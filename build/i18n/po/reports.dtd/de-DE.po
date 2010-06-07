@@ -2,20 +2,21 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-07 02:02-0400\n"
 "PO-Revision-Date: 2010-03-30 15:15+0000\n"
 "Last-Translator: Jens Böning <jensboening@gmx.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.7.0\n"
 "X-Launchpad-Export-Date: 2010-03-31 03:55+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Accelerator-Marker: &\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
@@ -164,8 +165,9 @@ msgid "Double-click on an item to see the item details."
 msgstr ""
 
 #: reports.oils_rpt_builder.template_types
+#, fuzzy
 msgid "Template Types"
-msgstr ""
+msgstr "Vorlagenart: "
 
 #: reports.oils_rpt_builder.display_items
 msgid "Display Items"
@@ -259,16 +261,18 @@ msgid "Date selector"
 msgstr ""
 
 #: reports.oils_rpt_editor.template_name
+#, fuzzy
 msgid "Template Name:"
-msgstr ""
+msgstr "Vorlagenname: "
 
 #: reports.oils_rpt_editor.template_creator
 msgid "Template Creator:"
 msgstr ""
 
 #: reports.oils_rpt_editor.template_description
+#, fuzzy
 msgid "Template Description:"
-msgstr ""
+msgstr "Vorlagenbeschreibung: "
 
 #: reports.oils_rpt_editor.report_name
 msgid "Report Name:"
@@ -397,8 +401,9 @@ msgid "Create a new sub-folder"
 msgstr "Einen neuen Unterordner erstellen"
 
 #: reports.oils_rpt_folder_manager.share_this_folder
+#, fuzzy
 msgid "Share this folder"
-msgstr ""
+msgstr "Diesen Ordner freigeben:"
 
 #: reports.oils_rpt_folder_manager.hide_folder
 msgid "Hide (un-share) this folder"
@@ -427,14 +432,16 @@ msgid "Folder Name:"
 msgstr "Ordnername:"
 
 #: reports.oils_rpt_folder_manager.do_not_share
+#, fuzzy
 msgctxt "reports.oils_rpt_folder_manager.do_not_share"
 msgid "Do not share"
-msgstr ""
+msgstr "Nicht freigeben"
 
 #: reports.oils_rpt_folder_manager.share
+#, fuzzy
 msgctxt "reports.oils_rpt_folder_manager.share"
 msgid "Share"
-msgstr ""
+msgstr "Freigabe"
 
 #: reports.oils_rpt_folder_manager.share_with
 msgctxt "reports.oils_rpt_folder_manager.share_with"
@@ -738,14 +745,16 @@ msgid "Alter Display Header"
 msgstr ""
 
 #: reports.xul.template_builder.move_up.label
+#, fuzzy
 msgctxt "reports.xul.template_builder.move_up.label"
 msgid "Move Up"
-msgstr ""
+msgstr "Nach oben"
 
 #: reports.xul.template_builder.move_down.label
+#, fuzzy
 msgctxt "reports.xul.template_builder.move_down.label"
 msgid "Move Down"
-msgstr ""
+msgstr "Nach unten verschieben"
 
 #: reports.xul.template_builder.remove_selected_field.label
 msgid "Remove Selected Field"

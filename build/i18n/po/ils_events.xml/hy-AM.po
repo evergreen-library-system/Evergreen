@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"POT-Creation-Date: 2010-06-07 02:03:42-0400\n"
 "PO-Revision-Date: 2009-12-21 08:22+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-12-22 04:36+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2009-12-22 04:36+0000\n"
 
 #: 1208.TITLE_LAST_COPY:66
 msgid "The last copy attached to a title is being removed or deleted"
@@ -29,14 +29,12 @@ msgid "This item is too new to have a hold placed on it"
 msgstr "Նյութը չափից դուրս նոր է որպեսզի այն պատվիրեն:"
 
 #: 1214.PATRON_DUP_IDENT1:87
-msgid ""
-"The selected primary identification type and value are in use by another "
-"patron"
+msgid "The selected primary identification type and value are in use by another patron"
 msgstr ""
 "Ընտրված սկզբնական բնոթագրման տեսակը և արժեքը օգտագործվում են մեկ ուրիշի "
 "կողմից:"
 
-#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:763
+#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:775
 msgid ""
 "A *TERRIBLE* problem has occurred: a credit\n"
 "            card transaction was processed successfuly, but the patron's\n"
@@ -64,18 +62,21 @@ msgstr "Առաջարկվող config_circ_matrix_test չի գտնվել"
 msgid "The requested metabib_series_field_entry was not found"
 msgstr "Հարցվող metabib_series_field_entry չի գտնված:"
 
-#: 8002.OFFLINE_FILE_ERROR:858
+#: 8002.OFFLINE_FILE_ERROR:892
 msgid " An offline file or directory could not be created or accessed "
-msgstr ""
-" Ոֆլայն ֆայլը կամ գրադարանը հնարվոր չ: ստեղծել կամ հասանելի դարձնել: "
+msgstr " Ոֆլայն ֆայլը կամ գրադարանը հնարվոր չ: ստեղծել կամ հասանելի դարձնել: "
 
-#: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:748
+#: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:760
 msgid "The credit card processor you have named is not allowed"
 msgstr "Քո կողմից նշված կրեդիտ քարտի պրոցեսորը արգելված է"
 
-#: 4010.CREDIT_PROCESSOR_NO_DEFAULT_SELECTED:754
+#: 4010.CREDIT_PROCESSOR_NO_DEFAULT_SELECTED:766
 msgid "No default credit processor is selected"
 msgstr "Լռակյաց կրեդիտի պրոցեսորը չի ընտրված"
+
+#: 1862.ACQ_FUND_EXCEEDS_STOP_PERCENT:655
+msgid "The requested acq.purchase_order cannot be activated because it would over-encumber a fund."
+msgstr ""
 
 #: 1649.VANDELAY_IMPORT_ITEM_NOT_FOUND:587
 msgid "The requested vandelay.import_item was not found"
@@ -105,27 +106,27 @@ msgstr "Առաջարկվող acq.funding_source_dedit չի գտնվել"
 msgid "The requested action_open_circ_count_by_circ_mod was not found"
 msgstr "Հարցվող action_open_circ_count_by_circ_mod չի գտնված"
 
-#: 0.SUCCESS:14
-msgid " "
-msgstr " "
-
-#: 7006.COPY_IS_REFERENCE:801
+#: 7006.COPY_IS_REFERENCE:823
 msgid " Copy is reference material "
 msgstr " Օրինակը տեղեկատու նյութ է: "
+
+#: 7025.PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS:783
+msgid "There are too many active password reset request sessions for this patron."
+msgstr ""
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:465
 msgid "The requested metabib_subject_field_entry was not found"
 msgstr "Հարցվող metabib_subject_field_entry չի գտնված"
 
-#: 1711.BIB_QUEUE_EXISTS:717
+#: 1711.BIB_QUEUE_EXISTS:729
 msgid "A bib record queue with the same name already exists"
 msgstr "Նույն անվանումով մատենագիտական գրառման հերթ արդեն կա"
 
-#: 1875.ACQ_LINEITEM_GENERATED_ATTR_DEFINITION_NOT_FOUND:661
-#: 1876.ACQ_LINEITEM_LOCAL_ATTR_DEFINITION_NOT_FOUND:664
-#: 1877.ACQ_LINEITEM_MARC_ATTR_DEFINITION_NOT_FOUND:667
-#: 1878.ACQ_LINEITEM_USR_ATTR_DEFINITION_NOT_FOUND:670
-#: 1879.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:673
+#: 1875.ACQ_LINEITEM_GENERATED_ATTR_DEFINITION_NOT_FOUND:673
+#: 1876.ACQ_LINEITEM_LOCAL_ATTR_DEFINITION_NOT_FOUND:676
+#: 1877.ACQ_LINEITEM_MARC_ATTR_DEFINITION_NOT_FOUND:679
+#: 1878.ACQ_LINEITEM_USR_ATTR_DEFINITION_NOT_FOUND:682
+#: 1879.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:685
 msgid "The requested acq_lineitem_attr was not found"
 msgstr "Առաջարկվող acq_lineitem_attr  չի գտնված"
 
@@ -165,15 +166,15 @@ msgstr "Հարցվող metabib_full_rec չի գտնված"
 msgid "No TCN could be found that does not collide with existing records"
 msgstr "Չի գտնվում TCN որը առկա գրառումների հետ collide չի լինում"
 
-#: 7016.ITEM_ON_HOLDS_SHELF:831
+#: 7016.ITEM_ON_HOLDS_SHELF:853
 msgid "This requested item is currently on the holds shelf"
 msgstr "Պահանջվող նյութը գտնվում է պահումների ցուցակում"
 
-#: 2001.DATABASE_UPDATE_FAILED:731
+#: 2001.DATABASE_UPDATE_FAILED:743
 msgid "The attempt to write to the DB failed"
 msgstr "Փորձը գրելու բազայում ձախոխվեց"
 
-#: 8000.OFFLINE_SESSION_ACTIVE:852
+#: 8000.OFFLINE_SESSION_ACTIVE:886
 msgid " An offline session for this location is currently processing "
 msgstr " Օֆլայն սեսիան այս տեղաբաշխման համար մշակվում է "
 
@@ -193,13 +194,13 @@ msgstr "Օգտվողի կապի սեսիան կամ ժամկետանց է կամ
 msgid " Requested billing note does not exist "
 msgstr " Հարցվող վճարի նշպւմը գոյություն չունի "
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:855
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:889
 msgid " An offline file for this workstation exists within this session "
 msgstr ""
 " Այս աշխատանքային կայանի համար օֆլայն ֆայլը գոյպւթյուն ունի այս սեսիայի "
 "ներսում "
 
-#: 1880.CONFIG_BILLING_TYPE_NOT_FOUND:676
+#: 1880.CONFIG_BILLING_TYPE_NOT_FOUND:688
 msgid "The requested config_billing_type was not found"
 msgstr "Առաջարկվող config_billing_type չի գտնված"
 
@@ -219,7 +220,7 @@ msgstr "Ջնջելու համար պատճեն չի գտնվում նորմալ 
 msgid "The requested acq.funding_source_credit_total was not found"
 msgstr "Պահանջվող acq.funding_source_credit_total չի գտնված"
 
-#: 1870.ACQ_LINEITEM_DETAIL_NOT_FOUND:649
+#: 1870.ACQ_LINEITEM_DETAIL_NOT_FOUND:661
 msgid "The requested acq.lineitem_detail was not found"
 msgstr "Պահանջվող acq.lineitem_detail չի գտնված"
 
@@ -228,9 +229,7 @@ msgid "The user does not have a valid phone number assigned"
 msgstr "Օգտվողը չունի նշված հեռախոս"
 
 #: 1002.ACTOR_USER_NOT_FOUND:29
-msgid ""
-"Someone attempted to retrieve a user from the system and the user was not "
-"found"
+msgid "Someone attempted to retrieve a user from the system and the user was not found"
 msgstr "Ինչ որ մեկը փորձեց կանչել համակարգի օգտվողին ն օգտվողը չի գտնվել"
 
 #: 1643.VANDELAY_BIB_QUEUE_NOT_FOUND:569
@@ -245,7 +244,7 @@ msgstr "Պահանջվող acq.fund_debit_total չի գտնված"
 msgid "The requested reporter_output_folder was not found"
 msgstr "Հարցվող reporter_output_folder չի գտնված"
 
-#: 8007.OFFLINE_SESSION_EXISTS:873
+#: 8007.OFFLINE_SESSION_EXISTS:907
 msgid " A session with the given name already exists "
 msgstr " Տրված անունով սէսիա արդեն գոյություն ունի "
 
@@ -261,6 +260,10 @@ msgstr "Հարցվող reporter_report_folder չի գտնված"
 msgid "The requested perm_ex was not found"
 msgstr "Հարցվող perm_ex չի գտնված"
 
+#: 10101.ACQ_ALREADY_CANCELED:947
+msgid "The object is already canceled."
+msgstr ""
+
 #: 1553.ACTOR_ORG_UNIT_CLOSED_DATE_NOT_FOUND:304
 msgid "The requested actor_org_unit_closed_date was not found"
 msgstr "Հարցվող actor_org_unit_closed_date չի գտնված"
@@ -269,11 +272,15 @@ msgstr "Հարցվող actor_org_unit_closed_date չի գտնված"
 msgid "The requested config_rules_recurring_fine was not found"
 msgstr "Պահանջվող config_rules_recurring_fine չի գտնված"
 
+#: 7007.COPY_NEEDED_FOR_HOLD:826
+msgid " Copy is needed to fulfil a hold "
+msgstr " Օրինակը հարկ է լրացնել պահման մեջ "
+
 #: 1541.AUTHORITY_RECORD_DESCRIPTOR_NOT_FOUND:271
 msgid "The requested authority_record_descriptor was not found"
 msgstr "Հարցվող authority_record_descriptor չի գտնված"
 
-#: 7011.COPY_STATUS_LOST:816
+#: 7011.COPY_STATUS_LOST:838
 msgid "Copy has is marked as lost"
 msgstr "Օրինակը նշված է որպես կորած"
 
@@ -295,11 +302,11 @@ msgstr "Հարցվող reporter_report չի գտնված"
 msgid "The requested money_collections_tracker was not found"
 msgstr "Հարցվող money_collections_tracker չի գտնված"
 
-#: 5000.PERM_FAILURE:768
+#: 5000.PERM_FAILURE:780
 msgid "Permission Denied"
 msgstr "Արտոնություն չկա"
 
-#: 7015.NEGATIVE_PATRON_BALANCE:828
+#: 7015.NEGATIVE_PATRON_BALANCE:850
 msgid "This requested action would result in a negative patron balance"
 msgstr "Հարցվող գործողության արդյունքում ընթերցողը կունենա բացասական բալանսը"
 
@@ -311,7 +318,7 @@ msgstr "Հարցվող actor_user_standing_penalty չի գտնված"
 msgid "The given username already exists in the database"
 msgstr "Տրված օգտվողի անունը արդեն կա"
 
-#: 9000.REPORT_TEMPLATE_EXISTS:886
+#: 9000.REPORT_TEMPLATE_EXISTS:920
 msgid " A report template with the given name and folder already exists"
 msgstr " Հաշվետվության ձևաչափը տրված անվանմամբ և թղթապանակով գոյություն ունի"
 
@@ -319,27 +326,39 @@ msgstr " Հաշվետվության ձևաչափը տրված անվանմամբ
 msgid "The requested actor_stat_cat_entry was not found"
 msgstr "Հարցվող actor_stat_cat_entry չի գտնված"
 
-#: 1710.CONTAINER_EXISTS:714
+#: 1710.CONTAINER_EXISTS:726
 msgid "User has already created a bucket with the requested name"
 msgstr "Օգտվողը արդեն ստեղծել է փունջ հարցվող անվանումով"
 
-#: 10000.ACQ_LINEITEM_APPROVED:894
+#: 10000.ACQ_LINEITEM_APPROVED:928
 msgid "The lineitem cannot be altered because it has already been approved"
 msgstr "Տողի նյութը հնարավոր չէ փոփոխել, քանի որ այն արդեն հաստատված է։"
+
+#: 7020.COPY_RESERVED:868
+msgid "Item reserved for booking request"
+msgstr ""
 
 #: 1575.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_NOT_FOUND:367
 msgid "The requested container_biblio_record_entry_bucket was not found"
 msgstr "Հարցվող container_biblio_record_entry_bucket չի գտնված"
 
-#: 1701.COPY_LOCATION_EXISTS:687
+#: 7021.RESERVATION_NOT_FOUND:871
+msgid "Booking reservation not found"
+msgstr ""
+
+#: 1701.COPY_LOCATION_EXISTS:699
 msgid " The copy location object already exists "
 msgstr " Պատճենվող տեղաբաշխումը գոյություն ունի "
 
-#: 1703.WORKSTATION_NAME_EXISTS:693
+#: 1703.WORKSTATION_NAME_EXISTS:705
 msgid " A workstation with that name already exists "
 msgstr " Այդ անունով աշխատանքային կայան գոյություն ունի "
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:906 10005.ACQ_LINEITEM_NO_PROVIDER:909
+#: 1860.ACQ_PURCHASE_ORDER_TOO_SHORT:649
+msgid "The requested acq.purchase_order cannot be split because it does not have more than one lineitem"
+msgstr ""
+
+#: 10004.ACQ_LINEITEM_NO_PRICE:940 10005.ACQ_LINEITEM_NO_PROVIDER:943
 msgid "The lineitem has no price"
 msgstr "Տողի նյութը չունի գին"
 
@@ -359,7 +378,7 @@ msgstr "Հարցվող asset_copy_note չի գտնված"
 msgid "The requested acq.fund_combined_balance was not found"
 msgstr "Պահանջվող requested acq.fund_combined_balance չի գտնված"
 
-#: 7017.ROUTE_TO_COPY_LOCATION:837
+#: 7017.ROUTE_TO_COPY_LOCATION:859
 msgid ""
 " \n"
 "\t\tA copy needs to be routed to a copy location.  The location\n"
@@ -403,7 +422,7 @@ msgstr "Z հերթը ճիշտ չէ կազմված"
 msgid "The given user barcode already exists"
 msgstr "Օգտվողի տրված շտրիխ կոդը գոյություն ունի"
 
-#: 1713.SURVEY_RESPONSES_EXIST:723
+#: 1713.SURVEY_RESPONSES_EXIST:735
 msgid "Responses to this survey exist"
 msgstr "Այս հարցախույզի համար առկա են պատասխաններ"
 
@@ -431,11 +450,11 @@ msgstr "Հարցվող permission_grp_tree չի գտնված"
 msgid " Requested title note does not exist "
 msgstr " Պահանջվող վերնագրի նշումը առկա չէ "
 
-#: 10001.ACQ_LINEITEM_NO_COPIES:897
+#: 10001.ACQ_LINEITEM_NO_COPIES:931
 msgid "The lineitem has no attached copies"
 msgstr "Տողի նյութը չունի կցվածօրինակներ"
 
-#: 9001.REPORT_REPORT_EXISTS:890
+#: 9001.REPORT_REPORT_EXISTS:924
 msgid " A report with the given name and folder already exists"
 msgstr " Տված անունով և թղթապանակով հաշվետվությունը արդեն առկա է"
 
@@ -443,11 +462,11 @@ msgstr " Տված անունով և թղթապանակով հաշվետվութ�
 msgid "The requested action_in_house_use was not found"
 msgstr "Հարցվող action_in_house_use չի գտնված"
 
-#: 1872.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:655
+#: 1872.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:667
 msgid "The requested acq.lineitem_provider_attr_definition was not found"
 msgstr "Պահանջվող acq.lineitem_provider_attr_definition չի գտնվել"
 
-#: 7005.LOCATION_CIRC_NOT_ALLOWED:798
+#: 7005.LOCATION_CIRC_NOT_ALLOWED:820
 msgid " Location does not allow materials to circulate "
 msgstr " Տեղաբաշխումը թույլ չի տալիս նյութը սպասարկել "
 
@@ -467,7 +486,7 @@ msgstr "Հարցվող config_rules_max_fine չի գտնված"
 msgid "The requested actor_org_unit_setting was not found"
 msgstr "Հարցվող actor_org_unit_setting չի գտնված"
 
-#: 7009.CIRC_CLAIMS_RETURNED:810
+#: 7009.CIRC_CLAIMS_RETURNED:832
 msgid " Requested circulation is marked claims returned "
 msgstr " Պահանջվող տածքը նշված է պարտքի վերադարձ "
 
@@ -479,7 +498,7 @@ msgstr "Հարցվող permission_usr_grp_map չի գտնված"
 msgid "The requested money_work_payment was not found"
 msgstr "Հարցվող money_work_payment չի գտնված"
 
-#: 2000.BAD_PARAMS:728
+#: 2000.BAD_PARAMS:740
 msgid "Invalid parameters were encountered in a method"
 msgstr "Մեթոդում գտնվել են սխալ պարամետրեր"
 
@@ -491,7 +510,7 @@ msgstr "Հարցվող money_cash_payment չի գնված"
 msgid "The selected location cannot have volumes attached"
 msgstr "Ընտրված տեղաբաշխումը չի կարող ունենալ կցված հատորներ"
 
-#: 1704.TCN_EXISTS:696
+#: 1704.TCN_EXISTS:708
 msgid "A record already exists with the requested TCN value"
 msgstr "Պահանջվող TCN արժեքով գրառում արդեն առկա է"
 
@@ -503,7 +522,7 @@ msgstr "Իրադարձություն: Օգտագործվում է միայն ն�
 msgid "The requested biblio_record_node was not found"
 msgstr "Հարցվող biblio_record_node չի գտնված"
 
-#: 8003.OFFLINE_PARAM_ERROR:861
+#: 8003.OFFLINE_PARAM_ERROR:895
 msgid " Missing params in offline upload "
 msgstr " Օֆլայն բեռնավորման մեջ առկա են պակասող պարամետրեր "
 
@@ -514,6 +533,10 @@ msgstr "Հարցվող actor_user_setting չի գտնված"
 #: 1211.BILL_ALREADY_VOIDED:76
 msgid "The selecte bill has already been voided"
 msgstr "Ընտրված հաշիվը արդեն հեռացվել է"
+
+#: 7026.PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST:786
+msgid "The user attempted to update their password using a stale or inactive password reset request session."
+msgstr ""
 
 #: 1222.PATRON_NO_EMAIL_ADDRESS:119
 msgid "The user does not have a valid email address assigned"
@@ -531,8 +554,7 @@ msgid ""
 "\t\t"
 msgstr ""
 "\n"
-"\t\t\tԸնտրված օրինակը չի կարող սպասարկվել, քանի որ ընթերցողի տան "
-"տեղաբաշխումը \n"
+"\t\t\tԸնտրված օրինակը չի կարող սպասարկվել, քանի որ ընթերցողի տան տեղաբաշխումը \n"
 "\t\t\tսպասարկման տիրույթից դուրս է:\n"
 "\t\t"
 
@@ -544,11 +566,11 @@ msgstr "Հարցվող config_lit_form_map չի գտնված"
 msgid "The requested metabib_record_descriptor was not found"
 msgstr "Հարցվող metabib_record_descriptor չի գտնված"
 
-#: 1702.OPEN_CIRCULATION_EXISTS:690
+#: 1702.OPEN_CIRCULATION_EXISTS:702
 msgid " There is an open circulation on the requested item "
 msgstr " Պատվիրված նյութի համար կա բաց սպասարկում "
 
-#: 4001.CREDIT_PROCESSOR_NOT_ENABLED:742
+#: 4001.CREDIT_PROCESSOR_NOT_ENABLED:754
 msgid "Credit card processor not enabled"
 msgstr "Կրեդիտ քարտի պրոցեսորը թույլատրված չէ"
 
@@ -567,6 +589,10 @@ msgstr "Գրանցումը ձախողվեց"
 #: 1543.MONEY_CREDIT_CARD_PAYMENT_NOT_FOUND:277
 msgid "The requested money_credit_card_payment was not found"
 msgstr "Հարցվող money_credit_card_payment չի գտնված"
+
+#: 7023.RESERVATION_BAD_PARAMS:877
+msgid "Provided parameters describe unacceptable reservation."
+msgstr ""
 
 #: 1857.ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND:640
 msgid "The requested acq.funding_source_balance was not found"
@@ -589,8 +615,7 @@ msgid "The requested config_non_cataloged_type was not found"
 msgstr "Հարցվող config_non_cataloged_type չի գտնված"
 
 #: 1225.TRANSIT_ABORT_NOT_ALLOWED:128
-msgid ""
-"The transit on this item may not be aborted due to the state the item is in"
+msgid "The transit on this item may not be aborted due to the state the item is in"
 msgstr "Այս նյութի համար տրանզիտը չի կարող վիժեցվել, ելնելով նյութի վիճակից"
 
 #: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:274
@@ -617,11 +642,11 @@ msgstr "Տրված օրինակը ստանդարտ սպասարկման կարք
 msgid "The requested money_billable_transaction was not found"
 msgstr "Հարցվող money_billable_transaction չի գտնված"
 
-#: 1871.PERMISSION_USR_OBJECT_PERM_MAP_NOT_FOUND:652
+#: 1871.PERMISSION_USR_OBJECT_PERM_MAP_NOT_FOUND:664
 msgid "The requested permission.usr_object_perm_map was not found"
 msgstr "Պահանջվող permission.usr_object_perm չի գտնվել"
 
-#: 7004.COPY_NOT_AVAILABLE:795
+#: 7004.COPY_NOT_AVAILABLE:817
 msgid " Copy is not available "
 msgstr " Օրինակը մատչելի չէ "
 
@@ -630,8 +655,7 @@ msgid "The requested money_open_user_summary was not found"
 msgstr "Հարցվող money_open_user_summary չի գտնված"
 
 #: 1207.REFUND_EXCEEDS_BALANCE:63
-msgid ""
-"A refund greater than the negative balance on a transaction was provided"
+msgid "A refund greater than the negative balance on a transaction was provided"
 msgstr ""
 "Տրվել է ավելի մէծ վերադարձի գումար քան տրանզակցիայի բացասական գումարն է:"
 
@@ -647,13 +671,17 @@ msgstr "Դուրս տրման փորձ է արվել առանց իրավասու
 msgid "The requested money_credit_payment was not found"
 msgstr "Հարցվող money_credit_payment չի գտնված"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:903
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:937
 msgid "The lineitem detail has no owning_lib"
 msgstr "Տողի նյութի մանրամասը չունի owning_lib"
 
 #: 1618.METABIB_TITLE_FIELD_ENTRY_NOT_FOUND:494
 msgid "The requested metabib_title_field_entry was not found"
 msgstr "Հարցվող metabib_title_field_entry չի գտնված"
+
+#: 7022.RESERVATION_CAPTURE_FAILED:874
+msgid "Booking reservation capture failed"
+msgstr ""
 
 #: 1202.ITEM_NOT_CATALOGED:45
 msgid "The requested item is not cataloged in the database"
@@ -667,13 +695,17 @@ msgstr "Հարցվող money_billing չի գտնված"
 msgid "The requested config_metabib_field was not found"
 msgstr "Հարցվող config_metabib_field չի գտնված"
 
-#: 2002.DATABASE_QUERY_FAILED:734
+#: 2002.DATABASE_QUERY_FAILED:746
 msgid "The attempt to query to the DB failed"
 msgstr "Բազայում հարցում անելու փորձը տապալվեց"
 
 #: 1549.CONFIG_STANDING_NOT_FOUND:293
 msgid "The requested config_standing was not found"
 msgstr "Հարցվող config_standing չի գտնված"
+
+#: 1861.ACQ_PURCHASE_ORDER_TOO_LATE:652
+msgid "The requested acq.purchase_order cannot be split because it has gone beyond the \"pending\" state"
+msgstr ""
 
 #: 1210.INCORRECT_PASSWORD:73
 msgid "The provided password is not correct"
@@ -687,7 +719,7 @@ msgstr "Հարցվող config_item_type_map չի գտնված"
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
 msgstr "Պահանջվող config_circ_matrix_ruleset_not_found չի գտնվել"
 
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:900
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:934
 msgid "The lineitem detail has no associated fund"
 msgstr "Տողի նյութի մանրամասը չունի իրեն կցված գումար"
 
@@ -699,7 +731,7 @@ msgstr "Հարցվող config_identification_type չի գտնված"
 msgid "The requested asset_copy_location was not found"
 msgstr "Հարցվող asset_copy_location չի գտնված"
 
-#: 7001.PATRON_BAD_STANDING:785
+#: 7001.PATRON_BAD_STANDING:807
 msgid ""
 "\n"
 "\t\t\tThe patron in question is not able to check out materials because\n"
@@ -715,10 +747,8 @@ msgstr ""
 msgid "The requested asset_call_number_note was not found"
 msgstr "Հարցվող asset_call_number_note չի գտնված"
 
-#: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:751
-msgid ""
-"No credit card processor specified either in org unit settings or in call to "
-"credit service API method."
+#: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:763
+msgid "No credit card processor specified either in org unit settings or in call to credit service API method."
 msgstr ""
 "Կրեդիտ քարտի պրոցեսորը չի նշված կամ org unit-ի կարգաբերման մեջ  կամ կրեդիտ "
 "քարտի կանչման ծառայության API  մեթոդում"
@@ -727,9 +757,8 @@ msgstr ""
 msgid "Requested address was not found"
 msgstr "Հարցվող հասցեն չի գտնված"
 
-#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:789
-msgid ""
-"The patron in question has the maximum number of items already checked out"
+#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:811
+msgid "The patron in question has the maximum number of items already checked out"
 msgstr "Հարցված ընթերցողը ունի առավելաքույն սպասարկված նյութեր"
 
 #: 1003.Z3950_SEARCH_FAILED:32
@@ -756,19 +785,19 @@ msgstr ""
 "\t\t\tսպասարկւոմը նորմալ չի ավարտվել\n"
 "\t\t"
 
-#: 4002.CREDIT_PROCESSOR_BAD_PARAMS:745
+#: 4002.CREDIT_PROCESSOR_BAD_PARAMS:757
 msgid "Not enough parameters to use credit card processor"
 msgstr "Պարամետրերը բավարար չեն կրեդիտ քարտի պրոցեսորի օգտագործման համար"
 
-#: 1709.MAX_HOLDS:711
+#: 1709.MAX_HOLDS:723
 msgid "User has reached the maximum number of holds"
 msgstr "Օգտվողը հասէլ է պահումների ամենամեծ քանակին"
 
-#: 1706.ITEM_BARCODE_EXISTS:702
+#: 1706.ITEM_BARCODE_EXISTS:714
 msgid "An item with the same barcode exists"
 msgstr "Նույն շտրիխ կոդով նյութ գոյություն ունի"
 
-#: 7014.COPY_IN_TRANSIT:825
+#: 7014.COPY_IN_TRANSIT:847
 msgid "Copy is in transit"
 msgstr "Օրինակը տրանզիտում է"
 
@@ -776,7 +805,7 @@ msgstr "Օրինակը տրանզիտում է"
 msgid "A copy with a remote circulating library (circ_lib) was encountered"
 msgstr "Օրինակ հեռու գտնվող (circ_lib) գրադարանից տեսնված է"
 
-#: 7000.ROUTE_ITEM:778
+#: 7000.ROUTE_ITEM:800
 msgid ""
 " \n"
 "\t\t\tA copy needs to be routed to a different location\t\n"
@@ -790,11 +819,11 @@ msgstr ""
 "\t\t\tիրադարձության ոբյեկտի ներսում\n"
 "\t\t"
 
-#: 7007.COPY_NEEDED_FOR_HOLD:804
-msgid " Copy is needed to fulfil a hold "
-msgstr " Օրինակը հարկ է լրացնել պահման մեջ "
+#: 0.SUCCESS:14
+msgid "Success"
+msgstr ""
 
-#: 7010.COPY_ALERT_MESSAGE:813
+#: 7010.COPY_ALERT_MESSAGE:835
 msgid " The requested copy has an alert message attached "
 msgstr " Պատվիրված օրինակը կցված հաղորդագրություն ունի "
 
@@ -809,6 +838,10 @@ msgstr "Հարցվող action_hold_request չի գտնված"
 #: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:79
 msgid "The patron has too many overdue items"
 msgstr "Ընթերցողը չափից շատ ժամկետանց նյութեր ունի"
+
+#: 1863.ACQ_FUND_EXCEEDS_WARN_PERCENT:658
+msgid "Activating the requested acq.purchase_order would encumber it beyond its warning level."
+msgstr ""
 
 #: 1578.ACTION_HOLD_NOTIFICATION_NOT_FOUND:376
 msgid "The requested action_hold_notification was not found"
@@ -846,12 +879,12 @@ msgstr "Հարցվող actor_org_unit_hours_of_operation չի գտնված"
 msgid "The requested ex was not found"
 msgstr "Պատվիրված ex չի գտնված"
 
-#: 7019.HOLD_CAPTURE_DELAYED:843
+#: 7019.HOLD_CAPTURE_DELAYED:865
 msgid "Hold capture was delayed for this item"
 msgstr "Պահումի որսումը կասեցվել է այս նյութի համար"
 
-#: 8004.OFFLINE_CONFIG_ERROR:864 8005.OFFLINE_CHECKSUM_FAILED:867
-#: 8006.OFFLINE_SESSION_NOT_FOUND:870
+#: 8004.OFFLINE_CONFIG_ERROR:898 8005.OFFLINE_CHECKSUM_FAILED:901
+#: 8006.OFFLINE_SESSION_NOT_FOUND:904
 msgid " Offline server is not configured properly "
 msgstr " Ոֆլայն կայանը ճիշտ չի կարգաբերված "
 
@@ -867,15 +900,23 @@ msgstr "Հարցվող container_copy_bucket_item չի գտնված"
 msgid "The requested actor_stat_cat was not found"
 msgstr "Հարցվող actor_stat_cat չի գտնված"
 
-#: 7003.COPY_CIRC_NOT_ALLOWED:792
+#: 7027.PATRON_PASSWORD_WAS_NOT_STRONG:789
+msgid "The user attempted to set their password to a weak value."
+msgstr ""
+
+#: 7003.COPY_CIRC_NOT_ALLOWED:814
 msgid " Target copy is not allowed to circulate "
 msgstr " Թիրախ օրինակը արգելված է սպասարկել "
 
-#: 7008.MAX_RENEWALS_REACHED:807
+#: 10102.ACQ_NOT_CANCELABLE:950
+msgid "The object is not in a cancelable state."
+msgstr ""
+
+#: 7008.MAX_RENEWALS_REACHED:829
 msgid " Circulation has no more renewals remaining "
 msgstr " Սպասարկման մոդուլւոմ սպասող թարմացումներ էլ չկան "
 
-#: 8009.OFFLINE_NO_ORG:879 8010.OFFLINE_SESSION_COMPLETE:882
+#: 8009.OFFLINE_NO_ORG:913 8010.OFFLINE_SESSION_COMPLETE:916
 msgid " No org id was provided "
 msgstr " org id չկա "
 
@@ -894,8 +935,7 @@ msgstr "Հարցվող reporter_template_folder չի գտնված"
 #: 1500.ACTION_CIRCULATION_NOT_FOUND:173
 msgid ""
 "\n"
-"\t\t\tSomeone attempted to retrieve a circulation object from the system and "
-"\n"
+"\t\t\tSomeone attempted to retrieve a circulation object from the system and \n"
 "\t\t\tthe object was not found.\n"
 "\t\t"
 msgstr ""
@@ -932,7 +972,7 @@ msgstr "Հարցվող container_biblio_record_entry_bucket_item չի գտնվա
 msgid "User login failed"
 msgstr "Օգտվողի գրանցումը ձախողվեգ"
 
-#: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:658
+#: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:670
 msgid "The requested acq.currency_type was not found"
 msgstr "Պահանջվող acq.currency_type չի գտնվել"
 
@@ -940,7 +980,7 @@ msgstr "Պահանջվող acq.currency_type չի գտնվել"
 msgid "The requested money_grocery was not found"
 msgstr "Հարցվող money_grocery չի գտնված"
 
-#: 7012.COPY_STATUS_MISSING:819
+#: 7012.COPY_STATUS_MISSING:841
 msgid "Copy has is marked as missing"
 msgstr "Օրինակը նշված է որպես բացակա"
 
@@ -952,19 +992,19 @@ msgstr "Հարցվող container_user_bucket_item չի գտնված"
 msgid "The requested money_billable_transaction_summary was not found"
 msgstr "Հարցվող money_billable_transaction_summary չի գտնված"
 
-#: 1712.AUTH_QUEUE_EXISTS:720
+#: 1712.AUTH_QUEUE_EXISTS:732
 msgid "An authority record queue with the same name already exists"
 msgstr "Նույն անվանումով հեղինակավոր գրառման հարցում արդեն կա"
 
-#: 2003.INTERNAL_SERVER_ERROR:737
+#: 2003.INTERNAL_SERVER_ERROR:749
 msgid "There was an internal server error"
 msgstr "Աօկա է կայանի ներքին սխալ"
 
-#: 4020.CREDIT_PROCESSOR_DECLINED_TRANSACTION:757
+#: 4020.CREDIT_PROCESSOR_DECLINED_TRANSACTION:769
 msgid "The credit card processor has declined the transaction."
 msgstr "Կրեդիտ քարտի պրոցեսորը մերժել է այս տրանզակցիան"
 
-#: 8008.OFFLINE_INVALID_SESSION:876
+#: 8008.OFFLINE_INVALID_SESSION:910
 msgid " The session name is invalid "
 msgstr " Սէսիայի անոնը սխալ է "
 
@@ -992,7 +1032,7 @@ msgstr "Ընթերցողի հաշիվը ժամկետանց է"
 msgid "The requested metabib_metarecord was not found"
 msgstr "Հարցվող metabib_metarecord չի գտնված"
 
-#: 1707.HOLD_EXISTS:705
+#: 1707.HOLD_EXISTS:717
 msgid "User already has an open hold on the selected item"
 msgstr "Ընտրված նյութի համար օգտվողը ունի բաց պահում"
 
@@ -1016,7 +1056,7 @@ msgstr "Հարցվող money_forgive_payment չի գտնված"
 msgid "The saved item has been edited by another user"
 msgstr "Հիշված նյութը խմբագրվըլ է մեկ այլ օգտվողի կողմից"
 
-#: 1700.NON_CAT_TYPE_EXISTS:684
+#: 1700.NON_CAT_TYPE_EXISTS:696
 msgid " The non-cataloged type object already exists "
 msgstr " Չմուտքագրվող դասի պատկեր արդեն աօկա է "
 
@@ -1024,9 +1064,8 @@ msgstr " Չմուտքագրվող դասի պատկեր արդեն աօկա է "
 msgid "The requested acq.lineitem_attr was not found"
 msgstr "Պահանջվող acq.lineitem_attr չի գտնվել"
 
-#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:708
-msgid ""
-"A duplicate money.collections_tracker object already exists in the database"
+#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:720
+msgid "A duplicate money.collections_tracker object already exists in the database"
 msgstr "Կրկնվող money.collections_tracker պատկեր շտեմարանում աօկա է"
 
 #: 1634.REPORTER_TEMPLATE_NOT_FOUND:542
@@ -1049,7 +1088,7 @@ msgstr "Պահանջվող մատեն գրաղումը նշված է ջնջվա�
 msgid "The requested acq.picklist was not found"
 msgstr "Պահանջվող acq.picklist չի գտնվել"
 
-#: 7018.COPY_MARKED_LOST:840
+#: 7018.COPY_MARKED_LOST:862
 msgid "The requested item is already marked as lost"
 msgstr "Պահանջվող մատեն գրաղումը նշված է կորած"
 
@@ -1057,7 +1096,7 @@ msgstr "Պահանջվող մատեն գրաղումը նշված է կորած"
 msgid "The requested config_circ_modifier was not found"
 msgstr "Պահանջվող config_circ_modifier չի գտնվել"
 
-#: 1705.VOLUME_LABEL_EXISTS:699
+#: 1705.VOLUME_LABEL_EXISTS:711
 msgid "A volume with the same label, title and owning library exists"
 msgstr "Նույն պիտակով, վերնագրովշ և վայրով հտոր արդեն կա"
 
@@ -1073,11 +1112,11 @@ msgstr "Պահանջվող acq.funding_source_allocation_total չի գտնվել
 msgid "The patron's card is not active"
 msgstr "Ընթերցողի տոմսը ակտիվ չէ"
 
-#: 1881.PERMISSION_GRP_PENALTY_THRESHOLD_NOT_FOUND:679
+#: 1881.PERMISSION_GRP_PENALTY_THRESHOLD_NOT_FOUND:691
 msgid "The requested permission_grp_penalty_threshold was not found"
 msgstr "Պահանջվող permission_grp_penalty_threshold չի գտնվել"
 
-#: 7013.PATRON_EXCEEDS_FINES:822
+#: 7013.PATRON_EXCEEDS_FINES:844
 msgid "The patron in question has reached the maximum fine amount"
 msgstr "Հարցվող ընթերցողը հասել է մաքսիմում տուգանքի մեծությանը"
 
@@ -1105,8 +1144,7 @@ msgid ""
 "\t\t"
 msgstr ""
 "\n"
-"\t\t\tՎերաֆինանսավորման այս արժեխը թույլատրված չէ, քանի որ այն գերազանցում է "
-"\n"
+"\t\t\tՎերաֆինանսավորման այս արժեխը թույլատրված չէ, քանի որ այն գերազանցում է \n"
 "\t\t\tայս տրանզակցիայի համար հատկացված ընդհանուր գումարին:\n"
 "\t\t"
 
@@ -1137,3 +1175,6 @@ msgstr "Հարցվող action_non_cataloged_circulation չի գտնված"
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:453
 msgid "The requested money_user_summary was not found"
 msgstr "Հարցվող money_user_summary չի գտնված"
+
+#~ msgid " "
+#~ msgstr " "

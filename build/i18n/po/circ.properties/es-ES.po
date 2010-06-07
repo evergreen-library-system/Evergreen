@@ -2,20 +2,21 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-07 02:03-0400\n"
 "PO-Revision-Date: 2010-01-04 21:08+0000\n"
 "Last-Translator: Federico Vera <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.7.0\n"
 "X-Launchpad-Export-Date: 2010-01-05 04:41+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Accelerator-Marker: &\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -125,12 +126,14 @@ msgid "Circ ID %1$s failed backdating due to %2$s"
 msgstr ""
 
 #: staff.circ.backdate.circ_ids.prompt
-msgid "Number of circulations selected: %1$s"
+#, fuzzy
+msgid "Number of circulations selected: %1$s "
 msgstr "Número de circulaciones seleccionadas: %1$s"
 
 #: staff.circ.backdate.circ_ids.failed
-msgid "Number of circulations not backdated: %1$s"
-msgstr ""
+#, fuzzy
+msgid "Number of circulations not backdated: %1$s "
+msgstr "Número de circulaciones seleccionadas: %1$s"
 
 #: staff.circ.checkout.sorting.exception
 msgid "error in sorting non-cataloged items: %1$s"
@@ -393,6 +396,49 @@ msgstr "%1$s : %2$s"
 msgid "Legacy/Not Dated"
 msgstr ""
 
+#. # From Config::rules::circ_duration, 1 - Name, 2 - ID, 3 - Short, 4 - Normal, 5 - Extended, 6 - Max Renewals
+#: staff.circ.copy_details.duration_rule_format
+msgctxt "staff.circ.copy_details.duration_rule_format"
+msgid "%1$s"
+msgstr ""
+
+#. # From Config::rules::circ_duration, 1 - Name, 2 - ID, 3 - Short, 4 - Normal, 5 - Extended, 6 - Max Renewals
+#: staff.circ.copy_details.duration_rule_tooltip_format
+msgid "%3$s/%4$s/%5$s - %6$s renewals"
+msgstr ""
+
+#. # From Config::rules::recurring_fine, 1 - Name, 2 - ID, 3 - Low, 4 - Normal, 5 - High, 6 - Recurrence Interval
+#: staff.circ.copy_details.recurring_fine_rule_format
+msgctxt "staff.circ.copy_details.recurring_fine_rule_format"
+msgid "%1$s"
+msgstr ""
+
+#. # From Config::rules::recurring_fine, 1 - Name, 2 - ID, 3 - Low, 4 - Normal, 5 - High, 6 - Recurrence Interval
+#: staff.circ.copy_details.recurring_fine_rule_tooltip_format
+msgid "%3$s/%4$s/%5$s - %6$s"
+msgstr ""
+
+#. # From Config::rules::max_fine, 1 - Name, 2 - ID, 3 - Amount, 4 - Is Percent
+#: staff.circ.copy_details.max_fine_rule_format
+msgctxt "staff.circ.copy_details.max_fine_rule_format"
+msgid "%1$s"
+msgstr ""
+
+#. # From Config::rules::max_fine, 1 - Name, 2 - ID, 3 - Amount, 4 - Is Percent
+#: staff.circ.copy_details.max_fine_rule_tooltip_format
+msgid "%3$s Is Percent? %4$s"
+msgstr ""
+
+#. # From asset::copy_location: 1 - Can Circulate?  2 - Is Holdable?  3 - Hold Capture Requires Verification?  4 - Is OPAC Visible?
+#: staff.circ.copy_details.location_tooltip
+msgid "Circulate? %1$s  Holdable? %2$s  Hold Verify? %3$s  OPAC Visible? %4$s"
+msgstr ""
+
+#. # From config::copy_status: 1 - OPAC Visible?  2 - Is Holdable?
+#: staff.circ.copy_details.copy_status_tooltip
+msgid "OPAC Visible? %1$s  Holdable? %2$s"
+msgstr ""
+
 #: staff.circ.copy_status.tab_name
 msgid "Item Status"
 msgstr "Estado del elemento"
@@ -510,9 +556,10 @@ msgid "Delete"
 msgstr ""
 
 #: staff.circ.copy_status.delete_volumes.cancel
+#, fuzzy
 msgctxt "staff.circ.copy_status.delete_volumes.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: staff.circ.copy_status.delete_volumes.override
 msgctxt "staff.circ.copy_status.delete_volumes.override"
@@ -543,9 +590,10 @@ msgid "Limit Selection"
 msgstr ""
 
 #: staff.circ.copy_status.ok
+#, fuzzy
 msgctxt "staff.circ.copy_status.ok"
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: staff.circ.copy_status.mark_library
 msgid "Library and Record marked as Volume Transfer Destination"
@@ -575,9 +623,10 @@ msgid "Transfer"
 msgstr ""
 
 #: staff.circ.copy_status.transfer_volume.cancel.label
+#, fuzzy
 msgctxt "staff.circ.copy_status.transfer_volume.cancel.label"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: staff.circ.copy_status.transfer_volume.cancel.accesskey
 msgid "C"
@@ -623,9 +672,10 @@ msgid "%1$s was either mis-scanned or is not cataloged."
 msgstr ""
 
 #: staff.circ.copy_status.status.not_cataloged
+#, fuzzy
 msgctxt "staff.circ.copy_status.status.not_cataloged"
 msgid "Not Cataloged"
-msgstr ""
+msgstr "No-catalogado"
 
 #: staff.circ.copy_status.status.pre_cat
 msgid "Item is a pre-cataloged item."
@@ -668,9 +718,10 @@ msgstr ""
 
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.barcode
+#, fuzzy
 msgctxt "staff.circ.hold_capture.print.barcode"
 msgid "Barcode:"
-msgstr ""
+msgstr "Código de barras:"
 
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.title
@@ -725,20 +776,22 @@ msgid "In-House Use"
 msgstr ""
 
 #: staff.circ.in_house_use.barcode
+#, fuzzy
 msgctxt "staff.circ.in_house_use.barcode"
 msgid "Barcode:"
-msgstr ""
+msgstr "Código de barras:"
 
 #: staff.circ.in_house_use.noncat_sort_error
 msgid "error in noncat sorting:"
 msgstr ""
 
 #: staff.circ.in_house_use.noncataloged
+#, fuzzy
 msgid "Non-Cataloged"
-msgstr ""
+msgstr "No-catalogado"
 
 #: staff.circ.in_house_use.items_dump
-msgid "items ="
+msgid "items = "
 msgstr ""
 
 #: staff.circ.in_house_use.confirm_multiple
@@ -750,14 +803,16 @@ msgid "In-House Use Verification"
 msgstr ""
 
 #: staff.circ.in_house_use.yes
+#, fuzzy
 msgctxt "staff.circ.in_house_use.yes"
 msgid "Yes"
-msgstr ""
+msgstr "Si"
 
 #: staff.circ.in_house_use.no
+#, fuzzy
 msgctxt "staff.circ.in_house_use.no"
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #. # adjust Circulation -> Offline Interface to match your translation in lang.dtd
 #: staff.circ.in_house_use.failed.verbose
@@ -771,9 +826,10 @@ msgid "In House Use Failed"
 msgstr ""
 
 #: staff.circ.in_house_use.ok
+#, fuzzy
 msgctxt "staff.circ.in_house_use.ok"
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: staff.circ.in_house_use.external
 msgid "circ.in_house_use: Calling external .on_in_house_use()"
@@ -808,7 +864,7 @@ msgid "Close Window"
 msgstr ""
 
 #: staff.circ.print_list_template.preview
-msgid "preview:"
+msgid "preview: "
 msgstr ""
 
 #: staff.circ.print_list_template.save
@@ -854,14 +910,16 @@ msgid "Aborting Transits"
 msgstr ""
 
 #: staff.circ.utils.yes
+#, fuzzy
 msgctxt "staff.circ.utils.yes"
 msgid "Yes"
-msgstr ""
+msgstr "Si"
 
 #: staff.circ.utils.no
+#, fuzzy
 msgctxt "staff.circ.utils.no"
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: staff.circ.utils.abort_transits.not_allowed
 msgid "Copy ID = %1$s"
@@ -902,8 +960,9 @@ msgid "Transaction Type"
 msgstr ""
 
 #: staff.circ.utils.offline.noncat
+#, fuzzy
 msgid "Non-Cataloged?"
-msgstr ""
+msgstr "No-catalogado"
 
 #: staff.circ.utils.offline.noncat_type
 msgid "Non-Cataloged Type ID"
@@ -934,9 +993,10 @@ msgid "Use Time"
 msgstr ""
 
 #: staff.circ.utils.not_cataloged
+#, fuzzy
 msgctxt "staff.circ.utils.not_cataloged"
 msgid "Not Cataloged"
-msgstr ""
+msgstr "No-catalogado"
 
 #: staff.circ.utils.retrieving
 msgid "Retrieving..."
@@ -982,6 +1042,10 @@ msgstr ""
 
 #: staff.circ.utils.holdable
 msgid "Holdable?"
+msgstr ""
+
+#: staff.circ.utils.floating
+msgid "Floating?"
 msgstr ""
 
 #: staff.circ.utils.hold_note
@@ -1063,7 +1127,7 @@ msgid "Date Created"
 msgstr ""
 
 #: staff.circ.utils.edit_date
-msgid "Date Last Edited"
+msgid "Date Last Edited "
 msgstr ""
 
 #: staff.circ.utils.bre.create_date
@@ -1071,7 +1135,7 @@ msgid "Date Record Created"
 msgstr ""
 
 #: staff.circ.utils.bre.edit_date
-msgid "Date Record Last Edited"
+msgid "Date Record Last Edited "
 msgstr ""
 
 #: staff.circ.utils.edition
@@ -1133,8 +1197,9 @@ msgid "Alert Message"
 msgstr ""
 
 #: staff.circ.utils.barcode
+#, fuzzy
 msgid "Barcode"
-msgstr ""
+msgstr "Código de barras:"
 
 #: staff.circ.utils.title
 msgid "Title"
@@ -1181,6 +1246,7 @@ msgid "Request Library"
 msgstr ""
 
 #: staff.circ.utils.request_time
+msgctxt "staff.circ.utils.request_time"
 msgid "Request Date"
 msgstr ""
 
@@ -1191,8 +1257,9 @@ msgstr ""
 
 #. # Date the hold was captured
 #: staff.circ.utils.capture_time
+#, fuzzy
 msgid "Capture Date"
-msgstr ""
+msgstr "Fecha futuar"
 
 #. # Date the hold was cancelled
 #: staff.circ.utils.hold_cancel_time
@@ -1227,6 +1294,22 @@ msgstr ""
 
 #: staff.circ.utils.hold_status.5
 msgid "Reserved/Pending"
+msgstr ""
+
+#: staff.circ.utils.hold_post_clear_shelf_action.label
+msgid "Post-Clear"
+msgstr ""
+
+#: staff.circ.utils.hold_post_clear_shelf_action.hold
+msgid "Need for Hold"
+msgstr ""
+
+#: staff.circ.utils.hold_post_clear_shelf_action.transit
+msgid "Need for Transit"
+msgstr ""
+
+#: staff.circ.utils.hold_post_clear_shelf_action.shelf
+msgid "Reshelve"
 msgstr ""
 
 #: staff.circ.utils.frozen
@@ -1282,8 +1365,7 @@ msgid "Override Checkin Failure?"
 msgstr ""
 
 #: staff.circ.utils.checkin.override.item_deposit_paid.warning
-msgid ""
-"A paid deposit will be owed to this patron if this action is overrided."
+msgid "A paid deposit will be owed to this patron if this action is overrided."
 msgstr ""
 
 #: staff.circ.utils.billable.amount
@@ -1421,7 +1503,7 @@ msgid "Hold Capture Delayed"
 msgstr ""
 
 #: staff.circ.utils.hold_capture_delayed.prompt_for_nocapture
-msgid "Do Not Capture"
+msgid "Do Not Capture "
 msgstr ""
 
 #: staff.circ.utils.hold_capture_delayed.prompt_for_capture
@@ -1441,9 +1523,10 @@ msgid "FIXME -- this case \"%1$s\" is unhandled."
 msgstr ""
 
 #: staff.circ.utils.msg.ok
+#, fuzzy
 msgctxt "staff.circ.utils.msg.ok"
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: staff.circ.utils.route_to.destination
 msgid "Destination: %1$s."
@@ -1470,7 +1553,7 @@ msgid "Estimated Wait Time"
 msgstr ""
 
 #: staff.circ.utils.potential_copies
-msgid "Potential Copies"
+msgid "Potential Copies "
 msgstr ""
 
 #: staff.circ.utils.queue_position
@@ -1479,6 +1562,10 @@ msgstr ""
 
 #: staff.circ.utils.total_holds
 msgid "Total Number of Holds"
+msgstr ""
+
+#: staff.circ.utils.find_acq_po.no_po
+msgid "Lineitem found (%1$s), but without purchase order"
 msgstr ""
 
 #: staff.circ.work_log_column.message
@@ -1490,12 +1577,62 @@ msgstr ""
 msgid "When"
 msgstr ""
 
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode
 #: staff.circ.work_log_checkout.message
 msgid "%1$s circulated %4$s to %3$s (%2$s)"
 msgstr ""
 
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode
 #: staff.circ.work_log_renew.message
 msgid "%1$s renewed %4$s for %3$s (%2$s)"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.transit.message
+msgid "%1$s attempted checkin of %4$s, resulting in transit.  Route To = %5$s"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.transit_for_hold.message
+msgid ""
+"%1$s attempted checkin of %4$s, resulting in a hold-transit.  Route To = %"
+"5$s"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.no_change.message
+msgid "%1$s attempted checkin of %4$s, but nothing happened.  Route To = %5$s"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.error.message
+msgid "%1$s attempted checkin of %4$s, and an error occurred.  Route To = %5$s"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.success.message
+msgid "%1$s attempted checkin of %4$s, which succeeded.  Route To = %5$s"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.hold_shelf.message
+msgid ""
+"%1$s attempted checkin of %4$s, which routed the item to the Holds Shelf.  "
+"Route To = %5$s"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.cataloging.message
+msgid ""
+"%1$s attempted checkin of %4$s, which is a pre-cat and was routed to "
+"Cataloging.  Route To = %5$s"
+msgstr ""
+
+#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode  4 - Item Barcode  5 - Route To text
+#: staff.circ.work_log_checkin_attempt.cataloging.message
+msgid ""
+"%1$s attempted checkin of %4$s, which was not found, and so was routed to "
+"Cataloging.  Route To = %5$s"
 msgstr ""
 
 #: staff.circ.checkin.hold_capture
@@ -1507,11 +1644,12 @@ msgid "Item Check In"
 msgstr ""
 
 #: staff.circ.renew.tab.label
+#, fuzzy
 msgid "Renew Items"
-msgstr ""
+msgstr "Renovar elemento"
 
 #: staff.circ.checkin.error
-msgid "Check In Failed (in circ.util.checkin) (%1$s):"
+msgid "Check In Failed (in circ.util.checkin) (%1$s): "
 msgstr ""
 
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
@@ -1589,9 +1727,33 @@ msgid ""
 msgstr ""
 
 #: staff.circ.holds.activation_date.invalid_date
+#, fuzzy
 msgctxt "staff.circ.holds.activation_date.invalid_date"
 msgid "Invalid Date"
+msgstr "Fecha inválida"
+
+#: staff.circ.holds.request_date.prompt
+msgid ""
+"Please enter a new Request Date for hold %1$s.  WARNING: This effectively "
+"reorders the holds queue."
 msgstr ""
+
+#: staff.circ.holds.request_date.prompt.plural
+msgid ""
+"Please enter a new Request Date for holds %1$s.  WARNING: This effectively "
+"reorders the holds queue."
+msgstr ""
+
+#: staff.circ.holds.request_date.dialog.description
+msgctxt "staff.circ.holds.request_date.dialog.description"
+msgid "Request Date"
+msgstr ""
+
+#: staff.circ.holds.request_date.invalid_date
+#, fuzzy
+msgctxt "staff.circ.holds.request_date.invalid_date"
+msgid "Invalid Date"
+msgstr "Fecha inválida"
 
 #: staff.circ.holds.expire_time.prompt
 msgid ""
@@ -1609,9 +1771,10 @@ msgid ""
 msgstr ""
 
 #: staff.circ.holds.expire_time.invalid_date
+#, fuzzy
 msgctxt "staff.circ.holds.expire_time.invalid_date"
 msgid "Invalid Date"
-msgstr ""
+msgstr "Fecha inválida"
 
 #: staff.circ.holds.shelf_expire_time.prompt
 msgid "Please enter a Shelf Expiration Date for hold %1$s."
@@ -1627,26 +1790,29 @@ msgid "Shelf Expire Time"
 msgstr ""
 
 #: staff.circ.holds.shelf_expire_time.invalid_date
+#, fuzzy
 msgctxt "staff.circ.holds.shelf_expire_time.invalid_date"
 msgid "Invalid Date"
-msgstr ""
+msgstr "Fecha inválida"
 
 #: staff.circ.holds.modifying_holds
 msgid "Modifying Holds"
 msgstr ""
 
 #: staff.circ.holds.modifying_holds.yes
+#, fuzzy
 msgctxt "staff.circ.holds.modifying_holds.yes"
 msgid "Yes"
-msgstr ""
+msgstr "Si"
 
 #: staff.circ.holds.modifying_holds.no
+#, fuzzy
 msgctxt "staff.circ.holds.modifying_holds.no"
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: staff.circ.hold_update.hold_ids.failed
-msgid "Number of holds not updated: %1$s"
+msgid "Number of holds not updated: %1$s "
 msgstr ""
 
 #: staff.circ.holds.already_activated

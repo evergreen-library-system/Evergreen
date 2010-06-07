@@ -2,20 +2,19 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2010-06-07 02:03:45-0400\n"
 "PO-Revision-Date: 2010-01-19 00:08+0000\n"
 "Last-Translator: FAMM <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-01-20 04:37+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-01-20 04:37+0000\n"
 
 #: conify.js:SURVEY_ID
 msgid "Survey ID # ${0}"
@@ -26,8 +25,9 @@ msgid "Problem fetching Holds Address for ${0}"
 msgstr ""
 
 #: conify.js:ERROR_CALLING_METHOD_CAM
+#, fuzzy
 msgid "Problem calling method to create new ${0}"
-msgstr ""
+msgstr "Problema llamando al crear un nuevo permiso"
 
 #: conify.js:SUCCESS_SAVING_MAILING
 msgid "Saved changes to the Mailing Address of ${0}"
@@ -98,9 +98,7 @@ msgid "Saved changes to ${0}"
 msgstr "Datos guardados de ${0}"
 
 #: conify.js:CONFIRM_UNSAVED_CHANGES
-msgid ""
-"There are unsaved changes to one or more organization types. Click OK to "
-"save these changes, or Cancel to abandon them."
+msgid "There are unsaved changes to one or more organization types. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 
 #: conify.js:ERROR_FETCHING_HOURS
@@ -120,8 +118,9 @@ msgid "Save Changes"
 msgstr ""
 
 #: conify.js:ERROR_CREATING_PERM_MAP
+#, fuzzy
 msgid "Problem creating new Permission Map"
-msgstr ""
+msgstr "Problema al crear un nuevo permiso"
 
 #: conify.js:ERROR_CALLING_METHOD_PGT
 msgid "Problem calling method to create child Group"
@@ -156,13 +155,12 @@ msgid "Problem fetching organizational unit data"
 msgstr ""
 
 #: conify.js:ERROR_CALLING_METHOD_PERM_MAP
+#, fuzzy
 msgid "Problem calling method to create new permission map"
-msgstr ""
+msgstr "Problema llamando al crear un nuevo permiso"
 
 #: conify.js:CONFIRM_EXIT_CCS
-msgid ""
-"There are unsaved changes to one or more copy statuses. Click OK to save "
-"these changes, or Cancel to abandon them."
+msgid "There are unsaved changes to one or more copy statuses. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 
 #: conify.js:OPAC_VISIBLE
@@ -186,9 +184,7 @@ msgid "Problem saving Holds Address data for ${0}"
 msgstr ""
 
 #: conify.js:CONFIRM_EXIT_PPL
-msgid ""
-"There are unsaved modified permissions. Click OK to save these changes, or "
-"Cancel to abandon them."
+msgid "There are unsaved modified permissions. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 
 #: conify.js:ERROR_DELETING_LAST_AOU
@@ -216,9 +212,7 @@ msgid "Problem saving data for ${0}"
 msgstr ""
 
 #: conify.js:CONFIRM_EXIT_AOU
-msgid ""
-"There are unsaved changes to one or more organizational units. Click OK to "
-"save these changes, or Cancel to abandon them."
+msgid "There are unsaved changes to one or more organizational units. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 
 #: conify.js:SURVEY_SAVE_ADD
@@ -250,8 +244,9 @@ msgid "New child Organizational Unit created for ${0}"
 msgstr ""
 
 #: conify.js:ERROR_CALLING_METHOD_CCS
+#, fuzzy
 msgid "Problem calling method to create new copy status"
-msgstr ""
+msgstr "Problema llamando al crear un nuevo permiso"
 
 #: conify.js:LABEL_VALUE
 msgid "Value"
@@ -266,8 +261,9 @@ msgid "New ${0} permission created"
 msgstr ""
 
 #: conify.js:ERROR_DELETING
+#, fuzzy
 msgid "Problem deleting ${0}"
-msgstr ""
+msgstr "Problema salvando ${0}"
 
 #: conify.js:SUCCESS_CREATING_CODE
 msgid "New ${0} ${1} created"
@@ -278,8 +274,9 @@ msgid "Translation"
 msgstr ""
 
 #: conify.js:SUCCESS_SAVING_HOLDS
+#, fuzzy
 msgid "Saved changes to the Holds Address of ${0}"
-msgstr ""
+msgstr "Salvados los cambios de la dirrecion \"ILL\""
 
 #: conify.js:LABEL_CODE
 msgid "Code"
@@ -322,14 +319,13 @@ msgid "${0}: ${1}"
 msgstr ""
 
 #: conify.js:CONFIRM_EXIT_CAM
-msgid ""
-"There are unsaved changes to one or more ${0} codes. Click OK to save these "
-"changes, or Cancel to abandon them."
+msgid "There are unsaved changes to one or more ${0} codes. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 
 #: conify.js:SUCCESS_SAVING_PHYSICAL
+#, fuzzy
 msgid "Saved changes to the Physical Address of ${0}"
-msgstr ""
+msgstr "Salvar cambios de la dirrecion del correo ${0}"
 
 #: conify.js:SUCCESS_DELETED_PERM_MAP
 msgid "Permission mapping deleted"
@@ -360,9 +356,7 @@ msgid "Problem saving Mailing Address data for ${0}"
 msgstr ""
 
 #: conify.js:CONFIRM_EXIT_PGT
-msgid ""
-"There are unsaved modified permission maps. Click OK to save these changes, "
-"or Cancel to abandon them."
+msgid "There are unsaved modified permission maps. Click OK to save these changes, or Cancel to abandon them."
 msgstr ""
 
 #: conify.js:ERROR_SAVING_ILL

@@ -2,20 +2,21 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-07 02:02-0400\n"
 "PO-Revision-Date: 2010-04-16 11:27+0000\n"
 "Last-Translator: Cédric VALMARY (Per Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.7.0\n"
 "X-Launchpad-Export-Date: 2010-04-17 04:23+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Accelerator-Marker: &\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -120,8 +121,9 @@ msgid "Physical Description"
 msgstr ""
 
 #: common.pubdate
+#, fuzzy
 msgid "Publication Date"
-msgstr ""
+msgstr "Data de publicacion"
 
 #: common.publisher
 msgid "Publisher"
@@ -209,12 +211,12 @@ msgid "Match Score: "
 msgstr ""
 
 #: common.tips
+#, fuzzy
 msgid "Tips:"
-msgstr ""
+msgstr "Conselh :"
 
 #: common.tips.tip1
-msgid ""
-"Click on a folder icon in the sidebar to access related quick searches"
+msgid "Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 
 #: common.tips.tip2
@@ -241,9 +243,10 @@ msgid "Loading library selector..."
 msgstr ""
 
 #: common.org.note
+#, fuzzy
 msgctxt "common.org.note"
 msgid "Tip:"
-msgstr ""
+msgstr "Conselh :"
 
 #: common.org.notetext
 msgid ""
@@ -363,9 +366,10 @@ msgid "&lt;&lt; Previous Page"
 msgstr ""
 
 #: common.cn.shelf
+#, fuzzy
 msgctxt "common.cn.shelf"
 msgid "Shelf Browser"
-msgstr ""
+msgstr "Autonavigacion"
 
 #: common.cn.next
 msgid "Next Page &gt;&gt;"
@@ -396,8 +400,7 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -970,8 +973,9 @@ msgid "Zip"
 msgstr "Còde postal"
 
 #: myopac.summary.address.edit
+#, fuzzy
 msgid "Edit Address"
-msgstr ""
+msgstr "Adreça electronica"
 
 #: myopac.summary.address.invalid
 msgid "Invalid Address"
@@ -983,7 +987,8 @@ msgstr ""
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different username."
+"The requested username is not available.  Please choose a different "
+"username."
 msgstr ""
 
 #: myopac.summary.username.success
@@ -1312,7 +1317,7 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
 msgstr ""
 
 #. Introduces the logo for the project
@@ -1390,6 +1395,10 @@ msgstr "Totes los formats"
 
 #: opac.search.largePrint
 msgid "Large Print Books"
+msgstr ""
+
+#: opac.search.ebook
+msgid "E-Books"
 msgstr ""
 
 #: opac.search.audioBooks
@@ -1694,9 +1703,17 @@ msgstr "Començament"
 msgid "Previous page"
 msgstr "Pagina precedenta"
 
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr ""
+
 #: rdetail.page.next
 msgid "Next page"
 msgstr "Pagina seguenta"
+
+#: rdetail.page.next.short
+msgid "&#187;"
+msgstr ""
 
 #: rdetail.page.last
 msgid "Last results page"
@@ -1855,6 +1872,7 @@ msgid "There are no call numbers for this item at this location."
 msgstr ""
 
 #: rdetail.extras.call.local
+msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
 msgstr ""
 
@@ -1871,7 +1889,7 @@ msgid "Show a preview of this book from Google Book Search"
 msgstr ""
 
 #: rdetail.loading
-msgid "Loading copy infomation..."
+msgid "Loading copy information..."
 msgstr ""
 
 #: rdetail.noneAvailable
@@ -1987,6 +2005,11 @@ msgstr ""
 msgid "Browse in Google Books Search"
 msgstr ""
 
+#: result.localCallNumbers
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
+msgstr ""
+
 #: common.call.number.label
 msgid "Call Number:"
 msgstr ""
@@ -2039,14 +2062,23 @@ msgstr ""
 msgid "Please select a physical location where your hold can be delivered."
 msgstr ""
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr ""
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr ""
 
 #: common.hold.exists.override
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
 
 #: common.hold.barred
@@ -2209,8 +2241,7 @@ msgid ""
 msgstr ""
 
 #: login.account.inactive
-msgid ""
-"This account has been deactivated.  Please contact your local library."
+msgid "This account has been deactivated.  Please contact your local library."
 msgstr ""
 
 #: login.failed

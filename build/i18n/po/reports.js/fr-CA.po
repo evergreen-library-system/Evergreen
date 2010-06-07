@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"POT-Creation-Date: 2010-06-07 02:03:45-0400\n"
 "PO-Revision-Date: 2010-03-21 15:48+0000\n"
 "Last-Translator: Jörg BUCHMANN <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-03-22 04:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
+"X-Launchpad-Export-Date: 2010-03-22 04:47+0000\n"
 
 #: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
 msgid "In list"
@@ -73,8 +73,7 @@ msgstr "Nom du jour"
 #: reports.js:SOURCE_SETUP_CONFIRM_EXIT
 msgid ""
 "You have started building a template!\n"
-" Selecting a new starting source will destroy the current template and start "
-"over.  Is this OK?"
+" Selecting a new starting source will destroy the current template and start over.  Is this OK?"
 msgstr ""
 "Vous avez commencé à construire un modèle !\n"
 " Choisir une nouvelle source de démarrage détruira le modèle en cours et "
@@ -226,8 +225,7 @@ msgstr "Vide"
 
 #: reports.js:TEMPLATE_CONF_IN
 msgid "Field matches one of list (comma separated):"
-msgstr ""
-"Champ correspond à une entrée de la liste (séparé par des virgules) :"
+msgstr "Champ correspond à une entrée de la liste (séparé par des virgules) :"
 
 #: reports.js:TRANSFORMS_MONTH_TRUNC reports.js:TFORMS_LABEL_MONTH_TRUNC
 msgid "Year + Month"
@@ -238,8 +236,9 @@ msgid "First contiguous non-space string"
 msgstr ""
 
 #: reports.js:TEMPLATE_CONF_NOT_BETWEEN
+#, fuzzy
 msgid "Field value is not between (comma separated):"
-msgstr ""
+msgstr "Valeur du champ est entre (séparé par des virgules) :"
 
 #: reports.js:TEMPLATE_CONF_RAW_DATA reports.js:TRANSFORMS_BARE
 #: reports.js:TFORMS_LABEL_RAW_DATA
@@ -376,8 +375,9 @@ msgid "First 5 characters (for US ZIP code)"
 msgstr "Premier 5 caractères (pour code ZIP des États-Unis)"
 
 #: reports.js:OPERATORS_GTE_TIME reports.js:FILTERS_LABEL_GTE_TIME
+#, fuzzy
 msgid "On or After (Date/Time)"
-msgstr ""
+msgstr "Avant le (Date/Heure)"
 
 #: reports.js:TRANSFORMS_YEAR_TRUNC reports.js:TFORMS_LABEL_YEAR_TRUNC
 msgid "Year"
@@ -427,5 +427,6 @@ msgid "Max"
 msgstr "Max"
 
 #: reports.js:TEMPLATE_CONF_NOT_IN reports.js:TEMPLATE_CONF_NO_MATCH
+#, fuzzy
 msgid "Field does not match one of list (comma separated):"
-msgstr ""
+msgstr "Champ correspond à une entrée de la liste (séparé par des virgules) :"

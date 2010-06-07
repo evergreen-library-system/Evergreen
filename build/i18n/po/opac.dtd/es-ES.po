@@ -2,20 +2,21 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-07 02:02-0400\n"
 "PO-Revision-Date: 2010-05-30 05:34+0000\n"
 "Last-Translator: victor tejada yau <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.7.0\n"
 "X-Launchpad-Export-Date: 2010-05-31 03:48+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Accelerator-Marker: &\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -215,8 +216,7 @@ msgid "Tips:"
 msgstr "Consejos:"
 
 #: common.tips.tip1
-msgid ""
-"Click on a folder icon in the sidebar to access related quick searches"
+msgid "Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 "Haga clic en un ícono de la barra lateral para acceder a búsquedas rápidas "
 "relacionadas"
@@ -409,8 +409,7 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -513,8 +512,8 @@ msgstr ""
 "visible a otros. \n"
 "Para acceder a la vista pública de un guarda libros compartido, haga clic en "
 "\"Ver\" líguese con \n"
-"la columna \"Compartido\" de la lista de guarda libros en la parte superior "
-"de esta página."
+"la columna \"Compartido\" de la lista de guarda libros en la parte superior de "
+"esta página."
 
 #: myopac.item.confirm
 msgid "Are you sure you wish to remove this bookbag item?"
@@ -552,7 +551,6 @@ msgid ""
 "avoid using bookbags all together.  Thank you."
 msgstr ""
 "Precaución: Añadir elementos al porta libros crea una liga entre usted y los "
-"\n"
 "elementos en la base de datos. El contenido del porta libros NO es visible \n"
 "públicamente a menos que el porta libros sea compartido. Sin embargo, si "
 "prefiere no \n"
@@ -718,8 +716,9 @@ msgid "Edit"
 msgstr "Editar"
 
 #: myopac.holds.status.none
+#, fuzzy
 msgid "You have no items on hold at this time"
-msgstr ""
+msgstr "No tiene elementos retirados en este momento"
 
 #: myopac.holds.status.waiting
 msgid "Waiting for copy"
@@ -769,8 +768,11 @@ msgid "Actions for selected holds"
 msgstr ""
 
 #: myopac.holds.cancel.confirm
+#, fuzzy
 msgid "Are you sure you wish to cancel the selected holds?"
 msgstr ""
+"¿Está usted seguro de que quiere renovar el (los) elemento(s) "
+"seleccionado(s)?"
 
 #: myopac.holds.freeze.confirm
 msgid ""
@@ -1019,7 +1021,8 @@ msgstr "Por favor ingrese un nombre de usuario"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different username."
+"The requested username is not available.  Please choose a different "
+"username."
 msgstr ""
 
 #: myopac.summary.username.success
@@ -1348,7 +1351,8 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+#, fuzzy
+msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
 msgstr "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
 
 #. Introduces the logo for the project
@@ -1380,9 +1384,10 @@ msgid "Account Preferences"
 msgstr "Preferencias de la cuenta"
 
 #: myopac.bookbags
+#, fuzzy
 msgctxt "myopac.bookbags"
 msgid "My Bookbags"
-msgstr ""
+msgstr "Mi guarda libros"
 
 #. =================================================================
 #. Sidebar
@@ -1426,6 +1431,10 @@ msgstr "Todos los formatos"
 
 #: opac.search.largePrint
 msgid "Large Print Books"
+msgstr ""
+
+#: opac.search.ebook
+msgid "E-Books"
 msgstr ""
 
 #: opac.search.audioBooks
@@ -1501,9 +1510,10 @@ msgid "Place Hold"
 msgstr ""
 
 #: opac.holds.exportRefWorks
+#, fuzzy
 msgctxt "opac.holds.exportRefWorks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Exportar a RefWorks"
 
 #: opac.holds.contactPhone
 msgid "Contact telephone number"
@@ -1514,8 +1524,9 @@ msgid "Contact email address"
 msgstr ""
 
 #: opac.holds.pickupLocation
+#, fuzzy
 msgid "Pickup location"
-msgstr ""
+msgstr "Elegir ubicación"
 
 #: opac.holds.success
 msgid "Hold was successfully placed"
@@ -1633,8 +1644,9 @@ msgid "Bib Level"
 msgstr ""
 
 #: advanced.filter.pubyear
+#, fuzzy
 msgid "Publication Year"
-msgstr ""
+msgstr "Fecha de publicación"
 
 #: advanced.filter.pubyear.equals
 msgid "Is"
@@ -1730,9 +1742,17 @@ msgstr "Iniciar"
 msgid "Previous page"
 msgstr "Página anterior"
 
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr ""
+
 #: rdetail.page.next
 msgid "Next page"
 msgstr "Página siguiente"
+
+#: rdetail.page.next.short
+msgid "&#187;"
+msgstr ""
 
 #: rdetail.page.last
 msgid "Last results page"
@@ -1751,8 +1771,9 @@ msgid "Add to bookbag"
 msgstr ""
 
 #: rdetail.bookbag.create
+#, fuzzy
 msgid "Create a new bookbag"
-msgstr ""
+msgstr "Crear un nuevo guarda libros"
 
 #: rdetail.record.deleted
 msgid ""
@@ -1770,12 +1791,14 @@ msgid "Item successfully added to bookbag"
 msgstr ""
 
 #: rdetail.bookbag.name
+#, fuzzy
 msgid "Enter the name of the new bookbag"
-msgstr ""
+msgstr "De nombre al nuevo guarda libros "
 
 #: rdetail.bookbag.create.success
+#, fuzzy
 msgid "Bookbag successfully created"
-msgstr ""
+msgstr "Porta libros actualizado exitosamente"
 
 #: rdetail.detailMain.headerLabel
 msgid "Record Summary"
@@ -1853,9 +1876,10 @@ msgid "Copy Summary"
 msgstr "Copiar resumen"
 
 #: rdetail.extras.browser
+#, fuzzy
 msgctxt "rdetail.extras.browser"
 msgid "Shelf Browser"
-msgstr ""
+msgstr "Buscador de estante"
 
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
@@ -1891,6 +1915,7 @@ msgid "There are no call numbers for this item at this location."
 msgstr ""
 
 #: rdetail.extras.call.local
+msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
 msgstr ""
 
@@ -1907,7 +1932,7 @@ msgid "Show a preview of this book from Google Book Search"
 msgstr ""
 
 #: rdetail.loading
-msgid "Loading copy infomation..."
+msgid "Loading copy information..."
 msgstr ""
 
 #: rdetail.noneAvailable
@@ -2004,8 +2029,9 @@ msgid "subject"
 msgstr "asunto"
 
 #: result.lowhits.series
+#, fuzzy
 msgid "series"
-msgstr ""
+msgstr "Serie"
 
 #: result.lowhits.keyword
 msgid "keyword"
@@ -2016,11 +2042,17 @@ msgid "View titles for this record"
 msgstr ""
 
 #: result.table.author
+#, fuzzy
 msgid "Perform an Author Search"
-msgstr ""
+msgstr "Buscar por autor"
 
 #: result.googleBooks.browse
 msgid "Browse in Google Books Search"
+msgstr ""
+
+#: result.localCallNumbers
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
 msgstr ""
 
 #: common.call.number.label
@@ -2075,14 +2107,23 @@ msgstr ""
 msgid "Please select a physical location where your hold can be delivered."
 msgstr ""
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr ""
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr ""
 
 #: common.hold.exists.override
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
 
 #: common.hold.barred
@@ -2155,45 +2196,54 @@ msgid ""
 msgstr ""
 
 #: common.keywords.label
+#, fuzzy
 msgid "Keywords:"
-msgstr ""
+msgstr "Palabra clave"
 
 #: common.physical.label
+#, fuzzy
 msgid "Physical Description:"
-msgstr ""
+msgstr "Descripción física"
 
 #: common.series.label
+#, fuzzy
 msgid "Series:"
-msgstr ""
+msgstr "Serie"
 
 #: common.subject.label
+#, fuzzy
 msgid "Subject:"
-msgstr ""
+msgstr "Asunto"
 
 #: common.title.label
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "Título"
 
 #: common.author.label
+#, fuzzy
 msgid "Author:"
-msgstr ""
+msgstr "Autor"
 
 #: common.format.label
+#, fuzzy
 msgid "Format:"
-msgstr ""
+msgstr "Formato"
 
 #: library.select
 msgid "Find results in"
 msgstr ""
 
 #: library.select.label
+#, fuzzy
 msgid "Choose a different library..."
-msgstr ""
+msgstr "Elija una biblioteca diferente"
 
 #: library.select.help
+#, fuzzy
 msgctxt "library.select.help"
 msgid "Choose a library to search"
-msgstr ""
+msgstr "Elija una biblioteca a buscar"
 
 #: login.username
 msgid "Enter your username or library barcode"
@@ -2210,12 +2260,14 @@ msgid ""
 msgstr ""
 
 #: login.password.current.enter
+#, fuzzy
 msgid "Enter your current password"
-msgstr ""
+msgstr "Ingrese la contraseña actual:"
 
 #: login.password.new.enter
+#, fuzzy
 msgid "Enter the new password"
-msgstr ""
+msgstr "Ingrese la nueva contraseña:"
 
 #: login.password.new.reenter
 msgid "Re-type the new password for verification"
@@ -2230,9 +2282,10 @@ msgid "Passwords do not match"
 msgstr ""
 
 #: login.password.success
+#, fuzzy
 msgctxt "login.password.success"
 msgid "Password successfully updated"
-msgstr ""
+msgstr "Contraseña actualizada correctamente"
 
 #: login.password.strength
 msgid "The password provided is not strong enough."
@@ -2245,8 +2298,7 @@ msgid ""
 msgstr ""
 
 #: login.account.inactive
-msgid ""
-"This account has been deactivated.  Please contact your local library."
+msgid "This account has been deactivated.  Please contact your local library."
 msgstr ""
 
 #: login.failed
@@ -2271,8 +2323,9 @@ msgid "Simple Search"
 msgstr ""
 
 #: slimpac.start.nowSearching
+#, fuzzy
 msgid "Now searching: "
-msgstr ""
+msgstr "Buscando "
 
 #: slimpac.start.dynamic
 msgid "Dynamic Catalog"
@@ -2286,8 +2339,9 @@ msgid "Item Language"
 msgstr ""
 
 #: slimpac.advanced.create_date
+#, fuzzy
 msgid "Record Creation Date"
-msgstr ""
+msgstr "Fecha de creación de la cuenta"
 
 #: slimpac.advanced.edit_date
 msgid "Record Edit Date"
@@ -2317,14 +2371,16 @@ msgid "Library barcode or username"
 msgstr ""
 
 #: selfck.staff_pw
+#, fuzzy
 msgctxt "selfck.staff_pw"
 msgid "Password"
-msgstr ""
+msgstr "Contraseña"
 
 #: selfck.submit
+#, fuzzy
 msgctxt "selfck.submit"
 msgid "Submit"
-msgstr ""
+msgstr "Enviar"
 
 #: selfck.clear
 msgid "Clear"
@@ -2339,24 +2395,28 @@ msgid "Please scan an item to checkout or renew:"
 msgstr ""
 
 #: selfck.barcode
+#, fuzzy
 msgctxt "selfck.barcode"
 msgid "Barcode"
-msgstr ""
+msgstr "Código de barras"
 
 #: selfck.title
+#, fuzzy
 msgctxt "selfck.title"
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: selfck.author
+#, fuzzy
 msgctxt "selfck.author"
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
 #: selfck.due_date
+#, fuzzy
 msgctxt "selfck.due_date"
 msgid "Due Date"
-msgstr ""
+msgstr "Fecha de vencimiento"
 
 #: selfck.remaining
 msgctxt "selfck.remaining"
@@ -2376,8 +2436,9 @@ msgid "Renewal"
 msgstr ""
 
 #: selfck.done
+#, fuzzy
 msgid "Done"
-msgstr ""
+msgstr "Ninguno"
 
 #: selfck.welcome
 msgid "Welcome"

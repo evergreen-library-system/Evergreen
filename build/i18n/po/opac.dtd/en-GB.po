@@ -2,20 +2,21 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
-#
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-07 02:02-0400\n"
 "PO-Revision-Date: 2010-04-22 10:28+0000\n"
 "Last-Translator: Jonathan Field <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.7.0\n"
 "X-Launchpad-Export-Date: 2010-04-23 03:48+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Accelerator-Marker: &\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -213,10 +214,8 @@ msgid "Tips:"
 msgstr "Tips:"
 
 #: common.tips.tip1
-msgid ""
-"Click on a folder icon in the sidebar to access related quick searches"
-msgstr ""
-"Click on a folder icon in the sidebar to access related quick searches"
+msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgstr "Click on a folder icon in the sidebar to access related quick searches"
 
 #: common.tips.tip2
 msgid ""
@@ -416,8 +415,7 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -428,8 +426,7 @@ msgstr ""
 "browser. \n"
 "To use the regular Evergreen Catalogue, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalogue \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -1051,9 +1048,11 @@ msgstr "Please enter a username"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different username."
+"The requested username is not available.  Please choose a different "
+"username."
 msgstr ""
-"The requested username is not available.  Please choose a different username."
+"The requested username is not available.  Please choose a different "
+"username."
 
 #: myopac.summary.username.success
 msgid "Username successfully updated"
@@ -1252,8 +1251,7 @@ msgstr "Tip:"
 #. =================================================================
 #: opac.session_expiring
 msgid "Your login session will timeout in 1 minute unless there is activity."
-msgstr ""
-"Your login session will timeout in 1 minute unless there is activity."
+msgstr "Your login session will timeout in 1 minute unless there is activity."
 
 #: opac.session_expired
 msgid "Your login session has expired"
@@ -1382,7 +1380,8 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+#, fuzzy
+msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
 msgstr "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
 
 #. Introduces the logo for the project
@@ -1461,6 +1460,10 @@ msgstr "All Formats"
 #: opac.search.largePrint
 msgid "Large Print Books"
 msgstr "Large Print Books"
+
+#: opac.search.ebook
+msgid "E-Books"
+msgstr ""
 
 #: opac.search.audioBooks
 msgid "Audiobooks"
@@ -1764,9 +1767,17 @@ msgstr "Start"
 msgid "Previous page"
 msgstr "Previous page"
 
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr ""
+
 #: rdetail.page.next
 msgid "Next page"
 msgstr "Next page"
+
+#: rdetail.page.next.short
+msgid "&#187;"
+msgstr ""
 
 #: rdetail.page.last
 msgid "Last results page"
@@ -1928,6 +1939,8 @@ msgid "There are no call numbers for this item at this location."
 msgstr "There are no call numbers for this item at this location."
 
 #: rdetail.extras.call.local
+#, fuzzy
+msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
 msgstr "Local Class Numbers:"
 
@@ -1944,7 +1957,8 @@ msgid "Show a preview of this book from Google Book Search"
 msgstr "Show a preview of this book from Google Book Search"
 
 #: rdetail.loading
-msgid "Loading copy infomation..."
+#, fuzzy
+msgid "Loading copy information..."
 msgstr "Loading copy infomation..."
 
 #: rdetail.noneAvailable
@@ -2060,6 +2074,12 @@ msgstr "Perform an Author Search"
 msgid "Browse in Google Books Search"
 msgstr "Browse in Google Books Search"
 
+#: result.localCallNumbers
+#, fuzzy
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
+msgstr "Local Class Numbers:"
+
 #: common.call.number.label
 msgid "Call Number:"
 msgstr "Class Number:"
@@ -2112,14 +2132,24 @@ msgstr "Advanced Hold Options"
 msgid "Please select a physical location where your hold can be delivered."
 msgstr "Please select a physical location where your hold can be delivered."
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr ""
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr "A hold already exists on the requested item."
 
 #: common.hold.exists.override
+#, fuzzy
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
 "A hold already exists on the requested \n"
 "item. Would you like to create the hold anyway?"
@@ -2302,10 +2332,8 @@ msgstr ""
 "library."
 
 #: login.account.inactive
-msgid ""
-"This account has been deactivated.  Please contact your local library."
-msgstr ""
-"This account has been deactivated.  Please contact your local library."
+msgid "This account has been deactivated.  Please contact your local library."
+msgstr "This account has been deactivated.  Please contact your local library."
 
 #: login.failed
 msgid ""

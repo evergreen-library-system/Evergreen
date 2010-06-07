@@ -1,17 +1,18 @@
 # extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
+"POT-Creation-Date: 2010-06-07 02:02-0400\n"
 "PO-Revision-Date: 2009-12-15 14:11+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.7.0\n"
 "X-Launchpad-Export-Date: 2009-12-16 05:28+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
 "X-Accelerator-Marker: &\n"
 
 # =================================================================
@@ -215,8 +216,7 @@ msgid "Tips:"
 msgstr "Հնարքներ։"
 
 #: common.tips.tip1
-msgid ""
-"Click on a folder icon in the sidebar to access related quick searches"
+msgid "Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 "Սեղմիր կողային մասում առկա թղթապանակի պատկերիկի վրա առագ փնտրումը հասանելի "
 "դարձնելու համար"
@@ -328,10 +328,10 @@ msgstr ""
 "պատկանելիության, ընթերցողի հիմնական գրադարանի, և նյութի պատվերի "
 "դիտարկումները \tորքան ամսաթիվը սահմանում է առաջնայնությունները պահումների "
 "համար. ցուցակը դինամիկ է, փոփոխվաղ \tյուրաքանչյուր տեղադրված պահման հետ։  "
-"Հետևաբար, տեղաբաշխման յուրաքանչյուր ցուցում \tպահման ցուցակում կլինի ոչ "
-"ճիշտ։  PINES-ի պահումների համակարգը նախագծված է \tպահանջվող նյութը "
-"հնարավորինս արագ և արդյունավետ կերպով ստանալու համար։ \tՁեր PINES գրադարանը "
-"կկապվի ձեր հետ երբ պահվող նյութերը կդառնան \tհասանելի։"
+"Հետևաբար, տեղաբաշխման յուրաքանչյուր ցուցում \tպահման ցուցակում կլինի ոչ ճիշտ։ "
+" PINES-ի պահումների համակարգը նախագծված է \tպահանջվող նյութը հնարավորինս "
+"արագ և արդյունավետ կերպով ստանալու համար։ \tՁեր PINES գրադարանը կկապվի ձեր "
+"հետ երբ պահվող նյութերը կդառնան \tհասանելի։"
 
 #: holds.advanced_options
 msgid ""
@@ -429,21 +429,21 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
 msgstr ""
-"JavaScript-ը պետք է թույլատրված լինի որպեսզի կարողանաս օգտագործել Evergreen-"
-"ի սովորական քարտարանը։ \n"
+"JavaScript-ը պետք է թույլատրված լինի որպեսզի կարողանաս օգտագործել "
+"Evergreen-ի սովորական քարտարանը։ \n"
 "Համենայնդեպս թվում է որ JavaScript-ը արգելափակված է կամ քո դիտակի ւողմից չի "
 "աջակցվում։ \n"
 "Evergreen-ի սովորական քարտարանի օգտագործման համար թույլատրիր JavaScript-ը "
 "փոխելով քո դիտակի ընտրությունները, ապա \n"
 "<a style='color: blue; text-decoration: underline;' href='/'>փորձիր "
 "նորից</a>.\n"
-"<br/><br/>Որպես այլընտրանք կարող ես օգտագործել հիմնական միայն HTML-քարտարանը։"
+"<br/><br/>Որպես այլընտրանք կարող ես օգտագործել հիմնական միայն "
+"HTML-քարտարանը։"
 
 #. =================================================================
 #. MyOPAC bookbag page
@@ -1073,7 +1073,8 @@ msgstr "Մուտք արա օգտվողի անուն"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different username."
+"The requested username is not available.  Please choose a different "
+"username."
 msgstr "Պահանջվող օգտվողi անունը մատչելի չէ։ Ընտրիր օգտվողի այլ անուն։"
 
 #: myopac.summary.username.success
@@ -1419,7 +1420,8 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+#, fuzzy
+msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
 msgstr "Հեղինակային իրավունք &#xA9; 2006-2008 Georgia Public Library Service"
 
 # Introduces the logo for the project
@@ -1505,6 +1507,10 @@ msgstr "Բոլոր ձևաչափերը"
 #: opac.search.largePrint
 msgid "Large Print Books"
 msgstr "Մեծ տպագիր գրքեր"
+
+#: opac.search.ebook
+msgid "E-Books"
+msgstr ""
 
 #: opac.search.audioBooks
 msgid "Audiobooks"
@@ -1815,9 +1821,17 @@ msgstr "Սկսիր"
 msgid "Previous page"
 msgstr "Նախորդ էջ"
 
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr ""
+
 #: rdetail.page.next
 msgid "Next page"
 msgstr "Հաջորդ էջ"
+
+#: rdetail.page.next.short
+msgid "&#187;"
+msgstr ""
 
 #: rdetail.page.last
 msgid "Last results page"
@@ -1979,6 +1993,8 @@ msgid "There are no call numbers for this item at this location."
 msgstr "Այս վայրում այս նյութի համար դասիչավորման համարներ չկան"
 
 #: rdetail.extras.call.local
+#, fuzzy
+msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
 msgstr "Տեղային դասիչներ"
 
@@ -1995,7 +2011,8 @@ msgid "Show a preview of this book from Google Book Search"
 msgstr "Ցույց տուր Google Book Search-ից այս գրքի նախնական դիտումը"
 
 #: rdetail.loading
-msgid "Loading copy infomation..."
+#, fuzzy
+msgid "Loading copy information..."
 msgstr "Պատճենի տեղեկատվության բեռնավորում..."
 
 #: rdetail.noneAvailable
@@ -2061,8 +2078,7 @@ msgstr "Միգուցե՞ դու նկատի ունես"
 
 #: result.lowhits.formats
 msgid "You will find more hits when searching all item formats:"
-msgstr ""
-"Դու կունենաս ավելի շատ հարվածներ երբ որոնես ըստ նյութի բոլոր ձևաչափերի։"
+msgstr "Դու կունենաս ավելի շատ հարվածներ երբ որոնես ըստ նյութի բոլոր ձևաչափերի։"
 
 #: result.lowhits.formats.search
 msgid "Search again with all formats?"
@@ -2111,6 +2127,12 @@ msgstr "Իրականացրու որոնում ըստ Հեղինակի"
 #: result.googleBooks.browse
 msgid "Browse in Google Books Search"
 msgstr "Դիտիր Google-ի Գրքի փնտրման մեջ"
+
+#: result.localCallNumbers
+#, fuzzy
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
+msgstr "Տեղային դասիչներ"
 
 #: common.call.number.label
 msgid "Call Number:"
@@ -2164,14 +2186,24 @@ msgstr "Պահման խորացված ընտրանքներ"
 msgid "Please select a physical location where your hold can be delivered."
 msgstr "Ընտրեք այն ֆիզիկական տեղաբաշխումը, ուր կարելի է առաքել ձեր պահումը։"
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr ""
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr "Պատվիրված նյութի վրա արդեն գոյություն ունի պահում։"
 
 #: common.hold.exists.override
+#, fuzzy
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
 "Պահանջվողի համար արդեն պահում կա։ \n"
 "Ցանկանու՞մ ես ստեղծել պահում։"
@@ -2183,8 +2215,8 @@ msgid ""
 "library."
 msgstr ""
 "ԸՆԹԵՐՑՈՂԸ ԿԱՍԵՑՎԱԾ Է։ տես նշումները \n"
-"\"Իմ հաշվեկշիռ\" էջի \"Աշխատակազմի նշումներ\" բաժնում, կամ կապվիր քո "
-"գրադարանի հետ։"
+"\"Իմ հաշվեկշիռ\" էջի \"Աշխատակազմի նշումներ\" բաժնում, կամ կապվիր քո գրադարանի "
+"հետ։"
 
 #: common.hold.item.invalid
 msgid ""
@@ -2353,8 +2385,7 @@ msgstr ""
 "տեղային գրադարանի հետ։"
 
 #: login.account.inactive
-msgid ""
-"This account has been deactivated.  Please contact your local library."
+msgid "This account has been deactivated.  Please contact your local library."
 msgstr "Այս հաշիվը ապաակտիվացված է։ Կապվիր քո տեղային գրադարանի հետ։"
 
 #: login.failed

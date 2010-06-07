@@ -2,20 +2,21 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-07 02:02-0400\n"
 "PO-Revision-Date: 2010-04-07 13:36+0000\n"
 "Last-Translator: Provetin <hamburgskaddi@web.de>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.7.0\n"
 "X-Launchpad-Export-Date: 2010-04-08 07:19+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Accelerator-Marker: &\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -25,7 +26,8 @@ msgid "remote v1"
 msgstr ""
 "Fernbedinung v1 \t\r\n"
 "================================================================= allgemeine "
-"Ausgaben   ================================================================="
+"Ausgaben   "
+"================================================================="
 
 #: lang.description
 msgid "English"
@@ -216,8 +218,7 @@ msgid "Tips:"
 msgstr "Hinweise:"
 
 #: common.tips.tip1
-msgid ""
-"Click on a folder icon in the sidebar to access related quick searches"
+msgid "Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 "Klicken Sie auf einen Dateiordner in der Seitenleiste, um auf verwandte "
 "Schnellsuchen zuzugreifen"
@@ -426,8 +427,7 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -1021,8 +1021,9 @@ msgid "City"
 msgstr "Ort"
 
 #: myopac.summary.address.county
+#, fuzzy
 msgid "County"
-msgstr ""
+msgstr "Land"
 
 #: myopac.summary.address.state
 msgid "State"
@@ -1050,7 +1051,8 @@ msgstr "Bitte geben Sie einen Benutzernamen ein"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different username."
+"The requested username is not available.  Please choose a different "
+"username."
 msgstr ""
 "Der eingegebene Benutzername ist nicht verfügbar. Bitte wählen Sie einen "
 "anderen Benutzernamen."
@@ -1126,8 +1128,9 @@ msgid "Subject contains the following words"
 msgstr "Das Thema enthält die folgenden Wörter"
 
 #: opac.advanced.refined.series_contains
+#, fuzzy
 msgid "Series contains the following words"
-msgstr ""
+msgstr "Das Thema enthält die folgenden Wörter"
 
 #: opac.advanced.refined.contains
 msgid "Contains"
@@ -1245,9 +1248,10 @@ msgstr ""
 #. Tips
 #. ==========================================================
 #: tips.label
+#, fuzzy
 msgctxt "tips.label"
 msgid "Tip:"
-msgstr ""
+msgstr "Hinweis"
 
 #. =================================================================
 #. More generic stuff
@@ -1346,9 +1350,10 @@ msgstr "Eintragungsdetails"
 #. Footer
 #. =================================================================
 #: footer.basic
+#, fuzzy
 msgctxt "footer.basic"
 msgid "Basic Catalog (HTML only)"
-msgstr ""
+msgstr "Grundlagenkatalog (nur HTML)"
 
 #: footer.find.library
 msgid "Find a Library Near Me"
@@ -1383,7 +1388,7 @@ msgid "GALILEO"
 msgstr "GALILEO"
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
 msgstr ""
 
 #. Introduces the logo for the project
@@ -1415,9 +1420,10 @@ msgid "Account Preferences"
 msgstr "Benutzerkontoeinstellungen"
 
 #: myopac.bookbags
+#, fuzzy
 msgctxt "myopac.bookbags"
 msgid "My Bookbags"
-msgstr ""
+msgstr "Meine Büchermappen."
 
 #. =================================================================
 #. Sidebar
@@ -1461,6 +1467,10 @@ msgstr "Alle Formate"
 
 #: opac.search.largePrint
 msgid "Large Print Books"
+msgstr ""
+
+#: opac.search.ebook
+msgid "E-Books"
 msgstr ""
 
 #: opac.search.audioBooks
@@ -1536,9 +1546,10 @@ msgid "Place Hold"
 msgstr ""
 
 #: opac.holds.exportRefWorks
+#, fuzzy
 msgctxt "opac.holds.exportRefWorks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Nach RefWorks exportieren"
 
 #: opac.holds.contactPhone
 msgid "Contact telephone number"
@@ -1754,8 +1765,9 @@ msgstr ""
 
 #. Result # &common.of; #
 #: rdetail.result
+#, fuzzy
 msgid "Result"
-msgstr ""
+msgstr "Ergebnisse"
 
 #: rdetail.start
 msgid "Start"
@@ -1765,9 +1777,17 @@ msgstr ""
 msgid "Previous page"
 msgstr "Vorherige Seite"
 
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr ""
+
 #: rdetail.page.next
 msgid "Next page"
 msgstr "Nächste Seite"
+
+#: rdetail.page.next.short
+msgid "&#187;"
+msgstr ""
 
 #: rdetail.page.last
 msgid "Last results page"
@@ -1786,8 +1806,9 @@ msgid "Add to bookbag"
 msgstr ""
 
 #: rdetail.bookbag.create
+#, fuzzy
 msgid "Create a new bookbag"
-msgstr ""
+msgstr "Eine Büchermappen erstellen"
 
 #: rdetail.record.deleted
 msgid ""
@@ -1805,12 +1826,14 @@ msgid "Item successfully added to bookbag"
 msgstr ""
 
 #: rdetail.bookbag.name
+#, fuzzy
 msgid "Enter the name of the new bookbag"
-msgstr ""
+msgstr "Geben Sie den Namen der neuen Büchermappe ein: "
 
 #: rdetail.bookbag.create.success
+#, fuzzy
 msgid "Bookbag successfully created"
-msgstr ""
+msgstr "Büchermappe erfolgreich aktualisiert."
 
 #: rdetail.detailMain.headerLabel
 msgid "Record Summary"
@@ -1888,9 +1911,10 @@ msgid "Copy Summary"
 msgstr ""
 
 #: rdetail.extras.browser
+#, fuzzy
 msgctxt "rdetail.extras.browser"
 msgid "Shelf Browser"
-msgstr ""
+msgstr "Lager Browser"
 
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
@@ -1926,6 +1950,7 @@ msgid "There are no call numbers for this item at this location."
 msgstr ""
 
 #: rdetail.extras.call.local
+msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
 msgstr ""
 
@@ -1942,7 +1967,7 @@ msgid "Show a preview of this book from Google Book Search"
 msgstr "Eine Vorschau für dieses Buch von Google Book Search anzeigen"
 
 #: rdetail.loading
-msgid "Loading copy infomation..."
+msgid "Loading copy information..."
 msgstr ""
 
 #: rdetail.noneAvailable
@@ -2039,8 +2064,9 @@ msgid "subject"
 msgstr "Thema"
 
 #: result.lowhits.series
+#, fuzzy
 msgid "series"
-msgstr ""
+msgstr "Reihe"
 
 #: result.lowhits.keyword
 msgid "keyword"
@@ -2057,6 +2083,11 @@ msgstr ""
 #: result.googleBooks.browse
 msgid "Browse in Google Books Search"
 msgstr "Googe Books Search durchsuchen"
+
+#: result.localCallNumbers
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
+msgstr ""
 
 #: common.call.number.label
 msgid "Call Number:"
@@ -2110,14 +2141,23 @@ msgstr ""
 msgid "Please select a physical location where your hold can be delivered."
 msgstr ""
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr ""
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr ""
 
 #: common.hold.exists.override
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
 
 #: common.hold.barred
@@ -2198,12 +2238,14 @@ msgid "Keywords:"
 msgstr "Schlüsselwörter:"
 
 #: common.physical.label
+#, fuzzy
 msgid "Physical Description:"
-msgstr ""
+msgstr "äußerliche Beschreibung"
 
 #: common.series.label
+#, fuzzy
 msgid "Series:"
-msgstr ""
+msgstr "Reihe"
 
 #: common.subject.label
 msgid "Subject:"
@@ -2288,8 +2330,7 @@ msgstr ""
 "kontaktieren Sie Ihre örtliche Bibliothek."
 
 #: login.account.inactive
-msgid ""
-"This account has been deactivated.  Please contact your local library."
+msgid "This account has been deactivated.  Please contact your local library."
 msgstr ""
 "Dieses Benutzerkonto wurde deaktiviert. Bitte wenden sie sich an ihre "
 "örtliche Bibliothek."

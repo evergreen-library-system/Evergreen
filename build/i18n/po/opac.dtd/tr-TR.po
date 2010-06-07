@@ -2,20 +2,21 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-07 02:02-0400\n"
 "PO-Revision-Date: 2010-03-23 17:58+0000\n"
 "Last-Translator: Can Bülbül <a_bulbul@ug.bilkent.edu.tr>\n"
 "Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.7.0\n"
 "X-Launchpad-Export-Date: 2010-03-24 04:55+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Accelerator-Marker: &\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -63,8 +64,9 @@ msgid "Author"
 msgstr "Yazar"
 
 #: common.authors
+#, fuzzy
 msgid "Authors"
-msgstr ""
+msgstr "Yazar"
 
 #: common.callnumber
 msgctxt "common.callnumber"
@@ -213,8 +215,7 @@ msgid "Tips:"
 msgstr ""
 
 #: common.tips.tip1
-msgid ""
-"Click on a folder icon in the sidebar to access related quick searches"
+msgid "Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 
 #: common.tips.tip2
@@ -396,8 +397,7 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -983,7 +983,8 @@ msgstr ""
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different username."
+"The requested username is not available.  Please choose a different "
+"username."
 msgstr ""
 
 #: myopac.summary.username.success
@@ -1312,7 +1313,7 @@ msgid "GALILEO"
 msgstr ""
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
 msgstr ""
 
 #. Introduces the logo for the project
@@ -1390,6 +1391,10 @@ msgstr ""
 
 #: opac.search.largePrint
 msgid "Large Print Books"
+msgstr ""
+
+#: opac.search.ebook
+msgid "E-Books"
 msgstr ""
 
 #: opac.search.audioBooks
@@ -1541,8 +1546,9 @@ msgid "Fiction"
 msgstr ""
 
 #: advanced.language
+#, fuzzy
 msgid "Language"
-msgstr ""
+msgstr "Dil: "
 
 #: advanced.audience
 msgid "Audience"
@@ -1694,8 +1700,16 @@ msgstr ""
 msgid "Previous page"
 msgstr ""
 
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr ""
+
 #: rdetail.page.next
 msgid "Next page"
+msgstr ""
+
+#: rdetail.page.next.short
+msgid "&#187;"
 msgstr ""
 
 #: rdetail.page.last
@@ -1855,6 +1869,7 @@ msgid "There are no call numbers for this item at this location."
 msgstr ""
 
 #: rdetail.extras.call.local
+msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
 msgstr ""
 
@@ -1871,7 +1886,7 @@ msgid "Show a preview of this book from Google Book Search"
 msgstr ""
 
 #: rdetail.loading
-msgid "Loading copy infomation..."
+msgid "Loading copy information..."
 msgstr ""
 
 #: rdetail.noneAvailable
@@ -1956,12 +1971,14 @@ msgid "You can try searching the same terms by:"
 msgstr ""
 
 #: result.lowhits.title
+#, fuzzy
 msgid "title"
-msgstr ""
+msgstr "Başlık"
 
 #: result.lowhits.author
+#, fuzzy
 msgid "author"
-msgstr ""
+msgstr "Yazar"
 
 #: result.lowhits.subject
 msgid "subject"
@@ -1985,6 +2002,11 @@ msgstr ""
 
 #: result.googleBooks.browse
 msgid "Browse in Google Books Search"
+msgstr ""
+
+#: result.localCallNumbers
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
 msgstr ""
 
 #: common.call.number.label
@@ -2039,14 +2061,23 @@ msgstr ""
 msgid "Please select a physical location where your hold can be delivered."
 msgstr ""
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr ""
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr ""
 
 #: common.hold.exists.override
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
 
 #: common.hold.barred
@@ -2135,12 +2166,14 @@ msgid "Subject:"
 msgstr ""
 
 #: common.title.label
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "Başlık"
 
 #: common.author.label
+#, fuzzy
 msgid "Author:"
-msgstr ""
+msgstr "Yazar"
 
 #: common.format.label
 msgid "Format:"
@@ -2209,8 +2242,7 @@ msgid ""
 msgstr ""
 
 #: login.account.inactive
-msgid ""
-"This account has been deactivated.  Please contact your local library."
+msgid "This account has been deactivated.  Please contact your local library."
 msgstr ""
 
 #: login.failed
@@ -2308,14 +2340,16 @@ msgid "Barcode"
 msgstr ""
 
 #: selfck.title
+#, fuzzy
 msgctxt "selfck.title"
 msgid "Title"
-msgstr ""
+msgstr "Başlık"
 
 #: selfck.author
+#, fuzzy
 msgctxt "selfck.author"
 msgid "Author"
-msgstr ""
+msgstr "Yazar"
 
 #: selfck.due_date
 msgctxt "selfck.due_date"
@@ -2340,8 +2374,9 @@ msgid "Renewal"
 msgstr ""
 
 #: selfck.done
+#, fuzzy
 msgid "Done"
-msgstr ""
+msgstr "Hiçbiri"
 
 #: selfck.welcome
 msgid "Welcome"

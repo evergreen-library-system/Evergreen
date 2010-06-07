@@ -2,20 +2,21 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#
+#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:35-0400\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-07 02:02-0400\n"
 "PO-Revision-Date: 2010-03-02 22:39+0000\n"
 "Last-Translator: Dmagick <Unknown>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.7.0\n"
 "X-Launchpad-Export-Date: 2010-03-03 04:46+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
+"X-Accelerator-Marker: &\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -213,8 +214,7 @@ msgid "Tips:"
 msgstr ""
 
 #: common.tips.tip1
-msgid ""
-"Click on a folder icon in the sidebar to access related quick searches"
+msgid "Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 
 #: common.tips.tip2
@@ -232,9 +232,10 @@ msgid "Close All"
 msgstr ""
 
 #: common.org.cancel
+#, fuzzy
 msgctxt "common.org.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "לבטל"
 
 #: common.org.loading
 msgid "Loading library selector..."
@@ -396,8 +397,7 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
-"\n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -536,8 +536,9 @@ msgstr ""
 #. MyOPAC Checked Page
 #. =================================================================
 #: myopac.checked.out
+#, fuzzy
 msgid "Total items out:"
-msgstr ""
+msgstr "פריטים סה\"כ איחור:"
 
 #: myopac.checked.overdue
 msgid "Total items overdue:"
@@ -980,8 +981,9 @@ msgid "Zip"
 msgstr ""
 
 #: myopac.summary.address.edit
+#, fuzzy
 msgid "Edit Address"
-msgstr ""
+msgstr "כתובת דוא\"ל"
 
 #: myopac.summary.address.invalid
 msgid "Invalid Address"
@@ -993,12 +995,14 @@ msgstr ""
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different username."
+"The requested username is not available.  Please choose a different "
+"username."
 msgstr ""
 
 #: myopac.summary.username.success
+#, fuzzy
 msgid "Username successfully updated"
-msgstr ""
+msgstr "התיק עודכן בהצלחה."
 
 #: myopac.summary.username.failure
 msgid "Username update failed"
@@ -1141,9 +1145,10 @@ msgid "Item Barcode"
 msgstr ""
 
 #: opac.advanced.quick.cn
+#, fuzzy
 msgctxt "opac.advanced.quick.cn"
 msgid "Call Number"
-msgstr ""
+msgstr "הסב מספר"
 
 #: opac.advanced.copy_loc_filter
 msgid "Shelving Location"
@@ -1231,22 +1236,25 @@ msgid "Go to My OPAC"
 msgstr ""
 
 #: navigate.login
+#, fuzzy
 msgid "Log in"
-msgstr ""
+msgstr "כניסה"
 
 #: navigate.login.title
 msgid "Log in for personalized features"
 msgstr ""
 
 #: navigate.logout
+#, fuzzy
 msgctxt "navigate.logout"
 msgid "Log out"
-msgstr ""
+msgstr "התנתק"
 
 #: navigate.logout.title
+#, fuzzy
 msgctxt "navigate.logout.title"
 msgid "Log out"
-msgstr ""
+msgstr "התנתק"
 
 #: opac.navigate.selectNewOrg
 msgid "Choose a different library"
@@ -1285,9 +1293,10 @@ msgstr ""
 #. Footer
 #. =================================================================
 #: footer.basic
+#, fuzzy
 msgctxt "footer.basic"
 msgid "Basic Catalog (HTML only)"
-msgstr ""
+msgstr "קטלוג בסיסי (HTML בלבד)"
 
 #: footer.find.library
 msgid "Find a Library Near Me"
@@ -1322,7 +1331,7 @@ msgid "GALILEO"
 msgstr ""
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
+msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
 msgstr ""
 
 #. Introduces the logo for the project
@@ -1354,9 +1363,10 @@ msgid "Account Preferences"
 msgstr ""
 
 #: myopac.bookbags
+#, fuzzy
 msgctxt "myopac.bookbags"
 msgid "My Bookbags"
-msgstr ""
+msgstr "שקיות הספר שלי"
 
 #. =================================================================
 #. Sidebar
@@ -1402,6 +1412,10 @@ msgstr ""
 msgid "Large Print Books"
 msgstr ""
 
+#: opac.search.ebook
+msgid "E-Books"
+msgstr ""
+
 #: opac.search.audioBooks
 msgid "Audiobooks"
 msgstr ""
@@ -1419,8 +1433,9 @@ msgid "Electronic Resources"
 msgstr ""
 
 #: opac.search.nowSearching
+#, fuzzy
 msgid "Now Searching"
-msgstr ""
+msgstr "כעת מחפשים "
 
 #. =================================================================
 #. Page Titles
@@ -1488,8 +1503,9 @@ msgid "Contact email address"
 msgstr ""
 
 #: opac.holds.pickupLocation
+#, fuzzy
 msgid "Pickup location"
-msgstr ""
+msgstr "מיקום האיסוף"
 
 #: opac.holds.success
 msgid "Hold was successfully placed"
@@ -1551,8 +1567,9 @@ msgid "Fiction"
 msgstr ""
 
 #: advanced.language
+#, fuzzy
 msgid "Language"
-msgstr ""
+msgstr "שפה: "
 
 #: advanced.audience
 msgid "Audience"
@@ -1583,8 +1600,9 @@ msgid "Relevance"
 msgstr ""
 
 #: advanced.pubdate
+#, fuzzy
 msgid "Publication date"
-msgstr ""
+msgstr "תאריך פרסום"
 
 #: advanced.sort.asc
 msgid "Ascending / A to Z"
@@ -1607,8 +1625,9 @@ msgid "Bib Level"
 msgstr ""
 
 #: advanced.filter.pubyear
+#, fuzzy
 msgid "Publication Year"
-msgstr ""
+msgstr "תאריך פרסום"
 
 #: advanced.filter.pubyear.equals
 msgid "Is"
@@ -1655,9 +1674,10 @@ msgid "Holdable"
 msgstr ""
 
 #: rdetail.cn.due
+#, fuzzy
 msgctxt "rdetail.cn.due"
 msgid "Due Date"
-msgstr ""
+msgstr "תאריך יעד"
 
 #: rdetail.cn.more
 msgid "more info..."
@@ -1693,8 +1713,9 @@ msgstr ""
 
 #. Result # &common.of; #
 #: rdetail.result
+#, fuzzy
 msgid "Result"
-msgstr ""
+msgstr "תוצאות"
 
 #: rdetail.start
 msgid "Start"
@@ -1704,8 +1725,16 @@ msgstr ""
 msgid "Previous page"
 msgstr ""
 
+#: rdetail.page.previous.short
+msgid "&#171;"
+msgstr ""
+
 #: rdetail.page.next
 msgid "Next page"
+msgstr ""
+
+#: rdetail.page.next.short
+msgid "&#187;"
 msgstr ""
 
 #: rdetail.page.last
@@ -1725,8 +1754,9 @@ msgid "Add to bookbag"
 msgstr ""
 
 #: rdetail.bookbag.create
+#, fuzzy
 msgid "Create a new bookbag"
-msgstr ""
+msgstr "צור התיק חדש"
 
 #: rdetail.record.deleted
 msgid ""
@@ -1744,21 +1774,24 @@ msgid "Item successfully added to bookbag"
 msgstr ""
 
 #: rdetail.bookbag.name
+#, fuzzy
 msgid "Enter the name of the new bookbag"
-msgstr ""
+msgstr "הזן את שם התיק החדש: "
 
 #: rdetail.bookbag.create.success
+#, fuzzy
 msgid "Bookbag successfully created"
-msgstr ""
+msgstr "התיק עודכן בהצלחה."
 
 #: rdetail.detailMain.headerLabel
 msgid "Record Summary"
 msgstr ""
 
 #: rdetail.detailMain.subjects
+#, fuzzy
 msgctxt "rdetail.detailMain.subjects"
 msgid "Subjects"
-msgstr ""
+msgstr "נושא"
 
 #: rdetail.detailMain.abstract
 msgid "Abstract"
@@ -1781,13 +1814,15 @@ msgid "Copy Information"
 msgstr ""
 
 #: rdetail.copyInfo.library
+#, fuzzy
 msgctxt "rdetail.copyInfo.library"
 msgid "Library"
-msgstr ""
+msgstr "ספרייה"
 
 #: rdetail.copyInfo.callnumber
+#, fuzzy
 msgid "Callnumber"
-msgstr ""
+msgstr "הסב מספר"
 
 #: rdetail.copyInfo.copylocation
 msgid "Copy Location"
@@ -1827,9 +1862,10 @@ msgid "Copy Summary"
 msgstr ""
 
 #: rdetail.extras.browser
+#, fuzzy
 msgctxt "rdetail.extras.browser"
 msgid "Shelf Browser"
-msgstr ""
+msgstr "הדפדפן מדף"
 
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
@@ -1865,6 +1901,7 @@ msgid "There are no call numbers for this item at this location."
 msgstr ""
 
 #: rdetail.extras.call.local
+msgctxt "rdetail.extras.call.local"
 msgid "Local Call Numbers:"
 msgstr ""
 
@@ -1881,7 +1918,7 @@ msgid "Show a preview of this book from Google Book Search"
 msgstr ""
 
 #: rdetail.loading
-msgid "Loading copy infomation..."
+msgid "Loading copy information..."
 msgstr ""
 
 #: rdetail.noneAvailable
@@ -1893,9 +1930,10 @@ msgid "Online Resources"
 msgstr ""
 
 #: rdetail.summary.subjects
+#, fuzzy
 msgctxt "rdetail.summary.subjects"
 msgid "Subjects"
-msgstr ""
+msgstr "נושא"
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
@@ -1966,24 +2004,29 @@ msgid "You can try searching the same terms by:"
 msgstr ""
 
 #: result.lowhits.title
+#, fuzzy
 msgid "title"
-msgstr ""
+msgstr "כותר"
 
 #: result.lowhits.author
+#, fuzzy
 msgid "author"
-msgstr ""
+msgstr "מחבר"
 
 #: result.lowhits.subject
+#, fuzzy
 msgid "subject"
-msgstr ""
+msgstr "נושא"
 
 #: result.lowhits.series
+#, fuzzy
 msgid "series"
-msgstr ""
+msgstr "סדרה"
 
 #: result.lowhits.keyword
+#, fuzzy
 msgid "keyword"
-msgstr ""
+msgstr "מילת מפתח"
 
 #: result.table.keyword
 msgid "View titles for this record"
@@ -1997,9 +2040,15 @@ msgstr ""
 msgid "Browse in Google Books Search"
 msgstr ""
 
-#: common.call.number.label
-msgid "Call Number:"
+#: result.localCallNumbers
+msgctxt "result.localCallNumbers"
+msgid "Local Call Numbers:"
 msgstr ""
+
+#: common.call.number.label
+#, fuzzy
+msgid "Call Number:"
+msgstr "הסב מספר"
 
 #: common.isbn.label
 msgid "ISBN:"
@@ -2049,14 +2098,23 @@ msgstr ""
 msgid "Please select a physical location where your hold can be delivered."
 msgstr ""
 
+#: common.hold.checked_out
+msgid "This item is already checked out."
+msgstr ""
+
+#: common.hold.checked_out.override
+msgid ""
+"This item is already checked out.  Would you like to place the hold anyway?"
+msgstr ""
+
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr ""
 
 #: common.hold.exists.override
 msgid ""
-"A hold already exists on the requested \n"
-"item. Would you like to create the hold anyway?"
+"A hold already exists on the requested item. Would you like to create the "
+"hold anyway?"
 msgstr ""
 
 #: common.hold.barred
@@ -2129,32 +2187,38 @@ msgid ""
 msgstr ""
 
 #: common.keywords.label
+#, fuzzy
 msgid "Keywords:"
-msgstr ""
+msgstr "מילת מפתח"
 
 #: common.physical.label
 msgid "Physical Description:"
 msgstr ""
 
 #: common.series.label
+#, fuzzy
 msgid "Series:"
-msgstr ""
+msgstr "סדרה"
 
 #: common.subject.label
+#, fuzzy
 msgid "Subject:"
-msgstr ""
+msgstr "נושא"
 
 #: common.title.label
+#, fuzzy
 msgid "Title:"
-msgstr ""
+msgstr "כותר"
 
 #: common.author.label
+#, fuzzy
 msgid "Author:"
-msgstr ""
+msgstr "מחבר"
 
 #: common.format.label
+#, fuzzy
 msgid "Format:"
-msgstr ""
+msgstr "מבנה"
 
 #: library.select
 msgid "Find results in"
@@ -2184,12 +2248,14 @@ msgid ""
 msgstr ""
 
 #: login.password.current.enter
+#, fuzzy
 msgid "Enter your current password"
-msgstr ""
+msgstr "הזן את הסיסמה הנוכחית:"
 
 #: login.password.new.enter
+#, fuzzy
 msgid "Enter the new password"
-msgstr ""
+msgstr "הזן סיסמה חדשה:"
 
 #: login.password.new.reenter
 msgid "Re-type the new password for verification"
@@ -2219,8 +2285,7 @@ msgid ""
 msgstr ""
 
 #: login.account.inactive
-msgid ""
-"This account has been deactivated.  Please contact your local library."
+msgid "This account has been deactivated.  Please contact your local library."
 msgstr ""
 
 #: login.failed
@@ -2245,8 +2310,9 @@ msgid "Simple Search"
 msgstr ""
 
 #: slimpac.start.nowSearching
+#, fuzzy
 msgid "Now searching: "
-msgstr ""
+msgstr "כעת מחפשים "
 
 #: slimpac.start.dynamic
 msgid "Dynamic Catalog"
@@ -2260,8 +2326,9 @@ msgid "Item Language"
 msgstr ""
 
 #: slimpac.advanced.create_date
+#, fuzzy
 msgid "Record Creation Date"
-msgstr ""
+msgstr "תאריך יצירת חשבון"
 
 #: slimpac.advanced.edit_date
 msgid "Record Edit Date"
@@ -2291,14 +2358,16 @@ msgid "Library barcode or username"
 msgstr ""
 
 #: selfck.staff_pw
+#, fuzzy
 msgctxt "selfck.staff_pw"
 msgid "Password"
-msgstr ""
+msgstr "סיסמה"
 
 #: selfck.submit
+#, fuzzy
 msgctxt "selfck.submit"
 msgid "Submit"
-msgstr ""
+msgstr "להגיש"
 
 #: selfck.clear
 msgid "Clear"
@@ -2318,24 +2387,28 @@ msgid "Barcode"
 msgstr ""
 
 #: selfck.title
+#, fuzzy
 msgctxt "selfck.title"
 msgid "Title"
-msgstr ""
+msgstr "כותר"
 
 #: selfck.author
+#, fuzzy
 msgctxt "selfck.author"
 msgid "Author"
-msgstr ""
+msgstr "מחבר"
 
 #: selfck.due_date
+#, fuzzy
 msgctxt "selfck.due_date"
 msgid "Due Date"
-msgstr ""
+msgstr "תאריך יעד"
 
 #: selfck.remaining
+#, fuzzy
 msgctxt "selfck.remaining"
 msgid "Renewals Remaining"
-msgstr ""
+msgstr "חידושים נותרים"
 
 #: selfck.cotype
 msgid "Type"
@@ -2350,8 +2423,9 @@ msgid "Renewal"
 msgstr ""
 
 #: selfck.done
+#, fuzzy
 msgid "Done"
-msgstr ""
+msgstr "ללא"
 
 #: selfck.welcome
 msgid "Welcome"
