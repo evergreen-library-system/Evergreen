@@ -2,19 +2,20 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-01-31 22:59:36-0400\n"
-"PO-Revision-Date: 2009-12-31 11:38+0000\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2010-04-22 10:29+0000\n"
 "Last-Translator: Jonathan Field <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2010-04-23 03:47+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
 
 #: 1208.TITLE_LAST_COPY:66
 msgid "The last copy attached to a title is being removed or deleted"
@@ -33,7 +34,9 @@ msgid "This item is too new to have a hold placed on it"
 msgstr "This item is too new to have a hold placed on it"
 
 #: 1214.PATRON_DUP_IDENT1:87
-msgid "The selected primary identification type and value are in use by another patron"
+msgid ""
+"The selected primary identification type and value are in use by another "
+"patron"
 msgstr ""
 "The selected primary identification type and value are in use by another "
 "patron"
@@ -66,7 +69,7 @@ msgstr "The requested config_circ_matrix_test was not found"
 msgid "The requested metabib_series_field_entry was not found"
 msgstr "The requested metabib_series_field_entry was not found"
 
-#: 8002.OFFLINE_FILE_ERROR:870
+#: 8002.OFFLINE_FILE_ERROR:858
 msgid " An offline file or directory could not be created or accessed "
 msgstr " An offline file or directory could not be created or accessed "
 
@@ -105,6 +108,10 @@ msgstr "The requested acq.funding_source_dedit was not found"
 #: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:563
 msgid "The requested action_open_circ_count_by_circ_mod was not found"
 msgstr "The requested action_open_circ_count_by_circ_mod was not found"
+
+#: 0.SUCCESS:14
+msgid " "
+msgstr " "
 
 #: 7006.COPY_IS_REFERENCE:801
 msgid " Copy is reference material "
@@ -170,7 +177,7 @@ msgstr "This requested item is currently on the holds shelf"
 msgid "The attempt to write to the DB failed"
 msgstr "The attempt to write to the DB failed"
 
-#: 8000.OFFLINE_SESSION_ACTIVE:864
+#: 8000.OFFLINE_SESSION_ACTIVE:852
 msgid " An offline session for this location is currently processing "
 msgstr " An offline session for this location is currently processing "
 
@@ -190,7 +197,7 @@ msgstr "User login session has either timed out or does not exist"
 msgid " Requested billing note does not exist "
 msgstr " Requested billing note does not exist "
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:867
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:855
 msgid " An offline file for this workstation exists within this session "
 msgstr " An offline file for this workstation exists within this session "
 
@@ -223,7 +230,9 @@ msgid "The user does not have a valid phone number assigned"
 msgstr "The user does not have a valid phone number assigned"
 
 #: 1002.ACTOR_USER_NOT_FOUND:29
-msgid "Someone attempted to retrieve a user from the system and the user was not found"
+msgid ""
+"Someone attempted to retrieve a user from the system and the user was not "
+"found"
 msgstr ""
 "Someone attempted to retrieve a user from the system and the user was not "
 "found"
@@ -240,7 +249,7 @@ msgstr "The requested acq.fund_debit_total was not found"
 msgid "The requested reporter_output_folder was not found"
 msgstr "The requested reporter_output_folder was not found"
 
-#: 8007.OFFLINE_SESSION_EXISTS:885
+#: 8007.OFFLINE_SESSION_EXISTS:873
 msgid " A session with the given name already exists "
 msgstr " A session with the given name already exists "
 
@@ -270,7 +279,7 @@ msgstr "The requested authority_record_descriptor was not found"
 
 #: 7011.COPY_STATUS_LOST:816
 msgid "Copy has is marked as lost"
-msgstr "Copy has is marked as lost"
+msgstr "Copy is marked as lost"
 
 #: 1587.CONTAINER_CALL_NUMBER_BUCKET_NOT_FOUND:402
 msgid "The requested container_call_number_bucket was not found"
@@ -306,7 +315,7 @@ msgstr "The requested actor_user_standing_penalty was not found"
 msgid "The given username already exists in the database"
 msgstr "The given username already exists in the database"
 
-#: 9000.REPORT_TEMPLATE_EXISTS:898
+#: 9000.REPORT_TEMPLATE_EXISTS:886
 msgid " A report template with the given name and folder already exists"
 msgstr " A report template with the given name and folder already exists"
 
@@ -318,21 +327,13 @@ msgstr "The requested actor_stat_cat_entry was not found"
 msgid "User has already created a bucket with the requested name"
 msgstr "User has already created a bucket with the requested name"
 
-#: 10000.ACQ_LINEITEM_APPROVED:906
+#: 10000.ACQ_LINEITEM_APPROVED:894
 msgid "The lineitem cannot be altered because it has already been approved"
 msgstr "The lineitem cannot be altered because it has already been approved"
-
-#: 7020.COPY_RESERVED:846
-msgid "Item reserved for booking request"
-msgstr ""
 
 #: 1575.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_NOT_FOUND:367
 msgid "The requested container_biblio_record_entry_bucket was not found"
 msgstr "The requested container_biblio_record_entry_bucket was not found"
-
-#: 7021.RESERVATION_NOT_FOUND:849
-msgid "Booking reservation not found"
-msgstr ""
 
 #: 1701.COPY_LOCATION_EXISTS:687
 msgid " The copy location object already exists "
@@ -342,7 +343,7 @@ msgstr " The copy location object already exists "
 msgid " A workstation with that name already exists "
 msgstr " A workstation with that name already exists "
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:918 10005.ACQ_LINEITEM_NO_PROVIDER:921
+#: 10004.ACQ_LINEITEM_NO_PRICE:906 10005.ACQ_LINEITEM_NO_PROVIDER:909
 msgid "The lineitem has no price"
 msgstr "The lineitem has no price"
 
@@ -434,11 +435,11 @@ msgstr "The requested permission_grp_tree was not found"
 msgid " Requested title note does not exist "
 msgstr " Requested title note does not exist "
 
-#: 10001.ACQ_LINEITEM_NO_COPIES:909
+#: 10001.ACQ_LINEITEM_NO_COPIES:897
 msgid "The lineitem has no attached copies"
 msgstr "The lineitem has no attached copies"
 
-#: 9001.REPORT_REPORT_EXISTS:902
+#: 9001.REPORT_REPORT_EXISTS:890
 msgid " A report with the given name and folder already exists"
 msgstr " A report with the given name and folder already exists"
 
@@ -506,7 +507,7 @@ msgstr "Placeholder event.  Used for development only"
 msgid "The requested biblio_record_node was not found"
 msgstr "The requested biblio_record_node was not found"
 
-#: 8003.OFFLINE_PARAM_ERROR:873
+#: 8003.OFFLINE_PARAM_ERROR:861
 msgid " Missing params in offline upload "
 msgstr " Missing params in offline upload "
 
@@ -570,10 +571,6 @@ msgstr "The login failed"
 msgid "The requested money_credit_card_payment was not found"
 msgstr "The requested money_credit_card_payment was not found"
 
-#: 7023.RESERVATION_BAD_PARAMS:855
-msgid "Provided parameters describe unacceptable reservation."
-msgstr ""
-
 #: 1857.ACQ_FUNDING_SOURCE_BALANCE_NOT_FOUND:640
 msgid "The requested acq.funding_source_balance was not found"
 msgstr "The requested acq.funding_source_balance was not found"
@@ -595,7 +592,8 @@ msgid "The requested config_non_cataloged_type was not found"
 msgstr "The requested config_non_cataloged_type was not found"
 
 #: 1225.TRANSIT_ABORT_NOT_ALLOWED:128
-msgid "The transit on this item may not be aborted due to the state the item is in"
+msgid ""
+"The transit on this item may not be aborted due to the state the item is in"
 msgstr ""
 "The transit on this item may not be aborted due to the state the item is in"
 
@@ -636,7 +634,8 @@ msgid "The requested money_open_user_summary was not found"
 msgstr "The requested money_open_user_summary was not found"
 
 #: 1207.REFUND_EXCEEDS_BALANCE:63
-msgid "A refund greater than the negative balance on a transaction was provided"
+msgid ""
+"A refund greater than the negative balance on a transaction was provided"
 msgstr ""
 "A refund greater than the negative balance on a transaction was provided"
 
@@ -652,17 +651,13 @@ msgstr "An issue was attempted without a valid checkout permit key"
 msgid "The requested money_credit_payment was not found"
 msgstr "The requested money_credit_payment was not found"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:915
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:903
 msgid "The lineitem detail has no owning_lib"
 msgstr "The lineitem detail has no owning_lib"
 
 #: 1618.METABIB_TITLE_FIELD_ENTRY_NOT_FOUND:494
 msgid "The requested metabib_title_field_entry was not found"
 msgstr "The requested metabib_title_field_entry was not found"
-
-#: 7022.RESERVATION_CAPTURE_FAILED:852
-msgid "Booking reservation capture failed"
-msgstr ""
 
 #: 1202.ITEM_NOT_CATALOGED:45
 msgid "The requested item is not cataloged in the database"
@@ -696,7 +691,7 @@ msgstr "The requested config_item_type_map was not found"
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
 msgstr "The requested config_circ_matrix_ruleset_not_found was not found"
 
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:912
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:900
 msgid "The lineitem detail has no associated fund"
 msgstr "The lineitem detail has no associated fund"
 
@@ -725,7 +720,9 @@ msgid "The requested asset_call_number_note was not found"
 msgstr "The requested asset_call_number_note was not found"
 
 #: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:751
-msgid "No credit card processor specified either in org unit settings or in call to credit service API method."
+msgid ""
+"No credit card processor specified either in org unit settings or in call to "
+"credit service API method."
 msgstr ""
 "No credit card processor specified either in org unit settings or in call to "
 "credit service API method."
@@ -735,8 +732,10 @@ msgid "Requested address was not found"
 msgstr "Requested address was not found"
 
 #: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:789
-msgid "The patron in question has the maximum number of items already checked out"
-msgstr "The patron in question has the maximum number of items already on loan"
+msgid ""
+"The patron in question has the maximum number of items already checked out"
+msgstr ""
+"The patron in question has the maximum number of items already on loan"
 
 #: 1003.Z3950_SEARCH_FAILED:32
 msgid "The Z search did not succeed"
@@ -856,8 +855,8 @@ msgstr "The requested ex was not found"
 msgid "Hold capture was delayed for this item"
 msgstr "Hold capture was delayed for this item"
 
-#: 8004.OFFLINE_CONFIG_ERROR:876 8005.OFFLINE_CHECKSUM_FAILED:879
-#: 8006.OFFLINE_SESSION_NOT_FOUND:882
+#: 8004.OFFLINE_CONFIG_ERROR:864 8005.OFFLINE_CHECKSUM_FAILED:867
+#: 8006.OFFLINE_SESSION_NOT_FOUND:870
 msgid " Offline server is not configured properly "
 msgstr " Offline server is not configured properly "
 
@@ -881,7 +880,7 @@ msgstr " Target copy is not allowed to circulate "
 msgid " Circulation has no more renewals remaining "
 msgstr " Circulation has no more renewals remaining "
 
-#: 8009.OFFLINE_NO_ORG:891 8010.OFFLINE_SESSION_COMPLETE:894
+#: 8009.OFFLINE_NO_ORG:879 8010.OFFLINE_SESSION_COMPLETE:882
 msgid " No org id was provided "
 msgstr " No org id was provided "
 
@@ -900,12 +899,14 @@ msgstr "The requested reporter_template_folder was not found"
 #: 1500.ACTION_CIRCULATION_NOT_FOUND:173
 msgid ""
 "\n"
-"\t\t\tSomeone attempted to retrieve a circulation object from the system and \n"
+"\t\t\tSomeone attempted to retrieve a circulation object from the system and "
+"\n"
 "\t\t\tthe object was not found.\n"
 "\t\t"
 msgstr ""
 "\n"
-"\t\t\tSomeone attempted to retrieve a circulation object from the system and \n"
+"\t\t\tSomeone attempted to retrieve a circulation object from the system and "
+"\n"
 "\t\t\tthe object was not found.\n"
 "\t\t"
 
@@ -931,7 +932,8 @@ msgstr "The requested acq.purchase_order was not found"
 
 #: 1625.CONTAINER_BIBLIO_RECORD_ENTRY_BUCKET_ITEM_NOT_FOUND:515
 msgid "The requested container_biblio_record_entry_bucket_item was not found"
-msgstr "The requested container_biblio_record_entry_bucket_item was not found"
+msgstr ""
+"The requested container_biblio_record_entry_bucket_item was not found"
 
 #: 1000.LOGIN_FAILED:23
 msgid "User login failed"
@@ -969,7 +971,7 @@ msgstr "There was an internal server error"
 msgid "The credit card processor has declined the transaction."
 msgstr "The credit card processor has declined the transaction."
 
-#: 8008.OFFLINE_INVALID_SESSION:888
+#: 8008.OFFLINE_INVALID_SESSION:876
 msgid " The session name is invalid "
 msgstr " The session name is invalid "
 
@@ -1030,7 +1032,8 @@ msgid "The requested acq.lineitem_attr was not found"
 msgstr "The requested acq.lineitem_attr was not found"
 
 #: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:708
-msgid "A duplicate money.collections_tracker object already exists in the database"
+msgid ""
+"A duplicate money.collections_tracker object already exists in the database"
 msgstr ""
 "A duplicate money.collections_tracker object already exists in the database"
 

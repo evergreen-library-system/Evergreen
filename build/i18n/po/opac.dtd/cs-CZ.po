@@ -1,21 +1,20 @@
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"POT-Creation-Date: 2009-11-23 23:35-0400\n"
 "PO-Revision-Date: 2009-11-24 07:06+0000\n"
 "Last-Translator: Linda Skolková <Unknown>\n"
 "Language-Team: UISK <li@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
+"X-Launchpad-Export-Date: 2009-11-25 04:52+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -213,7 +212,8 @@ msgid "Tips:"
 msgstr "Tipy:"
 
 #: common.tips.tip1
-msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgid ""
+"Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 "Klikněte na ikonu složky pro zobrazení souvisejících rychlých vyhledávání"
 
@@ -384,7 +384,7 @@ msgstr "&lt;&lt; Předchozí strana"
 #: common.cn.shelf
 msgctxt "common.cn.shelf"
 msgid "Shelf Browser"
-msgstr "Prohlížení regálu"
+msgstr ""
 
 #: common.cn.next
 msgid "Next Page &gt;&gt;"
@@ -415,13 +415,15 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
 msgstr ""
 "K prohlížení katalogu Evergreen musíte mít povolený JavaScript. \n"
-"Zdá se, že máte buď zakázaný JavaScript, nebo ho Váš prohlížeč nepodporuje. \n"
+"Zdá se, že máte buď zakázaný JavaScript, nebo ho Váš prohlížeč nepodporuje. "
+"\n"
 "K použití katalogu povolte JavaScript změnou nastavení v prohlížeči, potom \n"
 "<a style='color: blue; text-decoration: underline;' href='/'>zkuste "
 "znovu</a>. \n"
@@ -1021,18 +1023,16 @@ msgid "State"
 msgstr "Stát"
 
 #: myopac.summary.address.country
-#, fuzzy
 msgid "Country"
-msgstr "Okres"
+msgstr ""
 
 #: myopac.summary.address.zip
 msgid "Zip"
 msgstr "PSČ"
 
 #: myopac.summary.address.edit
-#, fuzzy
 msgid "Edit Address"
-msgstr "E-mail"
+msgstr ""
 
 #: myopac.summary.address.invalid
 msgid "Invalid Address"
@@ -1044,9 +1044,9 @@ msgstr "Zadejte prosím uživatelské jméno"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different "
-"username."
-msgstr "Požadované uživatelské jméno není k dispozici. Zvolte si prosím jiné."
+"The requested username is not available.  Please choose a different username."
+msgstr ""
+"Požadované uživatelské jméno není k dispozici. Zvolte si prosím jiné."
 
 #: myopac.summary.username.success
 msgid "Username successfully updated"
@@ -1247,7 +1247,8 @@ msgstr "Tip:"
 #. =================================================================
 #: opac.session_expiring
 msgid "Your login session will timeout in 1 minute unless there is activity."
-msgstr "Vaše přihlášení vyprší během minuty, pokud nebude zaznamenána aktivita."
+msgstr ""
+"Vaše přihlášení vyprší během minuty, pokud nebude zaznamenána aktivita."
 
 #: opac.session_expired
 msgid "Your login session has expired"
@@ -1918,7 +1919,8 @@ msgstr "Záznam MARC"
 
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
-msgstr "Pro tento exemplář nejsou v tomto umístění k dispozici žádné signatury."
+msgstr ""
+"Pro tento exemplář nejsou v tomto umístění k dispozici žádné signatury."
 
 #: rdetail.extras.call.local
 msgid "Local Call Numbers:"
@@ -2105,24 +2107,14 @@ msgstr "Pokročilé možnosti rezervace"
 msgid "Please select a physical location where your hold can be delivered."
 msgstr "Zvolte prosím místo, kam může být doručena rezervovaná jednotka."
 
-#: common.hold.checked_out
-msgid "This item is already checked out."
-msgstr ""
-
-#: common.hold.checked_out.override
-msgid ""
-"This item is already checked out.  Would you like to place the hold anyway?"
-msgstr ""
-
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr "Na zvolený exemplář již existuje rezervace."
 
 #: common.hold.exists.override
-#, fuzzy
 msgid ""
-"A hold already exists on the requested item. Would you like to create the "
-"hold anyway?"
+"A hold already exists on the requested \n"
+"item. Would you like to create the hold anyway?"
 msgstr ""
 "Na požadovaný exemplář již existuje \n"
 "rezervace. Chcete jej přesto rezervovat?"
@@ -2161,7 +2153,8 @@ msgstr "(Nápověda)"
 msgid ""
 "The phone number does not have the correct format. The expected format is "
 "XXX-YYY-ZZZZ"
-msgstr "Telefonní číslo nemá správný formát. Očekávaný formát je XXX-YYY-ZZZZ"
+msgstr ""
+"Telefonní číslo nemá správný formát. Očekávaný formát je XXX-YYY-ZZZZ"
 
 #: common.hold.failed
 msgid ""
@@ -2303,7 +2296,8 @@ msgstr ""
 "prosím svou knihovnu."
 
 #: login.account.inactive
-msgid "This account has been deactivated.  Please contact your local library."
+msgid ""
+"This account has been deactivated.  Please contact your local library."
 msgstr "Tento účet byl deaktivován. Kontaktujte prosím svou knihovnu."
 
 #: login.failed

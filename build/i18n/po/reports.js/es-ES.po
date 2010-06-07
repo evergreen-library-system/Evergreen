@@ -2,19 +2,20 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-01-31 22:59:38-0400\n"
-"PO-Revision-Date: 2010-01-02 05:44+0000\n"
-"Last-Translator: Federico Vera <Unknown>\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2010-05-06 18:57+0000\n"
+"Last-Translator: Nicolás M. Zahlut <nzahlut@live.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2010-05-20 05:29+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 
 #: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
 msgid "In list"
@@ -77,8 +78,12 @@ msgstr "Nombre del día"
 #: reports.js:SOURCE_SETUP_CONFIRM_EXIT
 msgid ""
 "You have started building a template!\n"
-" Selecting a new starting source will destroy the current template and start over.  Is this OK?"
+" Selecting a new starting source will destroy the current template and start "
+"over.  Is this OK?"
 msgstr ""
+"¡Usted ha comenzado a crear una plantilla!\n"
+" Seleccionar una nueva fuente de inicio destruirá la plantilla actual y "
+"tendrá que volver a empezar. ¿Está de acuerdo?"
 
 #: reports.js:WIDGET_YEARS
 msgid "Year(s)"
@@ -86,16 +91,15 @@ msgstr "Año(s)"
 
 #: reports.js:FOLDER_WINDOW_SELECT_ITEM
 msgid "Please select an item from the list"
-msgstr ""
+msgstr "Por favor seleccione un elemento de a lista"
 
 #: reports.js:FOLDERS_REPORT
 msgid "Report"
 msgstr "Informe"
 
 #: reports.js:FILTERS_LABEL_LSE_TIME reports.js:OPERATORS_LTE_TIME
-#, fuzzy
 msgid "On or Before (Date/Time)"
-msgstr "Antes de (Fecha/Hora)"
+msgstr "En o Antes (Fecha/Hora)"
 
 #: reports.js:TEMPLATE_CONF_FALSE
 msgid "False"
@@ -107,7 +111,7 @@ msgstr "Valor ${0}:"
 
 #: reports.js:TRANSFORMS_COUNT_DISTINCT reports.js:TFORMS_LABEL_COUNT_DISTINCT
 msgid "Count Distinct"
-msgstr ""
+msgstr "Recuento distintivo"
 
 #: reports.js:TRANSFORMS_SUBSTRING
 msgid "Substring"
@@ -219,15 +223,15 @@ msgstr "Último valor"
 
 #: reports.js:FILTERS_LABEL_EQ_ANY reports.js:OPERATORS_EQ_ANY
 msgid "Equals Any"
-msgstr ""
+msgstr "Igual a cualquiera"
 
 #: reports.js:TEMPLATE_CONF_BARE
 msgid "Bare"
-msgstr ""
+msgstr "Simple"
 
 #: reports.js:TEMPLATE_CONF_IN
 msgid "Field matches one of list (comma separated):"
-msgstr ""
+msgstr "Campo coincide con uno de la lista (separados por coma):"
 
 #: reports.js:TRANSFORMS_MONTH_TRUNC reports.js:TFORMS_LABEL_MONTH_TRUNC
 msgid "Year + Month"
@@ -235,12 +239,11 @@ msgstr "Año + Mes"
 
 #: reports.js:TRANSFORMS_FIRST_WORD reports.js:TFORMS_LABEL_FIRST_WORD
 msgid "First contiguous non-space string"
-msgstr ""
+msgstr "Primera cadena contigua sin espacios"
 
 #: reports.js:TEMPLATE_CONF_NOT_BETWEEN
-#, fuzzy
 msgid "Field value is not between (comma separated):"
-msgstr "El valor del campo está entre (separados por comas):"
+msgstr "Valor de campo no está entre (separados por coma):"
 
 #: reports.js:TEMPLATE_CONF_RAW_DATA reports.js:TRANSFORMS_BARE
 #: reports.js:TFORMS_LABEL_RAW_DATA
@@ -253,7 +256,7 @@ msgstr "Todas las fuentes disponibles"
 
 #: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
 msgid "Contains Matching substring"
-msgstr ""
+msgstr "Contiene subcadena coincidente"
 
 #: reports.js:OPERATORS_EQUALS reports.js:TEMPLATE_CONF_EQUALS
 #: reports.js:FILTERS_LABEL_EQUALS
@@ -286,11 +289,11 @@ msgstr "Menor que"
 
 #: reports.js:SOURCE_SETUP_CORE_SOURCES
 msgid "Core Sources"
-msgstr ""
+msgstr "Fuentes centrales"
 
 #: reports.js:TRANSFORMS_MONTHS_AGO reports.js:TFORMS_LABEL_MONTHS_AGO
 msgid "Months ago"
-msgstr ""
+msgstr "Hace meses"
 
 #: reports.js:TRANSFORMS_ROUND reports.js:TFORMS_LABEL_ROUND
 msgid "Round"
@@ -314,7 +317,7 @@ msgstr "Día del mes"
 
 #: reports.js:SOURCE_BROWSE_NON_AGGREGATE
 msgid "Non-Aggregate"
-msgstr ""
+msgstr "No Agregados"
 
 #: reports.js:OPERATORS_IS_NULL reports.js:FILTERS_LABEL_NULL
 msgid "Is NULL"
@@ -334,7 +337,7 @@ msgstr "Día(s)"
 
 #: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
 msgid "Report Output: ${0}"
-msgstr ""
+msgstr "Informe de salida: ${0}"
 
 #: reports.js:TEMPLATE_CONF_CONFIRM_STATE
 msgid "Click OK for TRUE and Cancel for FALSE."
@@ -377,9 +380,8 @@ msgid "First 5 characters (for US ZIP code)"
 msgstr "Primeros 5 caracteres (para códigos postales de EEUU)"
 
 #: reports.js:OPERATORS_GTE_TIME reports.js:FILTERS_LABEL_GTE_TIME
-#, fuzzy
 msgid "On or After (Date/Time)"
-msgstr "Antes de (Fecha/Hora)"
+msgstr "En o Después (Fecha/Hora)"
 
 #: reports.js:TRANSFORMS_YEAR_TRUNC reports.js:TFORMS_LABEL_YEAR_TRUNC
 msgid "Year"
@@ -391,7 +393,7 @@ msgstr "Informes"
 
 #: reports.js:TFORMS_LABEL_QUARTERS_AGO reports.js:TRANSFORMS_QUARTERS_AGO
 msgid "Quarters ago"
-msgstr ""
+msgstr "trimestres atrás"
 
 #: reports.js:FOLDERS_OUTPUT
 msgid "Output"
@@ -417,7 +419,7 @@ msgstr "No está en la lista"
 
 #: reports.js:OPERATORS_ILIKE reports.js:FILTERS_LABEL_ILIKE
 msgid "Contains Matching substring (ignore case)"
-msgstr ""
+msgstr "Contiene subcadena coincidente (ignorar mayúsculas)"
 
 #: reports.js:TRANSFORMS_MOY reports.js:TFORMS_LABEL_MOY
 msgid "Month of Year"
@@ -433,4 +435,4 @@ msgstr "Máx"
 
 #: reports.js:TEMPLATE_CONF_NOT_IN reports.js:TEMPLATE_CONF_NO_MATCH
 msgid "Field does not match one of list (comma separated):"
-msgstr ""
+msgstr "Campo no coincide con ninguno de la lista (separados por coma):"

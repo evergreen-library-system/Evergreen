@@ -1,17 +1,16 @@
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-31 22:59-0400\n"
-"PO-Revision-Date: 2009-11-24 06:12+0000\n"
-"Last-Translator: Ruzanna <Unknown>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2010-03-23 10:21+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+"X-Launchpad-Export-Date: 2010-03-24 04:54+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.exception
@@ -32,7 +31,8 @@ msgstr "библиотечный объект JSAN отсутствует"
 
 #: common.error
 msgid "Please inform your help desk or developers of this error:"
-msgstr "Пожалуйста  сообщите  службе помощи или  разработчикам об  этой ошибке:"
+msgstr ""
+"Пожалуйста  сообщите  службе помощи или  разработчикам об  этой ошибке:"
 
 #: common.ok
 msgid "Ok"
@@ -45,10 +45,6 @@ msgstr "Очистить"
 #: common.confirm
 msgid "Check here to confirm this message."
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
-
-#: common.cancelled
-msgid "Action Cancelled"
-msgstr ""
 
 #: common.error.default
 msgid "Please report that this happened."
@@ -67,8 +63,9 @@ msgid "Expired"
 msgstr "Недействительный"
 
 #: common.barcode.status.warning.barred
-msgctxt "common.barcode.status.warning.barred"
-msgid "Barred"
+msgid ""
+"_: common.barcode.status.warning.barred\n"
+"Barred"
 msgstr "Запрещённый"
 
 #: common.barcode.status.warning.blocked
@@ -97,8 +94,9 @@ msgid "Not yet implemented"
 msgstr "Еще не Внедрена"
 
 #: common.yes
-msgctxt "common.yes"
-msgid "Yes"
+msgid ""
+"_: common.yes\n"
+"Yes"
 msgstr "Да"
 
 #: common.no
@@ -137,14 +135,10 @@ msgstr "Ошибка  get_contentWindow(%1$s): %2$s"
 msgid "Error adjusting the font size: %1$s"
 msgstr "Ошибка при настройке размера шрифта: %1$s"
 
-#. # Appended to notes with certain settings enabled.  First position is staff initials, and second position is a date for when the initials were added.
-#: staff.initials.format
-msgid "[ %1$s %2$s @ %3$s ]"
-msgstr ""
-
 #: staff.acp_label_barcode
-msgctxt "staff.acp_label_barcode"
-msgid "Barcode"
+msgid ""
+"_: staff.acp_label_barcode\n"
+"Barcode"
 msgstr "Штрих-код"
 
 #: staff.acp_label_call_number
@@ -192,8 +186,9 @@ msgid "Price"
 msgstr "Цена"
 
 #: staff.acp_label_status
-msgctxt "staff.acp_label_status"
-msgid "Status"
+msgid ""
+"_: staff.acp_label_status\n"
+"Status"
 msgstr "Статус"
 
 #: staff.ahr_current_copy_label
@@ -217,8 +212,9 @@ msgid "Fulfillment Time"
 msgstr "Время Завершения"
 
 #: staff.ahr_hold_type_label
-msgctxt "staff.ahr_hold_type_label"
-msgid "Type"
+msgid ""
+"_: staff.ahr_hold_type_label\n"
+"Type"
 msgstr "Тип"
 
 #: staff.ahr_holdable_formats_label
@@ -251,11 +247,12 @@ msgstr "Глубины выбора"
 
 #: staff.ahr_top_of_queue_label
 msgid "Top of Queue"
-msgstr ""
+msgstr "Начало очереди"
 
 #: staff.ahr_status_label
-msgctxt "staff.ahr_status_label"
-msgid "Status"
+msgid ""
+"_: staff.ahr_status_label\n"
+"Status"
 msgstr "Статус"
 
 #: staff.ahr_target_label
@@ -263,8 +260,9 @@ msgid "Target"
 msgstr "Мишень"
 
 #: staff.ahr_usr_label
-msgctxt "staff.ahr_usr_label"
-msgid "User"
+msgid ""
+"_: staff.ahr_usr_label\n"
+"User"
 msgstr "Пользователь"
 
 #: staff.circ_label_due_date
@@ -273,7 +271,7 @@ msgstr "Дата сдачи"
 
 #: staff.circ_label_due_time
 msgid "Due Time"
-msgstr ""
+msgstr "Время  возврата"
 
 #: staff.circ_label_id
 msgid "Circulation ID"
@@ -284,8 +282,9 @@ msgid "Remaining Renewals"
 msgstr "Оставшиеся Обновления"
 
 #: staff.mvr_label_author
-msgctxt "staff.mvr_label_author"
-msgid "Author"
+msgid ""
+"_: staff.mvr_label_author\n"
+"Author"
 msgstr "Автор"
 
 #: staff.mvr_label_doc_id
@@ -293,8 +292,9 @@ msgid "Document ID"
 msgstr "ID документа"
 
 #: staff.mvr_label_title
-msgctxt "staff.mvr_label_title"
-msgid "Title"
+msgid ""
+"_: staff.mvr_label_title\n"
+"Title"
 msgstr "Заглавие"
 
 #: staff.bills_xact_dates_label
@@ -311,85 +311,71 @@ msgstr "Текущий платеж"
 
 #: staff.csp_id_label
 msgid "Penalty Type ID"
-msgstr ""
+msgstr "Тип ID штрафа"
 
 #: staff.csp_name_label
 msgid "Name"
-msgstr ""
+msgstr "Имя"
 
 #: staff.csp_label_label
 msgid "Label"
-msgstr ""
+msgstr "Метка"
 
 #: staff.csp_block_list_label
 msgid "Block List"
-msgstr ""
+msgstr "Блок-лист"
 
 #: staff.csp_block_circ_label
 msgid "Blocks Circulations?"
-msgstr ""
+msgstr "Заблокировать  циркуляции?"
 
 #: staff.csp_block_renew_label
 msgid "Blocks Renewals?"
-msgstr ""
+msgstr "Заблокировать  продление сроков?"
 
 #: staff.csp_block_hold_label
 msgid "Blocks Holds?"
-msgstr ""
+msgstr "Заблокировать  хранения?"
 
 #: staff.csp_block_circ_yes
-msgctxt "staff.csp_block_circ_yes"
-msgid "Yes"
+msgid ""
+"_: staff.csp_block_circ_yes\n"
+"Yes"
 msgstr "Да"
 
-#: staff.csp_block_circ_no
-msgid ""
-"_: staff.csp_block_circ_no\n"
-""
-msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2009-11-24 06:12+0000\n"
-"Last-Translator: Ruzanna <Unknown>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
-"X-Accelerator-Marker: &\n"
-
 #: staff.csp_block_renew_yes
-msgctxt "staff.csp_block_renew_yes"
-msgid "Yes"
+msgid ""
+"_: staff.csp_block_renew_yes\n"
+"Yes"
 msgstr "Да"
 
 #: staff.csp_block_hold_yes
-msgctxt "staff.csp_block_hold_yes"
-msgid "Yes"
+msgid ""
+"_: staff.csp_block_hold_yes\n"
+"Yes"
 msgstr "Да"
 
 #: staff.ausp_id_label
 msgid "Penalty ID"
-msgstr ""
+msgstr "ID штрафа"
 
 #: staff.ausp_staff_label
 msgid "Applied By"
-msgstr ""
+msgstr "Применяемые"
 
 #: staff.ausp_set_date_label
 msgid "Applied On"
-msgstr ""
+msgstr "Применяются на"
 
 #: staff.ausp_note_label
-msgctxt "staff.ausp_note_label"
-msgid "Note"
+msgid ""
+"_: staff.ausp_note_label\n"
+"Note"
 msgstr "Заметка"
 
 #: staff.ausp_org_unit_label
 msgid "Library"
-msgstr ""
+msgstr "Библиотека"
 
 #: staff.mbts_id_label
 msgid "Bill #"
@@ -404,8 +390,9 @@ msgid "Finish"
 msgstr "Заканчивать"
 
 #: staff.mbts_xact_type_label
-msgctxt "staff.mbts_xact_type_label"
-msgid "Type"
+msgid ""
+"_: staff.mbts_xact_type_label\n"
+"Type"
 msgstr "Тип"
 
 #: staff.mbts_total_owed_label
@@ -421,8 +408,9 @@ msgid "Balance Owed"
 msgstr "Баланс причитался"
 
 #: staff.mbts_usr_label
-msgctxt "staff.mbts_usr_label"
-msgid "User"
+msgid ""
+"_: staff.mbts_usr_label\n"
+"User"
 msgstr "Пользователь"
 
 #: staff.mbts_last_billing_note_label
@@ -454,13 +442,15 @@ msgid "Billing Type"
 msgstr "Тип Счета"
 
 #: staff.mb_xact_label
-msgctxt "staff.mb_xact_label"
-msgid "Transaction ID"
+msgid ""
+"_: staff.mb_xact_label\n"
+"Transaction ID"
 msgstr "ID транзакции"
 
 #: staff.mb_billing_ts_label
-msgctxt "staff.mb_billing_ts_label"
-msgid "When"
+msgid ""
+"_: staff.mb_billing_ts_label\n"
+"When"
 msgstr "Когда"
 
 #: staff.mb_void_time_label
@@ -468,13 +458,15 @@ msgid "Void Time"
 msgstr "Неанятое время"
 
 #: staff.mb_note_label
-msgctxt "staff.mb_note_label"
-msgid "Note"
+msgid ""
+"_: staff.mb_note_label\n"
+"Note"
 msgstr "Заметка"
 
 #: staff.mb_amount_label
-msgctxt "staff.mb_amount_label"
-msgid "Amount"
+msgid ""
+"_: staff.mb_amount_label\n"
+"Amount"
 msgstr "Количество"
 
 #: staff.mb_voider_label
@@ -482,8 +474,9 @@ msgid "Voider"
 msgstr "Voider"
 
 #: staff.mb_voided_label
-msgctxt "staff.mb_voided_label"
-msgid "Voided"
+msgid ""
+"_: staff.mb_voided_label\n"
+"Voided"
 msgstr "Свободен"
 
 #: staff.mb_id_label
@@ -499,8 +492,9 @@ msgid "Forgive Payment"
 msgstr "Прощай оплату"
 
 #: staff.mp_payment_timestamp_label
-msgctxt "staff.mp_payment_timestamp_label"
-msgid "When"
+msgid ""
+"_: staff.mp_payment_timestamp_label\n"
+"When"
 msgstr "Когда"
 
 #: staff.mp_payment_type_label
@@ -508,8 +502,9 @@ msgid "Payment Type"
 msgstr "Тип оплаты"
 
 #: staff.mp_voided_label
-msgctxt "staff.mp_voided_label"
-msgid "Voided"
+msgid ""
+"_: staff.mp_voided_label\n"
+"Voided"
 msgstr "Свободен"
 
 #: staff.mp_id_label
@@ -521,8 +516,9 @@ msgid "Goods Payment"
 msgstr "Оплата товаров"
 
 #: staff.mp_xact_label
-msgctxt "staff.mp_xact_label"
-msgid "Transaction ID"
+msgid ""
+"_: staff.mp_xact_label\n"
+"Transaction ID"
 msgstr "ID транзакции"
 
 #: staff.mp_credit_payment_label
@@ -534,8 +530,9 @@ msgid "Work Payment"
 msgstr "Оплата работы"
 
 #: staff.mp_note_label
-msgctxt "staff.mp_note_label"
-msgid "Note"
+msgid ""
+"_: staff.mp_note_label\n"
+"Note"
 msgstr "Заметка"
 
 #: staff.mp_cash_payment_label
@@ -543,8 +540,9 @@ msgid "Cash Payment"
 msgstr "Оплата наличными"
 
 #: staff.mp_amount_label
-msgctxt "staff.mp_amount_label"
-msgid "Amount"
+msgid ""
+"_: staff.mp_amount_label\n"
+"Amount"
 msgstr "Количество"
 
 #: staff.mp_check_payment_label
@@ -560,8 +558,9 @@ msgid "Staff"
 msgstr "Персонал"
 
 #: staff.card_barcode_label
-msgctxt "staff.card_barcode_label"
-msgid "Barcode"
+msgid ""
+"_: staff.card_barcode_label\n"
+"Barcode"
 msgstr "Штрих-код"
 
 #: staff.au_active_label
@@ -577,8 +576,9 @@ msgid "Profile"
 msgstr "Профиль"
 
 #: staff.au_barred_label
-msgctxt "staff.au_barred_label"
-msgid "Barred"
+msgid ""
+"_: staff.au_barred_label\n"
+"Barred"
 msgstr "Закрытый"
 
 #: staff.au_alert_message_label
@@ -623,7 +623,7 @@ msgstr "Другой телефон"
 
 #: staff.au_alias_label
 msgid "Alias"
-msgstr ""
+msgstr "Псевдоним"
 
 #: staff.au_email_label
 msgid "Email"
@@ -686,8 +686,9 @@ msgid "Suffix"
 msgstr "Суффикс"
 
 #: staff.z39_50.search_class.author
-msgctxt "staff.z39_50.search_class.author"
-msgid "Author"
+msgid ""
+"_: staff.z39_50.search_class.author\n"
+"Author"
 msgstr "Автор"
 
 #: staff.z39_50.search_class.isbn
@@ -763,8 +764,9 @@ msgid "Accession #"
 msgstr "Инвентарный #"
 
 #: staff.z39_50.search_class.title
-msgctxt "staff.z39_50.search_class.title"
-msgid "Title"
+msgid ""
+"_: staff.z39_50.search_class.title\n"
+"Title"
 msgstr "Заглавие"
 
 #: staff.z39_50_import_interface_label
@@ -805,19 +807,19 @@ msgstr "Регистрация успешнa"
 
 #: staff.util.timestamp_dialog.future_date_disallowed
 msgid "Future dates disallowed."
-msgstr ""
+msgstr "Будущие даты запрещены"
 
 #: staff.util.timestamp_dialog.past_date_disallowed
 msgid "Past dates disallowed."
-msgstr ""
+msgstr "Прошлые даты запрещены"
 
 #: staff.util.timestamp_dialog.today_disallowed
 msgid "Today disallowed."
-msgstr ""
+msgstr "Сегодня отказано"
 
 #: tab.label.triggered_events_for_copy
 msgid "Triggered Events: %1$s"
-msgstr ""
+msgstr "Триггерные  мероприятия: %1$s"
 
 #~ msgid "Expire Time"
 #~ msgstr "Время истечения"

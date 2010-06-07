@@ -1,22 +1,21 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/circ.properties
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > circ.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
 "PO-Revision-Date: 2009-11-24 21:11+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+"X-Launchpad-Export-Date: 2009-11-25 04:50+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Poedit-Country: Canada\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-Country: Canada\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -58,8 +57,8 @@ msgid ""
 "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
 "anyway?"
 msgstr ""
-"Numéro de chèque erroné, possiblement en raison d’un problème de balayage. D"
-"ésirez-vous utiliser quand même ce code à barres (\"%1$s\")?"
+"Numéro de chèque erroné, possiblement en raison d’un problème de balayage. "
+"Désirez-vous utiliser quand même ce code à barres (\"%1$s\")?"
 
 #: staff.circ.barcode.bad
 msgid "Bad Barcode"
@@ -158,7 +157,8 @@ msgstr "Articles non catalogués"
 
 #: staff.circ.checkout.cmd_checkout_submit.too_many.msg
 msgid "You tried to circulate %1$d %2$s.  The maximum is 99 per action."
-msgstr "Vous avez tenté de prêter %1$d %2$s. Le maximum est de 99 par action."
+msgstr ""
+"Vous avez tenté de prêter %1$d %2$s. Le maximum est de 99 par action."
 
 #: staff.circ.checkout.cmd_checkout_submit.too_many.title
 msgctxt "staff.circ.checkout.cmd_checkout_submit.too_many.title"
@@ -396,8 +396,8 @@ msgid ""
 "to \"On Holds Shelf\".  Please check this item in to correct the status."
 msgstr ""
 "Cet article n’est pas saisi pour un article mis en réserve, toutefois, cet "
-"état est réglé incorrectement à \"Sur l’étagère des articles mis en réserve\". "
-"Veuillez entrer cet article pour en corriger l’état."
+"état est réglé incorrectement à \"Sur l’étagère des articles mis en "
+"réserve\". Veuillez entrer cet article pour en corriger l’état."
 
 #: staff.circ.copy_details.no_hold
 msgid "This item is not captured for a hold."
@@ -409,39 +409,6 @@ msgstr ""
 
 #: staff.circ.copy_details.circ_count_by_year.legacy_label
 msgid "Legacy/Not Dated"
-msgstr ""
-
-#. # From Config::rules::circ_duration, 1 - Name, 2 - ID, 3 - Short, 4 - Normal, 5 - Extended, 6 - Max Renewals
-#: staff.circ.copy_details.duration_rule_format
-msgctxt "staff.circ.copy_details.duration_rule_format"
-msgid "%1$s"
-msgstr ""
-
-#. # From Config::rules::circ_duration, 1 - Name, 2 - ID, 3 - Short, 4 - Normal, 5 - Extended, 6 - Max Renewals
-#: staff.circ.copy_details.duration_rule_tooltip_format
-msgid "%3$s/%4$s/%5$s - %6$s renewals"
-msgstr ""
-
-#. # From Config::rules::recurring_fine, 1 - Name, 2 - ID, 3 - Low, 4 - Normal, 5 - High, 6 - Recurrence Interval
-#: staff.circ.copy_details.recurring_fine_rule_format
-msgctxt "staff.circ.copy_details.recurring_fine_rule_format"
-msgid "%1$s"
-msgstr ""
-
-#. # From Config::rules::recurring_fine, 1 - Name, 2 - ID, 3 - Low, 4 - Normal, 5 - High, 6 - Recurrence Interval
-#: staff.circ.copy_details.recurring_fine_rule_tooltip_format
-msgid "%3$s/%4$s/%5$s - %6$s"
-msgstr ""
-
-#. # From Config::rules::max_fine, 1 - Name, 2 - ID, 3 - Amount, 4 - Is Percent
-#: staff.circ.copy_details.max_fine_rule_format
-msgctxt "staff.circ.copy_details.max_fine_rule_format"
-msgid "%1$s"
-msgstr ""
-
-#. # From Config::rules::max_fine, 1 - Name, 2 - ID, 3 - Amount, 4 - Is Percent
-#: staff.circ.copy_details.max_fine_rule_tooltip_format
-msgid "%3$s Is Precent? %4$s"
 msgstr ""
 
 #: staff.circ.copy_status.tab_name
@@ -516,7 +483,8 @@ msgstr "Il semble que tous les exemplaires n’ont pas été transférés."
 
 #: staff.circ.copy_status.add_volumes.perm_failure
 msgid "You do not have permission to add volumes to that library."
-msgstr "Vous n’êtes pas autorisé à ajouter des volumes dans cette bibliothèque."
+msgstr ""
+"Vous n’êtes pas autorisé à ajouter des volumes dans cette bibliothèque."
 
 #: staff.circ.copy_status.add_volumes.title
 msgid "Add Volume/Item for Record # %1$s"
@@ -632,8 +600,7 @@ msgstr ""
 #: staff.circ.copy_status.transfer_volume.confirm
 msgid "Transfer volumes %1$s to library %2$s on the following record?"
 msgstr ""
-"Transférer les volumes %1$s vers la bibliothèque %2$s dans le compte "
-"suivant?"
+"Transférer les volumes %1$s vers la bibliothèque %2$s dans le compte suivant?"
 
 #: staff.circ.copy_status.transfer_volume.transfer.label
 msgid "Transfer"
@@ -678,8 +645,8 @@ msgid ""
 "Bad check digit, possibly due to a bad scan.  Use this barcode (\"%1$s\") "
 "anyway?"
 msgstr ""
-"Numéro de chèque erroné, possiblement en raison d’un problème de balayage. D"
-"ésirez-vous utiliser quand même ce code à barres (\"%1$s\")?"
+"Numéro de chèque erroné, possiblement en raison d’un problème de balayage. "
+"Désirez-vous utiliser quand même ce code à barres (\"%1$s\")?"
 
 #: staff.circ.copy_status.status.null_result
 msgid "Something weird happened.  Result was null."
@@ -810,7 +777,8 @@ msgstr "Articles ="
 
 #: staff.circ.in_house_use.confirm_multiple
 msgid "Are you sure you want to mark %1$s as having been used %2$s times?"
-msgstr "Désirez-vous vraiment désigner %1$s comme ayant été utilisé %2$s fois?"
+msgstr ""
+"Désirez-vous vraiment désigner %1$s comme ayant été utilisé %2$s fois?"
 
 #: staff.circ.in_house_use.confirm_multiple.title
 msgid "In-House Use Verification"
@@ -1058,10 +1026,6 @@ msgstr "Supprimé?"
 msgid "Holdable?"
 msgstr "Mise en réserve possible?"
 
-#: staff.circ.utils.floating
-msgid "Floating?"
-msgstr ""
-
 #: staff.circ.utils.hold_note
 msgid "Hold Note(s)"
 msgstr ""
@@ -1259,7 +1223,6 @@ msgid "Request Library"
 msgstr "Bibliothèque qui a effectué la demande"
 
 #: staff.circ.utils.request_time
-msgctxt "staff.circ.utils.request_time"
 msgid "Request Date"
 msgstr "Date de la demande"
 
@@ -1361,7 +1324,8 @@ msgid "Override Checkin Failure?"
 msgstr "Ne pas tenir compte de l’échec d’entrée?"
 
 #: staff.circ.utils.checkin.override.item_deposit_paid.warning
-msgid "A paid deposit will be owed to this patron if this action is overrided."
+msgid ""
+"A paid deposit will be owed to this patron if this action is overrided."
 msgstr "Un dépôt sera dû à ce client si cette action est contournée."
 
 #: staff.circ.utils.billable.amount
@@ -1392,7 +1356,8 @@ msgstr "Cet article doit être acheminé vers %1$s."
 
 #: staff.circ.utils.route_item_error
 msgid "We should have received a ROUTE_ITEM"
-msgstr "Nous devrions avoir reçu une indication ROUTE_ITEM (article acheminé)."
+msgstr ""
+"Nous devrions avoir reçu une indication ROUTE_ITEM (article acheminé)."
 
 #: staff.circ.utils.route_item_status_error
 msgid "status of Holds Shelf, but no actual hold found."
@@ -1689,28 +1654,6 @@ msgstr ""
 
 #: staff.circ.holds.activation_date.invalid_date
 msgctxt "staff.circ.holds.activation_date.invalid_date"
-msgid "Invalid Date"
-msgstr "Date invalide"
-
-#: staff.circ.holds.request_date.prompt
-msgid ""
-"Please enter a new Request Date for hold %1$s.  WARNING: This effectively "
-"reorders the holds queue."
-msgstr ""
-
-#: staff.circ.holds.request_date.prompt.plural
-msgid ""
-"Please enter a new Request Date for holds %1$s.  WARNING: This effectively "
-"reorders the holds queue."
-msgstr ""
-
-#: staff.circ.holds.request_date.dialog.description
-msgctxt "staff.circ.holds.request_date.dialog.description"
-msgid "Request Date"
-msgstr "Date de la demande"
-
-#: staff.circ.holds.request_date.invalid_date
-msgctxt "staff.circ.holds.request_date.invalid_date"
 msgid "Invalid Date"
 msgstr "Date invalide"
 

@@ -1,17 +1,16 @@
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-31 22:59-0400\n"
-"PO-Revision-Date: 2010-01-23 19:56+0000\n"
-"Last-Translator: Sergey Sedov <Unknown>\n"
+"POT-Creation-Date: 2009-11-23 23:35-0400\n"
+"PO-Revision-Date: 2010-02-20 12:35+0000\n"
+"Last-Translator: Nkolay Parukhin <parukhin@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
+"X-Launchpad-Export-Date: 2010-02-21 04:57+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Bookmarks: 81,321,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
@@ -211,7 +210,8 @@ msgid "Tips:"
 msgstr "Советы:"
 
 #: common.tips.tip1
-msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgid ""
+"Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 "Щелкните на папку в отдельной ставке на странице, чтобы получить доступ к "
 "быстрому поиску"
@@ -417,7 +417,8 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
@@ -506,7 +507,7 @@ msgstr "Совместно используйте эту папку"
 #: myopac.bookbag.refworks
 msgctxt "myopac.bookbag.refworks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Экспорт в RefWorks"
 
 #: myopac.bookbag.no.items
 msgid "The selected bookbag contains no items..."
@@ -795,8 +796,7 @@ msgid ""
 "suspended"
 msgstr ""
 "Вы уверены, что хотите приостанавливать выбранные хранения? \n"
-"Если единица уже выбрана для выполнения хранения, она не будет "
-"приостановлена"
+"Если единица уже выбрана для выполнения хранения, она не будет приостановлена"
 
 #: myopac.holds.thaw.confirm
 msgid "Are you sure you wish to activate the selected holds?"
@@ -805,7 +805,8 @@ msgstr "Вы уверены, что хотите активировать выб
 #: myopac.holds.thaw_date.confirm
 msgid ""
 "Are you sure you wish to change the activate date for the selected holds?"
-msgstr "Вы уверены, что хотите изменить дату активации для выбранных хранений?"
+msgstr ""
+"Вы уверены, что хотите изменить дату активации для выбранных хранений?"
 
 #: myopac.holds.freeze.select_thaw
 msgid ""
@@ -837,7 +838,7 @@ msgstr "Дата истечения"
 
 #: myopac.holds.estimated_wait
 msgid "Estimated Wait (days)"
-msgstr ""
+msgstr "Расчетное ожидание (дней)"
 
 #. =================================================================
 #. MyOPAC Preferences Page
@@ -1006,7 +1007,7 @@ msgstr "Адреса"
 
 #: myopac.summary.addresses.pending
 msgid "Pending Addresses"
-msgstr ""
+msgstr "Ожидающие адреса"
 
 #: myopac.summary.address.type
 msgid "Address Type"
@@ -1050,8 +1051,7 @@ msgstr "Пожалуйста введите имя пользователя"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different "
-"username."
+"The requested username is not available.  Please choose a different username."
 msgstr ""
 "Запрашиваемое имя пользователя не доступна. Пожалуйста, выберите другое имя "
 "пользователя."
@@ -1539,7 +1539,7 @@ msgstr "Поставить хранение"
 #: opac.holds.exportRefWorks
 msgctxt "opac.holds.exportRefWorks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Экспорт в RefWorks"
 
 #: opac.holds.contactPhone
 msgid "Contact telephone number"
@@ -1855,7 +1855,7 @@ msgstr "Шифр"
 
 #: rdetail.copyInfo.copylocation
 msgid "Copy Location"
-msgstr ""
+msgstr "Местоположение копии"
 
 #: rdetail.copyInfo.local
 msgid "View Copy Information for this location only"
@@ -1875,11 +1875,11 @@ msgstr "Печать шифров для этой библиотеки"
 
 #: rdetail.copyInfo.details
 msgid "Copy Details"
-msgstr ""
+msgstr "Подробнее о копии"
 
 #: rdetail.copyInfo.browse
 msgid "Browse Call Numbers"
-msgstr ""
+msgstr "Обзор телефоннных номеров"
 
 #: rdetail.copyInfo.hold
 msgctxt "rdetail.copyInfo.hold"
@@ -1910,7 +1910,7 @@ msgstr "Цитата"
 
 #: rdetail.extras.preview
 msgid "Preview"
-msgstr ""
+msgstr "Предпросмотр"
 
 #: rdetail.extras.author.notes
 msgid "Author Notes"
@@ -1934,15 +1934,15 @@ msgstr "Местный шифр"
 
 #: rdetail.extras.preview.fulltext
 msgid "Full text"
-msgstr ""
+msgstr "Полный текст"
 
 #: rdetail.extras.preview.title
 msgid "See the full text of this book."
-msgstr ""
+msgstr "Посмотреть полный текст этой книги."
 
 #: rdetail.extras.preview.badge
 msgid "Show a preview of this book from Google Book Search"
-msgstr ""
+msgstr "Показать предпросмотр этой книги из Google книг"
 
 #: rdetail.loading
 msgid "Loading copy infomation..."
@@ -2113,24 +2113,14 @@ msgstr "Опции расширенного хранения"
 msgid "Please select a physical location where your hold can be delivered."
 msgstr "Пожалуйста, выберите  место, для размещения вашего хранения"
 
-#: common.hold.checked_out
-msgid "This item is already checked out."
-msgstr ""
-
-#: common.hold.checked_out.override
-msgid ""
-"This item is already checked out.  Would you like to place the hold anyway?"
-msgstr ""
-
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
 msgstr "Хранение уже существует на запрошенную единицу"
 
 #: common.hold.exists.override
-#, fuzzy
 msgid ""
-"A hold already exists on the requested item. Would you like to create the "
-"hold anyway?"
+"A hold already exists on the requested \n"
+"item. Would you like to create the hold anyway?"
 msgstr ""
 "Хранение уже существует на запрошенную \n"
 "единицу. Хотите все же создавать хранение?"
@@ -2142,8 +2132,8 @@ msgid ""
 "library."
 msgstr ""
 "Патрон запрещенный: Ознакомьтесь с заметками  в \n"
-"\"Заметки персонала \" в секции \"Мой акаунт\" или свяжитесь с вашей местной  "
-"библиотекой."
+"\"Заметки персонала \" в секции \"Мой акаунт\" или свяжитесь с вашей местной "
+" библиотекой."
 
 #: common.hold.item.invalid
 msgid ""
@@ -2314,7 +2304,8 @@ msgstr ""
 "свяжитесь в местную библиотеку."
 
 #: login.account.inactive
-msgid "This account has been deactivated.  Please contact your local library."
+msgid ""
+"This account has been deactivated.  Please contact your local library."
 msgstr "Аккаунт отключен . Пожалуйста, обратитесь в местную библиотеку."
 
 #: login.failed

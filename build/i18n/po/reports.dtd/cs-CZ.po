@@ -1,30 +1,29 @@
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-31 22:59-0400\n"
-"PO-Revision-Date: 2009-11-24 07:21+0000\n"
-"Last-Translator: Linda Skolková <Unknown>\n"
+"POT-Creation-Date: 2009-11-23 23:35-0400\n"
+"PO-Revision-Date: 2010-05-27 09:18+0000\n"
+"Last-Translator: Tomáš Marek <marek.tomass@gmail.com>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
+"X-Launchpad-Export-Date: 2010-05-28 03:40+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
 msgid "You are logged in as "
-msgstr "Jste nahraný v jako "
+msgstr "Jste přihlášen jako "
 
 #: reports.common.loading
 msgid "Loading..."
-msgstr "Zavádí se ..."
+msgstr "Načítání..."
 
 #: reports.oils_rpt.title
 msgid "Evergreen: Reports"
@@ -40,7 +39,7 @@ msgstr "Mé složky"
 
 #: reports.oils_rpt.shared_folders
 msgid "Shared Folders"
-msgstr "Společné složky"
+msgstr "Sdílené složky"
 
 #: reports.oils_rpt.manage_folder_contents
 msgid "Manage Folder Contents"
@@ -52,7 +51,7 @@ msgstr "Spravovat složku"
 
 #: reports.oils_rpt.created_by
 msgid "created by "
-msgstr "vytvořený "
+msgstr "vytvořil "
 
 #: reports.oils_rpt.create_new_sub_folder
 msgctxt "reports.oils_rpt.create_new_sub_folder"
@@ -61,12 +60,12 @@ msgstr "Vytvořit novou podsložku"
 
 #: reports.oils_rpt.folder_type
 msgid "Folder type: "
-msgstr "Typy složek "
+msgstr "Typ složky: "
 
 #: reports.oils_rpt.folder_name
 msgctxt "reports.oils_rpt.folder_name"
 msgid "Folder Name:"
-msgstr "Jména složek"
+msgstr "Název složky:"
 
 #: reports.oils_rpt.share_folder
 msgid "Share this folder:"
@@ -94,11 +93,11 @@ msgstr "Vytvořit podsložku"
 
 #: reports.oils_rpt_builder.title
 msgid "Evergreen: Report Builder"
-msgstr ""
+msgstr "Evergreen: Report Builder"
 
 #: reports.oils_rpt_builder.reports_home
 msgid "Reports Home"
-msgstr "Domácí zprávy"
+msgstr "Hlavní strana Zpráv"
 
 #: reports.oils_rpt_builder.cloning_template
 msgid "Cloning template"
@@ -106,11 +105,11 @@ msgstr "Klonování šablony (vzoru)"
 
 #: reports.oils_rpt_builder.template_name
 msgid "Template Name: "
-msgstr "Název šablony "
+msgstr "Název šablony: "
 
 #: reports.oils_rpt_builder.template_description
 msgid "Template Description: "
-msgstr "Popis šablony "
+msgstr "Popis šablony: "
 
 #: reports.oils_rpt_builder.template_type
 msgid "Template Type: "
@@ -134,17 +133,17 @@ msgstr "Šablona zobrazení exemplářů"
 
 #: reports.oils_rpt_builder.remove_selected
 msgid "Remove Selected"
-msgstr "Odstranění označených"
+msgstr "Odebrat označené"
 
 #: reports.oils_rpt_builder.move_up
 msgctxt "reports.oils_rpt_builder.move_up"
 msgid "Move Up"
-msgstr "Přeřadit, povýšit, posunout se"
+msgstr "Posunout nahoru"
 
 #: reports.oils_rpt_builder.move_down
 msgctxt "reports.oils_rpt_builder.move_down"
 msgid "Move Down"
-msgstr "Přesunout dolů"
+msgstr "Posunout dolů"
 
 #. The below two entity strings were the contents of the .xhtml file but I don't think that works when using XML entities
 #. ENTITY reports.oils_rpt_builder.move_up "Move &uarr;"
@@ -212,7 +211,8 @@ msgstr "Vytvořit filtr"
 
 #: reports.oils_rpt_builder.aggregate_filter_to_apply
 msgid "Select what aggregate filter should be applied to this field:"
-msgstr "Výběr toho, které seskupení filtů by mělo být v tomto poli aplikováno:"
+msgstr ""
+"Výběr toho, které seskupení filtů by mělo být v tomto poli aplikováno:"
 
 #: reports.oils_rpt_builder.selected_to_sort_columns
 msgid "Select how the columns should be sorted"
@@ -668,11 +668,11 @@ msgstr "Název zdroje"
 
 #: reports.xul.template_builder.source_nullable.label
 msgid "Nullable"
-msgstr ""
+msgstr "Vynulovatelný"
 
 #: reports.xul.template_builder.nullability_select.label
 msgid "Enable nullability selection"
-msgstr ""
+msgstr "Zapnout výběr vynulovatelnosti"
 
 #: reports.xul.template_builder.source_specifier.label
 msgid "Source Specifier:"

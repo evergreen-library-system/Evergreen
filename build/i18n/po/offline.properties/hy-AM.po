@@ -1,18 +1,17 @@
 # extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-31 22:59-0400\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
 "PO-Revision-Date: 2009-12-21 13:45+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
+"X-Launchpad-Export-Date: 2009-12-22 04:36+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.exception
@@ -115,8 +114,10 @@ msgid "Delete"
 msgstr "Ջնջել"
 
 #: cat.opac.undelete_record.confirm
-msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
-msgstr "Վստա՞հ ես որ ցանկանում ես հետ ջնջել վերնագրի գրառումը #%1$s քարտարանից:"
+msgid ""
+"Are you sure you want to undelete title record #%1$s from the catalog?"
+msgstr ""
+"Վստա՞հ ես որ ցանկանում ես հետ ջնջել վերնագրի գրառումը #%1$s քարտարանից:"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
@@ -169,6 +170,10 @@ msgstr "Այս TCN-ով գրառումը %1$s նշված է վերադրման �
 #: cat.save_record
 msgid "Save Record"
 msgstr "Հիշել գրառումը"
+
+#: cat.save.success
+msgid "Record successfully saved."
+msgstr "Գրառումը հաջողությամբ հիշված է:"
 
 #: cat.save.failure
 msgid "Record not likely updated."
@@ -244,15 +249,16 @@ msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը
 
 #: circ.offline_checkout.barcode.flagged.blocked
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged Blocked."
-msgstr "Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է արգելափակված:"
+msgstr ""
+"Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է արգելափակված:"
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
-"3$s."
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
+"%3$s."
 msgstr ""
-"Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է չճանաչված կոդով: %"
-"3$s."
+"Զգուշացում: Սրա համար %1$s, այս շտրիխ կոդը (%2$s) նշված է չճանաչված կոդով: "
+"%3$s."
 
 #: circ.offline_checkout.date.early
 msgid "Due date needs to be after today."
@@ -418,7 +424,8 @@ msgstr "Անվանափոխումը չկայացավ: Շտրիխ կոդը չի կ
 
 #: menu.cmd_replace_barcode.duplicate.error
 msgid "Rename aborted.  Another copy has barcode \"%1$s\"."
-msgstr "Անվանափոխումը չկայացավ: Նույն շտրիխ կոդը մեկ այլ օրինակ ունի \"%1$s\":"
+msgstr ""
+"Անվանափոխումը չկայացավ: Նույն շտրիխ կոդը մեկ այլ օրինակ ունի \"%1$s\":"
 
 #: menu.cmd_replace_barcode.testing.error
 msgid "Error testing replacement barcode \"%1$s\"."
@@ -829,8 +836,7 @@ msgstr ""
 "Կրկնել Ցանցը։ Եթե ցանկանում ես մուտք գործել ավտոնոմ ռեժիմ, ընտրիր Անտեսիր "
 "Սխալները և համապատասխան երկխոսությունները։ Եթե վստահ ես որ այս սխալը "
 "Էվերգրինի թերություններից է և ոչ թե ցանցային պրոբլեմ է, կապվիր օգնւթյան "
-"սեղանի կամ Էվերգրինի աշխատակազմի հետ, և նրանց տրամադրիր այս "
-"տեղեկատվությունը։"
+"սեղանի կամ Էվերգրինի աշխատակազմի հետ, և նրանց տրամադրիր այս տեղեկատվությունը։"
 
 #: network.server.method
 msgid "method=%1$s"
@@ -977,7 +983,8 @@ msgid "=-=-="
 msgstr "=-=-="
 
 #: menu.cmd_survey_wizard.inadequate_perm
-msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
+msgid ""
+"You are lacking the CREATE_SURVEY permission and/or working locations."
 msgstr ""
 "Դու ցանկանում ես ձեռք բերել CREATE_SURVEY արտոնություն և/կամ աշխատանքային "
 "տեղաբաշխումներ։"
@@ -1066,30 +1073,6 @@ msgstr "Փոխանակման կուրսեր"
 msgid "Distribution Formulas"
 msgstr "Տարածման ֆորմուլաներ"
 
-#: menu.cmd_booking_resource.tab
-msgid "Resources"
-msgstr ""
-
-#: menu.cmd_booking_reservation.tab
-msgid "Reservations"
-msgstr ""
-
-#: menu.cmd_booking_reservation_pickup.tab
-msgid "Reservation Pickup"
-msgstr ""
-
-#: menu.cmd_booking_reservation_return.tab
-msgid "Reservation Return"
-msgstr ""
-
-#: menu.cmd_booking_pull_list.tab
-msgid "Booking Pull List"
-msgstr ""
-
-#: menu.cmd_booking_capture.tab
-msgid "Booking Capture"
-msgstr ""
-
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
 msgstr "Սպասարկման կանոնակարգեր"
@@ -1101,10 +1084,6 @@ msgstr "Պահման կանոնակարգեր"
 #: menu.local_admin.work_log.tab
 msgid "Work Log"
 msgstr "Աշխատանքային լոգ"
-
-#: menu.local_admin.patrons_due_refunds.tab
-msgid "Patrons With Negative Balances"
-msgstr ""
 
 #: menu.circulation.staged_patrons.tab
 msgid "Pending Patrons"
@@ -1121,33 +1100,6 @@ msgstr ""
 #: load_printer_settings_error_title
 msgid "Printer Settings"
 msgstr "Տպիչի Կարգաբերումներ"
-
-#: staff.cat.util.copy_editor.batch_edit
-msgid "Batch Edit"
-msgstr ""
-
-#: staff.cat.util.copy_editor.batch_view
-msgid "Batch View"
-msgstr ""
-
-#: staff.cat.util.copy_editor.edit
-msgid "Edit"
-msgstr ""
-
-#: staff.cat.util.copy_editor.view
-msgid "View"
-msgstr ""
-
-#: staff.circ.copy_status.add_volumes.perm_failure
-msgid "You do not have permission to add volumes to the workstation library."
-msgstr ""
-
-#: staff.circ.copy_status.add_volumes.title
-msgid "Add Volume/Item for Record # %1$s"
-msgstr ""
-
-#~ msgid "Record successfully saved."
-#~ msgstr "Գրառումը հաջողությամբ հիշված է:"
 
 #~ msgid "About this client..."
 #~ msgstr "Այս հաճախորդի մասին..."

@@ -1,44 +1,52 @@
-#, fuzzy
+# Brazilian Portuguese translation for evergreen
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR: Job Diógenes Ribeiro Borges, 2009.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-01-31 22:59:38-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2010-02-22 22:13+0000\n"
+"Last-Translator: jobdrb <jobdrb@gmail.com>\n"
+"Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
+"X-Launchpad-Export-Date: 2010-02-23 05:07+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Poedit-Country: BRAZIL\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
 msgid "In list"
-msgstr ""
+msgstr "Na lista"
 
 #: reports.js:WIDGET_REAL_DATE
 msgid "Real Date"
-msgstr ""
+msgstr "Data Real"
 
 #: reports.js:TFORMS_LABEL_MONTH_NAME
 msgid "Month Name'"
-msgstr ""
+msgstr "Nome do Mês'"
 
 #: reports.js:OPERATORS_IS_NOT_NULL reports.js:FILTERS_LABEL_NOT_NULL
 msgid "Is not NULL"
-msgstr ""
+msgstr "Não é NULO"
 
 #: reports.js:FOLDERS_TEMPLATE
 msgid "Template"
-msgstr ""
+msgstr "Modelo"
 
 #: reports.js:FILTERS_LABEL_NE_ANY reports.js:OPERATORS_NE_ANY
 msgid "Does Not Equal Any"
-msgstr ""
+msgstr "Não é igual a nenhum"
 
 #: reports.js:REPORT_EDITOR_INVALID_DATE_ALERT
 msgid "invalid start date -  YYYY-MM-DD"
-msgstr ""
+msgstr "data de início inválida - AAAA-MM-DD"
 
 #: reports.js:TEMPLATE_CONF_CONFIRM_SAVE reports.js:RPT_BUILDER_CONFIRM_SAVE
 msgid ""
@@ -46,350 +54,357 @@ msgid ""
 "Description: ${1}\n"
 "Save Template?"
 msgstr ""
+"Nome : ${0}\n"
+"Descrição: ${1}\n"
+"Salvar Modelo?"
 
 #: reports.js:OPERATORS_GT_EQUAL reports.js:FILTERS_LABEL_GT_EQUAL
 msgid "Greater than or equal to"
-msgstr ""
+msgstr "Maior ou igual a"
 
 #: reports.js:TEMPLATE_CONF_PROMPT_CHANGE
 msgid "Change the column header to: ${0}"
-msgstr ""
+msgstr "Alterar o cabeçalho da coluna para: $(0)"
 
 #: reports.js:LINK_NULLABLE_RIGHT
 msgid "Parent"
-msgstr ""
+msgstr "Pai"
 
 #: reports.js:TEMPLATE_CONF_BETWEEN
 msgid "Field value is between (comma separated):"
-msgstr ""
+msgstr "Valor do campo esta entre (separado por virgula):"
 
 #: reports.js:TFORMS_LABEL_DAY_NAME reports.js:TRANSFORMS_DAY_NAME
 msgid "Day Name"
-msgstr ""
+msgstr "Nome do Dia"
 
 #: reports.js:SOURCE_SETUP_CONFIRM_EXIT
 msgid ""
 "You have started building a template!\n"
-" Selecting a new starting source will destroy the current template and start over.  Is this OK?"
+" Selecting a new starting source will destroy the current template and start "
+"over.  Is this OK?"
 msgstr ""
+"Você iniciou a criação de um modelo!\n"
+" Ao selecionar uma nova fonte será destruído o modelo atual e começará "
+"novamente. É isto que DESEJA?"
 
 #: reports.js:WIDGET_YEARS
 msgid "Year(s)"
-msgstr ""
+msgstr "Ano(s)"
 
 #: reports.js:FOLDER_WINDOW_SELECT_ITEM
 msgid "Please select an item from the list"
-msgstr ""
+msgstr "Por favor selecione um item da lista"
 
 #: reports.js:FOLDERS_REPORT
 msgid "Report"
-msgstr ""
+msgstr "Relatório"
 
 #: reports.js:FILTERS_LABEL_LSE_TIME reports.js:OPERATORS_LTE_TIME
 msgid "On or Before (Date/Time)"
-msgstr ""
+msgstr "Dentro ou Antes (Data/Hora)"
 
 #: reports.js:TEMPLATE_CONF_FALSE
 msgid "False"
-msgstr ""
+msgstr "Falso"
 
 #: reports.js:TEMPLATE_CONF_DEFAULT
 msgid "Value ${0}:"
-msgstr ""
+msgstr "Valor ${0}:"
 
 #: reports.js:TRANSFORMS_COUNT_DISTINCT reports.js:TFORMS_LABEL_COUNT_DISTINCT
 msgid "Count Distinct"
-msgstr ""
+msgstr "Qtde de Distintos"
 
 #: reports.js:TRANSFORMS_SUBSTRING
 msgid "Substring"
-msgstr ""
+msgstr "Subtexto"
 
 #: reports.js:FOLDER_WINDOW_CHANGE_FOLDERS
 msgid "Change Folders"
-msgstr ""
+msgstr "Alterar senha"
 
 #: reports.js:TEMPLATE_CONF_SUCCESS_SAVE
 msgid "Template ${0} was successfully saved."
-msgstr ""
+msgstr "O modelo ${0} foi salvo com sucesso."
 
 #: reports.js:REPORT_EDITOR_ENTER_NAME_ALERT
 msgid "Please enter a report name"
-msgstr ""
+msgstr "Por favor entre com o nome do relatório"
 
 #: reports.js:FOLDER_WINDOW_COLNAME_SELECT
 msgid "Select"
-msgstr ""
+msgstr "Selecione"
 
 #: reports.js:FILTERS_LABEL_LT_TIME reports.js:OPERATORS_LT_TIME
 msgid "Before (Date/Time)"
-msgstr ""
+msgstr "Antes (Data/Hora)"
 
 #: reports.js:TFORMS_LABEL_DOY reports.js:TRANSFORMS_DOY
 msgid "Day of Year"
-msgstr ""
+msgstr "Dia do Ano"
 
 #: reports.js:TRANSFORMS_SUM reports.js:TFORMS_LABEL_SUM
 msgid "Sum"
-msgstr ""
+msgstr "Soma"
 
 #: reports.js:TFORMS_LABEL_LOWER reports.js:TRANSFORMS_LOWER
 msgid "Lower case"
-msgstr ""
+msgstr "Minúsculas"
 
 #: reports.js:TFORMS_LABEL_DOW reports.js:TRANSFORMS_DOW
 msgid "Day of Week"
-msgstr ""
+msgstr "Dia da Semana"
 
 #: reports.js:REPORT_EDITOR_OUTPUT_FOLDERS
 msgid "Output Folders"
-msgstr ""
+msgstr "Pastas de gravação"
 
 #: reports.js:FOLDER_WINDOW_COLNAME_ALL
 msgid "All"
-msgstr ""
+msgstr "Tudo"
 
 #: reports.js:REPORT_EDITOR_REPORT_FOLDERS
 msgid "Report Folders"
-msgstr ""
+msgstr "Pastas de Relatório"
 
 #: reports.js:FILTERS_LABEL_BETWEEN reports.js:OPERATORS_BETWEEN
 msgid "Between"
-msgstr ""
+msgstr "Entre"
 
 #: reports.js:FILTERS_LABEL_LT_EQUAL reports.js:OPERATORS_LT_EQUAL
 msgid "Less than or equal to"
-msgstr ""
+msgstr "Menor ou igual a"
 
 #: reports.js:TRANSFORMS_UPPER reports.js:TFORMS_LABEL_UPPER
 msgid "Upper case"
-msgstr ""
+msgstr "Maiúsculas"
 
 #: reports.js:FILTERS_LABEL_NOT_BETWEEN reports.js:OPERATORS_NOT_BETWEEN
 msgid "Not between"
-msgstr ""
+msgstr "Não Dentre"
 
 #: reports.js:WIDGET_MONTHS
 msgid "Month(s)"
-msgstr ""
+msgstr "Mês(es)"
 
 #: reports.js:SOURCE_BROWSE_AGGREGATE
 msgid "Aggregate"
-msgstr ""
+msgstr "Agregar"
 
 #: reports.js:TEMPLATE_CONF_TRUE
 msgid "True"
-msgstr ""
+msgstr "Verdadeiro"
 
 #: reports.js:TFORMS_LABEL_AVERAGE reports.js:TRANSFORMS_AVERAGE
 msgid "Average"
-msgstr ""
+msgstr "Média"
 
 #: reports.js:LINK_NULLABLE_NONE reports.js:FOLDER_WINDOW_COLNAME_NONE
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #: reports.js:TFORMS_LABEL_INT reports.js:TRANSFORMS_INT
 msgid "Drop trailing decimals"
-msgstr ""
+msgstr "Descarta decimais"
 
 #: reports.js:TRANSFORMS_HOUR_TRUNC reports.js:TFORMS_LABEL_HOUR_TRUNC
 msgid "Hour"
-msgstr ""
+msgstr "Hora"
 
 #: reports.js:TRANSFORMS_AGE reports.js:TFORMS_LABEL_AGE
 msgid "Age"
-msgstr ""
+msgstr "Idade/Tempo"
 
 #: reports.js:TRANSFORMS_QOY reports.js:TFORMS_LABEL_QOY
 msgid "Quarter of Year"
-msgstr ""
+msgstr "Quadrimestre"
 
 #: reports.js:TRANSFORMS_LAST reports.js:TFORMS_LABEL_LAST
 msgid "Last Value"
-msgstr ""
+msgstr "Último Valor"
 
 #: reports.js:FILTERS_LABEL_EQ_ANY reports.js:OPERATORS_EQ_ANY
 msgid "Equals Any"
-msgstr ""
+msgstr "Iguais a Qualquer"
 
 #: reports.js:TEMPLATE_CONF_BARE
 msgid "Bare"
-msgstr ""
+msgstr "Puro"
 
 #: reports.js:TEMPLATE_CONF_IN
 msgid "Field matches one of list (comma separated):"
-msgstr ""
+msgstr "Campo é igual a algum da lista (separados por virgulas):"
 
 #: reports.js:TRANSFORMS_MONTH_TRUNC reports.js:TFORMS_LABEL_MONTH_TRUNC
 msgid "Year + Month"
-msgstr ""
+msgstr "Ano + Mês"
 
 #: reports.js:TRANSFORMS_FIRST_WORD reports.js:TFORMS_LABEL_FIRST_WORD
 msgid "First contiguous non-space string"
-msgstr ""
+msgstr "Primeira sequência contigua de caracteres sem espaço"
 
 #: reports.js:TEMPLATE_CONF_NOT_BETWEEN
 msgid "Field value is not between (comma separated):"
-msgstr ""
+msgstr "Valor do campo não esta entre (separado por virgula):"
 
 #: reports.js:TEMPLATE_CONF_RAW_DATA reports.js:TRANSFORMS_BARE
 #: reports.js:TFORMS_LABEL_RAW_DATA
 msgid "Raw Data"
-msgstr ""
+msgstr "Dados puros"
 
 #: reports.js:SOURCE_SETUP_ALL_AVAIL_SOURCES
 msgid "All Available Sources"
-msgstr ""
+msgstr "Todas Fontes Disponíveis"
 
 #: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
 msgid "Contains Matching substring"
-msgstr ""
+msgstr "contém os subtextos iguais ao fornecido"
 
 #: reports.js:OPERATORS_EQUALS reports.js:TEMPLATE_CONF_EQUALS
 #: reports.js:FILTERS_LABEL_EQUALS
 msgid "Equals"
-msgstr ""
+msgstr "Iguais"
 
 #: reports.js:WIDGET_QUARTERS
 msgid "Quarter(s)"
-msgstr ""
+msgstr "Quadrimestre(s)"
 
 #: reports.js:LINK_NULLABLE_LEFT
 msgid "Child"
-msgstr ""
+msgstr "Criança"
 
 #: reports.js:TFORMS_LABEL_DATE reports.js:TRANSFORMS_DATE
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: reports.js:TFORMS_LABEL_COUNT reports.js:TRANSFORMS_COUNT
 msgid "Count"
-msgstr ""
+msgstr "Qtde"
 
 #: reports.js:LINK_NULLABLE_DEFAULT
 msgid "Default"
-msgstr ""
+msgstr "Default"
 
 #: reports.js:FILTERS_LABEL_LESS_THAN reports.js:OPERATORS_LESS_THAN
 msgid "Less than"
-msgstr ""
+msgstr "Menor que"
 
 #: reports.js:SOURCE_SETUP_CORE_SOURCES
 msgid "Core Sources"
-msgstr ""
+msgstr "Fontes Principais"
 
 #: reports.js:TRANSFORMS_MONTHS_AGO reports.js:TFORMS_LABEL_MONTHS_AGO
 msgid "Months ago"
-msgstr ""
+msgstr "Meses atrás"
 
 #: reports.js:TRANSFORMS_ROUND reports.js:TFORMS_LABEL_ROUND
 msgid "Round"
-msgstr ""
+msgstr "Arredondamento"
 
 #: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
 msgid "Is NULL or Blank"
-msgstr ""
+msgstr "É NULO ou Branco"
 
 #: reports.js:FILTERS_LABEL_GT_TIME reports.js:OPERATORS_GT_TIME
 msgid "After (Date/Time)"
-msgstr ""
+msgstr "Depois (Data/Hora)"
 
 #: reports.js:TRANSFORMS_WOY reports.js:TFORMS_LABEL_WOY
 msgid "Week of Year"
-msgstr ""
+msgstr "Semana do Ano"
 
 #: reports.js:TFORMS_LABEL_DOM reports.js:TRANSFORMS_DOM
 msgid "Day of Month"
-msgstr ""
+msgstr "Dia do Mês"
 
 #: reports.js:SOURCE_BROWSE_NON_AGGREGATE
 msgid "Non-Aggregate"
-msgstr ""
+msgstr "Não-Agregado"
 
 #: reports.js:OPERATORS_IS_NULL reports.js:FILTERS_LABEL_NULL
 msgid "Is NULL"
-msgstr ""
+msgstr "É Nulo"
 
 #: reports.js:TRANSFORMS_MIN reports.js:TFORMS_LABEL_MIN
 msgid "Min"
-msgstr ""
+msgstr "Min"
 
 #: reports.js:FILTERS_LABEL_NOT_NULL_BLANK reports.js:OPERATORS_NOT_NULL_BLANK
 msgid "Is not NULL or Blank"
-msgstr ""
+msgstr "Não é NULO ou Branco"
 
 #: reports.js:WIDGET_DAYS
 msgid "Day(s)"
-msgstr ""
+msgstr "Dia(s)"
 
 #: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
 msgid "Report Output: ${0}"
-msgstr ""
+msgstr "Relatório Gravado: {0}"
 
 #: reports.js:TEMPLATE_CONF_CONFIRM_STATE
 msgid "Click OK for TRUE and Cancel for FALSE."
-msgstr ""
+msgstr "Clique OK para VERDADEIRO ou Cancelar para FALSO"
 
 #: reports.js:FOLDERS_TEMPLATES
 msgid "Templates"
-msgstr ""
+msgstr "Modelos"
 
 #: reports.js:WIDGET_RELATIVE_DATE
 msgid "Relative Date"
-msgstr ""
+msgstr "Data Relativa"
 
 #: reports.js:TRANSFORMS_FIRST reports.js:TFORMS_LABEL_FIRST
 msgid "First Value"
-msgstr ""
+msgstr "Primeiro Valor"
 
 #: reports.js:FILTERS_LABEL_GREATER_THAN reports.js:OPERATORS_GREATER_THAN
 msgid "Greater than"
-msgstr ""
+msgstr "Maior do que"
 
 #: reports.js:TEMPLATE_CONF_BOOLEAN_VALUE
 msgid "Boolean Value"
-msgstr ""
+msgstr "Valor boleano"
 
 #: reports.js:REPORT_EDITOR_PROVIDE_OUTPUT_ALERT
 msgid "Please provide an output folder"
-msgstr ""
+msgstr "Por favor informa uma pasa para gravação"
 
 #: reports.js:REPORT_EDITOR_PROVIDE_FOLDER_ALERT
 msgid "Please provide a report folder"
-msgstr ""
+msgstr "Por favor informe a pasta para o relatório"
 
 #: reports.js:TRANSFORMS_MONTH_NAME
 msgid "Month Name"
-msgstr ""
+msgstr "Nome do Mês"
 
 #: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
 msgid "First 5 characters (for US ZIP code)"
-msgstr ""
+msgstr "Primeiros 5 caracteres (para CEP)"
 
 #: reports.js:OPERATORS_GTE_TIME reports.js:FILTERS_LABEL_GTE_TIME
 msgid "On or After (Date/Time)"
-msgstr ""
+msgstr "Dentro ou após (Data/Hora)"
 
 #: reports.js:TRANSFORMS_YEAR_TRUNC reports.js:TFORMS_LABEL_YEAR_TRUNC
 msgid "Year"
-msgstr ""
+msgstr "Ano"
 
 #: reports.js:FOLDERS_REPORTS
 msgid "Reports"
-msgstr ""
+msgstr "Relatórios"
 
 #: reports.js:TFORMS_LABEL_QUARTERS_AGO reports.js:TRANSFORMS_QUARTERS_AGO
 msgid "Quarters ago"
-msgstr ""
+msgstr "Quadrimestres atrás"
 
 #: reports.js:FOLDERS_OUTPUT
 msgid "Output"
-msgstr ""
+msgstr "Gravar em"
 
 #: reports.js:TEMPLATE_CONF_SELECT_CANCEL
 msgid "Select the value, or cancel:"
-msgstr ""
+msgstr "Selecione o valor, ou cancele:"
 
 #: reports.js:TEMPLATE_CONF_CONFIRM_RESET
 msgid ""
@@ -397,27 +412,31 @@ msgid ""
 "from the [${1}] source. Click OK if you\n"
 "would like to reset this field."
 msgstr ""
+"Você já incluiu o campo [${0}]\n"
+"da fonte [${1}]. Clique OK se você\n"
+"deseja redefinir este campo."
 
 #: reports.js:OPERATORS_NOT_IN_LIST reports.js:FILTERS_LABEL_NOT_IN
 msgid "Not in list"
-msgstr ""
+msgstr "Fora da lista"
 
 #: reports.js:OPERATORS_ILIKE reports.js:FILTERS_LABEL_ILIKE
 msgid "Contains Matching substring (ignore case)"
 msgstr ""
+"contém os subtextos iguais ao fornecido (ignorando maiúsculas e minúsculas)"
 
 #: reports.js:TRANSFORMS_MOY reports.js:TFORMS_LABEL_MOY
 msgid "Month of Year"
-msgstr ""
+msgstr "Mês do Ano"
 
 #: reports.js:TRANSFORMS_HOD reports.js:TFORMS_LABEL_HOD
 msgid "Hour of day"
-msgstr ""
+msgstr "Hora do dia"
 
 #: reports.js:TRANSFORMS_MAX reports.js:TFORMS_LABEL_MAX
 msgid "Max"
-msgstr ""
+msgstr "Máx"
 
 #: reports.js:TEMPLATE_CONF_NOT_IN reports.js:TEMPLATE_CONF_NO_MATCH
 msgid "Field does not match one of list (comma separated):"
-msgstr ""
+msgstr "Campo é diferente a algum da lista (separados por virgulas):"

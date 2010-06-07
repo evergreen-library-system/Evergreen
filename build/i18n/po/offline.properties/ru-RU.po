@@ -1,17 +1,16 @@
-#. extracted from ../../Open-ILS/xul/staff_client/chrome/locale/en-US/offline.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-31 22:59-0400\n"
-"PO-Revision-Date: 2010-01-23 19:55+0000\n"
-"Last-Translator: Sergey Sedov <Unknown>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2010-05-11 07:38+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
+"X-Launchpad-Export-Date: 2010-05-20 05:29+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.exception
@@ -49,7 +48,7 @@ msgstr "Пожалуйста сообщите что это случилось"
 
 #: common.error.copy_msg
 msgid "Copy Message"
-msgstr ""
+msgstr "Скопировать сообщение"
 
 #: common.barcode.status.warning
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3."
@@ -117,8 +116,10 @@ msgid "Delete"
 msgstr "Удалить"
 
 #: cat.opac.undelete_record.confirm
-msgid "Are you sure you want to undelete title record #%1$s from the catalog?"
-msgstr "Вы уверены, что хотите восстановить заглавный запись #%1$s из каталога?"
+msgid ""
+"Are you sure you want to undelete title record #%1$s from the catalog?"
+msgstr ""
+"Вы уверены, что хотите восстановить заглавный запись #%1$s из каталога?"
 
 #: cat.opac.undelete_record
 msgid "Undelete Record"
@@ -157,9 +158,8 @@ msgstr "Ошибка при удалении записи #%1$s : %2$s : %3$s"
 
 #. # variables: document ID, error code, error description
 #: cat.opac.record_undeleted.error
-#, fuzzy
 msgid "Error undeleting record #%1$s : %2$s : %3$s"
-msgstr "Ошибка при удалении записи #%1$s : %2$s : %3$s"
+msgstr "Ошибка восстановления записи #%1$s : %2$s : %3$s"
 
 #: cat.opac.record_marked_for_overlay.record_id.alert
 msgid "Record with ID %1$s marked for overlay."
@@ -172,6 +172,10 @@ msgstr "Запись с TCN %1$s помечена для наложения."
 #: cat.save_record
 msgid "Save Record"
 msgstr "Сохранить запись"
+
+#: cat.save.success
+msgid "Record successfully saved."
+msgstr "Запись успешно сохранена"
 
 #: cat.save.failure
 msgid "Record not likely updated."
@@ -259,8 +263,8 @@ msgstr ""
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
-"3$s."
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
+"%3$s."
 msgstr ""
 "Предупреждение: По состоянию на %1$s,, этот штрих-код (%2$s) был отмечен с "
 "неизвестным кодом: %3$s."
@@ -592,7 +596,7 @@ msgstr "Редактор хочет поискать для: %1$s"
 
 #: menu.cmd_verify_credentials.tabname
 msgid "Verify Credentials"
-msgstr ""
+msgstr "Подтвердите полномочия(права)"
 
 #: menu.close_all_tabs.error
 msgid "Error closing all tabs"
@@ -612,7 +616,7 @@ msgstr "Пауза для ошибки"
 
 #: menu.reset_network_stats
 msgid "Reset network activity summary?"
-msgstr ""
+msgstr "Сбросить также настройки сети?"
 
 #: main.testing
 msgid "Testing"
@@ -705,7 +709,7 @@ msgstr "Кэш очищен"
 
 #: main.on_debug.debug
 msgid "debug the debug :D"
-msgstr ""
+msgstr "отладка отладки :D"
 
 #: main.new_window_btn.login_first_warning
 msgid "Please login first!"
@@ -872,7 +876,8 @@ msgstr "Неизвестный статус"
 
 #: network.window_title.error
 msgid "Error setting window titles to match new login"
-msgstr "Ошибка при настройке оконных заглавий для соответствия с новым логином"
+msgstr ""
+"Ошибка при настройке оконных заглавий для соответствия с новым логином"
 
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
@@ -905,249 +910,198 @@ msgid ""
 "retrieved, and this may take some time and lag the staff client.  Would you "
 "like to proceed?"
 msgstr ""
+"ВНИМАНИЕ: Только %1$s из %2$s строк(ки) в этом списке были востановленны для "
+"немедленного просмотра. Сортировка этого листа требует, чтобы все эти строки "
+"были восстановлены и это может занять некоторое время и будут лаги. "
+"Продолжить?"
 
 #: list.columns_saved
 msgid "Column configuration saved."
-msgstr ""
+msgstr "Колонка конфигурации сохранена"
 
 #: list.row_retrieving
 msgid "Retrieving..."
-msgstr ""
+msgstr "Восстановление..."
 
 #: list.save_csv_as
 msgid "Save List CSV As..."
-msgstr ""
+msgstr "Сохранить CSV список как..."
 
 #: list.actions.menu.label
 msgid "List Actions"
-msgstr ""
+msgstr "Список действий"
 
 #: list.actions.menu.accesskey
 msgctxt "list.actions.menu.accesskey"
 msgid "L"
-msgstr ""
+msgstr "L"
 
 #: list.actions.field_to_clipboard.label
 msgid "Copy Field from Selected Row to Clipboard"
-msgstr ""
+msgstr "Копировать поле из выделенной строки в буфер обмена"
 
 #: list.actions.field_to_clipboard.accesskey
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #: list.actions.csv_to_clipboard.label
 msgid "Copy List CSV to Clipboard"
-msgstr ""
+msgstr "Копировать список CSV в буфер обмена"
 
 #: list.actions.csv_to_clipboard.accesskey
 msgctxt "list.actions.csv_to_clipboard.accesskey"
 msgid "L"
-msgstr ""
+msgstr "L"
 
 #: list.actions.csv_to_printer.label
 msgid "Print List CSV"
-msgstr ""
+msgstr "Печать списка CSV"
 
 #: list.actions.csv_to_printer.accesskey
 msgid "P"
-msgstr ""
+msgstr "P"
 
 #: list.actions.extended_to_printer.label
 msgid "Print List Expanded Format"
-msgstr ""
+msgstr "Печать списка в расширенном формате"
 
 #: list.actions.extended_to_printer.accesskey
 msgid "x"
-msgstr ""
+msgstr "x"
 
 #: list.actions.csv_to_file.label
 msgid "Save List CSV to File"
-msgstr ""
+msgstr "Сохранить список CSV в файл"
 
 #: list.actions.csv_to_file.accesskey
 msgid "F"
-msgstr ""
+msgstr "F"
 
 #: list.actions.save_column_configuration.label
 msgid "Save Column Configuration"
-msgstr ""
+msgstr "Сохранить колонку конфигурации"
 
 #: list.actions.save_column_configuration.accesskey
 msgid "S"
-msgstr ""
+msgstr "S"
 
 #: list.dump_extended_format.record_separator
 msgid "=-=-="
-msgstr ""
+msgstr "=-=-="
 
 #: menu.cmd_survey_wizard.inadequate_perm
-msgid "You are lacking the CREATE_SURVEY permission and/or working locations."
-msgstr ""
+msgid ""
+"You are lacking the CREATE_SURVEY permission and/or working locations."
+msgstr "Вы не имеете CREATE_SURVEY полномочия и/или рабочее место"
 
 #: menu.cmd_local_admin_fonts_and_sounds.tab
 msgid "Global Font and Sound Settings"
-msgstr ""
+msgstr "Глобальный шрифт и Настройка звука"
 
 #: menu.cmd_local_admin_printer.tab
 msgid "Printer Settings Editor"
-msgstr ""
+msgstr "Редактор настроек принтера"
 
 #: menu.cmd_local_admin_closed_dates.tab
 msgid "Closed Dates Editor"
-msgstr ""
+msgstr "Редактор Закрытых дат"
 
 #: menu.cmd_local_admin_copy_locations.tab
-#, fuzzy
 msgid "Copy Locations Editor"
-msgstr "Редактор Местонахождений"
+msgstr "Редактор местонахождения копии"
 
 #: menu.cmd_local_admin_lib_settings.tab
 msgid "Library Settings Editor"
-msgstr ""
+msgstr "Редактор настроек библиотеки"
 
 #: menu.cmd_local_admin_non_cat_types.tab
-#, fuzzy
 msgid "Non-cataloged Types Editor"
 msgstr "Редактор некаталогизированных типов"
 
 #: menu.cmd_local_admin_stat_cats.tab
-#, fuzzy
 msgid "Statistical Categories Editor"
-msgstr "Редактор категорий Статистики"
+msgstr "Редактор Статистических категорий"
 
 #: menu.cmd_local_admin_reports.tab
 msgid "Reports"
-msgstr ""
+msgstr "Отчёты"
 
 #: menu.cmd_local_admin_cash_reports.tab
 msgid "Cash Reports"
-msgstr ""
+msgstr "Отчеты по наличным платежам"
 
 #: menu.cmd_local_admin_transit_list.tab
 msgid "Transits"
-msgstr ""
+msgstr "Транзиты"
 
 #: menu.cmd_acq_view_picklist.tab
 msgid "Selection Lists"
-msgstr ""
+msgstr "Списки выбора"
 
 #: menu.cmd_acq_bib_search.tab
 msgid "Title Search"
-msgstr ""
+msgstr "Поиск по заглавию"
 
 #: menu.cmd_acq_upload.tab
 msgid "Load Order Record"
-msgstr ""
+msgstr "Загрузить заказанную запись"
 
 #: menu.cmd_acq_new_brief_record.tab
 msgid "New Brief Record"
-msgstr ""
+msgstr "Новая краткая запись"
 
 #: menu.cmd_acq_view_po.tab
 msgid "Purchase Orders"
-msgstr ""
+msgstr "Заказ"
 
 #: menu.cmd_acq_view_fund.tab
 msgid "Funds"
-msgstr ""
+msgstr "Фонды"
 
 #: menu.cmd_acq_view_funding_source.tab
 msgid "Funding Sources"
-msgstr ""
+msgstr "Источники финансирования"
 
 #: menu.cmd_acq_view_provider.tab
 msgid "Providers"
-msgstr ""
+msgstr "Провайдеры"
 
 #: menu.cmd_acq_view_currency_type.tab
 msgid "Currency Types"
-msgstr ""
+msgstr "Типы валют"
 
 #: menu.cmd_acq_view_exchange_rate.tab
 msgid "Exchange Rates"
-msgstr ""
+msgstr "Курсы обмена валют"
 
 #: menu.cmd_acq_view_distrib_formula.tab
 msgid "Distribution Formulas"
-msgstr ""
-
-#: menu.cmd_booking_resource.tab
-msgid "Resources"
-msgstr ""
-
-#: menu.cmd_booking_reservation.tab
-msgid "Reservations"
-msgstr ""
-
-#: menu.cmd_booking_reservation_pickup.tab
-msgid "Reservation Pickup"
-msgstr ""
-
-#: menu.cmd_booking_reservation_return.tab
-msgid "Reservation Return"
-msgstr ""
-
-#: menu.cmd_booking_pull_list.tab
-msgid "Booking Pull List"
-msgstr ""
-
-#: menu.cmd_booking_capture.tab
-msgid "Booking Capture"
-msgstr ""
+msgstr "Формула распределения"
 
 #: menu.local_admin.circ_matrix_matchpoint.tab
 msgid "Circulation Policies"
-msgstr ""
+msgstr "Политика циркуляции"
 
 #: menu.local_admin.hold_matrix_matchpoint.tab
 msgid "Hold Policies"
-msgstr ""
+msgstr "Политика Хранения"
 
 #: menu.local_admin.work_log.tab
 msgid "Work Log"
-msgstr ""
-
-#: menu.local_admin.patrons_due_refunds.tab
-msgid "Patrons With Negative Balances"
-msgstr ""
+msgstr "Регистрация Работы"
 
 #: menu.circulation.staged_patrons.tab
 msgid "Pending Patrons"
-msgstr ""
+msgstr "Находящиеся на рассмотрении пользователи библиотеки"
 
 #: load_printer_settings_error_description
 msgid ""
 "Printer settings did not load cleanly with this version of Evergreen.  You "
 "should reconfigure your printer under Printer Settings Editor."
 msgstr ""
+"Настройки принтера не были загружены чисто с этой версией Evergreen. Вы "
+"должны перестроить свой принтер под Редактора настроек принтера"
 
 #: load_printer_settings_error_title
 msgid "Printer Settings"
-msgstr ""
-
-#: staff.cat.util.copy_editor.batch_edit
-msgid "Batch Edit"
-msgstr ""
-
-#: staff.cat.util.copy_editor.batch_view
-msgid "Batch View"
-msgstr ""
-
-#: staff.cat.util.copy_editor.edit
-msgid "Edit"
-msgstr ""
-
-#: staff.cat.util.copy_editor.view
-msgid "View"
-msgstr ""
-
-#: staff.circ.copy_status.add_volumes.perm_failure
-msgid "You do not have permission to add volumes to the workstation library."
-msgstr ""
-
-#: staff.circ.copy_status.add_volumes.title
-msgid "Add Volume/Item for Record # %1$s"
-msgstr ""
-
-#~ msgid "Record successfully saved."
-#~ msgstr "Запись успешно сохранена"
+msgstr "Настройки принтера"

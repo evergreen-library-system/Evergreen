@@ -2,23 +2,24 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-01-31 22:59:38-0400\n"
-"PO-Revision-Date: 2009-12-29 16:07+0000\n"
-"Last-Translator: Jonathan Field <Unknown>\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2010-02-23 21:42+0000\n"
+"Last-Translator: Provetin <hamburgskaddi@web.de>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2010-02-24 04:58+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
 
 #: opac.js:EDIT_PROPERTIES
 msgid "Edit Propeties"
-msgstr "Edit Propeties"
+msgstr "Edit Properties"
 
 #: opac.js:CURRENT_SUPPLEMENTS
 msgid "Current supplements"

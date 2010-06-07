@@ -1,265 +1,274 @@
 # Brazilian Portuguese translation for evergreen
-# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the evergreen package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
+# FIRST AUTHOR: Job Diogenes Ribeiro Borges, 2009.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-31 22:59-0400\n"
-"PO-Revision-Date: 2010-01-29 12:28+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-11-23 23:35-0400\n"
+"PO-Revision-Date: 2010-02-05 17:27+0000\n"
+"Last-Translator: jobdrb <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:09+0000\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2010-02-06 04:53+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+"X-Poedit-Country: BRAZIL\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #. =================================================================
 #. Some generic stuff
 #. =================================================================
 #: lang.version
 msgid "remote v1"
-msgstr ""
+msgstr "v1 remoto"
 
 #: lang.description
 msgid "English"
-msgstr ""
+msgstr "Inglês"
 
 #: lang.author
 msgid "PINES"
-msgstr ""
+msgstr "PINES"
 
 #: common.all
 msgid "All"
-msgstr ""
+msgstr "Todos"
 
 #: common.currency
 msgid "$"
-msgstr ""
+msgstr "$"
 
 #: common.language
 msgid "Language: "
-msgstr ""
+msgstr "Idioma: "
 
 #: common.name
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: common.none
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 #: common.title
 msgctxt "common.title"
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: common.author
 msgctxt "common.author"
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
 #: common.authors
 msgid "Authors"
-msgstr ""
+msgstr "Autores"
 
 #: common.callnumber
 msgctxt "common.callnumber"
 msgid "Call Number"
-msgstr ""
+msgstr "Número de Chamada"
 
 #: common.edition
 msgid "Edition"
-msgstr ""
+msgstr "Edição"
 
 #: common.subject
 msgid "Subject"
-msgstr ""
+msgstr "Assunto"
 
 #: common.series
 msgid "Series"
-msgstr ""
+msgstr "Séries"
 
 #: common.keyword
 msgid "Keyword"
-msgstr ""
+msgstr "Palavra-Chave"
 
 #: common.type
 msgid "Search Type"
-msgstr ""
+msgstr "Pesquisar Tipo"
 
 #: common.isbn
 msgctxt "common.isbn"
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: common.format
 msgid "Format"
-msgstr ""
+msgstr "Formato"
 
 #. Message displayed while search results are loading
 #: common.loading
 msgctxt "common.loading"
 msgid "Loading..."
-msgstr ""
+msgstr "Carregando..."
 
 #: common.login
 msgctxt "common.login"
 msgid "Login"
-msgstr ""
+msgstr "Entrar"
 
 #: common.logout
 msgid "Log Out"
-msgstr ""
+msgstr "Sair"
 
 #: common.physical
 msgid "Physical Description"
-msgstr ""
+msgstr "Descrição Física"
 
 #: common.pubdate
 msgid "Publication Date"
-msgstr ""
+msgstr "Data de Publicação"
 
 #: common.publisher
 msgid "Publisher"
-msgstr ""
+msgstr "Editora"
 
 #: common.results
 msgid "Results"
-msgstr ""
+msgstr "Resultados"
 
 #: common.select
 msgid "Select"
-msgstr ""
+msgstr "Selecionar"
 
 #: common.status
 msgid "Status"
-msgstr ""
+msgstr "Situação"
 
 #: common.at
 msgid "at"
-msgstr ""
+msgstr "em"
 
 #: common.of
 msgid "of"
-msgstr ""
+msgstr "de"
 
 #: common.no
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 #: common.yes
 msgid "Yes"
-msgstr ""
+msgstr "Sim"
 
 #: common.cancel
 msgctxt "common.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: common.library
 msgctxt "common.library"
 msgid "Library"
-msgstr ""
+msgstr "Biblioteca"
 
 #: common.username
 msgid "Username"
-msgstr ""
+msgstr "Nome de Usuário"
 
 #: common.password
 msgctxt "common.password"
 msgid "Password"
-msgstr ""
+msgstr "Senha"
 
 #: common.submit
 msgctxt "common.submit"
 msgid "Submit"
-msgstr ""
+msgstr "Submeter"
 
 #: common.close
 msgid "close"
-msgstr ""
+msgstr "fechar"
 
 #: common.and
 msgid "and"
-msgstr ""
+msgstr "e"
 
 #: common.user_not_found
 msgid "User not found"
-msgstr ""
+msgstr "Usuário não encontrado"
 
 #: opac.advanced.wizard.title
 msgctxt "opac.advanced.wizard.title"
 msgid "Advanced Search"
-msgstr ""
+msgstr "Pesquisa Avançada"
 
 #: common.nowSearching
 msgid "Now searching "
-msgstr ""
+msgstr "Pesquisando agora "
 
 #: common.ofAtLeast
 msgid " of about "
-msgstr ""
+msgstr " de "
 
 #: common.relevancy
 msgid "Match Score: "
-msgstr ""
+msgstr "Escore Correspondente: "
 
 #: common.tips
 msgid "Tips:"
-msgstr ""
+msgstr "Dicas:"
 
 #: common.tips.tip1
-msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgid ""
+"Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
+"Clique no ícone de pasta na barra-lateral para acessar pesquisas rápidas "
+"relacionadas"
 
 #: common.tips.tip2
 msgid ""
 "If you don't find what you want try expanding your search using the range "
 "selector at the right of the search bar"
 msgstr ""
+"Se você não encontrar o que deseja tente expandir sua pesquisa usando o "
+"seletor de abrangência à direita da barra de pesquisa"
 
 #: common.org.openAll
 msgid "Expand All"
-msgstr ""
+msgstr "Expandir Tudo"
 
 #: common.org.closeAll
 msgid "Close All"
-msgstr ""
+msgstr "Fechar Tudo"
 
 #: common.org.cancel
 msgctxt "common.org.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: common.org.loading
 msgid "Loading library selector..."
-msgstr ""
+msgstr "Carregando seletor de biblioteca...."
 
 #: common.org.note
 msgctxt "common.org.note"
 msgid "Tip:"
-msgstr ""
+msgstr "Dica:"
 
 #: common.org.notetext
 msgid ""
 "Click on a location's name to select it.  Click on the folder icons to "
 "expand a section."
 msgstr ""
+"Clique no nome da localização para seleciona-la. Clique nos ícones de pasta "
+"para expandir a sessão."
 
 #: opac.login.login
 msgctxt "opac.login.login"
 msgid "Login"
-msgstr ""
+msgstr "Entrar"
 
 #: opac.basic
 msgctxt "opac.basic"
 msgid "Basic Catalog (HTML only)"
-msgstr ""
+msgstr "Catálogo Básico (somente HTML)"
 
 #: common.password_criteria
 msgid ""
@@ -267,34 +276,36 @@ msgid ""
 "contain at least one letter (a-z/A-Z), \n"
 "and contain at least one number."
 msgstr ""
+"A senha deve conter ao menos 7 caracteres, \tconter ao menos uma letra (a-"
+"z/A-Z), \te conter ao menos um número."
 
 #: common.a2z.title
 msgid "Title: A to Z"
-msgstr ""
+msgstr "Título: A à Z"
 
 #: common.z2a.title
 msgid "Title: Z to A"
-msgstr ""
+msgstr "Título: Z à A"
 
 #: common.a2z.author
 msgid "Author: A to Z"
-msgstr ""
+msgstr "Autor: A à Z"
 
 #: common.z2a.author
 msgid "Author: Z to A"
-msgstr ""
+msgstr "Autor: Z à A"
 
 #: common.new2old.pubdate
 msgid "Date: Newest to Oldest"
-msgstr ""
+msgstr "Data: Recente à Antiga"
 
 #: common.old2new.pubdate
 msgid "Date: Oldest to Newest"
-msgstr ""
+msgstr "Data: Antiga à Recente"
 
 #: opac.style.reddish
 msgid "Reddish"
-msgstr ""
+msgstr "Avermelhado"
 
 #: holds.where_am_i
 msgid ""
@@ -308,6 +319,15 @@ msgid ""
 "Your library will contact you when you hold items become \n"
 "available."
 msgstr ""
+"Listas de reservas não são tão simples como \n"
+"'primeiro a chegar, primeiro servido'. Uma matriz complexa combinando \n"
+"considerações de propriedade do item, biblioteca de residência do leitor \n"
+"e data de compra do item, determinam as prioridades para as reservas; \n"
+"a lista é dinâmica, alterando-se a cada reserva feita. Por isso, qualquer \n"
+"indicação de  posição de uma reserva sera imprecisa. O sistema de reservas \n"
+"é projetado para obter uma requisição de item da maneira mais rápida e \n"
+"eficiente possível. Sua biblioteca irá contactar você quando os itens em \n"
+"reserva se tornarem disponíveis."
 
 #: holds.advanced_options
 msgid ""
@@ -315,78 +335,85 @@ msgid ""
 "versions of this title, select the formats that would be acceptable. \n"
 "The first available copy will be sent to you."
 msgstr ""
+"Se você deseja ampliar o alcance de sua reserva para incluir outras \n"
+"versões deste título, selecione os formatos que seriam aceitáveis. \n"
+"O primeiro exemplar disponível lhe será enviado."
 
 #. =================================================================
 #. Events and Permissions
 #. =================================================================
 #: ilsevent.0
 msgid "Operation Succeeded"
-msgstr ""
+msgstr "Operação Bem-sucedida"
 
 #: ilsevent.1000
 msgid "Login failed.  The username or password entered was incorrect."
 msgstr ""
+"Falha de autentificação. O nome de usuário ou a senha informada esta "
+"incorreta."
 
 #: ilsevent.1001
 msgid "Login session has timed out or does not exist"
-msgstr ""
+msgstr "A sessão expirou ou não existe"
 
 #: ilsevent.1002
 msgid "User was not found in the database"
-msgstr ""
+msgstr "Usuário não encontrado no banco de dados"
 
 #: ilsevent.1200
 msgid "The given username already exists in the database"
-msgstr ""
+msgstr "O nome de usuário dado já existe no banco de dados"
 
 #: ilsevent.5000
 msgid "Permission Denied"
-msgstr ""
+msgstr "Permissão Negada"
 
 #: ilsperm.CREATE_HOLD
 msgid "User is not allowed to create holds for other users at this location"
 msgstr ""
+"Não é permitido ao usuário fazer reservas para outros usuários nesta "
+"localização"
 
 #. =================================================================
 #. common/pages
 #. =================================================================
 #: common.cn.loading
 msgid "Loading Callnumber Page..."
-msgstr ""
+msgstr "Carregando Página do Nº de Chamada..."
 
 #: common.cn.browsing
 msgid "You are now browsing"
-msgstr ""
+msgstr "Você esta navegando agora"
 
 #: common.cn.previous
 msgid "&lt;&lt; Previous Page"
-msgstr ""
+msgstr "&lt;&lt; Página Anterior"
 
 #: common.cn.shelf
 msgctxt "common.cn.shelf"
 msgid "Shelf Browser"
-msgstr ""
+msgstr "Navegador de Prateleira"
 
 #: common.cn.next
 msgid "Next Page &gt;&gt;"
-msgstr ""
+msgstr "Próx. Página &gt;&gt;"
 
 #: common.textsize.title
 msgid "Text Size: "
-msgstr ""
+msgstr "Tam. do Text: "
 
 #: common.textsize.regular
 msgid "Regular"
-msgstr ""
+msgstr "Regular"
 
 #. Regular / Large
 #: common.textsize.separator
 msgid "/"
-msgstr ""
+msgstr "/"
 
 #: common.textsize.large
 msgid "Large"
-msgstr ""
+msgstr "Grande"
 
 #: home.js.disabled
 msgid ""
@@ -396,11 +423,20 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
 "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
 "<a style='color: blue; text-decoration: underline;' "
 "href='/opac/extras/slimpac/start.html'>here</a>."
 msgstr ""
+"JavaScript deve estar ativado para que você possa usar o Catálogo regular "
+"Evergreen. \\ nNo entanto, aparentemente o JavaScript está desativado ou não "
+"é suportado pelo seu navegador. \\ nPara usar o Catálogo regular Evergreen, "
+"ative o JavaScript alterando as opções do navegador e, em seguida, \\ n<a "
+"style='color: blue; text-decoration: underline;' href='/'> tente novamente "
+"</ a>. \\ n<br/> <br/> Alternativamente, você pode usar interface básica "
+"HTML-pura para o catálogo \\ n<a style='color: blue; text-decoration: "
+"underline;' href='/opac/extras/slimpac/start.html'> clicando aqui </ a>."
 
 #. =================================================================
 #. MyOPAC bookbag page
@@ -411,80 +447,82 @@ msgid ""
 "bookbag. \n"
 "Are you sure you wish to continue?"
 msgstr ""
+"Isto irá remover a sacola selecionada e todos os itens nela contidos. \\ "
+"nTem certeza de que deseja continuar?"
 
 #: myopac.no.bookbags
 msgid "You have not created any bookbags"
-msgstr ""
+msgstr "Você não criou nenhuma sacola"
 
 #: myopac.bookbags.title
 msgctxt "myopac.bookbags.title"
 msgid "My Bookbags"
-msgstr ""
+msgstr "Minha Sacola"
 
 #: myopac.bookbag.items
 msgid "# Items"
-msgstr ""
+msgstr "# Itens"
 
 #: myopac.bookbag.shared
 msgid "Shared"
-msgstr ""
+msgstr "Compartilhado"
 
 #: myopac.bookbag.toggle
 msgid "Share / Hide"
-msgstr ""
+msgstr "Compartilhar / Ocultar"
 
 #: myopac.bookbag.delete
 msgid "Delete this bookbag?"
-msgstr ""
+msgstr "Excluir esta sacola?"
 
 #: myopac.items
 msgid "Items"
-msgstr ""
+msgstr "Itens"
 
 #: myopac.view
 msgid "(View)"
-msgstr ""
+msgstr "(Ver)"
 
 #: myopac.atom.feed
 msgid "ATOM Feed"
-msgstr ""
+msgstr "Suprir ATOM"
 
 #: myopac.bookbag.hide
 msgid "Hide"
-msgstr ""
+msgstr "Ocultar"
 
 #: myopac.delete
 msgid "Delete"
-msgstr ""
+msgstr "Excluir"
 
 #: myopac.bookbag.create
 msgid "Create a new Bookbag"
-msgstr ""
+msgstr "Cria uma nova Sacola"
 
 #: myopac.bookbag.naming
 msgid "Enter the name of the new Bookbag: "
-msgstr ""
+msgstr "Entre com o nome da nova Sacola: "
 
 #: myopac.bookbag.share
 msgid "Share this Bookbag"
-msgstr ""
+msgstr "Compartilhar esta Sacola"
 
 #: myopac.bookbag.refworks
 msgctxt "myopac.bookbag.refworks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Exportar para RefWorks"
 
 #: myopac.bookbag.no.items
 msgid "The selected bookbag contains no items..."
-msgstr ""
+msgstr "A sacola selecionada não contem itens..."
 
 #: myopac.bookbag.remove
 msgid "Remove this item?"
-msgstr ""
+msgstr "Remover este item?"
 
 #: myopac.remove.link
 msgid "remove"
-msgstr ""
+msgstr "retirar"
 
 #: myopac.publish.text
 msgid ""
@@ -493,10 +531,14 @@ msgid ""
 "To see the public view of a shared Bookbag, click the \"View\" link in the \n"
 "\"Shared\" column of the Bookbag list at the top of this page."
 msgstr ""
+"Compartilhar uma sacola significa que o conteúdo desta será visível para os "
+"outros.  Para visualizar a visão pública de uma Sacola, clique no link \\ "
+"\"Visualizar \", da coluna  \\ \"Compartilhado\" da lista de Sacolas no topo "
+"desta página."
 
 #: myopac.item.confirm
 msgid "Are you sure you wish to remove this bookbag item?"
-msgstr ""
+msgstr "Você tem certeza que deseja retirar este item da sacola?"
 
 #: myopac.publish.confirm
 msgid ""
@@ -504,18 +546,20 @@ msgid ""
 "of the bookbag to be seen by others.  Are you sure you wish to share this "
 "bookbag?"
 msgstr ""
+"Compartilhando esta sacola permitirá que o conteúdo \\ ndesta seja visto por "
+"outras pessoas. Tem certeza de que deseja compartilhar-la?"
 
 #: myopac.unpublish.confirm
 msgid "Are you sure you wish to hide this bookbag?"
-msgstr ""
+msgstr "Você tem certeza que deseja ocultar esta sacola?"
 
 #: myopac.update.success
 msgid "The Bookbag was successfully updated."
-msgstr ""
+msgstr "A Sacola foi atualizada com sucesso."
 
 #: myopac.updated.success
 msgid "Bookbag successfully updated"
-msgstr ""
+msgstr "Sacola atualizada com sucesso"
 
 #: myopac.create.warning
 msgid ""
@@ -526,62 +570,69 @@ msgid ""
 "we suggest that you do not place said items in a bookbag or that you \n"
 "avoid using bookbags all together.  Thank you."
 msgstr ""
+"Aviso: Adicionando itens a uma sacola cria um elo entre você \n"
+"e os itens na base de dados. O conteúdo desta não são publicamente visíveis, "
+"a menos que você a compartilhe. No entanto, se você preferir não ter nenhuma "
+"ligação entre o seu registro de leitor e um determinado item ou itens, "
+"sugerimos \n"
+"que você não coloque os itens supracitados na sacola ou que você evite \n"
+"usar em conjunto todas as sacolas. Obrigado."
 
 #: myopac.describe.bookbags
 msgid "Bookbags are..."
-msgstr ""
+msgstr "As sacolas são..."
 
 #. =================================================================
 #. MyOPAC Checked Page
 #. =================================================================
 #: myopac.checked.out
 msgid "Total items out:"
-msgstr ""
+msgstr "Total de itens saídos:"
 
 #: myopac.checked.overdue
 msgid "Total items overdue:"
-msgstr ""
+msgstr "Total de itens vencidos:"
 
 #: myopac.checked.renew
 msgid "Renew Selected Items"
-msgstr ""
+msgstr "Renovar Itens Selecionados"
 
 #: myopac.checked.renewing
 msgid "Renewing..."
-msgstr ""
+msgstr "Renovando..."
 
 #: myopac.checked.renew.remaining
 msgctxt "myopac.checked.renew.remaining"
 msgid "Renewals Remaining"
-msgstr ""
+msgstr "Renovação Restantes"
 
 #: myopac.checked.noitems
 msgid "You have no items checked out at this time"
-msgstr ""
+msgstr "Você não tem itens emprestados neste momento"
 
 #: myopac.checked.other.circ
 msgid "Other Circulations"
-msgstr ""
+msgstr "Outras Circulações"
 
 #: myopac.checked.circ.lib
 msgid "Circulating Library"
-msgstr ""
+msgstr "Biblioteca de Circulação"
 
 #: myopac.checked.item.type
 msgid "Circulation Type"
-msgstr ""
+msgstr "Tipo de Circulação"
 
 #: myopac.checked.circ.time
 msgid "Please return by ..."
-msgstr ""
+msgstr "Por favor devolver por ..."
 
 #: myopac.checked.renew.success
 msgid "item(s) successfully renewed"
-msgstr ""
+msgstr "item(s) renovados com sucesso"
 
 #: myopac.checked.renew.confirm
 msgid "Are you sure you wish to renew the selected item(s)?"
-msgstr ""
+msgstr "Você tem certeza que deseja selecionar os item(s) selecionados?"
 
 #: myopac.checked.renew.fail
 msgid ""
@@ -589,151 +640,158 @@ msgid ""
 "means the item is needed to fulfill a hold.  Please see a librarian for "
 "further help."
 msgstr ""
+"O Sistema não pode renovar o item selecionado no momento. Isto significa "
+"geralmente que o item esta reservado para atender uma reserva. Por favor "
+"consulte um bibliotecário(a) para ajuda adicional."
 
 #: myopac.checked.renew.fail2
 msgid ""
 "Library policy prevents the renewal of this item at this time.  Please see a "
 "librarian for further details."
 msgstr ""
+"A política de renovação do PINES impede a renovação deste item no momento. "
+"Por favor, consulte um bibliotecário para mais detalhes."
 
 #. =================================================================
 #. MyOPAC Fines Page
 #. =================================================================
 #: myopac.fines.title
 msgid "Summary"
-msgstr ""
+msgstr "Sumário"
 
 #: myopac.fines.owed
 msgid "Total Owed"
-msgstr ""
+msgstr "Total Vencido"
 
 #: myopac.fines.paid
 msgid "Total Paid"
-msgstr ""
+msgstr "Total Pago"
 
 #: myopac.fines.balance
 msgid "Balance Owed"
-msgstr ""
+msgstr "Balanço de Vencimento"
 
 #: myopac.fines.status
 msgctxt "myopac.fines.status"
 msgid "Loading..."
-msgstr ""
+msgstr "Carregando..."
 
 #: myopac.fines.overdue
 msgid "Overdue Materials"
-msgstr ""
+msgstr "Materiais Vencidos"
 
 #: myopac.fines.checkout
 msgid "Checkout Date"
-msgstr ""
+msgstr "Data de Empréstimo"
 
 #: myopac.fines.due
 msgctxt "myopac.fines.due"
 msgid "Due Date"
-msgstr ""
+msgstr "Data de Vencimento"
 
 #: myopac.fines.returned
 msgid "Date Returned"
-msgstr ""
+msgstr "Data de Devolução"
 
 #: myopac.fines.accruing
 msgid "(fines accruing)"
-msgstr ""
+msgstr "(multas acumulando)"
 
 #: myopac.fines.other
 msgid "Other Fees"
-msgstr ""
+msgstr "Outras Multas"
 
 #: myopac.fines.time.start
 msgid "Transaction Start Time"
-msgstr ""
+msgstr "Hora de Início de Transação"
 
 #: myopac.fines.time.paid
 msgid "Last Payment Time"
-msgstr ""
+msgstr "Última Hora de Pagamento"
 
 #: myopac.fines.owed.initial
 msgid "Initial Amount Owed"
-msgstr ""
+msgstr "Dívida Inicial"
 
 #: myopac.fines.paid.amount
 msgid "Total Amount Paid"
-msgstr ""
+msgstr "Valor Total Pago"
 
 #: myopac.fines.type
 msgid "Billing Type"
-msgstr ""
+msgstr "Tipo de Faturamento"
 
 #. =================================================================
 #. MyOPAC Holds Page
 #. =================================================================
 #: myopac.holds.formats
 msgid "Formats"
-msgstr ""
+msgstr "Formatos"
 
 #: myopac.holds.location
 msgid "Pickup Location"
-msgstr ""
+msgstr "Local de Coleta"
 
 #: myopac.holds.edit
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: myopac.holds.status.none
 msgid "You have no items on hold at this time"
-msgstr ""
+msgstr "Você não tem itens em reserva neste momento"
 
 #: myopac.holds.status.waiting
 msgid "Waiting for copy"
-msgstr ""
+msgstr "Esperando por exemplar"
 
 #: myopac.holds.status.intransit
 msgid "In Transit"
-msgstr ""
+msgstr "Em Transito"
 
 #: myopac.holds.status.available
 msgid "Ready for Pickup"
-msgstr ""
+msgstr "Pronto para Coletar"
 
 #: myopac.holds.cancel
 msgctxt "myopac.holds.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancela"
 
 #: myopac.holds.verify
 msgid ""
 "If you wish to cancel the selected hold, click OK, otherwise click Cancel."
 msgstr ""
+"Se você deseja cancelar a reserva selecionada, clique em OK, caso contrário, "
+"clique em Cancelar."
 
 #: myopac.holds.freeze_selected
 msgid "Suspend"
-msgstr ""
+msgstr "Suspender"
 
 #: myopac.holds.thaw_selected
 msgid "Activate"
-msgstr ""
+msgstr "Ativar"
 
 #: myopac.holds.thaw_date_selected
 msgid "Set Active Date"
-msgstr ""
+msgstr "Definir Data Ativa"
 
 #: myopac.holds.cancel_selected
 msgctxt "myopac.holds.cancel_selected"
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: myopac.holds.processing
 msgid "Processing holds... This may take a moment."
-msgstr ""
+msgstr "Processando reservas... Isto pode demorar um pouco."
 
 #: myopac.holds.actions
 msgid "Actions for selected holds"
-msgstr ""
+msgstr "Ações para as reservas selecionadas"
 
 #: myopac.holds.cancel.confirm
 msgid "Are you sure you wish to cancel the selected holds?"
-msgstr ""
+msgstr "Você tem certeza que deseja cancelar as reservas selecionadas?"
 
 #: myopac.holds.freeze.confirm
 msgid ""
@@ -741,106 +799,115 @@ msgid ""
 "If an item has already been selected to fulfill the hold, it will not be "
 "suspended"
 msgstr ""
+"Tem certeza que você deseja suspender as reservas selecionadas? \n"
+"Note que se um item já foi selecionado para executar a reserva, este não "
+"será suspenso"
 
 #: myopac.holds.thaw.confirm
 msgid "Are you sure you wish to activate the selected holds?"
-msgstr ""
+msgstr "Tem certeza que deseja ativar as reservas selecionadas?"
 
 #: myopac.holds.thaw_date.confirm
 msgid ""
 "Are you sure you wish to change the activate date for the selected holds?"
 msgstr ""
+"Você tem certeza que deseja alterar a data de ativação para as reservas "
+"selecionadas?"
 
 #: myopac.holds.freeze.select_thaw
 msgid ""
 "Select an automatic activation date.  If no date is chosen, the holds will "
 "remain suspended until they are manually activated."
 msgstr ""
+"Selecione uma data automática de ativação. Se nenhuma data for selecionada a "
+"reserva se manterá suspensa até ser ativada manualmente."
 
 #: opac.holds.freeze
 msgid "Suspend this hold"
-msgstr ""
+msgstr "Suspender esta reserva"
 
 #: opac.holds.freeze.help
 msgid ""
 "A suspended hold will retain its place in the queue, but will not be "
 "fulfilled until it has been activated."
 msgstr ""
+"Um reserva suspensa será mantida na fila, porem não sera atendida até se "
+"tonar ativa."
 
 #: opac.holds.freeze.thaw_date
 msgid "Automatically activate hold on:"
-msgstr ""
+msgstr "Ativar automaticamente as reservas em:"
 
 #: opac.holds.expire_time
 msgid "Expiration date"
-msgstr ""
+msgstr "Data de Expiração"
 
 #: myopac.holds.estimated_wait
 msgid "Estimated Wait (days)"
-msgstr ""
+msgstr "Estimativa de Espera (dias)"
 
 #. =================================================================
 #. MyOPAC Preferences Page
 #. =================================================================
 #: myopac.prefs.title
 msgid "Preferences"
-msgstr ""
+msgstr "Preferencias"
 
 #: myopac.prefs.hits
 msgid "Search hits per page"
-msgstr ""
+msgstr "Resultados de pesquisa por página"
 
 #: myopac.prefs.font
 msgid "Default Font Size"
-msgstr ""
+msgstr "Tam. de Fonte Padrão"
 
 #: myopac.prefs.font.regular
 msgid "Regular Font"
-msgstr ""
+msgstr "Fonte Regular"
 
 #: myopac.prefs.font.large
 msgid "Large Font"
-msgstr ""
+msgstr "Fonte Grande"
 
 #: myopac.prefs.holds.notify
 msgid "Default Hold Notification Method"
-msgstr ""
+msgstr "Método Padrão de Notificação de Reserva"
 
 #: myopac.prefs.holds.both
 msgid "Use Phone and Email"
-msgstr ""
+msgstr "Usar Telefone e Email"
 
 #: myopac.prefs.holds.phone
 msgid "Use Phone Only"
-msgstr ""
+msgstr "Usar Somente Telefone"
 
 #: myopac.prefs.holds.email
 msgid "Use Email Only"
-msgstr ""
+msgstr "Usar Somente Email"
 
 #: myopac.prefs.search.location
 msgid "Default Search Location"
-msgstr ""
+msgstr "Local de Pesquisa Padrão"
 
 #: myopac.prefs.search.home
 msgid "Always search my home library by default."
-msgstr ""
+msgstr "Sempre pesquisar minha biblioteca de residência por padrão."
 
 #: myopac.prefs.search.range
 msgid "Default Search Range"
-msgstr ""
+msgstr "Abrangência Padrão de Pesquisa"
 
 #: myopac.prefs.save
 msgid "Save Preference Changes"
-msgstr ""
+msgstr "Salvar Alterações das Preferencias"
 
 #: myopac.prefs.save.success
 msgid "Preferences successfully updated"
-msgstr ""
+msgstr "Preferencias atualizadas com sucesso"
 
 #: myopac.prefs.save.failed
 msgid "Preferences update failed!"
-msgstr ""
+msgstr "A atualização das preferências falhou!"
 
 #: myopac.prefs.help
 msgid ""
@@ -850,14 +917,19 @@ msgid ""
 "However, you will still have the option to change individual holds "
 "regardless of this setting."
 msgstr ""
+"Esta configuração define o modo como você será notificado das reservas que "
+"fez na biblioteca.  \n"
+"Por padrão, será usado o estilo de notificação você escolher aqui. \n"
+"No entanto, você ainda terá a opção de alterar reservas individuais "
+"independentemente desta definição."
 
 #: myopac.holds.unfrozen
 msgid "Active"
-msgstr ""
+msgstr "Ativo"
 
 #: myopac.holds.frozen.until
 msgid "Activate on..."
-msgstr ""
+msgstr "Ativar em..."
 
 #. =================================================================
 #. MyOPAC Summary page
@@ -867,277 +939,282 @@ msgid ""
 "Your account expired on <span id='myopac.expired.date'/>! \n"
 "Please see a librarian to renew your account."
 msgstr ""
+"Sua conta expirou em <span id='myopac.expired.date'/>! \n"
+"Por favor contacte um bibliotecário para renovar sua conta."
 
 #: myopac.summary.notes
 msgid "* Staff Notes *"
-msgstr ""
+msgstr "* Observações da Administração *"
 
 #: myopac.summary.phone.day
 msgid "Day Phone"
-msgstr ""
+msgstr "Telefone (Dia)"
 
 #: myopac.summary.phone.evening
 msgid "Evening Phone"
-msgstr ""
+msgstr "Telefone (Noite)"
 
 #: myopac.summary.phone.other
 msgid "Other Phone"
-msgstr ""
+msgstr "Outro Telefone"
 
 #: myopac.summary.change
 msgid "Change"
-msgstr ""
+msgstr "Alterar"
 
 #: myopac.summary.username.enter
 msgid "Enter new username:"
-msgstr ""
+msgstr "Entre com um novo nome de Usuário:"
 
 #: myopac.summary.password.text
 msgid "(not shown)"
-msgstr ""
+msgstr "(não é mostrado)"
 
 #: myopac.summary.password.current
 msgid "Enter current password:"
-msgstr ""
+msgstr "Entre com a senha atual:"
 
 #: myopac.summary.password.new
 msgid "Enter new password:"
-msgstr ""
+msgstr "Entre com a nova senha:"
 
 #: myopac.summary.password.reenter
 msgid "Re-enter new password:"
-msgstr ""
+msgstr "Re-entre a nova senha:"
 
 #: myopac.summary.email
 msgid "Email Address"
-msgstr ""
+msgstr "Endereço de Email"
 
 #: myopac.summary.email.new
 msgid "Enter new email address:"
-msgstr ""
+msgstr "Entre com novo endereço de email:"
 
 #: myopac.summary.id.primary
 msgid "Primary Identification"
-msgstr ""
+msgstr "Identificação Primária"
 
 #: myopac.summary.barcode
 msgid "Active Barcode"
-msgstr ""
+msgstr "Código-de-barra Ativo"
 
 #: myopac.summary.home
 msgid "Home Library"
-msgstr ""
+msgstr "Biblioteca de Residência"
 
 #: myopac.summary.genesis
 msgid "Account Creation Date"
-msgstr ""
+msgstr "Data de Criação da Conta"
 
 #: myopac.summary.addresses
 msgid "Addresses"
-msgstr ""
+msgstr "Endereço"
 
 #: myopac.summary.addresses.pending
 msgid "Pending Addresses"
-msgstr ""
+msgstr "Endereço Pendente"
 
 #: myopac.summary.address.type
 msgid "Address Type"
-msgstr ""
+msgstr "Tipo de Endereço"
 
 #: myopac.summary.address.street
 msgid "Street"
-msgstr ""
+msgstr "Rua"
 
 #: myopac.summary.address.city
 msgid "City"
-msgstr ""
+msgstr "Cidade"
 
 #: myopac.summary.address.county
 msgid "County"
-msgstr ""
+msgstr "País"
 
 #: myopac.summary.address.state
 msgid "State"
-msgstr ""
+msgstr "Estado"
 
 #: myopac.summary.address.country
 msgid "Country"
-msgstr ""
+msgstr "País"
 
 #: myopac.summary.address.zip
 msgid "Zip"
-msgstr ""
+msgstr "CEP"
 
 #: myopac.summary.address.edit
 msgid "Edit Address"
-msgstr ""
+msgstr "Editar Endereço"
 
 #: myopac.summary.address.invalid
 msgid "Invalid Address"
-msgstr ""
+msgstr "Endereço Inválido"
 
 #: myopac.summary.username.error
 msgid "Please enter a username"
-msgstr ""
+msgstr "Por favor entre com um nome de usuário"
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different "
-"username."
+"The requested username is not available.  Please choose a different username."
 msgstr ""
+"O nome de usuário solicitado não está disponível. Por favor escolha um nome "
+"de usuário diferente."
 
 #: myopac.summary.username.success
 msgid "Username successfully updated"
-msgstr ""
+msgstr "Nome de usuário atualizado com sucesso"
 
 #: myopac.summary.username.failure
 msgid "Username update failed"
-msgstr ""
+msgstr "A atualização de nome de usuário falhou"
 
 #: myopac.summary.username.invalid
 msgid "Username cannot contain spaces or have the same format as a barcode"
 msgstr ""
+"O Nome de Usuário não pode conter espaços ou ter o mesmo formato como um "
+"código de barras"
 
 #: myopac.summary.email.error
 msgid "Please enter a valid email address"
-msgstr ""
+msgstr "Por favor entre com endereço de email válido"
 
 #: myopac.summary.email.success
 msgid "Email address successfully updated"
-msgstr ""
+msgstr "Endereço de email atualizado com sucesso"
 
 #: myopac.summary.email.failed
 msgid "Email address update failed"
-msgstr ""
+msgstr "A atualização de endereço de email falhou"
 
 #: myopac.summary.password.error
 msgid "Passwords are empty or do not match"
-msgstr ""
+msgstr "As senhas são vazias ou não correspondem"
 
 #: myopac.summary.password.success
 msgctxt "myopac.summary.password.success"
 msgid "Password successfully updated"
-msgstr ""
+msgstr "Senha atualizada com sucesso"
 
 #: myopac.summary.password.failure
 msgid "Password update failed"
-msgstr ""
+msgstr "A atualização de senha falhou"
 
 #. =================================================================
 #. Advanced Search Page
 #. =================================================================
 #: opac.advanced.wizard.contains
 msgid "Selected field contains the following words"
-msgstr ""
+msgstr "Os Campos selecionados contém as seguintes palavras"
 
 #: opac.advanced.wizard.nocontains
 msgid "Selected field does <u>not</u> contain the following words"
-msgstr ""
+msgstr "O campo selecionado <u>não</u> contém as seguintes palavras"
 
 #: opac.advanced.wizard.exact
 msgid "Selected field contains the <u>exact</u> phrase"
-msgstr ""
+msgstr "O campo selecionado contém <u>exatamente</u> a frase"
 
 #: opac.advanced.refined.title
 msgid "Refined Advanced Search"
-msgstr ""
+msgstr "Busca Avançada Refinada"
 
 #: opac.advanced.refined.title_contains
 msgid "Title contains the following words"
-msgstr ""
+msgstr "No título contém as seguintes palavras"
 
 #: opac.advanced.refined.author_contains
 msgid "Author contains the following words"
-msgstr ""
+msgstr "No autor contém as seguintes palavras"
 
 #: opac.advanced.refined.subject_contains
 msgid "Subject contains the following words"
-msgstr ""
+msgstr "No assunto contém as seguintes palavras"
 
 #: opac.advanced.refined.series_contains
 msgid "Series contains the following words"
-msgstr ""
+msgstr "Nas séries contém as seguintes palavras"
 
 #: opac.advanced.refined.contains
 msgid "Contains"
-msgstr ""
+msgstr "Contém"
 
 #: opac.advanced.refined.nocontains
 msgid "Does not contain"
-msgstr ""
+msgstr "Não contém"
 
 #: opac.advanced.refined.exact
 msgid "Matches Exactly"
-msgstr ""
+msgstr "Correspondem Exatamente"
 
 #: opac.advanced.marc.warning
 msgid "For Librarians"
-msgstr ""
+msgstr "Para Bibliotecários"
 
 #: opac.advanced.marc.title
 msgctxt "opac.advanced.marc.title"
 msgid "MARC Expert Search"
-msgstr ""
+msgstr "Busca avançada por MARC"
 
 #: opac.advanced.marc.tag
 msgid "MARC Tag"
-msgstr ""
+msgstr "MARC Tag"
 
 #: opac.advanced.marc.ind1
 msgid "Indicator 1"
-msgstr ""
+msgstr "Indicador 1"
 
 #: opac.advanced.marc.ind2
 msgid "Indicator 2"
-msgstr ""
+msgstr "Indicador 2"
 
 #: opac.advanced.marc.subfield
 msgid "Subfield"
-msgstr ""
+msgstr "Subcampo"
 
 #: opac.advanced.marc.value
 msgid "Value"
-msgstr ""
+msgstr "Valor"
 
 #: opac.advanced.marc.addrow
 msgid "Add a new row"
-msgstr ""
+msgstr "Inclui uma nova linha"
 
 #: opac.advanced.quick.title
 msgctxt "opac.advanced.quick.title"
 msgid "Quick Search"
-msgstr ""
+msgstr "Busca Rápida"
 
 #: opac.advanced.quick.isbn
 msgctxt "opac.advanced.quick.isbn"
 msgid "ISBN"
-msgstr ""
+msgstr "ISBN"
 
 #: opac.advanced.quick.issn
 msgid "ISSN"
-msgstr ""
+msgstr "ISSN"
 
 #: opac.advanced.quick.lccn
 msgid "LCCN"
-msgstr ""
+msgstr "LCCN"
 
 #. title control number
 #: opac.advanced.quick.tcn
 msgid "TCN"
-msgstr ""
+msgstr "TCN"
 
 #: opac.advanced.quick.barcode
 msgid "Item Barcode"
-msgstr ""
+msgstr "Código de Barras do Item"
 
 #: opac.advanced.quick.cn
 msgctxt "opac.advanced.quick.cn"
 msgid "Call Number"
-msgstr ""
+msgstr "Número de Chama"
 
 #: opac.advanced.copy_loc_filter
 msgid "Shelving Location"
-msgstr ""
+msgstr "Localização nas Prateleiras"
 
 #. ==========================================================
 #. MARC expert search
@@ -1145,30 +1222,30 @@ msgstr ""
 #: search.marc
 msgctxt "search.marc"
 msgid "MARC Expert Search"
-msgstr ""
+msgstr "Pesquisa Avançada MARC"
 
 #: search.marc.tag
 msgid "Tag:"
-msgstr ""
+msgstr "Tag:"
 
 #: search.marc.subfield
 msgid "Subfield:"
-msgstr ""
+msgstr "Subcampo:"
 
 #: search.marc.value
 msgid "Value:"
-msgstr ""
+msgstr "Valor:"
 
 #: search.marc.add.row
 msgid "Add Row"
-msgstr ""
+msgstr "Inclui Linha"
 
 #. ==========================================================
 #. Status bar
 #. ==========================================================
 #: status.results
 msgid "Including results for"
-msgstr ""
+msgstr "Incluindo resultados para"
 
 #. ==========================================================
 #. Tips
@@ -1176,100 +1253,100 @@ msgstr ""
 #: tips.label
 msgctxt "tips.label"
 msgid "Tip:"
-msgstr ""
+msgstr "Dica:"
 
 #. =================================================================
 #. More generic stuff
 #. =================================================================
 #: opac.session_expiring
 msgid "Your login session will timeout in 1 minute unless there is activity."
-msgstr ""
+msgstr "Sua sessão irá expirar em 1 minuto a menos que haja atividade."
 
 #: opac.session_expired
 msgid "Your login session has expired"
-msgstr ""
+msgstr "Sua sessão expirou"
 
 #: navigate.home
 msgid "Home"
-msgstr ""
+msgstr "Início"
 
 #: navigate.home.title
 msgid "Go to the Home page"
-msgstr ""
+msgstr "Ir para Página Inicial"
 
 #: opac.navigate.advanced
 msgctxt "opac.navigate.advanced"
 msgid "Advanced Search"
-msgstr ""
+msgstr "Busca Avançada"
 
 #: opac.navigate.advanced.title
 msgid "Go to the Advanced Search Page"
-msgstr ""
+msgstr "Ir para Página de Pesquisa Avançada"
 
 #: navigate.myopac
 msgctxt "navigate.myopac"
 msgid "My Account"
-msgstr ""
+msgstr "Minha Conta"
 
 #: opac.navigate.myopac
 msgctxt "opac.navigate.myopac"
 msgid "My Account"
-msgstr ""
+msgstr "Minha Conta"
 
 #: navigate.myopac.title
 msgid "Go to My OPAC"
-msgstr ""
+msgstr "Ir para Meu OPAC"
 
 #: navigate.login
 msgid "Log in"
-msgstr ""
+msgstr "Conectar"
 
 #: navigate.login.title
 msgid "Log in for personalized features"
-msgstr ""
+msgstr "Conexão para recursos personalizados"
 
 #: navigate.logout
 msgctxt "navigate.logout"
 msgid "Log out"
-msgstr ""
+msgstr "Desconectar"
 
 #: navigate.logout.title
 msgctxt "navigate.logout.title"
 msgid "Log out"
-msgstr ""
+msgstr "Desconectar"
 
 #: opac.navigate.selectNewOrg
 msgid "Choose a different library"
-msgstr ""
+msgstr "Escolha uma biblioteca diferente"
 
 #: opac.navigate.selectOrg
 msgctxt "opac.navigate.selectOrg"
 msgid "Choose a library to search"
-msgstr ""
+msgstr "Escolha uma biblioteca para pesquisar"
 
 #: navigate.loggedinas
 msgid "You are logged in as "
-msgstr ""
+msgstr "Você se conectou como "
 
 #: navigate.loggedinas.title
 msgid "Logged in as..."
-msgstr ""
+msgstr "Conectado como..."
 
 #: navigate.titleGroupResults
 msgid "My Search Results"
-msgstr ""
+msgstr "Meus Resultados Encontrados"
 
 #: navigate.titleResults
 msgid "My Title Results"
-msgstr ""
+msgstr "Meus Títulos Encontrados"
 
 #: navigate.title.details
 msgid "My Title Details"
-msgstr ""
+msgstr "Meus Detalhes de Títulos"
 
 #: navigate.record.details
 msgid "Record Details"
-msgstr ""
+msgstr "Detalhes de Registro"
 
 #. =================================================================
 #. Footer
@@ -1277,446 +1354,446 @@ msgstr ""
 #: footer.basic
 msgctxt "footer.basic"
 msgid "Basic Catalog (HTML only)"
-msgstr ""
+msgstr "Catálogo Básico (somente HTML)"
 
 #: footer.find.library
 msgid "Find a Library Near Me"
-msgstr ""
+msgstr "Encontre uma Biblioteca Próxima a Mim"
 
 #: footer.find.url
 msgid "http://www.georgialibraries.org/lib/directories/pineslibdir.html"
-msgstr ""
+msgstr "http://www.georgialibraries.org/lib/directories/pineslibdir.html"
 
 #: footer.help.url
 msgid "http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help"
-msgstr ""
+msgstr "http://open-ils.org/dokuwiki/doku.php?id=evergreen-user:opac_help"
 
 #: footer.help
 msgid "Help"
-msgstr ""
+msgstr "Ajuda"
 
 #: footer.library.url
 msgid "http://www.georgialibraries.org/public/pines.html"
-msgstr ""
+msgstr "http://www.georgialibraries.org/public/pines.html"
 
 #: footer.library.about
 msgid "About PINES"
-msgstr ""
+msgstr "Sobre PINES"
 
 #: footer.union.url
 msgid "http://www.galileo.usg.edu/"
-msgstr ""
+msgstr "http://www.galileo.usg.edu/"
 
 #: footer.union
 msgid "GALILEO"
-msgstr ""
+msgstr "GALILEO"
 
 #: footer.copyright
 msgid "Copyright &#xA9; 2006-2008 Georgia Public Library Service"
-msgstr ""
+msgstr "Copyright &#xA9; 2006 Georgia Public Library Service"
 
 #. Introduces the logo for the project
 #: footer.logo
 msgid "Powered by"
-msgstr ""
+msgstr "Powered by"
 
 #. =================================================================
 #. My OPAC
 #. =================================================================
 #: myopac.account
 msgid "Account Summary"
-msgstr ""
+msgstr "Sumário da Conta"
 
 #: myopac.checkouts
 msgid "Items Checked Out"
-msgstr ""
+msgstr "Item Emprestados"
 
 #: myopac.holds
 msgid "Items on Hold"
-msgstr ""
+msgstr "Itens em Reserva"
 
 #: myopac.fines
 msgid "Fines"
-msgstr ""
+msgstr "Multas"
 
 #: myopac.preferences
 msgid "Account Preferences"
-msgstr ""
+msgstr "Preferências da Conta"
 
 #: myopac.bookbags
 msgctxt "myopac.bookbags"
 msgid "My Bookbags"
-msgstr ""
+msgstr "Minhas Sacolas"
 
 #. =================================================================
 #. Sidebar
 #. =================================================================
 #: sidebar.relevantSubjects.headerLabel
 msgid "Relevant Subjects"
-msgstr ""
+msgstr "Assuntos Relevantes"
 
 #: sidebar.relevantAuthors.headerLabel
 msgid "Relevant Authors"
-msgstr ""
+msgstr "Autores Relevantes"
 
 #: sidebar.relevantSeries.headerLabel
 msgid "Relevant Series"
-msgstr ""
+msgstr "Séries Relevantes"
 
 #: sidebar.relevantReviews.headerLabel
 msgctxt "sidebar.relevantReviews.headerLabel"
 msgid "Reviews"
-msgstr ""
+msgstr "Revisões"
 
 #: sidebar.quick.search
 msgctxt "sidebar.quick.search"
 msgid "Quick Search"
-msgstr ""
+msgstr "Pesquisa Rápida"
 
 #: sidebar.copy.not.found
 msgid "No copy with the requested barcode was found"
-msgstr ""
+msgstr "Nenhum exemplar encontrado para o código-de-barras solicitado"
 
 #. =================================================================
 #. Search formats
 #. =================================================================
 #: opac.search.books
 msgid "Books"
-msgstr ""
+msgstr "Livros"
 
 #: opac.search.allFormats
 msgid "All Formats"
-msgstr ""
+msgstr "Todos Formatos"
 
 #: opac.search.largePrint
 msgid "Large Print Books"
-msgstr ""
+msgstr "Livros Impressos Grandes"
 
 #: opac.search.audioBooks
 msgid "Audiobooks"
-msgstr ""
+msgstr "Livros em Áudio"
 
 #: opac.search.videoRecordings
 msgid "Video Recordings"
-msgstr ""
+msgstr "Gravações em Vídeo"
 
 #: opac.search.music
 msgid "Music"
-msgstr ""
+msgstr "Música"
 
 #: opac.search.electronic
 msgid "Electronic Resources"
-msgstr ""
+msgstr "Recursos Eletrônicos"
 
 #: opac.search.nowSearching
 msgid "Now Searching"
-msgstr ""
+msgstr "Agora Pesquisando"
 
 #. =================================================================
 #. Page Titles
 #. =================================================================
 #: opac.title.home
 msgid "Evergreen Home"
-msgstr ""
+msgstr "Evergreen Página Inicial"
 
 #: opac.title.mresult
 msgid "Evergreen Title Groups"
-msgstr ""
+msgstr "Grupos de Títulos Evergreen"
 
 #: opac.title.rresult
 msgid "Evergreen Titles"
-msgstr ""
+msgstr "Títulos Evergreen"
 
 #: opac.title.myopac
 msgid "Evergreen My Account"
-msgstr ""
+msgstr "Minha Conta Evergreen"
 
 #: opac.title.rdetail
 msgid "Evergreen Title Details"
-msgstr ""
+msgstr "Detalhes de Títulos Evergreen"
 
 #: opac.title.advanced
 msgid "Evergreen Advanced Search"
-msgstr ""
+msgstr "Pesquisa Avançada Evergreen"
 
 #: opac.title.reqitems
 msgid "Evergreen Request Items"
-msgstr ""
+msgstr "Ítens Solicitados Evergreen"
 
 #: opac.title.cnbrowse
 msgid "Evergreen Call Number Browse"
-msgstr ""
+msgstr "Navegação por Nº de Chamadas Evergreen"
 
 #: opac.holds.forMe
 msgid "Place this hold for myself"
-msgstr ""
+msgstr "Por esta reserva para eu mesmo"
 
 #: opac.holds.xulRecipient
 msgid "Enter recipient barcode"
-msgstr ""
+msgstr "Entre com o código de barras do recebedor"
 
 #: opac.holds.recipient
 msgid "Recipient"
-msgstr ""
+msgstr "Recebedor"
 
 #: opac.holds.placeHold
 msgctxt "opac.holds.placeHold"
 msgid "Place Hold"
-msgstr ""
+msgstr "Reservar"
 
 #: opac.holds.exportRefWorks
 msgctxt "opac.holds.exportRefWorks"
 msgid "Export to RefWorks"
-msgstr ""
+msgstr "Exportar para RefWorks"
 
 #: opac.holds.contactPhone
 msgid "Contact telephone number"
-msgstr ""
+msgstr "Número de telefone para contato"
 
 #: opac.holds.contactEmail
 msgid "Contact email address"
-msgstr ""
+msgstr "Endereço de email para contato"
 
 #: opac.holds.pickupLocation
 msgid "Pickup location"
-msgstr ""
+msgstr "Local de coleta"
 
 #: opac.holds.success
 msgid "Hold was successfully placed"
-msgstr ""
+msgstr "A reserva foi realizada com sucesso"
 
 #: opac.holds.failure
 msgid "Hold was not successfully placed"
-msgstr ""
+msgstr "Sem sucesso ao realizar a reserva"
 
 #. =================================================================
 #. Advanced
 #. =================================================================
 #: advanced.search.title
 msgid "Search Input"
-msgstr ""
+msgstr "Entrada de Pesquisa"
 
 #: advanced.add.row
 msgid "Add Search Row"
-msgstr ""
+msgstr "Inclui Linha para Pesquisa"
 
 #: advanced.search.submit
 msgid "Submit Search"
-msgstr ""
+msgstr "Executar Pesquisa"
 
 #: advanced.search.reset
 msgid "Reset Form"
-msgstr ""
+msgstr "Redefine Forma"
 
 #: advanced.search.filters
 msgid "Search Filters"
-msgstr ""
+msgstr "Filtros de Pesquisa"
 
 #: advanced.item.form
 msgid "Item Form"
-msgstr ""
+msgstr "Forma do Item"
 
 #: advanced.item.type
 msgid "Item Type"
-msgstr ""
+msgstr "Tipo do Item"
 
 #: advanced.link
 msgid "Advanced"
-msgstr ""
+msgstr "Avançado"
 
 #: advanced.basic.link
 msgid "Basic"
-msgstr ""
+msgstr "Básico"
 
 #: advanced.literary.form
 msgid "Literary Form"
-msgstr ""
+msgstr "Forma Literária"
 
 #: advanced.non.fiction
 msgid "Non Fiction"
-msgstr ""
+msgstr "Não Ficção"
 
 #: advanced.fiction
 msgid "Fiction"
-msgstr ""
+msgstr "Ficção"
 
 #: advanced.language
 msgid "Language"
-msgstr ""
+msgstr "Idioma"
 
 #: advanced.audience
 msgid "Audience"
-msgstr ""
+msgstr "Público"
 
 #: advanced.adult
 msgid "Adult"
-msgstr ""
+msgstr "Adulto"
 
 #: advanced.juvenile
 msgid "Juvenile"
-msgstr ""
+msgstr "Juvenil"
 
 #: advanced.general
 msgid "General"
-msgstr ""
+msgstr "Geral"
 
 #: advanced.sort.criteria
 msgid "Sort Criteria"
-msgstr ""
+msgstr "Critério de Ordenação"
 
 #: advanced.search.library
 msgid "Search Library"
-msgstr ""
+msgstr "Biblioteca de Pesquisa"
 
 #: advanced.relevance
 msgid "Relevance"
-msgstr ""
+msgstr "Relevância"
 
 #: advanced.pubdate
 msgid "Publication date"
-msgstr ""
+msgstr "Data de Publicação"
 
 #: advanced.sort.asc
 msgid "Ascending / A to Z"
-msgstr ""
+msgstr "Ascendente / A até Z"
 
 #: advanced.sort.desc
 msgid "Descending / Z to A"
-msgstr ""
+msgstr "Descendente / Z até A"
 
 #: advanced.frbrize
 msgid "Group Formats and Editions"
-msgstr ""
+msgstr "Formatos de Grupo e Edições"
 
 #: advanced.go
 msgid "Go"
-msgstr ""
+msgstr "Ir"
 
 #: advanced.biblevel
 msgid "Bib Level"
-msgstr ""
+msgstr "Nível Cat."
 
 #: advanced.filter.pubyear
 msgid "Publication Year"
-msgstr ""
+msgstr "Ano de Publicação"
 
 #: advanced.filter.pubyear.equals
 msgid "Is"
-msgstr ""
+msgstr "esta"
 
 #: advanced.filter.pubyear.before
 msgid "Before"
-msgstr ""
+msgstr "Antes"
 
 #: advanced.filter.pubyear.after
 msgid "After"
-msgstr ""
+msgstr "Depois"
 
 #: advanced.filter.pubyear.between
 msgid "Between"
-msgstr ""
+msgstr "Entre"
 
 #. =================================================================
 #. Rdetail
 #. =================================================================
 #: rdetail.print
 msgid "print these details"
-msgstr ""
+msgstr "imprima esses detalhes"
 
 #: rdetail.cn.barcode
 msgctxt "rdetail.cn.barcode"
 msgid "Barcode"
-msgstr ""
+msgstr "Código de Barras"
 
 #: rdetail.cn.location
 msgid "Location"
-msgstr ""
+msgstr "Local"
 
 #: rdetail.cn.hold.age
 msgid "Age Hold Protection"
-msgstr ""
+msgstr "Proteção de Reserva por Tempo"
 
 #: rdetail.cn.genesis
 msgid "Create Date"
-msgstr ""
+msgstr "Data de Cria"
 
 #: rdetail.cn.holdable
 msgid "Holdable"
-msgstr ""
+msgstr "Reservável"
 
 #: rdetail.cn.due
 msgctxt "rdetail.cn.due"
 msgid "Due Date"
-msgstr ""
+msgstr "Data de Vencimento"
 
 #: rdetail.cn.more
 msgid "more info..."
-msgstr ""
+msgstr "mais info..."
 
 #: rdetail.cn.less
 msgid "less info"
-msgstr ""
+msgstr "menos info"
 
 #: rdetail.cn.hold
 msgid "place hold"
-msgstr ""
+msgstr "reservar"
 
 #: rdetail.cn.disabled
 msgid "- Disabled -"
-msgstr ""
+msgstr "- Desabilitado -"
 
 #: rdetail.cn.note
 msgid "Copy Note"
-msgstr ""
+msgstr "Observação do Exemplar"
 
 #: rdetail.cn.category
 msgid "Copy Category"
-msgstr ""
+msgstr "Categoria do Exemplar"
 
 #: rdetail.cn.print
 msgid "Print Page"
-msgstr ""
+msgstr "Imprimir Página"
 
 #: rdetail.page.results
 msgid "First results page"
-msgstr ""
+msgstr "Primeira página de resultados"
 
 #. Result # &common.of; #
 #: rdetail.result
 msgid "Result"
-msgstr ""
+msgstr "Resultado"
 
 #: rdetail.start
 msgid "Start"
-msgstr ""
+msgstr "Inicío"
 
 #: rdetail.page.previous
 msgid "Previous page"
-msgstr ""
+msgstr "Página Anterior"
 
 #: rdetail.page.next
 msgid "Next page"
-msgstr ""
+msgstr "Próxima página"
 
 #: rdetail.page.last
 msgid "Last results page"
-msgstr ""
+msgstr "Última pág. de resultados"
 
 #: rdetail.end
 msgid "End"
-msgstr ""
+msgstr "Fim"
 
 #: rdetail.more
 msgid "More Actions..."
-msgstr ""
+msgstr "Mais ações..."
 
 #: rdetail.bookbag.add
 msgid "Add to bookbag"
-msgstr ""
+msgstr "Por na sacola"
 
 #: rdetail.bookbag.create
 msgid "Create a new bookbag"
-msgstr ""
+msgstr "Criar nova sacola"
 
 #: rdetail.record.deleted
 msgid ""
@@ -1724,339 +1801,339 @@ msgid ""
 "We recommend that you remove this title from any bookbags it may have been "
 "added to."
 msgstr ""
+"Este registro foi excluído do banco de dados. \n"
+"Recomendamos que você remova este título das bolsas-de-livros que ele fora "
+"incluído."
 
 #: rdetail.none
 msgid "(none)"
-msgstr ""
+msgstr "(nenhum)"
 
 #: rdetail.bookbag.add.success
 msgid "Item successfully added to bookbag"
-msgstr ""
+msgstr "Item posto com sucesso na sacola"
 
 #: rdetail.bookbag.name
 msgid "Enter the name of the new bookbag"
-msgstr ""
+msgstr "Entre com o nome da nova sacola"
 
 #: rdetail.bookbag.create.success
 msgid "Bookbag successfully created"
-msgstr ""
+msgstr "Sacola criada com sucesso"
 
 #: rdetail.detailMain.headerLabel
 msgid "Record Summary"
-msgstr ""
+msgstr "Sumário do Registro"
 
 #: rdetail.detailMain.subjects
 msgctxt "rdetail.detailMain.subjects"
 msgid "Subjects"
-msgstr ""
+msgstr "Assuntos"
 
 #: rdetail.detailMain.abstract
 msgid "Abstract"
-msgstr ""
+msgstr "Resumo"
 
 #: rdetail.detailMain.viewMarc
 msgid "View MARC"
-msgstr ""
+msgstr "Ver MARC"
 
 #: rdetail.detailMain.hideMarc
 msgid "Return to title details"
-msgstr ""
+msgstr "Retorna aos detalhes do título"
 
 #: rdetail.author.search
 msgid "Perform an author search"
-msgstr ""
+msgstr "Faz uma pesquisa por autor"
 
 #: rdetail.copyInfo.headerLabel
 msgid "Copy Information"
-msgstr ""
+msgstr "Informações do Exemplar"
 
 #: rdetail.copyInfo.library
 msgctxt "rdetail.copyInfo.library"
 msgid "Library"
-msgstr ""
+msgstr "Biblioteca"
 
 #: rdetail.copyInfo.callnumber
 msgid "Callnumber"
-msgstr ""
+msgstr "Nº de Chamada"
 
 #: rdetail.copyInfo.copylocation
 msgid "Copy Location"
-msgstr ""
+msgstr "Local do Exemplar"
 
 #: rdetail.copyInfo.local
 msgid "View Copy Information for this location only"
-msgstr ""
+msgstr "Ver Informações do Exemplar apenas para esta localização"
 
 #: rdetail.copyInfo.all
 msgid "View copy information for all libraries"
-msgstr ""
+msgstr "Ver informações de exemplar para todas bibliotecas"
 
 #: rdetail.copyInfo.actions
 msgid "Actions"
-msgstr ""
+msgstr "Ações"
 
 #: rdetail.copyInfo.print
 msgid "Print Call Numbers for this library"
-msgstr ""
+msgstr "Imprimir os Números de Chamada para esta biblioteca"
 
 #: rdetail.copyInfo.details
 msgid "Copy Details"
-msgstr ""
+msgstr "Detalhes do Exemplar"
 
 #: rdetail.copyInfo.browse
 msgid "Browse Call Numbers"
-msgstr ""
+msgstr "Folhear Nºs de Chamada"
 
 #: rdetail.copyInfo.hold
 msgctxt "rdetail.copyInfo.hold"
 msgid "Place Hold"
-msgstr ""
+msgstr "Reservar"
 
 #: rdetail.extras.summary
 msgid "Copy Summary"
-msgstr ""
+msgstr "Sumário do Exemplar"
 
 #: rdetail.extras.browser
 msgctxt "rdetail.extras.browser"
 msgid "Shelf Browser"
-msgstr ""
+msgstr "Navegador de Prateleira"
 
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
 msgid "Reviews"
-msgstr ""
+msgstr "Revisões"
 
 #: rdetail.extras.toc
 msgid "Table of Contents"
-msgstr ""
+msgstr "Tabela de Conteúdo"
 
 #: rdetail.extras.excerpt
 msgid "Excerpt"
-msgstr ""
+msgstr "Excerto"
 
 #: rdetail.extras.preview
 msgid "Preview"
-msgstr ""
+msgstr "Prever"
 
 #: rdetail.extras.author.notes
 msgid "Author Notes"
-msgstr ""
+msgstr "Notas dos Autores"
 
 #: rdetail.extras.annotation
 msgid "Annotation"
-msgstr ""
+msgstr "Anotações"
 
 #: rdetail.extras.marc
 msgid "MARC Record"
-msgstr ""
+msgstr "Registro MARC"
 
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
-msgstr ""
+msgstr "Não existem nº de chamadas para este item nesta localização"
 
 #: rdetail.extras.call.local
 msgid "Local Call Numbers:"
-msgstr ""
+msgstr "Nº de Chamada Local:"
 
 #: rdetail.extras.preview.fulltext
 msgid "Full text"
-msgstr ""
+msgstr "Texto Completo"
 
 #: rdetail.extras.preview.title
 msgid "See the full text of this book."
-msgstr ""
+msgstr "Veja o texto completo deste livro."
 
 #: rdetail.extras.preview.badge
 msgid "Show a preview of this book from Google Book Search"
-msgstr ""
+msgstr "Mostra um preview deste livro do Google Book Search"
 
 #: rdetail.loading
 msgid "Loading copy infomation..."
-msgstr ""
+msgstr "Carregando informações do exemplar..."
 
 #: rdetail.noneAvailable
 msgid " * There are no copies in this location"
-msgstr ""
+msgstr " * Não exitem exemplares nesta localização"
 
 #: rdetail.summary.online
 msgid "Online Resources"
-msgstr ""
+msgstr "Recursos Online"
 
 #: rdetail.summary.subjects
 msgctxt "rdetail.summary.subjects"
 msgid "Subjects"
-msgstr ""
+msgstr "Assuntos"
 
 #: result.sort_by
 msgid "Sort Results by Relevance"
-msgstr ""
+msgstr "Ordenar Resultados por Relevância"
 
 #: result.sort_by.title
 msgid "Sort Results by Title"
-msgstr ""
+msgstr "Ordenar Resultados por Título"
 
 #: result.sort_by.author
 msgid "Sort Results by Author"
-msgstr ""
+msgstr "Ordenar Resultados por Autor"
 
 #: result.sort_by.pubdate
 msgid "Sort Results by Publication Date"
-msgstr ""
+msgstr "Ordenar Resultados por Data de Publicação"
 
 #: result.limit2avail
 msgid "Limit to Available"
-msgstr ""
+msgstr "Limite para Disponíveis"
 
 #: result.info.copies
 msgid "Available copies / Total copies"
-msgstr ""
+msgstr "Exemplares disponíveis / Total de Exemplares"
 
 #: result.info.no.items
 msgid "No items with the selected format were found in this location."
 msgstr ""
+"Nenhum item com o formato selecionado foi encontrado nesta localização"
 
 #: result.info.format.items
 msgid "Listed below are all items in the catalog with the chosen format."
 msgstr ""
+"Listados abaixo estão todos os itens no catálogo com o formato escolhido."
 
 #: result.info.show
 msgid "Show records for"
-msgstr ""
+msgstr "Mostrar registros para"
 
 #: result.lowhits.few
 msgid "Few hits were returned for your search."
-msgstr ""
+msgstr "Poucos resultados retornaram para sua pesquisa."
 
 #: result.lowhits.zero
 msgid "Zero hits were returned for your search."
-msgstr ""
+msgstr "Nenhum resultado obtido para sua pesquisa."
 
 #: result.lowhits.did.you.mean
 msgid "Maybe you meant:"
-msgstr ""
+msgstr "Talvez você pretenda:"
 
 #: result.lowhits.formats
 msgid "You will find more hits when searching all item formats:"
 msgstr ""
+"Você encontrará mais resultados quando pesquisar por itens em todos formatos"
 
 #: result.lowhits.formats.search
 msgid "Search again with all formats?"
-msgstr ""
+msgstr "Pesquisar novamente com todos formatos?"
 
 #: result.lowhits.related
 msgid "You may also like to try these related searches:"
-msgstr ""
+msgstr "Você pode também querer tentar essas pesquisas relacionadas"
 
 #: result.lowhits.expand
 msgid "You may also wish to expand your search range to:"
-msgstr ""
+msgstr "Você pode também desejar expandir seu leque de pesquisas para:"
 
 #: result.lowhits.class
 msgid "You can try searching the same terms by:"
-msgstr ""
+msgstr "Você pode tentar pesquisar os mesmos termos por:"
 
 #: result.lowhits.title
 msgid "title"
-msgstr ""
+msgstr "título"
 
 #: result.lowhits.author
 msgid "author"
-msgstr ""
+msgstr "autor"
 
 #: result.lowhits.subject
 msgid "subject"
-msgstr ""
+msgstr "assunto"
 
 #: result.lowhits.series
 msgid "series"
-msgstr ""
+msgstr "séries"
 
 #: result.lowhits.keyword
 msgid "keyword"
-msgstr ""
+msgstr "palavra-chave"
 
 #: result.table.keyword
 msgid "View titles for this record"
-msgstr ""
+msgstr "ver títulos para este registro"
 
 #: result.table.author
 msgid "Perform an Author Search"
-msgstr ""
+msgstr "Realizar uma Pesquisa por Autor"
 
 #: result.googleBooks.browse
 msgid "Browse in Google Books Search"
-msgstr ""
+msgstr "Consultar no Google Books Search"
 
 #: common.call.number.label
 msgid "Call Number:"
-msgstr ""
+msgstr "Nº de Chamada:"
 
 #: common.isbn.label
 msgid "ISBN:"
-msgstr ""
+msgstr "ISBN:"
 
 #: common.issn.label
 msgid "ISSN:"
-msgstr ""
+msgstr "ISSN:"
 
 #: common.copy.barcode.label
 msgid "Copy Barcode:"
-msgstr ""
+msgstr "Código-de-barras do Exemplar:"
 
 #: common.hold.place
 msgid "Place hold for my account"
-msgstr ""
+msgstr "Por em reserva para a minha conta"
 
 #: common.hold.check
 msgid "Checking for possibility of hold fulfillment..."
-msgstr ""
+msgstr "Checando a possibilidade de atendimento para a reserva..."
 
 #: common.hold.create
 msgid "Create / Edit a Hold"
-msgstr ""
+msgstr "Criar / Editar uma Reserva"
 
 #: common.hold.update
 msgid "Update Hold"
-msgstr ""
+msgstr "Atualizar Reserva"
 
 #: common.hold.type.label
 msgid "Hold Type:"
-msgstr ""
+msgstr "Tipo de Reserva:"
 
 #: common.hold.volume
 msgid "Volume Hold"
-msgstr ""
+msgstr "Volume da Reserva"
 
 #: common.hold.copy
 msgid "Copy Hold"
-msgstr ""
+msgstr "Reservar Exemplar"
 
 #: common.hold.advanced
 msgid "Advanced Hold Options"
-msgstr ""
+msgstr "Opções Avançadas de Reserva"
 
 #: common.hold.delivery
 msgid "Please select a physical location where your hold can be delivered."
 msgstr ""
-
-#: common.hold.checked_out
-msgid "This item is already checked out."
-msgstr ""
-
-#: common.hold.checked_out.override
-msgid ""
-"This item is already checked out.  Would you like to place the hold anyway?"
-msgstr ""
+"Por favor selecione um local físico para onde sua reserva seja entregue."
 
 #: common.hold.exists
 msgid "A hold already exists on the requested item."
-msgstr ""
+msgstr "Já existe uma reserva para o item solicitado."
 
 #: common.hold.exists.override
 msgid ""
-"A hold already exists on the requested item. Would you like to create the "
-"hold anyway?"
+"A hold already exists on the requested \n"
+"item. Would you like to create the hold anyway?"
 msgstr ""
+"Uma reserva já existe para o item solicitado. \n"
+"Você gostaria de criar a reserva mesmo assim?"
 
 #: common.hold.barred
 msgid ""
@@ -2064,6 +2141,9 @@ msgid ""
 "\"Staff Notes\" section of your \"My Account\" page or contact your local "
 "library."
 msgstr ""
+"LEITOR BARRADO. Por favor veja as observações na seção \"Observações da "
+"Administração\" de sua página  \"Minha Conta\" ou contacte sua biblioteca "
+"local."
 
 #: common.hold.item.invalid
 msgid ""
@@ -2072,21 +2152,26 @@ msgid ""
 "and \n"
 "place a new one."
 msgstr ""
+"Esta reserva não é mais válida. É provável que o \\ destino para a reserva "
+"foi excluído do sistema. Por favor cancelar esta reserva e \\ ncrie uma nova."
 
 #: common.hold.patron.invalid
 msgid "The patron barcode entered as the hold recipient is invalid."
 msgstr ""
+"O código-de-barras de leitor fornecido para receber a reserva é inválido."
 
 #. Was (??), perhaps change to a button or icon?
 #: common.help
 msgid "(Help)"
-msgstr ""
+msgstr "(Ajuda)"
 
 #: common.phone.format.help
 msgid ""
 "The phone number does not have the correct format. The expected format is "
 "XXX-YYY-ZZZZ"
 msgstr ""
+"O número de telefone não tem o formato correto. O formato esperado é XXX-"
+"YYYY-ZZZZ"
 
 #: common.hold.failed
 msgid ""
@@ -2096,334 +2181,348 @@ msgid ""
 "It is also possible that you have exceeded the number of allowable holds. \n"
 "For further information, please consult your local librarian."
 msgstr ""
+"Nenhum item foi encontrado que possa atender a reserva solicitada. \\ nÉ "
+"possível que escolhendo um formato diferente resultará em um reserva com. \\ "
+"nTambém é possível que você excedeu o número máximo permitido de reservas. \\"
+" nPara mais informações, queira consultar o seu  bibliotecário local."
 
 #: common.control.click
 msgid "(control-click to select multiple formats)"
-msgstr ""
+msgstr "(control-clique para selecionar múltiplos formatos)"
 
 #: common.format.alternatives
 msgid "Acceptable Alternative Formats:"
-msgstr ""
+msgstr "Formatos Alternativos Aceitos:"
 
 #: common.phone.format
 msgid "(XXX-YYY-ZZZZ)"
-msgstr ""
+msgstr "(XXX-YYYY-ZZZZ)"
 
 #: common.phone.enable
 msgid "Enable phone notifications for this hold?"
-msgstr ""
+msgstr "Habilita notificação por telefone para esta reserva?"
 
 #: common.email.enable
 msgid "Enable email notifications for this hold?"
-msgstr ""
+msgstr "Habilita notificação por email para esta reserva?"
 
 #: common.email.none
 msgid "(Patron has no configured email address)"
-msgstr ""
+msgstr "(O Leitor não possui um email configurado)"
 
 #: common.email.set
 msgid ""
 "(See <a class='classic_link' id='holds.no_email.my_account'>My Account</a> "
 "for setting your email address)"
 msgstr ""
+"(Veja <a class='classic_link' id='holds.no_email.my_account'>Minha Conta</a> "
+"para definir seu endereço de email)"
 
 #: common.keywords.label
 msgid "Keywords:"
-msgstr ""
+msgstr "PalavrasChave:"
 
 #: common.physical.label
 msgid "Physical Description:"
-msgstr ""
+msgstr "Descrição Física:"
 
 #: common.series.label
 msgid "Series:"
-msgstr ""
+msgstr "Séries:"
 
 #: common.subject.label
 msgid "Subject:"
-msgstr ""
+msgstr "Assunto:"
 
 #: common.title.label
 msgid "Title:"
-msgstr ""
+msgstr "Título:"
 
 #: common.author.label
 msgid "Author:"
-msgstr ""
+msgstr "Autor:"
 
 #: common.format.label
 msgid "Format:"
-msgstr ""
+msgstr "Formato:"
 
 #: library.select
 msgid "Find results in"
-msgstr ""
+msgstr "Encontrar resultados em"
 
 #: library.select.label
 msgid "Choose a different library..."
-msgstr ""
+msgstr "Escolha uma biblioteca diferente..."
 
 #: library.select.help
 msgctxt "library.select.help"
 msgid "Choose a library to search"
-msgstr ""
+msgstr "Escolha uma biblioteca para pesquisar"
 
 #: login.username
 msgid "Enter your username or library barcode"
-msgstr ""
+msgstr "Entre com seu nome de usuário ou código-de-barras da biblioteca"
 
 #: login.password.change
 msgid "Change Password"
-msgstr ""
+msgstr "Alterar Senha"
 
 #: login.first.time
 msgid ""
 "This appears to be the first time you have logged in. \n"
 "You will need to change your password."
 msgstr ""
+"Esta parecendo que esta é a primeira vez que você se conecta ao sistema. \n"
+"Você precisará alterar sua senha."
 
 #: login.password.current.enter
 msgid "Enter your current password"
-msgstr ""
+msgstr "Entre com sua senha atual"
 
 #: login.password.new.enter
 msgid "Enter the new password"
-msgstr ""
+msgstr "Entre com a nova senha"
 
 #: login.password.new.reenter
 msgid "Re-type the new password for verification"
-msgstr ""
+msgstr "Re-digite a nova senha para verificação"
 
 #: login.password.update
 msgid "Update Password"
-msgstr ""
+msgstr "Atualizar Senha"
 
 #: login.password.nomatch
 msgid "Passwords do not match"
-msgstr ""
+msgstr "Senhas não conferem"
 
 #: login.password.success
 msgctxt "login.password.success"
 msgid "Password successfully updated"
-msgstr ""
+msgstr "Senha atualizada com sucesso"
 
 #: login.password.strength
 msgid "The password provided is not strong enough."
-msgstr ""
+msgstr "A senha fornecida não é suficiente segura."
 
 #: login.barcode.inactive
 msgid ""
 "The barcode used to login is marked as inactive.  Please contact your local "
 "library."
 msgstr ""
+"O código-de-barras utilizado para conectar esta marcado como inativo.  Por "
+"favor contate sua biblioteca local."
 
 #: login.account.inactive
-msgid "This account has been deactivated.  Please contact your local library."
-msgstr ""
+msgid ""
+"This account has been deactivated.  Please contact your local library."
+msgstr "Esta conta foi desativada. Por favor contate sua biblioteca local."
 
 #: login.failed
 msgid ""
 "Login failed. The username or password provided was not valid. \n"
 "Ensure Caps-Lock is off and try again or contact your local library."
 msgstr ""
+"Falha na autentificação. O nome de usuário ou senha fornecida não eram "
+"válidos. Certifique-se que o \"Caps Lock\" está desligado e tente novamente "
+"ou contate a sua biblioteca local."
 
 #: button.go
 msgid "Go!"
-msgstr ""
+msgstr "Ir!"
 
 #. =================================================================
 #. Slimpac Simple Search
 #. =================================================================
 #: slimpac.language.select
 msgid "Select language"
-msgstr ""
+msgstr "Selecionar idioma"
 
 #: slimpac.start.title
 msgid "Simple Search"
-msgstr ""
+msgstr "Pesquisa Simples"
 
 #: slimpac.start.nowSearching
 msgid "Now searching: "
-msgstr ""
+msgstr "Pesquisando agora: "
 
 #: slimpac.start.dynamic
 msgid "Dynamic Catalog"
-msgstr ""
+msgstr "Catálogo Dinâmico"
 
 #. =================================================================
 #. Slimpac Advanced Search
 #. =================================================================
 #: slimpac.advanced.language
 msgid "Item Language"
-msgstr ""
+msgstr "Idioma do Item"
 
 #: slimpac.advanced.create_date
 msgid "Record Creation Date"
-msgstr ""
+msgstr "Data de Criação do Registro"
 
 #: slimpac.advanced.edit_date
 msgid "Record Edit Date"
-msgstr ""
+msgstr "Data de Edição do Registro"
 
 #: opac.image_provided
 msgid "Image provided by"
-msgstr ""
+msgstr "Imagem fornecida por"
 
 #: vendor.name
 msgid "Amazon"
-msgstr ""
+msgstr "Amazon"
 
 #: vendor.base_link
 msgid "http://amazon.com/dp/"
-msgstr ""
+msgstr "http://amazon.com/dp/"
 
 #. =================================================================
 #. Selfcheck
 #. =================================================================
 #: selfck.staff_login_label
 msgid "Staff login"
-msgstr ""
+msgstr "Entrar como Administrador"
 
 #: selfck.staff_login
 msgid "Library barcode or username"
-msgstr ""
+msgstr "Código-de-barra ou nome de usuário"
 
 #: selfck.staff_pw
 msgctxt "selfck.staff_pw"
 msgid "Password"
-msgstr ""
+msgstr "Senha"
 
 #: selfck.submit
 msgctxt "selfck.submit"
 msgid "Submit"
-msgstr ""
+msgstr "Submeter"
 
 #: selfck.clear
 msgid "Clear"
-msgstr ""
+msgstr "Limpar"
 
 #: selfck.patron_barcode_label
 msgid "Please scan your library barcode"
-msgstr ""
+msgstr "Por favor escanear seu código de barras da biblioteca"
 
 #: selfck.item_barcode_label
 msgid "Please scan an item to checkout or renew:"
-msgstr ""
+msgstr "Favor escanear um item para Saída ou Renovar:"
 
 #: selfck.barcode
 msgctxt "selfck.barcode"
 msgid "Barcode"
-msgstr ""
+msgstr "Código de Barras"
 
 #: selfck.title
 msgctxt "selfck.title"
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: selfck.author
 msgctxt "selfck.author"
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
 #: selfck.due_date
 msgctxt "selfck.due_date"
 msgid "Due Date"
-msgstr ""
+msgstr "Data de Vencimento"
 
 #: selfck.remaining
 msgctxt "selfck.remaining"
 msgid "Renewals Remaining"
-msgstr ""
+msgstr "Renovação Restantes"
 
 #: selfck.cotype
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: selfck.cotype_co
 msgid "Checkout"
-msgstr ""
+msgstr "Dar Saída (Emprestar)"
 
 #: selfck.cotype_rn
 msgid "Renewal"
-msgstr ""
+msgstr "Renovação"
 
 #: selfck.done
 msgid "Done"
-msgstr ""
+msgstr "Feito"
 
 #: selfck.welcome
 msgid "Welcome"
-msgstr ""
+msgstr "Bem Vindo"
 
 #: selfck.printing
 msgid "Printing Receipt..."
-msgstr ""
+msgstr "Imprimindo Recibo..."
 
 #. event messages
 #: selfck.event.co_success
 msgid "Check out succeeded"
-msgstr ""
+msgstr "Saídas dadas com sucesso."
 
 #: selfck.event.co_unknown
 msgid "An unknown event has occurred"
-msgstr ""
+msgstr "Ocorreu um evento desconhecido"
 
 #: selfck.event.dupe_barcode
 msgid "This item has already been checked out during this session"
-msgstr ""
+msgstr "Já foi dado saída deste item durante esta sessão"
 
 #: selfck.event.patron_not_found
 msgid "The patron barcode was not found"
-msgstr ""
+msgstr "O código de barras do Leitor não foi encontrado"
 
 #: selfck.event.item_noncat
 msgid "The requested item is not in the catalog"
-msgstr ""
+msgstr "O item solicitado não esta no catálogo"
 
 #: selfck.event.item_nocirc
 msgid "The requested item is not allowed to circulate"
-msgstr ""
+msgstr "O exemplar escolhido não esta permitido para circular"
 
 #: selfck.event.already_out
 msgid "The requested item is already checked out to another patron"
-msgstr ""
+msgstr "O Item requisitado Já foi dado saída para um outro leitor"
 
 #: selfck.items_out
 msgid "You checked out the following items"
-msgstr ""
+msgstr "Você deu saída aos seguintes itens"
 
 #: selfck.org_hours
 msgid "Hours of Operation"
-msgstr ""
+msgstr "Horas de Operação"
 
 #: selfck.org_phone
 msgid "Library Phone Number"
-msgstr ""
+msgstr "Nº do Telefone da Biblioteca"
 
 #: selfck.day0
 msgid "Monday"
-msgstr ""
+msgstr "Segunda"
 
 #: selfck.day1
 msgid "Tuesday"
-msgstr ""
+msgstr "Terça"
 
 #: selfck.day2
 msgid "Wednesday"
-msgstr ""
+msgstr "Quarta"
 
 #: selfck.day3
 msgid "Thursday"
-msgstr ""
+msgstr "Quinta"
 
 #: selfck.day4
 msgid "Friday"
-msgstr ""
+msgstr "Sexta"
 
 #: selfck.day5
 msgid "Saturday"
-msgstr ""
+msgstr "Sábado"
 
 #: selfck.day6
 msgid "Sunday"
-msgstr ""
+msgstr "Domingo"

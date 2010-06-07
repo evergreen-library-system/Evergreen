@@ -1,17 +1,16 @@
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/circ.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-31 22:59-0400\n"
-"PO-Revision-Date: 2009-11-24 06:09+0000\n"
-"Last-Translator: Ruzanna <Unknown>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2010-03-26 10:28+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.3.0\n"
-"X-Launchpad-Export-Date: 2010-02-01 03:08+0000\n"
+"X-Launchpad-Export-Date: 2010-03-27 05:01+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.circ.alert
@@ -117,19 +116,19 @@ msgstr "circ.util.checkin: Calling external .on_checkin()"
 
 #: staff.circ.backdate.success
 msgid "Circ ID %1$s backdated to %2$s"
-msgstr ""
+msgstr "Циркулирующие ID %1$s записанны задним числом  к %2$s"
 
 #: staff.circ.backdate.failure
 msgid "Circ ID %1$s failed backdating due to %2$s"
-msgstr ""
+msgstr "Циркулирующим ID %1$s не удалась  датировка задним числом  к %2$s"
 
 #: staff.circ.backdate.circ_ids.prompt
 msgid "Number of circulations selected: %1$s"
-msgstr ""
+msgstr "Количество циркуляций выбраны: %1$s"
 
 #: staff.circ.backdate.circ_ids.failed
 msgid "Number of circulations not backdated: %1$s"
-msgstr ""
+msgstr "Количество циркуляций  не записанны задним числом: %1$s"
 
 #: staff.circ.checkout.sorting.exception
 msgid "error in sorting non-cataloged items: %1$s"
@@ -241,8 +240,8 @@ msgstr ""
 #: staff.circ.checkout.not_cataloged.confirm
 msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
 msgstr ""
-"Неправильный скан или некаталогизированная единица. Выдать как "
-"пре-каталогизированную единицу?"
+"Неправильный скан или некаталогизированная единица. Выдать как пре-"
+"каталогизированную единицу?"
 
 #: staff.circ.pre_cataloged
 msgid "Pre-cataloged"
@@ -294,7 +293,7 @@ msgstr "Прервать Передачу затем осуществить Вы
 
 #: staff.circ.checkout.offer_renewal
 msgid "Renew Item"
-msgstr ""
+msgstr "Обновить единицу"
 
 #: staff.circ.checkout.network_failure
 msgid "There was a network failure."
@@ -369,15 +368,15 @@ msgstr "Эта единица не в транзите."
 
 #: staff.circ.copy_details.desk_renewal
 msgid "Desk"
-msgstr ""
+msgstr "Стол"
 
 #: staff.circ.copy_details.opac_renewal
 msgid "OPAC"
-msgstr ""
+msgstr "OPAC"
 
 #: staff.circ.copy_details.phone_renewal
 msgid "Phone"
-msgstr ""
+msgstr "Телефон"
 
 #. # Displays user info: "Family name, First name : Barcode"
 #: staff.circ.copy_details.user_details
@@ -399,44 +398,11 @@ msgstr "Эта единица  не зарегистрированна для р
 
 #: staff.circ.copy_details.circ_count_by_year
 msgid "%1$s : %2$s"
-msgstr ""
+msgstr "%1$s : %2$s"
 
 #: staff.circ.copy_details.circ_count_by_year.legacy_label
 msgid "Legacy/Not Dated"
-msgstr ""
-
-#. # From Config::rules::circ_duration, 1 - Name, 2 - ID, 3 - Short, 4 - Normal, 5 - Extended, 6 - Max Renewals
-#: staff.circ.copy_details.duration_rule_format
-msgctxt "staff.circ.copy_details.duration_rule_format"
-msgid "%1$s"
-msgstr ""
-
-#. # From Config::rules::circ_duration, 1 - Name, 2 - ID, 3 - Short, 4 - Normal, 5 - Extended, 6 - Max Renewals
-#: staff.circ.copy_details.duration_rule_tooltip_format
-msgid "%3$s/%4$s/%5$s - %6$s renewals"
-msgstr ""
-
-#. # From Config::rules::recurring_fine, 1 - Name, 2 - ID, 3 - Low, 4 - Normal, 5 - High, 6 - Recurrence Interval
-#: staff.circ.copy_details.recurring_fine_rule_format
-msgctxt "staff.circ.copy_details.recurring_fine_rule_format"
-msgid "%1$s"
-msgstr ""
-
-#. # From Config::rules::recurring_fine, 1 - Name, 2 - ID, 3 - Low, 4 - Normal, 5 - High, 6 - Recurrence Interval
-#: staff.circ.copy_details.recurring_fine_rule_tooltip_format
-msgid "%3$s/%4$s/%5$s - %6$s"
-msgstr ""
-
-#. # From Config::rules::max_fine, 1 - Name, 2 - ID, 3 - Amount, 4 - Is Percent
-#: staff.circ.copy_details.max_fine_rule_format
-msgctxt "staff.circ.copy_details.max_fine_rule_format"
-msgid "%1$s"
-msgstr ""
-
-#. # From Config::rules::max_fine, 1 - Name, 2 - ID, 3 - Amount, 4 - Is Percent
-#: staff.circ.copy_details.max_fine_rule_tooltip_format
-msgid "%3$s Is Precent? %4$s"
-msgstr ""
+msgstr "Наследство/Не датированно"
 
 #: staff.circ.copy_status.tab_name
 msgid "Item Status"
@@ -700,22 +666,22 @@ msgstr "Единица в циркуляции."
 
 #: staff.circ.copy_status.alt_view.label
 msgid "Alternate View"
-msgstr ""
+msgstr "Альтернативный просмотр"
 
 #: staff.circ.copy_status.alt_view.accesskey
 msgctxt "staff.circ.copy_status.alt_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #: staff.circ.copy_status.list_view.label
 msgctxt "staff.circ.copy_status.list_view.label"
 msgid "List View"
-msgstr ""
+msgstr "Просмотр списка"
 
 #: staff.circ.copy_status.list_view.accesskey
 msgctxt "staff.circ.copy_status.list_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #: staff.circ.hold_capture.print.to_printer
 msgid "To Printer"
@@ -765,15 +731,15 @@ msgstr "FIXME: нуждается в специальном сигнале и  �
 
 #: staff.circ.route_to.hold_shelf
 msgid "HOLD SHELF"
-msgstr ""
+msgstr "Полочное хранение"
 
 #: staff.circ.route_to.public_hold_shelf
 msgid "PUBLIC HOLD SHELF"
-msgstr ""
+msgstr "Общедоступное полочное хранение"
 
 #: staff.circ.route_to.private_hold_shelf
 msgid "PRIVATE HOLD SHELF"
-msgstr ""
+msgstr "Частное полочное хранение"
 
 #: staff.circ.in_house_use.tab_name
 msgid "In-House Use"
@@ -1043,17 +1009,13 @@ msgstr "Удаленный?"
 msgid "Holdable?"
 msgstr "Удерживаемый?"
 
-#: staff.circ.utils.floating
-msgid "Floating?"
-msgstr ""
-
 #: staff.circ.utils.hold_note
 msgid "Hold Note(s)"
-msgstr ""
+msgstr "Примечание(я) хранения"
 
 #: staff.circ.utils.staff_hold
 msgid "Staff Hold?"
-msgstr ""
+msgstr "Укомплектовать   хранение?"
 
 #: staff.circ.utils.opac_visible
 msgid "OPAC Visible?"
@@ -1061,7 +1023,7 @@ msgstr "OPAC видим?"
 
 #: staff.circ.utils.status_changed_time
 msgid "Status Changed Time"
-msgstr ""
+msgstr "Изменен статус времени"
 
 #: staff.circ.utils.reference
 msgid "Reference?"
@@ -1073,16 +1035,16 @@ msgstr "Депозитный?"
 
 #: staff.circ.utils.acp_mint_condition
 msgid "Quality"
-msgstr ""
+msgstr "Качество"
 
 #: staff.circ.utils.acp_mint_condition.true
 msgctxt "staff.circ.utils.acp_mint_condition.true"
 msgid "Good"
-msgstr ""
+msgstr "Хорошо"
 
 #: staff.circ.utils.acp_mint_condition.false
 msgid "Mediocre"
-msgstr ""
+msgstr "Средний"
 
 #. # The < and > highlight that the value is not set; translate Unset and change the delimiters as needed
 #: staff.circ.utils.unset
@@ -1091,15 +1053,15 @@ msgstr "<Сброс>"
 
 #: staff.circ.utils.checkout_lib
 msgid "Checkout or Renew Library"
-msgstr ""
+msgstr "Регистрировать или восстанавливать библиотеку"
 
 #: staff.circ.utils.checkout_workstation
 msgid "Circ or Renewal Workstation"
-msgstr ""
+msgstr "Циркуляция  или возобновление рабочих станций"
 
 #: staff.circ.utils.checkout_workstation_top_of_chain
 msgid "Checkout Workstation"
-msgstr ""
+msgstr "Зарегистрированная рабочая станция"
 
 #: staff.circ.utils.xact_start
 msgid "Checkout Date"
@@ -1115,11 +1077,11 @@ msgstr "Транзакция закончена"
 
 #: staff.circ.utils.checkin_scan_time
 msgid "Checkin Scan Date"
-msgstr ""
+msgstr "Регистрация сканированной  даты"
 
 #: staff.circ.utils.checkin_workstation
 msgid "Checkin Workstation"
-msgstr ""
+msgstr "Регистрация рабочей станции"
 
 #: staff.circ.utils.create_date
 msgid "Date Created"
@@ -1131,11 +1093,11 @@ msgstr "Последняя отредактирования дата"
 
 #: staff.circ.utils.bre.create_date
 msgid "Date Record Created"
-msgstr ""
+msgstr "Данные записи созданны"
 
 #: staff.circ.utils.bre.edit_date
 msgid "Date Record Last Edited"
-msgstr ""
+msgstr "Данные записи последний раз отредактированны"
 
 #: staff.circ.utils.edition
 msgid "Edition"
@@ -1155,11 +1117,11 @@ msgstr "Издатель"
 
 #: staff.circ.utils.creator
 msgid "Created By"
-msgstr ""
+msgstr "Создано"
 
 #: staff.circ.utils.editor
 msgid "Edited By"
-msgstr ""
+msgstr "Под редакцией"
 
 #. # TCN is an acronym for Title Control Number
 #: staff.circ.utils.tcn
@@ -1168,7 +1130,7 @@ msgstr "TCN"
 
 #: staff.circ.utils.tcn_source
 msgid "TCN Source"
-msgstr ""
+msgstr "Источник TCN"
 
 #: staff.circ.utils.stop_fines
 msgid "Fines Stopped"
@@ -1244,7 +1206,6 @@ msgid "Request Library"
 msgstr "Запрошенная библиотека"
 
 #: staff.circ.utils.request_time
-msgctxt "staff.circ.utils.request_time"
 msgid "Request Date"
 msgstr "Запрос даты"
 
@@ -1261,17 +1222,17 @@ msgstr "Дата захвата"
 #. # Date the hold was cancelled
 #: staff.circ.utils.hold_cancel_time
 msgid "Cancel Time"
-msgstr ""
+msgstr "Отмена времени"
 
 #. # Controlled entry for why the hold was cancelled
 #: staff.circ.utils.hold_cancel_cause
 msgid "Cancel Cause"
-msgstr ""
+msgstr "Отмена причины"
 
 #. # Freetext note pertaining to the cancelled hold
 #: staff.circ.utils.hold_cancel_note
 msgid "Cancel Note"
-msgstr ""
+msgstr "Отмена примечания"
 
 #: staff.circ.utils.hold_status.1
 msgid "Waiting for copy"
@@ -1291,7 +1252,7 @@ msgstr "Готов для подбора"
 
 #: staff.circ.utils.hold_status.5
 msgid "Reserved/Pending"
-msgstr ""
+msgstr "Забронированно/В ожидании"
 
 #: staff.circ.utils.frozen
 msgid "Frozen?"
@@ -1346,7 +1307,8 @@ msgid "Override Checkin Failure?"
 msgstr "Отвергать выдачу  удаления?"
 
 #: staff.circ.utils.checkin.override.item_deposit_paid.warning
-msgid "A paid deposit will be owed to this patron if this action is overrided."
+msgid ""
+"A paid deposit will be owed to this patron if this action is overrided."
 msgstr ""
 "Оплачиваемый депозит будет позаимствован этому пользователю если это "
 "действие  отвергнется."
@@ -1357,7 +1319,7 @@ msgstr "Сделка для %1$s выставлен счет $%2$s"
 
 #: staff.circ.utils.fine_tally_text
 msgid "Fine Tally: $%1$s"
-msgstr ""
+msgstr "Подсчёт штрафа: $%1$s"
 
 #: staff.circ.utils.transit_hold_cancelled
 msgid "Original hold for transit cancelled."
@@ -1394,25 +1356,25 @@ msgstr "Заглавие:  %1$s"
 
 #: staff.circ.utils.ahr_mint_condition
 msgid "Copy Quality"
-msgstr ""
+msgstr "Качество экземпляра"
 
 #: staff.circ.utils.ahr_mint_condition.true
 msgctxt "staff.circ.utils.ahr_mint_condition.true"
 msgid "Good"
-msgstr ""
+msgstr "Хорошо"
 
 #: staff.circ.utils.ahr_mint_condition.false
 msgid "Any"
-msgstr ""
+msgstr "Любой"
 
 #: staff.circ.utils.holds.shelf_time
 msgid "Shelf Time"
-msgstr ""
+msgstr "Время хранения"
 
 #: staff.circ.utils.holds.shelf_expire_time
 msgctxt "staff.circ.utils.holds.shelf_expire_time"
 msgid "Shelf Expire Time"
-msgstr ""
+msgstr "Истечение полочного времени"
 
 #. # Hold for patron familyName, firstName secondName
 #: staff.circ.utils.payload.hold.patron
@@ -1421,7 +1383,7 @@ msgstr "Хранение для патрона %1$s, %2$s %3$s"
 
 #: staff.circ.utils.payload.hold.patron_alias
 msgid "Hold for patron %1$s"
-msgstr ""
+msgstr "Хранение для клиента %1$s"
 
 #: staff.circ.utils.payload.hold.phone_notify
 msgid "Notify by phone: %1$s"
@@ -1441,11 +1403,11 @@ msgstr "Slip Date: %1$s"
 
 #: staff.circ.utils.payload.hold.notes.staff_note
 msgid "Staff Note: %1$s : %2$s"
-msgstr ""
+msgstr "Пометка персонала: %1$s : %2$s"
 
 #: staff.circ.utils.payload.hold.notes.patron_note
 msgid "Patron Note: %1$s : %2$s"
-msgstr ""
+msgstr "Пометка  клиента: %1$s : %2$s"
 
 #: staff.circ.utils.hold_slip
 msgid "Hold Slip"
@@ -1459,11 +1421,11 @@ msgstr "Печать"
 #: staff.circ.utils.hold_slip.print.no
 msgctxt "staff.circ.utils.hold_slip.print.no"
 msgid "Do Not Print"
-msgstr "Не пачатать"
+msgstr "Не печатать"
 
 #: staff.circ.utils.transit_slip
 msgid "Transit Slip"
-msgstr ""
+msgstr "Карточка транзита"
 
 #: staff.circ.utils.transit_slip.print.yes
 msgctxt "staff.circ.utils.transit_slip.print.yes"
@@ -1473,7 +1435,7 @@ msgstr "Печать"
 #: staff.circ.utils.transit_slip.print.no
 msgctxt "staff.circ.utils.transit_slip.print.no"
 msgid "Do Not Print"
-msgstr "Не пачатать"
+msgstr "Не печатать"
 
 #: staff.circ.utils.hold_capture_delayed.description
 msgid ""
@@ -1533,19 +1495,19 @@ msgstr "%1$s в передаче."
 
 #: staff.circ.utils.estimated_wait
 msgid "Estimated Wait Time"
-msgstr ""
+msgstr "Предполагаемое время ожидания"
 
 #: staff.circ.utils.potential_copies
 msgid "Potential Copies"
-msgstr ""
+msgstr "Потенциальные Копии"
 
 #: staff.circ.utils.queue_position
 msgid "Queue Position"
-msgstr ""
+msgstr "Позиция очереди"
 
 #: staff.circ.utils.total_holds
 msgid "Total Number of Holds"
-msgstr ""
+msgstr "Общее количество  хранений"
 
 #: staff.circ.work_log_column.message
 msgctxt "staff.circ.work_log_column.message"
@@ -1554,15 +1516,15 @@ msgstr "Сообщение"
 
 #: staff.circ.work_log_column.when
 msgid "When"
-msgstr ""
+msgstr "Когда"
 
 #: staff.circ.work_log_checkout.message
 msgid "%1$s circulated %4$s to %3$s (%2$s)"
-msgstr ""
+msgstr "%1$s циркулированны %4$s to %3$s (%2$s)"
 
 #: staff.circ.work_log_renew.message
 msgid "%1$s renewed %4$s for %3$s (%2$s)"
-msgstr ""
+msgstr "%1$s обновленны %4$s for %3$s (%2$s)"
 
 #: staff.circ.checkin.hold_capture
 msgid "Hold Capture"
@@ -1574,7 +1536,7 @@ msgstr "Прием единицы"
 
 #: staff.circ.renew.tab.label
 msgid "Renew Items"
-msgstr ""
+msgstr "Продлить срок действия единиц"
 
 #: staff.circ.checkin.error
 msgid "Check In Failed (in circ.util.checkin) (%1$s):"
@@ -1663,33 +1625,10 @@ msgstr ""
 msgid ""
 "Activation Date needs to be either unset or set to fall on a future date."
 msgstr ""
-"Дата активации должна быть либо сброшена либо установлена  на дату в "
-"будущем."
+"Дата активации должна быть либо сброшена либо установлена  на дату в будущем."
 
 #: staff.circ.holds.activation_date.invalid_date
 msgctxt "staff.circ.holds.activation_date.invalid_date"
-msgid "Invalid Date"
-msgstr "Неправильная  дата"
-
-#: staff.circ.holds.request_date.prompt
-msgid ""
-"Please enter a new Request Date for hold %1$s.  WARNING: This effectively "
-"reorders the holds queue."
-msgstr ""
-
-#: staff.circ.holds.request_date.prompt.plural
-msgid ""
-"Please enter a new Request Date for holds %1$s.  WARNING: This effectively "
-"reorders the holds queue."
-msgstr ""
-
-#: staff.circ.holds.request_date.dialog.description
-msgctxt "staff.circ.holds.request_date.dialog.description"
-msgid "Request Date"
-msgstr "Запрос даты"
-
-#: staff.circ.holds.request_date.invalid_date
-msgctxt "staff.circ.holds.request_date.invalid_date"
 msgid "Invalid Date"
 msgstr "Неправильная  дата"
 
@@ -1722,15 +1661,17 @@ msgstr "Неправильная  дата"
 #: staff.circ.holds.shelf_expire_time.prompt
 msgid "Please enter a Shelf Expiration Date for hold %1$s."
 msgstr ""
+"Пожалуйста введите дату истечения полочного срока для хранения  %1$s."
 
 #: staff.circ.holds.shelf_expire_time.prompt.plural
 msgid "Please enter a Shelf Expiration Date for holds %1$s."
 msgstr ""
+"Пожалуйста введите дату истечения полочного срока для хранений  %1$s."
 
 #: staff.circ.holds.shelf_expire_time.dialog.description
 msgctxt "staff.circ.holds.shelf_expire_time.dialog.description"
 msgid "Shelf Expire Time"
-msgstr ""
+msgstr "Истечение полочного  времени"
 
 #: staff.circ.holds.shelf_expire_time.invalid_date
 msgctxt "staff.circ.holds.shelf_expire_time.invalid_date"
@@ -1753,7 +1694,7 @@ msgstr "Нет"
 
 #: staff.circ.hold_update.hold_ids.failed
 msgid "Number of holds not updated: %1$s"
-msgstr ""
+msgstr "Количество хранений  не обновлены:% 1 $ S"
 
 #: staff.circ.holds.already_activated
 msgid "Hold %1$s was already activated."
@@ -1785,22 +1726,22 @@ msgstr "Хранения кажется не приостановлены."
 
 #: staff.circ.holds.alt_view.label
 msgid "Detail View"
-msgstr ""
+msgstr "Подробный просмотр"
 
 #: staff.circ.holds.alt_view.accesskey
 msgctxt "staff.circ.holds.alt_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #: staff.circ.holds.list_view.label
 msgctxt "staff.circ.holds.list_view.label"
 msgid "List View"
-msgstr ""
+msgstr "Просмотр списка"
 
 #: staff.circ.holds.list_view.accesskey
 msgctxt "staff.circ.holds.list_view.accesskey"
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #~ msgid "Checkout Timestamp"
 #~ msgstr "Штамп времени Выдачи"
