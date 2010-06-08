@@ -547,30 +547,31 @@ static FromRelation* constructFromRelation( BuildSQLState* state, dbi_result res
 	else
 		type = FRT_RELATION;     // shouldn't happen due to database constraint
 
-	const char* table_name  = dbi_result_get_string_idx( result, 3 );
-	const char* class_name  = dbi_result_get_string_idx( result, 4 );
+	const char* table_name   = dbi_result_get_string_idx( result, 3 );
+	const char* class_name   = dbi_result_get_string_idx( result, 4 );
 
 	int subquery_id;
 	if( dbi_result_field_is_null_idx( result, 5 ) )
-		subquery_id          = -1;
+		subquery_id           = -1;
 	else
-		subquery_id          = dbi_result_get_int_idx( result, 5 );
+		subquery_id           = dbi_result_get_int_idx( result, 5 );
 
 	int function_call_id;
 	if( dbi_result_field_is_null_idx( result, 6 ) )
-		function_call_id     = -1;
+		function_call_id      = -1;
 	else
-		function_call_id     = dbi_result_get_int_idx( result, 6 );
+		function_call_id      = dbi_result_get_int_idx( result, 6 );
 
-	const char* table_alias  = dbi_result_get_string_idx( result, 7 );
+	Expression* function_call = NULL;
+	const char* table_alias   = dbi_result_get_string_idx( result, 7 );
 
 	int parent_relation_id;
 	if( dbi_result_field_is_null_idx( result, 8 ) )
-		parent_relation_id   = -1;
+		parent_relation_id    = -1;
 	else
-		parent_relation_id   = dbi_result_get_int_idx( result, 8 );
+		parent_relation_id    = dbi_result_get_int_idx( result, 8 );
 
-	int seq_no               = dbi_result_get_int_idx( result, 9 );
+	int seq_no                = dbi_result_get_int_idx( result, 9 );
 
 	JoinType join_type;
 	const char* join_type_str = dbi_result_get_string_idx( result, 10 );
@@ -620,10 +621,27 @@ static FromRelation* constructFromRelation( BuildSQLState* state, dbi_result res
 			}
 			break;
 		case FRT_FUNCTION :
-			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-				"Functions in FROM clause not yet supported" ));
-			state->error = 1;
-			return NULL;
+			if( -1 == function_call_id ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"FROM clause # %d purports to reference a function; not identified", id ));
+				state->error = 1;
+				return NULL;
+			}
+
+			function_call = getExpression( state, function_call_id );
+			if( !function_call ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Unable to build function call # %d in FROM relation # %d",
+					function_call_id, id ));
+				state->error = 1;
+				return NULL;
+			} else if( function_call->type != EXP_FUNCTION ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"In FROM relation # %d: supposed function call expression # %d "
+					"is not a function call", id, function_call_id ));
+				state->error = 1;
+				return NULL;
+			}
 	}
 
 	FromRelation* join_list = getJoinList( state, id );
@@ -666,6 +684,7 @@ static FromRelation* constructFromRelation( BuildSQLState* state, dbi_result res
 	fr->subquery_id = subquery_id;
 	fr->subquery = subquery;
 	fr->function_call_id = function_call_id;
+	fr->function_call = function_call;
 	fr->table_alias = table_alias ? strdup( table_alias ) : NULL;
 	fr->parent_relation_id = parent_relation_id;
 	fr->seq_no = seq_no;
@@ -756,6 +775,10 @@ static void fromRelationFree( FromRelation* fr ) {
 		if( fr->subquery ) {
 			storedQFree( fr->subquery );
 			fr->subquery = NULL;
+		}
+		if( fr->function_call ) {
+			expressionFree( fr->function_call );
+			fr->function_call = NULL;
 		}
 		free( fr->table_alias );
 		fr->table_alias = NULL;

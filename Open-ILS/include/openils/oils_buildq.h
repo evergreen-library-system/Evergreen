@@ -108,6 +108,7 @@ struct FromRelation_ {
 	int              subquery_id;
 	StoredQ*         subquery;
 	int              function_call_id;
+	Expression*      function_call;
 	char*            table_alias;
 	int              parent_relation_id;
 	int              seq_no;

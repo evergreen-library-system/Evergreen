@@ -372,7 +372,18 @@ static void buildFrom( BuildSQLState* state, const FromRelation* core_from ) {
 			buffer_add_char( state->sql, ')' );
 			break;
 		case FRT_FUNCTION :
-			sqlAddMsg( state, "Functions in FROM clause not yet supported" );
+			buildFunction( state, core_from->function_call );
+			if ( state->error ) {
+				sqlAddMsg( state,
+					"Unable to include function call # %d in FROM relation # %d",
+	 				core_from->function_call->id, core_from->id );
+				return;
+			}
+			break;
+		default :
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Internal error: Invalid type # %d in FROM relation # %d",
+				core_from->type, core_from->id ));
 			state->error = 1;
 			return;
 	}
@@ -683,9 +694,10 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 			if( expr->column_name ) {
 				buffer_add( state->sql, expr->column_name );
 			} else {
-				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-					"Column name not present in expression # %d", expr->id ));
-				state->error = 1;
+				//osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				//	"Column name not present in expression # %d", expr->id ));
+				//state->error = 1;
+				buffer_add_char( state->sql, '*' );
 			}
 			break;
 		case EXP_EXIST :
