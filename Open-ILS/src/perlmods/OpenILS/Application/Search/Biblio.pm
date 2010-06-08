@@ -1153,7 +1153,7 @@ sub staged_search {
             $results = $U->storagereq($method, %$search_hash);
             $search_duration = time - $start;
             $logger->info("staged search: DB call took $search_duration seconds and returned ".scalar(@$results)." rows, including summary");
-            $summary = shift(@$results);
+            $summary = shift(@$results) if $results;
 
             unless($summary) {
                 $logger->info("search timed out: duration=$search_duration: params=".
