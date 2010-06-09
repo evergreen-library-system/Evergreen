@@ -742,6 +742,18 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                 );
                 return;
 
+            case 'passwd':
+                dojo.connect(widget.widget, 'onChange',
+                    function(newVal) {
+                        var pw1 = findWidget('au', 'passwd').widget;
+                        var pw2 = findWidget('au', 'passwd2').widget;
+                        var preserved_value = pw2.attr('value');
+                        // Ensure that the pw2 field match the pw1 field to validate
+                        pw2.regExp = newVal.replace(/([.\\^$*+?\(\)\[\]\{\}])/g, '\\$1');
+                        pw2.reset();
+                        ps2.attr(preserved_value);
+                    });
+                return;
         }
     }
 
