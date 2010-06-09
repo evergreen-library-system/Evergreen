@@ -1,0 +1,43 @@
+EDI Translator XML-RPC Service (for Evergreen)
+
+Copyright 2010
+License: GNU Public License v 2.0 or later
+
+Author: Joe Atzberger
+        Equinox Software, Inc.
+
+For ease of interpretation, Evergreen needs a service to convert between raw EDI and a 
+more commonly used JSON-based notation.  Here we have the script (edi_webrick.rb) to
+do that.  The Translator will be called on both inbound and outbound EDI messages,
+translating to JSON (JEDI) for edi_fetcher.pl and to EDI for edi_pusher.pl,
+respectively.
+
+Files:
+    edi_webrick.bash - wrapper script for setting ENV, calling edi_webrick.rb
+    edi_webrick.cnf  - edi_webrick.rb config script
+    edi_webrick.rb   - the main EDI translator daemon script
+    install.sh       - dependency installer (for debian lenny)
+    README           - this file
+
+This service can be run on a local or remote system that has the proper ruby environment
+established.  See the install.sh script for an example of how to install the needed ruby
+components (on debian lenny linux).  
+
+There is no such thing (yet?) as "push" from a vendor of their EDI responses.  Basically
+they just put responses in an FTP directory somewhere that you are expected to check.  It
+would be cool if there were a better way to do that like consuming some RSS feed or 
+remote API callbacks.  
+
+Evergreen will only support one delivery address per PO.  That limitation is based
+on the mapping to the delivery address via the ordering_agency org_unit.  If items
+need to be shipped someplace else, then they need a different PO, for now at least.
+
+If we want to support multiple vendor profiles, then we drop the unique constraint
+on SAN, add a new one on SAN + profile_code.  Profile code then goes in the template.
+The template logic could get rather complex to support all the optional data elements.
+
+mbklein says:
+'order' mapper won't work for EDIFACT versions later than D.96A, because of a change
+to the structure of the BGM segment.  But as long as all the supported vendors will
+accept a D.96A ORDERS (which I think they do), that's not a problem.
+
