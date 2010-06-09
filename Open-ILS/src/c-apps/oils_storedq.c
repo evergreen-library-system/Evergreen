@@ -72,6 +72,79 @@ static OrderItem* free_order_item_list = NULL;
 static int verbose = 0;
 
 /**
+	@brief Build a list of column names for a specified query.
+	@param state Pointer to the query-building context.
+	@param query Pointer to the specified query.
+	@return Pointer to a newly-allocated JSON_ARRAY of column names, if successful;
+		otherwise NULL.
+
+	The column names are those assigned by PostgreSQL, e.g.:
+		- a column alias, if an AS clause defines one
+		- a column name (not qualified by a table name or alias, even if the query
+		  specifies one)
+		- where the item is a function call, the name of the function
+		- where the item is a subquery or other expression, whatever PostgreSQL decides on,
+		  typically '?column?'
+
+	The resulting column names may include duplicates.
+
+	The calling code is responsible for freeing the list by calling jsonObjectFree().
+*/
+jsonObject* oilsGetColNames( BuildSQLState* state, StoredQ* query ) {
+	if( !state || !query ) return NULL;
+
+	// Build SQL in the usual way (with some temporary option settings)
+	int defaults_usable = state->defaults_usable;
+	int values_required = state->values_required;
+	state->defaults_usable = 1;   // We can't execute the test query unless we
+	state->values_required = 1;   // have a value for every bind variable.
+	int rc = buildSQL( state, query );
+	state->defaults_usable = defaults_usable;
+	state->values_required = values_required;
+	if( rc ) {
+		osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+			"Unable to build SQL statement for query id # %d", query->id ));
+		state->error = 1;
+		return NULL;
+	}
+
+	// Wrap it in an outer query to get the column names, but no rows
+	growing_buffer* wrapper = buffer_init( 80 + strlen( OSRF_BUFFER_C_STR( state->sql )));
+	buffer_add( wrapper, "SELECT \"phony query\".* FROM (" );
+	buffer_add( wrapper, OSRF_BUFFER_C_STR( state->sql ));
+	buffer_chomp( wrapper );    // remove the terminating newline
+	buffer_chomp( wrapper );    // remove the terminating semicolon
+	buffer_add( wrapper, ") AS \"phony query\" WHERE FALSE;" );
+
+	// Execute the wrapped query
+	dbi_result result = dbi_conn_query( state->dbhandle, OSRF_BUFFER_C_STR( wrapper ));
+	buffer_free( wrapper );
+	if( !result ) {
+		const char* msg;
+		int errnum = dbi_conn_error( state->dbhandle, &msg );
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+			"Unable to execute dummy query for column names: #%d %s",
+			errnum, msg ? msg : "No description available" ));
+		state->error = 1;
+		return NULL;
+	}
+
+	// Examine the query result to get the column names
+
+	unsigned int num_cols = dbi_result_get_numfields( result );
+	jsonObject* cols = jsonNewObjectType( JSON_ARRAY );
+	unsigned int i;
+	for( i = 1; i <= num_cols; ++i ) {
+		const char* fname = dbi_result_get_field_name( result, i );
+		if( fname )
+			jsonObjectPush( cols, jsonNewObject( fname ));
+	}
+
+	dbi_result_free( result );
+	return cols;
+}
+
+/**
 	@brief Load a stored query.
 	@param state Pointer to the query-building context.
 	@param query_id ID of the query in query.stored_query.
@@ -998,7 +1071,14 @@ static BindVar* constructBindVar( BuildSQLState* state, dbi_result result ) {
 	else if( !strcmp( type_str, "string_list" ))
 		type = BIND_STR_LIST;
 	else if( !strcmp( type_str, "number_list" ))
-		type = BIND_NUM_LIST;;
+		type = BIND_NUM_LIST;
+	else {         // Shouldn't happen due to database constraint...
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+			"Internal error: invalid bind variable type \"%s\" for bind variable \"%s\"",
+			type_str, name ));
+		state->error = 1;
+		return NULL;
+	}
 
 	const char* description = dbi_result_get_string_idx( result, 3 );
 
@@ -1731,71 +1811,6 @@ static void orderItemListFree( OrderItem* ord ) {
 
 	// Transfer the entire list to the free list
 	free_order_item_list = first;
-}
-
-/**
-	@brief Build a list of column names for a specified query.
-	@param state Pointer to the query-building context.
-	@param query Pointer to the specified query.
-	@return Pointer to a newly-allocated JSON_ARRAY of column names.
-
-	In the resulting array, each entry is either a JSON_STRING or (when no column name is
-	available) a JSON_NULL.
-
-	The calling code is responsible for freeing the list by calling jsonObjectFree().
-*/
-jsonObject* oilsGetColNames( BuildSQLState* state, StoredQ* query ) {
-	if( !state || !query )
-		return NULL;
-
-	// Save the outermost query id for possible use in an error message
-	int id = query->id;
-
-	while( query->type != QT_SELECT ) {
-		// If the query is a UNION, INTERSECT, or EXCEPT, there must be a SELECT in
-		// there somewhere.  Find the first one, and use the SELECT list from that.
-		QSeq* child_list = query->child_list;
-		if( !child_list ) {
-			query = NULL;
-			break;
-		} else
-			query = child_list->child_query;
-	}
-
-	if( !query ) {
-		state->error = 1;
-		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
-			"Unable to find first SELECT in query # %d", id ));
-		return NULL;
-	}
-
-	// Get the SELECT list for the first SELECT
-	SelectItem* col = query->select_list;
-	if( !col ) {
-		state->error = 1;
-		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
-			"First SELECT in query # %d has empty SELECT list", id ));
-			return NULL;
-	}
-
-	jsonObject* col_list = jsonNewObjectType( JSON_ARRAY );
-
-	// Traverse the list, adding an entry for each
-	do {
-		const char* alias = NULL;
-		if( col->column_alias )
-			alias = col->column_alias;
-		else {
-			Expression* expression = col->expression;
-			if( expression && EXP_COLUMN == expression->type && expression->column_name )
-				alias = expression->column_name;
-		}
-
-		jsonObjectPush( col_list, jsonNewObject( alias ) );
-		col = col->next;
-	} while( col );
-
-	return col_list;
 }
 
 /**
