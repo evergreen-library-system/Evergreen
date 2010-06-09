@@ -270,7 +270,7 @@ function set_hold_browser() {
 
 function set_acq_orders() {
     g.view = 'acq_orders';
-    var url = xulG.url_prefix( '/acq/lineitem/related/' ) + window.escape(docid) + '?target=bib';
+    var url = xulG.url_prefix( '/eg/acq/lineitem/related/' ) + window.escape(docid) + '?target=bib';
     if (acq_orders_reset) {
         bottom_pane.reset_iframe(url,{},xulG);
         acq_orders_reset = false;
