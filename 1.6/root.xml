@@ -57,7 +57,8 @@ ls
             <info>
                   <title>Administration</title>
             </info>
- <xi:include href="admin/serveradministration.xml"/>
+ <xi:include href="admin/admin-intro.xml"/>
+<xi:include href="admin/serveradministration.xml"/>
  <xi:include href="admin/AdminMisc.xml"/>
  <xi:include href="admin/Upgrading-Evergreen_1.6.xml"/>
  <xi:include href="admin/troubleshooting.xml"/>
