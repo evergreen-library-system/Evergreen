@@ -770,7 +770,7 @@ static int val_fields_attributes( Class* class, const char* id, xmlNodePtr field
 			rc = 1;
 		} else if( DT_ID == field->datatype && ! sequence && ! class->is_virtual ) {
 			printf(
-				"Line %ld: Primary key is an id; class \"%s\" should have a sequence attribute\n",
+				"Line %ld: Primary key is an id; class \"%s\" may need a sequence attribute\n",
 				xmlGetLineNo( fields ), id );
 			rc = 1;
 		} else if(    DT_ID != field->datatype
@@ -1117,6 +1117,29 @@ static int val_one_field( Class* class, const char* id, xmlNodePtr field ) {
 				rc = 1;
 			}
 			xmlFree( primitive );
+		} else if( !strcmp( attr_name, "validate" )) {
+			xmlChar* validate = xmlGetProp( field, (xmlChar*) "validate" );
+			if( !*validate ) {
+				// Value should be a regular expression to define a validation rule
+				printf( "Line %ld: Empty value for \"validate\" attribute "
+					"for field \"%s\" in class \"%s\"\n",
+					xmlGetLineNo( field ), (char*) field_name ? : "", id );
+				rc = 1;
+			}
+			xmlFree( validate );
+			// To do: verify that the namespace is oils_obj
+		} else if( !strcmp( attr_name, "required" )) {
+			xmlChar* required = xmlGetProp( field, (xmlChar*) "required" );
+			if( strcmp( (char*) required, "true" ) && strcmp( (char*) required, "false" )) {
+				printf( 
+					"Line %ld: Invalid value \"%s\" for \"required\" attribute "
+					"for field \"%s\" in class \"%s\"\n",
+					xmlGetLineNo( field ), (char*) required,
+					(char*) field_name ? : "", id );
+				rc = 1;
+			}
+			xmlFree( required );
+			// To do: verify that the namespace is oils_obj
 		} else {
 			printf( "Line %ld: Unexpected field attribute \"%s\" in class \"%s\"\n",
 				xmlGetLineNo( field ), attr_name, id );
