@@ -751,7 +751,7 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                         // Ensure that the pw2 field match the pw1 field to validate
                         pw2.regExp = newVal.replace(/([.\\^$*+?\(\)\[\]\{\}])/g, '\\$1');
                         pw2.reset();
-                        ps2.attr(preserved_value);
+                        pw2.attr(preserved_value);
                     });
                 return;
         }
