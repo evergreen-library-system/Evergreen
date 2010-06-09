@@ -1,6 +1,6 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Global Flags' %]
-<script>
+<script type="text/javascript">
     dojo.require('openils.Util');
     dojo.require('openils.widget.AutoGrid');
     openils.Util.addOnLoad( 

@@ -2,7 +2,7 @@
 [% WRAPPER default/base.tt2 %]
 <script src='[% ctx.media_prefix %]/js/ui/default/actor/user/register.js'> </script>
 
-<style>
+<style type="text/css">
 
     /* XXX Move me into the CSS tree XXX */
 

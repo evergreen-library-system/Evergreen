@@ -4,7 +4,7 @@
 </script>
 <script src="[% ctx.media_prefix %]/js/ui/default/acq/search/unified.js">
 </script>
-<script>
+<script type="text/javascript">
     /* The functions in this <script> element are for formatting/getting
         fields for autogrids, and doing misc operations on specific
         result types. General unified search code is in unified.js. */

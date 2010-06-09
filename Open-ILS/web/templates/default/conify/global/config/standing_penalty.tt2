@@ -1,11 +1,11 @@
 [% WRAPPER default/base.tt2 %]
-<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/standing_penalty.js'> </script>
-<style>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/standing_penalty.js'></script>
+<style type="text/css">
     @import "[% ctx.media_prefix %]/js/dojo/dojox/form/resources/CheckedMultiSelect.css";
 </style>
 <h1>Standing Penalty Types</h1><br/>
 
-<script>
+<script type="text/javascript">
 
     if(!dojo._hasResource['openils.widget.StandingPenaltyBlockedSelector']) {
         dojo.provide('openils.widget.StandingPenaltyBlockedSelector');

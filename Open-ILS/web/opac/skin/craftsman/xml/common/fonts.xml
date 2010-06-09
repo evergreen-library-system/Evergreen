@@ -11,7 +11,7 @@
 		    <span style='vertical-align: top;'>&common.language;</span>
             <span id='translation_switch' dojoType="dijit.form.FilteringSelect" store="openils.I18N.localeStore"
                 searchAttr="label" required="false" jsId='opacLocaleSelector'>
-                <script>
+                <script type="text/javascript">
                     dojo.addOnLoad(function() {
                         opacLocaleSelector.setValue(locale);
                         dojo.connect(opacLocaleSelector, 'onChange', 

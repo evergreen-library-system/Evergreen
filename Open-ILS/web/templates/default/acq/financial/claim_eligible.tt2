@@ -1,10 +1,10 @@
 [% WRAPPER "default/base.tt2" %]
 [% ctx.page_title = "Items Eligible For Claiming" %]
-<script>var filter = "[% ctx.page_args.0 %]";</script>
-<script
+<script type="text/javascript">var filter = "[% ctx.page_args.0 %]";</script>
+<script type="text/javascript"
     src="[% ctx.media_prefix %]/js/ui/default/acq/financial/claim_eligible.js">
 </script>
-<script
+<script type="text/javascript"
     src="[% ctx.media_prefix %]/js/ui/default/acq/financial/claim_voucher.js">
 </script>
 <div>

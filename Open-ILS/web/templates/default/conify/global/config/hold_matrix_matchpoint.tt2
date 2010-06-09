@@ -1,6 +1,6 @@
 [% ctc.page_title = 'Hold Policy Configuration' %]
 [% WRAPPER default/base.tt2 %]
-<script>
+<script type="text/javascript">
     dojo.require('dijit.layout.ContentPane');
     dojo.require('dijit.form.Button');
     dojo.require('openils.widget.AutoGrid');

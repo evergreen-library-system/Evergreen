@@ -28,11 +28,11 @@
         </form>
     </div>
     <div dojoType="dijit.ProgressBar" style="width:300px" jsId="searchProgress" id="searchProgress"></div>
-    <script>dojo.style('searchProgress', 'visibility', 'hidden');</script>
+    <script type="text/javascript">dojo.style('searchProgress', 'visibility', 'hidden');</script>
     <div id='oils-acq-recv-grid' style='height:100%'>
         [% grid_jsid = 'liGrid'; domprefix = 'oils-acq-recv' %]
         [% INCLUDE 'default/acq/common/jubgrid.tt2' %]
     </div>
-    <script>dojo.style('oils-acq-recv-grid', 'visibility', 'hidden');</script>
+    <script type="text/javascript">dojo.style('oils-acq-recv-grid', 'visibility', 'hidden');</script>
 [% END %]
 

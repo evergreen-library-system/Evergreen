@@ -129,7 +129,7 @@ pointing to the JUB model (and store) that you have created.
 
 [% UNLESS hide_details %]
     <!-- button bar for lineitems -->
-    <script>JUBGrid.showDetails = true;</script>
+    <script type="text/javascript">JUBGrid.showDetails = true;</script>
     <div id="[% domprefix %]-container" class='container'
         dojoType="dijit.layout.ContentPane" sizeMin="" sizeShare="">
         <div dojoType="dijit.layout.ContentPane"

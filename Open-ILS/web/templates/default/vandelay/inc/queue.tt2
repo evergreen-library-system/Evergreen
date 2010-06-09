@@ -68,7 +68,7 @@
                     <option value='import_all'>&vandelay.import.all;</option>
                     <option value='delete_queue'>&vandelay.delete.queue;</option>
                 </select>
-                <script>
+                <script type="text/javascript">
                     var sel = dojo.byId('vl-queue-actions-selector');
                     sel.onchange = function(evt) {
                         switch(openils.Util.selectorValue(evt.target)) {
@@ -85,7 +85,7 @@
                 </script>
             </td>
             <td align='middle' valign='bottom'>
-                <style>.filter_span { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
+                <style type="text/css">.filter_span { padding-right: 5px; border-right: 2px solid #e8e1cf; } </style>
                 <table><tr>
                     <td>
                         <span>&vandelay.limit.to.collision.matches;</span>

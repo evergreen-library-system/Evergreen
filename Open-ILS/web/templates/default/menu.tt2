@@ -1,5 +1,5 @@
 <div id='oils-menu-div'>
-    <script>
+    <script type="text/javascript">
         dojo.require('openils.XUL');
         if(openils.XUL.isXUL()) 
             openils.Util.hide('oils-menu-div')

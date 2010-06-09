@@ -7,7 +7,7 @@
     <button id='vl-marc-html-edit-button' dojoType='dijit.form.Button'>&vandelay.edit;</button>
 </div>
 <div>
-    <style>#vl-marc-record-html td {padding:0px;}</style>
+    <style type="text/css">#vl-marc-record-html td {padding:0px;}</style>
     <div id='vl-marc-record-html'> </div>
 </div>
 

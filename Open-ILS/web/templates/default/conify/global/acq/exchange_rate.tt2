@@ -1,5 +1,5 @@
 [% WRAPPER default/base.tt2 %]
-<script>
+<script type="text/javascript">
     dojo.require('openils.widget.AutoGrid');
     dojo.require('dijit.form.FilteringSelect');
     openils.Util.addOnLoad(

@@ -1,6 +1,6 @@
 <div id='oils-base-header-content-div'>
     <span id='oils-base-header-user-info'> </span>
-    <script>
+    <script type="text/javascript">
         /*
         dojo.addOnLoad(function(){
             dojo.byId('oils-base-header-user-info').appendChild(

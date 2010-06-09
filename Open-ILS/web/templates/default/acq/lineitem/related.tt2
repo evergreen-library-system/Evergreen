@@ -4,7 +4,7 @@
 <script type="text/javascript">var targetId = "[% ctx.page_args.0 %]";</script>
 <h1>Related Lineitems</h1>
 <div id="acq-related-mini">
-    <script>
+    <script type="text/javascript">
         function iterateSubfields(item) {
             var out = '';
             var list = dojo.query('subfield', item);

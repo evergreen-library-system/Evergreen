@@ -1,6 +1,6 @@
 [% WRAPPER default/base.tt2 %]
-<script src="[% ctx.media_prefix %]/js/ui/default/conify/global/acq/claim_grid.js"></script>
-<script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/conify/global/acq/claim_grid.js"></script>
+<script type="text/javascript">
 openils.Util.addOnLoad(
     function() {
         /* XXX TODO support URI param for claim_policy search constraint */

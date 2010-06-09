@@ -31,7 +31,7 @@
 		<img src='<!--#echo var="OILS_BASE"-->/images/main_logo.jpg' />
 	</div>
 
-	<style>.rowpad { height: 20px; }</style>
+	<style type="text/css">.rowpad { height: 20px; }</style>
 
 	<table id='frontsearch_table' height='100%' width='100%' 
 		style='margin-top: 10px; border-collapse: collapse;'>
@@ -110,7 +110,7 @@
 		        <span style='vertical-align: top;'>&common.language;</span>
 		        <span dojoType="dijit.form.FilteringSelect" store="openils.I18N.localeStore" 
                     searchAttr="label" required="false" jsId='opacLocaleSelector'>
-                    <script>
+                    <script type="text/javascript">
                         dojo.addOnLoad(function() {
                             opacLocaleSelector.setValue(locale);
                             dojo.connect(opacLocaleSelector, 'onChange', 

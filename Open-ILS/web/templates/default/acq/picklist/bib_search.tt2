@@ -1,10 +1,10 @@
 [% WRAPPER 'default/base.tt2' %]
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/bib_search.js'> </script>
-<style>
+<style type="text/css">
     @import "[% ctx.media_prefix %]/js/dojo/dojox/form/resources/CheckedMultiSelect.css";
 </style>
 
-<script>
+<script type="text/javascript">
     var searchOffset = 0;
 </script>
 
@@ -69,6 +69,6 @@
     <img src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif'/>
 </div>
 
-<script>dojo.style('oils-acq-pl-search-results', 'display', 'none');</script>
+<script type="text/javascript">dojo.style('oils-acq-pl-search-results', 'display', 'none');</script>
 [% END %]
 

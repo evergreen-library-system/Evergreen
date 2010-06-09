@@ -22,7 +22,7 @@
 <!-- load the page-specific JS -->
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/po/search.js'> </script>
 
-<script>
+<script type="text/javascript">
     function formatId(id) {
         if(id) return '<a href="[% ctx.base_path %]/acq/po/view/' + id + '">'+id;
     }
@@ -45,7 +45,7 @@
         <input id='po-search-provider-selector'/>
 
         <label for='state'>State</label></td>
-        <script>
+        <script type="text/javascript">
             var stateStore = new dojo.data.ItemFileReadStore({
                 data : {
                     identifier:"value",

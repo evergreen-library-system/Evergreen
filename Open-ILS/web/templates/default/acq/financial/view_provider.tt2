@@ -1,6 +1,6 @@
 [% WRAPPER default/base.tt2 %]
-<script>var providerId = [% ctx.page_args.0 %]</script>
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/financial/view_provider.js'> </script>
+<script type="text/javascript">var providerId = [% ctx.page_args.0 %]</script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/view_provider.js'></script>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top">
     <div dojoType="dijit.layout.TabContainer">

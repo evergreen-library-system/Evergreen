@@ -2,7 +2,7 @@
 	<table id='adv_global_search' width='100%' align='center'>
 	<!--class='data_grid data_grid_center'-->
 	
-		<style>
+		<style type="text/css">
 			#adv_global_search select { width: 13em; }
 			#adv_global_input_table select { width: 7em; }
 			.adv_adv_link { font-size: 8pt; color: red; }

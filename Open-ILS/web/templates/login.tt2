@@ -1,6 +1,6 @@
 <!-- general purpose login dialog -->
 <div style='display:none;' dojoType="dijit.Dialog" jsId='oilsLoginDialog' class='oils-login-dialog'>
-    <script>dojo.require('dijit.form.TextBox');</script>
+    <script type="text/javascript">dojo.require('dijit.form.TextBox');</script>
     <b>Please Login</b>
     <div class='hidden oils-notify-text' id='oils-login-failed'>Login Failed</div>
     <form>
@@ -15,7 +15,7 @@
             </tr>
             <tr>
                 <td>Workstation</td>
-                <td><span id='oils-login-workstation'/></td>
+                <td><span id='oils-login-workstation'></span></td>
             </tr>
             <tr>
                 <td colspan='2' align='center'>

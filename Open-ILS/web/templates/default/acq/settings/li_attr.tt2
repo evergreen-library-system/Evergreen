@@ -44,7 +44,7 @@
             </table>
         </div>
     </div>
-    <script>
+    <script type="text/javascript">
         var liAttrGridLayout = [{
             cells : [[
                 {name: 'ID', field: 'id'},

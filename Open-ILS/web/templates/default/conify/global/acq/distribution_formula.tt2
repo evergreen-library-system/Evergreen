@@ -1,6 +1,6 @@
 [% WRAPPER default/base.tt2 %]
-<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/distribution_formula.js'> </script>
-<script> var formulaId = '[% ctx.page_args.0 %]';
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/distribution_formula.js'></script>
+<script type="text/javascript"> var formulaId = '[% ctx.page_args.0 %]';
 
 function getFormulaName(rowIndex, item) {
         if(!item) return '';

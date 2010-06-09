@@ -3,7 +3,7 @@
     directory (matching the relative path) and change the values accordingly.
 #%]
 
-<script>
+<script type="text/javascript">
     SelfCheckManager.audioConfig = {
         'login-success' : '',
         'login-failure' : '[% ctx.media_prefix %]/audio/circ/question.wav',

@@ -2,7 +2,7 @@
 [% ctx.page_title = 'Selection Lists' %]
 <script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/view_list.js'> </script>
 
-<script>
+<script type="text/javascript">
     function formatName(inDatum) {
         for(var i in plCache){
             var pl = plCache[i];

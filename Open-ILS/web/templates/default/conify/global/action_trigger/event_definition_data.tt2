@@ -1,6 +1,6 @@
 [% WRAPPER default/base.tt2 %]
-<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/action_trigger/event_definition.js'> </script>
-<script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/action_trigger/event_definition.js'></script>
+<script type="text/javascript">
     eventDefId = [% ctx.page_args.0 %];
     openils.Util.addOnLoad(loadEventDefData)
 </script>

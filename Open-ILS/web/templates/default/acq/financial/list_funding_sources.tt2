@@ -1,10 +1,10 @@
 [% WRAPPER 'default/base.tt2' %]
 
 <!-- load the page-specific JS -->
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_funding_sources.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_funding_sources.js'></script>
 
 <!-- The main grid lives here -->
-<script>
+<script type="text/javascript">
     function getName(rowIndex, item) {
         if(!item) return '';
         var name = this.grid.store.getValue(item, 'name');
