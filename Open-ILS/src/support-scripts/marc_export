@@ -204,9 +204,9 @@ while ( my $i = <> ) {
 		if (uc($format) eq 'XML') {
 			print $r->as_xml_record;
 		} elsif (uc($format) eq 'UNIMARC') {
-			print $r->as_unimarc
+			print $r->as_usmarc;
 		} elsif (uc($format) eq 'USMARC') {
-			print $r->as_usmarc
+			print $r->as_usmarc;
 		}
 
         $count{did}++;

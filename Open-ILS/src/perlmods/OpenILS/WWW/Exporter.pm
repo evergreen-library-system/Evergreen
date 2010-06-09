@@ -278,7 +278,7 @@ sub handler {
 				$x =~ s/^<\?xml version="1.0" encoding="UTF-8"\?>//o;
 				$r->print($x);
 			} elsif (uc($format) eq 'UNIMARC') {
-				$r->print($req->as_unimarc);
+				$r->print($req->as_usmarc);
 			} elsif (uc($format) eq 'USMARC') {
 				$r->print($req->as_usmarc);
 			}
