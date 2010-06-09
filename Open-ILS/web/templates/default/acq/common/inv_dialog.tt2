@@ -1,6 +1,6 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/acq/common/inv_dialog.js">
 </script>
-<big><strong>Choose invoice</big></strong>
+<big><strong>Choose invoice</strong></big>
 <table class="acq-link-invoice-dialog">
     <tr>
         <th>

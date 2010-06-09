@@ -77,7 +77,7 @@
                         <table style='width:100%;'>
                             <tbody>
                                 <tr>
-                                    <td rowspan='2' style='width:43px;'><img style='width:40px;height:65px;' name='jacket'></img></td>
+                                    <td rowspan='2' style='width:43px;'><img style='width:40px;height:65px;' name='jacket'></td>
                                     <td style='width:70%;font-weight:bold;'>
                                         <span name="bib_origin" class="hidden">
                                             <img src="/opac/images/book-icon.png" />
