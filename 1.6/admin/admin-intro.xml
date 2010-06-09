@@ -1,0 +1,6 @@
+<partintro xmlns:xl="http://www.w3.org/1999/xlink">
+	<para>This part of the documentation is intended for Evergreen administrators. It deals with maintaining servers, installation, upgrading, and configuring both system wide and local library settings. 
+	Some sections require understanding of linux system administration while others require an understanding of your system hierarchy of locations and users. Many procedures explained in the following 
+	chapters are accomplished with linux commands run from the terminal without a Graphical User Interface (GUI).</para>
+	<para>In order to accomplish some of the tasks, prerequisite knowledge or experience will be required and you may need to consult system administration documentation for your specific linux distribution if you have limited linux system experience. A vast ammount of free resources can be found on the on the web for various experinece levels. You might also consider consulting <link xl:href="http://www.postgresql.org/docs/">PostgreSQL</link> and <link xl:href="http://httpd.apache.org/docs/">Apache</link> documentation for a greater understanding of the software stack on which Evergreen is built.</para>
+</partintro>
