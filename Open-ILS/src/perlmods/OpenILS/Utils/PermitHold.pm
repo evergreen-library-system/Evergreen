@@ -229,7 +229,13 @@ sub indb_hold_permit {
         return 0;
     }
 
-    return [OpenILS::Event->new('NO_POLICY_MATCHPOINT')] unless @$results;
+    return [
+        new OpenILS::Event(
+            "NO_POLICY_MATCHPOINT",
+            "payload" => {"fail_part" => "no_matchpoint"}
+        )
+    ] unless @$results;
+
     return [] if $U->is_true($results->[0]->{success});
 
     return [

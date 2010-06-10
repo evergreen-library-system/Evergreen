@@ -1639,6 +1639,8 @@ sub check_title_hold {
     my $soft_boundary = $U->ou_ancestor_setting_value($selection_ou, OILS_SETTING_HOLD_SOFT_BOUNDARY);
     my $hard_boundary = $U->ou_ancestor_setting_value($selection_ou, OILS_SETTING_HOLD_HARD_BOUNDARY);
 
+    my @status = ();
+    my $return_depth = $hard_boundary; # default depth to return on success
     if(defined $soft_boundary and $depth < $soft_boundary) {
         # work up the tree and as soon as we find a potential copy, use that depth
         # also, make sure we don't go past the hard boundary if it exists
@@ -1650,26 +1652,35 @@ sub check_title_hold {
         my $depth = $soft_boundary;
         while($depth >= $min_depth) {
             $logger->info("performing hold possibility check with soft boundary $depth");
-            my @status = do_possibility_checks($e, $patron, $request_lib, $depth, %params);
-            return {success => 1, depth => $depth, local_avail => $status[1]} if $status[0];
+            @status = do_possibility_checks($e, $patron, $request_lib, $depth, %params);
+            if ($status[0]) {
+                $return_depth = $depth;
+                last;
+            }
             $depth--;
         }
     } elsif(defined $hard_boundary and $depth < $hard_boundary) {
         # there is no soft boundary, enforce the hard boundary if it exists
         $logger->info("performing hold possibility check with hard boundary $hard_boundary");
-        my @status = do_possibility_checks($e, $patron, $request_lib, $hard_boundary, %params);
-        if($status[0]) {
-            return {success => 1, depth => $hard_boundary, local_avail => $status[1]}
-        }
+        @status = do_possibility_checks($e, $patron, $request_lib, $hard_boundary, %params);
     } else {
         # no boundaries defined, fall back to user specifed boundary or no boundary
         $logger->info("performing hold possibility check with no boundary");
-        my @status = do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params);
-        if($status[0]) {
-            return {success => 1, depth => $hard_boundary, local_avail => $status[1]};
-        }
+        @status = do_possibility_checks($e, $patron, $request_lib, $params{depth}, %params);
     }
-    return {success => 0};
+
+    if ($status[0]) {
+        return {
+            "success" => 1,
+            "depth" => $return_depth,
+            "local_avail" => $status[1]
+        };
+    } elsif ($status[2]) {
+        my $n = scalar @{$status[2]};
+        return {"success" => 0, "last_event" => $status[2]->[$n - 1]};
+    } else {
+        return {"success" => 0};
+    }
 }
 
 sub do_possibility_checks {
@@ -1717,12 +1728,14 @@ sub do_possibility_checks {
 
 		my $maps = $e->search_metabib_metarecord_source_map({metarecord=>$mrid});
 		my @recs = map { $_->source } @$maps;
+		my @status = ();
 		for my $rec (@recs) {
-            my @status = _check_title_hold_is_possible(
-				$rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou);
-            return @status if $status[1];
+			@status = _check_title_hold_is_possible(
+				$rec, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
+			);
+			last if $status[1];
 		}
-		return (0);	
+		return @status;
 	}
 #   else { Unrecognized hold_type ! }   # FIXME: return error? or 0?
 }
@@ -1786,7 +1799,14 @@ sub _check_title_hold_is_possible {
     );
 
     $logger->info("title possible found ".scalar(@$copies)." potential copies");
-    return (0) unless @$copies;
+    return (
+        0, 0, [
+            new OpenILS::Event(
+                "HIGH_LEVEL_HOLD_HAS_NO_COPIES",
+                "payload" => {"fail_part" => "no_ultimate_items"}
+            )
+        ]
+    ) unless @$copies;
 
     # -----------------------------------------------------------------------
     # sort the copies into buckets based on their circ_lib proximity to 
@@ -1838,7 +1858,8 @@ sub _check_title_hold_is_possible {
 
     my $title;
     my %seen;
-    for my $key (@keys) {
+    my @status;
+    OUTER: for my $key (@keys) {
       my @cps = @{$buckets{$key}};
 
       $logger->info("looking at " . scalar(@{$buckets{$key}}). " copies in proximity bucket $key");
@@ -1856,14 +1877,14 @@ sub _check_title_hold_is_possible {
             $title = $vol->record;
          }
    
-         my @status = verify_copy_for_hold( 
-            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib );
+         @status = verify_copy_for_hold(
+            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib);
 
-        return @status if $status[0];
+         last OUTER if $status[0];
       }
     }
 
-    return (0);
+    return @status;
 }
 
 
@@ -1872,12 +1893,23 @@ sub _check_volume_hold_is_possible {
     my %org_filter = create_ranged_org_filter(new_editor(), $selection_ou, $depth);
 	my $copies = new_editor->search_asset_copy({call_number => $vol->id, %org_filter});
 	$logger->info("checking possibility of volume hold for volume ".$vol->id);
+
+    return (
+        0, 0, [
+            new OpenILS::Event(
+                "HIGH_LEVEL_HOLD_HAS_NO_COPIES",
+                "payload" => {"fail_part" => "no_ultimate_items"}
+            )
+        ]
+    ) unless @$copies;
+
+    my @status;
 	for my $copy ( @$copies ) {
-        my @status = verify_copy_for_hold( 
+        @status = verify_copy_for_hold(
 			$patron, $requestor, $title, $copy, $pickup_lib, $request_lib );
-        return @status if $status[0];
+        last if $status[0];
 	}
-	return (0);
+	return @status;
 }
 
 
@@ -1893,16 +1925,18 @@ sub verify_copy_for_hold {
 			title_descriptor	=> $title->fixed_fields, # this is fleshed into the title object
 			pickup_lib			=> $pickup_lib,
 			request_lib			=> $request_lib,
-            new_hold            => 1
+            new_hold            => 1,
+            show_event_list     => 1
 		} 
 	);
 
     return (
-        $permitted,
+        (not scalar @$permitted), # true if permitted is an empty arrayref
         (
 	        ($copy->circ_lib == $pickup_lib) and 
             ($copy->status == OILS_COPY_STATUS_AVAILABLE)
-        )
+        ),
+        $permitted
     );
 }
 
