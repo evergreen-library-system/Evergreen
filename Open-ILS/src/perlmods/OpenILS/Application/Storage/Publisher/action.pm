@@ -978,6 +978,7 @@ sub new_hold_copy_targeter {
 	local $OpenILS::Application::Storage::WRITE = 1;
 
 	$self->{target_weight} = {};
+	$self->{max_loops} = {};
 
 	my $holds;
 
@@ -1248,15 +1249,17 @@ sub new_hold_copy_targeter {
 				}
 			}
 
+            my $pu_lib = ''.$hold->pickup_lib;
+
 			my $prox_list = [];
 			$$prox_list[0] =
 			[
 				grep {
-					''.$_->circ_lib eq ''.$hold->pickup_lib
+					''.$_->circ_lib eq $pu_lib
 				} @good_copies
 			];
 
-			$all_copies = [grep {''.$_->circ_lib ne ''.$hold->pickup_lib } @good_copies];
+			$all_copies = [grep {''.$_->circ_lib ne $pu_lib } @good_copies];
 			# $all_copies is now a list of copies not at the pickup library
 
 			my $best = choose_nearest_copy($hold, $prox_list);
@@ -1265,11 +1268,13 @@ sub new_hold_copy_targeter {
 			if (!$best) {
 				$log->debug("\tNothing at the pickup lib, looking elsewhere among ".scalar(@$all_copies)." copies");
 
-				my $max_loops = $actor->request(
-					'open-ils.actor.ou_setting.ancestor_default' => $hold->pickup_lib.'' => 'circ.holds.max_org_unit_target_loops'
+				$self->{max_loops}{$pu_lib} = $actor->request(
+					'open-ils.actor.ou_setting.ancestor_default' => $pu_lib => 'circ.holds.max_org_unit_target_loops'
 				)->gather(1);
 
-				if (defined($max_loops)) {
+				if (defined($self->{max_loops}{$pu_lib})) {
+					$self->{max_loops}{$pu_lib} = $self->{max_loops}{$pu_lib}{value};
+
 					my %circ_lib_map =  map { (''.$_->circ_lib => 1) } @$all_copies;
 					my $circ_lib_list = [keys %circ_lib_map];
 	
@@ -1317,7 +1322,7 @@ sub new_hold_copy_targeter {
 	
 					$current_loop++ if (!@keepers);
 	
-					if ($max_loops && $max_loops <= $current_loop) {
+					if ($self->{max_loops}{$pu_lib} && $self->{max_loops}{$pu_lib} <= $current_loop) {
 						# We haven't exceeded max_loops yet
 						my @keeper_copies;
 						for my $cp ( @$all_copies ) {
@@ -1343,7 +1348,7 @@ sub new_hold_copy_targeter {
 					}
 				}
 
-				$prox_list = create_prox_list( $self, $hold->pickup_lib, $all_copies );
+				$prox_list = create_prox_list( $self, $pu_lib, $all_copies );
 
 				$client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
@@ -1874,7 +1879,9 @@ sub create_prox_list {
 		# Fetch the weighting value for hold targeting, defaulting to 1
 		$self->{target_weight}{$lib} ||= $actor->request(
 			'open-ils.actor.ou_setting.ancestor_default' => $lib.'' => 'circ.holds.org_unit_target_weight'
-		)->gather(1) || 1;
+		)->gather(1);
+        $self->{target_weight}{$lib} = $self->{target_weight}{$lib}{value} if (ref $self->{target_weight}{$lib});
+        $self->{target_weight}{$lib} ||= 1;
 
 		$prox_list[$prox] = [] unless defined($prox_list[$prox]);
 		for my $w ( 1 .. $self->{target_weight}{$lib} ) {
