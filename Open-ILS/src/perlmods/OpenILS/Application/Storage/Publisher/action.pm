@@ -267,6 +267,9 @@ sub nearest_hold {
 	my $cp = shift;
 	my $limit = int(shift()) || 10;
 	my $age = shift() || '0 seconds';
+    my $fifo = shift();
+
+    my $holdsort = $fifo ? "h.request_time, h.selection_depth DESC, p.prox " : "p.prox, h.selection_depth DESC, h.request_time ";
 
 	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $here, $cp, $age);
 		SELECT	h.id
@@ -279,10 +282,7 @@ sub nearest_hold {
 		  	AND h.cancel_time IS NULL
 		  	AND (h.expire_time IS NULL OR h.expire_time > NOW())
             AND h.frozen IS FALSE
-		ORDER BY
-			p.prox,
-			h.selection_depth DESC,
-			h.request_time
+		ORDER BY $holdsort
 		LIMIT $limit
 	SQL
 	
