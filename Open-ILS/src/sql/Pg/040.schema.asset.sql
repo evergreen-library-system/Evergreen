@@ -101,31 +101,6 @@ CREATE TRIGGER acp_status_changed_trig
     BEFORE UPDATE ON asset.copy
     FOR EACH ROW EXECUTE PROCEDURE asset.acp_status_changed();
 
-CREATE TABLE asset.copy_transparency (
-	id		SERIAL		PRIMARY KEY,
-	deposit_amount	NUMERIC(6,2),
-	owner		INT		NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
-	circ_lib	INT		REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
-	loan_duration	INT		CHECK ( loan_duration IN (1,2,3) ),
-	fine_level	INT		CHECK ( fine_level IN (1,2,3) ),
-	holdable	BOOL,
-	circulate	BOOL,
-	deposit		BOOL,
-	ref		BOOL,
-	opac_visible	BOOL,
-	circ_modifier	TEXT,
-	circ_as_type	TEXT,
-	name		TEXT		NOT NULL,
-	CONSTRAINT scte_name_once_per_lib UNIQUE (owner,name)
-);
-
-CREATE TABLE asset.copy_transparency_map (
-	id		BIGSERIAL	PRIMARY KEY,
-	transparency	INT	NOT NULL REFERENCES asset.copy_transparency (id) DEFERRABLE INITIALLY DEFERRED,
-	target_copy	INT	NOT NULL UNIQUE REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED
-);
-CREATE INDEX cp_tr_cp_idx ON asset.copy_transparency_map (transparency);
-
 CREATE TABLE asset.stat_cat_entry_transparency_map (
 	id			BIGSERIAL	PRIMARY KEY,
 	stat_cat		INT		NOT NULL, -- needs ON DELETE CASCADE
