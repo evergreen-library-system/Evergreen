@@ -1802,6 +1802,11 @@ INSERT into config.org_unit_setting_type
   'Lost items are usable on checkin instead of going ''home'' first',
   'bool' ),
 
+( 'circ.holds_fifo',
+  'Holds: FIFO',
+  'Force holds to a more strict First-In, First-Out capture',
+  'bool' ),
+
 ( 'opac.allow_pending_address',
   'OPAC: Allow pending addresses',
   'If enabled, patrons can create and edit existing addresses.  Addresses are kept in a pending state until staff approves the changes',

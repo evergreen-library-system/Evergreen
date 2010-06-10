@@ -1971,10 +1971,12 @@ sub find_nearest_permitted_hold {
 	$logger->info("circulator: searching for best hold at org ".$user->ws_ou.
         " and copy $bc with a hold stalling interval of ". ($hold_stall_interval || "(none)"));
 
+	my $fifo = $U->ou_ancestor_setting_value($user->ws_ou, 'circ.hold_fifo');
+
 	# search for what should be the best holds for this copy to fulfill
 	my $best_holds = $U->storagereq(
         "open-ils.storage.action.hold_request.nearest_hold.atomic", 
-		$user->ws_ou, $copy->id, 10, $hold_stall_interval );
+		$user->ws_ou, $copy->id, 10, $hold_stall_interval, $fifo );
 
 	unless(@$best_holds) {
 
