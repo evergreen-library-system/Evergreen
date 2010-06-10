@@ -93,11 +93,13 @@ function oilsRptMakeLabel(path) {
 	var parts = path.split(/-/);
 	var str = '';
 	for( var i = 0; i < parts.length; i++ ) {
-		if(i%2 == 0) {
+		if(i%2 == 0) { // IDL class names
 			if( i == 0 )
 				str += oilsIDL[parts[i]].label;
-		} else {
-			var f = oilsRptFindField(oilsIDL[parts[i-1]], parts[i]);
+		} else { // Field names
+            var name = parts[i];
+            name = name.replace(/>.*/,''); // field name may be appended with >join-type
+            var f = oilsRptFindField(oilsIDL[parts[i-1]], name);
 			str += " -> "+f.label;
 		}
 	}
