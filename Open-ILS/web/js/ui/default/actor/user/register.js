@@ -58,17 +58,17 @@ function load() {
 
     if(xulG) {
 	    if(xulG.ses) openils.User.authtoken = xulG.ses;
-	    if(xulG.clone !== null) cloneUser = xulG.clone;
-        if(xulG.usr !== null) userId = xulG.usr
-        if(xulG.params) {
+	    if(typeof xulG.clone != 'undefined') cloneUser = xulG.clone;
+        if(typeof xulG.usr != 'undefined') userId = xulG.usr
+        if(typeof xulG.params != 'undefined') {
             var parms = xulG.params;
-	        if(parms.ses) 
+	        if(typeof parms.ses != 'undefined') 
                 openils.User.authtoken = parms.ses;
-	        if(parms.clone) 
+	        if(typeof parms.clone != 'undefined') 
                 cloneUser = parms.clone;
-            if(parms.usr !== null)
+            if(typeof parms.usr != 'undefined')
                 userId = parms.usr;
-            if(parms.stage !== null)
+            if(typeof parms.stage != 'undefined')
                 stageUname = parms.stage
         }
     }
