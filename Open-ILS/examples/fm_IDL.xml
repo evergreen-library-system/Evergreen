@@ -2927,11 +2927,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Is OPAC Visible?" name="opac_visible" reporter:datatype="bool"/>
 			<field reporter:label="Owning Org Unit" name="owning_lib"  reporter:datatype="org_unit"/>
 			<field reporter:label="Copy Location Orders" name="orders" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Copies" name="copies" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="distribution_formula_entries" reltype="has_many" key="location" map="" class="acqdfe"/>
 			<link field="orders" reltype="has_many" key="location" map="" class="acplo"/>
+			<link field="copies" reltype="has_many" key="location" map="" class="acp"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
