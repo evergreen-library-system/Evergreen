@@ -1011,10 +1011,19 @@ static BindVar* getBindVar( BuildSQLState* state, const char* name ) {
 			return bind;   // Already loaded it...
 	}
 
-	// Load a BindVar from the Database.
+	// Load a BindVar from the Database.(after escaping any special characters)
+	char* esc_str = strdup( name );
+	dbi_conn_quote_string( state->dbhandle, &esc_str );
+	if( !esc_str ) {
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+			"Unable to format bind variable name \"%s\"", name ));
+		state->error = 1;
+		return NULL;
+	}
 	dbi_result result = dbi_conn_queryf( state->dbhandle,
 		"SELECT name, type, description, default_value, label "
-		"FROM query.bind_variable WHERE name = \'%s\';", name );
+		"FROM query.bind_variable WHERE name = %s;", esc_str );
+	free( esc_str );
 	if( result ) {
 		if( dbi_result_first_row( result ) ) {
 			bind = constructBindVar( state, result );
