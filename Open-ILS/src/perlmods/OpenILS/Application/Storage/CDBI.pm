@@ -22,6 +22,11 @@ use OpenSRF::EX qw/:try/;
 our $VERSION = 1;
 my $log = 'OpenSRF::Utils::Logger';
 
+if ($Class::DBI::VERSION gt '3.0.1') {
+    $log->error("Your version of Class::DBI, $Class::DBI::VERSION, is too new and incompatable with Evergreen.  You will need to downgrade to version 3.0.1"); 
+    die("Your version of Class::DBI, $Class::DBI::VERSION, is too new and incompatable with Evergreen.  You will need to downgrade to version 3.0.1"); 
+}
+
 sub child_init {
 	my $self = shift;
 
