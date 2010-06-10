@@ -1267,16 +1267,18 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	osrfHash* class = osrfHashGet( method_metadata, "class" );
 	const char* method_type = osrfHashGet( method_metadata, "methodtype" );
 
-	// Set fetch to 1 in all cases, meaning that for local or foreign contexts we will
-	// always do another lookup of the current row, even if we already have a row image,
-	// because the row image in hand may not include the foreign key(s) that we need.
+	// Set fetch to 1 in all cases except for inserts, meaning that for local or foreign
+	// contexts we will do another lookup of the current row, even if we already have a
+	// previously fetched row image, because the row image in hand may not include the
+	// foreign key(s) that we need.
 
 	// This is a quick fix with a bludgeon.  There are ways to avoid the extra lookup,
 	// but they aren't implemented yet.
-	//int fetch = 0;
-	int fetch = 1;
+
+	int fetch = 0;
 	if( *method_type == 's' || *method_type == 'i' ) {
 		method_type = "retrieve"; // search and id_list are equivalent to retrieve for this
+		fetch = 1;
 	} else if( *method_type == 'u' || *method_type == 'd' ) {
 		fetch = 1; // MUST go to the db for the object for update and delete
 	}
