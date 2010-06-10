@@ -832,10 +832,17 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 					"Internal error: No string value in string expression # %d", expr->id ));
 					state->error = 1;
 			} else {
-				// To do: escape special characters in the string
-				buffer_add_char( state->sql, '\'' );
-				buffer_add( state->sql, expr->literal );
-				buffer_add_char( state->sql, '\'' );
+				char* str = strdup( expr->literal );
+				dbi_conn_quote_string( state->dbhandle, &str );
+				if( str ) {
+					buffer_add( state->sql, str );
+					free( str );
+				} else {
+					osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+						"Unable to format string literal \"%s\" for expression # %d",
+							expr->literal, expr->id ));
+					state->error = 1;
+				}
 			}
 			break;
 		case EXP_SUBQUERY :
@@ -1037,10 +1044,17 @@ static void buildScalar( BuildSQLState* state, int numeric, const jsonObject* ob
 					"Invalid value for bind variable: expected a string, found a number" );
 				state->error = 1;
 			} else {
-				// To do: escape special characters in the string
-				buffer_add_char( state->sql, '\'' );
-				buffer_add( state->sql, jsonObjectGetString( obj ));
-				buffer_add_char( state->sql, '\'' );
+				char* str = jsonObjectToSimpleString( obj );
+				dbi_conn_quote_string( state->dbhandle, &str );
+				if( str ) {
+					buffer_add( state->sql, str );
+					free( str );
+				} else {
+					osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+						"Unable to format string literal \"%s\" for bind variable",
+						jsonObjectGetString( obj )));
+					state->error = 1;
+				}
 			}
 			break;
 		case JSON_NUMBER :
