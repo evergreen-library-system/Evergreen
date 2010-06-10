@@ -1370,6 +1370,7 @@ INSERT INTO permission.perm_list VALUES
     (388, 'UPDATE_ORG_UNIT_SETTING.circ.block_renews_for_holds', oils_i18n_gettext(388, 'Allow a user to enable blocking of renews on items that could fulfill holds', 'ppl', 'description')),
     (389, 'ACQ_XFER_MANUAL_DFUND_AMOUNT', oils_i18n_gettext(389, 'Allow a user to transfer different amounts of money out of one fund and into another', 'ppl', 'description')),
     (390, 'OVERRIDE_HOLD_HAS_LOCAL_COPY', oils_i18n_gettext( 390, 'Allow a user to override the circ.holds.hold_has_copy_at.block setting', 'ppl', 'description' ))
+    ,(391, 'UPDATE_PICKUP_LIB_FROM_TRANSIT', oils_i18n_gettext( 391, 'Allow a user to change the pickup and transit destination for a captured hold item already in transit', 'ppl', 'description' ))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
