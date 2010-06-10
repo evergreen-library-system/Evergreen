@@ -169,10 +169,9 @@ int osrfAppChildInit( void ) {
 	Method parameters:
 	- query id (key of query.stored_query table)
 
-	Returns: a character string serving as a token for future references to the query.
-
-	NB: the method return type is temporary.  Eventually this method will return both a token
-	and a list of bind variables.
+	Returns: a hash with two entries:
+	- "token": A character string serving as a token for future references to the query.
+	- "bind_variables" A hash of bind variables; see notes for doParamList().
 */
 int doPrepare( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
@@ -212,7 +211,14 @@ int doPrepare( osrfMethodContext* ctx ) {
 
 	osrfLogInfo( OSRF_LOG_MARK, "Token for query id # %d is \"%s\"", query_id, token );
 
-	osrfAppRespondComplete( ctx, jsonNewObject( token ));
+	// Build an object to return: a hash containing the query token
+	// and a list of bind variables.
+	jsonObject* returned_obj = jsonNewObjectType( JSON_HASH );
+	jsonObjectSetKey( returned_obj, "token", jsonNewObject( token ));
+	jsonObjectSetKey( returned_obj, "bind_variables",
+		oilsBindVarList( state->bindvar_list ));
+
+	osrfAppRespondComplete( ctx, returned_obj );
 	return 0;
 }
 
@@ -250,7 +256,7 @@ int doColumns( osrfMethodContext* ctx ) {
 	}
 
 	osrfLogInfo( OSRF_LOG_MARK, "Listing column names for token %s", token );
-	
+
 	jsonObject* col_list = oilsGetColNames( query->state, query->query );
 	if( query->state->error ) {
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
@@ -262,6 +268,27 @@ int doColumns( osrfMethodContext* ctx ) {
 	}
 }
 
+/**
+	@brief Implement the param_list method.
+	@param ctx Pointer to the current method context.
+	@return Zero if successful, or -1 if not.
+
+	Provide a list of bind variables for a specified query, along with their various
+	attributes.
+
+	Method parameters:
+	- query token, as previously returned by the .prepare method.
+
+	Returns: A (possibly empty) JSON_HASH, keyed on the names of the bind variables.
+	The data for each is another level of JSON_HASH with a fixed set of tags:
+	- "label"
+	- "type"
+	- "description"
+	- "default_value" (as a jsonObject)
+	- "actual_value" (as a jsonObject)
+
+	Any non-existent values are represented as JSON_NULLs.
+*/
 int doParamList( osrfMethodContext* ctx ) {
 	if(osrfMethodVerifyContext( ctx )) {
 		osrfLogError( OSRF_LOG_MARK,  "Invalid method context" );
@@ -295,6 +322,8 @@ int doParamList( osrfMethodContext* ctx ) {
 	@brief Implement the bind_param method.
 	@param ctx Pointer to the current method context.
 	@return Zero if successful, or -1 if not.
+
+	Apply values to bind variables, overriding the defaults, if any.
 
 	Method parameters:
 	- query token, as previously returned by the .prepare method.
