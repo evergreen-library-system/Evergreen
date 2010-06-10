@@ -1256,7 +1256,7 @@ sub new_hold_copy_targeter {
 				} @good_copies
 			];
 
-			$all_copies = [grep {$_->circ_lib != $hold->pickup_lib } @good_copies];
+			$all_copies = [grep {''.$_->circ_lib ne ''.$hold->pickup_lib } @good_copies];
 			# $all_copies is now a list of copies not at the pickup library
 
 			my $best = choose_nearest_copy($hold, $prox_list);
@@ -1321,8 +1321,9 @@ sub new_hold_copy_targeter {
 						# We haven't exceeded max_loops yet
 						my @keeper_copies;
 						for my $cp ( @$all_copies ) {
-							push (@keeper_copies, $cp) if ( grep { $_ eq ''.$cp->circ_lib } @keepers );
+							push(@keeper_copies, $cp) if ( grep { $_ eq ''.$cp->circ_lib } @keepers );
 						}
+						$all_copies = [@keeper_copies];
 					} else {
 						# We have, and should remove potentials and cancel the hold
 						my @oldmaps = action::hold_copy_map->search( hold => $hold->id );
