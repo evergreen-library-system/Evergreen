@@ -1,1 +1,95 @@
-#ChangeLog
+2010-05-03  erickson
+
+	* backporting 16376: fixed bug where updating the email address
+	  resulted in updating the username instead of the email address on
+	  the local copy of the user object in the opac. this bug likely
+	  affected nothing.
+
+2010-05-10  phasefx
+
+	* backport changesets 16411 and 16393 for authoritative methods
+
+2010-05-16  miker
+
+	* adjust upgrade script in case there is ever a
+	  1.6.0.5Open-ILS/src/sql/Pg/1.6.0.4-1.6.0.5-upgrade-db.sql
+
+2010-05-21  miker
+
+	* Patch from Dan Wells to fix the bookbag menu not showing up in
+	  Craftsman.
+
+2010-05-25  erickson
+
+	* Patch from Bill Ott to add missing apostrophe in rdetail.js
+
+2010-06-01  dbs
+
+	* Fix regression in date formatting for purposes other than due
+	  dates
+	  
+	  Thanks to #atheos in IRC for pointing out this problem
+
+2010-06-02  dbs
+
+	* Backport r16558 from rel_1_6: Avoid schema creation failure by
+	  ensuring metabib exists before referencing rule is created
+
+2010-06-08  erickson
+
+	* back-porting: protect against empty results from bib searches
+	  caused by search timeouts. This allows the API call to log the
+	  error and return reasonable results
+
+2010-06-10  erickson
+
+	* updated report param editor to handle join types embedded in the
+	  field name. this bug caused sporadic failed rendering of the
+	  report editor params widgets
+
+2010-06-10  miker
+
+	* Patch from James Fournie of SITKA:
+	  
+	  There was some discussion about problems with holds fulfillment
+	  at the holds roundtable at EG2010. I am pleased to share this patch with
+	  the community which has been thoroughly tested by the folks at
+	  Thompson-Nicola Regional District Library. (thanks guys!)
+	  
+	  Background:
+	  
+	  Evergreen's default out-of-the-box behaviour for holds fulfillment is
+	  a gas-saving method. Holds are fulfilled by proximity. In a
+	  multibranch library, holds are fulfilled at the local branch first.
+	  Many libraries, particularly single branch libraries may be ok with
+	  this, but it may be problematic for other libraries.
+	  
+	  Imagine a scenario where you have a large central branch and a small
+	  rural branch of the same library system. At the large branch, there
+	  are many copies of Popular New DVD with lots of holds. There are no
+	  copies at the rural branch. Patrons at the small rural branch who
+	  want to pick up Popular New DVD at their home branch may never get
+	  their hold fulfilled because the copies will stay at the large branch
+	  as long as there are holds for pickup there.
+	  
+	  This patch adds an org unit setting that changes the opportunistic
+	  check-in so that items checked in will be assigned to holds by request
+	  date first, rather than proximity. This setting can be applied to
+	  any level of the org tree, so in some situations you may even want to
+	  activate FIFO for large libraries, but leave the original setting for
+	  smaller libraries with less traffic who want to keep their copies more
+	  local.
+	  
+	  Also credit to Jeff Godin who thought of the same patch and
+	  contributed the setting name "holds FIFO" for the setting
+	  
+	  [ NOTE: Implications of mixed FIFO and non-FIFO environments that are
+	  not sufficiently segregated by the use of Hard Boundaries for Holds
+	  present a potenial for user confusion. Beware that mixing FIFO and
+	  non-FIFO settings within a resource-sharing group will likely result in
+	  severe imbalance of hold fulfillment, though further configuration,
+	  development, tuning and testing may be able to mitigate these issues.
+	    --miker ]
+
+	* .: Tagging 1.6.0.5
+
