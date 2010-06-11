@@ -115,7 +115,7 @@ def main():
     if options.pot:
         pot.get_strings(options.pot)
         if options.outfile:
-            if not os.path.exists(options.outfile):
+            if not os.path.exists(os.path.dirname(options.outfile)):
                 os.makedirs(os.path.dirname(options.outfile))
             pot.savepot(options.outfile)
         else:
