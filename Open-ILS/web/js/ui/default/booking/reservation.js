@@ -324,10 +324,17 @@ function create_bresv(resource_list) {
             var targeting = check_bresv_targeting(results);
             if (targeting.missing) {
                 if (aous_cache["booking.require_successful_targeting"]) {
-                    alert(localeStrings.CREATE_BRESV_OK_MISSING_TARGET(
-                        results.length, targeting.missing, targeting.due_dates,
-                        true /* will cancel */
-                    ));
+                    alert(
+                        dojo.string.substitute(
+                            localeStrings.CREATE_BRESV_OK_MISSING_TARGET,
+                                [results.length, targeting.missing]
+                        ) + "\n\n" +
+                        dojo.string.substitute(
+                            localeStrings.CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC,
+                                [targeting.due_dates]
+                        ) + "\n\n" +
+                        localeStrings.CREATE_BRESV_OK_MISSING_TARGET_WILL_CANCEL
+                    );
                     cancel_reservations(
                         results.map(
                             function(o) { return o.bresv; },
@@ -335,12 +342,23 @@ function create_bresv(resource_list) {
                         )
                     );
                 } else {
-                    alert(localeStrings.CREATE_BRESV_OK_MISSING_TARGET(
-                        results.length, targeting.missing, targeting.due_dates
-                    ));
+                    alert(
+                        dojo.string.substitute(
+                            localeStrings.CREATE_BRESV_OK_MISSING_TARGET,
+                                [results.length, targeting.missing]
+                        ) + "\n\n" +
+                        dojo.string.substitute(
+                            localeStrings.CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC,
+                                [targeting.due_dates]
+                        )
+                    );
                 }
             } else {
-                alert(localeStrings.CREATE_BRESV_OK(results.length));
+                alert(
+                    dojo.string.substitute(
+                        localeStrings.CREATE_BRESV_OK, [results.length]
+                    )
+                );
             }
             update_brsrc_list();
             update_bresv_grid();
@@ -475,7 +493,11 @@ function cancel_reservations(bresv_id_list, skip_update) {
     } else if (is_ils_event(result)) {
         alert(my_ils_error(localeStrings.CXL_BRESV_FAILURE2, result));
     } else {
-        alert(localeStrings.CXL_BRESV_SUCCESS(result.length));
+        alert(
+            dojo.string.substitute(
+                localeStrings.CXL_BRESV_SUCCESS, [result.length]
+            )
+        );
     }
 }
 
