@@ -26,10 +26,22 @@ CREATE INDEX serial_record_entry_owning_lib_idx ON serial.record_entry ( owning_
 
 CREATE RULE protect_mfhd_delete AS ON DELETE TO serial.record_entry DO INSTEAD UPDATE serial.record_entry SET deleted = true WHERE old.id = serial.record_entry.id;
 
+CREATE TABLE serial.subscription (
+	id                     SERIAL       PRIMARY KEY,
+	start_date             TIMESTAMP WITH TIME ZONE     NOT NULL,
+	end_date               TIMESTAMP WITH TIME ZONE,    -- interpret NULL as current subscription
+	record_entry           BIGINT       REFERENCES biblio.record_entry (id)
+	                                    ON DELETE SET NULL
+	                                    DEFERRABLE INITIALLY DEFERRED,
+	expected_date_offset   INTERVAL
+	-- acquisitions/business-side tables link to here
+);
+
+
 CREATE TABLE serial.caption_and_pattern (
 	id           SERIAL       PRIMARY KEY,
-	record       BIGINT       NOT NULL
-	                          REFERENCES serial.record_entry (id)
+	subscription INT          NOT NULL
+	                          REFERENCES serial.subscription (id)
 	                          ON DELETE CASCADE
 	                          DEFERRABLE INITIALLY DEFERRED,
 	type         TEXT         NOT NULL
@@ -51,20 +63,12 @@ CREATE TABLE serial.caption_and_pattern (
 	chron_5      TEXT
 );
 
-CREATE TABLE serial.subscription (
-	id                     SERIAL       PRIMARY KEY,
-	start_date             TIMESTAMP WITH TIME ZONE     NOT NULL,
-	end_date               TIMESTAMP WITH TIME ZONE,    -- interpret NULL as current subscription
-	record_entry           BIGINT       REFERENCES serial.record_entry (id)
-	                                    ON DELETE SET NULL
-	                                    DEFERRABLE INITIALLY DEFERRED,
-	expected_date_offset   INTERVAL
-	-- acquisitions/business-side tables link to here
-);
-
 --at least one distribution per org_unit holding issues
 CREATE TABLE serial.distribution (
 	id                    SERIAL  PRIMARY KEY,
+	record_entry          BIGINT  REFERENCES serial.record_entry (id)
+								  ON DELETE SET NULL
+								  DEFERRABLE INITIALLY DEFERRED,
 	subscription          INT     NOT NULL
 	                              REFERENCES serial.subscription (id)
 								  ON DELETE CASCADE
@@ -84,6 +88,7 @@ CREATE TABLE serial.distribution (
 	unit_label_base       TEXT,
 	unit_label_suffix     TEXT
 );
+CREATE UNIQUE INDEX one_dist_per_sre_idx ON serial.distribution (record_entry);
 
 CREATE TABLE serial.stream (
 	id              SERIAL  PRIMARY KEY,
