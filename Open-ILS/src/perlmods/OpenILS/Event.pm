@@ -23,7 +23,8 @@ sub new {
     _load_events() unless $events;
 
     throw OpenSRF::EX ("Bad event name: $event") unless $event;
-    my $e = $events->{$event} || '';
+    my $e = $events->{$event};
+    $e = '' unless defined $e;
 
     my(   $m,   $f,   $l ) = caller(0);
     my(  $mm,  $ff,  $ll ) = caller(1);
