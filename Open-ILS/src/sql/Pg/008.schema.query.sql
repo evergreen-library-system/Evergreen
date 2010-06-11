@@ -442,6 +442,7 @@ CREATE OR REPLACE VIEW query.expr_xcase AS
 		parenthesize,
 		parent_expr,
 		seq_no,
+		left_operand,
 		negate
     FROM
         query.expression
@@ -457,6 +458,7 @@ CREATE OR REPLACE RULE query_expr_xcase_insert_rule AS
 		parenthesize,
 		parent_expr,
 		seq_no,
+		left_operand,
 		negate
     ) VALUES (
         COALESCE(NEW.id, NEXTVAL('query.expression_id_seq'::REGCLASS)),
@@ -464,6 +466,7 @@ CREATE OR REPLACE RULE query_expr_xcase_insert_rule AS
         COALESCE(NEW.parenthesize, FALSE),
         NEW.parent_expr,
         COALESCE(NEW.seq_no, 1),
+		NEW.left_operand,
 		COALESCE(NEW.negate, false)
     );
 
@@ -475,6 +478,7 @@ CREATE OR REPLACE RULE query_expr_xcase_update_rule AS
         parenthesize = NEW.parenthesize,
         parent_expr = NEW.parent_expr,
         seq_no = NEW.seq_no,
+		left_operand = NEW.left_operand,
 		negate = NEW.negate
     WHERE
         id = OLD.id;
