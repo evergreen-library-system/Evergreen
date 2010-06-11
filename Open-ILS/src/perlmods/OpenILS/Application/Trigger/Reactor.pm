@@ -10,8 +10,8 @@ use OpenILS::Utils::CStoreEditor qw/:funcs/;
 my $U = 'OpenILS::Application::AppUtils';
 
 sub fourty_two { return 42 }
-sub NOOP_True { return 1 }
-sub NOOP_False { return 0 }
+sub NOOP_True  { return  1 }
+sub NOOP_False { return  0 }
 
 
 
@@ -75,13 +75,13 @@ my $_TT_helpers = {
         ]);
         if($copy->call_number->id == -1) {
             return {
-                title => $copy->dummy_title,
+                title  => $copy->dummy_title,
                 author => $copy->dummy_author,
             };
         } else {
             my $mvr = $U->record_to_mvr($copy->call_number->record);
             return {
-                title => $mvr->title,
+                title  => $mvr->title,
                 author => $mvr->author
             };
         }
@@ -93,6 +93,7 @@ my $_TT_helpers = {
         return $U->ou_ancestor_setting_value($org_id, $setting);
     },
 
+    # helpers.get_li_attr('isbn_13', li.attributes)
     # returns matching line item attribute, or undef
     get_li_attr => sub {
         my $name = shift or return;     # the first arg is always the name
@@ -100,8 +101,11 @@ my $_TT_helpers = {
         # if the next is the last, it's the attributes, otherwise type
         # use Data::Dumper; $logger->warn("get_li_attr: " . Dumper($attr));
         ($name and @$attr) or return;
+        my $length;
+        $name =~ s/^(\D+)_(\d+)$/$1/ and $length = $2;
         foreach (@$attr) {
             $_->attr_name eq $name or next;
+            next if $length and $length != length($_->attr_value);
             return $_->attr_value if (! $type) or $type eq $_->attr_type;
         }
         return;
