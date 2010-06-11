@@ -393,9 +393,9 @@ util.list.prototype = {
         s += ('tree = ' + this.node + '  treechildren = ' + treechildren_node + '\n');
         s += ('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
 
-        if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
+        obj.put_retrieving_label(treerow);
 
-            obj.put_retrieving_label(treerow);
+        if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
             treerow.addEventListener(
                 'flesh',
                 function() {
@@ -457,7 +457,6 @@ util.list.prototype = {
             );
             */
         } else {
-            obj.put_retrieving_label(treerow);
             treerow.addEventListener(
                 'flesh',
                 function() {
@@ -540,9 +539,10 @@ util.list.prototype = {
         s += ('tree = ' + this.node + '\n');
         s += ('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
 
+        obj.put_retrieving_label(treerow);
+
         if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
 
-            obj.put_retrieving_label(treerow);
             treerow.addEventListener(
                 'flesh',
                 function() {
@@ -604,7 +604,6 @@ util.list.prototype = {
             );
             */
         } else {
-            obj.put_retrieving_label(treerow);
             treerow.addEventListener(
                 'flesh',
                 function() {
@@ -654,23 +653,16 @@ util.list.prototype = {
     'put_retrieving_label' : function(treerow) {
         var obj = this;
         try {
-            /*
-            var cols_idx = 0;
-            dump('put_retrieving_label.  columns = ' + js2JSON(obj.columns) + '\n');
-            while( obj.columns[cols_idx] && obj.columns[cols_idx].hidden && obj.columns[cols_idx].hidden == 'true') {
-                dump('\t' + cols_idx);
-                var treecell = document.createElement('treecell');
-                treerow.appendChild(treecell);
-                cols_idx++;
-            }
-            */
             for (var i = 0; i < obj.columns.length; i++) {
-            var treecell = document.createElement('treecell'); treecell.setAttribute('label',document.getElementById('offlineStrings').getString('list.row_retrieving'));
-            treerow.appendChild(treecell);
+                var treecell;
+                if (typeof treerow.childNodes[i] == 'undefined') {
+                    treecell = document.createElement('treecell');
+                    treerow.appendChild(treecell);
+                } else {
+                    treecell = treerow.childNodes[i];
+                }
+                treecell.setAttribute('label',document.getElementById('offlineStrings').getString('list.row_retrieving'));
             }
-            /*
-            dump('\t' + cols_idx + '\n');
-            */
         } catch(E) {
             alert(E);
         }
@@ -879,22 +871,29 @@ util.list.prototype = {
     '_map_row_to_treecell' : function(params,treerow) {
         var obj = this;
         var s = '';
-        util.widgets.remove_children(treerow);
 
         if (typeof params.map_row_to_column == 'function' || typeof this.map_row_to_column == 'function') {
 
             for (var i = 0; i < this.columns.length; i++) {
-                var treecell = document.createElement('treecell');
+                var treecell;
+                if (typeof treerow.childNodes[i] == 'undefined') {
+                    treecell = document.createElement('treecell');
+                    treerow.appendChild( treecell );
+                } else {
+                    treecell = treerow.childNodes[i];
+                }
+                
+                if ( this.columns[i].editable == false ) { treecell.setAttribute('editable','false'); }
                 var label = '';
+
+                // What skip columns is doing is rendering the treecells as blank/empty
                 if (params.skip_columns && (params.skip_columns.indexOf(i) != -1)) {
                     treecell.setAttribute('label',label);
-                    treerow.appendChild( treecell );
                     s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
                     continue;
                 }
                 if (params.skip_all_columns_except && (params.skip_all_columns_except.indexOf(i) == -1)) {
                     treecell.setAttribute('label',label);
-                    treerow.appendChild( treecell );
                     s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
                     continue;
                 }
@@ -908,8 +907,7 @@ util.list.prototype = {
                     label = this.map_row_to_column(params.row,this.columns[i]);
     
                 }
-                treecell.setAttribute('label',label ? label : '');
-                treerow.appendChild( treecell );
+                if (this.columns[i].type == 'checkbox') { treecell.setAttribute('value',label); } else { treecell.setAttribute('label',label ? label : ''); }
                 s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
             }
         } else if (typeof params.map_row_to_columns == 'function' || typeof this.map_row_to_columns == 'function') {
@@ -926,9 +924,19 @@ util.list.prototype = {
 
             }
             for (var i = 0; i < labels.length; i++) {
-                var treecell = document.createElement('treecell');
-                treecell.setAttribute('label',typeof labels[i] == 'string' || typeof labels[i] == 'number' ? labels[i] : '');
-                treerow.appendChild( treecell );
+                var treecell;
+                if (typeof treerow.childNodes[i] == 'undefined') {
+                    treecell = document.createElement('treecell');
+                    treerow.appendChild(treecell);
+                } else {
+                    treecell = treerow.childNodes[i];
+                }
+                if ( this.columns[i].editable == false ) { treecell.setAttribute('editable','false'); }
+                if ( this.columns[i].type == 'checkbox') {
+                    treecell.setAttribute('value', labels[i]);
+                } else {
+                    treecell.setAttribute('label',typeof labels[i] == 'string' || typeof labels[i] == 'number' ? labels[i] : '');
+                }
                 s += ('treecell = ' + treecell + ' with label = ' + labels[i] + '\n');
             }
 
@@ -1045,7 +1053,14 @@ util.list.prototype = {
             var treeitem = this.treechildren.childNodes[i];
             var treerow = treeitem.firstChild;
             for (var j = 0; j < treerow.childNodes.length; j++) {
-                row[ obj.columns[j].id ] = treerow.childNodes[j].getAttribute('label');
+                if (typeof obj.columns[j] == 'undefined') {
+                    dump('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n');
+                    dump('_dump_tree_with_keys @ ' + location.href + '\n');
+                    dump('\ttreerow.childNodes.length='+treerow.childNodes.length+' j='+j+' obj.columns.length='+obj.columns.length+'\n');
+                    debugger;
+                } else {
+                    row[ obj.columns[j].id ] = treerow.childNodes[j].getAttribute('label');
+                }
             }
             dump.push( row );
         }
@@ -1197,8 +1212,15 @@ util.list.prototype = {
             for (var j = 0; j < treerow.childNodes.length; j++) {
                 var value = treerow.childNodes[j].getAttribute('label');
                 if (params.skip_hidden_columns) if (obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('hidden') == 'true') continue;
-                var id = obj.columns[j].id; if (params.labels_instead_of_ids) id = obj.columns[j].label;
-                row[ id ] = value;
+                if (typeof obj.columns[j] == 'undefined') {
+                    dump('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n');
+                    dump('_dump_tree_selection_with_keys @ ' + location.href + '\n');
+                    dump('\ttreerow.childNodes.length='+treerow.childNodes.length+' j='+j+' obj.columns.length='+obj.columns.length+'\n');
+                    debugger;
+                } else {
+                    var id = obj.columns[j].id; if (params.labels_instead_of_ids) id = obj.columns[j].label;
+                    row[ id ] = value;
+                }
             }
             dump.push( row );
         }
