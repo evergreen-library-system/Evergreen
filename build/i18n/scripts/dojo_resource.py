@@ -126,7 +126,7 @@ def main():
         pot.loadpo(options.create)
         pot.create_bundle()
         if options.outfile:
-            if not os.path.exists(options.outfile):
+            if not os.path.exists(os.path.dirname(options.outfile)):
                 os.makedirs(os.path.dirname(options.outfile))
             outfile = codecs.open(options.outfile, encoding='utf-8', mode='w')
             simplejson.dump(pot.msgs, outfile, indent=4)
