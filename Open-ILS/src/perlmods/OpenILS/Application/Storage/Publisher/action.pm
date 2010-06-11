@@ -301,10 +301,6 @@ sub nearest_hold {
 		  	AND (h.expire_time IS NULL OR h.expire_time > NOW())
             AND h.frozen IS FALSE
 		ORDER BY $holdsort
-			p.prox,
-            CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END,
-			h.selection_depth DESC,
-			h.request_time
 		LIMIT $limit
 	SQL
 	
