@@ -1,6 +1,6 @@
 package OpenILS::Application::Trigger::Validator::Acq;
 use strict; use warnings;
-use OpenSRF::Utils::Logger qw/:logger/;
+# use OpenSRF::Utils::Logger qw/:logger/;
 
 sub get_lineitem_from_req {
     my($self, $env) = @_;
