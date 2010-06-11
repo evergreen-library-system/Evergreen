@@ -768,6 +768,9 @@
 	<event code='4010' textcode='CREDIT_PROCESSOR_NO_DEFAULT_SELECTED'>
 		<desc xml:lang="en-US">No default credit processor is selected</desc>
 	</event>
+	<event code='4019' textcode='CREDIT_PROCESSOR_INVALID_CC_NUMBER'>
+		<desc xml:lang="en-US">An invalid credit card number has been supplied.</desc>
+	</event>
 	<event code='4020' textcode='CREDIT_PROCESSOR_DECLINED_TRANSACTION'>
 		<desc xml:lang="en-US">The credit card processor has declined the transaction.</desc>
 	</event>

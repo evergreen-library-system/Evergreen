@@ -100,7 +100,7 @@ sub get_processor_settings {
 #              description: optional
 #                /, type => 'hash' }
 #        ],
-#        return => { desc => 'Hash of status information', type =>'hash' }
+#        return => { desc => 'an ilsevent' }
 #    }
 
 sub process_payment {
@@ -221,15 +221,9 @@ sub dispatch {
     if (!validate($argshash->{cc})) {
         # Although it might help a troubleshooter, it's probably not a good
         # idea to put the credit card number in the log file.
-        $logger->warn("Credit card number invalid");
+        $logger->info("Credit card number invalid");
 
-        # The idea of returning a hashref with statusText and statusCode
-        # comes from an older version handle_authorizenet(), but I'm not
-        # sure it's the best thing to do, really.
-        return {
-            statusText => "Credit card number invalid",
-            statusCode => 500
-        };
+        return new OpenILS::Event("CREDIT_PROCESSOR_INVALID_CC_NUMBER");
     }
 
     # cardtype() also comes from Business::CreditCard.  It is not certain that
@@ -257,38 +251,30 @@ sub dispatch {
     $transaction->content(prepare_bop_content($argshash, $patron, $cardtype));
     $transaction->submit();
 
-    # The data structures that we return based on success or failure are still
-    # basically from earlier code.  These might should be improved/reduced.
+    my $payload = {
+        "processor" => $argshash->{"processor"},
+        "card_type" => $cardtype,
+        "server_response" => $transaction->server_response
+    };
+
+    foreach (qw/authorization correlationid avs_code cvv2_code error_message/) {
+        # authorization should always be present for successes, and
+        # error_message should always be present for failures. The remaining
+        # field may be important in PayPal transacations? Not sure.
+        $payload->{$_} = $transaction->$_ if $transaction->can($_);
+    }
+
+    my $event_name;
+
     if ($transaction->is_success()) {
         $logger->info($argshash->{processor} . " payment succeeded");
-
-        my $retval = {
-            statusText => "Transaction approved: " . $transaction->authorization,
-            processor => $argshash->{processor},
-            cardType => $cardtype,
-            statusCode => 200,
-            approvalCode => $transaction->authorization,
-            server_response => $transaction->server_response
-        };
-
-        # These result fields may be important in PayPal xactions? Not sure.
-        foreach (qw/correlationid avs_code cvv2_code/) {
-            if ($transaction->can($_)) {
-                $retval->{$_} = $transaction->$_;
-            }
-        }
-        return $retval;
-    }
-    else {
+        $event_name = "SUCCESS";
+    } else {
         $logger->info($argshash->{processor} . " payment failed");
-        return {
-            statusText => "Transaction declined: " . $transaction->error_message,
-            statusCode => 500,
-            errorMessage => $transaction->error_message,
-            server_response => $transaction->server_response
-        };
+        $event_name = "CREDIT_PROCESSOR_DECLINED_TRANSACTION";
     }
 
+    return new OpenILS::Event($event_name, "payload" => $payload);
 }
 
 

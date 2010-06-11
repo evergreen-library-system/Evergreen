@@ -250,28 +250,23 @@ sub make_payments {
                     "zip" => $cc_args->{billing_zip},
                 });
 
-            if (exists $response->{ilsevent}) {
+            if ($U->event_code($response)) { # non-success
                 $logger->info(
-                    "event response from process_payment(): " .
-                    $response->{"textcode"}
+                    "Credit card payment for user $user_id failed: " .
+                    $response->{"textcode"} . " " .
+                    $response->{"payload"}->{"error_message"}
                 );
+
                 return $response;
-            }
-            if ($response->{statusCode} != 200) {
-                $logger->info("Credit card payment for user $user_id " .
-                    "failed with message: " . $response->{statusText});
-                return OpenILS::Event->new(
-                    'CREDIT_PROCESSOR_DECLINED_TRANSACTION',
-                    note => $response->{statusText}
+            } else {
+                $approval_code = $response->{"payload"}->{"authorization"};
+                $cc_type = $response->{"payload"}->{"card_type"};
+                $cc_processor = $response->{"payload"}->{"processor"};
+                $logger->info(
+                    "Credit card payment for user $user_id succeeded"
                 );
             }
-            $approval_code = $response->{approvalCode};
-            $cc_type = $response->{cardType};
-            $cc_processor = $response->{processor};
-            $logger->info("Credit card payment processing for " .
-                "user $user_id succeeded");
-        }
-        else {
+        } else {
             return OpenILS::Event->new(
                 'BAD_PARAMS', note => 'Need approval code'
             ) if not $cc_args->{approval_code};
