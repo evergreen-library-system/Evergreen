@@ -137,6 +137,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         case 'f' : 
                         case 'false' : 
                             return openils.widget.AutoFieldWidget.localeStrings.FALSE;
+                        case  null :
                         case 'unset' : return openils.widget.AutoFieldWidget.localeStrings.UNSET;
                         case true : return openils.widget.AutoFieldWidget.localeStrings.TRUE; 
                         default: return openils.widget.AutoFieldWidget.localeStrings.FALSE;
