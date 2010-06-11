@@ -2102,6 +2102,22 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
         'bool'
 );
 
+-- 0305.data.org-setting-circ.holds.expired_patron_block.sql
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+        'circ.holds.expired_patron_block',
+        oils_i18n_gettext(
+            'circ.holds.expired_patron_block',
+            'Circulation: Block hold request if hold recipient privileges have expired', 
+            'coust', 
+            'label'),
+        oils_i18n_gettext(
+            'circ.holds.expired_patron_block',
+            'Circulation: Block hold request if hold recipient privileges have expired', 
+            'coust', 
+            'description'),
+        'bool'
+);
+
 -- Org_unit_setting_type(s) that need an fm_class:
 INSERT into config.org_unit_setting_type
 ( name, label, description, datatype, fm_class ) VALUES

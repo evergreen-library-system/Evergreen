@@ -100,6 +100,18 @@ sub create_hold {
         $e->allowed('REQUEST_HOLDS', $recipient->home_ou) or return $e->event;
     }
 
+    # If the related org setting tells us to, block if patron privs have expired
+    my $expire_setting = $U->ou_ancestor_setting_value($recipient->home_ou, OILS_SETTING_BLOCK_HOLD_FOR_EXPIRED_PATRON);
+    if ($expire_setting) {
+        my $expire = DateTime::Format::ISO8601->new->parse_datetime(
+            cleanse_ISO8601($recipient->expire_date));
+
+        push( @events, OpenILS::Event->new(
+            'PATRON_ACCOUNT_EXPIRED',
+            "payload" => {"fail_part" => "actor.usr.privs_expired"}
+            )) if( CORE::time > $expire->epoch ) ;
+    }
+
     # Now make sure the recipient is allowed to receive the specified hold
     my $porg = $recipient->home_ou;
     my $rid  = $e->requestor->id;
