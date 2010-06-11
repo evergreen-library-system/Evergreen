@@ -4840,24 +4840,33 @@ INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, vali
 $$[%- USE date -%]
 [%# start JEDI document -%]
 [%- BLOCK big_block -%]
-["order", {
-    "po_number":[% target.id %],
-    "date":"[% date.format(date.now, '%Y%m%d') %]",
-    "buyer":[
-        {"id":"[% target.ordering_agency.mailing_address.san %]",
-         "reference":{"API":"[% target.ordering_agency.mailing_address.san %]"}}
-    ],
-    "vendor":[ 
-        "[% target.provider.san %]", // [% target.provider.name %] ([% target.provider.id %])
-        {"id-qualifier":"91", "reference":{"IA":"[% target.provider.id %]"}, "id":"[% target.provider.san %]"}
-    ],
-    "currency":"[% target.provider.currency_type %]",
-    "items":[
+{
+   "recipient":"[% target.provider.san %]",
+   "sender":"[% target.ordering_agency.mailing_address.san %]",
+   "body": [{
+     "ORDERS":[ "order", {
+        "po_number":[% target.id %],
+        "date":"[% date.format(date.now, '%Y%m%d') %]",
+        "buyer":[{
+            [%- IF target.provider.edi_default.vendcode -%]
+                "id":"[% target.ordering_agency.mailing_address.san _ ' ' _ target.provider.edi_default.vendcode %]", 
+                "id-qualifier": 91
+            [%- ELSE -%]
+                "id":"[% target.ordering_agency.mailing_address.san %]"
+            [%- END  -%]
+        }],
+        "vendor":[ 
+            [%- # target.provider.name (target.provider.id) -%]
+            "[% target.provider.san %]",
+            {"id-qualifier": 92, "id":"[% target.provider.id %]"}
+        ],
+        "currency":"[% target.provider.currency_type %]",
+        "items":[
         [% FOR li IN target.lineitems %]
         {
             "identifiers":[
                 {"id-qualifier":"SA","id":"[% li.id %]"},
-                {"id-qualifier":"IB","id":"[% helpers.get_li_attr('isbn', li.attributes) %]"}
+                {"id-qualifier":"IB","id":"[% helpers.get_li_attr('isbn_13', li.attributes) || helpers.get_li_attr('isbn_10', li.attributes) %]"}
             ],
             "price":[% li.estimated_unit_price || '0.00' %],
             "desc":[
@@ -4867,12 +4876,14 @@ $$[%- USE date -%]
                 {"BPH":"[% helpers.get_li_attr('pagination','', li.attributes) %]"}
             ],
             "quantity":[% li.lineitem_details.size %]
-            [%-# TODO: lineitem details (later) -%]
-        }[% UNLESS loop.last %],[% END -%]
-        [%- END %]
-    ],
-    "line_items":[% target.lineitems.size %]
-}]
+        }[% UNLESS loop.last %],[% END %]
+        [%-# TODO: lineitem details (later) -%]
+        [% END %]
+        ],
+        "line_items":[% target.lineitems.size %]
+     }]  [% # close ORDERS array %]
+   }]    [% # close  body  array %]
+}
 [% END %]
 [% tempo = PROCESS big_block; helpers.escape_json(tempo) %]
 $$
