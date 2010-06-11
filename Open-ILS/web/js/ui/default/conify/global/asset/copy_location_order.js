@@ -36,7 +36,10 @@ function filterGrid(org) {
     // fetch the locations and order entries
     var pcrud = new openils.PermaCrud({authtoken : user.authtoken});
     orders = pcrud.search('acplo', {org : org}, {order_by : {acplo : 'position'}});
-    locations = pcrud.search('acpl', {owning_lib : org}, {order_by : {acpl : 'name'}}); // TODO
+    locations = pcrud.search('acpl', 
+        {owning_lib : fieldmapper.aou.orgNodeTrail(fieldmapper.aou.findOrgUnit(org), true)}, 
+        {order_by : {acpl : 'name'}}
+    ); 
 
     // init the DnD environment
     source.selectAll();
@@ -65,6 +68,7 @@ function filterGrid(org) {
     // shove them into the DnD environment
     dojo.forEach(locs,
         function(loc) {
+            if(!loc) return;
             var node = source.insertNodes(false, [ 
                 { 
                     data : loc.name() + ' (' + fieldmapper.aou.findOrgUnit(loc.owning_lib()).shortname()+')',
