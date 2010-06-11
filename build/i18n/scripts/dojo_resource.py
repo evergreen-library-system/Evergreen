@@ -35,6 +35,7 @@ import re
 import sys
 import simplejson
 import os.path
+import os
 
 class DojoResource (basel10n.BaseL10N):
     """
@@ -58,7 +59,11 @@ class DojoResource (basel10n.BaseL10N):
         # Avoid generating duplicate entries by keeping track of msgids
         msgids = dict()
 
-        bundle = simplejson.load(codecs.open(source, encoding='utf-8', mode='r'))
+	try:
+            bundle = simplejson.load(codecs.open(source, encoding='utf-8', mode='r'))
+	except ValueError:
+	    print("Reading Dojo resource file %s" % (source))
+            raise
 
         for key, value in bundle.iteritems():
             if value in msgids:
@@ -110,6 +115,8 @@ def main():
     if options.pot:
         pot.get_strings(options.pot)
         if options.outfile:
+            if not os.path.exists(options.outfile):
+                os.makedirs(os.path.dirname(options.outfile))
             pot.savepot(options.outfile)
         else:
             sys.stdout.write(pot.pot.__str__())
@@ -119,6 +126,8 @@ def main():
         pot.loadpo(options.create)
         pot.create_bundle()
         if options.outfile:
+            if not os.path.exists(options.outfile):
+                os.makedirs(os.path.dirname(options.outfile))
             outfile = codecs.open(options.outfile, encoding='utf-8', mode='w')
             simplejson.dump(pot.msgs, outfile, indent=4)
         else:
