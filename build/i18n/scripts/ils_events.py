@@ -141,12 +141,13 @@ class ILSEventHandler(xml.sax.handler.ContentHandler):
         Build the ILS event description
         """
         if self.en_us_flag is True and content is not None:
-            self.desc += content
+            self.desc = self.desc.strip() + ' ' + content.strip()
 
     def endElement(self, name):
         """
         Generate the event with the closed description
         """
+        self.desc = self.desc.strip()
         if name == 'desc' and self.en_us_flag is True:
             lineno = self.locator.getLineNumber()
             event = "%d.%s" % (int(self.numcode), self.textcode)
