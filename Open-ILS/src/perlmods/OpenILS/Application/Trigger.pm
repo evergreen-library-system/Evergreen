@@ -479,9 +479,21 @@ sub create_batch_events {
 
         $class =~ s/^Fieldmapper:://o;
         $class =~ s/::/_/go;
-
         my $method = 'search_'. $class;
-        my $object_ids = $editor->$method( $filter, {idlist => 1, timeout => 7200} );
+
+        # for cleaner logging
+        my $def_id = $def->id;
+        my $hook = $def->hook;
+
+        $logger->info("trigger: create_batch_events() collecting object IDs for def=$def_id / hook=$hook");
+
+        my $object_ids = $editor->$method( $filter, {idlist => 1, timeout => 10800} );
+
+        if($object_ids) {
+            $logger->info("trigger: create_batch_events() fetched ".scalar(@$object_ids)." object IDs for def=$def_id / hook=$hook");
+        } else {
+            $logger->warn("trigger: create_batch_events() timeout occurred collecting object IDs for def=$def_id / hook=$hook");
+        }
 
         for my $o_id (@$object_ids) {
 
@@ -496,7 +508,11 @@ sub create_batch_events {
 
             $client->respond( $event->id );
         }
+        
+        $logger->info("trigger: create_batch_events() successfully created events for def=$def_id / hook=$hook");
     }
+
+    $logger->info("trigger: create_batch_events() done creating events");
 
     $editor->commit;
 
@@ -526,7 +542,7 @@ sub fire_single_event {
     my $e = OpenILS::Application::Trigger::Event->new($event_id);
 
     if ($e->validate->valid) {
-        $logger->info("Event is valid, reacting...");
+        $logger->info("trigger: Event is valid, reacting...");
         $e->react->cleanup;
     }
 
@@ -554,7 +570,7 @@ sub fire_event_group {
     my $e = OpenILS::Application::Trigger::EventGroup->new(@$events);
 
     if ($e->validate->valid) {
-        $logger->info("Event group is valid, reacting...");
+        $logger->info("trigger: Event group is valid, reacting...");
         $e->react->cleanup;
     }
 
@@ -590,7 +606,7 @@ sub pending_events {
     }
 
     return $editor->search_action_trigger_event(
-        $query, { idlist=> 1, timeout => 7200 }
+        $query, { idlist=> 1, timeout => 7200, substream => 1 }
     );
 }
 __PACKAGE__->register_method(
@@ -608,6 +624,13 @@ sub grouped_events {
 
     my %groups = ( '*' => [] );
 
+    if($events) {
+        $logger->info("trigger: grouped_events found ".scalar(@$events)." pending events to process");
+    } else {
+        $logger->warn("trigger: grouped_events timed out loading pending events");
+        return \%groups;
+    }
+
     for my $e_id ( @$events ) {
         $logger->info("trigger: processing event $e_id");
 
@@ -618,7 +641,7 @@ sub grouped_events {
         try {
            $e = OpenILS::Application::Trigger::Event->new($e_id);
         } catch Error with {
-            $logger->error("Event creation failed with ".shift());
+            $logger->error("trigger: Event creation failed with ".shift());
         };
 
         next unless $e; 
@@ -626,7 +649,7 @@ sub grouped_events {
         try {
             $e->build_environment;
         } catch Error with {
-            $logger->error("Event environment building failed with ".shift());
+            $logger->error("trigger: Event environment building failed with ".shift());
         };
 
         if (my $group = $e->event->event_def->group_field) {
@@ -670,6 +693,7 @@ sub run_all_events {
 
     for my $def ( keys %$groups ) {
         if ($def eq '*') {
+            $logger->info("trigger: run_all_events firing un-grouped events");
             for my $event ( @{ $$groups{'*'} } ) {
                 try {
                     $client->respond(
@@ -678,11 +702,14 @@ sub run_all_events {
                             ->run($event)
                     );
                 } catch Error with { 
-                    $logger->error("event firing failed with ".shift());
+                    $logger->error("trigger: event firing failed with ".shift());
                 };
             }
+            $logger->info("trigger: run_all_events completed firing un-grouped events");
+
         } else {
             my $defgroup = $$groups{$def};
+            $logger->info("trigger: run_all_events firing events for grouped event def=$def");
             for my $ident ( keys %$defgroup ) {
                 try {
                     $client->respond(
@@ -691,9 +718,10 @@ sub run_all_events {
                             ->run($$defgroup{$ident})
                     );
                 } catch Error with {
-                    $logger->error("event firing failed with ".shift());
+                    $logger->error("trigger: event firing failed with ".shift());
                 };
             }
+            $logger->info("trigger: run_all_events completed firing events for grouped event def=$def");
         }
     }
                 

@@ -19,8 +19,10 @@ use Getopt::Long;
 use OpenSRF::System;
 use OpenSRF::AppSession;
 use OpenSRF::Utils::JSON;
+use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
+my $req_timeout = 10800;
 
 # DEFAULT values
 
@@ -146,8 +148,21 @@ sub process_hooks {
         $method =~ s/passive/active/ if $config->{active};
         
         my $req = $ses->request($method, $hook, $config->{context_org}, $config->{filter}, $opt_granularity);
-        while (my $resp = $req->recv(timeout => 1800)) {
-            $opt_debug_stdout and print OpenSRF::Utils::JSON->perl2JSON($resp->content) . "\n";
+
+        my $debug_hook = "'$hook' and filter ".OpenSRF::Utils::JSON->perl2JSON($config->{filter});
+        $logger->info("at_runner: creating events for $debug_hook");
+
+        my @event_ids;
+        while (my $resp = $req->recv(timeout => $req_timeout)) {
+            push(@event_ids, $resp->content);
+        }
+
+        if(@event_ids) {
+            $logger->info("at_runner: created ".scalar(@event_ids)." events for $debug_hook");
+        } elsif($req->complete) {
+            $logger->info("at_runner: no events to create for $debug_hook");
+        } else {
+            $logger->warn("at_runner: timeout occurred during event creation for $debug_hook");
         }
     }
 }
@@ -160,7 +175,7 @@ sub run_pending {
     my $req = $ses->request('open-ils.trigger.event.run_all_pending' => $opt_granularity);
 
     my $check_lockfile = 1;
-    while (my $resp = $req->recv(timeout => 7200)) {
+    while (my $resp = $req->recv(timeout => $req_timeout)) {
         if ($check_lockfile && -e $opt_lockfile) {
             open LF, $opt_lockfile;
             my $contents = <LF>;
