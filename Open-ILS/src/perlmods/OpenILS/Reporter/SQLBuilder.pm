@@ -944,10 +944,20 @@ sub toSQL {
 		$sql .= " NOT IN (". join(",", map { $_->toSQL } @$val).")";
 
 	} elsif (lc($op) eq 'is blank') {
-		$sql = '('. $self->SUPER::toSQL ." IS NULL OR ". $self->SUPER::toSQL ." = '')";
+		if ($rel && $rel->is_nullable) { # need to redo this
+		    $sql = "((". $self->SUPER::toSQL .") IS NULL OR ";
+		} else {
+		    $sql = '';
+		}
+		$sql .= '('. $self->SUPER::toSQL ." IS NULL OR ". $self->SUPER::toSQL ." = '')";
 
 	} elsif (lc($op) eq 'is not blank') {
-		$sql = '('. $self->SUPER::toSQL ." IS NOT NULL AND ". $self->SUPER::toSQL ." <> '')";
+		if ($rel && $rel->is_nullable) { # need to redo this
+		    $sql = "((". $self->SUPER::toSQL .") IS NULL OR ";
+		} else {
+		    $sql = '';
+		}
+		$sql .= '('. $self->SUPER::toSQL ." IS NOT NULL AND ". $self->SUPER::toSQL ." <> '')";
 
 	} elsif (lc($op) eq 'between') {
 		$sql .= " BETWEEN ". join(" AND ", map { $_->toSQL } @$val);
