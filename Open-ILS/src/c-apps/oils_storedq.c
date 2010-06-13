@@ -41,6 +41,10 @@ static BindVar* getBindVar( BuildSQLState* state, const char* name );
 static BindVar* constructBindVar( BuildSQLState* state, dbi_result result );
 static void bindVarFree( char* name, void* p );
 
+static CaseBranch* getCaseBranchList( BuildSQLState* state, int parent_id );
+static CaseBranch* constructCaseBranch( BuildSQLState* state, dbi_result result );
+static void freeBranchList( CaseBranch* branch );
+
 static Expression* getExpression( BuildSQLState* state, int id );
 static Expression* constructExpression( BuildSQLState* state, dbi_result result );
 static void expressionListFree( Expression* exp );
@@ -60,6 +64,7 @@ static StoredQ* free_storedq_list = NULL;
 static FromRelation* free_from_relation_list = NULL;
 static SelectItem* free_select_item_list = NULL;
 static BindVar* free_bindvar_list = NULL;
+static CaseBranch* free_branch_list = NULL;
 static Expression* free_expression_list = NULL;
 static IdNode* free_id_node_list = NULL;
 static QSeq* free_qseq_list = NULL;
@@ -1158,6 +1163,161 @@ static void bindVarFree( char* key, void* p ) {
 }
 
 /**
+	@brief Given an id for a parent expression, build a list of CaseBranch structs.
+	@param Pointer to the query-building context.
+	@param id ID of a row in query.case_branch.
+	@return Pointer to a newly-created CaseBranch if successful, or NULL if not.
+*/
+static CaseBranch* getCaseBranchList( BuildSQLState* state, int parent_id ) {
+	CaseBranch* branch_list = NULL;
+	dbi_result result = dbi_conn_queryf( state->dbhandle,
+		"SELECT id, condition, result "
+		"FROM query.case_branch WHERE parent_expr = %d "
+		"ORDER BY seq_no desc;", parent_id );
+	if( result ) {
+		int condition_found = 0;   // Boolean
+		if( dbi_result_first_row( result ) ) {
+			// Boolean: true for the first branch we encounter.  That's actually the last
+			// branch in the CASE, because we're reading them in reverse order.  The point
+			// is to enforce the rule that only the last branch can be an ELSE.
+			int first = 1;
+			while( 1 ) {
+				CaseBranch* branch = constructCaseBranch( state, result );
+				if( branch ) {
+					PRINT( "Found a case branch\n" );
+					branch->next = branch_list;
+					branch_list  = branch;
+				} else {
+					osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+						"Unable to build CASE branch for expression id #%d", parent_id ));
+					freeBranchList( branch_list );
+					branch_list = NULL;
+					break;
+				}
+
+				if( branch->condition )
+					condition_found = 1;
+				else if( !first ) {
+					sqlAddMsg( state, "ELSE branch # %d not at end of CASE expression # %d",
+						branch->id, parent_id );
+					freeBranchList( branch_list );
+					branch_list = NULL;
+					break;
+				}
+				first = 0;
+
+				if( !dbi_result_next_row( result ) )
+					break;
+			};  // end while
+		}
+
+		// Make sure that at least one branch includes a condition
+		if( !condition_found ) {
+			sqlAddMsg( state, "No conditional branch in CASE expression # %d", parent_id );
+			freeBranchList( branch_list );
+			branch_list = NULL;
+		}
+	} else {
+		const char* msg;
+		int errnum = dbi_conn_error( state->dbhandle, &msg );
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+			"Unable to query query.case_branch table for parent expression # %d: %s",
+			parent_id, errnum, msg ? msg : "No description available" ));
+		state->error = 1;
+	}
+
+	return branch_list;
+}
+
+static CaseBranch* constructCaseBranch( BuildSQLState* state, dbi_result result ) {
+	int id = dbi_result_get_int_idx( result, 1 );
+
+	int condition_id;
+	if( dbi_result_field_is_null_idx( result, 2 ))
+		condition_id = -1;
+	else
+		condition_id = dbi_result_get_int_idx( result, 2 );
+
+	Expression* condition = NULL;
+	if( condition_id != -1 ) {   // If it's -1, we have an ELSE condition
+		condition = getExpression( state, condition_id );
+		if( ! condition ) {
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Unable to build condition expression for case branch # %d", id ));
+			state->error = 1;
+			return NULL;
+		}
+	}
+
+	int result_id = dbi_result_get_int_idx( result, 3 );
+
+	Expression* result_p = NULL;
+	if( -1 == result_id ) {
+		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+			"No result expression defined for case branch # %d", id ));
+		state->error = 1;
+		if( condition )
+			expressionFree( condition );
+		return NULL;
+	} else {
+		result_p = getExpression( state, result_id );
+		if( ! result_p ) {
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Unable to build result expression for case branch # %d", id ));
+			state->error = 1;
+			if( condition )
+				expressionFree( condition );
+			return NULL;
+		}
+	}
+
+	// Allocate a CaseBranch: from the free list if possible, from the heap if necessary
+	CaseBranch* branch = NULL;
+	if( free_branch_list ) {
+		branch = free_branch_list;
+		free_branch_list = free_branch_list->next;
+	} else
+		branch = safe_malloc( sizeof( CaseBranch ) );
+
+	// Populate the new CaseBranch
+	branch->id = id;
+	branch->condition = condition;
+	branch->result = result_p;
+
+	return branch;
+}
+
+/**
+	@brief Free a list of CaseBranches.
+	@param branch Pointer to the first in a linked list of CaseBranches to be freed.
+
+	Each CaseBranch goes onto a free list for potential reuse.
+*/
+static void freeBranchList( CaseBranch* branch ) {
+	if( !branch )
+		return;
+
+	CaseBranch* first = branch;
+	while( branch ) {
+		if( branch->condition ) {
+			expressionFree( branch->condition );
+			branch->condition = NULL;
+		}
+		expressionFree( branch->result );
+		branch->result = NULL;
+
+		if( branch->next )
+			branch = branch->next;
+		else {
+			branch->next = free_branch_list;
+			branch = NULL;
+		}
+	}
+
+	free_branch_list = first;
+}
+
+/**
 	@brief Given an id for a row in query.expression, build an Expression struct.
 	@param Pointer to the query-building context.
 	@param id ID of a row in query.expression.
@@ -1309,6 +1469,7 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	Expression* right_operand = NULL;
 	StoredQ* subquery = NULL;
 	BindVar* bind = NULL;
+	CaseBranch* branch_list = NULL;
 	Expression* subexp_list = NULL;
 
 	if( EXP_BETWEEN == type ) {
@@ -1363,7 +1524,7 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 			bind = getBindVar( state, bind_variable );
 			if( ! bind ) {
 				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-								"Unable to load bind variable \"%s\" for expression # %d",
+					"Unable to load bind variable \"%s\" for expression # %d",
 		bind_variable, id ));
 				state->error = 1;
 				return NULL;
@@ -1371,7 +1532,7 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 			PRINT( "\tBind variable is \"%s\"\n", bind_variable );
 		} else {
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-							"No variable specified for bind variable expression # %d",
+				"No variable specified for bind variable expression # %d",
 	   bind_variable, id ));
 			state->error = 1;
 			return NULL;
@@ -1385,6 +1546,31 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 				expressionFree( left_operand );
 				return NULL;
 			}
+		}
+
+	} else if( EXP_CASE == type ) {
+		// Get the left operand
+		if( -1 == left_operand_id ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"No left operand defined for CASE expression # %d", id ));
+			state->error = 1;
+			return NULL;
+		} else {
+			left_operand = getExpression( state, left_operand_id );
+			if( !left_operand ) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Unable to get left operand in CASE expression # %d", id ));
+				state->error = 1;
+				return NULL;
+			}
+		}
+
+		branch_list = getCaseBranchList( state, id );
+		if( ! branch_list ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Unable to build branches for CASE expression # %d", id ));
+			state->error = 1;
+			return NULL;
 		}
 
 	} else if( EXP_EXIST == type ) {
@@ -1507,7 +1693,7 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 			right_operand = getExpression( state, right_operand_id );
 			if( !right_operand ) {
 				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-								"Unable to get right operand in expression # %d", id ));
+					"Unable to get right operand in expression # %d", id ));
 				state->error = 1;
 				return NULL;
 			}
@@ -1586,6 +1772,7 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 	exp->cast_type_id = subquery_id;
 	exp->negate = negate;
 	exp->bind = bind;
+	exp->branch_list = branch_list;
 	exp->subexp_list = subexp_list;
 	exp->function_name = function_name ? strdup( function_name ) : NULL;
 
@@ -1623,8 +1810,10 @@ static void expressionFree( Expression* exp ) {
 			expressionFree( exp->left_operand );
 			exp->left_operand = NULL;
 		}
-		free( exp->op );
-		exp->op = NULL;
+		if( exp->op ) {
+			free( exp->op );
+			exp->op = NULL;
+		}
 		if( exp->right_operand ) {
 			expressionFree( exp->right_operand );
 			exp->right_operand = NULL;
@@ -1641,6 +1830,11 @@ static void expressionFree( Expression* exp ) {
 			// Free the linked list of subexpressions
 			expressionListFree( exp->subexp_list );
 			exp->subexp_list = NULL;
+		}
+
+		if( exp->branch_list ) {
+			freeBranchList( exp->branch_list );
+			exp->branch_list = NULL;
 		}
 
 		if( exp->function_name ) {
@@ -1964,6 +2158,14 @@ void storedQCleanup( void ) {
 		free_bindvar_list = bind->next;
 		free( bind );
 		bind = free_bindvar_list;
+	}
+
+	// Free all the nodes in the case branch free list
+	CaseBranch* branch = free_branch_list;
+	while( branch ) {
+		free_branch_list = branch->next;
+		free( branch );
+		branch = free_branch_list;
 	}
 }
 

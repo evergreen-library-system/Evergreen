@@ -24,6 +24,9 @@ typedef struct SelectItem_ SelectItem;
 struct BindVar_;
 typedef struct BindVar_ BindVar;
 
+struct CaseBranch_;
+typedef struct CaseBranch_ CaseBranch;
+
 struct Expression_;
 typedef struct Expression_ Expression;
 
@@ -144,6 +147,13 @@ struct BindVar_ {
 	jsonObject* actual_value;
 };
 
+struct CaseBranch_ {
+	CaseBranch* next;
+	int id;
+	Expression* condition;
+	Expression* result;
+};
+
 typedef enum {
 	EXP_BETWEEN,
 	EXP_BIND,
@@ -183,6 +193,7 @@ struct Expression_ {
 	int         negate;             // Boolean
 	BindVar*    bind;
 	Expression* subexp_list;        // Linked list of subexpressions
+	CaseBranch* branch_list;        // Linked list of CASE branches
 	// The next column comes, not from query.expression,
 	// but from query.function_sig:
 	char*       function_name;

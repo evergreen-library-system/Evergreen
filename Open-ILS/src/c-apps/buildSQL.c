@@ -23,6 +23,7 @@ static void buildJoin( BuildSQLState* state, const FromRelation* join );
 static void buildSelectList( BuildSQLState* state, const SelectItem* item );
 static void buildGroupBy( BuildSQLState* state, const SelectItem* sel_list );
 static void buildOrderBy( BuildSQLState* state, const OrderItem* ord_list );
+static void buildCase( BuildSQLState* state, const Expression* expr );
 static void buildExpression( BuildSQLState* state, const Expression* expr );
 static void buildFunction( BuildSQLState* state, const Expression* exp );
 static void buildSeries( BuildSQLState* state, const Expression* subexp_list, const char* op );
@@ -376,7 +377,7 @@ static void buildFrom( BuildSQLState* state, const FromRelation* core_from ) {
 			if ( state->error ) {
 				sqlAddMsg( state,
 					"Unable to include function call # %d in FROM relation # %d",
-	 				core_from->function_call->id, core_from->id );
+					core_from->function_call->id, core_from->id );
 				return;
 			}
 			break;
@@ -669,11 +670,10 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 				buffer_add( state->sql, "FALSE " );
 			break;
 		case EXP_CASE :
-			if( expr->negate )
-				buffer_add( state->sql, "NOT " );
+			buildCase( state, expr );
+			if( state->error )
+				sqlAddMsg( state, "Unable to build CASE expression # %d", expr->id );
 
-			sqlAddMsg( state, "CASE expressions not yet supported" );
-			state->error = 1;
 			break;
 		case EXP_CAST :                   // Type cast
 			if( expr->negate )
@@ -694,9 +694,6 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 			if( expr->column_name ) {
 				buffer_add( state->sql, expr->column_name );
 			} else {
-				//osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-				//	"Column name not present in expression # %d", expr->id ));
-				//state->error = 1;
 				buffer_add_char( state->sql, '*' );
 			}
 			break;
@@ -866,6 +863,70 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 
 	if( expr->parenthesize )
 		buffer_add_char( state->sql, ')' );
+}
+
+/**
+	@brief Build a CASE expression.
+	@param state Pointer to the query-building context.
+	@param exp Pointer to an Expression representing a CASE expression.
+*/
+static void buildCase( BuildSQLState* state, const Expression* expr ) {
+	// Sanity checks
+	if( ! expr->left_operand ) {
+		sqlAddMsg( state, "CASE expression # %d has no left operand", expr->id );
+		state->error  = 1;
+		return;
+	} else if( ! expr->branch_list ) {
+		sqlAddMsg( state, "CASE expression # %d has no branches", expr->id );
+		state->error  = 1;
+		return;
+	}
+
+	if( expr->negate )
+		buffer_add( state->sql, "NOT (" );
+
+	// left_operand is the expression on which we shall branch
+	buffer_add( state->sql, "CASE " );
+	buildExpression( state, expr->left_operand );
+	if( state->error ) {
+		sqlAddMsg( state, "Unable to build operand of CASE expression # %d", expr->id );
+		return;
+	}
+
+	incr_indent( state );
+
+	// Emit each branch in turn
+	CaseBranch* branch = expr->branch_list;
+	while( branch ) {
+		add_newline( state );
+
+		if( branch->condition ) {
+			// Emit a WHEN condition
+			buffer_add( state->sql, "WHEN " );
+			buildExpression( state, branch->condition );
+			incr_indent( state );
+			add_newline( state );
+			buffer_add( state->sql, "THEN " );
+		} else {
+			// Emit ELSE
+			buffer_add( state->sql, "ELSE " );
+			incr_indent( state );
+			add_newline( state );
+		}
+
+		// Emit the THEN expression
+		buildExpression( state, branch->result );
+		decr_indent( state );
+
+		branch = branch->next;
+	}
+
+	decr_indent( state );
+	add_newline( state );
+	buffer_add( state->sql, "END" );
+
+	if( expr->negate )
+		buffer_add( state->sql, ")" );
 }
 
 /**
