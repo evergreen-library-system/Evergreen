@@ -380,7 +380,7 @@ sub _recording_failure {
         );
     } else { # Otherwise, the problem is somewhat less severe:
         $logger->warn($msg);
-        $logger->warn("Payment: " . Dumper($payment));
+        $logger->warn("Payment: " . Dumper($payment)) if $payment;
         return $e->die_event;
     }
 }
