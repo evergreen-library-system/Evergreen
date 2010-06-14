@@ -1,1 +1,257 @@
-#ChangeLog
+2010-04-28  senator
+
+	* Booking: fix problem capturing items for reservation on first
+	  checkin
+
+2010-05-03  erickson
+
+	* backporting 16376: fixed bug where updating the email address
+	  resulted in updating the username instead of the email address on
+	  the local copy of the user object in the opac. this bug likely
+	  affected nothing.
+
+	* backporting 16381: updated SIP server to pull item config info
+	  from the new circ_modifier table when legacy script support is
+	  disabled
+
+2010-05-05  miker
+
+	* backport IE fix
+
+2010-05-05  phasefx
+
+	* make this call .authoritative to avoid replication lag in the
+	  patron summary sidebar
+
+2010-05-07  erickson
+
+	* patch from James Fournie to repair some faulty assumptions in the
+	  previous legacy script SIP fix; additionally, I added
+	  legacy_script_support override option to oils_sip.xml.exmple to
+	  allow use of in-db circ-mod configs even if the circ code is
+	  still using circ scritps
+
+2010-05-10  phasefx
+
+	* UUID::Tiny has slipped into rel_1_6 as a prerequisite
+
+	* use authoritative method here to fix race condition with patron
+	  editor and replication lag
+
+2010-05-16  miker
+
+	* allow multiple 260 tags in summary view
+
+2010-05-21  miker
+
+	* Forward port of a patch from Dan Wells to fix the bookbag menu
+	  not showing up in Craftsman.
+
+2010-05-21  erickson
+
+	* back-porting a number of local dojo library fixes and
+	  enhancements. of note, autogrid caching and paging for faster
+	  paged grid display. (turning on the pager in some config
+	  interfaces to follow).
+
+	* backporting r16483: enable grid paging by default. replaced
+	  showPaginator with hidePaginator option
+
+2010-05-25  erickson
+
+	* Patch from Bill Ott to add missing apostrophe in rdetail.js
+
+2010-05-26  dbs
+
+	* 1.6.1.0 database upgrade script: password reset functionality
+	  
+	  Still needs bookings support, possibly other 1.6.0-1.6.1 changes
+
+2010-05-26  miker
+
+	* 1.6.0.4-1.6.1.0 upgrade script, ready for testing!
+
+2010-05-27  erickson
+
+	* repaired bug in dojo.mixin usage for applying overrides. support
+	  for stying fields marked readOnly via override
+
+2010-06-01  dbs
+
+	* Forward port r16547 from rel_1_6_0: fix regression in date
+	  formatting for non-due dates
+
+2010-06-01  erickson
+
+	* backporting 16544: in the SIP server plugin, don't connect and
+	  start a transaction by default with every cstore handle. only
+	  connect/begin when necessary. also, making use of new
+	  CStoreEditor::init() call for setting up the editor environment
+	  when initial load was done before the IDL was available. Also,
+	  back-porting Joe A's CStoreEditor cleanup changes, namely the new
+	  init() routine.
+
+2010-06-02  dbs
+
+	* Avoid schema creation failure by ensuring metabib exists before
+	  referencing rule is created
+
+2010-06-03  phasefx
+
+	* more due date convenience options for offline mode, courtesy of
+	  Michael Peters, Indiana State Library
+
+	* backport changesets 16564, 16566, 16567: fix logic error that
+	  could result in partial list of available libs for workstation
+	  registration and fix bug where attempting to use the home lib as
+	  a menu default when the home lib is not among the working
+	  location and descendeants
+
+2010-06-04  dbs
+
+	* Merge r16568 through r16572 from trunk for fixes to password
+	  reset functionality
+
+2010-06-04  miker
+
+	* protect the main transaction from existing permissions;
+	  individually insert permissions to avoid missing some; do not pin
+	  permission IDs, just push them into the protected range
+
+	* forward port syntax corrections for 1.6.0.4 DB upgrade script
+
+2010-06-04  senator
+
+	* Booking: these misc AutoGrid-based booking admin interfaces were
+	  broken
+
+2010-06-07  senator
+
+	* Booking: make check-in op-capture behave more reasonably when
+	  elbow_room is
+	  zero, and give the OU setting for elbow_room a default value of 1
+	  day since
+	  that's probably a more reasonable value than zero anyway.
+	  
+	  Also add a smidge of documentation explaining what elbow room is
+	  for.
+
+2010-06-08  erickson
+
+	* back-porting: protect against empty results from bib searches
+	  caused by search timeouts. This allows the API call to log the
+	  error and return reasonable results
+
+2010-06-10  erickson
+
+	* updated report param editor to handle join types embedded in the
+	  field name. this bug caused sporadic failed rendering of the
+	  report editor params widgets
+
+2010-06-10  miker
+
+	* Patch from James Fournie of SITKA:
+	  
+	  There was some discussion about problems with holds fulfillment
+	  at the holds roundtable at EG2010. I am pleased to share this patch with
+	  the community which has been thoroughly tested by the folks at
+	  Thompson-Nicola Regional District Library. (thanks guys!)
+	  
+	  Background:
+	  
+	  Evergreen's default out-of-the-box behaviour for holds
+	  fulfillment is a gas-saving method. Holds are fulfilled by proximity. In a
+	  multibranch library, holds are fulfilled at the local branch
+	  first.  Many libraries, particularly single branch libraries may be ok
+	  with this, but it may be problematic for other libraries.
+	  
+	  Imagine a scenario where you have a large central branch and a
+	  small rural branch of the same library system. At the large branch,
+	  there are many copies of Popular New DVD with lots of holds. There are
+	  no copies at the rural branch. Patrons at the small rural branch who
+	  want to pick up Popular New DVD at their home branch may never
+	  get their hold fulfilled because the copies will stay at the large
+	  branch as long as there are holds for pickup there.
+	  
+	  This patch adds an org unit setting that changes the
+	  opportunistic check-in so that items checked in will be assigned to holds by
+	  request date first, rather than proximity. This setting can be applied to
+	  any level of the org tree, so in some situations you may even
+	  want to activate FIFO for large libraries, but leave the original setting
+	  for smaller libraries with less traffic who want to keep their copies
+	  more local.
+	  
+	  Also credit to Jeff Godin who thought of the same patch and
+	  contributed the setting name "holds FIFO" for the setting
+	  
+	  [ NOTE: Implications of mixed FIFO and non-FIFO environments that are
+	  not sufficiently segregated by the use of Hard Boundaries for
+	  Holds present a potenial for user confusion. Beware that mixing FIFO
+	  and non-FIFO settings within a resource-sharing group will likely
+	  result in severe imbalance of hold fulfillment, though further
+	  configuration, development, tuning and testing may be able to mitigate these
+	  issues.
+	  --miker ]
+
+2010-06-11  dbs
+
+	* Merge r16605 and r16607 from trunk for Dojo i18n enhancements:
+	  * Create output directories if they do no exist (r16605)
+	  * Identify problem file when generating POT from Dojo resource
+	  files (r16607)
+
+	* Backport r16667 from trunk: Remove extraneous whitespace in ILS
+	  events POT file
+	  
+	  We were grabbing everything - tabs, newlines, extra spaces - from
+	  ils_events.xml, and we don't want to do that.
+
+	* Fix directory creation in Dojo resource script
+	  
+	  Don't assume that if the file doesn't exist, that the directory
+	  also does not.
+
+	* Add i18n Makefile support for new Dojo resource files in this
+	  release
+	  
+	  reservation.js is still commented out until we bring it into
+	  compliance
+
+	* Just like r16670, avoid directory creation error if directory
+	  exists
+
+2010-06-11  erickson
+
+	* added a number of info messages to the action/trigger runner and
+	  server code. the messages provide summary data about what event
+	  defs / hooks are being processed and when/if they complete or
+	  timeout.
+
+2010-06-11  phasefx
+
+	* backporting changeset 16687 with harmless bits of 14391 and 15222
+	  sneaking in; hoping to help with
+	  https://bugs.launchpad.net/evergreen/+bug/567505
+
+2010-06-11  erickson
+
+	* a null boolean value should use the label for UNSET instead of
+	  False (the default)
+
+2010-06-11  senator
+
+	* Repair abuse of dojo translatable string bundle for Booking.
+	  These should be JSON only, no code.
+
+2010-06-12  miker
+
+	* backporting r16694 -- reporter WHERE clause fixes
+
+2010-06-14  miker
+
+	* db upgrade script comment and license
+
+	* Branching 1.6.1.x
+
+	* .: Tagging 1.6.1.0 for release
+

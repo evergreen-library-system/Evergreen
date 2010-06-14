@@ -19,6 +19,8 @@
 
 BEGIN;
 
+INSERT INTO config.upgrade_log (version) VALUES ('1.6.1.0');
+
 CREATE TABLE actor.usr_password_reset (
   id SERIAL PRIMARY KEY,
   uuid TEXT NOT NULL, 
