@@ -220,9 +220,6 @@ sub process_spool {
     my $evt = check_queue_perms($e, $type, $queue);
     return $evt if $evt;
 
-	my $method = "open-ils.vandelay.queued_${type}_record.create";
-	$method = $self->method_lookup( $method );
-
     my $cache = new OpenSRF::Utils::Cache();
 
     if($fingerprint) {
