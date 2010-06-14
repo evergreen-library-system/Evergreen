@@ -1,5 +1,5 @@
 {
-    'TRUE' : 'True',
-    'FALSE' : 'False',
-    'UNSET' : 'Unset'
+    "TRUE" : "True",
+    "FALSE" : "False",
+    "UNSET" : "Unset"
 }
