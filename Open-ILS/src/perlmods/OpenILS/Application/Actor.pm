@@ -1023,31 +1023,17 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.user.fleshed.retrieve_by_barcode",);
 
 sub user_retrieve_by_barcode {
-	my($self, $client, $user_session, $barcode) = @_;
+	my($self, $client, $auth, $barcode) = @_;
 
-	$logger->debug("Searching for user with barcode $barcode");
-	my ($user_obj, $evt) = $apputils->checkses($user_session);
-	return $evt if $evt;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
 
-	my $card = OpenILS::Application::AppUtils->simple_scalar_request(
-			"open-ils.cstore", 
-			"open-ils.cstore.direct.actor.card.search.atomic",
-			{ barcode => $barcode }
-	);
+    my $card = $e->search_actor_card({barcode => $barcode})->[0]
+        or return $e->event;
 
-	if(!$card || !$card->[0]) {
-		return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' );
-	}
-
-	$card = $card->[0];
-	my $user = flesh_user($card->usr(), new_editor(requestor => $user_obj));
-
-	$evt = $U->check_perms($user_obj->id, $user->home_ou, 'VIEW_USER');
-	return $evt if $evt;
-
-	if(!$user) { return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' ); }
-	return $user;
-
+	my $user = flesh_user($card->usr, $e);
+    return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
+    return $user;
 }
 
 
@@ -1062,8 +1048,7 @@ sub get_user_by_id {
 	my ($self, $client, $auth, $id) = @_;
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
-	my $user = $e->retrieve_actor_user($id)
-		or return $e->event;
+	my $user = $e->retrieve_actor_user($id) or return $e->event;
 	return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);	
 	return $user;
 }
