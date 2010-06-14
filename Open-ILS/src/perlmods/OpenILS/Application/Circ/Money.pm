@@ -70,28 +70,43 @@ __PACKAGE__->register_method(
             "desc" =>
                 q{1 on success, event on failure.  Event possibilities include:
                 BAD_PARAMS
-                    (Bad parameters were given to this API method itself.
-                    See note field.)
+                    Bad parameters were given to this API method itself.
+                    See note field.
+                REFUND_EXCEEDS_BALANCE
+                REFUND_EXCEEDS_DESK_PAYMENTS
                 CREDIT_PROCESSOR_NOT_SPECIFIED
-                    (Evergreen has not been set up to process CC payments)
+                    Evergreen has not been set up to process CC payments.
                 CREDIT_PROCESSOR_NOT_ALLOWED
-                    (Evergreen has been incorrectly setup for CC payments)
+                    Evergreen has been incorrectly setup for CC payments.
                 CREDIT_PROCESSOR_NOT_ENABLED
-                    (Evergreen has been set up for CC payments, but an admin
-                    has not explicitly enabled them)
+                    Evergreen has been set up for CC payments, but an admin
+                    has not explicitly enabled them.
                 CREDIT_PROCESSOR_BAD_PARAMS
-                    (Evergreen has been incorrectly setup for CC payments;
+                    Evergreen has been incorrectly setup for CC payments;
                     specifically, the login and/or password for the CC
-                    processor weren't provided)
+                    processor weren't provided.
+                CREDIT_PROCESSOR_INVALID_CC_NUMBER
+                    You have supplied a credit card number that Evergreen
+                    has judged to be invalid even before attempting to contact
+                    the payment processor.
                 CREDIT_PROCESSOR_DECLINED_TRANSACTION
-                    (We contacted the CC processor to attempt the charge, but
-                    they declined it.  See the statusText field for their
-                    message.)
+                    We contacted the CC processor to attempt the charge, but
+                    they declined it.
+                        The error_message field of the event payload will
+                        contain the payment processor's response.  This
+                        typically includes a message in plain English intended
+                        for human consumption.  In PayPal's case, the message
+                        is preceded by an integer, a colon, and a space, so
+                        a caller might take the 2nd match from /^(\d+: )?(.+)$/
+                        to present to the user.
+                        The payload also contains other fields from the payment
+                        processor, but these are generally not user-friendly
+                        strings.
                 CREDIT_PROCESSOR_SUCCESS_WO_RECORD
-                    (A payment was processed successfully, but couldn't be
-                    recorded in Evergreen.  This is bad bad bad, as it means
+                    A payment was processed successfully, but couldn't be
+                    recorded in Evergreen.  This is _bad bad bad_, as it means
                     somebody made a payment but isn't getting credit for it.
-                    See note field for more info.)
+                    See note field for more info.
 },
             "type" => "number"
         }
