@@ -43,7 +43,7 @@
 	"REPORT_EDITOR_OUTPUT_FOLDERS": "Output Folders",
 	"REPORT_EDITOR_PROVIDE_FOLDER_ALERT": "Please provide a report folder",
 	"REPORT_EDITOR_ENTER_NAME_ALERT": "Please enter a report name",
-	"REPORT_EDITOR_INVALID_DATE_ALERT": "invalid start date -  YYYY-MM-DD",
+	"REPORT_EDITOR_INVALID_DATE_ALERT": "invalid start date - YYYY-MM-DD",
 	"REPORT_EDITOR_PROVIDE_OUTPUT_ALERT": "Please provide an output folder",
 	
 	"TFORMS_LABEL_RAW_DATA": "Raw Data",
@@ -69,7 +69,7 @@
 	"TFORMS_LABEL_YEAR_TRUNC": "Year",
 	"TFORMS_LABEL_HOUR_TRUNC": "Hour",
 	"TFORMS_LABEL_DAY_NAME": "Day Name",
-	"TFORMS_LABEL_MONTH_NAME": "Month Name'",
+	"TFORMS_LABEL_MONTH_NAME": "Month Name",
 	"TFORMS_LABEL_AGE": "Age",
 	"TFORMS_LABEL_MONTHS_AGO": "Months ago",
 	"TFORMS_LABEL_QUARTERS_AGO": "Quarters ago",

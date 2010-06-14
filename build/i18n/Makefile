@@ -93,8 +93,7 @@ dojo2pot:
 	@scripts/dojo_resource.py --pot $(DOJO_BOOKING_SRC)/capture.js --output $(POTSRC)/capture.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_BOOKING_SRC)/pickup_and_return.js --output $(POTSRC)/pickup_and_return.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_BOOKING_SRC)/pull_list.js --output $(POTSRC)/pull_list.js.pot
-	# FIXME: reservation.js is not valid JSON
-	#@scripts/dojo_resource.py --pot $(DOJO_BOOKING_SRC)/reservation.js --output $(POTSRC)/reservation.js.pot
+	@scripts/dojo_resource.py --pot $(DOJO_BOOKING_SRC)/reservation.js --output $(POTSRC)/reservation.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_CON_SRC)/conify.js --output $(POTSRC)/conify.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_OPAC_SRC)/opac.js --output $(POTSRC)/opac.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_RPT_SRC)/reports.js --output $(POTSRC)/reports.js.pot
@@ -103,14 +102,13 @@ dojo2pot:
 
 po2dojo:
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/acq.js.po --output $(PROJECT)/$(LOCALE)/acq.js
-	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/register.js.po --output $(PROJECT)/$(LOCALE)/register.js
+	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/capture.js.po --output $(PROJECT)/$(LOCALE)/capture.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/conify.js.po --output $(PROJECT)/$(LOCALE)/conify.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/opac.js.po --output $(PROJECT)/$(LOCALE)/opac.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/pickup_and_return.js.po --output $(PROJECT)/$(LOCALE)/pickup_and_return.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/pull_list.js.po --output $(PROJECT)/$(LOCALE)/pull_list.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/register.js.po --output $(PROJECT)/$(LOCALE)/register.js
-	# FIXME: reservation.js is not valid JSON
-	#@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/reservation.js.po --output $(PROJECT)/$(LOCALE)/reservation.js
+	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/reservation.js.po --output $(PROJECT)/$(LOCALE)/reservation.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/reports.js.po --output $(PROJECT)/$(LOCALE)/reports.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/AutoFieldWidget.js.po --output $(PROJECT)/$(LOCALE)/AutoFieldWidget.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/TranslatorPopup.js.po --output $(PROJECT)/$(LOCALE)/TranslatorPopup.js
@@ -188,8 +186,7 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PROJECT)/$(LOCALE)/capture.js $(DOJO_BOOKING_SRC)/$(DOJO_LOCALE)/capture.js
 	cp $(PROJECT)/$(LOCALE)/pickup_and_return.js $(DOJO_BOOKING_SRC)/$(DOJO_LOCALE)/pickup_and_return.js
 	cp $(PROJECT)/$(LOCALE)/pull_list.js $(DOJO_BOOKING_SRC)/$(DOJO_LOCALE)/pull_list.js
-	# FIXME: reservation.js is not valid JSON
-	#cp $(PROJECT)/$(LOCALE)/reservation.js $(DOJO_BOOKING_SRC)/$(DOJO_LOCALE)/reservation.js
+	cp $(PROJECT)/$(LOCALE)/reservation.js $(DOJO_BOOKING_SRC)/$(DOJO_LOCALE)/reservation.js
 	mkdir -p $(DOJO_CON_SRC)/$(DOJO_LOCALE)
 	cp $(PROJECT)/$(LOCALE)/conify.js $(DOJO_CON_SRC)/$(DOJO_LOCALE)/conify.js
 	mkdir -p $(DOJO_OPAC_SRC)/$(DOJO_LOCALE)

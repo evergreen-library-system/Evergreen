@@ -1,8 +1,8 @@
-({
-	locale : 'Locale',
-	translation : 'Translation',
-	translate : 'Translate',
-	create : 'Create',
-	update : 'Update',
-	remove : 'Remove'
-})
+{
+	"locale" : "Locale",
+	"translation" : "Translation",
+	"translate" : "Translate",
+	"create" : "Create",
+	"update" : "Update",
+	"remove" : "Remove"
+}
