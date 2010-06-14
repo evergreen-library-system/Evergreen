@@ -102,7 +102,7 @@ dojo2pot:
 
 po2dojo:
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/acq.js.po --output $(PROJECT)/$(LOCALE)/acq.js
-	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/register.js.po --output $(PROJECT)/$(LOCALE)/register.js
+	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/capture.js.po --output $(PROJECT)/$(LOCALE)/capture.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/conify.js.po --output $(PROJECT)/$(LOCALE)/conify.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/opac.js.po --output $(PROJECT)/$(LOCALE)/opac.js
 	@scripts/dojo_resource.py --create $(POINDIR)/$(LOCALE)/pickup_and_return.js.po --output $(PROJECT)/$(LOCALE)/pickup_and_return.js
