@@ -27,6 +27,7 @@ use OpenILS::Event;
 use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;
+$Data::Dumper::Indent = 0;
 
 __PACKAGE__->register_method(
     method => "make_payments",
@@ -106,7 +107,10 @@ __PACKAGE__->register_method(
                     A payment was processed successfully, but couldn't be
                     recorded in Evergreen.  This is _bad bad bad_, as it means
                     somebody made a payment but isn't getting credit for it.
-                    See note field for more info.
+                    See errors in the system log if this happens.  Info from
+                    the credit card transaction will also be available in the
+                    event payload, although this probably won't be suitable for
+                    staff client/OPAC display.
 },
             "type" => "number"
         }
@@ -238,6 +242,9 @@ sub make_payments {
     # open a new transaction.  We cannot leave one open while credit card
     # processing might be happening, as it can easily time out the database
     # transaction.
+
+    my $cc_payload;
+
     if($type eq 'credit_card_payment') {
         $approval_code = $cc_args->{approval_code};
         # If an approval code was not given, we'll need
@@ -274,12 +281,14 @@ sub make_payments {
 
                 return $response;
             } else {
-                $approval_code = $response->{"payload"}->{"authorization"};
-                $cc_type = $response->{"payload"}->{"card_type"};
-                $cc_processor = $response->{"payload"}->{"processor"};
-                $logger->info(
-                    "Credit card payment for user $user_id succeeded"
-                );
+                # We need to save this for later in case there's a failure on
+                # the EG side to store the processor's result.
+                $cc_payload = $response->{"payload"};
+
+                $approval_code = $cc_payload->{"authorization"};
+                $cc_type = $cc_payload->{"card_type"};
+                $cc_processor = $cc_payload->{"processor"};
+                $logger->info("Credit card payment for user $user_id succeeded");
             }
         } else {
             return OpenILS::Event->new(
@@ -313,13 +322,10 @@ sub make_payments {
                 $trans = $e->retrieve_money_billable_transaction($transid);
                 $trans->xact_finish("now");
                 if (!$e->update_money_billable_transaction($trans)) {
-                    $logger->warn("update_money_billable_transaction() " .
-                        "failed");
-                    $e->rollback;
-                    return OpenILS::Event->new(
-                        'CREDIT_PROCESSOR_SUCCESS_WO_RECORD',
-                        note => 'update_money_billable_transaction() failed'
-                    );
+                    return _recording_failure(
+                        $e, "update_money_billable_transaction() failed",
+                        $payment, $cc_payload
+                    )
                 }
             }
         }
@@ -328,23 +334,16 @@ sub make_payments {
         $payment->cc_type($cc_type) if $cc_type;
         $payment->cc_processor($cc_processor) if $cc_processor;
         if (!$e->$create_money_method($payment)) {
-            $logger->warn("$create_money_method failed: " .
-                Dumper($payment)); # won't contain CC number.
-            $e->rollback;
-            return OpenILS::Event->new(
-                'CREDIT_PROCESSOR_SUCCESS_WO_RECORD',
-                note => "$create_money_method failed"
+            return _recording_failure(
+                $e, "$create_money_method failed", $payment, $cc_payload
             );
         }
     }
 
     my $evt = _update_patron_credit($e, $patron, $credit);
     if ($evt) {
-        $logger->warn("_update_patron_credit() failed");
-        $e->rollback;
-        return OpenILS::Event->new(
-            'CREDIT_PROCESSOR_SUCCESS_WO_RECORD',
-            note => "_update_patron_credit() failed"
+        return _recording_failure(
+            $e, "_update_patron_credit() failed", undef, $cc_payload
         );
     }
 
@@ -354,19 +353,36 @@ sub make_payments {
             $e, $user_id, $org_id
         );
         if ($evt) {
-            $logger->warn(
-                "OpenILS::Utils::Penalty::calculate_penalties() failed"
-            );
-            $e->rollback;
-            return OpenILS::Event->new(
-                'CREDIT_PROCESSOR_SUCCESS_WO_RECORD',
-                note => "OpenILS::Utils::Penalty::calculate_penalties() failed"
+            return _recording_failure(
+                $e, "calculate_penalties() failed", undef, $cc_payload
             );
         }
     }
 
     $e->commit;
     return 1;
+}
+
+sub _recording_failure {
+    my ($e, $msg, $payment, $payload) = @_;
+
+    if ($payload) { # If the payment processor already accepted a payment:
+        $logger->error($msg);
+        $logger->error("Payment processor payload: " . Dumper($payload));
+        # payment shouldn't contain CC number
+        $logger->error("Payment: " . Dumper($payment)) if $payment;
+
+        $e->rollback;
+
+        return new OpenILS::Event(
+            "CREDIT_PROCESSOR_SUCCESS_WO_RECORD",
+            "payload" => $payload
+        );
+    } else { # Otherwise, the problem is somewhat less severe:
+        $logger->warn($msg);
+        $logger->warn("Payment: " . Dumper($payment));
+        return $e->die_event;
+    }
 }
 
 sub _update_patron_credit {
