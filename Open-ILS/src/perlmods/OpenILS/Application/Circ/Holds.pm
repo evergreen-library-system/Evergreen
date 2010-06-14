@@ -1029,14 +1029,24 @@ sub retrieve_hold_queue_status_impl {
     # accomodate holds that currently have no potential copies
     my $q_holds = $e->json_query({
 
-        # fetch request_time since it's in the order_by and we're asking for distinct values
-        select => {ahr => ['id', 'request_time']},
+        # fetch cut_in_line and request_time since they're in the order_by
+        # and we're asking for distinct values
+        select => {ahr => ['id', 'cut_in_line', 'request_time']},
         from   => {
             ahr => {
                 ahcm => {type => 'left'} # there may be no copy maps 
             }
         },
-        order_by => {ahr => ['request_time']},
+        order_by => [
+            {
+                "class" => "ahr",
+                "field" => "cut_in_line",
+                "transform" => "coalesce",
+                "params" => [ 0 ],
+                "direction" => "desc"
+            },
+            { "class" => "ahr", "field" => "request_time" }
+        ],
         distinct => 1,
         where    => {
             '-or' => [
