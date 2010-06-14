@@ -533,7 +533,7 @@ patron.items.prototype = {
             }
             //alert('backdate = ' + backdate);
             if (backdate) {
-                backdate = util.date.formatted_date(backdate + ' 00:00:00','%{iso8601}');
+                backdate = util.date.formatted_date(backdate,'%{iso8601}');
                 var barcodes = util.functional.map_list(retrieve_ids,function(o){return o.barcode;});
                 var do_not_move_these = {};
                 for (var i = 0; i < barcodes.length; i++) {

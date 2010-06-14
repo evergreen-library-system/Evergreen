@@ -788,7 +788,7 @@ patron.holds.prototype = {
                                 if (thaw_date || thaw_date == '') {
                                     circ.util.batch_hold_update(
                                         hold_list, 
-                                        { 'frozen' : 't', 'thaw_date' : thaw_date == '' ? null : util.date.formatted_date(thaw_date + ' 00:00:00','%{iso8601}') }, 
+                                        { 'frozen' : 't', 'thaw_date' : thaw_date == '' ? null : util.date.formatted_date(thaw_date,'%{iso8601}') }, 
                                         { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } }
                                     );
                                 }
@@ -833,7 +833,7 @@ patron.holds.prototype = {
                                 if (expire_time || expire_time == '') {
                                     circ.util.batch_hold_update(
                                         hold_list, 
-                                        { 'expire_time' : expire_time == '' ? null : util.date.formatted_date(expire_time + ' 00:00:00','%{iso8601}') }, 
+                                        { 'expire_time' : expire_time == '' ? null : util.date.formatted_date(expire_time,'%{iso8601}') }, 
                                         { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } }
                                     );
                                 }
