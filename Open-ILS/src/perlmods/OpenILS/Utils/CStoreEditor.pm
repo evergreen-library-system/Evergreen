@@ -295,7 +295,9 @@ sub rollback {
 
 sub disconnect {
 	my $self = shift;
-	$self->session->disconnect if $self->{session};
+	$self->session->disconnect if 
+        $self->{session} and 
+        $self->{session}->state == OpenSRF::AppSession::CONNECTED();
     delete $self->{session};
 }
 
