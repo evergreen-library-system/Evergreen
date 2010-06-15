@@ -44,6 +44,8 @@ var stageUser;
 var optInSettings;
 var allCardsTemplate;
 
+var dupeUsrname = false;
+var dupeBarcode = false;
 
 if(!window.xulG) var xulG = null;
 
@@ -602,6 +604,7 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
             dojo.connect(widget.widget, 'onChange',
                 function() {
                     var barcode = this.attr('value');
+                    dupeBarcode = false;
                     dojo.addClass(dojo.byId('uedit-dupe-barcode-warning'), 'hidden');
                     fieldmapper.standardRequest(
                         ['open-ils.actor', 'open-ils.actor.barcode.exists'],
@@ -610,8 +613,10 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                             oncomplete : function(r) {
                                 var res = openils.Util.readResponse(r);
                                 if(res == '1') {
+                                    dupeBarcode = true;
                                     dojo.removeClass(dojo.byId('uedit-dupe-barcode-warning'), 'hidden');
                                 } else {
+                                    dupeBarcode = false;
                                     dojo.addClass(dojo.byId('uedit-dupe-barcode-warning'), 'hidden');
                                     var un = findWidget('au', 'usrname');
                                     if(!un.widget.attr('value'))
@@ -636,6 +641,7 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                         var usrname = input.widget.attr('value');
 
                         if(!usrname) {
+                            dupeUsrname = false;
                             dojo.addClass(dojo.byId('uedit-dupe-username-warning'), 'hidden');
                             return;
                         }
@@ -647,8 +653,10 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                                 oncomplete : function(r) {
                                     var res = openils.Util.readResponse(r);
                                     if(res) {
+                                        dupeUsrname = true;
                                         dojo.removeClass(dojo.byId('uedit-dupe-username-warning'), 'hidden');
                                     } else {
+                                        dupeUsrname = false;
                                         dojo.addClass(dojo.byId('uedit-dupe-username-warning'), 'hidden');
                                     }
                                 }
@@ -952,6 +960,11 @@ function uEditSave() { _uEditSave(); }
 function uEditSaveClone() { _uEditSave(true); }
 
 function _uEditSave(doClone) {
+
+    if ( (! myForm.isValid()) || dupeUsrname || dupeBarcode ) {
+        alert('Form is invalid.  Please edit and try again.');
+        return;
+    }
 
     for(var idx in widgetPile) {
         var w = widgetPile[idx];

@@ -86,9 +86,16 @@
 
 </style>
 
-<table>
-    [% INCLUDE default/actor/user/register_table.tt2 %]
-</table>
+<div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data" action="" method="">
+    <script type="dojo/method" event="onSubmit">
+        /* we don't want to use the form action, but uEditSave and UEditSaveClone from the Save buttons.  We
+            do want to use the Form's validation features, which we do from within UEditSave, etc. */
+        return false;
+    </script>
+    <table>
+        [% INCLUDE default/actor/user/register_table.tt2 %]
+    </table>
+</div>
 
 <div id='uedit-save-div'>
     <button dojoType='dijit.form.Button' jsId='saveButton' onClick='uEditSave'>Save</button>
