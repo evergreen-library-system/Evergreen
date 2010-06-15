@@ -51,7 +51,6 @@ function formatProvider(value) {
                 fieldOrder="['id', 'label', 'host', 'username', 'password', 'account', 'owner', 'last_activity', 'provider', 'path', 'in_dir', 'vendcode']"
                 query="{id: '*'}"
                 defaultCellWidth='"auto"'
-                autoHeight='true'
                 fmClass='acqedi'
                 showPaginator='true'
                 editOnEnter='true'>

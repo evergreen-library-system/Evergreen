@@ -698,29 +698,29 @@
 <!ENTITY staff.main.menu.admin.server_admin.acq.lineitem_alert.label "Line Item Alerts">
 <!ENTITY staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey "L">
 <!ENTITY staff.main.menu.admin.server_admin.acq.fund_tag.label "Fund Tags">
-<!ENTITY staff.main.menu.admin.server_admin.acq.fund_tag.accesskey "F">
+<!ENTITY staff.main.menu.admin.server_admin.acq.fund_tag.accesskey "G">
 <!ENTITY staff.main.menu.admin.server_admin.acq.cancel_reason.label "Cancel Reasons">
-<!ENTITY staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey "C">
+<!ENTITY staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey "R">
 <!ENTITY staff.main.menu.admin.server_admin.acq.claim_type.label "Claim Types">
 <!ENTITY staff.main.menu.admin.server_admin.acq.claim_type.accesskey "T">
 <!ENTITY staff.main.menu.admin.server_admin.acq.claim_event_type.label "Claim Event Types">
 <!ENTITY staff.main.menu.admin.server_admin.acq.claim_event_type.accesskey "E">
 <!ENTITY staff.main.menu.admin.server_admin.acq.claim_policy.label "Claim Policies">
-<!ENTITY staff.main.menu.admin.server_admin.acq.claim_policy.accesskey "P">
+<!ENTITY staff.main.menu.admin.server_admin.acq.claim_policy.accesskey "O">
 <!ENTITY staff.main.menu.admin.server_admin.acq.claim_policy_action.label "Claim Policy Actions">
 <!ENTITY staff.main.menu.admin.server_admin.acq.claim_policy_action.accesskey "A">
 <!ENTITY staff.main.menu.admin.server_admin.acq.fund.label "Funds">
-<!ENTITY staff.main.menu.admin.server_admin.acq.fund.accesskey "N">
+<!ENTITY staff.main.menu.admin.server_admin.acq.fund.accesskey "F">
 <!ENTITY staff.main.menu.admin.server_admin.acq.funding_source.label "Funding Sources">
 <!ENTITY staff.main.menu.admin.server_admin.acq.funding_source.accesskey "S">
 <!ENTITY staff.main.menu.admin.server_admin.acq.provider.label "Providers">
-<!ENTITY staff.main.menu.admin.server_admin.acq.provider.accesskey "V">
+<!ENTITY staff.main.menu.admin.server_admin.acq.provider.accesskey "P">
 <!ENTITY staff.main.menu.admin.server_admin.acq.edi_account.label "EDI Accounts">
 <!ENTITY staff.main.menu.admin.server_admin.acq.edi_account.accesskey "U">
 <!ENTITY staff.main.menu.admin.server_admin.acq.distrib_formula.label "Distribution Formulas">
 <!ENTITY staff.main.menu.admin.server_admin.acq.distrib_formula.accesskey "D">
 <!ENTITY staff.main.menu.admin.server_admin.acq.currency_type.label "Currency Types">
-<!ENTITY staff.main.menu.admin.server_admin.acq.currency_type.accesskey "R">
+<!ENTITY staff.main.menu.admin.server_admin.acq.currency_type.accesskey "C">
 <!ENTITY staff.main.menu.admin.server_admin.acq.exchange_rate.label "Exchange Rates">
 <!ENTITY staff.main.menu.admin.server_admin.acq.exchange_rate.accesskey "X">
 

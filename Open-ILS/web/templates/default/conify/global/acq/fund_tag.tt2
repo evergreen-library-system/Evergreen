@@ -23,7 +23,6 @@
         dojoType="openils.widget.AutoGrid"
         fieldOrder="['id', 'owner', 'name']"
         query="{id: '*'}"
-        defaultCellWidth="20"
         fmClass="acqft"
         editOnEnter="true">
     </table>

@@ -24,6 +24,9 @@ function draw() {
                     var form = openils.Util.readResponse(r);
                     formCache[form.id()] = form;
                     fListGrid.store.newItem(form.toStoreItem());
+                },
+                oncomplete: function() {
+                    fListGrid.hideLoadProgressIndicator();
                 }
             }
         );
@@ -37,7 +40,7 @@ function drawFormulaSummary() {
     dfeListGrid.overrideEditWidgets.formula = new
         dijit.form.TextBox({style:'display:none', value: formulaId});
     dfeListGrid.loadAll({order_by:{acqdfe : 'formula'}}, {formula : formulaId});
-    var pcrud = new openils.PermaCrud;
+    var pcrud = new openils.PermaCrud();
     var formulaName = pcrud.retrieve('acqdf', formulaId);
     dojo.byId('formula_head').innerHTML = formulaName.name();
 }

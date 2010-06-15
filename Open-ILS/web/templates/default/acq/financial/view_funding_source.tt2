@@ -125,10 +125,10 @@
 
                     <table 
                         jsId="fsCreditGrid"
-                        autoHeight='true'
                         dojoType="openils.widget.AutoGrid"
                         fieldOrder="['amount', 'effective_date', 'deadline_date', 'note']"
                         suppressFields="['id', 'funding_source']"
+                        defaultCellWidth='"auto"'
                         fmClass="acqfscred"
                         query="{id: '*'}"
                         showPaginator='true'>

@@ -99,13 +99,19 @@ function loadFSGrid() {
 /** builds the credits grid ----- */
 function loadCreditGrid() {
     if(fsCreditGrid.isLoaded) return;
-    fsCreditGrid.loadAll({order_by : {acqfscred :  'effective_date DESC'}});
+    fsCreditGrid.loadAll(
+        {"order_by": {"acqfscred": "effective_date DESC"}},
+        {"funding_source": fundingSource.id()}
+    );
     fsCreditGrid.isLoaded = true;
 }
 
 function loadAllocationGrid() {
     if(fsAllocationGrid.isLoaded) return;
-    fsAllocationGrid.loadAll({order_by : {acqfa :  'create_time DESC'}});
+    fsAllocationGrid.loadAll(
+        {"order_by": {"acqfa": "create_time DESC"}},
+        {"funding_source": fundingSource.id()}
+    );
     fsAllocationGrid.isLoaded = true;
 }
 

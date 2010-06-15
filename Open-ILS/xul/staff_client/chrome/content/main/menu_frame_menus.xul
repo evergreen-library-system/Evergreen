@@ -368,22 +368,22 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.usr_setting_type;" command="cmd_server_admin_usr_setting_type"/>
                 <menu id="main.menu.admin.server.acq" label="&staff.main.menu.admin.server_admin.acq.label;" accesskey="&staff.main.menu.admin.server_admin.acq.accesskey;">
                     <menupopup id="main.menu.admin.server.acq.popup">
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.lineitem_alert.label;" accesskey="&staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey;" command="cmd_server_admin_acq_lineitem_alert"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.fund.label;" accesskey="&staff.main.menu.admin.server_admin.acq.fund.accesskey;" command="cmd_server_admin_acq_fund" />
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.fund_tag.label;" accesskey="&staff.main.menu.admin.server_admin.acq.fund_tag.accesskey;" command="cmd_server_admin_acq_fund_tag"/>
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.cancel_reason.label;" accesskey="&staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey;" command="cmd_server_admin_acq_cancel_reason"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.funding_source.label;" accesskey="&staff.main.menu.admin.server_admin.acq.funding_source.accesskey;" command="cmd_server_admin_acq_funding_source" />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.distrib_formula.label;" accesskey="&staff.main.menu.admin.server_admin.acq.distrib_formula.accesskey;" command="cmd_server_admin_acq_distrib_formula" />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.currency_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.currency_type.accesskey;" command="cmd_server_admin_acq_currency_type" />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.exchange_rate.label;" accesskey="&staff.main.menu.admin.server_admin.acq.exchange_rate.accesskey;" command="cmd_server_admin_acq_exchange_rate" />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.provider.label;" accesskey="&staff.main.menu.admin.server_admin.acq.provider.accesskey;" command="cmd_server_admin_acq_provider" />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.edi_account.label;" accesskey="&staff.main.menu.admin.server_admin.acq.edi_account.accesskey;" command="cmd_server_admin_acq_edi_account" />
                         <menuseparator />
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_type.accesskey;" command="cmd_server_admin_acq_claim_type"/>
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_event_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_event_type.accesskey;" command="cmd_server_admin_acq_claim_event_type"/>
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_policy.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_policy.accesskey;" command="cmd_server_admin_acq_claim_policy"/>
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_policy_action.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_policy_action.accesskey;" command="cmd_server_admin_acq_claim_policy_action"/>
                         <menuseparator />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.fund.label;" accesskey="&staff.main.menu.admin.server_admin.acq.fund.accesskey;" command="cmd_server_admin_acq_fund" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.funding_source.label;" accesskey="&staff.main.menu.admin.server_admin.acq.funding_source.accesskey;" command="cmd_server_admin_acq_funding_source" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.provider.label;" accesskey="&staff.main.menu.admin.server_admin.acq.provider.accesskey;" command="cmd_server_admin_acq_provider" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.edi_account.label;" accesskey="&staff.main.menu.admin.server_admin.acq.edi_account.accesskey;" command="cmd_server_admin_acq_edi_account" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.currency_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.currency_type.accesskey;" command="cmd_server_admin_acq_currency_type" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.exchange_rate.label;" accesskey="&staff.main.menu.admin.server_admin.acq.exchange_rate.accesskey;" command="cmd_server_admin_acq_exchange_rate" />
-                        <menuitem label="&staff.main.menu.admin.server_admin.acq.distrib_formula.label;" accesskey="&staff.main.menu.admin.server_admin.acq.distrib_formula.accesskey;" command="cmd_server_admin_acq_distrib_formula" />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.lineitem_alert.label;" accesskey="&staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey;" command="cmd_server_admin_acq_lineitem_alert"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.cancel_reason.label;" accesskey="&staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey;" command="cmd_server_admin_acq_cancel_reason"/>
                     </menupopup>
                 </menu>
                 <menu id="main.menu.admin.server.booking" label="&staff.main.menu.admin.server_admin.booking.label;" accesskey="&staff.main.menu.admin.server_admin.booking.accesskey;">

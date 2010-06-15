@@ -28,14 +28,17 @@ function getBalanceInfo(rowIndex, item) {
 
 function loadFSGrid() {
     fieldmapper.standardRequest(
-        ['open-ils.acq', 'open-ils.acq.funding_source.org.retrieve'],
-        {   async: true,
+        ['open-ils.acq', 'open-ils.acq.funding_source.org.retrieve'], {
+            async: true,
             params: [openils.User.authtoken, null, {flesh_summary:1}],
-                onresponse : function(r) { /* request object*/ 
+            onresponse: function(r) { /* request object*/
                 if(fs = openils.Util.readResponse(r)) {
                     openils.acq.FundingSource.cache[fs.id()] = fs;
                     fsGrid.store.newItem(acqfs.toStoreItem(fs));
                 }
+            },
+            oncomplete: function() {
+                fsGrid.hideLoadProgressIndicator();
             }
         }
     );

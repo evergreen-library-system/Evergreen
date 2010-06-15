@@ -64,7 +64,6 @@ function formatName(value) {
                 fieldOrder="['id', 'name', 'code', 'owner', 'currency_type']"
                 query="{id: '*'}"
                 defaultCellWidth='"auto"'
-                autoHeight='true'
                 fmClass='acqpro'
                 showPaginator='true'
                 editOnEnter='true'>
