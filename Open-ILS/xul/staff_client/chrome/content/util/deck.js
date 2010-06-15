@@ -157,6 +157,7 @@ util.deck.prototype = {
         var browser = document.createElement('browser');
         obj.id_incr++;
         browser.setAttribute('type','content');
+        browser.setAttribute('autoscroll','false');
         browser.setAttribute('id','frame_'+obj.id_incr);
         browser.setAttribute('src',url);
         this.node.appendChild( browser );

@@ -1539,6 +1539,7 @@ main.menu.prototype = {
                 frame = this.w.document.createElement('browser');
                 frame.setAttribute('flex','1');
                 frame.setAttribute('type','content');
+                frame.setAttribute('autoscroll','false');
                 frame.setAttribute('id','frame_'+obj.id_incr);
                 panel.appendChild(frame);
                 try {

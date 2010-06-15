@@ -120,7 +120,7 @@
             <label id="debug" value="Debug" disabled="true" command="cmd_debug" onclick="this.doCommand();" />
             <button id="browser_print" command="cmd_print" hidden="true"/>
         </hbox>
-        <browser id="browser_browser" flex="1" type="content"/>
+        <browser id="browser_browser" flex="1" autoscroll="false" type="content"/>
     </vbox>
 
 </window>
