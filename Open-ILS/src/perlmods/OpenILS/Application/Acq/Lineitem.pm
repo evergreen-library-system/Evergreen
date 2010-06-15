@@ -282,7 +282,7 @@ __PACKAGE__->register_method(
 
 sub lineitem_search {
     my($self, $conn, $auth, $search, $options) = @_;
-    my $e = new_editor(authtoken=>$auth, xact=>1);
+    my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('CREATE_PICKLIST');
     # XXX needs permissions consideration
