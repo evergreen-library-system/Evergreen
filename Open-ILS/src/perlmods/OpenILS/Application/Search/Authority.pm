@@ -56,6 +56,9 @@ sub crossref_authority {
 
 	my $session = OpenSRF::AppSession->create("open-ils.storage");
 
+	# Avoid generating spurious errors for more granular indexes, like author|personal
+	$class =~ s/^(.*?)\|.*?$/$1/;
+
 	$logger->info("authority xref search for $class=$term, limit=$limit");
 	my $fr = $session->request(
 		"open-ils.storage.authority.$class.see_from.controlled.atomic",$term, $limit)->gather(1);
