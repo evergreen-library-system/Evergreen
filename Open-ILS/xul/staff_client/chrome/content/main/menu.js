@@ -700,6 +700,34 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/acq/claim_policy_action'); }
             ],
+            'cmd_server_admin_acq_fund' : [
+                ['oncommand'],
+                function() { open_eg_web_page('acq/fund/list'); }
+            ],
+            'cmd_server_admin_acq_funding_source' : [
+                ['oncommand'],
+                function() { open_eg_web_page('acq/funding_source/list'); }
+            ],
+            'cmd_server_admin_acq_provider' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/provider'); }
+            ],
+            'cmd_server_admin_acq_edi_account' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/edi_account'); }
+            ],
+            'cmd_server_admin_acq_currency_type' : [
+                ['oncommand'],
+                function() { open_eg_web_page('acq/currency_type/list'); }
+            ],
+            'cmd_server_admin_acq_exchange_rate' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/exchange_rate'); }
+            ],
+            'cmd_server_admin_acq_distrib_formula' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/distribution_formula'); }
+            ],
             'cmd_server_admin_z39_source' : [
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/z3950_source'); }
@@ -779,34 +807,6 @@ main.menu.prototype = {
             'cmd_acq_new_brief_record' : [
                 ['oncommand'],
                 function() { open_eg_web_page('acq/picklist/brief_record', 'menu.cmd_acq_new_brief_record.tab'); }
-            ],
-            'cmd_acq_view_fund' : [
-                ['oncommand'],
-                function() { open_eg_web_page('acq/fund/list', 'menu.cmd_acq_view_fund.tab'); }
-            ],
-            'cmd_acq_view_funding_source' : [
-                ['oncommand'],
-                function() { open_eg_web_page('acq/funding_source/list', 'menu.cmd_acq_view_funding_source.tab'); }
-            ],
-            'cmd_acq_view_provider' : [
-                ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/provider', 'menu.cmd_acq_view_provider.tab'); }
-            ],
-            'cmd_acq_view_edi_account' : [
-                ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/edi_account', 'menu.cmd_acq_view_edi_account.tab'); }
-            ],
-            'cmd_acq_view_currency_type' : [
-                ['oncommand'],
-                function() { open_eg_web_page('acq/currency_type/list', 'menu.cmd_acq_view_currency_type.tab'); }
-            ],
-            'cmd_acq_view_exchange_rate' : [
-                ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/exchange_rate', 'menu.cmd_acq_view_exchange_rate.tab'); }
-            ],
-            'cmd_acq_view_distrib_formula' : [
-                ['oncommand'],
-                function() { open_eg_web_page('conify/global/acq/distribution_formula', 'menu.cmd_acq_view_distrib_formula.tab'); }
             ],
             'cmd_acq_claim_eligible' : [
                 ['oncommand'],

@@ -81,19 +81,12 @@
     <command id="cmd_acq_view_picklist" />
     <command id="cmd_acq_upload" />
     <command id="cmd_acq_view_po" />
-    <command id="cmd_acq_view_po_events" />
+    <!-- <command id="cmd_acq_view_po_events" /> -->
     <command id="cmd_acq_user_requests" />
     <command id="cmd_acq_bib_search" />
     <command id="cmd_acq_unified_search" />
     <command id="cmd_acq_from_bib" />
     <command id="cmd_acq_new_brief_record" />
-    <command id="cmd_acq_view_fund" />
-    <command id="cmd_acq_view_funding_source" />
-    <command id="cmd_acq_view_provider" />
-    <command id="cmd_acq_view_edi_account" />
-    <command id="cmd_acq_view_currency_type" />
-    <command id="cmd_acq_view_exchange_rate" />
-    <command id="cmd_acq_view_distrib_formula" />
     <command id="cmd_acq_claim_eligible" />
 
     <command id="cmd_booking_reservation" />
@@ -143,6 +136,13 @@
     <command id="cmd_server_admin_acq_claim_event_type"/>
     <command id="cmd_server_admin_acq_claim_policy"/>
     <command id="cmd_server_admin_acq_claim_policy_action"/>
+    <command id="cmd_server_admin_acq_fund" />
+    <command id="cmd_server_admin_acq_funding_source" />
+    <command id="cmd_server_admin_acq_provider" />
+    <command id="cmd_server_admin_acq_edi_account" />
+    <command id="cmd_server_admin_acq_currency_type" />
+    <command id="cmd_server_admin_acq_exchange_rate" />
+    <command id="cmd_server_admin_acq_distrib_formula" />
     <command id="cmd_server_admin_z39_source"/>
     <command id="cmd_server_admin_circ_mod"/>
     <command id="cmd_server_admin_global_flag"/>
@@ -275,16 +275,9 @@
         <menuitem label="&staff.main.menu.acq.create_invoice.label;" accesskey="&staff.main.menu.acq.create_invoice.accesskey;" command="cmd_acq_create_invoice"/>
         <menuitem label="&staff.main.menu.acq.upload.label;" accesskey="&staff.main.menu.acq.upload.accesskey;" command="cmd_acq_upload"/>
         <menuitem label="&staff.main.menu.acq.brief_record.label;" accesskey="&staff.main.menu.acq.brief_record.accesskey;" command="cmd_acq_new_brief_record"/>
-        <menuitem label="&staff.main.menu.acq.po_events.label;" accesskey="&staff.main.menu.acq.po_events.accesskey;" command="cmd_acq_view_po_events" />
+        <!-- <menuitem label="&staff.main.menu.acq.po_events.label;" accesskey="&staff.main.menu.acq.po_events.accesskey;" command="cmd_acq_view_po_events" /> -->
         <menuitem label="&staff.main.menu.acq.user_requests.label;" accesskey="&staff.main.menu.acq.user_requests.accesskey;" command="cmd_acq_user_requests" />
         <menuseparator />
-        <menuitem label="&staff.main.menu.acq.fund.label;" accesskey="&staff.main.menu.acq.fund.accesskey;" command="cmd_acq_view_fund" />
-        <menuitem label="&staff.main.menu.acq.funding_source.label;" accesskey="&staff.main.menu.acq.funding_source.accesskey;" command="cmd_acq_view_funding_source" />
-        <menuitem label="&staff.main.menu.acq.provider.label;" accesskey="&staff.main.menu.acq.provider.accesskey;" command="cmd_acq_view_provider" />
-        <menuitem label="&staff.main.menu.acq.edi_account.label;" accesskey="&staff.main.menu.acq.edi_account.accesskey;" command="cmd_acq_view_edi_account" />
-        <menuitem label="&staff.main.menu.acq.currency_type.label;" accesskey="&staff.main.menu.acq.currency_type.accesskey;" command="cmd_acq_view_currency_type" />
-        <menuitem label="&staff.main.menu.acq.exchange_rate.label;" accesskey="&staff.main.menu.acq.exchange_rate.accesskey;" command="cmd_acq_view_exchange_rate" />
-        <menuitem label="&staff.main.menu.acq.distrib_formula.label;" accesskey="&staff.main.menu.acq.distrib_formula.accesskey;" command="cmd_acq_view_distrib_formula" />
         <menuitem label="&staff.main.menu.acq.claim_eligible.label;" accesskey="&staff.main.menu.acq.claim_eligible.accesskey;" command="cmd_acq_claim_eligible" />
     </menupopup>
 </menu>
@@ -383,6 +376,14 @@
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_event_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_event_type.accesskey;" command="cmd_server_admin_acq_claim_event_type"/>
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_policy.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_policy.accesskey;" command="cmd_server_admin_acq_claim_policy"/>
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_policy_action.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_policy_action.accesskey;" command="cmd_server_admin_acq_claim_policy_action"/>
+                        <menuseparator />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.fund.label;" accesskey="&staff.main.menu.admin.server_admin.acq.fund.accesskey;" command="cmd_server_admin_acq_fund" />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.funding_source.label;" accesskey="&staff.main.menu.admin.server_admin.acq.funding_source.accesskey;" command="cmd_server_admin_acq_funding_source" />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.provider.label;" accesskey="&staff.main.menu.admin.server_admin.acq.provider.accesskey;" command="cmd_server_admin_acq_provider" />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.edi_account.label;" accesskey="&staff.main.menu.admin.server_admin.acq.edi_account.accesskey;" command="cmd_server_admin_acq_edi_account" />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.currency_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.currency_type.accesskey;" command="cmd_server_admin_acq_currency_type" />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.exchange_rate.label;" accesskey="&staff.main.menu.admin.server_admin.acq.exchange_rate.accesskey;" command="cmd_server_admin_acq_exchange_rate" />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.distrib_formula.label;" accesskey="&staff.main.menu.admin.server_admin.acq.distrib_formula.accesskey;" command="cmd_server_admin_acq_distrib_formula" />
                     </menupopup>
                 </menu>
                 <menu id="main.menu.admin.server.booking" label="&staff.main.menu.admin.server_admin.booking.label;" accesskey="&staff.main.menu.admin.server_admin.booking.accesskey;">

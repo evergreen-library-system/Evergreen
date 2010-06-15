@@ -709,6 +709,20 @@
 <!ENTITY staff.main.menu.admin.server_admin.acq.claim_policy.accesskey "P">
 <!ENTITY staff.main.menu.admin.server_admin.acq.claim_policy_action.label "Claim Policy Actions">
 <!ENTITY staff.main.menu.admin.server_admin.acq.claim_policy_action.accesskey "A">
+<!ENTITY staff.main.menu.admin.server_admin.acq.fund.label "Funds">
+<!ENTITY staff.main.menu.admin.server_admin.acq.fund.accesskey "N">
+<!ENTITY staff.main.menu.admin.server_admin.acq.funding_source.label "Funding Sources">
+<!ENTITY staff.main.menu.admin.server_admin.acq.funding_source.accesskey "S">
+<!ENTITY staff.main.menu.admin.server_admin.acq.provider.label "Providers">
+<!ENTITY staff.main.menu.admin.server_admin.acq.provider.accesskey "V">
+<!ENTITY staff.main.menu.admin.server_admin.acq.edi_account.label "EDI Accounts">
+<!ENTITY staff.main.menu.admin.server_admin.acq.edi_account.accesskey "U">
+<!ENTITY staff.main.menu.admin.server_admin.acq.distrib_formula.label "Distribution Formulas">
+<!ENTITY staff.main.menu.admin.server_admin.acq.distrib_formula.accesskey "D">
+<!ENTITY staff.main.menu.admin.server_admin.acq.currency_type.label "Currency Types">
+<!ENTITY staff.main.menu.admin.server_admin.acq.currency_type.accesskey "R">
+<!ENTITY staff.main.menu.admin.server_admin.acq.exchange_rate.label "Exchange Rates">
+<!ENTITY staff.main.menu.admin.server_admin.acq.exchange_rate.accesskey "X">
 
 <!ENTITY staff.main.menu.admin.server_admin.booking.label "Booking">
 <!ENTITY staff.main.menu.admin.server_admin.booking.accesskey "B">
@@ -820,20 +834,6 @@
 <!ENTITY staff.main.menu.acq.po_events.accesskey "E">
 <!ENTITY staff.main.menu.acq.user_requests.label "User Requests">
 <!ENTITY staff.main.menu.acq.user_requests.accesskey "R">
-<!ENTITY staff.main.menu.acq.fund.label "Funds">
-<!ENTITY staff.main.menu.acq.fund.accesskey "F">
-<!ENTITY staff.main.menu.acq.funding_source.label "Funding Sources">
-<!ENTITY staff.main.menu.acq.funding_source.accesskey "S">
-<!ENTITY staff.main.menu.acq.provider.label "Providers">
-<!ENTITY staff.main.menu.acq.provider.accesskey "V">
-<!ENTITY staff.main.menu.acq.edi_account.label "EDI Accounts">
-<!ENTITY staff.main.menu.acq.edi_account.accesskey "U">
-<!ENTITY staff.main.menu.acq.distrib_formula.label "Distribution Formulas">
-<!ENTITY staff.main.menu.acq.distrib_formula.accesskey "D">
-<!ENTITY staff.main.menu.acq.currency_type.label "Currency Types">
-<!ENTITY staff.main.menu.acq.currency_type.accesskey "C">
-<!ENTITY staff.main.menu.acq.exchange_rate.label "Exchange Rates">
-<!ENTITY staff.main.menu.acq.exchange_rate.accesskey "X">
 <!ENTITY staff.main.menu.acq.claim_eligible.label "Claim-Eligible Items">
 <!ENTITY staff.main.menu.acq.claim_eligible.accesskey "M">
 
