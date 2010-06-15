@@ -68,7 +68,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0308'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0309'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -750,9 +750,6 @@ DECLARE
     normalizer      RECORD;
     value           TEXT := '';
 BEGIN
-    IF NEW.index_vector = ''::tsvector THEN
-        RETURN NEW;
-    END IF;
 
     value := NEW.value;
 
@@ -763,7 +760,34 @@ BEGIN
                     m.params AS params
               FROM  config.index_normalizer n
                     JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
-              WHERE field = NEW.field
+              WHERE field = NEW.field AND m.pos < 0
+              ORDER BY m.pos LOOP
+                EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                    quote_literal( value ) ||
+                    CASE
+                        WHEN normalizer.param_count > 0
+                            THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                            ELSE ''
+                        END ||
+                    ')' INTO value;
+
+        END LOOP;
+
+        NEW.value := value;
+    END IF;
+
+    IF NEW.index_vector = ''::tsvector THEN
+        RETURN NEW;
+    END IF;
+
+    IF TG_TABLE_NAME::TEXT ~ 'field_entry$' THEN
+        FOR normalizer IN
+            SELECT  n.func AS func,
+                    n.param_count AS param_count,
+                    m.params AS params
+              FROM  config.index_normalizer n
+                    JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+              WHERE field = NEW.field AND m.pos >= 0
               ORDER BY m.pos LOOP
                 EXECUTE 'SELECT ' || normalizer.func || '(' ||
                     quote_literal( value ) ||
