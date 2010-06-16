@@ -1789,6 +1789,43 @@ Returns the list of valid metarecord formats that supercat understands.
 );
 
 
+sub list_authority_formats {
+	my @list = (
+		{ marcxml =>
+			{ namespace_uri	  => 'http://www.loc.gov/MARC21/slim',
+			  docs		  => 'http://www.loc.gov/marcxml/',
+			  schema_location => 'http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd',
+			}
+		}
+	);
+
+#	for my $type ( keys %record_xslt ) {
+#		push @list,
+#			{ $type => 
+#				{ namespace_uri	  => $record_xslt{$type}{namespace_uri},
+#				  docs		  => $record_xslt{$type}{docs},
+#				  schema_location => $record_xslt{$type}{schema_location},
+#				}
+#			};
+#	}
+#
+	return \@list;
+}
+__PACKAGE__->register_method(
+	method    => 'list_authority_formats',
+	api_name  => 'open-ils.supercat.authority.formats',
+	api_level => 1,
+	argc      => 0,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the list of valid authority formats that supercat understands.
+		  DESC
+		  'return' =>
+		  	{ desc => 'The format list',
+			  type => 'array' }
+		}
+);
+
 sub list_record_formats {
 	my @list = (
 		{ marcxml =>

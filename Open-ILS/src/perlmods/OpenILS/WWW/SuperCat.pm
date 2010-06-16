@@ -147,7 +147,7 @@ sub child_init {
     $list = [ map { (keys %$_)[0] } @$list ];
     push @$list, 'htmlholdings','html', 'marctxt', 'ris';
 
-    for my $browse_axis ( qw/title author subject topic series item-age authority.title authority.author authority.subject authority.topic/ ) {
+    for my $browse_axis ( qw/title author subject topic series item-age/ ) {
         for my $record_browse_format ( @$list ) {
             {
                 my $__f = $record_browse_format;
@@ -163,10 +163,39 @@ sub child_init {
                 	my $site = shift;
 
 			$log->info("Creating record feed with params [$real_format, $record_list, $unapi, $site]");
-                	my $bib_or_authority = $__a =~ /^authority/ ? 'authority' : 'record';
-                	my $feed = create_record_feed( $bib_or_authority, $real_format, $record_list, $unapi, $site, $real_format =~ /(-full|-uris)$/o ? 1 : 0 );
+                	my $feed = create_record_feed( 'record', $real_format, $record_list, $unapi, $site, $real_format =~ /(-full|-uris)$/o ? 1 : 0 );
                 	$feed->root( "$base/../" );
                 	$feed->lib( $site );
+                	$feed->link( next => $next => $feed->type );
+                	$feed->link( previous => $prev => $feed->type );
+
+                	return (
+                        "Content-type: ". $feed->type ."; charset=utf-8\n\n",
+                        $feed->toString
+                    );
+                };
+            }
+        }
+    }
+
+    for my $browse_axis ( qw/authority.title authority.author authority.subject authority.topic/ ) {
+        for my $record_browse_format ( qw/marcxml/ ) {
+            {
+                my $__f = $record_browse_format;
+                my $__a = $browse_axis;
+
+                $browse_types{$__a}{$__f} = sub {
+                	my $record_list = shift;
+                	my $prev = shift;
+                	my $next = shift;
+                	my $real_format = shift || $__f;
+                	my $unapi = shift;
+                	my $base = shift;
+                	my $site = shift;
+
+			$log->info("Creating record feed with params [$real_format, $record_list, $unapi, $site]");
+                	my $feed = create_record_feed( 'authority', $real_format, $record_list, $unapi, $site, 0 );
+                	$feed->root( "$base/../" );
                 	$feed->link( next => $next => $feed->type );
                 	$feed->link( previous => $prev => $feed->type );
 
@@ -341,6 +370,7 @@ sub unapi {
 			$lib = uc($4);
 			$type = 'record';
 			$type = 'metarecord' if ($1 =~ /^m/o);
+			$type = 'authority' if ($1 =~ /^authority/o);
 
 			my $list = $supercat
 				->request("open-ils.supercat.$type.formats")
@@ -380,7 +410,7 @@ sub unapi {
 
 		} else {
 			my $list = $supercat
-				->request("open-ils.supercat.record.formats")
+				->request("open-ils.supercat.$type.formats")
 				->gather(1);
 				
 			push @$list,
@@ -434,6 +464,7 @@ sub unapi {
 		$type = 'acp' if ($1 =~ /^asset-copy/o);
 		$type = 'acn' if ($1 =~ /^asset-call_number/o);
 		$type = 'auri' if ($1 =~ /^asset-uri/o);
+		$type = 'authority' if ($1 =~ /^authority/o);
 		$command = 'retrieve';
 		$command = 'browse' if ($type eq 'call_number');
 	}
