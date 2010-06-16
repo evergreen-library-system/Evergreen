@@ -819,7 +819,7 @@ sub authority_tag_sf_browse {
 			{ select	=> { afr => [qw/record value/] },
 			  from		=> 'afr',
 			  where		=> { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } }, 
-			  order_by	=> { mfr => { value => 'asc' } },
+			  order_by	=> { afr => { value => 'asc' } },
 			  limit		=> $after_limit,
 			  offset	=> abs($page) * $page_size - $after_offset,
 			}
