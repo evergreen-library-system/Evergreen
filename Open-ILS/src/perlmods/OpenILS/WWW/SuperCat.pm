@@ -147,7 +147,7 @@ sub child_init {
     $list = [ map { (keys %$_)[0] } @$list ];
     push @$list, 'htmlholdings','html', 'marctxt', 'ris';
 
-    for my $browse_axis ( qw/title author subject topic series item-age/ ) {
+    for my $browse_axis ( qw/title author subject topic series item-age authority.title authority.author authority.subject authority.topic/ ) {
         for my $record_browse_format ( @$list ) {
             {
                 my $__f = $record_browse_format;
@@ -1411,7 +1411,7 @@ sub string_browse {
 	my $tree = $supercat->request(
 		"open-ils.supercat.$axis.browse",
 		$string,
-		$site,
+		(($axis =~ /^authority/) ? () : ($site)),
 		$page_size,
 		$page,
 		$status,
