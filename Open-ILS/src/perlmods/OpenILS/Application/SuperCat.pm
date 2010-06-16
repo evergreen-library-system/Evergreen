@@ -352,6 +352,8 @@ sub new_books_by_item {
 	my $ou = shift;
 	my $page_size = shift || 10;
 	my $page = shift || 1;
+	my $statuses = shift || [];
+	my $copy_locations = shift || [];
 
     my $offset = $page_size * ($page - 1);
 
@@ -377,7 +379,12 @@ sub new_books_by_item {
                        },
 		  from		=> { 'acn' => { 'acp' => { field => call_number => fkey => 'id' } } },
 		  where		=>
-			{ '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () },
+			{ '+acp' =>
+				{ deleted => 'f',
+				  ((@ou_ids)          ? ( circ_lib => \@ou_ids)        : ()),
+				  ((@$statuses)       ? ( status   => $statuses)       : ()),
+				  ((@$copy_locations) ? ( location => $copy_locations) : ())
+				}, 
 			  '+acn' => { record => { '>' => 0 } },
 			}, 
 		  order_by	=> { acp => { create_date => { transform => 'max', direction => 'desc' } } },
@@ -513,6 +520,8 @@ sub tag_sf_browse {
 	my $ou = shift;
 	my $page_size = shift || 9;
 	my $page = shift || 0;
+	my $statuses = shift || [];
+	my $copy_locations = shift || [];
 
 	my ($before_limit,$after_limit) = (0,0);
 	my ($before_offset,$after_offset) = (0,0);
@@ -561,7 +570,12 @@ sub tag_sf_browse {
     					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } },
 					      where	=>
 				    		{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
-			    			  '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () }
+			    			  '+acp' =>
+								{ deleted => 'f',
+								  ((@ou_ids)          ? ( circ_lib => \@ou_ids)        : ()),
+								  ((@$statuses)       ? ( status   => $statuses)       : ()),
+								  ((@$copy_locations) ? ( location => $copy_locations) : ())
+								}
 		    				},
 	    				  limit => 1
     					}
@@ -603,7 +617,12 @@ sub tag_sf_browse {
 	    				  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } },
 		    			  where	=>
 			    			{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
-				    		  '+acp' => { deleted => 'f', (@ou_ids) ? ( circ_lib => \@ou_ids) : () }
+			    			  '+acp' =>
+								{ deleted => 'f',
+								  ((@ou_ids)          ? ( circ_lib => \@ou_ids)        : ()),
+								  ((@$statuses)       ? ( status   => $statuses)       : ()),
+								  ((@$copy_locations) ? ( location => $copy_locations) : ())
+								}
 					    	},
     					  limit => 1
 	    				}

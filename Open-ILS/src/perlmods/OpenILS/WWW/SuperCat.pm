@@ -1387,6 +1387,8 @@ sub string_browse {
 
     return item_age_browse($apache) if ($axis eq 'item-age'); # short-circut to the item-age sub
 
+	my $status = [$cgi->param('status')];
+	my $cpLoc = [$cgi->param('copyLocation')];
 	$site ||= $cgi->param('searchOrg');
 	$page ||= $cgi->param('startPage') || 0;
 	$page_size ||= $cgi->param('count') || 9;
@@ -1411,7 +1413,9 @@ sub string_browse {
 		$string,
 		$site,
 		$page_size,
-		$page
+		$page,
+		$status,
+		$cpLoc
 	)->gather(1);
 
     (my $norm_format = $format) =~ s/(-full|-uris)$//o;
@@ -1453,6 +1457,8 @@ sub item_age_browse {
 		return undef;
 	}
 
+	my $status = [$cgi->param('status')];
+	my $cpLoc = [$cgi->param('copyLocation')];
 	$site ||= $cgi->param('searchOrg') || '-';
 	$page ||= $cgi->param('startPage') || 1;
 	$page_size ||= $cgi->param('count') || 10;
@@ -1466,7 +1472,9 @@ sub item_age_browse {
 		"open-ils.supercat.new_book_list",
 		$site,
 		$page_size,
-		$page
+		$page,
+		$status,
+		$cpLoc
 	)->gather(1);
 
     (my $norm_format = $format) =~ s/(-full|-uris)$//o;
