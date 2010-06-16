@@ -29,6 +29,7 @@ function ftInit() {
                     buildFtGrid();
                 }
             );
+            buildFtGrid();
         }
     );
 }
@@ -42,7 +43,7 @@ function buildFtGrid() {
         {"owner": fieldmapper.aou.orgNodeTrail(ftOwner, true /* asId */)},
         {
             "async": true,
-            "oncomplete": function(r) {
+            "onresponse": function(r) {
                 if ((ftList = openils.Util.readResponse(r))) {
                     ftList = openils.Util.objectSort(ftList);
                     ftList.forEach(
@@ -51,6 +52,9 @@ function buildFtGrid() {
                         }
                     );
                 }
+            },
+            "oncomplete": function() {
+                ftGrid.hideLoadProgressIndicator();
             }
         }
     );

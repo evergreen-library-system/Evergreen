@@ -672,6 +672,14 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/billing_type'); }
             ],
+            'cmd_server_admin_acq_invoice_item_type' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/invoice_item_type'); }
+            ],
+            'cmd_server_admin_acq_invoice_payment_method' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/invoice_payment_method'); }
+            ],
             'cmd_server_admin_acq_lineitem_alert' : [
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/acq/lineitem_alert'); }

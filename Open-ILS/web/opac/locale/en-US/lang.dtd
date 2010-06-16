@@ -697,6 +697,10 @@
 <!ENTITY staff.main.menu.admin.server_admin.acq.accesskey "A">
 <!ENTITY staff.main.menu.admin.server_admin.acq.lineitem_alert.label "Line Item Alerts">
 <!ENTITY staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey "L">
+<!ENTITY staff.main.menu.admin.server_admin.acq.invoice_item_type.label "Invoice Item Type">
+<!ENTITY staff.main.menu.admin.server_admin.acq.invoice_item_type.accesskey "I">
+<!ENTITY staff.main.menu.admin.server_admin.acq.invoice_payment_method.label "Invoice Payment Method">
+<!ENTITY staff.main.menu.admin.server_admin.acq.invoice_payment_method.accesskey "Y">
 <!ENTITY staff.main.menu.admin.server_admin.acq.fund_tag.label "Fund Tags">
 <!ENTITY staff.main.menu.admin.server_admin.acq.fund_tag.accesskey "G">
 <!ENTITY staff.main.menu.admin.server_admin.acq.cancel_reason.label "Cancel Reasons">

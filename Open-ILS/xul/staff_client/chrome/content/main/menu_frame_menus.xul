@@ -129,6 +129,8 @@
     <command id="cmd_server_admin_copy_status"/>
     <command id="cmd_server_admin_marc_code"/>
     <command id="cmd_server_admin_billing_type"/>
+    <command id="cmd_server_admin_acq_invoice_item_type"/>
+    <command id="cmd_server_admin_acq_invoice_payment_method"/>
     <command id="cmd_server_admin_acq_cancel_reason"/>
     <command id="cmd_server_admin_acq_lineitem_alert"/>
     <command id="cmd_server_admin_acq_fund_tag"/>
@@ -381,6 +383,9 @@
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_event_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_event_type.accesskey;" command="cmd_server_admin_acq_claim_event_type"/>
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_policy.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_policy.accesskey;" command="cmd_server_admin_acq_claim_policy"/>
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.claim_policy_action.label;" accesskey="&staff.main.menu.admin.server_admin.acq.claim_policy_action.accesskey;" command="cmd_server_admin_acq_claim_policy_action"/>
+                        <menuseparator />
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.invoice_item_type.label;" accesskey="&staff.main.menu.admin.server_admin.acq.invoice_item_type.accesskey;" command="cmd_server_admin_acq_invoice_item_type"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.invoice_payment_method.label;" accesskey="&staff.main.menu.admin.server_admin.acq.invoice_payment_method.accesskey;" command="cmd_server_admin_acq_invoice_payment_method"/>
                         <menuseparator />
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.lineitem_alert.label;" accesskey="&staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey;" command="cmd_server_admin_acq_lineitem_alert"/>
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.cancel_reason.label;" accesskey="&staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey;" command="cmd_server_admin_acq_cancel_reason"/>
