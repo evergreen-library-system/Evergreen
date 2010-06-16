@@ -282,5 +282,11 @@ if(!dojo._hasResource["openils.Util"]) {
         return K;
     }
 
+    openils.Util.uniqueElements = function(L) {
+        var o = {};
+        for (var k in L) o[L[k]] = true;
+        return openils.Util.objectProperties(o);
+    }
+
 }
 

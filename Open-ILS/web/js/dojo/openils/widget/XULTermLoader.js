@@ -63,11 +63,14 @@ if (!dojo._hasResource["openils.widget.XULTermLoader"]) {
                         alert(this._.TERM_LIMIT);
                         return;
                     }
-                    var data = this.parseUnimaginatively(
+                    var data = this[
+                        this.parseCSV ? "parseAsCSV" : "parseUnimaginatively"
+                    ](
                         openils.XUL.contentFromFileOpenDialog(
                             this._.CHOOSE_FILE, this.args.fileSizeLimit
                         )
                     );
+
                     if (data.length + this.terms.length >=
                         this.args.termLimit) {
                         alert(this._.TERM_LIMIT_SOME);
@@ -82,6 +85,17 @@ if (!dojo._hasResource["openils.widget.XULTermLoader"]) {
                 } catch(E) {
                     alert(E);
                 }
+            },
+            "parseAsCSV": function(data) {
+                return this.parseUnimaginatively(data).
+                    map(
+                        function(o) {
+                            return o.match(/^".+"$/) ? o.slice(1,-1) : o;
+                        }
+                    ).
+                    filter(
+                        function(o) { return Boolean(o.match(/^\d+$/)); }
+                    );
             },
             "parseUnimaginatively": function(data) {
                 if (!data) return [];

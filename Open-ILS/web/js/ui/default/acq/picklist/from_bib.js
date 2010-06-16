@@ -7,9 +7,14 @@ var pager = null;
 var usingPl = null;
 
 function fetchRecords() {
-    var data = termLoader.attr("value");
+    var data = openils.Util.uniqueElements(termLoader.attr("value"));
     var result_count = 0;
-    pager.total = data.length;
+    // Don't show a total for now... This total is the total number of
+    // search terms, but a user would take it to mean the total number of
+    // results, which we don't have a straightfoward way of getting without
+    // doing the search more that once.
+
+    // pager.total = data.length;
 
     progressDialog.show(true);
     fieldmapper.standardRequest(
@@ -60,7 +65,7 @@ function beginSearch() {
 
 function init() {
     new openils.widget.XULTermLoader(
-        {"parentNode": "acq-frombib-upload"}
+        {"parentNode": "acq-frombib-upload", "parseCSV": true}
     ).build(function(w) { termLoader = w; });
     liTable = new AcqLiTable();
     pager = new LiTablePager(fetchRecords, liTable);
