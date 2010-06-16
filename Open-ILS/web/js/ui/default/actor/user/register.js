@@ -1,4 +1,5 @@
 dojo.require('dojo.data.ItemFileReadStore');
+dojo.require('dijit.form.Form');
 dojo.require('dijit.form.Textarea');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('dijit.form.ComboBox');
