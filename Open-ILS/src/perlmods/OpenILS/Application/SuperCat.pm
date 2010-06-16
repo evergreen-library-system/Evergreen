@@ -1351,6 +1351,39 @@ for my $t ( qw/biblio authority/ ) {
 }
 
 
+sub retrieve_authority_marcxml {
+	my $self = shift;
+	my $client = shift;
+	my $rid = shift;
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	my $record = $_storage->request( 'open-ils.cstore.direct.authority.record_entry.retrieve' => $rid )->gather(1);
+	return $U->entityize( $record->marc ) if ($record);
+	return undef;
+}
+
+__PACKAGE__->register_method(
+	method    => 'retrieve_authority_marcxml',
+	api_name  => 'open-ils.supercat.authority.marcxml.retrieve',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the MARCXML representation of the requested authority record
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'authorityId',
+				  desc => 'An OpenILS authority::record_entry id',
+				  type => 'number' },
+			],
+		  'return' =>
+		  	{ desc => 'The authority record in MARCXML',
+			  type => 'string' }
+		}
+);
+
 sub retrieve_record_marcxml {
 	my $self = shift;
 	my $client = shift;

@@ -163,7 +163,8 @@ sub child_init {
                 	my $site = shift;
 
 			$log->info("Creating record feed with params [$real_format, $record_list, $unapi, $site]");
-                	my $feed = create_record_feed( 'record', $real_format, $record_list, $unapi, $site, $real_format =~ /(-full|-uris)$/o ? 1 : 0 );
+                	my $bib_or_authority = $__a =~ /^authority/ ? 'authority' : 'record';
+                	my $feed = create_record_feed( $bib_or_authority, $real_format, $record_list, $unapi, $site, $real_format =~ /(-full|-uris)$/o ? 1 : 0 );
                 	$feed->root( "$base/../" );
                 	$feed->lib( $site );
                 	$feed->link( next => $next => $feed->type );
@@ -1328,6 +1329,7 @@ sub create_record_feed {
 
 		my $item_tag = "tag:$host,$year:biblio-record_entry/$rec/$lib";
 		$item_tag = "tag:$host,$year:isbn/$rec/$lib" if ($search eq 'isbn');
+		$item_tag = "tag:$host,$year:authorit-record_entry/$rec" if ($search eq 'authority');
 
 		my $xml = $supercat->request(
 			"open-ils.supercat.$search.$type.retrieve",
