@@ -415,6 +415,12 @@ Returns the XML representation of the requested bibliographic record's holdings
 				{ name => 'page',
 				  desc => 'The page of records to retrieve, calculated based on page_size.  Starts at 1.',
 				  type => 'number' },
+				{ name => 'statuses',
+				  desc => 'Array of statuses to filter copies by, optional and can be undef.',
+				  type => 'array' },
+				{ name => 'locations',
+				  desc => 'Array of copy locations to filter copies by, optional and can be undef.',
+				  type => 'array' },
 			],
 		  'return' =>
 		  	{ desc => 'Record IDs',
@@ -440,7 +446,9 @@ __PACKAGE__->register_method(
 		  	[ { name => 'value', desc => 'The target title', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
+			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
 		}
 );
@@ -456,7 +464,9 @@ __PACKAGE__->register_method(
 		  	[ { name => 'value', desc => 'The target author', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
+			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
 		}
 );
@@ -472,7 +482,9 @@ __PACKAGE__->register_method(
 		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
+			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
 		}
 );
@@ -488,7 +500,9 @@ __PACKAGE__->register_method(
 		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
+			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
 		}
 );
@@ -504,7 +518,9 @@ __PACKAGE__->register_method(
 		  	[ { name => 'value', desc => 'The target series', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
+			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
 		}
 );
@@ -678,6 +694,12 @@ Returns a list of the requested org-scoped record ids held
 				{ name => 'page',
 				  desc => 'The page of call numbers to retrieve, calculated based on page_size.  Can be positive, negative or 0.',
 				  type => 'number' },
+				{ name => 'statuses',
+				  desc => 'Array of statuses to filter copies by, optional and can be undef.',
+				  type => 'array' },
+				{ name => 'locations',
+				  desc => 'Array of copy locations to filter copies by, optional and can be undef.',
+				  type => 'array' },
 			],
 		  'return' =>
 		  	{ desc => 'Record IDs that have copies at the relevant org units',
