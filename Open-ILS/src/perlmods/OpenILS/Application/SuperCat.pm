@@ -710,7 +710,7 @@ Returns a list of the requested org-scoped record ids held
 sub general_authority_browse {
 	my $self = shift;
 	my $client = shift;
-    return tag_sf_browse($self, $client, $self->{tag}, $self->{subfield}, @_);
+    return authority_tag_sf_browse($self, $client, $self->{tag}, $self->{subfield}, @_);
 }
 __PACKAGE__->register_method(
 	method    => 'general_authority_browse',
