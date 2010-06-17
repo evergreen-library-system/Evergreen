@@ -72,12 +72,12 @@ patron.util.mbts_columns = function(modify,params) {
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.mbts.last_payment_ts(), "%{localized}" ); }
         },
         {
-            'persist' : 'hidden width ordinal', 'id' : 'xact_start', 'label' : commonStrings.getString('staff.mbts_xact_start_label'), 'flex' : 1,
+            'persist' : 'hidden width ordinal', 'id' : 'mbts_xact_start', 'label' : commonStrings.getString('staff.mbts_xact_start_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { return my.mbts.xact_start() ? util.date.formatted_date( my.mbts.xact_start(), "%{localized}" ) : ""; }
         },
         {
-            'persist' : 'hidden width ordinal', 'id' : 'xact_finish', 'label' : commonStrings.getString('staff.mbts_xact_finish_label'), 'flex' : 1,
+            'persist' : 'hidden width ordinal', 'id' : 'mbts_xact_finish', 'label' : commonStrings.getString('staff.mbts_xact_finish_label'), 'flex' : 1,
             'sort_type' : 'date',
             'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { return my.mbts.xact_finish() ? util.date.formatted_date( my.mbts.xact_finish(), "%{localized}" ) : ""; }
         },
@@ -423,7 +423,7 @@ patron.util.columns = function(modify,params) {
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return my.au.suffix(); }
         },
         { 
-            'persist' : 'hidden width ordinal', 'id' : 'alert_message', 'label' : commonStrings.getString('staff.au_alert_message_label'), 'flex' : 1, 
+            'persist' : 'hidden width ordinal', 'id' : 'au_alert_message', 'label' : commonStrings.getString('staff.au_alert_message_label'), 'flex' : 1, 
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return my.au.alert_message(); }
         },
         { 
@@ -432,7 +432,7 @@ patron.util.columns = function(modify,params) {
             'sort_type' : 'number'
         },
         { 
-            'persist' : 'hidden width ordinal', 'id' : 'create_date', 'label' : commonStrings.getString('staff.au_create_date_label'), 'flex' : 1, 
+            'persist' : 'hidden width ordinal', 'id' : 'au_create_date', 'label' : commonStrings.getString('staff.au_create_date_label'), 'flex' : 1, 
             'sort_type' : 'date',
             'primary' : false, 'hidden' : true, 'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.au.create_date(), "%{localized}" ); }
         },

@@ -424,7 +424,7 @@ function init_lists() {
                 }
             ].concat(
                 patron.util.mbts_columns({
-                    'xact_finish' : { 'hidden' : xul_param('current') ? true : false }
+                    'mbts_xact_finish' : { 'hidden' : xul_param('current') ? true : false }
                 }
             ).concat( 
                 circ.util.columns({ 

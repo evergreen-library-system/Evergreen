@@ -75,10 +75,25 @@ util.list.prototype = {
             this.node.appendChild(treecols);
             this.treecols = treecols;
 
+            var check_for_id_collisions = {};
             for (var i = 0; i < this.columns.length; i++) {
                 var treecol = document.createElement('treecol');
                 for (var j in this.columns[i]) {
-                    treecol.setAttribute(j,this.columns[i][j]);
+                    var value = this.columns[i][j];
+                    if (j=='id') {
+                        if (typeof check_for_id_collisions[value] == 'undefined') {
+                            check_for_id_collisions[value] = true;
+                        } else {
+                            // Column id's are important for sorting and saving list configuration.  Collisions started happening because
+                            // we were using field names as id's, and then later combining column definitions for multiple objects that
+                            // shared field names.  The downside to this sort of automatic collision prevention is that these generated
+                            // id's can change as we add and remove columns, possibly breaking saved list configurations.
+                            dump('Column collision with id = ' + value + ', renaming to ');
+                            value = value + '_collision_' + i;
+                            dump(value + '\n');
+                        }
+                    }
+                    treecol.setAttribute(j,value);
                 }
                 treecols.appendChild(treecol);
                 if (this.columns[i].type == 'checkbox') {
