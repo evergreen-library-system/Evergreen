@@ -29,6 +29,80 @@ CREATE OR REPLACE FUNCTION public.extract_marc_field ( TEXT, BIGINT, TEXT, TEXT 
     SELECT regexp_replace(array_to_string( array_accum( output ),' ' ),$4,'','g') FROM oils_xpath_table('id', 'marc', $1, $3, 'id='||$2)x(id INT, output TEXT);
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION oils_xml_uncache (xml TEXT) RETURNS BOOL AS $func$
+  delete $_SHARED{'_xslt_process'}{docs}{shift()};
+  return 1;
+$func$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION oils_xml_cache (xml TEXT) RETURNS BOOL AS $func$
+  use strict;
+  use XML::LibXML;
+
+  my $doc = shift;
+
+  # The following approach uses the older XML::LibXML 1.69 / XML::LibXSLT 1.68
+  # methods of parsing XML documents and stylesheets, in the hopes of broader
+  # compatibility with distributions
+  my $parser = $_SHARED{'_xslt_process'}{parsers}{xml} || XML::LibXML->new();
+
+  # Cache the XML parser, if we do not already have one
+  $_SHARED{'_xslt_process'}{parsers}{xml} = $parser
+    unless ($_SHARED{'_xslt_process'}{parsers}{xml});
+
+  # Parse and cache the doc
+  eval { $_SHARED{'_xslt_process'}{docs}{$doc} = $parser->parse_string($doc) };
+
+  return 0 if ($@);
+  return 1;
+$func$ LANGUAGE PLPERLU;
+
+-- if we use these, we need to ...
+drop function oils_xpath(text, text, anyarray);
+
+CREATE OR REPLACE FUNCTION oils_xpath (xpath TEXT, xml TEXT, ns TEXT[][]) RETURNS TEXT[] AS $func$
+  use strict;
+  use XML::LibXML;
+
+  my $xpath = shift;
+  my $doc = shift;
+  my $ns_string = shift || '';
+  #elog(NOTICE,"ns_string: $ns_string");
+
+  my %ns_list = $ns_string =~ m/\{([^{,]+),([^}]+)\}/g;
+  #elog(NOTICE,"NS Prefix $_: $ns_list{$_}") for (keys %ns_list);
+
+  # The following approach uses the older XML::LibXML 1.69 / XML::LibXSLT 1.68
+  # methods of parsing XML documents and stylesheets, in the hopes of broader
+  # compatibility with distributions
+  my $parser = eval { $_SHARED{'_xslt_process'}{parsers}{xml} || XML::LibXML->new() };
+
+  return undef if ($@);
+
+  # Cache the XML parser, if we do not already have one
+  $_SHARED{'_xslt_process'}{parsers}{xml} = $parser
+    unless ($_SHARED{'_xslt_process'}{parsers}{xml});
+
+  # Look for a cached version of the doc, or parse it if none
+  my $dom = eval { $_SHARED{'_xslt_process'}{docs}{$doc} || $parser->parse_string($doc) };
+
+  return undef if ($@);
+
+  # Cache the parsed XML doc, if already there
+  $_SHARED{'_xslt_process'}{docs}{$doc} = $dom
+    unless ($_SHARED{'_xslt_process'}{docs}{$doc});
+
+  # Register the requested namespaces
+  $dom->documentElement->setNamespace( $ns_list{$_} => $_ ) for ( keys %ns_list );
+
+  # Gather and return nodes
+  my @nodes = $dom->findnodes($xpath);
+  #elog(NOTICE,"nodes found by $xpath: ". scalar(@nodes));
+
+  return [ map { $_->toString } @nodes ];
+$func$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT ) RETURNS TEXT[] AS $$SELECT oils_xpath( $1, $2, '{}'::TEXT[] );$$ LANGUAGE SQL IMMUTABLE;
+
 */
 
 CREATE FUNCTION version_specific_xpath () RETURNS TEXT AS $wrapper_function$
