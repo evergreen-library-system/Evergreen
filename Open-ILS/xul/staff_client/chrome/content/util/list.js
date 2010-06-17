@@ -1444,6 +1444,11 @@ util.list.prototype = {
                             a = a.value; b = b.value; 
                             if (col.getAttribute('sort_type')) {
                                 switch(col.getAttribute('sort_type')) {
+                                    case 'date' :
+                                        JSAN.use('util.date'); // to pull in dojo.date.locale
+                                        a = dojo.date.locale.parse(a,{});
+                                        b = dojo.date.locale.parse(b,{});
+                                    break;
                                     case 'number' :
                                         a = Number(a); b = Number(b);
                                     break;
@@ -1466,6 +1471,7 @@ util.list.prototype = {
                                     b = String( b ).toUpperCase();
                                 }
                             }
+                            //dump('sorting: type = ' + col.getAttribute('sort_type') + ' a = ' + a + ' b = ' + b + ' a<b= ' + (a<b) + ' a>b= ' + (a>b) + '\n');
                             if (a < b) return -1; 
                             if (a > b) return 1; 
                             return 0; 
@@ -1684,7 +1690,9 @@ util.list.prototype = {
                 var def = {
                     'id' : col_id,
                     'label' : my_field.label || my_field.name,
-                    'sort_type' : [ 'int', 'float', 'id', 'number' ].indexOf(my_field.datatype) > -1 ? 'number' : ( my_field.datatype == 'money' ? 'money' : 'default'),
+                    'sort_type' : [ 'int', 'float', 'id', 'number' ].indexOf(my_field.datatype) > -1 ? 'number' : 
+                        ( my_field.datatype == 'money' ? 'money' : 
+                        ( my_field.datatype == 'timestamp' ? 'date' : 'default')),
                     'hidden' : my_field.virtual || my_field.datatype == 'link',
                     'flex' : 1
                 };                    

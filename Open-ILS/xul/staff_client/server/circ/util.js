@@ -882,6 +882,7 @@ circ.util.columns = function(modify,params) {
             'fm_class' : 'acp',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.status_changed_time'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.acp.status_changed_time(), '%{localized}' ); },
@@ -909,6 +910,7 @@ circ.util.columns = function(modify,params) {
             'id' : 'xact_start',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.xact_start'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
@@ -925,6 +927,7 @@ circ.util.columns = function(modify,params) {
             'id' : 'checkin_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkin_time'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
@@ -941,6 +944,7 @@ circ.util.columns = function(modify,params) {
             'id' : 'xact_finish',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.xact_finish'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.circ ? util.date.formatted_date( my.circ.xact_finish(), '%{localized}' ) : ""; },
@@ -951,6 +955,7 @@ circ.util.columns = function(modify,params) {
             'id' : 'due_date',
             'label' : document.getElementById('commonStrings').getString('staff.circ_label_due_date'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
@@ -967,6 +972,7 @@ circ.util.columns = function(modify,params) {
             'id' : 'acp_create_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.create_date'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.acp.create_date(), '%{localized}' ); }
@@ -977,6 +983,7 @@ circ.util.columns = function(modify,params) {
             'id' : 'acp_edit_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.edit_date'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.acp.edit_date(), '%{localized}' ); }
@@ -1121,6 +1128,7 @@ circ.util.columns = function(modify,params) {
             'id' : 'stop_fines_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.stop_fines_time'),
             'flex' : 0,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
@@ -1221,6 +1229,7 @@ circ.util.columns = function(modify,params) {
             'id' : 'checkin_scan_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.checkin_scan_time'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.circ ? util.date.formatted_date( my.circ.checkin_scan_time(), '%{localized}' ) : ""; },
@@ -1251,6 +1260,7 @@ circ.util.columns = function(modify,params) {
             'id' : 'create_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.bre.create_date'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.bre ? util.date.formatted_date( my.bre.create_date(), '%{localized}' ) : ''; }
@@ -1261,6 +1271,7 @@ circ.util.columns = function(modify,params) {
             'id' : 'edit_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.bre.edit_date'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.bre ? util.date.formatted_date( my.bre.edit_date(), '%{localized}' ) : ''; }
@@ -1449,6 +1460,7 @@ circ.util.transit_columns = function(modify,params) {
             'id' : 'transit_source_send_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_source_send_time'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : false,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.atc.source_send_time(), '%{localized}' ); }
@@ -1473,6 +1485,7 @@ circ.util.transit_columns = function(modify,params) {
             'id' : 'transit_dest_recv_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_dest_recv_time'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : false,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.atc.dest_recv_time(), '%{localized}' ); }
@@ -1536,6 +1549,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'cancel_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.hold_cancel_time'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.cancel_time(), '%{localized}' ); }
@@ -1593,6 +1607,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'request_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.request_time'),
             'flex' : 0,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.request_time(), '%{localized}' ); }
@@ -1602,6 +1617,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'shelf_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.holds.shelf_time'),
             'flex' : 0,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.shelf_time(), '%{localized}' ); }
@@ -1611,6 +1627,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'shelf_expire_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.holds.shelf_expire_time'),
             'flex' : 0,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.shelf_expire_time(), '%{localized}' ); }
@@ -1620,6 +1637,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'available_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.available_time'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : false,
             'editable' : false, 'render' : function(my) {
@@ -1637,6 +1655,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'capture_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.capture_time'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.ahr.capture_time() ? util.date.formatted_date( my.ahr.capture_time(), '%{localized}' ) : ""; }
@@ -1715,6 +1734,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'thaw_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.thaw_date'),
             'flex' : 0,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) {
@@ -1801,6 +1821,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'expire_date',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_expire_date_label'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.ahr.expire_time() ? util.date.formatted_date( my.ahr.expire_time(), '%{localized}' ) : ''; }
@@ -1810,6 +1831,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'fulfillment_time',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_fulfillment_time_label'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.fulfillment_time(), '%{localized}' ); }
@@ -1846,6 +1868,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'prev_check_time',
             'label' : document.getElementById('commonStrings').getString('staff.ahr_prev_check_time_label'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.prev_check_time(), '%{localized}' ); }
@@ -1976,6 +1999,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'notify_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.notify_time'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return util.date.formatted_date( my.ahr.notify_time(), '%{localized}' ); }
@@ -2009,6 +2033,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'transit_source_send_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_source_send_time'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.ahr.transit() ?  util.date.formatted_date( my.ahr.transit().source_send_time(), '%{localized}' ) : ""; }
@@ -2027,6 +2052,7 @@ circ.util.hold_columns = function(modify,params) {
             'id' : 'transit_dest_recv_time',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.transit_dest_recv_time'),
             'flex' : 1,
+            'sort_type' : 'date',
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.ahr.transit() ?  util.date.formatted_date( my.ahr.transit().dest_recv_time(), '%{localized}' ) : ""; }
