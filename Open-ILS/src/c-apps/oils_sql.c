@@ -1100,7 +1100,7 @@ int doIdList( osrfMethodContext* ctx ) {
 		jsonObjectRemoveKey( rest_of_query, "select" );
 		jsonObjectRemoveKey( rest_of_query, "no_i18n" );
 		jsonObjectRemoveKey( rest_of_query, "flesh" );
-		jsonObjectRemoveKey( rest_of_query, "flesh_columns" );
+		jsonObjectRemoveKey( rest_of_query, "flesh_fields" );
 	} else {
 		rest_of_query = jsonNewObjectType( JSON_HASH );
 	}
@@ -5225,8 +5225,10 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 	dbi_result_free( result );
 	free( sql );
 
-	// If we're asked to flesh, and there's anything to flesh, then flesh.
-	if( res_list->size && query_hash ) {
+	// If we're asked to flesh, and there's anything to flesh, then flesh it
+	// (but not for PCRUD, lest the user to bypass permissions by fleshing
+	// something that he has no permission to look at).
+	if( res_list->size && query_hash && ! enforce_pcrud ) {
 		_tmp = jsonObjectGetKeyConst( query_hash, "flesh" );
 		if( _tmp ) {
 			// Get the flesh depth
