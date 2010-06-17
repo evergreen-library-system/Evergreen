@@ -224,7 +224,11 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         dojo.require('dojo.date.stamp');
                         this.widget = new dijit.form.DateTextBox(this.dijitArgs, this.parentNode);
                         if(this.widgetValue != null) 
-                            this.widgetValue = dojo.date.stamp.fromISOString(this.widgetValue);
+                            this.widgetValue = dojo.date.stamp.fromISOString(
+                                // Kludge until the ML returning ISO timestamps with a colon in the timezone offset,
+                                // which dojo.date.stamp.fromISOString requires
+                                this.widgetValue.replace( /^(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d-\d\d)(\d\d)$/, '$1:$2') 
+                            );
                         break;
 
                     case 'bool':
