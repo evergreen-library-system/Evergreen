@@ -27,6 +27,17 @@ HTMLSelectElement.prototype.setValue = function(s) {
     }
 }
 
+/* minor formatting function used by autogrids in unified.tt2 */
+function getName(rowIndex, item) {
+    if (item) {
+        return {
+            "name": this.grid.store.getValue(item, "name") ||
+                localeStrings.UNNAMED,
+            "id": this.grid.store.getValue(item, "id")
+        };
+    }
+}
+
 /* quickly find elements by the value of a "name" attribute */
 function nodeByName(name, root) {
     return dojo.query("[name='" + name + "']", root)[0];

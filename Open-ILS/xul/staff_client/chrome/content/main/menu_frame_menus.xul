@@ -78,7 +78,7 @@
     <command id="cmd_open_vandelay" />
     
     <command id="cmd_acq_create_invoice" />
-    <command id="cmd_acq_view_picklist" />
+    <!-- <command id="cmd_acq_view_picklist" /> -->
     <command id="cmd_acq_upload" />
     <command id="cmd_acq_view_po" />
     <!-- <command id="cmd_acq_view_po_events" /> -->
@@ -272,7 +272,7 @@
         <menuitem label="&staff.main.menu.acq.bib_search.label;" accesskey="&staff.main.menu.acq.bib_search.accesskey;" command="cmd_acq_bib_search"/>
         <menuitem label="&staff.main.menu.acq.from_bib.label;" accesskey="&staff.main.menu.acq.from_bib.accesskey;" command="cmd_acq_from_bib"/>
         <!-- <menuitem label="&staff.main.menu.acq.po.label;" accesskey="&staff.main.menu.acq.po.accesskey;" command="cmd_acq_view_po" /> -->
-        <menuitem label="&staff.main.menu.acq.picklist.label;" accesskey="&staff.main.menu.acq.picklist.accesskey;" command="cmd_acq_view_picklist"/>
+        <!-- <menuitem label="&staff.main.menu.acq.picklist.label;" accesskey="&staff.main.menu.acq.picklist.accesskey;" command="cmd_acq_view_picklist"/> -->
         <menuseparator />
         <menuitem label="&staff.main.menu.acq.create_invoice.label;" accesskey="&staff.main.menu.acq.create_invoice.accesskey;" command="cmd_acq_create_invoice"/>
         <menuitem label="&staff.main.menu.acq.upload.label;" accesskey="&staff.main.menu.acq.upload.accesskey;" command="cmd_acq_upload"/>

@@ -831,9 +831,13 @@ sub update_picklist {
     $picklist = $mgr->editor->retrieve_acq_picklist($picklist) unless ref $picklist;
     $picklist->edit_time('now');
     $picklist->editor($mgr->editor->requestor->id);
-    $mgr->picklist($picklist);
-    return $picklist if $mgr->editor->update_acq_picklist($picklist);
-    return undef;
+    if ($mgr->editor->update_acq_picklist($picklist)) {
+        $picklist = $mgr->editor->retrieve_acq_picklist($mgr->editor->data);
+        $mgr->picklist($picklist);
+        return $picklist;
+    } else {
+        return undef;
+    }
 }
 
 sub delete_picklist {
@@ -2085,6 +2089,7 @@ sub merge_picklist_api {
 
     # XXX perms on each picklist modified
 
+    $lead_pl = $e->retrieve_acq_picklist($lead_pl) or return $e->die_event;
     # point all of the lineitems at the lead picklist
     my $li_ids = $e->search_acq_lineitem({picklist => $pl_list}, {idlist => 1});
 
@@ -2100,6 +2105,8 @@ sub merge_picklist_api {
         my $pl = $e->retrieve_acq_picklist($pl_id);
         $e->delete_acq_picklist($pl) or return $e->die_event;
     }
+
+    update_picklist($mgr, $lead_pl) or return $e->die_event;
 
     $e->commit;
     return $mgr->respond_complete;
