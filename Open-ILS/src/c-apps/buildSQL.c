@@ -679,8 +679,22 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 			if( expr->negate )
 				buffer_add( state->sql, "NOT " );
 
-			sqlAddMsg( state, "Cast expressions not yet supported" );
-			state->error = 1;
+			buffer_add( state->sql, "CAST (" );
+			buildExpression( state, expr->left_operand );
+			if( state->error )
+				sqlAddMsg( state, "Unable to build left operand for CAST expression # %d",
+					expr->id );
+			else {
+				buffer_add( state->sql, " AS " );
+				if( expr->cast_type && expr->cast_type->datatype_name ) {
+					buffer_add( state->sql, expr->cast_type->datatype_name );
+					buffer_add_char( state->sql, ')' );
+				} else {
+					osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+						"No datatype available for CAST expression # %d", expr->id ));
+					state->error = 1;
+				}
+			}
 			break;
 		case EXP_COLUMN :                 // Table column
 			if( expr->negate )

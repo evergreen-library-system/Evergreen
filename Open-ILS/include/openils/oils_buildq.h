@@ -27,6 +27,9 @@ typedef struct BindVar_ BindVar;
 struct CaseBranch_;
 typedef struct CaseBranch_ CaseBranch;
 
+struct Datatype_;
+typedef struct Datatype_ Datatype;
+
 struct Expression_;
 typedef struct Expression_ Expression;
 
@@ -154,6 +157,14 @@ struct CaseBranch_ {
 	Expression* result;
 };
 
+struct Datatype_ {
+	Datatype* next;
+	int       id;
+	char*     datatype_name;
+	int       is_numeric;          // Boolean
+	int       is_composite;        // Boolean
+};
+
 typedef enum {
 	EXP_BETWEEN,
 	EXP_BIND,
@@ -189,7 +200,7 @@ struct Expression_ {
 	Expression* right_operand;
 	int         subquery_id;
 	StoredQ*    subquery;
-	int         cast_type_id;
+	Datatype*   cast_type;
 	int         negate;             // Boolean
 	BindVar*    bind;
 	Expression* subexp_list;        // Linked list of subexpressions
