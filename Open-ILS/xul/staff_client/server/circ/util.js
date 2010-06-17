@@ -964,7 +964,7 @@ circ.util.columns = function(modify,params) {
         {
             'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
-            'id' : 'create_date',
+            'id' : 'acp_create_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.create_date'),
             'flex' : 1,
             'primary' : false,
@@ -974,7 +974,7 @@ circ.util.columns = function(modify,params) {
         {
             'persist' : 'hidden width ordinal',
             'fm_class' : 'acp',
-            'id' : 'edit_date',
+            'id' : 'acp_edit_date',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.edit_date'),
             'flex' : 1,
             'primary' : false,
