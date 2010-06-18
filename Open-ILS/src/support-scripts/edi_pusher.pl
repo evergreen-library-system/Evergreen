@@ -88,14 +88,16 @@ foreach my $def (@$defs) {
     $query->{limit} = $remaining if $remaining > 0;
 
     if ($opts->{verbose}) {
+        # $subq->{'select'}->{'acqedim'} = ['id', 'purchase_order', 'message_type', 'status'];
         my $excluded = $e->json_query($subq);
-        print "Excluded: ", scalar(@$excluded), " purchase order(s): ", join("\n", map {Dumper $_} @$excluded), "\n";
+        print "Excluded: ", scalar(@$excluded), " purchase order(s):\n", Dumper(\@$excluded), "\n";
     }
 
     my $events = $e->json_query($query);
 
     if(!$events) {
-        $logger->error("error querying JEDI events for event definition $def->id");
+        print STDERR   "error querying JEDI events for event definition ", $def->id, "\n";
+        $logger->error("error querying JEDI events for event definition ". $def->id);
         next;
     }
 
