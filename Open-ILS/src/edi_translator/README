@@ -41,3 +41,5 @@ mbklein says:
 to the structure of the BGM segment.  But as long as all the supported vendors will
 accept a D.96A ORDERS (which I think they do), that's not a problem.
 
+SEE ALSO:
+    http://github.com/mbklein/openils-mapper
