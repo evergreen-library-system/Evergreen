@@ -110,6 +110,9 @@
 <!ENTITY common.textsize.regular "Regular">
 <!ENTITY common.textsize.separator "/"> <!-- Regular / Large -->
 <!ENTITY common.textsize.large "Large">
+<!ENTITY common.googlechromeframe.why "Installing the Google Chrome Frame plugin for Internet Explorer will improve your Evergreen experience with more speed and advanced features!">
+<!ENTITY common.googlechromeframe.install "Install Now!">
+<!ENTITY common.googlechromeframe.dontask "Don't ask me again">
 
 <!ENTITY home.js.disabled "JavaScript must be enabled in order for you to use the regular Evergreen Catalog.
 However, it seems JavaScript is either disabled or not supported by your browser.
