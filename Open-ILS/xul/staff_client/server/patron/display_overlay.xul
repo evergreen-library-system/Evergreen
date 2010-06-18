@@ -13,7 +13,7 @@
 <vbox id="pdm2" flex="1">
     <hbox id="pdm2hb1">
         <hbox>
-            <label id="patron_name" class="patronNameLarge" tooltiptext="&staff.patron_display.name.label;" value="&staff.patron.display_overlay.none_selected.value;" flex="1"/>
+            <label id="patron_name" class="patronNameLarge" value="&staff.patron.display_overlay.none_selected.value;" flex="1"/>
         </hbox>
         <deck id="PatronNavBar" flex="1" class="my_overflow" />
     </hbox>

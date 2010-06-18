@@ -506,6 +506,14 @@ patron.display.prototype = {
                                     patron.util.format_name( obj.patron )
                                 );
                                 patron.util.set_penalty_css(obj.patron);
+                                var tooltiptext = $("patronStrings").getFormattedString(
+                                    'staff.patron.display.db_data',
+                                    [
+                                        obj.patron.id(),
+                                        obj.patron.create_date()
+                                    ]
+                                );
+                                e.setAttribute('tooltiptext',tooltiptext);
                             };
                         }
                     ],
