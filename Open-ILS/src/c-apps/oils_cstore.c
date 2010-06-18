@@ -94,6 +94,12 @@ static dbi_conn dbhandle; /* our CURRENT db connection */
 static jsonObject* jsonNULL = NULL; // 
 static int max_flesh_depth = 100;
 
+#ifdef PCRUD
+static int enforce_pcrud = 1;     // Boolean
+#else
+static int enforce_pcrud = 0;     // Boolean
+#endif
+
 /* called when this process is about to exit */
 void osrfAppChildExit() {
     osrfLogDebug(OSRF_LOG_MARK, "Child is exiting, disconnecting from database...");
@@ -804,7 +810,7 @@ int dispatchCRUDMethod ( osrfMethodContext* ctx ) {
             jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "select" );
             jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "no_i18n" );
             jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh" );
-            jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh_columns" );
+            jsonObjectRemoveKey( jsonObjectGetIndex( _p, 1 ), "flesh_fields" );
         } else {
             jsonObjectSetIndex( _p, 1, jsonNewObjectType(JSON_HASH) );
         }
@@ -4271,7 +4277,7 @@ static jsonObject* doFieldmapperSearch ( osrfMethodContext* ctx, osrfHash* meta,
 	dbi_result_free(result);
 	free(sql);
 
-	if (res_list->size && order_hash) {
+	if (res_list->size && order_hash && ! enforce_pcrud) {
 		_tmp = jsonObjectGetKeyConst( order_hash, "flesh" );
 		if (_tmp) {
 			int x = (int)jsonObjectGetNumber(_tmp);
