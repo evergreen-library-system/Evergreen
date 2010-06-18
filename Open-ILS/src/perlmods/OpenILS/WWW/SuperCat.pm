@@ -194,7 +194,7 @@ sub child_init {
                 	my $site = shift;
 
 			$log->info("Creating record feed with params [$real_format, $record_list, $unapi, $site]");
-                	my $feed = create_record_feed( 'authority', $real_format, $record_list, $unapi, $site, 0 );
+                	my $feed = create_record_feed( 'authority', $real_format, $record_list, $unapi, $site, undef, $real_format =~ /-full$/o ? -1 : 0 );
                 	$feed->root( "$base/../" );
                 	$feed->link( next => $next => $feed->type );
                 	$feed->link( previous => $prev => $feed->type );
@@ -1360,7 +1360,9 @@ sub create_record_feed {
 
 		my $item_tag = "tag:$host,$year:biblio-record_entry/$rec/$lib";
 		$item_tag = "tag:$host,$year:isbn/$rec/$lib" if ($search eq 'isbn');
-		$item_tag = "tag:$host,$year:authorit-record_entry/$rec" if ($search eq 'authority');
+		$item_tag .= "/$depth" if (defined($depth));
+
+		$item_tag = "tag:$host,$year:authority-record_entry/$rec" if ($search eq 'authority');
 
 		my $xml = $supercat->request(
 			"open-ils.supercat.$search.$type.retrieve",
@@ -1372,7 +1374,7 @@ sub create_record_feed {
 		next unless $node;
 
 		$xml = '';
-		if ($lib && ($type eq 'marcxml' || $type eq 'atom') &&  $flesh) {
+		if ($lib && ($type eq 'marcxml' || $type eq 'atom') &&  $flesh > 0) {
 			my $r = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib, $flesh_feed, $paging );
 			while ( !$r->complete ) {
 				$xml .= join('', map {$_->content} $r->recv);
@@ -1383,8 +1385,8 @@ sub create_record_feed {
 
 		$node->id($item_tag);
 		#$node->update_ts(cleanse_ISO8601($record->edit_date));
-		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlholdings-full" => 'text/html') if ($flesh);
-		$node->link(opac => $feed->unapi . "?id=$item_tag&format=opac") if ($flesh);
+		$node->link(alternate => $feed->unapi . "?id=$item_tag&format=htmlholdings-full" => 'text/html') if ($flesh > 0);
+		$node->link(opac => $feed->unapi . "?id=$item_tag&format=opac") if ($flesh > 0);
 		$node->link(unapi => $feed->unapi . "?id=$item_tag") if ($flesh);
 		$node->link('unapi-id' => $item_tag) if ($flesh);
 	}
