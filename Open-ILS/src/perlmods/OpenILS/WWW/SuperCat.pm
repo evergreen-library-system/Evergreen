@@ -359,7 +359,7 @@ sub unapi {
 	my $format = $cgi->param('format');
 	my $flesh_feed = parse_feed_type($format);
 	(my $base_format = $format) =~ s/(-full|-uris)$//o;
-	my ($id,$type,$command,$lib,$paging) = ('','','');
+	my ($id,$type,$command,$lib,$depth,$paging) = ('','','');
 
 	if (!$format) {
 		my $body = "Content-type: application/xml; charset=utf-8\n\n";
@@ -487,7 +487,7 @@ sub unapi {
 	my $lib_id = $lib_object->id;
 
 	my $ou_types = $actor->request( 'open-ils.actor.org_types.retrieve' )->gather(1);
-	my $lib_depth = (grep { $_->id == $lib_object->ou_type } @$ou_types)[0]->depth;
+	my $lib_depth = $depth || (grep { $_->id == $lib_object->ou_type } @$ou_types)[0]->depth;
 
 	if ($type eq 'call_number' and $command eq 'browse') {
 		print "Location: $root/browse/$base_format/call_number/$lib/$id\n\n";
