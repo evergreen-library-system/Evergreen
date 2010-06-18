@@ -49,6 +49,11 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             for(var k in args)
                 this[k] = args[k];
 
+            if (!this.dijitArgs) {
+                this.dijitArgs = {};
+            }
+            this.dijitArgs['scrollOnFocus'] = false;
+
             // find the field description in the IDL if not provided
             if(this.fmObject) 
                 this.fmClass = this.fmObject.classname;
