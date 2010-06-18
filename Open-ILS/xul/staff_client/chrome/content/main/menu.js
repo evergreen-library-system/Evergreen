@@ -780,17 +780,17 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('acq/invoice/view?create=1', 'menu.cmd_acq_create_invoice.tab'); }
             ],
-            'cmd_acq_view_picklist' : [
+            'cmd_acq_view_my_pl' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/picklist/list', 'menu.cmd_acq_view_picklist.tab'); }
+                function() { open_eg_web_page('acq/search/unified?ca=pl', 'menu.cmd_acq_unified_search.tab'); }
             ],
-            'cmd_acq_view_po' : [
+            'cmd_acq_view_local_po' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/po/search', 'menu.cmd_acq_view_po.tab'); }
+                function() { open_eg_web_page('acq/search/unified?ca=po', 'menu.cmd_acq_unified_search.tab'); }
             ],
-            'cmd_acq_view_po_events' : [
+            'cmd_acq_view_local_inv' : [
                 ['oncommand'],
-                function() { open_eg_web_page('acq/po/events', 'menu.cmd_acq_view_po_events.tab'); }
+                function() { open_eg_web_page('acq/search/unified?ca=inv', 'menu.cmd_acq_unified_search.tab'); }
             ],
             'cmd_acq_user_requests' : [
                 ['oncommand'],

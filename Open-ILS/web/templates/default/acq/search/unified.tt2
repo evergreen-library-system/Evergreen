@@ -27,7 +27,7 @@
                 <option value="lineitem_and_bib">
                     line items &amp; catalog records
                 </option>
-                <option value="picklist">pick lists</option>
+                <option value="picklist">selection lists</option>
                 <option value="purchase_order">purchase orders</option>
                 <option value="invoice">invoices</option>
             </select>

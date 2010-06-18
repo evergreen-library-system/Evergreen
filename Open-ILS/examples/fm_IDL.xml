@@ -5559,9 +5559,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
     </class>
 
-	<class id="acqpl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::picklist" oils_persist:tablename="acq.picklist" reporter:label="Pick List">
+	<class id="acqpl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::picklist" oils_persist:tablename="acq.picklist" reporter:label="Selection List">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.picklist_id_seq">
-			<field reporter:label="Picklist ID" name="id" reporter:datatype="id" reporter:selector='name' />
+			<field reporter:label="Selection List ID" name="id" reporter:datatype="id" reporter:selector='name' />
 			<field reporter:label="Owner" name="owner" reporter:datatype="link" />
 			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit" />
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" />
@@ -5760,7 +5760,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_id_seq">
 			<field reporter:label="Lineitem ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Selecting User" name="selector" reporter:datatype="link" />
-			<field reporter:label="Picklist" name="picklist" reporter:datatype="link" />
+			<field reporter:label="Selection List" name="picklist" reporter:datatype="link" />
 			<field reporter:label="Purchase Order" name="purchase_order" reporter:datatype="link" />
 			<field reporter:label="Provider" name="provider" reporter:datatype="link" />
 			<field reporter:label="Creation Time" name="create_time" reporter:datatype="timestamp" />
@@ -5821,7 +5821,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Selector" name="selector" reporter:datatype="link"/>
 			<field reporter:label="Provider" name="provider" reporter:datatype="link"/>
 			<field reporter:label="Purchase Order" name="purchase_order" reporter:datatype="link"/>
-			<field reporter:label="Picklist" name="picklist" reporter:datatype="link"/>
+			<field reporter:label="Selection List" name="picklist" reporter:datatype="link"/>
 			<field reporter:label="Expected Receive Time" name="expected_recv_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Edit Time" name="edit_time" reporter:datatype="timestamp"/>

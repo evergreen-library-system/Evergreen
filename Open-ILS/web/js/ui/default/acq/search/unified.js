@@ -791,20 +791,58 @@ function ResultManager(liPager, poGrid, plGrid, invGrid) {
 
 function URIManager() {
     var self = this;
+    this.cannedSearches = {
+        "po": {
+            "search_object": {
+                "acqpo": [
+                    {"ordering_agency": openils.User.user.ws_ou()},
+                    {"state": "on-order"}
+                ]
+            },
+            "result_type": "purchase_order",
+            "conjunction": "and"
+        },
+        "pl": {
+            "search_object": {
+                "acqpl": [
+                    {"owner": openils.User.user.usrname()}
+                ]
+            },
+            "result_type": "picklist",
+            "conjunction": "and"
+        },
+        "inv": {
+            "search_object": {
+                "acqinv": [
+                    {"complete": "f"},
+                    {"receiver": openils.User.user.ws_ou()}
+                ]
+            },
+            "result_type": "invoice",
+            "conjunction": "and"
+        }
+    };
 
-    this.search_object = cgi.param("so");
-    if (this.search_object)
-        this.search_object = base64Decode(this.search_object);
-
-    this.result_type = cgi.param("rt");
-    if (this.result_type) {
+    if (this.canned = cgi.param("ca")) { /* assignment */
+        dojo.mixin(this, this.cannedSearches[this.canned]);
         dojo.byId("acq-unified-result-type").setValue(this.result_type);
         dojo.byId("acq-unified-result-type").onchange();
-    }
-
-    this.conjunction = cgi.param("c");
-    if (this.conjunction)
         dojo.byId("acq-unified-conjunction").setValue(this.conjunction);
+    } else {
+        this.search_object = cgi.param("so");
+        if (this.search_object)
+            this.search_object = base64Decode(this.search_object);
+
+        this.result_type = cgi.param("rt");
+        if (this.result_type) {
+            dojo.byId("acq-unified-result-type").setValue(this.result_type);
+            dojo.byId("acq-unified-result-type").onchange();
+        }
+
+        this.conjunction = cgi.param("c");
+        if (this.conjunction)
+            dojo.byId("acq-unified-conjunction").setValue(this.conjunction);
+    }
 }
 
 /* onload */

@@ -820,22 +820,26 @@
 <!ENTITY staff.main.menu.acq.accesskey "A">
 <!ENTITY staff.main.menu.acq.create_invoice.label "New Invoice">
 <!ENTITY staff.main.menu.acq.create_invoice.accesskey "N">
-<!ENTITY staff.main.menu.acq.picklist.label "Selection Lists">
-<!ENTITY staff.main.menu.acq.picklist.accesskey "L">
-<!ENTITY staff.main.menu.acq.bib_search.label "Title Search">
-<!ENTITY staff.main.menu.acq.bib_search.accesskey "T">
-<!ENTITY staff.main.menu.acq.from_bib.label "Import Catalog Records by ID">
-<!ENTITY staff.main.menu.acq.from_bib.accesskey "I">
+
+<!ENTITY staff.main.menu.acq.search.label "Search">
+<!ENTITY staff.main.menu.acq.search.accesskey "S">
 <!ENTITY staff.main.menu.acq.unified_search.label "Acquisitions Search">
 <!ENTITY staff.main.menu.acq.unified_search.accesskey "A">
+<!ENTITY staff.main.menu.acq.view_my_pl.label "My Selection Lists">
+<!ENTITY staff.main.menu.acq.view_my_pl.accesskey "L">
+<!ENTITY staff.main.menu.acq.view_local_po.label "Local Purchase Orders">
+<!ENTITY staff.main.menu.acq.view_local_po.accesskey "P">
+<!ENTITY staff.main.menu.acq.view_local_inv.label "Local Invoices">
+<!ENTITY staff.main.menu.acq.view_local_inv.accesskey "I">
+<!ENTITY staff.main.menu.acq.bib_search.label "Title Search">
+<!ENTITY staff.main.menu.acq.bib_search.accesskey "T">
+
+<!ENTITY staff.main.menu.acq.from_bib.label "Import Catalog Records by ID">
+<!ENTITY staff.main.menu.acq.from_bib.accesskey "I">
 <!ENTITY staff.main.menu.acq.brief_record.label "New Brief Record">
 <!ENTITY staff.main.menu.acq.brief_record.accesskey "B">
 <!ENTITY staff.main.menu.acq.upload.label "Load Order Record">
 <!ENTITY staff.main.menu.acq.upload.accesskey "O">
-<!ENTITY staff.main.menu.acq.po.label "Purchase Orders">
-<!ENTITY staff.main.menu.acq.po.accesskey "P">
-<!ENTITY staff.main.menu.acq.po_events.label "Purchase Order Events">
-<!ENTITY staff.main.menu.acq.po_events.accesskey "E">
 <!ENTITY staff.main.menu.acq.user_requests.label "User Requests">
 <!ENTITY staff.main.menu.acq.user_requests.accesskey "R">
 <!ENTITY staff.main.menu.acq.claim_eligible.label "Claim-Eligible Items">
