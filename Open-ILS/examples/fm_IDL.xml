@@ -3048,10 +3048,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="End Date" name="end_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Bibliographic Record Entry" name="record_entry" reporter:datatype="link"/>
 			<field reporter:label="Expected Date Offset" name="expected_date_offset" reporter:datatype="interval"/>
+			<field reporter:label="Captions and Patterns" name="captions_and_patterns" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Distributions" name="distributions" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Issuances" name="issuances" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="record_entry" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="captions_and_patterns" reltype="has_many" key="id" map="" class="sercap"/>
+			<link field="distributions" reltype="has_many" key="id" map="" class="sdist"/>
+			<link field="issuances" reltype="has_many" key="id" map="" class="siss"/>
 		</links>
 	</class>
 
@@ -3068,6 +3074,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Bind Unit Template" name="bind_unit_template" reporter:datatype="link"/>
 			<field reporter:label="Unit Label Base" name="unit_label_base" reporter:datatype="text"/>
 			<field reporter:label="Unit Label Suffix" name="unit_label_suffix" reporter:datatype="text"/>
+			<field reporter:label="Bib Summaries" name="bib_summaries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Suplemental Summaries" name="sup_summaries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Index Summaries" name="index_summaries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Streams" name="streams" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="record_entry" reltype="has_a" key="id" map="" class="sre"/>
@@ -3077,6 +3087,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="receive_unit_template" reltype="has_a" key="id" map="" class="act"/>
 			<link field="bind_call_number" reltype="has_a" key="id" map="" class="acn"/>
 			<link field="bind_unit_template" reltype="has_a" key="id" map="" class="act"/>
+			<link field="bib_summaries" reltype="has_many" key="id" map="" class="sbsum"/>
+			<link field="sup_summaries" reltype="has_many" key="id" map="" class="sssum"/>
+			<link field="index_summaries" reltype="has_many" key="id" map="" class="sisum"/>
+			<link field="streams" reltype="has_many" key="id" map="" class="sstr"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -3087,9 +3101,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Distribution" name="distribution" reporter:datatype="link"/>
 			<field reporter:label="Routing Label" name="routing_label" reporter:datatype="text"/>
+			<field reporter:label="Items" name="items" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="distribution" reltype="has_a" key="id" map="" class="sdist"/>
+			<link field="items" reltype="has_many" key="id" map="" class="sitem"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -3125,11 +3141,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Holding Code" name="holding_code" reporter:datatype="text"/>
 			<field reporter:label="Holding Type" name="holding_type" reporter:datatype="text"/>
 			<field reporter:label="Holding Link ID" name="holding_link_id" reporter:datatype="int"/>
+			<field reporter:label="Items" name="items" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
+			<link field="items" reltype="has_many" key="id" map="" class="sitem"/>
 		</links>
 	</class>
 
@@ -3175,6 +3193,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Label Sort Key" name="label_sort_key" reporter:datatype="text"/>
 			<field reporter:label="Contents" name="contents" reporter:datatype="text"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+			<field reporter:label="Serial Items" name="items" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
             <link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
@@ -3191,6 +3210,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
             <link field="total_circ_count" reltype="might_have" key="id" map="" class="erfcc"/>
             <link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
+            <link field="items" reltype="has_many" key="id" map="" class="sitem"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -3209,6 +3229,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="URI" name="uri" reporter:datatype="link"/>
 			<field reporter:label="Date Expected" name="date_expected" reporter:datatype="timestamp"/>
 			<field reporter:label="Date Received" name="date_received" reporter:datatype="timestamp"/>
+			<field reporter:label="Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
@@ -3217,6 +3238,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="stream" reltype="has_a" key="id" map="" class="sstr"/>
 			<link field="unit" reltype="has_a" key="id" map="" class="sunit"/>
 			<link field="uri" reltype="has_a" key="id" map="" class="auri"/>
+			<link field="notes" reltype="has_many" key="id" map="" class="sin"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>
@@ -3230,7 +3252,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Public?" name="pub" reporter:datatype="bool"/>
 			<field reporter:label="Title" name="title" reporter:datatype="text"/>
-			<field reporter:label="Vale" name="value" reporter:datatype="text"/>
+			<field reporter:label="Value" name="value" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="item" reltype="has_a" key="id" map="" class="sitem"/>
