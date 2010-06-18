@@ -93,6 +93,26 @@ my $_TT_helpers = {
         return $U->ou_ancestor_setting_value($org_id, $setting);
     },
 
+    # This basically greps/maps out ths isbn string values, but also promotes the first isbn-13 to the
+    # front of the line (so that the EDI translator takes it as primary) if there is one.
+    get_li_isbns => sub {
+        my $attrs = shift;
+        my @isbns;
+        my $primary;
+        foreach (@$attrs) {
+            $_->attr_name eq 'isbn' or next;
+            my $val = $_->attr_value;
+            if (! $primary and length($val) == 13) {
+                $primary = $val;
+            } else {
+                push @isbns, $val;
+            }
+        }
+        $primary and unshift @isbns, $primary;
+        $logger->error("get_li_isbns returning isbns: " . join(', ', @isbns));
+        return @isbns;
+    },
+
     # helpers.get_li_attr('isbn_13', li.attributes)
     # returns matching line item attribute, or undef
     get_li_attr => sub {

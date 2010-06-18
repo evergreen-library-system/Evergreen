@@ -4864,9 +4864,15 @@ $$[%- USE date -%]
         "items":[
         [% FOR li IN target.lineitems %]
         {
-            "identifiers":[
-                {"id-qualifier":"SA","id":"[% li.id %]"},
-                {"id-qualifier":"IB","id":"[% helpers.get_li_attr('isbn_13', li.attributes) || helpers.get_li_attr('isbn_10', li.attributes) %]"}
+            "identifiers":[   [%-# li.isbns = helpers.get_li_isbns(li.attributes) %]
+            [% FOR isbn IN helpers.get_li_isbns(li.attributes) -%]
+                [% IF isbn.length == 13 -%]
+                {"id-qualifier":"EN","id":"[% isbn %]"},
+                [% ELSE -%]
+                {"id-qualifier":"IB","id":"[% isbn %]"},
+                [%- END %]
+            [% END %]
+                {"id-qualifier":"SA","id":"[% li.id %]"}
             ],
             "price":[% li.estimated_unit_price || '0.00' %],
             "desc":[
