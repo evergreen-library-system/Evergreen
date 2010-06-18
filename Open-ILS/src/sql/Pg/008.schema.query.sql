@@ -67,6 +67,10 @@ CREATE TABLE query.datatype (
 	( is_numeric IS FALSE OR is_composite IS FALSE )
 );
 
+-- Leave room to seed with stock datatypes
+-- before adding customized ones
+SELECT setval( 'query.datatype_id_seq', 1000 );
+
 CREATE TABLE query.subfield (
 	id              SERIAL            PRIMARY KEY,
 	composite_type  INT               NOT NULL
