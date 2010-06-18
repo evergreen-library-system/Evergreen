@@ -163,7 +163,7 @@ sub child_init {
                 	my $site = shift;
 
 			$log->info("Creating record feed with params [$real_format, $record_list, $unapi, $site]");
-                	my $feed = create_record_feed( 'record', $real_format, $record_list, $unapi, $site, $real_format =~ /(-full|-uris)$/o ? 1 : 0 );
+                	my $feed = create_record_feed( 'record', $real_format, $record_list, $unapi, $site, undef, $real_format =~ /(-full|-uris)$/o ? 1 : 0 );
                 	$feed->root( "$base/../" );
                 	$feed->lib( $site );
                 	$feed->link( next => $next => $feed->type );
@@ -456,7 +456,7 @@ sub unapi {
 	if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)(?:\[([0-9,]+)\])?(?:/(.+))?}o) {
 		$id = $2;
 		$paging = $3;
-		$lib = uc($4);
+		($lib,$depth) = split('/', $4);
 		$type = 'record';
 		$type = 'metarecord' if ($1 =~ /^metabib/o);
 		$type = 'isbn' if ($1 =~ /^isbn/o);
@@ -549,6 +549,7 @@ sub unapi {
 			$format => [ $id ],
 			$base,
 			$lib,
+			$depth,
 			$flesh_feed,
             $paging
 		);
@@ -915,6 +916,7 @@ sub bookbag_feed {
 		[ map { $_->target_biblio_record_entry } @{ $bucket->items } ],
 		$unapi,
 		$org_unit->[0]->shortname,
+		undef,
 		$flesh_feed
 	);
 	$feed->root($root);
@@ -992,7 +994,7 @@ sub changes_feed {
 	#	return 302;
 	#}
 
-	my $feed = create_record_feed( 'record', $type, $list, $unapi, $org_unit->[0]->shortname, $flesh_feed);
+	my $feed = create_record_feed( 'record', $type, $list, $unapi, $org_unit->[0]->shortname, undef, $flesh_feed);
 	$feed->root($root);
 
 	if ($date) {
@@ -1221,6 +1223,7 @@ sub opensearch_feed {
 		[ map { $_->[0] } @{$recs->{ids}} ],
 		$unapi,
 		$org,
+		undef,
 		$flesh_feed
 	);
 
@@ -1327,6 +1330,7 @@ sub create_record_feed {
 	my $unapi = shift;
 
 	my $lib = uc(shift()) || '-';
+	my $depth = shift;
 	my $flesh = shift;
 	$flesh = 1 if (!defined($flesh));
 
@@ -1375,7 +1379,7 @@ sub create_record_feed {
 
 		$xml = '';
 		if ($lib && ($type eq 'marcxml' || $type eq 'atom') &&  $flesh > 0) {
-			my $r = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib, $flesh_feed, $paging );
+			my $r = $supercat->request( "open-ils.supercat.$search.holdings_xml.retrieve", $rec, $lib, $depth, $flesh_feed, $paging );
 			while ( !$r->complete ) {
 				$xml .= join('', map {$_->content} $r->recv);
 			}

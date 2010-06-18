@@ -1128,6 +1128,7 @@ sub new_record_holdings {
 	my $client = shift;
 	my $bib = shift;
 	my $ou = shift;
+	my $depth = shift;
 	my $flesh = shift;
 	my $paging = shift;
 
@@ -1142,15 +1143,18 @@ sub new_record_holdings {
 		$o_search = { parent_ou => undef };
 	}
 
-	my $orgs = $_storage->request(
-		"open-ils.cstore.direct.actor.org_unit.search",
-		$o_search,
-		{ flesh		=> 100,
-		  flesh_fields	=> { aou	=> [qw/children/] }
-		}
-	)->gather(1);
+    my $one_org = $_storage->request(
+        "open-ils.cstore.direct.actor.org_unit.search",
+        $o_search
+    )->gather(1);
 
-	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
+    my $orgs = $_storage->request(
+        'open-ils.cstore.json_query.atomic',
+        { from => [ 'actor.org_unit_descendants', defined($depth) ? ( $one_org->id, $depth ) :  ( $one_org->id ) ] }
+    )->gather(1);
+
+
+	my @ou_ids = map { $_->{id} } @$orgs;
 
 	$logger->info("Searching for holdings at orgs [".join(',',@ou_ids)."], based on $ou");
 
