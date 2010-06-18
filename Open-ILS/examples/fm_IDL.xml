@@ -3043,12 +3043,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="ssub" controller="open-ils.cstore" oils_obj:fieldmapper="serial::subscription" oils_persist:tablename="serial.subscription" reporter:label="Subscription">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.subscription_id_seq">
 			<field reporter:label="Id" name="id" reporter:datatype="id"/>
+			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="link"/>
 			<field reporter:label="Start Date" name="start_date" reporter:datatype="timestamp"/>
 			<field reporter:label="End Date" name="end_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Bibliographic Record Entry" name="record_entry" reporter:datatype="link"/>
 			<field reporter:label="Expected Date Offset" name="expected_date_offset" reporter:datatype="interval"/>
 		</fields>
 		<links>
+			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="record_entry" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
 	</class>

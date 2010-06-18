@@ -28,6 +28,7 @@ CREATE RULE protect_mfhd_delete AS ON DELETE TO serial.record_entry DO INSTEAD U
 
 CREATE TABLE serial.subscription (
 	id                     SERIAL       PRIMARY KEY,
+	owning_lib             INT     NOT NULL DEFAULT 1 REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	start_date             TIMESTAMP WITH TIME ZONE     NOT NULL,
 	end_date               TIMESTAMP WITH TIME ZONE,    -- interpret NULL as current subscription
 	record_entry           BIGINT       REFERENCES biblio.record_entry (id)
