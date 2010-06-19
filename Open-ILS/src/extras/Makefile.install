@@ -3,7 +3,7 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (etch/lenny), Ubuntu (hardy/intrepid/karmic), and Gentoo.
+# Currently supports Debian (etch/lenny), Ubuntu (hardy/karmic), and Gentoo.
 # Working towards support of CentOS 5 / RHEL 5.
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
@@ -13,8 +13,6 @@
 # 	make -f Makefile.install debian-lenny
 # 	- or -
 # 	make -f Makefile.install ubuntu-hardy
-# 	- or -
-# 	make -f Makefile.install ubuntu-intrepid
 # 	- or -
 # 	make -f Makefile.install ubuntu-karmic
 # 	- or -
@@ -72,6 +70,13 @@ PAY_ONLINE_HOST=http://ftp.perl.org/pub/CPAN/authors/id/I/IV/IVAN/
 
 APT_TOOL=aptitude -yq
 
+# 64 or 32 bit os?
+LBITS=$(shell getconf LONG_BIT)
+
+#RHEL/Centos PGSQL 
+PGSQL_HOST=http://yum.pgsqlrpms.org/reporpms/8.4
+PGSQL_CENTOS=pgdg-centos-8.4-2.noarch.rpm
+PGSQL_REDHAT=pgdg-redhat-8.4-2.noarch.rpm	
 
 # Debian dependencies
 DEBS =  \
@@ -125,46 +130,43 @@ CENTOS = \
 	aspell-devel \
 	aspell-en \
 	gd-devel \
-	perl-DBD-Pg
+	libssh2-devel \
+	openssl-devel \
+	perl-Business-CreditCard \
+	perl-Business-OnlinePayment \
+	perl-Class-Data-Inheritable \
+	perl-DateTime-Format-Builder \
+	perl-DateTime-Format-Strptime \
+	perl-Ima-DBI \
+	perl-DBD-Pg \
+	perl-GD-Graph3d \
+	perl-IO-stringy \
+	perl-Spreadsheet-WriteExcel \
+	perl-Text-Aspell \
+	perl-Text-CSV
 
-PGSQL_CENTOS = \
-	postgresql \
-	postgresql-contrib \
-	postgresql-devel \
-	postgresql-pl \
-	postgresql-server
-
-# Avoids a weak reference error that otherwise sinks DateTime:Format:ISO8601
-CENTOS_PERL_FORCE = \
-	Scalar::Util
-
-# Some of these packages have stupid bugs in their test suites
-# that are simply too painful to workaround
-CENTOS_PERL_NOTEST = \
-	Business::OnlinePayment::AuthorizeNet \
-	DateTime::Format::Strptime
-
-# This is a developer's version, but B:OP:AuthorizeNet depends on it
-CENTOS_PERL_VERSION = \
-	IVAN/Business-OnlinePayment-3.00_08.tar.gz
+PGSQL_84_RPMS = \
+	postgresql-8.4* \
+	postgresql-contrib-8.4* \
+	postgresql-devel-8.4* \
+	postgresql-plp*-8.4* \
+	postgresql-server-8.4*
 
 CENTOS_PERL = \
-	Business::CreditCard \
+	Class::DBI \
 	Class::DBI::Pg \
-	DateTime \
-	DateTime::TimeZone \
-	DateTime::Format::Builder \
-	GD::Graph3d \
-	MARC::Record \
-	Net::Z3950::ZOOM \
-	Spreadsheet::WriteExcel \
-	Text::Aspell \
-	Text::CSV
+	Encode \
+	DBIx::ContextualFetch \
+	Getopt::Long \
+	Net::SSH2 \
+	Net::uFTP \
+	Net::XMPP \
+	Net::Z3950::ZOOM
 
-PGSQL_CLIENT_DEBS_8.1 = \
+PGSQL_CLIENT_DEBS_81 = \
 	postgresql-client-8.1
 
-PGSQL_SERVER_DEBS_8.1 = \
+PGSQL_SERVER_DEBS_81 = \
 	postgresql-8.1 \
 	postgresql-contrib-8.1 \
 	postgresql-plperl-8.1 \
@@ -252,6 +254,7 @@ all:
 install: install_cpan install_js_sm install_libdbi 
 
 centos: install_centos_pgsql install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local
+rhel: install_redhat_pgsql install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local
 
 debian-etch: etch generic_debian
 debian-lenny: lenny generic_debian
@@ -261,13 +264,9 @@ generic_debian:  install_debs install debian_sys_config
 
 gentoo: install_gentoos install_gentoo_perl install
 
-rhel: centos
-
 ubuntu-hardy: hardy generic_ubuntu
-ubuntu-intrepid: intrepid generic_ubuntu
 ubuntu-karmic: karmic generic_ubuntu
 hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc install_extra_encode
-intrepid: install_pgsql_client_debs_83 install_extra_debs
 karmic: install_pgsql_client_debs_84 install_extra_debs
 generic_ubuntu: install_debs install debian_sys_config
 
@@ -285,7 +284,7 @@ install_cpan_marc:
 install_yaz:    
 	if [ ! -d $(YAZ) ]; then wget $(YAZ_HOST)/$(YAZ).tar.gz; fi;
 	tar xzf $(YAZ).tar.gz
-	cd $(YAZ) && ./configure && make && make install
+	cd $(YAZ) && ./configure && make && make install && ldconfig
 
 # Install the custom spidermonkey libs and JavaScript-SpiderMonkey Perl modules
 install_js_sm: 
@@ -385,15 +384,35 @@ install_gentoo_perl:
 # CENTOS
 install_centos_rpms:
 	yum -y install $(CENTOS)
+	yum -y update
+	if [ $(LBITS) -eq 64 ]; then \
+		ln -sf /usr/lib64/libpq.* /usr/lib/ && \
+		ln -sf /usr/lib64/perl5/5.8.8/x86_64-linux-thread-multi/CORE/libperl.so /usr/lib/ && \
+		ldconfig ; \
+	fi;
+	if [ $(LBITS) -eq 32 ]; then \
+		ln -sf /usr/lib/perl5/5.8.8/i386-linux-thread-multi/CORE/libperl.so /usr/lib && \
+		ldconfig ; \
+	fi;
 
 install_centos_pgsql:
-	yum -y install $(PGSQL_CENTOS)
+	if [ $(LBITS) -eq 64 ]; then yum remove -y postgresql-libs-8.1*i386 apr-util-devel-*i386 ; fi;
+	wget $(PGSQL_HOST)/$(PGSQL_CENTOS)
+	rpm -Uvh --force ./$(PGSQL_CENTOS)
+	yum update -y
+	yum -y install $(PGSQL_84_RPMS)
+
+install_redhat_pgsql:
+	if [ $(LBITS) -eq 64 ]; then yum remove -y postgresql-libs-8.1*i386 apr-util-devel-*i386 ; fi;
+	wget $(PGSQL_HOST)/$(PGSQL_REDHAT)
+	rpm -Uvh --force ./$(PGSQL_REDHAT)
+	yum update -y
+	yum -y install $(PGSQL_84_RPMS)
 
 install_centos_perl:
-	for m in $(CENTOS_PERL_FORCE); do perl -MCPAN -e "CPAN::Shell->force(qw#install $$m#);"; done
 	for m in $(CENTOS_PERL); do perl -MCPAN -e "install \"$$m\";"; done
-	for m in $(CENTOS_PERL_VERSION); do perl -MCPAN -e "CPAN::Shell->install \"$$m\";"; done
-	for m in $(CENTOS_PERL_NOTEST); do perl -MCPAN -e "CPAN::Shell->notest('install', \"$$m\";"; done
+	echo "force install Business::OnlinePayment::AuthorizeNet" | perl -MCPAN -e shell
+	echo "force install Scalar::Util" | perl -MCPAN -e shell	
 
 # We need to add /usr/local/lib to the ldconfig list of directories on CentOS,
 # if it is not already there

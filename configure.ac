@@ -287,6 +287,7 @@ if test "x$openils_core" = "xtrue"; then
 	  [AC_MSG_FAILURE("pgsql driver not installed?")])
 
 	AC_CHECK_LIB([expat], [main], [], AC_MSG_ERROR(*** OpenILS requires libexpat))
+	AC_CHECK_LIB([ncurses], [main], [], AC_MSG_ERROR(*** OpenILS requires libncurses))
 	AC_CHECK_LIB([readline], [main], [], AC_MSG_ERROR(*** OpenILS requires libreadline))
 	AC_CHECK_LIB([xml2], [main], [], AC_MSG_ERROR(*** OpenILS requires libxml2))
 	AC_CHECK_LIB([xslt], [main], [], AC_MSG_ERROR(*** OpenILS requires libxslt))
