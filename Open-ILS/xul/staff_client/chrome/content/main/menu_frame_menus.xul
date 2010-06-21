@@ -268,25 +268,20 @@
 <!-- The Acquisitions menu on the main menu -->
 <menu id="main.menu.acq" label="&staff.main.menu.acq.label;" accesskey="&staff.main.menu.acq.accesskey;">
     <menupopup id="main.menu.acq.popup">
-        <menu id="main.menu.acq.search" label="&staff.main.menu.acq.search.label;" accesskey="&staff.main.menu.acq.search.accesskey;">
-            <menupopup id="main.menu.acq.search.popup">
-                <menuitem label="&staff.main.menu.acq.unified_search.label;" accesskey="&staff.main.menu.acq.unified_search.accesskey;" command="cmd_acq_unified_search"/>
-                <menuseparator />
-                <menuitem label="&staff.main.menu.acq.view_my_pl.label;" accesskey="&staff.main.menu.acq.view_my_pl.accesskey;" command="cmd_acq_view_my_pl"/>
-                <menuitem label="&staff.main.menu.acq.view_local_po.label;" accesskey="&staff.main.menu.acq.view_local_po.accesskey;" command="cmd_acq_view_local_po"/>
-                <menuitem label="&staff.main.menu.acq.view_local_inv.label;" accesskey="&staff.main.menu.acq.view_local_inv.accesskey;" command="cmd_acq_view_local_inv"/>
-                <menuseparator />
-                <menuitem label="&staff.main.menu.acq.bib_search.label;" accesskey="&staff.main.menu.acq.bib_search.accesskey;" command="cmd_acq_bib_search"/>
-            </menupopup>
-        </menu>
-        <menuitem label="&staff.main.menu.acq.from_bib.label;" accesskey="&staff.main.menu.acq.from_bib.accesskey;" command="cmd_acq_from_bib"/>
+        <menuitem label="&staff.main.menu.acq.unified_search.label;" accesskey="&staff.main.menu.acq.unified_search.accesskey;" command="cmd_acq_unified_search"/>
         <menuseparator />
-        <menuitem label="&staff.main.menu.acq.create_invoice.label;" accesskey="&staff.main.menu.acq.create_invoice.accesskey;" command="cmd_acq_create_invoice"/>
-        <menuitem label="&staff.main.menu.acq.upload.label;" accesskey="&staff.main.menu.acq.upload.accesskey;" command="cmd_acq_upload"/>
+        <menuitem label="&staff.main.menu.acq.view_my_pl.label;" accesskey="&staff.main.menu.acq.view_my_pl.accesskey;" command="cmd_acq_view_my_pl"/>
         <menuitem label="&staff.main.menu.acq.brief_record.label;" accesskey="&staff.main.menu.acq.brief_record.accesskey;" command="cmd_acq_new_brief_record"/>
         <menuitem label="&staff.main.menu.acq.user_requests.label;" accesskey="&staff.main.menu.acq.user_requests.accesskey;" command="cmd_acq_user_requests" />
+        <menuitem label="&staff.main.menu.acq.bib_search.label;" accesskey="&staff.main.menu.acq.bib_search.accesskey;" command="cmd_acq_bib_search"/>
+        <menuitem label="&staff.main.menu.acq.from_bib.label;" accesskey="&staff.main.menu.acq.from_bib.accesskey;" command="cmd_acq_from_bib"/>
+        <menuseparator />
+        <menuitem label="&staff.main.menu.acq.upload.label;" accesskey="&staff.main.menu.acq.upload.accesskey;" command="cmd_acq_upload"/>
+        <menuitem label="&staff.main.menu.acq.view_local_po.label;" accesskey="&staff.main.menu.acq.view_local_po.accesskey;" command="cmd_acq_view_local_po"/>
         <menuseparator />
         <menuitem label="&staff.main.menu.acq.claim_eligible.label;" accesskey="&staff.main.menu.acq.claim_eligible.accesskey;" command="cmd_acq_claim_eligible" />
+        <menuitem label="&staff.main.menu.acq.view_local_inv.label;" accesskey="&staff.main.menu.acq.view_local_inv.accesskey;" command="cmd_acq_view_local_inv"/>
+        <menuitem label="&staff.main.menu.acq.create_invoice.label;" accesskey="&staff.main.menu.acq.create_invoice.accesskey;" command="cmd_acq_create_invoice"/>
     </menupopup>
 </menu>
 
