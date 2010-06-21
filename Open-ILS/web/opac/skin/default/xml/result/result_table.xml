@@ -134,11 +134,12 @@
 										<a style='padding-left: 8px;' class='classic_link' name="googleBooks-link">&result.googleBooks.browse;</a>
 									</span>
 
-
+                                    <!-- Placeholder for ChilFresh Review link -->
+                                    <span name="chilifreshReviewLink" class="chili_review"></span>
 								</td>
 							</tr>
 							<tr name="local_callnumber_list" class="result_table_title_cell hide_me">
-								<td>&result.localCallNumbers;
+								<td colspan="2">&result.localCallNumbers;
 									<span type='opac/slot-data+holdings_xml' query='volumes volume' join=", ">
                                         <!-- Because we clone this template table, and IE won't clone <script>
                                              nodes (yes, even when it doesn't understand the type ARG) we need
@@ -147,7 +148,13 @@
 									</span>
 								</td>
 							</tr>
-
+                            <!-- Placeholder for ChiliFresh Review -->
+                            <tr class="hide_me" name="chilifreshReview">
+                                <td></td>
+                                <td valign="top">
+                                        <div name="chilifreshReviewResult" style="display:none"></div>
+                                </td>
+                            </tr>
 						</tbody>
 					</table>
 				</td>
@@ -214,6 +221,20 @@
 		config.names.result.format_pic = 'format_pic'
 	</script>
 
+    <!-- ChiliFresh setup -->
+    <!--#include virtual="../chilifresh.xml"-->
+    <script language='javascript' type='text/javascript'>
+        var chilifresh = '<!--#echo var="OILS_CHILIFRESH_ACCOUNT"-->';
+    </script>
+    <!--if expr="$OILS_CHILIFRESH_ACCOUNT"-->
+        <input type="hidden" id="chilifresh_account" name="chilifresh_account"
+            value="<!--#echo var='OILS_CHILIFRESH_ACCOUNT'-->" />
+        <input type="hidden" id="chilifresh_profile" name="chilifresh_profile"
+            value="<!--#echo var='OILS_CHILIFRESH_PROFILE'-->" />
+        <input type="hidden" id="chilifresh_version" name="chilifresh_version" value="onsite_v1" />
+        <input type="hidden" id="chilifresh_type" name="chilifresh_type" value="search" />
+        <script language="javascript" type="text/javascript" src="<!--#echo var='OILS_CHILIFRESH_URL'-->"></script>
+    <!--endif-->
 </div>
 
 

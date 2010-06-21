@@ -470,6 +470,16 @@ function _rdetailDraw(r) {
 
 	// grab added content 
 	acCollectData(cleanISBN(record.isbn()), rdetailhandleAC);
+
+    // different type of added content
+    var currentISBN = cleanISBN(record.isbn());
+    if (chilifresh && currentISBN) {
+        $('chilifreshReviewLink').setAttribute('id','isbn_'+currentISBN);
+        $('chilifreshReviewResult').setAttribute('id','chili_review_'+currentISBN);
+        unHideMe($('rdetail_reviews_link'));
+        unHideMe($('rdetail_chilifresh_reviews'));
+        chili_init();
+    }
 }
 
 

@@ -15,7 +15,7 @@ if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
 	G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
 	G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, 
       resultDrawAuthors, resultDrawSeries, function(){unHideMe($('result_info_2'))},
-	  fetchGoogleBooksLink);
+	  fetchGoogleBooksLink,fetchChiliFreshReviews);
 
 	attachEvt('result','lowHits',resultLowHits);
 	attachEvt('result','zeroHits',resultZeroHits);
@@ -453,6 +453,27 @@ function resultDisplayRecord(rec, pos, is_mr) {
         }
     }
 
+    if (currentISBN && chilifresh) {
+        var cfrow = $n(r, "chilifreshReview");
+        if (cfrow) {
+            removeCSSClass( cfrow, 'hide_me' );
+        }
+        var cflink = $n(r, "chilifreshReviewLink");
+        if (cflink) {
+            cflink.setAttribute(
+                'id',
+                'isbn_' + currentISBN
+            );
+        }
+        var cfdiv = $n(r, "chilifreshReviewResult");
+        if (cfdiv) {
+            cfdiv.setAttribute(
+                'id',
+                'chili_review_' + currentISBN
+            )
+        }
+    }
+
 /*
 	try {
 		var rank = parseFloat(ranks[pos + getOffset()]);
@@ -647,6 +668,12 @@ function fetchGoogleBooksLink () {
         scriptElement.setAttribute("type", "text/javascript");
         // make the request to Google Book Search
         document.documentElement.firstChild.appendChild(scriptElement);
+    }
+}
+
+function fetchChiliFreshReviews() {
+    if (chilifresh) {
+        chili_init();
     }
 }
 
