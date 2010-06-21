@@ -72,7 +72,7 @@ function TermSelectorFactory(terms) {
             "disabled": "disabled",
             "selected": "selected",
             "value": "",
-            "innerHTML": "Select Search Field" // XXX i18n
+            "innerHTML": localeStrings.SELECT_SEARCH_FIELD
         })
     );
 
@@ -736,7 +736,7 @@ function ResultManager(liPager, poGrid, plGrid, invGrid) {
             "&c=" + dojo.byId("acq-unified-conjunction").getValue();
     };
 
-    this.search = function(search_object, termManager) {
+    this.search = function(uriManager, termManager) {
         var bib_search_string = null;
         this.count_results = 0;
         this.result_type = dojo.byId("acq-unified-result-type").getValue();
@@ -761,7 +761,9 @@ function ResultManager(liPager, poGrid, plGrid, invGrid) {
 
         this.params[
             dojo.byId("acq-unified-conjunction").getValue() == "and" ? 1 : 2
-        ] = search_object;
+        ] = uriManager.search_object;
+        if (uriManager.order_by)
+            this.params[4].order_by = uriManager.order_by;
 
         var interface = this.result_types[this.result_type].interface;
         interface.dataLoader = this._dataLoader;
@@ -800,7 +802,10 @@ function URIManager() {
                 ]
             },
             "result_type": "purchase_order",
-            "conjunction": "and"
+            "conjunction": "and",
+            "order_by": [
+                {"class": "acqpo", "field": "edit_time", "direction": "desc"}
+            ]
         },
         "pl": {
             "search_object": {
@@ -809,7 +814,10 @@ function URIManager() {
                 ]
             },
             "result_type": "picklist",
-            "conjunction": "and"
+            "conjunction": "and",
+            "order_by": [
+                {"class": "acqpl", "field": "edit_time", "direction": "desc"}
+            ]
         },
         "inv": {
             "search_object": {
@@ -819,7 +827,10 @@ function URIManager() {
                 ]
             },
             "result_type": "invoice",
-            "conjunction": "and"
+            "conjunction": "and",
+            "order_by": [
+                {"class": "acqinv", "field": "recv_date", "direction": "desc"}
+            ]
         }
     };
 
@@ -861,7 +872,7 @@ openils.Util.addOnLoad(
             hideForm();
             openils.Util.show("acq-unified-body");
             termManager.reflect(uriManager.search_object);
-            resultManager.search(uriManager.search_object, termManager);
+            resultManager.search(uriManager, termManager);
         } else {
             termManager.addRow();
             openils.Util.show("acq-unified-body");

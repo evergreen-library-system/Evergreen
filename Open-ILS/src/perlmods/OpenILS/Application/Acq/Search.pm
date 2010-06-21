@@ -366,8 +366,35 @@ sub unified_search {
     my $retriever = $RETRIEVERS{$ret_type};
     my $hint = F("acq::$ret_type")->{"hint"};
 
+    my $select_clause = {
+        $hint => [{"column" => "id", "transform" => "distinct"}]
+    };
+
+    if ($options->{"order_by"}) {
+        # What's the point of this block?  When using ORDER BY in conjuction
+        # with SELECT DISTINCT, the fields present in ORDER BY have to also
+        # be in the SELECT clause.  This will take _one_ such field and add
+        # it to the SELECT clause as needed.
+        my ($order_by, $class, $field);
+        unless (
+            ($order_by = $options->{"order_by"}->[0]) &&
+            ($class = $order_by->{"class"}) =~ /^[\da-z_]+$/ &&
+            ($field = $order_by->{"field"}) =~ /^[\da-z_]+$/
+        ) {
+            $e->disconnect;
+            return new OpenILS::Event(
+                "BAD_PARAMS", "note" =>
+q/order_by clause must be of the long form, like:
+"order_by": [{"class": "foo", "field": "bar", "direction": "asc"}]/
+            );
+        } else {
+            $select_clause->{$class} ||= [];
+            push @{$select_clause->{$class}}, $field;
+        }
+    }
+
     my $query = {
-        "select" => {$hint => [{"column" => "id", "transform" => "distinct"}]},
+        "select" => $select_clause,
         "from" => {
             "jub" => {
                 "acqpo" => {
@@ -394,7 +421,7 @@ sub unified_search {
                 }
             }
         },
-        "order_by" => {$hint => {"id" => {}}},
+        "order_by" => ($options->{"order_by"} || {$hint => {"id" => {}}}),
         "offset" => ($options->{"offset"} || 0)
     };
 
@@ -430,11 +457,12 @@ sub unified_search {
     }
 
     my $results = $e->json_query($query) or return $e->die_event;
+    my @id_list = map { $_->{"id"} } (grep { $_->{"id"} } @$results);
+
     if ($options->{"id_list"}) {
-        $conn->respond($_->{"id"}) foreach (grep { $_->{"id"} } @$results);
+        $conn->respond($_) foreach @id_list;
     } else {
-        $conn->respond($retriever->($e, $_->{"id"}, $options))
-            foreach (grep { $_->{"id"} } @$results);
+        $conn->respond($retriever->($e, $_, $options)) foreach @id_list;
     }
 
     $e->disconnect;
