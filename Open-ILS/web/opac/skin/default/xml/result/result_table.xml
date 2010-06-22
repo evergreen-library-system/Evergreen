@@ -31,7 +31,7 @@
 					<table class='result_table_subtable'>
 						<tbody class='result_table_subtbody'>
 
-							<tr style='height: 1em' name='counts_row'>
+							<tr style='height: 1em' name='counts_row' valign="top">
 
 								<td  rowspan='4' class='result_table_pic_header'>
 									<a><img name='item_jacket' class='result_table_pic'/></a>
@@ -134,8 +134,6 @@
 										<a style='padding-left: 8px;' class='classic_link' name="googleBooks-link">&result.googleBooks.browse;</a>
 									</span>
 
-                                    <!-- Placeholder for ChilFresh Review link -->
-                                    <span name="chilifreshReviewLink" class="chili_review"></span>
 								</td>
 							</tr>
 							<tr name="local_callnumber_list" class="result_table_title_cell hide_me">
@@ -150,8 +148,8 @@
 							</tr>
                             <!-- Placeholder for ChiliFresh Review -->
                             <tr class="hide_me" name="chilifreshReview">
-                                <td></td>
-                                <td valign="top">
+                                <td valign="top" colspan="2">
+                                        <span name="chilifreshReviewLink" class="chili_review"></span>
                                         <div name="chilifreshReviewResult" style="display:none"></div>
                                 </td>
                             </tr>
