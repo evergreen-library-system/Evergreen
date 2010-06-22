@@ -788,6 +788,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('acq/search/unified?ca=po', 'menu.cmd_acq_unified_search.tab'); }
             ],
+            'cmd_acq_create_po' : [
+                ['oncommand'],
+                function() { open_eg_web_page('acq/po/create', 'menu.cmd_acq_po.tab'); }
+            ],
             'cmd_acq_view_local_inv' : [
                 ['oncommand'],
                 function() { open_eg_web_page('acq/search/unified?ca=inv', 'menu.cmd_acq_unified_search.tab'); }

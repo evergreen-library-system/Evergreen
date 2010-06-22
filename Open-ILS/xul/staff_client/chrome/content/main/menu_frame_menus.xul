@@ -78,6 +78,7 @@
     <command id="cmd_open_vandelay" />
     
     <command id="cmd_acq_create_invoice" />
+    <command id="cmd_acq_create_po" />
     <command id="cmd_acq_view_my_pl" />
     <command id="cmd_acq_view_local_po" />
     <command id="cmd_acq_view_local_inv" />
@@ -278,6 +279,7 @@
         <menuseparator />
         <menuitem label="&staff.main.menu.acq.upload.label;" accesskey="&staff.main.menu.acq.upload.accesskey;" command="cmd_acq_upload"/>
         <menuitem label="&staff.main.menu.acq.view_local_po.label;" accesskey="&staff.main.menu.acq.view_local_po.accesskey;" command="cmd_acq_view_local_po"/>
+        <menuitem label="&staff.main.menu.acq.create_po.label;" accesskey="&staff.main.menu.acq.create_po.accesskey;" command="cmd_acq_create_po"/>
         <menuseparator />
         <menuitem label="&staff.main.menu.acq.claim_eligible.label;" accesskey="&staff.main.menu.acq.claim_eligible.accesskey;" command="cmd_acq_claim_eligible" />
         <menuitem label="&staff.main.menu.acq.view_local_inv.label;" accesskey="&staff.main.menu.acq.view_local_inv.accesskey;" command="cmd_acq_view_local_inv"/>
