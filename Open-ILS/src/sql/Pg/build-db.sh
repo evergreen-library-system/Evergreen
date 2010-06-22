@@ -123,6 +123,7 @@ ordered_file_list="
   952.data.MODS3-xsl.sql
   953.data.MODS32-xsl.sql
   954.data.MODS33-xsl.sql
+  954.data.marc21expand880.sql
   
   reporter-schema.sql
   extend-reporter.sql
