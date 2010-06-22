@@ -120,7 +120,6 @@
 	<div id='rdetail_preview_badge' class='hide_me'>&rdetail.extras.preview.badge;</div>
 
     <!-- ChiliFresh setup -->
-    <!--#include virtual="../chilifresh.xml"-->
     <script language='javascript' type='text/javascript'>
         var chilifresh = '<!--#echo var="OILS_CHILIFRESH_ACCOUNT"-->';
     </script>

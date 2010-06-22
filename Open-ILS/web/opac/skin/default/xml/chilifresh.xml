@@ -1,6 +1,0 @@
-<!-- Specify your ChiliFresh account # below to enable ChiliFresh integration with the OPAC -->
-
-<!--#set var='OILS_CHILIFRESH_ACCOUNT' value=""-->
-<!--#set var='OILS_CHILIFRESH_PROFILE' value=""-->
-<!--#set var='OILS_CHILIFRESH_URL' value="http://chilifresh.com/on-site/js/evergreen.js"-->
-

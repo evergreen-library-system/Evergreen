@@ -222,7 +222,6 @@
 	</script>
 
     <!-- ChiliFresh setup -->
-    <!--#include virtual="../chilifresh.xml"-->
     <script language='javascript' type='text/javascript'>
         var chilifresh = '<!--#echo var="OILS_CHILIFRESH_ACCOUNT"-->';
     </script>
