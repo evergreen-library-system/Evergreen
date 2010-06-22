@@ -29,6 +29,16 @@ sub MinPassiveTargetAge {
     my $target = $env->{target};
     my $delay_field = $env->{params}->{target_age_field} || $env->{event}->event_def->delay_field;
 
+    unless($env->{params}->{min_target_age}) {
+        $logger->warn("'min_target_age' parameter required for MinPassiveTargetAge validator");
+        return 0; # no-op false
+    }
+
+    unless($delay_field) {
+        $logger->warn("'target_age_field' parameter or delay_field required for MinPassiveTargetAge validator");
+        return 0; # no-op false
+    }
+
     my $delay_field_ts = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($target->$delay_field()));
 
     # to get the minimum time that the target must have aged to, add the min age to the delay field
