@@ -4338,8 +4338,8 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
 
 -- Sample Pre-due Notice --
 
-INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, max_delay, template) 
-    VALUES (6, 'f', 1, '3 Day Courtesy Notice', 'checkout.due', 'MaxPassiveDelayAge', 'SendEmail', '-3 days', 'due_date', 'usr', '-2 days',
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, reactor, delay, delay_field, group_field, max_delay, template) 
+    VALUES (6, 'f', 1, '3 Day Courtesy Notice', 'checkout.due', 'SendEmail', '-3 days', 'due_date', 'usr', '-2 days',
 $$
 [%- USE date -%]
 [%- user = target.0.usr -%]
