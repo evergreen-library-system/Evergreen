@@ -245,3 +245,5 @@ span[name="bib_origin"] img { vertical-align: middle; }
 #acq-po-item-table-controls { margin-top: 8px; }
 
 #acq-litpager-controls[disabled="true"] { color: #ccc; }
+
+.acq-po-info th { text-align: right; }

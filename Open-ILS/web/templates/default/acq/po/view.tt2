@@ -5,21 +5,78 @@
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
     <div>
         <div id='oils-acq-picklist-header'>
-            <div>
-                Purchase Order
-            </div>
-            <table class='oils-generic-table'>
-                <tr><td>ID</td><td><a id='acq-po-view-id'/></td></tr>
-                <tr><td>Name</td><td><a id='acq-po-view-name' href='javascript:void(0);' onclick='updatePoName()'></a></td></tr>
-                <tr><td>Provider</td><td><span id="acq-po-view-provider"/></td></tr>
-                <tr><td>Total Lineitems</td><td><span id='acq-po-view-total-li'/></td></tr>
-                <tr><td>Total Estimated</td><td>$<span id='acq-po-view-total-estimated'/></td></tr>
-                <tr><td>Total Encumbered</td><td>$<span id='acq-po-view-total-enc'/></td></tr>
-                <tr><td>Total Spent</td><td>$<span id='acq-po-view-total-spent'/></td></tr>
-                <tr><td>Status</td><td><span id='acq-po-view-state'/></td></tr>
-                <tr><td>Prepayment Required?</td><td><span id="acq-po-view-prepay"/></td></tr>
+            <big>Purchase Order</big>
+            <table class="oils-generic-table acq-po-info">
                 <tr>
-                    <td id="acq-po-cancel-label"></td>
+                    <th>ID</th><td><a id="acq-po-view-id"/></td>
+                    <th>Prepayment Required?</th>
+                    <td><span id="acq-po-view-prepay"/></td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td><a id="acq-po-view-name" href="javascript:void(0);"
+                        onclick="updatePoName()"></a></td>
+                    <th>Activatable?</th>
+                    <td>
+                        <span id="acq-po-activate-checking"></span>
+                        <a class="hidden" id="acq-po-activate-link" href="javascript:void(0);" onclick="activatePo()">Activate Order</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Provider</th>
+                    <td><span id="acq-po-view-provider"/></td>
+                    <th>Notes</th>
+                    <td>
+                        <a href="javascript:void(0);"
+                            id="acq-po-view-notes"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Total Lineitems</th>
+                    <td><span id="acq-po-view-total-li"/></td>
+                    <th>EDI Messages</th>
+                    <td>
+                        <a href="javascript:void(0);"
+                            id="acq-po-view-edi-messages"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Total Estimated</th>
+                    <td>$<span id="acq-po-view-total-estimated"/></td>
+                    <th>History</th>
+                    <td>
+                        <a class="hidden" href="javascript:void(0);"
+                            id="acq-po-view-history">View</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Total Encumbered</th>
+                    <td>$<span id="acq-po-view-total-enc"/></td>
+                    <th>Invoicing</th>
+                    <td id="acq-po-invoice-stuff" class="hidden">
+                        <button dojoType="dijit.form.Button"
+                            id="acq-po-view-invoice-link">
+                            View Invoices
+                            (<span id="acq-po-view-invoice-count"></span>)
+                        </button> &nbsp;
+                        <button dojoType="dijit.form.Button"
+                            id="acq-po-create-invoice-link">
+                            Create Invoice
+                        </button> &nbsp;
+                        <button dojoType="dijit.form.DropDownButton">
+                            <span>Link Invoice</span>
+                            <div dojoType="dijit.TooltipDialog"
+                                id="acq-po-link-invoice">
+                                [% INCLUDE "default/acq/common/inv_dialog.tt2"
+                                    which = "po" %]
+                            </div>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Total Spent</th>
+                    <td>$<span id="acq-po-view-total-spent"/></td>
+                    <th id="acq-po-cancel-label"></th>
                     <td>
                         <span id="acq-po-view-cancel-reason"></span>
                         <span id="acq-po-choose-cancel-reason" class="hidden">
@@ -39,47 +96,13 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Notes</td>
+                    <th>Status</th>
+                    <td><span id="acq-po-view-state"/></td>
                     <td>
-                        <a href="javascript:void(0);"
-                            id="acq-po-view-notes"></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>EDI Messages</td>
-                    <td>
-                        <a href="javascript:void(0);"
-                            id="acq-po-view-edi-messages"></a>
-                    </td>
-                </tr>
-                <tr id="acq-po-activate" class="hidden">
-                    <td>Activatable?</td>
-                    <td>
-                        <span id="acq-po-activate-checking"></span>
-                        <a class="hidden" id="acq-po-activate-link" href="javascript:void(0);" onclick="activatePo()">Activate Order</a>
-                    </td>
-                </tr>
-                <tr><td><a class="hidden" id="acq-po-split" href="javascript:void(0);" onclick="if (confirm(localeStrings.CONFIRM_SPLIT_PO)) splitPo();">Split Order by Lineitems</a></td></tr>
-                <tr id="acq-po-view-invoices" class="hidden"><!-- TODO: only reveal when really applicable -->
-                    <td>Invoicing</td>
-                    <td>
-                        <button dojoType="dijit.form.Button"
-                            id="acq-po-view-invoice-link">
-                            View Invoices
-                            (<span id="acq-po-view-invoice-count"></span>)
-                        </button> &nbsp;
-                        <button dojoType="dijit.form.Button"
-                            id="acq-po-create-invoice-link">
-                            Create Invoice
-                        </button> &nbsp;
-                        <button dojoType="dijit.form.DropDownButton">
-                            <span>Link Invoice</span>
-                            <div dojoType="dijit.TooltipDialog"
-                                id="acq-po-link-invoice">
-                                [% INCLUDE "default/acq/common/inv_dialog.tt2"
-                                    which = "po" %]
-                            </div>
-                        </button>
+                        <a class="hidden" id="acq-po-split" href="javascript:void(0);"
+                            onclick="if (confirm(localeStrings.CONFIRM_SPLIT_PO)) splitPo();">
+                            Split Order by Lineitems
+                        </a>
                     </td>
                 </tr>
             </table>

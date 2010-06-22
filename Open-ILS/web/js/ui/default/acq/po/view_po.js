@@ -85,7 +85,8 @@ function AcqPoNoteTable() {
     };
 
     this.updatePoNotesCount = function() {
-        dojo.byId("acq-po-view-notes").innerHTML = PO.notes().length;
+        dojo.byId("acq-po-view-notes").innerHTML =
+            "(" + PO.notes().length + ")";
     };
 
     this.updatePoNotes = function(newNote) {
@@ -297,7 +298,7 @@ function prepareInvoiceFeatures() {
     if (!invoiceLinkDialogManager)
         invoiceLinkDialogManager = new InvoiceLinkDialogManager("po", PO);
 
-    openils.Util.show("acq-po-view-invoices", "table-row");
+    openils.Util.show("acq-po-invoice-stuff", "table-cell");
 }
 
 function renderPo() {
@@ -319,13 +320,15 @@ function renderPo() {
         dojo.byId("acq-po-view-cancel-reason"),
         dojo.byId("acq-po-cancel-label")
     );
-    dojo.byId("acq-po-view-notes").innerHTML = PO.notes().length;
+    // dojo.byId("acq-po-view-notes").innerHTML = PO.notes().length;
+    poNoteTable.updatePoNotesCount();
 
-    if(PO.state() == "pending") {
-        openils.Util.show("acq-po-activate", "table-row");
+    if (PO.state() == "pending") {
         checkCouldActivatePo();
         if (PO.lineitem_count() > 1)
             openils.Util.show("acq-po-split");
+    } else {
+        dojo.byId("acq-po-activate-checking").innerHTML = localeStrings.NO;
     }
 
     // XXX we probably don't *always* need to do this...
@@ -334,6 +337,12 @@ function renderPo() {
         function(po_item) { poItemTable.addItem(po_item); }
     );
     poItemTable.show();
+
+    dojo.attr(
+        "acq-po-view-history", "href",
+        oilsBasePath + "/acq/po/history/" + PO.id()
+    );
+    openils.Util.show("acq-po-view-history", "inline");
 
     prepareInvoiceFeatures();
 }
