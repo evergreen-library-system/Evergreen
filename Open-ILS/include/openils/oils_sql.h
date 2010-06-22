@@ -35,13 +35,13 @@ char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags );
 
 char* oilsGetRelation( osrfHash* classdef );
 
-int beginTransaction ( osrfMethodContext* );
-int commitTransaction ( osrfMethodContext* );
-int rollbackTransaction ( osrfMethodContext* );
+int beginTransaction ( osrfMethodContext* ctx );
+int commitTransaction ( osrfMethodContext* ctx );
+int rollbackTransaction ( osrfMethodContext* ctx );
 
-int setSavepoint ( osrfMethodContext* );
-int releaseSavepoint ( osrfMethodContext* );
-int rollbackSavepoint ( osrfMethodContext* );
+int setSavepoint ( osrfMethodContext* ctx );
+int releaseSavepoint ( osrfMethodContext* ctx );
+int rollbackSavepoint ( osrfMethodContext* ctx );
 
 int doJSONSearch ( osrfMethodContext* ctx );
 
@@ -51,6 +51,9 @@ int doUpdate( osrfMethodContext* ctx );
 int doDelete( osrfMethodContext* ctx );
 int doSearch( osrfMethodContext* ctx );
 int doIdList( osrfMethodContext* ctx );
+
+int is_identifier( const char* s);
+int is_good_operator( const char* op );
 
 #ifdef __cplusplus
 }

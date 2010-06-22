@@ -11,6 +11,8 @@
 #include "opensrf/log.h"
 #include "opensrf/string_array.h"
 #include "opensrf/osrf_hash.h"
+#include "opensrf/osrf_application.h"
+#include "openils/oils_sql.h"
 #include "openils/oils_buildq.h"
 
 #define PRINT if( verbose ) printf
@@ -685,6 +687,13 @@ static FromRelation* constructFromRelation( BuildSQLState* state, dbi_result res
 
 	switch ( type ) {
 		case FRT_RELATION :
+			if( table_name && ! is_identifier( table_name )) {
+				osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+					"Table name \"%s\" is not a valid identifier for FROM relation # %d",
+	 				table_name, id ));
+				state->error = 1;
+				return NULL;
+			}
 			break;
 		case FRT_SUBQUERY :
 			if( -1 == subquery_id ) {
@@ -1738,6 +1747,20 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 			}
 		}
 
+	} else if( EXP_COLUMN == type ) {
+		if( !column_name ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"No column name for column expression # %d", id ));
+			state->error = 1;
+			return NULL;
+		} else if( !is_identifier( column_name )) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Column name \"%s\" is invalid identifier for expression # %d",
+				column_name, id ));
+			state->error = 1;
+			return NULL;
+		}
+
 	} else if( EXP_EXIST == type ) {
 		if( -1 == subquery_id ) {
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
@@ -1758,6 +1781,12 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 		if( !function_name ) {
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
 				"Function call expression # %d provides no function name", id ));
+			state->error = 1;
+			return NULL;
+		} else if( !is_identifier( function_name )) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Function call expression # %d contains an invalid function name \"%s\"",
+				id, function_name ));
 			state->error = 1;
 			return NULL;
 		} else {
@@ -1833,9 +1862,35 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 				"Numeric expression # %d provides no numeric value", id ));
 			state->error = 1;
 			return NULL;
+		} else if( !jsonIsNumeric( literal )) {
+			// Purported number is not numeric.  We use JSON rules here to determine what
+			// a valid number is, just because we already have a function lying around that
+			// can do that validation.  PostgreSQL probably doesn't use the same exact rules.
+			// If that's a problem, we can write a separate validation routine to follow
+			// PostgreSQL's rules, once we figure out what those rules are.
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Numeric expression # %d is not a valid number: \"%s\"", id, literal ));
+			state->error = 1;
+			return NULL;
 		}
 
 	} else if( EXP_OPERATOR == type ) {
+		// Make sure we have a plausible operator
+		if( !operator ) {
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Operator expression # %d has no operator", id ));
+			state->error = 1;
+			return NULL;
+		} else if( !is_good_operator( operator )) {
+			// The specified operator contains one or more characters that aren't allowed
+			// in an operator.  This isn't a true validation; it's just a protective
+			// measure to prevent certain kinds of sql injection.
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Operator expression # %d contains invalid operator \"%s\"", id, operator ));
+			state->error = 1;
+			return NULL;
+		}
+
 		// Load left and/or right operands
 		if( -1 == left_operand_id && -1 == right_operand_id ) {
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,

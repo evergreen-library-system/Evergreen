@@ -102,8 +102,6 @@ static int obj_is_true( const jsonObject* obj );
 static const char* json_type( int code );
 static const char* get_primitive( osrfHash* field );
 static const char* get_datatype( osrfHash* field );
-static int is_identifier( const char* s );
-static int is_good_operator( const char* op );
 static void pop_query_frame( void );
 static void push_query_frame( void );
 static int add_query_core( const char* alias, const char* class_name );
@@ -6121,7 +6119,7 @@ static const char* get_datatype( osrfHash* field ) {
 	More pedantically we should allow quoted identifiers containing arbitrary characters, but
 	for the foreseeable future such quoted identifiers are not likely to be an issue.
 */
-static int is_identifier( const char* s) {
+int is_identifier( const char* s) {
 	if( !s )
 		return 0;
 
@@ -6178,7 +6176,7 @@ static int is_identifier( const char* s) {
 	We don't do that because we want to allow custom operators like ">100*", which at this
 	writing would be difficult or impossible to express otherwise in a JSON query.
 */
-static int is_good_operator( const char* op ) {
+int is_good_operator( const char* op ) {
 	if( !op ) return 0;   // Sanity check
 
 	const char* s = op;
