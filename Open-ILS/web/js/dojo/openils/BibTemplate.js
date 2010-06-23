@@ -133,6 +133,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                     if (templated) {
                                         if (debug) alert('BibTemplate debug -- slot template innerHTML:\n' + slot.innerHTML);
                                         var template_values = {};
+                                        var template_value_count = 0;
 
                                         dojo.query(
                                             '*[type=opac/template-value]',
@@ -140,11 +141,14 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                         ).orphan().forEach(function(x) {
                                             var name = x.getAttribute('name');
                                             var value = (new Function( 'item_list', 'BT', 'slotXML', 'slot', unescape(x.innerHTML) ))(item_list,BT,bib,slot);
-                                            if (name && (value || value == '')) template_values[name] = value;
+                                            if (name && (value || value == '')) {
+                                                template_values[name] = value;
+                                                template_value_count++;
+                                            }
                                         });
 
                                         if (debug) alert('BibTemplate debug -- template values:\n' + dojo.toJson( template_values ));
-                                        slot.innerHTML = dojo.string.substitute( unescape(slot.innerHTML), template_values );
+                                        if (template_value_count > 0) slot.innerHTML = dojo.string.substitute( unescape(slot.innerHTML), template_values );
                                     }
 
                                     var handler_node = dojo.query( '*[type=opac/slot-format]', slot )[0];
