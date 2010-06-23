@@ -22,9 +22,9 @@ my %item_db;
 
 my %fields = (
     id => 0,
-    #   sip_media_type      => 0,
+#   sip_media_type     => 0,
     sip_item_properties => 0,
-    #   magnetic_media      => 0,
+#   magnetic_media     => 0,
     permanent_location => 0,
     current_location   => 0,
 #   print_line         => 1,
@@ -104,7 +104,7 @@ sub new {
 	}
 
 	my ($circ) = $U->fetch_open_circulation($copy->id);
-	if($circ) {
+	if ($circ) {
 		# if i am checked out, set $self->{patron} to the user's barcode
 		my $user = $e->retrieve_actor_user(
 			[
@@ -120,11 +120,33 @@ sub new {
         syslog('LOG_DEBUG', "OILS: Open circulation exists on $item_id : user = $bc");
     }
 
-    $self->{id}     = $item_id;
-    $self->{copy}   = $copy;
-    $self->{volume} = $copy->call_number;
-    $self->{record} = $copy->call_number->record;
-    $self->{mods}   = $U->record_to_mvr($self->{record}) if $self->{record}->marc;
+    $self->{id} = $item_id;
+    $self->{copy}        = $copy;
+    $self->{volume}      = $copy->call_number;
+    $self->{record}      = $copy->call_number->record;
+    $self->{call_number} = $copy->call_number->label;
+    $self->{mods} = $U->record_to_mvr($self->{record}) if $self->{record}->marc;
+
+    if ($copy->status->id == OILS_COPY_STATUS_IN_TRANSIT) {
+        my $transit = $e->search_action_transit_copy([
+            {
+                target_copy    => $copy->id,    # NOT barcode ($self->id)
+                dest_recv_time => undef
+            },
+            {
+                flesh => 1,
+                flesh_fields => {
+                    atc => [ 'dest' ]
+                }
+            }
+        ]);
+        # warn "Item transit: " . Dumper($transit) . "\nItem transit->dest: " . Dumper($transit->dest);;
+        if ($transit) {
+            $self->{destination_loc} = $transit->[0]->dest->shortname;
+        } else {
+            syslog('LOG_WARNING', "OILS: Item('$item_id') status is In Transit, but no action.transit_copy found!");
+        }
+    }
 
     syslog("LOG_DEBUG", "OILS: Item('$item_id'): found with title '%s'", $self->title_id);
 
@@ -228,12 +250,12 @@ sub title_id {
 
 sub permanent_location {
     my $self = shift;
-    return OpenILS::SIP::clean_text($self->{volume}->owning_lib->name);
+    return OpenILS::SIP::clean_text($self->{copy}->circ_lib->shortname);
 }
 
 sub current_location {
     my $self = shift;
-    return OpenILS::SIP::clean_text($self->{copy}->circ_lib->name);
+    return OpenILS::SIP::clean_text($self->{copy}->circ_lib->shortname);
 }
 
 
@@ -289,7 +311,7 @@ sub fee_currency {
 
 sub owner {
     my $self = shift;
-    return OpenILS::SIP::clean_text($self->{volume}->owning_lib->name);
+    return OpenILS::SIP::clean_text($self->{copy}->circ_lib->shortname);
 }
 
 sub hold_queue {
@@ -367,3 +389,31 @@ sub available {
 
 
 1;
+__END__
+
+=head1 NAME
+
+OpenILS::SIP::Item - SIP abstraction layer for OpenILS Items.
+
+=head1 DESCRIPTION
+
+=head2 owning_lib vs. circ_lib
+
+In Evergreen, owning_lib is the org unit that purchased the item, the place to which the item 
+should return after it's done rotating/floating to other branches (via staff intervention),
+or some combination of those.  The owning_lib, however, is not necessarily where the item
+should be going "right now" or where it should return to by default.  That would be the copy
+circ_lib or the transit destination.  (In fact, the item may B<never> go to the owning_lib for
+its entire existence).  In the context of SIP, the circ_lib more accurately describes the item's
+permanent location, i.e. where it needs to be sent if it's not en route to somewhere else.
+
+This confusion extends also to the SIP extension field of "owner".  It means that the SIP owner does not 
+correspond to EG's asset.volume.owning_lib, mainly because owning_lib is effectively the "ultimate
+owner" but not necessarily the "current owner".  Because we populate SIP fields with circ_lib, the
+owning_lib is unused by SIP.  
+
+=head1 TODO
+
+Holds queue logic
+
+=cut

@@ -113,11 +113,6 @@ sub do_checkin {
 
     my $circ = $resp->{payload}->{circ} || '';
     my $copy = $resp->{payload}->{copy} || '';
-    if ($copy) {
-        ref($copy->call_number) and $self->item->call_number( $copy->call_number->label );
-        # ref($copy->location   ) and $self->item->collection_code($copy->location->name);
-        # This is misleading because if there is a hold we don't want to point back to the owning library OR its location.
-    }
 
     if ( $circ ) {
         # $self->item->{patron} = OpenILS::SIP::patron_barcode_from_id($circ->usr);     # Item.pm already does this for us!
