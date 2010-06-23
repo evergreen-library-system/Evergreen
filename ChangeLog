@@ -1,1 +1,12 @@
-#ChangeLog
+2010-06-18  miker
+
+	* Backport security fix r16747 from trunk
+
+2010-06-22  miker
+
+	* remove attempts to install staging and query schemas in 1.6.x
+
+2010-06-23  miker
+
+	* .: tagging 1.6.1.1
+
