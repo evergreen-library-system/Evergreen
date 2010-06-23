@@ -46,7 +46,6 @@
 						class='classic_link'>&rdetail.extras.author.notes;</a>
 				</td>
 
-
 				<td id='rdetail_annotation_link' class='hide_me rdetail_extras_td'
 					style='padding-right: 15px; padding-left: 15px;' >
 					<a href='javascript:rdetailShowExtra("annotation");' 
@@ -59,6 +58,11 @@
 						class='classic_link'>&rdetail.extras.marc;</a>
 				</td>
 
+				<td id='rdetail_novelist_link' class='hide_me rdetail_extras_td'
+					style='padding-right: 15px; padding-left: 15px;' >
+					<a href='javascript:rdetailShowExtra("novelist");' 
+						class='classic_link'>&rdetail.extras.novelist;</a>
+				</td>
 
 			</tr>
 		</thead>
@@ -95,6 +99,16 @@
 			<div id='rdetail_view_marc_box'> </div>
 		</div>
 
+        <div id='rdetail_novelist_div' class='rdetail_extras_div hide_me'>
+            <div id="NoveListSelect" class="NoveListSelect">
+                <div id="NoveListAnchor" class="NoveListSelect"></div>
+                <div id="novsuggestions"></div>
+                <div id="nextreads"></div>
+                <div id="novrelatedauthors"></div>
+               <div id="novrelateditems"></div>
+            </div>
+        </div>
+
 		<div id='rdetail_cn_browse_div' style='text-align: center;' class='hide_me'>
 
 			<div id='cn_browse_none' class='hide_me color_4' style='width: 90%; text-align: center; margin: 10px;'>
@@ -122,8 +136,9 @@
     <!-- ChiliFresh setup -->
     <script language='javascript' type='text/javascript'>
         var chilifresh = '<!--#echo var="OILS_CHILIFRESH_ACCOUNT"-->';
+        if (chilifresh == '(none)') { chilifresh = false; }
     </script>
-    <!--if expr="$OILS_CHILIFRESH_ACCOUNT"-->
+    <!--if expr="${OILS_CHILIFRESH_ACCOUNT} && ${OILS_CHILIFRESH_ACCOUNT}!='(none)'"-->
         <input type="hidden" id="chilifresh_account" name="chilifresh_account"
             value="<!--#echo var='OILS_CHILIFRESH_ACCOUNT'-->" />
         <input type="hidden" id="chilifresh_profile" name="chilifresh_profile"
@@ -132,5 +147,14 @@
         <input type="hidden" id="chilifresh_type" name="chilifresh_type" value="search" />
         <script language="javascript" type="text/javascript" src="<!--#echo var='OILS_CHILIFRESH_URL'-->"></script>
     <!--endif-->
+
+    <!-- Novelist setup -->
+    <!--if expr="${OILS_NOVELIST_URL} && ${OILS_NOVELIST_URL}!='(none)'"-->
+        <script type="text/javascript" id="EIT" src="<!--#echo var='OILS_NOVELIST_URL'-->"></script>
+    <!--endif-->
+    <script language='javascript' type='text/javascript'>
+        var novelist = '<!--#echo var="OILS_NOVELIST_URL"-->';
+        if (novelist == '(none)') { novelist = false; }
+    </script>
 
 </div>

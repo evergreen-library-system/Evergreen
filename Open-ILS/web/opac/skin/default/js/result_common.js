@@ -453,7 +453,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
         }
     }
 
-    if (currentISBN && chilifresh) {
+    if (currentISBN && chilifresh && chilifresh != '(none)') {
         var cfrow = $n(r, "chilifreshReview");
         if (cfrow) {
             removeCSSClass( cfrow, 'hide_me' );
@@ -672,8 +672,8 @@ function fetchGoogleBooksLink () {
 }
 
 function fetchChiliFreshReviews() {
-    if (chilifresh) {
-        chili_init();
+    if (chilifresh && chilifresh != '(none)') {
+        try { chili_init(); } catch(E) { dump(E + '\n'); }
     }
 }
 

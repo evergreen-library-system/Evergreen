@@ -469,16 +469,32 @@ function _rdetailDraw(r) {
 	resultDrawSeries();
 
 	// grab added content 
+
+    // Proxied through Evergreen AddedContent module
 	acCollectData(cleanISBN(record.isbn()), rdetailhandleAC);
 
-    // different type of added content
     var currentISBN = cleanISBN(record.isbn());
-    if (chilifresh && currentISBN) {
+
+    // Not proxied, cross-site javascript
+
+    // ChiliFresh
+    if (chilifresh && chilifresh != '(none)' && currentISBN) {
         $('chilifreshReviewLink').setAttribute('id','isbn_'+currentISBN);
         $('chilifreshReviewResult').setAttribute('id','chili_review_'+currentISBN);
         unHideMe($('rdetail_reviews_link'));
         unHideMe($('rdetail_chilifresh_reviews'));
-        chili_init();
+        try {
+            chili_init();
+        } catch(E) {
+            dump(E + '\n');
+            hideMe($('rdetail_reviews_link'));
+            hideMe($('rdetail_chilifresh_reviews'));
+        }
+    }
+
+    // Novelist
+    if (novelist && currentISBN) {
+        unHideMe($('rdetail_novelist_link'));
     }
 }
 
@@ -560,6 +576,7 @@ function rdetailShowExtra(type, args) {
 	hideMe($('rdetail_marc_div'));
 	hideMe($('cn_browse'));
 	hideMe($('rdetail_cn_browse_div'));
+	hideMe($('rdetail_novelist_div'));
 	hideMe($('rdetail_notes_div'));
 
 	removeCSSClass($('rdetail_copy_info_link'), 'rdetail_extras_selected');
@@ -571,6 +588,7 @@ function rdetailShowExtra(type, args) {
 	removeCSSClass($('rdetail_anotes_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_annotation_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_viewmarc_link'), 'rdetail_extras_selected');
+	removeCSSClass($('rdetail_novelist_link'), 'rdetail_extras_selected');
 
 	switch(type) {
 
@@ -614,6 +632,11 @@ function rdetailShowExtra(type, args) {
 			var req = new Request( FETCH_MARC_HTML, record.doc_id() );
 			req.callback(rdetailViewMarc); 
 			req.send();
+			break;
+
+		case "novelist": 
+			addCSSClass($('rdetail_novelist_link'), 'rdetail_extras_selected');
+			unHideMe($('rdetail_novelist_div')); 
 			break;
 
 		case 'cn':
