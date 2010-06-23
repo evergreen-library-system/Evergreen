@@ -1,1 +1,30 @@
-#ChangeLog
+2010-06-11  erickson
+
+	* added a number of info messages to the action/trigger runner and
+	  server code. the messages provide summary data about what event
+	  defs / hooks are being processed and when/if they complete or
+	  timeout.
+
+2010-06-14  erickson
+
+	* removed unused method retrieved from method_lookup. apart from
+	  being unused, the call was attempting to fetch a nonexistent
+	  method ('auth' vs. 'authority') and hilarity ensued
+
+2010-06-18  dbs
+
+	* Backport security fix r16747 from trunk
+	  
+	  1. Disable fleshing for PCRUD. Otherwise fleshing would provide a
+	  back door whereby a user could see stuff he has no permission to
+	  see.
+	  
+	  2. For the id_list method: strip out the "flesh_fields" entry,
+	  not the "flesh_columns" entry (which doesn't exist). This actually
+	  makes no difference, but if we're going to do something useless, we
+	  might as well do it right.
+
+2010-06-23  miker
+
+	* .: tagging 1.6.0.6, security release
+
