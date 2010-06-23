@@ -20,7 +20,14 @@ BEGIN;
 
 
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants ( INT, INT ) RETURNS SETOF actor.org_unit AS $$
-    SELECT  * FROM  actor.org_unit_descendants( (actor.org_unit_ancestor_at_depth($1,$2)).id );
+    SELECT  *
+      FROM  actor.org_unit_descendants(
+                CASE WHEN $2 IS NOT NULL THEN
+                    (actor.org_unit_ancestor_at_depth($1,$2)).id
+                ELSE 
+                    $1
+                END
+    );
 $$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION actor.noncached_org_unit_descendants ( org INT ) RETURNS SETOF actor.org_unit AS $$
@@ -54,7 +61,7 @@ BEGIN
         -- RAISE NOTICE 'Getting perm from cache';
         EXECUTE $$SELECT memcache_get('oils_orgcache_$$ || org || $$') AS x;$$ INTO cached_value;
 
-        IF cached_value.x IS NOT NULL THEN
+        IF cached_value.x IS NOT NULL AND cached_value.x <> '' THEN
             FOR curr_org IN
                 SELECT  *
                   FROM  actor.org_unit
