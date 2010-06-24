@@ -2,9 +2,9 @@ BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0315'); --miker
 
-CREATE OR REPLACE FUNCTION public.remove_paren_substring( TEXT ) RETURNS TEXT AS $$
+CREATE OR REPLACE FUNCTION public.remove_paren_substring( TEXT ) RETURNS TEXT AS $func$
     SELECT regexp_replace($1, $$\([^)]+\)$$, '', 'g');
-$$ LANGUAGE SQL STRICT IMMUTABLE;
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field, search_field ) VALUES
     (26, 'identifier', 'arcn', oils_i18n_gettext(26, 'Authority record control number', 'cmf', 'label'), 'marcxml', $$//marc:subfield[@code='0']$$, TRUE, FALSE );
