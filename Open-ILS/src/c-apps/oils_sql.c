@@ -181,9 +181,10 @@ dbi_conn oilsConnectDB( const char* mod_name ) {
 	if( dbi_conn_connect( handle ) < 0 ) {
 		sleep( 1 );
 		if( dbi_conn_connect( handle ) < 0 ) {
-			const char* errmsg;
-			dbi_conn_error( handle, &errmsg );
-			osrfLogError( OSRF_LOG_MARK, "Error connecting to database: %s", errmsg );
+			const char* msg;
+			dbi_conn_error( handle, &msg );
+			osrfLogError( OSRF_LOG_MARK, "Error connecting to database: %s",
+				msg ? msg : "(No description available)" );
 			return NULL;
 		}
 	}
@@ -383,7 +384,10 @@ int oilsExtendIDL( dbi_conn handle ) {
 			} // end while loop for traversing columns of result
 			dbi_result_free( result  );
 		} else {
-			osrfLogDebug( OSRF_LOG_MARK, "No data found for class [%s]...", classname );
+			const char* msg;
+			int errnum = dbi_conn_error( handle, &msg );
+			osrfLogDebug( OSRF_LOG_MARK, "No data found for class [%s]: %d, %s", classname,
+				errnum, msg ? msg : "(No description available)" );
 		}
 	} // end for each class in IDL
 
@@ -412,8 +416,14 @@ int oilsExtendIDL( dbi_conn handle ) {
 */
 void userDataFree( void* blob ) {
 	osrfHash* hash = (osrfHash*) blob;
-	if( osrfHashGet( hash, "xact_id" ) && writehandle )
-		dbi_conn_query( writehandle, "ROLLBACK;" );
+	if( osrfHashGet( hash, "xact_id" ) && writehandle ) {
+		if( !dbi_conn_query( writehandle, "ROLLBACK;" )) {
+			const char* msg;
+			int errnum = dbi_conn_error( writehandle, &msg );
+			osrfLogWarning( OSRF_LOG_MARK, "Unable to perform rollback: %d %s",
+				errnum, msg ? msg : "(No description available)" );
+		};
+	}
 
 	osrfHashFree( hash );
 }
@@ -693,7 +703,10 @@ int beginTransaction( osrfMethodContext* ctx ) {
 
 	dbi_result result = dbi_conn_query( writehandle, "START TRANSACTION;" );
 	if( !result ) {
-		osrfLogError( OSRF_LOG_MARK, "%s: Error starting transaction", modulename );
+		const char* msg;
+		int errnum = dbi_conn_error( writehandle, &msg );
+		osrfLogError( OSRF_LOG_MARK, "%s: Error starting transaction: %d %s",
+			modulename, errnum, msg ? msg : "(No description available)" );
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error starting transaction" );
 		return -1;
@@ -752,12 +765,16 @@ int setSavepoint( osrfMethodContext* ctx ) {
 
 	dbi_result result = dbi_conn_queryf( writehandle, "SAVEPOINT \"%s\";", spName );
 	if( !result ) {
+		const char* msg;
+		int errnum = dbi_conn_error( writehandle, &msg );
 		osrfLogError(
 			OSRF_LOG_MARK,
-			"%s: Error creating savepoint %s in transaction %s",
+			"%s: Error creating savepoint %s in transaction %s: %d %s",
 			modulename,
 			spName,
-			trans_id
+			trans_id,
+			errnum,
+			msg ? msg : "(No description available)"
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error creating savepoint" );
@@ -816,12 +833,16 @@ int releaseSavepoint( osrfMethodContext* ctx ) {
 
 	dbi_result result = dbi_conn_queryf( writehandle, "RELEASE SAVEPOINT \"%s\";", spName );
 	if( !result ) {
+		const char* msg;
+		int errnum = dbi_conn_error( writehandle, &msg );
 		osrfLogError(
 			OSRF_LOG_MARK,
-			"%s: Error releasing savepoint %s in transaction %s",
+			"%s: Error releasing savepoint %s in transaction %s: %d %s",
 			modulename,
 			spName,
-			trans_id
+			trans_id,
+			errnum,
+			msg ? msg : "(No description available)"
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error releasing savepoint" );
@@ -880,12 +901,16 @@ int rollbackSavepoint( osrfMethodContext* ctx ) {
 
 	dbi_result result = dbi_conn_queryf( writehandle, "ROLLBACK TO SAVEPOINT \"%s\";", spName );
 	if( !result ) {
+		const char* msg;
+		int errnum = dbi_conn_error( writehandle, &msg );
 		osrfLogError(
 			OSRF_LOG_MARK,
-			"%s: Error rolling back savepoint %s in transaction %s",
+			"%s: Error rolling back savepoint %s in transaction %s: %d %s",
 			modulename,
 			spName,
-			trans_id
+			trans_id,
+			errnum,
+			msg ? msg : "(No description available)"
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error rolling back savepoint" );
@@ -933,7 +958,10 @@ int commitTransaction( osrfMethodContext* ctx ) {
 
 	dbi_result result = dbi_conn_query( writehandle, "COMMIT;" );
 	if( !result ) {
-		osrfLogError( OSRF_LOG_MARK, "%s: Error committing transaction", modulename );
+		const char* msg;
+		int errnum = dbi_conn_error( writehandle, &msg );
+		osrfLogError( OSRF_LOG_MARK, "%s: Error committing transaction: %d %s",
+			modulename, errnum, msg ? msg : "(No description available)" );
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 				"osrfMethodException", ctx->request, "Error committing transaction" );
 		return -1;
@@ -981,9 +1009,12 @@ int rollbackTransaction( osrfMethodContext* ctx ) {
 
 	dbi_result result = dbi_conn_query( writehandle, "ROLLBACK;" );
 	if( !result ) {
-		osrfLogError( OSRF_LOG_MARK, "%s: Error rolling back transaction", modulename );
+		const char* msg;
+		int errnum = dbi_conn_error( writehandle, &msg );
+		osrfLogError( OSRF_LOG_MARK, "%s: Error rolling back transaction: %d %s",
+			modulename, errnum, msg ? msg : "(No description available)" );
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
-				"osrfMethodException", ctx->request, "Error rolling back transaction" );
+			"osrfMethodException", ctx->request, "Error rolling back transaction" );
 		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject( trans_id );
@@ -1678,6 +1709,12 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 					dbi_result_free( result );
 					if( OK )
 						break;
+				} else {
+					const char* msg;
+					int errnum = dbi_conn_error( writehandle, &msg );
+					osrfLogWarning( OSRF_LOG_MARK,
+						"Unable to call check object permissions: %d, %s",
+						errnum, msg ? msg : "(No description available)" );
 				}
 			}
 
@@ -1694,15 +1731,15 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 			if( result ) {
 				osrfLogDebug( OSRF_LOG_MARK,
-						"Received a result for permission [%s] for user %d at org %d",
-						perm, userid, atoi( context_org ));
+					"Received a result for permission [%s] for user %d at org %d",
+					perm, userid, atoi( context_org ));
 				if( dbi_result_first_row( result )) {
 					jsonObject* return_val = oilsMakeJSONFromResult( result );
 					const char* has_perm = jsonObjectGetString(
-							jsonObjectGetKeyConst( return_val, "has_perm" ));
+						jsonObjectGetKeyConst( return_val, "has_perm" ));
 					osrfLogDebug( OSRF_LOG_MARK,
-							"Status of permission [%s] for user %d at org %d is [%s]",
-							perm, userid, atoi( context_org ), has_perm );
+						"Status of permission [%s] for user %d at org %d is [%s]",
+						perm, userid, atoi( context_org ), has_perm );
 					if( *has_perm == 't' )
 						OK = 1;
 					jsonObjectFree( return_val );
@@ -1711,6 +1748,11 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 				dbi_result_free( result );
 				if( OK )
 					break;
+			} else {
+				const char* msg;
+				int errnum = dbi_conn_error( writehandle, &msg );
+				osrfLogWarning( OSRF_LOG_MARK, "Unable to call user object permissions: %d, %s",
+					errnum, msg ? msg : "(No description available)" );
 			}
 
 		}
@@ -1981,12 +2023,16 @@ int doCreate( osrfMethodContext* ctx ) {
 	dbi_result result = dbi_conn_query( writehandle, query );
 	if( !result ) {
 		obj = jsonNewObject( NULL );
+		const char* msg;
+		int errnum = dbi_conn_error( writehandle, &msg );
 		osrfLogError(
 			OSRF_LOG_MARK,
-			"%s ERROR inserting %s object using query [%s]",
+			"%s ERROR inserting %s object using query [%s]: %d %s",
 			modulename,
 			osrfHashGet(meta, "fieldmapper"),
-			query
+			query,
+			errnum,
+			msg ? msg : "(No description available)"
 		);
 		osrfAppSessionStatus(
 			ctx->session,
@@ -3007,8 +3053,6 @@ static char* searchWHERE( const jsonObject* search_hash, const ClassInfo* class_
 
 	int first = 1;
 	if( search_hash->type == JSON_ARRAY ) {
-		osrfLogDebug( OSRF_LOG_MARK,
-		  "%s: In WHERE clause, condition type is JSON_ARRAY", modulename );
 		if( 0 == search_hash->size ) {
 			osrfLogError(
 				OSRF_LOG_MARK,
@@ -5129,7 +5173,10 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 
 	} else {
 		err = -1;
-		osrfLogError( OSRF_LOG_MARK, "%s: Error with query [%s]", modulename, sql );
+		const char* msg;
+		int errnum = dbi_conn_error( dbhandle, &msg );
+		osrfLogError( OSRF_LOG_MARK, "%s: Error with query [%s]: %d %s",
+			modulename, sql, errnum, msg ? msg : "(No description available)" );
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
@@ -5174,8 +5221,11 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 
 	dbi_result result = dbi_conn_query( dbhandle, sql );
 	if( NULL == result ) {
-		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]",
-			modulename, osrfHashGet( class_meta, "fieldmapper" ), sql );
+		const char* msg;
+		int errnum = dbi_conn_error( dbhandle, &msg );
+		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]: %d %s",
+			modulename, osrfHashGet( class_meta, "fieldmapper" ), sql, errnum,
+			msg ? msg : "(No description available)" );
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
@@ -5675,13 +5725,17 @@ int doUpdate( osrfMethodContext* ctx ) {
 	if( !result ) {
 		jsonObjectFree( obj );
 		obj = jsonNewObject( NULL );
+		const char* msg;
+		int errnum = dbi_conn_error( dbhandle, &msg );
 		osrfLogError(
 			OSRF_LOG_MARK,
-			"%s ERROR updating %s object with %s = %s",
+			"%s ERROR updating %s object with %s = %s: %d %s",
 			modulename,
 			osrfHashGet( meta, "fieldmapper" ),
 			pkey,
-			id
+			id,
+			errnum,
+			msg ? msg : "(No description available)"
 		);
 	}
 
@@ -5772,13 +5826,17 @@ int doDelete( osrfMethodContext* ctx ) {
 	if( !result ) {
 		jsonObjectFree( obj );
 		obj = jsonNewObject( NULL );
+		const char* msg;
+		int errnum = dbi_conn_error( writehandle, &msg );
 		osrfLogError(
 			OSRF_LOG_MARK,
-			"%s ERROR deleting %s object with %s = %s",
+			"%s ERROR deleting %s object with %s = %s: %d %s",
 			modulename,
 			osrfHashGet( meta, "fieldmapper" ),
 			pkey,
-			id
+			id,
+			errnum,
+			msg ? msg : "(No description available)"
 		);
 	}
 
