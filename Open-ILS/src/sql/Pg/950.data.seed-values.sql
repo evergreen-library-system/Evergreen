@@ -4288,13 +4288,24 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
       WHERE i.func IN ('replace')
             AND m.id IN (19);
 
-INSERT INTO config.metabib_field_index_norm_map (field,norm)
+INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
     SELECT  m.id,
             i.id,
+            -2
       FROM  config.metabib_field m,
             config.index_normalizer i
-      WHERE i.func IN ('btrim','remove_paren_substring')
+      WHERE i.func IN ('remove_paren_substring')
             AND m.id IN (26);
+
+INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
+    SELECT  m.id,
+            i.id,
+            -1
+      FROM  config.metabib_field m,
+            config.index_normalizer i
+      WHERE i.func IN ('btrim')
+            AND m.id IN (26);
+
 
 -- claims returned mark item missing 
 INSERT INTO

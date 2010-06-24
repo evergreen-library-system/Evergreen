@@ -25,12 +25,22 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 	0
 );
 
-INSERT INTO config.metabib_field_index_norm_map (field,norm)
+INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
     SELECT  m.id,
             i.id,
+            -2
       FROM  config.metabib_field m,
             config.index_normalizer i
-      WHERE i.func IN ('btrim','remove_paren_substring')
+      WHERE i.func IN ('remove_paren_substring')
+            AND m.id IN (26);
+
+INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
+    SELECT  m.id,
+            i.id,
+            -1
+      FROM  config.metabib_field m,
+            config.index_normalizer i
+      WHERE i.func IN ('btrim')
             AND m.id IN (26);
 
 COMMIT;
