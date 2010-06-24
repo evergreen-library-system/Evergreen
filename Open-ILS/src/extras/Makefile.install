@@ -195,7 +195,7 @@ PGSQL_84_RPMS = \
 	postgresql-8.4* \
 	postgresql-contrib-8.4* \
 	postgresql-devel-8.4* \
-	postgresql-plp*-8.4* \
+	postgresql-plpe*-8.4* \
 	postgresql-server-8.4*
 
 PGSQL_CLIENT_DEBS_81 = \
@@ -441,6 +441,9 @@ install_gentoo_perl:
 install_fedora_13_rpms:
 	yum -y update
 	yum -y install $(FEDORA_13_RPMS)
+
+install_fedora_13_pgsql_server:
+	yum -y install $(PGSQL_84_RPMS)
 
 # CENTOS
 install_centos_rpms:
