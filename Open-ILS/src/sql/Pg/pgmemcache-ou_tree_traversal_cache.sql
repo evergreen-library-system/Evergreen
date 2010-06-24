@@ -57,6 +57,10 @@ DECLARE
     cached_value    RECORD;
 BEGIN
 
+    IF org IS NULL THEN
+        RETURN;
+    END IF;
+
     IF permission.mc_init() THEN
         -- RAISE NOTICE 'Getting perm from cache';
         EXECUTE $$SELECT memcache_get('oils_orgcache_$$ || org || $$') AS x;$$ INTO cached_value;
