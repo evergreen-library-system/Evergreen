@@ -4339,7 +4339,7 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
 -- Sample Pre-due Notice --
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, max_delay, template) 
-    VALUES (6, 'f', 1, '3 Day Courtesy Notice', 'checkout.due', 'Open-ILS/src/sql/Pg/950.data.seed-values.sql', 'SendEmail', '-3 days', 'due_date', 'usr', '-2 days',
+    VALUES (6, 'f', 1, '3 Day Courtesy Notice', 'checkout.due', 'CircIsOpen', 'SendEmail', '-3 days', 'due_date', 'usr', '-2 days',
 $$
 [%- USE date -%]
 [%- user = target.0.usr -%]
