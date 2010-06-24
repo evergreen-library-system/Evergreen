@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <limits.h>
 #include "openils/oils_utils.h"
 #include "openils/oils_idl.h"
 
