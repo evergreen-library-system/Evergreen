@@ -360,6 +360,9 @@ static char* find_id_attr( const char** atts ) {
         if (!strcmp(name,"id")) return value;
 		i++;
 	}
+
+	/* In case we don't find anything to return */
+	return NULL;
 }
 
 /* cycles through the attributes attached to an element */
