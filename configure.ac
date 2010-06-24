@@ -219,7 +219,7 @@ AC_ARG_WITH([dbi],
 # If the passed in value doesn't work, fall back to reasonable defaults
 # Distributions are starting to package a good version of libdbi / libdbd
 if ! test -d "$DBI_LIBS"; then
-	for i in /usr/lib/dbd/ /usr/local/lib/dbd/ ; do
+	for i in /usr/lib/dbd/ /usr/lib64/dbd /usr/local/lib/dbd/ ; do
 		if test -d "$i"; then
 			DBI_LIBS="$i"
 			break
@@ -291,7 +291,7 @@ if test "x$openils_core" = "xtrue"; then
 	AC_CHECK_LIB([readline], [main], [], AC_MSG_ERROR(*** OpenILS requires libreadline))
 	AC_CHECK_LIB([xml2], [main], [], AC_MSG_ERROR(*** OpenILS requires libxml2))
 	AC_CHECK_LIB([xslt], [main], [], AC_MSG_ERROR(*** OpenILS requires libxslt))
-	AC_CHECK_LIB([perl], [main], [], AC_MSG_ERROR(*** OpenILS requires libperl-dev))
+#	AC_CHECK_LIB([perl], [main], [], AC_MSG_ERROR(*** OpenILS requires libperl-dev))
 	AC_CHECK_LIB([pq], [main], [], AC_MSG_ERROR(*** OpenILS requires libpq))
 
 

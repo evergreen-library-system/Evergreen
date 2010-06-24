@@ -163,6 +163,7 @@ FEDORA_13_RPMS = \
 	js-devel \
 	libdbi \
 	libdbi-dbd-pgsql \
+	libdbi-devel \
 	libssh2-devel \
 	libyaz \
 	libyaz-devel \
