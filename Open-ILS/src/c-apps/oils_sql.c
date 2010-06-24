@@ -234,6 +234,22 @@ void oilsSetDBConnection( dbi_conn conn ) {
 }
 
 /**
+	@brief Determine whether a database connection is alive.
+	@param handle Handle for a database connection.
+	@return 1 if the connection is alive, or zero if it isn't.
+*/
+int oilsIsDBConnected( dbi_conn handle ) {
+	dbi_result result = dbi_conn_query( handle, "SELECT 1;" );
+	if( result ) {
+		dbi_result_free( result );
+		return 1;
+	} else {
+		osrfLogError( OSRF_LOG_MARK, "Database connection isn't working" );
+		return 0;
+	}
+}
+
+/**
 	@brief Get a table name, view name, or subquery for use in a FROM clause.
 	@param class Pointer to the IDL class entry.
 	@return A table name, a view name, or a subquery in parentheses.
@@ -388,6 +404,9 @@ int oilsExtendIDL( dbi_conn handle ) {
 			int errnum = dbi_conn_error( handle, &msg );
 			osrfLogDebug( OSRF_LOG_MARK, "No data found for class [%s]: %d, %s", classname,
 				errnum, msg ? msg : "(No description available)" );
+			// We don't check the database connection here.  It's routine to get failures at
+			// this point; we routinely try to query tables that don't exist, because they
+			// are defined in the IDL but not in the database.
 		}
 	} // end for each class in IDL
 
@@ -398,6 +417,10 @@ int oilsExtendIDL( dbi_conn handle ) {
 	if( !results_found ) {
 		osrfLogError( OSRF_LOG_MARK,
 			"No results found for any class -- bad database connection?" );
+		return 1;
+	} else if( ! oilsIsDBConnected( handle )) {
+		osrfLogError( OSRF_LOG_MARK,
+			"Unable to extend IDL: database connection isn't working" );
 		return 1;
 	}
 	else
@@ -708,15 +731,17 @@ int beginTransaction( osrfMethodContext* ctx ) {
 		osrfLogError( OSRF_LOG_MARK, "%s: Error starting transaction: %d %s",
 			modulename, errnum, msg ? msg : "(No description available)" );
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
-				"osrfMethodException", ctx->request, "Error starting transaction" );
+			"osrfMethodException", ctx->request, "Error starting transaction" );
+		if( !oilsIsDBConnected( writehandle ))
+			osrfAppSessionPanic( ctx->session );
 		return -1;
 	} else {
 		setXactId( ctx );
 		jsonObject* ret = jsonNewObject( getXactId( ctx ) );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree( ret );
+		return 0;
 	}
-	return 0;
 }
 
 /**
@@ -777,14 +802,16 @@ int setSavepoint( osrfMethodContext* ctx ) {
 			msg ? msg : "(No description available)"
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
-				"osrfMethodException", ctx->request, "Error creating savepoint" );
+			"osrfMethodException", ctx->request, "Error creating savepoint" );
+		if( !oilsIsDBConnected( writehandle ))
+			osrfAppSessionPanic( ctx->session );
 		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject( spName );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree( ret  );
+		return 0;
 	}
-	return 0;
 }
 
 /**
@@ -845,14 +872,16 @@ int releaseSavepoint( osrfMethodContext* ctx ) {
 			msg ? msg : "(No description available)"
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
-				"osrfMethodException", ctx->request, "Error releasing savepoint" );
+			"osrfMethodException", ctx->request, "Error releasing savepoint" );
+		if( !oilsIsDBConnected( writehandle ))
+			osrfAppSessionPanic( ctx->session );
 		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject( spName );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree( ret );
+		return 0;
 	}
-	return 0;
 }
 
 /**
@@ -913,14 +942,16 @@ int rollbackSavepoint( osrfMethodContext* ctx ) {
 			msg ? msg : "(No description available)"
 		);
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
-				"osrfMethodException", ctx->request, "Error rolling back savepoint" );
+			"osrfMethodException", ctx->request, "Error rolling back savepoint" );
+		if( !oilsIsDBConnected( writehandle ))
+			osrfAppSessionPanic( ctx->session );
 		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject( spName );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree( ret );
+		return 0;
 	}
-	return 0;
 }
 
 /**
@@ -963,15 +994,17 @@ int commitTransaction( osrfMethodContext* ctx ) {
 		osrfLogError( OSRF_LOG_MARK, "%s: Error committing transaction: %d %s",
 			modulename, errnum, msg ? msg : "(No description available)" );
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
-				"osrfMethodException", ctx->request, "Error committing transaction" );
+			"osrfMethodException", ctx->request, "Error committing transaction" );
+		if( !oilsIsDBConnected( writehandle ))
+			osrfAppSessionPanic( ctx->session );
 		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject( trans_id );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree( ret );
 		clearXactId( ctx );
+		return 0;
 	}
-	return 0;
 }
 
 /**
@@ -1015,14 +1048,16 @@ int rollbackTransaction( osrfMethodContext* ctx ) {
 			modulename, errnum, msg ? msg : "(No description available)" );
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_INTERNALSERVERERROR,
 			"osrfMethodException", ctx->request, "Error rolling back transaction" );
+		if( !oilsIsDBConnected( writehandle ))
+			osrfAppSessionPanic( ctx->session );
 		return -1;
 	} else {
 		jsonObject* ret = jsonNewObject( trans_id );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree( ret );
 		clearXactId( ctx );
+		return 0;
 	}
-	return 0;
 }
 
 /**
@@ -1612,7 +1647,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 								oilsFMGetStringConst( _fparam, foreign_field ));
 							osrfLogDebug( OSRF_LOG_MARK,
 								"adding foreign class %s field %s (value: %s) "
-									"to the context org	 list",
+									"to the context org list",
 								class_name,
 								foreign_field,
 								osrfStringArrayGetString(
@@ -1715,6 +1750,8 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 					osrfLogWarning( OSRF_LOG_MARK,
 						"Unable to call check object permissions: %d, %s",
 						errnum, msg ? msg : "(No description available)" );
+					if( !oilsIsDBConnected( writehandle ))
+						osrfAppSessionPanic( ctx->session );
 				}
 			}
 
@@ -1753,6 +1790,8 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 				int errnum = dbi_conn_error( writehandle, &msg );
 				osrfLogWarning( OSRF_LOG_MARK, "Unable to call user object permissions: %d, %s",
 					errnum, msg ? msg : "(No description available)" );
+				if( !oilsIsDBConnected( writehandle ))
+					osrfAppSessionPanic( ctx->session );
 			}
 
 		}
@@ -2041,6 +2080,8 @@ int doCreate( osrfMethodContext* ctx ) {
 			ctx->request,
 			"INSERT error -- please see the error log for more details"
 		);
+		if( !oilsIsDBConnected( writehandle ))
+			osrfAppSessionPanic( ctx->session );
 		rc = -1;
 	} else {
 
@@ -5123,9 +5164,6 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 
 	int err = 0;
 
-	// XXX for now...
-	dbhandle = writehandle;
-
 	jsonObject* hash = jsonObjectGetIndex( ctx->params, 0 );
 
 	int flags = 0;
@@ -5147,6 +5185,10 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 	}
 
 	osrfLogDebug( OSRF_LOG_MARK, "%s SQL =  %s", modulename, sql );
+
+	// XXX for now...
+	dbhandle = writehandle;
+
 	dbi_result result = dbi_conn_query( dbhandle, sql );
 
 	if( result ) {
@@ -5184,6 +5226,8 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 			ctx->request,
 			"Severe query error -- see error log for more details"
 		);
+		if( !oilsIsDBConnected( dbhandle ))
+			osrfAppSessionPanic( ctx->session );
 	}
 
 	free( sql );
@@ -5226,6 +5270,8 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 		osrfLogError(OSRF_LOG_MARK, "%s: Error retrieving %s with query [%s]: %d %s",
 			modulename, osrfHashGet( class_meta, "fieldmapper" ), sql, errnum,
 			msg ? msg : "(No description available)" );
+		if( !oilsIsDBConnected( dbhandle ))
+			osrfAppSessionPanic( ctx->session );
 		osrfAppSessionStatus(
 			ctx->session,
 			OSRF_STATUS_INTERNALSERVERERROR,
@@ -5568,7 +5614,6 @@ int doUpdate( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-	dbhandle = writehandle;
 	const char* trans_id = getXactId( ctx );
 
 	// Set the last_xact_id
@@ -5593,6 +5638,7 @@ int doUpdate( osrfMethodContext* ctx ) {
 		id
 	);
 
+	dbhandle = writehandle;
 	growing_buffer* sql = buffer_init( 128 );
 	buffer_fadd( sql,"UPDATE %s SET", osrfHashGet( meta, "tablename" ));
 
@@ -5722,6 +5768,7 @@ int doUpdate( osrfMethodContext* ctx ) {
 	dbi_result result = dbi_conn_query( dbhandle, query );
 	free( query );
 
+	int rc = 0;
 	if( !result ) {
 		jsonObjectFree( obj );
 		obj = jsonNewObject( NULL );
@@ -5737,12 +5784,22 @@ int doUpdate( osrfMethodContext* ctx ) {
 			errnum,
 			msg ? msg : "(No description available)"
 		);
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_INTERNALSERVERERROR,
+			"osrfMethodException",
+			ctx->request,
+			"Error in updating a row -- please see the error log for more details"
+		);
+		if( !oilsIsDBConnected( dbhandle ))
+			osrfAppSessionPanic( ctx->session );
+		rc = -1;
 	}
 
 	free( id );
 	osrfAppRespondComplete( ctx, obj );
 	jsonObjectFree( obj );
-	return 0;
+	return rc;
 }
 
 int doDelete( osrfMethodContext* ctx ) {
@@ -5823,7 +5880,9 @@ int doDelete( osrfMethodContext* ctx ) {
 	dbi_result result = dbi_conn_queryf( writehandle, "DELETE FROM %s WHERE %s = %s;",
 		osrfHashGet( meta, "tablename" ), pkey, id );
 
+	int rc = 0;
 	if( !result ) {
+		rc = -1;
 		jsonObjectFree( obj );
 		obj = jsonNewObject( NULL );
 		const char* msg;
@@ -5838,13 +5897,22 @@ int doDelete( osrfMethodContext* ctx ) {
 			errnum,
 			msg ? msg : "(No description available)"
 		);
+		osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_INTERNALSERVERERROR,
+			"osrfMethodException",
+			ctx->request,
+			"Error in deleting a row -- please see the error log for more details"
+		);
+		if( !oilsIsDBConnected( writehandle ))
+			osrfAppSessionPanic( ctx->session );
 	}
 
 	free( id );
 
 	osrfAppRespondComplete( ctx, obj );
 	jsonObjectFree( obj );
-	return 0;
+	return rc;
 }
 
 /**
