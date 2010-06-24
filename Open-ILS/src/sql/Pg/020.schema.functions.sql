@@ -100,6 +100,10 @@ CREATE OR REPLACE FUNCTION public.remove_commas( TEXT ) RETURNS TEXT AS $$
     SELECT regexp_replace($1, ',', '', 'g');
 $$ LANGUAGE SQL STRICT IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION public.remove_paren_substring( TEXT ) RETURNS TEXT AS $$
+    SELECT regexp_replace($1, $$\([^)]+\)$$, '', 'g');
+$$ LANGUAGE SQL STRICT IMMUTABLE;
+
 CREATE OR REPLACE FUNCTION public.remove_whitespace( TEXT ) RETURNS TEXT AS $$
     SELECT regexp_replace(normalize_space($1), E'\\s+', '', 'g');
 $$ LANGUAGE SQL STRICT IMMUTABLE;

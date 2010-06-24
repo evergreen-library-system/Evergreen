@@ -82,6 +82,8 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
     (24, 'identifier', 'sici', oils_i18n_gettext(24, 'SICI', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and ind1='4']/marc:subfield[@code='a' or @code='z']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
     (25, 'identifier', 'bibcn', oils_i18n_gettext(25, 'Local Free-Text Call Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='099']//text()$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field, search_field ) VALUES
+    (26, 'identifier', 'arcn', oils_i18n_gettext(26, 'Authority record control number', 'cmf', 'label'), 'marcxml', $$//marc:subfield[@code='0']$$, TRUE, FALSE );
 
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 
@@ -4171,6 +4173,13 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 );
 
 INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+	'Remove Parenthesized Substring',
+	'Remove any parenthesized substrings from the extracted text, such as the agency code preceding authority record control numbers in subfield 0.',
+	'remove_paren_substring',
+	0
+);
+
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
 	'Up-case',
 	'Convert text upper case.',
 	'uppercase',
@@ -4226,6 +4235,13 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 	2
 );
 
+INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
+	'Trim Surrounding Space',
+	'Trim leading and trailing spaces from extracted text.',
+	'btrim',
+	0
+);
+
 -- make use of the index normalizers
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm)
@@ -4271,6 +4287,14 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
             config.index_normalizer i
       WHERE i.func IN ('replace')
             AND m.id IN (19);
+
+INSERT INTO config.metabib_field_index_norm_map (field,norm)
+    SELECT  m.id,
+            i.id,
+      FROM  config.metabib_field m,
+            config.index_normalizer i
+      WHERE i.func IN ('btrim','remove_paren_substring')
+            AND m.id IN (26);
 
 -- claims returned mark item missing 
 INSERT INTO
