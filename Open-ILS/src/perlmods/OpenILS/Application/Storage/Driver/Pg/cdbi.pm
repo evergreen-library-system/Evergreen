@@ -1,7 +1,10 @@
 { # Based on the change to Class::DBI in OpenILS::Application::Storage.  This will
   # allow us to use TSearch2 via a simple cdbi "search" interface.
 	#-------------------------------------------------------------------------------
-	use Class::DBI;
+	use UNIVERSAL::require; 
+	BEGIN {                 
+		'Class::DBI::Frozen::301'->use or 'Class::DBI'->use or die $@;
+	}     
 	package Class::DBI;
 
 	sub search_fts {

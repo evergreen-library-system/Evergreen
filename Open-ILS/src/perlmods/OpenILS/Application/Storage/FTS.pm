@@ -237,7 +237,10 @@ sub sql_where_clause {
 }
 
 #-------------------------------------------------------------------------------
-use Class::DBI;
+use UNIVERSAL::require; 
+BEGIN {                 
+	'Class::DBI::Frozen::301'->use or 'Class::DBI'->use or die $@;
+}     
 
 package Class::DBI;
 

@@ -14,7 +14,10 @@
 	use OpenILS::Application::Storage::Driver::Pg::fts;
 	use OpenILS::Application::Storage::Driver::Pg::storage;
 	use OpenILS::Application::Storage::Driver::Pg::dbi;
-	use Class::DBI;
+	use UNIVERSAL::require; 
+	BEGIN {                 
+		'Class::DBI::Frozen::301'->use or 'Class::DBI'->use or die $@;
+	}     
 	use base qw/Class::DBI OpenILS::Application::Storage/;
 	use DBI;
 	use OpenSRF::EX qw/:try/;

@@ -167,10 +167,10 @@ FEDORA_13_RPMS = \
 	libssh2-devel \
 	libyaz \
 	libyaz-devel \
+	mod_ssl \
 	ncurses-devel \
 	ncurses-libs \
 	perl-Business-CreditCard \
-	perl-Class-DBI-Pg \
 	perl-Email-Send \
 	perl-GDGraph3d \
 	perl-MARC-Record \
@@ -190,7 +190,8 @@ FEDORA_13_RPMS = \
 # Should be fixed in 3.22
 FEDORA_13_CPAN = \
 	Business::OnlinePayment \
-	Business::OnlinePayment::AuthorizeNet
+	Business::OnlinePayment::AuthorizeNet \
+	Class::DBI::Frozen::301
 
 PGSQL_84_RPMS = \
 	postgresql-8.4* \

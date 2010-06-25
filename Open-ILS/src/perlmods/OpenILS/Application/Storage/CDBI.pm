@@ -1,6 +1,9 @@
 package OpenILS::Application::Storage::CDBI;
+use UNIVERSAL::require; 
+BEGIN {                 
+	'Class::DBI::Frozen::301'->use or 'Class::DBI'->use or die $@;
+}     
 use base qw/Class::DBI/;
-use Class::DBI;
 use Class::DBI::AbstractSearch;
 
 use OpenILS::Application::Storage::CDBI::actor;
@@ -23,8 +26,8 @@ our $VERSION = 1;
 my $log = 'OpenSRF::Utils::Logger';
 
 if ($Class::DBI::VERSION gt '3.0.1') {
-    $log->error("Your version of Class::DBI, $Class::DBI::VERSION, is too new and incompatable with Evergreen.  You will need to downgrade to version 3.0.1"); 
-    die("Your version of Class::DBI, $Class::DBI::VERSION, is too new and incompatable with Evergreen.  You will need to downgrade to version 3.0.1"); 
+    $log->error("Your version of Class::DBI, $Class::DBI::VERSION, is too new and incompatible with Evergreen.  You will need to downgrade to version 3.0.1 or install Class::DBI::Frozen::301"); 
+    die("Your version of Class::DBI, $Class::DBI::VERSION, is too new and incompatible with Evergreen.  You will need to downgrade to version 3.0.1 or install Class::DBI::Frozen::301"); 
 }
 
 sub child_init {
