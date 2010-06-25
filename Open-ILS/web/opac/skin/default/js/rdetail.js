@@ -568,6 +568,7 @@ var rdetailMarcFetched = false;
 function rdetailShowExtra(type, args) {
 
 	hideMe($('rdetail_copy_info_div'));
+	hideMe($('rdetail_summary_div'));
 	hideMe($('rdetail_reviews_div'));
 	hideMe($('rdetail_toc_div'));
 	hideMe($('rdetail_anotes_div'));
@@ -581,6 +582,7 @@ function rdetailShowExtra(type, args) {
 
 	removeCSSClass($('rdetail_copy_info_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_viewcn_link'), 'rdetail_extras_selected');
+	removeCSSClass($('rdetail_summary_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_reviews_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_toc_link'), 'rdetail_extras_selected');
 	removeCSSClass($('rdetail_excerpt_link'), 'rdetail_extras_selected');
@@ -596,6 +598,11 @@ function rdetailShowExtra(type, args) {
 			unHideMe($('rdetail_copy_info_div')); 
 			addCSSClass($('rdetail_copy_info_link'), 'rdetail_extras_selected');
 			break;
+
+        case "summary":
+            addCSSClass($('rdetail_summary_link'), 'rdetail_extras_selected');
+            unHideMe($('rdetail_summary_div'));
+            break;
 
 		case "reviews": 
 			addCSSClass($('rdetail_reviews_link'), 'rdetail_extras_selected');
@@ -696,6 +703,7 @@ function rdetailShowCNBrowse( cn, loc, depth, fromOnclick ) {
 	setSelector( $('cn_browse_selector'), cn );
 	hideMe($('rdetail_copy_info_div'));
 	hideMe($('rdetail_reviews_div'));
+	hideMe($('rdetail_summary_div'));
 	hideMe($('rdetail_toc_div'));
 	hideMe($('rdetail_marc_div'));
 	unHideMe($('rdetail_cn_browse_div'));
@@ -705,6 +713,11 @@ function rdetailShowCNBrowse( cn, loc, depth, fromOnclick ) {
 }
 
 function rdetailhandleAC(data) {
+
+	if( data.summary.html ) {
+		$('rdetail_summary_div').innerHTML = data.summary.html;
+		unHideMe($('rdetail_summary_link'));
+	}
 
 	if( data.reviews.html ) {
 		$('rdetail_review_container').innerHTML = data.reviews.html;

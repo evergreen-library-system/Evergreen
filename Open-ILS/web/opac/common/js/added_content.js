@@ -19,6 +19,7 @@ function acMakeURL(type, key) {
 
 function acCollectData( key, callback ) {
 	var context = { key : key, callback: callback, data : {} };
+	acCollectItem(context, 'summary');
 	acCollectItem(context, 'reviews');
 	acCollectItem(context, 'toc');
 	acCollectItem(context, 'excerpt');
