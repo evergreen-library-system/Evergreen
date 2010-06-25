@@ -342,7 +342,7 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
     }
 
     for my $f ( keys %fields) {
-        if ( @{$fields{$f}} ) {
+        if ( @{$fields{$f}{sf}} ) {
             for my $from_field ($source_r->field( $f )) {
                 for my $to_field ($target_r->field( $f )) {
                     if (exists($fields{$f}{match})) {
@@ -539,6 +539,44 @@ BEGIN
     END IF;
 
     RETURN TRUE;
+
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.merge_record_xml ( target_marc TEXT, template_marc TEXT ) RETURNS TEXT AS $$
+DECLARE
+    dyn_profile     vandelay.compile_profile%ROWTYPE;
+    replace_rule    TEXT;
+    tmp_marc        TEXT;
+    trgt_marc        TEXT;
+    tmpl_marc        TEXT;
+    match_count     INT;
+BEGIN
+
+    IF target_marc IS NULL OR template_marc IS NULL THEN
+        -- RAISE NOTICE 'no marc for target or template record';
+        RETURN NULL;
+    END IF;
+
+    dyn_profile := vandelay.compile_profile( template_marc );
+
+    IF dyn_profile.replace_rule <> '' AND dyn_profile.preserve_rule <> '' THEN
+        -- RAISE NOTICE 'both replace [%] and preserve [%] specified', dyn_profile.replace_rule, dyn_profile.preserve_rule;
+        RETURN NULL;
+    END IF;
+
+    IF dyn_profile.replace_rule <> '' THEN
+        trgt_marc = target_marc;
+        tmpl_marc = template_marc;
+        replace_rule = dyn_profile.replace_rule;
+    ELSE
+        tmp_marc = target_marc;
+        trgt_marc = template_marc;
+        tmpl_marc = tmp_marc;
+        replace_rule = dyn_profile.preserve_rule;
+    END IF;
+
+    RETURN vandelay.merge_record_xml( trgt_marc, tmpl_marc, dyn_profile.add_rule, replace_rule, dyn_profile.strip_rule );
 
 END;
 $$ LANGUAGE PLPGSQL;
