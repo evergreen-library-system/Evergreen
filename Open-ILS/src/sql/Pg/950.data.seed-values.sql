@@ -82,8 +82,6 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
     (24, 'identifier', 'sici', oils_i18n_gettext(24, 'SICI', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and ind1='4']/marc:subfield[@code='a' or @code='z']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
     (25, 'identifier', 'bibcn', oils_i18n_gettext(25, 'Local Free-Text Call Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='099']//text()$$ );
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field, search_field ) VALUES
-    (26, 'identifier', 'arcn', oils_i18n_gettext(26, 'Authority record control number', 'cmf', 'label'), 'marcxml', $$//marc:subfield[@code='0']$$, TRUE, FALSE );
 
 SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.metabib_field), TRUE);
 
@@ -4287,24 +4285,6 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
             config.index_normalizer i
       WHERE i.func IN ('replace')
             AND m.id IN (19);
-
-INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
-    SELECT  m.id,
-            i.id,
-            -2
-      FROM  config.metabib_field m,
-            config.index_normalizer i
-      WHERE i.func IN ('remove_paren_substring')
-            AND m.id IN (26);
-
-INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
-    SELECT  m.id,
-            i.id,
-            -1
-      FROM  config.metabib_field m,
-            config.index_normalizer i
-      WHERE i.func IN ('btrim')
-            AND m.id IN (26);
 
 
 -- claims returned mark item missing 
