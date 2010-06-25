@@ -1408,13 +1408,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="last_xact_id" />
 			<field name="marc" />
 			<field name="source" />
-			<field name="fixed_fields" oils_persist:virtual="true" />
-			<field name="notes" oils_persist:virtual="true" />
+			<field name="fixed_fields" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field name="bib_links" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 			<link field="notes" reltype="has_many" key="record" map="" class="arn"/>
+			<link field="bib_links" reltype="has_many" key="authority" map="" class="abl"/>
 			<link field="fixed_fields" reltype="might_have" key="record" map="" class="ard"/>
 		</links>
 	</class>
@@ -1427,6 +1429,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links>
 			<link field="record" reltype="has_a" key="id" map="" class="are"/>
+		</links>
+	</class>
+	<class id="abl" controller="open-ils.cstore" oils_obj:fieldmapper="authority::bib_linking" oils_persist:tablename="authority.bib_linking" reporter:label="Authority-Bibliographic Record Link">
+		<fields oils_persist:primary="id" oils_persist:sequence="authority.bib_linking_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="bib" reporter:datatype="link" />
+			<field name="authority" reporter:datatype="link" />
+		</fields>
+		<links>
+			<link field="bib" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="authority" reltype="has_a" key="id" map="" class="are"/>
 		</links>
 	</class>
 	<class id="clm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::language_map" oils_persist:tablename="config.language_map" reporter:label="Language Map" oils_persist:field_safe="true">
@@ -1740,6 +1753,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Indexed Series Field Entries" name="series_field_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Flattened MARC Fields " name="full_record_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Simple Record Extracts " name="simple_record" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Authority Links" name="authority_links" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -1758,6 +1772,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="author_field_entries" reltype="has_many" key="source" map="" class="mafe"/>
 			<link field="series_field_entries" reltype="has_many" key="source" map="" class="msefe"/>
 			<link field="full_record_entries" reltype="has_many" key="record" map="" class="mfr"/>
+			<link field="authority_links" reltype="has_many" key="bib" map="" class="abl"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>

@@ -39,6 +39,14 @@ CREATE INDEX authority_record_entry_editor_idx ON authority.record_entry ( edito
 CREATE UNIQUE INDEX authority_record_unique_tcn ON authority.record_entry (arn_source,arn_value) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE TRIGGER a_marcxml_is_well_formed BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.check_marcxml_well_formed();
 
+CREATE TABLE authority.bib_linking (
+    id          BIGSERIAL   PRIMARY KEY,
+    bib         BIGINT      NOT NULL REFERENCES biblio.record_entry (id),
+    authority   BIGINT      NOT NULL REFERENCES authority.record_entry (id)
+);
+CREATE INDEX authority_bl_bib_idx ON authority.bib_linking ( bib );
+CREATE UNIQUE INDEX authority_bl_bib_authority_once_idx ON authority.bib_linking ( authority, bib );
+
 CREATE TABLE authority.record_note (
 	id		BIGSERIAL	PRIMARY KEY,
 	record		BIGINT		NOT NULL REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
