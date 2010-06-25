@@ -88,7 +88,6 @@ DEBS =  \
 	libbusiness-creditcard-perl\
 	libbusiness-onlinepayment-authorizenet-perl\
 	libbusiness-onlinepayment-perl\
-	libclass-dbi-pg-perl\
 	libdatetime-format-builder-perl\
 	libdatetime-format-iso8601-perl\
 	libdatetime-format-mail-perl\
@@ -147,8 +146,7 @@ CENTOS = \
 	perl-Text-CSV
 
 CENTOS_PERL = \
-	Class::DBI \
-	Class::DBI::Pg \
+	Class::DBI::Frozen::301 \
 	Encode \
 	DBIx::ContextualFetch \
 	Getopt::Long \
