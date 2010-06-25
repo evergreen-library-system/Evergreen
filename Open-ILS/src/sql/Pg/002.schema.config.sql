@@ -57,7 +57,6 @@ INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_located_uri');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_full_rec');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_rec_descriptor');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_field_entry');
-INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_authority_linking');
 
 CREATE TABLE config.global_flag (
     label   TEXT    NOT NULL
@@ -69,7 +68,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0318'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0319'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,

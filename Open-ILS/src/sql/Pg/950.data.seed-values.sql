@@ -5613,6 +5613,28 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
 
 INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
     VALUES (
+        'ingest.disable_authority_linking',
+        oils_i18n_gettext(
+            'ingest.disable_authority_linking',
+            'Authority Automation: Disable bib-authority link tracking',
+            'cgf', 
+            'label'
+        )
+    );
+
+INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
+    VALUES (
+        'ingest.disable_authority_auto_update',
+        oils_i18n_gettext(
+            'ingest.disable_authority_auto_update',
+            'Authority Automation: Disable automatic authority updating (requires link tracking)',
+            'cgf', 
+            'label'
+        )
+    );
+
+INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
+    VALUES (
         'cat.bib.use_id_for_tcn',
         oils_i18n_gettext(
             'cat.bib.use_id_for_tcn',
