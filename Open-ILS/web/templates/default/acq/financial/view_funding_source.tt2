@@ -125,6 +125,7 @@
 
                     <table 
                         jsId="fsCreditGrid"
+                        autoheight="true"
                         dojoType="openils.widget.AutoGrid"
                         fieldOrder="['amount', 'effective_date', 'deadline_date', 'note']"
                         suppressFields="['id', 'funding_source']"

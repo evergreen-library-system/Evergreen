@@ -57,6 +57,11 @@ function TagManager(displayNode) {
                         dojo.destroy(
                             "oils-acq-fund-tag-mapping-" + mapping.id()
                         );
+                        fund.tags(
+                            fund.tags().filter(
+                                function(o) { return o.id() != mapping.id(); }
+                            )
+                        );
                     },
                     "onerror": function() {
                         /* XXX does onerror not actually work? */
@@ -81,6 +86,7 @@ function TagManager(displayNode) {
                 "oncomplete": function(r, list) {
                     mapping = list[0]; /* get the new mapping's ID this way */
                     mapping.tag(tag); /* re-"flesh" */
+                    fund.tags().push(mapping); /* save local reference */
                     dojo.place(
                         self.renderTagMapping(mapping),
                         self.displayNode, "last"

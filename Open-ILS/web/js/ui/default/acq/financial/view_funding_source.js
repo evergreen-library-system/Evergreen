@@ -16,11 +16,11 @@ dojo.require('openils.widget.AutoGrid');
 var ses = new OpenSRF.ClientSession('open-ils.acq');
 var fundingSource = null;
 
-function resetPage() {
+function resetPage(also_load_grid) {
     fundingSource = null;
     fsCreditGrid.isLoaded = false;
     fsAllocationGrid.isLoaded = false;
-    loadFS();
+    loadFS(also_load_grid);
 }
 
 function getFund(rowIndex, item) {
@@ -32,17 +32,21 @@ function getFund(rowIndex, item) {
 /** creates a new funding_source_credit from the dialog ----- */
 function applyFSCredit(fields) {
     fields.funding_source = fundingSourceID;
-    openils.acq.FundingSource.createCredit(fields, resetPage);
+    openils.acq.FundingSource.createCredit(
+        fields, function() { resetPage(loadCreditGrid); }
+    );
 }
 
 function applyFSAllocation(fields) {
     fields.funding_source = fundingSourceID;
     if(isNaN(fields.amount)) fields.amount = null;
-    openils.acq.Fund.createAllocation(fields, resetPage);
+    openils.acq.Fund.createAllocation(
+        fields, function() { resetPage(loadAllocationGrid); }
+    );
 }
 
 /** fetch the fleshed funding source ----- */
-function loadFS() {
+function loadFS(also_load_grid) {
     var req = ses.request(
         'open-ils.acq.funding_source.retrieve', 
         openils.User.authtoken, fundingSourceID, 
@@ -58,6 +62,8 @@ function loadFS() {
             return;
         }
         loadFSGrid();
+        if (typeof(also_load_grid) == "function")
+            also_load_grid(true /* reset_first */);
     }
     req.send();
 }
@@ -87,7 +93,7 @@ function formatFund(fund) {
     }
 }
 
-/** builds the credits grid ----- */
+/** builds the summary grid ----- */
 function loadFSGrid() {
     if(!fundingSource) return;
     var store = new dojo.data.ItemFileReadStore({data:acqfs.toStoreData([fundingSource])});
@@ -97,8 +103,9 @@ function loadFSGrid() {
 
 
 /** builds the credits grid ----- */
-function loadCreditGrid() {
-    if(fsCreditGrid.isLoaded) return;
+function loadCreditGrid(reset_first) {
+    if (fsCreditGrid.isLoaded) return;
+    if (reset_first) fsCreditGrid.resetStore();
     fsCreditGrid.loadAll(
         {"order_by": {"acqfscred": "effective_date DESC"}},
         {"funding_source": fundingSource.id()}
@@ -106,8 +113,9 @@ function loadCreditGrid() {
     fsCreditGrid.isLoaded = true;
 }
 
-function loadAllocationGrid() {
-    if(fsAllocationGrid.isLoaded) return;
+function loadAllocationGrid(reset_first) {
+    if (fsAllocationGrid.isLoaded) return;
+    if (reset_first) fsCreditGrid.resetStore();
     fsAllocationGrid.loadAll(
         {"order_by": {"acqfa": "create_time DESC"}},
         {"funding_source": fundingSource.id()}
