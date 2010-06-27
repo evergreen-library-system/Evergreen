@@ -317,14 +317,13 @@ function create_bresv(resource_list) {
             } else {
                 if (results.length == 1) {
                     alert(dojo.string.substitute(
-                        localeStrings.CREATE_BRESV_OK(results.length)
+                        localeStrings.CREATE_BRESV_OK, [results.length]
                     ));
                 } else {
                     alert(dojo.string.substitute(
-                        localeStrings.CREATE_BRESV_OK_PLURAL(results.length)
+                        localeStrings.CREATE_BRESV_OK_PLURAL, [results.length]
                     ));
                 }
-            );
             }
             update_brsrc_list();
             update_bresv_grid();
