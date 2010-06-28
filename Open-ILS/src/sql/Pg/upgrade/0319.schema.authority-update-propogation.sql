@@ -13,7 +13,7 @@ INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
             'label'
         )
     );
-UPDATE config.global_flag SET enabled = (SELECT enabled FROM config.internal_flag WHERE name = 'ingest.disable_authority_linking');
+UPDATE config.global_flag SET enabled = (SELECT enabled FROM ONLY config.internal_flag WHERE name = 'ingest.disable_authority_linking');
 DELETE FROM config.internal_flag WHERE name = 'ingest.disable_authority_linking';
 
 INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
