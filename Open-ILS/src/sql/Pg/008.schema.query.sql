@@ -135,7 +135,6 @@ CREATE TABLE query.expression (
 									'xcast',   -- cast
 									'xcol',    -- column
 									'xex',     -- exists
-									'xfld',    -- field
 									'xfunc',   -- function
 									'xin',     -- in
 									'xisnull', -- is null
@@ -662,64 +661,6 @@ CREATE OR REPLACE RULE query_expr_xex_delete_rule AS
     DO INSTEAD
     DELETE FROM query.expression WHERE id = OLD.id;
 
--- Create updatable view for field expressions
-
-CREATE OR REPLACE VIEW query.expr_xfld AS
-    SELECT
-		id,
-		parenthesize,
-		parent_expr,
-		seq_no,
-		column_name,
-		left_operand,
-		negate
-    FROM
-        query.expression
-    WHERE
-        type = 'xfld';
-
-CREATE OR REPLACE RULE query_expr_xfld_insert_rule AS
-    ON INSERT TO query.expr_xfld
-    DO INSTEAD
-    INSERT INTO query.expression (
-		id,
-		type,
-		parenthesize,
-		parent_expr,
-		seq_no,
-		column_name,
-		left_operand,
-		negate
-    ) VALUES (
-        COALESCE(NEW.id, NEXTVAL('query.expression_id_seq'::REGCLASS)),
-        'xfld',
-        COALESCE(NEW.parenthesize, FALSE),
-        NEW.parent_expr,
-        COALESCE(NEW.seq_no, 1),
-		NEW.column_name,
-		NEW.left_operand,
-		COALESCE(NEW.negate, false)
-    );
-
-CREATE OR REPLACE RULE query_expr_xfld_update_rule AS
-    ON UPDATE TO query.expr_xfld
-    DO INSTEAD
-    UPDATE query.expression SET
-        id = NEW.id,
-        parenthesize = NEW.parenthesize,
-        parent_expr = NEW.parent_expr,
-        seq_no = NEW.seq_no,
-		column_name = NEW.column_name,
-		left_operand = NEW.left_operand,
-		negate = NEW.negate
-    WHERE
-        id = OLD.id;
-
-CREATE OR REPLACE RULE query_expr_xfld_delete_rule AS
-    ON DELETE TO query.expr_xfld
-    DO INSTEAD
-    DELETE FROM query.expression WHERE id = OLD.id;
-
 -- Create updatable view for function call expressions
 
 CREATE OR REPLACE VIEW query.expr_xfunc AS
@@ -728,6 +669,7 @@ CREATE OR REPLACE VIEW query.expr_xfunc AS
 		parenthesize,
 		parent_expr,
 		seq_no,
+		column_name,
 		function_id,
 		negate
     FROM
@@ -744,6 +686,7 @@ CREATE OR REPLACE RULE query_expr_xfunc_insert_rule AS
 		parenthesize,
 		parent_expr,
 		seq_no,
+		column_name,
 		function_id,
 		negate
     ) VALUES (
@@ -752,6 +695,7 @@ CREATE OR REPLACE RULE query_expr_xfunc_insert_rule AS
         COALESCE(NEW.parenthesize, FALSE),
         NEW.parent_expr,
         COALESCE(NEW.seq_no, 1),
+		NEW.column_name,
 		NEW.function_id,
 		COALESCE(NEW.negate, false)
     );
@@ -764,6 +708,7 @@ CREATE OR REPLACE RULE query_expr_xfunc_update_rule AS
         parenthesize = NEW.parenthesize,
         parent_expr = NEW.parent_expr,
         seq_no = NEW.seq_no,
+		column_name = NEW.column_name,
 		function_id = NEW.function_id,
 		negate = NEW.negate
     WHERE
