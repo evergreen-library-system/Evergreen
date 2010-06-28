@@ -173,7 +173,6 @@ typedef enum {
 	EXP_CAST,
 	EXP_COLUMN,
 	EXP_EXIST,
-	EXP_FIELD,
 	EXP_FUNCTION,
 	EXP_IN,
 	EXP_ISNULL,
@@ -196,7 +195,7 @@ struct Expression_ {
 	char*       table_alias;
 	char*       column_name;
 	Expression* left_operand;
-	char*       op;
+	char*       op;                 // Not called "operator" because that's a keyword in C++
 	Expression* right_operand;
 	int         subquery_id;
 	StoredQ*    subquery;

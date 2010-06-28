@@ -1540,8 +1540,6 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 		type = EXP_COLUMN;
 	else if( !strcmp( type_str, "xex" ))
 		type = EXP_EXIST;
-	else if( !strcmp( type_str, "xfld" ))
-		type = EXP_FIELD;
 	else if( !strcmp( type_str, "xfunc" ))
 		type = EXP_FUNCTION;
 	else if( !strcmp( type_str, "xin" ))

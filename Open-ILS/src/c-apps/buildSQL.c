@@ -728,13 +728,6 @@ static void buildExpression( BuildSQLState* state, const Expression* expr ) {
 				buffer_add_char( state->sql, ')' );
 			}
 			break;
-		case EXP_FIELD :
-			if( expr->negate )
-				buffer_add( state->sql, "NOT " );
-
-			sqlAddMsg( state, "Field expressions not yet supported" );
-			state->error = 1;
-			break;
 		case EXP_FUNCTION :
 			buildFunction( state, expr );
 			break;
@@ -956,6 +949,11 @@ static void buildFunction( BuildSQLState* state, const Expression* expr ) {
 	if( expr->negate )
 		buffer_add( state->sql, "NOT " );
 
+	// If a subfield is specified, the function call
+	// needs an extra layer of parentheses
+	if( expr->column_name )
+		buffer_add_char( state->sql, '(' );
+
 	// We rely on the input side to ensure that the function name is available
 	buffer_add( state->sql, expr->function_name );
 	buffer_add_char( state->sql, '(' );
@@ -964,6 +962,13 @@ static void buildFunction( BuildSQLState* state, const Expression* expr ) {
 	buildSeries( state, expr->subexp_list, NULL );
 
 	buffer_add_char( state->sql, ')' );
+
+	if( expr->column_name ) {
+		// Add the name of the subfield
+		buffer_add( state->sql, ").\"" );
+		buffer_add( state->sql, expr->column_name );
+		buffer_add_char( state->sql, '\"' );
+	}
 }
 
 /**
