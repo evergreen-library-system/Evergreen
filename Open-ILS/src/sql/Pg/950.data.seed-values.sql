@@ -952,17 +952,6 @@ INSERT INTO actor.org_address VALUES (DEFAULT,DEFAULT,DEFAULT,1,'123 Main St.',N
 
 UPDATE actor.org_unit SET holds_address = 1, ill_address = 1, billing_address = 1, mailing_address = 1;
 
--- In booking, elbow room defines:
---  a) how far in the future you must make a reservation on a given item if
---      that item will have to transit somewhere to fulfill the reservation.
---  b) how soon a reservation must be starting for the reserved item to
---      be op-captured by the checkin interface.
-INSERT INTO actor.org_unit_setting (org_unit, name, value) VALUES (
-    (SELECT id FROM actor.org_unit WHERE parent_ou IS NULL),
-    'circ.booking_reservation.default_elbow_room',
-    '"1 day"'
-);
-
 INSERT INTO config.billing_type (id, name, owner) VALUES
 	( 1, oils_i18n_gettext(1, 'Overdue Materials', 'cbt', 'name'), 1);
 INSERT INTO config.billing_type (id, name, owner) VALUES
@@ -2148,6 +2137,17 @@ INSERT INTO config.org_unit_setting_type
         'interval'
     );
 
+-- *** Has to go below coust definition to satisfy referential integrity ***
+-- In booking, elbow room defines:
+--  a) how far in the future you must make a reservation on a given item if
+--      that item will have to transit somewhere to fulfill the reservation.
+--  b) how soon a reservation must be starting for the reserved item to
+--      be op-captured by the checkin interface.
+INSERT INTO actor.org_unit_setting (org_unit, name, value) VALUES (
+    (SELECT id FROM actor.org_unit WHERE parent_ou IS NULL),
+    'circ.booking_reservation.default_elbow_room',
+    '"1 day"'
+);
 
 -- Org_unit_setting_type(s) that need an fm_class:
 INSERT into config.org_unit_setting_type
