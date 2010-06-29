@@ -364,7 +364,7 @@ sub unapi {
 	if (!$format) {
 		my $body = "Content-type: application/xml; charset=utf-8\n\n";
 	
-		if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)(?:\[([0-9,]+)\])?(?:/(.+))?}o) {
+		if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^\/[]+)(?:\[([0-9,]+)\])?(?:/(.+))?}o) {
 			$id = $2;
 			$paging = $3;
 			$lib = uc($4);
@@ -453,20 +453,21 @@ sub unapi {
 		return Apache2::Const::OK;
 	}
 
-	if ($uri =~ m{^tag:[^:]+:([^\/]+)/(\d+)(?:\[([0-9,]+)\])?(?:/(.+))?}o) {
+	my $scheme;
+	if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^\/[]+)(?:\[([0-9,]+)\])?(?:/(.+))?}o) {
+		$scheme = $1;
 		$id = $2;
 		$paging = $3;
 		($lib,$depth) = split('/', $4);
 		$type = 'record';
-		$type = 'metarecord' if ($1 =~ /^metabib/o);
-		$type = 'isbn' if ($1 =~ /^isbn/o);
-		$type = 'call_number' if ($1 =~ /^call_number/o);
-		$type = 'acp' if ($1 =~ /^asset-copy/o);
-		$type = 'acn' if ($1 =~ /^asset-call_number/o);
-		$type = 'auri' if ($1 =~ /^asset-uri/o);
-		$type = 'authority' if ($1 =~ /^authority/o);
+		$type = 'metarecord' if ($scheme =~ /^metabib/o);
+		$type = 'isbn' if ($scheme =~ /^isbn/o);
+		$type = 'acp' if ($scheme =~ /^asset-copy/o);
+		$type = 'acn' if ($scheme =~ /^asset-call_number/o);
+		$type = 'auri' if ($scheme =~ /^asset-uri/o);
+		$type = 'authority' if ($scheme =~ /^authority/o);
 		$command = 'retrieve';
-		$command = 'browse' if ($type eq 'call_number');
+		$command = 'browse' if (grep { $scheme eq $_ } qw/call_number title author subjet topic authority.title authority.author authority.subject authority.topic series item-age/);
 	}
 
     if ($paging) {
@@ -489,8 +490,8 @@ sub unapi {
 	my $ou_types = $actor->request( 'open-ils.actor.org_types.retrieve' )->gather(1);
 	my $lib_depth = $depth || (grep { $_->id == $lib_object->ou_type } @$ou_types)[0]->depth;
 
-	if ($type eq 'call_number' and $command eq 'browse') {
-		print "Location: $root/browse/$base_format/call_number/$lib/$id\n\n";
+	if ($command eq 'browse') {
+		print "Location: $root/browse/$base_format/$scheme/$lib/$id\n\n";
 		return 302;
 	}
 
@@ -583,7 +584,7 @@ sub unapi {
 
 	my $method = "open-ils.supercat.$type.$base_format.$command";
 	my @params = ($id);
-	push @params, $lib, $flesh_feed, $paging if ($base_format eq 'holdings_xml');
+	push @params, $lib, $lib_depth, $flesh_feed, $paging if ($base_format eq 'holdings_xml');
 
 	my $req = $supercat->request($method,@params);
 	my $data = $req->gather();
@@ -1340,7 +1341,11 @@ sub create_record_feed {
 	my $base = $cgi->url;
 	my $host = $cgi->virtual_host || $cgi->server_name;
 
-	my $year = (gmtime())[5] + 1900;
+    my ($year,$month,$day) = reverse( (localtime)[3,4,5] );
+    $year += 1900;
+    $month += 1;
+
+    my $tag_prefix = sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d", $month, $day);
 
 	my $flesh_feed = parse_feed_type($type);
 
@@ -1362,11 +1367,12 @@ sub create_record_feed {
 		#my $rec = $record->id;
 		my $rec = $record;
 
-		my $item_tag = "tag:$host,$year:biblio-record_entry/$rec/$lib";
-		$item_tag = "tag:$host,$year:isbn/$rec/$lib" if ($search eq 'isbn');
+		my $item_tag = "$tag_prefix:biblio-record_entry/$rec/$lib";
+		$item_tag = "$tag_prefix:metabib-metarecord/$rec/$lib" if ($search eq 'metarecord');
+		$item_tag = "$tag_prefix:isbn/$rec/$lib" if ($search eq 'isbn');
 		$item_tag .= "/$depth" if (defined($depth));
 
-		$item_tag = "tag:$host,$year:authority-record_entry/$rec" if ($search eq 'authority');
+		$item_tag = "$tag_prefix:authority-record_entry/$rec" if ($search eq 'authority');
 
 		my $xml = $supercat->request(
 			"open-ils.supercat.$search.$type.retrieve",

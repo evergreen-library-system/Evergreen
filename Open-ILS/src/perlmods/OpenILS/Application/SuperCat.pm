@@ -1672,6 +1672,7 @@ sub retrieve_metarecord_mods {
 
 	# ... and a MODS clone to populate, with guts removed.
 	my $mods = $_parser->parse_string($master)->documentElement;
+	$mods->setNamespace('http://www.loc.gov/mods/', undef);
 	$mods->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
 	($mods) = $mods->findnodes('//mods:mods');
 	$mods->removeChildNodes;
@@ -1679,11 +1680,11 @@ sub retrieve_metarecord_mods {
 	# Add the metarecord ID as a (locally defined) info URI
 	my $recordInfo = $mods
 		->ownerDocument
-		->createElement("mods:recordInfo");
+		->createElement("recordInfo");
 
 	my $recordIdentifier = $mods
 		->ownerDocument
-		->createElement("mods:recordIdentifier");
+		->createElement("recordIdentifier");
 
 	my ($year,$month,$day) = reverse( (localtime)[3,4,5] );
 	$year += 1900;
@@ -1740,23 +1741,23 @@ sub retrieve_metarecord_mods {
 
 		my $relatedItem = $mods
 			->ownerDocument
-			->createElement("mods:relatedItem");
+			->createElement("relatedItem");
 
 		$relatedItem->setAttribute( type => 'constituent' );
 
 		my $identifier = $mods
 			->ownerDocument
-			->createElement("mods:identifier");
+			->createElement("identifier");
 
 		$identifier->setAttribute( type => 'uri' );
 
 		my $subRecordInfo = $mods
 			->ownerDocument
-			->createElement("mods:recordInfo");
+			->createElement("recordInfo");
 
 		my $subRecordIdentifier = $mods
 			->ownerDocument
-			->createElement("mods:recordIdentifier");
+			->createElement("recordIdentifier");
 
 		my $subid = $map->source;
 		$subRecordIdentifier->appendTextNode(
