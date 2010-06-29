@@ -3,6 +3,7 @@
  */
 dojo.require("fieldmapper.OrgUtils");
 dojo.require("openils.PermaCrud");
+dojo.require("openils.User");
 dojo.require("openils.widget.OrgUnitFilteringSelect");
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dijit.form.DateTextBox");
@@ -21,6 +22,7 @@ var brt_list = [];
 var brsrc_index = {};
 var bresv_index = {};
 var just_reserved_now = {};
+var aous_cache = {};
 
 function AttrValueTable() { this.t = {}; }
 AttrValueTable.prototype.set = function(attr, value) { this.t[attr] = value; };
@@ -262,14 +264,25 @@ function sync_brsrc_index_from_ids(available_list, additional_list) {
 
 function check_bresv_targeting(results) {
     var missing = 0;
+    var due_dates = [];
     for (var i in results) {
-        if (!(results[i].targeting && results[i].targeting.current_resource)) {
+        var targ = results[i].targeting;
+        if (!(targ && targ.current_resource)) {
             missing++;
+            if (targ) {
+                if (targ.error == "NO_COPIES" && targ.conflicts) {
+                    for (var k in targ.conflicts) {
+                        /* Could potentially get more circ information from
+                         * targ.conflicts for display in the future. */
+                        due_dates.push(humanize_timestamp_string2(targ.conflicts[k].due_date()));
+                    }
+                }
+            }
         } else {
             just_reserved_now[results[i].targeting.current_resource] = true;
         }
     }
-    return missing;
+    return {"missing": missing, "due_dates": due_dates};
 }
 
 function create_bresv(resource_list) {
@@ -308,22 +321,44 @@ function create_bresv(resource_list) {
                 ));
             }
         } else {
-            var missing;
-            if (missing = check_bresv_targeting(results)) {
-                alert(dojo.string.substitute(
-                    localeStrings.CREATE_BRESV_OK_MISSING_TARGET,
-                    [results.length, missing]
-                ));
-            } else {
-                if (results.length == 1) {
-                    alert(dojo.string.substitute(
-                        localeStrings.CREATE_BRESV_OK, [results.length]
-                    ));
+            var targeting = check_bresv_targeting(results);
+            if (targeting.missing) {
+                if (aous_cache["booking.require_successful_targeting"]) {
+                    alert(
+                        dojo.string.substitute(
+                            localeStrings.CREATE_BRESV_OK_MISSING_TARGET,
+                                [results.length, targeting.missing]
+                        ) + "\n\n" +
+                        dojo.string.substitute(
+                            localeStrings.CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC,
+                                [targeting.due_dates]
+                        ) + "\n\n" +
+                        localeStrings.CREATE_BRESV_OK_MISSING_TARGET_WILL_CANCEL
+                    );
+                    cancel_reservations(
+                        results.map(
+                            function(o) { return o.bresv; },
+                            true /* skip_update */
+                        )
+                    );
                 } else {
-                    alert(dojo.string.substitute(
-                        localeStrings.CREATE_BRESV_OK_PLURAL, [results.length]
-                    ));
+                    alert(
+                        dojo.string.substitute(
+                            localeStrings.CREATE_BRESV_OK_MISSING_TARGET,
+                                [results.length, targeting.missing]
+                        ) + "\n\n" +
+                        dojo.string.substitute(
+                            localeStrings.CREATE_BRESV_OK_MISSING_TARGET_BLOCKED_BY_CIRC,
+                                [targeting.due_dates]
+                        )
+                    );
                 }
+            } else {
+                alert(
+                    dojo.string.substitute(
+                        localeStrings.CREATE_BRESV_OK, [results.length]
+                    )
+                );
             }
             update_brsrc_list();
             update_bresv_grid();
@@ -342,7 +377,7 @@ function flatten_to_dojo_data(obj_list) {
                 "id": o.id(),
                 "type": o.target_resource_type().name(),
                 "start_time": humanize_timestamp_string(o.start_time()),
-                "end_time": humanize_timestamp_string(o.end_time()),
+                "end_time": humanize_timestamp_string(o.end_time())
             };
 
             if (o.current_resource())
@@ -442,7 +477,7 @@ function init_bresv_grid(barcode) {
     }
 }
 
-function cancel_reservations(bresv_id_list) {
+function cancel_reservations(bresv_id_list, skip_update) {
     try {
         var result = fieldmapper.standardRequest(
             ["open-ils.booking", "open-ils.booking.reservations.cancel"],
@@ -452,21 +487,17 @@ function cancel_reservations(bresv_id_list) {
         alert(localeStrings.CXL_BRESV_FAILURE2 + E);
         return;
     }
-    setTimeout(update_bresv_grid, 0);
+    if (!skip_update) setTimeout(update_bresv_grid, 0);
     if (!result) {
         alert(localeStrings.CXL_BRESV_FAILURE);
     } else if (is_ils_event(result)) {
         alert(my_ils_error(localeStrings.CXL_BRESV_FAILURE2, result));
     } else {
-        if (result.length == 1) {
-            alert(dojo.string.substitute(
+        alert(
+            dojo.string.substitute(
                 localeStrings.CXL_BRESV_SUCCESS, [result.length]
-            ));
-        } else {
-            alert(dojo.string.substitute(
-                localeStrings.CXL_BRESV_SUCCESS_PLURAL, [result.length]
-            ));
-        }
+            )
+        );
     }
 }
 
@@ -705,7 +736,7 @@ function init_timestamp_widgets() {
                     timePattern: "HH:mm",
                     clickableIncrement: "T00:15:00",
                     visibleIncrement: "T00:15:00",
-                    visibleRange: "T01:30:00",
+                    visibleRange: "T01:30:00"
                 },
                 onChange: function() {
                     reserve_timestamp_range.update_from_widget(this);
@@ -736,7 +767,7 @@ function cancel_selected_bresv(bresv_dojo_items) {
         /* After some delay to allow the cancellations a chance to get
          * committed, refresh the brsrc list as it might reflect newly
          * available resources now. */
-        setTimeout(update_brsrc_list, 2000);
+        if (our_brt) setTimeout(update_brsrc_list, 2000);
     } else {
         alert(localeStrings.CXL_BRESV_SELECT_SOMETHING);
     }
@@ -770,6 +801,24 @@ function early_action_passthru() {
     return true;
 }
 
+function init_aous_cache() {
+    /* The following method call could be given a longer
+     * list of OU settings to fetch in the future if needed. */
+    var results = fieldmapper.aou.fetchOrgSettingBatch(
+        openils.User.user.ws_ou(), ["booking.require_successful_targeting"]
+    );
+    if (results && !is_ils_event(results)) {
+        for (var k in results) {
+            if (results[k] != undefined)
+                aous_cache[k] = results[k].value;
+        }
+    } else if (results) {
+        alert(my_ils_error(localeStrings.ERROR_FETCHING_AOUS, results));
+    } else {
+        alert(localeStrings.ERROR_FETCHING_AOUS);
+    }
+}
+
 /*
  * my_init
  */
@@ -778,6 +827,7 @@ function my_init() {
     reveal_dom_element(document.getElementById("brt_search_block"));
     hide_dom_element(document.getElementById("reserve_under"));
     init_auto_l10n(document.getElementById("auto_l10n_start_here"));
+    init_aous_cache();
     init_timestamp_widgets();
 
     if (!(opts = xulG.bresv_interface_opts)) opts = {};

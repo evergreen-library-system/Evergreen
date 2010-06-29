@@ -48,6 +48,13 @@ function humanize_timestamp_string(ts) {
     var timeparts = parts[1].split("-")[0].split(":");
     return parts[0] + " " + timeparts[0] + ":" + timeparts[1];
 }
+function humanize_timestamp_string2(ts) {
+    /* For now, this discards time zones, too. */
+    var parts = ts.split(" ");
+    parts[1] = parts[1].replace(/[\-\+]\d+$/, "");
+    var timeparts = parts[1].split("-")[0].split(":");
+    return parts[0] + " " + timeparts[0] + ":" + timeparts[1];
+}
 function is_ils_event(e) { return (e.ilsevent != undefined); }
 function is_ils_actor_card_error(e) {
     return (e.textcode == "ACTOR_CARD_NOT_FOUND");

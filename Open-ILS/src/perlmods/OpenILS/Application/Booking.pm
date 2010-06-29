@@ -7,6 +7,7 @@ use POSIX qw/strftime/;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 
+use OpenSRF::Utils qw/:datetime/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
@@ -319,7 +320,7 @@ sub resource_list_by_attrs {
     return undef unless ($filters->{type} || $filters->{attribute_values});
 
     my $query = {
-        "select"   => {brsrc => ["id"]},
+        "select"   => {brsrc => [qw/id owner/], brt => ["elbow_room"]},
         "from"     => {brsrc => {"brt" => {}}},
         "where"    => {},
         "distinct" => 1
@@ -373,6 +374,7 @@ sub resource_list_by_attrs {
                             "end_time"
                         ),
                         {"cancel_time" => undef},
+                        {"return_time" => undef},
                         {"current_resource" => {"=" => {"+brsrc" => "id"}}}
                     ]},
                 }}
@@ -408,21 +410,58 @@ sub resource_list_by_attrs {
     }
 
     my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
-    my $rows = $cstore->request( 'open-ils.cstore.json_query.atomic', $query )->gather(1);
+    my $rows = $cstore->request(
+        "open-ils.cstore.json_query.atomic", $query
+    )->gather(1);
     $cstore->disconnect;
 
-    return @$rows ? [map { $_->{id} } @$rows] : [];
+    return [] if not @$rows;
+
+    if ($filters->{"pickup_lib"} && $filters->{"available"}) {
+        my @new_rows = ();
+        my $general_elbow_room = $U->ou_ancestor_setting_value(
+            $filters->{"pickup_lib"},
+            "circ.booking_reservation.default_elbow_room"
+        ) || '0 seconds';
+        my $would_start = $filters->{"available"}->[0];
+        my $dt_parser = new DateTime::Format::ISO8601;
+
+        $logger->info(
+            "general_elbow_room: '$general_elbow_room', " .
+            "would_start: '$would_start'"
+        );
+
+        # Here, elbow_room will double as required transit time padding.
+        foreach (@$rows) {
+            my $elbow_room = $_->{"elbow_room"} || $general_elbow_room;
+            if ($_->{"owner"} != $filters->{"pickup_lib"}) {
+                (my $ws = $would_start) =~ s/ /T/;
+                push @new_rows, $_ if DateTime->compare(
+                    $dt_parser->parse_datetime($ws),
+                    DateTime->now(
+                        "time_zone" => DateTime::TimeZone->new(
+                            "name" => "local"
+                        )
+                    )->add(seconds => interval_to_seconds($elbow_room))
+                ) >= 0;
+            } else {
+                push @new_rows, $_;
+            }
+        }
+        return [map { $_->{id} } @new_rows];
+    } else {
+        return [map { $_->{id} } @$rows];
+    }
 }
 __PACKAGE__->register_method(
     method   => "resource_list_by_attrs",
     api_name => "open-ils.booking.resources.filtered_id_list",
-    argc     => 3,
+    argc     => 2,
     signature=> {
         params => [
             {type => 'string', desc => 'Authentication token (unused for now,' .
                ' but at least pass undef here)'},
             {type => 'object', desc => 'Filter object: see notes for details'},
-            {type => 'bool', desc => 'Return whole objects instead of IDs?'}
         ],
         return => { desc => "An array of brsrc ids matching the requested filters." },
     },
@@ -484,8 +523,15 @@ sub reservation_list_by_filters {
         $query->{where}->{target_resource_type} = $filters->{type};
     }
 
+    $query->{where}->{"-and"} = [];
     if ($filters->{resource}) {
-        $query->{where}->{target_resource} = $filters->{resource};
+#       $query->{where}->{target_resource} = $filters->{resource};
+        push @{$query->{where}->{"-and"}}, {
+            "-or" => {
+                "target_resource" => $filters->{resource},
+                "current_resource" => $filters->{resource}
+            }
+        };
     }
 
     if ($filters->{attribute_values}) {
@@ -504,13 +550,21 @@ sub reservation_list_by_filters {
     }
 
     if ($filters->{search_start} || $filters->{search_end}) {
-        $query->{where}->{'-or'} = {};
+        my $or = {};
 
-        $query->{where}->{'-or'}->{start_time} = { 'between' => [ $filters->{search_start}, $filters->{search_end} ] }
-                if ($filters->{search_start});
+        $or->{start_time} =
+            {'between' => [ $filters->{search_start}, $filters->{search_end}]}
+                if $filters->{search_start};
 
-        $query->{where}->{'-or'}->{end_time} = { 'between' => [ $filters->{search_start}, $filters->{search_end} ] }
-                if ($filters->{search_end});
+        $or->{end_time} =
+            {'between' =>[$filters->{search_start}, $filters->{search_end}]}
+                if $filters->{search_end};
+
+        push @{$query->{where}->{"-and"}}, {"-or" => $or};
+    }
+
+    if (not scalar @{$query->{"where"}->{"-and"}}) {
+        delete $query->{"where"}->{"-and"};
     }
 
     my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
@@ -541,11 +595,12 @@ sub reservation_list_by_filters {
 __PACKAGE__->register_method(
     method   => "reservation_list_by_filters",
     api_name => "open-ils.booking.reservations.filtered_id_list",
-    argc     => 2,
+    argc     => 3,
     signature=> {
         params => [
             {type => 'string', desc => 'Authentication token'},
-            {type => 'object', desc => 'Filter object -- see notes for details'}
+            {type => "object", desc => "Filter object: see notes for details"},
+            {type => "bool", desc => "Return whole object instead of ID? (default false)"}
         ],
         return => { desc => "An array of bresv ids matching the requested filters." },
     },
@@ -572,7 +627,7 @@ NOTES
 sub naive_ts_string {strftime("%F %T", localtime($_[0] || time));}
 sub naive_start_of_day {strftime("%F", localtime($_[0] || time))." 00:00:00";}
 
-# Return a list of bresv or an ilsevent on failure.
+# Return a map of bresv or an ilsevent on failure.
 sub get_uncaptured_bresv_for_brsrc {
     my ($e, $o) = @_; # o's keys (all optional): owning_lib, barcode, range
 
@@ -630,6 +685,10 @@ sub get_uncaptured_bresv_for_brsrc {
                 "-and" => [
                     {"current_resource" => "PLACEHOLDER"},
                     {"start_time" => "PLACEHOLDER"},
+                    {"capture_time" => undef},
+                    {"cancel_time" => undef},
+                    {"return_time" => undef},
+                    {"pickup_time" => undef}
                 ]
             }
         };
@@ -727,6 +786,75 @@ __PACKAGE__->register_method(
 );
 
 
+sub could_capture {
+    my ($self, $client, $auth, $barcode) = @_;
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed("CAPTURE_RESERVATION");
+
+    my $dt_parser = new DateTime::Format::ISO8601;
+    my $now = now DateTime; # sic
+    my $res = get_uncaptured_bresv_for_brsrc($e, {"barcode" => $barcode});
+
+    if ($res and keys %$res) {
+        my $id;
+        while ((undef, $id) = each %$res) {
+            my $bresv = $e->retrieve_booking_reservation([
+                $id, {
+                    "flesh" => 1, "flesh_fields" => {
+                        "bresv" => [qw(
+                            usr target_resource_type
+                            target_resource current_resource
+                        )]
+                    }
+                }
+            ]);
+            my $elbow_room = interval_to_seconds(
+                $bresv->target_resource_type->elbow_room ||
+                $U->ou_ancestor_setting_value(
+                    $bresv->pickup_lib,
+                    "circ.booking_reservation.default_elbow_room"
+                ) ||
+                "0 seconds"
+            );
+
+            unless ($elbow_room) {
+                $client->respond($bresv);
+            } else {
+                my $start_time = $dt_parser->parse_datetime(
+                    clense_ISO8601($bresv->start_time)
+                );
+
+                if ($now >= $start_time->subtract("seconds" => $elbow_room)) {
+                    $client->respond($bresv);
+                } else {
+                    $logger->info(
+                        "not within elbow room: $elbow_room, " .
+                        "else would have returned bresv " . $bresv->id
+                    );
+                }
+            }
+        }
+    }
+    $e->disconnect;
+    undef;
+}
+__PACKAGE__->register_method(
+    method   => "could_capture",
+    api_name => "open-ils.booking.reservations.could_capture",
+    argc     => 2,
+    streaming=> 1,
+    signature=> {
+        params => [
+            {type => "string", desc => "Authentication token"},
+            {type => "string", desc => "Resource barcode"}
+        ],
+        return => {desc => "One or zero reservations; event on error."}
+    }
+);
+
+
 sub get_copy_fleshed_just_right {
     my ($self, $client, $auth, $barcode) = @_;
 
@@ -771,7 +899,10 @@ sub best_bresv_candidate {
     my ($e, $id_list) = @_;
 
     # This will almost always be the case.
-    return $id_list->[0] if @$id_list == 1;
+    if (@$id_list == 1) {
+        $logger->info("best_bresv_candidate (only) " . $id_list->[0]);
+        return $id_list->[0];
+    }
 
     my @here = ();
     my $this_ou = $e->requestor->ws_ou;
@@ -791,40 +922,48 @@ sub best_bresv_candidate {
         push @here, $_->{"id"} if $_->{"pickup_lib"} == $this_ou;
     }
 
+    my $result;
     if (@here > 0) {
-        return pop @here if @here == 1;
-        return (sort @here)[0];
+        $result = @here == 1 ? pop @here : (sort @here)[0];
     } else {
-        return (sort @$id_list)[0];
+        $result = (sort @$id_list)[0];
     }
+    $logger->info(
+        "best_bresv_candidate from " . join(",", @$id_list) . ": $result"
+    );
+    return $result;
 }
 
 
 sub capture_resource_for_reservation {
-    my ($self, $client, $auth, $barcode) = @_;
+    my ($self, $client, $auth, $barcode, $no_update_copy) = @_;
 
-    my $e = new_editor(xact => 1, authtoken => $auth);
+    my $e = new_editor(authtoken => $auth);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed("CAPTURE_RESERVATION");
 
     my $uncaptured = get_uncaptured_bresv_for_brsrc(
         $e, {"barcode" => $barcode}
     );
-    $e->disconnect;
 
     if (keys %$uncaptured) {
         # Note this will only capture one reservation at a time, even in
         # cases with overbooking (multiple "soonest" bresv's on a resource).
-        my $key = (sort(keys %$uncaptured))[0];
+        my $bresv = best_bresv_candidate(
+            $e, $uncaptured->{
+                (sort(keys %$uncaptured))[0]
+            }
+        );
+        $e->disconnect;
         return capture_reservation(
-            $self, $client, $auth, best_bresv_candidate($e, $uncaptured->{$key})
+            $self, $client, $auth, $bresv, $no_update_copy
         );
     } else {
         return new OpenILS::Event(
             "RESERVATION_NOT_FOUND",
-            desc => "No capturable reservation found pertaining " .
+            "desc" => "No capturable reservation found pertaining " .
                 "to a resource with barcode $barcode",
-            payload => {fail_cause => 'no-reservation', captured => 0}
+            "payload" => {"fail_cause" => "no-reservation", "captured" => 0}
         );
     }
 }
@@ -836,7 +975,7 @@ __PACKAGE__->register_method(
         params => [
             {type => "string", desc => "Authentication token"},
             {type => "string", desc => "Barcode of booked & targeted resource"},
-            {type => "int", desc => "Pickup library (default to client ws_ou)"},
+            {type => "number", desc => "(optional) 1 to not update copy"}
         ],
         return => { desc => "An OpenILS event describing the capture outcome" }
     }
@@ -844,89 +983,125 @@ __PACKAGE__->register_method(
 
 
 sub capture_reservation {
-    my ($self, $client, $auth, $res_id) = @_;
+    my ($self, $client, $auth, $res_id, $no_update_copy) = @_;
 
-    my $e = new_editor(xact => 1, authtoken => $auth);
-    return $e->event unless $e->checkauth;
-    return $e->event unless $e->allowed('CAPTURE_RESERVATION');
+    my $e = new_editor("xact" => 1, "authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('CAPTURE_RESERVATION');
     my $here = $e->requestor->ws_ou;
 
     my $reservation = $e->retrieve_booking_reservation([
         $res_id, {
-            flesh => 2,
-            flesh_fields => {"bresv" => ["usr"], "au" => ["card"]}
+            "flesh" => 2, "flesh_fields" => {
+                "bresv" => [qw/usr current_resource type/],
+                "au" => ["card"],
+                "brsrc" => ["type"]
+            }
         }
     ]);
-    return OpenILS::Event->new('RESERVATION_NOT_FOUND') unless $reservation;
 
-    return OpenILS::Event->new('RESERVATION_CAPTURE_FAILED', payload => { captured => 0, fail_cause => 'no-resource' })
-        if (!$reservation->current_resource); # no resource
+    return new OpenILS::Event("RESERVATION_NOT_FOUND") unless $reservation;
+    return new OpenILS::Event(
+        "RESERVATION_CAPTURE_FAILED",
+        payload => {"captured" => 0, "fail_cause" => "no-resource"}
+    ) unless $reservation->current_resource;
 
-    return OpenILS::Event->new('RESERVATION_CAPTURE_FAILED', payload => { captured => 0, fail_cause => 'cancelled' })
-        if ($reservation->cancel_time); # canceled
+    return new OpenILS::Event(
+        "RESERVATION_CAPTURE_FAILED",
+        "payload" => {"captured" => 0, "fail_cause" => "cancelled"}
+    ) if $reservation->cancel_time;
 
-    my $resource = $e->retrieve_booking_resource( $reservation->current_resource );
-    my $type = $e->retrieve_booking_resource_type( $resource->type );
+    $reservation->capture_staff($e->requestor->id);
+    $reservation->capture_time("now");
 
-    $reservation->capture_staff( $e->requestor->id );
-    $reservation->capture_time( 'now' );
+    $e->update_booking_reservation($reservation) or return $e->die_event;
 
-    my $reservation_id = undef;
-    return $e->event unless ( $e->update_booking_reservation( $reservation ) and $reservation_id = $e->data );
+    my $ret = {"captured" => 1, "reservation" => $reservation};
 
-    $reservation->id($reservation_id);
-
-    my $ret = { captured => 1, reservation => $reservation };
+    my $search_acp_like_this = [
+        {
+            "barcode" => $reservation->current_resource->barcode,
+            "deleted" => "f"
+        },
+        {"flesh" => 1, "flesh_fields" => {"acp" => ["call_number"]}}
+    ];
 
     if ($here != $reservation->pickup_lib) {
-        return OpenILS::Event->new('RESERVATION_CAPTURE_FAILED', payload => { captured => 0, fail_cause => 'not-transferable' })
-            if (!$U->is_true($type->transferable)); # non-transferable resource
+        $logger->info("resource isn't at the reservation's pickup lib...");
+        return new OpenILS::Event(
+            "RESERVATION_CAPTURE_FAILED",
+            "payload" => {"captured" => 0, "fail_cause" => "not-transferable"}
+        ) unless $U->is_true(
+            $reservation->current_resource->type->transferable
+        );
 
         # need to transit the item ... is it already in transit?
-        my $transit = $e->search_action_reservation_transit_copy( { reservation => $res_id, dest_recv_time => undef } )->[0];
+        my $transit = $e->search_action_reservation_transit_copy(
+            {"reservation" => $res_id, "dest_recv_time" => undef}
+        )->[0];
 
         if (!$transit) { # not yet in transit
             $transit = new Fieldmapper::action::reservation_transit_copy;
 
             $transit->reservation($reservation->id);
-            $transit->target_copy($resource->id);
+            $transit->target_copy($reservation->current_resource->id);
             $transit->copy_status(15);
-            $transit->source_send_time('now');
+            $transit->source_send_time("now");
             $transit->source($here);
             $transit->dest($reservation->pickup_lib);
 
-            $e->create_action_reservation_transit_copy( $transit );
+            $e->create_action_reservation_transit_copy($transit);
 
-            if ($U->is_true($type->catalog_item)) {
-                my $copy = $e->search_asset_copy( { barcode => $resource->barcode, deleted => 'f' } )->[0];
+            if ($U->is_true(
+                $reservation->current_resource->type->catalog_item
+            )) {
+                my $copy = $e->search_asset_copy($search_acp_like_this)->[0];
 
                 if ($copy) {
                     return new OpenILS::Event(
                         "OPEN_CIRCULATION_EXISTS",
-                        payload => { captured => 0, copy => $copy }
-                    ) if $copy->status == 1;
-                    $copy->status(6);
-                    $e->update_asset_copy( $copy );
-                    $$ret{catalog_item} = $copy; # $e->data is just id (int)
+                        "payload" => {"captured" => 0, "copy" => $copy}
+                    ) if $copy->status == 1 and not $no_update_copy;
+
+                    $ret->{"mvr"} = get_mvr($copy->call_number->record);
+                    if ($no_update_copy) {
+                        $ret->{"new_copy_status"} = 6;
+                    } else {
+                        $copy->status(6);
+                        $e->update_asset_copy($copy) or return $e->die_event;
+                    }
                 }
             }
         }
 
-        $$ret{transit} = $transit;
-    } elsif ($U->is_true($type->catalog_item)) {
-        my $copy = $e->search_asset_copy( { barcode => $resource->barcode, deleted => 'f' } )->[0];
+        $ret->{"transit"} = $transit;
+    } elsif ($U->is_true($reservation->current_resource->type->catalog_item)) {
+        $logger->info("resource is a catalog item...");
+        my $copy = $e->search_asset_copy($search_acp_like_this)->[0];
 
         if ($copy) {
-            return OpenILS::Event->new('OPEN_CIRCULATION_EXISTS', payload => { captured => 0, copy => $copy }) if ($copy->status == 1);
-            $copy->status(15);
-            $e->update_asset_copy( $copy );
-            $$ret{catalog_item} = $copy; # $e->data is just id (int)
+            return new OpenILS::Event(
+                "OPEN_CIRCULATION_EXISTS",
+                "payload" => {"captured" => 0, "copy" => $copy}
+            ) if $copy->status == 1 and not $no_update_copy;
+
+            $ret->{"mvr"} = get_mvr($copy->call_number->record);
+            if ($no_update_copy) {
+                $ret->{"new_copy_status"} = 15;
+            } else {
+                $copy->status(15);
+                $e->update_asset_copy($copy) or return $e->die_event;
+            }
         }
     }
 
-    $e->commit;
+    $e->commit or return $e->die_event;
 
-    return OpenILS::Event->new('SUCCESS', payload => $ret);
+    # XXX I'm not sure whether these last two elements of the payload
+    # actually get used anywhere.
+    $ret->{"resource"} = $reservation->current_resource;
+    $ret->{"type"} = $reservation->current_resource->type;
+    return new OpenILS::Event("SUCCESS", "payload" => $ret);
 }
 __PACKAGE__->register_method(
     method   => "capture_reservation",
@@ -960,10 +1135,18 @@ sub cancel_reservation {
     ]);
     return $e->die_event if not $bresv_list;
 
+    my @results = ();
     my $circ = OpenSRF::AppSession->connect("open-ils.circ") or
         return $e->die_event;
-    my @results = ();
     foreach my $bresv (@$bresv_list) {
+        $bresv->cancel_time("now");
+        $e->update_booking_reservation($bresv) or do {
+            $circ->disconnect;
+            return $e->die_event;
+        };
+        $e->xact_commit;
+        $e->xact_begin;
+
         if (
             $bresv->target_resource_type->catalog_item == "t" &&
             $bresv->current_resource
@@ -975,16 +1158,10 @@ sub cancel_reservation {
                         "noop" => 1}
                 )->gather(1)->{"textcode"});
         }
-        $bresv->cancel_time("now");
-        $e->update_booking_reservation($bresv) or do {
-            $circ->disconnect;
-            return $e->die_event;
-        };
-
         push @results, $bresv->id;
     }
 
-    $e->commit;
+    $e->disconnect;
     $circ->disconnect;
 
     return \@results;
@@ -1094,7 +1271,7 @@ sub get_bresv_by_returnable_resource_barcode {
     my $e = new_editor(xact => 1, authtoken => $auth);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed("VIEW_USER");
-    return $e->die_event unless $e->allowed("ADMIN_BOOKING_RESERVATION");
+#    return $e->die_event unless $e->allowed("ADMIN_BOOKING_RESERVATION");
 
     my $rows = $e->json_query({
         "select" => {"bresv" => ["id"]},

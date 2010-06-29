@@ -2,6 +2,8 @@
  * localization (Dojo/nls) for pickup and return . */
 
 dojo.require("dojo.data.ItemFileReadStore");
+dojo.require("dojo.date.locale");
+dojo.require("openils.PermaCrud");
 
 function Populator(widgets, primary_input) {
     this.widgets = widgets;
@@ -137,7 +139,7 @@ Populator.prototype.return_by_resource = function(barcode) {
     var r = fieldmapper.standardRequest(
         ["open-ils.booking",
         "open-ils.booking.reservations.by_returnable_resource_barcode"],
-        [xulG.auth.session.key, barcode]
+        [openils.User.authtoken, barcode]
     );
     if (!r || r.length < 1) {
         alert(localeStrings.NO_SUCH_RETURNABLE_RESOURCE);
@@ -159,7 +161,10 @@ Populator.prototype.return_by_resource = function(barcode) {
         if (!ret) {
             alert(localeStrings.RETURN_NO_RESPONSE);
         } else if (is_ils_event(ret) && ret.textcode != "SUCCESS") {
-            alert(my_ils_error(localeStrings.RETURN_ERROR, ret));
+            if (ret.textcode == "ROUTE_ITEM")
+                display_transit_slip(ret);
+            else
+                alert(my_ils_error(localeStrings.RETURN_ERROR, ret));
         } else {
             /* XXX speedbump should go, but something has to happen else
              * there's no indication to staff that anything happened when
@@ -189,7 +194,7 @@ Populator.prototype.populate = function(barcode, which) {
 
     var result = fieldmapper.standardRequest(
         ["open-ils.booking", "open-ils.booking.reservations.get_captured"],
-        [xulG.auth.session.key, this.patron_barcode, which]
+        [openils.User.authtoken, this.patron_barcode, which]
     );
 
     if (!result) {
@@ -220,7 +225,7 @@ Populator.prototype.toggle_anyness = function(any, which) {
 Populator.prototype.pickup = function(reservation) {
     return fieldmapper.standardRequest(
         ["open-ils.circ", "open-ils.circ.reservation.pickup"],
-        [xulG.auth.session.key, {
+        [openils.User.authtoken, {
             "patron_barcode": this.patron_barcode,
             "reservation": reservation
         }]
@@ -229,7 +234,7 @@ Populator.prototype.pickup = function(reservation) {
 Populator.prototype.return = function(reservation) {
     return fieldmapper.standardRequest(
         ["open-ils.circ", "open-ils.circ.reservation.return"],
-        [xulG.auth.session.key, {
+        [openils.User.authtoken, {
             "patron_barcode": this.patron_barcode,
             "reservation": reservation.id()
             /* yeah just id here ------^; lack of parallelism */
@@ -258,7 +263,10 @@ Populator.prototype.act_on_selected = function(how, which) {
         if (!result) {
             alert(no_response_msg);
         } else if (is_ils_event(result) && result.textcode != "SUCCESS") {
-            alert(my_ils_error(error_msg, result));
+            if (result.textcode == "ROUTE_ITEM")
+                display_transit_slip(result);
+            else
+                alert(my_ils_error(error_msg, result));
         } else {
             continue;
         }
@@ -281,3 +289,50 @@ Populator.prototype.reset = function() {
         this.primary_input.focus();
     }
 };
+
+/* XXX needs to be combined with the code that shows transit slips in the
+ * booking capture interface. */
+function display_transit_slip(e) {
+    var ou = fieldmapper.aou.findOrgUnit(e.org, /* slim_ok */false);
+    var ma = (new openils.PermaCrud()).retrieve("aoa", ou.mailing_address());
+    var mas = ma ?
+        dojo.string.substitute(
+            localeStrings.ADDRESS,
+            [ma.street1(),ma.street2(),ma.city(),ma.state(),ma.post_code()].map(
+                function(o) { return o ? o : ""; }
+            )
+        ).replace("\n\n", "\n").replace("\n", "<br />") : "[Unknown address]";
+    /* XXX i18n and/or template */
+    try {
+        var win = window.open(
+            "","","resizeable,width=600,height=400,scrollbars=1"
+        );
+        win.document.body.innerHTML =
+            "<h1>Transit Slip</h1>\n" +
+            //"<img src='/xul/server/skin/media/images/turtle.gif' />\n" +
+            "<p>Destination: <strong>" + ou.name() + "</strong></p>\n" +
+            "<p>" + mas + "</p>\n" +
+            "<p>Barcode: " + e.payload.copy.barcode() + "<br />\n" +
+            "Title: <span id='title'></span><br />\n" +
+            "Author: <span id='author'></span><br />\n" +
+            "Slip Date: " +
+                dojo.date.locale.format(new Date(), {"formatLength": "short"}) +
+            "</p>";
+        fieldmapper.standardRequest(
+            ["open-ils.search", "open-ils.search.biblio.mods_from_copy"], {
+                "params": [e.payload.copy.id()],
+                "async": true,
+                "onresponse": function(r) {
+                    var mvr = openils.Util.readResponse(r);
+                    dojo.byId("title", win.document).innerHTML = mvr.title();
+                    dojo.byId("author", win.document).innerHTML = mvr.author();
+                },
+                "oncomplete": function() {
+                    win[confirm("Print transit slip?") ? "print" : "close"]();
+                }
+            }
+        );
+    } catch (E) {
+        alert("exception rendering transit slip: " + E); // XXX
+    }
+}

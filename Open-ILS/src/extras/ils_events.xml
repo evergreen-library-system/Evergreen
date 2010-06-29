@@ -882,6 +882,9 @@
 	<event code='7023' textcode='RESERVATION_BAD_PARAMS'>
 		<desc xml:lang="en-US">Provided parameters describe unacceptable reservation.</desc>
 	</event>
+	<event code="7024" textcode="HOLD_RESERVATION_CONFLICT">
+		<desc xml:lang="en-US">Both a hold and a reservation exist for t
+	</event>
 
 
 

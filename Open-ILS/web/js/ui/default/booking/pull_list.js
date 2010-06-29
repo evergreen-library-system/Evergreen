@@ -47,18 +47,33 @@ function generate_result_row(one) {
         return td;
     }
 
+    function render_pickup_lib(pickup_lib) {
+        var span = document.createElement("span");
+        if (pickup_lib != owning_lib_selected)
+            span.setAttribute("class", "pull_list_will_transit");
+        span.innerHTML = localeStrings.AT + " " +
+            fieldmapper.aou.findOrgUnit(pickup_lib).shortname();
+        return span;
+    }
+
     function reservation_info_cell(one) {
         var td = document.createElement("td");
         for (var i in one.reservations) {
             var one_resv = one.reservations[i];
             var div = document.createElement("div");
-            var s = humanize_timestamp_string(one_resv.start_time()) + " - " +
-                humanize_timestamp_string(one_resv.end_time()) + " " +
-                formal_name(one_resv.usr());
-            /* FIXME: The above need patron barcode instead of name, but
-             * that requires a fix in the middle layer to flesh on the
-             * right stuff. */
-            div.appendChild(document.createTextNode(s));
+            div.setAttribute("class", "pull_list_resv_detail");
+            var content = [
+                document.createTextNode(
+                    humanize_timestamp_string(one_resv.start_time()) +
+                    " - " + humanize_timestamp_string(one_resv.end_time())
+                ),
+                document.createElement("br"),
+                render_pickup_lib(one_resv.pickup_lib()),
+                document.createTextNode(
+                    " " + localeStrings.FOR + " " + formal_name(one_resv.usr())
+                )
+            ];
+            for (var k in content) { div.appendChild(content[k]); }
             td.appendChild(div);
         }
         return td;
@@ -71,7 +86,6 @@ function generate_result_row(one) {
     cells.push(cell(undefined, one.current_resource.barcode()));
     cells.push(cell(baseid + "_call_number", "-"));
     cells.push(cell(baseid + "_copy_location", "-"));
-    cells.push(cell(baseid + "_copy_number", "-"));
     cells.push(reservation_info_cell(one));
 
     var row = document.createElement("tr");
@@ -120,6 +134,7 @@ function get_all_relevant_acp(list) {
             return results;
         }
     }
+    return null;
 }
 
 function fill_in_pull_list_details(list, acp_cache) {
@@ -133,10 +148,6 @@ function fill_in_pull_list_details(list, acp_cache) {
             var copy_location_el = document.getElementById(
                 dom_table_rowid(one.current_resource.id()) + "_copy_location"
             );
-            var copy_number_el = document.getElementById(
-                dom_table_rowid(one.current_resource.id()) + "_copy_number"
-            );
-
             var bc = one.current_resource.barcode();
 
             if (acp_cache[bc]) {
@@ -147,10 +158,6 @@ function fill_in_pull_list_details(list, acp_cache) {
                 if (copy_location_el && acp_cache[bc].location()) {
                     var value = acp_cache[bc].location().name();
                     if (value) copy_location_el.innerHTML = value;
-                }
-                if (copy_number_el) {
-                    var value = acp_cache[bc].copy_number();
-                    if (value) copy_number_el.innerHTML = value;
                 }
             } else {
                 alert(localeStrings.COPY_MISSING + bc);
