@@ -87,3 +87,21 @@ div#patron_info { font-size: 12pt; font-weight: bold; }
 div#no_ready_bresv, div#no_out_bresv, div#no_in_bresv {
     font-style: italic;
 }
+.tundra .dojoxGridRowSelected {
+    background-color: #006699 !important;
+    color: #ffffff;
+}
+.pull_list_resv_detail {
+    border-bottom: 1px dashed #999999;
+    margin-bottom: 4px;
+}
+.pull_list_will_transit { font-weight: bold; color: #ff6666; }
+iframe#printing_iframe {
+    border-top: 1px dashed #333333;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+}
+button.print_slip {
+    margin-left: 24px;
+}
