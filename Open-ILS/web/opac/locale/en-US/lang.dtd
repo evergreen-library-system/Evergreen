@@ -961,6 +961,10 @@
 <!ENTITY staff.main.menu.file.new.label "New Window">
 <!ENTITY staff.main.menu.file.new_tab.accesskey "T">
 <!ENTITY staff.main.menu.file.new_tab.label "New Tab">
+<!ENTITY staff.main.menu.file.join_tabs_horizontal.accesskey "J">
+<!ENTITY staff.main.menu.file.join_tabs_horizontal.label "Join Tabs (Horizontal)">
+<!ENTITY staff.main.menu.file.join_tabs_vertical.accesskey "V">
+<!ENTITY staff.main.menu.file.join_tabs_vertical.label "Join Tabs (Vertical)">
 <!ENTITY staff.main.menu.file.open.key "O">
 <!ENTITY staff.main.menu.file.open.label "Open Session">
 <!ENTITY staff.main.menu.file.save.key "S">

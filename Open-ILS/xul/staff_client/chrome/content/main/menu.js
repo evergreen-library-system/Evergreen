@@ -35,6 +35,11 @@ main.menu = function () {
             tabs.childNodes[i].setAttribute('accesskey','');
         }
     }
+
+    if (xulG.pref.getBoolPref('open-ils.enable_join_tabs')) {
+        document.getElementById('join_tabs_menuitem_vertical').hidden = false;
+        document.getElementById('join_tabs_menuitem_horizontal').hidden = false;
+    }
 }
 
 main.menu.prototype = {
@@ -156,6 +161,14 @@ main.menu.prototype = {
             'cmd_new_tab' : [
                 ['oncommand'],
                 function() { obj.new_tab(null,{'focus':true},null); }
+            ],
+            'cmd_join_tabs_vertical' : [
+                ['oncommand'],
+                function() { obj.join_tabs({'orient':'vertical'}); }
+            ],
+            'cmd_join_tabs_horizontal' : [
+                ['oncommand'],
+                function() { obj.join_tabs({'orient':'horizontal'}); }
             ],
             'cmd_close_tab' : [
                 ['oncommand'],
@@ -1277,6 +1290,11 @@ main.menu.prototype = {
         }
     },
 
+    // We keep a reference to content_params fed to tabs, so if we manipulate the DOM (say, via join_tabs),
+    // we can re-inject the content_params into the content if needed.  We have to watch out for memory leaks
+    // doing this.
+    'preserved_content_params' : {},
+
     'close_all_tabs' : function() {
         var obj = this;
         try {
@@ -1288,8 +1306,8 @@ main.menu.prototype = {
         }
     },
 
-    'close_tab' : function () {
-        var idx = this.controller.view.tabs.selectedIndex;
+    'close_tab' : function (specific_idx) {
+        var idx = specific_idx || this.controller.view.tabs.selectedIndex;
         var tab = this.controller.view.tabs.childNodes[idx];
         var panel = this.controller.view.panels.childNodes[ idx ];
         while ( panel.lastChild ) panel.removeChild( panel.lastChild );
@@ -1335,6 +1353,66 @@ main.menu.prototype = {
         if (tab_flag) {
             this.controller.view.tabs.selectedIndex = 0;
             this.new_tab(); 
+        }
+    },
+
+    'join_tabs' : function(params) {
+        try {
+            if (!params) { params = {}; }
+            if (!params.orient) { params.orient = 'horizontal'; }
+
+            var left_idx = params.specific_idx || this.controller.view.tabs.selectedIndex;
+            var left_tab = this.controller.view.tabs.childNodes[left_idx];
+            var left_panel = this.controller.view.panels.childNodes[ left_idx ];
+
+            // Find next not-hidden tab
+            var right_idx;
+            for (var i = left_idx + 1; i<this.controller.view.tabs.childNodes.length; i++) {
+                var tab = this.controller.view.tabs.childNodes[i];
+                if (!tab.hidden && !right_idx) {
+                    right_idx = i;
+                }
+            }
+            if (!right_idx) { return; }
+
+            // Grab the content
+            var right_tab = this.controller.view.tabs.childNodes[right_idx];
+            var right_panel = this.controller.view.panels.childNodes[ right_idx ];
+
+            var left_content = left_panel.removeChild( left_panel.firstChild );
+            var right_content = right_panel.removeChild( right_panel.firstChild );
+
+            // Create a wrapper and shuffle the content
+            var box = params.orient == 'vertical' ? document.createElement('vbox') : document.createElement('hbox');
+            box.setAttribute('flex',1);
+            left_panel.appendChild(box);
+            box.appendChild(left_content);
+            var splitter = document.createElement('splitter');
+            splitter.appendChild( document.createElement('grippy') );
+            box.appendChild(splitter);
+            box.appendChild(right_content);
+
+            right_tab.hidden = true;
+            // FIXME: if we really want to combine labels for joined tabs, need to handle the cases where the content dynamically set their tab 
+            // labels with xulG.set_tab_name
+            left_tab.setAttribute('unadornedlabel', left_tab.getAttribute('unadornedlabel') + ' / ' + right_tab.getAttribute('unadornedlabel'));
+            left_tab.setAttribute('label', left_tab.getAttribute('label') + ' / ' + right_tab.getAttribute('unadornedlabel'));
+
+            // Re-apply content params, etc.
+            var left_params = this.preserved_content_params[ left_idx ];
+            var right_params = this.preserved_content_params[ right_idx ];
+            this.preserved_content_params[ left_idx ] = function() {
+                try {
+                    left_params();
+                    right_params();
+                } catch(E) {
+                    alert('Error re-applying content params after join_tabs');
+                }
+            };
+            this.preserved_content_params[ left_idx ]();
+
+        } catch(E) {
+            alert('Error in menu.js with join_tabs(): ' + E);
         }
     },
 
@@ -1507,19 +1585,8 @@ main.menu.prototype = {
             if (params.src) { help_btn.setAttribute('src', params.src); }
         }
     },
-    'set_tab' : function(url,params,content_params) {
+    'augment_content_params' : function(idx,tab,params,content_params) {
         var obj = this;
-        if (!url) url = '/xul/server/';
-        if (!url.match(/:\/\//) && !url.match(/^data:/)) url = urls.remote + url;
-        if (!params) params = {};
-        if (!content_params) content_params = {};
-        var idx = this.controller.view.tabs.selectedIndex;
-        if (params && typeof params.index != 'undefined') idx = params.index;
-        var tab = this.controller.view.tabs.childNodes[ idx ];
-        if (params.focus) tab.focus();
-        var panel = this.controller.view.panels.childNodes[ idx ];
-        while ( panel.lastChild ) panel.removeChild( panel.lastChild );
-
         content_params.new_tab = function(a,b,c) { return obj.new_tab(a,b,c); };
         content_params.set_tab = function(a,b,c) { return obj.set_tab(a,b,c); };
         content_params.close_tab = function() { return obj.close_tab(); };
@@ -1528,7 +1595,7 @@ main.menu.prototype = {
         content_params.volume_item_creator = function(a) { return obj.volume_item_creator(a); };
         content_params.get_new_session = function(a) { return obj.get_new_session(a); };
         content_params.holdings_maintenance_tab = function(a,b,c) { return obj.holdings_maintenance_tab(a,b,c); };
-        content_params.set_tab_name = function(name) { tab.setAttribute('label',(idx + 1) + ' ' + name); };
+        content_params.set_tab_name = function(name) { tab.setAttribute('unadornedlabel',name); tab.setAttribute('label',(idx + 1) + ' ' + name); };
         content_params.set_help_context = function(params) { return obj.set_help_context(params); };
         content_params.open_chrome_window = function(a,b,c) { return xulG.window.open(a,b,c); };
         content_params.url_prefix = function(url) { return obj.url_prefix(url); };
@@ -1541,6 +1608,24 @@ main.menu.prototype = {
         content_params.chrome_xulG = xulG;
         content_params._sound = xulG._sound;
         content_params._data = xulG._data;
+
+        return content_params;
+    },
+    'set_tab' : function(url,params,content_params) {
+        var obj = this;
+        if (!url) url = '/xul/server/';
+        if (!url.match(/:\/\//) && !url.match(/^data:/)) url = urls.remote + url;
+        if (!params) params = {};
+        if (!content_params) content_params = {};
+        var idx = this.controller.view.tabs.selectedIndex;
+        if (obj.preserved_content_params[idx]) { delete obj.preserved_content_params[ idx ]; }
+        if (params && typeof params.index != 'undefined') idx = params.index;
+        var tab = this.controller.view.tabs.childNodes[ idx ];
+        if (params.focus) tab.focus();
+        var panel = this.controller.view.panels.childNodes[ idx ];
+        while ( panel.lastChild ) panel.removeChild( panel.lastChild );
+
+        content_params = obj.augment_content_params(idx,tab,params,content_params);
         if (params && params.tab_name) content_params.set_tab_name( params.tab_name );
         
         var frame;
@@ -1567,6 +1652,9 @@ main.menu.prototype = {
                             'passthru_content_params' : content_params,
                         }
                     );
+                    obj.preserved_content_params[ idx ] = function() {
+                        b.passthru_content_params = content_params;
+                    }
                 } catch(E) {
                     alert(E);
                 }
@@ -1576,37 +1664,40 @@ main.menu.prototype = {
                 panel.appendChild(frame);
                 dump('creating iframe with src = ' + url + '\n');
                 frame.setAttribute('src',url);
-                try {
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                    var cw = frame.contentWindow;
-                    if (typeof cw.wrappedJSObject != 'undefined') cw = cw.wrappedJSObject;
-                    cw.IAMXUL = true;
-                    cw.xulG = content_params;
-                    cw.addEventListener(
-                        'load',
-                        function() {
-                            try {
-                                if (typeof cw.help_context_set_locally == 'undefined') {
-                                    var help_params = {
-                                        'protocol' : cw.location.protocol,
-                                        'hostname' : cw.location.hostname,
-                                        'port' : cw.location.port,
-                                        'pathname' : cw.location.pathname,
-                                        'src' : ''
-                                    };
-                                    obj.set_help_context(help_params);
-                                } else if (typeof cw.default_focus == 'function') {
-                                    cw.default_focus();
+                obj.preserved_content_params[ idx ] = function() {
+                    try {
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        var cw = frame.contentWindow;
+                        if (typeof cw.wrappedJSObject != 'undefined') cw = cw.wrappedJSObject;
+                        cw.IAMXUL = true;
+                        cw.xulG = content_params;
+                        cw.addEventListener(
+                            'load',
+                            function() {
+                                try {
+                                    if (typeof cw.help_context_set_locally == 'undefined') {
+                                        var help_params = {
+                                            'protocol' : cw.location.protocol,
+                                            'hostname' : cw.location.hostname,
+                                            'port' : cw.location.port,
+                                            'pathname' : cw.location.pathname,
+                                            'src' : ''
+                                        };
+                                        obj.set_help_context(help_params);
+                                    } else if (typeof cw.default_focus == 'function') {
+                                        cw.default_focus();
+                                    }
+                                } catch(E) {
+                                    obj.error.sdump('D_ERROR', 'main.menu, set_tab, onload: ' + E);
                                 }
-                            } catch(E) {
-                                obj.error.sdump('D_ERROR', 'main.menu, set_tab, onload: ' + E);
-                            }
-                        },
-                        false
-                    );
-                } catch(E) {
-                    this.error.sdump('D_ERROR', 'main.menu: ' + E);
-                }
+                            },
+                            false
+                        );
+                    } catch(E) {
+                        this.error.sdump('D_ERROR', 'main.menu: ' + E);
+                    }
+                };
+                obj.preserved_content_params[ idx ]();
             }
         } catch(E) {
             this.error.sdump('D_ERROR', 'main.menu:2: ' + E);

@@ -13,6 +13,8 @@
     <command id="cmd_new_tab" key="new-tab-key" />
     <command id="cmd_close_tab" key="close-tab-key" />
     <command id="cmd_close_all_tabs" key="close-all-tabs-key" />
+    <command id="cmd_join_tabs_vertical" label="&staff.main.menu.file.join_tabs_vertical.label;" accesskey="&staff.main.menu.file.join_tabs_vertical.accesskey;" />
+    <command id="cmd_join_tabs_horizontal" label="&staff.main.menu.file.join_tabs_horizontal.label;" accesskey="&staff.main.menu.file.join_tabs_horizontal.accesskey;" />
     <command id="cmd_shutdown" />
 
     <command id="cmd_edit_copy_buckets" />
@@ -188,6 +190,8 @@
     <menupopup id="main.menu.file.popup">
         <menuitem label="&staff.main.menu.file.new.label;" accesskey="&staff.main.menu.file.new.accesskey;" key="new-window-key" command="cmd_new_window"/>
         <menuitem label="&staff.main.menu.file.new_tab.label;" accesskey="&staff.main.menu.file.new_tab.accesskey;" key="new-tab-key" command="cmd_new_tab"/>
+        <menuitem id="join_tabs_menuitem_horizontal" hidden="true" command="cmd_join_tabs_horizontal"/>
+        <menuitem id="join_tabs_menuitem_vertical" hidden="true" command="cmd_join_tabs_vertical"/>
         <menuseparator />
         <menuitem label="&staff.main.menu.file.close_tab.label;" accesskey="&staff.main.menu.file.close_tab.accesskey;" oldaccesskey="&staff.main.menu.file.close_tab.key;" key="close-tab-key" command="cmd_close_tab"/>
         <menuitem label="&staff.main.menu.tabs.close;" accesskey="&staff.main.menu.tabs.close.accesskey;" key="close-all-tabs-key" command="cmd_close_all_tabs"/>
