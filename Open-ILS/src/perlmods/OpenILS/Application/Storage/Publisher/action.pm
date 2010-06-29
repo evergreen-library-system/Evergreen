@@ -743,7 +743,7 @@ sub generate_fines {
 	for my $c (@circs) {
 
         my $ctype = ref($c);
-        $ctype =~ s/^.*([^:]+)$/$1/o;
+        $ctype =~ s/^.+::(\w+)$/$1/;
 	
         my $due_date_method = 'due_date';
         my $target_copy_method = 'target_copy';
@@ -765,7 +765,11 @@ sub generate_fines {
 				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
 			}
 			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
-			$log->info("Processing circ ".$c->id."...\n");
+			$log->info(
+				sprintf("Processing %s %d...",
+					($is_reservation ? "reservation" : "circ"), $c->id
+				)
+			);
 
 
 			my $due_dt = $parser->parse_datetime( cleanse_ISO8601( $c->$due_date_method ) );
@@ -1500,6 +1504,7 @@ sub reservation_targeter {
 
 
             my @good_resources = ();
+            my %conflicts = ();
             for my $res (@$all_resources) {
                 unless (isTrue($res->type->catalog_item)) {
                     push @good_resources, $res;
@@ -1519,16 +1524,20 @@ sub reservation_targeter {
                 }
 
                 if ($copy->status->id == 1) {
-                    my $circs = action::circulation->search_where(
+                    my $circs = [ action::circulation->search_where(
                         {target_copy => $copy->id, checkin_time => undef },
                         { order_by => 'id DESC' }
-                    );
+                    ) ];
 
                     if (@$circs) {
                         my $due_date = $circs->[0]->due_date;
 			            $due_date = $parser->parse_datetime( cleanse_ISO8601( $due_date ) );
 			            my $start_time = $parser->parse_datetime( cleanse_ISO8601( $bresv->start_time ) );
-                        next if (DateTime->compare($start_time, $due_date) < 0);
+                        if (DateTime->compare($start_time, $due_date) < 0) {
+                            $conflicts{$res->id} = $circs->[0]->to_fieldmapper;
+                            next;
+                        }
+
                         push @good_resources, $res;
                     }
 
@@ -1544,7 +1553,8 @@ sub reservation_targeter {
 			# if we have no copies ...
 			if (!@good_resources) {
 				$log->info("\tNo resources available for targeting at all!\n");
-				push @successes, { reservation => $bresv->id, eligible_copies => 0, error => 'NO_COPIES' };
+				push @successes, { reservation => $bresv->id, eligible_copies => 0, error => 'NO_COPIES', conflicts => \%conflicts };
+
 
 				$self->method_lookup('open-ils.storage.transaction.commit')->run;
 				die "OK\n";
