@@ -1,11 +1,5 @@
 
 BEGIN;
-
-CREATE OR REPLACE FUNCTION explode_array(anyarray) RETURNS SETOF anyelement AS $BODY$
-    SELECT ($1)[s] FROM generate_series(1, array_upper($1, 1)) AS s;
-$BODY$
-LANGUAGE 'sql' IMMUTABLE;
-
 -- NOTE: current config.item_type should get sip2_media_type and magnetic_media columns
 
 -- New table needed to handle circ modifiers inside the DB.  Will still require

@@ -84,4 +84,9 @@ CREATE AGGREGATE public.agg_tsvector (
 	stype	 = tsvector
 );
 
+CREATE OR REPLACE FUNCTION public.explode_array(anyarray) RETURNS SETOF anyelement AS $BODY$
+    SELECT ($1)[s] FROM generate_series(1, array_upper($1, 1)) AS s;
+$BODY$
+LANGUAGE 'sql' IMMUTABLE;
+
 COMMIT;
