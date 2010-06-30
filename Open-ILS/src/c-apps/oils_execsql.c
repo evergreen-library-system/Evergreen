@@ -10,6 +10,8 @@
 #include "opensrf/log.h"
 #include "opensrf/string_array.h"
 #include "opensrf/osrf_json.h"
+#include "opensrf/osrf_application.h"
+#include "openils/oils_sql.h"
 #include "openils/oils_buildq.h"
 
 static jsonObject* get_row( BuildSQLState* state );
@@ -49,6 +51,8 @@ jsonObject* oilsFirstRow( BuildSQLState* state ) {
 		(void) dbi_conn_error( state->dbhandle, &msg );
 		osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
 			"Unable to execute query: %s",msg ? msg : "No description available" ));
+		if( ! oilsIsDBConnected( state->dbhandle ))
+			state->panic = 1;
 		return NULL;
 	}
 

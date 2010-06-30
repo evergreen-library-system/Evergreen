@@ -68,6 +68,7 @@ struct BuildSQLState_ {
 	int defaults_usable;          /**< Boolean; if true, we can use unconfirmed default
 	                                   values for bind variables */
 	int values_required;          /**< Boolean: if true, we need values for a bind variables */
+	int panic;                    /**< Boolean: set to true if database connection dies */
 };
 
 typedef enum {

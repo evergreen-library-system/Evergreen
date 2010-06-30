@@ -139,6 +139,8 @@ jsonObject* oilsGetColNames( BuildSQLState* state, StoredQ* query ) {
 			"Unable to execute dummy query for column names: #%d %s",
 			errnum, msg ? msg : "No description available" ));
 		state->error = 1;
+		if( ! oilsIsDBConnected( state->dbhandle ))
+			state->panic = 1;
 		return NULL;
 	}
 
@@ -210,6 +212,8 @@ StoredQ* getStoredQuery( BuildSQLState* state, int query_id ) {
 			"Unable to query query.stored_query table: #%d %s",
 			errnum, msg ? msg : "No description available" ));
 		state->error = 1;
+		if( ! oilsIsDBConnected( state->dbhandle ))
+			state->panic = 1;
 	}
 
 	pop_id( &state->query_stack );
@@ -428,6 +432,8 @@ static QSeq* loadChildQueries( BuildSQLState* state, int parent_id, const char* 
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
 				"%s query # %d has no child queries within it", type_str, parent_id ));
 			state->error = 1;
+			if( ! oilsIsDBConnected( state->dbhandle ))
+				state->panic = 1;
 			return NULL;
 		}
 	} else {
@@ -605,6 +611,8 @@ static FromRelation* getFromRelation( BuildSQLState* state, int id ) {
 			"Unable to query query.from_relation table: #%d %s",
 			errnum, msg ? msg : "No description available" ));
 		state->error = 1;
+		if( ! oilsIsDBConnected( state->dbhandle ))
+			state->panic = 1;
 	}
 
 	if( fr )
@@ -838,6 +846,8 @@ static FromRelation* getJoinList( BuildSQLState* state, int id ) {
 			"Unable to query query.from_relation table for join list: #%d %s",
 			errnum, msg ? msg : "No description available" ));
 		state->error = 1;
+		if( ! oilsIsDBConnected( state->dbhandle ))
+			state->panic = 1;
 	}
 
 	return join_list;
@@ -940,6 +950,8 @@ static SelectItem* getSelectList( BuildSQLState* state, int query_id ) {
 			"Unable to query query.select_list table: #%d %s",
 			errnum, msg ? msg : "No description available" ));
 		state->error = 1;
+		if( ! oilsIsDBConnected( state->dbhandle ))
+			state->panic = 1;
 	}
 
 	return select_list;
@@ -1071,6 +1083,8 @@ static BindVar* getBindVar( BuildSQLState* state, const char* name ) {
 			"Unable to query query.bind_variable table for \"%s\": #%d %s",
 			name, errnum, msg ? msg : "No description available" ));
 		state->error = 1;
+		if( ! oilsIsDBConnected( state->dbhandle ))
+			state->panic = 1;
 	}
 
 	if( bind ) {
@@ -1251,6 +1265,8 @@ static CaseBranch* getCaseBranchList( BuildSQLState* state, int parent_id ) {
 			"Unable to query query.case_branch table for parent expression # %d: %s",
 			parent_id, errnum, msg ? msg : "No description available" ));
 		state->error = 1;
+		if( ! oilsIsDBConnected( state->dbhandle ))
+			state->panic = 1;
 	}
 
 	return branch_list;
@@ -1377,6 +1393,8 @@ static Datatype* getDatatype( BuildSQLState* state, int id ) {
 			"Unable to query query.datatype table: #%d %s",
 			errnum, msg ? msg : "No description available" ));
 		state->error = 1;
+		if( ! oilsIsDBConnected( state->dbhandle ))
+			state->panic = 1;
 	}
 	return datatype;
 }
@@ -1506,6 +1524,8 @@ static Expression* getExpression( BuildSQLState* state, int id ) {
 			"Unable to query query.expression table: #%d %s",
 			errnum, msg ? msg : "No description available" ));
 		state->error = 1;
+		if( ! oilsIsDBConnected( state->dbhandle ))
+			state->panic = 1;
 	}
 
 	pop_id( &state->expr_stack );
@@ -1929,6 +1949,14 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 				"Series expression is empty in expression # %d", id ));
 			state->error = 1;
 			return NULL;
+		} else if( operator && !is_good_operator( operator )) {
+			// The specified operator contains one or more characters that aren't allowed
+			// in an operator.  This isn't a true validation; it's just a protective
+			// measure to prevent certain kinds of sql injection.
+			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Series expression # %d contains invalid operator \"%s\"", id, operator ));
+			state->error = 1;
+			return NULL;
 		}
 
 	} else if( EXP_STRING == type ) {
@@ -2118,6 +2146,8 @@ static Expression* getExpressionList( BuildSQLState* state, int id ) {
 			"Unable to query query.expression table for expression list: #%d %s",
 			errnum, msg ? msg : "No description available" ));
 		state->error = 1;
+		if( ! oilsIsDBConnected( state->dbhandle ))
+			state->panic = 1;
 	}
 
 	return exp_list;
@@ -2166,6 +2196,8 @@ static OrderItem* getOrderByList( BuildSQLState* state, int query_id ) {
 			"Unable to query query.order_by_list table: #%d %s",
 			errnum, msg ? msg : "No description available" ));
 		state->error = 1;
+		if( ! oilsIsDBConnected( state->dbhandle ))
+			state->panic = 1;
 	}
 
 	return ord_list;

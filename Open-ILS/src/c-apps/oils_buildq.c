@@ -35,6 +35,7 @@ BuildSQLState* buildSQLStateNew( dbi_conn dbhandle ) {
 	state->indent          = 0;
 	state->defaults_usable = 0;
 	state->values_required = 0;
+	state->panic           = 0;
 
 	return state;
 }

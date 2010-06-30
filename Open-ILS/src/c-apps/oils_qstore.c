@@ -204,6 +204,11 @@ int doPrepare( osrfMethodContext* ctx ) {
 		osrfLogWarning( OSRF_LOG_MARK, "Unable to load stored query # %d", query_id );
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
 			ctx->request, "Unable to load stored query" );
+		if( state->panic ) {
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state, 
+				"Database connection isn't working" ));
+			osrfAppSessionPanic( ctx->session );
+		}
 		return -1;
 	}
 
@@ -211,8 +216,8 @@ int doPrepare( osrfMethodContext* ctx ) {
 
 	osrfLogInfo( OSRF_LOG_MARK, "Token for query id # %d is \"%s\"", query_id, token );
 
-	// Build an object to return: a hash containing the query token
-	// and a list of bind variables.
+	// Build an object to return.  It will be a hash containing the query token and a
+	// list of bind variables.
 	jsonObject* returned_obj = jsonNewObjectType( JSON_HASH );
 	jsonObjectSetKey( returned_obj, "token", jsonNewObject( token ));
 	jsonObjectSetKey( returned_obj, "bind_variables",
@@ -261,6 +266,11 @@ int doColumns( osrfMethodContext* ctx ) {
 	if( query->state->error ) {
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
 			ctx->request, "Unable to get column names" );
+		if( query->state->panic ) {
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( query->state,
+				"Database connection isn't working" ));
+			osrfAppSessionPanic( ctx->session );
+		}
 		return -1;
 	} else {
 		osrfAppRespondComplete( ctx, col_list );
@@ -449,6 +459,11 @@ int doExecute( osrfMethodContext* ctx ) {
 			"Unable to execute SQL statement for query id # %d", query->query->id ));
 		osrfAppSessionStatus( ctx->session, OSRF_STATUS_BADREQUEST, "osrfMethodException",
 			ctx->request, "Unable to execute SQL statement" );
+		if( query->state->panic ) {
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( query->state,
+				"Database connection isn't working" ));
+			osrfAppSessionPanic( ctx->session );
+		}
 		return -1;
 	}
 
