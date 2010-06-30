@@ -432,7 +432,8 @@ sub biblio_multi_search_full_rec {
 		my $term     = $$arg{term};
 		my $limiters = $$arg{restrict};
 
-		my ($index_col)  = metabib::full_rec->columns('FTS') || 'value';
+		my ($index_col)  = metabib::full_rec->columns('FTS');
+		$index_col ||= 'value';
 		my $search_table = metabib::full_rec->table;
 
 		my $fts = OpenILS::Application::Storage::FTS->compile('default' => $term, 'value',"$index_col");
