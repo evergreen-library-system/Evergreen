@@ -94,6 +94,7 @@ DEBS =  \
 	libdatetime-perl\
 	libdatetime-timezone-perl\
 	libdatetime-set-perl\
+	libdbd-pg-perl\
 	libemail-send-perl\
 	libgd-graph3d-perl\
 	liblog-log4perl-perl\
