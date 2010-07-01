@@ -26,6 +26,8 @@ static void buildOrderBy( BuildSQLState* state, const OrderItem* ord_list );
 static void buildCase( BuildSQLState* state, const Expression* expr );
 static void buildExpression( BuildSQLState* state, const Expression* expr );
 static void buildFunction( BuildSQLState* state, const Expression* exp );
+static int subexp_count( const Expression* expr );
+static void buildTypicalFunction( BuildSQLState* state, const Expression* expr );
 static void buildExtract( BuildSQLState* state, const Expression* expr );
 static void buildSeries( BuildSQLState* state, const Expression* subexp_list, const char* op );
 static void buildBindVar( BuildSQLState* state, const BindVar* bind );
@@ -938,13 +940,9 @@ static void buildCase( BuildSQLState* state, const Expression* expr ) {
 }
 
 /**
-	@brief Build a function call.
+	@brief Build a function call, with a subfield if specified.
 	@param state Pointer to the query-building context.
 	@param exp Pointer to an Expression representing a function call.
-
-	This function does not currently accommodate certain functions with idiosyncratic
-	syntax, such as the absence of parentheses, or the use of certain keywords in
-	in the parameter list.
 */
 static void buildFunction( BuildSQLState* state, const Expression* expr ) {
 	if( expr->negate )
@@ -958,19 +956,21 @@ static void buildFunction( BuildSQLState* state, const Expression* expr ) {
 	// First, check for some specific functions with peculiar syntax, and treat them
 	// as special exceptions.  We rely on the input side to ensure that the function
 	// name is available.
-	if( !strcasecmp( expr->function_name, "EXTRACT" )) {
+	if( !strcasecmp( expr->function_name, "EXTRACT" ))
 		buildExtract( state, expr );
-	} else {
-		// Not a special exception.
-		buffer_add( state->sql, expr->function_name );
-		buffer_add_char( state->sql, '(' );
+	else if( !strcasecmp( expr->function_name, "CURRENT_DATE" ) && ! expr->subexp_list )
+		buffer_add( state->sql, "CURRENT_DATE " );
+	else if( !strcasecmp( expr->function_name, "CURRENT_TIME" ) && ! expr->subexp_list )
+		buffer_add( state->sql, "CURRENT_TIME " );
+	else if( !strcasecmp( expr->function_name, "CURRENT_TIMESTAMP" ) && ! expr->subexp_list )
+		buffer_add( state->sql, "CURRENT_TIMESTAMP " );
+	else if( !strcasecmp( expr->function_name, "LOCALTIME" ) && ! expr->subexp_list )
+		buffer_add( state->sql, "LOCALTIME " );
+	else if( !strcasecmp( expr->function_name, "LOCALTIMESTAMP" ) && ! expr->subexp_list )
+		buffer_add( state->sql, "LOCALTIMESTAMP " );
+	else
+		buildTypicalFunction( state, expr );     // Not a special exception.
 
-		// Add the parameters, if any
-		buildSeries( state, expr->subexp_list, NULL );
-
-		buffer_add_char( state->sql, ')' );
-	}
-	
 	if( expr->column_name ) {
 		// Add the name of the subfield
 		buffer_add( state->sql, ").\"" );
@@ -980,24 +980,58 @@ static void buildFunction( BuildSQLState* state, const Expression* expr ) {
 }
 
 /**
+	@brief Count the number of subexpressions attached to a given Expression.
+	@param expr Pointer to the Expression whose subexpressions are to be counted.
+	@return The number of subexpressions.
+*/
+static int subexp_count( const Expression* expr ) {
+	int count = 0;
+	const Expression* sub = expr->subexp_list;
+	while( sub ) {
+		++count;
+		sub = sub->next;
+	}
+	return count;
+}
+
+/**
+	@brief Build an ordinary function call, i.e. one with no special syntax,
+	@param state Pointer to the query-building context.
+	@param exp Pointer to an Expression representing a function call.
+
+	Emit the parameters as a comma-separated list of expressions.
+*/
+static void buildTypicalFunction( BuildSQLState* state, const Expression* expr ) {
+	buffer_add( state->sql, expr->function_name );
+	buffer_add_char( state->sql, '(' );
+
+	// Add the parameters, if any
+	buildSeries( state, expr->subexp_list, NULL );
+
+	buffer_add_char( state->sql, ')' );
+}
+
+/**
 	@brief Build a call to the EXTRACT function, with its peculiar syntax.
 	@param state Pointer to the query-building context.
 	@param exp Pointer to an Expression representing an EXTRACT call.
+
+	If there are not exactly two parameters, or if the first parameter is not a string,
+	then assume it is an ordinary function overloading on the same name.  We don't try to
+	check the type of the second parameter.  Hence it is possible for a legitimately
+	overloaded function to be uncallable.
+
+	The first parameter of EXTRACT() must be one of a short list of names for some fragment
+	of a date or time.  Here we accept that parameter in the form of a string.  We don't
+	surround it with quotes in the output, although PostgreSQL wouldn't mind if we did.
 */
 static void buildExtract( BuildSQLState* state, const Expression* expr ) {
 
 	const Expression* arg = expr->subexp_list;
 
-	// Sanity checks
-	if( !arg ) {
-		sqlAddMsg( state,
-			"No arguments supplied to EXTRACT function in expression # %d", expr->id );
-		state->error = 1;
-		return;
-	} else if( arg->type != EXP_STRING ) {
-		sqlAddMsg( state,
-			"First argument to EXTRACT is not a string in expression # %d", expr->id );
-		state->error = 1;
+	// See if this is the special form of EXTRACT(), so far as we can tell
+	if( subexp_count( expr ) != 2 || arg->type != EXP_STRING ) {
+		buildTypicalFunction( state, expr );
 		return;
 	} else {
 		// check the first argument against a list of valid values
@@ -1022,6 +1056,8 @@ static void buildExtract( BuildSQLState* state, const Expression* expr ) {
 			&& strcasecmp( arg->literal, "timezone_minute" )
 			&& strcasecmp( arg->literal, "week" )
 			&& strcasecmp( arg->literal, "year" )) {
+			// This *could* be an ordinary function, overloading on the name.  However it's
+			// more likely that the user misspelled one of the names expected by EXTRACT().
 			sqlAddMsg( state,
 				"Invalid name \"%s\" as EXTRACT argument in expression # %d",
 				expr->literal, expr->id );
@@ -1045,13 +1081,6 @@ static void buildExtract( BuildSQLState* state, const Expression* expr ) {
 	// a good way of checking it here, so we rely on PostgreSQL to complain if necessary.
 	buildExpression( state, arg );
 	buffer_add_char( state->sql, ')' );
-
-	if( arg->next ) {
-		sqlAddMsg( state,
-			"Too many one arguments supplied to EXTRACT function in expression # %d", expr->id );
-		state->error = 1;
-		return;
-	}
 }
 
 /**
