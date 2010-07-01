@@ -1668,14 +1668,17 @@ sub retrieve_metarecord_mods {
 		$self	->method_lookup('open-ils.supercat.record.mods.retrieve')
 			->run($mr->master_record);
 	my $master_mods = $_parser->parse_string($master)->documentElement;
-	$master_mods->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
+	$master_mods->setNamespace( "http://www.loc.gov/mods/", "mods" );
+	$master_mods->setNamespace( "http://www.loc.gov/mods/", undef, 1 );
 
 	# ... and a MODS clone to populate, with guts removed.
 	my $mods = $_parser->parse_string($master)->documentElement;
-	$mods->setNamespace('http://www.loc.gov/mods/', undef);
-	$mods->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
+	$mods->setNamespace( "http://www.loc.gov/mods/", "mods" ); # modsCollection element
+	$mods->setNamespace('http://www.loc.gov/mods/', undef, 1);
 	($mods) = $mods->findnodes('//mods:mods');
+	#$mods->setNamespace( "http://www.loc.gov/mods/", "mods" ); # mods element
 	$mods->removeChildNodes;
+	$mods->setNamespace('http://www.loc.gov/mods/', undef, 1);
 
 	# Add the metarecord ID as a (locally defined) info URI
 	my $recordInfo = $mods
@@ -1702,21 +1705,24 @@ sub retrieve_metarecord_mods {
 	my ($title) = $master_mods->findnodes( './mods:titleInfo[not(@type)]' );
 	
 	if ($title) {
-		$title->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
+		$title->setNamespace( "http://www.loc.gov/mods/", "mods" );
+		$title->setNamespace( "http://www.loc.gov/mods/", undef, 1 );
 		$title = $mods->ownerDocument->importNode($title);
 		$mods->appendChild($title);
 	}
 
 	my ($author) = $master_mods->findnodes( './mods:name[mods:role/mods:text[text()="creator"]]' );
 	if ($author) {
-		$author->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
+		$author->setNamespace( "http://www.loc.gov/mods/", "mods" );
+		$author->setNamespace( "http://www.loc.gov/mods/", undef, 1 );
 		$author = $mods->ownerDocument->importNode($author);
 		$mods->appendChild($author);
 	}
 
 	my ($isbn) = $master_mods->findnodes( './mods:identifier[@type="isbn"]' );
 	if ($isbn) {
-		$isbn->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
+		$isbn->setNamespace( "http://www.loc.gov/mods/", "mods" );
+		$isbn->setNamespace( "http://www.loc.gov/mods/", undef, 1 );
 		$isbn = $mods->ownerDocument->importNode($isbn);
 		$mods->appendChild($isbn);
 	}
@@ -1730,11 +1736,13 @@ sub retrieve_metarecord_mods {
 				->run($map->source);
 
 		my $part_mods = $_parser->parse_string($rec);
-		$part_mods->documentElement->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
+		$part_mods->documentElement->setNamespace( "http://www.loc.gov/mods/", "mods" );
+		$part_mods->documentElement->setNamespace( "http://www.loc.gov/mods/", undef, 1 );
 		($part_mods) = $part_mods->findnodes('//mods:mods');
 
 		for my $node ( ($part_mods->findnodes( './mods:subject' )) ) {
-			$node->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
+			$node->setNamespace( "http://www.loc.gov/mods/", "mods" );
+			$node->setNamespace( "http://www.loc.gov/mods/", undef, 1 );
 			$node = $mods->ownerDocument->importNode($node);
 			$mods->appendChild( $node );
 		}
@@ -1771,12 +1779,14 @@ sub retrieve_metarecord_mods {
 		$relatedItem->appendChild( $subRecordInfo );
 
 		my ($tor) = $part_mods->findnodes( './mods:typeOfResource' );
-		$tor->setNamespace( "http://www.loc.gov/mods/", "mods", 1 ) if ($tor);
+		$tor->setNamespace( "http://www.loc.gov/mods/", "mods" );
+		$tor->setNamespace( "http://www.loc.gov/mods/", undef, 1 ) if ($tor);
 		$tor = $mods->ownerDocument->importNode($tor) if ($tor);
 		$relatedItem->appendChild($tor) if ($tor);
 
 		if ( my ($part_isbn) = $part_mods->findnodes( './mods:identifier[@type="isbn"]' ) ) {
-			$part_isbn->setNamespace( "http://www.loc.gov/mods/", "mods", 1 );
+			$part_isbn->setNamespace( "http://www.loc.gov/mods/", "mods" );
+			$part_isbn->setNamespace( "http://www.loc.gov/mods/", undef, 1 );
 			$part_isbn = $mods->ownerDocument->importNode($part_isbn);
 			$relatedItem->appendChild( $part_isbn );
 
