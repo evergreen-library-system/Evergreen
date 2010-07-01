@@ -1766,12 +1766,7 @@ static Expression* constructExpression( BuildSQLState* state, dbi_result result 
 		}
 
 	} else if( EXP_COLUMN == type ) {
-		if( !column_name ) {
-			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
-				"No column name for column expression # %d", id ));
-			state->error = 1;
-			return NULL;
-		} else if( !is_identifier( column_name )) {
+		if( column_name && !is_identifier( column_name )) {
 			osrfLogWarning( OSRF_LOG_MARK, sqlAddMsg( state,
 				"Column name \"%s\" is invalid identifier for expression # %d",
 				column_name, id ));
