@@ -1,3 +1,5 @@
+dojo.require("dijit.form.Button");
+
 /* Quick and dirty way to localize some strings; not recommended for reuse.
  * I'm sure dojo provides a better mechanism for this, but at the moment
  * this is faster to implement anew than figuring out the Right way to do

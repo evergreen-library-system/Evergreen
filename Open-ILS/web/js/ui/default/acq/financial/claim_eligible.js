@@ -1,3 +1,4 @@
+dojo.require("dijit.form.Button");
 dojo.require("dijit.form.TextBox");
 dojo.require("openils.acq.Lineitem");
 dojo.require("openils.widget.OrgUnitFilteringSelect");
