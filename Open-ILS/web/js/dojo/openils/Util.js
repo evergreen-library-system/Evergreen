@@ -222,8 +222,17 @@ if(!dojo._hasResource["openils.Util"]) {
         var d = new Date();
         var start = d.getTime();
         var parts = interval.split(' ');
-        for(var i = 0; i < parts.length; i += 2) 
-            d = dojo.date.add(d, parts[i+1].replace(/s?,?$/,''), Number(parts[i]));
+        for(var i = 0; i < parts.length; i += 2)  {
+            var type = parts[i+1].replace(/s?,?$/,'');
+            switch(type) {
+                case 'mon': // postgres
+                    type = 'month'; // dojo
+                    break;
+                // add more as necessary
+            }
+
+            d = dojo.date.add(d, type, Number(parts[i]));
+        }
         return Number((d.getTime() - start) / 1000);
     };
 
