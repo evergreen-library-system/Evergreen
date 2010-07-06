@@ -781,7 +781,7 @@ sub cn_ranged_tree {
 		next if ($cp->deleted);
 		my $copy = $cp->to_fieldmapper;
 		$copy->status( $cp->status->to_fieldmapper );
-		$copy->location( $cp->status->to_fieldmapper );
+		$copy->location( $cp->location->to_fieldmapper );
 
 		push @{ $call_number->copies }, $copy;
 	}
@@ -791,6 +791,57 @@ sub cn_ranged_tree {
 __PACKAGE__->register_method(
 	api_name	=> 'open-ils.storage.asset.call_number.ranged_tree',
 	method		=> 'cn_ranged_tree',
+	argc		=> 1,
+	api_level	=> 1,
+);
+
+
+# XXX Since this is all we need in open-ils.storage for serial stuff ATM, just
+# XXX putting it here instead of creating a whole new file.
+sub issuance_ranged_tree {
+	my $self = shift;
+	my $client = shift;
+	my $iss = shift;
+	my $ou = shift;
+	my $depth = shift || 0;
+
+	my $ou_list =
+		actor::org_unit
+			->db_Main
+			->selectcol_arrayref(
+				'SELECT id FROM actor.org_unit_descendants(?,?)',
+				{},
+				$ou,
+				$depth
+			);
+
+	return undef unless ($ou_list and @$ou_list);
+
+	$iss = serial::issuance->retrieve( $iss );
+	return undef unless ($iss);
+
+	my $issuance = $iss->to_fieldmapper;
+	$issuance->items([]);
+
+    for my $it ( $iss->items() ) {
+        my $item = $it->to_fieldmapper;
+
+    	next if ($it->unit->deleted);
+    	next unless (grep { $it->unit->circ_lib eq $_ } @$ou_list);
+
+    	my $unit = $it->unit->to_fieldmapper;
+ 		$unit->status( $it->unit->status->to_fieldmapper );
+    	$unit->location( $it->unit->location->to_fieldmapper );
+    	$item->unit( $unit );
+
+        push @{ $issuance->items }, $item;
+	}
+
+	return $issuance;
+}
+__PACKAGE__->register_method(
+	api_name	=> 'open-ils.storage.serial.issuance.ranged_tree',
+	method		=> 'issuance_ranged_tree',
 	argc		=> 1,
 	api_level	=> 1,
 );

@@ -529,7 +529,7 @@ CREATE TABLE acq.lineitem_detail (
     lineitem    INT         NOT NULL REFERENCES acq.lineitem (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     fund        INT         REFERENCES acq.fund (id) DEFERRABLE INITIALLY DEFERRED,
     fund_debit  INT         REFERENCES acq.fund_debit (id) DEFERRABLE INITIALLY DEFERRED,
-    eg_copy_id  BIGINT      REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+    eg_copy_id  BIGINT,     -- REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED, -- XXX could be an serial.issuance
     barcode     TEXT,
     cn_label    TEXT,
     note        TEXT,

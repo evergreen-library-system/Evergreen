@@ -44,7 +44,7 @@ use base qw/asset/;
 __PACKAGE__->table( 'asset_copy' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/call_number barcode creator create_date editor
-				   edit_date copy_number status loan_duration circ_lib
+				   edit_date copy_number status loan_duration circ_lib dummy_isbn
 				   fine_level circulate deposit price ref opac_visible
 				   circ_as_type circ_modifier deposit_amount location mint_condition
 				   holdable dummy_title dummy_author deleted alert_message

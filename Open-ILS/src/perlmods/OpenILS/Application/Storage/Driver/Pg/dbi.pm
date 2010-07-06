@@ -719,6 +719,34 @@
 
 	#-------------------------------------------------------------------------------
 
+	package serial::subscription;
+
+	serial::subscription->sequence( 'serial.subscription_id_seq' );
+	serial::subscription->table('serial.subscription');
+
+	#-------------------------------------------------------------------------------
+
+	package serial::issuance;
+
+	serial::issuance->sequence( 'serial.issuance_id_seq' );
+	serial::issuance->table('serial.issuance');
+
+	#-------------------------------------------------------------------------------
+
+	package serial::item;
+
+	serial::item->sequence( 'serial.item_id_seq' );
+	serial::item->table('serial.item');
+
+	#-------------------------------------------------------------------------------
+
+	package serial::unit;
+
+	serial::unit->sequence( 'asset.copy_id_seq' );
+	serial::unit->table('serial.unit');
+
+	#-------------------------------------------------------------------------------
+
 	package config::language_map;
 	config::language_map->table('config.language_map');
 

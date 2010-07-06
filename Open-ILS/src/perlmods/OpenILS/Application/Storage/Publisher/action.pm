@@ -1174,6 +1174,17 @@ sub new_hold_copy_targeter {
 						  deleted => 'f' }
 					) if ($vtree && @{ $vtree->copies });
 					
+			} elsif ($hold->hold_type eq 'I') {
+				my ($itree) = $self
+					->method_lookup( 'open-ils.storage.serial.issuance.ranged_tree')
+					->run( $hold->target, $hold->selection_ou, $hold->selection_depth );
+
+				push @$all_copies,
+					asset::copy->search_where(
+						{ id => [map {$_->unit->id} @{ $itree->items }],
+						  deleted => 'f' }
+					) if ($itree && @{ $itree->items });
+					
 			} elsif  ($hold->hold_type eq 'C' || $hold->hold_type eq 'R' || $hold->hold_type eq 'F') {
 				my $_cp = asset::copy->retrieve($hold->target);
 				push @$all_copies, $_cp if $_cp;

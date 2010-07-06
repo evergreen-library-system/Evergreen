@@ -10,6 +10,7 @@ use OpenILS::Application::Storage::CDBI::actor;
 use OpenILS::Application::Storage::CDBI::action;
 use OpenILS::Application::Storage::CDBI::booking;
 use OpenILS::Application::Storage::CDBI::asset;
+use OpenILS::Application::Storage::CDBI::serial;
 use OpenILS::Application::Storage::CDBI::authority;
 use OpenILS::Application::Storage::CDBI::biblio;
 use OpenILS::Application::Storage::CDBI::config;
@@ -521,6 +522,25 @@ sub modify_from_fieldmapper {
 	asset::copy->has_a( location => 'asset::copy_location' );
 	asset::copy->has_a( circ_lib => 'actor::org_unit' );
 
+	serial::unit->has_a( call_number => 'asset::call_number' );
+	serial::unit->has_a( creator => 'actor::user' );
+	serial::unit->has_a( editor => 'actor::user' );
+	serial::unit->has_a( status => 'config::copy_status' );
+	serial::unit->has_a( location => 'asset::copy_location' );
+	serial::unit->has_a( circ_lib => 'actor::org_unit' );
+
+	serial::item->has_a( unit => 'serial::unit' );
+	serial::item->has_a( issuance => 'serial::issuance' );
+	serial::item->has_a( uri => 'asset::uri' );
+
+	serial::unit->has_many( items => 'serial::item' );
+
+	serial::issuance->has_a( subscription => 'serial::subsription' );
+	serial::issuance->has_many( items => 'serial::item' );
+
+	serial::subscription->has_a( record_entry => 'biblio::record_entry' );
+	serial::subscription->has_many( issuances => 'serial::issuance' );
+
 	asset::call_number_note->has_a( call_number => 'asset::call_number' );
 
 	asset::call_number->has_a( record => 'biblio::record_entry' );
@@ -585,6 +605,7 @@ sub modify_from_fieldmapper {
 
 	action::circulation->has_a( target_copy => 'asset::copy' );
 	asset::copy->has_many( circulations => 'action::circulation' => 'target_copy' );
+	serial::unit->has_many( circulations => 'action::circulation' => 'target_copy' );
 
 	booking::reservation->has_a( pickup_lib => 'actor::org_unit' );
 
@@ -734,6 +755,7 @@ sub modify_from_fieldmapper {
 	action::hold_request->has_many(  eligible_copies => [ 'action::hold_copy_map' => 'target_copy' ] );
 
 	asset::copy->has_many(  holds => [ 'action::hold_copy_map' => 'hold' ] );
+	serial::unit->has_many(  holds => [ 'action::hold_copy_map' => 'hold' ] );
 
 	container::biblio_record_entry_bucket->has_a( owner => 'actor::user' );
 	container::biblio_record_entry_bucket_item->has_a( bucket => 'container::biblio_record_entry_bucket' );

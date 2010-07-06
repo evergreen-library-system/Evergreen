@@ -23,7 +23,7 @@ CREATE SCHEMA action;
 
 CREATE TABLE action.in_house_use (
 	id		SERIAL				PRIMARY KEY,
-	item		BIGINT				NOT NULL REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED,
+	item		BIGINT				NOT NULL, -- REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED, -- XXX could be an serial.issuance
 	staff		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	use_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
@@ -349,7 +349,7 @@ CREATE TABLE action.hold_request (
 	cancel_cause	INT REFERENCES action.hold_request_cancel_cause (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	cancel_note		TEXT,
 	target			BIGINT				NOT NULL, -- see hold_type
-	current_copy		BIGINT				REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+	current_copy		BIGINT,				-- REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,  -- XXX could be an serial.unit now...
 	fulfillment_staff	INT				REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	fulfillment_lib		INT				REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	request_lib		INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
@@ -358,7 +358,7 @@ CREATE TABLE action.hold_request (
 	selection_ou		INT				NOT NULL,
 	selection_depth		INT				NOT NULL DEFAULT 0,
 	pickup_lib		INT				NOT NULL REFERENCES actor.org_unit DEFERRABLE INITIALLY DEFERRED,
-	hold_type		TEXT				NOT NULL CHECK (hold_type IN ('M','T','V','C')),
+	hold_type		TEXT				NOT NULL, -- CHECK (hold_type IN ('M','T','V','C')),  -- XXX constraint too constraining...
 	holdable_formats	TEXT,
 	phone_notify		TEXT,
 	email_notify		BOOL				NOT NULL DEFAULT TRUE,
@@ -411,7 +411,7 @@ CREATE INDEX ahn_notify_staff_idx ON action.hold_notification ( notify_staff );
 CREATE TABLE action.hold_copy_map (
 	id		SERIAL	PRIMARY KEY,
 	hold		INT	NOT NULL REFERENCES action.hold_request (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	target_copy	BIGINT	NOT NULL REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	target_copy	BIGINT	NOT NULL, -- REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, -- XXX could be an serial.issuance
 	CONSTRAINT copy_once_per_hold UNIQUE (hold,target_copy)
 );
 -- CREATE INDEX acm_hold_idx ON action.hold_copy_map (hold);
@@ -421,7 +421,7 @@ CREATE TABLE action.transit_copy (
 	id			SERIAL				PRIMARY KEY,
 	source_send_time	TIMESTAMP WITH TIME ZONE,
 	dest_recv_time		TIMESTAMP WITH TIME ZONE,
-	target_copy		BIGINT				NOT NULL REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	target_copy		BIGINT				NOT NULL, -- REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, -- XXX could be an serial.issuance
 	source			INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	dest			INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	prev_hop		INT				REFERENCES action.transit_copy (id) DEFERRABLE INITIALLY DEFERRED,
@@ -438,7 +438,7 @@ CREATE TABLE action.hold_transit_copy (
 	hold	INT	REFERENCES action.hold_request (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (action.transit_copy);
 ALTER TABLE action.hold_transit_copy ADD PRIMARY KEY (id);
-ALTER TABLE action.hold_transit_copy ADD CONSTRAINT ahtc_tc_fkey FOREIGN KEY (target_copy) REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+-- ALTER TABLE action.hold_transit_copy ADD CONSTRAINT ahtc_tc_fkey FOREIGN KEY (target_copy) REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED; -- XXX could be an serial.issuance
 CREATE INDEX active_hold_transit_dest_idx ON "action".hold_transit_copy (dest);
 CREATE INDEX active_hold_transit_source_idx ON "action".hold_transit_copy (source);
 CREATE INDEX active_hold_transit_cp_idx ON "action".hold_transit_copy (target_copy);

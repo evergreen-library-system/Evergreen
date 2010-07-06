@@ -80,6 +80,10 @@ ALTER TABLE asset.copy ADD CONSTRAINT asset_copy_call_number_fkey FOREIGN KEY (c
 ALTER TABLE asset.copy ADD CONSTRAINT asset_copy_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE asset.copy ADD CONSTRAINT asset_copy_editor_fkey FOREIGN KEY (editor) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
+ALTER TABLE serial.unit ADD CONSTRAINT serial_unit_call_number_fkey FOREIGN KEY (call_number) REFERENCES asset.call_number (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE serial.unit ADD CONSTRAINT serial_unit_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE serial.unit ADD CONSTRAINT serial_unit_editor_fkey FOREIGN KEY (editor) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+
 ALTER TABLE asset.copy_note ADD CONSTRAINT asset_copy_note_copy_fkey FOREIGN KEY (owning_copy) REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE asset.copy_note ADD CONSTRAINT asset_copy_note_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
@@ -96,7 +100,7 @@ ALTER TABLE asset.stat_cat ADD CONSTRAINT a_sc_owner_fkey FOREIGN KEY (owner) RE
 ALTER TABLE asset.stat_cat_entry ADD CONSTRAINT a_sce_sc_fkey FOREIGN KEY (stat_cat) REFERENCES asset.stat_cat (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE asset.stat_cat_entry ADD CONSTRAINT a_sce_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE asset.stat_cat_entry_copy_map ADD CONSTRAINT a_sc_oc_fkey FOREIGN KEY (owning_copy) REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+-- ALTER TABLE asset.stat_cat_entry_copy_map ADD CONSTRAINT a_sc_oc_fkey FOREIGN KEY (owning_copy) REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE asset.stat_cat_entry_copy_map ADD CONSTRAINT a_sc_sce_fkey FOREIGN KEY (stat_cat_entry) REFERENCES asset.stat_cat_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE asset.stat_cat_entry_copy_map ADD CONSTRAINT a_sc_sc_fkey FOREIGN KEY (stat_cat) REFERENCES asset.stat_cat (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
@@ -104,7 +108,7 @@ ALTER TABLE money.billable_xact ADD CONSTRAINT money_billable_xact_usr_fkey FORE
 
 ALTER TABLE action.circulation ADD CONSTRAINT action_circulation_usr_fkey FOREIGN KEY (usr) REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE action.circulation ADD CONSTRAINT action_circulation_circ_lib_fkey FOREIGN KEY (circ_lib) REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE action.circulation ADD CONSTRAINT action_circulation_target_copy_fkey FOREIGN KEY (target_copy) REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+-- ALTER TABLE action.circulation ADD CONSTRAINT action_circulation_target_copy_fkey FOREIGN KEY (target_copy) REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE config.billing_type ADD CONSTRAINT config_billing_type_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
