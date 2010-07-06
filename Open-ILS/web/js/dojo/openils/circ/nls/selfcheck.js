@@ -19,6 +19,23 @@
     "WORKSTATION_EXISTS" : "This workstation has already been registered.  Would you like to use it for this self-check station?",
     "CC_PAYABLE_BALANCE" : "Total amount to pay: $${0}",
     "TOTAL_FINES_SELECTED" : "Selected total: $${0}",
-    "WELCOME_BANNER" : "Welcome, ${0}"
+    "WELCOME_BANNER" : "Welcome, ${0}",
+    "FAIL_PART_actor_usr_barred": "The patron is barred",
+    "FAIL_PART_asset_copy_circulate": "The item does not circulate",
+    "FAIL_PART_asset_copy_location_circulate": "Items from this shelving location do not circulate",
+    "FAIL_PART_asset_copy_status": "The item cannot circulate at this time",
+    "FAIL_PART_circ_holds_target_skip_me": "The item's circulation library does not fulfill holds",
+    "FAIL_PART_config_circ_matrix_circ_mod_test": "The patron has too many items of this type checked out",
+    "FAIL_PART_config_circ_matrix_test_available_copy_hold_ratio": "The available item-to-hold ratio is too low",
+    "FAIL_PART_config_circ_matrix_test_circulate": "Circulation rules reject this item as non-circulatable",
+    "FAIL_PART_config_circ_matrix_test_total_copy_hold_ratio": "The total item-to-hold ratio is too low",
+    "FAIL_PART_config_hold_matrix_test_holdable": "Hold rules reject this item as unholdable",
+    "FAIL_PART_config_hold_matrix_test_max_holds": "The patron has reached the maximum number of holds",
+    "FAIL_PART_config_rule_age_hold_protect_prox": "The item is too new to transit this far",
+    "FAIL_PART_no_item": "The system could not find this item",
+    "FAIL_PART_no_ultimate_items": "The system could not find any items to match this hold request",
+    "FAIL_PART_no_matchpoint": "System rules do not define how to handle this item",
+    "FAIL_PART_no_user": "The system could not find this patron",
+    "FAIL_PART_transit_range": "The item cannot transit this far"
 }
 

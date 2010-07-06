@@ -884,6 +884,15 @@ SelfCheckManager.prototype.checkout = function(barcode, override) {
     }
 }
 
+SelfCheckManager.prototype.failPartMessage = function(result) {
+    if (result.payload && result.payload.fail_part) {
+        var stringKey = "FAIL_PART_" +
+            result.payload.fail_part.replace(/\./g, "_");
+        return localeStrings[stringKey];
+    } else {
+        return null;
+    }
+}
 
 SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
 
@@ -1039,12 +1048,14 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
             default:
                 console.error('Unhandled event ' + result.textcode);
 
-                if(action == 'checkout' || action == 'renew') {
-                    displayText = dojo.string.substitute(
-                        localeStrings.GENERIC_CIRC_FAILURE, [item]);
-                } else {
-                    displayText = dojo.string.substitute(
-                        localeStrings.UNKNOWN_ERROR, [result.textcode]);
+                if (!(displayText = this.failPartMessage(result))) {
+                    if (action == 'checkout' || action == 'renew') {
+                        displayText = dojo.string.substitute(
+                            localeStrings.GENERIC_CIRC_FAILURE, [item]);
+                    } else {
+                        displayText = dojo.string.substitute(
+                            localeStrings.UNKNOWN_ERROR, [result.textcode]);
+                    }
                 }
         }
     }
