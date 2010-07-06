@@ -881,6 +881,35 @@ vim:et:ts=4:sw=4:
             </open-ils.pcrud>
 
 
+            <open-ils.qstore>
+                <keepalive>6</keepalive>
+                <stateless>1</stateless>
+                <language>C</language>
+                <implementation>oils_qstore.so</implementation>
+                <max_requests>200</max_requests>
+                <unix_config>
+                    <max_requests>1000</max_requests>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                    <driver>pgsql</driver>
+                    <database>
+                        <type>master</type>
+                        <weight>2</weight>
+                        <user>postgres</user>
+                        <host>localhost</host>
+                        <port>5432</port>
+                        <pw>postgres</pw>
+                        <db>evergreen</db>
+                        <client_encoding>UTF-8</client_encoding>
+                    </database>
+                </app_settings>
+            </open-ils.qstore>
+
+
             <opensrf.settings>
                 <keepalive>1</keepalive>
                 <stateless>1</stateless>
