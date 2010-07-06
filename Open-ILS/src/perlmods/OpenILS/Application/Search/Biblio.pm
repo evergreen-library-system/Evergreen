@@ -910,6 +910,11 @@ The search-hash argument can have the following elements:
     format  : The MARC format
     sort    : What field to sort the results on? [ author | title | pubdate ]
     sort_dir: What direction do we sort? [ asc | desc ]
+    tag_circulated_records : Boolean, if true, records that are in the user's visible checkout history
+        will be tagged with an additional value ("1") as the last value in the record ID array for
+        each record.  Requires the 'authtoken'
+    authtoken : Authentication token string;  When actions are performed that require a user login
+        (e.g. tagging circulated records), the authentication token is required
 
 The searches element is required, must have a hashref value, and the hashref must contain at least one 
 of the following classes as a key:
@@ -1170,6 +1175,10 @@ sub staged_search {
             # Create backwards-compatible result structures
             if($self->api_name =~ /biblio/) {
                 $results = [map {[$_->{id}]} @$results];
+
+                tag_circulated_records($search_hash->{authtoken}, $results) 
+                    if $search_hash->{tag_circulated_records} and $search_hash->{authtoken};
+
             } else {
                 $results = [map {[$_->{id}, $_->{rel}, $_->{record}]} @$results];
             }
@@ -1248,6 +1257,34 @@ sub staged_search {
     cache_facets($facet_key, $new_ids, ($self->api_name =~ /metabib/) ? 1 : 0) if $docache;
 
     return undef;
+}
+
+sub tag_circulated_records {
+    my ($auth, $results) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $results unless $e->checkauth;
+
+    # Give me the distinct set of bib records that exist in the user's visible circulation history
+    my $circ_recs = $e->json_query({
+        select => {acn => [{column => 'record', transform => 'distinct'}]}, 
+        from => {acp => 'acn'}, 
+        where => {
+            '+acp' => {
+                id => {
+                    in => {
+                        from => ['action.usr_visible_circ_copies', $e->requestor->id]}
+                }
+            }
+        }
+    });
+
+    # if the record appears in the circ history, push a 1 onto 
+    # the rec array structure to indicate truthiness
+    for my $rec (@$results) {
+        push(@$rec, 1) if grep { $_->{record} eq $$rec[0] } @$circ_recs;
+    }
+
+    $results
 }
 
 # creates a unique token to represent the query in the cache
