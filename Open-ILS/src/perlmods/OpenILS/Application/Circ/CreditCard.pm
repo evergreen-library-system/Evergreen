@@ -231,7 +231,15 @@ sub dispatch {
     #   a payment processor, nor that
     # b) it is even necessary to supply this argument to processors in all
     #   cases.  Testing this with several processors would be a good idea.
-    (my $cardtype = cardtype($argshash->{cc})) =~ s/ card//;
+    (my $cardtype = cardtype($argshash->{cc})) =~ s/ card//i;
+
+    if (lc($cardtype) eq "unknown") {
+        $logger->info("Credit card number passed validate(), " .
+            "yet cardtype() returned $cardtype");
+        return new OpenILS::Event(
+            "CREDIT_PROCESSOR_INVALID_CC_NUMBER", "note" => "cardtype $cardtype"
+        );
+    }
 
     $logger->debug(
         "applying payment via processor '" . $argshash->{processor} . "'"
@@ -249,7 +257,10 @@ sub dispatch {
     );
 
     $transaction->content(prepare_bop_content($argshash, $patron, $cardtype));
-    $transaction->submit();
+
+    # XXX submit() does not return a value, although crashing is possible here
+    # with some bad input depending on the payment processor.
+    $transaction->submit;
 
     my $payload = {
         "processor" => $argshash->{"processor"},
