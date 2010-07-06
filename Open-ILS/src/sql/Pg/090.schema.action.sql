@@ -616,6 +616,16 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+CREATE OR REPLACE FUNCTION action.usr_visible_circ_copies( user_id INTEGER ) RETURNS SETOF INTEGER AS $$
+    DECLARE
+        copy INTEGER;
+    BEGIN
+        FOR copy IN SELECT DISTINCT(target_copy) FROM action.usr_visible_circs(user_id) LOOP
+            RETURN NEXT copy;
+        END LOOP;
+    END;
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION action.usr_visible_holds (usr_id INT) RETURNS SETOF action.hold_request AS $func$
 DECLARE
     h               action.hold_request%ROWTYPE;
