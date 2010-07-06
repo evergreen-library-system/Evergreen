@@ -1084,7 +1084,9 @@ __PACKAGE__->register_method(
 sub staged_search {
 	my($self, $conn, $search_hash, $docache) = @_;
 
-    my $method = ($self->api_name =~ /metabib/) ?
+    my $IAmMetabib = ($self->api_name =~ /metabib/) ? 1 : 0;
+
+    my $method = $IAmMetabib?
         'open-ils.storage.metabib.multiclass.staged.search_fts':
         'open-ils.storage.biblio.multiclass.staged.search_fts';
 
@@ -1173,15 +1175,14 @@ sub staged_search {
             }
 
             # Create backwards-compatible result structures
-            if($self->api_name =~ /biblio/) {
-                $results = [map {[$_->{id}]} @$results];
-
-                tag_circulated_records($search_hash->{authtoken}, $results) 
-                    if $search_hash->{tag_circulated_records} and $search_hash->{authtoken};
-
-            } else {
+            if($IAmMetabib) {
                 $results = [map {[$_->{id}, $_->{rel}, $_->{record}]} @$results];
+            } else {
+                $results = [map {[$_->{id}]} @$results];
             }
+
+            tag_circulated_records($search_hash->{authtoken}, $results, $IAmMetabib) 
+                if $search_hash->{tag_circulated_records} and $search_hash->{authtoken};
 
             push @$new_ids, grep {defined($_)} map {$_->[0]} @$results;
             $results = [grep {defined $_->[0]} @$results];
@@ -1254,34 +1255,39 @@ sub staged_search {
         }
     );
 
-    cache_facets($facet_key, $new_ids, ($self->api_name =~ /metabib/) ? 1 : 0) if $docache;
+    cache_facets($facet_key, $new_ids, $IAmMetabib) if $docache;
 
     return undef;
 }
 
 sub tag_circulated_records {
-    my ($auth, $results) = @_;
+    my ($auth, $results, $metabib) = @_;
     my $e = new_editor(authtoken => $auth);
     return $results unless $e->checkauth;
 
+    my $query = {
+        select   => { acn => [{ column => 'record', alias => 'tagme' }] }, 
+        from     => { acp => 'acn' }, 
+        where    => { id => { in => { from => ['action.usr_visible_circ_copies', $e->requestor->id] } } },
+        distinct => 1
+    };
+
+    if ($metabib) {
+        $query = {
+            select   => { mmsm => [{ column => 'metarecord', alias => 'tagme' }] },
+            from     => 'mmsm',
+            where    => { source => { in => $query } },
+            distinct => 1
+        };
+    }
+
     # Give me the distinct set of bib records that exist in the user's visible circulation history
-    my $circ_recs = $e->json_query({
-        select => {acn => [{column => 'record', transform => 'distinct'}]}, 
-        from => {acp => 'acn'}, 
-        where => {
-            '+acp' => {
-                id => {
-                    in => {
-                        from => ['action.usr_visible_circ_copies', $e->requestor->id]}
-                }
-            }
-        }
-    });
+    my $circ_recs = $e->json_query( $query );
 
     # if the record appears in the circ history, push a 1 onto 
     # the rec array structure to indicate truthiness
     for my $rec (@$results) {
-        push(@$rec, 1) if grep { $_->{record} eq $$rec[0] } @$circ_recs;
+        push(@$rec, 1) if grep { $_->{tagme} eq $$rec[0] } @$circ_recs;
     }
 
     $results
