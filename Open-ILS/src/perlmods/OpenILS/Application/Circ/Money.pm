@@ -69,7 +69,7 @@ __PACKAGE__->register_method(
         ],
         "return" => {
             "desc" =>
-                q{1 on success, event on failure.  Event possibilities include:
+                q{Array of payment IDs on success, event on failure.  Event possibilities include:
                 BAD_PARAMS
                     Bad parameters were given to this API method itself.
                     See note field.
@@ -299,6 +299,7 @@ sub make_payments {
 
     ### RE-OPEN TRANSACTION HERE ###
     $e->xact_begin;
+    my @payment_ids;
 
     # create payment records
     my $create_money_method = "create_money_" . $type;
@@ -338,6 +339,8 @@ sub make_payments {
                 $e, "$create_money_method failed", $payment, $cc_payload
             );
         }
+
+        push(@payment_ids, $payment->id);
     }
 
     my $evt = _update_patron_credit($e, $patron, $credit);
@@ -360,7 +363,7 @@ sub make_payments {
     }
 
     $e->commit;
-    return 1;
+    return \@payment_ids;
 }
 
 sub _recording_failure {
