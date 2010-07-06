@@ -106,9 +106,22 @@ SelfCheckManager.prototype.init = function() {
                 self.patron,
                 self.getSelectedFinesTotal(),
                 self.getSelectedFineTransactions(),
-                function() {
-                    self.updateFinesSummary();
-                    self.drawFinesPage();
+                function(resp) {
+                    var evt = openils.Event.parse(resp);
+                    if(evt) {
+                        var message = evt + '';
+                        if(evt.textcode == 'CREDIT_PROCESSOR_DECLINED_TRANSACTION' && evt.payload)
+                            message += '\n' + evt.payload.error_message;
+                        self.handleAlert(message, true, 'payment-failure');
+                        return;
+                    }
+                    self.printPaymentReceipt(
+                        resp,
+                        function() {
+                            self.updateFinesSummary();
+                            self.drawFinesPage();
+                        }
+                    );
                 }
             );
         },
@@ -1325,6 +1338,35 @@ SelfCheckManager.prototype.printHoldsReceipt = function(callback) {
     );
 }
 
+
+SelfCheckManager.prototype.printPaymentReceipt = function(paymentIds, callback) {
+    
+    var self = this;
+    progressDialog.show(true);
+
+    fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.money.payment_receipt.print'],
+        {
+            async : true,
+            params : [this.authtoken, paymentIds],
+            oncomplete : function(r) {
+                var resp = openils.Util.readResponse(r);
+                var output = resp.template_output();
+                progressDialog.hide();
+                if(output) {
+                    self.printData(output.data(), 1, callback); 
+                } else {
+                    var error = resp.error_output();
+                    if(error) {
+                        throw new Error("Error creating receipt: " + error.data());
+                    } else {
+                        throw new Error("No receipt data returned from server");
+                    }
+                }
+            }
+        }
+    );
+}
 
 /**
  * Print a receipt for this user's items out

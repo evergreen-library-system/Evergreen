@@ -86,6 +86,7 @@ proto.sendCCPayment = function(patron, xacts, onPaymentSubmit) {
         payments : xacts,
         cc_args : {
             where_process : 1,
+            //type : oilsSelfckCCType.attr('value'),
             number : oilsSelfckCCNumber.attr('value'),
             cvv2 : oilsSelfckCCCVV.attr('value'),
             expire_year : oilsSelfckCCYear.attr('value'),
