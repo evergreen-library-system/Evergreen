@@ -574,7 +574,6 @@ patron.bills.prototype = {
                 api.BILL_PAY.method,
                 [ ses(), payment_blob ]
             );
-            if (robj == 1) { return true; } 
             if (typeof robj.ilsevent != 'undefined') {
                 switch(Number(robj.ilsevent)) {
                     case 0 /* SUCCESS */ : return true; break;
@@ -582,6 +581,7 @@ patron.bills.prototype = {
                     default: throw(robj); break;
                 }
             }
+            return true;
         } catch(E) {
             obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bills.pay.payment_failed'),E);
             return false;

@@ -837,7 +837,6 @@ function pay(payment_blob) {
             note : payment_blob.note
         }
         var robj = g.network.simple_request( 'BILL_PAY', [ ses(), payment_blob ]);
-        if (robj == 1) { return true; } 
         if (typeof robj.ilsevent != 'undefined') {
             switch(Number(robj.ilsevent)) {
                 case 0 /* SUCCESS */ : return true; break;
@@ -845,6 +844,7 @@ function pay(payment_blob) {
                 default: throw(robj); break;
             }
         }
+        return true;
     } catch(E) {
         g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bills.pay.payment_failed'),E);
         return false;
