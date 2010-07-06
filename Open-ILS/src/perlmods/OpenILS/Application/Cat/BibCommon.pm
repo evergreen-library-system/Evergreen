@@ -230,8 +230,6 @@ sub find_free_tcn {
 	my $editor = shift;
 	my $existing_rec = shift;
 
-	my $add_901 = 0;
-
 	my $xpath = '//marc:datafield[@tag="901"]/marc:subfield[@code="a"]';
 	my ($tcn) = $marcxml->documentElement->findvalue($xpath) =~ /(\w+)\s*$/o;
 
@@ -249,8 +247,6 @@ sub find_free_tcn {
 
 	if(_tcn_exists($editor, $tcn, $tcn_source, $existing_rec)) {
 		$tcn = undef;
-	} else {
-		$add_901++;
 	}
 
 
@@ -289,32 +285,6 @@ sub find_free_tcn {
 	}
 
 	return undef unless $tcn;
-
-	if ($add_901) {
-		my $df = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'datafield');
-		$df->setAttribute( tag => '901' );
-		$df->setAttribute( ind1 => ' ' );
-		$df->setAttribute( ind2 => ' ' );
-		$marcxml->documentElement->appendChild( $df );
-
-		my $sfa = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'subfield');
-		$sfa->setAttribute( code => 'a' );
-		$sfa->appendChild( $marcxml->createTextNode( $tcn ) );
-		$df->appendChild( $sfa );
-
-		my $sfb = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'subfield');
-		$sfb->setAttribute( code => 'b' );
-		$sfb->appendChild( $marcxml->createTextNode( $tcn_source ) );
-		$df->appendChild( $sfb );
-
-        if ($existing_rec) {
-    		my $sfc = $marcxml->createElementNS( 'http://www.loc.gov/MARC21/slim', 'subfield');
-    		$sfc->setAttribute( code => 'c' );
-	    	$sfc->appendChild( $marcxml->createTextNode( $existing_rec ) );
-		    $df->appendChild( $sfb );
-        }
-	}
-
 	return $tcn;
 }
 

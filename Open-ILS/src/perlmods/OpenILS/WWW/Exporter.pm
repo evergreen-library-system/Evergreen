@@ -218,18 +218,7 @@ sub handler {
 		try {
 
 			my $req = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
-			$req->delete_field( $_ ) for ($req->field(901));
 			$req->encoding($encoding) if ($encoding eq 'UTF-8');
-
-			$req->append_fields(
-				MARC::Field->new(
-					901, '', '', 
-					a => $bib->$tcn_v,
-					b => $bib->$tcn_s,
-					c => $bib->id
-				)
-			);
-
 
 			if ($holdings) {
 				$req->delete_field( $_ ) for ($req->field('852')); # remove any legacy 852s

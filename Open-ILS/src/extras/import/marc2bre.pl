@@ -250,11 +250,9 @@ PROCESS: while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 		}
 
 		# turn our id and tcn into a 901 field, and also create a tcn and/or figure out the tcn source
-		my $field901;
-		($field901, $tcn_value, $tcn_source) = preprocess($rec, $tcn_value, $id);
+		($tcn_value, $tcn_source) = preprocess($rec, $tcn_value, $id);
 		# delete the old identifier and trash fields
 		$rec->delete_field($_) for ($rec->field('901', $tcn_field, $id_field, @trash_fields));
-		$rec->append_fields($field901);
 	}
 
 	(my $xml = $rec->as_xml_record()) =~ s/\n//sog;
@@ -385,14 +383,7 @@ sub preprocess {
 		warn "\n!!! TCN $passed_tcn is already in use, using TCN ($tcn_value) derived from $tcn_source ID.\n";
 	}
 
-	my $field901 = MARC::Field->new(
-		'901' => ('', ''),
-		a => $tcn_value,
-		b => $tcn_source,
-		c => $id
-	);
-
-	return ($field901, $tcn_value, $tcn_source);
+	return ($tcn_value, $tcn_source);
 }
 
 sub despace {

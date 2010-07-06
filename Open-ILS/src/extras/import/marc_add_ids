@@ -65,15 +65,8 @@ while (<>) {
 	try {
 		my $r = MARC::Record->new_from_xml($partlist{marc});
 
-		my %sfmap;
-		$sfmap{a} = $partlist{tcn_value} if ($partlist{tcn_value});
-		$sfmap{b} = $partlist{tcn_source} if ($partlist{tcn_source});
-		$sfmap{c} = $partlist{id} if ($partlist{id});
 
-		my $f = MARC::Field->new(901 => ' ' => ' ' => %sfmap);
-		$r->delete_field($_) for ($r->field('901'));
-		$r->append_fields( $f );
-
+        # XXX the following wil likely be subsumed by an in-db process, as the 901 was
         if ($set_001_003) {
             my $old_001 = $r->field('001');
             if ($old_001) {

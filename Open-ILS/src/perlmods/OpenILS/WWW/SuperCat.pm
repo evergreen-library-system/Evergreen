@@ -778,20 +778,7 @@ sub supercat {
 		try {
 			my $bib = $supercat->request( "open-ils.supercat.record.object.retrieve", $id )->gather(1)->[0];
         
-			my $r = MARC::Record->new_from_xml( $bib->marc, 'UTF-8', 'USMARC' );
-			$r->delete_field( $_ ) for ($r->field(901));
-                
-			$r->append_fields(
-				MARC::Field->new(
-					901, '', '',
-					a => $bib->tcn_value,
-					b => $bib->tcn_source,
-					c => $bib->id
-				)
-			);
-
-			print "Content-type: application/octet-stream\n\n";
-			print $r->as_usmarc;
+			print "Content-type: application/octet-stream\n\n" . MARC::Record->new_from_xml( $bib->marc, 'UTF-8', 'USMARC' )->as_usmarc;
 
 		} otherwise {
 			warn shift();
@@ -1833,16 +1820,6 @@ sub sru_search {
 						);
 					}
 				}
-
-				$marc->delete_field( $_ ) for ($marc->field(901));
-				$marc->append_fields(
-					MARC::Field->new(
-						901, '', '', 
-						a => $record->tcn_value,
-						b => $record->tcn_source,
-						c => $record->id
-					)
-				);
 
 				# Ensure the data is encoded as UTF8 before we hand it off
 				$marcxml = encode_utf8($marc->as_xml_record());

@@ -147,18 +147,6 @@ while ( my $i = <> ) {
 	try {
 
 		my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
-		$r->delete_field( $_ ) for ($r->field(901));
-
-		$r->append_fields(
-			MARC::Field->new(
-				901, '', '', 
-				a => $bib->tcn_value,
-				b => $bib->tcn_source,
-				c => $bib->id
-			)
-		);
-
-
         my $cn_list = $bib->call_numbers;
         if ($cn_list && @$cn_list) {
 
