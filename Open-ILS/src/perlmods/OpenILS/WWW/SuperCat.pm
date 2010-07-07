@@ -1432,7 +1432,7 @@ sub string_browse {
 
 	unless ($string and $axis and grep { $axis eq $_ } keys %browse_types) {
 		warn "something's wrong...";
-		warn " >>> $format -> $axis -> $site -> $string -> $page -> $page_size ";
+		warn " >>> format: $format -> axis: $axis -> site: $site -> string: $string -> page: $page -> page_size: $page_size ";
 		return undef;
 	}
 

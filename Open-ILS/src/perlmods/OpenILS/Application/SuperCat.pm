@@ -244,6 +244,8 @@ sub cn_browse {
 	my $ou = shift;
 	my $page_size = shift || 9;
 	my $page = shift || 0;
+	my $statuses = shift || [];
+	my $copy_locations = shift || [];
 
 	my ($before_limit,$after_limit) = (0,0);
 	my ($before_offset,$after_offset) = (0,0);
@@ -278,12 +280,28 @@ sub cn_browse {
 
 	my @list = ();
 
+    my @cp_filter = ();
+    if (@$statuses || @$copy_locations) {
+        @cp_filter = (
+            '-exists' => {
+                from  => 'acp',
+				where => {
+                    call_number => { '=' => { '+acn' => 'id' } },
+                    deleted     => 'f',
+                    ((@$statuses)       ? ( status   => $statuses)       : ()),
+				    ((@$copy_locations) ? ( location => $copy_locations) : ())
+                }
+            }
+        );
+    }
+
 	if ($page <= 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
 			{ label		=> { "<" => { transform => "upper", value => ["upper", $label] } },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
+              @cp_filter
 			},
 			{ flesh		=> 1,
 			  flesh_fields	=> { acn => [qw/record owning_lib/] },
@@ -301,6 +319,7 @@ sub cn_browse {
 			{ label		=> { ">=" => { transform => "upper", value => ["upper", $label] } },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
+              @cp_filter
 			},
 			{ flesh		=> 1,
 			  flesh_fields	=> { acn => [qw/record owning_lib/] },
@@ -337,6 +356,12 @@ Returns the XML representation of the requested bibliographic record's holdings
 				{ name => 'page',
 				  desc => 'The page of call numbers to retrieve, calculated based on page_size.  Can be positive, negative or 0.',
 				  type => 'number' },
+				{ name => 'statuses',
+				  desc => 'Array of statuses to filter copies by, optional and can be undef.',
+				  type => 'array' },
+				{ name => 'locations',
+				  desc => 'Array of copy locations to filter copies by, optional and can be undef.',
+				  type => 'array' },
 			],
 		  'return' =>
 		  	{ desc => 'Call numbers with owning_lib and record fleshed',
