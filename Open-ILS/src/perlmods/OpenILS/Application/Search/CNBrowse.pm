@@ -44,12 +44,36 @@ sub cn_browse_start {
 }
 
 
-
-
 __PACKAGE__->register_method(
-	method	=> "cn_browse",
-	api_name	=> "open-ils.search.callnumber.browse",
-	notes		=> "Starts a callnumber browse"
+	method => "cn_browse",
+	api_name => "open-ils.search.callnumber.browse",
+    signature => {
+        desc => q/Paged call number browse/,
+        params => [
+            { name => 'label',
+              desc => 'The target call number lable',
+              type => 'string' },
+            { name => 'org_unit',
+              desc => 'The org unit shortname (or "-" or undef for global) to browse',
+              type => 'string' },
+            { name => 'page_size',
+              desc => 'Count of call numbers to retrieve, default is 9',
+              type => 'number' },
+            { name => 'offset',
+              desc => 'The page of call numbers to retrieve, calculated based on page_size.  Can be positive, negative or 0.',
+              type => 'number' },
+            { name => 'statuses',
+              desc => 'Array of statuses to filter copies by, optional and can be undef.',
+              type => 'array' },
+            { name => 'locations',
+              desc => 'Array of copy locations to filter copies by, optional and can be undef.',
+              type => 'array' },
+        ],
+        return => {
+            type => 'array',
+            desc => q/List of callnumber (acn) and record (mvr) objects/
+        }
+    }
 );
 
 sub cn_browse {
@@ -63,7 +87,7 @@ sub cn_browse {
 
 	my $data = $ses->request(
 		'open-ils.supercat.call_number.browse', 
-		$cn, $name, $size, $offset )->gather(1);
+		$cn, $name, $size, $offset, $copy_statuses, $copy_locations )->gather(1);
 
 	return [] unless $data;
 
