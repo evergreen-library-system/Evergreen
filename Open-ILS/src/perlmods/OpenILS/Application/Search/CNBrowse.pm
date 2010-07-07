@@ -77,7 +77,7 @@ __PACKAGE__->register_method(
 );
 
 sub cn_browse {
-	my( $self, $conn, $cn, $orgid, $size, $offset ) = @_;
+	my( $self, $conn, $cn, $orgid, $size, $offset, $copy_statuses, $copy_locations ) = @_;
 	my $ses = OpenSRF::AppSession->create('open-ils.supercat');
 
 	my $tree = $U->get_slim_org_tree;
