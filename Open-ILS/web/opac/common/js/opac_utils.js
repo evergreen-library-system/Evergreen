@@ -329,10 +329,17 @@ function _debug(str) {
 	*/
 }
 
+var forceLoginSSL; // set via Apache env variable
 function  buildOPACLink(args, slim, ssl) {
 
 	if(!args) args = {};
 	var string = "";
+
+    if( ssl == undefined && (
+            location.protocol == 'https:' ||
+            (forceLoginSSL && G.user && G.user.session))) {
+        ssl = true;
+    }
 
 	if(!slim) {
 		string = findBaseURL(ssl);
@@ -799,7 +806,7 @@ function doLogout() {
 	
 	var nored = false;
 	try{ if(isFrontPage) nored = true; } catch(e){nored = false;}
-	if(!nored) goTo(buildOPACLink(args));
+	if(!nored) goTo(buildOPACLink(args, false, false));
 }
 
 

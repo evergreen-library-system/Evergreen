@@ -41,6 +41,10 @@
 			getId("home_adv_search_link").setAttribute("href", buildOPACLink({page:ADVANCED})); 
 			getId("home_myopac_link").setAttribute("href", buildOPACLink({page:MYOPAC}, false, true));
 		}
+
+        <!--#if expr="$OILS_OPAC_FORCE_LOGIN_SSL"-->
+            forceLoginSSL = true;
+        <!--#endif -->
 	</script>
 
 	<!-- enable Dojo date picker -->
