@@ -1,4 +1,25 @@
 #!/usr/bin/perl
+
+#    This CGI script might be useful for providing an easy way for EZproxy to authenticate
+#    users against an Evergreen instance.
+#    
+#    For example, if you modify your eg_vhost.conf by adding this:
+#    <Directory "/openils/var/cgi-bin/ezproxy">
+#        AddHandler cgi-script .pl
+#        AllowOverride None
+#        Options +ExecCGI
+#        allow from all
+#    </Directory>
+#    
+#    and make that directory and copy remoteauth.cgi to it:
+#    mkdir /openils/var/cgi-bin/ezproxy/
+#    cp remoteauth.cgi /openils/var/cgi-bin/ezproxy/
+#    
+#    Then you could add a line like this to the users.txt of your EZproxy instance:
+#    
+#    ::external=https://hostname/cgi-bin/ezproxy/remoteauth.cgi,post=user=^u&passwd=^p
+#
+
 #use strict;
 use warnings;
 
