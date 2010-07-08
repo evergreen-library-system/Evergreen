@@ -339,6 +339,43 @@ function createCheckbox (attrs) {
     return createComplexXULElement('checkbox', attrs, Array.prototype.slice.apply(arguments, [1]) );
 }
 
+// Find the next textbox that we can use for a focus point
+// For control fields, use the first editable text box
+// For data fields, focus on the first subfield text box
+function setFocusToNextTag (row, direction) {
+    while (direction == 'up' ? row = row.previousSibling : row = row.nextSibling) {
+        var children = row.childNodes;
+        for (var i = 0; i <  children.length; i++) {
+			// This would be way cleaner with dojo.query()
+            if (row.className  == 'marcDatafieldRow') {
+                // marcSubfield lives in hbox.hbox.textbox
+                var hboxKids = children[i].childNodes;
+                if (children[i].tagName == 'hbox') {
+                    for (var j = 0; j < hboxKids.length; j++) {
+                        var msfBoxKids = hboxKids[j].childNodes;
+                        if (hboxKids[j].className == 'marcSubfieldBox') {
+                            for (var k = 0; k < msfBoxKids.length; k++) {
+                                if (msfBoxKids[k].className == 'plain marcSubfield') {
+                                        msfBoxKids[k].focus();
+                                        return false;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            } else {
+                if (children[i].tagName == 'textbox') {
+                    children[i].focus();
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+
 function createMARCTextbox (element,attrs) {
 
     var box = createComplexXULElement('textbox', attrs, Array.prototype.slice.apply(arguments, [2]) );
@@ -475,6 +512,14 @@ function createMARCTextbox (element,attrs) {
                     event.preventDefault();
 
                     return false;
+                } else {
+                    if (event.keyCode == 38) {
+                        return setFocusToNextTag(row, 'up');
+                    }
+                    if (event.keyCode == 40) {
+                        return setFocusToNextTag(row, 'down');
+                    }
+                    return false;
                 }
 
             } else if (event.keyCode == 46 && event.ctrlKey) { // ctrl+del
@@ -534,7 +579,15 @@ function createMARCTextbox (element,attrs) {
                 createControlField('008','                                        ');
                 loadRecord(xml_record);
             }
+
             return true;
+
+        } else { // event on a control field
+            if (event.keyCode == 38) { 
+                return setFocusToNextTag(row, 'up'); 
+            } else if (event.keyCode == 40) { 
+                return setFocusToNextTag(row, 'down');
+            }
         }
     };
 
