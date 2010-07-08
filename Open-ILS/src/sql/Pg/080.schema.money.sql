@@ -627,7 +627,8 @@ CREATE TABLE money.credit_card_payment (
 	cc_type		TEXT,
 	cc_number	TEXT,
     cc_processor TEXT,
-    cc_name TEXT, -- name of account holder, not the name of the credit card :)
+    cc_first_name TEXT,
+    cc_last_name TEXT,
 	expire_month	INT,
 	expire_year	INT,
 	approval_code	TEXT
