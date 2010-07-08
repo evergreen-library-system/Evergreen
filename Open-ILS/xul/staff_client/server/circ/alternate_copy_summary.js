@@ -284,6 +284,12 @@ function load_item() {
         set("hold_transit_copy", '');
 
         if (details.transit) {
+            JSAN.use('circ.util'); var columns = circ.util.transit_columns({});
+
+            JSAN.use('util.list'); var list = new util.list('transit');
+            list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
+            list.append( { 'row' : { 'my' : { 'atc' : details.transit, } } });
+
             var transit_copy_status = typeof details.transit.copy_status() == 'object' ? details.transit.copy_status() : data.hash.ccs[ details.transit.copy_status() ];
                 set("transit_copy_status", transit_copy_status.name() );
                 set_tooltip("transit_copy_status", document.getElementById('circStrings').getFormattedString(
@@ -302,6 +308,8 @@ function load_item() {
             set("source_send_time", util.date.formatted_date( details.transit.source_send_time(), '%{localized}' )); 
             set("target_copy", details.transit.target_copy()); 
             set("hold_transit_copy", details.transit.hold_transit_copy()); 
+        } else {
+            $('transit_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.not_transit'));
         }
 
         set("checkin_lib", '');
@@ -562,6 +570,29 @@ function load_item() {
         set("notes", '');
 
         if (details.hold) {
+            var better_fleshed_hold_blob = network.simple_request('FM_AHR_BLOB_RETRIEVE.authoritative',[ ses(), details.hold.id() ]);
+            var status_robj = better_fleshed_hold_blob.status;
+            JSAN.use('circ.util');
+            var columns = circ.util.hold_columns( 
+                { 
+                    'request_time' : { 'hidden' : false },
+                    'pickup_lib_shortname' : { 'hidden' : false },
+                    'hold_type' : { 'hidden' : true },
+                    'current_copy' : { 'hidden' : true },
+                    'capture_time' : { 'hidden' : true },
+                    'email_notify' : { 'hidden' : false },
+                    'phone_notify' : { 'hidden' : false },
+                } 
+            );
+
+            JSAN.use('util.list'); var list = new util.list('hold');
+            list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
+            list.append( { 'row' : { 'my' : { 'ahr' : better_fleshed_hold_blob.hold, 'acp' : details.copy, 'status' : status_robj, } } });
+
+            JSAN.use('patron.util'); 
+            var au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), details.hold.usr() );
+            $('patron_name').setAttribute('value', $('circStrings').getFormattedString('staff.circ.copy_details.user_details', [au_obj.family_name(), au_obj.first_given_name(), au_obj.card().barcode()]) );
+
             set("hold_status", details.hold.status()); 
             set("transit", details.hold.transit()); 
             set("capture_time", util.date.formatted_date( details.hold.capture_time(), '%{localized}' )); 
@@ -600,7 +631,13 @@ function load_item() {
             set("cancel_cause", details.hold.cancel_cause()); 
             set("cancel_note", details.hold.cancel_note()); 
             set("notes", details.hold.notes()); 
-        } 
+        } else {
+            if (details.copy.status() == 8 /* ON HOLDS SHELF */) {
+                $('hold_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.bad_hold_status'));
+            } else {
+                $('hold_caption').setAttribute('label', $('circStrings').getString('staff.circ.copy_details.no_hold'));
+            }
+        }
 
         var x = document.getElementById('cat_deck');
         if (x) {
