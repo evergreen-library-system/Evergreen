@@ -373,6 +373,9 @@ sub set_circ_claims_returned {
         my $original_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($circ->due_date));
         my $new_date = DateTime::Format::ISO8601->new->parse_datetime($backdate);
         $backdate = $new_date->ymd . 'T' . $original_date->strftime('%T%z');
+        if ($backdate =~ /^(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d-\d\d)(\d\d)$/) {
+            $backdate = "$1:$2"; # put a colon in the timestamp component for DateTime::Format::ISO8601->parse_datetime
+        }
 
         # make it look like the circ stopped at the cliams returned time
         $circ->stop_fines_time($backdate);
@@ -502,6 +505,9 @@ sub set_circ_due_date {
         my $original_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($circ->due_date));
         my $new_date = DateTime::Format::ISO8601->new->parse_datetime($date);
         $date = $new_date->ymd . 'T' . $original_date->strftime('%T%z');
+        if ($date =~ /^(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d-\d\d)(\d\d)$/) {
+            $date = "$1:$2"; # put a colon in the timestamp component for DateTime::Format::ISO8601->parse_datetime
+        }
     }
 
 	$circ->due_date($date);
