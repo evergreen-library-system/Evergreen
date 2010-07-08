@@ -1838,41 +1838,7 @@ function AcqLiTable() {
                 break;
 
             case 'create_order':
-
-                if(!this.createPoProviderSelector) {
-                    var widget = new openils.widget.AutoFieldWidget({
-                        fmField : 'provider',
-                        fmClass : 'acqpo',
-                        searchFilter: {"active": "t"},
-                        parentNode : dojo.byId('acq-lit-po-provider'),
-                        dijitArgs : {
-                            "onChange": function() {
-                                if (this.item) {
-                                    self._updateCreatePoPrepayCheckbox(
-                                        this.item.prepayment_required
-                                    );
-                                }
-                            }
-                        }
-                    });
-                    widget.build(
-                        function(w) { self.createPoProviderSelector = w; }
-                    );
-                }
-
-                if(!this.createPoAgencySelector) {
-                    var widget = new openils.widget.AutoFieldWidget({
-                        fmField : 'ordering_agency',
-                        fmClass : 'acqpo',
-                        parentNode : dojo.byId('acq-lit-po-agency'),
-                        orgLimitPerms : ['CREATE_PURCHASE_ORDER'],
-                    });
-                    widget.build(
-                        function(w) { self.createPoAgencySelector = w; }
-                    );
-                }
-
-         
+                this._loadPOSelect();
                 acqLitPoCreateDialog.show();
                 break;
 
@@ -2408,7 +2374,38 @@ function AcqLiTable() {
         );
     }
 
-    this._loadPLSelect = function() {
+    this._loadPOSelect = function() {
+        if (!this.createPoProviderSelector) {
+            var widget = new openils.widget.AutoFieldWidget({
+                "fmField": "provider",
+                "fmClass": "acqpo",
+                "searchFilter": {"active": "t"},
+                "parentNode": dojo.byId("acq-lit-po-provider"),
+                "dijitArgs": {
+                    "onChange": function() {
+                        if (this.item) {
+                            self._updateCreatePoPrepayCheckbox(
+                                this.item.prepayment_required
+                            );
+                        }
+                    }
+                }
+            });
+            widget.build(function(w) { self.createPoProviderSelector = w; });
+        }
+
+        if (!this.createPoAgencySelector) {
+            var widget = new openils.widget.AutoFieldWidget({
+                "fmField": "ordering_agency",
+                "fmClass": "acqpo",
+                "parentNode": dojo.byId("acq-lit-po-agency"),
+                "orgLimitPerms": ["CREATE_PURCHASE_ORDER"],
+            });
+            widget.build(function(w) { self.createPoAgencySelector = w; });
+        }
+    };
+
+    this._loadPLSelect = function(preSel) {
         if(this._plSelectLoaded) return;
         var plList = [];
         function handleResponse(r) {
@@ -2424,7 +2421,8 @@ function AcqLiTable() {
                     self._plSelectLoaded = true;
                     acqLitAddExistingSelect.store = 
                         new dojo.data.ItemFileReadStore({data:acqpl.toStoreData(plList)});
-                    acqLitAddExistingSelect.setValue();
+
+                    acqLitAddExistingSelect.setValue(preSel);
                 }
             }
         );

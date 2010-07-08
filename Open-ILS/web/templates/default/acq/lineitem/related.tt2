@@ -38,23 +38,14 @@
             <div type='opac/slot-data' query='datafield[tag=260] subfield[code=c]'/>
         </li>
     </ul>
-    <div dojoType="dijit.form.DropDownButton">
-        <span>Create New Lineitem For This Record</span>
-        <div dojoType="dijit.TooltipDialog"  execute="addLi(arguments[0]);">
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Add To Selection List</td>
-                        <td style='padding-left:10px;'><div name='picklist' jsId='plSelector' dojoType='dijit.form.FilteringSelect'/></td>
-                    </tr>
-                    <tr>
-                        <td colspan='2' style='align:center'>
-                            <button dojoType="dijit.form.Button" type="submit">Create</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+
+    <div id="li_create_holder" class="hidden">
+        <button jsId="addToPlButton" dojoType="dijit.form.Button">
+            Add to New Selection List
+        </button>
+        <button jsId="createPoButton" dojoType="dijit.form.Button">
+            Create a New Purchase Order
+        </button>
     </div>
 
 </div>

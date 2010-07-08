@@ -35,6 +35,7 @@ function fetchRelated() {
     if(identTarget == 'bib')
         var method = 'open-ils.acq.lineitems_for_bib.by_bib_id';
 
+    var total = 0;
     fieldmapper.standardRequest(
         ["open-ils.acq", method], {
             "async": true,
@@ -46,9 +47,14 @@ function fetchRelated() {
             "onresponse": function(r) {
                 var resp = openils.Util.readResponse(r);
                 if (resp) {
+                    total++;
                     liTable.show("list");
                     liTable.addLineitem(resp);
                 }
+            },
+            "oncomplete": function() {
+                if (!total)
+                    openils.Util.show("li_create_holder");
             }
         }
     );
@@ -69,78 +75,63 @@ function fetchBib() {
     }) 
 }
 
-function addLi(fields) {
-
-    var li = new fieldmapper.jub();
-    li.marc(bibRecord.marc());
-    li.eg_bib_id(bibRecord.id());
-    if(fields.picklist) li.picklist(fields.picklist);
-    if(fields.po) li.po(fields.po);
-    li.selector(openils.User.user.id());
-    li.creator(openils.User.user.id());
-    li.editor(openils.User.user.id());
-
-    fieldmapper.standardRequest(
-        ['open-ils.acq', 'open-ils.acq.lineitem.create'],
-        {   async : true,
-            params : [openils.User.authtoken, li],
-            oncomplete : function(r) {
-                var id = openils.Util.readResponse(r);
-                if(!id) return;
-                if(fields.picklist) 
-                    location.href = oilsBasePath + '/acq/picklist/view/' + fields.picklist;
-                else
-                    location.href = oilsBasePath + '/acq/po/view/' + fields.po;
+function createLi(oncomplete) {
+    return function() {
+        progressDialog.show();
+        liTable.reset();
+        fieldmapper.standardRequest(
+            ["open-ils.acq", "open-ils.acq.biblio.create_by_id"], {
+                "params": [
+                    openils.User.authtoken, [bibRecord.id()], {
+                        "flesh_attrs": true,
+                        "flesh_cancel_reason": true,
+                        "flesh_notes": true
+                    }
+                ],
+                "async": true,
+                "onresponse": function(r) {
+                    var li = openils.Util.readResponse(r);
+                    if (typeof(li) == "object") {
+                        liTable.show("list");
+                        liTable.addLineitem(li);
+                        dojo.query(
+                            "input[name='selectbox']", liTable._findLiRow(li)
+                        )[0].checked = true;
+                    }
+                },
+                "oncomplete": function() {
+                    progressDialog.hide();
+                    openils.Util.hide("li_create_holder");
+                    oncomplete();
+                }
             }
+        );
+    };
+}
+
+function prepareButtons() {
+    addToPlButton.onClick = createLi(
+        function() { /* oncomplete */
+            liTable._loadPLSelect(paramPL);
+            acqLitSavePlDialog.show();
+        }
+    );
+    createPoButton.onClick = createLi(
+        function() { /* oncomplete */
+            liTable._loadPOSelect();
+            acqLitPoCreateDialog.show();
         }
     );
 }
-
-function loadPl() {
-
-    if(paramPL) {
-
-        fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
-            {   async: true,
-                params: [openils.User.authtoken, paramPL], 
-                oncomplete : function(r) {
-                    var pl = openils.Util.readResponse(r);
-                    plSelector.store = 
-                        new dojo.data.ItemFileReadStore({data:fieldmapper.acqpl.toStoreData([pl])});
-                    plSelector.attr('value', pl.name());
-                    plSelector.attr('disabled', true);
-                }
-            }
-        );
-
-    } else {
-
-        fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.picklist.user.retrieve.atomic'],
-            {   async: true,
-                params: [openils.User.authtoken], 
-                oncomplete : function(r) {
-                    var list = openils.Util.readResponse(r);
-                    plSelector.store = 
-                        new dojo.data.ItemFileReadStore({data:fieldmapper.acqpl.toStoreData(list)});
-                }
-            }
-        );
-    }
-}
-
 
 function load() {
     var cgi = new openils.CGI();
 
     identTarget = cgi.param('target');
     paramPL = cgi.param('pl');
-    paramPO = cgi.param('po');
+//    paramPO = cgi.param('po');
 
-    loadPl();
-
-    if(identTarget == 'bib') {
+    if (identTarget == 'bib') {
         fetchBib();
     } else {
         fetchLi(); 
@@ -150,6 +141,7 @@ function load() {
     liTable.reset();
     liTable._isRelatedViewer = true;
 
+    prepareButtons();
     fetchRelated();
 }
 
