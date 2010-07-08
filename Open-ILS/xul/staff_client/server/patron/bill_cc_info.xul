@@ -48,8 +48,8 @@
             "cc_number":        show['int'],
             "expire_month":     show['int'],
             "expire_year":      show['int'],
-            "billing_first":    show['int'],
-            "billing_last":     show['int'],
+            "billing_first":    show['ext'] + show['int'],
+            "billing_last":     show['ext'] + show['int'],
             "billing_address":  show['int'],
             "billing_city":     show['int'],
             "billing_state":    show['int'],
@@ -79,14 +79,16 @@
         function populate_address_fields() {
             $('billing_first').value = patron.first_given_name();
             $('billing_last').value = patron.family_name();
-            $('billing_address').value = patron.billing_address().street1();
-            var street2 = patron.billing_address().street2();
-            if (street2) {
-                $('billing_address').value += (' ' + street2);
+            if (patron.billing_address()) {
+                $('billing_address').value = patron.billing_address().street1();
+                var street2 = patron.billing_address().street2();
+                if (street2) {
+                    $('billing_address').value += (' ' + street2);
+                }
+                $('billing_city').value = patron.billing_address().city();
+                $('billing_state').value = patron.billing_address().state();
+                $('billing_zip').value = patron.billing_address().post_code();
             }
-            $('billing_city').value = patron.billing_address().city();
-            $('billing_state').value = patron.billing_address().state();
-            $('billing_zip').value = patron.billing_address().post_code();
         }
 
         function info_init() {

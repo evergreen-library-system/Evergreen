@@ -51,8 +51,8 @@ __PACKAGE__->register_method(
                         number          (for call to payment processor)
                         expire_month    (for call to payment processor)
                         expire_year     (for call to payment processor)
-                        billing_first   (for call to payment processor)
-                        billing_last    (for call to payment processor)
+                        billing_first   (for out-of-band payments and for call to payment processor)
+                        billing_last    (for out-of-band payments and for call to payment processor)
                         billing_address (for call to payment processor)
                         billing_city    (for call to payment processor)
                         billing_state   (for call to payment processor)
@@ -334,6 +334,8 @@ sub make_payments {
         $payment->approval_code($approval_code) if $approval_code;
         $payment->cc_type($cc_type) if $cc_type;
         $payment->cc_processor($cc_processor) if $cc_processor;
+        $payment->cc_first_name($cc_args->{'billing_first'}) if $cc_args->{'billing_first'};
+        $payment->cc_last_name($cc_args->{'billing_last'}) if $cc_args->{'billing_last'};
         if (!$e->$create_money_method($payment)) {
             return _recording_failure(
                 $e, "$create_money_method failed", $payment, $cc_payload
