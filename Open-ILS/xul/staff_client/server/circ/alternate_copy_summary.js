@@ -364,7 +364,9 @@ function load_item() {
             }
             set("checkin_staff", details.circ.checkin_staff()); 
             set("checkin_time", util.date.formatted_date( details.circ.checkin_time(), '%{localized}' )); 
+            set("last_checkin_time", util.date.formatted_date( details.circ.checkin_time(), '%{localized}' )); 
             set("checkin_scan_time", util.date.formatted_date( details.circ.checkin_scan_time(), '%{localized}' )); 
+            set("last_checkin_scan_time", util.date.formatted_date( details.circ.checkin_scan_time(), '%{localized}' )); 
             try { set("circ_circ_lib" , typeof details.circ.circ_lib() == 'object' ? details.circ.circ_lib().shortname() : data.hash.aou[ details.circ.circ_lib() ].shortname() );  } catch(E) {};
             try { set_tooltip("circ_circ_lib" , typeof details.circ.circ_lib() == 'object' ? details.circ.circ_lib().name() : data.hash.aou[ details.circ.circ_lib() ].name() );  } catch(E) {};
             set("circ_staff", details.circ.circ_staff()); 
