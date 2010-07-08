@@ -68,7 +68,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0327'); -- berick
+INSERT INTO config.upgrade_log (version) VALUES ('0328'); -- phasefx
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
