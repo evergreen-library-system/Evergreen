@@ -263,10 +263,15 @@ function AcqLiTable() {
         dojo.forEach(tds, function(td) {self.setRowAttr(td, liWrapper, td.getAttribute('attr'), td.getAttribute('attr_type'));});
         dojo.query('[name=source_label]', row)[0].appendChild(document.createTextNode(li.source_label()));
 
-        var isbn = liWrapper.findAttr('isbn', 'lineitem_marc_attr_definition');
-        if(isbn) {
-            // XXX media prefix for added content
-            dojo.query('[name=jacket]', row)[0].setAttribute('src', '/opac/extras/ac/jacket/small/' + isbn);
+        var identifier =
+            liWrapper.findAttr("isbn", "lineitem_marc_attr_definition") ||
+            liWrapper.findAttr("upc", "lineitem_marc_attr_definition");
+
+        // XXX media prefix for added content
+        if (identifier) {
+            nodeByName("jacket").setAttribute(
+                "src", "/opac/extras/ac/jacket/small/" + identifier
+            );
         }
 
         nodeByName("worksheet_link", row).href =
