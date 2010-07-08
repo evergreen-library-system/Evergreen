@@ -325,11 +325,19 @@ sub process_request {   # The core Net::Server method
     $logger->info("stream parser received contact");
     my $data;
     eval {
+        local $SIG{ALRM} = sub { die "alarm\n" };
         alarm $wait_time; # prevent accidental tie ups of backend processes
         $data = <STDIN>;
         alarm 0;
     };
+
+    if($@) {
+        $logger->error("reading from STDIN failed or timed out: $@");
+        return;
+    } 
+
     $logger->info("stream parser read " . length($data) . " bytes");
+
     if ($real_opts->{noqueue}) {
         old_process_batch_data($data);
     } else {
