@@ -250,8 +250,7 @@ if(!dojo._hasResource["MARC.Record"]) {
                     }
                 } else {
                     var data = df_line_data(current_line);
-                    var start_delim = new RegExp( '^' + me.delimiter );
-                    if (!data.match( start_delim )) data = me.delimiter + 'a' + data;
+                    if (!(data.substring(0,1) == me.delimiter)) data = me.delimiter + 'a' + data;
 
                     var sf_list = data.split(me.delimiter);
                     sf_list.shift();
