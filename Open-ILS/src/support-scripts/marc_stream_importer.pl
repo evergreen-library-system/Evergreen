@@ -321,20 +321,15 @@ sub process_batch_data {
 }
 
 sub process_request {   # The core Net::Server method
-    my $self = shift;
-    my $socket = $self->{server}->{client};
-    my $data = '';
-    my $buf;
-
-    # Reading <STDIN> blocks until the client is closed.  Instead of waiting 
-    # for that, give each inbound record $wait_time seconds to fully arrive
-    # and pull the data directly from the socket
+    local $/ = "\x1D"; # MARC record separator
+    $logger->info("stream parser received contact");
+    my $data;
     eval {
-        local $SIG{ALRM} = sub { die "alarm\n" }; 
-        alarm $wait_time;
-        $data .= $buf while $socket->sysread($buf, $bufsize);
+        alarm $wait_time; # prevent accidental tie ups of backend processes
+        $data = <STDIN>;
         alarm 0;
     };
+    $logger->info("stream parser read " . length($data) . " bytes");
     if ($real_opts->{noqueue}) {
         old_process_batch_data($data);
     } else {
