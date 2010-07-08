@@ -346,7 +346,7 @@ function setFocusToNextTag (row, direction) {
     while (direction == 'up' ? row = row.previousSibling : row = row.nextSibling) {
         var children = row.childNodes;
         for (var i = 0; i <  children.length; i++) {
-			// This would be way cleaner with dojo.query()
+            // This would be way cleaner with dojo.query()
             if (row.className  == 'marcDatafieldRow') {
                 // marcSubfield lives in hbox.hbox.textbox
                 var hboxKids = children[i].childNodes;
@@ -1124,6 +1124,36 @@ function toggleFFE () {
 function changeFFEditor (type) {
     var grid = document.getElementById('leaderGrid');
     grid.setAttribute('type',type);
+
+    // Hide FFEditor rows that we don't need for our current type
+    // Again, this would be easier with dojo
+    var row_list = grid.childNodes;
+    var rows;
+    for (var i = 0; i < row_list.length; i++) {
+        if (row_list[i].nodeType && row_list[i].tagName == 'rows') {
+            rows = row_list[i];
+        }
+    }
+
+    // If all of the labels for a given row do not include our
+    // desired type in their set attribute, we can hide that row
+    row_list = rows.childNodes;
+    for (var i = 0; i < row_list.length; i++) {
+        if (row_list[i].nodeType && row_list[i].tagName == 'row') {
+            var label_list = row_list[i].childNodes;
+            var found_type = false;
+            for (var j = 0; j < label_list.length; j++) {
+                if (label_list[j].nodeType && 
+                        label_list[j].tagName == 'label' && 
+                        label_list[j].getAttribute('set').indexOf(type) != -1) {
+                    found_type = true;
+                }
+            }
+            if (!found_type) {
+                row_list[i].hidden = true;
+            }
+        }
+    }
 }
 
 function fillFixedFields (rec) {
