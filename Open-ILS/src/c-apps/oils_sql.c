@@ -1379,6 +1379,10 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 	// Get a list of permissions from the permacrud entry.
 	osrfStringArray* permission = osrfHashGet( pcrud, "permission" );
+	if( permission->size == 0 ) {
+		osrfLogDebug( OSRF_LOG_MARK, "No permissions required for this action, passing through" );
+		return 1;
+	}
 
 	// Build a list of org units that own the row.  This is fairly convoluted because there
 	// are several different ways that an org unit may own the row, as defined by the
@@ -1676,11 +1680,6 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	const char* context_org = NULL;
 	const char* perm = NULL;
 	int OK = 0;
-
-	if( permission->size == 0 ) {
-	    osrfLogDebug( OSRF_LOG_MARK, "No permission specified for this action, passing through" );
-		OK = 1;
-	}
 
 	// For every combination of permission and context org unit: call a stored procedure
 	// to determine if the user has this permission in the context of this org unit.
