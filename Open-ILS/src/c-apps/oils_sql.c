@@ -1421,25 +1421,32 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 		// keys, we must either read the relevant row from the database, or look at
 		// the image of the row that we already have in memory.
 
-		// (Herein lies a bug.  Even if we have an image of the row in memory, that
-		// image may not include the foreign key column(s) that we need.)
+		// Even if we have an image of the row in memory, that image may not include the
+		// foreign key column(s) that we need.  So whenever possible, we do a fresh read
+		// of the row to make sure that we have what we need.
 
 	    osrfLogDebug( OSRF_LOG_MARK, "global-level permissions not required, "
 				"fetching context org ids" );
 	    const char* pkey = osrfHashGet( class, "primarykey" );
 		jsonObject *param = NULL;
 
-		if( obj->classname ) {
+		if( !pkey ) {
+			// There is no primary key, so we can't do a fresh lookup.  Use the row
+			// image that we already have.  If it doesn't have everything we need, too bad.
+			fetch = 0;
+			param = jsonObjectClone( obj );
+			osrfLogDebug( OSRF_LOG_MARK, "No primary key; using clone of object" );
+		} else if( obj->classname ) {
 			pkey_value = oilsFMGetStringConst( obj, pkey );
 			if( !fetch )
 				param = jsonObjectClone( obj );
 			osrfLogDebug( OSRF_LOG_MARK, "Object supplied, using primary key value of %s",
-					pkey_value );
+				pkey_value );
 		} else {
 			pkey_value = jsonObjectGetString( obj );
 			fetch = 1;
 			osrfLogDebug( OSRF_LOG_MARK, "Object not supplied, using primary key value "
-					"of %s and retrieving from the database", pkey_value );
+				"of %s and retrieving from the database", pkey_value );
 		}
 
 		if( fetch ) {
@@ -1482,10 +1489,10 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 
 		if( local_context && local_context->size > 0 ) {
 			// The IDL provides a list of column names for the foreign keys denoting
-			// local context.  Look up the value of each one, and if it isn't null,
-			// add it to the list of org units.
+			// local context, i.e. columns identifying owing org units directly.  Look up
+			// the value of each one, and if it isn't null, add it to the list of org units.
 			osrfLogDebug( OSRF_LOG_MARK, "%d class-local context field(s) specified",
-					local_context->size );
+				local_context->size );
 			int i = 0;
 			const char* lcontext = NULL;
 			while ( (lcontext = osrfStringArrayGetString(local_context, i++)) ) {
