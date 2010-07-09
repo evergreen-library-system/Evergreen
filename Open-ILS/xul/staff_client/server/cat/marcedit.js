@@ -91,31 +91,31 @@ function wrap_long_fields (node) {
 
 function swap_editors () {
 
-	dojo.require('MARC.Record');
+    dojo.require('MARC.Record');
 
-	var xe = $('xul-editor');
-	var te = $('text-editor');
+    var xe = $('xul-editor');
+    var te = $('text-editor');
 
-	te.hidden = te.hidden ? false : true;
-	xe.hidden = xe.hidden ? false : true;
+    te.hidden = te.hidden ? false : true;
+    xe.hidden = xe.hidden ? false : true;
 
-	if (te.hidden) {
-		// get the marcxml from the text box
-		var xml_string = new MARC.Record({
-			marcbreaker : $('text-editor-box').value,
-			delimiter : '$'
-		}).toXmlString();
+    if (te.hidden) {
+        // get the marcxml from the text box
+        var xml_string = new MARC.Record({
+            marcbreaker : $('text-editor-box').value,
+            delimiter : '$'
+        }).toXmlString();
 
-		// reset the xml record and rerender it
-		xml_record = new XML( xml_string );
-		loadRecord(xml_record);
-	} else {
-		var xml_string = xml_record.toXMLString();
+        // reset the xml record and rerender it
+        xml_record = new XML( xml_string );
+        loadRecord(xml_record);
+    } else {
+        var xml_string = xml_record.toXMLString();
 
-		// push the xml record into the textbox
-		var rec = new MARC.Record ({ delimiter : '$', marcxml : xml_string });
-		$('text-editor-box').value = rec.toBreaker();
-	}
+        // push the xml record into the textbox
+        var rec = new MARC.Record ({ delimiter : '$', marcxml : xml_string });
+        $('text-editor-box').value = rec.toBreaker();
+    }
 }
 
 function my_init() {
@@ -147,7 +147,7 @@ function my_init() {
 
         document.getElementById('save-button').setAttribute('label', window.xulG.save.label);
         document.getElementById('save-button').setAttribute('oncommand',
-			'if ($("xul-editor").hidden) swap_editors(); ' +
+            'if ($("xul-editor").hidden) swap_editors(); ' +
             'mangle_005(); ' + 
             'var xml_string = xml_escape_unicode( xml_record.toXMLString() ); ' + 
             'save_attempt( xml_string ); ' +
