@@ -638,7 +638,7 @@ sub supercat {
 
 	my $path = $cgi->path_info;
 	my ($id,$type,$format,$command) = reverse split '/', $path;
-	my $flesh_feed = parse_feed_type($type);
+	my $flesh_feed = parse_feed_type($format);
 	(my $base_format = $format) =~ s/(-full|-uris)$//o;
 
 	my $skin = $cgi->param('skin') || 'default';
@@ -804,7 +804,7 @@ sub supercat {
 		my $feed = create_record_feed(
 			$type,
 			$format => [ $id ],
-			undef, undef,
+			undef, undef, undef,
 			$flesh_feed
 		);
 
