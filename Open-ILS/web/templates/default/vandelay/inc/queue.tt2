@@ -117,10 +117,10 @@
             </td>
             <td align='right' valign='bottom'>
                 <span style='padding-right:4px;'>
-                    <a href='javascript:void(0);' onclick='vlQueueGridPrevPage();'>&#171; &vandelay.prev.page;</a>
+                    <a href='javascript:void(0);' onclick='vlQueueGridPrevPage();'>&vandelay.prev.page;</a>
                 </span>
                 <span style='padding-right:10px;'>
-                    <a href='javascript:void(0);' onclick='vlQueueGridNextPage();'>&vandelay.next.page; &#187;</a>
+                    <a href='javascript:void(0);' onclick='vlQueueGridNextPage();'>&vandelay.next.page;</a>
                 </span>
             </td>
         </tr>
