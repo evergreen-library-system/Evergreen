@@ -5764,6 +5764,17 @@ INSERT INTO config.global_flag (name,label,enabled)
         TRUE
     );
 
+INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
+    VALUES (
+        'cat.maintain_control_numbers',
+        oils_i18n_gettext(
+            'cat.maintain_control_numbers',
+            'Cat: Maintain 001/003/035 according to the MARC21 specification',
+            'cgf', 
+            'label'
+        )
+    );
+
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
     VALUES (
         'history.circ.retention_age',
@@ -5807,6 +5818,21 @@ VALUES (
     oils_i18n_gettext('auth.persistent_login_interval', 'Persistent Login Duration', 'coust', 'label'),
     oils_i18n_gettext('auth.persistent_login_interval', 'How long a persistent login lasts.  E.g. ''2 weeks''', 'coust', 'description'),
     'interval'
+);
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+        'cat.marc_control_number_identifier',
+        oils_i18n_gettext(
+            'cat.marc_control_number_identifier', 
+            'Cat: Defines the control number identifier used in 003 and 035 fields.', 
+            'coust', 
+            'label'),
+        oils_i18n_gettext(
+            'cat.marc_control_number_identifier', 
+            'Cat: Defines the control number identifier used in 003 and 035 fields.', 
+            'coust', 
+            'description'),
+        'string'
 );
 
 -- 0311.data.query-seed-datatypes.sql
