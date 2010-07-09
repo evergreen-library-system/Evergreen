@@ -384,35 +384,23 @@ function createCheckbox (attrs) {
 // For control fields, use the first editable text box
 // For data fields, focus on the first subfield text box
 function setFocusToNextTag (row, direction) {
-    while (direction == 'up' ? row = row.previousSibling : row = row.nextSibling) {
-        var children = row.childNodes;
-        for (var i = 0; i <  children.length; i++) {
-            // This would be way cleaner with dojo.query()
-            if (row.className  == 'marcDatafieldRow') {
-                // marcSubfield lives in hbox.hbox.textbox
-                var hboxKids = children[i].childNodes;
-                if (children[i].tagName == 'hbox') {
-                    for (var j = 0; j < hboxKids.length; j++) {
-                        var msfBoxKids = hboxKids[j].childNodes;
-                        if (hboxKids[j].className == 'marcSubfieldBox') {
-                            for (var k = 0; k < msfBoxKids.length; k++) {
-                                if (msfBoxKids[k].className == 'plain marcSubfield') {
-                                        msfBoxKids[k].focus();
-                                        return false;
-                                }
-                            }
+    var keep_looking = true;
+    while (keep_looking && (direction == 'up' ? row = row.previousSibling : row = row.nextSibling)) {
+        // Is it a datafield?
+        dojo.query('hbox hbox textbox', row).forEach(function(node, index, arr) {
+            node.focus();
+            keep_looking = false;
+        });
 
-                        }
-                    }
-                }
-            } else {
-                if (children[i].tagName == 'textbox') {
-                    children[i].focus();
-                    return false;
-                }
-            }
+        // No, it's a control field; use the first textbox
+        if (keep_looking) {
+            dojo.query('textbox', row).forEach(function(node, index, arr) {
+                node.focus();
+                keep_looking = false;
+            });
         }
     }
+
     return true;
 }
 
@@ -1167,34 +1155,14 @@ function changeFFEditor (type) {
     grid.setAttribute('type',type);
 
     // Hide FFEditor rows that we don't need for our current type
-    // Again, this would be easier with dojo
-    var row_list = grid.childNodes;
-    var rows;
-    for (var i = 0; i < row_list.length; i++) {
-        if (row_list[i].nodeType && row_list[i].tagName == 'rows') {
-            rows = row_list[i];
-        }
-    }
-
     // If all of the labels for a given row do not include our
     // desired type in their set attribute, we can hide that row
-    row_list = rows.childNodes;
-    for (var i = 0; i < row_list.length; i++) {
-        if (row_list[i].nodeType && row_list[i].tagName == 'row') {
-            var label_list = row_list[i].childNodes;
-            var found_type = false;
-            for (var j = 0; j < label_list.length; j++) {
-                if (label_list[j].nodeType && 
-                        label_list[j].tagName == 'label' && 
-                        label_list[j].getAttribute('set').indexOf(type) != -1) {
-                    found_type = true;
-                }
-            }
-            if (!found_type) {
-                row_list[i].hidden = true;
-            }
+    dojo.query('rows row', grid).forEach(function(node, index, arr) {
+        if (dojo.query('label[set~=' + type + ']', node).length == 0) {
+            node.hidden = true;
         }
-    }
+    });
+
 }
 
 function fillFixedFields (rec) {
