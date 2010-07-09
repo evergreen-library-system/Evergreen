@@ -33,6 +33,7 @@
         </hbox>
         <button label="&staff.cat.marcedit.validate.label;" accesskey="&staff.cat.marcedit.validate.accesskey;" oncommand="validateAuthority(this);"/>
         <button id="save-button" accesskey="&staff.cat.marcedit.save-button.accesskey;"/>
+        <button label="&staff.cat.marcedit.swapEditor.label;" oncommand="swap_editors()"/>
         <button label="&staff.cat.marcedit.help.label;" accesskey="&staff.cat.marcedit.help.accesskey;"
             oncommand="alert(
                 $('catStrings').getString('staff.cat.marcedit.help.add_row') + '\n' +
@@ -50,7 +51,7 @@
     </hbox>
 </groupbox>
 
-<groupbox flex="1">
+<groupbox id="xul-editor" flex="1">
     <caption label="&staff.cat.marcedit.caption.label;"/>
     <vbox flex="1" style="overflow: auto;">
         <hbox>
@@ -195,6 +196,10 @@
         </grid>
     </vbox>
 </groupbox>
+
+<hbox hidden="true" id="text-editor" flex="1">
+    <xhtml:textarea rows="50" cols='100' id="text-editor-box"></xhtml:textarea>
+</hbox>
 
 <grid name="authority-marc-template" hidden="true">
     <columns>
