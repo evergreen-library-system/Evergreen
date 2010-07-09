@@ -78,6 +78,17 @@ function xml_escape_unicode ( str ) {
     );
 }
 
+function wrap_long_fields (node) {
+    var text_size = dojo.attr(node, 'size');
+    var hard_width = 100; 
+    if (text_size > hard_width) {
+        dojo.attr(node, 'multiline', 'true');
+        dojo.attr(node, 'cols', hard_width);
+        var text_rows = (text_size / hard_width) + 1;
+        dojo.attr(node, 'rows', text_rows);
+    }
+}
+
 function swap_editors () {
 
 	dojo.require('MARC.Record');
@@ -106,7 +117,6 @@ function swap_editors () {
 		$('text-editor-box').value = rec.toBreaker();
 	}
 }
-
 
 function my_init() {
     try {
@@ -1500,6 +1510,8 @@ function marcDatafield (field) {
         sf_box.appendChild(
             marcSubfield(sf)
         );
+
+        dojo.query('.marcSubfield', sf_box).forEach(wrap_long_fields);
 
         if (sf.@code == '' && (!current_focus || current_focus.className.match(/Ind/)))
             current_focus = sf_box.lastChild.childNodes[1];
