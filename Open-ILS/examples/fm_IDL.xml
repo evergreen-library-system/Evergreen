@@ -2156,26 +2156,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="metarecord" reltype="has_a" key="id" map="" class="mmr"/>
 		</links>
 	</class>
-	<class id="mfae" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::facet_entry" reporter:label="Combined Facet Entry View" oils_persist:readonly="true">
-		<oils_persist:source_definition>
-			SELECT * FROM (
-				SELECT * FROM metabib.author_field_entry
-						UNION ALL
-				SELECT * FROM metabib.keyword_field_entry
-						UNION ALL
-				SELECT * FROM metabib.identifier_field_entry
-						UNION ALL
-				SELECT * FROM metabib.title_field_entry
-						UNION ALL
-				SELECT * FROM metabib.subject_field_entry
-						UNION ALL
-				SELECT * FROM metabib.series_field_entry
-			)x
-			WHERE x.index_vector = ''
-		</oils_persist:source_definition>
-		<fields>
-			<field name="field" reporter:datatype="link"/>
+	<class id="mfae" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::facet_entry" oils_persist:tablename="metabib.facet_entry" reporter:label="Combined Facet Entry" oils_persist:readonly="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="metabib.facet_entry_id_seq">
 			<field name="id" reporter:datatype="id" />
+			<field name="field" reporter:datatype="link"/>
 			<field name="source" reporter:datatype="link"/>
 			<field name="value"  reporter:datatype="text"/>
 		</fields>

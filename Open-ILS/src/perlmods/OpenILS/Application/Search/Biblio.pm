@@ -1359,12 +1359,10 @@ sub cache_facets {
             },
             from    => {
                 mfae => {
-                    cmf   => { field => 'id',     fkey => 'field'  },
                     mmrsm => { field => 'source', fkey => 'source' }
                 }
             },
             where   => {
-                '+cmf'   => 'facet_field',
                 '+mmrsm' => { $count_field => $results }
             }
         }

@@ -125,6 +125,17 @@ CREATE INDEX metabib_series_field_entry_value_idx ON metabib.series_field_entry 
 CREATE INDEX metabib_series_field_entry_source_idx ON metabib.series_field_entry (source);
 
 
+CREATE TABLE metabib.facet_entry (
+	id		BIGSERIAL	PRIMARY KEY,
+	source		BIGINT		NOT NULL,
+	field		INT		NOT NULL,
+	value		TEXT		NOT NULL
+);
+CREATE INDEX metabib_facet_entry_field_idx ON metabib.facet_entry (field);
+CREATE INDEX metabib_facet_entry_value_idx ON metabib.facet_entry (SUBSTRING(value,1,1024));
+CREATE INDEX metabib_facet_entry_source_idx ON metabib.facet_entry (source);
+
+
 CREATE TABLE metabib.rec_descriptor (
 	id		BIGSERIAL PRIMARY KEY,
 	record		BIGINT,
@@ -736,29 +747,29 @@ CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT
 DECLARE
     fclass          RECORD;
     ind_data        metabib.field_entry_template%ROWTYPE;
-    ind_vector      TSVECTOR;
 BEGIN
     FOR fclass IN SELECT * FROM config.metabib_class LOOP
         -- RAISE NOTICE 'Emptying out %', fclass.name;
         EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
     END LOOP;
 
+    DELETE FROM metabib.facet_entry WHERE source = bib_id;
+
     FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
         IF ind_data.field < 0 THEN
-            ind_vector = '';
             ind_data.field = -1 * ind_data.field;
+            INSERT INTO metabib.facet_entry (field, source, value)
+                VALUES (ind_data.field, ind_data.source, ind_data.value);
         ELSE
-            ind_vector = NULL;
+            EXECUTE $$
+                INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value)
+                    VALUES ($$ ||
+                        quote_literal(ind_data.field) || $$, $$ ||
+                        quote_literal(ind_data.source) || $$, $$ ||
+                        quote_literal(ind_data.value) ||
+                    $$);$$;
         END IF;
 
-        EXECUTE $$
-            INSERT INTO metabib.$$ || ind_data.field_class || $$_field_entry (field, source, value, index_vector)
-                VALUES ($$ ||
-                    quote_literal(ind_data.field) || $$, $$ ||
-                    quote_literal(ind_data.source) || $$, $$ ||
-                    quote_literal(ind_data.value) || $$, $$ ||
-                    COALESCE(quote_literal(ind_vector),'NULL'::TEXT) ||
-                $$);$$;
     END LOOP;
 
     RETURN;
