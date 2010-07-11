@@ -11,17 +11,17 @@ CREATE TABLE metabib.facet_entry (
 
 INSERT INTO metabib.facet_entry (source, field, value)
     SELECT source, field, value FROM (
-        SELECT source, field, value FROM metabib.author_field_entry
+        SELECT * FROM metabib.author_field_entry
             UNION ALL
-        SELECT source, field, value FROM metabib.keyword_field_entry
+        SELECT * FROM metabib.keyword_field_entry
             UNION ALL
-        SELECT source, field, value FROM metabib.identifier_field_entry
+        SELECT * FROM metabib.identifier_field_entry
             UNION ALL
-        SELECT source, field, value FROM metabib.title_field_entry
+        SELECT * FROM metabib.title_field_entry
             UNION ALL
-        SELECT source, field, value FROM metabib.subject_field_entry
+        SELECT * FROM metabib.subject_field_entry
             UNION ALL
-        SELECT source, field, value FROM metabib.series_field_entry
+        SELECT * FROM metabib.series_field_entry
         )x
     WHERE x.index_vector = '';
         
