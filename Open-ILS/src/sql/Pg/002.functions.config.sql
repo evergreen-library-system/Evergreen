@@ -473,6 +473,7 @@ use strict;
 use MARC::Record;
 use MARC::File::XML;
 use Encode;
+use Unicode::Normalize;
 
 my $record = MARC::Record->new_from_xml($_TD->{new}{marc});
 my $schema = $_TD->{table_schema};
