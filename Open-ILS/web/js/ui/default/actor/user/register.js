@@ -1274,6 +1274,20 @@ function uEditToggleRequired() {
     openils.Util.toggle('uedit-show-all');
 }
 
-
+function printable_output() {
+    var temp; var s = '=-=-=-=\r\n';
+    for (var idx in widgetPile) {
+        var w = widgetPile[idx];
+        var val = uEditWidgetVal(w);
+        var label = w.idlField.label;
+        if (temp != w._wtype) {
+            temp = w._wtype;
+            s += '-------\r\n';
+        }
+        s += label + ':\t' + (typeof val == 'object' ? '' : val) + '\r\n';
+    }
+    s += '=-=-=-=\r\n';
+    return s;
+}
 
 openils.Util.addOnLoad(load);
