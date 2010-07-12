@@ -162,6 +162,9 @@ CREATE TABLE serial.unit (
 
 ALTER TABLE serial.unit ADD PRIMARY KEY (id);
 
+-- must create this rule explicitly; it is not inherited from asset.copy
+CREATE RULE protect_serial_unit_delete AS ON DELETE TO serial.unit DO INSTEAD UPDATE serial.unit SET deleted = TRUE WHERE OLD.id = serial.unit.id;
+
 CREATE TABLE serial.item (
 	id              SERIAL  PRIMARY KEY,
 	creator         INT     NOT NULL
