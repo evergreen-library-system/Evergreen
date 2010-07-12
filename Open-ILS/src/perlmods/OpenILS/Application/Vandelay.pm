@@ -23,6 +23,29 @@ use OpenILS::Application::Cat::AuthCommon;
 use OpenILS::Application::Cat::AssetCommon;
 my $U = 'OpenILS::Application::AppUtils';
 
+# A list of LDR/06 values from http://loc.gov/marc
+my %record_types = (
+        a => 'bib',
+        c => 'bib',
+        d => 'bib',
+        e => 'bib',
+        f => 'bib',
+        g => 'bib',
+        i => 'bib',
+        j => 'bib',
+        k => 'bib',
+        m => 'bib',
+        o => 'bib',
+        p => 'bib',
+        r => 'bib',
+        t => 'bib',
+        u => 'holdings',
+        v => 'holdings',
+        x => 'holdings',
+        y => 'holdings',
+        z => 'auth',
+);
+
 sub initialize {}
 sub child_init {}
 
@@ -265,11 +288,18 @@ sub process_spool {
 			$xml =~ s/[\x00-\x1f]//go;
 
             my $qrec;
-			if ($type eq 'bib') {
-				$qrec = _add_bib_rec( $e, $xml, $queue_id, $purpose, $bib_source ) or return $e->die_event;
-			} else {
-				$qrec = _add_auth_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
-			}
+            # Check the leader to ensure we've got something resembling the expected
+            # Allow spaces to give records the benefit of the doubt
+            my $ldr_type = substr($r->leader(), 6, 1);
+            if ($type eq 'bib' && ($record_types{$ldr_type}) eq 'bib') {
+                $qrec = _add_bib_rec( $e, $xml, $queue_id, $purpose, $bib_source ) or return $e->die_event;
+            } elsif ($type eq 'auth' && ($record_types{$ldr_type}) eq 'auth') {
+                $qrec = _add_auth_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
+            } else {
+                # I don't know how to handle this type; rock on
+                $logger->error("In process_spool(), type was $type and leader type was $ldr_type ; not currently supported");
+                next;
+            }
 
             if($self->api_name =~ /stream_results/ and $qrec) {
 			    $client->respond($qrec->id)
