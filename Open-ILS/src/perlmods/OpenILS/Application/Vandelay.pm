@@ -53,182 +53,182 @@ sub child_init {}
 # Biblio ingest
 
 sub create_bib_queue {
-	my $self = shift;
-	my $client = shift;
-	my $auth = shift;
-	my $name = shift;
-	my $owner = shift;
-	my $type = shift;
-	my $import_def = shift;
+    my $self = shift;
+    my $client = shift;
+    my $auth = shift;
+    my $name = shift;
+    my $owner = shift;
+    my $type = shift;
+    my $import_def = shift;
 
-	my $e = new_editor(authtoken => $auth, xact => 1);
+    my $e = new_editor(authtoken => $auth, xact => 1);
 
-	return $e->die_event unless $e->checkauth;
-	return $e->die_event unless $e->allowed('CREATE_BIB_IMPORT_QUEUE');
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('CREATE_BIB_IMPORT_QUEUE');
     $owner ||= $e->requestor->id;
 
     return OpenILS::Event->new('BIB_QUEUE_EXISTS') 
         if $e->search_vandelay_bib_queue(
             {name => $name, owner => $owner, queue_type => $type})->[0];
 
-	my $queue = new Fieldmapper::vandelay::bib_queue();
-	$queue->name( $name );
-	$queue->owner( $owner );
-	$queue->queue_type( $type ) if ($type);
-	$queue->item_attr_def( $import_def ) if ($import_def);
+    my $queue = new Fieldmapper::vandelay::bib_queue();
+    $queue->name( $name );
+    $queue->owner( $owner );
+    $queue->queue_type( $type ) if ($type);
+    $queue->item_attr_def( $import_def ) if ($import_def);
 
-	my $new_q = $e->create_vandelay_bib_queue( $queue );
-	return $e->die_event unless ($new_q);
-	$e->commit;
+    my $new_q = $e->create_vandelay_bib_queue( $queue );
+    return $e->die_event unless ($new_q);
+    $e->commit;
 
     return $new_q;
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib_queue.create",
-	method		=> "create_bib_queue",
-	api_level	=> 1,
-	argc		=> 4,
+    api_name   => "open-ils.vandelay.bib_queue.create",
+    method     => "create_bib_queue",
+    api_level  => 1,
+    argc       => 4,
 );                      
 
 
 sub create_auth_queue {
-	my $self = shift;
-	my $client = shift;
-	my $auth = shift;
-	my $name = shift;
-	my $owner = shift;
-	my $type = shift;
+    my $self = shift;
+    my $client = shift;
+    my $auth = shift;
+    my $name = shift;
+    my $owner = shift;
+    my $type = shift;
 
-	my $e = new_editor(authtoken => $auth, xact => 1);
+    my $e = new_editor(authtoken => $auth, xact => 1);
 
-	return $e->die_event unless $e->checkauth;
-	return $e->die_event unless $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE');
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE');
     $owner ||= $e->requestor->id;
 
     return OpenILS::Event->new('AUTH_QUEUE_EXISTS') 
         if $e->search_vandelay_bib_queue(
             {name => $name, owner => $owner, queue_type => $type})->[0];
 
-	my $queue = new Fieldmapper::vandelay::authority_queue();
-	$queue->name( $name );
-	$queue->owner( $owner );
-	$queue->queue_type( $type ) if ($type);
+    my $queue = new Fieldmapper::vandelay::authority_queue();
+    $queue->name( $name );
+    $queue->owner( $owner );
+    $queue->queue_type( $type ) if ($type);
 
-	my $new_q = $e->create_vandelay_authority_queue( $queue );
-	$e->die_event unless ($new_q);
-	$e->commit;
+    my $new_q = $e->create_vandelay_authority_queue( $queue );
+    $e->die_event unless ($new_q);
+    $e->commit;
 
     return $new_q;
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.authority_queue.create",
-	method		=> "create_auth_queue",
-	api_level	=> 1,
-	argc		=> 3,
+    api_name   => "open-ils.vandelay.authority_queue.create",
+    method     => "create_auth_queue",
+    api_level  => 1,
+    argc       => 3,
 );                      
 
 sub add_record_to_bib_queue {
-	my $self = shift;
-	my $client = shift;
-	my $auth = shift;
-	my $queue = shift;
-	my $marc = shift;
-	my $purpose = shift;
+    my $self = shift;
+    my $client = shift;
+    my $auth = shift;
+    my $queue = shift;
+    my $marc = shift;
+    my $purpose = shift;
     my $bib_source = shift;
 
-	my $e = new_editor(authtoken => $auth, xact => 1);
+    my $e = new_editor(authtoken => $auth, xact => 1);
 
-	$queue = $e->retrieve_vandelay_bib_queue($queue);
+    $queue = $e->retrieve_vandelay_bib_queue($queue);
 
-	return $e->die_event unless $e->checkauth;
-	return $e->die_event unless
-		($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
-		 $e->allowed('CREATE_BIB_IMPORT_QUEUE'));
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless
+        ($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
+         $e->allowed('CREATE_BIB_IMPORT_QUEUE'));
 
-	my $new_rec = _add_bib_rec($e, $marc, $queue->id, $purpose, $bib_source);
+    my $new_rec = _add_bib_rec($e, $marc, $queue->id, $purpose, $bib_source);
 
-	return $e->die_event unless ($new_rec);
-	$e->commit;
+    return $e->die_event unless ($new_rec);
+    $e->commit;
     return $new_rec;
 }
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.queued_bib_record.create",
-	method		=> "add_record_to_bib_queue",
-	api_level	=> 1,
-	argc		=> 3,
+    api_name   => "open-ils.vandelay.queued_bib_record.create",
+    method     => "add_record_to_bib_queue",
+    api_level  => 1,
+    argc       => 3,
 );                      
 
 sub _add_bib_rec {
-	my $e = shift;
-	my $marc = shift;
-	my $queue = shift;
-	my $purpose = shift;
+    my $e = shift;
+    my $marc = shift;
+    my $queue = shift;
+    my $purpose = shift;
     my $bib_source = shift;
 
-	my $rec = new Fieldmapper::vandelay::queued_bib_record();
-	$rec->marc( $marc );
-	$rec->queue( $queue );
-	$rec->purpose( $purpose ) if ($purpose);
+    my $rec = new Fieldmapper::vandelay::queued_bib_record();
+    $rec->marc( $marc );
+    $rec->queue( $queue );
+    $rec->purpose( $purpose ) if ($purpose);
     $rec->bib_source($bib_source);
 
-	return $e->create_vandelay_queued_bib_record( $rec );
+    return $e->create_vandelay_queued_bib_record( $rec );
 }
 
 sub add_record_to_authority_queue {
-	my $self = shift;
-	my $client = shift;
-	my $auth = shift;
-	my $queue = shift;
-	my $marc = shift;
-	my $purpose = shift;
+    my $self = shift;
+    my $client = shift;
+    my $auth = shift;
+    my $queue = shift;
+    my $marc = shift;
+    my $purpose = shift;
 
-	my $e = new_editor(authtoken => $auth, xact => 1);
+    my $e = new_editor(authtoken => $auth, xact => 1);
 
-	$queue = $e->retrieve_vandelay_authority_queue($queue);
+    $queue = $e->retrieve_vandelay_authority_queue($queue);
 
-	return $e->die_event unless $e->checkauth;
-	return $e->die_event unless
-		($e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', undef, $queue) ||
-		 $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE'));
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless
+        ($e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', undef, $queue) ||
+         $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE'));
 
-	my $new_rec = _add_auth_rec($e, $marc, $queue->id, $purpose);
+    my $new_rec = _add_auth_rec($e, $marc, $queue->id, $purpose);
 
-	return $e->die_event unless ($new_rec);
-	$e->commit;
+    return $e->die_event unless ($new_rec);
+    $e->commit;
     return $new_rec;
 }
 __PACKAGE__->register_method(
-	api_name	=> "open-ils.vandelay.queued_authority_record.create",
-	method		=> "add_record_to_authority_queue",
-	api_level	=> 1,
-	argc		=> 3,
+    api_name   => "open-ils.vandelay.queued_authority_record.create",
+    method     => "add_record_to_authority_queue",
+    api_level  => 1,
+    argc       => 3,
 );
 
 sub _add_auth_rec {
-	my $e = shift;
-	my $marc = shift;
-	my $queue = shift;
+    my $e = shift;
+    my $marc = shift;
+    my $queue = shift;
     my $purpose = shift;
 
-	my $rec = new Fieldmapper::vandelay::queued_authority_record();
-	$rec->marc( $marc );
-	$rec->queue( $queue );
-	$rec->purpose( $purpose ) if ($purpose);
+    my $rec = new Fieldmapper::vandelay::queued_authority_record();
+    $rec->marc( $marc );
+    $rec->queue( $queue );
+    $rec->purpose( $purpose ) if ($purpose);
 
-	return $e->create_vandelay_queued_authority_record( $rec );
+    return $e->create_vandelay_queued_authority_record( $rec );
 }
 
 sub process_spool {
-	my $self = shift;
-	my $client = shift;
-	my $auth = shift;
-	my $fingerprint = shift || '';
-	my $queue_id = shift;
+    my $self = shift;
+    my $client = shift;
+    my $auth = shift;
+    my $fingerprint = shift || '';
+    my $queue_id = shift;
     my $purpose = shift;
     my $filename = shift;
     my $bib_source = shift;
 
-	my $e = new_editor(authtoken => $auth, xact => 1);
+    my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
 
     my $queue;
@@ -247,7 +247,7 @@ sub process_spool {
 
     if($fingerprint) {
         my $data = $cache->get_cache('vandelay_import_spool_' . $fingerprint);
-	    $purpose = $data->{purpose};
+        $purpose = $data->{purpose};
         $filename = $data->{path};
         $bib_source = $data->{bib_source};
     }
@@ -265,27 +265,27 @@ sub process_spool {
     $marctype = 'XML' if (getc(F) =~ /^\D/o);
     close F;
 
-	my $batch = new MARC::Batch ($marctype, $filename);
-	$batch->strict_off;
+    my $batch = new MARC::Batch ($marctype, $filename);
+    $batch->strict_off;
 
-	my $response_scale = 10;
-	my $count = 0;
-	my $r = -1;
-	while (try { $r = $batch->next } otherwise { $r = -1 }) {
-		if ($r == -1) {
-			$logger->warn("Proccessing of record $count in set $filename failed.  Skipping this record");
-			$count++;
-		}
+    my $response_scale = 10;
+    my $count = 0;
+    my $r = -1;
+    while (try { $r = $batch->next } otherwise { $r = -1 }) {
+        if ($r == -1) {
+            $logger->warn("Proccessing of record $count in set $filename failed.  Skipping this record");
+            $count++;
+        }
 
-		$logger->info("processing record $count");
+        $logger->info("processing record $count");
 
-		try {
-			(my $xml = $r->as_xml_record()) =~ s/\n//sog;
-			$xml =~ s/^<\?xml.+\?\s*>//go;
-			$xml =~ s/>\s+</></go;
-			$xml =~ s/\p{Cc}//go;
-			$xml = $U->entityize($xml);
-			$xml =~ s/[\x00-\x1f]//go;
+        try {
+            (my $xml = $r->as_xml_record()) =~ s/\n//sog;
+            $xml =~ s/^<\?xml.+\?\s*>//go;
+            $xml =~ s/>\s+</></go;
+            $xml =~ s/\p{Cc}//go;
+            $xml = $U->entityize($xml);
+            $xml =~ s/[\x00-\x1f]//go;
 
             my $qrec;
             # Check the leader to ensure we've got something resembling the expected
@@ -302,90 +302,90 @@ sub process_spool {
             }
 
             if($self->api_name =~ /stream_results/ and $qrec) {
-			    $client->respond($qrec->id)
+                $client->respond($qrec->id)
             } else {
-			    $client->respond($count) if (++$count % $response_scale) == 0;
-			    $response_scale *= 10 if ($count == ($response_scale * 10));
+                $client->respond($count) if (++$count % $response_scale) == 0;
+                $response_scale *= 10 if ($count == ($response_scale * 10));
             }
-		} catch Error with {
-			my $error = shift;
-			$logger->warn("Encountered a bad record at Vandelay ingest: ".$error);
-		}
-	}
+        } catch Error with {
+            my $error = shift;
+            $logger->warn("Encountered a bad record at Vandelay ingest: ".$error);
+        }
+    }
 
-	$e->commit;
+    $e->commit;
     unlink($filename);
     $cache->delete_cache('vandelay_import_spool_' . $fingerprint) if $fingerprint;
-	return $count;
+    return $count;
 }
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib.process_spool",
-	method		=> "process_spool",
-	api_level	=> 1,
-	argc		=> 3,
-	record_type	=> 'bib'
+    api_name    => "open-ils.vandelay.bib.process_spool",
+    method      => "process_spool",
+    api_level   => 1,
+    argc        => 3,
+    record_type => 'bib'
 );                      
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.auth.process_spool",
-	method		=> "process_spool",
-	api_level	=> 1,
-	argc		=> 3,
-	record_type	=> 'auth'
+    api_name    => "open-ils.vandelay.auth.process_spool",
+    method      => "process_spool",
+    api_level   => 1,
+    argc        => 3,
+    record_type => 'auth'
 );                      
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib.process_spool.stream_results",
-	method		=> "process_spool",
-	api_level	=> 1,
-	argc		=> 3,
+    api_name    => "open-ils.vandelay.bib.process_spool.stream_results",
+    method      => "process_spool",
+    api_level   => 1,
+    argc        => 3,
     stream      => 1,
-	record_type	=> 'bib'
+    record_type => 'bib'
 );                      
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.auth.process_spool.stream_results",
-	method		=> "process_spool",
-	api_level	=> 1,
-	argc		=> 3,
+    api_name    => "open-ils.vandelay.auth.process_spool.stream_results",
+    method      => "process_spool",
+    api_level   => 1,
+    argc        => 3,
     stream      => 1,
-	record_type	=> 'auth'
+    record_type => 'auth'
 );
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib_queue.records.retrieve",
-	method		=> 'retrieve_queued_records',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.bib_queue.records.retrieve",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'bib'
+    record_type => 'bib'
 );
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.auth_queue.records.retrieve",
-	method		=> 'retrieve_queued_records',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.auth_queue.records.retrieve",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'auth'
+    record_type => 'auth'
 );
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib_queue.records.matches.retrieve",
-	method		=> 'retrieve_queued_records',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.bib_queue.records.matches.retrieve",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'bib',
+    record_type => 'bib',
     signature   => {
         desc => q/Only retrieve queued bib records that have matches against existing records/
     }
 );
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.auth_queue.records.matches.retrieve",
-	method		=> 'retrieve_queued_records',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.auth_queue.records.matches.retrieve",
+    method      => 'retrieve_queued_records',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'auth',
+    record_type => 'auth',
     signature   => {
         desc => q/Only retrieve queued authority records that have matches against existing records/
     }
@@ -447,35 +447,35 @@ sub retrieve_queued_records {
 
 sub check_queue_perms {
     my($e, $type, $queue) = @_;
-	if ($type eq 'bib') {
-		return $e->die_event unless
-			($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
-			 $e->allowed('CREATE_BIB_IMPORT_QUEUE'));
-	} else {
-		return $e->die_event unless
-			($e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', undef, $queue) ||
-			 $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE'));
-	}
+    if ($type eq 'bib') {
+        return $e->die_event unless
+            ($e->allowed('CREATE_BIB_IMPORT_QUEUE', undef, $queue) ||
+             $e->allowed('CREATE_BIB_IMPORT_QUEUE'));
+    } else {
+        return $e->die_event unless
+            ($e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE', undef, $queue) ||
+             $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE'));
+    }
 
     return undef;
 }
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib_record.list.import",
-	method		=> 'import_record_list',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.bib_record.list.import",
+    method      => 'import_record_list',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'bib'
+    record_type => 'bib'
 );
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.auth_record.list.import",
-	method		=> 'import_record_list',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.auth_record.list.import",
+    method      => 'import_record_list',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'auth'
+    record_type => 'auth'
 );
 
 sub import_record_list {
@@ -490,44 +490,44 @@ sub import_record_list {
 
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib_queue.import",
-	method		=> 'import_queue',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.bib_queue.import",
+    method      => 'import_queue',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'bib'
+    record_type => 'bib'
 );
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.auth_queue.import",
-	method		=> 'import_queue',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.auth_queue.import",
+    method      => 'import_queue',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'auth'
+    record_type => 'auth'
 );
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib_queue.nomatch.import",
-	method		=> 'import_queue',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.bib_queue.nomatch.import",
+    method      => 'import_queue',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
     signature   => {
         desc => q/Only import records that have no collisions/
     },
-	record_type	=> 'bib'
+    record_type => 'bib'
 );
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.auth_queue.nomatch.import",
-	method		=> 'import_queue',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.auth_queue.nomatch.import",
+    method      => 'import_queue',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
     signature   => {
         desc => q/Only import records that have no collisions/
     },
-	record_type	=> 'auth'
+    record_type => 'auth'
 );
 sub import_queue {
     my($self, $conn, $auth, $q_id, $options) = @_;
@@ -803,20 +803,20 @@ sub import_record_list_impl {
 
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib_queue.owner.retrieve",
-	method		=> 'owner_queue_retrieve',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.bib_queue.owner.retrieve",
+    method      => 'owner_queue_retrieve',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'bib'
+    record_type => 'bib'
 );
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.authority_queue.owner.retrieve",
-	method		=> 'owner_queue_retrieve',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.authority_queue.owner.retrieve",
+    method      => 'owner_queue_retrieve',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'auth'
+    record_type => 'auth'
 );
 
 sub owner_queue_retrieve {
@@ -841,18 +841,18 @@ sub owner_queue_retrieve {
 }
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib_queue.delete",
-	method		=> "delete_queue",
-	api_level	=> 1,
-	argc		=> 2,
-	record_type	=> 'bib'
+    api_name    => "open-ils.vandelay.bib_queue.delete",
+    method      => "delete_queue",
+    api_level   => 1,
+    argc        => 2,
+    record_type => 'bib'
 );            
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.auth_queue.delete",
-	method		=> "delete_queue",
-	api_level	=> 1,
-	argc		=> 2,
-	record_type	=> 'auth'
+    api_name    => "open-ils.vandelay.auth_queue.delete",
+    method      => "delete_queue",
+    api_level   => 1,
+    argc        => 2,
+    record_type => 'auth'
 );  
 
 sub delete_queue {
@@ -860,13 +860,13 @@ sub delete_queue {
     my $e = new_editor(xact => 1, authtoken => $auth);
     return $e->die_event unless $e->checkauth;
     if($self->{record_type} eq 'bib') {
-	    return $e->die_event unless $e->allowed('CREATE_BIB_IMPORT_QUEUE');
+        return $e->die_event unless $e->allowed('CREATE_BIB_IMPORT_QUEUE');
         my $queue = $e->retrieve_vandelay_bib_queue($q_id)
             or return $e->die_event;
         $e->delete_vandelay_bib_queue($queue)
             or return $e->die_event;
     } else {
-   	    return $e->die_event unless $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE');
+           return $e->die_event unless $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE');
         my $queue = $e->retrieve_vandelay_authority_queue($q_id)
             or return $e->die_event;
         $e->delete_vandelay_authority_queue($queue)
@@ -878,20 +878,20 @@ sub delete_queue {
 
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.queued_bib_record.html",
-	method		=> 'queued_record_html',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.queued_bib_record.html",
+    method      => 'queued_record_html',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'bib'
+    record_type => 'bib'
 );
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.queued_authority_record.html",
-	method		=> 'queued_record_html',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.queued_authority_record.html",
+    method      => 'queued_record_html',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'auth'
+    record_type => 'auth'
 );
 
 sub queued_record_html {
@@ -914,20 +914,20 @@ sub queued_record_html {
 
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib_queue.summary.retrieve", 
-	method		=> 'retrieve_queue_summary',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.bib_queue.summary.retrieve", 
+    method      => 'retrieve_queue_summary',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'bib'
+    record_type => 'bib'
 );
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.auth_queue.summary.retrieve",
-	method		=> 'retrieve_queue_summary',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.auth_queue.summary.retrieve",
+    method      => 'retrieve_queue_summary',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'auth'
+    record_type => 'auth'
 );
 
 sub retrieve_queue_summary {
@@ -960,20 +960,20 @@ sub retrieve_queue_summary {
 
 
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib_record.list.asset.import",
-	method		=> 'import_record_list_assets',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.bib_record.list.asset.import",
+    method      => 'import_record_list_assets',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'bib'
+    record_type => 'bib'
 );
 __PACKAGE__->register_method(  
-	api_name	=> "open-ils.vandelay.bib_record.queue.asset.import",
-	method		=> 'import_record_queue_assets',
-	api_level	=> 1,
-	argc		=> 2,
+    api_name    => "open-ils.vandelay.bib_record.queue.asset.import",
+    method      => 'import_record_queue_assets',
+    api_level   => 1,
+    argc        => 2,
     stream      => 1,
-	record_type	=> 'bib'
+    record_type => 'bib'
 );
 
 sub import_record_list_assets {
