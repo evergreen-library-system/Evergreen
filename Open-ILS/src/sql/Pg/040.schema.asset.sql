@@ -87,6 +87,18 @@ CREATE INDEX cp_creator_idx  ON asset.copy ( creator );
 CREATE INDEX cp_editor_idx   ON asset.copy ( editor );
 CREATE RULE protect_copy_delete AS ON DELETE TO asset.copy DO INSTEAD UPDATE asset.copy SET deleted = TRUE WHERE OLD.id = asset.copy.id;
 
+CREATE TABLE asset.opac_visible_copies (
+  id        BIGINT primary key, -- copy id
+  record    BIGINT,
+  circ_lib  INTEGER
+);
+COMMENT ON TABLE asset.opac_visible_copies IS $$
+Materialized view of copies that are visible in the OPAC, used by
+search.query_parser_fts() to speed up OPAC visibility checks on large
+databases.  Contents are maintained by a set of triggers.
+$$;
+CREATE INDEX opac_visible_copies_idx1 on asset.opac_visible_copies (record, circ_lib);
+
 CREATE OR REPLACE FUNCTION asset.acp_status_changed()
 RETURNS TRIGGER AS $$
 BEGIN
