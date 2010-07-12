@@ -10,14 +10,18 @@
 
     <head>
         <title>&staff.server.admin.copy_locations.title;</title>
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" djConfig="parseOnLoad: true,isDebug:false" src="/js/dojo/dojo/openils_dojo.js"></script>
+        <script type="text/javascript">
+            dojo.require("fieldmapper.AutoIDL");
+            dojo.require("openils.widget.TranslatorPopup");
+        </script>
         <script language='javascript' src='/opac/common/js/utils.js'> </script>
         <script language='javascript' src='/opac/common/js//config.js'> </script>
         <script language='javascript' src='/opac/common/js/CGI.js'> </script>
         <script language='javascript' src='/opac/common/js/Cookie.js'> </script>
     
         <script language='javascript' src='/opac/common/js/JSON_v1.js'> </script>
-        <script language='javascript' src='/opac/common/js/fmall.js'> </script>
-        <script language='javascript' src='/opac/common/js/fmgen.js'> </script>
         <script language='javascript' src='/opac/common/js/Cookies.js'> </script>
         <script language='javascript' src='/opac/common/js/opac_utils.js'> </script>
         <script language='javascript' src='/opac/common/js/<!--#echo var="locale"-->/OrgTree.js'> </script>
@@ -118,7 +122,10 @@
                 </thead>
                 <tbody id='cl_tbody'>
                     <tr id='cl_row'>
-                        <td name='cl_name'> </td>
+                        <td>
+                            <span name='cl_name'></span>
+                            <span name="cl_xlate_popup"></span>
+                        </td>
                         <td name='cl_owner'> </td>
                         <td name='cl_holdable'> </td>
                         <td name='cl_hold_verify'> </td>

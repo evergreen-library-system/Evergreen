@@ -14,7 +14,7 @@ my $U = "OpenILS::Application::AppUtils";
 __PACKAGE__->register_method(
 	api_name		=> "open-ils.circ.copy_location.retrieve.all",
 	method		=> 'cl_retrieve_all',
-	argc			=>	1,
+	argc			=>	2,
 	signature	=> q/
 		Retrieves the ranged set of copy locations for the requested org.
 		If no org is provided, all copy locations are returned
@@ -24,16 +24,16 @@ __PACKAGE__->register_method(
 		/);
 
 sub cl_retrieve_all {
-	my( $self, $client, $org_id ) = @_;
+	my( $self, $client, $org_id, $no_i18n ) = @_;
 
 	if(!$org_id) {
 		my $otree = $U->get_org_tree();
 		$org_id = $otree->id;
 	}
 
-    return new_editor()->search_asset_copy_location({
+    return new_editor()->search_asset_copy_location([{
         owning_lib => $U->get_org_full_path($org_id)
-    });
+    }, {"no_i18n" => scalar($no_i18n)}]);
 }
 
 __PACKAGE__->register_method(

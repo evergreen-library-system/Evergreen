@@ -49,7 +49,7 @@ function clGo() {
 
 function clGo2() {    
     locationSet = {};
-    var req = new Request(RETRIEVE_CL, focusOrg);
+    var req = new Request(RETRIEVE_CL, focusOrg, true /* no i18n */);
     req.request._last = true;
     req.callback(clAppendLocation);
     req.send();
@@ -164,6 +164,15 @@ function clBuildRow( tbody, row, cl ) {
     var edit = $n( row, 'cl_edit');
     edit.onclick = function() { clEdit( cl, tbody, row ); };
     checkPermOrgDisabled(edit, cl.owning_lib(), 'UPDATE_COPY_LOCATION');
+
+    if (!window._cl_per_row)
+        window._cl_per_row = [];
+    window._cl_per_row.push(cl);
+    new openils.widget.TranslatorPopup({
+        "targetObject":
+            "window._cl_per_row[" + (window._cl_per_row.length - 1) + "]",
+        "field": "name"
+    }, $n(row, "cl_xlate_popup"));
 
     var del = $n( row, 'cl_delete' );
     del.onclick = function() { clDelete( cl, tbody, row ); };
