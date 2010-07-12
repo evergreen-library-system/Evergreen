@@ -315,14 +315,39 @@ dump('params.print_strategy = ' + params.print_strategy + ' || obj.data.print_st
                         obj._NSPrint_custom_print(w,silent,params);
                     break;    
                     case 'window.print':
-                        w.print();
+                        if (! params.msg) {
+                            w.print();
+                        } else {
+                            w = window.open('data:text/plain,'+escape(params.msg));
+                            setTimeout(
+                                function() {
+                                    w.print();
+                                    setTimeout(
+                                        function() {
+                                            w.close(); 
+                                        }, 2000
+                                    );
+                                }, 0
+                            );
+                        }
                     break;    
                     case 'webBrowserPrint':
-                        obj._NSPrint_webBrowserPrint(w,silent,params);
-                    break;    
                     default:
-                        //w.print();
-                        obj._NSPrint_webBrowserPrint(w,silent,params);
+                        if (! params.msg) {
+                            obj._NSPrint_webBrowserPrint(w,silent,params);
+                        } else {
+                            w = window.open('data:text/plain,'+escape(params.msg));
+                            setTimeout(
+                                function() {
+                                    obj._NSPrint_webBrowserPrint(w,silent,params);
+                                    setTimeout(
+                                        function() {
+                                            w.close(); 
+                                        }, 2000
+                                    );
+                                }, 0
+                            );
+                        }
                     break;    
                 }
 
