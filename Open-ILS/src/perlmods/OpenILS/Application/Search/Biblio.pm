@@ -1334,21 +1334,18 @@ sub cache_facets {
 
     # The query we're constructing
     #
-    # select  cmf.id,
+    # select  mfae.field as id,
     #         mfae.value,
     #         count(distinct mmrsm.appropriate-id-field )
     #   from  metabib.facet_entry mfae
-    #         join config.metabib_field cmf on (mfae.field = cmf.id)
     #         join metabib.metarecord_sourc_map mmrsm on (mfae.source = mmrsm.source)
-    #   where cmf.facet_field
-    #         and mmrsm.appropriate-id-field in IDLIST
+    #   where mmrsm.appropriate-id-field in IDLIST
     #   group by 1,2;
 
     my $count_field = $metabib ? 'metarecord' : 'source';
     my $facets = $U->cstorereq( "open-ils.cstore.json_query.atomic",
         {   select  => {
-                cmf  => [ 'id' ],
-                mfae => [ 'value' ],
+                mfae => [ { column => 'field', alias => 'id'}, 'value' ],
                 mmrsm => [{
                     transform => 'count',
                     distinct => 1,
