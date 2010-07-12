@@ -307,6 +307,7 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
 
     use MARC::Record;
     use MARC::File::XML;
+    use strict;
 
     my $target_xml = shift;
     my $source_xml = shift;
@@ -346,9 +347,9 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
             for my $from_field ($source_r->field( $f )) {
                 for my $to_field ($target_r->field( $f )) {
                     if (exists($fields{$f}{match})) {
-                        next unless (grep { $_ =~ $field{$f}{match}{re} } $to_field->subfield($field{$f}{match}{sf}));
+                        next unless (grep { $_ =~ $fields{$f}{match}{re} } $to_field->subfield($fields{$f}{match}{sf}));
                     }
-                    my @new_sf = map { ($_ => $from_field->subfield($_)) } @{$fields{$f}};
+                    my @new_sf = map { ($_ => $from_field->subfield($_)) } @{$fields{$f}{sf}};
                     $to_field->add_subfields( @new_sf );
                 }
             }
@@ -371,6 +372,7 @@ CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS
 
     use MARC::Record;
     use MARC::File::XML;
+    use strict;
 
     my $xml = shift;
     my $r = MARC::Record->new_from_xml( $xml );
@@ -405,10 +407,10 @@ CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS
     for my $f ( keys %fields) {
         for my $to_field ($r->field( $f )) {
             if (exists($fields{$f}{match})) {
-                next unless (grep { $_ =~ $field{$f}{match}{re} } $to_field->subfield($field{$f}{match}{sf}));
+                next unless (grep { $_ =~ $fields{$f}{match}{re} } $to_field->subfield($fields{$f}{match}{sf}));
             }
 
-            if ( @{$fields{$f}} ) {
+            if ( @{$fields{$f}{sf}} ) {
                 $to_field->delete_subfield(code => $fields{$f}{sf});
             } else {
                 $r->delete_field( $to_field );
