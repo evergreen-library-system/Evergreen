@@ -439,8 +439,8 @@ sub new {
 	my $class = shift;
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
-	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/', undef);
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/', 'mods');
+	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/', undef, 1);
 	$self->{type} = 'application/xml';
 	$self->{holdings_xpath} = '/mods:mods';
 	return $self;
@@ -491,8 +491,8 @@ sub new {
 	my $class = shift;
 	my $xml = shift;
 	my $self = $class->SUPER::build($xml);
-	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/v3', undef);
 	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/v3', 'mods');
+	$self->{doc}->documentElement->setNamespace('http://www.loc.gov/mods/v3', undef, 1);
 	$self->{type} = 'application/xml';
 	$self->{holdings_xpath} = '/mods:mods';
 	return $self;
