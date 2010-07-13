@@ -417,7 +417,8 @@ $f$ LANGUAGE PLPERLU;
 
 CREATE OR REPLACE FUNCTION maintain_901 () RETURNS TRIGGER AS $func$
 BEGIN
-    NEW.marc := REGEXP_REPLACE(NEW.marc, E'<datafield tag="901".+?</datafield>', '', 'g');
+    -- Remove any existing 901 fields before we insert the authoritative one
+    NEW.marc := REGEXP_REPLACE(NEW.marc, E'<datafield\s*[^<>]*?\s*tag="901".+?</datafield>', '', 'g');
     IF TG_TABLE_SCHEMA = 'biblio' THEN
         NEW.marc := REGEXP_REPLACE(
             NEW.marc,
