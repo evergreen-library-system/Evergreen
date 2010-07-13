@@ -273,7 +273,7 @@ sub process_spool {
     my $r = -1;
     while (try { $r = $batch->next } otherwise { $r = -1 }) {
         if ($r == -1) {
-            $logger->warn("Proccessing of record $count in set $filename failed.  Skipping this record");
+            $logger->warn("Processing of record $count in set $filename failed.  Skipping this record");
             $count++;
         }
 
@@ -291,9 +291,9 @@ sub process_spool {
             # Check the leader to ensure we've got something resembling the expected
             # Allow spaces to give records the benefit of the doubt
             my $ldr_type = substr($r->leader(), 6, 1);
-            if ($type eq 'bib' && ($record_types{$ldr_type}) eq 'bib') {
+            if ($type eq 'bib' && ($record_types{$ldr_type}) eq 'bib' || $ldr_type eq ' ') {
                 $qrec = _add_bib_rec( $e, $xml, $queue_id, $purpose, $bib_source ) or return $e->die_event;
-            } elsif ($type eq 'auth' && ($record_types{$ldr_type}) eq 'auth') {
+            } elsif ($type eq 'auth' && ($record_types{$ldr_type}) eq 'auth' || $ldr_type eq ' ') {
                 $qrec = _add_auth_rec( $e, $xml, $queue_id, $purpose ) or return $e->die_event;
             } else {
                 # I don't know how to handle this type; rock on
@@ -727,7 +727,7 @@ sub import_record_list_impl {
 
             if(!$imported) {
             
-                # No overlay / merge occured.  Do a traditional record import by creating a new record
+                # No overlay / merge occurred.  Do a traditional record import by creating a new record
             
                 if($type eq 'bib') {
                     $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import($e, $rec->marc); #$rec->bib_source
@@ -747,7 +747,7 @@ sub import_record_list_impl {
 
                 } else {
 
-                    $logger->info("vl: successfully importid new $type record");
+                    $logger->info("vl: successfully imported new $type record");
                     $rec->imported_as($record->id);
                     $rec->import_time('now');
 
