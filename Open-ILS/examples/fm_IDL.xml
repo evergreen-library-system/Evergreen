@@ -6793,13 +6793,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Query type" name="type" reporter:datatype="text"/>
 			<field reporter:label="Use ALL" name="use_all" reporter:datatype="bool"/>
 			<field reporter:label="Use DISTINCT" name="use_distinct" reporter:datatype="bool"/>
-			<field reporter:label="FROM Clause" name="from_clause" reporter:datatype="int"/>
-			<field reporter:label="WHERE Clause" name="where_clause" reporter:datatype="int"/>
-			<field reporter:label="HAVING Clause" name="having_clause" reporter:datatype="int"/>
-			<field reporter:label="LIMIT count" name="limit_count" reporter:datatype="int"/>
-			<field reporter:label="OFFSET count" name="offset_count" reporter:datatype="int"/>
+			<field reporter:label="FROM Clause" name="from_clause" reporter:datatype="link"/>
+			<field reporter:label="WHERE Clause" name="where_clause" reporter:datatype="link"/>
+			<field reporter:label="HAVING Clause" name="having_clause" reporter:datatype="link"/>
+			<field reporter:label="LIMIT count" name="limit_count" reporter:datatype="link"/>
+			<field reporter:label="OFFSET count" name="offset_count" reporter:datatype="link"/>
 		</fields>
 		<links>
+			<link field="from_clause" reltype="has_a" key="id" map="" class="qfr"/>
+			<link field="having_clause" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="where_clause" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="limit_count" reltype="has_a" key="id" map="" class="qxp"/>
+			<link field="offset_count" reltype="has_a" key="id" map="" class="qxp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 		</permacrud>

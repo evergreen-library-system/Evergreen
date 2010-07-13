@@ -90,6 +90,8 @@ struct StoredQ_ {
 	QSeq*         child_list;
 	Expression*   having_clause;
 	OrderItem*    order_by_list;
+	Expression*   limit_count;
+	Expression*   offset_count;
 };
 
 typedef enum {

@@ -184,8 +184,8 @@ StoredQ* getStoredQuery( BuildSQLState* state, int query_id ) {
 
 	StoredQ* sq = NULL;
 	dbi_result result = dbi_conn_queryf( state->dbhandle,
-		"SELECT id, type, use_all, use_distinct, from_clause, where_clause, having_clause "
-		"FROM query.stored_query WHERE id = %d;", query_id );
+		"SELECT id, type, use_all, use_distinct, from_clause, where_clause, having_clause, "
+		"limit_count, offset_count FROM query.stored_query WHERE id = %d;", query_id );
 	if( result ) {
 		if( dbi_result_first_row( result ) ) {
 			sq = constructStoredQ( state, result );
@@ -270,6 +270,18 @@ static StoredQ* constructStoredQ( BuildSQLState* state, dbi_result result ) {
 	else
 		having_clause_id = dbi_result_get_int_idx( result, 7 );
 
+	int limit_count_id;
+	if( dbi_result_field_is_null_idx( result, 8 ) )
+		limit_count_id = -1;
+	else
+		limit_count_id = dbi_result_get_int_idx( result, 8 );
+
+	int offset_count_id;
+	if( dbi_result_field_is_null_idx( result, 9 ) )
+		offset_count_id = -1;
+	else
+		offset_count_id = dbi_result_get_int_idx( result, 9 );
+
 	FromRelation* from_clause = NULL;
 	if( QT_SELECT == type ) {
 		// A SELECT query needs a FROM clause; go get it
@@ -327,6 +339,7 @@ static StoredQ* constructStoredQ( BuildSQLState* state, dbi_result result ) {
 		}
 	}
 
+	// Get the HAVING clause, if there is one
 	Expression* having_clause = NULL;
 	if( having_clause_id != -1 ) {
 		having_clause = getExpression( state, having_clause_id );
@@ -336,8 +349,8 @@ static StoredQ* constructStoredQ( BuildSQLState* state, dbi_result result ) {
 				"Unable to fetch HAVING expression for query id = %d", id ));
 			expressionFree( where_clause );
 			freeQSeqList( child_list );
-			fromRelationFree( from_clause );
 			selectListFree( select_list );
+			fromRelationFree( from_clause );
 			state->error = 1;
 			return NULL;
 		}
@@ -351,9 +364,44 @@ static StoredQ* constructStoredQ( BuildSQLState* state, dbi_result result ) {
 		expressionFree( having_clause );
 		expressionFree( where_clause );
 		freeQSeqList( child_list );
-		fromRelationFree( from_clause );
 		selectListFree( select_list );
+		fromRelationFree( from_clause );
 		return NULL;
+	}
+
+	// Get the LIMIT clause, if there is one
+	Expression* limit_count = NULL;
+	if( limit_count_id != -1 ) {
+		limit_count = getExpression( state, limit_count_id );
+		if( ! limit_count ) {
+			// shouldn't happen due to foreign key constraint
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Unable to fetch LIMIT expression for query id = %d", id ));
+			orderItemListFree( order_by_list );
+			freeQSeqList( child_list );
+			selectListFree( select_list );
+			fromRelationFree( from_clause );
+			state->error = 1;
+			return NULL;
+		}
+	}
+
+	// Get the OFFSET clause, if there is one
+	Expression* offset_count = NULL;
+	if( offset_count_id != -1 ) {
+		offset_count = getExpression( state, offset_count_id );
+		if( ! offset_count ) {
+			// shouldn't happen due to foreign key constraint
+			osrfLogError( OSRF_LOG_MARK, sqlAddMsg( state,
+				"Unable to fetch OFFSET expression for query id = %d", id ));
+			expressionFree( limit_count );
+			orderItemListFree( order_by_list );
+			freeQSeqList( child_list );
+			selectListFree( select_list );
+			fromRelationFree( from_clause );
+			state->error = 1;
+			return NULL;
+		}
 	}
 
 	// Allocate a StoredQ: from the free list if possible, from the heap if necessary
@@ -378,6 +426,8 @@ static StoredQ* constructStoredQ( BuildSQLState* state, dbi_result result ) {
 	sq->child_list = child_list;
 	sq->having_clause = having_clause;
 	sq->order_by_list = order_by_list;
+	sq->limit_count = limit_count;
+	sq->offset_count = offset_count;
 
 	return sq;
 }
@@ -535,8 +585,18 @@ void storedQFree( StoredQ* sq ) {
 			orderItemListFree( sq->order_by_list );
 			sq->order_by_list = NULL;
 		}
-		if( sq->having_clause )
+		if( sq->having_clause ) {
 			expressionFree( sq->having_clause );
+			sq->having_clause = NULL;
+		}
+		if( sq->limit_count ) {
+			expressionFree( sq->limit_count );
+			sq->limit_count = NULL;
+		}
+		if( sq->offset_count ) {
+			expressionFree( sq->offset_count );
+			sq->offset_count = NULL;
+		}
 
 		// Stick the empty husk on the free list for potential reuse
 		sq->next = free_storedq_list;

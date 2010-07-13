@@ -25,10 +25,12 @@ static void buildGroupBy( BuildSQLState* state, const SelectItem* sel_list );
 static void buildOrderBy( BuildSQLState* state, const OrderItem* ord_list );
 static void buildCase( BuildSQLState* state, const Expression* expr );
 static void buildExpression( BuildSQLState* state, const Expression* expr );
+
 static void buildFunction( BuildSQLState* state, const Expression* exp );
 static int subexp_count( const Expression* expr );
 static void buildTypicalFunction( BuildSQLState* state, const Expression* expr );
 static void buildExtract( BuildSQLState* state, const Expression* expr );
+
 static void buildSeries( BuildSQLState* state, const Expression* subexp_list, const char* op );
 static void buildBindVar( BuildSQLState* state, const BindVar* bind );
 static void buildScalar( BuildSQLState* state, int numeric, const jsonObject* obj );
@@ -262,7 +264,7 @@ static void buildSelect( BuildSQLState* state, const StoredQ* query ) {
 		return;
 	}
 
-	// To do: get SELECT list; just a stub here
+	// Get SELECT list
 	buffer_add( state->sql, "SELECT" );
 	incr_indent( state );
 	buildSelectList( state, query->select_list );
@@ -326,9 +328,19 @@ static void buildSelect( BuildSQLState* state, const StoredQ* query ) {
 		}
 	}
 
-	// To do: Build LIMIT clause, if there is one
+	// Build LIMIT clause, if there is one
+	if( query->limit_count ) {
+		add_newline( state );
+		buffer_add( state->sql, "LIMIT " );
+		buildExpression( state, query->limit_count );
+	}
 
-	// To do: Build OFFSET clause, if there is one
+	// Build OFFSET clause, if there is one
+	if( query->offset_count ) {
+		add_newline( state );
+		buffer_add( state->sql, "OFFSET " );
+		buildExpression( state, query->offset_count );
+	}
 
 	state->error = 0;
 }
@@ -968,7 +980,19 @@ static void buildFunction( BuildSQLState* state, const Expression* expr ) {
 		buffer_add( state->sql, "LOCALTIME " );
 	else if( !strcasecmp( expr->function_name, "LOCALTIMESTAMP" ) && ! expr->subexp_list )
 		buffer_add( state->sql, "LOCALTIMESTAMP " );
-	else
+	else if( !strcasecmp( expr->function_name, "TRIM" )) {
+		int arg_count = subexp_count( expr );
+
+		if( (arg_count != 2 && arg_count != 3 ) || expr->subexp_list->type != EXP_STRING )
+			buildTypicalFunction( state, expr );
+		else {
+			sqlAddMsg( state,
+				"TRIM function not supported in expr # %d; use ltrim() and/or rtrim()",
+				expr->id );
+			state->error = 1;
+			return;
+		}
+	} else
 		buildTypicalFunction( state, expr );     // Not a special exception.
 
 	if( expr->column_name ) {
@@ -985,6 +1009,9 @@ static void buildFunction( BuildSQLState* state, const Expression* expr ) {
 	@return The number of subexpressions.
 */
 static int subexp_count( const Expression* expr ) {
+	if( !expr )
+		return 0;
+
 	int count = 0;
 	const Expression* sub = expr->subexp_list;
 	while( sub ) {

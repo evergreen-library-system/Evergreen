@@ -39,9 +39,11 @@ CREATE TABLE  query.stored_query (
 	where_clause  INT,           --REFERENCES query.expression
 	                             --DEFERRABLE INITIALLY DEFERRED,
 	having_clause INT,           --REFERENCES query.expression
+	                             --DEFERRABLE INITIALLY DEFERRED,
+	limit_count   INT,           --REFERENCES query.expression
+	                             --DEFERRABLE INITIALLY DEFERRED,
+	offset_count  INT            --REFERENCES query.expression
 	                             --DEFERRABLE INITIALLY DEFERRED
-	limit_count   INT,
-	offset_count  INT
 );
 
 -- (Foreign keys to be defined later after other tables are created)
@@ -185,6 +187,16 @@ ALTER TABLE query.stored_query
 
 ALTER TABLE query.stored_query
 	ADD FOREIGN KEY ( having_clause )
+	REFERENCES query.expression( id )
+	DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE query.stored_query
+	ADD FOREIGN KEY ( limit_count )
+	REFERENCES query.expression( id )
+	DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE query.stored_query
+	ADD FOREIGN KEY ( offset_count )
 	REFERENCES query.expression( id )
 	DEFERRABLE INITIALLY DEFERRED;
 
