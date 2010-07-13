@@ -38,8 +38,10 @@ CREATE TABLE  query.stored_query (
 	                             --DEFERRABLE INITIALLY DEFERRED,
 	where_clause  INT,           --REFERENCES query.expression
 	                             --DEFERRABLE INITIALLY DEFERRED,
-	having_clause INT            --REFERENCES query.expression
+	having_clause INT,           --REFERENCES query.expression
 	                             --DEFERRABLE INITIALLY DEFERRED
+	limit_count   INT,
+	offset_count  INT
 );
 
 -- (Foreign keys to be defined later after other tables are created)
