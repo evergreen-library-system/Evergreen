@@ -48,13 +48,23 @@ sub validate_tag {
 				"WHERE tag = ? AND subfield = ? AND value = ?";
 		}
 
-		my $sql = 'SELECT COUNT(DISTINCT record) FROM (';
+		my $sql;
+		if ($self->api_name =~ /id_list/) {
+			$sql = 'SELECT DISTINCT record FROM (';
+		} else {
+			$sql = 'SELECT COUNT(DISTINCT record) FROM (';
+		}
 		$sql .= 'SELECT record FROM (('.join(') INTERSECT (', @selects).')) AS x ';
 		$sql .= "JOIN $search_table recheck USING (record) WHERE recheck.tag = ? ";
 		$sql .= "GROUP BY 1 HAVING (COUNT(recheck.id) - ?) = 0) AS foo;";
 
-		my $count = authority::full_rec->db_Main->selectcol_arrayref( $sql, {}, @values, $t, scalar(@searches) )->[0];
-		return $count if ($count > 0);
+		if ($self->api_name =~ /id_list/) {
+			my $id_list = authority::full_rec->db_Main->selectcol_arrayref( $sql, {}, @values, $t, scalar(@searches) );
+			return $id_list if (scalar(@$id_list)> 0);
+		} else {
+			my $count = authority::full_rec->db_Main->selectcol_arrayref( $sql, {}, @values, $t, scalar(@searches) )->[0];
+			return $count if ($count > 0);
+		}
 	}
 
 	return 0;
@@ -64,6 +74,13 @@ __PACKAGE__->register_method(
 	method		=> 'validate_tag',
 	api_level	=> 1,
 );
+
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.authority.validate.tag.id_list",
+	method		=> 'validate_tag',
+	api_level	=> 1,
+);
+
 
 sub find_authority_marc {
 	my $self = shift;

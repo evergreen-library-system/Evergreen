@@ -32,6 +32,20 @@ __PACKAGE__->register_method(
         note		=> "Validates authority data from existing controlled terms",
 );              
 
+sub validate_authority_return_records_by_id {
+	my $self = shift;
+	my $client = shift;
+
+	my $session = OpenSRF::AppSession->create("open-ils.storage");
+	return $session->request( 'open-ils.storage.authority.validate.tag.id_list' => @_ )->gather(1);
+}
+__PACKAGE__->register_method(
+        method		=> "validate_authority_return_records_by_id",
+        api_name	=> "open-ils.search.authority.validate.tag.id_list",
+        argc		=> 4, 
+        note		=> "Validates authority data from existing controlled terms",
+);              
+
 sub search_authority {
 	my $self = shift;
 	my $client = shift;
