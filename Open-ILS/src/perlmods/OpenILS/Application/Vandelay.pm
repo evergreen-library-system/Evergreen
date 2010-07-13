@@ -280,6 +280,15 @@ sub process_spool {
         $logger->info("processing record $count");
 
         try {
+            # Avoid an over-eager MARC::File::XML that may try to convert
+            # our record from MARC8 to UTF8 and break because the record
+            # is obviously already UTF8
+            my $ldr = $r->leader();
+            if (($marctype eq 'XML') && (substr($ldr, 9, 1) ne 'a')) {
+                $logger->warn("MARCXML record LDR/09 was not 'a'; record leader may be corrupt");
+                substr($ldr,9,1,'a');
+                $r->leader($ldr);
+            }
             (my $xml = $r->as_xml_record()) =~ s/\n//sog;
             $xml =~ s/^<\?xml.+\?\s*>//go;
             $xml =~ s/>\s+</></go;
