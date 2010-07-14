@@ -224,7 +224,7 @@ sub active_captions {
     my $self  = shift;
     my $tag = shift;
 
-    # TODO: add support for caption types as argument? (base, index, supplement)
+    # TODO: add support for caption types as argument? (basic, index, supplement)
     my @captions;
     my @active_captions;
 
