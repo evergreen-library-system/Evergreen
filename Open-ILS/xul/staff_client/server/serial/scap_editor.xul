@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Caption/Pattern Editor Overlay -->
+
+<!-- LOCALIZATION -->
+<!DOCTYPE overlay PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<overlay id="serial_scap_editor_panel_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<vbox flex="1" id="serial_scap_editor_panel" class="my_overflow">
+        <vbox id="brief_display_box"/>
+
+		<hbox flex="1" style="overflow: auto">
+			<vbox flex="1">
+				<label value="Caption and Pattern" style="font-weight: bold; font-size: large"/>
+				<vbox id="scap_editor_left_pane" flex="1"/>
+			</vbox>
+        </hbox>
+
+		<hbox id="scap_editor_nav">
+			<spacer flex="1"/>
+			<button id="scap_save" label="&staff.serial.scap_editor.modify;" hidden="true" accesskey="&staff.serial.scap_editor.modify.accesskey;" oncommand="g.manage_subs.scap_editor.save()" />
+			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
+		</hbox>
+
+		<spacer/>
+	</vbox>
+
+</overlay>
+
