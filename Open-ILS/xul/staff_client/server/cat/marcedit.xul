@@ -180,13 +180,58 @@
                             <textbox id="File_tb" context="clipboard" class="plain" name="File" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                         <row>
-                            <label name="Type" control="Type_tbmfhd" set="MFHD" value="Type" />
+                            <label name="Type" control="Type_tbmfhd" set="AUT MFHD" value="Type" />
                             <textbox id="Type_tbmfhd" context="clipboard" class="plain" name="Type" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="ELvl" control="ELvl_tbmfhd" set="MFHD" value="ELvl" />
-                            <textbox id="Elvl_tbmfhd" context="clipboard" class="plain" name="ELvl" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="Item" control="Item_tbmfhd" set="MFHD" value="Item" />
+                            <label name="ELvl" control="ELvl_tbmfhd" set="AUT MFHD" value="ELvl" />
+                            <textbox id="ELvl_tbmfhd" context="clipboard" class="plain" name="ELvl" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="Item" control="Item_tbmfhd" set="AUT MFHD" value="Item" />
                             <textbox id="Item_tbmfhd" context="clipboard" class="plain" name="Item" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="GeoDiv" control="GeoDiv_tb" set="AUT" value="GeoDiv" />
+                            <textbox id="GeoDiv_tb" context="clipboard" class="plain" name="GeoDiv" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="Roman" control="Roman_tb" set="AUT" value="Roman" />
+                            <textbox id="Roman_tb" context="clipboard" class="plain" name="Roman" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="CatLang" control="CatLang_tb" set="AUT" value="CatLang" />
+                            <textbox id="CatLang_tb" context="clipboard" class="plain" name="CatLang" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
+                        <row>
+                            <label name="Kind" control="Kind_tb" set="AUT" value="Kind" />
+                            <textbox id="Kind_tb" context="clipboard" class="plain" name="Kind" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="Rules" control="Rules_tb" set="AUT" value="Rules" />
+                            <textbox id="Rules_tb" context="clipboard" class="plain" name="Rules" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="SHSys" control="SHSys_tb" set="AUT" value="SHSys" />
+                            <textbox id="SHSys_tb" context="clipboard" class="plain" name="SHSys" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="SerType" control="SerType_tb" set="AUT" value="SerType" />
+                            <textbox id="SerType_tb" context="clipboard" class="plain" name="SerType" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="SerNum" control="SerNum_tb" set="AUT" value="SerNum" />
+                            <textbox id="SerNum_tb" context="clipboard" class="plain" name="SerNum" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="HeadMain" control="HeadMain_tb" set="AUT" value="HeadMain" />
+                            <textbox id="HeadMain_tb" context="clipboard" class="plain" name="HeadMain" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                        </row>
+                        <row>
+                            <label name="HeadSubj" control="HeadSubj_tb" set="AUT" value="HeadSubj" />
+                            <textbox id="HeadSubj_tb" context="clipboard" class="plain" name="HeadSubj" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="HeadSer" control="HeadSer_tb" set="AUT" value="HeadSer" />
+                            <textbox id="HeadSer_tb" context="clipboard" class="plain" name="HeadSer" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="TypeSubd" control="TypeSubd_tb" set="AUT" value="TypeSubd" />
+                            <textbox id="TypeSubd_tb" context="clipboard" class="plain" name="TypeSubd" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="TypeGov" control="TypeGov_tb" set="AUT" value="TypeGov" />
+                            <textbox id="TypeGov_tb" context="clipboard" class="plain" name="TypeGov" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="RefEval" control="RefEval_tb" set="AUT" value="RefEval" />
+                            <textbox id="RefEval_tb" context="clipboard" class="plain" name="RefEval" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="RecUpd" control="RecUpd_tb" set="AUT" value="RecUpd" />
+                            <textbox id="RecUpd_tb" context="clipboard" class="plain" name="RecUpd" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                        </row>
+                        <row>
+                            <label name="NameDiff" control="NameDiff_tb" set="AUT" value="NameDiff" />
+                            <textbox id="NameDiff_tb" context="clipboard" class="plain" name="NameDiff" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="Level" control="Level_tb" set="AUT" value="Level" />
+                            <textbox id="Level_tb" context="clipboard" class="plain" name="Level" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="ModRec" control="ModRec_tb" set="AUT" value="ModRec" />
+                            <textbox id="ModRec_tb" context="clipboard" class="plain" name="ModRec" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="CatSrc" control="CatSrc_tb" set="AUT" value="CatSrc" />
+                            <textbox id="CatSrc_tb" context="clipboard" class="plain" name="CatSrc" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                        </row>
+
                     </rows>
                 </grid>
             </vbox>

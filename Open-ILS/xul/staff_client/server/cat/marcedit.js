@@ -671,6 +671,7 @@ var rec_type = {
     SCO : { Type : /[cd]{1}/,    BLvl : /[abcdms]{1}/ },
     REC : { Type : /[ij]{1}/,    BLvl : /[abcdms]{1}/ },
     COM : { Type : /[m]{1}/,    BLvl : /[abcdms]{1}/ },
+	AUT : { Type : /[z]{1}/,	BLvl : /.{1}/ },
     MFHD : { Type : /[uvxy]{1}/,  BLvl : /.{1}/ }
 };
 
@@ -909,6 +910,7 @@ var ff_pos = {
             SCO : {start : 6, len : 1, def : 'c' },
             REC : {start : 6, len : 1, def : 'i' },
             COM : {start : 6, len : 1, def : 'm' },
+            AUT : {start : 6, len : 1, def : 'z' },
             MFHD : {start : 6, len : 1, def : 'y' }
         }
     },
@@ -963,6 +965,7 @@ var ff_pos = {
             SCO : {start : 17, len : 1, def : ' ' },
             REC : {start : 17, len : 1, def : ' ' },
             COM : {start : 17, len : 1, def : ' ' },
+            AUT : {start : 17, len : 1, def : 'n' },
             MFHD : {start : 17, len : 1, def : 'u' }
         }
     },
@@ -1121,7 +1124,102 @@ var ff_pos = {
         _6 : {
             SER : {start : 16, len : 1, def : ' ' }
         }
-    }
+    },
+	"GeoDiv" : {
+		"_8" : {
+			"AUT" : {"start" : 6, "len" : 1, "def" : ' ' }
+		}
+	},
+	"Roman" : {
+		"_8" : {
+			"AUT" : {"start" : 7, "len" : 1, "def" : ' ' }
+		}
+	},
+	"CatLang" : {
+		"_8" : {
+			"AUT" : {"start" : 8, "len" : 1, "def" : ' ' }
+		}
+	},
+	"Kind" : {
+		"_8" : {
+			"AUT" : {"start" : 9, "len" : 1, "def" : ' ' }
+		}
+	},
+	"Rules" : {
+		"_8" : {
+			"AUT" : {"start" : 10, "len" : 1, "def" : ' ' }
+		}
+	},
+	"SHSys" : {
+		"_8" : {
+			"AUT" : {"start" : 11, "len" : 1, "def" : ' ' }
+		}
+	},
+	"SerType" : {
+		"_8" : {
+			"AUT" : {"start" : 12, "len" : 1, "def" : ' ' }
+		}
+	},
+	"SerNum" : {
+		"_8" : {
+			"AUT" : {"start" : 13, "len" : 1, "def" : ' ' }
+		}
+	},
+	"HeadMain" : {
+		"_8" : {
+			"AUT" : {"start" : 14, "len" : 1, "def" : ' ' }
+		}
+	},
+	"HeadSubj" : {
+		"_8" : {
+			"AUT" : {"start" : 15, "len" : 1, "def" : ' ' }
+		}
+	},
+	"HeadSer" : {
+		"_8" : {
+			"AUT" : {"start" : 16, "len" : 1, "def" : ' ' }
+		}
+	},
+	"TypeSubd" : {
+		"_8" : {
+			"AUT" : {"start" : 17, "len" : 1, "def" : ' ' }
+		}
+	},
+	"TypeGov" : {
+		"_8" : {
+			"AUT" : {"start" : 28, "len" : 1, "def" : ' ' }
+		}
+	},
+	"RefEval" : {
+		"_8" : {
+			"AUT" : {"start" : 29, "len" : 1, "def" : ' ' }
+		}
+	},
+	"RecUpd" : {
+		"_8" : {
+			"AUT" : {"start" : 31, "len" : 1, "def" : ' ' }
+		}
+	},
+	"NameDiff" : {
+		"_8" : {
+			"AUT" : {"start" : 32, "len" : 1, "def" : ' ' }
+		}
+	},
+	"Level" : {
+		"_8" : {
+			"AUT" : {"start" : 33, "len" : 1, "def" : ' ' }
+		}
+	},
+	"ModRec" : {
+		"_8" : {
+			"AUT" : {"start" : 38, "len" : 1, "def" : ' ' }
+		}
+	},
+	"CatSrc" : {
+		"_8" : {
+			"AUT" : {"start" : 39, "len" : 1, "def" : ' ' }
+		}
+	}
 };
 
 function recordType (rec) {
@@ -1234,7 +1332,7 @@ function fillFixedFields (rec) {
                         p = '_7';
                     }
 
-                    if (!value) {
+                    if (p && !value) {
                         for (var j = 0; j < ff_pos[name][p][rtype].len; j++) {
                             value += d;
                         }
