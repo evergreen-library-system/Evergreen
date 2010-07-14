@@ -60,7 +60,7 @@ sub validate_tag {
 
 		if ($self->api_name =~ /id_list/) {
 			my $id_list = authority::full_rec->db_Main->selectcol_arrayref( $sql, {}, @values, $t, scalar(@searches) );
-			return $id_list if (scalar(@$id_list)> 0);
+			return $id_list;
 		} else {
 			my $count = authority::full_rec->db_Main->selectcol_arrayref( $sql, {}, @values, $t, scalar(@searches) )->[0];
 			return $count if ($count > 0);
