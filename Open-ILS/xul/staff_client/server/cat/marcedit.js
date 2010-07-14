@@ -670,7 +670,8 @@ var rec_type = {
     MAP : { Type : /[ef]{1}/,    BLvl : /[abcdms]{1}/ },
     SCO : { Type : /[cd]{1}/,    BLvl : /[abcdms]{1}/ },
     REC : { Type : /[ij]{1}/,    BLvl : /[abcdms]{1}/ },
-    COM : { Type : /[m]{1}/,    BLvl : /[abcdms]{1}/ }
+    COM : { Type : /[m]{1}/,    BLvl : /[abcdms]{1}/ },
+    MFHD : { Type : /[uvxy]{1}/,  BLvl : /.{1}/ }
 };
 
 var ff_pos = {
@@ -907,7 +908,8 @@ var ff_pos = {
             MAP : {start : 6, len : 1, def : 'e' },
             SCO : {start : 6, len : 1, def : 'c' },
             REC : {start : 6, len : 1, def : 'i' },
-            COM : {start : 6, len : 1, def : 'm' }
+            COM : {start : 6, len : 1, def : 'm' },
+            MFHD : {start : 6, len : 1, def : 'y' }
         }
     },
     Ctrl : {
@@ -943,7 +945,12 @@ var ff_pos = {
             MAP : {start : 18, len : 1, def : ' ' },
             SCO : {start : 18, len : 1, def : ' ' },
             REC : {start : 18, len : 1, def : ' ' },
-            COM : {start : 18, len : 1, def : ' ' }
+            COM : {start : 18, len : 1, def : 'i' }
+        }
+	},
+    Item : {
+        ldr : {
+            MFHD : {start : 18, len : 1, def : 'i' }
         }
     },
     ELvl : {
@@ -955,7 +962,8 @@ var ff_pos = {
             MAP : {start : 17, len : 1, def : ' ' },
             SCO : {start : 17, len : 1, def : ' ' },
             REC : {start : 17, len : 1, def : ' ' },
-            COM : {start : 17, len : 1, def : ' ' }
+            COM : {start : 17, len : 1, def : ' ' },
+            MFHD : {start : 17, len : 1, def : 'u' }
         }
     },
     Indx : {
