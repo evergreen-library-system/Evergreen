@@ -925,7 +925,20 @@ sub create_serial_record_xml {
 	# The goal is to generate common patterns for the caller in the UI that
 	# then get passed in here.
 	if (!$xml) {
-		$xml = "<record xsi:schemaLocation=\"http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://www.loc.gov/MARC21/slim\"> <leader>00307ny  a22001094  4500</leader> <controlfield tag=\"001\">42153</controlfield> <controlfield tag=\"005\">20090601182414.0</controlfield> <controlfield tag=\"008\">      4u####8###l# 4   uueng1      </controlfield> <datafield tag=\"852\" ind1=\" \" ind2=\" \"> <subfield code=\"b\">" . $aou->name . "</subfield> </datafield></record>";
+		my $aou_name = $aou->name;
+		$xml = <<HERE;
+<record 
+ xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="http://www.loc.gov/MARC21/slim">
+<leader>00307ny  a22001094  4500</leader>
+<controlfield tag="001">42153</controlfield>
+<controlfield tag="005">20090601182414.0</controlfield>
+<controlfield tag="004">$record_id</controlfield>
+<controlfield tag="008">      4u####8###l# 4   uueng1      </controlfield>
+<datafield tag="852" ind1=" " ind2=" "> <subfield code="b">$aou_name</subfield></datafield>
+</record>
+HERE
 	}
 	my $marcxml = XML::LibXML->new->parse_string($xml);
 	$marcxml->documentElement->setNamespace("http://www.loc.gov/MARC21/slim", "marc", 1 );
