@@ -96,11 +96,15 @@ jsonObject* oilsBindVarList( osrfHash* bindvar_list ) {
 			attr = jsonNewObject( bind->description );
 			jsonObjectSetKey( bind_obj, "description", attr );
 
-			attr = jsonObjectClone( bind->default_value );
-			jsonObjectSetKey( bind_obj, "default_value", attr );
+			if( bind->default_value ) {
+				attr = jsonObjectClone( bind->default_value );
+				jsonObjectSetKey( bind_obj, "default_value", attr );
+			}
 
-			attr = jsonObjectClone( bind->actual_value );
-			jsonObjectSetKey( bind_obj, "actual_value", attr );
+			if( bind->actual_value ) {
+				attr = jsonObjectClone( bind->actual_value );
+				jsonObjectSetKey( bind_obj, "actual_value", attr );
+			}
 
 			// Add the bind variable to the list
 			jsonObjectSetKey( list, osrfHashIteratorKey( iter ), bind_obj );
