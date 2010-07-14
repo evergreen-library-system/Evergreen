@@ -95,4 +95,8 @@ grid#leaderGrid[type="COM"] *[set~="COM"], grid#leaderGrid[type="COM"] *[set~="C
     visibility: visible;
 }
 
+grid#leaderGrid[type="MFHD"] *[set~="MFHD"], grid#leaderGrid[type="MFHD"] *[set~="MFHD"] + textbox {
+    visibility: visible;
+}
+
 grid[name="-none-"] * label { color: black; }

@@ -78,9 +78,9 @@
                     </columns>
                     <rows>
                         <row>
-                            <label name="Type" control="Type_tb" set="BKS SER VIS MIX MAP SCO REC COM MFHD" value="Type" />
+                            <label name="Type" control="Type_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Type" />
                             <textbox id="Type_tb" context="clipboard" class="plain" name="Type" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="ELvl" control="ELvl_tb" set="BKS SER VIS MIX MAP SCO REC COM MFHD" value="ELvl" />
+                            <label name="ELvl" control="ELvl_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="ELvl" />
                             <textbox id="Elvl_tb" context="clipboard" class="plain" name="ELvl" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="Srce" control="Srce_tb" set="BKS SER VIS MIX MAP SCO REC COM" value="Srce" />
                             <textbox id="Srce_tb" context="clipboard" class="plain" name="Srce" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
@@ -178,8 +178,14 @@
                             <textbox id="Tech_tb" context="clipboard" class="plain" name="Tech" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                             <label name="File" control="File_tb" set="COM" value="File" />
                             <textbox id="File_tb" context="clipboard" class="plain" name="File" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
-                            <label name="Item" control="Item_tb" set="MFHD" value="Item" />
-                            <textbox id="Item_tb" context="clipboard" class="plain" name="Item" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                        </row>
+                        <row>
+                            <label name="Type" control="Type_tbmfhd" set="MFHD" value="Type" />
+                            <textbox id="Type_tbmfhd" context="clipboard" class="plain" name="Type" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="ELvl" control="ELvl_tbmfhd" set="MFHD" value="ELvl" />
+                            <textbox id="Elvl_tbmfhd" context="clipboard" class="plain" name="ELvl" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
+                            <label name="Item" control="Item_tbmfhd" set="MFHD" value="Item" />
+                            <textbox id="Item_tbmfhd" context="clipboard" class="plain" name="Item" maxlength="1" size="1" oninput="updateFixedFields(this);" onfocus="this.select();"/>
                         </row>
                     </rows>
                 </grid>
