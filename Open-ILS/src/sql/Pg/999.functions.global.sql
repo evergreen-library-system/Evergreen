@@ -1103,6 +1103,15 @@ BEGIN
 		moved_objects := moved_objects + 1;
 	END LOOP;
 
+    -- Find and move authority->bib links to the target record
+    FOR auth_link IN SELECT * FROM authority.bib_linking WHERE bib = source_record LOOP
+        UPDATE  authority.bib_linking
+          SET   bib = target_record
+          WHERE id = auth_link.id;
+
+        moved_objects := moved_objects + 1;
+    END LOOP;
+
     -- Finally, "delete" the source record
     DELETE FROM biblio.record_entry WHERE id = source_record;
 
