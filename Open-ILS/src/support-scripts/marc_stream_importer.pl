@@ -160,6 +160,9 @@ sub old_process_batch_data {
     $batch->strict_off;
 
     my $index = 0;
+    my $imported = 0;
+    my $failed = 0;
+
     while (1) {
         my $rec;
         $index++;
@@ -168,6 +171,7 @@ sub old_process_batch_data {
 
         if ($@) {
             $logger->error("Failed parsing MARC record $index");
+            $failed++;
             next;
         }
         last unless $rec;   # The only way out
@@ -180,8 +184,10 @@ sub old_process_batch_data {
             $resp = xml_import($authtoken, $rec->as_xml_record, $bib_source);   # try again w/ new token
         }
         oils_event_die($resp);
+        $imported++;
     }
-    return $index;
+
+    return ($imported, $failed);
 }
 
 sub process_spool { # filename
@@ -262,12 +268,21 @@ sub bib_queue_import {
     }
 
     # collect the successfully imported vandelay records
+    my $failed = 0;
     while(my $resp = $req->recv) {
          if($req->failed) {
             $logger->error("Error importing MARC data: $resp");
 
         } elsif(my $data = $resp->content) {
-            push(@cleanup_recs, $data->{imported}) unless $data->{err_event};
+
+            if($data->{err_event}) {
+
+                $logger->error(Dumper($data->{err_event}));
+                $failed++;
+
+            } else {
+                push(@cleanup_recs, $data->{imported}) if $data->{imported};
+            }
         }
     }
 
@@ -291,6 +306,9 @@ sub bib_queue_import {
 
     $pcrud->request('open-ils.pcrud.transaction.commit', $authtoken)->recv unless $err;
     $pcrud->disconnect;
+
+    $logger->info("imported queued vandelay records: @cleanup_recs");
+    return (scalar(@cleanup_recs), $failed);
 }
 
 sub process_batch_data {
@@ -311,22 +329,29 @@ sub process_batch_data {
         $rec_ids = process_spool($tempfile);                # try again w/ new token
     }
 
-    my $resp = bib_queue_import($rec_ids);
+    my ($imported, $failed) = bib_queue_import($rec_ids);
 
-    if (oils_event_equals($resp, 'NO_SESSION')) {  # has the session timed out?
+    if (oils_event_equals($imported, 'NO_SESSION')) {  # has the session timed out?
         new_auth_token();
-        $resp = bib_queue_import();                # try again w/ new token
+        ($imported, $failed) = bib_queue_import();                # try again w/ new token
     }
-    oils_event_die($resp);
+
+    oils_event_die($imported);
+
+    return ($imported, $failed);
 }
 
 sub process_request {   # The core Net::Server method
-    local $/ = "\x1D"; # MARC record separator
-    $logger->info("stream parser received contact");
+    my $self = shift;
+    my $client = $self->{server}->{client};
+
+    $logger->info("stream parser received contact from $client");
+
     my $data;
     eval {
         local $SIG{ALRM} = sub { die "alarm\n" };
         alarm $wait_time; # prevent accidental tie ups of backend processes
+        local $/ = "\x1D"; # MARC record separator
         $data = <STDIN>;
         alarm 0;
     };
@@ -338,11 +363,25 @@ sub process_request {   # The core Net::Server method
 
     $logger->info("stream parser read " . length($data) . " bytes");
 
+    my ($imported, $failed) = (0, 0);
+
     if ($real_opts->{noqueue}) {
-        old_process_batch_data($data);
+        ($imported, $failed) = old_process_batch_data($data);
     } else {
-        process_batch_data($data);
+        ($imported, $failed) = process_batch_data($data);
     }
+
+    my $profile = (!$merge_profile) ? '' :
+        $apputils->simplereq(
+            'open-ils.pcrud', 
+            'open-ils.pcrud.retrieve.vmp', 
+            $authtoken, 
+            $merge_profile)->name;
+
+    my $msg = '';
+    $msg .= "Successfully imported $imported records using merge profile '$profile'\n" if $imported;
+    $msg .= "Faield to import $failed records\n" if $failed;
+    print $client $msg;
 }
 
 
