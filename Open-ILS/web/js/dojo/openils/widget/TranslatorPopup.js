@@ -20,7 +20,6 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
     dojo._hasResource["openils.widget.TranslatorPopup"] = true;
     dojo.provide("openils.widget.TranslatorPopup");
     dojo.require("openils.I18N");
-    dojo.require("openils.User");
     dojo.require("fieldmapper.dojoData");
     dojo.require("DojoSRF");
 	dojo.require("dojo.data.ItemFileWriteStore");
@@ -212,10 +211,13 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 			
 				var _trans_dijit = this;
 
+                if (typeof(ses) == "undefined")
+                    var ses = cgi.param("ses") || dojo.cookie("ses");
+
 				OpenSRF.CachedClientSession('open-ils.permacrud').request({
 					method : 'open-ils.permacrud.' + method + '.i18n',
 					timeout: 10,
-					params : [ openils.User.authtoken, trans_obj ],
+					params : [ ses, trans_obj ],
 					onerror: function (r) {
 						//highlighter.editor_pane.red.play();
 						if ((typeof status_update != "undefined") && status_update) status_update( 'Problem saving translation for ' + _trans_dijit._targetObject[_trans_dijit.field]() );
