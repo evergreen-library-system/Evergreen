@@ -141,10 +141,10 @@ BEGIN
         moved_objects := moved_objects + 1;
     END LOOP;
 
-    -- Find and move authority->bib links to the target record
+    -- Delete authority->bib links to the source record to avoid
+    -- the overhead of updating controlled fields in deleted records
     FOR auth_link IN SELECT * FROM authority.bib_linking WHERE bib = source_record LOOP
-        UPDATE  authority.bib_linking
-          SET   bib = target_record
+        DELETE FROM authority.bib_linking
           WHERE id = auth_link.id;
 
         moved_objects := moved_objects + 1;
