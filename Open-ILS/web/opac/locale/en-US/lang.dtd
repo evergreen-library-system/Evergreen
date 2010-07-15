@@ -3225,6 +3225,7 @@
 <!ENTITY staff.circ.alternate_copy_summary.Most_Recent_Circ_Group.label "Most Recent Circ Group">
 <!ENTITY staff.circ.alternate_copy_summary.OPAC_Visible.label "OPAC Visible">
 <!ENTITY staff.circ.alternate_copy_summary.Owning_Library.label "Owning Library">
+<!ENTITY staff.circ.alternate_copy_summary.Circ_Library.label "Circ Library">
 <!ENTITY staff.circ.alternate_copy_summary.Patron_Name.label "Patron">
 <!ENTITY staff.circ.alternate_copy_summary.Price.label "Price">
 <!ENTITY staff.circ.alternate_copy_summary.Previous_Circ_Group.label "Previous Circ Group">
