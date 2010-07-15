@@ -20,6 +20,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
     dojo._hasResource["openils.widget.TranslatorPopup"] = true;
     dojo.provide("openils.widget.TranslatorPopup");
     dojo.require("openils.I18N");
+    dojo.require("openils.User");
     dojo.require("fieldmapper.dojoData");
     dojo.require("DojoSRF");
 	dojo.require("dojo.data.ItemFileWriteStore");
@@ -214,16 +215,16 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 				OpenSRF.CachedClientSession('open-ils.permacrud').request({
 					method : 'open-ils.permacrud.' + method + '.i18n',
 					timeout: 10,
-					params : [ ses, trans_obj ],
+					params : [ openils.User.authtoken, trans_obj ],
 					onerror: function (r) {
 						//highlighter.editor_pane.red.play();
-						if (status_update) status_update( 'Problem saving translation for ' + _trans_dijit._targetObject[_trans_dijit.field]() );
+						if ((typeof status_update != "undefined") && status_update) status_update( 'Problem saving translation for ' + _trans_dijit._targetObject[_trans_dijit.field]() );
 					},
 					oncomplete : function (r) {
 						var res = r.recv();
 						if ( res && res.content() ) {
 							//highlighter.editor_pane.green.play();
-							if (status_update) status_update( 'Saved changes to translation for ' + _trans_dijit._targetObject[_trans_dijit.field]() );
+							if ((typeof status_update != "undefined") && status_update) status_update( 'Saved changes to translation for ' + _trans_dijit._targetObject[_trans_dijit.field]() );
 			
 							if (method == 'delete') {
 								dojo.NodeList(dojo.byId('translation_row_' + trans_obj.id())).orphan();
@@ -236,7 +237,7 @@ if(!dojo._hasResource["openils.widget.TranslatorPopup"]) {
 			
 						} else {
 							//highlighter.editor_pane.red.play();
-							if (status_update) status_update( 'Problem saving translation for ' + _trans_dijit._targetObject[_trans_dijit.field]() );
+							if ((typeof status_update != "undefined") && status_update) status_update( 'Problem saving translation for ' + _trans_dijit._targetObject[_trans_dijit.field]() );
 						}
 					},
 				}).send();
