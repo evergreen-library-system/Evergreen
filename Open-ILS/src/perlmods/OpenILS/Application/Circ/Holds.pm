@@ -741,7 +741,13 @@ sub update_hold_impl {
     unless($hold) {
         $hold = $e->retrieve_action_hold_request($values->{id})
             or return $e->die_event;
-        $hold->$_($values->{$_}) for keys %$values;
+        for my $k (keys %$values) {
+            if (defined $values->{$k}) {
+                $hold->$k($values->{$k});
+            } else {
+                my $f = "clear_$k"; $hold->$f();
+            }
+        }
     }
 
     my $orig_hold = $e->retrieve_action_hold_request($hold->id)
