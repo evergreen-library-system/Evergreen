@@ -1353,7 +1353,7 @@ sub authority_tag_sf_startwith {
 	my $limit = shift || 10;
 	my $page = shift || 0;
 
-	my $offset = $limit * $page
+	my $offset = $limit * $page;
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
 	my @list = ();
