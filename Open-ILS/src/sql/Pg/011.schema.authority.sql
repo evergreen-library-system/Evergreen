@@ -1,7 +1,9 @@
 /*
  * Copyright (C) 2004-2008  Georgia Public Library Service
  * Copyright (C) 2008  Equinox Software, Inc.
+ * Copyright (C) 2010  Laurentian University
  * Mike Rylander <miker@esilibrary.com> 
+ * Dan Scott <dscott@laurentian.ca>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -41,6 +43,7 @@ CREATE UNIQUE INDEX authority_record_unique_tcn ON authority.record_entry (arn_s
 CREATE TRIGGER a_marcxml_is_well_formed BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.check_marcxml_well_formed();
 CREATE TRIGGER b_maintain_901 BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE maintain_901();
 CREATE TRIGGER c_maintain_control_numbers BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE maintain_control_numbers();
+CREATE RULE protect_authority_rec_delete AS ON DELETE TO authority.record_entry DO INSTEAD (UPDATE authority.record_entry SET deleted = TRUE WHERE OLD.id = authority.record_entry.id);
 
 CREATE TABLE authority.bib_linking (
     id          BIGSERIAL   PRIMARY KEY,
@@ -192,5 +195,43 @@ CREATE OR REPLACE FUNCTION authority.generate_overlay_template ( TEXT ) RETURNS 
     SELECT authority.generate_overlay_template( $1, NULL );
 $func$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION authority.merge_records ( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
+DECLARE
+    moved_objects INT := 0;
+    bib_id        INT := 0;
+    bib_rec       biblio.record_entry%ROWTYPE;
+    auth_link     authority.bib_linking%ROWTYPE;
+BEGIN
+
+    -- 1. Make source_record MARC a copy of the target_record to get auto-sync in linked bib records
+    UPDATE authority.record_entry
+      SET marc = (
+        SELECT marc
+          FROM authority.record_entry
+          WHERE id = target_record
+      )
+      WHERE id = source_record;
+
+    -- 2. Update all bib records with the ID from target_record in their $0
+    FOR bib_rec IN SELECT bre.* FROM biblio.record_entry bre 
+      INNER JOIN authority.bib_linking abl ON abl.bib = bre.id
+      WHERE abl.authority = target_record LOOP
+
+        UPDATE biblio.record_entry
+          SET marc = REGEXP_REPLACE(marc, 
+            E'(<subfield\\s+code="0"\\s*>[^<]*?\\))' || source_record || '<',
+            E'\\1' || target_record || '<', 'g')
+          WHERE id = bib_rec.id;
+
+          moved_objects := moved_objects + 1;
+    END LOOP;
+
+    -- 3. "Delete" source_record
+    DELETE FROM authority.record_entry
+      WHERE id = source_record;
+
+    RETURN moved_objects;
+END;
+$func$ LANGUAGE plpgsql;
 
 COMMIT;
