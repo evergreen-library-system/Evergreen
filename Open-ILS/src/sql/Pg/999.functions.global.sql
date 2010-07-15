@@ -967,12 +967,13 @@ $$;
 
 CREATE OR REPLACE FUNCTION asset.merge_record_assets( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
 DECLARE
-	moved_objects INT := 0;
-	source_cn     asset.call_number%ROWTYPE;
-	target_cn     asset.call_number%ROWTYPE;
-	metarec       metabib.metarecord%ROWTYPE;
-	hold          action.hold_request%ROWTYPE;
-	ser_rec       serial.record_entry%ROWTYPE;
+    moved_objects INT := 0;
+    source_cn     asset.call_number%ROWTYPE;
+    target_cn     asset.call_number%ROWTYPE;
+    metarec       metabib.metarecord%ROWTYPE;
+    hold          action.hold_request%ROWTYPE;
+    ser_rec       serial.record_entry%ROWTYPE;
+    auth_link     authority.bib_linking%ROWTYPE;
     uri_count     INT := 0;
     counter       INT := 0;
     uri_datafield TEXT;
