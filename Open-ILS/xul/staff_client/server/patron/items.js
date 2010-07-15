@@ -460,7 +460,7 @@ patron.items.prototype = {
                         if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
                     }
                 }
-                for (var i = 0; i < obj.retrieve_ids.length; i++) {
+                for (var i = 0; i < retrieve_ids.length; i++) {
                     obj.refresh(retrieve_ids[i].circ_id);
                 }
             } catch(E) {
