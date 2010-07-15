@@ -950,6 +950,7 @@ BEGIN
 
     IF NEW.deleted IS TRUE THEN -- If this bib is deleted
         DELETE FROM metabib.metarecord_source_map WHERE source = NEW.id; -- Rid ourselves of the search-estimate-killing linkage
+        DELETE FROM authority.bib_linking WHERE bib = NEW.id; -- Avoid updating fields in bibs that are no longer visible
         RETURN NEW; -- and we're done
     END IF;
 

@@ -964,7 +964,6 @@ COMMENT ON FUNCTION container.clear_all_expired_circ_history_items( ) IS $$
 */
 $$;
 
-
 CREATE OR REPLACE FUNCTION asset.merge_record_assets( target_record BIGINT, source_record BIGINT ) RETURNS INT AS $func$
 DECLARE
     moved_objects INT := 0;
@@ -973,7 +972,6 @@ DECLARE
     metarec       metabib.metarecord%ROWTYPE;
     hold          action.hold_request%ROWTYPE;
     ser_rec       serial.record_entry%ROWTYPE;
-    auth_link     authority.bib_linking%ROWTYPE;
     uri_count     INT := 0;
     counter       INT := 0;
     uri_datafield TEXT;
@@ -1103,15 +1101,6 @@ BEGIN
 
 		moved_objects := moved_objects + 1;
 	END LOOP;
-
-    -- Delete authority->bib links to the source record to avoid
-    -- the overhead of updating controlled fields in deleted records
-    FOR auth_link IN SELECT * FROM authority.bib_linking WHERE bib = source_record LOOP
-        DELETE FROM authority.bib_linking
-          WHERE id = auth_link.id;
-
-        moved_objects := moved_objects + 1;
-    END LOOP;
 
     -- Finally, "delete" the source record
     DELETE FROM biblio.record_entry WHERE id = source_record;
