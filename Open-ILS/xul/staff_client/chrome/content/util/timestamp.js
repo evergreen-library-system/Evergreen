@@ -23,6 +23,17 @@ function timestamp_init() {
         JSAN.use('util.date'); 
 
         $('datepicker').value = xul_param('default_date',{'modal_xulG':true}) || util.date.formatted_date(new Date(),'%F');
+        if (xul_param('default_time',{'modal_xulG':true})) {
+            $('timepicker').value = xul_param('default_time',{'modal_xulG':true});
+        }
+        if (xul_param('time_readonly',{'modal_xulG':true})) {
+            $('timepicker').readonly = true; // This isn't working correctly with xulrunner 1.9.2
+            $('timepicker').disabled = true; // So, poor man's kludge
+        }
+        if (xul_param('date_readonly',{'modal_xulG':true})) {
+            $('datepicker').readonly = true; // This isn't working correctly with xulrunner 1.9.2
+            $('datepicker').disabled = true; // So, poor man's kludge
+        }
 
         if (xul_param('title',{'modal_xulG':true})) { $('dialogheader').setAttribute('title',xul_param('title',{'modal_xulG':true})); }
         if (xul_param('description',{'modal_xulG':true})) { $('dialogheader').setAttribute('description',xul_param('description',{'modal_xulG':true})); }

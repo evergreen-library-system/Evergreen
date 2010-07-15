@@ -756,39 +756,32 @@ patron.holds.prototype = {
                         ['command'],
                         function() {
                             try {
-                                JSAN.use('util.date');
-                                function check_date(value) {
-                                    try {
-                                        if (! util.date.check('YYYY-MM-DD',value) ) { throw(document.getElementById('circStrings').getString('staff.circ.holds.activation_date.invalid_date')); }
-                                        if (util.date.check_past('YYYY-MM-DD',value) || util.date.formatted_date(new Date(),'%F') == value ) {
-                                            throw(document.getElementById('circStrings').getString('staff.circ.holds.activation_date.too_early.error'));
-                                        }
-                                        return true;
-                                    } catch(E) {
-                                        alert(E);
-                                        return false;
-                                    }
-                                }
-
                                 var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt',[hold_list.join(', ')]);
                                 var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.activation_date.prompt.plural',[hold_list.join(', ')]);
                                 var msg = obj.retrieve_ids.length > 1 ? msg_plural : msg_singular;
-                                var value = 'YYYY-MM-DD';
                                 var title = document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds');
-                                var thaw_date; var invalid = true;
-                                while(invalid) {
-                                    thaw_date = window.prompt(msg,value,title);
-                                    if (thaw_date) {
-                                        invalid = ! check_date(thaw_date);
-                                    } else {
-                                        invalid = false;
+                                var desc = document.getElementById('circStrings').getString('staff.circ.holds.activation_date.dialog.description');
+
+                                JSAN.use('util.window'); var win = new util.window();
+                                var my_xulG = win.open( 
+                                    urls.XUL_TIMESTAMP_DIALOG, 'edit_thaw_date', 'chrome,resizable,modal', 
+                                    { 
+                                        'title' : title, 
+                                        'description' : desc, 
+                                        'msg' : msg, 
+                                        'allow_unset' : true,
+                                        'disallow_future_dates' : false,
+                                        'disallow_past_dates' : true,
+                                        'disallow_today' : true,
+                                        'default_time' : '00:00:00',
+                                        'time_readonly' : false
                                     }
-                                }
-                                if (thaw_date || thaw_date == '') {
+                                );
+                                if (my_xulG.complete) {
                                     circ.util.batch_hold_update(
                                         hold_list, 
-                                        { 'frozen' : 't', 'thaw_date' : thaw_date == '' ? null : util.date.formatted_date(thaw_date,'%{iso8601}') }, 
+                                        { 'frozen' : 't', 'thaw_date' : my_xulG.timestamp }, 
                                         { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } }
                                     );
                                 }
@@ -801,39 +794,33 @@ patron.holds.prototype = {
                         ['command'],
                         function() {
                             try {
-                                JSAN.use('util.date');
-                                function check_date(value) {
-                                    try {
-                                        if (! util.date.check('YYYY-MM-DD',value) ) { throw(document.getElementById('circStrings').getString('staff.circ.holds.expire_time.invalid_date')); }
-                                        if (util.date.check_past('YYYY-MM-DD',value) || util.date.formatted_date(new Date(),'%F') == value ) {
-                                            throw(document.getElementById('circStrings').getString('staff.circ.holds.expire_time.too_early.error'));
-                                        }
-                                        return true;
-                                    } catch(E) {
-                                        alert(E);
-                                        return false;
-                                    }
-                                }
-
                                 var hold_list = util.functional.map_list(obj.retrieve_ids, function(o){return o.id;});
                                 var msg_singular = document.getElementById('circStrings').getFormattedString('staff.circ.holds.expire_time.prompt',[hold_list.join(', ')]);
                                 var msg_plural = document.getElementById('circStrings').getFormattedString('staff.circ.holds.expire_time.prompt.plural',[hold_list.join(', ')]);
                                 var msg = obj.retrieve_ids.length > 1 ? msg_plural : msg_singular;
                                 var value = 'YYYY-MM-DD';
                                 var title = document.getElementById('circStrings').getString('staff.circ.holds.modifying_holds');
-                                var expire_time; var invalid = true;
-                                while(invalid) {
-                                    expire_time = window.prompt(msg,value,title);
-                                    if (expire_time) {
-                                        invalid = ! check_date(expire_time);
-                                    } else {
-                                        invalid = false;
+                                var desc = document.getElementById('circStrings').getString('staff.circ.holds.expire_time.dialog.description');
+
+                                JSAN.use('util.window'); var win = new util.window();
+                                var my_xulG = win.open( 
+                                    urls.XUL_TIMESTAMP_DIALOG, 'edit_expire_time', 'chrome,resizable,modal', 
+                                    { 
+                                        'title' : title, 
+                                        'description' : desc, 
+                                        'msg' : msg, 
+                                        'allow_unset' : true,
+                                        'disallow_future_dates' : false,
+                                        'disallow_past_dates' : true,
+                                        'disallow_today' : true,
+                                        'default_time' : '00:00:00',
+                                        'time_readonly' : false
                                     }
-                                }
-                                if (expire_time || expire_time == '') {
+                                );
+                                if (my_xulG.complete) {
                                     circ.util.batch_hold_update(
                                         hold_list, 
-                                        { 'expire_time' : expire_time == '' ? null : util.date.formatted_date(expire_time,'%{iso8601}') }, 
+                                        { 'expire_time' : my_xulG.timestamp }, 
                                         { 'progressmeter' : progressmeter, 'oncomplete' :  function() { obj.clear_and_retrieve(true); } }
                                     );
                                 }
