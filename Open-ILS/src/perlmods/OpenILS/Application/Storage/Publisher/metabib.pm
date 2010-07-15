@@ -445,9 +445,16 @@ sub biblio_multi_search_full_rec {
 
 		my @wheres;
 		for my $limit (@$limiters) {
-			push @wheres, "( tag = ? AND subfield LIKE ? AND $fts_where )";
-			push @binds, $$limit{tag}, $$limit{subfield};
- 			$log->debug("Limiting query using { tag => $$limit{tag}, subfield => $$limit{subfield} }", DEBUG);
+			if ($$limit{tag} =~ /^\d+$/ and $$limit{tag} < 10) {
+				# MARC control field; mfr.subfield is NULL
+				push @wheres, "( tag = ? AND $fts_where )";
+				push @binds, $$limit{tag};
+ 				$log->debug("Limiting query using { tag => $$limit{tag} }", DEBUG);
+			} else {
+				push @wheres, "( tag = ? AND subfield LIKE ? AND $fts_where )";
+				push @binds, $$limit{tag}, $$limit{subfield};
+ 				$log->debug("Limiting query using { tag => $$limit{tag}, subfield => $$limit{subfield} }", DEBUG);
+			}
 		}
 		my $where = join(' OR ', @wheres);
 
@@ -700,9 +707,16 @@ sub search_full_rec {
 	my @binds;
 	my @wheres;
 	for my $limit (@$limiters) {
-		push @wheres, "( tag = ? AND subfield LIKE ? AND $fts_where )";
-		push @binds, $$limit{tag}, $$limit{subfield};
- 		$log->debug("Limiting query using { tag => $$limit{tag}, subfield => $$limit{subfield} }", DEBUG);
+		if ($$limit{tag} =~ /^\d+$/ and $$limit{tag} < 10) {
+			# MARC control field; mfr.subfield is NULL
+			push @wheres, "( tag = ? AND $fts_where )";
+			push @binds, $$limit{tag};
+ 			$log->debug("Limiting query using { tag => $$limit{tag} }", DEBUG);
+		} else {
+			push @wheres, "( tag = ? AND subfield LIKE ? AND $fts_where )";
+			push @binds, $$limit{tag}, $$limit{subfield};
+ 			$log->debug("Limiting query using { tag => $$limit{tag}, subfield => $$limit{subfield} }", DEBUG);
+		}
 	}
 	my $where = join(' OR ', @wheres);
 
