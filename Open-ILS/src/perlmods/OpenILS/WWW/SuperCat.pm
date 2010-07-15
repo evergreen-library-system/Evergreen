@@ -1457,6 +1457,70 @@ sub string_browse {
 	return Apache2::Const::OK;
 }
 
+sub string_startwith {
+	my $apache = shift;
+	return Apache2::Const::DECLINED if (-e $apache->filename);
+
+	my $cgi = new CGI;
+	my $year = (gmtime())[5] + 1900;
+
+	my $host = $cgi->virtual_host || $cgi->server_name;
+
+	my $add_path = 0;
+	if ( $cgi->server_software !~ m|^Apache/2.2| ) {
+		my $rel_name = $cgi->url(-relative=>1);
+		$add_path = 1 if ($cgi->url(-path_info=>1) !~ /$rel_name$/);
+	}
+
+	my $url = $cgi->url(-path_info=>$add_path);
+	my $root = (split 'startwith', $url)[0];
+	my $base = (split 'startwith', $url)[0] . 'startwith';
+	my $unapi = (split 'startwith', $url)[0] . 'unapi';
+
+	my $path = $cgi->path_info;
+	$path =~ s/^\///og;
+
+	my ($format,$axis,$site,$string,$page,$page_size) = split '/', $path;
+	#warn " >>> $format -> $axis -> $site -> $string -> $page -> $page_size ";
+
+	my $status = [$cgi->param('status')];
+	my $cpLoc = [$cgi->param('copyLocation')];
+	$site ||= $cgi->param('searchOrg');
+	$page ||= $cgi->param('startPage') || 0;
+	$page_size ||= $cgi->param('count') || 9;
+
+	$page = 0 if ($page !~ /^-?\d+$/);
+
+	my $prev = join('/', $base,$format,$axis,$site,$string,$page - 1,$page_size);
+	my $next = join('/', $base,$format,$axis,$site,$string,$page + 1,$page_size);
+
+	unless ($string and $axis and grep { $axis eq $_ } keys %browse_types) {
+		warn "something's wrong...";
+		warn " >>> format: $format -> axis: $axis -> site: $site -> string: $string -> page: $page -> page_size: $page_size ";
+		return undef;
+	}
+
+	$string = decode_utf8($string);
+	$string =~ s/\+/ /go;
+	$string =~ s/'//go;
+
+	my $tree = $supercat->request(
+		"open-ils.supercat.$axis.startwith",
+		$string,
+		(($axis =~ /^authority/) ? () : ($site)),
+		$page_size,
+		$page,
+		$status,
+		$cpLoc
+	)->gather(1);
+
+    (my $norm_format = $format) =~ s/(-full|-uris)$//o;
+
+	my ($header,$content) = $browse_types{$axis}{$norm_format}->($tree,$prev,$next,$format,$unapi,$base,$site);
+	print $header.$content;
+	return Apache2::Const::OK;
+}
+
 sub item_age_browse {
 	my $apache = shift;
 	return Apache2::Const::DECLINED if (-e $apache->filename);

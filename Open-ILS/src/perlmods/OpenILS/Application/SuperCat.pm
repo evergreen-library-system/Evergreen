@@ -369,6 +369,129 @@ Returns the XML representation of the requested bibliographic record's holdings
 		}
 );
 
+sub cn_startwith {
+	my $self = shift;
+	my $client = shift;
+
+	my $label = shift;
+	my $ou = shift;
+	my $limit = shift || 10;
+	my $page = shift || 0;
+	my $statuses = shift || [];
+	my $copy_locations = shift || [];
+
+
+	my $offset = $page * $limit;
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	my $o_search = { shortname => $ou };
+	if (!$ou || $ou eq '-') {
+		$o_search = { parent_ou => undef };
+	}
+
+	my $orgs = $_storage->request(
+		"open-ils.cstore.direct.actor.org_unit.search",
+		$o_search,
+		{ flesh		=> 100,
+		  flesh_fields	=> { aou	=> [qw/children/] }
+		}
+	)->gather(1);
+
+	my @ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
+
+	$logger->debug("Searching for CNs at orgs [".join(',',@ou_ids)."], based on $ou");
+
+	my @list = ();
+
+    my @cp_filter = ();
+    if (@$statuses || @$copy_locations) {
+        @cp_filter = (
+            '-exists' => {
+                from  => 'acp',
+				where => {
+                    call_number => { '=' => { '+acn' => 'id' } },
+                    deleted     => 'f',
+                    ((@$statuses)       ? ( status   => $statuses)       : ()),
+				    ((@$copy_locations) ? ( location => $copy_locations) : ())
+                }
+            }
+        );
+    }
+
+	if ($page < 0) {
+		my $before = $_storage->request(
+			"open-ils.cstore.direct.asset.call_number.search.atomic",
+			{ label		=> { "<" => { transform => "upper", value => ["upper", $label] } },
+			  owning_lib	=> \@ou_ids,
+              deleted => 'f',
+              @cp_filter
+			},
+			{ flesh		=> 1,
+			  flesh_fields	=> { acn => [qw/record owning_lib/] },
+			  order_by	=> { acn => "upper(label) desc, id desc, owning_lib desc" },
+			  limit		=> $limit,
+			  offset	=> $offset,
+			}
+		)->gather(1);
+		push @list, reverse(@$before);
+	}
+
+	if ($page >= 0) {
+		my $after = $_storage->request(
+			"open-ils.cstore.direct.asset.call_number.search.atomic",
+			{ label		=> { ">=" => { transform => "upper", value => ["upper", $label] } },
+			  owning_lib	=> \@ou_ids,
+              deleted => 'f',
+              @cp_filter
+			},
+			{ flesh		=> 1,
+			  flesh_fields	=> { acn => [qw/record owning_lib/] },
+			  order_by	=> { acn => "upper(label), id, owning_lib" },
+			  limit		=> $limit,
+			  offset	=> $offset,
+			}
+		)->gather(1);
+		push @list, @$after;
+	}
+
+	return \@list;
+}
+__PACKAGE__->register_method(
+	method    => 'cn_startwith',
+	api_name  => 'open-ils.supercat.call_number.startwith',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the XML representation of the requested bibliographic record's holdings
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'label',
+				  desc => 'The target call number lable',
+				  type => 'string' },
+				{ name => 'org_unit',
+				  desc => 'The org unit shortname (or "-" or undef for global) to browse',
+				  type => 'string' },
+				{ name => 'page_size',
+				  desc => 'Count of call numbers to retrieve, default is 9',
+				  type => 'number' },
+				{ name => 'page',
+				  desc => 'The page of call numbers to retrieve, calculated based on page_size.  Can be positive, negative or 0.',
+				  type => 'number' },
+				{ name => 'statuses',
+				  desc => 'Array of statuses to filter copies by, optional and can be undef.',
+				  type => 'array' },
+				{ name => 'locations',
+				  desc => 'Array of copy locations to filter copies by, optional and can be undef.',
+				  type => 'array' },
+			],
+		  'return' =>
+		  	{ desc => 'Call numbers with owning_lib and record fleshed',
+			  type => 'array' }
+		}
+);
+
 
 sub new_books_by_item {
 	my $self = shift;
@@ -886,6 +1009,418 @@ Returns a list of the requested authority record ids held
 			  type => 'array' }
 		}
 );
+
+sub general_startwith {
+	my $self = shift;
+	my $client = shift;
+    return tag_sf_startwith($self, $client, $self->{tag}, $self->{subfield}, @_);
+}
+__PACKAGE__->register_method(
+	method    => 'general_startwith',
+	api_name  => 'open-ils.supercat.title.startwith',
+	tag       => 'tnf', subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target title', type => 'string' },
+			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
+			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
+		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_startwith',
+	api_name  => 'open-ils.supercat.author.startwith',
+	tag       => [qw/100 110 111/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target author', type => 'string' },
+			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
+			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
+		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_startwith',
+	api_name  => 'open-ils.supercat.subject.startwith',
+	tag       => [qw/600 610 611 630 648 650 651 653 655 656 662 690 691 696 697 698 699/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
+			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
+			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
+		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_startwith',
+	api_name  => 'open-ils.supercat.topic.startwith',
+	tag       => [qw/650 690/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
+			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
+			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
+		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_startwith',
+	api_name  => 'open-ils.supercat.series.startwith',
+	tag       => [qw/440 490 800 810 811 830/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target series', type => 'string' },
+			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
+			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
+		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
+		}
+);
+
+
+sub tag_sf_startwith {
+	my $self = shift;
+	my $client = shift;
+
+	my $tag = shift;
+	my $subfield = shift;
+	my $value = shift;
+	my $ou = shift;
+	my $limit = shift || 10;
+	my $page = shift || 0;
+	my $statuses = shift || [];
+	my $copy_locations = shift || [];
+
+	my $offset = $limit * $page;
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	my @ou_ids;
+	if ($ou && $ou ne '-') {
+		my $orgs = $_storage->request(
+			"open-ils.cstore.direct.actor.org_unit.search",
+			{ shortname => $ou },
+			{ flesh		=> 100,
+			  flesh_fields	=> { aou	=> [qw/children/] }
+			}
+		)->gather(1);
+		@ou_ids = tree_walker($orgs, 'children', sub {shift->id}) if $orgs;
+	}
+
+	$logger->debug("Searching for records at orgs [".join(',',@ou_ids)."], based on $ou");
+
+	my @list = ();
+
+	if ($page < 0) {
+		my $before = $_storage->request(
+			"open-ils.cstore.json_query.atomic",
+			{ select	=> { mfr => [qw/record value/] },
+			  from		=> 'mfr',
+			  where		=>
+				{ '+mfr'	=>
+					{ tag	=> $tag,
+					  subfield => $subfield,
+					  value => { '<' => lc($value) }
+					},
+                  '-or' => [
+		    		{ '-exists'	=>
+	    				{ select=> { acp => [ 'id' ] },
+    					  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } },
+					      where	=>
+				    		{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
+			    			  '+acp' =>
+								{ deleted => 'f',
+								  ((@ou_ids)          ? ( circ_lib => \@ou_ids)        : ()),
+								  ((@$statuses)       ? ( status   => $statuses)       : ()),
+								  ((@$copy_locations) ? ( location => $copy_locations) : ())
+								}
+		    				},
+	    				  limit => 1
+    					}
+                    },
+                    { '-exists'	=>
+    					{ select=> { auri => [ 'id' ] },
+	    				  from	=> { acn => { auricnm => { field => 'call_number', fkey => 'id', join => { auri => { field => 'id', fkey => 'uri' } } } } },
+		    			  where	=>
+			    			{ '+acn' => { record => { '=' => { '+mfr' => 'record' } }, (@ou_ids) ? ( owning_lib => \@ou_ids) : () },
+				    		  '+auri' => { active => 't' }
+					    	},
+    					  limit => 1
+	    				}
+                    }
+                  ]
+				}, 
+			  order_by	=> { mfr => { value => 'desc' } },
+			  limit		=> $limit,
+			  offset	=> $offset
+			}
+		)->gather(1);
+		push @list, map { $_->{record} } reverse(@$before);
+	}
+
+	if ($page >= 0) {
+		my $after = $_storage->request(
+			"open-ils.cstore.json_query.atomic",
+			{ select	=> { mfr => [qw/record value/] },
+			  from		=> 'mfr',
+			  where		=>
+				{ '+mfr'	=>
+					{ tag	=> $tag,
+					  subfield => $subfield,
+					  value => { '>=' => lc($value) }
+					},
+				  '-or' => [
+                    { '-exists'	=>
+    					{ select=> { acp => [ 'id' ] },
+	    				  from	=> { acn => { acp => { field => 'call_number', fkey => 'id' } } },
+		    			  where	=>
+			    			{ '+acn' => { record => { '=' => { '+mfr' => 'record' } } },
+			    			  '+acp' =>
+								{ deleted => 'f',
+								  ((@ou_ids)          ? ( circ_lib => \@ou_ids)        : ()),
+								  ((@$statuses)       ? ( status   => $statuses)       : ()),
+								  ((@$copy_locations) ? ( location => $copy_locations) : ())
+								}
+					    	},
+    					  limit => 1
+	    				}
+                    },
+                    { '-exists'	=>
+    					{ select=> { auri => [ 'id' ] },
+	    				  from	=> { acn => { auricnm => { field => 'call_number', fkey => 'id', join => { auri => { field => 'id', fkey => 'uri' } } } } },
+		    			  where	=>
+			    			{ '+acn' => { record => { '=' => { '+mfr' => 'record' } }, (@ou_ids) ? ( owning_lib => \@ou_ids) : () },
+				    		  '+auri' => { active => 't' }
+					    	},
+    					  limit => 1
+	    				},
+                    }
+                  ]
+				}, 
+			  order_by	=> { mfr => { value => 'asc' } },
+			  limit		=> $limit,
+			  offset	=> $offset
+			}
+		)->gather(1);
+		push @list, map { $_->{record} } @$after;
+	}
+
+	return \@list;
+}
+__PACKAGE__->register_method(
+	method    => 'tag_sf_startwith',
+	api_name  => 'open-ils.supercat.tag.startwith',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns a list of the requested org-scoped record ids held
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'tag',
+				  desc => 'The target MARC tag',
+				  type => 'string' },
+				{ name => 'subfield',
+				  desc => 'The target MARC subfield',
+				  type => 'string' },
+				{ name => 'value',
+				  desc => 'The target string',
+				  type => 'string' },
+				{ name => 'org_unit',
+				  desc => 'The org unit shortname (or "-" or undef for global) to browse',
+				  type => 'string' },
+				{ name => 'page_size',
+				  desc => 'Count of call numbers to retrieve, default is 9',
+				  type => 'number' },
+				{ name => 'page',
+				  desc => 'The page of call numbers to retrieve, calculated based on page_size.  Can be positive, negative or 0.',
+				  type => 'number' },
+				{ name => 'statuses',
+				  desc => 'Array of statuses to filter copies by, optional and can be undef.',
+				  type => 'array' },
+				{ name => 'locations',
+				  desc => 'Array of copy locations to filter copies by, optional and can be undef.',
+				  type => 'array' },
+			],
+		  'return' =>
+		  	{ desc => 'Record IDs that have copies at the relevant org units',
+			  type => 'array' }
+		}
+);
+
+sub general_authority_startwith {
+	my $self = shift;
+	my $client = shift;
+    return authority_tag_sf_startwith($self, $client, $self->{tag}, $self->{subfield}, @_);
+}
+__PACKAGE__->register_method(
+	method    => 'general_authority_startwith',
+	api_name  => 'open-ils.supercat.authority.title.startwith',
+	tag       => '130', subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record ids held",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target title', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_authority_startwith',
+	api_name  => 'open-ils.supercat.authority.author.startwith',
+	tag       => [qw/100 110 111/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record ids held",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target author', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_authority_startwith',
+	api_name  => 'open-ils.supercat.authority.subject.startwith',
+	tag       => [qw/148 150 151 155/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record ids held",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_authority_startwith',
+	api_name  => 'open-ils.supercat.authority.topic.startwith',
+	tag       => '150', subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record ids held",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+
+sub authority_tag_sf_startwith {
+	my $self = shift;
+	my $client = shift;
+
+	my $tag = shift;
+	my $subfield = shift;
+	my $value = shift;
+	my $limit = shift || 10;
+	my $page = shift || 0;
+
+	my $offset = $limit * $page
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	my @list = ();
+
+	if ($page < 0) {
+		my $before = $_storage->request(
+			"open-ils.cstore.json_query.atomic",
+			{ select	=> { afr => [qw/record value/] },
+			  from		=> 'afr',
+			  where		=> { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
+			  order_by	=> { afr => { value => 'desc' } },
+			  limit		=> $limit,
+			  offset	=> $offset
+			}
+		)->gather(1);
+		push @list, map { $_->{record} } reverse(@$before);
+	}
+
+	if ($page >= 0) {
+		my $after = $_storage->request(
+			"open-ils.cstore.json_query.atomic",
+			{ select	=> { afr => [qw/record value/] },
+			  from		=> 'afr',
+			  where		=> { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } }, 
+			  order_by	=> { afr => { value => 'asc' } },
+			  limit		=> $limit,
+			  offset	=> $offset
+			}
+		)->gather(1);
+		push @list, map { $_->{record} } @$after;
+	}
+
+	return \@list;
+}
+__PACKAGE__->register_method(
+	method    => 'authority_tag_sf_startwith',
+	api_name  => 'open-ils.supercat.authority.tag.startwith',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns a list of the requested authority record ids held
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'tag',
+				  desc => 'The target Authority MARC tag',
+				  type => 'string' },
+				{ name => 'subfield',
+				  desc => 'The target Authority MARC subfield',
+				  type => 'string' },
+				{ name => 'value',
+				  desc => 'The target string',
+				  type => 'string' },
+				{ name => 'page_size',
+				  desc => 'Count of call numbers to retrieve, default is 9',
+				  type => 'number' },
+				{ name => 'page',
+				  desc => 'The page of call numbers to retrieve, calculated based on page_size.  Can be positive, negative or 0.',
+				  type => 'number' },
+			],
+		  'return' =>
+		  	{ desc => 'Authority Record IDs that are near the target string',
+			  type => 'array' }
+		}
+);
+
 
 sub holding_data_formats {
     return [{
