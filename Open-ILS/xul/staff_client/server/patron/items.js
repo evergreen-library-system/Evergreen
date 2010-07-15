@@ -320,42 +320,30 @@ patron.items.prototype = {
 
             var count = 0;
 
-            function check_date(value) {
-                JSAN.use('util.date');
-                try {
-                    if (! util.date.check('YYYY-MM-DD',value) ) { 
-                        throw($("patronStrings").getString('staff.patron.items.items_edit.invalid_date')); 
-                    }
-                    if (util.date.check_past('YYYY-MM-DD',value) ) { 
-                        throw($("patronStrings").getString('staff.patron.items.items_edit.need_later_date')); 
-                    }
-                    if ( util.date.formatted_date(new Date(),'%F') == value) { 
-                        throw($("patronStrings").getString('staff.patron.items.items_edit.need_later_date')); 
-                    }
-                    return true;
-                } catch(E) {
-                    alert(E);
-                    return false;
-                }
-            }
-
             if (params.get_date) {
                 JSAN.use('util.functional');
                 var title = $("patronStrings").getString('staff.patron.items.items_edit.renew_with_date.title');
-                var value = 'YYYY-MM-DD';
-                var text = $("patronStrings").getFormattedString('staff.patron.items.items_edit.renew_with_date.prompt', [util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ')]);
-                var due_date; var invalid = true;
-                while(invalid) {
-                    due_date = window.prompt(text,value,title);
-                    if (due_date) {
-                        invalid = ! check_date(due_date);
-                        if (invalid) obj.sound.circ_bad();
-                    } else {
-                        alert( $("patronStrings").getString('staff.patron.items.items_edit.cancel_renew_with_date') );
-                        return;
+                var msg = $("patronStrings").getFormattedString('staff.patron.items.items_edit.renew_with_date.prompt', [util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ')]);
+                var desc = $("patronStrings").getString('staff.patron.items.items_edit.renew_with_date.description');
+
+                JSAN.use('util.window'); var win = new util.window();
+                var my_xulG = win.open( 
+                    urls.XUL_TIMESTAMP_DIALOG, 'edit_renew_due_date', 'chrome,resizable,modal', 
+                    { 
+                        'title' : title, 
+                        'description' : desc, 
+                        'msg' : msg, 
+                        'allow_unset' : false,
+                        'disallow_future_dates' : false,
+                        'disallow_past_dates' : false,
+                        'disallow_today' : false,
+                        'time_readonly' : false
                     }
+                );
+
+                if (my_xulG.complete) {
+                    params.due_date = my_xulG.timestamp;
                 }
-                params.due_date = due_date;
             }
 
             function gen_renew(bc,circ_id) {
@@ -412,26 +400,6 @@ patron.items.prototype = {
             try {
                 var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
                 if (!retrieve_ids || retrieve_ids.length == 0) return;
-                function check_date(value) {
-                    JSAN.use('util.date');
-                    try {
-                        if (! util.date.check('YYYY-MM-DD',value) ) { 
-                            throw($("patronStrings").getString('staff.patron.items.items_edit.invalid_date')); 
-                        }
-                        if (util.date.check_past('YYYY-MM-DD',value) ) { 
-                            throw($("patronStrings").getString('staff.patron.items.items_edit.need_later_date')); 
-                        }
-                        /*
-                        if ( util.date.formatted_date(new Date(),'%F') == value) { 
-                            throw('Due date needs to be after today.'); 
-                        }
-                        */
-                        return true;
-                    } catch(E) {
-                        alert(E);
-                        return false;
-                    }
-                }
 
                 JSAN.use('util.functional');
                 var title = '';
@@ -441,27 +409,35 @@ patron.items.prototype = {
                     title += $("patronStrings").getString('staff.patron.items.items_edit.edit_due_date.singular');
                 }
                 var value = 'YYYY-MM-DD';
-                var text = $("patronStrings").getFormattedString('staff.patron.items.items_edit.new_due_date', [util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ')]);
-                var due_date; var invalid = true;
-                while(invalid) {
-                    due_date = window.prompt(text,value,title);
-                    if (due_date) {
-                        invalid = ! check_date(due_date);
-                    } else {
-                        invalid = false;
+                var msg = $("patronStrings").getFormattedString('staff.patron.items.items_edit.new_due_date', [util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ')]);
+                var desc = $("patronStrings").getString('staff.patron.items.items_edit.edit_due_date.description');
+
+                JSAN.use('util.window'); var win = new util.window();
+                var my_xulG = win.open( 
+                    urls.XUL_TIMESTAMP_DIALOG, 'edit_due_date', 'chrome,resizable,modal', 
+                    { 
+                        'title' : title, 
+                        'description' : desc, 
+                        'msg' : msg, 
+                        'allow_unset' : false,
+                        'disallow_future_dates' : false,
+                        'disallow_past_dates' : false,
+                        'disallow_today' : false,
+                        'time_readonly' : false
                     }
-                }
-                if (due_date) {
+                );
+
+                if (my_xulG.complete) {
                     // XXX We need to append the time component from the original due date to the entered
                     // date here, if (circ interval % 1 day == 0)
+                    // XXX I think the middle layer is doing this now
                     var circs = util.functional.map_list(retrieve_ids,function(o){return o.circ_id;});
                     for (var i = 0; i < circs.length; i++) {
-                        var robj = obj.network.simple_request('FM_CIRC_EDIT_DUE_DATE',[ses(),circs[i],due_date]);
+                        var robj = obj.network.simple_request('FM_CIRC_EDIT_DUE_DATE',[ses(),circs[i],my_xulG.timestamp]);
                         if (typeof robj.ilsevent != 'undefined') { if (robj.ilsevent != 0) throw(robj); }
+                        obj.list_circ_map[ circs[i] ].row.my.circ = robj;
+                        obj.refresh(circs[i]);
                     }
-                }
-                for (var i = 0; i < retrieve_ids.length; i++) {
-                    obj.refresh(retrieve_ids[i].circ_id);
                 }
             } catch(E) {
                 obj.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.items.items_edit.dates_not_modified'),E);
@@ -498,48 +474,37 @@ patron.items.prototype = {
         try {
             JSAN.use('util.date');
             var retrieve_ids = ( which == 2 ? obj.retrieve_ids2 : obj.retrieve_ids );
-            if (!retrieve_ids || retrieve_ids.length == 0) return;
-            function check_date(value) {
-                try {
-                    if (! util.date.check('YYYY-MM-DD',value) ) { 
-                        throw($("patronStrings").getString('staff.patron.items.items_edit.invalid_date')); 
-                    }
-                    if ( util.date.formatted_date(new Date(),'%F') == value) { 
-                        return true;
-                    }
-                    if (! util.date.check_past('YYYY-MM-DD',value) ) { 
-                        throw($("patronStrings").getString('staff.patron.items.items_claimed_returned.date_cannot_be_in_future')); 
-                    }
-                    return true;
-                } catch(E) {
-                    alert(E);
-                    return false;
-                }
-            }
 
             JSAN.use('util.functional');
             var title = $("patronStrings").getString('staff.patron.items.items_claimed_returned.claimed_returned');
             var value = 'YYYY-MM-DD';
-            var text = $("patronStrings").getFormattedString('staff.patron.items.items_claimed_returned.enter_returned_date',
+            var msg = $("patronStrings").getFormattedString('staff.patron.items.items_claimed_returned.enter_returned_date',
                 [util.functional.map_list(retrieve_ids,function(o){return o.barcode;}).join(', ')]);
-            var backdate; var invalid = true;
-            while(invalid) {
-                backdate = window.prompt(text,value,title);
-                if (backdate) {
-                    invalid = ! check_date(backdate);
-                } else {
-                    invalid = false;
+            var desc = $("patronStrings").getString('staff.patron.items.items_claimed_returned.claimed_returned.description');
+
+            JSAN.use('util.window'); var win = new util.window();
+            var my_xulG = win.open( 
+                urls.XUL_TIMESTAMP_DIALOG, 'edit_claimed_returned', 'chrome,resizable,modal', 
+                { 
+                    'title' : title, 
+                    'description' : desc, 
+                    'msg' : msg, 
+                    'allow_unset' : false,
+                    'disallow_future_dates' : true,
+                    'disallow_past_dates' : false,
+                    'disallow_today' : false,
+                    'time_readonly' : false
                 }
-            }
-            //alert('backdate = ' + backdate);
-            if (backdate) {
-                backdate = util.date.formatted_date(backdate,'%{iso8601}');
+            );
+
+
+            if (my_xulG.complete) {
                 var barcodes = util.functional.map_list(retrieve_ids,function(o){return o.barcode;});
                 var do_not_move_these = {};
                 for (var i = 0; i < barcodes.length; i++) {
                     var robj = obj.network.simple_request(
                         'MARK_ITEM_CLAIM_RETURNED', 
-                        [ ses(), { barcode: barcodes[i], backdate: backdate } ],
+                        [ ses(), { barcode: barcodes[i], backdate: my_xulG.timestamp } ],
                         null,
                         {
                             'title' : $("patronStrings").getString('staff.patron.items.set_claim_returned_failure'),

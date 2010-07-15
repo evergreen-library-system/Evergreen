@@ -514,7 +514,7 @@ sub set_circ_due_date {
     $e->update_action_circulation($circ) or return $e->die_event;
     $e->commit;
 
-    return $circ->id;
+    return $circ;
 }
 
 
