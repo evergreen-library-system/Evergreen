@@ -489,8 +489,13 @@ if (!($enable->{processed}) or $enable->{rows}[0]->{enabled} eq 'f') {
 # Get the control number identifier from an OU setting based on $_TD->{new}{owner}
 my $ou_cni = 'EVRGRN';
 
-# bre.owner can be null, so fall back to the consortial setting
-my $owner = $_TD->{new}{owner} || 1;
+my $owner;
+if ($schema eq 'serial') {
+    $owner = $_TD->{new}{owning_lib};
+} else {
+    # are.owner and bre.owner can be null, so fall back to the consortial setting
+    $owner = $_TD->{new}{owner} || 1;
+}
 
 my $ous_rv = spi_exec_query("SELECT value FROM actor.org_unit_ancestor_setting('cat.marc_control_number_identifier', $owner)");
 if ($ous_rv->{processed}) {

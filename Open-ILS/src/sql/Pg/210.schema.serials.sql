@@ -19,7 +19,6 @@ CREATE TABLE serial.record_entry (
 	deleted		BOOL		NOT NULL DEFAULT FALSE,
 	marc		TEXT,
 	last_xact_id	TEXT		NOT NULL,
-	owner		INT
 );
 CREATE INDEX serial_record_entry_creator_idx ON serial.record_entry ( creator );
 CREATE INDEX serial_record_entry_editor_idx ON serial.record_entry ( editor );
