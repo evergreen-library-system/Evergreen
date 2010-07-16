@@ -24,34 +24,34 @@ my @formats = qw/USMARC UNIMARC XML BRE/;
 my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings) = ('/openils/conf/opensrf_core.xml','USMARC','MARC8','','$');
 
 GetOptions(
-        'help'      => \$help,
+        'help'       => \$help,
         'items'      => \$holdings,
-        'location=s'      => \$location,
-        'money=s'      => \$dollarsign,
-        'config=s'      => \$config,
-        'format=s'      => \$format,
-        'xml-idl=s'      => \$idl,
-        'encoding=s'      => \$encoding,
+        'location=s' => \$location,
+        'money=s'    => \$dollarsign,
+        'config=s'   => \$config,
+        'format=s'   => \$format,
+        'xml-idl=s'  => \$idl,
+        'encoding=s' => \$encoding,
 );
 
 if ($help) {
-	print <<"	HELP";
+print <<"HELP";
 Usage: $0 [options]
- --help or -h		This screen.
- --config or -c		Configuration file [/openils/conf/opensrf_core.xml]
- --format or -f		Output format (USMARC, UNIMARC, XML) [USMARC]
- --encoding or -e	Output Encoding (UTF-8, ISO-8859-?, MARC8) [MARC8]
- --items or -i		Include items (holdings) in the output
- --xml-idl or -x	Location of the IDL XML
- --location or -l	MARC Location Code for holdings from
- 			http://www.loc.gov/marc/organizations/orgshome.html
+ --help or -h       This screen.
+ --config or -c     Configuration file [/openils/conf/opensrf_core.xml]
+ --format or -f     Output format (USMARC, UNIMARC, XML) [USMARC]
+ --encoding or -e   Output Encoding (UTF-8, ISO-8859-?, MARC8) [MARC8]
+ --items or -i      Include items (holdings) in the output
+ --xml-idl or -x    Location of the IDL XML
+ --location or -l   MARC Location Code for holdings from
+                    http://www.loc.gov/marc/organizations/orgshome.html
 
 Example:
 
   cat list_of_ids | $0 > output_file
 
-	HELP
-	exit;
+HELP
+    exit;
 }
 
 $format = uc($format);
@@ -61,20 +61,20 @@ binmode(STDOUT, ':raw') if ($encoding ne 'UTF-8');
 binmode(STDOUT, ':utf8') if ($encoding eq 'UTF-8');
 
 if (!grep { uc($format) eq $_ } @formats) {
-	die	"Please select a supported format.  ".
-		"Right now that means one of [".
-		join('|',@formats). "]\n";
+    die "Please select a supported format.  ".
+        "Right now that means one of [".
+        join('|',@formats). "]\n";
 }
 
 if ($format ne 'XML') {
-	my $type = 'MARC::File::' . $format;
-	$type->require;
+    my $type = 'MARC::File::' . $format;
+    $type->require;
 }
 
 OpenSRF::System->bootstrap_client( config_file => $config );
 
 if (!$idl) {
-	$idl = OpenSRF::Utils::SettingsClient->new->config_value("IDL");
+    $idl = OpenSRF::Utils::SettingsClient->new->config_value("IDL");
 }
 
 Fieldmapper->import(IDL => $idl);
@@ -92,29 +92,29 @@ my %shelves;
 my $flesh = {};
 if ($holdings) {
 
-	print STDERR "Retrieving Org Units ... ";
-	my $r = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search', { id => { '!=' => undef } } );
+    print STDERR "Retrieving Org Units ... ";
+    my $r = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search', { id => { '!=' => undef } } );
 
     while (my $o = $r->recv) {
         die $r->failed->stringify if ($r->failed);
         $o = $o->content;
         last unless ($o);
-	    $orgs{$o->id} = $o;
+        $orgs{$o->id} = $o;
     }
     $r->finish;
-	print STDERR "OK\n";
+    print STDERR "OK\n";
 
-	print STDERR "Retrieving Shelving locations ... ";
-	$r = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search', { id => { '!=' => undef } } );
+    print STDERR "Retrieving Shelving locations ... ";
+    $r = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search', { id => { '!=' => undef } } );
 
     while (my $s = $r->recv) {
         die $r->failed->stringify if ($r->failed);
         $s = $s->content;
         last unless ($s);
-	    $shelves{$s->id} = $s;
+        $shelves{$s->id} = $s;
     }
     $r->finish;
-	print STDERR "OK\n";
+    print STDERR "OK\n";
 
     $flesh = { flesh => 2, flesh_fields => { bre => [ 'call_numbers' ], acn => [ 'copies' ] } };
 }
@@ -128,7 +128,7 @@ while ( my $i = <> ) {
     try {
         local $SIG{ALRM} = sub { die "TIMEOUT\n" };
         alarm(1);
-	    $bib = $ses->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve', $i, $flesh )->gather(1);
+        $bib = $ses->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve', $i, $flesh )->gather(1);
         alarm(0);
     } otherwise {
         warn "\n!!!!!! Timed out trying to read record $i\n";
@@ -136,76 +136,76 @@ while ( my $i = <> ) {
     alarm(0);
 
     $count{bib}++;
-	next unless $bib;
+    next unless $bib;
 
     if (uc($format) eq 'BRE') {
         print OpenSRF::Utils::JSON->perl2JSON($bib);
-	    stats();
+        stats();
         next;
     }
 
-	try {
+    try {
 
-		my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
+        my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
         my $cn_list = $bib->call_numbers;
         if ($cn_list && @$cn_list) {
 
-	        $count{cn} += @$cn_list;
-		
+            $count{cn} += @$cn_list;
+        
             my $cp_list = [ map { @{ $_->copies } } @$cn_list ];
             if ($cp_list && @$cp_list) {
 
-	            my %cn_map;
-	            push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
-		                        
-	            for my $cn ( @$cn_list ) {
-	                my $cn_map_list = $cn_map{$cn->id};
-	
-	                for my $cp ( @$cn_map_list ) {
-	                    $count{cp}++;
-		                        
-						$r->append_fields(
-							MARC::Field->new(
-								852, '4', '', 
-								a => $location,
-								b => $orgs{$cn->owning_lib}->shortname,
-								b => $orgs{$cp->circ_lib}->shortname,
-								c => $shelves{$cp->location}->name,
-								j => $cn->label,
-								($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
-								p => $cp->barcode,
-								($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
-								($cp->copy_number ? ( t => $cp->copy_number ) : ()),
-								($cp->ref eq 't' ? ( x => 'reference' ) : ()),
-								($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
-								($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
-								($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
-							)
-						);
+                my %cn_map;
+                push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
+                                
+                for my $cn ( @$cn_list ) {
+                    my $cn_map_list = $cn_map{$cn->id};
+    
+                    for my $cp ( @$cn_map_list ) {
+                        $count{cp}++;
+                                
+                        $r->append_fields(
+                            MARC::Field->new(
+                                852, '4', '', 
+                                a => $location,
+                                b => $orgs{$cn->owning_lib}->shortname,
+                                b => $orgs{$cp->circ_lib}->shortname,
+                                c => $shelves{$cp->location}->name,
+                                j => $cn->label,
+                                ($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
+                                p => $cp->barcode,
+                                ($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
+                                ($cp->copy_number ? ( t => $cp->copy_number ) : ()),
+                                ($cp->ref eq 't' ? ( x => 'reference' ) : ()),
+                                ($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
+                                ($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
+                                ($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
+                            )
+                        );
 
                         stats() if (! ($count{cp} % 100 ));
-					}
-				}
-			}
+                    }
+                }
+            }
         }
 
-		if (uc($format) eq 'XML') {
-			print $r->as_xml_record;
-		} elsif (uc($format) eq 'UNIMARC') {
-			print $r->as_usmarc;
-		} elsif (uc($format) eq 'USMARC') {
-			print $r->as_usmarc;
-		}
+        if (uc($format) eq 'XML') {
+            print $r->as_xml_record;
+        } elsif (uc($format) eq 'UNIMARC') {
+            print $r->as_usmarc;
+        } elsif (uc($format) eq 'USMARC') {
+            print $r->as_usmarc;
+        }
 
         $count{did}++;
 
-	} otherwise {
-		my $e = shift;
-		warn "\n$e\n";
+    } otherwise {
+        my $e = shift;
+        warn "\n$e\n";
         import MARC::File::XML; # reset SAX parser so that one bad record doesn't kill the entire export
-	};
+    };
 
-	stats() if (! ($count{bib} % 50 ));
+    stats() if (! ($count{bib} % 50 ));
 }
 
 print "</collection>\n" if ($format eq 'XML');
@@ -224,23 +224,23 @@ DONE
 
 sub stats {
     try {
-	no warnings;
+        no warnings;
 
-    	$speed = $count{did} / (time - $start);
+        $speed = $count{did} / (time - $start);
 
-    	my $speed_now = ($count{did} - $count{did_last}) / (time - $count{time_last});
-	    my $cn_speed = $count{cn} / (time - $start);
-    	my $cp_speed = $count{cp} / (time - $start);
+        my $speed_now = ($count{did} - $count{did_last}) / (time - $count{time_last});
+        my $cn_speed = $count{cn} / (time - $start);
+        my $cp_speed = $count{cp} / (time - $start);
 
-	    printf STDERR "\r  $count{did} of $count{bib} @  \%0.4f/s ttl / \%0.4f/s rt ".
+        printf STDERR "\r  $count{did} of $count{bib} @  \%0.4f/s ttl / \%0.4f/s rt ".
                 "($count{cn} CNs @ \%0.4f/s :: $count{cp} CPs @ \%0.4f/s)\r",
                 $speed,
                 $speed_now,
                 $cn_speed,
                 $cp_speed;
     } otherwise {};
-   	$count{did_last} = $count{did};
-   	$count{time_last} = time;
+    $count{did_last} = $count{did};
+    $count{time_last} = time;
 }
 
 
