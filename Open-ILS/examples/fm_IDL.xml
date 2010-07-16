@@ -1408,11 +1408,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="last_xact_id" />
 			<field name="marc" />
 			<field name="source" />
+			<field reporter:label="Owner" name="owner"  reporter:datatype="org_unit"/>
 			<field name="fixed_fields" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field name="bib_links" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 			<link field="notes" reltype="has_many" key="record" map="" class="arn"/>
