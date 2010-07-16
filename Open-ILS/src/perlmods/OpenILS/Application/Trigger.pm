@@ -453,16 +453,16 @@ sub create_batch_events {
             push @{ $$filter{'-and'} }, $f;
         }
 
-        push @{ $filter->{'-and'} }, {
-            '-not-exists' => {
-                from  => 'atev',
-                where => {
-                    event_def => $def->id,
-                    target    => { '=' => { '+' . $hook_hash{$def->hook}->core_type => $class->Identity } },
-                    ($active ? (state  => 'pending') : ())
-                }
+        my $join = { 'join' => {
+            atev => {
+                field => 'target',
+                fkey => $class->Identity,
+                type => 'left',
+                filter => { event_def => $def->id }
             }
-        };
+        }};
+
+        push @{ $filter->{'-and'} }, { '+atev' => { id => undef } };
 
         if ($def->usr_field && $def->opt_in_setting) {
             push @{ $filter->{'-and'} }, {
@@ -487,7 +487,7 @@ sub create_batch_events {
 
         $logger->info("trigger: create_batch_events() collecting object IDs for def=$def_id / hook=$hook");
 
-        my $object_ids = $editor->$method( $filter, {idlist => 1, timeout => 10800} );
+        my $object_ids = $editor->$method( [$filter, $join], {idlist => 1, timeout => 10800} );
 
         if($object_ids) {
             $logger->info("trigger: create_batch_events() fetched ".scalar(@$object_ids)." object IDs for def=$def_id / hook=$hook");
