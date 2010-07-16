@@ -2,6 +2,8 @@
 -- Adjust the table and affected functions accordingly
 BEGIN;
 
+INSERT INTO config.upgrade_log (version) VALUES ('0340'); -- dbs
+
 ALTER TABLE serial.record_entry DROP COLUMN owner;
 
 CREATE OR REPLACE FUNCTION maintain_control_numbers() RETURNS TRIGGER AS $func$
