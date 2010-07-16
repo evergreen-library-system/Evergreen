@@ -10,7 +10,6 @@ main.menu = function () {
     offlineStrings = document.getElementById('offlineStrings');
     JSAN.use('util.error'); this.error = new util.error();
     JSAN.use('util.window'); this.window = new util.window();
-    JSAN.use('util.sound'); this.sound = new util.sound({'interval':500,'sig':'menu_constructor'});
     JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 
     this.w = window;
@@ -155,7 +154,7 @@ main.menu.prototype = {
                     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                     mframe.xulG = xulG;
                     /* This window should get its own objects for these */
-                    delete mframe.xulG['_sound']; delete mframe.xulG['_data'];
+                    delete mframe.xulG['_data'];
                 }
             ],
             'cmd_new_tab' : [
@@ -1606,7 +1605,6 @@ main.menu.prototype = {
             if (e) { e.setAttribute('label',text); }
         };
         content_params.chrome_xulG = xulG;
-        content_params._sound = xulG._sound;
         content_params._data = xulG._data;
 
         return content_params;
