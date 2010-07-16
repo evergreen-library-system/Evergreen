@@ -21,7 +21,7 @@ use Getopt::Long;
 
 my @formats = qw/USMARC UNIMARC XML BRE/;
 
-my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings,$timeout) = ('/openils/conf/opensrf_core.xml','USMARC','MARC8','','$',0);
+my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings,$timeout) = ('/openils/conf/opensrf_core.xml','USMARC','MARC8','','$',0,undef,undef,0);
 
 GetOptions(
         'help'       => \$help,
@@ -135,16 +135,20 @@ my $last_time = time;
 my %count = ();
 my $speed = 0;
 while ( my $i = <> ) {
-    my $bib;
-    try {
-        local $SIG{ALRM} = sub { die "TIMEOUT\n" };
-        alarm($timeout);
-        $bib = $ses->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve', $i, $flesh )->gather(1);
-        alarm(0);
-    } otherwise {
+    my $bib; 
+
+    my $r = $ses->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve', $i, $flesh );
+    my $s = $r->recv(timeout => $timeout);
+    if ($r->failed) {
+        warn "\n!!!!!! Failed trying to read record $i: " . $r->failed->stringify . "\n";
+        next;
+    }
+    if ($r->timed_out) {
         warn "\n!!!!!! Timed out trying to read record $i\n";
-    };
-    alarm(0);
+        next;
+    }
+    $bib = $s->content;
+    $r->finish;
 
     $count{bib}++;
     next unless $bib;
@@ -201,7 +205,9 @@ while ( my $i = <> ) {
         }
 
         if (uc($format) eq 'XML') {
-            print $r->as_xml_record;
+            my $xml = $r->as_xml_record;
+            $xml =~ s/^<\?.+?\?>$//mo;
+            print $xml;
         } elsif (uc($format) eq 'UNIMARC') {
             print $r->as_usmarc;
         } elsif (uc($format) eq 'USMARC') {
