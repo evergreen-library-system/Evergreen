@@ -21,7 +21,7 @@ use Getopt::Long;
 
 my @formats = qw/USMARC UNIMARC XML BRE/;
 
-my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings) = ('/openils/conf/opensrf_core.xml','USMARC','MARC8','','$');
+my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings,$timeout) = ('/openils/conf/opensrf_core.xml','USMARC','MARC8','','$',0);
 
 GetOptions(
         'help'       => \$help,
@@ -32,6 +32,7 @@ GetOptions(
         'format=s'   => \$format,
         'xml-idl=s'  => \$idl,
         'encoding=s' => \$encoding,
+        'timeout=i'  => \$timeout,
 );
 
 if ($help) {
@@ -45,6 +46,9 @@ Usage: $0 [options]
  --xml-idl or -x    Location of the IDL XML
  --location or -l   MARC Location Code for holdings from
                     http://www.loc.gov/marc/organizations/orgshome.html
+ --timeout          Timeout for exporting a single record; increase if you
+                    are using --holdings and are exporting bibs that
+                    have a lot of items attached to them.
 
 Example:
 
@@ -69,6 +73,13 @@ if (!grep { uc($format) eq $_ } @formats) {
 if ($format ne 'XML') {
     my $type = 'MARC::File::' . $format;
     $type->require;
+}
+
+if ($timeout <= 0) {
+    # set default timeout and/or correct silly user who 
+    # supplied a negative timeout; default timeout of
+    # 300 seconds if exporting items determined empirically.
+    $timeout = $holdings ? 300 : 1;
 }
 
 OpenSRF::System->bootstrap_client( config_file => $config );
@@ -127,7 +138,7 @@ while ( my $i = <> ) {
     my $bib;
     try {
         local $SIG{ALRM} = sub { die "TIMEOUT\n" };
-        alarm(1);
+        alarm($timeout);
         $bib = $ses->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve', $i, $flesh )->gather(1);
         alarm(0);
     } otherwise {
