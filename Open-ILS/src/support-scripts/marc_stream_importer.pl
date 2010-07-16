@@ -380,7 +380,8 @@ sub process_request {   # The core Net::Server method
 
     my $msg = '';
     $msg .= "Successfully imported $imported records using merge profile '$profile'\n" if $imported;
-    $msg .= "Faield to import $failed records\n" if $failed;
+    $msg .= "Failed to import $failed records\n" if $failed;
+    $msg .= "\x00";
     print $client $msg;
 }
 
