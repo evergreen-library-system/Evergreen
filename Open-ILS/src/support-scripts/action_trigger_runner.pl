@@ -194,7 +194,10 @@ help() and exit unless ($opt_run_pending or $opt_process_hooks);
 if (-e $opt_lockfile) {
     die "I'm already running with lockfile $opt_lockfile\n" if (!$opt_process_hooks);
     # sleeping loop if we're in --process-hooks mode
-    do { last unless ( -e $opt_lockfile ); $max_sleep--; } while ($max_sleep >= 0 && sleep(1));
+    while ($max_sleep >= 0 && sleep(1)) {
+        last unless ( -e $opt_lockfile ); 
+        $max_sleep--;
+    }
 }
 
 # there's a tiny race condition here ... oh well
