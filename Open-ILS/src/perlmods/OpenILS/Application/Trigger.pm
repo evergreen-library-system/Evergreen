@@ -418,6 +418,8 @@ sub create_batch_events {
             }
         }};
 
+        push @{ $filter->{'-and'} }, { '+atev' => { id => undef } };
+
         $class =~ s/^Fieldmapper:://o;
         $class =~ s/::/_/go;
         my $method = 'search_'. $class;
