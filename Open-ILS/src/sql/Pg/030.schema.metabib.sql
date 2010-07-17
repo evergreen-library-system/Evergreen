@@ -894,44 +894,6 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION authority.propagate_changes (aid BIGINT, bid BIGINT) RETURNS BIGINT AS $func$
-    UPDATE  biblio.record_entry
-      SET   marc = vandelay.merge_record_xml( marc, authority.generate_overlay_template( $1 ) )
-      WHERE id = $2;
-    SELECT $1;
-$func$ LANGUAGE SQL;
-
-CREATE OR REPLACE FUNCTION authority.propagate_changes (aid BIGINT) RETURNS SETOF BIGINT AS $func$
-    SELECT authority.propagate_changes( authority, bib ) FROM authority.bib_linking WHERE authority = $1;
-$func$ LANGUAGE SQL;
-
-CREATE OR REPLACE FUNCTION authority.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
-BEGIN
-
-    IF NEW.deleted IS TRUE THEN -- If this authority is deleted
-        RETURN NEW; -- and ... we're done
-    END IF;
-
-    IF TG_OP = 'UPDATE' THEN -- re-ingest?
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc' AND enabled;
-
-        IF NOT FOUND AND OLD.marc = NEW.marc THEN -- don't do anything if the MARC didn't change
-            RETURN NEW;
-        END IF;
-    END IF;
-
-
-    -- authority change propogation
-    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_auto_update' AND enabled;
-    IF NOT FOUND THEN
-        PERFORM authority.propagate_changes( NEW.id );
-    END IF;
-
-    RETURN NEW;
-END;
-$func$ LANGUAGE PLPGSQL;
-
-
 CREATE OR REPLACE FUNCTION biblio.map_authority_linking (bibid BIGINT, marc TEXT) RETURNS BIGINT AS $func$
     DELETE FROM authority.bib_linking WHERE bib = $1;
     INSERT INTO authority.bib_linking (bib, authority)
