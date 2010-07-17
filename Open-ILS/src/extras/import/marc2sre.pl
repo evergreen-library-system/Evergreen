@@ -25,7 +25,7 @@ use MARC::Charset;
 
 MARC::Charset->ignore_errors(1);
 
-my ($idfield, $count, $user, $password, $config, $marctype, $idsubfield, @files, @trash_fields, $quiet) =
+my ($idfield, $count, $user, $password, $config, $marctype, $idsubfield, @files, @trash_fields, $quiet, $libmap) =
 	('001', 1, 'admin', 'open-ils', '/openils/conf/opensrf_core.xml', 'USMARC');
 
 GetOptions(
@@ -37,6 +37,7 @@ GetOptions(
 	'config=s'	=> \$config,
 	'marctype=s'	=> \$marctype,
 	'file=s'	=> \@files,
+	'libmap=s'	=> \$libmap,
 	'quiet'		=> \$quiet,
 );
 
@@ -45,6 +46,10 @@ GetOptions(
 my @ses;
 my @req;
 my %processing_cache;
+my $lib_id_map;
+if ($libmap) {
+	$lib_id_map = map_libraries_to_ID($libmap);
+}
 
 OpenSRF::System->bootstrap_client( config_file => $config );
 Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
@@ -98,6 +103,13 @@ while ( try { $rec = $batch->next } otherwise { $rec = -1 } ) {
 	$bib->edit_date('now');
 	$bib->last_xact_id('IMPORT-'.$starttime);
 
+	if ($libmap) {
+		my $lib_id = get_library_id($rec);
+		if ($lib_id) {
+			$bib->owning_lib($lib_id);
+		}
+	}
+
 	print OpenSRF::Utils::JSON->perl2JSON($bib)."\n";
 
 	$count++;
@@ -137,3 +149,45 @@ sub login {
         return $authtoken;
 }       
 
+=head2
+
+map_libraries_to_ID
+
+Parses a file to return a hash of library names to integers representing
+the actor.org_unit.id value of the library. This enables us to generate
+an ingest file that does not subsequently need to manually manipulated.
+
+The library name must correspond to the 'b' subfield of the 852 field.
+Well, it does not have to, but you will have to modify this script
+accordingly.
+
+The format of the map file should be the name of the library, followed
+by a tab, followed by the desired numeric ID of the library. For example:
+
+BR1	4
+BR2	5
+
+=cut
+
+sub map_libraries_to_ID {
+	my $map_filename = shift;
+
+	my %lib_id_map;
+
+	open(MAP_FH, '<', $map_filename) or die "Could not load [$map_filename] $!";
+	while (<MAP_FH>) {
+		my ($lib, $id) = $_ =~ /^(.*?)\t(.*?)$/;
+		$lib_id_map{$lib} = $id;
+	}
+
+	return \%lib_id_map;
+}
+
+sub get_library_id {
+	my $record = shift;
+
+	my $lib_name = $record->field('852')->subfield('b');
+	my $lib_id = $lib_id_map->{$lib_name};
+
+	return $lib_id;
+}
