@@ -41,6 +41,7 @@ use OpenILS::Application;
 use base qw/OpenILS::Application/;
 use OpenILS::Application::AppUtils;
 use OpenSRF::AppSession;
+use OpenSRF::Utils qw/:datetime/;;
 use OpenSRF::Utils::Logger qw($logger);
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::MFHD;
@@ -53,6 +54,9 @@ my %MFHD_NAMES_BY_TAG = (  '853' => $MFHD_NAMES[0],
                         '864' => $MFHD_NAMES[1],
                         '855' => $MFHD_NAMES[2],
                         '865' => $MFHD_NAMES[2] );
+my %MFHD_TAGS_BY_NAME = (  $MFHD_NAMES[0] => '853',
+                        $MFHD_NAMES[1] => '854',
+                        $MFHD_NAMES[2] => '855');
 
 
 # helper method for conforming dates to ISO8601
@@ -83,7 +87,7 @@ __PACKAGE__->register_method(
                  type => 'string'
             },
             {
-                 name => 'issuances',
+                 name => 'items',
                  desc => 'Array of fleshed items',
                  type => 'array'
             }
@@ -119,7 +123,7 @@ sub fleshed_item_alter {
         } elsif( $item->isnew ) {
             # TODO: reconsider this
             # if the item has a new issuance, create the issuance first
-            if ($item->issuance->isnew) {
+            if (ref $item->issuance eq 'Fieldmapper::serial::issuance' and $item->issuance->isnew) {
                 fleshed_issuance_alter($self, $conn, $auth, [$item->issuance]);
             }
             _cleanse_dates($item, ['date_expected','date_received']);
@@ -288,6 +292,24 @@ sub _update_issuance {
     return 0;
 }
 
+__PACKAGE__->register_method(
+    method  => "fleshed_serial_issuance_retrieve_batch",
+    authoritative => 1,
+    api_name    => "open-ils.serial.issuance.fleshed.batch.retrieve"
+);
+
+sub fleshed_serial_issuance_retrieve_batch {
+    my( $self, $client, $ids ) = @_;
+# FIXME: permissions?
+    $logger->info("Fetching fleshed serial issuances @$ids");
+    return $U->cstorereq(
+        "open-ils.cstore.direct.serial.issuance.search.atomic",
+        { id => $ids },
+        { flesh => 1,
+          flesh_fields => {siss => [ qw/creator editor subscription/ ]}
+        });
+}
+
 
 ##########################################################################
 # unit methods
@@ -391,83 +413,101 @@ sub _update_sunit {
 # predict and receive methods
 #
 __PACKAGE__->register_method(
-    method    => 'generate_predictions',
-    api_name  => 'open-ils.serial.generate_predictions',
+    method    => 'make_predictions',
+    api_name  => 'open-ils.serial.make_predictions',
     api_level => 1,
     argc      => 1,
     signature => {
-        desc     => 'Receives an sre (serial record entry) id and returns an array ref of predicted issuances',
+        desc     => 'Receives an ssub id and populates the issuance and item tables',
         'params' => [ {
-                 name => 'sre_id',
-                 desc => 'Serial Record Entry ID',
-                 type => 'integer'
+                 name => 'ssub_id',
+                 desc => 'Serial Subscription ID',
+                 type => 'int'
             }
-        ],
-        'return' => {
-            desc => 'Returns predicted issuances',
-            type => 'array'
-        }
+        ]
     }
 );
 
-sub generate_predictions {
+sub make_predictions {
     my ($self, $conn, $authtoken, $args) = @_;
 
     my $editor = OpenILS::Utils::CStoreEditor->new();
-    if (!exists($args->{sre_id})) { # lookup by sdist_id instead
-        my $sdist = $editor->retrieve_serial_distribution([$args->{sdist_id}]);
-        $args->{sre_id} = $sdist->record_entry;
-    }
-    #return $args->{sre_id};
-    my $sre = $editor->retrieve_serial_record_entry([$args->{sre_id}]);
+    my $ssub_id = $args->{ssub_id};
+    my $mfhd = MFHD->new(MARC::Record->new());
 
-    #return $sre->marc;
-
-    #convert from marc_xml to marc
-    my $marc = MARC::Record->new_from_xml($sre->marc);
-
-    #turn into MFHD record object
-    my $mfhd = MFHD->new($marc);
+    my $ssub = $editor->retrieve_serial_subscription([$ssub_id]);
+    my $scaps = $editor->search_serial_caption_and_pattern({ subscription => $ssub_id, active => 't'});
+    my $sdists = $editor->search_serial_distribution( [{ subscription => $ssub->id }, {  flesh => 1,
+              flesh_fields => {sdist => [ qw/ streams / ]}, limit => 1 }] ); #TODO: 'deleted' support?
 
     my @predictions;
-    # TODO: consider support for predicting supplements/indexes (854/855)
-    my $tag = '853';
-    my @active_captions = $mfhd->active_captions($tag);
-    foreach my $caption (@active_captions) {
+    my $link_id = 1;
+    foreach my $scap (@$scaps) {
+        my $caption_field = _revive_caption($scap);
+        $caption_field->update('8' => $link_id);
+        $mfhd->append_fields($caption_field);
         my $options = {
-                'caption' => $caption,
-                'num_to_predict' => $args->{num_to_predict},
-                'last_rec_date' => $args->{last_rec_date}
+                'caption' => $caption_field,
+                'scap_id' => $scap->id,
+                'num_to_predict' => $args->{num_to_predict}
+                #'last_rec_date' => $args->{last_rec_date}
                 };
-        if ($args->{from_last_received}) {
-            my $last_received = $editor->search_serial_issuance([
-                {   'holding_type' => $MFHD_NAMES_BY_TAG{$tag},
-                    'holding_link_id' => $caption->link_id,
-                    'distribution' => $args->{sdist_id}},
-                {limit => 1, order_by => { siss => "date_expected DESC" }}]
+        if ($args->{base_issuance}) { # predict from a given issuance
+            #$options->{last_rec_date} = $args->{base_issuance}->date_expected;
+            $options->{predict_from} = _revive_holding($args->{base_issuance}->holding_code, $caption_field, 1); # fresh MFHD Record, so we simply default to 1 for seqno
+        } else { # default to predicting from last published
+            my $last_published = $editor->search_serial_issuance([
+                    {'caption_and_pattern' => $scap->id,
+                    'subscription' => $ssub_id},
+                {limit => 1, order_by => { siss => "date_published DESC" }}]
                 );
-            if ($last_received->[0]) {
-                $options->{last_rec_date} = $last_received->[0]->date_expected;
-                $options->{predict_from} = _revive_holding($mfhd, $last_received->[0]->holding_code);
+            if ($last_published->[0]) {
+                my $last_siss = $last_published->[0];
+                #my $items_for_last_published = $editor->search_serial_item({'issuance' => $last_siss->id}, {limit => 1, order_by => { sitem => "date_expected ASC" }}); # assume later expected are exceptions, TODO: move this whole date offset idea to item creation portion, not issuance creation
+                #$options->{last_rec_date} = $items_for_last_published->[0]->date_expected;
+                $options->{predict_from} = _revive_holding($last_siss->holding_code, $caption_field, 1);
+            } else {
+                #TODO: throw event (can't predict from nothing!)
             }
         }
         push( @predictions, _generate_issuance_values($mfhd, $options) );
+        $link_id++;
     }
 
     my @issuances;
     foreach my $prediction (@predictions) {
         my $issuance = new Fieldmapper::serial::issuance;
         $issuance->isnew(1);
-        $issuance->holding_link_id($prediction->[0]);
-        $issuance->label($prediction->[1]);
-        $issuance->date_published($prediction->[2]);
-        $issuance->date_expected($prediction->[3]);
-        $issuance->holding_code(OpenSRF::Utils::JSON->perl2JSON($prediction->[4]));
-        $issuance->holding_type($prediction->[5]);
+        $issuance->label($prediction->{label});
+        $issuance->date_published($prediction->{date_published}->strftime('%F'));
+        $issuance->holding_code(OpenSRF::Utils::JSON->perl2JSON($prediction->{holding_code}));
+        $issuance->holding_type($prediction->{holding_type});
+        $issuance->caption_and_pattern($prediction->{caption_and_pattern});
+        $issuance->subscription($ssub->id);
         push (@issuances, $issuance);
     }
 
-    return \@issuances;
+    fleshed_issuance_alter($self, $conn, $authtoken, \@issuances); # FIXME: catch events
+
+    my @items;
+    for (my $i = 0; $i < @issuances; $i++) {
+        my $date_expected = $predictions[$i]->{date_published}->add(seconds => interval_to_seconds($ssub->expected_date_offset))->strftime('%F');
+        my $issuance = $issuances[$i];
+        #$issuance->label(interval_to_seconds($ssub->expected_date_offset));
+        foreach my $sdist (@$sdists) {
+            my $streams = $sdist->streams;
+            foreach my $stream (@$streams) {
+                my $item = new Fieldmapper::serial::item;
+                $item->isnew(1);
+                $item->stream($stream->id);
+                $item->date_expected($date_expected);
+                $item->issuance($issuance->id);
+                push (@items, $item);
+            }
+        }
+    }
+    fleshed_item_alter($self, $conn, $authtoken, \@items); # FIXME: catch events
+    return \@items;
 }
 
 #
@@ -482,105 +522,117 @@ sub generate_predictions {
 # The basic method is to first convert to a single holding if compressed, then
 # increment the holding and save the resulting values to @issuances.
 # 
-# returns @issuance_values, an array of array refs containing (link id, formatted
+# returns @issuance_values, an array of hashrefs containing (formatted
 # label, formatted chronology date, formatted estimated arrival date, and an
 # array ref of holding subfields as (key, value, key, value ...)) (not a hash
-# to protect order and possible duplicate keys).
+# to protect order and possible duplicate keys), and a holding type.
 #
 sub _generate_issuance_values {
     my ($mfhd, $options) = @_;
     my $caption = $options->{caption};
+    my $scap_id = $options->{scap_id};
     my $num_to_predict = $options->{num_to_predict};
-    my $last_rec_date = $options->{last_rec_date};   # expected or actual, according to preference
-    my $predict_from = $options->{predict_from};   # optional issuance to predict from
+    my $predict_from = $options->{predict_from};   # issuance to predict from
+    #my $last_rec_date = $options->{last_rec_date};   # expected or actual
 
     # TODO: add support for predicting serials with no chronology by passing in
     # a last_pub_date option?
 
-    my $strp = new DateTime::Format::Strptime(pattern => '%F');
 
-    my $receival_date = $strp->parse_datetime($last_rec_date);
-
-    my $htag    = $caption->tag;
-    $htag =~ s/^85/86/;
-    my $link_id = $caption->link_id;
-    if(!$predict_from) {
-        my @holdings = $mfhd->holdings($htag, $link_id);
-        my $last_holding = $holdings[-1];
-
-        if ($last_holding->is_compressed) {
-            $last_holding->compressed_to_last; # convert to last in range
-        }
-        $predict_from = $last_holding;
-    }
-
-    my $pub_date  = $strp->parse_datetime($predict_from->chron_to_date);
-    my $date_diff = $receival_date - $pub_date;
+# Only needed for 'real' MFHD records, not our temp records
+#    my $link_id = $caption->link_id;
+#    if(!$predict_from) {
+#        my $htag = $caption->tag;
+#        $htag =~ s/^85/86/;
+#        my @holdings = $mfhd->holdings($htag, $link_id);
+#        my $last_holding = $holdings[-1];
+#
+#        #if ($last_holding->is_compressed) {
+#        #    $last_holding->compressed_to_last; # convert to last in range
+#        #}
+#        $predict_from = $last_holding;
+#    }
+#
 
     $predict_from->notes('public',  []);
-# add a note marker for system use
+# add a note marker for system use (?)
     $predict_from->notes('private', ['AUTOGEN']);
 
+    my $strp = new DateTime::Format::Strptime(pattern => '%F');
+    my $pub_date;
     my @issuance_values;
     my @predictions = $mfhd->generate_predictions({'base_holding' => $predict_from, 'num_to_predict' => $num_to_predict});
     foreach my $prediction (@predictions) {
         $pub_date = $strp->parse_datetime($prediction->chron_to_date);
-        my $arrival_date = $pub_date + $date_diff;
         push(
                 @issuance_values,
-                [
-                    $link_id,
-                    $prediction->format,
-                    $pub_date->strftime('%F'),
-                    $arrival_date->strftime('%F'),
-                    [$htag,$prediction->indicator(1),$prediction->indicator(2),$prediction->subfields_list],
-                    $MFHD_NAMES_BY_TAG{$caption->tag}
-                ]
+                {
+                    #$link_id,
+                    label => $prediction->format,
+                    date_published => $pub_date,
+                    #date_expected => $date_expected->strftime('%F'),
+                    holding_code => [$prediction->indicator(1),$prediction->indicator(2),$prediction->subfields_list],
+                    holding_type => $MFHD_NAMES_BY_TAG{$caption->tag},
+                    caption_and_pattern => $scap_id
+                }
             );
     }
 
     return @issuance_values;
 }
 
+sub _revive_caption {
+    my $scap = shift;
+
+    my $pattern_code = $scap->pattern_code;
+
+    # build MARC::Field
+    my $pattern_parts = OpenSRF::Utils::JSON->JSON2perl($pattern_code);
+    unshift(@$pattern_parts, $MFHD_TAGS_BY_NAME{$scap->type});
+    my $pattern_field = new MARC::Field(@$pattern_parts);
+
+    # build MFHD::Caption
+    return new MFHD::Caption($pattern_field);
+}
+
 sub _revive_holding {
-    my $mfhd = shift;
     my $holding_code = shift;
+    my $caption_field = shift;
+    my $seqno = shift;
 
     # build MARC::Field
     my $holding_parts = OpenSRF::Utils::JSON->JSON2perl($holding_code);
-    my $issuance_holding = new MARC::Field(@$holding_parts);
-    # fetch matching captions
-    my $captag = $issuance_holding->tag;
-    $captag =~ s/^86/85/;
-    my $captions_ref = $mfhd->captions($captag, 'hashref');
+    my $captag = $caption_field->tag;
+    $captag =~ s/^85/86/;
+    unshift(@$holding_parts, $captag);
+    my $holding_field = new MARC::Field(@$holding_parts);
+
     # build MFHD::Holding
-    my $link_subfield = $issuance_holding->subfield('8');
-    my ($link_id, $seqno) = split(/\./, $link_subfield);
-    return new MFHD::Holding($seqno, $issuance_holding, $captions_ref->{$link_id});
+    return new MFHD::Holding($seqno, $holding_field, $caption_field);
 }
 
 __PACKAGE__->register_method(
-    method    => 'receive_issuances',
-    api_name  => 'open-ils.serial.receive_issuances',
+    method    => 'receive_items',
+    api_name  => 'open-ils.serial.receive_items',
     api_level => 1,
     argc      => 1,
     signature => {
-        desc     => 'Marks an issuance as received, updates the shelving unit (creating a new shelving unit if needed), and updates the underlying MFHD record',
+        desc     => 'Marks an item as received, updates the shelving unit (creating a new shelving unit if needed), and updates the summaries',
         'params' => [ {
-                 name => 'issuances',
-                 desc => 'array of Issuance objects',
+                 name => 'items',
+                 desc => 'array of serial items',
                  type => 'array'
             }
         ],
         'return' => {
-            desc => 'Returns number of received issuances',
+            desc => 'Returns number of received items',
             type => 'int'
         }
     }
 );
 
-sub receive_issuances {
-    my ($self, $conn, $auth, $issuances) = @_;
+sub receive_items {
+    my ($self, $conn, $auth, $items) = @_;
 
     my $last_distribution;
     my $last_mfhd;
@@ -589,29 +641,26 @@ sub receive_issuances {
     my( $reqr, $evt ) = $U->checkses($auth);
     return $evt if $evt;
     my $editor = new_editor(requestor => $reqr, xact => 1);
-    foreach my $issuance (@$issuances) {
-        # unflesh shelving unit if fleshed
-        $issuance->shelving_unit( $issuance->shelving_unit->id ) if ref($issuance->shelving_unit);
-        $issuance->distribution( $issuance->distribution->id ) if ref($issuance->distribution);
+    foreach my $item (@$items) {
+        # unflesh unit if fleshed
+        $item->unit( $item->unit->id ) if ref($item->unit);
 
-        $issuance->copies_received($issuance->copies_received + 1);
-        $issuance->copies_expected($issuance->copies_expected - 1);
-        $issuance->date_received('now');
+        $item->date_received('now');
 
-        # create shelving unit if needed
-        if ($issuance->shelving_unit == -1) { # create by "volume" (first issuance division)
+        # create unit if needed
+        if ($item->unit == -1) { # create by "volume" (first item division)
         #TODO
-        } elsif ($issuance->shelving_unit == -2) { # create by "issue" (second issuance division)
+        } elsif ($item->unit == -2) { # create by "issue" (second item division)
         #TODO
         }
 
         my $mfhd;
         my $sre;
-        if ($issuance->distribution == $last_distribution) {
+        if ($item->distribution == $last_distribution) {
             # use cached record
             $mfhd = $last_mfhd;
         } else { # get MFHD record
-            my $sdist = $editor->retrieve_serial_distribution([$issuance->distribution]);
+            my $sdist = $editor->retrieve_serial_distribution([$item->distribution]);
             $sre = $editor->retrieve_serial_record_entry([$sdist->record_entry]);
 
             #convert from marc_xml to marc
@@ -623,45 +672,33 @@ sub receive_issuances {
             $mfhds_to_save{$sre->id} = $mfhd;
         }
 
-#        # build MARC::Field
-#        my $holding_parts = OpenSRF::Utils::JSON->JSON2perl($issuance->holding_code);
-#        my $issuance_holding = new MARC::Field(@$holding_parts);
-#        # fetch matching captions
-#        my $captag = $issuance_holding->tag;
-#        $captag =~ s/^86/85/;
-#        my $captions_ref = $mfhd->captions($captag, 'hashref');
-#        # build MFHD::Holding
-#        my $link_subfield = $issuance_holding->subfield('8');
-#        my ($link_id, $seqno) = split(/\./, $link_subfield);
-#        $issuance_holding = new MFHD::Holding($seqno, $issuance_holding, $captions_ref->{$link_id});
-        my $issuance_holding = _revive_holding($mfhd, $issuance->holding_code);
+        my $item_holding = _revive_holding($mfhd, $item->holding_code);
         
         # get all current holdings for this linked caption
-#        my @curr_holdings = $mfhd->holdings($issuance_holding->tag, $link_id);
-        my @curr_holdings = $mfhd->holdings($issuance_holding->tag, $issuance_holding->caption->link_id);
+        my @curr_holdings = $mfhd->holdings($item_holding->tag, $item_holding->caption->link_id);
         # short-circuit logic : if holding is the next one, increment the last current holding
         my $next_holding_values = $curr_holdings[-1]->next;
-        if ($next_holding_values and $issuance_holding->matches($next_holding_values)) {
+        if ($next_holding_values and $item_holding->matches($next_holding_values)) {
             $curr_holdings[-1]->extend;
         } else { # not the next expected, do full replacement
-            $mfhd->append_fields($issuance_holding);
+            $mfhd->append_fields($item_holding);
 #            my @updated_holdings = $mfhd->get_compressed_holdings($captions_ref->{$link_id});
-            my @updated_holdings = $mfhd->get_compressed_holdings($issuance_holding->caption);
+            my @updated_holdings = $mfhd->get_compressed_holdings($item_holding->caption);
             # set reference point to top of current holdings
             my $marker_field = MARC::Field->new(500, '', '','a' => 'Temporary Marker'); 
             $mfhd->insert_fields_before($curr_holdings[0], $marker_field);
             foreach my $holding (@curr_holdings) {
                 $mfhd->delete_field($holding);
             }
-            $mfhd->delete_field($issuance_holding);
+            $mfhd->delete_field($item_holding);
             $mfhd->insert_fields_before($marker_field, @updated_holdings);
             # delete reference point
             $mfhd->delete_field($marker_field);
         }   
 
-        $last_distribution = $issuance->distribution;
+        $last_distribution = $item->distribution;
         $last_mfhd = $mfhd;
-        _update_issuance($editor, undef, $issuance);
+        _update_item($editor, undef, $item);
     }
 
     foreach my $sre_id (keys %sres_to_save) {
@@ -672,13 +709,10 @@ sub receive_issuances {
         $sre->marc($xml);
         $sre->ischanged(1);
         $editor->update_serial_record_entry($sre);
-        #return ($sre->record);
     }
 
-    #return OpenSRF::Utils::JSON->perl2JSON($last_mfhd);
-
     $editor->commit;
-    return scalar @$issuances;
+    return scalar @$items;
 }
 
 
@@ -706,6 +740,19 @@ __PACKAGE__->register_method(
         @param args A named hash of parameters including:
             authtoken       : Required if viewing non-public notes
             subscription_id : The id of the item whose notes we want to retrieve
+            pub             : True if all the caller wants are public notes
+        @return An array of note objects
+    /
+);
+
+__PACKAGE__->register_method(
+    method      => 'fetch_notes',
+    api_name        => 'open-ils.serial.distribution_note.retrieve.all',
+    signature   => q/
+        Returns an array of copy note objects.  
+        @param args A named hash of parameters including:
+            authtoken       : Required if viewing non-public notes
+            distribution_id : The id of the item whose notes we want to retrieve
             pub             : True if all the caller wants are public notes
         @return An array of note objects
     /
@@ -753,6 +800,17 @@ __PACKAGE__->register_method(
     api_name        => 'open-ils.serial.subscription_note.create',
     signature   => q/
         Creates a new subscription note
+        @param authtoken The login session key
+        @param note The note object to create
+        @return The id of the new note object
+    /
+);
+
+__PACKAGE__->register_method(
+    method      => 'create_note',
+    api_name        => 'open-ils.serial.distribution_note.create',
+    signature   => q/
+        Creates a new distribution note
         @param authtoken The login session key
         @param note The note object to create
         @return The id of the new note object
@@ -811,6 +869,17 @@ __PACKAGE__->register_method(
         /
 );
 
+__PACKAGE__->register_method(
+    method      => 'delete_note',
+    api_name        =>  'open-ils.serial.distribution_note.delete',
+    signature   => q/
+        Deletes an existing distribution note
+        @param authtoken The login session key
+        @param noteid The id of the note to delete
+        @return 1 on success - Event otherwise.
+        /
+);
+
 sub delete_note {
     my( $self, $conn, $authtoken, $noteid ) = @_;
 
@@ -820,7 +889,8 @@ sub delete_note {
     my $e = new_editor(xact=>1, authtoken=>$authtoken);
     return $e->die_event unless $e->checkauth;
 
-    my $note = $e->retrieve_serial_item_note([
+    my $method = "retrieve_serial_${type}_note";
+    my $note = $e->$method([
         $noteid,
     ]) or return $e->die_event;
 
@@ -830,7 +900,7 @@ sub delete_note {
 #            $e->allowed('DELETE_COPY_NOTE', $note->item->call_number->owning_lib);
 #    }
 
-    my $method = "delete_serial_${type}_note";
+    $method = "delete_serial_${type}_note";
     $e->$method($note) or return $e->die_event;
     $e->commit;
     return 1;
@@ -907,6 +977,15 @@ sub fleshed_ssub_alter {
 sub _delete_ssub {
     my ($editor, $override, $ssub) = @_;
     $logger->info("subscription-alter: delete subscription ".OpenSRF::Utils::JSON->perl2JSON($ssub));
+    my $sdists = $editor->search_serial_distribution(
+            { subscription => $ssub->id }, { limit => 1 } ); #TODO: 'deleted' support?
+    my $cps = $editor->search_serial_caption_and_pattern(
+            { subscription => $ssub->id }, { limit => 1 } ); #TODO: 'deleted' support?
+    my $sisses = $editor->search_serial_issuance(
+            { subscription => $ssub->id }, { limit => 1 } ); #TODO: 'deleted' support?
+    return OpenILS::Event->new(
+            'SERIAL_SUBSCRIPTION_NOT_EMPTY', payload => $ssub->id ) if (@$sdists or @$cps or @$sisses);
+
     return $editor->event unless $editor->delete_serial_subscription($ssub);
     return 0;
 }
@@ -1175,8 +1254,119 @@ sub fleshed_serial_distribution_retrieve_batch {
         "open-ils.cstore.direct.serial.distribution.search.atomic",
         { id => $ids },
         { flesh => 1,
-          flesh_fields => {sdist => [ qw/ holding_lib receive_call_number receive_unit_template bind_call_number bind_unit_template / ]}
+          flesh_fields => {sdist => [ qw/ holding_lib receive_call_number receive_unit_template bind_call_number bind_unit_template streams / ]}
         });
+}
+
+##########################################################################
+# caption and pattern methods
+#
+__PACKAGE__->register_method(
+    method    => 'scap_alter',
+    api_name  => 'open-ils.serial.caption_and_pattern.batch.update',
+    api_level => 1,
+    argc      => 2,
+    signature => {
+        desc     => 'Receives an array of one or more caption and patterns and updates the database as needed',
+        'params' => [ {
+                 name => 'authtoken',
+                 desc => 'Authtoken for current user session',
+                 type => 'string'
+            },
+            {
+                 name => 'scaps',
+                 desc => 'Array of caption and patterns',
+                 type => 'array'
+            }
+
+        ],
+        'return' => {
+            desc => 'Returns 1 if successful, event if failed',
+            type => 'mixed'
+        }
+    }
+);
+
+sub scap_alter {
+    my( $self, $conn, $auth, $scaps ) = @_;
+    return 1 unless ref $scaps;
+    my( $reqr, $evt ) = $U->checkses($auth);
+    return $evt if $evt;
+    my $editor = new_editor(requestor => $reqr, xact => 1);
+    my $override = $self->api_name =~ /override/;
+
+# TODO: permission check
+#        return $editor->event unless
+#            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
+
+    for my $scap (@$scaps) {
+        my $scapid = $scap->id;
+
+        if( $scap->isdeleted ) {
+            $evt = _delete_scap( $editor, $override, $scap);
+        } elsif( $scap->isnew ) {
+            $evt = _create_scap( $editor, $scap );
+        } else {
+            $evt = _update_scap( $editor, $override, $scap );
+        }
+    }
+
+    if( $evt ) {
+        $logger->info("caption_and_pattern-alter failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
+        $editor->rollback;
+        return $evt;
+    }
+    $logger->debug("caption_and_pattern-alter: done updating caption_and_pattern batch");
+    $editor->commit;
+    $logger->info("caption_and_pattern-alter successfully updated ".scalar(@$scaps)." caption_and_patterns");
+    return 1;
+}
+
+sub _delete_scap {
+    my ($editor, $override, $scap) = @_;
+    $logger->info("caption_and_pattern-alter: delete caption_and_pattern ".OpenSRF::Utils::JSON->perl2JSON($scap));
+    my $sisses = $editor->search_serial_issuance(
+            { caption_and_pattern => $scap->id }, { limit => 1 } ); #TODO: 'deleted' support?
+    return OpenILS::Event->new(
+            'SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES', payload => $scap->id ) if (@$sisses);
+
+    return $editor->event unless $editor->delete_serial_caption_and_pattern($scap);
+    return 0;
+}
+
+sub _create_scap {
+    my ($editor, $scap) = @_;
+
+    $logger->info("caption_and_pattern-alter: new caption_and_pattern ".OpenSRF::Utils::JSON->perl2JSON($scap));
+    return $editor->event unless $editor->create_serial_caption_and_pattern($scap);
+    return 0;
+}
+
+sub _update_scap {
+    my ($editor, $override, $scap) = @_;
+
+    $logger->info("caption_and_pattern-alter: retrieving caption_and_pattern ".$scap->id);
+    my $orig_scap = $editor->retrieve_serial_caption_and_pattern($scap->id);
+
+    $logger->info("caption_and_pattern-alter: original caption_and_pattern ".OpenSRF::Utils::JSON->perl2JSON($orig_scap));
+    $logger->info("caption_and_pattern-alter: updated caption_and_pattern ".OpenSRF::Utils::JSON->perl2JSON($scap));
+    return $editor->event unless $editor->update_serial_caption_and_pattern($scap);
+    return 0;
+}
+
+__PACKAGE__->register_method(
+    method  => "serial_caption_and_pattern_retrieve_batch",
+    authoritative => 1,
+    api_name    => "open-ils.serial.caption_and_pattern.batch.retrieve"
+);
+
+sub serial_caption_and_pattern_retrieve_batch {
+    my( $self, $client, $ids ) = @_;
+    $logger->info("Fetching caption_and_patterns @$ids");
+    return $U->cstorereq(
+        "open-ils.cstore.direct.serial.caption_and_pattern.search.atomic",
+        { id => $ids }
+    );
 }
 
 1;

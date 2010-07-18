@@ -24,6 +24,8 @@ serial.manage_subs.prototype = {
 
     'ids_from_sel_list' : function(type) {
         var obj = this;
+        JSAN.use('util.functional');
+
         var list = util.functional.map_list(
             util.functional.filter_list(
                 obj.sel_list,
@@ -185,7 +187,6 @@ serial.manage_subs.prototype = {
                             ['command'],
                             function() {
                                 try {
-                                    JSAN.use('util.functional');
                                     var list = obj.ids_from_sel_list('ssub');
                                     if (list.length == 0) return;
 
@@ -223,7 +224,6 @@ serial.manage_subs.prototype = {
                             ['command'],
                             function() {
                                 try {
-                                    JSAN.use('util.functional');
                                     var list = obj.ids_from_sel_list('ssub');
                                     if (list.length == 0) return;
 
@@ -261,7 +261,6 @@ serial.manage_subs.prototype = {
                             ['command'],
                             function() {
                                 try {
-                                    JSAN.use('util.functional');
                                     var list = obj.ids_from_sel_list('ssub');
                                     if (list.length == 0) list = obj.ids_from_sel_list('sdist-group');
                                     if (list.length == 0) return;
@@ -454,7 +453,6 @@ serial.manage_subs.prototype = {
                             ['command'],
                             function() {
                                 try {
-                                    JSAN.use('util.functional');
                                     var list = obj.ids_from_sel_list('aou');
                                     if (list.length == 0) return;
                                     //TODO: permission check?
@@ -500,11 +498,11 @@ serial.manage_subs.prototype = {
                                         return;
                                     }
                                     
-                                    JSAN.use('util.functional');
-
                                     var list = obj.ids_from_sel_list('ssub');
 
                                     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
+
+                                    JSAN.use('util.functional');
 
                                     var ssub_list = util.functional.map_list(
                                         list,
@@ -607,6 +605,62 @@ serial.manage_subs.prototype = {
                             ['command'],
                             function() {
                                 obj.refresh_list();
+                            }
+                        ],
+                        'cmd_make_predictions' : [
+                            ['command'],
+                            function() {
+                                try {
+                                    var list = obj.ids_from_sel_list('ssub');
+                                    if (list.length == 0) {
+                                        alert('You must select a subscription before predicting issuances.'); //TODO: better error
+                                        return;
+                                    }
+
+                                    var num_to_predict = prompt('How many items would you like to predict?',
+                                            '12',
+                                            'Number of Predicted Items');
+                                    num_to_predict = String( num_to_predict ).replace(/\D/g,'');
+                                    if (num_to_predict == '') {
+                                        alert('Invalid number entered!'); //TODO: better error
+                                        return;
+                                    }
+
+                                    for (i = 0; i < list.length; i++) {
+                                        var robj = obj.network.request(
+                                                'open-ils.serial',
+                                                'open-ils.serial.make_predictions',
+                                                [ ses(), {"ssub_id":list[i], "num_to_predict":num_to_predict, "last_rec_date":"2010-07-07"}]
+                                        );
+                                        util.functional.map_list(
+                                            robj,
+                                            function(o) {
+                                                alert('debug: ' + o.date_expected());
+                                            }
+                                        );
+                                    }
+                                    return;
+
+                                    /*JSAN.use('util.functional');
+                                    var list = util.functional.map_list(
+                                            robj,
+                                            function (o) {
+                                                o.distribution(obj.sdist_id);
+                                                return o;
+                                            }
+                                        );*/
+
+                                    var robj = obj.network.request(
+                                                'open-ils.serial',
+                                                'open-ils.serial.item.fleshed.batch.update',
+                                                [ ses(), list ]
+                                            );
+
+                                    //obj.refresh_list('main');
+
+                                } catch(E) {
+                                    obj.error.standard_unexpected_error_alert('cmd_make_predictions failed!',E);
+                                }
                             }
                         ],
 /*dbw2                      'sel_distribution_details' : [
@@ -1071,19 +1125,29 @@ serial.manage_subs.prototype = {
 
     'on_select' : function(list,twisty) {
         var obj = this;
+        var sel_lists = {};
+
         for (var i = 0; i < list.length; i++) {
-            var node = obj.map_tree[ list[i] ];
             var row_type = list[i].split('_')[0];
             var id = list[i].split('_')[1];
 
-            switch(row_type) {
-                case 'aou' : obj.on_select_org(id,twisty); break;
-                case 'ssub' : obj.on_select_ssub(id,twisty); break;
-                case 'sdist' : obj.on_select_sdist(id,twisty); break;
-                case 'siss' : obj.on_select_siss(id,twisty); break;
-                case 'scap' : obj.on_select_scap(id,twisty); break;
-                default: break;
+            if (!sel_lists[row_type]) sel_lists[row_type] = [];
+            sel_lists[row_type].push(id);
+
+            if (twisty) {
+                switch(row_type) {
+                    case 'aou' : obj.on_select_org(id,twisty); break;
+                    case 'ssub' : obj.on_select_ssub(id,twisty); break;
+                    default: break;
+                }
             }
+        }
+
+        var row_type = obj.focused_node_retrieve_id.split('_')[0];
+        var id = obj.focused_node_retrieve_id.split('_')[1];
+
+        if (sel_lists[row_type]) { // the type focused is in the selection (usually the case)
+            obj['on_click_' + row_type](sel_lists[row_type],twisty);
         }
     },
 
@@ -1135,11 +1199,18 @@ serial.manage_subs.prototype = {
                 document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','false'); 
                 document.getElementById('lib_menu').setAttribute('disabled','false'); 
             } );
+        } catch(E) {
+            alert(E);
+        }
+    },
 
-            // draw ssub editor
+    'on_click_ssub' : function(ssub_ids,twisty) {
+        var obj = this;
+        try {
+            // draw sdist editor
             if (typeof twisty == 'undefined') {
                 var params = {};
-                params.ssub_ids = [ssub_id];
+                params.ssub_ids = ssub_ids;
                 obj.editor_init('ssub', 'edit', params);
             }
         } catch(E) {
@@ -1147,13 +1218,13 @@ serial.manage_subs.prototype = {
         }
     },
 
-    'on_select_sdist' : function(sdist_id,twisty) {
+    'on_click_sdist' : function(sdist_ids,twisty) {
         var obj = this;
         try {
             // draw sdist editor
             if (typeof twisty == 'undefined') {
                 var params = {};
-                params.sdist_ids = [sdist_id];
+                params.sdist_ids = sdist_ids;
                 obj.editor_init('sdist', 'edit', params);
             }
         } catch(E) {
@@ -1161,13 +1232,13 @@ serial.manage_subs.prototype = {
         }
     },
 
-    'on_select_siss' : function(siss_id,twisty) {
+    'on_click_siss' : function(siss_ids,twisty) {
         var obj = this;
         try {
             // draw siss editor
             if (typeof twisty == 'undefined') {
                 var params = {};
-                params.siss_ids = [siss_id];
+                params.siss_ids = siss_ids;
                 obj.editor_init('siss', 'edit', params);
             }
         } catch(E) {
@@ -1175,13 +1246,13 @@ serial.manage_subs.prototype = {
         }
     },
 
-    'on_select_scap' : function(scap_id,twisty) {
+    'on_click_scap' : function(scap_ids,twisty) {
         var obj = this;
         try {
             // draw scap editor
             if (typeof twisty == 'undefined') {
                 var params = {};
-                params.scap_ids = [scap_id];
+                params.scap_ids = scap_ids;
                 obj.editor_init('scap', 'edit', params);
             }
         } catch(E) {
@@ -1482,7 +1553,7 @@ serial.manage_subs.prototype = {
                     'id' : 'tree_location',
                     'label' : document.getElementById('catStrings').getString('staff.cat.copy_browser.list_init.tree_location'),
                     'flex' : 1, 'primary' : true, 'hidden' : false, 
-                    'render' : function(my) { return my.sdist ? my.sdist.label() : my.siss ? my.siss.label() : my.scap ? 'C/P #:' + my.scap.id() : my.ssub ? 'Subscription #:' + my.ssub.id() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : my.label ? my.label : "???"; },
+                    'render' : function(my) { return my.sdist ? my.sdist.label() : my.siss ? my.siss.label() : my.scap ? 'C/P : #' + my.scap.id() : my.ssub ? 'Subscription : #' + my.ssub.id() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : my.label ? my.label : "???"; },
                 },
                 {
                     'id' : 'subscription_count',
@@ -1523,7 +1594,8 @@ serial.manage_subs.prototype = {
                         netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserRead');
                         var row = {}; var col = {}; var nobj = {};
                         obj.list.node.treeBoxObject.getCellAt(ev.clientX,ev.clientY,row,col,nobj); 
-                        if ((row.value == -1)||(nobj.value != 'twisty')) { return; }
+                        if ((row.value == -1)||(nobj.value != 'twisty')) { return; } // on_click runs for twistys only
+
                         var node = obj.list.node.contentView.getItemAtIndex(row.value);
                         var list = [ node.getAttribute('retrieve_id') ];
                         if (typeof obj.on_select == 'function') {
@@ -1535,6 +1607,11 @@ serial.manage_subs.prototype = {
                     },
                     'on_select' : function(ev) {
                         JSAN.use('util.functional');
+                        
+                        // get the actual node clicked to determine which editor to use
+                        var node = obj.list.node.contentView.getItemAtIndex(obj.list.node.view.selection.currentIndex);
+                        obj.focused_node_retrieve_id = node.getAttribute('retrieve_id');
+
                         var sel = obj.list.retrieve_selection();
                         obj.controller.view.sel_clip.disabled = sel.length < 1;
                         obj.sel_list = util.functional.map_list(
@@ -1585,6 +1662,7 @@ serial.manage_subs.prototype = {
             obj.controller.view.cmd_add_sdist.setAttribute('disabled','true');
             obj.controller.view.cmd_add_siss.setAttribute('disabled','true');
             obj.controller.view.cmd_add_scap.setAttribute('disabled','true');
+            obj.controller.view.cmd_make_predictions.setAttribute('disabled','true');
             obj.controller.view.cmd_delete_sdist.setAttribute('disabled','true');
             obj.controller.view.cmd_delete_siss.setAttribute('disabled','true');
             obj.controller.view.cmd_delete_scap.setAttribute('disabled','true');
@@ -1605,6 +1683,7 @@ serial.manage_subs.prototype = {
                 obj.controller.view.cmd_add_siss.setAttribute('disabled','false');
                 obj.controller.view.cmd_add_scap.setAttribute('disabled','false');
                 obj.controller.view.cmd_transfer_subscription.setAttribute('disabled','false');
+                obj.controller.view.cmd_make_predictions.setAttribute('disabled','false');
             }
             if (found_sdist_group) {
                 obj.controller.view.cmd_add_sdist.setAttribute('disabled','false');

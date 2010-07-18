@@ -55,6 +55,7 @@ vim:noet:sw=4:ts=4:
                         <menuitem command="cmd_add_sdist" label="Add Distribution"/>
                         <menuitem command="cmd_add_siss" label="Add Issuance"/>
                         <menuitem command="cmd_add_scap" label="Add Caption/Pattern"/>
+                        <menuitem command="cmd_make_predictions" label="Make Predictions"/>
                         <menuitem command="cmd_delete_ssub" label="Delete Subscription"/>
                         <menuitem command="cmd_delete_sdist" label="Delete Distribution"/>
                         <menuitem command="cmd_delete_siss" label="Delete Issuance"/>
@@ -77,6 +78,7 @@ vim:noet:sw=4:ts=4:
                                         <menuitem command="cmd_add_sdist" label="Add Distribution"/>
                                         <menuitem command="cmd_add_siss" label="Add Issuance"/>
                                         <menuitem command="cmd_add_scap" label="Add Caption/Pattern"/>
+                                        <menuitem command="cmd_make_predictions" label="Make Predictions"/>
                                         <menuitem command="cmd_delete_ssub" label="Delete Subscription"/>
                                         <menuitem command="cmd_delete_sdist" label="Delete Distribution"/>
                                         <menuitem command="cmd_delete_siss" label="Delete Issuance"/>

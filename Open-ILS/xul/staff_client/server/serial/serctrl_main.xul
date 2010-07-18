@@ -59,9 +59,10 @@ vim:noet:sw=4:ts=4:
 		<command id="cmd_delete_sdist"/>
 		<command id="cmd_delete_siss"/>
         <command id="cmd_delete_ssub"/>
+        <command id="cmd_make_predictions"/>
         <command id="cmd_mark_library"/>
         <command id="cmd_mark_subscription"/>
-		<command id="cmd_predict_items"/>
+		<!--<command id="cmd_predict_items"/>-->
 		<command id="cmd_print_spine_labels"/>
 		<command id="cmd_receive_items"/>
 		<command id="cmd_refresh_list"/>
