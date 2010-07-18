@@ -608,8 +608,8 @@ sub import_record_list_impl {
     my $type = $self->{record_type};
     my $total = @$rec_ids;
     my $count = 0;
+    my $step = '1' . '0' x ((length($total) * 3) - 2);
     my %queues;
-    my @ingest_queue;
     my $auto_overlay_exact = $$args{auto_overlay_exact};
     my $auto_overlay_1match = $$args{auto_overlay_1match};
     my $merge_profile = $$args{merge_profile};
@@ -634,8 +634,6 @@ sub import_record_list_impl {
         $search_func =~ s/bib/authority/o;
         $rec_class = 'vqar';
     }
-
-    my $ingest_ses = OpenSRF::AppSession->connect('open-ils.ingest');
 
     for my $rec_id (@$rec_ids) {
 
@@ -744,10 +742,6 @@ sub import_record_list_impl {
                 } else {
 
                     $record = OpenILS::Application::Cat::AuthCommon->import_authority_record($e, $rec->marc); #$source);
-                    push @ingest_queue, { 
-                        req => $ingest_ses->request('open-ils.ingest.full.authority.record', $record->id), 
-                        rec_id => $record->id 
-                    };
                 }
 
                 if($U->event_code($record)) {
@@ -766,23 +760,20 @@ sub import_record_list_impl {
         }
 
         if($imported) {
-
             $e->commit;
-            $conn->respond({total => $total, progress => ++$count, imported => $rec_id});
-
         } else {
-
             $e->rollback;
+            # Send an update whenever there's an error
             $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
         }
 
-        $conn->respond({total => $total, progress => $count, imported => $rec_id}) if (++$count % 10) == 0;
+        $conn->respond({total => $total, progress => $count, imported => $rec_id}) if (++$count % $step) == 0;
     }
 
     # see if we need to mark any queues as complete
-    my $e = new_editor(xact => 1);
     for my $q_id (keys %queues) {
 
+    	my $e = new_editor(xact => 1);
         my $remaining = $e->$search_func(
             [{queue => $q_id, import_time => undef}, {limit =>1}], {idlist => 1});
 
@@ -793,21 +784,13 @@ sub import_record_list_impl {
                 $queue->complete('t');
                 $e->$update_queue_func($queue) or return $e->die_event;
                 $e->commit;
-                last
+                next;
             }
-            
         } 
+    	$e->rollback;
     }
-    $e->rollback;
 
-    $count = 0;
-    for my $ingest (@ingest_queue) {
-        try { $ingest->{req}->gather(1); } otherwise {};
-        $conn->respond({total => $total, progress => $count, imported => $ingest->{rec_id}}) if (++$count % 10) == 0;
-    } 
-
-    $ingest_ses->disconnect();
-    return undef;
+    return {total => $total, progress => $count};
 }
 
 
