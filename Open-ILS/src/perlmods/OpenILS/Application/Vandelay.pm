@@ -790,7 +790,8 @@ sub import_record_list_impl {
     	$e->rollback;
     }
 
-    return {total => $total, progress => $count};
+    $conn->respond({total => $total, progress => $count});
+    return undef;
 }
 
 
