@@ -381,7 +381,7 @@ sub cn_startwith {
 	my $copy_locations = shift || [];
 
 
-	my $offset = $page * $limit;
+	my $offset = abs($page) * $limit;
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
 	my $o_search = { shortname => $ou };
@@ -1120,7 +1120,7 @@ sub tag_sf_startwith {
 	my $statuses = shift || [];
 	my $copy_locations = shift || [];
 
-	my $offset = $limit * $page;
+	my $offset = $limit * abs($page);
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
 	my @ou_ids;
@@ -1353,7 +1353,7 @@ sub authority_tag_sf_startwith {
 	my $limit = shift || 10;
 	my $page = shift || 0;
 
-	my $offset = $limit * $page;
+	my $offset = $limit * abs($page);
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
 	my @list = ();
