@@ -1094,6 +1094,20 @@ sub retrieve_hold_queue_status_impl {
         where => {'+ahcm' => {hold => $hold->id}}
     });
 
+
+    # take into account copies that have no circ modifier
+    my $no_circ_mods = $e->json_query({
+        select => {
+            acp => [
+                {column => 'id', transform => 'count', aggregate => 1, alias => 'count'}
+            ]
+        },
+        from => {ahcm => 'acp'},
+        where => {'+ahcm' => {hold => $hold->id}, '+acp' => {circ_modifier => undef}}
+    })->[0];
+
+    push(@$hold_data, {count => $no_circ_mods->{count}}) if $no_circ_mods;
+
     my $user_org = $e->json_query({select => {au => ['home_ou']}, from => 'au', where => {id => $hold->usr}})->[0]->{home_ou};
 
     my $default_wait = $U->ou_ancestor_setting_value($user_org, OILS_SETTING_HOLD_ESIMATE_WAIT_INTERVAL);
