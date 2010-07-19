@@ -450,8 +450,11 @@ function myOShowHoldStatus(r) {
 
     if(qstats.estimated_wait || myopacShowHoldEstimate) {
         myopacShowHoldEstimate = true;
-        if(qstats.estimated_wait)
-            $n(row, 'myopac_holds_estimated_wait').appendChild(text(qstats.estimated_wait));
+        if(qstats.estimated_wait) {
+            // wait is currently returned in seconds, but displayed in days
+            var wait = Math.ceil(qstats.estimated_wait / 86400);
+            $n(row, 'myopac_holds_estimated_wait').appendChild(text(wait));
+        }
         unHideMe($('myopac_holds_estimated_wait_column'));
         unHideMe($n(row, 'myopac_holds_estimated_wait'));
     } 
