@@ -1085,28 +1085,20 @@ sub retrieve_hold_queue_status_impl {
 
     my $hold_data = $e->json_query({
         select => {
-            ccm => [
-                {column => 'code', transform => 'count', aggregate => 1, alias => 'count'}, 
-                {column =>'avg_wait_time'}
-            ]
+            acp => [ {column => 'id', transform => 'count', aggregate => 1, alias => 'count'} ],
+            ccm => [ {column =>'avg_wait_time'} ]
         }, 
-        from => {ahcm => {acp => {join => 'ccm'}}}, 
-        where => {'+ahcm' => {hold => $hold->id}}
+        from => {
+            ahcm => {
+                acp => {
+                    join => {
+                        ccm => {type => 'left'}
+                    }
+                }
+            }
+        }, 
+        where => {'+ahcm' => {hold => $hold->id} }
     });
-
-
-    # take into account copies that have no circ modifier
-    my $no_circ_mods = $e->json_query({
-        select => {
-            acp => [
-                {column => 'id', transform => 'count', aggregate => 1, alias => 'count'}
-            ]
-        },
-        from => {ahcm => 'acp'},
-        where => {'+ahcm' => {hold => $hold->id}, '+acp' => {circ_modifier => undef}}
-    })->[0];
-
-    push(@$hold_data, {count => $no_circ_mods->{count}}) if $no_circ_mods;
 
     my $user_org = $e->json_query({select => {au => ['home_ou']}, from => 'au', where => {id => $hold->usr}})->[0]->{home_ou};
 
