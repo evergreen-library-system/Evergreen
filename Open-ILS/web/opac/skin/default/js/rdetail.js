@@ -42,6 +42,8 @@ var rdetailNext = null;
 var rdetailStart = null;
 var rdetailEnd = null;
 
+var mfhdDetails = [];
+
 /* serials are currently the only use of Dojo strings in the OPAC */
 if (rdetailDisplaySerialHoldings) {
 	dojo.require("dijit.Menu");
@@ -243,6 +245,10 @@ function _holdingsDraw(h) {
 
 	dojo.forEach(holdings, _holdingsDrawMFHD);
 
+	// Populate XUL menus
+	if (isXUL()) {
+		runEvt('rdetail','MFHDDrawn');
+	}
 }
 
 function _holdingsDrawMFHD(holdings, entryNum) {
@@ -284,6 +290,14 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 		}
 	}
 
+	// Show entryNum + 1 in staff client for better menu correlation
+	// Maybe this should be holdings.id() instead? (which could get long after time)
+	var entryNumString = '';
+	if (isXUL()) {
+		var entryNumInc = entryNum + 1;
+		entryNumString = ' [Entry #'+entryNumInc+'] ';
+	}
+
 	dojo.place("<table style='width: 100%;'><caption id='mfhdHoldingsCaption" + entryNum + "' class='rdetail_header color_1'>" +
 		dojo.string.substitute(opac_strings.HOLDINGS_TABLE_CAPTION, [hloc]) +
 		"</caption><tbody id='rdetail_holdings_tbody_" + entryNum +
@@ -300,6 +314,7 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 	if (hinc.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.INCOMPLETE_VOLUMES, hinc); }
 
 	if (isXUL()) {
+		mfhdDetails.push({ 'id' : holdings.id(), 'label' : hloc, 'entryNum' : entryNum, 'owning_lib' : holdings.owning_lib() });
 		dojo.require('openils.Event');
 		dojo.require('openils.PermaCrud');
 		var mfhd_edit = new dijit.Menu({});
