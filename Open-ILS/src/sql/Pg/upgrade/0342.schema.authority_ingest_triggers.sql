@@ -2,7 +2,7 @@
 -- authority.record_entry and authority.full_rec will automatically be populated
 BEGIN;
 
-INSERT INTO config.upgrade_log('342'); --dbs
+INSERT INTO config.upgrade_log (version) VALUES ('0342'); -- dbs 
 
 CREATE OR REPLACE FUNCTION authority.propagate_changes (aid BIGINT, bid BIGINT) RETURNS BIGINT AS $func$
     UPDATE  biblio.record_entry
