@@ -311,8 +311,11 @@ sub set_circ_claims_returned {
         my $new_date = DateTime::Format::ISO8601->new->parse_datetime($backdate);
         $backdate = $new_date->ymd . 'T' . $original_date->strftime('%T%z');
 
+        # clean it up once again; need a : in the timezone offset. E.g. -06:00 not -0600
+        $backdate = clense_ISO8601($backdate);
+
         # make it look like the circ stopped at the cliams returned time
-        $circ->stop_fines_time(clense_ISO8601($backdate));
+        $circ->stop_fines_time($backdate);
         my $evt = OpenILS::Application::Circ::CircCommon->void_overdues($e, $circ, $backdate);
         return $evt if $evt;
     }
