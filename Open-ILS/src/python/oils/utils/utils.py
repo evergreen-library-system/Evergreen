@@ -13,7 +13,7 @@
 # GNU General Public License for more details.
 # -----------------------------------------------------------------------
 
-import re, md5
+import re, hashlib
 import osrf.ses
 from osrf.log import *
 
@@ -24,7 +24,7 @@ from osrf.log import *
 # -----------------------------------------------------------------------
 
 def md5sum(str):
-    m = md5.new()
+    m = hashlib.md5()
     m.update(str)
     return m.hexdigest()
 
