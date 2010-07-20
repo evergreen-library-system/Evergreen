@@ -373,6 +373,8 @@ sub process_request {   # The core Net::Server method
 
     my ($imported, $failed) = (0, 0);
 
+    new_auth_token(); # login
+
     if ($real_opts->{noqueue}) {
         ($imported, $failed) = old_process_batch_data($data);
     } else {
@@ -391,6 +393,8 @@ sub process_request {   # The core Net::Server method
     $msg .= "Failed to import $failed records\n" if $failed;
     $msg .= "\x00";
     print $client $msg;
+
+    clear_auth_token(); # logout
 }
 
 
@@ -402,10 +406,17 @@ sub new_auth_token {
     return $authtoken;
 }
 
+sub clear_auth_token {
+    $apputils->simplereq(
+        'open-ils.auth',
+        'open-ils.auth.session.delete',
+        $authtoken
+    );
+}
+
 ##### MAIN ######
 
 osrf_connect($osrf_config);
-new_auth_token();
 print "Calling Net::Server run ", (@ARGV ? "with command-line options: " . join(' ', @ARGV) : ''), "\n";
 __PACKAGE__->run(conf_file => $conf_file);
 
