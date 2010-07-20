@@ -31,6 +31,7 @@ use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
 use OpenILS::Utils::Cronscript;
+use OpenSRF::Transport::PeerHandle;
 require 'oils_header.pl';
 use vars qw/$apputils/;
 
@@ -346,6 +347,13 @@ sub process_request {   # The core Net::Server method
     my $client = $self->{server}->{client};
 
     $logger->info("stream parser received contact from $client");
+
+    my $ph = OpenSRF::Transport::PeerHandle->retrieve;
+    if(!$ph->flush_socket()) {
+        $logger->error("We received a request, bu we are no longer connected to opensrf.  ".
+            "Exiting and dropping request from $client");
+        exit;
+    }
 
     my $data;
     eval {
