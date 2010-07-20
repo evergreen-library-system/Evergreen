@@ -992,7 +992,7 @@ BEGIN
                     'marc',
                     'biblio.record_entry',
                     '//*[@tag="856"]',
-                    'id=' || lineitem
+                    'id=' || source_record
                 ) as t(i int,c text);
     
         FOR i IN 1 .. counter LOOP
