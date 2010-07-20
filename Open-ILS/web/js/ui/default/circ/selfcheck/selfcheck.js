@@ -22,6 +22,8 @@ const SET_WORKSTATION_REQUIRED = 'circ.selfcheck.workstation_required';
 const SET_ALERT_POPUP = 'circ.selfcheck.alert.popup';
 const SET_ALERT_SOUND = 'circ.selfcheck.alert.sound';
 const SET_CC_PAYMENT_ALLOWED = 'credit.payments.allow';
+// This setting only comes into play if COPY_NOT_AVAILABLE is in the SET_AUTO_OVERRIDE_EVENTS list
+const SET_BLOCK_CHECKOUT_ON_COPY_STATUS = 'circ.selfcheck.block_checkout_on_copy_status';
 
 function SelfCheckManager() {
 
@@ -243,6 +245,7 @@ SelfCheckManager.prototype.loadOrgSettings = function() {
             SET_ALERT_POPUP,
             SET_ALERT_SOUND,
             SET_AUTO_OVERRIDE_EVENTS,
+            SET_BLOCK_CHECKOUT_ON_COPY_STATUS,
             SET_PATRON_PASSWORD_REQUIRED,
             SET_AUTO_RENEW_INTERVAL,
             SET_WORKSTATION_REQUIRED,
@@ -877,7 +880,7 @@ SelfCheckManager.prototype.checkout = function(barcode, override) {
     console.log("Checkout out item " + barcode + " with method " + method);
 
     var result = fieldmapper.standardRequest(
-        ['open-ils.circ', 'open-ils.circ.checkout.full'],
+        ['open-ils.circ', method],
         {params: [
             this.authtoken, {
                 patron_id : this.patron.id(),
@@ -917,6 +920,7 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
     var sound = ''; // sound file reference
     var payload = result.payload || {};
     var overrideEvents = this.orgSettings[SET_AUTO_OVERRIDE_EVENTS];
+    var blockStatuses = this.orgSettings[SET_BLOCK_CHECKOUT_ON_COPY_STATUS];
         
     if(result.textcode == 'NO_SESSION') {
 
@@ -1006,11 +1010,25 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
     
             var override = true;
             for(var i = 0; i < result.length; i++) {
-                var match = overrideEvents.filter(
-                    function(e) { return (e == result[i].textcode); })[0];
+
+                var match = overrideEvents.filter(function(e) { return (e == result[i].textcode); })[0];
+
                 if(!match) {
                     override = false;
                     break;
+                }
+
+                if(result[i].textcode == 'COPY_NOT_AVAILABLE' && blockStatuses && blockStatuses.length) {
+
+                    var stat = result[i].payload.status(); // copy status
+                    if(typeof stat == 'object') stat = stat.id();
+
+                    var match2 = blockStatuses.filter(function(e) { return (e == stat); })[0];
+
+                    if(match2) { // copy is in a blocked status
+                        override = false;
+                        break;
+                    }
                 }
 
                 if(result[i].textcode == 'COPY_IN_TRANSIT') {
@@ -1020,7 +1038,6 @@ SelfCheckManager.prototype.handleXactResult = function(action, item, result) {
                     } else {
                         override = false;
                     }
-
                 }
             }
 
