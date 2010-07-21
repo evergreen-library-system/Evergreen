@@ -151,6 +151,7 @@ CREATE TABLE action_trigger.event (
     template_output BIGINT      REFERENCES action_trigger.event_output (id),
     error_output    BIGINT      REFERENCES action_trigger.event_output (id)
 );
+CREATE INDEX atev_target_def_idx ON action_trigger.event (target,event_def);
 
 CREATE TABLE action_trigger.event_params (
     id          BIGSERIAL   PRIMARY KEY,
