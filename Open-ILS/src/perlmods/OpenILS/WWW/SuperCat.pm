@@ -586,6 +586,10 @@ sub unapi {
 	my @params = ($id);
 	push @params, $lib, $lib_depth, $flesh_feed, $paging if ($base_format eq 'holdings_xml');
 
+	# for acn, acp, etc, the "lib" pathinfo position isn't useful.
+	# however, we can have it carry extra options like no_record! (comma separated)
+	push @params, { map { ( $_ => 1 ) } split(',', $lib) } if ( grep { $type eq $_} qw/acn acp auri/);
+
 	my $req = $supercat->request($method,@params);
 	my $data = $req->gather();
 
