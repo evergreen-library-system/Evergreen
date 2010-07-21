@@ -8,9 +8,6 @@
                 <tr id="acq-[% which_lc %]-info-row"><td name="label"/><td name="value"/></tr>
             </tbody>
         </table>
-        <div style="margin-top:10px;" class="hidden" id="acq-[% which_lc %]-info-cat-link">
-            View in the <a href="/opac/en-US/skin/default/xml/rdetail.xml?r=">Catalog</a>
-        </div>
 [% IF which == "Lit" %]
         <div class="hidden" id="acq-[% which_lc %]-info-related">
             Show the <a name="rel_link" href="#"><span name="related_number"></span> lineitem(s)</a> related to the same bibliographic record.

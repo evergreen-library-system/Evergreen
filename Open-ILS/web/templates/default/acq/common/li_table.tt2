@@ -77,14 +77,11 @@
                         <table style='width:100%;'>
                             <tbody>
                                 <tr>
-                                    <td rowspan='2' style='width:43px;'><img style='width:40px;height:65px;' name='jacket'></td>
+                                    <td rowspan='3' style='width:43px;'><img style='width:40px;height:65px;' name='jacket'></td>
                                     <td style='width:70%;font-weight:bold;'>
                                         <span name="bib_origin" class="hidden">
                                             <img src="/opac/images/book-icon.png" />
                                         </span><a attr='title' href='javascript:void(0);'></a>
-                                        <span name="worksheet">(<a name="worksheet_link" href="javascript:void(0);">&#x270D;</a>)</span>
-                                        <span name='pl' class='hidden'>(<a name='pl_link' href='javascript:void(0);'></a>)</span>
-                                        <span name='po' class='hidden'>(<a name='po_link' href='javascript:void(0);'>PO</a>)</span>
                                     </td>
                                     <td rowspan='2' style='text-align:right'>
                                     </td>
@@ -100,10 +97,19 @@
                                         <span name='source_label'></span>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td colspan='0'>
+                                        <span name="catalog" class='hidden'><a title='Show In Catalog' name="catalog_link" href="javascript:void(0);">&#x279F; catalog</a></span> 
+                                        <span name="link_to_catalog" class='hidden'><a title='Link To Catalog Record' name="link_to_catalog_link" href="javascript:void(0);">&#x27BE; link to catalog</a></span> 
+                                        <span name="worksheet"> | <a title='Generate Worksheet' name="worksheet_link" href="javascript:void(0);">&#x270D; worksheet</a></span>
+                                        <span name='pl' class='hidden'> | <a title='Select List' name='pl_link' href='javascript:void(0);'>&#x2756; </a></span>
+                                        <span name='po' class='hidden'> | <a title='Purchase Order' name='po_link' href='javascript:void(0);'>&#x2318; </a></span>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </td>
-                    <td><a name='copieslink' href='javascript:void(0);'>Copies(<span name='count'>0</span>)</a></td>
+                    <td><a title='FOOOBAR' name='copieslink' href='javascript:void(0);'>Copies(<span name='count'>0</span>)</a></td>
                     <td>
                         <a name='noteslink' href='javascript:void(0);'>Notes(<span name='notes_count'>0</span>)</a><span name="notes_alert_flag"></span>
                     </td>

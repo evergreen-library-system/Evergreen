@@ -274,6 +274,14 @@ function AcqLiTable() {
             );
         }
 
+        if(li.eg_bib_id()) {
+            openils.Util.show(nodeByName('catalog', row), 'inline');
+            nodeByName("catalog_link", row).onclick = this.generateMakeRecTab(li.eg_bib_id());
+        } else {
+            // TODO: Add discovery mechanism for bib linking
+            openils.Util.show(nodeByName('link_to_catalog', row), 'inline');
+        }
+
         nodeByName("worksheet_link", row).href =
             oilsBasePath + "/acq/lineitem/worksheet/" + li.id();
 
@@ -305,7 +313,7 @@ function AcqLiTable() {
                 openils.Util.show(nodeByName('po', row), 'inline');
                 var link = nodeByName('po_link', row);
                 link.setAttribute('href', oilsBasePath + '/acq/po/view/' + li.purchase_order());
-                link.innerHTML = 'PO: ' + po.name(); // TODO i18n
+                link.innerHTML += po.name();
             }
         }
 
@@ -318,13 +326,16 @@ function AcqLiTable() {
                     ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
                     {params: [this.authtoken, li.picklist()]});
             if (pl) {
-                if (pl.name() == "")
+                if (pl.name() == "") {
                     openils.Util.show(nodeByName("bib_origin", row), "inline");
 
-                openils.Util.show(nodeByName('pl', row), 'inline');
-                var link = nodeByName('pl_link', row);
-                link.setAttribute('href', oilsBasePath + '/acq/picklist/view/' + li.picklist());
-                link.innerHTML = 'PL: '+pl.name(); // TODO i18n
+                } else {
+
+                    openils.Util.show(nodeByName('pl', row), 'inline');
+                    var link = nodeByName('pl_link', row);
+                    link.setAttribute('href', oilsBasePath + '/acq/picklist/view/' + li.picklist());
+                    link.innerHTML += pl.name();
+                }
             }
         }
 
@@ -839,24 +850,6 @@ function AcqLiTable() {
                 oilsBasePath + "/acq/lineitem/related/" + li.id();
         }
 
-        if(li.eg_bib_id()) {
-
-            openils.Util.show('acq-lit-info-cat-link');
-            var link = dojo.byId('acq-lit-info-cat-link').getElementsByTagName('a')[0];
-
-            if(openils.XUL.isXUL()) {
-
-                link.setAttribute('href', 'javascript:void(0);');
-                link.onclick = this.generateMakeRecTab( li.eg_bib_id() );
-
-            } else {
-                var href = link.getAttribute('href');
-                if(href.match(/=$/))
-                    link.setAttribute('href',  href + li.eg_bib_id());
-            }
-        } else {
-            openils.Util.hide('acq-lit-info-cat-link');
-        }
     };
 
     this.generateMakeRecTab = function(bib_id,default_view, row) {
