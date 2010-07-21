@@ -127,6 +127,13 @@ sub new {
     $self->{call_number} = $copy->call_number->label;
     $self->{mods} = $U->record_to_mvr($self->{record}) if $self->{record}->marc;
 
+    # use the non-translated version of the copy location as the
+    # collection code, since it may be used for additional routing
+    # purposes by the SIP client.  Config option?
+    $self->{collection_code} = 
+        $e->retrieve_asset_copy_location([
+            $copy->location, {no_i18n => 1}])->name;
+
     if ($copy->status->id == OILS_COPY_STATUS_IN_TRANSIT) {
         my $transit = $e->search_action_transit_copy([
             {
