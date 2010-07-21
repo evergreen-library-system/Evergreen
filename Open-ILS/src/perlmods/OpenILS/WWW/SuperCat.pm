@@ -482,13 +482,16 @@ sub unapi {
 		)->gather(1)->[0]->shortname;
 	}
 
-	my $lib_object = $actor->request(
-		'open-ils.actor.org_unit_list.search' => shortname => $lib
-	)->gather(1)->[0];
-	my $lib_id = $lib_object->id;
+	my ($lib_object,$lib_id,$ou_types,$lib_depth);
+	if ($type ne 'acn' && $type ne 'acp' && $type ne 'auri') {
+		$lib_object = $actor->request(
+			'open-ils.actor.org_unit_list.search' => shortname => $lib
+		)->gather(1)->[0];
+		$lib_id = $lib_object->id;
 
-	my $ou_types = $actor->request( 'open-ils.actor.org_types.retrieve' )->gather(1);
-	my $lib_depth = $depth || (grep { $_->id == $lib_object->ou_type } @$ou_types)[0]->depth;
+		$ou_types = $actor->request( 'open-ils.actor.org_types.retrieve' )->gather(1);
+		$lib_depth = $depth || (grep { $_->id == $lib_object->ou_type } @$ou_types)[0]->depth;
+	}
 
 	if ($command eq 'browse') {
 		print "Location: $root/browse/$base_format/$scheme/$lib/$id\n\n";
