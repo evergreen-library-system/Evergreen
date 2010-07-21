@@ -219,6 +219,10 @@ CREATE TABLE serial.item (
 	                        DEFERRABLE INITIALLY DEFERRED,
 	date_expected   TIMESTAMP WITH TIME ZONE,
 	date_received   TIMESTAMP WITH TIME ZONE
+	status          TEXT      CONSTRAINT valid_status CHECK
+	                          (
+	                              status IN ('Bindery', 'Bound', 'Claimed', 'Discarded', 'Expected', 'Not Held', 'Not Published', 'Received')
+	                          ) DEFAULT 'Expected'
 );
 
 CREATE TABLE serial.item_note (
@@ -236,7 +240,7 @@ CREATE TABLE serial.item_note (
 	value       TEXT    NOT NULL
 );
 
-CREATE TABLE serial.bib_summary (
+CREATE TABLE serial.basic_summary (
 	id                  SERIAL  PRIMARY KEY,
 	distribution        INT     NOT NULL
 	                            REFERENCES serial.distribution (id)
@@ -246,7 +250,7 @@ CREATE TABLE serial.bib_summary (
 	textual_holdings    TEXT
 );
 
-CREATE TABLE serial.sup_summary (
+CREATE TABLE serial.supplement_summary (
 	id                  SERIAL  PRIMARY KEY,
 	distribution        INT     NOT NULL
 	                            REFERENCES serial.distribution (id)

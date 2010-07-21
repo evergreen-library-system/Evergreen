@@ -83,7 +83,7 @@ serial.manage_items.prototype = {
                     // get latest sdist id list based on library drowdown
                     obj.set_sdist_ids();
                     obj.refresh_list('main');
-                    obj.refresh_list('sunit');
+                    obj.refresh_list('workarea');
                 },
                 false
             );
@@ -228,12 +228,11 @@ serial.manage_items.prototype = {
                                 var list = util.functional.map_list(
                                         obj.retrieve_ids,
                                         function (o) {
-                                            return obj.list_sitem_map[o.sitem_id];
+                                            var item = obj.list_sitem_map[o.sitem_id];
+                                            item.unit('-1'); //FIXME: hard-coded unit (-1 is AUTO)
+                                            return item;
                                         }
                                     );
-                                for (var i = 0; i < list.length; i++) {
-                                        list[i].unit('1'); //FIXME: hard-coded unit
-                                }
 
                                 var robj = obj.network.request(
                                             'open-ils.serial',
@@ -244,7 +243,7 @@ serial.manage_items.prototype = {
 
                                 alert('Successfully received '+robj+' item(s)');
                                 obj.refresh_list('main');
-                                obj.refresh_list('sunit');
+                                obj.refresh_list('workarea');
                                 
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('cmd_receive_items failed!',E);
@@ -275,13 +274,13 @@ serial.manage_items.prototype = {
 
                     'cmd_items_print' : [ ['command'], function() { obj.items_print(obj.selected_list); } ],
 					'cmd_items_export' : [ ['command'], function() { obj.items_export(obj.selected_list); } ],
-					'cmd_refresh_list' : [ ['command'], function() { obj.refresh_list('main'); obj.refresh_list('sunit'); } ]
+					'cmd_refresh_list' : [ ['command'], function() { obj.refresh_list('main'); obj.refresh_list('workarea'); } ]
 				}
 			}
 		);
         
 		obj.retrieve('main'); // retrieve main list
-        obj.retrieve('sunit'); // retrieve shelving unit list
+        obj.retrieve('workarea'); // retrieve shelving unit list
 
 		obj.controller.view.sel_clip.setAttribute('disabled','true');
 
@@ -317,7 +316,7 @@ serial.manage_items.prototype = {
 
 		JSAN.use('circ.util');
         var columns = item_columns({});
-        
+
         function retrieve_row(params) {
 			try { 
 				var row = params.row;
@@ -380,18 +379,18 @@ serial.manage_items.prototype = {
 			}
 		);
         obj.lists.main.sitem_retrieve_params = {'date_received' : null };
-        obj.lists.main.sitem_sort_params ={'order_by' : {'sitem' : 'date_expected ASC'}};
+        obj.lists.main.sitem_extra_params ={'order_by' : {'sitem' : 'date_expected ASC, stream ASC'}};
 
-        obj.lists.sunit = new util.list('sunit_tree');
-		obj.lists.sunit.init(
+        obj.lists.workarea = new util.list('workarea_tree');
+		obj.lists.workarea.init(
 			{
 				'columns' : columns,
 				'map_row_to_columns' : circ.util.std_map_row_to_columns(),
 				'retrieve_row' : retrieve_row,
 				'on_select' : function(ev) {
-                    obj.selected_list = 'sunit';
+                    obj.selected_list = 'workarea';
 					JSAN.use('util.functional');
-					var sel = obj.lists.sunit.retrieve_selection();
+					var sel = obj.lists.workarea.retrieve_selection();
 					obj.controller.view.sel_clip.setAttribute('disabled',sel.length < 1);
 					var list = util.functional.map_list(
 						sel,
@@ -409,8 +408,8 @@ serial.manage_items.prototype = {
 				}
 			}
 		);
-        obj.lists.sunit.sitem_retrieve_params = {'unit' : 1, 'date_received' : {"!=" : null}}; //FIXME: hard-coded shelving unit
-        obj.lists.sunit.sitem_sort_params ={'order_by' : {'sitem' : 'date_received DESC'}};
+        obj.lists.workarea.sitem_retrieve_params = {'date_received' : {"!=" : null}};
+        obj.lists.workarea.sitem_extra_params ={'order_by' : {'sitem' : 'date_received DESC'}, 'limit' : 30};
     },
 
 	'refresh_list' : function(list_name) {
@@ -431,35 +430,31 @@ serial.manage_items.prototype = {
 	'retrieve' : function(list_name) {
 		var obj = this;
         var list = obj.lists[list_name];
-		if (window.xulG && window.xulG.items) {
-			obj.items = window.xulG.items;
-		} else {
-			obj.items = []; //FIXME: not using this
+        
+        if (!obj.sdist_ids.length) { // no sdists to retrieve items for
+            return;
+        }
 
-            var rparams = list.sitem_retrieve_params;
-            var robj;
-            if (obj.sdist_ids.length > 0) {
-                rparams['+sstr'] = { "distribution" : {"in" : obj.sdist_ids} };
-                var other_params = list.sitem_sort_params;
-                other_params.join = 'sstr';
+        var rparams = list.sitem_retrieve_params;
+        var robj;
+        rparams['+sstr'] = { "distribution" : obj.sdist_ids };
+        var other_params = list.sitem_extra_params;
+        other_params.join = 'sstr';
 
-                robj = obj.network.simple_request(
-                    'FM_SITEM_ID_LIST',
-                    [ ses(), rparams, other_params ]
-                );
-            }
-/*			if (typeof robj.ilsevent!='undefined') {
-				obj.error.standard_unexpected_error_alert('FIXME: Catch edit control with no distribution',E);
-			}*/
-		}
+        robj = obj.network.simple_request(
+            'FM_SITEM_ID_LIST',
+            [ ses(), rparams, other_params ]
+        );
+        if (typeof robj.ilsevent!='undefined') {
+            obj.error.standard_unexpected_error_alert('Failed to retrieve serial item ID list',E);
+        }
         if (!robj) {
             robj = [];
-        }else if (!robj.length) {
+        } else if (!robj.length) {
             robj = [robj];
         }
 
 		list.clear();
-
         for (i = 0; i < robj.length; i++) {
             list.append( { 'row' : { 'my' : { 'sitem_id' : robj[i] } }, 'to_bottom' : true, 'no_auto_select' : true } );
         }
@@ -470,6 +465,9 @@ serial.manage_items.prototype = {
 		dump('manage_items.on_select list = ' + js2JSON(list) + '\n');
 
 		var obj = this;
+
+		/*obj.controller.view.cmd_items_claimed_returned.setAttribute('disabled','false');
+		obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');*/
 
 		obj.retrieve_ids = list;
 	}
@@ -491,60 +489,6 @@ function item_columns(modify,params) {
             'persist' : 'hidden width ordinal'
         },
         {
-            'id' : 'creator',
-            'label' : 'Creator',
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : true,
-            'persist' : 'hidden width ordinal',
-            'render' : function(my) { return my.sitem.creator().usrname(); }
-        },
-        {
-            'id' : 'create_date',
-            'label' : document.getElementById('circStrings').getString('staff.circ.utils.create_date'),
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : true,
-            'persist' : 'hidden width ordinal',
-            'render' : function(my) { return my.sitem.create_date().substr(0,10); }
-        },
-        {
-            'id' : 'editor',
-            'label' : 'Editor',
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : false,
-            'persist' : 'hidden width ordinal',
-            'render' : function(my) { return my.sitem.editor().usrname(); }
-        },
-        {
-            'id' : 'edit_date',
-            'label' : document.getElementById('circStrings').getString('staff.circ.utils.edit_date'),
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : false,
-            'persist' : 'hidden width ordinal',
-            'render' : function(my) { return my.sitem.edit_date().substr(0,10); }
-        },
-        {
-            'id' : 'distribution',
-            'label' : 'Distribution',
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : true,
-            'persist' : 'hidden width ordinal',
-            'render' : function(my) { return my.sitem.stream().distribution().label(); }
-        },
-        {
-            'id' : 'unit',
-            'label' : 'Unit',
-            'flex' : 1,
-            'primary' : false,
-            'hidden' : false,
-            'persist' : 'hidden width ordinal',
-            'render' : function(my) { return my.sitem.unit().call_number().label(); }
-        },
-        {
             'id' : 'label',
             'label' : 'Issuance Label',
             'flex' : 1,
@@ -552,6 +496,24 @@ function item_columns(modify,params) {
             'hidden' : false,
             'render' : function(my) { return my.sitem.issuance().label(); },
             'persist' : 'hidden width ordinal'
+        },
+        {
+            'id' : 'distribution',
+            'label' : 'Distribution',
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : false,
+            'persist' : 'hidden width ordinal',
+            'render' : function(my) { return my.sitem.stream().distribution().label(); }
+        },
+        {
+            'id' : 'stream_id',
+            'label' : 'Stream ID',
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : false,
+            'persist' : 'hidden width ordinal',
+            'render' : function(my) { return my.sitem.stream().id(); }
         },
         {
             'id' : 'date_published',
@@ -588,6 +550,60 @@ function item_columns(modify,params) {
             'hidden' : false,
             'render' : function(my) { return my.sitem.notes().length; },
             'persist' : 'hidden width ordinal'
+        },
+        {
+            'id' : 'call_number',
+            'label' : 'Call Number',
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : false,
+            'persist' : 'hidden width ordinal',
+            'render' : function(my) { return my.sitem.unit().call_number().label(); }
+        },
+        {
+            'id' : 'unit_id_contents',
+            'label' : 'Unit ID / Contents',
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : false,
+            'render' : function(my) { return '[' + my.sitem.unit().id() + '] ' + my.sitem.unit().summary_contents() ; },
+            'persist' : 'hidden width ordinal'
+        },
+        {
+            'id' : 'creator',
+            'label' : 'Creator',
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'persist' : 'hidden width ordinal',
+            'render' : function(my) { return my.sitem.creator().usrname(); }
+        },
+        {
+            'id' : 'create_date',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.create_date'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'persist' : 'hidden width ordinal',
+            'render' : function(my) { return my.sitem.create_date().substr(0,10); }
+        },
+        {
+            'id' : 'editor',
+            'label' : 'Editor',
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'persist' : 'hidden width ordinal',
+            'render' : function(my) { return my.sitem.editor().usrname(); }
+        },
+        {
+            'id' : 'edit_date',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.edit_date'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : false,
+            'persist' : 'hidden width ordinal',
+            'render' : function(my) { return my.sitem.edit_date().substr(0,10); }
         },
         {
             'id' : 'holding_code',

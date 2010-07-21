@@ -119,7 +119,7 @@ sub fleshed_item_alter {
         $item->edit_date('now');
 
         if( $item->isdeleted ) {
-            $evt = _delete_item( $editor, $override, $item);
+            $evt = _delete_sitem( $editor, $override, $item);
         } elsif( $item->isnew ) {
             # TODO: reconsider this
             # if the item has a new issuance, create the issuance first
@@ -127,10 +127,10 @@ sub fleshed_item_alter {
                 fleshed_issuance_alter($self, $conn, $auth, [$item->issuance]);
             }
             _cleanse_dates($item, ['date_expected','date_received']);
-            $evt = _create_item( $editor, $item );
+            $evt = _create_sitem( $editor, $item );
         } else {
             _cleanse_dates($item, ['date_expected','date_received']);
-            $evt = _update_item( $editor, $override, $item );
+            $evt = _update_sitem( $editor, $override, $item );
         }
     }
 
@@ -145,14 +145,14 @@ sub fleshed_item_alter {
     return 1;
 }
 
-sub _delete_item {
+sub _delete_sitem {
     my ($editor, $override, $item) = @_;
     $logger->info("item-alter: delete item ".OpenSRF::Utils::JSON->perl2JSON($item));
     return $editor->event unless $editor->delete_serial_item($item);
     return 0;
 }
 
-sub _create_item {
+sub _create_sitem {
     my ($editor, $item) = @_;
 
     $item->creator($editor->requestor->id);
@@ -163,7 +163,7 @@ sub _create_item {
     return 0;
 }
 
-sub _update_item {
+sub _update_sitem {
     my ($editor, $override, $item) = @_;
 
     $logger->info("item-alter: retrieving item ".$item->id);
@@ -241,13 +241,13 @@ sub fleshed_issuance_alter {
         $issuance->edit_date('now');
 
         if( $issuance->isdeleted ) {
-            $evt = _delete_issuance( $editor, $override, $issuance);
+            $evt = _delete_siss( $editor, $override, $issuance);
         } elsif( $issuance->isnew ) {
             _cleanse_dates($issuance, ['date_published']);
-            $evt = _create_issuance( $editor, $issuance );
+            $evt = _create_siss( $editor, $issuance );
         } else {
             _cleanse_dates($issuance, ['date_published']);
-            $evt = _update_issuance( $editor, $override, $issuance );
+            $evt = _update_siss( $editor, $override, $issuance );
         }
     }
 
@@ -262,14 +262,14 @@ sub fleshed_issuance_alter {
     return 1;
 }
 
-sub _delete_issuance {
+sub _delete_siss {
     my ($editor, $override, $issuance) = @_;
     $logger->info("issuance-alter: delete issuance ".OpenSRF::Utils::JSON->perl2JSON($issuance));
     return $editor->event unless $editor->delete_serial_issuance($issuance);
     return 0;
 }
 
-sub _create_issuance {
+sub _create_siss {
     my ($editor, $issuance) = @_;
 
     $issuance->creator($editor->requestor->id);
@@ -280,7 +280,7 @@ sub _create_issuance {
     return 0;
 }
 
-sub _update_issuance {
+sub _update_siss {
     my ($editor, $override, $issuance) = @_;
 
     $logger->info("issuance-alter: retrieving issuance ".$issuance->id);
@@ -612,7 +612,7 @@ sub _revive_holding {
 }
 
 __PACKAGE__->register_method(
-    method    => 'receive_items',
+    method    => 'unitize_items',
     api_name  => 'open-ils.serial.receive_items',
     api_level => 1,
     argc      => 1,
@@ -631,90 +631,274 @@ __PACKAGE__->register_method(
     }
 );
 
-sub receive_items {
+sub unitize_items {
     my ($self, $conn, $auth, $items) = @_;
 
-    my $last_distribution;
-    my $last_mfhd;
-    my %sres_to_save;
-    my %mfhds_to_save;
     my( $reqr, $evt ) = $U->checkses($auth);
     return $evt if $evt;
     my $editor = new_editor(requestor => $reqr, xact => 1);
-    foreach my $item (@$items) {
-        # unflesh unit if fleshed
-        $item->unit( $item->unit->id ) if ref($item->unit);
+    $self->api_name =~ /serial\.(\w*)_items/;
+    my $mode = $1;
+    
+    my %found_unit_ids;
+    my %found_stream_ids;
+    my %found_types;
 
-        $item->date_received('now');
+    my %stream_ids_by_unit_id;
+
+    my %unit_map;
+    my %sdist_by_unit_id;
+    my %sdist_by_stream_id;
+
+    my $new_unit_id; # id for '-2' units to share
+    foreach my $item (@$items) {
+        # for debugging only, TODO: delete
+        if (!ref $item) { # hopefully we got an id instead
+            $item = $editor->retrieve_serial_item($item);
+        }
+        # get ids
+        my $unit_id = ref($item->unit) ? $item->unit->id : $item->unit;
+        my $stream_id = ref($item->stream) ? $item->stream->id : $item->stream;
+        my $issuance_id = ref($item->issuance) ? $item->issuance->id : $item->issuance;
+        #TODO: evt on any missing ids
+
+        if ($mode eq 'receive') {
+            $item->date_received('now');
+            $item->status('Received');
+        } else {
+            $item->status('Bindery');
+        }
+
+        # check for types to trigger summary updates
+        my $scap;
+        if (!ref $item->issuance) {
+            my $scaps = $editor->search_serial_caption_and_pattern([{"+siss" => {"id" => $issuance_id}}, { "join" => {"siss" => {}} }]);
+            $scap = $scaps->[0];
+        } elsif (!ref $item->issuance->caption_and_pattern) {
+            $scap = $editor->retrieve_serial_caption_and_pattern($item->issuance->caption_and_pattern);
+        } else {
+            $scap = $editor->issuance->caption_and_pattern;
+        }
+        if (!exists($found_types{$stream_id})) {
+            $found_types{$stream_id} = {};
+        }
+        $found_types{$stream_id}->{$scap->type} = 1;
 
         # create unit if needed
-        if ($item->unit == -1) { # create by "volume" (first item division)
-        #TODO
-        } elsif ($item->unit == -2) { # create by "issue" (second item division)
-        #TODO
-        }
-
-        my $mfhd;
-        my $sre;
-        if ($item->distribution == $last_distribution) {
-            # use cached record
-            $mfhd = $last_mfhd;
-        } else { # get MFHD record
-            my $sdist = $editor->retrieve_serial_distribution([$item->distribution]);
-            $sre = $editor->retrieve_serial_record_entry([$sdist->record_entry]);
-
-            #convert from marc_xml to marc
-            my $marc = MARC::Record->new_from_xml($sre->marc);
-
-            #turn into MFHD record object
-            $mfhd = MFHD->new($marc);
-            $sres_to_save{$sre->id} = $sre;
-            $mfhds_to_save{$sre->id} = $mfhd;
-        }
-
-        my $item_holding = _revive_holding($mfhd, $item->holding_code);
-        
-        # get all current holdings for this linked caption
-        my @curr_holdings = $mfhd->holdings($item_holding->tag, $item_holding->caption->link_id);
-        # short-circuit logic : if holding is the next one, increment the last current holding
-        my $next_holding_values = $curr_holdings[-1]->next;
-        if ($next_holding_values and $item_holding->matches($next_holding_values)) {
-            $curr_holdings[-1]->extend;
-        } else { # not the next expected, do full replacement
-            $mfhd->append_fields($item_holding);
-#            my @updated_holdings = $mfhd->get_compressed_holdings($captions_ref->{$link_id});
-            my @updated_holdings = $mfhd->get_compressed_holdings($item_holding->caption);
-            # set reference point to top of current holdings
-            my $marker_field = MARC::Field->new(500, '', '','a' => 'Temporary Marker'); 
-            $mfhd->insert_fields_before($curr_holdings[0], $marker_field);
-            foreach my $holding (@curr_holdings) {
-                $mfhd->delete_field($holding);
+        if ($unit_id == -1 or (!$new_unit_id and $unit_id == -2)) { # create unit per item
+            my $unit;
+            my $sdists = $editor->search_serial_distribution([{"+sstr" => {"id" => $stream_id}}, { "join" => {"sstr" => {}} }]);
+            $unit = _build_unit($editor, $sdists->[0], $mode);
+            my $evt =  _create_sunit($editor, $unit);
+            return $evt if $evt;
+            if ($unit_id == -2) {
+                $new_unit_id = $unit->id;
+                $unit_id = $new_unit_id;
+            } else {
+                $unit_id = $unit->id;
             }
-            $mfhd->delete_field($item_holding);
-            $mfhd->insert_fields_before($marker_field, @updated_holdings);
-            # delete reference point
-            $mfhd->delete_field($marker_field);
-        }   
+            $item->unit($unit_id);
+            
+            # get unit with 'DEFAULT's and save unit and sdist for later use
+            $unit = $editor->retrieve_serial_unit($unit->id);
+            $unit_map{$unit_id} = $unit;
+            $sdist_by_unit_id{$unit_id} = $sdists->[0];
+            $sdist_by_stream_id{$stream_id} = $sdists->[0];
+        } elsif ($unit_id == -2) { # create one unit for all '-2' items
+            $unit_id = $new_unit_id;
+        }
 
-        $last_distribution = $item->distribution;
-        $last_mfhd = $mfhd;
-        _update_item($editor, undef, $item);
+        $found_unit_ids{$unit_id} = 1;
+        $found_stream_ids{$stream_id} = 1;
+
+        # save the stream_id for this unit_id
+        # TODO: prevent items from different streams in same unit? (perhaps in interface)
+        $stream_ids_by_unit_id{$unit_id} = $stream_id;
+
+        my $evt = _update_sitem($editor, undef, $item);
+        return $evt if $evt;
     }
 
-    foreach my $sre_id (keys %sres_to_save) {
-        #TODO: update '005' to current date
-        my $sre = $sres_to_save{$sre_id};
-        (my $xml = $mfhds_to_save{$sre_id}->as_xml_record()) =~ s/\n//sog;
-        $xml =~ s/^<\?xml.+\?\s*>//go;
-        $sre->marc($xml);
-        $sre->ischanged(1);
-        $editor->update_serial_record_entry($sre);
+    # deal with unit level labels
+    foreach my $unit_id (keys %found_unit_ids) {
+
+        # get all the needed issuances for unit
+        my $issuances = $editor->search_serial_issuance([ {"+sitem" => {"unit" => $unit_id, "status" => "Received"}}, {"join" => {"sitem" => {}}, "order_by" => {"siss" => "date_published"}} ]);
+        #TODO: evt on search failure
+
+        my ($mfhd, $formatted_parts) = _summarize_contents($editor, $issuances);
+
+        # special case for single formatted_part (may have summarized version)
+        if (@$formatted_parts == 1) {
+            #TODO: MFHD.pm should have a 'format_summary' method for this
+        }
+
+        # retrieve and update unit contents
+        my $sunit;
+        my $sdist;
+
+        # if we just created the unit, we will already have it and the distribution stored
+        if (exists $unit_map{$unit_id}) {
+            $sunit = $unit_map{$unit_id};
+            $sdist = $sdist_by_unit_id{$unit_id};
+        } else {
+            $sunit = $editor->retrieve_serial_unit($unit_id);
+            $sdist = $editor->search_serial_distribution([{"+sstr" => {"id" => $stream_ids_by_unit_id{$unit_id}}}, { "join" => {"sstr" => {}} }]);
+            $sdist = $sdist->[0];
+        }
+
+        $sunit->detailed_contents($sdist->unit_label_prefix . ' '
+                    . join(', ', @$formatted_parts) . ' '
+                    . $sdist->unit_label_suffix);
+
+        $sunit->summary_contents($sunit->detailed_contents); #TODO: change this when real summary contents are available
+
+        # create sort_key by left padding numbers to 6 digits
+        my $sort_key = $sunit->detailed_contents;
+        $sort_key =~ s/(\d+)/sprintf '%06d', $1/eg; # this may need improvement
+        $sunit->sort_key($sort_key);
+        
+        if ($mode eq 'bind') {
+            $sunit->status(2); # set to 'Bindery' status
+        }
+
+        my $evt = _update_sunit($editor, undef, $sunit);
+        return $evt if $evt;
+    }
+
+    # TODO: cleanup 'dead' units (units which are now emptied of their items)
+
+    if ($mode eq 'receive') { # the summary holdings do not change when binding
+        # deal with stream level summaries
+        # summaries will be built from the "primary" stream only, that is, the stream with the lowest ID per distribution
+        # (TODO: consider direct designation)
+        my %primary_streams_by_sdist;
+        my %streams_by_sdist;
+
+        # see if we have primary streams, and if so, associate them with their distributions
+        foreach my $stream_id (keys %found_stream_ids) {
+            my $sdist;
+            if (exists $sdist_by_stream_id{$stream_id}) {
+                $sdist = $sdist_by_stream_id{$stream_id};
+            } else {
+                $sdist = $editor->search_serial_distribution([{"+sstr" => {"id" => $stream_id}}, { "join" => {"sstr" => {}} }]);
+                $sdist = $sdist->[0];
+            }
+            my $streams;
+            if (!exists($streams_by_sdist{$sdist->id})) {
+                $streams = $editor->search_serial_stream([{"distribution" => $sdist->id}, {"order_by" => {"sstr" => "id"}}]);
+                $streams_by_sdist{$sdist->id} = $streams;
+            } else {
+                $streams = $streams_by_sdist{$sdist->id};
+            }
+            $primary_streams_by_sdist{$sdist->id} = $streams->[0] if ($stream_id == $streams->[0]->id);
+        }
+
+        # retrieve and update summaries for each affected primary stream's distribution
+        foreach my $sdist_id (keys %primary_streams_by_sdist) {
+            my $stream = $primary_streams_by_sdist{$sdist_id};
+            my $stream_id = $stream->id;
+            # get all the needed issuances for stream
+            # FIXME: search in Bindery/Bound/Not Published? as well as Received
+            foreach my $type (keys %{$found_types{$stream_id}}) {
+                my $issuances = $editor->search_serial_issuance([ {"+sitem" => {"stream" => $stream_id, "status" => "Received"}, "+scap" => {"type" => $type}}, {"join" => {"sitem" => {}, "scap" => {}}, "order_by" => {"siss" => "date_published"}} ]);
+                #TODO: evt on search failure
+
+                my ($mfhd, $formatted_parts) = _summarize_contents($editor, $issuances);
+
+                # retrieve and update the generated_coverage of the summary
+                my $search_method = "search_serial_${type}_summary";
+                my $summary = $editor->$search_method([{"distribution" => $sdist_id}]);
+                $summary = $summary->[0];
+                $summary->generated_coverage(join(', ', @$formatted_parts));
+                my $update_method = "update_serial_${type}_summary";
+                return $editor->event unless $editor->$update_method($summary);
+            }
+        }
     }
 
     $editor->commit;
     return scalar @$items;
 }
 
+sub _build_unit {
+    my $editor = shift;
+    my $sdist = shift;
+    my $mode = shift;
+
+    my $attr = $mode . '_unit_template';
+    my $template = $editor->retrieve_asset_copy_template($sdist->$attr);
+
+    my @parts = qw( circ_lib status location loan_duration fine_level age_protect circulate deposit ref holdable deposit_amount price circ_modifier circ_as_type alert_message opac_visible floating mint_condition );
+
+    my $unit = new Fieldmapper::serial::unit;
+    foreach my $part (@parts) {
+        my $value = $template->$part;
+        next if !defined($value);
+        $unit->$part($value);
+    }
+    if (!$template->circ_lib) {
+        $unit->circ_lib($sdist->holding_lib);
+    }
+    $unit->creator($editor->requestor->id);
+    $unit->editor($editor->requestor->id);
+    $attr = $mode . '_call_number';
+    $unit->call_number($sdist->$attr);
+    $unit->barcode('AUTO');
+    $unit->sort_key('');
+    $unit->summary_contents('');
+    $unit->detailed_contents('');
+
+    return $unit;
+}
+
+
+sub _summarize_contents {
+    my $editor = shift;
+    my $issuances = shift;
+
+    # create MFHD record
+    my $mfhd = MFHD->new(MARC::Record->new());
+    my %scaps;
+    my %scap_fields;
+    my @scap_fields_ordered;
+    my $seqno = 1;
+    my $link_id = 1;
+    foreach my $issuance (@$issuances) {
+        my $scap_id = $issuance->caption_and_pattern;
+        next if (!$scap_id); # skip issuances with no caption/pattern
+
+        my $scap;
+        my $scap_field;
+        # if this is the first appearance of this scap, retrieve it and add it to the temporary record
+        if (!exists $scaps{$issuance->caption_and_pattern}) {
+            $scaps{$scap_id} = $editor->retrieve_serial_caption_and_pattern($scap_id);
+            $scap = $scaps{$scap_id};
+            $scap_field = _revive_caption($scap);
+            $scap_fields{$scap_id} = $scap_field;
+            push(@scap_fields_ordered, $scap_field);
+            $scap_field->update('8' => $link_id);
+            $mfhd->append_fields($scap_field);
+            $link_id++;
+        } else {
+            $scap = $scaps{$scap_id};
+            $scap_field = $scap_fields{$scap_id};
+        }
+
+        $mfhd->append_fields(_revive_holding($issuance->holding_code, $scap_field, $seqno));
+        $seqno++;
+    }
+
+    my @formatted_parts;
+    foreach my $scap_field (@scap_fields_ordered) { #TODO: use generic MFHD "summarize" method, once available
+       my @updated_holdings = $mfhd->get_compressed_holdings($scap_field);
+       foreach my $holding (@updated_holdings) {
+           push(@formatted_parts, $holding->format);
+       }
+    }
+
+    return ($mfhd, \@formatted_parts);
+}
 
 ##########################################################################
 # note methods
@@ -1225,6 +1409,18 @@ sub _create_sdist {
 
     $logger->info("distribution-alter: new distribution ".OpenSRF::Utils::JSON->perl2JSON($sdist));
     return $editor->event unless $editor->create_serial_distribution($sdist);
+
+    # create summaries too
+    my $summary = new Fieldmapper::serial::basic_summary;
+    $summary->distribution($sdist->id);
+    return $editor->event unless $editor->create_serial_basic_summary($summary);
+    $summary = new Fieldmapper::serial::supplement_summary;
+    $summary->distribution($sdist->id);
+    return $editor->event unless $editor->create_serial_supplement_summary($summary);
+    $summary = new Fieldmapper::serial::index_summary;
+    $summary->distribution($sdist->id);
+    return $editor->event unless $editor->create_serial_index_summary($summary);
+
     return 0;
 }
 
