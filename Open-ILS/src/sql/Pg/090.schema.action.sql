@@ -480,6 +480,47 @@ CREATE VIEW action.unfulfilled_hold_max_loop AS
       GROUP BY 1;
 
 
+CREATE TABLE action.fieldset (
+    id              SERIAL          PRIMARY KEY,
+    owner           INT             NOT NULL REFERENCES actor.usr (id)
+                                    DEFERRABLE INITIALLY DEFERRED,
+	owning_lib      INT             NOT NULL REFERENCES actor.org_unit (id)
+                                    DEFERRABLE INITIALLY DEFERRED,
+	status          TEXT            NOT NULL
+	                                CONSTRAINT valid_status CHECK ( status in
+									( 'PENDING', 'APPLIED', 'ERROR' )),
+    creation_time   TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
+    scheduled_time  TIMESTAMPTZ,
+    applied_time    TIMESTAMPTZ,
+    classname       TEXT            NOT NULL, -- an IDL class name
+    name            TEXT            NOT NULL,
+    stored_query    INT             REFERENCES query.stored_query (id)
+                                    DEFERRABLE INITIALLY DEFERRED,
+    pkey_value      TEXT,
+	CONSTRAINT lib_name_unique UNIQUE (owning_lib, name),
+    CONSTRAINT fieldset_one_or_the_other CHECK (
+        (stored_query IS NOT NULL AND pkey_value IS NULL) OR
+        (pkey_value IS NOT NULL AND stored_query IS NULL)
+    )
+	-- the CHECK constraint means we can update the fields for a single
+	-- row without all the extra overhead involved in a query
+);
+
+CREATE INDEX action_fieldset_sched_time_idx ON action.fieldset( scheduled_time );
+CREATE INDEX action_owner_idx               ON action.fieldset( owner );
+
+
+CREATE TABLE action.fieldset_col_val (
+    id              SERIAL  PRIMARY KEY,
+    fieldset        INT     NOT NULL REFERENCES action.fieldset
+                                         ON DELETE CASCADE
+                                         DEFERRABLE INITIALLY DEFERRED,
+    col             TEXT    NOT NULL,  -- "field" from the idl ... the column on the table
+    val             TEXT,              -- value for the column ... NULL means, well, NULL
+    CONSTRAINT fieldset_col_once_per_set UNIQUE (fieldset, col)
+);
+
+
 -- represents a circ chain summary
 CREATE TYPE action.circ_chain_summary AS (
     num_circs INTEGER,

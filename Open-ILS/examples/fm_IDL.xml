@@ -6725,6 +6725,43 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </fields>
     </class>
 
+	<class id="afs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::fieldset" oils_persist:tablename="action.fieldset" reporter:label="Fieldset">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.fieldset_id_seq">
+			<field reporter:label="Fieldset ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
+			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="link"/>
+			<field reporter:label="Status" name="status" reporter:datatype="text"/>
+			<field reporter:label="Creation Time" name="creation_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Scheduled Time" name="scheduled_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Applied Time" name="applied_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Class Name" name="classname" reporter:datatype="text"/>
+			<field reporter:label="Fieldset Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Stored Query" name="stored_query" reporter:datatype="link"/>
+			<field reporter:label="Primary Key Value" name="pkey_value" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
+			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="stored_query" reltype="has_a" key="id" map="" class="qsq"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="afscv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::fieldset_col_val" oils_persist:tablename="action.fieldset_col_val" reporter:label="Fieldset Column Value">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.fieldset_col_val_id_seq">
+			<field reporter:label="Column Value ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Fieldset ID" name="fieldset" reporter:datatype="link"/>
+			<field reporter:label="Column Name" name="col" reporter:datatype="text"/>
+			<field reporter:label="Column Value" name="val" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="fieldset" reltype="has_a" key="id" map="" class="afs"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
     <class id="aufhl" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_loops" oils_persist:tablename="action.unfulfilled_hold_loops" oils_persist:readonly="true">
         <fields>
             <field reporter:label="Hold ID" name="hold" reporter:datatype="link"/>
