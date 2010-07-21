@@ -99,6 +99,8 @@ CREATE TABLE config.circ_matrix_matchpoint (
     marc_type            TEXT    REFERENCES config.item_type_map (code) DEFERRABLE INITIALLY DEFERRED,
     marc_form            TEXT    REFERENCES config.item_form_map (code) DEFERRABLE INITIALLY DEFERRED,
     marc_vr_format       TEXT    REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
+    copy_circ_lib        INT     REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    copy_owning_lib      INT     REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
     ref_flag             BOOL,
     juvenile_flag        BOOL,
     is_renewal           BOOL,
@@ -111,7 +113,11 @@ CREATE TABLE config.circ_matrix_matchpoint (
     script_test          TEXT,                           -- javascript source 
     total_copy_hold_ratio     FLOAT,
     available_copy_hold_ratio FLOAT,
-    CONSTRAINT ep_once_per_grp_loc_mod_marc UNIQUE (grp, org_unit, circ_modifier, marc_type, marc_form, marc_vr_format, ref_flag, juvenile_flag, usr_age_lower_bound, usr_age_upper_bound, is_renewal)
+    CONSTRAINT ep_once_per_grp_loc_mod_marc UNIQUE (
+        grp, org_unit, circ_modifier, marc_type, marc_form, marc_vr_format, ref_flag,
+        juvenile_flag, usr_age_lower_bound, usr_age_upper_bound, is_renewal, copy_circ_lib,
+        copy_owning_lib
+    )
 );
 
 
@@ -134,24 +140,37 @@ DECLARE
     current_group    permission.grp_tree%ROWTYPE;
     user_object    actor.usr%ROWTYPE;
     item_object    asset.copy%ROWTYPE;
+    cn_object    asset.call_number%ROWTYPE;
     rec_descriptor    metabib.rec_descriptor%ROWTYPE;
     current_mp    config.circ_matrix_matchpoint%ROWTYPE;
     matchpoint    config.circ_matrix_matchpoint%ROWTYPE;
 BEGIN
     SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
     SELECT INTO item_object * FROM asset.copy WHERE id = match_item;
+    SELECT INTO cn_object * FROM asset.call_number WHERE id = item_object.call_number;
     SELECT INTO rec_descriptor r.* FROM metabib.rec_descriptor r JOIN asset.call_number c USING (record) WHERE c.id = item_object.call_number;
     SELECT INTO current_group * FROM permission.grp_tree WHERE id = user_object.profile;
 
     LOOP 
         -- for each potential matchpoint for this ou and group ...
         FOR current_mp IN
-            SELECT    m.*
-              FROM    config.circ_matrix_matchpoint m
-                JOIN actor.org_unit_ancestors( context_ou ) d ON (m.org_unit = d.id)
-                LEFT JOIN actor.org_unit_proximity p ON (p.from_org = context_ou AND p.to_org = d.id)
-              WHERE    m.grp = current_group.id AND m.active
+            SELECT  m.*
+              FROM  config.circ_matrix_matchpoint m
+                    JOIN actor.org_unit_ancestors( context_ou ) d ON (m.org_unit = d.id)
+                    LEFT JOIN actor.org_unit_proximity p ON (p.from_org = context_ou AND p.to_org = d.id)
+              WHERE m.grp = current_group.id
+                    AND m.active
+                    AND (m.copy_owning_lib IS NULL OR cn_object.owning_lib IN ( SELECT id FROM actor.org_unit_descendants(m.copy_owning_lib) ))
+                    AND (m.copy_circ_lib   IS NULL OR item_object.circ_lib IN ( SELECT id FROM actor.org_unit_descendants(m.copy_circ_lib)   ))
               ORDER BY    CASE WHEN p.prox        IS NULL THEN 999 ELSE p.prox END,
+                    CASE WHEN m.copy_owning_lib IS NOT NULL
+                        THEN 256 / ( SELECT COALESCE(prox, 255) + 1 FROM actor.org_unit_proximity WHERE to_org = cn_object.owning_lib AND from_org = m.copy_owning_lib LIMIT 1 )
+                        ELSE 0
+                    END +
+                    CASE WHEN m.copy_circ_lib IS NOT NULL
+                        THEN 256 / ( SELECT COALESCE(prox, 255) + 1 FROM actor.org_unit_proximity WHERE to_org = item_object.circ_lib AND from_org = m.copy_circ_lib LIMIT 1 )
+                        ELSE 0
+                    END +
                     CASE WHEN m.is_renewal = renewal        THEN 128 ELSE 0 END +
                     CASE WHEN m.juvenile_flag    IS NOT NULL THEN 64 ELSE 0 END +
                     CASE WHEN m.circ_modifier    IS NOT NULL THEN 32 ELSE 0 END +

@@ -1049,6 +1049,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Renewal?" name="is_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Active?" name="active" reporter:datatype="bool"/>
 			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit"/>
+			<field reporter:label="Copy Circ Lib" name="copy_circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Copy Owning Lib" name="copy_owning_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Permission Group" name="grp" reporter:datatype="link"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="MARC Type" name="marc_type" oils_persist:primitive="string" reporter:datatype="link"/>
@@ -1067,6 +1069,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="copy_circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="copy_owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 			<link field="marc_type" reltype="has_a" key="code" map="" class="citm"/>
