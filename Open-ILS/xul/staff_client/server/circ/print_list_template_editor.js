@@ -262,8 +262,13 @@ circ.print_list_template_editor.prototype = {
                                             + '<h1>' 
                                             + document.getElementById('circStrings').getString('staff.circ.print_list_template.window.heading')
                                             + '</h1>'
-                                            + '<p>%SHORTNAME%, %TODAY%, %STAFF_FIRSTNAME%, %STAFF_LASTNAME%, '
-                                            + '%PATRON_FIRSTNAME%, %PATRON_ALIAS%, %PATRON_ALIAS_OR_FIRSTNAME%, %LIBRARY%</p>'
+                                            + '<p>%LIBRARY%, %SHORTNAME%, %LINE_NO%, '
+                                            + '%STAFF_FIRSTNAME%, %STAFF_LASTNAME%, %STAFF_BARCODE%, %STAFF_PROFILE%, '
+                                            + '%PATRON_FIRSTNAME%, %PATRON_ALIAS%, %PATRON_ALIAS_OR_FIRSTNAME%, %PATRON_LASTNAME%, '
+                                            + '%PATRON_BARCODE%, %patron_barcode%, '
+                                            + '%TODAY%, %TODAY_TRIM%, %TODAY_m%, %TODAY_d%, %TODAY_Y%, %TODAY_H%, %TODAY_I%, '
+                                            + '%TODAY_M%, %TODAY_D%, %TODAY_F% '
+                                            + '</p>'
                                             + '<h1>'
                                             + document.getElementById('circStrings').getFormattedString('staff.circ.print_list_template.window.template_type', [template_type])
                                             + '</h1>'
