@@ -118,6 +118,11 @@
     </script>
     [% INCLUDE 'default/acq/common/li_table.tt2' %]
     [% INCLUDE "default/acq/common/notes.tt2" which = "Po" %]
+    <div class='hidden' id='acq-po-no-lineitems'>
+        <button type='dijit.form.Button' onclick='location.href = oilsBasePath + "/acq/picklist/brief_record?po=" + poId'>
+            Add Brief Record
+        </button>
+    </div>
     [% INCLUDE "default/acq/po/item_table.tt2" %]
 </div>
 [% END %]

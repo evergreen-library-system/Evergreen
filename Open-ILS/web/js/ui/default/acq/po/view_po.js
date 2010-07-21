@@ -381,11 +381,13 @@ function init() {
     );
 
     var totalEstimated = 0;
+    var zeroLi = true;
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.lineitem.search'],
         {   async: true,
 params: [openils.User.authtoken, {purchase_order:poId}, {flesh_attrs:true, flesh_notes:true, flesh_cancel_reason:true}],
             onresponse: function(r) {
+                zeroLi = false;
                 liTable.show('list');
                 var li = openils.Util.readResponse(r);
                 // TODO: Add po_item's to total estimated amount
@@ -396,6 +398,7 @@ params: [openils.User.authtoken, {purchase_order:poId}, {flesh_attrs:true, flesh
             oncomplete : function() {
                 dojo.byId("acq-po-view-total-estimated").innerHTML = totalEstimated.toFixed(2);
                 if (liFocus) liTable.drawCopies(liFocus);
+                if(zeroLi) openils.Util.show('acq-po-no-lineitems');
             }
         }
     );
