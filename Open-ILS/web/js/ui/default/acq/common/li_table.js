@@ -269,7 +269,7 @@ function AcqLiTable() {
 
         // XXX media prefix for added content
         if (identifier) {
-            nodeByName("jacket").setAttribute(
+            nodeByName("jacket", row).setAttribute(
                 "src", "/opac/extras/ac/jacket/small/" + identifier
             );
         }
@@ -280,6 +280,7 @@ function AcqLiTable() {
         } else {
             // TODO: Add discovery mechanism for bib linking
             openils.Util.show(nodeByName('link_to_catalog', row), 'inline');
+            nodeByName("link_to_catalog_link", row).onclick = function() { self.drawBibFinder(li) };
         }
 
         nodeByName("worksheet_link", row).href =
@@ -2471,5 +2472,51 @@ function AcqLiTable() {
                 );
             }
         );
+    },
+
+    this.drawBibFinder = function(li) {
+
+        var query = '';
+        var liWrapper = new openils.acq.Lineitem({lineitem:li});
+
+        dojo.forEach(
+            ['isbn', 'upc', 'issn', 'title', 'author'],
+            function(field) {
+                var val = liWrapper.findAttr(field, 'lineitem_marc_attr_definition');
+                if(val) {
+                    if(field == 'title' || field == 'author') {
+                        query += field +':' + val + ' ';
+                    } else {
+                        query += 'identifier|' + field + ':' + val + ' ';
+                    }
+                }
+            }
+        );
+
+        win = window.open(
+            oilsBasePath + '/acq/lineitem/findbib?query=' + escape(query),
+            '', 'resizable,scrollbars=1');
+
+        win.window.recordFound = function(bibId) { 
+            win.close();
+
+            var attrs = li.attributes();
+            li.attributes(null);
+            li.eg_bib_id(bibId);
+
+            fieldmapper.standardRequest(
+                ["open-ils.acq", "open-ils.acq.lineitem.update"], 
+                {
+                    "params": [openils.User.authtoken, li],
+                    "async": true,
+                    "oncomplete": function(r) {
+                        if(openils.Util.readResponse(r)) {
+                            location.href = location.href;
+                        }
+                    }
+                }
+            );
+        }
     }
 }
+
