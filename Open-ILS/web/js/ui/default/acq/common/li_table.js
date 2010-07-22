@@ -801,6 +801,7 @@ function AcqLiTable() {
 
                 oncomplete: function(r) {
                     var li = openils.Util.readResponse(r);
+                    self.liCache[liId] = li;
                     handler(li)
                 }
             }
@@ -887,7 +888,10 @@ function AcqLiTable() {
         );
     }
 
-    this.drawCopies = function(liId) {
+    this.drawCopies = function(liId, force_fetch) {
+        if (typeof force_fetch == "undefined")
+            force_fetch = false;
+
         this.show('copies');
         var self = this;
         this.copyCache = {};
@@ -912,7 +916,7 @@ function AcqLiTable() {
             function() {
                 openils.acq.Lineitem.fetchAttrDefs(
                     function() { 
-                        self._fetchLineitem(liId, function(li){self._drawCopies(li);}); 
+                        self._fetchLineitem(liId, function(li){self._drawCopies(li);}, force_fetch); 
                     } 
                 );
             }
@@ -1775,14 +1779,14 @@ function AcqLiTable() {
             openils.Util.show("acq-lit-update-copies-progress");
             fieldmapper.standardRequest(
                 ['open-ils.acq', 'open-ils.acq.lineitem_detail.cud.batch'],
-                {   async: true,
+                {   async: false,
                     params: [openils.User.authtoken, copies],
                     onresponse: function(r) {
                         var res = openils.Util.readResponse(r);
                         litUpdateCopiesProgress.update(res);
                     },
                     oncomplete: function() {
-                        self.drawCopies(liId);
+                        self.drawCopies(liId, true /* force_fetch */);
                         openils.Util.hide("acq-lit-update-copies-progress");
                     }
                 }
