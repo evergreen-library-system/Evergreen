@@ -1780,7 +1780,7 @@ function AcqLiTable() {
             openils.Util.show("acq-lit-update-copies-progress");
             fieldmapper.standardRequest(
                 ['open-ils.acq', 'open-ils.acq.lineitem_detail.cud.batch'],
-                {   async: false,
+                {   async: true,
                     params: [openils.User.authtoken, copies],
                     onresponse: function(r) {
                         var res = openils.Util.readResponse(r);
