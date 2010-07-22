@@ -997,7 +997,10 @@ BEGIN
                 ) as t(i int,c text);
     
         FOR i IN 1 .. counter LOOP
-            SELECT  '<datafield xmlns="http://www.loc.gov/MARC21/slim" tag="856">' ||
+            SELECT  '<datafield xmlns="http://www.loc.gov/MARC21/slim"' || 
+			' tag="856"' ||
+			' ind1="' || FIRST(ind1) || '"'  ||
+			' ind2="' || FIRST(ind2) || '">' ||
                         array_to_string(
                             array_accum(
                                 '<subfield code="' || subfield || '">' ||
@@ -1014,10 +1017,12 @@ BEGIN
                         'id',
                         'marc',
                         'biblio.record_entry',
+                        '//*[@tag="856"][position()=' || i || ']/@ind1|' ||
+                        '//*[@tag="856"][position()=' || i || ']/@ind2|' ||
                         '//*[@tag="856"][position()=' || i || ']/*/@code|' ||
                         '//*[@tag="856"][position()=' || i || ']/*[@code]',
                         'id=' || source_record
-                    ) as t(id int,subfield text,data text);
+                    ) as t(id int,ind1 text, ind2 text,subfield text,data text);
 
             uri_text := uri_text || uri_datafield;
         END LOOP;
