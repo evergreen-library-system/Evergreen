@@ -23,7 +23,8 @@ function fetchLi() {
                 "flesh_cancel_reason": true
             }],
             "oncomplete": function(r) {
-                fetchBib();
+                var li = openils.Util.readResponse(r);
+                fetchBib(li.eg_bib_id());
             }
         }
     );
@@ -56,13 +57,14 @@ function fetchRelated() {
     );
 }
 
-function fetchBib() {
+function fetchBib(bibId) {
+    bibId = bibId || targetId;
     new openils.BibTemplate({ 
-        record : targetId, 
+        record : bibId, 
         org_unit : fieldmapper.aou.findOrgUnit(openils.User.user.ws_ou()).shortname()
     }).render();
 
-    new openils.PermaCrud().retrieve('bre', targetId, {
+    new openils.PermaCrud().retrieve('bre', bibId, {
         oncomplete : function(r) {
             bibRecord = openils.Util.readResponse(r);
             // render bib details
