@@ -658,7 +658,7 @@ sub patron_search {
 
 	my $card = '';
 	if ($cv) {
-	    $card = 'JOIN (SELECT DISTINCT usr FROM actor.card WHERE barcode LIKE ?||\'%\') AS card ON (card.usr = users.id)';
+	    $card = 'JOIN (SELECT DISTINCT usr FROM actor.card WHERE LOWER(barcode) LIKE ?||\'%\') AS card ON (card.usr = users.id)';
 	    unshift(@usrv, $cv);
 	}
 
