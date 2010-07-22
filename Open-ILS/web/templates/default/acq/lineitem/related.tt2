@@ -39,7 +39,7 @@
         </li>
     </ul>
 
-    <div id="li_create_holder" class="hidden">
+    <div id="acq-related-li-create-holder">
         <button jsId="addToPlButton" dojoType="dijit.form.Button">
             Add to New Selection List
         </button>

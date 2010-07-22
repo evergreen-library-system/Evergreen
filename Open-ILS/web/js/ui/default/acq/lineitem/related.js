@@ -51,10 +51,6 @@ function fetchRelated() {
                     liTable.show("list");
                     liTable.addLineitem(resp);
                 }
-            },
-            "oncomplete": function() {
-                if (!total)
-                    openils.Util.show("li_create_holder");
             }
         }
     );
@@ -101,7 +97,6 @@ function createLi(oncomplete) {
                 },
                 "oncomplete": function() {
                     progressDialog.hide();
-                    openils.Util.hide("li_create_holder");
                     oncomplete();
                 }
             }

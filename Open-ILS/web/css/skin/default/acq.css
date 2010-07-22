@@ -181,6 +181,10 @@ span[name="notes_alert_flag"] {color: #c00;font-weight: bold;font-size: 110%;mar
 
 #acq-related-info-tbody td {padding:5px;}
 #acq-related-mini ul { list-style-type: square; }
+#acq-related-li-create-holder {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+}
 
 /* fiscal rollover ui */
 #oils-acq-rollover-tooltip-table td { border-bottom: 2px solid #888 }
