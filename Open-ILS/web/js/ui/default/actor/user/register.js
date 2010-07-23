@@ -1279,7 +1279,28 @@ function printable_output() {
     for (var idx in widgetPile) {
         var w = widgetPile[idx];
         var val = uEditWidgetVal(w);
-        var label = w.idlField.label;
+        var label;
+        if (typeof w.idlField == 'undefined') {
+            label = w._wtype;
+            if (w._wtype == 'statcat') {
+                var stat = statCats.filter(
+                    function(m){
+                        return (m.id() == w._statcat) })[0];
+                label = stat.name();
+            } else if (w._wtype == 'survey') {
+                var survey = surveys.filter(
+                    function(m){
+                        return (m.id() == w._survey) })[0];
+                var question = survey.questions().filter(
+                    function(m){
+                        return (m.id() == w._question) })[0];
+                label = survey.name() + ' : ' + question.question();
+            } else {
+                label = 'FIXME';
+            }
+        } else {
+            label = w.idlField.label;
+        }
         if (temp != w._wtype) {
             temp = w._wtype;
             s += '-------\r\n';
