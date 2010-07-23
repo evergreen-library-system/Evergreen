@@ -1,1 +1,60 @@
-#ChangeLog
+2010-07-01  gmc
+
+	* backport r16838 from trunk
+	  
+	  bug #600021: fix lookup of FIFO holds OU setting
+	  
+	  Patch from Anoop Atre that fixes enabling FIFO
+	  holds via the circ.holds_fifo org unit setting.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-07-07  miker
+
+	* add missing event definition required by vandelay authority
+	  import
+
+2010-07-09  miker
+
+	* Patch from James Fournie to address backdating timestamp format
+	  error
+
+2010-07-15  miker
+
+	* complete backporting fun for conify started around 1.6.0.4
+
+2010-07-16  erickson
+
+	* back-porting action trigger fixes 16953
+
+2010-07-20  miker
+
+	* backporting r16982: use the correct table and field, caught by
+	  Doug Kyle and reported via IRC
+
+	* Backport of r16987: Patch from John Craig providing a saner
+	  timestamp cleansing setup for backdated circs, 1.6 edition
+
+2010-07-21  miker
+
+	* index which /greatly/ speeds collection of pending active events
+
+2010-07-22  miker
+
+	* backport of r17007: retain the indicators on located uri 856
+	  merge during asset merge
+
+2010-07-22  gmc
+
+	* bug #608937: make barcode search from main patron search form
+	  case-insensitive
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-07-23  miker
+
+	* include null fields, via .toStoreItem(), when creating a
+	  permission map store item
+
+	* .: Tagging 1.6.0.7
+
