@@ -1206,7 +1206,6 @@ function uEditNewAddr(evt, id, mkLinks) {
                 if(mkLinks || (patron.mailing_address() && patron.mailing_address().id() == id))
                     ma.checked = true;
 
-            } else {
                 var btn = dojo.query('[name=delete-button]', row)[0];
                 if(btn) btn.onclick = function(){ uEditDeleteAddr(id) };
             }
