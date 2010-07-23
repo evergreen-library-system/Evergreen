@@ -26,6 +26,7 @@ use File::Basename qw/fileparse/;
 use File::Temp;
 use Getopt::Long qw(:DEFAULT GetOptionsFromArray);
 use Pod::Usage;
+use Socket;
 
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::AppSession;
@@ -346,7 +347,9 @@ sub process_request {   # The core Net::Server method
     my $self = shift;
     my $client = $self->{server}->{client};
 
-    $logger->info("stream parser received contact from $client");
+    my $sockname = getpeername($client);
+    my ($port, $ip_addr) = unpack_sockaddr_in($sockname);
+    $logger->info("stream parser received contact from ".inet_ntoa($ip_addr));
 
     my $ph = OpenSRF::Transport::PeerHandle->retrieve;
     if(!$ph->flush_socket()) {
