@@ -430,7 +430,7 @@
 										err = true;
 									},
                                     oncomplete : function (r,list) {
-								        group_store.newItem( list[0].toHash(), { parent : current_group, attribute : 'children' } );
+								        group_store.newItem( list[0].toStoreItem(), { parent : current_group, attribute : 'children' } );
                                     }
                                 });
 
@@ -599,7 +599,7 @@
 						                            },
 						                            oncomplete : function (r, list) {
 		
-						                                var new_item_hash = list[0].toHash();
+						                                var new_item_hash = list[0].toStoreItem();
 						                                perm_map_store.newItem( new_item_hash );
 						                                status_update( pgt_strings.SUCCESS_NEW_PERM_MAP );
 						                                highlighter.group_tree.green.play();
