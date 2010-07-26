@@ -219,10 +219,11 @@ CREATE TABLE serial.item (
 	                        DEFERRABLE INITIALLY DEFERRED,
 	date_expected   TIMESTAMP WITH TIME ZONE,
 	date_received   TIMESTAMP WITH TIME ZONE
-	status          TEXT      CONSTRAINT valid_status CHECK
-	                          (
-	                              status IN ('Bindery', 'Bound', 'Claimed', 'Discarded', 'Expected', 'Not Held', 'Not Published', 'Received')
-	                          ) DEFAULT 'Expected'
+	status          TEXT    CONSTRAINT valid_status CHECK
+	                        (
+	                            status IN ('Bindery', 'Bound', 'Claimed', 'Discarded', 'Expected', 'Not Held', 'Not Published', 'Received')
+	                        ) DEFAULT 'Expected',
+	shadowed        BOOL    DEFAULT FALSE -- ignore when generating summaries/labels
 );
 
 CREATE TABLE serial.item_note (
