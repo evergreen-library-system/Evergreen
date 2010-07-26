@@ -929,6 +929,7 @@ Returns event on error or:
  3 for 'in transit',
  4 for 'arrived',
  5 for 'hold-shelf-delay'
+ 6 for 'canceled'
 END_OF_DESC
         }
     }
@@ -952,6 +953,9 @@ sub retrieve_hold_status {
 
 sub _hold_status {
 	my($e, $hold) = @_;
+    if ($hold->cancel_time) {
+        return 6;
+    }
 	return 1 unless $hold->current_copy;
 	return 2 unless $hold->capture_time;
 
