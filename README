@@ -1,11 +1,11 @@
-README for Evergreen 1.6
+README for Evergreen trunk
 
 Installing prerequisites:
 ========================
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (1.1 or later).
+1. Begin by installing the most recent version of OpenSRF (1.4.0 or later).
 You can download OpenSRF releases from
 http://evergreen-ils.org/downloads
 
@@ -15,13 +15,12 @@ installer.
 
 Issue the following commands as the root user to install prerequisites
 using the Makefile.install prerequisite installer, substituting
-"debian-etch", "debian-lenny", "ubuntu-hardy",
-"ubuntu-intrepid", "ubuntu-karmic", "centos", "rhel", or "gentoo"
-for <osname> below:
+"debian-etch", "debian-lenny", "fedora-13", "ubuntu-hardy", "ubuntu-lucid",
+"centos", or "rhel" for <osname> below:
 
 make -f Open-ILS/src/extras/Makefile.install <osname>
 
-Note: "centos", "rhel", and "gentoo" are less tested than the debian
+Note: "centos" and "rhel" are less tested than the debian, fedora,
 and ubuntu options.  Your patches and suggestions for improvement are
 welcome!
 
@@ -40,7 +39,7 @@ Installation instructions:
 Once you have configured and compiled Evergreen, issue the following
 command as the root user to install Evergreen:
 
-make STAFF_CLIENT_BUILD_ID=rel_1_6_0_0 install
+make STAFF_CLIENT_BUILD_ID=rel_trunk install
 
 This will install Evergreen, including example configuration files in
 /openils/conf/ that you can use as templates for your own configuration files.
@@ -59,9 +58,9 @@ Issue the following commands as the root user to fetch, extract, and copy the
 files into the correct directory, adjusting the version number to match the
 version of the Dojo Toolkit that you downloaded:
 
-wget http://download.dojotoolkit.org/release-1.3.2/dojo-release-1.3.2.tar.gz
-tar -C /openils/var/web/js -xzf dojo-release-1.3.2.tar.gz
-cp -r /openils/var/web/js/dojo-release-1.3.2/* /openils/var/web/js/dojo/.
+wget http://download.dojotoolkit.org/release-1.3.3/dojo-release-1.3.3.tar.gz
+tar -C /openils/var/web/js -xzf dojo-release-1.3.3.tar.gz
+cp -r /openils/var/web/js/dojo-release-1.3.3/* /openils/var/web/js/dojo/.
 
 Change ownership of the Evergreen files:
 =======================================
@@ -100,26 +99,28 @@ connection information in opensrf.xml for you.
 Creating the Evergreen database:
 ===============================
 
-PostgreSQL 8.2 or 8.3 will be installed on your system by the Makefile.install
+PostgreSQL 8.3 or 8.4 will be installed on your system by the Makefile.install
 prerequisite installer if packages are available for your distribution, or
-you will have to compile PostgreSQL 8.2 or 8.3 from source and install it (which
-is beyond the scope of this document).
+you will have to compile PostgreSQL 8.3 or 8.4 from source and install it (which
+is beyond the scope of this document). PostgreSQL 8.4 is recommended if you have
+the option.
 
 Once the PostgreSQL database server has been installed, you will need to
 create the database and add the appropriate languages and extensions to
 support Evergreen. Issue the following commands as the "postgres" user to set
 up a database called "evergreen". Note that the location of the PostgreSQL
 "contrib" packages may vary depending on your distribution. In the following
-commands, we assume that you are working with PostgreSQL 8.3 on a Debian-based
+commands, we assume that you are working with PostgreSQL 8.4 on a Debian-based
 system:
 
 createdb -E UNICODE evergreen
 createlang plperl evergreen
 createlang plperlu evergreen
 createlang plpgsql evergreen
-psql -f /usr/share/postgresql/8.3/contrib/tablefunc.sql -d evergreen
-psql -f /usr/share/postgresql/8.3/contrib/tsearch2.sql -d evergreen
-psql -f /usr/share/postgresql/8.3/contrib/pgxml.sql -d evergreen
+psql -f /usr/share/postgresql/8.4/contrib/tablefunc.sql -d evergreen
+psql -f /usr/share/postgresql/8.4/contrib/tsearch2.sql -d evergreen
+psql -f /usr/share/postgresql/8.4/contrib/pgxml.sql -d evergreen
+psql -f /usr/share/postgresql/8.4/contrib/isn.sql -d evergreen
 
 Once you have created the Evergreen database, you need to create a PostgreSQL
 user to access the database. Issue the following command as the "postgres"

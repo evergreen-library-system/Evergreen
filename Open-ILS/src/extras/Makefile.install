@@ -3,8 +3,8 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (etch/lenny), Ubuntu (hardy/karmic), and Gentoo.
-# Working towards support of CentOS 5 / RHEL 5 / Fedora 13.
+# Currently supports Debian (etch/lenny), Ubuntu (hardy/lucid), and Fedora (13).
+# Working towards support of CentOS 5 / RHEL 5.
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
@@ -14,36 +14,23 @@
 # 	- or -
 # 	make -f Makefile.install ubuntu-hardy
 # 	- or -
-# 	make -f Makefile.install ubuntu-karmic
+# 	make -f Makefile.install ubuntu-lucid
 # 	- or -
 # 	make -f Makefile.install fedora-13
 # 	- or -
 # 	make -f Makefile.install centos
 # 	- or -
 # 	make -f Makefile.install rhel
-# 	- or -
-# 	make -f Makefile.install gentoo
 #
 # Notes:
 #
 # 	This makefile has been tested much more with Debian and Ubuntu than
-# 	Fedora, CentOS, Gentoo, or RHEL.
-#
-# 	Gentoo (especially amd64) requires a good bit of masked package
-# 	mangling for some packages.  These are not documented here because
-# 	they will continue to evolve
+# 	Fedora, CentOS, or RHEL.
 #
 # ---------------------------------------------------------------------
  
 # Make any assumptions about the shell being used explicit
 SHELL=/bin/bash 
-
-# XXX
-# Gentoo needs explicit versions on many of these packages
-# to simulate a "blessed" set of packages
-#
-# Also, I (think) Gentoo has a javascript::spidermonkey package that does
-# not require fetching the sources externally ... needs testing/updating in here
 
 LIBJS=js-1.7.0
 LIBJS_PERL=JavaScript-SpiderMonkey-0.20
@@ -235,26 +222,6 @@ PGSQL_SERVER_DEBS_84 = \
 	postgresql-plperl-8.4 \
 	postgresql-server-dev-8.4
 
-GENTOOS = \
-    yaz\
-    aspell-en\
-    dev-db/libpq\
-    dev-db/postgresql\
-    dev-perl/Email-Send\
-    dev-perl/DateTime\
-    dev-perl/DateTime-TimeZone\
-    dev-perl/DBD-Pg\
-    dev-perl/GD-Graph3d\
-    dev-perl/Text-Aspell\
-    dev-perl/Template-Toolkit\
-    dev-perl/Text-CSV_XS\
-    dev-perl/Spreadsheet-WriteExcel
-
-GENTOO_PERL = \
-    MARC::Record \
-    Net::Z3950::ZOOM \
-    Text::CSV
-
 DEB_APACHE_MODS = \
     expires\
     include\
@@ -303,12 +270,10 @@ etch: install_pgsql_client_debs_81 install_yaz install_cpan_marc install_extra_e
 lenny: install_pgsql_client_debs_83 install_extra_debs
 generic_debian:  install_debs install debian_sys_config install_cpan_safe
 
-gentoo: install_gentoos install_gentoo_perl install
-
 ubuntu-hardy: hardy generic_ubuntu
-ubuntu-karmic: karmic generic_ubuntu
+ubuntu-lucid: lucid generic_ubuntu
 hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc install_extra_encode
-karmic: install_pgsql_client_debs_84 install_extra_debs
+lucid: install_pgsql_client_debs_84 install_extra_debs
 generic_ubuntu: install_debs install debian_sys_config install_cpan_safe
 
 # - COMMON TARGETS ---------------------------------------------------------
@@ -426,15 +391,6 @@ install_extra_debs:
 # Debian Etch - see bug 525069
 install_extra_encode:
 	$(APT_TOOL) install $(EXTRA_ENCODE)
-
-# ------------------------------------------------------------------
-# - GENTOO ---------------------------------------------------------
-
-install_gentoos:
-	emerge -n $(GENTOOS)
-
-install_gentoo_perl:
-	for m in $(GENTOO_PERL); do perl -MCPAN -e "install \"$$m\";"; done
 
 # ------------------------------------------------------------------
 
