@@ -3249,7 +3249,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Date Received" name="date_received" reporter:datatype="timestamp"/>
 			<field reporter:label="Status" name="status" reporter:datatype="text"/>
 			<field reporter:label="Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Shadowed?" name="shadowed" oils_persist:virtual="true" reporter:datatype="bool"/>
+			<field reporter:label="Shadowed?" name="shadowed" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
