@@ -62,6 +62,14 @@ wget http://download.dojotoolkit.org/release-1.3.3/dojo-release-1.3.3.tar.gz
 tar -C /openils/var/web/js -xzf dojo-release-1.3.3.tar.gz
 cp -r /openils/var/web/js/dojo-release-1.3.3/* /openils/var/web/js/dojo/.
 
+Create the oils_web.xml configuration file:
+==========================================
+Many administration interfaces, such as acquisitions, bookings, and various
+configuration screens, depend on the correct configuration of HTML templates.
+Copying the sample configuration file into place should work in most cases:
+
+cp /openils/conf/oils_web.xml.example /openils/conf/oils_web.xml
+
 Change ownership of the Evergreen files:
 =======================================
 
