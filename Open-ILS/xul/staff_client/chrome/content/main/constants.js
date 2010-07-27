@@ -402,6 +402,7 @@ var urls = {
     'XUL_STANDING_PENALTIES' : '/xul/server/patron/standing_penalties.xul',
     'XUL_NEW_STANDING_PENALTY' : '/xul/server/patron/new_standing_penalty.xul',
     'XUL_EDIT_STANDING_PENALTY' : '/xul/server/patron/edit_standing_penalty.xul',
+    'XUL_SCAN_ITEM_AS_MISSING_PIECES' : '/xul/server/circ/missing_pieces.xul',
     'XUL_STAT_CAT_EDIT' : '/xul/server/admin/stat_cat_editor.xhtml',
     'XUL_SURVEY_WIZARD' : 'chrome://open_ils_staff_client/content/admin/survey_wizard.xul',
     'XUL_TIMESTAMP_DIALOG' : '/xul/server/util/timestamp.xul',

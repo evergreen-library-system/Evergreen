@@ -33,6 +33,7 @@
     <command id="cmd_browse_holds" />
     <command id="cmd_browse_holds_shelf" />
     <command id="cmd_in_house_use" key="circ-in-house-use" />
+    <command id="cmd_scan_item_as_missing_pieces" label="&staff.main.menu.circ.scan_item_as_missing_pieces.label;" accesskey="&staff.main.menu.circ.scan_item_as_missing_pieces.accesskey;" />
     <command id="cmd_copy_status" key="copy-status-key" />
     <command id="cmd_search_opac" key="search-opac-key" />
     <command id="cmd_public_opac" />
@@ -237,6 +238,7 @@
         <menuitem label="&staff.main.menu.circ.verify_credentials;" accesskey="&staff.main.menu.circ.verify_credentials.accesskey;" command="cmd_verify_credentials"/>
         <menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
         <menuitem label="&staff.main.menu.circ.in_house.label;" accesskey="&staff.main.menu.circ.in_house.accesskey;" key="circ-in-house-use-key" command="cmd_in_house_use"/>
+        <menuitem command="cmd_scan_item_as_missing_pieces"/>
         <menuseparator />
         <menuitem label="&staff.main.menu.circ.reprint.label;" accesskey="&staff.main.menu.circ.reprint.accesskey;" key="reprint-receipt-key" command="cmd_reprint"/>
         <menuitem label="&staff.main.menu.circ.offline.label;" command="cmd_standalone" accesskey="&staff.main.menu.circ.offline.accesskey;"/>

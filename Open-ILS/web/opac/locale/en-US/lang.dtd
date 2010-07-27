@@ -882,6 +882,8 @@
 <!ENTITY staff.main.menu.circ.hold_pull.label "Pull List for Hold Requests">
 <!ENTITY staff.main.menu.circ.in_house.accesskey "I">
 <!ENTITY staff.main.menu.circ.in_house.label "Record In-House Use">
+<!ENTITY staff.main.menu.circ.scan_item_as_missing_pieces.accesskey "M">
+<!ENTITY staff.main.menu.circ.scan_item_as_missing_pieces.label "Scan Item as Missing Pieces">
 <!ENTITY staff.main.menu.circ.accesskey "C">
 <!ENTITY staff.main.menu.circ.label "Circulation">
 <!ENTITY staff.main.menu.circ.lost.key "L">
@@ -1955,6 +1957,8 @@
 <!ENTITY staff.circ.checkin_overlay.sel_backdate.accesskey "B">
 <!ENTITY staff.circ.checkin_overlay.sel_mark_items_damaged.label "Mark Item Damaged">
 <!ENTITY staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey "D">
+<!ENTITY staff.circ.checkin_overlay.sel_mark_missing_pieces.label "Mark Item as Missing Pieces">
+<!ENTITY staff.circ.checkin_overlay.sel_mark_missing_pieces.accesskey "M">
 <!ENTITY staff.circ.checkin_overlay.sel_transit_abort.label "Abort Transit">
 <!ENTITY staff.circ.checkin_overlay.sel_spine.label "Print Spine Label">
 <!ENTITY staff.circ.checkin_overlay.sel_spine.accesskey "P">

@@ -504,6 +504,13 @@ main.menu.prototype = {
                 }
             ],
 
+            'cmd_scan_item_as_missing_pieces' : [
+                ['oncommand'],
+                function() { 
+                    xulG.window.open(obj.url_prefix(urls.XUL_SCAN_ITEM_AS_MISSING_PIECES),'scan_missing_pieces','chrome'); 
+                }
+            ],
+
             'cmd_standalone' : [
                 ['oncommand'],
                 function() { 

@@ -29,6 +29,7 @@
     <command id="sel_spine" disabled="true"/>
     <command id="sel_transit_abort" disabled="true"/>
     <command id="sel_mark_items_damaged" disabled="true"/>
+    <command id="sel_mark_missing_pieces" disabled="true" label="&staff.circ.checkin_overlay.sel_mark_missing_pieces.label;" accesskey="&staff.circ.checkin_overlay.sel_mark_missing_pieces.accesskey;"/>
 
     <command id="cmd_do_not_alert_on_precat" />
     <command id="cmd_suppress_holds_and_transits" />
@@ -50,6 +51,7 @@
         <menuitem command="sel_backdate" label="&staff.circ.checkin_overlay.sel_backdate.label;" accesskey="&staff.circ.checkin_overlay.sel_backdate.accesskey;" />
         <menuseparator />
         <menuitem command="sel_mark_items_damaged" label="&staff.circ.checkin_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey;"/>
+        <menuitem command="sel_mark_missing_pieces" />
         <menuseparator />
         <menuitem command="sel_transit_abort" label="&staff.circ.checkin_overlay.sel_transit_abort.label;" />
         <menuseparator />
@@ -120,6 +122,7 @@
                     <menuitem command="sel_backdate" label="&staff.circ.checkin_overlay.sel_backdate.label;" accesskey="&staff.circ.checkin_overlay.sel_backdate.accesskey;" />
                     <menuseparator />
                     <menuitem command="sel_mark_items_damaged" label="&staff.circ.checkin_overlay.sel_mark_items_damaged.label;" accesskey="&staff.circ.checkin_overlay.sel_mark_items_damaged.accesskey;"/>
+                    <menuitem command="sel_mark_missing_pieces" />
                     <menuseparator />
                     <menuitem command="sel_transit_abort" label="&staff.circ.checkin_overlay.sel_transit_abort.label;" />
                     <menuseparator />

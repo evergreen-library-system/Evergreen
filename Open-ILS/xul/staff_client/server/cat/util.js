@@ -9,7 +9,7 @@ cat.util.EXPORT_OK    = [
     'spawn_copy_editor', 'add_copies_to_bucket', 'show_in_opac', 'spawn_spine_editor', 'transfer_copies', 
     'transfer_title_holds', 'mark_item_missing', 'mark_item_damaged', 'replace_barcode', 'fast_item_add', 
     'make_bookable', 'edit_new_brsrc', 'edit_new_bresv', 'batch_edit_volumes', 'render_fine_level',
-    'render_loan_duration'
+    'render_loan_duration', 'mark_item_as_missing_pieces'
 ];
 cat.util.EXPORT_TAGS    = { ':all' : cat.util.EXPORT_OK };
 
@@ -737,6 +737,9 @@ cat.util.render_loan_duration = function(value) {
         case 3: text = document.getElementById("catStrings").getString("staff.cat.copy_editor.field.loan_duration.extended"); break;
     }
     return text;
+}
+
+cat.util.mark_item_as_missing_pieces = function(copy_ids) {
 }
 
 dump('exiting cat/util.js\n');
