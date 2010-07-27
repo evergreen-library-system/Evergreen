@@ -518,6 +518,8 @@ my @AUTOLOAD_FIELDS = qw/
     return_patron
     claims_never_checked_out
     skip_permit_key
+    skip_deposit_fee
+    skip_rental_fee
 /;
 
 
@@ -1431,6 +1433,9 @@ sub apply_deposit_fee {
     return unless 
         ($self->is_deposit and not $self->is_deposit_exempt) or 
         ($self->is_rental and not $self->is_rental_exempt);
+
+    return if $self->is_deposit and $self->skip_deposit_fee;
+    return if $self->is_rental and $self->skip_rental_fee;
 
 	my $bill = Fieldmapper::money::billing->new;
     my $amount = $copy->deposit_amount;
