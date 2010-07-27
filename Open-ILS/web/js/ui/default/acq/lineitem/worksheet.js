@@ -1,3 +1,4 @@
+dojo.require('dijit.form.Button');
 dojo.require('openils.widget.ProgressDialog');
 dojo.requireLocalization("openils.acq", "acq");
 var localeStrings = dojo.i18n.getLocalization("openils.acq", "acq");
