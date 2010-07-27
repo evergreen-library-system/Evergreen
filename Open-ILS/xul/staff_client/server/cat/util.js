@@ -740,6 +740,7 @@ cat.util.render_loan_duration = function(value) {
 }
 
 cat.util.mark_item_as_missing_pieces = function(copy_ids) {
+    alert(js2JSON(copy_ids));
 }
 
 dump('exiting cat/util.js\n');

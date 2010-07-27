@@ -28,10 +28,10 @@
     </script>
     <scripts id="openils_util_scripts"/>
 
+    <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
+
     <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
     <script type="text/javascript" src="missing_pieces.js"/>
-
-    <label value="retrieving coust's with dojo and PermaCrud..."/>
 
 </window>
 
