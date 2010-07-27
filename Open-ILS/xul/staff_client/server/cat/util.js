@@ -740,7 +740,44 @@ cat.util.render_loan_duration = function(value) {
 }
 
 cat.util.mark_item_as_missing_pieces = function(copy_ids) {
-    alert(js2JSON(copy_ids));
+    var error;
+    try {
+        JSAN.use('util.error'); error = new util.error();
+        JSAN.use('util.functional'); JSAN.use('util.date');
+        JSAN.use('util.network'); var network = new util.network();
+        var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ copy_ids ]);
+        if (typeof copies.ilsevent != 'undefined') throw(copies);
+
+        var r = error.yns_alert($("catStrings").getFormattedString('staff.cat.util.mark_item_missing_pieces.ms_message', [util.functional.map_list( copies, function(o) { return o.barcode(); } ).join(", ")]),
+            $("catStrings").getString('staff.cat.util.mark_item_missing_pieces.ms_title'),
+            $("catStrings").getString('staff.cat.util.mark_item_missing_pieces.ms_ok_label'),
+            $("catStrings").getString('staff.cat.util.mark_item_missing_pieces.ms_cancel_label'), null,
+            $("catStrings").getString('staff.cat.util.mark_item_missing_pieces.ms_confirm_action'));
+
+        if (r == 0) {
+            var count = 0;
+            for (var i = 0; i < copies.length; i++) {
+                try {
+                    var robj = network.simple_request('MARK_ITEM_MISSING_PIECES',[ses(),copies[i].id()]);
+                    if (typeof robj.ilsevent != 'undefined') { throw(robj); }
+                    // TODO: Print missing pieces slip
+                    // TODO: Bill patron prompt
+                    // TODO: Item/patron notes/messages
+                    // TODO: Invoke 3rd party app with letter to patron
+                    count++;
+                } catch(E) {
+                    error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.util.mark_item_missing_pieces.marking_error', [copies[i].barcode()]),E);
+                }
+            }
+            alert(count == 1 ? $("catStrings").getString('staff.cat.util.mark_item_missing_pieces.one_item_missing_pieces') :
+                $("catStrings").getFormattedString('staff.cat.util.mark_item_missing_pieces.multiple_item_missing_pieces', [count]));
+        }
+
+        return true;
+    } catch(E) {
+        alert('Error in cat.util.mark_item_as_missing_pieces: ' + E);
+        return false;
+    }
 }
 
 dump('exiting cat/util.js\n');

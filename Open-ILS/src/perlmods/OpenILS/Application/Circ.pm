@@ -35,6 +35,7 @@ use OpenILS::Application::Cat::AssetCommon;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
 
+my $holdcode    = "OpenILS::Application::Circ::Holds";
 
 # ------------------------------------------------------------------------
 # Top level Circ package;
@@ -1200,6 +1201,142 @@ sub handle_mark_damaged {
     }
 }
 
+
+
+# ----------------------------------------------------------------------
+__PACKAGE__->register_method(
+    method => 'mark_item_missing_pieces',
+    api_name => 'open-ils.circ.mark_item_missing_pieces',
+    signature	=> q/
+        Changes the status of a copy to "damaged" or to a custom status based on the 
+        circ.missing_pieces.copy_status org unit setting. Requires MARK_ITEM_MISSING_PIECES
+        permission.
+        @param authtoken The login session key
+        @param copy_id The ID of the copy to mark as damaged
+        @return Success event with circ and copy objects in the payload, or error Event otherwise.
+        /
+);
+
+sub mark_item_missing_pieces {
+	my( $self, $conn, $auth, $copy_id, $args ) = @_;
+    ### FIXME: We're starting a transaction here, but we're doing a lot of things outside of the transaction
+	my $e = new_editor(authtoken=>$auth, xact =>1);
+	return $e->die_event unless $e->checkauth;
+    $args ||= {};
+
+    my $copy = $e->retrieve_asset_copy([
+        $copy_id,
+        {flesh => 1, flesh_fields => {'acp' => ['call_number']}}])
+            or return $e->die_event;
+
+    my $owning_lib = 
+        ($copy->call_number->id == OILS_PRECAT_CALL_NUMBER) ? 
+            $copy->circ_lib : $copy->call_number->owning_lib;
+
+    return $e->die_event unless $e->allowed('MARK_ITEM_MISSING_PIECES', $owning_lib);
+
+    #### grab the last circulation
+    my $circ = $e->search_action_circulation([
+        {   target_copy => $copy->id}, 
+        {   limit => 1, 
+            order_by => {circ => "xact_start DESC"}
+        }
+    ])->[0];
+
+    if ($circ) {
+        if (! $circ->checkin_time) { # if circ active, attempt renew
+            my ($res) = $self->method_lookup('open-ils.circ.renew')->run($e->authtoken,{'copy_id'=>$circ->target_copy});
+            if (ref $res ne 'ARRAY') { $res = [ $res ]; }
+            if ( $res->[0]->{textcode} eq 'SUCCESS' ) {
+                $circ = $res->[0]->{payload}{'circ'};
+                $circ->target_copy( $copy->id );
+                $logger->info('open-ils.circ.mark_item_missing_pieces: successful renewal');
+            } else {
+                $logger->info('open-ils.circ.mark_item_missing_pieces: non-successful renewal');
+            }
+        } else {
+
+            my $co_params = {
+                'copy_id'=>$circ->target_copy,
+                'patron_id'=>$circ->usr,
+                'skip_deposit_fee'=>1,
+                'skip_rental_fee'=>1
+            };
+
+            if ($U->ou_ancestor_setting_value($e->requestor->ws_ou, 'circ.block_renews_for_holds')) {
+
+                my ($hold, undef, $retarget) = $holdcode->find_nearest_permitted_hold(
+                    $e, $copy, $e->requestor, 1 );
+
+                if ($hold) { # needed for hold? then due now
+
+                    $logger->info('open-ils.circ.mark_item_missing_pieces: item needed for hold, shortening due date');
+                    my $due_date = DateTime->now(time_zone => 'local');
+                    $co_params->{'due_date'} = cleanse_ISO8601( $due_date->strftime('%FT%T%z') );
+                } else {
+                    $logger->info('open-ils.circ.mark_item_missing_pieces: item not needed for hold');
+                }
+            }
+
+            my ($res) = $self->method_lookup('open-ils.circ.checkout.full.override')->run($e->authtoken,$co_params);
+            if (ref $res ne 'ARRAY') { $res = [ $res ]; }
+            if ( $res->[0]->{textcode} eq 'SUCCESS' ) {
+                $logger->info('open-ils.circ.mark_item_missing_pieces: successful checkout');
+                $circ = $res->[0]->{payload}{'circ'};
+            } else {
+                $logger->info('open-ils.circ.mark_item_missing_pieces: non-successful checkout');
+                $e->rollback;
+                return $res;
+            }
+        }
+    } else {
+        $logger->info('open-ils.circ.mark_item_missing_pieces: no previous checkout');
+        $e->rollback;
+        return OpenILS::Event->new('ACTION_CIRCULATION_NOT_FOUND',{'copy'=>$copy});
+    }
+
+    ### Update the item status
+
+    my $custom_stat = $U->ou_ancestor_setting_value(
+        $owning_lib, 'circ.missing_pieces.copy_status', $e);
+    my $stat = $custom_stat || OILS_COPY_STATUS_DAMAGED;
+
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    $ses->request('open-ils.trigger.event.autocreate', 'missing_pieces', $copy, $owning_lib);
+
+	$copy->status($stat);
+	$copy->edit_date('now');
+	$copy->editor($e->requestor->id);
+
+	$e->update_asset_copy($copy) or return $e->die_event;
+
+	my $holds = $e->search_action_hold_request(
+		{ 
+			current_copy => $copy->id,
+			fulfillment_time => undef,
+			cancel_time => undef,
+		}
+	);
+
+    $logger->debug("resetting holds that target the marked copy");
+    OpenILS::Application::Circ::Holds->_reset_hold($e->requestor, $_) for @$holds;
+
+	if ($e->commit) {
+
+        my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+        $ses->request('open-ils.trigger.event.autocreate', 'checkout.missing_pieces', $circ, $circ->circ_lib);
+
+        return OpenILS::Event->new('SUCCESS',
+            payload => {
+                circ => $circ,
+                copy => $copy
+            }
+        ); 
+
+    } else {
+        return $e->die_event;
+    }
+}
 
 
 
