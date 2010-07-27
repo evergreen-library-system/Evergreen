@@ -86,7 +86,7 @@ serial.editor_base = {
 
             var do_edit;
             if (typeof params.do_edit == 'undefined') {
-                do_edit = xul_params('do_edit',{'modal_xulG':true});
+                do_edit = xul_param('do_edit',{'modal_xulG':true});
             } else {
                 do_edit = params.do_edit;
             }
@@ -456,7 +456,7 @@ serial.editor_base = {
                 try {
                     if (block) return; block = true;
 
-                    function post_c(v) {
+                    function post_c(v, unchanged) {
                         try {
                             /* dbw2 not needed?
                             var t = input_cmd.match('apply_stat_cat') ? 'stat_cat' : ( input_cmd.match('apply_owning_lib') ? 'owning_lib' : 'attribute' );
@@ -473,7 +473,9 @@ serial.editor_base = {
                                 break;
                             }
                             obj.changed[ hbox.id ] = { 'type' : t, 'field' : f, 'value' : v }; */
-                            obj.changed[ hbox.id ] = true;
+                            if (!unchanged) {
+                                obj.changed[ hbox.id ] = true;
+                            }
                             block = false;
                             setTimeout(
                                 function() {
@@ -560,10 +562,13 @@ serial.editor_base = {
                 var xulG = {};
                 xulG[fm_type_plural] = obj[fm_type_plural];
                 update_modal_xulG(xulG);
-                window.close();
             } else {
                 obj.data['temp_' + fm_type_plural] = js2JSON( obj[fm_type_plural] );
                 obj.data.stash('temp_' + fm_type_plural);
+            }
+
+            if (xul_param('in_modal',{'modal_xulG':true})) {
+                window.close();
             }
         } catch(E) {
             obj.error.standard_unexpected_error_alert(fm_type + '_editor save',E);

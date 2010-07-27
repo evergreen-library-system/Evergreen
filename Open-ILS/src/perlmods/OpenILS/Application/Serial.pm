@@ -395,10 +395,6 @@ sub _create_sunit {
 sub _update_sunit {
     my ($editor, $override, $sunit) = @_;
 
-#    my $evt;
-#    my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
-#    return $evt if ( $evt = OpenILS::Application::Cat::AssetCommon->org_cannot_have_vols($editor, $org) );
-
     $logger->info("sunit-alter: retrieving sunit ".$sunit->id);
     my $orig_sunit = $editor->retrieve_serial_unit($sunit->id);
 
@@ -407,6 +403,59 @@ sub _update_sunit {
     return $editor->event unless $editor->update_serial_unit($sunit);
     return 0;
 }
+
+__PACKAGE__->register_method(
+	method	=> "retrieve_unit_list",
+    authoritative => 1,
+	api_name	=> "open-ils.serial.unit_list.retrieve"
+);
+
+sub retrieve_unit_list {
+
+	my( $self, $client, @sdist_ids ) = @_;
+
+	if(ref($sdist_ids[0])) { @sdist_ids = @{$sdist_ids[0]}; }
+
+	my $e = new_editor();
+
+    my $query = {
+        'select' => 
+            { 'sunit' => [ 'id', 'summary_contents', 'sort_key' ],
+              'sitem' => ['stream'],
+              'sstr' => ['distribution'],
+              'sdist' => [{'column' => 'label', 'alias' => 'sdist_label'}]
+            },
+        'from' =>
+            { 'sdist' =>
+                { 'sstr' =>
+                    { 'join' =>
+                        { 'sitem' =>
+                            { 'join' => { 'sunit' => {} } }
+                        }
+                    }
+                }
+            },
+        'distinct' => 'true',
+        'where' => { '+sdist' => {'id' => \@sdist_ids} },
+        'order_by' => [{'class' => 'sunit', 'field' => 'sort_key'}]
+    };
+
+    my $unit_list_entries = $e->json_query($query);
+    
+    my @entries;
+    foreach my $entry (@$unit_list_entries) {
+        my $value = {'sunit' => $entry->{id}, 'sstr' => $entry->{stream}, 'sdist' => $entry->{distribution}};
+        my $label = $entry->{summary_contents};
+        if (length($label) > 100) {
+            $label = substr($label, 0, 100) . '...'; # limited space in dropdown / menu
+        }
+        $label = "[$entry->{sdist_label}/$entry->{stream} #$entry->{id}] " . $label;
+        push (@entries, [$label, OpenSRF::Utils::JSON->perl2JSON($value)]);
+    }
+
+    return \@entries;
+}
+
 
 
 ##########################################################################
@@ -706,6 +755,7 @@ sub unitize_items {
             $sdist_by_stream_id{$stream_id} = $sdists->[0];
         } elsif ($unit_id == -2) { # create one unit for all '-2' items
             $unit_id = $new_unit_id;
+            $item->unit($unit_id);
         }
 
         $found_unit_ids{$unit_id} = 1;
@@ -818,7 +868,7 @@ sub unitize_items {
     }
 
     $editor->commit;
-    return scalar @$items;
+    return {'num_items_received' => scalar @$items, 'new_unit_id' => $new_unit_id};
 }
 
 sub _build_unit {
@@ -829,7 +879,7 @@ sub _build_unit {
     my $attr = $mode . '_unit_template';
     my $template = $editor->retrieve_asset_copy_template($sdist->$attr);
 
-    my @parts = qw( circ_lib status location loan_duration fine_level age_protect circulate deposit ref holdable deposit_amount price circ_modifier circ_as_type alert_message opac_visible floating mint_condition );
+    my @parts = qw( status location loan_duration fine_level age_protect circulate deposit ref holdable deposit_amount price circ_modifier circ_as_type alert_message opac_visible floating mint_condition );
 
     my $unit = new Fieldmapper::serial::unit;
     foreach my $part (@parts) {
@@ -837,9 +887,9 @@ sub _build_unit {
         next if !defined($value);
         $unit->$part($value);
     }
-    if (!$template->circ_lib) {
-        $unit->circ_lib($sdist->holding_lib);
-    }
+
+    # ignore circ_lib in template, set to distribution holding_lib
+    $unit->circ_lib($sdist->holding_lib);
     $unit->creator($editor->requestor->id);
     $unit->editor($editor->requestor->id);
     $attr = $mode . '_call_number';
@@ -1223,7 +1273,6 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.serial.subscription_tree.global.retrieve"
 );
 
-# user_session may be null/undef
 sub retrieve_sub_tree {
 
 	my( $self, $client, $user_session, $docid, @org_ids ) = @_;
@@ -1276,22 +1325,6 @@ sub _build_subs_list {
 
 		#$dists = [ sort { $a->label cmp $b->label } @$dists  ];
 
-#		for my $dist (@$dists) {
-#			if( $c->status == OILS_COPY_STATUS_CHECKED_OUT ) {
-#				$c->circulations(
-#					$e->search_action_circulation(
-#						[
-#							{ target_copy => $c->id },
-#							{
-#								order_by => { circ => 'xact_start desc' },
-#								limit => 1
-#							}
-#						]
-#					)
-#				)
-#			}
-#		}
-
 		$sub->distributions($dists);
         
         # TODO: filter on !deleted?
@@ -1302,10 +1335,12 @@ sub _build_subs_list {
 		#$issuances = [ sort { $a->label cmp $b->label } @$issuances  ];
 		$sub->issuances($issuances);
 
+        # TODO: filter on !deleted?
 		my $scaps = $e->search_serial_caption_and_pattern(
-			{ subscription => $sub->id }); # TODO: filter on !deleted?
+			[{ subscription => $sub->id }, { 'order_by' => {'scap' => 'id'} }]
+            );
 
-		$scaps = [ sort { $a->id cmp $b->id } @$scaps  ];
+		#$scaps = [ sort { $a->id cmp $b->id } @$scaps  ];
 		$sub->scaps($scaps);
 		push( @built_subs, $sub );
 	}

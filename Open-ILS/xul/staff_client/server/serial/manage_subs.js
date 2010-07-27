@@ -1147,7 +1147,7 @@ serial.manage_subs.prototype = {
         var id = obj.focused_node_retrieve_id.split('_')[1];
 
         if (sel_lists[row_type]) { // the type focused is in the selection (usually the case)
-            obj['on_click_' + row_type](sel_lists[row_type],twisty);
+            if (obj['on_click_' + row_type]) obj['on_click_' + row_type](sel_lists[row_type],twisty);
         }
     },
 

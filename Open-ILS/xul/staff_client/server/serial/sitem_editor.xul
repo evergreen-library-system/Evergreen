@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Serial Item Editor -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="serial_item_editor_win" 
+	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+	width="800" height="390" oils_persist="width height"
+	title="Item Editor"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+    <script type="text/javascript">
+		var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};
+	</script>
+    <scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script type="text/javascript" src="sitem_editor.js"/>
+    <script>
+        <![CDATA[
+            function my_init() {
+                try {
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    if (typeof JSAN == 'undefined') { 
+                        throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+                    }
+                    JSAN.errorLevel = "die"; // none, warn, or die
+                    JSAN.addRepository('/xul/server/');
+                    JSAN.use('util.error'); g.error = new util.error();
+                    g.error.sdump('D_TRACE','my_init() for serial/sitem_editor.xul');
+                    JSAN.use('serial.sitem_editor'); g.sitem_editor = new serial.sitem_editor();
+
+                    g.sitem_editor.init({"do_edit" : true, "handle_update" : true});
+
+                } catch(E) {
+                    var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['serial/sitem_editor.xul', E]);
+                    try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                    alert(err_msg);
+                }
+            }
+
+        ]]>
+    </script>
+
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+	<messagecatalog id="serialStrings" src="/xul/server/locale/<!--#echo var='locale'-->/serial.properties" />
+
+    <vbox id="brief_display_box"/>
+
+	<groupbox flex="1" class="my_overflow">
+		<hbox flex="1" style="overflow: auto">
+			<vbox flex="1">
+				<label value="Item" style="font-weight: bold; font-size: large"/>
+				<vbox id="sitem_editor_left_pane" flex="1"/>
+			</vbox>
+			<splitter><grippy /></splitter>
+			<vbox flex="1">
+				<label value=" " style="font-weight: bold; font-size: large"/>
+				<vbox id="sitem_editor_middle_pane" flex="1"/>
+			</vbox>
+			<splitter><grippy /></splitter>
+			<vbox flex="1">
+				<button style="font-weight: bold; font-size: normal" label="Item Dates" accesskey="1" oncommand="document.getElementById('sitem_editor_right_pane').firstChild.firstChild.focus();"/>
+				<vbox id="sitem_editor_right_pane" flex="1"/>
+			</vbox>
+		</hbox>
+
+		<hbox id="nav">
+			<spacer flex="1"/>
+			<button id="sitem_notes" label="&staff.serial.sitem_editor.notes;" accesskey="&staff.serial.sitem_editor.notes.accesskey;" oncommand="g.sitem_editor.notes();"/>
+			<button id="sitem_save" label="&staff.serial.sitem_editor.modify;" hidden="true" accesskey="&staff.serial.sitem_editor.modify.accesskey;" oncommand="g.sitem_editor.save();"/>
+			<button id="sitem_cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>
+		</hbox>
+
+		<spacer/>
+	</groupbox>
+
+</window>
+

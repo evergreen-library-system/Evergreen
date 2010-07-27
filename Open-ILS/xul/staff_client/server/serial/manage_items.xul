@@ -83,24 +83,22 @@ vim:noet:sw=4:ts=4:
         <tree id="item_tree" flex="2" enableColumnDrag="true" context="serial_manage_items_popup"/>
         <splitter state="open" collapse="after" resizebefore="closest" resizeafter="farthest"/>
         <hbox align="center">
-            <label style="font-weight: bold" value="Workarea"/>
+            <label style="font-weight: bold" value="Showing: "/>
             <label id="serial_workarea_type_label" value="Recently Received"/>
             <spacer flex="1"/>
             <button label="Receive/Move Selected &#8595;" command="cmd_receive_items"/>
-            <description value="into"/>
-            <description id="serial_workarea_unit_desc" value="[**AUTO**]"/>
+        </hbox>
+        <hbox align="center">
+            <label style="font-weight: bold" value="Current Working Unit: "/>
+            <description flex="1" id="serial_workarea_sunit_desc">**Auto per Item**</description>
+            <spacer flex="1"/>
             <menubar>
-                <menu label="Set Current Unit">
+                <menu label="Set Current Unit" id="serial_items_current_sunit" sunit_id="-1" sunit_label="Auto per Item" sdist_id="" sstr_id="">
                     <menupopup>
-                        <menuitem command="cmd_broken" label="New Unit"/>
-                        <menuitem command="cmd_broken" label="Auto per Item"/>
-                        <menu label="Recent">
-                            <menupopup>
-                                <menuitem command="cmd_broken" label="V.1"/>
-                                <menuitem command="cmd_broken" label="V.2"/>
-                            </menupopup>
-                        </menu>
-                        <menuitem command="cmd_broken" label="Other..."/>
+                        <menuitem command="cmd_set_sunit" label="New Unit" sunit_id="-2" sdist_id="" sstr_id=""/>
+                        <menuitem command="cmd_set_sunit" label="Auto per Item" sunit_id="-1" sdist_id="" sstr_id=""/>
+                        <menu label="Recent" id="serial_items_recent_sunits" sunit_json='[]'/>
+                        <menuitem command="cmd_set_other_sunit" label="Other..."/>
                     </menupopup>
                 </menu>
                 <button command="cmd_broken" label="Edit Current Unit..."/>

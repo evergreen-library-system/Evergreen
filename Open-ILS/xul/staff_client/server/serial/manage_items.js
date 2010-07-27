@@ -8,6 +8,9 @@ serial.manage_items = function (params) {
 	JSAN.use('util.error'); this.error = new util.error();
 	JSAN.use('util.network'); this.network = new util.network();
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
+
+    this.current_sunit_id = -1; //default to **AUTO**
+
 }
 
 serial.manage_items.prototype = {
@@ -18,11 +21,11 @@ serial.manage_items.prototype = {
 		var obj = this;
 
         try {
-            var holding_lib = $('serial_item_lib_menu').value;
-            robj = obj.network.request(
+            obj.holding_lib = $('serial_item_lib_menu').value;
+            var robj = obj.network.request(
                 'open-ils.pcrud',
                 'open-ils.pcrud.id_list.sdist',
-                [ ses(), {"holding_lib" : holding_lib, "+ssub":{"record_entry" : obj.docid}}, {"join":"ssub"} ]
+                [ ses(), {"holding_lib" : obj.holding_lib, "+ssub":{"record_entry" : obj.docid}}, {"join":"ssub"} ]
             );
             if (robj != null) {
                 if (typeof robj.ilsevent != 'undefined') throw(robj);
@@ -35,7 +38,7 @@ serial.manage_items.prototype = {
         }
     },
 
-    'build_lib_menu' : function () {
+    'build_menus' : function () {
 		var obj = this;
 
         // draw library drop-down
@@ -78,8 +81,8 @@ serial.manage_items.prototype = {
                 'command',
                 function(ev) {
                     if (document.getElementById('serial_item_refresh_button')) document.getElementById('serial_item_refresh_button').focus();
-                    JSAN.use('util.file'); var file = new util.file('manage_items_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'serial_item_lib_menu' : [ 'value' ], 'serial_manage_items_mode' : [ 'selectedIndex' ], 'serial_manage_items_show_all' : [ 'checked' ] }); //FIXME: do load_attributes somewhere and check if selectedIndex does what we want here
+                    JSAN.use('util.file'); var file = new util.file('serial_items_prefs.'+obj.data.server_unadorned);
+                    util.widgets.save_attributes(file, { 'serial_item_lib_menu' : [ 'value' ], 'mode_receive' : [ 'selected' ], 'mode_bind' : [ 'selected' ], 'serial_manage_items_show_all' : [ 'checked' ] });
                     // get latest sdist id list based on library drowdown
                     obj.set_sdist_ids();
                     obj.refresh_list('main');
@@ -90,12 +93,25 @@ serial.manage_items.prototype = {
         } else {
             throw(document.getElementById('catStrings').getString('staff.cat.copy_browser.missing_library') + '\n');
         }
-        file = new util.file('manage_items_prefs.'+obj.data.server_unadorned);
+        file = new util.file('serial_items_prefs.'+obj.data.server_unadorned);
         util.widgets.load_attributes(file);
         ml.value = ml.getAttribute('value');
         if (! ml.value) {
             ml.value = org.id();
             ml.setAttribute('value',ml.value);
+        }
+
+        // setup recent sunits list
+        var recent_sunits_file = new util.file('serial_items_recent_sunits_'+obj.docid+'.'+obj.data.server_unadorned);
+        util.widgets.load_attributes(recent_sunits_file);
+        var recent_sunits_popup = $('serial_items_recent_sunits');
+        obj.sunit_entries = JSON2js(recent_sunits_popup.getAttribute('sunit_json'));
+        for (i = 0; i < obj.sunit_entries.length; i++) {
+            var sunit_info = obj.sunit_entries[i];
+            var new_menu_item = recent_sunits_popup.appendItem(sunit_info.label);
+            new_menu_item.setAttribute('id', 'serial_items_recent_sunits_entry_'+sunit_info.id);
+            new_menu_item.setAttribute('sunit_id', sunit_info.id);
+            new_menu_item.setAttribute('command', 'cmd_set_sunit');
         }
     },
 
@@ -104,7 +120,8 @@ serial.manage_items.prototype = {
 
 		obj.docid = params['docid'];
 
-        obj.build_lib_menu();
+        obj.build_menus();
+        obj.set_sunit($('serial_items_current_sunit').getAttribute('sunit_id'), $('serial_items_current_sunit').getAttribute('sunit_label'), $('serial_items_current_sunit').getAttribute('sdist_id'), $('serial_items_current_sunit').getAttribute('sstr_id'));
         obj.set_sdist_ids();
 		obj.init_lists();
 
@@ -125,7 +142,7 @@ serial.manage_items.prototype = {
                                 new_item.issuance().subscription(1); //FIXME: hard-coded subscription
                                 new_item.isnew(1);
                                 new_item.issuance().isnew(1);
-                                spawn_item_editor( {'items' : [new_item], 'edit' : 1 } );
+                                spawn_sitem_editor( {'sitems' : [new_item], 'do_edit' : 1 } );
 
                                 obj.refresh_list('main');
 
@@ -148,7 +165,7 @@ serial.manage_items.prototype = {
                                         }
                                     );
 
-                                spawn_item_editor( { 'item_ids' : list, 'edit' : 1 } );
+                                spawn_sitem_editor( { 'sitem_ids' : list, 'do_edit' : 1 } );
 
                                 obj.refresh_list(obj.selected_list);
 
@@ -214,6 +231,28 @@ serial.manage_items.prototype = {
                             }
                         }
                     ],
+                    'cmd_set_sunit' : [
+                        ['command'],
+                        function(evt) {
+                            try {
+                                var target = evt.explicitOriginalTarget;
+                                var label = target.label;
+                                var sunit_id = target.getAttribute('sunit_id');
+                                var sdist_id = target.getAttribute('sdist_id');
+                                var sstr_id = target.getAttribute('sstr_id');
+                                obj.set_sunit(sunit_id, label, sdist_id, sstr_id);
+                                obj.save_sunit(sunit_id, label, sdist_id, sstr_id);
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('cmd_set_sunit failed!',E);
+                            }
+                        }
+                    ],
+                    'cmd_set_other_sunit' : [
+                        ['command'],
+                        function() {
+                            obj.set_other_sunit();
+                        }
+                    ],
                     'cmd_predict_items' : [
                         ['command'],
                         function() {
@@ -229,7 +268,7 @@ serial.manage_items.prototype = {
                                         obj.retrieve_ids,
                                         function (o) {
                                             var item = obj.list_sitem_map[o.sitem_id];
-                                            item.unit('-1'); //FIXME: hard-coded unit (-1 is AUTO)
+                                            item.unit(obj.current_sunit_id);
                                             return item;
                                         }
                                     );
@@ -241,7 +280,13 @@ serial.manage_items.prototype = {
                                         );
                                 if (typeof robj.ilsevent != 'undefined') throw(robj); //TODO: catch for override
 
-                                alert('Successfully received '+robj+' item(s)');
+                                alert('Successfully received '+robj.num_items_received+' item(s)');
+
+                                if (obj.current_sunit_id == -2) {
+                                    obj.current_sunit_id = robj.new_unit_id;
+                                }
+
+                                obj.rebuild_current_sunit(list[0].stream().distribution().label(), list[0].stream().distribution().id(), list[0].stream().id());
                                 obj.refresh_list('main');
                                 obj.refresh_list('workarea');
                                 
@@ -311,6 +356,122 @@ serial.manage_items.prototype = {
 		}
 	},
 
+	'rebuild_current_sunit' : function(sdist_label, sdist_id, sstr_id) {
+		var obj = this;
+		try {
+            var robj = obj.network.request(
+                'open-ils.pcrud',
+                'open-ils.pcrud.retrieve.sunit',
+                [ ses(),  obj.current_sunit_id]
+            );
+            if (!robj) return; // current sunit is NEW or AUTO
+
+            var label = '[' + sdist_label + '/' + sstr_id + ' #' + obj.current_sunit_id + '] ' + robj.summary_contents();
+            obj.set_sunit(obj.current_sunit_id, label, sdist_id, sstr_id);
+            obj.save_sunit(obj.current_sunit_id, label, sdist_id, sstr_id);
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('serial items set_sunit',E);
+		}
+	},
+
+	'set_sunit' : function(sunit_id, label, sdist_id, sstr_id) {
+		var obj = this;
+		try {
+            obj.current_sunit_id = sunit_id;
+            obj.current_sunit_sdist_id = sdist_id;
+            obj.current_sunit_sstr_id = sstr_id;
+            if (sunit_id < 0) {
+                $('serial_workarea_sunit_desc').firstChild.nodeValue = '**' + label + '**';
+            } else {
+                $('serial_workarea_sunit_desc').firstChild.nodeValue = label;
+                obj.add_sunit_to_menu(sunit_id, label, sdist_id, sstr_id);
+            }
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('serial items set_sunit',E);
+		}
+	},
+
+	'save_sunit' : function(sunit_id, label, sdist_id, sstr_id) {
+		var obj = this;
+		try {
+            $('serial_items_current_sunit').setAttribute('sunit_id', sunit_id);
+            $('serial_items_current_sunit').setAttribute('sunit_label', label);
+            if (sunit_id > 0) {
+                $('serial_items_current_sunit').setAttribute('sdist_id', sdist_id);
+                $('serial_items_current_sunit').setAttribute('sstr_id', sstr_id);
+            }
+            var recent_sunits_file = new util.file('serial_items_recent_sunits_'+obj.docid+'.'+obj.data.server_unadorned);
+            util.widgets.save_attributes(recent_sunits_file, { 'serial_items_recent_sunits' : [ 'sunit_json' ], 'serial_items_current_sunit' : [ 'sunit_id', 'sunit_label', 'sdist_id', 'sstr_id' ] });
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('serial items save_sunit',E);
+		}
+	},
+
+	'set_other_sunit' : function() {
+		var obj = this;
+		try {
+            g.serial_items_sunit_select = '';
+            g.serial_items_sdist_ids = obj.sdist_ids;
+            JSAN.use('util.window'); var win = new util.window();
+            win.open(
+                xulG.url_prefix(urls.XUL_SERIAL_SELECT_UNIT),
+                'sel_serial_sunit_win_' + win.window_name_increment(),
+                'chrome,resizable,modal,centerscreen'
+            );
+            if (!g.serial_items_sunit_select) {
+                return;
+            }
+
+            var selection = g.serial_items_sunit_select;
+            var sunit_id = selection.sunit;
+            var sdist_id = selection.sdist;
+            var sstr_id = selection.sstr;
+            var label = selection.label;
+
+            obj.set_sunit(sunit_id, label, sdist_id, sstr_id);
+            obj.save_sunit(sunit_id, label, sdist_id, sstr_id);
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('serial items set_other_sunit',E);
+		}
+	},
+
+	'add_sunit_to_menu' : function(sunit_id, label, sdist_id, sstr_id) {
+		var obj = this;
+		try {
+            if (sunit_id > 0) {
+                // check if it is already in sunit_entries, remove it
+                for (i = 0; i < obj.sunit_entries.length; i++) {
+                    if (obj.sunit_entries[i].id == sunit_id) {
+                        obj.sunit_entries.splice(i,1);
+                        var menu_item = $('serial_items_recent_sunits_entry_'+sunit_id);
+                        menu_item.parentNode.removeChild(menu_item);
+                        i--;
+                    }
+                }
+                // add to front of array
+                obj.sunit_entries.unshift({"id" : sunit_id, "label" : label, "sdist_id" : sdist_id, "sstr_id" : sstr_id});
+                var recent_sunits_popup = $('serial_items_recent_sunits');
+                var new_menu_item = recent_sunits_popup.insertItemAt(0,label);
+                new_menu_item.setAttribute('id', 'serial_items_recent_sunits_entry_'+sunit_id);
+                new_menu_item.setAttribute('sunit_id', sunit_id);
+                new_menu_item.setAttribute('sdist_id', sdist_id);
+                new_menu_item.setAttribute('sstr_id', sstr_id);
+                new_menu_item.setAttribute('command', 'cmd_set_sunit');
+
+                // pop off from sunit_entries if it already has 10 sunits
+                if (obj.sunit_entries.length > 10) {
+                    var sunit_info = obj.sunit_entries.pop();
+                    var menu_item = $('serial_items_recent_sunits_entry_'+sunit_info.id);
+                    menu_item.parentNode.removeChild(menu_item);
+                }
+
+                recent_sunits_popup.setAttribute('sunit_json', js2JSON(obj.sunit_entries));
+            }
+		} catch(E) {
+			obj.error.standard_unexpected_error_alert('serial items add_sunit_to_menu',E);
+		}
+	},
+
 	'init_lists' : function() {
 		var obj = this;
 
@@ -320,20 +481,21 @@ serial.manage_items.prototype = {
         function retrieve_row(params) {
 			try { 
 				var row = params.row;
-                obj.network.simple_request( //FIXME: pcrud fleshing won't work!!
-                    'FM_SITEM_RETRIEVE',
-                    //[ ses(), row.my.sitem_id, {"flesh":1, "flesh_fields":{"sitem": ["creator","editor","distribution","shelving_unit"]}}],
-                    [ ses(), row.my.sitem_id, {"flesh":2,"flesh_fields":{"sitem":["creator","editor","issuance","stream","unit","notes"], "sunit":["call_number"], "sstr":["distribution"]}}], // TODO: we really need note count only, not the actual notes, is there a smart way to do that?
+                obj.network.simple_request(
+                    'FM_SITEM_FLESHED_BATCH_RETRIEVE.authoritative',
+                    [[row.my.sitem_id]],
+                    //[ ses(), row.my.sitem_id, {"flesh":2,"flesh_fields":{"sitem":["creator","editor","issuance","stream","unit","notes"], "sunit":["call_number"], "sstr":["distribution"]}}],
                     function(req) {
                         try {
                             var robj = req.getResultObject();
                             if (typeof robj.ilsevent != 'undefined') throw(robj);
                             if (typeof robj.ilsevent == 'null') throw('null result');
-                            obj.list_sitem_map[robj.id()] = robj;
-                            row.my.sitem = robj;
+                            var sitem = robj[0];
+                            obj.list_sitem_map[sitem.id()] = sitem;
+                            row.my.sitem = sitem;
                             //params.row_node.setAttribute( 'retrieve_id', js2JSON({'copy_id':copy_id,'circ_id':row.my.circ.id(),'barcode':row.my.acp.barcode(),'doc_id': ( row.my.record ? row.my.record.id() : null ) }) );
-                            params.row_node.setAttribute( 'retrieve_id', js2JSON({'sitem_id':robj.id()}) );
-                            dump('dumping... ' + js2JSON(obj.list_sitem_map[robj.id()]));
+                            params.row_node.setAttribute( 'retrieve_id', js2JSON({'sitem_id':sitem.id()}) );
+                            dump('dumping... ' + js2JSON(obj.list_sitem_map[sitem.id()]));
                             if (typeof params.on_retrieve == 'function') {
                                 params.on_retrieve(row);
                             }
@@ -378,7 +540,11 @@ serial.manage_items.prototype = {
 				}
 			}
 		);
-        obj.lists.main.sitem_retrieve_params = {'date_received' : null };
+        if (document.getElementById('serial_manage_items_show_all').checked) {
+            obj.lists.main.sitem_retrieve_params = {};
+        } else {
+            obj.lists.main.sitem_retrieve_params = {'date_received' : null };
+        }
         obj.lists.main.sitem_extra_params ={'order_by' : {'sitem' : 'date_expected ASC, stream ASC'}};
 
         obj.lists.workarea = new util.list('workarea_tree');
@@ -455,6 +621,7 @@ serial.manage_items.prototype = {
         }
 
 		list.clear();
+
         for (i = 0; i < robj.length; i++) {
             list.append( { 'row' : { 'my' : { 'sitem_id' : robj[i] } }, 'to_bottom' : true, 'no_auto_select' : true } );
         }
@@ -664,12 +831,12 @@ function item_columns(modify,params) {
     return c;
 };
 
-spawn_item_editor = function(params) {
+spawn_sitem_editor = function(params) {
     try {
-        if (!params.item_ids && !params.items) return;
-        if (params.item_ids && params.item_ids.length == 0) return;
-        if (params.items && params.items.length == 0) return;
-        if (params.item_ids) params.item_ids = js2JSON(params.item_ids); // legacy
+        if (!params.sitem_ids && !params.sitems) return;
+        if (params.sitem_ids && params.sitem_ids.length == 0) return;
+        if (params.sitems && params.sitems.length == 0) return;
+        if (params.sitem_ids) params.sitem_ids = js2JSON(params.sitem_ids); // legacy
         if (!params.caller_handles_update) params.handle_update = 1; // legacy
 
         var obj = {};
@@ -677,30 +844,31 @@ spawn_item_editor = function(params) {
         JSAN.use('util.error'); obj.error = new util.error();
 
         var title = '';
-        if (params.item_ids && params.item_ids.length > 1 && params.edit == 1)
+        if (params.sitem_ids && params.sitem_ids.length > 1 && params.do_edit == 1)
             title = 'Batch Edit Items';
-        else /* if(params.copies && params.copies.length > 1 && params.edit == 1)
+        else /* if(params.sitems && params.sitems.length > 1 && params.do_edit == 1)
             title = 'Batch View Items';
-        else if(params.item_ids && params.item_ids.length == 1) */
+        else if(params.sitem_ids && params.sitem_ids.length == 1) */
             title = 'Edit Item';/*
         else
             title = 'View Item';*/
 
         JSAN.use('util.window'); var win = new util.window();
+        params.in_modal = true;
         var my_xulG = win.open(
             (urls.XUL_SERIAL_ITEM_EDITOR),
             title,
             'chrome,modal,resizable',
             params
         );
-        if (my_xulG.items && params.edit) {
-            return my_xulG.items;
+        if (my_xulG.sitems && params.do_edit) {
+            return my_xulG.sitems;
         } else {
             return [];
         }
     } catch(E) {
         JSAN.use('util.error'); var error = new util.error();
-        error.standard_unexpected_error_alert('error in spawn_item_editor',E);
+        error.standard_unexpected_error_alert('error in spawn_sitem_editor',E);
     }
 }
 

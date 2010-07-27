@@ -223,7 +223,7 @@ CREATE TABLE serial.item (
 	                        (
 	                            status IN ('Bindery', 'Bound', 'Claimed', 'Discarded', 'Expected', 'Not Held', 'Not Published', 'Received')
 	                        ) DEFAULT 'Expected',
-	shadowed        BOOL    DEFAULT FALSE -- ignore when generating summaries/labels
+	shadowed        BOOL    NOT NULL DEFAULT FALSE -- ignore when generating summaries/labels
 );
 
 CREATE TABLE serial.item_note (

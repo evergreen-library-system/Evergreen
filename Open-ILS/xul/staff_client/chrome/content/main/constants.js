@@ -426,6 +426,7 @@ var urls = {
     'XUL_SERIAL_ITEM_EDITOR' : '/xul/server/serial/item_editor.xul',
     'XUL_SERIAL_NOTES' : '/xul/server/serial/notes.xul',
     'XUL_SERIAL_SELECT_AOU' : '/xul/server/serial/select_aou.xul',
+    'XUL_SERIAL_SELECT_UNIT' : '/xul/server/serial/select_unit.xul',
     'XUL_SERIAL_SERCTRL_MAIN' : '/xul/server/serial/serctrl_main.xul',
     'XUL_SPINE_LABEL' : '/xul/server/cat/spine_labels.xul',
     'XUL_STAGED_PATRONS' : '/xul/server/patron/staged.xul',
