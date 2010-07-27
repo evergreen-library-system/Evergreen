@@ -23,6 +23,14 @@
            showing tags */
         return link;
     }
+
+    function createNewFund() {
+        /* Set the display constraints before drawing the edit dialog;
+           introduce Y2K and Y2K2C problem */
+        lfGrid.overrideWidgetArgs = {year: { dijitArgs: {constraints : {min: 2000, max: 2200, pattern : '####'}}}};
+        lfGrid.showCreateDialog();
+    }
+
 </script>
 
 <table style='width:100%;'>
@@ -31,7 +39,7 @@
         <td style='text-align:left;font-size:130%;font-weight: bold;'>Funds</td>
         <td style='text-align:right;width:90%;'>
 
-            <button dojoType='dijit.form.Button' onClick='lfGrid.showCreateDialog()'>New Fund</button>
+            <button dojoType='dijit.form.Button' onClick='createNewFund()'>New Fund</button>
             <button dojoType='dijit.form.Button' onClick='lfGrid.deleteSelected()'>Delete Selected</button>
 
             <div dojoType="dijit.form.DropDownButton">
