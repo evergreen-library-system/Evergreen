@@ -215,7 +215,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
                     case 'int':
                         dojo.require('dijit.form.NumberTextBox');
-                        this.dijitArgs = dojo.mixin(this.dijitArgs || {}, {constraints:{places:0}});
+                        this.dijitArgs = dojo.mixin({constraints:{places:0}}, this.dijitArgs || {});
                         this.widget = new dijit.form.NumberTextBox(this.dijitArgs, this.parentNode);
                         break;
 
