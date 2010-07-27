@@ -30,7 +30,7 @@ CREATE RULE protect_mfhd_delete AS ON DELETE TO serial.record_entry DO INSTEAD U
 
 CREATE TABLE serial.subscription (
 	id                     SERIAL       PRIMARY KEY,
-	owning_lib             INT     NOT NULL DEFAULT 1 REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+	owning_lib             INT          NOT NULL DEFAULT 1 REFERENCES actor.org_unit (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	start_date             TIMESTAMP WITH TIME ZONE     NOT NULL,
 	end_date               TIMESTAMP WITH TIME ZONE,    -- interpret NULL as current subscription
 	record_entry           BIGINT       REFERENCES biblio.record_entry (id)
@@ -40,6 +40,20 @@ CREATE TABLE serial.subscription (
 	-- acquisitions/business-side tables link to here
 );
 
+CREATE TABLE serial.subscription_note (
+	id           SERIAL PRIMARY KEY,
+	subscription INT    NOT NULL
+	                    REFERENCES serial.subscription (id)
+	                    ON DELETE CASCADE
+	                    DEFERRABLE INITIALLY DEFERRED,
+	creator      INT    NOT NULL
+	                    REFERENCES actor.usr (id)
+	                    DEFERRABLE INITIALLY DEFERRED,
+	create_date  TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+	pub          BOOL   NOT NULL DEFAULT FALSE,
+	title        TEXT   NOT NULL,
+	value        TEXT   NOT NULL
+);
 
 CREATE TABLE serial.caption_and_pattern (
 	id           SERIAL       PRIMARY KEY,
@@ -50,7 +64,7 @@ CREATE TABLE serial.caption_and_pattern (
 	type         TEXT         NOT NULL
 	                          CONSTRAINT cap_type CHECK ( type in
 	                          ( 'basic', 'supplement', 'index' )),
-	create_time  TIMESTAMPTZ  NOT NULL DEFAULT now(),
+	create_date  TIMESTAMPTZ  NOT NULL DEFAULT now(),
 	active       BOOL         NOT NULL DEFAULT FALSE,
 	pattern_code TEXT         NOT NULL,       -- must contain JSON
 	enum_1       TEXT,
@@ -88,10 +102,25 @@ CREATE TABLE serial.distribution (
 	                              DEFERRABLE INITIALLY DEFERRED,
 	bind_unit_template    INT     REFERENCES asset.copy_template (id)
 	                              DEFERRABLE INITIALLY DEFERRED,
-	unit_label_base       TEXT,
+	unit_label_prefix     TEXT,
 	unit_label_suffix     TEXT
 );
 CREATE UNIQUE INDEX one_dist_per_sre_idx ON serial.distribution (record_entry);
+
+CREATE TABLE serial.distribution_note (
+	id           SERIAL PRIMARY KEY,
+	distribution INT    NOT NULL
+	                    REFERENCES serial.distribution (id)
+	                    ON DELETE CASCADE
+	                    DEFERRABLE INITIALLY DEFERRED,
+	creator      INT    NOT NULL
+	                    REFERENCES actor.usr (id)
+	                    DEFERRABLE INITIALLY DEFERRED,
+	create_date  TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+	pub          BOOL   NOT NULL DEFAULT FALSE,
+	title        TEXT   NOT NULL,
+	value        TEXT   NOT NULL
+);
 
 CREATE TABLE serial.stream (
 	id              SERIAL  PRIMARY KEY,
@@ -143,20 +172,22 @@ CREATE TABLE serial.issuance (
 	                          DEFERRABLE INITIALLY DEFERRED,
 	label           TEXT,
 	date_published  TIMESTAMP WITH TIME ZONE,
+	caption_and_pattern INT   REFERENCES serial.caption_and_pattern (id)
+	                          DEFERRABLE INITIALLY DEFERRED,
 	holding_code    TEXT,
 	holding_type    TEXT      CONSTRAINT valid_holding_type CHECK
 	                          (
 	                              holding_type IS NULL
 	                              OR holding_type IN ('basic','supplement','index')
 	                          ),
-	holding_link_id INT
+	holding_link_id INT -- probably defunct
 	-- TODO: add columns for separate enumeration/chronology values
 );
 
 CREATE TABLE serial.unit (
-	label           TEXT,
-	label_sort_key  TEXT,
-	contents        TEXT    NOT NULL
+	sort_key          TEXT,
+	detailed_contents TEXT    NOT NULL,
+	summary_contents  TEXT    NOT NULL
 ) INHERITS (asset.copy);
 
 ALTER TABLE serial.unit ADD PRIMARY KEY (id);
@@ -190,6 +221,11 @@ CREATE TABLE serial.item (
 	                        DEFERRABLE INITIALLY DEFERRED,
 	date_expected   TIMESTAMP WITH TIME ZONE,
 	date_received   TIMESTAMP WITH TIME ZONE
+	status          TEXT    CONSTRAINT valid_status CHECK
+	                        (
+	                            status IN ('Bindery', 'Bound', 'Claimed', 'Discarded', 'Expected', 'Not Held', 'Not Published', 'Received')
+	                        ) DEFAULT 'Expected',
+	shadowed        BOOL    NOT NULL DEFAULT FALSE -- ignore when generating summaries/labels
 );
 
 CREATE TABLE serial.item_note (
@@ -207,7 +243,7 @@ CREATE TABLE serial.item_note (
 	value       TEXT    NOT NULL
 );
 
-CREATE TABLE serial.bib_summary (
+CREATE TABLE serial.basic_summary (
 	id                  SERIAL  PRIMARY KEY,
 	distribution        INT     NOT NULL
 	                            REFERENCES serial.distribution (id)
@@ -217,7 +253,7 @@ CREATE TABLE serial.bib_summary (
 	textual_holdings    TEXT
 );
 
-CREATE TABLE serial.sup_summary (
+CREATE TABLE serial.supplement_summary (
 	id                  SERIAL  PRIMARY KEY,
 	distribution        INT     NOT NULL
 	                            REFERENCES serial.distribution (id)
@@ -238,3 +274,4 @@ CREATE TABLE serial.index_summary (
 );
 
 COMMIT;
+
