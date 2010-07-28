@@ -220,7 +220,7 @@ CREATE TABLE serial.item (
 	                        ON DELETE SET NULL
 	                        DEFERRABLE INITIALLY DEFERRED,
 	date_expected   TIMESTAMP WITH TIME ZONE,
-	date_received   TIMESTAMP WITH TIME ZONE
+	date_received   TIMESTAMP WITH TIME ZONE,
 	status          TEXT    CONSTRAINT valid_status CHECK
 	                        (
 	                            status IN ('Bindery', 'Bound', 'Claimed', 'Discarded', 'Expected', 'Not Held', 'Not Published', 'Received')
