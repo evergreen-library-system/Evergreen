@@ -496,7 +496,7 @@ BEGIN
 
     SELECT  b.marc INTO eg_marc
       FROM  biblio.record_entry b
-            JOIN vandelay.bib_match m ON (m.eg_record = b.id AND m.queued_record = import_id)
+      WHERE b.id = eg_id
       LIMIT 1;
 
     IF eg_marc IS NULL OR v_marc IS NULL THEN
