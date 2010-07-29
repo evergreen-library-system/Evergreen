@@ -3092,6 +3092,8 @@ sub query_parser_fts_wrapper {
     my $query = $base_query;
     $log->debug("Full base query: $base_query", DEBUG);
 
+    $query = "$args{facets} $query" if  ($args{facets});
+
     if (!$locale_map{COMPLETE}) {
 
         my @locales = config::i18n_locale->search_where({ code => { '<>' => '' } });

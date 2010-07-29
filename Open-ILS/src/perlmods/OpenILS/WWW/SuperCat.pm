@@ -367,7 +367,7 @@ sub unapi {
 		if ($uri =~ m{^tag:[^:]+:([^\/]+)/([^\/[]+)(?:\[([0-9,]+)\])?(?:/(.+))?}o) {
 			$id = $2;
 			$paging = $3;
-			$lib = uc($4);
+			($lib,$depth) = split('/', $4);
 			$type = 'record';
 			$type = 'metarecord' if ($1 =~ /^m/o);
 			$type = 'authority' if ($1 =~ /^authority/o);

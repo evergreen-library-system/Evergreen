@@ -13,9 +13,7 @@ if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
 	G.evt.result.hitCountReceived.push(resultSetHitInfo);
 	G.evt.result.recordReceived.push(resultDisplayRecord, resultAddCopyCounts);
 	G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
-	G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, 
-      resultDrawAuthors, resultDrawSeries, function(){unHideMe($('result_info_2'))},
-	  fetchGoogleBooksLink,fetchChiliFreshReviews);
+	G.evt.result.allRecordsReceived.push( function(){unHideMe($('result_info_2'))}, fetchGoogleBooksLink, fetchChiliFreshReviews);
 
 	attachEvt('result','lowHits',resultLowHits);
 	attachEvt('result','zeroHits',resultZeroHits);
@@ -80,6 +78,8 @@ function resultCollectSearchIds( type, method, handler ) {
 	if(item_form) args.item_form	= item_form;
     if(getAvail()) args.available = 1;
 
+
+	if(getFacet()) args.facets  = getFacet();
 
 	if(getAudience()) args.audience  = getAudience().split(/,/);
 	if(getLitForm()) args.lit_form	= getLitForm().split(/,/);

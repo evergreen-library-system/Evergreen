@@ -55,49 +55,26 @@
 		</div>
 	</div>
 
-	<div id='subject_tree_sidebar' class='sidebar_chunk hide_me' style='margin-top: 12px;'> 
-		<div id='subject_sidebar_tree_div'> </div>
-		<script language='javascript' type='text/javascript'>
-			removeChildren($('subject_sidebar_tree_div'));
-			var subjectSidebarTree = new SlimTree(
-				document.getElementById('subject_sidebar_tree_div'),
-				'subjectSidebarTree', '../../../../images/slimtree/related.jpg');
-			subjectSidebarTree.addNode( 'subjectSidebarTreeRoot', -1, 
-				"&sidebar.relevantSubjects.headerLabel;", 
-				'javascript:subjectSidebarTree.toggle(' +
-					'"subjectSidebarTreeRoot");');
-		</script>
+    <div id='facetSidebarContainer' class='hide_me'>
+
+   	 <div class="side_bar_item" style="margin-top: 10px; font-weight: bold;">
+      <span>&navigate.facetRefine;</span>
 	</div>
 
-	<div id='author_tree_sidebar' class='sidebar_chunk hide_me'> 
-		<hr/>
-		<div id='author_sidebar_tree_div'> </div>
-		<script language='javascript' type='text/javascript'>
-			removeChildren($('author_sidebar_tree_div'));
-			var authorSidebarTree = new SlimTree(
-				document.getElementById('author_sidebar_tree_div'),
-				'authorSidebarTree','../../../../images/slimtree/people.jpg');
-			authorSidebarTree.addNode( 'authorSidebarTreeRoot', -1, 
-				"&sidebar.relevantAuthors.headerLabel;", 
-				'javascript:authorSidebarTree.toggle(' +
-					'"authorSidebarTreeRoot");');
-		</script>
-	</div>
+     <div dojoType='openils.widget.FacetSidebar' searchBox='facet_box' searchSubmit='search_submit' facetLimit='5' classOrder='["author","subject","series","title","keyword"]'>
+            <script type='dojo/method' event='populate'><![CDATA[
+                var fblob = this;
+                attachEvt("result", "allRecordsReceived", function () {
+                    if(!resultFacetKey) return;
+                    if (fblob.facetCacheKey) return; // already rendered it
 
-	<div id='series_tree_sidebar' class='sidebar_chunk hide_me'> 
-		<hr/>
-		<div id='series_sidebar_tree_div'> </div>
-		<script language='javascript' type='text/javascript'>
-			removeChildren($('series_sidebar_tree_div'));
-			var seriesSidebarTree = new SlimTree(
-				document.getElementById('series_sidebar_tree_div'),
-				'seriesSidebarTree',
-				'../../../../images/slimtree/houses.jpg');
-			seriesSidebarTree.addNode( 'seriesSidebarTreeRoot', -1, 
-				"&sidebar.relevantSeries.headerLabel;", 
-				'javascript:seriesSidebarTree.toggle(' +
-					'"seriesSidebarTreeRoot");');
-		</script>
+                    dojo.removeClass('facetSidebarContainer','hide_me');
+
+                    fblob.facetCacheKey = resultFacetKey;
+                    fblob.render();
+                });
+            ]]></script>
+        </div>
 	</div>
 
 	<div id='adv_quick_search_sidebar' class='sidebar_chunk hide_me' 
@@ -188,21 +165,11 @@
 		config.ids.sidebar.loginbox		= 'login_link_div';
 		config.ids.sidebar.logged_in_as	= 'logged_in_as_div';
 		config.ids.sidebar.username_dest	= 'username_dest';
-		config.ids.sidebar.subject			= 'subject_sidebar';
-		config.ids.sidebar.subject_item	= 'subject_item';
-		config.ids.sidebar.author			= 'author_sidebar';
-		config.ids.sidebar.author_item	= 'author_item';
-		config.ids.sidebar.series			= 'series_sidebar';
-		config.ids.sidebar.series_item	= 'series_item';
 		
 		config.ids.sidebar.home_link		= 'home_link'
 		config.ids.sidebar.advanced_link	= 'advanced_link'
 		config.ids.sidebar.myopac_link	= 'myopac_link'
 		
-		config.names.sidebar.subject_item	= 'subject_item';
-		config.names.sidebar.author_item		= 'author_item';
-		config.names.sidebar.series_item		= 'series_item';
-
 		config.css.encircled				= 'encircled';
 	</script>
 

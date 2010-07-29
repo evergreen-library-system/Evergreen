@@ -464,9 +464,9 @@ function _rdetailDraw(r) {
 	breq.callback( rdetailCheckDeleted );
 	breq.send();
 
-	resultBuildCaches( [ record ] );
-	resultDrawSubjects();
-	resultDrawSeries();
+	//resultBuildCaches( [ record ] );
+	//resultDrawSubjects();
+	//resultDrawSeries();
 
 	// grab added content 
 

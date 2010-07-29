@@ -71,5 +71,5 @@
 		dojo.require("dojo.date.locale");
 		dojo.require("dojo.date.stamp");
 		dojo.require("dojo.parser");
-		dojo.require("openils.I18N");
+		dojo.require("openils.widget.FacetSidebar"); // pulls in Searcher and I18N
 	</script>

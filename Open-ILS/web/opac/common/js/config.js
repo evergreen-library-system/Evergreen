@@ -9,6 +9,7 @@ var STAFF_WEB_BASE_PATH = '/eg'; // root of the web-based staff interfaces
 
 /* URL param names */
 var PARAM_TERM			= "t";			/* search term */
+var PARAM_FACET			= "ft";			/* facet term */
 var PARAM_STYPE		= "tp";			/* search type */
 var PARAM_LOCATION	= "l";			/* current location */
 var PARAM_LASSO	= "sg";			/* current location */
@@ -49,6 +50,7 @@ var PARAM_NOPERSIST_SEARCH = 'nps';
 
 /* URL param values (see comments above) */
 var TERM;  
+var FACET;  
 var STYPE;  
 var LOCATION;  
 var LASSO;  

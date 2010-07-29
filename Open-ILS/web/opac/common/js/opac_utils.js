@@ -140,6 +140,7 @@ function initParams() {
 	if(isNaN(DEPTH)) DEPTH = null;
 
 
+	FACET		= cgi.param(PARAM_FACET);
 	TERM		= cgi.param(PARAM_TERM);
 	STYPE		= cgi.param(PARAM_STYPE);
 	FORM		= cgi.param(PARAM_FORM);
@@ -232,6 +233,7 @@ function initCookies() {
 
 /* URL param accessors */
 function getTerm(){return TERM;}
+function getFacet(){return FACET;}
 function getStype(){return STYPE;}
 function getLocation(){return LOCATION;}
 function getLasso(){return LASSO;}
@@ -376,6 +378,8 @@ function  buildOPACLink(args, slim, ssl) {
 		string += _appendParam(ORIGLOC,	PARAM_ORIGLOC, args, getOrigLocation, string);
 	if(getTerm()) 
 		string += _appendParam(TERM,		PARAM_TERM, args, getTerm, string);
+	if(getFacet()) 
+		string += _appendParam(FACET,		PARAM_FACET, args, getFacet, string);
 	if(getStype()) 
 		string += _appendParam(STYPE,		PARAM_STYPE, args, getStype, string);
 	if(getLocation() != 1) 
@@ -504,7 +508,7 @@ function buildTitleDetailLink(rec, link) {
 function buildSearchLink(type, string, linknode, trunc) {
 	if(!trunc) trunc = 65;
 	var args = {};
-	if( SHOW_MR_DEFAULT) {
+	if( SHOW_MR_DEFAULT || findCurrentPage() == MRESULT ) {
 		args.page = MRESULT;
 	} else {
 		args.page = RRESULT;

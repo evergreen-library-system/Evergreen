@@ -1510,7 +1510,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="cmsa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_search_alias" oils_persist:tablename="config.metabib_search_alias" reporter:label="Metabib Search Alias">
+	<class id="cmsa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_search_alias" oils_persist:tablename="config.metabib_search_alias" reporter:label="Metabib Search Alias" oils_persist:field_safe="true">
 		<fields oils_persist:primary="alias">
 			<field reporter:label="Alias (RegExp)" name="alias" reporter:datatype="text"/>
 			<field reporter:label="Class" name="field_class" reporter:datatype="link"/>
@@ -1530,7 +1530,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="cmc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_class" oils_persist:tablename="config.metabib_class" reporter:label="Metabib Class">
+	<class id="cmc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_class" oils_persist:tablename="config.metabib_class" reporter:label="Metabib Class" oils_persist:field_safe="true">
 		<fields oils_persist:primary="name">
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text"/>
@@ -1549,7 +1549,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="cmf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_field" oils_persist:tablename="config.metabib_field" reporter:label="Metabib Field">
+	<class id="cmf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_field" oils_persist:tablename="config.metabib_field" reporter:label="Metabib Field" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.metabib_field_id_seq">
 			<field reporter:label="Class" name="field_class" reporter:datatype="link"/>
 			<field reporter:label="ID" name="id" reporter:datatype="id" />

@@ -28,7 +28,7 @@
                         var out = '';
                         var list = dojo.query( 'subfield', item );
                         for (var i = 0; i < list.length; i++) {
-                            out += dojox.data.dom.textContent(list[i]) + ' ';
+                            out += BT.textContent(list[i]) + ' ';
                         }
                         return out;
                     ]]></script>
@@ -93,13 +93,13 @@
                         var output = [];
                         var list = dojo.query( 'subfield', item );
                         for (var i =0; i < list.length; i++) {
-                            total += dojox.data.dom.textContent(list[i]) + ' ';
+                            total += BT.textContent(list[i]) + ' ';
                             var current = '<a href="rresult.xml?rt=subject&tp=subject&t=' + total;
                             for (var p in other_params) {
                                 if (cgi.param(other_params[p]))
                                     current += '&' + other_params[p] + '=' + cgi.param(other_params[p]);
                             }
-                            current += '">' + dojox.data.dom.textContent(list[i]) + '</a>'
+                            current += '">' + BT.textContent(list[i]) + '</a>'
                             output.push(current);
                         }
                         return '<span>' + output.join(' &#x2d;&#x2d; ') + '</span><br/>';

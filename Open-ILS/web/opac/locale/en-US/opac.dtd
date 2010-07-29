@@ -373,6 +373,7 @@ Please see a librarian to renew your account.">
 <!ENTITY navigate.loggedinas.title "Logged in as...">
 <!ENTITY navigate.titleGroupResults "My Search Results">
 <!ENTITY navigate.titleResults "My Title Results">
+<!ENTITY navigate.facetRefine "Refine your search">
 <!ENTITY navigate.title.details "My Title Details">
 <!ENTITY navigate.record.details "Record Details">
 

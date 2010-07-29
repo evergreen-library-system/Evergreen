@@ -1,13 +1,44 @@
 
 <!-- Searchbar for doing metarecord searches -->
 
-<div id='searchbar'>
+<div id='searchbar' dojoType="openils.widget.Searcher" basicTextBox='search_box'>
+    <script type='dojo/method' event='performSearch'>
+        this.compileFullSearch();
+        dojo.byId(this.basicTextBox).value = this.basic_query;
+        dojo.byId(this.facetTextBox).value += this.facet_query;
+        dojo.byId('search_submit').click();
+    </script>
+    <script type='dojo/method' event='populate'><![CDATA[
+        var searcher = this;
+        attachEvt("result", "allRecordsReceived", function () {
+            if(!resultCompiledSearch) {
+                return;
+            }
+        
+            var all_search = dojo.query( '.classedSearch', searcher.classedSearches );
+            if (all_search.length > 1) {
+                for (var i = 1; i < all_search.length; i++) {
+                    dojo.destroy(all_search[i]);
+                }
+            }
+
+            var csearch = dijit.byNode(dojo.query( '.classedSearch', searcher.classedSearches )[0]);
+        
+            for (var type in resultCompiledSearch.searches) {
+                csearch.matchIndex.attr('value',type);
+                csearch.searchValue.attr('value',resultCompiledSearch.searches[type].term);
+                csearch = searcher.addClassAnd();
+            }
+        });
+    ]]></script>
+
 
 	<!-- load my js -->
 	<script language='javascript' type='text/javascript'>
 		config.ids.searchbar = {};
 		config.css.searchbar = {};
 		config.ids.searchbar.text				= 'search_box';	
+		config.ids.searchbar.facets				= 'facet_box';	
 		config.ids.searchbar.submit			= 'search_submit';	
 		config.ids.searchbar.type_selector	= 'search_type_selector';
 		config.ids.searchbar.depth_selector	= 'depth_selector';
@@ -28,7 +59,8 @@
 
 				<td nowrap='nowrap' align='center'  class='search_box_container color_2'>
 
-					<input id='search_box' type='text' />
+					<input id='search_box' type='text' onkeyup='dojo.byId("facet_box").value = "";'/>
+					<input id='facet_box' type='hidden' />
 					<span style='padding-left: 6px;'>
 						<input type='button' style='width: 40px;' id='search_submit' value='&button.go;' />
 					</span>

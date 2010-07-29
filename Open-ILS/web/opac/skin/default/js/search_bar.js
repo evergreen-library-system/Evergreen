@@ -31,6 +31,7 @@ function searchBarInit() {
 
 	/* set up the selector objects, etc */
 	G.ui.searchbar.text.value = (getTerm() != null) ? getTerm() : "";
+	if (!isFrontPage) G.ui.searchbar.facets.value = (getFacet() != null) ? getFacet() : "";
 	setSelector(_ts,	getStype());
 	setSelector(_fs,	getForm());
 
@@ -51,6 +52,7 @@ function searchBarInit() {
 function searchBarSubmit(isFilterSort) {
 
 	var text = G.ui.searchbar.text.value;
+	var facet_text = isFrontPage ? '' : G.ui.searchbar.facets.value;
 
 	clearSearchParams();
 
@@ -61,7 +63,7 @@ function searchBarSubmit(isFilterSort) {
 
 	var args = {};
 
-	if(SHOW_MR_DEFAULT || (isFilterSort && findCurrentPage() == MRESULT)) {
+	if(SHOW_MR_DEFAULT || findCurrentPage() == MRESULT) {
 		args.page				= MRESULT;
 	} else {
 		args.page				= RRESULT;
@@ -70,6 +72,7 @@ function searchBarSubmit(isFilterSort) {
 
 	args[PARAM_STYPE]		= _ts.options[_ts.selectedIndex].value;
 	args[PARAM_TERM]		= text;
+	args[PARAM_FACET]		= facet_text;
 	args[PARAM_LOCATION] = depthSelGetNewLoc();
 	args[PARAM_DEPTH]		= d;
 	args[PARAM_FORM]		= _fs.options[_fs.selectedIndex].value;

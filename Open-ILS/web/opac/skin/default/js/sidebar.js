@@ -183,12 +183,14 @@ function setSidebarLinks() {
 }
 
 function sidebarTreesFree() {
+/*
 	removeChildren($(subjectSidebarTree.rootid));
 	removeChildren($(authorSidebarTree.rootid));
 	removeChildren($(seriesSidebarTree.rootid));
 	subjectSidebarTree = null;
 	authorSidebarTree = null;
 	seriesSidebarTree = null;
+*/
 }
 
 

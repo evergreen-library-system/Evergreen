@@ -30,8 +30,42 @@ body a:hover	{ color: red; text-decoration: underline;}
 .border_3_3 { border: 3px solid #E0F6E0; }
 .border_4_3 { border: 3px solid #E0F0E0; }
 
+/* some facet styling */
+.facetClassContainer { margin: 2px; border: 1px solid #64EA4F; }
+.facetClassLabelContainer { background: #A7EA9D; border: 1px solid #A7EA9D; }
+.facetClassLabel { font-weight: bold; text-align: center; }
+.facetFieldContainer { background: #E0F6E0; }
+.facetFieldLabel { padding-left: 2px; margin-top: 5px; margin-bottom: 5px; font-weight: bold; text-align: left; }
+.extraFacetFieldsWrapper { }
+.toggleExtraFacetFieldsButton { float: right; margin: 0px; padding: 0px; }
+.facetFieldLineCount { display: inline-block; border-right: 1px solid #A7EA9D; color: gray; width: 3em; margin-right: 3px }
+.facetField { border-top: 1px solid #A7EA9D; }
+.facetFields { padding-left: 5px; }
+.facetFieldLineValue { overflow: hidden; text-overflow: ellipsis; }
 
+.searcherSimpleSearchWrapper {} 
+.searcherAdvancedSearchWrapper { margin: 2px; border: 1px solid #64EA4F; } 
 
+.searcherClassedSearchesContainer { margin: 5px; } 
+.searcherClassedSearches {} 
+.searcherClassedSearchesLabel { font-weight: bold; } 
+
+.searcherClassedSearchesAddContainer { width: 50%; text-align: center; }
+
+.searcherFacetedSearchesContainer { margin: 5px; border-top: 1px solid black; } 
+.searcherFacetedSearches {} 
+.searcherFacetedSearchesLabel { font-weight: bold; } 
+
+.searcherFilterModifierContainer { margin: 5px; border-top: 1px solid black; } 
+
+.searcherFiltersLabel { font-weight: bold; } 
+.searcherFilterContainer {} 
+
+.searcherModifiersLabel { font-weight: bold; } 
+.searcherModifierContainer {} 
+
+.searcherGoContainer { width: 50%; text-align: right; }
+.searcherDeckSwapContainer {}
 
 /* general purpose light borders */
 .border_5 { border: 1px solid #D0D0D0; }
