@@ -41,10 +41,10 @@
 
     <div id="acq-related-li-create-holder">
         <button jsId="addToPlButton" dojoType="dijit.form.Button">
-            Add to New Selection List
+            Add to Selection List
         </button>
         <button jsId="createPoButton" dojoType="dijit.form.Button">
-            Create a New Purchase Order
+            Create Purchase Order
         </button>
     </div>
 
