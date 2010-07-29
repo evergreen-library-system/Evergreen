@@ -88,6 +88,7 @@ DEBS =  \
 	libmarc-record-perl\
 	libncurses5-dev\
 	libnet-server-perl\
+	libnspr4-dev\
 	libole-storage-lite-perl\
 	libpq-dev\
 	libreadline5-dev\
@@ -307,7 +308,7 @@ install_js_sm: install_libjs install_spidermonkey
 install_libjs: 
 	if [ ! -f $(LIBJS).tar.gz ]; then wget $(LIBJS_URL); fi;
 	tar -zxf $(LIBJS).tar.gz
-	cd js/src/ && make -f Makefile.ref
+	cd js/src/ && JS_THREADSAFE=true JS_DIST=/usr make -f Makefile.ref
 	mkdir -p $(JS_INSTALL_PREFIX)/include/js/
 	cp js/src/*.h $(JS_INSTALL_PREFIX)/include/js/
 	cp js/src/*.tbl $(JS_INSTALL_PREFIX)/include/js/
