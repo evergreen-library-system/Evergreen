@@ -499,10 +499,8 @@ sub make_predictions {
                 'caption' => $caption_field,
                 'scap_id' => $scap->id,
                 'num_to_predict' => $args->{num_to_predict}
-                #'last_rec_date' => $args->{last_rec_date}
                 };
         if ($args->{base_issuance}) { # predict from a given issuance
-            #$options->{last_rec_date} = $args->{base_issuance}->date_expected;
             $options->{predict_from} = _revive_holding($args->{base_issuance}->holding_code, $caption_field, 1); # fresh MFHD Record, so we simply default to 1 for seqno
         } else { # default to predicting from last published
             my $last_published = $editor->search_serial_issuance([
@@ -512,8 +510,6 @@ sub make_predictions {
                 );
             if ($last_published->[0]) {
                 my $last_siss = $last_published->[0];
-                #my $items_for_last_published = $editor->search_serial_item({'issuance' => $last_siss->id}, {limit => 1, order_by => { sitem => "date_expected ASC" }}); # assume later expected are exceptions, TODO: move this whole date offset idea to item creation portion, not issuance creation
-                #$options->{last_rec_date} = $items_for_last_published->[0]->date_expected;
                 $options->{predict_from} = _revive_holding($last_siss->holding_code, $caption_field, 1);
             } else {
                 #TODO: throw event (can't predict from nothing!)
@@ -1448,13 +1444,21 @@ sub _create_sdist {
     # create summaries too
     my $summary = new Fieldmapper::serial::basic_summary;
     $summary->distribution($sdist->id);
+    $summary->generated_coverage('');
     return $editor->event unless $editor->create_serial_basic_summary($summary);
     $summary = new Fieldmapper::serial::supplement_summary;
     $summary->distribution($sdist->id);
+    $summary->generated_coverage('');
     return $editor->event unless $editor->create_serial_supplement_summary($summary);
     $summary = new Fieldmapper::serial::index_summary;
     $summary->distribution($sdist->id);
+    $summary->generated_coverage('');
     return $editor->event unless $editor->create_serial_index_summary($summary);
+
+    # create a starter stream (TODO: reconsider this)
+    my $stream = new Fieldmapper::serial::stream;
+    $stream->distribution($sdist->id);
+    return $editor->event unless $editor->create_serial_stream($stream);
 
     return 0;
 }

@@ -1136,18 +1136,23 @@ serial.manage_subs.prototype = {
 
             if (twisty) {
                 switch(row_type) {
-                    case 'aou' : obj.on_select_org(id,twisty); break;
+                    case 'aou' : obj.on_click_aou(id,twisty); break;
                     case 'ssub' : obj.on_select_ssub(id,twisty); break;
                     default: break;
                 }
             }
         }
 
+        if (!obj.focused_node_retrieve_id) return;
+
         var row_type = obj.focused_node_retrieve_id.split('_')[0];
         var id = obj.focused_node_retrieve_id.split('_')[1];
 
         if (sel_lists[row_type]) { // the type focused is in the selection (usually the case)
-            if (obj['on_click_' + row_type]) obj['on_click_' + row_type](sel_lists[row_type],twisty);
+            switch(row_type) {
+                case 'aou' : obj.on_click_aou(id,twisty); break;
+                default: if (obj['on_click_' + row_type]) obj['on_click_' + row_type](sel_lists[row_type],twisty);
+            }
         }
     },
 
@@ -1260,10 +1265,9 @@ serial.manage_subs.prototype = {
         }
     },
 
-    'on_select_org' : function(org_id,twisty) {
+    'on_click_aou' : function(org_id,twisty) {
         var obj = this;
         var org = obj.data.hash.aou[ org_id ];
-        if (obj.data.hash.aout[ org.ou_type() ].depth() == 0 && ! get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) return;
         obj.funcs.push( function() { 
             document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
             document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','true'); 
@@ -1393,10 +1397,8 @@ serial.manage_subs.prototype = {
             }
 
             if (document.getElementById('show_ssubs').checked) {
-                if (! ( obj.data.hash.aout[ org.ou_type() ].depth() == 0 && ! get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) )) {
-                    node.setAttribute('open','true');
-                    obj.funcs.push( function() { obj.on_select_org( org.id() ); } );
-                }
+                obj.funcs.push( function() { obj.on_click_aou( org.id() ); } );
+                node.setAttribute('open','true');
             }
 
         } catch(E) {
@@ -1609,8 +1611,10 @@ serial.manage_subs.prototype = {
                         JSAN.use('util.functional');
                         
                         // get the actual node clicked to determine which editor to use
-                        var node = obj.list.node.contentView.getItemAtIndex(obj.list.node.view.selection.currentIndex);
-                        obj.focused_node_retrieve_id = node.getAttribute('retrieve_id');
+                        if (obj.list.node.view.selection.currentIndex > -1) {
+                            var node = obj.list.node.contentView.getItemAtIndex(obj.list.node.view.selection.currentIndex);
+                            obj.focused_node_retrieve_id = node.getAttribute('retrieve_id');
+                        }
 
                         var sel = obj.list.retrieve_selection();
                         obj.controller.view.sel_clip.disabled = sel.length < 1;
@@ -1641,14 +1645,11 @@ serial.manage_subs.prototype = {
         var obj = this;
         try {
             var found_aou = false; var found_ssub = false; var found_sdist = false; var found_siss = false; var found_scap = false; var found_sdist_group = false; var found_siss_group = false; var found_scap_group = false;
-            var found_aou_with_can_have_vols = false;
             for (var i = 0; i < obj.sel_list.length; i++) {
                 var type = obj.sel_list[i].split(/_/)[0];
                 switch(type) {
                     case 'aou' : 
                         found_aou = true; 
-                        var org = obj.data.hash.aou[ obj.sel_list[i].split(/_/)[1] ];
-                        if ( get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) found_aou_with_can_have_vols = true;
                     break;
                     case 'ssub' : found_ssub = true; break;
                     case 'sdist' : found_sdist = true; break;
@@ -1672,7 +1673,7 @@ serial.manage_subs.prototype = {
             obj.controller.view.cmd_mark_subscription.setAttribute('disabled','true');
             obj.controller.view.cmd_transfer_subscription.setAttribute('disabled','true');
             obj.controller.view.cmd_transfer_sdists.setAttribute('disabled','true');
-            if (found_aou && found_aou_with_can_have_vols) {
+            if (found_aou) {
                 obj.controller.view.cmd_add_subscriptions.setAttribute('disabled','false');
                 obj.controller.view.cmd_mark_library.setAttribute('disabled','false');
             }

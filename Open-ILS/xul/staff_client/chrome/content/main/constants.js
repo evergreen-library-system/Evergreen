@@ -423,7 +423,7 @@ var urls = {
     'XUL_RECORD_BUCKETS' : '/xul/server/cat/record_buckets.xul',
     'XUL_RECORD_BUCKETS_QUICK' : '/xul/server/cat/record_buckets_quick.xul',
     'XUL_REMOTE_BROWSER' : '/xul/server/util/rbrowser.xul',
-    'XUL_SERIAL_ITEM_EDITOR' : '/xul/server/serial/item_editor.xul',
+    'XUL_SERIAL_ITEM_EDITOR' : '/xul/server/serial/sitem_editor.xul',
     'XUL_SERIAL_NOTES' : '/xul/server/serial/notes.xul',
     'XUL_SERIAL_SELECT_AOU' : '/xul/server/serial/select_aou.xul',
     'XUL_SERIAL_SELECT_UNIT' : '/xul/server/serial/select_unit.xul',
