@@ -28,7 +28,11 @@ Configuration and compilation instructions:
 ==========================================
 
 For the time being, we are still installing everything in the /openils/
-directory. Issue the following commands to configure and build Evergreen:
+directory. If you are working with a version of Evergreen taken directly
+from the Subversion repository, rather than a packaged version of Evergreen,
+first see "Developer instructions" below.
+
+Otherwise, issue the following commands to configure and build Evergreen:
 
 ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
@@ -152,6 +156,23 @@ This will create the database schema and configure all of the services in
 your /openils/conf/opensrf.xml configuration file to point to that database.
 It also creates the configuration files required by the Evergreen cgi-bin
 administration scripts.
+
+Developer instructions:
+======================
+
+Developers working directly with the source code from the Subversion
+repository will also need to install some extra packages and perform
+one more step before they can proceed with the "./configure" step.
+
+Install the following packages:
+  * autoconf
+  * automake
+  * libtool
+
+Run the following command in the source directory to generate the configure
+script and Makefiles:
+
+$ ./autogen.sh 
 
 Getting help:
 ============
