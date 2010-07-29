@@ -549,8 +549,8 @@ sub bib_search {
                 $bibs = [ @new_bibs ];
             }
         } else {
-            $picklist =
-                OpenILS::Application::Acq::Order::zsearch_build_pl($mgr, undef);
+            $picklist = OpenILS::Application::Acq::Order::zsearch_build_pl($mgr, undef)
+                or return $e->die_event;
         }
 
         $conn->respond($picklist->id);
