@@ -123,7 +123,7 @@ CREATE OR REPLACE VIEW authority.tracing_links AS
 CREATE OR REPLACE FUNCTION authority.generate_overlay_template ( TEXT, BIGINT ) RETURNS TEXT AS $func$
 
     use MARC::Record;
-    use MARC::File::XML;
+    use MARC::File::XML (BinaryEncoding => 'UTF-8');
 
     my $xml = shift;
     my $r = MARC::Record->new_from_xml( $xml );
@@ -178,10 +178,8 @@ CREATE OR REPLACE FUNCTION authority.generate_overlay_template ( TEXT, BIGINT ) 
 
     $xml = $tmpl->as_xml_record;
     $xml =~ s/^<\?.+?\?>$//mo;
-
-    # Leave formatting intact for now
-    #$xml =~ s/\n//sgo;
-    #$xml =~ s/>\s+</></sgo;
+    $xml =~ s/\n//sgo;
+    $xml =~ s/>\s+</></sgo;
 
     return $xml;
 

@@ -306,7 +306,7 @@ $_$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT, field TEXT ) RETURNS TEXT AS $_$
 
     use MARC::Record;
-    use MARC::File::XML;
+    use MARC::File::XML (BinaryEncoding => 'UTF-8');
     use strict;
 
     my $target_xml = shift;
@@ -371,7 +371,7 @@ $_$ LANGUAGE PLPERLU;
 CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS TEXT AS $_$
 
     use MARC::Record;
-    use MARC::File::XML;
+    use MARC::File::XML (BinaryEncoding => 'UTF-8');
     use strict;
 
     my $xml = shift;

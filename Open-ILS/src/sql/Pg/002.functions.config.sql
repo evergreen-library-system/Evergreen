@@ -472,7 +472,7 @@ $func$ LANGUAGE PLPGSQL;
 CREATE OR REPLACE FUNCTION maintain_control_numbers() RETURNS TRIGGER AS $func$
 use strict;
 use MARC::Record;
-use MARC::File::XML;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
 use Encode;
 use Unicode::Normalize;
 

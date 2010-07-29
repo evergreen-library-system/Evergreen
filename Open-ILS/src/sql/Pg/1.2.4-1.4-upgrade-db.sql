@@ -2043,7 +2043,7 @@ CREATE TABLE vandelay.import_bib_trash_fields (
 CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS TEXT AS $_$
 
     use MARC::Record;
-    use MARC::File::XML;
+    use MARC::File::XML (BinaryEncoding => 'UTF-8');
 
     my $xml = shift;
     my $field_spec = shift;
