@@ -743,6 +743,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/acq/edi_account'); }
             ],
+            'cmd_server_admin_acq_edi_message' : [
+                ['oncommand'],
+                function() { open_eg_web_page('acq/po/edi_messages'); }
+            ],
             'cmd_server_admin_acq_currency_type' : [
                 ['oncommand'],
                 function() { open_eg_web_page('acq/currency_type/list'); }

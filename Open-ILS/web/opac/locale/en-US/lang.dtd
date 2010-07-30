@@ -721,6 +721,8 @@
 <!ENTITY staff.main.menu.admin.server_admin.acq.provider.accesskey "P">
 <!ENTITY staff.main.menu.admin.server_admin.acq.edi_account.label "EDI Accounts">
 <!ENTITY staff.main.menu.admin.server_admin.acq.edi_account.accesskey "U">
+<!ENTITY staff.main.menu.admin.server_admin.acq.edi_message.label "EDI Messages">
+<!ENTITY staff.main.menu.admin.server_admin.acq.edi_message.accesskey "M">
 <!ENTITY staff.main.menu.admin.server_admin.acq.distrib_formula.label "Distribution Formulas">
 <!ENTITY staff.main.menu.admin.server_admin.acq.distrib_formula.accesskey "D">
 <!ENTITY staff.main.menu.admin.server_admin.acq.currency_type.label "Currency Types">
