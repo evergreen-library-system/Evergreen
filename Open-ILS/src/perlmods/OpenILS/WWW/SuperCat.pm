@@ -54,6 +54,9 @@ $browse_types{call_number}{xml} = sub {
 
 		$cn_label =~ s/\n//gos;
 		$cn_label =~ s/'/&apos;/go;
+		$cn_label =~ s/&/&amp;/go;
+		$cn_label =~ s/</&lt;/go;
+		$cn_label =~ s/>/&gt;/go;
 
 		(my $ou_class = $cn->owning_lib->class_name) =~ s/::/-/gso;
 		$ou_class =~ s/Fieldmapper-//gso;
