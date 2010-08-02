@@ -55,9 +55,10 @@ if [ "_$TABLES" == "_" ]; then
     select array_to_string(array_accum(table_schema || '.' || table_name),' ')
       from information_schema.tables
       where table_schema in (
-        'action', 'actor', 'asset', 'authority', 'auditor', 'biblio', 'config',
-        'container', 'extend_reporter', 'metabib', 'money', 'offline', 'permission',
-        'reporter', 'search', 'stats', 'vandely'
+        'acq', 'action', 'action_trigger', 'actor', 'asset', 'asset_hist', 'auditor',
+        'authority', 'biblio', 'booking', 'circ_stats', 'config', 'container',
+        'extend_reporter', 'metabib', 'money', 'offline', 'permission', 'query',
+        'reporter', 'search', 'serial', 'staging', 'stats', 'vandelay'
       ) and table_type = 'BASE TABLE' order by 1;
   ")
   TABLES="$TABLES pg_ts_cfg pg_ts_cfgmap"
