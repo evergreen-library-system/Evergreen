@@ -759,11 +759,18 @@ cat.util.mark_item_as_missing_pieces = function(copy_ids) {
             for (var i = 0; i < copies.length; i++) {
                 try {
                     var robj = network.simple_request('MARK_ITEM_MISSING_PIECES',[ses(),copies[i].id()]);
-                    if (typeof robj.ilsevent != 'undefined') { throw(robj); }
-                    // TODO: Print missing pieces slip
-                    // TODO: Bill patron prompt
-                    // TODO: Item/patron notes/messages
-                    // TODO: Invoke 3rd party app with letter to patron
+                    if (typeof robj.ilsevent != 'undefined') {
+                        if (robj.ilsevent == 0 /* SUCCESS */) {
+                            // TODO: Print missing pieces slip
+                            // TODO: Item/patron notes/messages
+                            // TODO: Invoke 3rd party app with letter to patron
+                        } else if (robj.ilsevent == 1500 /* ACTION_CIRCULATION_NOT_FOUND */) {
+                        } else {
+                            throw(robj);
+                        }
+                    } else {
+                        throw(robj);
+                    }
                     count++;
                 } catch(E) {
                     error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.util.mark_item_missing_pieces.marking_error', [copies[i].barcode()]),E);

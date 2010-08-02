@@ -1324,12 +1324,14 @@ sub mark_item_missing_pieces {
 	if ($e->commit) {
 
         my $ses = OpenSRF::AppSession->create('open-ils.trigger');
-        $ses->request('open-ils.trigger.event.autocreate', 'checkout.missing_pieces', $circ, $circ->circ_lib);
+        $ses->request('open-ils.trigger.event.autocreate', 'circ.missing_pieces', $circ, $circ->circ_lib);
 
         return OpenILS::Event->new('SUCCESS',
             payload => {
                 circ => $circ,
-                copy => $copy
+                copy => $copy,
+                slip => $U->fire_object_event(undef, 'circ.format.missing_pieces.slip.print', $circ, $circ->circ_lib),
+                letter => $U->fire_object_event(undef, 'circ.format.missing_pieces.letter.print', $circ, $circ->circ_lib)
             }
         ); 
 
