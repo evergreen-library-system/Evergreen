@@ -259,7 +259,7 @@ CREATE TABLE money.materialized_billable_xact_summary AS
 CREATE OR REPLACE VIEW money.billable_xact_summary AS 
     SELECT * FROM money.materialized_billable_xact_summary;
 
-ALTER TABLE money.materialized_billable_xact_summary ADD CONSTRAINT PRIMARY KEY (id);
+ALTER TABLE money.materialized_billable_xact_summary ADD PRIMARY KEY (id);
 
 CREATE INDEX money_mat_summary_usr_idx ON money.materialized_billable_xact_summary (usr);
 CREATE INDEX money_mat_summary_xact_start_idx ON money.materialized_billable_xact_summary (xact_start);
