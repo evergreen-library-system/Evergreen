@@ -47,6 +47,8 @@ CREATE TABLE staging.billing_address_stage (
         LIKE staging.mailing_address_stage INCLUDING DEFAULTS
 );
 
+ALTER TABLE staging.billing_address_stage ADD CONSTRAINT PRIMARY KEY (row_id);
+
 CREATE TABLE staging.statcat_stage (
         row_id          BIGSERIAL PRIMARY KEY,
         row_date    TIMESTAMP WITH TIME ZONE DEFAULT NOW(),

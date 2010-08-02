@@ -759,7 +759,7 @@ CREATE TABLE acq.edi_account (      -- similar tables can extend remote_account 
 ) INHERITS (config.remote_account);
 
 -- We need a UNIQUE constraint here also, to support the FK from acq.provider.edi_default
-ALTER TABLE acq.edi_account ADD CONSTRAINT acq_edi_account_id_unique UNIQUE (id);
+ALTER TABLE acq.edi_account ADD CONSTRAINT PRIMARY KEY (id);
 
 CREATE TABLE acq.edi_message (
     id               SERIAL          PRIMARY KEY,
