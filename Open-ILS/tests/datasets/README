@@ -3,6 +3,7 @@ The following table lists the data sets we have collected for testing purposes.
 ^ File name         ^ Format    ^ Encoding ^ Source system ^ Description            ^
 | auth-1066.mrc     | MARC21    | UTF8     | Aleph         | Dutch authority records from IISH (missing 0 in leader 22) |
 | auth-subset100.mrc| MARC21    | UTF8     | Aleph         | Dutch authority records from IISH (missing 0 in leader 22) |
+| badisbns.xml      | MARC21XML | UTF8     |               | 10 records with known bad ISBNs |
 | FSL.marc          | MARC21    | UTF8     | Aleph         | Armenian and Cyrillic scripts, collected from the Fundamental Science Library in Yerevan, Armenia |
 | hebrew.marc       | MARC21    | MARC8    | III           | Hebrew scripts, 25 records |
 | lul_fre_100.marc  | MARC21    | MARC8    | Unicorn GL3.1 | 100 records, French, pre-1923  |

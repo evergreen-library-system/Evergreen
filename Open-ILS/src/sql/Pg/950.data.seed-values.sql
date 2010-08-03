@@ -4226,7 +4226,7 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 
 INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
 	'Extract Dewey-like number',
-	'Extract a string of numeric characters ther resembles a DDC number.',
+	'Extract a string of numeric characters that resembles a DDC number.',
 	'call_number_dewey',
 	0
 );
@@ -4281,16 +4281,7 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm)
       FROM  config.metabib_field m,
         config.index_normalizer i
       WHERE i.func IN ('naco_normalize','split_date_range')
-            AND m.id NOT IN (19);
-
-INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
-    SELECT  m.id,
-            i.id,
-            1
-      FROM  config.metabib_field m,
-            config.index_normalizer i
-      WHERE i.func IN ('first_word')
-            AND m.id IN (18);
+            AND m.id NOT IN (18, 19);
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
     SELECT  m.id,

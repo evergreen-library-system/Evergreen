@@ -101,6 +101,8 @@ DEBS =  \
 
 # Debian Lenny and Ubuntu Intrepid bundle recent versions of yaz
 EXTRA_DEBS = \
+	libbusiness-isbn-perl\
+	libbusiness-isbn-data-perl\
 	libmarc-charset-perl \
 	libmarc-xml-perl \
 	libnet-z3950-zoom-perl \
@@ -158,6 +160,8 @@ FEDORA_13_RPMS = \
 	ncurses-devel \
 	ncurses-libs \
 	perl-Business-CreditCard \
+	perl-Business-ISBN \
+	perl-Business-ISBN-Data \
 	perl-Email-Send \
 	perl-GDGraph3d \
 	perl-MARC-Record \
@@ -248,6 +252,8 @@ CPAN_MODULES_SAFE = \
 
 # Recent Debian/Ubuntus have libmarc-charset-perl, libmarc-xml-perl, libnet-z3950-zoom-perl
 CPAN_MODULES_MARC = \
+	Business::ISBN \
+	Business::ISBN::Data \
     MARC::Charset \
     MARC::File::XML \
     Net::Z3950::ZOOM
