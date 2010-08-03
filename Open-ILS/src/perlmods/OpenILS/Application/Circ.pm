@@ -1725,6 +1725,47 @@ sub retrieve_prev_circ_chain {
 }
 
 
+__PACKAGE__->register_method(
+	method	=> "get_copy_due_date",
+	api_name	=> "open-ils.circ.copy.due_date.retrieve",
+	signature => {
+        desc => q/
+            Given a copy ID, returns the due date for the copy if it's 
+            currently circulating.  Otherwise, returns null.  Note, this is a public 
+            method requiring no authentication.  Only the due date is exposed.
+            /,
+        params => [
+            {desc => 'Copy ID', type => 'number'}
+        ],
+        return => {desc => q/
+            Due date (ISO date stamp) if the copy is circulating, null otherwise.
+        /}
+    }
+);
+
+sub get_copy_due_date {
+    my($self, $conn, $copy_id) = @_;
+    my $e = new_editor();
+
+    my $circ = $e->json_query({
+        select => {circ => ['due_date']},
+        from => 'circ',
+        where => {
+            target_copy => $copy_id,
+            checkin_time => undef,
+            '-or' => [
+                {stop_fines => ["MAXFINES","LONGOVERDUE"]},
+                {stop_fines => undef}
+            ],
+        },
+        limit => 1
+    })->[0] or return undef;
+
+    return $circ->{due_date};
+}
+
+
+
 
 
 # {"select":{"acp":["id"],"circ":[{"aggregate":true,"transform":"count","alias":"count","column":"id"}]},"from":{"acp":{"circ":{"field":"target_copy","fkey":"id","type":"left"},"acn"{"field":"id","fkey":"call_number"}}},"where":{"+acn":{"record":200057}}
