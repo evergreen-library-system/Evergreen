@@ -6434,6 +6434,27 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
         'array'
     );
 
+-- 0359.data.setting-prev-iss-copy-loc.sql
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, fm_class )
+VALUES (
+    'serial.prev_issuance_copy_location',
+    oils_i18n_gettext(
+        'setting.name',
+        'Serials: Previous Issuance Copy Location',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'setting.name',
+        'When a serial issuance is received, copies (units) of the previous issuance will be automatically moved into the configured shelving location',
+        'coust',
+        'descripton'
+        ),
+    'link',
+    'acpl'
+);
+
 -- 0355.data.missing_pieces_format.sql
 
 INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES 
