@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="MyAccountRenewItems">
+
+	<info>
+		<title>My Account - Renew Items</title>
+		<abstract><para>Renew selected items</para></abstract>
+	</info>
+
+	<section xml:id="myaccountrenewitems">
+		<title>Procedure</title>
+
+		<orderedlist>
+			<listitem>
+				<para>Login to My Account, open <emphasis>Items Checked Out</emphasis> tab</para>
+			</listitem>
+			<listitem>
+				<para>Select the items to renew</para>
+			</listitem>
+			<listitem>
+				<para>Click <emphasis>Renew Selected Items</emphasis></para>
+			</listitem>
+			<listitem>
+				<para>Click <emphasis>OK</emphasis></para>
+			</listitem>
+			<listitem>
+				<para>Click <emphasis>OK</emphasis></para>
+			</listitem>
+		</orderedlist>
+
+		<para>
+			<mediaobject xml:id="img_myaccountrenewitems">
+				<imageobject>
+					<imagedata width="430px" height="600px" fileref="../media/myaccount-itemrenew.png" scalefit="1" />
+				</imageobject>
+			</mediaobject>
+		</para>
+	</section>
+</chapter>
