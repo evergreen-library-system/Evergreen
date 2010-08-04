@@ -3238,7 +3238,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="sunit" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::unit" oils_persist:tablename="serial.unit" reporter:label="Unit">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Statistical Category Entries" name="stat_cat_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Age Hold Protection" name="age_protect" reporter:datatype="link"/>
 			<field reporter:label="Alert Message" name="alert_message" reporter:datatype="text"/>
 			<field reporter:label="Barcode" name="barcode" reporter:datatype="text"/>
@@ -3269,14 +3268,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Copy Status Changed Time" name="status_changed_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool"/>
 			<field reporter:label="Is Floating" name="floating" reporter:datatype="bool"/>
+			<field reporter:label="Cost" name="cost" reporter:datatype="money"/>
+			<field reporter:label="Sort Key" name="sort_key" reporter:datatype="text"/>
+			<field reporter:label="Summary Contents" name="summary_contents" reporter:datatype="text"/>
+			<field reporter:label="Detailed Contents" name="detailed_contents" reporter:datatype="text"/>
 			<field reporter:label="Copy Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Total Circulations" name="total_circ_count" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Holds" name="holds" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Sort Key" name="sort_key" reporter:datatype="text"/>
-			<field reporter:label="Summary Contents" name="summary_contents" reporter:datatype="text"/>
-			<field reporter:label="Detailed Contents" name="detailed_contents" reporter:datatype="text"/>
+			<field reporter:label="Statistical Category Entries" name="stat_cat_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
@@ -4216,7 +4217,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="acp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy" oils_persist:tablename="asset.copy" reporter:core="true" reporter:label="Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_id_seq">
-			<field reporter:label="Statistical Category Entries" name="stat_cat_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Age Hold Protection" name="age_protect" reporter:datatype="link"/>
 			<field reporter:label="Alert Message" name="alert_message" reporter:datatype="text"/>
 			<field reporter:label="Barcode" name="barcode" reporter:datatype="text"/>
@@ -4248,11 +4248,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Copy Status Changed Time" name="status_changed_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool"/>
 			<field reporter:label="Is Floating" name="floating" reporter:datatype="bool"/>
+			<field reporter:label="Cost" name="cost" reporter:datatype="money"/>
 			<field reporter:label="Copy Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Total Circulations" name="total_circ_count" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Holds" name="holds" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Statistical Category Entries" name="stat_cat_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
@@ -5167,6 +5169,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Fund" name="fund" reporter:datatype="link" />
 			<field reporter:label="Amount Paid" name="amount_paid" reporter:datatype="money" />
 			<field reporter:label="Purchase Order Item" name="po_item" reporter:datatype="link" />
+			<field reporter:label="Target" name="target" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="invoice" reltype="has_a" key="id" map="" class="acqinv"/>
@@ -5879,6 +5882,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Note" name="note" reporter:datatype="text"/>
 			<field reporter:label="Estimated Cost" name="estimated_cost" reporter:datatype="money"/>
 			<field reporter:label="Fund" name="fund" reporter:datatype="link"/>
+			<field reporter:label="Target" name="target" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
@@ -6722,6 +6726,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="type" reltype="has_a" key="id" map="" class="acqclet"/>
 			<link field="claim" reltype="has_a" key="id" map="" class="acqcl"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="acqscl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::serial_claim" oils_persist:tablename="acq.serial_claim" reporter:label="Serial Claim">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.serial_claim_id_seq">
+			<field reporter:label="Claim ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Claim Type" name="type" reporter:datatype="link"/>
+			<field reporter:label="Serial Item" name="item" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="type" reltype="has_a" key="id" map="" class="acqclt"/>
+			<link field="item" reltype="has_a" key="id" map="" class="sitem"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
+	<class id="acqscle" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::serial_claim_event" oils_persist:tablename="acq.serial_claim_event" reporter:label="Serial Claim Event">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.serial_claim_event_id_seq">
+			<field reporter:label="Claim Event ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Claim Event Type" name="type" reporter:datatype="link"/>
+			<field reporter:label="Claim ID" name="claim" reporter:datatype="link"/>
+			<field reporter:label="Event Date" name="event_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
+			<field reporter:label="Note" name="note" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="type" reltype="has_a" key="id" map="" class="acqclet"/>
+			<link field="claim" reltype="has_a" key="id" map="" class="acqscl"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">

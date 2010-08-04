@@ -78,7 +78,8 @@ CREATE TABLE asset.copy (
 	floating		BOOL				NOT NULL DEFAULT FALSE,
 	dummy_isbn      TEXT,
 	status_changed_time TIMESTAMP WITH TIME ZONE,
-	mint_condition      BOOL        NOT NULL DEFAULT TRUE
+	mint_condition      BOOL        NOT NULL DEFAULT TRUE,
+    cost    NUMERIC(8,2)
 );
 CREATE UNIQUE INDEX copy_barcode_key ON asset.copy (barcode) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE INDEX cp_cn_idx ON asset.copy (call_number);

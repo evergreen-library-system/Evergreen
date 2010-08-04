@@ -880,7 +880,8 @@ CREATE TABLE acq.po_item (
 	note            TEXT,
 	estimated_cost  NUMERIC(8,2),
 	fund            INT         REFERENCES acq.fund (id)
-	                            DEFERRABLE INITIALLY DEFERRED
+	                            DEFERRABLE INITIALLY DEFERRED,
+    target          BIGINT
 );
 
 CREATE TABLE acq.invoice_item ( -- for invoice-only debits: taxes/fees/non-bib items/etc
@@ -898,7 +899,8 @@ CREATE TABLE acq.invoice_item ( -- for invoice-only debits: taxes/fees/non-bib i
 	                            DEFERRABLE INITIALLY DEFERRED,
 	amount_paid     NUMERIC (8,2),
 	po_item         INT         REFERENCES acq.po_item (id)
-	                            DEFERRABLE INITIALLY DEFERRED
+	                            DEFERRABLE INITIALLY DEFERRED,
+    target          BIGINT
 );
 
 -- Patron requests
@@ -2621,5 +2623,30 @@ CREATE TABLE acq.claim_event (
 );
 
 CREATE INDEX claim_event_claim_date_idx ON acq.claim_event( claim, event_date );
+
+-- And the serials version of claiming
+CREATE TABLE acq.serial_claim (
+    id     SERIAL           PRIMARY KEY,
+    type   INT              NOT NULL REFERENCES acq.claim_type
+                                     DEFERRABLE INITIALLY DEFERRED,
+    item    BIGINT          NOT NULL REFERENCES serial.item
+                                     DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE INDEX serial_claim_lid_idx ON acq.serial_claim( item );
+
+CREATE TABLE acq.serial_claim_event (
+    id             BIGSERIAL        PRIMARY KEY,
+    type           INT              NOT NULL REFERENCES acq.claim_event_type
+                                             DEFERRABLE INITIALLY DEFERRED,
+    claim          SERIAL           NOT NULL REFERENCES acq.serial_claim
+                                             DEFERRABLE INITIALLY DEFERRED,
+    event_date     TIMESTAMPTZ      NOT NULL DEFAULT now(),
+    creator        INT              NOT NULL REFERENCES actor.usr
+                                             DEFERRABLE INITIALLY DEFERRED,
+    note           TEXT
+);
+
+CREATE INDEX serial_claim_event_claim_date_idx ON acq.serial_claim_event( claim, event_date );
 
 COMMIT;
