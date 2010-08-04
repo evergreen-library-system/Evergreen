@@ -1064,7 +1064,6 @@ function rdetailCheckForGBPreview() {
 function searchForGBPreview( isbn ) {
 	dojo.require("dojo.io.script");
 	dojo.io.script.get({"url": "https://www.google.com/jsapi"});
-	dojo.io.script.get({"url": "http://books.google.com/books/api.js", "content": {"key": "notsupplied", "callback": "google.loader.callbacks.books"}});
 	dojo.io.script.get({"url": "http://books.google.com/books", "content": { "bibkeys": isbn, "jscmd": "viewapi", "callback": "GBPreviewCallback"}});
 }
 
