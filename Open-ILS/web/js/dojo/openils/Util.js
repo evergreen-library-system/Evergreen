@@ -22,9 +22,31 @@
 if(!dojo._hasResource["openils.Util"]) {
     dojo._hasResource["openils.Util"] = true;
     dojo.provide("openils.Util");
+    dojo.require("dojo.date.locale");
+    dojo.require("dojo.date.stamp");
     dojo.require('openils.Event');
     dojo.declare('openils.Util', null, {});
 
+
+    /**
+     * Returns a locale-appropriate representation of a timestamp when the
+     * timestamp (first argument) is actually a string as provided by
+     * fieldmapper objects.
+     * The second argument is an optional argument that will be provided
+     * as the second argument to dojo.date.locale.format()
+     */
+    openils.Util.timeStamp = function(s, opts) {
+        if (typeof(opts) == "undefined") opts = {};
+
+        return dojo.date.locale.format(
+            dojo.date.stamp.fromISOString(
+                s.replace(
+                    /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+-]\d{2})(\d{2})$/,
+                    "$1:$2"
+                )
+            ), opts
+        );
+    };
 
     /**
      * Wrapper for dojo.addOnLoad that verifies a valid login session is active
