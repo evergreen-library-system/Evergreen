@@ -4,3 +4,6 @@
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
 .has_copies { color: black; background-color: lightgreen; font-weight: bold; }
+
+.copy_editor_field_changed { background: lightgreen; }
+
