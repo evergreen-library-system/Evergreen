@@ -30,5 +30,5 @@
 			<td><!--#include virtual="libselect.xml"--></td>
 		</tr>
 	</table>
-	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/default/js/search_bar.js'></script>
+	<script language='javascript' type='text/javascript' src='<!--#echo var="OILS_OPAC_JS_HOST"-->/skin/craftsman/js/search_bar.js'></script>
 </div>
