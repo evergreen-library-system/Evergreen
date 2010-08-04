@@ -23,7 +23,7 @@
 				<td nowrap='nowrap' class='rdetail_desc'>&common.title;</td>		
                 <!-- *** Example of how to use the openils.BibTemplate infrastructure to augment the stock
                      *** summary screen with more and/or different information.  In this case, the raw MARC 245. -->
-                <td type='opac/slot-data' query='datafield[tag=245]' class='rdetail_item' id='rdetail_title'>
+                <td type='opac/slot-data' query='datafield[tag="245"]' class='rdetail_item' id='rdetail_title'>
                     <script type='opac/slot-format'><![CDATA[
                         var out = '';
                         var list = dojo.query( 'subfield', item );
@@ -85,7 +85,7 @@
                  *** summary screen with complex information, such as new search links on subjects. -->
             <tr>
                 <td nowrap='nowrap' class='rdetail_desc'>&rdetail.summary.subjects;</td>
-                <td type='opac/slot-data' query='datafield[tag=650]' class='rdetail_item'>
+                <td type='opac/slot-data' query='datafield[tag="650"]' class='rdetail_item'>
                     <script type='opac/slot-format'><![CDATA[
                         var cgi = new CGI();
                         var other_params = [ 'd', 'l', 'r', 'av', 's', 'sd' ];
@@ -111,10 +111,10 @@
 				<!-- *** Example of how to use the openils.BibTemplate infrastructure to augment the stock
 				     *** summary screen with complex information, such as location-specific URIs (856$9). -->
    				<td nowrap='nowrap' class='rdetail_desc'>&rdetail.summary.online;
-					<span class='hide_me' type='opac/slot-data' query='datafield[tag=856] subfield[code=9]'>
+					<span class='hide_me' type='opac/slot-data' query='datafield[tag="856"] subfield[code="9"]'>
 						<script type='opac/slot-format'><![CDATA[
 							// There exists at least one localized URI. Clear all links.
-							dojo.query('*:not([type^=opac])', 'rdetail_online').orphan();
+							dojo.query('*:not([type^="opac"])', 'rdetail_online').orphan();
 							return '';
 						]]></script>
 					</span>
