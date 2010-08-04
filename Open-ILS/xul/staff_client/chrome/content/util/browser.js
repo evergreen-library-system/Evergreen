@@ -53,9 +53,11 @@ util.browser.prototype = {
                                     var print_params = {};
                                     if (obj.html_source) {
                                         print_params.msg = obj.html_source;
+                                        print_params.content_type = 'text/html';
                                     }
                                     if (typeof content.printable_output == 'function') {
                                         print_params.msg = content.printable_output();
+                                        print_params.content_type = 'text/plain';
                                     }
                                     JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
                                     if (data.print_strategy == 'webBrowserPrint' || !data.print_strategy) {

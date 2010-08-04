@@ -127,7 +127,10 @@ util.print.prototype = {
             switch(content_type) {
                 case 'text/html' :
                     var jsrc = 'data:text/javascript,' + window.escape('var params = { "data" : ' + js2JSON(params.data) + ', "list" : ' + js2JSON(params.list) + '}; function my_init() { if (typeof go_print == "function") { go_print(); } else { setTimeout( function() { if (typeof go_print == "function") { alert("Please tell the developers that the 2-second go_print workaround executed, and let them know whether this job printed successfully.  Thanks!"); go_print(); } else { alert("Please tell the developers that the 2-second go_print workaround did not work.  We will try to print one more time; there have been reports of wasted receipt paper at this point.  Please check the settings in the print dialog and/or prepare to power off your printer.  Thanks!"); window.print(); } }, 2000 ); } /* FIXME - mozilla bug#301560 - xpcom kills it too */ }');
-                    w = obj.win.open('data:text/html,<html id="top"><head><script src="/xul/server/main/JSAN.js"></script><script src="' + window.escape(jsrc) + '"></script></head><body onload="try{my_init();}catch(E){alert(E);}">' + window.escape(msg) + '</body></html>','receipt_temp','chrome,resizable');
+                    var print_url = 'data:text/html,'
+                        + '<html id="top"><head><script src="/xul/server/main/JSAN.js"></script><script src="' + window.escape(jsrc) + '"></script></head>'
+                        + '<body onload="try{my_init();}catch(E){alert(E);}">' + window.escape(msg) + '</body></html>';
+                    w = obj.win.open(print_url,'receipt_temp','chrome,resizable');
                     w.minimize();
                     w.go_print = function() { 
                         try {
@@ -315,10 +318,14 @@ dump('params.print_strategy = ' + params.print_strategy + ' || obj.data.print_st
                         obj._NSPrint_custom_print(w,silent,params);
                     break;    
                     case 'window.print':
-                        if (! params.msg) {
+                        if (typeof w == 'object') {
                             w.print();
                         } else {
-                            w = window.open('data:text/plain,'+escape(params.msg));
+                            if (params.content_type == 'text/plain') {
+                                w = window.open('data:text/plain,'+escape(params.msg));
+                            } else {
+                                w = window.open('data:text/html,'+escape(params.msg));
+                            }
                             setTimeout(
                                 function() {
                                     w.print();
@@ -333,10 +340,14 @@ dump('params.print_strategy = ' + params.print_strategy + ' || obj.data.print_st
                     break;    
                     case 'webBrowserPrint':
                     default:
-                        if (! params.msg) {
+                        if (typeof w == 'object') {
                             obj._NSPrint_webBrowserPrint(w,silent,params);
                         } else {
-                            w = window.open('data:text/plain,'+escape(params.msg));
+                            if (params.content_type == 'text/plain') {
+                                w = window.open('data:text/plain,'+escape(params.msg));
+                            } else {
+                                w = window.open('data:text/html,'+escape(params.msg));
+                            }
                             setTimeout(
                                 function() {
                                     obj._NSPrint_webBrowserPrint(w,silent,params);
