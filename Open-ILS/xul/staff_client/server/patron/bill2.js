@@ -42,19 +42,7 @@ function my_init() {
 
         $('credit_forward').setAttribute('value','???');
         if (!g.patron) {
-            g.network.simple_request(
-                'FM_AU_FLESHED_RETRIEVE_VIA_ID.authoritative',
-                [ ses(), g.patron_id ],
-                function(req) {
-                    try {
-                        g.patron = req.getResultObject();
-                        if (typeof g.patron.ilsevent != 'undefined') throw(g.patron);
-                        $('credit_forward').setAttribute('value',util.money.sanitize( g.patron.credit_forward_balance() ));
-                    } catch(E) {
-                        alert('Error in bill2.js, retrieve patron callback: ' + E);
-                    }
-                }
-            );
+            refresh_patron();
         } else {
             $('credit_forward').setAttribute('value',util.money.sanitize( g.patron.credit_forward_balance() ));
         }
@@ -757,14 +745,7 @@ function apply_payment() {
             if (typeof window.xulG == 'object' && typeof window.xulG.refresh == 'function') window.xulG.refresh();
             if (typeof window.xulG == 'object' && typeof window.xulG.on_money_change == 'function') window.xulG.on_money_change();
             if ( $('payment_type').value == 'credit_payment' || $('convert_change_to_credit').checked ) {
-                JSAN.use('patron.util'); 
-                patron.util.retrieve_au_via_id(ses(),g.patron_id, function(req) {
-                    var au_obj = req.getResultObject();
-                    if (typeof au_obj.ilsevent == 'undefined') {
-                        g.patron = au_obj;
-                        $('credit_forward').setAttribute('value',util.money.sanitize( g.patron.credit_forward_balance() ));
-                    }
-                });
+                refresh_patron();
             }
             try {
                 if ( ! $('receipt_upon_payment').hasAttribute('checked') ) { return; } // Skip print attempt
@@ -836,11 +817,14 @@ function pay(payment_blob) {
             payment_type : $('payment_type').getAttribute('label'),
             note : payment_blob.note
         }
-        var robj = g.network.simple_request( 'BILL_PAY', [ ses(), payment_blob ]);
+        var robj = g.network.simple_request( 'BILL_PAY', [ ses(), payment_blob, g.patron.last_xact_id() ]);
         if (typeof robj.ilsevent != 'undefined') {
-            switch(Number(robj.ilsevent)) {
-                case 0 /* SUCCESS */ : return true; break;
-                case 1226 /* REFUND_EXCEEDS_DESK_PAYMENTS */ : alert($("patronStrings").getFormattedString('staff.patron.bills.pay.refund_exceeds_desk_payment', [robj.desc])); return false; break;
+            switch(robj.textcode) {
+                case 'SUCCESS' : return true; break;
+                case 'REFUND_EXCEEDS_DESK_PAYMENTS' : alert($("patronStrings").getFormattedString('staff.patron.bills.pay.refund_exceeds_desk_payment', [robj.desc])); return false; break;
+                case 'INVALID_USER_XACT_ID' :
+                    refresh(); default_focus();
+                    alert($("patronStrings").getFormattedString('staff.patron.bills.pay.invalid_user_xact_id', [robj.desc])); return false; break;
                 default: throw(robj); break;
             }
         }
@@ -856,6 +840,7 @@ function refresh(params) {
         if (params && params.clear_voided_summary) {
             g.data.voided_billings = []; g.data.stash('voided_billings');
         }
+        refresh_patron();
         g.bill_list.clear();
         retrieve_mbts_for_list();
         tally_voided();
@@ -908,3 +893,13 @@ function void_all_billings(mobts_id) {
     }
 }
 
+function refresh_patron() {
+    JSAN.use('patron.util'); JSAN.use('util.money');
+    patron.util.retrieve_au_via_id(ses(),g.patron_id, function(req) {
+        var au_obj = req.getResultObject();
+        if (typeof au_obj.ilsevent == 'undefined') {
+            g.patron = au_obj;
+            $('credit_forward').setAttribute('value',util.money.sanitize( g.patron.credit_forward_balance() ));
+        }
+    });
+}

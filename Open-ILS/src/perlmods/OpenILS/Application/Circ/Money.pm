@@ -66,6 +66,10 @@ __PACKAGE__->register_method(
                     ], 
                 }/, type => 'hash'
             },
+            {
+                desc => q/Last user transaction ID.  This is the actor.usr.last_xact_id value/, 
+                type => 'string'
+            }
         ],
         "return" => {
             "desc" =>
@@ -73,6 +77,11 @@ __PACKAGE__->register_method(
                 BAD_PARAMS
                     Bad parameters were given to this API method itself.
                     See note field.
+                INVALID_USER_XACT_ID
+                    The last user transaction ID does not match the ID in the database.  This means
+                    the user object has been updated since the last retrieval.  The client should
+                    be instructed to reload the user object and related transactions before attempting
+                    another payment
                 REFUND_EXCEEDS_BALANCE
                 REFUND_EXCEEDS_DESK_PAYMENTS
                 CREDIT_PROCESSOR_NOT_SPECIFIED
@@ -117,7 +126,7 @@ __PACKAGE__->register_method(
     }
 );
 sub make_payments {
-    my($self, $client, $auth, $payments) = @_;
+    my($self, $client, $auth, $payments, $last_xact_id) = @_;
 
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
@@ -137,6 +146,11 @@ sub make_payments {
     my ($approval_code, $cc_processor, $cc_type) = (undef,undef,undef);
 
     my $patron = $e->retrieve_actor_user($user_id) or return $e->die_event;
+
+    if($patron->last_xact_id ne $last_xact_id) {
+        $e->rollback;
+        return OpenILS::Event->new('INVALID_USER_XACT_ID');
+    }
 
     # A user is allowed to make credit card payments on his/her own behalf
     # All other scenarious require permission
@@ -364,8 +378,12 @@ sub make_payments {
         }
     }
 
+    # update the user to create a new last_xact_id
+    $e->update_actor_user($patron) or return $e->die_event;
+    $patron = $e->retrieve_actor_user($patron) or return $e->die_event;
+
     $e->commit;
-    return \@payment_ids;
+    return {last_xact_id => $patron->last_xact_id, payments => \@payment_ids};
 }
 
 sub _recording_failure {

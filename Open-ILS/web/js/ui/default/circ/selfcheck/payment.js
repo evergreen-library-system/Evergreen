@@ -102,7 +102,7 @@ proto.sendCCPayment = function(patron, xacts, onPaymentSubmit) {
 
     var resp = fieldmapper.standardRequest(
         ['open-ils.circ', 'open-ils.circ.money.payment'],
-        {params : [this.authtoken, args]}
+        {params : [this.authtoken, args, patron.last_xact_id()]}
     );
 
     if (typeof(progressDialog) != "undefined")

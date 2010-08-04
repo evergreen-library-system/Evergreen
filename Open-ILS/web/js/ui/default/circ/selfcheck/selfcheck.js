@@ -114,9 +114,13 @@ SelfCheckManager.prototype.init = function() {
                         var message = evt + '';
                         if(evt.textcode == 'CREDIT_PROCESSOR_DECLINED_TRANSACTION' && evt.payload)
                             message += '\n' + evt.payload.error_message;
+                        if(evt.textcode == 'INVALID_USER_XACT_ID')
+                            message += '\n' + localeStrings.PAYMENT_INVALID_USER_XACT_ID;
                         self.handleAlert(message, true, 'payment-failure');
                         return;
                     }
+
+                    self.patron.last_xact_id(resp.last_xact_id); // update to match latest from server
                     self.printPaymentReceipt(
                         resp,
                         function() {
@@ -1356,7 +1360,7 @@ SelfCheckManager.prototype.printHoldsReceipt = function(callback) {
 }
 
 
-SelfCheckManager.prototype.printPaymentReceipt = function(paymentIds, callback) {
+SelfCheckManager.prototype.printPaymentReceipt = function(response, callback) {
     
     var self = this;
     progressDialog.show(true);
@@ -1365,7 +1369,7 @@ SelfCheckManager.prototype.printPaymentReceipt = function(paymentIds, callback) 
         ['open-ils.circ', 'open-ils.circ.money.payment_receipt.print'],
         {
             async : true,
-            params : [this.authtoken, paymentIds],
+            params : [this.authtoken, response.payments],
             oncomplete : function(r) {
                 var resp = openils.Util.readResponse(r);
                 var output = resp.template_output();

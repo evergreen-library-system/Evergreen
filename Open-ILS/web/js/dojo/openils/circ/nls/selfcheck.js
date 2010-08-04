@@ -36,6 +36,7 @@
     "FAIL_PART_no_ultimate_items": "The system could not find any items to match this hold request",
     "FAIL_PART_no_matchpoint": "System rules do not define how to handle this item",
     "FAIL_PART_no_user": "The system could not find this patron",
-    "FAIL_PART_transit_range": "The item cannot transit this far"
+    "FAIL_PART_transit_range": "The item cannot transit this far",
+    "PAYMENT_INVALID_USER_XACT_ID" : "We cannot proceed with the payment, because your account was updated from another location.  Please refresh the interface or log out and back in to retrieve the latest account information"
 }
 
