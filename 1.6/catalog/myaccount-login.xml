@@ -4,7 +4,7 @@
 
 	<info>
 		<title>My Account - Login</title>
-		<abstract><para>Logging In (including required password change on first login, as well as self selected username alternative to card number)</para></abstract>
+		<abstract><para>Logging In</para></abstract>
 	</info>
 
 	<section xml:id="myaccountlogin">
