@@ -745,6 +745,7 @@ cat.util.mark_item_as_missing_pieces = function(copy_ids) {
         JSAN.use('util.error'); error = new util.error();
         JSAN.use('util.functional'); JSAN.use('util.date');
         JSAN.use('util.network'); var network = new util.network();
+        JSAN.use('util.print'); var print = new util.print();
         var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ copy_ids ]);
         if (typeof copies.ilsevent != 'undefined') throw(copies);
 
@@ -761,10 +762,13 @@ cat.util.mark_item_as_missing_pieces = function(copy_ids) {
                     var robj = network.simple_request('MARK_ITEM_MISSING_PIECES',[ses(),copies[i].id()]);
                     if (typeof robj.ilsevent != 'undefined') {
                         if (robj.ilsevent == 0 /* SUCCESS */) {
-                            // TODO: Print missing pieces slip
+                            if (robj.payload && robj.payload.slip) {
+                                print.simple( robj.payload.slip.template_output().data() );
+                            }
                             // TODO: Item/patron notes/messages
                             // TODO: Invoke 3rd party app with letter to patron
                         } else if (robj.ilsevent == 1500 /* ACTION_CIRCULATION_NOT_FOUND */) {
+                            throw(robj);
                         } else {
                             throw(robj);
                         }
