@@ -223,14 +223,15 @@ sub currency {
 sub fee_amount {
 	my $self = shift;
 	syslog('LOG_DEBUG', 'OILS: Patron->fee_amount()');
+    my $user_id = $self->{user}->id;
 
-	my $ses = $U->start_db_session();
-	my $summary = $ses->request(
-		'open-ils.storage.money.open_user_summary.search', $self->{user}->id )->gather(1);
-	$U->rollback_db_session($ses);
+    my $e = $self->{editor};
+    $e->xact_begin;
+    my $summary = $e->search_money_open_user_summary($user_id)->[0];
+    $e->rollback; # xact_rollback + disconnect
 
 	my $total = $summary->balance_owed;
-	syslog('LOG_INFO', "User ".$self->{id} .':'.$self->{user}->id." has a fee amount of \$$total");
+	syslog('LOG_INFO', "User ".$self->{id} .":$user_id has a fee amount of \$$total");
 	return $total;
 }
 
