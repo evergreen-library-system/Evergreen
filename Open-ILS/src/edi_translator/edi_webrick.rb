@@ -88,6 +88,7 @@ end
 
 # create a servlet to handle XML-RPC requests:
 servlet = XMLRPC::WEBrickServlet.new
+servlet.add_handler("mapper_version") { OpenILS::Mapper::VERSION }
 servlet.add_handler("upper_case") { |a_string| a_string.upcase   }
 servlet.add_handler("lower_case") { |a_string| a_string.downcase }
 servlet.add_handler("edi2json"  ) { |a_string|
