@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter version="5.0" xml:id="MyAccount" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
+	<info>
+		<title>My Account</title>
+		<abstract>
+			<para>Items and issues related to your private account.</para>
+		</abstract>
+	</info>
+	<section xml:id="myaccount">
+		<section xml:id="myaccountloginpasswordupdate">
+			<info>
+				<title>My Account - First Login Password Update</title>
+				<abstract>
+					<para>Logging In (including required password change on first login, as well as self selected username alternative to card number)</para>
+				</abstract>
+			</info>
+			<para>Login to the OWWL Online Catalog My Account with Password Update</para>
+			<para>Patrons are given temporary "dummy" barcodes when new accounts are created, or forgotten passwords are reset. Patrons MUST change their password to something more secure with their <emphasis role="bold">first ever</emphasis> OPAC login or <emphasis role="bold">first</emphasis> login after a password reset. Once the password is updated, they will not have to repeat this process for subsequent logins.</para>
+			<section>
+				<title>Procedure</title>
+				<orderedlist>
+					<listitem>
+						<para>Open a web browser and go to: [URL]</para>
+					</listitem>
+					<listitem>
+						<para>Click <emphasis>My Account</emphasis></para>
+					</listitem>
+					<listitem>
+						<para>Enter your <emphasis>Username</emphasis> and <emphasis>Password</emphasis></para>
+						<itemizedlist>
+							<listitem>
+								<para>By default, your username is your library card number.</para>
+							</listitem>
+							<listitem>
+								<para>Your password is a 4 digit code provided when your account was created.  If you have forgotten your password, contact your local library to have it reset.</para>
+							</listitem>
+						</itemizedlist>
+					</listitem>
+					<listitem>
+						<para>Click <emphasis>Login</emphasis>; you will be prompted to change your password</para>
+						<para>
+							<mediaobject>
+								<imageobject xml:id="img_myaccountloginpasswordupdate">
+									<imagedata fileref="../media/myaccount-login.png" height="400px" scalefit="1" width="430px"/>
+								</imageobject>
+							</mediaobject>
+						</para>
+						<orderedlist>
+							<listitem>
+								<para>Enter your current password</para>
+							</listitem>
+							<listitem>
+								<para>Enter a new password</para>
+							</listitem>
+							<listitem>
+								<para>Enter the new password again</para>
+							</listitem>
+							<listitem>
+								<para>Click <emphasis>Update Password</emphasis></para>
+							</listitem>
+							<listitem>
+								<para>At <emphasis role="bold">Password successfully updated</emphasis> pop-up click <emphasis>OK</emphasis>; you will be returned to the login screen</para>
+							</listitem>
+						</orderedlist>
+					</listitem>
+				</orderedlist>
+				<orderedlist>
+					<listitem>
+						<para>Enter your <emphasis>Username</emphasis> and <emphasis role="bold">new</emphasis> <emphasis>Password</emphasis></para>
+					</listitem>
+					<listitem>
+						<para>Your <emphasis role="bold">Account Summary</emphasis> page displays</para>
+					</listitem>
+				</orderedlist>
+				<para/>
+				<para><imagedata fileref="../media/myaccount-login-arrow.png" scalefit="0"/>	To view your account details, click one of the <emphasis role="bold">My Account</emphasis> tabs</para>
+				<para><imagedata fileref="../media/myaccount-login-arrow.png" scalefit="0"/>	To start a search, enter a term in the search box at the top of the page and click Go!</para>
+				<para>
+					<imagedata fileref="../media/myaccount-login-info.png" scalefit="0"/>
+					<emphasis role="bold">	If using a public computer be sure to log out!</emphasis>
+				</para>
+				<para/>
+			</section>
+		</section>
+		<section xml:id="myaccountlogin">
+			<info>
+				<title>My Account - Logging In</title>
+				<abstract>
+					<para>Logging In</para>
+				</abstract>
+			</info>
+			<para/>
+			<para/>
+			<title>Login to the OWWL Online Catalog</title>
+			<section>
+				<title>Procedure</title>
+				<orderedlist>
+					<listitem>
+						<para>Open a web browser and go to: [URL]</para>
+					</listitem>
+					<listitem>
+						<para>Click <emphasis>My Account</emphasis></para>
+					</listitem>
+					<listitem>
+						<para>Enter your <emphasis>Username</emphasis> and <emphasis>Password</emphasis></para>
+						<itemizedlist>
+							<listitem>By default, your username is your library card number.</listitem>
+							<listitem>Your password is a 4 digit code provided when your account was created. If you have forgotten your password, contact your local library to have it reset.</listitem>
+						</itemizedlist>
+					</listitem>
+					<listitem>
+						<para>Click <emphasis>Login</emphasis></para>
+						<itemizedlist>
+							<listitem>At the first login, or following a password reset, you will be prompted to change your password.</listitem>
+							<listitem>After updating the password, you must enter your Username and Password again</listitem>
+						</itemizedlist>
+					</listitem>
+					<listitem>
+						<para>Your <emphasis role="bold">Account Summary</emphasis> page displays</para>
+					</listitem>
+				</orderedlist>
+				<para/>
+				<para><imagedata fileref="../media/myaccount-login-arrow.png" scalefit="0"/>	To view your account details, click one of the <emphasis role="bold">My Account</emphasis> tabs</para>
+				<para><imagedata fileref="../media/myaccount-login-arrow.png" scalefit="0"/>	To start a search, enter a term in the search box at the top of the page and click <emphasis>Go!</emphasis></para>
+				<para>
+					<imagedata fileref="../media/myaccount-login-info.png" scalefit="0"/>
+					<emphasis role="bold">	If using a public computer be sure to log out!</emphasis>
+				</para>
+				<para/>
+				<para>
+					<mediaobject>
+						<imageobject xml:id="img_myaccountlogin">
+							<imagedata fileref="../media/myaccount-login.png" height="400px" scalefit="1" width="430px"/>
+						</imageobject>
+					</mediaobject>
+				</para>
+			</section>
+		</section>
+		<section xml:id="myaccountsummary">
+			<info>
+				<title>My Account - Account Summary</title>
+				<abstract>
+					<para>View Staff Notes, home library, address, and phone numbers. Change account username, password, and email.</para>
+				</abstract>
+			</info>
+			<section>
+				<title>Procedure</title>
+				<orderedlist>
+					<listitem>
+						<para>stuff goes here...</para>
+					</listitem>
+				</orderedlist>
+				<para>
+					<mediaobject xml:id="img_myaccountsummary">
+						<imageobject>
+							<imagedata fileref="../media/myaccount-summary.png" height="600px" scalefit="1" width="430px"/>
+						</imageobject>
+					</mediaobject>
+				</para>
+			</section>
+		</section>
+		<section xml:id="myaccountitemscheckedout">
+			<info>
+				<title>My Account - Items Checked Out</title>
+				<abstract>
+					<para>Manage items currently checked out</para>
+				</abstract>
+			</info>
+			<section>
+				<title>About Managing Items Checked Out in My Account</title>
+				<para>All items currently borrowed, overdue items, renewals remaining, renew items, non-cataloged types checked out.</para>
+				<section>
+					<title>Actions include:</title>
+					<itemizedlist>
+						<listitem>
+							<para>stuff goes here...</para>
+						</listitem>
+					</itemizedlist>
+				</section>
+				<para>
+					<mediaobject xml:id="img_myaccountitemscheckedout">
+						<imageobject>
+							<imagedata fileref="../media/myaccount-itemscheckedout.png" height="600px" scalefit="1" width="430px"/>
+						</imageobject>
+					</mediaobject>
+				</para>
+			</section>
+		</section>
+		<section xml:id="myaccountitemsonhold">
+			<info>
+				<title>My Account - Items On Hold</title>
+				<abstract>
+					<para>Manage items currently being requested</para>
+				</abstract>
+			</info>
+			<section>
+				<title>About Managing Holds in My Account</title>
+				<para>From My Account patrons can manage items currently being requested.</para>
+				<section xml:id="myaccountholds-actions">
+					<title>Actions include:</title>
+					<itemizedlist>
+						<listitem>
+							<para>Suspend ~ set a period of time during which the hold will not become active, such as during a vacation</para>
+						</listitem>
+						<listitem>
+							<para>Activate ~ manually remove the suspension</para>
+						</listitem>
+						<listitem>
+							<para>Set Active Date ~ specify a date at which the suspension will be lifted</para>
+						</listitem>
+						<listitem>
+							<para>Cancel ~remove the hold request</para>
+						</listitem>
+					</itemizedlist>
+				</section>
+				<section xml:id="myaccountitemsonhold-edit">
+					<title>Edit options include:</title>
+					<itemizedlist>
+						<listitem>
+							<para>Enable/disable phone notifications</para>
+						</listitem>
+						<listitem>
+							<para>Change telephone number for notification</para>
+						</listitem>
+						<listitem>
+							<para>Enable/disable email notification</para>
+						</listitem>
+						<listitem>
+							<para>Change pick up library</para>
+						</listitem>
+						<listitem>
+							<para>Change expiration date</para>
+						</listitem>
+						<listitem>
+							<para>Suspend</para>
+						</listitem>
+						<listitem>
+							<para>Activate date</para>
+						</listitem>
+					</itemizedlist>
+				</section>
+			</section>
+			<section xml:id="myaccountitemsonhold-procedure">
+				<title>Procedure</title>
+				<orderedlist>
+					<listitem>
+						<para>Login to My Account, click the <emphasis>Items on Hold</emphasis> tab</para>
+					</listitem>
+					<listitem>
+						<para>Select the hold to modify</para>
+					</listitem>
+					<listitem>
+						<para>Click <emphasis>Edit</emphasis> or <emphasis>Actions for Selected Holds</emphasis>~</para>
+					</listitem>
+					<listitem>
+						<para>Select the change to make, follow the steps on the screen</para>
+					</listitem>
+				</orderedlist>
+				<para>
+					<mediaobject xml:id="img_myaccountitemsonhold">
+						<imageobject>
+							<imagedata fileref="../media/myaccount-itemsonhold.png" height="600px" scalefit="1" width="430px"/>
+						</imageobject>
+					</mediaobject>
+				</para>
+			</section>
+		</section>
+		<section xml:id="myaccountfines">
+			<info>
+				<title>My Account - Fines</title>
+				<abstract>
+					<para>Manage fines on items currently checked out</para>
+				</abstract>
+			</info>
+			<para>MY ACCOUNT - FINES</para>
+		</section>
+		<section xml:id="myaccountpreferences">
+			<info>
+				<title>My Account - Preferences</title>
+				<abstract>
+					<para>Manage preferences for my private account</para>
+				</abstract>
+			</info>
+			<para>MY ACCOUNT - PREFERENCES</para>
+		</section>
+		<section xml:id="myaccountbookbags">
+			<info>
+				<title>My Account - Bookbags</title>
+				<abstract>
+					<para>Create and Manage Bookbags</para>
+				</abstract>
+			</info>
+			<section>
+				<title>About My Bookbags</title>
+				<para>My Bookbags is a feature that allows you to create lists of library materials (books, audiobooks, videos, etc.) These lists create links to records in the catalog, but are otherwise completely private and only accessible by you when logged in to your My Account. </para>
+				<para>You have the option to share <emphasis role="bold">specific</emphasis> lists with people whom you choose (send them the direct URL), or more generally via RSS feed. Shared bookbags do <emphasis role="bold">NOT</emphasis> create a link to your personal library account information or private bookbags. You can share or un-share bookbags at any time.</para>
+				<para>You can create as many bookbags and you want. Your bookbags will stay in your account until you delete them.</para>
+				<para>Items remain in bookbags until you remove them. Even if the item record is removed from the catalog, the bookbag entry will remain (but there will be no link to the catalog.)</para>
+			</section>
+			<section xml:id="myaccountbookbags-create">
+				<title>Create a new Bookbag</title>
+				<orderedlist>
+					<listitem>
+						<para>Login to <emphasis>My Account</emphasis> , click <emphasis>My Bookbags</emphasis></para>
+					</listitem>
+					<listitem>
+						<para>At <emphasis>Create a new Bookbag</emphasis>, enter the name of the new Bookbag</para>
+					</listitem>
+					<listitem>
+						<para>Share - yes or no</para>
+					</listitem>
+					<listitem>
+						<para>Click <emphasis>Submit</emphasis></para>
+					</listitem>
+					<listitem>
+						<para>Click <emphasis>OK</emphasis></para>
+					</listitem>
+				</orderedlist>
+			</section>
+			<section xml:id="myaccountbookbags-add">
+				<title>Add items to a Bookbag</title>
+				<orderedlist>
+					<listitem>
+						<para>Search for an item, open the Title Record</para>
+					</listitem>
+					<listitem>
+						<para>Open the <emphasis>More Actions...</emphasis> list; click the Bookbag name</para>
+					</listitem>
+					<listitem>
+						<para>Click <emphasis>OK</emphasis></para>
+					</listitem>
+				</orderedlist>
+			</section>
+			<section xml:id="myaccountbookbags-share">
+				<title>Share a Bookbag</title>
+				<orderedlist>
+					<listitem>
+						<para>Login to <emphasis>My Account</emphasis>, click <emphasis>My Bookbags</emphasis></para>
+					</listitem>
+					<listitem>
+						<para>Find the Bookbag to share, click <emphasis>Share this Bookbag</emphasis></para>
+					</listitem>
+					<listitem>
+						<para>Click <emphasis>OK</emphasis></para>
+					</listitem>
+					<listitem>
+						<para>Click <emphasis>OK</emphasis></para>
+					</listitem>
+					<listitem>
+						<para>Click <emphasis>View</emphasis> to open the list as a webpage - copy and send this URL to selected recipients or embed in another website</para>
+					</listitem>
+					<listitem>
+						<para>Click the RSS symbol add the list to an RSS reader</para>
+					</listitem>
+				</orderedlist>
+			</section>
+			<section xml:id="myaccountbookbags-example">
+				<para>
+					<mediaobject>
+						<imageobject xml:id="img_myaccountbookbags">
+							<imagedata fileref="../media/myaccount-bookbags.png" height="400px" scalefit="1" width="430px"/>
+						</imageobject>
+					</mediaobject>
+				</para>
+			</section>
+		</section>
+	</section>
+</chapter>
