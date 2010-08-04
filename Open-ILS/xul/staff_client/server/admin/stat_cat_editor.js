@@ -140,10 +140,13 @@ function scDraw( type, cats ) {
     hideMe($('sc_none'));
     unHideMe($('sc_table'));
 
-    if(type == 'actor') 
+    if(type == ACTOR) {
         unHideMe($('sc_usr_summary_label'));
-    else
+        hideMe($('sc_required_label'));
+    } else {
+        unHideMe($('sc_required_label'));
         hideMe($('sc_usr_summary_label'));
+    }
 
     scCounter = 0;
     for( var c in cats ) scInsertCat( tbody, cats[c], type );
@@ -168,13 +171,19 @@ function scInsertCat( tbody, cat, type ) {
     else 
         unHideMe($n(row, 'sc_opac_invisible'));
 
-    if(type == 'actor') {
+    if(type == ACTOR) {
         if(isTrue(cat.usr_summary()))
             unHideMe($n(row, 'sc_usr_summary_on'));
         else 
             unHideMe($n(row, 'sc_usr_summary'));
 
+        hideMe($n(row, 'sc_required_td'));
     } else {
+        if(isTrue(cat.required()))
+            unHideMe($n(row, 'sc_required_on'));
+        else 
+            unHideMe($n(row, 'sc_required'));
+
         hideMe($n(row, 'sc_usr_summary_td'));
     }
 
@@ -270,6 +279,20 @@ function scBuildNew() {
     var libSel = $('sc_owning_lib_selector');
     var typeSel = $('sc_type_selector');
     var type = getSelectorVal(typeSel);
+    switch(type) {
+        case ACTOR:
+            hideMe($('required_td1'));
+            hideMe($('required_td2'));
+            unHideMe($('usr_summary_td1'));
+            unHideMe($('usr_summary_td2'));
+        break;
+        case ASSET:
+            hideMe($('usr_summary_td1'));
+            hideMe($('usr_summary_td2'));
+            unHideMe($('required_td1'));
+            unHideMe($('required_td2'));
+        break;
+    }
     var org_list = PERMS[type].create_stat_cat;
     if(org_list.length == 0) { /* no create perms */
         $('sc_new').disabled = true;
@@ -287,11 +310,21 @@ function scNew() {
     var type = getSelectorVal($('sc_type_selector'));
 
     var visible = 0;
+    var required = 0;
+    var usr_summary = 0;
     if( $('sc_make_opac_visible').checked) visible = 1;
+    if( $('sc_make_required').checked) required = 1;
+    if( $('sc_make_usr_summary').checked) usr_summary = 1;
 
     var cat;
-    if( type == ACTOR ) cat = new actsc();
-    if( type == ASSET ) cat = new asc();
+    if( type == ACTOR ) {
+        cat = new actsc();
+        cat.usr_summary( usr_summary );
+    }
+    if( type == ASSET ) {
+        cat = new asc();
+        cat.required( required );
+    }
 
     cat.opac_visible(visible);
     cat.name(name);
@@ -320,11 +353,16 @@ function scEdit( tbody, type, cat ) {
 
     $n(row, 'sc_edit_name').value = cat.name();
 
-    if(type == 'actor') {
+    if(type == ACTOR) {
         var cb = $n(row, 'sc_edit_usr_summary');
         cb.checked = isTrue(cat.usr_summary()); 
+        hideMe($n(row, 'sc_edit_required_td'));
+        unHideMe($n(row, 'sc_edit_usr_summary_td'));
     } else {
+        var cb = $n(row, 'sc_edit_required');
+        cb.checked = isTrue(cat.required()); 
         hideMe($n(row, 'sc_edit_usr_summary_td'));
+        unHideMe($n(row, 'sc_edit_required_td'));
     }
 
     var name = $n(row, 'sc_edit_cancel');
@@ -382,23 +420,22 @@ function scEditGo( type, cat, row, selector ) {
 
     if(!name) return false;
 
-    var isvisible = false;
-    if( cat.opac_visible() != 0 && cat.opac_visible() != '0' ) isvisible = true;
-
     var usr_summary = $n(row, 'sc_edit_usr_summary').checked;
-
-    if( (name == cat.name()) && 
-        (visible == isvisible) && 
-        (newlib == cat.owner()) && 
-        (usr_summary == isTrue(cat.usr_summary())) )
-            return true; 
+    var required = $n(row, 'sc_edit_required').checked;
 
     cat.name( name );
     cat.owner( newlib );
     cat.entries(null);
     cat.opac_visible(0);
     if( visible ) cat.opac_visible(1);
-    cat.usr_summary( (usr_summary) ? 1 : 0 );
+    switch(type) {
+        case ACTOR:
+            cat.usr_summary( (usr_summary) ? 1 : 0 );
+        break;
+        case ASSET:
+            cat.required( (required) ? 1 : 0 );
+        break;
+    }
 
     var req = new Request( SC_UPDATE.replace(/TYPE/,type), session, cat );
     req.send(true);

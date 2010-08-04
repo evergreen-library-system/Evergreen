@@ -56,7 +56,7 @@ use base qw/asset/;
 
 __PACKAGE__->table( 'asset_stat_cat' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/owner name opac_visible/ );
+__PACKAGE__->columns( Essential => qw/owner name opac_visible required/ );
 
 #-------------------------------------------------------------------------------
 package asset::stat_cat_entry;
