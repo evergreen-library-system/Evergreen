@@ -175,6 +175,46 @@ sub biblio_record_replace_marc  {
 }
 
 __PACKAGE__->register_method(
+	method	=> "template_overlay_biblio_record_entry",
+	api_name	=> "open-ils.cat.biblio.record_entry.template_overlay",
+    stream  => 1,
+    signature => q#
+        Overlays biblio.record_entry MARC values
+        @param auth The authtoken
+        @param records The record ids to be updated by the template
+        @param template The overlay template
+        @return Stream of hashes record id in the key "record" and t or f for the success of the overlay operation in key "success"
+    #
+);
+
+sub template_overlay_biblio_record_entry {
+    my($self, $conn, $auth, $records, $template) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    $records = [$records] if (!ref($records));
+
+    for my $rid ( @$records ) {
+        my $rec = $e->retrieve_biblio_record_entry($rid);
+        next unless $rec;
+
+        unless ($e->allowed('UPDATE_RECORD', $rec->owner, $rec)) {
+            $conn->respond({ record => $rid, success => 'f' });
+            next;
+        }
+
+        my $success = $e->json_query(
+            { from => [ 'vandelay.template_overlay_bib_record', $template, $rid ] }
+        )->[0]->{'vandelay.template_overlay_bib_record'};
+
+        $conn->respond({ record => $rid, success => $success });
+    }
+
+    $e->commit;
+    return undef;
+}
+
+__PACKAGE__->register_method(
 	method	=> "update_biblio_record_entry",
 	api_name	=> "open-ils.cat.biblio.record_entry.update",
     signature => q/
