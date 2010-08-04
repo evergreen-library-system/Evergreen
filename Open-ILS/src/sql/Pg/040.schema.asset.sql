@@ -127,6 +127,7 @@ CREATE TABLE asset.stat_cat (
 	owner		INT	NOT NULL,
 	opac_visible	BOOL	NOT NULL DEFAULT FALSE,
 	name		TEXT	NOT NULL,
+	required	BOOL	NOT NULL DEFAULT FALSE,
 	CONSTRAINT sc_once_per_owner UNIQUE (owner,name)
 );
 
