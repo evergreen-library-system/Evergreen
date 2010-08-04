@@ -227,7 +227,7 @@ sub fee_amount {
 
     my $e = $self->{editor};
     $e->xact_begin;
-    my $summary = $e->search_money_open_user_summary($user_id)->[0];
+    my $summary = $e->retrieve_money_open_user_summary($user_id);
     $e->rollback; # xact_rollback + disconnect
 
 	my $total = $summary->balance_owed;
