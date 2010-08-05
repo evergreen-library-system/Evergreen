@@ -160,6 +160,7 @@ function my_init() {
 
         g.summarize( g.copies );
         g.render();
+        g.check_for_unmet_required_fields();
 
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/copy_editor.js', E]);
@@ -219,6 +220,7 @@ g.apply_template = function() {
             }
             g.summarize( g.copies );
             g.render();
+            g.check_for_unmet_required_fields();
         }
     } catch(E) {
         g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.apply_templates.error'), E);
@@ -385,6 +387,7 @@ g.reset = function() {
     g.copies = JSON2js( g.original_copies );
     g.summarize( g.copies );
     g.render();
+    g.check_for_unmet_required_fields();
 }
 
 /******************************************************************************************************/
@@ -392,10 +395,16 @@ g.reset = function() {
 
 g.apply = function(field,value) {
     g.error.sdump('D_TRACE','applying field = <' + field + '>  value = <' + value + '>\n');
-    if (value == '<HACK:KLUDGE:NULL>') value = null;
+    if (value == '<HACK:KLUDGE:NULL>') {
+        value = null;
+    }
     if (field == 'alert_message') { value = value.replace(/^\W+$/g,''); }
     if (field == 'price' || field == 'deposit_amount') {
-        if (value == '') { value = null; } else { JSAN.use('util.money'); value = util.money.sanitize( value ); }
+        if (value == '') {
+            value = null;
+        } else {
+            JSAN.use('util.money'); value = util.money.sanitize( value );
+        }
     }
     for (var i = 0; i < g.copies.length; i++) {
         var copy = g.copies[i];
@@ -424,12 +433,14 @@ g.apply_stat_cat = function(sc_id,entry_id) {
                     return (obj.stat_cat() != sc_id);
                 }
             );
-            if (entry_id > -1) temp.push( 
-                util.functional.find_id_object_in_list( 
-                    g.data.hash.asc[sc_id].entries(), 
-                    entry_id
-                )
-            );
+            if (entry_id > -1) {
+                temp.push( 
+                    util.functional.find_id_object_in_list( 
+                        g.data.hash.asc[sc_id].entries(), 
+                        entry_id
+                    )
+                );
+            }
             copy.stat_cat_entries( temp );
 
         } catch(E) {
@@ -663,9 +674,15 @@ g.get_acpl_list = function() {
 
 
 /******************************************************************************************************/
-/* This keeps track of what fields have been edited for styling purposes */
+/* This keeps track of which fields have been edited for styling purposes */
 
 g.changed = {};
+
+/******************************************************************************************************/
+/* This keeps track of which fields are required, and which fields have been populated */
+
+g.required = {};
+g.populated = {};
 
 /******************************************************************************************************/
 /* These need data from the middle layer to render */
@@ -963,6 +980,7 @@ g.summarize = function( copies ) {
         var render = g.field_names[i][1].render;
         var attr = g.field_names[i][1].attr;
         g.summary[ field_name ] = {};
+        g.populated[ field_name ] = 1; // delete later if we encounter a copy with the field unset
 
         /******************************************************************************************************/
         /* Loop through the copies */
@@ -971,7 +989,7 @@ g.summarize = function( copies ) {
 
             var fm = copies[j];
             var cmd = render || ('fm.' + field_name + '();');
-            var value = '???';
+            var value = $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null");
 
             /**********************************************************************************************/
             /* Try to retrieve the value for this field for this copy */
@@ -983,6 +1001,9 @@ g.summarize = function( copies ) {
             }
             if (typeof value == 'object' && value != null) {
                 alert('FIXME: field_name = <' + field_name + '>  value = <' + js2JSON(value) + '>\n');
+            }
+            if (value == $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null")) {
+                delete g.populated[field_name];
             }
 
             /**********************************************************************************************/
@@ -1060,6 +1081,7 @@ g.render = function() {
                 caption.setAttribute('id','caption_'+fn); // used for focus/keyboard navigation
                 vbox = document.createElement('vbox'); groupbox.appendChild(vbox); // main display widget goes here
                 if (typeof g.changed[fn] != 'undefined') { addCSSClass(vbox,'copy_editor_field_changed'); }
+                if (typeof g.required[fn] != 'undefined') { addCSSClass(vbox,'copy_editor_field_required'); }
                 grid = util.widgets.make_grid( [ { 'flex' : 1 }, {}, {} ] ); vbox.appendChild(grid);
                 grid.setAttribute('flex','1');
                 rows = grid.lastChild;
@@ -1182,6 +1204,7 @@ g.render_input = function(node,blob) {
                             function() {
                                 g.summarize( g.copies );
                                 g.render();
+                                g.check_for_unmet_required_fields();
                                 document.getElementById(caption.id).focus();
                             }, 0
                         );
@@ -1202,7 +1225,16 @@ g.render_input = function(node,blob) {
                     apply.addEventListener('command',function() { c(x.value); },false);
                     var cancel = document.createElement('button');
                     cancel.setAttribute('label', $('catStrings').getString('staff.cat.copy_editor.cancel.label'));
-                    cancel.addEventListener('command',function() { setTimeout( function() { g.summarize( g.copies ); g.render(); document.getElementById(caption.id).focus(); }, 0); }, false);
+                    cancel.addEventListener('command',function() {
+                            setTimeout( function() {
+                                    g.summarize( g.copies );
+                                    g.render();
+                                    g.check_for_unmet_required_fields();
+                                    document.getElementById(caption.id).focus(); 
+                                }, 0
+                            );
+                        }, false
+                    );
                     hbox2.appendChild(cancel);
                     setTimeout( function() { x.focus(); }, 0 );
                 }
@@ -1327,6 +1359,10 @@ g.add_stat_cat = function(sc) {
 
         var label_name = g.data.hash.aou[ sc.owner() ].shortname() + " : " + sc.name();
 
+        if (get_bool( sc.required() )) {
+            g.required[ label_name ] = 1;
+        }
+
         var temp_array = [
             label_name,
             {
@@ -1352,7 +1388,7 @@ g.add_stat_cat = function(sc) {
 g.populate_stat_cats = function() {
     try {
         g.data.stash_retrieve();
-        g.stat_cat_seen = {};
+        g.stat_cat_seen = {}; // used for determining whether a stat cat is displayed (and is eligible to be manipulated via a template)
 
         function get(lib_id,only_these) {
             g.data.stash_retrieve();
@@ -1445,6 +1481,20 @@ g.populate_stat_cats = function() {
     } catch(E) {
         alert(E);
         g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.populate_stat_cat.error'),E);
+    }
+}
+
+g.check_for_unmet_required_fields = function() {
+    var abort = [];
+    for (var fn in g.required) {
+        if (typeof g.populated[fn] == 'undefined') {
+            abort.push(fn);
+        }
+    }
+    if (abort.length > 0) {
+        $('save').setAttribute('disabled','true'); 
+    } else {
+        $('save').setAttribute('disabled','false'); 
     }
 }
 

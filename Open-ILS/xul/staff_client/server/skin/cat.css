@@ -6,4 +6,5 @@
 .has_copies { color: black; background-color: lightgreen; font-weight: bold; }
 
 .copy_editor_field_changed { background: lightgreen; }
+.copy_editor_field_required { border: solid thin red; }
 
