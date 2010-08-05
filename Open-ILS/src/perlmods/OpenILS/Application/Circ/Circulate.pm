@@ -1082,6 +1082,7 @@ sub run_indb_circ_test {
     $self->circ_test_success($U->is_true($results->[0]->{success}));
 
     if(my $mp = $results->[0]->{matchpoint}) {
+        $logger->info("circulator: circ policy test found matchpoint $mp");
         $self->circ_matrix_matchpoint(
             $self->editor->retrieve_config_circ_matrix_matchpoint([
                 $mp,
