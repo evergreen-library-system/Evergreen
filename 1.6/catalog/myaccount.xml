@@ -42,13 +42,17 @@
 					</listitem>
 					<listitem>
 						<para>Click <emphasis>Login</emphasis>; you will be prompted to change your password</para>
-						<para>
-							<mediaobject>
-								<imageobject xml:id="img_myaccountloginpasswordupdate">
-									<imagedata fileref="../media/myaccount-login.png" height="400px" scalefit="1" width="430px"/>
-								</imageobject>
-							</mediaobject>
-						</para>
+						<figure>
+							<title>Login Password Update: Example of first time login</title>
+							<para>
+								<mediaobject>
+									<alt>Example of first time login</alt>
+									<imageobject xml:id="img_myaccountloginpasswordupdate">
+										<imagedata fileref="../media/myaccount-loginpasswordupdate.png" height="400px" scalefit="1" width="430px"/>
+									</imageobject>
+								</mediaobject>
+							</para>
+						</figure>
 						<orderedlist>
 							<listitem>
 								<para>Enter your current password</para>
@@ -67,8 +71,6 @@
 							</listitem>
 						</orderedlist>
 					</listitem>
-				</orderedlist>
-				<orderedlist>
 					<listitem>
 						<para>Enter your <emphasis>Username</emphasis> and <emphasis role="bold">new</emphasis> <emphasis>Password</emphasis></para>
 					</listitem>
@@ -133,13 +135,17 @@
 					<emphasis role="bold">	If using a public computer be sure to log out!</emphasis>
 				</para>
 				<para/>
-				<para>
-					<mediaobject>
-						<imageobject xml:id="img_myaccountlogin">
-							<imagedata fileref="../media/myaccount-login.png" height="400px" scalefit="1" width="430px"/>
-						</imageobject>
-					</mediaobject>
-				</para>
+				<figure>
+					<title>Login: Example of login</title>
+					<para>
+						<mediaobject>
+							<alt>Example of login</alt>
+							<imageobject xml:id="img_myaccountlogin">
+								<imagedata fileref="../media/myaccount-login.png" height="400px" scalefit="1" width="430px"/>
+							</imageobject>
+						</mediaobject>
+					</para>
+				</figure>
 			</section>
 		</section>
 		<section xml:id="myaccountsummary">
@@ -153,13 +159,17 @@
 			</info>
 			<section>
 				<para>stuff goes here...</para>
-				<para>
-					<mediaobject xml:id="img_myaccountsummary">
-						<imageobject>
-							<imagedata fileref="../media/myaccount-summary.png" height="600px" scalefit="1" width="430px"/>
-						</imageobject>
-					</mediaobject>
-				</para>
+				<figure>
+					<title>Account Summary: Example of account summary</title>
+					<para>
+						<mediaobject>
+							<alt>Summary of status of an account</alt>
+							<imageobject xml:id="img_myaccountsummary">
+								<imagedata fileref="../media/myaccount-summary.png" height="600px" scalefit="1" width="430px"/>
+							</imageobject>
+						</mediaobject>
+					</para>
+				</figure>
 			</section>
 		</section>
 		<section xml:id="myaccountitemscheckedout">
@@ -175,13 +185,17 @@
 				<title>About Managing Items Checked Out in My Account</title>
 				<para>All items currently borrowed, overdue items, renewals remaining, renew items, non-cataloged types checked out.</para>
 				<para>stuff goes here...</para>
-				<para>
-					<mediaobject xml:id="img_myaccountitemscheckedout">
-						<imageobject>
-							<imagedata fileref="../media/myaccount-itemscheckedout.png" height="600px" scalefit="1" width="430px"/>
-						</imageobject>
-					</mediaobject>
-				</para>
+				<figure>
+					<title>Items Checked Out: Example of items checked out for an account</title>
+					<para>
+						<mediaobject>
+							<alt>Summary of items checked out for an account</alt>
+							<imageobject xml:id="img_myaccountitemscheckedout">
+								<imagedata fileref="../media/myaccount-itemscheckedout.png" height="600px" scalefit="1" width="430px"/>
+							</imageobject>
+						</mediaobject>
+					</para>
+				</figure>
 			</section>
 		</section>
 		<section xml:id="myaccountitemsonhold">
@@ -256,13 +270,17 @@
 						<para>Select the change to make, follow the steps on the screen</para>
 					</listitem>
 				</orderedlist>
-				<para>
-					<mediaobject xml:id="img_myaccountitemsonhold">
-						<imageobject>
-							<imagedata fileref="../media/myaccount-itemsonhold.png" height="600px" scalefit="1" width="430px"/>
-						</imageobject>
-					</mediaobject>
-				</para>
+				<figure>
+					<title>Items On Hold: Example of items on hold for an account</title>
+					<para>
+						<mediaobject>
+							<alt>Summary of items on hold for an account</alt>
+							<imageobject xml:id="img_myaccountitemsonhold">
+								<imagedata fileref="../media/myaccount-itemsonhold.png" height="600px" scalefit="1" width="430px"/>
+							</imageobject>
+						</mediaobject>
+					</para>
+				</figure>
 			</section>
 		</section>
 		<section xml:id="myaccountfines">
@@ -365,13 +383,17 @@
 				</orderedlist>
 			</section>
 			<section xml:id="myaccountbookbags-example">
-				<para>
-					<mediaobject>
-						<imageobject xml:id="img_myaccountbookbags">
-							<imagedata fileref="../media/myaccount-bookbags.png" height="400px" scalefit="1" width="430px"/>
-						</imageobject>
-					</mediaobject>
-				</para>
+				<figure>
+					<title>Bookbags: Example of bookbags for an account</title>
+					<para>
+						<mediaobject>
+							<alt>Summary of status of bookbags for an account</alt>
+							<imageobject xml:id="img_myaccountbookbags">
+								<imagedata fileref="../media/myaccount-bookbags.png" height="400px" scalefit="1" width="430px"/>
+							</imageobject>
+						</mediaobject>
+					</para>
+				</figure>
 			</section>
 		</section>
 	</section>
