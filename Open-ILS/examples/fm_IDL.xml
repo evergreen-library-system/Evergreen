@@ -2461,7 +2461,7 @@ SELECT  usr,
         SUM(
             CASE
                 WHEN (
-                    ((fine_interval >= '1 day' AND due_date >= 'today') OR (fine_interval < '1 day'  AND due_date > 'now'))
+                    ((fine_interval >= '1 day' AND due_date >= 'today') OR (fine_interval &lt; '1 day'  AND due_date > 'now'))
                     AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE'))
                 ) THEN 1
                 ELSE 0
@@ -2471,7 +2471,7 @@ SELECT  usr,
         SUM(
             CASE
                 WHEN (
-                    ((fine_interval >= '1 day' AND due_date < 'today') OR (fine_interval < '1 day'  AND due_date < 'now'))
+                    ((fine_interval >= '1 day' AND due_date &lt; 'today') OR (fine_interval &lt; '1 day'  AND due_date &lt; 'now'))
                     AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE'))
                 ) THEN 1
                 ELSE 0
