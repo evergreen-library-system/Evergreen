@@ -76,7 +76,6 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     label   : fieldmapper._getAttributeNS(node,this.NS_REPORTS, 'label'),
                     restrict_primary   : fieldmapper._getAttributeNS(node,this.NS_PERSIST, 'restrict_primary'),
                     virtual : (fieldmapper._getAttributeNS(node,this.NS_PERSIST, 'virtual') == 'true'),
-                    required : (fieldmapper._getAttributeNS(node,this.NS_OBJ, 'required') == 'true'),
                     pkey    : fieldmapper._getAttributeNS(fields,this.NS_PERSIST, 'primary'),
                     pkey_sequence : fieldmapper._getAttributeNS(fields,this.NS_PERSIST, 'sequence')
                 };
@@ -147,7 +146,9 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     selector : fieldmapper._getAttributeNS(field,this.NS_REPORTS,'selector'),
                     array_position : position++,
                     type	: 'field',
-                    virtual : (fieldmapper._getAttributeNS(fields[i],this.NS_PERSIST, 'virtual') == 'true') 
+                    virtual : (fieldmapper._getAttributeNS(fields[i],this.NS_PERSIST, 'virtual') == 'true'),
+                    required : (fieldmapper._getAttributeNS(fields[i],this.NS_OBJ, 'required') == 'true'),
+                    i18n : (fieldmapper._getAttributeNS(fields[i],this.NS_PERSIST, 'i18n') == 'true')
                 };
 
                 obj.label = obj.label || obj.name;
