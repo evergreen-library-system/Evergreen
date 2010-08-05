@@ -1048,10 +1048,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Matchpoint ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Renewal?" name="is_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Active?" name="active" reporter:datatype="bool"/>
-			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit"/>
+			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Copy Circ Lib" name="copy_circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Copy Owning Lib" name="copy_owning_lib" reporter:datatype="org_unit"/>
-			<field reporter:label="Permission Group" name="grp" reporter:datatype="link"/>
+			<field reporter:label="Permission Group" name="grp" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="MARC Type" name="marc_type" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="MARC Form" name="marc_form" oils_persist:primitive="string" reporter:datatype="link"/>
@@ -1060,9 +1060,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="User Age: Lower Bound" name="usr_age_lower_bound" reporter:datatype="text"/>
 			<field reporter:label="User Age: Upper Bound" name="usr_age_upper_bound" reporter:datatype="text"/>
 			<field reporter:label="Circulate?" name="circulate" reporter:datatype="bool"/>
-			<field reporter:label="Duration Rule" name="duration_rule" reporter:datatype="link"/>
-			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" reporter:datatype="link"/>
-			<field reporter:label="Max Fine Rule" name="max_fine_rule" reporter:datatype="link"/>
+			<field reporter:label="Duration Rule" name="duration_rule" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Max Fine Rule" name="max_fine_rule" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Script Test" name="script_test" reporter:datatype="text"/>
 			<field name="total_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Total Copy/Hold Ratio"/>
 			<field name="available_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Available Copy/Hold Ratio"/>
