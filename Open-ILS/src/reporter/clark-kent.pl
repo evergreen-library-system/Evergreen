@@ -35,7 +35,7 @@ GetOptions(
 	"daemon"	=> \$daemon,
 	"sleep=i"	=> \$sleep_interval,
 	"concurrency=i"	=> \$count,
-	"boostrap=s"	=> \$config,
+	"bootstrap|boostrap=s"	=> \$config,
 	"lockfile=s"	=> \$lockfile,
 );
 
