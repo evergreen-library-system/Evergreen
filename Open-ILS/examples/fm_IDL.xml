@@ -2387,7 +2387,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="auss" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_saved_search" oils_persist:tablename="actor.usr_saved_search" reporter:label="User Saved Search">
-		<fields oils_persist:primary="id" oils_persist:sequence="usr_saved_search_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_saved_search_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
@@ -7097,7 +7097,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="qxp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expression" oils_persist:tablename="query.expression" reporter:label="Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Expression Type" name="type" reporter:datatype="text"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
@@ -7129,7 +7129,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="qcb" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::case_branch" oils_persist:tablename="query.case_branch" reporter:label="Case Branch">
-		<fields oils_persist:primary="id" oils_persist:sequence="case_branch_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.case_branch_id_seq">
 			<field reporter:label="Case Branch ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
 			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
@@ -7146,7 +7146,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="qfr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::from_relation" oils_persist:tablename="query.from_relation" reporter:label="From Relation">
-		<fields oils_persist:primary="id" oils_persist:sequence="from_relation_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.from_relation_id_seq">
 			<field reporter:label="From Relation ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="From Relation Type" name="type" reporter:datatype="text"/>
 			<field reporter:label="Table Name" name="table_name" reporter:datatype="text"/>
@@ -7170,7 +7170,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="qrc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::record_column" oils_persist:tablename="query.record_column" reporter:label="Record Column">
-		<fields oils_persist:primary="id" oils_persist:sequence="record_column_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.record_column_id_seq">
 			<field reporter:label="Record Column ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="From Relation ID" name="from_relation" reporter:datatype="link"/>
 			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
@@ -7186,7 +7186,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="qsi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::select_item" oils_persist:tablename="query.select_item" reporter:label="Select Item">
-		<fields oils_persist:primary="id" oils_persist:sequence="select_item_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.select_item_id_seq">
 			<field reporter:label="Select Item ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Stored Query ID" name="stored_query" reporter:datatype="link"/>
 			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
@@ -7203,7 +7203,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="qobi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::order_by_item" oils_persist:tablename="query.order_by_item" reporter:label="Order By Item">
-		<fields oils_persist:primary="id" oils_persist:sequence="order_by_item_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.order_by_item_id_seq">
 			<field reporter:label="Order By Item ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Stored Query ID" name="stored_query" reporter:datatype="link"/>
 			<field reporter:label="Sequence Number" name="seq_no" reporter:datatype="int"/>
@@ -7218,7 +7218,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xbet" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xbet" oils_persist:tablename="query.expr_xbet" reporter:label="Between Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7235,7 +7235,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xbind" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xbind" oils_persist:tablename="query.expr_xbind" reporter:label="Bind Variable Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7251,7 +7251,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xbool" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xbool" oils_persist:tablename="query.expr_xbool" reporter:label="Boolean Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7267,7 +7267,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xcase" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xcase" oils_persist:tablename="query.expr_xcase" reporter:label="Case Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7284,7 +7284,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xcast" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xcast" oils_persist:tablename="query.expr_xcast" reporter:label="Cast Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7303,7 +7303,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xcol" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xcol" oils_persist:tablename="query.expr_xcol" reporter:label="Column Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7320,7 +7320,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xex" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xex" oils_persist:tablename="query.expr_xex" reporter:label="Exists Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7337,7 +7337,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xfunc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xfunc" oils_persist:tablename="query.expr_xfunc" reporter:label="Function Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7355,7 +7355,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xin" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xin" oils_persist:tablename="query.expr_xin" reporter:label="In Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7374,7 +7374,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xisnull" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xisnull" oils_persist:tablename="query.expr_xisnull" reporter:label="IS NULL Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7391,7 +7391,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xnull" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xnull" oils_persist:tablename="query.expr_xnull" reporter:label="Null Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7406,7 +7406,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xnum" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xnum" oils_persist:tablename="query.expr_xnum" reporter:label="Number Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7421,7 +7421,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xop" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xop" oils_persist:tablename="query.expr_xop" reporter:label="Operator Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7441,7 +7441,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xser" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xser" oils_persist:tablename="query.expr_xser" reporter:label="Operator Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7457,7 +7457,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xstr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xstr" oils_persist:tablename="query.expr_xstr" reporter:label="String Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
@@ -7472,7 +7472,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="xsubq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="query::expr_xsubq" oils_persist:tablename="query.expr_xsubq" reporter:label="Subquery Expression">
-		<fields oils_persist:primary="id" oils_persist:sequence="expression_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="query.expression_id_seq">
 			<field reporter:label="Expression ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Is Parenthesized" name="parenthesize" reporter:datatype="bool"/>
 			<field reporter:label="Parent Expression" name="parent_expr" reporter:datatype="link"/>
