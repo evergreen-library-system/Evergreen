@@ -3,18 +3,22 @@
 	<info>
 		<title>My Account</title>
 		<abstract>
-			<para>Items and issues related to your private account.</para>
+			<para>Items and issues related to user accounts.</para>
 		</abstract>
 	</info>
+	<para/>
+	<para/>
 	<section xml:id="myaccount">
 		<section xml:id="myaccountloginpasswordupdate">
 			<info>
-				<title>My Account - First Login Password Update</title>
+				<title>First Login Password Update</title>
 				<abstract>
-					<para>Logging In (including required password change on first login, as well as self selected username alternative to card number)</para>
+					<para>
+						<emphasis>Logging In (including required password change on first login, as well as self-selected username alternative to card number)</emphasis>
+					</para>
 				</abstract>
 			</info>
-			<para>Login to the OWWL Online Catalog My Account with Password Update</para>
+			<para>Login to the Online Catalog My Account with Password Update</para>
 			<para>Patrons are given temporary "dummy" barcodes when new accounts are created, or forgotten passwords are reset. Patrons MUST change their password to something more secure with their <emphasis role="bold">first ever</emphasis> OPAC login or <emphasis role="bold">first</emphasis> login after a password reset. Once the password is updated, they will not have to repeat this process for subsequent logins.</para>
 			<section>
 				<title>Procedure</title>
@@ -32,7 +36,7 @@
 								<para>By default, your username is your library card number.</para>
 							</listitem>
 							<listitem>
-								<para>Your password is a 4 digit code provided when your account was created.  If you have forgotten your password, contact your local library to have it reset.</para>
+								<para>Your password is a 4 digit code provided when your account was created. If you have forgotten your password, contact your local library to have it reset.</para>
 							</listitem>
 						</itemizedlist>
 					</listitem>
@@ -84,14 +88,16 @@
 		</section>
 		<section xml:id="myaccountlogin">
 			<info>
-				<title>My Account - Logging In</title>
+				<title>Logging In</title>
 				<abstract>
-					<para>Logging In</para>
+					<para>
+						<emphasis>The login process</emphasis>
+					</para>
 				</abstract>
 			</info>
 			<para/>
 			<para/>
-			<title>Login to the OWWL Online Catalog</title>
+			<title>Login to the Online Catalog</title>
 			<section>
 				<title>Procedure</title>
 				<orderedlist>
@@ -138,18 +144,15 @@
 		</section>
 		<section xml:id="myaccountsummary">
 			<info>
-				<title>My Account - Account Summary</title>
+				<title>Account Summary</title>
 				<abstract>
-					<para>View Staff Notes, home library, address, and phone numbers. Change account username, password, and email.</para>
+					<para>
+						<emphasis>View Staff Notes, home library, address, and phone numbers; change account username, password, and email</emphasis>
+					</para>
 				</abstract>
 			</info>
 			<section>
-				<title>Procedure</title>
-				<orderedlist>
-					<listitem>
-						<para>stuff goes here...</para>
-					</listitem>
-				</orderedlist>
+				<para>stuff goes here...</para>
 				<para>
 					<mediaobject xml:id="img_myaccountsummary">
 						<imageobject>
@@ -161,22 +164,17 @@
 		</section>
 		<section xml:id="myaccountitemscheckedout">
 			<info>
-				<title>My Account - Items Checked Out</title>
+				<title>Items Checked Out</title>
 				<abstract>
-					<para>Manage items currently checked out</para>
+					<para>
+						<emphasis>Manage items currently checked out</emphasis>
+					</para>
 				</abstract>
 			</info>
 			<section>
 				<title>About Managing Items Checked Out in My Account</title>
 				<para>All items currently borrowed, overdue items, renewals remaining, renew items, non-cataloged types checked out.</para>
-				<section>
-					<title>Actions include:</title>
-					<itemizedlist>
-						<listitem>
-							<para>stuff goes here...</para>
-						</listitem>
-					</itemizedlist>
-				</section>
+				<para>stuff goes here...</para>
 				<para>
 					<mediaobject xml:id="img_myaccountitemscheckedout">
 						<imageobject>
@@ -188,9 +186,11 @@
 		</section>
 		<section xml:id="myaccountitemsonhold">
 			<info>
-				<title>My Account - Items On Hold</title>
+				<title>Items On Hold</title>
 				<abstract>
-					<para>Manage items currently being requested</para>
+					<para>
+						<emphasis>Manage items currently being requested</emphasis>
+					</para>
 				</abstract>
 			</info>
 			<section>
@@ -267,32 +267,42 @@
 		</section>
 		<section xml:id="myaccountfines">
 			<info>
-				<title>My Account - Fines</title>
+				<title>Fines</title>
 				<abstract>
-					<para>Manage fines on items currently checked out</para>
+					<para>
+						<emphasis>Manage fines on items currently checked out</emphasis>
+					</para>
 				</abstract>
 			</info>
-			<para>MY ACCOUNT - FINES</para>
+			<section>
+				<para>stuff goes here...</para>
+			</section>
 		</section>
 		<section xml:id="myaccountpreferences">
 			<info>
-				<title>My Account - Preferences</title>
+				<title>Preferences</title>
 				<abstract>
-					<para>Manage preferences for my private account</para>
+					<para>
+						<emphasis>Manage preferences for an account</emphasis>
+					</para>
 				</abstract>
 			</info>
-			<para>MY ACCOUNT - PREFERENCES</para>
+			<section>
+				<para>stuff goes here...</para>
+			</section>
 		</section>
 		<section xml:id="myaccountbookbags">
 			<info>
-				<title>My Account - Bookbags</title>
+				<title>Bookbags</title>
 				<abstract>
-					<para>Create and Manage Bookbags</para>
+					<para>
+						<emphasis>Create and manage bookbags</emphasis>
+					</para>
 				</abstract>
 			</info>
 			<section>
 				<title>About My Bookbags</title>
-				<para>My Bookbags is a feature that allows you to create lists of library materials (books, audiobooks, videos, etc.) These lists create links to records in the catalog, but are otherwise completely private and only accessible by you when logged in to your My Account. </para>
+				<para>My Bookbags is a feature that allows you to create lists of library materials (books, audiobooks, videos, etc.) These lists create links to records in the catalog, but are otherwise completely private and only accessible by you when logged in to your My Account.</para>
 				<para>You have the option to share <emphasis role="bold">specific</emphasis> lists with people whom you choose (send them the direct URL), or more generally via RSS feed. Shared bookbags do <emphasis role="bold">NOT</emphasis> create a link to your personal library account information or private bookbags. You can share or un-share bookbags at any time.</para>
 				<para>You can create as many bookbags and you want. Your bookbags will stay in your account until you delete them.</para>
 				<para>Items remain in bookbags until you remove them. Even if the item record is removed from the catalog, the bookbag entry will remain (but there will be no link to the catalog.)</para>
