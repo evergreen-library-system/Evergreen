@@ -1840,9 +1840,43 @@ sub checked_out {
 
 sub _checked_out {
 	my( $iscount, $e, $userid ) = @_;
-	my $meth = 'open-ils.storage.actor.user.checked_out';
-	$meth = "$meth.count" if $iscount;
-	return $U->storagereq($meth, $userid);
+
+    my %result = (
+        out => [],
+        overdue => [],
+        lost => [],
+        claims_returned => [],
+        long_overdue => []
+    );
+	my $meth = 'retrieve_action_open_circ_';
+
+    if ($iscount) {
+	    $meth .= 'count';
+        %result = (
+            out => 0,
+            overdue => 0,
+            lost => 0,
+            claims_returned => 0,
+            long_overdue => 0
+        );
+    } else {
+	    $meth .= 'list';
+    }
+
+    my $data = $e->$meth($userid);
+
+    if ($data) {
+        if ($iscount) {
+            $result{$_} += $data->$_() for (keys %result);
+            $result{total} += $data->$_() for (keys %result);
+        } else {
+            for my $k (keys %result) {
+                $result{$k} = [ grep { $_ > 0 } split( ',', $data->$k()) ];
+            }
+        }
+    }
+
+    return \%result;
 }
 
 
