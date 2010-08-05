@@ -17,7 +17,6 @@ use OpenILS::Const qw/:const/;
 use XML::LibXML;
 use Unicode::Normalize;
 use Data::Dumper;
-use OpenILS::Utils::FlatXML;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Perm;
 use OpenSRF::Utils::SettingsClient;
