@@ -515,7 +515,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             if(this.onload)
                 this.onload(this.widget, this);
 
-            if(!this.readOnly && this.dijitArgs && this.dijitArgs.required) {
+            if(!this.readOnly && (this.idlField.required || (this.dijitArgs && this.dijitArgs.required))) {
                 // a required dijit is not given any styling to indicate the value
                 // is invalid until the user has focused the widget then left it with
                 // invalid data.  This change tells dojo to pretend this focusing has 
