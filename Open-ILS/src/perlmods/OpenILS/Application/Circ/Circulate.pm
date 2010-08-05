@@ -2739,7 +2739,7 @@ sub checkin_handle_lost {
 sub checkin_handle_backdate {
     my $self = shift;
 
-    my $bd = $self->backdate;
+    my $bd = clense_ISO8601($self->backdate);
 
     # ------------------------------------------------------------------
     # clean up the backdate for date comparison
@@ -2747,7 +2747,7 @@ sub checkin_handle_backdate {
     # ------------------------------------------------------------------
     my $original_date = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($self->circ->due_date));
     my $new_date = DateTime::Format::ISO8601->new->parse_datetime($bd);
-    $bd = $new_date->ymd . 'T' . $original_date->strftime('%T%z');
+    $bd = clense_ISO8601($new_date->ymd . 'T' . $original_date->strftime('%T%z'));
 
     $self->backdate($bd);
 
