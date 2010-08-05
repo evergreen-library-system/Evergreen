@@ -1111,6 +1111,7 @@ sub do_inspect {
         circ_test_success => $self->circ_test_success,
         failure_events => [],
         failure_codes => [],
+        matchpoint => $self->circ_matrix_matchpoint
     };
 
     unless($self->circ_test_success) {
