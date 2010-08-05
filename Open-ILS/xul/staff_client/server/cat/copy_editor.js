@@ -1057,7 +1057,8 @@ g.render = function() {
                 }
                 if (typeof g.changed[fn] != 'undefined') groupbox.setAttribute('class','copy_editor_field_changed');
                 caption = document.createElement('caption'); groupbox.appendChild(caption);
-                caption.setAttribute('label',fn); 
+                caption.setAttribute('label',fn);
+                caption.setAttribute('id','caption_'+fn); // used for focus/keyboard navigation
                 vbox = document.createElement('vbox'); groupbox.appendChild(vbox); // main display widget goes here
                 grid = util.widgets.make_grid( [ { 'flex' : 1 }, {}, {} ] ); vbox.appendChild(grid);
                 grid.setAttribute('flex','1');
