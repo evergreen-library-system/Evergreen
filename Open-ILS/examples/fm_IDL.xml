@@ -2483,9 +2483,9 @@ SELECT  usr,
         SUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LONGOVERDUE') THEN id ELSE 0 END) AS long_overdue
   FROM  action.circulation
   WHERE checkin_time IS NULL
-  GROUP BY 1;
+  GROUP BY 1
         </oils_persist:source_definition>
-        <fields oils_persist:primary="id">
+        <fields oils_persist:primary="usr">
             <field reporter:label="User ID" name="usr" reporter:datatype="link"/>
             <field reporter:label="Out" name="out" reporter:datatype="text"/>
             <field reporter:label="Overdue" name="overdue" reporter:datatype="text"/>
@@ -2525,9 +2525,9 @@ SELECT  usr,
         ARRAY_TO_STRING(ARRAY_ACCUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LONGOVERDUE') THEN id ELSE 0 END),',') AS long_overdue
   FROM  action.circulation
   WHERE checkin_time IS NULL
-  GROUP BY 1;
+  GROUP BY 1
         </oils_persist:source_definition>
-        <fields oils_persist:primary="id">
+        <fields oils_persist:primary="usr">
             <field reporter:label="User ID" name="usr" reporter:datatype="link"/>
             <field reporter:label="Out" name="out" reporter:datatype="text"/>
             <field reporter:label="Overdue" name="overdue" reporter:datatype="text"/>
