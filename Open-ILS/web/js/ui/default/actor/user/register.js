@@ -186,7 +186,10 @@ function replaceCardHandler() {
     newc.isnew(1);
     newc.active('t');
     patron.card(newc);
-    patron.cards().push(newc);
+    var t = patron.cards();
+        if (!t) { t = []; }
+        t.push(newc);
+        patron.cards(t);
 }
 
 
@@ -223,7 +226,10 @@ function uEditLoadStageUser(stageUname) {
         mail_addr.usr(-1);
         mail_addr.isnew(1);
         patron.mailing_address(mail_addr);
-        patron.addresses().push(mail_addr);
+        var t = patron.addresses();
+            if (!t) { t = []; }
+            t.push(mail_addr);
+            patron.addresses(t);
 
         for(var key in fieldmapper.IDL.fmclasses.stgma.field_map) {
             if(fieldmapper.IDL.fmclasses.aua.field_map[key] && !fieldmapper.IDL.fmclasses.stgma.field_map[key].virtual) {
@@ -242,7 +248,10 @@ function uEditLoadStageUser(stageUname) {
         bill_addr.usr(-1);
         bill_addr.isnew(1);
         patron.billing_address(bill_addr);
-        patron.addresses().push(bill_addr);
+        var t = patron.addresses();
+            if (!t) { t = []; }
+            t.push(bill_addr);
+            patron.addresses(t);
 
         for(var key in fieldmapper.IDL.fmclasses.stgba.field_map) {
             if(fieldmapper.IDL.fmclasses.aua.field_map[key] && !fieldmapper.IDL.fmclasses.stgba.field_map[key].virtual) {
@@ -282,13 +291,21 @@ function uEditCopyCloneData(patron) {
     );
 
     // don't grab all addresses().  the only ones we can link to are billing/mailing
-    if(patron.billing_address())
-        patron.addresses().push(patron.billing_address());
+    if(patron.billing_address()) {
+        var t = patron.addresses();
+            if (!t) { t = []; }
+            t.push(patron.billing_address());
+            patron.addresses(t);
+    }
 
     if(patron.mailing_address() && (
             patron.addresses().length == 0 || 
-            patron.mailing_address().id() != patron.billing_address().id()) )
-        patron.addresses().push(patron.mailing_address());
+            patron.mailing_address().id() != patron.billing_address().id()) ) {
+        var t = patron.addresses();
+            if (!t) { t = []; }
+            t.push(patron.mailing_address());
+            patron.addresses(t);
+    }
 }
 
 
@@ -357,7 +374,7 @@ function uEditDrawSettingRow(tbody, dividerRow, template, stype) {
     var row = template.cloneNode(true);
     row.setAttribute('user_setting', stype.name());
     getByName(row, 'label').innerHTML = stype.label();
-    var cb = new dijit.form.CheckBox({}, getByName(row, 'widget'));
+    var cb = new dijit.form.CheckBox({scrollOnFocus:false}, getByName(row, 'widget'));
     cb.attr('value', userSettings[stype.name()]);
     dojo.connect(cb, 'onChange', function(newVal) { userSettingsToUpdate[stype.name()] = newVal; });
     tbody.insertBefore(row, dividerRow.nextSibling);
@@ -396,7 +413,7 @@ function loadStatCats() {
         var span = valtd.appendChild(document.createElement('span'));
         var store = new dojo.data.ItemFileReadStore(
                 {data:fieldmapper.actsc.toStoreData(stat.entries())});
-        var comboBox = new dijit.form.ComboBox({store:store}, span);
+        var comboBox = new dijit.form.ComboBox({store:store,scrollOnFocus:false}, span);
         comboBox.labelAttr = 'value';
         comboBox.searchAttr = 'value';
 
@@ -435,7 +452,10 @@ function loadSurveys() {
             var span = getByName(qrow, 'answers').appendChild(document.createElement('span'));
             var store = new dojo.data.ItemFileReadStore(
                 {data:fieldmapper.asva.toStoreData(quest.answers())});
-            var select = new dijit.form.FilteringSelect({store:store}, span);
+            var select = new dijit.form.FilteringSelect({store:store,scrollOnFocus:false}, span);
+            if (! openils.Util.isTrue(survey.required())) {
+                select.isValid = function() { return true; };
+            }
             select.labelAttr = 'answer';
             select.searchAttr = 'answer';
 
@@ -963,7 +983,7 @@ function uEditSaveClone() { _uEditSave(true); }
 function _uEditSave(doClone) {
 
     if ( (! myForm.isValid()) || dupeUsrname || dupeBarcode ) {
-        alert('Form is invalid.  Please edit and try again.');
+        alert(localeStrings.INVALID_FORM);
         return;
     }
 
@@ -988,7 +1008,10 @@ function _uEditSave(doClone) {
                     addr.id(w._addr);
                     addr.isnew(1);
                     addr.usr(patron.id());
-                    patron.addresses().push(addr);
+                    var t = patron.addresses();
+                        if (!t) { t = []; }
+                        t.push(addr);
+                        patron.addresses(t);
                 } else {
                     if(addr[w._fmfield]() != val)
                         addr.ischanged(1);
@@ -1011,7 +1034,10 @@ function _uEditSave(doClone) {
                 resp.usr(patron.id());
                 resp.question(w._question)
                 resp.answer(val);
-                patron.survey_responses().push(resp);
+                var t = patron.survey_responses();
+                    if (!t) { t = []; }
+                    t.push(resp);
+                    patron.survey_responses(t);
                 break;
 
             case 'statcat':
@@ -1033,7 +1059,10 @@ function _uEditSave(doClone) {
                 map.stat_cat(w._statcat);
                 map.stat_cat_entry(val);
                 map.target_usr(patron.id());
-                patron.stat_cat_entries().push(map);
+                var t = patron.stat_cat_entries();
+                    if (!t) { t = []; }
+                    t.push(map);
+                    patron.stat_cat_entries(t);
                 break;
         }
     }
