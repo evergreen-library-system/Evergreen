@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+	    xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="advancedsearch">
+	<info>
+	<title>Advanced Search</title>
+		<abstract>
+			<para>Advanced searches allow users to perform more complex searches by providing more options. Many kinds of searches can be performed from the 
+			<emphasis>Advance Search</emphasis> screen. </para> 
+        	</abstract>
+	</info>    		
+	<section xml:id="Quicksearch">
+		<title>Quick Search</title>
+		<para>You can see from the drop down list below, that Quick Search also allows you to search by:</para>
+			<itemizedlist>
+				<listitem>ISSN (International Standard Serial Number)</listitem>
+				<listitem>Call Number</listitem>
+				<listitem>LCCN (Library of Congress Card Number)</listitem>
+				<listitem>TCN (Title Control Number)</listitem>
+				<listitem>Item Barcode</listitem>
+			</itemizedlist>
+			<note>
+				<para>To search by LCCN, replace the hyphen with a 0 (zero). To search by ISSN, replace the hyphen with a space.</para> 
+				<para>When using <emphasis>Quick Search</emphasis>, only that field is used for the search.</para> 
+ 				<para>Anything entered in other search fields does not affect your search, and the other fields will not be cleared after a <emphasis>Quick Search</emphasis> 
+				is performed.</para>  
+				<para>The <emphasis>Quick Search</emphasis> function cannot be limited to your local library.  A <emphasis>Quick Search</emphasis> searches all of Evergreen.</para>
+			</note> 
+	</section>
+	<section xml:id="UsingSearchInput">
+		<title>Using Search Input</title>
+		<para>The search input boxes allow you to search by Keyword, Title, Author, Subject, and Series, and to combine these searches to narrow your results.</para> 
+		<para>The default setting displays three boxes for keyword searches.  You can click on the down arrows to select Title, Author, Subject or Series as well.   
+		If desired, you can use different searches in the different boxes. For instance, you can enter the title of a book in one box, and the author in another. </para> 
+		<para>More search rows may be added by clicking the <guibutton>Add Search Row</guibutton> button.  You can delete search rows by clicking the <guibutton>X</guibutton> button next to the 			search row.</para>
+		<para>Keyword searches are very general and will give you many results.</para>
+		<para>You can also adjust your searches by changing your selection from <guilabel>Contains</guilabel>  to <guilabel>Matches Exactly</guilabel> or 
+		<guilabel>Does not contain</guilabel> .</para>
+		<para>Since Evergreen uses stem searching, doing a Keyword search with <guilabel>Contains</guilabel> will give you results with words related to the search term.</para> 
+		<note><para>Limiting your title search to <guilabel>Matches Exactly</guilabel> will not limit to titles that contain nothing but your search string, but rather titles that 
+		contain your exact search string.</para></note> 
+		<tip><para>When doing searches for one word titles, it is extremely useful to limit by author as well. </para></tip> 
+		<para>If you go back to the search screen, your last search will be retained. However, the display reorders the search categories. <emphasis>Author</emphasis> 
+		will be displayed on the top.</para>
+	</section>
+	<section xml:id="SortCriteria">
+		<title>Sort Criteria</title>
+		<para>Below the <guilabel>Search Input</guilabel> box are the <guilabel>Sort Criteria</guilabel> and <guilabel>Search Library</guilabel> boxes. The <guilabel>Sort Criteria</guilabel> 
+		box is on the left, and allows you to change the way your search results are sorted.</para> 
+		<para>The default Sort Criteria is <emphasis>by Relevance</emphasis>.  Generally items are considered more relevant the more often your search terms show up within a 
+		bibliographic record.</para> 
+		<para>You can also choose to sort your results alphabetically by author or title, or chronologically by publication date.</para>
+		<para>When you select <guilabel>Title</guilabel>, <guilabel>Author</guilabel> or <guilabel>Publication Date</guilabel>, the drop down box below becomes active.  
+		You can then select <guilabel>Ascending / A to Z</guilabel> or <guilabel>Descending / Z to A</guilabel>.</para>  
+		<note><para>For Publication Date, selecting Ascending give you the oldest works first, and Descending will give you the most recent works first.</para></note> 
+		<para>The <guilabel>Sort Criteria</guilabel> box also allows you to group titles and formats, so that they all display on one line in your search results.</para> 
+		<note><para>Limiting your title search to <guilabel>Matches Exactly</guilabel> will not limit to titles that contain nothing but your search string, but rather titles that contain 
+		your exact search string.</para></note>
+		<para>When <guilabel>Group Formats and Editions</guilabel> is selected, most manifestations of a work will be grouped together in one line in your search results. Below the first 
+		line includes both print and sound recordings. When the same search is performed with out the box checked, the results show 14 different records including various manifestations, 
+		as well as some records which probably need to be merged. The <guilabel>Group Formats and Editions</guilabel> will remain checked or unchecked until you change it again.</para> 
+	</section>
+	<section xml:id="SearchLibrary">
+		<title>Search Library</title>
+		<para>The <guilabel>Search Library</guilabel> box allows you to change the search range, and to limit searches to available items.</para> 
+		<para>In addition to changing the search range to your branch, your local library system, or the entire system, you can limit your search to a particular library other 
+		than your home library. Select <guilabel>Choose a different library</guilabel>, to select from a list of libraries in the system.</para> 
+		<para>You can click on the library system name on the list, or click the arrow next to the system name to choose a particular branch.  
+		When you select a name from the list, you will return to the search screen and that library will show in the <guilabel>Search Library</guilabel> box.</para>
+		<para>The <guilabel>Search library</guilabel> box also allows you to limit your search to items that are available for checkout. Place a check mark in the 
+		<guilabel>Limit to Available box</guilabel>.</para> 	
+		<para>If your search range is <emphasis>Everywhere</emphasis>, then the items just have to be available at one location.</para> 	
+		<para>If you use the <emphasis>Limit to Available</emphasis> function and limit your search range to a particular branch, your results will include only items available 
+		at that branch.</para> 
+	</section>
+	<section xml:id="UsingSearchFilters">
+		<title>Using Search Filters</title>
+		<para>Another way to limit your search results is to use <emphasis>Search Filters</emphasis>.  You can limit by <guilabel>Item Form</guilabel>, <guilabel>Item Type</guilabel>, 		<guilabel>Literary Form</guilabel>, <guilabel>Language</guilabel>, <guilabel>Audience</guilabel>, and <guilabel>Shelving Location</guilabel>.  
+		All of these searches except for Shelving Location are based on data from the MARC record fixed fields. </para> 
+		<para>To limit your search, simply click on your choices to highlight them in blue. Your search results will include only records which are coded to your choices.</para> 
+		<para>There are blue arrows on the left side of the boxes, you can scroll up and down on to see more choices by clicking the up and down arrows.</para>
+		<para>You can also select multiple items in the same box.  To select items which are all in a row, click the first item you wish to select, then press the <keycap>Shift</keycap> key while 
+		clicking the bottom item.</para> 	
+		<para>To select items which are not in a row, press the <keycap>Ctrl</keycap> key while clicking on the items you wish to select. If you do not press the 
+		<keycap>Ctrl</keycap> key, any previous selections will be unselected when you click something new. </para> 		
+		<para>To change your selection, you can click a line in the box to remove any other selections.</para> 
+		<para>To unselect something you have highlighted, when you do not want to select anything from that box, press the Ctrl key while clicking on that selection.</para>
+		<note><para>Clicking <guibutton>Reset Form</guibutton> under <guilabel>Search Input</guilabel> will not reset your search filters.  You can unset the filters individually</para></note> 
+		<para><guilabel>Item Type</guilabel>, <guilabel>LiteraryForm</guilabel> and <guilabel>Audience</guilabel> also have advanced optionsfor search filters.  
+		These also depend on the coding of the MARC fixed fields, and results with advanced options will be even less precise since for instance, juvenile items that 
+		could be coded for a specific age group may simply have a <emphasis>j</emphasis>. To see the advanced options, click on <guibutton>Advanced</guibutton> next to the field where you 
+		wish to expand your options.</para>
+	</section>
+</chapter>
+

@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+	    xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="basicsearch">
+	<info>
+	<title>Basic Search</title>
+		<abstract>
+			<para>From the OPAC home, you can conduct a basic search of all materials owned by all libraries in your Evergreen system.</para> 
+			<para>This search can be as simple as typing keywords into the search and box and clicking Go!  Or, you can make your search more precise by limiting your search by 
+			fields to search,  material type or library location.</para>
+        	</abstract>
+	</info>    		
+	<section xml:id="TypeofSearch">
+		<title>Type of Searches</title>
+			<itemizedlist>
+				<listitem><emphasis>Keyword</emphasis> – terms found anywhere in the item description</listitem>
+				<listitem><emphasis>Title</emphasis> – terms found in the item title</listitem>
+				<listitem><emphasis>Author</emphasis> – author name</listitem>
+				<listitem><emphasis>Subject</emphasis> – terms found in the formal subject designation</listitem>
+				<listitem><emphasis>Series</emphasis> – specific series name</listitem>
+			</itemizedlist>
+	</section>
+	<section xml:id="Limitbyformats">
+		<title>Format Limiters</title>
+		<itemizedlist>
+			<listitem>All Formats</listitem>
+			<listitem>Books</listitem>
+			<listitem>Large Print Books</listitem>
+			<listitem>Audiobooks – on CD, cassette, MP3, etc.</listitem>
+			<listitem>Videorecordings – on DVD, VHS, etc.</listitem>
+			<listitem>Music – on CD, cassette, etc.</listitem>
+			<listitem>Electronic resources – various digital formats</listitem>
+		</itemizedlist>
+	</section>
+	<section xml:id="Procedure">
+			<title>Procedure</title>
+		<procedure>
+			<step><para>Open an Internet browser and go to the Evergreen search page.</para></step>
+			<step><para>In the search box, enter your search term
+				<procedure>
+					<step><para>Select an index or format if applicable</para></step>
+					<step><para>Click Choose a library to search and select a library from the list if desired</para></step>
+				</procedure>
+			</para></step>
+			<step><para><guibutton>Click Go!</guibutton></para></step>		
+		</procedure>	
+	</section>
+</chapter>
+
