@@ -1679,7 +1679,7 @@ sub retrieve_prev_circ_chain {
         my $target_copy = $$first_circ{'target_copy'};
         my $usr = $$first_circ{'usr'};
         my $last_circ_from_prev_chain = $e->json_query({
-            'select' => { 'circ' => ['id'] },
+            'select' => { 'circ' => ['id','usr'] },
             'from' => 'circ', 
             'where' => {
                 target_copy => $target_copy,
@@ -1694,7 +1694,7 @@ sub retrieve_prev_circ_chain {
         return undef unless $sum;
         my $obj = Fieldmapper::action::circ_chain_summary->new;
         $obj->$_($sum->{$_}) for keys %$sum;
-        return { 'summary' => $obj, 'usr' => $usr };
+        return { 'summary' => $obj, 'usr' => $$last_circ_from_prev_chain{'usr'} };
 
     } else {
 
