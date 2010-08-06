@@ -556,6 +556,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             if(this.cache.permGrpTree) {
                 this.widget.tree = this.cache.permGrpTree;
                 this.widget.startup();
+                this._widgetLoaded();
                 return true;
             } 
 
