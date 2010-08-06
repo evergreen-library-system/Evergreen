@@ -124,6 +124,8 @@ CENTOS = \
 	libssh2-devel \
 	openssl-devel \
 	perl-Business-CreditCard \
+	perl-Business-ISBN \
+	perl-Business-ISBN-Data \
 	perl-Business-OnlinePayment \
 	perl-Class-Data-Inheritable \
 	perl-DateTime-Format-Builder \
