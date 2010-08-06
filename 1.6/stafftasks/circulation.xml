@@ -536,7 +536,7 @@
 		<section xml:id="holdslevels">
 			<title>Holds Levels</title>
 			<para>Evergreen has four hold levels. Library staff may place holds at all four levels, while patrons may only place Meta-record and Title-level holds.</para> 
-			<table xml:id="search.relevance">
+			<table xml:id="holdslevelstable">
 			<title>Hold Levels Explained:</title>
 			<tgroup cols="5">
 				<thead>
