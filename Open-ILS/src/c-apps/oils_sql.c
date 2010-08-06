@@ -239,13 +239,30 @@ void oilsSetDBConnection( dbi_conn conn ) {
 	@return 1 if the connection is alive, or zero if it isn't.
 */
 int oilsIsDBConnected( dbi_conn handle ) {
+	// Do an innocuous SELECT.  If it succeeds, the database connection is still good.
 	dbi_result result = dbi_conn_query( handle, "SELECT 1;" );
 	if( result ) {
 		dbi_result_free( result );
 		return 1;
 	} else {
-		osrfLogError( OSRF_LOG_MARK, "Database connection isn't working" );
-		return 0;
+		// This is a terrible, horrible, no good, very bad kludge.
+		// Sometimes the SELECT 1 query fails, not because the database connection is dead,
+		// but because (due to a previous error) the database is ignoring all commands,
+		// even innocuous SELECTs, until the current transaction is rolled back.  The only
+		// known way to detect this condition via the dbi library is by looking at the error
+		// message.  This approach will break if the language or wording of the message ever
+		// changes.
+		// Note: the dbi_conn_ping function purports to determine whether the doatabase
+		// connection is live, but at this writing this function is unreliable and useless.
+		static const char* ok_msg = "ERROR:  current transaction is aborted, commands "
+			"ignored until end of transaction block\n";
+		const char* msg;
+		dbi_conn_error( handle, &msg );
+		if( strcmp( msg, ok_msg )) {
+			osrfLogError( OSRF_LOG_MARK, "Database connection isn't working" );
+			return 0;
+		} else
+			return 1;   // ignoring SELECT due to previous error; that's okay
 	}
 }
 
