@@ -677,15 +677,17 @@ sub mk_env {
 	};
 
 	if( $self->patron_id ) {
-		$patron = $e->retrieve_actor_user([$self->patron_id, $flesh]) or return $e->event;
+		$patron = $e->retrieve_actor_user([$self->patron_id, $flesh])
+			or return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'));
 
 	} elsif( $self->patron_barcode ) {
 
-		my $card = $e->search_actor_card( 
-			{barcode => $self->patron_barcode})->[0] or return $e->event;
+		# note: throwing ACTOR_USER_NOT_FOUND instead of ACTOR_CARD_NOT_FOUND is intentional
+		my $card = $e->search_actor_card({barcode => $self->patron_barcode})->[0] 
+			or return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'));
 
-		$patron = $e->search_actor_user([ 
-			{card => $card->id}, $flesh])->[0] or return $e->event;
+		$patron = $e->search_actor_user([{card => $card->id}, $flesh])->[0]
+			or return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'));
 
 	} else {
 		if( my $copy = $self->copy ) {
