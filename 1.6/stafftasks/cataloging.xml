@@ -209,14 +209,11 @@
 				<step><para>Retrieve the record.</para></step>
 				<step><para><menuchoice><guimenu>Actions for this Record</guimenu> <guimenuitem>MARC Edit</guimenuitem></menuchoice>. </para></step>
 				<step><para>The MARC record will display. </para></step>
-				<step>
-					<substeps>
-						<step>Select <guilabel>Stack</guilabel> subfields to alter subfields display.</step>
-						<step>Right click into a tag field to add/remove rows or replace tags.</step>
-						<step>To work with the data in a tag or indicator, click or <keycap>Tab</keycap> into the required field.  <emphasis>Right click</emphasis> to 
-						view acceptable tags or indicators.</step>
-					</substeps>
-				</step>							
+	
+				<step><para>Select <guilabel>Stack</guilabel> subfields to alter subfields display.</para></step>
+						<step><para>Right click into a tag field to add/remove rows or replace tags.</para></step>
+						<step><para>To work with the data in a tag or indicator, click or <keycap>Tab</keycap> into the required field.  <emphasis>Right click</emphasis> to 
+						view acceptable tags or indicators.</para></step>
 				<step><para>When finished, click <guibutton>Save Record</guibutton>.</para></step>
 				<step><para>Click <guibutton>OK</guibutton>.</para></step>	
 			</procedure>
