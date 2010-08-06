@@ -202,9 +202,10 @@ patron.display.prototype = {
                                         obj.summary_window.g.summary.controller.render('patron_bill');
                                         obj.bill_window.g.bills.refresh(true);
                                     },
-                                    'url_prefix' : xulG.url_prefix,
-                                    'new_tab' : xulG.new_tab,
-                                    'new_patron_tab' : xulG.new_patron_tab
+                                    'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                    'get_new_session' : function(a) { return xulG.get_new_session(a); },
+                                    'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
+                                    'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
                                 }
                             );
                             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
@@ -241,9 +242,10 @@ patron.display.prototype = {
                                             'passthru_content_params' : {
                                                 'spawn_search' : spawn_search,
                                                 'spawn_editor' : spawn_editor,
-                                                'url_prefix' : xulG.url_prefix,
-                                                'new_tab' : xulG.new_tab,
-                                                'new_patron_tab' : xulG.new_patron_tab,
+                                                'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                                'get_new_session' : function(a) { return xulG.get_new_session(a); },
+                                                'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
+                                                'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); },
                                                 'params' : p,
                                                 'on_save' : function(p_obj) {
                                                     JSAN.use('patron.util');
@@ -283,9 +285,10 @@ patron.display.prototype = {
                                         },
                                         'spawn_search' : spawn_search,
                                         'spawn_editor' : spawn_editor,
-                                        'url_prefix' : xulG.url_prefix,
-                                        'new_tab' : xulG.new_tab,
-                                        'new_patron_tab' : xulG.new_patron_tab
+                                        'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                        'get_new_session' : function(a) { return xulG.get_new_session(a); },
+                                        'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
+                                        'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
                                     }
                                 }
                             );
@@ -307,9 +310,10 @@ patron.display.prototype = {
                                 {},
                                 {
                                     'patron_id' : obj.patron.id(),
-                                    'url_prefix' : xulG.url_prefix,
-                                    'new_tab' : xulG.new_tab,
-                                    'new_patron_tab' : xulG.new_patron_tab
+                                    'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                    'get_new_session' : function(a) { return xulG.get_new_session(a); },
+                                    'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
+                                    'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
                                 }
                             );
                         }
@@ -334,9 +338,10 @@ patron.display.prototype = {
                                 {},
                                 {
                                     'patron_id' : obj.patron.id(),
-                                    'url_prefix' : xulG.url_prefix,
-                                    'new_tab' : xulG.new_tab,
-                                    'new_patron_tab' : xulG.new_patron_tab
+                                    'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                    'get_new_session' : function(a) { return xulG.get_new_session(a); },
+                                    'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
+                                    'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
                                 }
                             );
                         }
@@ -349,9 +354,10 @@ patron.display.prototype = {
                                 {},
                                 {
                                     'patron_id' : obj.patron.id(),
-                                    'url_prefix' : xulG.url_prefix,
-                                    'new_tab' : xulG.new_tab,
-                                    'new_patron_tab' : xulG.new_patron_tab
+                                    'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                    'get_new_session' : function(a) { return xulG.get_new_session(a); },
+                                    'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
+                                    'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
                                 }
                             );
                         }
@@ -463,9 +469,10 @@ patron.display.prototype = {
                                                 alert(E);
                                             }
                                         },
-                                        'url_prefix' : xulG.url_prefix,
-                                        'new_tab' : xulG.new_tab,
-                                        'new_patron_tab' : xulG.new_patron_tab
+                                        'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                        'get_new_session' : function(a) { return xulG.get_new_session(a); },
+                                        'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
+                                        'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
                                     }
                                 );
                             } catch(E) {
@@ -485,8 +492,9 @@ patron.display.prototype = {
                                 {
                                     'display_window' : window,
                                     'patron_id' : obj.patron.id(),
-                                    'url_prefix' : xulG.url_prefix,
-                                    'new_tab' : xulG.new_tab,
+                                    'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                                    'get_new_session' : function(a) { return xulG.get_new_session(a); },
+                                    'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                                     'on_money_change' : function(b) {
                                         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                         obj.summary_window.refresh();
@@ -615,9 +623,9 @@ patron.display.prototype = {
                     'on_finished' : obj.gen_patron_summary_finish_func(),
                     'stop_sign_page' : obj.gen_patron_stop_sign_page_func(),
                     'spawn_group_interface' : function() { obj.spawn_group_interface(); },
-                    'new_patron_tab' : xulG.new_patron_tab,
-                    'new_tab' : xulG.new_tab,
-                    'set_tab' : xulG.set_tab,
+                    'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); },
+                    'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
+                    'set_tab' : function(a,b,c) { return xulG.set_tab(a,b,c); },
                     'on_error' : function(E) {
                         try {
                             var error;
@@ -716,9 +724,9 @@ patron.display.prototype = {
                                             {
                                                 //'id' : list[0],
                                                 'spawn_group_interface' : function() { obj.spawn_group_interface(); },
-                                                'new_patron_tab' : xulG.new_patron_tab,
-                                                'new_tab' : xulG.new_tab,
-                                                'set_tab' : xulG.set_tab,
+                                                'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); },
+                                                'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
+                                                'set_tab' : function(a,b,c) { return xulG.set_tab(a,b,c); },
                                                 'on_finished' : function(patron) {
                                                     obj.patron = patron;
                                                     obj.controller.render();
@@ -796,7 +804,7 @@ patron.display.prototype = {
                 urls.XUL_CHECKOUT,
                 {},
                 { 
-                    'set_tab' : xulG.set_tab,
+                    'set_tab' : function(a,b,c) { return xulG.set_tab(a,b,c); },
                     'patron_id' : obj.patron.id(),
                     'patron' : obj.patron,
                     'check_stop_checkouts' : function() { return obj.check_stop_checkouts(); },
@@ -961,9 +969,10 @@ patron.display.prototype = {
                 {},
                 {
                     'patron_id' : obj.patron.id(),
-                    'url_prefix' : xulG.url_prefix,
-                    'new_tab' : xulG.new_tab,
-                    'new_patron_tab' : xulG.new_patron_tab
+                    'url_prefix' : function(url) { return xulG.url_prefix(url); },
+                    'get_new_session' : function(a) { return xulG.get_new_session(a); },
+                    'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
+                    'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
                 }
             );
         } catch(E) {

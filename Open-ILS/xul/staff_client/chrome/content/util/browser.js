@@ -159,15 +159,15 @@ util.browser.prototype = {
             cw.IAMXUL = true;
             cw.XUL_BUILD_ID = '/xul/server/'.split(/\//)[2];
             cw.xulG = obj.passthru_content_params || {};
-            cw.xulG.set_tab = window.xulG.set_tab;
-            cw.xulG.new_tab = window.xulG.new_tab;
-            cw.xulG.new_patron_tab = window.xulG.new_patron_tab;
-            cw.xulG.set_patron_tab = window.xulG.set_patron_tab;
-            cw.xulG.volume_item_creator = window.xulG.volume_item_creator;
-            cw.xulG.get_new_session = window.xulG.get_new_session;
-            cw.xulG.holdings_maintenance_tab = window.xulG.holdings_maintenance_tab;
-            cw.xulG.url_prefix = window.xulG.url_prefix;
-            cw.xulG.urls = window.urls;
+            if (!cw.xulG.set_tab) { cw.xulG.set_tab = function(a,b,c) { return window.xulG.set_tab(a,b,c); }; }
+            if (!cw.xulG.new_tab) { cw.xulG.new_tab = function(a,b,c) { return window.xulG.new_tab(a,b,c); }; }
+            if (!cw.xulG.new_patron_tab) { cw.xulG.new_patron_tab = function(a,b) { return window.xulG.new_patron_tab(a,b); }; }
+            if (!cw.xulG.set_patron_tab) { cw.xulG.set_patron_tab = function(a,b) { return window.xulG.set_patron_tab(a,b); }; }
+            if (!cw.xulG.volume_item_creator) { cw.xulG.volume_item_creator = function(a) { return window.xulG.volume_item_creator(a); }; }
+            if (!cw.xulG.get_new_session) { cw.xulG.get_new_session = function(a) { return window.xulG.get_new_session(a); }; }
+            if (!cw.xulG.holdings_maintenance_tab) { cw.xulG.holdings_maintenance_tab = function(a,b,c) { return window.xulG.holdings_maintenance_tab(a,b,c); }; }
+            if (!cw.xulG.url_prefix) { cw.xulG.url_prefix = function(url) { return window.xulG.url_prefix(url); }; }
+            if (!cw.xulG.urls) { cw.xulG.urls = window.urls; }
             try { s += ('******** cw = ' + cw + ' cw.xulG = ' + (cw.xulG) + '\n'); } catch(E) { s+=E + '\n'; }
             obj.error.sdump('D_BROWSER',s);
         } catch(E) {
