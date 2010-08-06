@@ -2,6 +2,9 @@
 <abbr class="unapi-id" title='tag:<!--#echo var="HTTP_HOST"-->,<!--#echo var="OILS_TIME_YEAR"-->:biblio-record_entry/<!--#echo var="OILS_OPAC_RID"-->'></abbr>
 <!-- This holds the record summary information -->
 <div>
+	<!-- temporary hack to give IE somewhere to put these things; should just rip out from rdetail.js 
+		See https://bugs.launchpad.net/evergreen/+bug/532217 -->
+	<span class='hide_me' id='rdetail_title'></span>
 	<table id='rdetail_details_table'>
 		<tbody id='rdetail_details_tbody'>
 
@@ -23,7 +26,7 @@
 				<td nowrap='nowrap' class='rdetail_desc'>&common.title;</td>		
                 <!-- *** Example of how to use the openils.BibTemplate infrastructure to augment the stock
                      *** summary screen with more and/or different information.  In this case, the raw MARC 245. -->
-                <td type='opac/slot-data' query='datafield[tag="245"]' class='rdetail_item' id='rdetail_title'>
+                <td type='opac/slot-data' query='datafield[tag="245"]' class='rdetail_item'>
                     <script type='opac/slot-format'><![CDATA[
                         var out = '';
                         var list = dojo.query( 'subfield', item );
