@@ -125,21 +125,22 @@
 				been selected, click <guibutton>Save as Default</guibutton> to save the services to be searched and any usernames/passwords. These will be automatically selected the next 
 				time the Z39.50 screen is opened.</para></step>
 				<step><para>Fill in search criteria for the item and <guibutton>click Search</guibutton>.</para></step>
-				<note><para>active search fields will adjust to the selected targets. Keyword and Subject will only be active if the local catalog is selected. If multiple 
+				<note><para>Active search fields will adjust to the selected targets. Keyword and Subject will only be active if the local catalog is selected. If multiple 
 				targets are selected for a search, an active box may apply to only one target.</para></note>
 				<step><para>Search results display in the bottom pane. To view long lists of results, use <guibutton>Hide Top Pane</guibutton> to view the results. Information about 
 				each record retrieved appears on a separate summary line, with various columns of information. </para></step>
 				<note><para>The <emphasis>Service</emphasis> column indicates where the record was found. If <emphasis>nativeevergreen-catalog</emphasis> is listed in the service 
 				column, the record is already in the Evergreen database.</para></note>
 				<step><para>From this screen users may: 
-					<itemizedlist>
-						<listitem>Retrieve further results, if applicable</listitem>
-						<listitem>View MARC records</listitem>
-						<listitem>Export MARC records</listitem>
-						<listitem>Import or overlay MARC records</listitem>
-					</itemizedlist>					
+							
 				</para></step>
 			</procedure>
+				<itemizedlist>
+					<listitem>Retrieve further results, if applicable</listitem>
+					<listitem>View MARC records</listitem>
+					<listitem>Export MARC records</listitem>
+					<listitem>Import or overlay MARC records</listitem>
+				</itemizedlist>			
 		</section>		
 		<section xml:id="importingrecords">
 			<title>Importing Records</title>
@@ -175,7 +176,7 @@
 				<step><para>Details from the file upload will appear. By default <guilabel>Limit to Non-Imported Records</guilabel> is selected and the table only displays MARC 
 				records that conflict with others already in Evergreen. You may click <guilabel>Matches</guilabel> to view the conflicting Evergreen records. If the matched records 
 				are not true matches, it is still possible to upload the selected records using the <guimenu>Actions</guimenu> drop-down menu.</para></step>
-				<note><para>The <menuitem>Import Attached Holdings</menuitem> option requires additional server configuration.</para></note>
+				<note><para>The <guimenuitem>Import Attached Holdings</guimenuitem> option requires additional server configuration.</para></note>
 			</procedure>
 		</section>			
 		<section xml:id="creatingnewMARCrecords">
@@ -209,12 +210,12 @@
 				<step><para><menuchoice><guimenu>Actions for this Record</guimenu> <guimenuitem>MARC Edit</guimenuitem></menuchoice>. </para></step>
 				<step><para>The MARC record will display. </para></step>
 				<step>
-					<itemizedlist>
-						<listitem>Select <guilabel>Stack</guilabel> subfields to alter subfields display.</listitem>
-						<listitem>Right click into a tag field to add/remove rows or replace tags.</listitem>
-						<listitem>To work with the data in a tag or indicator, click or <keycap>Tab</keycap> into the required field.  <emphasis>Right click</emphasis> to 
-						view acceptable tags or indicators.</listitem>
-					</itemizedlist>
+					<substeps>
+						<step>Select <guilabel>Stack</guilabel> subfields to alter subfields display.</step>
+						<step>Right click into a tag field to add/remove rows or replace tags.</step>
+						<step>To work with the data in a tag or indicator, click or <keycap>Tab</keycap> into the required field.  <emphasis>Right click</emphasis> to 
+						view acceptable tags or indicators.</step>
+					</substeps>
 				</step>							
 				<step><para>When finished, click <guibutton>Save Record</guibutton>.</para></step>
 				<step><para>Click <guibutton>OK</guibutton>.</para></step>	
