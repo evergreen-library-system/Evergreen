@@ -223,7 +223,7 @@
 			<title>MARC Record Leader and MARC fixed field 008</title>
 			<para>Parts of the leader and the 008 field can be edited in the MARC Editor via the fixed field editor box displayed above the MARC record. Information about the leader and 
 			the 008 can be found on the Library of Congress’s MARC Standards page at <ulink url='http://www.loc.gov/marc/'>http://www.loc.gov/marc/</ulink>.</para>
-			<title>To edit the MARC record leader:</title>		
+			<para>To edit the MARC record leader:</para>		
 			<procedure>
 				<step><para>Retrieve and display the appropriate record in MARC Edit view.</para></step>
 				<step><para><emphasis>Click</emphasis> into any box displayed in the fixed field editor.</para></step>
