@@ -260,7 +260,7 @@
 			</procedure>
 		</section>
 	</section>
-	<section xml:id="catalogingtemplates">
+	<section xml:id="cattemplates">
 		<title>Cataloging Templates</title>
 		<para>This section explains creating, using, exporting, and importing item record templates for cataloging. Use of templates enhances item creation and helps ensure 
 		consistency in record format in the database.</para> 
