@@ -216,7 +216,7 @@ sub run_attr_script {
         my $mod = $self->{copy}->circ_modifier;
 
         if($mod) {
-            my $mod_obj = OpenILS::SIP->editor()->search_config_circ_modifier($mod);
+            my $mod_obj = OpenILS::SIP->editor()->retrieve_config_circ_modifier($mod);
             if($mod_obj) {
                 $config->{magneticMedia} = $mod_obj->magnetic_media;
                 $config->{SIPMediaType}  = $mod_obj->sip2_media_type;
