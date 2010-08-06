@@ -49,12 +49,19 @@ sub new {
 
 sub resensitize {
     my $self = shift;
+    return 0 if !$self->{item};
     return !$self->{item}->magnetic;
 }
 
 sub do_checkin {
     my $self = shift;
     my ($inst_id, $trans_date, $return_date, $current_loc, $item_props) = @_; # most unused
+
+    unless($self->{item}) {
+        $self->ok(0);
+        return undef;
+    }
+
     $inst_id ||= '';
 
     my $resp = $U->simplereq(
