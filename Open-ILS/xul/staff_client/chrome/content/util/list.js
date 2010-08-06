@@ -393,12 +393,12 @@ util.list.prototype = {
 		s += ('tree = ' + this.node + '  treechildren = ' + treechildren_node + '\n');
 		s += ('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
 
-		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
+        obj.put_retrieving_label(treerow);
 
-			obj.put_retrieving_label(treerow);
-			treerow.addEventListener(
-				'flesh',
-				function() {
+        if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
+            treerow.addEventListener(
+                'flesh',
+                function() {
 
 					if (treerow.getAttribute('retrieved') == 'true') return; /* already running */
 
@@ -442,46 +442,45 @@ util.list.prototype = {
 
 							obj.retrieve_row( params );
 
-					} else {
-					
-							inc_fleshed();
-					}
-				},
-				false
-			);
-			/*
-			setTimeout(
-				function() {
-					util.widgets.dispatch('flesh',treerow);
-				}, 0
-			);
-			*/
-		} else {
-			obj.put_retrieving_label(treerow);
-			treerow.addEventListener(
-				'flesh',
-				function() {
-					//dump('fleshing anon\n');
-					if (treerow.getAttribute('fleshed') == 'true') return; /* already fleshed */
-					obj._map_row_to_treecell(params,treerow);
-					treerow.setAttribute('retrieved','true');
-					treerow.setAttribute('fleshed','true');
-					obj.row_count.fleshed++;
-					if (obj.row_count.fleshed >= obj.row_count.total) {
-						setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
-					}
-				},
-				false
-			);
-			/*
-			setTimeout(
-				function() {
-					util.widgets.dispatch('flesh',treerow);
-				}, 0
-			);
-			*/
-		}
-		this.error.sdump('D_LIST',s);
+                    } else {
+                    
+                            inc_fleshed();
+                    }
+                },
+                false
+            );
+            /*
+            setTimeout(
+                function() {
+                    util.widgets.dispatch('flesh',treerow);
+                }, 0
+            );
+            */
+        } else {
+            treerow.addEventListener(
+                'flesh',
+                function() {
+                    //dump('fleshing anon\n');
+                    if (treerow.getAttribute('fleshed') == 'true') return; /* already fleshed */
+                    obj._map_row_to_treecell(params,treerow);
+                    treerow.setAttribute('retrieved','true');
+                    treerow.setAttribute('fleshed','true');
+                    obj.row_count.fleshed++;
+                    if (obj.row_count.fleshed >= obj.row_count.total) {
+                        setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
+                    }
+                },
+                false
+            );
+            /*
+            setTimeout(
+                function() {
+                    util.widgets.dispatch('flesh',treerow);
+                }, 0
+            );
+            */
+        }
+        this.error.sdump('D_LIST',s);
 
 			try {
 
@@ -540,12 +539,13 @@ util.list.prototype = {
 		s += ('tree = ' + this.node + '\n');
 		s += ('treeitem = ' + treeitem + '  treerow = ' + treerow + '\n');
 
-		if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
+        obj.put_retrieving_label(treerow);
 
-			obj.put_retrieving_label(treerow);
-			treerow.addEventListener(
-				'flesh',
-				function() {
+        if (typeof params.retrieve_row == 'function' || typeof this.retrieve_row == 'function') {
+
+            treerow.addEventListener(
+                'flesh',
+                function() {
 
 					if (treerow.getAttribute('retrieved') == 'true') return; /* already running */
 
@@ -589,46 +589,45 @@ util.list.prototype = {
 
 							obj.retrieve_row( params );
 
-					} else {
-					
-							inc_fleshed();
-					}
-				},
-				false
-			);
-			/*
-			setTimeout(
-				function() {
-					util.widgets.dispatch('flesh',treerow);
-				}, 0
-			);
-			*/
-		} else {
-			obj.put_retrieving_label(treerow);
-			treerow.addEventListener(
-				'flesh',
-				function() {
-					//dump('fleshing anon\n');
-					if (treerow.getAttribute('fleshed') == 'true') return; /* already fleshed */
-					obj._map_row_to_treecell(params,treerow);
-					treerow.setAttribute('retrieved','true');
-					treerow.setAttribute('fleshed','true');
-					obj.row_count.fleshed++;
-					if (obj.row_count.fleshed >= obj.row_count.total) {
-						setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
-					}
-				},
-				false
-			);
-			/*
-			setTimeout(
-				function() {
-					util.widgets.dispatch('flesh',treerow);
-				}, 0
-			);
-			*/
-		}
-		this.error.sdump('D_LIST',s);
+                    } else {
+                    
+                            inc_fleshed();
+                    }
+                },
+                false
+            );
+            /*
+            setTimeout(
+                function() {
+                    util.widgets.dispatch('flesh',treerow);
+                }, 0
+            );
+            */
+        } else {
+            treerow.addEventListener(
+                'flesh',
+                function() {
+                    //dump('fleshing anon\n');
+                    if (treerow.getAttribute('fleshed') == 'true') return; /* already fleshed */
+                    obj._map_row_to_treecell(params,treerow);
+                    treerow.setAttribute('retrieved','true');
+                    treerow.setAttribute('fleshed','true');
+                    obj.row_count.fleshed++;
+                    if (obj.row_count.fleshed >= obj.row_count.total) {
+                        setTimeout( function() { obj.exec_on_all_fleshed(); }, 0 );
+                    }
+                },
+                false
+            );
+            /*
+            setTimeout(
+                function() {
+                    util.widgets.dispatch('flesh',treerow);
+                }, 0
+            );
+            */
+        }
+        this.error.sdump('D_LIST',s);
 
 			try {
 
@@ -651,30 +650,23 @@ util.list.prototype = {
 		return params;
 	},
 
-	'put_retrieving_label' : function(treerow) {
-		var obj = this;
-		try {
-			/*
-			var cols_idx = 0;
-			dump('put_retrieving_label.  columns = ' + js2JSON(obj.columns) + '\n');
-			while( obj.columns[cols_idx] && obj.columns[cols_idx].hidden && obj.columns[cols_idx].hidden == 'true') {
-				dump('\t' + cols_idx);
-				var treecell = document.createElement('treecell');
-				treerow.appendChild(treecell);
-				cols_idx++;
-			}
-			*/
-			for (var i = 0; i < obj.columns.length; i++) {
-			var treecell = document.createElement('treecell'); treecell.setAttribute('label',document.getElementById('offlineStrings').getString('list.row_retrieving'));
-			treerow.appendChild(treecell);
-			}
-			/*
-			dump('\t' + cols_idx + '\n');
-			*/
-		} catch(E) {
-			alert(E);
-		}
-	},
+    'put_retrieving_label' : function(treerow) {
+        var obj = this;
+        try {
+            for (var i = 0; i < obj.columns.length; i++) {
+                var treecell;
+                if (typeof treerow.childNodes[i] == 'undefined') {
+                    treecell = document.createElement('treecell');
+                    treerow.appendChild(treecell);
+                } else {
+                    treecell = treerow.childNodes[i];
+                }
+                treecell.setAttribute('label',document.getElementById('offlineStrings').getString('list.row_retrieving'));
+            }
+        } catch(E) {
+            alert(E);
+        }
+    },
 
 	'detect_visible' : function() {
 		var obj = this;
@@ -876,43 +868,49 @@ util.list.prototype = {
 
 	},
 
-	'_map_row_to_treecell' : function(params,treerow) {
-		var obj = this;
-		var s = '';
-		util.widgets.remove_children(treerow);
+    '_map_row_to_treecell' : function(params,treerow) {
+        var obj = this;
+        var s = '';
 
 		if (typeof params.map_row_to_column == 'function' || typeof this.map_row_to_column == 'function') {
 
-			for (var i = 0; i < this.columns.length; i++) {
-				var treecell = document.createElement('treecell');
-				var label = '';
-				if (params.skip_columns && (params.skip_columns.indexOf(i) != -1)) {
-					treecell.setAttribute('label',label);
-					treerow.appendChild( treecell );
-					s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
-					continue;
-				}
-				if (params.skip_all_columns_except && (params.skip_all_columns_except.indexOf(i) == -1)) {
-					treecell.setAttribute('label',label);
-					treerow.appendChild( treecell );
-					s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
-					continue;
-				}
-	
-				if (typeof params.map_row_to_column == 'function')  {
-	
-					label = params.map_row_to_column(params.row,this.columns[i]);
-	
-				} else if (typeof this.map_row_to_column == 'function') {
-	
-					label = this.map_row_to_column(params.row,this.columns[i]);
-	
-				}
-				treecell.setAttribute('label',label ? label : '');
-				treerow.appendChild( treecell );
-				s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
-			}
-		} else if (typeof params.map_row_to_columns == 'function' || typeof this.map_row_to_columns == 'function') {
+            for (var i = 0; i < this.columns.length; i++) {
+                var treecell;
+                if (typeof treerow.childNodes[i] == 'undefined') {
+                    treecell = document.createElement('treecell');
+                    treerow.appendChild( treecell );
+                } else {
+                    treecell = treerow.childNodes[i];
+                }
+                
+                if ( this.columns[i].editable == false ) { treecell.setAttribute('editable','false'); }
+                var label = '';
+
+                // What skip columns is doing is rendering the treecells as blank/empty
+                if (params.skip_columns && (params.skip_columns.indexOf(i) != -1)) {
+                    treecell.setAttribute('label',label);
+                    s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
+                    continue;
+                }
+                if (params.skip_all_columns_except && (params.skip_all_columns_except.indexOf(i) == -1)) {
+                    treecell.setAttribute('label',label);
+                    s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
+                    continue;
+                }
+    
+                if (typeof params.map_row_to_column == 'function')  {
+    
+                    label = params.map_row_to_column(params.row,this.columns[i]);
+    
+                } else if (typeof this.map_row_to_column == 'function') {
+    
+                    label = this.map_row_to_column(params.row,this.columns[i]);
+    
+                }
+                if (this.columns[i].type == 'checkbox') { treecell.setAttribute('value',label); } else { treecell.setAttribute('label',label ? label : ''); }
+                s += ('treecell = ' + treecell + ' with label = ' + label + '\n');
+            }
+        } else if (typeof params.map_row_to_columns == 'function' || typeof this.map_row_to_columns == 'function') {
 
 			var labels = [];
 
@@ -924,13 +922,23 @@ util.list.prototype = {
 
 				labels = this.map_row_to_columns(params.row,this.columns);
 
-			}
-			for (var i = 0; i < labels.length; i++) {
-				var treecell = document.createElement('treecell');
-				treecell.setAttribute('label',typeof labels[i] == 'string' || typeof labels[i] == 'number' ? labels[i] : '');
-				treerow.appendChild( treecell );
-				s += ('treecell = ' + treecell + ' with label = ' + labels[i] + '\n');
-			}
+            }
+            for (var i = 0; i < labels.length; i++) {
+                var treecell;
+                if (typeof treerow.childNodes[i] == 'undefined') {
+                    treecell = document.createElement('treecell');
+                    treerow.appendChild(treecell);
+                } else {
+                    treecell = treerow.childNodes[i];
+                }
+                if ( this.columns[i].editable == false ) { treecell.setAttribute('editable','false'); }
+                if ( this.columns[i].type == 'checkbox') {
+                    treecell.setAttribute('value', labels[i]);
+                } else {
+                    treecell.setAttribute('label',typeof labels[i] == 'string' || typeof labels[i] == 'number' ? labels[i] : '');
+                }
+                s += ('treecell = ' + treecell + ' with label = ' + labels[i] + '\n');
+            }
 
 		} else {
 
@@ -1037,20 +1045,27 @@ util.list.prototype = {
 
 	},
 
-	'_dump_tree_with_keys' : function(params) {
-		var obj = this;
-		var dump = [];
-		for (var i = 0; i < this.treechildren.childNodes.length; i++) {
-			var row = {};
-			var treeitem = this.treechildren.childNodes[i];
-			var treerow = treeitem.firstChild;
-			for (var j = 0; j < treerow.childNodes.length; j++) {
-				row[ obj.columns[j].id ] = treerow.childNodes[j].getAttribute('label');
-			}
-			dump.push( row );
-		}
-		return dump;
-	},
+    '_dump_tree_with_keys' : function(params) {
+        var obj = this;
+        var dump = [];
+        for (var i = 0; i < this.treechildren.childNodes.length; i++) {
+            var row = {};
+            var treeitem = this.treechildren.childNodes[i];
+            var treerow = treeitem.firstChild;
+            for (var j = 0; j < treerow.childNodes.length; j++) {
+                if (typeof obj.columns[j] == 'undefined') {
+                    dump('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n');
+                    dump('_dump_tree_with_keys @ ' + location.href + '\n');
+                    dump('\ttreerow.childNodes.length='+treerow.childNodes.length+' j='+j+' obj.columns.length='+obj.columns.length+'\n');
+                    debugger;
+                } else {
+                    row[ obj.columns[j].id ] = treerow.childNodes[j].getAttribute('label');
+                }
+            }
+            dump.push( row );
+        }
+        return dump;
+    },
 
 	'dump_csv' : function(params) {
 		var obj = this;
@@ -1186,24 +1201,31 @@ util.list.prototype = {
 
 	},
 
-	'_dump_tree_selection_with_keys' : function(params) {
-		var obj = this;
-		var dump = [];
-		var list = obj._retrieve_selection_from_tree();
-		for (var i = 0; i < list.length; i++) {
-			var row = {};
-			var treeitem = list[i];
-			var treerow = treeitem.firstChild;
-			for (var j = 0; j < treerow.childNodes.length; j++) {
-				var value = treerow.childNodes[j].getAttribute('label');
-				if (params.skip_hidden_columns) if (obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('hidden') == 'true') continue;
-				var id = obj.columns[j].id; if (params.labels_instead_of_ids) id = obj.columns[j].label;
-				row[ id ] = value;
-			}
-			dump.push( row );
-		}
-		return dump;
-	},
+    '_dump_tree_selection_with_keys' : function(params) {
+        var obj = this;
+        var dump = [];
+        var list = obj._retrieve_selection_from_tree();
+        for (var i = 0; i < list.length; i++) {
+            var row = {};
+            var treeitem = list[i];
+            var treerow = treeitem.firstChild;
+            for (var j = 0; j < treerow.childNodes.length; j++) {
+                var value = treerow.childNodes[j].getAttribute('label');
+                if (params.skip_hidden_columns) if (obj.node.treeBoxObject.columns.getColumnAt(j).element.getAttribute('hidden') == 'true') continue;
+                if (typeof obj.columns[j] == 'undefined') {
+                    dump('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n');
+                    dump('_dump_tree_selection_with_keys @ ' + location.href + '\n');
+                    dump('\ttreerow.childNodes.length='+treerow.childNodes.length+' j='+j+' obj.columns.length='+obj.columns.length+'\n');
+                    debugger;
+                } else {
+                    var id = obj.columns[j].id; if (params.labels_instead_of_ids) id = obj.columns[j].label;
+                    row[ id ] = value;
+                }
+            }
+            dump.push( row );
+        }
+        return dump;
+    },
 
 	'clipboard' : function(params) {
 		try {
