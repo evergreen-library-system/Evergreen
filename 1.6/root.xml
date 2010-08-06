@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <book xml:id="evergreen" xmlns="http://docbook.org/ns/docbook"
-      xmlns:xi="http://www.w3.org/2001/XInclude" version="5" xml:lang="EN"
-      xmlns:xlink="http://www.w3.org/1999/xlink">
+      xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="EN"
+      xmlns:xlink="http://www.w3.org/2001/xlink">
       <info>
             <title>Evergreen 1.6 Documentation</title>
- 		<subtitle>Draft Version
-<para><imageobject><imagedata scalefit="0" fileref="media/evergreen_logo.gif"/>
-                                    </imageobject></para>
-</subtitle>
-ls
-<copyright>
+ 		<subtitle>Draft Version</subtitle>
+		<copyright>
                   <year>2010</year>
                   <holder>Evergreen Community</holder>
-		<inlinemediaobject>
-                                    
-                              </inlinemediaobject>    
+		<inlinemediaobject>                   
+                </inlinemediaobject>    
             </copyright>
                  <legalnotice>
                   <para><link xlink:title="Creative Commons license"
@@ -29,57 +24,66 @@ ls
                   </link></para>
                     <para>This document was updated <?dbtimestamp format="Y-m-d"?>.</para>    
                </legalnotice>
-      </info>  
-            
-<part xml:id="intro">
-            <info>
-                  <title>Introduction</title>
-            </info>
- </part>
-
-<part xml:id="catalog">
-            <info>
-                  <title>Public Access Catalog</title>
-            </info>
- </part>
-
-<part xml:id="core_tasks">
-            <info>
-                  <title>Core Staff Tasks</title>
-            </info>
- </part>
-
-
-
-
-
-<part xml:id="admin">
-            <info>
-                  <title>Administration</title>
-            </info>
- <xi:include href="admin/admin-intro.xml"/>
-<xi:include href="admin/serveradministration.xml"/>
- <xi:include href="admin/AdminMisc.xml"/>
- <xi:include href="admin/Upgrading-Evergreen_1.6.xml"/>
- <xi:include href="admin/troubleshooting.xml"/>
-</part>
-
-<part xml:id="software_integration">
-            <info>
-                  <title>Third Party System Integration</title>
-            </info>
-</part>
- <part xml:id="Development">
-            <info>
-                  <title>Development</title>
-            </info>
-</part>
-<part xml:id="Appendices">
-            <info>
-                  <title>Appendices</title>
-            </info>
-<xi:include href="appendices/bookindex.xml"/>
-
-</part>
-
+	</info>
+	<part xml:id="intro">
+            	<info>
+                	<title>Introduction</title>
+           	</info>
+		<partintro xmlns:xl="http://www.w3.org/1999/xlink" xml:id="intro_intro">
+    			<para>The book you’re holding in your hands or viewing on a screen is The Book of Evergreen, the official guide to the 1.6.x version of the Evergreen open source library 
+			automation software.  This guide was produced by the Evergreen Documentation Interest Group (DIG), consisting of numerous volunteers from many different organizations.  
+			The DIG has drawn together, edited, and supplemented pre-existing documentation contributed by libraries and consortia running Evergreen that were kind enough to release their 
+			documentation into the creative commons.  For a full list of authors and contributing organizations, see <xref linkend="about_this_documentation"></xref>.  
+			Just like the software it describes, this guide is a work in progress, continually revised to meet the needs of its users, so if you find errors or omissions, please let us know, by 
+			contacting the DIG facilitators at <link mailto="docs@evergreen-ils.org">docs@evergreen-ils.org</link>.</para>
+    			<para>This guide to Evergreen is intended to meet the needs of front-line library staff, catalogers, library administrators, system administrators, and software developers.  
+			It is organized into Parts, Chapters, and Sections addressing key aspects of the software, beginning with the topics of broadest interest to the largest groups of users and 
+			progressing to some of the more specialized and technical topics of interest to smaller numbers of users.</para>
+    			<para>Copies of this guide can be accessed in PDF and HTML formats from the Documentation section of <link href="http://evergreen-ils.org/">http://evergreen-ils.org/</link> and 
+			are included in DocBook XML format along with the Evergreen source code, available for download from the same Web site.</para>
+		</partintro>
+		<xi:include href="intro/about_evergreen.xml"/>
+ 	</part>
+	<part xml:id="catalog">
+		<info>
+			<title>Public Access Catalog</title>
+		</info>
+		<xi:include href="catalog/basicsearch.xml"/>
+		<xi:include href="catalog/advancedsearch.xml"/>
+		<xi:include href="catalog/myaccount.xml"/>
+	</part>
+	<part xml:id="core_tasks">
+		<info>
+			<title>Core Staff Tasks</title>
+		</info>
+		<xi:include href="stafftasks/circulation.xml"/>
+		<xi:include href="stafftasks/cataloging.xml"/>
+ 	</part>
+	<part xml:id="admin">
+		<info>
+			<title>Administration</title>
+		</info>
+		<xi:include href="admin/admin-intro.xml"/>
+		<xi:include href="admin/serveradministration.xml"/>
+		<xi:include href="admin/AdminMisc.xml"/>
+ 		<xi:include href="admin/Upgrading-Evergreen_1.6.xml"/>
+ 		<xi:include href="admin/troubleshooting.xml"/>
+	</part>
+	<part xml:id="software_integration">
+		<info>
+			<title>Third Party System Integration</title>
+		</info>
+	</part>
+	<part xml:id="Development">
+		<info>
+			<title>Development</title>
+		</info>
+		<xi:include href="development/schema.xml"/>
+	</part>
+	<part xml:id="Appendices">
+		<info>
+			<title>Appendices</title>
+		</info>
+		<xi:include href="appendices/bookindex.xml"/>
+	</part>
 </book>
