@@ -29,12 +29,15 @@ if(!dojo._hasResource["openils.Event"]) {
             this.servertime = kwargs.servertime;
             this.ilsperm = kwargs.ilsperm;
             this.ilspermloc = kwargs.ilspermloc;
+            this.note = kwargs.note;
         },
 
         toString : function() {
             var s = 'Event: ' + (this.code || '') + ':' + this.textcode + ' -> ' + new String(this.desc);
             if(this.ilsperm)
                 s += ' ' + this.ilsperm + '@' + this.ilspermloc;
+            if(this.note)
+                s += '\n' + this.note;
             return s;
         }
     });

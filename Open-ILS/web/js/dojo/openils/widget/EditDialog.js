@@ -38,9 +38,9 @@ if(!dojo._hasResource['openils.widget.EditDialog']) {
                     self.hide(); 
                 }
 
-                this.editPane.onPostSubmit = function(r) { 
+                this.editPane.onPostSubmit = function(r, cudResults) { 
                     self.hide(); 
-                    if(onSubmit) onSubmit(r);
+                    if(onSubmit) onSubmit(r, cudResults);
                 }
             },
 

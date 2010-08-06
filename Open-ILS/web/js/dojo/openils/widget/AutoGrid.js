@@ -1,6 +1,7 @@
 if(!dojo._hasResource['openils.widget.AutoGrid']) {
     dojo.provide('openils.widget.AutoGrid');
     dojo.require('dojox.grid.DataGrid');
+    dojo.require('dijit.layout.ContentPane');
     dojo.require('openils.widget.AutoWidget');
     dojo.require('openils.widget.AutoFieldWidget');
     dojo.require('openils.widget.EditPane');
@@ -17,11 +18,18 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             editOnEnter : false, 
             defaultCellWidth : null,
             editStyle : 'dialog',
+            editReadOnly : false,
             suppressFields : null,
             hideSelector : false,
             selectorWidth : '1.5',
             showColumnPicker : false,
             columnPickerPrefix : null,
+            displayLimit : 15,
+            displayOffset : 0,
+            requiredFields : null,
+            hidePaginator : false,
+            showLoadFilter : false,
+            suppressLinkedFields : null, // list of fields whose linked display data should not be fetched from the server
 
             /* by default, don't show auto-generated (sequence) fields */
             showSequenceFields : false, 
@@ -34,6 +42,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.initAutoEnv();
                 this.attr('structure', this._compileStructure());
                 this.setStore(this.buildAutoStore());
+                this.cachedQueryOpts = {};
 
                 if(this.showColumnPicker) {
                     if(!this.columnPickerPrefix) {
@@ -51,6 +60,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
                 this.overrideEditWidgets = {};
                 this.overrideEditWidgetClass = {};
+                this.overrideWidgetArgs = {};
 
                 if(this.editOnEnter) 
                     this._applyEditOnEnter();
@@ -65,6 +75,82 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         }
                     );
                 }
+
+                if(!this.hidePaginator) {
+                    var self = this;
+                    this.paginator = new dijit.layout.ContentPane();
+
+
+                    var back = dojo.create('a', {
+                        innerHTML : 'Back',  // TODO i18n
+                        style : 'padding-right:6px;',
+                        href : 'javascript:void(0);', 
+                        onclick : function() { 
+                            self.resetStore();
+                            self.cachedQueryOpts.offset = self.displayOffset -= self.displayLimit;
+                            if(self.displayOffset < 0)
+                                self.cachedQueryOpts.offset = self.displayOffset = 0;
+                            if(self.dataLoader)
+                                self.dataLoader()
+                            else
+                                self.loadAll(self.cachedQueryOpts, self.cachedQuerySearch);
+                        }
+                    });
+
+                    var forw = dojo.create('a', {
+                        innerHTML : 'Next',  // TODO i18n
+                        style : 'padding-right:6px;',
+                        href : 'javascript:void(0);', 
+                        onclick : function() { 
+                            self.resetStore();
+                            self.cachedQueryOpts.offset = self.displayOffset += self.displayLimit;
+                            if(self.dataLoader)
+                                self.dataLoader()
+                            else
+                                self.loadAll(self.cachedQueryOpts, self.cachedQuerySearch);
+                        }
+                    });
+
+                    dojo.place(this.paginator.domNode, this.domNode, 'before');
+                    dojo.place(back, this.paginator.domNode);
+                    dojo.place(forw, this.paginator.domNode);
+
+                    if(this.showLoadFilter) {
+                        dojo.require('openils.widget.PCrudFilterDialog');
+                        dojo.place(
+                            dojo.create('a', {
+                                innerHTML : 'Filter', // TODO i18n
+                                style : 'padding-right:6px;',
+                                href : 'javascript:void(0);', 
+                                onclick : function() { 
+                                    var dialog = new openils.widget.PCrudFilterDialog({fmClass:self.fmClass})
+                                    dialog.onApply = function(filter) {
+                                        self.resetStore();
+                                        self.loadAll(self.cachedQueryOpts, filter);
+                                    };
+                                    dialog.startup();
+                                    dialog.show();
+                                }
+                            }),
+                            this.paginator.domNode
+                        );
+                    }
+
+                    // progress image
+                    this.loadProgressIndicator = dojo.create('img', {
+                        src:'/opac/images/progressbar_green.gif', // TODO configured path
+                        style:'height:16px;width:16px;'
+                    });
+                    dojo.place(this.loadProgressIndicator, this.paginator.domNode);
+                }
+            },
+
+            hideLoadProgressIndicator : function() {
+                dojo.style(this.loadProgressIndicator, 'visibility', 'hidden');
+            },
+
+            showLoadProgressIndicator : function() {
+                dojo.style(this.loadProgressIndicator, 'visibility', 'visible');
             },
 
             /* Don't allow sorting on the selector column */
@@ -205,6 +291,9 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 }
             },
 
+            /**
+             * @return {Array} List of every fieldmapper object in the data store
+             */
             getAllObjects : function() {
                 var objs = [];
                 var self = this;
@@ -220,16 +309,18 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 return objs;
             },
 
+            /**
+             * Deletes the underlying object for all selected rows
+             */
             deleteSelected : function() {
                 var items = this.getSelectedItems();
                 var total = items.length;
                 var self = this;
                 dojo.require('openils.PermaCrud');
-                var pcrud = new openils.PermaCrud();
                 dojo.forEach(items,
                     function(item) {
                         var fmObject = new fieldmapper[self.fmClass]().fromStoreItem(item);
-                        pcrud['delete'](fmObject, {oncomplete : function(r) { self.store.deleteItem(item) }});
+                        new openils.PermaCrud()['eliminate'](fmObject, {oncomplete : function(r) { self.store.deleteItem(item) }});
                     }
                 );
             },
@@ -282,12 +373,17 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 var grid = this;
                 var fmObject = new fieldmapper[this.fmClass]().fromStoreItem(storeItem);
                 var idents = grid.store.getIdentityAttributes();
+                var self = this;
 
                 var pane = new openils.widget.EditPane({
                     fmObject:fmObject,
+                    hideSaveButton : this.editReadOnly,
+                    readOnly : this.editReadOnly,
                     overrideWidgets : this.overrideEditWidgets,
                     overrideWidgetClass : this.overrideEditWidgetClass,
+                    overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
+                    requiredFields : this.requiredFields,
                     onPostSubmit : function() {
                         for(var i in fmObject._fields) {
                             var field = fmObject._fields[i];
@@ -304,7 +400,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                 } catch (E) {}
                             },200
                         );
-                        if(onPostSubmit) onPostSubmit();
+                        if(onPostSubmit) 
+                            onPostSubmit();
                     },
                     onCancel : function() {
                         setTimeout(function(){
@@ -324,9 +421,11 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     fmClass : this.fmClass,
                     overrideWidgets : this.overrideEditWidgets,
                     overrideWidgetClass : this.overrideEditWidgetClass,
+                    overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
-                    onPostSubmit : function(r) {
-                        var fmObject = openils.Util.readResponse(r);
+                    requiredFields : this.requiredFields,
+                    onPostSubmit : function(req, cudResults) {
+                        var fmObject = cudResults[0];
                         if(grid.onPostCreate)
                             grid.onPostCreate(fmObject);
                         if(fmObject) 
@@ -338,7 +437,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                             } catch (E) {}
                         },200);
                         if(onPostSubmit)
-                            onPostSubmit();
+                            onPostSubmit(fmObject);
                     },
                     onCancel : function() {
                         if(onCancel) onCancel();
@@ -349,7 +448,15 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 return pane;
             },
 
-            // .startup() is called within
+            /**
+             * Creates an EditPane with a copy of the data from the provided store
+             * item for cloning said item
+             * @param {Object} storeItem Dojo data item
+             * @param {Number} rowIndex The Grid row index of the item to be cloned
+             * @param {Function} onPostSubmit Optional callback for post-submit behavior
+             * @param {Function} onCancel Optional callback for clone cancelation
+             * @return {Object} The clone EditPane
+             */
             _makeClonePane : function(storeItem, rowIndex, onPostSubmit, onCancel) {
                 var clonePane = this._makeCreatePane(onPostSubmit, onCancel);
                 var origPane = this._makeEditPane(storeItem, rowIndex);
@@ -378,6 +485,9 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.editDialog.show();
             },
 
+            /**
+             * Generates an EditDialog for object creation and displays it to the user
+             */
             showCreateDialog : function() {
                 var self = this;
                 var done = function() { self.hideDialog(); };
@@ -397,13 +507,20 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 if(this.onEditPane) this.onEditPane(this.editPane);
             },
 
-            showClonePane : function() {
+            showClonePane : function(onPostSubmit) {
                 var self = this;
                 var done = function() { self.hidePane(); };
+
+                                    
                 var row = this.getFirstSelectedRow();
                 if(!row) return;
+
+                var postSubmit = (onPostSubmit) ? 
+                    function(result) { onPostSubmit(self.getItem(row), result); self.hidePane(); } :
+                    done;
+
                 dojo.style(this.domNode, 'display', 'none');
-                this.editPane = this._makeClonePane(this.getItem(row), row, done, done);
+                this.editPane = this._makeClonePane(this.getItem(row), row, postSubmit, done);
                 this.domNode.parentNode.insertBefore(this.editPane.domNode, this.domNode);
                 if(this.onEditPane) this.onEditPane(this.editPane);
             },
@@ -439,16 +556,28 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
             loadAll : function(opts, search) {
                 dojo.require('openils.PermaCrud');
-                if(!opts) opts = {};
+                if(this.loadProgressIndicator)
+                    dojo.style(this.loadProgressIndicator, 'visibility', 'visible');
                 var self = this;
+                opts = dojo.mixin(
+                    {limit : this.displayLimit, offset : this.displayOffset}, 
+                    opts || {}
+                );
                 opts = dojo.mixin(opts, {
                     async : true,
                     streaming : true,
                     onresponse : function(r) {
                         var item = openils.Util.readResponse(r);
                         self.store.newItem(item.toStoreItem());
+                    },
+                    oncomplete : function() {
+                        if(self.loadProgressIndicator) 
+                            dojo.style(self.loadProgressIndicator, 'visibility', 'hidden');
                     }
                 });
+
+                this.cachedQuerySearch = search;
+                this.cachedQueryOpts = opts;
                 if(search)
                     new openils.PermaCrud().search(this.fmClass, search, opts);
                 else
@@ -470,18 +599,26 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             fmClass: this.grid.fmClass,
             fmField: this.field,
             widgetValue : val,
-            readOnly : true
+            readOnly : true,
+            forceSync : true, // prevents many simultaneous requests for the same data
+            suppressLinkedFields : this.grid.suppressLinkedFields
         });
 
+        autoWidget.build();
+
+        /*
+        // With proper caching, this should not be necessary to prevent grid render flickering
         var _this = this;
         autoWidget.build(
             function(w, ww) {
-                var node = _this.grid.getCell(_this.index).view.getCellNode(rowIndex, _this.index);
-                if(node) {
-                    node.innerHTML = ww.getDisplayString();
-                }
+                try {
+                    var node = _this.grid.getCell(_this.index).view.getCellNode(rowIndex, _this.index);
+                    if(node) 
+                        node.innerHTML = ww.getDisplayString();
+                } catch(E) {}
             }
         );
+        */
 
         return autoWidget.getDisplayString();
     }

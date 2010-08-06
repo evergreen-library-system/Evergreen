@@ -16,6 +16,11 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             onPostSubmit : null, // apply callback
             onCancel : null, // cancel callback
             hideActionButtons : false,
+            fieldDocs : null,
+            existingTable : null,
+            suppressFields : null,
+            requiredFields : null,
+            paneStackCount : 1, // how many fields to add to each row, for compressing display
 
             constructor : function(args) {
                 this.fieldList = [];
@@ -31,11 +36,20 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 this.inherited(arguments);
                 this.initAutoEnv();
                 if(this.readOnly)
-                    this.hideActionButtons = true;
+                    this.hideSaveButton = true;
 
-                var table = this.table = document.createElement('table');
+                // grab any field-level docs
+                /*
+                var pcrud = new openils.PermaCrud();
+                this.fieldDocs = pcrud.search('fdoc', {fm_class:this.fmClass});
+                */
+
+                var table = this.existingTable;
+                if(!table) {
+                    var table = this.table = document.createElement('table');
+                    this.domNode.appendChild(table);
+                }
                 var tbody = document.createElement('tbody');
-                this.domNode.appendChild(table);
                 table.appendChild(tbody);
 
                 this.limitPerms = [];
@@ -48,37 +62,80 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 if(!this.overrideWidgetClass)
                     this.overrideWidgetClass = {};
 
+                if(!this.overrideWidgetArgs)
+                    this.overrideWidgetArgs = {};
+
+                var idx = 0;
+                var currentRow;
                 for(var f in this.sortedFieldList) {
                     var field = this.sortedFieldList[f];
-                    if(!field || field.virtual) continue;
+                    if(!field || field.virtual || field.nonIdl) continue;
+
+                    if(this.suppressFields && this.suppressFields.indexOf(field.name) > -1)
+                        continue;
 
                     if(field.name == this.fmIDL.pkey && this.mode == 'create' && this.fmIDL.pkey_sequence)
                         continue; /* don't show auto-generated fields on create */
 
-                    var row = document.createElement('tr');
+                    if((idx++ % this.paneStackCount) == 0 || !currentRow) {
+                        // time to start a new row
+                        currentRow = document.createElement('tr');
+                        tbody.appendChild(currentRow);
+                    }
+
+                    //var docTd = document.createElement('td');
                     var nameTd = document.createElement('td');
                     var valTd = document.createElement('td');
                     var valSpan = document.createElement('span');
                     valTd.appendChild(valSpan);
+                    dojo.addClass(nameTd, 'openils-widget-editpane-name-cell');
+                    dojo.addClass(valTd, 'openils-widget-editpane-value-cell');
 
+                    /*
+                    if(this.fieldDocs[field]) {
+                        var helpLink = dojo.create('a');
+                        var helpImg = dojo.create('img', {src:'/opac/images/advancedsearch-icon.png'}); // TODO Config
+                        helpLink.appendChild(helpImg);
+                        docTd.appendChild(helpLink);
+                    }
+                    */
 
                     nameTd.appendChild(document.createTextNode(field.label));
-                    row.setAttribute('fmfield', field.name);
-                    row.appendChild(nameTd);
-                    row.appendChild(valTd);
-                    tbody.appendChild(row);
+                    currentRow.setAttribute('fmfield', field.name);
+                    //currentRow.appendChild(docTd);
+                    currentRow.appendChild(nameTd);
+                    currentRow.appendChild(valTd);
+                    //dojo.addClass(docTd, 'oils-fm-edit-pane-help');
 
-                    var widget = new openils.widget.AutoFieldWidget({
-                        idlField : field, 
-                        fmObject : this.fmObject,
-                        fmClass : this.fmClass,
-                        parentNode : valSpan,
-                        orgLimitPerms : this.limitPerms,
-                        readOnly : this.readOnly,
-                        widget : this.overrideWidgets[field.name],
-                        widgetClass : this.overrideWidgetClass[field.name],
-                        disableWidgetTest : this.disableWidgetTest
-                    });
+                    if(!this.overrideWidgetArgs[field.name])
+                        this.overrideWidgetArgs[field.name] = {};
+
+                    var args = dojo.mixin(
+                        {   // defaults
+                            idlField : field, 
+                            fmObject : this.fmObject,
+                            fmClass : this.fmClass,
+                            parentNode : valSpan,
+                            orgLimitPerms : this.limitPerms,
+                            readOnly : this.readOnly,
+                            widget : this.overrideWidgets[field.name],
+                            widgetClass : this.overrideWidgetClass[field.name],
+                            disableWidgetTest : this.disableWidgetTest
+                        },
+                        this.overrideWidgetArgs[field.name] // per-field overrides
+                    );
+
+                    if(args.readOnly) {
+                        dojo.addClass(nameTd, 'openils-widget-editpane-ro-name-cell');
+                        dojo.addClass(valTd, 'openils-widget-editpane-ro-value-cell');
+                    }
+
+                    if(this.requiredFields && this.requiredFields.indexOf(field.name) >= 0) {
+                        if(!args.dijitArgs) args.dijitArgs = {};
+                        args.dijitArgs.required = true;
+                    }
+
+                    var widget = new openils.widget.AutoFieldWidget(args);
 
                     widget.build();
                     this.fieldList.push({name:field.name, widget:widget});
@@ -117,6 +174,8 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     onClick : this.onCancel
                 }, cancelSpan);
 
+                if(this.hideSaveButton) return;
+
                 new dijit.form.Button({
                     label:'Save',  // XXX
                     onClick: function() {self.performAutoEditAction();}
@@ -137,9 +196,9 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             performAutoEditAction : function() {
                 var self = this;
                 self.performEditAction({
-                    oncomplete:function(r) {
+                    oncomplete:function(req, cudResults) {
                         if(self.onPostSubmit)
-                            self.onPostSubmit(r);
+                            self.onPostSubmit(req, cudResults);
                     }
                 });
             },

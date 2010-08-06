@@ -145,8 +145,8 @@ function svCreate(args) {
     var pcrud = new openils.PermaCrud();
     pcrud.create(sv,
                  {           
-                     oncomplete: function(r) {
-                         var obj = openils.Util.readResponse(r);
+                     oncomplete: function(r, objs) {
+                         var obj = objs[0];
                          if(!obj) return '';
                          svGrid.store.newItem(asv.toStoreItem(obj));
                          svSurveyDialog.hide();

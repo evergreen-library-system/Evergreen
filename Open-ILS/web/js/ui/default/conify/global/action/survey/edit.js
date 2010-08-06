@@ -123,8 +123,8 @@ function newQuestion(svyId, questionText, questionRow) {
     question.question(questionText);
     question.isnew(true);
     pcrud.create(question, 
-        {oncomplete: function(r) 
-             { var q = openils.Util.readResponse(r); 
+        {oncomplete: function(r, qs) 
+             { var q = qs[0];
                  questionRow.parentNode.removeChild(questionRow);
                  drawQuestionBody(q, null);
                  newQuestionBody(svyId);
