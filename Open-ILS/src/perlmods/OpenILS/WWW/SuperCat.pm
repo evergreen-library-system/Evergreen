@@ -470,7 +470,7 @@ sub unapi {
 		$type = 'auri' if ($scheme =~ /^asset-uri/o);
 		$type = 'authority' if ($scheme =~ /^authority/o);
 		$command = 'retrieve';
-		$command = 'browse' if (grep { $scheme eq $_ } qw/call_number title author subjet topic authority.title authority.author authority.subject authority.topic series item-age/);
+		$command = 'browse' if (grep { $scheme eq $_ } qw/call_number title author subject topic authority.title authority.author authority.subject authority.topic series item-age/);
 	}
 
     if ($paging) {
