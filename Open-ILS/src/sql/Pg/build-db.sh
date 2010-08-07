@@ -105,9 +105,9 @@ ordered_file_list="
   100.circ_matrix.sql
   110.hold_matrix.sql
 
+  210.schema.serials.sql
   200.schema.acq.sql
   201.acq.audit-functions.sql
-  210.schema.serials.sql
 
   300.schema.staged_search.sql
   400.schema.action_trigger.sql
