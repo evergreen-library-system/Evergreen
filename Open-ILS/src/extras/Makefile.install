@@ -266,12 +266,12 @@ all:
 	@echo "please specify an OS" && exit 0
 
 # these should be the same for any distro
-install: install_cpan install_js_sm install_libdbi 
+install: install_cpan install_js_sm install_libdbi install_library_callnumber_lc
 
 centos: install_centos_pgsql install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe
 rhel: install_redhat_pgsql install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe
 
-fedora-13: install_fedora_13_rpms install_cpan install_cpan_marc install_cpan_fedora install_spidermonkey
+fedora-13: install_fedora_13_rpms install_cpan install_cpan_marc install_cpan_fedora install_spidermonkey install_library_callnumber_lc
 
 debian-etch: etch generic_debian
 debian-lenny: lenny generic_debian
@@ -343,6 +343,9 @@ install_libdbi:
 	cd $(LIBDBI_DRIVERS) && ./configure  \
 		--disable-docs --with-pgsql --enable-libdbi && make all install  
 
+install_library_callnumber_lc:
+	if [ ! -d Library-CallNumber-LC ]; then svn checkout http://library-callnumber-lc.googlecode.com/svn/trunk/perl/Library-CallNumber-LC; fi;
+	cd Library-CallNumber-LC && perl Makefile.PL && make install
 
 clean:
 	make -C $(LIBDBI) clean

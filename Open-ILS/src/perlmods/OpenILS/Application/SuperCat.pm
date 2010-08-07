@@ -305,7 +305,7 @@ sub cn_browse {
 			},
 			{ flesh		=> 1,
 			  flesh_fields	=> { acn => [qw/record owning_lib/] },
-			  order_by	=> { acn => "upper(label) desc, id desc, owning_lib desc" },
+			  order_by	=> { acn => "label_sortkey, upper(label) desc, id desc, owning_lib desc" },
 			  limit		=> $before_limit,
 			  offset	=> abs($page) * $page_size - $before_offset,
 			}
@@ -323,7 +323,7 @@ sub cn_browse {
 			},
 			{ flesh		=> 1,
 			  flesh_fields	=> { acn => [qw/record owning_lib/] },
-			  order_by	=> { acn => "upper(label), id, owning_lib" },
+			  order_by	=> { acn => "label_sortkey, upper(label), id, owning_lib" },
 			  limit		=> $after_limit,
 			  offset	=> abs($page) * $page_size - $after_offset,
 			}
@@ -428,7 +428,7 @@ sub cn_startwith {
 			},
 			{ flesh		=> 1,
 			  flesh_fields	=> { acn => [qw/record owning_lib/] },
-			  order_by	=> { acn => "upper(label) desc, id desc, owning_lib desc" },
+			  order_by	=> { acn => "label_sortkey, upper(label) desc, id desc, owning_lib desc" },
 			  limit		=> $limit,
 			  offset	=> $offset,
 			}
@@ -446,7 +446,7 @@ sub cn_startwith {
 			},
 			{ flesh		=> 1,
 			  flesh_fields	=> { acn => [qw/record owning_lib/] },
-			  order_by	=> { acn => "upper(label), id, owning_lib" },
+			  order_by	=> { acn => "label_sortkey, upper(label), id, owning_lib" },
 			  limit		=> $limit,
 			  offset	=> $offset,
 			}
@@ -1760,7 +1760,7 @@ sub new_record_holdings {
 				},
           ( $limit > -1 ? ( limit  => $limit  ) : () ),
           ( $offset     ? ( offset => $offset ) : () ),
-          order_by  => { acn => { label => {} } }
+          order_by  => { acn => { label_sortkey => {} } }
 		}
 	)->gather(1);
 
