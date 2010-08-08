@@ -72,8 +72,9 @@
 				<title>Copy Alerts</title>
 				<para>Copy alerts are useful alerts for physical item copies.</para>
 				<para>Staff must be granted permission to override alerts at checkout or checkin.</para> 
-				<para>Creating copy alerts:</para>		
+					
 				<procedure>
+					<title>Creating copy alerts:</title>						
 					<step><para><menuchoice><guimenu>Search</guimenu><guimenuitem>for copies by Barcode</guimenuitem></menuchoice>.</para></step>
 					<step><para>Enter an item barcode.</para></step>
 					<step><para>Select the row.</para></step>
@@ -82,9 +83,9 @@
 					<step><para>Click <guibutton>Apply</guibutton>.</para></step>
 					<step><para>Click <guibutton>Modify Copies</guibutton>.</para></step>
 				</procedure>
-				<note><para>Copy alerts must be manually removed. Follow the same process, but delete the text in the Alert Message box, to remove copy alerts.</para></note>		
-				<para>Adding or removing copy alerts to or from multiple items:</para>		
+				<note><para>Copy alerts must be manually removed. Follow the same process, but delete the text in the Alert Message box, to remove copy alerts.</para></note>				
 				<procedure>
+					<title>Adding or removing copy alerts to or from multiple items:</title>
 					<step><para>Retrieve items to the <emphasis>Item Status</emphasis> screen.</para></step>
 					<step><para>Select all items to be changed by highlighting the first item in the list, holding down the <keycap>Shift</keycap> key, and clicking on the last item. 						Select several, non-sequential items, by holding down the <keycap>Ctrl</keycap> key and clicking on the required items.</para></step>
 					<step><para>Continue to <emphasis>Edit Item Attributes</emphasis>, as above.</para></step>
@@ -101,9 +102,9 @@
 			</section>
 			<section xml:id="copynotes">
 				<title>Copy Notes</title>
-				<para>Copy notes are informational only. They may be internal or made available to the public in the OPAC.</para>
-				<para>Accessing copy notes from the copy editor:</para>		
+				<para>Copy notes are informational only. They may be internal or made available to the public in the OPAC.</para>	
 				<procedure>
+					<title>Accessing copy notes from the copy editor:</title>
 					<step><para>Click <guibutton>Copy Notes</guibutton>.</para></step>
 					<step><para>If a note exists, it will display with a yellow background.</para></step>
 					<step><para>Click <guibutton>Add Note</guibutton> to create a new copy note.  Select the <guilabel>Public</guilabel> checkbox to make the note visible in 
@@ -223,8 +224,9 @@
 			<title>MARC Record Leader and MARC fixed field 008</title>
 			<para>Parts of the leader and the 008 field can be edited in the MARC Editor via the fixed field editor box displayed above the MARC record. Information about the leader and 
 			the 008 can be found on the Library of Congress’s MARC Standards page at <ulink url='http://www.loc.gov/marc/'>http://www.loc.gov/marc/</ulink>.</para>
-			<para>To edit the MARC record leader:</para>		
+					
 			<procedure>
+				<title>To edit the MARC record leader:</title>				
 				<step><para>Retrieve and display the appropriate record in MARC Edit view.</para></step>
 				<step><para><emphasis>Click</emphasis> into any box displayed in the fixed field editor.</para></step>
 				<step><para>Press <keycap>Tab</keycap> or use the mouse to move between fields. </para></step>			
@@ -240,14 +242,15 @@
 			<para>In Evergreen, a record must be <emphasis>marked</emphasis> for overlay. The mark for overlay is by login. Only one record at a time may be marked for overlay. When another 
 			record is marked for overlay, the previously marked item is <emphasis>de-marked</emphasis>. Once a record is marked, it remains marked until overlaid or until the user logs out 
 			of Evergreen.</para> 
-			<para>Marking a record for overlay:</para>		
+					
 			<procedure>
+				<title>Marking a record for overlay:</title>
 				<step><para>Search for and retrieve a record for overlay.</para></step>
 				<step><para>Select <menuchoice><guimenu>Actions for this Record</guimenu> <guimenuitem>Mark for Overlay</guimenuitem></menuchoice>. Record is now 
 				<emphasis>marked</emphasis>.</para></step>
-			</procedure>
-			<para>Overlaying the marked record:</para>		
+			</procedure>	
 			<procedure>
+				<title>Overlaying the marked record:</title>
 				<step><para>Once the record is marked for overlay, proceed to search for and import the new record from a Z39.50 target.</para></step>
 				<step><para>Select <menuchoice><guimenu>Cataloging</guimenu> <guimenuitem>Import Record from Z39.50</guimenuitem></menuchoice>.</para></step>
 				<step><para>Choose targets and enter search terms.</para></step>
@@ -264,8 +267,9 @@
 		<title>Cataloging Templates</title>
 		<para>This section explains creating, using, exporting, and importing item record templates for cataloging. Use of templates enhances item creation and helps ensure 
 		consistency in record format in the database.</para> 
-		<para>Creating item templates:</para>		
+				
 		<procedure>
+			<title>Creating item templates:</title>
 			<step><para>Search for and retrieve a record.</para></step>
 			<step><para>Select <menuchoice><guimenu>Actions for this Record</guimenu> <guimenuitem>Holdings Maintenance</guimenuitem></menuchoice>.</para></step>	
 			<step><para>Select an item record in list and click <menuchoice><guimenu>Actionsfor Selected Rows</guimenu> <guimenuitem>Edit Item Attributes</guimenuitem></menuchoice>.
@@ -280,8 +284,9 @@
 			<step><para>Click <guibutton>Close</guibutton> to exit the Copy Editor.</para></step>			
 		</procedure>
 		<para>Once item templates have been created, they may be employed when items are added to the database.</para>
-		<para>Using item templates:</para>		
+				
 		<procedure>
+			<title>Using item templates:</title>
 			<step><para>Retrieve a record and display volumes.</para></step>
 			<step><para>Select the appropriate volume.</para></step>	
 			<step><para><menuchoice><guimenu>Actions for this Row</guimenu> <guimenuitem>Add Items</guimenuitem></menuchoice>.</para></step>
@@ -300,8 +305,9 @@
 			<step><para>Select where the template should be saved on the workstation, name the file, and click <guibutton>Save</guibutton>. </para></step>	
 			<step><para>Click <guibutton>OK</guibutton>.</para></step>					
 		</procedure>
-		<para>Importing templates</para>		
+				
 		<procedure>
+			<title>Importing templates:</title>
 			<step><para>Click on <guibutton>Import</guibutton> in the top left hand corner of the Copy Editor.</para></step>
 			<step><para>Navigate to the file’s location, select the file and click <guibutton>Open</guibutton>.</para></step>	
 			<step><para>Click <guibutton>OK</guibutton>.</para></step>					
@@ -329,8 +335,9 @@
 			identified.</para></step>	
 			<step><para>All buckets created by this login are available in the drop down menu.</para></step>					
 		</procedure>
-		<para>Creating record buckets from within a record:</para>		
+				
 		<procedure>
+			<title>Creating record buckets from within a record:</title>
 			<step><para>Search for, retrieve, and display the desired bibliographic record.</para></step>
 			<step><para>Choose <menuchoice><guimenu>Actions for this Record</guimenu> <guimenuitem>Add to Bucket</guimenuitem></menuchoice>.</para></step>	
 			<step><para>Select <guimenuitem>Add to New Bucket</guimenuitem>.</para></step>	
@@ -343,9 +350,9 @@
 			<step><para>Select the appropriate bucket and click <guibutton>Add to Selected Bucket</guibutton>.</para></step>	
 			<step><para>To confirm this action, go back to the Record Bucket tab. The bucket now contains the record.</para></step>	
 			<step><para>Continue to add records, if required.</para></step>	
-		</procedure>
-		<para>To work from within the buckets module:</para>		
+		</procedure>	
 		<procedure>
+			<title>To work from within the buckets module:</title>	
 			<step><para>Choose <menuchoice><guimenu>Cataloging </guimenu> <guimenuitem> Manage Record Buckets</guimenuitem></menuchoice>.</para></step>
 			<step><para>Select the Record Query tab on the left side of the screen.</para></step>	
 			<step><para>Select the appropriate bucket and click <guibutton>Add to Selected Bucket</guibutton>.</para></step>	
@@ -367,22 +374,24 @@
 			<title>Adding Copy Records to Copy Buckets</title>
 			<para>While creating copy buckets is similar to creating record buckets (simply choose Copy Buckets in the menu choice), there are significant differences in adding copy 
 			records to a bucket. Records must be added to copy buckets from the copy record level. This may be done from several locations within the Evergreen client.</para>	
-			<para>From the holdings maintenance record summary screen:</para>		
+					
 			<procedure>
+				<title>Adding copy records from the holdings maintenance record summary screen:</title>
 				<step><para>Select the required record and choose <menuchoice><guimenu>Actions for Selected Rows</guimenu> <guimenuitem>Add Items to Buckets</guimenuitem>
 				</menuchoice>.</para></step>
 				<step><para>Add the record to an existing bucket or create a new bucket on the fly.</para></step>	
 				<step><para>The copy record is now in the selected bucket. The displayed data differs slightly from the Record Bucket view.</para></step>	
 			</procedure>
-			<para>From the item status (<keycap>F5</keycap>) screen:</para>		
+				
 			<procedure>
+				<title>Adding copy records from the item status screen:</title>	
 				<step><para>Select the required record(s) and choose <menuchoice><guimenu>Actions for Catalogers</guimenu> <guimenuitem>Add Items to Buckets</guimenuitem>
 				</menuchoice> or choose <menuchoice><guimenu>Actions for Selected Items</guimenu> <guimenuitem>Add to Item Bucket</guimenuitem>
 				</menuchoice>.</para></step>
 				<step><para>Select the desired bucket and click <guibutton>Add to Selected Bucket</guibutton> or <guibutton>Create a New Bucket</guibutton>.</para></step>	
-			</procedure>
-			<para>From within the copy buckets module:</para>		
+			</procedure>	
 			<procedure>
+				<title>Adding copy records from within the copy buckets module:</title>
 				<step><para>Enter item barcode(s) into the Pending Copies barcode box.</para></step>
 				<step><para>Click <guibutton>Submit</guibutton>.</para></step>
 				<step><para>Item(s) will display. </para></step>
@@ -393,29 +402,32 @@
 		<section xml:id="WorkingwithRecordsinaBucket">
 			<title>Working with Records in a Bucket</title>
 			<para>Once records have been placed in a bucket, a variety of functions may be performed. </para>	
-			<para>To batch edit records:</para>		
+					
 			<procedure>
-				<step><para>Access the Copy Bucket view by choosing <menuchoice><guimenu>Edit</guimenu> <guimenuitem>Copy Buckets</guimenuitem>
+				<title>To batch edit records:</title>
+				<step><para>Access the Copy Bucket view by choosing <menuchoice><guimenu>Edit</guimenu> 
+				<guimenuitem>Copy Buckets</guimenuitem>
 				</menuchoice>.</para></step>
 				<step><para>Select the appropriate bucket from the drop down menu.</para></step>	
 				<step><para>When the bucket is displayed click <guibutton>Edit Item Attributes</guibutton>.</para></step>
-				<step><para>The Copy Editor window opens. Note that all the barcodes, call numbers, and shelving locations display.</para></step>
+				<step><para>The Copy Editor window opens. Note that all the barcodes, call numbers, 
+				and shelving locations display.</para></step>
 				<step><para>Make the desired edits.</para></step>	
 				<step><para>Apply each change.</para></step>
 				<step><para>Click <guibutton>Modify Copies</guibutton> to save all changes.</para></step>
 				<step><para>Click <guibutton>OK</guibutton>.</para></step>	
 				<step><para>The desired changes are made for all selected items.</para></step>			
 			</procedure>
-			<caution><para>Use caution when using the Transfer to Specific Volume action.</para></caution>  
-
-			<para>Removing records from buckets:</para>		
+			<caution><para>Use caution when using the Transfer to Specific Volume action.</para></caution>  	
 			<procedure>
+				<title>Removing records from buckets:</title>
 				<step><para>select the desired record.</para></step>
 				<step><para>Click <guibutton>Remove Selected from Bucket</guibutton></para></step>
 			</procedure>
 			<para>The same procedure is used for both Record and Copy Buckets</para>
-			<para>Retrieving Shared Buckets:</para>		
+				
 			<procedure>
+				<title>Retrieving shared buckets:</title>	
 				<step><para>Access the copy or record bucket management screen as described above.</para></step>
 				<step><para>In drop down menu beside <guimenu>Choose a bucket…</guimenu> select <guimenuitem>Retrieve shared bucket</guimenuitem>.</para></step>
 				<step><para>Enter the desired bucket number and click <guibutton>OK</guibutton>.</para></step>
@@ -442,9 +454,9 @@
 	</section>
 	<section xml:id="PrintingSpineandPocketLabels">
 		<title>Printing Spine and Pocket Labels</title>
-		<para>Copy buckets may be used to group items requiring labels.</para>
-		<para>Locate the correct copy bucket:</para>		
+		<para>Copy buckets may be used to group items requiring labels.</para>	
 		<procedure>
+			<step><para>Locate the correct copy bucket.</para></step>
 			<step><para>Select <guimenuitem>Show Status</guimenuitem>.</para></step>
 			<step><para>Items display in the Item Status screen.</para></step>	
 			<step><para>Select items requiring labels (hold the <keycap>Ctrl</keycap> key down and click the required items to select multiple items; if all items require labels, hold the 
@@ -462,8 +474,9 @@
 	</section>
 	<section xml:id="DeletingRecords">
 		<title>Deleting Records</title>
-		<para>For batch deletions:</para>		
+				
 		<procedure>
+			<title>Batch deletions:</title>
 			<step><para>Create a copy bucket for the items to be deleted (<menuchoice><guimenu>Cataloging</guimenu> <guimenuitem>Manage Copy Buckets</guimenuitem>
 			</menuchoice>; create a New Bucket</para></step>		
 			<step><para>Enter the barcodes for the to-be-deleted items into the Pending Copies section of the Copy Buckets screen.</para></step>	
@@ -474,8 +487,9 @@
 		<para>When all items have been deleted from a bibliographic record, the bibliographic record is also deleted from the system.  The record may still be retrieved through the client, 
 		but will display as Deleted.  These records will not display in the OPAC.</para>
 		<para>Individual item records may be deleted from the Holdings Maintenance screen.</para>
-		<para>To delete individual records:</para>		
+				
 		<procedure>
+			<title>To delete individual records:</title>
 			<step><para>Highlight the item (barcode) to be deleted.</para></step>		
 			<step><para>Select <menuchoice><guimenu>Actions for Selected Rows</guimenu> <guimenuitem>Delete Items</guimenuitem>
 			</menuchoice>.</para></step>	
@@ -488,8 +502,9 @@
 			<step><para>Choose <menuchoice><guimenu>Actions for this Record</guimenu> <guimenuitem>Delete Record</guimenuitem>
 			</menuchoice>.</para></step>		
 		</procedure>
-		<para>To restore records:</para>		
+				
 		<procedure>
+			<title>To restore records:</title>
 			<step><para>Retrieve the record through the staff client.</para></step>		
 			<step><para><menuchoice><guimenu>Actions for this record</guimenu> <guimenuitem>Undelete Record</guimenuitem></menuchoice>.</para></step>	
 			<step><para>Confirm the action by selecting the checkbox and Undelete in the resulting popup box.</para></step>	
