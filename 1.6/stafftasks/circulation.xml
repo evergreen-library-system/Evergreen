@@ -812,4 +812,850 @@
 			</section>
 		</section>
 	</section>
+	<section xml:id="offlinetransactions">
+	      <title>Offline Transactions</title>
+	     
+	   <para>Evergreen's Standalone Interface/Offline Interface is designed to log transactions during
+	      network outage, which can be uploaded and processed once network operations are
+	      restored.</para>
+
+	   <para>The terms “Offline Interface” and “Standalone Interface” mean the same thing - a separate
+	      program to handle simple circulation tasks while the network is down. </para>
+
+	   <informalfigure>
+	      <para>To access Offline Interface, go to Staff Client login screen. Click
+		    <guibutton>Standalone Interface</guibutton> button. </para>
+	      <para>
+		 <mediaobject>
+		    <imageobject>
+		       <imagedata scalefit="0" fileref="media/offline-1.png "/>
+		    </imageobject>
+		 </mediaobject>
+	      </para>
+	   </informalfigure>
+	   <informalfigure>
+	      <para>Evergreen Standalone Interface will open. </para>
+	      <para>
+		 <mediaobject>
+		    <imageobject>
+		       <imagedata scalefit="0" fileref="media/offline-2.png "/>
+		    </imageobject>
+		 </mediaobject>
+	      </para>
+	   </informalfigure>
+
+	   <section>
+	      <info>
+		 <title>Patron Registration</title>
+	      </info>
+	      <para>Patron registration on Evergreen Offline Interface records the minimum patron
+		 information necessary to register a new patron.</para>
+	      <tip>
+		 <para>All fields, except Line 2 of Billing Address, on <guilabel>Patron
+		       Registration</guilabel> screen are required. If your library does not record
+		    information for any field, you need work out a standard fake value for it, e.g.
+		    1900-01-01 for Date of Birth.</para>
+
+		 <para>The account password will be automatically generated. Patrons can access their
+		    account with the password after the offline transactions are uploaded and
+		    processed.</para>
+
+	      </tip>
+
+	      <procedure>
+		 <step>
+		    <informalfigure>
+		       <para>Click <guibutton>Register Patron</guibutton> on the top menu bar.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-24.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+
+		 </step>
+
+		 <step>
+		    <informalfigure>
+		       <para><guilabel>Patron Registration</guilabel> screen is displayed.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-25.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+		 </step>
+
+
+
+		 <step>
+		    <informalfigure>
+		       <para>Fill in the form with patron information. Use the drop down list if available.
+		          Click <guibutton>Save patron registration</guibutton> button. Click
+		             <guibutton>OK</guibutton> on the confirmation pop-up window.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-26.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+
+		    </informalfigure>
+
+		 </step>
+
+
+
+
+
+	      </procedure>
+
+	   </section>
+
+	   <section xml:id="offline-check-out">
+	      <info>
+		 <title>Check Out</title>
+	      </info>
+
+	      <procedure>
+		 <step>
+		    <informalfigure>
+		       <para>Click <guibutton>Check Out</guibutton> button to access check out screen. </para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-3.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <informalfigure>
+		       <para>The Standalone Check Out screen will open.</para>
+		      <para> <mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-4.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <para>Make sure the date (on the left end of the menu bar) is correct.</para>
+		 </step>
+
+		 <step>
+		    <informalfigure>
+		       <para>Scan the patron's library card barcode in <guilabel>Enter the patron's
+		             barcode</guilabel> box. </para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-5.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+		 </step>
+
+
+		 <step>
+		    <informalfigure>
+		       <para>Check that the due date is correct. You may delete then type in a due date in
+		             <guilabel>Enter the item due date</guilabel> box. You may also click
+		             <guimenu>choose one of these</guimenu> dropdown list to select a relative due
+		          date based on the loan period. </para>
+		      <para> <mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-6.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+		 </step>
+
+
+		 <step>
+		    <informalfigure>
+		       <para>Scan the items' bacode in <guilabel>Enter the item barcode</guilabel> box. It
+		          will appear on the right side of the screen. </para>
+
+
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-7.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+		 </step>
+		 <step>
+		    <informalfigure>
+		       <para>For non-catalogued items, you may also click<guimenu> choose a non-barcode
+		             option </guimenu> dropdown list to select a non-catalogued category.</para><para>  <mediaobject>
+		             <imageobject>
+		                <imagedata scalefit="0" fileref="media/offline-8.png"/>
+		             </imageobject>
+		          </mediaobject>
+		       </para>
+		    </informalfigure>
+
+		    <informalfigure>
+		       <para>Enter the number of items you want to check out, then click
+		             <guibutton>OK</guibutton> on the prompt window.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-9.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <para>Scan all items, changing the due date if necessary.</para>
+		 </step>
+
+		 <step>
+		    <informalfigure>
+		       <para>If you want to print receipt, make sure <guilabel>Print receipt?</guilabel>
+		          checkbox is selected.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-10.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <informalfigure>
+		       <para>Click <guibutton>Save these transactions</guibutton>.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-11.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+
+
+		    </informalfigure>
+		 </step>
+	      </procedure>
+	      <tip>
+		 <para>The default dates are based on your computer settings.</para>
+		 <para>Pre-catalogued item circulation is not available on Offline Interface. If an existing pre-cat barcode 
+		    happens to be used, it will be checked out with the previous author and title. If a new pre-cat barcode is attempted, 
+		 an error of ASSET NOT FOUND (item not found) will be returned upon processing offline transactions.</para>
+	      </tip>
+	   </section>
+
+	   <section>
+	      <info>
+		 <title>Renew</title>
+	      </info>
+	      <para>To renew, you must know items barcode number. Patron's barcode is optional.</para>
+	      <procedure>
+
+		 <step>
+
+		    <informalfigure>
+		       <para>To access renew function, click <guibutton>Renew</guibutton> button on the top
+		          menu bar.</para>
+
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-12.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+
+		 </step>
+		 <step>
+		    <informalfigure>
+		       <para><guilabel>Renew</guilabel> screen looks very similar to <guilabel>Check
+		             Out</guilabel> screen. The differences are patron's barcode is optional on
+		             <guilabel>Renew</guilabel> screen, and non-barcoded option is not available as
+		          non-barcoded items can not be renewed. </para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-13.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <para>Follow the same procedure as checking out described above. Skip patron barcode if
+		       you do not have it.</para>
+		 </step>
+
+
+	      </procedure>
+	   </section>
+	   <section>
+	      <info>
+		 <title>In House Use</title>
+	      </info>
+	      <para/>
+	      <procedure>
+		 <step>
+		    <informalfigure>
+		       <para>To access <guilabel>In House Use</guilabel>, click <guibutton>In House
+		             Use</guibutton> button on the top menu bar.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-14.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <informalfigure>
+		       <para>Make sure the date is correct.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-15.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <informalfigure>
+		       <para>Type in the number in <guilabel>Enter the number of uses of the item</guilabel>
+		          box.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-16.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+
+		 </step>
+
+		 <step>
+		    <informalfigure>
+		       <para>Scan or type in the item barcode number in <guilabel>Enter the item
+		             barcode</guilabel> box.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-17.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <para>Repeat the above 2 steps until all items have been scanned.</para>
+		 </step>
+		 <step>
+		    <informalfigure>
+		       <para>Click <guibutton>Save these transactions</guibutton>. Make sure <guilabel>Print
+		             receipt?</guilabel> checkbox is selected if you want to print a receipt.</para>
+		      <para> <mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-18.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+
+		    </informalfigure>
+		 </step>
+	      </procedure>
+
+	   </section>
+	   <section>
+	      <info>
+		 <title>Check In</title>
+	      </info>
+
+	      <procedure>
+		 <step>
+		    <informalfigure>
+		       <para>Click <guibutton>Check In</guibutton> button on the top menu bar.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-19.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <informalfigure>
+		       <para><guilabel>Check In</guilabel> screen will open.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-20.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <informalfigure>
+		       <para>Make sure the date is correct.</para>
+		      <para> <mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-21.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <informalfigure>
+		       <para>Scan the items barcode in <guilabel>Enter item barcode</guilabel> box. The
+		          number will be displayed on the right side fo the screen.</para>
+		       <para><mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-22.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <para>Scan all items you want to check in.</para>
+		 </step>
+		 <step>
+		    <informalfigure>
+		       <para>Click <guibutton>Save these transactions</guibutton>. If you need to print a
+		          receipt, make sure <guilabel>Print receipt?</guilabel> checkbox is selected before
+		          you save the transactions.</para>
+		      <para> <mediaobject>
+		          <imageobject>
+		             <imagedata scalefit="0" fileref="media/offline-23.png"/>
+		          </imageobject>
+		       </mediaobject></para>
+		    </informalfigure>
+		 </step>
+
+	      </procedure>
+	      <caution>
+		 <para>Without access to Evergreen database, items on holds or with special status will not
+		    be captured in offline mode. Sitka Support Team recommends libraries not use check in
+		    function on Standalone Interface if possible.</para>
+	      </caution>
+	   </section>
+
+
+	   <section>
+      <info>
+         <title>Uploading offline transactions</title>
+      </info>
+
+      <para>Once you are able to connect to the server, you need to upload the offline transactions.
+          It is good practice to do this as soon as possible, but if the local system administrator
+         isn’t on site for a day or two do not panic.</para>
+
+      <para>The terms <guilabel>Offline Interface</guilabel> and <guilabel>Standalone
+            Interface</guilabel> mean the same thing - a separate program to handle simple
+         circulation tasks while the network is down. </para>
+
+      <para>Once you can connect to the server, there are 3 steps to uploading offline
+         transactions:</para>
+
+      <orderedlist inheritnum="ignore" continuation="restarts">
+         <listitem>
+            <para><link xlink:href="#offline-create">Create a session: </link> to be done by local
+               system administrators at an administration workstation.</para>
+         </listitem>
+         <listitem>
+            <para><link xlink:href="#offline-upload">Upload transactions to a session: </link> to be
+               done by circulation staff at circulation workstations.</para>
+         </listitem>
+         <listitem>
+            <para><link xlink:href="#offline-process">Process the uploaded transactions: </link>to
+               be done by local system administrators at an administration workstation.</para>
+         </listitem>
+      </orderedlist>
+
+      <para>Once the network has come back up, a local system administrator must first create a
+         session before uploading transactions. Then, staff can upload transactions from each of the
+         workstations used in offline circ to that session.  Once all of the branch workstations
+         have uploaded their transactions to the session, the manager will process all the
+         transactions from all the workstations at once. </para>
+
+      <note>
+         <para>Circulation Staff uploading transactions to the session does not put the transactions
+            into the <application>Evergreen</application> database. The transactions will not be
+            sent to the <application>Evergreen</application> database until the manager processes
+            the session.</para>
+      </note>
+
+      <simplesect xml:id="offline-create">
+         <info>
+            <title>Create a Session</title>
+         </info>
+
+         <procedure>
+            <step>
+               <para>Log into Evergreen with a local system administrator username and
+                  password.</para>
+            </step>
+
+            <step>
+               <informalfigure>
+                  <para>From the menu bar, select <menuchoice>
+                        <guimenu>Admin (-)</guimenu>
+                        <guimenuitem>Offline Transaction Management</guimenuitem>
+                     </menuchoice>.</para>
+                  <para>
+                     <mediaobject>
+                        <alt>screenshot of staff client</alt>
+                        <imageobject>
+                           <imagedata scalefit="0" fileref="media/offline-27.png"/>
+                        </imageobject>
+
+                     </mediaobject>
+                  </para>
+               </informalfigure>
+            </step>
+
+
+            <step>
+               <para>The <guilabel>Offline Transactions</guilabel> screen will open. Previously
+                  created sessions will be listed in the Offline Sessions section. Otherwise, the
+                  Offline Sessions section will be blank. </para>
+            </step>
+
+            <step>
+               <informalfigure>
+                  <para>In the upper <guilabel>Offline Sessions</guilabel> section, click on the
+                        <guibutton>Create</guibutton> button to create a new session.</para>
+                  <para>
+                     <mediaobject>
+                        <alt>screenshot of staff client</alt>
+                        <imageobject>
+                           <imagedata scalefit="0" fileref="media/offline-28.png"/>
+                        </imageobject>
+
+                     </mediaobject>
+                  </para>
+               </informalfigure>
+            </step>
+
+
+            <step>
+               <informalfigure>
+                  <para>Enter a name for the session, like “Internet Down 2009-12-02”.  Click
+                        <guibutton>OK</guibutton>.</para>
+                  <para>
+                     <mediaobject>
+                        <alt>screenshot of staff client</alt>
+                        <imageobject>
+                           <imagedata scalefit="0" fileref="media/offline-29.png"/>
+                        </imageobject>
+
+                     </mediaobject>
+                  </para>
+               </informalfigure>
+            </step>
+
+
+            <step>
+               <informalfigure>
+                  <para>In the <guilabel>Offline Sessions</guilabel> section, highlight the session
+                     you just created. An <guilabel>Uploaded Transactions</guilabel> section will
+                     appear in the bottom of the screen. Initially, this section will be empty.
+                      </para>
+                  <para>
+                     <mediaobject>
+                        <alt>screenshot of staff client</alt>
+                        <imageobject>
+                           <imagedata width="100%" scalefit="1" fileref="media/offline-30.png"/>
+                        </imageobject>
+
+                     </mediaobject>
+                  </para>
+               </informalfigure>
+            </step>
+
+
+            <step>
+               <para>Inform library staff that the session has been created and what the session
+                  name is. </para>
+            </step>
+         </procedure>
+
+      </simplesect>
+      <simplesect xml:id="offline-upload">
+         <info>
+            <title>Upload Workstation Transactions to a Session</title>
+         </info>
+
+         <para>Wait until the local system administrator has created a session and told you that
+            it's ready for your upload. There may be several sessions shown on the <guilabel>Offline
+               Transaction Management</guilabel> screen, so you will need the name of the correct
+            session from your local system administrator.</para>
+
+         <procedure>
+            <step>
+               <para>Log into <application>Evergreen</application> with your regular username and
+                  password.</para>
+            </step>
+
+
+            <step>
+               <para>From the menu bar, select <menuchoice>
+                     <guimenu>Admin (-)</guimenu>
+                     <guimenuitem>Offline Transaction Management</guimenuitem>
+                  </menuchoice>.</para>
+            </step>
+
+
+            <step>
+               <para>The <guilabel>Offline Transactions</guilabel> screen will open. You should see
+                  at least one session in the <guilabel>Offline Sessions</guilabel> section. You may
+                  see old sessions listed there, as well. </para>
+            </step>
+
+            <step>
+               <informalfigure>
+                  <para>In the upper <guilabel>Offline Sessions</guilabel> section, highlight the
+                     correct session, then click <guibutton>Upload</guibutton>.  </para>
+                  <para>
+                     <mediaobject>
+                        <alt>screenshot of staff client</alt>
+                        <imageobject>
+                           <imagedata width="100%" scalefit="1" fileref="media/offline-31.png"/>
+                        </imageobject>
+
+
+                     </mediaobject>
+                  </para>
+               </informalfigure>
+            </step>
+
+
+
+
+            <step>
+               <informalfigure>
+                  <para>When the uploading is finished,select the session in Offline Sessions
+                     section. Now the value in the <guilabel>Upload Count</guilabel> column should
+                     have been increased by 1. Your workstation should be listed in
+                        <guilabel>Uploaded Transactions</guilabel> section now. </para>
+                  <para>
+                     <mediaobject>
+                        <alt>screenshot of staff client</alt>
+                        <imageobject>
+                           <imagedata width="100%" scalefit="1" fileref="media/offline-32.png"/>
+                        </imageobject>
+
+                     </mediaobject>
+                  </para>
+               </informalfigure>
+            </step>
+
+
+            <step>
+               <para>Inform your local system administrator that your transaction has been uploaded
+                  to the session.</para>
+            </step>
+
+         </procedure>
+
+         <note>
+            <para>You will need to do this for each workstation you have used for offline
+               circulation.  If your library has more than one workstations that have been used for
+               offline transactions you will see the other workstation sessions that have already
+               been uploaded.  </para>
+         </note>
+
+      </simplesect>
+      <simplesect xml:id="offline-process">
+         <info>
+            <title>Process the Transactions</title>
+         </info>
+
+         <para>Wait until all the appropriate staff workstations have uploaded their transactions to
+            your session. You should see the workstations listed in the <guilabel>Uploaded
+               Transactions</guilabel> section. You'll need to be logged into
+               <application>Evergreen</application> as a local system administrator to do the
+            processing step.</para>
+         <procedure>
+
+            <step>
+               <para>Log into <application>Evergreen</application> with a local system
+                  administrator's username and password.</para>
+            </step>
+
+            <step>
+               <para>From the menu bar, select <menuchoice>
+                     <guimenu>Admin (-)</guimenu>
+                     <guimenuitem>Offline Transaction Management</guimenuitem>
+                  </menuchoice>.</para>
+            </step>
+
+
+            <step>
+               <informalfigure>
+                  <para>Highlight the correct session and, if necessary,
+                        <guibutton>Refresh</guibutton> to verify all the appropriate workstations
+                     have uploaded their transactions to your session. </para>
+                  <para>
+                     <mediaobject>
+                        <alt>screenshot of staff client</alt>
+                        <imageobject>
+                           <imagedata width="100%" scalefit="1" fileref="media/offline-33.png"/>
+                        </imageobject>
+
+                     </mediaobject>
+                  </para>
+               </informalfigure>
+            </step>
+
+
+            <step>
+               <informalfigure>
+                  <para>Click on the <guibutton>Process</guibutton> button. </para>
+                  <para>
+                     <mediaobject>
+                        <alt>screenshot of staff client</alt>
+                        <imageobject>
+                           <imagedata width="100%" scalefit="1" fileref="media/offline-34.png"/>
+                        </imageobject>
+
+                     </mediaobject>
+                  </para>
+               </informalfigure>
+            </step>
+
+
+            <step>
+               <informalfigure>
+                  <para>The processing may take a while, depending on how many transactions you have
+                     done. Click the <guibutton>Refresh</guibutton> button to check the status. The
+                     processing is complete when the <guilabel>Processing?</guilabel> column shows
+                        <guilabel>Completed</guilabel>.</para>
+                  <para>
+                     <mediaobject>
+                        <alt>screenshot of staff client</alt>
+                        <imageobject>
+                           <imagedata width="100%" scalefit="1" fileref="media/offline-35.png"/>
+                        </imageobject>
+
+                     </mediaobject>
+                  </para>
+               </informalfigure>
+            </step>
+         </procedure>
+
+         <note>
+            <para>The number in the <guilabel>Transactions Processed</guilabel> column is equal to
+               the number of items checked out or checked in.  For example, if there are 5
+               transactions processed this could be 5 items checked out, or 3 items checked in and 2
+               items checked out, or 5 items checked in.  </para>
+         </note>
+      </simplesect>
+      <simplesect>
+         <info>
+            <title>Exceptions</title>
+         </info>
+
+         <para>Exceptions are problems that were encountered during processing.  For example, a
+            mis-scanned patron barcode, an open circulation, or an item that wasn’t checked in
+            before it was checked out to another patron, would be listed as an exception. Those
+            transactions causing exceptions may not be loaded into Evergreen database. Staff should
+            examine the exceptions and take necessary action.</para>
+
+         <informalfigure>
+            <para>The example below shows several exceptions:</para>
+
+            <para>
+               <mediaobject>
+                  <alt>screenshot of staff client</alt>
+                  <imageobject>
+                     <imagedata width="100%" scalefit="1" fileref="media/offline-36.png"/>
+                  </imageobject>
+
+               </mediaobject>
+            </para>
+         </informalfigure>
+
+         <para>These are a few notes about possible exceptions. It is not an all-inclusive
+            list.</para>
+
+         <orderedlist inheritnum="ignore" continuation="restarts">
+            <listitem>
+               <para>Checking out a DVD with the wrong date (leaving due date set at +2 weeks
+                  instead of +1 week) doesn't cause an exception.</para>
+            </listitem>
+            <listitem>
+               <para>Overdue books are not flagged as exceptions.</para>
+            </listitem>
+            <listitem>
+               <para>Checking out a reference book doesn't cause an exception.</para>
+            </listitem>
+            <listitem>
+               <para>Checking out an item belonging to another library doesn't cause an
+                  exception.</para>
+            </listitem>
+            <listitem>
+               <para>The <guilabel>Standalone Interface</guilabel> doesn't recognize books on hold,
+                  no exceptions will be generated for that.</para>
+            </listitem>
+            <listitem>
+               <para>The <guilabel>Standalone Interface</guilabel> will recognize blocked, barred,
+                  and expired patrons as well as lost cards, IF you have recently done an <menuchoice>
+                     <guimenu>Admin (-)</guimenu>
+                     <guimenuitem>Download Offline Patron List</guimenuitem>
+                  </menuchoice> on the workstation on which you're using the <guilabel>Standalone
+                     Interface</guilabel>. You will get an error message indicating the patron
+                  status from within the <guilabel>Standalone Interface</guilabel> at check-out
+                  time.</para>
+            </listitem>
+            <listitem>
+               <formalpara>
+                  <title>ROUTE-ITEM</title>
+                  <para>Indicates the book should be routed to another branch or library system.
+                     You'll need to find the book and re-check it in (online) to get the
+                        <guilabel>Transit Slip</guilabel> to print.</para>
+               </formalpara>
+            </listitem>
+            <listitem>
+               <formalpara>
+                  <title>COPY_STATUS_LOST</title>
+                  <para>Indicates a book previously marked as lost was found and checked in.</para>
+               </formalpara>
+            </listitem>
+            <listitem>
+               <formalpara>
+                  <title>CIRC_CLAIMS_RETURNED</title>
+                  <para>Indicates a book previously marked as claimed-returned was found and checked
+                     in.</para>
+               </formalpara>
+            </listitem>
+            <listitem>
+               <formalpara>
+                  <title>ASSET_COPY_NOT_FOUND</title>
+                  <para>Indicates the item barcode was mis-scanned/mis-typed.</para>
+               </formalpara>
+            </listitem>
+            <listitem>
+               <formalpara>
+                  <title>ACTOR_CARD_NOT_FOUND</title>
+                  <para>Indicates the patron's library barcode was mis-scanned/ mis-typed.</para>
+               </formalpara>
+            </listitem>
+            <listitem>
+               <formalpara>
+                  <title>OPEN_CIRCULATION_EXISTS</title>
+                  <para>Indicates a book was checked out that had never been checked in.</para>
+               </formalpara>
+            </listitem>
+            <listitem>
+               <formalpara>
+                  <title>MAX_RENEWALS_REACHED</title>
+                  <para>Indicates the item has already been renewed the maximum times allowed (or
+                     it’s a video/DVD).</para>
+               </formalpara>
+            </listitem>
+         </orderedlist>
+      </simplesect>
+   </section>
+</section>
 </chapter>
