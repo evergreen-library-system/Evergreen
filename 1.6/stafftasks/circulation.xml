@@ -828,7 +828,7 @@
 	      <para>
 		 <mediaobject>
 		    <imageobject>
-		       <imagedata scalefit="0" fileref="media/offline-1.png "/>
+		       <imagedata scalefit="0" fileref="../media/offline-1.png "/>
 		    </imageobject>
 		 </mediaobject>
 	      </para>
@@ -838,7 +838,7 @@
 	      <para>
 		 <mediaobject>
 		    <imageobject>
-		       <imagedata scalefit="0" fileref="media/offline-2.png "/>
+		       <imagedata scalefit="0" fileref="../media/offline-2.png "/>
 		    </imageobject>
 		 </mediaobject>
 	      </para>
@@ -868,7 +868,7 @@
 		       <para>Click <guibutton>Register Patron</guibutton> on the top menu bar.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-24.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-24.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -880,7 +880,7 @@
 		       <para><guilabel>Patron Registration</guilabel> screen is displayed.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-25.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-25.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -895,7 +895,7 @@
 		             <guibutton>OK</guibutton> on the confirmation pop-up window.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-26.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-26.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 
@@ -922,7 +922,7 @@
 		       <para>Click <guibutton>Check Out</guibutton> button to access check out screen. </para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-3.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-3.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -933,7 +933,7 @@
 		       <para>The Standalone Check Out screen will open.</para>
 		      <para> <mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-4.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-4.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -949,7 +949,7 @@
 		             barcode</guilabel> box. </para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-5.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-5.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -964,7 +964,7 @@
 		          date based on the loan period. </para>
 		      <para> <mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-6.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-6.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -979,7 +979,7 @@
 
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-7.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-7.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -989,7 +989,7 @@
 		       <para>For non-catalogued items, you may also click<guimenu> choose a non-barcode
 		             option </guimenu> dropdown list to select a non-catalogued category.</para><para>  <mediaobject>
 		             <imageobject>
-		                <imagedata scalefit="0" fileref="media/offline-8.png"/>
+		                <imagedata scalefit="0" fileref="../media/offline-8.png"/>
 		             </imageobject>
 		          </mediaobject>
 		       </para>
@@ -1000,7 +1000,7 @@
 		             <guibutton>OK</guibutton> on the prompt window.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-9.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-9.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 
@@ -1017,7 +1017,7 @@
 		          checkbox is selected.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-10.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-10.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 
@@ -1029,7 +1029,7 @@
 		       <para>Click <guibutton>Save these transactions</guibutton>.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-11.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-11.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 
@@ -1060,7 +1060,7 @@
 
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-12.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-12.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -1074,7 +1074,7 @@
 		          non-barcoded items can not be renewed. </para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-13.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-13.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 
@@ -1101,7 +1101,7 @@
 		             Use</guibutton> button on the top menu bar.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-14.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-14.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -1112,7 +1112,7 @@
 		       <para>Make sure the date is correct.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-15.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-15.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -1124,7 +1124,7 @@
 		          box.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-16.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-16.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -1137,7 +1137,7 @@
 		             barcode</guilabel> box.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-17.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-17.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 
@@ -1153,7 +1153,7 @@
 		             receipt?</guilabel> checkbox is selected if you want to print a receipt.</para>
 		      <para> <mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-18.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-18.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 
@@ -1173,7 +1173,7 @@
 		       <para>Click <guibutton>Check In</guibutton> button on the top menu bar.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-19.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-19.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 
@@ -1185,7 +1185,7 @@
 		       <para><guilabel>Check In</guilabel> screen will open.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-20.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-20.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 
@@ -1197,7 +1197,7 @@
 		       <para>Make sure the date is correct.</para>
 		      <para> <mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-21.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-21.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 
@@ -1210,7 +1210,7 @@
 		          number will be displayed on the right side fo the screen.</para>
 		       <para><mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-22.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-22.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -1226,7 +1226,7 @@
 		          you save the transactions.</para>
 		      <para> <mediaobject>
 		          <imageobject>
-		             <imagedata scalefit="0" fileref="media/offline-23.png"/>
+		             <imagedata scalefit="0" fileref="../media/offline-23.png"/>
 		          </imageobject>
 		       </mediaobject></para>
 		    </informalfigure>
@@ -1306,7 +1306,7 @@
                      <mediaobject>
                         <alt>screenshot of staff client</alt>
                         <imageobject>
-                           <imagedata scalefit="0" fileref="media/offline-27.png"/>
+                           <imagedata scalefit="0" fileref="../media/offline-27.png"/>
                         </imageobject>
 
                      </mediaobject>
@@ -1329,7 +1329,7 @@
                      <mediaobject>
                         <alt>screenshot of staff client</alt>
                         <imageobject>
-                           <imagedata scalefit="0" fileref="media/offline-28.png"/>
+                           <imagedata scalefit="0" fileref="../media/offline-28.png"/>
                         </imageobject>
 
                      </mediaobject>
@@ -1346,7 +1346,7 @@
                      <mediaobject>
                         <alt>screenshot of staff client</alt>
                         <imageobject>
-                           <imagedata scalefit="0" fileref="media/offline-29.png"/>
+                           <imagedata scalefit="0" fileref="../media/offline-29.png"/>
                         </imageobject>
 
                      </mediaobject>
@@ -1365,7 +1365,7 @@
                      <mediaobject>
                         <alt>screenshot of staff client</alt>
                         <imageobject>
-                           <imagedata width="100%" scalefit="1" fileref="media/offline-30.png"/>
+                           <imagedata width="100%" scalefit="1" fileref="../media/offline-30.png"/>
                         </imageobject>
 
                      </mediaobject>
@@ -1420,7 +1420,7 @@
                      <mediaobject>
                         <alt>screenshot of staff client</alt>
                         <imageobject>
-                           <imagedata width="100%" scalefit="1" fileref="media/offline-31.png"/>
+                           <imagedata width="100%" scalefit="1" fileref="../media/offline-31.png"/>
                         </imageobject>
 
 
@@ -1442,7 +1442,7 @@
                      <mediaobject>
                         <alt>screenshot of staff client</alt>
                         <imageobject>
-                           <imagedata width="100%" scalefit="1" fileref="media/offline-32.png"/>
+                           <imagedata width="100%" scalefit="1" fileref="../media/offline-32.png"/>
                         </imageobject>
 
                      </mediaobject>
@@ -1500,7 +1500,7 @@
                      <mediaobject>
                         <alt>screenshot of staff client</alt>
                         <imageobject>
-                           <imagedata width="100%" scalefit="1" fileref="media/offline-33.png"/>
+                           <imagedata width="100%" scalefit="1" fileref="../media/offline-33.png"/>
                         </imageobject>
 
                      </mediaobject>
@@ -1516,7 +1516,7 @@
                      <mediaobject>
                         <alt>screenshot of staff client</alt>
                         <imageobject>
-                           <imagedata width="100%" scalefit="1" fileref="media/offline-34.png"/>
+                           <imagedata width="100%" scalefit="1" fileref="../media/offline-34.png"/>
                         </imageobject>
 
                      </mediaobject>
@@ -1535,7 +1535,7 @@
                      <mediaobject>
                         <alt>screenshot of staff client</alt>
                         <imageobject>
-                           <imagedata width="100%" scalefit="1" fileref="media/offline-35.png"/>
+                           <imagedata width="100%" scalefit="1" fileref="../media/offline-35.png"/>
                         </imageobject>
 
                      </mediaobject>
@@ -1569,7 +1569,7 @@
                <mediaobject>
                   <alt>screenshot of staff client</alt>
                   <imageobject>
-                     <imagedata width="100%" scalefit="1" fileref="media/offline-36.png"/>
+                     <imagedata width="100%" scalefit="1" fileref="../media/offline-36.png"/>
                   </imageobject>
 
                </mediaobject>
