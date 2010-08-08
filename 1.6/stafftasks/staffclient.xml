@@ -23,10 +23,10 @@
 
 
 
-         <mediaobject xml:id="intro-login">
+         <mediaobject xml:id="staffclient-login">
             <alt>screenshot of staff client login</alt>
             <imageobject>
-               <imagedata scalefit="0" fileref="../media/intro-1.png"/>
+               <imagedata scalefit="0" fileref="../media/staffclient-1.png"/>
             </imageobject>
 
          </mediaobject>
@@ -172,7 +172,7 @@
             <para><mediaobject>
                <alt>staff client tabs</alt>
                <imageobject>
-                  <imagedata scalefit="0" fileref="../media/intro-2.png"/>
+                  <imagedata scalefit="0" fileref="../media/staffclient-2.png"/>
                </imageobject>
             </mediaobject></para>
          </informalfigure>
@@ -183,7 +183,7 @@
             <para><mediaobject>
                <alt>staff client tabs</alt>
                <imageobject>
-                  <imagedata scalefit="0" fileref="../media/intro-3.png"/>
+                  <imagedata scalefit="0" fileref="../media/staffclient-3.png"/>
                </imageobject>
             </mediaobject></para>
          </informalfigure>
@@ -412,14 +412,14 @@
                      <mediaobject>
                         <alt>copy/paste methods</alt>
                         <imageobject>
-                           <imagedata scalefit="0" fileref="../media/intro-5.png"/>
+                           <imagedata scalefit="0" fileref="../media/staffclient-5.png"/>
                         </imageobject>
 
                      </mediaobject>
                      <mediaobject>
                         <alt>copy/paste methods </alt>
                         <imageobject>
-                           <imagedata scalefit="0" fileref="../media/intro-6.png"/>
+                           <imagedata scalefit="0" fileref="../media/staffclient-6.png"/>
                         </imageobject>
                      </mediaobject>
                   </para>
@@ -442,7 +442,7 @@
                  <para> <mediaobject>
                      <alt>copy/paste methods</alt>
                      <imageobject>
-                        <imagedata scalefit="0" fileref="../media/intro-6a.png"/>
+                        <imagedata scalefit="0" fileref="../media/staffclient-6a.png"/>
                      </imageobject>
 
                   </mediaobject></para>
@@ -452,7 +452,7 @@
                <mediaobject>
                   <alt>copy/paste methods</alt>
                   <imageobject>
-                     <imagedata scalefit="0" fileref="../media/intro-6b.png"/>
+                     <imagedata scalefit="0" fileref="../media/staffclient-6b.png"/>
                   </imageobject>
 
                </mediaobject>
@@ -464,7 +464,7 @@
                      <mediaobject>
                         <alt>copy/paste methods</alt>
                         <imageobject>
-                           <imagedata scalefit="0" fileref="../media/intro-6c.png"/>
+                           <imagedata scalefit="0" fileref="../media/staffclient-6c.png"/>
                         </imageobject>
 
                      </mediaobject>
@@ -488,7 +488,7 @@
                   <para><mediaobject>
                      <alt>copy/paste methods</alt>
                      <imageobject>
-                        <imagedata scalefit="0" fileref="../media/intro-6d.png"/>
+                        <imagedata scalefit="0" fileref="../media/staffclient-6d.png"/>
                      </imageobject>
 
                   </mediaobject></para>
@@ -523,7 +523,7 @@
                <mediaobject>
                   <alt>screenshot of staff client column picker</alt>
                   <imageobject>
-                     <imagedata width="100%" scalefit="1" fileref="../media/intro-4.png"/>
+                     <imagedata width="100%" scalefit="1" fileref="../media/staffclient-4.png"/>
 
                   </imageobject>
                </mediaobject>
@@ -552,7 +552,7 @@
                <mediaobject>
                   <alt>staff client button bar</alt>
                   <imageobject>
-                     <imagedata scalefit="0" fileref="../media/intro-9.png"/>
+                     <imagedata scalefit="0" fileref="../media/staffclient-9.png"/>
 
                   </imageobject>
                </mediaobject>
@@ -571,7 +571,7 @@
                <mediaobject>
                   <alt>staff client button bar</alt>
                   <imageobject>
-                     <imagedata scalefit="0" fileref="../media/intro-8.png"/>
+                     <imagedata scalefit="0" fileref="../media/staffclient-8.png"/>
 
                   </imageobject>
                </mediaobject>
@@ -596,7 +596,7 @@
             <para><mediaobject>
                <alt>staff client tabs</alt>
                <imageobject>
-                  <imagedata scalefit="0" fileref="../media/intro-7.png"/>
+                  <imagedata scalefit="0" fileref="../media/staffclient-7.png"/>
                </imageobject>
             </mediaobject></para>
 
@@ -611,7 +611,7 @@
            <para> <mediaobject>
                <alt>staff client tabs</alt>
                <imageobject>
-                  <imagedata width="100%" scalefit="1" fileref="../media/intro-7a.png"/>
+                  <imagedata width="100%" scalefit="1" fileref="../media/staffclient-7a.png"/>
                </imageobject>
             </mediaobject></para>
 

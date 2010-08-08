@@ -148,8 +148,9 @@
 			<title>Patron Notes</title>
 			<para>See Notes message appears</para>
 			<para>Notes are strictly communicative and may made visible to the patron, via their account on the OPAC.</para>
-			<para>To insert/remove a note:</para>
+			
 			<procedure>
+				<title>To insert/remove a note:</title>			
 				<step><para>Open a patron record, click <guibutton>Other</guibutton></para></step>
 				<step><para>Select <guimenuitem>Notes</guimenuitem>.</para></step>
 				<step><para>Click Add New Note.</para></step>
@@ -163,8 +164,8 @@
 		</section>
 		<section xml:id="mergingpatronrecords">
 		<title>Merging Patron Records</title>
-		<para>From the Patron Search screen:</para>
 			<procedure>
+				<title>Merging patron Records From the patron search screen:</title>				
 				<step><para>Search by the terms shared by the two records</para></step>
 				<step><para>Select the two records to merge by pressing down the <keycap>CTRL</keycap> key and clicking each record. </para></step>
 				<step><para>Click <guibutton>Merge Patrons</guibutton>.</para></step>
@@ -174,8 +175,9 @@
 				<note><para>Once two records have been merged, the notes, bills, holds and outstanding items under the non-lead record 
 				are brought to the lead record. Staff-inserted alert messages are not transferred.</para></note>
 			</procedure>
-			<para>From the Patron Group screen:</para>
+			<para></para>
 			<procedure>
+				<title>Merging patron records from the patron group screen:</title>				
 				<step><para>Retrieve one of the two patron records you want to merge. Go to <menuchoice><guimenu>Other</guimenu> <guimenuitem>Group</guimenuitem></menuchoice>.</para></step>
 				<step><para>The patron record is displayed as a group member. Choose <menuchoice><guimenu>Action</guimenu> <guimenuitem>Move another patron to this 
 				patron group</guimenuitem></menuchoice>.</para></step>
@@ -199,8 +201,9 @@
 		<para>Non-cataloged circulation: circulation of items that are not in the catalog and do not have a barcode.</para> 
 		<section xml:id="checkout">
 			<title>Check Out (<keycap>F1</keycap>)</title>
-			<para>To check out regular items:</para>
+			
 			<procedure>
+				<title>To check out regular items:</title>				
 				<step><para>Click <guibutton>Check Out</guibutton> button or hit <keycap>F1</keycap> to access <emphasis>Retrieve Patron by Barcode</emphasis></para></step>
 				<step><para>Scan the patron barcode</para></step>
 				<step><para>Patron Account opens to the Check Out function tab</para></step>			
@@ -215,16 +218,17 @@
 			<para>Pre-cat items are those items that have yet to be added to the database or that have barcode labels, but are not attached to an existing bibliographic record.</para>
 			<caution><para>ONLY use Pre-Cat Checkout as a last resort, such as when a patron brings the item to the desk from the shelf and MUST have it that day. Otherwise, 
 			ask the patron to wait until you can have the item correctly processed.</para></caution>					
-			<para>From the check out screen:</para>
+			
 			<procedure>
+				<title>Checking out pre-cataloged items from the check out screen:</title>				
 				<step><para>Scan the item barcode.</para></step>
 				<step><para>An alert will appear stating: <emphasis>Mis-scan or non-cataloged item</emphasis>.</para></step>
 				<step><para>To continue with check out, click <guibutton>Pre-cataloged</guibutton>.</para></step>
 				<step><para>Enter title and author information and click <guibutton>Checkout</guibutton>.</para></step>
 				<step><para>Item is added to the list of Check Outs</para></step>   
 			</procedure>
-			<para>Checking in pre-cataloged items</para>
 			<procedure>
+				<title>Checking in pre-cataloged items</title>	
 				<step><para>Scan the item barcode.</para></step>
 				<step><para>An alert will appear stating: "This item needs to be routed to Cataloging"</para></step>
 				<step><para>Click <guibutton>OK</guibutton>.</para></step>
@@ -242,9 +246,10 @@
 			patron's record.</para>
 			<para>No fines accrue.</para>
 			<para>Circulation statistics are collected.</para>
-			<para>From the Check Out screen:</para>
 			<procedure>
-				<step><para>Click <guibutton>Check Out</guibutton> button or hit <keycap>F1</keycap> to access <emphasis>Retrieve Patron by Barcode</emphasis>.</para></step>
+			<title>Checking Out Non-cataloged Items From the Check Out screen:</title>				
+				<step><para>Click <guibutton>Check Out</guibutton> button or hit <keycap>F1</keycap> to access <emphasis>Retrieve 
+				Patron by Barcode</emphasis>.</para></step>
 				<step><para>Scan patron barcode.</para></step>
 				<step><para>The Patron Account opens to Check Out function tab.</para></step>
 				<step><para>Click on Barcode to open the non-cataloged items selection list.</para></step>
@@ -276,9 +281,10 @@
 		</section>
 		<section xml:id="checkin">
 			<title>Check In (F2)</title>
-			<para>Regular check in:</para>
 			<procedure>
-				<step><para>Click <guibutton>Check In</guibutton> button or hit <keycap>F2</keycap> to open Item Check In tab.</para></step>
+				<title>Regular check in:</title>				
+				<step><para>Click <guibutton>Check In</guibutton> button or hit <keycap>F2</keycap> to open Item Check In tab.
+				</para></step>
 				<step><para>Scan item barcode.</para></step>
 				<step><para>Continue to scan barcodes until all items are discharged.</para></step>
 				<step><para>Close tab when done.</para></step>
@@ -301,8 +307,8 @@
 			<title>Renewal and Editing Item's Due Date</title>
 			<para>Checked-out items can be renewed according to library policy. The new due date is calculated from the renewal 
 			date. Existing loans may be extended to a specific date by editing the due date.</para>
-			<para>To renew items:</para>
 			<procedure>
+				<title>Renewing items</title>				
 				<step><para>Retrieve the patron record.</para></step> 
 				<step><para>Items Out screen.</para></step> 
 				<step><para>Select item(s) to renew. </para></step>
@@ -311,8 +317,8 @@
 				<step><para>To view the new due date, click <guimenuitem>Refresh</guimenuitem>.</para></step> 
 			</procedure>
 			<para>Renewal may also be done from the Items Status screen. See  <xref linkend="itemstatus"/>.</para>
-			<para>Editing the due date of items:</para>
 			<procedure>
+				<title>Editing the due date of items:</title>	
 				<step><para>From the patron record, open Items Out tab</para></step> 
 				<step><para>Highlight the item, <emphasis>right click</emphasis>, and select <guimenuitem>Edit Due Date</guimenuitem></para></step>
 				<step><para>To update multiple items highlight the first item, press and hold <keycap>Ctrl</keycap>, highlight additional items</para></step> 
@@ -325,8 +331,8 @@
 		</section>
 		<section xml:id="lostclaimedreturned">
 			<title>Marking Items “Lost” and “Claimed Returned”</title>
-			<para>To mark items as lost</para>
 			<procedure>
+				<title>To mark items as lost:</title>
 				<step><para>Retrieve the patron record.</para></step> 
 				<step><para>Click <guimenuitem>Items Out</guimenuitem> tab.</para></step> 
 				<step><para>Select appropriate item(s).</para></step>
@@ -339,9 +345,8 @@
 			section called <xref linkend="newgrocerybills"/> for details
 			If the lost item is returned, the bill and payment (if bill has been paid) will not be cancelled/refunded automatically. 					
 			These bills must be dealt with manually, as per local policy.</para></note>
-
-			<para>Mark items as <emphasis>Claimed Returned</emphasis></para>
 			<procedure>
+				<title>Marking items as <emphasis>Claimed Returned:</emphasis></title>
 				<step><para>Retrieve the patron record.</para></step> 
 				<step><para>Click <guibutton>Items Out</guibutton>.</para></step> 
 				<step><para>Select item(s).</para></step>
@@ -379,8 +384,8 @@
 			<para>Many functions may be performed from the Item Status screen.  This section will cover circulation-related functions:
  			checking item status, viewing past circulations, inserting item alert messages, and marking items missing or damaged.
 			</para>
-			<para>Checking an item's status:</para>
 			<procedure>
+				<title>Checking an item's status:</title>
 					<step><para>Select <menuchoice><guimenu>Search</guimenu><guisubmenu>Search for copies by Barcode or Circulation</guisubmenu>
 					<guimenuitem>Show Item Status by Barcode</guimenuitem></menuchoice>.</para></step> 
 					<step><para>Enter item barcode.</para></step> 
@@ -388,8 +393,9 @@
 					to choose which fields to view.)</para></step>
 			</procedure>
 			<note><para>If an item's status is <emphasis>Available</emphasis>, the displayed due date refers to the previous circulation's due date.</para></note>
-			<para>Viewing Past Circulations:</para>
+			
 			<procedure>
+					<title>Viewing Past Circulations:</title>					
 					<step><para>Retrieve an item (see above).</para></step> 
 					<step><para>Select <menuchoice><guimenu>Actions for Selected Items</guimenu><guimenuitem>Show Last Few Circulations</guimenuitem></menuchoice>.</para></step> 
 					<step><para>The item’s recent circulation history displays.</para></step>
@@ -457,24 +463,25 @@
 		</section>
 		<section xml:id="voidforgive">
 			<title>Void vs. Forgive</title>	
-			<para>Void clears all history of the bill, while forgive retains the history.</para>
-			<para>Forgiving ills:</para>				
+			<para>Void clears all history of the bill, while forgive retains the history.</para>		
 			<procedure>
+				<title>Forgiving bills:</title>	
 				<step><para>Retrieve the patron record.</para></step> 
 				<step><para>Choose <guimenuitem>forgive</guimenuitem> as the payment type </para></step> 
 				<step><para>Enter the amount to be forgiven. </para></step>
 				<step><para>Apply Payment.</para></step> 
 			</procedure>
-			<para>Voiding bills:</para>
+			
 			<section xml:id="voidbills">
+				<para>Voiding bills:</para>
 				<para>Bills under one transaction are grouped in one bill line. Bills may be voided in part or in whole.</para>		
-				<procedure>
-					<title>To void the whole amount:</title>			
+				<procedure>			
 					<step><para>Click <guibutton>Void All Billings</guibutton></para></step> 
 					<step><para>confirm.</para></step>
 				</procedure>				
-				<para>To void a partial amount:</para>
+				
 				<procedure>
+					<title>To void a partial amount:</title>				
 					<step><para>Click <guibutton>Full Details for the transaction</guibutton>.</para></step> 
 					<step><para>The bill details screen displays.</para></step>
 					<step><para>Select the bill to void.</para></step> 
@@ -485,9 +492,9 @@
 		</section>
 		<section xml:id="newgrocerybills">
 			<title>Adding New "Grocery" Bills</title>
-			<para>A grocery bill can be added as a new bill or to an existing bill.</para>		
-			<para>To add as a new bill:</para>			
-			<procedure>
+			<para>A grocery bill can be added as a new bill or to an existing bill.</para>					
+			<procedure>	
+				<title>To add as a new bill:</title>
 				<step><para>Retrieve the patron record. </para></step> 
 				<step><para>Select <guimenuitem>Bills</guimenuitem>.</para></step>
 				<step><para>Click <guibutton>Bill Patron</guibutton>.</para></step> 
@@ -495,11 +502,12 @@
 				<step><para>Enter the Amount and Note (as required).</para></step> 
 				<step><para>Submit this Bill and confirm.</para></step> 
 			</procedure>				
-			<para>To add bill to an existing bill line:</para>
 			<procedure>
+				<title>To add bill to an existing bill line:</title>
 				<step><para>Select <guimenuitem>Bills</guimenuitem>.</para></step> 
 				<step><para>Click <guibutton>Add Billing</guibutton> at the bottom of the correct bill line.</para></step>
-				<step><para>Choose appropriate billing type from the drop down menu. (<guimenuitem>Grocery</guimenuitem> is the only available transaction type.)</para></step>
+				<step><para>Choose appropriate billing type from the drop down menu. (<guimenuitem>Grocery</guimenuitem> 
+				is the only available transaction type.)</para></step>
 				<step><para>Enter the Amount and Note (as required).</para></step> 
 				<step><para>Submit this Bill and confirm.</para></step> 
 				<step><para>The Money Summary will adjust accordingly.</para></step> 
@@ -507,9 +515,10 @@
 		</section>
 		<section xml:id="billhistory">
 			<title>Bill History</title>
-			<para>The Bill History view includes specific details about the item as well as information about the bill and payments.</para>			
-			<para>To view a patron’s bill history:</para>			
+			<para>The Bill History view includes specific details about the item as well as information about the 
+			bill and payments.</para>			
 			<procedure>
+				<title>To view a patron’s bill history:</title>
 				<step><para>From the patron record, open the Bills tab</para></step> 
 				<step><para>Click <guimenuitem>History</guimenuitem>.</para></step>
 				<step><para>The Bill History window opens.</para></step>
@@ -591,8 +600,9 @@
 			a paperback edition could fill the hold, even when the hold is placed on the hardback record.  If there are many different records for the same item, books attached to 
 			other records could fill the hold, so this may speed hold fulfillment. If Audiobooks is selected, the patron could also receive the audiobook if that is the first available 
 			version of the item. If audiobooks are selected, the patron could receive a cassette or CD version if Evergreen libraries own both.</para></note>
-			<para>Placing holds from catalog records:</para>			
+						
 			<procedure>
+				<title>Placing holds from catalog records:</title>				
 				<step><para>Retrieve the desired title record (<menuchoice><guimenu>Search </guimenu> <guimenuitem>Search the Catalog</guimenuitem></menuchoice>).</para></step> 
 				<step><para>Scan or type patron’s barcode into the <guilabel>Enter recipient barcode</guilabel> field. Click <guibutton>Submit</guibutton>.</para></step>
 				<step><para>Click on an entry to display it’s summary.</para></step> 
@@ -603,8 +613,9 @@
 			</procedure>
 			<note><para>Uncaptured holds will not be targeted after their expiration dates. If the Suspend this Hold checkbox is selected, the hold will be suspended and will not 
 			be captured until reactivated.</para></note>					
-			<para>Placing holds from patron records:</para>			
+					
 			<procedure>
+				<title>Placing holds from patron records:</title>	
 				<step><para>Open the patron record.</para></step> 
 				<step><para>Click <guibutton>Holds</guibutton></para></step>
 				<step><para>Click <guibutton>Place Hold</guibutton> (top left top corner).</para></step> 
@@ -632,8 +643,8 @@
 				</itemizedlist>
 			</para>
 			<para>Staff can edit holds from patron records or title records. Patrons may edit holds from their OPAC account.</para>
-			<para>Managing holds in patron records:</para>
 			<procedure>
+				<title>Managing holds in patron records:</title>				
 				<step><para>Retrieve the patron record.</para></step> 
 				<step><para>Select <guimenuitem>Holds</guimenuitem>.</para></step>
 				<step><para>Highlight the appropriate hold record.</para></step> 
@@ -642,8 +653,9 @@
 			</procedure>	
 			<note><para>Captured holds with statuses of <emphasis>On Hold Self</emphasis> or <emphasis>Ready for Pickup</emphasis> can be cancelled by staff or patrons. The status 
 			of these items will not be change until they are <emphasis>checked in</emphasis>.</para></note>
-			<para>Managing holds in title records:</para>
+			
 			<procedure>
+				<title>Managing holds in title records:</title>
 				<step><para>Retrieve and display the appropriate title record through the catalog.</para></step> 
 				<step><para>Choose <menuchoice><guimenu>Actions for this Reord</guimenu> <guimenuitem>View Holds</guimenuitem></menuchoice>.</para></step>
 				<step><para>By default, only holds with the pickup location of your library are displayed.</para></step> 
@@ -706,8 +718,9 @@
 			<para><emphasis>Waiting-for-copy</emphasis>: all copies are checked out or otherwise unavailable.</para>
 			<para><emphasis>Waiting-for-capture</emphasis>: an available copy is assigned to the hold. The item displays on the Holds Pull List. Staff must retrieve and capture the hold.</para>
 			<para><emphasis>Ready-for-pickup</emphasis>: the hold has been captured and is waiting for patron pickup.</para>
-			<para>To retrieve the holds pull list:</para>
+			
 			<procedure>
+				<title>To retrieve the holds pull list:</title>
 				<step><para>Select <menuchoice><guimenu>Circulation</guimenu> <guimenuitem>Pull List for Hold Requests</guimenuitem></menuchoice>.</para></step> 
 				<step><para>The Holds Pull List displays. </para></step>
 				<step><para>Sort by clicking the column labels (e.g. Call Number).</para></step> 
