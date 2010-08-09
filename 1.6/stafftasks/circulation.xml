@@ -528,6 +528,21 @@
 			<note><para>Items may be deleted from the catalog even if a charge for that item is still attached to the patron's record.  The charge will remain on the patron's account 
 			after the deletion.</para></note>
 		</section>
+		<section xml:id="bills-refund">
+			      <info><title>Refund</title></info>
+			      <para>Sometimes paid bills need to be voided, such as when lost and paid items are returned. A negative balance may be 
+				 created once such bills are voided. To close such bills, staff may refund the balance amount or add a bill entry.</para>
+			   <procedure>
+			      <step><para>To refund, click <guilabel>Refund</guilabel> in the billing 
+				 line on <guilabel>Bills</guilabel> screen. 
+				The amount shows in <menuchoice><guimenu>Pay Bill</guimenu><guisubmenu>Change</guisubmenu></menuchoice> box.</para>
+				</step>
+			      <step><para>Click <guilabel>Apply Payment</guilabel>. A receipt will be printed.</para>
+			</step>      
+			   </procedure>
+			   <tip><para><guilabel>Refund</guilabel> button will automatically show up once a bill has a negative balance.</para>
+			   <para>Refunds are reflected in the Cash Report.</para></tip>
+		   </section> 
 	</section>
 	<section xml:id="Holds">
 		<title>Holds</title>
