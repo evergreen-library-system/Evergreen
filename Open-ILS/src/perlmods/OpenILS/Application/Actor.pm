@@ -4095,6 +4095,120 @@ sub user_visible_circs {
     return undef;
 }
 
+__PACKAGE__->register_method(
+    method     => "user_saved_search_cud",
+    api_name   => "open-ils.actor.user.saved_search.cud",
+    stream     => 1,
+    signature  => {
+        desc   => 'Create/Update/Delete Access to user saved searches',
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Saved Search Object', type => 'object', class => 'auss' }
+        ],
+        return => {
+            desc   => q/The retrieved or updated saved search object, or id of a deleted object; Event on error/,
+            class  => 'auss'
+        }   
+    }
+);
+
+__PACKAGE__->register_method(
+    method     => "user_saved_search_cud",
+    api_name   => "open-ils.actor.user.saved_search.retrieve",
+    stream     => 1,
+    signature  => {
+        desc   => 'Retrieve a saved search object',
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Saved Search ID', type => 'number' }
+        ],
+        return => {
+            desc   => q/The saved search object, Event on error/,
+            class  => 'auss'
+        }   
+    }
+);
+
+sub user_saved_search_cud {
+    my( $self, $client, $auth, $search ) = @_;
+    my $e = new_editor( authtoken=>$auth );
+    return $e->die_event unless $e->checkauth;
+
+    my $o_search;      # prior version of the object, if any
+    my $res;           # to be returned
+
+    # branch on the operation type
+
+    if( $self->api_name =~ /retrieve/ ) {                    # Retrieve
+
+        # Get the old version, to check ownership
+        $o_search = $e->retrieve_actor_usr_saved_search( $search )
+            or return $e->die_event;
+
+        # You can't read somebody else's search
+        return OpenILS::Event->new('BAD_PARAMS')
+            unless $o_search->owner == $e->requestor->id;
+
+        $res = $o_search;
+
+    } else {
+
+        $e->xact_begin;               # start an editor transaction
+
+        if( $search->isnew ) {                               # Create
+
+            # You can't create a search for somebody else
+            return OpenILS::Event->new('BAD_PARAMS')
+                unless $search->owner == $e->requestor->id;
+
+            $e->create_actor_usr_saved_search( $search )
+                or return $e->die_event;
+
+            $res = $search->id;
+
+        } elsif( $search->ischanged ) {                      # Update
+
+            # You can't change ownership of a search
+            return OpenILS::Event->new('BAD_PARAMS')
+                unless $search->owner == $e->requestor->id;
+
+            # Get the old version, to check ownership
+            $o_search = $e->retrieve_actor_usr_saved_search( $search->id )
+                or return $e->die_event;
+
+            # You can't update somebody else's search
+            return OpenILS::Event->new('BAD_PARAMS')
+                unless $o_search->owner == $e->requestor->id;
+
+            # Do the update
+            $e->update_actor_usr_saved_search( $search )
+                or return $e->die_event;
+
+            $res = $search;
+
+        } elsif( $search->isdeleted ) {                      # Delete
+
+            # Get the old version, to check ownership
+            $o_search = $e->retrieve_actor_usr_saved_search( $search->id )
+                or return $e->die_event;
+
+            # You can't delete somebody else's search
+            return OpenILS::Event->new('BAD_PARAMS')
+                unless $o_search->owner == $e->requestor->id;
+
+            # Do the delete
+            $e->delete_actor_usr_saved_search( $o_search )
+                or return $e->die_event;
+
+            $res = $search->id;
+        }
+
+        $e->commit;
+    }
+
+    return $res;
+}
+
 
 
 1;
