@@ -93,27 +93,32 @@ sub new {
 				}
 			}
 		]
-    );
-
-
-    $copy = $copy->[0];
+    )->[0];
 
 	if(!$copy) {
 		syslog("LOG_DEBUG", "OILS: Item '%s' : not found", $item_id);
 		return undef;
 	}
 
-	my ($circ) = $U->fetch_open_circulation($copy->id);
-	if ($circ) {
-		# if i am checked out, set $self->{patron} to the user's barcode
-		my $user = $e->retrieve_actor_user(
-			[
-				$circ->usr,
-				{ flesh => 1, flesh_fields => { "au" => [ 'card' ] } }
-			]
-		);
+    my $circ = $e->search_action_circulation([
+        {
+            target_copy => $copy->id,
+            stop_fines_time => undef, 
+            checkin_time => undef
+        },
+        {
+            flesh => 2,
+            flesh_fields => {
+                circ => ['usr'],
+                au => ['card']
+            }
+        }
+    ])->[0];
 
-        my $bc = ($user) ? $user->card->barcode : "";
+    if($circ) {
+
+        my $user = $circ->usr;
+        my $bc = ($user->card) ? $user->card->barcode : '';
         $self->{patron} = $bc;
         $self->{patron_object} = $user;
 
