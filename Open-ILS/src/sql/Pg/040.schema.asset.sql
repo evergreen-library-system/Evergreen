@@ -265,7 +265,7 @@ CREATE OR REPLACE FUNCTION asset.label_normalizer_lc(TEXT) RETURNS TEXT AS $func
 
 $func$ LANGUAGE PLPERLU;
 
-INSERT INTO asset.call_number_class (name, normalizer) VALUES 
+INSERT INTO asset.call_number_class (name, normalizer, field) VALUES 
     ('Generic', 'asset.label_normalizer_generic', '050ab,055ab,060ab,070ab,080ab,082ab,086ab,088ab,090,092,096,098,099'),
     ('Dewey (DDC)', 'asset.label_normalizer_dewey', '080ab,082ab'),
     ('Library of Congress (LC)', 'asset.label_normalizer_lc', '050ab,055ab')
