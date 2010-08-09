@@ -49,13 +49,17 @@
 			<title>Public Access Catalog</title>
 		</info>
 		<xi:include href="opac/basicsearch.xml"/>
-		<xi:include href="opac/advancedsearch.xml"/>
+		<xi:include href="opac/advancedsearch.xml"/>	
+		<xi:include href="opac/searchtips.xml"/>
+		<xi:include href="opac/searchmethodology.xml"/>
+		<xi:include href="opac/searchresults.xml"/>
 		<xi:include href="opac/myaccount.xml"/>
 	</part>
 	<part xml:id="core_tasks">
 		<info>
 			<title>Core Staff Tasks</title>
 		</info>
+		<xi:include href="stafftasks/staffclient.xml"/>
 		<xi:include href="stafftasks/circulation.xml"/>
 		<xi:include href="stafftasks/cataloging.xml"/>
  	</part>
@@ -78,7 +82,7 @@
 		<info>
 			<title>Development</title>
 		</info>
-		<xi:include href="development/schema.xml"/>
+<!--		<xi:include href="development/schema.xml"/>-->
 	</part>
 	<part xml:id="Appendices">
 		<info>
