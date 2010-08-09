@@ -324,8 +324,8 @@
 	#---------------------------------------------------------------------
 	package asset::call_number_class;
 	
-	asset::call_number->table( 'asset.call_number_class' );
-	asset::call_number->sequence( 'asset.call_number_class_id_seq' );
+	asset::call_number_class->table( 'asset.call_number_class' );
+	asset::call_number_class->sequence( 'asset.call_number_class_id_seq' );
 	
 	#---------------------------------------------------------------------
 	package asset::copy_location_order;
