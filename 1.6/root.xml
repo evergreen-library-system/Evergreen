@@ -44,13 +44,13 @@
 		</partintro>
 		<xi:include href="intro/about_evergreen.xml"/>
  	</part>
-	<part xml:id="catalog">
+	<part xml:id="opac">
 		<info>
 			<title>Public Access Catalog</title>
 		</info>
-		<xi:include href="catalog/basicsearch.xml"/>
-		<xi:include href="catalog/advancedsearch.xml"/>
-		<xi:include href="catalog/myaccount.xml"/>
+		<xi:include href="opac/basicsearch.xml"/>
+		<xi:include href="opac/advancedsearch.xml"/>
+		<xi:include href="opac/myaccount.xml"/>
 	</part>
 	<part xml:id="core_tasks">
 		<info>
