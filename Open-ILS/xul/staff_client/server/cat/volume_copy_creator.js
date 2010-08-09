@@ -50,8 +50,8 @@ function my_init() {
         var label_class = fieldmapper.aou.fetchOrgSettingDefault(ses('ws_ou'), 'cat.default_classification_scheme');
 
         // Assign a default value if none was returned 
-        if (!label_class.value) {
-            label_class.value = 1;
+        if (!label_class) {
+            label_class = { "value": 1 };
         }
 
         /***********************************************************************************************************/
