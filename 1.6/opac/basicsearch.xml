@@ -9,40 +9,92 @@
 			fields to search,  material type or library location.</para>
         	</abstract>
 	</info>    		
-	<section xml:id="TypeofSearch">
-		<title>Type of Searches</title>
-			<itemizedlist>
-				<listitem><emphasis>Keyword</emphasis> – terms found anywhere in the item description</listitem>
-				<listitem><emphasis>Title</emphasis> – terms found in the item title</listitem>
-				<listitem><emphasis>Author</emphasis> – author name</listitem>
-				<listitem><emphasis>Subject</emphasis> – terms found in the formal subject designation</listitem>
-				<listitem><emphasis>Series</emphasis> – specific series name</listitem>
-			</itemizedlist>
-	</section>
-	<section xml:id="Limitbyformats">
-		<title>Format Limiters</title>
-		<itemizedlist>
-			<listitem>All Formats</listitem>
-			<listitem>Books</listitem>
-			<listitem>Large Print Books</listitem>
-			<listitem>Audiobooks – on CD, cassette, MP3, etc.</listitem>
-			<listitem>Videorecordings – on DVD, VHS, etc.</listitem>
-			<listitem>Music – on CD, cassette, etc.</listitem>
-			<listitem>Electronic resources – various digital formats</listitem>
-		</itemizedlist>
-	</section>
-	<section xml:id="Procedure">
-			<title>Procedure</title>
-		<procedure>
-			<step><para>Open an Internet browser and go to the Evergreen search page.</para></step>
-			<step><para>In the search box, enter your search term
-				<procedure>
-					<step><para>Select an index or format if applicable</para></step>
-					<step><para>Click Choose a library to search and select a library from the list if desired</para></step>
-				</procedure>
-			</para></step>
-			<step><para><guibutton>Click Go!</guibutton></para></step>		
-		</procedure>	
-	</section>
+	 
+      <para>The Homepage contains a single search box for you to enter search terms. You can get to
+         the Homepage at any time by selecting the <guilabel>Home</guilabel> link from the left-hand
+         sidebar in the catalogue, or you can enter a search anywhere you see a search box.</para>
+
+      <para>You can select to search by: </para>
+      <itemizedlist>
+         <listitem>
+            <para><emphasis role="bold">Keyword</emphasis>—finds the terms you enter anywhere in the
+               entire record for an item, including title, author, subject, and other information.
+            </para>
+         </listitem>
+      </itemizedlist>
+      <itemizedlist>
+         <listitem>
+            <para><emphasis role="bold">Title</emphasis>—finds the terms you enter in the title of
+               an item.</para>
+         </listitem>
+      </itemizedlist>
+      <itemizedlist>
+         <listitem>
+            <para><emphasis role="bold">Author</emphasis>—finds the terms you enter in the author of
+               an item.</para>
+         </listitem>
+      </itemizedlist>
+      <itemizedlist>
+         <listitem>
+            <para><emphasis role="bold">Subject</emphasis>—finds the terms you enter in the subject
+               of an item. Subjects are categories assigned to items according to a system such as
+               the Library of Congress Subject Headings.</para>
+         </listitem>
+      </itemizedlist>
+      <itemizedlist>
+         <listitem>
+            <para><emphasis role="bold">Series</emphasis>—finds the terms you enter in the title of
+               a multi-part series.</para>
+         </listitem>
+      </itemizedlist>
+      <simplesect xml:id="catalogue-basic-search-format">
+
+         <title> Formats</title>
+         <para>You can limit your search by format: </para>
+         <itemizedlist>
+            <listitem>
+               <para>
+                  <emphasis role="bold">Books</emphasis>
+               </para>
+            </listitem>
+         </itemizedlist>
+         <itemizedlist>
+            <listitem>
+               <para>
+                  <emphasis role="bold">Large Print</emphasis>
+               </para>
+            </listitem>
+         </itemizedlist>
+         <itemizedlist>
+            <listitem>
+               <para><emphasis role="bold">Audiobooks</emphasis> (books read aloud on CDs or other
+                  media) </para>
+            </listitem>
+         </itemizedlist>
+         <itemizedlist>
+            <listitem>
+               <para><emphasis role="bold">Video</emphasis> (VHS tapes, DVDs, and other media)
+               </para>
+            </listitem>
+         </itemizedlist>
+         <itemizedlist>
+            <listitem>
+               <para><emphasis role="bold">Music </emphasis>(music on CD or other media)</para>
+            </listitem>
+         </itemizedlist>
+         <itemizedlist>
+            <listitem>
+               <para><emphasis role="bold">Electronic Resources</emphasis> (databases or other
+                  resources available electronically in the library or online) </para>
+            </listitem>
+         </itemizedlist>
+      </simplesect>
+      <simplesect xml:id="catalogue-basic-search-libraries">
+         <title> Libraries</title>
+         <para>If you are using a catalogue in a library or accessing a library’s online catalogue
+            from its homepage, the search will return items for your local library. If your library
+            has multiple branches, the result will display items available at your branch and all
+            branches of your library system separately.</para>
+      </simplesect>
 </chapter>
 
