@@ -245,7 +245,9 @@ __PACKAGE__->register_method(
                 includes the context org unit and all parent org units.  
                 Object includes the keys "transcendant", "count", "org_unit", "depth", 
                 "unshadow", "available".  Each is a count, except "org_unit" which is 
-                the context org unit and "depth" which is the depth of the context org unit
+                the context org unit and "depth" which is the depth of the context org
+                unit.  "depth" is always -1 when the count from a lasso search is
+                performed, since depth doesn't mean anything in a lasso context.
             /,
             type => 'array'
         }
@@ -253,23 +255,25 @@ __PACKAGE__->register_method(
 );
 
 sub record_id_to_copy_count {
-	my( $self, $client, $org_id, $record_id ) = @_;
+    my( $self, $client, $org_id, $record_id ) = @_;
 
-	return [] unless $record_id;
+    return [] unless $record_id;
 
-	my $method = "open-ils.storage.biblio.record_entry.copy_count.atomic";
-	my $key = "record";
+    my $key = $self->api_name =~ /metarecord/ ? 'metarecord' : 'record';
+    my $staff =~ $self->api_name =~ /staff/ ? 't' : 'f';
 
-	if($self->api_name =~ /metarecord/) {
-		$method = "open-ils.storage.metabib.metarecord.copy_count.atomic";
-		$key = "metarecord";
-	}
+    my $data = $U->cstorereq(
+        "open-ils.cstore.json_query.atomic",
+        { from => ['asset.' . $key  . '_copy_count' => $org_id => $record_id => $staff] }
+    );
 
-	$method =~ s/atomic/staff\.atomic/og if($self->api_name =~ /staff/ );
+    my @count;
+    for my $d ( @$data ) { # fix up the key name change required by stored-proc version
+        $$d{count} = delete $$d{visible};
+        push @count, $d;
+    }
 
-	my $count = $U->storagereq($method, org_unit => $org_id, $key => $record_id);
-
-	return [ sort { $a->{depth} <=> $b->{depth} } @$count ];
+    return [ sort { $a->{depth} <=> $b->{depth} } @count ];
 }
 
 
