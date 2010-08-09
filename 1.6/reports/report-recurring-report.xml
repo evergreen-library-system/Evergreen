@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="recurring-report" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<info><title>Running Recurring Reports</title></info>
+
+
+    <para>Recurring reports are a useful way to save time by scheduling reports that you run on
+        a regular basis, such as monthly circulation and monthly patron registration
+        statistics. When you have set up a report to run on a monthly basis you’ll get an email
+        informing you that the report has successfully run. You can click on a link in the
+        email that will take you directly to the report output. You can also access
+        the output through the reporter interface as described in <xref linkend="view-output"
+        />.</para>
+    
+    <para>To set up a monthly recurring report follow the procedure in <xref
+        linkend="generate-report"/> but make the changes described below.</para>
+    <procedure>
+        
+        <step>
+            
+                <para>Select the <guilabel>Recurring Report</guilabel> check-box and set the
+                    recurrence interval to 1 month.</para>
+        </step>
+        
+        <step>
+           
+                <para>Do not select <guilabel>Run ASAP</guilabel>. Instead schedule the report
+                    to run early on the first day of the next month. Enter the date in
+                    YYYY-MM-DD format. </para>
+	 </step>
+        
+        <step>
+           <para>Ensure there is an email address to receive completion emails. You will
+                receive an email completion notice each month when the output is ready. </para>
+         
+        </step>
+        <step>
+            <para>Select a folder for the report’s output. </para>
+        </step>
+        
+        <step>
+                <para>Click <guibutton>Save Report</guibutton>.</para>
+        </step>
+        <step>
+           <para>You will get a confirmation dialogue box that the <guilabel>Action
+                Succeeded</guilabel>. Click <guibutton>OK</guibutton>. </para>
+      </step>
+    </procedure>
+    
+    <para> You will get an email on the 1st of each month with a link to the report
+        output. By clicking this link it will open the output in a web browser. It is
+        still possible to login to the staff client and access the output in
+        <guilabel>Output</guilabel> folder. </para>
+    
+    <formalpara>
+        <title>How to stop or make changes to an existing recurring report?</title>
+        <para>Sometimes you may wish to stop or make changes to a recurring report, e.g. the
+            recurrence interval, generation date, email address to receive completion email,
+            output format/folder or even filter values (such as the number of days overdue). You
+            will need to delete the current report from the report folder, then use the above
+            procedure to set up a new recurring report with the desired changes. Please note
+            that deleting a report also deletes all output associated with it.</para>
+    </formalpara>
+    <tip>
+        <para>Once you have been on Evergreen for a year, you could set up your recurring
+            monthly reports to show comparative data from one year ago. To do this select 
+            relative dates of 1 month ago and 13 months ago. </para>
+    </tip>
+</chapter>
