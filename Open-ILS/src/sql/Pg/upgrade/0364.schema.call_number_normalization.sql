@@ -7,6 +7,7 @@ CREATE TABLE asset.call_number_class (
     name           TEXT          NOT NULL,
     normalizer     TEXT          NOT NULL DEFAULT 'asset.normalize_generic'
 );
+CREATE INDEX asset_call_number_label_sortkey ON asset.call_number(label_sortkey);
 
 INSERT INTO asset.call_number_class (name, normalizer) VALUES 
     ('Generic', 'asset.label_normalizer_generic'),
@@ -14,11 +15,10 @@ INSERT INTO asset.call_number_class (name, normalizer) VALUES
     ('Library of Congress (LC)', 'asset.label_normalizer_lc')
 ;
 
-ALTER TABLE asset.call_number ADD COLUMN label_class BIGINT DEFAULT 1 NOT NULL REFERENCES asset.call_number_class(id) DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE asset.call_number ADD COLUMN label_sortkey TEXT;
-CREATE INDEX asset_call_number_label_sortkey ON asset.call_number(label_sortkey);
 ALTER TABLE auditor.asset_call_number_history ADD COLUMN label_class BIGINT;
 ALTER TABLE auditor.asset_call_number_history ADD COLUMN label_sortkey TEXT;
+ALTER TABLE asset.call_number ADD COLUMN label_class BIGINT DEFAULT 1 NOT NULL REFERENCES asset.call_number_class(id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE asset.call_number ADD COLUMN label_sortkey TEXT;
 
 CREATE OR REPLACE FUNCTION asset.label_normalizer() RETURNS TRIGGER AS $func$
 DECLARE
