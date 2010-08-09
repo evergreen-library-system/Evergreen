@@ -45,6 +45,15 @@ function my_init() {
 
         var ou_ids = xul_param('ou_ids',{'concat' : true}) || [];
 
+        // Get the default callnumber classification scheme from OU settings
+        dojo.require('fieldmapper.OrgUtils');
+        var label_class = fieldmapper.aou.fetchOrgSettingDefault(ses('ws_ou'), 'cat.default_classification_scheme');
+
+        // Assign a default value if none was returned 
+        if (!label_class.value) {
+            label_class.value = 1;
+        }
+
         /***********************************************************************************************************/
         /* If we're passed existing_copies, rig up a copy_shortcut object to leverage existing code for rendering the volume labels, etc. 
          * Also make a lookup object for existing copies keyed on org id and callnumber label, and another keyed on copy id. */
@@ -89,53 +98,7 @@ function my_init() {
         /* For the call number drop down */
 
         if (!g.copy_shortcut) {
-            var cn_blob;
-            try {
-                cn_blob = g.network.simple_request('BLOB_MARC_CALLNUMBERS_RETRIEVE',[g.doc_id]);
-            } catch(E) {
-                cn_blob = [];
-            }
-            var hbox = document.getElementById('marc_cn');
-            var ml = util.widgets.make_menulist(
-                util.functional.map_list(
-                    cn_blob,
-                    function(o) {
-                        for (var i in o) {
-                            return [ o[i], i ];
-                        }
-                    }
-                ).sort(
-                    function(a,b) {
-                        a = a[1]; b = b[1];
-                        if (a == '082') return -1; 
-                        if (b == '082') return 1; 
-                        if (a == '092')  return -1; 
-                        if (b == '092')  return 1; 
-                        if (a < b) return -1; 
-                        if (a > b) return 1; 
-                        return 0;
-                    }
-                )
-            ); hbox.appendChild(ml);
-            ml.setAttribute('editable','true');
-            ml.setAttribute('width', '200');
-            var btn = document.createElement('button');
-            btn.setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.my_init.btn.label'));
-            btn.setAttribute('accesskey',$('catStrings').getString('staff.cat.volume_copy_creator.my_init.btn.accesskey'));
-            btn.setAttribute('image','/xul/server/skin/media/images/down_arrow.gif');
-            hbox.appendChild(btn);
-            btn.addEventListener(
-                'command',
-                function() {
-                    var nl = document.getElementsByTagName('textbox');
-                    for (var i = 0; i < nl.length; i++) {
-                        if (nl[i].getAttribute('rel_vert_pos')==2 
-                            && !nl[i].disabled) nl[i].value = ml.value;
-                    }
-                    if (g.last_focus) setTimeout( function() { g.last_focus.focus(); }, 0 );
-                }, 
-                false
-            );
+            g.list_callnumbers(g.doc_id, label_class.value);
         }
 
         /***********************************************************************************************************/
@@ -590,4 +553,52 @@ g.save_prefs = function () {
     }
 }
 
-
+g.list_callnumbers = function(doc_id, label_class) {
+    var cn_blob;
+    try {
+        cn_blob = g.network.simple_request('BLOB_MARC_CALLNUMBERS_RETRIEVE',[g.doc_id, label_class]);
+    } catch(E) {
+        cn_blob = [];
+    }
+    var hbox = document.getElementById('marc_cn');
+    var ml = util.widgets.make_menulist(
+        util.functional.map_list(
+            cn_blob,
+            function(o) {
+                for (var i in o) {
+                    return [ o[i], i ];
+                }
+            }
+        ).sort(
+            function(a,b) {
+                a = a[1]; b = b[1];
+                if (a == '082') return -1; 
+                if (b == '082') return 1; 
+                if (a == '092')  return -1; 
+                if (b == '092')  return 1; 
+                if (a < b) return -1; 
+                if (a > b) return 1; 
+                return 0;
+            }
+        )
+    ); hbox.appendChild(ml);
+    ml.setAttribute('editable','true');
+    ml.setAttribute('width', '200');
+    var btn = document.createElement('button');
+    btn.setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.my_init.btn.label'));
+    btn.setAttribute('accesskey',$('catStrings').getString('staff.cat.volume_copy_creator.my_init.btn.accesskey'));
+    btn.setAttribute('image','/xul/server/skin/media/images/down_arrow.gif');
+    hbox.appendChild(btn);
+    btn.addEventListener(
+        'command',
+        function() {
+            var nl = document.getElementsByTagName('textbox');
+            for (var i = 0; i < nl.length; i++) {
+                if (nl[i].getAttribute('rel_vert_pos')==2 
+                    && !nl[i].disabled) nl[i].value = ml.value;
+            }
+            if (g.last_focus) setTimeout( function() { g.last_focus.focus(); }, 0 );
+        }, 
+        false
+    );
+}

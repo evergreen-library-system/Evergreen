@@ -1625,8 +1625,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
     <class id="acnc" controller="open-ils.cstore" oils_obj:fieldmapper="asset::call_number_class" oils_persist:tablename="asset.call_number_class" reporter:label="Call number classification scheme">
         <fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_class_id_seq">
+            <field reporter:label="Call number class ID" name="id" reporter_datatype="id"/>
             <field reporter:label="Name" name="name" reporter:datatype="text"/>
             <field reporter:label="Normalizer function" name="normalizer" reporter:datatype="text"/>
+            <field reporter:label="Call number fields" name="field" reporter:datatype="text"/>
         </fields>
     </class>
 	<class id="acn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number" oils_persist:tablename="asset.call_number" reporter:label="Call Number/Volume">

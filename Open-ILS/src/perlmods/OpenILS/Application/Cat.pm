@@ -347,33 +347,65 @@ sub biblio_record_record_metadata {
 
 
 __PACKAGE__->register_method(
-	method	=> "biblio_record_marc_cn",
-	api_name	=> "open-ils.cat.biblio.record.marc_cn.retrieve",
-	argc		=> 1, #(bib id ) 
+    method    => "biblio_record_marc_cn",
+    api_name    => "open-ils.cat.biblio.record.marc_cn.retrieve",
+    argc        => 1, #(bib id ) 
+    signature => {
+        desc => 'Extracts call number candidates from a bibliographic record',
+        params => [
+            {desc => 'Record ID', type => 'number'},
+            {desc => '(Optional) Classification scheme ID', type => 'number'},
+        ]
+    },
+    return => {desc => 'Hash of candidate call numbers identified by tag' }
 );
 
 sub biblio_record_marc_cn {
-	my( $self, $client, $id ) = @_;
+    my( $self, $client, $id, $class ) = @_;
 
-	my $session = OpenSRF::AppSession->create("open-ils.cstore");
-	my $marc = $session
-		->request("open-ils.cstore.direct.biblio.record_entry.retrieve", $id )
-		->gather(1)
-		->marc;
+    my $e = new_editor();
+    my $marc = $e->retrieve_biblio_record_entry($id)->marc;
 
-	my $doc = XML::LibXML->new->parse_string($marc);
-	$doc->documentElement->setNamespace( "http://www.loc.gov/MARC21/slim", "marc", 1 );
-	
-	my @res;
-	for my $tag ( qw/050 055 060 070 080 082 086 088 090 092 096 098 099/ ) {
-		my @node = $doc->findnodes("//marc:datafield[\@tag='$tag']");
-		for my $x (@node) {
-			my $cn = $x->findvalue("marc:subfield[\@code='a' or \@code='b']");
-			push @res, {$tag => $cn} if ($cn);
-		}
-	}
+    my $doc = XML::LibXML->new->parse_string($marc);
+    $doc->documentElement->setNamespace( "http://www.loc.gov/MARC21/slim", "marc", 1 );
 
-	return \@res
+    my @fields;
+    my @res;
+    if ($class) {
+        @fields = split(/,/, $e->retrieve_asset_call_number_class($class)->field);
+    } else {
+        @fields = qw/050ab 055ab 060ab 070ab 080ab 082ab 086ab 088ab 090 092 096 098 099/;
+    }
+
+    # Get field/subfield combos based on acnc value; for example "050ab,055ab"
+
+    foreach my $field (@fields) {
+        my $tag = substr($field, 0, 3);
+        $logger->debug("Tag = $tag");
+        my @node = $doc->findnodes("//marc:datafield[\@tag='$tag']");
+
+        # Now parse the subfields and build up the subfield XPath
+        my @subfields = split(//, substr($field, 3));
+
+        # If they give us no subfields to parse, default to just the 'a'
+        if (!@subfields) {
+            @subfields = ('a');
+        }
+        my $subxpath;
+        foreach my $sf (@subfields) {
+            $subxpath .= "\@code='$sf' or ";
+        }
+        $subxpath = substr($subxpath, 0, -4);
+        $logger->debug("subxpath = $subxpath");
+
+        # Find the contents of the specified subfields
+        foreach my $x (@node) {
+            my $cn = $x->findvalue("marc:subfield[$subxpath]");
+            push @res, {$tag => $cn} if ($cn);
+        }
+    }
+
+    return \@res;
 }
 
 __PACKAGE__->register_method(

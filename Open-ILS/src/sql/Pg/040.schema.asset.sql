@@ -170,8 +170,15 @@ CREATE TABLE asset.uri (
 CREATE TABLE asset.call_number_class (
     id             bigserial     PRIMARY KEY,
     name           TEXT          NOT NULL,
-    normalizer     TEXT          NOT NULL DEFAULT 'asset.normalize_generic'
+    normalizer     TEXT          NOT NULL DEFAULT 'asset.normalize_generic',
+    field          TEXT          NOT NULL DEFAULT '050ab,055ab,060ab,070ab,080ab,082ab,086ab,088ab,090,092,096,098,099'
 );
+COMMENT ON TABLE asset.call_number_class IS $$
+Defines the call number normalization database functions in the "normalizer"
+column and the tag/subfield combinations to use to lookup the call number in
+the "field" column for a given classification scheme. Tag/subfield combinations
+are delimited by commas.
+$$;
 
 CREATE OR REPLACE FUNCTION asset.label_normalizer() RETURNS TRIGGER AS $func$
 DECLARE
@@ -259,9 +266,9 @@ CREATE OR REPLACE FUNCTION asset.label_normalizer_lc(TEXT) RETURNS TEXT AS $func
 $func$ LANGUAGE PLPERLU;
 
 INSERT INTO asset.call_number_class (name, normalizer) VALUES 
-    ('Generic', 'asset.label_normalizer_generic'),
-    ('Dewey (DDC)', 'asset.label_normalizer_dewey'),
-    ('Library of Congress (LC)', 'asset.label_normalizer_lc')
+    ('Generic', 'asset.label_normalizer_generic', '050ab,055ab,060ab,070ab,080ab,082ab,086ab,088ab,090,092,096,098,099'),
+    ('Dewey (DDC)', 'asset.label_normalizer_dewey', '080ab,082ab'),
+    ('Library of Congress (LC)', 'asset.label_normalizer_lc', '050ab,055ab')
 ;
 
 CREATE TABLE asset.call_number (

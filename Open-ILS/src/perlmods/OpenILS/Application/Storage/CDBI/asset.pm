@@ -21,6 +21,14 @@ __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/location org position/ );
 
 #-------------------------------------------------------------------------------
+package asset::call_number_class;
+use base qw/asset/;
+
+__PACKAGE__->table( 'asset_call_number_class' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Essential => qw/name normalizer field/ );
+
+#-------------------------------------------------------------------------------
 package asset::call_number;
 use base qw/asset/;
 
