@@ -9,9 +9,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			you optimize your Evergreen system.</para>
 		</abstract>
 	</info>
-	<section xml:id="orgtyes">
+	<section xml:id="orgunitsandtypes">
 		<title>Organizational Unit Types and Organizational Units</title>
-		<section>
+		<section xml:id="orgtypes">
 			<title>Organizational Unit Types</title>
 			<para>Organizational Unit Types are the terms used to refer to levels in the hierarchy of your 
 			library system(s). Examples could include>All-Encompassing Consortium, Consortium Within a 
@@ -77,8 +77,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<step><para>Click <guibutton>Save</guibutton> to save your changes.</para></step>
 			</procedure>
 		</section>
-	</section>
-	<section xml:id="orgunits">
+	
+		<section xml:id="orgunits">
 		<title>Organizational Units</title>
 		<abstract>
 		<para>Organizational Units are the specific instances of the organization unit types that 
@@ -133,6 +133,147 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<step><para>Edit the fields in the right pane.</para></step>
 			<step><para>Click <guibutton>Save</guibutton> to save your changes.</para></step>
 		</procedure>
+		
+		</section>
+		<section xml:id="server-hours">
+		      <info>
+			 <title>Library Hours of Operation</title>
+		      </info>
+
+		      <para>Local System Administrators can use the <guilabel>Organizational Units</guilabel> interface to set the library's hours of operation. These are regular weekly hours;
+			 holiday and other closures are recorded in the <link linkend="lsa-closed">Closed Dates
+			    Editor</link>.</para>
+
+		      <para>Hours of operation and closed dates affect due dates and overdue fines.</para>
+
+		      <itemizedlist>
+			 <listitem>
+			    <formalpara>
+			       <title>Due dates</title>
+			       <para>Due dates that would fall on closed days are automatically pushed forward to
+				  the next open day. Likewise, if an item is checked out at 8pm, for example, and
+				  would normally be due on a day when the library closes before 8pm, Evergreen
+				  pushes the due date forward to the next open day.</para>
+			    </formalpara>
+			 </listitem>
+			 <listitem>
+			    <formalpara>
+			       <title>Overdue fines</title>
+			       <para>Overdue fines are not charged on days when the library is closed.</para>
+			    </formalpara>
+			 </listitem>
+		      </itemizedlist>
+
+			<para>To review or edit your library's hours of operation,</para>
+
+
+	      <procedure>
+
+		 <step>
+		    <para>Open the <guilabel>Organizational Units</guilabel> interface as described in the steps
+		          <link linkend="server-main">above</link>.</para>
+		 </step>
+		 <step>
+		    <informalfigure>
+		       <para>Click the <guilabel>Hours of
+		             Operation</guilabel> tab.</para>
+		       <para>
+		          <mediaobject>
+		             <alt>organizational units, main settings</alt>
+		             <imageobject>
+		                <imagedata scalefit="0" fileref="../media/server-4.png"/>
+		             </imageobject>
+		          </mediaobject>
+		       </para>
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <informalfigure>
+		       <para>Review your library's weekly hours, editing as necessary. To set a closed day
+		          click the corresponding <guibutton>Closed</guibutton> button. Closed days (Monday
+		          and Sunday in the example below) have open and close times of 12:00
+		          AM.</para>
+		       <para>
+		          <mediaobject>
+		             <alt>hours of operation interface</alt>
+		             <imageobject>
+		                <imagedata scalefit="0" fileref="../media/server-5.png"/>
+		             </imageobject>
+		          </mediaobject>
+		       </para>
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		    <para>Click <guibutton>Save</guibutton> to record any changes</para>
+		 </step>
+
+
+	      </procedure>
+
+  	 </section>
+
+
+	   <section xml:id="server-addresses">
+	      <info>
+		 <title>Library Addresses</title>
+	      </info>
+
+	      <para>Addresses set in <menuchoice>
+		    <guimenu>Admin (-)</guimenu>
+		    <guisubmenu>Server Administrations</guisubmenu>
+		    <guimenuitem>Organizational Units</guimenuitem>
+		 </menuchoice> appear in patron email notifications, hold slips, and transit slips. Local
+		 System Adminstrators should ensure that the <guilabel>Physical</guilabel>,
+		    <guilabel>Holds</guilabel>, and <guilabel>Mailing</guilabel> addresses are set
+		 correctly.</para>
+
+	      <procedure>
+
+		 <step>
+		    <para>Open the <guilabel>Organizational Units</guilabel> interface as described in the <link
+		          linkend="server-main">previous section</link>.</para>
+		 </step>
+		 <step>
+		    <informalfigure>
+		       <para>Click the
+		             <guilabel>Addresses</guilabel> tab.</para>
+		       <para>
+		          <mediaobject>
+		             <alt>organizational units, main settings</alt>
+		             <imageobject>
+		                <imagedata scalefit="0" fileref="../media/server-6.png"/>
+		             </imageobject>
+		          </mediaobject>
+		       </para>
+		    </informalfigure>
+		 </step>
+
+		 <step>
+		   
+		       <para>There are four address tabs: <guilabel>Physical</guilabel>,
+		             <guilabel>Holds</guilabel>, <guilabel>Mailing</guilabel>, and
+		             <guilabel>ILL</guilabel>. Sitka Support recommends setting the first three at a
+		          minimum.  The <guilabel>Holds Address</guilabel> appears on transit slips when items are sent to fulfill holds at another branch.</para>
+		      
+		   
+		 </step>
+
+		 <step>
+		    <para>Click <guibutton>Save</guibutton> to record changes for each tab.</para>
+		 </step>
+
+	      </procedure>
+
+	      <note>
+		 <para>The <guilabel>Valid</guilabel> checkbox is an optional setting that does not affect
+		    current Evergreen functions, but the Sitka Support team recommends checking it for all
+		    correct addresses.</para>
+	      </note>
+
+	   </section>
+
 	</section>
 	<section xml:id="relevancyrankings">
 		<title>Adjusting Search Relevancy Rankings</title>
@@ -1183,6 +1324,440 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</table>	
 		</section>
 	</section>
+	<section>
+	<info>
+
+        <title>Staff Accounts</title>
+    </info>
+
+    <informalfigure>
+        <para> New staff accounts are created in much the same way as patron accounts, using <menuchoice>
+                <guimenu>Circulation</guimenu>
+                <guimenuitem>Register Patron</guimenuitem>
+            </menuchoice> or <keycombo>
+                <keycap>Shift</keycap>
+                <keycap>F1</keycap>
+            </keycombo>. Select one of the staff profiles from the <guilabel>Profile
+                Group</guilabel> drop-down menu. </para>
+        <para>
+            <mediaobject>
+                <alt>User permissions screenshot</alt>
+                <imageobject>
+                    <imagedata scalefit="0" fileref="../media/profile-2.png"/>
+                </imageobject>
+
+            </mediaobject>
+        </para>
+    </informalfigure>
+
+
+
+    <para xml:id="profiles-working">Each new staff account must be assigned a <guilabel>Working
+            Location</guilabel> which determines its access level in staff client interfaces.
+        Accounts migrated from legacy systems or created before the upgrade to Evergreen 1.6 already
+        have working locations assigned.</para>
+
+
+    <procedure>
+        <step>
+            <para>To assign a working location open the newly created staff account using
+                    <keycap>F1</keycap> (retrieve patron) or <keycap>F4</keycap> (patron search).
+            </para>
+        </step>
+
+        <step>
+            <informalfigure>
+                <para>Select <menuchoice>
+                        <guimenu>Other</guimenu>
+                        <guimenuitem>User Permission Editor</guimenuitem>
+                    </menuchoice></para>
+                <para>
+                    <mediaobject>
+                        <alt>User permissions screenshot</alt>
+                        <imageobject>
+                            <imagedata scalefit="0" fileref="../media/profile-1.png"/>
+                        </imageobject>
+
+                    </mediaobject>
+                </para>
+            </informalfigure>
+        </step>
+
+        <step>
+            <para>Place a check in the box next to the desired working location, then scroll to the
+                bottom of the display and click <guibutton>Save</guibutton>.</para>
+
+
+        </step>
+
+    </procedure>
+
+    <note>
+        <para>In multi-branch libraries it is possible to assign more than one working
+            location</para>
+    </note>
+
+
+    <section xml:id="staff_account_permissions">
+        <info>
+            <title>Staff Account Permissions</title>
+        </info>
+        <para>Below is a general outline of staff account permission levels. To view a detailed list
+            of permissions for a particular Evergreen account go to <menuchoice>
+                <guimenu>Admin (-)</guimenu>
+                <guimenuitem>User permission editor</guimenuitem>
+            </menuchoice> in the staff client.</para>
+
+        <informaltable>
+
+            <tgroup cols="7" align="center" colsep="1" rowsep="1">
+
+                <thead>
+                    <row>
+                        <entry>Action</entry>
+                        <entry>General Staff</entry>
+                        <entry>Circulators</entry>
+                        <entry>Circ + Copy Edit</entry>
+                        <entry>Circ + Full Cat</entry>
+                        <entry>Catalogers</entry>
+                        <entry>Local System Administrator (LSA)</entry>
+                    </row>
+                </thead>
+
+                <tbody>
+                    <row>
+                        <entry>Basic circulation functions</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                    </row>
+
+
+                    <row>
+                        <entry>CheckIn bad status overrides</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                    </row>
+
+                    <row>
+                        <entry>CheckIn Missing/Lost/ClaimedReturned overrides</entry>
+                        <entry/>
+                        <entry/>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry/>
+                        <entry>*</entry>
+                    </row>
+                    <row>
+                        <entry>CheckOut overrides</entry>
+                        <entry/>
+                        <entry/>
+                        <entry/>
+                        <entry>*</entry>
+                        <entry/>
+                        <entry>*</entry>
+                    </row>
+
+                    <row>
+                        <entry>MaxRenewalReached override</entry>
+                        <entry/>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                    </row>
+
+
+
+                    <row>
+                        <entry>Basic patron record</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                    </row>
+
+
+                    <row>
+                        <entry>Bar patrons</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry/>
+                        <entry>*</entry>
+                    </row>
+                    <row>
+                        <entry>Unbar patrons</entry>
+                        <entry/>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry/>
+                        <entry>*</entry>
+                    </row>
+
+                    <row>
+                        <entry>Merge/delete patrons</entry>
+                        <entry/>
+                        <entry/>
+                        <entry/>
+                        <entry/>
+                        <entry/>
+                        <entry>*</entry>
+                    </row>
+
+                    <row>
+                        <entry>Patron restriction overrides</entry>
+                        <entry/>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry/>
+                        <entry>*</entry>
+                    </row>
+
+                    <row>
+                        <entry>Bills and payments</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry/>
+                        <entry>*</entry>
+                    </row>
+
+
+                    <row>
+                        <entry>Holds</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                    </row>
+                    <row>
+                        <entry>Copy/volume records</entry>
+                        <entry/>
+                        <entry/>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                    </row>
+
+                    <row>
+                        <entry>Bib records</entry>
+                        <entry/>
+                        <entry/>
+                        <entry/>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                    </row>
+                    <row>
+                        <entry>Buckets</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                    </row>
+
+
+
+                    <row>
+                        <entry>View report output</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                    </row>
+
+                    <row>
+                        <entry>Create/run reports</entry>
+                        <entry/>
+                        <entry/>
+                        <entry/>
+                        <entry/>
+                        <entry/>
+                        <entry>*</entry>
+                    </row>
+
+                    <row>
+                        <entry>Create/upload offline transactions</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                    </row>
+
+                    <row>
+                        <entry>Process offline transactions</entry>
+                        <entry/>
+                        <entry/>
+                        <entry/>
+                        <entry/>
+                        <entry/>
+                        <entry>*</entry>
+                    </row>
+                    <row>
+                        <entry>Transit</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                    </row>
+                    <row>
+                        <entry>Abort remote transit</entry>
+                        <entry/>
+                        <entry/>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                        <entry>*</entry>
+                    </row>
+
+                </tbody>
+            </tgroup>
+        </informaltable>
+    </section>
+
+    <section xml:id="profiles-grant-permissions">
+        <title>Granting Additional Permissions</title>
+        <para>A Local System Administrator (LSA) may selectively grant LSA permissions to other staff
+            accounts. In the example below a <emphasis>Circ +Full
+                Cat</emphasis> account is granted permission to process offline transactions, a function which otherwise requires an LSA login.</para>
+
+        <procedure>
+            <step>
+                <para>Log in as a Local System Administrator.</para>
+            </step>
+
+           <step><stepalternatives> <step>
+               
+                    <para>Select <menuchoice>
+                            <guimenu>Admin (-)</guimenu>
+                            <guimenuitem>User Permission Editor</guimenuitem>
+                        </menuchoice> and enter the staff account barcode when prompted</para>
+               
+               <para><emphasis role="bold">OR</emphasis></para>
+           </step>
+               <step>
+                  
+                       <para>Retrieve the staff account first, then select <menuchoice>
+                           <guimenu>Other</guimenu>
+                           <guimenuitem>User Permission Editor</guimenuitem>
+                       </menuchoice></para>
+                       
+               </step></stepalternatives></step>
+
+            <step>
+                <informalfigure>
+                    <para>The <guilabel>User Permission Editor</guilabel> will load (this may take a
+                        few seconds). Greyed-out permissions cannot be edited because they are
+                        either a) already granted to the account, or b) not
+                        available to any staff account, including LSAs.</para>
+                    <para>
+                        <mediaobject>
+                            <alt>User permissions screenshot</alt>
+                            <imageobject>
+                                <imagedata scalefit="0" fileref="../media/profile-5.png"/>
+                            </imageobject>
+
+                        </mediaobject>
+                    </para>
+
+                    <para>
+                        <inlinemediaobject>
+                            <imageobject>
+                                <imagedata scalefit="0" fileref="../media/1.png"/>
+                            </imageobject>
+                        </inlinemediaobject> List of permission names.  For help correlating permissions to specific Evergreen
+                        functions please contact Sitka support.</para>
+
+                    <para>
+                        <inlinemediaobject>
+                            <imageobject>
+                                <imagedata scalefit="0" fileref="../media/2.png"/>
+                            </imageobject>
+                        </inlinemediaobject>
+                        If checked the permission is granted to this account.</para>
+
+                    <para>
+                        <inlinemediaobject>
+                            <imageobject>
+                                <imagedata scalefit="0" fileref="../media/3.png"/>
+                            </imageobject>
+                        </inlinemediaobject> <guilabel>Depth</guilabel> limits application to the staff member's library and should be left at the default.  Evergreen blocks attempts to set Federation- or Sitka-wide privileges.</para>
+
+                    <para>
+                        <inlinemediaobject>
+                            <imageobject>
+                                <imagedata scalefit="0" fileref="../media/4.png"/>
+                            </imageobject>
+                        </inlinemediaobject>
+                        If checked this staff account will be able to grant the new privilege to other accounts (not recommended).
+                        </para>
+
+                </informalfigure>
+            </step>
+            
+            <step>
+                <informalfigure>
+                    <para>To allow processing of offline transactions check the <emphasis>Applied</emphasis> column next to OFFLINE_EXECUTE.</para>
+                    <para>
+                        <mediaobject>
+                            <alt>User permissions screenshot</alt>
+                            <imageobject>
+                                <imagedata scalefit="0" fileref="../media/profile-6.png"/>
+                            </imageobject>
+                            
+                        </mediaobject>
+                    </para>
+                    
+                </informalfigure>
+            </step>
+            
+            <step>
+                <informalfigure>
+                    <para>Scroll down and click <guibutton>Save</guibutton> to apply the changes.</para>
+                    <para>
+                        <mediaobject>
+                            <alt>User permissions screenshot</alt>
+                            <imageobject>
+                                <imagedata scalefit="0" fileref="../media/profile-7.png"/>
+                            </imageobject>
+                            
+                        </mediaobject>
+                    </para>
+                    
+                </informalfigure>
+            </step>
+            
+        </procedure>
+
+        
+    </section>
+</section>
 	<section xml:id="copystatus">
 		<title>Copy Status</title>
 		<para>To navigate to the copy status editor from the staff client menu, select 

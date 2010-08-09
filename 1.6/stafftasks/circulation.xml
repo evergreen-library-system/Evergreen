@@ -1274,15 +1274,15 @@
 
       <orderedlist inheritnum="ignore" continuation="restarts">
          <listitem>
-            <para><link xlink:href="#offline-create">Create a session: </link> to be done by local
+            <para>Create a session: to be done by local
                system administrators at an administration workstation.</para>
          </listitem>
          <listitem>
-            <para><link xlink:href="#offline-upload">Upload transactions to a session: </link> to be
+            <para>Upload transactions to a session: to be
                done by circulation staff at circulation workstations.</para>
          </listitem>
          <listitem>
-            <para><link xlink:href="#offline-process">Process the uploaded transactions: </link>to
+            <para>Process the uploaded transactions: to
                be done by local system administrators at an administration workstation.</para>
          </listitem>
       </orderedlist>

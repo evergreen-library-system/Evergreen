@@ -73,6 +73,20 @@
  		<xi:include href="admin/Upgrading-Evergreen_1.6.xml"/>
  		<xi:include href="admin/troubleshooting.xml"/>
 	</part>
+	<part xml:id="reports">
+		<info>
+			<title>Administration</title>
+		</info>
+		<xi:include href="reports/report-folder.xml"/>
+		<xi:include href="reports/report-create-template.xml"/>
+		<xi:include href="reports/report-generate-report.xml"/>
+ 		<xi:include href="reports/report-view-output.xml"/>
+ 		<xi:include href="reports/report-shared-template.xml"/>
+ 		<xi:include href="reports/report-recurring-report.xml"/>
+ 		<xi:include href="reports/report-template-terminology.xml"/>
+		
+	</part>
+
 	<part xml:id="software_integration">
 		<info>
 			<title>Third Party System Integration</title>
