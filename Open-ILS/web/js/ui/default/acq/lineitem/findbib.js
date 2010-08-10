@@ -24,7 +24,7 @@ function doSearch() {
     progressDialog.show(true);
     var query = searchQuery.attr('value');
     fieldmapper.standardRequest(
-        ['open-ils.search', 'open-ils.search.biblio.multiclass.query'],
+        ['open-ils.search', 'open-ils.search.biblio.multiclass.query.staff'],
         {
             async : true,
             params : [{limit : limit}, query, 1],
