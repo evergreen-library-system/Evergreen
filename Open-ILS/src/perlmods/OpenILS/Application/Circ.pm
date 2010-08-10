@@ -505,10 +505,7 @@ sub set_circ_due_date {
     if (!(interval_to_seconds($circ->duration) % 86400)) { # duration is divisible by days
         my $original_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($circ->due_date));
         my $new_date = DateTime::Format::ISO8601->new->parse_datetime($date);
-        $date = $new_date->ymd . 'T' . $original_date->strftime('%T%z');
-        if ($date =~ /^(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d-\d\d)(\d\d)$/) {
-            $date = "$1:$2"; # put a colon in the timestamp component for DateTime::Format::ISO8601->parse_datetime
-        }
+        $date = cleanse_ISO8601( $new_date->ymd . 'T' . $original_date->strftime('%T%z') );
     }
 
 	$circ->due_date($date);
