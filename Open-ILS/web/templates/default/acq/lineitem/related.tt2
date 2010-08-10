@@ -7,10 +7,8 @@
     <script type="text/javascript">
         function iterateSubfields(item) {
             var out = '';
-            var list = dojo.query('subfield', item);
-            for (var i = 0; i < list.length; i++) {
-                out += dojox.data.dom.textContent(list[i]) + ' ';
-            }
+            dojo.query('subfield', item).forEach(
+                function(item) { out += item.textContent + ' '; } );
             return out;
         }
     </script>
