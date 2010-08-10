@@ -3,33 +3,22 @@
 	<info>
 		<title>My Account</title>
 		<abstract>
-			<para>Items and issues related to user accounts.</para>
+			<para>This chapter will explain how users can use the My Account feature of the OPAC to manage their accounts.</para>
 		</abstract>
 	</info>
-	<para/>
-	<para/>
-	<section xml:id="myaccount">
-		<section xml:id="myaccountloginpasswordupdate">
-			<info>
+	<simplesect xml:id="myaccountloginpasswordupdate">
+		
 				<title>First Login Password Update</title>
-				<abstract>
-					<para>
-						<emphasis>Logging In (including required password change on first login, as well as self-selected username alternative to card number)</emphasis>
-					</para>
-				</abstract>
-			</info>
-			<para>Login to the Online Catalog My Account with Password Update</para>
-			<para>Patrons are given temporary "dummy" barcodes when new accounts are created, or forgotten passwords are reset. Patrons MUST change their password to something more secure with their <emphasis role="bold">first ever</emphasis> OPAC login or <emphasis role="bold">first</emphasis> login after a password reset. Once the password is updated, they will not have to repeat this process for subsequent logins.</para>
-			<section>
-				<title>Procedure</title>
-				<orderedlist>
-					<listitem>
+			<para>Patrons are given temporary <emphasis>dummy</emphasis> barcodes when new accounts are created, or forgotten passwords are reset. Patrons MUST change their password to something more secure with their <emphasis role="bold">first ever</emphasis> OPAC login or <emphasis role="bold">first</emphasis> login after a password reset. Once the password is updated, they will not have to repeat this process for subsequent logins.</para>
+			
+				<procedure>
+					<step>
 						<para>Open a web browser and go to: [URL]</para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Click <emphasis>My Account</emphasis></para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Enter your <emphasis>Username</emphasis> and <emphasis>Password</emphasis></para>
 						<itemizedlist>
 							<listitem>
@@ -39,179 +28,93 @@
 								<para>Your password is a 4 digit code provided when your account was created. If you have forgotten your password, contact your local library to have it reset.</para>
 							</listitem>
 						</itemizedlist>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Click <emphasis>Login</emphasis>; you will be prompted to change your password</para>
-						<figure>
-							<title>Login Password Update: Example of first time login</title>
-							<para>
-								<mediaobject>
-									<alt>Example of first time login</alt>
-									<imageobject xml:id="img_myaccountloginpasswordupdate">
-										<imagedata fileref="../media/myaccount-loginpasswordupdate.png" height="400px" scalefit="1" width="430px"/>
-									</imageobject>
-								</mediaobject>
-							</para>
-						</figure>
-						<orderedlist>
-							<listitem>
+						<substeps>
+							<step>
 								<para>Enter your current password</para>
-							</listitem>
-							<listitem>
+							</step>
+							<step>
 								<para>Enter a new password</para>
-							</listitem>
-							<listitem>
+							</step>
+							<step>
 								<para>Enter the new password again</para>
-							</listitem>
-							<listitem>
+							</step>
+							<step>
 								<para>Click <emphasis>Update Password</emphasis></para>
-							</listitem>
-							<listitem>
+							</step>
+							<step>
 								<para>At <emphasis role="bold">Password successfully updated</emphasis> pop-up click <emphasis>OK</emphasis>; you will be returned to the login screen</para>
-							</listitem>
-						</orderedlist>
-					</listitem>
-					<listitem>
+							</step>
+						</substeps>
+					</step>
+					<step>
 						<para>Enter your <emphasis>Username</emphasis> and <emphasis role="bold">new</emphasis> <emphasis>Password</emphasis></para>
-					</listitem>
-					<listitem>
-						<para>Your <emphasis role="bold">Account Summary</emphasis> page displays</para>
-					</listitem>
-				</orderedlist>
+					</step>
+					<step>
+						<para>Your <emphasis role="bold">Account Summary</emphasis> page displays.</para>
+					</step>
+				</procedure>
 				<para/>
-				<para><imagedata fileref="../media/myaccount-login-arrow.png" scalefit="0"/>	To view your account details, click one of the <emphasis role="bold">My Account</emphasis> tabs</para>
-				<para><imagedata fileref="../media/myaccount-login-arrow.png" scalefit="0"/>	To start a search, enter a term in the search box at the top of the page and click Go!</para>
-				<para>
-					<imagedata fileref="../media/myaccount-login-info.png" scalefit="0"/>
-					<emphasis role="bold">	If using a public computer be sure to log out!</emphasis>
-				</para>
+				<para>To view your account details, click one of the <emphasis role="bold">My Account</emphasis> tabs</para>
+				<para>To start a search, enter a term in the search box at the top of the page and click Go!</para>
+				<caution><para>If using a public computer be sure to log out!
+				</para></caution>
 				<para/>
-			</section>
-		</section>
-		<section xml:id="myaccountlogin">
-			<info>
+		</simplesect>
+		<simplesect xml:id="myaccountlogin">
 				<title>Logging In</title>
-				<abstract>
-					<para>
-						<emphasis>The login process</emphasis>
-					</para>
-				</abstract>
-			</info>
-			<para/>
-			<para/>
-			<title>Login to the Online Catalog</title>
-			<section>
-				<title>Procedure</title>
-				<orderedlist>
-					<listitem>
+				<procedure>
+				<title>Logging into your account from the  online catalog</title>	
+					<step>
 						<para>Open a web browser and go to: [URL]</para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Click <emphasis>My Account</emphasis></para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Enter your <emphasis>Username</emphasis> and <emphasis>Password</emphasis></para>
 						<itemizedlist>
-							<listitem>By default, your username is your library card number.</listitem>
-							<listitem>Your password is a 4 digit code provided when your account was created. If you have forgotten your password, contact your local library to have it reset.</listitem>
+							<listitem><para>By default, your username is your library card number.</para></listitem>
+							<listitem><para>Your password is a 4 digit code provided when your account was created. If you have forgotten your password, contact your local 
+							library to have it reset.</para></listitem>
 						</itemizedlist>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Click <emphasis>Login</emphasis></para>
 						<itemizedlist>
-							<listitem>At the first login, or following a password reset, you will be prompted to change your password.</listitem>
-							<listitem>After updating the password, you must enter your Username and Password again</listitem>
+							<listitem><para>At the first login, or following a password reset, you will be prompted to change your password.</para></listitem>
+							<listitem><para>After updating the password, you must enter your Username and Password again</para></listitem>
 						</itemizedlist>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Your <emphasis role="bold">Account Summary</emphasis> page displays</para>
-					</listitem>
-				</orderedlist>
-				<para/>
-				<para><imagedata fileref="../media/myaccount-login-arrow.png" scalefit="0"/>	To view your account details, click one of the <emphasis role="bold">My Account</emphasis> tabs</para>
-				<para><imagedata fileref="../media/myaccount-login-arrow.png" scalefit="0"/>	To start a search, enter a term in the search box at the top of the page and click <emphasis>Go!</emphasis></para>
-				<para>
-					<imagedata fileref="../media/myaccount-login-info.png" scalefit="0"/>
-					<emphasis role="bold">	If using a public computer be sure to log out!</emphasis>
-				</para>
-				<para/>
-				<figure>
-					<title>Login: Example of login</title>
-					<para>
-						<mediaobject>
-							<alt>Example of login</alt>
-							<imageobject xml:id="img_myaccountlogin">
-								<imagedata fileref="../media/myaccount-login.png" height="400px" scalefit="1" width="430px"/>
-							</imageobject>
-						</mediaobject>
-					</para>
-				</figure>
-			</section>
-		</section>
-		<section xml:id="myaccountsummary">
-			<info>
+					</step>
+				</procedure>
+				<para>To view your account details, click one of the <emphasis role="bold">My Account</emphasis> tabs</para>
+				<para>To start a search, enter a term in the search box at the top of the page and click <emphasis>Go!</emphasis></para>
+				<para><emphasis role="bold">If using a public computer be sure to log out!</emphasis></para>
+		</simplesect>
+		<simplesect xml:id="myaccountsummary">
 				<title>Account Summary</title>
-				<abstract>
 					<para>
-						<emphasis>View Staff Notes, home library, address, and phone numbers; change account username, password, and email</emphasis>
+						<emphasis>Users can view Staff Notes, home library, address, and phone numbers. They can also change account username, password, and email.</emphasis>
 					</para>
-				</abstract>
-			</info>
-			<section>
-				<para>stuff goes here...</para>
-				<figure>
-					<title>Account Summary: Example of account summary</title>
-					<para>
-						<mediaobject>
-							<alt>Summary of status of an account</alt>
-							<imageobject xml:id="img_myaccountsummary">
-								<imagedata fileref="../media/myaccount-summary.png" height="600px" scalefit="1" width="430px"/>
-							</imageobject>
-						</mediaobject>
-					</para>
-				</figure>
-			</section>
-		</section>
-		<section xml:id="myaccountitemscheckedout">
-			<info>
+		</simplesect>
+		<simplesect xml:id="myaccountitemscheckedout">
 				<title>Items Checked Out</title>
-				<abstract>
 					<para>
-						<emphasis>Manage items currently checked out</emphasis>
-					</para>
-				</abstract>
-			</info>
-			<section>
-				<title>About Managing Items Checked Out in My Account</title>
-				<para>All items currently borrowed, overdue items, renewals remaining, renew items, non-cataloged types checked out.</para>
-				<para>stuff goes here...</para>
-				<figure>
-					<title>Items Checked Out: Example of items checked out for an account</title>
-					<para>
-						<mediaobject>
-							<alt>Summary of items checked out for an account</alt>
-							<imageobject xml:id="img_myaccountitemscheckedout">
-								<imagedata fileref="../media/myaccount-itemscheckedout.png" height="600px" scalefit="1" width="430px"/>
-							</imageobject>
-						</mediaobject>
-					</para>
-				</figure>
-			</section>
-		</section>
-		<section xml:id="myaccountitemsonhold">
-			<info>
+						Users can manage items currently checked out and view overdue items and see renewals remaining.</para>
+				
+		</simplesect>
+		<simplesect xml:id="myaccountitemsonhold">
 				<title>Items On Hold</title>
-				<abstract>
 					<para>
 						<emphasis>Manage items currently being requested</emphasis>
 					</para>
-				</abstract>
-			</info>
-			<section>
-				<title>About Managing Holds in My Account</title>
 				<para>From My Account patrons can manage items currently being requested.</para>
-				<section xml:id="myaccountholds-actions">
-					<title>Actions include:</title>
+					<para>Actions include:</para>
 					<itemizedlist>
 						<listitem>
 							<para>Suspend ~ set a period of time during which the hold will not become active, such as during a vacation</para>
@@ -226,9 +129,9 @@
 							<para>Cancel ~remove the hold request</para>
 						</listitem>
 					</itemizedlist>
-				</section>
-				<section xml:id="myaccountitemsonhold-edit">
-					<title>Edit options include:</title>
+				
+					<para>Edit options include:</para>
+
 					<itemizedlist>
 						<listitem>
 							<para>Enable/disable phone notifications</para>
@@ -252,149 +155,90 @@
 							<para>Activate date</para>
 						</listitem>
 					</itemizedlist>
-				</section>
-			</section>
-			<section xml:id="myaccountitemsonhold-procedure">
-				<title>Procedure</title>
-				<orderedlist>
-					<listitem>
+				<procedure>
+				<title>To edit items on hold:</title>
+					<step>
 						<para>Login to My Account, click the <emphasis>Items on Hold</emphasis> tab</para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Select the hold to modify</para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Click <emphasis>Edit</emphasis> or <emphasis>Actions for Selected Holds</emphasis>~</para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Select the change to make, follow the steps on the screen</para>
-					</listitem>
-				</orderedlist>
-				<figure>
-					<title>Items On Hold: Example of items on hold for an account</title>
-					<para>
-						<mediaobject>
-							<alt>Summary of items on hold for an account</alt>
-							<imageobject xml:id="img_myaccountitemsonhold">
-								<imagedata fileref="../media/myaccount-itemsonhold.png" height="600px" scalefit="1" width="430px"/>
-							</imageobject>
-						</mediaobject>
-					</para>
-				</figure>
-			</section>
-		</section>
-		<section xml:id="myaccountfines">
-			<info>
+					</step>
+				</procedure>
+		</simplesect>
+		<simplesect xml:id="myaccountfines">
 				<title>Fines</title>
-				<abstract>
 					<para>
 						<emphasis>Manage fines on items currently checked out</emphasis>
 					</para>
-				</abstract>
-			</info>
-			<section>
-				<para>stuff goes here...</para>
-			</section>
-		</section>
-		<section xml:id="myaccountpreferences">
-			<info>
+		</simplesect>
+		<simplesect xml:id="myaccountpreferences">
 				<title>Preferences</title>
-				<abstract>
 					<para>
 						<emphasis>Manage preferences for an account</emphasis>
 					</para>
-				</abstract>
-			</info>
-			<section>
-				<para>stuff goes here...</para>
-			</section>
-		</section>
-		<section xml:id="myaccountbookbags">
-			<info>
+		</simplesect>
+		<simplesect xml:id="myaccountbookbags">
 				<title>Bookbags</title>
-				<abstract>
-					<para>
-						<emphasis>Create and manage bookbags</emphasis>
-					</para>
-				</abstract>
-			</info>
-			<section>
-				<title>About My Bookbags</title>
 				<para>My Bookbags is a feature that allows you to create lists of library materials (books, audiobooks, videos, etc.) These lists create links to records in the catalog, but are otherwise completely private and only accessible by you when logged in to your My Account.</para>
 				<para>You have the option to share <emphasis role="bold">specific</emphasis> lists with people whom you choose (send them the direct URL), or more generally via RSS feed. Shared bookbags do <emphasis role="bold">NOT</emphasis> create a link to your personal library account information or private bookbags. You can share or un-share bookbags at any time.</para>
 				<para>You can create as many bookbags and you want. Your bookbags will stay in your account until you delete them.</para>
 				<para>Items remain in bookbags until you remove them. Even if the item record is removed from the catalog, the bookbag entry will remain (but there will be no link to the catalog.)</para>
-			</section>
-			<section xml:id="myaccountbookbags-create">
+				<procedure>
 				<title>Create a new Bookbag</title>
-				<orderedlist>
-					<listitem>
+					<step>
 						<para>Login to <emphasis>My Account</emphasis> , click <emphasis>My Bookbags</emphasis></para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>At <emphasis>Create a new Bookbag</emphasis>, enter the name of the new Bookbag</para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Share - yes or no</para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Click <emphasis>Submit</emphasis></para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Click <emphasis>OK</emphasis></para>
-					</listitem>
-				</orderedlist>
-			</section>
-			<section xml:id="myaccountbookbags-add">
+					</step>
+				</procedure>
+				<procedure>
 				<title>Add items to a Bookbag</title>
-				<orderedlist>
-					<listitem>
+					<step>
 						<para>Search for an item, open the Title Record</para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Open the <emphasis>More Actions...</emphasis> list; click the Bookbag name</para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Click <emphasis>OK</emphasis></para>
-					</listitem>
-				</orderedlist>
-			</section>
-			<section xml:id="myaccountbookbags-share">
+					</step>
+				</procedure>
+				<procedure>
 				<title>Share a Bookbag</title>
-				<orderedlist>
-					<listitem>
+					<step>
 						<para>Login to <emphasis>My Account</emphasis>, click <emphasis>My Bookbags</emphasis></para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Find the Bookbag to share, click <emphasis>Share this Bookbag</emphasis></para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Click <emphasis>OK</emphasis></para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Click <emphasis>OK</emphasis></para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Click <emphasis>View</emphasis> to open the list as a webpage - copy and send this URL to selected recipients or embed in another website</para>
-					</listitem>
-					<listitem>
+					</step>
+					<step>
 						<para>Click the RSS symbol add the list to an RSS reader</para>
-					</listitem>
-				</orderedlist>
-			</section>
-			<section xml:id="myaccountbookbags-example">
-				<figure>
-					<title>Bookbags: Example of bookbags for an account</title>
-					<para>
-						<mediaobject>
-							<alt>Summary of status of bookbags for an account</alt>
-							<imageobject xml:id="img_myaccountbookbags">
-								<imagedata fileref="../media/myaccount-bookbags.png" height="400px" scalefit="1" width="430px"/>
-							</imageobject>
-						</mediaobject>
-					</para>
-				</figure>
-			</section>
-		</section>
-	</section>
+					</step>
+				</procedure>
+		</simplesect>
 </chapter>
