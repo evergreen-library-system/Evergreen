@@ -320,9 +320,9 @@ BEGIN
 
         IF item_object.create_date + age_protect_object.age > NOW() THEN
             IF hold_test.distance_is_from_owner THEN
-                SELECT INTO hold_transit_prox prox FROM actor.org_unit_prox WHERE from_org = item_cn_object.owning_lib AND to_org = pickup_ou;
+                SELECT INTO hold_transit_prox prox FROM actor.org_unit_proximity WHERE from_org = item_cn_object.owning_lib AND to_org = pickup_ou;
             ELSE
-                SELECT INTO hold_transit_prox prox FROM actor.org_unit_prox WHERE from_org = item_object.circ_lib AND to_org = pickup_ou;
+                SELECT INTO hold_transit_prox prox FROM actor.org_unit_proximity WHERE from_org = item_object.circ_lib AND to_org = pickup_ou;
             END IF;
 
             IF hold_transit_prox > age_protect_object.prox THEN
