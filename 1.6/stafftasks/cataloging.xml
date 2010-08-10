@@ -9,7 +9,7 @@
 	</info>    
 	<section xml:id="locatingrecords">
 		<title>Locating Records</title>
-		<section xml:id="staffclientrecordsearch">
+		<simplesect xml:id="staffclientrecordsearch">
 			<title>Search</title>
 			<para>Search functionality may be functioned through:
 				<itemizedlist>
@@ -30,8 +30,8 @@
 			Use <emphasis>ocm</emphasis> as a prefix for OCLC numbers that are eight digits or shorter. Evergreen will automatically prefix the number with zeros so that it is nine digits. 
 			(e.g. ocm01234567, or ocm00123456)
 			Do not use hyphens when searching by LCCN.  Substitute a <emphasis>0</emphasis> in place of the hyphen. (e.g. 2001001234)</para></tip>
-		</section>
-		<section xml:id="MARCexpertsearch">
+		</simplesect>
+		<simplesect xml:id="MARCexpertsearch">
 			<title>MARC Expert Search</title>
 			<para>Located beneath the “Quick Search” box on the catalog search screen.</para>
 			<procedure>
@@ -42,10 +42,10 @@
 			</procedure>
 			<tip><para>To set default record views for a username, select <menuchoice><guimenu>Actions for this Record</guimenu> <guimenuitem>Set bottom interface as 
 			Default</guimenuitem></menuchoice>.</para></tip>
-		</section>
-		<section xml:id="addingandeditingitems">
+		</simplesect>
+		<simplesect xml:id="addingandeditingitems">
 			<title>Adding and Editing Items</title>
-			<section xml:id="adingholdingstotitlerecords">
+			<simplesect xml:id="adingholdingstotitlerecords">
 				<title>Adding Holdings to Title Rrcords</title>			
 				<procedure>
 					<step><para>Retrieve an existing bibliographic record.</para></step>
@@ -64,11 +64,11 @@
 				</procedure>
 			<note><para>New items are assigned a status of In Process. Items must be checked in to become Available.  Alternatively, use Edit Item Attributes from the Actions for Selected 
 			Rows to change statuses to Available once records have been created and saved to database. The creation and use of item record templates is recommended. </para></note>
-			</section>
-		</section>
-		<section xml:id="copyalertsandnotes">
+			</simplesect>
+		</simplesect>
+		<simplesect xml:id="copyalertsandnotes">
 			<title>Copy Alerts and Notes</title>
-			<section xml:id="copyalerts">
+			<simplesect xml:id="copyalerts">
 				<title>Copy Alerts</title>
 				<para>Copy alerts are useful alerts for physical item copies.</para>
 				<para>Staff must be granted permission to override alerts at checkout or checkin.</para> 
@@ -90,8 +90,8 @@
 					<step><para>Select all items to be changed by highlighting the first item in the list, holding down the <keycap>Shift</keycap> key, and clicking on the last item. 						Select several, non-sequential items, by holding down the <keycap>Ctrl</keycap> key and clicking on the required items.</para></step>
 					<step><para>Continue to <emphasis>Edit Item Attributes</emphasis>, as above.</para></step>
 				</procedure>
-			</section>
-			<section xml:id="viewingcopyalerts">
+			</simplesect>
+			<simplesect xml:id="viewingcopyalerts">
 				<title>Viewing Copy Alerts</title>
 				<para>Copy alerts may be viewed from the <emphasis>Item Status</emphasis> screen, at checkin, and at checkout.</para>
 				<para>To view alerts from the <emphasis>Item Status</emphasis>, enter the barcode number.  Select the item and click <menuchoice><guimenu>Actions for Selected 
@@ -99,8 +99,8 @@
 				<para>To view alerts from the Item Status, enter the barcode number.  Select the item and click <menuchoice><guimenu>Actions for Selected Items</guimenu> 
 				<guimenuitem>Show Item Details</guimenuitem></menuchoice>.</para>
 				<para>The copy alert will display automatically at checkout and checkin.</para>
-			</section>
-			<section xml:id="copynotes">
+			</simplesect>
+			<simplesect xml:id="copynotes">
 				<title>Copy Notes</title>
 				<para>Copy notes are informational only. They may be internal or made available to the public in the OPAC.</para>	
 				<procedure>
@@ -112,13 +112,13 @@
 					<step><para>Click <guibutton>Add Note</guibutton> to display the new note.</para></step>
 					<step><para>Use the <guibutton>Delete This Note</guibutton> button to remove a note from a copy record.</para></step>
 				</procedure>			
-			</section>
-		</section>
+			</simplesect>
+		</simplesect>
 	</section>
 	<section xml:id="addingnewbibliographicrecords">
 		<title>Adding New Bibliographic Records</title>
 		<para>Evergreen allows new bibliographic records to be added to the database through Z39.50 searching, MARC record file uploads, and original cataloging.</para> 
-		<section xml:id="ImportingMARCRecords-Z39">
+		<simplesect xml:id="ImportingMARCRecords-Z39">
 			<title>Importing MARC Records via the Z39.50 Interface</title>
 			<procedure>
 				<step><para><menuchoice><guimenu>Cataloging</guimenu> <guimenuitem>Import Record from Z39.50</guimenuitem></menuchoice></para></step>
@@ -142,8 +142,8 @@
 					<listitem>Export MARC records</listitem>
 					<listitem>Import or overlay MARC records</listitem>
 				</itemizedlist>			
-		</section>		
-		<section xml:id="importingrecords">
+		</simplesect>		
+		<simplesect xml:id="importingrecords">
 			<title>Importing Records</title>
 			<procedure>
 				<step><para>Highlight the record and click <guibutton>MARC Editor for Import</guibutton>.</para></step>
@@ -156,8 +156,8 @@
 			</procedure>
 			<note><para>Select <guilabel>Fast Item Add</guilabel> to input the call number and barcode data from this screen. This box is 
 				<emphasis>sticky</emphasis> for the login.</para></note>
-		</section>	
-		<section xml:id="uploadingMARCfiles">
+		</simplesect>	
+		<simplesect xml:id="uploadingMARCfiles">
 			<title>Uploading MARC files</title>
 			<para>Title records that do not already exist in the Evergreen database may be uploaded directly to the catalog through vendor-supplied MARC files. Multiple title records 
 			can be uploaded and added at the same time.</para>
@@ -179,8 +179,8 @@
 				are not true matches, it is still possible to upload the selected records using the <guimenu>Actions</guimenu> drop-down menu.</para></step>
 				<note><para>The <guimenuitem>Import Attached Holdings</guimenuitem> option requires additional server configuration.</para></note>
 			</procedure>
-		</section>			
-		<section xml:id="creatingnewMARCrecords">
+		</simplesect>			
+		<simplesect xml:id="creatingnewMARCrecords">
 			<title>Creating New MARC Records</title>
 			<para>New MARC records may be created in Evergreen using MARC templates. For detailed information on MARC standards, visit the Library of Congress website: 
 			<ulink url='http://www.loc.gov/marc/'>http://www.loc.gov/marc/</ulink></para>
@@ -197,14 +197,14 @@
 				<step><para>The record is created and will open in the current default view. Holdings may now be added.</para></step>
 				<note><para>If the <guilabel>Fast Item Add</guilabel> box was selected, the copy editor will open after <guibutton>Create Record</guibutton> is clicked.</para></note>
 			</procedure>
-		</section>
+		</simplesect>
 	</section>
 	<section xml:id="MARCeditor">
 		<title>Working with the MARC Editor</title>
 		<para>The MARC Editor allows MARC tags, sub-fields, and indicators to be edited.</para> 
 		<para>OPAC icons for text, moving pictures and sound rely on correct MARC coding in the leader and the 008, as do OPAC search filters such as publication date, item type, or 
 		target audience. Bibliographic matching and de-duplicating also rely on correct MARC coding and consistency in use and content in particular MARC tags.</para> 
-		<section xml:id="editingMARCrecords">
+		<simplesect xml:id="editingMARCrecords">
 			<title>Editing MARC Records</title>
 			<procedure>
 				<step><para>Retrieve the record.</para></step>
@@ -219,8 +219,8 @@
 				<step><para>Click <guibutton>OK</guibutton>.</para></step>	
 			</procedure>
 			<tip><para>The MARC Editor may be navigated using keyboard shortcuts. Click <guibutton>Help</guibutton> to see the shortcut menu from within the MARC Editor.</para></tip>
-		</section>	
-		<section xml:id="MARCrecordleader">
+		</simplesect>	
+		<simplesect xml:id="MARCrecordleader">
 			<title>MARC Record Leader and MARC fixed field 008</title>
 			<para>Parts of the leader and the 008 field can be edited in the MARC Editor via the fixed field editor box displayed above the MARC record. Information about the leader and 
 			the 008 can be found on the Library of Congress’s MARC Standards page at <ulink url='http://www.loc.gov/marc/'>http://www.loc.gov/marc/</ulink>.</para>
@@ -235,8 +235,8 @@
 				<step><para>The OPAC icon for the appropriate material type will display.</para></step>	
 			</procedure>
 			<tip><para>The MARC Editor may be navigated using keyboard shortcuts. Click <guibutton>Help</guibutton> to see the shortcut menu from within the MARC Editor.</para></tip>
-		</section>	
-		<section xml:id="overlayingMARCrecords">
+		</simplesect>	
+		<simplesect xml:id="overlayingMARCrecords">
 			<title>Overlaying MARC Records</title>
 			<para>Overlaying a MARC record replaces an existing MARC record while leaving all holdings, holds, active circulations, bills, and fines intact.</para>
 			<para>In Evergreen, a record must be <emphasis>marked</emphasis> for overlay. The mark for overlay is by login. Only one record at a time may be marked for overlay. When another 
@@ -261,11 +261,11 @@
 				<step><para>Click <guibutton>Overlay</guibutton>.</para></step>
 				<step><para>Confirm the overlay. The record in Evergreen is overlaid with the new MARC record. All preexisting holdings remain intact.</para></step>
 			</procedure>
-		</section>
+		</simplesect>
 	</section>
 	<section xml:id="cattemplates">
 		<title>Cataloging Templates</title>
-		<para>This section explains creating, using, exporting, and importing item record templates for cataloging. Use of templates enhances item creation and helps ensure 
+		<para>This simplesect explains creating, using, exporting, and importing item record templates for cataloging. Use of templates enhances item creation and helps ensure 
 		consistency in record format in the database.</para> 
 				
 		<procedure>
@@ -370,7 +370,7 @@
 				displayed data.</listitem>
 			</itemizedlist>
 		</tip>
-		<section xml:id="addingcopyrecordscopybuckets">
+		<simplesect xml:id="addingcopyrecordscopybuckets">
 			<title>Adding Copy Records to Copy Buckets</title>
 			<para>While creating copy buckets is similar to creating record buckets (simply choose Copy Buckets in the menu choice), there are significant differences in adding copy 
 			records to a bucket. Records must be added to copy buckets from the copy record level. This may be done from several locations within the Evergreen client.</para>	
@@ -398,8 +398,8 @@
 				<step><para>Use <guibutton>Add All</guibutton> or select the appropriate items and <guibutton>Add Selected</guibutton> to move items to the bucket displayed in the 
 				bottom pane.</para></step>	
 			</procedure>
-		</section>
-		<section xml:id="WorkingwithRecordsinaBucket">
+		</simplesect>
+		<simplesect xml:id="WorkingwithRecordsinaBucket">
 			<title>Working with Records in a Bucket</title>
 			<para>Once records have been placed in a bucket, a variety of functions may be performed. </para>	
 					
@@ -433,7 +433,7 @@
 				<step><para>Enter the desired bucket number and click <guibutton>OK</guibutton>.</para></step>
 				<step><para>The requested bucket now displays. The bucket number (assigned by Evergreen) and owner displays.</para></step>
 			</procedure>
-		</section>
+		</simplesect>
 	</section>
 	<section xml:id="MergingBibliographicRecords">
 		<title>Merging Bibliographic Records</title>
@@ -479,7 +479,7 @@
 			<title>Batch deletions:</title>
 			<step><para>Create a copy bucket for the items to be deleted (<menuchoice><guimenu>Cataloging</guimenu> <guimenuitem>Manage Copy Buckets</guimenuitem>
 			</menuchoice>; create a New Bucket</para></step>		
-			<step><para>Enter the barcodes for the to-be-deleted items into the Pending Copies section of the Copy Buckets screen.</para></step>	
+			<step><para>Enter the barcodes for the to-be-deleted items into the Pending Copies simplesect of the Copy Buckets screen.</para></step>	
 			<step><para>Add All of the items to the selected bucket.</para></step>	
 			<step><para>Delete All from Catalog.</para></step>
 			<step><para>The Deleted? status for each item will change from <emphasis>No</emphasis> to <emphasis>Yes</emphasis>.</para></step>	

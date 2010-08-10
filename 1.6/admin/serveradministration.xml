@@ -11,7 +11,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	</info>
 	<section xml:id="orgunitsandtypes">
 		<title>Organizational Unit Types and Organizational Units</title>
-		<section xml:id="orgtypes">
+		<simplesect xml:id="orgtypes">
 			<title>Organizational Unit Types</title>
 			<para>Organizational Unit Types are the terms used to refer to levels in the hierarchy of your 
 			library system(s). Examples could include>All-Encompassing Consortium, Consortium Within a 
@@ -76,9 +76,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<step><para>Make the changes in the right pane.</para></step>
 				<step><para>Click <guibutton>Save</guibutton> to save your changes.</para></step>
 			</procedure>
-		</section>
+		</simplesect>
 	
-		<section xml:id="orgunits">
+		<simplesect xml:id="orgunits">
 		<title>Organizational Units</title>
 		<abstract>
 		<para>Organizational Units are the specific instances of the organization unit types that 
@@ -134,8 +134,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<step><para>Click <guibutton>Save</guibutton> to save your changes.</para></step>
 		</procedure>
 		
-		</section>
-		<section xml:id="server-hours">
+		</simplesect>
+		<simplesect xml:id="server-hours">
 		      <info>
 			 <title>Library Hours of Operation</title>
 		      </info>
@@ -212,10 +212,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 
 	      </procedure>
 
-  	 </section>
+  	 </simplesect>
 
 
-	   <section xml:id="server-addresses">
+	   <simplesect xml:id="server-addresses">
 	      <info>
 		 <title>Library Addresses</title>
 	      </info>
@@ -233,7 +233,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 
 		 <step>
 		    <para>Open the <guilabel>Organizational Units</guilabel> interface as described in the <link
-		          linkend="server-main">previous section</link>.</para>
+		          linkend="server-main">previous simplesect</link>.</para>
 		 </step>
 		 <step>
 		    <informalfigure>
@@ -272,14 +272,14 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		    correct addresses.</para>
 	      </note>
 
-	   </section>
+	   </simplesect>
 
 	</section>
 	<section xml:id="relevancyrankings">
 		<title>Adjusting Search Relevancy Rankings</title>
 		<info>
 			<abstract>
-				<para>This section describes indexed field weighting and matchpoint weighting, which
+				<para>This simplesect describes indexed field weighting and matchpoint weighting, which
 				control relevance ranking in Evergreen catalog search results. Adjusting relavancy can only be completed through access to the Evergreen database as of version 1.6.</para>
 				<tip>
 					<para>In tuning search relevance, it is good practice to make incremental
@@ -288,7 +288,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				</tip>
 			</abstract>
 		</info>
-		<section>
+		<simplesect>
 			<title>Indexed-field Weighting</title>
 			<para>Indexed-field weighting is configured in the Evergreen database in the weight column
 			of the config.metabib_field table, which follows the other four columns in this table:
@@ -302,8 +302,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			for <emphasis role="bold">jaguar</emphasis> would double the relevance  for the book titled
 			<emphasis role="italic">Aimee and Jaguar</emphasis> than for a record with the term
 			<emphasis role="bold">jaguar</emphasis> in another indexed field. </para>
-		</section>
-		<section>
+		</simplesect>
+		<simplesect>
 			<title>Matchpoint Weighting</title>
 			<para> Matchpoint weighting provides another way to fine-tune Evergreen relevance ranking,
 			and is configured through floating-point multipliers in the multiplier column of the
@@ -481,8 +481,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				</tbody>
 			</tgroup>
 			</table>
-		</section>
-		<section>
+		</simplesect>
+		<simplesect>
 			<title>Combining Index Weighting and Matchpoint Weighting</title>
 			<para>Index weighting and matchpoint weighting may be combined. The relevance boost of the combined 
 			weighting is equal to the product of the two multiplied values. </para>
@@ -494,8 +494,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				the matchpoint weights that apply -- because they are evaluated at different stages of the 
 				search process.</para>
 			</note>
-		</section>
-		<section>
+		</simplesect>
+		<simplesect>
 			<title>Adjusting Relevancy for Keyword Searches</title>
 			<para> Searching the out of the box <emphasis>keyword</emphasis> does not boost the ranking for terms appearing in, the title or subject fields since  there is just one 
 			keyword index which does not distinguish terms that appear in the title field from those in the notes field for example. In comparison, the title index is actually composed of 
@@ -545,9 +545,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 					<screen>WHERE id = 17;</screen>
 				</step>
 			</procedure>  
-		</section> 
-		</section>
-		<section xml:id="grouppermissions">
+		</simplesect> 
+	</section>
+	<section xml:id="grouppermissions">
 			<title>User and Group Permissions</title>
 			<abstract>
 			<para>It is essential to understand how user and group permissions can be used to allow staff 
@@ -559,28 +559,28 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			have the ability to assign elevated permissions to a user, and which staff members have the ability 
 			to edit users in particular groups.</para>
 		</abstract>
-		<section>
+		<simplesect>
 			<title>User Permissions</title>
 			<tip><para>Ihe User permissions editor allows an administrator to set up permission fopr an individual user. However, In most cases, permissions can be controlled more 
 			efficiently at the group level with individuals being assigned to specific groups based on their roles in the library.</para></tip> 
 			<para>To open the user permission editor, select <menuchoice><guimenu>Admin</guimenu>  
 			<guisubmenu>User Permission Editor</guisubmenu></menuchoice>. Type the user's barcode when prompted.</para>   
-			<section>
+			<simplesect>
 				<title>Working Locations</title>
-				<para>The first section of the User Permission Editor is the the Working Locations 
-				section.  You may select more than one working location for a user. This will effect 
+				<para>The first simplesect of the User Permission Editor is the the Working Locations 
+				simplesect.  You may select more than one working location for a user. This will effect 
 				the availability of certain permissions which are dependent on the user having the working location.</para> 	
-			</section>
-			<section>
+			</simplesect>
+			<simplesect>
 				<title>User Permission Settings</title>
 				<para>Below the working locations is the long list of all the permissions available on your 
 				system. For each permission you can apply it by checking the 
 				<emphasis>Applied</emphasis> check box. You can also select a depth to which the 
 				permission is applied and also make the permission <emphasis>grantable</emphasis>, allowing 
 				the user the ability to grant the permission to others.</para>
-			</section>	
-		</section>
-		<section>
+			</simplesect>	
+		</simplesect>
+		<simplesect>
 			<title>Group Permissions</title>
 			<para>Most permissions should be assigned at the group level. Here you can create new 
 			groups based on the roles and responsibilities of the users in your system. Staff will be able to 
@@ -648,8 +648,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<step><para>Click <guibutton>Save Changes</guibutton> when you are finished all 
 				the changes.</para></step>
 			</procedure>
-		</section>
-		<section>
+		</simplesect>
+		<simplesect>
 			<title>Permissions</title>
 			<table xml:id="permissiondescriptions">
 				<title>Permissions Table</title>
@@ -1322,7 +1322,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 					</tbody>
 				</tgroup>
 			</table>	
-		</section>
+		</simplesect>
 	</section>
 	<section>
 	<info>
@@ -1398,7 +1398,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
     </note>
 
 
-    <section xml:id="staff_account_permissions">
+    <simplesect xml:id="staff_account_permissions">
         <info>
             <title>Staff Account Permissions</title>
         </info>
@@ -1639,9 +1639,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                 </tbody>
             </tgroup>
         </informaltable>
-    </section>
+    </simplesect>
 
-    <section xml:id="profiles-grant-permissions">
+    <simplesect xml:id="profiles-grant-permissions">
         <title>Granting Additional Permissions</title>
         <para>A Local System Administrator (LSA) may selectively grant LSA permissions to other staff
             accounts. In the example below a <emphasis>Circ +Full
@@ -1751,13 +1751,11 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                     </para>
                     
                 </informalfigure>
-            </step>
-            
-        </procedure>
-
-        
-    </section>
-</section>
+            </step>     
+        		</procedure>
+       
+    		</simplesect>
+	</section>
 	<section xml:id="copystatus">
 		<title>Copy Status</title>
 		<para>To navigate to the copy status editor from the staff client menu, select 
@@ -1910,7 +1908,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<step><para>Once you have finished editing the statuses, remember to click 
 				<guibutton>Save Changes</guibutton>.</para></step>   	
 			</procedure>
-			</section>
+	</section>
 	<section xml:id="billingtypes">
 		<title>Billing Types</title>
 		<para>The billing types editor is used for creating, editing and deleting billing types.</para>    
@@ -2004,7 +2002,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
     	
 			</step>
 			<step>
-			<para>Add the template to the to the <emphasis>marctemplates</emphasis> list in the open-ils.cat section of the evergreen configuration file <filename>opensrf.xml</filename> </para>
+			<para>Add the template to the to the <emphasis>marctemplates</emphasis> list in the open-ils.cat simplesect of the evergreen configuration file <filename>opensrf.xml</filename> </para>
 			</step>
 			<step>
 				<para>Restart perl services for changes to take effect.</para>
