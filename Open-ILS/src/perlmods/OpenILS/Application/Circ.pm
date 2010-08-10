@@ -49,6 +49,7 @@ sub initialize {
 
 __PACKAGE__->register_method(
 	method => 'retrieve_circ',
+	authoritative	=> 1,
 	api_name	=> 'open-ils.circ.retrieve',
 	signature => q/
 		Retrieve a circ object by id
