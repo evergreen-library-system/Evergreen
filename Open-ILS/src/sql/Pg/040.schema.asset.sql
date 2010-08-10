@@ -485,7 +485,7 @@ BEGIN
 END;
 $f$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE OR REPLACE FUNCTION asset.record_copy_count ( place INT, record BIGINT, staff BOOL) RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT) AS $f$
+CREATE OR REPLACE FUNCTION asset.record_copy_count ( place INT, record BIGINT, staff BOOL) RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT) AS $f$
 BEGIN
     IF staff IS TRUE THEN
         IF place > 0 THEN
@@ -609,7 +609,7 @@ BEGIN
 END;
 $f$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE OR REPLACE FUNCTION asset.metarecord_copy_count ( place INT, record BIGINT, staff BOOL) RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT) AS $f$
+CREATE OR REPLACE FUNCTION asset.metarecord_copy_count ( place INT, record BIGINT, staff BOOL) RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT) AS $f$
 BEGIN
     IF staff IS TRUE THEN
         IF place > 0 THEN
