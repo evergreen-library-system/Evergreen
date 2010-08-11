@@ -1,4 +1,5 @@
 dojo.require('dojo.date.locale');
+dojo.require('dojo.cookie');
 dojo.require('dojo.date.stamp');
 dojo.require('dijit.form.CheckBox');
 dojo.require('dijit.form.NumberSpinner');
@@ -8,6 +9,7 @@ dojo.require('openils.User');
 dojo.require('openils.Event');
 dojo.require('openils.widget.ProgressDialog');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
+
 
 dojo.requireLocalization('openils.circ', 'selfcheck');
 var localeStrings = dojo.i18n.getLocalization('openils.circ', 'selfcheck');
@@ -74,6 +76,14 @@ function SelfCheckManager() {
     this.initPrinter();
 }
 
+SelfCheckManager.prototype.setupStaffLogin = function(verify) {
+
+    if(verify) oilsSetupUser(); 
+    this.staff = openils.User.user;
+    this.workstation = openils.User.workstation;
+    this.authtoken = openils.User.authtoken;
+}
+
 
 
 /**
@@ -81,9 +91,7 @@ function SelfCheckManager() {
  */
 SelfCheckManager.prototype.init = function() {
 
-    this.staff = openils.User.user;
-    this.workstation = openils.User.workstation;
-    this.authtoken = openils.User.authtoken;
+    this.setupStaffLogin();
     this.loadOrgSettings();
 
     this.circTbody = dojo.byId('oils-selfck-circ-tbody');
@@ -297,6 +305,8 @@ SelfCheckManager.prototype.drawLoginPage = function() {
  * Login the patron.  
  */
 SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
+
+    this.setupStaffLogin(true); // verify still valid
 
     if(this.orgSettings[SET_PATRON_PASSWORD_REQUIRED]) {
         
