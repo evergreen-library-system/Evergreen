@@ -37,17 +37,15 @@
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
     <vbox id="summary_box"/>
+    <hbox>
+        <hbox id="marc_cn"/>
+        <spacer flex="1" />
+        <button id="generate_barcodes" label="&staff.cat.volume_copy_creator.generate_barcodes.label;" oncommand="g.generate_barcodes();" accesskey="&staff.cat.volume_copy_creator.generate_barcodes.accesskey;"/>
+        <checkbox id="check_barcodes" label="&staff.cat.volume_copy_creator.check_barcodes.label;" oncommand="g.save_prefs();" accesskey="&staff.cat.volume_copy_creator.check_barcodes.accesskey;"/>
+        <checkbox id="print_labels" label="&staff.cat.volume_copy_creator.print_labels.label;"  oncommand="g.save_prefs();" accesskey="&staff.cat.volume_copy_creator.print_labels.accesskey;"/>
+    </hbox>
     <groupbox flex="1" class="my_overflow">
         <caption id="caption" label="&staff.cat.volume_copy_creator.label;"/>
-        <hbox style="border-bottom: solid black thin">
-            <hbox id="marc_cn"/>
-            <spacer flex="1" />
-            <button id="generate_barcodes" label="&staff.cat.volume_copy_creator.generate_barcodes.label;" oncommand="g.generate_barcodes();" accesskey="&staff.cat.volume_copy_creator.generate_barcodes.accesskey;"/>
-            <checkbox id="check_barcodes" label="&staff.cat.volume_copy_creator.check_barcodes.label;" oncommand="g.save_prefs();" accesskey="&staff.cat.volume_copy_creator.check_barcodes.accesskey;"/>
-            <checkbox id="print_labels" label="&staff.cat.volume_copy_creator.print_labels.label;"  oncommand="g.save_prefs();" accesskey="&staff.cat.volume_copy_creator.print_labels.accesskey;"/>
-            <button id="CreateWithDefaults" disabled="true" oncommand="g.stash_and_close('noedit');"/>
-            <button id="EditThenCreate" disabled="true" oncommand="g.stash_and_close('edit');"/>
-        </hbox>
         <grid flex="1">
             <columns> <column flex="0"/> <column flex="0"/> <column flex="1"/> </columns>
             <rows id="rows">
@@ -58,6 +56,11 @@
             </rows>
         </grid>
     </groupbox>
+    <hbox style="border-bottom: solid black thin">
+        <spacer flex="1" />
+        <button id="CreateWithDefaults" disabled="true" oncommand="g.stash_and_close('noedit');"/>
+        <button id="EditThenCreate" disabled="true" oncommand="g.stash_and_close('edit');"/>
+    </hbox>
 
 </window>
 
