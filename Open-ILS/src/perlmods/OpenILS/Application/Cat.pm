@@ -430,18 +430,33 @@ sub autogen_barcodes {
     return $e->event unless $e->allowed('UPDATE_COPY', $e->requestor->ws_ou);
     $options ||= {};
 
+    my $barcode_text = '';
+    my $barcode_number = 0;
+
+    if ($barcode =~ /^(\D+)/) { $barcode_text = $1; }
+    if ($barcode =~ /(\d+)$/) { $barcode_number = $1; }
+
     my @res;
     for (my $i = 1; $i <= $num_of_barcodes; $i++) {
+        my $calculated_barcode;
+
         # default is to use checkdigits, so looking for an explicit false here
         if (defined $$options{'checkdigit'} && ! $$options{'checkdigit'}) { 
-            push @res, $barcode + $i;
+            $calculated_barcode = $barcode_number + $i;
         } else {
-            if ($barcode !~ /^\d{13,14}$/) {
-                push @res, $barcode + $i;
+            if ($barcode_number =~ /^\d{8}$/) {
+                $calculated_barcode = add_codabar_checkdigit($barcode_number + $i, 0);
+            } elsif ($barcode_number =~ /^\d{9}$/) {
+                $calculated_barcode = add_codabar_checkdigit($barcode_number + $i*10, 1); # strip last digit
+            } elsif ($barcode_number =~ /^\d{13}$/) {
+                $calculated_barcode = add_codabar_checkdigit($barcode_number + $i, 0);
+            } elsif ($barcode_number =~ /^\d{14}$/) {
+                $calculated_barcode = add_codabar_checkdigit($barcode_number + $i*10, 1); # strip last digit
             } else {
-                push @res, add_codabar_checkdigit($barcode + $i*10);
+                $calculated_barcode = $barcode_number + $i;
             }
         }
+        push @res, $barcode_text . $calculated_barcode;
     }
     return \@res
 }
@@ -449,13 +464,18 @@ sub autogen_barcodes {
 # Codabar doesn't define a checkdigit algorithm, but this one is typically used by libraries.  gmcharlt++
 sub add_codabar_checkdigit {
     my $barcode = shift;
+    my $strip_last_digit = shift;
 
-    return $barcode if $barcode !~ /^\d{13,14}$/;
-    $barcode = substr($barcode, 0, 13); # ignore 14th digit
+    return $barcode if $barcode =~ /\D/;
+    $barcode = substr($barcode, 0, length($barcode)-1) if $strip_last_digit;
     my @digits = split //, $barcode;
     my $total = 0;
-    $total += $digits[$_] foreach (1, 3, 5, 7, 9, 11);
-    $total += (2 * $digits[$_] >= 10) ? (2 * $digits[$_] - 9) : (2 * $digits[$_]) foreach (0, 2, 4, 6, 8, 10, 12);
+    for (my $i = 1; $i < length($barcode); $i+=2) { # for a 13/14 digit barcode, would expect 1,3,5,7,9,11
+        $total += $digits[$i];
+    }
+    for (my $i = 0; $i < length($barcode); $i+=2) { # for a 13/14 digit barcode, would expect 0,2,4,6,8,10,12
+        $total += (2 * $digits[$i] >= 10) ? (2 * $digits[$i] - 9) : (2 * $digits[$i]);
+    }
     my $remainder = $total % 10;
     my $checkdigit = ($remainder == 0) ? $remainder : 10 - $remainder;
     return $barcode . $checkdigit;
