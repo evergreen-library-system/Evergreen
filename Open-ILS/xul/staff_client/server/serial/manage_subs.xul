@@ -32,8 +32,7 @@ vim:noet:sw=4:ts=4:
                                 JSAN.errorLevel = "die"; // none, warn, or die
                                 JSAN.addRepository('/xul/server/');
                                 JSAN.use('util.error'); g.error = new util.error();
-                                g.error.sdump('D_TRACE','my_init() for serial/manage_subs.xul');
-                                //JSAN.use('serial2.init');
+                                g.error.sdump('D_TRACE','manage_subs_init() for serial/manage_subs.xul');
                                 JSAN.use('serial.manage_subs'); g.manage_subs = new serial.manage_subs();
 
                                 g.manage_subs.init( { 'docid' : xul_param('docid') } );
@@ -55,7 +54,9 @@ vim:noet:sw=4:ts=4:
                         <menuitem command="cmd_add_sdist" label="Add Distribution"/>
                         <menuitem command="cmd_add_siss" label="Add Issuance"/>
                         <menuitem command="cmd_add_scap" label="Add Caption/Pattern"/>
+                        <menuseparator/>
                         <menuitem command="cmd_make_predictions" label="Make Predictions"/>
+                        <menuseparator/>
                         <menuitem command="cmd_delete_ssub" label="Delete Subscription"/>
                         <menuitem command="cmd_delete_sdist" label="Delete Distribution"/>
                         <menuitem command="cmd_delete_siss" label="Delete Issuance"/>
@@ -78,7 +79,9 @@ vim:noet:sw=4:ts=4:
                                         <menuitem command="cmd_add_sdist" label="Add Distribution"/>
                                         <menuitem command="cmd_add_siss" label="Add Issuance"/>
                                         <menuitem command="cmd_add_scap" label="Add Caption/Pattern"/>
+                                        <menuseparator/>
                                         <menuitem command="cmd_make_predictions" label="Make Predictions"/>
+                                        <menuseparator/>
                                         <menuitem command="cmd_delete_ssub" label="Delete Subscription"/>
                                         <menuitem command="cmd_delete_sdist" label="Delete Distribution"/>
                                         <menuitem command="cmd_delete_siss" label="Delete Issuance"/>

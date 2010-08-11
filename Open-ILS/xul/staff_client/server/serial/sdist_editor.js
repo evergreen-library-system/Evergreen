@@ -314,25 +314,15 @@ serial.sdist_editor.prototype = {
             }
 
             // return cached version if we have it
+            // TODO: clear cache on holding_lib change? (cannot remember how to reproduce this bug)
             if (obj.acn_lists[lib_id]) {
                 return obj.acn_lists[lib_id];
-            }
-
-            /* we only show this list if dealing with one org_unit, default to first sdist*/
-            var my_sre = obj.network.request(
-                'open-ils.pcrud',
-                'open-ils.pcrud.retrieve.sre',
-                [ ses(), obj.sdists[0].record_entry() ]
-            );
-
-            if (!my_sre) {
-                return [];
             }
 
             var acn_list = obj.network.request(
                 'open-ils.pcrud',
                 'open-ils.pcrud.search.acn',
-                [ ses(), {"record" : my_sre.record(), "owning_lib" : lib_id, "deleted" : 'f' }, {"order_by" : {"acn" : "label"} } ]
+                [ ses(), {"record" : obj.docid, "owning_lib" : lib_id, "deleted" : 'f' }, {"order_by" : {"acn" : "label"} } ]
             );
 
             if (!acn_list) {

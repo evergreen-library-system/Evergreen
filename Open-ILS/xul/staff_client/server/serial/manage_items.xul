@@ -51,6 +51,7 @@ vim:noet:sw=4:ts=4:
             <button id="refresh_button" label="&staff.cat.copy_browser.holdings_maintenance.refresh_button.label;" command="cmd_refresh_list" />
             <spacer flex="1"/>
             <menubar>
+                <!--
                 <menu label="Actions for this Serial Control" accesskey="C">
                     <menupopup>
                         <menuitem command="cmd_predict_items" label="Predict Items"/>
@@ -58,6 +59,7 @@ vim:noet:sw=4:ts=4:
                         <menuitem command="cmd_edit_mfhd" label="Edit MFHD Record"/>
                     </menupopup>
                 </menu>
+                -->
                 <menu label="&staff.cat.copy_browser.holdings_maintenance.actions.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.actions.accesskey;">
                     <menupopup>
                         <menuitem command="cmd_edit_items" label="Edit Item Attributes" accesskey="&staff.cat.copy_browser.actions.cmd_edit_items.accesskey;"/>
@@ -84,7 +86,7 @@ vim:noet:sw=4:ts=4:
         <splitter state="open" collapse="after" resizebefore="closest" resizeafter="farthest"/>
         <hbox align="center">
             <label style="font-weight: bold" value="Showing: "/>
-            <label id="serial_workarea_type_label" value="Recently Received"/>
+            <label id="serial_workarea_mode_label" value="Recently Received"/>
             <spacer flex="1"/>
             <button label="Receive/Move Selected &#8595;" command="cmd_receive_items"/>
         </hbox>

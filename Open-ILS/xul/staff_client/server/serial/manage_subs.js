@@ -188,6 +188,7 @@ serial.manage_subs.prototype = {
                             function() {
                                 try {
                                     var list = obj.ids_from_sel_list('ssub');
+                                    if (list.length == 0) list = obj.ids_from_sel_list('scap-group');
                                     if (list.length == 0) return;
 
                                     /*TODO: permission check?
@@ -225,6 +226,7 @@ serial.manage_subs.prototype = {
                             function() {
                                 try {
                                     var list = obj.ids_from_sel_list('ssub');
+                                    if (list.length == 0) list = obj.ids_from_sel_list('siss-group');
                                     if (list.length == 0) return;
 
                                     /*TODO: permission check?
@@ -954,6 +956,8 @@ serial.manage_subs.prototype = {
 
             JSAN.use('util.exec'); var exec = new util.exec(20); exec.timer(obj.funcs,100);
 
+            obj.toggle_actions(); // disable menus initially
+
         } catch(E) {
             this.error.standard_unexpected_error_alert('serial/manage_subs.init: ',E);
         }
@@ -1527,7 +1531,7 @@ serial.manage_subs.prototype = {
                 'to_bottom' : true,
                 'no_auto_select' : true,
             };
-            data['row']['my'][type] = item;
+            data['row']['my'][type] = item; // TODO: future optimization: get only the IDs of these leaves, then fetch the full row in 'retrieve_row'
             var nparams = obj.list.append(data);
             var node = nparams.my_node;
             obj.map_tree[ type + '_' + item.id() ] =  node;

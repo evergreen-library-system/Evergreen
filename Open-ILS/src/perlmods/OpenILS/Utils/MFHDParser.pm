@@ -59,16 +59,16 @@ sub mfhd_to_hash {
     my $marc;
     my $mfhd;
 
-    my $location            = '';
-    my $holdings            = [];
-    my $supplements         = [];
-    my $indexes             = [];
-    my $current_holdings    = [];
-    my $current_supplements = [];
-    my $current_indexes     = [];
-    my $online              = [];    # Laurentian extension to MFHD standard
-    my $missing             = [];    # Laurentian extension to MFHD standard
-    my $incomplete          = [];    # Laurentian extension to MFHD standard
+    my $location                = '';
+    my $basic_holdings          = [];
+    my $supplement_holdings     = [];
+    my $index_holdings          = [];
+    my $basic_holdings_add      = [];
+    my $supplement_holdings_add = [];
+    my $index_holdings_add      = [];
+    my $online                  = [];    # Laurentian extension to MFHD standard
+    my $missing                 = [];    # Laurentian extension to MFHD standard
+    my $incomplete              = [];    # Laurentian extension to MFHD standard
 
     try {
         $marc = MARC::Record->new_from_xml($mfhd_xml);
@@ -108,48 +108,89 @@ sub mfhd_to_hash {
 
     $location =~ s/ -- $//;
 
+    # TODO: for now, we will assume that textual holdings are in addition to the 
+    # computable holdings (that is, they have link IDs greater than the 85X fields)
+    # or that they fully replace the computable holdings (checking for link ID '0').
+    # Eventually this may be handled better by format_holdings() in MFHD.pm
+    my %skip_computable;
     try {
         foreach my $field ($marc->field('866')) {
             my $textual_holdings = $self->format_textual_holdings($field);
             if ($textual_holdings) {
-                push @$holdings, $textual_holdings;
+                push @$basic_holdings_add, $textual_holdings;
+                if ($field->subfield('8') eq '0') {
+                   $skip_computable{'basic'} = 1; # link ID 0 trumps computable fields
+                }
             }
         }
         foreach my $field ($marc->field('867')) {
             my $textual_holdings = $self->format_textual_holdings($field);
             if ($textual_holdings) {
-                push @$supplements, $textual_holdings;
+                push @$supplement_holdings_add, $textual_holdings;
+                if ($field->subfield('8') eq '0') {
+                   $skip_computable{'supplement'} = 1; # link ID 0 trumps computable fields
+                }
             }
         }
         foreach my $field ($marc->field('868')) {
             my $textual_holdings = $self->format_textual_holdings($field);
             if ($textual_holdings) {
-                push @$indexes, $textual_holdings;
+                push @$index_holdings_add, $textual_holdings;
+                if ($field->subfield('8') eq '0') {
+                   $skip_computable{'index'} = 1; # link ID 0 trumps computable fields
+                }
             }
         }
 
-        foreach my $cap_id ($mfhd->caption_link_ids('853')) {
-            my @curr_holdings = $mfhd->holdings('863', $cap_id);
-            next unless scalar @curr_holdings;
-            foreach (@curr_holdings) {
-                push @$current_holdings, $_->format();
+        if (!exists($skip_computable{'basic'})) {
+            foreach my $cap_id ($mfhd->caption_link_ids('853')) {
+                my @holdings = $mfhd->holdings('863', $cap_id);
+                next unless scalar @holdings;
+                foreach (@holdings) {
+                    push @$basic_holdings, $_->format();
+                }
             }
+            if (!@$basic_holdings) { # no computed holdings found
+                $basic_holdings = $basic_holdings_add;
+                $basic_holdings_add = [];
+            }
+        } else { # textual are non additional, but primary
+            $basic_holdings = $basic_holdings_add;
+            $basic_holdings_add = [];
         }
 
-        foreach my $cap_id ($mfhd->caption_link_ids('854')) {
-            my @curr_supplements = $mfhd->holdings('864', $cap_id);
-            next unless scalar @curr_supplements;
-            foreach (@curr_supplements) {
-                push @$current_supplements, $_->format();
+        if (!exists($skip_computable{'supplement'})) {
+            foreach my $cap_id ($mfhd->caption_link_ids('854')) {
+                my @supplements = $mfhd->holdings('864', $cap_id);
+                next unless scalar @supplements;
+                foreach (@supplements) {
+                    push @$supplement_holdings, $_->format();
+                }
             }
+            if (!@$supplement_holdings) { # no computed holdings found
+                $supplement_holdings = $supplement_holdings_add;
+                $supplement_holdings_add = [];
+            }
+        } else { # textual are non additional, but primary
+            $supplement_holdings = $supplement_holdings_add;
+            $supplement_holdings_add = [];
         }
 
-        foreach my $cap_id ($mfhd->caption_link_ids('855')) {
-            my @curr_indexes = $mfhd->holdings('865', $cap_id);
-            next unless scalar @curr_indexes;
-            foreach (@curr_indexes) {
-                push @$current_indexes, $_->format();
+        if (!exists($skip_computable{'index'})) {
+            foreach my $cap_id ($mfhd->caption_link_ids('855')) {
+                my @indexes = $mfhd->holdings('865', $cap_id);
+                next unless scalar @indexes;
+                foreach (@indexes) {
+                    push @$index_holdings, $_->format();
+                }
             }
+            if (!@$index_holdings) { # no computed holdings found
+                $index_holdings = $index_holdings_add;
+                $index_holdings_add = [];
+            }
+        } else { # textual are non additional, but primary
+            $index_holdings = $index_holdings_add;
+            $index_holdings_add = [];
         }
 
         # Laurentian extensions
@@ -179,15 +220,16 @@ sub mfhd_to_hash {
     };
 
     return {
-        location            => $location,
-        holdings            => $holdings,
-        current_holdings    => $current_holdings,
-        supplements         => $supplements,
-        current_supplements => $current_supplements,
-        indexes             => $indexes,
-        current_indexes     => $current_indexes,
-        missing             => $missing,
-        incomplete          => $incomplete,
+        location                => $location,
+        basic_holdings          => $basic_holdings,
+        basic_holdings_add      => $basic_holdings_add,
+        supplement_holdings     => $supplement_holdings,
+        supplement_holdings_add => $supplement_holdings_add,
+        index_holdings          => $index_holdings,
+        index_holdings_add      => $index_holdings_add,
+        missing                 => $missing,
+        incomplete              => $incomplete,
+        online                  => $online
     };
 }
 
@@ -203,15 +245,15 @@ Initialize the serial virtual record (svr) instance
 
 sub init_holdings_virtual_record {
     my $record = Fieldmapper::serial::virtual_record->new;
-    $record->id();
+    $record->sre_id();
     $record->location();
     $record->owning_lib();
-    $record->holdings([]);
-    $record->current_holdings([]);
-    $record->supplements([]);
-    $record->current_supplements([]);
-    $record->indexes([]);
-    $record->current_indexes([]);
+    $record->basic_holdings([]);
+    $record->basic_holdings_add([]);
+    $record->supplement_holdings([]);
+    $record->supplement_holdings_add([]);
+    $record->index_holdings([]);
+    $record->index_holdings_add([]);
     $record->online([]);
     $record->missing([]);
     $record->incomplete([]);
@@ -238,7 +280,7 @@ sub generate_svr {
     my $record   = init_holdings_virtual_record();
     my $holdings = $self->mfhd_to_hash($mfhd);
 
-    $record->id($id);
+    $record->sre_id($id);
     $record->owning_lib($owning_lib);
 
     if (!$holdings) {
@@ -246,12 +288,12 @@ sub generate_svr {
     }
 
     $record->location($holdings->{location});
-    $record->holdings($holdings->{holdings});
-    $record->current_holdings($holdings->{current_holdings});
-    $record->supplements($holdings->{supplements});
-    $record->current_supplements($holdings->{current_supplements});
-    $record->indexes($holdings->{indexes});
-    $record->current_indexes($holdings->{current_indexes});
+    $record->basic_holdings($holdings->{basic_holdings});
+    $record->basic_holdings_add($holdings->{basic_holdings_add});
+    $record->supplement_holdings($holdings->{supplement_holdings});
+    $record->supplement_holdings_add($holdings->{supplement_holdings_add});
+    $record->index_holdings($holdings->{index_holdings});
+    $record->index_holdings_add($holdings->{index_holdings_add});
     $record->online($holdings->{online});
     $record->missing($holdings->{missing});
     $record->incomplete($holdings->{incomplete});

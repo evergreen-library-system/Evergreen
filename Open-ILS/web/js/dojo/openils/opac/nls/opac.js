@@ -18,8 +18,10 @@
 	"EDIT_MFHD_RECORD": "Edit Record",
 	"EDIT_MFHD_MENU": "Edit Holdings",
 	"EDIT_PROPERTIES": "Edit Propeties",
-	"HOLDINGS": "Previous volumes",
-	"INDEXES": "Previous indexes",
+	"BASIC_HOLDINGS": "Volumes",
+	"BASIC_HOLDINGS_ADD": "Additional Volume Information",
+	"INDEX_HOLDINGS": "Indexes",
+	"INDEX_HOLDINGS_ADD": "Additional Index Information",
 	"CURRENT_HOLDINGS": "Current volume",
 	"CURRENT_INDEXES": "Current indexes",
 	"CURRENT_SUPPLEMENTS": "Current supplements",
@@ -28,5 +30,6 @@
 	"MISSING_VOLUMES": "Missing volumes",
 	"ONLINE_VOLUMES": "Online volumes",
 	"SAVE_MFHD_LABEL": "Save MFHD",
-	"SUPPLEMENTS": "Previous supplements"
+	"SUPPLEMENT_HOLDINGS": "Supplements",
+	"SUPPLEMENT_HOLDINGS_ADD": "Additional Supplement Information"
 }

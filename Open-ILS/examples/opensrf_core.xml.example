@@ -33,6 +33,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
           <service>open-ils.search</service>
           <service>open-ils.supercat</service>
           <service>open-ils.vandelay</service>
+          <service>open-ils.serial</service>
         </services>
       </router>
 

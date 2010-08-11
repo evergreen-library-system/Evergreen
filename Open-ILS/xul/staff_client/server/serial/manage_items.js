@@ -10,6 +10,7 @@ serial.manage_items = function (params) {
 	JSAN.use('OpenILS.data'); this.data = new OpenILS.data(); this.data.init({'via':'stash'});
 
     this.current_sunit_id = -1; //default to **AUTO**
+    this.mode = 'receive';
 
 }
 
@@ -80,9 +81,8 @@ serial.manage_items.prototype = {
             ml.addEventListener(
                 'command',
                 function(ev) {
-                    if (document.getElementById('serial_item_refresh_button')) document.getElementById('serial_item_refresh_button').focus();
-                    JSAN.use('util.file'); var file = new util.file('serial_items_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'serial_item_lib_menu' : [ 'value' ], 'mode_receive' : [ 'selected' ], 'mode_bind' : [ 'selected' ], 'serial_manage_items_show_all' : [ 'checked' ] });
+                    //if (document.getElementById('serial_item_refresh_button')) document.getElementById('serial_item_refresh_button').focus();
+                    obj.save_settings();
                     // get latest sdist id list based on library drowdown
                     obj.set_sdist_ids();
                     obj.refresh_list('main');
@@ -90,6 +90,7 @@ serial.manage_items.prototype = {
                 },
                 false
             );
+
         } else {
             throw(document.getElementById('catStrings').getString('staff.cat.copy_browser.missing_library') + '\n');
         }
@@ -99,6 +100,13 @@ serial.manage_items.prototype = {
         if (! ml.value) {
             ml.value = org.id();
             ml.setAttribute('value',ml.value);
+        }
+        
+        // deal with mode radio selectedIndex, as load_attributes is setting a "read-only" value
+        if ($('mode_receive').getAttribute('selected')) {
+            $('serial_manage_items_mode').selectedIndex = 0;
+        } else {
+            $('serial_manage_items_mode').selectedIndex = 1;
         }
 
         // setup recent sunits list
@@ -124,6 +132,30 @@ serial.manage_items.prototype = {
         obj.set_sunit($('serial_items_current_sunit').getAttribute('sunit_id'), $('serial_items_current_sunit').getAttribute('sunit_label'), $('serial_items_current_sunit').getAttribute('sdist_id'), $('serial_items_current_sunit').getAttribute('sstr_id'));
         obj.set_sdist_ids();
 		obj.init_lists();
+
+        var mode_radio_group = $('serial_manage_items_mode');
+        obj.set_mode(mode_radio_group.selectedItem.id.substr(5));
+        mode_radio_group.addEventListener(
+            'command',
+            function(ev) {
+                obj.save_settings();
+                var mode = ev.target.id.substr(5); //strip out 'mode_'
+                obj.set_mode(mode);
+                obj.refresh_list('main');
+                obj.refresh_list('workarea');
+            },
+            false
+        );
+        $('serial_manage_items_show_all').addEventListener(
+            'command',
+            function(ev) {
+                obj.save_settings();
+                obj.set_mode();
+                obj.refresh_list('main');
+                obj.refresh_list('workarea');
+            },
+            false
+        );
 
 		JSAN.use('util.controller'); obj.controller = new util.controller();
 		obj.controller.init(
@@ -242,6 +274,7 @@ serial.manage_items.prototype = {
                                 var sstr_id = target.getAttribute('sstr_id');
                                 obj.set_sunit(sunit_id, label, sdist_id, sstr_id);
                                 obj.save_sunit(sunit_id, label, sdist_id, sstr_id);
+                                if (obj.mode == 'bind') obj.refresh_list('workarea');
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('cmd_set_sunit failed!',E);
                             }
@@ -251,6 +284,7 @@ serial.manage_items.prototype = {
                         ['command'],
                         function() {
                             obj.set_other_sunit();
+                            if (obj.mode == 'bind') obj.refresh_list('workarea');
                         }
                     ],
                     'cmd_predict_items' : [
@@ -273,14 +307,61 @@ serial.manage_items.prototype = {
                                         }
                                     );
 
+                                var method; var success_label;
+                                if (obj.mode == 'receive') {
+                                    method = 'open-ils.serial.receive_items';
+                                    success_label = 'received';
+                                } else { // bind mode
+                                    method = 'open-ils.serial.bind_items';
+                                    success_label = 'bound';
+                                } 
+
+                                // deal with barcodes for *NEW* units
+                                var barcodes = {};
+                                if (obj.current_sunit_id < 0) { // **AUTO** or **NEW** units
+                                    new_unit_barcode = '';
+                                    for (var i = 0; i < list.length; i++) {
+                                        var item = list[i];
+                                        if (new_unit_barcode) {
+                                            barcodes[item.id()] = new_unit_barcode;
+                                            continue;
+                                        }
+                                        var prompt_text;
+                                        if (obj.current_sunit_id == -1) {
+                                            prompt_text = 'Please enter a barcode for '+item.issuance().label()+ ' from Distribution: '+item.stream().distribution().label()+'/'+item.stream().id()+':';
+                                        } else { // must be -2
+                                            prompt_text = 'Please enter a barcode for new unit:';
+                                        }
+                                        var barcode = window.prompt(prompt_text,
+                                            '',
+                                            'Unit Barcode Prompt');
+                                        barcode = String( barcode ).replace(/\s/g,'');
+                                        /* Casting a possibly null input value to a String turns it into "null" */
+                                        if (!barcode || barcode == 'null') {
+                                            alert('Invalid barcode entered, defaulting to system-generated.');
+                                            barcode = 'auto';
+                                        }
+
+                                        var test = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]);
+                                        if (typeof test.ilsevent == 'undefined') {
+                                            alert('Another copy has barcode "' + barcode + '", defaulting to system-generated.');
+                                            barcode = 'auto';
+                                        }
+                                        barcodes[item.id()] = barcode;
+                                        if (obj.current_sunit_id == -2) {
+                                            new_unit_barcode = barcode;
+                                        }
+                                    }
+                                }
+
                                 var robj = obj.network.request(
                                             'open-ils.serial',
-                                            'open-ils.serial.receive_items',
-                                            [ ses(), list ]
+                                            method,
+                                            [ ses(), list, barcodes ]
                                         );
                                 if (typeof robj.ilsevent != 'undefined') throw(robj); //TODO: catch for override
 
-                                alert('Successfully received '+robj.num_items_received+' item(s)');
+                                alert('Successfully '+success_label+' '+robj.num_items+' item(s)');
 
                                 if (obj.current_sunit_id == -2) {
                                     obj.current_sunit_id = robj.new_unit_id;
@@ -319,7 +400,7 @@ serial.manage_items.prototype = {
 
                     'cmd_items_print' : [ ['command'], function() { obj.items_print(obj.selected_list); } ],
 					'cmd_items_export' : [ ['command'], function() { obj.items_export(obj.selected_list); } ],
-					'cmd_refresh_list' : [ ['command'], function() { obj.refresh_list('main'); obj.refresh_list('workarea'); } ]
+					'cmd_refresh_list' : [ ['command'], function() { obj.set_sdist_ids(); obj.refresh_list('main'); obj.refresh_list('workarea'); } ]
 				}
 			}
 		);
@@ -472,6 +553,50 @@ serial.manage_items.prototype = {
 		}
 	},
 
+	'set_mode' : function(mode) {
+		var obj = this;
+
+        if (!mode) {
+            mode = obj.mode;
+        } else {
+            obj.mode = mode;
+        }
+
+        if (mode == 'receive') {
+            $('serial_workarea_mode_label').value = 'Recently Received';
+            if ($('serial_manage_items_show_all').checked) {
+                obj.lists.main.sitem_retrieve_params = {};
+            } else {
+                obj.lists.main.sitem_retrieve_params = {'date_received' : null };
+            }
+            obj.lists.main.sitem_extra_params ={'order_by' : {'sitem' : 'date_expected ASC, stream ASC'}};
+
+            obj.lists.workarea.sitem_retrieve_params = {'date_received' : {"!=" : null}};
+            obj.lists.workarea.sitem_extra_params ={'order_by' : {'sitem' : 'date_received DESC'}, 'limit' : 30};
+        } else { // bind mode
+            $('serial_workarea_mode_label').value = 'Bound Items in Current Working Unit';
+            if ($('serial_manage_items_show_all').checked) {
+                obj.lists.main.sitem_retrieve_params = {};
+            } else {
+                obj.lists.main.sitem_retrieve_params = {'date_received' : {'!=' : null}, 'status' : {'!=' : 'Bindery'} };
+            }
+            obj.lists.main.sitem_extra_params ={'order_by' : {'sitem' : 'date_expected ASC, stream ASC'}};
+
+            obj.lists.workarea.sitem_retrieve_params = {'status' : 'Bindery'}; // unit set dynamically in 'retrieve'
+            obj.lists.workarea.sitem_extra_params ={'order_by' : {'sitem' : 'date_received DESC'}};
+
+            // default to **NEW UNIT**
+            obj.set_sunit(-2, 'New Unit', '', '');
+        }
+    },
+
+	'save_settings' : function() {
+		var obj = this;
+
+        JSAN.use('util.file'); var file = new util.file('serial_items_prefs.'+obj.data.server_unadorned);
+        util.widgets.save_attributes(file, { 'serial_item_lib_menu' : [ 'value' ], 'mode_receive' : [ 'selected' ], 'mode_bind' : [ 'selected' ], 'serial_manage_items_show_all' : [ 'checked' ] });
+    },
+
 	'init_lists' : function() {
 		var obj = this;
 
@@ -540,12 +665,6 @@ serial.manage_items.prototype = {
 				}
 			}
 		);
-        if (document.getElementById('serial_manage_items_show_all').checked) {
-            obj.lists.main.sitem_retrieve_params = {};
-        } else {
-            obj.lists.main.sitem_retrieve_params = {'date_received' : null };
-        }
-        obj.lists.main.sitem_extra_params ={'order_by' : {'sitem' : 'date_expected ASC, stream ASC'}};
 
         obj.lists.workarea = new util.list('workarea_tree');
 		obj.lists.workarea.init(
@@ -574,21 +693,11 @@ serial.manage_items.prototype = {
 				}
 			}
 		);
-        obj.lists.workarea.sitem_retrieve_params = {'date_received' : {"!=" : null}};
-        obj.lists.workarea.sitem_extra_params ={'order_by' : {'sitem' : 'date_received DESC'}, 'limit' : 30};
     },
 
 	'refresh_list' : function(list_name) {
         var obj = this;
 
-        // TODO: make this change on the checkbox command event?
-        if (list_name == 'main') {
-            if (document.getElementById('serial_manage_items_show_all').checked) {
-                delete obj.lists.main.sitem_retrieve_params.date_received;
-            } else {
-                obj.lists.main.sitem_retrieve_params.date_received = null;
-            }
-        }
         //TODO Optimize this?
         obj.retrieve(list_name);
     },
@@ -597,6 +706,8 @@ serial.manage_items.prototype = {
 		var obj = this;
         var list = obj.lists[list_name];
         
+		list.clear();
+
         if (!obj.sdist_ids.length) { // no sdists to retrieve items for
             return;
         }
@@ -604,6 +715,11 @@ serial.manage_items.prototype = {
         var rparams = list.sitem_retrieve_params;
         var robj;
         rparams['+sstr'] = { "distribution" : obj.sdist_ids };
+
+        if (obj.mode == 'bind' && list_name == 'workarea') {
+             rparams['unit'] = obj.current_sunit_id;
+        }
+
         var other_params = list.sitem_extra_params;
         other_params.join = 'sstr';
 
@@ -611,16 +727,13 @@ serial.manage_items.prototype = {
             'FM_SITEM_ID_LIST',
             [ ses(), rparams, other_params ]
         );
-        if (typeof robj.ilsevent!='undefined') {
-            obj.error.standard_unexpected_error_alert('Failed to retrieve serial item ID list',E);
-        }
         if (!robj) {
             robj = [];
+        } else if (typeof robj.ilsevent!='undefined') {
+            obj.error.standard_unexpected_error_alert('Failed to retrieve serial item ID list',E);
         } else if (!robj.length) {
             robj = [robj];
         }
-
-		list.clear();
 
         for (i = 0; i < robj.length; i++) {
             list.append( { 'row' : { 'my' : { 'sitem_id' : robj[i] } }, 'to_bottom' : true, 'no_auto_select' : true } );

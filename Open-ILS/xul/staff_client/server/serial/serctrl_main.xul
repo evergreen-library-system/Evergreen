@@ -62,11 +62,13 @@ vim:noet:sw=4:ts=4:
         <command id="cmd_make_predictions"/>
         <command id="cmd_mark_library"/>
         <command id="cmd_mark_subscription"/>
-		<!--<command id="cmd_predict_items"/>-->
+		<command id="cmd_predict_items"/>
 		<command id="cmd_print_spine_labels"/>
 		<command id="cmd_receive_items"/>
 		<command id="cmd_refresh_list"/>
 		<command id="cmd_replace_barcode"/>
+        <command id="cmd_set_sunit" />
+        <command id="cmd_set_other_sunit" />
         <command id="cmd_show_all_libs" />
         <command id="cmd_show_libs_with_distributions" />
         <command id="cmd_show_my_libs" />
@@ -99,21 +101,21 @@ vim:noet:sw=4:ts=4:
 	</popupset> -->
 
 <!--	<groupbox flex="1" class="my_overflow"> -->
-        <tabbox id="serial_tabbox" flex="1">
+        <tabbox id="serial_tabbox" flex="1" class="my_overflow">
             <caption label="Serial Control"/>
             <tabs>
                 <tab label="Items" />
                 <tab label="Units" />
-                <tab label="Summaries" />
+                <tab label="Distributions" />
                 <tab id="serial_manage_subs_tab" label="Subscriptions" />
                 <tab label="Claims" />
             </tabs>
             <tabpanels flex="1">
                 <tabpanel id="serial_manage_items" />
-                <tabpanel id="serial_manage_units" />
-                <tabpanel id="serial_manage_summaries" />
+                <tabpanel id="serial_manage_units"><description>This tab will contain an alternative unit view/editor.</description></tabpanel>
+                <tabpanel id="serial_manage_distributions"><description>This tab will contain a tree of distributions with editors for templates, summaries, and streams.</description></tabpanel>
                 <tabpanel id="serial_manage_subs" />
-                <tabpanel id="serial_manage_claims" />
+                <tabpanel id="serial_manage_claims"><description>This tab will contain a claims interface.</description></tabpanel>
             </tabpanels>
         </tabbox>
 <!--	</groupbox> -->
