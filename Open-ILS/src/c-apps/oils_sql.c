@@ -753,6 +753,7 @@ int beginTransaction( osrfMethodContext* ctx ) {
 			osrfAppSessionPanic( ctx->session );
 		return -1;
 	} else {
+		dbi_result_free( result );
 		setXactId( ctx );
 		jsonObject* ret = jsonNewObject( getXactId( ctx ) );
 		osrfAppRespondComplete( ctx, ret );
@@ -824,6 +825,7 @@ int setSavepoint( osrfMethodContext* ctx ) {
 			osrfAppSessionPanic( ctx->session );
 		return -1;
 	} else {
+		dbi_result_free( result );
 		jsonObject* ret = jsonNewObject( spName );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree( ret  );
@@ -894,6 +896,7 @@ int releaseSavepoint( osrfMethodContext* ctx ) {
 			osrfAppSessionPanic( ctx->session );
 		return -1;
 	} else {
+		dbi_result_free( result );
 		jsonObject* ret = jsonNewObject( spName );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree( ret );
@@ -964,6 +967,7 @@ int rollbackSavepoint( osrfMethodContext* ctx ) {
 			osrfAppSessionPanic( ctx->session );
 		return -1;
 	} else {
+		dbi_result_free( result );
 		jsonObject* ret = jsonNewObject( spName );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree( ret );
@@ -1016,6 +1020,7 @@ int commitTransaction( osrfMethodContext* ctx ) {
 			osrfAppSessionPanic( ctx->session );
 		return -1;
 	} else {
+		dbi_result_free( result );
 		jsonObject* ret = jsonNewObject( trans_id );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree( ret );
@@ -1069,6 +1074,7 @@ int rollbackTransaction( osrfMethodContext* ctx ) {
 			osrfAppSessionPanic( ctx->session );
 		return -1;
 	} else {
+		dbi_result_free( result );
 		jsonObject* ret = jsonNewObject( trans_id );
 		osrfAppRespondComplete( ctx, ret );
 		jsonObjectFree( ret );
@@ -2107,6 +2113,7 @@ int doCreate( osrfMethodContext* ctx ) {
 			osrfAppSessionPanic( ctx->session );
 		rc = -1;
 	} else {
+		dbi_result_free( result );
 
 		char* id = oilsFMGetString( target, pkey );
 		if( !id ) {
@@ -5817,7 +5824,8 @@ int doUpdate( osrfMethodContext* ctx ) {
 		if( !oilsIsDBConnected( dbhandle ))
 			osrfAppSessionPanic( ctx->session );
 		rc = -1;
-	}
+	} else
+		dbi_result_free( result );
 
 	free( id );
 	osrfAppRespondComplete( ctx, obj );
@@ -5929,7 +5937,8 @@ int doDelete( osrfMethodContext* ctx ) {
 		);
 		if( !oilsIsDBConnected( writehandle ))
 			osrfAppSessionPanic( ctx->session );
-	}
+	} else
+		dbi_result_free( result );
 
 	free( id );
 
