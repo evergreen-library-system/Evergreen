@@ -570,17 +570,13 @@ sub rel_bump {
     return '' if (!@$only_atoms);
 
     if ($bump eq 'first_word') {
-        return "/* first_word */ CASE WHEN naco_normalize(".$node->table_alias.".value) ".
-                    "LIKE naco_normalize(".$self->QueryParser->quote_value($only_atoms->[0]->content).") \|\| '\%' ".
-                    "THEN $multiplier ELSE 1 END";
+        return " /* first_word */ COALESCE(NULLIF( (naco_normalize(".$node->table_alias.".value) ~ ('^'||naco_normalize(".$self->QueryParser->quote_value($only_atoms->[0]->content).")))::BOOL::INT, 0 ) * $multiplier, 1)";
     } elsif ($bump eq 'full_match') {
-        return "/* full_match */ CASE WHEN naco_normalize(".$node->table_alias.".value) ".
-                    "LIKE". join( '||\'%\'||', map { " naco_normalize(".$self->QueryParser->quote_value($_->content).") " } @$only_atoms ) .
-                    "THEN $multiplier ELSE 1 END";
+        return " /* full_match */ COALESCE(NULLIF( (naco_normalize(".$node->table_alias.".value) ~ ('^'||".
+                    join( "||' '||", map { "naco_normalize(".$self->QueryParser->quote_value($_->content).")" } @$only_atoms )."||'\$'))::BOOL::INT, 0 ) * $multiplier, 1)";
     } elsif ($bump eq 'word_order') {
-        return "/* word_order */ CASE WHEN naco_normalize(".$node->table_alias.".value) ".
-                    "LIKE '\%'||". join( '||\'%\'||', map { " naco_normalize(".$self->QueryParser->quote_value($_->content).") " } @$only_atoms ) . '||\'%\' '.
-                    "THEN $multiplier ELSE 1 END";
+        return " /* word_order */ COALESCE(NULLIF( (naco_normalize(".$node->table_alias.".value) ~ (".
+                    join( "||'.*'||", map { "naco_normalize(".$self->QueryParser->quote_value($_->content).")" } @$only_atoms )."))::BOOL::INT, 0 ) * $multiplier, 1)";
     }
 
     return '';
@@ -633,6 +629,8 @@ sub flatten {
                         next if (!$$bumps{$b}{active});
                         next if ($used_bumps{$b});
                         $used_bumps{$b} = 1;
+
+                        next if ($$bumps{$b}{multiplier} == 1); # optimization to remove unneeded bumps
 
                         my $bump_case = $self->rel_bump( $node, $b, $$bumps{$b}{multiplier} );
                         $node_rank .= "\n\t\t\t\t * " . $bump_case if ($bump_case);
