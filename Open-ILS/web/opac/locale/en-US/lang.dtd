@@ -2579,8 +2579,8 @@
 <!ENTITY staff.cat.spine_labels.available_macros.label "Available Macros">
 <!ENTITY staff.cat.volume_copy_creator.title "Volume and Copy Editor">
 <!ENTITY staff.cat.volume_copy_creator.label "Volume and Copy Creator">
-<!ENTITY staff.cat.volume_copy_creator.check_barcodes.label "Check Barcodes?">
-<!ENTITY staff.cat.volume_copy_creator.check_barcodes.accesskey "B">
+<!ENTITY staff.cat.volume_copy_creator.check_barcodes.label "Use Checkdigit">
+<!ENTITY staff.cat.volume_copy_creator.check_barcodes.accesskey "t">
 <!ENTITY staff.cat.volume_copy_creator.generate_barcodes.label "Auto-Generate Barcodes?">
 <!ENTITY staff.cat.volume_copy_creator.generate_barcodes.accesskey "G">
 <!ENTITY staff.cat.volume_copy_creator.print_labels.label "Print Labels?">

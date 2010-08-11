@@ -351,7 +351,12 @@ g.generate_barcodes = function() {
 
         var barcodes = g.network.simple_request(
             'AUTOGENERATE_BARCODES',
-            [ ses(), first_barcode, nodes.length - 1 ]
+            [
+                ses(),
+                first_barcode,
+                nodes.length - 1,
+                $('check_barcodes').checked ? {} : { "checkdigit" : false }
+            ]
         );
 
         if (typeof barcodes.ilsevent != 'undefined') {
