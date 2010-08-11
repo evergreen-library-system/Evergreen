@@ -399,7 +399,7 @@ BEGIN
                 COUNT( av.id ),
                 SUM( CASE WHEN cp.status IN (0,7,12) THEN 1 ELSE 0 END ),
                 COUNT( av.id ),
-                CASE WHEN src.transcendant THEN 1 ELSE NULL::INT END
+                trans
           FROM  
                 actor.org_unit_descendants(ans.id) d
                 JOIN asset.opac_visible_copies av ON (av.record = record AND av.circ_lib = d.id)
