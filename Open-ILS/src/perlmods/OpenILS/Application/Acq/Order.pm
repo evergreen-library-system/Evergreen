@@ -1274,7 +1274,7 @@ sub upload_records {
         $mgr->respond;
 	}
 
-    my $die_event = activate_purchase_order_impl($mgr, $po->id) if $po;;
+    my $die_event = activate_purchase_order_impl($mgr, $po->id) if $po and $activate_po;
     return $die_event if $die_event;
 
 	$e->commit;
