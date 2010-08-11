@@ -1,4 +1,5 @@
 [% WRAPPER default/base.tt2 %]
+[% ctx.page_title = 'Providers' %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/provider.js'> </script>
 
 <script type="text/javascript"> 
@@ -7,20 +8,19 @@
 function getInvIdent(rowIndex, item) {
     if (!item) return {};
     return {
-        "id": this.grid.store.getValue(item, "id"),
+          "id": this.grid.store.getValue(item, "id"),
         "name": this.grid.store.getValue(item, "inv_ident")
     };
 }
 
 function formatInvIdent(o) {
-    return "<a href='" + oilsBasePath + "/acq/invoice/view/" + o.id + "'>" +
-        o.name + "</a>";
+    return "<a href='" + oilsBasePath + "/acq/invoice/view/" + o.id + "'>" + o.name + "</a>";
 }
 
 function getProviderName(rowIndex, item) {
     if(!item) return '';
     var name = this.grid.store.getValue(item, 'name');
-    var id = this.grid.store.getValue(item, 'id');
+    var id   = this.grid.store.getValue(item, 'id');
     return id + ':' + name;
 }
 
@@ -79,9 +79,8 @@ function formatName(value) {
 <div dojoType="dijit.layout.TabContainer" style='height:100%' jsId='providerTabs'>
 
     <div dojoType="dijit.layout.ContentPane" title='Provider Address' select='true' id='provider-address'>
-
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div> Provider Address</div>
+            <div>Provider Address</div>
             <div>
             <button dojoType='dijit.form.Button' onClick='paListGrid.showCreateDialog()'>New Provider Address</button>
             <button dojoType='dijit.form.Button' onClick='paListGrid.deleteSelected()'>Delete Selected</button>
@@ -101,7 +100,7 @@ function formatName(value) {
 
     <div dojoType="dijit.layout.ContentPane" title='Provider Contact' id='tab-pro-contact'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-            <div> Provider Contact</div>
+            <div>Provider Contact</div>
             <div>
             <button dojoType='dijit.form.Button' onClick='pcListGrid.showCreateDialog()'>New Contact</button>
             <button dojoType='dijit.form.Button' onClick='pcListGrid.deleteSelected()'>Delete Selected</button>
@@ -118,24 +117,23 @@ function formatName(value) {
             </table>
         </div>
       
-            <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
-                <div>Contact Address</div>
-                <div>
-                    <button dojoType='dijit.form.Button' onClick='pcaListGrid.showCreateDialog()'>New Contact Address</button>
-                    <button dojoType='dijit.form.Button' onClick='pcaListGrid.deleteSelected()'>Delete Selected</button>
-                </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+            <div>Contact Address</div>
+            <div>
+                <button dojoType='dijit.form.Button' onClick='pcaListGrid.showCreateDialog()'>New Contact Address</button>
+                <button dojoType='dijit.form.Button' onClick='pcaListGrid.deleteSelected()'>Delete Selected</button>
             </div>
-            <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
-                <table  jsId="pcaListGrid"
-                        dojoType="openils.widget.AutoGrid"
-                        fieldOrder="['id', 'address_type', 'contact', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
-                        query="{id: '*'}"
-                        fmClass='acqpca'
-                        defaultCellWidth='"auto"' 
-                        editOnEnter='true'>
-                    
-                </table>
-            </div>
+        </div>
+        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" style='height:200px'>
+            <table  jsId="pcaListGrid"
+                    dojoType="openils.widget.AutoGrid"
+                    fieldOrder="['id', 'address_type', 'contact', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
+                    query="{id: '*'}"
+                    fmClass='acqpca'
+                    defaultCellWidth='"auto"' 
+                    editOnEnter='true'>
+            </table>
+        </div>
        
     </div>
     <div dojoType="dijit.layout.ContentPane" title='Attribute Definitions' id='tab-attr'>
