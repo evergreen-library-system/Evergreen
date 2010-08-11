@@ -251,10 +251,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
-				<retrieve permission="CREATE_IMPORT_ITEM_ATTR_DEF UPDATE_IMPORT_ITEM_ATTR_DEF DELETE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
-				<update permission="UPDATE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
-				<delete permission="DELETE_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
+				<create permission="CREATE_IMPORT_ITEM_ATTR_DEF ADMIN_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
+				<retrieve permission="CREATE_IMPORT_ITEM_ATTR_DEF UPDATE_IMPORT_ITEM_ATTR_DEF DELETE_IMPORT_ITEM_ATTR_DEF ADMIN_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
+				<update permission="UPDATE_IMPORT_ITEM_ATTR_DEF ADMIN_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
+				<delete permission="DELETE_IMPORT_ITEM_ATTR_DEF ADMIN_IMPORT_ITEM_ATTR_DEF" context_field="owner"/>
 			</actions>
 		</permacrud>
 	</class>

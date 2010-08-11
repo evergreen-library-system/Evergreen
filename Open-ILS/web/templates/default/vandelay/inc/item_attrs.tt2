@@ -1,0 +1,27 @@
+<!--
+    Grid for configuring vandelay.import_item_attr_definition
+-->
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
+        <div>Import Item Attrbute Definitions</div>
+        <div>
+            <button dojoType='dijit.form.Button' onClick='itemAttrGrid.showCreateDialog()'>New Definition</button>
+            <button dojoType='dijit.form.Button' onClick='itemAttrGrid.deleteSelected()'>Delete Selected</button>
+        </div>
+    </div>
+    <div>
+        <span style='padding-right:10px;'>Context Org Unit</span>
+        <select dojoType="openils.widget.OrgUnitFilteringSelect" jsId='itemAttrContextOrgSelector'
+            searchAttr='shortname' labelAttr='shortname'> </select>
+    </div>
+    <table  jsId="itemAttrGrid"
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="[]"
+            query="{id: '*'}"
+            fmClass='viiad'
+            editStyle='pane'
+            showPaginator='true'
+            editOnEnter='true'>
+    </table>
+</div>

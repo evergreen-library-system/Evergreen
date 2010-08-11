@@ -56,7 +56,8 @@ var globalDivs = [
     'vl-marc-upload-status-div',
     'vl-attr-editor-div',
     'vl-marc-export-div',
-    'vl-profile-editor-div'
+    'vl-profile-editor-div',
+    'vl-item-attr-editor-div'
 ];
 
 var authtoken;
@@ -272,6 +273,9 @@ function displayGlobalDiv(id) {
             break;
         case 'vl-profile-editor-div':
             openils.Util.addCSSClass(dojo.byId('vl-menu-profile-editor'), 'toolbar_selected');
+            break;
+        case 'vl-item-attr-editor-div':
+            openils.Util.addCSSClass(dojo.byId('vl-menu-import-item-attr-editor'), 'toolbar_selected');
             break;
     }
 }
@@ -1322,7 +1326,7 @@ function vlShowProfileEditor() {
             function() {
                 profileContextOrg = this.attr('value');
                 pGrid.resetStore();
-                buildGrid();
+                buildProfileGrid();
             }
         );
     };
@@ -1342,5 +1346,36 @@ function buildProfileGrid() {
     );
 }
 
+/* --- Import Item Attr Grid --------------- */
 
+var itemAttrContextOrg;
+function vlShowImportItemAttrEditor() {
+    displayGlobalDiv('vl-item-attr-editor-div');
+    buildImportItemAttrGrid();
+
+    var connect = function() {
+        dojo.connect(itemAttrContextOrgSelector, 'onChange',
+            function() {
+                itemAttrContextOrg = this.attr('value');
+                itemAttrGrid.resetStore();
+                vlShowImportItemAttrEditor();
+            }
+        );
+    };
+
+    new openils.User().buildPermOrgSelector(
+        'ADMIN_IMPORT_ITEM_ATTR_DEF', 
+            itemAttrContextOrgSelector, null, connect);
+}
+
+function buildImportItemAttrGrid() {
+
+    if(itemAttrContextOrg == null)
+        itemAttrContextOrg = openils.User.user.ws_ou();
+
+    itemAttrGrid.loadAll( 
+        {order_by : {viiad : 'name'}}, 
+        {owner : fieldmapper.aou.fullPath(itemAttrContextOrg, true)}
+    );
+}
 
