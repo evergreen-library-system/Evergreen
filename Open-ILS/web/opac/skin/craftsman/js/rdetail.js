@@ -1089,11 +1089,6 @@ function GBPreviewCallback(GBPBookInfo) {
 	}
 
 	if ( GBPBook.preview != "noview" ) {
-		if ( GBPBook.preview == 'full' ) {
-			setText( $('rdetail_preview_link'), $('rdetail_preview_full_text').innerHTML );
-			$('rdetail_preview_link_a').title = $('rdetail_preview_title').innerHTML;      
-		}
-
 		// Add a button below the book cover image to load the preview.
 		GBPBadge = document.createElement( 'img' );
 		GBPBadge.src = 'http://books.google.com/intl/en/googlebooks/images/gbs_preview_button1.gif';
