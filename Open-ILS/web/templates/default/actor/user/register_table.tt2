@@ -2,13 +2,13 @@
     <tr fmclass='ac' fmfield='barcode' required='required'>
         <td/><td/><td/>
         <td>
-            <button dojoType='dijit.form.Button' jsId='replaceBarcode'>Replace Barcode</button>
+            <button dojoType='dijit.form.Button' jsId='replaceBarcode' scrollOnFocus='false'>Replace Barcode</button>
             <span id='uedit-dupe-barcode-warning' style='color:red; font-weight:bold' class='hidden'>
                 Barcode is already in use
             </span>
         </td>
         <td id='uedit-all-barcodes' class='hidden'>
-            <button dojoType='dijit.form.Button' jsId='allCards'>See All</button>
+            <button dojoType='dijit.form.Button' jsId='allCards' scrollOnFocus='false'>See All</button>
         </td>
     </tr>
     <tr fmclass='au' fmfield='usrname' required='required'>
@@ -94,7 +94,7 @@
 
     <tr id='new-addr-row' class='newaddr-row' required='show'>
         <td colspan='0' style='text-align:center;'>
-            <button dojoType='dijit.form.Button' onClick='uEditNewAddr'>New Address</button>
+            <button dojoType='dijit.form.Button' onClick='uEditNewAddr' scrollOnFocus='false'>New Address</button>
         </td>
     </tr>
 
