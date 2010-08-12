@@ -31,6 +31,7 @@
            	</info>
 		<xi:include href="intro/intro_intro.xml"/>
 		<xi:include href="intro/about_evergreen.xml"/>
+		<xi:include href="intro/releasenotes.xml"/>
  	</part>
 	<part xml:id="opac">
 		<info>
@@ -64,7 +65,7 @@
 	</part>
 	<part xml:id="reports">
 		<info>
-			<title>Administration</title>
+			<title>Reports</title>
 		</info>
 		<xi:include href="reports/report-folder.xml"/>
 		<xi:include href="reports/report-create-template.xml"/>
@@ -85,12 +86,15 @@
 		<info>
 			<title>Development</title>
 		</info>
-		<xi:include href="development/schema.xml"/>
+		<xi:include href="development/OpenSRF_intro.xml"/>
+		<xi:include href="development/datamodelsandaccess.xml"/>
+		<xi:include href="development/introduction_to_sql.xml"/>
 	</part>
 	<part xml:id="Appendices">
 		<info>
 			<title>Appendices</title>
 		</info>
+		<xi:include href="development/schema.xml"/>
 		<xi:include href="appendices/bookindex.xml"/>
 	</part>
 </book>
