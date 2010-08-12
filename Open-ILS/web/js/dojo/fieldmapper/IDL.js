@@ -24,12 +24,6 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                         if (i > 0) idl_url += '&';
                         idl_url += 'class=' + trim_class;
                     }
-
-                    JSON2js.fallbackObjectifier = function (arg, key_name, val_name) {
-                        fieldmapper.IDL.load([arg[key_name]]);
-                        return decodeJS(arg);
-                    }
-                    
                 }
                         
                 var self = this;
@@ -202,5 +196,11 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
     fieldmapper.IDL.load = function (list) { if (!list) list = []; return new fieldmapper.IDL(list); };
     fieldmapper.IDL.loaded = false;
 
+    JSON2js.fallbackObjectifier = function (arg, key_name, val_name) {
+        console.log("Firing IDL loader for " + key_name);
+        fieldmapper.IDL.load([arg[key_name]]);
+        return decodeJS(arg);
+    }
+ 
 }
 
