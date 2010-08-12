@@ -733,11 +733,16 @@ static int val_fields_attributes( Class* class, const char* id, xmlNodePtr field
 					xmlGetLineNo( fields ), id );
 				rc = 1;
 			}
-		} else if( !strcmp( attr_name, "sequence" ) ) {
+		} else if( !strcmp( attr_name, "sequence" )) {
 			sequence = xmlGetProp( fields, (xmlChar*) "sequence" );
 			if( '\0' == sequence[0] ) {
 				printf(
 					"Line %ld: value of sequence attribute is an empty string for class \"%s\"\n",
+					xmlGetLineNo( fields ), id );
+				rc = 1;
+			} else if( !strchr( (const char*) sequence, '.' )) {
+				printf(
+					"Line %ld: name of sequence for class \"%s\" is not qualified by schema\n",
 					xmlGetLineNo( fields ), id );
 				rc = 1;
 			}
