@@ -39,6 +39,43 @@ my $U = $apputils;
 
 
 __PACKAGE__->register_method(
+    method    => "create_hold_batch",
+    api_name  => "open-ils.circ.holds.create.batch",
+    stream => 1,
+    signature => {
+        desc => q/@see open-ils.circ.holds.create.batch/,
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Array of hold objects', type => 'array' }
+        ],
+        return => {
+            desc => 'Array of hold ID on success, -1 on missing arg, event (or ref to array of events) on error(s)',
+        },
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => "create_hold_batch",
+    api_name  => "open-ils.circ.holds.create.override.batch",
+    stream => 1,
+    signature => {
+        desc  => '@see open-ils.circ.holds.create.batch',
+    }
+);
+
+
+sub create_hold_batch {
+	my( $self, $conn, $auth, $hold_list ) = @_;
+    (my $method = $self->api_name) =~ s/\.batch//og;
+    foreach (@$hold_list) {
+        my ($res) = $self->method_lookup($method)->run($auth, $_);
+        $conn->respond($res);
+    }
+    return undef;
+}
+
+
+__PACKAGE__->register_method(
     method    => "create_hold",
     api_name  => "open-ils.circ.holds.create",
     signature => {
@@ -1607,6 +1644,32 @@ sub fetch_captured_holds {
     return undef;
 }
 
+__PACKAGE__->register_method(
+    method    => "check_title_hold_batch",
+    api_name  => "open-ils.circ.title_hold.is_possible.batch",
+    stream    => 1,
+    signature => {
+        desc  => '@see open-ils.circ.title_hold.is_possible.batch',
+        params => [
+            { desc => 'Authentication token',     type => 'string'},
+            { desc => 'Array of Hash of named parameters', type => 'array'},
+        ],
+        return => {
+            desc => 'Array of response objects',
+            type => 'array'
+        }
+    }
+);
+
+sub check_title_hold_batch {
+    my($self, $client, $authtoken, $param_list) = @_;
+    foreach (@$param_list) {
+        my ($res) = $self->method_lookup('open-ils.circ.title_hold.is_possible')->run($authtoken, $_);
+        $client->respond($res);
+    }
+    return undef;
+}
+
 
 __PACKAGE__->register_method(
     method    => "check_title_hold",
@@ -1720,6 +1783,8 @@ sub check_title_hold {
         return {"success" => 0};
     }
 }
+
+
 
 sub do_possibility_checks {
     my($e, $patron, $request_lib, $depth, %params) = @_;
