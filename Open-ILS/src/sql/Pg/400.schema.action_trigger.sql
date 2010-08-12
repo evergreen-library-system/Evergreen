@@ -121,15 +121,18 @@ INSERT INTO action_trigger.reactor (module,description) VALUES
         'description'
     )
 );
-INSERT INTO action_trigger.reactor (module,description) VALUES
-(   'GenerateBatchOverduePDF',
-    oils_i18n_gettext(
-        'GenerateBatchOverduePDF',
-        'Output a batch PDF of overdue notices for printing',
-        'atreact',
-        'description'
-    )
-);
+
+-- TODO: build a PDF generator
+--INSERT INTO action_trigger.reactor (module,description) VALUES
+--(   'GenerateBatchOverduePDF',
+--    oils_i18n_gettext(
+--        'GenerateBatchOverduePDF',
+--        'Output a batch PDF of overdue notices for printing',
+--        'atreact',
+--        'description'
+--    )
+--);
+
 INSERT INTO action_trigger.reactor (module,description) VALUES
 (   'MarkItemLost',
     oils_i18n_gettext(
