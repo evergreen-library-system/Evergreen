@@ -5183,7 +5183,7 @@ SELECT  usr,
 			<field reporter:label="Receiver" name="receiver" reporter:datatype="org_unit" />
 			<field reporter:label="Provider" name="provider" reporter:datatype="link"/>
 			<field reporter:label="Shipper" name="shipper" reporter:datatype="link"/>
-			<field reporter:label="Receive Date/Time" name="recv_date" reporter:datatype="timestamp" />
+			<field reporter:label="Invoice Date" name="recv_date" reporter:datatype="timestamp" />
 			<field reporter:label="Receive Method" name="recv_method" reporter:datatype="link" />
 			<field reporter:label="Invoice Type" name="inv_type" reporter:datatype="text" />
 			<field reporter:label="Vendor Invoice ID" name="inv_ident" reporter:datatype="text" />
