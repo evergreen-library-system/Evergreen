@@ -39,6 +39,7 @@ my %fields = (
     local_file      => undef,
     tempfile        => undef,
     error           => undef,
+    single_ext      => undef,
     specific        => 0,
     debug           => 0,
 );
@@ -260,10 +261,26 @@ sub put {
 
     $self->{put_args} = [$local_file];      # same for scp_put and uFTP put
     if (defined $self->remote_path and not defined $self->remote_file) {
-        $self->remote_file($self->remote_path . '/' . basename($local_file));   # if we know just the dir
+        my $rpath = $self->remote_path;
+        my $fname = basename($local_file);
+        if ($rpath =~ /^(.*)\*+(.*)$/) {    # if the path has an asterisk in it, like './incoming/*.tst'
+            my $head = $1;
+            my $tail = $2;
+            if ($tail =~ /\//) {
+                $logger->warn($self->_error("remote path '$rpath' has dir slashes AFTER an asterisk.  Cannot determine target dir"));
+                return;
+            }
+            if ($self->single_ext) {
+                $tail =~ /\./ and $fname =~ s/\./_/g;    # if dot in tail, replace dots in fname (w/ _)
+            }
+            $self->remote_file($head . $fname . $tail);
+        } else {
+            $self->remote_file($rpath . '/' . $fname);   # if we know just the dir
+        }
     }
+
     if (defined $self->remote_file) {
-        push @{$self->{put_args}}, $self->remote_file;     # user can specify remote_file name, optionally
+        push @{$self->{put_args}}, $self->remote_file;   # user can specify remote_file name, optionally
     }
 
     my %keys = $self->key_check($params);

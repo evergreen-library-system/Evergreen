@@ -55,6 +55,15 @@ print "\nHook '$hook' is used in ", scalar(@$defs), " event definition(s):\n";
 $Data::Dumper::Indent = 1;
 my $remaining = $opts->{'max-batch-size'};
 
+# FIXME: this is the disclusion subquery.  It discludes any PO that has
+# a non-retry edi_message linked to it.  But that means that if there are
+# mutliple EDI messages (say, some failed translation) and one marked retry,
+# the PO is still discluded!  Perhaps there should never be multiple messages,
+# but that makes testing much trickier (and is not DB-enforced).
+#
+# One approach might be to supplementally query for any "retry" messages that 
+# are on active providers (and deduplicate).  
+
 my $subq = {
     select => { acqedim => ['purchase_order'] },
     from   => 'acqedim',

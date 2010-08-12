@@ -156,7 +156,7 @@ sub send_core {
         } elsif (! $_->edi) {
             $logger->error("Message (id " . $_->id. ") for $log_str has no EDI content");
             $error = "EDI empty!";
-        } elsif ($res = $server->put({remote_path => $account->path, content => $_->edi})) {
+        } elsif ($res = $server->put({remote_path => $account->path, content => $_->edi, single_ext => 1})) {
             #  This is the successful case!
             $_->remote_file($res);
             $_->status('complete');
