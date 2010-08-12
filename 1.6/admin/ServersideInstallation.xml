@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="ServersideInstallation" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
+	<info>
+		<title>Server-side Installation of Evergreen Software</title>
+		<abstract>
+			<para>Specifics in the process of installing server-side software for Evergreen</para>
+		</abstract>
+	</info>
+	<section xml:id="serversideinstallation-overview">
+		<title>Overview</title>
+		<para>A bare-minimum system Evergreen system requires only a single Server and a single Staff Client (in fact, that is a reasonable system for simple experiments or a proof-of-concept). Another simple system may require only that you install one or more instances of the Staff Client software. For instance, if your consortium already provides the Evergreen Server software or if you are using the hosted version provided by Equinox, you do not need to install the Server software at all. But typical real-world systems will probably consist of at least one or two Servers plus multiple Staff Clients.</para>
+		<para>The Server software currently runs as a native application on any of several well-known Linux distributions (e.g., Debian and Ubuntu). It does not run as a native application on the Windows operating system (e.g., WindowsXP, WindowsXP Professional, Windows7), but the software can be installed and run on Windows via a virtualized Unix-guest Operating System (using, for example, VirtualBox or VMware to emulate a Linux environment). More information on virtualized environments can be found in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-virtual">"Installing in Virtualized Unix Environments"</link></emphasis></emphasis></para>
+	</section>
+	<section xml:id="serversideinstallation-requirements">
+		<title>System Requirements</title>
+		<para>This section describes processes and events that must occur to install the Evergreen server in all supported operating systems / environments. Please review the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-process">"The Installation Process"</link></emphasis></emphasis> for instructions tailored to specific distributions.</para>
+		<para>The system requirements for running Evergreen really depend on what you want to do with it. For just evaluating the software, or for a very small library (for example, 1 circulation station, a few thousand items, and infrequent online catalog use), any modern desktop or laptop made within the last few years capable of running Linux, FreeBSD, etc. should suffice. We recommend at least 512mb of RAM.</para>
+		<para>
+			<screen>
+			From Dan Scott on [http://list.georgialibraries.org/pipermail/open-ils-general/2007-July/000316.html|OPEN-ILS-GENERAL]:
+			> On 8/11/07, lan ye &lt;lye at mail.slcl.org> wrote:
+			> > We've been researching the Evergreen Open Source Library system, and would
+			> like to have a list of hardware requirements for the installation of a small
+			> test server. To keep things within a small budget, I would like to just use
+			> an ordinary PC. Could you send some information to us?
+
+			For system requirements, it depends on how extensive you want your
+			tests to be. Evergreen and all of the pieces it depends on
+			(PostgreSQL, Apache, Ejabberd) run happily in a VMWare image allocated
+			512MB of RAM on my laptop with just the Project Gutenberg e-books
+			loaded, and that's enough to evaluate the OPAC interface / try out the
+			staff client / make some local changes and generally experiment. But
+			I'm not going to load one million bib records into that system and
+			expect it to perform. So, probably any hardware you have lying around
+			would be adequate for a small test server.
+
+			> > It looks like Evergreen has been successfully installed on two Linux
+			> systems: Gentoo and Ubuntu. Which one is the best for us to test using
+			> what's already in place at other libraries? Are there any differences /
+			> Advantages in functionality between Gentoo and Ubuntu?
+
+			As John said, GPLS is running on Debian, and that's the only Evergreen
+			system that is in production at the moment. However, the documentation
+			for installing on Debian is a bit scattered right now. The developers
+			themselves used Gentoo originally, and that's what I'm using at the
+			moment &amp; have documented in the wiki; the install process on Ubuntu is
+			very thoroughly documented and Ubuntu is reasonably close to Debian.
+			See http://open-ils.org/dokuwiki/doku.php?id=server_installation for
+			the list of install instructions for various distributions.
+
+			As for advantages / disadvantages of particular distributions, that's
+			a religious war that I don't want to step into... We'll try to help
+			you out no matter what distribution you choose; just please choose a
+			current release :)
+
+			-- 
+			Dan Scott
+			Laurentian University
+			</screen>
+			<screen>
+			And from James Fournie in that same [http://list.georgialibraries.org/pipermail/open-ils-general/2007-July/000317.html|thread]:
+			We are running a test Ubuntu server on a ~1ghz Celeron PC with 512mb RAM.
+			It seems to be ok handling the Gutenberg samples, and our collection of
+			about 8000 records. We did have serious problems using anything less than
+			512mb RAM. Also, I tried Evergreen on a K6 II 350, but it wasn't pretty.
+
+			James Fournie
+			Digitization Librarian
+			Union of B.C. Indian Chiefs
+			</screen>
+		</para>
+	</section>
+	<section xml:id="serversideinstallation-examples">
+		<title>Example System Architectures</title>
+		<para>[[real-world examples of working systems]]</para>
+		<section xml:id="serversideinstallation-example-pines">
+			<title>PINES</title>
+			<para>In order to provide load balancing and high-availability at the OPAC and Staff Client level, PINES has implemented a Linux Virtual Server environment with five independent mini-clusters. This allows live updates of the entire system with no perceived downtime or interruption in service.</para>
+			<para>[[ further information on PINES ]] </para>
+		</section>
+		<section xml:id="serversideinstallation-example-other">
+			<title>Other Architectures</title>
+			<para>[[ further information on OTHER ]] </para>
+		</section>
+	</section>
+	<section xml:id="serversideinstallation-virtual">
+		<title>Installing in Virtualized Unix Environments</title>
+		<para>[[ Installing in Virtualized Unix Environments ]]</para>
+		<section xml:id="serversideinstallation-virtualized-virtualbox">
+			<title>VirtualBox</title>
+			<para>[[ VirtualBox ]]</para>
+		</section>
+		<section xml:id="serversideinstallation-virtualized-vmware">
+			<title>VMware</title>
+			<para>[[ VMware ]]</para>
+		</section>
+		<section xml:id="serversideinstallation-virtualized-virtualpc">
+			<title>VirtualPC</title>
+			<para>[[ VirtualPC ]]</para>
+		</section>
+	</section>
+	<section xml:id="serversideinstallation-process">
+		<title>The Installation Process</title>
+		<section>
+			<title>Current stable Release</title>
+			<para>
+				<link linkend="serversideinstallation-ubuntudebian">Installing Evergreen 1.6.0.x on Ubuntu or Debian</link>
+			</para>
+			<para>
+				<link linkend="serversideinstallation-opensrf">Installing OpenSRF 1.2.x</link>
+			</para>
+		</section>
+		<section>
+			<title>Previous stable release</title>
+			<para>
+				<link linkend="serversideinstallation-ubuntudebian-previous">Installing Evergreen 1.4.0.x on Ubuntu or Debian</link>
+			</para>
+			<para>
+				<link linkend="serversideinstallation-opensrf-previous">Installing OpenSRF 1.0.x</link>
+			</para>
+		</section>
+		<section>
+			<title>Configuring the system</title>
+			<para>
+				<link linkend="serversideinstallation-organizationandpolicy">Organization and Policy Editing</link>
+			</para>
+			<section>
+				<title>Holds</title>
+				<para>For holds to work properly, you need to run this command as the user <emphasis role="bold">opensrf</emphasis> to calculate the proximity of locations in the Organizational Unit tree:</para>
+				<screen>
+				$ autogen.sh -u -c /openils/conf/opensrf_core.xml
+				</screen>
+				<para>This is an expensive operation if you have a large Organizational Unit tree, so don't run it indiscriminately.</para>
+			</section>
+		</section>
+	</section>
+	<section xml:id="serversideinstallation-ubuntudebian">
+		<title>Installing Evergreen 1.6.0.x On Ubuntu or Debian</title>
+		<para>The following steps have been tested on the x86 (32-bit) and x86-64 (64-bit) architectures. There may be differences between the Desktop and Server editions of Ubuntu. These instructions assume the Server edition.</para>
+		<para>In the following instructions, you are asked to perform certain steps as either the <emphasis role="bold">root</emphasis> user, the <emphasis role="bold">opensrf</emphasis> user, or the <emphasis role="bold">postgres</emphasis> user.</para>
+		<para>To become the <emphasis role="bold">root</emphasis> user, issue the command: <emphasis><emphasis role="bold">sudo su - root</emphasis></emphasis>. To switch from the <emphasis role="bold">root</emphasis> user to a different user, issue a command like: <emphasis><emphasis role="bold">su - USERNAME</emphasis></emphasis>. For example, to switch from the <emphasis role="bold">root</emphasis> user to the <emphasis role="bold">opensrf</emphasis> user, issue this command: <emphasis><emphasis role="bold">su - opensrf</emphasis></emphasis>. Once you have become a non-root user, to become the <emphasis role="bold">root</emphasis> user again, simply issue the <emphasis><emphasis role="bold">exit</emphasis></emphasis> command.</para>
+		<section>
+			<title>Install the latest version of OpenSRF</title>
+			<para>For further information on installing the Open Service Request Framework (OpenSRF), see the section <link linkend="serverinstallation-opensrf">Installing OpenSRF</link>.</para>
+			<para>Follow the steps outlined in that section, then run the specified test(s) to ensure that OpenSRF is properly installed before continuing with any further Evergreen installation steps. The Evergreen application depends on properly installation of OpenSRF. If OpenSRF does not work correctly, Evergreen will not work properly either.</para>
+		</section>
+		<section>
+			<title>Download and Build Evergreen </title>
+			<para>In this section, you will download, unpack, install and test the Evergreen system, including the Evergreen server and the PostgreSQL database system. You will also make several configuration changes and adjustments to the software, including updates to configure the system for your own locale, and some updates needed to work around a few known issues.</para>
+			<para>As far as possible, perform the following steps in the order they are given, since the success of many steps relies on the successful completion of earlier steps. You should make backup copies of files and environments when you are instructed to do so. In the event of installation problems, those copies can allow you to back out of a step gracefully and resume the installation from a known state.</para>
+			<para>Of course, when you successfully complete and test the entire installation you should take a final snapshot backup of your system(s). This can be the first in the series of regularly scheduled system backups that you should probably institute.</para>
+			<section>
+				<title>Download and Unpack Latest Evergreen Version</title>
+				<para>As the <emphasis role="bold">opensrf</emphasis> user, download and extract the latest version of Evergreen. The latest version can be found here: <emphasis><emphasis role="bold"><ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.0.7.tar.gz"></ulink></emphasis></emphasis></para>
+				<figure>
+					<title>Commands to download/extract Evergreen</title>
+					<screen>
+					$ sudo su - opensrf
+					$ wget http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.0.7.tar.gz
+					$ tar zxf Evergreen-ILS-1.6.0.7.tar.gz
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Install Prerequisites to Build Evergreen</title>
+				<para>In this step you will install and configure a set of prerequisites for building Evergreen. In a following step you will actually build the software.</para>
+				<para>As the <emphasis role="bold">root</emphasis> user, build the prerequisites from the software distribution that you just downloaded and unpacked. Enter the commands show below. Remember to replace <emphasis>[distribution]</emphasis> in the following example with the keyword that corresponds to your actual Linux distribution (see the following list):</para>
+				<itemizedlist>
+					<listitem><emphasis>debian-etch</emphasis> for Debian Etch (4.0)</listitem>
+					<listitem><emphasis>debian-lenny</emphasis> for Debian Lenny (5.0)</listitem>
+					<listitem>[[other Debian distributions]]</listitem>
+					<listitem><emphasis>ubuntu-hardy</emphasis> for Ubuntu Hardy (8.04)</listitem>
+					<listitem><emphasis>ubuntu-karmic</emphasis> for Ubuntu Karmic (9.10) and Ubuntu Lucid (10.04)</listitem>
+					<listitem>[[other Ubuntu distributions]]</listitem>
+				</itemizedlist>
+				<figure>
+					<title>Commands to install prerequisites for Evergreen</title>
+					<screen>
+					$ sudo su - root
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+					$ make -f Open-ILS/src/extras/Makefile.install [distribution]
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>(OPTIONAL) Install the PostgreSQL Server</title>
+				<para>Since the PostgreSQL server is usually a standalone server in multi-server production systems, the prerequisite installer Makefile in the previous step does not automatically install PostgreSQL. If your PostgreSQL server is on a different system, just skip this step.</para>
+				<para>For further information on installing PostgreSQL, see the section <link linkend="serverinstallation-postgresql">Installing PostgreSQL</link>.</para>
+				<para>If your PostgreSQL server will be on the same system as your Evergreen software, then as the <emphasis role="bold">root</emphasis> user install the required PostgreSQL server packages:</para>
+				<figure>
+					<title>Commands to install the PostgreSQL server</title>
+					<screen>
+					$ sudo su - root
+
+					# Debian Lenny and Ubuntu Hardy (8.04)
+					$ make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_83
+
+					# Ubuntu Karmic (9.10) and Ubuntu Lucid (10.04)
+					$ make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_84
+					</screen>
+				</figure>
+				<para><emphasis role="bold">Note:</emphasis> PostgreSQL 8.1 is deprecated and will become unsupported in a future release, though existing installations upgrading from Evergreen 1.4 or before will work fine. However, consider upgrading your Postgres soon!</para>
+				<para>[[ is this still true? ]]</para>
+				<para>[[ how to determine which version of PostgreSQL you have? ]]</para>
+			</section>
+			<section>
+				<title>(OPTIONAL) Install Perl Modules on PostgreSQL Server</title>
+				<para>If PostgreSQL is running on the same system as your Evergreen software, then the Perl modules will automatically be available. Just skip this step.</para>
+				<para>Otherwise, if your PostgreSQL server is running on another system, then as the <emphasis role="bold">root</emphasis> user install the following Perl modules on that system:</para>
+				<figure>
+					<title>Commands to install Perl modules</title>
+					<screen>
+					# ensure the gcc compiler is installed
+					$ sudo su - root
+					$ aptitude install gcc
+
+					# install the Perl modules
+					$ perl -MCPAN -e shell
+					cpan> install JSON::XS
+					cpan> install MARC::Record
+					cpan> install MARC::File::XML
+					</screen>
+				</figure>
+				<para>[[ how to install the Perl modules ]]</para>
+				<para>[[ how to verify that the Perl modules are installed ]]</para>
+			</section>
+			<section>
+				<title>Add Additional Library Paths on Evergreen System</title>
+				<para>As the <emphasis role="bold">root</emphasis> user, you must update the system dynamic library path to ensure the system will recognize the newly installed libraries. Do this by creating a new file named <emphasis role="bold">/etc/ld.so.conf.d/eg.conf</emphasis> containing the two paths, then run the command <emphasis role="bold">ldconfig</emphasis> to automatically read the file and modify the dynamic library path:</para>
+				<figure>
+					<title>Commands to modify system dynamic library path</title>
+					<screen>
+					$ sudo su - root
+					$ cat > /etc/ld.so.conf.d/eg.conf &lt;&lt; ENDOFFILE
+					/usr/local/lib
+					/usr/local/lib/dbd
+					ENDOFFILE
+					$ ldconfig
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>(OPTIONAL) Restart the PostgreSQL Service</title>
+				<para>If PostgreSQL is running on the same system as the rest of Evergreen, as the <emphasis role="bold">root</emphasis> user you must restart the PostgreSQL service to avoid a problem where the library <emphasis role="bold">plperl.so</emphasis> cannot be found. If your PostgreSQL server is running on another system, just skip this step.</para>
+				<para>[[ other versions of PostgreSQL ]]</para>
+				<figure>
+					<title>Commands to restart PostgreSQL service</title>
+					<screen>
+					$ sudo su - root
+					$ /etc/init.d/postgresql-8.3 restart
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Configure and Compile Evergreen Sources</title>
+				<para>As the <emphasis role="bold">opensrf</emphasis> user, configure and compile the software from the prerequisites that were set up in previous steps:</para>
+				<figure>
+					<title>Commands to configure and compile Evergreen</title>
+					<screen>
+					$ sudo su - opensrf
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+					$ ./configure --prefix=/openils --sysconfdir=/openils/conf
+					$ make
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Link and Install Evergreen</title>
+				<para>As the <emphasis role="bold">root</emphasis> user, link and install the compiled code. In the commands below, remember to set the variable <emphasis role="bold"> STAFF_CLIENT_BUILD_ID </emphasis> to match the version of the staff client you will use to connect to the Evergreen Server. Finally, create a symbolic link named <emphasis role="bold">server</emphasis> in <emphasis role="bold">/openils/var/web/xul</emphasis> to the <emphasis role="bold">/server</emphasis> subdirectory of your staff client build:</para>
+				<figure>
+					<title>Commands to link and install Evergreen</title>
+					<screen>
+					$ sudo su - root
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+					$ make STAFF_CLIENT_BUILD_ID=rel_1_6_0_6 install
+					$ cd /openils/var/web/xul
+					$ ln -sf rel_1_6_0_7/server server
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Copy the OpenSRF Configuration Files</title>
+				<para>As the <emphasis role="bold">root</emphasis> user, copy the example OpenSRF configuration files into place. This will replace the OpenSRF configuration files that you set up while installing and testing OpenSRF. You should also create backup copies of the old files for troubleshooting purposes. Finally, change the ownership on the installed files to the user <emphasis role="bold">opensrf</emphasis>:</para>
+				<figure>
+					<title>Commands to copy OpenSRF configuration files</title>
+					<screen>
+					$ sudo su - root
+					$ cp /openils/conf/opensrf.xml.example      /openils/conf/opensrf.xml
+					$ cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
+					$ cp /openils/conf/oils_web.xml.example     /openils/conf/oils_web.xml
+					$ chown -R opensrf:opensrf /openils/
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Create and configure PostgreSQL Database</title>
+				<para>As the <emphasis role="bold">postgres</emphasis> user on your PostgreSQL server, create the Evergreen database.</para>
+				<para>Remember to adjust the path for the <emphasis role="bold">contrib</emphasis> repository to match your PostgreSQL server layout. For example, if you built PostgreSQL from source following the cheat sheet, the contrib directory will be located here: <emphasis role="bold">/usr/local/share/contrib</emphasis> . If you installed the PostgreSQL 8.3 server packages on Ubuntu 8.04, the directory will be located here: <emphasis role="bold">/usr/share/postgresql/8.3/contrib/</emphasis> .</para>
+				<orderedlist>
+					<listitem>
+						<para>
+							<emphasis role="bold">Create and configure the database</emphasis>
+						</para>
+						<para>As the <emphasis role="bold">postgres</emphasis> user on the PostgreSQL system create the PostgreSQL database, then set some internal paths:</para>
+						<figure>
+							<title>Commands to create database and adjust the path</title>
+							<screen>
+							# create the database
+							$ sudo su - postgres
+							$ createdb -E UNICODE evergreen
+							$ createlang plperl   evergreen
+							$ createlang plperlu  evergreen
+							$ createlang plpgsql  evergreen
+	
+							# adjust the paths
+							$ psql -f /usr/share/postgresql/8.3/contrib/tablefunc.sql evergreen
+							$ psql -f /usr/share/postgresql/8.3/contrib/tsearch2.sql  evergreen
+							$ psql -f /usr/share/postgresql/8.3/contrib/pgxml.sql     evergreen
+							</screen>
+						</figure>
+					</listitem>
+					<listitem>
+						<para><emphasis role="bold">Create new Evergreen superuser</emphasis> </para>
+						<para>As the <emphasis role="bold">postgres</emphasis> user on the PostgreSQL system, create the new user <emphasis role="bold"> evergreen </emphasis>:</para>
+						<figure>
+							<title>Commands to create the 'evergreen' user</title>
+							<screen>
+							# create superuser 'evergreen' and set the password
+							$ sudo su - postgres
+							$ createuser -P -s evergreen
+							Enter password for new role:  mynewpassword
+							Enter it again:  mynewpassword
+							</screen>
+						</figure>
+					</listitem>
+				</orderedlist>
+			</section>
+			<section>
+				<title>Create Database Schema</title>
+				<para>As the <emphasis role="bold">root</emphasis> user, create the database schema and configure your system with the corresponding database authentication details for the database user 'evergreen' that you created in the previous step.</para>
+				<para>Enter the commands and replace <emphasis>[HOSTNAME], [PORT], [USER], [PASSWORD]</emphasis> and <emphasis>[DATABASENAME]</emphasis> with appropriate values.</para>
+				<para>On most systems <emphasis>[HOSTNAME]</emphasis> will be <emphasis role="bold">localhost</emphasis>, and <emphasis>[PORT]</emphasis> will be <emphasis role="bold">5432</emphasis>.</para>
+				<figure>
+					<title>Commands to create Evergreen database schema</title>
+					<screen>
+					$ sudo su - root
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+					$ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
+						--service all --create-schema --create-bootstrap --create-offline \
+						--hostname [HOSTNAME] --port [PORT] \
+						--user [USER] --password [PASSWORD] --database [DATABASENAME]
+					</screen>
+				</figure>
+				<para>
+					<emphasis> NOTE: If you are entering the above command on a single line, do not include the ''\'' characters. If you are using the <emphasis role="bold"> bash </emphasis> shell, these should only be used at the end of a line at a bash prompt to indicate that the command is continued on the next line.</emphasis>
+				</para>
+			</section>
+			<section>
+				<title>Setup the Apache Server</title>
+				<para>As the <emphasis role="bold">root</emphasis> user, configure the Apache server and copy several new configuration files to the Apache server directories:</para>
+				<figure>
+					<title>Commands to configure the Apache server</title>
+					<screen>
+					# configure the Apache server
+					$ sudo su - root
+					$ a2enmod ssl	     # enable mod_ssl
+					$ a2enmod rewrite    # enable mod_rewrite
+					$ a2enmod expires    # enable mod_expires
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+
+					# copy files
+					$ cp Open-ILS/examples/apache/eg.conf       /etc/apache2/sites-available/
+					$ cp Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/
+					$ cp Open-ILS/examples/apache/startup.pl    /etc/apache2/
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Create a Security Certificate (SSL Key)</title>
+				<para>Use the command <emphasis role="bold"> openssl </emphasis> to create a new SSL key for your Apache server. For a public production server you should configure or purchase a signed SSL certificate, but for now you can just use a self-signed certificate and accept the warnings in the staff client and browser during testing and development:</para>
+				<figure>
+					<title>Commands to create an SSL key</title>
+					<screen>
+					$ mkdir /etc/apache2/ssl
+					$ cd /etc/apache2/ssl
+					$ openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key
+					</screen>
+				</figure>
+				<para><emphasis> <emphasis role="bold"> Warning: </emphasis> This is only a temporary measure to expedite testing. You <emphasis role="bold"> must </emphasis> get a proper SSL certificate for a public production system. See this section for further comments on setting up a properly signed SSL certificate: </emphasis> </para>
+				<para> [[how to get a signed SSL certificate]] </para>
+			</section>
+			<section>
+				<title>Modify the Apache Configuration File</title>
+				<para>Edit the Apache configuration file <emphasis>/etc/apache2/sites-available/eg.conf</emphasis> and make the following changes:</para>
+				<itemizedlist>
+					<listitem>
+						<para>Comment out the line <emphasis role="bold">Allow from 10.0.0.0/8</emphasis>, then uncomment the line <emphasis role="bold">Allow from all</emphasis>. This is a temporary measure to expedite testing.</para>
+						<para>
+							<emphasis> <emphasis role="bold"> Warning: </emphasis> You must remove these changes after testing is completed. This will enable access to the configuration CGI scripts from any workstation on any network. You <emphasis role="bold"> must </emphasis> secure this for a public production system, preferably by explicitly specifying the allowed IP addresses and adding proper authentication.</emphasis>
+						</para>
+					</listitem>
+					<listitem>Comment out the line <emphasis role="bold">Listen 443</emphasis> as it conflicts with the same declaration in the configuration file: <emphasis role="bold">/etc/apache2/ports.conf</emphasis> .
+						<para> [[Debian Etch users - do not do this!]] </para></listitem>
+				</itemizedlist>
+			</section>
+			<section>
+				<title>Modifications to Keep the Logs Functioning</title>
+				<para>You must modify the Apache configuration file to allow the logs to function properly, but it may break other Apache applications on your server. We hope to make this unnecessary soon.</para>
+				<para> [[ is this still necessary ? ]] </para>
+				<orderedlist>
+					<listitem>
+						<para>For the Linux distributions <emphasis>Ubuntu Hardy / Debian Etch </emphasis>, as the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis role="bold"> /etc/apache2/apache2.conf </emphasis> and change the user:</para>
+						<screen>www-data</screen>
+						<para>to the user:</para>
+						<screen>opensrf</screen>
+					</listitem>
+					<listitem>
+						<para>For the Linux distributions <emphasis>Ubuntu Karmic / Ubuntu Lucid / Debian Lenny </emphasis>, as the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis role="bold">/etc/apache2/envvars </emphasis> and change the phrase:</para>
+						<screen>export APACHE_RUN_USER=www-data</screen>
+						<para>to the phrase:</para>
+						<screen>export APACHE_RUN_USER=opensrf</screen>
+					</listitem>
+				</orderedlist>
+			</section>
+			<section>
+				<title>Modify Apache Configuration File</title>
+				<para>As the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis> and add the line <emphasis role="bold">KeepAliveTimeout 1</emphasis>, or modify an existing line if it already exists.</para>
+			</section>
+			<section>
+				<title>(OPTIONAL) Performance Modifications for Apache</title>
+				<para>As the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis> and add the line <emphasis role="bold">MaxKeepAliveRequests 100</emphasis>, or modify an existing line if it already exists. Additionally, locate and modify the section related to <emphasis>prefork configuration</emphasis> to suit the load on your system.</para>
+				<para>Following are settings that may apply to a busy system:</para>
+				<figure>
+					<title>"Prefork configuration" section of Apache configuration file</title>
+					<screen>
+					&lt;IfModule mpm_prefork_module>
+					   StartServers	   20
+					   MinSpareServers	 5
+					   MaxSpareServers	15
+					   MaxClients	    150
+					   MaxRequestsPerChild 10000
+					&lt;/IfModule>
+					</screen>
+				</figure>
+				<para>[[ settings of "prefork configuration" section for busy/notbusy systems ]]</para>
+			</section>
+			<section>
+				<title>Enable the Evergreen Site</title>
+				<para>As the <emphasis role="bold">root</emphasis> user, enable the Evergreen site:</para>
+				<figure>
+					<title>Commands to enabl e the Evergreen site</title>
+					<screen>
+					$ sudo su - root
+					$ a2dissite default    # OPTIONAL: disable the default site (i.e., the "It Works" page).
+					$ a2ensite eg.conf
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Modify the OpenSRF Configuration File</title>
+				<para>As the <emphasis role="bold">opensrf</emphasis> user, edit the OpenSRF configuration file <emphasis>/openils/conf/opensrf_core.xml</emphasis> to update the Jabber usernames and passwords, and to specify the domains from which we'll accept and to which we'll make connections.</para>
+				<para>If you are installing Evergreen on a single server and using the ~private.localhost~ / ~public.localhost~ domains, these will already be set to the correct values. Otherwise, search and replace to match your customized values.</para>
+				<para><emphasis role="bold">Note:</emphasis> the following example uses common XPath syntax on the left-hand side to indicate the position within the XML file:</para>
+				<figure>
+					<title>Updates needed to the file /openils/conf/opensrf_core.xml</title>
+					<screen>
+					/config/opensrf/username  = opensrf
+					/config/opensrf/passwd    = password for **private.localhost** opensrf user
+					/config/gateway/username  = opensrf
+					/config/gateway/passwd    = password for **public.localhost** opensrf user
+					/config/routers/router/transport - first entry, where ''transport/server'' == **public.localhost** :
+					    username = router
+					    password = password for **public.localhost** router user
+					/config/routers/router/transport'' - second entry, where ''transport/server'' == **private.localhost** :
+					    username = router
+					    password = password for **private.localhost** router user
+					</screen>
+				</figure>
+				<para>[[ better diagram needed here ]]</para>
+			</section>
+			<section>
+				<title>Create Private Configuration Files for Certain Users</title>
+				<para>Copy the file <emphasis>/openils/conf/srfsh.xml.example</emphasis> to the file <emphasis>.srfsh.xml</emphasis> in the home directory of each user you want to use to run the <emphasis role="bold">srfsh</emphasis> command line client for testing OpenSRF. Finally, edit each file <emphasis>.srfsh.xml</emphasis> and make the following changes:</para>
+				<itemizedlist>
+					<listitem>Modify <emphasis role="bold">domain</emphasis> to be the router hostname (following our domain examples, <emphasis role="bold">private.localhost</emphasis> will give the utility <emphasis role="bold">srfsh</emphasis> access to all OpenSRF services, while <emphasis role="bold">public.localhost</emphasis> will only allow access to those OpenSRF services that are publicly exposed).</listitem>
+					<listitem>Modify <emphasis role="bold">username</emphasis> and <emphasis role="bold">password</emphasis> to match the <emphasis role="bold">opensrf</emphasis> Jabber user for the chosen domain</listitem>
+					<listitem>Modify <emphasis role="bold">logfile</emphasis> to be the full path for a log file to which the user has write access</listitem>
+					<listitem>Modify <emphasis role="bold">loglevel</emphasis> as needed for testing</listitem>
+				</itemizedlist>
+				<figure>
+					<title>Sample of configuration file /openils/conf/srfsh.xml.example</title>
+					<screen>
+					&lt;?xml version="1.0"?>
+					&lt;!-- This file follows the standard bootstrap config file layout found in opensrf_core.xml -->
+					&lt;srfsh>
+					&lt;router_name>router&lt;/router_name>
+					&lt;domain>private.localhost&lt;/domain>
+					&lt;username>opensrf&lt;/username>
+					&lt;passwd>evergreen&lt;/passwd>
+					&lt;port>5222&lt;/port>
+					&lt;logfile>/tmp/srfsh.log&lt;/logfile>
+					&lt;!-- 0 None, 1 Error, 2 Warning, 3 Info, 4 debug, 5 Internal (Nasty) -->
+					&lt;loglevel>4&lt;/loglevel>
+					&lt;/srfsh>
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Modify the OpenSRF Environment</title>
+				<para>As the <emphasis role="bold">opensrf</emphasis> user, change the permissions of files to <emphasis>executable</emphasis> in the directory <emphasis>/openils/var/cgi-bin</emphasis>, then add a Perl environmental variable to the shell configuration file <emphasis>~/.bashrc</emphasis> for the user <emphasis role="bold">opensrf</emphasis>.</para>
+				<para><emphasis role="bold">Note:</emphasis> in a multi-server environment, you must add the modifications to <emphasis role="bold">~/.bashrc</emphasis> at the top of the file <emphasis>before</emphasis> the line <emphasis role="bold"> [ -z "$PS1" ] &amp;&amp; return</emphasis>. This will allow headless (scripted) logins to load the correct environment.</para>
+				<figure>
+					<title>Modify the OpenSRF environment</title>
+					<screen>
+					# change permissions
+					$ sudo su - opensrf
+					$ chmod 755 /openils/var/cgi-bin/*.cgi
+
+					# add environmental variable
+					$ echo "export PERL5LIB=/openils/lib/perl5:\$PERL5LIB" >> ~/.bashrc
+					$ . ~/.bashrc    # inherit the new environment
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>(OPTIONAL) Configuration for Other Languages</title>
+				<para>Load translations such as Armenian (hy-AM), Canadian French (fr-CA), and others into the database to complete the translations available in the OPAC and staff client. See [[server_installation:adding_localizations|these instructions]] for details.</para>
+			</section>
+		</section>
+		<section xml:id="serverinstallation-ubuntu-debian-starting">
+			<title>Starting the Server</title>
+		</section>
+		<section xml:id="serverinstallation-ubuntu-debian-testing-connections">
+			<title>Testing Connections to the Server</title>
+		</section>
+		<section xml:id="serverinstallation-ubuntu-debian-starting-webserver">
+			<title>Starting the Web Server</title>
+		</section>
+		<section xml:id="serverinstallation-ubuntu-debian-stopping">
+			<title>Stopping the Server</title>
+		</section>
+		<section xml:id="serverinstallation-ubuntu-debian-reports">
+			<title>Setting Up Support For Reports</title>
+		</section>
+	</section>
+	<section xml:id="serversideinstallation-opensrf">
+		<title>Installing OpenSRF 1.2.x</title>
+		<para>[[ Installing OpenSRF 1.2.x ]]</para>
+	</section>
+	<section xml:id="serversideinstallation-ubuntudebian-previous">
+		<title>Installing Evergreen 1.4.0.x on Ubuntu or Debian</title>
+		<para>[[ Installing Evergreen 1.4.0.x on Ubuntu or Debian ]]</para>
+	</section>
+	<section xml:id="serversideinstallation-opensrf-previous">
+		<title>Installing OpenSRF 1.0.x</title>
+		<para>[[ Installing OpenSRF 1.0.x ]]</para>
+	</section>
+	<section xml:id="serversideinstallation-organizationandpolicy">
+		<title>Organization and Policy Editing</title>
+		<para>[[ Organization and Policy Editing ]] </para>
+	</section>
+	<section xml:id="serversideinstallation-testing">
+		<title>Testing the Installation</title>
+		<section xml:id="serversideinstallation-testing-srfsh">
+			<title>Testing with srfsh</title>
+			<para>Installing OpenILS will place an executable called 'srfsh' (surf shell) into the BINDIR directory. This is a command line diagnostic tool for interacting with the OpenSRF network.</para>
+			<para>For starters, there is a command called math_bench in srfsh that sends queries to the math servers. Note that opensrf.math and opensrf.dbmath must be running for this command to work:</para>
+			<screen>
+			srfsh# math_bench 10
+			|.........|.........|.........|.........|.........|.........|.........|.........|.........|.........
+			
+			++++++++++++++++++++++++++++++++++++++++
+			 Average round trip time: 0.033425
+			srfsh#
+			</screen>
+			<para>The first argument is how many sets of 4 queries (+ - * /) are sent to <emphasis>opensrf.math</emphasis>. When the response is successful, you will see the string of "+" symbols. If the system is not running correctly, you will either get an exception or no result at all.</para>
+			<para>For other srfsh commands, type 'help' in at the prompt.</para>
+		</section>
+		<section xml:id="serversideinstallation-testing-opac">
+			<title>Testing the OPAC</title>
+			<para>By default, the OPAC will live at the URL <emphasis>http://my.domain.com/opac/</emphasis>.</para>
+			<para>Navigate to this URL and the front page of the OPAC should load. There is a basic text entry field with some extra search options. If you have any problems loading this page, check the Apache error logs. If the page loads but does not function correctly, then check for possible javascript errors. We hightly reccommend testing with the <emphasis>Firefox</emphasis> browser because of the helpful javascript debugging tools.</para>
+			<para>Assuming that the OPAC is functioning and there is data in your database, you can now perform other simple functional tests (e.g., searching the catalog).</para>
+			<para>[[ other simple functional tests ]]</para>
+		</section>
+	</section>
+	<section xml:id="serversideinstallation-buildingstaffclient">
+		<title>Building the Staff Client</title>
+		<para>[[ Building the Staff Client ]]</para>
+	</section>
+	<section xml:id="serversideinstallation-localizations">
+		<title>Language Localization</title>
+		<para>[[ Adding Localized Languages to the Database ]]</para>
+	</section>
+	<section xml:id="serversideinstallation-sip">
+		<title>Installing the SIP Server</title>
+		<para>[[ Installing the SIP Server ]]</para>
+	</section>
+	<section xml:id="serversideinstallation-nginx">
+		<title>Using nginx to serve static content</title>
+		<para>[[ Using nginx to serve static content ]]</para>
+	</section>
+</chapter>
