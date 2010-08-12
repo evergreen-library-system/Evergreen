@@ -21,19 +21,22 @@ serial.sdist_editor = function (params) {
     this.editor_values = {};
 
     // setup sre arrays
-    var mfhd_details = this.data.mfhd.details;
     this.sre_id_map = {};
     this.sres_ou_map = {};
-    for (var i = 0; i < mfhd_details.length; i++) {
-        var mfhd_detail = mfhd_details[i];
-        mfhd_detail.label = mfhd_detail.label + ' (' + (mfhd_detail.entryNum + 1) + ')';
-        var sre_id = mfhd_detail.id;
-        var org_unit_id = mfhd_detail.owning_lib;
-        this.sre_id_map[sre_id] = mfhd_detail;
-        if (!this.sres_ou_map[org_unit_id]) {
-            this.sres_ou_map[org_unit_id] = [];
+    var parent_g = window.parent.g;
+    if (parent_g.mfhd) {
+        var mfhd_details = parent_g.mfhd.details;
+        for (var i = 0; i < mfhd_details.length; i++) {
+            var mfhd_detail = mfhd_details[i];
+            mfhd_detail.label = mfhd_detail.label + ' (' + (mfhd_detail.entryNum + 1) + ')';
+            var sre_id = mfhd_detail.id;
+            var org_unit_id = mfhd_detail.owning_lib;
+            this.sre_id_map[sre_id] = mfhd_detail;
+            if (!this.sres_ou_map[org_unit_id]) {
+                this.sres_ou_map[org_unit_id] = [];
+            }
+            this.sres_ou_map[org_unit_id].push(mfhd_detail);
         }
-        this.sres_ou_map[org_unit_id].push(mfhd_detail);
     }
 };
 

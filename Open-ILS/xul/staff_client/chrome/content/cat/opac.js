@@ -321,9 +321,8 @@ function set_opac() {
                 win.attachEvt("rdetail", "MFHDDrawn",
                     function() {
                         if (win.mfhdDetails && win.mfhdDetails.length > 0) {
-                            g.data.mfhd = {};
-                            g.data.mfhd.details = win.mfhdDetails;
-                            g.data.stash('mfhd');
+                            g.mfhd = {};
+                            g.mfhd.details = win.mfhdDetails;
                             mfhd_edit_menu.disabled = false;
                             mfhd_delete_menu.disabled = false;
                             for (var i = 0; i < win.mfhdDetails.length; i++) {
