@@ -298,10 +298,17 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 		entryNumString = ' [Entry #'+entryNumInc+'] ';
 	}
 
-	dojo.place("<table style='width: 100%;'><caption id='mfhdHoldingsCaption" + entryNum + "' class='rdetail_header color_1'>" +
-		dojo.string.substitute(opac_strings.HOLDINGS_TABLE_CAPTION, [hloc]) +
+	var refNode;
+	if (entryNum > 0) {
+		refNode = 'rdetail_holdings_table_' + (entryNum - 1);
+	} else {
+		refNode = 'rdetail_details_table';
+	}
+
+	dojo.place("<table style='width: 100%;' id='rdetail_holdings_table_"+entryNum+"'><caption id='mfhdHoldingsCaption" + entryNum + "' class='rdetail_header color_1'>" +
+		dojo.string.substitute(opac_strings.HOLDINGS_TABLE_CAPTION, [hloc]) + entryNumString +
 		"</caption><tbody id='rdetail_holdings_tbody_" + entryNum +
-		"'></tbody></table>", "rdetail_details_table", "after"
+		"'></tbody></table>", refNode, "after"
 	);
 	if (hb.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.BASIC_HOLDINGS, hb); }
 	if (hba.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.BASIC_HOLDINGS_ADD, hba); }
