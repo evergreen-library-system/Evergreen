@@ -4,6 +4,9 @@
 	<chapterinfo>
     		<title>Introduction to SQL for Evergreen Administrators</title>
 	</chapterinfo>
+	<abstract id="itnroSQL_abstract">
+		<simpara>This chapter was taken from Dan Scott's <emphasis>Introduction to SQL for Evergreen Administrators</emphasis>, February 2010.</simpara>
+	</abstract>	
 	<section id="intro_to_databases">
 			<title>Introduction to SQL Databases</title>
 		<simplesect>
@@ -2015,7 +2018,5 @@
 			</para></formalpara>
 		</simplesect>
 	</section>
-	<section id="intor_to_sql_attribution">
-		<simpara>This chapter was taken from Dan Scott's <emphasis>Introduction to SQL for Evergreen Administrators</emphasis>, February 2010.</simpara>
-	</section>
+	
 </chapter>

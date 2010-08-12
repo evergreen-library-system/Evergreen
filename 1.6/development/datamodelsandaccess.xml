@@ -4,8 +4,11 @@
 	<chapterinfo>
 	<title>Evergreen Data Models and Access</title>
 	</chapterinfo>
-	<section id="_database_schema">
-		<title>Database schema</title>
+		<abstract id="DM_abstract">
+		<simpara>This chapter was taken from Dan Scott's <emphasis>Developer Workshop</emphasis>, February 2010.</simpara>
+	</abstract>
+	<section id="exploring_database_schema">
+		<title>Exploring the Database Schema</title>
 		<simpara>The database schema is tied pretty tightly to PostgreSQL. Although PostgreSQL
 		adheres closely to ANSI SQL standards, the use of schemas, SQL functions
 		implemented in both plpgsql and plperl, and PostgreSQL&#8217;s native full-text
@@ -49,6 +52,7 @@
 		</simpara>
 		</listitem>
 		</itemizedlist>
+		This documentation also contains an Appendix for the Evergreen <xref linkend="databaseschema"/>.	 
 	</section>
 	<section id="_database_access_methods">
 		<title>Database access methods</title>
@@ -754,7 +758,5 @@
 		</callout>
 		</calloutlist>
 	</section>
-	<section id="dm_attribution">
-		<simpara>This chapter was taken from Dan Scott's <emphasis>Developer Workshop</emphasis>, February 2010.</simpara>
-	</section>
+	
 </chapter>

@@ -4,13 +4,13 @@
 	<chapterinfo>
     		<title>OpenSRF</title>
 	</chapterinfo>
-	<abstract id="_abstract">
+	<abstract id="openSRF_abstract">
 		<simpara>One of the claimed advantages of
 		Evergreen over alternative integrated library systems is the underlying Open
 		Service Request Framework (OpenSRF, pronounced "open surf") architecture. This
 		article introduces OpenSRF, demonstrates how to build OpenSRF services through
 		simple code examples, and explains the technical foundations on which OpenSRF
-		is built.</simpara>
+		is built. This chapter was taken from Dan Scott's <emphasis>Easing gently into OpenSRF</emphasis> article, June, 2010.</simpara>
 	</abstract>
 	<section id="_introducing_opensrf">
 		<title>Introducing OpenSRF</title>
@@ -1696,8 +1696,5 @@
 		flexibility as OpenSRF services, but have the disadvantage of not being
 		integrated into the same configuration and control infrastructure as the
 		OpenSRF services.</simpara>
-	</section>
-	<section id="OpenSRF_attribution">
-		<simpara>This chapter was taken from Dan Scott's <emphasis>Easing gently into OpenSRF</emphasis> article, June, 2010.</simpara>
 	</section>
 </chapter>
