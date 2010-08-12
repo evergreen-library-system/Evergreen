@@ -624,11 +624,10 @@ function uEditNewAddr(evt, id) {
                     }
                 }
 
-            } else {
-                var btn = dojo.query('[name=delete-button]', row)[0];
-                if(btn) btn.onclick = function(){ uEditDeleteAddr(id) };
-            }
         }
+
+	var btn = dojo.query('[name=delete-button]', row)[0];
+	if(btn) btn.onclick = function(){ uEditDeleteAddr(id) };
     );
 }
 
