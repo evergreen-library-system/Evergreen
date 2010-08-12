@@ -109,7 +109,7 @@
         <tr fmclass='au' fmfield='profile' required='required'/>
         <tr fmclass='au' fmfield='expire_date' required='required'/>
         <tr fmclass='au' fmfield='net_access_level' required='required'/>
-        <tr fmclass='au' fmfield='active'/>
+        <tr fmclass='au' fmfield='active' required='show'/>
         <tr fmclass='au' fmfield='barred'/>
         <tr fmclass='au' fmfield='master_account'/>
         <tr fmclass='au' fmfield='claims_returned_count'/>
