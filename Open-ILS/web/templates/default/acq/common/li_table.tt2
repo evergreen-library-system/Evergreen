@@ -149,17 +149,17 @@
             <table style='width:100%'>
                 <tr>
                     <td class="acq-lit-li-menu-left">
-                        <div dojoType='dijit.form.Button' id='acq-lit-copies-back-button'>&#x2196; Return</div>
+                        <div dojoType='dijit.form.Button' id='acq-lit-copies-back-button' scrollOnFocus='false'>&#x2196; Return</div>
                         <span style='margin-left:10px;padding-left:10px;border-left:2px solid #aaa;'>
                             Item Count: 
                             <input dojoType='dijit.form.NumberTextBox' jsId='acqLitCopyCountInput'  
                                 constraints="{min:0,max:1000,places:0}" style='width:40px' value='0'></input> 
-                            <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount'>Go</div>
+                            <div dojoType='dijit.form.Button' jsId='acqLitAddCopyCount' scrollOnFocus='false'>Go</div>
                         </span>
                     </td>
                     <td class="acq-lit-li-menu-right">
                         <span>
-                            <div dojoType='dijit.form.Button' jsId='acqLitSaveCopies'>Save Changes</div>
+                            <div dojoType='dijit.form.Button' jsId='acqLitSaveCopies' scrollOnFocus='false'>Save Changes</div>
                         </span>
                         <span id='acq-lit-update-copies-progress' class='hidden'>
                             <span dojoType="dijit.ProgressBar" style="width:300px" jsId="litUpdateCopiesProgress"></span>
@@ -179,7 +179,7 @@
                     <td><div name='circ_modifier'></div></td>
                     <td><div name='cn_label'></div></td>
                     <td colspan='3' style='text-align:left;'>
-                        <div dojoType='dijit.form.Button' jsId='acqLitBatchUpdateCopies'>Batch Update</div>
+                        <div dojoType='dijit.form.Button' jsId='acqLitBatchUpdateCopies' scrollOnFocus='false'>Batch Update</div>
                     </td>
                 </tr>
             </tbody>
@@ -235,7 +235,7 @@
                     <td><div name='barcode'></div></td>
                     <td><div name='note'></div></td>
                     <td><a href="javascript:void(0);" name="receive">Mark&nbsp;Received</a><a href="javascript:void(0);" name="unreceive">Un-Receive</a>&nbsp;<a href="javascript:void(0);" name="cancel">Cancel</a><span class="hidden" name="cancel_reason"></span>&nbsp;<a href="javascript:void(0);" name="claim">Claim</a></td>
-                    <td><div name='delete' dojoType='dijit.form.Button' style='color:red;'>X</div></td>
+                    <td><div name='delete' dojoType='dijit.form.Button' style='color:red;' scrollOnFocus='false'>X</div></td>
                 </tr>
             </tbody>
         </table>
@@ -250,11 +250,11 @@
             <table style='width:100%'>
                 <tr>
                     <td style='text-align:left;'>
-                        <div dojoType='dijit.form.Button' id='acq-lit-real-copies-back-button'>&#x2196; Return</div>
+                        <div dojoType='dijit.form.Button' id='acq-lit-real-copies-back-button' scrollOnFocus='false'>&#x2196; Return</div>
                     </td>
                     <td style='text-align:right;'>
                         <span>
-                            <div dojoType='dijit.form.Button' jsId='acqLitSaveRealCopies'>Save Changes</div>
+                            <div dojoType='dijit.form.Button' jsId='acqLitSaveRealCopies' scrollOnFocus='false'>Save Changes</div>
                         </span>
                     </td>
                 </tr>
