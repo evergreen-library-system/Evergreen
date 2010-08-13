@@ -42,6 +42,8 @@ var rdetailNext = null;
 var rdetailStart = null;
 var rdetailEnd = null;
 
+var orgHiding = false;
+
 /* serials are currently the only use of Dojo strings in the OPAC */
 if (rdetailDisplaySerialHoldings) {
 	dojo.require("dijit.Menu");
@@ -736,6 +738,14 @@ function _rdetailRows(node) {
 
 		if(!isXUL() && !isTrue(node.opac_visible())) return;
 
+		if (orgHiding) {
+			if (isTrue( findOrgType(node.ou_type()).can_have_vols() )) {
+				if ( ! orgIsMine( orgHiding.org, node, orgHiding.depth ) ) {
+					return;
+				}
+			}
+		}
+
 		var row = copyRow.cloneNode(true);
 		row.id = "cp_info_" + node.id();
 
@@ -784,6 +794,8 @@ function _rdetailBuildInfoRows(r) {
 		unHideMe( $n( $('rdetail_copy_info_table'), 'rdetail_copylocation_header' ) );
 
 	removeChildren(copyRowParent);
+
+	orgHiding = checkOrgHiding();
 
 	_rdetailRows();
 

@@ -92,13 +92,26 @@ function orgNodeTrail(node) {
 
 function findSiblingOrgs(node) { return findOrgUnit(node.parent_ou()).children(); }
 
-/* true if 'org' is 'me' or a child of mine */
-function orgIsMine(me, org) {
-	if(!me || !org) return false;
-	if(me.id() == org.id()) return true;
+/* true if 'org' is 'me' or a child of mine, or optionally, a child of an ancestor org within the specified depth */
+function orgIsMine(me, org, depth) {
+	if(!me || !org) {
+        return false;
+    }
+	if(me.id() == org.id()) {
+        return true;
+    }
+	if (depth) {
+		while (depth < findOrgDepth(me)) {
+			me = findOrgUnit( me.parent_ou() );
+		}
+        if(me.id() == org.id()) {
+            return true;
+        }
+	}
 	for( var i in me.children() ) {
-		if(orgIsMine(me.children()[i], org))
+		if(orgIsMine(me.children()[i], org, false)) {
 			return true;
+        }
 	}
 	return false;
 }
