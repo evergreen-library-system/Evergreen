@@ -198,6 +198,13 @@
     </rows>
 </grid>
 
+<popupset id="patron_summary_popups">
+    <popup id="addr_export_popup" oncommand="export_address(event);">
+        <menuitem id="addr_export_copy" label="&staff.patron_display.address_export_popup.copy;"/>
+        <menuitem id="addr_export_print" label="&staff.patron_display.address_export_popup.print;"/>
+    </popup>
+</popupset>
+
 <groupbox id="PatronSummaryContact_mailing_address" orient="vertical">
     <caption id="pdcmac" label="&staff.patron_display.mailing_address;" class="shrinkable_groupbox"/>
     <description id="patron_mailing_address_street1" tooltiptext="&staff.patron_display.mailing.street1.label;" class="copyable address street street1 mailing value"/>
@@ -209,7 +216,7 @@
     </hbox>
     <hbox>
         <spacer flex="1" />
-        <label value="&staff.patron_display.mailing.copy;" onclick="copy_mailing_address();" class="copyable click_link"/>
+        <label id="addr_export_mailing" value="&staff.patron_display.address_export;" popup="addr_export_popup" class="copyable click_link"/>
     </hbox>
 </groupbox>
 
@@ -224,7 +231,7 @@
     </hbox>
     <hbox>
         <spacer flex="1" />
-        <label value="&staff.patron_display.physical.copy;" onclick="copy_billing_address();" class="copyable click_link"/>
+        <label id="addr_export_physical" value="&staff.patron_display.address_export;" popup="addr_export_popup" class="copyable click_link"/>
     </hbox>
 </groupbox>
 

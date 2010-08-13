@@ -76,8 +76,19 @@
             }
         }
 
-        function copy_address(a) {
+        function export_address(ev) {
+            var action = ev.originalTarget.id;
+            var a;
             var p = g.summary.patron;
+            switch(document.popupNode.id) {
+                case 'addr_export_mailing':
+                    a = g.summary.patron.mailing_address();
+                break;
+                case 'addr_export_physical':
+                    a = g.summary.patron.billing_address();
+                break;
+            };
+
             var parts = [
                 p.first_given_name(), p.second_given_name(), p.family_name(),
                 a.street1(), a.street2(), a.city(), a.county(),
@@ -89,30 +100,19 @@
             var s = $("patronStrings").getFormattedString(
                 'staff.patron.mailable_address_format', parts
             );
-            // Replace literal instances of '\n' and excessive whitespace.
-            copy_to_clipboard(
-                s.replace(/(\\n)+/g, "\r\n").replace(/ {2,}/g, " ")
-            );
-        }
 
-        function copy_displayed_address() {
-            if ( $('radio_address').selectedIndex == 0 ) {
-                copy_mailing_address();
-            } else {
-                copy_billing_address();
-            }
-        }
-
-        function copy_mailing_address() {
-            var a = g.summary.patron.mailing_address();
-            if (!a) return;
-            copy_address(a);
-        }
-
-        function copy_billing_address() {
-            var a = g.summary.patron.billing_address();
-            if (!a) return;
-            copy_address(a);
+            switch(action) {
+                case 'addr_export_copy':
+                    // Replace literal instances of '\n' and excessive whitespace.
+                    s = s.replace(/(\\n)+/g, "\r\n").replace(/ {2,}/g, " ");
+                    copy_to_clipboard(s);
+                break;
+                case 'addr_export_print':
+                    // Replace literal instances of '\n' and excessive whitespace.
+                    s = s.replace(/(\\n)+/g, "<br/>").replace(/ {2,}/g, " ");
+                    JSAN.use('util.print'); var print = new util.print(); print.simple(s);
+                break;
+            };
         }
     
         function post_overlay() {

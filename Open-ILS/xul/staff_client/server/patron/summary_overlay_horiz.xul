@@ -247,6 +247,13 @@
     </groupbox>
 </vbox>
 
+<popupset id="patron_summary_popups">
+    <popup id="addr_export_popup" oncommand="export_address(event);">
+        <menuitem id="addr_export_copy" label="&staff.patron_display.address_export_popup.copy;"/>
+        <menuitem id="addr_export_print" label="&staff.patron_display.address_export_popup.print;"/>
+    </popup>
+</popupset>
+
 <vbox id="PatronSummaryContact_address">
     <groupbox>
         <caption label="&staff.patron_display.addresses.caption;"/>
@@ -273,16 +280,19 @@
         <hbox>
             <radiogroup id="radio_address" orient="horizontal" oils_persist="value">
                 <radio id="radio_address_mailing" selected="true" value="mailing"
-                    oncommand="oils_persist(this.parentNode); $('address_deck').selectedIndex = 0;"
+                    oncommand="oils_persist(this.parentNode); $('address_deck').selectedIndex = 0; $('address_action_deck').selectedIndex = 0;"
                     label="&staff.patron_display.radio.mailing_address.label;" 
                     accesskey="&staff.patron_display.radio.mailing_address.accesskey;" />
                 <radio id="radio_address_physical" value="physical"
-                    oncommand="oils_persist(this.parentNode); $('address_deck').selectedIndex = 1;"
+                    oncommand="oils_persist(this.parentNode); $('address_deck').selectedIndex = 1; $('address_action_deck').selectedIndex = 1;"
                     label="&staff.patron_display.radio.physical_address.label;"
                     accesskey="&staff.patron_display.radio.physical_address.accesskey;" /> 
             </radiogroup>
             <spacer flex="1" />
-            <label value="&staff.patron_display.address.copy;" onclick="copy_displayed_address();" class="copyable click_link"/>
+            <deck id="address_action_deck">
+                <label id="addr_export_mailing" value="&staff.patron_display.address_export;" popup="addr_export_popup" class="copyable click_link"/>
+                <label id="addr_export_physical" value="&staff.patron_display.address_export;" popup="addr_export_popup" class="copyable click_link"/>
+            </deck>
         </hbox>
     </groupbox>
 </vbox>
