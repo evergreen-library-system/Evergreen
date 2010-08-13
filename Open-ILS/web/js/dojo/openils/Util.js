@@ -319,5 +319,46 @@ if(!dojo._hasResource["openils.Util"]) {
         return openils.Util.objectProperties(o);
     }
 
+    /**
+     * Highlight instances of each pattern in the given DOM node
+     * Inspired by the jquery plugin
+     * http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html
+     */
+    openils.Util.hilightNode = function(node, patterns, args) {
+
+        var hclass = (args && args.classname) ? args.classname : 'oils-hightlight';
+
+        function _hilightNode(node, pat) {
+
+            if(node.nodeType == 3) { 
+
+                pat = pat.toUpperCase();
+                var text = node.data.toUpperCase();
+                var pos = -1;
+
+                // find each instance of pat in the current node
+                while( (pos =  text.indexOf(pat, pos + 1)) >= 0 ) {
+
+                    var wrapper = dojo.create('span', {className : hclass});
+                    var midnode = node.splitText(pos);
+                    midnode.splitText(pat.length);
+                    wrapper.appendChild(midnode.cloneNode(true));
+                    midnode.parentNode.replaceChild(wrapper, midnode);
+                }
+
+            } else if(node.nodeType == 1 && node.childNodes[0]) {
+
+                // not a text node?  have you checked the children?
+                dojo.forEach(
+                    node.childNodes,
+                    function(child) { _hilightNode(child, pat); }
+                );
+            }
+        }
+
+        // descend the tree for each pattern, since nodes are changed during highlighting
+        dojo.forEach(patterns, function(pat) { _hilightNode(node, pat); });
+    };
+
 }
 
