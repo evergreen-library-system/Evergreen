@@ -601,3 +601,20 @@ $func$ LANGUAGE plpgsql;
 COMMIT;
 
 CREATE INDEX atev_target_def_idx ON action_trigger.event (target,event_def);
+-- Give circulation staff the ability to handle day-to-day booking/reservation tasks
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 5, id, 2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESERVATION';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 5, id, 2, false FROM permission.perm_list WHERE code = 'RETRIEVE_RESERVATION_PULL_LIST';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 5, id, 2, false FROM permission.perm_list WHERE code = 'CAPTURE_RESERVATION';
+
+-- Give local administrators the ability to handle all booking/reservation tasks
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESOURCE';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESOURCE_TYPE';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESOURCE_ATTR';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESOURCE_ATTR_MAP';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESOURCE_ATTR_VALUE';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESERVATION';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESERVATION_ATTR_VALUE_MAP';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'HOLD_ITEM_CHECKED_OUT.override';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'RETRIEVE_RESERVATION_PULL_LIST';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'CAPTURE_RESERVATION';
+

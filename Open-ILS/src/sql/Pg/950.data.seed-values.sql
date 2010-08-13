@@ -1580,6 +1580,23 @@ INSERT INTO permission.perm_list (code, description) VALUES ('ALLOW_ALT_TCN', 'A
 -- Ability to merge users
 INSERT INTO permission.perm_list (code, description) VALUES ('MERGE_USERS', 'Allows user records to be merged');
 
+-- Give circulation staff the ability to handle day-to-day booking/reservation tasks
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 5, id, 2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESERVATION';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 5, id, 2, false FROM permission.perm_list WHERE code = 'RETRIEVE_RESERVATION_PULL_LIST';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 5, id, 2, false FROM permission.perm_list WHERE code = 'CAPTURE_RESERVATION';
+
+-- Give local administrators the ability to handle all booking/reservation tasks
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESOURCE';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESOURCE_TYPE';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESOURCE_ATTR';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESOURCE_ATTR_MAP';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESOURCE_ATTR_VALUE';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESERVATION';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESERVATION_ATTR_VALUE_MAP';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'HOLD_ITEM_CHECKED_OUT.override';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'RETRIEVE_RESERVATION_PULL_LIST';
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 10, id,  2, false FROM permission.perm_list WHERE code = 'CAPTURE_RESERVATION';
+
 -- Trigger event definition permissions
 INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_TRIGGER_EVENT_DEF', 'Allow a user to administer trigger event definitions');
 INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_TRIGGER_CLEANUP', 'Allow a user to create, delete, and update trigger cleanup entries');
