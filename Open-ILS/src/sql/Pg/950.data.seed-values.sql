@@ -1580,6 +1580,23 @@ INSERT INTO permission.perm_list (code, description) VALUES ('ALLOW_ALT_TCN', 'A
 -- Ability to merge users
 INSERT INTO permission.perm_list (code, description) VALUES ('MERGE_USERS', 'Allows user records to be merged');
 
+-- Give circulation staff the ability to handle day-to-day booking/reservation tasks
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, 'ADMIN_BOOKING_RESERVATION', 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, 'RETRIEVE_RESERVATION_PULL_LIST', 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, 'CAPTURE_RESERVATION', 2, false);
+
+-- Give local administrators the ability to handle all booking/reservation tasks
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESOURCE',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESOURCE_TYPE',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESOURCE_ATTR',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESOURCE_ATTR_MAP',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESOURCE_ATTR_VALUE',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESERVATION',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESERVATION_ATTR_VALUE_MAP',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'HOLD_ITEM_CHECKED_OUT.override',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'RETRIEVE_RESERVATION_PULL_LIST',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'CAPTURE_RESERVATION',  2, false);
+
 -- Trigger event definition permissions
 INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_TRIGGER_EVENT_DEF', 'Allow a user to administer trigger event definitions');
 INSERT INTO permission.perm_list (code, description) VALUES ('ADMIN_TRIGGER_CLEANUP', 'Allow a user to create, delete, and update trigger cleanup entries');

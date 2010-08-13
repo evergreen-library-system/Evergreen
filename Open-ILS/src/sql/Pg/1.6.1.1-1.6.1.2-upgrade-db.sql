@@ -601,3 +601,20 @@ $func$ LANGUAGE plpgsql;
 COMMIT;
 
 CREATE INDEX atev_target_def_idx ON action_trigger.event (target,event_def);
+-- Give circulation staff the ability to handle day-to-day booking/reservation tasks
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, 'ADMIN_BOOKING_RESERVATION', 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, 'RETRIEVE_RESERVATION_PULL_LIST', 2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, 'CAPTURE_RESERVATION', 2, false);
+
+-- Give local administrators the ability to handle all booking/reservation tasks
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESOURCE',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESOURCE_TYPE',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESOURCE_ATTR',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESOURCE_ATTR_MAP',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESOURCE_ATTR_VALUE',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESERVATION',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'ADMIN_BOOKING_RESERVATION_ATTR_VALUE_MAP',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'HOLD_ITEM_CHECKED_OUT.override',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'RETRIEVE_RESERVATION_PULL_LIST',  2, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (10, 'CAPTURE_RESERVATION',  2, false);
+
