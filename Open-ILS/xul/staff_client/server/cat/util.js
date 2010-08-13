@@ -776,6 +776,24 @@ cat.util.mark_item_as_missing_pieces = function(copy_ids) {
                                 { 'copy_id' : copies[i].id() }
                             );
                             // TODO: patron notes/messages
+                            var my_xulG = win.open(
+                                urls.XUL_NEW_STANDING_PENALTY,
+                                'new_standing_penalty',
+                                'chrome,resizable,modal',
+                                {}
+                            );
+                            if (my_xulG.id) {
+                                var penalty = new ausp();
+                                penalty.usr( robj.payload.circ.usr() );
+                                penalty.isnew( 1 );
+                                penalty.standing_penalty( my_xulG.id );
+                                penalty.org_unit( ses('ws_ou') );
+                                penalty.note( my_xulG.note );
+                                network.simple_request(
+                                    'FM_AUSP_APPLY',
+                                    [ ses(), penalty ]
+                                );
+                            }
                             // TODO: Invoke 3rd party app with letter to patron
                         } else if (robj.ilsevent == 1500 /* ACTION_CIRCULATION_NOT_FOUND */) {
                             alert( $("catStrings").getFormattedString('staff.cat.util.mark_item_missing_pieces.circ_not_found',[ copies[i].barcode() ]) );
