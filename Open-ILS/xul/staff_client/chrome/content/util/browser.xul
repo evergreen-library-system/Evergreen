@@ -106,6 +106,7 @@
         <command id="cmd_broken" />
         <command id="cmd_print" label="&common.browser.print.label;" accesskey="&common.browser.print.accesskey;" />
         <command id="cmd_debug" />
+        <command id="cmd_find" />
         <command id="cmd_back" label="&common.browser.backward.label;" accesskey="&common.browser.backward.accesskey;" />
         <command id="cmd_reload" label="&common.browser.reload.label;" accesskey="&common.browser.reload.accesskey;" />
         <command id="cmd_forward" label="&common.browser.forward.label;" accesskey="&common.browser.forward.accesskey;" />
@@ -119,6 +120,7 @@
             <spacer flex="1"/>
             <label id="debug" value="Debug" disabled="true" command="cmd_debug" onclick="this.doCommand();" />
             <button id="browser_print" command="cmd_print" hidden="true"/>
+            <button id="browser_find" label="Find in Page" command="cmd_find" hidden="false"/>
         </hbox>
         <browser id="browser_browser" flex="1" autoscroll="false" type="content"/>
     </vbox>

@@ -108,6 +108,13 @@ util.browser.prototype = {
                                     obj.error.sdump('D_ERROR',err);
                                 }
                             }
+                        ],
+                        'cmd_find' : [
+                            ['command'],
+                            function() {
+                                var text = window.prompt('Enter text to find:');
+                                obj.find(text);
+                            }
                         ]
                     }
                 }
@@ -132,6 +139,71 @@ util.browser.prototype = {
 
         } catch(E) {
             this.error.sdump('D_ERROR','util.browser.init: ' + E + '\n');
+        }
+    },
+
+    'find' : function(text) {
+        var obj = this;
+        try {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+
+            function getBrowser() {
+                return obj.controller.view.browser_browser;
+            }
+
+            function getFocusedSelCtrl() {
+                var ds = getBrowser().docShell;
+                var dsEnum = ds.getDocShellEnumerator(Components.interfaces.nsIDocShellTreeItem.typeContent,
+                                                    Components.interfaces.nsIDocShell.ENUMERATE_FORWARDS);
+                while (dsEnum.hasMoreElements()) {
+                    ds = dsEnum.getNext().QueryInterface(Components.interfaces.nsIDocShell);
+                    if (ds.hasFocus) {
+                        var display = ds.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsISelectionDisplay);
+                        if (!display) return null;
+                        return display.QueryInterface(Components.interfaces.nsISelectionController);
+                    }
+                }
+
+                // One last try
+                return getBrowser().docShell
+                    .QueryInterface(Components.interfaces.nsIInterfaceRequestor)
+                    .getInterface(Components.interfaces.nsISelectionDisplay)
+                    .QueryInterface(Components.interfaces.nsISelectionController);
+            }
+
+            function setSelection(range) {
+                try {
+                    var selctrlcomp = Components.interfaces.nsISelectionController;
+                    var selctrl = getFocusedSelCtrl();
+                    var sel = selctrl.getSelection(selctrlcomp.SELECTION_NORMAL);
+                    sel.removeAllRanges();
+                    sel.addRange(range.cloneRange());
+
+                    selctrl.scrollSelectionIntoView(selctrlcomp.SELECTION_NORMAL,
+                        selctrlcomp.SELECTION_FOCUS_REGION,
+                        true);
+                } catch(e) {alert("setSelection: " + e);}
+            }
+
+            var doc = obj.get_content().document;
+            var body = doc.body;
+            var count = body.childNodes.length;
+            var finder = Components.classes["@mozilla.org/embedcomp/rangefind;1"].createInstance()
+                .QueryInterface(Components.interfaces.nsIFind);
+            var searchRange = doc.createRange();
+            var startPt = doc.createRange();
+            var endPt = doc.createRange();
+                searchRange.setStart(body,0);
+                searchRange.setEnd(body, count);
+                startPt.setStart(body, 0);
+                startPt.setEnd(body, 0);
+                endPt.setStart(body, count);
+                endPt.setEnd(body, count);
+            var retRange = finder.Find(text, searchRange, startPt, endPt);
+            alert('retRange = ' + retRange );
+            setSelection(retRange);
+        } catch(E) {
+            alert('Error in browser.js, find(): ' + E);
         }
     },
 
