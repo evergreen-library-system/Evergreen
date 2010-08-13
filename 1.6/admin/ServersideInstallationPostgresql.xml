@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="ServersideInstallationPostgresql" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
+	<info>
+		<title>Server-side Installation of PostgreSQL</title>
+		<abstract>
+			<para>Specifics in the process of installing PostgreSQL for Evergreen</para>
+		</abstract>
+	</info>
+	<section xml:id="serversideinstallation-postgresql"></section>
+</chapter>
