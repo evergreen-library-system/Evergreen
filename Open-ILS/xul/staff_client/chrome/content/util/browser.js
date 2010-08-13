@@ -200,7 +200,7 @@ util.browser.prototype = {
                 endPt.setStart(body, count);
                 endPt.setEnd(body, count);
             var retRange = finder.Find(text, searchRange, startPt, endPt);
-            alert('retRange = ' + retRange );
+            dump('retRange = ' + retRange + '\n');
             setSelection(retRange);
         } catch(E) {
             alert('Error in browser.js, find(): ' + E);

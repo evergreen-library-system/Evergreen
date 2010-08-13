@@ -115,13 +115,20 @@
         <command id="cmd_forward" label="&common.browser.forward.label;" accesskey="&common.browser.forward.accesskey;" />
     </commandset>
 
+    <popupset>
+        <popup id="debug_popup">
+            <menuitem label="&common.browser.set_url.label;" accesskey="&common.browser.set_url.accesskey;" command="cmd_debug" />
+            <menuitem label="&common.browser.find.label;" accesskey="&common.browser.find.accesskey;" command="cmd_find" />
+        </popup>
+    </popupset>
+
     <vbox flex="1">
         <hbox>
             <button id="back" command="cmd_back" disabled="true" hidden="true"/>
             <button id="reload" command="cmd_reload" disabled="false" hidden="false"/>
             <button id="forward" command="cmd_forward" disabled="true" hidden="true"/>
             <spacer flex="1"/>
-            <label id="debug" value="Debug" disabled="true" command="cmd_debug" onclick="this.doCommand();" />
+            <label id="debug" value="Debug" disabled="true" popup="debug_popup" />
             <button id="browser_print" command="cmd_print" hidden="true"/>
             <button id="browser_find" label="Find in Page" command="cmd_find" hidden="false"/>
         </hbox>

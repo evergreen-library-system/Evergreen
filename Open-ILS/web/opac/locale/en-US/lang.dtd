@@ -64,6 +64,10 @@
 <!ENTITY common.browser.print.accesskey "P">
 <!ENTITY common.browser.help.label "Help">
 <!ENTITY common.browser.help.accesskey "H">
+<!ENTITY common.browser.find.label "Find in Page">
+<!ENTITY common.browser.find.accesskey "i">
+<!ENTITY common.browser.set_url.label "Modify URL">
+<!ENTITY common.browser.set_url.accesskey "U">
 
 <!ENTITY common.textbox.cut "Cut">
 <!ENTITY common.textbox.copy "Copy">
