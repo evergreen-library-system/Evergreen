@@ -127,7 +127,6 @@
             <spacer flex="1"/>
             <label id="debug" value="Debug" disabled="true" popup="debug_popup" />
             <button id="browser_print" command="cmd_print" hidden="true"/>
-            <button id="browser_find" label="Find in Page" command="cmd_find" hidden="false"/>
         </hbox>
         <browser id="browser_browser" flex="1" autoscroll="false" type="content"/>
     </vbox>
