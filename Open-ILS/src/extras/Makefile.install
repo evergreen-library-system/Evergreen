@@ -1,16 +1,17 @@
 # ---------------------------------------------------------------------
 # Author: Bill Erickson <erickson@esilibrary.com>
+# Author: Dan Scott <dscott@laurentian.ca>
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (etch/lenny), Ubuntu (hardy/lucid), and Fedora (13).
+# Currently supports Debian (lenny/squeeze), Ubuntu (hardy/lucid), and Fedora (13).
 # Working towards support of CentOS 5 / RHEL 5.
 # Installs Perl prereqs, libjs with Perl wrapper, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
-# 	make -f Makefile.install debian-etch
-# 	- or -
 # 	make -f Makefile.install debian-lenny
+# 	- or -
+# 	make -f Makefile.install debian-squeeze
 # 	- or -
 # 	make -f Makefile.install ubuntu-hardy
 # 	- or -
@@ -109,10 +110,12 @@ EXTRA_DEBS = \
 	libyaz-dev \
 	yaz
 
-# Ubuntu Hardy and Debian Etch require libencode-perl 
-# to get a version of Encode > 2.12 - see bug 525069.
-# Note that the Debian version of libencode-perl comes
-# from etch-backports.
+EXTRA_DEBS_SQUEEZE = \
+    libbusiness-credit-card-perl \
+    libuuid-tiny-perl
+
+# Ubuntu Hardy requires libencode-perl # to get a version of Encode
+# > 2.12 - see bug 525069.
 EXTRA_ENCODE = \
 	libencode-perl
 
@@ -193,32 +196,11 @@ PGSQL_84_RPMS = \
 	postgresql-plpe*-8.4* \
 	postgresql-server-8.4*
 
-PGSQL_CLIENT_DEBS_81 = \
-	postgresql-client-8.1
-
-PGSQL_SERVER_DEBS_81 = \
-	postgresql-8.1 \
-	postgresql-contrib-8.1 \
-	postgresql-plperl-8.1 \
-	postgresql-server-dev-8.1
-
 PGSQL_CLIENT_DEBS_82 = \
 	postgresql-client
 
-PGSQL_SERVER_DEBS_82 = \
-	postgresql \
-	postgresql-contrib-8.2 \
-	postgresql-plperl-8.2 \
-	postgresql-server-dev-8.2
-
 PGSQL_CLIENT_DEBS_83 = \
 	postgresql-client
-
-PGSQL_SERVER_DEBS_83 = \
-	postgresql \
-	postgresql-contrib-8.3 \
-	postgresql-plperl-8.3 \
-	postgresql-server-dev-8.3
 
 PGSQL_CLIENT_DEBS_84 = \
 	postgresql-client
@@ -241,12 +223,15 @@ DEB_APACHE_DISMODS = \
 
 # Chronically unpackaged CPAN modules
 CPAN_MODULES = \
-    Business::CreditCard::Object \
     Business::EDI \
     Net::uFTP \
     Net::Z3950::Simple2ZOOM \
-    UUID::Tiny \
     SRU
+
+# More chronically unpackaged CPAN modules (available in Squeeze though)
+CPAN_MODULES_MORE = \
+    Business::CreditCard::Object \
+    UUID::Tiny
 
 # Are we sure most distros don't come with an acceptable version of Safe.pm?
 CPAN_MODULES_SAFE = \
@@ -273,23 +258,26 @@ rhel: install_redhat_pgsql install_centos_rpms install_yaz install_cpan_marc ins
 
 fedora-13: install_fedora_13_rpms install_cpan install_cpan_marc install_cpan_fedora install_spidermonkey install_library_callnumber_lc
 
-debian-etch: etch generic_debian
-debian-lenny: lenny generic_debian
-etch: install_pgsql_client_debs_81 install_yaz install_cpan_marc install_extra_encode
+debian-lenny: lenny generic_debian install_cpan_more install_cpan_safe
+debian-squeeze: squeeze generic_debian
 lenny: install_pgsql_client_debs_83 install_extra_debs
-generic_debian:  install_debs install debian_sys_config install_cpan_safe
+squeeze: install_pgsql_client_debs_84  install_extra_debs_squeeze
+generic_debian:  install_debs install debian_sys_config
 
 ubuntu-hardy: hardy generic_ubuntu
 ubuntu-lucid: lucid generic_ubuntu
 hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc install_extra_encode
 lucid: install_pgsql_client_debs_84 install_extra_debs
-generic_ubuntu: install_debs install debian_sys_config install_cpan_safe
+generic_ubuntu: install_debs install debian_sys_config install_cpan_more install_cpan_safe
 
 # - COMMON TARGETS ---------------------------------------------------------
 
 # Install the CPAN modules
 install_cpan: 
 	for m in $(CPAN_MODULES); do perl -MCPAN -e "install \"$$m\";"; done
+
+install_cpan_more: 
+	for m in $(CPAN_MODULES_MORE); do perl -MCPAN -e "install \"$$m\";"; done
 
 # Install the CPAN modules for MARC functionality
 install_cpan_marc: 
@@ -378,29 +366,16 @@ install_pgsql_server_debs_84:
 install_pgsql_client_debs_83:
 	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_83)
 
-install_pgsql_server_debs_83:
-	LANG=C $(APT_TOOL) install $(PGSQL_SERVER_DEBS_83)
-
 install_pgsql_client_debs_82:
 	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_82)
 
-install_pgsql_server_debs_82:
-	LANG=C $(APT_TOOL) install $(PGSQL_SERVER_DEBS_82)
-
-# Etch requires an explicit version to avoid PostgreSQL 7.4
-install_pgsql_client_debs_81:
-	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_81)
-
-# Etch requires an explicit version to avoid PostgreSQL 7.4
-install_pgsql_server_debs_81:
-	LANG=C $(APT_TOOL) install $(PGSQL_SERVER_DEBS_81)
-
 # Install the debian-specific dependencies for more modern distros
+install_extra_debs_squeeze: install_extra_debs
+
 install_extra_debs:
 	$(APT_TOOL) install $(EXTRA_DEBS)
 
-# Install specific modules required by Ubuntu Hardy and
-# Debian Etch - see bug 525069
+# Install specific modules required by Ubuntu Hardy - see bug 525069
 install_extra_encode:
 	$(APT_TOOL) install $(EXTRA_ENCODE)
 
