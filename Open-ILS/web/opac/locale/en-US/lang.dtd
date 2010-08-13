@@ -1804,6 +1804,8 @@
 <!ENTITY staff.server.admin.index.transits "Transits">
 <!ENTITY staff.server.admin.index.transit_list "Transit List">
 <!ENTITY staff.server.admin.index.conify "Server Settings">
+<!ENTITY staff.server.admin.index.external_text_editor.label "External Text Editor Command">
+<!ENTITY staff.server.admin.index.external_text_editor.accesskey "x">
 
 <!ENTITY staff.server.admin.index.booking "Booking">
 <!ENTITY staff.server.admin.index.booking.reservation "Create/Cancel Reservations">

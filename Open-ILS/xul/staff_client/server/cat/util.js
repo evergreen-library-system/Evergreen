@@ -775,7 +775,7 @@ cat.util.mark_item_as_missing_pieces = function(copy_ids) {
                                 'chrome,resizable,modal',
                                 { 'copy_id' : copies[i].id() }
                             );
-                            // TODO: patron notes/messages
+                            // Patron Message
                             var my_xulG = win.open(
                                 urls.XUL_NEW_STANDING_PENALTY,
                                 'new_standing_penalty',
@@ -794,7 +794,35 @@ cat.util.mark_item_as_missing_pieces = function(copy_ids) {
                                     [ ses(), penalty ]
                                 );
                             }
-                            // TODO: Invoke 3rd party app with letter to patron
+                            // Patron Letter
+
+                            var txt_file = new util.file('letter.txt');
+                            txt_file.write_content('truncate',robj.payload.letter.template_output().data());
+                            var text_path = '"' + txt_file._file.path + '"';
+                            txt_file.close();
+
+                            var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+                            var key = 'oils.text_editor.external.cmd';
+                            var has_key = prefs.prefHasUserValue(key);
+                            var oils_external_letter_opener_cmd = has_key ? prefs.getCharPref(key) : 'C:\\Windows\\notepad.exe %letter.txt%';
+
+                            var cmd = oils_external_letter_opener_cmd.replace('%letter.txt%',text_path);
+
+                            var file = new util.file('letter.bat');
+                            file.write_content('truncate+exec',cmd);
+                            file.close();
+                            file = new util.file('letter.bat');
+
+                            dump('letter exec: ' + cmd + '\n');
+                            var process = Components.classes["@mozilla.org/process/util;1"].createInstance(Components.interfaces.nsIProcess);
+                            process.init(file._file);
+
+                            var args = [];
+
+                            dump('process.run = ' + process.run(false, args, args.length) + '\n');
+
+                            file.close();
+
                         } else if (robj.ilsevent == 1500 /* ACTION_CIRCULATION_NOT_FOUND */) {
                             alert( $("catStrings").getFormattedString('staff.cat.util.mark_item_missing_pieces.circ_not_found',[ copies[i].barcode() ]) );
                         } else {

@@ -617,6 +617,21 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/permission/grp_penalty_threshold'); }
             ],
+            'cmd_local_admin_external_text_editor' : [
+                ['oncommand'],
+                function() {
+                    var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+                    var key = 'oils.text_editor.external.cmd';
+                    var has_key = prefs.prefHasUserValue(key);
+                    var value = has_key ? prefs.getCharPref(key) : 'C:\\Windows\\notepad.exe %letter.txt%';
+                    var cmd = window.prompt(
+                        document.getElementById('offlineStrings').getString('text_editor.prompt_for_external_cmd'),
+                        value
+                    );
+                    if (!cmd) { return; }
+                    prefs.setCharPref(key,cmd);
+                }
+            ],
             'cmd_local_admin_idl_field_doc' : [
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/idl_field_doc'); }

@@ -114,6 +114,9 @@
     <command id="cmd_local_admin_standing_penalty"/>
     <command id="cmd_local_admin_grp_penalty_threshold"/>
     <command id="cmd_local_admin_copy_location_order"/>
+    <command id="cmd_local_admin_external_text_editor"
+        label="&staff.server.admin.index.external_text_editor.label;"
+        accesskey="&staff.server.admin.index.external_text_editor.accesskey;"/>
     <command id="cmd_local_admin_idl_field_doc"/>
     <command id="cmd_local_admin_action_trigger"/>
     <command id="cmd_local_admin_survey"/>
@@ -345,6 +348,7 @@
                 <menuitem label="&staff.server.admin.index.closed_dates;" command="cmd_local_admin_closed_dates"/>
                 <menuitem label="&staff.server.admin.index.copy_locations;" command="cmd_local_admin_copy_locations"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.copy_location_order.label;" command="cmd_local_admin_copy_location_order"/>
+                <menuitem command="cmd_local_admin_external_text_editor"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;" command="cmd_local_admin_idl_field_doc"/>
                 <menuitem label="&staff.server.admin.index.fonts_and_sounds;" command="cmd_local_admin_fonts_and_sounds"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.grp_penalty_threshold.label;" command="cmd_local_admin_grp_penalty_threshold"/>
