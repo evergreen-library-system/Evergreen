@@ -326,7 +326,8 @@ if(!dojo._hasResource["openils.Util"]) {
      */
     openils.Util.hilightNode = function(node, patterns, args) {
 
-        var hclass = (args && args.classname) ? args.classname : 'oils-hightlight';
+        args = args ||{};
+        var hclass = args.classname || 'oils-highlight';
 
         function _hilightNode(node, pat) {
 
