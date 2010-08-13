@@ -964,6 +964,16 @@
 
 	<!-- ================================================================ -->
 
+    <event code='11000' textcode='SERIAL_SUBSCRIPTION_NOT_EMPTY'>
+        <desc xml:lang="en-US">The subscription still has dependent objects</desc>
+    </event>
+
+    <event code='11001' textcode='SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES'>
+        <desc xml:lang="en-US">The caption/pattern still has dependent issuances</desc>
+    </event>
+
+	<!-- ================================================================ -->
+
 </ils_events>
 
 

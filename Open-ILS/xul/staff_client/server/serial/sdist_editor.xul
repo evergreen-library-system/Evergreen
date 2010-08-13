@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Distribution Editor Overlay -->
+
+<!-- LOCALIZATION -->
+<!DOCTYPE overlay PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<overlay id="serial_sdist_editor_panel_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<vbox flex="1" id="serial_sdist_editor_panel" class="my_overflow">
+        <vbox id="brief_display_box"/>
+
+		<hbox flex="1" style="overflow: auto">
+			<vbox flex="1">
+				<label value="Distribution" style="font-weight: bold; font-size: large"/>
+				<vbox id="sdist_editor_left_pane" flex="1"/>
+			</vbox>
+			<splitter><grippy /></splitter>
+			<vbox flex="1">
+				<vbox id="sdist_editor_right_pane"/>
+                <groupbox>
+                    <caption label="Library Specific Options" />
+                    <description>Note: Changing the 'Holding Lib' will unset all of these values</description>
+                    <vbox id="sdist_editor_lso_pane" flex="1"/>
+                </groupbox>
+			</vbox>
+		</hbox>
+
+		<hbox id="sdist_editor_nav">
+			<spacer flex="1"/>
+			<button id="sdist_notes" label="&staff.serial.sdist_editor.notes;" accesskey="&staff.serial.sdist_editor.notes.accesskey;" oncommand="g.manage_subs.sdist_editor.notes()" />
+			<button id="sdist_save" label="&staff.serial.sdist_editor.modify;" hidden="true" accesskey="&staff.serial.ssub_editor.modify.accesskey;" oncommand="g.manage_subs.sdist_editor.save()" />
+			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
+		</hbox>
+
+		<spacer/>
+	</vbox>
+
+</overlay>
+

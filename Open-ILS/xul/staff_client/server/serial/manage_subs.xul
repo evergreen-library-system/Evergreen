@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Manage Subscriptions Overlay -->
+<!--
+vim:noet:sw=4:ts=4:
+-->
+<!DOCTYPE overlay PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<?xul-overlay href="/xul/server/serial/ssub_editor.xul"?>
+<?xul-overlay href="/xul/server/serial/sdist_editor.xul"?>
+<?xul-overlay href="/xul/server/serial/siss_editor.xul"?>
+<?xul-overlay href="/xul/server/serial/scap_editor.xul"?>
+<overlay id="serial_manage_subs_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+            <tab id="serial_manage_subs_tab" label="Subscriptions" oncommand="manage_subs_init()"/>
+            <tabpanel id="serial_manage_subs" orient="vertical" flex="1">
+                 <script>
+                    <![CDATA[
+                        manage_subs_inited = 0;
+                        function manage_subs_init() {
+                            if (manage_subs_inited) {
+                                return;
+                            }
+                            try {
+                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                                if (typeof JSAN == 'undefined') { 
+                                    throw( document.getElementById("commonStrings").getString('common.jsan.missing') );
+                                }
+                                JSAN.errorLevel = "die"; // none, warn, or die
+                                JSAN.addRepository('/xul/server/');
+                                JSAN.use('util.error'); g.error = new util.error();
+                                g.error.sdump('D_TRACE','manage_subs_init() for serial/manage_subs.xul');
+                                JSAN.use('serial.manage_subs'); g.manage_subs = new serial.manage_subs();
+
+                                g.manage_subs.init( { 'docid' : xul_param('docid') } );
+                                manage_subs_inited = 1;
+
+                            } catch(E) {
+                                var err_msg = document.getElementById("commonStrings").getFormattedString('common.exception', ['serial/manage_subs.xul', E]);
+                                try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); }
+                                alert(err_msg);
+                            }
+                        }
+
+                    ]]>
+                </script>
+
+                <popupset>
+                    <popup id="serial_manage_subs_popup">
+                        <menuitem command="cmd_add_subscriptions" label="Add Subscription"/>
+                        <menuitem command="cmd_add_sdist" label="Add Distribution"/>
+                        <menuitem command="cmd_add_siss" label="Add Issuance"/>
+                        <menuitem command="cmd_add_scap" label="Add Caption/Pattern"/>
+                        <menuseparator/>
+                        <menuitem command="cmd_make_predictions" label="Make Predictions"/>
+                        <menuseparator/>
+                        <menuitem command="cmd_delete_ssub" label="Delete Subscription"/>
+                        <menuitem command="cmd_delete_sdist" label="Delete Distribution"/>
+                        <menuitem command="cmd_delete_siss" label="Delete Issuance"/>
+                        <menuitem command="cmd_delete_scap" label="Delete Caption/Pattern"/>
+                    </popup>
+                </popupset>
+
+                <hbox flex="1">
+                    <vbox flex="1">
+                        <hbox id="serial_sub_lib_menu"/>
+                        <hbox>
+                            <checkbox id="show_ssubs" label="Show Subs." />
+                            <checkbox id="show_groups" label="Show Groups" />
+                            <button id="serial_sub_add_button" label="&staff.cat.copy_browser.holdings_maintenance.refresh_button.label;" command="cmd_refresh_list" />
+                            <spacer flex="1"/>
+                            <menubar>
+                                <menu label="Actions for Selected Row">
+                                    <menupopup>
+                                        <menuitem command="cmd_add_subscriptions" label="Add Subscription"/>
+                                        <menuitem command="cmd_add_sdist" label="Add Distribution"/>
+                                        <menuitem command="cmd_add_siss" label="Add Issuance"/>
+                                        <menuitem command="cmd_add_scap" label="Add Caption/Pattern"/>
+                                        <menuseparator/>
+                                        <menuitem command="cmd_make_predictions" label="Make Predictions"/>
+                                        <menuseparator/>
+                                        <menuitem command="cmd_delete_ssub" label="Delete Subscription"/>
+                                        <menuitem command="cmd_delete_sdist" label="Delete Distribution"/>
+                                        <menuitem command="cmd_delete_siss" label="Delete Issuance"/>
+                                        <menuitem command="cmd_delete_scap" label="Delete Caption/Pattern"/>
+                                    </menupopup>
+                                </menu>
+                            </menubar>
+                        </hbox>
+                        <tree id="subs_tree" flex="15" enableColumnDrag="true" context="serial_manage_subs_popup"/>
+                    </vbox>
+                    <splitter state="open" collapse="before" resizebefore="closest" resizeafter="farthest"/>
+                    <deck id="serial_manage_subs_editor_deck" flex="20">
+                        <description value="Please select an object to edit"/>
+                        <vbox id="serial_ssub_editor_panel" />
+                        <vbox id="serial_sdist_editor_panel" />
+                        <vbox id="serial_siss_editor_panel" />
+                        <vbox id="serial_scap_editor_panel" />
+                    </deck>
+                </hbox>
+            </tabpanel>
+
+</overlay>

@@ -1056,6 +1056,26 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.vandelay>
 
+            <open-ils.serial>
+                <keepalive>3</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::Serial</implementation>
+                <max_requests>17</max_requests>
+                <unix_config>
+                    <unix_sock>open-ils.serial_unix.sock</unix_sock>
+                    <unix_pid>open-ils.serial_unix.pid</unix_pid>
+                    <max_requests>1000</max_requests>
+                    <unix_log>open-ils.serial_unix.log</unix_log>
+                    <min_children>5</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>3</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                </app_settings>
+            </open-ils.serial>
+
         </apps>
     </default>
 
@@ -1096,6 +1116,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.trigger</appname>  
                 <appname>open-ils.fielder</appname>  
                 <appname>open-ils.vandelay</appname>  
+                <appname>open-ils.serial</appname>  
             </activeapps>
         </localhost>
     </hosts>

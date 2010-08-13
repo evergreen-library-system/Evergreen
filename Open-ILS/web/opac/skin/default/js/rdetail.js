@@ -43,6 +43,8 @@ var rdetailNext = null;
 var rdetailStart = null;
 var rdetailEnd = null;
 
+var mfhdDetails = [];
+
 /* serials are currently the only use of Dojo strings in the OPAC */
 if (rdetailDisplaySerialHoldings) {
 	dojo.require("dijit.Menu");
@@ -268,6 +270,10 @@ function _holdingsDraw(h) {
 
 	dojo.forEach(holdings, _holdingsDrawMFHD);
 
+	// Populate XUL menus
+	if (isXUL()) {
+		runEvt('rdetail','MFHDDrawn');
+	}
 }
 
 function _holdingsDrawMFHD(holdings, entryNum) {
@@ -281,19 +287,19 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 		}
         }
 
-	var hh = holdings.holdings();
-	var hch = holdings.current_holdings();
-	var hs = holdings.supplements();
-	var hcs = holdings.current_supplements();
-	var hi = holdings.indexes();
-	var hci = holdings.current_indexes();
+	var hb = holdings.basic_holdings();
+	var hba = holdings.basic_holdings_add();
+	var hs = holdings.supplement_holdings();
+	var hsa = holdings.supplement_holdings_add();
+	var hi = holdings.index_holdings();
+	var hia = holdings.index_holdings_add();
 	var ho = holdings.online();
 	var hm = holdings.missing();
 	var hinc = holdings.incomplete();
 	var hloc = holdings.location() || 'MFHD';
 
-	if (	hh.length == 0 && hch.length == 0 && hs.length == 0 &&
-		hcs.length == 0 && hi.length == 0 && hci.length == 0 &&
+	if (	hb.length == 0 && hba.length == 0 && hs.length == 0 &&
+		hsa.length == 0 && hi.length == 0 && hia.length == 0 &&
 		ho.length == 0 && hm.length == 0 && hinc.length == 0
 	) {
 
@@ -303,41 +309,57 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 			 * record is likely empty or corrupt. This gives cataloguers a
 			 * chance to add holdings or correct the record
 			 */
-			hh = 'PLACEHOLDER';
+			hb = ['PLACEHOLDER'];
 		} else {
 			return null;
 		}
 	}
 
-	dojo.place("<table style='width: 100%;'><caption id='mfhdHoldingsCaption" + entryNum + "' class='rdetail_header color_1'>" +
-		dojo.string.substitute(opac_strings.HOLDINGS_TABLE_CAPTION, [hloc]) +
+	// Show entryNum + 1 in staff client for better menu correlation
+	// Maybe this should be holdings.sre_id() instead? (which could get long after time)
+	var entryNumString = '';
+	if (isXUL()) {
+		var entryNumInc = entryNum + 1;
+		entryNumString = ' [Entry #'+entryNumInc+'] ';
+	}
+
+	var refNode;
+	if (entryNum > 0) {
+		refNode = 'rdetail_holdings_table_' + (entryNum - 1);
+	} else {
+		refNode = 'rdetail_details_table';
+	}
+
+	dojo.place("<table style='width: 100%;' id='rdetail_holdings_table_"+entryNum+"'><caption id='mfhdHoldingsCaption" + entryNum + "' class='rdetail_header color_1'>" +
+		dojo.string.substitute(opac_strings.HOLDINGS_TABLE_CAPTION, [hloc]) + entryNumString +
 		"</caption><tbody id='rdetail_holdings_tbody_" + entryNum +
-		"'></tbody></table>", "rdetail_details_table", "after"
+		"'></tbody></table>", refNode, "after"
 	);
-	if (hh.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.HOLDINGS, hh); }
-	if (hch.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.CURRENT_HOLDINGS, hch); }
-	if (hs.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.SUPPLEMENTS, hs); }
-	if (hcs.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.CURRENT_SUPPLEMENTS, hcs); }
-	if (hi.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.INDEXES, hi); }
-	if (hci.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.CURRENT_INDEXES, hci); }
+	if (hb.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.BASIC_HOLDINGS, hb); }
+	if (hba.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.BASIC_HOLDINGS_ADD, hba); }
+	if (hs.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.SUPPLEMENT_HOLDINGS, hs); }
+	if (hsa.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.SUPPLEMENT_HOLDINGS_ADD, hsa); }
+	if (hi.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.INDEX_HOLDINGS, hi); }
+	if (hia.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.INDEX_HOLDINGS_ADD, hia); }
 	if (ho.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.ONLINE_VOLUMES, ho); }
 	if (hm.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.MISSING_VOLUMES, hm); }
 	if (hinc.length > 0) { _holdingsDrawMFHDEntry(entryNum, opac_strings.INCOMPLETE_VOLUMES, hinc); }
 
 	if (isXUL()) {
+		mfhdDetails.push({ 'id' : holdings.sre_id(), 'label' : hloc, 'entryNum' : entryNum, 'owning_lib' : holdings.owning_lib() });
 		dojo.require('openils.Event');
 		dojo.require('openils.PermaCrud');
 		var mfhd_edit = new dijit.Menu({});
-		new dijit.MenuItem({onClick: function(){loadMarcEditor(holdings.id())}, label:opac_strings.EDIT_MFHD_RECORD}).placeAt(mfhd_edit, "first");
+		new dijit.MenuItem({onClick: function(){loadMarcEditor(holdings.sre_id())}, label:opac_strings.EDIT_MFHD_RECORD}).placeAt(mfhd_edit, "first");
 		new dijit.MenuItem({onClick:function(){
 			var pcrud = new openils.PermaCrud({"authtoken": G.user.session});
-			var mfhd_rec = pcrud.retrieve("sre", holdings.id());
+			var mfhd_rec = pcrud.retrieve("sre", holdings.sre_id());
 			if (mfhd_rec) {
 				pcrud.eliminate(mfhd_rec);
-				alert(dojo.string.substitute(opac_strings.DELETED_MFHD_RECORD, [holdings.id()]));
+				alert(dojo.string.substitute(opac_strings.DELETED_MFHD_RECORD, [holdings.sre_id()]));
 			}
 		}, label:opac_strings.DELETE_MFHD}).placeAt(mfhd_edit, "last");
-		// new dijit.MenuItem({onClick:function(){alert("Edit properties " + holdings.id());}, label:opac_strings.EDIT_PROPERTIES}).placeAt(mfhd_edit, "last");
+		// new dijit.MenuItem({onClick:function(){alert("Edit properties " + holdings.sre_id());}, label:opac_strings.EDIT_PROPERTIES}).placeAt(mfhd_edit, "last");
 		var mfhd_mb = new dijit.form.DropDownButton({dropDown: mfhd_edit, label:opac_strings.EDIT_MFHD_MENU, style:"float:right"});
 		mfhd_mb.placeAt("mfhdHoldingsCaption" + entryNum, "last");
 		mfhd_edit.startup();

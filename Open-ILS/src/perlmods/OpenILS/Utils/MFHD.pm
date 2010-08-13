@@ -6,6 +6,9 @@ use Carp;
 use DateTime::Format::Strptime;
 use Data::Dumper;
 
+# for inherited methods to work properly, we need to force a
+# MARC::Record version greater than 2.0.0
+use MARC::Record 2.0.1;
 use base 'MARC::Record';
 
 use OpenILS::Utils::MFHD::Caption;
@@ -84,30 +87,148 @@ sub caption_link_ids {
     return sort keys %{$self->{_mfhd_CAPTIONS}->{$field}};
 }
 
+# optional argument to get back a 'hashref' or an 'array' (default)
 sub captions {
     my $self  = shift;
-    my $field = shift;
+    my $tag = shift;
+    my $return_type = shift;
 
     # TODO: add support for caption types as argument? (base, index, supplement)
-    my @captions;
-    my @sorted_ids = $self->caption_link_ids($field);
+    my @sorted_ids = $self->caption_link_ids($tag);
 
-    foreach my $link_id (@sorted_ids) {
-        push(@captions, $self->{_mfhd_CAPTIONS}{$field}{$link_id});
+    if (defined($return_type) and $return_type eq 'hashref') {
+        my %captions;
+        foreach my $link_id (@sorted_ids) {
+            $captions{$link_id} = $self->{_mfhd_CAPTIONS}{$tag}{$link_id};
+        }
+        return \%captions;
+    } else {
+        my @captions;
+        foreach my $link_id (@sorted_ids) {
+            push(@captions, $self->{_mfhd_CAPTIONS}{$tag}{$link_id});
+        }
+        return @captions;
     }
+}
 
-    return @captions;
+sub append_fields {
+    my $self = shift;
+
+    my $field_count = $self->SUPER::append_fields(@_);
+    if ($field_count) {
+        foreach my $field (@_) {
+            $self->_avoid_link_collision($field);
+            my $field_type = ref $field;
+            if ($field_type eq 'MFHD::Holding') {
+                $self->{_mfhd_HOLDINGS}{$field->tag}{$field->caption->link_id}{$field->seqno} = $field;
+            } elsif ($field_type eq 'MFHD::Caption') {
+                $self->{_mfhd_CAPTIONS}{$field->tag}{$field->link_id} = $field;
+            }
+        }
+        return $field_count;
+    } else {
+        return;
+    }   
+}
+
+sub delete_field {
+    my $self = shift;
+    my $field = shift;
+
+    my $field_count = $self->SUPER::delete_field($field);
+    if ($field_count) {
+        my $field_type = ref($field);
+        if ($field_type eq 'MFHD::Holding') {
+            delete($self->{_mfhd_HOLDINGS}{$field->tag}{$field->caption->link_id}{$field->seqno});
+        } elsif ($field_type eq 'MFHD::Caption') {
+            delete($self->{_mfhd_CAPTIONS}{$field->tag}{$field->link_id});
+        }
+        return $field_count;
+    } else {
+        return;
+    }
+}
+
+sub insert_fields_before {
+    my $self = shift;
+    my $before = shift;
+
+    my $field_count = $self->SUPER::insert_fields_before($before, @_);
+    if ($field_count) {
+        foreach my $field (@_) {
+            $self->_avoid_link_collision($field);
+            my $field_type = ref $field;
+            if ($field_type eq 'MFHD::Holding') {
+                $self->{_mfhd_HOLDINGS}{$field->tag}{$field->caption->link_id}{$field->seqno} = $field;
+            } elsif ($field_type eq 'MFHD::Caption') {
+                $self->{_mfhd_CAPTIONS}{$field->tag}{$field->link_id} = $field;
+            }
+        }
+        return $field_count;
+    } else {
+        return;
+    }
+}
+
+sub insert_fields_after {
+    my $self = shift;
+    my $after = shift;
+
+    my $field_count = $self->SUPER::insert_fields_after($after, @_);
+    if ($field_count) {
+        foreach my $field (@_) {
+            $self->_avoid_link_collision($field);
+            my $field_type = ref $field;
+            if ($field_type eq 'MFHD::Holding') {
+                $self->{_mfhd_HOLDINGS}{$field->tag}{$field->caption->link_id}{$field->seqno} = $field;
+            } elsif ($field_type eq 'MFHD::Caption') {
+                $self->{_mfhd_CAPTIONS}{$field->tag}{$field->link_id} = $field;
+            }
+        }
+        return $field_count;
+    } else {
+        return;
+    }
+}
+
+sub _avoid_link_collision {
+    my $self = shift;
+    my $field = shift;
+
+    my $fieldref = ref($field);
+    if ($fieldref eq 'MFHD::Holding') {
+        my $seqno = $field->seqno;
+        my $changed_seqno = 0;
+        if (exists($self->{_mfhd_HOLDINGS}{$field->tag}{$field->caption->link_id}{$seqno})) {
+            $changed_seqno = 1;
+            do {
+                $seqno++;
+            } while (exists($self->{_mfhd_HOLDINGS}{$field->tag}{$field->caption->link_id}{$seqno}));
+        }
+        $field->seqno($seqno) if $changed_seqno;
+    } elsif ($fieldref eq 'MFHD::Caption') {
+        my $link_id = $field->link_id;
+        my $changed_link_id = 0;
+        if (exists($self->{_mfhd_CAPTIONS}{$field->tag}{$link_id})) {
+            $link_id++;
+            $changed_link_id = 1;
+            do {
+                $link_id++;
+            } while (exists($self->{_mfhd_CAPTIONS}{$field->tag}{$link_id}));
+        }
+        $field->link_id($link_id) if $changed_link_id;
+    }
 }
 
 sub active_captions {
     my $self  = shift;
-    my $field = shift;
+    my $tag = shift;
 
-    # TODO: add support for caption types as argument? (base, index, supplement)
+    # TODO: add support for caption types as argument? (basic, index, supplement)
     my @captions;
     my @active_captions;
 
-    @captions = $self->captions($field);
+    @captions = $self->captions($tag);
 
     # TODO: for now, we will assume the last 85X field is active
     # and the rest are historical.  The standard is hazy about
@@ -130,74 +251,178 @@ sub holdings {
 }
 
 #
-# generate_predictions() is an initial attempt at a function which can be used
-# to populate an issuance table with a list of predicted issues.  It accepts
-# a hash ref of options initially defined as:
-# field : the caption field to predict on (853, 854, or 855)
+# generate_predictions()
+# Accepts a hash ref of options initially defined as:
+# base_holding : reference to the holding field to predict from
 # num_to_predict : the number of issues you wish to predict
-# last_rec_date : the date of the last received issue, to be used as an offset
-#                 for predicting future issues
+# OR
+# end_holding : holding field ref, keep predicting until you meet or exceed it
 #
 # The basic method is to first convert to a single holding if compressed, then
 # increment the holding and save the resulting values to @predictions.
 # 
-# returns @preditions, an array of array refs containing (link id, formatted
-# label, formatted chronology date, formatted estimated arrival date, and an
-# array ref of holding subfields as (key, value, key, value ...)) (not a hash
-# to protect order and possible duplicate keys).
-#
+# returns @predictions, an array of holding field refs (including end_holding
+# if applicable but NOT base_holding)
+# 
 sub generate_predictions {
     my ($self, $options) = @_;
-    my $field          = $options->{field};
+
+    my $base_holding   = $options->{base_holding};
     my $num_to_predict = $options->{num_to_predict};
-    my $last_rec_date =
-      $options->{last_rec_date};   # expected or actual, according to preference
+    my $end_holding    = $options->{end_holding};
+    my $max_to_predict = $options->{max_to_predict} || 10000; # fail-safe
 
-    # TODO: add support for predicting serials with no chronology by passing in
-    # a last_pub_date option?
-
-    my $strp = new DateTime::Format::Strptime(pattern => '%F');
-
-    my $receival_date = $strp->parse_datetime($last_rec_date);
-
-    my @active_captions = $self->active_captions($field);
-
+    if (!defined($base_holding)) {
+        carp("Base holding not defined in generate_predictions, returning empty set");
+        return ();
+    }
+    if ($base_holding->is_compressed) {
+        carp("Ambiguous compressed base holding in generate_predictions, returning empty set");
+        return ();
+    }
+    my $curr_holding = $base_holding->clone; # prevent side-effects
+    
     my @predictions;
-    foreach my $caption (@active_captions) {
-        my $htag    = $caption->tag;
-        my $link_id = $caption->link_id;
-        $htag =~ s/^85/86/;
-        my @holdings = $self->holdings($htag, $link_id);
-        my $last_holding = $holdings[-1];
-
-        if ($last_holding->is_compressed) {
-            $last_holding->compressed_to_last; # convert to last in range
-        }
-
-        my $pub_date  = $strp->parse_datetime($last_holding->chron_to_date);
-        my $date_diff = $receival_date - $pub_date;
-
-        $last_holding->notes('public',  []);
-        # add a note marker for system use
-        $last_holding->notes('private', ['AUTOGEN']);
-
+        
+    if ($num_to_predict) {
         for (my $i = 0; $i < $num_to_predict; $i++) {
-            $last_holding->increment;
-            $pub_date = $strp->parse_datetime($last_holding->chron_to_date);
-            my $arrival_date = $pub_date + $date_diff;
-            push(
-                @predictions,
-                [
-                    $link_id,
-                    $last_holding->format,
-                    $pub_date->strftime('%F'),
-                    $arrival_date->strftime('%F'),
-                    [$last_holding->subfields_list]
-                ]
-            );
+            push(@predictions, $curr_holding->increment->clone);
+        }
+    } elsif (defined($end_holding)) {
+        $end_holding = $end_holding->clone; # prevent side-effects
+        my $next_holding = $curr_holding->increment->clone;
+        my $num_predicted = 0;
+        while ($next_holding le $end_holding) {
+            push(@predictions, $next_holding);
+            $num_predicted++;
+            if ($num_predicted >= $max_to_predict) {
+                carp("Maximum prediction count exceeded");
+                last;
+            }
+            $next_holding = $curr_holding->increment->clone;
         }
     }
+
     return @predictions;
+}
+
+#
+# create an array of compressed holdings from all holdings for a given caption,
+# compressing as needed
+#
+# Optionally you can skip sorting, but the resulting compression will be compromised
+# if the current holdings are out of order
+#
+# TODO: gap marking, gap preservation
+#
+# TODO: some of this could be moved to the Caption object to allow for 
+# decompression in the absense of an overarching MFHD object
+#
+sub get_compressed_holdings {
+    my $self = shift;
+    my $caption = shift;
+    my $opts = shift;
+    my $skip_sort = $opts->{'skip_sort'};
+
+    # make sure none are compressed
+    my @decomp_holdings;
+    if ($skip_sort) {
+        @decomp_holdings = $self->get_decompressed_holdings($caption, {'skip_sort' => 1});
+    } else {
+        # sort for best algorithm
+        @decomp_holdings = $self->get_decompressed_holdings($caption, {'dedupe' => 1});
+    }
+
+    my $runner = $decomp_holdings[0]->clone->increment;   
+    my $curr_holding = shift(@decomp_holdings);
+    $curr_holding = $curr_holding->clone;
+    my $seqno = 1;
+    $curr_holding->seqno($seqno);
+    my @comp_holdings;
+#    my $last_holding;
+    foreach my $holding (@decomp_holdings) {
+        if ($runner eq $holding) {
+            $curr_holding->extend;
+            $runner->increment;
+#        } elsif ($holding eq $last_holding) {
+#            carp("Found duplicate holding in compression set, skipping");
+        } elsif ($runner gt $holding) { # should not happen unless holding is not in series
+            carp("Found unexpected holding, skipping");
+        } else {
+            push(@comp_holdings, $curr_holding);
+            while ($runner le $holding) {
+                $runner->increment;
+            }
+            $curr_holding = $holding->clone;
+            $seqno++;
+            $curr_holding->seqno($seqno);
+        }
+#        $last_holding = $holding;
+    }
+    push(@comp_holdings, $curr_holding);
+
+    return @comp_holdings;
+}
+
+#
+# create an array of single holdings from all holdings for a given caption,
+# decompressing as needed
+#
+# resulting array is returned as they come in the record, unsorted
+#
+# optional argument will reorder and renumber the holdings before returning
+# 
+# TODO: some of this could be moved to the Caption (and/or Holding) object to
+# allow for decompression in the absense of an overarching MFHD object
+#
+sub get_decompressed_holdings {
+    my $self = shift;
+    my $caption = shift;
+    my $opts = shift;
+    my $skip_sort = $opts->{'skip_sort'};
+    my $dedupe = $opts->{'dedupe'};
+
+    if ($dedupe and $skip_sort) {
+        carp("Attempted deduplication without sorting, failure likely");
+    }
+
+    my $htag    = $caption->tag;
+    my $link_id = $caption->link_id;
+    $htag =~ s/^85/86/;
+    my @holdings = $self->holdings($htag, $link_id);
+    my @decomp_holdings;
+
+    foreach my $holding (@holdings) {
+        if (!$holding->is_compressed) {
+            push(@decomp_holdings, $holding->clone);
+        } else {
+            my $base_holding = $holding->clone->compressed_to_first;
+            my @new_holdings = $self->generate_predictions(
+                {'base_holding' => $base_holding,
+                 'end_holding' => $holding->clone->compressed_to_last});
+            push(@decomp_holdings, $base_holding, @new_holdings);
+        }
+    }
+
+    unless ($skip_sort) {
+        my @temp_holdings = sort {$a cmp $b} @decomp_holdings;
+        @decomp_holdings = @temp_holdings;
+    }
+
+    my @return_holdings = (shift(@decomp_holdings));
+    $return_holdings[0]->seqno(1);
+    my $seqno = 2;
+    foreach my $holding (@decomp_holdings) { # renumber sequence
+        if ($holding eq $return_holdings[-1] and $dedupe) {
+            carp("Found duplicate holding in decompression set, discarding");
+            next;
+        }
+        $holding->seqno($seqno);
+        $seqno++;
+        push(@return_holdings, $holding);
+    }
+
+    return @return_holdings;
 }
 
 #

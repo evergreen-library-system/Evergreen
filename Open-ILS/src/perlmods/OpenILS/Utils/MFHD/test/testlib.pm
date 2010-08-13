@@ -55,7 +55,6 @@ sub load_MARC_rec {
 
         $field = MARC::Field->new(
             $fieldno, $inds[0], $inds[1],
-            a => 'scratch',
             @subfields
         );
 

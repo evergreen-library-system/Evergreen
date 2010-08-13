@@ -1539,6 +1539,41 @@
 <!ENTITY staff.record_list.title "Title">
 <!ENTITY staff.record_list.win_title "Cataloging">
 <!ENTITY staff.retrieving.record "Retrieving...">
+<!ENTITY staff.serial.mfhd_menu.label "MFHD Holdings">
+<!ENTITY staff.serial.mfhd_menu.add.label "Add MFHD Record">
+<!ENTITY staff.serial.mfhd_menu.edit.label "Edit MFHD Record">
+<!ENTITY staff.serial.mfhd_menu.delete.label "Delete MFHD Record">
+<!ENTITY staff.serial.scap_editor.modify "Modify Caption and Pattern(s)">
+<!ENTITY staff.serial.scap_editor.modify.accesskey "M">
+<!ENTITY staff.serial.scap_editor.create "Create Caption and Pattern(s)">
+<!ENTITY staff.serial.scap_editor.create.accesskey "C">
+<!ENTITY staff.serial.scap_editor.notes "Caption and Pattern Notes">
+<!ENTITY staff.serial.scap_editor.notes.accesskey "N">
+<!ENTITY staff.serial.sdist_editor.modify "Modify Distribution(s)">
+<!ENTITY staff.serial.sdist_editor.modify.accesskey "M">
+<!ENTITY staff.serial.sdist_editor.create "Create Distribution(s)">
+<!ENTITY staff.serial.sdist_editor.create.accesskey "C">
+<!ENTITY staff.serial.sdist_editor.notes "Distribution Notes">
+<!ENTITY staff.serial.sdist_editor.notes.accesskey "N">
+<!ENTITY staff.serial.serctrl_view.label "Serial Control View">
+<!ENTITY staff.serial.siss_editor.modify "Modify Issuance(s)">
+<!ENTITY staff.serial.siss_editor.modify.accesskey "M">
+<!ENTITY staff.serial.siss_editor.create "Create Issuance(s)">
+<!ENTITY staff.serial.siss_editor.create.accesskey "C">
+<!ENTITY staff.serial.siss_editor.notes "Issuance Notes">
+<!ENTITY staff.serial.siss_editor.notes.accesskey "N">
+<!ENTITY staff.serial.sitem_editor.modify "Modify Item(s)">
+<!ENTITY staff.serial.sitem_editor.modify.accesskey "M">
+<!ENTITY staff.serial.sitem_editor.create "Create Item(s)">
+<!ENTITY staff.serial.sitem_editor.create.accesskey "C">
+<!ENTITY staff.serial.sitem_editor.notes "Item Notes">
+<!ENTITY staff.serial.sitem_editor.notes.accesskey "N">
+<!ENTITY staff.serial.ssub_editor.modify "Modify Subscription(s)">
+<!ENTITY staff.serial.ssub_editor.modify.accesskey "M">
+<!ENTITY staff.serial.ssub_editor.create "Create Subscription(s)">
+<!ENTITY staff.serial.ssub_editor.create.accesskey "C">
+<!ENTITY staff.serial.ssub_editor.notes "Subscription Notes">
+<!ENTITY staff.serial.ssub_editor.notes.accesskey "N">
 <!ENTITY staff.survey.wizard.page1 "Initial Settings">
 <!ENTITY staff.survey.wizard.page2 "Add Questions for Survey:">
 <!ENTITY staff.survey.wizard.title "Add a Survey Wizard">

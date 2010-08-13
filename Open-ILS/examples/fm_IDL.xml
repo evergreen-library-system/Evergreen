@@ -3088,15 +3088,15 @@ SELECT  usr,
 
 	<class id="svr" controller="open-ils.cstore" oils_obj:fieldmapper="serial::virtual_record" oils_persist:virtual="true" reporter:label="Serial Virtual Record">
 		<fields>
-			<field name="id" oils_persist:virtual="true" />
+			<field name="sre_id" oils_persist:virtual="true" />
 			<field name="location" oils_persist:virtual="true" />
 			<field name="owning_lib" oils_persist:virtual="true" />
-			<field name="holdings" oils_persist:virtual="true" />
-			<field name="current_holdings" oils_persist:virtual="true" />
-			<field name="supplements" oils_persist:virtual="true" />
-			<field name="current_supplements" oils_persist:virtual="true" />
-			<field name="indexes" oils_persist:virtual="true" />
-			<field name="current_indexes" oils_persist:virtual="true" />
+			<field name="basic_holdings" oils_persist:virtual="true" />
+			<field name="basic_holdings_add" oils_persist:virtual="true" />
+			<field name="supplement_holdings" oils_persist:virtual="true" />
+			<field name="supplement_holdings_add" oils_persist:virtual="true" />
+			<field name="index_holdings" oils_persist:virtual="true" />
+			<field name="index_holdings_add" oils_persist:virtual="true" />
 			<field name="online" oils_persist:virtual="true" />
 			<field name="missing" oils_persist:virtual="true" />
 			<field name="incomplete" oils_persist:virtual="true" />
@@ -3481,7 +3481,7 @@ SELECT  usr,
 	</class>
 
 	<class id="sssum" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::supplement_summary" oils_persist:tablename="serial.supplement_summary" reporter:label="Supplemental Issue Summary">
-		<fields oils_persist:primary="id" oils_persist:sequence="serial.sup_summary_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="serial.supplement_summary_id_seq">
 			<field name="id" reporter:datatype="id" />
 			<field name="distribution" reporter:datatype="link"/>
 			<field name="generated_coverage" reporter:datatype="text"/>
@@ -4419,6 +4419,12 @@ SELECT  usr,
 			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_ASSET_COPY_TEMPLATE" global_required="true"/>
+				<retrieve />
+				<update permission="ADMIN_ASSET_COPY_TEMPLATE" global_required="true"/>
+				<delete permission="ADMIN_ASSET_COPY_TEMPLATE" global_required="true"/>
+			</actions>
 		</permacrud>
 	</class>
 

@@ -5,6 +5,7 @@ var marc_edit_reset = true;
 var copy_browser_reset = true;
 var hold_browser_reset = true;
 var acq_orders_reset = true;
+var serctrl_view_reset = true;
 
 function $(id) { return document.getElementById(id); }
 
@@ -361,6 +362,40 @@ function set_opac() {
                         }
                     }
                 );
+
+                $('mfhd_add').setAttribute('oncommand','create_mfhd()');
+                var mfhd_edit_menu = $('mfhd_edit');
+                var mfhd_delete_menu = $('mfhd_delete');
+
+                // clear menus on subsequent loads
+                if (mfhd_edit_menu.firstChild) {
+                    mfhd_edit_menu.removeChild(mfhd_edit_menu.firstChild);
+                    mfhd_delete_menu.removeChild(mfhd_delete_menu.firstChild);
+                }
+
+                mfhd_edit_menu.disabled = true;
+                mfhd_delete_menu.disabled = true;
+
+                win.attachEvt("rdetail", "MFHDDrawn",
+                    function() {
+                        if (win.mfhdDetails && win.mfhdDetails.length > 0) {
+                            g.mfhd = {};
+                            g.mfhd.details = win.mfhdDetails;
+                            mfhd_edit_menu.disabled = false;
+                            mfhd_delete_menu.disabled = false;
+                            for (var i = 0; i < win.mfhdDetails.length; i++) {
+                                var mfhd_details = win.mfhdDetails[i];
+                                var num = mfhd_details.entryNum;
+                                num++;
+                                var label = mfhd_details.label + ' (' + num + ')';
+                                var item = mfhd_edit_menu.appendItem(label);
+                                item.setAttribute('oncommand','open_mfhd_editor('+mfhd_details.id+')');
+                                item = mfhd_delete_menu.appendItem(label);
+                                item.setAttribute('oncommand','delete_mfhd('+mfhd_details.id+')');
+                            }
+                        }
+                    }
+                );
             },
             'url_prefix' : xulG.url_prefix,
         };
@@ -390,6 +425,97 @@ function set_opac() {
     }
     opac_wrapper_set_help_context(); 
     bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
+}
+
+function set_serctrl_view() {
+    g.view = 'serctrl_view';
+    if (serctrl_view_reset) {
+        bottom_pane.reset_iframe( xulG.url_prefix( urls.XUL_SERIAL_SERCTRL_MAIN ) + '?docid=' + window.escape(docid), {}, xulG);
+        serctrl_view_reset =false;
+    } else {
+        bottom_pane.set_iframe( xulG.url_prefix( urls.XUL_SERIAL_SERCTRL_MAIN ) + '?docid=' + window.escape(docid), {}, xulG);
+    }
+}
+
+function create_mfhd() {
+    try {
+        g.data.create_mfhd_aou = '';
+        JSAN.use('util.window'); var win = new util.window();
+        win.open(
+            xulG.url_prefix(urls.XUL_SERIAL_SELECT_AOU),
+            'sel_bucket_win' + win.window_name_increment(),
+            'chrome,resizable,modal,centerscreen'
+        );
+        if (!g.data.create_mfhd_aou) {
+            return;
+        }
+        var r = g.network.simple_request(
+                'MFHD_XML_RECORD_CREATE',
+                [ ses(), 1, g.data.create_mfhd_aou, docid ]
+            );
+        if (typeof r.ilsevent != 'undefined') {
+            throw(r);
+        }
+        alert("MFHD record created."); //TODO: better success message
+        //TODO: refresh opac display
+    } catch(E) {
+        g.error.standard_unexpected_error_alert("Create MFHD failed", E); //TODO: better error handling
+    }
+}
+
+function delete_mfhd(sre_id) {
+    if (g.error.yns_alert(
+        document.getElementById('offlineStrings').getFormattedString('serial.delete_record.confirm', [sre_id]),
+        document.getElementById('offlineStrings').getString('cat.opac.delete_record'),
+        document.getElementById('offlineStrings').getString('cat.opac.delete'),
+        document.getElementById('offlineStrings').getString('cat.opac.cancel'),
+        null,
+        document.getElementById('offlineStrings').getString('cat.opac.record_deleted.confirm')) == 0) {
+        var robj = g.network.request(
+                'open-ils.permacrud',
+                'open-ils.permacrud.delete.sre',
+                [ses(),sre_id]);
+        if (typeof robj.ilsevent != 'undefined') {
+            alert(document.getElementById('offlineStrings').getFormattedString('cat.opac.record_deleted.error',  [docid, robj.textcode, robj.desc]) + '\n');
+        } else {
+            alert(document.getElementById('offlineStrings').getString('cat.opac.record_deleted'));
+            //TODO: refresh opac display
+        }
+    }
+}
+
+function open_mfhd_editor(sre_id) {
+    try {
+        var r = g.network.simple_request(
+                'FM_SRE_RETRIEVE',
+                [ ses(), sre_id ]
+              );
+        if (typeof r.ilsevent != 'undefined') {
+            throw(r);
+        }
+        open_marc_editor(r, 'MFHD');
+    } catch(E) {
+        g.error.standard_unexpected_error_alert("Create MFHD failed", E); //TODO: better error handling
+    }
+}
+
+function open_marc_editor(rec, label) {
+    win = window.open( xulG.url_prefix('/xul/server/cat/marcedit.xul') );
+
+    win.xulG = {
+        record : {marc : rec.marc()},
+        save : {
+            label: 'Save ' + label,
+            func: function(xmlString) {  // TODO: switch to pcrud, or define an sre update method in Serial.pm?
+                var method = 'open-ils.permacrud.update.' + rec.classname;
+                rec.marc(xmlString);
+                g.network.request(
+                    'open-ils.permacrud', method,
+                    [ses(), rec]
+                );
+            }
+        }
+    };
 }
 
 function bib_in_new_tab() {
@@ -431,7 +557,7 @@ function add_to_bucket() {
     win.open(
         xulG.url_prefix(urls.XUL_RECORD_BUCKETS_QUICK),
         'sel_bucket_win' + win.window_name_increment(),
-        'chrome,resizable,modal,center',
+        'chrome,resizable,modal,centerscreen',
         {
             record_ids: [ docid ]
         }
@@ -565,6 +691,7 @@ function refresh_display(id) {
             case 'copy_browser' : set_copy_browser(); break;
             case 'hold_browser' : set_hold_browser(); break;
             case 'acq_orders' : set_acq_orders(); break;
+            case 'serctrl_view' : set_serctrl_view(); break;
             case 'opac' :
             default: set_opac(); break;
         }

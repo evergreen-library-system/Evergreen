@@ -65,6 +65,15 @@
                 <menuseparator/>
                 <menuitem label="&staff.cat.opac.default.label;" id="default" oncommand="set_default();"/>
                 <menuitem label="&staff.cat.opac.refresh_me.label;" id="refresh_me" oncommand="refresh_display(docid);"/>
+                <menuseparator/>
+                <menu id="mfhd_menu" label="&staff.serial.mfhd_menu.label;">
+                    <menupopup id="mfhd_popup">
+                        <menuitem id="mfhd_add" label="&staff.serial.mfhd_menu.add.label;"/>
+                        <menu id="mfhd_edit" label="&staff.serial.mfhd_menu.edit.label;"/>
+                        <menu id="mfhd_delete" label="&staff.serial.mfhd_menu.delete.label;"/>
+                    </menupopup>
+                </menu>
+                <menuitem id="serctrl_view" label="&staff.serial.serctrl_view.label;" oncommand="set_serctrl_view();"/>
                 </menupopup>
                 </menu>
             </menubar>

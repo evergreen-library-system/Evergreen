@@ -73,65 +73,116 @@ Given a bib record ID, returns a hash of holdings statements
 
 =cut
 
-sub bib_to_mfhd_hash {
+# DEFUNCT ?
+#sub bib_to_mfhd_hash {
+#	my ($self, $client, $bib) = @_;
+#	
+#	my $mfhd_hash;
+#
+#	# XXX perhaps this? --miker
+##	my $e = OpenILS::Utils::CStoreEditor->new();
+##	my $mfhd = $e->search_serial_record_entry({ record => $bib });
+##	return $u->generate_svr( $mfhd->[0] ) if (ref $mfhd);
+##	return undef;
+#
+#	my @mfhd = $U->cstorereq( "open-ils.cstore.json_query.atomic", {
+#		select  => { sre => 'marc' },
+#		from    => 'sre',
+#		where   => { record => $bib, deleted => 'f' },
+#		distinct => 1
+#	});
+#	
+#	if (!@mfhd or scalar(@mfhd) == 0) {
+#		return undef;
+#	}
+#
+#	my $u = OpenILS::Utils::MFHDParser->new();
+#	$mfhd_hash = $u->generate_svr( $mfhd[0][0]->{id}, $mfhd[0][0]->{marc}, $mfhd[0][0]->{owning_lib} );
+#
+#	return $mfhd_hash;
+#}
+#
+#__PACKAGE__->register_method(
+#	method	=> "bib_to_mfhd_hash",
+#	api_name	=> "open-ils.search.serial.record.bib_to_mfhd.retrieve",
+#	argc		=> 1, 
+#	note		=> "Given a bibliographic record ID, return MFHD holdings"
+#);
+
+sub bib_to_svr {
 	my ($self, $client, $bib) = @_;
 	
-	my $mfhd_hash;
-
-	# XXX perhaps this? --miker
-#	my $e = OpenILS::Utils::CStoreEditor->new();
-#	my $mfhd = $e->search_serial_record_entry({ record => $bib });
-#	return $u->generate_svr( $mfhd->[0] ) if (ref $mfhd);
-#	return undef;
-
-	my @mfhd = $U->cstorereq( "open-ils.cstore.json_query.atomic", {
-		select  => { sre => 'marc' },
-		from    => 'sre',
-		where   => { record => $bib, deleted => 'f' },
-		distinct => 1
-	});
-	
-	if (!@mfhd or scalar(@mfhd) == 0) {
-		return undef;
-	}
-
-	my $u = OpenILS::Utils::MFHDParser->new();
-	$mfhd_hash = $u->generate_svr( $mfhd[0][0]->{id}, $mfhd[0][0]->{marc}, $mfhd[0][0]->{owning_lib} );
-
-	return $mfhd_hash;
-}
-
-__PACKAGE__->register_method(
-	method	=> "bib_to_mfhd_hash",
-	api_name	=> "open-ils.search.serial.record.bib_to_mfhd.retrieve",
-	argc		=> 1, 
-	note		=> "Given a bibliographic record ID, return MFHD holdings"
-);
-
-sub bib_to_mfhd {
-	my ($self, $client, $bib) = @_;
-	
-	my $mfhd;
+	my $svrs;
 
 	my $e = OpenILS::Utils::CStoreEditor->new();
-	my $serials = $e->search_serial_record_entry({ record => $bib, deleted => 'f' });
-	if (!ref $serials) {
+    # TODO: 'deleted' ssub support
+    my $sdists = $e->search_serial_distribution([{ "+ssub" => {"record_entry" => $bib} }, { "flesh" => 1, "flesh_fields" => {'sdist' => [ "record_entry", "holding_lib", "basic_summary", "supplement_summary", "index_summary" ]}, "join" => {"ssub" => {}} }]);
+	my $sres = $e->search_serial_record_entry([{ record => $bib, deleted => 'f', "+sdist" => {"id" => undef} }, { "join" => {"sdist" => { 'type' => 'left' }} }]);
+	if (!ref $sres and !ref $sdists) {
 		return undef;
 	}
 
-	my $u = OpenILS::Utils::MFHDParser->new();
-	foreach (@$serials) {
-		push(@$mfhd, $u->generate_svr($_->id, $_->marc, $_->owning_lib));
+	my $mfhd_parser = OpenILS::Utils::MFHDParser->new();
+	foreach (@$sdists) {
+        my $svr;
+        if (ref $_->record_entry) {
+            $svr = $mfhd_parser->generate_svr($_->record_entry->id, $_->record_entry->marc, $_->record_entry->owning_lib);
+        } else {
+            $svr = Fieldmapper::serial::virtual_record->new;
+            $svr->sre_id(-1);
+            $svr->location($_->holding_lib->name);
+            $svr->owning_lib($_->holding_lib);
+            $svr->basic_holdings([]);
+            $svr->supplement_holdings([]);
+            $svr->index_holdings([]);
+            $svr->basic_holdings_add([]);
+            $svr->supplement_holdings_add([]);
+            $svr->index_holdings_add([]);
+            $svr->online([]);
+            $svr->missing([]);
+            $svr->incomplete([]);
+        }
+        if (ref $_->basic_summary) { #TODO: 'show-generated' boolean on summaries
+            if ($_->basic_summary->generated_coverage) {
+                push(@{$svr->basic_holdings}, $_->basic_summary->generated_coverage);
+            }
+            if ($_->basic_summary->textual_holdings) {
+                push(@{$svr->basic_holdings_add}, $_->basic_summary->textual_holdings);
+            }
+        }
+        if (ref $_->supplement_summary) {
+            if ($_->supplement_summary->generated_coverage) {
+                push(@{$svr->supplement_holdings}, $_->supplement_summary->generated_coverage);
+            }
+            if ($_->supplement_summary->textual_holdings) {
+                push(@{$svr->supplement_holdings_add}, $_->supplement_summary->textual_holdings);
+            }
+        }
+        if (ref $_->index_summary) {
+            if ($_->index_summary->generated_coverage) {
+                push(@{$svr->index_holdings}, $_->index_summary->generated_coverage);
+            }
+            if ($_->index_summary->textual_holdings) {
+                push(@{$svr->index_holdings_add}, $_->index_summary->textual_holdings);
+            }
+        }
+        push(@$svrs, $svr);
+	}
+	foreach (@$sres) {
+		push(@$svrs, $mfhd_parser->generate_svr($_->id, $_->marc, $_->owning_lib));
 	}
 
-	return $mfhd;
+    # do a basic location sort for simple predictability
+    @$svrs = sort { $a->location cmp $b->location } @$svrs;
+
+	return $svrs;
 }
 
 __PACKAGE__->register_method(
-	method	=> "bib_to_mfhd",
+	method	=> "bib_to_svr",
 	api_name	=> "open-ils.search.serial.record.bib.retrieve",
 	argc		=> 1, 
-	note		=> "Given a bibliographic record ID, return MFHD holdings"
+	note		=> "Given a bibliographic record ID, return holdings in svr form"
 );
 
 1;

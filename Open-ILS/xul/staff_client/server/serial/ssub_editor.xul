@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Subscription Editor Overlay -->
+
+<!-- LOCALIZATION -->
+<!DOCTYPE overlay PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<overlay id="serial_ssub_editor_panel_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<vbox flex="1" id="serial_ssub_editor_panel" class="my_overflow">
+        <vbox id="brief_display_box"/>
+
+		<hbox flex="1" style="overflow: auto">
+			<vbox flex="1">
+				<label value="Subscription" style="font-weight: bold; font-size: large"/>
+				<vbox id="left_pane" flex="1"/>
+			</vbox>
+			<splitter><grippy /></splitter>
+			<vbox flex="1">
+				<label value=" " style="font-weight: bold; font-size: large"/>
+				<vbox id="right_pane" flex="1"/>
+			</vbox>
+		</hbox>
+
+		<hbox id="nav">
+			<spacer flex="1"/>
+			<button id="ssub_notes" label="&staff.serial.ssub_editor.notes;" accesskey="&staff.serial.ssub_editor.notes.accesskey;" oncommand="g.manage_subs.ssub_editor.notes()" />
+			<button id="ssub_save" label="&staff.serial.ssub_editor.modify;" hidden="true" accesskey="&staff.serial.ssub_editor.modify.accesskey;" oncommand="g.manage_subs.ssub_editor.save()" />
+			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
+		</hbox>
+
+		<spacer/>
+	</vbox>
+
+</overlay>
+

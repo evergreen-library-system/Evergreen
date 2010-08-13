@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Select Serial Unit Dialog -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://open_ils_staff_client/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/cat.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="select_serial_unit_win" title="Select Serial Unit"
+	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }" oils_persist="height width"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	<!-- BEHAVIOR -->
+	<script type="text/javascript">var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true; var g = {};</script>
+	<scripts id="openils_util_scripts"/>
+
+	<script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+	<script>
+	<![CDATA[
+		function $(id) { return document.getElementById(id); }
+
+		function my_init() {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                if (typeof JSAN == 'undefined') { throw( $("commonStrings").getString('common.jsan.missing') ); }
+				JSAN.errorLevel = "die"; // none, warn, or die
+				JSAN.addRepository('/xul/server/');
+				JSAN.use('util.error'); g.error = new util.error();
+				g.error.sdump('D_TRACE','my_init() for serial/select_unit.xul');
+
+                JSAN.use('util.widgets');
+
+                var ml;
+				JSAN.use('util.network'); g.network = new util.network();
+                var robj = g.network.request(
+                    'open-ils.serial',
+                    'open-ils.serial.unit_list.retrieve',
+                    opener.g.serial_items_sdist_ids
+                );
+                if (typeof robj.ilsevent != 'undefined') throw(robj);
+                ml = util.widgets.make_menulist(robj);
+                ml.setAttribute('id','unit_menu');
+                document.getElementById('x_unit_menu').appendChild(ml);
+            } catch(E) {
+                //TODO: better error
+                g.error.standard_unexpected_error_alert('', E);
+            }
+        }
+
+        g.select_unit = function() {
+            var selection = JSON2js($('unit_menu').value);
+            selection.label = $('unit_menu').selectedItem.label;
+            opener.g.serial_items_sunit_select = selection;
+            window.close();
+        }
+
+	]]>
+	</script>
+	
+	<messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
+
+	<vbox flex="1" style="overflow: auto">
+	<groupbox flex="1">
+<!--TODO: label strings -->
+		<caption label="Select a Serial Unit"/>
+		<description id="desc">Please select a Serial Unit</description>
+        <hbox id="x_unit_menu"/>
+		<hbox>
+			<button label="Select"
+				accesskey="s" oncommand="g.select_unit()"/>
+			<button label="&staff.cat.record_buckets_quick.cancel.label;"
+				accesskey="&staff.cat.record_buckets_quick.cancel.accesskey;" oncommand="window.close()"/>
+		</hbox>
+		<hbox>
+		</hbox>
+	</groupbox>
+	</vbox>
+
+</window>
+
