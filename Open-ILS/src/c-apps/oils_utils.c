@@ -305,7 +305,7 @@ char* oilsUtilsFetchOrgSetting( int orgid, const char* setting ) {
 		"open-ils.actor",
 		"open-ils.actor.ou_setting.ancestor_default", params);
 
-	char* value = jsonObjectToSimpleString(jsonObjectGetKey(set, "value"));
+	char* value = jsonObjectToSimpleString( jsonObjectGetKeyConst( set, "value" ));
 	jsonObjectFree(params);
 	jsonObjectFree(set);
 	osrfLogDebug(OSRF_LOG_MARK, "Fetched org [%d] setting: %s => %s", orgid, setting, value);
@@ -341,7 +341,7 @@ char* oilsUtilsLogin( const char* uname, const char* passwd, const char* type, i
 
 	if(o) {
 		const char* tok = jsonObjectGetString(
-			jsonObjectGetKey(jsonObjectGetKey(o,"payload"), "authtoken"));
+			jsonObjectGetKeyConst( jsonObjectGetKey( o,"payload" ), "authtoken" ));
 		if( tok )
 			token = strdup( tok );
 	}
@@ -439,7 +439,7 @@ long oilsUtilsIntervalToSeconds( const char* s ) {
 	jsonObjectFree( query_obj );
 
 	// Get the results
-	jsonObject* seconds_obj = jsonObjectGetKey( result, "config.interval_to_seconds" );
+	const jsonObject* seconds_obj = jsonObjectGetKeyConst( result, "config.interval_to_seconds" );
 	long seconds = -1;
 	if( seconds_obj && JSON_NUMBER == seconds_obj->type )
 		seconds = (long) jsonObjectGetNumber( seconds_obj );
