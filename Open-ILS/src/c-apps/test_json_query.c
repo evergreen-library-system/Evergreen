@@ -180,10 +180,10 @@ static int test_json_query( const char* json_query ) {
 
 	int flags = 0;
 
-	if ( obj_is_true( jsonObjectGetKey( hash, "distinct" ) ) )
+	if ( obj_is_true( jsonObjectGetKeyConst( hash, "distinct" )))
 		flags |= SELECT_DISTINCT;
 
-	if ( obj_is_true( jsonObjectGetKey( hash, "no_i18n" ) ) )
+	if ( obj_is_true( jsonObjectGetKeyConst( hash, "no_i18n" )))
 		flags |= DISABLE_I18N;
 
 	char* sql_query = buildQuery( NULL, hash, flags );
