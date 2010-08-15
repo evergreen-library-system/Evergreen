@@ -704,7 +704,8 @@ static oilsEvent*  _oilsAuthResetTimeout( const char* authToken ) {
 			// Extend the current endtime by a fixed amount
 			time_t endtime = (time_t) jsonObjectGetNumber( endtime_obj );
 			int reset_interval = DEFAULT_RESET_INTERVAL;
-			jsonObject* reset_interval_obj = jsonObjectGetKey( cacheObj, "reset_interval" );
+			const jsonObject* reset_interval_obj = jsonObjectGetKeyConst(
+				cacheObj, "reset_interval" );
 			if( reset_interval_obj ) {
 				reset_interval = (int) jsonObjectGetNumber( reset_interval_obj );
 				if( reset_interval <= 0 )
