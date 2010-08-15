@@ -94,7 +94,8 @@ static char* searchWHERE ( const jsonObject*, const ClassInfo*, int, osrfMethodC
 static char* buildSELECT ( jsonObject*, jsonObject*, osrfHash*, osrfMethodContext* );
 char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags );
 
-char* SELECT ( osrfMethodContext*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, jsonObject*, int );
+char* SELECT ( osrfMethodContext*, jsonObject*, const jsonObject*, const jsonObject*,
+	const jsonObject*, const jsonObject*, const jsonObject*, const jsonObject*, int );
 
 void userDataFree( void* );
 static void sessionDataFree( char*, void* );
@@ -659,7 +660,7 @@ static int reset_timeout( const char* authkey, time_t now ) {
 		return 1;       // Not the right sort of object returned
 	}
 
-	const jsonObject* ilsevent = jsonObjectGetKey( result, "ilsevent" );
+	const jsonObject* ilsevent = jsonObjectGetKeyConst( result, "ilsevent" );
 	if( !ilsevent || ilsevent->type != JSON_NUMBER ) {
 		osrfLogError( OSRF_LOG_MARK, "ilsevent is absent or malformed" );
 		jsonObjectFree( result );
@@ -667,7 +668,7 @@ static int reset_timeout( const char* authkey, time_t now ) {
 	}
 
 	if( jsonObjectGetNumber( ilsevent ) != 0.0 ) {
-		const char* desc = jsonObjectGetString( jsonObjectGetKey( result, "desc" ) );
+		const char* desc = jsonObjectGetString( jsonObjectGetKeyConst( result, "desc" ));
 		if( !desc )
 			desc = "(No reason available)";    // failsafe; shouldn't happen
 		osrfLogInfo( OSRF_LOG_MARK, "Failure to reset timeout: %s", desc );
@@ -677,7 +678,7 @@ static int reset_timeout( const char* authkey, time_t now ) {
 
 	// Revise our local proxy for the timeout deadline
 	// by a smallish fraction of the timeout interval
-	const char* timeout = jsonObjectGetString( jsonObjectGetKey( result, "payload" ) );
+	const char* timeout = jsonObjectGetString( jsonObjectGetKeyConst( result, "payload" ));
 	if( !timeout )
 		timeout = "1";   // failsafe; shouldn't happen
 	time_next_reset = now + atoi( timeout ) / 15;
@@ -3643,9 +3644,9 @@ char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags ) {
 	}
 
 	// Determine what kind of query it purports to be, and dispatch accordingly.
-	if( jsonObjectGetKey( query, "union" ) ||
-		jsonObjectGetKey( query, "intersect" ) ||
-		jsonObjectGetKey( query, "except" ) ) {
+	if( jsonObjectGetKeyConst( query, "union" ) ||
+		jsonObjectGetKeyConst( query, "intersect" ) ||
+		jsonObjectGetKeyConst( query, "except" )) {
 		return doCombo( ctx, query, flags );
 	} else {
 		// It is presumably a SELECT query
@@ -3658,12 +3659,12 @@ char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags ) {
 		char* sql = SELECT(
 			ctx,
 			jsonObjectGetKey( query, "select" ),
-			jsonObjectGetKey( query, "from" ),
-			jsonObjectGetKey( query, "where" ),
-			jsonObjectGetKey( query, "having" ),
-			jsonObjectGetKey( query, "order_by" ),
-			jsonObjectGetKey( query, "limit" ),
-			jsonObjectGetKey( query, "offset" ),
+			jsonObjectGetKeyConst( query, "from" ),
+			jsonObjectGetKeyConst( query, "where" ),
+			jsonObjectGetKeyConst( query, "having" ),
+			jsonObjectGetKeyConst( query, "order_by" ),
+			jsonObjectGetKeyConst( query, "limit" ),
+			jsonObjectGetKeyConst( query, "offset" ),
 			flags
 		);
 		pop_query_frame();
@@ -3675,12 +3676,12 @@ char* SELECT (
 		/* method context */ osrfMethodContext* ctx,
 
 		/* SELECT   */ jsonObject* selhash,
-		/* FROM     */ jsonObject* join_hash,
-		/* WHERE    */ jsonObject* search_hash,
-		/* HAVING   */ jsonObject* having_hash,
-		/* ORDER BY */ jsonObject* order_hash,
-		/* LIMIT    */ jsonObject* limit,
-		/* OFFSET   */ jsonObject* offset,
+		/* FROM     */ const jsonObject* join_hash,
+		/* WHERE    */ const jsonObject* search_hash,
+		/* HAVING   */ const jsonObject* having_hash,
+		/* ORDER BY */ const jsonObject* order_hash,
+		/* LIMIT    */ const jsonObject* limit,
+		/* OFFSET   */ const jsonObject* offset,
 		/* flags    */ int flags
 ) {
 	const char* locale = osrf_message_get_last_locale();
@@ -4224,7 +4225,7 @@ char* SELECT (
 					return NULL;
 				}
 
-				const jsonObject* agg_obj = jsonObjectGetKey( selfield, "aggregate" );
+				const jsonObject* agg_obj = jsonObjectGetKeyConst( selfield, "aggregate" );
 				if( obj_is_true( agg_obj ) )
 					aggregate_found = 1;
 				else {
@@ -4241,7 +4242,7 @@ char* SELECT (
 #if 0
 			    if (is_agg->size || (flags & SELECT_DISTINCT)) {
 
-					const jsonObject* aggregate_obj = jsonObjectGetKey( selfield, "aggregate" );
+					const jsonObject* aggregate_obj = jsonObjectGetKeyConst( elfield, "aggregate");
 				    if ( ! obj_is_true( aggregate_obj ) ) {
 					    if (gfirst) {
 						    gfirst = 0;
@@ -4252,7 +4253,7 @@ char* SELECT (
 					    buffer_fadd(group_buf, " %d", sel_pos);
 
 					/*
-				    } else if (is_agg = jsonObjectGetKey( selfield, "having" )) {
+				    } else if (is_agg = jsonObjectGetKeyConst( selfield, "having" )) {
 					    if (gfirst) {
 						    gfirst = 0;
 					    } else {
@@ -4970,7 +4971,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 			if( locale ) {
 				const char* i18n;
-				const jsonObject* no_i18n_obj = jsonObjectGetKey( order_hash, "no_i18n" );
+				const jsonObject* no_i18n_obj = jsonObjectGetKeyConst( order_hash, "no_i18n" );
 				if( obj_is_true( no_i18n_obj ) )    // Suppress internationalization?
 					i18n = NULL;
 				else
@@ -5198,10 +5199,10 @@ int doJSONSearch ( osrfMethodContext* ctx ) {
 
 	int flags = 0;
 
-	if( obj_is_true( jsonObjectGetKey( hash, "distinct" ) ) )
+	if( obj_is_true( jsonObjectGetKeyConst( hash, "distinct" )))
 		flags |= SELECT_DISTINCT;
 
-	if( obj_is_true( jsonObjectGetKey( hash, "no_i18n" ) ) )
+	if( obj_is_true( jsonObjectGetKeyConst( hash, "no_i18n" )))
 		flags |= DISABLE_I18N;
 
 	osrfLogDebug( OSRF_LOG_MARK, "Building SQL ..." );
