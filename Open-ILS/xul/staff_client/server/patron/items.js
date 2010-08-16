@@ -548,12 +548,17 @@ patron.items.prototype = {
             }
             var r = window.confirm(msg);
             if (!r) { return; }
+            var auto_print = document.getElementById('checkin_auto_print_slips');
+            if (auto_print) auto_print = auto_print.getAttribute('checked') == 'true';
             JSAN.use('circ.util');
             for (var i = 0; i < retrieve_ids.length; i++) {
                 var copy_id = retrieve_ids[i].copy_id;
                 dump('Check in copy_id = ' + copy_id + ' barcode = ' + retrieve_ids[i].barcode + '\n');
                 var robj = circ.util.checkin_via_barcode(
-                    ses(), { 'copy_id' : copy_id }
+                    ses(),
+                    { 'copy_id' : copy_id },
+                    false /* backdate */,
+                    auto_print
                 );
                 /* circ.util.checkin_via_barcode handles errors currently */
             }

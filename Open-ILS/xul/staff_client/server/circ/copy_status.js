@@ -246,10 +246,17 @@ circ.copy_status.prototype = {
                         function() {
                             try {
                                 var funcs = [];
+                                var auto_print = document.getElementById('checkin_auto_print_slips');
+                                if (auto_print) auto_print = auto_print.getAttribute('checked') == 'true';
                                 JSAN.use('circ.util');
                                 for (var i = 0; i < obj.selection_list.length; i++) {
                                     var barcode = obj.selection_list[i].barcode;
-                                    var checkin = circ.util.checkin_via_barcode( ses(), { 'barcode' : barcode } );
+                                    var checkin = circ.util.checkin_via_barcode(
+                                        ses(),
+                                        { 'barcode' : barcode },
+                                        false /* backdate */,
+                                        auto_print
+                                    );
                                     funcs.push( function(a) { return function() { obj.copy_status( a, true ); }; }(barcode) );
                                 }
                                 for (var i = 0; i < funcs.length; i++) { funcs[i](); }

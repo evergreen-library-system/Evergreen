@@ -192,6 +192,9 @@
     <checkbox id="trim_list" label="&staff.circ.copy_status_overlay.trim_list.label;" checked="true" oils_persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" />
     <checkbox id="strict_barcode" label="&staff.circ.copy_status_overlay.strict_barcode.label;" checked="false" oils_persist="checked" oncommand="try{this.setAttribute('checked',this.checked);}catch(E){alert(E);}" /> 
     <spacer flex="1"/>
+    <checkbox id="checkin_auto_print_slips" oils_persist="checked" 
+        label="&staff.circ.checkin_overlay.checkin_auto_print_slips.label;"
+        accesskey="&staff.circ.checkin_overlay.checkin_auto_print_slips.accesskey;"/>
 </hbox>
 
 </overlay>
