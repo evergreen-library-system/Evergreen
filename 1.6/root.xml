@@ -57,6 +57,7 @@
 			<title>Administration</title>
 		</info>
 		<xi:include href="admin/admin-intro.xml"/>
+		<xi:include href="admin/requirements-configuration.xml"/>
 		<xi:include href="admin/serveradministration.xml"/>
 		<xi:include href="admin/AdminMisc.xml"/>
 		<xi:include href="admin/admin-lsa.xml"/>
