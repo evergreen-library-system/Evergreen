@@ -875,9 +875,12 @@ function void_all_billings(mobts_id) {
             var robj = g.network.simple_request('FM_MB_VOID',[ses()].concat(util.functional.map_list(mb_list,function(o){return o.id();})));
             if (robj.ilsevent) {
                 switch(Number(robj.ilsevent)) {
+                    case 5000 /* PERM_FAILURE */:
+                        return;
+                    break;
                     default: 
                         g.error.standard_unexpected_error_alert($("patronStrings").getString('staff.patron.bills.void_all_billings.error_voiding_bills'),robj); 
-                        refresh(); return; 
+                        return; 
                     break;
                 }
             }
