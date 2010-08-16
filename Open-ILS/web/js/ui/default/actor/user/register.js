@@ -184,7 +184,7 @@ function replaceCardHandler() {
     input.widget.attr('disabled', false).attr('readOnly', false).attr('value', null).focus();
     replaceBarcode.attr('disabled', true);
     
-    // pull old car off the cards list so we don't have a dupe sitting in there
+    // pull old card off the cards list so we don't have a dupe sitting in there
     var old = patron.cards().filter(function(c){return (c.id() == patron.card().id())})[0];
     old.active('f');
     old.ischanged(1);
