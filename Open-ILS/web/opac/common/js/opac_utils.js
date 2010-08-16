@@ -826,20 +826,43 @@ function drawOrgTree() {
 	setTimeout( 'buildOrgSelector(G.ui.common.org_tree, orgTreeSelector);', 1 );
 }
 	
+function checkOrgHiding() {
+	var context_org = getOrigLocation() || globalOrgTree.id();
+	var depth = fetchOrgSettingDefault( context_org, 'opac.org_unit_hiding.depth');
+	if (isXUL()) {
+		return false; // disable org hiding for staff client
+	}
+	if ( findOrgDepth( context_org ) < depth ) {
+		return false; // disable org hiding if Original Location doesn't make sense with setting depth (avoids disjointed org selectors)
+	}
+	return { 'org' : findOrgUnit(context_org), 'depth' : depth };
+}
+
 var orgTreeSelector;
 function buildOrgSelector(node) {
 	var tree = new SlimTree(node,'orgTreeSelector');
 	orgTreeSelector = tree;
+	var orgHiding = checkOrgHiding();
 	for( var i in orgArraySearcher ) { 
 		var node = orgArraySearcher[i];
 		if( node == null ) continue;
-        if(!isXUL() && !isTrue(node.opac_visible())) continue; 
-		if(node.parent_ou() == null)
+		if(!isXUL() && !isTrue(node.opac_visible())) continue; 
+		if (orgHiding) {
+			if ( ! orgIsMine( orgHiding.org, node, orgHiding.depth ) ) {
+				continue;
+			}
+		}
+		if(node.parent_ou() == null) {
 			tree.addNode(node.id(), -1, node.name(), 
 				"javascript:orgSelect(" + node.id() + ");", node.name());
-		else {
-			tree.addNode(node.id(), node.parent_ou(), node.name(), 
-				"javascript:orgSelect(" + node.id() + ");", node.name());
+		} else {
+			if (orgHiding && orgHiding.depth == findOrgDepth(node)) {
+				tree.addNode(node.id(), -1, node.name(), 
+					"javascript:orgSelect(" + node.id() + ");", node.name());
+			} else {
+				tree.addNode(node.id(), node.parent_ou(), node.name(), 
+					"javascript:orgSelect(" + node.id() + ");", node.name());
+			}
 		}
 	}
 	hideMe($('org_loading_div'));

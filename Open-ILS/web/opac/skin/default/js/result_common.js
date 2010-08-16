@@ -697,7 +697,17 @@ function resultAddCopyCounts(rec, pagePosition) {
 	var ccell = $n(countsrow, config.names.result.count_cell);
 
 	var nodes = orgNodeTrail(findOrgUnit(getLocation()));
-	var node = nodes[0];
+	var start_here = 0;
+	var orgHiding = checkOrgHiding();
+	if (orgHiding) {
+		for (var i = 0; i < nodes.length; i++) {
+			if (orgHiding.depth == findOrgDepth(nodes[i])) {
+				start_here = i;
+			}
+		}
+	}
+
+	var node = nodes[start_here];
 	var type = findOrgType(node.ou_type());
 	ccell.id = "copy_count_cell_" + type.depth() + "_" + pagePosition;
 	ccell.title = type.opac_label();
@@ -718,10 +728,10 @@ function resultAddCopyCounts(rec, pagePosition) {
 		resultCCHeaderApplied = true;
 	}
 
-	if(nodes[1]) {
+	if(nodes[start_here+1]) {
 
-		var x = 1;
-		var d = findOrgDepth(nodes[1]);
+		var x = start_here+1;
+		var d = findOrgDepth(nodes[start_here+1]);
 		var d2 = findOrgDepth(nodes[nodes.length -1]);
 
 		for( var i = d; i <= d2 ; i++ ) {
@@ -798,20 +808,22 @@ function resultDisplayCopyCounts(rec, pagePosition, copy_counts) {
 	var i = 0;
 	while(copy_counts[i] != null) {
 		var cell = $("copy_count_cell_" + i +"_" + pagePosition);
-		var cts = copy_counts[i];
-		cell.appendChild(text(cts.available + " / " + cts.count));
+		if (cell) {
+			var cts = copy_counts[i];
+			cell.appendChild(text(cts.available + " / " + cts.count));
 
-		if(isXUL()) {
-			/* here we style opac-invisible records for xul */
+			if(isXUL()) {
+				/* here we style opac-invisible records for xul */
 
-			if( cts.depth == 0 ) {
-				if(cts.transcendant == null && cts.unshadow == 0) {
-					_debug("found an opac-shadowed record: " + rec.doc_id());
-					var row = cell.parentNode.parentNode.parentNode.parentNode.parentNode; 
-					if( cts.count == 0 ) 
-						addCSSClass( row, 'no_copies' );
-					else 
-						addCSSClass( row, 'shadowed' );
+				if( cts.depth == 0 ) {
+					if(cts.transcendant == null && cts.unshadow == 0) {
+						_debug("found an opac-shadowed record: " + rec.doc_id());
+						var row = cell.parentNode.parentNode.parentNode.parentNode.parentNode; 
+						if( cts.count == 0 ) 
+							addCSSClass( row, 'no_copies' );
+						else 
+							addCSSClass( row, 'shadowed' );
+					}
 				}
 			}
 		}

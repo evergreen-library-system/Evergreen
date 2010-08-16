@@ -78,6 +78,7 @@ function buildLocationSelector(newLoc) {
 	var type;
 	if (location) type = findOrgType(location.ou_type());
 
+	var orgHiding = checkOrgHiding();
 	while( type && location ) {
 		var n = node.cloneNode(true);	
 		n.setAttribute("value", type.depth());
@@ -85,8 +86,14 @@ function buildLocationSelector(newLoc) {
 		n.appendChild(text(type.opac_label()));
 		selector.appendChild(n);
 		location = findOrgUnit(location.parent_ou());
-		if(location) type = findOrgType(location.ou_type());
-		else type = null;
+		if(location) {
+			type = findOrgType(location.ou_type());
+			if (orgHiding && orgHiding.depth > type.depth()) {
+				type = null;
+			}
+		} else {
+			type = null;
+		}
 	}
 
 	selector.appendChild(node);
