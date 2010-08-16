@@ -6336,6 +6336,7 @@ SELECT  usr,
 			<field name="last_activity" reporter:datatype="timestamp" reporter:label="Last Activity"/>
 			<field name="provider"      reporter:datatype="link"      reporter:label="Provider"/>
 			<field name="in_dir"        reporter:datatype="text"      reporter:label="Incoming Directory"/>
+			<field name="vendacct"      reporter:datatype="text"      reporter:label="Vendor Account Number"/>
 			<field name="vendcode"      reporter:datatype="text"      reporter:label="Vendor Assigned Code"/>
 		</fields>
 		<links>

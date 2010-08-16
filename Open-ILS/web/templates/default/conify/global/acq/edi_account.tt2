@@ -48,7 +48,7 @@ function formatProvider(value) {
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
         <table  jsId="pListGrid"
                 dojoType="openils.widget.AutoGrid"
-                fieldOrder="['id', 'label', 'host', 'username', 'password', 'account', 'owner', 'last_activity', 'provider', 'path', 'in_dir', 'vendcode']"
+                fieldOrder="['id', 'label', 'host', 'username', 'password', 'account', 'owner', 'last_activity', 'provider', 'path', 'in_dir', 'vendacct', 'vendcode']"
                 query="{id: '*'}"
                 defaultCellWidth='"auto"'
                 fmClass='acqedi'

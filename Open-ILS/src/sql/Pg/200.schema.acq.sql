@@ -755,7 +755,8 @@ CREATE TABLE acq.fiscal_year (
 CREATE TABLE acq.edi_account (      -- similar tables can extend remote_account for other parts of EG
     provider    INT     NOT NULL REFERENCES acq.provider          (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     in_dir      TEXT,   -- incoming messages dir (probably different than config.remote_account.path, the outgoing dir)
-    vendcode    TEXT
+    vendcode    TEXT,
+    vendacct    TEXT
 ) INHERITS (config.remote_account);
 
 -- We need a UNIQUE constraint here also, to support the FK from acq.provider.edi_default
