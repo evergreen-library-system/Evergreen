@@ -132,6 +132,13 @@ function load() {
     dojo.connect(allCards, 'onClick', drawAllCards);
     if(patron.cards().length > 1)
         dojo.removeClass(dojo.byId('uedit-all-barcodes'), 'hidden');
+
+    var input = findWidget('ac', 'barcode');
+    if (patron.isnew()) {
+        replaceBarcode.attr('disabled', true);
+    } else {
+        input.widget.attr('disabled', true).attr('readOnly', true);
+    }
 }
 
 
@@ -174,7 +181,8 @@ function drawAllCards() {
  */
 function replaceCardHandler() {
     var input = findWidget('ac', 'barcode');
-    input.widget.attr('value', null);
+    input.widget.attr('disabled', false).attr('readOnly', false).attr('value', null).focus();
+    replaceBarcode.attr('disabled', true);
     
     // pull old car off the cards list so we don't have a dupe sitting in there
     var old = patron.cards().filter(function(c){return (c.id() == patron.card().id())})[0];
