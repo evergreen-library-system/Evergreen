@@ -293,7 +293,7 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PROJECT)/$(LOCALE)/opac.js $(DOJO_OPAC_SRC)/$(DOJO_LOCALE)/opac.js
 	mkdir -p $(DOJO_RPT_SRC)/$(DOJO_LOCALE)
 	cp $(PROJECT)/$(LOCALE)/reports.js $(DOJO_RPT_SRC)/$(DOJO_LOCALE)/reports.js
-	mkdir -p $(DOJO_User_SRC)/$(DOJO_LOCALE)
+	mkdir -p $(DOJO_USER_SRC)/$(DOJO_LOCALE)
 	cp $(PROJECT)/$(LOCALE)/User.js $(DOJO_USER_SRC)/$(DOJO_LOCALE)/User.js
 	mkdir -p $(DOJO_WIDGET_SRC)/$(DOJO_LOCALE)
 	cp $(PROJECT)/$(LOCALE)/AutoFieldWidget.js $(DOJO_WIDGET_SRC)/$(DOJO_LOCALE)/AutoFieldWidget.js
