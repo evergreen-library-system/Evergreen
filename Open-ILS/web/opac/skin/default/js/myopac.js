@@ -21,6 +21,12 @@ function clearNodes( node, keepArray ) {
 
 function myOPACInit() {
 
+    var orgHiding = checkOrgHiding();
+    if (orgHiding) {
+        hideMe($('prefs_def_location_row'));
+        hideMe($('prefs_def_range_row'));
+    }
+
 	if(!(G.user && G.user.session)) {
         initLogin();
 

@@ -56,7 +56,7 @@
 			</tr>
 
 
-			<tr>
+			<tr id='prefs_def_location_row'>
 				<td>&myopac.prefs.search.location;</td>
 				<td>
 					<div style='margin-bottom: 5px;'>
@@ -71,7 +71,7 @@
 				</td>
 			</tr>
 
-			<tr>
+			<tr id='prefs_def_range_row'>
 				<td>&myopac.prefs.search.range;</td>
 				<td>
 					<select id='prefs_def_range'>
