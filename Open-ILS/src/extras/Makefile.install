@@ -111,7 +111,6 @@ EXTRA_DEBS = \
 	yaz
 
 EXTRA_DEBS_SQUEEZE = \
-    libbusiness-credit-card-perl \
     libuuid-tiny-perl
 
 # Ubuntu Hardy requires libencode-perl # to get a version of Encode
@@ -371,6 +370,7 @@ install_pgsql_client_debs_82:
 
 # Install the debian-specific dependencies for more modern distros
 install_extra_debs_squeeze: install_extra_debs
+	$(APT_TOOL) install $(EXTRA_DEBS_SQUEEZE)
 
 install_extra_debs:
 	$(APT_TOOL) install $(EXTRA_DEBS)
