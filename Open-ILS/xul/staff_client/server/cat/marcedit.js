@@ -2250,10 +2250,12 @@ function validateAuthority (button) {
         // XXX If adt, etc should be validated separately from vxz, etc then move this up into the above for loop
         for (var j = 0; j < subfields.length; j++) {
             var sf = subfields[j];
-               if (!found) {
-                sf.childNodes[2].inputField.style.color = 'red';
+            if (!found) {
+                dojo.removeClass(sf.childNodes[2], 'marcValidated');
+                dojo.addClass(sf.childNodes[2], 'marcUnvalidated');
             } else {
-                sf.childNodes[2].inputField.style.color = 'black';
+                dojo.removeClass(sf.childNodes[2], 'marcUnvalidated');
+                dojo.addClass(sf.childNodes[2], 'marcValidated');
             }
         }
     }

@@ -104,3 +104,6 @@ grid#leaderGrid[type="MFHD"] *[set~="MFHD"], grid#leaderGrid[type="MFHD"] *[set~
 }
 
 grid[name="-none-"] * label { color: black; }
+
+.marcValidated { color: black; }
+.marcUnvalidated { color: red; }
