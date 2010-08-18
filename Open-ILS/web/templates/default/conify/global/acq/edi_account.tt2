@@ -27,6 +27,9 @@ function formatProvider(value) {
     }
 }
 </script>
+<style type="text/css">
+    .footer_notes { padding-top: 16px; font-size: smaller; }
+</style>
 
 <div id='main-list-div'>
     <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
@@ -61,6 +64,13 @@ function formatProvider(value) {
                 </tr>
             </thead>
         </table>
+    </div>
+    <div class="footer_notes">
+        <b>Username</b>, <b>Password</b> and <b>Account</b> are (s)FTP/SSH parameters.<br />
+        <b>Account</b> is unlikely to be used by modern systems and should typically be empty.<br />
+        <b>Vendor Account Number</b> (VAN) is vendor-assigned, only needed if different than the org_unit SAN.<br />
+        <b>Vendor Assigned Code</b> (VAC) is essentially a sub-account designation, e.g. '0001'.  It can be used with or without VAN.<br />
+        The location of codes in the EDI message itself may vary according to vendor-specific semantics.
     </div>
 </div>
 
