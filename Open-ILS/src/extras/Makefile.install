@@ -168,7 +168,6 @@ FEDORA_13_RPMS = \
 	perl-Business-ISBN-Data \
 	perl-Email-Send \
 	perl-GDGraph3d \
-	perl-MARC-Record \
 	perl-Net-SSH2 \
 	perl-OLE-Storage_Lite \
 	perl-Spreadsheet-WriteExcel \
@@ -183,10 +182,12 @@ FEDORA_13_RPMS = \
 
 # Note: B:O:AuthorizeNet 3.21 fails with https://rt.cpan.org/Public/Bug/Display.html?id=55172
 # Should be fixed in 3.22
+# MARC::Record 2.0.1 is required but only 2.0.0 is packaged
 FEDORA_13_CPAN = \
 	Business::OnlinePayment \
 	Business::OnlinePayment::AuthorizeNet \
-	Class::DBI::Frozen::301
+	Class::DBI::Frozen::301 \
+	MARC::Record
 
 PGSQL_84_RPMS = \
 	postgresql-8.4* \
@@ -255,7 +256,7 @@ install: install_cpan install_js_sm install_libdbi install_library_callnumber_lc
 centos: install_centos_pgsql install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe
 rhel: install_redhat_pgsql install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe
 
-fedora-13: install_fedora_13_rpms install_cpan install_cpan_marc install_cpan_fedora install_spidermonkey install_library_callnumber_lc
+fedora-13: install_fedora_13_rpms install_cpan install_cpan_fedora install_cpan_marc install_spidermonkey install_library_callnumber_lc
 
 debian-lenny: lenny generic_debian install_cpan_more install_cpan_safe
 debian-squeeze: squeeze generic_debian
