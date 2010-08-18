@@ -156,7 +156,7 @@ function formatName(value) {
                         <th field="xpath" width='auto'/>
                         <th field="tag" name="Tag" get='getParsedTag'/>
                         <th field="subfield" name="Subfield" get='getParsedSubf'/>
-                    <tr>
+                    </tr>
                 </thead>
             </table>
         </div>
@@ -194,7 +194,7 @@ function formatName(value) {
                 <thead>
                     <tr>
                         <th field="inv_ident" get="getInvIdent" formatter="formatInvIdent" />
-                    <tr>
+                    </tr>
                 </thead>
             </table>
         </div>
