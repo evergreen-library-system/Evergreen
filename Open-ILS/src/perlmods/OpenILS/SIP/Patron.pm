@@ -230,7 +230,7 @@ sub fee_amount {
     my $summary = $e->retrieve_money_open_user_summary($user_id);
     $e->rollback; # xact_rollback + disconnect
 
-	my $total = $summary->balance_owed;
+    my $total = ($summary) ? $summary->balance_owed : 0;
 	syslog('LOG_INFO', "User ".$self->{id} .":$user_id has a fee amount of \$$total");
 	return $total;
 }
