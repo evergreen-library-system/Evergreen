@@ -44,6 +44,12 @@ my $U = 'OpenILS::Application::AppUtils';
 
 my ($bootstrap, $actor, $templates);
 my $i18n = {};
+my $init_done = 0; # has child_init been called?
+
+sub import {
+    my $self = shift;
+    $bootstrap = shift;
+}
 
 sub child_init {
     OpenSRF::System->bootstrap_client( config_file => $bootstrap );
@@ -54,10 +60,14 @@ sub child_init {
     $templates = $conf->config_value("dirs", "templates");
     $actor = OpenSRF::AppSession->create('open-ils.actor');
     load_i18n();
+    $init_done = 1;
 }
 
 sub password_reset {
     my $apache = shift;
+
+    child_init() unless $init_done;
+
     return Apache2::Const::DECLINED if (-e $apache->filename);
 
     $apache->content_type('text/html');
