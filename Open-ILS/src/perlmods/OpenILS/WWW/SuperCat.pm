@@ -397,6 +397,10 @@ sub unapi {
 				<formats id='$uri'>
 					<format name='opac' type='text/html'/>
 				FORMATS
+			} else {
+				$body .= <<"				FORMATS";
+				<formats id='$uri'>
+				FORMATS
 			}
 
 			for my $h (@$list) {
