@@ -323,6 +323,9 @@ cat.util.mark_item_damaged = function(copy_ids) {
         JSAN.use('util.error'); error = new util.error();
         JSAN.use('util.functional'); JSAN.use('util.date');
         JSAN.use('util.network'); var network = new util.network();
+        if (!copy_ids) { return; }
+        copy_ids = util.functional.filter_list( copy_ids, function(o) { return o != null; } );
+        if (copy_ids.length < 1) { return; }
         var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ copy_ids ]);
         if (typeof copies.ilsevent != 'undefined') throw(copies);
         var magic_status = false;
@@ -466,6 +469,9 @@ cat.util.mark_item_missing = function(copy_ids) {
         JSAN.use('util.error'); error = new util.error();
         JSAN.use('util.functional');
         JSAN.use('util.network'); var network = new util.network();
+        if (!copy_ids) { return; }
+        copy_ids = util.functional.filter_list( copy_ids, function(o) { return o != null; } );
+        if (copy_ids.length < 1) { return; }
         var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ copy_ids ]);
         if (typeof copies.ilsevent != 'undefined') throw(copies);
         var magic_status = false;
@@ -556,6 +562,9 @@ cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
 }
 
 cat.util.make_bookable = function(copy_ids) {
+    if (!copy_ids) { return; }
+    copy_ids = util.functional.filter_list( copy_ids, function(o) { return o != null; } );
+    if (copy_ids.length < 1) { return; }
     var results = fieldmapper.standardRequest(
         ["open-ils.booking", "open-ils.booking.resources.create_from_copies"],
         [ses(), copy_ids]
@@ -747,6 +756,9 @@ cat.util.mark_item_as_missing_pieces = function(copy_ids) {
         JSAN.use('util.network'); var network = new util.network();
         JSAN.use('util.print'); var print = new util.print();
         JSAN.use('util.window'); var win = new util.window();
+        if (!copy_ids) { return; }
+        copy_ids = util.functional.filter_list( copy_ids, function(o) { return o != null; } );
+        if (copy_ids.length < 1) { return; }
         var copies = network.simple_request('FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative', [ copy_ids ]);
         if (typeof copies.ilsevent != 'undefined') throw(copies);
 
