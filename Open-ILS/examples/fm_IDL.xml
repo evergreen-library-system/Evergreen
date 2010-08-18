@@ -2489,9 +2489,9 @@ SELECT  usr,
             END
         ) AS overdue,
 
-        SUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LOST') THEN id ELSE 0 END) AS lost,
-        SUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'CLAIMSRETURNED') THEN id ELSE 0 END) AS claims_returned,
-        SUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LONGOVERDUE') THEN id ELSE 0 END) AS long_overdue
+        SUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LOST') THEN 1 ELSE 0 END) AS lost,
+        SUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'CLAIMSRETURNED') THEN 1 ELSE 0 END) AS claims_returned,
+        SUM( CASE WHEN (xact_finish IS NULL AND stop_fines = 'LONGOVERDUE') THEN 1 ELSE 0 END) AS long_overdue
   FROM  action.circulation
   WHERE checkin_time IS NULL
   GROUP BY 1
