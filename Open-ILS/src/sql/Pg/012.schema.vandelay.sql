@@ -80,6 +80,7 @@ CREATE TABLE vandelay.queued_bib_record (
 	imported_as	INT		REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (vandelay.queued_record);
 ALTER TABLE vandelay.queued_bib_record ADD PRIMARY KEY (id);
+CREATE INDEX queued_bib_record_queue_idx ON vandelay.queued_bib_record (queue);
 
 CREATE TABLE vandelay.queued_bib_record_attr (
 	id			BIGSERIAL	PRIMARY KEY,
@@ -87,6 +88,7 @@ CREATE TABLE vandelay.queued_bib_record_attr (
 	field		INT			NOT NULL REFERENCES vandelay.bib_attr_definition (id) DEFERRABLE INITIALLY DEFERRED,
 	attr_value	TEXT		NOT NULL
 );
+CREATE INDEX queued_bib_record_attr_record_idx ON vandelay.queued_bib_record_attr (record);
 
 CREATE TABLE vandelay.bib_match (
 	id				BIGSERIAL	PRIMARY KEY,
@@ -1181,6 +1183,7 @@ CREATE TABLE vandelay.queued_authority_record (
 	imported_as	INT	REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (vandelay.queued_record);
 ALTER TABLE vandelay.queued_authority_record ADD PRIMARY KEY (id);
+CREATE INDEX queued_authority_record_queue_idx ON vandelay.queued_authority_record (queue);
 
 CREATE TABLE vandelay.queued_authority_record_attr (
 	id			BIGSERIAL	PRIMARY KEY,
@@ -1188,6 +1191,7 @@ CREATE TABLE vandelay.queued_authority_record_attr (
 	field		INT			NOT NULL REFERENCES vandelay.authority_attr_definition (id) DEFERRABLE INITIALLY DEFERRED,
 	attr_value	TEXT		NOT NULL
 );
+CREATE INDEX queued_authority_record_attr_record_idx ON vandelay.queued_authority_record_attr (record);
 
 CREATE TABLE vandelay.authority_match (
 	id				BIGSERIAL	PRIMARY KEY,
