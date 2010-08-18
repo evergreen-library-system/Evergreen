@@ -231,6 +231,7 @@ CPAN_MODULES = \
 # More chronically unpackaged CPAN modules (available in Squeeze though)
 CPAN_MODULES_MORE = \
     Business::CreditCard::Object \
+    MARC::Record \
     UUID::Tiny
 
 # Are we sure most distros don't come with an acceptable version of Safe.pm?
