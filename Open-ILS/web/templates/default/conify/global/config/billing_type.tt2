@@ -1,5 +1,6 @@
 [% WRAPPER default/base.tt2 %]
-<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/billing_type.js'> </script>
+[% ctx.page_title = 'Billing Types' %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/billing_type.js'> </script>
 
 <!-- grid -->
 

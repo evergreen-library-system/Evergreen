@@ -1,5 +1,6 @@
 [% WRAPPER default/base.tt2 %]
-<script src="[% ctx.media_prefix %]/js/ui/default/conify/global/acq/fund_tag.js"> </script>
+[% ctx.page_title = 'Fund Tags' %]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/conify/global/acq/fund_tag.js"> </script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane"
          layoutAlign="top" class="oils-header-panel">

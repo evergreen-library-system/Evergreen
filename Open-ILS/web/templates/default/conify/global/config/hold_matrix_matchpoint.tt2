@@ -1,4 +1,4 @@
-[% ctc.page_title = 'Hold Policy Configuration' %]
+[% ctx.page_title = 'Hold Policy Configuration' %]
 [% WRAPPER default/base.tt2 %]
 <script type="text/javascript">
     dojo.require('dijit.layout.ContentPane');

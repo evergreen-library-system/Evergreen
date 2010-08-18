@@ -1,5 +1,6 @@
 [% WRAPPER default/base.tt2 %]
-<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/lineitem_marc_attr_def.js'> </script>
+[% ctx.page_title = 'Line Item MARC Attributes' %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/lineitem_marc_attr_def.js'> </script>
 
 <!-- grid -->
 

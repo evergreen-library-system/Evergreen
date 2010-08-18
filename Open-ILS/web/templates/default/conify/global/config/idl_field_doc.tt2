@@ -1,5 +1,6 @@
 [% WRAPPER default/base.tt2 %]
-<script src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/idl_field_doc.js'> </script>
+[% ctx.page_title = 'Field Documentation' %]
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/config/idl_field_doc.js'> </script>
 <table style='width:100%;margin-bottom:10px;'>
     <tr>
         <td align='left'><h3>Field Documentation</h3></td>

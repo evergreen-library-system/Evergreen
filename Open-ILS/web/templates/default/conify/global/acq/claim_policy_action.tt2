@@ -1,4 +1,6 @@
 [% WRAPPER default/base.tt2 %]
+[% ctx.page_title = 'Claim Policy Actions' %]
+
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/conify/global/acq/claim_grid.js"></script>
 <script type="text/javascript">
 openils.Util.addOnLoad(
