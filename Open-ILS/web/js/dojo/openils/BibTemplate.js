@@ -28,11 +28,13 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
             this.subObjectLimit = kwargs.subObjectLimit;
             this.subObjectOffset = kwargs.subObjectOffset;
             this.tagURI = kwargs.tagURI;
+            this.xml = kwargs.xml;
             this.record = kwargs.record;
             this.org_unit = kwargs.org_unit || '-';
             this.depth = kwargs.depth;
             this.sync = kwargs.sync == true;
             this.locale = kwargs.locale || OpenSRF.locale || 'en-US';
+            this.nodelay = kwargs.delay == false;
 
             this.mode = 'biblio-record_entry';
             this.default_datatype = 'marcxml-uris';
@@ -41,6 +43,8 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                 this.mode = 'metabib-metarecord';
                 this.default_datatype = 'mods';
             }
+
+            if (this.nodelay) this.render();
         },
 
         subsetNL : function (old_nl, start, end) {
@@ -76,7 +80,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                 } else if (s.getAttribute('type').indexOf('+') > -1)  {
                     current_datatype = s.getAttribute('type').split('+').reverse()[0];
                 }
-        
+
                 if (!slots[current_datatype]) slots[current_datatype] = [];
                 slots[current_datatype].push(s);
 
@@ -86,94 +90,98 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
 
                 (function (args) {
                     var BT = args.renderer;
+                    var process_record = function (bib) {
+                        dojo.forEach(args.slot_list, function (slot) {
+                            var debug = slot.getAttribute('debug') == 'true';
 
-                    var uri = '';
-                    if (BT.tagURI) {
-                        uri = BT.tagURI;
-                    } else {
-                        uri = 'tag:evergreen-opac:' + BT.mode + '/' + BT.record;
-                        if (BT.subObjectLimit) {
-                            uri += '[' + BT.subObjectLimit;
-                            if (BT.subObjectOffset)
-                                uri += ',' + BT.subObjectOffset;
-                            uri += ']';
-                        }
-                        uri += '/' + BT.org_unit;
-                        if (BT.depth || BT.depth == '0') uri += '/' + BT.depth;
-                    }
+                            try {
+                                var joiner = slot.getAttribute('join') || ' ';
+                                var item_limit = parseInt(slot.getAttribute('limit'));
+                                var item_offset = parseInt(slot.getAttribute('offset')) || 0;
 
-                    dojo.xhrGet({
-                        url: '/opac/extras/unapi?id=' + uri + '&format=' + args.dtype + '&locale=' + BT.locale,
-                        handleAs: 'xml',
-                        sync: BT.sync,
-                        preventCache: true,
-                        load: function (bib) {
+                                var item_list = dojo.query(
+                                    slot.getAttribute('query'),
+                                    bib
+                                );
 
-                            dojo.forEach(args.slot_list, function (slot) {
-                                var debug = slot.getAttribute('debug') == 'true';
+                                if (item_limit) {
+                                    if (debug) alert('BibTemplate debug -- item list limit/offset requested: ' + item_limit + '/' + item_offset);
+                                    if (item_list.length) item_list = BT.subsetNL(item_list, item_offset, item_offset + item_limit);
+                                    if (!item_list.length) return;
+                                }
 
-                                try {
-                                    var joiner = slot.getAttribute('join') || ' ';
-                                    var item_limit = parseInt(slot.getAttribute('limit'));
-                                    var item_offset = parseInt(slot.getAttribute('offset')) || 0;
+                                var templated = slot.getAttribute('templated') == 'true';
+                                if (debug) alert('BibTemplate debug -- slot ' + (templated ? 'is' : 'is not') + ' templated');
+                                if (templated) {
+                                    if (debug) alert('BibTemplate debug -- slot template innerHTML:\n' + slot.innerHTML);
+                                    var template_values = {};
+                                    var template_value_count = 0;
 
-                                    var item_list = dojo.query(
-                                        slot.getAttribute('query'),
-                                        bib
-                                    );
-
-                                    if (item_limit) {
-                                        if (debug) alert('BibTemplate debug -- item list limit/offset requested: ' + item_limit + '/' + item_offset);
-                                        if (item_list.length) item_list = BT.subsetNL(item_list, item_offset, item_offset + item_limit);
-                                        if (!item_list.length) return;
-                                    }
-
-                                    var templated = slot.getAttribute('templated') == 'true';
-                                    if (debug) alert('BibTemplate debug -- slot ' + (templated ? 'is' : 'is not') + ' templated');
-                                    if (templated) {
-                                        if (debug) alert('BibTemplate debug -- slot template innerHTML:\n' + slot.innerHTML);
-                                        var template_values = {};
-                                        var template_value_count = 0;
-
-                                        dojo.query(
-                                            '*[type=opac/template-value]',
-                                            slot
-                                        ).orphan().forEach(function(x) {
-                                            var name = x.getAttribute('name');
-                                            var value = (new Function( 'item_list', 'BT', 'slotXML', 'slot', unescape(x.innerHTML) ))(item_list,BT,bib,slot);
-                                            if (name && (value || value == '')) {
-                                                template_values[name] = value;
-                                                template_value_count++;
-                                            }
-                                        });
-
-                                        if (debug) alert('BibTemplate debug -- template values:\n' + dojo.toJson( template_values ));
-                                        if (template_value_count > 0) slot.innerHTML = dojo.string.substitute( unescape(slot.innerHTML), template_values );
-                                    }
-
-                                    var handler_node = dojo.query( '*[type=opac/slot-format]', slot )[0];
-                                    if (handler_node) slot_handler = new Function('item_list', 'BT', 'slotXML', 'slot', 'item', dojox.xml.parser.textContent(handler_node) || handler_node.innerHTML);
-                                    else slot_handler = new Function('item_list', 'BT', 'slotXML', 'slot', 'item','return dojox.xml.parser.textContent(item) || item.innerHTML;');
-
-                                    if (item_list.length) {
-                                        var content = dojo.map(item_list, dojo.partial(slot_handler,item_list,BT,bib,slot)).join(joiner);
-                                        if (templated) {
-                                            if (handler_node) handler_node.parentNode.replaceChild( dojo.doc.createTextNode( content ), handler_node );
-                                        } else {
-                                            slot.innerHTML = content;
+                                    dojo.query(
+                                        '*[type=opac/template-value]',
+                                        slot
+                                    ).orphan().forEach(function(x) {
+                                        var name = x.getAttribute('name');
+                                        var value = (new Function( 'item_list', 'BT', 'slotXML', 'slot', unescape(x.innerHTML) ))(item_list,BT,bib,slot);
+                                        if (name && (value || value == '')) {
+                                            template_values[name] = value;
+                                            template_value_count++;
                                         }
-                                    }
+                                    });
 
-                                    delete(slot_handler);
-                                } catch (e) {
-                                    if (debug) {
-                                        alert('BibTemplate Error: ' + e + '\n' + dojo.toJson(e));
-                                        throw(e);
+                                    if (debug) alert('BibTemplate debug -- template values:\n' + dojo.toJson( template_values ));
+                                    if (template_value_count > 0) slot.innerHTML = dojo.string.substitute( unescape(slot.innerHTML), template_values );
+                                }
+
+                                var handler_node = dojo.query( '*[type=opac/slot-format]', slot )[0];
+                                if (handler_node) slot_handler = new Function('item_list', 'BT', 'slotXML', 'slot', 'item', dojox.xml.parser.textContent(handler_node) || handler_node.innerHTML);
+                                else slot_handler = new Function('item_list', 'BT', 'slotXML', 'slot', 'item','return dojox.xml.parser.textContent(item) || item.innerHTML;');
+
+                                if (item_list.length) {
+                                    var content = dojo.map(item_list, dojo.partial(slot_handler,item_list,BT,bib,slot)).join(joiner);
+                                    if (templated) {
+                                        if (handler_node) handler_node.parentNode.replaceChild( dojo.doc.createTextNode( content ), handler_node );
+                                    } else {
+                                        slot.innerHTML = content;
                                     }
                                 }
-                            });
-                       }
-                    });
+
+                                delete(slot_handler);
+                            } catch (e) {
+                                if (debug) {
+                                    alert('BibTemplate Error: ' + e + '\n' + dojo.toJson(e));
+                                    throw(e);
+                                }
+                            }
+                        });
+                    };
+
+                    if (BT.xml) {
+                        process_record(BT.xml);
+                    } else {
+                        var uri = '';
+                        if (BT.tagURI) {
+                            uri = BT.tagURI;
+                        } else {
+                            uri = 'tag:evergreen-opac:' + BT.mode + '/' + BT.record;
+                            if (BT.subObjectLimit) {
+                                uri += '[' + BT.subObjectLimit;
+                                if (BT.subObjectOffset)
+                                    uri += ',' + BT.subObjectOffset;
+                                uri += ']';
+                            }
+                            uri += '/' + BT.org_unit;
+                            if (BT.depth || BT.depth == '0') uri += '/' + BT.depth;
+                        }
+
+                        dojo.xhrGet({
+                            url: '/opac/extras/unapi?id=' + uri + '&format=' + args.dtype + '&locale=' + BT.locale,
+                            handleAs: 'xml',
+                            sync: BT.sync,
+                            preventCache: true,
+                            load: process_record
+                        });
+                    }
 
                 })({ slot_list : slots[datatype].reverse(), dtype : datatype, renderer : this });
             
@@ -184,4 +192,49 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
         }
     });
 
+    dojo._hasResource["openils.FeedTemplate"] = true;
+    dojo.provide("openils.FeedTemplate");
+    dojo.declare('openils.FeedTemplate', null, {
+
+        constructor : function(kwargs) {
+            this.place = kwargs.place;
+            this.root = kwargs.root;
+            this.xml = kwargs.xml;
+            this.feed_uri = kwargs.uri;
+            this.item_query = kwargs.query;
+            this.sync = kwargs.sync == true;
+            this.nodelay = kwargs.delay == false;
+            this.reverseSort = kwargs.reverseSort == true;
+            this.relativePosition = 'last';
+            if (this.reverseSort) this.relativePosition = 'first';
+
+            if (this.nodelay) this.render();
+        },
+
+        render : function () {
+            var me = this;
+            var process_feed = function (xmldoc) {
+                dojo.query( me.item_query, xmldoc ).forEach(
+                    function (item) {
+                        var template = me.root.cloneNode(true);
+                        dojo.place( template, place, me.relativePosition );
+                        new openils.BibTemplate({ delay : false, xml : item, root : template });
+                    }
+                );
+            };
+
+            if (this.xml) {
+                process_feed(this.xml);
+            } else {
+                dojo.xhrGet({
+                    url: this.feed_uri,
+                    handleAs: 'xml',
+                    sync: this.sync,
+                    preventCache: true,
+                    load: process_feed
+                });
+            }
+
+        }
+    });
 }
