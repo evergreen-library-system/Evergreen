@@ -2191,11 +2191,24 @@ sub activate_purchase_order_impl {
     update_purchase_order($mgr, $po) or return $e->die_event;
 
     my $query = [
-        {purchase_order => $po_id, state => 'pending-order'},
+        {
+            purchase_order => $po_id, 
+            '-or' => [{state => 'pending-order'}, {state => 'new'}]
+        },
         {limit => 1}
     ];
 
-    while( my $li = $e->search_acq_lineitem($query)->[0] ) {
+    while( my $li_id = $e->search_acq_lineitem($query, {idlist => 1})->[0] ) {
+
+        my $li;
+        if($dry_run) {
+            $li = $e->retrieve_acq_lineitem($li_id);
+        } else {
+            # can't activate a PO w/o assets.  Create lineitem assets as necessary
+            my $data = create_lineitem_assets($mgr, $li_id) or return $e->die_event;
+            $li = $data->{li};
+        }
+
         $li->state('on-order');
         create_lineitem_debits($mgr, $li, $dry_run) or return $e->die_event;
         update_lineitem($mgr, $li) or return $e->die_event;
