@@ -169,6 +169,13 @@ function TermSelectorFactory(terms) {
                             w.focus();
                         if (typeof(callback) == "function")
                             callback(term, widgetKey);
+
+                        // submit on enter
+                        openils.Util.registerEnterHandler(w.domNode,
+                            function() { 
+                                resultManager.go(termManager.buildSearchObject());
+                            }
+                        );
                     }
                 );
             }
