@@ -385,7 +385,11 @@ function init() {
     fieldmapper.standardRequest(
         ['open-ils.acq', 'open-ils.acq.lineitem.search'],
         {   async: true,
-params: [openils.User.authtoken, {purchase_order:poId}, {flesh_attrs:true, flesh_notes:true, flesh_cancel_reason:true}],
+            params: [
+                openils.User.authtoken, 
+                {purchase_order:poId}, 
+                {flesh_attrs:true, flesh_notes:true, flesh_cancel_reason:true, clear_marc:true}
+            ],
             onresponse: function(r) {
                 zeroLi = false;
                 liTable.show('list');
