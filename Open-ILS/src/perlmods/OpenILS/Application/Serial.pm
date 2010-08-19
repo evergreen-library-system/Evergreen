@@ -40,10 +40,12 @@ use warnings;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 use OpenILS::Application::AppUtils;
+use OpenILS::Event;
 use OpenSRF::AppSession;
-use OpenSRF::Utils qw/:datetime/;;
-use OpenSRF::Utils::Logger qw($logger);
+use OpenSRF::Utils qw/:datetime/;
+use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
+use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::MFHD;
 use MARC::File::XML (BinaryEncoding => 'utf8');
 my $U = 'OpenILS::Application::AppUtils';
@@ -58,7 +60,6 @@ my %MFHD_TAGS_BY_NAME = (  $MFHD_NAMES[0] => '853',
                         $MFHD_NAMES[1] => '854',
                         $MFHD_NAMES[2] => '855');
 
-
 # helper method for conforming dates to ISO8601
 sub _cleanse_dates {
     my $item = shift;
@@ -68,6 +69,14 @@ sub _cleanse_dates {
         $item->$field(OpenSRF::Utils::clense_ISO8601($item->$field)) if $item->$field;
     }
     return 0;
+}
+
+sub _get_mvr {
+    $U->simplereq(
+        "open-ils.search",
+        "open-ils.search.biblio.record.mods_slim.retrieve",
+        @_
+    );
 }
 
 
@@ -1602,6 +1611,260 @@ sub serial_caption_and_pattern_retrieve_batch {
         "open-ils.cstore.direct.serial.caption_and_pattern.search.atomic",
         { id => $ids }
     );
+}
+
+__PACKAGE__->register_method(
+    "method" => "bre_by_identifier",
+    "api_name" => "open-ils.serial.biblio.record_entry.by_identifier",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Find instances of biblio.record_entry given a search token" .
+            " that could be a value for any identifier defined in " .
+            "config.metabib_field",
+        "params" => [
+            {"desc" => "Search token", "type" => "string"},
+            {"desc" => "Options: require_subscriptions, add_mvr, is_actual_id" .
+                " (all boolean)", "type" => "object"}
+        ],
+        "return" => {
+            "desc" => "Any matching BREs, or if the add_mvr option is true, " .
+                "objects with a 'bre' key/value pair, and an 'mvr' " .
+                "key-value pair.  BREs have subscriptions fleshed on.",
+            "type" => "object"
+        }
+    }
+);
+
+sub bre_by_identifier {
+    my ($self, $client, $term, $options) = @_;
+
+    return new OpenILS::Event("BAD_PARAMS") unless $term;
+
+    $options ||= {};
+    my $e = new_editor();
+
+    my @ids;
+
+    if ($options->{"is_actual_id"}) {
+        @ids = ($term);
+    } else {
+        my $cmf =
+            $e->search_config_metabib_field({"field_class" => "identifier"})
+                or return $e->die_event;
+
+        my @identifiers = map { $_->name } @$cmf;
+        my $query = join(" || ", map { "id|$_: $term" } @identifiers);
+
+        my $search = create OpenSRF::AppSession("open-ils.search");
+        my $search_result = $search->request(
+            "open-ils.search.biblio.multiclass.query.staff", {}, $query
+        )->gather(1);
+        $search->disconnect;
+
+        # Un-nest results. They tend to look like [[1],[2],[3]] for some reason.
+        @ids = map { @{$_} } @{$search_result->{"ids"}};
+
+        unless (@ids) {
+            $e->disconnect;
+            return undef;
+        }
+    }
+
+    my $bre = $e->search_biblio_record_entry([
+        {"id" => \@ids}, {
+            "flesh" => 2, "flesh_fields" => {
+                "bre" => ["subscriptions"],
+                "ssub" => ["owning_lib"]
+            }
+        }
+    ]) or return $e->die_event;
+
+    if (@$bre && $options->{"require_subscriptions"}) {
+        $bre = [ grep { @{$_->subscriptions} } @$bre ];
+    }
+
+    $e->disconnect;
+
+    if (@$bre) { # re-evaluate after possible grep
+        if ($options->{"add_mvr"}) {
+            $client->respond(
+                {"bre" => $_, "mvr" => _get_mvr($_->id)}
+            ) foreach (@$bre);
+        } else {
+            $client->respond($_) foreach (@$bre);
+        }
+    }
+
+    undef;
+}
+
+__PACKAGE__->register_method(
+    "method" => "get_receivable_items",
+    "api_name" => "open-ils.serial.items.receivable.by_subscription",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Return all receivable items under a given subscription",
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "Subscription ID", "type" => "number"},
+        ],
+        "return" => {
+            "desc" => "All receivable items under a given subscription",
+            "type" => "object"
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    "method" => "get_receivable_items",
+    "api_name" => "open-ils.serial.items.receivable.by_issuance",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Return all receivable items under a given issuance",
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "Issuance ID", "type" => "number"},
+        ],
+        "return" => {
+            "desc" => "All receivable items under a given issuance",
+            "type" => "object"
+        }
+    }
+);
+
+sub get_receivable_items {
+    my ($self, $client, $auth, $term)  = @_;
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    # XXX permissions
+
+    my $by = ($self->api_name =~ /by_(\w+)$/)[0];
+
+    my %where = (
+        "issuance" => {"issuance" => $term},
+        "subscription" => {"+siss" => {"subscription" => $term}}
+    );
+
+    my $item_ids = $e->json_query(
+        {
+            "select" => {"sitem" => ["id"]},
+            "from" => {"sitem" => "siss"},
+            "where" => {
+                %{$where{$by}}, "date_received" => undef
+            },
+            "order_by" => {"sitem" => ["id"]}
+        }
+    ) or return $e->die_event;
+
+    return undef unless @$item_ids;
+
+    foreach (map { $_->{"id"} } @$item_ids) {
+        $client->respond(
+            $e->retrieve_serial_item([
+                $_, {
+                    "flesh" => 3,
+                    "flesh_fields" => {
+                        "sitem" => ["stream", "issuance"],
+                        "sstr" => ["distribution"],
+                        "sdist" => ["holding_lib"]
+                    }
+                }
+            ])
+        );
+    }
+
+    $e->disconnect;
+    undef;
+}
+
+__PACKAGE__->register_method(
+    "method" => "get_receivable_issuances",
+    "api_name" => "open-ils.serial.issuances.receivable",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Return all issuances with receivable items given " .
+            "a subscription ID",
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "Subscription ID", "type" => "number"},
+        ],
+        "return" => {
+            "desc" => "All issuances with receivable items " .
+                "(but not the items themselves)", "type" => "object"
+        }
+    }
+);
+
+sub get_receivable_issuances {
+    my ($self, $client, $auth, $sub_id) = @_;
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    # XXX permissions
+
+    my $issuance_ids = $e->json_query({
+        "select" => {
+            "siss" => [
+                {"transform" => "distinct", "column" => "id"}
+            ]
+        },
+        "from" => {"siss" => "sitem"},
+        "where" => {
+            "subscription" => $sub_id,
+            "+sitem" => {"date_received" => undef}
+        }
+    }) or return $e->die_event;
+
+    $client->respond($e->retrieve_serial_issuance($_->{"id"}))
+        foreach (@$issuance_ids);
+
+    $e->disconnect;
+    undef;
+}
+
+__PACKAGE__->register_method(
+    "method" => "receive_items_by_id",
+    "api_name" => "open-ils.serial.items.receive_by_id",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Given sitem IDs, just set their date_received to now()",
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "Serial Item IDs", "type" => "array"},
+        ],
+        "return" => {
+            "desc" => "Stream of updated items", "type" => "object"
+        }
+    }
+);
+
+sub receive_items_by_id {
+    my ($self, $client, $auth, $id_list) = @_;
+
+    my $e = new_editor("authtoken" => $auth, "xact" => 1);
+    return $e->die_event unless $e->checkauth;
+
+    # XXX permissions
+
+    # for now this function doesn't do nearly enough. simply sets
+    # date_received to now()
+
+    my @results = ();
+    foreach (@$id_list) {
+        my $sitem = $e->retrieve_serial_item($_) or return $e->die_event;
+
+        $sitem->date_received("now");
+        $e->update_serial_item($sitem) or return $e->die_event;
+
+        push @results, $sitem;
+    }
+
+    $e->commit;
+    $client->respond($_) foreach @results;
+    undef;
 }
 
 1;

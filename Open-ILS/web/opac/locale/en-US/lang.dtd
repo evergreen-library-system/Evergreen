@@ -316,6 +316,8 @@
 <!ENTITY staff.cat.opac.view_holds.label "View Holds">
 <!ENTITY staff.cat.opac.view_orders.accesskey "r">
 <!ENTITY staff.cat.opac.view_orders.label "View/Place Orders">
+<!ENTITY staff.cat.opac.batch_receive.accesskey "i">
+<!ENTITY staff.cat.opac.batch_receive.label "Serials Batch Receive">
 <!ENTITY staff.cat.popup.add_to_bucket "Add to Bucket">
 <!ENTITY staff.cat.popup.add_to_bucket.key "">
 <!ENTITY staff.cat.popup.browse.record.tab.key "">
@@ -747,6 +749,19 @@
 <!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr_map.label "Resource Attribute Maps">
 <!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr_map.accesskey "M">
 
+<!ENTITY staff.main.menu.admin.server_admin.serial.label "Serials">
+<!ENTITY staff.main.menu.admin.server_admin.serial.accesskey "S">
+<!ENTITY staff.main.menu.admin.server_admin.serial.subscription.label "Subscriptions">
+<!ENTITY staff.main.menu.admin.server_admin.serial.subscription.accesskey "S">
+<!ENTITY staff.main.menu.admin.server_admin.serial.distribution.label "Distributions">
+<!ENTITY staff.main.menu.admin.server_admin.serial.distribution.accesskey "D">
+<!ENTITY staff.main.menu.admin.server_admin.serial.stream.label "Streams">
+<!ENTITY staff.main.menu.admin.server_admin.serial.stream.accesskey "T">
+<!ENTITY staff.main.menu.admin.server_admin.serial.routing_list_user.label "Routing List Users">
+<!ENTITY staff.main.menu.admin.server_admin.serial.routing_list_user.accesskey "R">
+<!ENTITY staff.main.menu.admin.server_admin.serial.caption_and_pattern.label "Captions and Patterns">
+<!ENTITY staff.main.menu.admin.server_admin.serial.caption_and_pattern.accesskey "C">
+
 <!ENTITY staff.main.menu.admin.developer.label "For developers...">
 <!ENTITY staff.main.menu.admin.download_patrons.accesskey "D">
 <!ENTITY staff.main.menu.admin.download_patrons.label "Download Offline Patron List">
@@ -851,6 +866,11 @@
 <!ENTITY staff.main.menu.acq.view_local_inv.accesskey "I">
 <!ENTITY staff.main.menu.acq.create_invoice.label "Create Invoice">
 <!ENTITY staff.main.menu.acq.create_invoice.accesskey "V">
+
+<!ENTITY staff.main.menu.serial.label "Serials">
+<!ENTITY staff.main.menu.serial.accesskey "S">
+<!ENTITY staff.main.menu.serial.batch_receive.label "Batch Receive">
+<!ENTITY staff.main.menu.serial.batch_receive.accesskey "B">
 
 <!ENTITY staff.main.menu.booking.label "Booking">
 <!ENTITY staff.main.menu.booking.accesskey "B">
@@ -1576,6 +1596,35 @@
 <!ENTITY staff.serial.ssub_editor.create.accesskey "C">
 <!ENTITY staff.serial.ssub_editor.notes "Subscription Notes">
 <!ENTITY staff.serial.ssub_editor.notes.accesskey "N">
+
+<!ENTITY staff.serial.batch_receive "Batch Receive">
+<!ENTITY staff.serial.batch_receive.bib_search_term "Enter an identifier for a bibliographic record:">
+<!ENTITY staff.serial.batch_receive.bib_search_term.accesskey "B">
+<!ENTITY staff.serial.batch_receive.find_record "Find Record">
+<!ENTITY staff.serial.batch_receive.find_record.accesskey "F">
+<!ENTITY staff.serial.batch_receive.title "Title:">
+<!ENTITY staff.serial.batch_receive.author "Author:">
+<!ENTITY staff.serial.batch_receive.fulfilling_sub "Fulfilling Subscription:">
+<!ENTITY staff.serial.batch_receive.choose_sub "Choose a Subscription:">
+<!ENTITY staff.serial.batch_receive.choose_sub.accesskey "S">
+<!ENTITY staff.serial.batch_receive.choose_issuance "Choose an Issuance:">
+<!ENTITY staff.serial.batch_receive.choose_issuance.accesskey "I">
+<!ENTITY staff.serial.batch_receive.next "Next">
+<!ENTITY staff.serial.batch_receive.next.accesskey "N">
+<!ENTITY staff.serial.batch_receive.issuance "Issuance:">
+<!ENTITY staff.serial.batch_receive.no_items "There are no items to receive for this subscription.">
+<!ENTITY staff.serial.batch_receive.org_unit "Org Unit">
+<!ENTITY staff.serial.batch_receive.barcode "Barcode">
+<!ENTITY staff.serial.batch_receive.circ_mod "Circ Modifier">
+<!ENTITY staff.serial.batch_receive.note "Note">
+<!ENTITY staff.serial.batch_receive.copy_loc "Copy Location">
+<!ENTITY staff.serial.batch_receive.price "Price">
+<!ENTITY staff.serial.batch_receive.receive "Receive?">
+<!ENTITY staff.serial.batch_receive.auto_generate "Auto-generate?">
+<!ENTITY staff.serial.batch_receive.recieve_selected "Receive Selected Items">
+<!ENTITY staff.serial.batch_receive.start_over "Start Over">
+<!ENTITY staff.serial.batch_receive.start_over.accesskey "O">
+
 <!ENTITY staff.survey.wizard.page1 "Initial Settings">
 <!ENTITY staff.survey.wizard.page2 "Add Questions for Survey:">
 <!ENTITY staff.survey.wizard.title "Add a Survey Wizard">

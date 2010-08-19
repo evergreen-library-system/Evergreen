@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/serial.css" type="text/css"?>
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+<?xul-overlay href="/xul/server/serial/batch_receive_overlay.xul"?>
+
+<window id="batch_receive_win"
+    onload="try{my_init();font_helper();persist_helper();}catch(E){alert(E);}"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script type="text/javascript">
+        var myPackageDir = "open_ils_staff_client";
+        var IAMXUL = true;
+        var g = {};
+    </script>
+
+    <scripts id="openils_util_scripts" />
+
+    <!-- JSAN is still needed for font_helper stuff, but I'm going to try
+        not to use it otherwise.  -->
+    <script type="text/javascript" src="/xul/server/main/JSAN.js" />
+
+    <messagecatalog id="serialStrings"
+        src="/xul/server/locale/<!--#echo var='locale'-->/serial.properties" />
+
+    <commandset />
+    <box id="batch_receive_main" />
+</window>

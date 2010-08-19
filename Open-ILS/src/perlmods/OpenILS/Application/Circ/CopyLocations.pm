@@ -18,22 +18,29 @@ __PACKAGE__->register_method(
 	signature	=> q/
 		Retrieves the ranged set of copy locations for the requested org.
 		If no org is provided, all copy locations are returned
-		@param authtoken The login session key
 		@param orgId The org location id
+		@param noi18n No i18n in result
+        @param flesh_owning_lib Flesh owning lib in results
 		@return An array of copy location objects
 		/);
 
 sub cl_retrieve_all {
-	my( $self, $client, $org_id, $no_i18n ) = @_;
+	my ($self, $client, $org_id, $no_i18n, $flesh_owning_lib) = @_;
 
 	if(!$org_id) {
 		my $otree = $U->get_org_tree();
 		$org_id = $otree->id;
 	}
 
+    my $second_cstore_arg = {"no_i18n" => scalar($no_i18n)};
+    if ($flesh_owning_lib) {
+        $second_cstore_arg->{"flesh"} = 1;
+        $second_cstore_arg->{"flesh_fields"} = {"acpl" => ["owning_lib"]};
+    }
+
     return new_editor()->search_asset_copy_location([{
         owning_lib => $U->get_org_full_path($org_id)
-    }, {"no_i18n" => scalar($no_i18n)}]);
+    }, $second_cstore_arg]);
 }
 
 __PACKAGE__->register_method(

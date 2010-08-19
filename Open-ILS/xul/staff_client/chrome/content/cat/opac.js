@@ -538,6 +538,28 @@ function open_marc_editor(rec, label) {
     };
 }
 
+function serials_mgmt_new_tab() {
+    try {
+        /* XXX should the following be put into a function somewhere? the gist
+         * of this setting up of content_params seems to be duplicated all
+         * over the place.
+         */
+        var content_params = {"session": ses(), "authtime": ses("authtime")};
+        ["url_prefix", "new_tab", "set_tab", "close_tab", "new_patron_tab",
+            "set_patron_tab", "volume_item_creator", "get_new_session",
+            "holdings_maintenance_tab", "set_tab_name", "open_chrome_window",
+            "url_prefix", "network_meter", "page_meter", "set_statusbar",
+            "set_help_context"
+        ].forEach(function(k) { content_params[k] = xulG[k]; });
+
+        xulG.new_tab(
+            xulG.url_prefix(urls.XUL_SERIAL_RECORD_ENTRY), {}, content_params
+        );
+    } catch (E) {
+        g.error.sdump('D_ERROR', E);
+    }
+}
+
 function bib_in_new_tab() {
     try {
         var url = browser_frame.contentWindow.g.browser.controller.view.browser_browser.contentWindow.wrappedJSObject.location.href;
@@ -562,6 +584,30 @@ function bib_in_new_tab() {
         xulG.new_tab(xulG.url_prefix(urls.XUL_OPAC_WRAPPER), {}, content_params);
     } catch(E) {
         g.error.sdump('D_ERROR',E);
+    }
+}
+
+function batch_receive_in_new_tab() {
+    try {
+        var content_params = {"session": ses(), "authtime": ses("authtime")};
+
+        ["url_prefix", "new_tab", "set_tab", "close_tab", "new_patron_tab",
+            "set_patron_tab", "volume_item_creator", "get_new_session",
+            "holdings_maintenance_tab", "set_tab_name", "open_chrome_window",
+            "url_prefix", "network_meter", "page_meter", "set_statusbar",
+            "set_help_context"
+        ].forEach(function(k) { content_params[k] = xulG[k]; });
+
+        xulG.new_tab(
+            xulG.url_prefix(urls.XUL_SERIAL_BATCH_RECEIVE) +
+                "?docid=" + window.escape(docid), {
+                "tab_name": $("offlineStrings").getString(
+                    "menu.cmd_serial_batch_receive.tab"
+                )
+            }, content_params
+        );
+    } catch (E) {
+        g.error.sdump("D_ERROR", E);
     }
 }
 

@@ -74,6 +74,7 @@
                     </menupopup>
                 </menu>
                 <menuitem id="serctrl_view" label="&staff.serial.serctrl_view.label;" oncommand="set_serctrl_view();"/>
+                <menuitem label="&staff.cat.opac.batch_receive.label;" accesskey="&staff.cat.opac.batch_receive.accesskey;" id="batch_receive" oncommand="batch_receive_in_new_tab();"/>
                 </menupopup>
                 </menu>
             </menubar>

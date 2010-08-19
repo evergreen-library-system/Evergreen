@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE overlay PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+<overlay id="batch_receive_overlay"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script type="text/javascript" src="/xul/server/serial/batch_receive.js" />
+
+    <box id="batch_receive_main" flex="1" orient="vertical" class="my_overflow">
+        <caption label="&staff.serial.batch_receive;" />
+
+        <vbox flex="1" id="batch_receve_main_action">
+            <vbox id="batch_receive_bib" class="hideme">
+                <hbox align="center" flex="0">
+                    <label
+                        control="bib_search_term"
+                        accesskey="&staff.serial.batch_receive.bib_search_term.accesskey;"
+                        value="&staff.serial.batch_receive.bib_search_term;" />
+                    <textbox id="bib_search_term"
+                        onkeypress="batch_receiver.bib_lookup(null, event);" />
+                    <button id="bib_lookup_submit"
+                        oncommand="batch_receiver.bib_lookup();"
+                        label="&staff.serial.batch_receive.find_record;"
+                        accesskey="&staff.serial.batch_receive.find_record.accesskey;" />
+                </hbox>
+            </vbox>
+
+            <vbox id="batch_receive_bibdata_bits" class="hideme">
+                <hbox>
+                    <label value="&staff.serial.batch_receive.title;" />
+                    <description id="title_here" />
+                </hbox>
+                <hbox id="author_here_holder" class="hideme">
+                    <label value="&staff.serial.batch_receive.author;" />
+                    <description id="author_here" />
+                </hbox>
+            </vbox>
+
+            <box id="batch_receive_sub_bits" class="hideme">
+                <label value="&staff.serial.batch_receive.fulfilling_sub;" />
+                <description id="sublabel_here" />
+            </box>
+
+            <vbox id="batch_receive_sub" class="hideme">
+                <hbox align="center">
+                    <label
+                        control="sub_chooser"
+                        value="&staff.serial.batch_receive.choose_sub;"
+                        accesskey="&staff.serial.batch_receive.choose_sub.accesskey;" />
+                    <box id="sub_chooser_here"></box>
+                    <button
+                        oncommand="batch_receiver.choose_issuance();"
+                        label="&staff.serial.batch_receive.next;"
+                        accesskey="&staff.serial.batch_receive.next.accesskey;" />
+                </hbox>
+            </vbox>
+
+            <box id="batch_receive_issuance_bits" class="hideme">
+                <label value="&staff.serial.batch_receive.issuance;" />
+                <description id="issuance_label_here" />
+            </box>
+
+            <vbox id="batch_receive_issuance" class="hideme">
+                <hbox align="center">
+                    <label
+                        control="issuance_chooser"
+                        value="&staff.serial.batch_receive.choose_issuance;"
+                        accesskey="&staff.serial.batch_receive.choose_issuance.accesskey;" />
+                    <box id="issuance_chooser_here"></box>
+                    <button
+                        oncommand="batch_receiver.load_entry_form();"
+                        label="&staff.serial.batch_receive.next;"
+                        accesskey="&staff.serial.batch_receive.next.accesskey;" />
+                </hbox>
+            </vbox>
+
+            <vbox id="batch_receive_no_entry" class="hideme">
+                <description value="&staff.serial.batch_receive.no_items;" />
+            </vbox>
+
+            <vbox id="batch_receive_entry" class="hideme">
+                <box class="hideme" id="form_holder">
+                    <!-- XXX should be a XUL grid instead of an HTML table -->
+                    <h:table>
+                        <h:thead>
+                            <h:tr>
+                                <h:th>
+                                    &staff.serial.batch_receive.org_unit;
+                                </h:th>
+                                <h:th>
+                                    &staff.serial.batch_receive.barcode;
+                                </h:th>
+                                <h:th>
+                                    &staff.serial.batch_receive.circ_mod;
+                                </h:th>
+                                <h:th>
+                                    &staff.serial.batch_receive.note;
+                                </h:th>
+                                <h:th>
+                                    &staff.serial.batch_receive.copy_loc;
+                                </h:th>
+                                <h:th>
+                                    &staff.serial.batch_receive.price;
+                                </h:th>
+                                <h:th>
+                                    &staff.serial.batch_receive.receive;
+                                </h:th>
+                            </h:tr>
+                        </h:thead>
+                        <h:tbody id="entry_batch_tbody">
+                            <h:tr id="entry_batch_row">
+                                <h:td name="holding_lib"><!-- empty --></h:td>
+                                <h:td name="barcode" align="center">
+                                    <checkbox
+                                        id="autogen_barcodes"
+                                        label="&staff.serial.batch_receive.auto_generate;" />
+                                </h:td>
+                                <h:td name="circ_mod" align="center"></h:td>
+                                <h:td name="note"></h:td>
+                                <h:td name="copy_loc" align="center"></h:td>
+                                <h:td name="price"></h:td>
+                                <h:td name="receive"></h:td>
+                                <h:td name="apply"></h:td>
+                            </h:tr>
+                            <h:tr>
+                                <h:td colspan="8">
+                                    <h:hr size="4" />
+                                </h:td>
+                            </h:tr>
+                        </h:tbody>
+                        <h:tbody id="entry_tbody">
+                            <h:tr id="entry_template">
+                                <h:td name="holding_lib" align="center"></h:td>
+                                <h:td name="barcode"></h:td>
+                                <h:td name="circ_mod" align="center"></h:td>
+                                <h:td name="note"></h:td>
+                                <h:td name="copy_loc" align="center"></h:td>
+                                <h:td name="price"></h:td>
+                                <h:td name="receive" align="center"></h:td>
+                            </h:tr>
+                        </h:tbody>
+                    </h:table>
+                </box>
+                <hbox id="entry_submitter" flex="1">
+                    <button oncommand="batch_receiver.receive();"
+                        label="&staff.serial.batch_receive.recieve_selected;" />
+                </hbox>
+            </vbox>
+        </vbox>
+
+        <hbox>
+            <button oncommand="batch_receiver._init();"
+                label="&staff.serial.batch_receive.start_over;"
+                accesskey="&staff.serial.batch_receive.start_over.accesskey;" />
+        </hbox>
+    </box>
+</overlay>

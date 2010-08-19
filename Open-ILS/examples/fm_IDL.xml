@@ -1781,6 +1781,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Flattened MARC Fields " name="full_record_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Simple Record Extracts " name="simple_record" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Authority Links" name="authority_links" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Subscriptions" name="subscriptions" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -1800,6 +1801,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="series_field_entries" reltype="has_many" key="source" map="" class="msefe"/>
 			<link field="full_record_entries" reltype="has_many" key="record" map="" class="mfr"/>
 			<link field="authority_links" reltype="has_many" key="bib" map="" class="abl"/>
+			<link field="subscriptions" reltype="has_many" key="record_entry" map="" class="ssub"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -3169,10 +3171,10 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="ssub" controller="open-ils.cstore" oils_obj:fieldmapper="serial::subscription" oils_persist:tablename="serial.subscription" reporter:label="Subscription">
+	<class id="ssub" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::subscription" oils_persist:tablename="serial.subscription" reporter:label="Subscription">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.subscription_id_seq">
 			<field reporter:label="Id" name="id" reporter:datatype="id"/>
-			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="link"/>
+			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Start Date" name="start_date" reporter:datatype="timestamp"/>
 			<field reporter:label="End Date" name="end_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Bibliographic Record Entry" name="record_entry" reporter:datatype="link"/>
@@ -3190,6 +3192,14 @@ SELECT  usr,
 			<link field="scaps" reltype="has_many" key="subscription" map="" class="scap"/>
 			<link field="notes" reltype="has_many" key="subscription" map="" class="ssubn"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_SERIAL_SUBSCRIPTION" context_field="owning_lib"/>
+				<retrieve permission="VIEW_SERIAL_SUBSCRIPTION" context_field="owning_lib"/>
+				<update permission="ADMIN_SERIAL_SUBSCRIPTION" context_field="owning_lib"/>
+				<delete permission="ADMIN_SERIAL_SUBSCRIPTION" context_field="owning_lib"/>
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="ssubn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::subscription_note" oils_persist:tablename="serial.subscription_note" reporter:label="Subscription Note">

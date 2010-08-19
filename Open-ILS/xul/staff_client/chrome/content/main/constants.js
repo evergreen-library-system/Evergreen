@@ -458,5 +458,6 @@ var urls = {
     'EG_WEB_BASE' : '/eg',
     'XUL_LOCAL_ADMIN_BASE' : '/xul/server/admin',
     'XUL_REPORTS' : '/reports/oils_rpt.xhtml',
-    'EG_ACQ_PO_VIEW' : '/eg/acq/po/view'
+    'EG_ACQ_PO_VIEW' : '/eg/acq/po/view',
+    'XUL_SERIAL_BATCH_RECEIVE': '/xul/server/serial/batch_receive.xul'
 }
