@@ -482,9 +482,8 @@ sub complete_lineitem_detail {
         $lid->location($loc);
     }
 
-    if(!$lid->circ_modifier and my $mod = get_default_circ_modifier($mgr, $lid->owning_lib)) {
-        $lid->circ_modifier($mod);
-    }
+    $lid->circ_modifier(get_default_circ_modifier($mgr, $lid->owning_lib))
+        unless defined $lid->circ_modifier;
 
     $mgr->editor->update_acq_lineitem_detail($lid) or return 0;
     return $lid;
@@ -492,10 +491,9 @@ sub complete_lineitem_detail {
 
 sub get_default_circ_modifier {
     my($mgr, $org) = @_;
-    my $mod = $mgr->cache($org, 'def_circ_mod');
-    return $mod if $mod;
-    $mod = $U->ou_ancestor_setting_value($org, 'acq.default_circ_modifier');
-    return $mgr->cache($org, 'def_circ_mod', $mod) if $mod;
+    my $code = $mgr->cache($org, 'def_circ_mod');
+    $code = $U->ou_ancestor_setting_value($org, 'acq.default_circ_modifier') unless defined $code;
+    return $mgr->cache($org, 'def_circ_mod', $code) if defined $code;
     return undef;
 }
 
@@ -1386,21 +1384,20 @@ sub extract_lineitem_detail_data {
     # ---------------------------------------------------------------------
     # Circ Modifier
     my $code = $compiled{circ_modifier};
-    my $mod;
 
-    if($code) {
+    if(defined $code) {
 
-        $mod = $mgr->cache($base_org, "mod.$code") ||
+        # verify this is a valid circ modifier
+        return $killme->("invlalid circ_modifier $code") unless 
+            defined $mgr->cache($base_org, "mod.$code") or 
             $mgr->editor->retrieve_config_circ_modifier($code);
-        return $killme->("invlalid circ_modifier $code") unless $mod;
-        $mgr->cache($base_org, "mod.$code", $mod);
+
+            # if valid, cache for future tests
+            $mgr->cache($base_org, "mod.$code", $code);
 
     } else {
-        # try the default
-        $mod = get_default_circ_modifier($mgr, $base_org);
+        $compiled{circ_modifier} = get_default_circ_modifier($mgr, $base_org);
     }
-
-    $compiled{circ_modifier} = $mod if $mod;
 
 
     # ---------------------------------------------------------------------
