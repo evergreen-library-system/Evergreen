@@ -951,8 +951,11 @@ sub authority_tag_sf_browse {
 		my $before = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
 			{ select	=> { afr => [qw/record value/] },
-			  from		=> 'afr',
-			  where		=> { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
+			  from		=> { 'are', 'afr' },
+			  where		=> {
+				'+afr' => { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
+				'+are' => { 'deleted' => 'f' }
+			  },
 			  order_by	=> { afr => { value => 'desc' } },
 			  limit		=> $before_limit,
 			  offset	=> abs($page) * $page_size - $before_offset,
@@ -965,8 +968,11 @@ sub authority_tag_sf_browse {
 		my $after = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
 			{ select	=> { afr => [qw/record value/] },
-			  from		=> 'afr',
-			  where		=> { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } }, 
+			  from		=> { 'are', 'afr' },
+			  where		=> {
+				'+afr' => { tag => $tag, subfield => $subfield, value => { '>' => lc($value) } },
+				'+are' => { 'deleted' => 'f' }
+			  },
 			  order_by	=> { afr => { value => 'asc' } },
 			  limit		=> $after_limit,
 			  offset	=> abs($page) * $page_size - $after_offset,
