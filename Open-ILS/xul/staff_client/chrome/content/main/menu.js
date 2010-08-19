@@ -1012,6 +1012,14 @@ main.menu.prototype = {
                 }
             ],
 
+            'cmd_authority_manage' : [
+                ['oncommand'],
+                function() {
+                    obj.data.stash_retrieve();
+                    obj.set_tab(obj.url_prefix(urls.AUTHORITY_MANAGE),{},{});
+                }
+            ],
+
             /* Admin menu */
             'cmd_change_session' : [
                 ['oncommand'],

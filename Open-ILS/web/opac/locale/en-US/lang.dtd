@@ -789,6 +789,8 @@
 <!ENTITY staff.main.menu.cat.add_copy.label "Add Item">
 <!ENTITY staff.main.menu.cat.add_volume.key "V">
 <!ENTITY staff.main.menu.cat.add_volume.label "Add Volume">
+<!ENTITY staff.main.menu.cat.authority_manage.accesskey "t">
+<!ENTITY staff.main.menu.cat.authority_manage.label "Manage Authorities">
 <!ENTITY staff.main.menu.cat.bib_search.accesskey "S">
 <!ENTITY staff.main.menu.cat.bib_search.label "Search the Catalog">
 <!ENTITY staff.main.menu.cat.bib_status.key "B">

@@ -24,6 +24,7 @@
 
     <command id="cmd_cat_main" key="cat-main-key" />
     <command id="cmd_create_marc" />
+    <command id="cmd_authority_manage" />
     <command id="cmd_circ_checkout" key="circ-checkout-key" />
     <command id="cmd_patron_search" key="patron-search-key" />
     <command id="cmd_circ_checkin" key="circ-checkin-key" />
@@ -272,6 +273,8 @@
         <menuseparator />
         <menuitem label="&staff.main.menu.replace_barcode.label;" command="cmd_replace_barcode"/>
         <menuitem label="&staff.main.menu.cat.retrieve_last_record.label;" accesskey="&staff.main.menu.cat.retrieve_last_record.accesskey;" command="cmd_retrieve_last_record" key="retrieve_last_record_key"/>
+        <menuseparator />
+        <menuitem label="&staff.main.menu.cat.authority_manage.label;" accesskey="&staff.main.menu.cat.authority_manage.accesskey;" command="cmd_authority_manage"/>
     </menupopup>
 </menu>
 

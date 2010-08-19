@@ -355,6 +355,7 @@ var urls = {
     'AUDIO_circ_bad' : '/xul/server/skin/media/audio/question.wav',
     'AUDIO_event_ASSET_COPY_NOT_FOUND' : '/xul/server/skin/media/audio/redalert.wav',
 
+    'AUTHORITY_MANAGE' : '/eg/cat/authority/list',
     'XUL_AUTH_SIMPLE' : '/xul/server/main/simple_auth.xul',
     'XUL_BIB_BRIEF' : '/xul/server/cat/bib_brief.xul',
     'XUL_BROWSER' : 'chrome://open_ils_staff_client/content/util/browser.xul',
