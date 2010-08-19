@@ -11,9 +11,12 @@ dojo.require('dijit.form.TextBox');
 dojo.require("dijit.Menu");
 dojo.require("dijit.MenuItem");
 dojo.require('dojox.xml.parser');
+dojo.require('openils.CGI');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.XUL');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
+
+var cgi = new openils.CGI();
 
 /*
 // OrgUnits do not currently affect the retrieval of authority records,
@@ -97,11 +100,70 @@ function loadMarcEditor(pcrud, rec) {
         }
     };
 }
+
+function authListInit() {
+    /* Parse CGI params so we can display records on load */
+    term = cgi.param('authTerm') || '';
+    page = cgi.param('authPage') || 0;
+    axis = cgi.param('authAxis') || 'authority.author';
+    if (axis) {
+        dijit.byId('authAxis').attr('value', axis);
+    }
+    if (page) {
+        dijit.byId('authPage').attr('value', page);
+    }
+
+    /* If we receive a term, go ahead and display the records */
+    if (term) {
+        dijit.byId('authTerm').attr('value', term);
+        displayRecords();
+    }
+
+    /* Make searching possible without having to click Submit */
+    dojo.connect(dijit.byId('authTerm'), 'onBlur', 'displayRecords');
+}
+
+function displayRecords(parms) {
+
+    if (parms && parms.page) {
+        if (parms.page == 'next') {
+            page = dijit.byId('authPage').attr('value');
+            dijit.byId('authPage').attr('value', page + 1);
+        } else if (parms.page == 'prev') {
+            page = dijit.byId('authPage').attr('value');
+            dijit.byId('authPage').attr('value', page - 1);
+        } else {
+            dijit.byId('authPage').attr('value', parms.page);
+        }
+    }
+
+    /* Protect against null input */
+    if (!dijit.byId('authTerm').attr('value')) {
+        return;
+    }
+
+    /* Clear out the current contents of the page */
+    widgets = dijit.findWidgets(dojo.byId('authlist-div'));
+    dojo.forEach(widgets, function(w) { w.destroyRecursive(true); });
+
+    dojo.query("#authlist-div div").orphan();
+
+    url = '/opac/extras/startwith/marcxml/'
+        + dijit.byId('authAxis').attr('value')
+        // + '/' + dijit.byId('authOU').attr('value')
+        + '/1' // replace with preceding line if OUs gain some meaning
+        + '/' + dijit.byId('authTerm').attr('value')
+        + '/' + dijit.byId('authPage').attr('value')
+    ;
+    dojo.xhrGet({"url":url, "handleAs":"xml", "content":{"format":"marcxml"}, "preventCache": true, "load":displayAuthorities });
+}
+
+dojo.addOnLoad(authListInit);
 </script>
 
 <div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data" action="" method="">
     <label for="authTerm">Search term: </label><input type="text" name="authTerm" value="" dojoType="dijit.form.TextBox" trim="true" id="authTerm" propercase="false"/>
-    <label for="authAxis">Authority type: </label><select type="text" name="authAxis" value="" dojoType="dijit.form.FilteringSelect" trim="true" id="authAxis" propercase="false">
+    <label for="authAxis">Authority type: </label><select type="text" name="authAxis" value="" dojoType="dijit.form.FilteringSelect" trim="true" id="authAxis" propercase="false" style="width: 10em;">
         <option value="authority.author">Author</option>
         <option value="authority.subject">Subject</option>
         <option value="authority.title">Title</option>
@@ -109,28 +171,24 @@ function loadMarcEditor(pcrud, rec) {
     </select>
 <!-- Not currently useful - see authOUListInit() above -->
 <!--    <label for="authOU">Library: </label><select dojoType="openils.widget.OrgUnitFilteringSelect" id="authOU" name="authOU" searchAttr="shortname" labelAttr="shortname"></select> -->
-    <label for="authPage">Page: </label><input dojoType="dijit.form.NumberSpinner" value="0" constraints="{min:-100,max:100,places:0}" smallDelta="1" id="authPage" name="authPage"/>
+
+    <div dojoType="dijit.form.Button" type="button" value="Previous">Previous
+        <script type="dojo/method" event="onClick" args="evt">
+            displayRecords({"page":"prev"});
+        </script>
+    </div>
+
+    <label for="authPage">Page: </label><input dojoType="dijit.form.NumberSpinner" value="0" constraints="{min:-100,max:100,places:0}" smallDelta="1" id="authPage" name="authPage" style="width:5em;" />
+
+    <div dojoType="dijit.form.Button" type="button" value="Next">Next
+        <script type="dojo/method" event="onClick" args="evt">
+            displayRecords({"page":"next"});
+        </script>
+    </div>
+
     <div dojoType="dijit.form.Button" type="button" value="Submit">Submit
         <script type="dojo/method" event="onClick" args="evt">
-            /* Protect against null input */
-            if (!dijit.byId('authTerm').attr('value')) {
-                return;
-            }
-
-            /* Clear out the current contents of the page */
-            widgets = dijit.findWidgets(dojo.byId('authlist-div'));
-            dojo.forEach(widgets, function(w) { w.destroyRecursive(true); });
-
-            dojo.query("#authlist-div div").orphan();
-
-            url = '/opac/extras/startwith/marcxml/'
-                + dijit.byId('authAxis').attr('value')
-                // + '/' + dijit.byId('authOU').attr('value')
-                + '/1' // replace with preceding line if OUs gain some meaning
-                + '/' + dijit.byId('authTerm').attr('value')
-                + '/' + dijit.byId('authPage').attr('value')
-            ;
-            dojo.xhrGet({"url":url, "handleAs":"xml", "content":{"format":"marcxml"}, "preventCache": true, "load":displayAuthorities });
+            displayRecords();
         </script>
     </div>
 </div>
