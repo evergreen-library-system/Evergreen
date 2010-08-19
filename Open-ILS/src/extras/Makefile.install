@@ -246,6 +246,9 @@ CPAN_MODULES_MARC = \
     MARC::File::XML \
     Net::Z3950::ZOOM
 
+CPAN_MODULES_FORCE = \
+	Class::DBI::Frozen::301
+
 # ----------------------------------------------------------------------------
 
 all: 
@@ -260,7 +263,7 @@ rhel: install_redhat_pgsql install_centos_rpms install_yaz install_cpan_marc ins
 fedora-13: install_fedora_13_rpms install_cpan install_cpan_fedora install_cpan_marc install_spidermonkey install_library_callnumber_lc
 
 debian-lenny: lenny generic_debian install_cpan_more install_cpan_safe
-debian-squeeze: squeeze generic_debian
+debian-squeeze: squeeze generic_debian install_cpan_force
 lenny: install_pgsql_client_debs_83 install_extra_debs
 squeeze: install_pgsql_client_debs_84  install_extra_debs_squeeze
 generic_debian:  install_debs install debian_sys_config
@@ -283,6 +286,9 @@ install_cpan_more:
 # Install the CPAN modules for MARC functionality
 install_cpan_marc: 
 	for m in $(CPAN_MODULES_MARC); do perl -MCPAN -e "install \"$$m\";"; done
+
+install_cpan_force:
+	for m in $(CPAN_MODULES_FORCE); do perl -MCPAN -e "force install \"$$m\";"; done
 
 # Install the Safe Perl module
 # Is this really unpackaged everywhere except for Fedora?
