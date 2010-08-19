@@ -45,24 +45,31 @@ function displayAuthorities(data) {
 
         // Create the authority record listing entry
         dojo.place('<div class="authEntry" id="auth' + authId + '">' + authText + '</div>', "authlist-div", "last");
+
         // Add the menu of new/edit/delete/mark-for-merge options
         var auth_menu = new dijit.Menu({});
-        new dijit.MenuItem({"onClick": function(){
+
+        // "Edit" menu item
+        new dijit.MenuItem({"id": "edit_" + authId, "onClick": function(){
+            recId = this.id.slice(this.id.lastIndexOf('_') + 1);
             pcrud = new openils.PermaCrud();
-            var auth_rec = pcrud.retrieve("are", authId);
+            auth_rec = pcrud.retrieve("are", recId);
             if (auth_rec) {
                 loadMarcEditor(pcrud, auth_rec);
             }
         }, "label":"Edit"}).placeAt(auth_menu, "first");
-        new dijit.MenuItem({"onClick":function(){
+
+        // "Delete" menu item
+        new dijit.MenuItem({"id": "delete_" + authId, "onClick":function(){
+            recId = this.id.slice(this.id.lastIndexOf('_') + 1);
             pcrud = new openils.PermaCrud();
-            var auth_rec = pcrud.retrieve("are", authId);
+            auth_rec = pcrud.retrieve("are", recId);
             if (auth_rec) {
                 pcrud.eliminate(auth_rec);
-                alert("Deleted authority record # " + authId);
+                alert("Deleted authority record # " + recId);
             }
         }, "label":"Delete"}).placeAt(auth_menu, "last");
-        var auth_mb = new dijit.form.DropDownButton({dropDown: auth_menu, label:"Actions"});
+        auth_mb = new dijit.form.DropDownButton({dropDown: auth_menu, label:"Actions"});
         auth_mb.placeAt("auth" + authId, "first");
         auth_menu.startup();
     });
@@ -111,6 +118,9 @@ function loadMarcEditor(pcrud, rec) {
             }
 
             /* Clear out the current contents of the page */
+            widgets = dijit.findWidgets(dojo.byId('authlist-div'));
+            dojo.forEach(widgets, function(w) { w.destroyRecursive(true); });
+
             dojo.query("#authlist-div div").orphan();
 
             url = '/opac/extras/startwith/marcxml/'
@@ -120,7 +130,7 @@ function loadMarcEditor(pcrud, rec) {
                 + '/' + dijit.byId('authTerm').attr('value')
                 + '/' + dijit.byId('authPage').attr('value')
             ;
-            dojo.xhrGet({"url":url, "handleAs":"xml", "content":{"format":"marcxml"}, "load":displayAuthorities });
+            dojo.xhrGet({"url":url, "handleAs":"xml", "content":{"format":"marcxml"}, "preventCache": true, "load":displayAuthorities });
         </script>
     </div>
 </div>
@@ -128,4 +138,3 @@ function loadMarcEditor(pcrud, rec) {
 <div id='authlist-div'></div>
 
 [% END %]
-
