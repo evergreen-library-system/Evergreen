@@ -42,6 +42,7 @@
                     </td>
                     <td class='acq-invoice-center-col'>
                         <span name='inv_item_count'></span>&nbsp;/&nbsp;<span name='phys_item_count'></span>
+                    </td>
                     <td class='acq-invoice-billed-col'><div name='cost_billed'/></td>
                     <td class='acq-invoice-paid-col'><div name='amount_paid'/></td>
                     <td class='acq-invoice-center-col hide-complete'><a href='javascript:void(0);' name='detach'>Detach</a></td>
