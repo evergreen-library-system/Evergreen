@@ -1425,6 +1425,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="bib_links" reltype="has_many" key="authority" map="" class="abl"/>
 			<link field="fixed_fields" reltype="might_have" key="record" map="" class="ard"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_MARC IMPORT_MARC" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_MARC" global_required="true"/>
+                <delete permission="UPDATE_MARC" global_required="true"/>
+            </actions>
+        </permacrud>
+
 	</class>
 	<class id="ard" controller="open-ils.cstore" oils_obj:fieldmapper="authority::record_descriptor" oils_persist:tablename="authority.rec_descriptor" reporter:label="Authority Record Descriptor">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.rec_descriptor_id_seq">

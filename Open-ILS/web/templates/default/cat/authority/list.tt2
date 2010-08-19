@@ -1,0 +1,131 @@
+[% ctx.page_title = 'Authority record list' %]
+[% WRAPPER default/base.tt2 %]
+
+<script>
+dojo.require('dijit.form.Button');
+dojo.require('dijit.form.DropDownButton');
+dojo.require('dijit.form.FilteringSelect');
+dojo.require('dijit.form.Form');
+dojo.require('dijit.form.NumberSpinner');
+dojo.require('dijit.form.TextBox');
+dojo.require("dijit.Menu");
+dojo.require("dijit.MenuItem");
+dojo.require('dojox.xml.parser');
+dojo.require('openils.PermaCrud');
+dojo.require('openils.XUL');
+dojo.require('openils.widget.OrgUnitFilteringSelect');
+
+/*
+// OrgUnits do not currently affect the retrieval of authority records,
+// but this is how to display them if they become OrgUnit-aware
+function authOUListInit() {
+    new openils.User().buildPermOrgSelector(
+        "STAFF_LOGIN", // anywhere you can log in
+        dijit.byId("authOU"),
+        null, // pre-selected org
+        null
+    );
+}
+dojo.addOnLoad(authOUListInit);
+*/
+function displayAuthorities(data) { 
+    // Grab each record from the returned authority records
+    dojo.query("record", data).forEach(function(node) {
+        authText = '';
+        authId = 0;
+
+        // Grab each authority record field from the authority record
+        dojo.query("datafield[tag^='1']", node).forEach(function(dfNode) {
+            authText += dojox.xml.parser.textContent(dfNode); 
+        });
+        // Grab the ID of the authority record
+        dojo.query("datafield[tag='901'] subfield[code='c']", node).forEach(function(dfNode) {
+            authId = dojox.xml.parser.textContent(dfNode); 
+        });
+
+        // Create the authority record listing entry
+        dojo.place('<div class="authEntry" id="auth' + authId + '">' + authText + '</div>', "authlist-div", "last");
+        // Add the menu of new/edit/delete/mark-for-merge options
+        var auth_menu = new dijit.Menu({});
+        new dijit.MenuItem({"onClick": function(){
+            pcrud = new openils.PermaCrud();
+            var auth_rec = pcrud.retrieve("are", authId);
+            if (auth_rec) {
+                loadMarcEditor(pcrud, auth_rec);
+            }
+        }, "label":"Edit"}).placeAt(auth_menu, "first");
+        new dijit.MenuItem({"onClick":function(){
+            pcrud = new openils.PermaCrud();
+            var auth_rec = pcrud.retrieve("are", authId);
+            if (auth_rec) {
+                pcrud.eliminate(auth_rec);
+                alert("Deleted authority record # " + authId);
+            }
+        }, "label":"Delete"}).placeAt(auth_menu, "last");
+        var auth_mb = new dijit.form.DropDownButton({dropDown: auth_menu, label:"Actions"});
+        auth_mb.placeAt("auth" + authId, "first");
+        auth_menu.startup();
+    });
+}
+
+function loadMarcEditor(pcrud, rec) {
+    /*
+       To run in Firefox directly, must set signed.applets.codebase_principal_support
+       to true in about:config
+     */
+    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+    win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
+
+    win.xulG = {
+        "record": {"marc": rec.marc()},
+        "save": {
+            "label": "Save",
+            "func": function(xmlString) {
+                rec.marc(xmlString);
+                rec.ischanged(true);
+                pcrud.update(rec);
+                alert("Record was saved");
+                win.close();
+            }
+        }
+    };
+}
+</script>
+
+<div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data" action="" method="">
+    <label for="authTerm">Search term: </label><input type="text" name="authTerm" value="" dojoType="dijit.form.TextBox" trim="true" id="authTerm" propercase="false"/>
+    <label for="authAxis">Authority type: </label><select type="text" name="authAxis" value="" dojoType="dijit.form.FilteringSelect" trim="true" id="authAxis" propercase="false">
+        <option value="authority.author">Author</option>
+        <option value="authority.subject">Subject</option>
+        <option value="authority.title">Title</option>
+        <option value="authority.topic">Topic</option>
+    </select>
+<!-- Not currently useful - see authOUListInit() above -->
+<!--    <label for="authOU">Library: </label><select dojoType="openils.widget.OrgUnitFilteringSelect" id="authOU" name="authOU" searchAttr="shortname" labelAttr="shortname"></select> -->
+    <label for="authPage">Page: </label><input dojoType="dijit.form.NumberSpinner" value="0" constraints="{min:-100,max:100,places:0}" smallDelta="1" id="authPage" name="authPage"/>
+    <div dojoType="dijit.form.Button" type="button" value="Submit">Submit
+        <script type="dojo/method" event="onClick" args="evt">
+            /* Protect against null input */
+            if (!dijit.byId('authTerm').attr('value')) {
+                return;
+            }
+
+            /* Clear out the current contents of the page */
+            dojo.query("#authlist-div div").orphan();
+
+            url = '/opac/extras/startwith/marcxml/'
+                + dijit.byId('authAxis').attr('value')
+                // + '/' + dijit.byId('authOU').attr('value')
+                + '/1' // replace with preceding line if OUs gain some meaning
+                + '/' + dijit.byId('authTerm').attr('value')
+                + '/' + dijit.byId('authPage').attr('value')
+            ;
+            dojo.xhrGet({"url":url, "handleAs":"xml", "content":{"format":"marcxml"}, "load":displayAuthorities });
+        </script>
+    </div>
+</div>
+
+<div id='authlist-div'></div>
+
+[% END %]
+
