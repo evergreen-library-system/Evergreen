@@ -970,7 +970,7 @@ sub authority_tag_sf_browse {
 			{ select	=> { afr => [qw/record value/] },
 			  from		=> { 'are', 'afr' },
 			  where		=> {
-				'+afr' => { tag => $tag, subfield => $subfield, value => { '>' => lc($value) } },
+				'+afr' => { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } },
 				'+are' => { 'deleted' => 'f' }
 			  },
 			  order_by	=> { afr => { value => 'asc' } },
@@ -1368,8 +1368,11 @@ sub authority_tag_sf_startwith {
 		my $before = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
 			{ select	=> { afr => [qw/record value/] },
-			  from		=> 'afr',
-			  where		=> { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
+			  from		=> { 'afr', 'are' },
+			  where		=> {
+				'+afr' => { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
+				'+are' => { deleted => 'f' }
+			  },
 			  order_by	=> { afr => { value => 'desc' } },
 			  limit		=> $limit,
 			  offset	=> $offset
@@ -1382,8 +1385,11 @@ sub authority_tag_sf_startwith {
 		my $after = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
 			{ select	=> { afr => [qw/record value/] },
-			  from		=> 'afr',
-			  where		=> { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } }, 
+			  from		=> { 'afr', 'are' },
+			  where		=> {
+				'+afr' => { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } },
+				'+are' => { deleted => 'f' }
+			  },
 			  order_by	=> { afr => { value => 'asc' } },
 			  limit		=> $limit,
 			  offset	=> $offset
