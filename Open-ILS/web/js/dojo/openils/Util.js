@@ -361,5 +361,36 @@ if(!dojo._hasResource["openils.Util"]) {
         dojo.forEach(patterns, function(pat) { _hilightNode(node, pat); });
     };
 
+
+    /**
+     * Takes a chunk of HTML, inserts it into a new window, prints the window, 
+     * then closes the windw.  To provide ample printer queueing time, automatically
+     * wait a short time before closing the window after calling .print().  The amount
+     * of time to wait is based on the size of the data to be printed.
+     * @param html The HTML string
+     * @param callback Optional post-printing callback
+     */
+    openils.Util.printHtmlString = function(html, callback) {
+
+        var win = window.open('', 'Print Window', 'resizable,width=800,height=600,scrollbars=1'); 
+
+        // force the new window to the background
+        win.blur(); 
+        window.focus(); 
+
+        win.document.body.innerHTML = html;
+        win.print();
+
+        setTimeout(
+            function() { 
+                win.close();
+                if(callback)
+                    callback();
+            },
+            // 1k == 1 second pause, max 10 seconds
+            Math.min(html.length, 10000)
+        );
+    };
+
 }
 

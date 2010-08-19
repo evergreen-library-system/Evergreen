@@ -2076,8 +2076,7 @@ function AcqLiTable() {
                     progressDialog.hide();
                     var evt = openils.Util.readResponse(r);
                     if(evt && evt.template_output()) {
-                        win = window.open('','', 'resizable,width=800,height=600,scrollbars=1');
-                        win.document.body.innerHTML = evt.template_output().data();
+                        openils.Util.printHtmlString(evt.template_output().data());
                     }
                 }
             }
