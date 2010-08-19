@@ -5,7 +5,7 @@
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
     <div>
         <div id='oils-acq-picklist-header'>
-            <big>Purchase Order</big>
+            <big>Purchase Order (<span id="acq-po-view-state"></span>)</big>
             <table class="oils-generic-table acq-po-info">
                 <tr>
                     <th>ID</th><td><a id="acq-po-view-id"/></td>
@@ -96,9 +96,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Status</th>
-                    <td><span id="acq-po-view-state"/></td>
-                    <td>
+                    <td colspan='3'>
                         <a class="hidden" id="acq-po-split" href="javascript:void(0);"
                             onclick="if (confirm(localeStrings.CONFIRM_SPLIT_PO)) splitPo();">
                             Split Order by Lineitems
