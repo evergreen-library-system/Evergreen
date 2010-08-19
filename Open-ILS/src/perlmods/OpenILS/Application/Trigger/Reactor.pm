@@ -109,7 +109,7 @@ my $_TT_helpers = {
             }
         }
         $primary and unshift @isbns, $primary;
-        $logger->error("get_li_isbns returning isbns: " . join(', ', @isbns));
+        $logger->debug("get_li_isbns returning isbns: " . join(', ', @isbns));
         return @isbns;
     },
 
