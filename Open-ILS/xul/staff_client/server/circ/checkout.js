@@ -639,7 +639,11 @@ circ.checkout.prototype = {
                             return document.getElementById('circStrings').getString('staff.circ.checkout.override.item_rental_fee_required.warning');
                         },
                         '7004' : function(r) {
-                            return r.payload.status().name();
+                            try {
+                                return r.payload.status().name();
+                            } catch (E) {
+                                return "copy not available: (Unexpected error: payload not available)";  // XXX
+                            }
                         },
                         '7010' : function(r) {
                             return r.payload;

@@ -141,6 +141,7 @@
     </script>
     
     <messagecatalog id="patronStrings" src="/xul/server/locale/<!--#echo var='locale'-->/patron.properties"/>
+    <messagecatalog id="offlineStrings" src="/xul/server/locale/<!--#echo var='locale'-->/offline.properties"/>
 
     <commandset id="patron_summary_cmds" />
     <popupset id="patron_summary_popups" />
