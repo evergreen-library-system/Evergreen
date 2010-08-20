@@ -31,7 +31,8 @@ function formatName(value) {
         </div>
         <table  jsId="fListGrid"
                 dojoType="openils.widget.AutoGrid"
-                fieldOrder="['id', 'name', 'owner', 'item_count', 'skip_count']"
+                fieldOrder="['id', 'name', 'owner', 'item_count']"
+                suppressFields="['skip_count']"
                 query="{id: '*'}"
                 defaultCellWidth='12'
                 fmClass='acqdf'
