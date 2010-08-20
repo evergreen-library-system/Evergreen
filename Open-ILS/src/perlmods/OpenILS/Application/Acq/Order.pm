@@ -986,7 +986,7 @@ sub create_lineitem_assets {
             $volume = create_volume($mgr, $li, $lid) or return 0;
             $mgr->cache($org, "cn.$bibid.$label", $volume);
         }
-        create_copy($mgr, $volume, $lid) or return 0;
+        create_copy($mgr, $volume, $lid, $li) or return 0;
     }
 
     return { li => $li, new_bib => $new_bib };
@@ -1034,7 +1034,7 @@ sub create_volume {
 }
 
 sub create_copy {
-    my($mgr, $volume, $lid) = @_;
+    my($mgr, $volume, $lid, $li) = @_;
     my $copy = Fieldmapper::asset::copy->new;
     $copy->isnew(1);
     $copy->loan_duration(2);
@@ -1045,6 +1045,10 @@ sub create_copy {
     $copy->call_number($volume->id);
     $copy->circ_lib($volume->owning_lib);
     $copy->circ_modifier($lid->circ_modifier);
+
+    # AKA list price.  We might need a $li->list_price field since 
+    # estimated price is not necessarily the same as list price
+    $copy->price($li->estimated_unit_price); 
 
     my $evt = OpenILS::Application::Cat::AssetCommon->create_copy($mgr->editor, $volume, $copy);
     if($evt) {

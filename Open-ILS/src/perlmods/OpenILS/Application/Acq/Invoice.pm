@@ -163,11 +163,11 @@ sub rollback_entry_debits {
     my $lineitem = $e->retrieve_acq_lineitem($entry->lineitem) or return $e->die_event;
 
     for my $debit (@$debits) {
-
         # revert to the original estimated amount re-encumber
         $debit->encumbrance('t');
         $debit->amount($lineitem->estimated_unit_price());
         $e->update_acq_fund_debit($debit) or return $e->die_event;
+        update_copy_cost($e, $debit) or return $e->die_event; # clear the cost
     }
 
     return undef;
@@ -188,12 +188,41 @@ sub update_entry_debits {
     }
 
     for my $debit (@$debits) {
-        $debit->amount(entry_amount_per_item($entry));
+        my $amount = entry_amount_per_item($entry);
+        $debit->amount($amount);
         $debit->encumbrance('f');
         $e->update_acq_fund_debit($debit) or return $e->die_event;
+
+        # TODO: this does not reflect ancillary charges, like taxes, etc.
+        # We may need a way to indicate whether the amount attached to an 
+        # invoice_item should be prorated and included in the copy cost.
+        # Note that acq.invoice_item_type.prorate does not necessarily 
+        # mean a charge should be included in the copy price, only that 
+        # it should spread accross funds.
+        update_copy_cost($e, $debit, $amount) or return $e->die_event;
     }
 
     return undef;
+}
+
+# update the linked copy to reflect the amount paid for the item
+# returns true on success, false on error
+sub update_copy_cost {
+    my ($e, $debit, $amount) = @_;
+
+    my $lid = $e->search_acq_lineitem_detail([
+        {fund_debit => $debit->id},
+        {flesh => 1, flesh_fields => {acqlid => ['eg_copy_id']}}
+    ])->[0];
+
+    if($lid and my $copy = $lid->eg_copy_id) {
+        defined $amount and $copy->cost($amount) or $copy->clear_cost;
+        $copy->editor($e->requestor->id);
+        $copy->edit_date('now');
+        $e->update_asset_copy($copy) or return 0;
+    }
+
+    return 1;
 }
 
 
