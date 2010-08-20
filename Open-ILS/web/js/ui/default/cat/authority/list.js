@@ -7,8 +7,8 @@ dojo.require('dijit.form.TextBox');
 dojo.require("dijit.Menu");
 dojo.require("dijit.MenuItem");
 dojo.require('dojox.xml.parser');
+dojo.require("fieldmapper.Fieldmapper");
 dojo.require('openils.CGI');
-dojo.require('dojo.dnd.Source');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.XUL');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
@@ -189,5 +189,17 @@ function mergeRecords() {
     dojo.forEach(records, function(item, idx) {
         records[idx] = parseInt(item.slice(item.lastIndexOf('_') + 1));
     });
-    alert('TODO: actually merge the gathered records: ' + dojo.toJson(records));
+
+    /* Take the first record in the list and use that as the master */
+    fieldmapper.standardRequest(
+        ['open-ils.cat', 'open-ils.cat.authority.records.merge'],
+        {   async: false,
+            params: [openils.User.authtoken, records.shift(), records],
+            oncomplete : function(r) {
+                alert("Record merge is complete.");
+                clearMergeRecords();
+                displayRecords();
+            }
+        }
+    );
 }
