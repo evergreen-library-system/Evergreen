@@ -107,8 +107,12 @@ sub id {
 sub name {
     my $self = shift;
     my $u = $self->{user};
-    return OpenILS::SIP::clean_text($u->first_given_name . ' ' . 
-            $u->second_given_name . ' ' . $u->family_name);
+    return OpenILS::SIP::clean_text(
+        sprintf('%s %s %s', 
+            ($u->first_given_name || ''),
+            ($u->second_given_name || ''),
+            ($u->family_name || '')));
+   
 }
 
 sub home_library {
@@ -164,6 +168,14 @@ sub sip_birthdate {
 
 sub ptype {
     my $self = shift;
+
+	my $use_code = OpenILS::SIP->get_option_value('patron_type_uses_code') || '';
+
+    # should we use the no_i18n version of patron profile name (as a 'code')?
+    return $self->{editor}->retrieve_permission_grp_tree(
+        [$self->{user}->profile->id, {no_i18n => 1}])->name
+        if $use_code =~ /true/io;
+
     return OpenILS::SIP::clean_text($self->{user}->profile->name);
 }
 
@@ -428,6 +440,8 @@ sub __patron_items_info {
 			0, $self->{editor}, $self->{user}->id);;
 }
 
+
+
 sub overdue_items {
 	my ($self, $start, $end) = @_;
 
@@ -437,13 +451,12 @@ sub overdue_items {
 
 	my @o;
 	syslog('LOG_DEBUG', "OILS: overdue_items() fleshing circs @overdues");
-	
-	
-	my @return_datatype = grep { $_->{name} eq 'msg64_summary_datatype' } OpenILS::SIP::config()->{implementation_config}->{options}->{option};
+
+	my $return_datatype = OpenILS::SIP->get_option_value('msg64_summary_datatype') || '';
 	
 	for my $circid (@overdues) {
 		next unless $circid;
-		if(@return_datatype and $return_datatype[0]->{value} eq 'barcode') {
+		if($return_datatype eq 'barcode') {
 			push( @o, __circ_to_barcode($self->{editor}, $circid));
 		} else {
 			push( @o, OpenILS::SIP::clean_text(__circ_to_title($self->{editor}, $circid)));
@@ -486,11 +499,11 @@ sub charged_items {
 	my @c;
 	syslog('LOG_DEBUG', "OILS: charged_items() fleshing circs @charges");
 
-	my @return_datatype = grep { $_->{name} eq 'msg64_summary_datatype' } OpenILS::SIP::config()->{implementation_config}->{options}->{option};
+	my $return_datatype = OpenILS::SIP->get_option_value('msg64_summary_datatype') || '';
 
 	for my $circid (@charges) {
 		next unless $circid;
-		if(@return_datatype and $return_datatype[0]->{value} eq 'barcode') {
+		if($return_datatype eq 'barcode') {
 			push( @c, __circ_to_barcode($self->{editor}, $circid));
 		} else {
 			push( @c, OpenILS::SIP::clean_text(__circ_to_title($self->{editor}, $circid)));

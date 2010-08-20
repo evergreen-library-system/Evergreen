@@ -80,6 +80,14 @@ sub config {
 	return $config;
 }
 
+sub get_option_value {
+    my($self, $option) = @_;
+    my $ops = $config->{implementation_config}->{options}->{option};
+    $ops = [$ops] unless ref $ops eq 'ARRAY';
+    my @vals = grep { $_->{name} eq $option } @$ops;
+    return @vals ? $vals[0]->{value} : undef;
+}
+
 
 # Creates the global editor object
 my $cstore_init = 1; # call init on first use
