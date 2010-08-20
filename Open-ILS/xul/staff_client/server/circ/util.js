@@ -2694,6 +2694,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 break;
                 case 15: // ON_RESERVATION_SHELF
                     check.route_to = 'RESERVATION SHELF';
+                    check.what_happened = "reservation_shelf";
                     if (check.payload.reservation) {
                         if (check.payload.reservation.pickup_lib() != data.list.au[0].ws_ou()) {
                             msg += document.getElementById('commonStrings').getString('common.error');

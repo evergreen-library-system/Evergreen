@@ -14,6 +14,11 @@ my %scripts;
 my $script_libs;
 my $legacy_script_support = 0;
 
+my $MK_ENV_FLESH = { 
+    flesh => 2, 
+    flesh_fields => {acp => ['call_number'], acn => ['record']} 
+};
+
 sub initialize {
 
     my $self = shift;
@@ -188,7 +193,7 @@ sub run_method {
             my $res_id_list = [ map { $_->id } @$resources ];
             my $transit = $circulator->editor->search_action_reservation_transit_copy(
                 [
-                    { target_copy => $res_id_list, dest => $circulator->circ_lib },
+                    { target_copy => $res_id_list, dest => $circulator->circ_lib, dest_recv_time => undef },
                     { order_by => { artc => 'source_send_time' }, limit => 1 }
                 ]
             )->[0]; # Any transit for this barcode?
@@ -198,12 +203,21 @@ sub run_method {
                 my $reservation = $circulator->editor->retrieve_booking_reservation( $transit->reservation );
                 my $res_type    = $circulator->editor->retrieve_booking_resource_type( $reservation->target_resource_type );
 
+                my $success_event = new OpenILS::Event(
+                    "SUCCESS", "payload" => {"reservation" => $reservation}
+                );
                 if ($U->is_true($res_type->catalog_item)) { # is there a copy to be had here?
-                    if (my $copy = $circulator->editor->search_asset_copy({ barcode => $bc, deleted => 'f' })->[0]) { # got a copy
+                    if (my $copy = $circulator->editor->search_asset_copy([
+                        { barcode => $bc, deleted => 'f' }, $MK_ENV_FLESH
+                    ])->[0]) { # got a copy
                         $copy->status( $transit->copy_status );
                         $copy->editor($circulator->editor->requestor->id);
                         $copy->edit_date('now');
-                        $circulator->editor->update_asset_copy( $copy );
+                        $circulator->editor->update_asset_copy($copy);
+                        $success_event->{"payload"}->{"record"} =
+                            $U->record_to_mvr($copy->call_number->record);
+                        $copy->call_number($copy->call_number->id);
+                        $success_event->{"payload"}->{"copy"} = $copy;
                     }
                 }
 
@@ -211,51 +225,9 @@ sub run_method {
                 $circulator->editor->update_action_reservation_transit_copy( $transit );
 
                 $circulator->editor->commit;
-
-                #XXX need to return here, with info about the resource/copy and the "put it on the booking shelf" message
-
-            } else { # no transit, look for an upcoming reservation to capture for
-
-                my $reservation = $circulator->editor->search_booking_reservation(
-                    [
-                        { current_resource => $res_id_list,
-                          pickup_lib => $circulator->circ_lib,
-                          cancel_time => undef,
-                          capture_time => undef
-                        },
-                        { order_by => { bresv => 'start_time' }, limit => 1 }
-                    ]
-                )->[0];
-
-                if ($reservation) { # we have a reservation for which we could capture this resource.  wheee!
-                    my $res_type = $circulator->editor->retrieve_booking_resource_type( $reservation->target_resource_type );
-                    my $elbow_room = $res_type->elbow_room ||
-                        $U->ou_ancestor_setting_value( $circulator->circ_lib, 'circ.booking_reservation.default_elbow_room', $circulator->editor );
-                
-                    if ($elbow_room) {
-                        $reservation = $circulator->editor->search_booking_reservation(
-                            [
-                                { id => $reservation->id, start_time => { '<=' => DateTime->now->add( seconds => interval_to_seconds($elbow_room) )->strftime('%FT%T%z') } },
-                                { order_by => { bresv => 'start_time' }, limit => 1 }
-                            ]
-                        )->[0];
-                    }
-
-                    if ($reservation) { # no elbow room specified, or we still have a reservation within the elbow_room time
-                        my $b_ses = OpenSRF::AppSession->create('open-ils.booking');
-                        my $result = $b_ses->request(
-                            'open-ils.booking.reservations.capture',
-                            $auth => $reservation->id
-                        )->gather(1);
-
-                        if (ref($result) && $result->{ilsevent} == 0) { # captured!
-                            #XXX what to return here???
-                            return $result; # the booking capture success
-                        } else {
-                            #XXX how to fail???  Probably, just move on.
-                        }
-                    }
-                }
+                # Formerly this branch just stopped here. Argh!
+                $conn->respond_complete($success_event);
+                return;
             }
         }
     }
@@ -266,11 +238,13 @@ sub run_method {
     # Go ahead and load the script runner to make sure we have all 
     # of the objects we need
     # --------------------------------------------------------------------------
-    $circulator->is_res_checkin($circulator->is_checkin(1)) if $api =~ /reservation.return/;
+    $circulator->is_res_checkin($circulator->is_checkin(1)) if $api =~ /reservation.return/ or $circulator->seems_like_reservation();
     $circulator->is_res_checkout(1) if $api =~ /reservation.pickup/;
 
     $circulator->is_renewal(1) if $api =~ /renew/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
+
+    $circulator->mk_env();
     $circulator->noop if $circulator->claims_never_checked_out;
 
     if($legacy_script_support and not $circulator->is_checkin) {
@@ -280,8 +254,6 @@ sub run_method {
         $circulator->circ_permit_copy($scripts{circ_permit_copy});      
         $circulator->circ_duration($scripts{circ_duration});             
         $circulator->circ_permit_renew($scripts{circ_permit_renew});
-    } elsif (not $circulator->is_res_checkin) { # mk_env cannot work w/ reservation.return
-        $circulator->mk_env();
     }
     return circ_events($circulator) if $circulator->bail_out;
 
@@ -455,8 +427,8 @@ my @AUTOLOAD_FIELDS = qw/
     is_renewal
     is_checkout
     is_res_checkout
-    is_noncat
     is_precat
+    is_noncat
     request_precat
     is_checkin
     is_res_checkin
@@ -600,6 +572,9 @@ sub push_events {
     my( $self, @evts ) = @_;
     for my $e (@evts) {
         next unless $e;
+        $e->{payload} = $self->copy if 
+              ($e->{textcode} eq 'COPY_NOT_AVAILABLE');
+
         $logger->info("circulator: pushing event ".$e->{textcode});
         push( @{$self->events}, $e ) unless
             grep { $_->{textcode} eq $e->{textcode} } @{$self->events};
@@ -625,6 +600,49 @@ sub check_permit_key {
     return ($one) ? 1 : 0;
 }
 
+sub seems_like_reservation {
+    my $self = shift;
+
+    # Some words about the following method:
+    # 1) It requires the VIEW_USER permission, but that's not an
+    # issue, right, since all staff should have that?
+    # 2) It returns only one reservation at a time, even if an item can be
+    # and is currently overbooked.  Hmmm....
+    my $booking_ses = create OpenSRF::AppSession("open-ils.booking");
+    my $result = $booking_ses->request(
+        "open-ils.booking.reservations.by_returnable_resource_barcode",
+        $self->editor->authtoken,
+        $self->copy_barcode
+    )->gather(1);
+    $booking_ses->disconnect;
+
+    return $self->bail_on_events($result) if defined $U->event_code($result);
+
+    if (@$result > 0) {
+        $self->reservation(shift @$result);
+        return 1;
+    } else {
+        return 0;
+    }
+
+}
+
+# save_trimmed_copy() used just to be a block in mk_env(), but was separated for re-use
+sub save_trimmed_copy {
+    my ($self, $copy) = @_;
+
+    $self->copy($copy);
+    $self->volume($copy->call_number);
+    $self->title($self->volume->record);
+    $self->copy->call_number($self->volume->id);
+    $self->volume->record($self->title->id);
+    $self->is_precat(1) if $self->volume->id == OILS_PRECAT_CALL_NUMBER;
+    if($self->copy->deposit_amount and $self->copy->deposit_amount > 0) {
+        $self->is_deposit(1) if $U->is_true($self->copy->deposit);
+        $self->is_rental(1) unless $U->is_true($self->copy->deposit);
+    }
+}
+
 sub mk_env {
     my $self = shift;
     my $e = $self->editor;
@@ -634,31 +652,49 @@ sub mk_env {
     # --------------------------------------------------------------------------
     unless($self->is_noncat) {
         my $copy;
-	    my $flesh = { 
-		    flesh => 2, 
-		    flesh_fields => {acp => ['location', 'status', 'circ_lib', 'age_protect', 'call_number'], acn => ['record']}
-	    };
 	    if($self->copy_id) {
 		    $copy = $e->retrieve_asset_copy(
-			    [$self->copy_id, $flesh ]) or return $e->event;
+			    [$self->copy_id, $MK_ENV_FLESH ]) or return $e->event;
     
 	    } elsif( $self->copy_barcode ) {
     
 		    $copy = $e->search_asset_copy(
-			    [{barcode => $self->copy_barcode, deleted => 'f'}, $flesh ])->[0];
-	    }
+			    [{barcode => $self->copy_barcode, deleted => 'f'}, $MK_ENV_FLESH ])->[0];
+	    } elsif( $self->reservation ) {
+            my $res = $e->json_query(
+                {
+                    "select" => {"acp" => ["id"]},
+                    "from" => {
+                        "acp" => {
+                            "brsrc" => {
+                                "fkey" => "barcode",
+                                "field" => "barcode",
+                                "join" => {
+                                    "bresv" => {
+                                        "fkey" => "id",
+                                        "field" => "current_resource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "where" => {
+                        "+bresv" => {
+                            "id" => (ref $self->reservation) ?
+                                $self->reservation->id : $self->reservation
+                        }
+                    }
+                }
+            );
+            if (ref $res eq "ARRAY" and scalar @$res) {
+                $logger->info("circulator: mapped reservation " .
+                    $self->reservation . " to copy " . $res->[0]->{"id"});
+                $copy = $e->retrieve_asset_copy([$res->[0]->{"id"}, $MK_ENV_FLESH]);
+            }
+        }
     
         if($copy) {
-            $self->copy($copy);
-            $self->volume($copy->call_number);
-            $self->title($self->volume->record);
-            $self->copy->call_number($self->volume->id);
-            $self->volume->record($self->title->id);
-            $self->is_precat(1) if $self->volume->id == OILS_PRECAT_CALL_NUMBER;
-            if($self->copy->deposit_amount and $self->copy->deposit_amount > 0) {
-                $self->is_deposit(1) if $U->is_true($self->copy->deposit);
-                $self->is_rental(1) unless $U->is_true($self->copy->deposit);
-            }
+            $self->save_trimmed_copy($copy);
         } else {
             # We can't renew if there is no copy
             return $self->bail_on_events(OpenILS::Event->new('ASSET_COPY_NOT_FOUND'))
@@ -1229,11 +1265,6 @@ sub run_copy_permit_scripts {
    # uniquify the events
    my %hash = map { ($_->{ilsevent} => $_) } @allevents;
    @allevents = values %hash;
-
-   for (@allevents) {
-      $_->{payload} = $copy if 
-            ($_->{textcode} eq 'COPY_NOT_AVAILABLE');
-   }
 
     $logger->info("circulator: permit_copy script returned events: @allevents") if @allevents;
 
@@ -1831,13 +1862,17 @@ sub do_reservation_return {
 
     $self->log_me("do_reservation_return()");
 
-    my ($reservation, $evt) = $U->fetch_booking_reservation($self->reservation);
-    return $self->bail_on_events($evt) if $evt;
+    if (not ref $self->reservation) {
+        my ($reservation, $evt) =
+            $U->fetch_booking_reservation($self->reservation);
+        return $self->bail_on_events($evt) if $evt;
+        $self->reservation($reservation);
+    }
 
-    $self->reservation( $reservation );
     $self->generate_fines(1);
     $self->reservation->return_time('now');
     $self->update_reservation();
+    $self->reshelve_copy if $self->copy;
 
     if ( $self->reservation->current_resource && $self->reservation->current_resource->catalog_item ) {
         $self->copy( $self->reservation->current_resource->catalog_item );
@@ -1877,7 +1912,7 @@ sub booking_adjusted_due_date {
         my $booking_ses = OpenSRF::AppSession->create( 'open-ils.booking' );
         my $bookings = $booking_ses->request(
             'open-ils.booking.reservations.filtered_id_list', $self->editor->authtoken,
-            { resource => $booking_item->id, search_start => 'now', search_end => $circ->due_date }
+            { resource => $booking_item->id, search_start => 'now', search_end => $circ->due_date, fields => { cancel_time => undef }}
         )->gather(1);
         $booking_ses->disconnect;
         
@@ -2210,12 +2245,33 @@ sub do_checkin {
    # this copy can fulfill a hold or needs to be routed to a different location
    # ------------------------------------------------------------------------------
 
+    my $needed_for_something = 0; # formerly "needed_for_hold"
+
     if(!$self->noop) { # /not/ a no-op checkin, capture for hold or put item into transit
 
-        my $needed_for_hold = (!$self->remote_hold and $self->attempt_checkin_hold_capture());
+        if (!$self->remote_hold) {
+            my $potential_hold = $self->hold_capture_is_possible;
+            my $potential_reservation = $self->reservation_capture_is_possible;
+
+            if ($potential_hold and $potential_reservation) {
+                $logger->info("circulator: item could fulfill either hold or reservation");
+                $self->push_events(new OpenILS::Event(
+                    "HOLD_RESERVATION_CONFLICT",
+                    "hold" => $potential_hold,
+                    "reservation" => $potential_reservation
+                ));
+                return if $self->bail_out;
+            } elsif ($potential_hold) {
+                $needed_for_something =
+                    $self->attempt_checkin_hold_capture;
+            } elsif ($potential_reservation) {
+                $needed_for_something =
+                    $self->attempt_checkin_reservation_capture;
+            }
+        }
         return if $self->bail_out;
     
-        unless($needed_for_hold) {
+        unless($needed_for_something) {
             my $circ_lib = (ref $self->copy->circ_lib) ? 
                     $self->copy->circ_lib->id : $self->copy->circ_lib;
     
@@ -2256,6 +2312,7 @@ sub do_checkin {
             $self->update_copy;
         }
     }
+    $logger->info("LFW XXX: way down here"); # LFW XXX
 
     if($self->claims_never_checked_out and 
             $U->ou_ancestor_setting_value($self->circ->circ_lib, 'circ.claim_never_checked_out.mark_missing')) {
@@ -2265,7 +2322,7 @@ sub do_checkin {
         $self->update_copy;
 
     } else {
-        $self->reshelve_copy;
+        $self->reshelve_copy unless $needed_for_something;
     }
 
     return if $self->bail_out;
@@ -2408,6 +2465,42 @@ sub checkin_build_copy_transit {
 }
 
 
+sub hold_capture_is_possible {
+    my $self = shift;
+    my $copy = $self->copy;
+
+    # we've been explicitly told not to capture any holds
+    return 0 if $self->capture eq 'nocapture';
+
+    # See if this copy can fulfill any holds
+    my $hold = $holdcode->find_nearest_permitted_hold(
+        $self->editor, $copy, $self->editor->requestor, 1 # check_only
+    );
+    return undef if ref $hold eq "HASH" and
+        $hold->{"textcode"} eq "ACTION_HOLD_REQUEST_NOT_FOUND";
+    return $hold;
+}
+
+sub reservation_capture_is_possible {
+    my $self = shift;
+    my $copy = $self->copy;
+
+    # we've been explicitly told not to capture any holds
+    return 0 if $self->capture eq 'nocapture';
+
+    my $booking_ses = OpenSRF::AppSession->connect("open-ils.booking");
+    my $resv = $booking_ses->request(
+        "open-ils.booking.reservations.could_capture",
+        $self->editor->authtoken, $copy->barcode
+    )->gather(1);
+    $booking_ses->disconnect;
+    if (ref($resv) eq "HASH" and exists $resv->{"textcode"}) {
+        $self->push_events($resv);
+    } else {
+        return $resv;
+    }
+}
+
 # returns true if the item was used (or may potentially be used 
 # in subsequent calls) to capture a hold.
 sub attempt_checkin_hold_capture {
@@ -2484,6 +2577,69 @@ sub attempt_checkin_hold_capture {
     # make sure we save the copy status
     $self->update_copy;
     return 1;
+}
+
+sub attempt_checkin_reservation_capture {
+    my $self = shift;
+    my $copy = $self->copy;
+
+    # we've been explicitly told not to capture any holds
+    return 0 if $self->capture eq 'nocapture';
+
+    my $booking_ses = OpenSRF::AppSession->connect("open-ils.booking");
+    my $evt = $booking_ses->request(
+        "open-ils.booking.resources.capture_for_reservation",
+        $self->editor->authtoken,
+        $copy->barcode,
+        1 # don't update copy - we probably have it locked
+    )->gather(1);
+    $booking_ses->disconnect;
+
+    if (ref($evt) ne "HASH" or not exists $evt->{"textcode"}) {
+        $logger->warn(
+            "open-ils.booking.resources.capture_for_reservation " .
+            "didn't return an event!"
+        );
+    } else {
+        if (
+            $evt->{"textcode"} eq "RESERVATION_NOT_FOUND" and
+            $evt->{"payload"}->{"fail_cause"} eq "not-transferable"
+        ) {
+            # not-transferable is an error event we'll pass on the user
+            $logger->warn("reservation capture attempted against non-transferable item");
+            $self->push_events($evt);
+            return 0;
+        } elsif ($evt->{"textcode"} eq "SUCCESS") {
+            # Re-retrieve copy as reservation capture may have changed
+            # its status and whatnot.
+            $logger->info(
+                "circulator: booking capture win on copy " . $self->copy->id
+            );
+            if (my $new_copy_status = $evt->{"payload"}->{"new_copy_status"}) {
+                $logger->info(
+                    "circulator: changing copy " . $self->copy->id .
+                    "'s status from " . $self->copy->status . " to " .
+                    $new_copy_status
+                );
+                $self->copy->status($new_copy_status);
+                $self->update_copy;
+            }
+            $self->reservation($evt->{"payload"}->{"reservation"});
+
+            if (exists $evt->{"payload"}->{"transit"}) {
+                $self->push_events(
+                    new OpenILS::Event(
+                        "ROUTE_ITEM",
+                        "org" => $evt->{"payload"}->{"transit"}->dest
+                    )
+                );
+            }
+            $self->checkin_changed(1);
+            return 1;
+        }
+    }
+    # other results are treated as "nothing to capture"
+    return 0;
 }
 
 sub do_hold_notify {
@@ -2933,6 +3089,9 @@ sub checkin_flesh_events {
         $payload->{cancelled_hold_transit} = 1 if $self->cancelled_hold_transit;
         $payload->{hold}    = $hold;
         $payload->{patron}  = $self->patron;
+        $payload->{reservation} = $self->reservation
+            unless (not $self->reservation or $self->reservation->cancel_time);
+
         $evt->{payload}     = $payload;
     }
 }
