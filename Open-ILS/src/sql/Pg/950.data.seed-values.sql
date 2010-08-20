@@ -1258,7 +1258,7 @@ INSERT INTO permission.perm_list VALUES
     (277,'UPDATE_VOLUME_NOTE', oils_i18n_gettext(277,'FIXME: Need description for UPDATE_VOLUME_NOTE', 'ppl', 'description')),
     (278,'UPDATE_VR_FORMAT', oils_i18n_gettext(278,'FIXME: Need description for UPDATE_VR_FORMAT', 'ppl', 'description')),
     (279,'UPDATE_XML_TRANSFORM', oils_i18n_gettext(279,'FIXME: Need description for UPDATE_XML_TRANSFORM', 'ppl', 'description')),
-    (280,'MERGE_BIB_RECORDS', oils_i18n_gettext(280,'FIXME: Need description for MERGE_BIB_RECORDS', 'ppl', 'description')),
+    (280,'MERGE_BIB_RECORDS', oils_i18n_gettext(280,'Allow a user to merge bibliographic records and associated assets', 'ppl', 'description')),
     (281,'UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', oils_i18n_gettext(281,'FIXME: Need description for UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', 'ppl', 'description')),
     (282,'CREATE_ACQ_FUNDING_SOURCE', oils_i18n_gettext(282,'FIXME: Need description for CREATE_ACQ_FUNDING_SOURCE', 'ppl', 'description')),
     (283,'CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF', oils_i18n_gettext(283,'FIXME: Need description for CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF', 'ppl', 'description')),
@@ -1379,6 +1379,7 @@ INSERT INTO permission.perm_list VALUES
     (390, 'OVERRIDE_HOLD_HAS_LOCAL_COPY', oils_i18n_gettext( 390, 'Allow a user to override the circ.holds.hold_has_copy_at.block setting', 'ppl', 'description' ))
     ,(391, 'UPDATE_PICKUP_LIB_FROM_TRANSIT', oils_i18n_gettext( 391, 'Allow a user to change the pickup and transit destination for a captured hold item already in transit', 'ppl', 'description' ))
     ,(392, 'COPY_NEEDED_FOR_HOLD.override', oils_i18n_gettext( 392, 'Allow a user to force renewal of an item that could fulfill a hold request', 'ppl', 'description' ))
+    ,(393, 'MERGE_AUTH_RECORDS', oils_i18n_gettext( 393, 'Allow a user to merge authority records together', 'ppl', 'description' ))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -1514,6 +1515,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SE
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_MFHD_RECORD'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_MFHD_RECORD'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'MERGE_AUTH_RECORDS'), 1, false);
 
 -- Add basic circulation permissions to the Circulators group
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_TRANSACTION'), 0, false);
