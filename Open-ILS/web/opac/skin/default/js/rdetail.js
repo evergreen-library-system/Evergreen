@@ -353,6 +353,10 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 		var mfhd_edit = new dijit.Menu({});
 		new dijit.MenuItem({onClick: function(){loadMarcEditor(holdings.sre_id())}, label:opac_strings.EDIT_MFHD_RECORD}).placeAt(mfhd_edit, "first");
 		new dijit.MenuItem({onClick:function(){
+			// Avoid accidental deletion of MFHD records
+			if (!confirm(opac_strings.DELETE_MFHD_CONFIRM)) {
+				return;
+			}
 			var pcrud = new openils.PermaCrud({"authtoken": G.user.session});
 			var mfhd_rec = pcrud.retrieve("sre", holdings.sre_id());
 			if (mfhd_rec) {
