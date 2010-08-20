@@ -54,6 +54,8 @@ sub create_lineitem {
             or return $e->die_event;
         return $e->die_event unless 
             $e->allowed('MANAGE_PROVIDER', $po->ordering_agency, $po);
+
+        $li->provider($po->provider) unless defined $li->provider;
     }
 
     $li->selector($e->requestor->id);

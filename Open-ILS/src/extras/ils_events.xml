@@ -952,7 +952,7 @@
 		<desc xml:lang="en-US">The lineitem has no price</desc>
 	</event>
 	<event code='10005' textcode='ACQ_LINEITEM_NO_PROVIDER'>
-		<desc xml:lang="en-US">The lineitem has no price</desc>
+		<desc xml:lang="en-US">The lineitem has no provider</desc>
 	</event>
 
 	<event code='10101' textcode='ACQ_ALREADY_CANCELED'>
