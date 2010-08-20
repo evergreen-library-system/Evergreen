@@ -1,6 +1,6 @@
 [% WRAPPER 'default/base.tt2' %]
 [% ctx.page_title = 'Patron Requests' %]
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/user_request.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/user_request.js'></script>
 <script type="text/javascript">var reqId = '[% ctx.page_args.0 %]';</script>
 
     <div dojoType="dijit.layout.StackContainer" id="stackContainer" doLayout="false">

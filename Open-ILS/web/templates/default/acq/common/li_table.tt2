@@ -1,6 +1,6 @@
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"> </script>
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/common/li_table.js'> </script>
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/financial/claim_voucher.js'> </script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/common/li_table.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/claim_voucher.js'> </script>
 <div id='acq-lit-table-container'>
     <div id='acq-lit-table-div' class='hidden'>
 

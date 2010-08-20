@@ -1,10 +1,10 @@
 [% WRAPPER "default/base.tt2" %]
 [% ctx.page_title = "Acquisitions Search" %]
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/search/unified.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/search/invoice.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/search/picklist.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/search/purchase_order.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/unified.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/invoice.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/picklist.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/purchase_order.js"></script>
 <div id="acq-unified-body" class="hidden">
     <div id="acq-unified-heading">
         <span id="acq-unified-heading-actual">Acquisitions Search</span>

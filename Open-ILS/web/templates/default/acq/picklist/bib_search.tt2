@@ -1,5 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/bib_search.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/bib_search.js'></script>
 <style type="text/css">
     @import "[% ctx.media_prefix %]/js/dojo/dojox/form/resources/CheckedMultiSelect.css";
 </style>
