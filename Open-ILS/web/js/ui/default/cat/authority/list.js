@@ -132,8 +132,15 @@ function authListInit() {
     }
     dojo.connect(dijit.byId('authTerm'), 'onBlur', function() {
         dijit.byId('authPage').attr('value', 0);
-       displayRecords();
+        displayRecords();
     });
+    dojo.connect(dijit.byId('authTerm'), 'onKeyPress', function(evt) {
+        if (evt.keyCode == dojo.keys.ENTER) {
+            dijit.byId('authPage').attr('value', 0);
+            displayRecords();
+        }
+    });
+
 }
 dojo.addOnLoad(authListInit);
 
