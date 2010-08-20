@@ -98,4 +98,51 @@ sub batch_retrieve_authority_record {
     return undef;
 }
 
+__PACKAGE__->register_method(
+    method    => 'count_linked_bibs',
+    api_name  => 'open-ils.cat.authority.records.count_linked_bibs',
+    signature => q/
+        Counts the number of bib records linked to each authority record in the input list
+        @param records Array of authority records to return counts
+        @return A list of hashes containing the authority record ID ("id") and linked bib count ("bibs")
+    /
+);
+
+sub count_linked_bibs {
+    my( $self, $conn, $records ) = @_;
+
+    my $editor = new_editor();
+
+    my $link_count;
+    my @clean_records;
+    for my $auth ( @$records ) {
+        # Protection against SQL injection? Might be overkill.
+        my $intauth = int($auth);
+        if ($intauth) {
+            push(@clean_records, $intauth);
+        }
+    }
+    return $link_count if !@clean_records;
+    
+    $link_count = $editor->json_query({
+        "select" => {
+            "abl" => [
+                {
+                    "column" => "authority"
+                },
+                {
+                    "alias" => "bibs",
+                    "transform" => "count",
+                    "column" => "bib",
+                    "aggregate" => 1
+                }
+            ]
+        },
+        "from" => "abl",
+        "where" => { "authority" => \@clean_records }
+    });
+
+    return $link_count;
+}
+
 1;
