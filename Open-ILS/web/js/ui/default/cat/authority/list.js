@@ -73,6 +73,12 @@ function displayAuthorities(data) {
         // "Delete" menu item
         new dijit.MenuItem({"id": "delete_" + authId, "onClick":function(){
             recId = this.id.slice(this.id.lastIndexOf('_') + 1);
+
+            // Deleting an authority record is unusual; let's be 100% sure
+            if (!confirm("Are you sure you want to delete record " + recId + "?")) {
+                return;
+            }
+
             pcrud = new openils.PermaCrud();
             auth_rec = pcrud.retrieve("are", recId);
             if (auth_rec) {
