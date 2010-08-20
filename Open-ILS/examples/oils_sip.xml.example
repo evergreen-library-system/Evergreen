@@ -99,6 +99,10 @@
 					  default behaviour in previous versions of Evergreen.
 					-->
 					<option name='msg64_summary_datatype' value='barcode' />
+                    <!--
+                        If enabled, the PC field in patron-info requests will return the non-translated profile name
+                    <option name='patron_type_uses_code' value='true' />
+                    -->
 				</options>
 
                 <!-- If uncommented, overrides the legacy_script_support value in opensrf.xml for SIP. -->
