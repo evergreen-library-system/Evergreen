@@ -130,7 +130,10 @@ function authListInit() {
         dijit.byId('authTerm').attr('value', term);
         displayRecords();
     }
-    dojo.connect(dijit.byId('authTerm'), 'onBlur', 'displayRecords');
+    dojo.connect(dijit.byId('authTerm'), 'onBlur', function() {
+        dijit.byId('authPage').attr('value', 0);
+       displayRecords();
+    });
 }
 dojo.addOnLoad(authListInit);
 
