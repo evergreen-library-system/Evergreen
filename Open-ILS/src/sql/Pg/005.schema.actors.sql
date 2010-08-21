@@ -315,6 +315,7 @@ COMMENT ON TABLE actor.card IS $$
 $$;
 
 CREATE INDEX actor_card_usr_idx ON actor.card (usr);
+CREATE INDEX actor_card_barcode_lower_idx ON actor.card (lower(barcode));
 
 CREATE TABLE actor.org_unit_type (
 	id		SERIAL	PRIMARY KEY,
