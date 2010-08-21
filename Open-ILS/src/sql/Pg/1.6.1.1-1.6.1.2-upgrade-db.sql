@@ -599,6 +599,7 @@ $func$ LANGUAGE plpgsql;
 
 COMMIT;
 
+CREATE INDEX actor_card_barcode_lower_idx ON actor.card (lower(barcode));
 CREATE INDEX atev_target_def_idx ON action_trigger.event (target,event_def);
 -- Give circulation staff the ability to handle day-to-day booking/reservation tasks
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) SELECT 5, id, 2, false FROM permission.perm_list WHERE code = 'ADMIN_BOOKING_RESERVATION';
