@@ -7,6 +7,7 @@ dojo.require('dijit.form.TextBox');
 dojo.require("dijit.Menu");
 dojo.require("dijit.MenuItem");
 dojo.require('dojox.xml.parser');
+dojo.require('DojoSRF');
 dojo.require("fieldmapper.Fieldmapper");
 dojo.require('openils.CGI');
 dojo.require('openils.PermaCrud');
@@ -29,6 +30,8 @@ function authOUListInit() {
 dojo.addOnLoad(authOUListInit);
 */
 function displayAuthorities(data) { 
+
+    var idArr = [];
     // Grab each record from the returned authority records
     dojo.query("record", data).forEach(function(node) {
         authText = '';
@@ -43,8 +46,10 @@ function displayAuthorities(data) {
             authId = dojox.xml.parser.textContent(dfNode); 
         });
 
+        idArr.push(parseInt(authId));
+
         // Create the authority record listing entry
-        dojo.place('<div class="authEntry" id="auth' + authId + '"><span class="text">' + authText + '</span></div>', "authlist-div", "last");
+        dojo.place('<div class="authEntry" id="auth' + authId + '"><span class="text" id="authLabel' + authId + '">' + authText + '</span></div>', "authlist-div", "last");
 
         // Add the menu of new/edit/delete/mark-for-merge options
         var auth_menu = new dijit.Menu({});
@@ -87,10 +92,42 @@ function displayAuthorities(data) {
             }
         }, "label":"Delete"}).placeAt(auth_menu, "last");
 
-        auth_mb = new dijit.form.DropDownButton({dropDown: auth_menu, label:"Actions"});
+        auth_mb = new dijit.form.DropDownButton({dropDown: auth_menu, label:"Actions", id:"menu" + authId});
         auth_mb.placeAt("auth" + authId, "first");
         auth_menu.startup();
     });
+
+    showBibCount(idArr);
+
+}
+
+function showBibCount(authIds) {
+    /* Decorate the list with # of bibs linked to each authority record */
+    var ses = new OpenSRF.ClientSession('open-ils.cat');
+    var req = ses.request('open-ils.cat.authority.records.count_linked_bibs', authIds);
+    var linkedIds = [];
+    req.oncomplete = function(r) {
+        var msg = r.recv().content();
+        dojo.forEach(msg, function(auth) {
+                linkedIds.push(auth.authority);
+                dojo.place('<span class="bibcount">' + auth.bibs + '</span>', 'authLabel' + auth.authority, 'before');
+            }
+        );
+
+        /* Assign counts of 0 for every non-linked authority */
+        dojo.forEach(authIds, function (id) {
+            var found = false;
+            dojo.forEach(linkedIds, function (lid) {
+                if (id == lid) {
+                    found = true;
+                }
+            });
+            if (!found) {
+                dojo.place('<span class="bibcount">0</span>', 'authLabel' + id, 'before');
+            }
+        });
+    }
+    req.send();
 }
 
 function loadMarcEditor(pcrud, rec) {
