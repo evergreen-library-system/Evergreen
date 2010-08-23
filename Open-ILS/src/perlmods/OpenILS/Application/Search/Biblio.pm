@@ -260,7 +260,7 @@ sub record_id_to_copy_count {
     return [] unless $record_id;
 
     my $key = $self->api_name =~ /metarecord/ ? 'metarecord' : 'record';
-    my $staff =~ $self->api_name =~ /staff/ ? 't' : 'f';
+    my $staff = $self->api_name =~ /staff/ ? 't' : 'f';
 
     my $data = $U->cstorereq(
         "open-ils.cstore.json_query.atomic",
