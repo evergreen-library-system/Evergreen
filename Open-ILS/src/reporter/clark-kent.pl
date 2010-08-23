@@ -380,7 +380,7 @@ sub send_success {
 
 sub send_fail {
 	my $r = shift;
-	open F, $fail_template or die "Cannot read '$success_template'";
+	open F, $fail_template or die "Cannot read '$fail_template'";
 	my $tmpl = join('',<F>);
 	close F;
 
