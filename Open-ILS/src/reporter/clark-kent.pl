@@ -50,50 +50,48 @@ my (%data_db, %state_db);
 my $sc = OpenSRF::Utils::SettingsClient->new;
 
 $data_db{db_driver} = $sc->config_value( reporter => setup => database => 'driver' );
-$data_db{db_host} = $sc->config_value( reporter => setup => database => 'host' );
-$data_db{db_port} = $sc->config_value( reporter => setup => database => 'port' );
-$data_db{db_name} = $sc->config_value( reporter => setup => database => 'db' );
+$data_db{db_host}   = $sc->config_value( reporter => setup => database => 'host' );
+$data_db{db_port}   = $sc->config_value( reporter => setup => database => 'port' );
+$data_db{db_name}   = $sc->config_value( reporter => setup => database => 'db' );
 if (!$data_db{db_name}) {
     $data_db{db_name} = $sc->config_value( reporter => setup => database => 'name' );
     print STDERR "WARN: <database><name> is a deprecated setting for database name. For future compatibility, you should use <database><db> instead." if $data_db{db_name}; 
 }
-$data_db{db_user} = $sc->config_value( reporter => setup => database => 'user' );
-$data_db{db_pw} = $sc->config_value( reporter => setup => database => 'pw' );
+$data_db{db_user}   = $sc->config_value( reporter => setup => database => 'user' );
+$data_db{db_pw}     = $sc->config_value( reporter => setup => database => 'pw' );
 
 
 
 # Fetch the optional state database connection info
 $state_db{db_driver} = $sc->config_value( reporter => setup => state_store => 'driver' ) || $data_db{db_driver};
-$state_db{db_host} = $sc->config_value( reporter => setup => state_store => 'host' ) || $data_db{db_host};
-$state_db{db_port} = $sc->config_value( reporter => setup => state_store => 'port' ) || $data_db{db_port};
-$state_db{db_name} = $sc->config_value( reporter => setup => state_store => 'db' );
+$state_db{db_host}   = $sc->config_value( reporter => setup => state_store => 'host'   ) || $data_db{db_host};
+$state_db{db_port}   = $sc->config_value( reporter => setup => state_store => 'port'   ) || $data_db{db_port};
+$state_db{db_name}   = $sc->config_value( reporter => setup => state_store => 'db'     );
 if (!$state_db{db_name}) {
     $state_db{db_name} = $sc->config_value( reporter => setup => state_store => 'name' ) || $data_db{db_name};
 }
-$state_db{db_user} = $sc->config_value( reporter => setup => state_store => 'user' ) || $data_db{db_user};
-$state_db{db_pw} = $sc->config_value( reporter => setup => state_store => 'pw' ) || $data_db{db_pw};
+$state_db{db_user}   = $sc->config_value( reporter => setup => state_store => 'user'   ) || $data_db{db_user};
+$state_db{db_pw}     = $sc->config_value( reporter => setup => state_store => 'pw'     ) || $data_db{db_pw};
 
 
 die "Unable to retrieve database connection information from the settings server"
     unless ($state_db{db_driver} && $state_db{db_host} && $state_db{db_port} && $state_db{db_name} && $state_db{db_user} &&
         $data_db{db_driver} && $data_db{db_host} && $data_db{db_port} && $data_db{db_name} && $data_db{db_user});
 
-my $email_server = $sc->config_value( email_notify => 'smtp_server' );
-my $email_sender = $sc->config_value( email_notify => 'sender_address' );
+my $email_server     = $sc->config_value( email_notify => 'smtp_server' );
+my $email_sender     = $sc->config_value( email_notify => 'sender_address' );
 my $success_template = $sc->config_value( reporter => setup => files => 'success_template' );
-my $fail_template = $sc->config_value( reporter => setup => files => 'fail_template' );
-
-my $output_base = $sc->config_value( reporter => setup => files => 'output_base' );
-
-my $base_uri = $sc->config_value( reporter => setup => 'base_uri' );
+my $fail_template    = $sc->config_value( reporter => setup => files => 'fail_template' );
+my $output_base      = $sc->config_value( reporter => setup => files => 'output_base' );
+my $base_uri         = $sc->config_value( reporter => setup => 'base_uri' );
 
 my $state_dsn = "dbi:" . $state_db{db_driver} . ":dbname=" . $state_db{db_name} .';host=' . $state_db{db_host} . ';port=' . $state_db{db_port};
-my $data_dsn = "dbi:" . $data_db{db_driver} . ":dbname=" . $data_db{db_name} .';host=' . $data_db{db_host} . ';port=' . $data_db{db_port};
+my $data_dsn  = "dbi:" .  $data_db{db_driver} . ":dbname=" .  $data_db{db_name} .';host=' .  $data_db{db_host} . ';port=' .  $data_db{db_port};
 
 my ($dbh,$running,$sth,@reports,$run, $current_time);
 
 if ($daemon) {
-	open(F, ">$lockfile");
+	open(F, ">$lockfile") or die "Cannot write lockfile '$lockfile'";
 	print F $$;
 	close F;
 	daemonize("Clark Kent, waiting for trouble");
@@ -307,7 +305,7 @@ for my $r ( @reports ) {
 			SELECT * FROM reporter.schedule WHERE id = ?;
 		SQL
 
-		$r->{start_time} = $new_r->{start_time};
+		$r->{start_time}    = $new_r->{start_time};
 		$r->{complete_time} = $new_r->{complete_time};
 
 		if ($r->{email}) {
@@ -332,7 +330,7 @@ for my $r ( @reports ) {
 			SELECT * FROM reporter.schedule WHERE id = ?;
 		SQL
 
-		$r->{error_text} = $new_r->{error_text};
+		$r->{error_text}    = $new_r->{error_text};
 		$r->{complete_time} = $new_r->{complete_time};
 
 		if ($r->{email}) {
@@ -358,7 +356,7 @@ if ($daemon) {
 
 sub send_success {
 	my $r = shift;
-	open F, $success_template;
+	open F, $success_template or die "Cannot read '$success_template'";
 	my $tmpl = join('',<F>);
 	close F;
 
@@ -382,7 +380,7 @@ sub send_success {
 
 sub send_fail {
 	my $r = shift;
-	open F, $fail_template;
+	open F, $fail_template or die "Cannot read '$success_template'";
 	my $tmpl = join('',<F>);
 	close F;
 
@@ -409,7 +407,7 @@ sub build_csv {
 
 	return unless ($csv);
 	
-	my $f = new FileHandle (">$file");
+	my $f = new FileHandle (">$file") or die "Cannot write to '$file'";
 
 	$csv->print($f, $r->{column_labels});
 	$csv->print($f, $_) for (@{$r->{data}});
@@ -437,7 +435,7 @@ sub build_html {
 	my $file = shift;
 	my $r = shift;
 
-	my $index = new FileHandle (">$file");
+	my $index = new FileHandle (">$file") or die "Cannot write to '$file'";
 	
 	# index header
 	print $index <<"	HEADER";
@@ -459,6 +457,7 @@ sub build_html {
 
 	my @links;
 
+    my $br4 = '<br/>' x 4;
 	# add a link to the raw output html
 	push @links, "<a href='report-data.html.raw.html'>Tabular Output</a>" if ($r->{html_format});
 
@@ -469,11 +468,11 @@ sub build_html {
 	push @links, "<a href='report-data.csv'>CSV Output</a>" if ($r->{csv_format});
 
 	print $index join(' -- ', @links);
-	print $index "<br/><br/><br/><br/></center>";
+	print $index "$br4</center>";
 
 	if ($r->{html_format}) {
 		# create the raw output html file
-		my $raw = new FileHandle (">$file.raw.html");
+		my $raw = new FileHandle (">$file.raw.html") or die "Cannot write to '$file.raw.html'";
 		print $raw "<html><head><title>$$r{report}{name}</title>";
 
 		print $raw <<'		CSS';
@@ -501,25 +500,25 @@ sub build_html {
 	if ($r->{chart_pie}) {
 		my $pics = draw_pie($r, $file);
 		for my $pic (@$pics) {
-			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
+			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/>$br4";
 		}
 	}
 
-	print $index '<br/><br/><br/><br/>';
+	print $index $br4;
 	# Time for a bar chart
 	if ($r->{chart_bar}) {
 		my $pics = draw_bars($r, $file);
 		for my $pic (@$pics) {
-			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
+			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/>$br4";
 		}
 	}
 
-	print $index '<br/><br/><br/><br/>';
+	print $index $br4;
 	# Time for a bar chart
 	if ($r->{chart_line}) {
 		my $pics = draw_lines($r, $file);
 		for my $pic (@$pics) {
-			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/><br/><br/><br/><br/>";
+			print $index "<img src='report-data.html.$pic->{file}' alt='$pic->{name}'/>$br4";
 		}
 	}
 
@@ -585,7 +584,7 @@ sub draw_pie {
 
 			my $format = $pic->export_format;
 
-			open(IMG, ">$file.pie.$vcol.$sub_graph.$format");
+			open(IMG, ">$file.pie.$vcol.$sub_graph.$format") or die "Cannot write '$file.pie.$vcol.$sub_graph.$format'";
 			binmode IMG;
 
 			my $forgetit = 0;
@@ -709,7 +708,7 @@ sub draw_bars {
 
 	my $format = $pic->export_format;
 
-	open(IMG, ">$file.bar.$format");
+	open(IMG, ">$file.bar.$format") or die "Cannot write '$file.bar.$format'";
 	binmode IMG;
 
 	try {
@@ -729,7 +728,7 @@ sub draw_bars {
 }
 
 sub draw_lines {
-	my $r = shift;
+	my $r    = shift;
 	my $file = shift;
 	my $data = $r->{data};
 
@@ -815,7 +814,7 @@ sub draw_lines {
 
 	my $format = $pic->export_format;
 
-	open(IMG, ">$file.line.$format");
+	open(IMG, ">$file.line.$format") or die "Cannot write '$file.line.$format'";
 	binmode IMG;
 
 	try {
@@ -836,10 +835,10 @@ sub draw_lines {
 
 
 sub pivot_data {
-	my $blob = shift;
+	my $blob        = shift;
 	my $pivot_label = shift;
-	my $pivot_data = shift;
-	my $default = shift;
+	my $pivot_data  = shift;
+	my $default     = shift;
 	$default = 0 unless (defined $default);
 
 	my $data = $$blob{data};
