@@ -8,7 +8,7 @@ use Data::Dumper;
 
 # for inherited methods to work properly, we need to force a
 # MARC::Record version greater than 2.0.0
-use MARC::Record 2.0.1;
+use MARC::Record "2.0.1";
 use base 'MARC::Record';
 
 use OpenILS::Utils::MFHD::Caption;
