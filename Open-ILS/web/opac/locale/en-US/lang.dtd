@@ -697,6 +697,10 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_modifier.label "Circulation Modifiers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_setting_type "Organization Unit Setting Types">
 <!ENTITY staff.main.menu.admin.server_admin.conify.usr_setting_type "User Setting Types">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_circ_duration "Circulation Duration Rules">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_recurring_fine "Circulation Recurring Fine Rules">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_max_fine "Circulation Max Fine Rules">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_age_hold_protect "Age Hold Protect Rules">
 <!ENTITY staff.main.menu.admin.server_admin.conify.global_flag.label "Global Flags">
 
 <!ENTITY staff.main.menu.admin.server_admin.acq.label "Acquisitions">
