@@ -619,19 +619,19 @@ main.menu.prototype = {
             ],
             'cmd_local_admin_config_rule_circ_duration' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/rule/circ_duration'); }
+                function() { open_eg_web_page('conify/global/config/rule_circ_duration'); }
             ],
             'cmd_local_admin_config_rule_recurring_fine' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/rule/recurring_fine'); }
+                function() { open_eg_web_page('conify/global/config/rule_recurring_fine'); }
             ],
             'cmd_local_admin_config_rule_max_fine' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/rule/max_fine'); }
+                function() { open_eg_web_page('conify/global/config/rule_max_fine'); }
             ],
             'cmd_local_admin_config_rule_age_hold_protect' : [
                 ['oncommand'],
-                function() { open_eg_web_page('conify/global/config/rule/age_hold_protect'); }
+                function() { open_eg_web_page('conify/global/config/rule_age_hold_protect'); }
             ],
             'cmd_local_admin_external_text_editor' : [
                 ['oncommand'],
