@@ -1,12 +1,12 @@
-README for Evergreen trunk
+README for Evergreen 2.0-alpha1
 
 Installing prerequisites:
 ========================
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (1.4.0 or later).
-You can download OpenSRF releases from
+1. Begin by installing the most recent version of OpenSRF (1.4.0 or later,
+preferrably 1.6+).  You can download OpenSRF releases from
 http://evergreen-ils.org/downloads
 
 2. On Debian and Ubuntu, the easiest way to install the rest of the
@@ -43,7 +43,7 @@ Installation instructions:
 Once you have configured and compiled Evergreen, issue the following
 command as the root user to install Evergreen:
 
-make STAFF_CLIENT_BUILD_ID=rel_trunk install
+make STAFF_CLIENT_BUILD_ID=rel_2_0_alpha1 install
 
 This will install Evergreen, including example configuration files in
 /openils/conf/ that you can use as templates for your own configuration files.
