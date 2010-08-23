@@ -1295,6 +1295,15 @@ function uEditDeleteAddr(id, noAlert) {
     if(!noAlert) {
         if(!confirm('Delete address ' + id)) return; /* XXX i18n */
     }
+    var addr = patron.addresses().filter(function(i){return (i.id() == id)})[0];
+    if (addr) { addr.isdeleted(1); }
+    var m_a = patron.mailing_address();
+        if (typeof m_a == 'object' && m_a != null) { m_a = m_a.id(); }
+        if (m_a == id) { patron.mailing_address(null); }
+    var b_a = patron.billing_address();
+        if (typeof b_a == 'object' && b_a != null) { b_a = b_a.id(); }
+        if (b_a == id) { patron.billing_address(null); }
+
     var rows = dojo.query('tr[addr='+id+']', tbody);
     for(var i = 0; i < rows.length; i++)
         rows[i].parentNode.removeChild(rows[i]);
