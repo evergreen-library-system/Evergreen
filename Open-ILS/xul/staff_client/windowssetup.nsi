@@ -40,7 +40,7 @@
 ; Start menu page
 var ICONS_GROUP
 !define MUI_STARTMENUPAGE_NODISABLE
-!define MUI_STARTMENUPAGE_DEFAULTFOLDER "Evergreen Staff Client"
+!define MUI_STARTMENUPAGE_DEFAULTFOLDER "Evergreen Staff Client Trunk"
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT "${PRODUCT_UNINST_ROOT_KEY}"
 !define MUI_STARTMENUPAGE_REGISTRY_KEY "${PRODUCT_UNINST_KEY}"
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "${PRODUCT_STARTMENU_REGVAL}"
@@ -63,7 +63,7 @@ var ICONS_GROUP
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "evergreen_staff_client_setup.exe"
-InstallDir "$PROGRAMFILES\Evergreen Staff Client"
+InstallDir "$PROGRAMFILES\Evergreen Staff Client Trunk"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
@@ -87,7 +87,7 @@ Section "Staff Client" SECMAIN
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Evergreen Staff Client Profile Manager.lnk" "$INSTRDIR\evergreen.exe -profilemanager"
   !endif
   !endif
-  CreateShortCut "$DESKTOP\Evergreen Staff Client.lnk" "$INSTDIR\evergreen.exe"
+  CreateShortCut "$DESKTOP\Evergreen Staff Client Trunk.lnk" "$INSTDIR\evergreen.exe"
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
 
@@ -194,7 +194,7 @@ Section Uninstall
 
   Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Website.lnk"
-  Delete "$DESKTOP\Evergreen Staff Client.lnk"
+  Delete "$DESKTOP\Evergreen Staff Client Trunk.lnk"
   Delete "$SMPROGRAMS\$ICONS_GROUP\Evergreen Staff Client.lnk"
 
   RMDir "$SMPROGRAMS\$ICONS_GROUP"
