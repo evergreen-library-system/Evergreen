@@ -22,7 +22,7 @@
     onload="try { main_init(); } catch(E) { alert(E); }"
     onunload="try { G.auth.logoff(); } catch(E) { alert(E); }"
     title="&staff.auth.title;"
-    width="640" height="480"
+    width="640" height="480" windowtype="eg_main"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 
