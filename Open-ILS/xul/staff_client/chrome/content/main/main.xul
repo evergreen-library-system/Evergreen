@@ -92,7 +92,15 @@
     <groupbox id="main_groupbox" flex="1" style="overflow: auto;">
         <caption id="main_caption" label="&staff.main.auth.caption;"/>
         <hbox>
-            <button id="about_btn" label="&staff.auth.about_btn.label;" accesskey="&staff.auth.about_btn.accesskey;" />
+            <button type="menu" label="Help" accesskey="l">
+                <menupopup>
+                    <menuitem id="about_btn" label="&staff.auth.about_btn.label;" accesskey="&staff.auth.about_btn.accesskey;" />
+                    <menuitem id="contents_menu" label="Contents" accesskey="c" disabled="true" />
+                    <menuseparator id="check_upgrade_sep" hidden="true" />
+                    <menuitem id="check_upgrade" label="Check for upgrades" accesskey="" hidden="true" />
+                </menupopup>
+            </button>
+
 
             <button id="new_window_btn" label="&staff.auth.new_window_btn.label;" accesskey="&staff.auth.new_window_btn.accesskey;" />
 

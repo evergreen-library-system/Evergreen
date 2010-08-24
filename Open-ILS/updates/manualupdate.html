@@ -1,0 +1,57 @@
+#!/bin/bash
+echo "Content-Type: text/html"
+echo ""
+if [ -f ../patch/manual.html ]; then
+	cat ../patch/manual.html
+	exit
+fi
+cat <<ENDHEADER
+<html>
+<head>
+<title>Evergreen Staff Client</title>
+</head>
+<body>
+<h1>Evergreen Staff Client</h1>
+ENDHEADER
+if [ -f ../patch/win/VERSION ]; then
+	echo "<h2>Windows</h2>"
+	VERSION=$(cat ../patch/win/VERSION)
+	if [ -f clients/${VERSION}_setup.exe ]; then
+		echo "<p>An installer for Windows is available.</p>"
+		echo "<p><a href=\"clients/${VERSION}_setup.exe\">Click here to download the installer (version $VERSION)</a></p>"
+	else
+		echo "<p>No installer is currently available for Windows.</p>"
+	fi
+fi
+if [ -f ../patch/lin/VERSION ]; then
+	echo "<h2>Linux</h2>"
+	VERSION=$(cat ../patch/lin/VERSION)
+	if [ -f clients/${VERSION}.tar.bz2 ]; then
+		echo "<p>A bundle for Linux is available.</p>"
+		echo "<p><a href=\"clients/${VERSION}.tar.bz2\">Click here to download the bundle (version $VERSION)</a></p>"
+	else
+		echo "<p>No bundle is currently available for Linux.</p>"
+	fi
+fi
+if [ -f ../patch/VERSION ]; then
+	echo "<h2>XULRunner App Bundle</h2>"
+	VERSION=$(cat ../patch/VERSION)
+	if [ -f clients/${VERSION}_client.xpi ]; then
+		echo "<p>A XULRunner app bundle is available.</p>"
+		echo "<p><a href=\"download/${VERSION}_client.xpi\">Click here to download the XULRunner app bundle (version $VERSION)</a></p>"
+		echo "<p>This bundle can be installed via the --install-app command on xulrunner itself and should be compatible with all platforms XULRunner runs on.</p>"
+	else
+		echo "<p>No XULRunner app bundle is currently available.</p>"
+	fi
+	echo "<h2>Firefox Extension</h2>"
+	if [ -f ${VERSION}_extension.xpi ]; then
+		echo "<p>A Firefox Extension is available.</p>"
+		echo "<p><a href=\"${VERSION}_extension.xpi\">Click here to install the extension (version $VERSION)</a>"
+	else
+		echo "<p>No Firefox Extension is currently available.</p>"
+	fi
+fi
+cat <<ENDFOOTER
+</body>
+</html>
+ENDFOOTER

@@ -162,7 +162,7 @@ function main_init() {
                 var deck = document.getElementById('progress_space');
                 util.widgets.remove_children( deck );
                 var iframe = document.createElement('iframe'); deck.appendChild(iframe);
-                iframe.setAttribute( 'src', url + '/xul/server/main/data.xul' );
+                iframe.setAttribute( 'src', url + urls.XUL_LOGIN_DATA );
                 iframe.contentWindow.xulG = xulG;
                 G.data_xul = iframe.contentWindow;
             } else {
@@ -170,7 +170,7 @@ function main_init() {
                 var deck = G.auth.controller.view.ws_deck;
                 JSAN.use('util.widgets'); util.widgets.remove_children('ws_deck');
                 var iframe = document.createElement('iframe'); deck.appendChild(iframe);
-                iframe.setAttribute( 'src', url + '/xul/server/main/ws_info.xul' );
+                iframe.setAttribute( 'src', url + urls.XUL_WORKSTATION_INFO );
                 iframe.contentWindow.xulG = xulG;
                 deck.selectedIndex = deck.childNodes.length - 1;
             }
@@ -291,8 +291,8 @@ function main_init() {
 
         /////////////////////////////////////////////////////////////////////////////
 
-        var version = '/xul/server/'.split(/\//)[2];
-        if (version == 'server') {
+        var version = CLIENT_VERSION;
+        if (CLIENT_STAMP.length == 0) {
             version = 'versionless debug build';
             document.getElementById('debug_gb').hidden = false;
         }
@@ -302,6 +302,37 @@ function main_init() {
                 document.getElementById('debug_gb').hidden = false;
             }
         } catch(E) {
+        }
+
+        var appInfo = Components.classes["@mozilla.org/xre/app-info;1"] 
+            .getService(Components.interfaces.nsIXULAppInfo); 
+
+        if (appInfo.ID == "staff-client@open-ils.org")
+        {
+            try {
+                if (G.pref && G.pref.getBoolPref('app.update.enabled')) {
+                    document.getElementById('check_upgrade_sep').hidden = false;
+                    var upgrademenu = document.getElementById('check_upgrade');
+                    upgrademenu.hidden = false;
+                    G.upgradeCheck = function () {
+                        var um = Components.classes["@mozilla.org/updates/update-manager;1"]
+                            .getService(Components.interfaces.nsIUpdateManager);
+                        var prompter = Components.classes["@mozilla.org/updates/update-prompt;1"]
+                            .createInstance(Components.interfaces.nsIUpdatePrompt);
+
+                        if (um.activeUpdate && um.activeUpdate.state == "pending")
+                            prompter.showUpdateDownloaded(um.activeUpdate);
+                        else
+                            prompter.checkForUpdates();
+                    }
+                    upgrademenu.addEventListener(
+                        'command',
+                        G.upgradeCheck,
+                        false
+                    );
+                }
+            } catch(E) {
+            }
         }
 
         window.title = authStrings.getFormattedString('staff.auth.titlebar.label', version);

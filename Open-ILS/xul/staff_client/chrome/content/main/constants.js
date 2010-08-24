@@ -36,6 +36,9 @@ const MODE_EXCL     = 0x80;
 const PERMS_FILE      = 0644;
 const PERMS_DIR      = 0755;
 
+const CLIENT_VERSION = '';
+const CLIENT_STAMP   = '';
+
 var my_constants = {
     'magical_statuses' : {
         '1' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : true }, /* | Checked out    | t */
@@ -390,6 +393,7 @@ var urls = {
     'XUL_IN_HOUSE_USE' : '/xul/server/circ/in_house_use.xul',
     'XUL_LIST_CLIPBOARD' : '/xul/server/util/list_clipboard.xul',
     'XUL_LOCAL_ADMIN' : '/xul/server/admin/index.xhtml',
+    'XUL_LOGIN_DATA' : '/xul/server/main/data.xul', 
     'XUL_MARC_NEW' : '/xul/server/cat/marc_new.xul',
     'XUL_MARC_EDIT' : '/xul/server/cat/marcedit.xul',
     'XUL_MARC_VIEW' : '/xul/server/cat/marc_view.xul',
@@ -451,6 +455,7 @@ var urls = {
     'XUL_VOLUME_COPY_CREATOR' : '/xul/server/cat/volume_copy_creator.xul',
     'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
     'XUL_WORK_LOG' : '/xul/server/admin/work_log.xul',
+    'XUL_WORKSTATION_INFO' : '/xul/server/main/ws_info.xul',
     'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',
     'TEST_HTML' : '/xul/server/main/test.html',
     'TEST_XUL' : '/xul/server/main/test.xul',

@@ -1,0 +1,8 @@
+#!/bin/bash
+if [ ! -f ../patch/update.rdf ]; then
+	echo "Status: 404 Not Found"
+else
+	echo "Content-Type: text/xml"
+	echo ""
+	sed "s|::HOSTNAME::|$HTTP_HOST|" ../patch/update.rdf
+fi
