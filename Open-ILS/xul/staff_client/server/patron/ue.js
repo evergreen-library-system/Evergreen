@@ -638,7 +638,7 @@ function uEditSaveUser(cloneme) {
             var href = location.href;
             href = href.replace(/\&?usr=\d+/, '');
             href = href.replace(/\&?clone=\d+/, '');
-            href += '&clone=' + cloneme;
+            href += (href.match(/\?/) ? "&" : "?") + 'clone=' + cloneme;
             location.href = href;
         }
 
