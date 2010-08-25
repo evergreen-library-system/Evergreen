@@ -57,6 +57,7 @@
 		<info>
 			<title>Core Staff Tasks</title>
 		</info>
+		<xi:include href="stafftasks/stafftasks_intro.xml"/>
 		<xi:include href="stafftasks/staffclient.xml"/>
 		<xi:include href="stafftasks/circulation.xml"/>
 		<xi:include href="stafftasks/cataloging.xml"/>
@@ -106,6 +107,7 @@
 		<xi:include href="development/OpenSRF_intro.xml"/>
 		<xi:include href="development/datamodelsandaccess.xml"/>
 		<xi:include href="development/introduction_to_sql.xml"/>
+		<xi:include href="development/supercat.xml"/>
 	</part>
 	<part xml:id="Appendices">
 		<info>
