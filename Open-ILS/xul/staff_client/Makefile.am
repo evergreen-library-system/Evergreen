@@ -143,7 +143,10 @@ custom_skins:
 		if [ ! -f "$$skin" ]; then ( touch build/"$$skin" ); fi \
 	done;
 
-server-xul: build
+needwebdir:
+	@if [ -z "$(WEBDIR)" ]; then echo "!!!--------!!!"; echo "WEBDIR is not set. Must use top level Makefile or set WEBDIR to use this target."; echo "!!!--------!!!"; exit 1; fi
+
+server-xul: needwebdir build
 	@echo $@
 	mkdir -p $(WEBDIR)
 	mkdir -p $(WEBDIR)/xul/
