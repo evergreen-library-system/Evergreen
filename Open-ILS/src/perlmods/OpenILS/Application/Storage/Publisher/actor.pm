@@ -583,20 +583,21 @@ __PACKAGE__->register_method(
 sub penalized_barcodes {
 	my $self = shift;
 	my $client = shift;
-	my @ignore = @_;
 
 	my $c = actor::card->table;
 	my $p = actor::user_standing_penalty->table;
 
-	my $sql = "SELECT c.barcode FROM $c c JOIN $p p USING (usr)";
+	my $sql = <<"	SQL";
+		SELECT	DISTINCT c.barcode
+		  FROM	$c c
+			JOIN $p p USING (usr)
+			JOIN config.standing_penalty csp ON (csp.id = p.standing_penalty)
+		  WHERE	csp.block_list IS NOT NULL
+			AND p.set_date < CURRENT_DATE
+			AND (p.stop_date IS NULL OR p.stop_date > CURRENT_DATE);
+	SQL
 
-	if (@ignore) {
-		$sql .= ' WHERE penalty_type NOT IN ('. join(',', map { '?' } @ignore) . ')';
-	}
-
-	$sql .= ' GROUP BY c.barcode;';
-
-	my $list = actor::user->db_Main->selectcol_arrayref($sql, {}, @ignore);
+	my $list = actor::user->db_Main->selectcol_arrayref($sql);
 	for my $bc ( @$list ) {
 		$client->respond($bc);
 	}
@@ -608,11 +609,7 @@ __PACKAGE__->register_method(
 	stream		=> 1,
 	method		=> 'penalized_barcodes',
 	signature	=> <<'	NOTE',
-		Returns an array of barcodes that have penalties not listed
-		as a parameter.  Supply a list of any penalty types that should
-		not stop a patron from checking out materials.
-
-		@param ignore_list Penalty type to ignore
+		Returns an array of barcodes that have blocking penalties.
 		@return array of barcodes
 	NOTE
 );
