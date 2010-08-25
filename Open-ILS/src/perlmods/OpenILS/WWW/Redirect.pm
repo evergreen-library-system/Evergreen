@@ -56,13 +56,18 @@ sub handler {
 	my $apache_obj = shift;
 	my $cgi = CGI->new( $apache_obj );
 
+
+	my $skin = $apache_obj->dir_config('OILSRedirectSkin') || 'default';
+	my $depth = $apache_obj->dir_config('OILSRedirectDepth') || undef;
+	my $locale = $apache_obj->dir_config('OILSRedirectLocale') || 'en-US';
+
 	my $hostname = $cgi->server_name();
 	my $port		= $cgi->server_port();
 
 	my $proto = "http";
 	if($cgi->https) { $proto = "https"; }
 
-	my $url = "$proto://$hostname:$port/opac/en-US/skin/default/xml/index.xml";
+	my $url = "$proto://$hostname:$port/opac/$locale/skin/$skin/xml/index.xml";
 
 	my $path = $apache_obj->path_info();
 
@@ -77,7 +82,10 @@ sub handler {
             'open-ils.actor.org_unit.retrieve_by_shortname',
 			 $shortname)->gather(1);
 
-		if($org) { $url .= "?ol=" . $org->id; }
+		if($org) { 
+            $url .= "?ol=" . $org->id; 
+            $url .= "d=$depth" if defined $depth;
+        }
 	}
 
 	print "Location: $url\n\n"; 
