@@ -552,7 +552,7 @@
 				    <guimenuitem>Edit Item Attributes</guimenuitem> and change status to
 				    <emphasis>Available</emphasis> once record has been created and saved to
 				 database.</para>
-			      <para>Creation and use of item record templates is recommended. See <xref linkend="temp"/> for
+			      <para>Creation and use of item record templates is recommended. See <xref linkend="cattemplates"/> for
 				 more information.</para>
 			   </tip>
 		   <simplesect xml:id="add-hold">

@@ -44,10 +44,12 @@
 		<info>
 			<title>Public Access Catalog</title>
 		</info>
+		<xi:include href="opac/opac_intro.xml"/>
 		<xi:include href="opac/basicsearch.xml"/>
 		<xi:include href="opac/advancedsearch.xml"/>	
 		<xi:include href="opac/searchtips.xml"/>
 		<xi:include href="opac/searchmethodology.xml"/>
+		<xi:include href="opac/search_URL.xml"/>
 		<xi:include href="opac/searchresults.xml"/>
 		<xi:include href="opac/myaccount.xml"/>
 	</part>
