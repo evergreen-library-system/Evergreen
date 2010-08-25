@@ -67,142 +67,307 @@
             alert( util.functional.map_list( g.cols, function(o) { return '%' + o.id + '%'; } ).join(" ") );
         }
 
-        function $(id) { return document.getElementById(id); }
+        function $(id) { return dojo.byId(id); }
 
-        function generate() {
+        function generate(override) {
             try {
                 var idx = 0;
-                JSAN.use('util.text'); JSAN.use('util.money');
-                JSAN.use('util.widgets'); util.widgets.remove_children('panel'); var pn = $('panel'); $('preview').disabled = false;
+                JSAN.use('util.text');
+                JSAN.use('util.money');
+                JSAN.use('util.widgets');
+                var pn = $('panel');
+                $('preview').disabled = false;
                 var lw = Number($('lw').value) || 8; /* spine label width */
                 var ll = Number($('ll').value) || 9; /* spine label length */
                 var plw = Number($('plw').value) || 28; /* pocket label width */
                 var pll = Number($('pll').value) || 9; /* pocket label length */
-                for (var i in g.volumes) {
-                    var vb = document.createElement('vbox'); pn.appendChild(vb); vb.setAttribute('name','template'); vb.setAttribute('acn_id',g.volumes[i].id());
-                    var ds = document.createElement('description'); vb.appendChild(ds);
-                    ds.appendChild( document.createTextNode( g.volumes[i].label() ) );
-                    var ds2 = document.createElement('description'); vb.appendChild(ds2);
-                    ds2.appendChild( document.createTextNode( g.volumes[i].copies().length + (
-                        g.volumes[i].copies().length == 1 ? $("catStrings").getString('staff.cat.spine_labels.copy') : $("catStrings").getString('staff.cat.spine_labels.copies')) ) );
-                    ds2.setAttribute('style','color: green');
-                    var hb = document.createElement('hbox'); vb.appendChild(hb);
 
-                    var gb = document.createElement('groupbox'); hb.appendChild(gb); 
-                    /* take the call number and split it on whitespace */
-                    var names = String(g.volumes[i].label()).split(/\s+/);
-                    var j = 0;
-                    while (j < ll || j < pll) {
-                        var hb2 = document.createElement('hbox'); gb.appendChild(hb2);
-                        
-                        /* spine */
-                        if (j < ll) {
-                            var tb = document.createElement('textbox'); hb2.appendChild(tb); 
-                            tb.value = '';
-                            tb.setAttribute('class','plain'); tb.setAttribute('style','font-family: monospace');
-                            tb.setAttribute('size',lw+1); tb.setAttribute('maxlength',lw);
-                            tb.setAttribute('name','spine');
-                            var name = names.shift(); if (name) {
-                                name = String( name );
-                                /* if the name is greater than the label width... */
-                                if (name.length > lw) {
-                                    /* then try to split it on periods */
-                                    var sname = name.split(/\./);
-                                    if (sname.length > 1) {
-                                        /* if we can, then put the periods back in on each splitted element */
-                                        if (name.match(/^\./)) sname[0] = '.' + sname[0];
-                                        for (var k = 1; k < sname.length; k++) sname[k] = '.' + sname[k];
-                                        /* and put all but the first one back into the names array */
-                                        names = sname.slice(1).concat( names );
-                                        /* if the name fragment is still greater than the label width... */
-                                        if (sname[0].length > lw) {
-                                            /* then just truncate and throw the rest back into the names array */
-                                            tb.value = sname[0].substr(0,lw);
-                                            names = [ sname[0].substr(lw) ].concat( names );
-                                        } else {
-                                            /* otherwise we're set */
-                                            tb.value = sname[0];
-                                        }
-                                    } else {
-                                        /* if we can't split on periods, then just truncate and throw the rest back into the names array */
-                                        tb.value = name.substr(0,lw);
-                                        names = [ name.substr(lw) ].concat( names );
-                                    }
-                                } else {
-                                    /* otherwise we're set */
-                                    tb.value = name;
-                                }
-                            }
-                        }
+                if (override) {
+                    var gb = $('acn_' + g.volumes[override.acn].id());
+                    util.widgets.remove_children('acn_' + g.volumes[override.acn].id());
+                    generate_labels(g.volumes[override.acn], gb, lw, ll, plw, pll, override);
+                } else {
+                    util.widgets.remove_children('panel');
+                    for (var i in g.volumes) {
+                        var vb = document.createElement('vbox'); pn.appendChild(vb);
+                        vb.setAttribute('name','template');
+                        vb.setAttribute('acn_id',g.volumes[i].id());
+                        var ds = document.createElement('description'); vb.appendChild(ds);
+                        ds.appendChild( document.createTextNode( g.volumes[i].label() ) );
+                        var ds2 = document.createElement('description'); vb.appendChild(ds2);
+                        ds2.appendChild( document.createTextNode( g.volumes[i].copies().length + ' ' + (
+                            g.volumes[i].copies().length == 1 ? $("catStrings").getString('staff.cat.spine_labels.copy') : $("catStrings").getString('staff.cat.spine_labels.copies')) ) );
+                        ds2.setAttribute('style','color: green');
+                        var hb = document.createElement('hbox'); vb.appendChild(hb);
 
-                        /* pocket */
-                        if ($('pl').checked && j < pll) {
-                            var tb2 = document.createElement('textbox'); hb2.appendChild(tb2); 
-                            tb2.value = '';
-                            tb2.setAttribute('class','plain'); tb2.setAttribute('style','font-family: monospace');
-                            tb2.setAttribute('size',plw+1); tb2.setAttribute('maxlength',plw);
-                            tb2.setAttribute('name','pocket');
-                            if ($('title').checked && $('title_line').value == j + 1 && instanceOf(g.volumes[i].record(),mvr)) {
-                                if (g.volumes[i].record().title()) {
-                                    tb2.value = util.text.wrap_on_space( g.volumes[i].record().title(), plw )[0];
-                                } else {
-                                    tb2.value = '';
-                                }
-                            }
-                            if ($('title_r').checked && $('title_r_line').value == j + 1 && instanceOf(g.volumes[i].record(),mvr)) {
-                                if (g.volumes[i].record().title()) {
-                                    tb2.value = ( ($('title_r_indent').checked ? ' ' : '') + util.text.wrap_on_space( g.volumes[i].record().title(), plw )[1]).substr(0,plw);
-                                } else {
-                                    tb2.value = '';
-                                }
-                            }
-                            if ($('author').checked && $('author_line').value == j + 1 && instanceOf(g.volumes[i].record(),mvr)) {
-                                if (g.volumes[i].record().author()) {
-                                    tb2.value = g.volumes[i].record().author().substr(0,plw);
-                                } else {
-                                    tb2.value = '';
-                                }
-                            }
-                            if ($('call_number').checked && $('call_number_line').value == j + 1) {
-                                tb2.value = g.volumes[i].label().substr(0,plw);
-                            }
-                            if ($('owning_lib_shortname').checked && $('owning_lib_shortname_line').value == j + 1) {
-                                var lib = g.volumes[i].owning_lib();
-                                if (!instanceOf(lib,aou)) lib = g.data.hash.aou[ lib ];
-                                tb2.value = lib.shortname().substr(0,plw);
-                            }
-                            if ($('owning_lib').checked && $('owning_lib_line').value == j + 1) {
-                                var lib = g.volumes[i].owning_lib();
-                                if (!instanceOf(lib,aou)) lib = g.data.hash.aou[ lib ];
-                                tb2.value = lib.name().substr(0,plw);
-                            }
-                            if ($('shelving_location').checked && $('shelving_location_line').value == j + 1) {
-                                tb2.value = '%location%';
-                            }
-                            if ($('barcode').checked && $('barcode_line').value == j + 1) {
-                                tb2.value = '%barcode%';
-                            }
-                            if ($('custom1').checked && $('custom1_line').value == j + 1) {
-                                tb2.value = $('custom1_tb').value;
-                            }
-                            if ($('custom2').checked && $('custom2_line').value == j + 1) {
-                                tb2.value = $('custom2_tb').value;
-                            }
-                            if ($('custom3').checked && $('custom3_line').value == j + 1) {
-                                tb2.value = $('custom3_tb').value;
-                            }
-                            if ($('custom4').checked && $('custom4_line').value == j + 1) {
-                                tb2.value = $('custom4_tb').value;
-                            }
-                        }
+                        var gb = document.createElement('groupbox');
+                        hb.appendChild(gb); 
+                        gb.setAttribute('id','acn_' + g.volumes[i].id());
 
-                        j++;
+                        generate_labels(g.volumes[i], gb, lw, ll, plw, pll, override);
+
+                        idx++;
                     }
-
-                    idx++;
                 }
             } catch(E) {
                 g.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.spine_labels.generate.std_unexpeceted_err'),E);
+            }
+        }
+
+        function generate_labels(volume, label_node, spine_width, spine_max_lines, pocket_width, pocket_max_lines, override) {
+            var names;
+
+            if (override && volume.id() == override.acn) {
+                /* If we're calling ourself, we'll have an altered label */
+                names = String(override.label).split(/\s+/);
+            } else {
+                /* take the call number and split it on whitespace */
+                names = String(volume.label()).split(/\s+/);
+            }
+            var j = 0;
+            while (j < spine_max_lines || j < pocket_max_lines) {
+                var hb2 = document.createElement('hbox'); label_node.appendChild(hb2);
+                
+                /* spine */
+                if (j < spine_max_lines) {
+                    var tb = document.createElement('textbox'); hb2.appendChild(tb); 
+                    tb.value = '';
+                    tb.setAttribute('class','plain');
+                    tb.setAttribute('style','font-family: monospace');
+                    tb.setAttribute('size',spine_width+1);
+                    tb.setAttribute('maxlength',spine_width);
+                    tb.setAttribute('name','spine');
+                    var spine_row_id = 'acn_' + volume.id() + '_spine_' + j;
+                    tb.setAttribute('id',spine_row_id);
+                    var name = names.shift();
+                    if (name) {
+                        name = String( name );
+                        /* if the name is greater than the label width... */
+                        if (name.length > spine_width) {
+                            /* then try to split it on periods */
+                            var sname = name.split(/\./);
+                            if (sname.length > 1) {
+                                /* if we can, then put the periods back in on each splitted element */
+                                if (name.match(/^\./)) sname[0] = '.' + sname[0];
+                                for (var k = 1; k < sname.length; k++) sname[k] = '.' + sname[k];
+                                /* and put all but the first one back into the names array */
+                                names = sname.slice(1).concat( names );
+                                /* if the name fragment is still greater than the label width... */
+                                if (sname[0].length > spine_width) {
+                                    /* then just truncate and throw the rest back into the names array */
+                                    tb.value = sname[0].substr(0,spine_width);
+                                    names = [ sname[0].substr(spine_width) ].concat( names );
+                                } else {
+                                    /* otherwise we're set */
+                                    tb.value = sname[0];
+                                }
+                            } else {
+                                /* if we can't split on periods, then just truncate and throw the rest back into the names array */
+                                tb.value = name.substr(0,spine_width);
+                                names = [ name.substr(spine_width) ].concat( names );
+                            }
+                        } else {
+                            /* otherwise we're set */
+                            tb.value = name;
+                        }
+                    }
+                    dojo.connect($(spine_row_id), 'onkeypress', 'spine_label_key_events');
+                }
+
+                /* pocket */
+                if ($('pl').checked && j < pocket_max_lines) {
+                    var tb2 = document.createElement('textbox'); hb2.appendChild(tb2); 
+                    tb2.value = '';
+                    tb2.setAttribute('class','plain'); tb2.setAttribute('style','font-family: monospace');
+                    tb2.setAttribute('size',pocket_width+1); tb2.setAttribute('maxlength',pocket_width);
+                    tb2.setAttribute('name','pocket');
+                    if ($('title').checked && $('title_line').value == j + 1 && instanceOf(volume.record(),mvr)) {
+                        if (volume.record().title()) {
+                            tb2.value = util.text.wrap_on_space( volume.record().title(), pocket_width )[0];
+                        } else {
+                            tb2.value = '';
+                        }
+                    }
+                    if ($('title_r').checked && $('title_r_line').value == j + 1 && instanceOf(volume.record(),mvr)) {
+                        if (volume.record().title()) {
+                            tb2.value = ( ($('title_r_indent').checked ? ' ' : '') + util.text.wrap_on_space( volume.record().title(), pocket_width )[1]).substr(0,pocket_width);
+                        } else {
+                            tb2.value = '';
+                        }
+                    }
+                    if ($('author').checked && $('author_line').value == j + 1 && instanceOf(volume.record(),mvr)) {
+                        if (volume.record().author()) {
+                            tb2.value = volume.record().author().substr(0,pocket_width);
+                        } else {
+                            tb2.value = '';
+                        }
+                    }
+                    if ($('call_number').checked && $('call_number_line').value == j + 1) {
+                        tb2.value = volume.label().substr(0,pocket_width);
+                    }
+                    if ($('owning_lib_shortname').checked && $('owning_lib_shortname_line').value == j + 1) {
+                        var lib = volume.owning_lib();
+                        if (!instanceOf(lib,aou)) lib = g.data.hash.aou[ lib ];
+                        tb2.value = lib.shortname().substr(0,pocket_width);
+                    }
+                    if ($('owning_lib').checked && $('owning_lib_line').value == j + 1) {
+                        var lib = volume.owning_lib();
+                        if (!instanceOf(lib,aou)) lib = g.data.hash.aou[ lib ];
+                        tb2.value = lib.name().substr(0,pocket_width);
+                    }
+                    if ($('shelving_location').checked && $('shelving_location_line').value == j + 1) {
+                        tb2.value = '%location%';
+                    }
+                    if ($('barcode').checked && $('barcode_line').value == j + 1) {
+                        tb2.value = '%barcode%';
+                    }
+                    if ($('custom1').checked && $('custom1_line').value == j + 1) {
+                        tb2.value = $('custom1_tb').value;
+                    }
+                    if ($('custom2').checked && $('custom2_line').value == j + 1) {
+                        tb2.value = $('custom2_tb').value;
+                    }
+                    if ($('custom3').checked && $('custom3_line').value == j + 1) {
+                        tb2.value = $('custom3_tb').value;
+                    }
+                    if ($('custom4').checked && $('custom4_line').value == j + 1) {
+                        tb2.value = $('custom4_tb').value;
+                    }
+                }
+
+                j++;
+            }
+        }
+
+        function spine_label_key_events (event) {
+
+            /* Current value of the inpux box */
+            var line_value = event.target.value;
+
+            /* Cursor positions */
+            var sel_start = event.target.selectionStart;
+            var sel_end = event.target.selectionEnd;
+
+            /* Identifiers for this row: "acn_ID_spine_ROW" */
+            var atts = event.target.id.split('_');
+            var row_id = {
+                "acn": atts[1],
+                "spine": atts[3],
+                "prefix": 'acn_' + atts[1] + '_spine_'
+            };
+
+            switch (event.charOrCode) {
+                case dojo.keys.ENTER : {
+                    /* Create a new row by inserting a space at the
+                     * current cursor point, then regenerating the
+                     * label
+                     */
+                    if (sel_start == sel_end) {
+                        /* Special case if the cursor is at the start of the line */
+                        if (sel_start == 0) {
+                            line_value = ' ' + line_value;
+                        } else {
+                            line_value = line_value.substr(0, sel_start) + ' ' + line_value.substr(sel_end);
+                        }
+                    } else {
+                        line_value = line_value.substr(0, sel_start) + ' ' + line_value.substr(sel_end);
+                    }
+                    event.target.value = line_value;
+
+                    /* Recreate the label */
+                    var new_label = '';
+                    var chunk;
+                    var x = 0;
+                    while (chunk = $(row_id.prefix + x)) {
+                        if (x > 0) {
+                            new_label += ' ' + chunk.value;
+                        } else {
+                            new_label = chunk.value;
+                        }
+                        x++;
+                    }
+                    generate({"acn": row_id.acn, "label": new_label});
+                    $(row_id.prefix + row_id.spine).focus();
+                    break;
+                }
+
+                case dojo.keys.BACKSPACE : {
+                    /* Delete line if at the start of an input box */
+                    if (sel_start == 0) {
+                        var new_label = '';
+                        var chunk;
+                        var x = 0;
+                        while (x <= (row_id.spine - 1) && (chunk = $(row_id.prefix + x))) {
+                            if (x > 0) {
+                                new_label += ' ' + chunk.value;
+                            } else {
+                                new_label = chunk.value;
+                            }
+                            x++;
+                        }
+
+                        if (chunk = $(row_id.prefix + x)) {
+                            new_label += chunk.value;
+                            x++;
+                        }
+
+                        while (chunk = $(row_id.prefix + x)) {
+                            new_label += ' ' + chunk.value;
+                            x++;
+                        }
+                        generate({"acn": row_id.acn, "label": new_label});
+                        $(row_id.prefix + row_id.spine).focus();
+                    }
+                    break;
+                }
+
+                case dojo.keys.DELETE : {
+                    /* Delete line if at the end of an input box */
+                    if (sel_start == event.target.textLength) {
+                        var new_label = '';
+                        var chunk;
+                        var x = 0;
+                        while (x <= row_id.spine && (chunk = $(row_id.prefix + x))) {
+                            if (x > 0) {
+                                new_label += ' ' + chunk.value;
+                            } else {
+                                new_label = chunk.value;
+                            }
+                            x++;
+                        }
+
+                        if (chunk = $(row_id.prefix + x)) {
+                            new_label += chunk.value;
+                            x++;
+                        }
+
+                        while (chunk = $(row_id.prefix + x)) {
+                            new_label += ' ' + chunk.value;
+                            x++;
+                        }
+                        generate({"acn": row_id.acn, "label": new_label});
+                        $(row_id.prefix + row_id.spine).focus();
+                    }
+                    break;
+                }
+
+                case dojo.keys.UP_ARROW : {
+                    /* Move to the previous row */
+                    var prev_row = $(row_id.prefix + (parseInt(row_id.spine) - 1));
+                    if (prev_row) {
+                        prev_row.focus();
+                    }
+                    break;
+                }
+
+                case dojo.keys.DOWN_ARROW : {
+                    /* Move to the next row */
+                    var next_row = $(row_id.prefix + (parseInt(row_id.spine) + 1));
+                    if (next_row) {
+                        next_row.focus();
+                    }
+                    break;
+                }
             }
         }
 
