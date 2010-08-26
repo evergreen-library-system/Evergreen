@@ -58,7 +58,7 @@ sub handler {
 
 
 	my $skin = $apache_obj->dir_config('OILSRedirectSkin') || 'default';
-	my $depth = $apache_obj->dir_config('OILSRedirectDepth') || undef;
+	my $depth = $apache_obj->dir_config('OILSRedirectDepth');
 	my $locale = $apache_obj->dir_config('OILSRedirectLocale') || 'en-US';
 
 	my $hostname = $cgi->server_name();
@@ -84,7 +84,7 @@ sub handler {
 
 		if($org) { 
             $url .= "?ol=" . $org->id; 
-            $url .= "d=$depth" if defined $depth;
+            $url .= "&d=$depth" if defined $depth;
         }
 	}
 
