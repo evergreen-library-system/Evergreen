@@ -130,6 +130,7 @@
                         var gb = document.createElement('groupbox');
                         hb.appendChild(gb); 
                         gb.setAttribute('id','acn_' + g.volumes[i].id());
+                        gb.setAttribute('style','border: solid black 2px');
 
                         generate_labels(g.volumes[i], gb, label_cfg, override);
 
