@@ -17,3 +17,5 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
 INSERT INTO actor.org_unit_setting (org_unit, name, value) VALUES
     (1, 'cat.label.font.weight', '"normal"')
 ;
+
+COMMIT;
