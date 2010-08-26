@@ -238,7 +238,18 @@ sub run_method {
     # Go ahead and load the script runner to make sure we have all 
     # of the objects we need
     # --------------------------------------------------------------------------
-    $circulator->is_res_checkin($circulator->is_checkin(1)) if $api =~ /reservation.return/ or $circulator->seems_like_reservation();
+
+    # XXX I wanted to make this better so it might support blocking renewals
+    # if a reservation has been placed on an item, but that will need more
+    # design, as institutions will differ in their policy on that.  In the
+    # meantime making sure we're trying some kind of checkin will at least
+    # keep OPAC renewals from breaking since patrons don't have VIEW_USER...
+
+    $circulator->is_res_checkin($circulator->is_checkin(1))
+        if $api =~ /reservation.return/ or (
+            $api =~ /checkin/ and $circulator->seems_like_reservation()
+        );
+
     $circulator->is_res_checkout(1) if $api =~ /reservation.pickup/;
 
     $circulator->is_renewal(1) if $api =~ /renew/;
