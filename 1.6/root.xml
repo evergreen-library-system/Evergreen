@@ -107,6 +107,7 @@
 		<xi:include href="development/OpenSRF_intro.xml"/>
 		<xi:include href="development/datamodelsandaccess.xml"/>
 		<xi:include href="development/introduction_to_sql.xml"/>
+		<xi:include href="development/json.xml"/>	
 		<xi:include href="development/supercat.xml"/>
 	</part>
 	<part xml:id="Appendices">
