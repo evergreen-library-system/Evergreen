@@ -793,6 +793,12 @@ vim:et:ts=4:sw=4:
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
+                    <!-- default_preferred_language: Set the global, default preferred languange -->
+                    <default_preferred_language>eng</default_preferred_language>
+
+                    <!-- default_preferred_language_weight: Set the weight (higher is "better") for the preferred language -->
+                    <default_preferred_language_weight>5</default_preferred_language_weight>
+
                     <script_path>LIBDIR/javascript/</script_path>
                     <script_path>LOCALSTATEDIR/catalog/</script_path>
                     <scripts>
