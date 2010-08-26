@@ -2654,16 +2654,19 @@
 <!ENTITY staff.cat.spine_labels.close_window.label "Close Window">
 <!ENTITY staff.cat.spine_labels.close_window.accesskey "C">
 <!ENTITY staff.cat.spine_labels.font_size.label "Font size (in points):">
+<!ENTITY staff.cat.spine_labels.font_weight.label 'Font weight ("normal" or "bold"):'>
 <!ENTITY staff.cat.spine_labels.spine_label.label "Spine Label">
 <!ENTITY staff.cat.spine_labels.spine_label.left_margin.label "Left Margin (in characters):">
 <!ENTITY staff.cat.spine_labels.spine_label.label_width.label "Label Width (in characters):">
 <!ENTITY staff.cat.spine_labels.spine_label.label_length.label "Label Length (in lines):">
 <!ENTITY staff.cat.spine_labels.pocket_label.label "Pocket Label">
+<!ENTITY staff.cat.spine_labels.pocket_label.enabled.label "Enabled">
 <!ENTITY staff.cat.spine_labels.pocket_label.middle_margin.label "Middle Margin (in characters):">
 <!ENTITY staff.cat.spine_labels.pocket_label.label_width.label "Label Width (in characters):">
 <!ENTITY staff.cat.spine_labels.pocket_label.label_length.label "Label Length (in lines):">
 <!ENTITY staff.cat.spine_labels.pocket_label.title.label "Include Title (wraps on word at label width)">
 <!ENTITY staff.cat.spine_labels.on_line.label "On line:">
+<!ENTITY staff.cat.spine_labels.pocket_label.include_author.label "Include Author">
 <!ENTITY staff.cat.spine_labels.pocket_label.include_title.label "Include Title (segment after wrapping)">
 <!ENTITY staff.cat.spine_labels.indent_title.label "Indent a space?">
 <!ENTITY staff.cat.spine_labels.inc_call_number.label "Include Call Number">

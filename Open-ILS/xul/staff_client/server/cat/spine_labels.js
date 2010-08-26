@@ -100,6 +100,11 @@
                     label_cfg.font_size = g.data.hash.aous['cat.label.font.size'] || 10;
                     $('pt').value = label_cfg.font_size;
                 }
+                label_cfg.font_weight = $('font_weight').value;  /* font weight */
+                if (!label_cfg.font_weight) {
+                    label_cfg.font_weight = g.data.hash.aous['cat.label.font.weight'] || 'normal';
+                    $('font_weight').value = label_cfg.font_weight;
+                }
                 label_cfg.font_family = g.data.hash.aous['cat.label.font.family'] || 'monospace';
                 label_cfg.pocket_width = Number($('plw').value) || 28; /* pocket label width */
                 label_cfg.pocket_length = Number($('pll').value) || 9; /* pocket label length */
@@ -155,7 +160,11 @@
                     var tb = document.createElement('textbox'); hb2.appendChild(tb); 
                     tb.value = '';
                     tb.setAttribute('class','plain');
-                    tb.setAttribute('style','font-family: ' + label_cfg.font_family + '; font-size: ' + label_cfg.font_size);
+                    tb.setAttribute('style',
+                        'font-family: ' + label_cfg.font_family
+                        + '; font-size: ' + label_cfg.font_size
+                        + '; font-weight: ' + label_cfg.font_weight
+                    );
                     tb.setAttribute('size',label_cfg.spine_width+1);
                     tb.setAttribute('maxlength',label_cfg.spine_width);
                     tb.setAttribute('name','spine');
@@ -200,7 +209,12 @@
                 if ($('pl').checked && j < label_cfg.pocket_length) {
                     var tb2 = document.createElement('textbox'); hb2.appendChild(tb2); 
                     tb2.value = '';
-                    tb2.setAttribute('class','plain'); tb2.setAttribute('style','font-family: ' + label_cfg.font_family + '; font-size: ' + label_cfg.font_size);
+                    tb2.setAttribute('class','plain');
+                    tb2.setAttribute('style',
+                        'font-family: ' + label_cfg.font_family
+                        + '; font-size: ' + label_cfg.font_size
+                        + '; font-weight: ' + label_cfg.font_weight
+                    );
                     tb2.setAttribute('size',label_cfg.pocket_width+1); tb2.setAttribute('maxlength',label_cfg.pocket_width);
                     tb2.setAttribute('name','pocket');
                     if ($('title').checked && $('title_line').value == j + 1 && instanceOf(volume.record(),mvr)) {
@@ -418,6 +432,10 @@
                         $('pt').value = pt;
                     }
                     var ff = g.data.hash.aous['cat.spine.font.family'] || 'monospace';
+                    var fw = $('font_weight').value;  /* font weight */
+                    if (!fw) {
+                        fw = g.data.hash.aous['cat.label.font.weight'] || 'normal';
+                    }
                     var lm = Number($('lm').value); /* left margin */
                     if (!lm) {
                         lm = g.data.hash.aous['cat.spine.line.margin'] || 11;
@@ -436,7 +454,7 @@
                     var plw = Number($('plw').value) || 28; var pll = Number($('pll').value) || 9; /* pocket label width and length */
                     var html = "<html><head>";
                     html += "<link type='text/css' rel='stylesheet' href='" + xulG.url_prefix('/xul/server/skin/print.css') + "'></link>"
-                    html += "<link type='text/css' rel='stylesheet' href='data:text/css,pre{font-family:" + ff + ";font-size:" + pt + "pt;}'></link>";
+                    html += "<link type='text/css' rel='stylesheet' href='data:text/css,pre{font-family:" + ff + ";font-size:" + pt + "pt; font-weight: " + fw + ";}'></link>";
                     html += "<title>Spine Labels</title></head><body>\n";
                     var nl = document.getElementsByAttribute('name','template');
                     for (var i = 0; i < nl.length; i++) {
