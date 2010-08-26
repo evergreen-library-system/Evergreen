@@ -71,7 +71,16 @@ function displayAuthorities(data) {
             dojo.query('#auth' + recId + ' span.text').forEach(function(node) {
                 authText += dojox.xml.parser.textContent(node); 
             });
-            dojo.place('<div class="toMerge" id="toMerge_' + recId + '">' +  authText + '</div>', 'mergebox-div', 'last');
+
+            // If there is a toMerge item already, this is a target record
+            var mergeRole = '<td style="border: 1px solid black; padding-left: 0.5em; padding-right: 1em;">';
+            var isTarget = dojo.query('.toMerge').length;
+            if (isTarget) {
+                mergeRole += 'Target</td>';
+            } else {
+                mergeRole += 'Master</td>';
+            }
+            dojo.place('<tr class="toMerge" id="toMerge_' + recId + '">' + mergeRole + '<td style="border: 1px solid black; padding-left: 1em;">' + authText + '</td></tr>', 'mergebox-tbody', 'last');
             dojo.removeClass('mergebox-div', 'hidden');
         }, "label":"Mark for Merge"}).placeAt(auth_menu, "last");
 
