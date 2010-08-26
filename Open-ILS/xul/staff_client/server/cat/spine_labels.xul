@@ -49,13 +49,13 @@
 
             <hbox>
                 <label value="&staff.cat.spine_labels.font_size.label;" control="pt"/>
-                <textbox id="pt" value="10" onchange="this.setAttribute('value',this.value)" oils_persist="value" context="clipboard"/>
+                <textbox id="pt" value="" onchange="this.setAttribute('value',this.value)" oils_persist="value" context="clipboard"/>
             </hbox>
             <grid><columns><column/><column/><column/><column/></columns><rows>
                 <row> <label class="header" value="&staff.cat.spine_labels.spine_label.label;"/><spacer/> </row>
-                <row> <label value="&staff.cat.spine_labels.spine_label.left_margin.label;" control="lm"/><textbox id="lm" value="0" onchange="this.setAttribute('value',this.value)" oils_persist="value" context="clipboard"/> </row>
-                <row> <label value="&staff.cat.spine_labels.spine_label.label_width.label;" control="lw"/><textbox id="lw" value="8" onchange="this.setAttribute('value',this.value)" oils_persist="value" context="clipboard"/> </row>
-                <row> <label value="&staff.cat.spine_labels.spine_label.label_length.label;" control="ll"/><textbox id="ll" value="9" onchange="this.setAttribute('value',this.value)" oils_persist="value" context="clipboard"/> </row>
+                <row> <label value="&staff.cat.spine_labels.spine_label.left_margin.label;" control="lm"/><textbox id="lm" value="" onchange="this.setAttribute('value',this.value)" oils_persist="value" context="clipboard"/> </row>
+                <row> <label value="&staff.cat.spine_labels.spine_label.label_width.label;" control="lw"/><textbox id="lw" value="" onchange="this.setAttribute('value',this.value)" oils_persist="value" context="clipboard"/> </row>
+                <row> <label value="&staff.cat.spine_labels.spine_label.label_length.label;" control="ll"/><textbox id="ll" value="" onchange="this.setAttribute('value',this.value)" oils_persist="value" context="clipboard"/> </row>
                 <row> <label class="header" value="&staff.cat.spine_labels.pocket_label.label;"/><checkbox id="pl" checked="false" oils_persist="checked" label="Enabled"/> </row>
                 <row> <label value="&staff.cat.spine_labels.pocket_label.middle_margin.label;" control="mm"/><textbox id="mm" value="2" onchange="this.setAttribute('value',this.value)" oils_persist="value" context="clipboard"/> </row>
                 <row> <label value="&staff.cat.spine_labels.pocket_label.label_width.label;" control="plw"/><textbox id="plw" value="28" onchange="this.setAttribute('value',this.value)" oils_persist="value" context="clipboard"/> </row>

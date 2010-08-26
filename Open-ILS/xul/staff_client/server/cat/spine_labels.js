@@ -77,15 +77,37 @@
                 JSAN.use('util.widgets');
                 var pn = $('panel');
                 $('preview').disabled = false;
-                var lw = Number($('lw').value) || 8; /* spine label width */
-                var ll = Number($('ll').value) || 9; /* spine label length */
-                var plw = Number($('plw').value) || 28; /* pocket label width */
-                var pll = Number($('pll').value) || 9; /* pocket label length */
+
+                /* Grab from OU settings, then fall back to hardcoded defaults */
+                var label_cfg = {};
+                label_cfg.spine_width = Number($('lw').value); /* spine label width */
+                if (!label_cfg.spine_width) {
+                    label_cfg.spine_width = g.data.hash.aous['cat.spine.line.width'] || 8;
+                    $('lw').value = label_cfg.spine_width;
+                }
+                label_cfg.spine_length = Number($('ll').value); /* spine label length */
+                if (!label_cfg.spine_length) {
+                    label_cfg.spine_length = g.data.hash.aous['cat.spine.line.height'] || 9;
+                    $('ll').value = label_cfg.spine_length;
+                }
+                label_cfg.spine_left_margin = Number($('lm').value); /* left margin */
+                if (!label_cfg.spine_left_margin) {
+                    label_cfg.spine_left_margin = g.data.hash.aous['cat.spine.line.margin'] || 11;
+                    $('lm').value = label_cfg.spine_left_margin;
+                }
+                label_cfg.font_size = Number( $('pt').value );  /* font size */
+                if (!label_cfg.font_size) {
+                    label_cfg.font_size = g.data.hash.aous['cat.label.font.size'] || 10;
+                    $('pt').value = label_cfg.font_size;
+                }
+                label_cfg.font_family = g.data.hash.aous['cat.label.font.family'] || 'monospace';
+                label_cfg.pocket_width = Number($('plw').value) || 28; /* pocket label width */
+                label_cfg.pocket_length = Number($('pll').value) || 9; /* pocket label length */
 
                 if (override) {
                     var gb = $('acn_' + g.volumes[override.acn].id());
                     util.widgets.remove_children('acn_' + g.volumes[override.acn].id());
-                    generate_labels(g.volumes[override.acn], gb, lw, ll, plw, pll, override);
+                    generate_labels(g.volumes[override.acn], gb, label_cfg, override);
                 } else {
                     util.widgets.remove_children('panel');
                     for (var i in g.volumes) {
@@ -104,7 +126,7 @@
                         hb.appendChild(gb); 
                         gb.setAttribute('id','acn_' + g.volumes[i].id());
 
-                        generate_labels(g.volumes[i], gb, lw, ll, plw, pll, override);
+                        generate_labels(g.volumes[i], gb, label_cfg, override);
 
                         idx++;
                     }
@@ -114,7 +136,7 @@
             }
         }
 
-        function generate_labels(volume, label_node, spine_width, spine_max_lines, pocket_width, pocket_max_lines, override) {
+        function generate_labels(volume, label_node, label_cfg, override) {
             var names;
 
             if (override && volume.id() == override.acn) {
@@ -125,17 +147,17 @@
                 names = String(volume.label()).split(/\s+/);
             }
             var j = 0;
-            while (j < spine_max_lines || j < pocket_max_lines) {
+            while (j < label_cfg.spine_length || j < label_cfg.pocket_length) {
                 var hb2 = document.createElement('hbox'); label_node.appendChild(hb2);
                 
                 /* spine */
-                if (j < spine_max_lines) {
+                if (j < label_cfg.spine_length) {
                     var tb = document.createElement('textbox'); hb2.appendChild(tb); 
                     tb.value = '';
                     tb.setAttribute('class','plain');
-                    tb.setAttribute('style','font-family: monospace');
-                    tb.setAttribute('size',spine_width+1);
-                    tb.setAttribute('maxlength',spine_width);
+                    tb.setAttribute('style','font-family: ' + label_cfg.font_family + '; font-size: ' + label_cfg.font_size);
+                    tb.setAttribute('size',label_cfg.spine_width+1);
+                    tb.setAttribute('maxlength',label_cfg.spine_width);
                     tb.setAttribute('name','spine');
                     var spine_row_id = 'acn_' + volume.id() + '_spine_' + j;
                     tb.setAttribute('id',spine_row_id);
@@ -143,7 +165,7 @@
                     if (name) {
                         name = String( name );
                         /* if the name is greater than the label width... */
-                        if (name.length > spine_width) {
+                        if (name.length > label_cfg.spine_width) {
                             /* then try to split it on periods */
                             var sname = name.split(/\./);
                             if (sname.length > 1) {
@@ -153,18 +175,18 @@
                                 /* and put all but the first one back into the names array */
                                 names = sname.slice(1).concat( names );
                                 /* if the name fragment is still greater than the label width... */
-                                if (sname[0].length > spine_width) {
+                                if (sname[0].length > label_cfg.spine_width) {
                                     /* then just truncate and throw the rest back into the names array */
-                                    tb.value = sname[0].substr(0,spine_width);
-                                    names = [ sname[0].substr(spine_width) ].concat( names );
+                                    tb.value = sname[0].substr(0,label_cfg.spine_width);
+                                    names = [ sname[0].substr(label_cfg.spine_width) ].concat( names );
                                 } else {
                                     /* otherwise we're set */
                                     tb.value = sname[0];
                                 }
                             } else {
                                 /* if we can't split on periods, then just truncate and throw the rest back into the names array */
-                                tb.value = name.substr(0,spine_width);
-                                names = [ name.substr(spine_width) ].concat( names );
+                                tb.value = name.substr(0,label_cfg.spine_width);
+                                names = [ name.substr(label_cfg.spine_width) ].concat( names );
                             }
                         } else {
                             /* otherwise we're set */
@@ -175,45 +197,45 @@
                 }
 
                 /* pocket */
-                if ($('pl').checked && j < pocket_max_lines) {
+                if ($('pl').checked && j < label_cfg.pocket_length) {
                     var tb2 = document.createElement('textbox'); hb2.appendChild(tb2); 
                     tb2.value = '';
-                    tb2.setAttribute('class','plain'); tb2.setAttribute('style','font-family: monospace');
-                    tb2.setAttribute('size',pocket_width+1); tb2.setAttribute('maxlength',pocket_width);
+                    tb2.setAttribute('class','plain'); tb2.setAttribute('style','font-family: ' + label_cfg.font_family + '; font-size: ' + label_cfg.font_size);
+                    tb2.setAttribute('size',label_cfg.pocket_width+1); tb2.setAttribute('maxlength',label_cfg.pocket_width);
                     tb2.setAttribute('name','pocket');
                     if ($('title').checked && $('title_line').value == j + 1 && instanceOf(volume.record(),mvr)) {
                         if (volume.record().title()) {
-                            tb2.value = util.text.wrap_on_space( volume.record().title(), pocket_width )[0];
+                            tb2.value = util.text.wrap_on_space( volume.record().title(), label_cfg.pocket_width )[0];
                         } else {
                             tb2.value = '';
                         }
                     }
                     if ($('title_r').checked && $('title_r_line').value == j + 1 && instanceOf(volume.record(),mvr)) {
                         if (volume.record().title()) {
-                            tb2.value = ( ($('title_r_indent').checked ? ' ' : '') + util.text.wrap_on_space( volume.record().title(), pocket_width )[1]).substr(0,pocket_width);
+                            tb2.value = ( ($('title_r_indent').checked ? ' ' : '') + util.text.wrap_on_space( volume.record().title(), label_cfg.pocket_width )[1]).substr(0,label_cfg.pocket_width);
                         } else {
                             tb2.value = '';
                         }
                     }
                     if ($('author').checked && $('author_line').value == j + 1 && instanceOf(volume.record(),mvr)) {
                         if (volume.record().author()) {
-                            tb2.value = volume.record().author().substr(0,pocket_width);
+                            tb2.value = volume.record().author().substr(0,label_cfg.pocket_width);
                         } else {
                             tb2.value = '';
                         }
                     }
                     if ($('call_number').checked && $('call_number_line').value == j + 1) {
-                        tb2.value = volume.label().substr(0,pocket_width);
+                        tb2.value = volume.label().substr(0,label_cfg.pocket_width);
                     }
                     if ($('owning_lib_shortname').checked && $('owning_lib_shortname_line').value == j + 1) {
                         var lib = volume.owning_lib();
                         if (!instanceOf(lib,aou)) lib = g.data.hash.aou[ lib ];
-                        tb2.value = lib.shortname().substr(0,pocket_width);
+                        tb2.value = lib.shortname().substr(0,label_cfg.pocket_width);
                     }
                     if ($('owning_lib').checked && $('owning_lib_line').value == j + 1) {
                         var lib = volume.owning_lib();
                         if (!instanceOf(lib,aou)) lib = g.data.hash.aou[ lib ];
-                        tb2.value = lib.name().substr(0,pocket_width);
+                        tb2.value = lib.name().substr(0,label_cfg.pocket_width);
                     }
                     if ($('shelving_location').checked && $('shelving_location_line').value == j + 1) {
                         tb2.value = '%location%';
@@ -390,14 +412,31 @@
         function preview(idx) {
             try {
                     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-                    var pt = Number( $('pt').value ) || 10;  /* font size */
-                    var lm = Number($('lm').value); if (lm == NaN) lm = 11; /* left margin */
+                    var pt = Number( $('pt').value );  /* font size */
+                    if (!pt) {
+                        pt = g.data.hash.aous['cat.spine.font.size'] || 10;
+                        $('pt').value = pt;
+                    }
+                    var ff = g.data.hash.aous['cat.spine.font.family'] || 'monospace';
+                    var lm = Number($('lm').value); /* left margin */
+                    if (!lm) {
+                        lm = g.data.hash.aous['cat.spine.line.margin'] || 11;
+                    }
                     var mm = Number($('mm').value); if (mm == NaN) mm = 2; /* middle margin */
-                    var lw = Number($('lw').value) || 8; var ll = Number($('ll').value) || 9; /* spine label width and length */
+                    var lw = Number($('lw').value); /* spine label width */
+                    if (!lw) {
+                        lw = g.data.hash.aous['cat.spine.line.width'] || 8;
+                        $('lw').value = lw;
+                    }
+                    var ll = Number($('ll').value); /* spine label length */
+                    if (!ll) {
+                        ll = g.data.hash.aous['cat.spine.line.height'] || 9;
+                        $('ll').value = ll;
+                    }
                     var plw = Number($('plw').value) || 28; var pll = Number($('pll').value) || 9; /* pocket label width and length */
                     var html = "<html><head>";
                     html += "<link type='text/css' rel='stylesheet' href='" + xulG.url_prefix('/xul/server/skin/print.css') + "'></link>"
-                    html += "<link type='text/css' rel='stylesheet' href='data:text/css,pre{font-size:" + pt + "pt;}'></link>";
+                    html += "<link type='text/css' rel='stylesheet' href='data:text/css,pre{font-family:" + ff + ";font-size:" + pt + "pt;}'></link>";
                     html += "<title>Spine Labels</title></head><body>\n";
                     var nl = document.getElementsByAttribute('name','template');
                     for (var i = 0; i < nl.length; i++) {
