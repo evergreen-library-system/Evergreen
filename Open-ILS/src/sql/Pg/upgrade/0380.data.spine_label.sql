@@ -4,18 +4,18 @@ INSERT INTO config.upgrade_log (version) VALUES ('0380'); -- dbs
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
     VALUES
-        ('cat.spine.font.size',
-            oils_i18n_gettext('cat.spine.font.size',
-                'Cataloging: Spine label font size', 'coust', 'label'),
-            oils_i18n_gettext('cat.spine.font.size',
-                'Set the default font size for spine labels', 'coust', 'description'),
+        ('cat.label.font.size',
+            oils_i18n_gettext('cat.label.font.size',
+                'Cataloging: Spine and pocket label font size', 'coust', 'label'),
+            oils_i18n_gettext('cat.label.font.size',
+                'Set the default font size for spine and pocket labels', 'coust', 'description'),
             'integer'
         )
-        ,('cat.spine.font.family',
-            oils_i18n_gettext('cat.spine.font.family',
-                'Cataloging: Spine label font family', 'coust', 'label'),
-            oils_i18n_gettext('cat.spine.font.family',
-                'Set the preferred font family for spine labels. You can specify a list of fonts, separated by commas, in order of preference; the system will use the first font it finds with a matching name. For example, "Arial, Helvetica, serif".',
+        ,('cat.label.font.family',
+            oils_i18n_gettext('cat.label.font.family',
+                'Cataloging: Spine and pocket label font family', 'coust', 'label'),
+            oils_i18n_gettext('cat.label.font.family',
+                'Set the preferred font family for spine and pocket labels. You can specify a list of fonts, separated by commas, in order of preference; the system will use the first font it finds with a matching name. For example, "Arial, Helvetica, serif".',
                 'coust', 'description'),
             'string'
         )
