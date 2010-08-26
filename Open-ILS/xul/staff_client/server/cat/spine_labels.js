@@ -300,9 +300,20 @@
                      * label
                      */
                     if (sel_start == sel_end) {
-                        /* Special case if the cursor is at the start of the line */
                         if (sel_start == 0) {
+                            /* If the cursor is at the start of the line:
+                             * insert new line
+                             */
                             line_value = ' ' + line_value;
+                        } else if (sel_start == line_value.length) {
+                            /* Special case if the cursor is at the end of the line:
+                             * move to next line
+                             */
+                            var next_row = $(row_id.prefix + (parseInt(row_id.spine) + 1));
+                            if (next_row) {
+                                next_row.focus();
+                            }
+                            break;
                         } else {
                             line_value = line_value.substr(0, sel_start) + ' ' + line_value.substr(sel_end);
                         }
@@ -403,6 +414,10 @@
                     if (next_row) {
                         next_row.focus();
                     }
+                    break;
+                }
+
+                default : {
                     break;
                 }
             }
