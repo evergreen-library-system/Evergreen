@@ -1,4 +1,4 @@
-<partintro xmlns:xl="http://www.w3.org/1999/xlink">
+<partintro xmlns:xl="http://www.w3.org/1999/xlink" xml:id="admin_intro">
 	<para>This part of the documentation is intended for Evergreen administrators and requires root access to your Evergreen server(s) and administrator access to the Evergreen staff client. It deals with maintaining servers, installation, upgrading, and configuring both system wide and local library settings. 
 	Some sections require understanding of linux system administration while others require an understanding of your system hierarchy of locations and users. Many procedures explained in the following 
 	chapters are accomplished with linux commands run from the terminal without a Graphical User Interface (GUI).</para>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="requirements" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <info>
+        <title>System Requirements and Hardware Configurations</title>
+    </info>
+
+    <para>Evergreen is extremely scalable and can serve the need of a large range of libraries. The specific requirements and configuration of your system should be determined based on your 
+	specific needs of your organization or consortium.</para>
+    
+	<section xml:id="requirements_server">
+	        <info>
+	            <title>Server Minimum Requirements</title>
+	        </info>	
+			 <para>The following are the base requirements setting Evergreen up on a test server:</para>
+			<itemizedlist>
+				<listitem><para>An available desktop, server or virtual image</para></listitem>
+				<listitem><para>512MB RAM</para></listitem>			
+				<listitem><para>Linux Operating System</para></listitem>
+			</itemizedlist>
+			<tip><para>Debian and Ubuntu are the most widely used Linux distributions for installing Evergreen and most development takes place on Debian based systems. If you are new 
+			to Linux, it is strongly recommended that you install Evergreen on the latest stable server edition of Debian (<ulink url="http://www.debian.org/">http://www.debian.org/</ulink>)
+			or Ubuntu 10.04 Server(<ulink url="http://www.ubuntu.com/">http://www.ubuntu.com/</ulink>) since the installation instructions have been tested on these distributions. Debian and 				Ubuntu are free distributions of Linux.</para></tip>
+		</section>	  
+		<section xml:id="hardwareconfigurations">
+			<info>
+            			<title>Server Hardware Configurations and Clustering</title>
+			</info>
+        		<para>As apparent in the previous section, the base hardware requirements for running a functional Evergreen server are extremely minimal. It is also possible
+			to scale up your evergreen configuration to be spread your Evergreen resources and services over several or even many servers in a clustered approach for the purpose 
+			of system redundancy, load balancing and downtime reduction. This allows very large 
+			consortia to share one Evergreen system with hundreds of libraries with millions of records and millions of users, making the scalability of Evergreen almost infinite.</para>
+			<para>Here are some example scenarios for networked server configurations:</para>
+			<itemizedlist>
+				<listitem><para>A small library library with 1 location, under 25,000 items and a few thousand users could easily run Evergreen on a single server 
+				(1 machine).</para></listitem>
+				<listitem><para>A college or university with 1 million items and 20,000 users could run an Evergreen system using several servers balancing the load on their 
+				system by spreading services over multiple servers. It should host their PostgreSQL database on a separate server. They could also cluster the Evergreen services 	
+				strategically to minimize or eliminate any necessary downtown when upgrading Evergreen or other server software. Moreover, system redundancy will reduce the chance of 
+				unplanned catastrophic downtime caused by system failure since Evergreen will be running over several machines.</para></listitem>			
+				<listitem><para>A large library consortium with several public library systems and/or academic libraries with millions of users and items could run an Evergreen 
+				system over many servers with clusters for Evergreen services as well as a cluster for the Postgresql Database.</para></listitem>
+			</itemizedlist>
+      			<para>The key to Evergreen scalability is in the openSRF configuration files <filename>/openils/conf/opensrf.xml</filename> and 
+			<filename>/openils/conf/opensrf_core.xml</filename>. 
+			By configuring these files, an administrator could cluster evergreen services over multiple hosts, change the host running a specific service 
+			or change the host of the postgreSQL database.</para> 
+
+			<note><para>The default configuration of Evergreen in the installation instructions assumes a single <emphasis>localhost</emphasis> server setup. For more complex 
+			multi-server clustered configurations, some server administration and database administration experience or knowledge will be required.</para></note>		
+    		</section>    
+ 	
+		<section xml:id="requirements_staffclient">
+			<info>
+			    <title>Staff Client Requirements</title>
+			</info>
+	
+			<para> Staff terminals connect to the central database using the Evergreen staff client, available for download from 
+			<link xlink:href="http://www.open-ils.org/downloads.php">The Evergreen download page</link>. The staff client must be installed on each staff workstation and requires at 
+			minimum: </para>
+			<itemizedlist>
+	    			<listitem><para>Windows (XP, Vista, or 7), Mac OS X, or Linux operating system</para></listitem>
+	    			<listitem><para>a reliable high speed internet connection</para></listitem>
+	   			<listitem><para>512Mb of RAM</para></listitem>
+			</itemizedlist>
+	  		<simplesect>
+				<info>
+		    			<title>Barcode Scanners</title>   
+				</info>
+					<para>Evergreen will work with virtually any barcode scanner – if it worked with your legacy system it should work on Evergreen.</para>
+	    		</simplesect>
+			<simplesect>
+				<info>
+		    			<title>Printers</title>
+				</info>
+				<para>Evergreen can use any printer configured for your terminal to print receipts, check-out slips, holds
+		    		lists, etc. The single exception is spine label printing, which is still under development. Evergreen
+		    		currently formats spine labels for output to a label roll printer. If you do not have a roll printer
+		   		 manual formatting may be required.  For more on configuring receipt printers, see <link linkend="lsa-printer">Printer Settings</link>.</para>    
+	    		</simplesect>    
+	 	</section>
+</chapter>

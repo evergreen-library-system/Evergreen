@@ -452,6 +452,155 @@
 			record.</para></step>			
 		</procedure>
 	</section>
+	<section xml:id="Addingholdings">
+	     	<title>Adding holdings to title records</title>
+		<para>This lesson demonstrates adding your library’s volume and copy records to a title record. </para>
+		<procedure>
+		      <step>
+			 <para>Search the catalogue for a record that matches the item in hand, as described in <xref linkend="locatingrecords"/>.</para>
+		      </step>
+		      <step>
+			 <informalfigure>
+			    <para>When record is displayed, select <menuchoice>
+				  <guimenu>Actions for this Record</guimenu>
+				  <guimenuitem>Holdings Maintenance</guimenuitem>
+			       </menuchoice>.</para>
+			    <para>
+			       <mediaobject>
+				  <alt>screenshot of staff client</alt>
+				  <imageobject>
+				     <imagedata scalefit="0" fileref="../media/add_holdings-1.png"/>
+				  </imageobject>
+
+			       </mediaobject>
+			    </para>
+			 </informalfigure>
+		      </step>
+	      		<step>
+			 <informalfigure>
+			    <para>Record opens in <guilabel>record summary</guilabel> view. Select your library from
+			       the list and click <menuchoice>
+				  <guimenu>Actions for Selected Rows</guimenu>
+				  <guimenuitem>Add Volumes</guimenuitem>
+			       </menuchoice>.</para>
+			    <para>
+			       <mediaobject>
+				  <alt>screenshot of staff client</alt>
+				  <imageobject>
+				     <imagedata width="100%" scalefit="1" fileref="../media/add_holdings-2.png"/>
+				  </imageobject>
+			       </mediaobject>
+			    </para>
+			 </informalfigure>
+		      </step>
+		      <step>
+			 <informalfigure>
+			    <para>Enter amount in <guilabel># of volumes</guilabel> field, type in a call number, or
+			       if the call number pulled from MARC record is acceptable click
+				  <guibutton>Apply</guibutton> to bring call number down to call number field, enter
+			       number of copies, scan barcode, and click <guibutton>Edit then Create</guibutton>.
+			       Use <keycap>Tab</keycap> or <keycap>Enter</keycap> to move through fields.</para>
+			    <para>
+			       <mediaobject>
+				  <alt>screenshot of staff client</alt>
+				  <imageobject role="html">
+				     <imagedata scalefit="0" fileref="../media/add_holdings-3.png"/>
+				  </imageobject>
+				  <imageobject role="fo">
+				     <imagedata scale="80" fileref="../media/add_holdings-3.png"/>
+				  </imageobject>
+			       </mediaobject>
+			    </para>
+			 </informalfigure>
+		      </step>
+		      <step>
+			 <informalfigure>
+			    <para>The <guilabel>Copy Editor</guilabel> opens. Make all necessary edits by moving
+			       through fields and clicking <guibutton>Apply</guibutton> on every edit, and click
+				  <guibutton>Create Copies</guibutton></para>
+			    <para>
+			       <mediaobject xml:id="add-editor">
+				  <alt>screenshot of staff client</alt>
+				  <imageobject role="html">
+				     <imagedata width="100%" scalefit="1" fileref="../media/add_holdings-4.png"/>
+				  </imageobject>
+			       </mediaobject>
+
+			    </para>
+			 </informalfigure>
+		      </step>
+		      <step>
+			 <informalfigure>
+			    <para>Click <guibutton>OK</guibutton>.</para>
+			    <para>
+			       <mediaobject>
+				  <alt>screenshot of staff client</alt>
+				  <imageobject role="html">
+				     <imagedata scalefit="0" fileref="../media/add_holdings-5.png"/>
+				  </imageobject>
+				  <imageobject role="fo">
+				     <imagedata scale="80" fileref="../media/add_holdings-5.png"/>
+				  </imageobject>
+			       </mediaobject>
+			    </para>
+			 </informalfigure>
+		      </step>
+		   	</procedure>
+			   <tip>
+			      <para>Once an item is created it is assigned a status of <emphasis>In Process</emphasis>. Item
+				 must be checked in to become <emphasis>Available</emphasis> or cataloguer can choose to
+				    <guimenuitem>Edit Item Attributes</guimenuitem> and change status to
+				    <emphasis>Available</emphasis> once record has been created and saved to
+				 database.</para>
+			      <para>Creation and use of item record templates is recommended. See <xref linkend="cattemplates"/> for
+				 more information.</para>
+			   </tip>
+		   <simplesect xml:id="add-hold">
+		      <title>New Copies and Holds</title>
+		      <para>Because of the way Evergreen targets holds new copies are not guaranteed to fulfill
+			 pre-existing holds correctly until 24 hours after cataloguing. If your cataloguing
+			 turn-around time is shorter than 24 hours you can ensure the new copy is captured correctly
+			 at check in with the steps below.</para>
+			<procedure>
+				<step>
+				    	<informalfigure>
+					       <para>After adding the item select <menuchoice>
+						     <guimenu>Actions for this Record</guimenu>
+						     <guimenuitem>View Holds</guimenuitem>
+						  </menuchoice></para>
+					       <para>
+						  <mediaobject>
+						     <alt>actions for this record menu</alt>
+						     <imageobject>
+							<imagedata scalefit="0" fileref="../media/add_holdings-6.png"/>
+						     </imageobject>
+						  </mediaobject>
+					       </para>
+					</informalfigure>
+				</step>
+				 <step>
+				    <informalfigure>
+				       <para>If there are outstanding hold requests, select the hold that is next in line
+					  then choose <menuchoice>
+					     <guimenu>Actions for Selected Holds</guimenu>
+					     <guimenuitem>Find Another Target</guimenuitem>
+					  </menuchoice>. This forces Evergreen to re-target the hold and recognize the newly
+					  catalogued item.</para>
+				       <para>
+					  <mediaobject>
+					     <imageobject>
+						<imagedata scalefit="1" width="100%" fileref="../media/add_holdings-7.png"/>
+					     </imageobject>
+					  </mediaobject>
+				       </para>
+				    </informalfigure>
+				 </step>
+				 <step>
+				    <para> Check in the new item to capture it for the selected hold.</para>
+				 </step>
+			</procedure>
+   		</simplesect>
+	</section>	
 	<section xml:id="PrintingSpineandPocketLabels">
 		<title>Printing Spine and Pocket Labels</title>
 		<para>Copy buckets may be used to group items requiring labels.</para>	
@@ -510,4 +659,5 @@
 			<step><para>Confirm the action by selecting the checkbox and Undelete in the resulting popup box.</para></step>	
 		</procedure>
 	</section>
+	
 </chapter>

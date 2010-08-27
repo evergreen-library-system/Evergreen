@@ -5,6 +5,13 @@
       <info>
             <title>Evergreen 1.6 Documentation</title>
  		<subtitle>Draft Version</subtitle>
+		<corpauthor>Documentation Interest Group</corpauthor>
+	         <mediaobject>
+			<imageobject>
+			<imagedata scalefit="0" fileref="../media/main_logo.jpg"/>
+		</imageobject>
+		</mediaobject>
+
 		<copyright>
                   <year>2010</year>
                   <holder>Evergreen Community</holder>
@@ -37,10 +44,12 @@
 		<info>
 			<title>Public Access Catalog</title>
 		</info>
+		<xi:include href="opac/opac_intro.xml"/>
 		<xi:include href="opac/basicsearch.xml"/>
 		<xi:include href="opac/advancedsearch.xml"/>	
 		<xi:include href="opac/searchtips.xml"/>
 		<xi:include href="opac/searchmethodology.xml"/>
+		<xi:include href="opac/search_URL.xml"/>
 		<xi:include href="opac/searchresults.xml"/>
 		<xi:include href="opac/myaccount.xml"/>
 	</part>
@@ -48,6 +57,7 @@
 		<info>
 			<title>Core Staff Tasks</title>
 		</info>
+		<xi:include href="stafftasks/stafftasks_intro.xml"/>
 		<xi:include href="stafftasks/staffclient.xml"/>
 		<xi:include href="stafftasks/circulation.xml"/>
 		<xi:include href="stafftasks/cataloging.xml"/>
@@ -57,16 +67,22 @@
 			<title>Administration</title>
 		</info>
 		<xi:include href="admin/admin-intro.xml"/>
+		<xi:include href="admin/requirements-configuration.xml"/>
 		<xi:include href="admin/serveradministration.xml"/>
 		<xi:include href="admin/AdminMisc.xml"/>
 		<xi:include href="admin/admin-lsa.xml"/>
 		<xi:include href="admin/Upgrading-Evergreen_1.6.xml"/>
  		<xi:include href="admin/troubleshooting.xml"/>
+ 		<xi:include href="admin/z3950.xml"/>
+ 		<xi:include href="admin/sip.xml"/>
+	
 	</part>
 	<part xml:id="reports">
 		<info>
 			<title>Reports</title>
 		</info>
+		<xi:include href="reports/report-intro.xml"/>
+		<xi:include href="reports/report-startingreporter.xml"/>
 		<xi:include href="reports/report-folder.xml"/>
 		<xi:include href="reports/report-create-template.xml"/>
 		<xi:include href="reports/report-generate-report.xml"/>
@@ -86,15 +102,19 @@
 		<info>
 			<title>Development</title>
 		</info>
+		<xi:include href="development/development_intro.xml"/>
+		<xi:include href="development/customize_opac.xml"/>
 		<xi:include href="development/OpenSRF_intro.xml"/>
 		<xi:include href="development/datamodelsandaccess.xml"/>
 		<xi:include href="development/introduction_to_sql.xml"/>
+		<xi:include href="development/json.xml"/>	
+		<xi:include href="development/supercat.xml"/>
 	</part>
 	<part xml:id="Appendices">
 		<info>
 			<title>Appendices</title>
 		</info>
-		<xi:include href="development/schema.xml"/>
+<!--		<xi:include href="development/schema.xml"/>-->
 		<xi:include href="appendices/bookindex.xml"/>
 	</part>
 </book>

@@ -1929,8 +1929,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<title>Deleting Billing Types</title>
 				<step><para>Check the checkbox of the billing type(s) you wish to delete.</para></step>
 				<step><para>Click <guibutton>Delete Selected</guibutton>.
-					<warning><para>The selected billing types will be deleted without a 
-					verification alert.</para></warning>
+					<caution><para>The selected billing types will be deleted without a 
+					verification alert.</para></caution>
 				</para></step>
 			</procedure>
 			<procedure>
@@ -1968,8 +1968,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<step><para>Check the check box(es) next to the circulation modifiers(s) you wish to 
 				delete.</para></step>
 				<step><para>Click <guibutton>Delete Selected</guibutton> near the top of the page.
-				<warning><para>The selected circulation modifiers will be deleted without a 
-				verification alert.</para></warning>
+				<caution><para>The selected circulation modifiers will be deleted without a 
+				verification alert.</para></caution>
 				</para></step>
 			</procedure>
 			<procedure>

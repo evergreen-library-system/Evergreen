@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="Customizing_OPAC" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<info>
+        	<title>Customizing the OPAC</title>
+	</info>
+	<para>While Evergreen is ready to go out of the box, libraries will want to customize Evergreen with their own color scheme, logos and layout. This chapter will explain how to 
+	customize Evergreen to meet the needs of your users. For these task some knowledge of html and css is required. Many of these instructions assume a default installation of 
+	Evergreen using the default file locations.</para>
+   	<note>
+		<para>Be sure to save a backup copy of all files you edit in a location other than /openils/var/web/opac/ as files here could be overwritten when you upgrade your copy 
+		of Evergreen.</para>
+	</note>	
+	<section xml:id="ColorScheme">
+		<title>Change the Color Scheme</title>
+		<para>To change the color scheme of the default Evergreen skin, edit <filename>/openils/var/web/opac/theme/default/css/colors.css</filename>. From this one file you can 
+		change the 4 base color scheme as well as colors of specific elements.     
+		</para>							 
+		<para>You can also create alternate themes for your users.</para>     
+		<procedure>
+			<step>
+				<para>Copy the css folder and its contents from the example alternate theme <filename>/openils/var/web/opac/theme/reddish/</filename> 
+				to a new folder <filename>/openils/var/web/opac/theme/<emphasis>[your new theme]</emphasis>/</filename>.</para>
+			</step>	
+			<step>
+				<para>Edit /openils/var/web/opac/theme/<emphasis>[your new theme]</emphasis>/css/colors.css to use the colors you want.</para>
+			</step>
+			<step>
+				<para>Link to your new style sheet by adding the following to <filename>/openils/var/web/opac/skin/default/xml/common/css_common.xml</filename>.</para>
+				<screen>&lt;link type='text/css'</screen> 
+  				<screen>rel="alternate stylesheet"</screen>  
+  				<screen>title='&amp;opac.style.yourtheme;'</screen>  
+  				<screen>href="&lt;!--#echo var='OILS_THEME_BASE'--&gt;/yourtheme/css/colors.css"</screen> 
+  				<screen>name='Default' csstype='color'/&gt;</screen> 
+			</step>	
+			<step>
+				<para> Give your new theme a name users can select by adding the following to <filename>/openils/var/web/opac/locale/<emphasis>
+				[your locale]</emphasis>/opac.dtd</filename>.</para>
+				<screen>&lt;!ENTITY opac.style.yourtheme "YourTheme"&gt;</screen> 	
+			</step>	
+		</procedure>	
+	</section>
+	<section xml:id="customizing_opac_text">
+		<title>customizing Opac Text and Labels</title>
+		<para>To change text and links used throughout the OPAC, edit the following files:</para>
+		<itemizedlist>
+			<listitem><filename>/openils/var/web/opac/locale/<emphasis>[your locale]</emphasis>/lang.dtd</filename></listitem>
+			<listitem><filename>/openils/var/web/opac/locale/<emphasis>[your locale]</emphasis>/opac.dtd</filename></listitem>
+		</itemizedlist>
+		<tip>
+			<para>A better way to customize OPAC text is to create custom <emphasis>dtd</emphasis> files for your lang and opac customizations and then add a include 
+			statement above the default dtd files.</para>
+			<screen>&lt;!DOCTYPE html PUBLIC</screen> 
+        		<screen>"-//W3C//DTD XHTML 1.0 Transitional//EN"</screen> 
+        		<screen>"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [</screen>
+        		<screen>&lt;!--#include virtual="/opac/locale/${locale}/custom_opac.dtd"--&gt;</screen>
+       	 		<screen>&lt;!--#include virtual="/opac/locale/${locale}/opac.dtd"--&gt;</screen>
+			<screen>]&gt;</screen>
+			<para>position is important here. The first/top included <emphasis>dtd</emphasis> files will take precedence over the subsequent dtd includes.</para> 
+		</tip>
+		<para>While it is possible to add text to the xml files itself, it is a good practice to use the DTD file to control the text and refer to the DTD elements in the xml/html code.</para>   
+		<para>For example, the footer.xml file has this code to generate a copyright statement:</para>
+		<screen>&lt;div id='copyright_text'&gt;</screen>
+            	<screen>&lt;span&gt;&amp;footer.copyright;&lt;/span&gt;</screen>
+		<para>The included <filename>opac.dtd</filename> file in the en-US locale direcotry has this setting for &amp;footer.copyright text:</para>  
+		<screen>&lt;!ENTITY footer.copyright "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"&gt;</screen>
+	</section>
+	<section xml:id="Logo_Images">
+		<title>Logo Images</title>
+		<para>To change the logos used by default to your own logos, replace the following files with images of your own, appropriately sized. </para>
+		<itemizedlist>
+			<listitem><filename>/openils/var/web/opac/images/main_logo.jpg</filename></listitem>
+			<listitem><filename>/openils/var/web/opac/images/main_logo.jpg</filename></listitem>
+		</itemizedlist>				 
+	</section>
+	<section xml:id="AddedContent">
+		<title>Added Content</title>
+		<para>By default Evergreen includes customizable <quote>Added Content</quote> features to enhance the OPAC experience for your user. These features include Amazon book covers 
+		and Google books searching. These features can be turned off or custimized.</para>
+		<simplesect xml:id="bookcovers">
+			<title>Book Covers</title>
+			<para>The default install of Evergreen includes Amazon book covers. The settings for this are controlled by the &lt;added_content&gt; section of 
+			<filename>/opneils/conf/opensrf.xml</filename>. Here are the key elements of this configuration:</para>	
+			<screen>&lt;module&gt;OpenILS::WWW::AddedContent::Amazon&lt;/module&gt;</screen>
+			<para>This calls the Amazon perl module. If you wish to link to a different book cover service other than Amazon, you must create a new perl module and refer to it here. 
+			You will also need to change other settings accordingly. There are some available book cover perl modules available in  
+			<ulink url="http://svn.open-ils.org/trac/ILS/browser/trunk/Open-ILS/src/perlmods/OpenILS/WWW/AddedContent">trunk</ulink></para>
+			<screen>&lt;base_url&gt;http://images.amazon.com/images/P/&lt;/base_url&gt;</screen>
+			<para>Base URL for Amazon added content fetching.  This URL may need to be shortened when new (read: non-image) content fetching 
+			capabilities are added.</para>	 
+			<screen>&lt;timeout&gt;1&lt;/timeout&gt;</screen>
+			<para>Max number of seconds to wait for an added content request to return data.  Data not returned within the timeout is considered a failure.</para>	 
+			<screen>&lt;retry_timeout&gt;600&lt;/retry_timeout&gt;</screen>
+			<para>After added content lookups have been disabled due to too many lookup failures, this is the amount of time to wait before we try again.</para>
+			<screen>&lt;max_errors&gt;15&lt;/max_errors&gt;</screen>
+			<para>Maximum number of consecutive lookup errors a given process can live before added content lookups are disabled for everyone.</para>	
+			<screen>&lt;userid&gt;MY_USER_ID&lt;/userid&gt;</screen>
+			<para>If a userid is required to access the added content.</para>
+		</simplesect>
+		<simplesect xml:id="googlebookslink">
+			<title>Google Books Link</title>
+			<para>The results page will display a <quote>Browse in Google Books Search</quote> link for items in the results page which have corresponding entries in Google Books. 
+			This will link to Google Books content including table of contents and complete versions of the work if it exists in Google Books. Items not in Google Books will not 
+			display a link. This feature can be turned off by changing the googleBooksLink variable setting to <quote>false</quote>in the file 
+			<filename>/openils/var/web/opac/skin/default/js/result_common.js</filename>. By default, this feature is activated. </para> 
+		</simplesect>	  
+	</section>
+	<section xml:id="resultspage">
+		<title>Customizing the Results Page</title>
+		<para>The results page is extremely customizable and allows some built in features to be activated with some simple edits or more advanced customizations can be done by more 
+		experienced web developers.</para>
+		<para>There are several critical files to edit if you wish to  customize the results page:</para>
+		<itemizedlist>
+			<listitem><filename>/openils/var/web/opac/skin/default/js/result_common.js</filename> - This file controls the javascript for the top level elements on the results 
+			page and should only be edited by experienced web developers except for the <link linkend='googlebookslink'>google books link setting</link> mentioned perviously.</listitem>
+			<listitem><filename>/openils/var/web/opac/skin/default/js/rresult.js</filename> - Has some good controls of results page settings at the top of this file but 
+			requires web development skills for editing this file.</listitem>
+			<listitem><filename>/openils/var/web/opac/skin/default/xml/result/rresult_table.xml</filename> - This controls the layout of the items table on results page.</listitem>
+		</itemizedlist>		 
+	</section>
+	<section xml:id="deatailspage">
+		<title>Customizing the Details Page</title>
+		<para>There are many options when customizing the details page in Evergreen. The default settings are effective for most libraries, but it is important to understand the full potential 
+		of Evergreen when displaying the details of items.</para>  		
+		<para>Some quick features can be turned on and off by changing variable values in the file <filename>/openils/var/web/opac/skin/default/js/rdedail.js</filename>. 
+		You will notice the section at the top of this file called <quote>Per-skin configuration settings</quote>. Changing setting in this section can control several features includuing 
+		limiting results to local only or showing copy location or displaying serial holdings. Form this section you can also enable refworks and set the Refworks host URL.</para>
+		<para>Some copy level details settings can be turned on and off from <filename>/openils/var/web/opac/skin/default/js/copy_details.js</filename> including displaying certain fields 
+		such as due date in the OPAC.</para>
+		<para>An important file is the <filename>/openils/var/web/opac/skin/default/xml/rdetail/rdetail_summary.xml</filename> file. This file allows you to control which field to display in 
+		the details summary of the record. The new <link linkend='googlebookslink'>BibTemnplate</link> feature makes this file even more powerful by allowing you to display any marc fields 
+		with a variey of formatting options.</para>
+		<para>The <filename>/openils/var/web/opac/skin/default/xml/rdetail/rdetail_copyinfo.xml</filename> file allows you to format the display of the copy information.</para>   
+	</section>		
+	<section xml:id="BibTemplate">
+		<title>BibTemplate</title>
+		<para>BibTemplate is an Evergreen-custom Dojo module which can be used to retrieve and format XML  data served by the Evergreen unAPI service. unAPI is a protocol for requesting 				known objects in specific formats, and Evergreen uses this to supply data – bibliographic records, metarecords, monograph holdings information, Located URIs, and more to come – 
+		in many different formats from MARCXML to MODS to custom XML applications.</para> 
+		<para>Managing the display of information from raw XML can be difficult, and the purpose of BibTemplate  is to make this simpler, as well as move the display closer to the 
+		client and away from the source data. This is good from a separation-of-responsibilities perspective, and also makes it easier to contain and control local customization.</para>
+		<para>BibTemplate supports the foloowing Evergreen metadata formats:</para>
+		<itemizedlist>
+			<listitem>MARCXML - datatype='marcxml-full' (default)</listitem>					
+			<listitem>MODS 3.3: datatype='mods33'</listitem>
+			<listitem>Dublin Core: datatype='rdf_dc'</listitem>
+			<listitem>FGDC: datatype='fgdc'</listitem>
+		</itemizedlist>			
+		<simplesect>
+			<title>HTML API</title>
+			<para>BibTemplate follows the Dojo convention of adding attributes to existing (X)HTML in order to progressively change its behavior. The 1.6.0 HTML API consists of a 
+			set of attributes that are added to existing OPAC markup, and fall into two classes:</para>
+			<itemizedlist>
+				<listitem> The slot marker – Elements that denote the location of bibliographic data to insert.</listitem>
+				<listitem>The slot formatter – Elements that specify how the named data should be formatted for display.</listitem>
+			</itemizedlist>		 
+		</simplesect>
+		<simplesect>
+			<title>Slot Marker</title>
+			<para>A slot marker is any displayable HTML element that has a type attribute with a value starting with opac/slot-data. This element will become the container 
+			for the formatted data. A slot marker is required in order to retrieve, format and display data using BibTemplate. A slot marker must also have an 
+			attribute called query containing a CSS3 selector. This selector is applied to the XML returned by the unAPI service in order to gather the specific XML 
+			Nodes that should be considered for formatting.</para>
+			<para>The slot marker can also specify the format of the data to be returned from the unAPI service. This can be specified by adding +{format} to the type 
+			attribute, as in opac/slot-data+mods33-full. The default data format is marcxml-uri, which is an augmented MARCXML record containing Located URI information 
+			and unAPI links.</para>
+			<para>Example of a slot marker:</para>
+			<screen>&lt;p type='opac/slot-data' query='datafield[tag=245]'&gt;&lt;/p&gt;</screen>
+			<para>Most useful attribute match operators include:</para>
+			<itemizedlist>
+				<listitem> datafield[tag=245] - exact match</listitem>
+				<listitem>datafield[tag^=65] - match start of value</listitem>
+			</itemizedlist>	
+			<tip><para>Selectors always narrow, so select broadly and iterate through the NodeList</para></tip>
+		</simplesect>
+		<simplesect>
+			<title>Slot Formatter</title>
+			<para>A slot formatter is any invisible HTML element which has a type attribute with the value of opac/slot-format. (NOTE: before 1.6.0.4, only &lt;script&gt; 
+			elements were supported, though this restriction is now removed to support Internet Explorer.) Only one slot formatter element is allowed in each slot. The text contents 
+			of this element are wrapped in a JavaScript function and run for each node returned by the query CSS3 selector specified on the slot marker. This function is passed 
+			one argument, called item, which an XML Node captured by the selector. This function should return HTML text. The output for all runs of the slot formatter is 
+			concatenated into a single string and used to replace the contents of the slot marker.</para>
+			<para>The slot formatter is optional, and if not supplied BibTemplate will create a simple function which extracts and returns the text content of the XML Nodes 
+			specified in the CSS3 selector.</para>
+			<para>Example of a slot formatter:</para>
+			<programlisting>
+				&lt;td class='rdetail_item' id='rdetail_online' type='opac/slot-data' query='volumes volume uris uri' join=", "&gt;
+					&lt;script type='opac/slot-format'&gt;&lt;![CDATA[
+				 		var link = '&lt;a href="' + item.getAttribute('href') + '"&gt;' + item.getAttribute('label') + '&lt;/a&gt;';
+						if (item.getAttribute('use_restriction'))
+							link += ' (Use restriction: ' + item.getAttribute('use_restriction') + ')';
+							return link;
+					]]&gt;&lt;/script&gt;
+				&lt;/td&gt;
+			</programlisting>
+		</simplesect>
+		<simplesect>
+			<title>JavaScript API</title>
+			<para>In order for BibTemplate to find the slot markers and invoke the slot formatters JavaScript renderer must be instantiated and called. This must be done 
+			for each record that is to contribute to a pages display. The API for this is simple and straight-forward:</para>
+			<para>The slot formatter is optional, and if not supplied BibTemplate will create a simple function which extracts and returns the text content of the XML Nodes 
+			specified in the CSS3 selector.</para>
+			<para>Example of a slot formatter:</para>
+			<programlisting>
+				dojo.require('openils.BibTemplate'); // Tell Dojo to load BibTemplate, if it is not already loaded
+				
+				// Create a renderer supplying the record id and the short name of the org unit, if known, and call the render() method  					
+				new openils.BibTemplate({ record : new CGI().param('r'), org_unit : here.shortname() }).render(); 
+
+			</programlisting>
+			<para>The argument hash supplied to the new openils.BibTemplate() constructor can have the following properties:</para>
+			<itemizedlist>
+				<listitem>record – The bibliographic record ID.</listitem>
+				<listitem>org_unit – The relevant Organizational Unit, used to restrict holdings scope as on a search result or record detail page.</listitem>
+				<listitem>root – The root element within the web page that BibTemplate should search for slot markers</listitem>
+			</itemizedlist>		 
+		</simplesect>
+		<simplesect>
+			<title>BibTemplate Examples</title>
+			<para>This is all that we had to add to display the contents of an arbitrary MARC field:</para>
+			<programlisting>
+				&lt;tr&gt;
+					&lt;td&gt;Bibliography note&lt;/td&gt;
+					&lt;td type='opac/slot-data' query='datafield[tag=504]'&gt;&lt;/td&gt;
+				&lt;/tr&gt;
+			</programlisting>
+			<note><para>If multiple fields match, they are displayed on consecutive lines within the same left-hand cell.</para></note>
+			<para>To display a specific MARC subfield, add that subfield to the query attribute.</para>
+			<para>For example, subfield $a is the only user-oriented subfield in field 586 (Awards Note)</para>
+			<programlisting>
+				&lt;tr&gt;
+					&lt;td&gt;Awards note&lt;/td&gt;
+					&lt;td type='opac/slot-data' query='datafield[tag=586] subfield[code=a]'&gt;&lt;/td&gt;
+				&lt;/tr&gt;
+			</programlisting>
+			<para>Hide empty rows by default, and display them only if they have content:</para>
+			<programlisting>
+				&lt;tr class='hide_me' id='tag504'&gt;
+					&lt;td&gt;Bibliographic note&lt;/td&gt;
+					&lt;td type='opac/slot-data' query='datafield[tag=504]'&gt;
+						&lt;script type='opac/slot-format'&gt;&lt;![CDATA[
+							dojo.query('#tag504').removeClass('hide_me');
+							return '&lt;span&gt;' + dojox.data.dom.textContent(item) +
+							'&lt;/span&gt;&lt;br/&gt;';
+						]]&gt;&lt;/script&gt;
+					&lt;/td&gt;&lt;/tr&gt;
+			</programlisting>
+			<itemizedlist>
+				<listitem>&lt;![CDATA[ ... ]]&gt; tells Evergreen Web server to treat the contents as literal <quote>character data</quote> - 
+				avoids hilarity of entity substitution</listitem>
+				<listitem>&lt;script type='opac/slot-format'&gt;...&lt;/script&gt;, contained within an 'opac/slot-data' element, receives a variable named item 
+				containing the results of the query (a NodeList)</listitem>	
+			</itemizedlist>	
+			<para>Suppressing a subfield:</para>
+			<programlisting>
+				&lt;tr class='hide_me' id='tag700'&gt;
+					&lt;td>Additional authors&lt;/td&gt;
+					&lt;td type='opac/slot-data' query='datafield[tag=700]'&gt;
+						&lt;script type='opac/slot-format'&gt;&lt;![CDATA[
+							dojo.query('#tag700').removeClass('hide_me');
+							var text = '';
+							var list = dojo.query('subfield:not([code=4])', item);
+							for (var i =0; i &lt; list.length; i++) {
+								text += dojox.data.dom.textContent(list[i]) + ' ';
+							}
+							return '&lt;span&gt;' + text + '&lt;/span&gt;&lt;br/&gt;';
+						]]&gt;&lt;/script>
+					&lt;/td&gt;&lt;/tr&gt;
+			</programlisting>
+		</simplesect>
+	</section>
+</chapter>
+
