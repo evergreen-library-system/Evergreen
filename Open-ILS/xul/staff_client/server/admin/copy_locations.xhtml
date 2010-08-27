@@ -116,6 +116,8 @@
                         <td width=''>&staff.server.admin.copy_locations.editor.hold_verify;</td>
                         <td width=''>&staff.server.admin.copy_locations.editor.opac_visible;</td>
                         <td width=''>&staff.server.admin.copy_locations.editor.circulate;</td>
+                        <td width=''>Label prefix</td>
+                        <td width=''>Label suffix</td>
                         <td width=''>&staff.server.admin.copy_locations.editor.edit;</td>
                         <td width=''>&staff.server.admin.copy_locations.editor.delete;</td>
                     </tr>
@@ -131,6 +133,8 @@
                         <td name='cl_hold_verify'> </td>
                         <td name='cl_visible'> </td>
                         <td name='cl_circulate'> </td>
+                        <td name='cl_label_prefix'> </td>
+                        <td name='cl_label_suffix'> </td>
                         <td><input type='submit' value='Edit' name='cl_edit' disabled='disabled'> </input></td>
                         <td><input type='submit' value='Delete' name='cl_delete' disabled='disabled'> </input></td>
                     </tr>
@@ -194,6 +198,8 @@
                                 <input type='radio' name='cl_edit_circulate'/>
                             </span>
                         </td>
+                        <td><input name='cl_edit_label_prefix' type='text'> </input></td>
+                        <td><input name='cl_edit_label_suffix' type='text'> </input></td>
                         <td><input type='submit' name='cl_edit_commit' value='&staff.server.admin.copy_locations.submit;'/></td>
                         <td><input type='submit' name='cl_edit_cancel' value='&staff.server.admin.copy_locations.cancel;'/></td>
                     </tr>

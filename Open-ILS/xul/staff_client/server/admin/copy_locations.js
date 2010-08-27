@@ -160,6 +160,8 @@ function clBuildRow( tbody, row, cl ) {
     appendClear($n( row, 'cl_hold_verify'), (isTrue(cl.hold_verify())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
     appendClear($n( row, 'cl_visible'), (isTrue(cl.opac_visible())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
     appendClear($n( row, 'cl_circulate'), (isTrue(cl.circulate())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
+    $n( row, 'cl_label_prefix').appendChild(text(cl.label_prefix()));
+    $n( row, 'cl_label_suffix').appendChild(text(cl.label_suffix()));
 
     var edit = $n( row, 'cl_edit');
     edit.onclick = function() { clEdit( cl, tbody, row ); };
@@ -201,6 +203,22 @@ function clEdit( cl, tbody, row ) {
     if(isTrue(cl.hold_verify())) arr[6].checked = true;
     else arr[7].checked = true;
 
+    var label_prefix = $n(r, 'cl_edit_label_prefix');
+    if (cl.label_prefix()) {
+        label_prefix.setAttribute('size', cl.label_prefix().length + 3);
+    } else {
+        label_prefix.setAttribute('size', 3);
+    }
+    label_prefix.value = cl.label_prefix();
+
+    var label_suffix = $n(r, 'cl_edit_label_suffix');
+    if (cl.label_suffix()) {
+        label_suffix.setAttribute('size', cl.label_suffix().length + 3);
+    } else {
+        label_suffix.setAttribute('size', 3);
+    }
+    label_suffix.value = cl.label_suffix();
+
     $n(r, 'cl_edit_cancel').onclick = function(){cleanTbody(tbody,'edit');}
     $n(r, 'cl_edit_commit').onclick = function(){clEditCommit( tbody, r, cl ); }
 
@@ -234,6 +252,8 @@ function clEditCommit( tbody, r, cl ) {
     if(arr[6].checked) cl.hold_verify(1);
     else cl.hold_verify(0);
     cl.name($n(r, 'cl_edit_name').value);
+    cl.label_prefix($n(r, 'cl_edit_label_prefix').value);
+    cl.label_suffix($n(r, 'cl_edit_label_suffix').value);
 
     var req = new Request( UPDATE_CL, SESSION, cl );
     req.send(true);
