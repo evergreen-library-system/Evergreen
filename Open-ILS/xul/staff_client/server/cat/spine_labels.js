@@ -144,18 +144,35 @@
 
         function generate_labels(volume, label_node, label_cfg, override) {
             var names;
+            var callnum;
 
             if (override && volume.id() == override.acn) {
                 /* If we're calling ourself, we'll have an altered label */
-                names = String(override.label).split(/\s+/);
+                callnum = String(override.label);
             } else {
                 /* take the call number and split it on whitespace */
-                names = String(volume.label()).split(/\s+/);
+                callnum = String(volume.label());
             }
-            var j = 0;
-            var name_cnt = 0;
+
             /* for LC, split between classification subclass letters and numbers */
-            var lc_class_re = /^([A-Z]{1,3})([0-9]+.*?$)/i;
+            var lc_class_re = /^([A-Z]{1,3})([0-9]+.*?)$/i;
+            var lc_class_match = lc_class_re.exec(callnum);
+            if (lc_class_match && lc_class_match.length > 1) {
+                callnum = lc_class_match[1] + ' ' + lc_class_match[2];
+            }
+
+            /* for LC, split between Cutter numbers */
+            var lc_cutter_re = /^(.*?)(\.[A-Z]{1}[0-9]+.*?)$/ig;
+            var lc_cutter_match = lc_cutter_re.exec(callnum);
+            if (lc_cutter_match && lc_cutter_match.length > 1) {
+                callnum = '';
+                for (var i = 1; i < lc_cutter_match.length; i++) {
+                    callnum += lc_cutter_match[i] + ' ';
+                }
+            }
+
+            names = callnum.split(/\s+/);
+            var j = 0;
             while (j < label_cfg.spine_length || j < label_cfg.pocket_length) {
                 var hb2 = document.createElement('hbox'); label_node.appendChild(hb2);
                 
@@ -178,16 +195,6 @@
                     var name = names.shift();
                     if (name) {
                         name = String( name );
-
-                        /* Split LC subclass between alpha and numeric part */
-                        if (name_cnt == 0) {
-                            var lc_class_match = lc_class_re.exec(name);
-                            if (lc_class_match && lc_class_match.length > 1) {
-                                name = lc_class_match[1];
-                                names = [lc_class_match[2]].concat(names);
-                            }
-                            name_cnt = 1;
-                        }
 
                         /* if the name is greater than the label width... */
                         if (name.length > label_cfg.spine_width) {
