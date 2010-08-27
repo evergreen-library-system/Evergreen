@@ -17,52 +17,59 @@
 		<para>The system requirements for running Evergreen really depend on what you want to do with it. For just evaluating the software, or for a very small library (for example, 1 circulation station, a few thousand items, and infrequent online catalog use), any modern desktop or laptop made within the last few years capable of running Linux, FreeBSD, etc. should suffice. We recommend at least 512mb of RAM.</para>
 		<para>
 			<screen>
-			From Dan Scott on [http://list.georgialibraries.org/pipermail/open-ils-general/2007-July/000316.html|OPEN-ILS-GENERAL]:
-			> On 8/11/07, lan ye &lt;lye at mail.slcl.org> wrote:
-			> > We've been researching the Evergreen Open Source Library system, and would
-			> like to have a list of hardware requirements for the installation of a small
-			> test server. To keep things within a small budget, I would like to just use
-			> an ordinary PC. Could you send some information to us?
+			From Dan Scott on [http://list.georgialibraries.org/pipermail/
+			  open-ils-general/2007-July/000316.html|OPEN-ILS-GENERAL]:
+			On 8/11/07, lan ye &lt;lye at mail.slcl.org> wrote:
+			> We've been researching the Evergreen Open Source Library system,
+			> and would like to have a list of hardware requirements for the
+			> installation of a small test server. To keep things within a
+			> small budget, I would like to just use an ordinary PC. Could you
+			> send some information to us?
 
 			For system requirements, it depends on how extensive you want your
 			tests to be. Evergreen and all of the pieces it depends on
-			(PostgreSQL, Apache, Ejabberd) run happily in a VMWare image allocated
-			512MB of RAM on my laptop with just the Project Gutenberg e-books
-			loaded, and that's enough to evaluate the OPAC interface / try out the
-			staff client / make some local changes and generally experiment. But
-			I'm not going to load one million bib records into that system and
-			expect it to perform. So, probably any hardware you have lying around
-			would be adequate for a small test server.
+			(PostgreSQL, Apache, Ejabberd) run happily in a VMWare image
+			allocated 512MB of RAM on my laptop with just the Project
+			Gutenberg e-books loaded, and that's enough to evaluate the OPAC
+			interface / try out the staff client / make some local changes and
+			generally experiment. But I'm not going to load one million bib
+			records into that system and expect it to perform. So, probably
+			any hardware you have lying around would be adequate for a small
+			test server.
 
-			> > It looks like Evergreen has been successfully installed on two Linux
-			> systems: Gentoo and Ubuntu. Which one is the best for us to test using
-			> what's already in place at other libraries? Are there any differences /
-			> Advantages in functionality between Gentoo and Ubuntu?
+			> It looks like Evergreen has been successfully installed on two
+			> Linux systems: Gentoo and Ubuntu. Which one is the best for us
+			> to test using what's already in place at other libraries? Are
+			> there any differences / Advantages in functionality between
+			> Gentoo and Ubuntu?
 
-			As John said, GPLS is running on Debian, and that's the only Evergreen
-			system that is in production at the moment. However, the documentation
-			for installing on Debian is a bit scattered right now. The developers
-			themselves used Gentoo originally, and that's what I'm using at the
-			moment &amp; have documented in the wiki; the install process on Ubuntu is
-			very thoroughly documented and Ubuntu is reasonably close to Debian.
-			See http://open-ils.org/dokuwiki/doku.php?id=server_installation for
+			As John said, GPLS is running on Debian, and that's the only
+			Evergreen system that is in production at the moment. However, the
+			documentation for installing on Debian is a bit scattered right
+			now. The developers themselves used Gentoo originally, and that's
+			what I'm using at the moment &amp; have documented in the wiki;
+			the install process on Ubuntu is very thoroughly documented and
+			Ubuntu is reasonably close to Debian.  See
+			http://open-ils.org/dokuwiki/doku.php?id=server_installation for
 			the list of install instructions for various distributions.
 
-			As for advantages / disadvantages of particular distributions, that's
-			a religious war that I don't want to step into... We'll try to help
-			you out no matter what distribution you choose; just please choose a
-			current release :)
+			As for advantages / disadvantages of particular distributions,
+			that's a religious war that I don't want to step into... We'll try
+			to help you out no matter what distribution you choose; just
+			please choose a current release :)
 
 			-- 
 			Dan Scott
 			Laurentian University
 			</screen>
 			<screen>
-			And from James Fournie in that same [http://list.georgialibraries.org/pipermail/open-ils-general/2007-July/000317.html|thread]:
-			We are running a test Ubuntu server on a ~1ghz Celeron PC with 512mb RAM.
-			It seems to be ok handling the Gutenberg samples, and our collection of
-			about 8000 records. We did have serious problems using anything less than
-			512mb RAM. Also, I tried Evergreen on a K6 II 350, but it wasn't pretty.
+			And from James Fournie in that same [http://list.georgialibraries.org/
+			  pipermail/open-ils-general/2007-July/000317.html|thread]:
+			We are running a test Ubuntu server on a ~1ghz Celeron PC with
+			512mb RAM.  It seems to be ok handling the Gutenberg samples, and
+			our collection of about 8000 records. We did have serious problems
+			using anything less than 512mb RAM. Also, I tried Evergreen on a
+			K6 II 350, but it wasn't pretty.
 
 			James Fournie
 			Digitization Librarian
@@ -141,7 +148,7 @@
 		<para>To become the <emphasis role="bold">root</emphasis> user, issue the command: <emphasis><emphasis role="bold">sudo su - root</emphasis></emphasis>. To switch from the <emphasis role="bold">root</emphasis> user to a different user, issue a command like: <emphasis><emphasis role="bold">su - USERNAME</emphasis></emphasis>. For example, to switch from the <emphasis role="bold">root</emphasis> user to the <emphasis role="bold">opensrf</emphasis> user, issue this command: <emphasis><emphasis role="bold">su - opensrf</emphasis></emphasis>. Once you have become a non-root user, to become the <emphasis role="bold">root</emphasis> user again, simply issue the <emphasis><emphasis role="bold">exit</emphasis></emphasis> command.</para>
 		<section>
 			<title>Install the latest version of OpenSRF</title>
-			<para>For further information on installing the Open Service Request Framework (OpenSRF), see the section <link linkend="serverinstallation-opensrf">Installing OpenSRF</link>.</para>
+			<para>For further information on installing the Open Service Request Framework (OpenSRF), see the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-opensrf">Installing OpenSRF</link></emphasis></emphasis>.</para>
 			<para>Follow the steps outlined in that section, then run the specified test(s) to ensure that OpenSRF is properly installed before continuing with any further Evergreen installation steps. The Evergreen application depends on properly installation of OpenSRF. If OpenSRF does not work correctly, Evergreen will not work properly either.</para>
 		</section>
 		<section>
@@ -185,7 +192,7 @@
 			<section>
 				<title>(OPTIONAL) Install the PostgreSQL Server</title>
 				<para>Since the PostgreSQL server is usually a standalone server in multi-server production systems, the prerequisite installer Makefile in the previous step does not automatically install PostgreSQL. If your PostgreSQL server is on a different system, just skip this step.</para>
-				<para>For further information on installing PostgreSQL, see the section <link linkend="serverinstallation-postgresql">Installing PostgreSQL</link>.</para>
+				<para>For further information on installing PostgreSQL, see the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-postgresql">Installing PostgreSQL</link></emphasis></emphasis>.</para>
 				<para>If your PostgreSQL server will be on the same system as your Evergreen software, then as the <emphasis role="bold">root</emphasis> user install the required PostgreSQL server packages:</para>
 				<figure>
 					<title>Commands to install the PostgreSQL server</title>
@@ -491,7 +498,8 @@
 					<title>Sample of configuration file /openils/conf/srfsh.xml.example</title>
 					<screen>
 					&lt;?xml version="1.0"?>
-					&lt;!-- This file follows the standard bootstrap config file layout found in opensrf_core.xml -->
+					&lt;!-- This file follows the standard bootstrap config file layout -->
+					&lt;!-- found in opensrf_core.xml -->
 					&lt;srfsh>
 					&lt;router_name>router&lt;/router_name>
 					&lt;domain>private.localhost&lt;/domain>
@@ -507,7 +515,7 @@
 			</section>
 			<section>
 				<title>Modify the OpenSRF Environment</title>
-				<para>As the <emphasis role="bold">opensrf</emphasis> user, change the permissions of files to <emphasis>executable</emphasis> in the directory <emphasis>/openils/var/cgi-bin</emphasis>, then add a Perl environmental variable to the shell configuration file <emphasis>~/.bashrc</emphasis> for the user <emphasis role="bold">opensrf</emphasis>.</para>
+				<para>As the <emphasis role="bold">opensrf</emphasis> user, change the file permissions the directory <emphasis>/openils/var/cgi-bin</emphasis> to <emphasis>executable</emphasis>, then modify the shell configuration file <emphasis>~/.bashrc</emphasis> of that user by adding a Perl environmental variable.</para>
 				<para><emphasis role="bold">Note:</emphasis> in a multi-server environment, you must add the modifications to <emphasis role="bold">~/.bashrc</emphasis> at the top of the file <emphasis>before</emphasis> the line <emphasis role="bold"> [ -z "$PS1" ] &amp;&amp; return</emphasis>. This will allow headless (scripted) logins to load the correct environment.</para>
 				<figure>
 					<title>Modify the OpenSRF environment</title>
@@ -524,11 +532,90 @@
 			</section>
 			<section>
 				<title>(OPTIONAL) Configuration for Other Languages</title>
-				<para>Load translations such as Armenian (hy-AM), Canadian French (fr-CA), and others into the database to complete the translations available in the OPAC and staff client. See [[server_installation:adding_localizations|these instructions]] for details.</para>
+				<para>Load translations such as Armenian (hy-AM), Canadian French (fr-CA), and others into the database to complete the translations available in the OPAC and staff client. See the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-localization">Adding Language Localization</link></emphasis></emphasis> for details.</para>
 			</section>
 		</section>
 		<section xml:id="serverinstallation-ubuntu-debian-starting">
-			<title>Starting the Server</title>
+			<title>Starting Evergreen</title>
+			<orderedlist>
+				<listitem>
+					<para>As the <emphasis role="bold">root</emphasis> user, start the memcached and ejabberd services (if they aren't already running):</para>
+					<figure>
+						<title>Start some services</title>
+						<screen>
+						$ sudo su - root
+						$ /etc/init.d/ejabberd start
+						$ /etc/init.d/memcached start
+						</screen>
+					</figure>
+				</listitem>
+				<listitem>
+					<para>As the <emphasis role="bold">opensrf</emphasis> user, start Evergreen.</para>
+					<para>Use the flag <emphasis>-l</emphasis> to force Evergreen to use <emphasis>localhost</emphasis> (your current system) as the hostname.</para>
+					<figure>
+						<title>Start Evergreen</title>
+						<screen>
+						$ sudo su - opensrf
+
+						# ensure you have the needed path
+						$ export PATH=$PATH:/openils/bin
+
+						# start the server;
+						# use "-l" to force hostname to be "localhost"
+						$ osrf_ctl.sh -l -a start_all     
+						</screen>
+					</figure>
+
+
+					<para><emphasis role="bold">Note:</emphasis> You can also start Evergreen <emphasis role="bold">without</emphasis> the <emphasis>-l</emphasis> flag, but it must know the fully qualified domain name for the system on which it will execute. That hostname would have been specified in the configuration file <emphasis>opensrf.xml</emphasis>, which you configured in a previous step.</para>
+					<para>[[ explanation needed for configuring opensrf.xml ]]</para>
+					<para>Execute the following command to determine the fully qualified domain name of your system:</para>
+					<figure>
+						<title>(OPTIONAL) Determine the fully qualified domain name</title>
+						<screen>
+						$ perl -e 'use Net::Domain qw(hostfqdn); print hostfqdn()."\n"'
+						</screen>
+					</figure>
+
+					<itemizedlist>
+						<listitem>When you attempt to start Evergreen, if you receive an error message similar to <emphasis>osrf_ctl.sh: command not found</emphasis>, then your environment variable <emphasis role="bold">PATH</emphasis> does not include the directory <emphasis>/openils/bin</emphasis>. As the <emphasis role="bold">opensrf</emphasis> user, edit the configuration file <emphasis>/home/opensrf/.bashrc</emphasis> and add the following line: <emphasis role="bold"><screen>export PATH=$PATH:/openils/bin</screen></emphasis></listitem>
+
+						<listitem>When you attempt to start Evergreen, if you receive an error message similar to <emphasis>Can't locate OpenSRF/System.pm in @INC ... BEGIN failed--compilation aborted</emphasis>, then your environment variable <emphasis role="bold">PERL5LIB</emphasis> does not include the directory <emphasis>/openils/lib/perl5</emphasis>. As the <emphasis role="bold">opensrf</emphasis> user, edit the configuration file <emphasis>/home/opensrf/.bashrc</emphasis> and add the following line: <emphasis role="bold"><screen>export PERL5LIB=$PERL5LIB:/openils/lib/perl5</screen></emphasis></listitem>
+					</itemizedlist>
+				</listitem>
+
+				<listitem>
+					<para>As the <emphasis role="bold">opensrf</emphasis> user, generate the Web files needed by the staff client and catalogue, and also update the organization unit proximity.</para>
+				<para> You need to do this the first time you start Evergreen, and after that each time you change the library hierarchy in ''config.cgi'':</para>
+					<figure>
+						<title>Generate web files</title>
+						<screen>
+						$ sudo su - opensrf
+						$ cd /openils/bin
+						$ ./autogen.sh -c /openils/conf/opensrf_core.xml -u
+						Updating Evergreen organization tree and IDL using '/openils/conf/opensrf_core.xml'
+
+						Updating fieldmapper
+						Exception: OpenSRF::EX::Session 2010-04-16T06:31:38 OpenSRF::Utils::SettingsClient /usr/local/share/perl/5.10.0/OpenSRF/Utils/SettingsClient.pm:103 Session Error: router@private.localhost/opensrf.settings IS NOT CONNECTED TO THE NETWORK!!!
+						</screen>
+
+					<para>[[ TEST THIS! ]]</para>
+					</figure>
+				</listitem>
+				<listitem>
+					<para>As the <emphasis role="bold">root</emphasis> user, restart the Apache Web server:</para>
+
+					<figure>
+						<title>Generate web files</title>
+						<screen>
+						$ sudo su - root
+						$ /etc/init.d/apache2 restart
+						</screen>
+					</figure>
+					<para>If the Apache Web server was running when you started the OpenSRF services, you might not be able to successfully log in to the OPAC or staff client until the Apache Web server is restarted.</para>
+				</listitem>
+
+			</orderedlist>
 		</section>
 		<section xml:id="serverinstallation-ubuntu-debian-testing-connections">
 			<title>Testing Connections to the Server</title>
@@ -588,8 +675,8 @@
 		<title>Building the Staff Client</title>
 		<para>[[ Building the Staff Client ]]</para>
 	</section>
-	<section xml:id="serversideinstallation-localizations">
-		<title>Language Localization</title>
+	<section xml:id="serversideinstallation-localization">
+		<title>Adding Language Localization</title>
 		<para>[[ Adding Localized Languages to the Database ]]</para>
 	</section>
 	<section xml:id="serversideinstallation-sip">
