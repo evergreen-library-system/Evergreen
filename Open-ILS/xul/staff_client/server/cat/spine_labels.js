@@ -33,11 +33,18 @@
                 for (var i = 0; i < g.barcodes.length; i++) {
                     var copy = g.network.simple_request( 'FM_ACP_RETRIEVE_VIA_BARCODE.authoritative', [ g.barcodes[i] ] );
                     if (typeof copy.ilsevent != 'undefined') throw(copy);
+                    var label_prefix = copy.location().label_prefix() || '';
+                    var label_suffix = copy.location().label_suffix() || '';
                     if (!g.volumes[ copy.call_number() ]) {
                         var volume = g.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', [ copy.call_number() ] );
                         if (typeof volume.ilsevent != 'undefined') throw(volume);
                         var record = g.network.simple_request('MODS_SLIM_RECORD_RETRIEVE.authoritative', [ volume.record() ]);
                         volume.record( record );
+
+                        /* Jam the prefixes and suffixes into the volume object */
+                        volume.prefix = label_prefix;
+                        volume.suffix = label_suffix;
+
                         g.volumes[ volume.id() ] = volume;
                     }
                     if (g.volumes[ copy.call_number() ].copies()) {
@@ -162,12 +169,22 @@
             }
 
             /* for LC, split between Cutter numbers */
-            var lc_cutter_re = /^(.*?)(\.[A-Z]{1}[0-9]+.*?)$/ig;
+            var lc_cutter_re = /^(.*)(\.[A-Z]{1}[0-9]+.*?)$/ig;
             var lc_cutter_match = lc_cutter_re.exec(callnum);
             if (lc_cutter_match && lc_cutter_match.length > 1) {
                 callnum = '';
                 for (var i = 1; i < lc_cutter_match.length; i++) {
                     callnum += lc_cutter_match[i] + ' ';
+                }
+            }
+
+            /* Only add the prefixes and suffixes once */
+            if (!override || volume.id() != override.acn) {
+                if (volume.prefix) {
+                    callnum = volume.prefix + ' ' + callnum;
+                }
+                if (volume.suffix) {
+                    callnum += ' ' + volume.suffix;
                 }
             }
 
