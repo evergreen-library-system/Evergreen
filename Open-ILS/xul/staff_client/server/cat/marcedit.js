@@ -1865,11 +1865,19 @@ function getAuthorityContextMenu (target, sf) {
         var fields = xml.datafield;
         for (var j in fields) {
 
+            /* Restrict options to Heading Information fields (1xx)
+             * and See Also From fields (5xx) rather than displaying
+             * every field in the authority record */
+            var tag = fields[j].@tag;
+            if (tag.substr(0,1) != 1 && tag.substr(0,1) != 5) {
+                continue;
+            }
+
             var row = createRow(
                 {},
-                createLabel( { value : fields[j].@tag } ),
-                createLabel( { value : fields[j].@ind1 } ),
-                createLabel( { value : fields[j].@ind2 } )
+                createLabel( { "value" : tag } ),
+                createLabel( { "value" : fields[j].@ind1 } ),
+                createLabel( { "value" : fields[j].@ind2 } )
             );
 
             var sf_box = createHbox();
@@ -1878,10 +1886,10 @@ function getAuthorityContextMenu (target, sf) {
             for (var k in subfields) {
                 sf_box.appendChild(
                     createCheckbox(
-                        { label    : '\u2021' + subfields[k].@code + ' ' + subfields[k],
-                          subfield : subfields[k].@code,
-                          tag      : subfields[k].parent().@tag,
-                          value    : subfields[k]
+                        { "label"    : '\u2021' + subfields[k].@code + ' ' + subfields[k],
+                          "subfield" : subfields[k].@code,
+                          "tag"      : subfields[k].parent().@tag,
+                          "value"    : subfields[k]
                         }
                     )
                 );
