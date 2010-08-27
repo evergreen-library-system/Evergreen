@@ -153,6 +153,9 @@
                 names = String(volume.label()).split(/\s+/);
             }
             var j = 0;
+            var name_cnt = 0;
+            /* for LC, split between classification subclass letters and numbers */
+            var lc_class_re = /^([A-Z]{1,3})([0-9]+.*?$)/i;
             while (j < label_cfg.spine_length || j < label_cfg.pocket_length) {
                 var hb2 = document.createElement('hbox'); label_node.appendChild(hb2);
                 
@@ -171,9 +174,21 @@
                     tb.setAttribute('name','spine');
                     var spine_row_id = 'acn_' + volume.id() + '_spine_' + j;
                     tb.setAttribute('id',spine_row_id);
+
                     var name = names.shift();
                     if (name) {
                         name = String( name );
+
+                        /* Split LC subclass between alpha and numeric part */
+                        if (name_cnt == 0) {
+                            var lc_class_match = lc_class_re.exec(name);
+                            if (lc_class_match && lc_class_match.length > 1) {
+                                name = lc_class_match[1];
+                                names = [lc_class_match[2]].concat(names);
+                            }
+                            name_cnt = 1;
+                        }
+
                         /* if the name is greater than the label width... */
                         if (name.length > label_cfg.spine_width) {
                             /* then try to split it on periods */
