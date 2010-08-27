@@ -93,13 +93,13 @@
                                     &staff.serial.batch_receive.barcode;
                                 </h:th>
                                 <h:th>
-                                    &staff.serial.batch_receive.circ_mod;
+                                    &staff.serial.batch_receive.circ_modifier;
                                 </h:th>
                                 <h:th>
                                     &staff.serial.batch_receive.note;
                                 </h:th>
                                 <h:th>
-                                    &staff.serial.batch_receive.copy_loc;
+                                    &staff.serial.batch_receive.location;
                                 </h:th>
                                 <h:th>
                                     &staff.serial.batch_receive.price;
@@ -117,9 +117,9 @@
                                         id="autogen_barcodes"
                                         label="&staff.serial.batch_receive.auto_generate;" />
                                 </h:td>
-                                <h:td name="circ_mod" align="center"></h:td>
+                                <h:td name="circ_modifier" align="center"></h:td>
                                 <h:td name="note"></h:td>
-                                <h:td name="copy_loc" align="center"></h:td>
+                                <h:td name="location" align="center"></h:td>
                                 <h:td name="price"></h:td>
                                 <h:td name="receive"></h:td>
                                 <h:td name="apply"></h:td>
@@ -134,9 +134,9 @@
                             <h:tr id="entry_template">
                                 <h:td name="holding_lib" align="center"></h:td>
                                 <h:td name="barcode"></h:td>
-                                <h:td name="circ_mod" align="center"></h:td>
+                                <h:td name="circ_modifier" align="center"></h:td>
                                 <h:td name="note"></h:td>
-                                <h:td name="copy_loc" align="center"></h:td>
+                                <h:td name="location" align="center"></h:td>
                                 <h:td name="price"></h:td>
                                 <h:td name="receive" align="center"></h:td>
                             </h:tr>

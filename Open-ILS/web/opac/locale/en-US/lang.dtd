@@ -1619,9 +1619,9 @@
 <!ENTITY staff.serial.batch_receive.no_items "There are no items to receive for this subscription.">
 <!ENTITY staff.serial.batch_receive.org_unit "Org Unit">
 <!ENTITY staff.serial.batch_receive.barcode "Barcode">
-<!ENTITY staff.serial.batch_receive.circ_mod "Circ Modifier">
+<!ENTITY staff.serial.batch_receive.circ_modifier "Circ Modifier">
 <!ENTITY staff.serial.batch_receive.note "Note">
-<!ENTITY staff.serial.batch_receive.copy_loc "Copy Location">
+<!ENTITY staff.serial.batch_receive.location "Copy Location">
 <!ENTITY staff.serial.batch_receive.price "Price">
 <!ENTITY staff.serial.batch_receive.receive "Receive?">
 <!ENTITY staff.serial.batch_receive.auto_generate "Auto-generate?">
