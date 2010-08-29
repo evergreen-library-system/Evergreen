@@ -49,9 +49,9 @@
 			now. The developers themselves used Gentoo originally, and that's
 			what I'm using at the moment &amp; have documented in the wiki;
 			the install process on Ubuntu is very thoroughly documented and
-			Ubuntu is reasonably close to Debian.  See
-			http://open-ils.org/dokuwiki/doku.php?id=server_installation for
-			the list of install instructions for various distributions.
+			Ubuntu is reasonably close to Debian.  
+			See http://open-ils.org/dokuwiki/doku.php?id=server_installation 
+			for the list of install instructions for various distributions.
 
 			As for advantages / disadvantages of particular distributions,
 			that's a religious war that I don't want to step into... We'll try
@@ -145,7 +145,7 @@
 		<title>Installing Evergreen 1.6.0.x On Ubuntu or Debian</title>
 		<para>The following steps have been tested on the x86 (32-bit) and x86-64 (64-bit) architectures. There may be differences between the Desktop and Server editions of Ubuntu. These instructions assume the Server edition.</para>
 		<para>In the following instructions, you are asked to perform certain steps as either the <emphasis role="bold">root</emphasis> user, the <emphasis role="bold">opensrf</emphasis> user, or the <emphasis role="bold">postgres</emphasis> user.</para>
-		<para>To become the <emphasis role="bold">root</emphasis> user, issue the command: <emphasis><emphasis role="bold">sudo su - root</emphasis></emphasis>. To switch from the <emphasis role="bold">root</emphasis> user to a different user, issue a command like: <emphasis><emphasis role="bold">su - USERNAME</emphasis></emphasis>. For example, to switch from the <emphasis role="bold">root</emphasis> user to the <emphasis role="bold">opensrf</emphasis> user, issue this command: <emphasis><emphasis role="bold">su - opensrf</emphasis></emphasis>. Once you have become a non-root user, to become the <emphasis role="bold">root</emphasis> user again, simply issue the <emphasis><emphasis role="bold">exit</emphasis></emphasis> command.</para>
+		<para>To become the <emphasis role="bold">root</emphasis> user, issue the command: <emphasis><emphasis role="bold">su - root</emphasis></emphasis>. To switch from the <emphasis role="bold">root</emphasis> user to a different user, issue a command like: <emphasis><emphasis role="bold">su - USERNAME</emphasis></emphasis>. For example, to switch from the <emphasis role="bold">root</emphasis> user to the <emphasis role="bold">opensrf</emphasis> user, issue this command: <emphasis><emphasis role="bold">su - opensrf</emphasis></emphasis>. Once you have become a non-root user, to become the <emphasis role="bold">root</emphasis> user again, simply issue the <emphasis><emphasis role="bold">exit</emphasis></emphasis> command.</para>
 		<section>
 			<title>Install the latest version of OpenSRF</title>
 			<para>For further information on installing the Open Service Request Framework (OpenSRF), see the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-opensrf">Installing OpenSRF</link></emphasis></emphasis>.</para>
@@ -162,7 +162,7 @@
 				<figure>
 					<title>Commands to download/extract Evergreen</title>
 					<screen>
-					$ sudo su - opensrf
+					$ su - opensrf
 					$ wget http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.0.7.tar.gz
 					$ tar zxf Evergreen-ILS-1.6.0.7.tar.gz
 					</screen>
@@ -183,7 +183,7 @@
 				<figure>
 					<title>Commands to install prerequisites for Evergreen</title>
 					<screen>
-					$ sudo su - root
+					$ su - root
 					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
 					$ make -f Open-ILS/src/extras/Makefile.install [distribution]
 					</screen>
@@ -197,7 +197,7 @@
 				<figure>
 					<title>Commands to install the PostgreSQL server</title>
 					<screen>
-					$ sudo su - root
+					$ su - root
 
 					# Debian Lenny and Ubuntu Hardy (8.04)
 					$ make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_83
@@ -218,7 +218,7 @@
 					<title>Commands to install Perl modules</title>
 					<screen>
 					# ensure the gcc compiler is installed
-					$ sudo su - root
+					$ su - root
 					$ aptitude install gcc
 
 					# install the Perl modules
@@ -237,7 +237,7 @@
 				<figure>
 					<title>Commands to modify system dynamic library path</title>
 					<screen>
-					$ sudo su - root
+					$ su - root
 					$ cat > /etc/ld.so.conf.d/eg.conf &lt;&lt; ENDOFFILE
 					/usr/local/lib
 					/usr/local/lib/dbd
@@ -253,7 +253,7 @@
 				<figure>
 					<title>Commands to restart PostgreSQL service</title>
 					<screen>
-					$ sudo su - root
+					$ su - root
 					$ /etc/init.d/postgresql-8.3 restart
 					</screen>
 				</figure>
@@ -264,7 +264,7 @@
 				<figure>
 					<title>Commands to configure and compile Evergreen</title>
 					<screen>
-					$ sudo su - opensrf
+					$ su - opensrf
 					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
 					$ ./configure --prefix=/openils --sysconfdir=/openils/conf
 					$ make
@@ -277,7 +277,7 @@
 				<figure>
 					<title>Commands to link and install Evergreen</title>
 					<screen>
-					$ sudo su - root
+					$ su - root
 					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
 					$ make STAFF_CLIENT_BUILD_ID=rel_1_6_0_6 install
 					$ cd /openils/var/web/xul
@@ -291,7 +291,7 @@
 				<figure>
 					<title>Commands to copy OpenSRF configuration files</title>
 					<screen>
-					$ sudo su - root
+					$ su - root
 					$ cp /openils/conf/opensrf.xml.example      /openils/conf/opensrf.xml
 					$ cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
 					$ cp /openils/conf/oils_web.xml.example     /openils/conf/oils_web.xml
@@ -313,7 +313,7 @@
 							<title>Commands to create database and adjust the path</title>
 							<screen>
 							# create the database
-							$ sudo su - postgres
+							$ su - postgres
 							$ createdb -E UNICODE evergreen
 							$ createlang plperl   evergreen
 							$ createlang plperlu  evergreen
@@ -333,7 +333,7 @@
 							<title>Commands to create the 'evergreen' user</title>
 							<screen>
 							# create superuser 'evergreen' and set the password
-							$ sudo su - postgres
+							$ su - postgres
 							$ createuser -P -s evergreen
 							Enter password for new role:  mynewpassword
 							Enter it again:  mynewpassword
@@ -350,7 +350,7 @@
 				<figure>
 					<title>Commands to create Evergreen database schema</title>
 					<screen>
-					$ sudo su - root
+					$ su - root
 					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
 					$ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 						--service all --create-schema --create-bootstrap --create-offline \
@@ -369,7 +369,7 @@
 					<title>Commands to configure the Apache server</title>
 					<screen>
 					# configure the Apache server
-					$ sudo su - root
+					$ su - root
 					$ a2enmod ssl	     # enable mod_ssl
 					$ a2enmod rewrite    # enable mod_rewrite
 					$ a2enmod expires    # enable mod_expires
@@ -457,7 +457,7 @@
 				<figure>
 					<title>Commands to enabl e the Evergreen site</title>
 					<screen>
-					$ sudo su - root
+					$ su - root
 					$ a2dissite default    # OPTIONAL: disable the default site (i.e., the "It Works" page).
 					$ a2ensite eg.conf
 					</screen>
@@ -521,7 +521,7 @@
 					<title>Modify the OpenSRF environment</title>
 					<screen>
 					# change permissions
-					$ sudo su - opensrf
+					$ su - opensrf
 					$ chmod 755 /openils/var/cgi-bin/*.cgi
 
 					# add environmental variable
@@ -535,7 +535,7 @@
 				<para>Load translations such as Armenian (hy-AM), Canadian French (fr-CA), and others into the database to complete the translations available in the OPAC and staff client. See the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-localization">Adding Language Localization</link></emphasis></emphasis> for details.</para>
 			</section>
 		</section>
-		<section xml:id="serverinstallation-ubuntu-debian-starting">
+		<section xml:id="serversideinstallation-starting">
 			<title>Starting Evergreen</title>
 			<orderedlist>
 				<listitem>
@@ -543,7 +543,7 @@
 					<figure>
 						<title>Start some services</title>
 						<screen>
-						$ sudo su - root
+						$ su - root
 						$ /etc/init.d/ejabberd start
 						$ /etc/init.d/memcached start
 						</screen>
@@ -555,7 +555,7 @@
 					<figure>
 						<title>Start Evergreen</title>
 						<screen>
-						$ sudo su - opensrf
+						$ su - opensrf
 
 						# ensure you have the needed path
 						$ export PATH=$PATH:/openils/bin
@@ -565,10 +565,8 @@
 						$ osrf_ctl.sh -l -a start_all     
 						</screen>
 					</figure>
-
-
-					<para><emphasis role="bold">Note:</emphasis> You can also start Evergreen <emphasis role="bold">without</emphasis> the <emphasis>-l</emphasis> flag, but it must know the fully qualified domain name for the system on which it will execute. That hostname would have been specified in the configuration file <emphasis>opensrf.xml</emphasis>, which you configured in a previous step.</para>
-					<para>[[ explanation needed for configuring opensrf.xml ]]</para>
+					<para><emphasis role="bold">Note:</emphasis> You can also start Evergreen <emphasis role="bold">without</emphasis> the <emphasis>-l</emphasis> flag, but the utility <emphasis> osrf_ctl.sh</emphasis> must know the fully qualified domain name for the system on which it will execute. That hostname would have been specified in the configuration file <emphasis>opensrf.xml</emphasis>, which you configured in a previous step.</para>
+					<para>[[ explanation for configuring opensrf.xml ]]</para>
 					<para>Execute the following command to determine the fully qualified domain name of your system:</para>
 					<figure>
 						<title>(OPTIONAL) Determine the fully qualified domain name</title>
@@ -576,21 +574,18 @@
 						$ perl -e 'use Net::Domain qw(hostfqdn); print hostfqdn()."\n"'
 						</screen>
 					</figure>
-
 					<itemizedlist>
 						<listitem>When you attempt to start Evergreen, if you receive an error message similar to <emphasis>osrf_ctl.sh: command not found</emphasis>, then your environment variable <emphasis role="bold">PATH</emphasis> does not include the directory <emphasis>/openils/bin</emphasis>. As the <emphasis role="bold">opensrf</emphasis> user, edit the configuration file <emphasis>/home/opensrf/.bashrc</emphasis> and add the following line: <emphasis role="bold"><screen>export PATH=$PATH:/openils/bin</screen></emphasis></listitem>
-
 						<listitem>When you attempt to start Evergreen, if you receive an error message similar to <emphasis>Can't locate OpenSRF/System.pm in @INC ... BEGIN failed--compilation aborted</emphasis>, then your environment variable <emphasis role="bold">PERL5LIB</emphasis> does not include the directory <emphasis>/openils/lib/perl5</emphasis>. As the <emphasis role="bold">opensrf</emphasis> user, edit the configuration file <emphasis>/home/opensrf/.bashrc</emphasis> and add the following line: <emphasis role="bold"><screen>export PERL5LIB=$PERL5LIB:/openils/lib/perl5</screen></emphasis></listitem>
 					</itemizedlist>
 				</listitem>
-
 				<listitem>
 					<para>As the <emphasis role="bold">opensrf</emphasis> user, generate the Web files needed by the staff client and catalogue, and also update the organization unit proximity.</para>
-				<para> You need to do this the first time you start Evergreen, and after that each time you change the library hierarchy in ''config.cgi'':</para>
+					<para> You need to do this the first time you start Evergreen, and after that each time you change the library hierarchy in ''config.cgi'':</para>
 					<figure>
 						<title>Generate web files</title>
 						<screen>
-						$ sudo su - opensrf
+						$ su - opensrf
 						$ cd /openils/bin
 						$ ./autogen.sh -c /openils/conf/opensrf_core.xml -u
 						Updating Evergreen organization tree and IDL using '/openils/conf/opensrf_core.xml'
@@ -598,36 +593,155 @@
 						Updating fieldmapper
 						Exception: OpenSRF::EX::Session 2010-04-16T06:31:38 OpenSRF::Utils::SettingsClient /usr/local/share/perl/5.10.0/OpenSRF/Utils/SettingsClient.pm:103 Session Error: router@private.localhost/opensrf.settings IS NOT CONNECTED TO THE NETWORK!!!
 						</screen>
-
-					<para>[[ TEST THIS! ]]</para>
+						<para>[[ TEST THIS! ]]</para>
 					</figure>
 				</listitem>
 				<listitem>
 					<para>As the <emphasis role="bold">root</emphasis> user, restart the Apache Web server:</para>
-
 					<figure>
 						<title>Generate web files</title>
 						<screen>
-						$ sudo su - root
+						$ su - root
 						$ /etc/init.d/apache2 restart
 						</screen>
 					</figure>
 					<para>If the Apache Web server was running when you started the OpenSRF services, you might not be able to successfully log in to the OPAC or staff client until the Apache Web server is restarted.</para>
 				</listitem>
-
 			</orderedlist>
 		</section>
-		<section xml:id="serverinstallation-ubuntu-debian-testing-connections">
-			<title>Testing Connections to the Server</title>
+		<section xml:id="serversideinstallation-testing-connections">
+			<title>Testing Connections to Evergreen</title>
+			<para>Once you have installed and started Evergreen, test your connection to Evergreen by using the utility <emphasis>srfsh</emphasis>. Start the utility and try logging onto the Evergreen server using the default administrator username and password. Following is sample output generated by executing that script during a successful Evergreen installation:</para>
+			<figure>
+				<title>Running the srfsh utility</title>
+				<screen>
+				$ su - opensrf
+				$ /openils/bin/srfsh
+				srfsh% login admin open-ils
+				Received Data: "250bf1518c7527a03249858687714376"
+			
+				------------------------------------
+				Request Completed Successfully
+				Request Time in seconds: 0.045286
+				------------------------------------
+			
+				Received Data: {
+				   "ilsevent":0,
+				   "textcode":"SUCCESS",
+				   "desc":" ",
+				   "pid":21616,
+				   "stacktrace":"oils_auth.c:304",
+				   "payload":{
+				      "authtoken":"e5f9827cc0f93b503a1cc66bee6bdd1a",
+				      "authtime":420
+				   }
+				}
+			
+				------------------------------------
+				Request Completed Successfully
+				Request Time in seconds: 1.336568
+				------------------------------------
+				</screen>
+			</figure>
+			<para>If this does not work, try some simple troubleshooting steps:</para>
+			<itemizedlist>
+				<listitem>
+					<para>As the <emphasis role="bold">opensrf</emphasis> user, run the script <emphasis>settings-tester.pl</emphasis>  to see if it finds any system configuration problems. Following is sample output generated by executing that script during a successful Evergreen installation:</para>
+					<figure>
+						<title>Executing the script <emphasis> settings-test.pl</emphasis></title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-testing-1.png" scalefit="1" width="100%"/>
+							</imageobject>
+						</mediaobject>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-testing-2.png" scalefit="1" width="100%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<para>If the output from the script does not help you find the problem, please do not make any further significant changes to your configuration. Follow the steps in the troubleshooting guide, <emphasis role="bold"><emphasis><link linkend="troubleshooting">Troubleshooting</link></emphasis></emphasis> .</para>
+				</listitem>
+				<listitem>If you have followed the entire set of installation steps listed here closely, you are probably extremely close to a working system. Gather your configuration files and log files and contact the [[ http://open-ils.org/listserv.php|Evergreen development mailing list ]] for assistance before making any drastic changes to your system configuration.</listitem>
+			</itemizedlist>
 		</section>
-		<section xml:id="serverinstallation-ubuntu-debian-starting-webserver">
-			<title>Starting the Web Server</title>
+		<section xml:id="serversideinstallation-running-staffclient">
+			<title>Running the Staff Client on Linux</title>
+			<para>Run the Evergreen staff client on a Linux system by using the application <emphasis>XULRunner</emphasis> (installed automatically and by default with Firefox version 3.0 and later on Debian and Ubuntu distributions).</para>
+			<para>For example, if the source files for the Evergreen installation are in the directory <emphasis>/home/opensrf/Evergreen-ILS-1.6.0.7/</emphasis>, start the staff client as shown in the following command example:</para>
+			<figure>
+				<title>Running the Linux staff client</title>
+				<screen>
+				$ su - opensrf
+				$ xulrunner /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client/build/application.ini
+				</screen>
+			</figure>
 		</section>
-		<section xml:id="serverinstallation-ubuntu-debian-stopping">
-			<title>Stopping the Server</title>
+		<section xml:id="serversideinstallation-starting-apache-server">
+			<title>Starting the Apache Web Server</title>
+			<para>Once you have started Evergreen and confirmed that a basic login attempt works, you can test and start the Apache web server.</para>
+			<para>As the <emphasis role="bold">root</emphasis> user, execute the following commands. Note the use of <emphasis>restart</emphasis> to force the new Evergreen modules to be reloaded even if the Apache server is already running. Any problems found with your configuration files should be displayed:</para>
+			<figure>
+				<title>Start the Apache Web Server</title>
+				<screen>
+				$ su - root
+				$ apache2ctl configtest &amp;&amp; /etc/init.d/apache2 restart
+				</screen>
+			</figure>
 		</section>
-		<section xml:id="serverinstallation-ubuntu-debian-reports">
+		<section xml:id="serversideinstallation-stopping">
+			<title>Stopping the Evergreen Services</title>
+			<para>As the <emphasis role="bold">opensrf</emphasis> user, stop all Evergreen services by using the following command:</para>
+			<figure>
+				<title>Stop all Evergreen services</title>
+				<screen>
+				$ su - opensrf
+
+				# stop the server:
+				# use "-l" to force hostname to be "localhost"
+				$ osrf_ctl.sh -l -a stop_all
+				</screen>
+			</figure>
+			<para><emphasis role="bold">Note:</emphasis> You can also stop Evergreen services <emphasis role="bold">without</emphasis> the <emphasis>-l</emphasis> flag, but the utility <emphasis> osrf_ctl.sh</emphasis> must know the fully qualified domain name for the system on which it will execute. That hostname would have been specified in the configuration file <emphasis>opensrf.xml</emphasis>, which you configured in a previous step.</para>
+			<para>[[ explanation for configuring opensrf.xml ]]</para>
+		</section>
+		<section xml:id="serversideinstallation-reports">
 			<title>Setting Up Support For Reports</title>
+			<para>Evergreen reports are extremely powerful, but some configuration is required. See the section <emphasis><emphasis role="bold"><link linkend="report-introduction">Reports</link></emphasis></emphasis> for details.</para>
+		</section>
+		<section xml:id="serversideinstallation-starting-reporter-daemon">
+			<title>Starting the Reporter Daemon</title>
+			<para>Once the <emphasis>open-ils.reporter</emphasis> process is running and enabled on the gateway, you can start the reporter daemon. That process periodically checks for requests for new reports or scheduled reports and gets them running.</para>
+			<para>As the <emphasis role="bold">opensrf</emphasis> user, start the reporter daemon using the following command:</para>
+			<figure>
+				<title>Starting the Reporter Daemon</title>
+				<screen>
+				$ su - opensrf
+				$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/src/reporter
+				$ ./clark-kent.pl --daemon
+				</screen>
+			</figure>
+			<para>You can also specify other options with this utility:</para>
+			<itemizedlist>
+				<listitem>--sleep=interval      : number of seconds to sleep between checks for new reports to run; defaults to 10</listitem>
+				<listitem>--lockfile=filename   : where to place the lockfile for the process; defaults to <emphasis>/tmp/reporter-LOCK</emphasis></listitem>
+				<listitem>--concurrency=integer : number of reporter daemon processes to run; defaults to "1"</listitem>
+				<listitem>--boostrap=filename   : OpenSRF bootstrap configuration file; defaults to <emphasis>/openils/conf/opensrf_core.xml</emphasis></listitem>
+			</itemizedlist>
+		</section>
+		<section xml:id="serversideinstallation-stopping-reporter-daemon">
+			<title>Stopping the Reporter Daemon</title>
+			<para>To stop the Reporter daemon, you must kill the process and remove the lockfile. The daemon may have just a single associated process, with a lockfile in the default location. <emphasis role="bold">Note:</emphasis> it is possible that several processes are running; see the optional commands in the previous section. As the <emphasis role="bold">opensrf</emphasis> user, perform the following commands to stop the Reporter daemon:</para>
+			<figure>
+				<title>Stopping the Reporter Daemon</title>
+				<screen>
+				$ su - opensrf
+				# find and kill the process ID number(s)
+				$ kill `ps wax | grep "Clark Kent" | grep -v grep | cut -b1-6`
+				# remove the lock file
+				$ rm /tmp/reporter-LOCK
+				</screen>
+			</figure>
 		</section>
 	</section>
 	<section xml:id="serversideinstallation-opensrf">
