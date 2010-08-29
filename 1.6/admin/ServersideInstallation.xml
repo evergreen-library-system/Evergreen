@@ -3,18 +3,20 @@
 	<info>
 		<title>Server-side Installation of Evergreen Software</title>
 		<abstract>
-			<para>Specifics in the process of installing server-side software for Evergreen</para>
+			<para>This section describes installation of the Evergreen server-side software. Installation, configuration, testing and verification of the Evergreen server-side software is straightforward if you follow some simple directions. Installation of the Evergreen Staff Client software is handled in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-staffclient"> "Installing the Evergreen Staff Client" </link></emphasis></emphasis>. </para>
 		</abstract>
 	</info>
 	<section xml:id="serversideinstallation-overview">
 		<title>Overview</title>
-		<para>A bare-minimum system Evergreen system requires only a single Server and a single Staff Client (in fact, that is a reasonable system for simple experiments or a proof-of-concept). Another simple system may require only that you install one or more instances of the Staff Client software. For instance, if your consortium already provides the Evergreen Server software or if you are using the hosted version provided by Equinox, you do not need to install the Server software at all. But typical real-world systems will probably consist of at least one or two Servers plus multiple Staff Clients.</para>
-		<para>The Server software currently runs as a native application on any of several well-known Linux distributions (e.g., Debian and Ubuntu). It does not run as a native application on the Windows operating system (e.g., WindowsXP, WindowsXP Professional, Windows7), but the software can be installed and run on Windows via a virtualized Unix-guest Operating System (using, for example, VirtualBox or VMware to emulate a Linux environment). More information on virtualized environments can be found in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-virtual">"Installing in Virtualized Unix Environments"</link></emphasis></emphasis></para>
+		<para>A bare-minimum system Evergreen system requires only a single Server and a single Staff Client, both residing on a single server machine. In fact, that is a reasonable architecture for simple experiments or as a proof of concept in a conference-room pilot. But typical real-world systems will probably consist of at least one or two Evergreen servers plus multiple Staff Clients.</para>
+		<para>Another simple system may require only that you install one or more instances of the Staff Client software. For instance, if your consortium already provides the Evergreen server software or if you are using the hosted version provided by Equinox, you do not need to install the Evergreen server-side software at all.</para>
+		<para>Current versions of Evergreen software run as native applications on any of several well-known Linux distributions (e.g., <emphasis>Ubuntu</emphasis> and <emphasis>Debian</emphasis>). It does not currently run as a native application on the Windows operating system (e.g., WindowsXP, WindowsXP Professional, Windows7), but the software can still be installed and run on Windows via a so-called <emphasis>virtualized</emphasis> Unix-guest Operating System (using, for example, VirtualBox or VMware to emulate a Linux environment). More information on running Evergreen in virtualized environments can be found in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-virtual">"Installing Evergreen in Virtualized Unix Environments"</link></emphasis></emphasis>.</para>
 	</section>
 	<section xml:id="serversideinstallation-requirements">
 		<title>System Requirements</title>
-		<para>This section describes processes and events that must occur to install the Evergreen server in all supported operating systems / environments. Please review the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-process">"The Installation Process"</link></emphasis></emphasis> for instructions tailored to specific distributions.</para>
+		<para>This section describes various requirements of the hardware and software environment that must be fulfilled to support a successful Evergreen installation. For a description of the installation process itself and for links to further instructions please review the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-process">"The Installation Process"</link></emphasis></emphasis> .</para>
 		<para>The system requirements for running Evergreen really depend on what you want to do with it. For just evaluating the software, or for a very small library (for example, 1 circulation station, a few thousand items, and infrequent online catalog use), any modern desktop or laptop made within the last few years capable of running Linux, FreeBSD, etc. should suffice. We recommend at least 512mb of RAM.</para>
+		<para> [[ Other hardware and software requirements ]] </para>
 		<para>
 			<screen>
 			From Dan Scott on [http://list.georgialibraries.org/pipermail/
@@ -79,83 +81,55 @@
 	</section>
 	<section xml:id="serversideinstallation-examples">
 		<title>Example System Architectures</title>
-		<para>[[real-world examples of working systems]]</para>
+		<para>This sections describes examples of some working Evergreen system architectures, including both server-side software and Staff Client software.</para>
 		<section xml:id="serversideinstallation-example-pines">
 			<title>PINES</title>
 			<para>In order to provide load balancing and high-availability at the OPAC and Staff Client level, PINES has implemented a Linux Virtual Server environment with five independent mini-clusters. This allows live updates of the entire system with no perceived downtime or interruption in service.</para>
 			<para>[[ further information on PINES ]] </para>
 		</section>
+		<section xml:id="serversideinstallation-example-sitka">
+			<title>Sitka</title>
+			<para>[[ further information on Sitka ]] </para>
+		</section>
 		<section xml:id="serversideinstallation-example-other">
-			<title>Other Architectures</title>
-			<para>[[ further information on OTHER ]] </para>
-		</section>
-	</section>
-	<section xml:id="serversideinstallation-virtual">
-		<title>Installing in Virtualized Unix Environments</title>
-		<para>[[ Installing in Virtualized Unix Environments ]]</para>
-		<section xml:id="serversideinstallation-virtualized-virtualbox">
-			<title>VirtualBox</title>
-			<para>[[ VirtualBox ]]</para>
-		</section>
-		<section xml:id="serversideinstallation-virtualized-vmware">
-			<title>VMware</title>
-			<para>[[ VMware ]]</para>
-		</section>
-		<section xml:id="serversideinstallation-virtualized-virtualpc">
-			<title>VirtualPC</title>
-			<para>[[ VirtualPC ]]</para>
+			<title>Other working systems</title>
+			<para>[[ further information on other working systems ]] </para>
 		</section>
 	</section>
 	<section xml:id="serversideinstallation-process">
 		<title>The Installation Process</title>
+		<para>Installing, configuring and testing the Evergreen server-side software is straightforward with the current stable software release. Earlier software distributions are also available. In the following sections you will find instructions tailored to specific distributions.</para>
 		<section>
-			<title>Current stable Release</title>
-			<para>
-				<link linkend="serversideinstallation-ubuntudebian">Installing Evergreen 1.6.0.x on Ubuntu or Debian</link>
+			<title>Current Stable Software Release</title>
+			<para>The current stable release of Evergreen is version <emphasis><emphasis role="bold">1.6.0.7</emphasis></emphasis>. Instructions for installing, configuring and testing that version on the <emphasis>Ubuntu</emphasis> or <emphasis>Debian</emphasis> Linux systems are found in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-ubuntudebian"> "Installing Evergreen 1.6.0.7 on Ubuntu or Debian" </link></emphasis></emphasis> .
 			</para>
-			<para>
-				<link linkend="serversideinstallation-opensrf">Installing OpenSRF 1.2.x</link>
+			<para>This release of Evergreen software is dependent on the OpenSRF software system. The current stable release of OpenSRF is version <emphasis><emphasis role="bold">1.0.6</emphasis></emphasis>. Instructions for installing, configuring and testing that version are found in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-opensrf"> "Installing OpenSRF" </link></emphasis></emphasis> .
 			</para>
 		</section>
 		<section>
-			<title>Previous stable release</title>
-			<para>
-				<link linkend="serversideinstallation-ubuntudebian-previous">Installing Evergreen 1.4.0.x on Ubuntu or Debian</link>
+			<title>Previous Software Releases</title>
+			<para>Earlier releases of Evergreen are also available. Instructions for installing, configuring and testing earlier versions are found in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-previousversions">Installing Previous Versions of Evergreen</link></emphasis></emphasis> .</para>
+			<para>The most recent previous release of Evergreen is version <emphasis><emphasis role="bold">1.4.0.6</emphasis></emphasis>. Instructions for installing, configuring and testing that version are found in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-ubuntudebian-previous">Installing Evergreen 1.4.0.6 on Ubuntu or Debian</link></emphasis></emphasis> .
 			</para>
-			<para>
-				<link linkend="serversideinstallation-opensrf-previous">Installing OpenSRF 1.0.x</link>
+			<para>The most recent previous release of OpenSRF is version <emphasis><emphasis role="bold">1.0.x</emphasis></emphasis>. Instructions for installing, configuring and testing that version are found in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-opensrf-previous">Installing OpenSRF 1.0.x</link></emphasis></emphasis> .
 			</para>
-		</section>
-		<section>
-			<title>Configuring the system</title>
-			<para>
-				<link linkend="serversideinstallation-organizationandpolicy">Organization and Policy Editing</link>
-			</para>
-			<section>
-				<title>Holds</title>
-				<para>For holds to work properly, you need to run this command as the user <emphasis role="bold">opensrf</emphasis> to calculate the proximity of locations in the Organizational Unit tree:</para>
-				<screen>
-				$ autogen.sh -u -c /openils/conf/opensrf_core.xml
-				</screen>
-				<para>This is an expensive operation if you have a large Organizational Unit tree, so don't run it indiscriminately.</para>
-			</section>
 		</section>
 	</section>
 	<section xml:id="serversideinstallation-ubuntudebian">
-		<title>Installing Evergreen 1.6.0.x On Ubuntu or Debian</title>
+		<title>Installing Evergreen 1.6.0.7 On Ubuntu or Debian</title>
 		<para>The following steps have been tested on the x86 (32-bit) and x86-64 (64-bit) architectures. There may be differences between the Desktop and Server editions of Ubuntu. These instructions assume the Server edition.</para>
 		<para>In the following instructions, you are asked to perform certain steps as either the <emphasis role="bold">root</emphasis> user, the <emphasis role="bold">opensrf</emphasis> user, or the <emphasis role="bold">postgres</emphasis> user.</para>
 		<para>To become the <emphasis role="bold">root</emphasis> user, issue the command: <emphasis><emphasis role="bold">su - root</emphasis></emphasis>. To switch from the <emphasis role="bold">root</emphasis> user to a different user, issue a command like: <emphasis><emphasis role="bold">su - USERNAME</emphasis></emphasis>. For example, to switch from the <emphasis role="bold">root</emphasis> user to the <emphasis role="bold">opensrf</emphasis> user, issue this command: <emphasis><emphasis role="bold">su - opensrf</emphasis></emphasis>. Once you have become a non-root user, to become the <emphasis role="bold">root</emphasis> user again, simply issue the <emphasis><emphasis role="bold">exit</emphasis></emphasis> command.</para>
 		<section>
-			<title>Install the latest version of OpenSRF</title>
-			<para>For further information on installing the Open Service Request Framework (OpenSRF), see the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-opensrf">Installing OpenSRF</link></emphasis></emphasis>.</para>
+			<title>Installing the latest version of OpenSRF</title>
+			<para>For further information on installing the Open Service Request Framework (OpenSRF), see the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-opensrf"> "Installing OpenSRF" </link></emphasis></emphasis>.</para>
 			<para>Follow the steps outlined in that section, then run the specified test(s) to ensure that OpenSRF is properly installed before continuing with any further Evergreen installation steps. The Evergreen application depends on properly installation of OpenSRF. If OpenSRF does not work correctly, Evergreen will not work properly either.</para>
 		</section>
 		<section>
-			<title>Download and Build Evergreen </title>
-			<para>In this section, you will download, unpack, install and test the Evergreen system, including the Evergreen server and the PostgreSQL database system. You will also make several configuration changes and adjustments to the software, including updates to configure the system for your own locale, and some updates needed to work around a few known issues.</para>
-			<para>As far as possible, perform the following steps in the order they are given, since the success of many steps relies on the successful completion of earlier steps. You should make backup copies of files and environments when you are instructed to do so. In the event of installation problems, those copies can allow you to back out of a step gracefully and resume the installation from a known state.</para>
-			<para>Of course, when you successfully complete and test the entire installation you should take a final snapshot backup of your system(s). This can be the first in the series of regularly scheduled system backups that you should probably institute.</para>
+			<title>Downloading and Building Evergreen </title>
+			<para>In this section, you will download, unpack, install, configure and test the Evergreen system, including the Evergreen server and the PostgreSQL database system. You will make several configuration changes and adjustments to the software, including updates to configure the system for your own locale, and some updates needed to work around a few known issues.</para>
+			<para>As far as possible, perform the following steps in the order they are given, since the success of many steps relies on the successful completion of earlier steps. You should make backup copies of files and environments when you are instructed to do so. In the event of installation problems those copies can allow you to back out of a step gracefully and resume the installation from a known state.</para>
+			<para>Of course, after you successfully complete and test the entire Evergreen installation you should take a final snapshot backup of your system(s). This can be the first in the series of regularly scheduled system backups that you should probably also begin.</para>
 			<section>
 				<title>Download and Unpack Latest Evergreen Version</title>
 				<para>As the <emphasis role="bold">opensrf</emphasis> user, download and extract the latest version of Evergreen. The latest version can be found here: <emphasis><emphasis role="bold"><ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.0.7.tar.gz"></ulink></emphasis></emphasis></para>
@@ -192,7 +166,7 @@
 			<section>
 				<title>(OPTIONAL) Install the PostgreSQL Server</title>
 				<para>Since the PostgreSQL server is usually a standalone server in multi-server production systems, the prerequisite installer Makefile in the previous step does not automatically install PostgreSQL. If your PostgreSQL server is on a different system, just skip this step.</para>
-				<para>For further information on installing PostgreSQL, see the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-postgresql">Installing PostgreSQL</link></emphasis></emphasis>.</para>
+				<para>For further information on installing PostgreSQL, see the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-postgresql"> "Installing PostgreSQL" </link></emphasis></emphasis>.</para>
 				<para>If your PostgreSQL server will be on the same system as your Evergreen software, then as the <emphasis role="bold">root</emphasis> user install the required PostgreSQL server packages:</para>
 				<figure>
 					<title>Commands to install the PostgreSQL server</title>
@@ -273,7 +247,7 @@
 			</section>
 			<section>
 				<title>Link and Install Evergreen</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, link and install the compiled code. In the commands below, remember to set the variable <emphasis role="bold"> STAFF_CLIENT_BUILD_ID </emphasis> to match the version of the staff client you will use to connect to the Evergreen Server. Finally, create a symbolic link named <emphasis role="bold">server</emphasis> in <emphasis role="bold">/openils/var/web/xul</emphasis> to the <emphasis role="bold">/server</emphasis> subdirectory of your staff client build:</para>
+				<para>As the <emphasis role="bold">root</emphasis> user, link and install the compiled code. In the commands below, remember to set the variable <emphasis role="bold"> STAFF_CLIENT_BUILD_ID </emphasis> to match the version of the Staff Client you will use to connect to the Evergreen server. Finally, create a symbolic link named <emphasis role="bold">server</emphasis> in <emphasis role="bold">/openils/var/web/xul</emphasis> to the <emphasis role="bold">/server</emphasis> subdirectory of your Staff Client build:</para>
 				<figure>
 					<title>Commands to link and install Evergreen</title>
 					<screen>
@@ -384,7 +358,7 @@
 			</section>
 			<section>
 				<title>Create a Security Certificate (SSL Key)</title>
-				<para>Use the command <emphasis role="bold"> openssl </emphasis> to create a new SSL key for your Apache server. For a public production server you should configure or purchase a signed SSL certificate, but for now you can just use a self-signed certificate and accept the warnings in the staff client and browser during testing and development:</para>
+				<para>Use the command <emphasis role="bold"> openssl </emphasis> to create a new SSL key for your Apache server. For a public production server you should configure or purchase a signed SSL certificate, but for now you can just use a self-signed certificate and accept the warnings in the Staff Client and browser during testing and development:</para>
 				<figure>
 					<title>Commands to create an SSL key</title>
 					<screen>
@@ -393,7 +367,7 @@
 					$ openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key
 					</screen>
 				</figure>
-				<para><emphasis> <emphasis role="bold"> Warning: </emphasis> This is only a temporary measure to expedite testing. You <emphasis role="bold"> must </emphasis> get a proper SSL certificate for a public production system. See this section for further comments on setting up a properly signed SSL certificate: </emphasis> </para>
+				<para><emphasis><emphasis role="bold"> Warning:</emphasis> This is only a temporary measure to expedite testing. You <emphasis role="bold"> must </emphasis> get a proper SSL certificate for a public production system. See this section for further comments on setting up a properly signed SSL certificate: </emphasis> </para>
 				<para> [[how to get a signed SSL certificate]] </para>
 			</section>
 			<section>
@@ -403,11 +377,13 @@
 					<listitem>
 						<para>Comment out the line <emphasis role="bold">Allow from 10.0.0.0/8</emphasis>, then uncomment the line <emphasis role="bold">Allow from all</emphasis>. This is a temporary measure to expedite testing.</para>
 						<para>
-							<emphasis> <emphasis role="bold"> Warning: </emphasis> You must remove these changes after testing is completed. This will enable access to the configuration CGI scripts from any workstation on any network. You <emphasis role="bold"> must </emphasis> secure this for a public production system, preferably by explicitly specifying the allowed IP addresses and adding proper authentication.</emphasis>
+							<emphasis><emphasis role="bold"> Warning: </emphasis> You must remove these changes after testing is completed. This will enable access to the configuration CGI scripts from any workstation on any network. You <emphasis role="bold"> must </emphasis> secure this for a public production system, preferably by explicitly specifying the allowed IP addresses and adding proper authentication.</emphasis>
 						</para>
 					</listitem>
-					<listitem>Comment out the line <emphasis role="bold">Listen 443</emphasis> as it conflicts with the same declaration in the configuration file: <emphasis role="bold">/etc/apache2/ports.conf</emphasis> .
-						<para> [[Debian Etch users - do not do this!]] </para></listitem>
+					<listitem>
+						<para>Comment out the line <emphasis role="bold">Listen 443</emphasis> as it conflicts with the same declaration in the configuration file: <emphasis role="bold">/etc/apache2/ports.conf</emphasis> .</para>
+						<para> [[Debian Etch users - do not do this!]] </para>
+					</listitem>
 				</itemizedlist>
 			</section>
 			<section>
@@ -487,7 +463,8 @@
 			</section>
 			<section>
 				<title>Create Private Configuration Files for Certain Users</title>
-				<para>Copy the file <emphasis>/openils/conf/srfsh.xml.example</emphasis> to the file <emphasis>.srfsh.xml</emphasis> in the home directory of each user you want to use to run the <emphasis role="bold">srfsh</emphasis> command line client for testing OpenSRF. Finally, edit each file <emphasis>.srfsh.xml</emphasis> and make the following changes:</para>
+				<para>The software installation will automatically create a utility named <emphasis>srfsh</emphasis> (surf shell). This is a command line diagnostic tool for interacting with the OpenSRF network software. You must set up a special configuration file for each user who will need to run the utility.</para>
+				<para>Copy the file <emphasis>/openils/conf/srfsh.xml.example</emphasis> to the file <emphasis>.srfsh.xml</emphasis> in the home directory of each user who will use <emphasis role="bold">srfsh</emphasis>. Finally, edit each file <emphasis>.srfsh.xml</emphasis> and make the following changes:</para>
 				<itemizedlist>
 					<listitem>Modify <emphasis role="bold">domain</emphasis> to be the router hostname (following our domain examples, <emphasis role="bold">private.localhost</emphasis> will give the utility <emphasis role="bold">srfsh</emphasis> access to all OpenSRF services, while <emphasis role="bold">public.localhost</emphasis> will only allow access to those OpenSRF services that are publicly exposed).</listitem>
 					<listitem>Modify <emphasis role="bold">username</emphasis> and <emphasis role="bold">password</emphasis> to match the <emphasis role="bold">opensrf</emphasis> Jabber user for the chosen domain</listitem>
@@ -532,7 +509,7 @@
 			</section>
 			<section>
 				<title>(OPTIONAL) Configuration for Other Languages</title>
-				<para>Load translations such as Armenian (hy-AM), Canadian French (fr-CA), and others into the database to complete the translations available in the OPAC and staff client. See the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-localization">Adding Language Localization</link></emphasis></emphasis> for details.</para>
+				<para>Load translations such as Armenian (hy-AM), Canadian French (fr-CA), and others into the database to complete the translations available in the OPAC and Staff Client. See the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-localization"> "Adding Language Localization" </link></emphasis></emphasis> for details.</para>
 			</section>
 		</section>
 		<section xml:id="serversideinstallation-starting">
@@ -580,8 +557,8 @@
 					</itemizedlist>
 				</listitem>
 				<listitem>
-					<para>As the <emphasis role="bold">opensrf</emphasis> user, generate the Web files needed by the staff client and catalogue, and also update the organization unit proximity.</para>
-					<para> You need to do this the first time you start Evergreen, and after that each time you change the library hierarchy in ''config.cgi'':</para>
+					<para>As the <emphasis role="bold">opensrf</emphasis> user, generate the Web files needed by the Staff Client and catalogue, and calculate the proximity of locations in the Organizational Unit tree (which allows <emphasis>Holds</emphasis> to work properly).</para>
+					<para>You must do this the first time you start Evergreen, and after any time you change the library hierarchy in the configuration file <emphasis>config.cgi</emphasis>.</para>
 					<figure>
 						<title>Generate web files</title>
 						<screen>
@@ -605,72 +582,93 @@
 						$ /etc/init.d/apache2 restart
 						</screen>
 					</figure>
-					<para>If the Apache Web server was running when you started the OpenSRF services, you might not be able to successfully log in to the OPAC or staff client until the Apache Web server is restarted.</para>
+					<para>If the Apache Web server was running when you started the OpenSRF services, you might not be able to successfully log in to the OPAC or Staff Client until the Apache Web server is restarted.</para>
 				</listitem>
 			</orderedlist>
 		</section>
-		<section xml:id="serversideinstallation-testing-connections">
-			<title>Testing Connections to Evergreen</title>
-			<para>Once you have installed and started Evergreen, test your connection to Evergreen by using the utility <emphasis>srfsh</emphasis>. Start the utility and try logging onto the Evergreen server using the default administrator username and password. Following is sample output generated by executing that script during a successful Evergreen installation:</para>
-			<figure>
-				<title>Running the srfsh utility</title>
+		<section xml:id="serversideinstallation-testing">
+			<title>Testing the Installation</title>
+			<para>This section describes several simple tests you can perform to verify that the Evergreen server-side software has been installed and configured properly and is running as expected.</para>
+			<section xml:id="serversideinstallation-testing-connections">
+				<title>Testing Connections to Evergreen</title>
+				<para>Once you have installed and started Evergreen, test your connection to Evergreen. As the <emphasis role="bold">opensrf</emphasis> user start the utility <emphasis>srfsh</emphasis> and try logging onto the Evergreen server using the default administrator username and password. Following is sample output generated by executing that script after a successful Evergreen installation:</para>
+				<figure>
+					<title>Running the srfsh utility</title>
+					<screen>
+					$ su - opensrf
+					$ /openils/bin/srfsh
+					srfsh% login admin open-ils
+					Received Data: "250bf1518c7527a03249858687714376"
+					------------------------------------
+					Request Completed Successfully
+					Request Time in seconds: 0.045286
+					------------------------------------
+					Received Data: {
+					   "ilsevent":0,
+					   "textcode":"SUCCESS",
+					   "desc":" ",
+					   "pid":21616,
+					   "stacktrace":"oils_auth.c:304",
+					   "payload":{
+					      "authtoken":"e5f9827cc0f93b503a1cc66bee6bdd1a",
+					      "authtime":420
+					   }
+					}
+					------------------------------------
+					Request Completed Successfully
+					Request Time in seconds: 1.336568
+					------------------------------------
+					</screen>
+				</figure>
+				<para>If this does not work, try other simple troubleshooting steps:</para>
+				<itemizedlist>
+					<listitem>
+						<para>As the <emphasis role="bold">opensrf</emphasis> user, run the script <emphasis>settings-tester.pl</emphasis> to see if it finds any system configuration problems. Following is sample output generated by executing that script after a successful Evergreen installation:</para>
+						<figure>
+							<title>Executing the script <emphasis> settings-test.pl</emphasis></title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-testing-1.png" scalefit="1" width="100%"/>
+								</imageobject>
+							</mediaobject>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-testing-2.png" scalefit="1" width="100%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+						<para>If the output from the script does not help you find the problem, please do not make any further significant changes to your configuration. Follow the steps in the troubleshooting guide, <emphasis><emphasis role="bold"><link linkend="troubleshooting"> "Troubleshooting" </link></emphasis></emphasis> .</para>
+					</listitem>
+					<listitem>If you have followed the entire set of installation steps listed here closely, you are probably extremely close to a working system. Gather your configuration files and log files and contact the [[ http://open-ils.org/listserv.php|Evergreen development mailing list ]] for assistance before making any drastic changes to your system configuration.</listitem>
+				</itemizedlist>
+			</section>
+			<section xml:id="serversideinstallation-testing-opac">
+				<title>Testing the Catalog</title>
+				<para>By default, the OPAC will live at the URL <emphasis>http://my.domain.com/opac/</emphasis>.</para>
+				<para>Navigate to this URL and the front page of the OPAC should load. There is a basic text entry field with some extra search options. If you have any problems loading this page, check the Apache error logs. If the page loads but does not function correctly, then check for possible javascript errors. We hightly reccommend testing with the <emphasis>Firefox</emphasis> browser because of the helpful javascript debugging tools.</para>
+				<para>Assuming that the OPAC is functioning and there is data in your database, you can now perform other simple functional tests (e.g., searching the catalog).</para>
+				<para>[[ other simple functional tests ]]</para>
+			</section>
+			<section xml:id="serversideinstallation-testing-othersrfsh">
+				<title>Other Tests with srfsh</title>
+				<para>There is also a <emphasis>srfsh</emphasis> command called <emphasis>math_bench</emphasis> that sends queries to the math servers. Note that opensrf.math and opensrf.dbmath must be running for this command to work:</para>
 				<screen>
-				$ su - opensrf
-				$ /openils/bin/srfsh
-				srfsh% login admin open-ils
-				Received Data: "250bf1518c7527a03249858687714376"
-			
-				------------------------------------
-				Request Completed Successfully
-				Request Time in seconds: 0.045286
-				------------------------------------
-			
-				Received Data: {
-				   "ilsevent":0,
-				   "textcode":"SUCCESS",
-				   "desc":" ",
-				   "pid":21616,
-				   "stacktrace":"oils_auth.c:304",
-				   "payload":{
-				      "authtoken":"e5f9827cc0f93b503a1cc66bee6bdd1a",
-				      "authtime":420
-				   }
-				}
-			
-				------------------------------------
-				Request Completed Successfully
-				Request Time in seconds: 1.336568
-				------------------------------------
+				srfsh# math_bench 10
+				|.........|.........|.........|.........|.........|.........|.........|.........|.........|.........
+				++++++++++++++++++++++++++++++++++++++++
+				Average round trip time: 0.033425
+				srfsh#
 				</screen>
-			</figure>
-			<para>If this does not work, try some simple troubleshooting steps:</para>
-			<itemizedlist>
-				<listitem>
-					<para>As the <emphasis role="bold">opensrf</emphasis> user, run the script <emphasis>settings-tester.pl</emphasis>  to see if it finds any system configuration problems. Following is sample output generated by executing that script during a successful Evergreen installation:</para>
-					<figure>
-						<title>Executing the script <emphasis> settings-test.pl</emphasis></title>
-						<mediaobject>
-							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-testing-1.png" scalefit="1" width="100%"/>
-							</imageobject>
-						</mediaobject>
-						<mediaobject>
-							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-testing-2.png" scalefit="1" width="100%"/>
-							</imageobject>
-						</mediaobject>
-					</figure>
-					<para>If the output from the script does not help you find the problem, please do not make any further significant changes to your configuration. Follow the steps in the troubleshooting guide, <emphasis role="bold"><emphasis><link linkend="troubleshooting">Troubleshooting</link></emphasis></emphasis> .</para>
-				</listitem>
-				<listitem>If you have followed the entire set of installation steps listed here closely, you are probably extremely close to a working system. Gather your configuration files and log files and contact the [[ http://open-ils.org/listserv.php|Evergreen development mailing list ]] for assistance before making any drastic changes to your system configuration.</listitem>
-			</itemizedlist>
+				<para>The first argument is how many sets of 4 queries (+ - * /) are sent to <emphasis>opensrf.math</emphasis>. When the response is successful, you will see the string of "+" symbols. If the system is not running correctly, you will either get an exception or no result at all.</para>
+				<para>For other srfsh commands, type 'help' in at the prompt.</para>
+			</section>
 		</section>
 		<section xml:id="serversideinstallation-running-staffclient">
 			<title>Running the Staff Client on Linux</title>
-			<para>Run the Evergreen staff client on a Linux system by using the application <emphasis>XULRunner</emphasis> (installed automatically and by default with Firefox version 3.0 and later on Debian and Ubuntu distributions).</para>
-			<para>For example, if the source files for the Evergreen installation are in the directory <emphasis>/home/opensrf/Evergreen-ILS-1.6.0.7/</emphasis>, start the staff client as shown in the following command example:</para>
+			<para>Run the Evergreen Staff Client on a Linux system by using the application <emphasis>XULRunner</emphasis> (installed automatically and by default with Firefox version 3.0 and later on Ubuntu and Debian distributions).</para>
+			<para>For example, if the source files for the Evergreen installation are in the directory <emphasis>/home/opensrf/Evergreen-ILS-1.6.0.7/</emphasis>, start the Staff Client as shown in the following command example:</para>
 			<figure>
-				<title>Running the Linux staff client</title>
+				<title>Running the Linux Staff Client</title>
 				<screen>
 				$ su - opensrf
 				$ xulrunner /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client/build/application.ini
@@ -707,7 +705,7 @@
 		</section>
 		<section xml:id="serversideinstallation-reports">
 			<title>Setting Up Support For Reports</title>
-			<para>Evergreen reports are extremely powerful, but some configuration is required. See the section <emphasis><emphasis role="bold"><link linkend="report-introduction">Reports</link></emphasis></emphasis> for details.</para>
+			<para>Evergreen reports are extremely powerful, but some configuration is required. See the section <emphasis><emphasis role="bold"><link linkend="report-introduction"> "Reports" </link></emphasis></emphasis> for details.</para>
 		</section>
 		<section xml:id="serversideinstallation-starting-reporter-daemon">
 			<title>Starting the Reporter Daemon</title>
@@ -745,49 +743,49 @@
 		</section>
 	</section>
 	<section xml:id="serversideinstallation-opensrf">
-		<title>Installing OpenSRF 1.2.x</title>
+		<title>Installing OpenSRF</title>
 		<para>[[ Installing OpenSRF 1.2.x ]]</para>
 	</section>
-	<section xml:id="serversideinstallation-ubuntudebian-previous">
-		<title>Installing Evergreen 1.4.0.x on Ubuntu or Debian</title>
-		<para>[[ Installing Evergreen 1.4.0.x on Ubuntu or Debian ]]</para>
+	<section xml:id="serversideinstallation-otherlinux">
+		<title>Installing Evergreen On Other Linux Systems</title>
+		<para>[[ Installing on Other Linux Systems ]]</para>
 	</section>
-	<section xml:id="serversideinstallation-opensrf-previous">
-		<title>Installing OpenSRF 1.0.x</title>
-		<para>[[ Installing OpenSRF 1.0.x ]]</para>
+	<section xml:id="serversideinstallation-virtual">
+		<title>Installing Evergreen in Virtualized Unix Environments</title>
+		<para>Evergreen software currently runs as a native application on any of several well-known Linux distributions (e.g., <emphasis>Ubuntu</emphasis> and <emphasis>Debian</emphasis>). It does not run as a native application on the Windows operating system (e.g., WindowsXP, WindowsXP Professional, Windows7), but the software can be installed and run on Windows via a virtualized Unix-guest Operating System (using, for example, VirtualBox or VMware to emulate a Linux environment). More information on virtualized environments can be found in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-virtual">"Installing Evergreen in Virtualized Unix Environments"</link></emphasis></emphasis>.</para>
+		<para>[[ Installing Evergreen in Virtualized Unix Environments ]]</para>
+		<section xml:id="serversideinstallation-virtualized-virtualbox">
+			<title>VirtualBox</title>
+			<para>[[ VirtualBox ]]</para>
+		</section>
+		<section xml:id="serversideinstallation-virtualized-vmware">
+			<title>VMware</title>
+			<para>[[ VMware ]]</para>
+		</section>
+		<section xml:id="serversideinstallation-virtualized-virtualpc">
+			<title>VirtualPC</title>
+			<para>[[ VirtualPC ]]</para>
+		</section>
+	</section>
+	<section xml:id="serversideinstallation-previousversions">
+		<title>Installing Previous Versions of Evergreen</title>
+		<para>Earlier releases of Evergreen are available. Instructions for installing, configuring and testing earlier versions are found below.</para>
+		<section xml:id="serversideinstallation-ubuntudebian-previous">
+			<title>Installing Evergreen 1.4.0.6 on Ubuntu or Debian</title>
+			<para>[[ Installing Evergreen 1.4.0.6 on Ubuntu or Debian ]]</para>
+		</section>
+		<section xml:id="serversideinstallation-opensrf-previous">
+			<title>Installing OpenSRF 1.0.x</title>
+			<para>[[ Installing OpenSRF 1.0.x ]]</para>
+		</section>
 	</section>
 	<section xml:id="serversideinstallation-organizationandpolicy">
 		<title>Organization and Policy Editing</title>
 		<para>[[ Organization and Policy Editing ]] </para>
 	</section>
-	<section xml:id="serversideinstallation-testing">
-		<title>Testing the Installation</title>
-		<section xml:id="serversideinstallation-testing-srfsh">
-			<title>Testing with srfsh</title>
-			<para>Installing OpenILS will place an executable called 'srfsh' (surf shell) into the BINDIR directory. This is a command line diagnostic tool for interacting with the OpenSRF network.</para>
-			<para>For starters, there is a command called math_bench in srfsh that sends queries to the math servers. Note that opensrf.math and opensrf.dbmath must be running for this command to work:</para>
-			<screen>
-			srfsh# math_bench 10
-			|.........|.........|.........|.........|.........|.........|.........|.........|.........|.........
-			
-			++++++++++++++++++++++++++++++++++++++++
-			 Average round trip time: 0.033425
-			srfsh#
-			</screen>
-			<para>The first argument is how many sets of 4 queries (+ - * /) are sent to <emphasis>opensrf.math</emphasis>. When the response is successful, you will see the string of "+" symbols. If the system is not running correctly, you will either get an exception or no result at all.</para>
-			<para>For other srfsh commands, type 'help' in at the prompt.</para>
-		</section>
-		<section xml:id="serversideinstallation-testing-opac">
-			<title>Testing the OPAC</title>
-			<para>By default, the OPAC will live at the URL <emphasis>http://my.domain.com/opac/</emphasis>.</para>
-			<para>Navigate to this URL and the front page of the OPAC should load. There is a basic text entry field with some extra search options. If you have any problems loading this page, check the Apache error logs. If the page loads but does not function correctly, then check for possible javascript errors. We hightly reccommend testing with the <emphasis>Firefox</emphasis> browser because of the helpful javascript debugging tools.</para>
-			<para>Assuming that the OPAC is functioning and there is data in your database, you can now perform other simple functional tests (e.g., searching the catalog).</para>
-			<para>[[ other simple functional tests ]]</para>
-		</section>
-	</section>
-	<section xml:id="serversideinstallation-buildingstaffclient">
-		<title>Building the Staff Client</title>
-		<para>[[ Building the Staff Client ]]</para>
+	<section xml:id="serversideinstallation-staffclient">
+		<title>Installing the Staff Client</title>
+		<para>[[ Installing the Staff Client ]]</para>
 	</section>
 	<section xml:id="serversideinstallation-localization">
 		<title>Adding Language Localization</title>
