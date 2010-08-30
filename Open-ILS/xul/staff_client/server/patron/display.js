@@ -932,11 +932,17 @@ patron.display.prototype = {
                     }
                 }
                 var penalties = obj.patron.standing_penalties();
+                msg += '<dl>';
                 for (var i = 0; i < penalties.length; i++) {
                     if (penalties[i].standing_penalty().block_list() || penalties[i].standing_penalty().id() == 20 /* ALERT_NOTE */) {
+                        msg += '<dt>';
                         msg += obj.OpenILS.data.hash.aou[ penalties[i].org_unit() ].shortname() + ' : ' + penalties[i].standing_penalty().label() + '<br/>';
+                        msg += '</dt><dd>';
+                        msg += penalties[i].note();
+                        msg += '</dd>';
                     }
                 }
+                msg += '</dl>';
                 var holds = params.holds_summary;
                 if (holds.ready && holds.ready > 0) {
                     msg += $("patronStrings").getFormattedString('staff.patron.display.init.holds_ready', [holds.ready]);
