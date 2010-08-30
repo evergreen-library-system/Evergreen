@@ -99,7 +99,7 @@
                 }
                 label_cfg.spine_left_margin = Number($('lm').value); /* left margin */
                 if (!label_cfg.spine_left_margin) {
-                    label_cfg.spine_left_margin = g.data.hash.aous['cat.spine.line.margin'] || 11;
+                    label_cfg.spine_left_margin = g.data.hash.aous['cat.spine.line.margin'] || 0;
                     $('lm').value = label_cfg.spine_left_margin;
                 }
                 label_cfg.font_size = Number( $('pt').value );  /* font size */
@@ -490,17 +490,17 @@
                     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
                     var pt = Number( $('pt').value );  /* font size */
                     if (!pt) {
-                        pt = g.data.hash.aous['cat.spine.font.size'] || 10;
+                        pt = g.data.hash.aous['cat.label.font.size'] || 10;
                         $('pt').value = pt;
                     }
-                    var ff = g.data.hash.aous['cat.spine.font.family'] || 'monospace';
+                    var ff = g.data.hash.aous['cat.label.font.family'] || 'monospace';
                     var fw = $('font_weight').value;  /* font weight */
                     if (!fw) {
                         fw = g.data.hash.aous['cat.label.font.weight'] || 'normal';
                     }
                     var lm = Number($('lm').value); /* left margin */
                     if (!lm) {
-                        lm = g.data.hash.aous['cat.spine.line.margin'] || 11;
+                        lm = g.data.hash.aous['cat.spine.line.margin'] || 0;
                     }
                     var mm = Number($('mm').value); if (mm == NaN) mm = 2; /* middle margin */
                     var lw = Number($('lw').value); /* spine label width */
