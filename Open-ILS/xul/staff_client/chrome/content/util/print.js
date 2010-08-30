@@ -1,7 +1,7 @@
 dump('entering util/print.js\n');
 
 if (typeof util == 'undefined') util = {};
-util.print = function () {
+util.print = function (context) {
 
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
@@ -11,8 +11,10 @@ util.print = function () {
     JSAN.use('util.functional');
     JSAN.use('util.file');
 
+    this.context = context || 'default';
+
     var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
-    var key = 'oils.printer.external.cmd';
+    var key = 'oils.printer.external.cmd.' + this.context;
     var has_key = prefs.prefHasUserValue(key);
     this.oils_printer_external_cmd = has_key ? prefs.getCharPref(key) : '';
 
@@ -83,7 +85,8 @@ util.print.prototype = {
 
             var obj = this;
 
-            obj.data.last_print = { 'msg' : msg, 'params' : params}; obj.data.stash('last_print');
+            obj.data.last_print = { 'msg' : msg, 'params' : params, 'context' : this.context};
+            obj.data.stash('last_print');
 
             var silent = false;
             if ( params && params.no_prompt && (params.no_prompt == true || params.no_prompt == 'true') ) {
@@ -102,9 +105,9 @@ util.print.prototype = {
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             obj.data.init({'via':'stash'});
 
-            if (params.print_strategy || obj.data.print_strategy) {
+            if (params.print_strategy || obj.data.print_strategy[obj.context] || obj.data.print_strategy['default']) {
 
-                switch(params.print_strategy || obj.data.print_strategy) {
+                switch(params.print_strategy || obj.data.print_strategy[obj.context] || obj.data.print_strategy['default']) {
                     case 'dos.print':
                         params.dos_print = true;
                     case 'custom.print':
@@ -296,10 +299,13 @@ util.print.prototype = {
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             obj.data.init({'via':'stash'});
 
-            if (params.print_strategy || obj.data.print_strategy) {
+            if (params.print_strategy || obj.data.print_strategy[obj.context] || obj.data.print_strategy['default']) {
 
-dump('params.print_strategy = ' + params.print_strategy + ' || obj.data.print_strategy = ' + obj.data.print_strategy + ' => ' + ( params.print_strategy || obj.data.print_strategy ) + '\n');
-                switch(params.print_strategy || obj.data.print_strategy) {
+                dump('params.print_strategy = ' + params.print_strategy
+                    + ' || obj.data.print_strategy[' + obj.context + '] = ' + obj.data.print_strategy[obj.context] 
+                    + ' || obj.data.print_strategy[default] = ' + obj.data.print_strategy['default'] 
+                    + ' => ' + ( params.print_strategy || obj.data.print_strategy[obj.context] || obj.data.print_strategy['default'] ) + '\n');
+                switch(params.print_strategy || obj.data.print_strategy[obj.context] || obj.data.print_strategy['default']) {
                     case 'dos.print':
                     case 'custom.print':
                         if (typeof w != 'string') {
@@ -515,23 +521,31 @@ dump('params.print_strategy = ' + params.print_strategy + ' || obj.data.print_st
         try {
             var error_msg = '';
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            var file = new util.file('gPrintSettings');
+            var file = new util.file('gPrintSettings.' + this.context);
             if (file._file.exists()) {
                 temp = file.get_object(); file.close();
                 for (var i in temp) {
                     try { this.gPrintSettings[i] = temp[i]; } catch(E) { error_msg += 'Error trying to set gPrintSettings.'+i+'='+temp[i]+' : ' + js2JSON(E) + '\n'; }
                 }
-            } else {
-                this.gPrintSettings.marginTop = 0;
-                this.gPrintSettings.marginLeft = 0;
-                this.gPrintSettings.marginBottom = 0;
-                this.gPrintSettings.marginRight = 0;
-                this.gPrintSettings.headerStrLeft = '';
-                this.gPrintSettings.headerStrCenter = '';
-                this.gPrintSettings.headerStrRight = '';
-                this.gPrintSettings.footerStrLeft = '';
-                this.gPrintSettings.footerStrCenter = '';
-                this.gPrintSettings.footerStrRight = '';
+            }  else if (this.context != 'default') {
+                var file = new util.file('gPrintSettings.default');
+                if (file._file.exists()) {
+                    temp = file.get_object(); file.close();
+                    for (var i in temp) {
+                        try { this.gPrintSettings[i] = temp[i]; } catch(E) { error_msg += 'Error trying to set gPrintSettings.'+i+'='+temp[i]+' : ' + js2JSON(E) + '\n'; }
+                    }
+                } else {
+                    this.gPrintSettings.marginTop = 0;
+                    this.gPrintSettings.marginLeft = 0;
+                    this.gPrintSettings.marginBottom = 0;
+                    this.gPrintSettings.marginRight = 0;
+                    this.gPrintSettings.headerStrLeft = '';
+                    this.gPrintSettings.headerStrCenter = '';
+                    this.gPrintSettings.headerStrRight = '';
+                    this.gPrintSettings.footerStrLeft = '';
+                    this.gPrintSettings.footerStrCenter = '';
+                    this.gPrintSettings.footerStrRight = '';
+                }
             }
             if (error_msg) {
                 this.error.sdump('D_PRINT',error_msg);
@@ -553,7 +567,7 @@ dump('params.print_strategy = ' + params.print_strategy + ' || obj.data.print_st
         try {
             var obj = this;
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-            var file = new util.file('gPrintSettings');
+            var file = new util.file('gPrintSettings.' + this.context);
             if (typeof obj.gPrintSettings == 'undefined') obj.GetPrintSettings();
             if (obj.gPrintSettings) file.set_object(obj.gPrintSettings); 
             file.close();

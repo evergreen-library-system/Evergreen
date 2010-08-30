@@ -3368,6 +3368,12 @@
 <!ENTITY staff.util.timestamp_dialog.apply_btn.accesskey "A">
 <!ENTITY staff.printing.set_default "Set Default Printer and Print Test Page">
 <!ENTITY staff.printing.page_settings "Page Settings">
+<!ENTITY staff.printing.context.header "Printer Context">
+<!ENTITY staff.printing.context.desc "Different printer settings may be configured for different contexts within the staff client (such as circulation, label printing, etc.).  If settings have not been made for a given context, the staff client will fall back on the 'default' context.">
+<!ENTITY staff.printing.context.radio.default.label "Default">
+<!ENTITY staff.printing.context.radio.receipt.label "Receipt">
+<!ENTITY staff.printing.context.radio.label.label "Label">
+<!ENTITY staff.printing.context.radio.mail.label "Mail">
 <!ENTITY staff.printing.normal_settings.header "Normal Settings">
 <!ENTITY staff.printing.advanced_settings.header "Advanced Settings">
 <!ENTITY staff.printing.advanced.mozilla_print "Use default print strategy (Mozilla Print)">

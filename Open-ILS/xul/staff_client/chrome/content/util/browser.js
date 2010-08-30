@@ -26,6 +26,7 @@ util.browser.prototype = {
             obj.debug_label = params['debug_label'];
             obj.passthru_content_params = params['passthru_content_params'];
             obj.on_url_load = params['on_url_load'];
+            obj.printer_context = params['printer_context'] || 'default';
 
             JSAN.use('util.controller'); obj.controller = new util.controller();
             obj.controller.init(
@@ -60,7 +61,13 @@ util.browser.prototype = {
                                         print_params.content_type = 'text/plain';
                                     }
                                     JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
-                                    if (data.print_strategy == 'webBrowserPrint' || !data.print_strategy) {
+                                    if (
+                                        !data.print_strategy
+                                        || !data.print_strategy[obj.printer_context]
+                                        || (data.print_strategy[obj.printer_context] && data.print_strategy[obj.printer_context] == 'webBrowserPrint')
+                                        || !data.print_strategy['default']
+                                        || (data.print_strategy['default'] && data.print_strategy['default'] == 'webBrowserPrint')
+                                    ) {
                                         // Override the print strategy temporarily in this context
                                         print_params.print_strategy = 'window.print';
                                     }

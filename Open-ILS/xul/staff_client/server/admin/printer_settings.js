@@ -9,7 +9,7 @@ function my_init() {
         JSAN.use('util.error'); g.error = new util.error();
         g.error.sdump('D_TRACE','my_init() for printer_settings.xul');
 
-        JSAN.use('util.print'); g.print = new util.print();
+        g.set_printer_context();
 
         g.prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
 
@@ -24,6 +24,11 @@ function my_init() {
     } catch(E) {
         try { g.error.standard_unexpected_error_dialog('admin/printer_settings.xul',E); } catch(F) { alert(E); }
     }
+}
+
+g.set_printer_context = function(context) {
+    g.context = context || 'default';
+    JSAN.use('util.print'); g.print = new util.print(g.context);
 }
 
 g.page_settings = function() {
@@ -42,7 +47,7 @@ g.printer_settings = function() {
 g.set_print_strategy = function(which) {
     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
     if (which == 'custom.print') {
-        var key = 'oils.printer.external.cmd';
+        var key = 'oils.printer.external.cmd.' + g.context;
         var has_key = g.prefs.prefHasUserValue(key);
         var value = has_key ? g.prefs.getCharPref(key) : '';
         var cmd = window.prompt(
@@ -52,13 +57,17 @@ g.set_print_strategy = function(which) {
         if (!cmd) { return; }
         g.prefs.setCharPref(key,cmd);
     }
-    JSAN.use('util.file'); var file = new util.file('print_strategy');
+    JSAN.use('util.file'); var file = new util.file('print_strategy.' + g.context);
     file.write_content( 'truncate', String( which ) );
     file.close();
     JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-    data.print_strategy = which; data.stash('print_strategy');
+    if (!data.print_strategy) {
+        data.print_strategy = {};
+    }
+    data.print_strategy[g.context] = which;
+    data.stash('print_strategy');
     alert(
-        document.getElementById('offlineStrings').getFormattedString('printing.print_strategy_saved',[which])
+        document.getElementById('offlineStrings').getFormattedString('printing.print_strategy_saved',[which,g.context])
     );
 }
 

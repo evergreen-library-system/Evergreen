@@ -27,6 +27,14 @@
     <script type="text/javascript" src="printer_settings.js"></script>
 </head><body onload="try { my_init(); } catch(E) { alert(E); }" style="background: white;">
     <div class="messagecatalog" id="offlineStrings" src="/xul/server/locale/<!--#echo var='locale'-->/offline.properties" />
+    <h1>&staff.printing.context.header;</h1>
+    <p>&staff.printing.context.desc;</p>
+    <form>
+        <input type="radio" name="context" value="default" checked="checked" onclick="g.set_printer_context('default');">&staff.printing.context.radio.default.label;</input>
+        <input type="radio" name="context" value="receipt" onclick="g.set_printer_context('receipt');">&staff.printing.context.radio.receipt.label;</input>
+        <input type="radio" name="context" value="label" onclick="g.set_printer_context('label');">&staff.printing.context.radio.label.label;</input>
+        <input type="radio" name="context" value="mail" onclick="g.set_printer_context('mail');">&staff.printing.context.radio.mail.label;</input>
+    </form> 
     <h1>&staff.printing.normal_settings.header;</h1>
     <iframe id="sample" src="printer_settings.txt"></iframe><br />
     <button onclick="try { g.printer_settings(); } catch(E) { alert(E); }">&staff.printing.set_default;</button>
