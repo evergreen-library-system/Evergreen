@@ -314,6 +314,7 @@ circ.checkin.prototype = {
                         ['command'],
                         function() {
                             var p = { 
+                                'printer_context' : 'receipt',
                                 'template' : 'checkin'
                             };
                             obj.list.print(p);

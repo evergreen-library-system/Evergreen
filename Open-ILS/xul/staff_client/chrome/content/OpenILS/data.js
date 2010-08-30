@@ -431,20 +431,24 @@ OpenILS.data.prototype = {
         }
         file.close();
 
-        JSAN.use('util.file'); var file = new util.file('print_strategy');
-        if (file._file.exists()) {
-            try {
-                var x = file.get_content();
-                if (x) {
-                    obj.print_strategy = x;
-                    obj.stash('print_strategy');
-                    obj.data_progress('Print strategy retrieved from file. ');
+        obj.print_strategy = {};
+        var print_contexts = [ 'default', 'receipt', 'label', 'mail' ];
+        for (var i in print_contexts) {
+            JSAN.use('util.file'); var file = new util.file('print_strategy.' + print_contexts[i]);
+            if (file._file.exists()) {
+                try {
+                    var x = file.get_content();
+                    if (x) {
+                        obj.print_strategy[ print_contexts[i] ] = x;
+                        obj.data_progress('Print strategy ' + print_contexts[i] + ' retrieved from file. ');
+                    }
+                } catch(E) {
+                    alert(E);
                 }
-            } catch(E) {
-                alert(E);
             }
+            file.close();
         }
-        file.close();
+        obj.stash('print_strategy');
 
         JSAN.use('util.print'); (new util.print()).GetPrintSettings();
         obj.data_progress('Printer settings retrieved. ');

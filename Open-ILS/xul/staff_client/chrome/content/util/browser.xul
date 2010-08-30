@@ -54,6 +54,7 @@
                 var p =    { 
                     'url' : url,
                     'push_xulG' : push_xulG,
+                    'printer_context' : xul_param('printer_context'),
                     'html_source' : xul_param('html_source'),
                     'debug_label' : 'debug'
                 };

@@ -33,6 +33,8 @@ util.list.prototype = {
 
         JSAN.use('util.widgets');
 
+        obj.printer_context = params.printer_context;
+
         if (typeof params.map_row_to_column == 'function') obj.map_row_to_column = params.map_row_to_column;
         if (typeof params.map_row_to_columns == 'function') {
             obj.map_row_to_columns = params.map_row_to_columns;
@@ -1265,7 +1267,7 @@ util.list.prototype = {
 
     'dump_csv_to_printer' : function(params) {
         var obj = this;
-        JSAN.use('util.print'); var print = new util.print();
+        JSAN.use('util.print'); var print = new util.print(params.printer_context || obj.printer_context);
         if (typeof params == 'undefined') params = {};
         if (params.no_full_retrieve) {
             print.simple( obj.dump_csv( params ), {'content_type':'text/plain'} );
@@ -1280,7 +1282,7 @@ util.list.prototype = {
 
     'dump_extended_format_to_printer' : function(params) {
         var obj = this;
-        JSAN.use('util.print'); var print = new util.print();
+        JSAN.use('util.print'); var print = new util.print(params.printer_context || obj.printer_context);
         if (typeof params == 'undefined') params = {};
         if (params.no_full_retrieve) {
             print.simple( obj.dump_extended_format( params ), {'content_type':'text/plain'} );
@@ -1341,7 +1343,7 @@ util.list.prototype = {
                 function() {
                     try {
                         if (!params.list) params.list = obj.dump_with_keys();
-                        JSAN.use('util.print'); var print = new util.print();
+                        JSAN.use('util.print'); var print = new util.print(params.printer_context || obj.printer_context);
                         print.tree_list( params );
                         if (typeof params.callback == 'function') params.callback();
                     } catch(E) {

@@ -110,7 +110,7 @@
                 case 'addr_export_print':
                     // Replace literal instances of '\n' and excessive whitespace.
                     s = s.replace(/(\\n)+/g, "<br/>").replace(/ {2,}/g, " ");
-                    JSAN.use('util.print'); var print = new util.print(); print.simple(s);
+                    JSAN.use('util.print'); var print = new util.print('mail'); print.simple(s);
                 break;
             };
         }
