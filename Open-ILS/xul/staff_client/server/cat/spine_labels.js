@@ -33,11 +33,18 @@
                 for (var i = 0; i < g.barcodes.length; i++) {
                     var copy = g.network.simple_request( 'FM_ACP_RETRIEVE_VIA_BARCODE.authoritative', [ g.barcodes[i] ] );
                     if (typeof copy.ilsevent != 'undefined') throw(copy);
+                    var label_prefix = copy.location().label_prefix() || '';
+                    var label_suffix = copy.location().label_suffix() || '';
                     if (!g.volumes[ copy.call_number() ]) {
                         var volume = g.network.simple_request( 'FM_ACN_RETRIEVE.authoritative', [ copy.call_number() ] );
                         if (typeof volume.ilsevent != 'undefined') throw(volume);
                         var record = g.network.simple_request('MODS_SLIM_RECORD_RETRIEVE.authoritative', [ volume.record() ]);
                         volume.record( record );
+
+                        /* Jam the prefixes and suffixes into the volume object */
+                        volume.prefix = label_prefix;
+                        volume.suffix = label_suffix;
+
                         g.volumes[ volume.id() ] = volume;
                     }
                     if (g.volumes[ copy.call_number() ].copies()) {
@@ -144,14 +151,44 @@
 
         function generate_labels(volume, label_node, label_cfg, override) {
             var names;
+            var callnum;
 
             if (override && volume.id() == override.acn) {
                 /* If we're calling ourself, we'll have an altered label */
-                names = String(override.label).split(/\s+/);
+                callnum = String(override.label);
             } else {
                 /* take the call number and split it on whitespace */
-                names = String(volume.label()).split(/\s+/);
+                callnum = String(volume.label());
             }
+
+            /* for LC, split between classification subclass letters and numbers */
+            var lc_class_re = /^([A-Z]{1,3})([0-9]+.*?)$/i;
+            var lc_class_match = lc_class_re.exec(callnum);
+            if (lc_class_match && lc_class_match.length > 1) {
+                callnum = lc_class_match[1] + ' ' + lc_class_match[2];
+            }
+
+            /* for LC, split between Cutter numbers */
+            var lc_cutter_re = /^(.*)(\.[A-Z]{1}[0-9]+.*?)$/ig;
+            var lc_cutter_match = lc_cutter_re.exec(callnum);
+            if (lc_cutter_match && lc_cutter_match.length > 1) {
+                callnum = '';
+                for (var i = 1; i < lc_cutter_match.length; i++) {
+                    callnum += lc_cutter_match[i] + ' ';
+                }
+            }
+
+            /* Only add the prefixes and suffixes once */
+            if (!override || volume.id() != override.acn) {
+                if (volume.prefix) {
+                    callnum = volume.prefix + ' ' + callnum;
+                }
+                if (volume.suffix) {
+                    callnum += ' ' + volume.suffix;
+                }
+            }
+
+            names = callnum.split(/\s+/);
             var j = 0;
             while (j < label_cfg.spine_length || j < label_cfg.pocket_length) {
                 var hb2 = document.createElement('hbox'); label_node.appendChild(hb2);
@@ -171,9 +208,11 @@
                     tb.setAttribute('name','spine');
                     var spine_row_id = 'acn_' + volume.id() + '_spine_' + j;
                     tb.setAttribute('id',spine_row_id);
+
                     var name = names.shift();
                     if (name) {
                         name = String( name );
+
                         /* if the name is greater than the label width... */
                         if (name.length > label_cfg.spine_width) {
                             /* then try to split it on periods */
@@ -341,7 +380,7 @@
 
                 case dojo.keys.BACKSPACE : {
                     /* Delete line if at the start of an input box */
-                    if (sel_start == 0) {
+                    if (sel_start == 0 && sel_end == sel_start) {
                         var new_label = '';
                         var chunk;
                         var x = 0;
@@ -365,6 +404,13 @@
                         }
                         generate({"acn": row_id.acn, "label": new_label});
                         $(row_id.prefix + row_id.spine).focus();
+                    }
+                    if (sel_start == 0) {
+                        /* Move to the previous row */
+                        var prev_row = $(row_id.prefix + (parseInt(row_id.spine) - 1));
+                        if (prev_row) {
+                            prev_row.focus();
+                        }
                     }
                     break;
                 }
@@ -505,22 +551,65 @@
                         }
                     }
                     html += '</body></html>';
-                    var loc = ( urls.XUL_BROWSER );
-                    xulG.new_tab(
-                        loc,
-                        {
-                            'tab_name' : $("catStrings").getString('staff.cat.spine_labels.preview.title')
-                        },
-                        { 
-                            'url' : 'data:text/html;charset=utf-8,'+window.escape(html),
-                            'html_source' : html,
-                            'show_print_button' : 1,
-                            'no_xulG' : 1
-                        }
-                    );
+
+                    /* From https://developer.mozilla.org/en/Using_nsIXULAppInfo */
+                    var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
+                                            .getService(Components.interfaces.nsIXULAppInfo);
+                    var platformVer = appInfo.platformVersion;
+
+                    /* We need to use different print strategies for different
+                     * XUL versions, apparently
+                     */
+                    if (platformVer.substr(0, 5) == '1.9.0') {
+                        preview_xul_190(html);
+                    } else {
+                        preview_xul_192(html);
+                    }
+
+
             } catch(E) {
                 g.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.spine_labels.preview.std_unexpected_err'),E);
             }
         }
 
+        function preview_xul_190(html) {
+            JSAN.use('util.window'); var win = new util.window();
+            var loc = ( urls.XUL_REMOTE_BROWSER );
+            //+ '?url=' + window.escape('about:blank') + '&show_print_button=1&alternate_print=1&no_xulG=1&title=' + window.escape('Spine Labels');
+            var w = win.open( loc, 'spine_preview', 'chrome,resizable,width=750,height=550');
+            w.xulG = { 
+                'url' : 'about:blank',
+                'show_print_button' : 1,
+                'alternate_print' : 1,
+                'no_xulG' : 1,
+                'title' : $("catStrings").getString('staff.cat.spine_labels.preview.title'),
+                'on_url_load' : function(b) { 
+                    try { 
+                        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+                        if (typeof w.xulG.written == 'undefined') {
+                            w.xulG.written = true;
+                            w.g.browser.get_content().document.write(html);
+                            w.g.browser.get_content().document.close();
+                        }
+                    } catch(E) {
+                        alert(E);
+                    }
+                }
+            };
+        }
 
+        function preview_xul_192(html) {
+            var loc = ( urls.XUL_BROWSER );
+            xulG.new_tab(
+                loc,
+                {
+                    'tab_name' : $("catStrings").getString('staff.cat.spine_labels.preview.title')
+                },
+                { 
+                    'url' : 'data:text/html;charset=utf-8,'+window.escape(html),
+                    'html_source' : html,
+                    'show_print_button' : 1,
+                    'no_xulG' : 1
+                }
+            );
+        }
