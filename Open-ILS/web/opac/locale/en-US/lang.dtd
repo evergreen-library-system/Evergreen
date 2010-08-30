@@ -682,6 +682,8 @@
 <!ENTITY staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label "Hold Policies">
 <!ENTITY staff.main.menu.admin.local_admin.work_log.label "Work Log">
 <!ENTITY staff.main.menu.admin.local_admin.work_log.accesskey "W">
+<!ENTITY staff.main.menu.admin.local_admin.copy_template.label "Copy Template Editor">
+<!ENTITY staff.main.menu.admin.local_admin.copy_template.accesskey "T">
 <!ENTITY staff.main.menu.admin.local_admin.patrons_due_refunds.label "Patrons with Negative Balances">
 <!ENTITY staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey "N">
 
