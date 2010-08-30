@@ -369,13 +369,24 @@ patron.summary.prototype = {
                                     function(req) {
                                         try {
                                             var robj = req.getResultObject();
-                                            util.widgets.set_text(e, robj.out + robj.overdue + robj.claims_returned + robj.long_overdue );
+                                            var do_not_tally_claims_returned = String( obj.OpenILS.data.hash.aous['circ.do_not_tally_claims_returned'] ) == 'true';
+                                            util.widgets.set_text(e,
+                                                robj.out
+                                                + robj.overdue
+                                                + (do_not_tally_claims_returned ? 0 : robj.claims_returned)
+                                                + robj.long_overdue
+                                            );
                                             if (e2) util.widgets.set_text(e2, robj.overdue    );
                                             if (e3) util.widgets.set_text(e3, robj.claims_returned    );
                                             if (e4) util.widgets.set_text(e4, robj.long_overdue    );
                                             if (e5) util.widgets.set_text(e5, robj.lost    );
                                             if (under_btn) util.widgets.set_text(under_btn, 
-                                                String( robj.out + robj.overdue + robj.claims_returned + robj.long_overdue) 
+                                                String(
+                                                    robj.out
+                                                    + robj.overdue
+                                                    + (do_not_tally_claims_returned ? 0 : robj.claims_returned)
+                                                    + robj.long_overdue
+                                                ) 
                                                 /* + ( robj.overdue > 0 ? '*' : '' ) */
                                             );
                                         } catch(E) {
