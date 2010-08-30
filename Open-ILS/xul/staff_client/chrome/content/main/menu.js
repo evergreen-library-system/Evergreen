@@ -684,6 +684,12 @@ main.menu.prototype = {
                     );
                 }
             ],
+            "cmd_local_admin_copy_template": [
+                ["oncommand"],
+                function() {
+                    open_eg_web_page("conify/global/asset/copy_template");
+                }
+            ],
             'cmd_local_admin_patrons_due_refunds' : [
                 ['oncommand'],
                 function() {

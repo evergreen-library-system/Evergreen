@@ -4406,7 +4406,7 @@ SELECT  usr,
 
 	<class id="act" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_template" oils_persist:tablename="asset.copy_template" reporter:label="Asset Copy Template">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_template_id_seq">
-			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name" />
 			<field reporter:label="Owning Lib" name="owning_lib" reporter:datatype="link"/>
 			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
 			<field reporter:label="Editor" name="editor" reporter:datatype="link"/>
