@@ -160,8 +160,8 @@ function clBuildRow( tbody, row, cl ) {
     appendClear($n( row, 'cl_hold_verify'), (isTrue(cl.hold_verify())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
     appendClear($n( row, 'cl_visible'), (isTrue(cl.opac_visible())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
     appendClear($n( row, 'cl_circulate'), (isTrue(cl.circulate())) ? _TRUE.cloneNode(true) : _FALSE.cloneNode(true) );
-    $n( row, 'cl_label_prefix').appendChild(text(cl.label_prefix()));
-    $n( row, 'cl_label_suffix').appendChild(text(cl.label_suffix()));
+    $n( row, 'cl_label_prefix').appendChild(text(cl.label_prefix() || ''));
+    $n( row, 'cl_label_suffix').appendChild(text(cl.label_suffix() || ''));
 
     var edit = $n( row, 'cl_edit');
     edit.onclick = function() { clEdit( cl, tbody, row ); };
