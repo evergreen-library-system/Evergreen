@@ -148,7 +148,7 @@ function loadMarcEditor(pcrud, rec) {
     win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
 
     win.xulG = {
-        "record": {"marc": rec.marc()},
+        "record": {"marc": rec.marc(), "rtype": "are"},
         "save": {
             "label": "Save",
             "func": function(xmlString) {

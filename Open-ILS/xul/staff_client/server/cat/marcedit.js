@@ -140,10 +140,29 @@ function my_init() {
             var cgi = new CGI();
             var _rid = cgi.param('record');
             if (_rid) {
+                window.xulG.record.id = _rid;
                 window.xulG.record.url = '/opac/extras/supercat/retrieve/marcxml/record/' + _rid;
             }
         }
+
         // End faking part...
+
+        /* Check for an explicitly passed record type
+         * This is not the same as the fixed-field record type; we can't trust
+         * the fixed fields when making modifications to the attributes for a
+         * given record (in particular, config.bib_source only applies for bib
+         * records, but an auth or MFHD record with the same ID and bad fixed
+         * fields could trample the config.bib_source value for the
+         * corresponding bib record if we're not careful.
+         *
+         * are = authority record
+         * sre = serial record (MFHD)
+         * bre = bibliographic record
+         */
+        if (!window.xulG.record.rtype) {
+            var cgi = new CGI();
+            window.xulG.record.rtype = cgi.param('rtype') || false;
+        }
 
         document.getElementById('save-button').setAttribute('label', window.xulG.save.label);
         document.getElementById('save-button').setAttribute('oncommand',
@@ -287,6 +306,19 @@ function my_init() {
             document.getElementById('fastItemAdd_checkbox').hidden = true;
         }
         document.getElementById('fastItemAdd_textboxes').hidden = document.getElementById('fastItemAdd_checkbox').hidden || !document.getElementById('fastItemAdd_checkbox').checked;
+
+        // Only show bib sources for bib records that already exist in the database
+        if (xulG.record.rtype == 'bre' && xulG.record.id) {
+            dojo.require('openils.PermaCrud');
+            var authtoken = ses();
+            // Retrieve the current record attributes
+            var bib = new openils.PermaCrud({"authtoken": authtoken}).retrieve('bre', xulG.record.id);
+
+            // Remember the current bib source of the record
+            xulG.record.bre = bib;
+
+            buildBibSourceList(authtoken, xulG.record.id);
+        }
 
     } catch(E) {
         alert('FIXME, MARC Editor, my_init: ' + E);
@@ -2303,3 +2335,65 @@ function searchAuthority (term, tag, sf, limit) {
 
 }
 
+function buildBibSourceList (authtoken, recId) {
+    /* TODO: Work out how to set the bib source of the bre that does not yet
+     * exist - this is specifically in the case of Z39.50 imports. Right now
+     * we just avoid populating and showing the config.bib_source list
+     */
+	if (!recId) {
+		return false;
+	}
+
+    var bib = xulG.record.bre;
+
+    dojo.require('openils.PermaCrud');
+
+    // cbsList = the XUL menulist that contains the available bib sources 
+    var cbsList = dojo.byId('bib-source-list');
+
+    // bibSources = an array containing all of the bib source objects
+    var bibSources = new openils.PermaCrud({"authtoken": authtoken}).retrieveAll('cbs');
+
+    // A tad ugly, but gives us the index of the bib source ID in cbsList
+    var x = 0;
+    var cbsListArr = [];
+    dojo.forEach(bibSources, function (item) {
+        cbsList.appendItem(item.source(), item.id());
+        cbsListArr[item.id()] = x;
+        x++;
+    });
+
+    // Show the current value of the bib source for this record
+    cbsList.selectedIndex = cbsListArr[bib.source()];
+
+    // Display the bib source selection widget
+    dojo.byId('bib-source-list-caption').hidden = false;
+    dojo.byId('bib-source-list').hidden = false;
+    dojo.byId('bib-source-list-button').disabled = true;
+    dojo.byId('bib-source-list-button').hidden = false;
+}
+
+// Fired when the "Update Source" button is clicked
+// Updates the value of the bib source for the current record
+function updateBibSource() {
+    var authtoken = ses();
+    var cbs = dojo.byId('bib-source-list').selectedItem.value;
+    var recId = xulG.record.id;
+    var pcrud = new openils.PermaCrud({"authtoken": authtoken});
+    var bib = pcrud.retrieve('bre', recId);
+    if (bib.source() != cbs) {
+        bib.source(cbs);
+        bib.ischanged = true;
+        pcrud.update(bib);
+    }
+}
+
+function onBibSourceSelect() {
+    var cbs = dojo.byId('bib-source-list').selectedItem.value;
+    var bib = xulG.record.bre;
+    if (bib.source() != cbs) {
+        dojo.byId('bib-source-list-button').disabled = false;   
+    } else {
+        dojo.byId('bib-source-list-button').disabled = true;   
+    }
+}

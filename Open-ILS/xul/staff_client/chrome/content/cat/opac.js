@@ -121,7 +121,7 @@ function set_marc_edit() {
     var a =    xulG.url_prefix( urls.XUL_MARC_EDIT );
     var b =    {};
     var c =    {
-            'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid },
+            'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid, "id": docid, "rtype": "bre" },
             'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
                 try {
                     var cat = { util: {} }; /* FIXME: kludge since we can't load remote JSAN libraries into chrome */

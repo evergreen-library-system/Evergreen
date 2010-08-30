@@ -236,6 +236,12 @@
                 </grid>
             </vbox>
         </groupbox>
+
+            <vbox>
+                <caption id="bib-source-list-caption" hidden="true">Bibliographic source</caption>
+                <menulist id="bib-source-list" rows="3" hidden="true" onselect='onBibSourceSelect();'><menupopup id='bib-source-list-popup'></menupopup></menulist>
+                <button id="bib-source-list-button" label="Update source" disabled="true" oncommand="updateBibSource();" hidden="true"/>
+            </vbox>
         </hbox>
 
         <grid id="recGrid" flex="1">
