@@ -551,22 +551,65 @@
                         }
                     }
                     html += '</body></html>';
-                    var loc = ( urls.XUL_BROWSER );
-                    xulG.new_tab(
-                        loc,
-                        {
-                            'tab_name' : $("catStrings").getString('staff.cat.spine_labels.preview.title')
-                        },
-                        { 
-                            'url' : 'data:text/html;charset=utf-8,'+window.escape(html),
-                            'html_source' : html,
-                            'show_print_button' : 1,
-                            'no_xulG' : 1
-                        }
-                    );
+
+                    /* From https://developer.mozilla.org/en/Using_nsIXULAppInfo */
+                    var appInfo = Components.classes["@mozilla.org/xre/app-info;1"]
+                                            .getService(Components.interfaces.nsIXULAppInfo);
+                    var platformVer = appInfo.platformVersion;
+
+                    /* We need to use different print strategies for different
+                     * XUL versions, apparently
+                     */
+                    if (platformVer.substr(0, 5) == '1.9.0') {
+                        preview_xul_190(html);
+                    } else {
+                        preview_xul_192(html);
+                    }
+
+
             } catch(E) {
                 g.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.spine_labels.preview.std_unexpected_err'),E);
             }
         }
 
+        function preview_xul_190(html) {
+            JSAN.use('util.window'); var win = new util.window();
+            var loc = ( urls.XUL_REMOTE_BROWSER );
+            //+ '?url=' + window.escape('about:blank') + '&show_print_button=1&alternate_print=1&no_xulG=1&title=' + window.escape('Spine Labels');
+            var w = win.open( loc, 'spine_preview', 'chrome,resizable,width=750,height=550');
+            w.xulG = { 
+                'url' : 'about:blank',
+                'show_print_button' : 1,
+                'alternate_print' : 1,
+                'no_xulG' : 1,
+                'title' : $("catStrings").getString('staff.cat.spine_labels.preview.title'),
+                'on_url_load' : function(b) { 
+                    try { 
+                        netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+                        if (typeof w.xulG.written == 'undefined') {
+                            w.xulG.written = true;
+                            w.g.browser.get_content().document.write(html);
+                            w.g.browser.get_content().document.close();
+                        }
+                    } catch(E) {
+                        alert(E);
+                    }
+                }
+            };
+        }
 
+        function preview_xul_192(html) {
+            var loc = ( urls.XUL_BROWSER );
+            xulG.new_tab(
+                loc,
+                {
+                    'tab_name' : $("catStrings").getString('staff.cat.spine_labels.preview.title')
+                },
+                { 
+                    'url' : 'data:text/html;charset=utf-8,'+window.escape(html),
+                    'html_source' : html,
+                    'show_print_button' : 1,
+                    'no_xulG' : 1
+                }
+            );
+        }
