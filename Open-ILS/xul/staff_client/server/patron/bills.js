@@ -540,7 +540,7 @@ patron.bills.prototype = {
                         };
                         obj.error.sdump('D_DEBUG',js2JSON(params));
                         if (document.getElementById('auto_print').checked) params.no_prompt = true;
-                        JSAN.use('util.print'); var print = new util.print();
+                        JSAN.use('util.print'); var print = new util.print('receipt');
                         print.tree_list( params );
                     } catch(E) {
                         obj.error.standard_unexpected_error_alert('bill receipt', E);
@@ -707,7 +707,7 @@ patron.bills.prototype = {
                     }
                 )
             };
-            JSAN.use('util.print'); var print = new util.print();
+            JSAN.use('util.print'); var print = new util.print('receipt');
             print.tree_list( params );
 
         } catch(E) {

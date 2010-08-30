@@ -307,6 +307,7 @@ circ.checkout.prototype = {
                 'data' : {
                     'balance_owed' : util.money.sanitize( obj.most_recent_balance_owed ),
                 },
+                'printer_context' : 'receipt',
                 'template' : 'checkout',
                 'callback' : function() {
                     setTimeout(

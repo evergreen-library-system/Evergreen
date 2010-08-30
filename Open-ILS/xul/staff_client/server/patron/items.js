@@ -256,6 +256,7 @@ patron.items.prototype = {
             JSAN.use('patron.util');
             var params = { 
                 'patron' : patron.util.retrieve_fleshed_au_via_id(ses(),obj.patron_id), 
+                'printer_context' : 'receipt', 
                 'template' : 'items_out'
             };
             list.print( params );

@@ -649,6 +649,7 @@ function print_bills() {
         JSAN.use('patron.util');
         var params = { 
             'patron' : patron.util.retrieve_au_via_id(ses(),g.patron_id), 
+            'printer_context' : 'receipt',
             'template' : template
         };
         g.bill_list.print(params);
@@ -782,7 +783,7 @@ function apply_payment() {
                 };
                 g.error.sdump('D_DEBUG',js2JSON(params));
                 if (! $('printer_prompt').hasAttribute('checked')) params.no_prompt = true;
-                JSAN.use('util.print'); var print = new util.print();
+                JSAN.use('util.print'); var print = new util.print('receipt');
                 print.tree_list( params ); 
             } catch(E) {
                 g.error.standard_unexpected_error_alert('bill receipt', E);
