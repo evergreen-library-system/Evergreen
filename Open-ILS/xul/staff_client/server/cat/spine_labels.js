@@ -380,7 +380,7 @@
 
                 case dojo.keys.BACKSPACE : {
                     /* Delete line if at the start of an input box */
-                    if (sel_start == 0) {
+                    if (sel_start == 0 && sel_end == sel_start) {
                         var new_label = '';
                         var chunk;
                         var x = 0;
@@ -404,6 +404,13 @@
                         }
                         generate({"acn": row_id.acn, "label": new_label});
                         $(row_id.prefix + row_id.spine).focus();
+                    }
+                    if (sel_start == 0) {
+                        /* Move to the previous row */
+                        var prev_row = $(row_id.prefix + (parseInt(row_id.spine) - 1));
+                        if (prev_row) {
+                            prev_row.focus();
+                        }
                     }
                     break;
                 }
