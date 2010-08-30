@@ -132,7 +132,12 @@ patron.items.prototype = {
                     'sel_copy_details2' : [ ['command'],
                         function() {
                             JSAN.use('circ.util');
-                            for (var i = 0; i < obj.retrieve_ids2.length; i++) { circ.util.show_copy_details( obj.retrieve_ids2[i].copy_id ); }
+                            circ.util.item_details_new(
+                                util.functional.map_list(
+                                    obj.retrieve_ids2,
+                                    function(o) { return o.barcode; }
+                                )
+                            );
                         }
                     ],
                     'cmd_items_print' : [ ['command'], function() { obj.items_print(1); } ],
