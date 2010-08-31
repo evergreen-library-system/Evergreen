@@ -998,7 +998,7 @@ sub do_copy_checks {
                 # ahead and renew the item instead of warning about open circulations.
     
                 my $auto_renew_intvl = $U->ou_ancestor_setting_value(        
-                    $self->editor->requestor->ws_ou, 
+                    $self->circ_lib,
                     'circ.checkout_auto_renew_age', 
                     $self->editor
                 );
@@ -1121,7 +1121,7 @@ sub run_indb_circ_test {
     my $results = $self->editor->json_query(
         {   from => [
                 $dbfunc,
-                $self->editor->requestor->ws_ou,
+                $self->circ_lib,
                 ($self->is_noncat or ($self->is_precat and !$self->override and !$self->is_renewal)) ? undef : $self->copy->id, 
                 $self->patron->id,
             ]
@@ -1351,7 +1351,7 @@ sub handle_claims_returned {
 
         $CR->checkin_time('now');   
         $CR->checkin_scan_time('now');   
-        $CR->checkin_lib($self->editor->requestor->ws_ou);
+        $CR->checkin_lib($self->circ_lib);
         $CR->checkin_workstation($self->editor->requestor->wsid);
         $CR->checkin_staff($self->editor->requestor->id);
 
@@ -1613,7 +1613,7 @@ sub handle_checkout_holds {
     $hold->capture_time('now') unless $hold->capture_time;
     $hold->fulfillment_time('now');
     $hold->fulfillment_staff($e->requestor->id);
-    $hold->fulfillment_lib($e->requestor->ws_ou);
+    $hold->fulfillment_lib($self->circ_lib);
 
     return $self->bail_on_events($e->event)
         unless $e->update_action_hold_request($hold);
@@ -1636,7 +1636,7 @@ sub find_related_user_hold {
     return undef if $self->volume->id == OILS_PRECAT_CALL_NUMBER; 
 
     return undef unless $U->ou_ancestor_setting_value(        
-        $e->requestor->ws_ou, 'circ.checkout_fills_related_hold', $e);
+        $self->circ_lib, 'circ.checkout_fills_related_hold', $e);
 
     # find the oldest unfulfilled hold that has not yet hit the holds shelf.
     my $args = {
@@ -1989,7 +1989,7 @@ sub apply_modified_due_date {
 
         # due-date overlap should be determined by the location the item
         # is checked out from, not the owning or circ lib of the item
-        my $org = $self->editor->requestor->ws_ou;
+        my $org = $self->circ_lib;
 
       $logger->info("circulator: circ searching for closed date overlap on lib $org".
             " with an item due date of ".$circ->due_date );
@@ -2104,7 +2104,7 @@ sub checkout_noncat {
     my $circ;
     my $evt;
 
-   my $lib      = $self->noncat_circ_lib || $self->editor->requestor->ws_ou;
+   my $lib      = $self->noncat_circ_lib || $self->circ_lib;
    my $count    = $self->noncat_count || 1;
    my $cotime   = cleanse_ISO8601($self->checkout_time) || "";
 
@@ -2292,9 +2292,9 @@ sub do_checkin {
                     " is on a remote hold's shelf, sending to $circ_lib");
             }
     
-            $logger->debug("circulator: circlib=$circ_lib, workstation=".$self->editor->requestor->ws_ou);
+            $logger->debug("circulator: circlib=$circ_lib, workstation=".$self->circ_lib);
     
-            if( $circ_lib == $self->editor->requestor->ws_ou ) {
+            if( $circ_lib == $self->circ_lib) {
                 # copy is where it needs to be, either for hold or reshelving
     
                 $self->checkin_handle_precat();
@@ -2305,7 +2305,7 @@ sub do_checkin {
     
                 if ($U->is_true( $self->copy->floating ) && !$self->remote_hold) { # copy is floating, stick here
                     $self->checkin_changed(1);
-                    $self->copy->circ_lib( $self->editor->requestor->ws_ou );
+                    $self->copy->circ_lib( $self->circ_lib );
                     $self->update_copy;
                 } else {
                     my $bc = $self->copy->barcode;
@@ -2319,7 +2319,7 @@ sub do_checkin {
     } else { # no-op checkin
         if ($U->is_true( $self->copy->floating )) { # XXX floating items still stick where they are even with no-op checkin?
             $self->checkin_changed(1);
-            $self->copy->circ_lib( $self->editor->requestor->ws_ou );
+            $self->copy->circ_lib( $self->circ_lib );
             $self->update_copy;
         }
     }
@@ -2426,7 +2426,7 @@ sub checkin_check_holds_shelf {
     $logger->info("circulator: we found a captured, un-fulfilled hold [".
         $hold->id. "] for copy ".$self->copy->barcode);
 
-    if( $hold->pickup_lib == $self->editor->requestor->ws_ou ) {
+    if( $hold->pickup_lib == $self->circ_lib ) {
         $logger->info("circulator: hold is for here .. we're done: ".$self->copy->barcode);
         return 1;
     }
@@ -2459,7 +2459,7 @@ sub checkin_build_copy_transit {
     #$dest  ||= (ref($copy->circ_lib)) ? $copy->circ_lib->id : $copy->circ_lib;
     $logger->info("circulator: transiting copy to $dest");
 
-   $transit->source($self->editor->requestor->ws_ou);
+   $transit->source($self->circ_lib);
    $transit->dest($dest);
    $transit->target_copy($copy->id);
    $transit->source_send_time('now');
@@ -2548,7 +2548,7 @@ sub attempt_checkin_hold_capture {
     $hold->current_copy($copy->id);
     $hold->capture_time('now');
     $self->put_hold_on_shelf($hold) 
-        if $hold->pickup_lib == $self->editor->requestor->ws_ou;
+        if $hold->pickup_lib == $self->circ_lib;
 
     # prevent DB errors caused by fetching 
     # holds from storage, and updating through cstore
@@ -2566,7 +2566,7 @@ sub attempt_checkin_hold_capture {
 
     return 0 if $self->bail_out;
 
-    if( $hold->pickup_lib == $self->editor->requestor->ws_ou ) {
+    if( $hold->pickup_lib == $self->circ_lib ) {
 
         # This hold was captured in the correct location
         $copy->status(OILS_COPY_STATUS_ON_HOLDS_SHELF);
@@ -2708,7 +2708,7 @@ sub checkin_build_hold_transit {
     $logger->debug("circulator: building hold transit for ".$copy->barcode);
 
    $trans->hold($hold->id);
-   $trans->source($self->editor->requestor->ws_ou);
+   $trans->source($self->circ_lib);
    $trans->dest($hold->pickup_lib);
    $trans->source_send_time("now");
    $trans->target_copy($copy->id);
@@ -2734,11 +2734,11 @@ sub process_received_transit {
 
     my $transit = $self->transit;
 
-    if( $transit->dest != $self->editor->requestor->ws_ou ) {
+    if( $transit->dest != $self->circ_lib ) {
         # - this item is in-transit to a different location
 
         my $tid = $transit->id; 
-        my $loc = $self->editor->requestor->ws_ou;
+        my $loc = $self->circ_lib;
         my $dest = $transit->dest;
 
         $logger->info("circulator: Fowarding transit on copy which is destined ".
@@ -2873,7 +2873,7 @@ sub checkin_handle_circ {
     $circ->checkin_scan_time('now');
 
     $circ->checkin_staff($self->editor->requestor->id);
-    $circ->checkin_lib($self->editor->requestor->ws_ou);
+    $circ->checkin_lib($self->circ_lib);
     $circ->checkin_workstation($self->editor->requestor->wsid);
 
     my $circ_lib = (ref $self->copy->circ_lib) ?  
@@ -2885,7 +2885,7 @@ sub checkin_handle_circ {
         $circ_lib, OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE, $self->editor) || 0;
 
 
-    if ( (!$lost_immediately_available) && ($circ_lib != $self->editor->requestor->ws_ou) ) {
+    if ( (!$lost_immediately_available) && ($circ_lib != $self->circ_lib) ) {
 
         if( ($stat == OILS_COPY_STATUS_LOST or $stat == OILS_COPY_STATUS_MISSING) ) {
             $logger->info("circulator: not updating copy status on checkin because copy is lost/missing");
