@@ -24,6 +24,7 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
             parentField : 'parent',
             labelAttr : 'name',
             childField : 'children',
+            disableQuery : null,
             tree : null,
 
             startup : function() {
@@ -44,6 +45,33 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                     this.store = new dojo.data.ItemFileReadStore({data:storeData});
                 }
                 this.inherited(arguments);
+
+                if(this.dataList.length > 0 && this.disableQuery)  
+                    this._setDisabled();
+            },
+
+            _setDisabled : function() {
+
+                // tag disabled items
+                this.store.fetch({
+                    query : this.disableQuery,
+                    onItem : function(item) { item._disabled = 'true'; }
+                });
+
+                // disallow selecting of disabled items
+                var self = this;
+                dojo.connect(this, 'onChange', 
+                    function(ident) { 
+                        if(!ident) return;
+                        self.store.fetchItemByIdentity({
+                            identity : ident,
+                            onItem : function(item) {
+                                if(item._disabled == 'true')
+                                    self.attr('value', '');
+                            }
+                        });
+                    }
+                );
             },
 
             // Compile the tree down to a depth-first list of dojo data items
@@ -52,18 +80,24 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                 var storeItem = node.toStoreItem();
                 storeItem._depth = depth++;
                 this.dataList.push(storeItem);
+
                 for(var i in node[this.childField]()) 
                     this._makeNodeList(node[this.childField]()[i], depth);
             },
 
             // For each item, find the depth at display time by searching up the tree.
             _getMenuLabelFromItem : function(item) {
+
+                var style = 'padding-left:'+ (item._depth * this.defaultPad) +'px;';
+
+                if(item._disabled == 'true') // TODO: external CSS
+                    style += 'background-color:#CCC;cursor:wait'; 
+
                 return {
                     html: true,
-                    label: '<div style="padding-left:'+ (item._depth * this.defaultPad) +'px;">' +
-                        this.store.getValue(item, this.labelAttr) + '</div>'
+                    label: '<div style="'+style+'">' + this.store.getValue(item, this.labelAttr) + '</div>'
                 }
-            }
+            },
         }
     );
 }
