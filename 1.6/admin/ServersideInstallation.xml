@@ -11,12 +11,12 @@
 		<para>Installing, configuring and testing the Evergreen server-side software is straightforward with the current stable software release. See the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-ubuntudebian"> "Installing Evergreen On Ubuntu or Debian" </link></emphasis></emphasis> for instructions tailored to installing on some particular distributions of the Linux operating system. Earlier software distributions are described in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-previousversions"> "Installing Previous Versions of Evergreen" </link></emphasis></emphasis>.</para>
 		<para>Current versions of the Evergreen server-side software run as native applications on any of several well-known Linux distributions (e.g., <emphasis>Ubuntu</emphasis> and <emphasis>Debian</emphasis>). It does not currently run as a native application on the Windows operating system (e.g., WindowsXP, WindowsXP Professional, Windows7), but the software can still be installed and run on Windows via a so-called <emphasis>virtualized</emphasis> Unix-guest Operating System (using, for example, VirtualBox, or VMware, or VirtualPC to emulate a Linux environment). It can also be installed and run on other Linux systems via virtualized environments (using, for example, VirtualBox or VMware). More information on virtualized environments can be found in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-virtual">"Installing Evergreen in Virtualized Unix Environments"</link></emphasis></emphasis>.</para>
 		<para>Installation of some sub-components of the Evergreen server-side software is mentioned only in abbreviated form in this section. More detailed information is available in the accompanying sections:
-<emphasis><emphasis role="bold"><link linkend="serversideinstallation-opensrf"> "OpenSRF" </link></emphasis></emphasis>, 
-<emphasis><emphasis role="bold"><link linkend="serversideinstallation-postgresql"> "PostgreSQL Database" </link></emphasis></emphasis>, 
+<emphasis><emphasis role="bold"><link linkend="serversideinstallation-opensrf"> "Installing OpenSRF On Ubuntu or Debian" </link></emphasis></emphasis>, 
+<emphasis><emphasis role="bold"><link linkend="serversideinstallation-postgresql"> "Installing PostgreSQL" </link></emphasis></emphasis>, 
 <emphasis><emphasis role="bold"><link linkend="serversideinstallation-apache"> "Apache" </link></emphasis></emphasis> and
 <emphasis><emphasis role="bold"><link linkend="serversideinstallation-memcached"> "memcached Servers" </link></emphasis></emphasis>.
 		</para>
-		<para>Installation of the Evergreen Staff Client software is handled in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-staffclient"> "Installing the Evergreen Staff Client" </link></emphasis></emphasis>. </para>
+		<para>Finally, installation of the Evergreen Staff Client software is reviewed in the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-staffclient"> "Running the Evergreen Staff Client" </link></emphasis></emphasis>. </para>
 		<section>
 			<title>Evergreen Software Dependencies</title>
 			<para>The Evergreen server-side software is keyed to certain major software sub-components in the Evergreen environment. Successful installation of Evergreen software requires that software versions agree with those listed here:</para>
@@ -486,7 +486,7 @@
 				</figure>
 			</section>
 			<section>
-				<title>Start OpenSRF</title>
+				<title>Starting OpenSRF</title>
 				<para>Before starting OpenSRF, ensure that the "ejabberd" and "memcached" daemons are running.</para>
 				<para>As the <emphasis role="bold">root</emphasis> user, start the "ejabberd" and "memcached" services:</para>
 				<figure>
@@ -864,7 +864,7 @@
 			</section>
 			<section>
 				<title>Create a Security Certificate (SSL Key)</title>
-				<para>Use the command <emphasis role="bold"> openssl </emphasis> to create a new SSL key for your Apache server. For a public production server you should configure or purchase a signed SSL certificate, but for now you can just use a self-signed certificate and accept the warnings in the Staff Client and browser during testing and development:</para>
+				<para>Use the command <emphasis role="bold">openssl</emphasis> to create a new SSL key for your Apache server. For a public production server you should configure or purchase a signed SSL certificate, but for now you can just use a self-signed certificate and accept the warnings in the Staff Client and browser during testing and development:</para>
 				<figure>
 					<title>Commands to create an SSL key</title>
 					<screen>
@@ -1249,20 +1249,65 @@
 	</section>
 	<section xml:id="serversideinstallation-postinstallation">
 		<title>Post-Installation Chores</title>
-		<itemizedlist>
-			<listitem>
-				<para>As the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis>/etc/apache2/sites-available/eg.conf</emphasis> again and make the following change:</para>
-				<para>Uncomment the line <emphasis role="bold">Allow from 10.0.0.0/8</emphasis>, then comment out the line <emphasis role="bold">Allow from all</emphasis>. You modified this file in an earlier step as a temporary measure to expedite testing (see the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-modify-apache"> "Modify the Apache Configuration File" </link></emphasis></emphasis> for further information). Those changes must now be reversed in order to deny unwanted access to your CGI scripts from users on other public networks. You <emphasis role="bold"> must </emphasis> secure this for a public production system.</para>
-			</listitem>
-			<listitem>
-				<warning>
-					<para><emphasis>This is only a temporary measure to expedite testing. You <emphasis role="bold"> must </emphasis> get a proper SSL certificate for a public production system. See this section for further comments on setting up a properly signed SSL certificate: <emphasis><emphasis role="bold"><link linkend="serversideinstallation-ssl"> "Getting a Signed SSL Security Certificate" </link></emphasis></emphasis> </emphasis>.</para>
-				</warning>
-			</listitem>
-		</itemizedlist>
+		<section>
+			<title>Remove temporary changes from Apache configuration file</title>
+			<para>As the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis>/etc/apache2/sites-available/eg.conf</emphasis> again and make the following change:</para>
+			<para>Uncomment the line <emphasis role="bold">Allow from 10.0.0.0/8</emphasis>, then comment out the line <emphasis role="bold">Allow from all</emphasis>. You modified this file in an earlier step as a temporary measure to expedite testing (see the section <emphasis><emphasis role="bold"><link linkend="serversideinstallation-modify-apache"> "Modify the Apache Configuration File" </link></emphasis></emphasis> for further information). Those changes must now be reversed in order to deny unwanted access to your CGI scripts from users on other public networks. You <emphasis role="bold"> must </emphasis> secure this for a public production system.</para>
+		</section>
+		<section>
+			<title>Configure a permanent SSL key</title>
+			<para>In a previous step, we used the command <emphasis role="bold">openssl</emphasis> to temporarily create a new SSL key for the Apache server. For a public production server you should configure or purchase a signed SSL certificate</para>
+			<warning>
+				<para><emphasis>The temporary SSL key was only created to expedite testing. You <emphasis role="bold"> must </emphasis> get a proper SSL certificate for a public production system. See this section for further comments on setting up a properly signed SSL certificate: <emphasis><emphasis role="bold"><link linkend="serversideinstallation-ssl"> "Getting a Signed SSL Security Certificate" </link></emphasis></emphasis> </emphasis>.</para>
+			</warning>
+		</section>
+		<section>
+			<title>Set Up Support For Reports</title>
+			<para>Evergreen reports are extremely powerful, but some configuration is required. See the section <emphasis><emphasis role="bold"><link linkend="report-introduction"> "Reports" </link></emphasis></emphasis> for details.</para>
+			<section>
+				<title>Starting the Reporter Daemon</title>
+				<para>Once the <emphasis>open-ils.reporter</emphasis> process is running and enabled on the gateway, you can start the reporter daemon. That process periodically checks for requests for new reports or scheduled reports and gets them running.</para>
+				<para>As the <emphasis role="bold">opensrf</emphasis> user, start the reporter daemon using the following command:</para>
+				<figure>
+					<title>Starting the Reporter Daemon</title>
+					<screen>
+					$ su - opensrf
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/src/reporter
+					$ ./clark-kent.pl --daemon
+					</screen>
+				</figure>
+				<para>You can also specify other options with this utility:</para>
+				<itemizedlist>
+					<listitem>--sleep=interval      : number of seconds to sleep between checks for new reports to run; defaults to 10</listitem>
+					<listitem>--lockfile=filename   : where to place the lockfile for the process; defaults to <emphasis>/tmp/reporter-LOCK</emphasis></listitem>
+					<listitem>--concurrency=integer : number of reporter daemon processes to run; defaults to "1"</listitem>
+					<listitem>--boostrap=filename   : OpenSRF bootstrap configuration file; defaults to <emphasis>/openils/conf/opensrf_core.xml</emphasis></listitem>
+				</itemizedlist>
+			</section>
+			<section>
+				<title>Stopping the Reporter Daemon</title>
+				<para>To stop the Reporter daemon, you must kill the process and remove the lockfile. The daemon may have just a single associated process, with a lockfile in the default location.</para>
+				<note>
+					<para>
+						<emphasis> It is possible that several processes are running; see the optional commands in the previous section. As the <emphasis role="bold">opensrf</emphasis> user, perform the following commands to stop the Reporter daemon:</emphasis>
+					</para>
+				</note>
+				<figure>
+					<title>Stopping the Reporter Daemon</title>
+					<screen>
+					$ su - opensrf
+					# find and kill the process ID number(s)
+					$ kill `ps wax | grep "Clark Kent" | grep -v grep | cut -b1-6`
+					# remove the lock file
+					$ rm /tmp/reporter-LOCK
+					</screen>
+				</figure>
+			</section>
+		</section>
 	</section>
-	<section xml:id="serversideinstallation-running-staffclient">
-		<title>Running the Staff Client on Linux</title>
+	<section xml:id="serversideinstallation-staffclient">
+		<title>Running the Evergreen Staff Client</title>
+		<para>[[ ADD CONTENT: LINUX VS WINDOWS STAFF CLIENT ]]</para>
 		<para>Run the Evergreen Staff Client on a Linux system by using the application <emphasis>XULRunner</emphasis> (installed automatically and by default with Firefox version 3.0 and later on Ubuntu and Debian distributions).</para>
 		<para>For example, if the source files for the Evergreen installation are in the directory <emphasis>/home/opensrf/Evergreen-ILS-1.6.0.7/</emphasis>, start the Staff Client as shown in the following command example:</para>
 		<figure>
@@ -1272,49 +1317,6 @@
 			$ xulrunner /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client/build/application.ini
 			</screen>
 		</figure>
-	</section>
-	<section xml:id="serversideinstallation-reports">
-		<title>Setting Up Support For Reports</title>
-		<para>Evergreen reports are extremely powerful, but some configuration is required. See the section <emphasis><emphasis role="bold"><link linkend="report-introduction"> "Reports" </link></emphasis></emphasis> for details.</para>
-		<section>
-			<title>Starting the Reporter Daemon</title>
-			<para>Once the <emphasis>open-ils.reporter</emphasis> process is running and enabled on the gateway, you can start the reporter daemon. That process periodically checks for requests for new reports or scheduled reports and gets them running.</para>
-			<para>As the <emphasis role="bold">opensrf</emphasis> user, start the reporter daemon using the following command:</para>
-			<figure>
-				<title>Starting the Reporter Daemon</title>
-				<screen>
-				$ su - opensrf
-				$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/src/reporter
-				$ ./clark-kent.pl --daemon
-				</screen>
-			</figure>
-			<para>You can also specify other options with this utility:</para>
-			<itemizedlist>
-				<listitem>--sleep=interval      : number of seconds to sleep between checks for new reports to run; defaults to 10</listitem>
-				<listitem>--lockfile=filename   : where to place the lockfile for the process; defaults to <emphasis>/tmp/reporter-LOCK</emphasis></listitem>
-				<listitem>--concurrency=integer : number of reporter daemon processes to run; defaults to "1"</listitem>
-				<listitem>--boostrap=filename   : OpenSRF bootstrap configuration file; defaults to <emphasis>/openils/conf/opensrf_core.xml</emphasis></listitem>
-			</itemizedlist>
-		</section>
-		<section>
-			<title>Stopping the Reporter Daemon</title>
-			<para>To stop the Reporter daemon, you must kill the process and remove the lockfile. The daemon may have just a single associated process, with a lockfile in the default location.</para>
-			<note>
-				<para>
-					<emphasis> It is possible that several processes are running; see the optional commands in the previous section. As the <emphasis role="bold">opensrf</emphasis> user, perform the following commands to stop the Reporter daemon:</emphasis>
-				</para>
-			</note>
-			<figure>
-				<title>Stopping the Reporter Daemon</title>
-				<screen>
-				$ su - opensrf
-				# find and kill the process ID number(s)
-				$ kill `ps wax | grep "Clark Kent" | grep -v grep | cut -b1-6`
-				# remove the lock file
-				$ rm /tmp/reporter-LOCK
-				</screen>
-			</figure>
-		</section>
 	</section>
 	<section xml:id="serversideinstallation-otherlinux">
 		<title>Installing Evergreen On Other Linux Systems</title>
@@ -1350,12 +1352,8 @@
 			<para>[[ ADD CONTENT FOR INSTALLING OPENSRF 1.0.x ]]</para>
 		</section>
 	</section>
-	<section xml:id="serversideinstallation-staffclient">
-		<title>Installing the Evergreen Staff Client</title>
-		<para>[[ ADD CONTENT FOR INSTALLING THE EVERGREEN STAFF CLIENT ]]</para>
-	</section>
 	<section xml:id="serversideinstallation-postgresql">
-		<title>PostgreSQL</title>
+		<title>Installing PostgreSQL</title>
 		<para>[[ ADD CONTENT FOR POSTGRESQL ]] </para>
 	</section>
 	<section xml:id="serversideinstallation-apache">
