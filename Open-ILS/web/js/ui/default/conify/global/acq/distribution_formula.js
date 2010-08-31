@@ -4,6 +4,9 @@ dojo.require('openils.widget.AutoGrid');
 dojo.require('dijit.form.FilteringSelect');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.widget.AutoFieldWidget');
+dojo.requireLocalization('openils.conify', 'conify');
+var localeStrings = dojo.i18n.getLocalization('openils.conify', 'conify');
+
 
 var formCache = [];
 var formula, entryTbody, entryTemplate, dndSource;
@@ -42,6 +45,29 @@ function draw() {
 
     }
 }
+
+function cloneSelectedFormula() {
+    var item = fListGrid.getSelectedItems()[0];
+    if(!item) return;
+    var formula = new fieldmapper.acqf().fromStoreItem(item);
+    fieldmapper.standardRequest(
+        ['open-ils.acq', 'open-ils.acq.distribution_formula.clone'],
+        {
+            asnyc : true,
+            params : [
+                openils.User.authtoken, 
+                formula.id(), 
+                dojo.string.substitute(localeStrings.ACQ_DISTRIB_FORMULA_NAME_CLONE, [formula.name()])
+            ],
+            oncomplete : function(r) {
+                if(r = openils.Util.readResponse(r)) {
+                    location.href = oilsBasePath + '/conify/global/acq/distribution_formula/' + r;
+                }
+            }
+        }
+    );
+}
+
 openils.Util.addOnLoad(draw);
 
 function getItemCount(rowIndex, item) {
@@ -65,6 +91,16 @@ function drawFormulaSummary() {
     formula.entries(entries);
 
     dojo.byId('formula_head').innerHTML = formula.name();
+    dojo.byId('formula_head').onclick = function() {
+        var name = prompt(localeStrings.ACQ_DISTRIB_FORMULA_NAME_PROMPT, formula.name());
+        if(name && name != formula.name()) {
+            formula.name(name);
+            pcrud = new openils.PermaCrud();
+            pcrud.update(formula);
+            dojo.byId('formula_head').innerHTML = name;
+        }
+    }
+
     dojo.forEach(entries, function(entry) { addEntry(entry); } );
 }
 

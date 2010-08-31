@@ -3124,4 +3124,48 @@ sub fetch_and_check_li {
 }
 
 
+__PACKAGE__->register_method(
+	method => "clone_distrib_form",
+	api_name => "open-ils.acq.distribution_formula.clone",
+    stream => 1,
+	signature => {
+        desc => q/Clone a distribution formula/,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Original formula ID", type => 'integer'},
+            {desc => "Name of new formula", type => 'string'},
+        ],
+        return => {desc => "ID of newly created formula"}
+    }
+);
+
+sub clone_distrib_form {
+    my($self, $client, $auth, $form_id, $new_name) = @_;
+
+    my $e = new_editor("xact"=> 1, "authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $old_form = $e->retrieve_acq_distribution_formula($form_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('ADMIN_ACQ_DISTRIB_FORMULA', $old_form->owner);
+
+    my $new_form = Fieldmapper::acq::distribution_formula->new;
+
+    $new_form->owner($old_form->owner);
+    $new_form->name($new_name);
+    $e->create_acq_distribution_formula($new_form) or return $e->die_event;
+
+    my $entries = $e->search_acq_distribution_formula_entry({formula => $form_id});
+    for my $entry (@$entries) {
+       my $new_entry = Fieldmapper::acq::distribution_formula_entry->new;
+       $new_entry->$_($entry->$_()) for $entry->real_fields;
+       $new_entry->formula($new_form->id);
+       $new_entry->clear_id;
+       $e->create_acq_distribution_formula_entry($new_entry) or return $e->die_event;
+    }
+
+    $e->commit;
+    return $new_form->id;
+}
+
 1;
+

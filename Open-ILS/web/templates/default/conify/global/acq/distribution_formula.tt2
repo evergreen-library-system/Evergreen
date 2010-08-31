@@ -1,22 +1,23 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Distribution Formulas' %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/distribution_formula.js'></script>
-<script type="text/javascript"> var formulaId = '[% ctx.page_args.0 %]';
 
-function getFormulaName(rowIndex, item) {
-    if(!item) return '';
-    var name = this.grid.store.getValue(item, 'name');
-    var id = this.grid.store.getValue(item, 'id');
-    return id + ':' + name;
-}
+<script type="text/javascript"> 
+    var formulaId = '[% ctx.page_args.0 %]';
 
-function formatName(value) {
-    if(value) {
-        var vals = value.split(/:/);
-        return '<a href="'+location.href+ '/'+vals[0]+'">'+vals[1]+'</a>';
+    function getFormulaName(rowIndex, item) {
+        if(!item) return '';
+        var name = this.grid.store.getValue(item, 'name');
+        var id = this.grid.store.getValue(item, 'id');
+        return id + ':' + name;
     }
-}
 
+    function formatName(value) {
+        if(value) {
+            var vals = value.split(/:/);
+            return '<a href="'+location.href+ '/'+vals[0]+'">'+vals[1]+'</a>';
+        }
+    }
 </script>
 
 
@@ -27,6 +28,7 @@ function formatName(value) {
             <div>
                 <button dojoType='dijit.form.Button' onClick='fListGrid.showCreateDialog()'>New Formula</button>
                 <button dojoType='dijit.form.Button' onClick='fListGrid.deleteSelected()'>Delete Selected</button>
+                <button dojoType='dijit.form.Button' onClick='cloneSelectedFormula()'>Clone Selected</button>
             </div>
         </div>
         <table  jsId="fListGrid"
@@ -50,7 +52,7 @@ function formatName(value) {
 
 <div id='formula-entry-div'>
     <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-        <div id="formula_head"></div>
+        <div><a href='javascript:void(0);' id="formula_head"></a></div>
         <div>
         </div>
     </div>
@@ -78,20 +80,19 @@ function formatName(value) {
                 <td><div name='location'></td>
                 <td><div name='item_count'></td>
                 <td>
-                    <!-- TODO: add to repo / use local images -->
-                    <img src='http://mxr.mozilla.org/mozilla-central/source/toolkit/themes/pinstripe/global/splitter/dimple.png?raw=1'/>
-                    <img src='http://mxr.mozilla.org/mozilla-central/source/toolkit/themes/pinstripe/global/splitter/dimple.png?raw=1'/>
-                    <img src='http://mxr.mozilla.org/mozilla-central/source/toolkit/themes/pinstripe/global/splitter/dimple.png?raw=1'/>
+                    <img src='[% ctx.media_prefix %]/images/dimple.png'/>
+                    <img src='[% ctx.media_prefix %]/images/dimple.png'/>
+                    <img src='[% ctx.media_prefix %]/images/dimple.png'/>
                 <td>
             </tr>
         </tbody>
     </table>
-</div>
-<br/>
-<div>
-    <button dojoType='dijit.form.Button' onClick='addEntry()'>New Entry</button>
-    <span style='padding-right:20px;'></span>
-    <button dojoType='dijit.form.Button' onClick='saveFormula()'>Apply Changes</button>
+    <br/>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='addEntry()'>New Entry</button>
+        <span style='padding-right:20px;'></span>
+        <button dojoType='dijit.form.Button' onClick='saveFormula()'>Apply Changes</button>
+    </div>
 </div>
 
 [% END %]
