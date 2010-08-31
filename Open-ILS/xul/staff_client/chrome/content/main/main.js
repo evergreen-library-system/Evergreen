@@ -224,6 +224,7 @@ function main_init() {
                                     throw(offlineStrings.getString('main.transaction_export.filename.error'));
                                 }
                             }
+                            file.close(); file = new util.file('pending_xacts'); // prevents a bug with .moveTo below
                             file._file.moveTo(null,filename);
                         } else {
                             alert(offlineStrings.getString('main.transaction_export.duplicate.warning'));
