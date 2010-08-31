@@ -53,6 +53,7 @@ sub resensitize {
     return !$self->{item}->magnetic;
 }
 
+my %org_sn_cache;
 sub do_checkin {
     my $self = shift;
     my ($inst_id, $trans_date, $return_date, $current_loc, $item_props) = @_; # most unused
@@ -64,11 +65,19 @@ sub do_checkin {
 
     $inst_id ||= '';
 
+    my $args = {barcode => $self->{item}->id};
+    if($current_loc) {
+        my $org_id = (defined $org_sn_cache{$current_loc}) ? 
+            $org_sn_cache{$current_loc} :
+            OpenILS::SIP->editor()->search_actor_org_unit({shortname => $current_loc}, {idlist => 1})->[0];
+        $org_sn_cache{$current_loc} = $org_id;
+        $args->{circ_lib} = $org_id if defined $org_id;
+    }
+
     my $resp = $U->simplereq(
         'open-ils.circ',
         'open-ils.circ.checkin',
-        $self->{authtoken},
-        { barcode => $self->{item}->id }
+        $self->{authtoken}, $args
     );
 
     if ($debug) {
