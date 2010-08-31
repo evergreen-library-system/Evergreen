@@ -2309,7 +2309,7 @@ function AcqLiTable() {
         }
         var self = this;
         win.xulG = {
-            record : {marc : li.marc()},
+            record : {marc : li.marc(), "rtype": "bre"},
             save : {
                 label: 'Save Record', // XXX I18N
                 func: function(xmlString) {
