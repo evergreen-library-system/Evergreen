@@ -59,6 +59,7 @@ util.browser.prototype = {
                                     if (typeof content.printable_output == 'function') {
                                         print_params.msg = content.printable_output();
                                         print_params.content_type = 'text/plain';
+                                        content = print_params.msg;
                                     }
                                     JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
                                     // Override the print strategy temporarily if it's not set or is equal to webBrowserPrint (which is buggy here)
