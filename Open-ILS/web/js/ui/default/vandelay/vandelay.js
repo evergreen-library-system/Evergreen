@@ -951,6 +951,13 @@ function vlOpenMarcEditWindow(rec, postReloadHTMLHandler) {
     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
     win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
 
+    var type;
+    if (currentType == 'bib') {
+        type = 'bre';
+    } else {
+        type = 'are';
+    }
+
     function onsave(r) {
         // after the record is saved, reload the HTML display
         var stat = r.recv().content();
@@ -962,7 +969,7 @@ function vlOpenMarcEditWindow(rec, postReloadHTMLHandler) {
     }
 
     win.xulG = {
-        record : {marc : rec.marc()},
+        record : {marc : rec.marc(), "rtype": type},
         save : {
             label: dojo.byId('vl-marc-edit-save-label').innerHTML,
             func: function(xmlString) {
