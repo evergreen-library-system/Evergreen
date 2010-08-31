@@ -549,12 +549,7 @@ function fleshFMRow(row, fmcls, args) {
     if(value !== null)
         dijitArgs.value = value;
 
-    // fetch profile groups non-async so existing expire_date is
-    // not overwritten when the profile groups arrive and update
-    var sync = (fmfield == 'profile') ? true : false;
-
-    var widget = new openils.widget.AutoFieldWidget({
-        forceSync : sync,
+    var wargs = {
         idlField : fieldIdl,
         fmObject : fmObject,
         fmClass : fmcls,
@@ -563,8 +558,18 @@ function fleshFMRow(row, fmcls, args) {
         dijitArgs : dijitArgs,
         orgDefaultsToWs : true,
         orgLimitPerms : ['UPDATE_USER'],
-    });
+    };
 
+    if(fmfield == 'profile') {
+        // fetch profile groups non-async so existing expire_date is
+        // not overwritten when the profile groups arrive and update
+        wargs.forceSync = true;
+        wargs.disableQuery = {usergroup : 'f'};
+    } else {
+        wargs.forceSync = false;
+    }
+
+    var widget = new openils.widget.AutoFieldWidget(wargs);
     widget.build();
 
     // now put it back before we register the widget
