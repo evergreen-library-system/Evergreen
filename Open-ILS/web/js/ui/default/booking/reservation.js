@@ -8,6 +8,7 @@ dojo.require("openils.widget.OrgUnitFilteringSelect");
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dijit.form.DateTextBox");
 dojo.require("dijit.form.TimeTextBox");
+dojo.require("dojo.date.stamp");
 dojo.requireLocalization("openils.booking", "reservation");
 
 /*
@@ -60,7 +61,7 @@ function TimestampRange() {
     };
 }
 TimestampRange.prototype.get_timestamp = function(when) {
-    return this.any_widget.serialize(this[when]).
+    return dojo.date.stamp.toISOString(this[when]).
         replace("T", " ").substr(0, 19);
 };
 TimestampRange.prototype.get_range = function() {
@@ -69,16 +70,14 @@ TimestampRange.prototype.get_range = function() {
         [this.get_timestamp("start"), this.get_timestamp("end")];
 };
 TimestampRange.prototype.update_from_widget = function(widget) {
-    var when = widget.id.match(/(start|end)/)[1];
-    var which = widget.id.match(/(date|time)/)[1];
+    var when = widget.name.match(/(start|end)/)[1];
+    var which = widget.name.match(/(date|time)/)[1];
 
-    if (this.any_widget == undefined)
-        this.any_widget = widget;
     if (this.nodes[when][which] == undefined)
         this.nodes[when][which] = widget.domNode; /* We'll need this later */
 
     if (when && which) {
-        this.update_timestamp(when, which, widget.value);
+        this.update_timestamp(when, which, widget.attr("value"));
     }
 
     this.compute_validity();
@@ -116,8 +115,8 @@ TimestampRange.prototype.current_minimum = function() {
 TimestampRange.prototype.update_timestamp = function(when, which, value) {
     if (which == "date") {
         this[when].setFullYear(value.getFullYear());
-        this[when].setMonth(value.getMonth());
-        this[when].setDate(value.getDate());
+        /* month and date MUST be done together */
+        this[when].setMonth(value.getMonth(), value.getDate());
     } else {    /* "time" */
         this[when].setHours(value.getHours());
         this[when].setMinutes(value.getMinutes());
