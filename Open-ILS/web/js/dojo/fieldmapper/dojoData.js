@@ -92,15 +92,18 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 		return data;
 	}
 
-	for (var i in fmclasses) fieldmapper[i].prototype.fromStoreItem = _fromStoreItem;
-	for (var i in fmclasses) fieldmapper[i].toStoreData = _toStoreData;
-	for (var i in fmclasses) fieldmapper[i].toStoreItem = _toStoreItem;
-	for (var i in fmclasses) fieldmapper[i].prototype.toStoreItem = function ( args ) { return _toStoreItem(this, args) };
-	for (var i in fmclasses) fieldmapper[i].initStoreData = _initStoreData;
+	for (var i in fmclasses) {
+		fieldmapper[i].prototype.fromStoreItem = _fromStoreItem;
+		fieldmapper[i].prototype.fromStoreItem = _fromStoreItem;
+		fieldmapper[i].toStoreData = _toStoreData;
+		fieldmapper[i].toStoreItem = _toStoreItem;
+		fieldmapper[i].prototype.toStoreItem = function ( args ) { return _toStoreItem(this, args) };
+		fieldmapper[i].initStoreData = _initStoreData;
+	}
 
-	fieldmapper.aou.prototype._ignore_fields = ['children'];
-	fieldmapper.aout.prototype._ignore_fields = ['children'];
-	fieldmapper.pgt.prototype._ignore_fields = ['children'];
+	if (fieldmapper.aou) fieldmapper.aou.prototype._ignore_fields = ['children'];
+	if (fieldmapper.aout) fieldmapper.aout.prototype._ignore_fields = ['children'];
+	if (fieldmapper.pgt) fieldmapper.pgt.prototype._ignore_fields = ['children'];
 
 	fieldmapper.aou.toStoreData = function (list, label) {
 		if (!label) label = 'shortname';

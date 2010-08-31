@@ -197,7 +197,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
     fieldmapper.IDL.loaded = false;
 
     JSON2js.fallbackObjectifier = function (arg, key_name, val_name) {
-        console.log("Firing IDL loader for " + key_name);
+        console.log("Firing IDL loader for " + arg[key_name]);
         fieldmapper.IDL.load([arg[key_name]]);
         return decodeJS(arg);
     }
