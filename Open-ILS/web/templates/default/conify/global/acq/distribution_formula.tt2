@@ -49,34 +49,50 @@ function formatName(value) {
 
 
 <div id='formula-entry-div'>
-    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-        <div id='formula-summary-pane'/>
-    </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-            <div id="formula_head"></div>
-            <div>
-                <button dojoType='dijit.form.Button' onClick='dfeListGrid.showCreateDialog()'>New Formula Entry</button>
-                <button dojoType='dijit.form.Button' onClick='dfeListGrid.deleteSelected()'>Delete Selected</button>
-            </div>
-        </div>
-        <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
-            <table  jsId="dfeListGrid"
-                    autoHeight='true'
-                    dojoType="openils.widget.AutoGrid"
-                    fieldOrder="['id','formula', 'owning_lib', 'location', 'item_count', 'position']"
-                    suppressFields="['formula']"
-                    query="{id: '*'}"
-                    defaultCellWidth='12'
-                    fmClass='acqdfe'
-                    editOnEnter='true'>
-                <thead>
-                    <tr>
-                        <th field='formula' get='getFormulaId' formatter='formatName'/>
-                    </tr>
-                </thead>
-            </table>
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+        <div id="formula_head"></div>
+        <div>
         </div>
     </div>
+    <br/>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='addEntry()'>New Entry</button>
+        <span style='padding-right:20px;'></span>
+        <button dojoType='dijit.form.Button' onClick='saveFormula()'>Apply Changes</button>
+    </div>
+    <br/>
+    <table class='oils-generic-table'>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Owning Library</th>
+                <th>Shelving Location</th>
+                <th>Item Count</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id='formula-entry-tbody'>
+            <tr id='formula-entry-tempate'>
+                <td><div name='delete' dojoType='dijit.form.Button' style='color:red;' scrollOnFocus='false'>X</div></td>
+                <td><div name='owning_lib'></td>
+                <td><div name='location'></td>
+                <td><div name='item_count'></td>
+                <td>
+                    <!-- TODO: add to repo / use local images -->
+                    <img src='http://mxr.mozilla.org/mozilla-central/source/toolkit/themes/pinstripe/global/splitter/dimple.png?raw=1'/>
+                    <img src='http://mxr.mozilla.org/mozilla-central/source/toolkit/themes/pinstripe/global/splitter/dimple.png?raw=1'/>
+                    <img src='http://mxr.mozilla.org/mozilla-central/source/toolkit/themes/pinstripe/global/splitter/dimple.png?raw=1'/>
+                <td>
+            </tr>
+        </tbody>
+    </table>
 </div>
+<br/>
+<div>
+    <button dojoType='dijit.form.Button' onClick='addEntry()'>New Entry</button>
+    <span style='padding-right:20px;'></span>
+    <button dojoType='dijit.form.Button' onClick='saveFormula()'>Apply Changes</button>
+</div>
+
 [% END %]
 
