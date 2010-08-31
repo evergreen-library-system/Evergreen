@@ -709,7 +709,7 @@ cat.z3950.prototype = {
             xulG.url_prefix(urls.XUL_MARC_EDIT), 
             { 'tab_name' : 'MARC Editor' }, 
             { 
-                'record' : { 'marc' : my_marcxml },
+                'record' : { 'marc' : my_marcxml, "rtype": "bre" },
                 'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
                     try {
                         JSAN.use('cat.util'); return cat.util.fast_item_add(doc_id,cn_label,cp_barcode);

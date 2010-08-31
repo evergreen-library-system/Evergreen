@@ -15,6 +15,8 @@
 
 <scripts id="openils_util_scripts"/>
 <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+<script>var djConfig = { 'baseUrl' : '/js/dojo/dojo/',parseOnLoad: true,isDebug:false };</script>
+<script type="text/javascript" src="/js/dojo/dojo/dojo.js" />
 
 <script src="marcedit.js" type="application/x-javascript; e4x=1"/>
 
@@ -183,6 +185,12 @@
                 </grid>
             </vbox>
         </groupbox>
+
+            <vbox>
+                <caption id="bib-source-list-caption" hidden="true">Bibliographic source</caption>
+                <menulist id="bib-source-list" rows="3" hidden="true" onselect='onBibSourceSelect();'><menupopup id='bib-source-list-popup'></menupopup></menulist>
+                <button id="bib-source-list-button" label="Update source" disabled="true" oncommand="updateBibSource();" hidden="true"/>
+            </vbox>
         </hbox>
 
         <grid id="recGrid" flex="1">
