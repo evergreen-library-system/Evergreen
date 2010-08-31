@@ -44,6 +44,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          *  dataLoader : Bypass the default PermaCrud linked data fetcher and use this function instead.
          *      Function arguments are (link class name, search filter, callback)
          *      The fetched objects should be passed to the callback as an array
+         *  disableQuery : dojo.data query passed to FilteringTreeSelect-based widgets to disable
+         *      (but leave visible) certain options.  
          */
         constructor : function(args) {
             for(var k in args)
@@ -560,6 +562,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         _buildPermGrpSelector : function() {
             dojo.require('openils.widget.FilteringTreeSelect');
             this.widget = new openils.widget.FilteringTreeSelect(this.dijitArgs, this.parentNode);
+            this.widget.disableQuery = this.disableQuery;
             this.widget.searchAttr = 'name';
 
             if(this.cache.permGrpTree) {
