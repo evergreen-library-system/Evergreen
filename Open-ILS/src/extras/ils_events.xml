@@ -972,6 +972,14 @@
         <desc xml:lang="en-US">The caption/pattern still has dependent issuances</desc>
     </event>
 
+    <event code='11101' textcode='SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE'>
+        <desc xml:lang="en-US">Units cannot be created for the given item because its associated distribution does not have a copy template.</desc>
+    </event>
+
+    <event code='11102' textcode='SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER'>
+        <desc xml:lang="en-US">Units cannot be created for the given item because its associated distribution does not have a call number.</desc>
+    </event>
+
 	<!-- ================================================================ -->
 
 </ils_events>

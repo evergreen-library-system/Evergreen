@@ -44,8 +44,8 @@ function S(k) {
 }
 
 function T(s) { return document.createTextNode(s); }
-function D(s) {return s ? openils.Util.timeStamp(s, {"selector":"date"}) : "";}
-function node_by_name(s, ctx) {return dojo.query("[name='" + s + "']", ctx)[0];}
+function D(s) {return s ? openils.Util.timeStamp(s,{"selector":"date"}) : "";}
+function node_by_name(s, ctx) {return dojo.query("[name='"+ s +"']",ctx)[0];}
 
 function num_sort(a, b) {
     [a, b] = [Number(a), Number(b)];
@@ -80,13 +80,20 @@ function BatchReceiver() {
 
         this._clear_entry_batch_row();
 
-        this._copy_loc_by_lib = {};
+        this._location_by_lib = {};
 
         /* empty the entry receiving table if we're starting over */
         if (this.item_cache) {
-            for (var id in this.item_cache)
+            for (var id in this.item_cache) {
                 this.finish_receipt(this.item_cache[id]);
+                hard_empty(this.entry_tbody);
+            }
+            /* XXX incredibly, running hard_empty() more than once seems to be
+             * good and necessary.  There's a bug under the covers somewhere,
+             * but this keeps it out of sight for the moment. */
+             hard_empty(this.entry_tbody);
         }
+        hard_empty(this.entry_tbody);
 
         this.rows = {};
         this.item_cache = {};
@@ -174,8 +181,8 @@ function BatchReceiver() {
         return issuances;
     };
 
-    this._build_circ_mod_dropdown = function() {
-        if (!this._built_circ_mod_dropdown) {
+    this._build_circ_modifier_dropdown = function() {
+        if (!this._built_circ_modifier_dropdown) {
             var menulist = dojo.create("menulist");
             var menupopup = dojo.create("menupopup", null, menulist, "only");
             dojo.create(
@@ -185,16 +192,24 @@ function BatchReceiver() {
 
             var mods = [];
             fieldmapper.standardRequest(
-                ["open-ils.circ", "open-ils.circ.circ_modifier.retrieve.all"], {
-                    "params": [],
+                ["open-ils.circ", "open-ils.circ.circ_modifier.retrieve.all"],{
+                    "params": [{"full": true}],
                     "async": false,
                     "onresponse": function(r) {
                         if (mods = openils.Util.readResponse(r)) {
-                            mods.forEach(
+                            mods.sort(
+                                function(a,b) {
+                                    return a.code() > b.code() ? 1 :
+                                        b.code() > a.code() ? -1 :
+                                        0;
+                                }
+                            ).forEach(
                                 function(mod) {
                                     dojo.create(
                                         "menuitem", {
-                                            "value": mod, "label": mod
+                                            "value": mod.code(),
+                                            /* XXX use format string */
+                                            "label": mod.code()+" "+mod.name()
                                         }, menupopup, "last"
                                     );
                                 }
@@ -205,17 +220,17 @@ function BatchReceiver() {
             );
             if (!mods.length) {
                 /* in this case, discard menulist and menupopup */
-                this._built_circ_mod_dropdown =
+                this._built_circ_modifier_dropdown =
                     dojo.create("description", {"value": "-"});
             } else {
-                this._built_circ_mod_dropdown = menulist;
+                this._built_circ_modifier_dropdown = menulist;
             }
         }
 
-        return dojo.clone(this._built_circ_mod_dropdown);
+        return dojo.clone(this._built_circ_modifier_dropdown);
     };
 
-    this._extend_circ_mod_for_batch = function(control) {
+    this._extend_circ_modifier_for_batch = function(control) {
         dojo.create(
             "menuitem", {"value": -1, "label": "---"},
             dojo.query("menupopup", control)[0],
@@ -224,7 +239,7 @@ function BatchReceiver() {
         return control;
     };
 
-    this._build_copy_loc_dropdown = function(locs, add_unset_value) {
+    this._build_location_dropdown = function(locs, add_unset_value) {
         var menulist = dojo.create("menulist");
         var menupopup = dojo.create("menupopup", null, menulist, "only");
 
@@ -249,21 +264,21 @@ function BatchReceiver() {
         return menulist;
     };
 
-    this._get_copy_locs_for_lib = function(lib) {
-        if (!this._copy_loc_by_lib[lib]) {
+    this._get_locations_for_lib = function(lib) {
+        if (!this._location_by_lib[lib]) {
             fieldmapper.standardRequest(
-                ["open-ils.circ", "open-ils.circ.copy_location.retrieve.all"], {
+                ["open-ils.circ", "open-ils.circ.copy_location.retrieve.all"],{
                     "params": [lib, false, true],
                     "async": false,
                     "onresponse": function(r) {
                         if (locs = openils.Util.readResponse(r))
-                            self._copy_loc_by_lib[lib] = locs;
+                            self._location_by_lib[lib] = locs;
                     }
                 }
             );
         }
 
-        return this._copy_loc_by_lib[lib];
+        return this._location_by_lib[lib];
     };
 
     this._build_receive_toggle = function(item) {
@@ -384,8 +399,8 @@ function BatchReceiver() {
                 ],
                 "async": false,
                 "oncomplete": function(r) {
-                    /* These two things better come before readResponse(), which
-                     * can throw exceptions. */
+                    /* These two things better come before readResponse(),
+                     * which can throw exceptions. */
                     busy(false);
                     dojo.byId("bib_lookup_submit").disabled = false;
 
@@ -472,8 +487,8 @@ function BatchReceiver() {
 
             this.issuances.sort(
                 function(a, b) {
-                    if (a.date_published() > b.date_published()) return 1;
-                    else if (b.date_published() > a.date_published()) return -1;
+                    if (a.date_published()>b.date_published()) return 1;
+                    else if (b.date_published()>a.date_published()) return -1;
                     else return 0;
                 }
             ).forEach(
@@ -557,18 +572,21 @@ function BatchReceiver() {
             this.batch_controls.note = dojo.create("textbox", {"size": 20})
         );
 
-        node_by_name("copy_loc", row).appendChild(
-            this.batch_controls.copy_loc = this._build_copy_loc_dropdown(
-                /* XXX is 1 really the right value below? */
-                this._get_copy_locs_for_lib(1),
+        node_by_name("location", row).appendChild(
+            this.batch_controls.location = this._build_location_dropdown(
+                /* XXX TODO build a smarter list. rather than all copy locs
+                 * under OU #1, try building a list of copy locs available to
+                 * all OUs represented in actual items */
+                this._get_locations_for_lib(1),
                 true /* add_unset_value */
             )
         );
 
-        node_by_name("circ_mod", row).appendChild(
-            this.batch_controls.circ_mod = this._extend_circ_mod_for_batch(
-                this._build_circ_mod_dropdown()
-            )
+        node_by_name("circ_modifier", row).appendChild(
+            this.batch_controls.circ_modifier =
+                this._extend_circ_modifier_for_batch(
+                    this._build_circ_modifier_dropdown()
+                )
         );
 
         node_by_name("price", row).appendChild(
@@ -615,16 +633,16 @@ function BatchReceiver() {
             )
         );
 
-        n("copy_loc").appendChild(
-            this._build_copy_loc_dropdown(
-                this._get_copy_locs_for_lib(
+        n("location").appendChild(
+            this._build_location_dropdown(
+                this._get_locations_for_lib(
                     item.stream().distribution().holding_lib().id()
                 )
             )
         );
 
         n("note").appendChild(dojo.create("textbox", {"size": 20}));
-        n("circ_mod").appendChild(this._build_circ_mod_dropdown());
+        n("circ_modifier").appendChild(this._build_circ_modifier_dropdown());
         n("price").appendChild(dojo.create("textbox", {"size": 9}));
         n("receive").appendChild(this._build_receive_toggle(item));
 
@@ -632,22 +650,52 @@ function BatchReceiver() {
     };
 
     this.receive = function() {
-        var recv_ids = [];
+        var items = [];
         for (var id in this.rows) {
-            /* XXX TODO: get field values, send to ML,
-             * and yes do trimming here. */
-            if (!this._row_disabled(id)) recv_ids.push(id);
+            if (this._row_disabled(id)) 
+                continue;
+
+            var item = this.item_cache[id];
+
+            var barcode = this._row_field_value(id, "barcode");
+            if (barcode) {
+                var unit = new sunit();
+                unit.barcode(barcode);
+
+                ["price", "location", "circ_modifier"].forEach(
+                    function(field) {
+                        var value = self._row_field_value(id, field).trim();
+                        if (value) unit[field](value);
+                    }
+                );
+
+
+                item.unit(unit);
+            }
+
+            var note_value = this._row_field_value(id, "note").trim();
+            if (note_value) {
+                var note = new sin();
+                note.item(id);
+                note.pub(false);
+                note.title(S("receive_time_note"));
+                note.value(note_value);
+
+                item.notes([note]);
+            }
+
+            items.push(item);
         }
 
         busy(true);
         fieldmapper.standardRequest(
-            ["open-ils.serial", "open-ils.serial.items.receive_by_id"], {
-                "params": [authtoken, recv_ids],
+            ["open-ils.serial", "open-ils.serial.receive_items.one_unit_per"],{
+                "params": [authtoken, items],
                 "async": true,
                 "oncomplete": function(r) {
                     try {
-                        while (item = openils.Util.readResponse(r))
-                            self.finish_receipt(item);
+                        while (item_id = openils.Util.readResponse(r))
+                            self.finish_receipt(item_id);
                     } catch (E) {
                         alert(E);
                     }
@@ -657,10 +705,11 @@ function BatchReceiver() {
         );
     };
 
-    this.finish_receipt = function(item) {
-        dojo.destroy(this.rows[item.id()]);
-        delete this.rows[item.id()];
-        delete this.item_cache[item.id()];
+    this.finish_receipt = function(item_id) {
+        hard_empty(this.rows[item_id]);
+        dojo.destroy(this.rows[item_id]);
+        delete this.rows[item_id];
+        delete this.item_cache[item_id];
     };
 
     this.autogen_if_appropriate = function(textbox, item_id) {

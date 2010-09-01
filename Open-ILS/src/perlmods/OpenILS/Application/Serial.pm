@@ -37,6 +37,7 @@ package OpenILS::Application::Serial;
 use strict;
 use warnings;
 
+
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 use OpenILS::Application::AppUtils;
@@ -876,13 +877,125 @@ sub unitize_items {
     return {'num_items_received' => scalar @$items, 'new_unit_id' => $new_unit_id};
 }
 
+__PACKAGE__->register_method(
+    method    => "receive_items_one_unit_per",
+    api_name  => "open-ils.serial.receive_items.one_unit_per",
+    stream => 1,
+    api_level => 1,
+    argc      => 1,
+    signature => {
+        desc     => "Marks items in a list as received, creates a new unit for each item if any unit is fleshed on",
+        "params" => [ {
+                 name => "items",
+                 desc => "array of serial items, possibly fleshed with units and definitely fleshed with stream->distribution",
+                 type => "array"
+            }
+        ],
+        "return" => {
+            desc => "The item ID for each item successfully received",
+            type => "int"
+        }
+    }
+);
+
+sub receive_items_one_unit_per {
+    # XXX This function may be temporary. unitize_items() would seem to aim to
+    # accomodate what this function does as well as other variations on the
+    # operation (binding multiple items into one unit, etc.?) plus generating
+    # summaries.  This is just a minimal get-it-working-now implementation.
+    # In the future, when unitize_items() is ready, perhaps any registered
+    # method names that point to this function can be repointed at
+    # unitize_items()
+
+    my ($self, $client, $auth, $items) = @_;
+
+    my $e = new_editor("authtoken" => $auth, "xact" => 1);
+    return $e->die_event unless $e->checkauth;
+
+    my $user_id = $e->requestor->id;
+
+    # Get a list of all the non-virtual field names in a serial::unit for
+    # merging given unit objects with template-built units later.
+    # XXX move this somewhere global so it isn't re-run all the time
+    my $all_unit_fields =
+        $Fieldmapper::fieldmap->{"Fieldmapper::serial::unit"}->{"fields"};
+    my @real_unit_fields = grep {
+        not $all_unit_fields->{$_}->{"virtual"}
+    } keys %$all_unit_fields;
+
+    foreach my $item (@$items) {
+        # Note that we expect a certain fleshing on the items we're getting.
+        my $sdist = $item->stream->distribution;
+
+        # Create unit if given by user
+        if (ref $item->unit) {
+            # detach from the item, as we need to create separately
+            my $user_unit = $item->unit;
+
+            # get a unit based on associated template
+            my $template_unit = _build_unit($e, $sdist, "receive");
+            if ($U->event_code($template_unit)) {
+                $e->rollback;
+                $template_unit->{"note"} = "Item ID: " . $item->id;
+                return $template_unit;
+            }
+
+            # merge built unit with provided unit from user
+            foreach (@real_unit_fields) {
+                unless ($user_unit->$_) {
+                    $user_unit->$_($template_unit->$_);
+                }
+            }
+
+            # set the incontrovertibles on the unit
+            $user_unit->edit_date("now");
+            $user_unit->create_date("now");
+            $user_unit->editor($user_id);
+            $user_unit->creator($user_id);
+
+            return $e->die_event unless $e->create_serial_unit($user_unit);
+
+            # save reference to new unit
+            $item->unit($e->data->id);
+        }
+
+        # Create notes if given by user
+        if (ref($item->notes) and @{$item->notes}) {
+            foreach my $note (@{$item->notes}) {
+                $note->creator($user_id);
+                $note->create_date("now");
+
+                return $e->die_event unless $e->create_serial_item_note($note);
+            }
+
+            $item->clear_notes; # They're saved; we no longer want them here.
+        }
+
+        # Set the incontrovertibles on the item
+        $item->date_received("now");
+        $item->edit_date("now");
+        $item->editor($user_id);
+
+        return $e->die_event unless $e->update_serial_item($item);
+
+        # send client a response
+        $client->respond($item->id);
+    }
+
+    # XXX TODO update basic/supplementary/index summaries
+
+    $e->commit or return $e->die_event;
+    undef;
+}
+
 sub _build_unit {
     my $editor = shift;
     my $sdist = shift;
     my $mode = shift;
 
     my $attr = $mode . '_unit_template';
-    my $template = $editor->retrieve_asset_copy_template($sdist->$attr);
+    my $template = $editor->retrieve_asset_copy_template($sdist->$attr) or
+        return new OpenILS::Event("SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE");
 
     my @parts = qw( status location loan_duration fine_level age_protect circulate deposit ref holdable deposit_amount price circ_modifier circ_as_type alert_message opac_visible floating mint_condition );
 
@@ -897,8 +1010,12 @@ sub _build_unit {
     $unit->circ_lib($sdist->holding_lib);
     $unit->creator($editor->requestor->id);
     $unit->editor($editor->requestor->id);
+
     $attr = $mode . '_call_number';
-    $unit->call_number($sdist->$attr);
+    my $cn = $sdist->$attr or
+        return new OpenILS::Event("SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER");
+
+    $unit->call_number($cn);
     $unit->barcode('AUTO');
     $unit->sort_key('');
     $unit->summary_contents('');
@@ -1808,14 +1925,19 @@ sub get_receivable_issuances {
     my $issuance_ids = $e->json_query({
         "select" => {
             "siss" => [
-                {"transform" => "distinct", "column" => "id"}
+                {"transform" => "distinct", "column" => "id"},
+                "date_published"
             ]
         },
         "from" => {"siss" => "sitem"},
         "where" => {
             "subscription" => $sub_id,
             "+sitem" => {"date_received" => undef}
+        },
+        "order_by" => {
+            "siss" => {"date_published" => {"direction" => "asc"}}
         }
+
     }) or return $e->die_event;
 
     $client->respond($e->retrieve_serial_issuance($_->{"id"}))
