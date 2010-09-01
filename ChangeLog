@@ -1,1 +1,154 @@
-#ChangeLog
+2010-08-05  gmc
+
+	* bug 613703: normalize backdate on item checkin better
+	  
+	  Fixes bug that appears to cause all checkins uploaded
+	  via offline circ to fail with an "invalid date format"
+	  error.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-08-06  gmc
+
+	* Patch from Bill Erickson backporting various autogrid fixes
+	  
+	  * includes autogrid caching and paging
+	  * purpose is to more gracefully handle large circ and
+	  hold policy matrixes in the 1.6.0.x branch
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* bug 614132: fix glitch when used cached permission group widget
+	  
+	  Fixes bug where the initial permission group value in a circ or
+	  hold matrix entry was not displayed when editing an
+	  existing matchpoint.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* bug 614150: bail out on ACTOR_USER_NOT_FOUND
+	  
+	  This fixes a bug where uploading an offline checkout
+	  that refers to a missing patron returns an INTERNAL_SERVER_ERROR
+	  instead of ACTOR_USER_NOT_FOUND. More generally, this avoids
+	  an exception in case case where a circ operation is made
+	  without checking the existence of the patron record beforehand.
+	  
+	  mk_env could use a better name, too.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-08-06  phasefx
+
+	* backporting changeset 16688 for more robust printing (addresses
+	  some "inner print_tree" errors). See
+	  https://bugs.launchpad.net/evergreen/+bug/567505/
+
+2010-08-06  gmc
+
+	* bug 532217: work around caching issue resulting doubled title
+	  display
+	  
+	  Quick hack shamelessly borrowed from Dan Scott to fix problem
+	  of title being displayed twice on bib details page when back
+	  button is used in OPAC or staff client.
+	  
+	  This is a temporary fix in lieu of rewriting the bib details
+	  display to use BibTemplate exclusively.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-08-09  dbs
+
+	* Patch from Ben Ostrowsky <ben@esilibrary.com> to specify "staff
+	  account" in proxied pages
+	  
+	  This change will make it a bit more clear that we're not looking
+	  for a
+	  patron barcode/PIN in the Selfcheck Login screen (and make the
+	  wording
+	  consistent across similar login pages).
+
+2010-08-10  gmc
+
+	* fix age protection proximity test for in-DB circ
+	  
+	  Patch from John Craig.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* remove extra DB upgrade script
+	  
+	  Thought better of including it in the backport to rel_1_6_0
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* bug 592777: allow authoritative version of open-ils.circ.retrieve
+	  
+	  Part of a fix to avoid race condition that can occur
+	  when patron renews an item in the OPAC in a database
+	  that uses pgpool and replication, which sometimes
+	  results in an erroneous 'action_circulation_not_found' error.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-08-12  dbs
+
+	* Remove broken old JavaScript in Google Book preview code
+	  
+	  I /think/ this was supposed to change the title of the "Preview"
+	  link to
+	  "Read this online" or the like in the case that the full text is
+	  available,
+	  but it was relying on a function that didn't exist (setText) and
+	  trying
+	  to reference an ID that didn't exists. So it broke in those rare
+	  cases
+	  where Google Books did provide the full text.
+
+	* Enable "Delete address" button to work in rel_1_6
+	  
+	  In some ways the inverse of r17023, the else clause that enabled
+	  the delete button to be enabled was never being reached because
+	  the preceding clauses caught all cases.
+	  
+	  Moving it outside of the foreach() loop entirely seems to resolve
+	  the problem.
+
+	* Show the "Active?" checkbox as part of the required (minimal) set
+	  of fields
+	  
+	  As we're registering users, it's probably a good idea to ensure
+	  that staff
+	  can set the user to active at the same time that they enter the
+	  minimal
+	  patron information.
+
+	* And get that closing brace back in place for the Dojo user editor
+
+2010-08-18  miker
+
+	* Backport of 17243: so, some datasets have records with multiple
+	  245a subfields. yeah, really.
+
+2010-08-21  miker
+
+	* backport of r17299: we need an index on LOWER(barcode) with
+	  r17018
+
+2010-08-24  atz
+
+	* 1-line fix for false 404 from sylvar
+	  
+	  solves "The requested URL
+	  /xul/rel_1_6_0_7/server/patron/ue.xhtml&clone=112879 was not
+	  found on this server."
+
+2010-08-31  phasefx
+
+	* fixes a bug when purging offline transactions after an Export
+
+2010-09-01  miker
+
+	* .: Tagging 1.6.0.8 ... let's hope this is the last 1.6.0!
+
