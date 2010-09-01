@@ -877,6 +877,35 @@ sub unitize_items {
     return {'num_items_received' => scalar @$items, 'new_unit_id' => $new_unit_id};
 }
 
+sub _find_or_create_call_number {
+    my ($e, $lib, $cn_string, $record) = @_;
+
+    my $existing = $e->search_asset_call_number({
+        "owning_lib" => $lib,
+        "label" => $cn_string,
+        "record" => $record,
+        "deleted" => "f"
+    }) or return $e->die_event;
+
+    if (@$existing) {
+        return $existing->[0]->id;
+    } else {
+        return $e->die_event unless
+            $e->allowed("CREATE_VOLUME", $lib);
+
+        my $acn = new Fieldmapper::asset::call_number;
+
+        $acn->creator($e->requestor->id);
+        $acn->editor($e->requestor->id);
+        $acn->record($record);
+        $acn->label($cn_string);
+        $acn->owning_lib($lib);
+
+        $e->create_asset_call_number($acn) or return $e->die_event;
+        return $e->data->id;
+    }
+}
+
 __PACKAGE__->register_method(
     "method" => "receive_items_one_unit_per",
     "api_name" => "open-ils.serial.receive_items.one_unit_per",
@@ -959,36 +988,19 @@ sub receive_items_one_unit_per {
                 }
             }
 
+            # Treat call number specially: the provided value from the
+            # user will really be a string.
             if ($user_unit->call_number) {
-                # call_number passed in will actually be a string representing
-                # a call_number label, not an actual acn object or even an ID.
-                # Therefore we must lookup the call_number requested, or
-                # create a new one if it does not exist for the given lib.
+                my $real_cn = _find_or_create_call_number(
+                    $e, $sdist->holding_lib->id,
+                    $user_unit->call_number, $record
+                );
 
-                my $existing = $e->search_asset_call_number({
-                    "owning_lib" => $sdist->holding_lib->id,
-                    "label" => $user_unit->call_number,
-                    "record" => $record,
-                    "deleted" => "f"
-                }) or return $e->die_event;
-
-                if (@$existing) {
-                    $user_unit->call_number($existing->[0]->id);
+                if ($U->event_code($real_cn)) {
+                    $e->rollback;
+                    return $real_cn;
                 } else {
-                    return $e->die_event unless
-                        $e->allowed("CREATE_VOLUME", $sdist->holding_lib->id);
-
-                    my $acn = new Fieldmapper::asset::call_number;
-
-                    $acn->creator($user_id);
-                    $acn->editor($user_id);
-                    $acn->record($record);
-                    $acn->label($user_unit->call_number);
-                    $acn->owning_lib($sdist->holding_lib->id);
-
-                    $e->create_asset_call_number($acn) or return $e->die_event;
-
-                    $user_unit->call_number($e->data->id);
+                    $user_unit->call_number($real_cn);
                 }
             }
 
