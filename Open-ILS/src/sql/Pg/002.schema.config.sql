@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2004-2008  Georgia Public Library Service
- * Copyright (C) 2008  Equinox Software, Inc.
+ * Copyright (C) 2008-2010  Equinox Software, Inc.
  * Mike Rylander <miker@esilibrary.com>
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('1.6.0.4'); -- dbs
+INSERT INTO config.upgrade_log (version) VALUES ('1.6.0.8'); -- dbs
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
