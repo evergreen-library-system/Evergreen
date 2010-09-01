@@ -1,1 +1,288 @@
-#ChangeLog
+2010-06-28  senator
+
+	* Patch from Don McMorris. Good catch, Don.
+	  
+	  He writes:
+	  
+	  In the branch rel_1_6 version of 950.data.seed-values.sql [1],
+	  lines
+	  138-142 create the OU setting
+	  'circ.booking_reservation.default_elbow_room' via the query:
+	  
+	  INSERT INTO actor.org_unit_setting (org_unit, name, value) VALUES
+	  (
+	  (SELECT id FROM actor.org_unit WHERE parent_ou IS NULL),
+	  'circ.booking_reservation.default_elbow_room',
+	  '"1 day"'
+	  );
+	  
+	  However, it appears that actor.org_unit does not start to get
+	  populated until line 853. As such, the "SELECT id FROM
+	  actor.org_unit
+	  WHERE parent_ou IS NULL" portion of the insert will return NULL,
+	  and
+	  actor.org_unit_setting.org_unit has a 'NOT NULL' contraint - as
+	  such,
+	  the insert fails.
+	  
+	  [...]
+
+2010-07-01  gmc
+
+	* backport r16838 from trunk
+	  
+	  bug #600021: fix lookup of FIFO holds OU setting
+	  
+	  Patch from Anoop Atre that fixes enabling FIFO
+	  holds via the circ.holds_fifo org unit setting.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-07-07  miker
+
+	* Forward port of r16867: add missing event definition required by
+	  vandelay authority import
+
+2010-07-08  dbs
+
+	* Give the "About" button a legitimate accesskey
+	  
+	  r15562 contained a fix for this to rel_1_6_0, but apparently I
+	  never
+	  forward-ported that "fix". Unfortunately, this leads to broken
+	  interfaces in
+	  the i18n build (bug re-found by Robert Souilliere in the 1.6.1.1
+	  release).
+
+	* Get the 1.6.0.4-1.6.0.5 updates into the rel_1_6/rel_1_6_0 stream
+	  
+	  This may end up in someone who has followed the entire 1.6.0.x
+	  upgrade train applying these two updates twice, but it shouldn't
+	  hurt - and ensures that someone who jumped to 1.6.1.0 or 1.6.1.1
+	  gets these important updates.
+
+2010-07-09  miker
+
+	* Patch from James Fournie to address backdating timestamp format
+	  error
+
+2010-07-13  dbs
+
+	* Backport the submit button from trunk. It's hard to submit a form
+	  without this.
+
+2010-07-16  erickson
+
+	* back-porting action trigger fixes 16956 and 16953
+
+	* replace line lost during conflict resolution
+
+2010-07-20  miker
+
+	* backporting r16982: use the correct table and field, caught by
+	  Doug Kyle and reported via IRC
+
+	* Backport of r16987: Patch from John Craig providing a saner
+	  timestamp cleansing setup for backdated circs, 1.6 edition
+
+2010-07-21  miker
+
+	* index which /greatly/ speeds collection of pending active events
+
+2010-07-22  miker
+
+	* backport of r17007: retain the indicators on located uri 856
+	  merge during asset merge
+
+2010-07-22  gmc
+
+	* bug #608937: make barcode search from main patron search form
+	  case-insensitive
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-07-23  miker
+
+	* Forward-port r17024: include null fields, via .toStoreItem(),
+	  when creating a permission map store item
+
+2010-08-05  gmc
+
+	* bug 613703: normalize backdate on item checkin better
+	  
+	  Fixes bug that appears to cause all checkins uploaded
+	  via offline circ to fail with an "invalid date format"
+	  error.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-08-06  gmc
+
+	* bug 614132: fix glitch when used cached permission group widget
+	  
+	  Fixes bug where the initial permission group value in a circ or
+	  hold matrix entry was not displayed when editing an
+	  existing matchpoint.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* bug 614150: bail out on ACTOR_USER_NOT_FOUND
+	  
+	  This fixes a bug where uploading an offline checkout
+	  that refers to a missing patron returns an INTERNAL_SERVER_ERROR
+	  instead of ACTOR_USER_NOT_FOUND. More generally, this avoids
+	  an exception in case case where a circ operation is made
+	  without checking the existence of the patron record beforehand.
+	  
+	  mk_env could use a better name, too.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* bug 532217: work around caching issue resulting doubled title
+	  display
+	  
+	  Quick hack shamelessly borrowed from Dan Scott to fix problem
+	  of title being displayed twice on bib details page when back
+	  button is used in OPAC or staff client.
+	  
+	  This is a temporary fix in lieu of rewriting the bib details
+	  display to use BibTemplate exclusively.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-08-09  dbs
+
+	* Patch from Ben Ostrowsky <ben@esilibrary.com> to specify "staff
+	  account" in proxied pages
+	  
+	  This change will make it a bit more clear that we're not looking
+	  for a
+	  patron barcode/PIN in the Selfcheck Login screen (and make the
+	  wording
+	  consistent across similar login pages).
+
+2010-08-10  gmc
+
+	* fix age protection proximity test for in-DB circ
+	  
+	  Patch from John Craig.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* remove extra DB upgrade script
+	  
+	  Thought better of including it in the backport to rel_1_6_1.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* bug 592777: allow authoritative version of open-ils.circ.retrieve
+	  
+	  Part of a fix to avoid race condition that can occur
+	  when patron renews an item in the OPAC in a database
+	  that uses pgpool and replication, which sometimes
+	  results in an erroneous 'action_circulation_not_found' error.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-08-11  dbs
+
+	* Add schema upgrades for r16982, r16996, r17009, r17159 to 1.6.1.2
+
+2010-08-12  dbs
+
+	* Remove broken old JavaScript in Google Book preview code
+	  
+	  I /think/ this was supposed to change the title of the "Preview"
+	  link to
+	  "Read this online" or the like in the case that the full text is
+	  available,
+	  but it was relying on a function that didn't exist (setText) and
+	  trying
+	  to reference an ID that didn't exists. So it broke in those rare
+	  cases
+	  where Google Books did provide the full text.
+
+	* Enable "Delete address" button to work in rel_1_6
+	  
+	  In some ways the inverse of r17023, the else clause that enabled
+	  the delete button to be enabled was never being reached because
+	  the preceding clauses caught all cases.
+	  
+	  Moving it outside of the foreach() loop entirely seems to resolve
+	  the problem.
+
+	* Show the "Active?" checkbox as part of the required (minimal) set
+	  of fields
+	  
+	  As we're registering users, it's probably a good idea to ensure
+	  that staff
+	  can set the user to active at the same time that they enter the
+	  minimal
+	  patron information.
+
+	* And get that closing brace back in place for the Dojo user editor
+
+2010-08-13  dbs
+
+	* Grant permissions related to booking/reservations to circulators
+	  and admins
+	  
+	  This should make for a better out-of-the-box experience for
+	  Evergreen adopters.
+	  The permissions in the upgrade script are outside of the
+	  transaction to avoid
+	  rolling back the entire upgrade if a site has already assigned
+	  these
+	  permissions.
+	  
+	  TODO: Document the new permissions as part of the 1.6.1 release
+	  notes so
+	  that sites can alter the upgrade script according to their
+	  desires if they
+	  don't like the defaults.
+
+2010-08-17  phasefx
+
+	* backport of 17216, org hiding depth in opac
+
+2010-08-18  miker
+
+	* Backport of 17243: so, some datasets have records with multiple
+	  245a subfields. yeah, really.
+
+2010-08-18  erickson
+
+	* provide an explicit import() sub to collect the boostrap config
+	  name at import. force child_init to run (once) if not run by
+	  Apache
+
+2010-08-21  miker
+
+	* backport of r17299: we need an index on LOWER(barcode) with
+	  r17018
+
+2010-08-24  atz
+
+	* 1-line fix for false 404 from sylvar
+	  
+	  solves "The requested URL
+	  /xul/rel_1_6_0_7/server/patron/ue.xhtml&clone=112879 was not
+	  found on this server."
+
+2010-08-26  senator
+
+	* Backport r17346 to fix broken OPAC renewals
+
+2010-08-31  senator
+
+	* Backport r17405: fix start/end date selection problem with
+	  reservations
+
+2010-08-31  phasefx
+
+	* fixes a bug when purging offline transactions after an Export
+
+2010-09-01  miker
+
+	* .: Tagging 1.6.1.2
+
