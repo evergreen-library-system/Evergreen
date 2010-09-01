@@ -45,6 +45,19 @@ function show(e) {
     openils.Util.removeCSSClass(e, "hideme");
 }
 
+function hide_table_cell(e) {
+    if (typeof(e) == "string") e = dojo.byId(e);
+
+    e.style.display = "none";
+    e.style.visibility = "hidden";
+}
+
+function show_table_cell(e) {
+    if (typeof(e) == "string") e = dojo.byId(e);
+    e.style.display = "table-cell";
+    e.style.visibility = "visible";
+}
+
 function busy(on) {
     if (typeof(busy._window) == "undefined")
         busy._window = dojo.query("window")[0];
@@ -383,11 +396,18 @@ function BatchReceiver() {
         dojo.query("textbox,menulist", row).forEach(
             function(element) { element.disabled = disabled; }
         );
+        this._row_disabled(row, disabled);
     };
 
-    this._row_disabled = function(row) {
+    this._row_disabled = function(row, disabled) {
         if (typeof(row) == "string") row = this.rows[row];
-        return !dojo.query("checkbox", row)[0].checked;
+
+        var checkbox = dojo.query("checkbox", row)[0];
+
+        if (typeof(disabled) != "undefined")
+            checkbox.checked = !disabled;
+
+        return !checkbox.checked;
     };
 
     this._row_field_value = function(row, field, value) {
@@ -460,11 +480,6 @@ function BatchReceiver() {
     };
 
     this._call_number_confirm_for_lib = function(lib, value) {
-        /* XXX Right now, this method will ask the user if they're serious if
-         * they apply an _existing_ (somewhere) call number to an item
-         * going to a library where that call number _doesn't_ exist,but it
-         * won't say anything if the user enters a brand new call number.
-         * This may not be ideal, and can be reworked later. */
         if (!this._has_confirmed_cn_for)
             this._has_confirmed_cn_for = {};
 
@@ -678,11 +693,11 @@ function BatchReceiver() {
                             show("form_holder");
 
                             list.forEach(function(o) {self.add_entry_row(o);});
-                            if (list.length > 1) {
-                                self.build_batch_entry_row();
-                                show("batch_receive_entry");
-                            }
 
+                            self.build_batch_entry_row();
+                            dojo.byId("batch_receive_with_units").doCommand();
+
+                            show("batch_receive_entry");
                             busy(false);
                         } else {
                             alert(S("item_lookup.none"));
@@ -695,9 +710,38 @@ function BatchReceiver() {
         );
     };
 
+    this.toggle_receive_with_units = function(ev) {
+        var head_row = dojo.byId("batch_receive_entry_thead");
+        var batch_row = dojo.byId("entry_batch_row");
+
+        var fields = [
+            "barcode", "call_number", "price", "location", "circ_modifier"
+        ];
+
+        var table_cell_func = ev.target.checked ?
+            show_table_cell : hide_table_cell;
+        fields.forEach(
+            function(key) {
+                if (batch_row) table_cell_func(node_by_name(key, batch_row));
+                if (head_row) table_cell_func(node_by_name(key, head_row));
+
+                for (var id in self.rows) {
+                    table_cell_func(node_by_name(key, self.rows[id]));
+                }
+            }
+        );
+
+        if (!ev.target.checked) {
+            /* XXX As of the time of this writing, a blank barcode field will
+             * avoid unit creation */
+            this._set_all_enabled_rows("barcode", "");
+        }
+    };
+
     this.toggle_all_receive = function(checked) {
-        for (var id in this.rows)
+        for (var id in this.rows) {
             this._disable_row(id, !checked);
+        }
     };
 
     this.build_batch_entry_row = function() {
@@ -839,7 +883,10 @@ function BatchReceiver() {
                 alert(S("missing_cn"));
                 return;
             } else if (!confirmed_missing_units) {
-                if (confirm(S("missing_units"))) {
+                if (
+                    (!dojo.byId("batch_receive_with_units").checked) ||
+                    confirm(S("missing_units"))
+                ) {
                     confirmed_missing_units = true;
                 } else {
                     return;

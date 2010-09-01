@@ -83,28 +83,28 @@
             <vbox id="batch_receive_entry" class="hideme">
                 <box class="hideme" id="form_holder">
                     <!-- XXX should be a XUL grid instead of an HTML table -->
-                    <h:table>
+                    <h:table id="batch_receive_entry_thead">
                         <h:thead>
                             <h:tr>
                                 <h:th>
                                     &staff.serial.batch_receive.org_unit;
                                 </h:th>
-                                <h:th>
+                                <h:th name="barcode">
                                     &staff.serial.batch_receive.barcode;
                                 </h:th>
-                                <h:th>
+                                <h:th name="circ_modifier">
                                     &staff.serial.batch_receive.circ_modifier;
                                 </h:th>
-                                <h:th>
+                                <h:th name="call_number">
                                     &staff.serial.batch_receive.call_number;
                                 </h:th>
                                 <h:th>
                                     &staff.serial.batch_receive.note;
                                 </h:th>
-                                <h:th>
+                                <h:th name="location">
                                     &staff.serial.batch_receive.location;
                                 </h:th>
-                                <h:th>
+                                <h:th name="price">
                                     &staff.serial.batch_receive.price;
                                 </h:th>
                                 <h:th>
@@ -159,12 +159,13 @@
             <button oncommand="batch_receiver.init();"
                 label="&staff.serial.batch_receive.start_over;"
                 accesskey="&staff.serial.batch_receive.start_over.accesskey;" />
-            <!-- coming soon
             <spacer flex="1" />
-            <checkbox oncommand="batch_receiver.toggle_receive_with_units(event);"
+            <checkbox
+                id="batch_receive_with_units"
+                oils_persist="checked"
+                oncommand="batch_receiver.toggle_receive_with_units(event);"
                 label="&staff.serial.batch_receive.with_units;"
                 accesskey="&staff.serial.batch_receive.with_units.accesskey;" />
-            -->
         </hbox>
     </box>
 </overlay>
