@@ -1,10 +1,12 @@
 dojo.require("dojo.cookie");
 dojo.require("dojo.date.locale");
 dojo.require("dojo.date.stamp");
+dojo.require("dojo.string");
 dojo.require("openils.Util");
+dojo.require("openils.User");
 dojo.require("openils.CGI");
+dojo.require("openils.PermaCrud");
 
-var authtoken;
 var batch_receiver;
 
 String.prototype.trim = function() {return this.replace(/^\s*(.+)\s*$/,"$1");}
@@ -18,8 +20,19 @@ String.prototype.trim = function() {return this.replace(/^\s*(.+)\s*$/,"$1");}
 function hard_empty(node) {
     if (typeof(node) == "string")
         node = dojo.byId(node);
-    if (node)
-        dojo.forEach(node.childNodes, dojo.destroy);
+
+    if (node && node.childNodes.length > 0) {
+        dojo.forEach(
+            node.childNodes,
+            function(c) {
+                if (c) {
+                    if (c.childNodes.length > 0)
+                        dojo.forEach(c.childNodes, hard_empty);
+                    dojo.destroy(c);
+                }
+            }
+        );
+    }
 }
 
 function hide(e) {
@@ -43,6 +56,11 @@ function S(k) {
         replace("\\n", "\n");
 }
 
+function F(k, args) {
+    return dojo.byId("serialStrings").
+        getFormattedString("batch_receive." + k, args).replace("\\n", "\n");
+}
+
 function T(s) { return document.createTextNode(s); }
 function D(s) {return s ? openils.Util.timeStamp(s,{"selector":"date"}) : "";}
 function node_by_name(s, ctx) {return dojo.query("[name='"+ s +"']",ctx)[0];}
@@ -55,7 +73,13 @@ function num_sort(a, b) {
 function BatchReceiver() {
     var self = this;
 
-    this._init = function(bib_id) {
+    this.init = function(authtoken, bib_id) {
+        if (authtoken) {
+            this.user = new openils.User({"authtoken": authtoken});
+            this.pcrud = new openils.PermaCrud({"authtoken": authtoken});
+            this.authtoken = authtoken;
+        }
+
         hide("batch_receive_sub");
         hide("batch_receive_entry");
         hide("batch_receive_bibdata_bits");
@@ -80,6 +104,8 @@ function BatchReceiver() {
 
         this._clear_entry_batch_row();
 
+        this._call_number_cache = null;
+        this._prepared_call_number_controls = {};
         this._location_by_lib = {};
 
         /* empty the entry receiving table if we're starting over */
@@ -165,7 +191,7 @@ function BatchReceiver() {
         try {
             fieldmapper.standardRequest(
                 ["open-ils.serial", "open-ils.serial.issuances.receivable"], {
-                    "params": [authtoken, this.sub.id()],
+                    "params": [this.authtoken, this.sub.id()],
                     "async": false,
                     "onresponse": function(r) {
                         if (r = openils.Util.readResponse(r))
@@ -281,6 +307,66 @@ function BatchReceiver() {
         return this._location_by_lib[lib];
     };
 
+    this._build_call_number_control = function(item) {
+        /* In any case, give a dropdown of call numbers related to the
+         * same bre as the subscription relates to. */
+        if (!this._call_number_cache) {
+            this._call_number_cache = this.pcrud.search(
+                "acn", {
+                    "record": this.sub.record_entry()
+                }, {
+                    "order_by": {"acn": "label"},   /* XXX wrong sorting? */
+                }
+            );
+        }
+
+        if (typeof item == "undefined") {
+            /* In this case, no further limiting of call numbers for now,
+             * although ideally it might be nice to limit to call numbers
+             * with owning_lib matching the holding_lib of the distribs
+             * that ultimately relate to the items. */
+
+            var menulist = dojo.create("menulist", {
+                "editable": "true", "className": "cn"
+            });
+            var menupopup = dojo.create("menupopup", null, menulist, "only");
+            this._call_number_cache.forEach(
+                function(cn) {
+                    dojo.create(
+                        "menuitem", {
+                            "value": cn.id(), "label": cn.label()
+                        }, menupopup, "last"
+                    );
+                }
+            );
+            return menulist;
+        } else {
+            /* In this case, limit call numbers by owning_lib matching
+             * distributions's holding_lib. */
+
+            var lib = item.stream().distribution().holding_lib().id();
+            if (!this._prepared_call_number_controls[lib]) {
+                var menulist = dojo.create("menulist", {
+                    "editable": "true", "className": "cn"
+                });
+                var menupopup = dojo.create("menupopup", null, menulist,"only");
+                this._call_number_cache.filter(
+                    function(cn) { return cn.owning_lib() == lib; }
+                ).forEach(
+                    function(cn) {
+                        dojo.create(
+                            "menuitem", {
+                                "value": cn.id(), "label": cn.label()
+                            }, menupopup, "last"
+                        );
+                    }
+                );
+                this._prepared_call_number_controls[lib] = menulist;
+            }
+            return dojo.clone(this._prepared_call_number_controls[lib]);
+        }
+    };
+
     this._build_receive_toggle = function(item) {
         return dojo.create(
             "checkbox", {
@@ -363,11 +449,58 @@ function BatchReceiver() {
         return list;
     };
 
+    this._cn_exists_but_not_for_lib = function(lib, value) {
+        var exists = this._call_number_cache.filter(
+            function(cn) { return cn.label() == value }
+        );
+        var for_lib = exists.filter(
+            function(cn) { return cn.owning_lib() == lib; }
+        );
+        return (exists.length && !for_lib.length);
+    };
+
+    this._call_number_confirm_for_lib = function(lib, value) {
+        /* XXX Right now, this method will ask the user if they're serious if
+         * they apply an _existing_ (somewhere) call number to an item
+         * going to a library where that call number _doesn't_ exist,but it
+         * won't say anything if the user enters a brand new call number.
+         * This may not be ideal, and can be reworked later. */
+        if (!this._has_confirmed_cn_for)
+            this._has_confirmed_cn_for = {};
+
+        if (typeof(this._has_confirmed_cn_for[lib.id()]) == "undefined") {
+            if (this._cn_exists_but_not_for_lib(lib.id(), value)) {
+                this._has_confirmed_cn_for[lib.id()] = confirm(
+                    F("cn_for_lib", [lib.shortname()])
+                );
+            } else {
+                this._has_confirmed_cn_for[lib.id()] = true;
+            }
+        }
+
+        return this._has_confirmed_cn_for[lib.id()];
+    }
+
+    this._confirm_row_field_application = function(id, key, value) {
+        if (key == "call_number") { /* XXX make a dispatch table so we can do
+                                       this for other fields too */
+            return this._call_number_confirm_for_lib(
+                this.item_cache[id].stream().distribution().holding_lib(),
+                value
+            );
+        } else {
+            return true;
+        }
+    };
+
     this._set_all_enabled_rows = function(key, value) {
         /* do NOT do trimming here, set whitespace as is. */
         for (var id in this.rows) {
-            if (!this._row_disabled(id))
-                this._row_field_value(id, key, value);
+            if (!this._row_disabled(id)) {
+                if (this._confirm_row_field_application(id, key, value)) {
+                    this._row_field_value(id, key, value);
+                }
+            }
         }
     };
 
@@ -420,7 +553,7 @@ function BatchReceiver() {
                     } else {
                         alert(S("bib_lookup.not_found"));
                         if (is_actual_id) {
-                            self._init();
+                            self.init();
                         } else {
                             dojo.byId("bib_search_term").reset();
                             dojo.byId("bib_search_term").focus();
@@ -510,7 +643,7 @@ function BatchReceiver() {
             this.load_entry_form(this.issuances[0]);
         } else {
             alert(S("issuance_lookup.none"));
-            this._init();
+            this.init();
         }
 
     };
@@ -533,7 +666,7 @@ function BatchReceiver() {
         fieldmapper.standardRequest(
             ["open-ils.serial",
                 "open-ils.serial.items.receivable.by_issuance.atomic"], {
-                "params": [authtoken, this.issuance.id()],
+                "params": [this.authtoken, this.issuance.id()],
                 "async": true,
                 "onresponse": function(r) {
                     busy(false);
@@ -554,13 +687,17 @@ function BatchReceiver() {
                         } else {
                             alert(S("item_lookup.none"));
                             if (self.issuances.length) self.choose_issuance();
-                            else self._init();
+                            else self.init();
                         }
                     }
                 }
             }
         );
+    };
 
+    this.toggle_all_receive = function(checked) {
+        for (var id in this.rows)
+            this._disable_row(id, !checked);
     };
 
     this.build_batch_entry_row = function() {
@@ -585,12 +722,27 @@ function BatchReceiver() {
         node_by_name("circ_modifier", row).appendChild(
             this.batch_controls.circ_modifier =
                 this._extend_circ_modifier_for_batch(
-                    this._build_circ_modifier_dropdown()
+                    this._build_circ_modifier_dropdown() /* for all OUs */
                 )
+        );
+
+        node_by_name("call_number", row).appendChild(
+            this.batch_controls.call_number = this._build_call_number_control()
         );
 
         node_by_name("price", row).appendChild(
             this.batch_controls.price = dojo.create("textbox", {"size": 9})
+        );
+
+        node_by_name("receive", row).appendChild(
+            dojo.create(
+                "checkbox", {
+                    "oncommand": function(ev) {
+                        self.toggle_all_receive(ev.target.checked);
+                    },
+                    "checked": "true"
+                }
+            )
         );
 
         node_by_name("apply", row).appendChild(
@@ -609,6 +761,9 @@ function BatchReceiver() {
             if (value != "" && value != -1)
                 this._set_all_enabled_rows(key, value);
         }
+
+        /* XXX genericize for all fields? */
+        delete this._has_confirmed_cn_for;
     };
 
     this.add_entry_row = function(item) {
@@ -643,6 +798,7 @@ function BatchReceiver() {
 
         n("note").appendChild(dojo.create("textbox", {"size": 20}));
         n("circ_modifier").appendChild(this._build_circ_modifier_dropdown());
+        n("call_number").appendChild(this._build_call_number_control(item));
         n("price").appendChild(dojo.create("textbox", {"size": 9}));
         n("receive").appendChild(this._build_receive_toggle(item));
 
@@ -651,14 +807,22 @@ function BatchReceiver() {
 
     this.receive = function() {
         var items = [];
+        var confirmed_missing_units = false;
+
         for (var id in this.rows) {
-            if (this._row_disabled(id)) 
+            if (this._row_disabled(id))
                 continue;
 
             var item = this.item_cache[id];
 
-            var barcode = this._row_field_value(id, "barcode");
-            if (barcode) {
+            /* Don't trim() call_number field, as existing call numbers
+             * are yielded by their label field, not by id, and if
+             * they start or end in spaces, we'll unintentionally create
+             * a new, different CN if we trim that */
+            var cn_string = this._row_field_value(id, "call_number");
+            var barcode = this._row_field_value(id, "barcode").trim();
+
+            if (barcode && cn_string.length) {
                 var unit = new sunit();
                 unit.barcode(barcode);
 
@@ -669,8 +833,17 @@ function BatchReceiver() {
                     }
                 );
 
-
+                unit.call_number(cn_string);
                 item.unit(unit);
+            } else if (barcode && !cn_string.length) {
+                alert(S("missing_cn"));
+                return;
+            } else if (!confirmed_missing_units) {
+                if (confirm(S("missing_units"))) {
+                    confirmed_missing_units = true;
+                } else {
+                    return;
+                }
             }
 
             var note_value = this._row_field_value(id, "note").trim();
@@ -690,7 +863,7 @@ function BatchReceiver() {
         busy(true);
         fieldmapper.standardRequest(
             ["open-ils.serial", "open-ils.serial.receive_items.one_unit_per"],{
-                "params": [authtoken, items],
+                "params": [this.authtoken, items, this.sub.record_entry()],
                 "async": true,
                 "oncomplete": function(r) {
                     try {
@@ -723,7 +896,9 @@ function BatchReceiver() {
                 try {
                     fieldmapper.standardRequest(
                         ["open-ils.cat", "open-ils.cat.item.barcode.autogen"], {
-                            "params": [authtoken, textbox.value, list.length],
+                            "params": [
+                                this.authtoken, textbox.value, list.length
+                            ],
                             "async": false,
                             "onresponse": function(r) {
                                 r = openils.Util.readResponse(r, false, true);
@@ -747,14 +922,15 @@ function BatchReceiver() {
         }
     };
 
-    this._init.apply(this, arguments);
+    this.init.apply(this, arguments);
 }
 
 function my_init() {
     var cgi = new openils.CGI();
 
-    authtoken = (typeof ses == "function" ? ses() : 0) ||
-        cgi.param("ses") || dojo.cookie("ses");
-
-    batch_receiver = new BatchReceiver(cgi.param("docid") || null);
+    batch_receiver = new BatchReceiver(
+        (typeof ses == "function" ? ses() : 0) ||
+            cgi.param("ses") || dojo.cookie("ses"),
+        cgi.param("docid") || null
+    );
 }

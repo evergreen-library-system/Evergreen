@@ -96,6 +96,9 @@
                                     &staff.serial.batch_receive.circ_modifier;
                                 </h:th>
                                 <h:th>
+                                    &staff.serial.batch_receive.call_number;
+                                </h:th>
+                                <h:th>
                                     &staff.serial.batch_receive.note;
                                 </h:th>
                                 <h:th>
@@ -118,10 +121,11 @@
                                         label="&staff.serial.batch_receive.auto_generate;" />
                                 </h:td>
                                 <h:td name="circ_modifier" align="center"></h:td>
+                                <h:td name="call_number" align="center"></h:td>
                                 <h:td name="note"></h:td>
                                 <h:td name="location" align="center"></h:td>
                                 <h:td name="price"></h:td>
-                                <h:td name="receive"></h:td>
+                                <h:td name="receive" align="center"></h:td>
                                 <h:td name="apply"></h:td>
                             </h:tr>
                             <h:tr>
@@ -135,6 +139,7 @@
                                 <h:td name="holding_lib" align="center"></h:td>
                                 <h:td name="barcode"></h:td>
                                 <h:td name="circ_modifier" align="center"></h:td>
+                                <h:td name="call_number" align="center"></h:td>
                                 <h:td name="note"></h:td>
                                 <h:td name="location" align="center"></h:td>
                                 <h:td name="price"></h:td>
@@ -150,10 +155,16 @@
             </vbox>
         </vbox>
 
-        <hbox>
-            <button oncommand="batch_receiver._init();"
+        <hbox align="center">
+            <button oncommand="batch_receiver.init();"
                 label="&staff.serial.batch_receive.start_over;"
                 accesskey="&staff.serial.batch_receive.start_over.accesskey;" />
+            <!-- coming soon
+            <spacer flex="1" />
+            <checkbox oncommand="batch_receiver.toggle_receive_with_units(event);"
+                label="&staff.serial.batch_receive.with_units;"
+                accesskey="&staff.serial.batch_receive.with_units.accesskey;" />
+            -->
         </hbox>
     </box>
 </overlay>

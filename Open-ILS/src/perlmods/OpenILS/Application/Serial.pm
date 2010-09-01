@@ -878,22 +878,34 @@ sub unitize_items {
 }
 
 __PACKAGE__->register_method(
-    method    => "receive_items_one_unit_per",
-    api_name  => "open-ils.serial.receive_items.one_unit_per",
-    stream => 1,
-    api_level => 1,
-    argc      => 1,
-    signature => {
-        desc     => "Marks items in a list as received, creates a new unit for each item if any unit is fleshed on",
-        "params" => [ {
-                 name => "items",
-                 desc => "array of serial items, possibly fleshed with units and definitely fleshed with stream->distribution",
-                 type => "array"
+    "method" => "receive_items_one_unit_per",
+    "api_name" => "open-ils.serial.receive_items.one_unit_per",
+    "stream" => 1,
+    "api_level" => 1,
+    "argc" => 3,
+    "signature" => {
+        "desc" => "Marks items in a list as received, creates a new unit for each item if any unit is fleshed on",
+        "params" => [
+            {
+                 "name" => "auth",
+                 "desc" => "authtoken",
+                 "type" => "string"
+            },
+            {
+                 "name" => "items",
+                 "desc" => "array of serial items, possibly fleshed with units and definitely fleshed with stream->distribution",
+                 "type" => "array"
+            },
+            {
+                "name" => "record",
+                "desc" => "id of bib record these items are associated with
+                    (XXX could/should be derived from items)",
+                "type" => "number"
             }
         ],
         "return" => {
-            desc => "The item ID for each item successfully received",
-            type => "int"
+            "desc" => "The item ID for each item successfully received",
+            "type" => "int"
         }
     }
 );
@@ -907,7 +919,7 @@ sub receive_items_one_unit_per {
     # method names that point to this function can be repointed at
     # unitize_items()
 
-    my ($self, $client, $auth, $items) = @_;
+    my ($self, $client, $auth, $items, $record) = @_;
 
     my $e = new_editor("authtoken" => $auth, "xact" => 1);
     return $e->die_event unless $e->checkauth;
@@ -933,7 +945,7 @@ sub receive_items_one_unit_per {
             my $user_unit = $item->unit;
 
             # get a unit based on associated template
-            my $template_unit = _build_unit($e, $sdist, "receive");
+            my $template_unit = _build_unit($e, $sdist, "receive", 1);
             if ($U->event_code($template_unit)) {
                 $e->rollback;
                 $template_unit->{"note"} = "Item ID: " . $item->id;
@@ -944,6 +956,39 @@ sub receive_items_one_unit_per {
             foreach (@real_unit_fields) {
                 unless ($user_unit->$_) {
                     $user_unit->$_($template_unit->$_);
+                }
+            }
+
+            if ($user_unit->call_number) {
+                # call_number passed in will actually be a string representing
+                # a call_number label, not an actual acn object or even an ID.
+                # Therefore we must lookup the call_number requested, or
+                # create a new one if it does not exist for the given lib.
+
+                my $existing = $e->search_asset_call_number({
+                    "owning_lib" => $sdist->holding_lib->id,
+                    "label" => $user_unit->call_number,
+                    "record" => $record,
+                    "deleted" => "f"
+                }) or return $e->die_event;
+
+                if (@$existing) {
+                    $user_unit->call_number($existing->[0]->id);
+                } else {
+                    return $e->die_event unless
+                        $e->allowed("CREATE_VOLUME", $sdist->holding_lib->id);
+
+                    my $acn = new Fieldmapper::asset::call_number;
+
+                    $acn->creator($user_id);
+                    $acn->editor($user_id);
+                    $acn->record($record);
+                    $acn->label($user_unit->call_number);
+                    $acn->owning_lib($sdist->holding_lib->id);
+
+                    $e->create_asset_call_number($acn) or return $e->die_event;
+
+                    $user_unit->call_number($e->data->id);
                 }
             }
 
@@ -992,6 +1037,7 @@ sub _build_unit {
     my $editor = shift;
     my $sdist = shift;
     my $mode = shift;
+    my $skip_call_number = shift;
 
     my $attr = $mode . '_unit_template';
     my $template = $editor->retrieve_asset_copy_template($sdist->$attr) or
@@ -1011,11 +1057,14 @@ sub _build_unit {
     $unit->creator($editor->requestor->id);
     $unit->editor($editor->requestor->id);
 
-    $attr = $mode . '_call_number';
-    my $cn = $sdist->$attr or
-        return new OpenILS::Event("SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER");
+    unless ($skip_call_number) {
+        $attr = $mode . '_call_number';
+        my $cn = $sdist->$attr or
+            return new OpenILS::Event("SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER");
 
-    $unit->call_number($cn);
+        $unit->call_number($cn);
+    }
+
     $unit->barcode('AUTO');
     $unit->sort_key('');
     $unit->summary_contents('');
