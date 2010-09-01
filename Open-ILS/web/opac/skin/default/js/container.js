@@ -32,6 +32,7 @@ function containerDelete( id, callback, args ) {
 
 function containerCreate( name, pub, callback, args ) {
 
+    fieldmapper.IDL.load(['cbreb']);
 	var container = new cbreb();
 	container.btype('bookbag');
 	container.owner( G.user.id() );
@@ -51,6 +52,7 @@ function containerUpdate( container, callback, args ) {
 
 function containerCreateItem( containerId, target, callback, args ) {
 
+    fieldmapper.IDL.load(['cbrebi']);
 	var item = new cbrebi();
 	item.target_biblio_record_entry(target);
 	item.bucket(containerId);

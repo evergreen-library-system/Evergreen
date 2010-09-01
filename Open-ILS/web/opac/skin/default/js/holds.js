@@ -759,6 +759,7 @@ function holdsBuildHoldFromWindow() {
 		return;
 	}
 
+    fieldmapper.IDL.load(['ahr']);
 	var hold = new ahr();
 	if(holdArgs.editHold) {
 		hold = holdArgs.editHold;
