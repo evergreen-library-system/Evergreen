@@ -1622,6 +1622,7 @@
 <!ENTITY staff.serial.batch_receive.org_unit "Org Unit">
 <!ENTITY staff.serial.batch_receive.barcode "Barcode">
 <!ENTITY staff.serial.batch_receive.circ_modifier "Circ Modifier">
+<!ENTITY staff.serial.batch_receive.call_number "Call Number">
 <!ENTITY staff.serial.batch_receive.note "Note">
 <!ENTITY staff.serial.batch_receive.location "Copy Location">
 <!ENTITY staff.serial.batch_receive.price "Price">
@@ -1630,6 +1631,8 @@
 <!ENTITY staff.serial.batch_receive.recieve_selected "Receive Selected Items">
 <!ENTITY staff.serial.batch_receive.start_over "Start Over">
 <!ENTITY staff.serial.batch_receive.start_over.accesskey "O">
+<!ENTITY staff.serial.batch_receive.with_units "Create Units For Received Items">
+<!ENTITY staff.serial.batch_receive.with_units.accesskey "U">
 
 <!ENTITY staff.survey.wizard.page1 "Initial Settings">
 <!ENTITY staff.survey.wizard.page2 "Add Questions for Survey:">
