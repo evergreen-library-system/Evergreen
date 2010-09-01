@@ -433,6 +433,7 @@ function unhideGoogleBooksLink (data) {
 		zero based position the record should have in the display table */
 function resultDisplayRecord(rec, pos, is_mr) {
 
+    fieldmapper.IDL.load(['mvr']);
 	if(rec == null) rec = new mvr(); /* so the page won't die if there was an error */
 	recordsHandled++;
 	recordsCache.push(rec);
