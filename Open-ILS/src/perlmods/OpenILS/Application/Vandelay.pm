@@ -44,6 +44,7 @@ my %record_types = (
         x => 'holdings',
         y => 'holdings',
         z => 'auth',
+      ' ' => 'bib',
 );
 
 sub initialize {}
@@ -624,6 +625,13 @@ sub import_record_list_impl {
     my $update_queue_func = 'update_vandelay_bib_queue';
     my $rec_class = 'vqbr';
 
+    my %bib_sources;
+    my $editor = new_editor();
+    my $sources = $editor->search_config_bib_source({id => {'!=' => undef}});
+    foreach my $src (@$sources) {
+        $bib_sources{$src->id} = $src->source;
+    }
+
     if($type eq 'auth') {
         $overlay_func =~ s/bib/auth/o;
         $auto_overlay_func = s/bib/auth/o;
@@ -737,8 +745,7 @@ sub import_record_list_impl {
                 # No overlay / merge occurred.  Do a traditional record import by creating a new record
             
                 if($type eq 'bib') {
-                    $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import($e, $rec->marc); #$rec->bib_source
-
+                    $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import($e, $rec->marc, $bib_sources{$rec->bib_source});
                 } else {
 
                     $record = OpenILS::Application::Cat::AuthCommon->import_authority_record($e, $rec->marc); #$source);

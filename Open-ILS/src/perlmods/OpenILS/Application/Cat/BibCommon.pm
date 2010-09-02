@@ -89,6 +89,9 @@ sub biblio_record_xml_import {
 		return $evt if $evt;
 	}
 
+	# Silence warnings when _find_tcn_info() fails
+	$tcn ||= '';
+	$tcn_source ||= '';
 	$logger->info("user ".$e->requestor->id.
 		" creating new biblio entry with tcn=$tcn and tcn_source $tcn_source");
 
