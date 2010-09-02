@@ -1825,10 +1825,14 @@
 <!ENTITY staff.server.admin.copy_locations.editor.help "Help">
 <!ENTITY staff.server.admin.copy_locations.editor.opac_visible "OPAC Visible">
 <!ENTITY staff.server.admin.copy_locations.editor.circulate "Circulate">
+<!ENTITY staff.server.admin.copy_locations.editor.create "Create">
 <!ENTITY staff.server.admin.copy_locations.editor.edit "Edit">
 <!ENTITY staff.server.admin.copy_locations.editor.delete "Delete">
 <!ENTITY staff.server.admin.copy_locations.editor.help.holdable "If a copy location is 'Holdable', copies in that location may have holds placed on them.">
 <!ENTITY staff.server.admin.copy_locations.editor.delete.confirm "Are you sure you wish to delete the selected copy location?  Note: If copies are currently attached to this location, the delete operation will fail.">
+<!ENTITY staff.server.admin.copy_locations.editor.prefix "Label prefix">
+<!ENTITY staff.server.admin.copy_locations.editor.suffix "Label suffix">
+<!ENTITY staff.server.admin.copy_locations.editor.welcome "Welcome">
 <!ENTITY staff.server.admin.copy_locations.submit "Submit">
 <!ENTITY staff.server.admin.copy_locations.cancel "Cancel">
 <!ENTITY staff.server.admin.copy_locations.update_success "Update Succeeded">
@@ -2568,6 +2572,8 @@
 <!ENTITY staff.cat.marcedit.help.accesskey "H">
 <!ENTITY staff.cat.marcedit.caption.label "MARC Record">
 <!ENTITY staff.cat.marcedit.toggleFFE.label "Fixed Fields -- Record type: ">
+<!ENTITY staff.cat.marcedit.source.caption "Bibliographic source">
+<!ENTITY staff.cat.marcedit.source.submit.label "Update source">
 <!ENTITY staff.cat.marc_new.load.label "Load">
 <!ENTITY staff.cat.marc_new.load.accesskey "L">
 <!ENTITY staff.cat.marc_view.title "MARC View">

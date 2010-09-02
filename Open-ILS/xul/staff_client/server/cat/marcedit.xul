@@ -238,9 +238,9 @@
         </groupbox>
 
             <vbox>
-                <caption id="bib-source-list-caption" hidden="true">Bibliographic source</caption>
+                <caption id="bib-source-list-caption" hidden="true">&staff.cat.marcedit.source.caption;</caption>
                 <menulist id="bib-source-list" rows="3" hidden="true" onselect='onBibSourceSelect();'><menupopup id='bib-source-list-popup'></menupopup></menulist>
-                <button id="bib-source-list-button" label="Update source" disabled="true" oncommand="updateBibSource();" hidden="true"/>
+                <button id="bib-source-list-button" label="&staff.cat.marcedit.source.submit.label;" disabled="true" oncommand="updateBibSource();" hidden="true"/>
             </vbox>
         </hbox>
 
