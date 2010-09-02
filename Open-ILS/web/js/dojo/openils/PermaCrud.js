@@ -366,7 +366,9 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                 if (obj.ischanged()) method = 'update';
                 if (obj.isnew())     method = 'create';
                 if (obj.isdeleted()) method = 'delete';
-                if (!method) throw 'No action detected';
+                if (!method) {
+                    return _auto_CUD_recursive(obj_list, pos+1, final_complete, final_error);
+                }
 
                 var req_hash = {
                     method : 'open-ils.pcrud.' + method + '.' + obj.classname,
@@ -393,16 +395,15 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                             oncomplete : function (r) {
                                 var res = r.recv();
                                 if ( res && res.content() ) {
-                                    _auto_CUD_recursive( list, 0 );
+                                    if (r._final_complete) 
+                                        req._final_complete(req, _return_list);
+                                    _pcrud.disconnect();
                                 } else {
                                     _pcrud.disconnect();
                                     throw 'Transaction commit error';
                                 }
                             },
                         }).send();
-
-                        if (r._final_complete) r._final_complete(r);
-                        _pcrud.disconnect();
                     };
 
                     req.onerror = function (r) {
