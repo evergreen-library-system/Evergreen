@@ -1284,6 +1284,46 @@ sub hold_pull_list {
 }
 
 __PACKAGE__->register_method(
+    method    => "print_hold_pull_list",
+    api_name  => "open-ils.circ.hold_pull_list.print",
+    signature => {
+        desc   => 'Returns an HTML-formatted holds pull list',
+        params => [
+            { desc => 'Authtoken', type => 'string'},
+            { desc => 'Org unit ID.  Optional, defaults to workstation org unit', type => 'number'},
+        ],
+        return => {
+            desc => 'HTML string',
+            type => 'string'
+        }
+    }
+);
+
+sub print_hold_pull_list {
+    my($self, $client, $auth, $org_id) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    $org_id = (defined $org_id) ? $org_id : $e->requestor->ws_ou;
+    return $e->die_event unless $e->allowed('VIEW_HOLD', $org_id);
+
+    my $hold_ids = $U->storagereq(
+        'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.status_filtered.atomic',
+        $org_id, 10000);
+
+    return undef unless @$hold_ids;
+    $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
+
+    my $holds = $e->search_action_hold_request({id => $hold_ids}, {substream => 1});
+    $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
+
+    return $U->fire_object_event(undef, 'ahr.format.pull_list', $holds, $org_id);
+}
+
+
+
+__PACKAGE__->register_method(
     method        => 'fetch_hold_notify',
     api_name      => 'open-ils.circ.hold_notification.retrieve_by_hold',
     authoritative => 1,
