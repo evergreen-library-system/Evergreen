@@ -7,6 +7,7 @@
 
     <para>Evergreen is extremely scalable and can serve the need of a large range of libraries. The specific requirements and configuration of your system should be determined based on your 
 	specific needs of your organization or consortium.</para>
+ 		
     
 	<section xml:id="Testing_SRU_yaz-client">
 	        <info>
@@ -16,6 +17,8 @@
 			that works out of the box. To search Evergreen with yaz-client, choose the <emphasis>GET</emphasis> query method and issue the <emphasis>find</emphasis> command. 
 			In the following example, we connect to the Evergreen test server <emphasis>dev.gapines.org</emphasis>; substitute this hostname with your own Evergreen server 
 			hostname:</para>
+			<note><para>Some older versions of yaz-client have known issues with SRU. Ensure that you are using the latest edition of yaz from 
+			<link xlink:href="http://www.indexdata.com/yaz">http://www.indexdata.com/yaz</link>.</para></note>
 			<screen>
 			$ yaz-client http://dev.gapines.org/opac/extras/sru
 			Z> sru GET 1.1
