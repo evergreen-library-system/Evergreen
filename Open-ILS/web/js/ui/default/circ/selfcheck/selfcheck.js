@@ -341,7 +341,16 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
     );
 
     var evt = openils.Event.parse(this.patron);
-    if(evt) {
+    
+    // verify validity of the card used to log in
+    var inactiveCard = false;
+    if(!evt) {
+        var card = this.patron.cards().filter(
+            function(c) { return (c.barcode() == barcode); })[0];
+        inactiveCard = !openils.Util.isTrue(card.active());
+    }
+
+    if(evt || inactiveCard) {
         this.handleAlert(
             dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode]),
             false, 'login-failure'
