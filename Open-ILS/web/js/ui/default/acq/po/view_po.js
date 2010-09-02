@@ -312,6 +312,21 @@ function renderPo() {
     dojo.byId("acq-po-view-total-enc").innerHTML = PO.amount_encumbered().toFixed(2);
     dojo.byId("acq-po-view-total-spent").innerHTML = PO.amount_spent().toFixed(2);
     dojo.byId("acq-po-view-state").innerHTML = PO.state(); // TODO i18n
+
+    if(PO.order_date()) {
+        openils.Util.show('acq-po-activated-on', 'inline');
+        dojo.byId('acq-po-activated-on').innerHTML = 
+            dojo.string.substitute(
+                localeStrings.PO_ACTIVATED_ON, [
+                    dojo.date.locale.format(
+                        dojo.date.stamp.fromISOString(PO.order_date()), 
+                        {formatLength:'short'}
+                    )
+                ]
+            );
+
+    }
+
     makePrepayWidget(
         dojo.byId("acq-po-view-prepay"),
         openils.Util.isTrue(PO.prepayment_required())
