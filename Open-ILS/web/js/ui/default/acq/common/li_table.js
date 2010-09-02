@@ -274,11 +274,12 @@ function AcqLiTable() {
             );
         }
 
+        nodeByName("liid", row).innerHTML += li.id();
+
         if(li.eg_bib_id()) {
             openils.Util.show(nodeByName('catalog', row), 'inline');
             nodeByName("catalog_link", row).onclick = this.generateMakeRecTab(li.eg_bib_id());
         } else {
-            // TODO: Add discovery mechanism for bib linking
             openils.Util.show(nodeByName('link_to_catalog', row), 'inline');
             nodeByName("link_to_catalog_link", row).onclick = function() { self.drawBibFinder(li) };
         }
