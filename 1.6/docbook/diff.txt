@@ -1,0 +1,54 @@
+7c7
+<      $Id: diff.txt,v 1.1 2010/09/02 17:02:33 sheppards Exp sheppards $
+---
+>      $Id: diff.txt,v 1.1 2010/09/02 17:02:33 sheppards Exp sheppards $
+18a19,24
+>   <xsl:attribute name="font-style">
+>     <xsl:choose>
+>       <xsl:when test="self::abstract">italic</xsl:when>
+>       <xsl:otherwise>inherit</xsl:otherwise>
+>     </xsl:choose>
+>   </xsl:attribute>
+936a943,961
+> <xsl:attribute-set name="xref.properties">
+>   <xsl:attribute name="font-style">
+>     <xsl:choose>
+>       <xsl:when test="self::link">italic</xsl:when>
+>       <xsl:otherwise>inherit</xsl:otherwise>
+>     </xsl:choose>
+>   </xsl:attribute>
+>   <xsl:attribute name="text-decoration">
+>     <xsl:choose>
+>       <xsl:when test="self::link">underline</xsl:when>
+>       <xsl:otherwise>inherit</xsl:otherwise>
+>     </xsl:choose>
+>   </xsl:attribute>
+>   <xsl:attribute name="color">
+>     <xsl:choose>
+>       <xsl:when test="self::link">#0000ff</xsl:when>
+>       <xsl:otherwise>inherit</xsl:otherwise>
+>     </xsl:choose>
+>   </xsl:attribute>
+937a963,984
+> 
+> <xsl:attribute-set name="figure.properties">
+>   <xsl:attribute name="font-size">
+>     <xsl:choose>
+>       <xsl:when test="self::figure">75%</xsl:when>
+>       <xsl:otherwise>inherit</xsl:otherwise>
+>     </xsl:choose>
+>   </xsl:attribute>
+>   <xsl:attribute name="background-color">
+>     <xsl:choose>
+>       <xsl:when test="self::figure">#f9f9f9</xsl:when>
+>       <xsl:otherwise>inherit</xsl:otherwise>
+>     </xsl:choose>
+>   </xsl:attribute>
+>   <xsl:attribute name="color">
+>     <xsl:choose>
+>       <xsl:when test="self::figure">black</xsl:when>
+>       <xsl:otherwise>inherit</xsl:otherwise>
+>     </xsl:choose>
+>   </xsl:attribute>
+> </xsl:attribute-set>
+> 

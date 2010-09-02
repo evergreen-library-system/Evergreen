@@ -1,0 +1,51 @@
+I made a few minor adjustments to my DocBook distribution to experiment with rendering in
+the PDF file. These don't change the HTML file created, just the PDF file;
+
+I currently have DocBook installed on a Fedora-12 system in the directory tree:
+        "/usr/local/src/docbook-xsl-1.75.2".
+
+================================================================================
+The changes outlined below were made to the file:
+        "/usr/local/src/docbook-xsl-1.75.2/fo/param.xsl"
+which should appear in all DocBook installations that use the FO rendering engine,
+which is part of the DocBook toolchain that we use.
+
+I provided the modified version of the file "param.xsl", and a list of patch differences
+in the file "diff.txt".
+
+To apply the changes, just backup the original file, then replace it with the modified file.
+No other changes to the toolchain are required.
+
+To see the changes, just re-run "xsltproc" on an .XML file that already contains links or
+figures and you should see the updates in the PDF file created.
+================================================================================
+
+
+
+
+An outline of my changes follows:
+---------------------------------
+1. Changes were motivated by my realization that you can't identify <link>s to other chapters
+   or documents within the PDF file.
+   Now all links are rendered in blue, underlined italic text for easy identification.
+
+   modify section "xref.properties":
+        set property "font-style" to italic;
+        set property "text-decoration" to underline;
+        set property "background-color" to blue;
+
+2. Changes were motivated by my desire to draw attention to figures or diagrams.
+   Now all figures are rendered in small text (75% the size of normal text), and a
+   background color is added to the figure to differentiate it from the surrounding
+   document.
+
+   add new section "figure.properties";
+        set property "background-color" to grey;
+        set property "font-size" to 75%
+
+3. Changes were motivated to see if I could do it :)
+   Now all sections within an <abstract/> tag are rendered in italic font.
+
+   modify the section "abstract.properties";
+        set property "font-style" to italic;
+
