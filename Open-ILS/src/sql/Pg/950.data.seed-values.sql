@@ -6449,13 +6449,13 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, f
 VALUES (
     'serial.prev_issuance_copy_location',
     oils_i18n_gettext(
-        'setting.name',
+        'serial.prev_issuance_copy_location',
         'Serials: Previous Issuance Copy Location',
         'coust',
         'label'
     ),
     oils_i18n_gettext(
-        'setting.name',
+        'serial.prev_issuance_copy_location',
         'When a serial issuance is received, copies (units) of the previous issuance will be automatically moved into the configured shelving location',
         'coust',
         'descripton'
@@ -6468,13 +6468,13 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, f
 VALUES (
     'cat.default_classification_scheme',
     oils_i18n_gettext(
-        'setting.name',
+        'cat.default_classification_scheme',
         'Cataloging: Default Classification Scheme',
         'coust',
         'label'
     ),
     oils_i18n_gettext(
-        'setting.name',
+        'cat.default_classification_scheme',
         'Defines the default classification scheme for new call numbers: 1 = Generic; 2 = Dewey; 3 = LC',
         'coust',
         'descripton'
