@@ -82,7 +82,8 @@
     <xsl:attribute name="margin-top">0.1in</xsl:attribute>
     <xsl:attribute name="margin-bottom">0.1in</xsl:attribute>
   </xsl:attribute-set>
-  
+
+ 
  <!-- format pdf table of contents -->
   <xsl:attribute-set name="toc.line.properties">
     <xsl:attribute name="color">#304F14</xsl:attribute>
