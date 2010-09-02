@@ -7,7 +7,12 @@
 	<para>Terms related to Evergreen Software used within this manual</para>
 	<glossdiv>
 		<title>A</title>
-		<glossentry></glossentry>
+		<glossentry id="Apache">
+			<glossterm>Apache</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>B</title>
@@ -15,15 +20,36 @@
 	</glossdiv>
 	<glossdiv>
 		<title>C</title>
-		<glossentry></glossentry>
+		<glossentry id="CPAN">
+			<glossterm>CPAN</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>D</title>
-		<glossentry></glossentry>
+		<glossentry id="Debian">
+			<glossterm>Debian</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
+		<glossentry>
+			<glossterm>Domain name</glossterm>
+			<glossdef>
+				<para>First part of a network address.</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>E</title>
-		<glossentry></glossentry>
+		<glossentry id="ejabberd">
+			<glossterm>ejabberd</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>F</title>
@@ -43,7 +69,12 @@
 	</glossdiv>
 	<glossdiv>
 		<title>J</title>
-		<glossentry></glossentry>
+		<glossentry id="Jabber">
+			<glossterm>Jabber</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>K</title>
@@ -55,19 +86,39 @@
 	</glossdiv>
 	<glossdiv>
 		<title>M</title>
-		<glossentry></glossentry>
+		<glossentry id="memcached">
+			<glossterm>memcached</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>N</title>
-		<glossentry></glossentry>
+		<glossentry id="NetAddr">
+			<glossterm>Network address</glossterm>
+			<glossdef>
+				<para>Four numbers separated by periods (e.g., "192.168.1.15")</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>O</title>
-		<glossentry></glossentry>
+		<glossentry id="OPAC">
+			<glossterm>Online Public Access Catalog (OPAC)</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>P</title>
-		<glossentry></glossentry>
+		<glossentry id="PostgreSQL">
+			<glossterm>PostgreSQL</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>Q</title>
@@ -75,11 +126,33 @@
 	</glossdiv>
 	<glossdiv>
 		<title>R</title>
-		<glossentry></glossentry>
+		<glossentry id="router">
+			<glossterm>router</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>S</title>
-		<glossentry></glossentry>
+		<glossentry id="srfsh">
+			<glossterm>srfsh</glossterm>
+			<glossdef>
+				<para>A command language interpreter (shell) that executes commands read from the standard input. It is used to test the Open Service Request Framework (OpenSRF).</para>
+			</glossdef>
+		</glossentry>
+		<glossentry id="SSL Certificate">
+			<glossterm>SSL Certificate</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
+		<glossentry id="Staff Client">
+			<glossterm>Staff Client</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>T</title>
@@ -87,11 +160,33 @@
 	</glossdiv>
 	<glossdiv>
 		<title>U</title>
-		<glossentry></glossentry>
+		<glossentry id="Ubuntu">
+			<glossterm>Ubuntu</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>V</title>
-		<glossentry></glossentry>
+		<glossentry id="Virtualization">
+			<glossterm>Virtualization</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
+		<glossentry id="Virtual PC">
+			<glossterm>Virtual PC</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
+		<glossentry id="VMware">
+			<glossterm>VMware</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>W</title>
@@ -101,9 +196,20 @@
 		<title>X</title>
 		<glossentry id="xml">
 			<glossterm>XML</glossterm>
-			<acronym>XML</acronym>
 			<glossdef>
 				<para>Extensible Markup Language</para>
+			</glossdef>
+		</glossentry>
+		<glossentry id="xpath">
+			<glossterm>xpath</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
+		<glossentry id="xulrunner">
+			<glossterm>xulrunner</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
