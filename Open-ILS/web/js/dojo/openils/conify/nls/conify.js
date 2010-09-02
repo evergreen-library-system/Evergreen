@@ -85,6 +85,8 @@
     "SURVEY_QUESTION": "Question:",
     "SURVEY_ID": "Survey ID # ${0}",
     "SURVEY_FOOT_LABEL": "Questions & Answers",
-    "EVENT_DEF_LABEL" : "${0}: ${1}"
+    "EVENT_DEF_LABEL" : "${0}: ${1}",
+    "ACQ_DISTRIB_FORMULA_NAME_PROMPT" : "Enter new formula name",
+    "ACQ_DISTRIB_FORMULA_NAME_CLONE" : "${0} (Clone)"
 }
 
