@@ -49,6 +49,7 @@
     "FUND_LIST_ROLLOVER_SUMMARY_ROLLOVER_AMOUNT" : "<b>$${1}</b> unspent money rolled over to fiscal year ${0} for the selected locations",
     "FUND_XFER_SAME_SOURCE_AND_DEST" : "Cannot transfer. The source and destination funds are the same.",
     "FUND_XFER_CONFIRM" : "Are you sure you're ready to commit this transfer?",
+    "PO_ACTIVATED_ON" : "Activated ${0}",
     "PO_CHECKING" : "[One moment...]",
     "PO_COULD_ACTIVATE" : "Yes.",
     "PO_WARNING_NO_BLOCK_ACTIVATION" : "Yes; fund ${0} (${1}) would be encumbered beyond its warning level.",

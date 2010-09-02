@@ -5,7 +5,10 @@
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
     <div>
         <div id='oils-acq-picklist-header'>
-            <big>Purchase Order (<span id="acq-po-view-state"></span>)</big>
+            <big>
+                Purchase Order (<span id="acq-po-view-state"></span>) 
+            </big>
+            <span id='acq-po-activated-on' class='hidden'></span>
             <table class="oils-generic-table acq-po-info">
                 <tr>
                     <th>ID</th><td><a id="acq-po-view-id"/></td>
