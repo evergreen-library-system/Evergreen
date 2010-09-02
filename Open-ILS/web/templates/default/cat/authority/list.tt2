@@ -3,23 +3,6 @@
 
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/cat/authority/list.js'> </script>
 
-<div id='mergebox-div' class='hidden' style='float:right; border: 4px solid; width: 25%;'>
-    <div style="border-bottom: 4px solid; text-align: center;">
-        <div dojoType="dijit.form.Form" encType="multipart/form-data" action="" method="">
-            <div dojoType="dijit.form.Button" type="button" value="Merge">Merge
-                <script type="dojo/method" event="onClick" args="evt">
-                    mergeRecords();
-                </script>
-            </div>
-            <div dojoType="dijit.form.Button" type="button" value="Clear">Clear
-                <script type="dojo/method" event="onClick" args="evt">
-                    clearMergeRecords();
-                </script>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data" action="" method="">
     <span style="white-space: nowrap;">
         <label for="authTerm">Search term: </label>
@@ -62,6 +45,30 @@
         </span>
     </span>
 </div>
+
+<hr />
+
+<div id='mergebox-div' class='hidden' style='float:right; border: 4px solid; width: 25%;'>
+    <div style="border-bottom: 4px solid; text-align: center;">
+        <div dojoType="dijit.form.Form" encType="multipart/form-data" action="" method="">
+            <div dojoType="dijit.form.Button" type="button" value="Merge">Merge
+                <script type="dojo/method" event="onClick" args="evt">
+                    mergeRecords();
+                </script>
+            </div>
+            <div dojoType="dijit.form.Button" type="button" value="Clear">Clear
+                <script type="dojo/method" event="onClick" args="evt">
+                    clearMergeRecords();
+                </script>
+            </div>
+        </div>
+    </div>
+    <table>
+        <tbody id='mergebox-tbody'>
+        </tbody>
+    </table>
+</div>
+
 
 <div id='authlist-div'></div>
 
