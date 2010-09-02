@@ -1,3 +1,5 @@
+dojo.require('openils.widget.ProgressDialog');
+
 function getInvIdent(rowIndex, item) {
     if (item) {
         return {
@@ -19,9 +21,9 @@ function printInvoiceVouchers() {
     var inv_ids = dijit.byId("acq-unified-inv-grid").
         getSelectedItems().map(function(o) {return o.id[0];});
 
-    /* XXX this business about opening a window and populating its
-     * body should be wrapped up in a simple dijit or something.
-     * consolidate with claim_voucher.js maybe. */
+    progressDialog.show(true);
+
+    var html;
     if (inv_ids.length) {
         var win = null;
         fieldmapper.standardRequest(
@@ -30,22 +32,18 @@ function printInvoiceVouchers() {
                 "async": true,
                 "onresponse": function(r) {
                     if (r = openils.Util.readResponse(r)) {
-                        if (!win) {
-                            win = window.open(
-                                "", "", "resizable,width=800," +
-                                "height=600,scrollbars=1"
-                            );
-                            win.document.title = localeStrings.INVOICES;
-                            win.document.body.innerHTML =
-                                "<style type='text/css'>.acq-invoice-" +
+                        if(!html) {
+                            html = "<style type='text/css'>.acq-invoice-" +
                                 "voucher {page-break-after:always;}" +
                                 "</style>\n";
                         }
-                        win.document.body.innerHTML +=
-                            r.template_output().data();
+                        html += r.template_output().data();
                     }
                 },
-                "oncomplete": function() { win.print(); }
+                "oncomplete": function() { 
+                    progressDialog.hide();
+                    openils.Util.printHtmlString(html);
+                }
             }
         );
     }
