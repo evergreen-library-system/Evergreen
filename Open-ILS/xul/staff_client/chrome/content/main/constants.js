@@ -129,6 +129,7 @@ var api = {
     'FM_AHR_PULL_LIST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_pull_list.retrieve' },
     'FM_AHR_PULL_LIST_COUNT' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_pull_list.retrieve.count' },
     'FM_AHR_ID_LIST_PULL_LIST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_pull_list.id_list.retrieve', 'secure' : false },
+    'HTML_HOLD_PULL_LIST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_pull_list.print' },
     'FM_AHR_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.on_shelf.retrieve' },
     'FM_AHR_ID_LIST_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.id_list.on_shelf.retrieve', 'secure' : false },
     'FM_AHR_ID_LIST_EXPIRED_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.id_list.expired_on_shelf.retrieve', 'secure' : false },

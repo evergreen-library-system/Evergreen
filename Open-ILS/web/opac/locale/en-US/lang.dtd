@@ -2977,6 +2977,8 @@
 <!ENTITY staff.patron.holds_overlay.holds_export.label "Export">
 <!ENTITY staff.patron.holds_overlay.print.label "Print">
 <!ENTITY staff.patron.holds_overlay.print.accesskey "P">
+<!ENTITY staff.patron.holds_overlay.print_full_pull_list.label "Print Full Pull List">
+<!ENTITY staff.patron.holds_overlay.print_full_pull_list.accesskey "u">
 <!ENTITY staff.patron.holds_overlay.place_hold.label "Place Hold">
 <!ENTITY staff.patron.holds_overlay.place_hold.accesskey "H">
 <!ENTITY staff.patron.holds_overlay.show_cancelled_holds.label "Show Cancelled Holds">

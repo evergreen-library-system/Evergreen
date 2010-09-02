@@ -18,6 +18,7 @@
         <command id="cmd_csv_to_printer" />
         <command id="cmd_csv_to_file" />
         <command id="cmd_holds_print" />
+        <command id="cmd_holds_print_full" />
         <command id="cmd_show_catalog" />
         <command id="cmd_retrieve_patron" />
         <command id="cmd_holds_edit_desire_mint_condition" />
@@ -186,6 +187,7 @@
         </button>
 
         <button id="holds_print" label="&staff.patron.holds_overlay.print.label;" command="cmd_holds_print" accesskey="&staff.patron.holds_overlay.print.accesskey;" />
+        <button id="print_full_btn" hidden="true" label="&staff.patron.holds_overlay.print_full_pull_list.label;" command="cmd_holds_print_full" accesskey="&staff.patron.holds_overlay.print_full_pull_list.accesskey;" />
         <spacer flex="1"/>
     </hbox>
 
