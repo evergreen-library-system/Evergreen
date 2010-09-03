@@ -72,7 +72,7 @@ if(!dojo._hasResource["MARC.Record"]) {
                 var f = arguments[i];
                 var done = false;
                 for (var j = 0; j < this.fields.length; j++) {
-                    if (f.tag > this.fields[j].tag) {
+                    if (f.tag < this.fields[j].tag) {
                         this.insertFieldsBefore(this.fields[j], f);
                         done = true;
                         break;
