@@ -15,8 +15,8 @@ patron.holds.prototype = {
     'hold_interface_type' : null,
 
     'pull_from_shelf_interface' : {
-        '_default' : { 'limit' : 50, 'offset' : 0 },
-        'current' : { 'limit' : 50, 'offset' : 0 }
+        '_default' : { 'limit' : 100, 'offset' : 0 },
+        'current' : { 'limit' : 100, 'offset' : 0 }
     },
 
     'filter_lib' : null,
