@@ -6,10 +6,11 @@
     xmlns:h="http://www.w3.org/1999/xhtml"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+    <script type="text/javascript" src="/xul/server/serial/common.js" />
     <script type="text/javascript" src="/xul/server/serial/batch_receive.js" />
 
     <box id="batch_receive_main" flex="1" orient="vertical" class="my_overflow">
-        <caption label="&staff.serial.batch_receive;" />
+        <caption class="top" label="&staff.serial.batch_receive;" />
 
         <vbox flex="1" id="batch_receve_main_action">
             <vbox id="batch_receive_bib" class="hideme">

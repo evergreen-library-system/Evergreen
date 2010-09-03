@@ -1571,6 +1571,9 @@
 <!ENTITY staff.serial.mfhd_menu.add.label "Add MFHD Record">
 <!ENTITY staff.serial.mfhd_menu.edit.label "Edit MFHD Record">
 <!ENTITY staff.serial.mfhd_menu.delete.label "Delete MFHD Record">
+<!ENTITY staff.serial.scap_editor.pattern_wizard "Pattern Code Wizard">
+<!ENTITY staff.serial.scap_editor.pattern_wizard.accesskey "Z">
+<!ENTITY staff.serial.scap_editor.modify.accesskey "M">
 <!ENTITY staff.serial.scap_editor.modify "Modify Caption and Pattern(s)">
 <!ENTITY staff.serial.scap_editor.modify.accesskey "M">
 <!ENTITY staff.serial.scap_editor.create "Create Caption and Pattern(s)">
