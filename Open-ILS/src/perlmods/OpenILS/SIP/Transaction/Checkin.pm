@@ -87,7 +87,7 @@ sub do_checkin {
     }
 
     my $code = $U->event_code($resp);
-    my $txt  = $code ? $resp->{textcode} : '';
+    my $txt  = (defined $code) ? $resp->{textcode} : '';
 
     $resp->{org} &&= OpenILS::SIP::shortname_from_id($resp->{org}); # Convert id to shortname
 
