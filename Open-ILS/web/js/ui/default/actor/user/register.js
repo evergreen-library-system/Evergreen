@@ -44,6 +44,7 @@ var cloneUserObj;
 var stageUser;
 var optInSettings;
 var allCardsTemplate;
+var uEditCloneCopyAddr; // if true, copy addrs on clone instead of link
 
 var dupeUsrname = false;
 var dupeBarcode = false;
@@ -81,12 +82,15 @@ function load() {
         'global.juvenile_age_threshold',
         'patron.password.use_phone',
         'ui.patron.default_inet_access_level',
-        'circ.holds.behind_desk_pickup_supported'
+        'circ.holds.behind_desk_pickup_supported',
+        'circ.patron_edit.clone.copy_address'
     ]);
+
     for(k in orgSettings)
         if(orgSettings[k])
             orgSettings[k] = orgSettings[k].value;
 
+    uEditCloneCopyAddr = orgSettings['circ.patron_edit.clone.copy_address'];
     uEditUsePhonePw = orgSettings['patron.password.use_phone'];
     uEditFetchUserSettings(userId);
 
@@ -285,34 +289,69 @@ function uEditLoadStageUser(stageUname) {
 function uEditCopyCloneData(patron) {
     cloneUserObj = uEditLoadUser(cloneUser);
 
-    dojo.forEach( [
+    var cloneFields = [
         'home_ou', 
         'day_phone', 
         'evening_phone', 
         'other_phone',
-        'billing_address',
-        'usrgroup',
-        'mailing_address' ], 
+        'usrgroup'
+    ];
+
+    if(!uEditCloneCopyAddr) 
+        cloneFields = cloneFields.concat(['mailing_address', 'billing_address']);
+
+    dojo.forEach(
+        cloneFields, 
         function(field) {
             patron[field](cloneUserObj[field]());
         }
     );
 
-    // don't grab all addresses().  the only ones we can link to are billing/mailing
-    if(patron.billing_address()) {
-        var t = patron.addresses();
-            if (!t) { t = []; }
-            t.push(patron.billing_address());
-            patron.addresses(t);
-    }
+    if(uEditCloneCopyAddr) {
+        var billAddr, mailAddr;
 
-    if(patron.mailing_address() && (
-            patron.addresses().length == 0 || 
-            patron.mailing_address().id() != patron.billing_address().id()) ) {
-        var t = patron.addresses();
-            if (!t) { t = []; }
-            t.push(patron.mailing_address());
-            patron.addresses(t);
+        // copy the billing and mailing addresses into new addresses
+        function cloneAddr(addr) {
+            var newAddr = addr.clone();
+            newAddr.isnew(true);
+            newAddr.id(uEditAddrVirtId--);
+            newAddr.usr(patron.id());
+            patron.addresses().push(newAddr);
+            return newAddr;
+        }
+
+        if(billAddr = cloneUserObj.billing_address()) 
+            patron.billing_address(cloneAddr(billAddr));
+
+        if(mailAddr = cloneUserObj.mailing_address()) {
+            if (billAddr && billAddr.id() == mailAddr.id()) {
+                patron.mailing_address(patron.billing_address());
+            } else {
+                patron.mailing_address(cloneAddr(mailAddr));
+            }
+        }
+
+        if(!billAddr) // if there was no billing addr, use the mailing addr
+            patron.billing_address(patron.mailing_address());
+
+    } else {
+
+        // link the billing and mailing addresses
+        if(patron.billing_address()) {
+            var t = patron.addresses();
+                if (!t) { t = []; }
+                t.push(patron.billing_address());
+                patron.addresses(t);
+        }
+
+        if(patron.mailing_address() && (
+                patron.addresses().length == 0 || 
+                patron.mailing_address().id() != patron.billing_address().id()) ) {
+            var t = patron.addresses();
+                if (!t) { t = []; }
+                t.push(patron.mailing_address());
+                patron.addresses(t);
+        }
     }
 }
 
