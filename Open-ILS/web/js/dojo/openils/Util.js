@@ -28,6 +28,16 @@ if(!dojo._hasResource["openils.Util"]) {
     dojo.declare('openils.Util', null, {});
 
 
+    openils.Util.timeStampRegexp =
+        /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+-]\d{2})(\d{2})$/;
+
+    openils.Util.timeStampAsDateObj = function(s) {
+        if (s.constructor.name == "Date") return s;
+        return dojo.date.stamp.fromISOString(
+            s.replace(openils.Util.timeStampRegexp, "$1:$2")
+        );
+    }
+
     /**
      * Returns a locale-appropriate representation of a timestamp when the
      * timestamp (first argument) is actually a string as provided by
@@ -39,12 +49,7 @@ if(!dojo._hasResource["openils.Util"]) {
         if (typeof(opts) == "undefined") opts = {};
 
         return dojo.date.locale.format(
-            dojo.date.stamp.fromISOString(
-                s.replace(
-                    /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+-]\d{2})(\d{2})$/,
-                    "$1:$2"
-                )
-            ), opts
+            openils.Util.timeStampAsDateObj(s), opts
         );
     };
 

@@ -151,10 +151,9 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     }
                 case 'timestamp':
                     if (!value) return '';
-                    dojo.require('dojo.date.locale');
-                    dojo.require('dojo.date.stamp');
-                    var date = dojo.date.stamp.fromISOString(value);
-                    return dojo.date.locale.format(date, {formatLength:'short'});
+                    return openils.Util.timeStamp(
+                        value, {"formatLength": "short"}
+                    );
                 case 'org_unit':
                     if(value === null || value === undefined) return '';
                     return fieldmapper.aou.findOrgUnit(value).shortname();
@@ -230,12 +229,11 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         dojo.require('dijit.form.DateTextBox');
                         dojo.require('dojo.date.stamp');
                         this.widget = new dijit.form.DateTextBox(this.dijitArgs, this.parentNode);
-                        if(this.widgetValue != null) 
-                            this.widgetValue = dojo.date.stamp.fromISOString(
-                                // Kludge until the ML returning ISO timestamps with a colon in the timezone offset,
-                                // which dojo.date.stamp.fromISOString requires
-                                this.widgetValue.replace( /^(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d-\d\d)(\d\d)$/, '$1:$2') 
+                        if (this.widgetValue != null) {
+                            this.widgetValue = openils.Util.timeStampAsDateObj(
+                                this.widgetValue
                             );
+                        }
                         break;
 
                     case 'bool':
