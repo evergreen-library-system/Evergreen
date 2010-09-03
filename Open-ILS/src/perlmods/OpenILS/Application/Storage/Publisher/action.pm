@@ -1338,7 +1338,7 @@ sub new_hold_copy_targeter {
 	
 					$current_loop++ if (!@keepers);
 	
-					if ($self->{max_loops}{$pu_lib} && $self->{max_loops}{$pu_lib} <= $current_loop) {
+					if ($self->{max_loops}{$pu_lib} && $self->{max_loops}{$pu_lib} >= $current_loop) {
 						# We haven't exceeded max_loops yet
 						my @keeper_copies;
 						for my $cp ( @$all_copies ) {
