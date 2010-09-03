@@ -68,7 +68,7 @@ if(!dojo._hasResource["MARC.Record"]) {
 
         insertOrderedFields : function () {
             var me = this;
-            for ( var i in arguments ) { // arguments is special, and for..in is correct
+            for (var i = 0; i < arguments.length; i++) {
                 var f = arguments[i];
                 var done = false;
                 for (var j = 0; j < this.fields.length; j++) {
