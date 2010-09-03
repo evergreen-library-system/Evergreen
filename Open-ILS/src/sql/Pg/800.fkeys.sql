@@ -114,7 +114,7 @@ ALTER TABLE config.billing_type ADD CONSTRAINT config_billing_type_owner_fkey FO
 
 ALTER TABLE config.remote_account ADD CONSTRAINT config_remote_account_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE config.org_unit_setting_type ADD CONSTRAINT view_perm_fkey FOREIGN KEY (view_perm) REFERENCES permission.perm_list (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE config.org_unit_setting_type ADD CONSTRAINT update_perm_fkey FOREIGN KEY (update_perm) REFERENCES permission.perm_list (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE config.org_unit_setting_type ADD CONSTRAINT view_perm_fkey FOREIGN KEY (view_perm) REFERENCES permission.perm_list (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE config.org_unit_setting_type ADD CONSTRAINT update_perm_fkey FOREIGN KEY (update_perm) REFERENCES permission.perm_list (id) ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 COMMIT;
