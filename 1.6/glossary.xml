@@ -86,6 +86,12 @@
 	</glossdiv>
 	<glossdiv>
 		<title>M</title>
+		<glossentry id="McCoy">
+			<glossterm>McCoy</glossterm>
+			<glossdef>
+				<para>McCoy is an open-source application that allows add-on authors to provide secure updates to their users. Applications periodically look for and install updates to their add-ons. It's important that the update information retrieved has not been tampered with since being written by the add-on author. Specifically, it focuses on the process of digitally signing update manifests so the applications can verify the integrity of a manifest retrieved over normally insecure channels.</para>
+			</glossdef>
+		</glossentry>
 		<glossentry id="memcached">
 			<glossterm>memcached</glossterm>
 			<glossdef>
@@ -132,6 +138,12 @@
 				<para>CONTENT NEEDED HERE</para>
 			</glossdef>
 		</glossentry>
+		<glossentry id="Resource Hacker">
+			<glossterm>Resource Hacker</glossterm>
+			<glossdef>
+				<para>An open-source utility used to view, modify, rename, add, delete and extract resources in 32bit Windows executables</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>S</title>
@@ -171,6 +183,12 @@
 		<title>V</title>
 		<glossentry id="Virtualization">
 			<glossterm>Virtualization</glossterm>
+			<glossdef>
+				<para>CONTENT NEEDED HERE</para>
+			</glossdef>
+		</glossentry>
+		<glossentry id="VirtualBox">
+			<glossterm>VirtualBox</glossterm>
 			<glossdef>
 				<para>CONTENT NEEDED HERE</para>
 			</glossdef>
