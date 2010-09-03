@@ -289,7 +289,31 @@ patron.holds.prototype = {
                             );
                         }
                     ],
-
+                    'cmd_holds_print_full' : [
+                        ['command'],
+                        function() {
+                            var x_print_full_pull_list = document.getElementById('print_full_btn');
+                            try {
+                                if (progressmeter) {
+                                    progressmeter.mode = 'undetermined';
+                                    progressmeter.hidden = false;
+                                    x_print_full_pull_list.disabled = true;
+                                }
+                                JSAN.use('util.print');
+                                var print = new util.print('default');
+                                var robj = obj.network.simple_request('HTML_HOLD_PULL_LIST',[ses()]);
+                                if (typeof robj.ilsevent != 'undefined') { throw(robj); }
+                                print.simple( robj.template_output().data() );
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('cmd_holds_print_full',E);
+                            }
+                            if (progressmeter) {
+                                progressmeter.mode = 'determined';
+                                progressmeter.hidden = true;
+                                x_print_full_pull_list.disabled = false;
+                            }
+                        }
+                    ],
                     'cmd_holds_print' : [
                         ['command'],
                         function() {
@@ -1259,6 +1283,7 @@ patron.holds.prototype = {
         var x_show_cancelled_deck = document.getElementById('show_cancelled_deck');
         var x_clear_shelf_widgets = document.getElementById('clear_shelf_widgets');
         var x_expired_checkbox = document.getElementById('expired_checkbox');
+        var x_print_full_pull_list = document.getElementById('print_full_btn');
         switch(obj.hold_interface_type) {
             case 'shelf':
                 obj.render_lib_menus({'pickup_lib':true});
@@ -1269,6 +1294,7 @@ patron.holds.prototype = {
             break;
             case 'pull' :
                 if (x_fetch_more) x_fetch_more.hidden = false;
+                if (x_print_full_pull_list) x_print_full_pull_list.hidden = false;
                 if (x_lib_type_menu) x_lib_type_menu.hidden = true;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = true;
             break;
