@@ -1,5 +1,5 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
-caption {
+caption.top {
     background-color: #00246b;
     color: #ff6308;
     font-size: 200%;
@@ -10,3 +10,13 @@ label.receiving { width: 20em; text-align: right; }
 #batch_receive_entry { padding-top: 10px; }
 #entry_submitter { padding: 20px 0; }
 menulist.cn { width: 12em; }
+button[icon="remove"] { min-width: 2.5em; }
+#enum_row_headings label { font-weight: bold; }
+#chron_row_headings label { font-weight: bold; }
+#calendar_change_row_headings label { font-weight: bold; }
+description.step { font-style: italic; font-size: 110%; }
+checkbox:focus:not([label]) .checkbox-label-box {
+    -moz-appearance: none;
+    border: none;
+}
+.padded_bottom { padding-bottom: 10px; }

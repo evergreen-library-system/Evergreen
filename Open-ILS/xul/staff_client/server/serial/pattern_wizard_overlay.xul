@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE overlay PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+<overlay id="pattern_wizard_overlay"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script type="text/javascript" src="/xul/server/serial/common.js" />
+    <script type="text/javascript" src="/xul/server/serial/pattern_wizard.js" />
+
+    <box orient="vertical" id="pattern_wizard_main" flex="1">
+        <caption class="top" label="Pattern Code Wizard" />
+        <vbox flex="1">
+            <hbox align="center" class="padded_bottom">
+                <button id="wizard_previous_step" disabled="true"
+                    icon="go-back" label="Previous"
+                    oncommand="wizard.previous_step();" />
+                <spacer flex="1" />
+                <button id="wizard_next_step" disabled="true"
+                    icon="go-forward" label="Next"
+                    oncommand="wizard.next_step();" />
+            </hbox>
+            <vbox id="wizard_step_captions" class="hideme">
+                <checkbox id="use_enum"
+                    oncommand="wizard.enum_editor.toggle(event);"
+                    label="Use enumerations?" />
+                <vbox id="enum_editor_here" class="hideme">
+                    <description class="step">
+                        "v." and "no." are common first and second level
+                        enumeration captions.
+                    </description>
+                    <grid flex="1">
+                        <columns>
+                            <column />
+                            <column />
+                            <column />
+                            <column />
+                        </columns>
+                        <rows>
+                            <row id="enum_row_headings">
+                                <label value="Enumeration Caption" />
+                                <label value="Units Per Higher Level" />
+                                <label value="Numbering Continuity" />
+                                <label />
+                            </row>
+                            <row id="enum_row_template" align="top">
+                                <vbox>
+                                    <label name="caption_label" />
+                                    <hbox>
+                                        <spacer flex="1" />
+                                        <textbox size="6" name="caption" />
+                                    </hbox>
+                                </vbox>
+                                <radiogroup name="units_per">
+                                    <hbox align="center">
+                                        <radio label="Number" value="number" />
+                                        <textbox name="units_per_number"
+                                            size="6" />
+                                    </hbox>
+                                    <radio label="Varies" value="var" />
+                                    <radio label="Undetermined" value="und" />
+                                </radiogroup>
+                                <menulist name="continuity">
+                                    <menupopup>
+                                        <menuitem value="c" label="Increments continuously" />
+                                        <menuitem value="r" label="Restarts at unit completion" />
+                                    </menupopup>
+                                </menulist>
+                                <button icon="remove" name="remover" label="Remove" />
+                            </row>
+                        </rows>
+                    </grid>
+                    <hbox>
+                        <spacer flex="1" />
+                        <button id="enum_add_normal_row"
+                            icon="add"
+                            label="Add Enumeration" accesskey="E"
+                            oncommand="wizard.enum_editor.add_normal_row();"
+                            />
+                        <spacer flex="1" />
+                        <button id="enum_add_alt_row"
+                            icon="add"
+                            label="Add Alternate Enumeration" accesskey="A"
+                            oncommand="wizard.enum_editor.add_alt_row();"
+                            />
+                        <spacer flex="1" />
+                    </hbox>
+                </vbox>
+            </vbox>
+            <vbox id="wizard_step_calendar_change" class="hideme">
+                <checkbox id="use_calendar_change"
+                    disabled="true"
+                    oncommand="wizard.calendar_change_editor.toggle(event);"
+                    label="Use calendar changes?" />
+                <vbox id="calendar_change_editor_here" class="hideme">
+                    <description class="step">
+                        Identify any points during the year at which the
+                        highest level enumeration caption changes.
+                    </description>
+                    <grid>
+                        <columns>
+                            <column />
+                            <column flex="1" />
+                            <column />
+                        </columns>
+                        <rows>
+                            <row id="calendar_change_row_headings">
+                                <label value="Type" />
+                                <label value="Point" />
+                                <label />
+                            </row>
+                            <row id="calendar_row_template">
+                                <menulist name="type">
+                                    <menupopup>
+                                        <menuitem value="month" label="At start of a month" />
+                                        <menuitem value="season" label="At start of a season" />
+                                        <menuitem value="date" label="On a date" />
+                                    </menupopup>
+                                </menulist>
+                                <hbox align="center">
+                                    <menulist name="month">
+                                        <menupopup>
+                                        </menupopup>
+                                    </menulist>
+                                    <menulist name="season" class="hideme">
+                                        <menupopup>
+                                            <menuitem value="21" label="Spring" />
+                                            <menuitem value="22" label="Summer" />
+                                            <menuitem value="23" label="Autumn" />
+                                            <menuitem value="24" label="Winter" />
+                                        </menupopup>
+                                    </menulist>
+                                    <hbox name="date" class="hideme">
+                                        <menulist name="date_month">
+                                            <menupopup>
+                                            </menupopup>
+                                        </menulist>
+                                        <textbox name="date_day" size="3" />
+                                    </hbox>
+                                </hbox>
+                                <button icon="remove" name="remover" label="Remove" />
+                            </row>
+                        </rows>
+                    </grid>
+                    <hbox pack="center">
+                        <button
+                            id="calendar_change_add_row"
+                            label="Add Calendar Change"
+                            accesskey="C"
+                            oncommand="wizard.calendar_change_editor.add_row();" />
+                    </hbox>
+                </vbox>
+            </vbox>
+            <vbox id="wizard_step_chronology" class="hideme">
+                <checkbox id="use_chron"
+                    oncommand="wizard.chron_editor.toggle(event);"
+                    label="Use chronology captions?" />
+                <vbox id="chron_editor_here" class="hideme">
+                    <description class="step">
+                        Generally, each caption should be a smaller unit of
+                        time than the preceding caption.
+                    </description>
+                    <grid>
+                        <columns>
+                            <column />
+                            <column />
+                            <column flex="1" />
+                            <column />
+                        </columns>
+                        <rows>
+                            <row id="chron_row_headings">
+                                <label />
+                                <label value="Caption" />
+                                <label value="Display in holding field?" />
+                                <label />
+                            </row>
+                            <row id="chron_row_template">
+                                <label name="caption_label" />
+                                <menulist name="caption">
+                                    <menupopup>
+                                        <menuitem label="Year" value="year" />
+                                        <menuitem label="Season" value="season" />
+                                        <menuitem label="Month" value="month" />
+                                        <menuitem label="Week" value="week" />
+                                        <menuitem label="Day" value="day" />
+                                        <menuitem label="Hour" value="hour" />
+                                    </menupopup>
+                                </menulist>
+                                <checkbox name="display_in_holding" />
+                                <button icon="remove" name="remover" label="Remove" />
+                            </row>
+                        </rows>
+                    </grid>
+                    <hbox pack="center">
+                        <button
+                            id="chron_add_row"
+                            label="Add Chronology Caption"
+                            accesskey="C"
+                            oncommand="wizard.chron_editor.add_row();" />
+                    </hbox>
+                </vbox>
+            </vbox>
+            <vbox id="wizard_step_basics" class="hideme">
+                <grid class="padded_bottom">
+                    <columns>
+                        <column />
+                        <column />
+                    </columns>
+                    <rows><!-- TODO hide these inputs if we're doing an 855 -->
+                        <row align="center">
+                            <label align="right" value="Compressibility and Expandability:" />
+                            <menulist id="ind1">
+                                <menupopup>
+                                    <menuitem value="0" label="Cannot compress or expand" />
+                                    <menuitem value="1" label="Can compress but not expand" />
+                                    <menuitem value="2" label="Can compress or expand" />
+                                    <menuitem value="3" label="Unknown" />
+                                </menupopup>
+                            </menulist>
+                        </row>
+                        <row align="center">
+                            <label align="right" value="Caption Evaluation:" />
+                            <menulist id="ind2">
+                                <menupopup>
+                                    <menuitem value="0" label="Captions verified; all levels present" />
+                                    <menuitem value="1" label="Captions verified; all levels may not be present" />
+                                    <menuitem value="2" label="Captions unverified; all levels present" />
+                                    <menuitem value="3" label="Captions unverified; all levels may not be present" />
+                                </menupopup>
+                            </menulist>
+                        </row>
+                    </rows>
+                </grid>
+                <radiogroup
+                    oncommand="wizard.frequency_type_toggle(this.value);">
+                    <grid>
+                        <columns><column /><column /></columns>
+                        <rows>
+                            <row>
+                                <radio
+                                    label="Select fundamental periodicity:"
+                                    accesskey="F" selected="true"
+                                    value="hard_w" />
+                                <menulist id="hard_w">
+                                    <menupopup>
+                                        <menuitem label="Annual" value="a" />
+                                        <menuitem label="Bimonthly" value="b" />
+                                        <menuitem label="Semiweekly" value="c" />
+                                        <menuitem label="Daily" value="d" />
+                                        <menuitem label="Biweekly" value="e" />
+                                        <menuitem label="Semiannual" value="f" />
+                                        <menuitem label="Biennial" value="g" />
+                                        <menuitem label="Triennial" value="h" />
+                                        <menuitem label="Three times a week" value="i" />
+                                        <menuitem label="Three times a month" value="j" />
+                                        <menuitem label="Continuously updated" value="k" />
+                                        <menuitem label="Monthly" value="m" />
+                                        <menuitem label="Quarterly" value="q" />
+                                        <menuitem label="Semimonthly" value="s" />
+                                        <menuitem label="Three times a year" value="t" />
+                                        <menuitem label="Weekly" value="w" />
+                                        <menuitem label="Completely irregular" value="x" />
+                                    </menupopup>
+                                </menulist>
+                            </row>
+                            <row>
+                                <radio
+                                    label="Use number of issues per year:"
+                                    value="soft_w"
+                                    selected="false" accesskey="I" />
+                                <textbox id="soft_w" disabled="true" />
+                            </row>
+                        </rows>
+                    </grid>
+                </radiogroup>
+            </vbox>
+            <vbox id="wizard_step_submit" class="hideme">
+                <description class="step">
+                    Are you ready to create a pattern code from your
+                    selections in this wizard?
+                </description>
+                <hbox pack="center">
+                    <button oncommand="wizard.submit();" icon="accept"
+                        accesskey="P" label="Create Pattern Code" />
+                </hbox>
+            </vbox>
+        </vbox>
+    </box>
+</overlay>

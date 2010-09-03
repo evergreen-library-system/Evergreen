@@ -22,6 +22,7 @@
 
 		<hbox id="scap_editor_nav">
 			<spacer flex="1"/>
+			<button id="scap_pattern_wizard" label="&staff.serial.scap_editor.pattern_wizard;" accesskey="&staff.serial.scap_editor.pattern_wizard.accesskey;" oncommand="g.manage_subs.scap_editor.pattern_wizard();" />
 			<button id="scap_save" label="&staff.serial.scap_editor.modify;" hidden="true" accesskey="&staff.serial.scap_editor.modify.accesskey;" oncommand="g.manage_subs.scap_editor.save()" />
 			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
 		</hbox>

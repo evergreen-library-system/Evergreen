@@ -1,68 +1,12 @@
+/* The code in this file relies on common.js */
+
 dojo.require("dojo.cookie");
-dojo.require("dojo.date.locale");
-dojo.require("dojo.date.stamp");
-dojo.require("dojo.string");
 dojo.require("openils.Util");
 dojo.require("openils.User");
 dojo.require("openils.CGI");
 dojo.require("openils.PermaCrud");
 
 var batch_receiver;
-
-String.prototype.trim = function() {return this.replace(/^\s*(.+)\s*$/,"$1");}
-
-/**
- * hard_empty() is needed because dojo.empty() doesn't seem to work on
- * XUL nodes. This also means that dojo.place() with a position argument of
- * "only" doesn't do what it should, but calling hard_empty() on the refnode
- * first will do the trick.
- */
-function hard_empty(node) {
-    if (typeof(node) == "string")
-        node = dojo.byId(node);
-
-    if (node && node.childNodes.length > 0) {
-        dojo.forEach(
-            node.childNodes,
-            function(c) {
-                if (c) {
-                    if (c.childNodes.length > 0)
-                        dojo.forEach(c.childNodes, hard_empty);
-                    dojo.destroy(c);
-                }
-            }
-        );
-    }
-}
-
-function hide(e) {
-    if (typeof(e) == "string") e = dojo.byId(e);
-    openils.Util.addCSSClass(e, "hideme");
-}
-
-function show(e) {
-    if (typeof(e) == "string") e = dojo.byId(e);
-    openils.Util.removeCSSClass(e, "hideme");
-}
-
-function hide_table_cell(e) {
-    if (typeof(e) == "string") e = dojo.byId(e);
-
-    e.style.display = "none";
-    e.style.visibility = "hidden";
-}
-
-function show_table_cell(e) {
-    if (typeof(e) == "string") e = dojo.byId(e);
-    e.style.display = "table-cell";
-    e.style.visibility = "visible";
-}
-
-function busy(on) {
-    if (typeof(busy._window) == "undefined")
-        busy._window = dojo.query("window")[0];
-    busy._window.style.cursor = on ? "wait" : "auto";
-}
 
 function S(k) {
     return dojo.byId("serialStrings").getString("batch_receive." + k).
@@ -72,15 +16,6 @@ function S(k) {
 function F(k, args) {
     return dojo.byId("serialStrings").
         getFormattedString("batch_receive." + k, args).replace("\\n", "\n");
-}
-
-function T(s) { return document.createTextNode(s); }
-function D(s) {return s ? openils.Util.timeStamp(s,{"selector":"date"}) : "";}
-function node_by_name(s, ctx) {return dojo.query("[name='"+ s +"']",ctx)[0];}
-
-function num_sort(a, b) {
-    [a, b] = [Number(a), Number(b)];
-    return a > b ? 1 : (a < b ? -1 : 0);
 }
 
 function BatchReceiver() {
