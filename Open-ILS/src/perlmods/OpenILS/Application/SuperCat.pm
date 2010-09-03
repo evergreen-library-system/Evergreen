@@ -3110,7 +3110,7 @@ sub as_xml {
     $xml .= '        <circ_lib xmlns="http://open-ils.org/spec/actors/v1" ';
     $xml .= 'id="tag:open-ils.org:actor-org_unit/' . $self->obj->circ_lib->id . '" ';
     $xml .= 'shortname="'.$self->escape( $self->obj->circ_lib->shortname ) .'" ';
-    $xml .= 'name="'.$self->escape( $self->obj->circ_lib->name ) .' opac_visible="'.$self->obj->circ_lib->opac_visible.'""/>';
+    $xml .= 'name="'.$self->escape( $self->obj->circ_lib->name ) .'" opac_visible="'.$self->obj->circ_lib->opac_visible.'"/>';
     $xml .= "\n";
 
 	$xml .= "        <copy_notes>\n";
