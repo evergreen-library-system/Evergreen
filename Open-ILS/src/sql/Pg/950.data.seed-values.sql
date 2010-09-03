@@ -955,9 +955,11 @@ INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES
     (9, 6, 5, 'BM1', oils_i18n_gettext(9, 'Example Bookmobile 1', 'aou', 'name'));
 SELECT SETVAL('actor.org_unit_id_seq'::TEXT, 100);
 
-INSERT INTO actor.org_address VALUES (DEFAULT,DEFAULT,DEFAULT,1,'123 Main St.',NULL,'Anywhere',NULL,'GA','US','30303');
+INSERT INTO actor.org_address (org_unit, street1, city, state, country, post_code)
+SELECT id, '123 Main St.', 'Anywhere', 'GA', 'US', '30303'
+FROM actor.org_unit;
 
-UPDATE actor.org_unit SET holds_address = 1, ill_address = 1, billing_address = 1, mailing_address = 1;
+UPDATE actor.org_unit SET holds_address = id, ill_address = id, billing_address = id, mailing_address = id;
 
 INSERT INTO config.billing_type (id, name, owner) VALUES
 	( 1, oils_i18n_gettext(1, 'Overdue Materials', 'cbt', 'name'), 1);
