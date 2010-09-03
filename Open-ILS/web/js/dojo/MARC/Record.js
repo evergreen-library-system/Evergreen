@@ -83,12 +83,13 @@ if(!dojo._hasResource["MARC.Record"]) {
         },
 
         insertFieldsBefore : function (target) {
-            arguments.splice(0,1);
+            var args = Array.prototype.slice.call(arguments);
+            args.splice(0,1);
             var me = this;
             for (var j = 0; j < this.fields.length; j++) {
                 if (target === this.fields[j]) {
                     j--;
-                    dojo.forEach( arguments, function (f) {
+                    dojo.forEach( args, function (f) {
                         me.fields.splice(j++,0,f);
                     });
                     break;
@@ -97,11 +98,12 @@ if(!dojo._hasResource["MARC.Record"]) {
         },
 
         insertFieldsAfter : function (target) {
-            arguments.splice(0,1);
+            var args = Array.prototype.slice.call(arguments);
+            args.splice(0,1);
             var me = this;
             for (var j = 0; j < this.fields.length; j++) {
                 if (target === this.fields[j]) {
-                    dojo.forEach( arguments, function (f) {
+                    dojo.forEach( args, function (f) {
                         me.fields.splice(j++,0,f);
                     });
                     break;
