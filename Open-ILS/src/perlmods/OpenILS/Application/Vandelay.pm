@@ -541,6 +541,13 @@ sub import_record_list_impl {
     my %queues;
     my @ingest_queue;
 
+    my %bib_sources; 
+    my $editor = new_editor(); 
+    my $sources = $editor->search_config_bib_source({id => {'!=' => undef}}); 
+    foreach my $src (@$sources) { 
+        $bib_sources{$src->id} = $src->source; 
+    } 
+
     my $ingest_ses = OpenSRF::AppSession->connect('open-ils.ingest');
 
     for my $rec_id (@$rec_ids) {
@@ -570,11 +577,11 @@ sub import_record_list_impl {
             if(defined $overlay_target) {
                 $logger->info("vl: overlaying record $overlay_target");
                 $record = OpenILS::Application::Cat::BibCommon->biblio_record_replace_marc(
-                    $e, $overlay_target, $rec->marc); #$rec->bib_source
+                    $e, $overlay_target, $rec->marc, $bib_sources{$rec->bib_source});
             } else {
                 $logger->info("vl: importing new record");
                 $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import(
-                    $e, $rec->marc); #$rec->bib_source
+                    $e, $rec->marc, $bib_sources{$rec->bib_source});
             }
 
             if($U->event_code($record)) {
