@@ -29,6 +29,48 @@ cat.copy_browser.prototype = {
 
             JSAN.use('util.network'); obj.network = new util.network();
             JSAN.use('OpenILS.data'); obj.data = new OpenILS.data(); obj.data.init({'via':'stash'});
+
+            obj.controller_init(params);
+
+            obj.list_init(params);
+
+            obj.controller.render();
+
+            obj.default_depth = obj.depth_menu_init();
+            obj.default_lib = obj.data.hash.aou[ obj.library_menu_init() ];
+
+            document.getElementById('show_acns').addEventListener(
+                'command',
+                function(ev) {
+                    JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
+                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
+                },
+                false
+            );
+
+            document.getElementById('show_acps').addEventListener(
+                'command',
+                function(ev) {
+                    JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
+                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
+                },
+                false
+            );
+
+            obj.show_my_libs( obj.default_lib.id() );
+
+            JSAN.use('util.exec'); var exec = new util.exec(20); exec.timer(obj.funcs,100);
+
+            obj.show_consortial_count();
+
+        } catch(E) {
+            this.error.standard_unexpected_error_alert('cat.copy_browser.init: ',E);
+        }
+    },
+
+    'controller_init' : function(params) {
+        var obj = this;
+        try {
             JSAN.use('util.controller'); obj.controller = new util.controller();
             obj.controller.init(
                 {
@@ -836,7 +878,66 @@ cat.copy_browser.prototype = {
                 }
             );
 
-            obj.list_init(params);
+        } catch(E) {
+            this.error.standard_unexpected_error_alert('cat.copy_browser.controller_init(): ',E);
+        }
+    },
+
+    'depth_menu_init' : function(params) {
+        var obj = this;
+        try {
+            var list = [];
+            var max_depth = 0;
+            for (var i = 0; i < obj.data.list.aout.length; i++) {
+                var type = obj.data.list.aout[i];
+                var depth = type.depth();
+                if ( depth > max_depth) { max_depth = depth; }
+                if (typeof list[depth] == 'undefined') {
+                    list[depth] = [
+                        type.opac_label(),
+                        type.depth(),
+                        false,
+                        ( type.depth() * 2)
+                    ];
+                } else {
+                    list[depth][0] += ' / ' + type.opac_label();
+                }
+            }
+            ml = util.widgets.make_menulist( list, max_depth );
+            ml.setAttribute('id','depth_menu'); document.getElementById('x_depth_menu').appendChild(ml);
+            ml.addEventListener(
+                'command',
+                function(ev) {
+                    obj.default_depth = ev.target.value;
+                    if (document.getElementById('refresh_button')) document.getElementById('refresh_button').focus(); 
+                    JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
+                    util.widgets.save_attributes(file, { 
+                        'lib_menu' : [ 'value' ],
+                        'depth_menu' : [ 'value' ],
+                        'show_acns' : [ 'checked' ],
+                        'show_acps' : [ 'checked' ]
+                    });
+                },
+                false
+            );
+
+            file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
+            util.widgets.load_attributes(file);
+            ml.value = ml.getAttribute('value');
+            if (! ml.value) {
+                ml.value = max_depth;
+                ml.setAttribute('value',ml.value);
+            }
+
+            return ml.value;
+        } catch(E) {
+            alert('Error in copy_browser.js, depth_menu_init(): ' + E);
+        }
+    },
+
+    'library_menu_init' : function(params) {
+        var obj = this;
+        try {
 
             obj.org_ids = obj.network.simple_request('FM_AOU_IDS_RETRIEVE_VIA_RECORD_ID.authoritative',[ obj.docid ]);
             if (typeof obj.org_ids.ilsevent != 'undefined') throw(obj.org_ids);
@@ -844,9 +945,6 @@ cat.copy_browser.prototype = {
             obj.org_ids = util.functional.map_list( obj.org_ids, function (o) { return Number(o); });
 
             var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
-            //obj.show_libs( org );
-
-            //obj.show_my_libs();
 
             JSAN.use('util.file'); JSAN.use('util.widgets');
 
@@ -877,11 +975,15 @@ cat.copy_browser.prototype = {
                 ml.addEventListener(
                     'command',
                     function(ev) {
-                        //obj.show_my_libs(ev.target.value);
-                        //alert('lib picker, command caught - ml = ' + ml + '\nml.value = ' + ml.value + '\n');
+                        obj.default_lib = obj.data.hash.aou[ ev.target.value ];
                         if (document.getElementById('refresh_button')) document.getElementById('refresh_button').focus(); 
                         JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
-                        util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
+                        util.widgets.save_attributes(file, { 
+                            'lib_menu' : [ 'value' ],
+                            'depth_menu' : [ 'value' ],
+                            'show_acns' : [ 'checked' ],
+                            'show_acps' : [ 'checked' ]
+                        });
                         obj.refresh_list();
                     },
                     false
@@ -890,8 +992,6 @@ cat.copy_browser.prototype = {
                 throw(document.getElementById('catStrings').getString('staff.cat.copy_browser.missing_library') + '\n');
             }
 
-            JSAN.use('util.widgets'); 
-        
             file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
             util.widgets.load_attributes(file);
             ml.value = ml.getAttribute('value');
@@ -900,32 +1000,10 @@ cat.copy_browser.prototype = {
                 ml.setAttribute('value',ml.value);
             }
 
-            document.getElementById('show_acns').addEventListener(
-                'command',
-                function(ev) {
-                    JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
-                },
-                false
-            );
-
-            document.getElementById('show_acps').addEventListener(
-                'command',
-                function(ev) {
-                    JSAN.use('util.file'); var file = new util.file('copy_browser_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_acns' : [ 'checked' ], 'show_acps' : [ 'checked' ] });
-                },
-                false
-            );
-
-            obj.show_my_libs( ml.value );
-
-            JSAN.use('util.exec'); var exec = new util.exec(20); exec.timer(obj.funcs,100);
-
-            obj.show_consortial_count();
+            return ml.value;
 
         } catch(E) {
-            this.error.standard_unexpected_error_alert('cat.copy_browser.init: ',E);
+            this.error.standard_unexpected_error_alert('cat.copy_browser.library_menu_init(): ',E);
         }
     },
 
@@ -957,7 +1035,7 @@ cat.copy_browser.prototype = {
                 if (typeof org != 'object') org = obj.data.hash.aou[ org ];
             }
             obj.show_libs( org, false );
-        
+/*        
             var p_org = obj.data.hash.aou[ org.parent_ou() ];
             if (p_org) {
                 obj.funcs.push( function() { 
@@ -980,6 +1058,7 @@ cat.copy_browser.prototype = {
                     document.getElementById('lib_menu').setAttribute('disabled','false'); 
                 } );
             }
+*/
         } catch(E) {
             alert(E);
         }
@@ -999,13 +1078,17 @@ cat.copy_browser.prototype = {
             } );
 
             for (var i = 0; i < obj.data.tree.aou.children().length; i++) {
-                obj.funcs.push(
-                    function(o) {
-                        return function() {
-                            obj.show_libs( o );
-                        }
-                    }( obj.data.tree.aou.children()[i] )
-                );
+                var child = obj.data.tree.aou.children()[i];
+                if (obj.data.hash.aout[child.ou_type()].depth() <= obj.default_depth
+                && orgIsMine(obj.default_lib,child,obj.default_depth)) {
+                    obj.funcs.push(
+                        function(o) {
+                            return function() {
+                                obj.show_libs( o );
+                            }
+                        }( child )
+                    );
+                }
             }
             obj.funcs.push( function() { 
                 document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
@@ -1097,11 +1180,15 @@ cat.copy_browser.prototype = {
                         x.setAttribute('container','true');
                         if (show_open) x.setAttribute('open','true');
                         for (var i = 0; i < start_aou.children().length; i++) {
-                            obj.funcs.push(
-                                function(o,p) {
-                                    return function() { obj.append_org(o,p); };
-                                }( start_aou.children()[i], start_aou )
-                            );
+                            var child = start_aou.children()[i];
+                            if (obj.data.hash.aout[child.ou_type()].depth() <= obj.default_depth
+                            && orgIsMine(obj.default_lib,child,obj.default_depth)) {
+                                obj.funcs.push(
+                                    function(o,p) {
+                                        return function() { obj.append_org(o,p); };
+                                    }( child, start_aou )
+                                );
+                            }
                         }
                     }
                 }
@@ -1159,44 +1246,54 @@ cat.copy_browser.prototype = {
 
     'on_select_org' : function(org_id,twisty) {
         var obj = this;
-        var org = obj.data.hash.aou[ org_id ];
-        if (obj.data.hash.aout[ org.ou_type() ].depth() == 0 && ! get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) return;
-        obj.funcs.push( function() { 
-            document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
-            document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
-            document.getElementById('lib_menu').setAttribute('disabled','true'); 
-        } );
-        if (org.children()) {
-            for (var i = 0; i < org.children().length; i++) {
-                obj.funcs.push(
-                    function(o,p) {
-                        return function() {
-                            obj.append_org(o,p)
-                        }
-                    }(org.children()[i],org)
-                );
+        try {
+            var org = obj.data.hash.aou[ org_id ];
+            if (obj.data.hash.aout[ org.ou_type() ].depth() == 0 && ! get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) return;
+            obj.funcs.push( function() { 
+                document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
+                document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
+                document.getElementById('lib_menu').setAttribute('disabled','true'); 
+            } );
+            if (org.children()) {
+                for (var i = 0; i < org.children().length; i++) {
+                    var child = org.children()[i];
+                    if (obj.data.hash.aout[child.ou_type()].depth() <= obj.default_depth
+                    && orgIsMine(obj.default_lib,child,obj.default_depth)) {
+                        obj.funcs.push(
+                            function(o,p) {
+                                return function() {
+                                    obj.append_org(o,p)
+                                }
+                            }(child,org)
+                        );
+                    }
+                }
+            } 
+            if (obj.map_acn[ 'aou_' + org_id ]) {
+                for (var i = 0; i < obj.map_acn[ 'aou_' + org_id ].length; i++) {
+                    obj.funcs.push(
+                        function(o,a) {
+                            return function() {
+                                obj.append_acn(o,a);
+                            }
+                        }( org, obj.map_acn[ 'aou_' + org_id ][i] )
+                    );
+                }
             }
-        } 
-        if (obj.map_acn[ 'aou_' + org_id ]) {
-            for (var i = 0; i < obj.map_acn[ 'aou_' + org_id ].length; i++) {
-                obj.funcs.push(
-                    function(o,a) {
-                        return function() {
-                            obj.append_acn(o,a);
-                        }
-                    }( org, obj.map_acn[ 'aou_' + org_id ][i] )
-                );
-            }
+            obj.funcs.push( function() { 
+                document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
+                document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','false'); 
+                document.getElementById('lib_menu').setAttribute('disabled','false'); 
+            } );
+        } catch(E) {
+            alert('Error in copy_browser.js, on_select_org(): ' + E);
         }
-        obj.funcs.push( function() { 
-            document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
-            document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','false'); 
-            document.getElementById('lib_menu').setAttribute('disabled','false'); 
-        } );
     },
 
     'append_org' : function (org,parent_org,params) {
         var obj = this;
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        obj.error.consoleService.logStringMessage('append_org: org = ' + org.shortname() + ' parent_org = ' + (parent_org ? parent_org.shortname() : '') + ' params = ' + js2JSON(params) + '\n');
         try {
             if (obj.map_tree[ 'aou_' + org.id() ]) {
                 var x = obj.map_tree[ 'aou_' + org.id() ];
@@ -1534,8 +1631,6 @@ cat.copy_browser.prototype = {
                 }
             );
 
-            obj.controller.render();
-
         } catch(E) {
             this.error.sdump('D_ERROR','cat.copy_browser.list_init: ' + E + '\n');
             alert(E);
@@ -1632,11 +1727,7 @@ cat.copy_browser.prototype = {
             if (typeof obj.org_ids.ilsevent != 'undefined') throw(obj.org_ids);
             JSAN.use('util.functional'); 
             obj.org_ids = util.functional.map_list( obj.org_ids, function (o) { return Number(o); });
-            /*
-            var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
-            obj.show_libs( org );
-            */
-            obj.show_my_libs( document.getElementById('lib_menu').value );
+            obj.show_my_libs( obj.default_lib.id() );
             // FIXME - we get a null from the copy_count call if we call it too quickly here
             setTimeout( function() { obj.show_consortial_count(); }, 2000 );
         } catch(E) {

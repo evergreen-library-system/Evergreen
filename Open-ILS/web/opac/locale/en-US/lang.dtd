@@ -2429,7 +2429,8 @@
 <!ENTITY staff.cat.copy_browser.actions.cmd_refresh_list.label "Refresh Listing">
 <!ENTITY staff.cat.copy_browser.actions.cmd_refresh_list.accesskey "R">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.caption "Holdings Maintenance">
-<!ENTITY staff.cat.copy_browser.holdings_maintenance.legend "Green in the list below means the library has volumes for this record.">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.legend "Green and bold in the list below means the library has volumes for this record.">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.depth_filter_menu "Limit:">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.consortial_total "Consortial Total:">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.consortial_available "Available:">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.show_acns "Show Volumes">
