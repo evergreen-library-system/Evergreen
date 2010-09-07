@@ -2,15 +2,14 @@
 <glossary xml:id="Glossary" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
 	<title>Glossary</title>
 	<abstract>
-		<para>In this section we expand acronyms, define terms, and generally try to un-obfuscate the Evergreen nomenclature.</para>
+		<para>In this section we expand acronyms, define terms, and generally try to explain concepts used by Evergreen software.</para>
 	</abstract>
-	<para>Terms related to Evergreen Software used within this manual</para>
 	<glossdiv>
 		<title>A</title>
 		<glossentry id="Apache">
 			<glossterm>Apache</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>Open-source web server software used to serve both static content and dynamic web pages in a secure and reliable way. More information is available at <ulink url="http://apache.org">apache.org</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -23,7 +22,7 @@
 		<glossentry id="CPAN">
 			<glossterm>CPAN</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>An open-source archive of software modules written in Perl. More information is available at <ulink url="http://www.cpan.org">www.cpan.org</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -32,13 +31,13 @@
 		<glossentry id="Debian">
 			<glossterm>Debian</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>One of the most popular open-source operating system using the Linux kernel that provides over 25000 useful precompiled software packages. Also known as Debian GNU/Linux. More information is available at <ulink url="http://www.debian.org">www.debian.org</ulink>.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry>
 			<glossterm>Domain name</glossterm>
 			<glossdef>
-				<para>First part of a network address.</para>
+				<para>PLEASE ADD CONTENT.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -47,7 +46,7 @@
 		<glossentry id="ejabberd">
 			<glossterm>ejabberd</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>An open-source Jabber/XMPP instant messaging server that runs under popular operating systems (e.g., Mac OSX, GNU/Linux, and Microsoft Windows). One popular use is to provide XMPP messaging services for a Jabber domain across an extendable cluster of cheap, easily-replaced machine nodes. See <link linkend="xmpp">"XMPP"</link> and <link linkend="jabber">"Jabber"</link>. More information is available at <ulink url="http://www.ejabberd.im/">http://www.ejabberd.im</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -69,10 +68,10 @@
 	</glossdiv>
 	<glossdiv>
 		<title>J</title>
-		<glossentry id="Jabber">
+		<glossentry id="jabber">
 			<glossterm>Jabber</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>Now known as XMPP (Extensible Messaging and Presence Protocol), it was originally named "Jabber". See <link linkend="xmpp">"XMPP"</link>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -89,13 +88,13 @@
 		<glossentry id="McCoy">
 			<glossterm>McCoy</glossterm>
 			<glossdef>
-				<para>McCoy is an open-source application that allows add-on authors to provide secure updates to their users. Applications periodically look for and install updates to their add-ons. It's important that the update information retrieved has not been tampered with since being written by the add-on author. Specifically, it focuses on the process of digitally signing update manifests so the applications can verify the integrity of a manifest retrieved over normally insecure channels.</para>
+				<para>McCoy is an open-source application that allows add-on authors to provide secure updates to their users. More information is available at <ulink url="https://developer.mozilla.org/en/McCoy">developer.mozilla.org/en/McCoy</ulink>.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="memcached">
 			<glossterm>memcached</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>PLEASE ADD CONTENT</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -113,7 +112,7 @@
 		<glossentry id="OPAC">
 			<glossterm>Online Public Access Catalog (OPAC)</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>PLEASE ADD CONTENT</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -122,7 +121,7 @@
 		<glossentry id="PostgreSQL">
 			<glossterm>PostgreSQL</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>PLEASE ADD CONTENT</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -135,7 +134,7 @@
 		<glossentry id="router">
 			<glossterm>router</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>PLEASE ADD CONTENT</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="Resource Hacker">
@@ -156,13 +155,13 @@
 		<glossentry id="SSL Certificate">
 			<glossterm>SSL Certificate</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>PLEASE ADD CONTENT</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="Staff Client">
 			<glossterm>Staff Client</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>PLEASE ADD CONTENT</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -175,7 +174,7 @@
 		<glossentry id="Ubuntu">
 			<glossterm>Ubuntu</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>A popular open-source operating system using the Linux kernel that was originally based on the Debian GNU/Linux operating system. More information is available at <ulink url="http://www.ubuntu.com">www.ubuntu.com</ulink>. Also see <link linkend="Debian">"Debian"</link>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -184,25 +183,25 @@
 		<glossentry id="Virtualization">
 			<glossterm>Virtualization</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>PLEASE ADD CONTENT</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="VirtualBox">
 			<glossterm>VirtualBox</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>PLEASE ADD CONTENT</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="Virtual PC">
 			<glossterm>Virtual PC</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>PLEASE ADD CONTENT</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="VMware">
 			<glossterm>VMware</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>PLEASE ADD CONTENT</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -215,19 +214,31 @@
 		<glossentry id="xml">
 			<glossterm>XML</glossterm>
 			<glossdef>
-				<para>Extensible Markup Language</para>
+				<para>The Extensible Markup Language, a set of rules for encoding information in a way that is both human- and machine-readable. It is primarily used to define documents but can also be used to define arbitrary data structures. It was originally defined by the World Wide Web Consortium (W3C).</para>
+			</glossdef>
+		</glossentry>
+		<glossentry id="xmpp">
+			<glossterm>XMPP</glossterm>
+			<glossdef>
+				<para>An open-standard communications protocol, based on XML, used in message-oriented middleware. It supports the concept of a consistent "domain" of message types that flow between software applications, possibly on different operating systems and architectures. More information is available at <ulink url="http://xmpp.org">xmpp.org</ulink>. Also see <link linkend="jabber">"Jabber"</link>.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="xpath">
 			<glossterm>xpath</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>The XML Path Language, a query language based on a tree representation of an XML document. It is used to programmatically select nodes from an XML document and to do minor computation involving strings, numbers and Boolean values. It allows you to identify parts of the XML document tree, to navigate around the tree, and to uniquely select nodes. The currently version is "XPath 2.0". It was originally defined by the World Wide Web Consortium (W3C).</para>
+			</glossdef>
+		</glossentry>
+		<glossentry id="xul">
+			<glossterm>XUL</glossterm>
+			<glossdef>
+				<para>The XML User Interface Language, a specialized interface language that allows building cross-platform applications that drive Mozilla-based browsers such as Firefox. More information is available at <ulink url="https://developer.mozilla.org/en/XUL">https://developer.mozilla.org/en/XUL</ulink>.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="xulrunner">
 			<glossterm>xulrunner</glossterm>
 			<glossdef>
-				<para>CONTENT NEEDED HERE</para>
+				<para>A specialized run-time application environment that provides support for installing, upgrading and uninstalling XUL applications (See <link linkend="xul">"XUL"</link>). It operates with Mozilla-based applications such as the Firefox browser. More information is available at <ulink url="https://developer.mozilla.org/en/XULRunner">https://developer.mozilla.org/en/XULRunner</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
