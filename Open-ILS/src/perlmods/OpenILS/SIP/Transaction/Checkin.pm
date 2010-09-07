@@ -56,7 +56,7 @@ sub resensitize {
 my %org_sn_cache;
 sub do_checkin {
     my $self = shift;
-    my ($inst_id, $trans_date, $return_date, $current_loc, $item_props) = @_; # most unused
+    my ($sip_handler, $inst_id, $trans_date, $return_date, $current_loc, $item_props) = @_; # most unused
 
     unless($self->{item}) {
         $self->ok(0);
@@ -65,13 +65,22 @@ sub do_checkin {
 
     $inst_id ||= '';
 
+    # physical location defaults to ws ou of the logged in sip user,
+    # which currently defaults to home_ou, since ws's aren't used.
+    my $phys_location = $sip_handler->{login_session}->ws_ou;
+
     my $args = {barcode => $self->{item}->id};
-    if($current_loc) {
+
+    if($current_loc) { # SIP client specified a physical location
+
         my $org_id = (defined $org_sn_cache{$current_loc}) ? 
             $org_sn_cache{$current_loc} :
             OpenILS::SIP->editor()->search_actor_org_unit({shortname => $current_loc}, {idlist => 1})->[0];
+
         $org_sn_cache{$current_loc} = $org_id;
-        $args->{circ_lib} = $org_id if defined $org_id;
+
+        # if the caller specifies a physical location, use it as the checkin circ lib
+        $args->{circ_lib} = $phys_location = $org_id if defined $org_id;
     }
 
     my $resp = $U->simplereq(
@@ -81,47 +90,53 @@ sub do_checkin {
     );
 
     if ($debug) {
-        open (DUMP, ">/tmp/sip_do_checkin.dump");
-        print DUMP Dumper($resp);
-        close DUMP;
+        my $s = Dumper($resp);
+        $s =~ s/\n//mog;
+        syslog('LOG_INFO', "OILS: Checkin response: $s");
     }
+
+    # In oddball cases, we can receive an array of events.
+    # The first event received should be treated as the main result.
+    $resp = $$resp[0] if ref($resp) eq 'ARRAY';
 
     my $code = $U->event_code($resp);
     my $txt  = (defined $code) ? $resp->{textcode} : '';
+
+    syslog('LOG_INFO', "OILS: Checkin resulted in event: $txt");
 
     $resp->{org} &&= OpenILS::SIP::shortname_from_id($resp->{org}); # Convert id to shortname
 
     $self->destination_loc($resp->{org}) if $resp->{org};
 
-    $debug and warn "Checkin textcode: $txt, org: " . ($resp->{org} || '');
-
     if ($txt eq 'ROUTE_ITEM') {
-        # $self->destination_loc($resp->{org});   # org value already converted and added (above)
-        $self->alert_type('04');            # send to other branch
-    }
-    elsif ($txt and $txt ne 'NO_CHANGE' and $txt ne 'SUCCESS') {
-        syslog('LOG_WARNING', "OILS: Checkin returned unrecognized event $code : $txt");
-        # $self->ok(0);   # maybe still ok?
-        $self->alert_type('00');            # unknown
+        # Note, this alert_type will be overridden below if this is a hold transit
+        $self->alert_type('04'); # send to other branch
+
+    } elsif ($txt and $txt ne 'NO_CHANGE' and $txt ne 'SUCCESS') {
+        syslog('LOG_WARNING', "OILS: Checkin returned unexpected event $code : $txt");
+        $self->alert_type('00'); # unknown
     }
     
     my $payload = $resp->{payload} || {};
 
     # Two places to look for hold data.  These are more important and more definitive than above.
     if ($payload->{remote_hold}) {
-        $self->item->hold($payload->{remote_hold});     # actually only used for checkin at non-owning branch w/ hold at same branch
-    }
-    elsif ($payload->{hold}) {
+        # actually only used for checkin at non-owning branch w/ hold at same branch
+        $self->item->hold($payload->{remote_hold});     
+
+    } elsif ($payload->{hold}) {
         $self->item->hold($payload->{hold});
     }
 
     if ($self->item->hold) {
-        my $holder = OpenILS::SIP->find_patron('usr' => $self->item->hold->usr)
-            or warn "OpenILS::SIP->find_patron cannot find hold usr => '" . $self->item->hold->usr . "'";
+        my $holder = OpenILS::SIP->find_patron('usr' => $self->item->hold->usr) or
+            syslog('LOG_WARNING', "OpenILS::SIP->find_patron cannot find hold usr => '" . $self->item->hold->usr . "'");
+
         $self->item->hold_patron_bcode( $holder->id   );
         $self->item->hold_patron_name(  $holder->name );     # Item already had the holder ID, we really just needed the name
         $self->item->destination_loc( OpenILS::SIP::shortname_from_id($self->item->hold->pickup_lib) );   # must use pickup_lib as method
-        my $atype = ($self->item->destination_loc eq $inst_id)  ? '01' : '02';
+
+        my $atype = ($self->item->hold->pickup_lib == $phys_location) ? '01' : '02';
         $self->alert_type($atype);
     }
 
@@ -131,14 +146,13 @@ sub do_checkin {
     my $copy = $resp->{payload}->{copy} || '';
 
     if ( $circ ) {
-        # $self->item->{patron} = OpenILS::SIP::patron_barcode_from_id($circ->usr);     # Item.pm already does this for us!
         $self->ok(1);
     } elsif ($txt eq 'NO_CHANGE' or $txt eq 'SUCCESS' or $txt eq 'ROUTE_ITEM') {
-        $self->ok(1);       # NO_CHANGE means it wasn't checked out anyway, no problem
+        $self->ok(1); # NO_CHANGE means it wasn't checked out anyway, no problem
     } else {
         $self->alert(1);
-        $self->alert_type('00') unless $self->alert_type;   # wasn't checked out, but *something* changed
-        # $self->ok(0);     # maybe still ok?
+        $self->alert_type('00') unless $self->alert_type; # wasn't checked out, but *something* changed
+        # $self->ok(0); # maybe still ok?
     }
 }
 
