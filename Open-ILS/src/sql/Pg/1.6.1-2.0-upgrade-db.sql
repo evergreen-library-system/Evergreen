@@ -1,3 +1,10 @@
+-- Drop a view temporarily in order to alter action.all_circulation, upon
+-- which it is dependent.  This drop is outside the transaction because the
+-- extend_reporter schema may not exist in a given database.  We will recreate
+-- the view later, after the transaction.
+
+DROP VIEW IF EXISTS extend_reporter.full_circ_count;
+
 BEGIN;
 
 -- Highest-numbered individual upgrade script
@@ -4967,12 +4974,7 @@ COMMENT ON TABLE config.rule_recurring_fine IS $$
  */
 $$;
 
-ALTER TABLE reporter.report RENAME COLUMN recurance TO recurrence;
-
 -- Extend the name change to some related views:
-
--- Must drop a dependent view temporarily:
-DROP VIEW IF EXISTS extend_reporter.full_circ_count;
 
 -- You would think that CREATE OR REPLACE would be enough, but in testing
 -- PostgreSQL complained about renaming the columns in the view. So we
@@ -5001,20 +5003,6 @@ CREATE OR REPLACE VIEW action.all_circulation AS
         JOIN actor.usr p ON (circ.usr = p.id)
         LEFT JOIN actor.usr_address a ON (p.mailing_address = a.id)
         LEFT JOIN actor.usr_address b ON (p.billing_address = a.id);
-
--- Recreate the temporarily dropped view, with a revised view action.all_circulation:
-
-CREATE OR REPLACE VIEW extend_reporter.full_circ_count AS
- SELECT cp.id, COALESCE(sum(c.circ_count), 0::bigint) + COALESCE(count(circ.id), 0::bigint) + COALESCE(count(acirc.id), 0::bigint) AS circ_count
-   FROM asset."copy" cp
-   LEFT JOIN extend_reporter.legacy_circ_count c USING (id)
-   LEFT JOIN "action".circulation circ ON circ.target_copy = cp.id
-   LEFT JOIN "action".aged_circulation acirc ON acirc.target_copy = cp.id
-  GROUP BY cp.id;
-
--- Let's not break existing reports
-UPDATE reporter.template SET data = REGEXP_REPLACE(data, E'^(.*)recuring(.*)$', E'\\1recurring\\2') WHERE data LIKE '%recuring%';
-UPDATE reporter.template SET data = REGEXP_REPLACE(data, E'^(.*)recurance(.*)$', E'\\1recurrence\\2') WHERE data LIKE '%recurance%';
 
 CREATE UNIQUE INDEX only_one_concurrent_checkout_per_copy ON action.circulation(target_copy) WHERE checkin_time IS NULL;
 
@@ -5262,28 +5250,6 @@ $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER age_parent_circ AFTER DELETE ON action.circulation
 FOR EACH ROW EXECUTE PROCEDURE action.age_parent_circ_on_delete ();
-
--- Need to recreate this view with DISTINCT calls to ARRAY_ACCUM, thus avoiding duplicated ISBN and ISSN values
-CREATE OR REPLACE VIEW reporter.old_super_simple_record AS
-SELECT  r.id,
-    r.fingerprint,
-    r.quality,
-    r.tcn_source,
-    r.tcn_value,
-    FIRST(title.value) AS title,
-    FIRST(author.value) AS author,
-    ARRAY_TO_STRING(ARRAY_ACCUM( DISTINCT publisher.value), ', ') AS publisher,
-    ARRAY_TO_STRING(ARRAY_ACCUM( DISTINCT SUBSTRING(pubdate.value FROM $$\d+$$) ), ', ') AS pubdate,
-    ARRAY_ACCUM( DISTINCT SUBSTRING(isbn.value FROM $$^\S+$$) ) AS isbn,
-    ARRAY_ACCUM( DISTINCT SUBSTRING(issn.value FROM $$^\S+$$) ) AS issn
-  FROM  biblio.record_entry r
-    LEFT JOIN metabib.full_rec title ON (r.id = title.record AND title.tag = '245' AND title.subfield = 'a')
-    LEFT JOIN metabib.full_rec author ON (r.id = author.record AND author.tag IN ('100','110','111') AND author.subfield = 'a')
-    LEFT JOIN metabib.full_rec publisher ON (r.id = publisher.record AND publisher.tag = '260' AND publisher.subfield = 'b')
-    LEFT JOIN metabib.full_rec pubdate ON (r.id = pubdate.record AND pubdate.tag = '260' AND pubdate.subfield = 'c')
-    LEFT JOIN metabib.full_rec isbn ON (r.id = isbn.record AND isbn.tag IN ('024', '020') AND isbn.subfield IN ('a','z'))
-    LEFT JOIN metabib.full_rec issn ON (r.id = issn.record AND issn.tag = '022' AND issn.subfield = 'a')
-  GROUP BY 1,2,3,4,5;
 
 -- This only gets inserted if there are no other id > 100 billing types
 INSERT INTO config.billing_type (id, name, owner) SELECT DISTINCT 101, oils_i18n_gettext(101, 'Misc', 'cbt', 'name'), 1 FROM config.billing_type_id_seq WHERE last_value < 101;
@@ -5857,17 +5823,6 @@ ADD COLUMN shelf_expire_time TIMESTAMPTZ;
 ALTER TABLE action.hold_request DROP CONSTRAINT hold_request_current_copy_fkey;
 
 ALTER TABLE action.hold_request DROP CONSTRAINT hold_request_hold_type_check;
-
--- If the following ALTERs die because the table doesn't exist, don't
--- worry about it.  Some installations have it and some don't.
-
--- ALTER TABLE auditor.action_hold_request_history ADD COLUMN cut_in_line BOOL;
-
--- ALTER TABLE auditor.action_hold_request_history
--- ADD COLUMN mint_condition boolean NOT NULL DEFAULT TRUE;
-
--- ALTER TABLE auditor.action_hold_request_history
--- ADD COLUMN shelf_expire_time TIMESTAMPTZ;
 
 UPDATE config.index_normalizer SET param_count = 0 WHERE func = 'split_date_range';
 
@@ -6615,45 +6570,6 @@ ALTER TABLE action.transit_copy
 ADD COLUMN prev_dest INTEGER REFERENCES actor.org_unit( id )
 							 DEFERRABLE INITIALLY DEFERRED;
 
--- Correct the ISSN array definition for reporter.simple_record
-
-CREATE OR REPLACE VIEW reporter.simple_record AS
-SELECT	r.id,
-	s.metarecord,
-	r.fingerprint,
-	r.quality,
-	r.tcn_source,
-	r.tcn_value,
-	title.value AS title,
-	uniform_title.value AS uniform_title,
-	author.value AS author,
-	publisher.value AS publisher,
-	SUBSTRING(pubdate.value FROM $$\d+$$) AS pubdate,
-	series_title.value AS series_title,
-	series_statement.value AS series_statement,
-	summary.value AS summary,
-	ARRAY_ACCUM( SUBSTRING(isbn.value FROM $$^\S+$$) ) AS isbn,
-	ARRAY_ACCUM( REGEXP_REPLACE(issn.value, E'^\\S*(\\d{4})[-\\s](\\d{3,4}x?)', E'\\1 \\2') ) AS issn,
-	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '650' AND subfield = 'a' AND record = r.id)) AS topic_subject,
-	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '651' AND subfield = 'a' AND record = r.id)) AS geographic_subject,
-	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '655' AND subfield = 'a' AND record = r.id)) AS genre,
-	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '600' AND subfield = 'a' AND record = r.id)) AS name_subject,
-	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '610' AND subfield = 'a' AND record = r.id)) AS corporate_subject,
-	ARRAY((SELECT value FROM metabib.full_rec WHERE tag = '856' AND subfield IN ('3','y','u') AND record = r.id ORDER BY CASE WHEN subfield IN ('3','y') THEN 0 ELSE 1 END)) AS external_uri
-  FROM	biblio.record_entry r
-	JOIN metabib.metarecord_source_map s ON (s.source = r.id)
-	LEFT JOIN metabib.full_rec uniform_title ON (r.id = uniform_title.record AND uniform_title.tag = '240' AND uniform_title.subfield = 'a')
-	LEFT JOIN metabib.full_rec title ON (r.id = title.record AND title.tag = '245' AND title.subfield = 'a')
-	LEFT JOIN metabib.full_rec author ON (r.id = author.record AND author.tag = '100' AND author.subfield = 'a')
-	LEFT JOIN metabib.full_rec publisher ON (r.id = publisher.record AND publisher.tag = '260' AND publisher.subfield = 'b')
-	LEFT JOIN metabib.full_rec pubdate ON (r.id = pubdate.record AND pubdate.tag = '260' AND pubdate.subfield = 'c')
-	LEFT JOIN metabib.full_rec isbn ON (r.id = isbn.record AND isbn.tag IN ('024', '020') AND isbn.subfield IN ('a','z'))
-	LEFT JOIN metabib.full_rec issn ON (r.id = issn.record AND issn.tag = '022' AND issn.subfield = 'a')
-	LEFT JOIN metabib.full_rec series_title ON (r.id = series_title.record AND series_title.tag IN ('830','440') AND series_title.subfield = 'a')
-	LEFT JOIN metabib.full_rec series_statement ON (r.id = series_statement.record AND series_statement.tag = '490' AND series_statement.subfield = 'a')
-	LEFT JOIN metabib.full_rec summary ON (r.id = summary.record AND summary.tag = '520' AND summary.subfield = 'a')
-  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14;
-
 DROP SCHEMA IF EXISTS booking CASCADE;
 
 CREATE SCHEMA booking;
@@ -6867,12 +6783,6 @@ BEGIN
 	RETURN TRUE;
 END;
 $creator$ LANGUAGE 'plpgsql';
-
--- Take advantage of the "IF EXISTS" option that has existed since
--- PostgreSQL 8.2 to avoid SQL errors 
-CREATE OR REPLACE FUNCTION reporter.disable_materialized_simple_record_trigger () RETURNS VOID AS $$
-    DROP TRIGGER IF EXISTS zzz_update_materialized_simple_record_tgr ON metabib.real_full_rec;
-$$ LANGUAGE SQL;
 
 -- represents a circ chain summary
 CREATE TYPE action.circ_chain_summary AS (
@@ -9474,21 +9384,8 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION reporter.simple_rec_trigger () RETURNS TRIGGER AS $func$
-BEGIN
-    IF TG_OP = 'DELETE' THEN
-        PERFORM reporter.simple_rec_delete(NEW.id);
-    ELSE
-        PERFORM reporter.simple_rec_update(NEW.id);
-    END IF;
-
-    RETURN NEW;
-END;
-$func$ LANGUAGE PLPGSQL;
-
 CREATE TRIGGER fingerprint_tgr BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.fingerprint_trigger ('eng','BKS');
 CREATE TRIGGER aaa_indexing_ingest_or_delete AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.indexing_ingest_or_delete ();
-CREATE TRIGGER bbb_simple_rec_trigger AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_trigger ();
 
 DROP TRIGGER IF EXISTS zzz_update_materialized_simple_rec_delete_tgr ON biblio.record_entry;
 
@@ -14154,8 +14051,6 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-\qecho Progress: dropping several tables from serial schema
-
 DROP TABLE IF EXISTS serial.bib_summary CASCADE;
 
 DROP TABLE IF EXISTS serial.index_summary CASCADE;
@@ -15034,9 +14929,6 @@ ALTER TABLE action.transit_copy DROP CONSTRAINT transit_copy_target_copy_fkey;
 ALTER TABLE action.hold_transit_copy DROP CONSTRAINT ahtc_tc_fkey;
 
 ALTER TABLE asset.stat_cat_entry_copy_map DROP CONSTRAINT a_sc_oc_fkey;
-
--- This is optional, might fail, that's ok
-ALTER TABLE extend_reporter.legacy_circ_count DROP CONSTRAINT legacy_circ_count_id_fkey;
 
 ALTER TABLE authority.record_entry ADD COLUMN owner INT;
 ALTER TABLE serial.record_entry ADD COLUMN owner INT;
@@ -16533,3 +16425,110 @@ ALTER TABLE asset.copy_location ADD COLUMN label_prefix TEXT;
 ALTER TABLE asset.copy_location ADD COLUMN label_suffix TEXT;
 
 COMMIT;
+
+-- Outside of the commit: various things that may legitimately fail.
+
+ALTER TABLE auditor.action_hold_request_history ADD COLUMN cut_in_line BOOL;
+
+ALTER TABLE auditor.action_hold_request_history
+ADD COLUMN mint_condition boolean NOT NULL DEFAULT TRUE;
+
+ALTER TABLE auditor.action_hold_request_history
+ADD COLUMN shelf_expire_time TIMESTAMPTZ;
+
+ALTER TABLE reporter.report RENAME COLUMN recurance TO recurrence;
+
+-- Recreate the temporarily dropped view, having altered the action.all_circulation view:
+
+CREATE OR REPLACE VIEW extend_reporter.full_circ_count AS
+ SELECT cp.id, COALESCE(sum(c.circ_count), 0::bigint) + COALESCE(count(circ.id), 0::bigint) + COALESCE(count(acirc.id), 0::bigint) AS circ_count
+   FROM asset."copy" cp
+   LEFT JOIN extend_reporter.legacy_circ_count c USING (id)
+   LEFT JOIN "action".circulation circ ON circ.target_copy = cp.id
+   LEFT JOIN "action".aged_circulation acirc ON acirc.target_copy = cp.id
+  GROUP BY cp.id;
+
+-- Let's not break existing reports
+UPDATE reporter.template SET data = REGEXP_REPLACE(data, E'^(.*)recuring(.*)$', E'\\1recurring\\2') WHERE data LIKE '%recuring%';
+UPDATE reporter.template SET data = REGEXP_REPLACE(data, E'^(.*)recurance(.*)$', E'\\1recurrence\\2') WHERE data LIKE '%recurance%';
+
+-- Need to recreate this view with DISTINCT calls to ARRAY_ACCUM, thus avoiding duplicated ISBN and ISSN values
+CREATE OR REPLACE VIEW reporter.old_super_simple_record AS
+SELECT  r.id,
+    r.fingerprint,
+    r.quality,
+    r.tcn_source,
+    r.tcn_value,
+    FIRST(title.value) AS title,
+    FIRST(author.value) AS author,
+    ARRAY_TO_STRING(ARRAY_ACCUM( DISTINCT publisher.value), ', ') AS publisher,
+    ARRAY_TO_STRING(ARRAY_ACCUM( DISTINCT SUBSTRING(pubdate.value FROM $$\d+$$) ), ', ') AS pubdate,
+    ARRAY_ACCUM( DISTINCT SUBSTRING(isbn.value FROM $$^\S+$$) ) AS isbn,
+    ARRAY_ACCUM( DISTINCT SUBSTRING(issn.value FROM $$^\S+$$) ) AS issn
+  FROM  biblio.record_entry r
+    LEFT JOIN metabib.full_rec title ON (r.id = title.record AND title.tag = '245' AND title.subfield = 'a')
+    LEFT JOIN metabib.full_rec author ON (r.id = author.record AND author.tag IN ('100','110','111') AND author.subfield = 'a')
+    LEFT JOIN metabib.full_rec publisher ON (r.id = publisher.record AND publisher.tag = '260' AND publisher.subfield = 'b')
+    LEFT JOIN metabib.full_rec pubdate ON (r.id = pubdate.record AND pubdate.tag = '260' AND pubdate.subfield = 'c')
+    LEFT JOIN metabib.full_rec isbn ON (r.id = isbn.record AND isbn.tag IN ('024', '020') AND isbn.subfield IN ('a','z'))
+    LEFT JOIN metabib.full_rec issn ON (r.id = issn.record AND issn.tag = '022' AND issn.subfield = 'a')
+  GROUP BY 1,2,3,4,5;
+
+-- Correct the ISSN array definition for reporter.simple_record
+
+CREATE OR REPLACE VIEW reporter.simple_record AS
+SELECT	r.id,
+	s.metarecord,
+	r.fingerprint,
+	r.quality,
+	r.tcn_source,
+	r.tcn_value,
+	title.value AS title,
+	uniform_title.value AS uniform_title,
+	author.value AS author,
+	publisher.value AS publisher,
+	SUBSTRING(pubdate.value FROM $$\d+$$) AS pubdate,
+	series_title.value AS series_title,
+	series_statement.value AS series_statement,
+	summary.value AS summary,
+	ARRAY_ACCUM( SUBSTRING(isbn.value FROM $$^\S+$$) ) AS isbn,
+	ARRAY_ACCUM( REGEXP_REPLACE(issn.value, E'^\\S*(\\d{4})[-\\s](\\d{3,4}x?)', E'\\1 \\2') ) AS issn,
+	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '650' AND subfield = 'a' AND record = r.id)) AS topic_subject,
+	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '651' AND subfield = 'a' AND record = r.id)) AS geographic_subject,
+	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '655' AND subfield = 'a' AND record = r.id)) AS genre,
+	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '600' AND subfield = 'a' AND record = r.id)) AS name_subject,
+	ARRAY((SELECT DISTINCT value FROM metabib.full_rec WHERE tag = '610' AND subfield = 'a' AND record = r.id)) AS corporate_subject,
+	ARRAY((SELECT value FROM metabib.full_rec WHERE tag = '856' AND subfield IN ('3','y','u') AND record = r.id ORDER BY CASE WHEN subfield IN ('3','y') THEN 0 ELSE 1 END)) AS external_uri
+  FROM	biblio.record_entry r
+	JOIN metabib.metarecord_source_map s ON (s.source = r.id)
+	LEFT JOIN metabib.full_rec uniform_title ON (r.id = uniform_title.record AND uniform_title.tag = '240' AND uniform_title.subfield = 'a')
+	LEFT JOIN metabib.full_rec title ON (r.id = title.record AND title.tag = '245' AND title.subfield = 'a')
+	LEFT JOIN metabib.full_rec author ON (r.id = author.record AND author.tag = '100' AND author.subfield = 'a')
+	LEFT JOIN metabib.full_rec publisher ON (r.id = publisher.record AND publisher.tag = '260' AND publisher.subfield = 'b')
+	LEFT JOIN metabib.full_rec pubdate ON (r.id = pubdate.record AND pubdate.tag = '260' AND pubdate.subfield = 'c')
+	LEFT JOIN metabib.full_rec isbn ON (r.id = isbn.record AND isbn.tag IN ('024', '020') AND isbn.subfield IN ('a','z'))
+	LEFT JOIN metabib.full_rec issn ON (r.id = issn.record AND issn.tag = '022' AND issn.subfield = 'a')
+	LEFT JOIN metabib.full_rec series_title ON (r.id = series_title.record AND series_title.tag IN ('830','440') AND series_title.subfield = 'a')
+	LEFT JOIN metabib.full_rec series_statement ON (r.id = series_statement.record AND series_statement.tag = '490' AND series_statement.subfield = 'a')
+	LEFT JOIN metabib.full_rec summary ON (r.id = summary.record AND summary.tag = '520' AND summary.subfield = 'a')
+  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14;
+
+CREATE OR REPLACE FUNCTION reporter.disable_materialized_simple_record_trigger () RETURNS VOID AS $$
+    DROP TRIGGER IF EXISTS zzz_update_materialized_simple_record_tgr ON metabib.real_full_rec;
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION reporter.simple_rec_trigger () RETURNS TRIGGER AS $func$
+BEGIN
+    IF TG_OP = 'DELETE' THEN
+        PERFORM reporter.simple_rec_delete(NEW.id);
+    ELSE
+        PERFORM reporter.simple_rec_update(NEW.id);
+    END IF;
+
+    RETURN NEW;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER bbb_simple_rec_trigger AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_trigger ();
+
+ALTER TABLE extend_reporter.legacy_circ_count DROP CONSTRAINT legacy_circ_count_id_fkey;
