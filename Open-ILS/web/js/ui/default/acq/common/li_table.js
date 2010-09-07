@@ -733,7 +733,8 @@ function AcqLiTable() {
 
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.lineitem.price.set'],
-            {   async : true,
+            {   async : false, // redundant w/ timeout
+                timeout : 10,
                 params : [this.authtoken, li.id(), price],
                 oncomplete : function(r) {
                     openils.Util.readResponse(r);
