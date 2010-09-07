@@ -1,10 +1,3 @@
--- Drop a view temporarily in order to alter action.all_circulation, upon
--- which it is dependent.  This drop is outside the transaction because the
--- extend_reporter schema may not exist in a given database.  We will recreate
--- the view later, after the transaction.
-
-DROP VIEW IF EXISTS extend_reporter.full_circ_count;
-
 BEGIN;
 
 -- Highest-numbered individual upgrade script
@@ -4976,6 +4969,11 @@ $$;
 
 -- Extend the name change to some related views:
 
+-- Drop a view temporarily in order to alter action.all_circulation, upon
+-- which it is dependent.  We will recreate the view later.
+
+DROP VIEW IF EXISTS extend_reporter.full_circ_count;
+
 -- You would think that CREATE OR REPLACE would be enough, but in testing
 -- PostgreSQL complained about renaming the columns in the view. So we
 -- drop the view first.
@@ -5003,6 +5001,16 @@ CREATE OR REPLACE VIEW action.all_circulation AS
         JOIN actor.usr p ON (circ.usr = p.id)
         LEFT JOIN actor.usr_address a ON (p.mailing_address = a.id)
         LEFT JOIN actor.usr_address b ON (p.billing_address = a.id);
+
+-- Recreate the temporarily dropped view, having altered the action.all_circulation view:
+
+CREATE OR REPLACE VIEW extend_reporter.full_circ_count AS
+ SELECT cp.id, COALESCE(sum(c.circ_count), 0::bigint) + COALESCE(count(circ.id), 0::bigint) + COALESCE(count(acirc.id), 0::bigint) AS circ_count
+   FROM asset."copy" cp
+   LEFT JOIN extend_reporter.legacy_circ_count c USING (id)
+   LEFT JOIN "action".circulation circ ON circ.target_copy = cp.id
+   LEFT JOIN "action".aged_circulation acirc ON acirc.target_copy = cp.id
+  GROUP BY cp.id;
 
 CREATE UNIQUE INDEX only_one_concurrent_checkout_per_copy ON action.circulation(target_copy) WHERE checkin_time IS NULL;
 
@@ -16424,29 +16432,7 @@ CREATE INDEX actor_card_barcode_lower_idx ON actor.card (lower(barcode));
 ALTER TABLE asset.copy_location ADD COLUMN label_prefix TEXT;
 ALTER TABLE asset.copy_location ADD COLUMN label_suffix TEXT;
 
-COMMIT;
-
--- Outside of the commit: various things that may legitimately fail.
-
-ALTER TABLE auditor.action_hold_request_history ADD COLUMN cut_in_line BOOL;
-
-ALTER TABLE auditor.action_hold_request_history
-ADD COLUMN mint_condition boolean NOT NULL DEFAULT TRUE;
-
-ALTER TABLE auditor.action_hold_request_history
-ADD COLUMN shelf_expire_time TIMESTAMPTZ;
-
 ALTER TABLE reporter.report RENAME COLUMN recurance TO recurrence;
-
--- Recreate the temporarily dropped view, having altered the action.all_circulation view:
-
-CREATE OR REPLACE VIEW extend_reporter.full_circ_count AS
- SELECT cp.id, COALESCE(sum(c.circ_count), 0::bigint) + COALESCE(count(circ.id), 0::bigint) + COALESCE(count(acirc.id), 0::bigint) AS circ_count
-   FROM asset."copy" cp
-   LEFT JOIN extend_reporter.legacy_circ_count c USING (id)
-   LEFT JOIN "action".circulation circ ON circ.target_copy = cp.id
-   LEFT JOIN "action".aged_circulation acirc ON acirc.target_copy = cp.id
-  GROUP BY cp.id;
 
 -- Let's not break existing reports
 UPDATE reporter.template SET data = REGEXP_REPLACE(data, E'^(.*)recuring(.*)$', E'\\1recurring\\2') WHERE data LIKE '%recuring%';
@@ -16532,3 +16518,16 @@ $func$ LANGUAGE PLPGSQL;
 CREATE TRIGGER bbb_simple_rec_trigger AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_trigger ();
 
 ALTER TABLE extend_reporter.legacy_circ_count DROP CONSTRAINT legacy_circ_count_id_fkey;
+
+COMMIT;
+
+-- Outside of the commit: some alters that may legitimately fail
+-- if the table doesn't exist.
+
+ALTER TABLE auditor.action_hold_request_history ADD COLUMN cut_in_line BOOL;
+
+ALTER TABLE auditor.action_hold_request_history
+ADD COLUMN mint_condition boolean NOT NULL DEFAULT TRUE;
+
+ALTER TABLE auditor.action_hold_request_history
+ADD COLUMN shelf_expire_time TIMESTAMPTZ;
