@@ -102,7 +102,7 @@ sub do_checkin {
     my $code = $U->event_code($resp);
     my $txt  = (defined $code) ? $resp->{textcode} : '';
 
-    syslog('LOG_INFO', "OILS: Checkin resulted in event: $txt");
+    syslog('LOG_INFO', "OILS: Checkin resulted in event: $txt, phys_location: $phys_location");
 
     $resp->{org} &&= OpenILS::SIP::shortname_from_id($resp->{org}); # Convert id to shortname
 
