@@ -932,7 +932,7 @@ patron.display.prototype = {
                     }
                 }
                 var penalties = obj.patron.standing_penalties();
-                msg += '<dl>';
+                if (penalties.length > 0) { msg += '<dl>'; }
                 for (var i = 0; i < penalties.length; i++) {
                     if (penalties[i].standing_penalty().block_list() || penalties[i].standing_penalty().id() == 20 /* ALERT_NOTE */) {
                         msg += '<dt>';
@@ -942,7 +942,7 @@ patron.display.prototype = {
                         msg += '</dd>';
                     }
                 }
-                msg += '</dl>';
+                if (penalties.length > 0) { msg += '</dl>'; }
                 var holds = params.holds_summary;
                 if (holds.ready && holds.ready > 0) {
                     msg += $("patronStrings").getFormattedString('staff.patron.display.init.holds_ready', [holds.ready]);
