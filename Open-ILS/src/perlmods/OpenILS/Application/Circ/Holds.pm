@@ -177,7 +177,13 @@ sub create_hold {
         return $e->event unless $e->allowed('TITLE_HOLDS',  $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_VOLUME ) {
         return $e->event unless $e->allowed('VOLUME_HOLDS', $porg);
+    } elsif ( $t eq OILS_HOLD_TYPE_ISSUANCE ) {
+        return $e->event unless $e->allowed('ISSUANCE_HOLDS', $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_COPY ) {
+        return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
+    } elsif ( $t eq OILS_HOLD_TYPE_FORCE ) {
+        return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
+    } elsif ( $t eq OILS_HOLD_TYPE_RECALL ) {
         return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
     }
 
@@ -1526,7 +1532,7 @@ __PACKAGE__->register_method(
 		Returns a list ids of un-fulfilled holds for a given title id
 		@param authtoken The login session key
 		@param id the id of the item whose holds we want to retrieve
-		@param type The hold type - M, T, V, C
+		@param type The hold type - M, T, I, V, C, F, R
 	/
 );
 
@@ -1739,11 +1745,12 @@ The named fields in the hash are:
  depth        - hold range depth          (default 0)
  pickup_lib   - destination for hold, fallback value for selection_ou
  selection_ou - ID of org_unit establishing hard and soft hold boundary settings
+ issuanceid   - ID of the issuance to be held, required for Issuance level hold
  titleid      - ID (BRN) of the title to be held, required for Title level hold
  volume_id    - required for Volume level hold
  copy_id      - required for Copy level hold
  mrid         - required for Meta-record level hold
- hold_type    - T,C,V or M for Title, Copy, Volume or Meta-record  (default "T")
+ hold_type    - T, C (or R or F), I, V or M for Title, Copy, Issuance, Volume or Meta-record  (default "T")
 
 All key/value pairs are passed on to do_possibility_checks.
 
@@ -1829,6 +1836,7 @@ sub check_title_hold {
 sub do_possibility_checks {
     my($e, $patron, $request_lib, $depth, %params) = @_;
 
+    my $issuanceid   = $params{issuance}      || "";
     my $titleid      = $params{titleid}      || "";
     my $volid        = $params{volume_id};
     my $copyid       = $params{copy_id};
@@ -1842,7 +1850,7 @@ sub do_possibility_checks {
 	my $volume;
 	my $title;
 
-	if( $hold_type eq OILS_HOLD_TYPE_COPY ) {
+	if( $hold_type eq OILS_HOLD_TYPE_FORCE || $hold_type eq OILS_HOLD_TYPE_RECALL || $hold_type eq OILS_HOLD_TYPE_COPY ) {
 
         return $e->event unless $copy   = $e->retrieve_asset_copy($copyid);
         return $e->event unless $volume = $e->retrieve_asset_call_number($copy->call_number);
@@ -1865,6 +1873,12 @@ sub do_possibility_checks {
 
 		return _check_title_hold_is_possible(
 			$titleid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
+        );
+
+	} elsif( $hold_type eq OILS_HOLD_TYPE_ISSUANCE ) {
+
+		return _check_issuance_hold_is_possible(
+			$issuanceid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
         );
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
@@ -2016,7 +2030,132 @@ sub _check_title_hold_is_possible {
 
          unless($title) { # grab the title if we don't already have it
             my $vol = $e->retrieve_asset_call_number(
-               [ $copy->call_number, { flesh => 1, flesh_fields => { acn => ['record'] } } ] );
+               [ $copy->call_number, { flesh => 1, flesh_fields => { bre => ['fixed_fields'], acn => ['record'] } } ] );
+            $title = $vol->record;
+         }
+   
+         @status = verify_copy_for_hold(
+            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib);
+
+         last OUTER if $status[0];
+      }
+    }
+
+    return @status;
+}
+
+sub _check_issuance_hold_is_possible {
+    my( $issuanceid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+   
+    my $e = new_editor();
+    my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
+
+    # this monster will grab the id and circ_lib of all of the "holdable" copies for the given record
+    my $copies = $e->json_query(
+        { 
+            select => { acp => ['id', 'circ_lib'] },
+              from => {
+                acp => {
+                    sitem => {
+                        field  => 'unit',
+                        fkey   => 'id',
+                        filter => { issuance => $issuanceid }
+                    },
+                    acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
+                    ccs  => { field => 'id', filter => { holdable => 't'}, fkey => 'status'   }
+                }
+            }, 
+            where => {
+                '+acp' => { circulate => 't', deleted => 'f', holdable => 't', %org_filter }
+            },
+            distinct => 1
+        }
+    );
+
+    $logger->info("issuance possible found ".scalar(@$copies)." potential copies");
+
+    if (!@$copies) {
+        my $empty_ok = $e->retrieve_config_global_flag('circ.holds.empty_issuance_ok');
+        $empty_ok = ($empty_ok and $U->is_true($empty_ok->enabled));
+
+        return (
+            0, 0, [
+                new OpenILS::Event(
+                    "HIGH_LEVEL_HOLD_HAS_NO_COPIES",
+                    "payload" => {"fail_part" => "no_ultimate_items"}
+                )
+            ]
+        ) unless $empty_ok;
+
+        return (1, 0);
+    }
+
+    # -----------------------------------------------------------------------
+    # sort the copies into buckets based on their circ_lib proximity to 
+    # the patron's home_ou.  
+    # -----------------------------------------------------------------------
+
+    my $home_org = $patron->home_ou;
+    my $req_org = $request_lib->id;
+
+    $logger->info("prox cache $home_org " . $prox_cache{$home_org});
+
+    $prox_cache{$home_org} = 
+        $e->search_actor_org_unit_proximity({from_org => $home_org})
+        unless $prox_cache{$home_org};
+    my $home_prox = $prox_cache{$home_org};
+
+    my %buckets;
+    my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
+    push( @{$buckets{ $hash{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
+
+    my @keys = sort { $a <=> $b } keys %buckets;
+
+
+    if( $home_org ne $req_org ) {
+      # -----------------------------------------------------------------------
+      # shove the copies close to the request_lib into the primary buckets 
+      # directly before the farthest away copies.  That way, they are not 
+      # given priority, but they are checked before the farthest copies.
+      # -----------------------------------------------------------------------
+        $prox_cache{$req_org} = 
+            $e->search_actor_org_unit_proximity({from_org => $req_org})
+            unless $prox_cache{$req_org};
+        my $req_prox = $prox_cache{$req_org};
+
+        my %buckets2;
+        my %hash2 = map { ($_->to_org => $_->prox) } @$req_prox;
+        push( @{$buckets2{ $hash2{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
+
+        my $highest_key = $keys[@keys - 1];  # the farthest prox in the exising buckets
+        my $new_key = $highest_key - 0.5; # right before the farthest prox
+        my @keys2   = sort { $a <=> $b } keys %buckets2;
+        for my $key (@keys2) {
+            last if $key >= $highest_key;
+            push( @{$buckets{$new_key}}, $_ ) for @{$buckets2{$key}};
+        }
+    }
+
+    @keys = sort { $a <=> $b } keys %buckets;
+
+    my $title;
+    my %seen;
+    my @status;
+    OUTER: for my $key (@keys) {
+      my @cps = @{$buckets{$key}};
+
+      $logger->info("looking at " . scalar(@{$buckets{$key}}). " copies in proximity bucket $key");
+
+      for my $copyid (@cps) {
+
+         next if $seen{$copyid};
+         $seen{$copyid} = 1; # there could be dupes given the merged buckets
+         my $copy = $e->retrieve_asset_copy($copyid);
+         $logger->debug("looking at bucket_key=$key, copy $copyid : circ_lib = " . $copy->circ_lib);
+
+         unless($title) { # grab the title if we don't already have it
+            my $vol = $e->retrieve_asset_call_number(
+               [ $copy->call_number, { flesh => 1, flesh_fields => { bre => ['fixed_fields'], acn => ['record'] } } ] );
             $title = $vol->record;
          }
    
@@ -2678,14 +2817,22 @@ sub hold_item_is_checked_out {
         limit => 1
     };
 
-    if($hold_type eq 'C') {
+    if($hold_type eq 'C' || $hold_type eq 'R' || $hold_type eq 'F') {
 
         $query->{where}->{'+acp'}->{id}->{in}->{where}->{'target_copy'} = $hold_target;
 
     } elsif($hold_type eq 'V') {
 
         $query->{where}->{'+acp'}->{call_number} = $hold_target;
-    
+
+     } elsif($hold_type eq 'I') {
+
+        $query->{from}->{acp}->{sitem} = {
+            field  => 'unit',
+            fkey   => 'id',
+            filter => {issuance => $hold_target},
+        };
+
     } elsif($hold_type eq 'T') {
 
         $query->{from}->{acp}->{acn} = {

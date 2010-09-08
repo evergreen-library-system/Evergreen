@@ -1382,7 +1382,9 @@ INSERT INTO permission.perm_list VALUES
     ,(391, 'UPDATE_PICKUP_LIB_FROM_TRANSIT', oils_i18n_gettext( 391, 'Allow a user to change the pickup and transit destination for a captured hold item already in transit', 'ppl', 'description' ))
     ,(392, 'COPY_NEEDED_FOR_HOLD.override', oils_i18n_gettext( 392, 'Allow a user to force renewal of an item that could fulfill a hold request', 'ppl', 'description' ))
     ,(393, 'MERGE_AUTH_RECORDS', oils_i18n_gettext( 393, 'Allow a user to merge authority records together', 'ppl', 'description' ))
+    ,(394, 'ISSUANCE_HOLDS', oils_i18n_gettext( 394, 'Allow a user to place holds on serials issuances'))
 ;
+
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
@@ -6218,6 +6220,18 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
         oils_i18n_gettext('circ.holds.hold_has_copy_at.block', 'Holds: Has Local Copy Block', 'coust', 'label'),
         oils_i18n_gettext('circ.holds.hold_has_copy_at.block', 'If there is an available copy at the requesting library that could fulfill a hold during hold placement time, do not allow the hold to be placed', 'coust', 'description'),
         'bool'
+    );
+
+INSERT INTO config.global_flag (name, label, enabled)
+    VALUES (
+        'circ.holds.empty_issuance_ok',
+        oils_i18n_gettext(
+            'circ.holds.empty_issuance_ok',
+            'Holds: Allow holds on empty issuances',
+            'cgf',
+            'label'
+        ),
+        TRUE
     );
 
 INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
