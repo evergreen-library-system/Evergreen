@@ -82,6 +82,8 @@ function load() {
         'global.juvenile_age_threshold',
         'patron.password.use_phone',
         'ui.patron.default_inet_access_level',
+        'ui.patron.default_ident_type',
+        'ui.patron.default_country',
         'circ.holds.behind_desk_pickup_supported',
         'circ.patron_edit.clone.copy_address'
     ]);
@@ -454,6 +456,9 @@ function loadStatCats() {
         var stat = statCats[idx];
         var row = statCatTemplate.cloneNode(true);
         row.id = 'stat-cat-row-' + idx;
+        row.setAttribute('stat_cat_owner',stat.owner());
+        row.setAttribute('stat_cat_name',stat.name());
+        row.setAttribute('stat_cat_id',stat.id());
         tbody.appendChild(row);
         getByName(row, 'name').innerHTML = stat.name();
         var valtd = getByName(row, 'widget');
@@ -520,6 +525,8 @@ function fleshFMRow(row, fmcls, args) {
     var wclass = row.getAttribute('wclass');
     var wstyle = row.getAttribute('wstyle');
     var wconstraints = row.getAttribute('wconstraints');
+    /* use CSS to set the zindex for widgets you want to disable. */
+    var disabled = dojo.style(row, 'zIndex') == -1 ? true : false;
 
     var isPasswd2 = (fmfield == 'passwd2');
     if(isPasswd2) fmfield = 'passwd';
@@ -549,7 +556,6 @@ function fleshFMRow(row, fmcls, args) {
     wtd.appendChild(span);
 
     var fmObject = null;
-    var disabled = false;
     switch(fmcls) {
         case 'au' : fmObject = patron; break;
         case 'ac' : fmObject = patron.card(); break;
@@ -1003,6 +1009,7 @@ function uEditNewPatron() {
     patron.card(card);
     patron.cards([card]);
     patron.net_access_level(orgSettings['ui.patron.default_inet_access_level'] || 1);
+    patron.ident_type(orgSettings['ui.patron.default_ident_type']);
     patron.stat_cat_entries([]);
     patron.survey_responses([]);
     patron.addresses([]);
@@ -1060,6 +1067,7 @@ function _uEditSave(doClone) {
                     addr.id(w._addr);
                     addr.isnew(1);
                     addr.usr(patron.id());
+                    addr.country(orgSettings['ui.patron.default_country']);
                     var t = patron.addresses();
                         if (!t) { t = []; }
                         t.push(addr);
@@ -1207,6 +1215,10 @@ function uEditNewAddr(evt, id, mkLinks) {
                 // make new addresses valid by default
                 if(id < 0 && row.getAttribute('fmfield') == 'valid') 
                     widget.widget.attr('value', true); 
+
+                // make new addresses use the org setting for default country 
+                if(id < 0 && row.getAttribute('fmfield') == 'country') 
+                    widget.widget.attr('value',orgSettings['ui.patron.default_country']);
 
             } else if(row.getAttribute('name') == 'uedit-addr-pending-row') {
 
