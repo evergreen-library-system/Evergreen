@@ -2074,8 +2074,9 @@ sub _check_issuance_hold_is_possible {
 
     $logger->info("issuance possible found ".scalar(@$copies)." potential copies");
 
+    my $empty_ok;
     if (!@$copies) {
-        my $empty_ok = $e->retrieve_config_global_flag('circ.holds.empty_issuance_ok');
+        $empty_ok = $e->retrieve_config_global_flag('circ.holds.empty_issuance_ok');
         $empty_ok = ($empty_ok and $U->is_true($empty_ok->enabled));
 
         return (
@@ -2166,6 +2167,14 @@ sub _check_issuance_hold_is_possible {
       }
     }
 
+    if (!$status[0]) {
+        if (!defined($empty_ok)) {
+            $empty_ok = $e->retrieve_config_global_flag('circ.holds.empty_issuance_ok');
+            $empty_ok = ($empty_ok and $U->is_true($empty_ok->enabled));
+        }
+
+        return (1,0) if ($empty_ok);
+    }
     return @status;
 }
 
