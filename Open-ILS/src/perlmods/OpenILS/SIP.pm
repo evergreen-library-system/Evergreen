@@ -62,14 +62,24 @@ sub new {
 	return $self;
 }
 
-sub verify_session {
-	my $self = shift;
+sub fetch_session {
+    my $self = shift;
+
 	my $ses = $U->simplereq( 
 		'open-ils.auth',
-		'open-ils.auth.session.retrieve',  $self->{authtoken} );
-	return 1 unless $U->event_code($ses);
-	syslog('LOG_INFO', "OILS: Logging back after session timeout as user ".$self->{login}->{id});
-	return $self->login( $self->{login}->{id}, $self->{login}->{password} );
+		'open-ils.auth.session.retrieve',  $self->{authtoken});
+
+    return undef if $U->event_code($ses); # auth timed out
+    return $self->{login_session} = $ses;
+}
+
+sub verify_session {
+	my $self = shift;
+
+    return 1 if $self->fetch_session;
+
+    syslog('LOG_INFO', "OILS: Logging back after session timeout as user ".$self->{login}->{id});
+    return $self->login( $self->{login}->{id}, $self->{login}->{password} );
 }
 
 sub editor {
@@ -205,6 +215,9 @@ sub login {
 
 	my $key = $response->{payload}->{authtoken};
 	syslog('LOG_INFO', "OILS: Login succeeded for $username : authkey = $key");
+
+    $self->fetch_session; # to cache the login
+
 	return $self->{authtoken} = $key;
 }
 
@@ -365,7 +378,7 @@ sub checkin {
         return $xact;
     }
 
-	$xact->do_checkin( $inst_id, $trans_date, $return_date, $current_loc, $item_props );
+	$xact->do_checkin( $self, $inst_id, $trans_date, $return_date, $current_loc, $item_props );
 	
 	if ($xact->ok) {
         $xact->patron($self->find_patron($item->{patron}));
