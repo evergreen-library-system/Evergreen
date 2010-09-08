@@ -906,6 +906,91 @@ sub _find_or_create_call_number {
     }
 }
 
+sub _issuances_received {
+    my ($e, $sitem) = @_;
+
+    my $results = $e->json_query({
+        "select" => {
+            "sitem" => [
+                {"transform" => "distinct", "column" => "issuance"}
+            ]
+        },
+        "from" => {"sitem" => {"sstr" => {}, "siss" => {}}},
+        "where" => {
+            "+sstr" => {"distribution" => $sitem->stream->distribution->id},
+            "+siss" => {"holding_type" => $sitem->issuance->holding_type},
+            "+sitem" => {"date_received" => {"!=" => undef}}
+        }
+    }) or return $e->die_event;
+
+    return [ map { $e->retrieve_serial_issuance($_->{"issuance"}) } @$results ];
+}
+
+# XXX _prepare_unit_label() duplicates some code from unitize_items().
+# Hopefully we can unify code paths down the road.
+sub _prepare_unit_label {
+    my ($e, $sunit, $sdist, $issuance) = @_;
+
+    my ($mfhd, $formatted_parts) = _summarize_contents($e, [$issuance]);
+
+    # special case for single formatted_part (may have summarized version)
+    if (@$formatted_parts == 1) {
+        #TODO: MFHD.pm should have a 'format_summary' method for this
+    }
+
+    $sunit->detailed_contents(
+        join(
+            " ",
+            $sdist->unit_label_prefix,
+            join(", ", @$formatted_parts),
+            $sdist->unit_label_suffix
+        )
+    );
+
+    # TODO: change this when real summary contents are available
+    $sunit->summary_contents($sunit->detailed_contents);
+
+    # Create sort_key by left padding numbers to 6 digits.
+    (my $sort_key = $sunit->detailed_contents) =~
+        s/(\d+)/sprintf '%06d', $1/eg;
+    $sunit->sort_key($sort_key);
+}
+
+# XXX duplicates a block of code from unitize_items().  Once I fully understand
+# what's going on and I'm sure it's working right, I'd like to have
+# unitize_items() just use this, keeping the logic in one place.
+sub _prepare_summaries {
+    my ($e, $sitem, $issuances) = @_;
+
+    my $dist_id = $sitem->stream->distribution->id;
+    my $type = $sitem->issuance->holding_type;
+
+    # Make sure @$issuances contains the new issuance from sitem.
+    unless (grep { $_->id == $sitem->issuance->id } @$issuances) {
+        push @$issuances, $sitem->issuance;
+    }
+
+    my ($mfhd, $formatted_parts) = _summarize_contents($e, $issuances);
+
+    my $search_method = "search_serial_${type}_summary";
+    my $summary = $e->$search_method([{"distribution" => $dist_id}]);
+
+    my $cu_method = "update";
+
+    if (@$summary) {
+        $summary = $summary->[0];
+    } else {
+        my $class = "Fieldmapper::serial::${type}_summary";
+        $summary = $class->new;
+        $summary->distribution($dist_id);
+        $cu_method = "create";
+    }
+
+    $summary->generated_coverage(join(", ", @$formatted_parts));
+    my $method = "${cu_method}_serial_${type}_summary";
+    return $e->die_event unless $e->$method($summary);
+}
+
 __PACKAGE__->register_method(
     "method" => "receive_items_one_unit_per",
     "api_name" => "open-ils.serial.receive_items.one_unit_per",
@@ -913,7 +998,7 @@ __PACKAGE__->register_method(
     "api_level" => 1,
     "argc" => 3,
     "signature" => {
-        "desc" => "Marks items in a list as received, creates a new unit for each item if any unit is fleshed on",
+        "desc" => "Marks items in a list as received, creates a new unit for each item if any unit is fleshed on, and updates summaries as needed",
         "params" => [
             {
                  "name" => "auth",
@@ -940,14 +1025,8 @@ __PACKAGE__->register_method(
 );
 
 sub receive_items_one_unit_per {
-    # XXX This function may be temporary. unitize_items() would seem to aim to
-    # accomodate what this function does as well as other variations on the
-    # operation (binding multiple items into one unit, etc.?) plus generating
-    # summaries.  This is just a minimal get-it-working-now implementation.
-    # In the future, when unitize_items() is ready, perhaps any registered
-    # method names that point to this function can be repointed at
-    # unitize_items()
-
+    # XXX This function may be temporary, as it does some of what
+    # unitize_items() does, just in a different way.
     my ($self, $client, $auth, $items, $record) = @_;
 
     my $e = new_editor("authtoken" => $auth, "xact" => 1);
@@ -1004,6 +1083,29 @@ sub receive_items_one_unit_per {
                 }
             }
 
+            my $evt = _prepare_unit_label(
+                $e, $user_unit, $sdist, $item->issuance
+            );
+            if ($U->event_code($evt)) {
+                $e->rollback;
+                return $evt;
+            }
+
+            # fetch a list of issuances with received copies already existing
+            # on this distribution.
+            my $issuances = _issuances_received($e, $item); #XXX optimize later
+            if ($U->event_code($issuances)) {
+                $e->rollback;
+                return $issuances;
+            }
+
+            # create/update summary objects related to this distribution
+            $evt = _prepare_summaries($e, $item, $issuances);
+            if ($U->event_code($evt)) {
+                $e->rollback;
+                return $evt;
+            }
+
             # set the incontrovertibles on the unit
             $user_unit->edit_date("now");
             $user_unit->create_date("now");
@@ -1029,6 +1131,7 @@ sub receive_items_one_unit_per {
         }
 
         # Set the incontrovertibles on the item
+        $item->status("Received");
         $item->date_received("now");
         $item->edit_date("now");
         $item->editor($user_id);
@@ -1038,8 +1141,6 @@ sub receive_items_one_unit_per {
         # send client a response
         $client->respond($item->id);
     }
-
-    # XXX TODO update basic/supplementary/index summaries
 
     $e->commit or return $e->die_event;
     undef;
@@ -2005,48 +2106,6 @@ sub get_receivable_issuances {
         foreach (@$issuance_ids);
 
     $e->disconnect;
-    undef;
-}
-
-__PACKAGE__->register_method(
-    "method" => "receive_items_by_id",
-    "api_name" => "open-ils.serial.items.receive_by_id",
-    "stream" => 1,
-    "signature" => {
-        "desc" => "Given sitem IDs, just set their date_received to now()",
-        "params" => [
-            {"desc" => "Authtoken", "type" => "string"},
-            {"desc" => "Serial Item IDs", "type" => "array"},
-        ],
-        "return" => {
-            "desc" => "Stream of updated items", "type" => "object"
-        }
-    }
-);
-
-sub receive_items_by_id {
-    my ($self, $client, $auth, $id_list) = @_;
-
-    my $e = new_editor("authtoken" => $auth, "xact" => 1);
-    return $e->die_event unless $e->checkauth;
-
-    # XXX permissions
-
-    # for now this function doesn't do nearly enough. simply sets
-    # date_received to now()
-
-    my @results = ();
-    foreach (@$id_list) {
-        my $sitem = $e->retrieve_serial_item($_) or return $e->die_event;
-
-        $sitem->date_received("now");
-        $e->update_serial_item($sitem) or return $e->die_event;
-
-        push @results, $sitem;
-    }
-
-    $e->commit;
-    $client->respond($_) foreach @results;
     undef;
 }
 
