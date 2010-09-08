@@ -3,7 +3,7 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); 
 @namespace html url("http://www.w3.org/TR/REC-html40"); 
 
-.has_copies { color: black; background-color: lightgreen; font-weight: bold; }
+.has_copies { border-left: solid thick green; font-weight: bold; }
 
 .copy_editor_field_changed { background: lightgreen; }
 .copy_editor_field_required { border: solid thin red; }
