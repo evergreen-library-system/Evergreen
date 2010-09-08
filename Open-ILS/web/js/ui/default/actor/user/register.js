@@ -456,6 +456,9 @@ function loadStatCats() {
         var stat = statCats[idx];
         var row = statCatTemplate.cloneNode(true);
         row.id = 'stat-cat-row-' + idx;
+        row.setAttribute('stat_cat_owner',stat.owner());
+        row.setAttribute('stat_cat_name',stat.name());
+        row.setAttribute('stat_cat_id',stat.id());
         tbody.appendChild(row);
         getByName(row, 'name').innerHTML = stat.name();
         var valtd = getByName(row, 'widget');
