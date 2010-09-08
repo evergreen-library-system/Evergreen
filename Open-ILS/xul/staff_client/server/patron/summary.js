@@ -131,15 +131,7 @@ patron.summary.prototype = {
                                 for (var i = 0; i < entries.length; i++) {
                                     var stat_cat = obj.OpenILS.data.hash.my_actsc[ entries[i].stat_cat() ];
                                     if (!stat_cat) {
-                                        stat_cat = obj.OpenILS.data.hash.actsc[ entries[i].stat_cat() ];
-                                    }
-                                    if (!stat_cat) {
-                                        var robj = obj.network.simple_request('FM_ACTSC_RETRIEVE_VIA_PCRUD',[ ses(), { 'id' : { '=' : entries[i].stat_cat() } }]);
-                                        if (typeof robj == 'object' && typeof robj.ilsevent != 'undefined') {
-                                            obj.OpenILS.data.hash.actsc[ entries[i].stat_cat() ] = robj;
-                                            obj.OpenILS.data.stash( 'hash' );
-                                            stat_cat = robj;
-                                        }
+                                        stat_cat = obj.OpenILS.data.lookup('actsc',entries[i].stat_cat());
                                     }
                                     if (!stat_cat) { continue; }
                                     if (get_bool( stat_cat.usr_summary() )) {
