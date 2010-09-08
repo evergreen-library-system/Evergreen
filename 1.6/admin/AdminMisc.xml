@@ -57,9 +57,9 @@
 	</section>
 	<section xml:id="backingup">
 		<title>Backing Up</title>
-		<para>Backing up your system files and data is a critical task for server and database adminstrators. 
+		<para>Backing up your system files and data is a critical task for server and database administrators. 
 		Having a strategy for backing up and recovery could be the difference between a minor annoyance for users and
-		a a complete catastrophy.</para>   
+		a a complete catastrophe.</para>   
 		<simplesect>
 			<title>Backing up the Evergreen Database</title>
 			<para>Most of the critical data for an Evergreen system – patrons, bibliographic records, holdings, 
@@ -83,7 +83,7 @@
 		</simplesect>
 		<simplesect>
 			<title>Backing up Evergreen Files</title>
-			<para>When you deploy Evergreen, you will probably customize many aspects of your system includung 
+			<para>When you deploy Evergreen, you will probably customize many aspects of your system including 
 			the system configuration files, Apache configuration files, OPAC and Staff Client. In order to 
 			protect your investment of time, you should carefully consider the best approach to backing up 
 			files.</para>
@@ -111,9 +111,9 @@
 	</section>
 	<section xml:id="security">
 		<title>Security</title>
-		<para>As with an ILS and resource accessible from the world wilde web careful consideration needs to be 
+		<para>As with an ILS and resource accessible from the world wide web careful consideration needs to be 
 		given to the security of your Evergreen servers and database. While it is impossible to cover all aspects 
-		of security, it is important to take several percautions when setting up production Evergreen site.</para>
+		of security, it is important to take several precautions when setting up production Evergreen site.</para>
 		<orderedlist>
 			<listitem>
 				<para>Change the Evergreen <emphasis>Admin</emphasis> password and keep it secure. The 
@@ -122,9 +122,9 @@
 				need the highest level access to Evergreen.</para>
 			</listitem>
 			<listitem>
-				<para>Create strong passwords using a combination of numerican and alphatbetical characters 
+				<para>Create strong passwords using a combination of numerical and alphabetical characters 
 				for all of the Administrative passwords used by Evergreen including the Evergreen 
-				postgresql user, opensrf linux account, and Admin evergreen users, and of course, any
+				postgresql user, opensrf Linux account, and Admin evergreen users, and of course, any
 				superusers on your server.</para>     
 			</listitem>
 			<listitem>
@@ -166,7 +166,7 @@
 	 		<screen>}</screen>
 		</simplesect>
 		<simplesect>
-			<title>Chaning Logging Level for Evergreen</title>
+			<title>Changing Logging Level for Evergreen</title>
 			<para>Change the Log Levels in your config files. Changing the level of logging will help 
 			narrow down errors.</para> 
 			<tip>
@@ -185,7 +185,7 @@
 			<para>Should be changed to:</para>
 			<screen>&lt;loglevel&gt;4&lt;/loglevel&gt;</screen>
 			<para>to allow debugging level logging</para>
-			<para>Other logging levels inclide <emphasis>0</emphasis> for no logging, 
+			<para>Other logging levels include <emphasis>0</emphasis> for no logging, 
 			<emphasis>1</emphasis> for logging errors and <emphasis>2</emphasis> for logging warnings 
 			and errors.</para>
 		</simplesect>

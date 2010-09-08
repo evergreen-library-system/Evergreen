@@ -6,7 +6,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="troubleshooting">
 		cause and solution to most problems. These instructions assume standard locations and file names for Evergreen
 		installations, and may also include commands for specific Linux distributions.</para>
 		<procedure>
-			<title>Systematic Evergreen Restart to isolate Errors</title>
+			<title>Systematic Evergreen Restart to Isolate Errors</title>
 			<step>
 				<para>Stop Apache:</para>
 				<screen>/etc/init.d/apache2 stop</screen>
@@ -16,13 +16,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="troubleshooting">
 			<step>
 				<para>Stop OpenSRF:</para>
 				<screen>osrf_ctl.sh -l -a stop_all</screen>
-				<para>You should get either output resembling this:</para>
+				<para>You should get either output simlar to this:</para>
 				<screen>Stopping OpenSRF C process 12515...</screen>
 				<screen>Stopping OpenSRF C process 12520...</screen>
 				<screen>Stopping OpenSRF C process 12526...</screen>
 				<screen>Stopping OpenSRF Perl process 12471...</screen>
 				<screen>Stopping OpenSRF Router process 12466...</screen>
-				<para>Or, if services have already been stopped, output maay look like this:</para>
+				<para>Or, if services have already been stopped, output may look like this:</para>
 				<screen>OpenSRF C not running</screen>
 				<screen>OpenSRF Perl not running</screen>
 				<screen>OpenSRF Router not running</screen>
@@ -46,7 +46,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="troubleshooting">
 				<screen>/openils/bin/osrf_ctl.sh -l -a start_router</screen>
 				<para>If the router started correctly, output will be:</para>
 				<screen>Starting OpenSRF Router</screen>
-				<para>If router does not start correcltly, you should check the router error log files 
+				<para>If router does not start correctly, you should check the router error log files 
 				for error information.</para>
 				<para>Evergreen 1.6 uses two routers, a public one and a private one, with two different 
 				logfiles:</para>
@@ -61,29 +61,24 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="troubleshooting">
 			<step>
 				<para>Start the OpenSRF perl services and check for errors</para>
 				<screen>/openils/bin/osrf_ctl.sh -l -a start_perl</screen>
-				<para>You should see the following output:</para>
+				<para>You should see the output similar to the following:</para>
 				<screen>Starting OpenSRF Perl</screen>
-				<screen>* starting all services for norcrossfx.norcross.esi</screen>
-				<screen>* starting servivce pid=7484 opensrf.settings</screen>
-				<screen>* starting servivce pid=7493 open-ils.cat</screen>
-				<screen>* starting servivce pid=7495 open-ils.supercat</screen>
-				<screen>* starting servivce pid=7497 open-ils.search</screen>
-				<screen>* starting servivce pid=7499 open-ils.circ</screen>
-				<screen>* starting servivce pid=7501 open-ils.actor</screen>
-				<screen>* starting servivce pid=7502 open-ils.storage</screen>
-				<screen>* starting servivce pid=7509 open-ils.penalty</screen>
-				<screen>* starting servivce pid=7512 open-ils.collections</screen>
-				<screen>* starting servivce pid=7514 open-ils.ingest</screen>
-				<screen>* starting servivce pid=7517 open-ils.permacrud</screen>
-				<screen>* starting servivce pid=7522 open-ils.fielder</screen>
-				<screen>* starting servivce pid=7527 open-ils.vandelay</screen>
-				<screen>* starting servivce pid=7516 open-ils.reporter</screen>
-				<para>If the perl services do not start correclty or you receive errors, search for errors 
+				<screen>* starting all services for ...</screen>
+				<screen>* starting service pid=7484 opensrf.settings</screen>
+				<screen>* starting service pid=7493 open-ils.cat</screen>
+				<screen>* starting service pid=7495 open-ils.supercat</screen>
+				<screen>* starting service pid=7497 open-ils.search</screen>
+				<screen>* starting service pid=7499 open-ils.circ</screen>
+				<screen>* starting service pid=7501 open-ils.actor</screen>
+				<screen>* starting service pid=7502 open-ils.storage</screen>
+				<screen>...</screen>
+				
+				<para>If the perl services do not start correctly or you receive errors, search for errors 
 				in the following log files:</para>
 				<screen>/openils/var/log/router.log</screen>
 				<screen>/openils/var/log/osrfsys.log</screen>
 				<para>At this point you can use the <command>grep</command> command to find errors in 
-				any of the Evrgreen log files:</para>
+				any of the Evergreen log files:</para>
 				<screen>grep ERR /openils/var/log/*.log</screen>
 				<para>As a final sanity check, look for OpenSRF processes:</para>
 				<screen>ps -aef | grep -i opensrf</screen>
@@ -100,9 +95,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="troubleshooting">
 				<screen>ps -aef | grep -i opensrf</screen>
 			</step>
 			<step>
-				<para>Smoke test with autogen.sh</para>
+				<para>Smoke test with autogen.sh<indexterm><primary>autogen</primary></indexterm></para>
 				<para>The Autogen tool will take some dynamic information from the database and generate 
-				static Javascript files for use by the OPAC and staff client. It is also able to refresh 
+				static JavaScript files for use by the OPAC and staff client. It is also able to refresh 
 				the proximity map between libraries for the purpose of efficiently routing hold 
 				requests.</para>
 				<para>As user opensrf, you invoke Autogen with the command:</para>
@@ -118,12 +113,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="troubleshooting">
 				<screen>Refreshing proximity of org units</screen>
 				<screen>Successfully updated the organization proximity</screen>
 				<screen>Done</screen>
-				<para>If Autogen does not complete its task and you recieve errors, use 
+				<para>If Autogen does not complete its task and you receive errors, use 
 				<command>grep</command> to find errors in the log files:</para>  
 				<screen>grep ERR /openils/var/log/*.log</screen>
 			</step>
 			<step>
-				<para>Connect to Evergreen using the srfsh command-line OpenSRF client</para>
+				<para>Connect to Evergreen using the srfsh command-line OpenSRF client<indexterm><primary>srfsh (command-line OpenSRF client)</primary></indexterm></para>
 				<screen>/openils/bin/srfsh</screen>
 				<note>
 					<para>In order for you to connect using <command>srfsh</command>, you will need to 
@@ -182,18 +177,18 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="troubleshooting">
 				<filename>/openils/var/log/gateway.log</filename></para>
 				<para>However, you should check all of the log files for errors:</para>
 				<screen>grep ERR /openils/var/log/*.log</screen>
-				<para>Another place to check for erros is the <application>Apache</application> error logs
-				generally located in in the <filename class="directory">/var/log/Apapche2</filename> 
+				<para>Another place to check for errors is the <application>Apache</application> error logs
+				generally located in in the <filename class="directory">/var/log/Apache2</filename> 
 				directory</para>
 				<para>If you encounter errors with Apache, a common source of potential problems are the 
 				Evergreen site configuration files <filename>/etc/apache2/eg_vhost.conf</filename> and 
 				<filename>/etc/apache2/sites-available/eg.conf</filename></para>
 			</step>
 			<step>
-				<para>Try to authenticate with the staff client</para>
+				<para>Try to login from the <link linkend="staffclient-login">staff client</link></para>
 			</step>
 			<step>
-				<para>Try to authenticate with the OPAC</para>
+				<para>Try to access the catalog from the OPAC</para>
 			</step>	
 		</procedure>	
 </chapter>

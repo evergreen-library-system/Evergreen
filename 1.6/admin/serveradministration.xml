@@ -43,21 +43,21 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 					</menuchoice>
 			</para>
 			<procedure>
-				<title>Adding Organization Types</title>
+				<title>Adding Organization Types<indexterm><primary>organization types</primary><secondary>adding</secondary></indexterm></title>
 				<step><para>Select an organization type from the organization type tree on the left and 
 				click <guibutton>New Child</guibutton>.</para></step>
 				<step><para>Make sure your new type is selected and edit the <guilabel>Type Name</guilabel>, 
 				<guilabel>OPAC Label</guilabel> and <guilabel>Parent Type</guilabel>.</para></step>
 				<step><para>Change the <guilabel>Parent Type</guilabel> if necessary.</para></step>
-				<step><para>Check the <guilabel>Can Have Volumes and Copies</guilabel> checkbox if the 
+				<step><para>Check the <guilabel>Can Have Volumes and Copies</guilabel> check box if the 
 				organization units of this type will have volumes and copies assigned to it.</para></step>
-				<step><para>Check the <guilabel>Can Have Users</guilabel> checkbox if you will allow users 
+				<step><para>Check the <guilabel>Can Have Users</guilabel> check box if you will allow users 
 				to be have the organization units of this type as their home unit.</para></step>
 				<step><para>Click <guibutton>Save</guibutton> to save your new organization type.
 				</para></step>	
 			</procedure>
 			<procedure>
-				<title>Deleting Organization Types</title>
+				<title>Deleting Organization Types<indexterm><primary>organization types</primary><secondary>deleting</secondary></indexterm></title>
 				<step><para>Select the <emphasis>organization type</emphasis> from the <emphasis>Organization Type</emphasis> 
 				tree.</para></step>
 				<step><para>Click <guibutton>Delete</guibutton>.</para></step>
@@ -70,7 +70,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				</note>
 			</procedure>
 			<procedure>
-				<title>Editing Organization Types</title>
+				<title>Editing Organization Types<indexterm><primary>organization types</primary><secondary>editing</secondary></indexterm></title>
 				<step><para>Select the <emphasis>organization type</emphasis> you wish to edit from the 
 				organization type tree.</para></step>
 				<step><para>Make the changes in the right pane.</para></step>
@@ -79,14 +79,14 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		</simplesect>
 	
 		<simplesect xml:id="orgunits">
-		<title>Organizational Units</title>
+		<title>Organizational Units<indexterm><primary>organization units</primary></indexterm></title>
 		<abstract>
 		<para>Organizational Units are the specific instances of the organization unit types that 
 		make up your library's hierarchy. These can include  consortia, systems, branches, 
-		etc. The organizational units should have distictive proper names such as 
+		etc. The organizational units should have distinctive proper names such as 
 		<emphasis>Main Street Branch</emphasis> or <emphasis>Townsville Campus</emphasis>.</para>
 		</abstract>
-		<para>To navigate to the organizational units adminstration page in the staff client select  
+		<para>To navigate to the organizational units administration page in the staff client select  
 			<menuchoice>
 				<guimenu>Admin</guimenu>  
 				<guisubmenu>Server Administration</guisubmenu>
@@ -94,7 +94,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</menuchoice>
 		</para>
 		<procedure>
-			<title>Adding Organizational Units</title>
+			<title>Adding Organizational Units<indexterm><primary>organization units</primary><secondary>adding</secondary></indexterm></title>
 			<step><para>Select an <emphasis>Organizational Unit</emphasis> from the organizational unit tree on the left and click 
 			<guibutton>New Child</guibutton>.</para></step>
 			<step><para>Make sure your new unit is selected and edit the <guilabel>Organizational Unit 
@@ -108,15 +108,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</step>
 			<step><para>Select the <guilabel>Organization Unit Type</guilabel> and 
 			<guilabel>Parent Organization Unit</guilabel>.</para></step>
-			<step><para>Check the <guilabel>Can Have Volumes and Copies</guilabel> checkbox if the 
-			organization units of this type will have volumes and copies assigned to it.</para></step>
-			<step><para>Check the <guilabel>OPAC Visible</guilabel> checkbox if you want this location to be 
-			visible in the OPAC for searching.</para></step>
+			<step><para>Check the <guilabel>Can Have Volumes and Copies</guilabel> check box if the 
+			organization units of this type will have volumes and copies assigned to it.<indexterm><primary>organization units</primary><secondary>volumes and copies</secondary></indexterm></para></step>
+			<step><para>Check the <guilabel>OPAC Visible</guilabel> check box if you want this location to be 
+			visible in the OPAC for searching.<indexterm><primary>Organization Units</primary><secondary>opac visible</secondary></indexterm></para></step>
 			<step><para>Click <guibutton>Save</guibutton> to save your new organizational unit.</para></step>	
 		</procedure>
 		<procedure>
-			<title>Deleting Organizational Units</title>
-			<step><para>Select the <emphasis>organizational unit</emphasis> you wish to delete from the organzational unit tree in the left pane.</para></step>
+			<title>Deleting Organizational Units <indexterm><primary>organization units</primary><secondary>deleting</secondary></indexterm></title>
+			<step><para>Select the <emphasis>organizational unit</emphasis> you wish to delete from the organizational unit tree in the left pane.</para></step>
 			<step><para>Click<guibutton>Delete</guibutton>.</para></step>
 			<step><para>Click <guibutton>OK</guibutton> on the warning alert box.</para></step>
 			<note>
@@ -127,7 +127,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</note>
 		</procedure>
 		<procedure>
-			<title>Editing Organizational Units</title>
+			<title>Editing Organizational Units<indexterm><primary>organization units</primary><secondary>editing</secondary></indexterm></title>
 			<step><para>Select the organizational unit you wish to edit from the 
 			organizational unit tree in the left pane.</para></step>
 			<step><para>Edit the fields in the right pane.</para></step>
@@ -137,7 +137,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		</simplesect>
 		<simplesect xml:id="server-hours">
 		      <info>
-			 <title>Library Hours of Operation</title>
+			 <title>Library Hours of Operation<indexterm><primary>hours of operation</primary><secondary>setting</secondary></indexterm></title>
 		      </info>
 
 		      <para>Local System Administrators can use the <guilabel>Organizational Units</guilabel> interface to set the library's hours of operation. These are regular weekly hours;
@@ -149,7 +149,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		      <itemizedlist>
 			 <listitem>
 			    <formalpara>
-			       <title>Due dates</title>
+			       <title>Due dates<indexterm><primary>hours of operation</primary><secondary>due dates policy</secondary></indexterm></title>
 			       <para>Due dates that would fall on closed days are automatically pushed forward to
 				  the next open day. Likewise, if an item is checked out at 8pm, for example, and
 				  would normally be due on a day when the library closes before 8pm, Evergreen
@@ -158,7 +158,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			 </listitem>
 			 <listitem>
 			    <formalpara>
-			       <title>Overdue fines</title>
+			       <title>Overdue fines <indexterm><primary>hours of operation</primary><secondary>overdue fines policy</secondary></indexterm></title>
 			       <para>Overdue fines are not charged on days when the library is closed.</para>
 			    </formalpara>
 			 </listitem>
@@ -217,7 +217,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 
 	   <simplesect xml:id="server-addresses">
 	      <info>
-		 <title>Library Addresses</title>
+		 <title>Library Addresses <indexterm><primary>library addresses </primary><secondary>setting</secondary></indexterm></title>
 	      </info>
 
 	      <para>Addresses set in <menuchoice>
@@ -225,7 +225,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		    <guisubmenu>Server Administrations</guisubmenu>
 		    <guimenuitem>Organizational Units</guimenuitem>
 		 </menuchoice> appear in patron email notifications, hold slips, and transit slips. Local
-		 System Adminstrators should ensure that the <guilabel>Physical</guilabel>,
+		 System Administrators should ensure that the <guilabel>Physical</guilabel>,
 		    <guilabel>Holds</guilabel>, and <guilabel>Mailing</guilabel> addresses are set
 		 correctly.</para>
 
@@ -233,7 +233,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 
 		 <step>
 		    <para>Open the <guilabel>Organizational Units</guilabel> interface as described in the <link
-		          linkend="server-main">previous simplesect</link>.</para>
+		          linkend="server-main">previous section</link>.</para>
 		 </step>
 		 <step>
 		    <informalfigure>
@@ -254,8 +254,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		   
 		       <para>There are four address tabs: <guilabel>Physical</guilabel>,
 		             <guilabel>Holds</guilabel>, <guilabel>Mailing</guilabel>, and
-		             <guilabel>ILL</guilabel>. Sitka Support recommends setting the first three at a
-		          minimum.  The <guilabel>Holds Address</guilabel> appears on transit slips when items are sent to fulfill holds at another branch.</para>
+		             <guilabel>ILL</guilabel>. The <guilabel>Holds Address</guilabel> appears on transit slips when items are sent to fulfill holds at another branch.</para>
 		      
 		   
 		 </step>
@@ -267,9 +266,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	      </procedure>
 
 	      <note>
-		 <para>The <guilabel>Valid</guilabel> checkbox is an optional setting that does not affect
-		    current Evergreen functions, but the Sitka Support team recommends checking it for all
-		    correct addresses.</para>
+		 <para>The <guilabel>Valid</guilabel> check box is an optional setting that does not affect current Evergreen functions.</para>
 	      </note>
 
 	   </simplesect>
@@ -279,8 +276,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		<title>Adjusting Search Relevancy Rankings</title>
 		<info>
 			<abstract>
-				<para>This simplesect describes indexed field weighting and matchpoint weighting, which
-				control relevance ranking in Evergreen catalog search results. Adjusting relavancy can only be completed through access to the Evergreen database as of version 1.6.</para>
+				<para>This section describes indexed field weighting and matchpoint weighting, which
+				control relevance ranking in Evergreen catalog search results. Adjusting relevancy can only be completed through access to the Evergreen database as of version 1.6.</para>
 				<tip>
 					<para>In tuning search relevance, it is good practice to make incremental
 					adjustments, capture search logs, and assess results before making further
@@ -289,7 +286,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</abstract>
 		</info>
 		<simplesect>
-			<title>Indexed-field Weighting</title>
+			<title>Indexed-field Weighting<indexterm><primary>relevancy</primary><secondary>indexed-field weighting</secondary></indexterm> </title>
 			<para>Indexed-field weighting is configured in the Evergreen database in the weight column
 			of the config.metabib_field table, which follows the other four columns in this table:
 			field_class, name, xpath, and format.</para>
@@ -304,8 +301,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<emphasis role="bold">jaguar</emphasis> in another indexed field. </para>
 		</simplesect>
 		<simplesect>
-			<title>Matchpoint Weighting</title>
-			<para> Matchpoint weighting provides another way to fine-tune Evergreen relevance ranking,
+			<title>Match point Weighting<indexterm><primary>relevancy</primary><secondary>match point weighting</secondary></indexterm></title>
+			<para> Match point weighting provides another way to fine-tune Evergreen relevance ranking,
 			and is configured through floating-point multipliers in the multiplier column of the
 			search.relevance_adjustment table.</para>
 			<para> Weighting can be adjusted for one, more, or all multiplier fields in
@@ -313,20 +310,20 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<para>You can adjust the following three matchpoints:</para> 
 			<itemizedlist>
 			<listitem>
-				<para><indexterm><primary>first_word</primary></indexterm> boosts relevance if the query is 
+				<para>first_wordboosts relevance if the query is 
 				one term long and matches the first term in the indexed field (search for <emphasis 
 				role="bold">twain</emphasis>, get a bonus for <emphasis role="bold">twain, mark</emphasis> 
 				but not <emphasis role="bold">mark twain</emphasis>)</para>
 			</listitem>
 			<listitem>
-				<para><indexterm><primary>word_order</primary></indexterm> increases relevance for words 
+				<para>word_order increases relevance for words 
 				matching the order of search terms, so that the results for the search <emphasis 
 				role="bold">legend suicide</emphasis> would match higher for the book <emphasis 
 				role="italic">Legend of a Suicide</emphasis> than for the book, 
 				<emphasis role="italic">Suicide Legend</emphasis></para>
 			</listitem>
 			<listitem>
-				<para><indexterm><primary>full_match</primary></indexterm> boosts relevance when the full 
+				<para>full_match boosts relevance when the full 
 				query exactly matches the entire indexed field (after space, case, and diacritics are 
 				normalized). So a title search for <emphasis role="italic">The Future of Ice</emphasis> 
 				would get a relevance boost above <emphasis role="italic">Ice>Ages of the 
@@ -483,7 +480,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</table>
 		</simplesect>
 		<simplesect>
-			<title>Combining Index Weighting and Matchpoint Weighting</title>
+			<title>Combining Index Weighting and Match point Weighting</title>
 			<para>Index weighting and matchpoint weighting may be combined. The relevance boost of the combined 
 			weighting is equal to the product of the two multiplied values. </para>
 			<para>If the relevance setting in the config.metabib_field were increased to 2, and the multiplier 
@@ -496,7 +493,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</note>
 		</simplesect>
 		<simplesect>
-			<title>Adjusting Relevancy for Keyword Searches</title>
+			<title>Adjusting Relevancy for Keyword Searches<indexterm><primary>relevancy</primary><secondary>keyword searches</secondary></indexterm></title>
 			<para> Searching the out of the box <emphasis>keyword</emphasis> does not boost the ranking for terms appearing in, the title or subject fields since  there is just one 
 			keyword index which does not distinguish terms that appear in the title field from those in the notes field for example. In comparison, the title index is actually composed of 
 			a number of separate indexes: title|proper, title|uniform, title|alternative, title|translated, etc, that collectively form the title index. You can see this in the 
@@ -504,7 +501,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			other fields. </para>
 			<procedure>
 				<step>
-					<para>From the command line, access the PorstgreSQL command line interface</para>
+					<para>From the command line, access the PostgreSQL command line interface</para>
 					<screen>psql -U evergreen</screen>
 				</step> 
 				<step>
@@ -547,11 +544,11 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</procedure>  
 		</simplesect> 
 	</section>
-	<section xml:id="grouppermissions">
-			<title>User and Group Permissions</title>
+	<section xml:id="permissions">
+			<title>User and Group Permissions <indexterm><primary>permissions</primary><secondary>group</secondary></indexterm></title>
 			<abstract>
 			<para>It is essential to understand how user and group permissions can be used to allow staff 
-			to fulfil their roles while ensuring that they only have access to the appropriate level.</para> 
+			to fulfill their roles while ensuring that they only have access to the appropriate level.</para> 
 			<para>Permissions in <application>Evergreen</application> are applied to a specific location and system depth based on the home 
 			library of the user. The user will only have that permission within the scope provided by the 
 			<emphasis>Depth</emphasis> field in relation to his/her working locations.</para> 
@@ -561,18 +558,17 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		</abstract>
 		<simplesect>
 			<title>User Permissions</title>
-			<tip><para>Ihe User permissions editor allows an administrator to set up permission fopr an individual user. However, In most cases, permissions can be controlled more 
+			<tip><para>The User permissions editor allows an administrator to set up permission for an individual user. However, In most cases, permissions can be controlled more 
 			efficiently at the group level with individuals being assigned to specific groups based on their roles in the library.</para></tip> 
 			<para>To open the user permission editor, select <menuchoice><guimenu>Admin</guimenu>  
 			<guisubmenu>User Permission Editor</guisubmenu></menuchoice>. Type the user's barcode when prompted.</para>   
 			<simplesect>
 				<title>Working Locations</title>
-				<para>The first simplesect of the User Permission Editor is the the Working Locations 
-				simplesect.  You may select more than one working location for a user. This will effect 
+				<para>You may select more than one working location for a user. This will effect 
 				the availability of certain permissions which are dependent on the user having the working location.</para> 	
 			</simplesect>
 			<simplesect>
-				<title>User Permission Settings</title>
+				<title>User Permission Settings<indexterm><primary>permissions</primary><secondary>user</secondary></indexterm></title>
 				<para>Below the working locations is the long list of all the permissions available on your 
 				system. For each permission you can apply it by checking the 
 				<emphasis>Applied</emphasis> check box. You can also select a depth to which the 
@@ -581,12 +577,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</simplesect>	
 		</simplesect>
 		<simplesect>
-			<title>Group Permissions</title>
+			<title>Group Permissions <indexterm><primary>permissions</primary><secondary>group</secondary></indexterm></title>
 			<para>Most permissions should be assigned at the group level. Here you can create new 
 			groups based on the roles and responsibilities of the users in your system. Staff will be able to 
 			assign users to these groups when they register patrons.</para> 
 			<tip><para>It is a good idea to create your groups soon after creating your organizational units.
-			It is also imprtaant to give careful consideration to the hierarchy of your groups to make 
+			It is also important to give careful consideration to the hierarchy of your groups to make 
 			permission assignment as efficient as possible.</para></tip> 
 			<para>To enter the <emphasis>Group Permission</emphasis> module from the staff client menu, select 
 			<menuchoice><guimenu>Admin</guimenu>  <guisubmenu>Server Administration</guisubmenu> 
@@ -603,7 +599,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				their groups</para></step>
 				<step><para>Selecting an <guilabel>Editing Permission</guilabel> will determine the group level the user will have for editing other users.</para></step>
 				<step><para>Select the <guilabel>Parent Group</guilabel> for the group.</para>
-				<note><para>The group will inherit its parent group's permissions so it is unecessary to assign permissions already inherited from its parent.</para></note></step>
+				<note><para>The group will inherit its parent group's permissions so it is unnecessary to assign permissions already inherited from its parent.</para></note></step>
 				<step><para>Click the <guibutton>Save</guibutton> button.</para></step> 
 			</procedure>
 			<procedure>
@@ -662,7 +658,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 					</thead>
 					<tbody>
 						<row>
-							<entry>ABORT_REMOTE_TRANIST</entry>
+							<entry>ABORT_REMOTE_TRANSIT</entry>
 							<entry>Allows user to abort a copy transit if the user is not at 
 							the transit source or destination</entry>
 						</row>
@@ -709,7 +705,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 						</row>
 						<row>
 							<entry>COPY_BAD_STATUS.override</entry>
-							<entry>Allows user to check out an item in a non-circulatable 
+							<entry>Allows user to check out an item in a non-circulating
 							status</entry>
 						</row>
 						<row>
@@ -779,7 +775,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 						</row>
 						<row>
 							<entry>CREATE_COPY_STAT_CAT</entry>
-							<entry>Allows user to create a statisitcal category for 
+							<entry>Allows user to create a statistical category for 
 							copies</entry>
 						</row>
 						<row>
@@ -954,7 +950,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 						</row>
 						<row>
 							<entry>EVERYTHING</entry>
-							<entry>	Every permssion is granted (for sysadmins and developers 
+							<entry>	Every permission is granted (for sysadmins and developers 
 							only!)</entry>
 						</row>
 						<row>
@@ -977,7 +973,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 						</row>
 						<row>
 							<entry>MAX_RENEWALS_REACHED.override</entry>
-							<entry>Allows user to renew an item past the maximun renewal 
+							<entry>Allows user to renew an item past the maximum renewal 
 							count</entry>
 						</row>
 						<row>
@@ -1111,7 +1107,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 						<row>
 							<entry>UPDATE_HOLD</entry>
 							<entry>Allows user to edit holds (such as change notification phone 
-							number or pickup library, as well as retarget the hold and capture 
+							number or pickup library, as well as re-target the hold and capture 
 							an item for hold or pickup)</entry>
 						</row>
 						<row>
@@ -1327,7 +1323,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	<section>
 	<info>
 
-        <title>Staff Accounts</title>
+        <title>Staff Accounts <indexterm><primary>staff accounts</primary></indexterm></title>
     </info>
 
     <informalfigure>
@@ -1341,7 +1337,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                 Group</guilabel> drop-down menu. </para>
         <para>
             <mediaobject>
-                <alt>User permissions screenshot</alt>
+                <alt>User permissions screen shot</alt>
                 <imageobject>
                     <imagedata scalefit="0" fileref="../media/profile-2.png"/>
                 </imageobject>
@@ -1353,7 +1349,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 
 
     <para xml:id="profiles-working">Each new staff account must be assigned a <guilabel>Working
-            Location</guilabel> which determines its access level in staff client interfaces.
+            Location</guilabel><indexterm><primary>staff accounts</primary><secondary>working location</secondary></indexterm> which determines its access level in staff client interfaces.
         Accounts migrated from legacy systems or created before the upgrade to Evergreen 1.6 already
         have working locations assigned.</para>
 
@@ -1373,7 +1369,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                     </menuchoice></para>
                 <para>
                     <mediaobject>
-                        <alt>User permissions screenshot</alt>
+                        <alt>User permissions screen shot</alt>
                         <imageobject>
                             <imagedata scalefit="0" fileref="../media/profile-1.png"/>
                         </imageobject>
@@ -1400,7 +1396,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 
     <simplesect xml:id="staff_account_permissions">
         <info>
-            <title>Staff Account Permissions</title>
+            <title>Staff Account Permissions <indexterm><primary>staff accounts</primary><secondary>permissions</secondary></indexterm> </title>
         </info>
         <para>Below is a general outline of staff account permission levels. To view a detailed list
             of permissions for a particular Evergreen account go to <menuchoice>
@@ -1678,7 +1674,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                         available to any staff account, including LSAs.</para>
                     <para>
                         <mediaobject>
-                            <alt>User permissions screenshot</alt>
+                            <alt>User permissions screen shot</alt>
                             <imageobject>
                                 <imagedata scalefit="0" fileref="../media/profile-5.png"/>
                             </imageobject>
@@ -1691,8 +1687,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                             <imageobject>
                                 <imagedata scalefit="0" fileref="../media/1.png"/>
                             </imageobject>
-                        </inlinemediaobject> List of permission names.  For help correlating permissions to specific Evergreen
-                        functions please contact Sitka support.</para>
+                        </inlinemediaobject> List of permission names.</para>
 
                     <para>
                         <inlinemediaobject>
@@ -1707,7 +1702,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                             <imageobject>
                                 <imagedata scalefit="0" fileref="../media/3.png"/>
                             </imageobject>
-                        </inlinemediaobject> <guilabel>Depth</guilabel> limits application to the staff member's library and should be left at the default.  Evergreen blocks attempts to set Federation- or Sitka-wide privileges.</para>
+                        </inlinemediaobject> <guilabel>Depth</guilabel> limits application to the staff member's library and should be left at the default.</para>
 
                     <para>
                         <inlinemediaobject>
@@ -1726,7 +1721,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                     <para>To allow processing of offline transactions check the <emphasis>Applied</emphasis> column next to OFFLINE_EXECUTE.</para>
                     <para>
                         <mediaobject>
-                            <alt>User permissions screenshot</alt>
+                            <alt>User permissions screen shot</alt>
                             <imageobject>
                                 <imagedata scalefit="0" fileref="../media/profile-6.png"/>
                             </imageobject>
@@ -1742,7 +1737,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                     <para>Scroll down and click <guibutton>Save</guibutton> to apply the changes.</para>
                     <para>
                         <mediaobject>
-                            <alt>User permissions screenshot</alt>
+                            <alt>User permissions screen shot</alt>
                             <imageobject>
                                 <imagedata scalefit="0" fileref="../media/profile-7.png"/>
                             </imageobject>
@@ -1882,9 +1877,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<step><para>Click <guibutton>Add</guibutton>.</para></step>
 				<step><para>Locate you new status and check the <emphasis>Holdable</emphasis> check box 
 				if you wish to all users to place holds on items in this status. Check 
-				<emphasis>OPAC Visble</emphasis> if you wish for this status to appear in the public 
+				<emphasis>OPAC Visible</emphasis> if you wish for this status to appear in the public 
 				OPAC.</para></step>
-				<step><para>Click <guibutton>Save Changes</guibutton> at the bottum of the screen to 
+				<step><para>Click <guibutton>Save Changes</guibutton> at the bottom of the screen to 
 				save changes to the new status.</para></step>
 			</procedure>
 			<procedure>
@@ -1927,7 +1922,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</procedure>
 			<procedure>
 				<title>Deleting Billing Types</title>
-				<step><para>Check the checkbox of the billing type(s) you wish to delete.</para></step>
+				<step><para>Check the check box of the billing type(s) you wish to delete.</para></step>
 				<step><para>Click <guibutton>Delete Selected</guibutton>.
 					<caution><para>The selected billing types will be deleted without a 
 					verification alert.</para></caution>
@@ -1958,7 +1953,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<step><para>Enter a <emphasis>Code</emphasis>, <emphasis>Name</emphasis> and  
 				<emphasis>Description</emphasis>.</para></step>
 				<step><para>Select the <emphasis>SIP 2 Media Type</emphasis>.</para></step>
-				<step><para>Check the <guibutton>Magnetic Media</guibutton> check box if the item is magnetic media such as a casette 
+				<step><para>Check the <guibutton>Magnetic Media</guibutton> check box if the item is magnetic media such as a cassette 
 				tape.</para></step>
 				<step><para>Click <guibutton>Save</guibutton> to save the new circulation 
 				modifier.</para></step>
@@ -1974,7 +1969,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</procedure>
 			<procedure>
 				<title>Editing Circulation Modifiers</title>
-				<step><para>Double click on the row of the cirlation modifier you wish to 
+				<step><para>Double click on the row of the circulation modifier you wish to 
 				edit.</para></step> 
 				<step><para>Make desired changes.</para></step>
 				<step><para>Once you have finished editing, click 
@@ -1983,7 +1978,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	</section>
 	<section xml:id="catalogingtemplates">
 		<title>Cataloging Templates</title>
-		<para>Cataloging templates are essential for making the cataloguing process more efficient. Templates are used that that the basic structure of specific types of cataloguing records can 			loaded when the cataloguer adds a new record</para>
+		<para>Cataloging templates are essential for making the cataloging process more efficient. Templates are used that that the basic structure of specific types of cataloging records can 			loaded when the cataloger adds a new record</para>
 		<procedure>
 			<title>Adding Cataloging Templates</title>
 			<step>
@@ -2002,7 +1997,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
     	
 			</step>
 			<step>
-			<para>Add the template to the to the <emphasis>marctemplates</emphasis> list in the open-ils.cat simplesect of the evergreen configuration file <filename>opensrf.xml</filename> </para>
+			<para>Add the template to the to the <emphasis>marctemplates</emphasis> list in the open-ils.cat section of the evergreen configuration file <filename>opensrf.xml</filename> </para>
 			</step>
 			<step>
 				<para>Restart perl services for changes to take effect.</para>
