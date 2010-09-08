@@ -82,6 +82,8 @@ function load() {
         'global.juvenile_age_threshold',
         'patron.password.use_phone',
         'ui.patron.default_inet_access_level',
+        'ui.patron.default_ident_type',
+        'ui.patron.default_country',
         'circ.holds.behind_desk_pickup_supported',
         'circ.patron_edit.clone.copy_address'
     ]);
@@ -1003,6 +1005,7 @@ function uEditNewPatron() {
     patron.card(card);
     patron.cards([card]);
     patron.net_access_level(orgSettings['ui.patron.default_inet_access_level'] || 1);
+    patron.ident_type(orgSettings['ui.patron.default_ident_type']);
     patron.stat_cat_entries([]);
     patron.survey_responses([]);
     patron.addresses([]);
@@ -1060,6 +1063,7 @@ function _uEditSave(doClone) {
                     addr.id(w._addr);
                     addr.isnew(1);
                     addr.usr(patron.id());
+                    addr.country(orgSettings['ui.patron.default_country']);
                     var t = patron.addresses();
                         if (!t) { t = []; }
                         t.push(addr);
@@ -1207,6 +1211,10 @@ function uEditNewAddr(evt, id, mkLinks) {
                 // make new addresses valid by default
                 if(id < 0 && row.getAttribute('fmfield') == 'valid') 
                     widget.widget.attr('value', true); 
+
+                // make new addresses use the org setting for default country 
+                if(id < 0 && row.getAttribute('fmfield') == 'country') 
+                    widget.widget.attr('value',orgSettings['ui.patron.default_country']);
 
             } else if(row.getAttribute('name') == 'uedit-addr-pending-row') {
 
