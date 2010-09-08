@@ -522,6 +522,8 @@ function fleshFMRow(row, fmcls, args) {
     var wclass = row.getAttribute('wclass');
     var wstyle = row.getAttribute('wstyle');
     var wconstraints = row.getAttribute('wconstraints');
+    /* use CSS to set the zindex for widgets you want to disable. */
+    var disabled = dojo.style(row, 'zIndex') == -1 ? true : false;
 
     var isPasswd2 = (fmfield == 'passwd2');
     if(isPasswd2) fmfield = 'passwd';
@@ -551,7 +553,6 @@ function fleshFMRow(row, fmcls, args) {
     wtd.appendChild(span);
 
     var fmObject = null;
-    var disabled = false;
     switch(fmcls) {
         case 'au' : fmObject = patron; break;
         case 'ac' : fmObject = patron.card(); break;
