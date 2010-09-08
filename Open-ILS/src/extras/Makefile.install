@@ -141,7 +141,6 @@ CENTOS = \
 	perl-Text-CSV
 
 CENTOS_PERL = \
-	Class::DBI::Frozen::301 \
 	Encode \
 	DBIx::ContextualFetch \
 	Getopt::Long \
@@ -186,7 +185,6 @@ FEDORA_13_RPMS = \
 FEDORA_13_CPAN = \
 	Business::OnlinePayment \
 	Business::OnlinePayment::AuthorizeNet \
-	Class::DBI::Frozen::301 \
 	MARC::Record
 
 PGSQL_84_RPMS = \
@@ -256,24 +254,25 @@ all:
 	@echo "please specify an OS" && exit 0
 
 # these should be the same for any distro
-install: install_cpan install_js_sm install_libdbi
+install: install_cpan install_js_sm install_libdbi install_cpan_force
 
-centos: install_centos_pgsql install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe
-rhel: install_redhat_pgsql install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe
+centos: install_centos_pgsql centos_like
+rhel: install_redhat_pgsql centos_like
+centos_like: install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe install_cpan_force
 
-fedora-13: install_fedora_13_rpms install_cpan install_cpan_fedora install_cpan_marc install_spidermonkey
+fedora-13: install_fedora_13_rpms install_cpan install_cpan_fedora install_cpan_marc install_spidermonkey install_cpan_force
 
 debian-lenny: lenny generic_debian install_cpan_more install_cpan_safe
-debian-squeeze: squeeze generic_debian install_cpan_force
+debian-squeeze: squeeze generic_debian
 lenny: install_pgsql_client_debs_83 install_extra_debs
 squeeze: install_pgsql_client_debs_84  install_extra_debs_squeeze
-generic_debian:  install_debs install debian_sys_config
+generic_debian:  install_debs install debian_sys_config install_cpan_force
 
 ubuntu-hardy: hardy generic_ubuntu
 ubuntu-lucid: lucid generic_ubuntu
 hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc install_extra_encode
 lucid: install_pgsql_client_debs_84 install_extra_debs
-generic_ubuntu: install_debs install debian_sys_config install_cpan_more install_cpan_safe
+generic_ubuntu: install_debs install debian_sys_config install_cpan_more install_cpan_safe install_cpan_force
 
 # - COMMON TARGETS ---------------------------------------------------------
 
