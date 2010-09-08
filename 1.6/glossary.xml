@@ -71,7 +71,7 @@
 		<glossentry id="jabber">
 			<glossterm>Jabber</glossterm>
 			<glossdef>
-				<para>Now known as XMPP (Extensible Messaging and Presence Protocol), it was originally named "Jabber". See <link linkend="xmpp">"XMPP"</link>.</para>
+				<para>Now known as XMPP (eXtensible Messaging and Presence Protocol), it was originally named "Jabber". See <link linkend="xmpp">"XMPP"</link>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -103,7 +103,7 @@
 		<glossentry id="NetAddr">
 			<glossterm>Network address</glossterm>
 			<glossdef>
-				<para>Four numbers separated by periods (e.g., "192.168.1.15")</para>
+				<para>A numerical label consisting of four numbers separated by periods (e.g., "192.168.1.15") that uniquely identifies a machine on a computer network.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -112,7 +112,7 @@
 		<glossentry id="OPAC">
 			<glossterm>Online Public Access Catalog (OPAC)</glossterm>
 			<glossdef>
-				<para>PLEASE ADD CONTENT</para>
+				<para>An online database of a library's holdings; used to find resources in their collections; possibly searchable by keyword, title, author, subject or call number.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -121,7 +121,7 @@
 		<glossentry id="PostgreSQL">
 			<glossterm>PostgreSQL</glossterm>
 			<glossdef>
-				<para>PLEASE ADD CONTENT</para>
+				<para>A popular open-source object-relational database management system that underpins Evergreen software.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -155,7 +155,7 @@
 		<glossentry id="SSL Certificate">
 			<glossterm>SSL Certificate</glossterm>
 			<glossdef>
-				<para>PLEASE ADD CONTENT</para>
+				<para>A special electronic document used to guarantee authenticity of a digital message. Also known as a "public key", or "identity" or "digital" certificate. It combines an identity (of a person or an organization) and a unique public key to form a so-called digital signature, and is used to verify that the public key does, in fact, belong with that particular identity.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="Staff Client">
@@ -183,25 +183,25 @@
 		<glossentry id="Virtualization">
 			<glossterm>Virtualization</glossterm>
 			<glossdef>
-				<para>PLEASE ADD CONTENT</para>
+				<para>A method of executing software in a special environment that is partitioned or separated from the real underlying hardware and software resources. In typical usage, it allows a "host" operating system to encapsulate or emulate another operating system environment in such a way that the emulated environment is completely unaware of the hosting environment. For instance, it allows a Linux application to execute within a Windows environment.</para>
 			</glossdef>
 		</glossentry>
-		<glossentry id="VirtualBox">
+		<glossentry id="virtualbox">
 			<glossterm>VirtualBox</glossterm>
 			<glossdef>
-				<para>PLEASE ADD CONTENT</para>
+				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It can be installed on Linux, Mac OS X, Windows or Solaris "host" operating systems and allows other "guest" (typically including Linux and Windows) operating systems to be loaded and executed. Also see <link linkend="virtualization">"virtualization"</link>.</para>
 			</glossdef>
 		</glossentry>
-		<glossentry id="Virtual PC">
+		<glossentry id="virtualpc">
 			<glossterm>Virtual PC</glossterm>
 			<glossdef>
-				<para>PLEASE ADD CONTENT</para>
+				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It is installed on a Windows "host" operating system and allows other "guest" (typically including Linux and Windows) operating systems to be loaded and executed. Also see <link linkend="virtualization">"virtualization"</link>.</para>
 			</glossdef>
 		</glossentry>
-		<glossentry id="VMware">
+		<glossentry id="vmware">
 			<glossterm>VMware</glossterm>
 			<glossdef>
-				<para>PLEASE ADD CONTENT</para>
+				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It can be installed on Linux, Mac OS X, Windows or Solaris "host" operating systems and allows other "guest" (typically including Linux and Windows) operating systems to be loaded and executed. Also see <link linkend="virtualization">"virtualization"</link>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -214,7 +214,7 @@
 		<glossentry id="xml">
 			<glossterm>XML</glossterm>
 			<glossdef>
-				<para>The Extensible Markup Language, a set of rules for encoding information in a way that is both human- and machine-readable. It is primarily used to define documents but can also be used to define arbitrary data structures. It was originally defined by the World Wide Web Consortium (W3C).</para>
+				<para>The eXtensible Markup Language, a subset of SGML; a set of rules for encoding information in a way that is both human- and machine-readable. It is primarily used to define documents but can also be used to define arbitrary data structures. It was originally defined by the World Wide Web Consortium (W3C).</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="xmpp">
