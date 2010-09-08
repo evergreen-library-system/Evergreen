@@ -2428,7 +2428,9 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             'request_date' : '',
             'request_date_msg' : '',
             'slip_date' : '',
-            'slip_date_msg' : ''
+            'slip_date_msg' : '',
+            'user' : '',
+            'user_stat_cat_entries' : ''
         };
 
         if (check.payload && check.payload.cancelled_hold_transit) {
@@ -2531,6 +2533,26 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         msg += '\n';
                         var au_obj = patron.util.retrieve_fleshed_au_via_id( session, check.payload.hold.usr() );
                         print_data.user = au_obj;
+                        print_data.user_stat_cat_entries = [];
+                        var entries = au_obj.stat_cat_entries();
+                        for (var i = 0; i < entries.length; i++) {
+                            var stat_cat = data.hash.my_actsc[ entries[i].stat_cat() ];
+                            if (!stat_cat) {
+                                stat_cat = data.lookup('actsc', entries[i].stat_cat());
+                            }
+                            print_data.user_stat_cat_entries.push( { 
+                                'id' : entries[i].id(),
+                                'stat_cat' : {
+                                    'id' : stat_cat.id(),
+                                    'name' : stat_cat.name(),
+                                    'opac_visible' : stat_cat.opac_visible(),
+                                    'owner' : stat_cat.owner(),
+                                    'usr_summary' : stat_cat.usr_summary()
+                                },
+                                'stat_cat_entry' : entries[i].stat_cat_entry(),
+                                'target_usr' : entries[i].target_usr() 
+                            } );
+                        }
                         msg += '\n';
                         if (au_obj.alias()) {
                             print_data.hold_for_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron_alias',  [au_obj.alias()]);
