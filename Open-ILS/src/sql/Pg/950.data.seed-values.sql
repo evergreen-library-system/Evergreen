@@ -1382,7 +1382,7 @@ INSERT INTO permission.perm_list VALUES
     ,(391, 'UPDATE_PICKUP_LIB_FROM_TRANSIT', oils_i18n_gettext( 391, 'Allow a user to change the pickup and transit destination for a captured hold item already in transit', 'ppl', 'description' ))
     ,(392, 'COPY_NEEDED_FOR_HOLD.override', oils_i18n_gettext( 392, 'Allow a user to force renewal of an item that could fulfill a hold request', 'ppl', 'description' ))
     ,(393, 'MERGE_AUTH_RECORDS', oils_i18n_gettext( 393, 'Allow a user to merge authority records together', 'ppl', 'description' ))
-    ,(394, 'ISSUANCE_HOLDS', oils_i18n_gettext( 394, 'Allow a user to place holds on serials issuances'))
+    ,(394, 'ISSUANCE_HOLDS', oils_i18n_gettext( 394, 'Allow a user to place holds on serials issuances', 'ppl', 'description' ))
 ;
 
 
