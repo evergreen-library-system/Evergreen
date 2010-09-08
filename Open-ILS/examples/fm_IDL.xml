@@ -5010,7 +5010,7 @@ SELECT  usr,
 	</class>
 	<class id="cbt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::billing_type" oils_persist:tablename="config.billing_type" oils_persist:restrict_primary="100" reporter:label="Billing Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.billing_type_id_seq">
-			<field name="id" reporter:datatype="id" reporter:label="ID" />
+			<field name="id" reporter:datatype="id" reporter:label="ID" reporter:selector="name"/>
 			<field name="name" reporter:datatype="text" reporter:label="Name" oils_persist:i18n="true"/>
 			<field name="owner" reporter:datatype="org_unit" reporter:label="Org Unit" />
             <field name="default_price" reporter:datatype="money" reporter:label="Default Price"/>
@@ -5444,7 +5444,7 @@ SELECT  usr,
 
 	<class id="acqfc" controller="open-ils.cstore" oils_obj:fieldmapper="acq::fiscal_calendar" oils_persist:tablename="acq.fiscal_calendar" reporter:label="Fiscal Calendar">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fiscal_calendar_id_seq">
-			<field reporter:label="Fiscal Calendar ID" name="id" reporter:datatype="id" reporter:selector='id'/>
+			<field reporter:label="Fiscal Calendar ID" name="id" reporter:datatype="id" reporter:selector='name'/>
 			<field reporter:label="Fiscal Calendar Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Years" name="years" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
@@ -5467,7 +5467,7 @@ SELECT  usr,
 
 	<class id="acqfy" controller="open-ils.cstore" oils_obj:fieldmapper="acq::fiscal_year" oils_persist:tablename="acq.fiscal_year" reporter:label="Fiscal Year">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fiscal_year_id_seq">
-			<field reporter:label="Fiscal Year ID" name="id" reporter:datatype="id" reporter:selector='id'/>
+			<field reporter:label="Fiscal Year ID" name="id" reporter:datatype="id" reporter:selector='year'/>
 			<field reporter:label="Calendar" name="calendar" reporter:datatype="link"/>
 			<field reporter:label="Fiscal Year" name="year" reporter:datatype="int"/>
 			<field reporter:label="Year Begin" name="year_begin" reporter:datatype="timestamp"/>
