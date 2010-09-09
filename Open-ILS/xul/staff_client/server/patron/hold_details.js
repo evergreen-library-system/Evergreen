@@ -26,7 +26,7 @@ function my_init() {
     }
 }
 
-function fetch_and_render_all() {
+function fetch_and_render_all(do_not_refresh_parent_interface) {
     try {
         if (!xulG.ahr_id) { alert('boo'); return; }
 
@@ -56,6 +56,12 @@ function fetch_and_render_all() {
 
         retrieve_notifications(); render_notifications();
 
+        if (!do_not_refresh_parent_interface) {
+            if (typeof xulG.clear_and_retrieve == 'function') {
+                xulG.clear_and_retrieve();
+            }
+        }
+
     } catch(E) {
         alert('Error in hold_details.js, fetch_and_render_all(): ' + E);
     }
@@ -64,14 +70,15 @@ function fetch_and_render_all() {
 function fetch_hold(id) {
     try {
         g.ahr_id = xulG.ahr_id;
-        g.blob = xulG.blob;
-        if (g.blob) {
-            g.ahr = xulG.blob.hold;
+        if (xulG.blob) {
+            g.blob = xulG.blob;
+            delete xulG.blob; // one-time deal for speed
         } else {
             g.blob = g.network.simple_request('FM_AHR_BLOB_RETRIEVE',[ ses(), g.ahr_id ]);
             if (typeof g.ahr.ilsevent != 'undefined') { throw(g.ahr); }
-            g.ahr = g.blob.hold;
         }
+        g.ahr = g.blob.hold;
+        g.ahr.status( g.blob.status );
     } catch(E) {
         alert('Error in hold_details.js, fetch_hold(): ' + E);
     }
@@ -123,9 +130,18 @@ function a_list_of_one() {
             'row' : {
                 'my' : {
                     'ahr' : g.ahr,
+                    'status' : g.blob.status,
                     'acp' : g.blob.copy,
                     'acn' : g.blob.volume,
                     'mvr' : g.blob.mvr,
+                    'patron_family_name' : g.blob.patron_last,
+                    'patron_first_given_name' : g.blob.patron_first,
+                    'patron_barcode' : g.blob.patron_barcode,
+                    'total_holds' : g.blob.total_holds,
+                    'queue_position' : g.blob.queue_position,
+                    'potential_copies' : g.blob.potential_copies,
+                    'estimated_wait' : g.blob.estimated_wait,
+                    'ahrn_count' : g.blob.hold.notes().length,
                     'blob' : g.blob
                 }
             },
