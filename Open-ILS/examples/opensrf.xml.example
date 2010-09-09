@@ -262,16 +262,8 @@ vim:et:ts=4:sw=4:
 
         <added_content>
 
-            <!-- XXX If you use the Amazon plugin, you must link back to Amazon in the OPAC -->
-
-            <!-- load the Amazon added content module -->
-            <module>OpenILS::WWW::AddedContent::Amazon</module>
-            <!--
-            Base URL for Amazon added content fetching.  This URL may
-            need to be shortened when new (read: non-image) content 
-            fetching capabilities are added
-            -->
-            <base_url>http://images.amazon.com/images/P/</base_url>
+            <!-- load the OpenLibrary added content module -->
+            <module>OpenILS::WWW::AddedContent::OpenLibrary</module>
 
             <!--
             Max number of seconds to wait for an added content request to 
@@ -295,6 +287,11 @@ vim:et:ts=4:sw=4:
 
             <!-- If a userid is required to access the added content.. -->
             <userid>MY_USER_ID</userid>
+
+            <!--
+            Base URL for Amazon added content fetching. Not needed by OpenLibrary
+            <base_url>http://images.amazon.com/images/P/</base_url>
+            -->
 
             <!--
             Segregating the details for ContentCafe out for easier use.  At some point, we
