@@ -96,6 +96,9 @@ econst OILS_SETTING_BLOCK_HOLD_FOR_EXPIRED_PATRON       => 'circ.holds.expired_p
 
 
 econst OILS_HOLD_TYPE_COPY        => 'C';
+econst OILS_HOLD_TYPE_FORCE       => 'F';
+econst OILS_HOLD_TYPE_RECALL      => 'R';
+econst OILS_HOLD_TYPE_ISSUANCE    => 'I';
 econst OILS_HOLD_TYPE_VOLUME      => 'V';
 econst OILS_HOLD_TYPE_TITLE       => 'T';
 econst OILS_HOLD_TYPE_METARECORD  => 'M';
