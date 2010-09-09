@@ -24,21 +24,21 @@ sub group_money_summary {
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VIEW_USER');
-    return $e->json_query(
-        {
-            select => {mous => ['usr', 'balance_owed']},
-            from => 'mous',
-            where => {
-                usr => {
-                    in => {
-                        select => {au => ['id']}, 
-                        from => 'au', 
-                        where => {usrgroup => $group_id}
-                    }
-                }
+
+	my $users = $e->search_actor_user({usrgroup => $group_id}, {idlist => 1});
+    my @mous;
+
+    for my $uid ( @$users ) {
+        push @mous, @{$e->json_query(
+            {
+                select => {mous => ['usr', 'balance_owed']},
+                from => 'mous',
+                where => { usr => $uid }
             }
-        }
-    );
+        )};
+    }
+
+    return \@mous;
 }
 
 
