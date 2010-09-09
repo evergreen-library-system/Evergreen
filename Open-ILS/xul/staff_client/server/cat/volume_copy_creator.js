@@ -47,7 +47,7 @@ function my_init() {
 
         // Get the default callnumber classification scheme from OU settings
         dojo.require('fieldmapper.OrgUtils');
-        var label_class = fieldmapper.aou.fetchOrgSettingDefault(ses('ws_ou'), 'cat.default_classification_scheme');
+        var label_class = g.data.hash.aous['cat.default_classification_scheme']; //fieldmapper.aou.fetchOrgSettingDefault(ses('ws_ou'), 'cat.default_classification_scheme');
 
         // Assign a default value if none was returned 
         if (!label_class) {
@@ -573,17 +573,6 @@ g.list_callnumbers = function(doc_id, label_class) {
                 for (var i in o) {
                     return [ o[i], i ];
                 }
-            }
-        ).sort(
-            function(a,b) {
-                a = a[1]; b = b[1];
-                if (a == '082') return -1; 
-                if (b == '082') return 1; 
-                if (a == '092')  return -1; 
-                if (b == '092')  return 1; 
-                if (a < b) return -1; 
-                if (a > b) return 1; 
-                return 0;
             }
         )
     ); hbox.appendChild(ml);
