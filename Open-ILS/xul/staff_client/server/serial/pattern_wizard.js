@@ -115,7 +115,7 @@ function CalendarChangeRow() {
     this.compile = function() {
         var type = node_by_name("type", this.element).value;
 
-        return this["_compile_" + type]();
+        return type ? this["_compile_" + type]() : [];
     };
 
     this._init.apply(this, arguments);
@@ -169,10 +169,13 @@ function CalendarChangeEditor() {
     };
 
     this.toggle = function(ev) {
-        (ev.target.checked ? show : hide)("calendar_change_editor_here");
+        this.active = ev.target.checked;
+        (this.active ? show : hide)("calendar_change_editor_here");
     };
 
     this.compile = function() {
+        if (!this.active) return [];
+
         return [
             "x",
             openils.Util.objectProperties(this.rows).sort(num_sort).map(
@@ -286,10 +289,13 @@ function ChronEditor() {
     };
 
     this.toggle = function(ev) {
-        (ev.target.checked ? show : hide)("chron_editor_here");
+        this.active = ev.target.checked;
+        (this.active ? show : hide)("chron_editor_here");
     };
 
     this.compile = function() {
+        if (!this.active) return [];
+
         return this.subfields.filter(
             function(subfield) { return Boolean(self.rows[subfield]); }
         ).reduce(
@@ -457,7 +463,9 @@ function EnumEditor() {
         var func;
         var use_calendar_change = dojo.byId("use_calendar_change");
 
-        if (ev.target.checked) {
+        this.active = ev.target.checked;
+
+        if (this.active) {
             func = show;
             use_calendar_change.disabled = false;
         } else {
@@ -471,6 +479,8 @@ function EnumEditor() {
     };
 
     this.compile = function() {
+        if (!this.active) return [];
+
         var rows = dojo.mixin({}, this.normal_rows, this.alt_rows);
         var subfields = [].concat(this.normal_subfields, this.alt_subfields);
 
