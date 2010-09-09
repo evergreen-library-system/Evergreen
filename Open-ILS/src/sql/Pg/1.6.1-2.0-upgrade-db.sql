@@ -144,7 +144,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.hold_stalling.soft',
   'Holds: Soft stalling interval',
-  'How long to wait before allowing remote items to be opportunisticaly captured for a hold.  Example "5 days"',
+  'How long to wait before allowing remote items to be opportunistically captured for a hold.  Example "5 days"',
   'interval' ),
 
 ( 'circ.hold_stalling_hard',
@@ -174,12 +174,12 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.item_checkout_history.max',
   'Maximum previous checkouts displayed',
-  'This is maximum number of previous circulations the staff client will display when investigating item details',
+  'This is the maximum number of previous circulations the staff client will display when investigating item details',
   'integer' ),
 
 ( 'circ.reshelving_complete.interval',
   'Change reshelving status interval',
-  'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"',
+  'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples: "1 day", "6 hours"',
   'interval' ),
 
 ( 'circ.holds.default_estimated_wait_interval',
@@ -194,7 +194,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.selfcheck.patron_login_timeout',
   'Selfcheck: Patron Login Timeout (in seconds)',
-  'Number of seconds of inactivity before the patron is logged out of the selfcheck interfacer',
+  'Number of seconds of inactivity before the patron is logged out of the selfcheck interface',
   'integer' ),
 
 ( 'circ.selfcheck.alert.popup',
@@ -723,7 +723,7 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
     VALUES (
         'circ.holds.uncancel.reset_request_time',
         'Holds: Reset request time on un-cancel',
-        'When a holds is uncanceled, reset the request time to push it to the end of the queue',
+        'When a hold is uncanceled, reset the request time to push it to the end of the queue',
         'bool'
     );
 
@@ -1046,7 +1046,7 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, f
             'label'),
         oils_i18n_gettext(
             'circ.missing_pieces.copy_status',
-            'This is the Item Status to use for items that have been marked or scanned as having Missing Pieces.  In absense of this setting, the Damaged status is used.',
+            'This is the Item Status to use for items that have been marked or scanned as having Missing Pieces.  In the absence of this setting, the Damaged status is used.',
             'coust',
             'description'),
         'link',
@@ -1247,13 +1247,13 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
     'hold_request.cancel.expire_holds_shelf',
     'ahr',
-    'A hold is cancelled becuase it was on the holds shelf too long'
+    'A hold is cancelled because it was on the holds shelf too long'
 );
 
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
     'hold_request.cancel.staff',
     'ahr',
-    'A hold is cancelled becuase it was cancelled by staff'
+    'A hold is cancelled because it was cancelled by staff'
 );
 
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
@@ -1310,7 +1310,7 @@ INSERT INTO action_trigger.event_params (event_def, param, value) VALUES
   
 INSERT INTO action_trigger.validator (module,description) VALUES ('MinPassiveTargetAge','Check that the target is old enough to be used by this event -- requires a min_target_age interval parameter, and accepts an optional target_age_field to specify what time to use for offsetting');
 
-INSERT INTO action_trigger.reactor (module,description) VALUES ('ApplyPatronPenalty','Applies the conifigured penalty to a patron.  Required named environment variables are "user", which refers to the user object, and "context_org", which refers to the org_unit object that acts as the focus for the penalty.');
+INSERT INTO action_trigger.reactor (module,description) VALUES ('ApplyPatronPenalty','Applies the configured penalty to a patron.  Required named environment variables are "user", which refers to the user object, and "context_org", which refers to the org_unit object that acts as the focus for the penalty.');
 
 INSERT INTO action_trigger.hook (
         key,
@@ -1421,7 +1421,7 @@ Dear [% user.family_name %], [% user.first_given_name %]
 
 You requested hold(s) on the following item(s), but unfortunately
 we have not been able to fulfill your request after a considerable
-length of time.  If you would still like to recieve these items,
+length of time.  If you would still like to receive these items,
 no action is required.
 
 [% FOR hold IN target %]
@@ -2206,7 +2206,7 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
   [% END %]
   <tr>
     <td/><td/><td/><td/>
-    <td>Sub Total</td>
+    <td>Subtotal</td>
     <td>[% subtotal %]</td>
   </tr>
   </tbody>
@@ -11465,7 +11465,7 @@ INSERT INTO acq.invoice_item_type (code,name) VALUES ('PRO',oils_i18n_gettext('P
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('SHP',oils_i18n_gettext('SHP', 'Shipping Charge', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('HND',oils_i18n_gettext('HND', 'Handling Charge', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('ITM',oils_i18n_gettext('ITM', 'Non-library Item', 'aiit', 'name'));
-INSERT INTO acq.invoice_item_type (code,name) VALUES ('SUB',oils_i18n_gettext('SUB', 'Searial Subscription', 'aiit', 'name'));
+INSERT INTO acq.invoice_item_type (code,name) VALUES ('SUB',oils_i18n_gettext('SUB', 'Serial Subscription', 'aiit', 'name'));
 
 CREATE TABLE acq.po_item (
 	id              SERIAL      PRIMARY KEY,
@@ -13767,7 +13767,7 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 
 INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
 	'Replace',
-	'Replace all occurances of first parameter in the string with the second parameter.',
+	'Replace all occurences of first parameter in the string with the second parameter.',
 	'replace',
 	2
 );
