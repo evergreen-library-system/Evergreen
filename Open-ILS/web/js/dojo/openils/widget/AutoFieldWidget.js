@@ -177,7 +177,10 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 if(this.parentNode) // may already be in the "right" place
                     this.parentNode.appendChild(this.widget.domNode);
                 if (this.shove) {
-                    this.widget.attr("value", this.widgetValue);
+                    if (this.shove.mode == "update")
+                        this.widget.attr("value", this.widgetValue);
+                    else
+                        this.widgetValue = this.shove.create;
                     this._widgetLoaded();
                 } else if (this.widget.attr("value") == null) {
                     this._widgetLoaded();

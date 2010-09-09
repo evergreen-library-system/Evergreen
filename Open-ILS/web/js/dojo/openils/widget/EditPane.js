@@ -126,9 +126,11 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     );
 
                     if (this.overrideWidgets[field.name]) {
-                        if (this.overrideWidgets[field.name].shove &&
-                            this.mode == "update") {
-                            args.shove = true;
+                        if (this.overrideWidgets[field.name].shove) {
+                            args.shove = dojo.mixin(
+                                {"mode": this.mode},
+                                this.overrideWidgets[field.name].shove
+                            );
                         }
                     }
 
