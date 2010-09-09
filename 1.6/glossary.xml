@@ -19,6 +19,12 @@
 	</glossdiv>
 	<glossdiv>
 		<title>C</title>
+		<glossentry id="closure">
+			<glossterm>Closure Compiler</glossterm>
+			<glossdef>
+				<para>A suite of open-source tools used to build web applications with Javascript; originally developed by Google. More information is available at <ulink url="http://code.google.com/closure/compiler/">http://code.google.com/closure/compiler/</ulink>.</para>
+			</glossdef>
+		</glossentry>
 		<glossentry id="CPAN">
 			<glossterm>CPAN</glossterm>
 			<glossdef>
@@ -88,7 +94,7 @@
 		<glossentry id="McCoy">
 			<glossterm>McCoy</glossterm>
 			<glossdef>
-				<para>McCoy is an open-source application that allows add-on authors to provide secure updates to their users. More information is available at <ulink url="https://developer.mozilla.org/en/McCoy">developer.mozilla.org/en/McCoy</ulink>.</para>
+				<para>An open-source application that allows add-on authors to provide secure updates to their users. More information is available at <ulink url="https://developer.mozilla.org/en/McCoy">developer.mozilla.org/en/McCoy</ulink>.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="memcached">
@@ -100,10 +106,16 @@
 	</glossdiv>
 	<glossdiv>
 		<title>N</title>
-		<glossentry id="NetAddr">
+		<glossentry id="netaddr">
 			<glossterm>Network address</glossterm>
 			<glossdef>
 				<para>A numerical label consisting of four numbers separated by periods (e.g., "192.168.1.15") that uniquely identifies a machine on a computer network.</para>
+			</glossdef>
+		</glossentry>
+		<glossentry id="nsis">
+			<glossterm>nsis</glossterm>
+			<glossdef>
+				<para>An open-source software tool used to create Windows installers. More information is available at <ulink url="http://nsis.sourceforge.net">http://nsis.sourceforge.net</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -126,6 +138,12 @@
 		</glossentry>
 	</glossdiv>
 	<glossdiv>
+		<glossentry id="putty">
+			<glossterm>Putty</glossterm>
+			<glossdef>
+				<para>A popular open-source telnet/ssh client for the Windows and Unix platforms. More information is available at <ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/">http://www.chiark.greenend.org.uk/~sgtatham/putty/</ulink>.</para>
+			</glossdef>
+		</glossentry>
 		<title>Q</title>
 		<glossentry></glossentry>
 	</glossdiv>
@@ -156,12 +174,6 @@
 			<glossterm>SSL Certificate</glossterm>
 			<glossdef>
 				<para>A special electronic document used to guarantee authenticity of a digital message. Also known as a "public key", or "identity" or "digital" certificate. It combines an identity (of a person or an organization) and a unique public key to form a so-called digital signature, and is used to verify that the public key does, in fact, belong with that particular identity.</para>
-			</glossdef>
-		</glossentry>
-		<glossentry id="Staff Client">
-			<glossterm>Staff Client</glossterm>
-			<glossdef>
-				<para>PLEASE ADD CONTENT</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -207,7 +219,12 @@
 	</glossdiv>
 	<glossdiv>
 		<title>W</title>
-		<glossentry></glossentry>
+		<glossentry id="wine">
+			<glossterm>Wine</glossterm>
+			<glossdef>
+				<para>A popular open-source applcation that allows Linux and Unix systems to run Windows executables. More information is available at <ulink url="http://www.winehq.org/">http://www.winehq.org/</ulink>.</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>X</title>
