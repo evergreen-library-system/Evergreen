@@ -221,58 +221,6 @@ sub create_hold {
 	return undef;
 }
 
-sub __create_hold {
-	my( $self, $client, $login_session, @holds) = @_;
-
-	if(!@holds){return 0;}
-	my( $user, $evt ) = $apputils->checkses($login_session);
-	return $evt if $evt;
-
-	my $holdsref = (ref($holds[0]) eq 'ARRAY') ? $holds[0] : [ @holds ];
-
-	$logger->debug("Iterating over " . scalar(@$holdsref) . " holds requests...");
-
-	for my $hold (@$holdsref) {
-        $hold or next;
-		my $type = $hold->hold_type;
-
-		$logger->activity("User " . $user->id . 
-			" creating new hold of type $type for user " . $hold->usr);
-
-		my $recipient;
-		if($user->id ne $hold->usr) {
-			( $recipient, $evt ) = $apputils->fetch_user($hold->usr);
-			return $evt if $evt;
-		} else {
-			$recipient = $user;
-		}
-
-		# am I allowed to place holds for this user?
-		if($hold->requestor ne $hold->usr) {
-			my $perm = _check_request_holds_perm($user->id, $user->home_ou);
-            return $perm if $perm;
-		}
-
-		# is this user allowed to have holds of this type?
-		my $perm = _check_holds_perm($type, $hold->requestor, $recipient->home_ou);
-        return $perm if $perm;
-
-		#enforce the fact that the login is the one requesting the hold
-		$hold->requestor($user->id); 
-		$hold->selection_ou($recipient->home_ou) unless $hold->selection_ou;
-
-		my $resp = $apputils->simplereq(
-			'open-ils.storage',
-			'open-ils.storage.direct.action.hold_request.create', $hold );
-
-		if(!$resp) { 
-			return OpenSRF::EX::ERROR ("Error creating hold"); 
-		}
-	}
-
-	return 1;
-}
-
 # makes sure that a user has permission to place the type of requested hold
 # returns the Perm exception if not allowed, returns undef if all is well
 sub _check_holds_perm {
@@ -1836,7 +1784,7 @@ sub check_title_hold {
 sub do_possibility_checks {
     my($e, $patron, $request_lib, $depth, %params) = @_;
 
-    my $issuanceid   = $params{issuance}      || "";
+    my $issuanceid   = $params{issuanceid}      || "";
     my $titleid      = $params{titleid}      || "";
     my $volid        = $params{volume_id};
     my $copyid       = $params{copy_id};
