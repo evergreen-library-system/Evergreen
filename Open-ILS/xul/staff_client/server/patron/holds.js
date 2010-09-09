@@ -232,7 +232,8 @@ patron.holds.prototype = {
                                     xulG.patron_rendered_elsewhere = (obj.hold_interface_type == 'patron');
                                     xulG.bib_rendered_elsewhere = (obj.hold_interface_type == 'record');
                                     f.xulG = xulG;
-                                    f.fetch_and_render_all();
+                                    f.xulG.clear_and_retrieve = function() { obj.clear_and_retrieve(); };
+                                    f.fetch_and_render_all(true);
                                 }
                             } catch(E) {
                                 alert('Error in holds.js, cmd_alt_view handler: ' + E);
