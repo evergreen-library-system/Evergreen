@@ -11,6 +11,16 @@ item_form is specified, use item_type(s)--language
 var noEmailMessage;
 var noEmailMessageXUL;
 
+var holdTargetTypeMap = {
+    M : 'metarecord',
+    T : 'record',
+    V : 'volume',
+    I : 'issuance',
+    C : 'copy'
+};
+
+
+
 function holdsHandleStaff() {
 
     // if we know the recipient's barcode, use it
@@ -180,21 +190,7 @@ function holdArgsFromHold(hold, oargs) {
 	var args = (oargs) ? oargs : {};
 	args.type = hold.hold_type();
 	var target = hold.target();
-
-	switch(args.type) {
-		case 'M':
-			args.metarecord = target;
-			break;
-		case 'T':
-			args.record = target;
-			break;
-		case 'V':
-			args.volume = target;
-			break;
-		case 'C':
-			args.copy = target;
-			break;
-	}
+    args[holdTargetTypeMap[args.type]] = target;
 	return args;
 }
 
@@ -229,6 +225,9 @@ function holdFetchObjects(hold, doneCallback) {
 		if( type == 'V' ) {
 			_h_set_vol(args, doneCallback);
 
+        } else if( type == 'I' ) {
+            _h_set_issuance(args, doneCallback);
+
 		} else {
 			if( type == 'T' ) {
 				_h_set_rec(args, doneCallback);
@@ -256,6 +255,28 @@ function _h_set_vol(args, doneCallback) {
 				var vol = r.getResultObject();
 				args.volumeObject = vol;
 				args.record = vol.record();
+				_h_set_rec(args, doneCallback);
+			}
+		);
+		vreq.send();
+	}
+}
+
+function _h_set_issuance(args, doneCallback) {
+
+	if( args.issuanceObject ) {
+		args.issuance = args.issuanceObject.id();
+		args.record = args.issuanceObject.subscription().record_entry();
+		_h_set_rec(args, doneCallback);
+
+	} else {
+
+		var vreq = new Request(FETCH_ISSUANCE, [args.issuance]);
+		vreq.callback(
+			function(r) {
+				var issuance = r.getResultObject()[0];
+				args.issuanceObject = issuance;
+				args.record = issuance.subscription().record_entry();
 				_h_set_rec(args, doneCallback);
 			}
 		);
@@ -395,7 +416,13 @@ function __holdsDrawWindow() {
 	appendClear($('holds_title'), text(rec.title()));
 	appendClear($('holds_author'), text(rec.author()));
 
-	if( holdArgs.type == 'V' || holdArgs.type == 'C' ) {
+    if( holdArgs.type == 'I' ) {
+		unHideMe($('holds_type_row'));
+        unHideMe($('holds_is_issuance'));
+        unHideMe($('holds_issuance_row'));
+        appendClear($('holds_issuance_label'), text(holdArgs.issuanceObject.label()));
+
+    } else if( holdArgs.type == 'V' || holdArgs.type == 'C' ) {
 
 		unHideMe($('holds_type_row'));
 		unHideMe($('holds_cn_row'));
@@ -416,6 +443,7 @@ function __holdsDrawWindow() {
 		hideMe($('holds_type_row'));
 		hideMe($('holds_copy_row'));
 		hideMe($('holds_cn_row'));
+		hideMe($('holds_issuance_row'));
 	}
 
 	removeChildren($('holds_format'));
@@ -783,20 +811,7 @@ function holdsBuildHoldFromWindow() {
 	else
 		hold.email_notify(0);
 
-	var target;
-
-	switch(holdArgs.type) {
-		case 'M':
-			target = holdArgs.metarecord; break;
-		case 'T':
-			target = holdArgs.record; break;
-		case 'V':
-			target = holdArgs.volume; break;
-		case 'C':
-			target = holdArgs.copy; break;
-	}
-
-
+	var target = holdArgs[holdTargetTypeMap[holdArgs.type]];
 
 	hold.pickup_lib(org); 
 	//hold.request_lib(org); 
