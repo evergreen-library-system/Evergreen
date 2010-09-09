@@ -125,6 +125,13 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                         this.overrideWidgetArgs[field.name] // per-field overrides
                     );
 
+                    if (this.overrideWidgets[field.name]) {
+                        if (this.overrideWidgets[field.name].shove &&
+                            this.mode == "update") {
+                            args.shove = true;
+                        }
+                    }
+
                     if(args.readOnly) {
                         dojo.addClass(nameTd, 'openils-widget-editpane-ro-name-cell');
                         dojo.addClass(valTd, 'openils-widget-editpane-ro-value-cell');
