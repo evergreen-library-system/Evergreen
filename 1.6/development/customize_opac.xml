@@ -69,8 +69,8 @@
 		<title>Logo Images</title>
 		<para>To change the logos used by default to your own logos, replace the following files with images of your own, appropriately sized. </para>
 		<itemizedlist>
-			<listitem><filename>/openils/var/web/opac/images/main_logo.jpg</filename></listitem>
-			<listitem><filename>/openils/var/web/opac/images/main_logo.jpg</filename></listitem>
+			<listitem>Large main logo:<filename>/openils/var/web/opac/images/main_logo.jpg</filename></listitem>
+			<listitem>Small logo:<filename>/openils/var/web/opac/images/small_logo.jpg</filename></listitem>
 		</itemizedlist>				 
 	</section>
 	<section xml:id="AddedContent">
