@@ -320,6 +320,35 @@ sub fleshed_serial_issuance_retrieve_batch {
         });
 }
 
+__PACKAGE__->register_method(
+    method  => "pub_fleshed_serial_issuance_retrieve_batch",
+    api_name    => "open-ils.serial.issuance.pub_fleshed.batch.retrieve",
+    signature => {
+        desc => q/
+            Public (i.e. OPAC) call for getting at the sub and 
+            ultimately the record entry from an issuance
+        /,
+        params => [{name => 'ids', desc => 'Array of IDs', type => 'array'}],
+        return => {
+            desc => q/
+                issuance objects, fleshed with subscriptions
+            /,
+            class => 'siss'
+        }
+    }
+);
+sub pub_fleshed_serial_issuance_retrieve_batch {
+    my( $self, $client, $ids ) = @_;
+    return [] unless $ids and @$ids;
+    return new_editor()->search_serial_issuance([
+        { id => $ids },
+        { 
+            flesh => 1,
+            flesh_fields => {siss => [ qw/subscription/ ]}
+        }
+    ]);
+}
+
 
 ##########################################################################
 # unit methods

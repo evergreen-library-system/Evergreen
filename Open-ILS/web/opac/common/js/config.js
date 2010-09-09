@@ -356,6 +356,7 @@ var UPDATE_HOLD					= 'open-ils.circ:open-ils.circ.hold.update';
 var FETCH_COPIES_FROM_VOLUME	= 'open-ils.search:open-ils.search.asset.copy.retrieve_by_cn_label:1';
 var FETCH_VOLUME_BY_INFO		= 'open-ils.search:open-ils.search.call_number.retrieve_by_info'; /* XXX staff method? */
 var FETCH_VOLUME					= 'open-ils.search:open-ils.search.asset.call_number.retrieve';
+var FETCH_ISSUANCE					= 'open-ils.serial:open-ils.serial.issuance.pub_fleshed.batch.retrieve';
 var FETCH_COPY_LOCATIONS		= 'open-ils.circ:open-ils.circ.copy_location.retrieve.all';
 var FETCH_COPY_NOTES				= 'open-ils.circ:open-ils.circ.copy_note.retrieve.all';
 var FETCH_COPY_STAT_CATS		= 'open-ils.circ:open-ils.circ.asset.stat_cat_entries.fleshed.retrieve_by_copy';
