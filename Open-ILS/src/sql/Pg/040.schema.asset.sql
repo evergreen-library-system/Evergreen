@@ -160,6 +160,7 @@ CREATE TABLE asset.copy_note (
 	value		TEXT				NOT NULL
 );
 CREATE INDEX asset_copy_note_creator_idx ON asset.copy_note ( creator );
+CREATE INDEX asset_copy_note_owning_copy_idx ON asset.copy_note ( owning_copy );
 
 CREATE TABLE asset.uri (
     id  SERIAL  PRIMARY KEY,
