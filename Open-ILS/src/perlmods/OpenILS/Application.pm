@@ -4,8 +4,9 @@ use UNIVERSAL::require;
 use base qw/OpenSRF::Application/;
 
 sub ils_version {
-    # version format is "x-y-z-p", for example "1-2-1-0" for Evergreen 1.2.1.0
-    return "1-5";
+    # version format is "x-y-z", for example "2-0-0" for Evergreen 2.0.0
+    # For branches, format is "x-y"
+    return "HEAD";
 }
 
 __PACKAGE__->register_method(
