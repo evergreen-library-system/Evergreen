@@ -93,6 +93,7 @@ COMMENT ON TABLE actor.usr IS $$
 $$;
 
 CREATE INDEX actor_usr_home_ou_idx ON actor.usr (home_ou);
+CREATE INDEX actor_usr_usrgroup_idx ON actor.usr (usrgroup);
 CREATE INDEX actor_usr_mailing_address_idx ON actor.usr (mailing_address);
 CREATE INDEX actor_usr_billing_address_idx ON actor.usr (billing_address);
 
