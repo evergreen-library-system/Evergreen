@@ -2316,11 +2316,17 @@
 <!ENTITY staff.cat.bib_brief.author.accesskey "">
 <!ENTITY staff.cat.bib_brief.edition.label "Edition:">
 <!ENTITY staff.cat.bib_brief.edition.accesskey "">
-<!ENTITY staff.cat.bib_brief.pub_date.label "Publication Date:">
+<!ENTITY staff.cat.bib_brief.pub_date.label "Pub Date:">
 <!ENTITY staff.cat.bib_brief.pub_date.accesskey "">
+<!ENTITY staff.cat.bib_brief.call_number.label "Bib Call #:">
+<!ENTITY staff.cat.bib_brief.call_number.accesskey "">
 <!-- "TCN" is an abbreviation for "title control number" -->
 <!ENTITY staff.cat.bib_brief.title_control_number.label "TCN:">
 <!ENTITY staff.cat.bib_brief.title_control_number.accesskey "">
+<!ENTITY staff.cat.bib_brief.biblio_record_entry_id.label "Record ID:">
+<!ENTITY staff.cat.bib_brief.biblio_record_entry_id.accesskey "">
+<!ENTITY staff.cat.bib_brief.biblio_record_entry_owner.label "Record Owner:">
+<!ENTITY staff.cat.bib_brief.biblio_record_entry_owner.accesskey "">
 <!ENTITY staff.cat.bib_brief.created_by.label "Created By:">
 <!ENTITY staff.cat.bib_brief.created_by.accesskey "">
 <!ENTITY staff.cat.bib_brief.last_edited_by.label "Last Edited By:">
@@ -3321,7 +3327,8 @@
 <!ENTITY staff.circ.alternate_copy_summary.Alert.label "Alert">
 <!ENTITY staff.circ.alternate_copy_summary.Alternate_View.label "Alternate View">
 <!ENTITY staff.circ.alternate_copy_summary.Barcode.label "Barcode">
-<!ENTITY staff.circ.alternate_copy_summary.Call_Number.label "Call Number">
+<!ENTITY staff.circ.alternate_copy_summary.Call_Number.label "Item Call #">
+<!ENTITY staff.circ.alternate_copy_summary.Call_Number.accesskey "">
 <!ENTITY staff.circ.alternate_copy_summary.Cataloging_Info.label "Cataloging Info">
 <!ENTITY staff.circ.alternate_copy_summary.Cataloging_Info.accesskey "I">
 <!ENTITY staff.circ.alternate_copy_summary.Checkin_Scan_Time.label "Checkin Scan Time">

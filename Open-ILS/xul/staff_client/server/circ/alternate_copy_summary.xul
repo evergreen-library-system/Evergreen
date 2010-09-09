@@ -42,9 +42,15 @@
         <!-- Most of this gets filled in by bib_brief_overlay.xul -->
         <grid id="bib_brief_grid"> 
             <rows id="bib_brief_grid_rows">
-                <row>
-                    <label value="&staff.circ.alternate_copy_summary.Call_Number.label;" accesskey="&staff.circ.alternate_copy_summary.call_number.accesskey;" control="call_number"/>
-                    <textbox name="call_number" readonly="true" context="clipboard"/>
+                <row id="bib_brief_grid_row3">
+                    <label id="bib_call_number_label"/>
+                    <textbox id="bib_call_number"/>
+                    <hbox id="placeholder1" flex="1">
+                        <label value="&staff.circ.alternate_copy_summary.Call_Number.label;" accesskey="&staff.circ.alternate_copy_summary.Call_Number.accesskey;" control="call_number" class="emphasis"/>
+                    </hbox>
+                    <hbox id="placeholder2" flex="1">
+                        <textbox name="call_number" readonly="true" context="clipboard" class="plain"/>
+                    </hbox>
                 </row>
             </rows>
         </grid>

@@ -71,7 +71,8 @@ function bib_brief_overlay(params) {
                     //dump('value = ' + value + '\n');
                     var n = set(c.id, value ? value : '');
                     if (c.id == 'tcn_source') set_tooltip('tcn',value);
-                    if (c.id == 'doc_id') set_tooltip('title',value);
+                    if (c.id == 'title') set_tooltip('title',value);
+                    if (c.id == 'author') set_tooltip('author',value);
                     //dump('set text on ' + n + ' elements\n');
                 } else {
                     //dump('render is not a function\n');
@@ -79,6 +80,30 @@ function bib_brief_overlay(params) {
             } else {
                 //dump('is not an mvr or bre\n');
             }
+        }
+
+        // Let's fetch a bib call number
+        JSAN.use('OpenILS.data');
+        var data = new OpenILS.data();
+        var label_class = data.hash.aous['cat.default_classification_scheme'];
+        if (!label_class) {
+            label_class = { "value": 1 };
+        }
+        var cn_blob_array = net.simple_request('BLOB_MARC_CALLNUMBERS_RETRIEVE',[params.mvr_id, label_class.value]);
+        if (! cn_blob_array) { cn_blob_array = []; }
+        var tooltip_text = '';
+        for (var i = 0; i < cn_blob_array.length; i++) {
+            var cn_blob_obj = cn_blob_array[i];
+            for (var j in cn_blob_obj) {
+                tooltip_text += j + ' : ' + cn_blob_obj[j] + '\n';
+            }
+        }
+        if (tooltip_text) {
+            var cn_blob_obj = cn_blob_array[0];
+            for (var j in cn_blob_obj) {
+                set('bib_call_number',cn_blob_obj[j]);
+            }
+            set_tooltip('bib_call_number',tooltip_text);
         }
 
     } catch(E) {

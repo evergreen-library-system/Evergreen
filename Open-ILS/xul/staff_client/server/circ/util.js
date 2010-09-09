@@ -1237,6 +1237,16 @@ circ.util.columns = function(modify,params) {
         {
             'persist' : 'hidden width ordinal',
             'fm_class' : 'bre',
+            'id' : 'owner',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.owner'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return my.bre ? (typeof my.bre.owner() == 'object' ? my.bre.owner().shortname() : data.hash.aou[my.bre.owner()].shortname() ) : ''; }
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'fm_class' : 'bre',
             'id' : 'creator',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.creator'),
             'flex' : 1,
