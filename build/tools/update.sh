@@ -157,7 +157,7 @@ BIDDATE=$(date +"%Y-%m-%dT%H:%M:%S");
 BID=${STAFF_CLIENT_BUILD_ID:-$BIDDATE};   # or "current"
 
 rm -f "$XUL/current" || rm -rf "$XUL/current";      # removing the old link/build
-cd $ILS && sudo make install STAFF_CLIENT_BUILD_ID=$BID;
+cd $ILS && sudo make install STAFF_CLIENT_STAMP_ID=$BID STAFF_CLIENT_BUILD_ID=$BID;
 sudo chown -R opensrf:opensrf $INSTALL
 
 [ -d "$XUL/$BID" ] || die_msg "New build directory $XUL/$BID was not created.  sudo make install failed?";
@@ -171,7 +171,12 @@ pwd;
 rm -f $XUL/current-client-build.zip;
 cp -r "$ILS/Open-ILS/xul/staff_client/build" ./
 zip -rq current-client-build.zip build;
+echo -n "BUILD_ID: ";
 cat ./build/BUILD_ID;
+echo -n "STAMP_ID: ";
+cat ./build/STAMP_ID;
+echo -n " VERSION: ";
+cat ./build/VERSION;
 rm -rf ./build;
 
 echo "build ID is '$BID'";
