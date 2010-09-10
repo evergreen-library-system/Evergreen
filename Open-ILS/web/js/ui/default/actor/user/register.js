@@ -84,6 +84,7 @@ function load() {
         'ui.patron.default_inet_access_level',
         'ui.patron.default_ident_type',
         'ui.patron.default_country',
+        'ui.patron.registration.require_address',
         'circ.holds.behind_desk_pickup_supported',
         'circ.patron_edit.clone.copy_address'
     ]);
@@ -1348,8 +1349,14 @@ function uEditApproveAddress(addr) {
 
 
 function uEditDeleteAddr(id, noAlert) {
+    if (patron.isnew() && orgSettings['ui.patron.registration.require_address']) {
+        if (dojo.query('tr[name=uedit-addr-divider]').length < 2) {
+            alert(localeStrings.NEED_ADDRESS);
+            return;
+        }
+    }
     if(!noAlert) {
-        if(!confirm('Delete address ' + id)) return; /* XXX i18n */
+        if(!confirm(dojo.string.substitute(localeStrings.DELETE_ADDRESS, [id]))) return;
     }
     var addr = patron.addresses().filter(function(i){return (i.id() == id)})[0];
     if (addr) { addr.isdeleted(1); }
