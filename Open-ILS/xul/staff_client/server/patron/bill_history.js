@@ -376,7 +376,7 @@ function print_bills() {
         var template = 'bills_historical'; if (xul_param('current')) template = 'bills_current';
         JSAN.use('patron.util');
         var params = { 
-            'patron' : patron.util.retrieve_au_via_id(ses(),g.patron_id), 
+            'patron' : patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id,null), 
             'template' : template
         };
         g.bill_list.print(params);
