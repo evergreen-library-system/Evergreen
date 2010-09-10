@@ -227,7 +227,7 @@ patron.util.mp_columns = function(modify,params) {
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'mp_staff', 'label' : commonStrings.getString('staff.mp_accepting_usr_label'), 'flex' : 1,
-            'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { var s = my.mp.accepting_usr(); if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s); return s.family_name() + " (" + s.card().barcode() + ") @ " + data.hash.aou[ s.home_ou() ].shortname(); }
+            'primary' : false, 'hidden' : false, 'editable' : false, 'render' : function(my) { var s = my.mp.accepting_usr(); if (s && typeof s != "object") s = patron.util.retrieve_fleshed_au_via_id(ses(),s,["card"]); return s.family_name() + " (" + s.card().barcode() + ") @ " + data.hash.aou[ s.home_ou() ].shortname(); }
         },
         {
             'persist' : 'hidden width ordinal', 'id' : 'mp_xact', 'label' : commonStrings.getString('staff.mp_xact_label'), 'flex' : 1,
@@ -590,15 +590,15 @@ patron.util.retrieve_name_via_id = function(session, id) {
     return parts;
 }
 
-patron.util.retrieve_fleshed_au_via_id = function(session, id, f) {
+patron.util.retrieve_fleshed_au_via_id = function(session, id, fields, func) {
     JSAN.use('util.network');
     var network = new util.network();
     var patron_obj = network.simple_request(
         'FM_AU_FLESHED_RETRIEVE_VIA_ID.authoritative',
-        [ session, id ],
-        typeof f == 'function' ? f : null
+        [ session, id, fields ],
+        typeof func == 'function' ? func : null
     );
-    if (typeof f != 'function') {
+    if (typeof func != 'function') {
         patron.util.set_penalty_css(patron_obj);
         return patron_obj;
     }

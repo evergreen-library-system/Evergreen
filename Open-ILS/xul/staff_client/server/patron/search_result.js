@@ -50,7 +50,10 @@ patron.search_result.prototype = {
                 'map_row_to_columns' : patron.util.std_map_row_to_columns(),
                 'retrieve_row' : function(params) {
                     var id = params.retrieve_id;
-                    var au_obj = patron.util.retrieve_au_via_id( ses(), id,
+                    var au_obj = patron.util.retrieve_fleshed_au_via_id(
+                        ses(),
+                        id,
+                        ["card","billing_address","mailing_address"],
                         function(req) {
                             try {
                                 var row = params.row;
