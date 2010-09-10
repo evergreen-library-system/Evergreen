@@ -44,7 +44,7 @@
       			<para>The key to Evergreen scalability is in the openSRF configuration files <filename>/openils/conf/opensrf.xml</filename> and 
 			<filename>/openils/conf/opensrf_core.xml</filename>. 
 			By configuring these files, an administrator could cluster evergreen services over multiple hosts, change the host running a specific service 
-			or change the host of the postgreSQL database.</para> 
+			or change the host of the PostgreSQL database.</para> 
 
 			<note><para>The default configuration of Evergreen in the installation instructions assumes a single <emphasis>localhost</emphasis> server setup. For more complex 
 			multi-server clustered configurations, some server administration and database administration experience or knowledge will be required.</para></note>		

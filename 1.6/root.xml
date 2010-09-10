@@ -114,7 +114,8 @@
 		<info>
 			<title>Appendices</title>
 		</info>
-<!--		<xi:include href="development/schema.xml"/>-->
+		<xi:include href="appendices/schema.xml"/>
+		<xi:include href="glossary.xml"/>
 		<xi:include href="appendices/bookindex.xml"/>
 	</part>
 </book>

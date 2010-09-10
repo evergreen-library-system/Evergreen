@@ -4,6 +4,50 @@
 	<chapterinfo>
 	<title>Release Notes</title>
 	</chapterinfo>
+	
+	
+	<simplesect>
+		<title>1.6.0.8</title>
+		<simplesect>
+			<title>New features</title>
+			<itemizedlist>
+				<listitem>Added index for case insensitive barcode searching (1.6.0.7) for speed.</listitem>
+				<listitem>Move to BibTemplate for general title detail display, not just overlay of MVR-based display.</listitem>
+			</itemizedlist> 
+		</simplesect>
+		<simplesect>
+			<title>Bug fixes</title>
+			<itemizedlist>
+				<listitem>Offline transaction timestamp and export fixes.</listitem>
+				<listitem>More configuration interface improvements.</listitem>
+				<listitem>Printing improvements to avoid the dreaded <quote>inner print_tree</quote> errors.</listitem>
+				<listitem>Fix Google Books full-text functionality.</listitem>
+				<listitem>User Editor improvements (addresses, appropriate required fields).</listitem>
+			</itemizedlist> 
+		</simplesect>
+	</simplesect>
+	<simplesect>
+		<title>1.6.0.7</title>
+		<simplesect>
+			<title>New features</title>
+			<itemizedlist>
+				<listitem>Made barcode searching from the general user search interface case insensitive</listitem>
+			</itemizedlist> 
+		</simplesect>
+		<simplesect>
+			<title>Bug fixes</title>
+			<itemizedlist>
+				<listitem>FIFO Holds Org Setting name in the Library Settings Editor did not match that used by the SQL – repaired.</listitem>
+				<listitem>Repaired Authority Record ingest.</listitem>
+				<listitem>Backdating timestamp format bug fixed – patch from James Fournie at SITKA.</listitem>
+				<listitem>Configuration interface bugs addressed (ongoing improvement from 1.6.0.4).</listitem>
+				<listitem>Action/Trigger (notifications, etc) bugs addressed.</listitem>
+				<listitem>In-Database record merging bug fixes (indicators, Located URIs)</listitem>
+				<listitem>In-Database hold testing stored procedure bug fixed – patch from John Craig.</listitem>
+			</itemizedlist> 
+		</simplesect>
+	</simplesect>
+
 	<simplesect>
 		<title>1.6.0.6</title>
 		<simplesect>

@@ -19,11 +19,10 @@
 			hostname:</para>
 			<note><para>Some older versions of yaz-client have known issues with SRU. Ensure that you are using the latest edition of yaz from 
 			<link xlink:href="http://www.indexdata.com/yaz">http://www.indexdata.com/yaz</link>.</para></note>
-			<screen>
-			$ yaz-client http://dev.gapines.org/opac/extras/sru
-			Z> sru GET 1.1
-			Z> find hemingway
-			</screen>
+			<screen>$ yaz-client http://dev.gapines.org/opac/extras/sru</screen>
+			<screen>Z> sru GET 1.1</screen>
+			<screen>Z> find hemingway</screen>
+			
 			 <para>If your database has records that match that term, you will get the corresponding MARCXML records in your response from yaz-client.</para>
 			 <para>Here's what the SRU request looks like as sent to the Evergreen web server:</para>
 			 <screen>GET /opac/extras/sru?version=1.1&amp;operation=searchRetrieve&amp;query=hemingway&amp;maximumRecords=0</screen>
@@ -109,7 +108,7 @@
 				<step>
 					<para>Create a Simple2ZOOM configuration file. Something like the following is a good start, and is based on the Simple2ZOOM documentation example. 
 					We'll name the file dgo.conf for our example:</para>	
- 					<screen>
+ 					<programlisting>
 					&lt;client&gt;
         			 		&lt;database name="gapines"&gt;
            						&lt;zurl&gt;http://dev.gapines.org/opac/extras/sru&lt;/zurl&gt;
@@ -128,7 +127,7 @@
            						&lt;/search&gt;
          					&lt;/database&gt;
       					&lt;/client&gt;
-					</screen>
+					</programlisting>
 					<para>You can have multiple &lt;database&gt; sections in a single file, each pointing to a different scope of your consortium. The name attribute on 
 					the &lt;database&gt; element is used in your Z39.50 connection string to name the database. The &lt;zurl&gt; element must point to 
 					<emphasis>http://hostname/opac/extras/sru</emphasis>. As of Evergreen 1.6, you can append an optional organization unit shortname for search 
@@ -140,7 +139,7 @@
 					<para>Run simple2ZOOM as a daemon, specifying the configuration files and one or more listener addresses that the Z39.50 server will be accessible on. 
 					If you do not specify a port, it will automatically run on port 9999. In the following example, we tell it to listen both to localhost on port 2210, 
 					and on dev.gapines.org on port 210:</para>
-					<screen>
+					<programlisting>
 					 &lt;yazgfs&gt;
           					&lt;server id="server1"&gt;
           						&lt;retrievalinfo&gt;
@@ -153,7 +152,7 @@
           						&lt;/retrievalinfo&gt;
           					&lt;/server&gt;
       					&lt;/yazgfs&gt;
-					</screen>
+					</programlisting>
 				</step>
 				<step>
 					<para>Run simple2ZOOM as a daemon, specifying the configuration files and one or more listener addresses that the Z39.50 server will be accessible on. 
@@ -162,7 +161,7 @@
 					<command>simple2zoom -c dgo.conf -- -f xml2marc-yaz.cfg localhost:2210 dev.gapines.org:210</command>
 				</step>				
 			</procedure>
-			<para>To test the Z39.50 server, we can use yaz-client again:</para>]
+			<para>To test the Z39.50 server, we can use yaz-client again:</para>
 			<screen>
 			yaz-client
 			Z&gt; open localhost:2210/gapines

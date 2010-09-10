@@ -109,7 +109,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<step><para>Select the <guilabel>Organization Unit Type</guilabel> and 
 			<guilabel>Parent Organization Unit</guilabel>.</para></step>
 			<step><para>Check the <guilabel>Can Have Volumes and Copies</guilabel> check box if the 
-			organization units of this type will have volumes and copies assigned to it.<indexterm><primary>organization units</primary><secondary>volumes and copies</secondary></indexterm></para></step>
+			organization units of this type will have volumes and copies assigned to it.<indexterm><primary>organization units</primary><secondary>volumes 
+			and copies</secondary></indexterm></para></step>
 			<step><para>Check the <guilabel>OPAC Visible</guilabel> check box if you want this location to be 
 			visible in the OPAC for searching.<indexterm><primary>Organization Units</primary><secondary>opac visible</secondary></indexterm></para></step>
 			<step><para>Click <guibutton>Save</guibutton> to save your new organizational unit.</para></step>	
@@ -272,278 +273,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	   </simplesect>
 
 	</section>
-	<section xml:id="relevancyrankings">
-		<title>Adjusting Search Relevancy Rankings</title>
-		<info>
-			<abstract>
-				<para>This section describes indexed field weighting and matchpoint weighting, which
-				control relevance ranking in Evergreen catalog search results. Adjusting relevancy can only be completed through access to the Evergreen database as of version 1.6.</para>
-				<tip>
-					<para>In tuning search relevance, it is good practice to make incremental
-					adjustments, capture search logs, and assess results before making further
-					adjustments. </para>
-				</tip>
-			</abstract>
-		</info>
-		<simplesect>
-			<title>Indexed-field Weighting<indexterm><primary>relevancy</primary><secondary>indexed-field weighting</secondary></indexterm> </title>
-			<para>Indexed-field weighting is configured in the Evergreen database in the weight column
-			of the config.metabib_field table, which follows the other four columns in this table:
-			field_class, name, xpath, and format.</para>
-			<para>The following is one representative line from the config.metabib_field table:</para>
-			<para> author | conference | //mods32:mods/mods32:name[@type='conference']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']] | mods32 | 1 ) </para>
-			<para>The default value for index-field weights in config.metabib_field is 1. Adjust the
-			weighting of indexed fields to boost or lower the relevance score for matches on that
-			indexed field. The weight value may be increased or decreased by whole integers. </para>
-			<para>For example, by increasing the weight of the title-proper field from 1 to 2, a search
-			for <emphasis role="bold">jaguar</emphasis> would double the relevance  for the book titled
-			<emphasis role="italic">Aimee and Jaguar</emphasis> than for a record with the term
-			<emphasis role="bold">jaguar</emphasis> in another indexed field. </para>
-		</simplesect>
-		<simplesect>
-			<title>Match point Weighting<indexterm><primary>relevancy</primary><secondary>match point weighting</secondary></indexterm></title>
-			<para> Match point weighting provides another way to fine-tune Evergreen relevance ranking,
-			and is configured through floating-point multipliers in the multiplier column of the
-			search.relevance_adjustment table.</para>
-			<para> Weighting can be adjusted for one, more, or all multiplier fields in
-			search.relevance_adjustment.</para>
-			<para>You can adjust the following three matchpoints:</para> 
-			<itemizedlist>
-			<listitem>
-				<para>first_wordboosts relevance if the query is 
-				one term long and matches the first term in the indexed field (search for <emphasis 
-				role="bold">twain</emphasis>, get a bonus for <emphasis role="bold">twain, mark</emphasis> 
-				but not <emphasis role="bold">mark twain</emphasis>)</para>
-			</listitem>
-			<listitem>
-				<para>word_order increases relevance for words 
-				matching the order of search terms, so that the results for the search <emphasis 
-				role="bold">legend suicide</emphasis> would match higher for the book <emphasis 
-				role="italic">Legend of a Suicide</emphasis> than for the book, 
-				<emphasis role="italic">Suicide Legend</emphasis></para>
-			</listitem>
-			<listitem>
-				<para>full_match boosts relevance when the full 
-				query exactly matches the entire indexed field (after space, case, and diacritics are 
-				normalized). So a title search for <emphasis role="italic">The Future of Ice</emphasis> 
-				would get a relevance boost above <emphasis role="italic">Ice>Ages of the 
-				Future</emphasis>.</para>
-			</listitem>
-			</itemizedlist>
-			<para> Here are the default settings of the search.relevance_adjustment table: </para>
-			<table xml:id="search.relevance">
-			<title>search.relevance_adjustment table</title>
-			<tgroup cols="4">
-				<thead>
-					<row>
-						<entry>field_class</entry>
-						<entry>name</entry>
-						<entry>bump_type</entry>
-						<entry>multiplier</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>author</entry>
-						<entry>conference</entry>
-						<entry>first_word</entry>
-						<entry>1.5</entry>
-					</row>
-					<row>
-						<entry>author</entry>
-						<entry>corporate</entry>
-						<entry>first_word</entry>
-						<entry>1.5</entry>
-					</row>
-					<row>
-						<entry>author </entry>
-						<entry>other </entry>
-						<entry>first_word</entry>
-						<entry>1.5</entry>
-					</row>
-					<row>
-						<entry>author</entry>
-						<entry>personal</entry>
-						<entry>first_word</entry>
-						<entry>1.5</entry>
-					</row>
-					<row>
-						<entry>keyword</entry>
-						<entry>keyword</entry>
-						<entry>word_order</entry>
-						<entry>10</entry>
-					</row>
-					<row>
-						<entry>series</entry>
-						<entry>seriestitle</entry>
-						<entry>first_word</entry>
-						<entry>1.5</entry>
-					</row>
-					<row>
-						<entry>series</entry>
-						<entry>seriestitle</entry>
-						<entry>full_match</entry>
-						<entry>20</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>abbreviated</entry>
-						<entry>first_word</entry>
-						<entry>1.5</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>abbreviated</entry>
-						<entry>full_match</entry>
-						<entry>20</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>abbreviated</entry>
-						<entry>word_order</entry>
-						<entry>10</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>alternative</entry>
-						<entry>first_word</entry>
-						<entry>1.5</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>alternative</entry>
-						<entry>full_match</entry>
-						<entry>20</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>alternative</entry>
-						<entry>word_order</entry>
-						<entry>10</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>proper</entry>
-						<entry>first_word</entry>
-						<entry>1.5</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>proper</entry>
-						<entry>full_match</entry>
-						<entry>20</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>proper</entry>
-						<entry>word_order</entry>
-						<entry>10</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>translated</entry>
-						<entry>first_word</entry>
-						<entry>1.5</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>translated</entry>
-						<entry>full_match</entry>
-						<entry>20</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>translated</entry>
-						<entry>word_order</entry>
-						<entry>10</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>uniform</entry>
-						<entry>first_word</entry>
-						<entry>1.5</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>uniform</entry>
-						<entry>full_match</entry>
-						<entry>20</entry>
-					</row>
-					<row>
-						<entry>title</entry>
-						<entry>uniform</entry>
-						<entry>word_order</entry>
-						<entry>10</entry>
-					</row>
-				</tbody>
-			</tgroup>
-			</table>
-		</simplesect>
-		<simplesect>
-			<title>Combining Index Weighting and Match point Weighting</title>
-			<para>Index weighting and matchpoint weighting may be combined. The relevance boost of the combined 
-			weighting is equal to the product of the two multiplied values. </para>
-			<para>If the relevance setting in the config.metabib_field were increased to 2, and the multiplier 
-			set to 1.2 in the search.relevance_adjustment table, the resulting matchpoint increase would be 
-			240%. </para>
-			<note>
-				<para>In practice, these weights are applied serially -- first the index weight, then all 
-				the matchpoint weights that apply -- because they are evaluated at different stages of the 
-				search process.</para>
-			</note>
-		</simplesect>
-		<simplesect>
-			<title>Adjusting Relevancy for Keyword Searches<indexterm><primary>relevancy</primary><secondary>keyword searches</secondary></indexterm></title>
-			<para> Searching the out of the box <emphasis>keyword</emphasis> does not boost the ranking for terms appearing in, the title or subject fields since  there is just one 
-			keyword index which does not distinguish terms that appear in the title field from those in the notes field for example. In comparison, the title index is actually composed of 
-			a number of separate indexes: title|proper, title|uniform, title|alternative, title|translated, etc, that collectively form the title index. You can see this in the 
-			config.metabib_field table. The following procedure will add a keyword|title index so that terms found in the title field of an item are given more weight than terms in 
-			other fields. </para>
-			<procedure>
-				<step>
-					<para>From the command line, access the PostgreSQL command line interface</para>
-					<screen>psql -U evergreen</screen>
-				</step> 
-				<step>
-					<para>Clone the title|proper index to create a keyword|title index</para>
-					<para>6 = the title|proper index</para>
-					<screen>INSERT INTO config.metabib_field 
-					(field_class, name, xpath, weight,</screen>
-					<screen>format, search_field, facet_field)</screen>
- 					<screen>SELECT 'keyword', 'title', xpath, weight, format,</screen> 
-					<screen>search_field, facet_field</screen>
-					<screen>FROM config.metabib_field</screen>
-					<screen>WHERE id = 6;</screen>
-				</step>
-				<step>
-					<para>Populate the keyword|title index with a set of index entries cloned from the metabib.title_field_entry table;</para>
-					<para>6 = the title|proper index</para>
-					<screen>INSERT INTO metabib.keyword_field_entry (source, field, value)</screen>
-					<screen>SELECT source, 17, value (the field value, 17, field be different 
-					in your database so you may need to check the 
-					<emphasis>config.metabib_field</emphasis> for the id of your new index).</screen>
-					<screen>FROM metabib.title_field_entry</screen>
-					<screen>WHERE field = 6;</screen>
-				</step>
-				<step> 
-					<para>Bump the relevance when the first search term appears first in the title in a keyword search.</para>
-					<para>17 = our new keyword|title index (This may be different in your database so you may need to check the <emphasis>config.metabib_field</emphasis> for the id 
-					of your new index).</para>
-					<screen>INSERT INTO search.relevance_adjustment 
-					(active, field, bump_type, multiplier)</screen>
-					<screen>VALUES (true, 17, 'first_word', 5); </screen>
-				</step>
-				<step>
-					<para>Boost the relevance for search terms appearing in the title in general</para>
-					<para>17 = our new keyword|title index (This may be different in your database so you may need to check the <emphasis>config.metabib_field</emphasis> for the id 
-					of your new index).</para>
-					<screen>UPDATE config.metabib_field</screen>
-					<screen>SET weight = 10</screen>
-					<screen>WHERE id = 17;</screen>
-				</step>
-			</procedure>  
-		</simplesect> 
-	</section>
+	
 	<section xml:id="permissions">
 			<title>User and Group Permissions <indexterm><primary>permissions</primary><secondary>group</secondary></indexterm></title>
 			<abstract>
@@ -2004,5 +1734,283 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<screen>/openils/bin/osrf_ctl.sh -l -a restart_perl</screen>
 			</step>
 		</procedure>
+	</section>
+	<section xml:id="relevancyrankings">
+		<title>Adjusting Search Relevancy Rankings</title>
+		<info>
+			<abstract>
+				<para>This section describes indexed field weighting and matchpoint weighting, which
+				control relevance ranking in Evergreen catalog search results. Adjusting relevancy can only be completed through access to the Evergreen database as of version 1.6.</para>
+				<tip>
+					<para>In tuning search relevance, it is good practice to make incremental
+					adjustments, capture search logs, and assess results before making further
+					adjustments. </para>
+				</tip>
+			</abstract>
+		</info>
+		<simplesect>
+			<title>Indexed-field Weighting<indexterm><primary>relevancy</primary><secondary>indexed-field weighting</secondary></indexterm> </title>
+			<para>Indexed-field weighting is configured in the Evergreen database in the weight column
+			of the config.metabib_field table, which follows the other four columns in this table:
+			field_class, name, xpath, and format.</para>
+			<para>The following is one representative line from the config.metabib_field table:</para>
+			<para> author | conference | //mods32:mods/mods32:name[@type='conference']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']] | mods32 | 1 ) </para>
+			<para>The default value for index-field weights in config.metabib_field is 1. Adjust the
+			weighting of indexed fields to boost or lower the relevance score for matches on that
+			indexed field. The weight value may be increased or decreased by whole integers. </para>
+			<para>For example, by increasing the weight of the title-proper field from 1 to 2, a search
+			for <emphasis role="bold">jaguar</emphasis> would double the relevance  for the book titled
+			<emphasis role="italic">Aimee and Jaguar</emphasis> than for a record with the term
+			<emphasis role="bold">jaguar</emphasis> in another indexed field. </para>
+		</simplesect>
+		<simplesect>
+			<title>Match point Weighting<indexterm><primary>relevancy</primary><secondary>match point weighting</secondary></indexterm></title>
+			<para> Match point weighting provides another way to fine-tune Evergreen relevance ranking,
+			and is configured through floating-point multipliers in the multiplier column of the
+			search.relevance_adjustment table.</para>
+			<para> Weighting can be adjusted for one, more, or all multiplier fields in
+			search.relevance_adjustment.</para>
+			<para>You can adjust the following three matchpoints:</para> 
+			<itemizedlist>
+			<listitem>
+				<para>first_wordboosts relevance if the query is 
+				one term long and matches the first term in the indexed field (search for <emphasis 
+				role="bold">twain</emphasis>, get a bonus for <emphasis role="bold">twain, mark</emphasis> 
+				but not <emphasis role="bold">mark twain</emphasis>)</para>
+			</listitem>
+			<listitem>
+				<para>word_order increases relevance for words 
+				matching the order of search terms, so that the results for the search <emphasis 
+				role="bold">legend suicide</emphasis> would match higher for the book <emphasis 
+				role="italic">Legend of a Suicide</emphasis> than for the book, 
+				<emphasis role="italic">Suicide Legend</emphasis></para>
+			</listitem>
+			<listitem>
+				<para>full_match boosts relevance when the full 
+				query exactly matches the entire indexed field (after space, case, and diacritics are 
+				normalized). So a title search for <emphasis role="italic">The Future of Ice</emphasis> 
+				would get a relevance boost above <emphasis role="italic">Ice>Ages of the 
+				Future</emphasis>.</para>
+			</listitem>
+			</itemizedlist>
+			<para> Here are the default settings of the search.relevance_adjustment table: </para>
+			<table xml:id="search.relevance">
+			<title>search.relevance_adjustment table</title>
+			<tgroup cols="4">
+				<thead>
+					<row>
+						<entry>field_class</entry>
+						<entry>name</entry>
+						<entry>bump_type</entry>
+						<entry>multiplier</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>author</entry>
+						<entry>conference</entry>
+						<entry>first_word</entry>
+						<entry>1.5</entry>
+					</row>
+					<row>
+						<entry>author</entry>
+						<entry>corporate</entry>
+						<entry>first_word</entry>
+						<entry>1.5</entry>
+					</row>
+					<row>
+						<entry>author </entry>
+						<entry>other </entry>
+						<entry>first_word</entry>
+						<entry>1.5</entry>
+					</row>
+					<row>
+						<entry>author</entry>
+						<entry>personal</entry>
+						<entry>first_word</entry>
+						<entry>1.5</entry>
+					</row>
+					<row>
+						<entry>keyword</entry>
+						<entry>keyword</entry>
+						<entry>word_order</entry>
+						<entry>10</entry>
+					</row>
+					<row>
+						<entry>series</entry>
+						<entry>seriestitle</entry>
+						<entry>first_word</entry>
+						<entry>1.5</entry>
+					</row>
+					<row>
+						<entry>series</entry>
+						<entry>seriestitle</entry>
+						<entry>full_match</entry>
+						<entry>20</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>abbreviated</entry>
+						<entry>first_word</entry>
+						<entry>1.5</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>abbreviated</entry>
+						<entry>full_match</entry>
+						<entry>20</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>abbreviated</entry>
+						<entry>word_order</entry>
+						<entry>10</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>alternative</entry>
+						<entry>first_word</entry>
+						<entry>1.5</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>alternative</entry>
+						<entry>full_match</entry>
+						<entry>20</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>alternative</entry>
+						<entry>word_order</entry>
+						<entry>10</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>proper</entry>
+						<entry>first_word</entry>
+						<entry>1.5</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>proper</entry>
+						<entry>full_match</entry>
+						<entry>20</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>proper</entry>
+						<entry>word_order</entry>
+						<entry>10</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>translated</entry>
+						<entry>first_word</entry>
+						<entry>1.5</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>translated</entry>
+						<entry>full_match</entry>
+						<entry>20</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>translated</entry>
+						<entry>word_order</entry>
+						<entry>10</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>uniform</entry>
+						<entry>first_word</entry>
+						<entry>1.5</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>uniform</entry>
+						<entry>full_match</entry>
+						<entry>20</entry>
+					</row>
+					<row>
+						<entry>title</entry>
+						<entry>uniform</entry>
+						<entry>word_order</entry>
+						<entry>10</entry>
+					</row>
+				</tbody>
+			</tgroup>
+			</table>
+		</simplesect>
+		<simplesect>
+			<title>Combining Index Weighting and Match point Weighting</title>
+			<para>Index weighting and matchpoint weighting may be combined. The relevance boost of the combined 
+			weighting is equal to the product of the two multiplied values. </para>
+			<para>If the relevance setting in the config.metabib_field were increased to 2, and the multiplier 
+			set to 1.2 in the search.relevance_adjustment table, the resulting matchpoint increase would be 
+			240%. </para>
+			<note>
+				<para>In practice, these weights are applied serially -- first the index weight, then all 
+				the matchpoint weights that apply -- because they are evaluated at different stages of the 
+				search process.</para>
+			</note>
+		</simplesect>
+		<simplesect>
+			<title>Adjusting Relevancy for Keyword Searches<indexterm><primary>relevancy</primary><secondary>keyword searches</secondary></indexterm></title>
+			<para> Searching the out of the box <emphasis>keyword</emphasis> does not boost the ranking for terms appearing in, the title or subject fields since  there is just one 
+			keyword index which does not distinguish terms that appear in the title field from those in the notes field for example. In comparison, the title index is actually composed of 
+			a number of separate indexes: title|proper, title|uniform, title|alternative, title|translated, etc, that collectively form the title index. You can see this in the 
+			config.metabib_field table. The following procedure will add a keyword|title index so that terms found in the title field of an item are given more weight than terms in 
+			other fields. </para>
+			<procedure>
+				<step>
+					<para>From the command line, access the PostgreSQL command line interface</para>
+					<screen>psql -U evergreen</screen>
+				</step> 
+				<step>
+					<para>Clone the title|proper index to create a keyword|title index</para>
+					<para>6 = the title|proper index</para>
+					<programlisting>
+					INSERT INTO config.metabib_field 
+						(field_class, name, xpath, weight, format, search_field, facet_field)
+						SELECT 'keyword', 'title', xpath, weight, format, search_field, facet_field
+						FROM config.metabib_field
+						WHERE id = 6;
+					</programlisting>
+				</step>
+				<step>
+					<para>Populate the keyword|title index with a set of index entries cloned from the metabib.title_field_entry table;</para>
+					<para>6 = the title|proper index</para>
+					<programlisting>
+					INSERT INTO metabib.keyword_field_entry 
+						(source, field, value)
+						SELECT source, 17, value (the field value, 17, field be different in your database so you may need to check the 
+						<emphasis>config.metabib_field</emphasis> for the id of your new index).
+						FROM metabib.title_field_entry
+						WHERE field = 6;
+					</programlisting>
+				</step>
+				<step> 
+					<para>Bump the relevance when the first search term appears first in the title in a keyword search.</para>
+					<para>17 = our new keyword|title index (This may be different in your database so you may need to check the <emphasis>config.metabib_field</emphasis> for the id 
+					of your new index).</para>
+					<programlisting>
+					INSERT INTO search.relevance_adjustment 
+						(active, field, bump_type, multiplier)
+					VALUES (true, 17, 'first_word', 5); 
+					</programlisting>
+				</step>
+				<step>
+					<para>Boost the relevance for search terms appearing in the title in general</para>
+					<para>17 = our new keyword|title index (This may be different in your database so you may need to check the <emphasis>config.metabib_field</emphasis> for the id 
+					of your new index).</para>
+					<programlisting>
+					UPDATE config.metabib_field
+					SET weight = 10
+					WHERE id = 17;
+					</programlisting>
+				</step>
+			</procedure>  
+		</simplesect> 
 	</section>
 </chapter>
