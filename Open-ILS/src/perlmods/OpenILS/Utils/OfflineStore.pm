@@ -49,7 +49,7 @@ sub disconnect {
 
 
 package OpenILS::Utils::OfflineStore::Session;
-use base 'OpenILS::Utils::OfflineStore';
+use parent 'OpenILS::Utils::OfflineStore';
 
 sub _create_table {
 	my $self = shift;
@@ -80,7 +80,7 @@ __PACKAGE__->has_many(scripts => 'OpenILS::Utils::OfflineStore::Script');
 
 
 package OpenILS::Utils::OfflineStore::Script;
-use base 'OpenILS::Utils::OfflineStore';
+use parent 'OpenILS::Utils::OfflineStore';
 
 sub _create_table {
 	my $self = shift;
