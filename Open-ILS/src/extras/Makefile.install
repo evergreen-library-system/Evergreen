@@ -91,7 +91,7 @@ DEBS =  \
 	libnet-server-perl\
 	libnspr4-dev\
 	libole-storage-lite-perl\
-	libparent-perl
+	libparent-perl \
 	libpq-dev\
 	libreadline5-dev\
 	libspreadsheet-writeexcel-perl\
