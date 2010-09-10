@@ -87,14 +87,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         style : 'padding-right:6px;',
                         href : 'javascript:void(0);', 
                         onclick : function() { 
-                            self.resetStore();
                             self.cachedQueryOpts.offset = self.displayOffset -= self.displayLimit;
                             if(self.displayOffset < 0)
                                 self.cachedQueryOpts.offset = self.displayOffset = 0;
-                            if(self.dataLoader)
-                                self.dataLoader()
-                            else
-                                self.loadAll(self.cachedQueryOpts, self.cachedQuerySearch);
+                            self.refresh();
                         }
                     });
 
@@ -103,12 +99,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         style : 'padding-right:6px;',
                         href : 'javascript:void(0);', 
                         onclick : function() { 
-                            self.resetStore();
                             self.cachedQueryOpts.offset = self.displayOffset += self.displayLimit;
-                            if(self.dataLoader)
-                                self.dataLoader()
-                            else
-                                self.loadAll(self.cachedQueryOpts, self.cachedQuerySearch);
+                            self.refresh();
                         }
                     });
 
@@ -555,6 +547,14 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             
             resetStore : function() {
                 this.setStore(this.buildAutoStore());
+            },
+
+            refresh : function() {
+                this.resetStore();
+                if (this.dataLoader)
+                    this.dataLoader()
+                else
+                    this.loadAll(this.cachedQueryOpts, this.cachedQuerySearch);
             },
 
             loadAll : function(opts, search) {
