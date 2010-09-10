@@ -37,7 +37,13 @@ patron.search_result.prototype = {
             'au_first_given_name' : { 'hidden' : false },
             'au_second_given_name' : { 'hidden' : false },
             'au_dob' : { 'hidden' : false }
-        });
+        }).concat(
+            obj.list.fm_columns('ac',{
+                '*' : { 'remove_virtual' : true, 'expanded_label' : true, 'hidden' : true },
+                'ac_barcode' : { 'hidden' : false }
+            })
+        );
+
         obj.list.init(
             {
                 'columns' : columns,
@@ -53,6 +59,7 @@ patron.search_result.prototype = {
                                 var row = params.row;
                                 if (typeof row.my == 'undefined') row.my = {};
                                 row.my.au = req.getResultObject();
+                                row.my.ac = row.my.au.card();
                                 if (typeof params.on_retrieve == 'function') {
                                     params.on_retrieve(row);
                                 } else {
