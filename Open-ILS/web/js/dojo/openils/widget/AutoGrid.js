@@ -20,6 +20,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             editStyle : 'dialog',
             editReadOnly : false,
             suppressFields : null,
+            suppressEditFields : null,
             hideSelector : false,
             selectorWidth : '1.5',
             showColumnPicker : false,
@@ -384,6 +385,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
                     requiredFields : this.requiredFields,
+                    suppressFields : this.suppressEditFields,
                     onPostSubmit : function() {
                         for(var i in fmObject._fields) {
                             var field = fmObject._fields[i];
@@ -424,6 +426,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
                     requiredFields : this.requiredFields,
+                    suppressFields : this.suppressEditFields,
                     onPostSubmit : function(req, cudResults) {
                         var fmObject = cudResults[0];
                         if(grid.onPostCreate)
