@@ -201,6 +201,9 @@
     </div>
     <div id="acq-unified-results-invoice" class="hidden">
         <div class="acq-unified-result-specific-controls">
+            <button onclick="dijit.byId('acq-unified-inv-grid').refresh();">
+                Refresh Grid
+            </button>
             <button onclick="printInvoiceVouchers();">
                 Print Selected Invoices
             </button>
@@ -217,7 +220,7 @@
             <thead>
                 <tr>
                     <th field="inv_ident" get="getInvIdent"
-                        formatter="formatInvIdent">Vendor Invoice ID</th>
+                        formatter="formatInvIdent"></th>
                 </tr>
             </thead>
         </table>
