@@ -3,6 +3,7 @@
 OPT_ACTION=""
 OPT_SIP_CONFIG=""
 OPT_PID_DIR=""
+OPT_SIP_ERR_LOG="/dev/null";
 SIP_DIR="/opt/SIPServer";
 
 # ---------------------------------------------------------------------------
@@ -13,13 +14,12 @@ SIP_DIR="/opt/SIPServer";
 
 function usage {
 	echo "";
-	echo "usage: $0 -d <pid_dir> -s <sip_config> -a <action>";
+	echo "usage: $0 -d <pid_dir> -s <sip_config> -a <action> -l <sip_err_log>";
 	echo "";
 	echo "Actions include:"
 	echo -e "\tstart_sip"
 	echo -e "\tstop_sip"
 	echo -e "\trestart_sip"
-	echo "";
 	exit;
 }
 
@@ -27,11 +27,12 @@ function usage {
 # ---------------------------------------------------------------------------
 # Load the command line options and set the global vars
 # ---------------------------------------------------------------------------
-while getopts  "a:d:s:" flag; do
+while getopts "a:d:s:l:" flag; do
 	case $flag in	
 		"a")		OPT_ACTION="$OPTARG";;
 		"s")		OPT_SIP_CONFIG="$OPTARG";;
 		"d")		OPT_PID_DIR="$OPTARG";;
+		"l")		OPT_SIP_ERR_LOG="$OPTARG";;
 		"h"|*)	usage;;
 	esac;
 done
@@ -89,7 +90,7 @@ function start_sip {
 	do_action "start" $PID_SIP "OILS SIP Server";
 	DIR=$(pwd);
 	cd $SIP_DIR;
-    perl SIPServer.pm "$OPT_SIP_CONFIG" > /dev/null 2>&1 &
+    perl SIPServer.pm "$OPT_SIP_CONFIG" >> "$OPT_SIP_ERR_LOG" 2>&1 &
 	pid=$!;
 	cd $DIR;
 	echo $pid > $PID_SIP;
