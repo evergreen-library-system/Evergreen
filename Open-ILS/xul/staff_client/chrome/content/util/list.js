@@ -1708,6 +1708,11 @@ util.list.prototype = {
                 var dataobj = hint;
                 var datafield = my_field.name;
                 if (column_extras) {
+                    if (column_extras['*']) {
+                        if (column_extras['*']['dataobj']) {
+                            dataobj = column_extras['*']['dataobj'];
+                        }
+                    }
                     if (column_extras[col_id]) {
                         if (column_extras[col_id]['dataobj']) {
                             dataobj = column_extras[col_id]['dataobj'];
@@ -1759,6 +1764,9 @@ util.list.prototype = {
                         if (column_extras['*']['expanded_label']) {
                             def.label = my_class.label + ': ' + def.label;
                         }
+                        if (column_extras['*']['label_prefix']) {
+                            def.label = column_extras['*']['label_prefix'] + def.label;
+                        }
                         if (column_extras['*']['remove_virtual']) {
                             if (my_field.virtual) {
                                 def.remove_me = true;
@@ -1771,6 +1779,9 @@ util.list.prototype = {
                         }
                         if (column_extras[col_id]['keep_me']) {
                             def.remove_me = false;
+                        }
+                        if (column_extras[col_id]['label_prefix']) {
+                            def.label = column_extras[col_id]['label_prefix'] + def.label;
                         }
                     }
                 }

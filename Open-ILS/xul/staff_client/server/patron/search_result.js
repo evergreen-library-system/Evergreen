@@ -42,6 +42,24 @@ patron.search_result.prototype = {
                 '*' : { 'remove_virtual' : true, 'expanded_label' : true, 'hidden' : true },
                 'ac_barcode' : { 'hidden' : false }
             })
+        ).concat(
+            obj.list.fm_columns('aua',{
+                '*' : {
+                    'dataobj' : 'billing_aua',
+                    'remove_virtual' : true,
+                    'label_prefix' : $('patronStrings').getString('staff.patron.search_result.billing_address_column_label_prefix'),
+                    'hidden' : true
+                }
+            },'billing_')
+        ).concat(
+            obj.list.fm_columns('aua',{
+                '*' : {
+                    'dataobj' : 'mailing_aua',
+                    'remove_virtual' : true,
+                    'label_prefix' : $('patronStrings').getString('staff.patron.search_result.mailing_address_column_label_prefix'),
+                    'hidden' : true
+                }
+            },'mailing_')
         );
 
         obj.list.init(
@@ -60,6 +78,8 @@ patron.search_result.prototype = {
                                 if (typeof row.my == 'undefined') row.my = {};
                                 row.my.au = req.getResultObject();
                                 row.my.ac = row.my.au.card();
+                                row.my.billing_aua = row.my.au.billing_address();
+                                row.my.mailing_aua = row.my.au.mailing_address();
                                 if (typeof params.on_retrieve == 'function') {
                                     params.on_retrieve(row);
                                 } else {
