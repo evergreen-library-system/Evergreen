@@ -275,6 +275,7 @@ function open_acq_orders() {
             "session": ses(),
             "authtime": ses("authtime"),
             "no_xulG": false,
+            "show_nav_buttons": true,
             "show_print_button": false
         };
 
