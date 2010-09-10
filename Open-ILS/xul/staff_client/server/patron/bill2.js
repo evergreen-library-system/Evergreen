@@ -95,7 +95,7 @@ function event_listeners() {
             function(ev) {
                 if ($('payment_type').value == 'credit_payment') {
                     JSAN.use('util.money');
-                    JSAN.use('patron.util'); g.patron = patron.util.retrieve_au_via_id(ses(),g.patron_id);
+                    JSAN.use('patron.util'); g.patron = patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id,null);
                     var proposed = util.money.dollars_float_to_cents_integer(ev.target.value);
                     var available = util.money.dollars_float_to_cents_integer(g.patron.credit_forward_balance());
                     if (proposed > available) {
@@ -647,8 +647,9 @@ function print_bills() {
     try {
         var template = 'bills_historical'; if (xul_param('current')) template = 'bills_current';
         JSAN.use('patron.util');
+        g.patron = patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id,null); 
         var params = { 
-            'patron' : patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id,null), 
+            'patron' : g.patron,
             'printer_context' : 'receipt',
             'template' : template
         };
@@ -899,7 +900,7 @@ function void_all_billings(mobts_id) {
 
 function refresh_patron() {
     JSAN.use('patron.util'); JSAN.use('util.money');
-    patron.util.retrieve_au_via_id(ses(),g.patron_id, function(req) {
+    patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id,null,function(req) {
         var au_obj = req.getResultObject();
         if (typeof au_obj.ilsevent == 'undefined') {
             g.patron = au_obj;
