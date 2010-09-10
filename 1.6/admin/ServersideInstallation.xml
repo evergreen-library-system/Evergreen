@@ -48,7 +48,6 @@
 					</tbody>
 				</tgroup>
 			</table>
-			<caution fileref="media/caution.png">VERIFY THE DEPENDENCIES IN THIS TABLE </caution>
 		</section>
 		<section>
 			<title>Current Stable Software Release</title>
@@ -158,7 +157,11 @@
 						</tbody>
 					</tgroup>
 				</table>
-				<caution fileref="media/caution.png"> ADD INFO FOR OTHER LINUX DISTRIBUTIONS </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO FOR OTHER LINUX DISTRIBUTIONS </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO FOR OTHER LINUX DISTRIBUTIONS </caution>
 				<para>This will install a number of packages on the system that are required by OpenSRF, including some Perl modules from CPAN. You can say "no" to the initial CPAN configuration prompt to allow it to automatically configure itself to download and install Perl modules from CPAN. The CPAN installer will ask you a number of times whether it should install prerequisite modules - say "yes".</para>
 			</section>
 			<section>
@@ -436,7 +439,11 @@
 					srfsh#
 					</screen>
 				</figure>
-				<caution fileref="media/caution.png"> VERIFY THIS TEST </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>VERIFY THIS TEST </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">VERIFY THIS TEST </caution>
 				<para>For other srfsh commands, type 'help' in at the prompt.</para>
 			</section>
 			<section>
@@ -546,7 +553,11 @@
 						</tbody>
 					</tgroup>
 				</table>
-				<caution fileref="media/caution.png"> ADD INFO FOR OTHER LINUX DISTRIBUTIONS </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO FOR OTHER LINUX DISTRIBUTIONS </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO FOR OTHER LINUX DISTRIBUTIONS </caution>
 			</section>
 			<section>
 				<title>(OPTIONAL) Install the PostgreSQL Server</title>
@@ -572,8 +583,16 @@
 						<emphasis>PostgreSQL 8.1 is deprecated and will become unsupported in a future release, though existing installations upgrading from Evergreen 1.4 or before will work fine. However, consider upgrading your Postgres soon!</emphasis>
 					</para>
 				</note>
-				<caution fileref="media/caution.png"> VERIFY: IS THIS STILL TRUE? </caution>
-				<caution fileref="media/caution.png"> ADD INFO ON HOW TO DETERMINE WHICH VERSION OF POSTGRESQL YOU HAVE </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>VERIFY: IS THIS STILL TRUE? </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">VERIFY: IS THIS STILL TRUE? </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO ON HOW TO DETERMINE WHICH VERSION OF POSTGRESQL YOU HAVE </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO ON HOW TO DETERMINE WHICH VERSION OF POSTGRESQL YOU HAVE </caution>
 			</section>
 			<section>
 				<title>(OPTIONAL) Install Perl Modules on PostgreSQL Server</title>
@@ -593,8 +612,16 @@
 					cpan> install MARC::File::XML
 					</screen>
 				</figure>
-				<caution fileref="media/caution.png"> ADD INFO ON HOW TO INSTALL THE PERL MODULES </caution>
-				<caution fileref="media/caution.png"> ADD INFO ON HOW TO VERIFY THAT THE PERL MODULES ARE INSTALLED </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO ON HOW TO INSTALL THE PERL MODULES </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO ON HOW TO INSTALL THE PERL MODULES </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO ON HOW TO VERIFY THAT THE PERL MODULES ARE INSTALLED </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO ON HOW TO VERIFY THAT THE PERL MODULES ARE INSTALLED </caution>
 			</section>
 			<section>
 				<title>Update the System Dynamic Library Path</title>
@@ -614,7 +641,11 @@
 			<section>
 				<title>(OPTIONAL) Restart the PostgreSQL Service</title>
 				<para>If PostgreSQL is running on the same system as the rest of Evergreen, as the <emphasis role="bold">root</emphasis> user you must restart the PostgreSQL service to avoid a problem where the library <emphasis role="bold">plperl.so</emphasis> cannot be found. If your PostgreSQL server is running on another system, just skip this step.</para>
-				<caution fileref="media/caution.png"> ADD INFO ON OTHER VERSIONS OF POSTGRESQL </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO ON OTHER VERSIONS OF POSTGRESQL </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO ON OTHER VERSIONS OF POSTGRESQL </caution>
 				<figure>
 					<title>Commands to restart PostgreSQL service</title>
 					<screen>
@@ -780,7 +811,11 @@
 						<emphasis>This is only a temporary measure to expedite testing. You <emphasis role="bold">must</emphasis> get a proper SSL certificate for a public production system.</emphasis>
 					</para>
 				</warning>
-				<caution fileref="media/caution.png"> ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </caution>
 			</section>
 			<section xml:id="serversideinstallation-modify-apache">
 				<title>Modify the Apache Configuration File</title>
@@ -799,7 +834,11 @@
 					</listitem>
 					<listitem>
 						<para>Comment out the line <emphasis role="bold">Listen 443</emphasis> as it conflicts with the same declaration in the configuration file: <emphasis>/etc/apache2/ports.conf</emphasis>. Debian <emphasis>etch</emphasis> users should not do this.</para>
-						<caution fileref="media/caution.png"> ADD INFO ON WHY DEBIAN ETCH USERS SHOULD NOT DO THIS </caution>
+						<indexterm>
+							<primary>ZZZ-REVIEW</primary>
+							<secondary>ADD INFO ON WHY DEBIAN ETCH USERS SHOULD NOT DO THIS </secondary>
+						</indexterm>
+						<caution fileref="../media/caution.png">ADD INFO ON WHY DEBIAN ETCH USERS SHOULD NOT DO THIS </caution>
 					</listitem>
 					<listitem>
 						<para>The following updates are needed to allow the logs to function properly, but it may break other Apache applications on your server. We hope to make this unnecessary in a future Evergreen release.</para>
@@ -860,7 +899,11 @@
 						<emphasis>The following example uses common XPath syntax on the left-hand side to indicate the approximate position needing changes within the XML file:</emphasis>
 					</para>
 				</note>
-				<caution fileref="media/caution.png"> ADD A BETTER DIAGRAM HERE </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD A BETTER DIAGRAM HERE </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD A BETTER DIAGRAM HERE </caution>
 				<figure>
 					<title>Updates needed in the file "/openils/conf/opensrf_core.xml"</title>
 					<screen>
@@ -971,7 +1014,11 @@
 								<emphasis>You can also start Evergreen <emphasis role="bold">without</emphasis> the <emphasis>-l</emphasis> flag, but the utility <emphasis>osrf_ctl.sh</emphasis> must know the fully qualified domain name for the system on which it will execute. That hostname may have been specified in the configuration file <emphasis>opensrf.xml</emphasis>, which you configured in a previous step.</emphasis>
 							</para>
 						</note>
-						<caution fileref="media/caution.png"> ADD EXPLANATION FOR CONFIGURING "opensrf.xml" </caution>
+						<indexterm>
+							<primary>ZZZ-REVIEW</primary>
+							<secondary>ADD EXPLANATION FOR CONFIGURING "opensrf.xml" </secondary>
+						</indexterm>
+						<caution fileref="../media/caution.png">ADD EXPLANATION FOR CONFIGURING "opensrf.xml" </caution>
 						<para>Execute the following command to determine the fully qualified domain name of your system:</para>
 						<figure>
 							<title>(OPTIONAL) Commands to determine the fully qualified domain name</title>
@@ -997,7 +1044,11 @@
 							Updating fieldmapper
 							...
 							</screen>
-							<caution fileref="media/caution.png"> ADD RESULTS OF TESTS FROM "autogen.sh" </caution>
+							<indexterm>
+								<primary>ZZZ-REVIEW</primary>
+								<secondary>ADD RESULTS OF TESTS FROM "autogen.sh" </secondary>
+							</indexterm>
+							<caution fileref="../media/caution.png">ADD RESULTS OF TESTS FROM "autogen.sh" </caution>
 						</figure>
 					</listitem>
 					<listitem>
@@ -1067,7 +1118,11 @@
 				<section>
 					<title>Testing with "settings-tester.pl"</title>
 					<para>As the <emphasis role="bold">opensrf</emphasis> user, run the script <emphasis>settings-tester.pl</emphasis> to see if it finds any system configuration problems. Following is sample output generated by executing that script after a successful Evergreen installation:</para>
-					<caution fileref="media/caution.png"> REWORK THIS DIAGRAM TO USE SAME IMAGE STANDARDS AS OTHER CHAPTERS </caution>
+					<indexterm>
+						<primary>ZZZ-REVIEW</primary>
+						<secondary>REWORK THIS DIAGRAM TO USE SAME IMAGE STANDARDS AS OTHER CHAPTERS </secondary>
+					</indexterm>
+					<caution fileref="../media/caution.png">REWORK THIS DIAGRAM TO USE SAME IMAGE STANDARDS AS OTHER CHAPTERS </caution>
 					<figure>
 						<title>Executing the script <emphasis>settings-tester.pl</emphasis></title>
 						<mediaobject>
@@ -1089,7 +1144,11 @@
 					<para>By default, the OPAC will live at the URL <emphasis>http://my.domain.com/opac/</emphasis>.</para>
 					<para>Navigate to this URL and the front page of the OPAC should load. There is a basic text entry field with some extra search options. If you have any problems loading this page, check the Apache error logs. If the page loads but does not function correctly, then check for possible javascript errors. We hightly reccommend testing with the <emphasis>Firefox</emphasis> browser because of the helpful javascript debugging tools.</para>
 					<para>Assuming that the OPAC is functioning and there is data in your database, you can now perform other simple functional tests (e.g., searching the catalog).</para>
-					<caution fileref="media/caution.png"> ADD OTHER SIMPLE FUNCTIONAL TESTS </caution>
+					<indexterm>
+						<primary>ZZZ-REVIEW</primary>
+						<secondary>ADD OTHER SIMPLE FUNCTIONAL TESTS </secondary>
+					</indexterm>
+					<caution fileref="../media/caution.png">ADD OTHER SIMPLE FUNCTIONAL TESTS </caution>
 				</section>
 				<section>
 					<title>Running the Evergreen Staff Client</title>
@@ -1134,7 +1193,11 @@
 						<emphasis>You can also stop Evergreen services <emphasis role="bold">without</emphasis> the <emphasis>-l</emphasis> flag, but the utility <emphasis>osrf_ctl.sh</emphasis> must know the fully qualified domain name for the system on which it will execute. That hostname may have been specified in the configuration file <emphasis>opensrf.xml</emphasis>, which you configured in a previous step.</emphasis>
 					</para>
 				</note>
-				<caution fileref="media/caution.png"> ADD EXPLANATION FOR CONFIGURING "opensrf.xml" </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD EXPLANATION FOR CONFIGURING "opensrf.xml" </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD EXPLANATION FOR CONFIGURING "opensrf.xml" </caution>
 			</section>
 			<section xml:id="serversideinstallation-postinstallation">
 				<title>Post-Installation Chores</title>
@@ -1151,7 +1214,11 @@
 							<emphasis>The temporary SSL key was only created to expedite testing. You <emphasis role="bold"> must</emphasis> get a proper SSL certificate for a public production system.</emphasis>
 						</para>
 					</warning>
-					<caution fileref="media/caution.png"> ADD EXPLANATION OF HOW TO GET PERMANENT SSL CERTIFICATE </caution>
+					<indexterm>
+						<primary>ZZZ-REVIEW</primary>
+						<secondary>ADD EXPLANATION OF HOW TO GET PERMANENT SSL CERTIFICATE </secondary>
+					</indexterm>
+					<caution fileref="../media/caution.png">ADD EXPLANATION OF HOW TO GET PERMANENT SSL CERTIFICATE </caution>
 				</section>
 				<section>
 					<title>Set Up Support For Reports</title>
@@ -1203,18 +1270,34 @@
 		<section xml:id="serversideinstallation-virtual">
 			<title>Installing In Virtualized Unix Environments</title>
 			<para>Evergreen software currently runs as a native application on any of several well-known Linux distributions (e.g., <emphasis>Ubuntu</emphasis> and <emphasis>Debian</emphasis>). It does not run as a native application on the Windows operating system (e.g., WindowsXP, WindowsXP Professional, Windows7), but the software can be installed and run on Windows via a virtualized Unix-guest Operating System (using, for example, VirtualBox or VMware to emulate a Linux environment).</para>
-			<caution fileref="media/caution.png"> ADD CONTENT FOR INSTALLING EVERGREEN IN VIRTUALIZED UNIX ENVIRONMENTS </caution>
+			<indexterm>
+				<primary>ZZZ-REVIEW</primary>
+				<secondary>ADD CONTENT FOR INSTALLING EVERGREEN IN VIRTUALIZED UNIX ENVIRONMENTS </secondary>
+			</indexterm>
+			<caution fileref="../media/caution.png">ADD CONTENT FOR INSTALLING EVERGREEN IN VIRTUALIZED UNIX ENVIRONMENTS </caution>
 			<section xml:id="serversideinstallation-virtualized-virtualbox">
 				<title>VirtualBox</title>
-				<caution fileref="media/caution.png"> ADD CONTENT FOR VirtualBox </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD CONTENT FOR VirtualBox </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD CONTENT FOR VirtualBox </caution>
 			</section>
 			<section xml:id="serversideinstallation-virtualized-vmware">
 				<title>VMware</title>
-				<caution fileref="media/caution.png"> ADD CONTENT FOR VMware </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD CONTENT FOR VMware </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD CONTENT FOR VMware </caution>
 			</section>
 			<section xml:id="serversideinstallation-virtualized-virtualpc">
 				<title>VirtualPC</title>
-				<caution fileref="media/caution.png"> ADD CONTENT FOR VirtualPC </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD CONTENT FOR VirtualPC </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD CONTENT FOR VirtualPC </caution>
 			</section>
 		</section>
 		<section xml:id="serversideinstallation-previousversions">
@@ -1223,26 +1306,46 @@
 			<para>The next most recent previous release of Evergreen is version <emphasis><emphasis role="bold">1.4.0.6</emphasis></emphasis>. The accompanying previous release of OpenSRF is version <emphasis><emphasis role="bold">1.0.x</emphasis></emphasis>.</para>
 			<section xml:id="serversideinstallation-ubuntudebian-previous">
 				<title>Installing Evergreen 1.4.0.6 on Ubuntu or Debian</title>
-				<caution fileref="media/caution.png"> ADD CONTENT FOR INSTALLING EVERGREEN 1.4.0.6 ON UBUNTU OR DEBIAN </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD CONTENT FOR INSTALLING EVERGREEN 1.4.0.6 ON UBUNTU OR DEBIAN </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD CONTENT FOR INSTALLING EVERGREEN 1.4.0.6 ON UBUNTU OR DEBIAN </caution>
 			</section>
 			<section xml:id="serversideinstallation-opensrf-previous">
 				<title>Installing OpenSRF 1.0.x</title>
-				<caution fileref="media/caution.png"> ADD CONTENT FOR INSTALLING OPENSRF 1.0.x </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD CONTENT FOR INSTALLING OPENSRF 1.0.x </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD CONTENT FOR INSTALLING OPENSRF 1.0.x </caution>
 			</section>
 		</section>
 		<section xml:id="serversideinstallation-postgresql">
 			<title>Installing PostgreSQL</title>
-			<caution fileref="media/caution.png"> ADD CONTENT FOR POSTGRESQL </caution>
+			<indexterm>
+				<primary>ZZZ-REVIEW</primary>
+				<secondary>ADD CONTENT FOR POSTGRESQL </secondary>
+			</indexterm>
+			<caution fileref="../media/caution.png">ADD CONTENT FOR POSTGRESQL </caution>
 		</section>
 		<section xml:id="serversideinstallation-apache">
 			<title>Installing Apache</title>
 			<section>
 				<title>Securing Apache (httpd)</title>
 				<para>The main consideration is to secure the directory <emphasis>cgi-bin</emphasis>. The only persons that need access to this directory are Evergreen system administrators. This directory should be restricted by both IP (to those workstations designated as Evergeen Administration systems), and by username/password.</para>
-				<caution fileref="media/caution.png"> ADD CONTENT ON HOW TO RESTRICT APACHE BY IP AND USERNAME/PASSWORD </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD CONTENT ON HOW TO RESTRICT APACHE BY IP AND USERNAME/PASSWORD </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD CONTENT ON HOW TO RESTRICT APACHE BY IP AND USERNAME/PASSWORD </caution>
 				<para>A user could add new libraries, re-arrange consortia, or change user groups; or a staff member could access the directory, and change his associated security group to administrative level privileges.</para>
 			</section>
-			<caution fileref="media/caution.png"> ADD MORE CONTENT FOR APACHE </caution>
+			<indexterm>
+				<primary>ZZZ-REVIEW</primary>
+				<secondary>ADD MORE CONTENT FOR APACHE </secondary>
+			</indexterm>
+			<caution fileref="../media/caution.png">ADD MORE CONTENT FOR APACHE </caution>
 		</section>
 	</section>
 	<section>
@@ -2237,7 +2340,11 @@
 	</section>
 	<section xml:id="serversideinstallation-memcached">
 		<title>memcached Servers</title>
-		<caution fileref="media/caution.png"> ADD CONTENT FOR MEMCACHED </caution>
+		<indexterm>
+			<primary>ZZZ-REVIEW</primary>
+			<secondary>ADD CONTENT FOR MEMCACHED </secondary>
+		</indexterm>
+		<caution fileref="../media/caution.png">ADD CONTENT FOR MEMCACHED </caution>
 	</section>
 	<section xml:id="serversideinstallation-organizationandpolicy">
 		<title>Organization and Policy Editing</title>
@@ -2247,19 +2354,36 @@
 			<listitem>Changing circulation rules for an existing library</listitem>
 			<listitem>Adding a new staff position or user group</listitem>
 		</itemizedlist>
-		<caution fileref="media/caution.png"> ADD CONTENT FOR ORGANIZATION AND POLICY EDITING </caution>
+		<indexterm>
+			<primary>ZZZ-REVIEW</primary>
+			<secondary>ADD CONTENT FOR ORGANIZATION AND POLICY EDITING </secondary>
+		</indexterm>
+		<caution fileref="../media/caution.png">ADD CONTENT FOR ORGANIZATION AND POLICY EDITING </caution>
 	</section>
 	<section xml:id="serversideinstallation-sip">
 		<title>Installing the SIP Server</title>
-		<caution fileref="media/caution.png"> ADD CONTENT FOR INSTALLING THE SIP SERVER </caution>
+		<indexterm>
+			<primary>ZZZ-REVIEW</primary>
+			<secondary>ADD CONTENT FOR INSTALLING THE SIP SERVER </secondary>
+		</indexterm>
+		<caution fileref="../media/caution.png">ADD CONTENT FOR INSTALLING THE SIP SERVER </caution>
 	</section>
 	<section xml:id="serversideinstallation-nginx">
 		<title>Using nginx to serve static content</title>
-		<caution fileref="media/caution.png"> ADD CONTENT FOR USING NGINX TO SERVE STATIC CONTENT </caution>
+		<indexterm>
+			<primary>ZZZ-REVIEW</primary>
+			<secondary>ADD CONTENT FOR USING NGINX TO SERVE STATIC CONTENT </secondary>
+		</indexterm>
+		<caution fileref="../media/caution.png">ADD CONTENT FOR USING NGINX TO SERVE STATIC CONTENT </caution>
 	</section>
 	<section xml:id="serversideinstallation-localization">
 		<title>(OPTIONAL) Configuration for Other Languages</title>
 		<para>This section describes how translations such as Armenian (hy-AM), Canadian French (fr-CA) and others are loaded into the database to complete the translations (default English) available in the OPAC and Staff Client.</para>
-		<caution fileref="media/caution.png"> ADD SECTION ON LANGUAGE LOCALIZATION </caution>
+		<indexterm>
+			<primary>ZZZ-REVIEW</primary>
+			<secondary>ADD SECTION ON LANGUAGE LOCALIZATION </secondary>
+		</indexterm>
+		<caution fileref="../media/caution.png">ADD SECTION ON LANGUAGE LOCALIZATION </caution>
 	</section>
+	<index/>
 </chapter>
