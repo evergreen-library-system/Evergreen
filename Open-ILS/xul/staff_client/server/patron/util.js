@@ -599,7 +599,7 @@ patron.util.retrieve_fleshed_au_via_id = function(session, id, fields, func) {
         typeof func == 'function' ? func : null
     );
     if (typeof func != 'function') {
-        patron.util.set_penalty_css(patron_obj);
+        if (!fields) { patron.util.set_penalty_css(patron_obj); }
         return patron_obj;
     }
 }
