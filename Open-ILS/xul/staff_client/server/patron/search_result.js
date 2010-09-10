@@ -29,21 +29,15 @@ patron.search_result.prototype = {
         JSAN.use('util.list'); obj.list = new util.list('patron_list');
 
         JSAN.use('patron.util');
-        var columns = patron.util.columns(
-            {
-                /* 'active' : { 'hidden' : 'false' }, */
-                'barred' : { 'hidden' : 'false' },
-                'family_name' : { 'hidden' : 'false' },
-                'first_given_name' : { 'hidden' : 'false' },
-                'second_given_name' : { 'hidden' : 'false' },
-                'dob' : { 'hidden' : obscure_dob }
-            },
-            {
-                'except_these' : [
-                    'au_barcode',
-                ]
-            }
-        );
+        var columns = obj.list.fm_columns('au',{
+            '*' : { 'remove_virtual' : true, 'expanded_label' : false, 'hidden' : true },
+            'au_barcode' : { 'hidden' : false },
+            'au_barred' : { 'hidden' : false },
+            'au_family_name' : { 'hidden' : false },
+            'au_first_given_name' : { 'hidden' : false },
+            'au_second_given_name' : { 'hidden' : false },
+            'au_dob' : { 'hidden' : false }
+        });
         obj.list.init(
             {
                 'columns' : columns,

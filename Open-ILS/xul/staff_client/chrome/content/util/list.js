@@ -1746,19 +1746,36 @@ util.list.prototype = {
                         if (column_extras['*']['expanded_label']) {
                             def.label = my_class.label + ': ' + def.label;
                         }
+                        if (column_extras['*']['remove_virtual']) {
+                            if (my_field.virtual) {
+                                def.remove_me = true;
+                            }
+                        }
                     }
                     if (column_extras[col_id]) {
                         for (var attr in column_extras[col_id]) {
                             def[attr] = column_extras[col_id][attr];
                         }
+                        if (column_extras[col_id]['keep_me']) {
+                            def.remove_me = false;
+                        }
                     }
                 }
-                return def;
+                if (def.remove_me) {
+                    dump('Skipping ' + def.label + '\n');
+                    return null;
+                } else {
+                    dump('Defining ' + def.label + '\n');
+                    return def;
+                }
             }
  
             for (var i = 0; i < my_class.fields.length; i++) {
                 var my_field = my_class.fields[i];
-                columns.push( col_def(my_field) );
+                var def = col_def(my_field);
+                if (def) {
+                    columns.push( def );
+                }
             }
 
         } catch(E) {
