@@ -599,7 +599,7 @@ patron.util.retrieve_fleshed_au_via_id = function(session, id, fields, func) {
         typeof func == 'function' ? func : null
     );
     if (typeof func != 'function') {
-        patron.util.set_penalty_css(patron_obj);
+        if (!fields) { patron.util.set_penalty_css(patron_obj); }
         return patron_obj;
     }
 }
@@ -619,34 +619,34 @@ var TIME = { minute : 60, hour : 60*60, day : 60*60*24, year : 60*60*24*365 };
 
 patron.util.set_penalty_css = function(patron) {
     try {
-                            removeCSSClass(document.documentElement,'PATRON_HAS_BILLS');
-                            removeCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
-                            removeCSSClass(document.documentElement,'PATRON_HAS_NOTES');
-                            removeCSSClass(document.documentElement,'PATRON_EXCEEDS_CHECKOUT_COUNT');
-                            removeCSSClass(document.documentElement,'PATRON_EXCEEDS_OVERDUE_COUNT');
-                            removeCSSClass(document.documentElement,'PATRON_EXCEEDS_FINES');
-                            removeCSSClass(document.documentElement,'NO_PENALTIES');
-                            removeCSSClass(document.documentElement,'ONE_PENALTY');
-                            removeCSSClass(document.documentElement,'MULTIPLE_PENALTIES');
-                            removeCSSClass(document.documentElement,'PATRON_HAS_ALERT');
-                            removeCSSClass(document.documentElement,'PATRON_BARRED');
-                            removeCSSClass(document.documentElement,'PATRON_INACTIVE');
-                            removeCSSClass(document.documentElement,'PATRON_EXPIRED');
-                            removeCSSClass(document.documentElement,'PATRON_HAS_INVALID_DOB');
-                            removeCSSClass(document.documentElement,'PATRON_HAS_INVALID_ADDRESS');
-                            removeCSSClass(document.documentElement,'PATRON_AGE_GE_65');
-                            removeCSSClass(document.documentElement,'PATRON_AGE_LT_65');
-                            removeCSSClass(document.documentElement,'PATRON_AGE_GE_24');
-                            removeCSSClass(document.documentElement,'PATRON_AGE_LT_24');
-                            removeCSSClass(document.documentElement,'PATRON_AGE_GE_21');
-                            removeCSSClass(document.documentElement,'PATRON_AGE_LT_21');
-                            removeCSSClass(document.documentElement,'PATRON_AGE_GE_18');
-                            removeCSSClass(document.documentElement,'PATRON_AGE_LT_18');
-                            removeCSSClass(document.documentElement,'PATRON_AGE_GE_13');
-                            removeCSSClass(document.documentElement,'PATRON_AGE_LT_13');
-                            removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_1');
-                            removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_2');
-                            removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_3');
+        removeCSSClass(document.documentElement,'PATRON_HAS_BILLS');
+        removeCSSClass(document.documentElement,'PATRON_HAS_OVERDUES');
+        removeCSSClass(document.documentElement,'PATRON_HAS_NOTES');
+        removeCSSClass(document.documentElement,'PATRON_EXCEEDS_CHECKOUT_COUNT');
+        removeCSSClass(document.documentElement,'PATRON_EXCEEDS_OVERDUE_COUNT');
+        removeCSSClass(document.documentElement,'PATRON_EXCEEDS_FINES');
+        removeCSSClass(document.documentElement,'NO_PENALTIES');
+        removeCSSClass(document.documentElement,'ONE_PENALTY');
+        removeCSSClass(document.documentElement,'MULTIPLE_PENALTIES');
+        removeCSSClass(document.documentElement,'PATRON_HAS_ALERT');
+        removeCSSClass(document.documentElement,'PATRON_BARRED');
+        removeCSSClass(document.documentElement,'PATRON_INACTIVE');
+        removeCSSClass(document.documentElement,'PATRON_EXPIRED');
+        removeCSSClass(document.documentElement,'PATRON_HAS_INVALID_DOB');
+        removeCSSClass(document.documentElement,'PATRON_HAS_INVALID_ADDRESS');
+        removeCSSClass(document.documentElement,'PATRON_AGE_GE_65');
+        removeCSSClass(document.documentElement,'PATRON_AGE_LT_65');
+        removeCSSClass(document.documentElement,'PATRON_AGE_GE_24');
+        removeCSSClass(document.documentElement,'PATRON_AGE_LT_24');
+        removeCSSClass(document.documentElement,'PATRON_AGE_GE_21');
+        removeCSSClass(document.documentElement,'PATRON_AGE_LT_21');
+        removeCSSClass(document.documentElement,'PATRON_AGE_GE_18');
+        removeCSSClass(document.documentElement,'PATRON_AGE_LT_18');
+        removeCSSClass(document.documentElement,'PATRON_AGE_GE_13');
+        removeCSSClass(document.documentElement,'PATRON_AGE_LT_13');
+        removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_1');
+        removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_2');
+        removeCSSClass(document.documentElement,'PATRON_NET_ACCESS_3');
 
         JSAN.use('util.network'); var net = new util.network();
         net.simple_request('FM_MOUS_RETRIEVE.authoritative',[ ses(), patron.id() ], function(req) {
@@ -672,6 +672,7 @@ patron.util.set_penalty_css = function(patron) {
         */
 
         var penalties = patron.standing_penalties();
+        if (!penalties) { penalties = []; }
         for (var i = 0; i < penalties.length; i++) {
             /* this comes from /opac/common/js/utils.js */
             addCSSClass(document.documentElement,penalties[i].standing_penalty().name());
@@ -743,12 +744,12 @@ patron.util.set_penalty_css = function(patron) {
         if ( get_bool( patron.juvenile() ) ) addCSSClass(document.documentElement,'PATRON_JUVENILE');
         else removeCSSClass(document.documentElement,'PATRON_JUVENILE');
 
-        if (patron.mailing_address()) {
+        if (patron.mailing_address() && typeof patron.mailing_address() == 'object') {
             if (!get_bool(patron.mailing_address().valid())) {
                 addCSSClass(document.documentElement,'PATRON_HAS_INVALID_ADDRESS');
             }
         }
-        if (patron.billing_address()) {
+        if (patron.billing_address() && typeof patron.billing_address() == 'object') {
             if (!get_bool(patron.billing_address().valid())) {
                 addCSSClass(document.documentElement,'PATRON_HAS_INVALID_ADDRESS');
             }

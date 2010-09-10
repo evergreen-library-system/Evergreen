@@ -5,7 +5,7 @@ function retrieve_patron() {
 
     if (g.patron_id) {
         JSAN.use('patron.util'); 
-        g.au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.patron_id );
+        g.au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), g.patron_id, null );
         
         $('patron_name').setAttribute('value', 
             patron.util.format_name( g.au_obj ) + ' : ' + g.au_obj.card().barcode() 
