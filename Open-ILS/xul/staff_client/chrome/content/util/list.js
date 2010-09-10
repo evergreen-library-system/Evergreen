@@ -1690,9 +1690,10 @@ util.list.prototype = {
     },
 
     // Takes fieldmapper class name and attempts to spit out column definitions suitable for .init
-    'fm_columns' : function(hint,column_extras) {
+    'fm_columns' : function(hint,column_extras,prefix) {
         var obj = this;
         var columns = [];
+        if (!prefix) { prefix = ''; }
         try {
             // requires the dojo library fieldmapper.autoIDL
             if (typeof fieldmapper == 'undefined') { throw 'fieldmapper undefined'; }
@@ -1703,7 +1704,19 @@ util.list.prototype = {
             var data = obj.data; data.stash_retrieve();
 
             function col_def(my_field) {
-                var col_id = hint + '_' + my_field.name;
+                var col_id = prefix + hint + '_' + my_field.name;
+                var dataobj = hint;
+                var datafield = my_field.name;
+                if (column_extras) {
+                    if (column_extras[col_id]) {
+                        if (column_extras[col_id]['dataobj']) {
+                            dataobj = column_extras[col_id]['dataobj'];
+                        }
+                        if (column_extras[col_id]['datafield']) {
+                            datafield = column_extras[col_id]['datafield'];
+                        }
+                    }
+                }
                 var def = {
                     'id' : col_id,
                     'label' : my_field.label || my_field.name,
@@ -1716,26 +1729,26 @@ util.list.prototype = {
                 // my_field.datatype => bool float id int interval link money number org_unit text timestamp
                 if (my_field.datatype == 'link') {
                     def.render = function(my) { 
-                        return typeof my[hint][my_field.name]() == 'object' ? my[hint][my_field.name]()[my_field.key]() : my[hint][my_field.name](); 
+                        return typeof my[dataobj][datafield]() == 'object' ? my[dataobj][datafield]()[my_field.key]() : my[dataobj][datafield](); 
                     }
                 } else {
-                    def.render = function(my) { return my[hint][my_field.name](); }
+                    def.render = function(my) { return my[dataobj][datafield](); }
                 }
                 if (my_field.datatype == 'timestamp') {
                     JSAN.use('util.date');
                     def.render = function(my) {
-                        return util.date.formatted_date( my[hint][my_field.name](), '%{localized}' );
+                        return util.date.formatted_date( my[dataobj][datafield](), '%{localized}' );
                     }
                 }
                 if (my_field.datatype == 'org_unit') {
                     def.render = function(my) {
-                        return typeof my[hint][my_field.name]() == 'object' ? my[hint][my_field.name]().shortname() : data.hash.aou[ my[hint][my_field.name]() ].shortname();
+                        return typeof my[dataobj][datafield]() == 'object' ? my[dataobj][datafield]().shortname() : data.hash.aou[ my[dataobj][datafield]() ].shortname();
                     }
                 }
                 if (my_field.datatype == 'money') {
                     JSAN.use('util.money');
                     def.render = function(my) {
-                        return util.money.sanitize( my[hint][my_field.name]() );
+                        return util.money.sanitize( my[dataobj][datafield]() );
                     }
                 }
                 if (column_extras) {
