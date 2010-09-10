@@ -672,6 +672,7 @@ patron.util.set_penalty_css = function(patron) {
         */
 
         var penalties = patron.standing_penalties();
+        if (!penalties) { penalties = []; }
         for (var i = 0; i < penalties.length; i++) {
             /* this comes from /opac/common/js/utils.js */
             addCSSClass(document.documentElement,penalties[i].standing_penalty().name());
@@ -743,12 +744,12 @@ patron.util.set_penalty_css = function(patron) {
         if ( get_bool( patron.juvenile() ) ) addCSSClass(document.documentElement,'PATRON_JUVENILE');
         else removeCSSClass(document.documentElement,'PATRON_JUVENILE');
 
-        if (patron.mailing_address()) {
+        if (patron.mailing_address() && typeof patron.mailing_address() == 'object') {
             if (!get_bool(patron.mailing_address().valid())) {
                 addCSSClass(document.documentElement,'PATRON_HAS_INVALID_ADDRESS');
             }
         }
-        if (patron.billing_address()) {
+        if (patron.billing_address() && typeof patron.billing_address() == 'object') {
             if (!get_bool(patron.billing_address().valid())) {
                 addCSSClass(document.documentElement,'PATRON_HAS_INVALID_ADDRESS');
             }
