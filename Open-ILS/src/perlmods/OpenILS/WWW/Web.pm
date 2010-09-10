@@ -95,4 +95,8 @@ sub _process_template {
 
 }
 
+# This module appears obsolete (probably superceded by EGWeb.pm
+# The template files it references do not exist in the codebase.
+# File is not referenced elsewhere in the codebase.  Candidate for deletion.
+
 1;
