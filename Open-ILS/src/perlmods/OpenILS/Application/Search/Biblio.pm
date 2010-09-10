@@ -1316,10 +1316,28 @@ sub retrieve_cached_facets {
     my $self   = shift;
     my $client = shift;
     my $key    = shift;
+    my $limit    = shift;
 
     return undef unless ($key and $key =~ /_facets$/);
 
-    return $cache->get_cache($key) || {};
+    my $blob = $cache->get_cache($key) || {};
+
+    my $facets = {};
+    if ($limit) {
+       for my $f ( keys %$blob ) {
+            my @sorted = map{ { $$_[1] => $$_[0] } } sort {$$b[0] <=> $$a[0]} map { [$_, $$blob{$f}{$_}] } keys %{ $$blob{$f} };
+            @sorted = @sorted[0 .. $limit - 1] if (scalar(@sorted) > $limit);
+            for my $s ( @sorted ) {
+                my ($k) = keys(%$s);
+                my ($v) = values(%$s);
+                $$facets{$f}{$k} = $v;
+            }
+        }
+    } else {
+        $facets = $blob;
+    }
+
+    return $facets;
 }
 
 __PACKAGE__->register_method(
