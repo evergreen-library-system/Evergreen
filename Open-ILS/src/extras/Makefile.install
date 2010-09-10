@@ -91,6 +91,7 @@ DEBS =  \
 	libnet-server-perl\
 	libnspr4-dev\
 	libole-storage-lite-perl\
+	libparent-perl
 	libpq-dev\
 	libreadline5-dev\
 	libspreadsheet-writeexcel-perl\
@@ -162,6 +163,7 @@ FEDORA_13_RPMS = \
 	mod_ssl \
 	ncurses-devel \
 	ncurses-libs \
+	perl-parent \
 	perl-Business-CreditCard \
 	perl-Business-ISBN \
 	perl-Business-ISBN-Data \

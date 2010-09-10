@@ -1,6 +1,15 @@
 package OpenILS::Utils::OfflineStore;
 use strict; use warnings;
-use base 'Class::DBI';
+
+use UNIVERSAL::require;
+if ('Class::DBI::Frozen::301'->use) {
+	use parent 'Class::DBI::Frozen::301';
+} elsif ('Class::DBI'->use) {
+	use parent 'Class::DBI';
+} else {
+	die $@;
+}
+
 use DBI;
 use OpenSRF::Utils::Config;
 
