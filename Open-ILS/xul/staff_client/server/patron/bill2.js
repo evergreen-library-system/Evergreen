@@ -78,6 +78,12 @@ function event_listeners() {
             false
         );
 
+        $('refund').addEventListener(
+            'command',
+            handle_refund,
+            false
+        );
+
         $('opac').addEventListener(
             'command',
             handle_opac,
@@ -319,6 +325,33 @@ function tally_all() {
     }
 }
 
+function handle_refund() {
+    if(g.bill_list_selection.length > 1) {
+        var msg = $("patronStrings").getFormattedString('staff.patron.bills.handle_refund.message_plural', [g.bill_list_selection]);
+    } else {
+        var msg = $("patronStrings").getFormattedString('staff.patron.bills.handle_refund.message_singular', [g.bill_list_selection]);
+    }
+        
+    var r = g.error.yns_alert(msg,
+        $("patronStrings").getString('staff.patron.bills.handle_refund.title'),
+        $("patronStrings").getString('staff.patron.bills.handle_refund.btn_yes'),
+        $("patronStrings").getString('staff.patron.bills.handle_refund.btn_no'),null,
+        $("patronStrings").getString('staff.patron.bills.handle_refund.confirm_message'));
+    if (r == 0) {
+        for (var i = 0; i < g.bill_list_selection.length; i++) {
+            var bill_id = g.bill_list_selection[i];
+            //alert('g.check_map['+bill_id+'] = '+g.check_map[bill_id]+' bill_map['+bill_id+'] = ' + js2JSON(g.bill_map[bill_id]));
+            g.check_map[bill_id] = true;
+            var row_params = g.row_map[bill_id];
+            row_params.row.my.checked = true;
+            g.bill_list.refresh_row(row_params);
+        }
+    }
+    tally_all();
+    distribute_payment();
+}
+
+
 function check_all() {
     try {
         for (var i in g.bill_map) {
@@ -438,6 +471,7 @@ function init_lists() {
             $('details').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('add').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('voidall').setAttribute('disabled', g.bill_list_selection.length == 0);
+            $('refund').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('opac').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('copy_details').setAttribute('disabled', g.bill_list_selection.length == 0);
         },
