@@ -68,9 +68,12 @@
 		</info>
 		<xi:include href="admin/admin-intro.xml"/>
 		<xi:include href="admin/requirements-configuration.xml"/>
+		<xi:include href="admin/ServersideInstallation.xml"/>	
 		<xi:include href="admin/serveradministration.xml"/>
 		<xi:include href="admin/AdminMisc.xml"/>
 		<xi:include href="admin/admin-lsa.xml"/>
+		<xi:include href="admin/admin-survey.xml"/>
+		<xi:include href="admin/admin-receipt.xml"/>
 		<xi:include href="admin/Upgrading-Evergreen_1.6.xml"/>
  		<xi:include href="admin/troubleshooting.xml"/>
  		<xi:include href="admin/z3950.xml"/>

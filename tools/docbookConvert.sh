@@ -1,14 +1,14 @@
 #/bin/bash
 
 #generate draft html
- xsltproc --xinclude --stringparam base.dir /openils/var/web/evergreen_documentation/draft/html/ /home/rsoulliere/doctools/EvergreenDocumentation/evergreen_docbook_files/evergreen_xhtml.xsl /home/rsoulliere/doctools/EvergreenDocumentation/root.xml
+ xsltproc --xinclude --stringparam base.dir /openils/var/web/evergreen_documentation/draft/html/ ~/Evergreen-DocBook/stylesheets/evergreen_docbook_files/evergreen_xhtml.xsl ~/Evergreen-DocBook/1.6/root.xml
 
 
 #Generate PDF via FO
-xsltproc --xinclude  --output /home/rsoulliere/doctools/EvergreenDocumentation/pdf/temp.fo /home/rsoulliere/doctools/EvergreenDocumentation/evergreen_docbook_files/evergreen_fo.xsl /home/rsoulliere/doctools/EvergreenDocumentation/root.xml
+ xsltproc --xinclude  --output ~/Evergreen-DocBook/1.6/pdf/temp.fo ~/Evergreen-DocBook/stylesheets/evergreen_docbook_files/evergreen_fo.xsl ~/Evergreen-DocBook/1.6/root.xml
 
 # must run fop from same directory as root.xml
-cd /home/rsoulliere/doctools/EvergreenDocumentation/
+cd ~/Evergreen-DocBook/1.6/
 
  ~/doctools/fop/fop -fo pdf/temp.fo -pdf /openils/var/web/evergreen_documentation/draft/pdf/Evergreen_Documentation.pdf 
 

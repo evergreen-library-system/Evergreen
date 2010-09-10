@@ -259,8 +259,8 @@
 			</step> 
 		</procedure>	
 	</simplesect>
-	<simplesect>
-		<para>Restart Evergreen and Test</para>
+	<simplesect xml:id="upgraderestart">
+		<title>Restart Evergreen and Test</title>
 		<procedure>
 			<step>
 				<para>As the <emphasis>opensrf</emphasis> user, start all 
@@ -291,4 +291,50 @@
 		section</link> of this documentation for tips 
 		on finding solutions and seeking further assistance from the Evergreen community.</para>  
 	</note>
+<simplesect>
+		<title>Upgrading PostgreSQL from 8.2 to 8.3</title>
+		<para>Evergreen 1.6 supports PostgreSQL version 8.3 and it is recommended that you upgrade PostgreSQL when you upgrade Evergreen to 1.6.</para>
+		<note><para>The Order of the following steps is very important.</para></note>
+		<procedure>
+			<step>
+				<para>As opensrf, stop the evergreen and opensrf services:</para>
+				<screen>osrf_ctl.sh -l -a stop_all</screen>
+			</step>			
+			<step>
+				<para><link linkend="backupevergreendatabase">Backup the Evergreen database data</link></para>
+			</step>
+			<step>			
+				<para>Create an empty Evergreen database in postgresql 8.3 by issuing the following commands as the postgres user:</para>
+				<screen>createdb -E UNICODE evergreen</screen>
+				<screen>createlang plperl   evergreen</screen>
+				<screen>createlang plperlu  evergreen</screen>
+				<screen>createlang plpgsql  evergreen</screen>
+				<screen>psql -f /usr/share/postgresql/8.3/contrib/tablefunc.sql evergreen</screen>
+				<screen>psql -f /usr/share/postgresql/8.3/contrib/tsearch2.sql evergreen</screen>
+				<screen>psql -f /usr/share/postgresql/8.3/contrib/pgxml.sql evergreen</screen>		
+			</step>
+			<step>
+				<para>As the postgres user on the PostgreSQL server, create a PostgreSQL user named evergreen for the database cluster:</para>
+				<screen>createuser -P -s evergreen</screen>
+				<para>Enter the password for the new PostgreSQL superuser (<quote>evergreen</quote>)</para>	
+			</step>			
+			<step>
+				<para>Restore data from backup created in step 1.</para>
+			</step>
+			<step>
+				<para>To point tsearch2 to proper function names in 8.3, run the SQL script 
+				<filename>/home/opensrf/Evergreen-ILS*/Open-ILS/src/sql/Pg/000.english.pg83.fts-config.sql</filename> using the <command>psql</command> command.</para>
+			</step>
+			<step>
+				<para><link linkend="upgraderestart">Restart Evergreen and OpenSRF services</link></para>
+			</step>
+			<step>
+				<para>For additional information regarding upgrading PostgreSQL, see the following documentation in PostgreSQL:</para>
+				<para><ulink url="http://www.postgresql.org/docs/8.3/static/install-upgrading.html" /></para>
+				<para><ulink url="http://www.postgresql.org/docs/8.3/interactive/textsearch-migration.html" /> 
+				</para>
+				<para><ulink url="http://www.postgresql.org/docs/current/static/tsearch2.html#AEN102824" /></para>
+			</step>
+		</procedure>
+	</simplesect>
 </chapter>
