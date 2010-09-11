@@ -52,7 +52,9 @@
 		<glossentry id="ejabberd">
 			<glossterm>ejabberd</glossterm>
 			<glossdef>
-				<para>An open-source Jabber/XMPP instant messaging server that runs under popular operating systems (e.g., Mac OSX, GNU/Linux, and Microsoft Windows). One popular use is to provide XMPP messaging services for a Jabber domain across an extendable cluster of cheap, easily-replaced machine nodes. See <link linkend="xmpp">"XMPP"</link> and <link linkend="jabber">"Jabber"</link>. More information is available at <ulink url="http://www.ejabberd.im/">http://www.ejabberd.im</ulink>.</para>
+				<para>An open-source Jabber/XMPP instant messaging server that runs under popular operating systems (e.g., Mac OSX, GNU/Linux, and Microsoft Windows). One popular use is to provide XMPP messaging services for a Jabber domain across an extendable cluster of cheap, easily-replaced machine nodes. More information is available at <ulink url="http://www.ejabberd.im/">http://www.ejabberd.im</ulink>.</para>
+				<glossseealso otherterm="Jabber"/>
+				<glossseealso otherterm="XMPP"/>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -74,10 +76,11 @@
 	</glossdiv>
 	<glossdiv>
 		<title>J</title>
-		<glossentry id="jabber">
+		<glossentry id="Jabber">
 			<glossterm>Jabber</glossterm>
 			<glossdef>
-				<para>Now known as XMPP (eXtensible Messaging and Presence Protocol), it was originally named "Jabber". See <link linkend="xmpp">"XMPP"</link>.</para>
+				<para>Now known as XMPP (eXtensible Messaging and Presence Protocol), it was originally named "Jabber".</para>
+				<glossseealso otherterm="XMPP"/>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -186,13 +189,14 @@
 		<glossentry id="Ubuntu">
 			<glossterm>Ubuntu</glossterm>
 			<glossdef>
-				<para>A popular open-source operating system using the Linux kernel that was originally based on the Debian GNU/Linux operating system. More information is available at <ulink url="http://www.ubuntu.com">www.ubuntu.com</ulink>. Also see <link linkend="Debian">"Debian"</link>.</para>
+				<para>A popular open-source operating system using the Linux kernel that was originally based on the Debian GNU/Linux operating system. More information is available at <ulink url="http://www.ubuntu.com">www.ubuntu.com</ulink>.</para>
+				<glossseealso otherterm="Debian"/>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>V</title>
-		<glossentry id="Virtualization">
+		<glossentry id="virtualization">
 			<glossterm>Virtualization</glossterm>
 			<glossdef>
 				<para>A method of executing software in a special environment that is partitioned or separated from the real underlying hardware and software resources. In typical usage, it allows a "host" operating system to encapsulate or emulate another operating system environment in such a way that the emulated environment is completely unaware of the hosting environment. For instance, it allows a Linux application to execute within a Windows environment.</para>
@@ -201,19 +205,22 @@
 		<glossentry id="virtualbox">
 			<glossterm>VirtualBox</glossterm>
 			<glossdef>
-				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It can be installed on Linux, Mac OS X, Windows or Solaris "host" operating systems and allows other "guest" (typically including Linux and Windows) operating systems to be loaded and executed. Also see <link linkend="virtualization">"virtualization"</link>.</para>
+				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It can be installed on Linux, Mac OS X, Windows or Solaris "host" operating systems and allows other "guest" (typically including Linux and Windows) operating systems to be loaded and executed.</para>
+				<glossseealso otherterm="virtualization"/>
 			</glossdef>
 		</glossentry>
 		<glossentry id="virtualpc">
 			<glossterm>Virtual PC</glossterm>
 			<glossdef>
-				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It is installed on a Windows "host" operating system and allows other "guest" (typically including Linux and Windows) operating systems to be loaded and executed. Also see <link linkend="virtualization">"virtualization"</link>.</para>
+				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It is installed on a Windows "host" operating system and allows other "guest" (typically including Linux and Windows) operating systems to be loaded and executed.</para>
+				<glossseealso otherterm="virtualization"/>
 			</glossdef>
 		</glossentry>
 		<glossentry id="vmware">
 			<glossterm>VMware</glossterm>
 			<glossdef>
-				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It can be installed on Linux, Mac OS X, Windows or Solaris "host" operating systems and allows other "guest" (typically including Linux and Windows) operating systems to be loaded and executed. Also see <link linkend="virtualization">"virtualization"</link>.</para>
+				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It can be installed on Linux, Mac OS X, Windows or Solaris "host" operating systems and allows other "guest" (typically including Linux and Windows) operating systems to be loaded and executed.</para>
+				<glossseealso otherterm="virtualization"/>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -234,10 +241,11 @@
 				<para>The eXtensible Markup Language, a subset of SGML; a set of rules for encoding information in a way that is both human- and machine-readable. It is primarily used to define documents but can also be used to define arbitrary data structures. It was originally defined by the World Wide Web Consortium (W3C).</para>
 			</glossdef>
 		</glossentry>
-		<glossentry id="xmpp">
+		<glossentry id="XMPP">
 			<glossterm>XMPP</glossterm>
 			<glossdef>
-				<para>An open-standard communications protocol, based on XML, used in message-oriented middleware. It supports the concept of a consistent "domain" of message types that flow between software applications, possibly on different operating systems and architectures. More information is available at <ulink url="http://xmpp.org">xmpp.org</ulink>. Also see <link linkend="jabber">"Jabber"</link>.</para>
+				<para>An open-standard communications protocol, based on XML, used in message-oriented middleware. It supports the concept of a consistent "domain" of message types that flow between software applications, possibly on different operating systems and architectures. More information is available at <ulink url="http://xmpp.org">xmpp.org</ulink>.</para>
+				<glossseealso otherterm="Jabber"/>
 			</glossdef>
 		</glossentry>
 		<glossentry id="xpath">
@@ -255,7 +263,8 @@
 		<glossentry id="xulrunner">
 			<glossterm>xulrunner</glossterm>
 			<glossdef>
-				<para>A specialized run-time application environment that provides support for installing, upgrading and uninstalling XUL applications (See <link linkend="xul">"XUL"</link>). It operates with Mozilla-based applications such as the Firefox browser. More information is available at <ulink url="https://developer.mozilla.org/en/XULRunner">https://developer.mozilla.org/en/XULRunner</ulink>.</para>
+				<para>A specialized run-time application environment that provides support for installing, upgrading and uninstalling XUL applications. It operates with Mozilla-based applications such as the Firefox browser. More information is available at <ulink url="https://developer.mozilla.org/en/XULRunner">https://developer.mozilla.org/en/XULRunner</ulink>.</para>
+				<glossseealso otherterm="xul"/>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
