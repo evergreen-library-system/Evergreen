@@ -349,6 +349,94 @@ sub pub_fleshed_serial_issuance_retrieve_batch {
     ]);
 }
 
+sub received_siss_by_bib {
+    my $self = shift;
+    my $client = shift;
+    my $bib = shift;
+
+    my $args = shift || {};
+    $$args{order} ||= 'asc';
+
+    my $e = new_editor();
+    my $issuances = $e->json_query({
+        select  => { 'siss' => [ 'id' ] },
+        from    => {
+            siss => {
+                ssub => {
+                    field  => 'id',
+                    fkey   => 'subscription'
+                },
+                sitem => {
+                    field  => 'issuance',
+                    fkey   => 'id',
+                    $$args{ou} ? ( join  => {
+                        sstr => {
+                            field => 'id',
+                            fkey  => 'stream',
+                            join  => {
+                                sdist => {
+                                    field  => 'id',
+                                    fkey   => 'distribution'
+                                }
+                            }
+                        }
+                    }) : ()
+                }
+            }
+        },
+        where => {
+            '+ssub'  => { record_entry => $bib },
+            '+sitem' => {
+                # XXX should we also take specific item statuses into account?
+                date_received => { '!=' => undef }
+            },
+            $$args{ou} ? ( '+sdist' => {
+                holding_lib => {
+                    'in' => {
+                        from => [
+                            'actor.org_unit_descendants',
+                            defined($$args{depth}) ? ( $$args{ou}, $$args{depth} ) :  ( $$args{ou} )
+                        ]
+                    }
+                }
+            }) : ()
+        },
+        $$args{limit}  ? ( limit  => $$args{limit}  ) : (),
+        $$args{offset} ? ( offset => $$args{offset} ) : (),
+        order_by => [{ class => 'siss', field => 'date_published', direction => $$args{order} }],
+        distinct => 1
+    });
+
+    $client->respond($e->retrieve_serial_issuance($_->{id})) for @$issuances;
+    return undef;
+}
+__PACKAGE__->register_method(
+    method    => 'received_siss_by_bib',
+    api_name  => 'open-ils.serial.siss.retrieve.by_bib',
+    api_level => 1,
+    argc      => 1,
+    stream    => 1,
+    signature => {
+        desc   => 'Receives a Bib ID and other optional params and returns "siss" (issuance) objects',
+        params => [
+            {   name => 'bibid',
+                desc => 'id of the bre to which the issuances belong',
+                type => 'number'
+            },
+            {   name => 'args',
+                desc =>
+q/A hash of optional arguments.  Valid keys and their meanings:
+    order  := date_published sort direction, either "asc" (chronological, default) or "desc" (reverse chronological)
+    limit  := Number of issuances to return.  Useful for paging results, or finding the oldest or newest
+    offest := Number of issuance to skip before returning results.  Useful for paging.
+    orgid  := OU id used to scope retrieval, based on distribution.holding_lib
+    depth  := OU depth used to range the scope of orgid
+/
+            }
+        ]
+    }
+);
+
 
 ##########################################################################
 # unit methods
