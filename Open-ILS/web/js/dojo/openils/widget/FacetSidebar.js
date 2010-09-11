@@ -47,12 +47,28 @@ if(!dojo._hasResource["openils.widget.FacetSidebar"]) {
 
                 if (openils.widget.Searcher._cache.facetData) {
                     this.facetData = openils.widget.Searcher._cache.facetData;
+                    this._render_callback();
                 } else {
-                    var facetData = fieldmapper.standardRequest( [ 'open-ils.search', 'open-ils.search.facet_cache.retrieve'], this.facetCacheKey );
-                    if (!facetData) return;
-                    this.facetData = openils.widget.Searcher._cache.facetData = facetData;
+                    var limit = dojo.isIE ? this.facetLimit : null;
+                    var self = this;
+                    fieldmapper.standardRequest( 
+                        [ 'open-ils.search', 'open-ils.search.facet_cache.retrieve'], 
+                        { async : true,
+                          params : [this.facetCacheKey, limit],
+                          oncomplete : function(r) {
+                              var facetData = r.recv().content();
+                              if (!facetData) return;
+                              self.facetData = openils.widget.Searcher._cache.facetData = facetData;
+                              self._render_callback();
+                          }
+                        }
+                    );
                 }
 
+            },
+
+            _render_callback : function(facetData) {
+		var facetData = this.facetData;
                 var classes = openils.widget.Searcher._cache.arr.cmc;
                 if (this.classOrder && this.classOrder.length > 0) {
                     classes = [];
