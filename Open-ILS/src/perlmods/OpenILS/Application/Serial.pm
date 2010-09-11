@@ -385,10 +385,12 @@ sub received_siss_by_bib {
             }
         },
         where => {
+            $$args{type} ? ( 'holding_type' => $$args{type} ) : (),
             '+ssub'  => { record_entry => $bib },
             '+sitem' => {
                 # XXX should we also take specific item statuses into account?
-                date_received => { '!=' => undef }
+                date_received => { '!=' => undef },
+                $$args{status} ? ( 'status' => $$args{status} ) : ()
             },
             $$args{ou} ? ( '+sdist' => {
                 holding_lib => {
@@ -412,7 +414,7 @@ sub received_siss_by_bib {
 }
 __PACKAGE__->register_method(
     method    => 'received_siss_by_bib',
-    api_name  => 'open-ils.serial.siss.retrieve.by_bib',
+    api_name  => 'open-ils.serial.received_siss.retrieve.by_bib',
     api_level => 1,
     argc      => 1,
     stream    => 1,
@@ -431,6 +433,8 @@ q/A hash of optional arguments.  Valid keys and their meanings:
     offest := Number of issuance to skip before returning results.  Useful for paging.
     orgid  := OU id used to scope retrieval, based on distribution.holding_lib
     depth  := OU depth used to range the scope of orgid
+    type   := Holding type filter. Valid values are "basic", "supplement" and "index". Can be a scalar (one) or arrayref (one or more).
+    status := Item status filter. Valid values are "Bindery", "Bound", "Claimed", "Discarded", "Expected", "Not Held", "Not Published" and "Received". Can be a scalar (one) or arrayref (one or more).
 /
             }
         ]
