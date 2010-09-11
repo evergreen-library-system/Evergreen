@@ -72,17 +72,17 @@
 			<para>This section describes the installation of the latest version of the Open Service Request Framework (OpenSRF), a major component of the Evergreen server-side software, on Ubuntu or Debian systems. Evergreen software is integrated with and depends on the OpenSRF software system.</para>
 			<para>Follow the steps outlined here and run the specified tests to ensure that OpenSRF is properly installed and configured. Do not continue with any further Evergreen installation steps until you have verified that OpenSRF has been successfully installed.</para>
 			<note>
-				<para>The following steps have been tested on the x86 (32-bit) and x86-64 (64-bit) platforms. OpenSRF 1.2.0 has been tested on Debian Etch (4.0), Debian Lenny, Ubuntu Hardy Heron (8.04), and Ubuntu Intrepid Ibex (8.10).</para>
-				<para>In the following instructions, you are asked to perform certain steps as either the <emphasis role="bold">root</emphasis> user, the <emphasis role="bold">opensrf</emphasis> user, or the <emphasis role="bold">postgres</emphasis> user.</para>
+				<para>The following steps have been tested on the x86 (32-bit) and x86-64 (64-bit) platforms. OpenSRF 1.2.2 has been tested on Debian Etch (4.0), Debian Lenny, Ubuntu Hardy Heron (8.04), and Ubuntu Intrepid Ibex (8.10).</para>
+				<para>In the following instructions, you are asked to perform certain steps as either the <systemitem class="username">root</systemitem> user, the <systemitem class="username">opensrf</systemitem> user, or the <systemitem class="username">postgres</systemitem> user.</para>
 				<itemizedlist>
-					<listitem><emphasis role="bold">Debian</emphasis> -- To become the <emphasis>root</emphasis> user, issue the command <emphasis role="bold">"su -"</emphasis> and enter the password of the root user.</listitem>
-					<listitem><emphasis role="bold">Ubuntu</emphasis> -- To become the <emphasis>root</emphasis> user, issue the command <emphasis role="bold">"sudo su -"</emphasis> and enter the password of your current user.</listitem>
+					<listitem><systemitem class="osname">Debian</systemitem> -- To become the <systemitem class="username">root</systemitem> user, issue the command <command>su -</command> and enter the password of the <systemitem class="username">root</systemitem> user.</listitem>
+					<listitem><systemitem class="osname">Ubuntu</systemitem> -- To become the <systemitem class="username">root</systemitem> user, issue the command <command>sudo su -</command> and enter the password of the <systemitem class="username">root</systemitem> user.</listitem>
 				</itemizedlist>
-				<para>To switch from the <emphasis role="bold">root</emphasis> user to a different user, issue the command <emphasis role="bold">"su - USERNAME"</emphasis>. For example, to switch from the <emphasis role="bold">root</emphasis> user to the <emphasis role="bold">opensrf</emphasis> user, issue the command <emphasis role="bold">"su - opensrf"</emphasis>. Once you have become a non-root user, to become the <emphasis role="bold">root</emphasis> user again, simply issue the command <emphasis role="bold">"exit"</emphasis>.</para>
+				<para>To switch from the <systemitem class="username">root</systemitem> user to a different user, issue the command <emphasis role="bold">"su - USERNAME"</emphasis>. For example, to switch from the <systemitem class="username">root</systemitem> user to the <systemitem class="username">opensrf</systemitem> user user, issue the command <emphasis role="bold">"su - opensrf"</emphasis>. Once you have become a non-root user, to become the <systemitem class="username">root</systemitem> user again, simply issue the command <emphasis role="bold">"exit"</emphasis>.</para>
 			</note>
 			<section>
 				<title>Add the OpenSRF User</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, add the opensrf user to the system. The default shell for the new user is automatically set to <emphasis role="bold">/bin/bash</emphasis> to inherit a reasonable environment:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, add the opensrf user to the system. The default shell for the new user is automatically set to <emphasis role="bold">/bin/bash</emphasis> to inherit a reasonable environment:</para>
 				<figure>
 					<title>Commands to add "opensrf" user</title>
 					<screen>
@@ -98,7 +98,7 @@
 			</section>
 			<section>
 				<title>Download and Unpack Latest OpenSRF Version</title>
-				<para>As the <emphasis role="bold">opensrf</emphasis> user, download and extract the latest version of OpenSRF. The latest version can be found here: <emphasis><emphasis role="bold"><ulink url="http://evergreen-ils.org/downloads/OpenSRF-1.2.2.tar.gz"></ulink></emphasis></emphasis></para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, download and extract the latest version of OpenSRF. The latest version can be found here: <emphasis><emphasis role="bold"><ulink url="http://evergreen-ils.org/downloads/OpenSRF-1.2.2.tar.gz"></ulink></emphasis></emphasis></para>
 				<figure>
 					<title>Commands to download and unpack OpenSRF</title>
 					<screen>
@@ -112,7 +112,7 @@
 			<section>
 				<title>Install Prerequisites to Build OpenSRF</title>
 				<para>In this section you will install and configure a set of prerequisites that will be used to build OpenSRF. In a following step you will actually build the software using the <emphasis>make</emphasis> utility.</para>
-				<para>As the <emphasis role="bold">root</emphasis> user, enter the commands show below to build the prerequisites from the software distribution that you just downloaded and unpacked. Remember to replace <emphasis>[distribution]</emphasis> in the example with the keyword corresponding to the actual Linux distribution listed in the <link linkend="serversideinstallation-keywords-figure-1">"Keywords"</link> figure below.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, enter the commands show below to build the prerequisites from the software distribution that you just downloaded and unpacked. Remember to replace <emphasis>[distribution]</emphasis> in the example with the keyword corresponding to the actual Linux distribution listed in the <link linkend="serversideinstallation-keywords-figure-1">"Keywords"</link> figure below.</para>
 				<figure>
 					<title>Commands to install prerequisites for OpenSRF</title>
 					<screen>
@@ -166,47 +166,47 @@
 			</section>
 			<section>
 				<title>Configure OpenSRF</title>
-				<para>As the <emphasis role="bold">opensrf</emphasis> user, return to the OpenSRF build directory and use the utility "configure" to prepare for the next step of compiling and linking the software. You can include the <emphasis>--enable-python</emphasis> and <emphasis>--enable-java</emphasis> configuration options if you wish to include support for Python and Java, respectively:</para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, return to the OpenSRF build directory and use the utility "configure" to prepare for the next step of compiling and linking the software. You can include the <option>--enable-python</option> and <option>--enable-java</option> configuration options if you wish to include support for Python and Java, respectively:</para>
 				<figure>
 					<title>Commands to configure OpenSRF</title>
-					<screen>
-					$ su - opensrf
-					$ cd /home/opensrf/OpenSRF-1.2.2
-					$ ./configure --prefix=/openils --sysconfdir=/openils/conf
-					$ make
-					...
-					</screen>
+<screen>
+<prompt>$</prompt> <userinput>su - opensrf</userinput>
+<prompt>$</prompt> <userinput>cd /home/opensrf/OpenSRF-1.2.2</userinput>
+<prompt>$</prompt> <userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput>
+<prompt>$</prompt> <userinput>make</userinput>
+...
+</screen>
 				</figure>
 			</section>
 			<section>
 				<title>Compile, Link and Install OpenSRF</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, return to the OpenSRF build directory and use the <emphasis>make</emphasis> command to compile, link and install OpenSRF:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, return to the OpenSRF build directory and use the <command>make</command> command to compile, link and install OpenSRF:</para>
 				<figure>
 					<title>Commands to build, link and install OpenSRF</title>
-					<screen>
-					$ su - opensrf
-					$ cd /home/opensrf/OpenSRF-1.2.2
-					$ make install
-					...
-					</screen>
+<screen>
+<prompt>$</prompt> <userinput>su - opensrf</userinput>
+<prompt>$</prompt> <userinput>cd /home/opensrf/OpenSRF-1.2.2</userinput>
+<prompt>$</prompt> <userinput>make install</userinput>
+...
+</screen>
 				</figure>
 			</section>
 			<section>
 				<title>Update the System Dynamic Library Path</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, you must update the system dynamic library path to make your system recognize the newly installed libraries. Do this by creating a new file named <emphasis role="bold">/etc/ld.so.conf.d/osrf.conf</emphasis> containing a new library path, then run the command <emphasis role="bold">ldconfig</emphasis> to automatically read the file and modify the system dynamic library path:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, you must update the system dynamic library path to make your system recognize the newly installed libraries. Do this by creating a new file named <filename>/etc/ld.so.conf.d/osrf.conf</filename> containing a new library path, then run the command <command>ldconfig</command> to automatically read the file and modify the system dynamic library path:</para>
 				<figure>
 					<title>Commands to modify system dynamic library path</title>
-					<screen>
-					$ su - root
-					$ echo "/openils/lib" > /etc/ld.so.conf.d/osrf.conf
-					$ ldconfig
-					</screen>
+<screen>
+<prompt>$</prompt> <userinput>su - root</userinput>
+<prompt>$</prompt> <userinput>echo "/openils/lib" > /etc/ld.so.conf.d/osrf.conf</userinput>
+<prompt>$</prompt> <userinput>ldconfig</userinput>
+</screen>
 				</figure>
 			</section>
 			<section>
 				<title>Define Public and Private OpenSRF Domains</title>
-				<para>Define your public and private OpenSRF domains. For security purposes, OpenSRF uses Jabber domains to separate services into public and private realms. Throughout these instructions, we will use the example domains <emphasis>public.localhost</emphasis> for the public domain and <emphasis>private.localhost</emphasis> for the private domain. On a single-server system, the easiest way to define public and private domains is to define separate hostnames by adding entries to the file <emphasis>/etc/hosts</emphasis>.</para>
-				<para>As the <emphasis role="bold">root</emphasis> user, edit the file <emphasis>/etc/hosts</emphasis> and add the following entries for our example domains:</para>
+				<para>Define your public and private OpenSRF domains. For security purposes, OpenSRF uses Jabber domains to separate services into public and private realms. Throughout these instructions, we will use the example domains <systemitem class="domainname">public.localhost</systemitem> for the public domain and <systemitem class="domainname">private.localhost</systemitem> for the private domain. On a single-server system, the easiest way to define public and private domains is to define separate hostnames by adding entries to the file <filename>/etc/hosts</filename>.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, edit the file <filename>/etc/hosts</filename> and add the following entries for our example domains:</para>
 				<figure>
 					<title>Example public and private domains in /etc/hosts</title>
 					<screen>
@@ -217,7 +217,7 @@
 			</section>
 			<section>
 				<title>Change File Ownerships</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, change the ownership of files installed in the directory <emphasis>/openils</emphasis> to the user "opensrf":</para>
+				<para>As the <systemitem class="username">root</systemitem> user, change the ownership of files installed in the directory <emphasis>/openils</emphasis> to the user "opensrf":</para>
 				<figure>
 					<title>Commands to change file ownerships</title>
 					<screen>
@@ -227,7 +227,7 @@
 			</section>
 			<section>
 				<title>Stop the "ejabberd" Service</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, stop the "ejabberd" service:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, stop the "ejabberd" service:</para>
 				<figure>
 					<title>Commands to stop the "ejabberd" service</title>
 					<screen>
@@ -248,7 +248,7 @@
 			</section>
 			<section>
 				<title>Edit the "ejabberd" configuration</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, edit the file <emphasis>/etc/ejabberd/ejabberd.cfg</emphasis> and make the following changes:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, edit the file <emphasis>/etc/ejabberd/ejabberd.cfg</emphasis> and make the following changes:</para>
 				<itemizedlist>
 					<listitem>Change <emphasis role="bold">{hosts, ["localhost"]}.</emphasis> to <emphasis role="bold">{hosts, ["localhost", "private.localhost", "public.localhost"]}.</emphasis></listitem>
 					<listitem>Change <emphasis role="bold">{max_user_sessions, 10}.</emphasis> to <emphasis role="bold">{max_user_sessions, 10000}.</emphasis> If you see something like this instead: <emphasis role="bold">{access, max_user_sessions, [{10, all}]}.</emphasis>, then change it to <emphasis role="bold">{access, max_user_sessions, [{10000, all}]}.</emphasis></listitem>
@@ -259,7 +259,7 @@
 			</section>
 			<section>
 				<title>Restart the "ejabberd" service</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, restart the <emphasis>ejabberd</emphasis> service to test the configuration changes and to register your users:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, restart the <emphasis>ejabberd</emphasis> service to test the configuration changes and to register your users:</para>
 				<figure>
 					<title>Commands to restart the "ejabberd" service</title>
 					<screen>
@@ -274,7 +274,7 @@
 					<listitem>a "router" user, to whom all requests to connect to an OpenSRF service will be routed; this "ejabberd" user must be named "router"</listitem>
 					<listitem>an "opensrf" user, which clients use to connect to OpenSRF services; this user can be named anything you like, but we will use "opensrf" in our examples</listitem>
 				</itemizedlist>
-				<para>As the <emphasis role="bold">root</emphasis> user, use the utility "ejabberdctl" to register your ejabber users <emphasis>router</emphasis> and <emphasis>opensrf</emphasis> for the OpenSRF router service on each domain. The users should have different passwords on each domain. These users will correspond to those configured in the file <emphasis>/openils/conf/opensrf_core.xml</emphasis>:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, use the utility "ejabberdctl" to register your ejabber users <emphasis>router</emphasis> and <emphasis>opensrf</emphasis> for the OpenSRF router service on each domain. The users should have different passwords on each domain. These users will correspond to those configured in the file <emphasis>/openils/conf/opensrf_core.xml</emphasis>:</para>
 				<figure>
 					<title>Commands to registe "router" and "ejabberd" users</title>
 					<screen>
@@ -290,7 +290,7 @@
 			</section>
 			<section>
 				<title>Create configuration files</title>
-				<para>As the <emphasis role="bold">opensrf</emphasis> user, use the example templates to create the configuration files <emphasis>/openils/conf/opensrf_core.xml</emphasis> and <emphasis>/openils/conf/opensrf.xml</emphasis>:</para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, use the example templates to create the configuration files <emphasis>/openils/conf/opensrf_core.xml</emphasis> and <emphasis>/openils/conf/opensrf.xml</emphasis>:</para>
 				<figure>
 					<title>Commands to create configuration files</title>
 					<screen>
@@ -334,65 +334,63 @@
 				<para>You also need to specify the domains from which OpenSRF will accept and to which OpenSRF will make connections. If you are installing OpenSRF on a single server and using the "private.localhost" / "public.localhost" domains, these will already be set to the correct values. Otherwise, search and replace to match your values.</para>
 			</section>
 			<section>
-				<title>Modify the file "opensrf.xml"</title>
-				<para>Modify the file <emphasis>/openils/conf/opensrf.xml</emphasis>.</para>
-				<para>As the <emphasis role="bold">opensrf</emphasis> user, edit the file to set the location of the persistent database in the <emphasis role="bold">&lt;dbfile></emphasis> element near the end of the file:</para>
+				<title>Modify the file <filename>opensrf.xml</filename></title>
+				<para>Modify the file <filename>/openils/conf/opensrf.xml</filename>.</para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user, edit the file to set the location of the persistent database in the <literal>dbfile</literal> element near the end of the file:</para>
 				<figure>
 					<title>Example of the file "opensrf.xml"</title>
-					<screen>
-					&lt;!-- Example of an app-specific setting override -->
-					&lt;opensrf.persist>
-					  &lt;app_settings>
-					    &lt;dbfile>/tmp/persist.db&lt;/dbfile>
-					  &lt;/app_settings>
-					&lt;/opensrf.persist>
-					</screen>
+					<programlisting language="xml"><![CDATA[
+<!-- Example of an app-specific setting override -->
+<opensrf.persist>
+  <app_settings>
+  <dbfile>/tmp/persist.db</dbfile>
+  </app_settings>
+</opensrf.persist>]]></programlisting>
 				</figure>
 			</section>
 			<section>
 				<title>Create Configuration Files for Users Needing srfsh</title>
-				<para>In this section you will set up a special configuration file for each user who will need to run the <emphasis>srfsh</emphasis> (surf shell) utility.</para>
-				<para>The software installation will automatically create <emphasis>srfsh</emphasis>. This is a command line diagnostic tool for testing and interacting with the OpenSRF network software. It will be used in a future step to complete and test the Evergreen installation. See the section <link linkend="serversideinstallation-testing">"Testing the Installation"</link> for further information.</para>
-				<para>As the <emphasis role="bold">root</emphasis> user, copy the short sample configuration file <emphasis>/openils/conf/srfsh.xml.example</emphasis> to the file <emphasis>.srfsh.xml</emphasis> (note the leading dot!) in the home directory of each user who will use <emphasis role="bold">srfsh</emphasis>. Finally, edit each file <emphasis>.srfsh.xml</emphasis> and make the following changes. When you finish, remember to change the owner of the file to match the owner of the home directory.</para>
+				<para>In this section you will set up a special configuration file for each user who will need to run the <application>srfsh</application> (pronounced <emphasis>surf shell</emphasis>) utility.</para>
+				<para>The software installation will automatically create <application>srfsh</application>. This is a command line diagnostic tool for testing and interacting with the OpenSRF network software. It will be used in a future step to complete and test the Evergreen installation. See the section <link linkend="serversideinstallation-testing">"Testing the Installation"</link> for further information.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, copy the short sample configuration file <filename>/openils/conf/srfsh.xml.example</filename> to the file <filename>.srfsh.xml</filename> (note the leading dot!) in the home directory of each user who will use <application>srfsh</application>. Finally, edit each file <filename>.srfsh.xml</filename> file and make the following changes. When you finish, remember to change the owner of the file to match the owner of the home directory.</para>
 				<itemizedlist>
-					<listitem>Modify <emphasis role="bold">domain</emphasis> to be the router hostname (following our domain examples, <emphasis role="bold">private.localhost</emphasis> will give <emphasis>srfsh</emphasis> access to all OpenSRF services, while <emphasis role="bold">public.localhost</emphasis> will only allow access to those OpenSRF services that are publicly exposed).</listitem>
-					<listitem>Modify <emphasis role="bold">username</emphasis> and <emphasis role="bold">password</emphasis> to match the <emphasis role="bold">opensrf</emphasis> Jabber user for the chosen domain</listitem>
-					<listitem>Modify <emphasis role="bold">logfile</emphasis> to be the full path for a log file to which the user has write access</listitem>
-					<listitem>Modify <emphasis role="bold">loglevel</emphasis> as needed for testing</listitem>
+					<listitem>Modify <literal>domain</literal> to be the router hostname (following our domain examples, <literal>private.localhost</literal> will give <application>srfsh</application> access to all OpenSRF services, while <literal>public.localhost</literal> will only allow access to those OpenSRF services that are publicly exposed).</listitem>
+					<listitem>Modify <literal>username</literal> and <literal>password</literal> to match the <literal>opensrf</literal> Jabber user for the chosen domain</listitem>
+					<listitem>Modify <literal>logfile</literal> to be the full path for a log file to which the user has write access</listitem>
+					<listitem>Modify <literal>loglevel</literal> as needed for testing</listitem>
 				</itemizedlist>
 				<figure>
 					<title>Example of the file "/openils/conf/srfsh.xml.example"</title>
-					<screen>
-					&lt;?xml version="1.0"?>
-					&lt;!-- This file follows the standard bootstrap config file layout -->
-					&lt;!-- found in opensrf_core.xml -->
-					&lt;srfsh>
-					&lt;router_name>router&lt;/router_name>
-					&lt;domain>private.localhost&lt;/domain>
-					&lt;username>opensrf&lt;/username>
-					&lt;passwd>privsrf&lt;/passwd>
-					&lt;port>5222&lt;/port>
-					&lt;logfile>/tmp/srfsh.log&lt;/logfile>
-					&lt;!-- 0 None, 1 Error, 2 Warning, 3 Info, 4 debug, 5 Internal (Nasty) -->
-					&lt;loglevel>4&lt;/loglevel>
-					&lt;/srfsh>
-					</screen>
+					<programlisting language="xml"><![CDATA[
+<?xml version="1.0"?>
+<!-- This file follows the standard bootstrap config file layout -->
+<!-- found in opensrf_core.xml -->
+<srfsh>
+<router_name>router</router_name>
+<domain>private.localhost</domain>
+<username>opensrf</username>
+<passwd>privsrf</passwd>
+<port>5222</port>
+<logfile>/tmp/srfsh.log</logfile>
+<!-- 0 None, 1 Error, 2 Warning, 3 Info, 4 debug, 5 Internal (Nasty) -->
+<loglevel>4</loglevel>
+</srfsh>]]></programlisting>
 				</figure>
 			</section>
 			<section>
 				<title>Modify Environmental Variable PATH for "opensrf" User</title>
-				<para>As the <emphasis role="bold">opensrf</emphasis> user, modify the environmental variable PATH by adding a new file path to the <emphasis>opensrf</emphasis> user's shell configuration file <emphasis>.bashrc</emphasis>:</para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user, modify the environmental variable <envar>PATH</envar> by adding a new file path to the <systemitem class="username">opensrf</systemitem> user's shell configuration file <filename>.bashrc</filename>:</para>
 				<figure>
 					<title>Commands to add path to ".bashrc" configuration file</title>
-					<screen>
-					$ su - opensrf
-					$ echo "export PATH=/openils/bin:\$PATH" >> ~/.bashrc
-					</screen>
+<screen>
+<prompt>$</prompt> <userinput>su - opensrf</userinput>
+<prompt>$</prompt> <userinput>echo "export PATH=/openils/bin:\$PATH" >> ~/.bashrc</userinput>
+</screen>
 				</figure>
 			</section>
 			<section>
 				<title>Starting OpenSRF</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, start the "ejabberd" and "memcached" services:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, start the <application>ejabberd</application> and <application>memcached</application> services:</para>
 				<figure>
 					<title>Commands to start "ejabberd" and "memcached" services</title>
 					<screen>
@@ -402,7 +400,7 @@
 					</screen>
 				</figure>
 				<para/>
-				<para>Finally, as the <emphasis role="bold">opensrf</emphasis> user, start OpenSRF:</para>
+				<para>Finally, as the <systemitem class="username">opensrf</systemitem> user user, start OpenSRF:</para>
 				<figure>
 					<title>Commands to start OpenSRF</title>
 					<screen>
@@ -424,7 +422,7 @@
 			</section>
 			<section>
 				<title>Testing connections to OpenSRF</title>
-				<para>Once you have installed and started OpenSRF, as the <emphasis role="bold">root</emphasis> user, test your connection to OpenSRF using the utility <emphasis>srfsh</emphasis> and trying to call the <emphasis>add</emphasis> method on the OpenSRF "math" service:</para>
+				<para>Once you have installed and started OpenSRF, as the <systemitem class="username">root</systemitem> user, test your connection to OpenSRF using the utility <emphasis>srfsh</emphasis> and trying to call the <emphasis>add</emphasis> method on the OpenSRF "math" service:</para>
 				<figure>
 					<title>Commands to test OpenSRF with "srfsh"</title>
 					<screen>
@@ -448,7 +446,7 @@
 			</section>
 			<section>
 				<title>Stopping OpenSRF</title>
-				<para>As the <emphasis role="bold">opensrf</emphasis> user, stop OpenSRF:</para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, stop OpenSRF:</para>
 				<figure>
 					<title>Commands to stop OpenSRF</title>
 					<screen>
@@ -464,12 +462,12 @@
 			<para>In this section you will download, unpack, install, configure and test the Evergreen system, including the Evergreen server and the PostgreSQL database system. You will make several configuration changes and adjustments to the software, including updates to configure the system for your own locale, and some updates needed to work around a few known issues.</para>
 			<note>
 				<para>The following steps have been tested on the x86 (32-bit) and x86-64 (64-bit) architectures. There may be differences between the Desktop and Server editions of Ubuntu. These instructions assume the Server edition.</para>
-				<para>In the following instructions, you are asked to perform certain steps as either the <emphasis role="bold">root</emphasis> user, the <emphasis role="bold">opensrf</emphasis> user, or the <emphasis role="bold">postgres</emphasis> user.</para>
+				<para>In the following instructions, you are asked to perform certain steps as either the <systemitem class="username">root</systemitem> user, the <systemitem class="username">opensrf</systemitem> user user, or the <emphasis role="bold">postgres</emphasis> user.</para>
 				<itemizedlist>
 					<listitem><emphasis role="bold">Debian</emphasis> -- To become the <emphasis>root</emphasis> user, issue the command <emphasis role="bold">"su -"</emphasis> and enter the password of the root user.</listitem>
 					<listitem><emphasis role="bold">Ubuntu</emphasis> -- To become the <emphasis>root</emphasis> user, issue the command <emphasis role="bold">"sudo su -"</emphasis> and enter the password of your current user.</listitem>
 				</itemizedlist>
-				<para>To switch from the <emphasis role="bold">root</emphasis> user to a different user, issue the command <emphasis role="bold">"su - USERNAME"</emphasis>. For example, to switch from the <emphasis role="bold">root</emphasis> user to the <emphasis role="bold">opensrf</emphasis> user, issue the command <emphasis role="bold">"su - opensrf"</emphasis>. Once you have become a non-root user, to become the <emphasis role="bold">root</emphasis> user again, simply issue the command <emphasis role="bold">"exit"</emphasis>.</para>
+				<para>To switch from the <systemitem class="username">root</systemitem> user to a different user, issue the command <emphasis role="bold">"su - USERNAME"</emphasis>. For example, to switch from the <systemitem class="username">root</systemitem> user to the <systemitem class="username">opensrf</systemitem> user user, issue the command <emphasis role="bold">"su - opensrf"</emphasis>. Once you have become a non-root user, to become the <systemitem class="username">root</systemitem> user again, simply issue the command <emphasis role="bold">"exit"</emphasis>.</para>
 			</note>
 			<section xml:id="serversideinstallation-opensrf-overview">
 				<title>Installing OpenSRF</title>
@@ -478,7 +476,7 @@
 			</section>
 			<section>
 				<title>Download and Unpack Latest Evergreen Version</title>
-				<para>As the <emphasis role="bold">opensrf</emphasis> user, download and extract the latest version of Evergreen. The latest version can be found here: <emphasis><emphasis role="bold"><ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.0.7.tar.gz"></ulink></emphasis></emphasis></para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, download and extract the latest version of Evergreen. The latest version can be found here: <emphasis><emphasis role="bold"><ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.0.7.tar.gz"></ulink></emphasis></emphasis></para>
 				<figure>
 					<title>Commands to download and unpack Evergreen</title>
 					<screen>
@@ -492,7 +490,7 @@
 			<section>
 				<title>Install Prerequisites to Build Evergreen</title>
 				<para>In this section you will install and configure a set of prerequisites that will be used to build Evergreen. In a following step you will actually build the software using the <emphasis>make</emphasis> utility.</para>
-				<para>As the <emphasis role="bold">root</emphasis> user, enter the commands show below to build the prerequisites from the software distribution that you just downloaded and unpacked. Remember to replace <emphasis>[distribution]</emphasis> in the example with the keyword corresponding to the actual Linux distribution listed in the <link linkend="serversideinstallation-keywords-figure-2">"Keywords"</link> figure below.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, enter the commands show below to build the prerequisites from the software distribution that you just downloaded and unpacked. Remember to replace <emphasis>[distribution]</emphasis> in the example with the keyword corresponding to the actual Linux distribution listed in the <link linkend="serversideinstallation-keywords-figure-2">"Keywords"</link> figure below.</para>
 				<figure>
 					<title>Commands to install prerequisites for Evergreen</title>
 					<screen>
@@ -563,7 +561,7 @@
 				<title>(OPTIONAL) Install the PostgreSQL Server</title>
 				<para>Since the PostgreSQL server is usually a standalone server in multi-server production systems, the prerequisite installer Makefile in the previous step does not automatically install PostgreSQL. If your PostgreSQL server is on a different system, just skip this step.</para>
 				<para>For further information on installing PostgreSQL, see the section <link linkend="serversideinstallation-postgresql">"Installing PostgreSQL"</link>.</para>
-				<para>If your PostgreSQL server will be on the same system as your Evergreen software, then as the <emphasis role="bold">root</emphasis> user install the required PostgreSQL server packages:</para>
+				<para>If your PostgreSQL server will be on the same system as your Evergreen software, then as the <systemitem class="username">root</systemitem> user install the required PostgreSQL server packages:</para>
 				<figure>
 					<title>Commands to install the PostgreSQL server</title>
 					<screen>
@@ -597,7 +595,7 @@
 			<section>
 				<title>(OPTIONAL) Install Perl Modules on PostgreSQL Server</title>
 				<para>If PostgreSQL is running on the same system as your Evergreen software, then the Perl modules will automatically be available. Just skip this step.</para>
-				<para>Otherwise, if your PostgreSQL server is running on another system, then as the <emphasis role="bold">root</emphasis> user install the following Perl modules on that system:</para>
+				<para>Otherwise, if your PostgreSQL server is running on another system, then as the <systemitem class="username">root</systemitem> user install the following Perl modules on that system:</para>
 				<figure>
 					<title>Commands to install Perl modules</title>
 					<screen>
@@ -625,7 +623,7 @@
 			</section>
 			<section>
 				<title>Update the System Dynamic Library Path</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, you must update the system dynamic library path to make your system recognize the newly installed libraries. Do this by creating a new file named <emphasis role="bold">/etc/ld.so.conf.d/eg.conf</emphasis> containing two new library paths, then run the command <emphasis role="bold">ldconfig</emphasis> to automatically read the file and modify the system dynamic library path:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, you must update the system dynamic library path to make your system recognize the newly installed libraries. Do this by creating a new file named <emphasis role="bold">/etc/ld.so.conf.d/eg.conf</emphasis> containing two new library paths, then run the command <emphasis role="bold">ldconfig</emphasis> to automatically read the file and modify the system dynamic library path:</para>
 				<figure>
 					<title>Commands to modify system dynamic library path</title>
 					<screen>
@@ -640,7 +638,7 @@
 			</section>
 			<section>
 				<title>(OPTIONAL) Restart the PostgreSQL Service</title>
-				<para>If PostgreSQL is running on the same system as the rest of Evergreen, as the <emphasis role="bold">root</emphasis> user you must restart the PostgreSQL service to avoid a problem where the library <emphasis role="bold">plperl.so</emphasis> cannot be found. If your PostgreSQL server is running on another system, just skip this step.</para>
+				<para>If PostgreSQL is running on the same system as the rest of Evergreen, as the <systemitem class="username">root</systemitem> user you must restart the PostgreSQL service to avoid a problem where the library <emphasis role="bold">plperl.so</emphasis> cannot be found. If your PostgreSQL server is running on another system, just skip this step.</para>
 				<indexterm>
 					<primary>ZZZ-REVIEW</primary>
 					<secondary>ADD INFO ON OTHER VERSIONS OF POSTGRESQL </secondary>
@@ -657,7 +655,7 @@
 			</section>
 			<section xml:id="serversideinstallation-configure">
 				<title>Configure Evergreen</title>
-				<para>As the <emphasis role="bold">opensrf</emphasis> user, return to the Evergreen build directory and use the utility "configure" to prepare for the next step of compiling and linking the software:</para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, return to the Evergreen build directory and use the utility "configure" to prepare for the next step of compiling and linking the software:</para>
 				<figure>
 					<title>Commands to configure Evergreen</title>
 					<screen>
@@ -672,7 +670,7 @@
 			<section xml:id="serversideinstallation-compilingevergreen">
 				<title>Compile, Link and Install Evergreen</title>
 				<para>In this step you will actually compile, link and install Evergreen and the default Evergreen Staff Client.</para>
-				<para>As the <emphasis role="bold">root</emphasis> user, return to the Evergreen build directory and use the <emphasis>make</emphasis> command as shown below. The Staff Client will also be automatically built, but you must remember to set the variable <emphasis role="bold">STAFF_CLIENT_BUILD_ID</emphasis> to match the version of the Staff Client you will use to connect to the Evergreen server.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, return to the Evergreen build directory and use the <emphasis>make</emphasis> command as shown below. The Staff Client will also be automatically built, but you must remember to set the variable <emphasis role="bold">STAFF_CLIENT_BUILD_ID</emphasis> to match the version of the Staff Client you will use to connect to the Evergreen server.</para>
 				<para>For further information on manually building the Staff Client, see the section <link linkend="serversideinstallation-building-staffclient">"Building and Installing the Evergreen Staff Client"</link>.</para>
 				<figure>
 					<title>Commands to build, link and install Evergreen</title>
@@ -684,7 +682,7 @@
 					</screen>
 					<para>The above commands will create a new subdirectory <emphasis>/openils/var/web/xul/rel_1_6_0_7</emphasis> containing the Staff Client.</para>
 				</figure>
-				<para>To complete the Staff Client installation, as the <emphasis role="bold">root</emphasis> user create a symbolic link named <emphasis>server</emphasis> in the head of the Staff Client directory <emphasis>/openils/var/web/xul</emphasis> that points to the <emphasis>/server</emphasis> subdirectory of the new Staff Client build:</para>
+				<para>To complete the Staff Client installation, as the <systemitem class="username">root</systemitem> user create a symbolic link named <emphasis>server</emphasis> in the head of the Staff Client directory <emphasis>/openils/var/web/xul</emphasis> that points to the <emphasis>/server</emphasis> subdirectory of the new Staff Client build:</para>
 				<figure>
 					<title>Commands to create symbolic link</title>
 					<screen>
@@ -696,7 +694,7 @@
 			</section>
 			<section>
 				<title>Copy the OpenSRF Configuration Files</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, copy the example OpenSRF configuration files into place. This replaces the configuration files that you set up in a previous step when you installed and tested OpenSRF. You should also create backup copies of the old files for troubleshooting purposes. Finally, change the ownership on the installed files to the user <emphasis role="bold">opensrf</emphasis>:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, copy the example OpenSRF configuration files into place. This replaces the configuration files that you set up in a previous step when you installed and tested OpenSRF. You should also create backup copies of the old files for troubleshooting purposes. Finally, change the ownership on the installed files to the user <systemitem class="username">opensrf</systemitem> user:</para>
 				<figure>
 					<title>Commands to copy OpenSRF configuration files</title>
 					<screen>
@@ -755,7 +753,7 @@
 			</section>
 			<section>
 				<title>Create Database Schema</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, create the database schema and configure your system with the corresponding database authentication details for the database user <emphasis>evergreen</emphasis> that you created in the previous step.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, create the database schema and configure your system with the corresponding database authentication details for the database user <emphasis>evergreen</emphasis> that you created in the previous step.</para>
 				<para>Enter the following commands and replace <emphasis>HOSTNAME, PORT, PASSWORD</emphasis> and <emphasis>DATABASENAME</emphasis> with appropriate values.</para>
 				<figure>
 					<title>Commands to create Evergreen database schema</title>
@@ -777,7 +775,7 @@
 			</section>
 			<section>
 				<title>Configure the Apache Server</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, configure the Apache server and copy several new configuration files to the Apache server directories:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, configure the Apache server and copy several new configuration files to the Apache server directories:</para>
 				<figure>
 					<title>Commands to configure the Apache server</title>
 					<screen>
@@ -819,7 +817,7 @@
 			</section>
 			<section xml:id="serversideinstallation-modify-apache">
 				<title>Modify the Apache Configuration File</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis>/etc/apache2/sites-available/eg.conf</emphasis> and make the following changes:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/sites-available/eg.conf</emphasis> and make the following changes:</para>
 				<orderedlist>
 					<listitem>
 						<para>Comment out the line <emphasis role="bold">Allow from 10.0.0.0/8</emphasis>, then uncomment the line <emphasis role="bold">Allow from all</emphasis>.</para>
@@ -844,15 +842,15 @@
 						<para>The following updates are needed to allow the logs to function properly, but it may break other Apache applications on your server. We hope to make this unnecessary in a future Evergreen release.</para>
 						<itemizedlist>
 							<listitem>
-								<para>For the Linux distributions <emphasis>Ubuntu Hardy</emphasis> or <emphasis>Debian Etch</emphasis>, as the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis> and change the user: <emphasis role="bold">www-data</emphasis> to the user: <emphasis role="bold">opensrf</emphasis>.</para>
+								<para>For the Linux distributions <emphasis>Ubuntu Hardy</emphasis> or <emphasis>Debian Etch</emphasis>, as the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis> and change the user: <emphasis role="bold">www-data</emphasis> to the user: <systemitem class="username">opensrf</systemitem> user.</para>
 							</listitem>
 							<listitem>
-								<para>For the Linux distributions <emphasis>Ubuntu Karmic</emphasis> or <emphasis>Ubuntu Lucid</emphasis> or <emphasis>Debian Lenny</emphasis>, as the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis>/etc/apache2/envvars</emphasis> and change the phrase: <emphasis role="bold">export APACHE_RUN_USER=www-data</emphasis> to the phrase: <emphasis role="bold">export APACHE_RUN_USER=opensrf</emphasis>.</para>
+								<para>For the Linux distributions <emphasis>Ubuntu Karmic</emphasis> or <emphasis>Ubuntu Lucid</emphasis> or <emphasis>Debian Lenny</emphasis>, as the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/envvars</emphasis> and change the phrase: <emphasis role="bold">export APACHE_RUN_USER=www-data</emphasis> to the phrase: <emphasis role="bold">export APACHE_RUN_USER=opensrf</emphasis>.</para>
 							</listitem>
 						</itemizedlist>
 					</listitem>
 					<listitem>
-						<para>As the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis> and add the line <emphasis role="bold">KeepAliveTimeout 1</emphasis>, or modify an existing line if it already exists.</para>
+						<para>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis> and add the line <emphasis role="bold">KeepAliveTimeout 1</emphasis>, or modify an existing line if it already exists.</para>
 					</listitem>
 				</orderedlist>
 			</section>
@@ -860,8 +858,8 @@
 				<title>(OPTIONAL) Performance Modifications for Apache</title>
 				<para>Some further configuration changes to Apache may be necessary for busy systems. These changes increase the number of Apache server processes that are started to support additional browser connections.</para>
 				<orderedlist>
-					<listitem>As the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis>, locate and modify the section related to <emphasis>prefork configuration</emphasis> to suit the load on your system.</listitem>
-					<listitem>As the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis> and add the line <emphasis role="bold">MaxKeepAliveRequests 100</emphasis>, or modify an existing line if it already exists.
+					<listitem>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis>, locate and modify the section related to <emphasis>prefork configuration</emphasis> to suit the load on your system.</listitem>
+					<listitem>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis> and add the line <emphasis role="bold">MaxKeepAliveRequests 100</emphasis>, or modify an existing line if it already exists.
 						<figure><title>(OPTIONAL) Example of updates to Apache configuration</title><screen>
 							&lt;IfModule mpm_prefork_module>
 							   StartServers		  20
@@ -876,7 +874,7 @@
 			</section>
 			<section>
 				<title>Enable the Evergreen Site</title>
-				<para>As the <emphasis role="bold">root</emphasis> user, execute the following Apache configuration commands to disable the default "It Works" web page and to enable the Evergreen web site:</para>
+				<para>As the <systemitem class="username">root</systemitem> user, execute the following Apache configuration commands to disable the default "It Works" web page and to enable the Evergreen web site:</para>
 				<figure>
 					<title>Commands to enable the Evergreen Web Site</title>
 					<screen>
@@ -892,7 +890,7 @@
 			</section>
 			<section>
 				<title>Modify the OpenSRF Configuration File</title>
-				<para>As the <emphasis role="bold">opensrf</emphasis> user, edit the OpenSRF configuration file <emphasis>/openils/conf/opensrf_core.xml</emphasis> to update the Jabber usernames and passwords, and to specify the domain from which we will accept and to which we will make connections.</para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, edit the OpenSRF configuration file <emphasis>/openils/conf/opensrf_core.xml</emphasis> to update the Jabber usernames and passwords, and to specify the domain from which we will accept and to which we will make connections.</para>
 				<para>If you are installing Evergreen on a single server and using the <emphasis>private.localhost</emphasis> / <emphasis>public.localhost</emphasis> domains, these will already be set to the correct values. Otherwise, search and replace to match your customized values.</para>
 				<note>
 					<para>
@@ -933,7 +931,7 @@
 				<para>In this section you will set up a special configuration file for each user who will need to run the utility. Copy the short sample configuration file <emphasis>/openils/conf/srfsh.xml.example</emphasis> to the file <emphasis>.srfsh.xml</emphasis> (note the leading dot!) in the home directory of each user who will use <emphasis role="bold">srfsh</emphasis>. Finally, edit each users' <emphasis>.srfsh.xml</emphasis> file and make the following changes:</para>
 				<orderedlist>
 					<listitem>Modify <emphasis role="bold">domain</emphasis> to be the router hostname (following our domain examples, <emphasis role="bold">private.localhost</emphasis> will give <emphasis role="bold">srfsh</emphasis> access to all OpenSRF services, while <emphasis role="bold">public.localhost</emphasis> will only allow access to those OpenSRF services that are publicly exposed).</listitem>
-					<listitem>Modify <emphasis role="bold">username</emphasis> and <emphasis role="bold">password</emphasis> to match the <emphasis role="bold">opensrf</emphasis> Jabber user for the chosen domain</listitem>
+					<listitem>Modify <emphasis role="bold">username</emphasis> and <emphasis role="bold">password</emphasis> to match the <systemitem class="username">opensrf</systemitem> user Jabber user for the chosen domain</listitem>
 					<listitem>Modify <emphasis role="bold">logfile</emphasis> to be the full path for a log file to which the user has write access</listitem>
 					<listitem>Modify <emphasis role="bold">loglevel</emphasis> as needed for testing</listitem>
 				</orderedlist>
@@ -958,7 +956,7 @@
 			</section>
 			<section>
 				<title>Modify the OpenSRF Environment</title>
-				<para>As the <emphasis role="bold">opensrf</emphasis> user, change the permissions of <emphasis>.cgi</emphasis> files in the directory <emphasis>/openils/var/cgi-bin</emphasis> to <emphasis>executable</emphasis>, then modify the shell configuration file <emphasis>~/.bashrc</emphasis> for <emphasis>opensrf</emphasis> by adding a Perl environmental variable. Finally, execute the shell configuration file to load the new variables into your current environment.</para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, change the permissions of <emphasis>.cgi</emphasis> files in the directory <emphasis>/openils/var/cgi-bin</emphasis> to <emphasis>executable</emphasis>, then modify the shell configuration file <emphasis>~/.bashrc</emphasis> for <emphasis>opensrf</emphasis> by adding a Perl environmental variable. Finally, execute the shell configuration file to load the new variables into your current environment.</para>
 				<note>
 					<para>
 						<emphasis>In a multi-server environment, you must add any modifications to <emphasis role="bold">~/.bashrc</emphasis> to the top of the file <emphasis>before</emphasis> the line <emphasis role="bold"> [ -z "$PS1" ] &amp;&amp; return</emphasis>. This will allow headless (scripted) logins to load the correct environment.</emphasis>
@@ -983,7 +981,7 @@
 				<title>Starting Evergreen</title>
 				<orderedlist>
 					<listitem>
-						<para>As the <emphasis role="bold">root</emphasis> user, start the "ejabberd" and "memcached" services (if they are not already running):</para>
+						<para>As the <systemitem class="username">root</systemitem> user, start the "ejabberd" and "memcached" services (if they are not already running):</para>
 						<figure>
 							<title>Commands to start "ejabberd" and "memcached" services</title>
 							<screen>
@@ -994,7 +992,7 @@
 						</figure>
 					</listitem>
 					<listitem>
-						<para>As the <emphasis role="bold">opensrf</emphasis> user, start Evergreen.</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, start Evergreen.</para>
 						<para>Use the flag <emphasis>-l</emphasis> to force Evergreen to use <emphasis>localhost</emphasis> (your current system) as the hostname. Using the <emphasis>start_all</emphasis> option will start the OpenSRF router, Perl services, and C services:</para>
 						<figure>
 							<title>Commands to start Evergreen</title>
@@ -1027,12 +1025,12 @@
 							</screen>
 						</figure>
 						<itemizedlist>
-							<listitem>When you attempt to start Evergreen, if you receive an error message similar to <emphasis>osrf_ctl.sh: command not found</emphasis>, then your environment variable <emphasis role="bold">PATH</emphasis> does not include the directory <emphasis>/openils/bin</emphasis>. As the <emphasis role="bold">opensrf</emphasis> user, edit the configuration file <emphasis>/home/opensrf/.bashrc</emphasis> and add the following line: <emphasis role="bold"><screen>export PATH=$PATH:/openils/bin</screen></emphasis></listitem>
-							<listitem>When you attempt to start Evergreen, if you receive an error message similar to <emphasis>Can't locate OpenSRF/System.pm in @INC ... BEGIN failed--compilation aborted</emphasis>, then your environment variable <emphasis role="bold">PERL5LIB</emphasis> does not include the directory <emphasis>/openils/lib/perl5</emphasis>. As the <emphasis role="bold">opensrf</emphasis> user, edit the configuration file <emphasis>/home/opensrf/.bashrc</emphasis> and add the following line: <emphasis role="bold"><screen>export PERL5LIB=$PERL5LIB:/openils/lib/perl5</screen></emphasis></listitem>
+							<listitem>When you attempt to start Evergreen, if you receive an error message similar to <emphasis>osrf_ctl.sh: command not found</emphasis>, then your environment variable <emphasis role="bold">PATH</emphasis> does not include the directory <emphasis>/openils/bin</emphasis>. As the <systemitem class="username">opensrf</systemitem> user user, edit the configuration file <emphasis>/home/opensrf/.bashrc</emphasis> and add the following line: <emphasis role="bold"><screen>export PATH=$PATH:/openils/bin</screen></emphasis></listitem>
+							<listitem>When you attempt to start Evergreen, if you receive an error message similar to <emphasis>Can't locate OpenSRF/System.pm in @INC ... BEGIN failed--compilation aborted</emphasis>, then your environment variable <emphasis role="bold">PERL5LIB</emphasis> does not include the directory <emphasis>/openils/lib/perl5</emphasis>. As the <systemitem class="username">opensrf</systemitem> user user, edit the configuration file <emphasis>/home/opensrf/.bashrc</emphasis> and add the following line: <emphasis role="bold"><screen>export PERL5LIB=$PERL5LIB:/openils/lib/perl5</screen></emphasis></listitem>
 						</itemizedlist>
 					</listitem>
 					<listitem>
-						<para>As the <emphasis role="bold">opensrf</emphasis> user, generate the Web files needed by the Staff Client and catalogue, and calculate the proximity of locations in the Organizational Unit tree (which allows <emphasis>Holds</emphasis> to work properly).</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, generate the Web files needed by the Staff Client and catalogue, and calculate the proximity of locations in the Organizational Unit tree (which allows <emphasis>Holds</emphasis> to work properly).</para>
 						<para>You must do this the first time you start Evergreen, and after any changes you make to the library hierarchy in the configuration file <emphasis>config.cgi</emphasis>.</para>
 						<figure>
 							<title>Commands to generate web files</title>
@@ -1052,7 +1050,7 @@
 						</figure>
 					</listitem>
 					<listitem>
-						<para>As the <emphasis role="bold">root</emphasis> user, restart the Apache Web server:</para>
+						<para>As the <systemitem class="username">root</systemitem> user, restart the Apache Web server:</para>
 						<figure>
 							<title>Commands to restart Apache web server</title>
 							<screen>
@@ -1069,7 +1067,7 @@
 				<para>This section describes several simple tests you can perform to verify that the Evergreen server-side software has been installed and configured properly and is running as expected.</para>
 				<section xml:id="serversideinstallation-testing-connections">
 					<title>Testing Connections to Evergreen</title>
-					<para>Once you have installed and started Evergreen, test your connection to Evergreen. As the <emphasis role="bold">opensrf</emphasis> user start the utility <emphasis>srfsh</emphasis> and try logging onto the Evergreen server using the default administrator username and password. Following is sample output generated by executing that script after a successful Evergreen installation:</para>
+					<para>Once you have installed and started Evergreen, test your connection to Evergreen. As the <systemitem class="username">opensrf</systemitem> user user start the utility <emphasis>srfsh</emphasis> and try logging onto the Evergreen server using the default administrator username and password. Following is sample output generated by executing that script after a successful Evergreen installation:</para>
 					<figure>
 						<title>Commands to test Evergreen with "srfsh"</title>
 						<screen>
@@ -1102,29 +1100,29 @@
 				<section>
 					<title>Other Connection Tests with "srfsh"</title>
 					<para></para>
-					<para>There is another <emphasis>srfsh</emphasis> command called <emphasis>math_bench</emphasis> that sends queries to the math servers. Note that opensrf.math and opensrf.dbmath must be running for this command to work:</para>
+					<para>There is another <application>srfsh</application> command called <command>math_bench</command> that sends queries to the math servers. Note that the <systemitem class="service">opensrf.math</systemitem> and <systemitem class="service">opensrf.dbmath</systemitem> must be running for this command to work:</para>
 					<screen>
-					srfsh# math_bench 10
-					|.........|.........|.........|.........|.........|.........|.........|.........|.........|.........
-					++++++++++++++++++++++++++++++++++++++++
-					Average round trip time: 0.033425
-					srfsh#
+<prompt>srfsh#</prompt> <userinput>math_bench 10</userinput>
+|.........|.........|.........|.........|.........|.........|.........|.........|.........|.........
+++++++++++++++++++++++++++++++++++++++++
+Average round trip time: 0.033425
+srfsh#
 					</screen>
-					<para>The first argument is how many sets of 4 queries (+ - * /) are sent to <emphasis>opensrf.math</emphasis>. When the response is successful, you will see the string of "+" symbols. If the system is not running correctly, you will either get an exception or no result at all.</para>
-					<para>For other srfsh commands, type 'help' in at the prompt.</para>
+					<para>The first argument is how many sets of 4 queries (+ - * /) are sent to <systemitem class="service">opensrf.math</systemitem>. When the response is successful, you will see the string of "+" symbols. If the system is not running correctly, you will either get an exception or no result at all.</para>
+					<para>For other <application>srfsh</application> commands, type <userinput>help</userinput> in at the prompt.</para>
 					<para/>
 					<para>If this does not work, try the troubleshooting steps in the following section.</para>
 				</section>
 				<section>
 					<title>Testing with "settings-tester.pl"</title>
-					<para>As the <emphasis role="bold">opensrf</emphasis> user, run the script <emphasis>settings-tester.pl</emphasis> to see if it finds any system configuration problems. Following is sample output generated by executing that script after a successful Evergreen installation:</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, run the script <command>settings-tester.pl</command> to see if it finds any system configuration problems. Following is sample output generated by executing that script after a successful Evergreen installation:</para>
 					<indexterm>
 						<primary>ZZZ-REVIEW</primary>
 						<secondary>REWORK THIS DIAGRAM TO USE SAME IMAGE STANDARDS AS OTHER CHAPTERS </secondary>
 					</indexterm>
 					<caution fileref="../media/caution.png">REWORK THIS DIAGRAM TO USE SAME IMAGE STANDARDS AS OTHER CHAPTERS </caution>
 					<figure>
-						<title>Executing the script <emphasis>settings-tester.pl</emphasis></title>
+						<title>Executing the script <command>settings-tester.pl</command></title>
 						<mediaobject>
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-testing-1.png" scalefit="1" width="100%"/>
@@ -1141,8 +1139,8 @@
 				</section>
 				<section xml:id="serversideinstallation-testing-opac">
 					<title>Testing the Catalog</title>
-					<para>By default, the OPAC will live at the URL <emphasis>http://my.domain.com/opac/</emphasis>.</para>
-					<para>Navigate to this URL and the front page of the OPAC should load. There is a basic text entry field with some extra search options. If you have any problems loading this page, check the Apache error logs. If the page loads but does not function correctly, then check for possible javascript errors. We hightly reccommend testing with the <emphasis>Firefox</emphasis> browser because of the helpful javascript debugging tools.</para>
+					<para>By default, the OPAC will live at the URL <uri>http://my.domain.com/</uri>.</para>
+					<para>Navigate to this URL and the front page of the OPAC should load. There is a basic text entry field with some extra search options. If you have any problems loading this page, check the Apache error logs. If the page loads but does not function correctly, then check for possible javascript errors. We hightly reccommend testing with the <application>Firefox</application> browser because of the helpful javascript debugging tools.</para>
 					<para>Assuming that the OPAC is functioning and there is data in your database, you can now perform other simple functional tests (e.g., searching the catalog).</para>
 					<indexterm>
 						<primary>ZZZ-REVIEW</primary>
@@ -1157,15 +1155,15 @@
 					<figure>
 						<title>Commands to run the Staff Client</title>
 						<screen>
-						$ su - opensrf
-						$ xulrunner /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client/build/application.ini
+						<prompt>$</prompt> <userinput>su - opensrf</userinput>
+						<prompt>$</prompt> <userinput>xulrunner /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client/build/application.ini</userinput>
 						</screen>
 					</figure>
 				</section>
 				<section xml:id="serversideinstallation-starting-apache-server">
 					<title>Testing the Apache Web Server</title>
 					<para>Once you have started Evergreen and confirmed that a basic login attempt works, you can test and start the Apache web server.</para>
-					<para>As the <emphasis role="bold">root</emphasis> user, execute the following commands. Note the use of <emphasis>restart</emphasis> to force the new Evergreen modules to be reloaded even if the Apache server is already running. Any problems found with your configuration files should be displayed:</para>
+					<para>As the <systemitem class="username">root</systemitem> user, execute the following commands. Note the use of <emphasis>restart</emphasis> to force the new Evergreen modules to be reloaded even if the Apache server is already running. Any problems found with your configuration files should be displayed:</para>
 					<figure>
 						<title>Commands to test the Apache Web Server</title>
 						<screen>
@@ -1177,7 +1175,7 @@
 			</section>
 			<section xml:id="serversideinstallation-stopping">
 				<title>Stopping Evergreen</title>
-				<para>As the <emphasis role="bold">opensrf</emphasis> user, stop all Evergreen services by using the following command:</para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, stop all Evergreen services by using the following command:</para>
 				<figure>
 					<title>Commands to stop Evergreen</title>
 					<screen>
@@ -1203,7 +1201,7 @@
 				<title>Post-Installation Chores</title>
 				<section>
 					<title>Remove temporary changes from Apache configuration file</title>
-					<para>As the <emphasis role="bold">root</emphasis> user, edit the Apache configuration file <emphasis>/etc/apache2/sites-available/eg.conf</emphasis> again and make the following change:</para>
+					<para>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/sites-available/eg.conf</emphasis> again and make the following change:</para>
 					<para>Uncomment the line <emphasis role="bold">Allow from 10.0.0.0/8</emphasis>, then comment out the line <emphasis role="bold">Allow from all</emphasis>. You modified this file in an earlier step as a temporary measure to expedite testing (see the section <link linkend="serversideinstallation-modify-apache">"Modify the Apache Configuration File"</link> for further information). Those changes must now be reversed in order to deny unwanted access to your CGI scripts from users on other public networks. You <emphasis role="bold">must</emphasis> secure this for a public production system.</para>
 				</section>
 				<section>
@@ -1227,7 +1225,7 @@
 						<listitem>
 							<para>Starting the Reporter Daemon</para>
 							<para>Once the <emphasis>open-ils.reporter</emphasis> process is running and enabled on the gateway, you can start the reporter daemon. That process periodically checks for requests for new reports or scheduled reports and gets them running.</para>
-							<para>As the <emphasis role="bold">opensrf</emphasis> user, start the reporter daemon using the following command:</para>
+							<para>As the <systemitem class="username">opensrf</systemitem> user user, start the reporter daemon using the following command:</para>
 							<figure>
 								<title>Commands to start the Reporter daemon</title>
 								<screen>
@@ -1249,7 +1247,7 @@
 							<para>To stop the Reporter daemon, you must kill the process and remove the lockfile. The daemon may have just a single associated process, with a lockfile in the default location.</para>
 							<note>
 								<para>
-									<emphasis>It is possible that several processes are running; see the optional commands in the previous section. As the <emphasis role="bold">opensrf</emphasis> user, perform the following commands to stop the Reporter daemon:</emphasis>
+									<emphasis>It is possible that several processes are running; see the optional commands in the previous section. As the <systemitem class="username">opensrf</systemitem> user user, perform the following commands to stop the Reporter daemon:</emphasis>
 								</para>
 							</note>
 							<figure>
@@ -1563,7 +1561,7 @@
 					<title>Quick Upgrade of the Staff Client</title>
 					<para>A Linux Staff Client is automatically built on the server as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software. To upgrade the Staff Client on a remote workstation with a new version, just copy the directory tree containing the Staff Client from the server to the remote workstation.</para>
 					<para>The following example assumes you already have an "opensrf" user account on both the server and the remote workstation. Remember to replace "user", "client.linux.machine" and "eg-client-x.x.x.x" with the proper user name, client machine name, and version number in the following example.</para>
-					<para>As the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then recursively copy the entire directory tree to the remote workstation:</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then recursively copy the entire directory tree to the remote workstation:</para>
 					<figure>
 						<title>Copying the Staff Client to a remote workstation</title>
 						<screen>
@@ -1572,7 +1570,7 @@
 					$ scp -r build user@client.linux.machine:~/eg-client-x.x.x.x/
 					</screen>
 					</figure>
-					<para>To test the newly copied Staff Client, as the <emphasis role="bold">opensrf</emphasis> user log into the remote workstation and execute it as shown:</para>
+					<para>To test the newly copied Staff Client, as the <systemitem class="username">opensrf</systemitem> user user log into the remote workstation and execute it as shown:</para>
 					<figure>
 						<title>Testing the copied Staff Client</title>
 						<screen>
@@ -1602,7 +1600,7 @@
 					<orderedlist>
 						<listitem>
 							<para>Prerequisites</para>
-							<para>Both "subversion" and "xulrunner" are required to build the Staff Client. As the <emphasis role="bold">root</emphasis> user, use "apt-get" to install packages for "subversion" and "xulrunner". You can also use "synaptic", the graphical user interface for "apt-get". For "subversion", select the latest version; for "xulrunner", select version <emphasis>1.8.1.4-2ubuntu5</emphasis>.</para>
+							<para>Both "subversion" and "xulrunner" are required to build the Staff Client. As the <systemitem class="username">root</systemitem> user, use "apt-get" to install packages for "subversion" and "xulrunner". You can also use "synaptic", the graphical user interface for "apt-get". For "subversion", select the latest version; for "xulrunner", select version <emphasis>1.8.1.4-2ubuntu5</emphasis>.</para>
 							<figure>
 								<title>Installing subversion and xulrunner</title>
 								<screen>
@@ -1622,7 +1620,7 @@
 								</listitem>
 								<listitem>
 									<para>Download the Code</para>
-									<para>As the <emphasis role="bold">opensrf</emphasis> user, open a terminal (command-line prompt) and navigate to the directory in which you wish to download the Staff Client. Use the following commands to download the proper version of the source code by tag name:</para>
+									<para>As the <systemitem class="username">opensrf</systemitem> user user, open a terminal (command-line prompt) and navigate to the directory in which you wish to download the Staff Client. Use the following commands to download the proper version of the source code by tag name:</para>
 									<figure>
 										<title>Downloading the source code</title>
 										<screen>
@@ -1640,7 +1638,7 @@
 							<section>
 								<title>Evergreen 1.2.x</title>
 								<para>In the following example, navigate to the directory in which the source code was downloaded, then navigate to the proper subdirectory and run the "make" utility to actually build the Staff Client. Remember to check with your system administrator about which Staff Client BUILD_ID to use. The server checks the Staff Client BUILD_ID against itself to determine whether or not a connecting client is supported. For instance, for the PINES installation (version 1.2.1.4) the supported BUILD_ID is "rel_1_2_1_4". Modify the following commands accordingly.</para>
-								<para>As the <emphasis role="bold">opensrf</emphasis> user, run the following commands to build the Staff Client:</para>
+								<para>As the <systemitem class="username">opensrf</systemitem> user user, run the following commands to build the Staff Client:</para>
 								<figure>
 									<title>Finding the downloaded source code</title>
 									<screen>
@@ -1687,7 +1685,7 @@
 						</listitem>
 						<listitem>
 							<para>Run the Staff Client (from the command line)</para>
-							<para>As the <emphasis role="bold">opensrf</emphasis> user, navigate to the <emphasis>build/</emphasis> subdirectory (not <emphasis>staff_client/</emphasis>) and run the following command:</para>
+							<para>As the <systemitem class="username">opensrf</systemitem> user user, navigate to the <emphasis>build/</emphasis> subdirectory (not <emphasis>staff_client/</emphasis>) and run the following command:</para>
 							<figure>
 								<title>Running the Staff Client</title>
 								<screen>
@@ -1735,7 +1733,7 @@
 				<section>
 					<title>Using Wine to Install On Linux</title>
 					<para>The Linux application <emphasis>Wine</emphasis> is another alternative for those who wish to install the packaged Windows versions rather than building the Staff Client manually. Wine is a Linux application that allows users to directly run Windows executables, and is a simple way for casual Linux users to use the Staff Client. More information about Wine can be found at <ulink url="http://www.winehq.org/site/docs/wineusr-guide/getting-wine">http://www.winehq.org/site/docs/wineusr-guide/getting-wine</ulink>.</para>
-					<para>As the <emphasis role="bold">root</emphasis> user, use "apt-get" to install the package for "wine". You can also use "synaptic", the graphical user interface.</para>
+					<para>As the <systemitem class="username">root</systemitem> user, use "apt-get" to install the package for "wine". You can also use "synaptic", the graphical user interface.</para>
 					<orderedlist>
 						<listitem>
 							<para>Install wine</para>
@@ -1748,7 +1746,7 @@
 						</listitem>
 						<listitem>
 							<para>Download Windows installer for the Staff Client</para>
-							<para>As the <emphasis role="bold">opensrf</emphasis> user, run the following commands to download the Windows installer for the proper Staff Client from the <emphasis>open-ils.org</emphasis> website and place it in a temporary directory:</para>
+							<para>As the <systemitem class="username">opensrf</systemitem> user user, run the following commands to download the Windows installer for the proper Staff Client from the <emphasis>open-ils.org</emphasis> website and place it in a temporary directory:</para>
 							<figure>
 								<title>Downloading the Staff Client installer</title>
 								<screen>
@@ -1760,7 +1758,7 @@
 						</listitem>
 						<listitem>
 							<para>Run the downloaded Windows installer</para>
-							<para>As the <emphasis role="bold">opensrf</emphasis> user, navigate to the directory where you downloaded the Windows executable file, then execute it:</para>
+							<para>As the <systemitem class="username">opensrf</systemitem> user user, navigate to the directory where you downloaded the Windows executable file, then execute it:</para>
 							<figure>
 								<title>Using Wine to run the Windows installer</title>
 								<screen>
@@ -1836,7 +1834,7 @@
 					</screen>
 					</figure>
 					<para>The following commands will manually build the Staff Client using a different BUILD_ID.</para>
-					<para>As the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then set the variable and build the Staff Client:</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then set the variable and build the Staff Client:</para>
 					<figure>
 						<title>Commands to manually build the Staff Client</title>
 						<screen>
@@ -1862,7 +1860,7 @@
 					</figure>
 					<para>The following commands will manually build the Staff Client using a different VERSION.</para>
 					<para>If you plan to make extensions update automatically, the VERSION needs to conform to the format recommended in <ulink url="https://developer.mozilla.org/en/Toolkit_version_format">Toolkit Version Format</ulink> and newer versions need to be "higher" than older versions.</para>
-					<para>As the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then set the variable and build the Staff Client:</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then set the variable and build the Staff Client:</para>
 					<figure>
 						<title>Commands to manually build the Staff Client</title>
 						<screen>
@@ -1888,7 +1886,7 @@
 					</figure>
 					<para>The following commands will manually build the Staff Client using a different STAMP_ID.</para>
 					<para>It is possible to have multiple versions of the Staff Client by specifying a different STAMP_ID for each, possibly for different uses or client-side customizations.</para>
-					<para>As the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then set the variable and build the Staff Client:</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then set the variable and build the Staff Client:</para>
 					<figure>
 						<title>Commands to manually build the Staff Client</title>
 						<screen>
@@ -1967,7 +1965,7 @@
 					<listitem>
 						<para>Developer Build</para>
 						<para>You can create a so-called "developer build" of the Staff Client by substituting "devbuild" for "build" when running <emphasis>make</emphasis>. The build will contain an extra configuration file that enables some developer options.</para>
-						<para>As the <emphasis role="bold">opensrf</emphasis> user, run <emphasis>make</emphasis> from the Staff Client source directory:</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, run <emphasis>make</emphasis> from the Staff Client source directory:</para>
 						<figure>
 							<title>Commands to do a "developer build"</title>
 							<screen>
@@ -1981,7 +1979,7 @@
 					<listitem>
 						<para>Compressed Javascript</para>
 						<para>You can execute the Google "Closure Compiler" utility to automatically review and compress Javascript code after the build process completes, by substituting "compress-javascript" for "build" when running <emphasis>make</emphasis>. For more information see <ulink url="http://code.google.com/closure/compiler/">Google "Closure Compiler"</ulink>.</para>
-						<para>As the <emphasis role="bold">opensrf</emphasis> user, run the following commands from the Staff Client source directory:</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, run the following commands from the Staff Client source directory:</para>
 						<figure>
 							<title>Commands to compress Javascript</title>
 							<screen>
@@ -1992,7 +1990,7 @@
 						</screen>
 						</figure>
 						<para>You can also combine Javascript review and compression, and also perform a "developer build".</para>
-						<para>As the <emphasis role="bold">opensrf</emphasis> user, run the following commands from the Staff Client source directory:</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, run the following commands from the Staff Client source directory:</para>
 						<figure>
 							<title>Commands to compress Javascript and do a "developer build"</title>
 							<screen>
@@ -2018,7 +2016,7 @@
 						</screen>
 						</figure>
 						<para>You can manually set AUTOUPDATE_HOST to set up automatic update checking. The following commands will manually build the Staff Client using a different AUTOUPDATE_HOST.</para>
-						<para>As the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then set the variable and build the Staff Client:</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then set the variable and build the Staff Client:</para>
 						<figure>
 							<title>Commands to manually specify AUTOUPDATE_HOST</title>
 							<screen>
@@ -2035,7 +2033,7 @@
 			<section>
 				<title>Installing and Activating a Manually Built Staff Client</title>
 				<para>The Staff Client is automatically built, installed and activated as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software. However, if you manually build the Staff Client, then you need to take additional steps to properly install and activate it. You also have the option of installing the Staff Client on the same machine it was built on, or on a different machine.</para>
-				<para>Assuming you have already built the Staff Client, and that your installation is in the directory <emphasis>/openils/var/web/xul</emphasis>, as the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then execute the following commands:</para>
+				<para>Assuming you have already built the Staff Client, and that your installation is in the directory <emphasis>/openils/var/web/xul</emphasis>, as the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
 				<figure>
 					<title>Commands to install the Staff Client on the same machine</title>
 					<screen>
@@ -2053,7 +2051,7 @@
 					<listitem>
 						<para>Packaging a Generic Client</para>
 						<para>This build creates a Staff Client packaged as an XPI file to use with <emphasis>XULRunner</emphasis>. It requires that you already have the "zip" utility installed on your system. It will create the output file "evergreen_staff_client.xpi", suitable for use with the <emphasis>XULRunner</emphasis> parameter <emphasis>--install-app</emphasis>.</para>
-						<para>As the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then execute the following commands:</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
 						<figure>
 							<title>Commands to package a "generic" client</title>
 							<screen>
@@ -2086,7 +2084,7 @@
 								</tbody>
 							</tgroup>
 						</table>
-						<para>As the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then execute the following commands:</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
 						<figure>
 							<title>Commands to build a Windows client</title>
 							<screen>
@@ -2100,7 +2098,7 @@
 					<listitem>
 						<para>Packaging a Linux Client</para>
 						<para>This build creates a Staff Client package for Linux as a "tar.bz2" file with <emphasis>XULRunner</emphasis> already bundled with it. It creates the output file "evergreen_staff_client.tar.bz2".</para>
-						<para>As the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then execute the following commands:</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
 						<figure>
 							<title>Commands to build a Linux client</title>
 							<screen>
@@ -2114,7 +2112,7 @@
 					<listitem>
 						<para>Packaging a Firefox Extension</para>
 						<para>This build requires that you already have the "zip" utility installed on your system. It creates a Staff Client packaged as a Firefox extension and creates the output file "evergreen.xpi".</para>
-						<para>As the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then execute the following commands:</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
 						<figure>
 							<title>Commands to build a Firefox extension</title>
 							<screen>
@@ -2151,7 +2149,7 @@
 					<itemizedlist>
 						<listitem>
 							<para>At configuration time for the normal build of Evergreen server-side software</para>
-							<para>This must be done when the Evergreen server-side software is first configured (see the section <link linkend="serversideinstallation-configure"> "Configure Evergreen" </link>). As the <emphasis role="bold">opensrf</emphasis> user, use the utility "configure" as shown:</para>
+							<para>This must be done when the Evergreen server-side software is first configured (see the section <link linkend="serversideinstallation-configure"> "Configure Evergreen" </link>). As the <systemitem class="username">opensrf</systemitem> user user, use the utility "configure" as shown:</para>
 							<figure>
 								<title>Commands to configure Evergreen</title>
 								<screen>
@@ -2174,7 +2172,7 @@
 					<title>Building Updates</title>
 					<para>Similar to building clients, the targets "generic-updates", "win-updates", "linux-updates", and "extension-updates" can be used individually with <emphasis>make</emphasis> to build the update files for the Staff Client. To build all the targets at once, simply use the target "updates".</para>
 					<para>A "full" update will be built for each specified target (or for all if you use the target "updates"). For all but extensions any previous "full" updates (archived by default in the directory <emphasis>/openils/var/updates/archives</emphasis>) will be used to make "partial" updates. Partial updates tend to be much smaller and will thus download more quickly, but if something goes wrong with a partial update the full update will be used as a fallback. Extensions do not currently support partial updates.</para>
-					<para>As the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then execute the following commands:</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
 					<figure>
 						<title>Commands for building updates</title>
 						<screen>
@@ -2201,7 +2199,7 @@
 					<title>Building updates with clients</title>
 					<para>To save time and effort you can build updates and manual download clients at the same time by adding the string "-client" to each target name. For instance, you can specify "win-updates-client". You can also specify "updates-client" to build all the targets at once. This does not work for extension-updates.</para>
 					<para>The clients will be installed alongside the updates and listed on the "manualupdate.html" page, rather than left in the Staff Client directory.</para>
-					<para>As the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then execute the following commands:</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
 					<figure>
 						<title>Commands for building updates</title>
 						<screen>
@@ -2227,7 +2225,7 @@
 					<para>This section reviews scripts associated with the update server, and requires some final adjustments to file permissions.</para>
 					<para>The Apache example configuration creates an "updates" directory that, by default, points to the directory <emphasis>/openils/var/updates/pub</emphasis>. This directory contains one HTML file and several specially-named script files.</para>
 					<para>The "updatedetails.html" file is the fallback web page for the update details. The "check" script is used for <emphasis>XULRunner</emphasis> updates. The "update.rdf" script is used for extension updates. The "manualupdate.html" script checks for clients to provide download links when automatic updates have failed and uses the download script to force a download of the generic client XPI (compared to Firefox trying to install it as an extension).</para>
-					<para>The following scripts should be marked as executable: <emphasis>check, download, manualupdate.html, update.rdf</emphasis>. As the <emphasis role="bold">root</emphasis> user, change directory to the updates directory, then execute the following commands:</para>
+					<para>The following scripts should be marked as executable: <emphasis>check, download, manualupdate.html, update.rdf</emphasis>. As the <systemitem class="username">root</systemitem> user, change directory to the updates directory, then execute the following commands:</para>
 					<figure>
 						<title>Changing file permissions of scripts</title>
 						<screen>
@@ -2245,7 +2243,7 @@
 					<para>Multiple workstation registrations for the same server can be accomplished with a single Staff Client install by using multiple profiles. When running <emphasis>XULRunner</emphasis> you can specify the option "-profilemanager" or "-P" (uppercase "P") to force the Profile Manager to start. Unchecking the "Don't ask at startup" option will make this the default.</para>
 					<para>Once you have opened the Profile Manager you can create additional profiles, one for each workstation you wish to register. You may need to install SSL exceptions for each profile.</para>
 					<para>When building targets "win-client", "win-updates-client", or "updates-client", you can specify "NSIS_EXTRAOPTS=-DPROFILES" to add an "Evergreen Staff Client Profile Manager" option to the start menu.</para>
-					<para>As the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then execute the following commands:</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
 					<figure>
 						<title>Command to add start menu option</title>
 						<screen>
