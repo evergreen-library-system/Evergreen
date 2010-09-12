@@ -519,9 +519,11 @@ OpenILS.data.prototype = {
         this.chain.push(
             function() {
                 try {
-                    var robj = obj.network.simple_request('CIRC_MODIFIER_LIST',[]);
+                    var robj = obj.network.simple_request('CIRC_MODIFIER_LIST',[{'full':true}]);
                     if (typeof robj.ilsevent != 'undefined') throw(robj);
-                    obj.list.circ_modifier = robj;
+                    obj.list.ccm = robj == null ? [] : robj;
+                    obj.hash.ccm = util.functional.convert_object_list_to_hash( obj.list.ccm );
+                    obj.list.circ_modifier = util.functional.map_list( obj.list.ccm, function(o) { return o.code(); } );
                     obj.data_progress('Retrieved circ modifier list. ');
                 } catch(E) {
                     var error = 'Error: ' + js2JSON(E);

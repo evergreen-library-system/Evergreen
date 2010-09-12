@@ -168,7 +168,8 @@ function load_item() {
             set("circ_as_type", details.copy.circ_as_type()); 
             set("copy_circ_lib" , typeof details.copy.circ_lib() == 'object' ? details.copy.circ_lib().shortname() : data.hash.aou[ details.copy.circ_lib() ].shortname()); 
             set_tooltip("copy_circ_lib" , typeof details.copy.circ_lib() == 'object' ? details.copy.circ_lib().name() : data.hash.aou[ details.copy.circ_lib() ].name()); 
-            set("circ_modifier", details.copy.circ_modifier()); 
+            var cm = details.copy.circ_modifier();
+            set("circ_modifier", document.getElementById('commonStrings').getFormattedString('staff.circ_modifier.display',[cm,data.hash.ccm[cm].name(),data.hash.ccm[cm].description()])); 
             set("circulate", get_localized_bool( details.copy.circulate() )); 
             set("copy_number", details.copy.copy_number()); 
             set("copy_create_date", util.date.formatted_date( details.copy.create_date(), '%{localized}' )); 

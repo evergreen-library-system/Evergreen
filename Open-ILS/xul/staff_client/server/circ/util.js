@@ -875,7 +875,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.acp.circ_modifier(); }
+            'editable' : false, 'render' : function(my) { var cm = my.acp.circ_modifier(); return document.getElementById('commonStrings').getFormattedString('staff.circ_modifier.display',[cm,data.hash.ccm[cm].name(),data.hash.ccm[cm].description()]); }
         },
         {
             'id' : 'status_changed_time',
