@@ -60,6 +60,7 @@ my %MFHD_NAMES_BY_TAG = (  '853' => $MFHD_NAMES[0],
 my %MFHD_TAGS_BY_NAME = (  $MFHD_NAMES[0] => '853',
                         $MFHD_NAMES[1] => '854',
                         $MFHD_NAMES[2] => '855');
+my $_strp_date = new DateTime::Format::Strptime(pattern => '%F');
 
 # helper method for conforming dates to ISO8601
 sub _cleanse_dates {
@@ -629,7 +630,9 @@ sub make_predictions {
         my $options = {
                 'caption' => $caption_field,
                 'scap_id' => $scap->id,
-                'num_to_predict' => $args->{num_to_predict}
+                'num_to_predict' => $args->{num_to_predict},
+                'end_date' => defined $args->{end_date} ?
+                    $_strp_date->parse_datetime($args->{end_date}) : undef
                 };
         if ($args->{base_issuance}) { # predict from a given issuance
             $options->{predict_from} = _revive_holding($args->{base_issuance}->holding_code, $caption_field, 1); # fresh MFHD Record, so we simply default to 1 for seqno
@@ -708,6 +711,7 @@ sub _generate_issuance_values {
     my $caption = $options->{caption};
     my $scap_id = $options->{scap_id};
     my $num_to_predict = $options->{num_to_predict};
+    my $end_date = $options->{end_date};
     my $predict_from = $options->{predict_from};   # issuance to predict from
     #my $last_rec_date = $options->{last_rec_date};   # expected or actual
 
@@ -734,12 +738,11 @@ sub _generate_issuance_values {
 # add a note marker for system use (?)
     $predict_from->notes('private', ['AUTOGEN']);
 
-    my $strp = new DateTime::Format::Strptime(pattern => '%F');
     my $pub_date;
     my @issuance_values;
-    my @predictions = $mfhd->generate_predictions({'base_holding' => $predict_from, 'num_to_predict' => $num_to_predict});
+    my @predictions = $mfhd->generate_predictions({'base_holding' => $predict_from, 'num_to_predict' => $num_to_predict, 'end_date' => $end_date});
     foreach my $prediction (@predictions) {
-        $pub_date = $strp->parse_datetime($prediction->chron_to_date);
+        $pub_date = $_strp_date->parse_datetime($prediction->chron_to_date);
         push(
                 @issuance_values,
                 {

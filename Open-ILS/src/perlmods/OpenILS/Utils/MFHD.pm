@@ -19,6 +19,8 @@ sub new {
     my $class = ref($proto) || $proto;
     my $self  = shift;
 
+    $self->{_strp_date} = new DateTime::Format::Strptime(pattern => '%F');
+
     $self->{_mfhd_CAPTIONS} = {};
     $self->{_mfhd_COMPRESSIBLE} = (substr($self->leader, 17, 1) =~ /[45]/);
 
@@ -250,6 +252,13 @@ sub holdings {
       values %{$self->{_mfhd_HOLDINGS}->{$field}->{$capid}};
 }
 
+sub _holding_date {
+    my $self = shift;
+    my $holding = shift;
+
+    return $self->{_strp_date}->parse_datetime($holding->chron_to_date);
+}
+
 #
 # generate_predictions()
 # Accepts a hash ref of options initially defined as:
@@ -257,6 +266,8 @@ sub holdings {
 # num_to_predict : the number of issues you wish to predict
 # OR
 # end_holding : holding field ref, keep predicting until you meet or exceed it
+# OR
+# end_date : keep predicting until you exceed this
 #
 # The basic method is to first convert to a single holding if compressed, then
 # increment the holding and save the resulting values to @predictions.
@@ -270,6 +281,7 @@ sub generate_predictions {
     my $base_holding   = $options->{base_holding};
     my $num_to_predict = $options->{num_to_predict};
     my $end_holding    = $options->{end_holding};
+    my $end_date       = $options->{end_date};
     my $max_to_predict = $options->{max_to_predict} || 10000; # fail-safe
 
     if (!defined($base_holding)) {
@@ -293,6 +305,18 @@ sub generate_predictions {
         my $next_holding = $curr_holding->increment->clone;
         my $num_predicted = 0;
         while ($next_holding le $end_holding) {
+            push(@predictions, $next_holding);
+            $num_predicted++;
+            if ($num_predicted >= $max_to_predict) {
+                carp("Maximum prediction count exceeded");
+                last;
+            }
+            $next_holding = $curr_holding->increment->clone;
+        }
+    } elsif (defined($end_date)) {
+        my $next_holding = $curr_holding->increment->clone;
+        my $num_predicted = 0;
+        while ($self->_holding_date($next_holding) <= $end_date) {
             push(@predictions, $next_holding);
             $num_predicted++;
             if ($num_predicted >= $max_to_predict) {
