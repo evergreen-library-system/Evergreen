@@ -56,7 +56,15 @@
             JSAN.use('util.widgets'); JSAN.use('util.functional');
             var x = util.widgets.make_menulist( 
                 [ [ $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null"), "<HACK:KLUDGE:NULL>" ] ].concat( 
-                    util.functional.map_list( g.data.list.circ_modifier, function(obj) { return [ obj, obj ]; } ).sort() 
+                    util.functional.map_list(
+                        g.data.list.ccm,
+                        function(obj) {
+                            return [
+                                document.getElementById('commonStrings').getFormattedString('staff.circ_modifier.display',[obj.code(),obj.name(),obj.description()]),
+                                obj.code()
+                            ];
+                        }
+                    ).sort() 
                 ) 
             );
             x.setAttribute('id','dummy_circ_modifier');

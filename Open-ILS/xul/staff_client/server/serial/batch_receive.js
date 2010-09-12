@@ -182,8 +182,7 @@ function BatchReceiver() {
                                     dojo.create(
                                         "menuitem", {
                                             "value": mod.code(),
-                                            /* XXX use format string */
-                                            "label": mod.code()+" "+mod.name()
+                                            "label": document.getElementById('commonStrings').getFormattedString('staff.circ_modifier.display',[mod.code(),mod.name(),mod.description()]) 
                                         }, menupopup, "last"
                                     );
                                 }
