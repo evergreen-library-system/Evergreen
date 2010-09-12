@@ -1,0 +1,2388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="ServersideInstallation" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
+	<info>
+		<title>Server-side Installation of Evergreen Software</title>
+		<abstract>
+			<para>This section describes installation of the Evergreen server-side software and its associated components. Installation, configuration, testing and verification of the software is straightforward if you follow some simple directions.</para>
+		</abstract>
+	</info>
+	<section xml:id="serversideinstallation-overview">
+		<title>Overview</title>
+		<para>Installing, configuring and testing the Evergreen server-side software is straightforward with the current stable software release. See the section <link linkend="serversideinstallation-all">"Installation of Server-Side Software"</link> for instructions tailored to installing on some particular distributions of the Linux operating system. Earlier software distributions are described in the section <link linkend="serversideinstallation-previousversions">"Installing Previous Versions of Evergreen"</link>.</para>
+		<para>The current version of the Evergreen server-side software runs as a native application on any of several well-known Linux distributions (e.g., <emphasis>Ubuntu</emphasis> and <emphasis>Debian</emphasis>). It does not currently run as a native application on the Windows operating system (e.g., WindowsXP, WindowsXP Professional, Windows7), but the software can still be installed and run on Windows via a so-called <emphasis>virtualized</emphasis> Unix-guest Operating System (using, for example, VirtualBox, or VMware, or VirtualPC to emulate a Linux environment). It can also be installed to run on other Linux systems via virtualized environments (using, for example, VirtualBox or VMware). More information on virtualized environments can be found in the section <link linkend="serversideinstallation-virtual">"Installing Evergreen in Virtualized Unix Environments"</link>.</para>
+		<para>Installation of some sub-components of the Evergreen server-side software is mentioned only in abbreviated form in this section. More detailed information is available in the accompanying sections:
+<link linkend="serversideinstallation-postgresql">"Installing PostgreSQL"</link>, 
+<link linkend="serversideinstallation-apache">"Apache"</link> and
+<link linkend="serversideinstallation-memcached">"memcached Servers"</link>.
+</para>
+		<para>Finally, installation of the Evergreen Staff Client software is reviewed in the section <link linkend="serversideinstallation-staffclient">"Installing the Evergreen Staff Client"</link>. </para>
+		<section>
+			<title>Evergreen Software Dependencies</title>
+			<para>The Evergreen server-side software has dependencies on particular versions of certain major software sub-components. Successful installation of Evergreen software requires that software versions agree with those listed here:</para>
+			<table>
+				<title>Evergreen Software Dependencies</title>
+				<tgroup align="left" cols="3" colsep="1" rowsep="1">
+					<thead>
+						<row>
+							<entry>Evergreen</entry>
+							<entry>OpenSRF</entry>
+							<entry>PostgreSQL</entry>
+						</row>
+					</thead>
+					<tbody>
+						<row>
+							<entry>1.6.x</entry>
+							<entry>1.2</entry>
+							<entry>8.2 / 8.3</entry>
+						</row>
+						<row>
+							<entry>1.4.x</entry>
+							<entry>1.0</entry>
+							<entry>8.1 / 8.2</entry>
+						</row>
+						<row>
+							<entry>1.2.x</entry>
+							<entry>0.9</entry>
+							<entry>8.1 / 8.2</entry>
+						</row>
+					</tbody>
+				</tgroup>
+			</table>
+		</section>
+		<section>
+			<title>Current Stable Software Release</title>
+			<para>The current stable release of Evergreen is version <emphasis><emphasis role="bold">1.6.0.7</emphasis></emphasis>. Instructions for installing, configuring and testing that version on the <emphasis>Ubuntu</emphasis> or <emphasis>Debian</emphasis> Linux systems are found in the section <link linkend="serversideinstallation-ubuntudebian">"Installing Evergreen on Ubuntu or Debian"</link> .
+			</para>
+			<para>This release of Evergreen software is dependent on the Open Service Request Framework (OpenSRF). The current stable release of OpenSRF is version <emphasis><emphasis role="bold">1.2.2</emphasis></emphasis>. Instructions for installing, configuring and testing that version are found in the section <link linkend="serversideinstallation-opensrf">"Installing OpenSRF On Ubuntu or Debian"</link> .</para>
+		</section>
+		<section>
+			<title>Previous Software Releases</title>
+			<para>Earlier releases of Evergreen are also available. Instructions for installing, configuring and testing earlier versions are found in the section <link linkend="serversideinstallation-previousversions">"Installing Previous Versions of Evergreen"</link> .</para>
+			<para>The next most recent previous release of Evergreen is version <emphasis><emphasis role="bold">1.4.0.6</emphasis></emphasis>. Instructions for installing, configuring and testing that version are found in the section <link linkend="serversideinstallation-ubuntudebian-previous">"Installing Evergreen 1.4.0.6 on Ubuntu or Debian"</link> .</para>
+			<para>The accompanying previous release of OpenSRF is version <emphasis><emphasis role="bold">1.0.x</emphasis></emphasis>. Instructions for installing, configuring and testing that version are found in the section <link linkend="serversideinstallation-opensrf-previous">"Installing OpenSRF 1.0.x"</link> .</para>
+		</section>
+	</section>
+	<section xml:id="serversideinstallation-all">
+		<title>Installing Server-Side Software</title>
+		<para>This section describes the installation of the major components of Evergreen server-side software.</para>
+		<para>As far as possible, you should perform the following steps in the exact order given since the success of many steps relies on the successful completion of earlier steps. You should make backup copies of files and environments when you are instructed to do so. In the event of installation problems those copies can allow you to back out of a step gracefully and resume the installation from a known state. See the section on <link linkend="adminmisc-backingup">"Backing Up"</link>  for further information.</para>
+		<para>Of course, after you successfully complete and test the entire Evergreen installation you should take a final snapshot backup of your system(s). This can be the first in the series of regularly scheduled system backups that you should probably also begin.</para>
+		<section xml:id="serversideinstallation-opensrf">
+			<title>Installing OpenSRF 1.2.x On Ubuntu or Debian</title>
+			<para>This section describes the installation of the latest version of the Open Service Request Framework (OpenSRF), a major component of the Evergreen server-side software, on Ubuntu or Debian systems. Evergreen software is integrated with and depends on the OpenSRF software system.</para>
+			<para>Follow the steps outlined here and run the specified tests to ensure that OpenSRF is properly installed and configured. Do not continue with any further Evergreen installation steps until you have verified that OpenSRF has been successfully installed.</para>
+			<note>
+				<para>The following steps have been tested on the x86 (32-bit) and x86-64 (64-bit) platforms. OpenSRF 1.2.2 has been tested on Debian Etch (4.0), Debian Lenny, Ubuntu Hardy Heron (8.04), and Ubuntu Intrepid Ibex (8.10).</para>
+				<para>In the following instructions, you are asked to perform certain steps as either the <systemitem class="username">root</systemitem> user, the <systemitem class="username">opensrf</systemitem> user, or the <systemitem class="username">postgres</systemitem> user.</para>
+				<itemizedlist>
+					<listitem><systemitem class="osname">Debian</systemitem> -- To become the <systemitem class="username">root</systemitem> user, issue the command <command>su -</command> and enter the password of the <systemitem class="username">root</systemitem> user.</listitem>
+					<listitem><systemitem class="osname">Ubuntu</systemitem> -- To become the <systemitem class="username">root</systemitem> user, issue the command <command>sudo su -</command> and enter the password of the <systemitem class="username">root</systemitem> user.</listitem>
+				</itemizedlist>
+				<para>To switch from the <systemitem class="username">root</systemitem> user to a different user, issue the command <emphasis role="bold">"su - USERNAME"</emphasis>. For example, to switch from the <systemitem class="username">root</systemitem> user to the <systemitem class="username">opensrf</systemitem> user user, issue the command <emphasis role="bold">"su - opensrf"</emphasis>. Once you have become a non-root user, to become the <systemitem class="username">root</systemitem> user again, simply issue the command <emphasis role="bold">"exit"</emphasis>.</para>
+			</note>
+			<section>
+				<title>Add the OpenSRF User</title>
+				<para>As the <systemitem class="username">root</systemitem> user, add the opensrf user to the system. The default shell for the new user is automatically set to <emphasis role="bold">/bin/bash</emphasis> to inherit a reasonable environment:</para>
+				<figure>
+					<title>Commands to add "opensrf" user</title>
+					<screen>
+					$ su - opensrf
+					$ useradd -m -s /bin/bash opensrf
+					$ passwd opensrf
+					Enter new UNIX password: ******
+					Retype new UNIX password: ******
+					passwd: password updated successfully
+					$
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Download and Unpack Latest OpenSRF Version</title>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, download and extract the latest version of OpenSRF. The latest version can be found here: <emphasis><emphasis role="bold"><ulink url="http://evergreen-ils.org/downloads/OpenSRF-1.2.2.tar.gz"></ulink></emphasis></emphasis></para>
+				<figure>
+					<title>Commands to download and unpack OpenSRF</title>
+					<screen>
+					$ su - opensrf
+					$ wget http://evergreen-ils.org/downloads/OpenSRF-1.2.2.tar.gz
+					$ tar zxf OpenSRF-1.2.2.tar.gz
+					</screen>
+				</figure>
+				<para>The new directory <emphasis>/home/opensrf/OpenSRF-1.2.2</emphasis> will be created.</para>
+			</section>
+			<section>
+				<title>Install Prerequisites to Build OpenSRF</title>
+				<para>In this section you will install and configure a set of prerequisites that will be used to build OpenSRF. In a following step you will actually build the software using the <emphasis>make</emphasis> utility.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, enter the commands show below to build the prerequisites from the software distribution that you just downloaded and unpacked. Remember to replace <emphasis>[distribution]</emphasis> in the example with the keyword corresponding to the actual Linux distribution listed in the <link linkend="serversideinstallation-keywords-figure-1">"Keywords"</link> figure below.</para>
+				<figure>
+					<title>Commands to install prerequisites for OpenSRF</title>
+					<screen>
+					$ su - root
+					$ cd /home/opensrf/OpenSRF-1.2.2
+					$ make -f src/extras/Makefile.install [distribution]
+					...
+					</screen>
+				</figure>
+				<table xml:id="serversideinstallation-keywords-figure-1">
+					<title>Keywords Targets for "make"</title>
+					<tgroup align="left" cols="2" colsep="1" rowsep="1">
+						<colspec colnum="1" colwidth="1*"/>
+						<colspec colnum="2" colwidth="3*"/>
+						<thead>
+							<row>
+								<entry>Keyword</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>debian-lenny</entry>
+								<entry>for Debian Lenny (5.0)</entry>
+							</row>
+							<row>
+								<entry>debian-etch</entry>
+								<entry>for Debian Etch (4.0)</entry>
+							</row>
+							<row>
+								<entry>ubuntu-karmic</entry>
+								<entry>for Ubuntu Karmic (9.10)</entry>
+							</row>
+							<row>
+								<entry>ubuntu-intrepid</entry>
+								<entry>for Ubuntu Jaunty (9.04) or Intrepid (8.10)</entry>
+							</row>
+							<row>
+								<entry>ubuntu-hardy</entry>
+								<entry>for Ubuntu Hardy (8.04)</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO FOR OTHER LINUX DISTRIBUTIONS </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO FOR OTHER LINUX DISTRIBUTIONS </caution>
+				<para>This will install a number of packages on the system that are required by OpenSRF, including some Perl modules from CPAN. You can say "no" to the initial CPAN configuration prompt to allow it to automatically configure itself to download and install Perl modules from CPAN. The CPAN installer will ask you a number of times whether it should install prerequisite modules - say "yes".</para>
+			</section>
+			<section>
+				<title>Configure OpenSRF</title>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, return to the OpenSRF build directory and use the utility "configure" to prepare for the next step of compiling and linking the software. You can include the <option>--enable-python</option> and <option>--enable-java</option> configuration options if you wish to include support for Python and Java, respectively:</para>
+				<figure>
+					<title>Commands to configure OpenSRF</title>
+<screen>
+<prompt>$</prompt> <userinput>su - opensrf</userinput>
+<prompt>$</prompt> <userinput>cd /home/opensrf/OpenSRF-1.2.2</userinput>
+<prompt>$</prompt> <userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput>
+<prompt>$</prompt> <userinput>make</userinput>
+...
+</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Compile, Link and Install OpenSRF</title>
+				<para>As the <systemitem class="username">root</systemitem> user, return to the OpenSRF build directory and use the <command>make</command> command to compile, link and install OpenSRF:</para>
+				<figure>
+					<title>Commands to build, link and install OpenSRF</title>
+<screen>
+<prompt>$</prompt> <userinput>su - opensrf</userinput>
+<prompt>$</prompt> <userinput>cd /home/opensrf/OpenSRF-1.2.2</userinput>
+<prompt>$</prompt> <userinput>make install</userinput>
+...
+</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Update the System Dynamic Library Path</title>
+				<para>As the <systemitem class="username">root</systemitem> user, you must update the system dynamic library path to make your system recognize the newly installed libraries. Do this by creating a new file named <filename>/etc/ld.so.conf.d/osrf.conf</filename> containing a new library path, then run the command <command>ldconfig</command> to automatically read the file and modify the system dynamic library path:</para>
+				<figure>
+					<title>Commands to modify system dynamic library path</title>
+<screen>
+<prompt>$</prompt> <userinput>su - root</userinput>
+<prompt>$</prompt> <userinput>echo "/openils/lib" > /etc/ld.so.conf.d/osrf.conf</userinput>
+<prompt>$</prompt> <userinput>ldconfig</userinput>
+</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Define Public and Private OpenSRF Domains</title>
+				<para>Define your public and private OpenSRF domains. For security purposes, OpenSRF uses Jabber domains to separate services into public and private realms. Throughout these instructions, we will use the example domains <systemitem class="domainname">public.localhost</systemitem> for the public domain and <systemitem class="domainname">private.localhost</systemitem> for the private domain. On a single-server system, the easiest way to define public and private domains is to define separate hostnames by adding entries to the file <filename>/etc/hosts</filename>.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, edit the file <filename>/etc/hosts</filename> and add the following entries for our example domains:</para>
+				<figure>
+					<title>Example public and private domains in /etc/hosts</title>
+					<screen>
+					127.0.1.2	public.localhost	public
+					127.0.1.3	private.localhost	private
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Change File Ownerships</title>
+				<para>As the <systemitem class="username">root</systemitem> user, change the ownership of files installed in the directory <emphasis>/openils</emphasis> to the user "opensrf":</para>
+				<figure>
+					<title>Commands to change file ownerships</title>
+					<screen>
+					$ chown -R opensrf:opensrf /openils
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Stop the "ejabberd" Service</title>
+				<para>As the <systemitem class="username">root</systemitem> user, stop the "ejabberd" service:</para>
+				<figure>
+					<title>Commands to stop the "ejabberd" service</title>
+					<screen>
+					$ /etc/init.d/ejabberd stop
+					</screen>
+				</figure>
+				<para>If "ejabberd" reports that it is already stopped, it may have run into a problem starting back at the installation stage. One possible fix is to kill any remaining <emphasis>beam</emphasis> and <emphasis>epmd</emphasis> processes, then edit the <emphasis>ejabberd</emphasis> configuration file to hardcode a domain:</para>
+				<figure>
+					<title>Commands to recover from "ejabberd" error</title>
+					<screen>
+					$ su - root
+					$ epmd -kill
+					$ killall beam; killall beam.smp
+					$ rm /var/lib/ejabberd/*
+					$ echo 'ERLANG_NODE=ejabberd@localhost' >> /etc/default/ejabberd
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Edit the "ejabberd" configuration</title>
+				<para>As the <systemitem class="username">root</systemitem> user, edit the file <emphasis>/etc/ejabberd/ejabberd.cfg</emphasis> and make the following changes:</para>
+				<itemizedlist>
+					<listitem>Change <emphasis role="bold">{hosts, ["localhost"]}.</emphasis> to <emphasis role="bold">{hosts, ["localhost", "private.localhost", "public.localhost"]}.</emphasis></listitem>
+					<listitem>Change <emphasis role="bold">{max_user_sessions, 10}.</emphasis> to <emphasis role="bold">{max_user_sessions, 10000}.</emphasis> If you see something like this instead: <emphasis role="bold">{access, max_user_sessions, [{10, all}]}.</emphasis>, then change it to <emphasis role="bold">{access, max_user_sessions, [{10000, all}]}.</emphasis></listitem>
+					<listitem>Change all three occurrences of <emphasis role="bold">max_stanza_size</emphasis> to <emphasis role="bold">2000000</emphasis>.</listitem>
+					<listitem>Change both occurrences of <emphasis role="bold">maxrate</emphasis> to <emphasis role="bold">500000</emphasis>.	</listitem>
+					<listitem>Comment out the line <emphasis role="bold">{mod_offline, []}</emphasis> by placing two <emphasis role="bold">%</emphasis> comment signs in front.</listitem>
+				</itemizedlist>
+			</section>
+			<section>
+				<title>Restart the "ejabberd" service</title>
+				<para>As the <systemitem class="username">root</systemitem> user, restart the <emphasis>ejabberd</emphasis> service to test the configuration changes and to register your users:</para>
+				<figure>
+					<title>Commands to restart the "ejabberd" service</title>
+					<screen>
+					$ /etc/init.d/ejabberd start
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Register "router" and "ejabberd" users</title>
+				<para>On each domain, you need two "ejabberd" users to manage the OpenSRF communications:</para>
+				<itemizedlist>
+					<listitem>a "router" user, to whom all requests to connect to an OpenSRF service will be routed; this "ejabberd" user must be named "router"</listitem>
+					<listitem>an "opensrf" user, which clients use to connect to OpenSRF services; this user can be named anything you like, but we will use "opensrf" in our examples</listitem>
+				</itemizedlist>
+				<para>As the <systemitem class="username">root</systemitem> user, use the utility "ejabberdctl" to register your ejabber users <emphasis>router</emphasis> and <emphasis>opensrf</emphasis> for the OpenSRF router service on each domain. The users should have different passwords on each domain. These users will correspond to those configured in the file <emphasis>/openils/conf/opensrf_core.xml</emphasis>:</para>
+				<figure>
+					<title>Commands to registe "router" and "ejabberd" users</title>
+					<screen>
+					# Syntax for registering a user with ejabberdctl:
+					#    ejabberdctl register &lt;user> &lt;domain> &lt;password>
+					#
+					$ ejabberdctl register router private.localhost &lt;password>
+					$ ejabberdctl register opensrf private.localhost &lt;password>
+					$ ejabberdctl register router public.localhost &lt;password>
+					$ ejabberdctl register opensrf public.localhost &lt;password>
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Create configuration files</title>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, use the example templates to create the configuration files <emphasis>/openils/conf/opensrf_core.xml</emphasis> and <emphasis>/openils/conf/opensrf.xml</emphasis>:</para>
+				<figure>
+					<title>Commands to create configuration files</title>
+					<screen>
+					$ su - root
+					$ cd /openils/conf
+					$ cp opensrf.xml.example      opensrf.xml
+					$ cp opensrf_core.xml.example opensrf_core.xml
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Edit opensrf_core.xml</title>
+				<para>Edit the file <emphasis>/openils/conf/opensrf_core.xml</emphasis> to change the "ejabberd" usernames and passwords as follows.</para>
+				<note>
+					<para>
+						<emphasis>The following example uses common XPath syntax on the left-hand side to indicate the aproximage position needing changes within the XML file.</emphasis>
+					</para>
+				</note>
+				<figure>
+					<title>Updates needed in the file "/openils/conf/opensrf_core.xml"</title>
+					<screen>
+					/config/opensrf/username = opensrf
+
+					/config/opensrf/passwd = password for "private.localhost" opensrf user
+
+					/config/gateway/username = opensrf
+
+					/config/gateway/passwd = password for "public.localhost" opensrf user
+
+					# first entry, where "transport/server" == "public.localhost" :
+					/config/routers/router/transport 
+					    username = router
+					    password = password for "public.localhost" router user
+
+					# second entry, where "transport/server" == "private.localhost" :
+					/config/routers/router/transport
+					    username = router
+					    password = password for "private.localhost" router user
+					</screen>
+				</figure>
+				<para>You also need to specify the domains from which OpenSRF will accept and to which OpenSRF will make connections. If you are installing OpenSRF on a single server and using the "private.localhost" / "public.localhost" domains, these will already be set to the correct values. Otherwise, search and replace to match your values.</para>
+			</section>
+			<section>
+				<title>Modify the file <filename>opensrf.xml</filename></title>
+				<para>Modify the file <filename>/openils/conf/opensrf.xml</filename>.</para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user, edit the file to set the location of the persistent database in the <literal>dbfile</literal> element near the end of the file:</para>
+				<figure>
+					<title>Example of the file "opensrf.xml"</title>
+					<programlisting language="xml"><![CDATA[
+<!-- Example of an app-specific setting override -->
+<opensrf.persist>
+  <app_settings>
+  <dbfile>/tmp/persist.db</dbfile>
+  </app_settings>
+</opensrf.persist>]]></programlisting>
+				</figure>
+			</section>
+			<section>
+				<title>Create Configuration Files for Users Needing srfsh</title>
+				<para>In this section you will set up a special configuration file for each user who will need to run the <application>srfsh</application> (pronounced <emphasis>surf shell</emphasis>) utility.</para>
+				<para>The software installation will automatically create <application>srfsh</application>. This is a command line diagnostic tool for testing and interacting with the OpenSRF network software. It will be used in a future step to complete and test the Evergreen installation. See the section <link linkend="serversideinstallation-testing">"Testing the Installation"</link> for further information.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, copy the short sample configuration file <filename>/openils/conf/srfsh.xml.example</filename> to the file <filename>.srfsh.xml</filename> (note the leading dot!) in the home directory of each user who will use <application>srfsh</application>. Finally, edit each file <filename>.srfsh.xml</filename> file and make the following changes. When you finish, remember to change the owner of the file to match the owner of the home directory.</para>
+				<itemizedlist>
+					<listitem>Modify <literal>domain</literal> to be the router hostname (following our domain examples, <literal>private.localhost</literal> will give <application>srfsh</application> access to all OpenSRF services, while <literal>public.localhost</literal> will only allow access to those OpenSRF services that are publicly exposed).</listitem>
+					<listitem>Modify <literal>username</literal> and <literal>password</literal> to match the <literal>opensrf</literal> Jabber user for the chosen domain</listitem>
+					<listitem>Modify <literal>logfile</literal> to be the full path for a log file to which the user has write access</listitem>
+					<listitem>Modify <literal>loglevel</literal> as needed for testing</listitem>
+				</itemizedlist>
+				<figure>
+					<title>Example of the file "/openils/conf/srfsh.xml.example"</title>
+					<programlisting language="xml"><![CDATA[
+<?xml version="1.0"?>
+<!-- This file follows the standard bootstrap config file layout -->
+<!-- found in opensrf_core.xml -->
+<srfsh>
+<router_name>router</router_name>
+<domain>private.localhost</domain>
+<username>opensrf</username>
+<passwd>privsrf</passwd>
+<port>5222</port>
+<logfile>/tmp/srfsh.log</logfile>
+<!-- 0 None, 1 Error, 2 Warning, 3 Info, 4 debug, 5 Internal (Nasty) -->
+<loglevel>4</loglevel>
+</srfsh>]]></programlisting>
+				</figure>
+			</section>
+			<section>
+				<title>Modify Environmental Variable PATH for "opensrf" User</title>
+				<para>As the <systemitem class="username">opensrf</systemitem> user, modify the environmental variable <envar>PATH</envar> by adding a new file path to the <systemitem class="username">opensrf</systemitem> user's shell configuration file <filename>.bashrc</filename>:</para>
+				<figure>
+					<title>Commands to add path to ".bashrc" configuration file</title>
+<screen>
+<prompt>$</prompt> <userinput>su - opensrf</userinput>
+<prompt>$</prompt> <userinput>echo "export PATH=/openils/bin:\$PATH" >> ~/.bashrc</userinput>
+</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Starting OpenSRF</title>
+				<para>As the <systemitem class="username">root</systemitem> user, start the <application>ejabberd</application> and <application>memcached</application> services:</para>
+				<figure>
+					<title>Commands to start "ejabberd" and "memcached" services</title>
+					<screen>
+					$ su - root
+					$ /etc/init.d/ejabberd start
+					$ /etc/init.d/memcached start
+					</screen>
+				</figure>
+				<para/>
+				<para>Finally, as the <systemitem class="username">opensrf</systemitem> user user, start OpenSRF:</para>
+				<figure>
+					<title>Commands to start OpenSRF</title>
+					<screen>
+					$ su - opensrf
+
+					# ensure you have the needed path
+					$ export PATH=$PATH:/openils/bin
+
+					# start the OpenSRF service:
+					# use "-l" to force hostname to be "localhost"
+					$ osrf_ctl.sh -l -a start_all     
+					</screen>
+				</figure>
+				<note>
+					<para>
+						<emphasis>You can also start Evergreen <emphasis role="bold">without</emphasis> the <emphasis>-l</emphasis> flag, but <emphasis>osrf_ctl.sh</emphasis> must know the fully qualified domain name for the system on which it will execute. That hostname may have been specified in the configuration file <emphasis>opensrf.xml</emphasis>, which you configured in a previous step.</emphasis>
+					</para>
+				</note>
+			</section>
+			<section>
+				<title>Testing connections to OpenSRF</title>
+				<para>Once you have installed and started OpenSRF, as the <systemitem class="username">root</systemitem> user, test your connection to OpenSRF using the utility <emphasis>srfsh</emphasis> and trying to call the <emphasis>add</emphasis> method on the OpenSRF "math" service:</para>
+				<figure>
+					<title>Commands to test OpenSRF with "srfsh"</title>
+					<screen>
+					$ su - opensrf
+					$ /openils/bin/srfsh
+					srfsh#  request opensrf.math add 2 2
+					Received Data: 4
+					------------------------------------
+					Request Completed Successfully
+					Request Time in seconds: 0.007519
+					------------------------------------
+					srfsh#
+					</screen>
+				</figure>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>VERIFY THIS TEST </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">VERIFY THIS TEST </caution>
+				<para>For other srfsh commands, type 'help' in at the prompt.</para>
+			</section>
+			<section>
+				<title>Stopping OpenSRF</title>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, stop OpenSRF:</para>
+				<figure>
+					<title>Commands to stop OpenSRF</title>
+					<screen>
+					$ su - opensrf
+					$ osrf_ctl.sh -l -a stop_all
+					</screen>
+				</figure>
+			</section>
+		</section>
+		<section xml:id="serversideinstallation-ubuntudebian">
+			<title>Installing Evergreen 1.6.x.x On Ubuntu or Debian</title>
+			<para>This section outlines the installation process for the latest stable version of Evergreen.</para>
+			<para>In this section you will download, unpack, install, configure and test the Evergreen system, including the Evergreen server and the PostgreSQL database system. You will make several configuration changes and adjustments to the software, including updates to configure the system for your own locale, and some updates needed to work around a few known issues.</para>
+			<note>
+				<para>The following steps have been tested on the x86 (32-bit) and x86-64 (64-bit) architectures. There may be differences between the Desktop and Server editions of Ubuntu. These instructions assume the Server edition.</para>
+				<para>In the following instructions, you are asked to perform certain steps as either the <systemitem class="username">root</systemitem> user, the <systemitem class="username">opensrf</systemitem> user user, or the <emphasis role="bold">postgres</emphasis> user.</para>
+				<itemizedlist>
+					<listitem><emphasis role="bold">Debian</emphasis> -- To become the <emphasis>root</emphasis> user, issue the command <emphasis role="bold">"su -"</emphasis> and enter the password of the root user.</listitem>
+					<listitem><emphasis role="bold">Ubuntu</emphasis> -- To become the <emphasis>root</emphasis> user, issue the command <emphasis role="bold">"sudo su -"</emphasis> and enter the password of your current user.</listitem>
+				</itemizedlist>
+				<para>To switch from the <systemitem class="username">root</systemitem> user to a different user, issue the command <emphasis role="bold">"su - USERNAME"</emphasis>. For example, to switch from the <systemitem class="username">root</systemitem> user to the <systemitem class="username">opensrf</systemitem> user user, issue the command <emphasis role="bold">"su - opensrf"</emphasis>. Once you have become a non-root user, to become the <systemitem class="username">root</systemitem> user again, simply issue the command <emphasis role="bold">"exit"</emphasis>.</para>
+			</note>
+			<section xml:id="serversideinstallation-opensrf-overview">
+				<title>Installing OpenSRF</title>
+				<para>Evergreen software is integrated with and depends on the Open Service Request Framework (OpenSRF) software system. For further information on installing, configuring and testing OpenSRF, see the section <link linkend="serversideinstallation-opensrf">"Installing OpenSRF"</link>.</para>
+				<para>Follow the steps outlined in that section and run the specified tests to ensure that OpenSRF is properly installed and configured. Do not continue with any further Evergreen installation steps until you have verified that OpenSRF has been successfully installed.</para>
+			</section>
+			<section>
+				<title>Download and Unpack Latest Evergreen Version</title>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, download and extract the latest version of Evergreen. The latest version can be found here: <emphasis><emphasis role="bold"><ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.0.7.tar.gz"></ulink></emphasis></emphasis></para>
+				<figure>
+					<title>Commands to download and unpack Evergreen</title>
+					<screen>
+					$ su - opensrf
+					$ wget http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.0.7.tar.gz
+					$ tar zxf Evergreen-ILS-1.6.0.7.tar.gz
+					</screen>
+				</figure>
+				<para>The new directory <emphasis>/home/opensrf/Evergreen-ILS-1.6.0.7</emphasis> will be created.</para>
+			</section>
+			<section>
+				<title>Install Prerequisites to Build Evergreen</title>
+				<para>In this section you will install and configure a set of prerequisites that will be used to build Evergreen. In a following step you will actually build the software using the <emphasis>make</emphasis> utility.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, enter the commands show below to build the prerequisites from the software distribution that you just downloaded and unpacked. Remember to replace <emphasis>[distribution]</emphasis> in the example with the keyword corresponding to the actual Linux distribution listed in the <link linkend="serversideinstallation-keywords-figure-2">"Keywords"</link> figure below.</para>
+				<figure>
+					<title>Commands to install prerequisites for Evergreen</title>
+					<screen>
+					$ su - root
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+					$ make -f Open-ILS/src/extras/Makefile.install [distribution]
+					...
+					</screen>
+				</figure>
+				<table xml:id="serversideinstallation-keywords-figure-2">
+					<title>Keywords Targets for "make"</title>
+					<tgroup align="left" cols="2" colsep="1" rowsep="1">
+						<colspec colnum="1" colwidth="1*"/>
+						<colspec colnum="2" colwidth="3*"/>
+						<thead>
+							<row>
+								<entry>Keyword</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>debian-lenny</entry>
+								<entry>for Debian Lenny (5.0), the most recent version</entry>
+							</row>
+							<row>
+								<entry>debian-etch</entry>
+								<entry>for Debian Etch (4.0)</entry>
+							</row>
+							<row>
+								<entry>ubuntu-karmic</entry>
+								<entry>for Ubuntu Lucid (10.04) [same as for Karmic]</entry>
+							</row>
+							<row>
+								<entry>ubuntu-karmic</entry>
+								<entry>for Ubuntu Karmic (9.10)</entry>
+							</row>
+							<row>
+								<entry>ubuntu-intrepid</entry>
+								<entry>for Ubuntu Intrepid (8.10)</entry>
+							</row>
+							<row>
+								<entry>ubuntu-hardy</entry>
+								<entry>for Ubuntu Hardy (8.04)</entry>
+							</row>
+							<row>
+								<entry>ubuntu-gutsy</entry>
+								<entry>for Ubuntu Gutsy (7.10)</entry>
+							</row>
+							<row>
+								<entry>gentoo</entry>
+								<entry>generic for Gentoo versions</entry>
+							</row>
+							<row>
+								<entry>centos</entry>
+								<entry>generic for Centos versions</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO FOR OTHER LINUX DISTRIBUTIONS </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO FOR OTHER LINUX DISTRIBUTIONS </caution>
+			</section>
+			<section>
+				<title>(OPTIONAL) Install the PostgreSQL Server</title>
+				<para>Since the PostgreSQL server is usually a standalone server in multi-server production systems, the prerequisite installer Makefile in the previous step does not automatically install PostgreSQL. If your PostgreSQL server is on a different system, just skip this step.</para>
+				<para>For further information on installing PostgreSQL, see the section <link linkend="serversideinstallation-postgresql">"Installing PostgreSQL"</link>.</para>
+				<para>If your PostgreSQL server will be on the same system as your Evergreen software, then as the <systemitem class="username">root</systemitem> user install the required PostgreSQL server packages:</para>
+				<figure>
+					<title>Commands to install the PostgreSQL server</title>
+					<screen>
+					$ su - root
+	
+					# Debian Lenny and Ubuntu Hardy (8.04)
+					$ make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_83
+					...
+
+					# Ubuntu Karmic (9.10) and Ubuntu Lucid (10.04)
+					$ make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_84
+					...
+					</screen>
+				</figure>
+				<note>
+					<para>
+						<emphasis>PostgreSQL 8.1 is deprecated and will become unsupported in a future release, though existing installations upgrading from Evergreen 1.4 or before will work fine. However, consider upgrading your Postgres soon!</emphasis>
+					</para>
+				</note>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>VERIFY: IS THIS STILL TRUE? </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">VERIFY: IS THIS STILL TRUE? </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO ON HOW TO DETERMINE WHICH VERSION OF POSTGRESQL YOU HAVE </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO ON HOW TO DETERMINE WHICH VERSION OF POSTGRESQL YOU HAVE </caution>
+			</section>
+			<section>
+				<title>(OPTIONAL) Install Perl Modules on PostgreSQL Server</title>
+				<para>If PostgreSQL is running on the same system as your Evergreen software, then the Perl modules will automatically be available. Just skip this step.</para>
+				<para>Otherwise, if your PostgreSQL server is running on another system, then as the <systemitem class="username">root</systemitem> user install the following Perl modules on that system:</para>
+				<figure>
+					<title>Commands to install Perl modules</title>
+					<screen>
+					# ensure the gcc compiler is installed
+					$ su - root
+					$ aptitude install gcc
+	
+					# install the Perl modules
+					$ perl -MCPAN -e shell
+					cpan> install JSON::XS
+					cpan> install MARC::Record
+					cpan> install MARC::File::XML
+					</screen>
+				</figure>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO ON HOW TO INSTALL THE PERL MODULES </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO ON HOW TO INSTALL THE PERL MODULES </caution>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO ON HOW TO VERIFY THAT THE PERL MODULES ARE INSTALLED </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO ON HOW TO VERIFY THAT THE PERL MODULES ARE INSTALLED </caution>
+			</section>
+			<section>
+				<title>Update the System Dynamic Library Path</title>
+				<para>As the <systemitem class="username">root</systemitem> user, you must update the system dynamic library path to make your system recognize the newly installed libraries. Do this by creating a new file named <emphasis role="bold">/etc/ld.so.conf.d/eg.conf</emphasis> containing two new library paths, then run the command <emphasis role="bold">ldconfig</emphasis> to automatically read the file and modify the system dynamic library path:</para>
+				<figure>
+					<title>Commands to modify system dynamic library path</title>
+					<screen>
+					$ su - root
+					$ cat > /etc/ld.so.conf.d/eg.conf &lt;&lt; ENDOFFILE
+					/usr/local/lib
+					/usr/local/lib/dbd
+					ENDOFFILE
+					$ ldconfig
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>(OPTIONAL) Restart the PostgreSQL Service</title>
+				<para>If PostgreSQL is running on the same system as the rest of Evergreen, as the <systemitem class="username">root</systemitem> user you must restart the PostgreSQL service to avoid a problem where the library <emphasis role="bold">plperl.so</emphasis> cannot be found. If your PostgreSQL server is running on another system, just skip this step.</para>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO ON OTHER VERSIONS OF POSTGRESQL </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO ON OTHER VERSIONS OF POSTGRESQL </caution>
+				<figure>
+					<title>Commands to restart PostgreSQL service</title>
+					<screen>
+					$ su - root
+					$ /etc/init.d/postgresql-PGSQL_VERSION restart
+					</screen>
+				</figure>
+				<emphasis>Where "PGSQL_VERSION" is your installed PostgreSQL version (e.g. "8.3").</emphasis>
+			</section>
+			<section xml:id="serversideinstallation-configure">
+				<title>Configure Evergreen</title>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, return to the Evergreen build directory and use the utility "configure" to prepare for the next step of compiling and linking the software:</para>
+				<figure>
+					<title>Commands to configure Evergreen</title>
+					<screen>
+					$ su - opensrf
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+					$ ./configure --prefix=/openils --sysconfdir=/openils/conf
+					$ make
+					...
+					</screen>
+				</figure>
+			</section>
+			<section xml:id="serversideinstallation-compilingevergreen">
+				<title>Compile, Link and Install Evergreen</title>
+				<para>In this step you will actually compile, link and install Evergreen and the default Evergreen Staff Client.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, return to the Evergreen build directory and use the <emphasis>make</emphasis> command as shown below. The Staff Client will also be automatically built, but you must remember to set the variable <emphasis role="bold">STAFF_CLIENT_BUILD_ID</emphasis> to match the version of the Staff Client you will use to connect to the Evergreen server.</para>
+				<para>For further information on manually building the Staff Client, see the section <link linkend="serversideinstallation-building-staffclient">"Building and Installing the Evergreen Staff Client"</link>.</para>
+				<figure>
+					<title>Commands to build, link and install Evergreen</title>
+					<screen>
+					$ su - root
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+					$ make STAFF_CLIENT_BUILD_ID=rel_1_6_0_7 install
+					...
+					</screen>
+					<para>The above commands will create a new subdirectory <emphasis>/openils/var/web/xul/rel_1_6_0_7</emphasis> containing the Staff Client.</para>
+				</figure>
+				<para>To complete the Staff Client installation, as the <systemitem class="username">root</systemitem> user create a symbolic link named <emphasis>server</emphasis> in the head of the Staff Client directory <emphasis>/openils/var/web/xul</emphasis> that points to the <emphasis>/server</emphasis> subdirectory of the new Staff Client build:</para>
+				<figure>
+					<title>Commands to create symbolic link</title>
+					<screen>
+					$ su - root
+					$ cd /openils/var/web/xul
+					$ ln -sf rel_1_6_0_7/server server
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Copy the OpenSRF Configuration Files</title>
+				<para>As the <systemitem class="username">root</systemitem> user, copy the example OpenSRF configuration files into place. This replaces the configuration files that you set up in a previous step when you installed and tested OpenSRF. You should also create backup copies of the old files for troubleshooting purposes. Finally, change the ownership on the installed files to the user <systemitem class="username">opensrf</systemitem> user:</para>
+				<figure>
+					<title>Commands to copy OpenSRF configuration files</title>
+					<screen>
+					$ su - root
+					$ cp /openils/conf/opensrf.xml.example      /openils/conf/opensrf.xml
+					$ cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
+					$ cp /openils/conf/oils_web.xml.example     /openils/conf/oils_web.xml
+					$ chown -R opensrf:opensrf /openils/
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Create and Configure PostgreSQL Database</title>
+				<para>As the <emphasis role="bold">postgres</emphasis> user on your PostgreSQL server, create the Evergreen database.</para>
+				<para>In the commands below, remember to adjust the path of the <emphasis role="bold">contrib</emphasis> repository to match your PostgreSQL server layout. For example, if you built PostgreSQL from source the path would be <emphasis role="bold">/usr/local/share/contrib</emphasis>; if you installed the PostgreSQL 8.3 server packages on Ubuntu 8.04, the path would be <emphasis role="bold">/usr/share/postgresql/8.3/contrib/</emphasis>.</para>
+				<orderedlist>
+					<listitem>
+						<para>
+							<emphasis role="bold">Create and configure the database</emphasis>
+						</para>
+						<para>As the <emphasis role="bold">postgres</emphasis> user on the PostgreSQL system create the PostgreSQL database, then set some internal paths:</para>
+						<figure>
+							<title>Commands to create database and adjust the path</title>
+							<screen>
+							# create the database
+							$ su - postgres
+							$ createdb -E UNICODE evergreen
+							$ createlang plperl   evergreen
+							$ createlang plperlu  evergreen
+							$ createlang plpgsql  evergreen
+		
+							# adjust the paths
+							$ psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/tablefunc.sql evergreen
+							$ psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/tsearch2.sql  evergreen
+							$ psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/pgxml.sql     evergreen
+							</screen>
+						</figure>
+						<emphasis>Where "PGSQL_VERSION" is your installed PostgreSQL version (e.g. "8.3").</emphasis>
+					</listitem>
+					<listitem>
+						<para><emphasis role="bold">Create new Evergreen superuser</emphasis> </para>
+						<para>As the <emphasis role="bold">postgres</emphasis> user on the PostgreSQL system, create the new database user <emphasis role="bold">evergreen</emphasis> and assign a password:</para>
+						<figure>
+							<title>Commands to create the "evergreen" user</title>
+							<screen>
+							# create superuser 'evergreen' and set the password
+							$ su - postgres
+							$ createuser -P -s evergreen
+							Enter password for new role: MYNEWPASSWORD
+							Enter it again: MYNEWPASSWORD
+							</screen>
+						</figure>
+						<emphasis>Where "MYNEWPASSWORD" is the password chosen.</emphasis>
+					</listitem>
+				</orderedlist>
+			</section>
+			<section>
+				<title>Create Database Schema</title>
+				<para>As the <systemitem class="username">root</systemitem> user, create the database schema and configure your system with the corresponding database authentication details for the database user <emphasis>evergreen</emphasis> that you created in the previous step.</para>
+				<para>Enter the following commands and replace <emphasis>HOSTNAME, PORT, PASSWORD</emphasis> and <emphasis>DATABASENAME</emphasis> with appropriate values.</para>
+				<figure>
+					<title>Commands to create Evergreen database schema</title>
+					<screen>
+					$ su - root
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+					$ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
+						--service all --create-schema --create-bootstrap --create-offline \
+						--hostname HOSTNAME --port PORT \
+						--user evergreen --password PASSWORD --database DATABASENAME
+					</screen>
+				</figure>
+				<emphasis>Where, on most systems, <emphasis>HOSTNAME</emphasis> will be <emphasis role="bold">localhost</emphasis>, <emphasis>PORT</emphasis> will be <emphasis role="bold">5432</emphasis>, and <emphasis>PASSWORD</emphasis> and <emphasis>DATABASENAME</emphasis> will be those assigned when PostgreSQL was installed in the previous step.</emphasis>
+				<note>
+					<para>
+						<emphasis>If you are entering the above command on a single line, do not include the <emphasis><emphasis role="bold">\</emphasis></emphasis> (backslash) characters. If you are using the <emphasis role="bold">bash</emphasis> shell, these should only be used at the end of a line at a bash prompt to indicate that the command is continued on the next line.</emphasis>
+					</para>
+				</note>
+			</section>
+			<section>
+				<title>Configure the Apache Server</title>
+				<para>As the <systemitem class="username">root</systemitem> user, configure the Apache server and copy several new configuration files to the Apache server directories:</para>
+				<figure>
+					<title>Commands to configure the Apache server</title>
+					<screen>
+					# configure the Apache server
+					$ su - root
+					$ a2enmod ssl	     # enable mod_ssl
+					$ a2enmod rewrite    # enable mod_rewrite
+					$ a2enmod expires    # enable mod_expires
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+	
+					# copy files
+					$ cp Open-ILS/examples/apache/eg.conf	 /etc/apache2/sites-available/
+					$ cp Open-ILS/examples/apache/eg_vhost.conf   /etc/apache2/
+					$ cp Open-ILS/examples/apache/startup.pl      /etc/apache2/
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Create a Security Certificate (SSL Key)</title>
+				<para>Use the command <emphasis role="bold">openssl</emphasis> to create a new SSL key for your Apache server. For a public production server you should configure or purchase a signed SSL certificate, but for now you can just use a self-signed certificate and accept the warnings in the Staff Client and browser during testing and development:</para>
+				<figure>
+					<title>Commands to create an SSL key</title>
+					<screen>
+					$ mkdir /etc/apache2/ssl
+					$ cd /etc/apache2/ssl
+					$ openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key
+					</screen>
+				</figure>
+				<warning>
+					<para>
+						<emphasis>This is only a temporary measure to expedite testing. You <emphasis role="bold">must</emphasis> get a proper SSL certificate for a public production system.</emphasis>
+					</para>
+				</warning>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </caution>
+			</section>
+			<section xml:id="serversideinstallation-modify-apache">
+				<title>Modify the Apache Configuration File</title>
+				<para>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/sites-available/eg.conf</emphasis> and make the following changes:</para>
+				<orderedlist>
+					<listitem>
+						<para>Comment out the line <emphasis role="bold">Allow from 10.0.0.0/8</emphasis>, then uncomment the line <emphasis role="bold">Allow from all</emphasis>.</para>
+						<para>
+							<emphasis>This change allows access to your configuration CGI scripts from <emphasis role="bold">any</emphasis> workstation on <emphasis role="bold">any</emphasis> network. This is only a temporary change to expedite testing and should be removed after you have finished and successfully tested the Evergreen installation.</emphasis>
+						</para>
+						<warning>
+							<para>
+								<emphasis>You must remove these changes after testing is completed. See the section <link linkend="serversideinstallation-postinstallation">"Post-Installation Chores"</link> for further details on removing this change after the Evergreen installation is complete.</emphasis>
+							</para>
+						</warning>
+					</listitem>
+					<listitem>
+						<para>Comment out the line <emphasis role="bold">Listen 443</emphasis> as it conflicts with the same declaration in the configuration file: <emphasis>/etc/apache2/ports.conf</emphasis>. Debian <emphasis>etch</emphasis> users should not do this.</para>
+						<indexterm>
+							<primary>ZZZ-REVIEW</primary>
+							<secondary>ADD INFO ON WHY DEBIAN ETCH USERS SHOULD NOT DO THIS </secondary>
+						</indexterm>
+						<caution fileref="../media/caution.png">ADD INFO ON WHY DEBIAN ETCH USERS SHOULD NOT DO THIS </caution>
+					</listitem>
+					<listitem>
+						<para>The following updates are needed to allow the logs to function properly, but it may break other Apache applications on your server. We hope to make this unnecessary in a future Evergreen release.</para>
+						<itemizedlist>
+							<listitem>
+								<para>For the Linux distributions <emphasis>Ubuntu Hardy</emphasis> or <emphasis>Debian Etch</emphasis>, as the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis> and change the user: <emphasis role="bold">www-data</emphasis> to the user: <systemitem class="username">opensrf</systemitem> user.</para>
+							</listitem>
+							<listitem>
+								<para>For the Linux distributions <emphasis>Ubuntu Karmic</emphasis> or <emphasis>Ubuntu Lucid</emphasis> or <emphasis>Debian Lenny</emphasis>, as the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/envvars</emphasis> and change the phrase: <emphasis role="bold">export APACHE_RUN_USER=www-data</emphasis> to the phrase: <emphasis role="bold">export APACHE_RUN_USER=opensrf</emphasis>.</para>
+							</listitem>
+						</itemizedlist>
+					</listitem>
+					<listitem>
+						<para>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis> and add the line <emphasis role="bold">KeepAliveTimeout 1</emphasis>, or modify an existing line if it already exists.</para>
+					</listitem>
+				</orderedlist>
+			</section>
+			<section>
+				<title>(OPTIONAL) Performance Modifications for Apache</title>
+				<para>Some further configuration changes to Apache may be necessary for busy systems. These changes increase the number of Apache server processes that are started to support additional browser connections.</para>
+				<orderedlist>
+					<listitem>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis>, locate and modify the section related to <emphasis>prefork configuration</emphasis> to suit the load on your system.</listitem>
+					<listitem>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/apache2.conf</emphasis> and add the line <emphasis role="bold">MaxKeepAliveRequests 100</emphasis>, or modify an existing line if it already exists.
+						<figure><title>(OPTIONAL) Example of updates to Apache configuration</title><screen>
+							&lt;IfModule mpm_prefork_module>
+							   StartServers		  20
+							   MinSpareServers	   5
+							   MaxSpareServers	  15
+							   MaxClients		 150
+							   MaxRequestsPerChild 10000
+							&lt;/IfModule>
+							MaxKeepAliveRequests 100
+							</screen></figure></listitem>
+				</orderedlist>
+			</section>
+			<section>
+				<title>Enable the Evergreen Site</title>
+				<para>As the <systemitem class="username">root</systemitem> user, execute the following Apache configuration commands to disable the default "It Works" web page and to enable the Evergreen web site:</para>
+				<figure>
+					<title>Commands to enable the Evergreen Web Site</title>
+					<screen>
+					$ su - root
+
+					# disable the default site
+					$ a2dissite default
+	
+					# enable the Evergreen web site
+					$ a2ensite eg.conf
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Modify the OpenSRF Configuration File</title>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, edit the OpenSRF configuration file <emphasis>/openils/conf/opensrf_core.xml</emphasis> to update the Jabber usernames and passwords, and to specify the domain from which we will accept and to which we will make connections.</para>
+				<para>If you are installing Evergreen on a single server and using the <emphasis>private.localhost</emphasis> / <emphasis>public.localhost</emphasis> domains, these will already be set to the correct values. Otherwise, search and replace to match your customized values.</para>
+				<note>
+					<para>
+						<emphasis>The following example uses common XPath syntax on the left-hand side to indicate the approximate position needing changes within the XML file:</emphasis>
+					</para>
+				</note>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD A BETTER DIAGRAM HERE </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD A BETTER DIAGRAM HERE </caution>
+				<figure>
+					<title>Updates needed in the file "/openils/conf/opensrf_core.xml"</title>
+					<screen>
+					/config/opensrf/username = opensrf
+	
+					/config/opensrf/passwd = password for "private.localhost" opensrf user
+	
+					/config/gateway/username = opensrf
+	
+					/config/gateway/passwd = password for "public.localhost" opensrf user
+	
+					# first entry, where "transport/server" == "public.localhost" :
+					/config/routers/router/transport 
+					    username = router
+					    password = password for "public.localhost" router user
+
+					# second entry, where "transport/server" == "private.localhost" :
+					/config/routers/router/transport
+					    username = router
+					    password = password for "private.localhost" router user
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Create Configuration Files for Users Needing srfsh</title>
+				<para>The software installation will automatically create a utility named <emphasis>srfsh</emphasis> (surf shell). This is a command line diagnostic tool for testing and interacting with the OpenSRF network software. It will be used in a future step to complete and test the Evergreen installation. See the section <link linkend="serversideinstallation-testing">"Testing the Installation"</link> for further information.</para>
+				<para>In this section you will set up a special configuration file for each user who will need to run the utility. Copy the short sample configuration file <emphasis>/openils/conf/srfsh.xml.example</emphasis> to the file <emphasis>.srfsh.xml</emphasis> (note the leading dot!) in the home directory of each user who will use <emphasis role="bold">srfsh</emphasis>. Finally, edit each users' <emphasis>.srfsh.xml</emphasis> file and make the following changes:</para>
+				<orderedlist>
+					<listitem>Modify <emphasis role="bold">domain</emphasis> to be the router hostname (following our domain examples, <emphasis role="bold">private.localhost</emphasis> will give <emphasis role="bold">srfsh</emphasis> access to all OpenSRF services, while <emphasis role="bold">public.localhost</emphasis> will only allow access to those OpenSRF services that are publicly exposed).</listitem>
+					<listitem>Modify <emphasis role="bold">username</emphasis> and <emphasis role="bold">password</emphasis> to match the <systemitem class="username">opensrf</systemitem> user Jabber user for the chosen domain</listitem>
+					<listitem>Modify <emphasis role="bold">logfile</emphasis> to be the full path for a log file to which the user has write access</listitem>
+					<listitem>Modify <emphasis role="bold">loglevel</emphasis> as needed for testing</listitem>
+				</orderedlist>
+				<figure>
+					<title>Example of user's file ".srfsh.xml"</title>
+					<screen>
+					&lt;?xml version="1.0"?>
+					&lt;!-- This file follows the standard bootstrap config file layout -->
+					&lt;!-- found in opensrf_core.xml -->
+					&lt;srfsh>
+					&lt;router_name>router&lt;/router_name>
+					&lt;domain>private.localhost&lt;/domain>
+					&lt;username>opensrf&lt;/username>
+					&lt;passwd>evergreen&lt;/passwd>
+					&lt;port>5222&lt;/port>
+					&lt;logfile>/tmp/srfsh.log&lt;/logfile>
+					&lt;!-- 0 None, 1 Error, 2 Warning, 3 Info, 4 debug, 5 Internal (Nasty) -->
+					&lt;loglevel>4&lt;/loglevel>
+					&lt;/srfsh>
+					</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Modify the OpenSRF Environment</title>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, change the permissions of <emphasis>.cgi</emphasis> files in the directory <emphasis>/openils/var/cgi-bin</emphasis> to <emphasis>executable</emphasis>, then modify the shell configuration file <emphasis>~/.bashrc</emphasis> for <emphasis>opensrf</emphasis> by adding a Perl environmental variable. Finally, execute the shell configuration file to load the new variables into your current environment.</para>
+				<note>
+					<para>
+						<emphasis>In a multi-server environment, you must add any modifications to <emphasis role="bold">~/.bashrc</emphasis> to the top of the file <emphasis>before</emphasis> the line <emphasis role="bold"> [ -z "$PS1" ] &amp;&amp; return</emphasis>. This will allow headless (scripted) logins to load the correct environment.</emphasis>
+					</para>
+				</note>
+				<figure>
+					<title>Commands to modify the OpenSRF environment</title>
+					<screen>
+					# change permissions
+					$ su - opensrf
+					$ chmod 755 /openils/var/cgi-bin/*.cgi
+	
+					# add environmental variable
+					$ echo "export PERL5LIB=/openils/lib/perl5:\$PERL5LIB" >> ~/.bashrc
+	
+					# inherit the new environment
+					$ . ~/.bashrc
+					</screen>
+				</figure>
+			</section>
+			<section xml:id="serversideinstallation-starting">
+				<title>Starting Evergreen</title>
+				<orderedlist>
+					<listitem>
+						<para>As the <systemitem class="username">root</systemitem> user, start the "ejabberd" and "memcached" services (if they are not already running):</para>
+						<figure>
+							<title>Commands to start "ejabberd" and "memcached" services</title>
+							<screen>
+							$ su - root
+							$ /etc/init.d/ejabberd start
+							$ /etc/init.d/memcached start
+							</screen>
+						</figure>
+					</listitem>
+					<listitem>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, start Evergreen.</para>
+						<para>Use the flag <emphasis>-l</emphasis> to force Evergreen to use <emphasis>localhost</emphasis> (your current system) as the hostname. Using the <emphasis>start_all</emphasis> option will start the OpenSRF router, Perl services, and C services:</para>
+						<figure>
+							<title>Commands to start Evergreen</title>
+							<screen>
+							$ su - opensrf
+
+							# ensure you have the needed path
+							$ export PATH=$PATH:/openils/bin
+
+							# start the OpenSRF service:
+							# use "-l" to force hostname to be "localhost"
+							$ osrf_ctl.sh -l -a start_all     
+							</screen>
+						</figure>
+						<note>
+							<para>
+								<emphasis>You can also start Evergreen <emphasis role="bold">without</emphasis> the <emphasis>-l</emphasis> flag, but the utility <emphasis>osrf_ctl.sh</emphasis> must know the fully qualified domain name for the system on which it will execute. That hostname may have been specified in the configuration file <emphasis>opensrf.xml</emphasis>, which you configured in a previous step.</emphasis>
+							</para>
+						</note>
+						<indexterm>
+							<primary>ZZZ-REVIEW</primary>
+							<secondary>ADD EXPLANATION FOR CONFIGURING "opensrf.xml" </secondary>
+						</indexterm>
+						<caution fileref="../media/caution.png">ADD EXPLANATION FOR CONFIGURING "opensrf.xml" </caution>
+						<para>Execute the following command to determine the fully qualified domain name of your system:</para>
+						<figure>
+							<title>(OPTIONAL) Commands to determine the fully qualified domain name</title>
+							<screen>
+							$ perl -e 'use Net::Domain qw(hostfqdn); print hostfqdn()."\n"'
+							</screen>
+						</figure>
+						<itemizedlist>
+							<listitem>When you attempt to start Evergreen, if you receive an error message similar to <emphasis>osrf_ctl.sh: command not found</emphasis>, then your environment variable <emphasis role="bold">PATH</emphasis> does not include the directory <emphasis>/openils/bin</emphasis>. As the <systemitem class="username">opensrf</systemitem> user user, edit the configuration file <emphasis>/home/opensrf/.bashrc</emphasis> and add the following line: <emphasis role="bold"><screen>export PATH=$PATH:/openils/bin</screen></emphasis></listitem>
+							<listitem>When you attempt to start Evergreen, if you receive an error message similar to <emphasis>Can't locate OpenSRF/System.pm in @INC ... BEGIN failed--compilation aborted</emphasis>, then your environment variable <emphasis role="bold">PERL5LIB</emphasis> does not include the directory <emphasis>/openils/lib/perl5</emphasis>. As the <systemitem class="username">opensrf</systemitem> user user, edit the configuration file <emphasis>/home/opensrf/.bashrc</emphasis> and add the following line: <emphasis role="bold"><screen>export PERL5LIB=$PERL5LIB:/openils/lib/perl5</screen></emphasis></listitem>
+						</itemizedlist>
+					</listitem>
+					<listitem>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, generate the Web files needed by the Staff Client and catalogue, and calculate the proximity of locations in the Organizational Unit tree (which allows <emphasis>Holds</emphasis> to work properly).</para>
+						<para>You must do this the first time you start Evergreen, and after any changes you make to the library hierarchy in the configuration file <emphasis>config.cgi</emphasis>.</para>
+						<figure>
+							<title>Commands to generate web files</title>
+							<screen>
+							$ su - opensrf
+							$ cd /openils/bin
+							$ ./autogen.sh -c /openils/conf/opensrf_core.xml -u
+							Updating Evergreen organization tree and IDL using '/openils/conf/opensrf_core.xml'
+							Updating fieldmapper
+							...
+							</screen>
+							<indexterm>
+								<primary>ZZZ-REVIEW</primary>
+								<secondary>ADD RESULTS OF TESTS FROM "autogen.sh" </secondary>
+							</indexterm>
+							<caution fileref="../media/caution.png">ADD RESULTS OF TESTS FROM "autogen.sh" </caution>
+						</figure>
+					</listitem>
+					<listitem>
+						<para>As the <systemitem class="username">root</systemitem> user, restart the Apache Web server:</para>
+						<figure>
+							<title>Commands to restart Apache web server</title>
+							<screen>
+							$ su - root
+							$ /etc/init.d/apache2 restart
+							</screen>
+						</figure>
+						<note>If the Apache Web server was running when you started the OpenSRF services, you might not be able to successfully log in to the OPAC or Staff Client until the Apache Web server is restarted.</note>
+					</listitem>
+				</orderedlist>
+			</section>
+			<section xml:id="serversideinstallation-testing">
+				<title>Testing the Installation</title>
+				<para>This section describes several simple tests you can perform to verify that the Evergreen server-side software has been installed and configured properly and is running as expected.</para>
+				<section xml:id="serversideinstallation-testing-connections">
+					<title>Testing Connections to Evergreen</title>
+					<para>Once you have installed and started Evergreen, test your connection to Evergreen. As the <systemitem class="username">opensrf</systemitem> user user start the utility <emphasis>srfsh</emphasis> and try logging onto the Evergreen server using the default administrator username and password. Following is sample output generated by executing that script after a successful Evergreen installation:</para>
+					<figure>
+						<title>Commands to test Evergreen with "srfsh"</title>
+						<screen>
+						$ su - opensrf
+						$ /openils/bin/srfsh
+						srfsh% login admin open-ils
+						Received Data: "250bf1518c7527a03249858687714376"
+						------------------------------------
+						Request Completed Successfully
+						Request Time in seconds: 0.045286
+						------------------------------------
+						Received Data: {
+						   "ilsevent":0,
+						   "textcode":"SUCCESS",
+						   "desc":" ",
+						   "pid":21616,
+						   "stacktrace":"oils_auth.c:304",
+						   "payload":{
+						      "authtoken":"e5f9827cc0f93b503a1cc66bee6bdd1a",
+						      "authtime":420
+						   }
+						}
+						------------------------------------
+						Request Completed Successfully
+						Request Time in seconds: 1.336568
+						------------------------------------
+						</screen>
+					</figure>
+				</section>
+				<section>
+					<title>Other Connection Tests with "srfsh"</title>
+					<para></para>
+					<para>There is another <application>srfsh</application> command called <command>math_bench</command> that sends queries to the math servers. Note that the <systemitem class="service">opensrf.math</systemitem> and <systemitem class="service">opensrf.dbmath</systemitem> must be running for this command to work:</para>
+					<screen>
+<prompt>srfsh#</prompt> <userinput>math_bench 10</userinput>
+|.........|.........|.........|.........|.........|.........|.........|.........|.........|.........
+++++++++++++++++++++++++++++++++++++++++
+Average round trip time: 0.033425
+srfsh#
+					</screen>
+					<para>The first argument is how many sets of 4 queries (+ - * /) are sent to <systemitem class="service">opensrf.math</systemitem>. When the response is successful, you will see the string of "+" symbols. If the system is not running correctly, you will either get an exception or no result at all.</para>
+					<para>For other <application>srfsh</application> commands, type <userinput>help</userinput> in at the prompt.</para>
+					<para/>
+					<para>If this does not work, try the troubleshooting steps in the following section.</para>
+				</section>
+				<section>
+					<title>Testing with "settings-tester.pl"</title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, run the script <command>settings-tester.pl</command> to see if it finds any system configuration problems. Following is sample output generated by executing that script after a successful Evergreen installation:</para>
+					<indexterm>
+						<primary>ZZZ-REVIEW</primary>
+						<secondary>REWORK THIS DIAGRAM TO USE SAME IMAGE STANDARDS AS OTHER CHAPTERS </secondary>
+					</indexterm>
+					<caution fileref="../media/caution.png">REWORK THIS DIAGRAM TO USE SAME IMAGE STANDARDS AS OTHER CHAPTERS </caution>
+					<figure>
+						<title>Executing the script <command>settings-tester.pl</command></title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-testing-1.png" scalefit="1" width="100%"/>
+							</imageobject>
+						</mediaobject>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-testing-2.png" scalefit="1" width="100%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<para>If the output from the script does not help you find the problem, please do not make any further significant changes to your configuration. Follow the steps in the troubleshooting guide, <link linkend="troubleshooting">"Troubleshooting"</link>.</para>
+					<para>If you have followed the entire set of installation steps listed here closely, you are probably extremely close to a working system. Gather your configuration files and log files and contact the <ulink url="http://open-ils.org/listserv.php">Evergreen development mailing list</ulink> for assistance before making any drastic changes to your system configuration.</para>
+				</section>
+				<section xml:id="serversideinstallation-testing-opac">
+					<title>Testing the Catalog</title>
+					<para>By default, the OPAC will live at the URL <uri>http://my.domain.com/</uri>.</para>
+					<para>Navigate to this URL and the front page of the OPAC should load. There is a basic text entry field with some extra search options. If you have any problems loading this page, check the Apache error logs. If the page loads but does not function correctly, then check for possible javascript errors. We hightly reccommend testing with the <application>Firefox</application> browser because of the helpful javascript debugging tools.</para>
+					<para>Assuming that the OPAC is functioning and there is data in your database, you can now perform other simple functional tests (e.g., searching the catalog).</para>
+					<indexterm>
+						<primary>ZZZ-REVIEW</primary>
+						<secondary>ADD OTHER SIMPLE FUNCTIONAL TESTS </secondary>
+					</indexterm>
+					<caution fileref="../media/caution.png">ADD OTHER SIMPLE FUNCTIONAL TESTS </caution>
+				</section>
+				<section>
+					<title>Running the Evergreen Staff Client</title>
+					<para>Run the Evergreen Staff Client by using the application <emphasis>XULRunner</emphasis> (installed automatically and by default with Firefox version 3.0 and later on Ubuntu and Debian distributions).</para>
+					<para>For example, if the source files for the Evergreen installation are in the directory <emphasis>/home/opensrf/Evergreen-ILS-1.6.0.7/</emphasis>, start the Staff Client as follows:</para>
+					<figure>
+						<title>Commands to run the Staff Client</title>
+						<screen>
+						<prompt>$</prompt> <userinput>su - opensrf</userinput>
+						<prompt>$</prompt> <userinput>xulrunner /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client/build/application.ini</userinput>
+						</screen>
+					</figure>
+				</section>
+				<section xml:id="serversideinstallation-starting-apache-server">
+					<title>Testing the Apache Web Server</title>
+					<para>Once you have started Evergreen and confirmed that a basic login attempt works, you can test and start the Apache web server.</para>
+					<para>As the <systemitem class="username">root</systemitem> user, execute the following commands. Note the use of <emphasis>restart</emphasis> to force the new Evergreen modules to be reloaded even if the Apache server is already running. Any problems found with your configuration files should be displayed:</para>
+					<figure>
+						<title>Commands to test the Apache Web Server</title>
+						<screen>
+						$ su - root
+						$ apache2ctl configtest &amp;&amp; /etc/init.d/apache2 restart
+						</screen>
+					</figure>
+				</section>
+			</section>
+			<section xml:id="serversideinstallation-stopping">
+				<title>Stopping Evergreen</title>
+				<para>As the <systemitem class="username">opensrf</systemitem> user user, stop all Evergreen services by using the following command:</para>
+				<figure>
+					<title>Commands to stop Evergreen</title>
+					<screen>
+					$ su - opensrf
+
+					# stop the server:
+					# use "-l" to force hostname to be "localhost"
+					$ osrf_ctl.sh -l -a stop_all
+					</screen>
+				</figure>
+				<note>
+					<para>
+						<emphasis>You can also stop Evergreen services <emphasis role="bold">without</emphasis> the <emphasis>-l</emphasis> flag, but the utility <emphasis>osrf_ctl.sh</emphasis> must know the fully qualified domain name for the system on which it will execute. That hostname may have been specified in the configuration file <emphasis>opensrf.xml</emphasis>, which you configured in a previous step.</emphasis>
+					</para>
+				</note>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD EXPLANATION FOR CONFIGURING "opensrf.xml" </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD EXPLANATION FOR CONFIGURING "opensrf.xml" </caution>
+			</section>
+			<section xml:id="serversideinstallation-postinstallation">
+				<title>Post-Installation Chores</title>
+				<section>
+					<title>Remove temporary changes from Apache configuration file</title>
+					<para>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <emphasis>/etc/apache2/sites-available/eg.conf</emphasis> again and make the following change:</para>
+					<para>Uncomment the line <emphasis role="bold">Allow from 10.0.0.0/8</emphasis>, then comment out the line <emphasis role="bold">Allow from all</emphasis>. You modified this file in an earlier step as a temporary measure to expedite testing (see the section <link linkend="serversideinstallation-modify-apache">"Modify the Apache Configuration File"</link> for further information). Those changes must now be reversed in order to deny unwanted access to your CGI scripts from users on other public networks. You <emphasis role="bold">must</emphasis> secure this for a public production system.</para>
+				</section>
+				<section>
+					<title>Configure a permanent SSL key</title>
+					<para>In a previous step, we used the command <emphasis role="bold">openssl</emphasis> to temporarily create a new SSL key for the Apache server. For a public production server you should configure or purchase a signed SSL certificate</para>
+					<warning>
+						<para>
+							<emphasis>The temporary SSL key was only created to expedite testing. You <emphasis role="bold"> must</emphasis> get a proper SSL certificate for a public production system.</emphasis>
+						</para>
+					</warning>
+					<indexterm>
+						<primary>ZZZ-REVIEW</primary>
+						<secondary>ADD EXPLANATION OF HOW TO GET PERMANENT SSL CERTIFICATE </secondary>
+					</indexterm>
+					<caution fileref="../media/caution.png">ADD EXPLANATION OF HOW TO GET PERMANENT SSL CERTIFICATE </caution>
+				</section>
+				<section>
+					<title>Set Up Support For Reports</title>
+					<para>Evergreen reports are extremely powerful, but some configuration is required. See the section <link linkend="report-introduction">"Reports"</link> for details.</para>
+					<itemizedlist>
+						<listitem>
+							<para>Starting the Reporter Daemon</para>
+							<para>Once the <emphasis>open-ils.reporter</emphasis> process is running and enabled on the gateway, you can start the reporter daemon. That process periodically checks for requests for new reports or scheduled reports and gets them running.</para>
+							<para>As the <systemitem class="username">opensrf</systemitem> user user, start the reporter daemon using the following command:</para>
+							<figure>
+								<title>Commands to start the Reporter daemon</title>
+								<screen>
+								$ su - opensrf
+								$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/src/reporter
+								$ ./clark-kent.pl --daemon
+								</screen>
+							</figure>
+							<para>You can also specify other options with this utility:</para>
+							<itemizedlist>
+								<listitem>--sleep=interval      : number of seconds to sleep between checks for new reports to run; defaults to 10</listitem>
+								<listitem>--lockfile=filename   : where to place the lockfile for the process; defaults to <emphasis>/tmp/reporter-LOCK</emphasis></listitem>
+								<listitem>--concurrency=integer : number of reporter daemon processes to run; defaults to "1"</listitem>
+								<listitem>--bootstrap=filename   : OpenSRF bootstrap configuration file; defaults to <emphasis>/openils/conf/opensrf_core.xml</emphasis></listitem>
+							</itemizedlist>
+						</listitem>
+						<listitem>
+							<para>Stopping the Reporter Daemon</para>
+							<para>To stop the Reporter daemon, you must kill the process and remove the lockfile. The daemon may have just a single associated process, with a lockfile in the default location.</para>
+							<note>
+								<para>
+									<emphasis>It is possible that several processes are running; see the optional commands in the previous section. As the <systemitem class="username">opensrf</systemitem> user user, perform the following commands to stop the Reporter daemon:</emphasis>
+								</para>
+							</note>
+							<figure>
+								<title>Commands to stop the Reporter daemon</title>
+								<screen>
+								$ su - opensrf
+								# find and kill the process ID number(s)
+								$ kill `ps wax | grep "Clark Kent" | grep -v grep | cut -b1-6`
+								# remove the lock file
+								$ rm /tmp/reporter-LOCK
+								</screen>
+							</figure>
+						</listitem>
+					</itemizedlist>
+				</section>
+			</section>
+		</section>
+		<section xml:id="serversideinstallation-virtual">
+			<title>Installing In Virtualized Unix Environments</title>
+			<para>Evergreen software currently runs as a native application on any of several well-known Linux distributions (e.g., <emphasis>Ubuntu</emphasis> and <emphasis>Debian</emphasis>). It does not run as a native application on the Windows operating system (e.g., WindowsXP, WindowsXP Professional, Windows7), but the software can be installed and run on Windows via a virtualized Unix-guest Operating System (using, for example, VirtualBox or VMware to emulate a Linux environment).</para>
+			<indexterm>
+				<primary>ZZZ-REVIEW</primary>
+				<secondary>ADD CONTENT FOR INSTALLING EVERGREEN IN VIRTUALIZED UNIX ENVIRONMENTS </secondary>
+			</indexterm>
+			<caution fileref="../media/caution.png">ADD CONTENT FOR INSTALLING EVERGREEN IN VIRTUALIZED UNIX ENVIRONMENTS </caution>
+			<section xml:id="serversideinstallation-virtualized-virtualbox">
+				<title>VirtualBox</title>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD CONTENT FOR VirtualBox </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD CONTENT FOR VirtualBox </caution>
+			</section>
+			<section xml:id="serversideinstallation-virtualized-vmware">
+				<title>VMware</title>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD CONTENT FOR VMware </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD CONTENT FOR VMware </caution>
+			</section>
+			<section xml:id="serversideinstallation-virtualized-virtualpc">
+				<title>VirtualPC</title>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD CONTENT FOR VirtualPC </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD CONTENT FOR VirtualPC </caution>
+			</section>
+		</section>
+		<section xml:id="serversideinstallation-previousversions">
+			<title>Installing Previous Versions of Evergreen</title>
+			<para>Earlier releases of Evergreen are available. Instructions for installing, configuring and testing earlier versions are found below.</para>
+			<para>The next most recent previous release of Evergreen is version <emphasis><emphasis role="bold">1.4.0.6</emphasis></emphasis>. The accompanying previous release of OpenSRF is version <emphasis><emphasis role="bold">1.0.x</emphasis></emphasis>.</para>
+			<section xml:id="serversideinstallation-ubuntudebian-previous">
+				<title>Installing Evergreen 1.4.0.6 on Ubuntu or Debian</title>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD CONTENT FOR INSTALLING EVERGREEN 1.4.0.6 ON UBUNTU OR DEBIAN </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD CONTENT FOR INSTALLING EVERGREEN 1.4.0.6 ON UBUNTU OR DEBIAN </caution>
+			</section>
+			<section xml:id="serversideinstallation-opensrf-previous">
+				<title>Installing OpenSRF 1.0.x</title>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD CONTENT FOR INSTALLING OPENSRF 1.0.x </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD CONTENT FOR INSTALLING OPENSRF 1.0.x </caution>
+			</section>
+		</section>
+		<section xml:id="serversideinstallation-postgresql">
+			<title>Installing PostgreSQL</title>
+			<indexterm>
+				<primary>ZZZ-REVIEW</primary>
+				<secondary>ADD CONTENT FOR POSTGRESQL </secondary>
+			</indexterm>
+			<caution fileref="../media/caution.png">ADD CONTENT FOR POSTGRESQL </caution>
+		</section>
+		<section xml:id="serversideinstallation-apache">
+			<title>Installing Apache</title>
+			<section>
+				<title>Securing Apache (httpd)</title>
+				<para>The main consideration is to secure the directory <emphasis>cgi-bin</emphasis>. The only persons that need access to this directory are Evergreen system administrators. This directory should be restricted by both IP (to those workstations designated as Evergeen Administration systems), and by username/password.</para>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD CONTENT ON HOW TO RESTRICT APACHE BY IP AND USERNAME/PASSWORD </secondary>
+				</indexterm>
+				<caution fileref="../media/caution.png">ADD CONTENT ON HOW TO RESTRICT APACHE BY IP AND USERNAME/PASSWORD </caution>
+				<para>A user could add new libraries, re-arrange consortia, or change user groups; or a staff member could access the directory, and change his associated security group to administrative level privileges.</para>
+			</section>
+			<indexterm>
+				<primary>ZZZ-REVIEW</primary>
+				<secondary>ADD MORE CONTENT FOR APACHE </secondary>
+			</indexterm>
+			<caution fileref="../media/caution.png">ADD MORE CONTENT FOR APACHE </caution>
+		</section>
+	</section>
+	<section>
+		<title>Installing the Staff Client</title>
+		<para>You can install the Staff Client from pre-built images and packages without actually having to first build it. Pre-built packages are currently available for Windows, MAC OS X, and Linux. If you need to manually build the Staff Client, see the section <link linkend="serversideinstallation-building-staffclient">"Manually Building the Staff Client"</link>.</para>
+		<section xml:id="serversideinstallation-prebuilt-staffclient">
+			<title>Installing a Pre-Built Staff Client</title>
+			<para>This section reviews the process of installing pre-built versions of the Staff Client in various environments.</para>
+			<section>
+				<title>Installing on Windows</title>
+				<para>A standard Microsoft Windows installer that contains the current version of the Staff Client is available from the downloads section of the Evergreen website at <ulink url="http://www.evergreen-ils.org/downloads.php">http://www.evergreen-ils.org/downloads.php</ulink>. Download the staff client installer, then run it. A screen that looks similar to this should appear:</para>
+				<figure>
+					<title>Running the Staff Client installer</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-staffclient-1.png" scalefit="1" width="70%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<para>Click the <emphasis>Next</emphasis> button to continue through the guided install process. The install wizard will ask you to agree to the end-user license, ask you where to install the software, ask about where to place icons, and then will install the software on your workstation.</para>
+				<para>When you run the staff client for the first time, a screen similar to this should appear:</para>
+				<figure>
+					<title>Running the Staff Client for the first time</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-staffclient-2.png" scalefit="1" width="70%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<para>First, configure the server you would like to connect to in the <emphasis role="bold">Server</emphasis> section. For example, the PINES demo system is <emphasis role="bold">demo.gapines.org</emphasis>. After selecting a server, click the <emphasis role="bold">Re-Test Server</emphasis> button.</para>
+				<para>Because this is the initial run of the staff client, the <emphasis role="bold">Workstation</emphasis> section in the upper-right states: <emphasis role="bold">Not yet configured for the specified server</emphasis>. The first thing that must be done to the Staff Client on every workstation is to assign it a workstation name. This is covered in the section <link linkend="serversideinstallation-workstationnames">"Assigning Workstation Names"</link>.</para>
+			</section>
+			<section>
+				<title>Installing on Mac OS X</title>
+				<para>A Mac package that contains the current version of the Staff Client is available for use with XULRunner.</para>
+				<section>
+					<title>Evergreen Indiana Pkg file [Evergreen v1.2.3.0]</title>
+					<orderedlist>
+						<listitem>Download and install the latest version of XULRunner for Mac OS. Release notes for the latest version can be found here: <ulink url="http://developer.mozilla.org/en/docs/XULRunner_1.8.0.4_Release_Notes">http://developer.mozilla.org/en/docs/XULRunner_1.8.0.4_Release_Notes</ulink>. Note, later versions may not work correctly.</listitem>
+						<listitem>Download and install the Mac Installation package for the 1_2_3_0 Version Staff Client from <ulink url="http://evergreen.lib.in.us/opac/extras/files/evergreen_osx_staff_client_1_2_3.zip">http://evergreen.lib.in.us/opac/extras/files/evergreen_osx_staff_client_1_2_3.zip</ulink>.</listitem>
+						<listitem>To upgrade to a more recent version of the staff client, you can copy the "build" directory from a working Windows installation of the desired version of the staff client to your Mac. The required files may be located in a directory like this on the Windows machine: <emphasis>C:\Program Files\Evergreen Staff Client\build</emphasis>. Copy these files into the "Resources" folder within the Open-ILS package in your Applications directory on the Mac, overwriting files with the same names.</listitem>
+						<listitem>Drag the application's icon into your toolbar for easier access.</listitem>
+					</orderedlist>
+					<para/>
+					<para>When you run the staff client installer, a screen will appear that looks similar to this:</para>
+					<figure>
+						<title>Running the Staff Client installer</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-staffclient-3.png" scalefit="1" width="20%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<caution> FIX BAD LINK: http://es.zionsville.lib.in.us/atheos/eg_osx_a.gif </caution>
+					<para>Click continue, accept the license, then finish the installation. The application will be located at the destination you selected during installation. You will then be able to drag the application into your toolbar for easier access.</para>
+					<figure>
+						<title>Finishing the installation</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-staffclient-4.png" scalefit="1" width="20%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<caution> FIX BAD LINK: http://es.zionsville.lib.in.us/atheos/eg_osx_a.gif </caution>
+				</section>
+				<section>
+					<title>Running directly using XULRunner</title>
+					<para>You must install an apropriate version of XULRunner to match the Evergreen version. See the following table for the recommended version of XULRunner:</para>
+					<table>
+						<title>Evergreen / XULRunner Dependencies</title>
+						<tgroup align="left" cols="2" colsep="1" rowsep="1">
+							<colspec colnum="1" colwidth="1*"/>
+							<colspec colnum="2" colwidth="3*"/>
+							<tbody>
+								<row>
+									<entry>Evergreen 1.6.x.x</entry>
+									<entry>XULrunner 1.9</entry>
+								</row>
+								<row>
+									<entry>Evergreen 1.4.x.x</entry>
+									<entry>XULrunner 1.8.0.4 or XULrunner 1.8.0.3</entry>
+								</row>
+								<row>
+									<entry>Evergreen 1.2.x.x</entry>
+									<entry>XULrunner 1.8.0.4 or XULrunner 1.8.0.3</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</table>
+					<note>If you have issues removing previously installed XULRunner versions see the <link linkend="serversideinstallation-staffclient-remove-xulrunner">next section</link> on removing previous XULRunner versions.</note>
+					<para>The staff client data from the <emphasis>./staff_client/build</emphasis> directory must be placed somewhere on the machine (e.g. <emphasis>~/Desktop/Evergreen_Staff_Client</emphasis>). Remember to call XULRunner with the full path to the binary, followed by the install command and the path to the client data. See the following command:</para>
+					<figure>
+						<title>Executing XULRunner</title>
+						<screen>
+					/Library/Frameworks/XUL.framework/xulrunner-bin --install-app ~/Desktop/Evergreen_Staff_Client
+					</screen>
+					</figure>
+					<para>This command should exit quietly. A folder will be created, named <emphasis>/Applications/OpenILS</emphasis>, containing a launcher named <emphasis>open_ils_staff_client</emphasis>.</para>
+				</section>
+				<section xml:id="serversideinstallation-staffclient-remove-xulrunner">
+					<title>Removing previously installed XULRunner versions</title>
+					<para>If you already have a newer version installed, per the release notes, you will need to remove the entire directory <emphasis>/Library/Frameworks/XUL.framework</emphasis> before downgrading.</para>
+					<para>In addition, you may also need to remove the previous file <emphasis>/Library/Receipts/xulrunner-ver-mak.pkg</emphasis>.</para>
+					<para>If there is no file <emphasis>/Library/Receipts/xulrunner-ver-mak.pkg</emphasis> (possibly in newer OSX releases) you need to flush the <emphasis>receiptdb</emphasis> file.</para>
+					<note>If you install a newer version over a previous (older) install, the older one is not removed but the symlinks get changed to the newer one.</note>
+					<para>First, get the package identifier, then purge/forget the build that was initially installed:</para>
+					<figure>
+						<title>Purging previous build</title>
+						<screen>
+					sudo pkgutil --pkgs > /tmp/pkgs.txt
+					sudo pkgutil --forget org.mozilla.xulrunner
+					</screen>
+					</figure>
+					<note>It may not be necessary to edit the file <emphasis>/Library/Receipts/InstallHistory.plist</emphasis> after deleting the folder <emphasis>XUL.framework</emphasis>.</note>
+				</section>
+				<section>
+					<title>Creating an APP file: Staff Client &amp; XULRunner Bundled</title>
+					<para>An APP file is basically a folder. Start with a folder stucture like this:</para>
+					<figure>
+						<title>Sample APP file folder structure</title>
+						<screen>
+					* Evergreen.app
+					  * Contents
+					    * Frameworks
+					    * Resources
+					    * MacOS
+					</screen>
+					</figure>
+					<para>Create an APP folder structure with the following commands:</para>
+					<figure>
+						<title>Creating a folder structure</title>
+						<screen>
+					mkdir -p Evergreen.app/Contents/Frameworks
+					mkdir -p Evergreen.app/Contents/Resources
+					mkdir -p Evergreen.app/Contents/MacOS
+					</screen>
+					</figure>
+					<para/>
+					<orderedlist>
+						<listitem>
+							<para>Create a new file in the folder <emphasis>Evergreen.app/Contents/Info.plist</emphasis> containing the following data (adjust for your version of Evergreen):</para>
+							<figure>
+								<title>Creating a new file</title>
+								<screen>
+							&lt;?xml version="1.0" encoding="UTF-8"?>
+							&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+							&lt;plist version="1.0">
+							&lt;dict>
+							       &lt;key>CFBundleExecutable&lt;/key>
+							       &lt;string>xulrunner&lt;/string>
+							       &lt;key>CFBundleGetInfoString&lt;/key>
+							       &lt;string>OpenILS open_ils_staff_client rel_1_6_0_7&lt;/string>
+							       &lt;key>CFBundleInfoDictionaryVersion&lt;/key>
+							       &lt;string>6.0&lt;/string>
+							       &lt;key>CFBundleName&lt;/key>
+							       &lt;string>Evergreen Staff Client&lt;/string>
+							       &lt;key>CFBundlePackageType&lt;/key>
+							       &lt;string>APPL&lt;/string>
+							       &lt;key>CFBundleShortVersionString&lt;/key>
+							       &lt;string>rel_1_6_0_7&lt;/string>
+							       &lt;key>CFBundleVersion&lt;/key>
+							       &lt;string>rel_1_6_0_7.rel_1_6_0_7&lt;/string>
+							       &lt;key>NSAppleScriptEnabled&lt;/key>
+							       &lt;true/>
+							       &lt;key>CFBundleTypeIconFile&lt;/key>
+							       &lt;string>Evergreen.icns&lt;/string>
+							&lt;/dict>
+							&lt;/plist>
+							</screen>
+							</figure>
+						</listitem>
+						<listitem>Download and install an appropriate Mac OS package of XULRunner from the Mozilla website (see above for recommendations).</listitem>
+						<listitem>
+							<para>Make a copy of <emphasis>/Library/Frameworks/XUL.Framework</emphasis> inside your APP file. It should look something like this:</para>
+							<figure>
+								<title>Example of APP file framework</title>
+								<screen>
+							* Evergreen.app/
+							__* Contents/
+							____* Frameworks/
+							______* XUL.Framework/
+							______* Versions/
+							________* Current -> 1.9.1.3 (symlink)
+							________* 1.9.1.3/
+							______* XUL -> Versions/Current/XUL
+							______* libxpcom.dylib -> Versions/Current/libxpcom.dylib
+							______* xulrunner-bin -> Versions/Current/xulrunner-bin
+							</screen>
+							</figure>
+						</listitem>
+						<listitem>Copy <emphasis>XUL.Framework/Versions/Current/xulrunner</emphasis> into <emphasis>Evergreen.app/MacOS</emphasis> (do not symlink; copy the file).</listitem>
+						<listitem>
+							<para>Make <emphasis>Evergreen.app/Resources</emphasis> the root of your Evergreen application files like this:</para>
+							<figure>
+								<title>Example APP file</title>
+								<screen>
+							* Evergreen.app/
+							__* Contents/
+							____* Resources/
+							______* BUILD_ID
+							______* application.ini
+							______* chrome/
+							______* components/
+							______* etc.
+							</screen>
+							</figure>
+						</listitem>
+						<listitem>Put a Mac format icon file named <emphasis>Evergreen.icns</emphasis> in Resources.</listitem>
+					</orderedlist>
+				</section>
+			</section>
+			<section xml:id="serversideinstallation-staffclient">
+				<title>Installing on Linux</title>
+				<section>
+					<title>Quick Upgrade of the Staff Client</title>
+					<para>A Linux Staff Client is automatically built on the server as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software. To upgrade the Staff Client on a remote workstation with a new version, just copy the directory tree containing the Staff Client from the server to the remote workstation.</para>
+					<para>The following example assumes you already have an "opensrf" user account on both the server and the remote workstation. Remember to replace "user", "client.linux.machine" and "eg-client-x.x.x.x" with the proper user name, client machine name, and version number in the following example.</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then recursively copy the entire directory tree to the remote workstation:</para>
+					<figure>
+						<title>Copying the Staff Client to a remote workstation</title>
+						<screen>
+					$ su - opensrf
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+					$ scp -r build user@client.linux.machine:~/eg-client-x.x.x.x/
+					</screen>
+					</figure>
+					<para>To test the newly copied Staff Client, as the <systemitem class="username">opensrf</systemitem> user user log into the remote workstation and execute it as shown:</para>
+					<figure>
+						<title>Testing the copied Staff Client</title>
+						<screen>
+					$ su - opensrf
+					$ xulrunner ~/eg-client-x.x.x.x/build/application.ini
+					</screen>
+					</figure>
+				</section>
+				<section>
+					<title>Building the Staff Client on the Server</title>
+					<para>A Linux Staff Client is automatically built on the server as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software.</para>
+					<para>In order to install a compatible Staff Client on another Linux system, just copy the applicable files from the server to that system, or even manually build it on that system. Ensure that the BUILD_ID you choose on the server matches the BUILD_ID for each staff client you use on other systems.</para>
+					<para>If you will be using a pre-packaged Windows version on some systems, you may want to choose the BUILD_ID on both server and other versions to match that of the Windows Staff Client. To determine which BUILD_ID is used in an existing Staff Client installation, just click "About this Client" on the running Staff Client.</para>
+					<para>If you are allowed to make changes on the Evergreen server, another option is to create a symbolic link. In order for a copy of the Staff Client and server to work together, the BUILD_ID must match the name of the directory containing the server components of the Staff Client, or the name of a symbolic link to that directory.</para>
+					<figure>
+						<title>Creating a symbolic link</title>
+						<screen>
+					$ su - root
+					$ cd /openils/var/web/xul
+					$ ln -s SERVER_BUILD_ID/ CLIENT_BUILD_ID
+					</screen>
+					</figure>
+				</section>
+				<section>
+					<title>Building the Staff Client on the client Machine</title>
+					<para>This section is directed toward end-users who wish to use Linux rather than Windows for client machines, but have limited Linux experience. You can build the Staff Client on a Linux system without installing the Evergreen Server component. This is a relatively simple process compared to server installation, but does require some command-line work. The following directions are for building Staff Client version 1.2.1.4 on Kubuntu 7.10; you must modify them for other distributions (the instructions should work as-is for Ubuntu or Ubuntu derivatives).</para>
+					<orderedlist>
+						<listitem>
+							<para>Prerequisites</para>
+							<para>Both "subversion" and "xulrunner" are required to build the Staff Client. As the <systemitem class="username">root</systemitem> user, use "apt-get" to install packages for "subversion" and "xulrunner". You can also use "synaptic", the graphical user interface for "apt-get". For "subversion", select the latest version; for "xulrunner", select version <emphasis>1.8.1.4-2ubuntu5</emphasis>.</para>
+							<figure>
+								<title>Installing subversion and xulrunner</title>
+								<screen>
+							$ sudo apt-get install subversion
+							$ sudo apt-get install xulrunner
+							</screen>
+							</figure>
+						</listitem>
+						<listitem>
+							<para>Download the Source Code</para>
+							<itemizedlist>
+								<listitem>
+									<para>Determine which version is needed</para>
+									<para>For most end-users, a specific version is required to communicate properly with the Evergreen server. Check with your system admininstrator, IT person, or HelpDesk to determine which Staff Client versions are supported.</para>
+									<para>Next, you need to determine which <emphasis>tag</emphasis> to use when downloading the source code. Tags are markers in the source code to create a snapshot of the code as it existed at a certain time; tags usually point to tested and stable code, or at least a community-recognized release version.</para>
+									<para>To determine which tag to use, browse to <ulink url="http://svn.open-ils.org/trac/ILS/browser">http://svn.open-ils.org/trac/ILS/browser</ulink>. Look in the "Visit" drop-down box; see the list of Branches and, further down, a list of Tags. You may have to do some guesswork, but it is fairly straightforward to determine which tag to use. If the server is version 1.2.1.4, you will want to use the tag that looks most appropriate. For example, as you look through the tag list, notice the tag named 'rel_1_2_1_4'. This is the tag you need; make a note of it for the next step.</para>
+								</listitem>
+								<listitem>
+									<para>Download the Code</para>
+									<para>As the <systemitem class="username">opensrf</systemitem> user user, open a terminal (command-line prompt) and navigate to the directory in which you wish to download the Staff Client. Use the following commands to download the proper version of the source code by tag name:</para>
+									<figure>
+										<title>Downloading the source code</title>
+										<screen>
+									$ su - opensrf
+									$ cd /YOUR/DOWNLOAD/DIRECTORY
+									$ svn co svn://svn.open-ils.org/ILS/tags/rel_1_2_1_4/
+									</screen>
+									</figure>
+									<para>Remember to change "rel_1_2_1_4" to the appropriate tag for your installation.</para>
+								</listitem>
+							</itemizedlist>
+						</listitem>
+						<listitem>
+							<para>Build the Staff Client</para>
+							<section>
+								<title>Evergreen 1.2.x</title>
+								<para>In the following example, navigate to the directory in which the source code was downloaded, then navigate to the proper subdirectory and run the "make" utility to actually build the Staff Client. Remember to check with your system administrator about which Staff Client BUILD_ID to use. The server checks the Staff Client BUILD_ID against itself to determine whether or not a connecting client is supported. For instance, for the PINES installation (version 1.2.1.4) the supported BUILD_ID is "rel_1_2_1_4". Modify the following commands accordingly.</para>
+								<para>As the <systemitem class="username">opensrf</systemitem> user user, run the following commands to build the Staff Client:</para>
+								<figure>
+									<title>Finding the downloaded source code</title>
+									<screen>
+								$ su - opensrf
+								$ cd /YOUR/DOWNLOAD/DIRECTORY
+								$ cd Open-ILS/xul/staff_client
+								$ make STAFF_CLIENT_BUILD_ID='rel_1_2_1_4'
+								...
+								</screen>
+								</figure>
+							</section>
+							<section>
+								<title>Evergreen 1.4.x</title>
+								<para>The 1.4 series of Evergreen has complicated the build process for the Staff Client a bit. If you downloaded a .tar.gz (compressed tar archive) of Evergreen, then your steps will resemble the following:</para>
+								<caution>FIXME -- Need instructions for getting certain Javascript files from OpenSRF, preferably without actually installing OpenSRF.
+</caution>
+								<figure>
+									<title>Building 1.4.x</title>
+									<screen>
+								$ su - opensrf
+								$ wget http://evergreen-ils.org/downloads/Evergreen-ILS-1.4.0.4.tar.gz
+								$ tar xfz Evergreen-ILS-1.4.0.4.tar.gz
+								$ cd Evergreen-ILS-1.4.0.4/
+								$ ./configure --prefix=/openils --sysconfdir=/openils/conf
+								$ cd Open-ILS/xul/staff_client/
+								$ make STAFF_CLIENT_BUILD_ID='rel_1_4_0_4' install
+								</screen>
+								</figure>
+								<para/>
+								<para>If you're installing from a Subversion checkout:</para>
+								<figure>
+									<title>Building from a "subversion" checkout</title>
+									<screen>
+								$ su - opensrf
+								$ svn co svn://svn.open-ils.org/ILS/tags/rel_1_4_0_4/
+								$ cd rel_1_4_0_4
+								$ ./autogen.sh   # If you downloaded a .tar.gz of Evergreen, you may skip this step
+								$ ./configure --prefix=/openils --sysconfdir=/openils/conf
+								$ cd Open-ILS/xul/staff_client/
+								$ make STAFF_CLIENT_BUILD_ID='rel_1_4_0_4' install
+								</screen>
+								</figure>
+							</section>
+						</listitem>
+						<listitem>
+							<para>Run the Staff Client (from the command line)</para>
+							<para>As the <systemitem class="username">opensrf</systemitem> user user, navigate to the <emphasis>build/</emphasis> subdirectory (not <emphasis>staff_client/</emphasis>) and run the following command:</para>
+							<figure>
+								<title>Running the Staff Client</title>
+								<screen>
+							$ su - opensrf
+							$ xulrunner application.ini
+							</screen>
+							</figure>
+						</listitem>
+						<listitem>
+							<para>(OPTIONAL) Cleaning Up / Creating Shortcuts</para>
+							<para>The source code download included many files that are needed to build the Staff Client, but are not necessary to run it. You may wish to remove them to save space, or to create a clean directory containing the built staff client that can be copied to other machines. To create a clean "staging" directory in which to place the finished staff client, issue the following commands:</para>
+							<figure>
+								<title>Creating a "staging" directory</title>
+								<screen>
+							$ mkdir ~/&lt;Destination Directory>
+							$ cd ~/&lt;Download Directory>/Open-ILS/xul/
+							$ cp -r staff_client ~/&lt;Destination Directory>
+							</screen>
+							</figure>
+							<para>Finally, test the Staff Client to verify that all the necessary files were moved to the destination directory:</para>
+							<figure>
+								<title>Testing the copied Staff Client</title>
+								<screen>
+							$ cd ~/&lt;Destination Directory>/staff_client/build
+							$ xulrunner application.ini
+							</screen>
+							</figure>
+							<para>If there were no problems, then finish the cleanup by removing the original download directory and all subdirectories:</para>
+							<figure>
+								<title>Cleaning up</title>
+								<screen>
+							$ rm -r -f ~/&lt;Download Directory>
+							</screen>
+							</figure>
+							<para>Finally, test the copied Staff Client. You can create "Desktop / Start Menu / K-Menu" shortcuts for the Staff Client by using the following command as the target:</para>
+							<figure>
+								<title>Running the copied Staff Client</title>
+								<screen>
+							$ xulrunner ~/&lt;Destination Directory>/staff_client/build/application.ini
+							</screen>
+							</figure>
+						</listitem>
+					</orderedlist>
+				</section>
+				<section>
+					<title>Using Wine to Install On Linux</title>
+					<para>The Linux application <emphasis>Wine</emphasis> is another alternative for those who wish to install the packaged Windows versions rather than building the Staff Client manually. Wine is a Linux application that allows users to directly run Windows executables, and is a simple way for casual Linux users to use the Staff Client. More information about Wine can be found at <ulink url="http://www.winehq.org/site/docs/wineusr-guide/getting-wine">http://www.winehq.org/site/docs/wineusr-guide/getting-wine</ulink>.</para>
+					<para>As the <systemitem class="username">root</systemitem> user, use "apt-get" to install the package for "wine". You can also use "synaptic", the graphical user interface.</para>
+					<orderedlist>
+						<listitem>
+							<para>Install wine</para>
+							<figure>
+								<title>Installing "wine"</title>
+								<screen>
+							$ sudo apt-get install wine
+							</screen>
+							</figure>
+						</listitem>
+						<listitem>
+							<para>Download Windows installer for the Staff Client</para>
+							<para>As the <systemitem class="username">opensrf</systemitem> user user, run the following commands to download the Windows installer for the proper Staff Client from the <emphasis>open-ils.org</emphasis> website and place it in a temporary directory:</para>
+							<figure>
+								<title>Downloading the Staff Client installer</title>
+								<screen>
+							$ su - opensrf
+							$ cd /YOUR/DOWNLOAD/DIRECTORY
+							$ wget http://open-ils.org/downloads/evergreen-setup-rel_version-number.exe
+							</screen>
+							</figure>
+						</listitem>
+						<listitem>
+							<para>Run the downloaded Windows installer</para>
+							<para>As the <systemitem class="username">opensrf</systemitem> user user, navigate to the directory where you downloaded the Windows executable file, then execute it:</para>
+							<figure>
+								<title>Using Wine to run the Windows installer</title>
+								<screen>
+							$ su - opensrf
+							$ cd /YOUR/DOWNLOAD/DIRECTORY
+							$ wine evergreen-setup-rel_version-number.exe
+							</screen>
+							</figure>
+							<para>If this step fails, you may need to configure Wine first to properly emulate Windows XP. To do so, type "winecfg" from the command line; in the "Applications" tab of the window that pops up, select "Default Settings" and choose "Windows XP" from the drop-down menu, then click "Apply".</para>
+						</listitem>
+						<listitem>
+							<para>Launch the Staff Client</para>
+							<para>A new entry for the Staff Client should now appear somewhere in the "All Applications" menu of your Linux desktop. Also, find a new desktop shortcut for the Staff Client. To launch the Staff Client, visit the "All Applications" menu, find a section similar to "Wine->Program Files->Evergreen Staff Client->Evergreen Staff Client", or else launch the Staff Client from the desktop shortcut.</para>
+						</listitem>
+					</orderedlist>
+				</section>
+				<section>
+					<title>Running the Staff Client over an SSH Tunnel</title>
+					<para>The Staff Client can use an SSH tunnel as a SOCKS 5 proxy. For more details, see the section <link linkend="serversideinstallation-proxy">Configuring a Proxy for the Staff Client</link>.</para>
+				</section>
+			</section>
+			<section xml:id="serversideinstallation-workstationnames">
+				<title>Assigning Workstation Names</title>
+				<para>The Staff Client must be assigned to a library and given a unique name before it will connect fully to the Evergreen server. The only restriction is that the workstation's name must be unique within the assigned library. Make sure to select a workstation name that you will remember later, and reflects the role, purpose, and/or location of a particular computer. These names will come up later in statistical reporting, and can also be handy when troubleshooting.</para>
+				<figure>
+					<title>Example of unconfigured Staff Client</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-staffclient-workstationnames-1.png" scalefit="1" width="70%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<para>In order to assign a workstation a name, a user with appropriate permissions must login to the Staff Client. In PINES, the local system administrator (OPSM) has the ability to assign workstation names in his or her library system. Library managers (LIBM's) have the ability within their branch. To assign a workstation a name, login to the system. You will be prompted to assign the workstation a library and a name:</para>
+				<figure>
+					<title>Example of configured Staff Client</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-staffclient-workstationnames-2.png" scalefit="1" width="70%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<para>Select the library this workstation physically operates in from the drop down menu. In this example, we have selected "MGRL-MA". Type in a friendly name for the workstation. In this example, we are installing the Staff Client on the director's personal system, and have named it as such. Then hit <emphasis role="bold">Register</emphasis>.</para>
+				<para>Once you have registered your workstation with the server, your screen will look like this:</para>
+				<figure>
+					<title>Example of registered Staff Client</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-staffclient-workstationnames-3.png" scalefit="1" width="70%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<para>You are now ready to log into the Staff Client for the first time. Type in your password again, and hit <emphasis role="bold">Login</emphasis>.</para>
+			</section>
+		</section>
+		<section xml:id="serversideinstallation-building-staffclient">
+			<title>Manually Building the Staff Client</title>
+			<para>This section reviews the process of manually building the Staff Client in various environments.</para>
+			<para>The Staff Client is automatically built by default as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software. See the section <link linkend="serversideinstallation-compilingevergreen">"Compile, Link and Install Evergreen"</link> to review details related to building the Staff Client in the final compile/link/install phase of the default Evergreen build process.</para>
+			<section>
+				<title>Building the Staff Client</title>
+				<para>You can also manually build the Staff Client by using the <emphasis>make</emphasis> utility in the Staff Client source directory (e.g., the directory <emphasis>/home/opensrf/Evergreen-ILS-1.6.0.x/Open-ILS/xul/staff_client</emphasis> for the current Evergreen version). There are a number of possible options to manually build special versions of the Staff Client on a Linux system. Following is a list of environment variables that can be passed to <emphasis>make</emphasis> to influence the manual build process:</para>
+				<section>
+					<title>Option STAFF_CLIENT_BUILD_ID</title>
+					<para>During the normal <emphasis>make install</emphasis> Evergreen server-side software build process, the variable defaults to an automatically generated date/time string, but you can also override the value of BUILD_ID.</para>
+					<para>The following commands could be used during the normal build process:</para>
+					<figure>
+						<title>Commands used during normal Evergreen build</title>
+						<screen>
+					$ su - root
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+					$ make STAFF_CLIENT_BUILD_ID=rel_1_6_0_7 install
+					...
+					</screen>
+					</figure>
+					<para>The following commands will manually build the Staff Client using a different BUILD_ID.</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then set the variable and build the Staff Client:</para>
+					<figure>
+						<title>Commands to manually build the Staff Client</title>
+						<screen>
+					$ su - opensrf
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+					$ make STAFF_CLIENT_BUILD_ID=my_test_id  build
+					...
+					</screen>
+					</figure>
+				</section>
+				<section>
+					<title>Option STAFF_CLIENT_VERSION</title>
+					<para>During the normal <emphasis>make install</emphasis> Evergreen server-side software build process, the variable is pulled automatically from a README file in the Evergreen source root. The variable defaults to <emphasis>0trunk.revision</emphasis>, where the value of "revision" is automatically generated. You can override the value of VERSION similarly to the BUILD_ID.</para>
+					<para>The following commands could be used during the normal build process:</para>
+					<figure>
+						<title>Commands used during normal Evergreen build</title>
+						<screen>
+					$ su - root
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+					$ make STAFF_CLIENT_VERSION=0mytest.200 install
+					...
+					</screen>
+					</figure>
+					<para>The following commands will manually build the Staff Client using a different VERSION.</para>
+					<para>If you plan to make extensions update automatically, the VERSION needs to conform to the format recommended in <ulink url="https://developer.mozilla.org/en/Toolkit_version_format">Toolkit Version Format</ulink> and newer versions need to be "higher" than older versions.</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then set the variable and build the Staff Client:</para>
+					<figure>
+						<title>Commands to manually build the Staff Client</title>
+						<screen>
+					$ su - opensrf
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+					$ make STAFF_CLIENT_VERSION=0mytest.200  build
+					...
+					</screen>
+					</figure>
+				</section>
+				<section>
+					<title>Option STAFF_CLIENT_STAMP_ID variable</title>
+					<para>During the normal <emphasis>make install</emphasis> Evergreen server-side software build process, this variable is generated from STAFF_CLIENT_VERSION. You can override the value of STAMP_ID similarly to the BUILD_ID.</para>
+					<para>The following commands could be used during the normal build process:</para>
+					<figure>
+						<title>Commands used during normal Evergreen build</title>
+						<screen>
+					$ su - root
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+					$ make STAFF_CLIENT_STAMP_ID=my_test_stamp install
+					...
+					</screen>
+					</figure>
+					<para>The following commands will manually build the Staff Client using a different STAMP_ID.</para>
+					<para>It is possible to have multiple versions of the Staff Client by specifying a different STAMP_ID for each, possibly for different uses or client-side customizations.</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then set the variable and build the Staff Client:</para>
+					<figure>
+						<title>Commands to manually build the Staff Client</title>
+						<screen>
+					$ su - opensrf
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+					$ make STAFF_CLIENT_STAMP_ID=my_test_stamp  build
+					...
+					</screen>
+					</figure>
+				</section>
+			</section>
+			<section>
+				<title>Advanced Build Options</title>
+				<para>In addition to the basic options listed above, there are a number of advanced options for building the Staff Client. Most are target names for the <emphasis>make</emphasis> utility and require that you build the Staff Client from its source directory. See the following table for a list of possible <emphasis>make</emphasis> target keywords:</para>
+				<table>
+					<title>Keywords Targets for "make" Command</title>
+					<tgroup align="left" cols="2" colsep="1" rowsep="1">
+						<colspec colnum="1" colwidth="1*"/>
+						<colspec colnum="2" colwidth="3*"/>
+						<thead>
+							<row>
+								<entry>Keyword</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>clients</entry>
+								<entry>Runs "make win-client", "make linux-client", and "make generic-client" individually</entry>
+							</row>
+							<row>
+								<entry>client_dir</entry>
+								<entry>Builds a client directory from the build directory, without doing a rebuild. The same as "copy everything but server/".</entry>
+							</row>
+							<row>
+								<entry>client_app</entry>
+								<entry>Prerequisite "client_dir"; removes "install.rdf" from client directory so an APP bundle can't be installed as an extension</entry>
+							</row>
+							<row>
+								<entry>client_ext</entry>
+								<entry>Prerequisite "client_dir"; remove "application.ini", "autoupdate.js", "standalone_xul_app.js" from client directory so an extension won't break Firefox</entry>
+							</row>
+							<row>
+								<entry>extension</entry>
+								<entry>Prerequisite "client_ext"; rewritten to use "client_ext"</entry>
+							</row>
+							<row>
+								<entry>generic-client</entry>
+								<entry>Prerequisite "client_app"; makes an XPI file suitable for use with "xulrunner --install-app""</entry>
+							</row>
+							<row>
+								<entry>win-xulrunner</entry>
+								<entry>Prerequisite "client_app"; adds Windows xulrunner to client build</entry>
+							</row>
+							<row>
+								<entry>linux-xulrunner</entry>
+								<entry>Prerequisite "client_app"; adds Linux xulrunner to client build</entry>
+							</row>
+							<row>
+								<entry>win-client</entry>
+								<entry>Prerequisite "win-xulrunner"; builds "setup exe" (requires that "nsis" package be installed, will add options for automatic update if configured and developer options if client build was a "make devbuild")</entry>
+							</row>
+							<row>
+								<entry>linux-client</entry>
+								<entry>Prerequisite "linux_xulrunner"; builds a "tar.bz2" bundle of the Linux client</entry>
+							</row>
+							<row>
+								<entry>[generic-|win-|linux-|extension-]updates[-client]</entry>
+								<entry>Calls external/make_updates.sh to build full and partial updates generic/win/linux/extension prefix limit to that distribution; Adding "-client" builds clients and copies them to a subdirectory of the "updates" directory as well; "extension-updates-client" doesn't exist.</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				<para>Descriptions of other special build options follow:</para>
+				<itemizedlist>
+					<listitem>
+						<para>Developer Build</para>
+						<para>You can create a so-called "developer build" of the Staff Client by substituting "devbuild" for "build" when running <emphasis>make</emphasis>. The build will contain an extra configuration file that enables some developer options.</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, run <emphasis>make</emphasis> from the Staff Client source directory:</para>
+						<figure>
+							<title>Commands to do a "developer build"</title>
+							<screen>
+						$ su - opensrf
+						$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+						$ make devbuild
+						...
+						</screen>
+						</figure>
+					</listitem>
+					<listitem>
+						<para>Compressed Javascript</para>
+						<para>You can execute the Google "Closure Compiler" utility to automatically review and compress Javascript code after the build process completes, by substituting "compress-javascript" for "build" when running <emphasis>make</emphasis>. For more information see <ulink url="http://code.google.com/closure/compiler/">Google "Closure Compiler"</ulink>.</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, run the following commands from the Staff Client source directory:</para>
+						<figure>
+							<title>Commands to compress Javascript</title>
+							<screen>
+						$ su - opensrf
+						$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+						$ make compress-javascript
+						...
+						</screen>
+						</figure>
+						<para>You can also combine Javascript review and compression, and also perform a "developer build".</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, run the following commands from the Staff Client source directory:</para>
+						<figure>
+							<title>Commands to compress Javascript and do a "developer build"</title>
+							<screen>
+						$ su - opensrf
+						$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+
+						# order of options is important!
+						$ make  devbuild  compress-javascript
+						...
+						</screen>
+						</figure>
+					</listitem>
+					<listitem>
+						<para>Automatic Update Host</para>
+						<para>The host used to check for automatic Staff Client updates can be overridden by specifying the AUTOUPDATE_HOST option. The following commands could have been used during the normal build process:</para>
+						<figure>
+							<title>Commands to set AUTOUPDATE_HOST for normal Evergreen build</title>
+							<screen>
+						$ su - root
+						$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+						$ make AUTOUPDATE_HOST=localhost install
+						...
+						</screen>
+						</figure>
+						<para>You can manually set AUTOUPDATE_HOST to set up automatic update checking. The following commands will manually build the Staff Client using a different AUTOUPDATE_HOST.</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then set the variable and build the Staff Client:</para>
+						<figure>
+							<title>Commands to manually specify AUTOUPDATE_HOST</title>
+							<screen>
+						$ su - opensrf
+						$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+						$ make AUTOUPDATE_HOST=localhost build
+						...
+						</screen>
+						</figure>
+						<para>For more information on Automatic Updates, see the section <link linkend="serversideinstallation-staffclient-autoupdate">"Automatic Updates"</link>.</para>
+					</listitem>
+				</itemizedlist>
+			</section>
+			<section>
+				<title>Installing and Activating a Manually Built Staff Client</title>
+				<para>The Staff Client is automatically built, installed and activated as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software. However, if you manually build the Staff Client, then you need to take additional steps to properly install and activate it. You also have the option of installing the Staff Client on the same machine it was built on, or on a different machine.</para>
+				<para>Assuming you have already built the Staff Client, and that your installation is in the directory <emphasis>/openils/var/web/xul</emphasis>, as the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
+				<figure>
+					<title>Commands to install the Staff Client on the same machine</title>
+					<screen>
+				$ su - opensrf
+				$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+				$ mkdir -p "/openils/var/web/xul/$(cat build/BUILD_ID)"
+				$ cp -R build/server "/openils/var/web/xul/$(cat build/BUILD_ID)"
+				</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Packaging the Staff Client</title>
+				<para>Once the Staff Client has been built, you can create several forms of client packages by using some targetted <emphasis>make</emphasis> commands in the Staff Client source directory.</para>
+				<itemizedlist>
+					<listitem>
+						<para>Packaging a Generic Client</para>
+						<para>This build creates a Staff Client packaged as an XPI file to use with <emphasis>XULRunner</emphasis>. It requires that you already have the "zip" utility installed on your system. It will create the output file "evergreen_staff_client.xpi", suitable for use with the <emphasis>XULRunner</emphasis> parameter <emphasis>--install-app</emphasis>.</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
+						<figure>
+							<title>Commands to package a "generic" client</title>
+							<screen>
+						$ su - opensrf
+						$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+						$ make generic-client
+						...
+						</screen>
+						</figure>
+					</listitem>
+					<listitem>
+						<para>Packaging a Windows Client</para>
+						<para>This build creates a Staff Client packaged as a Windows executable. It requires that you already have the "unzip" utility installed on your system. It also requires that you install <ulink url="http://nsis.sourceforge.net/">NSIS (Nullsoft Scriptable Install System)</ulink>, a professional open source utility package used to create Windows installers (the "makensis" utility is installed as part of the "nsis" package). We recommend using Version 2.45 or later. This build will create the output file "evergreen_staff_client_setup.exe".</para>
+						<para>(OPTIONAL) If you wish for the Staff Client to have a link icon/tray icon by default, you may wish to provide a pre-modified <emphasis>xulrunner-stub.exe</emphasis>. Place it in the Staff Client source directory and <emphasis>make</emphasis> will automatically use it instead of the one that comes with the downloaded <emphasis>XULRunner</emphasis> release. The version of <emphasis>xulrunner-stub.exe</emphasis> need not match exactly.</para>
+						<para>(OPTIONAL) You can also use a tool such as <ulink url="http://www.angusj.com/resourcehacker/">Resource Hacker</ulink> to embed icons. "Resource Hacker" is an open-source utility used to view, modify, rename, add, delete and extract resources in 32bit Windows executables. See the following table for some useful icon ID strings:</para>
+						<table>
+							<title>Useful icon ID strings</title>
+							<tgroup align="left" cols="2" colsep="1" rowsep="1">
+								<colspec colnum="1" colwidth="1*"/>
+								<colspec colnum="2" colwidth="1*"/>
+								<tbody>
+									<row>
+										<entry>IDI_APPICON</entry>
+										<entry>Tray icon</entry>
+									</row>
+									<row>
+										<entry>32512</entry>
+										<entry>Default window icon</entry>
+									</row>
+								</tbody>
+							</tgroup>
+						</table>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
+						<figure>
+							<title>Commands to build a Windows client</title>
+							<screen>
+						$ su - opensrf
+						$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+						$ make win-client
+						...
+						</screen>
+						</figure>
+					</listitem>
+					<listitem>
+						<para>Packaging a Linux Client</para>
+						<para>This build creates a Staff Client package for Linux as a "tar.bz2" file with <emphasis>XULRunner</emphasis> already bundled with it. It creates the output file "evergreen_staff_client.tar.bz2".</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
+						<figure>
+							<title>Commands to build a Linux client</title>
+							<screen>
+						$ su - opensrf
+						$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+						$ make linux-client
+						...
+						</screen>
+						</figure>
+					</listitem>
+					<listitem>
+						<para>Packaging a Firefox Extension</para>
+						<para>This build requires that you already have the "zip" utility installed on your system. It creates a Staff Client packaged as a Firefox extension and creates the output file "evergreen.xpi".</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
+						<figure>
+							<title>Commands to build a Firefox extension</title>
+							<screen>
+						$ su - opensrf
+						$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+						$ make extension
+						...
+						</screen>
+						</figure>
+					</listitem>
+				</itemizedlist>
+			</section>
+			<section xml:id="serversideinstallation-staffclient-autoupdate">
+				<title>Staff Client Automatic Updates</title>
+				<para>It is possible to set up support for automatic Staff Client updates, either during the normal Evergreen server-side build process, or by manually building the Staff Client with certain special options.</para>
+				<section>
+					<title>WARNINGS</title>
+					<para>Automatic update server certificate requirements are more strict than normal server requirements. Firefox and <emphasis>XULRunner</emphasis> will both ignore any automatic update server that is not validated by a trusted certificate authority. Servers with exceptions added to force the Staff Client to accept them <emphasis>WILL NOT WORK</emphasis>.</para>
+					<para>In addition, automatic updates have special requirements for the file <emphasis>update.rdf</emphasis>:</para>
+					<orderedlist>
+						<listitem>It must be served from an SSL server, or</listitem>
+						<listitem>It must be signed with the <ulink url="https://developer.mozilla.org/en/McCoy">McCoy</ulink> tool.</listitem>
+					</orderedlist>
+					<para>You can pre-install the signing key into the file <emphasis>install.rdf</emphasis> directly, or install it into a copy as <emphasis>install.mccoy.rdf</emphasis>. If the latter exists it will be copied into the build instead of the original file <emphasis>install.rdf</emphasis>.</para>
+				</section>
+				<section>
+					<title>Autoupdate Host</title>
+					<para>The name of the automatic update host can be provided in either of two ways:</para>
+					<orderedlist>
+						<listitem>At configuration time for the normal build of the Evergreen server-side software, or</listitem>
+						<listitem>During a manual Staff Client build process.</listitem>
+					</orderedlist>
+					<para/>
+					<itemizedlist>
+						<listitem>
+							<para>At configuration time for the normal build of Evergreen server-side software</para>
+							<para>This must be done when the Evergreen server-side software is first configured (see the section <link linkend="serversideinstallation-configure"> "Configure Evergreen" </link>). As the <systemitem class="username">opensrf</systemitem> user user, use the utility "configure" as shown:</para>
+							<figure>
+								<title>Commands to configure Evergreen</title>
+								<screen>
+							$ su - opensrf
+							$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+							$ ./configure --prefix=/openils --sysconfdir=/openils/conf --with-updateshost=hostname
+							$ make
+							...
+							</screen>
+							</figure>
+						</listitem>
+						<listitem>
+							<para>During a manual Staff Client build process</para>
+							<para>You will used the variable AUTOUPDATE_HOST=hostname (see above). If you specify just a hostname (such as "example.com") then the URL will be a secure URL (such as "https://example.com". If you wish to use a non-HTTPS URL then prefix the hostname with "http://" (such as "http://example.com").</para>
+							<para>If neither option is used then, by default, the Staff Client will not include the automatic update preferences.</para>
+						</listitem>
+					</itemizedlist>
+				</section>
+				<section>
+					<title>Building Updates</title>
+					<para>Similar to building clients, the targets "generic-updates", "win-updates", "linux-updates", and "extension-updates" can be used individually with <emphasis>make</emphasis> to build the update files for the Staff Client. To build all the targets at once, simply use the target "updates".</para>
+					<para>A "full" update will be built for each specified target (or for all if you use the target "updates"). For all but extensions any previous "full" updates (archived by default in the directory <emphasis>/openils/var/updates/archives</emphasis>) will be used to make "partial" updates. Partial updates tend to be much smaller and will thus download more quickly, but if something goes wrong with a partial update the full update will be used as a fallback. Extensions do not currently support partial updates.</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
+					<figure>
+						<title>Commands for building updates</title>
+						<screen>
+					$ su - opensrf
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+
+					# command to build all updates at once:
+					$ make updates
+					...
+
+					# commands to build updates individually:
+					$ make generic-updates
+					...
+					$ make win-updates
+					...
+					$ make linux-updates
+					...
+					$ make extension-updates
+					...
+					</screen>
+					</figure>
+				</section>
+				<section>
+					<title>Building updates with clients</title>
+					<para>To save time and effort you can build updates and manual download clients at the same time by adding the string "-client" to each target name. For instance, you can specify "win-updates-client". You can also specify "updates-client" to build all the targets at once. This does not work for extension-updates.</para>
+					<para>The clients will be installed alongside the updates and listed on the "manualupdate.html" page, rather than left in the Staff Client directory.</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
+					<figure>
+						<title>Commands for building updates</title>
+						<screen>
+					$ su - opensrf
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+
+					# command to build all updates at once:
+					$ make updates-client
+					...
+
+					# commands to build updates individually:
+					$ make generic-updates-client
+					...
+					$ make win-updates-client
+					...
+					$ make linux-updates-client
+					...
+					</screen>
+					</figure>
+				</section>
+				<section>
+					<title>Activating the Update Server</title>
+					<para>This section reviews scripts associated with the update server, and requires some final adjustments to file permissions.</para>
+					<para>The Apache example configuration creates an "updates" directory that, by default, points to the directory <emphasis>/openils/var/updates/pub</emphasis>. This directory contains one HTML file and several specially-named script files.</para>
+					<para>The "updatedetails.html" file is the fallback web page for the update details. The "check" script is used for <emphasis>XULRunner</emphasis> updates. The "update.rdf" script is used for extension updates. The "manualupdate.html" script checks for clients to provide download links when automatic updates have failed and uses the download script to force a download of the generic client XPI (compared to Firefox trying to install it as an extension).</para>
+					<para>The following scripts should be marked as executable: <emphasis>check, download, manualupdate.html, update.rdf</emphasis>. As the <systemitem class="username">root</systemitem> user, change directory to the updates directory, then execute the following commands:</para>
+					<figure>
+						<title>Changing file permissions of scripts</title>
+						<screen>
+					$ su - root
+					$ cd /openils/var/updates/pub
+					$ chmod +x  check  download  manualupdate.html  update.rdf
+					</screen>
+					</figure>
+				</section>
+			</section>
+			<section>
+				<title>Other tips</title>
+				<section>
+					<title>Multiple workstations on one install</title>
+					<para>Multiple workstation registrations for the same server can be accomplished with a single Staff Client install by using multiple profiles. When running <emphasis>XULRunner</emphasis> you can specify the option "-profilemanager" or "-P" (uppercase "P") to force the Profile Manager to start. Unchecking the "Don't ask at startup" option will make this the default.</para>
+					<para>Once you have opened the Profile Manager you can create additional profiles, one for each workstation you wish to register. You may need to install SSL exceptions for each profile.</para>
+					<para>When building targets "win-client", "win-updates-client", or "updates-client", you can specify "NSIS_EXTRAOPTS=-DPROFILES" to add an "Evergreen Staff Client Profile Manager" option to the start menu.</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user user, change directory to the Staff Client source directory, then execute the following commands:</para>
+					<figure>
+						<title>Command to add start menu option</title>
+						<screen>
+					$ su - opensrf
+					$ cd /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client
+					$ make NSIS_EXTRAOPTS=-DPROFILES win-client
+					...
+					</screen>
+					</figure>
+				</section>
+				<section>
+					<title> Multiple Staff Clients</title>
+					<para>This may be confusing if you are not careful, but you can log in to multiple Evergreen servers at the same time, or a single Evergreen server multiple times. In either case you will need to create an additional profile for each additional server or workstation you want to log in as (see previous tip).</para>
+					<para>Once you have created the profiles, run <emphasis>XULRunner</emphasis> with the option "-no-remote" (in addition to "-profilemanger" or "-P" if neeeded). Instead of <emphasis>XULRunner</emphasis> opening a new login window on your existing session it will start a new session instead, which can then be logged in to a different server or workstation ID.</para>
+				</section>
+			</section>
+		</section>
+		<section xml:id="serversideinstallation-running-staffclient">
+			<title>Running the Staff Client</title>
+			<para>Run the Staff Client on a Linux system by using the application <emphasis>XULRunner</emphasis> (installed automatically and by default with Firefox version 3.0 and later on Ubuntu and Debian distributions).</para>
+			<para>For example, if the source files for the Evergreen installation are in the directory <emphasis>/home/opensrf/Evergreen-ILS-1.6.0.7/</emphasis>, start the Staff Client as shown in the following command example:</para>
+			<figure>
+				<title>Commands to run the Staff Client</title>
+				<screen>
+			$ su - opensrf
+			$ xulrunner /home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client/build/application.ini
+			</screen>
+			</figure>
+		</section>
+		<section xml:id="serversideinstallation-proxy">
+			<title>Configuring a Proxy for the Staff Client</title>
+			<section>
+				<title>Why Use a Proxy for the Staff Client?</title>
+				<para>There are several reasons for sending network traffic for the Staff Client through an SSH proxy:</para>
+				<itemizedlist>
+					<listitem>
+						<para><emphasis role="bold">Firewalls</emphasis> may prevent you from reaching the server. This may happen when you are connecting the Staff Client to a test server that should not be available generally, or it may be the result of network design priorities other than ease of use.</para>
+					</listitem>
+					<listitem>
+						<para>You may wish to <emphasis role="bold">improve security</emphasis> where Staff Client traffic may be susceptible to network eavesdropping. This is especially true when wireless is otherwise the best option for connecting a staff machine to the network.</para>
+					</listitem>
+				</itemizedlist>
+			</section>
+			<section>
+				<title>Setting Up an SSH Tunnel</title>
+				<para>You will need a server that allows you to log in via SSH and has network access to the Evergreen server you want to reach. You will use your username and password for that SSH server to set up a tunnel.</para>
+				<para>For Windows users, one good solution is the open-source utility <ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</ulink>, a free telnet/SSH client]]. When setting up a PuTTY session:</para>
+				<figure>
+					<title>Setting up an SSH tunnel in PuTTY</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-proxy-putty.png" scalefit="1" width="70%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<orderedlist>
+					<listitem>Use the menu on the left to go to Connection > SSH > Tunnels.</listitem>
+					<listitem>Enter ''9999'' in the "Source port".</listitem>
+					<listitem>Choose "Dynamic". Do not enter anything in the Destination text entry box.</listitem>
+					<listitem>Click the "Add" button. "D9999" will now appear in the "Forwarded ports" list.</listitem>
+					<listitem>Use the menu on the left to go back to "Session", and enter the host name of the SSH server.</listitem>
+					<listitem>A window will open up so that you can enter your username and password. Once you are logged in, the tunnel is open.</listitem>
+				</orderedlist>
+			</section>
+			<section>
+				<title>Configuring the Staff Client to Use the SSH Tunnel</title>
+				<para>In order to tell the Staff Client that all traffic should be sent through the SSH tunnel just configured, you must edit the file <emphasis>C:\Program Files\Evergreen Staff Client\greprefs\all.js</emphasis>. Search this file for the word <emphasis role="bold">socks</emphasis> to find the appropriate section for the following changes.</para>
+				<figure>
+					<title>The SOCKS section of "all.js" before changes</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-proxy-socks-1.png" scalefit="1" width="70%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<para>Make the following changes:</para>
+				<itemizedlist>
+					<listitem>Change the value of <emphasis>network.proxy.socks</emphasis>  from <emphasis role="bold">""</emphasis> to <emphasis role="bold">"localhost"</emphasis>.</listitem>
+					<listitem>Change the value of <emphasis>network.proxy.socks_port</emphasis> from <emphasis role="bold">"0"</emphasis> to <emphasis role="bold">9999</emphasis>.</listitem>
+				</itemizedlist>
+				<figure xml:id="serversideinstallation-socks-figure">
+					<title>The SOCKS section of "all.js" after changes</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-proxy-socks-2.png" scalefit="1" width="70%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<para>If everything is working correctly, you should now be able to run the Staff Client and all its data will be sent encrypted through the SSH tunnel you have just configured.</para>
+			</section>
+		</section>
+	</section>
+	<section xml:id="serversideinstallation-memcached">
+		<title>memcached Servers</title>
+		<indexterm>
+			<primary>ZZZ-REVIEW</primary>
+			<secondary>ADD CONTENT FOR MEMCACHED </secondary>
+		</indexterm>
+		<caution fileref="../media/caution.png">ADD CONTENT FOR MEMCACHED </caution>
+	</section>
+	<section xml:id="serversideinstallation-organizationandpolicy">
+		<title>Organization and Policy Editing</title>
+		<para>After installing Evergreen, you will want to make configuration changes to reflect the organizational hierarchy and the policies of your library or libraries. See the section <link linkend="serveradministration-orgunits">"Organizational Unit Types and Organizational Units"</link> for further information. Examples of what can be configured include:</para>
+		<itemizedlist>
+			<listitem>Adding a branch library</listitem>
+			<listitem>Changing circulation rules for an existing library</listitem>
+			<listitem>Adding a new staff position or user group</listitem>
+		</itemizedlist>
+		<indexterm>
+			<primary>ZZZ-REVIEW</primary>
+			<secondary>ADD CONTENT FOR ORGANIZATION AND POLICY EDITING </secondary>
+		</indexterm>
+		<caution fileref="../media/caution.png">ADD CONTENT FOR ORGANIZATION AND POLICY EDITING </caution>
+	</section>
+	<section xml:id="serversideinstallation-sip">
+		<title>Installing the SIP Server</title>
+		<indexterm>
+			<primary>ZZZ-REVIEW</primary>
+			<secondary>ADD CONTENT FOR INSTALLING THE SIP SERVER </secondary>
+		</indexterm>
+		<caution fileref="../media/caution.png">ADD CONTENT FOR INSTALLING THE SIP SERVER </caution>
+	</section>
+	<section xml:id="serversideinstallation-nginx">
+		<title>Using nginx to serve static content</title>
+		<indexterm>
+			<primary>ZZZ-REVIEW</primary>
+			<secondary>ADD CONTENT FOR USING NGINX TO SERVE STATIC CONTENT </secondary>
+		</indexterm>
+		<caution fileref="../media/caution.png">ADD CONTENT FOR USING NGINX TO SERVE STATIC CONTENT </caution>
+	</section>
+	<section xml:id="serversideinstallation-localization">
+		<title>(OPTIONAL) Configuration for Other Languages</title>
+		<para>This section describes how translations such as Armenian (hy-AM), Canadian French (fr-CA) and others are loaded into the database to complete the translations (default English) available in the OPAC and Staff Client.</para>
+		<indexterm>
+			<primary>ZZZ-REVIEW</primary>
+			<secondary>ADD SECTION ON LANGUAGE LOCALIZATION </secondary>
+		</indexterm>
+		<caution fileref="../media/caution.png">ADD SECTION ON LANGUAGE LOCALIZATION </caution>
+	</section>
+	<index/>
+</chapter>
+
