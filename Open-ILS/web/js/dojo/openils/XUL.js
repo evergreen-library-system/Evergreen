@@ -33,6 +33,27 @@ if(!dojo._hasResource["openils.XUL"]) {
         xulG.new_tab(path, tabInfo, options);
     }
 
+    openils.XUL.newTabEasy = function(url, tab_name, extra_content_params) {
+        var content_params = {
+            "session": openils.User.authtoken,
+            "authtime": openils.User.authtime
+        };
+
+        ["url_prefix", "new_tab", "set_tab", "close_tab", "new_patron_tab",
+            "set_patron_tab", "volume_item_creator", "get_new_session",
+            "holdings_maintenance_tab", "set_tab_name", "open_chrome_window",
+            "url_prefix", "network_meter", "page_meter", "set_statusbar",
+            "set_help_context"
+        ].forEach(function(k) { content_params[k] = xulG[k]; });
+
+        if (extra_content_params)
+            dojo.mixin(content_params, extra_content_params);
+
+        xulG.new_tab(
+            xulG.url_prefix(url), {"tab_name": tab_name}, content_params
+        );
+    };
+
     /**
      * @return bool True if a new session was successfully created, false otherwise.
      */

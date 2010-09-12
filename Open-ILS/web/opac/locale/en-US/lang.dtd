@@ -316,6 +316,8 @@
 <!ENTITY staff.cat.opac.view_holds.label "View Holds">
 <!ENTITY staff.cat.opac.view_orders.accesskey "r">
 <!ENTITY staff.cat.opac.view_orders.label "View/Place Orders">
+<!ENTITY staff.cat.opac.alt_serial.accesskey "a">
+<!ENTITY staff.cat.opac.alt_serial.label "Alternate Serial Control">
 <!ENTITY staff.cat.opac.batch_receive.accesskey "i">
 <!ENTITY staff.cat.opac.batch_receive.label "Serials Batch Receive">
 <!ENTITY staff.cat.popup.add_to_bucket "Add to Bucket">

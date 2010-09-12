@@ -3170,12 +3170,24 @@ SELECT  usr,
 			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_SERIAL_CAPTION_PATTERN">
+					<context link="subscription" field="owning_lib" />
+				</create>
+				<retrieve />
+				<update permission="ADMIN_SERIAL_CAPTION_PATTERN">
+					<context link="subscription" field="owning_lib" />
+				</update>
+				<delete permission="ADMIN_SERIAL_CAPTION_PATTERN">
+					<context link="subscription" field="owning_lib" />
+				</delete>
+			</actions>
 		</permacrud>
 	</class>
 
 	<class id="ssub" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::subscription" oils_persist:tablename="serial.subscription" reporter:label="Subscription">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.subscription_id_seq">
-			<field reporter:label="Id" name="id" reporter:datatype="id"/>
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Start Date" name="start_date" reporter:datatype="timestamp"/>
 			<field reporter:label="End Date" name="end_date" reporter:datatype="timestamp"/>
@@ -3197,7 +3209,7 @@ SELECT  usr,
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="ADMIN_SERIAL_SUBSCRIPTION" context_field="owning_lib"/>
-				<retrieve permission="VIEW_SERIAL_SUBSCRIPTION" context_field="owning_lib"/>
+				<retrieve />
 				<update permission="ADMIN_SERIAL_SUBSCRIPTION" context_field="owning_lib"/>
 				<delete permission="ADMIN_SERIAL_SUBSCRIPTION" context_field="owning_lib"/>
 			</actions>
@@ -3227,7 +3239,7 @@ SELECT  usr,
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Legacy Record Entry" name="record_entry" reporter:datatype="link"/>
 			<field reporter:label="Subscription" name="subscription" reporter:datatype="link"/>
-			<field reporter:label="Holding Lib" name="holding_lib" reporter:datatype="link"/>
+			<field reporter:label="Holding Lib" name="holding_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text"/>
 			<field reporter:label="Receive Call Number" name="receive_call_number" reporter:datatype="link"/>
 			<field reporter:label="Receive Unit Template" name="receive_unit_template" reporter:datatype="link"/>
@@ -3257,10 +3269,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create/>
-				<retrieve/>
-				<update/>
-				<delete/>
+				<create permission="ADMIN_SERIAL_DISTRIBUTION" context_field="holding_lib" />
+				<retrieve />
+				<update permission="ADMIN_SERIAL_DISTRIBUTION" context_field="holding_lib" />
+				<delete permission="ADMIN_SERIAL_DISTRIBUTION" context_field="holding_lib" />
 			</actions>
 		</permacrud>
 	</class>
@@ -3299,6 +3311,18 @@ SELECT  usr,
 			<link field="distribution" reltype="has_a" key="id" map="" class="sdist"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_SERIAL_STREAM">
+					<context link="distribution" field="holding_lib" />
+				</create>
+				<retrieve />
+				<update permission="ADMIN_SERIAL_STREAM">
+					<context link="distribution" field="holding_lib" />
+				</update>
+				<delete permission="ADMIN_SERIAL_STREAM">
+					<context link="distribution" field="holding_lib" />
+				</delete>
+			</actions>
 		</permacrud>
 	</class>
 

@@ -1,0 +1,23 @@
+.oils-serial-header { margin-bottom: 20px; }
+.oils-serial-tab-container { height: 600px; }
+.lesser { margin-top: 2px !important }
+.lesser div:first-child { font-size: 110% !important; }
+.lesser div:last-child { margin-right: 16px; }
+#scap_editor th {
+    font-weight: bold;
+    background-color: #ccc;
+    padding: 2px 8px;
+}
+#scap_editor td { padding: 2px 8px; }
+#scap_editor tr[changed="true"] td { background-color: #fc9; }
+#scap_editor [name="remover"] button { color: red; font-weight: bold; }
+#scap_editor tfoot td { text-align: center; padding-top: 24px; }
+#scap_editor td[name] { text-align: center; }
+.serial-dialog-table tr > * { padding-bottom: 1em; }
+.serial-dialog-table th { text-align: left; padding-right: 1em; }
+.serial-dialog-table tr:last-child td { text-align: center; }
+.serial-additional-controls {
+    text-align: right;
+    margin-right: 16px;
+    padding: 8px 0;
+}
