@@ -15,7 +15,7 @@
 			 <para>The following are the base requirements setting Evergreen up on a test server:</para>
 			<itemizedlist>
 				<listitem><para>An available desktop, server or virtual image</para></listitem>
-				<listitem><para>512MB RAM</para></listitem>			
+				<listitem><para>1GB RAM, or more if your server also runs a graphical desktop</para></listitem>			
 				<listitem><para>Linux Operating System</para></listitem>
 			</itemizedlist>
 			<tip><para>Debian and Ubuntu are the most widely used Linux distributions for installing Evergreen and most development takes place on Debian based systems. If you are new 
@@ -26,8 +26,7 @@
 			<info>
             			<title>Server Hardware Configurations and Clustering</title>
 			</info>
-        		<para>As apparent in the previous section, the base hardware requirements for running a functional Evergreen server are extremely minimal. It is also possible
-			to scale up your evergreen configuration to be spread your Evergreen resources and services over several or even many servers in a clustered approach for the purpose 
+        		<para>The hardware requirements for running a functional Evergreen server are minimal. It is also possible to scale up your evergreen configuration to be spread your Evergreen resources and services over several or even many servers in a clustered approach for the purpose 
 			of system redundancy, load balancing and downtime reduction. This allows very large 
 			consortia to share one Evergreen system with hundreds of libraries with millions of records and millions of users, making the scalability of Evergreen almost infinite.</para>
 			<para>Here are some example scenarios for networked server configurations:</para>
@@ -41,7 +40,7 @@
 				<listitem><para>A large library consortium with several public library systems and/or academic libraries with millions of users and items could run an Evergreen 
 				system over many servers with clusters for Evergreen services as well as a cluster for the Postgresql Database.</para></listitem>
 			</itemizedlist>
-      			<para>The key to Evergreen scalability is in the openSRF configuration files <filename>/openils/conf/opensrf.xml</filename> and 
+      			<para>The key to Evergreen scalability is in the OpenSRF configuration files <filename>/openils/conf/opensrf.xml</filename> and 
 			<filename>/openils/conf/opensrf_core.xml</filename>. 
 			By configuring these files, an administrator could cluster evergreen services over multiple hosts, change the host running a specific service 
 			or change the host of the PostgreSQL database.</para> 
