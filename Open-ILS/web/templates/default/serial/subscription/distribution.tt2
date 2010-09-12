@@ -1,0 +1,33 @@
+<div dojoType="dijit.layout.ContentPane" layout="top"
+    class="oils-header-panel lesser">
+    <div>Distributions</div>
+    <div style="margin-right: 16px;">
+        <span dojoType="dijit.form.Button"
+            onClick="dist_grid.refresh();">Refresh Grid</span>
+        <span dojoType="dijit.form.Button"
+            onClick="dist_grid.showCreateDialog();">New Distribution</span>
+        <span dojoType="dijit.form.Button"
+            onClick="dist_grid.deleteSelected();">Delete Selected</span>
+    </div>
+</div>
+<div dojoType="dijit.layout.ContentPane" layout="top">
+    <table
+        jsId="dist_grid"
+        dojoType="openils.widget.AutoGrid"
+        autoHeight="true"
+        fieldOrder="['subscription','label','holding_lib']"
+        suppressFields="['record_entry','subscription','receive_call_number','bind_call_number','bind_unit_template']"
+        suppressEditFields="['record_entry','receive_call_number','bind_call_number','bind_unit_template']"
+        defaultCellWidth="'auto'"
+        fmClass="sdist"
+        query="{id: '*'}"
+        editOnEnter="true"
+        showPaginator="true">
+        <thead>
+            <tr>
+                <th field="label"
+                    get="get_sdist" formatter="format_sdist_label"></th>
+            </tr>
+        </thead>
+    </table>
+</div>

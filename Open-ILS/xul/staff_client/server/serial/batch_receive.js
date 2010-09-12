@@ -21,7 +21,7 @@ function F(k, args) {
 function BatchReceiver() {
     var self = this;
 
-    this.init = function(authtoken, bib_id) {
+    this.init = function(authtoken, bib_id, sub_id) {
         if (authtoken) {
             this.user = new openils.User({"authtoken": authtoken});
             this.pcrud = new openils.PermaCrud({"authtoken": authtoken});
@@ -73,7 +73,7 @@ function BatchReceiver() {
         this.item_cache = {};
 
         if (bib_id)
-            this.bib_lookup(bib_id, null, true);
+            this.bib_lookup(bib_id, null, true, sub_id);
 
         busy(false);
     };
@@ -453,7 +453,7 @@ function BatchReceiver() {
         }
     };
 
-    this.bib_lookup = function(bib_search_term, evt, is_actual_id) {
+    this.bib_lookup = function(bib_search_term, evt, is_actual_id, sub_id) {
         if (evt && evt.keyCode != 13) return;
 
         if (!bib_search_term) {
@@ -497,7 +497,7 @@ function BatchReceiver() {
                         } else {
                             self.bibdata = list[0];
                             self._show_bibdata_bits();
-                            self.choose_subscription();
+                            self.choose_subscription(sub_id);
                         }
                     } else {
                         alert(S("bib_lookup.not_found"));
@@ -513,7 +513,7 @@ function BatchReceiver() {
         );
     };
 
-    this.choose_subscription = function() {
+    this.choose_subscription = function(sub_id) {
         hide("batch_receive_bib");
         hide("batch_receive_entry");
         hide("batch_receive_sub_bits");
@@ -521,7 +521,11 @@ function BatchReceiver() {
 
         var subs = this.bibdata.bre.subscriptions();
 
-        if (subs.length > 1) {
+        if (sub_id) {
+            this.choose_issuance(
+                subs.filter(function(o) { return o.id() == sub_id; })[0]
+            );
+        } else if (subs.length > 1) {
             var menulist = dojo.create("menulist", {"id": "sub_chooser"});
             var menupopup = dojo.create("menupopup", {}, menulist, "only");
 
@@ -912,6 +916,6 @@ function my_init() {
     batch_receiver = new BatchReceiver(
         (typeof ses == "function" ? ses() : 0) ||
             cgi.param("ses") || dojo.cookie("ses"),
-        cgi.param("docid") || null
+        cgi.param("docid") || null, cgi.param("subid") || null
     );
 }

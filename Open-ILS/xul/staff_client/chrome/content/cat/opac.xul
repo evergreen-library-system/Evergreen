@@ -73,7 +73,8 @@
                         <menu id="mfhd_delete" label="&staff.serial.mfhd_menu.delete.label;"/>
                     </menupopup>
                 </menu>
-                <menuitem id="serctrl_view" label="&staff.serial.serctrl_view.label;" oncommand="set_serctrl_view();"/>
+                <menuitem id="serctrl_view" label="&staff.serial.serctrl_view.label;" oncommand="set_serctrl_view();" />
+                <menuitem label="&staff.cat.opac.alt_serial.label;" accesskey="&staff.cat.opac.alt_serial.accesskey;" id="alt_serial" oncommand="open_alt_serial_mgmt();" />
                 <menuitem label="&staff.cat.opac.batch_receive.label;" accesskey="&staff.cat.opac.batch_receive.accesskey;" id="batch_receive" oncommand="batch_receive_in_new_tab();"/>
                 </menupopup>
                 </menu>

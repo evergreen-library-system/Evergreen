@@ -303,6 +303,39 @@ function open_acq_orders() {
     }
 }
 
+function open_alt_serial_mgmt() {
+    try {
+        var content_params = {
+            "session": ses(),
+            "authtime": ses("authtime"),
+            "show_nav_buttons": true,
+            "no_xulG": false,
+            "show_print_button": false
+        };
+
+        ["url_prefix", "new_tab", "set_tab", "close_tab", "new_patron_tab",
+            "set_patron_tab", "volume_item_creator", "get_new_session",
+            "holdings_maintenance_tab", "set_tab_name", "open_chrome_window",
+            "url_prefix", "network_meter", "page_meter", "set_statusbar",
+            "set_help_context"
+        ].forEach(function(k) { content_params[k] = xulG[k]; });
+
+        var loc = urls.XUL_BROWSER + "?url=" + window.escape(
+            xulG.url_prefix("/eg/serial/list_subscription/") + docid
+        );
+        xulG.new_tab(
+            loc, {
+                "tab_name": $("offlineStrings").getString(
+                    "staff.cat.opac.serial_alt_mgmt"
+                ),
+                "browser": false
+            }, content_params
+        );
+    } catch (E) {
+        g.error.sdump("D_ERROR", E);
+    }
+}
+
 function set_opac() {
     g.view = 'opac';
     try {
@@ -537,28 +570,6 @@ function open_marc_editor(rec, label) {
             }
         }
     };
-}
-
-function serials_mgmt_new_tab() {
-    try {
-        /* XXX should the following be put into a function somewhere? the gist
-         * of this setting up of content_params seems to be duplicated all
-         * over the place.
-         */
-        var content_params = {"session": ses(), "authtime": ses("authtime")};
-        ["url_prefix", "new_tab", "set_tab", "close_tab", "new_patron_tab",
-            "set_patron_tab", "volume_item_creator", "get_new_session",
-            "holdings_maintenance_tab", "set_tab_name", "open_chrome_window",
-            "url_prefix", "network_meter", "page_meter", "set_statusbar",
-            "set_help_context"
-        ].forEach(function(k) { content_params[k] = xulG[k]; });
-
-        xulG.new_tab(
-            xulG.url_prefix(urls.XUL_SERIAL_RECORD_ENTRY), {}, content_params
-        );
-    } catch (E) {
-        g.error.sdump('D_ERROR', E);
-    }
 }
 
 function bib_in_new_tab() {

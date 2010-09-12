@@ -157,8 +157,8 @@
                     label="Use chronology captions?" />
                 <vbox id="chron_editor_here" class="hideme">
                     <description class="step">
-                        Generally, each caption should be a smaller unit of
-                        time than the preceding caption.
+                        Each caption must be a smaller unit of
+                        time than the preceding caption.<!-- XXX TODO enforce -->
                     </description>
                     <grid>
                         <columns>
