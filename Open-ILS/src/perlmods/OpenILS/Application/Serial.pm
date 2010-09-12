@@ -614,12 +614,38 @@ sub make_predictions {
 
     my $editor = OpenILS::Utils::CStoreEditor->new();
     my $ssub_id = $args->{ssub_id};
+    my $all_dists = $args->{all_dists};
     my $mfhd = MFHD->new(MARC::Record->new());
 
     my $ssub = $editor->retrieve_serial_subscription([$ssub_id]);
     my $scaps = $editor->search_serial_caption_and_pattern({ subscription => $ssub_id, active => 't'});
     my $sdists = $editor->search_serial_distribution( [{ subscription => $ssub->id }, {  flesh => 1,
-              flesh_fields => {sdist => [ qw/ streams / ]}, limit => 1 }] ); #TODO: 'deleted' support?
+              flesh_fields => {sdist => [ qw/ streams / ]}, $all_dists ? () : (limit => 1) }] ); #TODO: 'deleted' support?
+
+    if ($all_dists) {
+        my $total_streams = 0;
+        foreach (@$sdists) {
+            $total_streams += scalar(@{$_->streams});
+        }
+        if ($total_streams < 1) {
+            $editor->disconnect;
+            # XXX TODO new event type
+            return new OpenILS::Event(
+                "BAD_PARAMS", note =>
+                    "There are no streams to direct items. Can't predict."
+            );
+        }
+    }
+
+    unless (@$scaps) {
+        $editor->disconnect;
+        # XXX TODO new event type
+        return new OpenILS::Event(
+            "BAD_PARAMS", note =>
+                "There are no active caption-and-pattern objects associated " .
+                "with this subscription. Can't predict."
+        );
+    }
 
     my @predictions;
     my $link_id = 1;
@@ -644,9 +670,21 @@ sub make_predictions {
                 );
             if ($last_published->[0]) {
                 my $last_siss = $last_published->[0];
+                unless ($last_siss->holding_code) {
+                    $editor->disconnect;
+                    # XXX TODO new event type
+                    return new OpenILS::Event(
+                        "BAD_PARAMS", note =>
+                            "Last issuance has no holding code. Can't predict."
+                    );
+                }
                 $options->{predict_from} = _revive_holding($last_siss->holding_code, $caption_field, 1);
             } else {
-                #TODO: throw event (can't predict from nothing!)
+                $editor->disconnect;
+                # XXX TODO make a new event type instead of hijacking this one
+                return new OpenILS::Event(
+                    "BAD_PARAMS", note => "No issuance from which to predict!"
+                );
             }
         }
         push( @predictions, _generate_issuance_values($mfhd, $options) );
