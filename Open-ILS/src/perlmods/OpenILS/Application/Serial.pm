@@ -360,7 +360,7 @@ sub received_siss_by_bib {
 
     my $e = new_editor();
     my $issuances = $e->json_query({
-        select  => { 'siss' => [ 'id' ] },
+        select  => {'siss' => [{"transform" => "distinct", "column" => "id"}, "date_published"]},
         from    => {
             siss => {
                 ssub => {
@@ -395,19 +395,13 @@ sub received_siss_by_bib {
             },
             $$args{ou} ? ( '+sdist' => {
                 holding_lib => {
-                    'in' => {
-                        from => [
-                            'actor.org_unit_descendants',
-                            defined($$args{depth}) ? ( $$args{ou}, $$args{depth} ) :  ( $$args{ou} )
-                        ]
-                    }
+                    'in' => $U->get_org_descendants($$args{ou}, $$args{depth})
                 }
             }) : ()
         },
         $$args{limit}  ? ( limit  => $$args{limit}  ) : (),
         $$args{offset} ? ( offset => $$args{offset} ) : (),
-        order_by => [{ class => 'siss', field => 'date_published', direction => $$args{order} }],
-        distinct => 1
+        order_by => [{ class => 'siss', field => 'date_published', direction => $$args{order} }]
     });
 
     $client->respond($e->retrieve_serial_issuance($_->{id})) for @$issuances;
