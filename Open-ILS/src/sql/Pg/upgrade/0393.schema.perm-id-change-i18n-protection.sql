@@ -33,6 +33,6 @@ $_$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER maintain_perm_i18n_tgr
     AFTER UPDATE ON permission.perm_list
-    FOR EACH ROW EXECUTE PROCEDURE oils_i18n_tracking('ppl', 'id');
+    FOR EACH ROW EXECUTE PROCEDURE oils_i18n_id_tracking('ppl', 'id');
 
 COMMIT;
