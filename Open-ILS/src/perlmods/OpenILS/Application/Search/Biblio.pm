@@ -1316,6 +1316,7 @@ sub retrieve_cached_facets {
     my $self   = shift;
     my $client = shift;
     my $key    = shift;
+    my $limit  = shift;
 
     return undef unless ($key and $key =~ /_facets$/);
 
