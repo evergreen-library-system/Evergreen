@@ -9,12 +9,15 @@ use OpenSRF::EX qw/:try/;
 
 use OpenSRF::AppSession;
 use OpenSRF::Utils::SettingsClient;
+use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::Logger qw/:level/;
 
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::JSON;
 
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
+
+use Digest::MD5 qw(md5_hex);
 
 use XML::LibXML;
 use XML::LibXML::XPathContext;
@@ -31,6 +34,8 @@ our %namespace_map = (
 
 my $log = 'OpenSRF::Utils::Logger';
 
+my $cache;
+my $cache_timeout;
 my $parser = XML::LibXML->new();
 my $xslt = XML::LibXSLT->new();
 
@@ -48,10 +53,15 @@ sub initialize {
 
     $log->debug( 'IDL XML file loaded' );
 
+    $cache_timeout = $conf->config_value(
+            "apps", "open-ils.fielder", "app_settings", "cache_timeout" ) || 300;
+
     generate_methods();
 
 }
-sub child_init {}
+sub child_init {
+    $cache = OpenSRF::Utils::Cache->new('global');
+}
 
 sub fielder_fetch {
     my $self = shift;
@@ -59,8 +69,11 @@ sub fielder_fetch {
     my $obj = shift;
 
     my $query = $obj->{query};
+    my $nocache = $obj->{cache} ? 0 : 1;
     my $fields = $obj->{fields};
     my $distinct = $obj->{distinct} ? 1 : 0;
+
+    return undef unless $query;
 
     my $obj_class = $self->{class_hint};
     my $fm_class = $self->{class_name};
@@ -69,18 +82,34 @@ sub fielder_fetch {
         $fields = [ $fm_class->real_fields ];
     }
 
-    $log->debug( 'Field list: '. OpenSRF::Utils::JSON->perl2JSON( $fields ) );
-    $log->debug( 'Query: '. OpenSRF::Utils::JSON->perl2JSON( $query ) );
-
-    return undef unless $fields;
-    return undef unless $query;
-
     $fields = [$fields] if (!ref($fields));
 
+    my $qstring = OpenSRF::Utils::JSON->perl2JSON( $query );
+    my $fstring = OpenSRF::Utils::JSON->perl2JSON( [ sort { $a cmp $b } @$fields ] );
 
     $log->debug( 'Query Class: '. $obj_class );
+    $log->debug( 'Field list: '. $fstring );
+    $log->debug( 'Query: '. $qstring );
 
-    my $res = new_editor()->json_query({
+    my ($key,$res);
+    unless ($nocache) {
+        $key = 'open-ils.fielder_' . md5_hex(
+            $self->api_name . 
+            $qstring .
+            $fstring .
+            $distinct .
+            $obj_class
+        );
+
+        $res = $cache->get_cache( $key );
+
+        if ($res) {
+            $client->respond($_) for (@$res);
+            return undef;
+        }
+    }
+
+    $res = new_editor()->json_query({
         select  => { $obj_class => $fields },
         from    => $obj_class,
         where   => $query,
@@ -91,8 +120,10 @@ sub fielder_fetch {
         $client->respond($value);
     }
 
-    return undef;
+    $client->respond_complete();
 
+    $cache->put_cache( $key => $res => $cache_timeout ) unless ($nocache);
+    return undef;
 }
 
 sub generate_methods {

@@ -274,7 +274,7 @@ if(!dojo._hasResource["openils.widget.Searcher"]) {
 
             var fielder_result = fieldmapper.standardRequest(
                 [ 'open-ils.fielder', 'open-ils.fielder.'+c.classname+'.atomic'],
-                [ { query : q } ]
+                [ { cache : 1, query : q } ]
             );
 
             var sorted_fielder_result = fielder_result.sort( function(a,b) {

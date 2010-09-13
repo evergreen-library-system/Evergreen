@@ -25,7 +25,7 @@ if(!dojo._hasResource["openils.I18N"]) {
 
     dojo.declare('openils.I18N', null, {});
 
-	openils.I18N.BaseLocales = fieldmapper.standardRequest( [ 'open-ils.fielder', 'open-ils.fielder.i18n_l.atomic'], [ { query : { code : { '!=' :  null }  } } ] );
+	openils.I18N.BaseLocales = fieldmapper.standardRequest( [ 'open-ils.fielder', 'open-ils.fielder.i18n_l.atomic'], [ { cache : 1, query : { code : { '!=' :  null }  } } ] );
 	openils.I18N.localeStore = new dojo.data.ItemFileWriteStore( { data : {identifier : 'locale', label : 'label', items : [] } } );
 	openils.I18N.BaseLocales = openils.I18N.BaseLocales.sort(
         function(a, b) {
