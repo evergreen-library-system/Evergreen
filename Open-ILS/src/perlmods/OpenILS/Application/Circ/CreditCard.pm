@@ -249,7 +249,7 @@ sub dispatch {
     my %bop_args = get_bop_args_filler($argshash);
 
     # We're assuming that all B:OP processors accept this argument to the
-    # contstructor.
+    # constructor.
     $bop_args{test_transaction} = $argshash->{testmode};
 
     my $transaction = new Business::OnlinePayment(
