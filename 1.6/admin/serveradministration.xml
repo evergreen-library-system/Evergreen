@@ -1771,7 +1771,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<filename>opensrf.xml</filename><indexterm><primary>configuration files</primary><secondary>opensrf.xml</secondary></indexterm></para>
 			</step>
 			<step>
-				<para>Restart <systemitem class="service">Perl</systemitem></application><indexterm><primary>Perl</primary></indexterm> services for changes to take effect.</para>
+				<para>Restart <systemitem class="service">Perl</systemitem><indexterm><primary>Perl</primary></indexterm> services for changes to take effect.</para>
 				<screen><userimput>/openils/bin/osrf_ctl.sh -l -a restart_perl</userimput></screen>
 			</step>
 		</procedure>
