@@ -51,7 +51,7 @@ function my_init() {
 
         // Assign a default value if none was returned 
         if (!label_class) {
-            label_class = { "value": 1 };
+            label_class = 1;
         }
 
         /***********************************************************************************************************/
@@ -98,7 +98,7 @@ function my_init() {
         /* For the call number drop down */
 
         if (!g.copy_shortcut) {
-            g.list_callnumbers(g.doc_id, label_class.value);
+            g.list_callnumbers(g.doc_id, label_class);
         }
 
         /***********************************************************************************************************/
