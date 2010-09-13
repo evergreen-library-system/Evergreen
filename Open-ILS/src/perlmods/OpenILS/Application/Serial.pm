@@ -441,7 +441,7 @@ sub scoped_bib_holdings_summary {
     my $self = shift;
     my $client = shift;
     my $bibid = shift;
-    my $args = shift;
+    my $args = shift || {};
 
     $args->{order} = 'asc';
 
@@ -449,10 +449,10 @@ sub scoped_bib_holdings_summary {
 
     # split into issuance type sets
     my %type_blob = (basic => [], supplement => [], index => []);
-    my %statement_blob = %type_blob;
     push @{ $type_blob{ $_->holding_type } }, $_ for (@$issuances);
 
     # generate a statement list for each type
+    my %statement_blob;
     for my $type ( keys %type_blob ) {
         my ($mfhd,$list) = _summarize_contents(new_editor(), $type_blob{$type});
         $statement_blob{$type} = $list;
