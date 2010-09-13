@@ -189,16 +189,19 @@
                                 alert(msg); throw(msg);
                             }
                            
-                            var custom_src = String(this.src).replace('.','_custom.'); 
-                            var x2 = new XMLHttpRequest();
-                            x2.open("GET",custom_src,false);
-                            x2.send(null);
-                            if (x2.responseText) {
-                                var props = this._props2object(x2.responseText);
-                                for (var i in props) {
-                                    this._props[i] = props[i];
+                            try { // fail silently if no custom properties file exists
+                                var custom_src = String(this.src).replace('.','_custom.'); 
+                                var x2 = new XMLHttpRequest();
+                                x2.open("GET",custom_src,false);
+                                x2.send(null);
+                                if (x2.responseText) {
+                                    var props = this._props2object(x2.responseText);
+                                    for (var i in props) {
+                                        this._props[i] = props[i];
+                                    }
                                 }
-                            }
+                            } catch(EE) {}
+
                     } catch(E) {
                         alert('Error loading properties in messagecatalog in bindings.xml: ' + E);
                         throw(E);
