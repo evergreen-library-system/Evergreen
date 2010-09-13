@@ -87,9 +87,9 @@ function bib_brief_overlay(params) {
         var data = new OpenILS.data();
         var label_class = data.hash.aous['cat.default_classification_scheme'];
         if (!label_class) {
-            label_class = { "value": 1 };
+            label_class = 1;
         }
-        var cn_blob_array = net.simple_request('BLOB_MARC_CALLNUMBERS_RETRIEVE',[params.mvr_id, label_class.value]);
+        var cn_blob_array = net.simple_request('BLOB_MARC_CALLNUMBERS_RETRIEVE',[params.mvr_id, label_class]);
         if (! cn_blob_array) { cn_blob_array = []; }
         var tooltip_text = '';
         for (var i = 0; i < cn_blob_array.length; i++) {
