@@ -22,13 +22,13 @@
 		<glossentry id="closure">
 			<glossterm>Closure Compiler</glossterm>
 			<glossdef>
-				<para>A suite of open-source tools used to build web applications with Javascript; originally developed by Google. More information is available at <ulink url="http://code.google.com/closure/compiler/">http://code.google.com/closure/compiler/</ulink>.</para>
+				<para>A suite of open-source tools used to build web applications with <application>Javascript</application>; originally developed by Google. More information is available at <ulink url="http://code.google.com/closure/compiler/">http://code.google.com/closure/compiler/</ulink>.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="CPAN">
 			<glossterm>CPAN</glossterm>
 			<glossdef>
-				<para>An open-source archive of software modules written in Perl. More information is available at <ulink url="http://www.cpan.org">www.cpan.org</ulink>.</para>
+				<para>An open-source archive of software modules written in <application>Perl</application>. More information is available at <ulink url="http://www.cpan.org">www.cpan.org</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -37,13 +37,14 @@
 		<glossentry id="Debian">
 			<glossterm>Debian</glossterm>
 			<glossdef>
-				<para>One of the most popular open-source operating system using the Linux kernel that provides over 25000 useful precompiled software packages. Also known as Debian GNU/Linux. More information is available at <ulink url="http://www.debian.org">www.debian.org</ulink>.</para>
+				<para>One of the most popular open-source operating system using the <systemitem class="osname">Linux</systemitem> kernel that provides over 25000 useful precompiled software packages. Also known as <systemitem class="osname">Debian GNU/Linux</systemitem>. More information is available at <ulink url="http://www.debian.org">www.debian.org</ulink>.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry>
 			<glossterm>Domain name</glossterm>
 			<glossdef>
-				<para>PLEASE ADD CONTENT.</para>
+				<para>A unique set of case-insensitive, alphanumeric strings separated by periods that are used to name organizations, web sites and addresses on the Internet (e.g.: <uri>www.esilibrary.com</uri>). Domain names can be reserved via third-party registration services, and can be associated with a unique IP address or suite of IP addresses.</para>
+				<glossseealso otherterm="ipaddress"/>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -52,7 +53,7 @@
 		<glossentry id="ejabberd">
 			<glossterm>ejabberd</glossterm>
 			<glossdef>
-				<para>An open-source Jabber/XMPP instant messaging server that runs under popular operating systems (e.g., Mac OSX, GNU/Linux, and Microsoft Windows). One popular use is to provide XMPP messaging services for a Jabber domain across an extendable cluster of cheap, easily-replaced machine nodes. More information is available at <ulink url="http://www.ejabberd.im/">http://www.ejabberd.im</ulink>.</para>
+				<para>An open-source Jabber/XMPP instant messaging server that runs under popular operating systems (e.g., <systemitem class="osname">Mac OSX</systemitem>, <systemitem class="osname">GNU/Linux</systemitem>, and <systemitem class="osname">Microsoft Windows</systemitem>). One popular use is to provide <application>XMPP</application> messaging services for a <application>Jabber</application> domain across an extendable cluster of cheap, easily-replaced machine nodes. More information is available at <ulink url="http://www.ejabberd.im/">http://www.ejabberd.im</ulink>.</para>
 				<glossseealso otherterm="Jabber"/>
 				<glossseealso otherterm="XMPP"/>
 			</glossdef>
@@ -72,7 +73,12 @@
 	</glossdiv>
 	<glossdiv>
 		<title>I</title>
-		<glossentry></glossentry>
+		<glossentry id="ipaddress">
+			<glossterm>IP Address</glossterm>
+			<glossdef>
+				<para>(Internet Protocol address) A numerical label consisting of four numbers separated by periods (e.g., "192.168.1.15") assigned to individual members of networked computing systems. It uniquely identifies each system on the network and allows controlled communication between such systems. The numerical label scheme must adhere to a strictly defined naming convention that is currently defined and overseen by the Internet Corporation for Assigned Names and Numbers ("ICANN").</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>J</title>
@@ -103,7 +109,7 @@
 		<glossentry id="memcached">
 			<glossterm>memcached</glossterm>
 			<glossdef>
-				<para>PLEASE ADD CONTENT</para>
+				<para>A general-purpose distributed memory caching system, usually with a client~server architecture spread over multiple computing systems. It reduces the number of times a data source (e.g., a database) must be directly accessed by temporarily caching data in memory, therefore dramatically speeding up database-driven web applications.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -112,7 +118,8 @@
 		<glossentry id="netaddr">
 			<glossterm>Network address</glossterm>
 			<glossdef>
-				<para>A numerical label consisting of four numbers separated by periods (e.g., "192.168.1.15") that uniquely identifies a machine on a computer network.</para>
+				<para>Also known as an IP address (Internet Protocol address).</para>
+				<glossseealso otherterm="ipaddress"/>
 			</glossdef>
 		</glossentry>
 		<glossentry id="nsis">
@@ -152,12 +159,6 @@
 	</glossdiv>
 	<glossdiv>
 		<title>R</title>
-		<glossentry id="router">
-			<glossterm>router</glossterm>
-			<glossdef>
-				<para>PLEASE ADD CONTENT</para>
-			</glossdef>
-		</glossentry>
 		<glossentry id="Resource Hacker">
 			<glossterm>Resource Hacker</glossterm>
 			<glossdef>
@@ -189,7 +190,7 @@
 		<glossentry id="Ubuntu">
 			<glossterm>Ubuntu</glossterm>
 			<glossdef>
-				<para>A popular open-source operating system using the Linux kernel that was originally based on the Debian GNU/Linux operating system. More information is available at <ulink url="http://www.ubuntu.com">www.ubuntu.com</ulink>.</para>
+				<para>A popular open-source operating system using the <systemitem class="osname">Linux</systemitem> kernel that was originally based on the <systemitem class="osname">Debian GNU/Linux</systemitem> operating system. More information is available at <ulink url="http://www.ubuntu.com">www.ubuntu.com</ulink>.</para>
 				<glossseealso otherterm="Debian"/>
 			</glossdef>
 		</glossentry>
@@ -199,27 +200,27 @@
 		<glossentry id="virtualization">
 			<glossterm>Virtualization</glossterm>
 			<glossdef>
-				<para>A method of executing software in a special environment that is partitioned or separated from the real underlying hardware and software resources. In typical usage, it allows a "host" operating system to encapsulate or emulate another operating system environment in such a way that the emulated environment is completely unaware of the hosting environment. For instance, it allows a Linux application to execute within a Windows environment.</para>
+				<para>A method of executing software in a special environment that is partitioned or separated from the real underlying hardware and software resources. In typical usage, it allows a "host" operating system to encapsulate or emulate another operating system environment in such a way that the emulated environment is completely unaware of the hosting environment. For instance, it allows a <systemitem class="osname">Linux</systemitem> application to execute within a <systemitem class="osname">Windows</systemitem> environment.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="virtualbox">
 			<glossterm>VirtualBox</glossterm>
 			<glossdef>
-				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It can be installed on Linux, Mac OS X, Windows or Solaris "host" operating systems and allows other "guest" (typically including Linux and Windows) operating systems to be loaded and executed.</para>
+				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It can be installed on  <systemitem class="osname">Linux</systemitem>, <systemitem class="osname">Mac OS X</systemitem>, <systemitem class="osname">Windows</systemitem> or <systemitem class="osname">Solaris</systemitem> "host" operating systems and allows other "guest" (typically including <systemitem class="osname">Linux</systemitem> and <systemitem class="osname">Windows</systemitem>) operating systems to be loaded and executed.</para>
 				<glossseealso otherterm="virtualization"/>
 			</glossdef>
 		</glossentry>
 		<glossentry id="virtualpc">
 			<glossterm>Virtual PC</glossterm>
 			<glossdef>
-				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It is installed on a Windows "host" operating system and allows other "guest" (typically including Linux and Windows) operating systems to be loaded and executed.</para>
+				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It is installed on a Windows "host" operating system and allows other "guest" (typically including <systemitem class="osname">Linux</systemitem> and <systemitem class="osname">Windows</systemitem>) operating systems to be loaded and executed.</para>
 				<glossseealso otherterm="virtualization"/>
 			</glossdef>
 		</glossentry>
 		<glossentry id="vmware">
 			<glossterm>VMware</glossterm>
 			<glossdef>
-				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It can be installed on Linux, Mac OS X, Windows or Solaris "host" operating systems and allows other "guest" (typically including Linux and Windows) operating systems to be loaded and executed.</para>
+				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It can be installed on <systemitem class="osname">Linux</systemitem>, <systemitem class="osname">Mac OS X</systemitem>, <systemitem class="osname">Windows</systemitem> or <systemitem class="osname">Solaris</systemitem> "host" operating systems and allows other "guest" (typically including <systemitem class="osname">Linux</systemitem> and <systemitem class="osname">Windows</systemitem>) operating systems to be loaded and executed.</para>
 				<glossseealso otherterm="virtualization"/>
 			</glossdef>
 		</glossentry>
@@ -229,7 +230,7 @@
 		<glossentry id="wine">
 			<glossterm>Wine</glossterm>
 			<glossdef>
-				<para>A popular open-source applcation that allows Linux and Unix systems to run Windows executables. More information is available at <ulink url="http://www.winehq.org/">http://www.winehq.org/</ulink>.</para>
+				<para>A popular open-source application that allows <systemitem class="osname">Linux</systemitem> and <systemitem class="osname">Unix</systemitem> systems to run <systemitem class="osname">Windows</systemitem> executables. More information is available at <ulink url="http://www.winehq.org/">http://www.winehq.org/</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -257,13 +258,13 @@
 		<glossentry id="xul">
 			<glossterm>XUL</glossterm>
 			<glossdef>
-				<para>The XML User Interface Language, a specialized interface language that allows building cross-platform applications that drive Mozilla-based browsers such as Firefox. More information is available at <ulink url="https://developer.mozilla.org/en/XUL">https://developer.mozilla.org/en/XUL</ulink>.</para>
+				<para>The XML User Interface Language, a specialized interface language that allows building cross-platform applications that drive <application>Mozilla</application>-based browsers such as <application>Firefox</application>. More information is available at <ulink url="https://developer.mozilla.org/en/XUL">https://developer.mozilla.org/en/XUL</ulink>.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="xulrunner">
 			<glossterm>xulrunner</glossterm>
 			<glossdef>
-				<para>A specialized run-time application environment that provides support for installing, upgrading and uninstalling XUL applications. It operates with Mozilla-based applications such as the Firefox browser. More information is available at <ulink url="https://developer.mozilla.org/en/XULRunner">https://developer.mozilla.org/en/XULRunner</ulink>.</para>
+				<para>A specialized run-time application environment that provides support for installing, upgrading and uninstalling <application>XUL</application> applications. It operates with <application>Mozilla</application>-based applications such as the <application>Firefox</application> browser. More information is available at <ulink url="https://developer.mozilla.org/en/XULRunner">https://developer.mozilla.org/en/XULRunner</ulink>.</para>
 				<glossseealso otherterm="xul"/>
 			</glossdef>
 		</glossentry>
