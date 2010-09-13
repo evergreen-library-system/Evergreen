@@ -43,11 +43,11 @@ Installation instructions:
 Once you have configured and compiled Evergreen, issue the following
 command as the root user to install Evergreen:
 
-make STAFF_CLIENT_BUILD_ID=rel_trunk install
+make STAFF_CLIENT_STAMP_ID=rel_trunk install
 
 This will install Evergreen, including example configuration files in
 /openils/conf/ that you can use as templates for your own configuration files.
-The STAFF_CLIENT_BUILD_ID variable stamps the server-side and client-side files
+The STAFF_CLIENT_STAMP_ID variable stamps the server-side and client-side files
 for the staff client to ensure that they match.
 
 Install Dojo Toolkit:
@@ -147,7 +147,7 @@ source directory, replacing <user>, <password>, <hostname>, <port>, and <dbname>
 with the appropriate values for your PostgreSQL database:
 
 perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
-       --service all --create-schema --create-bootstrap --create-offline \
+       --service all --create-schema --create-offline \
        --user <user> --password <password> --hostname <hostname> --port <port> \
        --database <dbname>
 
