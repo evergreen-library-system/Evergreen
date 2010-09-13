@@ -437,6 +437,55 @@ q/A hash of optional arguments.  Valid keys and their meanings:
 );
 
 
+sub scoped_bib_holdings_summary {
+    my $self = shift;
+    my $client = shift;
+    my $bibid = shift;
+    my $args = shift;
+
+    $args->{order} = 'asc';
+
+    my ($issuances) = $self->method_lookup('open-ils.serial.received_siss.retrieve.by_bib.atomic')->run( $bibid => $args );
+
+    # split into issuance type sets
+    my %type_blob = (basic => [], supplement => [], index => []);
+    my %statement_blob = %type_blob;
+    push @{ $type_blob{ $_->holding_type } }, $_ for (@$issuances);
+
+    # generate a statement list for each type
+    for my $type ( keys %type_blob ) {
+        my ($mfhd,$list) = _summarize_contents(new_editor(), $type_blob{$type});
+        $statement_blob{$type} = $list;
+    }
+
+    return \%statement_blob;
+}
+__PACKAGE__->register_method(
+    method    => 'scoped_bib_holdings_summary',
+    api_name  => 'open-ils.serial.bib.summary_statements',
+    api_level => 1,
+    argc      => 1,
+    signature => {
+        desc   => 'Receives a Bib ID and other optional params and returns set of holdings statements',
+        params => [
+            {   name => 'bibid',
+                desc => 'id of the bre to which the issuances belong',
+                type => 'number'
+            },
+            {   name => 'args',
+                desc =>
+q/A hash of optional arguments.  Valid keys and their meanings:
+    orgid  := OU id used to scope retrieval, based on distribution.holding_lib
+    depth  := OU depth used to range the scope of orgid
+    type   := Holding type filter. Valid values are "basic", "supplement" and "index". Can be a scalar (one) or arrayref (one or more).
+    status := Item status filter. Valid values are "Bindery", "Bound", "Claimed", "Discarded", "Expected", "Not Held", "Not Published" and "Received". Can be a scalar (one) or arrayref (one or more).
+/
+            }
+        ]
+    }
+);
+
+
 ##########################################################################
 # unit methods
 #
