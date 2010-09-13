@@ -4,9 +4,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	<info>
 		<title>Server Administration</title>
 		<abstract>
-			<para>Administration of Evergreen involves configuration done from both the Staff Client as well a 
+			<para>Administration of <application>Evergreen</application> involves configuration done from both the Staff Client as well a 
 			the command line. The goal of this chapter is to provide you with the procedures to help 
-			you optimize your Evergreen system.</para>
+			you optimize your <application>Evergreen</application> system.</para>
 		</abstract>
 	</info>
 	<section xml:id="orgunitsandtypes">
@@ -58,7 +58,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</procedure>
 			<procedure>
 				<title>Deleting Organization Types<indexterm><primary>organization types</primary><secondary>deleting</secondary></indexterm></title>
-				<step><para>Select the <emphasis>organization type</emphasis> from the <emphasis>Organization Type</emphasis> 
+				<step><para>Select the <guilabel>organization type</guilabel> from the <guilabel>Organization Type</guilabel> 
 				tree.</para></step>
 				<step><para>Click <guibutton>Delete</guibutton>.</para></step>
 				<step><para>Click <guibutton>OK</guibutton> on the warning alert box.</para></step>
@@ -71,7 +71,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</procedure>
 			<procedure>
 				<title>Editing Organization Types<indexterm><primary>organization types</primary><secondary>editing</secondary></indexterm></title>
-				<step><para>Select the <emphasis>organization type</emphasis> you wish to edit from the 
+				<step><para>Select the <guilabel>organization type</guilabel> you wish to edit from the 
 				organization type tree.</para></step>
 				<step><para>Make the changes in the right pane.</para></step>
 				<step><para>Click <guibutton>Save</guibutton> to save your changes.</para></step>
@@ -95,7 +95,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		</para>
 		<procedure>
 			<title>Adding Organizational Units<indexterm><primary>organization units</primary><secondary>adding</secondary></indexterm></title>
-			<step><para>Select an <emphasis>Organizational Unit</emphasis> from the organizational unit tree on the left and click 
+			<step><para>Select an <guilabel>Organizational Unit</guilabel> from the organizational unit tree on the left and click 
 			<guibutton>New Child</guibutton>.</para></step>
 			<step><para>Make sure your new unit is selected and edit the <guilabel>Organizational Unit 
 			Name</guilabel>, <guilabel>Organizational Unit Policy Code</guilabel>, 
@@ -1607,7 +1607,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<step><para>Click <guibutton>Add</guibutton>.</para></step>
 				<step><para>Locate you new status and check the <emphasis>Holdable</emphasis> check box 
 				if you wish to all users to place holds on items in this status. Check 
-				<emphasis>OPAC Visible</emphasis> if you wish for this status to appear in the public 
+				<guilabel>OPAC Visible</guilabel> if you wish for this status to appear in the public 
 				OPAC.</para></step>
 				<step><para>Click <guibutton>Save Changes</guibutton> at the bottom of the screen to 
 				save changes to the new status.</para></step>
@@ -1626,7 +1626,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<title>Editing Copy Statuses</title>
 				<step><para>Double click on a status name to change its name and enter the new 
 				name.</para> <para>To change whether a status is visible in the OPAC, check or uncheck 
-				the <emphasis>OPAC Visible</emphasis> check box.</para><para>To allow patrons the ability to 
+				the <guilabel>OPAC Visible</guilabel> check box.</para><para>To allow patrons the ability to 
 				hold items in that status, check the <emphasis>Holdable</emphasis> check box. To prevent 
 				users from holding items in that status, uncheck the <emphasis>Holdable</emphasis> 
 				check box. </para></step>
@@ -1644,8 +1644,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<title>Adding Billing Types</title>
 				<step><para>Click <guibutton>New Billing Type</guibutton>.</para></step>
 				<step><para>Enter the name of the billing type.</para></step>
-				<step><para>Select the <emphasis>Org Unit</emphasis> to use this billing type.</para></step>
-				<step><para>Enter the <emphasis>Default Price</emphasis>. This is only the default since 
+				<step><para>Select the <guilabel>Org Unit</guilabel> to use this billing type.</para></step>
+				<step><para>Enter the <guilabel>Default Price</guilabel>. This is only the default since 
 				the actual price of a specific billing can be adjusted when staff create 
 				a billing</para></step>
 				<step><para>Click <guibutton>Save</guibutton> to save the new billing type.</para></step>
@@ -1661,8 +1661,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<procedure>
 				<title>Editing Billing Types</title>
 				<step><para>Double click on a billing types to open the editing window.</para></step> 
-				<step><para>Make desired changes to the <emphasis>name</emphasis>, 
-				<emphasis>Org Unit</emphasis> and <emphasis>Default Price</emphasis>.</para></step>
+				<step><para>Make desired changes to the <guilabel>name</guilabel>, 
+				<guilabel>Org Unit</guilabel> and <guilabel>Default Price</guilabel>.</para></step>
 				<step><para>Once you have finished editing, click 
 				<guibutton>Save</guibutton>.</para></step>   	
 			</procedure>
@@ -1680,9 +1680,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<procedure>
 				<title>Adding Circulation Modifiers</title>
 				<step><para>Click <guibutton>New Circ Modifier</guibutton>.</para></step>
-				<step><para>Enter a <emphasis>Code</emphasis>, <emphasis>Name</emphasis> and  
-				<emphasis>Description</emphasis>.</para></step>
-				<step><para>Select the <emphasis>SIP 2 Media Type</emphasis>.</para></step>
+				<step><para>Enter a <guilabel>Code</guilabel>, <guilabel>Name</guilabel> and  
+				<guilabel>Description</guilabel>.</para></step>
+				<step><para>Select the <guilabel>SIP 2 Media Type</guilabel>.</para></step>
 				<step><para>Check the <guibutton>Magnetic Media</guibutton> check box if the item is magnetic media such as a cassette 
 				tape.</para></step>
 				<step><para>Click <guibutton>Save</guibutton> to save the new circulation 
@@ -1714,24 +1714,65 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<step>
 				<para>				
 				Create a marc template in  the directory <filename class="directory">/openils/var/templates/marc/</filename>. It should be in xml format.
-				Here is an example file <filename>k_video.xml</filename>: 
+				Here is an example file <filename>k_book.xml</filename>: 
 				</para>
-    			 <para>
-				<mediaobject xml:id="cattemplate">
-            				<alt>Catalog Template Example</alt>
-           				<imageobject>
-               				<imagedata scalefit="0" fileref="../media/k_book_record.png"/>
-            				</imageobject>
-				</mediaobject>
-  			</para>
+    			<programlisting language="xml">
+			<![CDATA[
+			<record>
+			  <leader>00620cam a2200205Ka 4500</leader>
+			  <controlfield tag="008">070101s                            eng d</controlfield>
+			  <datafield tag="010" ind1="" ind2="">
+			    <subfield code="a"></subfield>
+			  </datafield>
+			  <datafield tag="020" ind1="" ind2="">
+			    <subfield code="a"></subfield>
+			  </datafield>
+			  <datafield tag="082" ind1="0" ind2="4">
+			    <subfield code="a"></subfield>
+			  </datafield>
+			  <datafield tag="092" ind1="" ind2="">
+			    <subfield code="a"></subfield>
+			  </datafield>
+			  <datafield tag="100" ind1="" ind2="">
+			    <subfield code="a"></subfield>
+			  </datafield>
+			  <datafield tag="245" ind1="" ind2="">
+			    <subfield code="a"></subfield>
+			    <subfield code="b"></subfield>
+			    <subfield code="c"></subfield>
+			  </datafield>
+			  <datafield tag="260" ind1="" ind2="">
+			    <subfield code="a"></subfield>
+			    <subfield code="b"></subfield>
+			    <subfield code="c"></subfield>
+			  </datafield>
+			  <datafield tag="300" ind1="" ind2="">
+			    <subfield code="a"></subfield>
+			    <subfield code="b"></subfield>
+			    <subfield code="c"></subfield>
+			  </datafield>
+			  <datafield tag="500" ind1="" ind2="">
+			    <subfield code="a"></subfield>
+			  </datafield>
+			  <datafield tag="650" ind1="" ind2="">
+			    <subfield code="a"></subfield>
+			    <subfield code="v"></subfield>
+			  </datafield>
+			  <datafield tag="650" ind1="" ind2="">
+			    <subfield code="a"></subfield>
+			  </datafield>
+			</record>
+			]]>
+			</programlisting>
     	
 			</step>
 			<step>
-			<para>Add the template to the to the <emphasis>marctemplates</emphasis> list in the open-ils.cat section of the evergreen configuration file <filename>opensrf.xml</filename> </para>
+			<para>Add the template to the to the <emphasis>marctemplates</emphasis> list in the open-ils.cat section of the Evergreen configuration file 
+			<filename>opensrf.xml</filename><indexterm><primary>configuration files</primary><secondary>opensrf.xml</secondary></indexterm></para>
 			</step>
 			<step>
-				<para>Restart perl services for changes to take effect.</para>
-				<screen>/openils/bin/osrf_ctl.sh -l -a restart_perl</screen>
+				<para>Restart <systemitem class="service">Perl</systemitem></application><indexterm><primary>Perl</primary></indexterm> services for changes to take effect.</para>
+				<screen><userimput>/openils/bin/osrf_ctl.sh -l -a restart_perl</userimput></screen>
 			</step>
 		</procedure>
 	</section>
@@ -1751,10 +1792,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		<simplesect>
 			<title>Indexed-field Weighting<indexterm><primary>relevancy</primary><secondary>indexed-field weighting</secondary></indexterm> </title>
 			<para>Indexed-field weighting is configured in the Evergreen database in the weight column
-			of the config.metabib_field table, which follows the other four columns in this table:
+			of the <link linkend="config.metabib_field">config.metabib_field</link> table, which follows the other four columns in this table:
 			field_class, name, xpath, and format.</para>
-			<para>The following is one representative line from the config.metabib_field table:</para>
-			<para> author | conference | //mods32:mods/mods32:name[@type='conference']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']] | mods32 | 1 ) </para>
+			<para>The following is one representative line from the <link linkend="config.metabib_field">config.metabib_field</link> table:</para>
+			<screen> author | conference | //mods32:mods/mods32:name[@type='conference']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']] | mods32 | 1 ) </screen>
 			<para>The default value for index-field weights in config.metabib_field is 1. Adjust the
 			weighting of indexed fields to boost or lower the relevance score for matches on that
 			indexed field. The weight value may be increased or decreased by whole integers. </para>
@@ -1769,7 +1810,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			and is configured through floating-point multipliers in the multiplier column of the
 			search.relevance_adjustment table.</para>
 			<para> Weighting can be adjusted for one, more, or all multiplier fields in
-			search.relevance_adjustment.</para>
+			<link linkend="search.relevance_adjustment">search.relevance_adjustment</link>.</para>
 			<para>You can adjust the following three matchpoints:</para> 
 			<itemizedlist>
 			<listitem>
@@ -1960,12 +2001,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<para> Searching the out of the box <emphasis>keyword</emphasis> does not boost the ranking for terms appearing in, the title or subject fields since  there is just one 
 			keyword index which does not distinguish terms that appear in the title field from those in the notes field for example. In comparison, the title index is actually composed of 
 			a number of separate indexes: title|proper, title|uniform, title|alternative, title|translated, etc, that collectively form the title index. You can see this in the 
-			config.metabib_field table. The following procedure will add a keyword|title index so that terms found in the title field of an item are given more weight than terms in 
-			other fields. </para>
+			<link linkend="config.metabib_field">config.metabib_field</link> table. The following procedure will add a keyword|title index so that terms found in the title field of an 
+			item are given more weight than terms in other fields. </para>
 			<procedure>
 				<step>
 					<para>From the command line, access the PostgreSQL command line interface</para>
-					<screen>psql -U evergreen</screen>
+					<screen><userinput>psql -U evergreen</userinput></screen>
 				</step> 
 				<step>
 					<para>Clone the title|proper index to create a keyword|title index</para>
@@ -1985,14 +2026,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 					INSERT INTO metabib.keyword_field_entry 
 						(source, field, value)
 						SELECT source, 17, value (the field value, 17, field be different in your database so you may need to check the 
-						<emphasis>config.metabib_field</emphasis> for the id of your new index).
+						<link linkend="config.metabib_field">config.metabib_field</link> for the id of your new index).
 						FROM metabib.title_field_entry
 						WHERE field = 6;
 					</programlisting>
 				</step>
 				<step> 
 					<para>Bump the relevance when the first search term appears first in the title in a keyword search.</para>
-					<para>17 = our new keyword|title index (This may be different in your database so you may need to check the <emphasis>config.metabib_field</emphasis> for the id 
+					<para>17 = our new keyword|title index (This may be different in your database so you may need to check the 
+					<link linkend="config.metabib_field">config.metabib_field</link> for the id 
 					of your new index).</para>
 					<programlisting>
 					INSERT INTO search.relevance_adjustment 
@@ -2002,7 +2044,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				</step>
 				<step>
 					<para>Boost the relevance for search terms appearing in the title in general</para>
-					<para>17 = our new keyword|title index (This may be different in your database so you may need to check the <emphasis>config.metabib_field</emphasis> for the id 
+					<para>17 = our new keyword|title index (This may be different in your database so you may need to check the 
+					<link linkend="config.metabib_field">config.metabib_field</link> for the id 
 					of your new index).</para>
 					<programlisting>
 					UPDATE config.metabib_field
