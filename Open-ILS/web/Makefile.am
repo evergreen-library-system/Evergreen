@@ -11,7 +11,7 @@ opacextrasdir = $(DESTDIR)$(WEBDIR)/opac/extras/xsl/
 reportsdir = $(DESTDIR)$(WEBDIR)/reports/
 
 if BUILDILSWEB
-OILSWEB_INST = webcore-install offline-install cgi-bootstrap
+OILSWEB_INST = webcore-install offline-install
 
 #webcore-install
 
@@ -32,7 +32,7 @@ JSDOJOSRF = $(OPENSRF_LIBS)/javascript/md5.js \
 	     $(OPENSRF_LIBS)/javascript/opensrf_xmpp.js
 endif
 
-install-exec-local: webcore-install offline-install cgi-bootstrap
+install-exec-local: webcore-install offline-install
 
 uninstall-hook:
 	rm -R $(opacextrasdir)
@@ -67,15 +67,6 @@ offline-install:
 	perl -pe "s{##CONFIG##}{@sysconfdir@}" < @top_srcdir@/Open-ILS/src/offline/offline.pl > $(TMP)/offline.pl;
 	cp $(TMP)/offline.pl $(DESTDIR)$(CGIDIR)/offline/
 	chmod +x $(DESTDIR)$(CGIDIR)/offline/offline.pl
-
-cgi-bootstrap:
-	@echo "Installing cgi's to $(DESTDIR)$(CGIDIR)"
-	$(MKDIR_P) $(TMP)/cgi-bin
-	$(MKDIR_P) $(DESTDIR)$(CGIDIR)
-	for i in @top_srcdir@/Open-ILS/src/cgi-bin/*cgi; do xxx=`basename $$i`; perl -pe "s{##CONFIG##}{@sysconfdir@}" < $$i > $(TMP)/cgi-bin/$$xxx; done
-	cp $(TMP)/cgi-bin/*cgi $(DESTDIR)$(CGIDIR)
-	cp -r @top_srcdir@/Open-ILS/src/cgi-bin/support $(DESTDIR)$(CGIDIR)
-	chmod 755 $(DESTDIR)$(CGIDIR)/*cgi
 
 install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(WEBDIR)/opac/common/js
