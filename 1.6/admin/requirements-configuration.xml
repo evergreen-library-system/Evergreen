@@ -26,7 +26,12 @@
 			<info>
             			<title>Server Hardware Configurations and Clustering</title>
 			</info>
+<<<<<<< HEAD
         		<para>The hardware requirements for running a functional Evergreen server are minimal. It is also possible to scale up your evergreen configuration to be spread your Evergreen resources and services over several or even many servers in a clustered approach for the purpose 
+=======
+        		<para>The hardware requirements for running a functional Evergreen server are minimal. It is also possible
+			to scale up your evergreen configuration to be spread your Evergreen resources and services over several or even many servers in a clustered approach for the purpose 
+>>>>>>> d7545acfb3e35c75cd8d52bf8ca16ca95df72832
 			of system redundancy, load balancing and downtime reduction. This allows very large 
 			consortia to share one Evergreen system with hundreds of libraries with millions of records and millions of users, making the scalability of Evergreen almost infinite.</para>
 			<para>Here are some example scenarios for networked server configurations:</para>
