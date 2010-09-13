@@ -43,7 +43,8 @@
 		<glossentry>
 			<glossterm>Domain name</glossterm>
 			<glossdef>
-				<para>PLEASE ADD CONTENT.</para>
+				<para>A unique set of case-insensitive, alphanumeric strings separated by periods that are used to name organizations, web sites and addresses on the Internet (e.g.: <uri>www.esilibrary.com</uri>). Domain names can be reserved via third-party registration services, and can be associated with a unique IP address or suite of IP addresses.</para>
+			<glossseealso otherterm="ip"/>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -72,7 +73,12 @@
 	</glossdiv>
 	<glossdiv>
 		<title>I</title>
-		<glossentry></glossentry>
+		<glossentry id="ipaddress">
+			<glossterm>IP Address</glossterm>
+			<glossdef>
+				<para>(Internet Protocol address) A numerical label consisting of four numbers separated by periods (e.g., "192.168.1.15") assigned to individual members of networked computing systems. It uniquely identifies each system on the network and allows controlled communication between such systems. The numerical label scheme must adhere to a strictly defined naming convention that is currently defined and overseen by the Internet Corporation for Assigned Names and Numbers ("ICANN").</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>J</title>
@@ -103,7 +109,7 @@
 		<glossentry id="memcached">
 			<glossterm>memcached</glossterm>
 			<glossdef>
-				<para>PLEASE ADD CONTENT</para>
+				<para>A general-purpose distributed memory caching system, usually with a client~server architecture spread over multiple computing systems. It reduces the number of times a data source (e.g., a database) must be directly accessed by temporarily caching data in memory, therefore dramatically speeding up database-driven web applications.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -112,7 +118,8 @@
 		<glossentry id="netaddr">
 			<glossterm>Network address</glossterm>
 			<glossdef>
-				<para>A numerical label consisting of four numbers separated by periods (e.g., "192.168.1.15") that uniquely identifies a machine on a computer network.</para>
+				<para>Also known as an IP address (Internet Protocol address).</para>
+				<glossseealso otherterm="ipaddress"/>
 			</glossdef>
 		</glossentry>
 		<glossentry id="nsis">
@@ -152,12 +159,6 @@
 	</glossdiv>
 	<glossdiv>
 		<title>R</title>
-		<glossentry id="router">
-			<glossterm>router</glossterm>
-			<glossdef>
-				<para>PLEASE ADD CONTENT</para>
-			</glossdef>
-		</glossentry>
 		<glossentry id="Resource Hacker">
 			<glossterm>Resource Hacker</glossterm>
 			<glossdef>
@@ -229,7 +230,7 @@
 		<glossentry id="wine">
 			<glossterm>Wine</glossterm>
 			<glossdef>
-				<para>A popular open-source applcation that allows Linux and Unix systems to run Windows executables. More information is available at <ulink url="http://www.winehq.org/">http://www.winehq.org/</ulink>.</para>
+				<para>A popular open-source application that allows Linux and Unix systems to run Windows executables. More information is available at <ulink url="http://www.winehq.org/">http://www.winehq.org/</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
