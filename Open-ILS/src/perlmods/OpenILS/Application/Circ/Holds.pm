@@ -2463,6 +2463,7 @@ sub find_hold_mvr {
 	my $tid;
 	my $copy;
 	my $volume;
+    my $issuance;
 
 	if( $hold->hold_type eq OILS_HOLD_TYPE_METARECORD ) {
 		my $mr = $e->retrieve_metabib_metarecord($hold->target)
@@ -2477,11 +2478,21 @@ sub find_hold_mvr {
 			or return $e->event;
 		$tid = $volume->record;
 
+    } elsif( $hold->hold_type eq OILS_HOLD_TYPE_ISSUANCE ) {
+        $issuance = $e->retrieve_serial_issuance([
+            $hold->target,
+            {flesh => 1, flesh_fields => {siss => [ qw/subscription/ ]}}
+        ]) or return $e->event;
+
+        $tid = $issuance->subscription->record_entry;
+
 	} elsif( $hold->hold_type eq OILS_HOLD_TYPE_COPY ) {
-		$copy = $e->retrieve_asset_copy($hold->target)
-			or return $e->event;
-		$volume = $e->retrieve_asset_call_number($copy->call_number)
-			or return $e->event;
+		$copy = $e->retrieve_asset_copy([
+            $hold->target, 
+            {flesh => 1, flesh_fields => {acp => ['call_number']}}
+        ]) or return $e->event;
+        
+		$volume = $copy->call_number;
 		$tid = $volume->record;
 	}
 
@@ -2496,7 +2507,7 @@ sub find_hold_mvr {
 
     # TODO return metarcord mvr for M holds
 	my $title = $e->retrieve_biblio_record_entry($tid);
-	return ( $U->record_to_mvr($title), $volume, $copy );
+	return ( $U->record_to_mvr($title), $volume, $copy, $issuance );
 }
 
 
