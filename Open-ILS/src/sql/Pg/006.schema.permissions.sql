@@ -27,6 +27,9 @@ CREATE TABLE permission.perm_list (
 	description	TEXT
 );
 CREATE INDEX perm_list_code_idx ON permission.perm_list (code);
+CREATE TRIGGER maintain_perm_i18n_tgr
+    AFTER UPDATE ON permission.perm_list
+    FOR EACH ROW EXECUTE PROCEDURE oils_i18n_id_tracking('ppl');
 
 CREATE TABLE permission.grp_tree (
 	id			SERIAL	PRIMARY KEY,

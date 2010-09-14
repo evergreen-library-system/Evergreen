@@ -68,7 +68,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0392'); -- phasefx
+INSERT INTO config.upgrade_log (version) VALUES ('0393'); -- miker
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -646,6 +646,34 @@ CREATE TABLE config.i18n_core (
 );
 
 CREATE UNIQUE INDEX i18n_identity ON config.i18n_core (fq_field,identity_value,translation);
+
+CREATE OR REPLACE FUNCTION oils_i18n_update_apply(old_ident TEXT, new_ident TEXT, hint TEXT) RETURNS VOID AS $_$
+BEGIN
+
+    EXECUTE $$
+        UPDATE  config.i18n_core
+          SET   identity_value = $$ || quote_literal(new_ident) || $$ 
+          WHERE fq_field LIKE '$$ || hint || $$.%' 
+                AND identity_value = $$ || quote_literal(old_ident) || $$::TEXT;$$;
+
+    RETURN;
+
+END;
+$_$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION oils_i18n_id_tracking(/* hint */) RETURNS TRIGGER AS $_$
+BEGIN
+    PERFORM oils_i18n_update_apply( OLD.id::TEXT, NEW.id::TEXT, TG_ARGV[0]::TEXT );
+    RETURN NEW;
+END;
+$_$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION oils_i18n_code_tracking(/* hint */) RETURNS TRIGGER AS $_$
+BEGIN
+    PERFORM oils_i18n_update_apply( OLD.code::TEXT, NEW.code::TEXT, TG_ARGV[0]::TEXT );
+    RETURN NEW;
+END;
+$_$ LANGUAGE PLPGSQL;
 
 CREATE TABLE config.billing_type (
     id              SERIAL  PRIMARY KEY,
