@@ -161,7 +161,7 @@
 			</section>
 			<section>
 				<title>Configure OpenSRF</title>
-				<para>As the <systemitem class="username">opensrf</systemitem> user, return to the OpenSRF build directory and use the <command>configure</command> utility to prepare for the next step of compiling and linking the software. You can include the <option>--enable-python</option> and <option>--enable-java</option> configuration options if you wish to include support for Python and Java, respectively:</para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user, return to the OpenSRF build directory and use the <command>configure</command> utility to prepare for the next step of compiling and linking the software. You can include the  <option>--enable-python</option> and <option>--enable-java</option> configuration options if you wish to include support for Python and Java, respectively:</para>
 				<figure>
 					<title>Commands to configure OpenSRF</title>
 					<screen>
@@ -246,10 +246,13 @@
 				<para>As the <systemitem class="username">root</systemitem> user, edit the file <filename>/etc/ejabberd/ejabberd.cfg</filename> and make the following changes:</para>
 				<itemizedlist>
 					<listitem>Change <literal>{hosts, ["localhost"]}.</literal> to <literal>{hosts, ["localhost", "private.localhost", "public.localhost"]}.</literal></listitem>
-					<listitem>Change <literal>{max_user_sessions, 10}.</literal> to <literal>{max_user_sessions, 10000}.</literal> If you see something like this instead: <literal>{access, max_user_sessions, [{10, all}]}.</literal>, then change it to <literal>{access, max_user_sessions, [{10000, all}]}.</literal></listitem>
+					<listitem>
+						<para>Change <literal>{max_user_sessions, 10}.</literal> to <literal>{max_user_sessions, 10000}.</literal></para>
+						<para>If you see something like this instead: <literal>{access, max_user_sessions, [{10, all}]}.</literal> then change it to <literal>{access, max_user_sessions, [{10000, all}]}.</literal></para>
+					</listitem>
 					<listitem>Change all three occurrences of <literal>max_stanza_size</literal> to <literal>2000000</literal>.</listitem>
 					<listitem>Change both occurrences of <literal>maxrate</literal> to <literal>500000</literal>.</listitem>
-					<listitem>Comment out the line <literal>{mod_offline, []}</literal> by placing two <literal>%</literal> comment signs in front.</listitem>
+					<listitem>Comment out the line <literal>{mod_offline, []}</literal> by placing two comment signs <literal>%%</literal> in front.</listitem>
 				</itemizedlist>
 			</section>
 			<section>
@@ -326,7 +329,7 @@ $ ejabberdctl register opensrf public.localhost  <password>
 					    password = password for "private.localhost" router user
 					</screen>
 				</figure>
-				<para>You also need to specify the domains from which OpenSRF will accept and to which OpenSRF will make connections. If you are installing OpenSRF on a single server and using the <systemitem class="domainname">private.localhost</systemitem> / <systemitem class="domainname">public.localhost</systemitem> domains, these will already be set to the correct values. Otherwise, search and replace to match your values.</para>
+				<para>You also need to specify the domains from which OpenSRF will accept and to which it will make connections. If you are installing OpenSRF on a single server and using the <systemitem class="domainname">private.localhost</systemitem> / <systemitem class="domainname">public.localhost</systemitem> domains, these will already be set to the correct values. Otherwise, search and replace to match your values.</para>
 			</section>
 			<section>
 				<title>Modify the file <filename>opensrf.xml</filename></title>
@@ -347,7 +350,7 @@ $ ejabberdctl register opensrf public.localhost  <password>
 				<title>Create Configuration Files for Users Needing <application>srfsh</application></title>
 				<para>In this section you will set up a special configuration file for each user who will need to run the <application>srfsh</application> (pronounced <emphasis>surf shell</emphasis>) utility.</para>
 				<para>The software installation will automatically create <application>srfsh</application>. This is a command line diagnostic tool for testing and interacting with the OpenSRF network software. It will be used in a future step to complete and test the Evergreen installation. See <xref linkend="serversideinstallation-testing"/> for further information.</para>
-				<para>As the <systemitem class="username">root</systemitem> user, copy the short sample configuration file <filename>/openils/conf/srfsh.xml.example</filename> to the file <filename>.srfsh.xml</filename> (note the leading dot!) in the home directory of each user who will use <application>srfsh</application>. Finally, edit each file <filename>.srfsh.xml</filename> and make the following changes. When you finish, remember to change the owner of the file to match the owner of the home directory.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, copy the short sample configuration file <filename>/openils/conf/srfsh.xml.example</filename> to the file <filename>.srfsh.xml</filename> (note the leading dot in the file name!) in the home directory of each user who will use <application>srfsh</application>. Finally, edit each file <filename>.srfsh.xml</filename> and make the following changes. When you finish, remember to change the owner of the file to match the owner of the home directory.</para>
 				<itemizedlist>
 					<listitem>Modify <literal>domain</literal> to be the router hostname (following our domain examples, <systemitem class="domainname">private.localhost</systemitem> will give <application>srfsh</application> access to all OpenSRF services, while <systemitem class="domainname">public.localhost</systemitem> will only allow access to those OpenSRF services that are publicly exposed).</listitem>
 					<listitem>Modify <literal>username</literal> and <literal>password</literal> to match the <literal>opensrf</literal> Jabber user for the chosen domain</listitem>
@@ -369,12 +372,11 @@ $ ejabberdctl register opensrf public.localhost  <password>
 <logfile>/tmp/srfsh.log</logfile>
 <!-- 0 None, 1 Error, 2 Warning, 3 Info, 4 debug, 5 Internal (Nasty) -->
 <loglevel>4</loglevel>
-</srfsh>
-]]></programlisting>
+</srfsh>]]></programlisting>
 				</figure>
 			</section>
 			<section>
-				<title>Modify Environmental Variable PATH for <systemitem class="username">opensrf</systemitem> User</title>
+				<title>Modify <envar>PATH</envar> Environment Variable for User <systemitem class="username">opensrf</systemitem></title>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, modify the environmental variable <envar>PATH</envar> by adding a new file path to the <systemitem class="username">opensrf</systemitem> user's shell configuration file <filename>.bashrc</filename>:</para>
 				<figure>
 					<title>Commands to add path to <filename>.bashrc</filename> configuration file</title>
@@ -433,12 +435,7 @@ $ ejabberdctl register opensrf public.localhost  <password>
 					srfsh#
 					</screen>
 				</figure>
-				<indexterm>
-					<primary>ZZZ-REVIEW</primary>
-					<secondary>VERIFY THIS TEST </secondary>
-				</indexterm>
-				<caution>VERIFY THIS TEST </caution>
-				<para>For other <application>srfsh</application> commands, type <userinput>help</userinput> in at the prompt.</para>
+				<para>For other <application>srfsh</application> commands, type <userinput>help</userinput> at the prompt.</para>
 			</section>
 			<section>
 				<title>Stopping OpenSRF</title>
@@ -857,7 +854,8 @@ $ ejabberdctl register opensrf public.localhost  <password>
 				<para>Some further configuration changes to Apache may be necessary for busy systems. These changes increase the number of Apache server processes that are started to support additional browser connections.</para>
 				<procedure>
 					<step>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <filename>/etc/apache2/apache2.conf</filename>, locate and modify the section related to <emphasis>prefork configuration</emphasis> to suit the load on your system.</step>
-					<step><para>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <filename>/etc/apache2/apache2.conf</filename> and add the line <emphasis role="bold">MaxKeepAliveRequests 100</emphasis>, or modify an existing line if it already exists.</para>
+					<step>
+						<para>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <filename>/etc/apache2/apache2.conf</filename> and add the line <emphasis role="bold">MaxKeepAliveRequests 100</emphasis>, or modify an existing line if it already exists.</para>
 						<figure>
 							<title>(OPTIONAL) Example of updates to Apache configuration</title>
 							<programlisting language="xml"><![CDATA[
@@ -869,8 +867,8 @@ $ ejabberdctl register opensrf public.localhost  <password>
    MaxRequestsPerChild 10000
 </IfModule>
 MaxKeepAliveRequests 100
-							]]></programlisting>
-							</figure>
+]]></programlisting>
+						</figure>
 					</step>
 				</procedure>
 			</section>
