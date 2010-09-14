@@ -13,13 +13,13 @@
         <script type="text/javascript">
 var djConfig = {parseOnLoad:true,isDebug:false,AutoIDL:[
 'aou','aout','pgt','lasso','mvr','acp','circ','ccmcmt','asvq','asva','asv','acplo','acqf','acqdfe',
-'vmp','cbs','viiad','vqarad','vqbrad','aoa','ac','aua','asvr','actscecm','sstr','scap','acqim','acqct','acqexr',
+'vmp','cbs','viiad','vqarad','vqbrad','aoa','ac','aua','asvr','actscecm','acqim','acqct','acqexr',
 'acqpro','acqpron','acqipm','acqinv','acqie','acqii','acqpa','acqpc','acqpca','acqftr','acqfc','acqfy','acqfs',
 'acqfscred','acqofscred','acqfdeb','acqf','acqfat','acqfdt','acqfet','acqfst','acqfcb','acqafat','acqafet',
 'acqafst','acqafsb','acqafcb','acqfsrcct','acqfsrcat','acqfsrcb','acqfsb','acqfa','acqfap','acqpl','acqcr',
 'acqpo','acqpoh','acqpon','acqpoi','acqlih','acqliat','acqlin','acqlia','acqlid','acqliad','acqlimad',
 'acqligad','acqliuad','acqlipad','acqphsm','acqlilad','acqedi','acqedim','acqdf','acqdfe','acqdfa','acqda',
-'acqclt','acqclet','acqcl','acqcle','acqscl','acqscle','acqclp','acqclpa','acqlisum','acqft','acqftm','jub']};
+'acqclt','acqclet','acqcl','acqcle','acqscl','acqscle','acqclp','acqclpa','acqlisum','acqft','acqftm','jub','sdist','ssub','sstr','scap','bre','siss','act']};
         </script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/dojo/openils_dojo.js"></script>
