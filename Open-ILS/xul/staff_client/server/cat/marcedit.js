@@ -1,4 +1,4 @@
-// vim: noet:sw=4:ts=4:
+// vim: et:sw=4:ts=4:
 var xmlDeclaration = /^<\?xml version[^>]+?>/;
 
 var serializer = new XMLSerializer();
@@ -18,6 +18,8 @@ var xml_record;
 var context_menus;
 var tag_menu;
 var p;
+var auth_pages = {};
+var show_auth_menu = false;
 
 function $(id) { return document.getElementById(id); }
 
@@ -703,7 +705,7 @@ var rec_type = {
     SCO : { Type : /[cd]{1}/,    BLvl : /[abcdms]{1}/ },
     REC : { Type : /[ij]{1}/,    BLvl : /[abcdms]{1}/ },
     COM : { Type : /[m]{1}/,    BLvl : /[abcdms]{1}/ },
-	AUT : { Type : /[z]{1}/,	BLvl : /.{1}/ },
+    AUT : { Type : /[z]{1}/,    BLvl : /.{1}/ },
     MFHD : { Type : /[uvxy]{1}/,  BLvl : /.{1}/ }
 };
 
@@ -981,7 +983,7 @@ var ff_pos = {
             REC : {start : 18, len : 1, def : ' ' },
             COM : {start : 18, len : 1, def : 'i' }
         }
-	},
+    },
     Item : {
         ldr : {
             MFHD : {start : 18, len : 1, def : 'i' }
@@ -1157,101 +1159,101 @@ var ff_pos = {
             SER : {start : 16, len : 1, def : ' ' }
         }
     },
-	"GeoDiv" : {
-		"_8" : {
-			"AUT" : {"start" : 6, "len" : 1, "def" : ' ' }
-		}
-	},
-	"Roman" : {
-		"_8" : {
-			"AUT" : {"start" : 7, "len" : 1, "def" : ' ' }
-		}
-	},
-	"CatLang" : {
-		"_8" : {
-			"AUT" : {"start" : 8, "len" : 1, "def" : ' ' }
-		}
-	},
-	"Kind" : {
-		"_8" : {
-			"AUT" : {"start" : 9, "len" : 1, "def" : ' ' }
-		}
-	},
-	"Rules" : {
-		"_8" : {
-			"AUT" : {"start" : 10, "len" : 1, "def" : ' ' }
-		}
-	},
-	"SHSys" : {
-		"_8" : {
-			"AUT" : {"start" : 11, "len" : 1, "def" : ' ' }
-		}
-	},
-	"SerType" : {
-		"_8" : {
-			"AUT" : {"start" : 12, "len" : 1, "def" : ' ' }
-		}
-	},
-	"SerNum" : {
-		"_8" : {
-			"AUT" : {"start" : 13, "len" : 1, "def" : ' ' }
-		}
-	},
-	"HeadMain" : {
-		"_8" : {
-			"AUT" : {"start" : 14, "len" : 1, "def" : ' ' }
-		}
-	},
-	"HeadSubj" : {
-		"_8" : {
-			"AUT" : {"start" : 15, "len" : 1, "def" : ' ' }
-		}
-	},
-	"HeadSer" : {
-		"_8" : {
-			"AUT" : {"start" : 16, "len" : 1, "def" : ' ' }
-		}
-	},
-	"TypeSubd" : {
-		"_8" : {
-			"AUT" : {"start" : 17, "len" : 1, "def" : ' ' }
-		}
-	},
-	"TypeGov" : {
-		"_8" : {
-			"AUT" : {"start" : 28, "len" : 1, "def" : ' ' }
-		}
-	},
-	"RefEval" : {
-		"_8" : {
-			"AUT" : {"start" : 29, "len" : 1, "def" : ' ' }
-		}
-	},
-	"RecUpd" : {
-		"_8" : {
-			"AUT" : {"start" : 31, "len" : 1, "def" : ' ' }
-		}
-	},
-	"NameDiff" : {
-		"_8" : {
-			"AUT" : {"start" : 32, "len" : 1, "def" : ' ' }
-		}
-	},
-	"Level" : {
-		"_8" : {
-			"AUT" : {"start" : 33, "len" : 1, "def" : ' ' }
-		}
-	},
-	"ModRec" : {
-		"_8" : {
-			"AUT" : {"start" : 38, "len" : 1, "def" : ' ' }
-		}
-	},
-	"CatSrc" : {
-		"_8" : {
-			"AUT" : {"start" : 39, "len" : 1, "def" : ' ' }
-		}
-	}
+    "GeoDiv" : {
+        "_8" : {
+            "AUT" : {"start" : 6, "len" : 1, "def" : ' ' }
+        }
+    },
+    "Roman" : {
+        "_8" : {
+            "AUT" : {"start" : 7, "len" : 1, "def" : ' ' }
+        }
+    },
+    "CatLang" : {
+        "_8" : {
+            "AUT" : {"start" : 8, "len" : 1, "def" : ' ' }
+        }
+    },
+    "Kind" : {
+        "_8" : {
+            "AUT" : {"start" : 9, "len" : 1, "def" : ' ' }
+        }
+    },
+    "Rules" : {
+        "_8" : {
+            "AUT" : {"start" : 10, "len" : 1, "def" : ' ' }
+        }
+    },
+    "SHSys" : {
+        "_8" : {
+            "AUT" : {"start" : 11, "len" : 1, "def" : ' ' }
+        }
+    },
+    "SerType" : {
+        "_8" : {
+            "AUT" : {"start" : 12, "len" : 1, "def" : ' ' }
+        }
+    },
+    "SerNum" : {
+        "_8" : {
+            "AUT" : {"start" : 13, "len" : 1, "def" : ' ' }
+        }
+    },
+    "HeadMain" : {
+        "_8" : {
+            "AUT" : {"start" : 14, "len" : 1, "def" : ' ' }
+        }
+    },
+    "HeadSubj" : {
+        "_8" : {
+            "AUT" : {"start" : 15, "len" : 1, "def" : ' ' }
+        }
+    },
+    "HeadSer" : {
+        "_8" : {
+            "AUT" : {"start" : 16, "len" : 1, "def" : ' ' }
+        }
+    },
+    "TypeSubd" : {
+        "_8" : {
+            "AUT" : {"start" : 17, "len" : 1, "def" : ' ' }
+        }
+    },
+    "TypeGov" : {
+        "_8" : {
+            "AUT" : {"start" : 28, "len" : 1, "def" : ' ' }
+        }
+    },
+    "RefEval" : {
+        "_8" : {
+            "AUT" : {"start" : 29, "len" : 1, "def" : ' ' }
+        }
+    },
+    "RecUpd" : {
+        "_8" : {
+            "AUT" : {"start" : 31, "len" : 1, "def" : ' ' }
+        }
+    },
+    "NameDiff" : {
+        "_8" : {
+            "AUT" : {"start" : 32, "len" : 1, "def" : ' ' }
+        }
+    },
+    "Level" : {
+        "_8" : {
+            "AUT" : {"start" : 33, "len" : 1, "def" : ' ' }
+        }
+    },
+    "ModRec" : {
+        "_8" : {
+            "AUT" : {"start" : 38, "len" : 1, "def" : ' ' }
+        }
+    },
+    "CatSrc" : {
+        "_8" : {
+            "AUT" : {"start" : 39, "len" : 1, "def" : ' ' }
+        }
+    }
 };
 
 function recordType (rec) {
@@ -1841,10 +1843,25 @@ var authority_tag_map = {
 function getAuthorityContextMenu (target, sf) {
     var menu_id = sf.parent().@tag + ':' + sf.@code + '-authority-context-' + sf;
 
-    var old = document.getElementById( menu_id );
-    if (old) old.parentNode.removeChild(old);
+    var page = 0;
+    var old = dojo.byId( menu_id );
+    if (old) {
+        page = auth_pages[menu_id];
+        old.parentNode.removeChild(old);
+    } else {
+        auth_pages[menu_id] = 0;
+    }
 
     var sf_popup = createPopup({ id : menu_id, flex : 1 });
+
+    sf_popup.addEventListener("popuphiding", function(event) {
+        if (show_auth_menu) {
+            show_auth_menu = false;
+            getAuthorityContextMenu(target, sf);
+            dojo.byId(menu_id).openPopup();
+        }  
+    }, false);
+
     context_menus.appendChild( sf_popup );
 
     if (!authority_tag_map[sf.parent().@tag]) {
@@ -1853,105 +1870,8 @@ function getAuthorityContextMenu (target, sf) {
         return false;
     }
 
-    var auth_data = searchAuthority( sf, authority_tag_map[sf.parent().@tag][0], sf.@code, 50);
+    browseAuthority( sf_popup, menu_id, target, sf, 20, page);
 
-    var res = new XML( auth_data.responseText );
-
-    var rec_list = [];
-
-    var recs = res.gw::payload.gw::array.gw::string;
-    for (var i in recs) {
-        var x = recs[i];
-        var xml = new XML(x.toString());
-        var main = xml.datafield.(@tag.toString().match(/^1/)).subfield;
-
-        if (! (main[0].parent().@tag == authority_tag_map[sf.parent().@tag][1]) ) continue;
-
-        var main_text = '';
-        for (var i in main) {
-            if (main_text) main_text += ' / ';
-            main_text += main[i];
-        }
-
-        rec_list.push( [ main_text, xml ] );
-    }
-    
-    for (var i in rec_list.sort( function (a, b) { if(a[0] > b[0]) return 1; return -1; } )) {
-
-        var main_text = rec_list[i][0];
-        var xml = rec_list[i][1];
-        var main = xml.datafield.(@tag.toString().match(/^1/)).subfield;
-
-        if (! (main[0].parent().@tag == authority_tag_map[sf.parent().@tag][1]) ) continue;
-
-        var grid = document.getElementsByAttribute('name','authority-marc-template')[0].cloneNode(true);
-        grid.setAttribute('name','-none-');
-        grid.setAttribute('style','overflow:scroll');
-
-
-        var submenu = createMenu( { label : main_text } );
-
-        var popup = createMenuPopup({ flex : "1" });
-        submenu.appendChild(popup);
-
-        var fields = xml.datafield;
-        for (var j in fields) {
-
-            /* Restrict options to Heading Information fields (1xx)
-             * and See Also From fields (5xx) rather than displaying
-             * every field in the authority record */
-            var tag = fields[j].@tag;
-            if (tag.substr(0,1) != 1 && tag.substr(0,1) != 5) {
-                continue;
-            }
-
-            var row = createRow(
-                {},
-                createLabel( { "value" : tag } ),
-                createLabel( { "value" : fields[j].@ind1 } ),
-                createLabel( { "value" : fields[j].@ind2 } )
-            );
-
-            var sf_box = createHbox();
-
-            var subfields = fields[j].subfield;
-            for (var k in subfields) {
-                sf_box.appendChild(
-                    createCheckbox(
-                        { "label"    : '\u2021' + subfields[k].@code + ' ' + subfields[k],
-                          "subfield" : subfields[k].@code,
-                          "tag"      : subfields[k].parent().@tag,
-                          "value"    : subfields[k]
-                        }
-                    )
-                );
-                row.appendChild(sf_box);
-            }
-
-            grid.lastChild.appendChild(row);
-        }
-
-        grid.hidden = false;
-        popup.appendChild( grid );
-
-        popup.appendChild(
-            createMenuitem(
-                { label : $('catStrings').getString('staff.cat.marcedit.apply_selected.label'),
-                  command : function (event) {
-                        applyAuthority(event.target.previousSibling, target, sf);
-                        return true;
-                  }
-                }
-            )
-        );
-
-        sf_popup.appendChild( submenu );
-    }
-
-    if (sf_popup.childNodes.length == 0)
-        sf_popup.appendChild(createLabel( { value : $('catStrings').getString('staff.cat.marcedit.no_authority_match.label') } ) );
-
-    target.setAttribute('context', menu_id);
     return true;
 }
 
@@ -2335,14 +2255,245 @@ function searchAuthority (term, tag, sf, limit) {
 
 }
 
+function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
+    dojo.require('dojox.xml.parser');
+
+    // map tag + subfield to the appropriate authority browse axis:
+    // currently authority.author, authority.subject, authority.title, authority.topic
+    // based on mappings in OpenILS::Application::SuperCat
+
+    var type;
+
+    // Map based on replacing the first char of the selected tag with '1'
+    switch ('1' + (sf.parent().@tag.toString()).substring(1)) {
+        case "130":
+            type = 'authority.title';
+            break;
+
+        case "100":
+        case "110":
+        case "111":
+            type = 'authority.author';
+            break;
+
+        case "150":
+            type = 'authority.topic';
+            break;
+
+        case "148":
+        case "151":
+        case "155":
+            type = 'authority.subject';
+            break;
+
+        // No matching tag means no authorities to search - shortcut
+        default:
+            return;
+    }
+
+    if (!limit) {
+        limit = 10;
+    }
+
+    if (!page) {
+        page = 0;
+    }
+
+    var url = '/opac/extras/startwith/marcxml/'
+        + type
+        + '/1' // OU - currently unscoped
+        + '/' + sf.toString()
+        + '/' + page
+        + '/' + limit
+    ;
+
+    // would be good to carve this out into a separate function
+    dojo.xhrGet({"url":url, "handleAs":"xml", "load": function(records) {
+        var create_menu = createMenu({ label: $('catStrings').getString('staff.cat.marcedit.create_authority.label')});
+
+        var cm_popup = create_menu.appendChild(
+            createMenuPopup()
+        );
+
+        cm_popup.appendChild(
+            createMenuitem({ label : $('catStrings').getString('staff.cat.marcedit.create_authority_now.label'),
+                command : function() { 
+                    // Call middle-layer function to create and save the new authority
+                    var source_f = summarizeField(sf);
+                    fieldmapper.standardRequest(
+                        ["open-ils.cat", "open-ils.cat.authority.record.create_from_bib"],
+                        {
+                            "async": true,
+                            "params": [source_f, ses()],
+                            "oncomplete": function() {
+                                alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
+                            }
+                        }
+                    );
+                }
+            })
+        );
+
+        cm_popup.appendChild(
+            createMenuitem({ label : $('catStrings').getString('staff.cat.marcedit.create_authority_edit.label'),
+                command : function() { 
+                    // Generate the new authority by calling the new middle-layer
+                    // function (a non-saving variant), then display in another
+                    // MARC editor
+                    var source_f = summarizeField(sf);
+                    var authtoken = ses();
+                    dojo.require('openils.PermaCrud');
+                    var pcrud = new openils.PermaCrud({"authtoken": authtoken});
+                    var rec = fieldmapper.standardRequest(
+                        ["open-ils.cat", "open-ils.cat.authority.record.create_from_bib.readonly"],
+                        { "params": [source_f] }
+                    );
+                    loadMarcEditor(pcrud, rec);
+                }
+            })
+        );
+
+        sf_popup.appendChild(create_menu);
+        sf_popup.appendChild( createComplexXULElement( 'menuseparator' ) );
+
+        // append "Previous page" results browser
+        sf_popup.appendChild(
+            createMenuitem({ label : $('catStrings').getString('staff.cat.marcedit.previous_page.label'),
+                command : function(event) { 
+                    auth_pages[menu_id] -= 1;
+                    show_auth_menu = true;
+                }
+            })
+        );
+        sf_popup.appendChild( createComplexXULElement( 'menuseparator' ) );
+
+        dojo.query('record', records).forEach(function(record) {
+            var main_text = '';
+            var auth_id = dojox.xml.parser.textContent(dojo.query('datafield[tag="901"] subfield[code="c"]', record)[0]);
+            var auth_org = dojox.xml.parser.textContent(dojo.query('controlfield[tag="003"]', record)[0]);
+            // we have grabbed the fields with tags beginning with 1 or 5 and iterate through the subfields
+            dojo.query('datafield[tag^="1"], datafield[tag^="5"]', record).forEach(function(field) {
+                dojo.query('subfield', field).forEach(function(subfield) {
+                    if (main_text) {
+                        main_text += ' / ';
+                    }
+                    main_text += dojox.xml.parser.textContent(subfield);
+                });
+            });
+
+            /*
+             * 
+            if (! (main[0].parent().@tag == authority_tag_map[sf.parent().@tag][1]) ) return;
+            */
+
+            var grid = dojo.query('[name="authority-marc-template"]')[0].cloneNode(true);
+            grid.setAttribute('name','-none-');
+            grid.setAttribute('style','overflow:scroll');
+
+            var submenu = createMenu( { label : main_text } );
+
+            var popup = createMenuPopup({ flex : "1" });
+            submenu.appendChild(popup);
+
+            dojo.query('datafield[tag^="1"], datafield[tag^="5"]', record).forEach(function(field) {
+                var row = createRow(
+                    {},
+                    createLabel( { "value" : dojo.attr(field, 'ind1') } ),
+                    createLabel( { "value" : dojo.attr(field, 'ind2') } )
+                );
+
+                var sf_box = createHbox();
+                dojo.query('subfield', field).forEach(function(subfield) {
+                    sf_box.appendChild(
+                        createCheckbox(
+                            { "label"    : '\u2021' + dojo.attr(subfield, 'code') + ' ' + dojox.xml.parser.textContent(subfield),
+                              "subfield" : dojo.attr(subfield, 'code'),
+                              "tag"      : dojo.attr(field, 'tag'),
+                              "value"    : dojox.xml.parser.textContent(subfield)
+                            }
+                        )
+                    );
+                    row.appendChild(sf_box);
+                });
+
+                // Append the authority linking subfield
+                sf_box.appendChild(
+                    createCheckbox(
+                        { "label"    : '\u2021' + '0' + ' (' + auth_org + ')' + auth_id,
+                          "subfield" : '0',
+                          "tag"      : dojo.attr(field, 'tag'),
+                          "value"    : '(' + auth_org + ')' + auth_id
+                        }
+                    )
+                );
+                row.appendChild(sf_box);
+
+                grid.lastChild.appendChild(row);
+            });
+
+            grid.hidden = false;
+            popup.appendChild( grid );
+
+            popup.appendChild(
+                createMenuitem(
+                    { label : $('catStrings').getString('staff.cat.marcedit.apply_selected.label'),
+                      command : function (event) {
+                            applyAuthority(event.target.previousSibling, target, sf);
+                            return true;
+                      }
+                    }
+                )
+            );
+
+            sf_popup.appendChild( submenu );
+        });
+
+        if (sf_popup.childNodes.length == 0) {
+            sf_popup.appendChild(createLabel( { value : $('catStrings').getString('staff.cat.marcedit.no_authority_match.label') } ) );
+        } else {
+            // append "Next page" results browser
+            sf_popup.appendChild( createComplexXULElement( 'menuseparator' ) );
+            sf_popup.appendChild(
+                createMenuitem({ label : $('catStrings').getString('staff.cat.marcedit.next_page.label'),
+                    command : function(event) { 
+                        auth_pages[menu_id] += 1;
+                        show_auth_menu = true;
+                    }
+                })
+            );
+        }
+
+        target.setAttribute('context', menu_id);
+        return true;
+    }});
+
+}
+
+function summarizeField(sf) {
+    var source_f= {
+        "tag": '',
+        "ind1": '',
+        "ind2": '',
+        "subfields": []
+    };
+    for (var i = 0; i < sf.parent().subfield.length(); i++) {
+        source_f.subfields.push([sf.parent().subfield[i].@code.toString(), sf.parent().subfield[i].toString()]);
+    }
+    source_f.tag = sf.parent().@tag.toString();
+    source_f.ind1 = sf.parent().@ind1.toString();
+    source_f.ind1 = sf.parent().@ind2.toString();
+    return source_f;
+}
+
+
 function buildBibSourceList (authtoken, recId) {
     /* TODO: Work out how to set the bib source of the bre that does not yet
      * exist - this is specifically in the case of Z39.50 imports. Right now
      * we just avoid populating and showing the config.bib_source list
      */
-	if (!recId) {
-		return false;
-	}
+    if (!recId) {
+        return false;
+    }
 
     var bib = xulG.record.bre;
 
@@ -2397,3 +2548,38 @@ function onBibSourceSelect() {
         dojo.byId('bib-source-list-button').disabled = true;   
     }
 }
+
+function loadMarcEditor(pcrud, marcxml) {
+    /*
+       To run in Firefox directly, must set signed.applets.codebase_principal_support
+       to true in about:config
+     */
+    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+    win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
+
+    /* Ugly hack to satisfy arn_value and last_xact_id db schema reqs */
+    var now = new Date;
+    var arn = 'AUTOGEN' + Date.parse(now);
+    
+    win.xulG = {
+        "record": {"marc": marcxml, "rtype": "are"},
+        "save": {
+            "label": $('catStrings').getString('staff.cat.marcedit.save.label'),
+            "func": function(xmlString) {
+                var rec = new are();
+                rec.marc(xmlString);
+                rec.arn_value(arn);
+                rec.last_xact_id(arn);
+                rec.isnew(true);
+                pcrud.create(rec, {
+                    "oncomplete": function () {
+                        alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
+                        win.close();
+                    }
+                });
+            }
+        }
+    };
+}
+
+
