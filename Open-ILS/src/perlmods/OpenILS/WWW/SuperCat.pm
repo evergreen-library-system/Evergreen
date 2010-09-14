@@ -1347,7 +1347,7 @@ sub create_record_feed {
 
     my $tag_prefix = sprintf("tag:open-ils.org,$year-\%0.2d-\%0.2d", $month, $day);
 
-	my $flesh_feed = defined($flesh) ? $flesh : $parse_feed_type($type);
+	my $flesh_feed = defined($flesh) ? $flesh : parse_feed_type($type);
 
 	$type =~ s/(-full|-uris)$//o;
 
