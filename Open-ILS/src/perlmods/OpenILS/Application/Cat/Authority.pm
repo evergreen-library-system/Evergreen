@@ -32,11 +32,88 @@ sub import_authority_record {
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('CREATE_AUTHORITY_RECORD');
-    my $rec = OpenILS::Utils::Cat::AuthCommon->import_authority_record($marc_xml, $source);
+    my $rec = OpenILS::Application::Cat::AuthCommon->import_authority_record($marc_xml, $source);
     $e->commit unless $U->event_code($rec);
     return $rec;
 }
 
+__PACKAGE__->register_method(
+    method => 'create_authority_record_from_bib_field',
+    api_name => 'open-ils.cat.authority.record.create_from_bib',
+    signature => {
+        desc => q/Create an authority record entry from a field in a bibliographic record/,
+        params => q/
+            @param field A hash representing the field to control, consisting of: { tag: string, ind1: string, ind2: string, subfields: [ [code, value] ... ] }
+            @param authtoken A valid authentication token
+            @returns The new record object 
+ /}
+);
+
+__PACKAGE__->register_method(
+    method => 'create_authority_record_from_bib_field',
+    api_name => 'open-ils.cat.authority.record.create_from_bib.readonly',
+    signature => {
+        desc => q/Creates MARCXML for an authority record entry from a field in a bibliographic record/,
+        params => q/
+            @param field A hash representing the field to control, consisting of: { tag: string, ind1: string, ind2: string, subfields: [ [code, value] ... ] }
+            @returns The MARCXML for the authority record
+ /}
+);
+
+sub create_authority_record_from_bib_field {
+    my($self, $conn, $field, $auth) = @_;
+
+    # Change the first character of the incoming bib field tag to a '1'
+    # for use in our authority record; close enough for now?
+    my $tag = $field->{'tag'};
+    $tag =~ s/^./1/;
+
+    my $ind1 = $field->{ind1} || ' ';
+    my $ind2 = $field->{ind2} || ' ';
+
+    my $control = qq{<datafield tag="$tag" ind1="$ind1" ind2="$ind2">};
+    foreach my $sf (@{$field->{subfields}}) {
+        my $code = $sf->[0];
+        my $val = $U->entityize($sf->[1]);
+        $control .= qq{<subfield code="$code">$val</subfield>};
+    }
+    $control .= '</datafield>';
+
+    # ARN, or "authority record number", needs to be unique across the database
+    # Of course, we have no idea what's in the database, and if the
+    # cat.maintain_control_numbers flag is set to "TRUE" then the 003 will
+    # be reset to the record ID anyway. Just use time() for now and hope that
+    # two attempts to create an authority record in the same second doesn't
+    # happen too often.
+    my $arn = 'AUTOGEN-' . time();
+
+    # Placeholder MARCXML; 
+    #   001/003 can be filled in via database triggers
+    #   005 will be filled in automatically at creation time
+    #   008 needs to be set by a cataloguer (could be some OU settings, I suppose)
+    #   040 should come from OU settings / OU shortname
+    #   
+    my $marc_xml = <<MARCXML;
+<record xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns="http://www.loc.gov/MARC21/slim"><leader>     nz  a22     o  4500</leader>
+<controlfield tag="001">$arn</controlfield>
+<controlfield tag="003">CONS</controlfield>
+<controlfield tag="008">      ||||||||||||||||||||||||||||||||||</controlfield>
+<datafield tag="040" ind1=" " ind2=" "><subfield code="a">CONS</subfield><subfield code="c">CONS</subfield></datafield>
+$control
+</record>
+MARCXML
+
+    if ($self->api_name =~ m/readonly$/) {
+        return $marc_xml;
+    } else {
+        my $e = new_editor(authtoken=>$auth, xact=>1);
+        return $e->die_event unless $e->checkauth;
+        return $e->die_event unless $e->allowed('CREATE_AUTHORITY_RECORD');
+        my $rec = OpenILS::Application::Cat::AuthCommon->import_authority_record($e, $marc_xml);
+        $e->commit unless $U->event_code($rec);
+        return $rec;
+    }
+}
 
 __PACKAGE__->register_method(
 	method	=> 'overlay_authority_record',
@@ -48,7 +125,7 @@ sub overlay_authority_record {
 	my $e = new_editor(authtoken=>$auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
 	return $e->die_event unless $e->allowed('UPDATE_AUTHORITY_RECORD');
-    my $rec = OpenILS::Utils::Cat::AuthCommon->overlay_authority_record($rec_id, $marc_xml, $source);
+    my $rec = OpenILS::Application::Cat::AuthCommon->overlay_authority_record($rec_id, $marc_xml, $source);
     $e->commit unless $U->event_code($rec);
     return $rec;
 
