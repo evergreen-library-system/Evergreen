@@ -155,7 +155,11 @@ function rdetailDraw() {
     }
 
 
-	if (rdetailDisplaySerialHoldings) {
+	if (rdetailDisplaySerialHoldings && (
+        isXUL() || !fetchOrgSettingDefault(
+            getLocation(), "opac.fully_compressed_serial_holdings")
+        )
+    ) {
 		var req = new Request(FETCH_MFHD_SUMMARY, getRid());
 		req.callback(_holdingsDraw);
 		req.send();

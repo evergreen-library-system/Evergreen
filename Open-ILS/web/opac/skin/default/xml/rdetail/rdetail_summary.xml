@@ -131,6 +131,35 @@
 					]]></script>
 				</td>
 			</tr>
+			<tr templated="true"
+				name="serial_holdings_label"
+				class="result_table_title_cell hide_me"
+				type="opac/slot-data"
+				query="datafield[tag=901] subfield[code=c]">
+				<td colspan="2">Issues Held: ${holdingsStatement}
+					<span class="hide_me" name="holdingsStatement" type="opac/template-value"><![CDATA[
+						if (fetchOrgSettingDefault(
+							getLocation(), "opac.fully_compressed_serial_holdings"
+						)) {
+							var blob = fieldmapper.standardRequest(
+								['open-ils.serial','open-ils.serial.bib.summary_statements'],
+								[BT.textContent(item_list[0]), { orgid : getLocation(), depth : getDepth() }]
+							);
+
+							var ret = dojo.create('div');
+							for (var i in blob) {
+								var br = dojo.create('br', null, ret);
+								var span = dojo.create('span',{class : 'holding_type_'+ i, innerHTML :  blob[i].join(', ') }, ret);
+							}
+
+							dojo.removeClass(slot,'hide_me');
+							return ret.innerHTML;
+						} else {
+							return "";
+						}
+					]]></span>
+				</td>
+			</tr>
 
 		</tbody>
 	</table>

@@ -2038,7 +2038,13 @@ INSERT into config.org_unit_setting_type
 ( 'circ.password_reset_request_throttle',
     oils_i18n_gettext('circ.password_reset_request_throttle', 'Circulation: Maximum concurrently active self-serve password reset requests', 'coust', 'label'),
     oils_i18n_gettext('circ.password_reset_request_throttle', 'Prevent the creation of new self-serve password reset requests until the number of active requests drops back below this number.', 'coust', 'description'),
-    'string')
+    'string'),
+
+( 'opac.fully_compressed_serial_holdings',
+    'OPAC: Use fully compressed serial holdings',
+    'Show fully compressed serial holdings for all libraries at and below
+    the current context unit',
+    'bool')
 ;
 
 UPDATE config.org_unit_setting_type
