@@ -21,6 +21,7 @@ use strict; use warnings;
 
 use Business::CreditCard;
 use Business::OnlinePayment;
+use UUID::Tiny qw/:std/;
 use Locale::Country;
 
 use OpenILS::Event;
@@ -68,24 +69,32 @@ sub bop_args_PayPal {
     );
 }
 
+# Provide default arguments for calls using the PayflowPro processor
+sub bop_args_PayflowPro {
+    my $argshash = shift;
+    return (
+        "vendor" => $argshash->{vendor},
+        "partner" => $argshash->{partner} || "PayPal" # reasonable default?
+    );
+}
+
 sub get_processor_settings {
     my $org_unit = shift;
     my $processor = lc shift;
 
+    # XXX TODO: make this one single cstore request instead of many
     +{ map { ($_ =>
         $U->ou_ancestor_setting_value(
             $org_unit, CREDIT_NS . ".processor.${processor}.${_}"
-        )) } qw/enabled login password signature server testmode/
+        )) } qw/enabled login password signature server testmode vendor partner/
     };
 }
 
-#    signature => {
-#        desc   => 'Process a payment via a supported processor (AuthorizeNet, Paypal)',
-#        params => [
-#            { desc => q/Hash of arguments with these keys:
+#        argshash (Hash of arguments with these keys):
 #                patron_id: Not a barcode, but a patron's internal ID
 #                       ou: Org unit where transaction happens
-#                processor: Payment processor to use (AuthorizeNet, PayPal, etc)
+#                processor: Payment processor to use
+#                           (AuthorizeNet/PayPal/PayflowPro)
 #                       cc: credit card number
 #                     cvv2: 3 or 4 digits from back of card
 #                   amount: transaction value
@@ -98,10 +107,6 @@ sub get_processor_settings {
 #                      zip: optional (default: patron's zip field)
 #                  country: optional (some processor APIs: 2 letter code.)
 #              description: optional
-#                /, type => 'hash' }
-#        ],
-#        return => { desc => 'an ilsevent' }
-#    }
 
 sub process_payment {
     my ($argshash) = @_;
@@ -209,6 +214,8 @@ sub prepare_bop_content {
     # PayPal must have 2 letter country field (ISO 3166) that's uppercase.
     if (length($content{country}) > 2 && $argshash->{processor} eq 'PayPal') {
         $content{country} = uc country2code($content{country});
+    } elsif($argshash->{processor} eq "PayflowPro") {
+        ($content{request_id} = create_uuid_as_string(UUID_V4)) =~ s/-//;
     }
 
     %content;
@@ -256,28 +263,26 @@ sub dispatch {
         $argshash->{processor}, %bop_args
     );
 
-    $transaction->content(prepare_bop_content($argshash, $patron, $cardtype));
+    my %content = prepare_bop_content($argshash, $patron, $cardtype);
+    $transaction->content(%content);
 
-    # XXX submit() does not return a value, although crashing is possible here
+    # submit() does not return a value, although crashing is possible here
     # with some bad input depending on the payment processor.
     $transaction->submit;
 
     my $payload = {
-        "processor" => $argshash->{"processor"},
-        "card_type" => $cardtype,
-        "server_response" => $transaction->server_response
+        "processor" => $argshash->{"processor"}, "card_type" => $cardtype
     };
 
-    foreach (qw/authorization correlationid avs_code cvv2_code error_message/) {
-        # authorization should always be present for successes, and
-        # error_message should always be present for failures. The remaining
-        # field may be important in PayPal transacations? Not sure.
+    # Put the values of any of these fields into the event payload, if present.
+    foreach (qw/authorization correlationid avs_code request_id
+        server_response cvv2_response cvv2_code error_message order_number/) {
         $payload->{$_} = $transaction->$_ if $transaction->can($_);
     }
 
     my $event_name;
 
-    if ($transaction->is_success()) {
+    if ($transaction->is_success) {
         $logger->info($argshash->{processor} . " payment succeeded");
         $event_name = "SUCCESS";
     } else {

@@ -1383,6 +1383,8 @@ INSERT INTO permission.perm_list VALUES
     ,(392, 'COPY_NEEDED_FOR_HOLD.override', oils_i18n_gettext( 392, 'Allow a user to force renewal of an item that could fulfill a hold request', 'ppl', 'description' ))
     ,(393, 'MERGE_AUTH_RECORDS', oils_i18n_gettext( 393, 'Allow a user to merge authority records together', 'ppl', 'description' ))
     ,(394, 'ISSUANCE_HOLDS', oils_i18n_gettext( 394, 'Allow a user to place holds on serials issuances', 'ppl', 'description' ))
+    ,(395, 'VIEW_CREDIT_CARD_PROCESSING', oils_i18n_gettext( 395, 'View org unit settings related to credit card processing', 'ppl', 'description' ))
+    ,(396, 'ADMIN_CREDIT_CARD_PROCESSING', oils_i18n_gettext( 396, 'Update org unit settings related to credit card processing', 'ppl', 'description' ))
 ;
 
 
@@ -1972,6 +1974,36 @@ INSERT into config.org_unit_setting_type
     'Credit card processing: PayPal test mode',
     '',
     'bool' ),
+('credit.processor.payflowpro.enabled',
+    'Credit card processing: Enable PayflowPro payments',
+    'This is NOT the same thing as the settings labeled with just "PayPal."',
+    'bool'
+),
+('credit.processor.payflowpro.login',
+    'Credit card processing: PayflowPro login/merchant ID',
+    'Often the same thing as the PayPal manager login',
+    'string'
+),
+('credit.processor.payflowpro.password',
+    'Credit card processing: PayflowPro password',
+    'PayflowPro password',
+    'string'
+),
+('credit.processor.payflowpro.testmode',
+    'Credit card processing: PayflowPro test mode',
+    'Do not really process transactions, but stay in test mode - uses pilot-payflowpro.paypal.com instead of the usual host',
+    'bool'
+),
+('credit.processor.payflowpro.vendor',
+    'Credit card processing: PayflowPro vendor',
+    'Often the same thing as the login',
+    'string'
+),
+('credit.processor.payflowpro.partner',
+    'Credit card processing: PayflowPro partner',
+    'Often "PayPal" or "VeriSign", sometimes others',
+    'string'
+),
 
 ( 'ui.admin.work_log.max_entries',
     oils_i18n_gettext('ui.admin.work_log.max_entries', 'GUI: Work Log: Maximum Actions Logged', 'coust', 'label'),
@@ -2008,6 +2040,16 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext('circ.password_reset_request_throttle', 'Prevent the creation of new self-serve password reset requests until the number of active requests drops back below this number.', 'coust', 'description'),
     'string')
 ;
+
+UPDATE config.org_unit_setting_type
+    SET view_perm = (SELECT id FROM permission.perm_list
+        WHERE code = 'VIEW_CREDIT_CARD_PROCESSING' LIMIT 1)
+    WHERE name LIKE 'credit.processor%' AND view_perm IS NULL;
+
+UPDATE config.org_unit_setting_type
+    SET update_perm = (SELECT id FROM permission.perm_list
+        WHERE code = 'ADMIN_CREDIT_CARD_PROCESSING' LIMIT 1)
+    WHERE name LIKE 'credit.processor%' AND update_perm IS NULL;
 
 -- 0234.data.org-setting-ui.circ.suppress_checkin_popups.sql
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
