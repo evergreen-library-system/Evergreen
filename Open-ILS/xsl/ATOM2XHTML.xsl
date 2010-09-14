@@ -412,18 +412,18 @@ To-do list:
 		<xsl:if test="$itemrights"><dd class="rights"><xsl:call-template name="showtext"><xsl:with-param name="node" select="$itemrights" /></xsl:call-template></dd></xsl:if>
 
         <!-- item count -->
-        <xsl:if test="h:volumes">
-            <xsl:if test="h:volumes/h:volume/h:copies/h:copy">
+        <xsl:if test="h:holdings/h:volumes">
+            <xsl:if test="h:holdings/h:volumes/h:volume/h:copies/h:copy">
                 <dd>
-                    <xsl:value-of select="$t-availcopies"/><xsl:value-of select="count(h:volumes/h:volume/h:copies/h:copy/h:status[@ident='0' or @ident='7' or @ident='12'])"/>
+                    <xsl:value-of select="$t-availcopies"/><xsl:value-of select="count(h:holdings/h:volumes/h:volume/h:copies/h:copy/h:status[@ident='0' or @ident='7' or @ident='12'])"/>
                     <span> / </span>
-                    <xsl:value-of select="$t-totalcopies"/><xsl:value-of select="count(h:volumes/h:volume/h:copies/h:copy)"/>
+                    <xsl:value-of select="$t-totalcopies"/><xsl:value-of select="count(h:holdings/h:volumes/h:volume/h:copies/h:copy)"/>
                 </dd>
             </xsl:if>
-            <xsl:if test="h:volumes/h:volume/h:uris/h:uri">
+            <xsl:if test="h:holdings/h:volumes/h:volume/h:uris/h:uri">
                 <dd>
                     <xsl:value-of select="$t-onlineresources"/>
-		    	    <xsl:for-each select="h:volumes/h:volume/h:uris/h:uri">
+		    	    <xsl:for-each select="h:holdings/h:volumes/h:volume/h:uris/h:uri">
                         <a>
     			    	    <xsl:attribute name="href">
 	    			    	    <xsl:value-of select="@href" />
