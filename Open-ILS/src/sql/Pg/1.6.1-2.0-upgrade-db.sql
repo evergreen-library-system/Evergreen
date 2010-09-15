@@ -3,9 +3,11 @@ BEGIN;
 -- Highest-numbered individual upgrade script
 -- incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0387');
+INSERT INTO config.upgrade_log (version) VALUES ('0399');
 
--- Add ON UPDATE CASCADE to some foreign keys so that, if we renumber the
+-- Begin by upgrading permission.perm_list.  This is fairly complicated.
+
+-- Add ON UPDATE CASCADE to some foreign keys so that, when we renumber the
 -- permissions, the dependents will follow and stay in sync:
 
 ALTER TABLE permission.grp_perm_map DROP CONSTRAINT grp_perm_map_perm_fkey;
@@ -19,6 +21,1126 @@ ALTER TABLE permission.usr_perm_map ADD CONSTRAINT usr_perm_map_perm_fkey FOREIG
 ALTER TABLE permission.usr_object_perm_map DROP CONSTRAINT usr_object_perm_map_perm_fkey;
 ALTER TABLE permission.usr_object_perm_map ADD CONSTRAINT usr_object_perm_map_perm_fkey FOREIGN KEY (perm)
     REFERENCES permission.perm_list (id) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
+
+UPDATE permission.perm_list
+    SET code = 'UPDATE_ORG_UNIT_SETTING.credit.payments.allow'
+    WHERE code = 'UPDATE_ORG_UNIT_SETTING.global.credit.allow';
+
+-- The following UPDATES were originally in an individual upgrade script, but should
+-- no longer be necessary now that the foreign key has an ON UPDATE CASCADE clause.
+-- We retain the UPDATES here, commented out, as historical relics.
+
+-- UPDATE permission.grp_perm_map SET perm = perm + 1000 WHERE perm NOT IN ( SELECT id FROM permission.perm_list );
+-- UPDATE permission.usr_perm_map SET perm = perm + 1000 WHERE perm NOT IN ( SELECT id FROM permission.perm_list );
+
+-- Spelling correction
+UPDATE permission.perm_list SET code = 'ADMIN_RECURRING_FINE_RULE' WHERE code = 'ADMIN_RECURING_FINE_RULE';
+
+-- Now we engage in a Great Renumbering of the permissions in permission.perm_list,
+-- in order to clean up accumulated cruft.
+
+-- The first step is to establish some triggers so that, when we change the id of a permission,
+-- the associated translations are updated accordingly.
+
+CREATE OR REPLACE FUNCTION oils_i18n_update_apply(old_ident TEXT, new_ident TEXT, hint TEXT) RETURNS VOID AS $_$
+BEGIN
+
+    EXECUTE $$
+        UPDATE  config.i18n_core
+          SET   identity_value = $$ || quote_literal( new_ident ) || $$ 
+          WHERE fq_field LIKE '$$ || hint || $$.%' 
+                AND identity_value = $$ || quote_literal( old_ident ) || $$;$$;
+
+    RETURN;
+
+END;
+$_$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION oils_i18n_id_tracking(/* hint */) RETURNS TRIGGER AS $_$
+BEGIN
+    PERFORM oils_i18n_update_apply( OLD.id::TEXT, NEW.id::TEXT, TG_ARGV[0]::TEXT );
+    RETURN NEW;
+END;
+$_$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION oils_i18n_code_tracking(/* hint */) RETURNS TRIGGER AS $_$
+BEGIN
+    PERFORM oils_i18n_update_apply( OLD.code::TEXT, NEW.code::TEXT, TG_ARGV[0]::TEXT );
+    RETURN NEW;
+END;
+$_$ LANGUAGE PLPGSQL;
+
+
+CREATE TRIGGER maintain_perm_i18n_tgr
+    AFTER UPDATE ON permission.perm_list
+    FOR EACH ROW EXECUTE PROCEDURE oils_i18n_id_tracking('ppl');
+
+-- Next, create a new table as a convenience for sloshing data back and forth,
+-- and for recording which permission went where.  It looks just like
+-- permission.perm_list, but with two extra columns: one for the old id, and one to
+-- distinguish between predefined permissions and non-predefined permissions.
+
+-- This table is, in effect, a temporary table, because we can drop it once the
+-- upgrade is complete.  It is not technically temporary as far as PostgreSQL is
+-- concerned, because we don't want it to disappear at the end of the session.
+-- We keep it around so that we have a map showing the old id and the new id for
+-- each permission.  However there is no IDL entry for it, nor is it defined
+-- in the base sql files.
+
+CREATE TABLE permission.temp_perm (
+	id          INT        PRIMARY KEY,
+	code        TEXT       UNIQUE,
+	description TEXT,
+	old_id      INT,
+	predefined  BOOL       NOT NULL DEFAULT TRUE
+);
+
+-- Populate the temp table with a definitive set of predefined permissions,
+-- hard-coding the ids.
+
+-- The first set of permissions is derived from the database, as loaded in a
+-- loaded 1.6.1 database, plus a few changes previously applied in this upgrade
+-- script.  The second set is derived from the IDL -- permissions that are referenced
+-- in <permacrud> elements but not defined in the database.
+
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( -1, 'EVERYTHING',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 1, 'OPAC_LOGIN',
+     'Allow a user to log in to the OPAC' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 2, 'STAFF_LOGIN',
+     'Allow a user to log in to the staff client' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 3, 'MR_HOLDS',
+     'Allow a user to create a metarecord holds' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 4, 'TITLE_HOLDS',
+     'Allow a user to place a hold at the title level' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 5, 'VOLUME_HOLDS',
+     'Allow a user to place a volume level hold' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 6, 'COPY_HOLDS',
+     'Allow a user to place a hold on a specific copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 7, 'REQUEST_HOLDS',
+     'Allow a user to create holds for another user (if true, we still check to make sure they have permission to make the type of hold they are requesting, for example, COPY_HOLDS)' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 8, 'REQUEST_HOLDS_OVERRIDE',
+     '* no longer applicable' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 9, 'VIEW_HOLD',
+     'Allow a user to view another user''s holds' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 10, 'DELETE_HOLDS',
+     '* no longer applicable' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 11, 'UPDATE_HOLD',
+     'Allow a user to update another user''s hold' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 12, 'RENEW_CIRC',
+     'Allow a user to renew items' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 13, 'VIEW_USER_FINES_SUMMARY',
+     'Allow a user to view bill details' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 14, 'VIEW_USER_TRANSACTIONS',
+     'Allow a user to see another user''s grocery or circulation transactions in the Bills Interface; duplicate of VIEW_TRANSACTION' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 15, 'UPDATE_MARC',
+     'Allow a user to edit a MARC record' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 16, 'CREATE_MARC',
+     'Allow a user to create new MARC records' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 17, 'IMPORT_MARC',
+     'Allow a user to import a MARC record via the Z39.50 interface' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 18, 'CREATE_VOLUME',
+     'Allow a user to create a volume' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 19, 'UPDATE_VOLUME',
+     'Allow a user to edit volumes - needed for merging records. This is a duplicate of VOLUME_UPDATE; user must have both permissions at appropriate level to merge records.' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 20, 'DELETE_VOLUME',
+     'Allow a user to delete a volume' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 21, 'CREATE_COPY',
+     'Allow a user to create a new copy object' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 22, 'UPDATE_COPY',
+     'Allow a user to edit a copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 23, 'DELETE_COPY',
+     'Allow a user to delete a copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 24, 'RENEW_HOLD_OVERRIDE',
+     'Allow a user to continue to renew an item even if it is required for a hold' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 25, 'CREATE_USER',
+     'Allow a user to create another user' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 26, 'UPDATE_USER',
+     'Allow a user to edit a user''s record' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 27, 'DELETE_USER',
+     'Allow a user to mark a user as deleted' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 28, 'VIEW_USER',
+     'Allow a user to view another user''s Patron Record' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 29, 'COPY_CHECKIN',
+     'Allow a user to check in a copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 30, 'CREATE_TRANSIT',
+     'Allow a user to place an item in transit' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 31, 'VIEW_PERMISSION',
+     'Allow a user to view user permissions within the user permissions editor' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 32, 'CHECKIN_BYPASS_HOLD_FULFILL',
+     '* no longer applicable' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 33, 'CREATE_PAYMENT',
+     'Allow a user to record payments in the Billing Interface' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 34, 'SET_CIRC_LOST',
+     'Allow a user to mark an item as ''lost''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 35, 'SET_CIRC_MISSING',
+     'Allow a user to mark an item as ''missing''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 36, 'SET_CIRC_CLAIMS_RETURNED',
+     'Allow a user to mark an item as ''claims returned''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 37, 'CREATE_TRANSACTION',
+     'Allow a user to create a new billable transaction' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 38, 'VIEW_TRANSACTION',
+     'Allow a user may view another user''s transactions' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 39, 'CREATE_BILL',
+     'Allow a user to create a new bill on a transaction' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 40, 'VIEW_CONTAINER',
+     'Allow a user to view another user''s containers (buckets)' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 41, 'CREATE_CONTAINER',
+     'Allow a user to create a new container for another user' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 42, 'UPDATE_ORG_UNIT',
+     'Allow a user to change the settings for an organization unit' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 43, 'VIEW_CIRCULATIONS',
+     'Allow a user to see what another user has checked out' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 44, 'DELETE_CONTAINER',
+     'Allow a user to delete another user''s container' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 45, 'CREATE_CONTAINER_ITEM',
+     'Allow a user to create a container item for another user' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 46, 'CREATE_USER_GROUP_LINK',
+     'Allow a user to add other users to permission groups' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 47, 'REMOVE_USER_GROUP_LINK',
+     'Allow a user to remove other users from permission groups' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 48, 'VIEW_PERM_GROUPS',
+     'Allow a user to view other users'' permission groups' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 49, 'VIEW_PERMIT_CHECKOUT',
+     'Allow a user to determine whether another user can check out an item' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 50, 'UPDATE_BATCH_COPY',
+     'Allow a user to edit copies in batch' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 51, 'CREATE_PATRON_STAT_CAT',
+     'User may create a new patron statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 52, 'CREATE_COPY_STAT_CAT',
+     'User may create a copy statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 53, 'CREATE_PATRON_STAT_CAT_ENTRY',
+     'User may create an entry in a patron statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 54, 'CREATE_COPY_STAT_CAT_ENTRY',
+     'User may create an entry in a copy statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 55, 'UPDATE_PATRON_STAT_CAT',
+     'User may update a patron statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 56, 'UPDATE_COPY_STAT_CAT',
+     'User may update a copy statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 57, 'UPDATE_PATRON_STAT_CAT_ENTRY',
+     'User may update an entry in a patron statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 58, 'UPDATE_COPY_STAT_CAT_ENTRY',
+     'User may update an entry in a copy statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 59, 'CREATE_PATRON_STAT_CAT_ENTRY_MAP',
+     'User may link another user to an entry in a statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 60, 'CREATE_COPY_STAT_CAT_ENTRY_MAP',
+     'User may link a copy to an entry in a statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 61, 'DELETE_PATRON_STAT_CAT',
+     'User may delete a patron statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 62, 'DELETE_COPY_STAT_CAT',
+     'User may delete a copy statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 63, 'DELETE_PATRON_STAT_CAT_ENTRY',
+     'User may delete an entry from a patron statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 64, 'DELETE_COPY_STAT_CAT_ENTRY',
+     'User may delete an entry from a copy statistical category' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 65, 'DELETE_PATRON_STAT_CAT_ENTRY_MAP',
+     'User may delete a patron statistical category entry map' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 66, 'DELETE_COPY_STAT_CAT_ENTRY_MAP',
+     'User may delete a copy statistical category entry map' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 67, 'CREATE_NON_CAT_TYPE',
+     'Allow a user to create a new non-cataloged item type' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 68, 'UPDATE_NON_CAT_TYPE',
+     'Allow a user to update a non-cataloged item type' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 69, 'CREATE_IN_HOUSE_USE',
+     'Allow a user to create a new in-house-use ' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 70, 'COPY_CHECKOUT',
+     'Allow a user to check out a copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 71, 'CREATE_COPY_LOCATION',
+     'Allow a user to create a new copy location' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 72, 'UPDATE_COPY_LOCATION',
+     'Allow a user to update a copy location' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 73, 'DELETE_COPY_LOCATION',
+     'Allow a user to delete a copy location' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 74, 'CREATE_COPY_TRANSIT',
+     'Allow a user to create a transit_copy object for transiting a copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 75, 'COPY_TRANSIT_RECEIVE',
+     'Allow a user to close out a transit on a copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 76, 'VIEW_HOLD_PERMIT',
+     'Allow a user to see if another user has permission to place a hold on a given copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 77, 'VIEW_COPY_CHECKOUT_HISTORY',
+     'Allow a user to view which users have checked out a given copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 78, 'REMOTE_Z3950_QUERY',
+     'Allow a user to perform Z39.50 queries against remote servers' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 79, 'REGISTER_WORKSTATION',
+     'Allow a user to register a new workstation' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 80, 'VIEW_COPY_NOTES',
+     'Allow a user to view all notes attached to a copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 81, 'VIEW_VOLUME_NOTES',
+     'Allow a user to view all notes attached to a volume' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 82, 'VIEW_TITLE_NOTES',
+     'Allow a user to view all notes attached to a title' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 83, 'CREATE_COPY_NOTE',
+     'Allow a user to create a new copy note' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 84, 'CREATE_VOLUME_NOTE',
+     'Allow a user to create a new volume note' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 85, 'CREATE_TITLE_NOTE',
+     'Allow a user to create a new title note' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 86, 'DELETE_COPY_NOTE',
+     'Allow a user to delete another user''s copy notes' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 87, 'DELETE_VOLUME_NOTE',
+     'Allow a user to delete another user''s volume note' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 88, 'DELETE_TITLE_NOTE',
+     'Allow a user to delete another user''s title note' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 89, 'UPDATE_CONTAINER',
+     'Allow a user to update another user''s container' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 90, 'CREATE_MY_CONTAINER',
+     'Allow a user to create a container for themselves' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 91, 'VIEW_HOLD_NOTIFICATION',
+     'Allow a user to view notifications attached to a hold' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 92, 'CREATE_HOLD_NOTIFICATION',
+     'Allow a user to create new hold notifications' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 93, 'UPDATE_ORG_SETTING',
+     'Allow a user to update an organization unit setting' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 94, 'OFFLINE_UPLOAD',
+     'Allow a user to upload an offline script' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 95, 'OFFLINE_VIEW',
+     'Allow a user to view uploaded offline script information' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 96, 'OFFLINE_EXECUTE',
+     'Allow a user to execute an offline script batch' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 97, 'CIRC_OVERRIDE_DUE_DATE',
+     'Allow a user to change the due date on an item to any date' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 98, 'CIRC_PERMIT_OVERRIDE',
+     'Allow a user to bypass the circulation permit call for check out' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 99, 'COPY_IS_REFERENCE.override',
+     'Allow a user to override the copy_is_reference event' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 100, 'VOID_BILLING',
+     'Allow a user to void a bill' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 101, 'CIRC_CLAIMS_RETURNED.override',
+     'Allow a user to check in or check out an item that has a status of ''claims returned''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 102, 'COPY_BAD_STATUS.override',
+     'Allow a user to check out an item in a non-circulatable status' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 103, 'COPY_ALERT_MESSAGE.override',
+     'Allow a user to check in/out an item that has an alert message' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 104, 'COPY_STATUS_LOST.override',
+     'Allow a user to remove the lost status from a copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 105, 'COPY_STATUS_MISSING.override',
+     'Allow a user to change the missing status on a copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 106, 'ABORT_TRANSIT',
+     'Allow a user to abort a copy transit if the user is at the transit destination or source' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 107, 'ABORT_REMOTE_TRANSIT',
+     'Allow a user to abort a copy transit if the user is not at the transit source or dest' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 108, 'VIEW_ZIP_DATA',
+     'Allow a user to query the ZIP code data method' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 109, 'CANCEL_HOLDS',
+     'Allow a user to cancel holds' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 110, 'CREATE_DUPLICATE_HOLDS',
+     'Allow a user to create duplicate holds (two or more holds on the same title)' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 111, 'actor.org_unit.closed_date.delete',
+     'Allow a user to remove a closed date interval for a given location' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 112, 'actor.org_unit.closed_date.update',
+     'Allow a user to update a closed date interval for a given location' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 113, 'actor.org_unit.closed_date.create',
+     'Allow a user to create a new closed date for a location' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 114, 'DELETE_NON_CAT_TYPE',
+     'Allow a user to delete a non cataloged type' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 115, 'money.collections_tracker.create',
+     'Allow a user to put someone into collections' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 116, 'money.collections_tracker.delete',
+     'Allow a user to remove someone from collections' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 117, 'BAR_PATRON',
+     'Allow a user to bar a patron' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 118, 'UNBAR_PATRON',
+     'Allow a user to un-bar a patron' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 119, 'DELETE_WORKSTATION',
+     'Allow a user to remove an existing workstation so a new one can replace it' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 120, 'group_application.user',
+     'Allow a user to add/remove users to/from the "User" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 121, 'group_application.user.patron',
+     'Allow a user to add/remove users to/from the "Patron" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 122, 'group_application.user.staff',
+     'Allow a user to add/remove users to/from the "Staff" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 123, 'group_application.user.staff.circ',
+     'Allow a user to add/remove users to/from the "Circulator" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 124, 'group_application.user.staff.cat',
+     'Allow a user to add/remove users to/from the "Cataloger" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 125, 'group_application.user.staff.admin.global_admin',
+     'Allow a user to add/remove users to/from the "GlobalAdmin" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 126, 'group_application.user.staff.admin.local_admin',
+     'Allow a user to add/remove users to/from the "LocalAdmin" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 127, 'group_application.user.staff.admin.lib_manager',
+     'Allow a user to add/remove users to/from the "LibraryManager" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 128, 'group_application.user.staff.cat.cat1',
+     'Allow a user to add/remove users to/from the "Cat1" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 129, 'group_application.user.staff.supercat',
+     'Allow a user to add/remove users to/from the "Supercat" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 130, 'group_application.user.sip_client',
+     'Allow a user to add/remove users to/from the "SIP-Client" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 131, 'group_application.user.vendor',
+     'Allow a user to add/remove users to/from the "Vendor" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 132, 'ITEM_AGE_PROTECTED.override',
+     'Allow a user to place a hold on an age-protected item' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 133, 'MAX_RENEWALS_REACHED.override',
+     'Allow a user to renew an item past the maximum renewal count' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 134, 'PATRON_EXCEEDS_CHECKOUT_COUNT.override',
+     'Allow staff to override checkout count failure' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 135, 'PATRON_EXCEEDS_OVERDUE_COUNT.override',
+     'Allow staff to override overdue count failure' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 136, 'PATRON_EXCEEDS_FINES.override',
+     'Allow staff to override fine amount checkout failure' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 137, 'CIRC_EXCEEDS_COPY_RANGE.override',
+     'Allow staff to override circulation copy range failure' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 138, 'ITEM_ON_HOLDS_SHELF.override',
+     'Allow staff to override item on holds shelf failure' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 139, 'COPY_NOT_AVAILABLE.override',
+     'Allow staff to force checkout of Missing/Lost type items' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 140, 'HOLD_EXISTS.override',
+     'Allow a user to place multiple holds on a single title' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 141, 'RUN_REPORTS',
+     'Allow a user to run reports' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 142, 'SHARE_REPORT_FOLDER',
+     'Allow a user to share report his own folders' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 143, 'VIEW_REPORT_OUTPUT',
+     'Allow a user to view report output' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 144, 'COPY_CIRC_NOT_ALLOWED.override',
+     'Allow a user to checkout an item that is marked as non-circ' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 145, 'DELETE_CONTAINER_ITEM',
+     'Allow a user to delete an item out of another user''s container' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 146, 'ASSIGN_WORK_ORG_UNIT',
+     'Allow a staff member to define where another staff member has their permissions' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 147, 'CREATE_FUNDING_SOURCE',
+     'Allow a user to create a new funding source' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 148, 'DELETE_FUNDING_SOURCE',
+     'Allow a user to delete a funding source' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 149, 'VIEW_FUNDING_SOURCE',
+     'Allow a user to view a funding source' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 150, 'UPDATE_FUNDING_SOURCE',
+     'Allow a user to update a funding source' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 151, 'CREATE_FUND',
+     'Allow a user to create a new fund' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 152, 'DELETE_FUND',
+     'Allow a user to delete a fund' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 153, 'VIEW_FUND',
+     'Allow a user to view a fund' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 154, 'UPDATE_FUND',
+     'Allow a user to update a fund' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 155, 'CREATE_FUND_ALLOCATION',
+     'Allow a user to create a new fund allocation' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 156, 'DELETE_FUND_ALLOCATION',
+     'Allow a user to delete a fund allocation' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 157, 'VIEW_FUND_ALLOCATION',
+     'Allow a user to view a fund allocation' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 158, 'UPDATE_FUND_ALLOCATION',
+     'Allow a user to update a fund allocation' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 159, 'GENERAL_ACQ',
+     'Lowest level permission required to access the ACQ interface' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 160, 'CREATE_PROVIDER',
+     'Allow a user to create a new provider' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 161, 'DELETE_PROVIDER',
+     'Allow a user to delate a provider' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 162, 'VIEW_PROVIDER',
+     'Allow a user to view a provider' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 163, 'UPDATE_PROVIDER',
+     'Allow a user to update a provider' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 164, 'ADMIN_FUNDING_SOURCE',
+     'Allow a user to create/view/update/delete a funding source' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 165, 'ADMIN_FUND',
+     '(Deprecated) Allow a user to create/view/update/delete a fund' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 166, 'MANAGE_FUNDING_SOURCE',
+     'Allow a user to view/credit/debit a funding source' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 167, 'MANAGE_FUND',
+     'Allow a user to view/credit/debit a fund' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 168, 'CREATE_PICKLIST',
+     'Allows a user to create a picklist' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 169, 'ADMIN_PROVIDER',
+     'Allow a user to create/view/update/delete a provider' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 170, 'MANAGE_PROVIDER',
+     'Allow a user to view and purchase from a provider' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 171, 'VIEW_PICKLIST',
+     'Allow a user to view another users picklist' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 172, 'DELETE_RECORD',
+     'Allow a staff member to directly remove a bibliographic record' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 173, 'ADMIN_CURRENCY_TYPE',
+     'Allow a user to create/view/update/delete a currency_type' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 174, 'MARK_BAD_DEBT',
+     'Allow a user to mark a transaction as bad (unrecoverable) debt' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 175, 'VIEW_BILLING_TYPE',
+     'Allow a user to view billing types' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 176, 'MARK_ITEM_AVAILABLE',
+     'Allow a user to mark an item status as ''available''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 177, 'MARK_ITEM_CHECKED_OUT',
+     'Allow a user to mark an item status as ''checked out''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 178, 'MARK_ITEM_BINDERY',
+     'Allow a user to mark an item status as ''bindery''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 179, 'MARK_ITEM_LOST',
+     'Allow a user to mark an item status as ''lost''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 180, 'MARK_ITEM_MISSING',
+     'Allow a user to mark an item status as ''missing''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 181, 'MARK_ITEM_IN_PROCESS',
+     'Allow a user to mark an item status as ''in process''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 182, 'MARK_ITEM_IN_TRANSIT',
+     'Allow a user to mark an item status as ''in transit''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 183, 'MARK_ITEM_RESHELVING',
+     'Allow a user to mark an item status as ''reshelving''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 184, 'MARK_ITEM_ON_HOLDS_SHELF',
+     'Allow a user to mark an item status as ''on holds shelf''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 185, 'MARK_ITEM_ON_ORDER',
+     'Allow a user to mark an item status as ''on order''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 186, 'MARK_ITEM_ILL',
+     'Allow a user to mark an item status as ''inter-library loan''' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 187, 'group_application.user.staff.acq',
+     'Allows a user to add/remove/edit users in the "ACQ" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 188, 'CREATE_PURCHASE_ORDER',
+     'Allows a user to create a purchase order' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 189, 'VIEW_PURCHASE_ORDER',
+     'Allows a user to view a purchase order' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 190, 'IMPORT_ACQ_LINEITEM_BIB_RECORD',
+     'Allows a user to import a bib record from the acq staging area (on-order record) into the ILS bib data set' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 191, 'RECEIVE_PURCHASE_ORDER',
+     'Allows a user to mark a purchase order, lineitem, or individual copy as received' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 192, 'VIEW_ORG_SETTINGS',
+     'Allows a user to view all org settings at the specified level' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 193, 'CREATE_MFHD_RECORD',
+     'Allows a user to create a new MFHD record' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 194, 'UPDATE_MFHD_RECORD',
+     'Allows a user to update an MFHD record' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 195, 'DELETE_MFHD_RECORD',
+     'Allows a user to delete an MFHD record' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 196, 'ADMIN_ACQ_FUND',
+     'Allow a user to create/view/update/delete a fund' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 197, 'group_application.user.staff.acq_admin',
+     'Allows a user to add/remove/edit users in the "Acquisitions Administrators" group' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 198, 'SET_CIRC_CLAIMS_RETURNED.override',
+     'Allows staff to override the max claims returned value for a patron' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 199, 'UPDATE_PATRON_CLAIM_RETURN_COUNT',
+     'Allows staff to manually change a patron''s claims returned count' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 200, 'UPDATE_BILL_NOTE',
+     'Allows staff to edit the note for a bill on a transaction' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 201, 'UPDATE_PAYMENT_NOTE',
+     'Allows staff to edit the note for a payment on a transaction' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 202, 'UPDATE_PATRON_CLAIM_NEVER_CHECKED_OUT_COUNT',
+     'Allows staff to manually change a patron''s claims never checkout out count' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 203, 'ADMIN_COPY_LOCATION_ORDER',
+     'Allow a user to create/view/update/delete a copy location order' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 204, 'ASSIGN_GROUP_PERM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 205, 'CREATE_AUDIENCE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 206, 'CREATE_BIB_LEVEL',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 207, 'CREATE_CIRC_DURATION',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 208, 'CREATE_CIRC_MOD',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 209, 'CREATE_COPY_STATUS',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 210, 'CREATE_HOURS_OF_OPERATION',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 211, 'CREATE_ITEM_FORM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 212, 'CREATE_ITEM_TYPE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 213, 'CREATE_LANGUAGE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 214, 'CREATE_LASSO',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 215, 'CREATE_LASSO_MAP',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 216, 'CREATE_LIT_FORM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 217, 'CREATE_METABIB_FIELD',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 218, 'CREATE_NET_ACCESS_LEVEL',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 219, 'CREATE_ORG_ADDRESS',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 220, 'CREATE_ORG_TYPE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 221, 'CREATE_ORG_UNIT',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 222, 'CREATE_ORG_UNIT_CLOSING',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 223, 'CREATE_PERM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 224, 'CREATE_RELEVANCE_ADJUSTMENT',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 225, 'CREATE_SURVEY',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 226, 'CREATE_VR_FORMAT',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 227, 'CREATE_XML_TRANSFORM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 228, 'DELETE_AUDIENCE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 229, 'DELETE_BIB_LEVEL',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 230, 'DELETE_CIRC_DURATION',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 231, 'DELETE_CIRC_MOD',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 232, 'DELETE_COPY_STATUS',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 233, 'DELETE_HOURS_OF_OPERATION',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 234, 'DELETE_ITEM_FORM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 235, 'DELETE_ITEM_TYPE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 236, 'DELETE_LANGUAGE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 237, 'DELETE_LASSO',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 238, 'DELETE_LASSO_MAP',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 239, 'DELETE_LIT_FORM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 240, 'DELETE_METABIB_FIELD',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 241, 'DELETE_NET_ACCESS_LEVEL',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 242, 'DELETE_ORG_ADDRESS',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 243, 'DELETE_ORG_TYPE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 244, 'DELETE_ORG_UNIT',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 245, 'DELETE_ORG_UNIT_CLOSING',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 246, 'DELETE_PERM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 247, 'DELETE_RELEVANCE_ADJUSTMENT',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 248, 'DELETE_SURVEY',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 249, 'DELETE_TRANSIT',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 250, 'DELETE_VR_FORMAT',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 251, 'DELETE_XML_TRANSFORM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 252, 'REMOVE_GROUP_PERM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 253, 'TRANSIT_COPY',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 254, 'UPDATE_AUDIENCE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 255, 'UPDATE_BIB_LEVEL',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 256, 'UPDATE_CIRC_DURATION',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 257, 'UPDATE_CIRC_MOD',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 258, 'UPDATE_COPY_NOTE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 259, 'UPDATE_COPY_STATUS',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 260, 'UPDATE_GROUP_PERM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 261, 'UPDATE_HOURS_OF_OPERATION',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 262, 'UPDATE_ITEM_FORM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 263, 'UPDATE_ITEM_TYPE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 264, 'UPDATE_LANGUAGE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 265, 'UPDATE_LASSO',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 266, 'UPDATE_LASSO_MAP',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 267, 'UPDATE_LIT_FORM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 268, 'UPDATE_METABIB_FIELD',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 269, 'UPDATE_NET_ACCESS_LEVEL',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 270, 'UPDATE_ORG_ADDRESS',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 271, 'UPDATE_ORG_TYPE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 272, 'UPDATE_ORG_UNIT_CLOSING',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 273, 'UPDATE_PERM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 274, 'UPDATE_RELEVANCE_ADJUSTMENT',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 275, 'UPDATE_SURVEY',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 276, 'UPDATE_TRANSIT',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 277, 'UPDATE_VOLUME_NOTE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 278, 'UPDATE_VR_FORMAT',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 279, 'UPDATE_XML_TRANSFORM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 280, 'MERGE_BIB_RECORDS',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 281, 'UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 282, 'CREATE_ACQ_FUNDING_SOURCE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 283, 'CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 284, 'CREATE_AUTHORITY_IMPORT_QUEUE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 285, 'CREATE_AUTHORITY_RECORD_NOTE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 286, 'CREATE_BIB_IMPORT_FIELD_DEF',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 287, 'CREATE_BIB_IMPORT_QUEUE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 288, 'CREATE_LOCALE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 289, 'CREATE_MARC_CODE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 290, 'CREATE_TRANSLATION',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 291, 'DELETE_ACQ_FUNDING_SOURCE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 292, 'DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 293, 'DELETE_AUTHORITY_IMPORT_QUEUE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 294, 'DELETE_AUTHORITY_RECORD_NOTE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 295, 'DELETE_BIB_IMPORT_IMPORT_FIELD_DEF',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 296, 'DELETE_BIB_IMPORT_QUEUE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 297, 'DELETE_LOCALE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 298, 'DELETE_MARC_CODE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 299, 'DELETE_TRANSLATION',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 300, 'UPDATE_ACQ_FUNDING_SOURCE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 301, 'UPDATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 302, 'UPDATE_AUTHORITY_IMPORT_QUEUE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 303, 'UPDATE_AUTHORITY_RECORD_NOTE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 304, 'UPDATE_BIB_IMPORT_IMPORT_FIELD_DEF',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 305, 'UPDATE_BIB_IMPORT_QUEUE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 306, 'UPDATE_LOCALE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 307, 'UPDATE_MARC_CODE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 308, 'UPDATE_TRANSLATION',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 309, 'VIEW_ACQ_FUNDING_SOURCE',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 310, 'VIEW_AUTHORITY_RECORD_NOTES',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 311, 'CREATE_IMPORT_ITEM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 312, 'CREATE_IMPORT_ITEM_ATTR_DEF',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 313, 'CREATE_IMPORT_TRASH_FIELD',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 314, 'DELETE_IMPORT_ITEM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 315, 'DELETE_IMPORT_ITEM_ATTR_DEF',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 316, 'DELETE_IMPORT_TRASH_FIELD',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 317, 'UPDATE_IMPORT_ITEM',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 318, 'UPDATE_IMPORT_ITEM_ATTR_DEF',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 319, 'UPDATE_IMPORT_TRASH_FIELD',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 320, 'UPDATE_ORG_UNIT_SETTING_ALL',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 321, 'UPDATE_ORG_UNIT_SETTING.circ.lost_materials_processing_fee',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 322, 'UPDATE_ORG_UNIT_SETTING.cat.default_item_price',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 323, 'UPDATE_ORG_UNIT_SETTING.auth.opac_timeout',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 324, 'UPDATE_ORG_UNIT_SETTING.auth.staff_timeout',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 325, 'UPDATE_ORG_UNIT_SETTING.org.bounced_emails',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 326, 'UPDATE_ORG_UNIT_SETTING.circ.hold_expire_alert_interval',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 327, 'UPDATE_ORG_UNIT_SETTING.circ.hold_expire_interval',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 328, 'UPDATE_ORG_UNIT_SETTING.credit.payments.allow',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 329, 'UPDATE_ORG_UNIT_SETTING.circ.void_overdue_on_lost',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 330, 'UPDATE_ORG_UNIT_SETTING.circ.hold_stalling.soft',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 331, 'UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.hard',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 332, 'UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.soft',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 333, 'UPDATE_ORG_UNIT_SETTING.opac.barcode_regex',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 334, 'UPDATE_ORG_UNIT_SETTING.global.password_regex',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 335, 'UPDATE_ORG_UNIT_SETTING.circ.item_checkout_history.max',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 336, 'UPDATE_ORG_UNIT_SETTING.circ.reshelving_complete.interval',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 337, 'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.patron_login_timeout',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 338, 'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 339, 'UPDATE_ORG_UNIT_SETTING.circ.selfcheck.require_patron_password',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 340, 'UPDATE_ORG_UNIT_SETTING.global.juvenile_age_threshold',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 341, 'UPDATE_ORG_UNIT_SETTING.cat.bib.keep_on_empty',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 342, 'UPDATE_ORG_UNIT_SETTING.cat.bib.alert_on_empty',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 343, 'UPDATE_ORG_UNIT_SETTING.patron.password.use_phone',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 344, 'HOLD_ITEM_CHECKED_OUT.override',
+     'Allows a user to place a hold on an item that they already have checked out' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 345, 'ADMIN_ACQ_CANCEL_CAUSE',
+     'Allow a user to create/update/delete reasons for order cancellations' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 346, 'ACQ_XFER_MANUAL_DFUND_AMOUNT',
+     'Allow a user to transfer different amounts of money out of one fund and into another' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 347, 'OVERRIDE_HOLD_HAS_LOCAL_COPY',
+     'Allow a user to override the circ.holds.hold_has_copy_at.block setting' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 348, 'UPDATE_PICKUP_LIB_FROM_TRANSIT',
+     'Allow a user to change the pickup and transit destination for a captured hold item already in transit' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 349, 'COPY_NEEDED_FOR_HOLD.override',
+     'Allow a user to force renewal of an item that could fulfill a hold request' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 350, 'MERGE_AUTH_RECORDS',
+     'Allow a user to merge authority records together' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 351, 'ALLOW_ALT_TCN',
+     'Allows staff to import a record using an alternate TCN to avoid conflicts' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 352, 'ADMIN_TRIGGER_EVENT_DEF',
+     'Allow a user to administer trigger event definitions' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 353, 'ADMIN_TRIGGER_CLEANUP',
+     'Allow a user to create, delete, and update trigger cleanup entries' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 354, 'CREATE_TRIGGER_CLEANUP',
+     'Allow a user to create trigger cleanup entries' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 355, 'DELETE_TRIGGER_CLEANUP',
+     'Allow a user to delete trigger cleanup entries' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 356, 'UPDATE_TRIGGER_CLEANUP',
+     'Allow a user to update trigger cleanup entries' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 357, 'CREATE_TRIGGER_EVENT_DEF',
+     'Allow a user to create trigger event definitions' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 358, 'DELETE_TRIGGER_EVENT_DEF',
+     'Allow a user to delete trigger event definitions' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 359, 'UPDATE_TRIGGER_EVENT_DEF',
+     'Allow a user to update trigger event definitions' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 360, 'VIEW_TRIGGER_EVENT_DEF',
+     'Allow a user to view trigger event definitions' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 361, 'ADMIN_TRIGGER_HOOK',
+     'Allow a user to create, update, and delete trigger hooks' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 362, 'CREATE_TRIGGER_HOOK',
+     'Allow a user to create trigger hooks' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 363, 'DELETE_TRIGGER_HOOK',
+     'Allow a user to delete trigger hooks' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 364, 'UPDATE_TRIGGER_HOOK',
+     'Allow a user to update trigger hooks' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 365, 'ADMIN_TRIGGER_REACTOR',
+     'Allow a user to create, update, and delete trigger reactors' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 366, 'CREATE_TRIGGER_REACTOR',
+     'Allow a user to create trigger reactors' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 367, 'DELETE_TRIGGER_REACTOR',
+     'Allow a user to delete trigger reactors' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 368, 'UPDATE_TRIGGER_REACTOR',
+     'Allow a user to update trigger reactors' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 369, 'ADMIN_TRIGGER_TEMPLATE_OUTPUT',
+     'Allow a user to delete trigger template output' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 370, 'DELETE_TRIGGER_TEMPLATE_OUTPUT',
+     'Allow a user to delete trigger template output' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 371, 'ADMIN_TRIGGER_VALIDATOR',
+     'Allow a user to create, update, and delete trigger validators' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 372, 'CREATE_TRIGGER_VALIDATOR',
+     'Allow a user to create trigger validators' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 373, 'DELETE_TRIGGER_VALIDATOR',
+     'Allow a user to delete trigger validators' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 374, 'UPDATE_TRIGGER_VALIDATOR',
+     'Allow a user to update trigger validators' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 375, 'HOLD_LOCAL_AVAIL_OVERRIDE',
+     'Allow a user to place a hold despite the availability of a local copy' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 376, 'ADMIN_BOOKING_RESOURCE',
+     'Enables the user to create/update/delete booking resources' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 377, 'ADMIN_BOOKING_RESOURCE_TYPE',
+     'Enables the user to create/update/delete booking resource types' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 378, 'ADMIN_BOOKING_RESOURCE_ATTR',
+     'Enables the user to create/update/delete booking resource attributes' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 379, 'ADMIN_BOOKING_RESOURCE_ATTR_MAP',
+     'Enables the user to create/update/delete booking resource attribute maps' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 380, 'ADMIN_BOOKING_RESOURCE_ATTR_VALUE',
+     'Enables the user to create/update/delete booking resource attribute values' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 381, 'ADMIN_BOOKING_RESERVATION',
+     'Enables the user to create/update/delete booking reservations' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 382, 'ADMIN_BOOKING_RESERVATION_ATTR_VALUE_MAP',
+     'Enables the user to create/update/delete booking reservation attribute value maps' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 383, 'RETRIEVE_RESERVATION_PULL_LIST',
+     'Allows a user to retrieve a booking reservation pull list' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 384, 'CAPTURE_RESERVATION',
+     'Allows a user to capture booking reservations' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 385, 'UPDATE_RECORD',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 386, 'UPDATE_ORG_UNIT_SETTING.circ.block_renews_for_holds',
+     '' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 387, 'MERGE_USERS',
+     'Allows user records to be merged' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 388, 'ISSUANCE_HOLDS',
+     'Allow a user to place holds on serials issuances' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 389, 'VIEW_CREDIT_CARD_PROCESSING',
+     'View org unit settings related to credit card processing' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 390, 'ADMIN_CREDIT_CARD_PROCESSING',
+     'Update org unit settings related to credit card processing' );
+
+-- Now for the permissions from the IDL.  We don't have descriptions for them.
+
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 391, 'ADMIN_ACQ_CLAIM' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 392, 'ADMIN_ACQ_CLAIM_EVENT_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 393, 'ADMIN_ACQ_CLAIM_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 394, 'ADMIN_ACQ_DISTRIB_FORMULA' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 395, 'ADMIN_ACQ_FISCAL_YEAR' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 396, 'ADMIN_ACQ_FUND_ALLOCATION_PERCENT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 397, 'ADMIN_ACQ_FUND_TAG' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 398, 'ADMIN_ACQ_LINEITEM_ALERT_TEXT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 399, 'ADMIN_AGE_PROTECT_RULE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 400, 'ADMIN_ASSET_COPY_TEMPLATE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 401, 'ADMIN_BOOKING_RESERVATION_ATTR_MAP' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 402, 'ADMIN_CIRC_MATRIX_MATCHPOINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 403, 'ADMIN_CIRC_MOD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 404, 'ADMIN_CLAIM_POLICY' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 405, 'ADMIN_CONFIG_REMOTE_ACCOUNT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 406, 'ADMIN_FIELD_DOC' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 407, 'ADMIN_GLOBAL_FLAG' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 408, 'ADMIN_GROUP_PENALTY_THRESHOLD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 409, 'ADMIN_HOLD_CANCEL_CAUSE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 410, 'ADMIN_HOLD_MATRIX_MATCHPOINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 411, 'ADMIN_IDENT_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 412, 'ADMIN_IMPORT_ITEM_ATTR_DEF' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 413, 'ADMIN_INDEX_NORMALIZER' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 414, 'ADMIN_INVOICE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 415, 'ADMIN_INVOICE_METHOD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 416, 'ADMIN_INVOICE_PAYMENT_METHOD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 417, 'ADMIN_LINEITEM_MARC_ATTR_DEF' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 418, 'ADMIN_MARC_CODE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 419, 'ADMIN_MAX_FINE_RULE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 420, 'ADMIN_MERGE_PROFILE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 421, 'ADMIN_ORG_UNIT_SETTING_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 422, 'ADMIN_RECURRING_FINE_RULE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 423, 'ADMIN_SERIAL_SUBSCRIPTION' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 424, 'ADMIN_STANDING_PENALTY' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 425, 'ADMIN_SURVEY' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 426, 'ADMIN_USER_REQUEST_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 427, 'ADMIN_USER_SETTING_GROUP' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 428, 'ADMIN_USER_SETTING_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 429, 'ADMIN_Z3950_SOURCE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 430, 'CREATE_BIB_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 431, 'CREATE_BIBLIO_FINGERPRINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 432, 'CREATE_BIB_SOURCE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 433, 'CREATE_BILLING_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 434, 'CREATE_CN_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 435, 'CREATE_COPY_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 436, 'CREATE_INVOICE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 437, 'CREATE_INVOICE_ITEM_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 438, 'CREATE_INVOICE_METHOD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 439, 'CREATE_MERGE_PROFILE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 440, 'CREATE_METABIB_CLASS' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 441, 'CREATE_METABIB_SEARCH_ALIAS' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 442, 'CREATE_USER_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 443, 'DELETE_BIB_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 444, 'DELETE_BIBLIO_FINGERPRINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 445, 'DELETE_BIB_SOURCE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 446, 'DELETE_BILLING_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 447, 'DELETE_CN_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 448, 'DELETE_COPY_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 449, 'DELETE_INVOICE_ITEM_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 450, 'DELETE_INVOICE_METHOD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 451, 'DELETE_MERGE_PROFILE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 452, 'DELETE_METABIB_CLASS' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 453, 'DELETE_METABIB_SEARCH_ALIAS' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 454, 'DELETE_USER_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 455, 'MANAGE_CLAIM' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 456, 'UPDATE_BIB_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 457, 'UPDATE_BIBLIO_FINGERPRINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 458, 'UPDATE_BIB_SOURCE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 459, 'UPDATE_BILLING_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 460, 'UPDATE_CN_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 461, 'UPDATE_COPY_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 462, 'UPDATE_INVOICE_ITEM_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 463, 'UPDATE_INVOICE_METHOD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 464, 'UPDATE_MERGE_PROFILE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 465, 'UPDATE_METABIB_CLASS' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 466, 'UPDATE_METABIB_SEARCH_ALIAS' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 467, 'UPDATE_USER_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 468, 'user_request.create' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 469, 'user_request.delete' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 470, 'user_request.update' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 471, 'user_request.view' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 472, 'VIEW_ACQ_FUND_ALLOCATION_PERCENT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 473, 'VIEW_CIRC_MATRIX_MATCHPOINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 474, 'VIEW_CLAIM' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 475, 'VIEW_GROUP_PENALTY_THRESHOLD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 476, 'VIEW_HOLD_MATRIX_MATCHPOINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 477, 'VIEW_INVOICE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 478, 'VIEW_MERGE_PROFILE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 479, 'VIEW_SERIAL_SUBSCRIPTION' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 480, 'VIEW_STANDING_PENALTY' );
+
+-- For every permission in the temp_perm table that has a matching
+-- permission in the real table: record the original id.
+
+UPDATE permission.temp_perm AS tp
+SET old_id =
+	(
+		SELECT id
+		FROM permission.perm_list AS ppl
+		WHERE ppl.code = tp.code
+	)
+WHERE code IN ( SELECT code FROM permission.perm_list );
+
+-- Start juggling ids.
+
+-- If any permissions have negative ids (with the special exception of -1),
+-- we need to move them into the positive range in order to avoid duplicate
+-- key problems (since we are going to use the negative range as a temporary
+-- staging area).
+
+-- First, move any predefined permissions that have negative ids (again with
+-- the special exception of -1).  Temporarily give them positive ids based on
+-- the sequence.
+
+UPDATE permission.perm_list
+SET id = NEXTVAL('permission.perm_list_id_seq'::regclass)
+WHERE id < -1
+  AND code IN (SELECT code FROM permission.temp_perm);
+
+-- Identify any non-predefined permissions whose ids are either negative
+-- or within the range (0-1000) reserved for predefined permissions.
+-- Assign them ids above 1000, based on the sequence.  Record the new
+-- ids in the temp_perm table.
+
+INSERT INTO permission.temp_perm ( id, code, description, old_id, predefined )
+(
+	SELECT NEXTVAL('permission.perm_list_id_seq'::regclass),
+		code, description, id, false
+	FROM permission.perm_list
+	WHERE  ( id < -1 OR id BETWEEN 0 AND 1000 )
+	AND code NOT IN (SELECT code FROM permission.temp_perm)
+);
+
+-- Now update the ids of those non-predefined permissions, using the
+-- values assigned in the previous step.
+
+UPDATE permission.perm_list AS ppl
+SET id = (
+		SELECT id
+		FROM permission.temp_perm AS tp
+		WHERE tp.code = ppl.code
+	)
+WHERE id IN ( SELECT old_id FROM permission.temp_perm WHERE NOT predefined );
+
+-- Now the negative ids have been eliminated, except for -1.  Move all the
+-- predefined permissions temporarily into the negative range.
+
+UPDATE permission.perm_list
+SET id = -1 - id
+WHERE id <> -1
+AND code IN ( SELECT code from permission.temp_perm WHERE predefined );
+
+-- Apply the final ids to the existing predefined permissions.
+
+UPDATE permission.perm_list AS ppl
+SET id =
+	(
+		SELECT id
+		FROM permission.temp_perm AS tp
+		WHERE tp.code = ppl.code
+	)
+WHERE
+	id <> -1
+	AND ppl.code IN
+	(
+		SELECT code from permission.temp_perm
+		WHERE predefined
+		AND old_id IS NOT NULL
+	);
+
+-- If there are any predefined permissions that don't exist yet in
+-- permission.perm_list, insert them now.
+
+INSERT INTO permission.perm_list ( id, code, description )
+(
+	SELECT id, code, description
+	FROM permission.temp_perm
+	WHERE old_id IS NULL
+);
+
+-- Reset the sequence to the lowest feasible value.  This may or may not
+-- accomplish anything, but it will do no harm.
+
+SELECT SETVAL('permission.perm_list_id_seq'::TEXT, GREATEST( 
+	(SELECT MAX(id) FROM permission.perm_list), 1000 ));
+
+-- If any permission lacks a description, use the code as a description.
+-- It's better than nothing.
+
+UPDATE permission.perm_list
+SET description = code
+WHERE description IS NULL
+   OR description = '';
+
+-- Thus endeth the Great Renumbering.
+
+-- Having massaged the permissions, massage the way they are assigned, by inserting
+-- rows into permission.grp_perm_map.  Some of these permissions may have already
+-- been assigned, so we insert the rows only if they aren't already there.
+
+-- for backwards compat, give everyone the permission
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
+    SELECT 1, id, 0, false FROM permission.perm_list AS perm
+	WHERE code = 'HOLD_ITEM_CHECKED_OUT.override'
+		AND NOT EXISTS (
+			SELECT 1
+			FROM permission.grp_perm_map AS map
+			WHERE
+				grp = 1
+				AND map.perm = perm.id
+		);
+
+-- Add trigger administration permissions to the Local System Administrator group.
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
+    SELECT 10, id, 1, false FROM permission.perm_list AS perm
+    WHERE (
+		perm.code LIKE 'ADMIN_TRIGGER%'
+        OR perm.code LIKE 'CREATE_TRIGGER%'
+        OR perm.code LIKE 'DELETE_TRIGGER%'
+        OR perm.code LIKE 'UPDATE_TRIGGER%'
+	) AND NOT EXISTS (
+		SELECT 1
+		FROM permission.grp_perm_map AS map
+		WHERE
+			grp = 10
+			AND map.perm = perm.id
+	);
+
+-- View trigger permissions are required at a consortial level for initial setup
+-- (as before, only if the row doesn't already exist)
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
+    SELECT 10, id, 0, false FROM permission.perm_list AS perm
+	WHERE code LIKE 'VIEW_TRIGGER%'
+		AND NOT EXISTS (
+			SELECT 1
+			FROM permission.grp_perm_map AS map
+			WHERE
+				grp = 10
+				AND map.perm = perm.id
+		);
+
+-- Permission for merging auth records may already be defined,
+-- so add it only if it isn't there.
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
+    SELECT 4, id, 1, false FROM permission.perm_list AS perm
+	WHERE code = 'MERGE_AUTH_RECORDS'
+		AND NOT EXISTS (
+			SELECT 1
+			FROM permission.grp_perm_map AS map
+			WHERE
+				grp = 4
+				AND map.perm = perm.id
+		);
 
 -- Create a reference table as parent to both
 -- config.org_unit_setting_type and config_usr_setting_type
@@ -144,7 +1266,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.hold_stalling.soft',
   'Holds: Soft stalling interval',
-  'How long to wait before allowing remote items to be opportunistically captured for a hold.  Example "5 days"',
+  'How long to wait before allowing remote items to be opportunisticaly captured for a hold.  Example "5 days"',
   'interval' ),
 
 ( 'circ.hold_stalling_hard',
@@ -174,12 +1296,12 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.item_checkout_history.max',
   'Maximum previous checkouts displayed',
-  'This is the maximum number of previous circulations the staff client will display when investigating item details',
+  'This is maximum number of previous circulations the staff client will display when investigating item details',
   'integer' ),
 
 ( 'circ.reshelving_complete.interval',
   'Change reshelving status interval',
-  'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples: "1 day", "6 hours"',
+  'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"',
   'interval' ),
 
 ( 'circ.holds.default_estimated_wait_interval',
@@ -194,7 +1316,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.selfcheck.patron_login_timeout',
   'Selfcheck: Patron Login Timeout (in seconds)',
-  'Number of seconds of inactivity before the patron is logged out of the selfcheck interface',
+  'Number of seconds of inactivity before the patron is logged out of the selfcheck interfacer',
   'integer' ),
 
 ( 'circ.selfcheck.alert.popup',
@@ -374,7 +1496,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'credit.processor.default',
     'Credit card processing: Name default credit processor',
-    'This might be "AuthorizeNet", "PayPal", etc.',
+    'This can be "AuthorizeNet", "PayPal" (for the Website Payment Pro API), or "PayflowPro".',
     'string' ),
 
 ( 'credit.processor.authorizenet.enabled',
@@ -723,7 +1845,7 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
     VALUES (
         'circ.holds.uncancel.reset_request_time',
         'Holds: Reset request time on un-cancel',
-        'When a hold is uncanceled, reset the request time to push it to the end of the queue',
+        'When a holds is uncanceled, reset the request time to push it to the end of the queue',
         'bool'
     );
 
@@ -1046,7 +2168,7 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, f
             'label'),
         oils_i18n_gettext(
             'circ.missing_pieces.copy_status',
-            'This is the Item Status to use for items that have been marked or scanned as having Missing Pieces.  In the absence of this setting, the Damaged status is used.',
+            'This is the Item Status to use for items that have been marked or scanned as having Missing Pieces.  In absense of this setting, the Damaged status is used.',
             'coust',
             'description'),
         'link',
@@ -1139,6 +2261,86 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
         ),
         'bool'
 );
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, fm_class ) VALUES (
+        'ui.patron.default_ident_type',
+        oils_i18n_gettext(
+            'ui.patron.default_ident_type',
+            'GUI: Default Ident Type for Patron Registration',
+            'coust',
+            'label'),
+        oils_i18n_gettext(
+            'ui.patron.default_ident_type',
+            'This is the default Ident Type for new users in the patron editor.',
+            'coust',
+            'description'),
+        'link',
+        'cit'
+);
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+        'ui.patron.default_country',
+        oils_i18n_gettext(
+            'ui.patron.default_country',
+            'GUI: Default Country for New Addresses in Patron Editor',
+            'coust',
+            'label'),
+        oils_i18n_gettext(
+            'ui.patron.default_country',
+            'This is the default Country for new addresses in the patron editor.',
+            'coust',
+            'description'),
+        'string'
+);
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+        'ui.patron.registration.require_address',
+        oils_i18n_gettext(
+            'ui.patron.registration.require_address',
+            'GUI: Require at least one address for Patron Registration',
+            'coust',
+            'label'),
+        oils_i18n_gettext(
+            'ui.patron.registration.require_address',
+            'Enforces a requirement for having at least one address for a patron during registration.',
+            'coust',
+            'description'),
+        'bool'
+);
+
+INSERT INTO config.org_unit_setting_type (
+    name, label, description, datatype
+) VALUES
+    ('credit.processor.payflowpro.enabled',
+        'Credit card processing: Enable PayflowPro payments',
+        'This is NOT the same thing as the settings labeled with just "PayPal."',
+        'bool'
+    ),
+    ('credit.processor.payflowpro.login',
+        'Credit card processing: PayflowPro login/merchant ID',
+        'Often the same thing as the PayPal manager login',
+        'string'
+    ),
+    ('credit.processor.payflowpro.password',
+        'Credit card processing: PayflowPro password',
+        'PayflowPro password',
+        'string'
+    ),
+    ('credit.processor.payflowpro.testmode',
+        'Credit card processing: PayflowPro test mode',
+        'Do not really process transactions, but stay in test mode - uses pilot-payflowpro.paypal.com instead of the usual host',
+        'bool'
+    ),
+    ('credit.processor.payflowpro.vendor',
+        'Credit card processing: PayflowPro vendor',
+        'Often the same thing as the login',
+        'string'
+    ),
+    ('credit.processor.payflowpro.partner',
+        'Credit card processing: PayflowPro partner',
+        'Often "PayPal" or "VeriSign", sometimes others',
+        'string'
+    );
 
 -- Patch the name of an old selfcheck setting
 UPDATE actor.org_unit_setting
@@ -1247,13 +2449,13 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
     'hold_request.cancel.expire_holds_shelf',
     'ahr',
-    'A hold is cancelled because it was on the holds shelf too long'
+    'A hold is cancelled becuase it was on the holds shelf too long'
 );
 
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
     'hold_request.cancel.staff',
     'ahr',
-    'A hold is cancelled because it was cancelled by staff'
+    'A hold is cancelled becuase it was cancelled by staff'
 );
 
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
@@ -1310,7 +2512,7 @@ INSERT INTO action_trigger.event_params (event_def, param, value) VALUES
   
 INSERT INTO action_trigger.validator (module,description) VALUES ('MinPassiveTargetAge','Check that the target is old enough to be used by this event -- requires a min_target_age interval parameter, and accepts an optional target_age_field to specify what time to use for offsetting');
 
-INSERT INTO action_trigger.reactor (module,description) VALUES ('ApplyPatronPenalty','Applies the configured penalty to a patron.  Required named environment variables are "user", which refers to the user object, and "context_org", which refers to the org_unit object that acts as the focus for the penalty.');
+INSERT INTO action_trigger.reactor (module,description) VALUES ('ApplyPatronPenalty','Applies the conifigured penalty to a patron.  Required named environment variables are "user", which refers to the user object, and "context_org", which refers to the org_unit object that acts as the focus for the penalty.');
 
 INSERT INTO action_trigger.hook (
         key,
@@ -1421,7 +2623,7 @@ Dear [% user.family_name %], [% user.first_given_name %]
 
 You requested hold(s) on the following item(s), but unfortunately
 we have not been able to fulfill your request after a considerable
-length of time.  If you would still like to receive these items,
+length of time.  If you would still like to recieve these items,
 no action is required.
 
 [% FOR hold IN target %]
@@ -2206,7 +3408,7 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
   [% END %]
   <tr>
     <td/><td/><td/><td/>
-    <td>Subtotal</td>
+    <td>Sub Total</td>
     <td>[% subtotal %]</td>
   </tr>
   </tbody>
@@ -4797,13 +5999,6 @@ COMMENT ON FUNCTION action.apply_fieldset( INT, TEXT, TEXT, TEXT ) IS $$
  */
 $$;
 
--- Removed:
--- stuff pertaining to settings and setting types
--- almost everything pertaining to permission.perm_list
--- everything pertaining to the action_trigger schema
--- the query schema
--- almost everything pertaining to fieldsets
-
 CREATE INDEX uhr_hold_idx ON action.unfulfilled_hold_list (hold);
 
 CREATE OR REPLACE VIEW action.unfulfilled_hold_loops AS
@@ -5837,6 +7032,8 @@ UPDATE config.index_normalizer SET param_count = 0 WHERE func = 'split_date_rang
 ALTER TABLE actor.usr ADD COLUMN
 	claims_never_checked_out_count  INT         NOT NULL DEFAULT 0;
 
+CREATE INDEX actor_usr_usrgroup_idx ON actor.usr (usrgroup);
+
 ALTER TABLE AUDITOR.actor_usr_history ADD COLUMN 
 	claims_never_checked_out_count INT NOT NULL DEFAULT 0;
 
@@ -6172,7 +7369,7 @@ BEGIN
     SELECT INTO rec_descriptor r.* FROM metabib.rec_descriptor r JOIN asset.call_number c USING (record) WHERE c.id = item_object.call_number;
     SELECT INTO current_group * FROM permission.grp_tree WHERE id = user_object.profile;
 
-    LOOP
+    LOOP 
         -- for each potential matchpoint for this ou and group ...
         FOR current_mp IN
             SELECT  m.*
@@ -6201,6 +7398,10 @@ BEGIN
                     CASE WHEN m.ref_flag        IS NOT NULL THEN 2 ELSE 0 END +
                     CASE WHEN m.usr_age_lower_bound    IS NOT NULL THEN 0.5 ELSE 0 END +
                     CASE WHEN m.usr_age_upper_bound    IS NOT NULL THEN 0.5 ELSE 0 END DESC LOOP
+
+            IF current_mp.is_renewal IS NOT NULL THEN
+                CONTINUE WHEN current_mp.is_renewal <> renewal;
+            END IF;
 
             IF current_mp.circ_modifier IS NOT NULL THEN
                 CONTINUE WHEN current_mp.circ_modifier <> item_object.circ_modifier OR item_object.circ_modifier IS NULL;
@@ -11465,7 +12666,7 @@ INSERT INTO acq.invoice_item_type (code,name) VALUES ('PRO',oils_i18n_gettext('P
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('SHP',oils_i18n_gettext('SHP', 'Shipping Charge', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('HND',oils_i18n_gettext('HND', 'Handling Charge', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('ITM',oils_i18n_gettext('ITM', 'Non-library Item', 'aiit', 'name'));
-INSERT INTO acq.invoice_item_type (code,name) VALUES ('SUB',oils_i18n_gettext('SUB', 'Serial Subscription', 'aiit', 'name'));
+INSERT INTO acq.invoice_item_type (code,name) VALUES ('SUB',oils_i18n_gettext('SUB', 'Searial Subscription', 'aiit', 'name'));
 
 CREATE TABLE acq.po_item (
 	id              SERIAL      PRIMARY KEY,
@@ -13767,7 +14968,7 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 
 INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
 	'Replace',
-	'Replace all occurences of first parameter in the string with the second parameter.',
+	'Replace all occurances of first parameter in the string with the second parameter.',
 	'replace',
 	2
 );
@@ -14950,6 +16151,18 @@ INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
             'cgf', 
             'label'
         )
+    );
+
+INSERT INTO config.global_flag (name, label, enabled)
+    VALUES (
+        'circ.holds.empty_issuance_ok',
+        oils_i18n_gettext(
+            'circ.holds.empty_issuance_ok',
+            'Holds: Allow holds on empty issuances',
+            'cgf',
+            'label'
+        ),
+        TRUE
     );
 
 CREATE OR REPLACE FUNCTION maintain_control_numbers() RETURNS TRIGGER AS $func$
@@ -16519,10 +17732,34 @@ CREATE TRIGGER bbb_simple_rec_trigger AFTER INSERT OR UPDATE ON biblio.record_en
 
 ALTER TABLE extend_reporter.legacy_circ_count DROP CONSTRAINT legacy_circ_count_id_fkey;
 
+CREATE INDEX asset_copy_note_owning_copy_idx ON asset.copy_note ( owning_copy );
+
+UPDATE config.org_unit_setting_type
+    SET view_perm = (SELECT id FROM permission.perm_list
+        WHERE code = 'VIEW_CREDIT_CARD_PROCESSING' LIMIT 1)
+    WHERE name LIKE 'credit.processor%' AND view_perm IS NULL;
+
+UPDATE config.org_unit_setting_type
+    SET update_perm = (SELECT id FROM permission.perm_list
+        WHERE code = 'ADMIN_CREDIT_CARD_PROCESSING' LIMIT 1)
+    WHERE name LIKE 'credit.processor%' AND update_perm IS NULL;
+
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
+    VALUES (
+        'opac.fully_compressed_serial_holdings',
+        'OPAC: Use fully compressed serial holdings',
+        'Show fully compressed serial holdings for all libraries at and below
+        the current context unit',
+        'bool'
+    );
+
 COMMIT;
 
--- Outside of the commit: some alters that may legitimately fail
--- if the table doesn't exist.
+-- Some operations go outside of the transaction, because they may
+-- legitimately fail.
+
+\qecho ALTERs of auditor.action_hold_request_history will fail if the table
+\qecho doesn't exist; ignore those errors if they occur.
 
 ALTER TABLE auditor.action_hold_request_history ADD COLUMN cut_in_line BOOL;
 
@@ -16531,3 +17768,37 @@ ADD COLUMN mint_condition boolean NOT NULL DEFAULT TRUE;
 
 ALTER TABLE auditor.action_hold_request_history
 ADD COLUMN shelf_expire_time TIMESTAMPTZ;
+
+\qecho Outside of the transaction: adding indexes that may or may not exist.
+\qecho If any of these CREATE INDEX statements fails because the index already
+\qecho exists, ignore the failure.
+
+CREATE INDEX serial_subscription_record_idx ON serial.subscription (record_entry);
+CREATE INDEX serial_subscription_owner_idx ON serial.subscription (owning_lib);
+CREATE INDEX serial_caption_and_pattern_sub_idx ON serial.caption_and_pattern (subscription);
+CREATE INDEX serial_distribution_sub_idx ON serial.distribution (subscription);
+CREATE INDEX serial_distribution_holding_lib_idx ON serial.distribution (holding_lib);
+CREATE INDEX serial_distribution_note_dist_idx ON serial.distribution_note (distribution);
+CREATE INDEX serial_stream_dist_idx ON serial.stream (distribution);
+CREATE INDEX serial_routing_list_user_stream_idx ON serial.routing_list_user (stream);
+CREATE INDEX serial_routing_list_user_reader_idx ON serial.routing_list_user (reader);
+CREATE INDEX serial_issuance_sub_idx ON serial.issuance (subscription);
+CREATE INDEX serial_issuance_caption_and_pattern_idx ON serial.issuance (caption_and_pattern);
+CREATE INDEX serial_issuance_date_published_idx ON serial.issuance (date_published);
+CREATE UNIQUE INDEX unit_barcode_key ON serial.unit (barcode) WHERE deleted = FALSE OR deleted IS FALSE;
+CREATE INDEX unit_cn_idx ON serial.unit (call_number);
+CREATE INDEX unit_avail_cn_idx ON serial.unit (call_number);
+CREATE INDEX unit_creator_idx  ON serial.unit ( creator );
+CREATE INDEX unit_editor_idx   ON serial.unit ( editor );
+CREATE INDEX serial_item_stream_idx ON serial.item (stream);
+CREATE INDEX serial_item_issuance_idx ON serial.item (issuance);
+CREATE INDEX serial_item_unit_idx ON serial.item (unit);
+CREATE INDEX serial_item_uri_idx ON serial.item (uri);
+CREATE INDEX serial_item_date_received_idx ON serial.item (date_received);
+CREATE INDEX serial_item_status_idx ON serial.item (status);
+CREATE INDEX serial_item_note_item_idx ON serial.item_note (item);
+CREATE INDEX serial_basic_summary_dist_idx ON serial.basic_summary (distribution);
+CREATE INDEX serial_supplement_summary_dist_idx ON serial.supplement_summary (distribution);
+CREATE INDEX serial_index_summary_dist_idx ON serial.index_summary (distribution);
+
+\qecho Upgrade script completed.
