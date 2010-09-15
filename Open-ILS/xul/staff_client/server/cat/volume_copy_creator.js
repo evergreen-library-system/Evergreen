@@ -106,7 +106,7 @@ function my_init() {
         /***********************************************************************************************************/
         /* For the call number drop down */
 
-        if (!g.copy_shortcut) {
+        if (g.existing_copies.length > 0 || !g.copy_shortcut) {
             g.list_callnumbers(g.doc_id, label_class);
         }
 
@@ -214,14 +214,16 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
             return;
         }
 
-        //if (call_number_column_textbox.disabled || number_of_copies_column_textbox.disabled) return;
+        while (barcode_column_box.childNodes.length > Number(number_of_copies_column_textbox.value)) {
+            barcode_column_box.removeChild( barcode_column_box.lastChild );
+        }
+        g.render_barcode_entry(
+            barcode_column_box,
+            call_number_column_textbox.value,
+            Number(number_of_copies_column_textbox.value),
+            ou_id
+        );
 
-        //call_number_column_textbox.disabled = true;
-        //number_of_copies_column_textbox.disabled = true;
-
-        util.widgets.remove_children(barcode_column_box);
-
-        g.render_barcode_entry(barcode_column_box,call_number_column_textbox.value,Number(number_of_copies_column_textbox.value),ou_id);
         document.getElementById("EditThenCreate").disabled = false;
         document.getElementById("CreateWithDefaults").disabled = false;
     }
@@ -292,7 +294,9 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
                             }
                             call_number_column_textbox.value = label; 
                             handle_change_call_number_column_textbox({'target':call_number_column_textbox});
-                            call_number_column_textbox.disabled = true;
+                            if (g.existing_copies.length < 1) {
+                                call_number_column_textbox.disabled = true;
+                            }
                         }
                     } catch(E) {
                         alert(E);
@@ -315,32 +319,40 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
         JSAN.use('util.barcode'); 
 
         for (var i = 0; i < count; i++) {
-            var tb = document.createElement('textbox'); node.appendChild(tb);
+            var tb; var set_handlers = false;
+            if (typeof node.childNodes[i] == 'undefined') {
+                tb = document.createElement('textbox'); node.appendChild(tb);
+                set_handlers = true;
+            } else {
+                tb = node.childNodes[i];
+            }
             tb.setAttribute('ou_id',ou_id);
             tb.setAttribute('callnumber',callnumber);
             tb.setAttribute('rel_vert_pos','4');
-            if (g.org_label_existing_copy_map[ ou_id ]) {
+            if (!tb.value && g.org_label_existing_copy_map[ ou_id ]) {
                 tb.value = g.org_label_existing_copy_map[ ou_id ][ callnumber ][i].barcode();
                 tb.setAttribute('acp_id', g.org_label_existing_copy_map[ ou_id ][ callnumber ][i].id());
                 tb.select();
                 if (! g.first_focus) { g.first_focus = tb; }
             }
-            util.widgets.apply_vertical_tab_on_enter_handler( 
-                tb, 
-                function() { ready_to_create({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); }
-            );
-            tb.addEventListener('change', function(ev) {
-                var barcode = String( ev.target.value ).replace(/\s/g,'');
-                if (barcode != ev.target.value) ev.target.value = barcode;
-                if ($('check_barcodes').checked && ! util.barcode.check(barcode) ) {
-                    g.error.yns_alert($("catStrings").getFormattedString('staff.cat.volume_copy_creator.render_barcode_entry.alert_message', [barcode]),
-                        $("catStrings").getString('staff.cat.volume_copy_creator.render_barcode_entry.alert_title'),
-                        $("catStrings").getString('staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button'),null,null,
-                        $("catStrings").getString('staff.cat.volume_copy_creator.render_barcode_entry.alert_confirm'));
-                    setTimeout( function() { ev.target.select(); ev.target.focus(); }, 0);
-                }
-            }, false);
-            tb.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
+            if (set_handlers) {
+                util.widgets.apply_vertical_tab_on_enter_handler( 
+                    tb, 
+                    function() { ready_to_create({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); }
+                );
+                tb.addEventListener('change', function(ev) {
+                    var barcode = String( ev.target.value ).replace(/\s/g,'');
+                    if (barcode != ev.target.value) ev.target.value = barcode;
+                    if ($('check_barcodes').checked && ! util.barcode.check(barcode) ) {
+                        g.error.yns_alert($("catStrings").getFormattedString('staff.cat.volume_copy_creator.render_barcode_entry.alert_message', [barcode]),
+                            $("catStrings").getString('staff.cat.volume_copy_creator.render_barcode_entry.alert_title'),
+                            $("catStrings").getString('staff.cat.volume_copy_creator.render_barcode_entry.alert_ok_button'),null,null,
+                            $("catStrings").getString('staff.cat.volume_copy_creator.render_barcode_entry.alert_confirm'));
+                        setTimeout( function() { ev.target.select(); ev.target.focus(); }, 0);
+                    }
+                }, false);
+                tb.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
+            }
         }
         
         setTimeout( function() { if (g.first_focus) { g.first_focus.focus(); } }, 0 ); 
@@ -466,7 +478,7 @@ g.stash_and_close = function(param) {
                     } else {
                         copy = g.id_copy_map[ acp_id ];
                         copy.barcode( barcode );
-                        copy.call_number( copy.call_number().id() );
+                        copy.call_number( acn_id );
                         copy.ischanged('1');
                     }
                     copies.push( copy );
@@ -598,7 +610,11 @@ g.list_callnumbers = function(doc_id, label_class) {
             var nl = document.getElementsByTagName('textbox');
             for (var i = 0; i < nl.length; i++) {
                 if (nl[i].getAttribute('rel_vert_pos')==2 
-                    && !nl[i].disabled) nl[i].value = ml.value;
+                    && !nl[i].disabled) 
+                {
+                    nl[i].value = ml.value;
+                    util.widgets.dispatch('change',nl[i]);
+                }
             }
             if (g.last_focus) setTimeout( function() { g.last_focus.focus(); }, 0 );
         }, 
