@@ -108,16 +108,16 @@ sub retrieve_lineitem_impl {
 
     my $fields = $flesh->{flesh_fields};
 
-    push(@{$fields->{jub}}, 'attributes') if $$options{flesh_attrs};
-    push(@{$fields->{jub}}, 'lineitem_notes') if $$options{flesh_notes};
-    push(@{$fields->{acqlin}}, 'alert_text') if $$options{flesh_notes};
-    push(@{$fields->{jub}}, 'order_summary') if $$options{flesh_order_summary};
+    push(@{$fields->{jub}   },    'attributes') if $$options{flesh_attrs};
+    push(@{$fields->{jub}   },'lineitem_notes') if $$options{flesh_notes};
+    push(@{$fields->{acqlin}},    'alert_text') if $$options{flesh_notes};
+    push(@{$fields->{jub}   }, 'order_summary') if $$options{flesh_order_summary};
     push(@{$fields->{acqlin}}, 'cancel_reason') if $$options{flesh_cancel_reason};
 
     if($$options{flesh_li_details}) {
-        push(@{$fields->{jub}}, 'lineitem_details');
-        push(@{$fields->{acqlid}}, 'fund') if $$options{flesh_fund};
-        push(@{$fields->{acqlid}}, 'fund_debit') if $$options{flesh_fund_debit};
+        push(@{$fields->{jub}   }, 'lineitem_details');
+        push(@{$fields->{acqlid}}, 'fund'         ) if $$options{flesh_fund};
+        push(@{$fields->{acqlid}}, 'fund_debit'   ) if $$options{flesh_fund_debit};
         push(@{$fields->{acqlid}}, 'cancel_reason') if $$options{flesh_cancel_reason};
     }
 
