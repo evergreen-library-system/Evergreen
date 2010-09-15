@@ -104,7 +104,8 @@ scalar(@$subset) or die "No acq.provider rows match options " .
 
 print "Limiting to " . scalar(@$subset) . " account(s)\n"; 
 foreach (@$subset) {
-    printf "Provider %s - %s, edi_account %s - %s: %s\n", $_->provider->id, $_->provider->name, $_->id, $_->label, $_->host;
+    printf "Provider %s - %s, edi_account %s - %s: %s%s\n",
+        $_->provider->id, $_->provider->name, $_->id, $_->label, $_->host, ($_->in_dir ? ('/' . $_->in_dir) : '') ;
 }
 
 if (@ARGV) {
@@ -129,7 +130,7 @@ if (@ARGV) {
 }
 # else no args
 
-my $res = $opts->{test} ? [] : OpenILS::Application::Acq::EDI->retrieve_core($subset);
+my $res = OpenILS::Application::Acq::EDI->retrieve_core($subset,undef,undef,$opts->{test});
 print "Files retrieved: ", scalar(@$res), "\n";
 $debug and print "retrieve_core returns ", scalar(@$res),  " ids: " . join(', ', @$res), "\n";
 

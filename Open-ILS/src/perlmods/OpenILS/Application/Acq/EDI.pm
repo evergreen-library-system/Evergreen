@@ -80,7 +80,7 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_core {
-    my ($self, $set, $max, $e) = @_;    # $e is a working editor
+    my ($self, $set, $max, $e, $test) = @_;    # $e is a working editor
 
     $e   ||= new_editor();
     $set ||= __PACKAGE__->retrieve_vendors($e);
@@ -95,22 +95,22 @@ sub retrieve_core {
             $logger->err(sprintf "Failed remote account mapping for %s (%s)", $account->host, $account->id);
             next;
         };
-        my $rf_starter = '';
+#       my $rf_starter = './';  # default to current dir
         if ($account->in_dir) { 
             if ($account->in_dir =~ /\*+.*\//) {
                 $logger->err("EDI in_dir has a slash after an asterisk in value: '" . $account->in_dir . "'.  Skipping account with indeterminate target dir!");
                 next;
             }
-            $rf_starter = $account->in_dir;
-            $rf_starter =~ s/((\/)?[^\/]*)\*+[^\/]*$//;  # kill up to the first (possible) slash before the asterisk: keep the preceeding static dir
-            $rf_starter .= '/' if $rf_starter or $2;   # recap the dir, or replace leading "/" if there was one (but don't add if empty)
+#           $rf_starter = $account->in_dir;
+#           $rf_starter =~ s/((\/)?[^\/]*)\*+[^\/]*$//;  # kill up to the first (possible) slash before the asterisk: keep the preceeding static dir
+#           $rf_starter .= '/' if $rf_starter or $2;   # recap the dir, or replace leading "/" if there was one (but don't add if empty)
         }
-        my @files    = ($server->ls({remote_file => ($rf_starter || '.')}));
+        my @files    = ($server->ls({remote_file => ($account->in_dir || './')}));
         my @ok_files = grep {$_ !~ /\/\.?\.$/ and $_ ne '0'} @files;
-        $logger->info(sprintf "%s of %s files at %s/%s", scalar(@ok_files), scalar(@files), $account->host, ($rf_starter || '.'));   
-        $server->remote_path(undef);
-        foreach (@ok_files) {
-            my $remote_file = $rf_starter . $_;
+        $logger->info(sprintf "%s of %s files at %s/%s", scalar(@ok_files), scalar(@files), $account->host, $account->in_dir);   
+        # $server->remote_path(undef);
+        foreach my $remote_file (@ok_files) {
+            # my $remote_file = $rf_starter . $_;
             my $description = sprintf "%s/%s", $account->host, $remote_file;
             
             # deduplicate vs. acct/filenames already in DB
@@ -134,13 +134,17 @@ sub retrieve_core {
             $max and $count > $max and last;
             $logger->info(sprintf "%s of %s targets: %s", $count, scalar(@ok_files), $description);
             print sprintf "%s of %s targets: %s\n", $count, scalar(@ok_files), $description;
+            if ($test) {
+                push @return, "test_$count";
+                next;
+            }
             my $content;
             my $io = IO::Scalar->new(\$content);
             unless ( $server->get({remote_file => $remote_file, local_file => $io}) ) {
                 $logger->error("(S)FTP get($description) failed");
                 next;
             }
-            my $incoming = __PACKAGE__->process_retrieval($content, $_, $server, $account->id, $e);
+            my $incoming = __PACKAGE__->process_retrieval($content, $remote_file, $server, $account->id, $e);
 #           $server->delete(remote_file => $_);   # delete remote copies of saved message
             push @return, $incoming->id;
         }
@@ -170,7 +174,13 @@ sub process_retrieval {
     $e->xact_begin;
     $e->create_acq_edi_message($incoming);
     $e->xact_commit;
-    __PACKAGE__->process_jedi($incoming, $server, $e);
+    my $res = __PACKAGE__->process_jedi($incoming, $server, $e);
+    $incoming->status($res ? 'processed' : 'proc_error');
+    if ($res) {
+        $e->xact_begin;
+        $e->update_acq_edi_message($incoming);
+        $e->xact_commit;
+    }
     return $incoming;
 }
 
@@ -397,21 +407,24 @@ sub process_jedi {
         return;
     }
     my $e = @_ ? shift : new_editor();
-    my $perl = __PACKAGE__->jedi2perl($jedi);
+    my $perl  = __PACKAGE__->jedi2perl($jedi);
+    my $error = '';
     if (ref($message) and not $perl) {
-        $message->error(($message->error || '') . " JSON2perl (jedi2perl) FAILED to convert jedi");
+        $error = ($message->error || '') . " JSON2perl (jedi2perl) FAILED to convert jedi";
+    }
+    elsif (! $perl->{body}) {
+        $error = "EDI interchange body not found!";
+    } 
+    elsif (! $perl->{body}->[0]) {
+        $error = "EDI interchange body not a populated arrayref!";
+    }
+    if ($error) {
+        $logger->warn($error);
+        $message->error($error);
         $message->error_time('NOW');
         $e->xact_begin;
         $e->udpate_acq_edi_message($message) or $logger->warn("EDI update_acq_edi_message failed! $!");
         $e->xact_commit;
-        return;
-    }
-    if (! $perl->{body}) {
-        $logger->warn("EDI interchange body not found!");
-        return;
-    } 
-    if (! $perl->{body}->[0]) {
-        $logger->warn("EDI interchange body not a populated arrayref!");
         return;
     }
 
