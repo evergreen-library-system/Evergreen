@@ -63,7 +63,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
 
             if(this.fmClass && !this.fmIDL)
-                throw new Error("IDL class '" + this.fmClass + "' not defined");
+                fieldmapper.IDL.load([this.fmClass]);
 
             this.suppressLinkedFields = args.suppressLinkedFields || [];
 
@@ -364,7 +364,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             var linkClass = this.idlField['class'];
             if(this.idlField.reltype != 'has_a')  return false;
             if(!fieldmapper.IDL.fmclasses[linkClass]) // class neglected by AutoIDL
-                throw new Error("IDL Class '" + linkClass + "' not defined");
+                fieldmapper.IDL.load([this.fmClass]);
             if(!fieldmapper.IDL.fmclasses[linkClass].permacrud) return false;
             if(!fieldmapper.IDL.fmclasses[linkClass].permacrud.retrieve) return false;
 
