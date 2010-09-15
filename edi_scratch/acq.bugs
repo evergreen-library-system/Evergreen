@@ -1,0 +1,24 @@
+
+Every LID needs a Fund.  Interface doesn't enforce this.
+
+When the interface intends to make you cancel rather than "X" a LID (because the PO is active)
+you can still delete LIDs by changing the Item Count and clicking "Go".
+
+LID Save Changes: when it works quickly, you have no idea that it succeeded.  Especially if you
+are conditioned to eternally hung progress bars.
+
+Upload MARC file for acq: hangs.
+
+No chrome package registered for chrome://open_ils_staff_client/js/dojo/dojo/dojo.js
+No chrome package registered for chrome://extensiondev/content/rdfhistory.js
+No chrome package registered for chrome://extensiondev/content/chromeShellExtras.js
+
+Error: buildGrid is not defined
+Source File: http://dev-vm7.lan.hq.esilibrary.com/js/ui/default/vandelay/vandelay.js
+Line: 1325
+
+Error: list[i].toHash is not a function
+Source File: http://dev-vm7.lan.hq.esilibrary.com/js/dojo/dojo/dojo.js
+Line: 71
+
+Title of tab for /eg/vandelay/vandelay is "Server Settings" (not "MARC Import/Export") as in FF.
