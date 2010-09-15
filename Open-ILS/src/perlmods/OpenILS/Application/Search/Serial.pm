@@ -112,7 +112,7 @@ Given a bib record ID, returns a hash of holdings statements
 sub bib_to_svr {
 	my ($self, $client, $bib) = @_;
 	
-	my $svrs;
+	my $svrs = [];
 
 	my $e = OpenILS::Utils::CStoreEditor->new();
     # TODO: 'deleted' ssub support
