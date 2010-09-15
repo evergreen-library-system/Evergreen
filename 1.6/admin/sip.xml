@@ -4,23 +4,28 @@
 	<info>
         	<title>SIP Server</title>
 	</info>
-	<para>SIP, standing for Standard Interchange Protocol, was developed by the 3M corporation to be a common protocol for data transfer between ILS' 
-	(referred to in SIP as an <emphasis>ACS</emphasis>, or <emphasis>Automated Circulation System</emphasis>) and a third party device. Originally, the protocol was developed for 
+	<para><systemitem class="protocol">SIP</systemitem>, standing for <systemitem class="protocol">Standard Interchange Protocol</systemitem>, was developed by the 
+	<orgname class="corporation">3M</orgname>corporation to be a common protocol for data transfer between ILS' 
+	(referred to in <systemitem class="protocol">SIP</systemitem> as an <emphasis>ACS</emphasis>, or <emphasis>Automated Circulation System</emphasis>)
+	<indexterm><primary>Automated Circulation System</primary></indexterm> and a 
+	third party device. Originally, the protocol was developed for 
 	use with 3M SelfCheck (often abbreviated SC, not to be confused with Staff Client) systems, but has since expanded to other companies and devices. It is now common to find 
-	SIP in use in several other vendors' SelfCheck systems, as well as other non-SelfCheck devices. Some examples include:</para>
+	<systemitem class="protocol">SIP</systemitem> in use in several other vendors' SelfCheck systems<indexterm><primary>SelfCheck</primary></indexterm>, as well as other non-SelfCheck devices. 
+	Some examples include:</para>
   	<itemizedlist>
 		<listitem>Patron Authentication (computer access, subscription databases)</listitem>
-		<listitem>Automated Material Handling (AMH) - The automated sorting of items, often to bins or book carts, based on shelving location or other programmable criteria</listitem>
+		<listitem>Automated Material Handling (AMH) <indexterm><primary>Automated Material Handling (AMH)</primary></indexterm>- The automated sorting of items, often to bins or 
+		book carts, based on shelving location or other programmable criteria</listitem>
 	</itemizedlist>
    
 	<section xml:id="Installing_SIP_Server">
 		<info>
-		<title>Installing the SIP Server</title>
+		<title>Installing the <systemitem class="protocol">SIP</systemitem> Server</title>
 	   	</info>
-		  <para>This is a rough intro to installing the SIP server for Evergreen.</para>
+		  <para>This is a rough intro to installing the <systemitem class="protocol">SIP</systemitem> server for Evergreen.</para>
 		<simplesect xml:id="Gettingthecode">
 			    <title>Getting the code</title>
-				<para>Current SIP code lives at github:</para>
+				<para>Current <systemitem class="protocol">SIP</systemitem> code lives at github:</para>
 				<screen>cd /opt</screen>
 				<screen>git clone git://github.com/atz/SIPServer.git SIPServer</screen>
 				<para>Or use the old style:</para>
@@ -40,7 +45,8 @@
       				<screen>$ cp oils_sip.xml.example oils_sip.xml</screen>
 			</step>
 			<step>
-				<para>Edit oils_sip.xml. Change the commented out &lt;server-params&gt; section to this:</para>
+				<para>Edit <filename>oils_sip.xml</filename><indexterm><primary>configuration files</primary><primary>oils_sip.xml</primary></indexterm>. 
+				Change the commented out &lt;server-params&gt; section to this:</para>
 				<screen>&lt;server-params</screen>
               			<screen>min_servers='1'</screen>
               			<screen>min_spare_servers='0'</screen>
@@ -48,14 +54,16 @@
           			<screen>/&gt;</screen>
 			</step>
 			<step>
-				<para> max_servers will directly correspond to the number of allowed SIP clients. Set the number accordingly, but bear in mind that too many connections can 
-				exhaust memory. On a 4G RAM/4 CPU server (that is also running evergreen), I would recommend not exceeding 100 SIP client connections, 
+				<para> max_servers will directly correspond to the number of allowed <systemitem class="protocol">SIP</systemitem> clients. Set the number accordingly, but 
+				bear in mind that too many connections can 
+				exhaust memory. On a 4G RAM/4 CPU server (that is also running evergreen), I would recommend not exceeding 100 
+				<systemitem class="protocol">SIP</systemitem> client connections, 
 				give or take.</para>				
 			</step>
 			</procedure>		 
 		</simplesect>
 		<simplesect xml:id="Adding_SIP_users">
-			<title>Adding SIP Users</title>
+			<title>Adding <systemitem class="protocol">SIP</systemitem> Users</title>
 			<procedure>
 				<step>
 					<para>Type the following commands from the command prompt:</para>
@@ -64,12 +72,14 @@
 	      				<screen>$ cp oils_sip.xml.example oils_sip.xml</screen>
 				</step>
 				<step>
-					<para> in the &lt;accounts&gt; section, add SIP client login information. Make sure that all &lt;logins&gt; use the same institution attribute, and make 
-					sure the institution is listed in &lt;institutions&gt;. All attributes in the &lt;login&gt; section will be used by the SIP client.</para>
+					<para> in the &lt;accounts&gt; section, add <systemitem class="protocol">SIP</systemitem> client login information. Make sure that all &lt;logins&gt; use the 
+					same institution attribute, and make 
+					sure the institution is listed in &lt;institutions&gt;. All attributes in the &lt;login&gt; section will be used by the <systemitem class="protocol">SIP</systemitem> client.</para>
 				
 				</step>
 				<step>
-					<para> In Evergreen, create a new profile group called SIP. This group should be a sub-group of Users (not Staff or Patrons). 
+					<para> In Evergreen, create a new profile group called <systemitem class="protocol">SIP</systemitem>. This group should be a sub-group of Users 
+					(not Staff or Patrons). 
 					Set Editing Permission as <emphasis>group_application.user.sip_client</emphasis> and give the group the following permissions:</para>
 					<literallayout>
 					COPY_CHECKIN
@@ -99,15 +109,15 @@
 				</step>
 				<step>
 					<para>For each account created in the &lt;login&gt; section of oils_sip.xml, create a user (via the staff client user editor) that has the same username 
-					and password and put that user into the SIP group.</para>
-					<note><para>The expiration date will affect the SIP users' connection, you might want to make a note of 
+					and password and put that user into the <systemitem class="protocol">SIP</systemitem> group.</para>
+					<note><para>The expiration date will affect the <systemitem class="protocol">SIP</systemitem> users' connection, you might want to make a note of 
 					this somewhere. </para></note>	
 				</step>
 			</procedure>		 
 		</simplesect>
 		<simplesect xml:id="Running_SIP_server">
 			<title>Running the server</title>
-				<para>To start the SIP server type the following commands from the command prompt:</para>
+				<para>To start the <systemitem class="protocol">SIP</systemitem> server type the following commands from the command prompt:</para>
 				<screen>$ sudo su opensrf</screen>
 				<screen>$ oils_ctl.sh -d /openils/var/run -s /openils/conf/oils_sip.xml -a [start|stop|restart]_sip</screen>	
 		</simplesect>
@@ -115,7 +125,7 @@
 			<title>Logging-SIP</title>
 			<simplesect>
 				<title>Syslog</title>
-				<para>It is useful to log SIP requests to a separate file especially during initial setup by modifying your syslog config file.</para>
+				<para>It is useful to log <systemitem class="protocol">SIP</systemitem> requests to a separate file especially during initial setup by modifying your syslog config file.</para>
 				<procedure>
 					<step>
 						<para>Edit syslog.conf.</para>
@@ -163,7 +173,7 @@
 			</simplesect>
 		</simplesect>	
 		<simplesect xml:id="Testing_SIP_Connection">
-			<title>Testing Your SIP Connection</title>
+			<title>Testing Your <systemitem class="protocol">SIP</systemitem> Connection</title>
 			<itemizedlist>
 				<listitem>
 					<para>In the top level CVS checkout of the SIPServer code.</para>
@@ -189,10 +199,10 @@
 			<title>More Testing</title>
 			<procedure>
 				<step>
-					<para>Once you have opened up either the SIP OR SIP2 ports to be accessible from outside you can do some testing via telnet. You can try this with localhost 
-					if you so wish, but we want to prove that SIP2 works from non-localhost. Replace $instid, $server, $barcode, $username, and $password variables below as 
+					<para>Once you have opened up either the <systemitem class="protocol">SIP</systemitem> OR <systemitem class="protocol">SIP2</systemitem> ports to be accessible from outside you can do some testing via telnet. You can try this with localhost 
+					if you so wish, but we want to prove that <systemitem class="protocol">SIP2</systemitem> works from non-localhost. Replace $instid, $server, $barcode, $username, and $password variables below as 
 					necessary.</para>
-					<note><para>We are using 6001 here which is associated with SIP2 as per our configuration.</para></note>
+					<note><para>We are using 6001 here which is associated with <systemitem class="protocol">SIP2</systemitem> as per our configuration.</para></note>
 					<screen>$ telnet $server 6001</screen>
 					<screen>Connected to $server.</screen>
 					<screen>Escape character is '^]'.</screen>
@@ -212,9 +222,9 @@
 	</section>
 	<section xml:id="SIP_Communication">
 		<info>
-			<title>SIP Communication</title>
+			<title><systemitem class="protocol">SIP</systemitem> Communication</title>
 	   	</info>
-		<para>SIP generally communicates over a TCP connection (either raw sockets or over telnet), but can also communicate via serial connections and other methods. In Evergreen, 
+		<para><systemitem class="protocol">SIP</systemitem> generally communicates over a TCP connection (either raw sockets or over telnet), but can also communicate via serial connections and other methods. In Evergreen, 
 		the most common deployment is a RAW socket connection on port 6001.</para>
 		<para>SIP communication consists of strings of messages, each message request and response begin with a 2-digit <quote>command</quote> - Requests usually being an odd 
 		number and responses usually increased by 1 to be an even number. The combination numbers for the request command and response is often referred to as a 
@@ -317,7 +327,7 @@
                         			<entry>93/94</entry>
 						<entry>Login</entry>
 						<entry>Yes</entry>
-						<entry><link linkend='SIP_Login'>93/94_Login</link> - Must be first command to Evergreen ACS (via socket) or SIP will terminate</entry>
+						<entry><link linkend='SIP_Login'>93/94_Login</link> - Must be first command to Evergreen ACS (via socket) or <systemitem class="protocol">SIP</systemitem> will terminate</entry>
                     			</row>
 					<row>
                         			<entry>97/96</entry>
@@ -408,7 +418,7 @@
 			<para>The request looks like:</para>
 			<screen>17&lt;xact_date&gt;[fields: AO,AB,AC]</screen>
 			<para>The request is very terse. AC is optional.</para>
-			<para>The following response structure is for SIP2. (Version 1 of the protocol had only 6 total fields.)</para>
+			<para>The following response structure is for <systemitem class="protocol">SIP2</systemitem>. (Version 1 of the protocol had only 6 total fields.)</para>
 			<screen>18&lt;circulation_status&gt;&lt;security_marker&gt;&lt;fee_type&gt;&lt;xact_date&gt;[fields: CF,AH,CJ,CM,AB,AJ,BG,BH,BV,CK,AQ,AP,CH,AF,AG,+CT,+CS]</screen>
 			<para>Example:</para>
 			<screen>1720060110    215612AOBR1|ABno_such_barcode|</screen>
@@ -433,13 +443,13 @@
 			<screen>2300120060101    084235AOCONS|AA999999|ACsip_01|ADuserpassword|LY|CQN|BHUSD|BV0.00|AFOK|AOCONS|</screen>
 			<screen>24  Y           00120100507    022803AEDoug Fiander|AA999999|BLY|CQY|BHUSD|BV0.00|AFOK|AOCONS|</screen>
 			<orderedlist>
-				<listitem>The <emphasis>BL</emphasis> field (SIP2, optional) is <emphasis>valid patron</emphasis>, so the <emphasis>N</emphasis> value means 
+				<listitem>The <emphasis>BL</emphasis> field (<systemitem class="protocol">SIP2</systemitem>, optional) is <emphasis>valid patron</emphasis>, so the <emphasis>N</emphasis> value means 
 				<emphasis>bad_barcode</emphasis> doesn't match a patron, the <emphasis>Y</emphasis> value means 999999 does.</listitem>
-				<listitem>The <emphasis>CQ</emphasis> field (SIP2, optional) is <emphasis>valid password</emphasis>, so the <emphasis>N</emphasis> 
+				<listitem>The <emphasis>CQ</emphasis> field (<systemitem class="protocol">SIP2</systemitem>, optional) is <emphasis>valid password</emphasis>, so the <emphasis>N</emphasis> 
 				value means <emphasis>bad_password</emphasis> doesn't match 999999's password, the <emphasis>Y</emphasis> means <emphasis>userpassword</emphasis> 
 				does.</listitem>
 			</orderedlist>
-			<para>So if you were building the most basic SIP2 authentication client, you would check for <emphasis>|CQY|</emphasis> in the response to know the user's barcode and password 
+			<para>So if you were building the most basic <systemitem class="protocol">SIP2</systemitem> authentication client, you would check for <emphasis>|CQY|</emphasis> in the response to know the user's barcode and password 
 			are correct (<emphasis>|CQY|</emphasis> implies <emphasis>|BLY|</emphasis>, since you cannot check the password unless the barcode exists). However, in practice, 
 			depending on the application, there are other factors to consider in authentication, like whether the user is blocked from checkout, owes excessive fines, reported their 
 			card lost, etc. These limitations are reflected in the 14-character <emphasis>patron status</emphasis> string immediately following the <emphasis>24</emphasis> code. 
@@ -512,7 +522,8 @@
 			<para>Example:</para>
 			<screen>9910302.00</screen>
 			<screen>98YYYYNN60000320100510    1717202.00AOCONS|BXYYYYYYYYYNYNNNYN|</screen>
-			<para>The Supported Messages field <emphasis>(BX)</emphasis> appears only in SIP2, and specifies whether 16 different SIP commands are supported by the ACS or not.</para>
+			<para>The Supported Messages field <emphasis>(BX)</emphasis> appears only in <systemitem class="protocol">SIP2</systemitem>, and specifies whether 16 different 
+			<systemitem class="protocol">SIP</systemitem>  commands are supported by the ACS or not.</para>
 		</simplesect>
 		<simplesect xml:id="SIP_Fields">
 			<title>Fields</title>
