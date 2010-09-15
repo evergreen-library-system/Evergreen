@@ -212,8 +212,26 @@ function my_init() {
             locale = 'en-US';
         }
 
+        // grab the right tooltip based on MARC type
+        var tooltip_doc = 'marcedit-tooltips.xml';
+        switch (window.xulG.record.rtype) {
+            case 'bre':
+                tooltip_doc = 'marcedit-tooltips.xml';
+                break; 
+            case 'are':
+                tooltip_doc = 'marcedit-tooltips-authority.xml';
+                locale = 'en-US'; // FIXME - note TODO above; at moment only en-US has this
+                break; 
+            case 'sre':
+                tooltip_doc = 'marcedit-tooltips-mfhd.xml';
+                locale = 'en-US'; // FIXME - note TODO above; at moment only en-US has this
+                break; 
+            default: 
+                tooltip_doc = 'marcedit-tooltips.xml';
+        }
+
         // Get the locale-specific tooltips
-        req.open('GET','/xul/server/locale/' + locale + '/marcedit-tooltips.xml',true);
+        req.open('GET','/xul/server/locale/' + locale + '/' + tooltip_doc,true);
 
         context_menus = createComplexXULElement('popupset');
         document.documentElement.appendChild( context_menus );
