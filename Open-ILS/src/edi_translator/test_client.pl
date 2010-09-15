@@ -88,21 +88,26 @@ if ($command eq 'json2edi' or $command eq 'edi2json' or $command eq 'edi2perl') 
         } else {
             $string =~ s/ORDRSP:0(:...:UN::)/ORDRSP:D$1/ and print STDERR "Corrected broken data 'ORDRSP:0' ==> 'ORDRSP:D'\n";
             $resp = $client->send_request('edi2json', $string);
+        }
+        unless ($resp) {
+            warn "Response does not have a payload value!";
+            next;
+        }
+        if ($resp->is_fault) {
+            print "\n\nERROR code ", $resp->code, " received:\n", nice_string($resp->string) . "\n...\n";
+            next;
+        }
+        if ($command ne 'json2edi') {   # like the else of the first conditional
             $parser ||= JSON::XS->new()->pretty(1)->ascii(1)->allow_nonref(1)->space_before(0);    # get it once
+            $verbose and print Dumper($resp);
             my $parsed = $parser->decode($resp->value) or warn "Failed to decode response payload value";
-            my $perl   = JSONObject2Perl($parsed) or warn "Failed to decode and create perl object from JSON";
+            my $perl   = JSONObject2Perl($parsed)      or warn "Failed to decode and create perl object from JSON";
             if ($perl) {
                 print STDERR "\n########## We were able to decode and perl-ify the JSON\n";
             } else {
                 print STDERR "\n########## ERROR: Failed to decode and perl-ify the JSON\n";
             }
             print "# $command Response: \n", $command eq 'edi2perl' ? Dumper($perl) : $parser->encode($parsed);
-        }
-
-        $resp or next;
-        if ($resp->is_fault) {
-            print "\n\nERROR code ", $resp->code, " received:\n", nice_string($resp->string) . "\n...\n";
-            next;
         }
     }
     exit;

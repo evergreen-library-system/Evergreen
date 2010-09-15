@@ -80,7 +80,7 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_core {
-    my ($self, $e, $set, $max) = @_;    # $e is a working editor
+    my ($self, $set, $max, $e) = @_;    # $e is a working editor
 
     $e   ||= new_editor();
     $set ||= __PACKAGE__->retrieve_vendors($e);
@@ -92,43 +92,86 @@ sub retrieve_core {
         my $server;
         $logger->info("EDI check for vendor " . ++$vcount . " of " . scalar(@$set) . ": " . $account->host);
         unless ($server = __PACKAGE__->remote_account($account)) {   # assignment, not comparison
-            $logger->err(sprintf "Failed remote account connection for %s (%s)", $account->host, $account->id);
+            $logger->err(sprintf "Failed remote account mapping for %s (%s)", $account->host, $account->id);
             next;
         };
-        my @files    = $server->ls({remote_file => ($account->in_dir || '.')});
-        my @ok_files = grep {$_ !~ /\/\.?\.$/ } @files;
-        $logger->info(sprintf "%s of %s files at %s/%s", scalar(@ok_files), scalar(@files), $account->host, ($account->in_dir || ''));   
-        foreach (@ok_files) {
-            ++$count;
-            $max and $count > $max and last;
-            my $content;
-            my $io = IO::Scalar->new(\$content);
-            unless (
-                $server->get({remote_file => ($account->in_dir ? ($account->in_dir . "/$_") : $_),
-                              local_file  => $io})
-                ) {
-                $logger->error("(S)FTP get($_) failed");
+        my $rf_starter = '';
+        if ($account->in_dir) { 
+            if ($account->in_dir =~ /\*+.*\//) {
+                $logger->err("EDI in_dir has a slash after an asterisk in value: '" . $account->in_dir . "'.  Skipping account with indeterminate target dir!");
                 next;
             }
-            my $z;  # must predeclare
-            $z = ( $content =~ s/('UNH\+\d+\+ORDRSP:)0(:96A:UN')/$1D$2/g )
-                and $logger->warn("Patching bogus spec reference ORDRSP:0:96A:UN => ORDRSP:D:96A:UN ($z times)");  # Hack/fix some faulty "0" in (B&T) data
-            my $incoming = Fieldmapper::acq::edi_message->new;
-            $incoming->remote_file($_);
-            $incoming->message_type('ORDRSP');  # FIXME: we don't actually know w/o sniffing, but DB constraint makes us say something
-            $incoming->edi($content);
-            $incoming->account($account->id);
-             __PACKAGE__->attempt_translation($incoming);
-            $e->xact_begin;
-            $e->create_acq_edi_message($incoming);
-            $e->xact_commit;
-            __PACKAGE__->record_activity($account, $e);
-            __PACKAGE__->process_jedi($incoming, $server, $e);
+            $rf_starter = $account->in_dir;
+            $rf_starter =~ s/((\/)?[^\/]*)\*+[^\/]*$//;  # kill up to the first (possible) slash before the asterisk: keep the preceeding static dir
+            $rf_starter .= '/' if $rf_starter or $2;   # recap the dir, or replace leading "/" if there was one (but don't add if empty)
+        }
+        my @files    = ($server->ls({remote_file => ($rf_starter || '.')}));
+        my @ok_files = grep {$_ !~ /\/\.?\.$/ and $_ ne '0'} @files;
+        $logger->info(sprintf "%s of %s files at %s/%s", scalar(@ok_files), scalar(@files), $account->host, ($rf_starter || '.'));   
+        $server->remote_path(undef);
+        foreach (@ok_files) {
+            my $remote_file = $rf_starter . $_;
+            my $description = sprintf "%s/%s", $account->host, $remote_file;
+            
+            # deduplicate vs. acct/filenames already in DB
+            my $hits = $e->search_acq_edi_message([
+                {
+                    account     => $account->id,
+                    remote_file => $remote_file,
+                    status      => {'in' => [qw/ processed /]},     # if it never got processed, go ahead and get the new one (try again)
+                    # create_time => 'NOW() - 60 DAYS',     # if we wanted to allow filenames to be reused after a certain time
+                    # ideally we would also use the date from FTP, but that info isn't available via RemoteAccount
+                }
+                # { flesh => 1, flesh_fields => {...}, }
+            ]);
+            if (scalar(@$hits)) {
+                $logger->debug("EDI: $remote_file already retrieved.  Skipping");
+                print ("EDI: $remote_file already retrieved.  Skipping");
+                next;
+            }
+
+            ++$count;
+            $max and $count > $max and last;
+            $logger->info(sprintf "%s of %s targets: %s", $count, scalar(@ok_files), $description);
+            print sprintf "%s of %s targets: %s\n", $count, scalar(@ok_files), $description;
+            my $content;
+            my $io = IO::Scalar->new(\$content);
+            unless ( $server->get({remote_file => $remote_file, local_file => $io}) ) {
+                $logger->error("(S)FTP get($description) failed");
+                next;
+            }
+            my $incoming = __PACKAGE__->process_retrieval($content, $_, $server, $account->id, $e);
 #           $server->delete(remote_file => $_);   # delete remote copies of saved message
             push @return, $incoming->id;
         }
     }
     return \@return;
+}
+
+# my $in = OpenILS::Application::Acq::EDI->process_retrieval($file_content, $remote_filename, $server, $account_id, $editor);
+
+sub process_retrieval {
+    my $incoming = Fieldmapper::acq::edi_message->new;
+    my ($class, $content, $remote, $server, $account_or_id, $e) = @_;
+    $content or return;
+    $e ||= new_editor;
+
+    my $account = __PACKAGE__->record_activity( $account_or_id, $e );
+
+    my $z;  # must predeclare
+    $z = ( $content =~ s/('UNH\+\d+\+ORDRSP:)0(:96A:UN')/$1D$2/g )
+        and $logger->warn("Patching bogus spec reference ORDRSP:0:96A:UN => ORDRSP:D:96A:UN ($z times)");  # Hack/fix some faulty "0" in (B&T) data
+
+    $incoming->remote_file($remote);
+    $incoming->account($account->id);
+    $incoming->edi($content);
+    $incoming->message_type(($content =~ /'UNH\+\d+\+(\S{6}):/) ? $1 : 'ORDRSP');   # cheap sniffing, ORDRSP fallback
+    __PACKAGE__->attempt_translation($incoming);
+    $e->xact_begin;
+    $e->create_acq_edi_message($incoming);
+    $e->xact_commit;
+    __PACKAGE__->process_jedi($incoming, $server, $e);
+    return $incoming;
 }
 
 # ->send_core
@@ -225,7 +268,7 @@ sub retrieve_vendors {
     $e ||= new_editor();
 
     my $criteria = {'+acqpro' => {active => 't'}};
-    # $criteria->{vendor_id} = $vendor_id if $vendor_id;
+    $criteria->{'+acqpro'}->{id} = $vendor_id if $vendor_id;
     return $e->search_acq_edi_account([
         $criteria, {
             'join' => 'acqpro',
@@ -299,10 +342,13 @@ sub remote_account {
     );
 }
 
+# takes account ID or account Fieldmapper object
+
 sub record_activity {
-    my ($class, $account, $e) = @_;
-    $account or return;
+    my ($class, $account_or_id, $e) = @_;
+    $account_or_id or return;
     $e ||= new_editor();
+    my $account = ref($account_or_id) ? $account_or_id : $e->retrieve_acq_edi_account($account_or_id);
     $logger->info("EDI record_activity calling update_acq_edi_account");
     $account->last_activity('NOW') or return;
     $e->xact_begin;
@@ -376,7 +422,8 @@ sub process_jedi {
 # So you might access it like:
 #   $obj->{body}->[0]->{ORDERS}->[0]->[0] eq 'UNH'
 
-    $logger->info("EDI interchange body has " . scalar(@{$perl->{body}}) . " messages(s)");
+    $logger->info("EDI interchange body has " . scalar(@{$perl->{body}}) . " message(s)");
+    my @ok_msg_codes = qw/ORDERS OSTRPT/;
     my @messages;
     my $i = 0;
     foreach my $part (@{$perl->{body}}) {
@@ -390,9 +437,10 @@ sub process_jedi {
                 $logger->warn("EDI interchange $i contains unhandled '$key' message.  Ignoring it.");
                 next;
             }
-            my $msg = __PACKAGE__->message_object($key, $part->{$key}) or next;
+            my $msg = __PACKAGE__->message_object($part->{$key}) or next;
             push @messages, $msg;
 
+            my $bgm = $msg->xpath('BGM') or $logger->warn("EDI No BGM segment found?!");
             my $tag4343 = $msg->xpath('BGM/4343');
             my $tag1225 = $msg->xpath('BGM/1225');
             if (ref $tag4343) {
@@ -502,14 +550,16 @@ sub process_jedi {
 
 sub message_object {
     my $class = shift;
-    my $key   = shift or return;
     my $body  = shift or return;
+    my $key   = shift if @_;
+    my $keystring = $key || 'UNSPECIFIED';
 
     my $msg = Business::EDI::Message->new($body);
     unless ($msg) {
-        $logger->error("EDI interchange message: $key body failed Business::EDI constructor. Skipping it.");
+        $logger->error("EDI interchange message: $keystring body failed Business::EDI constructor. Skipping it.");
         return;
     }
+    $key = $msg->code if ! $key;  # Now we set the key for reference if it wasn't specified
     my $val_0065 = $msg->xpath_value('UNH/S009/0065') || '';
     unless ($val_0065 eq $key) {
         $logger->error("EDI $key UNH/S009/0065 ('$val_0065') conflicts w/ message type $key.  Aborting");
@@ -536,6 +586,8 @@ sub message_object {
 =head2 ->eg_li($lineitem_object, [$server, $editor])
 
 my $line_item = OpenILS::Application::Acq::EDI->eg_li($edi_line);
+
+$server is a RemoteAccount object
 
 Updates:
  acq.lineitem.estimated_unit_price, 
@@ -585,7 +637,7 @@ sub eg_li {
     }); # Could send more {options}
 
     if (! $li or ref($li) ne 'Fieldmapper::acq::lineitem') {
-        $logger->error("EDI failed to retrieve lineitem by id '$id' for server " . $server->remote_host);
+        $logger->error("EDI failed to retrieve lineitem by id '$id' for server " . ($server->{remote_host} || $server->{host} || Dumper($server)));
         return;
     }
     unless ((! $server) or (! $server->provider)) {
