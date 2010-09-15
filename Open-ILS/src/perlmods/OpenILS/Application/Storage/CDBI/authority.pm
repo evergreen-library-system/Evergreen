@@ -10,7 +10,7 @@ use base qw/authority/;
 
 authority::record_entry->table( 'authority_record_entry' );
 authority::record_entry->columns( Primary => qw/id/ );
-authority::record_entry->columns( Essential => qw/arn_source arn_value creator editor
+authority::record_entry->columns( Essential => qw/creator editor
 				      create_date edit_date source active
 				      deleted marc last_xact_id/ );
 

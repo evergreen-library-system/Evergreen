@@ -437,8 +437,6 @@ BEGIN
             NEW.marc,
             E'(</(?:[^:]*?:)?record>)',
             E'<datafield tag="901" ind1=" " ind2=" ">' ||
-                '<subfield code="a">' || NEW.arn_value || E'</subfield>' ||
-                '<subfield code="b">' || NEW.arn_source || E'</subfield>' ||
                 '<subfield code="c">' || NEW.id || E'</subfield>' ||
                 '<subfield code="t">' || TG_TABLE_SCHEMA || E'</subfield>' ||
              E'</datafield>\\1'
