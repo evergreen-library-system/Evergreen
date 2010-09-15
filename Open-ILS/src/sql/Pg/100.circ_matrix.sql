@@ -181,6 +181,10 @@ BEGIN
                     CASE WHEN m.usr_age_lower_bound    IS NOT NULL THEN 0.5 ELSE 0 END +
                     CASE WHEN m.usr_age_upper_bound    IS NOT NULL THEN 0.5 ELSE 0 END DESC LOOP
 
+            IF current_mp.is_renewal IS NOT NULL THEN
+                CONTINUE WHEN current_mp.is_renewal <> renewal;
+            END IF;
+
             IF current_mp.circ_modifier IS NOT NULL THEN
                 CONTINUE WHEN current_mp.circ_modifier <> item_object.circ_modifier OR item_object.circ_modifier IS NULL;
             END IF;
