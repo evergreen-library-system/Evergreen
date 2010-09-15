@@ -17,11 +17,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="troubleshooting">
 			<para>Stop OpenSRF:</para><indexterm><primary>OpenSRF</primary></indexterm>
 			<screen><userinput>osrf_ctl.sh -l -a stop_all</userinput></screen>
 			<para>You should get either output simlar to this:</para>
-			<screen>Stopping OpenSRF C process 12515...</screen>
-			<screen>Stopping OpenSRF C process 12520...</screen>
-			<screen>Stopping OpenSRF C process 12526...</screen>
-			<screen>Stopping OpenSRF Perl process 12471...</screen>
-			<screen>Stopping OpenSRF Router process 12466...</screen>
+<screen>
+Stopping OpenSRF C process 12515...
+Stopping OpenSRF C process 12520...
+Stopping OpenSRF C process 12526...
+Stopping OpenSRF Perl process 12471...
+Stopping OpenSRF Router process 12466...
+</screen>
 			<para>Or, if services have already been stopped, output may look like this:</para>
 			<screen>OpenSRF C not running</screen>
 			<screen>OpenSRF Perl not running</screen>
@@ -65,18 +67,18 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="troubleshooting">
 		<indexterm><primary>OpenSRF</primary><secondary>services</secondary><tertiery>perl</tertiery></indexterm>
 			<screen><userinput>/openils/bin/osrf_ctl.sh -l -a start_perl</userinput></screen>
 			<para>You should see the output similar to the following:</para>
-			<screen>
-			Starting OpenSRF Perl
-			* starting all services for ...
-			* starting service pid=7484 opensrf.settings
-			* starting service pid=7493 open-ils.cat
-			* starting service pid=7495 open-ils.supercat
-			* starting service pid=7497 open-ils.search
-			* starting service pid=7499 open-ils.circ
-			* starting service pid=7501 open-ils.actor
-			* starting service pid=7502 open-ils.storage
-			...
-			</screen>
+<screen>
+Starting OpenSRF Perl
+* starting all services for ...
+* starting service pid=7484 opensrf.settings
+* starting service pid=7493 open-ils.cat
+* starting service pid=7495 open-ils.supercat
+* starting service pid=7497 open-ils.search
+* starting service pid=7499 open-ils.circ
+* starting service pid=7501 open-ils.actor
+* starting service pid=7502 open-ils.storage
+...
+</screen>
 			<para>If the <systemitem class="service">perl</systemitem> services do not start correctly or you receive errors, search for errors 
 			in the following log files:</para>
 			<itemizedlist>	
@@ -110,18 +112,18 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="troubleshooting">
 			<para>As user <systemitem class="username">opensrf</systemitem>, you invoke <command>autogen</command> with the command:</para>
 			<screen><userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput></screen>
 			<para>If Autogen completes successfully, the output will be:</para>
-			<screen>
-			Updating fieldmapper
-			Updating web_fieldmapper
-			Updating OrgTree
-			removing OrgTree from the cache...
-			Updating OrgTree HTML
-			Updating locales selection HTML
-			Updating Search Groups
-			Refreshing proximity of org units
-			Successfully updated the organization proximity
-			Done
-			</screen>
+<screen>
+Updating fieldmapper
+Updating web_fieldmapper
+Updating OrgTree
+removing OrgTree from the cache...
+Updating OrgTree HTML
+Updating locales selection HTML
+Updating Search Groups
+Refreshing proximity of org units
+Successfully updated the organization proximity
+Done
+</screen>
 			<para>If Autogen does not complete its task and you receive errors, use 
 			<command>grep</command> to find errors in the log files:</para>  
 			<screen><userinput>grep ERR /openils/var/log/*.log</userinput></screen>
@@ -139,31 +141,31 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="troubleshooting">
 			<para>At the srfsh prompt, enter this command:</para>
 			<screen><userinput>login admin open-ils</userinput></screen>
 			<para>You should the request verification:</para>
-			<screen>
-			Received Data: "6f63ff5542da1fead4431c6c280efc75"
-			------------------------------------
-			Request Completed Successfully
-			Request Time in seconds: 0.018414
-			------------------------------------
-			
-			Received Data: {
-			"ilsevent":0,
-			"textcode":"SUCCESS",
-			"desc":" ",
-			"pid":7793,
-			"stacktrace":"oils_auth.c:312",
-			"payload":{
-			"authtoken":"28804ebf99508496e2a4d2593aaa930e",
-			 "authtime":420.000000
-			}
-			}
-			
-			------------------------------------
-			Request Completed Successfully
-			Request Time in seconds: 0.552430
-			------------------------------------
-			Login Session: 28804.  Session timeout: 420.000
-			srfsh#</screen>        
+<screen>
+Received Data: "6f63ff5542da1fead4431c6c280efc75"
+------------------------------------
+Request Completed Successfully
+Request Time in seconds: 0.018414
+------------------------------------
+
+Received Data: {
+"ilsevent":0,
+"textcode":"SUCCESS",
+"desc":" ",
+"pid":7793,
+"stacktrace":"oils_auth.c:312",
+"payload":{
+"authtoken":"28804ebf99508496e2a4d2593aaa930e",
+ "authtime":420.000000
+}
+}
+
+------------------------------------
+Request Completed Successfully
+Request Time in seconds: 0.552430
+------------------------------------
+Login Session: 28804.  Session timeout: 420.000
+srfsh#</screen>        
 			<para>If you encounter errors or if you are unable to connect, you should consult the 
 			<filename>srfsh.log</filename> file. The location of this file is configured in your <indexterm><primary>logs</primary><secondary>srfsh.log</secondary></indexterm>
 			<filename>.srfsh.xml</filename> configuration file and is 

@@ -56,13 +56,15 @@
 				for your distribution:</para>
 				<itemizedlist>
 					<listitem>
-						<para><option>debian-etch</option> for <systemitem class="osname">Debian Etch (4.0)</systemitem><indexterm><primary>Linux</primary><secondary>Debian</secondary></indexterm></para>
+						<para><option>debian-etch</option> for <systemitem class="osname">Debian Etch (4.0)</systemitem>
+						<indexterm><primary>Linux</primary><secondary>Debian</secondary></indexterm></para>
 					</listitem>
 					<listitem>
 						<para><option>debian-lenny</option> for <systemitem class="osname">Debian Lenny (5.0)</systemitem></para>
 					</listitem>
 					<listitem>
-					<para><option>ubuntu-hardy</option> for <systemitem class="osname">Ubuntu Hardy Heron (8.04)</systemitem><indexterm><primary>Linux</primary><secondary>Ubuntu</secondary></indexterm></para>
+					<para><option>ubuntu-hardy</option> for <systemitem class="osname">Ubuntu Hardy Heron (8.04)</systemitem>
+					<indexterm><primary>Linux</primary><secondary>Ubuntu</secondary></indexterm></para>
 					</listitem>
 					<listitem>
 						<para><option>ubuntu-intrepid</option> for <systemitem class="osname">Ubuntu Intrepid Ibex 
@@ -213,15 +215,19 @@
 			<step>
 				<para>Update the Evergreen database:</para>
 				<note><para>it is recommended that you <link linkend="backingup">back up your Evergreen database</link> in order to restore your data if anything goes wrong.</para></note>
-				<screen><userinput>psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql evergreen</userinput></screen>
-				<screen><userinput>psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.0-1.6.0.1-upgrade-db.sql evergreen</userinput></screen> 
-				<screen><userinput>psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.1-1.6.0.2-upgrade-db.sql evergreen</userinput></screen> 
-				<screen><userinput>psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.2-1.6.0.3-upgrade-db.sql evergreen</userinput></screen> 
-				<screen><userinput>psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.3-1.6.0.4-upgrade-db.sql evergreen</userinput></screen> 
-				<screen><userinput>psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.4-1.6.0.5-upgrade-db.sql evergreen</userinput></screen>  
-				<screen><userinput>psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.5-1.6.0.6-upgrade-db.sql evergreen</userinput></screen> 
-				<screen><userinput>psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.6-1.6.0.7-upgrade-db.sql evergreen</userinput></screen> 
-				<screen><userinput>psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.7-1.6.0.8-upgrade-db.sql evergreen</userinput></screen> 
+<screen>
+<userinput>
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.4.0.5-1.6.0.0-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.0-1.6.0.1-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.1-1.6.0.2-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.2-1.6.0.3-upgrade-db.sql evergreen 
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.3-1.6.0.4-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.4-1.6.0.5-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.5-1.6.0.6-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.6-1.6.0.7-upgrade-db.sql evergreen 
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.7-1.6.0.8-upgrade-db.sql evergreen
+</userinput>
+</screen> 
 				<para>Download and run the the billing view hot-fix script</para>				
 				<screen><userinput>wget http://www.open-ils.org/downloads/1.6.0-mmbxs-cleanup.sql</userinput></screen>
 				<screen><userinput>psql -U evergreen -h localhost -f 1.6.0-mmbxs-cleanup.sql</userinput></screen>	
@@ -316,13 +322,17 @@
 			</step>
 			<step>			
 				<para>Create an empty Evergreen database in postgresql 8.3 by issuing the following commands as the postgres user:</para>
-				<screen><userinput>createdb -E UNICODE evergreen</userinput></screen>
-				<screen><userinput>createlang plperl   evergreen</userinput></screen>
-				<screen><userinput>createlang plperlu  evergreen</userinput></screen>
-				<screen><userinput>createlang plpgsql  evergreen</userinput></screen>
-				<screen><userinput>psql -f /usr/share/postgresql/8.3/contrib/tablefunc.sql evergreen</userinput></screen>
-				<screen><userinput>psql -f /usr/share/postgresql/8.3/contrib/tsearch2.sql evergreen</userinput></screen>
-				<screen><userinput>psql -f /usr/share/postgresql/8.3/contrib/pgxml.sql evergreen</userinput></screen>		
+<screen>
+<userinput>
+createdb -E UNICODE evergreen
+createlang plperl   evergreen
+createlang plperlu  evergreen
+createlang plpgsql  evergreen
+psql -f /usr/share/postgresql/8.3/contrib/tablefunc.sql evergreen
+psql -f /usr/share/postgresql/8.3/contrib/tsearch2.sql evergreen
+psql -f /usr/share/postgresql/8.3/contrib/pgxml.sql evergreen
+</userinput>
+</screen>		
 			</step>
 			<step>
 				<para>As the postgres user on the PostgreSQL server, create a PostgreSQL user named <systemitem class="username">evergreen</systemitem> for the database cluster:</para>
