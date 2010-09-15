@@ -39,6 +39,8 @@ CREATE TABLE serial.subscription (
 	expected_date_offset   INTERVAL
 	-- acquisitions/business-side tables link to here
 );
+CREATE INDEX serial_subscription_record_idx ON serial.subscription (record_entry);
+CREATE INDEX serial_subscription_owner_idx ON serial.subscription (owning_lib);
 
 CREATE TABLE serial.subscription_note (
 	id           SERIAL PRIMARY KEY,
@@ -54,6 +56,7 @@ CREATE TABLE serial.subscription_note (
 	title        TEXT   NOT NULL,
 	value        TEXT   NOT NULL
 );
+CREATE INDEX serial_subscription_note_sub_idx ON serial.subscription_note (subscription);
 
 CREATE TABLE serial.caption_and_pattern (
 	id           SERIAL       PRIMARY KEY,
@@ -79,6 +82,7 @@ CREATE TABLE serial.caption_and_pattern (
 	chron_4      TEXT,
 	chron_5      TEXT
 );
+CREATE INDEX serial_caption_and_pattern_sub_idx ON serial.caption_and_pattern (subscription);
 
 --at least one distribution per org_unit holding issues
 CREATE TABLE serial.distribution (
@@ -106,6 +110,8 @@ CREATE TABLE serial.distribution (
 	unit_label_suffix     TEXT
 );
 CREATE UNIQUE INDEX one_dist_per_sre_idx ON serial.distribution (record_entry);
+CREATE INDEX serial_distribution_sub_idx ON serial.distribution (subscription);
+CREATE INDEX serial_distribution_holding_lib_idx ON serial.distribution (holding_lib);
 
 CREATE TABLE serial.distribution_note (
 	id           SERIAL PRIMARY KEY,
@@ -121,6 +127,7 @@ CREATE TABLE serial.distribution_note (
 	title        TEXT   NOT NULL,
 	value        TEXT   NOT NULL
 );
+CREATE INDEX serial_distribution_note_dist_idx ON serial.distribution_note (distribution);
 
 CREATE TABLE serial.stream (
 	id              SERIAL  PRIMARY KEY,
@@ -130,6 +137,7 @@ CREATE TABLE serial.stream (
 	                        DEFERRABLE INITIALLY DEFERRED,
 	routing_label   TEXT
 );
+CREATE INDEX serial_stream_dist_idx ON serial.stream (distribution);
 
 CREATE UNIQUE INDEX label_once_per_dist
 	ON serial.stream (distribution, routing_label)
@@ -155,6 +163,8 @@ CREATE TABLE serial.routing_list_user (
 		(reader IS NULL AND department IS NOT NULL)
 	)
 );
+CREATE INDEX serial_routing_list_user_stream_idx ON serial.routing_list_user (stream);
+CREATE INDEX serial_routing_list_user_reader_idx ON serial.routing_list_user (reader);
 
 CREATE TABLE serial.issuance (
 	id              SERIAL    PRIMARY KEY,
@@ -183,14 +193,21 @@ CREATE TABLE serial.issuance (
 	holding_link_id INT -- probably defunct
 	-- TODO: add columns for separate enumeration/chronology values
 );
+CREATE INDEX serial_issuance_sub_idx ON serial.issuance (subscription);
+CREATE INDEX serial_issuance_caption_and_pattern_idx ON serial.issuance (caption_and_pattern);
+CREATE INDEX serial_issuance_date_published_idx ON serial.issuance (date_published);
 
 CREATE TABLE serial.unit (
 	sort_key          TEXT,
 	detailed_contents TEXT    NOT NULL,
 	summary_contents  TEXT    NOT NULL
 ) INHERITS (asset.copy);
-
 ALTER TABLE serial.unit ADD PRIMARY KEY (id);
+CREATE UNIQUE INDEX unit_barcode_key ON serial.unit (barcode) WHERE deleted = FALSE OR deleted IS FALSE;
+CREATE INDEX unit_cn_idx ON serial.unit (call_number);
+CREATE INDEX unit_avail_cn_idx ON serial.unit (call_number);
+CREATE INDEX unit_creator_idx  ON serial.unit ( creator );
+CREATE INDEX unit_editor_idx   ON serial.unit ( editor );
 
 -- must create this rule explicitly; it is not inherited from asset.copy
 CREATE RULE protect_serial_unit_delete AS ON DELETE TO serial.unit DO INSTEAD UPDATE serial.unit SET deleted = TRUE WHERE OLD.id = serial.unit.id;
@@ -227,6 +244,12 @@ CREATE TABLE serial.item (
 	                        ) DEFAULT 'Expected',
 	shadowed        BOOL    NOT NULL DEFAULT FALSE -- ignore when generating summaries/labels
 );
+CREATE INDEX serial_item_stream_idx ON serial.item (stream);
+CREATE INDEX serial_item_issuance_idx ON serial.item (issuance);
+CREATE INDEX serial_item_unit_idx ON serial.item (unit);
+CREATE INDEX serial_item_uri_idx ON serial.item (uri);
+CREATE INDEX serial_item_date_received_idx ON serial.item (date_received);
+CREATE INDEX serial_item_status_idx ON serial.item (status);
 
 CREATE TABLE serial.item_note (
 	id          SERIAL  PRIMARY KEY,
@@ -242,6 +265,7 @@ CREATE TABLE serial.item_note (
 	title       TEXT    NOT NULL,
 	value       TEXT    NOT NULL
 );
+CREATE INDEX serial_item_note_item_idx ON serial.item_note (item);
 
 CREATE TABLE serial.basic_summary (
 	id                  SERIAL  PRIMARY KEY,
@@ -252,6 +276,7 @@ CREATE TABLE serial.basic_summary (
 	generated_coverage  TEXT    NOT NULL,
 	textual_holdings    TEXT
 );
+CREATE INDEX serial_basic_summary_dist_idx ON serial.basic_summary (distribution);
 
 CREATE TABLE serial.supplement_summary (
 	id                  SERIAL  PRIMARY KEY,
@@ -262,6 +287,7 @@ CREATE TABLE serial.supplement_summary (
 	generated_coverage  TEXT    NOT NULL,
 	textual_holdings    TEXT
 );
+CREATE INDEX serial_supplement_summary_dist_idx ON serial.supplement_summary (distribution);
 
 CREATE TABLE serial.index_summary (
 	id                  SERIAL  PRIMARY KEY,
@@ -272,6 +298,7 @@ CREATE TABLE serial.index_summary (
 	generated_coverage  TEXT    NOT NULL,
 	textual_holdings    TEXT
 );
+CREATE INDEX serial_index_summary_dist_idx ON serial.index_summary (distribution);
 
 COMMIT;
 
