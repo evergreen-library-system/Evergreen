@@ -57,7 +57,7 @@ while (my $line = <TEMP>) {
 }
 close TEMP;
 
-my $dir = '/home/some_user/out';
+my $dir = '/home/' . $config{remote_user} . '/out';
 $delay and print "Sleeping $delay seconds\n" and sleep $delay;
 
 my $glob6 = $dir . '/*Q*';
