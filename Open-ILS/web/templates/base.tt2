@@ -19,7 +19,7 @@ var djConfig = {parseOnLoad:true,isDebug:false,AutoIDL:[
 'acqafst','acqafsb','acqafcb','acqfsrcct','acqfsrcat','acqfsrcb','acqfsb','acqfa','acqfap','acqpl','acqcr',
 'acqpo','acqpoh','acqpon','acqpoi','acqlih','acqliat','acqlin','acqlia','acqlid','acqliad','acqlimad',
 'acqligad','acqliuad','acqlipad','acqphsm','acqlilad','acqedi','acqedim','acqdf','acqdfe','acqdfa','acqda',
-'acqclt','acqclet','acqcl','acqcle','acqscl','acqscle','acqclp','acqclpa','acqlisum','acqft','acqftm','jub','sdist','ssub','sstr','scap','bre','siss','act', 'acpl', 'ccm', 'aiit']};
+'acqclt','acqclet','acqcl','acqcle','acqscl','acqscle','acqclp','acqclpa','acqlisum','acqft','acqftm','jub','sdist','ssub','sstr','scap','bre','siss','act', 'acpl', 'ccm', 'aiit', 'atevdef', 'ath', 'atreact', 'atval']};
         </script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/dojo/openils_dojo.js"></script>
