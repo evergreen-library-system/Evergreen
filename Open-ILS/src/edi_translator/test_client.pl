@@ -6,9 +6,11 @@ use strict;
 
 use Getopt::Long;
 use RPC::XML::Client;
+use JSON::XS;
 use Data::Dumper;
 
 # DEFAULTS
+$Data::Dumper::Indent = 1;
 my $host = 'http://localhost';
 my $verbose = 0;
 
@@ -23,7 +25,7 @@ $host =~ /:\d+$/     or $host .= ':9191';
 $host .= '/EDI';
 
 sub get_in {
-    print "Getting " . (shift) . " from input\n";
+    print STDERR "Getting " . (shift) . " from input\n";
     my $json = join("", <STDIN>);
     $json or return;
     print $json, "\n";
@@ -39,32 +41,64 @@ sub nice_string {
     return substr($string,0,$head) . " ...\n... " . substr($string, -1*$tail);
 }
 
+sub JSONObject2Perl {
+    my $obj = shift;
+    if ( ref $obj eq 'HASH' ) { # is a hash w/o class marker; simply revivify innards
+        for my $k (keys %$obj) {
+            $obj->{$k} = JSONObject2Perl($obj->{$k}) unless ref $obj->{$k} eq 'JSON::XS::Boolean';
+        }
+    } elsif ( ref $obj eq 'ARRAY' ) {
+        for my $i (0..scalar(@$obj) - 1) {
+            $obj->[$i] = JSONObject2Perl($obj->[$i]) unless ref $obj->[$i] eq 'JSON::XS::Boolean';
+        }
+    }
+    # ELSE: return vivified non-class hashes, all arrays, and anything that isn't a hash or array ref
+    return $obj;
+}
+
 # MAIN
 print "Trying host: $host\n";
 
+my $parser;
+
 my $client = new RPC::XML::Client($host);
 $client->request->header('Content-Type' => 'text/xml;charset=utf-8');
-print "User-agent: ", Dumper($client->useragent);
-print "Request: ", Dumper($client->request);
-print "Headers: \n";
-foreach ($client->request->header_field_names) {
-    print "\t$_ =>", $client->request->header($_), "\n";
+
+if ($verbose) {
+    print "User-agent: ", Dumper($client->useragent);
+    print "Request: ", Dumper($client->request);
+    print "Headers: \n";
+    foreach ($client->request->header_field_names) {
+        print "\t$_ =>", $client->request->header($_), "\n";
+    }
 }
 
 my @commands = @ARGV ? @ARGV : 'system.listMethods';
-if ($commands[0] eq 'json2edi' or $commands[0] eq 'edi2json') {
+my $command  = lc $commands[0];
+if ($command eq 'json2edi' or $command eq 'edi2json' or $command eq 'edi2perl') {
     shift;
-    @commands > 1 and print "Ignoring commands after $commands[0]\n";
+    @commands > 1 and print STDERR "Ignoring commands after $command\n";
     my $string;
-    my $type = $commands[0] eq 'json2edi' ? 'JSON' : 'EDI';
+    my $type = $command eq 'json2edi' ? 'JSON' : 'EDI';
     while ($string = get_in($type)) {  # assignment
-        if ($commands[0] ne 'json2edi') {
-            $string =~ s/ORDRSP:0(:...:UN::)/ORDRSP:D$1/ and print "Corrected broken data 'ORDRSP:0' ==> 'ORDRSP:D'\n";
+        my $resp;
+        if ($command eq 'json2edi') {
+            $resp = $client->send_request('json2edi', $string);
+            print "# $command Response: \n", Dumper($resp);
+        } else {
+            $string =~ s/ORDRSP:0(:...:UN::)/ORDRSP:D$1/ and print STDERR "Corrected broken data 'ORDRSP:0' ==> 'ORDRSP:D'\n";
+            $resp = $client->send_request('edi2json', $string);
+            $parser ||= JSON::XS->new()->pretty(1)->ascii(1)->allow_nonref(1)->space_before(0);    # get it once
+            my $parsed = $parser->decode($resp->value) or warn "Failed to decode response payload value";
+            my $perl   = JSONObject2Perl($parsed) or warn "Failed to decode and create perl object from JSON";
+            if ($perl) {
+                print STDERR "\n########## We were able to decode and perl-ify the JSON\n";
+            } else {
+                print STDERR "\n########## ERROR: Failed to decode and perl-ify the JSON\n";
+            }
+            print "# $command Response: \n", $command eq 'edi2perl' ? Dumper($perl) : $parser->encode($parsed);
         }
-        my $resp = $commands[0] eq 'json2edi' ?
-                   $client->send_request('json2edi', $string) :
-                   $client->send_request('edi2json', $string) ;
-        print "Response: ", Dumper($resp);
+
         $resp or next;
         if ($resp->is_fault) {
             print "\n\nERROR code ", $resp->code, " received:\n", nice_string($resp->string) . "\n...\n";
@@ -74,14 +108,14 @@ if ($commands[0] eq 'json2edi' or $commands[0] eq 'edi2json') {
     exit;
 } 
 
-print "Sending request: \n    ", join("\n    ", @commands), "\n\n";
+print STDERR "Sending request: \n    ", join("\n    ", @commands), "\n\n";
 my $resp = $client->send_request(@commands);
 
 print Dumper($resp);
 exit;
 
 if (ref $resp) {
-    print "Return is " . ref($resp), "\n";
+    print STDERR "Return is " . ref($resp), "\n";
     # print "Code: ", ($resp->{code}->as_string || 'UNKNOWN'), "\n";
     foreach (@$resp) {
         print Dumper ($_), "\n";
@@ -95,10 +129,11 @@ if (ref $resp) {
         print "\n";
     }
 } else {
-    print "ERROR: unrecognized response:\n\n", Dumper($resp), "\n";
+    print STDERR "ERROR: unrecognized response:\n\n", Dumper($resp), "\n";
 }
 $verbose and print Dumper($resp);
 $verbose and print "\nKEYS (level 1):\n",
     map {sprintf "%12s: %s\n", $_, scalar $resp->{$_}->value} sort keys %$resp;
 
 # print "spooled_filename: ", $resp->{spooled_filename}->value, "\n";
+
