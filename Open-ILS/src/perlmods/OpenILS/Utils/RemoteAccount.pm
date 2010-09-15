@@ -24,7 +24,7 @@ our $AUTOLOAD;
 our %keyfiles = ();
 
 my %fields = (
-    accound_object  => undef,
+    account_object  => undef,
     remote_host     => undef,
     remote_user     => undef,
     remote_password => undef,
@@ -641,7 +641,7 @@ sub AUTOLOAD {
 	$name =~ s/.*://;   #   strip leading package stuff
 
 	unless (exists $self->{_permitted}->{$name}) {
-		croak "Cannot access '$name' field of class '$class'";
+		croak "AUTOLOAD error: Cannot access '$name' field of class '$class'";
 	}
 
 	if (@_) {

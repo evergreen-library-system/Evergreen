@@ -60,5 +60,20 @@ my $res = OpenILS::Application::Acq::EDI->retrieve_core();
 print "Files retrieved: ", scalar(@$res), "\n";
 $debug and print "retrieve_core returns ", scalar(@$res),  " ids: " . join(', ', @$res), "\n";
 
-$debug and print Dumper($set);
+$debug and print map {Dumper($_) . "\n"} @$subset;
 print "\ndone\n";
+
+__END__
+
+=head1 edi_fetcher.pl - A script for retrieving and processing EDI files from remote accounts.
+
+Note: This script is expected to be run via crontab.
+
+Note: Depending on your vendors and you own network environment, you may want to set/export
+the environmental variable FTP_PASSIVE like:
+
+    export FTP_PASSIVE=1
+    # or
+    FTP_PASSIVE=1 Open-ILS/src/support-scripts/edi_fetcher.pl
+
+
