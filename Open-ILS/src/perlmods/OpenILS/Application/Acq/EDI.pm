@@ -126,7 +126,7 @@ sub retrieve_core {
             ]);
             if (scalar(@$hits)) {
                 $logger->debug("EDI: $remote_file already retrieved.  Skipping");
-                print ("EDI: $remote_file already retrieved.  Skipping");
+                warn "EDI: $remote_file already retrieved.  Skipping";
                 next;
             }
 
@@ -174,14 +174,16 @@ sub process_retrieval {
     $e->xact_begin;
     $e->create_acq_edi_message($incoming);
     $e->xact_commit;
-    my $res = __PACKAGE__->process_jedi($incoming, $server, $e);
-    $incoming->status($res ? 'processed' : 'proc_error');
+    # refresh: send process_jedi the updated row
+    my $res = __PACKAGE__->process_jedi($e->retrieve_acq_edi_message($incoming->id), $server, $account, $e);
+    my $outgoing = $e->retrieve_acq_edi_message($incoming->id);  # refresh again!
+    $outgoing->status($res ? 'processed' : 'proc_error');
     if ($res) {
         $e->xact_begin;
-        $e->update_acq_edi_message($incoming);
+        $e->update_acq_edi_message($outgoing);
         $e->xact_commit;
     }
-    return $incoming;
+    return $outgoing;
 }
 
 # ->send_core
@@ -396,17 +398,20 @@ sub jedi2perl {
 our @datecodes = (35, 359, 17, 191, 69, 76, 75, 79, 85, 74, 84, 223);
 our @noop_6063 = (21);
 
-# ->process_jedi($message, $server, $e)
+# ->process_jedi($message, $server, $remote, $e)
+# $message is an edi_message object
+#
 sub process_jedi {
-    my $class    = shift;
-    my $message  = shift or return;
-    my $server   = shift || {};  # context
-    my $jedi     = ref($message) ? $message->jedi : $message;  # If we got an object, it's an edi_message.  A string is the jedi content itself.
-    unless ($jedi) {
-        $logger->warn("EDI process_jedi missing required argument (edi_message object with jedi or jedi scalar)!");
+    my ($class, $message, $server, $remote, $e) = @_;
+    $message or return;
+    $server ||= {};  # context
+    $remote ||= {};  # context
+    $e ||= new_editor;
+    my $jedi;
+    unless (ref($message) and $jedi = $message->jedi) {     # assignment, not comparison
+        $logger->warn("EDI process_jedi missing required argument (edi_message object with jedi)!");
         return;
     }
-    my $e = @_ ? shift : new_editor();
     my $perl  = __PACKAGE__->jedi2perl($jedi);
     my $error = '';
     if (ref($message) and not $perl) {
@@ -423,7 +428,7 @@ sub process_jedi {
         $message->error($error);
         $message->error_time('NOW');
         $e->xact_begin;
-        $e->udpate_acq_edi_message($message) or $logger->warn("EDI update_acq_edi_message failed! $!");
+        $e->update_acq_edi_message($message) or $logger->warn("EDI update_acq_edi_message failed! $!");
         $e->xact_commit;
         return;
     }
@@ -436,7 +441,7 @@ sub process_jedi {
 #   $obj->{body}->[0]->{ORDERS}->[0]->[0] eq 'UNH'
 
     $logger->info("EDI interchange body has " . scalar(@{$perl->{body}}) . " message(s)");
-    my @ok_msg_codes = qw/ORDERS OSTRPT/;
+    my @ok_msg_codes = qw/ORDRSP OSTRPT/;
     my @messages;
     my $i = 0;
     foreach my $part (@{$perl->{body}}) {
@@ -446,7 +451,7 @@ sub process_jedi {
             next;
         }
         foreach my $key (keys %$part) {
-            if ($key ne 'ORDRSP') {     # We only do one type for now.  TODO: other types here
+            if (! grep {$_ eq $key} @ok_msg_codes) {     # We only do one type for now.  TODO: other types here
                 $logger->warn("EDI interchange $i contains unhandled '$key' message.  Ignoring it.");
                 next;
             }
@@ -492,16 +497,21 @@ sub process_jedi {
                     }
                 }
             }
-
             foreach my $detail ($msg->part('line_detail')) {
-                my $eg_line = __PACKAGE__->eg_li($detail, $server, $e) or next;
+                my $eg_line = __PACKAGE__->eg_li($detail, $remote, $server->{remote_host}, $e) or next;
                 my $li_date = $detail->xpath_value('DTM/2380') || $ddate;
                 my $price   = $detail->xpath_value('line_price/PRI/5118') || '';
-                $detail->expected_recv_time($li_date) if $li_date;
-                $detail->estimated_unit_price($price) if $price;
+                $eg_line->expected_recv_time($li_date) if $li_date;
+                $eg_line->estimated_unit_price($price) if $price;
+                if (not $message->purchase_order) {                     # first good lineitem sets the message PO link
+                    $message->purchase_order($eg_line->purchase_order); # EG $message object NOT Business::EDI $msg object
+                    $e->xact_begin;
+                    $e->update_acq_edi_message($message) or $logger->warn("EDI update_acq_edi_message (for PO number) failed! $!");
+                    $e->xact_commit;
+                }
                 # $e->search_acq_edi_account([]);
                 my $touches = 0;
-                my $eg_lids = $e->retrieve_acq_lineitem_detail({lineitem => $eg_line->id}); # should be the same as $eg_line->lineitem_details
+                my $eg_lids = $e->search_acq_lineitem_detail({lineitem => $eg_line->id}); # should be the same as $eg_line->lineitem_details
                 my $lidcount = scalar(@$eg_lids);
                 $lidcount == $eg_line->item_count or $logger->warn(
                     sprintf "EDI: LI %s itemcount (%d) mismatch, %d LIDs found", $eg_line->id, $eg_line->item_count, $lidcount
@@ -548,6 +558,7 @@ sub process_jedi {
                         $eg_line->cancel_reason($eg_reason->id);    # if ALL the items have the same cancel_reason, the PO gets it too
                     }
                 }
+                $eg_line->edit_time('NOW'); # TODO: have this field automatically updated via ON UPDATE trigger.  
                 $e->xact_begin;
                 $e->update_acq_lineitem($eg_line) or $logger->warn("EDI: update_acq_lineitem FAILED");
                 $e->xact_commit;
@@ -596,11 +607,12 @@ sub message_object {
     return $msg;
 }
 
-=head2 ->eg_li($lineitem_object, [$server, $editor])
+=head2 ->eg_li($lineitem_object, [$remote, $server_log_string, $editor])
 
-my $line_item = OpenILS::Application::Acq::EDI->eg_li($edi_line, $server, $e);
+my $line_item = OpenILS::Application::Acq::EDI->eg_li($edi_line, $remote, "test_server_01", $e);
 
-$server is a RemoteAccount object
+ $remote is a acq.edi_account Fieldmapper object.
+ $server_log_string is an arbitrary string use to identify the remote host in potential log messages.
 
 Updates:
  acq.lineitem.estimated_unit_price, 
@@ -611,7 +623,7 @@ Updates:
 =cut
 
 sub eg_li {
-    my ($class, $line, $server, $e) = @_;
+    my ($class, $line, $server, $server_log_string, $e) = @_;
     $line or return;
     $e ||= new_editor();
 
@@ -646,14 +658,13 @@ sub eg_li {
 
     my $li = OpenILS::Application::Acq::Lineitem::retrieve_lineitem_impl($e, $id, {
         flesh_li_details => 1,
-        clear_marc       => 1,
     }, 1); # Could send more {options}.  The 1 is for no_auth.
 
     if (! $li or ref($li) ne 'Fieldmapper::acq::lineitem') {
-        $logger->error("EDI failed to retrieve lineitem by id '$id' for server " . ($server->{remote_host} || $server->{host} || Dumper($server)));
+        $logger->error("EDI failed to retrieve lineitem by id '$id' for server $server_log_string");
         return;
     }
-    unless ((! $server) or (! $server->provider)) {     # but here we want $server to be acq.edi_account instead of RemoteAccount/
+    unless ((! $server) or (! $server->provider)) {     # but here we want $server to be acq.edi_account instead of RemoteAccount
         if ($server->provider != $li->provider) {
             # links go both ways: acq.provider.edi_default and acq.edi_account.provider
             $logger->info("EDI acct provider (" . $server->provider. ") doesn't match lineitem provider("
@@ -667,8 +678,8 @@ sub eg_li {
         }
     }
     
-    my $key = $line->xpath('LIN/1229') or $logger->warn("EDI LIN/1229 Action Code missing!");
-    $key or return;
+    my @lin_1229 = $line->xpath('LIN/1229') or $logger->warn("EDI LIN/1229 Action Code missing!");
+    my $key = $lin_1229[0] or return;
 
     my $eg_reason = $e->retrieve_acq_cancel_reason(1000 + $key->value);  # DB populated w/ spec keys in 1000's
     $eg_reason or $logger->warn(sprintf "EDI LIN/1229 Action Code '%s' (%s) not recognized in acq.cancel_reason", $key->value, $key->label);
@@ -679,8 +690,8 @@ sub eg_li {
         $logger->warn("EDI LIN/1229 Action Code '%s' (%s) has keep_debits=0", $key->value, $key->label);
     }
 
-    my $new_price = $line->xpath_value("PRI/5118");
-    $li->estimated_unit_price($new_price) if $new_price;
+    my @prices = $line->xpath_value("line_price/PRI/5118");
+    $li->estimated_unit_price($prices[0]) if @prices;
 
     return $li;
 }
