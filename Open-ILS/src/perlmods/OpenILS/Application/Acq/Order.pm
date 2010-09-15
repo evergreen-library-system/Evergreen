@@ -1160,9 +1160,9 @@ sub zsearch_build_pl {
 # ----------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
-    method => 'upload_records',
+    method   => 'upload_records',
     api_name => 'open-ils.acq.process_upload_records',
-    stream => 1,
+    stream   => 1,
 );
 
 sub upload_records {
@@ -1175,14 +1175,14 @@ sub upload_records {
     my $cache = OpenSRF::Utils::Cache->new;
 
     my $data = $cache->get_cache("vandelay_import_spool_$key");
-	my $purpose = $data->{purpose};
-    my $filename = $data->{path};
-    my $provider = $data->{provider};
-    my $picklist = $data->{picklist};
-    my $create_po = $data->{create_po};
-    my $activate_po = $data->{activate_po};
+    my $purpose         = $data->{purpose};
+    my $filename        = $data->{path};
+    my $provider        = $data->{provider};
+    my $picklist        = $data->{picklist};
+    my $create_po       = $data->{create_po};
+    my $activate_po     = $data->{activate_po};
     my $ordering_agency = $data->{ordering_agency};
-    my $create_assets = $data->{create_assets};
+    my $create_assets   = $data->{create_assets};
     my $po;
     my $evt;
 
@@ -1214,8 +1214,7 @@ sub upload_records {
 
     $logger->info("acq processing MARC file=$filename");
 
-    my $marctype = 'USMARC'; # ?
-	my $batch = new MARC::Batch ($marctype, $filename);
+	my $batch = new MARC::Batch ('USMARC', $filename);
 	$batch->strict_off;
 
 	my $count = 0;
@@ -1223,10 +1222,8 @@ sub upload_records {
 
 	while(1) {
 
-	    my $err;
-        my $xml;
+	    my ($err, $xml, $r);
 		$count++;
-        my $r;
 
 		try {
             $r = $batch->next;
@@ -1283,7 +1280,7 @@ sub upload_records {
     unlink($filename);
     $cache->delete_cache('vandelay_import_spool_' . $key);
 
-    if($create_assets) {
+    if ($create_assets) {
         create_lineitem_list_assets($mgr, \@li_list) or return $e->die_event;
     }
 
@@ -1315,14 +1312,15 @@ sub import_lineitem_details {
         last unless $$compiled{quantity};
 
         for(1..$$compiled{quantity}) {
-            my $lid = create_lineitem_detail($mgr, 
-                lineitem => $li->id,
-                owning_lib => $$compiled{owning_lib},
-                cn_label => $$compiled{call_number},
-                fund => $$compiled{fund},
-                circ_modifier => $$compiled{circ_modifier},
-                note => $$compiled{note},
-                location => $$compiled{copy_location},
+            my $lid = create_lineitem_detail(
+                $mgr, 
+                lineitem        => $li->id,
+                owning_lib      => $$compiled{owning_lib},
+                cn_label        => $$compiled{call_number},
+                fund            => $$compiled{fund},
+                circ_modifier   => $$compiled{circ_modifier},
+                note            => $$compiled{note},
+                location        => $$compiled{copy_location},
                 collection_code => $$compiled{collection_code}
             ) or return 0;
         }
@@ -1483,10 +1481,10 @@ sub create_po_assets {
 
 
 __PACKAGE__->register_method(
-	method => 'create_purchase_order_api',
-	api_name	=> 'open-ils.acq.purchase_order.create',
-	signature => {
-        desc => 'Creates a new purchase order',
+    method    => 'create_purchase_order_api',
+    api_name  => 'open-ils.acq.purchase_order.create',
+    signature => {
+        desc   => 'Creates a new purchase order',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'purchase_order to create', type => 'object'}
@@ -1506,10 +1504,10 @@ sub create_purchase_order_api {
 
     # create the PO
     my %pargs = (ordering_agency => $e->requestor->ws_ou); # default
-    $pargs{provider} = $po->provider if $po->provider;
-    $pargs{ordering_agency} = $po->ordering_agency if $po->ordering_agency;
-    $pargs{prepayment_required} = $po->prepayment_required
-        if $po->prepayment_required;
+    $pargs{provider}            = $po->provider            if $po->provider;
+    $pargs{ordering_agency}     = $po->ordering_agency     if $po->ordering_agency;
+    $pargs{prepayment_required} = $po->prepayment_required if $po->prepayment_required;
+        
     $po = create_purchase_order($mgr, %pargs) or return $e->die_event;
 
     my $li_ids = $$args{lineitems};
@@ -1544,14 +1542,11 @@ sub create_purchase_order_api {
 
 
 __PACKAGE__->register_method(
-	method => 'update_lineitem_fund_batch',
-	api_name => 'open-ils.acq.lineitem.fund.update.batch',
-    stream => 1,
+    method   => 'update_lineitem_fund_batch',
+    api_name => 'open-ils.acq.lineitem.fund.update.batch',
+    stream   => 1,
     signature => { 
-        desc => q/
-            Given a set of lineitem IDS, updates the fund for all attached
-            lineitem details
-        /
+        desc => q/Given a set of lineitem IDS, updates the fund for all attached lineitem details/
     }
 );
 
@@ -1834,8 +1829,8 @@ sub receive_lineitem_api {
 
 
 __PACKAGE__->register_method(
-	method => 'rollback_receive_po_api',
-	api_name	=> 'open-ils.acq.purchase_order.receive.rollback'
+    method   => 'rollback_receive_po_api',
+    api_name => 'open-ils.acq.purchase_order.receive.rollback'
 );
 
 sub rollback_receive_po_api {
@@ -1863,10 +1858,10 @@ sub rollback_receive_po_api {
 
 
 __PACKAGE__->register_method(
-	method => 'rollback_receive_lineitem_detail_api',
-	api_name	=> 'open-ils.acq.lineitem_detail.receive.rollback',
-	signature => {
-        desc => 'Mark a lineitem_detail as Un-received',
+    method    => 'rollback_receive_lineitem_detail_api',
+    api_name  => 'open-ils.acq.lineitem_detail.receive.rollback',
+    signature => {
+        desc   => 'Mark a lineitem_detail as Un-received',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'lineitem detail ID', type => 'number'}
