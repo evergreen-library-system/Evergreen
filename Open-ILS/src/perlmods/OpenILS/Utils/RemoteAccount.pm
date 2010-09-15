@@ -327,7 +327,7 @@ sub ls {
 # Checks if the filename part of a pathname has one or more glob characters
 # We split out the filename portion of the path
 # Detect glob or no glob.
-# return: regex for matching filenames
+# returns: directory, regex for matching filenames
 sub glob_parse {
     my $self = shift;
     my $path = shift or return;
