@@ -17,7 +17,6 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Acq::EDI::Translator;
 
 use Business::EDI;
-use Business::EDI::Segment::BGM;
 
 use Data::Dumper;
 our $verbose = 0;
@@ -339,6 +338,8 @@ sub jedi2perl {
 }
 
 our @datecodes = (35, 359, 17, 191, 69, 76, 75, 79, 85, 74, 84, 223);
+our @noop_6063 = (21);
+
 # ->process_jedi($message, $server, $e)
 sub process_jedi {
     my $class    = shift;
@@ -431,15 +432,20 @@ sub process_jedi {
                 }
             }
 
-            foreach my $lid ($msg->part('line_detail')) {
-                my $eg_line = __PACKAGE__->eg_li($lid, $server, $e) or next;
-                my $li_date = $lid->xpath_value('DTM') || $ddate;
-                my $price   = $lid->xpath_value('line_price/PRI/5118') || '';
-                $lid->expected_recv_time($li_date) if $li_date;
-                $lid->estimated_unit_price($price) if $price;
+            foreach my $detail ($msg->part('line_detail')) {
+                my $eg_line = __PACKAGE__->eg_li($detail, $server, $e) or next;
+                my $li_date = $detail->xpath_value('DTM/2380') || $ddate;
+                my $price   = $detail->xpath_value('line_price/PRI/5118') || '';
+                $detail->expected_recv_time($li_date) if $li_date;
+                $detail->estimated_unit_price($price) if $price;
                 # $e->search_acq_edi_account([]);
                 my $touches = 0;
-                foreach my $qty ($lid->part('all_QTY')) {
+                my $eg_lids = $e->retrieve_acq_lineitem_detail({lineitem => $eg_line->id});
+                my $lidcount = scalar(@$eg_lids);
+                $lidcount == $eg_line->item_count or $logger->warn(
+                    sprintf "EDI: LI %s itemcount (%d) mismatch, %d LIDs found", $eg_line->id, $eg_line->item_count, $lidcount
+                );
+                foreach my $qty ($detail->part('all_QTY')) {
                     my $ubound   = $qty->xpath_value('6060') or next;   # nothing to do if qty is 0
                     my $val_6063 = $qty->xpath_value('6063');
                     $ubound > 0 or next; # don't be crazy!
@@ -448,23 +454,43 @@ sub process_jedi {
                         next;
                     }
                     
-                    # TODO: add 6063 vals to cancel_reason namespace
-                    if ($val_6063 == 21) {      # ordered quantity (just FYI)
-                        $ubound eq $eg_line->item_count
-                            or $logger->warn("EDI: LI " . $eg_line->id . " -- Vendor says we ordered $ubound, but we have " . $eg_line->item_count . " LIDs!)");
+                    my $eg_reason = $e->retrieve_acq_cancel_reason(1200 + $val_6063);  # DB populated w/ 6063 keys in 1200's
+                    if (! $eg_reason) {
+                        $logger->warn("EDI: Unhandled quantity code '$val_6063' (LI " . $eg_line->id . ") $ubound items unprocessed");
                         next;
-                    } elsif ($val_6063 == 83) { # backorder
-                    } elsif ($val_6063 == 85) { # cancel
-                    } elsif ($val_6063 == 12 or $val_6063 == 57 or $val_6063 == 84 or $val_6063 == 118) {
+                    } elsif (grep {$val_6063 == $_} @noop_6063) {      # an FYI like "ordered quantity"
+                        $ubound eq $lidcount
+                            or $logger->warn("EDI: LI " . $eg_line->id . " -- Vendor says we ordered $ubound, but we have $lidcount LIDs!)");
+                        next;
+                    }
+                    # elsif ($val_6063 == 83) { # backorder
+                   #} elsif ($val_6063 == 85) { # cancel
+                   #} elsif ($val_6063 == 12 or $val_6063 == 57 or $val_6063 == 84 or $val_6063 == 118) {
                             # despatched, in transit, urgent delivery, or quantity manifested
-                    } else {
-                        $logger->warn("EDI: Unhanled quantity code '$val_6063' (LI " . $eg_line->id . ") $ubound items unprocessed");
+                   #}
+                    if ($touches >= $lidcount) {
+                        $logger->warn("EDI: LI "  . $eg_line->id . ", We already updated $touches of $lidcount LIDS, " .
+                                      "but message wants QTY $ubound more set to " . $eg_reason->label . ".  Ignoring!");
+                        next;
+                    }
+                    $e->xact_begin;
+                    foreach (1 .. $ubound) {
+                        my $eg_lid = shift @$eg_lids or $logger->warn("EDI: Used up all $lidcount LIDs!  Ignoring extra status " . $eg_reason->label);
+                        $eg_lid or next;
+                        $logger->debug(sprintf "Updating LID %s to %s", $eg_lid->id, $eg_reason->label);
+                        $eg_lid->cancel_reason($eg_reason->id);
+                        $e->update_acq_lineitem_detail($eg_lid);
+                        $touches++;
+                    }
+                    $e->xact_commit;
+                    if ($ubound == $eg_line->item_count) {
+                        $eg_line->cancel_reason($eg_reason->id);    # if ALL the items have the same cancel_reason, the PO gets it too
                     }
                 }
                 $e->xact_begin;
                 $e->update_acq_lineitem($eg_line) or $logger->warn("EDI: update_acq_lineitem FAILED");
                 $e->xact_commit;
-                # print STDERR "Lineitem to update: ", Dumper($eg_line);
+                # print STDERR "Lineitem update: ", Dumper($eg_line);
             }
         }
     }
@@ -498,7 +524,7 @@ sub message_object {
         $logger->info("EDI $key UNH/S009/0054 uses Spec revision version '$val_0054'");
         # Possible Spec Version limitation
         # my $yy = $tag_0054 ? substr($val_0054,0,2) : '';
-        # unless ($yy eq '00' or $yy > 94 and $yy < 
+        # unless ($yy eq '00' or $yy > 94 ...) {
         #     $logger->warn("EDI $key UNH/S009/0051 Spec revision version '$val_0054' not supported");
         # }
     } else {
