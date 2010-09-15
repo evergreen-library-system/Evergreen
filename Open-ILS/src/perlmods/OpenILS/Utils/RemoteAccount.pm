@@ -332,8 +332,9 @@ sub glob_parse {
     my $self = shift;
     my $path = shift or return;
     my ($vol, $dir, $file) = File::Spec->splitpath($path); # we don't care about attempted globs in mid-filepath
-    $file =~ /\*/ and return (File::Spec->catdir($vol, $dir), glob_to_regex($file));
-    $file =~ /\?/ and return (File::Spec->catdir($vol, $dir), glob_to_regex($file));
+    my $front = $vol ? File::Spec->catdir($vol, $dir) : $dir;
+    $file =~ /\*/ and return ($front, glob_to_regex($file));
+    $file =~ /\?/ and return ($front, glob_to_regex($file));
     $logger->debug("No glob detected in '$path'");
     return;
 }
@@ -481,18 +482,20 @@ sub ls_ssh2_full {
         if ($regex) {
             my $count = scalar(@pool);
             @pool = grep {$_->{name} =~ /$regex/} @pool;
-            $logger->info("Glob regex($regex) matches " . scalar(@pool) . " of $count files"); 
-        }
+            $logger->info("SSH ls: Glob regex($regex) matches " . scalar(@pool) . " of $count files"); 
+        } # else { $logger->info("SSH ls: No Glob regex in '$target'.  Just a regular ls"); }
         push @list, @pool;
     }
     return @list;
 
 }
 
-sub _slash_path {    # not OO
+sub _slash_path {
     my $self = shift;
     my $dir  = shift || '.';
     my $file = shift || '';
+    my ($dirpath, $regex) = $self->glob_parse($dir);
+    $dir = $dirpath if $dirpath;
     return $dir . ($dir =~ /\/$/ ? '' : '/') . $file;
 }
 
@@ -552,23 +555,37 @@ sub get_uftp {
     return $self->local_file;
 }
 
-sub ls_uftp {
+sub ls_uftp {   # returns full path like: dir/path/file.ext
     my $self = shift;
     my $ftp = $self->_uftp or return;
     my @list;
     foreach (@_) {
         my @part;
         my ($dirpath, $regex) = $self->glob_parse($_);
-        eval { @part = $ftp->ls($dirpath || $_) };
+        my $dirtarget = $dirpath || $_;
+        $dirtarget =~ s/\/+$//;
+        eval { @part = $ftp->ls($dirtarget) };      # this ls returns relative/path/filenames.  defer filename glob filtering for below.
         if ($@) {
             $logger->error($self->_error("ls from",  $self->remote_host, "failed with error: $@"));
             next;
         }
+        if ($dirtarget and $dirtarget ne '.' and $dirtarget ne './' and $ftp->is_dir($dirtarget)) {
+            foreach my $file (@part) {   # we ensure full(er) path
+                $file =~ /^$dirtarget\// and next;
+                $logger->debug("ls_uftp: prepending $dirtarget/ to $file");
+                $file = File::Spec->catdir($dirtarget, $file);
+            }
+        }
         if ($regex) {
             my $count = scalar(@part);
-            @part = grep {/$regex/} @part;
-            $logger->info("Glob regex($regex) matches " . scalar(@part) . " of $count files"); 
-        }
+            # @part = grep {my @a = split('/',$_); scalar(@a) ? /$regex/ : ($a[-1] =~ /$regex/)} @part;
+            my @bulk = @part;
+            @part = grep {
+                        my ($vol, $dir, $file) = File::Spec->splitpath($_);
+                        $file =~ /$regex/
+                    } @part;  
+            $logger->info("FTP ls: Glob regex($regex) matches " . scalar(@part) . " of $count files");
+        } #  else {$logger->info("FTP ls: No Glob regex in '$_'.  Just a regular ls");}
         push @list, @part;
     }
     return @list;
