@@ -29,16 +29,25 @@ function my_init() {
         // g.existing_copies = [ copy1, copy2, ... ]
         g.existing_copies = xul_param('existing_copies') || [];
 
+        function set_attr(id,attr,msgcat_key) {
+            var x = $(id);
+            if (x) {
+                x.setAttribute(
+                    attr,
+                    $('catStrings').getString(msgcat_key)
+                );
+            }
+        }
         if (g.existing_copies.length > 0) {
-            document.getElementById('EditThenCreate').setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.edit_then_rebarcode.btn.label'));
-            document.getElementById('EditThenCreate').setAttribute('accesskey',$('catStrings').getString('staff.cat.volume_copy_creator.edit_then_rebarcode.btn.accesskey'));
-            document.getElementById('CreateWithDefaults').setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.rebarcode.btn.label'));
-            document.getElementById('CreateWithDefaults').setAttribute('accesskey',$('catStrings').getString('staff.cat.volume_copy_creator.rebarcode.btn.accesskey'));
+            set_attr('EditThenCreate','label','staff.cat.volume_copy_creator.edit_then_rebarcode.btn.label');
+            set_attr('EditThenCreate','accesskey','staff.cat.volume_copy_creator.edit_then_rebarcode.btn.accesskey');
+            set_attr('CreateWithDefaults','label','staff.cat.volume_copy_creator.rebarcode.btn.label');
+            set_attr('CreateWithDefaults','accesskey','staff.cat.volume_copy_creator.rebarcode.btn.accesskey');
         } else {
-            document.getElementById('EditThenCreate').setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.edit_then_create.btn.label'));
-            document.getElementById('EditThenCreate').setAttribute('accesskey',$('catStrings').getString('staff.cat.volume_copy_creator.edit_then_create.btn.accesskey'));
-            document.getElementById('CreateWithDefaults').setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.create_with_defaults.btn.label'));
-            document.getElementById('CreateWithDefaults').setAttribute('accesskey',$('catStrings').getString('staff.cat.volume_copy_creator.create_with_defaults.btn.accesskey'));
+            set_attr('EditThenCreate','label','staff.cat.volume_copy_creator.edit_then_create.btn.label');
+            set_attr('EditThenCreate','accesskey','staff.cat.volume_copy_creator.edit_then_create.btn.accesskey');
+            set_attr('CreateWithDefaults','label','staff.cat.volume_copy_creator.create_with_defaults.btn.label');
+            set_attr('CreateWithDefaults','accesskey','staff.cat.volume_copy_creator.create_with_defaults.btn.accesskey');
         }
 
         //g.error.sdump('D_ERROR','location.href = ' + location.href + '\n\ncopy_short cut = ' + g.copy_shortcut + '\n\nou_ids = ' + xul_param('ou_ids'));
