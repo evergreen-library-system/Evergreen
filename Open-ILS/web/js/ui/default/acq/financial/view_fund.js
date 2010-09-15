@@ -69,13 +69,13 @@ function loadAllocationGrid() {
     /* XXX If we want to show allocating user with a username instead of just
      * ID#, the following pcrud search will have to be replaced with an API
      * call. */
-    fundAllocationGrid.loadAll({order_by : {acqfa :  'create_time DESC'}});
+    fundAllocationGrid.loadAll({order_by : {acqfa :  'create_time DESC'}}, {fund : fundID});
     fundAllocationGrid.isLoaded = true;
 }
 
 function loadDebitGrid() {
     if(fundDebitGrid.isLoaded) return;
-    fundDebitGrid.loadAll({order_by : {acqfdeb :  'create_time DESC'}});
+    fundDebitGrid.loadAll({order_by : {acqfdeb :  'create_time DESC'}}, {fund : fundID});
     fundDebitGrid.isLoaded = true;
 }
 
