@@ -94,7 +94,7 @@ sub retrieve_lineitem {
 }
 
 sub retrieve_lineitem_impl {
-    my ($e, $li_id, $options) = @_;
+    my ($e, $li_id, $options, $no_auth) = @_;   # no_auth needed for EDI scripts
     $options ||= {};
 
     my $flesh = {
@@ -151,12 +151,12 @@ sub retrieve_lineitem_impl {
 
     return $e->event unless (
         $li->purchase_order and 
-            $e->allowed(['VIEW_PURCHASE_ORDER', 'CREATE_PURCHASE_ORDER'], 
-                $li->purchase_order->ordering_agency, $li->purchase_order)
+            ($no_auth or $e->allowed(['VIEW_PURCHASE_ORDER', 'CREATE_PURCHASE_ORDER'], 
+                $li->purchase_order->ordering_agency, $li->purchase_order))
     ) or (
         $li->picklist and !$li->purchase_order and # user doesn't have view_po perms
-            $e->allowed(['VIEW_PICKLIST', 'CREATE_PICKLIST'], 
-                $li->picklist->org_unit, $li->picklist)
+            ($no_auth or $e->allowed(['VIEW_PICKLIST', 'CREATE_PICKLIST'], 
+                $li->picklist->org_unit, $li->picklist))
     );
 
     unless ($$options{flesh_po}) {

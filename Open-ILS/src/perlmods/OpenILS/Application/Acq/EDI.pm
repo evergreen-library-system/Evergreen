@@ -501,7 +501,7 @@ sub process_jedi {
                 $detail->estimated_unit_price($price) if $price;
                 # $e->search_acq_edi_account([]);
                 my $touches = 0;
-                my $eg_lids = $e->retrieve_acq_lineitem_detail({lineitem => $eg_line->id});
+                my $eg_lids = $e->retrieve_acq_lineitem_detail({lineitem => $eg_line->id}); # should be the same as $eg_line->lineitem_details
                 my $lidcount = scalar(@$eg_lids);
                 $lidcount == $eg_line->item_count or $logger->warn(
                     sprintf "EDI: LI %s itemcount (%d) mismatch, %d LIDs found", $eg_line->id, $eg_line->item_count, $lidcount
@@ -598,7 +598,7 @@ sub message_object {
 
 =head2 ->eg_li($lineitem_object, [$server, $editor])
 
-my $line_item = OpenILS::Application::Acq::EDI->eg_li($edi_line);
+my $line_item = OpenILS::Application::Acq::EDI->eg_li($edi_line, $server, $e);
 
 $server is a RemoteAccount object
 
@@ -647,13 +647,13 @@ sub eg_li {
     my $li = OpenILS::Application::Acq::Lineitem::retrieve_lineitem_impl($e, $id, {
         flesh_li_details => 1,
         clear_marc       => 1,
-    }); # Could send more {options}
+    }, 1); # Could send more {options}.  The 1 is for no_auth.
 
     if (! $li or ref($li) ne 'Fieldmapper::acq::lineitem') {
         $logger->error("EDI failed to retrieve lineitem by id '$id' for server " . ($server->{remote_host} || $server->{host} || Dumper($server)));
         return;
     }
-    unless ((! $server) or (! $server->provider)) {
+    unless ((! $server) or (! $server->provider)) {     # but here we want $server to be acq.edi_account instead of RemoteAccount/
         if ($server->provider != $li->provider) {
             # links go both ways: acq.provider.edi_default and acq.edi_account.provider
             $logger->info("EDI acct provider (" . $server->provider. ") doesn't match lineitem provider("
