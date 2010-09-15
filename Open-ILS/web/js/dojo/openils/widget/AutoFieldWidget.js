@@ -56,10 +56,15 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             }
             this.dijitArgs['scrollOnFocus'] = false;
 
+
             // find the field description in the IDL if not provided
             if(this.fmObject) 
                 this.fmClass = this.fmObject.classname;
             this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+
+            if(this.fmClass && !this.fmIDL)
+                throw new Error("IDL class '" + this.fmClass + "' not defined");
+
             this.suppressLinkedFields = args.suppressLinkedFields || [];
 
             if(this.selfReference) {
