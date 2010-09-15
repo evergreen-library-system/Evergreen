@@ -437,7 +437,30 @@ sub process_jedi {
                 my $price   = $lid->xpath_value('line_price/PRI/5118') || '';
                 $lid->expected_recv_time($li_date) if $li_date;
                 $lid->estimated_unit_price($price) if $price;
-                # foreach ($lid->part('all_QTY')) { }
+                # $e->search_acq_edi_account([]);
+                my $touches = 0;
+                foreach my $qty ($lid->part('all_QTY')) {
+                    my $ubound   = $qty->xpath_value('6060') or next;   # nothing to do if qty is 0
+                    my $val_6063 = $qty->xpath_value('6063');
+                    $ubound > 0 or next; # don't be crazy!
+                    if (! $val_6063) {
+                        $logger->warn("EDI: Response for LI " . $eg_line->id . " specifies quantity $ubound with no 6063 code! Contact vendor to resolve.");
+                        next;
+                    }
+                    
+                    # TODO: add 6063 vals to cancel_reason namespace
+                    if ($val_6063 == 21) {      # ordered quantity (just FYI)
+                        $ubound eq $eg_line->item_count
+                            or $logger->warn("EDI: LI " . $eg_line->id . " -- Vendor says we ordered $ubound, but we have " . $eg_line->item_count . " LIDs!)");
+                        next;
+                    } elsif ($val_6063 == 83) { # backorder
+                    } elsif ($val_6063 == 85) { # cancel
+                    } elsif ($val_6063 == 12 or $val_6063 == 57 or $val_6063 == 84 or $val_6063 == 118) {
+                            # despatched, in transit, urgent delivery, or quantity manifested
+                    } else {
+                        $logger->warn("EDI: Unhanled quantity code '$val_6063' (LI " . $eg_line->id . ") $ubound items unprocessed");
+                    }
+                }
                 $e->xact_begin;
                 $e->update_acq_lineitem($eg_line) or $logger->warn("EDI: update_acq_lineitem FAILED");
                 $e->xact_commit;
@@ -456,7 +479,7 @@ sub message_object {
     my $key   = shift or return;
     my $body  = shift or return;
 
-    my $msg = Business::EDI->detect_version($body);
+    my $msg = Business::EDI::Message->new($body);
     unless ($msg) {
         $logger->error("EDI interchange message: $key body failed Business::EDI constructor. Skipping it.");
         return;
@@ -507,9 +530,14 @@ sub eg_li {
     my $val_1154 = $line->xpath_value('line_reference/RFF/1154') || '';
     my $val_1082 = $line->xpath_value('LIN/1082') || '';
 
-    $val_1154 =~ s#^.*\/##;   # Many sources send the ID as 'order_ID/LI_ID'
-    $val_1082 =~ s#^.*\/##;   # Many sources send the ID as 'order_ID/LI_ID'
+    my @po_nums;
 
+    $val_1154 =~ s#^(.*)\/##;   # Many sources send the ID as 'order_ID/LI_ID'
+    $1 and push @po_nums, $1;
+    $val_1082 =~ s#^(.*)\/##;   # Many sources send the ID as 'order_ID/LI_ID'
+    $1 and push @po_nums, $1;
+
+    # TODO: possible check of po_nums
     # now do a lot of checking
 
     if ($val_1153 eq 'LI') {
@@ -525,7 +553,11 @@ sub eg_li {
     $id ||= $val_1082 || '';
     print STDERR "EDI retrieve/update lineitem $id\n";
 
-    my $li = OpenILS::Application::Acq::Lineitem::retrieve_lineitem_impl($e, $id); # Could send {options}
+    my $li = OpenILS::Application::Acq::Lineitem::retrieve_lineitem_impl($e, $id, {
+        flesh_li_details => 1,
+        clear_marc       => 1,
+    }); # Could send more {options}
+
     if (! $li or ref($li) ne 'Fieldmapper::acq::lineitem') {
         $logger->error("EDI failed to retrieve lineitem by id '$id' for server " . $server->remote_host);
         return;
