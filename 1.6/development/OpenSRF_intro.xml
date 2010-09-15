@@ -140,25 +140,27 @@
 		<simpara>For example, the following code implements an OpenSRF service. The service
 		includes one method named <literal>opensrf.simple-text.reverse()</literal> that accepts one
 		string as input and returns the reversed version of that string:</simpara>
-		<programlisting language="perl" linenumbering="unnumbered">#!/usr/bin/perl
+<programlisting language="perl" linenumbering="unnumbered">
+#!/usr/bin/perl
 
-		package OpenSRF::Application::Demo::SimpleText;
+package OpenSRF::Application::Demo::SimpleText;
 
-		use strict;
+use strict;
 
-		use OpenSRF::Application;
-		use parent qw/OpenSRF::Application/;
+use OpenSRF::Application;
+use parent qw/OpenSRF::Application/;
 
-		sub text_reverse {
-		    my ($self , $conn, $text) = @_;
-		    my $reversed_text = scalar reverse($text);
-		    return $reversed_text;
-		}
+sub text_reverse {
+    my ($self , $conn, $text) = @_;
+    my $reversed_text = scalar reverse($text);
+    return $reversed_text;
+}
 
-		__PACKAGE__-&gt;register_method(
-		    method    =&gt; 'text_reverse',
-		    api_name  =&gt; 'opensrf.simple-text.reverse'
-		);</programlisting>
+__PACKAGE__-&gt;register_method(
+    method    =&gt; 'text_reverse',
+    api_name  =&gt; 'opensrf.simple-text.reverse'
+);
+</programlisting>
 		<simpara>Ten lines of code, and we have a complete OpenSRF service that exposes a single
 		method and could be deployed quickly on a cluster of servers to meet your
 		application&#8217;s ravenous demand for reversed strings! If you&#8217;re unfamiliar with
@@ -193,27 +195,29 @@
 			<simpara>Begin by defining the service itself in <literal>opensrf.xml</literal>. To register the
 			<literal>opensrf.simple-text</literal> service, add the following section to the <literal>&lt;apps&gt;</literal>
 			element (corresponding to the XPath <literal>/opensrf/default/apps/</literal>):</simpara>
-			<programlisting language="xml" linenumbering="unnumbered">&lt;apps&gt;
-			  &lt;opensrf.simple-text&gt; <co id="CO1-1"/> 
-			    &lt;keepalive&gt;3&lt;/keepalive&gt;<co id="CO1-2"/> 
-			    &lt;stateless&gt;1&lt;/stateless&gt;<co id="CO1-3"/>
-			    &lt;language&gt;perl&lt;/language&gt;<co id="CO1-4"/> 
-			    &lt;implementation&gt;OpenSRF::Application::Demo::SimpleText&lt;/implementation&gt;<co id="CO1-5"/> 
-			    &lt;max_requests&gt;100&lt;/max_requests&gt;<co id="CO1-6"/> 
-			    &lt;unix_config&gt;
-			      &lt;max_requests&gt;1000&lt;/max_requests&gt; <co id="CO1-7"/> 
-			      &lt;unix_log&gt;opensrf.simple-text_unix.log&lt;/unix_log&gt; <co id="CO1-8"/> 
-			      &lt;unix_sock&gt;opensrf.simple-text_unix.sock&lt;/unix_sock&gt;<co id="CO1-9"/> 
-			      &lt;unix_pid&gt;opensrf.simple-text_unix.pid&lt;/unix_pid&gt; <co id="CO1-10"/> 
-			      &lt;min_children&gt;5&lt;/min_children&gt;  <co id="CO1-11"/> 
-			      &lt;max_children&gt;15&lt;/max_children&gt;<co id="CO1-12"/> 
-			      &lt;min_spare_children&gt;2&lt;/min_spare_children&gt;<co id="CO1-13"/> 
-			      &lt;max_spare_children&gt;5&lt;/max_spare_children&gt; <co id="CO1-14"/> 
-			    &lt;/unix_config&gt;
-			  &lt;/opensrf.simple-text&gt;
+<programlisting language="xml" linenumbering="unnumbered">
+&lt;apps&gt;
+  &lt;opensrf.simple-text&gt; <co id="CO1-1"/> 
+    &lt;keepalive&gt;3&lt;/keepalive&gt;<co id="CO1-2"/> 
+    &lt;stateless&gt;1&lt;/stateless&gt;<co id="CO1-3"/>
+    &lt;language&gt;perl&lt;/language&gt;<co id="CO1-4"/> 
+    &lt;implementation&gt;OpenSRF::Application::Demo::SimpleText&lt;/implementation&gt;<co id="CO1-5"/> 
+    &lt;max_requests&gt;100&lt;/max_requests&gt;<co id="CO1-6"/> 
+    &lt;unix_config&gt;
+      &lt;max_requests&gt;1000&lt;/max_requests&gt; <co id="CO1-7"/> 
+      &lt;unix_log&gt;opensrf.simple-text_unix.log&lt;/unix_log&gt; <co id="CO1-8"/> 
+      &lt;unix_sock&gt;opensrf.simple-text_unix.sock&lt;/unix_sock&gt;<co id="CO1-9"/> 
+      &lt;unix_pid&gt;opensrf.simple-text_unix.pid&lt;/unix_pid&gt; <co id="CO1-10"/> 
+      &lt;min_children&gt;5&lt;/min_children&gt;  <co id="CO1-11"/> 
+      &lt;max_children&gt;15&lt;/max_children&gt;<co id="CO1-12"/> 
+      &lt;min_spare_children&gt;2&lt;/min_spare_children&gt;<co id="CO1-13"/> 
+      &lt;max_spare_children&gt;5&lt;/max_spare_children&gt; <co id="CO1-14"/> 
+    &lt;/unix_config&gt;
+  &lt;/opensrf.simple-text&gt;
 
-			  &lt;!-- other OpenSRF services registered here... --&gt;
-			&lt;/apps&gt;</programlisting>
+  &lt;!-- other OpenSRF services registered here... --&gt;
+&lt;/apps&gt;
+</programlisting>
 			<calloutlist>
 			<callout arearefs="CO1-1">
 			<simpara>
@@ -313,16 +317,18 @@
 			edit the <literal>opensrf_core.xml</literal> configuration file to add the service to the list
 			of publicly accessible services:</simpara>
 			<formalpara><title>Making a service publicly accessible in <literal>opensrf_core.xml</literal></title><para>
-			<programlisting language="xml" linenumbering="unnumbered">&lt;router&gt;<co id="CO2-1"/> 
-			    &lt;!-- This is the public router. On this router, we only register applications
-			     which should be accessible to everyone on the opensrf network --&gt;
-			    &lt;name&gt;router&lt;/name&gt;
-			    &lt;domain&gt;public.localhost&lt;/domain&gt;<co id="CO2-2"/>
-			    &lt;services&gt;
-				&lt;service&gt;opensrf.math&lt;/service&gt;
-				&lt;service&gt;opensrf.simple-text&lt;/service&gt; <co id="CO2-3"/> 
-			    &lt;/services&gt;
-			&lt;/router&gt;</programlisting>
+<programlisting language="xml" linenumbering="unnumbered">
+&lt;router&gt;<co id="CO2-1"/> 
+    &lt;!-- This is the public router. On this router, we only register applications
+     which should be accessible to everyone on the opensrf network --&gt;
+    &lt;name&gt;router&lt;/name&gt;
+    &lt;domain&gt;public.localhost&lt;/domain&gt;<co id="CO2-2"/>
+    &lt;services&gt;
+	&lt;service&gt;opensrf.math&lt;/service&gt;
+	&lt;service&gt;opensrf.simple-text&lt;/service&gt; <co id="CO2-3"/> 
+    &lt;/services&gt;
+&lt;/router&gt;
+</programlisting>
 			</para></formalpara>
 			<calloutlist>
 			<callout arearefs="CO2-1">
@@ -365,15 +371,17 @@
 				<simpara>The following example calls the <literal>opensrf.simple-text.reverse</literal> method of the
 				<literal>opensrf.simple-text</literal> OpenSRF service, passing the string <literal>"foobar"</literal> as the
 				only method argument:</simpara>
-				<programlisting language="sh" linenumbering="unnumbered">$ srfsh
-				srfsh # request opensrf.simple-text opensrf.simple-text.reverse "foobar"
+<programlisting language="sh" linenumbering="unnumbered">
+$ srfsh
+srfsh # request opensrf.simple-text opensrf.simple-text.reverse "foobar"
 
-				Received Data: "raboof"
+Received Data: "raboof"
 
-				=------------------------------------
-				Request Completed Successfully
-				Request Time in seconds: 0.016718
-				=------------------------------------</programlisting>
+=------------------------------------
+Request Completed Successfully
+Request Time in seconds: 0.016718
+=------------------------------------
+</programlisting>
 			</simplesect>
 			<simplesect id="opensrfIntrospection">
 				<title>Getting documentation for OpenSRF methods from the srfsh client</title>
@@ -393,37 +401,39 @@
 				accurate information. The quality varies across the set of OpenSRF and
 				Evergreen APIs, although some effort is being put towards improving the
 				state of the internal documentation.</simpara></note>
-				<programlisting language="sh" linenumbering="unnumbered">srfsh# introspect opensrf.simple-text "opensrf.simple-text.reverse"
-				--&gt; opensrf.simple-text
+<programlisting language="sh" linenumbering="unnumbered">
+srfsh# introspect opensrf.simple-text "opensrf.simple-text.reverse"
+--&gt; opensrf.simple-text
 
-				Received Data: {
-				  "__c":"opensrf.simple-text",
-				  "__p":{
-				    "api_level":1,
-				    "stream":0,      <co id="CO3-1"/>
-				    "object_hint":"OpenSRF_Application_Demo_SimpleText",
-				    "remote":0,
-				    "package":"OpenSRF::Application::Demo::SimpleText", <co id="CO3-2"/>
-				    "api_name":"opensrf.simple-text.reverse",<co id="CO3-3"/>
-				    "server_class":"opensrf.simple-text",
-				    "signature":{ <co id="CO3-4"/>
-				      "params":[  <co id="CO3-5"/>
-					{
-					  "desc":"The string to reverse",
-					  "name":"text",
-					  "type":"string"
-					}
-				      ],
-				      "desc":"Returns the input string in reverse order\n", <co id="CO3-6"/>
-				      "return":{                                            <co id="CO3-7"/>
-					"desc":"Returns the input string in reverse order",
-					"type":"string"
-				      }
-				    },
-				    "method":"text_reverse",  <co id="CO3-8"/>
-				    "argc":1 <co id="CO3-9"/>
-				  }
-				}</programlisting>
+Received Data: {
+  "__c":"opensrf.simple-text",
+  "__p":{
+    "api_level":1,
+    "stream":0,      <co id="CO3-1"/>
+    "object_hint":"OpenSRF_Application_Demo_SimpleText",
+    "remote":0,
+    "package":"OpenSRF::Application::Demo::SimpleText", <co id="CO3-2"/>
+    "api_name":"opensrf.simple-text.reverse",<co id="CO3-3"/>
+    "server_class":"opensrf.simple-text",
+    "signature":{ <co id="CO3-4"/>
+      "params":[  <co id="CO3-5"/>
+	{
+	  "desc":"The string to reverse",
+	  "name":"text",
+	  "type":"string"
+	}
+      ],
+      "desc":"Returns the input string in reverse order\n", <co id="CO3-6"/>
+      "return":{                                            <co id="CO3-7"/>
+	"desc":"Returns the input string in reverse order",
+	"type":"string"
+      }
+    },
+    "method":"text_reverse",  <co id="CO3-8"/>
+    "argc":1 <co id="CO3-9"/>
+  }
+}
+</programlisting>
 				<calloutlist>
 				<callout arearefs="CO3-1">
 				<simpara>
@@ -481,43 +491,45 @@
 				<title>Calling OpenSRF methods from Perl applications</title>
 				<simpara>To call an OpenSRF method from Perl, you must connect to the OpenSRF service,
 				issue the request to the method, and then retrieve the results.</simpara>
-				<programlisting language="perl" linenumbering="unnumbered">#/usr/bin/perl
-				use strict;
-				use OpenSRF::AppSession;
-				use OpenSRF::System;
+<programlisting language="perl" linenumbering="unnumbered">
+#/usr/bin/perl
+use strict;
+use OpenSRF::AppSession;
+use OpenSRF::System;
 
-				OpenSRF::System-&gt;bootstrap_client(config_file =&gt; '/openils/conf/opensrf_core.xml');<co id="CO4-1"/>
+OpenSRF::System-&gt;bootstrap_client(config_file =&gt; '/openils/conf/opensrf_core.xml');<co id="CO4-1"/>
 
-				my $session = OpenSRF::AppSession-&gt;create("opensrf.simple-text");<co id="CO4-2"/>
+my $session = OpenSRF::AppSession-&gt;create("opensrf.simple-text");<co id="CO4-2"/>
 
-				print "substring: Accepts a string and a number as input, returns a string\n";
-				my $result = $session-&gt;request("opensrf.simple-text.substring", "foobar", 3);<co id="CO4-3"/>
-				my $request = $result-&gt;gather(); <co id="CO4-4"/>
-				print "Substring: $request\n\n";
+print "substring: Accepts a string and a number as input, returns a string\n";
+my $result = $session-&gt;request("opensrf.simple-text.substring", "foobar", 3);<co id="CO4-3"/>
+my $request = $result-&gt;gather(); <co id="CO4-4"/>
+print "Substring: $request\n\n";
 
-				print "split: Accepts two strings as input, returns an array of strings\n";
-				$request = $session-&gt;request("opensrf.simple-text.split", "This is a test", " ");<co id="CO4-5"/>
-				my $output = "Split: [";
-				my $element;
-				while ($element = $request-&gt;recv()) {   <co id="CO4-6"/>
-				    $output .= $element-&gt;content . ", ";  <co id="CO4-7"/>
-				}
-				$output =~ s/, $/]/;
-				print $output . "\n\n";
+print "split: Accepts two strings as input, returns an array of strings\n";
+$request = $session-&gt;request("opensrf.simple-text.split", "This is a test", " ");<co id="CO4-5"/>
+my $output = "Split: [";
+my $element;
+while ($element = $request-&gt;recv()) {   <co id="CO4-6"/>
+    $output .= $element-&gt;content . ", ";  <co id="CO4-7"/>
+}
+$output =~ s/, $/]/;
+print $output . "\n\n";
 
-				print "statistics: Accepts an array of strings as input, returns a hash\n";
-				my @many_strings = [
-				    "First I think I'll have breakfast",
-				    "Then I think that lunch would be nice",
-				    "And then seventy desserts to finish off the day"
-				];
+print "statistics: Accepts an array of strings as input, returns a hash\n";
+my @many_strings = [
+    "First I think I'll have breakfast",
+    "Then I think that lunch would be nice",
+    "And then seventy desserts to finish off the day"
+];
 
-				$result = $session-&gt;request("opensrf.simple-text.statistics", @many_strings); <co id="CO4-8"/>
-				$request = $result-&gt;gather();    <co id="CO4-9"/>
-				print "Length: " . $result-&gt;{'length'} . "\n";
-				print "Word count: " . $result-&gt;{'word_count'} . "\n";
+$result = $session-&gt;request("opensrf.simple-text.statistics", @many_strings); <co id="CO4-8"/>
+$request = $result-&gt;gather();    <co id="CO4-9"/>
+print "Length: " . $result-&gt;{'length'} . "\n";
+print "Word count: " . $result-&gt;{'word_count'} . "\n";
 
-				$session-&gt;disconnect();       <co id="CO4-10"/></programlisting>
+$session-&gt;disconnect();       <co id="CO4-10"/>
+</programlisting>
 				<calloutlist>
 				<callout arearefs="CO4-1">
 				<simpara>
@@ -607,20 +619,22 @@
 			returns a list, we accept two arguments of type string: the string to be split,
 			and the delimiter that should be used to split the string.</simpara>
 			<formalpara><title>Basic text splitting method</title><para>
-			<programlisting language="perl" linenumbering="unnumbered">sub text_split {
-			    my $self = shift;
-			    my $conn = shift;
-			    my $text = shift;
-			    my $delimiter = shift || ' ';
+<programlisting language="perl" linenumbering="unnumbered">
+sub text_split {
+    my $self = shift;
+    my $conn = shift;
+    my $text = shift;
+    my $delimiter = shift || ' ';
 
-			    my @split_text = split $delimiter, $text;
-			    return \@split_text;
-			}
+    my @split_text = split $delimiter, $text;
+    return \@split_text;
+}
 
-			__PACKAGE__-&gt;register_method(
-			    method    =&gt; 'text_split',
-			    api_name  =&gt; 'opensrf.simple-text.split'
-			);</programlisting>
+__PACKAGE__-&gt;register_method(
+    method    =&gt; 'text_split',
+    api_name  =&gt; 'opensrf.simple-text.split'
+);
+</programlisting>
 			</para></formalpara>
 			<simpara>We simply return a reference to the list, and OpenSRF does the rest of the work
 			for us to convert the data into the language-independent format that is then
@@ -650,27 +664,29 @@
 			configuration file and dynamically register OpenSRF methods for creating,
 			reading, updating, and deleting all of the defined classes.</simpara>
 			<formalpara><title>Example fieldmapper class definition for "Open User Summary"</title><para>
-			<programlisting language="xml" linenumbering="unnumbered">&lt;class id="mous" controller="open-ils.cstore open-ils.pcrud"
-			 oils_obj:fieldmapper="money::open_user_summary"
-			 oils_persist:tablename="money.open_usr_summary"
-			 reporter:label="Open User Summary"&gt;                                <co id="CO5-1"/>
-			    &lt;fields oils_persist:primary="usr" oils_persist:sequence=""&gt; <co id="CO5-2"/> 
-				&lt;field name="balance_owed" reporter:datatype="money" /&gt;  <co id="CO5-3"/> 
-				&lt;field name="total_owed" reporter:datatype="money" /&gt;
-				&lt;field name="total_paid" reporter:datatype="money" /&gt;
-				&lt;field name="usr" reporter:datatype="link"/&gt;
-			    &lt;/fields&gt;
-			    &lt;links&gt;
-				&lt;link field="usr" reltype="has_a" key="id" map="" class="au"/&gt;<co id="CO5-4"/> 
-			    &lt;/links&gt;
-			    &lt;permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1"&gt;<co id="CO5-5"/> 
-				&lt;actions&gt;
-				    &lt;retrieve permission="VIEW_USER"&gt;<co id="CO5-6"/> 
-					&lt;context link="usr" field="home_ou"/&gt;<co id="CO5-7"/>
-				    &lt;/retrieve&gt;
-				&lt;/actions&gt;
-			    &lt;/permacrud&gt;
-			&lt;/class&gt;</programlisting>
+<programlisting language="xml" linenumbering="unnumbered">
+&lt;class id="mous" controller="open-ils.cstore open-ils.pcrud"
+ oils_obj:fieldmapper="money::open_user_summary"
+ oils_persist:tablename="money.open_usr_summary"
+ reporter:label="Open User Summary"&gt;                                <co id="CO5-1"/>
+    &lt;fields oils_persist:primary="usr" oils_persist:sequence=""&gt; <co id="CO5-2"/> 
+	&lt;field name="balance_owed" reporter:datatype="money" /&gt;  <co id="CO5-3"/> 
+	&lt;field name="total_owed" reporter:datatype="money" /&gt;
+	&lt;field name="total_paid" reporter:datatype="money" /&gt;
+	&lt;field name="usr" reporter:datatype="link"/&gt;
+    &lt;/fields&gt;
+    &lt;links&gt;
+	&lt;link field="usr" reltype="has_a" key="id" map="" class="au"/&gt;<co id="CO5-4"/> 
+    &lt;/links&gt;
+    &lt;permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1"&gt;<co id="CO5-5"/> 
+	&lt;actions&gt;
+	    &lt;retrieve permission="VIEW_USER"&gt;<co id="CO5-6"/> 
+		&lt;context link="usr" field="home_ou"/&gt;<co id="CO5-7"/>
+	    &lt;/retrieve&gt;
+	&lt;/actions&gt;
+    &lt;/permacrud&gt;
+&lt;/class&gt;
+</programlisting>
 			</para></formalpara>
 			<calloutlist>
 			<callout arearefs="CO5-1">
@@ -887,24 +903,26 @@
 			<simpara>In the following example, the text splitting method has been reimplemented to
 			support streaming; very few changes are required:</simpara>
 			<formalpara><title>Text splitting method - streaming mode</title><para>
-			<programlisting language="perl" linenumbering="unnumbered">sub text_split {
-			    my $self = shift;
-			    my $conn = shift;
-			    my $text = shift;
-			    my $delimiter = shift || ' ';
+<programlisting language="perl" linenumbering="unnumbered">
+sub text_split {
+    my $self = shift;
+    my $conn = shift;
+    my $text = shift;
+    my $delimiter = shift || ' ';
 
-			    my @split_text = split $delimiter, $text;
-			    foreach my $string (@split_text) { <co id="CO6-1"/>
-				$conn-&gt;respond($string);
-			    }
-			    return undef;
-			}
+    my @split_text = split $delimiter, $text;
+    foreach my $string (@split_text) { <co id="CO6-1"/>
+	$conn-&gt;respond($string);
+    }
+    return undef;
+}
 
-			__PACKAGE__-&gt;register_method(
-			    method    =&gt; 'text_split',
-			    api_name  =&gt; 'opensrf.simple-text.split',
-			    stream    =&gt; 1<co id="CO6-2"/>
-			);</programlisting>
+__PACKAGE__-&gt;register_method(
+    method    =&gt; 'text_split',
+    api_name  =&gt; 'opensrf.simple-text.split',
+    stream    =&gt; 1<co id="CO6-2"/>
+);
+</programlisting>
 			</para></formalpara>
 			<calloutlist>
 			<callout arearefs="CO6-1">
@@ -936,43 +954,49 @@
 			<simpara>You can include many calls to the OpenSRF logger; only those that are higher
 			than your configured logging level will actually hit the log. The following
 			example exercises all of the available logging levels in OpenSRF:</simpara>
-			<programlisting language="perl" linenumbering="unnumbered">use OpenSRF::Utils::Logger;
-			my $logger = OpenSRF::Utils::Logger;
-			# some code in some function
-			{
-			    $logger-&gt;error("Hmm, something bad DEFINITELY happened!");
-			    $logger-&gt;warn("Hmm, something bad might have happened.");
-			    $logger-&gt;info("Something happened.");
-			    $logger-&gt;debug("Something happened; here are some more details.");
-			    $logger-&gt;internal("Something happened; here are all the gory details.")
-			}</programlisting>
+<programlisting language="perl" linenumbering="unnumbered">
+use OpenSRF::Utils::Logger;
+my $logger = OpenSRF::Utils::Logger;
+# some code in some function
+{
+    $logger-&gt;error("Hmm, something bad DEFINITELY happened!");
+    $logger-&gt;warn("Hmm, something bad might have happened.");
+    $logger-&gt;info("Something happened.");
+    $logger-&gt;debug("Something happened; here are some more details.");
+    $logger-&gt;internal("Something happened; here are all the gory details.")
+}
+</programlisting>
 			<simpara>If you call the mythical OpenSRF method containing the preceding OpenSRF logger
 			statements on a system running at the default logging level of INFO, you will
 			only see the INFO, WARN, and ERR messages, as follows:</simpara>
 			<formalpara><title>Results of logging calls at the default level of INFO</title><para>
-			<screen>[2010-03-17 22:27:30] opensrf.simple-text [ERR :5681:SimpleText.pm:277:] Hmm, something bad DEFINITELY happened!
-			[2010-03-17 22:27:30] opensrf.simple-text [WARN:5681:SimpleText.pm:278:] Hmm, something bad might have happened.
-			[2010-03-17 22:27:30] opensrf.simple-text [INFO:5681:SimpleText.pm:279:] Something happened.</screen>
+<screen>
+[2010-03-17 22:27:30] opensrf.simple-text [ERR :5681:SimpleText.pm:277:] Hmm, something bad DEFINITELY happened!
+[2010-03-17 22:27:30] opensrf.simple-text [WARN:5681:SimpleText.pm:278:] Hmm, something bad might have happened.
+[2010-03-17 22:27:30] opensrf.simple-text [INFO:5681:SimpleText.pm:279:] Something happened.
+</screen>
 			</para></formalpara>
 			<simpara>If you then increase the the logging level to INTERNAL (5), the logs will
 			contain much more information, as follows:</simpara>
 			<formalpara><title>Results of logging calls at the default level of INTERNAL</title><para>
-			<screen>[2010-03-17 22:48:11] opensrf.simple-text [ERR :5934:SimpleText.pm:277:] Hmm, something bad DEFINITELY happened!
-			[2010-03-17 22:48:11] opensrf.simple-text [WARN:5934:SimpleText.pm:278:] Hmm, something bad might have happened.
-			[2010-03-17 22:48:11] opensrf.simple-text [INFO:5934:SimpleText.pm:279:] Something happened.
-			[2010-03-17 22:48:11] opensrf.simple-text [DEBG:5934:SimpleText.pm:280:] Something happened; here are some more details.
-			[2010-03-17 22:48:11] opensrf.simple-text [INTL:5934:SimpleText.pm:281:] Something happened; here are all the gory details.
-			[2010-03-17 22:48:11] opensrf.simple-text [ERR :5934:SimpleText.pm:283:] Resolver did not find a cache hit
-			[2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:Cache.pm:125:] Stored opensrf.simple-text.test_cache.masaa =&gt; "here" in memcached server
-			[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:Application.pm:579:] Coderef for [OpenSRF::Application::Demo::SimpleText::test_cache]...
-			[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:Application.pm:586:] A top level Request object is responding de nada
-			[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:Application.pm:190:] Method duration for [opensrf.simple-text.test_cache]:  10.005
-			[2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:AppSession.pm:780:] Calling queue_wait(0)
-			[2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:AppSession.pm:769:] Resending...0
-			[2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:AppSession.pm:450:] In send
-			[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:AppSession.pm:506:] AppSession sending RESULT to opensrf@private.localhost/... 
-			[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:AppSession.pm:506:] AppSession sending STATUS to opensrf@private.localhost/... 
-			...</screen>
+<screen>
+[2010-03-17 22:48:11] opensrf.simple-text [ERR :5934:SimpleText.pm:277:] Hmm, something bad DEFINITELY happened!
+[2010-03-17 22:48:11] opensrf.simple-text [WARN:5934:SimpleText.pm:278:] Hmm, something bad might have happened.
+[2010-03-17 22:48:11] opensrf.simple-text [INFO:5934:SimpleText.pm:279:] Something happened.
+[2010-03-17 22:48:11] opensrf.simple-text [DEBG:5934:SimpleText.pm:280:] Something happened; here are some more details.
+[2010-03-17 22:48:11] opensrf.simple-text [INTL:5934:SimpleText.pm:281:] Something happened; here are all the gory details.
+[2010-03-17 22:48:11] opensrf.simple-text [ERR :5934:SimpleText.pm:283:] Resolver did not find a cache hit
+[2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:Cache.pm:125:] Stored opensrf.simple-text.test_cache.masaa =&gt; "here" in memcached server
+[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:Application.pm:579:] Coderef for [OpenSRF::Application::Demo::SimpleText::test_cache]...
+[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:Application.pm:586:] A top level Request object is responding de nada
+[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:Application.pm:190:] Method duration for [opensrf.simple-text.test_cache]:  10.005
+[2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:AppSession.pm:780:] Calling queue_wait(0)
+[2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:AppSession.pm:769:] Resending...0
+[2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:AppSession.pm:450:] In send
+[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:AppSession.pm:506:] AppSession sending RESULT to opensrf@private.localhost/... 
+[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:AppSession.pm:506:] AppSession sending STATUS to opensrf@private.localhost/... 
+...
+</screen>
 			</para></formalpara>
 			<simpara>To see everything that is happening in OpenSRF, try leaving your logging level
 			set to INTERNAL for a few minutes - just ensure that you have a lot of free disk
@@ -990,23 +1014,25 @@
 			by sleeping for 10 seconds the first time it receives a given cache key and
 			cannot retrieve a corresponding value from the cache:</simpara>
 			<formalpara><title>Simple caching OpenSRF service</title><para>
-			<programlisting language="perl" linenumbering="unnumbered">use OpenSRF::Utils::Cache;<co id="CO7-1"/>
-			sub test_cache {
-			    my $self = shift;
-			    my $conn = shift;
-			    my $test_key = shift;
-			    my $cache = OpenSRF::Utils::Cache-&gt;new('global'); <co id="CO7-2"/>
-			    my $cache_key = "opensrf.simple-text.test_cache.$test_key"; <co id="CO7-3"/>
-			    my $result = $cache-&gt;get_cache($cache_key) || undef; <co id="CO7-4"/>
-			    if ($result) {
-				$logger-&gt;info("Resolver found a cache hit");
-				return $result;
-			    }
-			    sleep 10; <co id="CO7-5"/>
-			    my $cache_timeout = 300; <co id="CO7-6"/>
-			    $cache-&gt;put_cache($cache_key, "here", $cache_timeout); <co id="CO7-7"/>
-			    return "There was no cache hit.";
-			}</programlisting>
+<programlisting language="perl" linenumbering="unnumbered">
+use OpenSRF::Utils::Cache;<co id="CO7-1"/>
+sub test_cache {
+    my $self = shift;
+    my $conn = shift;
+    my $test_key = shift;
+    my $cache = OpenSRF::Utils::Cache-&gt;new('global'); <co id="CO7-2"/>
+    my $cache_key = "opensrf.simple-text.test_cache.$test_key"; <co id="CO7-3"/>
+    my $result = $cache-&gt;get_cache($cache_key) || undef; <co id="CO7-4"/>
+    if ($result) {
+	$logger-&gt;info("Resolver found a cache hit");
+	return $result;
+    }
+    sleep 10; <co id="CO7-5"/>
+    my $cache_timeout = 300; <co id="CO7-6"/>
+    $cache-&gt;put_cache($cache_key, "here", $cache_timeout); <co id="CO7-7"/>
+    return "There was no cache hit.";
+}
+</programlisting>
 			</para></formalpara>
 			<calloutlist>
 			<callout arearefs="CO7-1">
@@ -1221,15 +1247,17 @@
 			OpenSRF requests and returns OpenSRF results as HTTP results to the initiating
 			HTTP client.</simpara>
 			<formalpara><title>Issuing an HTTP POST request to an OpenSRF method via the OpenSRF HTTP Translator</title><para>
-			<programlisting language="bash" linenumbering="unnumbered"># curl request broken up over multiple lines for legibility
-			curl -H "X-OpenSRF-service: opensrf.simple-text"<co id="CO8-1"/>
-			    --data 'osrf-msg=[  \<co id="CO8-2"/>
-				{"__c":"osrfMessage","__p":{"threadTrace":0,"locale":"en-CA", <co id="CO8-3"/>
-				    "type":"REQUEST","payload": {"__c":"osrfMethod","__p": 
-					{"method":"opensrf.simple-text.reverse","params":["foobar"]}   
-				    }}                                                                  
-				}]'                                                                    
-			http://localhost/osrf-http-translator <co id="CO8-4"/></programlisting>
+<programlisting language="bash" linenumbering="unnumbered">
+# curl request broken up over multiple lines for legibility
+curl -H "X-OpenSRF-service: opensrf.simple-text"<co id="CO8-1"/>
+    --data 'osrf-msg=[  \<co id="CO8-2"/>
+	{"__c":"osrfMessage","__p":{"threadTrace":0,"locale":"en-CA", <co id="CO8-3"/>
+	    "type":"REQUEST","payload": {"__c":"osrfMethod","__p": 
+		{"method":"opensrf.simple-text.reverse","params":["foobar"]}   
+	    }}                                                                  
+	}]'                                                                    
+http://localhost/osrf-http-translator <co id="CO8-4"/>
+</programlisting>
 			</para></formalpara>
 			<calloutlist>
 			<callout arearefs="CO8-1">
@@ -1297,21 +1325,23 @@
 			</callout>
 			</calloutlist>
 			<formalpara><title>Results from an HTTP POST request to an OpenSRF method via the OpenSRF HTTP Translator</title><para>
-			<programlisting language="bash" linenumbering="unnumbered"># HTTP response broken up over multiple lines for legibility
-			[{"__c":"osrfMessage","__p":   <co id="CO9-1"/>
-			    {"threadTrace":0, "payload": <co id="CO9-2"/>
-				{"__c":"osrfResult","__p": <co id="CO9-3"/>
-				    {"status":"OK","content":"raboof","statusCode":200} <co id="CO9-4"/>
-				},"type":"RESULT","locale":"en-CA" <co id="CO9-5"/>
-			    }
-			},
-			{"__c":"osrfMessage","__p":   <co id="CO9-6"/>
-			    {"threadTrace":0,"payload":  <co id="CO9-7"/>
-				{"__c":"osrfConnectStatus","__p": <co id="CO9-8"/>
-				    {"status":"Request Complete","statusCode":205}<co id="CO9-9"/>
-				},"type":"STATUS","locale":"en-CA"  <co id="CO9-10"/>
-			    }
-			}]</programlisting>
+<programlisting language="bash" linenumbering="unnumbered">
+# HTTP response broken up over multiple lines for legibility
+[{"__c":"osrfMessage","__p":   <co id="CO9-1"/>
+    {"threadTrace":0, "payload": <co id="CO9-2"/>
+	{"__c":"osrfResult","__p": <co id="CO9-3"/>
+	    {"status":"OK","content":"raboof","statusCode":200} <co id="CO9-4"/>
+	},"type":"RESULT","locale":"en-CA" <co id="CO9-5"/>
+    }
+},
+{"__c":"osrfMessage","__p":   <co id="CO9-6"/>
+    {"threadTrace":0,"payload":  <co id="CO9-7"/>
+	{"__c":"osrfConnectStatus","__p": <co id="CO9-8"/>
+	    {"status":"Request Complete","statusCode":205}<co id="CO9-9"/>
+	},"type":"STATUS","locale":"en-CA"  <co id="CO9-10"/>
+    }
+}]
+</programlisting>
 			</para></formalpara>
 			<calloutlist>
 			<callout arearefs="CO9-1">
@@ -1433,48 +1463,52 @@
 			the advantages of locale support and tracing the request from the requester
 			through the listener and responder (drone).</simpara>
 			<formalpara><title>A request for opensrf.simple-text.reverse("foobar"):</title><para>
-			<programlisting language="xml" linenumbering="unnumbered">&lt;message from='router@private.localhost/opensrf.simple-text'
-			  to='opensrf@private.localhost/opensrf.simple-text_listener_at_localhost_6275'
-			  router_from='opensrf@private.localhost/_karmic_126678.3719_6288'
-			  router_to='' router_class='' router_command='' osrf_xid=''
-			&gt;
-			  &lt;thread&gt;1266781414.366573.12667814146288&lt;/thread&gt;
-			  &lt;body&gt;
-			[
-			  {"__c":"osrfMessage","__p":
-			    {"threadTrace":"1","locale":"en-US","type":"REQUEST","payload":
-			      {"__c":"osrfMethod","__p":
-				{"method":"opensrf.simple-text.reverse","params":["foobar"]}
-			      }
-			    }
-			  }
-			]
-			  &lt;/body&gt;
-			&lt;/message&gt;</programlisting>
+<programlisting language="xml" linenumbering="unnumbered">
+&lt;message from='router@private.localhost/opensrf.simple-text'
+  to='opensrf@private.localhost/opensrf.simple-text_listener_at_localhost_6275'
+  router_from='opensrf@private.localhost/_karmic_126678.3719_6288'
+  router_to='' router_class='' router_command='' osrf_xid=''
+&gt;
+  &lt;thread&gt;1266781414.366573.12667814146288&lt;/thread&gt;
+  &lt;body&gt;
+[
+  {"__c":"osrfMessage","__p":
+    {"threadTrace":"1","locale":"en-US","type":"REQUEST","payload":
+      {"__c":"osrfMethod","__p":
+	{"method":"opensrf.simple-text.reverse","params":["foobar"]}
+      }
+    }
+  }
+]
+  &lt;/body&gt;
+&lt;/message&gt;
+</programlisting>
 			</para></formalpara>
 			<formalpara><title>A response from opensrf.simple-text.reverse("foobar")</title><para>
-			<programlisting language="xml" linenumbering="unnumbered">&lt;message from='opensrf@private.localhost/opensrf.simple-text_drone_at_localhost_6285'
-			  to='opensrf@private.localhost/_karmic_126678.3719_6288'
-			  router_command='' router_class='' osrf_xid=''
-			&gt;
-			  &lt;thread&gt;1266781414.366573.12667814146288&lt;/thread&gt;
-			  &lt;body&gt;
-			[
-			  {"__c":"osrfMessage","__p":
-			    {"threadTrace":"1","payload":
-			      {"__c":"osrfResult","__p":
-				{"status":"OK","content":"raboof","statusCode":200}
-			      } ,"type":"RESULT","locale":"en-US"}
-			  },
-			  {"__c":"osrfMessage","__p":
-			    {"threadTrace":"1","payload":
-			      {"__c":"osrfConnectStatus","__p":
-				{"status":"Request Complete","statusCode":205}
-			      },"type":"STATUS","locale":"en-US"}
-			  }
-			]
-			  &lt;/body&gt;
-			&lt;/message&gt;</programlisting>
+<programlisting language="xml" linenumbering="unnumbered">
+&lt;message from='opensrf@private.localhost/opensrf.simple-text_drone_at_localhost_6285'
+  to='opensrf@private.localhost/_karmic_126678.3719_6288'
+  router_command='' router_class='' osrf_xid=''
+&gt;
+  &lt;thread&gt;1266781414.366573.12667814146288&lt;/thread&gt;
+  &lt;body&gt;
+[
+  {"__c":"osrfMessage","__p":
+    {"threadTrace":"1","payload":
+      {"__c":"osrfResult","__p":
+	{"status":"OK","content":"raboof","statusCode":200}
+      } ,"type":"RESULT","locale":"en-US"}
+  },
+  {"__c":"osrfMessage","__p":
+    {"threadTrace":"1","payload":
+      {"__c":"osrfConnectStatus","__p":
+	{"status":"Request Complete","statusCode":205}
+      },"type":"STATUS","locale":"en-US"}
+  }
+]
+  &lt;/body&gt;
+&lt;/message&gt;
+</programlisting>
 			</para></formalpara>
 			<simpara>The content of the <literal>&lt;body&gt;</literal> element of the OpenSRF request and result should
 			look familiar; they match the structure of the <link linkend="OpenSRFOverHTTP">OpenSRF over HTTP examples</link> that we previously dissected.</simpara>
@@ -1510,7 +1544,9 @@
 			</listitem>
 			<listitem>
 			<simpara>
-			The optional <literal>stream</literal> member, if set to any value, specifies that the method supports returning multiple values from a single call to subsequent requests. OpenSRF automatically creates a corresponding method with ".atomic" appended to its name that returns the complete set of results in a single request. Streaming methods are useful if you are returning hundreds of records and want to act on the results as they return.
+			The optional <literal>stream</literal> member, if set to any value, specifies that the method supports returning multiple values from a single call to 
+			subsequent requests. OpenSRF automatically creates a corresponding method with ".atomic" appended to its name that returns the complete set of results in a 
+			single request. Streaming methods are useful if you are returning hundreds of records and want to act on the results as they return.
 			</simpara>
 			</listitem>
 			<listitem>
@@ -1525,7 +1561,8 @@
 			</listitem>
 			<listitem>
 			<simpara>
-			The <literal>params</literal> member of the <literal>signature</literal> hash is an array of hashes in which each array element describes the corresponding method argument in order.
+			The <literal>params</literal> member of the <literal>signature</literal> hash is an array of hashes in which each array element describes the corresponding method 
+			argument in order.
 			</simpara>
 			<itemizedlist>
 			<listitem>
@@ -1557,7 +1594,8 @@
 			</listitem>
 			<listitem>
 			<simpara>
-			The <literal>type</literal> member of the <literal>return</literal> hash specifies the data type of the return value: for example, string, integer, boolean, number, array, or hash.
+			The <literal>type</literal> member of the <literal>return</literal> hash specifies the data type of the return value: for example, string, integer, boolean, number, 
+			array, or hash.
 			</simpara>
 			</listitem>
 			</itemizedlist>
@@ -1575,61 +1613,61 @@
 		<itemizedlist>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.actor</literal> service supports common tasks for working with user
+		The <systemitem class="service">open-ils.actor</systemitem> service supports common tasks for working with user
 		     accounts and libraries.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.auth</literal> service supports authentication of Evergreen users.
+		The <systemitem class="service">open-ils.auth</systemitem> service supports authentication of Evergreen users.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.booking</literal> service supports the management of reservations
+		The <systemitem class="service">open-ils.booking</systemitem> service supports the management of reservations
 		    for bookable items.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.cat</literal> service supports common cataloging tasks, such as
+		The <systemitem class="service">open-ils.cat</systemitem> service supports common cataloging tasks, such as
 		     creating, modifying, and merging bibliographic and authority records.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.circ</literal> service supports circulation tasks such as checking
+		The <systemitem class="service">open-ils.circ</systemitem> service supports circulation tasks such as checking
 		    out items and calculating due dates.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.collections</literal> service supports tasks that assist collections
+		The <systemitem class="service">open-ils.collections</systemitem> service supports tasks that assist collections
 		    agencies in contacting users with outstanding fines above a certain
 		    threshold.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.cstore</literal> private service supports unrestricted access to
+		The <systemitem class="service">open-ils.cstore</systemitem> private service supports unrestricted access to
 		    Evergreen fieldmapper objects.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.ingest</literal> private service supports tasks for importing
+		The <systemitem class="service">open-ils.ingest</systemitem> private service supports tasks for importing
 		    data such as bibliographic and authority records.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.pcrud</literal> service supports permission-based access to Evergreen
+		The <systemitem class="service">open-ils.pcrud</systemitem> service supports permission-based access to Evergreen
 		    fieldmapper objects.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.penalty</literal> penalty service supports the calculation of
+		The <systemitem class="service">open-ils.penalty</systemitem> penalty service supports the calculation of
 		    penalties for users, such as being blocked from further borrowing, for
 		    conditions such as having too many items checked out or too many unpaid
 		    fines.
@@ -1637,25 +1675,25 @@
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.reporter</literal> service supports the creation and scheduling of
+		The <systemitem class="service">open-ils.reporter</systemitem> service supports the creation and scheduling of
 		    reports.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.reporter-store</literal> private service supports access to Evergreen
+		The <systemitem class="service">open-ils.reporter-store</systemitem> private service supports access to Evergreen
 		    fieldmapper objects for the reporting service.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.search</literal> service supports searching across bibliographic
+		The <systemitem class="service">open-ils.search</systemitem> service supports searching across bibliographic
 		    records, authority records, serial records, Z39.50 sources, and ZIP codes.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.storage</literal> private service supports a deprecated method of
+		The <systemitem class="service">open-ils.storage</systemitem> private service supports a deprecated method of
 		    providing access to Evergreen fieldmapper objects. Implemented in Perl,
 		    this service has largely been replaced by the much faster C-based
 		    <literal>open-ils.cstore</literal> service.
@@ -1663,30 +1701,30 @@
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.supercat</literal> service supports transforms of MARC records into
+		The <systemitem class="service">open-ils.supercat</systemitem> service supports transforms of MARC records into
 		    other formats, such as MODS, as well as providing Atom and RSS feeds and
 		    SRU access.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.trigger</literal> private service supports event-based triggers for
+		The <systemitem class="service">open-ils.trigger</systemitem> private service supports event-based triggers for
 		    actions such as overdue and holds available notification emails.
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		The <literal>open-ils.vandelay</literal> service supports the import and export of batches of
+		The <systemitem class="service">open-ils.vandelay</systemitem> service supports the import and export of batches of
 		    bibliographic and authority records.
 		</simpara>
 		</listitem>
 		</itemizedlist>
-		<simpara>Of some interest is that the <literal>open-ils.reporter-store</literal> and <literal>open-ils.cstore</literal>
+		<simpara>Of some interest is that the <systemitem class="service">open-ils.reporter-store</systemitem> and <systemitem class="service">open-ils.cstore</systemitem>
 		services have identical implementations. Surfacing them as separate services
 		enables a deployer of Evergreen to ensure that the reporting service does not
-		interfere with the performance-critical <literal>open-ils.cstore</literal> service. One can also
+		interfere with the performance-critical <systemitem class="service">open-ils.cstore</systemitem> service. One can also
 		direct the reporting service to a read-only database replica to, again, avoid
-		interference with <literal>open-ils.cstore</literal> which must write to the master database.</simpara>
+		interference with <systemitem class="service">open-ils.cstore</systemitem> which must write to the master database.</simpara>
 		<simpara>There are only a few significant services that are not built on OpenSRF in
 		Evergreen 1.6.0, such as the SIP and Z39.50 servers. These services implement
 		different protocols and build on existing daemon architectures (Simple2ZOOM

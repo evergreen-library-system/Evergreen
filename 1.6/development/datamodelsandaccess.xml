@@ -9,25 +9,25 @@
 	</abstract>
 	<section id="exploring_database_schema">
 		<title>Exploring the Database Schema</title>
-		<simpara>The database schema is tied pretty tightly to PostgreSQL. Although PostgreSQL
-		adheres closely to ANSI SQL standards, the use of schemas, SQL functions
-		implemented in both plpgsql and plperl, and PostgreSQL&#8217;s native full-text
+		<simpara>The database schema is tied pretty tightly to PostgreSQL. Although PostgreSQL<indexterm><primary>databases</primary><secondary>PostgreSQL</secondary></indexterm>
+		adheres closely to ANSI SQL standards, the use of schemas, SQL functions<indexterm><primary>ANSI</primary></indexterm>
+		implemented in both <systemitem>plpgsql</systemitem> and <systemitem>plperl</systemitem>, and PostgreSQL&#8217;s native full-text
 		search would make it&#8230; challenging&#8230; to port to other database platforms.</simpara>
 		<simpara>A few common PostgreSQL interfaces for poking around the schema and
 		manipulating data are:</simpara>
 		<itemizedlist>
 		<listitem>
 		<simpara>
-		psql (the command line client)
+		psql (the command line client)<indexterm><primary>databases</primary><secondary>PostgreSQL</secondary><tertiery>psql</tertiery></indexterm>
 		</simpara>
 		</listitem>
 		<listitem>
 		<simpara>
-		pgadminIII (a GUI client).
+		pgadminIII (a GUI client).<indexterm><primary>databases</primary><secondary>PostgreSQL</secondary><tertiery>pgadminIII</tertiery></indexterm>
 		</simpara>
 		</listitem>
 		</itemizedlist>
-		<simpara>Or you can read through the source files in Open-ILS/src/sql/Pg.</simpara>
+		<simpara>Or you can read through the source files in <filename class="directoy">Open-ILS/src/sql/Pg</filename>.</simpara>
 		<simpara>Let&#8217;s take a quick tour through the schemas, pointing out some highlights
 		and some key interdependencies:</simpara>
 		<itemizedlist>
@@ -81,27 +81,29 @@
 		</itemizedlist>
 		<simplesect id="_idl_basic_example_config_language_map">
 			<title>IDL basic example (config.language_map)</title>
-			<programlisting language="xml" linenumbering="unnumbered">&lt;class id="clm" controller="open-ils.cstore open-ils.pcrud"
-				oils_obj:fieldmapper="config::language_map"
-				oils_persist:tablename="config.language_map"
-				reporter:label="Language Map" oils_persist:field_safe="true"&gt; <co id="dmCO5-1"/> <co id="dmCO5-2"/> <co id="dmCO5-3"/> <co id="dmCO5-4"/>
-			    &lt;fields oils_persist:primary="code" oils_persist:sequence=""&gt;  <co id="dmCO5-5"/>
-				&lt;field reporter:label="Language Code" name="code"
-				    reporter:selector="value" reporter:datatype="text"/&gt; <co id="dmCO5-6"/>
-				&lt;field reporter:label="Language" name="value"
-				    reporter:datatype="text" oils_persist:i18n="true"/&gt; <co id="dmCO5-7"/>
-			    &lt;/fields&gt;
-			    &lt;links/&gt;
-			    &lt;permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1"&gt; <co id="dmCO5-8"/>
-				&lt;actions&gt;
-				    &lt;create global_required="true" permission="CREATE_MARC_CODE"&gt; <co id="dmCO5-9"/>
-				    &lt;retrieve global_required="true"
-					permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE"&gt;
-				    &lt;update global_required="true" permission="UPDATE_MARC_CODE"&gt;
-				    &lt;delete global_required="true" permission="DELETE_MARC_CODE"&gt;
-				&lt;/actions&gt;
-			    &lt;/permacrud&gt;
-			&lt;/class&gt;</programlisting>
+<programlisting language="xml" linenumbering="unnumbered">
+&lt;class id="clm" controller="open-ils.cstore open-ils.pcrud"
+	oils_obj:fieldmapper="config::language_map"
+	oils_persist:tablename="config.language_map"
+	reporter:label="Language Map" oils_persist:field_safe="true"&gt; <co id="dmCO5-1"/> <co id="dmCO5-2"/> <co id="dmCO5-3"/> <co id="dmCO5-4"/>
+    &lt;fields oils_persist:primary="code" oils_persist:sequence=""&gt;  <co id="dmCO5-5"/>
+	&lt;field reporter:label="Language Code" name="code"
+	    reporter:selector="value" reporter:datatype="text"/&gt; <co id="dmCO5-6"/>
+	&lt;field reporter:label="Language" name="value"
+	    reporter:datatype="text" oils_persist:i18n="true"/&gt; <co id="dmCO5-7"/>
+    &lt;/fields&gt;
+    &lt;links/&gt;
+    &lt;permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1"&gt; <co id="dmCO5-8"/>
+	&lt;actions&gt;
+	    &lt;create global_required="true" permission="CREATE_MARC_CODE"&gt; <co id="dmCO5-9"/>
+	    &lt;retrieve global_required="true"
+		permission="CREATE_MARC_CODE UPDATE_MARC_CODE DELETE_MARC_CODE"&gt;
+	    &lt;update global_required="true" permission="UPDATE_MARC_CODE"&gt;
+	    &lt;delete global_required="true" permission="DELETE_MARC_CODE"&gt;
+	&lt;/actions&gt;
+    &lt;/permacrud&gt;
+&lt;/class&gt;
+</programlisting>
 			<calloutlist>
 			<callout arearefs="dmCO5-1">
 			<simpara>
@@ -143,15 +145,19 @@
 			access to the classes for which <literal>oils_persist:field_safe</literal> is <literal>true</literal>. For
 			example,
 			</simpara>
-			<screen>srfsh# request open-ils.fielder open-ils.fielder.clm.atomic \
-			    {"query":{"code":{"=":"eng"}}}
+<screen>
+<userinput>
+srfsh# request open-ils.fielder open-ils.fielder.clm.atomic \
+{"query":{"code":{"=":"eng"}}}
 
-			Received Data: [
-			  {
-			    "value":"English",
-			    "code":"eng"
-			  }
-			]</screen>
+Received Data: [
+	{
+	"value":"English",
+	"code":"eng"
+	}
+]
+</userinput>
+</screen>
 			</callout>
 			<callout arearefs="dmCO5-5">
 			<simpara>
@@ -213,7 +219,8 @@
 			<callout arearefs="dmCO5-8">
 			<simpara>
 			The <literal>permacrud</literal> element defines the permissions (if any) required
-			to <emphasis role="strong">c</emphasis>reate, <emphasis role="strong">r</emphasis>etrieve, <emphasis role="strong">u</emphasis>pdate, and <emphasis role="strong">d</emphasis>elete data for this
+			to <emphasis role="strong">c</emphasis>reate, <emphasis role="strong">r</emphasis>etrieve, <emphasis role="strong">u</emphasis>pdate, 
+			and <emphasis role="strong">d</emphasis>elete data for this
 			class. <literal>open-ils.permacrud</literal> must be defined as a controller for the class
 			for the permissions to be applied.
 			</simpara>
@@ -316,30 +323,32 @@
 			can contain fields that link to fields in other classes. The <literal>&lt;links&gt;</literal>
 			element defines which fields link to fields in other classes, and
 			the nature of the relationship:</simpara>
-			<programlisting language="xml" linenumbering="unnumbered">&lt;class id="aws" controller="open-ils.cstore"
-				oils_obj:fieldmapper="actor::workstation"
-				oils_persist:tablename="actor.workstation"
-				reporter:label="Workstation"&gt;
-			    &lt;fields oils_persist:primary="id"
-				    oils_persist:sequence="actor.workstation_id_seq"&gt;
-				&lt;field reporter:label="Workstation ID" name="id"
-					reporter:datatype="id"/&gt;
-				&lt;field reporter:label="Workstation Name" name="name"
-					reporter:datatype="text"/&gt;
-				&lt;field reporter:label="Owning Library" name="owning_lib"
-					reporter:datatype="org_unit"/&gt;
-				&lt;field reporter:label="Circulations" name="circulations"
-					oils_persist:virtual="true" reporter:datatype="link"/&gt; <co id="dmCO6-1"/>
-			    &lt;/fields&gt;
-			    &lt;links&gt;  <co id="dmCO6-2"/>
-				&lt;link field="owning_lib" reltype="has_a" key="id"
-					map="" class="aou"/&gt;  <co id="dmCO6-3"/>
-				&lt;link field="circulations" reltype="has_many" key="workstation"
-					map="" class="circ"/&gt;
-				&lt;link field="circulation_checkins" reltype="has_many"
-					key="checkin_workstation" map="" class="circ"/&gt;
-			    &lt;/links&gt;
-			&lt;/class&gt;</programlisting>
+<programlisting language="xml" linenumbering="unnumbered">
+&lt;class id="aws" controller="open-ils.cstore"
+	oils_obj:fieldmapper="actor::workstation"
+	oils_persist:tablename="actor.workstation"
+	reporter:label="Workstation"&gt;
+    &lt;fields oils_persist:primary="id"
+	    oils_persist:sequence="actor.workstation_id_seq"&gt;
+	&lt;field reporter:label="Workstation ID" name="id"
+		reporter:datatype="id"/&gt;
+	&lt;field reporter:label="Workstation Name" name="name"
+		reporter:datatype="text"/&gt;
+	&lt;field reporter:label="Owning Library" name="owning_lib"
+		reporter:datatype="org_unit"/&gt;
+	&lt;field reporter:label="Circulations" name="circulations"
+		oils_persist:virtual="true" reporter:datatype="link"/&gt; <co id="dmCO6-1"/>
+    &lt;/fields&gt;
+    &lt;links&gt;  <co id="dmCO6-2"/>
+	&lt;link field="owning_lib" reltype="has_a" key="id"
+		map="" class="aou"/&gt;  <co id="dmCO6-3"/>
+	&lt;link field="circulations" reltype="has_many" key="workstation"
+		map="" class="circ"/&gt;
+	&lt;link field="circulation_checkins" reltype="has_many"
+		key="checkin_workstation" map="" class="circ"/&gt;
+    &lt;/links&gt;
+&lt;/class&gt;
+</programlisting>
 			<calloutlist>
 			<callout arearefs="dmCO6-1">
 			<simpara>
@@ -538,23 +547,25 @@
 			conditions.</simpara>
 			<simpara>For example, to generate a list of barcodes that are held in a
 			copy location that allows holds and is visible in the OPAC:</simpara>
-			<programlisting language="sh" linenumbering="unnumbered">srfsh# request open-ils.cstore open-ils.cstore.json_query  <co id="dmCO7-1"/>
-			    {"select": {"acp":["barcode"], "acpl":["name"]}, <co id="dmCO7-2"/>
-			     "from":   {"acp":"acpl"},   <co id="dmCO7-3"/>
-			     "where":  [     <co id="dmCO7-4"/>
-				 {"+acpl": "holdable"},   <co id="dmCO7-5"/>
-				 {"+acpl": "opac_visible"}     <co id="dmCO7-6"/>
-			     ]}
+<programlisting language="sh" linenumbering="unnumbered">
+srfsh# request open-ils.cstore open-ils.cstore.json_query  <co id="dmCO7-1"/>
+    {"select": {"acp":["barcode"], "acpl":["name"]}, <co id="dmCO7-2"/>
+     "from":   {"acp":"acpl"},   <co id="dmCO7-3"/>
+     "where":  [     <co id="dmCO7-4"/>
+	 {"+acpl": "holdable"},   <co id="dmCO7-5"/>
+	 {"+acpl": "opac_visible"}     <co id="dmCO7-6"/>
+     ]}
 
-			Received Data: {
-			  "barcode":"BARCODE1",
-			  "name":"Stacks"
-			}
+Received Data: {
+  "barcode":"BARCODE1",
+  "name":"Stacks"
+}
 
-			Received Data: {
-			  "barcode":"BARCODE2",
-			  "name":"Stacks"
-			}</programlisting>
+Received Data: {
+  "barcode":"BARCODE2",
+  "name":"Stacks"
+}
+</programlisting>
 			<calloutlist>
 			<callout arearefs="dmCO7-1">
 			<simpara>
@@ -618,13 +629,15 @@
 			<literal>open-ils.cstore.direct.\*.retrieve</literal> methods allow you to specify a
 			JSON structure defining the fields you wish to flesh in the returned object.</simpara>
 			<formalpara><title>Fleshing fields in objects returned by <literal>open-ils.cstore</literal></title><para>
-			<programlisting language="sh" linenumbering="unnumbered">srfsh# request open-ils.cstore open-ils.cstore.direct.asset.copy.retrieve 1, \
-			    {
-				"flesh": 1,    <co id="dmCO8-1"/>
-				"flesh_fields": {   <co id="dmCO8-2"/>
-				    "acp": ["location"]
-				}
-			    }</programlisting>
+<programlisting language="sh" linenumbering="unnumbered">
+srfsh# request open-ils.cstore open-ils.cstore.direct.asset.copy.retrieve 1, \
+    {
+	"flesh": 1,    <co id="dmCO8-1"/>
+	"flesh_fields": {   <co id="dmCO8-2"/>
+	    "acp": ["location"]
+	}
+    }
+</programlisting>
 			</para></formalpara>
 			<calloutlist>
 			<callout arearefs="dmCO8-1">
@@ -645,14 +658,16 @@
 			let&#8217;s also flesh the call number attached to the copy, and then flesh
 			the bibliographic record attached to the call number.</simpara>
 			<formalpara><title>Fleshing fields in fields of objects returned by <literal>open-ils.cstore</literal></title><para>
-			<programlisting language="java" linenumbering="unnumbered">request open-ils.cstore open-ils.cstore.direct.asset.copy.retrieve 1, \
-			    {
-				"flesh": 2,
-				"flesh_fields": {
-				    "acp": ["location", "call_number"],
-				    "acn": ["record"]
-				 }
-			    }</programlisting>
+<programlisting language="java" linenumbering="unnumbered">
+request open-ils.cstore open-ils.cstore.direct.asset.copy.retrieve 1, \
+    {
+	"flesh": 2,
+	"flesh_fields": {
+	    "acp": ["location", "call_number"],
+	    "acn": ["record"]
+	 }
+    }
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 	</section>
@@ -696,14 +711,14 @@
 		</listitem>
 		<listitem>
 		<simpara>
-		Rerun <literal>/openils/bin/autogen.sh</literal> to regenerate the JavaScript versions
+		Rerun <filename>/openils/bin/autogen.sh</filename> to regenerate the JavaScript versions<indexterm><primary>autogen</primary></indexterm>
 		of the IDL required by the HTTP translator and gateway.
 		</simpara>
 		</listitem>
 		</orderedlist>
-		<simpara>We also need to adjust our JavaScript client to use the nifty new
+		<simpara>We also need to adjust our JavaScript client to use the nifty new<indexterm><primary>JavaScript</primary></indexterm>
 		objects that <literal>open-ils.resolver.resolve_holdings</literal> now returns.
-		The best approach is to use the support in Evergreen&#8217;s Dojo extensions
+		The best approach is to use the support in Evergreen&#8217;s Dojo extensions<indexterm><primary>Dojo toolkit</primary></indexterm>
 		to generate the JavaScript classes directly from the IDL XML file.</simpara>
 		<formalpara><title>Accessing classes defined in the IDL via Fieldmapper</title><para>
 		<programlisting language="html" linenumbering="unnumbered"></programlisting>
@@ -716,7 +731,7 @@
 		</callout>
 		<callout arearefs="">
 		<simpara>
-		<literal>fieldmapper.AutoIDL</literal> reads <literal>/openils/var/reports/fm_IDL.xml</literal> to
+		<literal>fieldmapper.AutoIDL</literal> reads <filename>/openils/var/reports/fm_IDL.xml</filename> to
 		generate a list of class properties.
 		</simpara>
 		</callout>
