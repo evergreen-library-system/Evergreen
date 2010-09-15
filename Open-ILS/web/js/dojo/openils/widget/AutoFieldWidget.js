@@ -358,6 +358,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         _getLinkSelector : function() {
             var linkClass = this.idlField['class'];
             if(this.idlField.reltype != 'has_a')  return false;
+            if(!fieldmapper.IDL.fmclasses[linkClass]) // class neglected by AutoIDL
+                throw new Error("IDL Class '" + linkClass + "' not defined");
             if(!fieldmapper.IDL.fmclasses[linkClass].permacrud) return false;
             if(!fieldmapper.IDL.fmclasses[linkClass].permacrud.retrieve) return false;
 
