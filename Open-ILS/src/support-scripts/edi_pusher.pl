@@ -112,7 +112,7 @@ foreach my $def (@$defs) {
 
     $remaining -= scalar(@$events);
 
-    print "Event definition ", $def->id, " has ", scalar(@$events), " event(s)\n";
+    print "Event definition ", $def->id, " has ", scalar(@$events), " (completed) event(s)\n";
     foreach (@$events) {
 
         my $event = $e->retrieve_action_trigger_event([

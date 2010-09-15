@@ -1,0 +1,70 @@
+ {
+    "recipient":"1556150",
+    "sender":"6666666",
+    "body": [{
+      "ORDERS":[ "order", {
+         "po_number":8,
+         "date":"20100610",
+         "buyer":[{                "id":"6666666"        }],
+         "vendor":[             "1556150",
+             {"id-qualifier": 92, "id":"8"}
+         ],
+         "currency":"USD",
+         "items":[
+         
+         {
+             "identifiers":[
+                 {"id-qualifier":"EN","id":"9780446360272"},
+                 {"id-qualifier":"SA","id":"57"},
+                 {"id-qualifier":"IB","id":"0446360279"}
+             ],
+             "price":4.50,
+             "desc":[
+                 {"BTI":"Webster's new world thesaurus :"}, 
+                 {"BPU":"Warner Books, Inc.,"},
+                 {"BPD":"1990."},
+                 {"BPH":"xv, 494 p. ;"}
+             ],
+             "quantity":8,
+             "FTX": { "4451": "LIN", "C108": {"4440": "This is a TEST! zzz!"} }
+         },        
+         {
+             "identifiers":[
+                 {"id-qualifier":"SA","id":"59"},
+                 {"id-qualifier":"IB","id":"0446831832"},
+                 {"id-qualifier":"EN","id":"9780446357197"}
+             ],
+             "price":7.99,
+             "desc":[
+                 {"BTI":"The world is full of divorced women /"}, 
+                 {"BPU":"Warner Books,"},
+                 {"BPD":"c1980."},
+                 {"BPH":"413 p. ;"}
+             ],
+             "quantity":10
+         },        
+         {
+             "identifiers":[
+                 {"id-qualifier":"SA","id":"60"},
+                 {"id-qualifier":"IB","id":"0446350109"},
+                 {"id-qualifier":"EN","id":"9780446350105"}
+             ],
+             "price":8.75,
+             "desc":[
+                 {"BTI":"Windmills of the gods /"}, 
+                 {"BPU":"Warner Books,"},
+                 {"BPD":"1988, c1987."},
+                 {"BPH":"xiii, 434 p. ;"}
+             ],
+             "quantity":5
+         }        
+         ],
+         "line_items":3
+      }]  
+    }]    
+ }
+ 
+
+
+# json2edi Response: 
+$VAR1 = bless( do{\(my $o = 'UNA:+.? \'UNB+UNOB:3+6666666:31B+1556150:31B+100812:2026+1\'UNH+1+ORDERS:D:96A:UN\'BGM+220+8+9\'DTM+137:20100610:102\'NAD+BY+6666666::31B\'NAD+SU+1556150::31B\'NAD+SU+8::92\'CUX+2:USD:9\'LIN+1++9780446360272:EN\'PIA+5+9780446360272:EN+57:SA+0446360279:IB\'IMD+F+BTI+:::Webster?\'s new world thesaurus ?:\'IMD+F+BPU+:::Warner Books, Inc.,\'IMD+F+BPD+:::1990.\'IMD+F+BPH+:::xv, 494 p. ;\'QTY+21:8\'PRI+AAB:4.5\'RFF+LI:8/1\'LIN+2++59:SA\'PIA+5+59:SA+0446831832:IB+9780446357197:EN\'IMD+F+BTI+:::The world is full of divorced women: /\'IMD+F+BPU+:::Warner Books,\'IMD+F+BPD+:::c1980.\'IMD+F+BPH+:::413 p. ;\'QTY+21:10\'PRI+AAB:7.99\'RFF+LI:8/2\'LIN+3++60:SA\'PIA+5+60:SA+0446350109:IB+9780446350105:EN\'IMD+F+BTI+:::Windmills of the gods /\'IMD+F+BPU+:::Warner Books,\'IMD+F+BPD+:::1988, c1987.\'IMD+F+BPH+:::xiii, 434 p. ;\'QTY+21:5\'PRI+AAB:8.75\'RFF+LI:8/3\'UNS+S\'CNT+2:3\'UNT+37+1\'UNZ+1+1\'')}, 'RPC::XML::string' );

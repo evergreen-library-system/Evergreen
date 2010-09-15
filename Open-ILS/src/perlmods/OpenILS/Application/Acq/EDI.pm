@@ -17,7 +17,6 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Acq::EDI::Translator;
 
 use Business::EDI;
-use Business::EDI::Segment::BGM;
 
 use Data::Dumper;
 our $verbose = 0;
@@ -28,6 +27,8 @@ sub new {
     # $self->{args} = {};
     return $self;
 }
+
+# our $reasons = {};   # cache for acq.cancel_reason rows ?
 
 our $translator;
 
@@ -79,7 +80,7 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_core {
-    my ($self, $e, $set, $max) = @_;    # $e is a working editor
+    my ($self, $set, $max, $e, $test) = @_;    # $e is a working editor
 
     $e   ||= new_editor();
     $set ||= __PACKAGE__->retrieve_vendors($e);
@@ -91,36 +92,98 @@ sub retrieve_core {
         my $server;
         $logger->info("EDI check for vendor " . ++$vcount . " of " . scalar(@$set) . ": " . $account->host);
         unless ($server = __PACKAGE__->remote_account($account)) {   # assignment, not comparison
-            $logger->err(sprintf "Failed remote account connection for %s (%s)", $account->host, $account->id);
+            $logger->err(sprintf "Failed remote account mapping for %s (%s)", $account->host, $account->id);
             next;
         };
-        my @files    = $server->ls({remote_file => ($account->in_dir || '.')});
-        my @ok_files = grep {$_ !~ /\/\.?\.$/ } @files;
-        $logger->info(sprintf "%s of %s files at %s/%s", scalar(@ok_files), scalar(@files), $account->host, ($account->in_dir || ''));   
-        foreach (@ok_files) {
-            ++$count;
-            $max and $count > $max and last;
-            my $content;
-            my $io = IO::Scalar->new(\$content);
-            unless ($server->get({remote_file => $_, local_file => $io})) {
-                $logger->error("(S)FTP get($_) failed");
+#       my $rf_starter = './';  # default to current dir
+        if ($account->in_dir) { 
+            if ($account->in_dir =~ /\*+.*\//) {
+                $logger->err("EDI in_dir has a slash after an asterisk in value: '" . $account->in_dir . "'.  Skipping account with indeterminate target dir!");
                 next;
             }
-            my $incoming = Fieldmapper::acq::edi_message->new;
-            $incoming->remote_file($_);
-            $incoming->edi($content);
-            $incoming->account($account->id);
-             __PACKAGE__->attempt_translation($incoming);
-            $e->xact_begin;
-            $e->create_acq_edi_message($incoming);
-            $e->xact_commit;
-            __PACKAGE__->record_activity($account, $e);
-            __PACKAGE__->process_jedi($incoming, $server, $e);
+#           $rf_starter = $account->in_dir;
+#           $rf_starter =~ s/((\/)?[^\/]*)\*+[^\/]*$//;  # kill up to the first (possible) slash before the asterisk: keep the preceeding static dir
+#           $rf_starter .= '/' if $rf_starter or $2;   # recap the dir, or replace leading "/" if there was one (but don't add if empty)
+        }
+        my @files    = ($server->ls({remote_file => ($account->in_dir || './')}));
+        my @ok_files = grep {$_ !~ /\/\.?\.$/ and $_ ne '0'} @files;
+        $logger->info(sprintf "%s of %s files at %s/%s", scalar(@ok_files), scalar(@files), $account->host, $account->in_dir);   
+        # $server->remote_path(undef);
+        foreach my $remote_file (@ok_files) {
+            # my $remote_file = $rf_starter . $_;
+            my $description = sprintf "%s/%s", $account->host, $remote_file;
+            
+            # deduplicate vs. acct/filenames already in DB
+            my $hits = $e->search_acq_edi_message([
+                {
+                    account     => $account->id,
+                    remote_file => $remote_file,
+                    status      => {'in' => [qw/ processed /]},     # if it never got processed, go ahead and get the new one (try again)
+                    # create_time => 'NOW() - 60 DAYS',     # if we wanted to allow filenames to be reused after a certain time
+                    # ideally we would also use the date from FTP, but that info isn't available via RemoteAccount
+                }
+                # { flesh => 1, flesh_fields => {...}, }
+            ]);
+            if (scalar(@$hits)) {
+                $logger->debug("EDI: $remote_file already retrieved.  Skipping");
+                warn "EDI: $remote_file already retrieved.  Skipping";
+                next;
+            }
+
+            ++$count;
+            $max and $count > $max and last;
+            $logger->info(sprintf "%s of %s targets: %s", $count, scalar(@ok_files), $description);
+            print sprintf "%s of %s targets: %s\n", $count, scalar(@ok_files), $description;
+            if ($test) {
+                push @return, "test_$count";
+                next;
+            }
+            my $content;
+            my $io = IO::Scalar->new(\$content);
+            unless ( $server->get({remote_file => $remote_file, local_file => $io}) ) {
+                $logger->error("(S)FTP get($description) failed");
+                next;
+            }
+            my $incoming = __PACKAGE__->process_retrieval($content, $remote_file, $server, $account->id, $e);
 #           $server->delete(remote_file => $_);   # delete remote copies of saved message
             push @return, $incoming->id;
         }
     }
     return \@return;
+}
+
+# my $in = OpenILS::Application::Acq::EDI->process_retrieval($file_content, $remote_filename, $server, $account_id, $editor);
+
+sub process_retrieval {
+    my $incoming = Fieldmapper::acq::edi_message->new;
+    my ($class, $content, $remote, $server, $account_or_id, $e) = @_;
+    $content or return;
+    $e ||= new_editor;
+
+    my $account = __PACKAGE__->record_activity( $account_or_id, $e );
+
+    my $z;  # must predeclare
+    $z = ( $content =~ s/('UNH\+\d+\+ORDRSP:)0(:96A:UN')/$1D$2/g )
+        and $logger->warn("Patching bogus spec reference ORDRSP:0:96A:UN => ORDRSP:D:96A:UN ($z times)");  # Hack/fix some faulty "0" in (B&T) data
+
+    $incoming->remote_file($remote);
+    $incoming->account($account->id);
+    $incoming->edi($content);
+    $incoming->message_type(($content =~ /'UNH\+\d+\+(\S{6}):/) ? $1 : 'ORDRSP');   # cheap sniffing, ORDRSP fallback
+    __PACKAGE__->attempt_translation($incoming);
+    $e->xact_begin;
+    $e->create_acq_edi_message($incoming);
+    $e->xact_commit;
+    # refresh: send process_jedi the updated row
+    my $res = __PACKAGE__->process_jedi($e->retrieve_acq_edi_message($incoming->id), $server, $account, $e);
+    my $outgoing = $e->retrieve_acq_edi_message($incoming->id);  # refresh again!
+    $outgoing->status($res ? 'processed' : 'proc_error');
+    if ($res) {
+        $e->xact_begin;
+        $e->update_acq_edi_message($outgoing);
+        $e->xact_commit;
+    }
+    return $outgoing;
 }
 
 # ->send_core
@@ -217,7 +280,7 @@ sub retrieve_vendors {
     $e ||= new_editor();
 
     my $criteria = {'+acqpro' => {active => 't'}};
-    # $criteria->{vendor_id} = $vendor_id if $vendor_id;
+    $criteria->{'+acqpro'}->{id} = $vendor_id if $vendor_id;
     return $e->search_acq_edi_account([
         $criteria, {
             'join' => 'acqpro',
@@ -267,7 +330,7 @@ sub field_map {
     ($host =~ s/^(S?FTP)://i    and $args{type} = uc($1)) or
     ($host =~ s/^(SSH|SCP)://i  and $args{type} = 'SCP' ) ;
      $host =~ s/:(\d+)$//       and $args{port} = $1;
-     ($args{remote_host} = $host) =~ s#/+##;
+    ($args{remote_host} = $host) =~ s#/+##;
     $verbose and $logger->warn("field_map: " . Dumper(\%args));
     return %args;
 }
@@ -291,10 +354,13 @@ sub remote_account {
     );
 }
 
+# takes account ID or account Fieldmapper object
+
 sub record_activity {
-    my ($class, $account, $e) = @_;
-    $account or return;
+    my ($class, $account_or_id, $e) = @_;
+    $account_or_id or return;
     $e ||= new_editor();
+    my $account = ref($account_or_id) ? $account_or_id : $e->retrieve_acq_edi_account($account_or_id);
     $logger->info("EDI record_activity calling update_acq_edi_account");
     $account->last_activity('NOW') or return;
     $e->xact_begin;
@@ -329,32 +395,41 @@ sub jedi2perl {
     return $msg;
 }
 
-# ->process_jedi($message, $server, $e)
+our @datecodes = (35, 359, 17, 191, 69, 76, 75, 79, 85, 74, 84, 223);
+our @noop_6063 = (21);
+
+# ->process_jedi($message, $server, $remote, $e)
+# $message is an edi_message object
+#
 sub process_jedi {
-    my $class    = shift;
-    my $message  = shift or return;
-    my $server   = shift || {};  # context
-    my $jedi     = ref($message) ? $message->jedi : $message;  # If we got an object, it's an edi_message.  A string is the jedi content itself.
-    unless ($jedi) {
-        $logger->warn("EDI process_jedi missing required argument (edi_message object with jedi or jedi scalar)!");
+    my ($class, $message, $server, $remote, $e) = @_;
+    $message or return;
+    $server ||= {};  # context
+    $remote ||= {};  # context
+    $e ||= new_editor;
+    my $jedi;
+    unless (ref($message) and $jedi = $message->jedi) {     # assignment, not comparison
+        $logger->warn("EDI process_jedi missing required argument (edi_message object with jedi)!");
         return;
     }
-    my $e = @_ ? shift : new_editor();
-    my $perl = __PACKAGE__->jedi2perl($jedi);
+    my $perl  = __PACKAGE__->jedi2perl($jedi);
+    my $error = '';
     if (ref($message) and not $perl) {
-        $message->error(($message->error || '') . " JSON2perl (jedi2perl) FAILED to convert jedi");
+        $error = ($message->error || '') . " JSON2perl (jedi2perl) FAILED to convert jedi";
+    }
+    elsif (! $perl->{body}) {
+        $error = "EDI interchange body not found!";
+    } 
+    elsif (! $perl->{body}->[0]) {
+        $error = "EDI interchange body not a populated arrayref!";
+    }
+    if ($error) {
+        $logger->warn($error);
+        $message->error($error);
         $message->error_time('NOW');
         $e->xact_begin;
-        $e->udpate_acq_edi_message($message) or $logger->warn("EDI update_acq_edi_message failed! $!");
+        $e->update_acq_edi_message($message) or $logger->warn("EDI update_acq_edi_message failed! $!");
         $e->xact_commit;
-        return;
-    }
-    if (! $perl->{body}) {
-        $logger->warn("EDI interchange body not found!");
-        return;
-    } 
-    if (! $perl->{body}->[0]) {
-        $logger->warn("EDI interchange body not a populated arrayref!");
         return;
     }
 
@@ -365,8 +440,9 @@ sub process_jedi {
 # So you might access it like:
 #   $obj->{body}->[0]->{ORDERS}->[0]->[0] eq 'UNH'
 
-    $logger->info("EDI interchange body has " . scalar(@{$perl->{body}}) . " messages(s)");
-    my @li;
+    $logger->info("EDI interchange body has " . scalar(@{$perl->{body}}) . " message(s)");
+    my @ok_msg_codes = qw/ORDRSP OSTRPT/;
+    my @messages;
     my $i = 0;
     foreach my $part (@{$perl->{body}}) {
         $i++;
@@ -375,95 +451,168 @@ sub process_jedi {
             next;
         }
         foreach my $key (keys %$part) {
-            unless ($key eq 'ORDRSP') {     # We only do one type for now.  TODO: other types here
-                $logger->warn("EDI interchange message $i contains unhandled type '$key'.  Ignoring.");
+            if (! grep {$_ eq $key} @ok_msg_codes) {     # We only do one type for now.  TODO: other types here
+                $logger->warn("EDI interchange $i contains unhandled '$key' message.  Ignoring it.");
                 next;
             }
-            my @li_chunk = __PACKAGE__->parse_ordrsp($part->{$key}, $server, $e);
-            $logger->info("EDI $key parsing returned " . scalar(@li_chunk) . " line items");
-            push @li, @li_chunk;
-        }
-    }
-    return \@li, $perl;   # TODO process perl
-}
+            my $msg = __PACKAGE__->message_object($part->{$key}) or next;
+            push @messages, $msg;
 
-
-=head2 ->parse_ordrsp($segments, $server, $e)
-
-Returns array of lineitems.
-
-=cut
-
-# TODO: Build Business::EDI::Message::ORDRSP object instead
-# TODO: Convert access to methods, not reaching inside the data/object like $segbody->{S009}->{'0065'}
-
-sub parse_ordrsp {
-    my ($class, $segments, $server, $e, $test) = @_;    # test not implemented
-    $e ||= new_editor();
-    my $type = 'ORDRSP';
-    $logger->info("EDI " . scalar(@$segments) . " segments in $type message");
-    my (@lins, $bgm);
-    foreach my $segment (@$segments) {  # Prepass: catch the conditions that might cause us to bail
-        my ($tag, $segbody, @extra) = @$segment;
-        unless ($tag    ) {$logger->warn("EDI empty segment received"     ); next;}
-        unless ($segbody) {$logger->warn("EDI segment '$tag' missing body"); next;}
-        @extra and $logger->warn("EDI extra data (" . scalar(@extra) . " elements) found after pseudohash pair for $tag");
-        if ($tag eq 'UNH') {
-            unless ($segbody->{S009}->{'0065'} and $segbody->{S009}->{'0065'} eq $type) {
-                $logger->error("EDI $tag/S009/0065 ('" . ($segbody->{S009}->{'0065'} || '') . "') conflict w/ message type $type\.  Aborting");
-                return;
+            my $bgm = $msg->xpath('BGM') or $logger->warn("EDI No BGM segment found?!");
+            my $tag4343 = $msg->xpath('BGM/4343');
+            my $tag1225 = $msg->xpath('BGM/1225');
+            if (ref $tag4343) {
+                $logger->info(sprintf "EDI $key BGM/4343 Response Type: %s - %s", $tag4343->value, $tag4343->label)
+            } else {
+                $logger->warn("EDI $key BGM/4343 Response Type Code unrecognized"); # next; #?
             }
-            unless ($segbody->{S009}->{'0051'} and $segbody->{S009}->{'0051'} eq 'UN') {
-                $logger->warn("EDI $tag/S009/0051 does not designate 'UN' as controlling agency.  Will attempt to process anyway");
+            if (ref $tag1225) {
+                $logger->info(sprintf "EDI $key BGM/1225 Message Function: %s - %s", $tag1225->value, $tag1225->label);
+            } else {
+                $logger->warn("EDI $key BGM/1225 Message Function Code unrecognized"); # next; #?
             }
-        } elsif ($tag eq 'BGM') {
-            $bgm = Business::EDI::Segment::BGM->new($segbody);
-            $bgm->seg4343 or $logger->warn(sprintf "EDI $tag/4343 Response Type Code '%s' unrecognized", ($segbody->{4343} || ''));
-            $logger->info(sprintf "EDI $tag/4343 response type: %s - %s (%s)", $bgm->seg4343->value, $bgm->seg4343->label, $bgm->seg4343->desc);
-            my $fcn = $bgm->seg1225;
-            unless ($fcn) {
-                $logger->error(sprintf "EDI $tag/1225 Message Function Code '%s' unrecognized.  Aborting", ($segbody->{1225} || ''));
-                return;
+
+            # TODO: currency check, just to be paranoid
+            # *should* be unnecessary (vendor should reply in currency we send in ORDERS)
+            # That begs a policy question: how to handle mismatch?  convert (bad accuracy), reject, or ignore?  I say ignore.
+
+            # ALL those codes below are basically some form of (lastest) delivery date/time
+            # see, e.g.: http://www.stylusstudio.com/edifact/D04B/2005.htm
+            # The order is the order of definitiveness (first match wins)
+            # Note: if/when we do serials via EDI, dates (and ranges/periods) will need massive special handling
+            my @dates;
+            my $ddate;
+
+            foreach my $date ($msg->xpath('delivery_schedule')) {
+                my $val_2005 = $date->xpath_value('DTM/2005') or next;
+                (grep {$val_2005 eq $_} @datecodes) or next; # no match means some other kind of date we don't care about
+                push @dates, $date;
             }
-        }
-    }
-    my @ignored;
-    foreach my $segment (@$segments) {  # The main pass
-        my ($tag, $segbody, @extra) = @$segment;
-        next unless ($tag and $segbody);    # warnings above
-        if ($tag eq 'LIN') {
-            my @chunks = @{$segbody->{SG26}};
-            my $count = scalar(@chunks);
-            $logger->debug("EDI LIN/SG26 has $count chunks");
-# CHUNK:
-# ["RFF", {
-#   "C506": {
-#      "1153": "LI",
-#      "1154": "4639/1"
-#   }
-# }]
-            foreach (@chunks) {
-                my $label = $_->[0];
-                my $body  = $_->[1];
-                # $label eq 'QTY' and push @qtys, $body;
-                $label eq 'RFF' or next;
-                my $obj;
-                unless ($obj = Business::EDI::Segment::RFF->new($body)) {   # assignment, not comparison
-                    $logger->error("EDI $tag/$label failed to convert to an object");
+            if (@dates) {
+                DATECODE: foreach my $dcode (@datecodes) {   # now cycle back through hits in order of dcode definitiveness
+                    foreach my $date (@dates) {
+                        $date->xpath_value('DTM/2005') == $dcode or next;
+                        $ddate = $date->xpath_value('DTM/2380') and last DATECODE;
+                        # TODO: conversion based on format specified in DTM/2379 (best encapsulated in Business::EDI)
+                    }
                 }
-                $obj->seg1153 and $obj->seg1153->value eq 'LI' or $logger->warn("EDI $tag/$label object unexpected 1153 value (not 'LI')");
-                __PACKAGE__->update_li($obj->seg1154->value, $segbody, $server, $e);
             }
-            push @lins, \@chunks;
-        } elsif ($tag ne 'UNH' and $tag ne 'BGM') {
-            push @ignored, $tag;
+            foreach my $detail ($msg->part('line_detail')) {
+                my $eg_line = __PACKAGE__->eg_li($detail, $remote, $server->{remote_host}, $e) or next;
+                my $li_date = $detail->xpath_value('DTM/2380') || $ddate;
+                my $price   = $detail->xpath_value('line_price/PRI/5118') || '';
+                $eg_line->expected_recv_time($li_date) if $li_date;
+                $eg_line->estimated_unit_price($price) if $price;
+                if (not $message->purchase_order) {                     # first good lineitem sets the message PO link
+                    $message->purchase_order($eg_line->purchase_order); # EG $message object NOT Business::EDI $msg object
+                    $e->xact_begin;
+                    $e->update_acq_edi_message($message) or $logger->warn("EDI update_acq_edi_message (for PO number) failed! $!");
+                    $e->xact_commit;
+                }
+                # $e->search_acq_edi_account([]);
+                my $touches = 0;
+                my $eg_lids = $e->search_acq_lineitem_detail({lineitem => $eg_line->id}); # should be the same as $eg_line->lineitem_details
+                my $lidcount = scalar(@$eg_lids);
+                $lidcount == $eg_line->item_count or $logger->warn(
+                    sprintf "EDI: LI %s itemcount (%d) mismatch, %d LIDs found", $eg_line->id, $eg_line->item_count, $lidcount
+                );
+                foreach my $qty ($detail->part('all_QTY')) {
+                    my $ubound   = $qty->xpath_value('6060') or next;   # nothing to do if qty is 0
+                    my $val_6063 = $qty->xpath_value('6063');
+                    $ubound > 0 or next; # don't be crazy!
+                    if (! $val_6063) {
+                        $logger->warn("EDI: Response for LI " . $eg_line->id . " specifies quantity $ubound with no 6063 code! Contact vendor to resolve.");
+                        next;
+                    }
+                    
+                    my $eg_reason = $e->retrieve_acq_cancel_reason(1200 + $val_6063);  # DB populated w/ 6063 keys in 1200's
+                    if (! $eg_reason) {
+                        $logger->warn("EDI: Unhandled quantity code '$val_6063' (LI " . $eg_line->id . ") $ubound items unprocessed");
+                        next;
+                    } elsif (grep {$val_6063 == $_} @noop_6063) {      # an FYI like "ordered quantity"
+                        $ubound eq $lidcount
+                            or $logger->warn("EDI: LI " . $eg_line->id . " -- Vendor says we ordered $ubound, but we have $lidcount LIDs!)");
+                        next;
+                    }
+                    # elsif ($val_6063 == 83) { # backorder
+                   #} elsif ($val_6063 == 85) { # cancel
+                   #} elsif ($val_6063 == 12 or $val_6063 == 57 or $val_6063 == 84 or $val_6063 == 118) {
+                            # despatched, in transit, urgent delivery, or quantity manifested
+                   #}
+                    if ($touches >= $lidcount) {
+                        $logger->warn("EDI: LI "  . $eg_line->id . ", We already updated $touches of $lidcount LIDS, " .
+                                      "but message wants QTY $ubound more set to " . $eg_reason->label . ".  Ignoring!");
+                        next;
+                    }
+                    $e->xact_begin;
+                    foreach (1 .. $ubound) {
+                        my $eg_lid = shift @$eg_lids or $logger->warn("EDI: Used up all $lidcount LIDs!  Ignoring extra status " . $eg_reason->label);
+                        $eg_lid or next;
+                        $logger->debug(sprintf "Updating LID %s to %s", $eg_lid->id, $eg_reason->label);
+                        $eg_lid->cancel_reason($eg_reason->id);
+                        $e->update_acq_lineitem_detail($eg_lid);
+                        $touches++;
+                    }
+                    $e->xact_commit;
+                    if ($ubound == $eg_line->item_count) {
+                        $eg_line->cancel_reason($eg_reason->id);    # if ALL the items have the same cancel_reason, the PO gets it too
+                    }
+                }
+                $eg_line->edit_time('NOW'); # TODO: have this field automatically updated via ON UPDATE trigger.  
+                $e->xact_begin;
+                $e->update_acq_lineitem($eg_line) or $logger->warn("EDI: update_acq_lineitem FAILED");
+                $e->xact_commit;
+                # print STDERR "Lineitem update: ", Dumper($eg_line);
+            }
         }
     }
-    @ignored and $logger->debug("EDI: ignoring " . scalar(@ignored) . " segment(s): " . join(', ', @ignored));
-    return @lins;
+    return \@messages;
 }
 
-=head2 ->update_li($lineitem_id, $lineitem_object, [$server, $editor])
+# returns message object if processing should continue
+# returns false/undef value if processing should abort
+
+sub message_object {
+    my $class = shift;
+    my $body  = shift or return;
+    my $key   = shift if @_;
+    my $keystring = $key || 'UNSPECIFIED';
+
+    my $msg = Business::EDI::Message->new($body);
+    unless ($msg) {
+        $logger->error("EDI interchange message: $keystring body failed Business::EDI constructor. Skipping it.");
+        return;
+    }
+    $key = $msg->code if ! $key;  # Now we set the key for reference if it wasn't specified
+    my $val_0065 = $msg->xpath_value('UNH/S009/0065') || '';
+    unless ($val_0065 eq $key) {
+        $logger->error("EDI $key UNH/S009/0065 ('$val_0065') conflicts w/ message type $key.  Aborting");
+        return;
+    }
+    my $val_0051 = $msg->xpath_value('UNH/S009/0051') || '';
+    unless ($val_0051 eq 'UN') {
+        $logger->warn("EDI $key UNH/S009/0051 designates '$val_0051', not 'UN' as controlling agency.  Attempting to process anyway");
+    }
+    my $val_0054 = $msg->xpath_value('UNH/S009/0054') || '';
+    if ($val_0054) {
+        $logger->info("EDI $key UNH/S009/0054 uses Spec revision version '$val_0054'");
+        # Possible Spec Version limitation
+        # my $yy = $tag_0054 ? substr($val_0054,0,2) : '';
+        # unless ($yy eq '00' or $yy > 94 ...) {
+        #     $logger->warn("EDI $key UNH/S009/0051 Spec revision version '$val_0054' not supported");
+        # }
+    } else {
+        $logger->warn("EDI $key UNH/S009/0054 does not reference a known Spec revision version");
+    }
+    return $msg;
+}
+
+=head2 ->eg_li($lineitem_object, [$remote, $server_log_string, $editor])
+
+my $line_item = OpenILS::Application::Acq::EDI->eg_li($edi_line, $remote, "test_server_01", $e);
+
+ $remote is a acq.edi_account Fieldmapper object.
+ $server_log_string is an arbitrary string use to identify the remote host in potential log messages.
 
 Updates:
  acq.lineitem.estimated_unit_price, 
@@ -473,17 +622,49 @@ Updates:
 
 =cut
 
-sub update_li {
-    my ($class, $id, $object, $server, $e) = @_;
+sub eg_li {
+    my ($class, $line, $server, $server_log_string, $e) = @_;
+    $line or return;
     $e ||= new_editor();
-    $id =~ s#^.*\/##;   # Temporary fix for mbklein's testdata
-    print STDERR "Here we would retrieve/update lineitem $id\n";
-    my $li = OpenILS::Application::Acq::Lineitem::retrieve_lineitem_impl($e, $id); # Could send {options}
-    if (! $li or ref($li) ne 'Fieldmapper::acq::lineitem') {
-        $logger->error("EDI failed to retrieve lineitem by id '$id'");
+
+    my $id;
+    # my $rff      = $line->part('line_reference/RFF') or $logger->warn("EDI ORDRSP line_detail/RFF missing!");
+    my $val_1153 = $line->xpath_value('line_reference/RFF/1153') || '';
+    my $val_1154 = $line->xpath_value('line_reference/RFF/1154') || '';
+    my $val_1082 = $line->xpath_value('LIN/1082') || '';
+
+    my @po_nums;
+
+    $val_1154 =~ s#^(.*)\/##;   # Many sources send the ID as 'order_ID/LI_ID'
+    $1 and push @po_nums, $1;
+    $val_1082 =~ s#^(.*)\/##;   # Many sources send the ID as 'order_ID/LI_ID'
+    $1 and push @po_nums, $1;
+
+    # TODO: possible check of po_nums
+    # now do a lot of checking
+
+    if ($val_1153 eq 'LI') {
+        $id = $val_1154 or $logger->warn("EDI ORDRSP RFF/1154 reference to LI empty.  Attempting failover to LIN/1082");
+    } else {
+        $logger->warn("EDI ORDRSP RFF/1153 unexpected value ('$val_1153', not 'LI').  Attempting failover to LIN/1082");
+    }
+
+    if ($id and $val_1082 and $val_1082 ne $id) {
+        $logger->warn("EDI ORDRSP LIN/1082 Line Item ID mismatch ($id vs. $val_1082): cannot target update");
         return;
     }
-    unless ((! $server) or (! $server->provider)) {
+    $id ||= $val_1082 || '';
+    print STDERR "EDI retrieve/update lineitem $id\n";
+
+    my $li = OpenILS::Application::Acq::Lineitem::retrieve_lineitem_impl($e, $id, {
+        flesh_li_details => 1,
+    }, 1); # Could send more {options}.  The 1 is for no_auth.
+
+    if (! $li or ref($li) ne 'Fieldmapper::acq::lineitem') {
+        $logger->error("EDI failed to retrieve lineitem by id '$id' for server $server_log_string");
+        return;
+    }
+    unless ((! $server) or (! $server->provider)) {     # but here we want $server to be acq.edi_account instead of RemoteAccount
         if ($server->provider != $li->provider) {
             # links go both ways: acq.provider.edi_default and acq.edi_account.provider
             $logger->info("EDI acct provider (" . $server->provider. ") doesn't match lineitem provider("
@@ -496,12 +677,135 @@ sub update_li {
             }
         }
     }
-    return; # TODO: actual updates
-    $e->xact_begin;
-    $e->update_acq_lineitem($li) or $logger->warn("EDI: in update_li, update_acq_lineitem FAILED");
-    $e->xact_commit;
-    # print STDERR "Lineitem to update: ", Dumper($li);
+    
+    my @lin_1229 = $line->xpath('LIN/1229') or $logger->warn("EDI LIN/1229 Action Code missing!");
+    my $key = $lin_1229[0] or return;
+
+    my $eg_reason = $e->retrieve_acq_cancel_reason(1000 + $key->value);  # DB populated w/ spec keys in 1000's
+    $eg_reason or $logger->warn(sprintf "EDI LIN/1229 Action Code '%s' (%s) not recognized in acq.cancel_reason", $key->value, $key->label);
+    $eg_reason or return;
+
+    $li->cancel_reason($eg_reason->id);
+    unless ($eg_reason->keep_debits) {
+        $logger->warn("EDI LIN/1229 Action Code '%s' (%s) has keep_debits=0", $key->value, $key->label);
+    }
+
+    my @prices = $line->xpath_value("line_price/PRI/5118");
+    $li->estimated_unit_price($prices[0]) if @prices;
+
+    return $li;
 }
 
+# caching not needed for now (edi_fetcher is asynchronous)
+# sub get_reason {
+#     my ($class, $key, $e) = @_;
+#     $reasons->{$key} and return $reasons->{$key};
+#     $e ||= new_editor();
+#     $reasons->{$key} = $e->retrieve_acq_cancel_reason($key);
+#     return $reasons->{$key};
+# }
+
 1;
+
+__END__
+
+Example JSON data.
+
+Note the pseudo-hash 2-element arrays.  
+
+[
+  'SG26',
+  [
+    [
+      'LIN',
+      {
+        '1229' => '5',
+        '1082' => 1,
+        'C212' => {
+          '7140' => '9780446360272',
+          '7143' => 'EN'
+        }
+      }
+    ],
+    [
+      'IMD',
+      {
+        '7081' => 'BST',
+        '7077' => 'F',
+        'C273' => {
+          '7008' => [
+            'NOT APPLIC WEBSTERS NEW WORLD THESA'
+          ]
+        }
+      }
+    ],
+    [
+      'QTY',
+      {
+        'C186' => {
+          '6063' => '21',
+          '6060' => 10
+        }
+      }
+    ],
+    [
+      'QTY',
+      {
+        'C186' => {
+          '6063' => '12',
+          '6060' => 10
+        }
+      }
+    ],
+    [
+      'QTY',
+      {
+        'C186' => {
+          '6063' => '85',
+          '6060' => 0
+        }
+      }
+    ],
+    [
+      'FTX',
+      {
+        '4451' => 'LIN',
+        'C107' => {
+          '4441' => '01',
+          '3055' => '28',
+          '1131' => '8B'
+        }
+      }
+    ],
+    [
+      'SG30',
+      [
+        [
+          'PRI',
+          {
+            'C509' => {
+              '5118' => '4.5',
+              '5387' => 'SRP',
+              '5125' => 'AAB'
+            }
+          }
+        ]
+      ]
+    ],
+    [
+      'SG31',
+      [
+        [
+          'RFF',
+          {
+            'C506' => {
+              '1154' => '8/1',
+              '1153' => 'LI'
+            }
+          }
+        ]
+      ]
+    ]
+  ]
+],
 

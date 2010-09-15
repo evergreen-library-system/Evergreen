@@ -16,8 +16,10 @@ sub handler {
             new_editor->retrieve_acq_provider($po->provider);
 
     return 1 if 
-        $po->state eq 'on-order' and 
-        $provider->edi_default   and 
+        ($po->state eq 'on-order' or
+         $po->state eq 'retry'      ) and 
+        $provider                     and 
+        $provider->edi_default        and 
         $U->is_true($provider->active);
 
     return 0;

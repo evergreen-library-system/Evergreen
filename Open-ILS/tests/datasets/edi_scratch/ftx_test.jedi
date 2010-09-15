@@ -1,0 +1,69 @@
+ 
+ {
+    "recipient":"1556150",
+    "sender":"6666666",
+    "body": [{
+      "ORDERS":[ "order", {
+         "po_number":8,
+         "date":"20100610",
+         "buyer":[{                "id":"6666666"        }],
+         "vendor":[             "1556150",
+             {"id-qualifier": 92, "id":"8"}
+         ],
+         "currency":"USD",
+         "items":[
+         
+         {
+             "identifiers":[
+                 {"id-qualifier":"EN","id":"9780446360272"},
+                 {"id-qualifier":"SA","id":"57"},
+                 {"id-qualifier":"IB","id":"0446360279"}
+             ],
+             "price":4.50,
+             "desc":[
+                 {"BTI":"Webster's new world thesaurus :"}, 
+                 {"BPU":"Warner Books, Inc.,"},
+                 {"BPD":"1990."},
+                 {"BPH":"xv, 494 p. ;"}
+             ],
+             "quantity":8,
+             // "FTX":[ { "4451": "LIN", "C108": {"4440": "This is a TEST! zzz!"} } ]
+             "FTX": { "4451": "LIN", "C108": {"4440": "This is a TEST! zzz!"} }
+         },        
+         {
+             "identifiers":[
+                 {"id-qualifier":"SA","id":"59"},
+                 {"id-qualifier":"IB","id":"0446831832"},
+                 {"id-qualifier":"EN","id":"9780446357197"}
+             ],
+             "price":7.99,
+             "desc":[
+                 {"BTI":"The world is full of divorced women /"}, 
+                 {"BPU":"Warner Books,"},
+                 {"BPD":"c1980."},
+                 {"BPH":"413 p. ;"}
+             ],
+             "quantity":10
+         },        
+         {
+             "identifiers":[
+                 {"id-qualifier":"SA","id":"60"},
+                 {"id-qualifier":"IB","id":"0446350109"},
+                 {"id-qualifier":"EN","id":"9780446350105"}
+             ],
+             "price":8.75,
+             "desc":[
+                 {"BTI":"Windmills of the gods /"}, 
+                 {"BPU":"Warner Books,"},
+                 {"BPD":"1988, c1987."},
+                 {"BPH":"xiii, 434 p. ;"}
+             ],
+             "quantity":5
+         }        
+         ],
+         "line_items":3
+      }]  
+    }]    
+ }
+ 
+

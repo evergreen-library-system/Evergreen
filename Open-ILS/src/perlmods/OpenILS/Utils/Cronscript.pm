@@ -55,7 +55,7 @@ sub _default_self {
             'debug'         => 0,
             'verbose+'      => 0,
             'help'          => 0,
-            'internal_var'  => 'XYZ',
+          # 'internal_var'  => 'XYZ',
         },
     #   lockfile => undef,
     #   session => undef,
