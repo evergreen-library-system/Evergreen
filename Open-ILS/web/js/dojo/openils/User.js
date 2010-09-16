@@ -24,6 +24,7 @@ if(!dojo._hasResource["openils.User"]) {
     dojo.require('fieldmapper.Fieldmapper');
     dojo.require('fieldmapper.OrgUtils');
     dojo.require('openils.Util');
+    dojo.require('dojo.cookie');
     dojo.requireLocalization("openils.User", "User");
 
     dojo.declare('openils.User', null, {
@@ -51,6 +52,7 @@ if(!dojo._hasResource["openils.User"]) {
             this.authcookie = kwargs.authcookie || openils.User.authcookie;
             this.permOrgStoreCache = {}; /* permName => permOrgUnitStore map */
 
+            if (this.authcookie) this.authtoken = dojo.cookie(this.authcookie);
             if (this.id && this.authtoken) this.user = this.getById( this.id );
             else if (this.authtoken) this.getBySession();
             else if (kwargs.login) this.login();
@@ -148,7 +150,6 @@ if(!dojo._hasResource["openils.User"]) {
 					if (!openils.User.authtime) openils.User.authtime = _u.authtime;
                     _u.getBySession(onComplete);
                     if(_u.authcookie) {
-                        dojo.require('dojo.cookie');
                         dojo.cookie(_u.authcookie, _u.authtoken, {path:'/'});
                     }
                 }
@@ -192,7 +193,6 @@ if(!dojo._hasResource["openils.User"]) {
             if (!openils.User.authtime) openils.User.authtime = _u.authtime;
 
             if(_u.authcookie) {
-                dojo.require('dojo.cookie');
                 dojo.cookie(_u.authcookie, _u.authtoken, {path:'/'});
             }
 
