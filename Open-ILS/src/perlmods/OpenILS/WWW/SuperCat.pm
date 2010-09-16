@@ -781,6 +781,7 @@ sub bookbag_feed {
 
 	my $skin = $cgi->param('skin') || 'default';
 	my $locale = $cgi->param('locale') || 'en-US';
+	my $org_sn = $cgi->param('searchOrg') || '-';
 
 	$root =~ s{(?<!http:)//}{/}go;
 	$base =~ s{(?<!http:)//}{/}go;
@@ -797,7 +798,14 @@ sub bookbag_feed {
 
 	my $bucket_tag = "tag:$host,$year:record_bucket/$id";
 	if ($type eq 'opac') {
-		print "Location: $root/../../$locale/skin/$skin/xml/rresult.xml?rt=list&" .
+		my $scope = '';
+		if ($org_sn) {
+			my $ou = $actor->request("open-ils.actor.org_unit_list.search", "shortname", $org_sn)->gather(1);
+			if ($ou) {
+				$scope = '&l=' . $ou->[0]->id;
+			}
+		}
+		print "Location: $root/../../$locale/skin/$skin/xml/rresult.xml?rt=list$scope&" .
 			join('&', map { "rl=" . $_->target_biblio_record_entry } @{ $bucket->items }) .
 			"\n\n";
 		return 302;
