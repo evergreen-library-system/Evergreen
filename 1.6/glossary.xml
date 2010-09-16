@@ -177,13 +177,13 @@
 		<glossentry id="ssh">
 			<glossterm>SSH</glossterm>
 			<glossdef>
-				<para>An encrypted network protocol using public-key cryptography that allows secure communications between systems on an unsecure network. Typically used to access shell accounts but also supports tunneling, forwarding TCP ports and X11 connections, and transferring files.</para>
+				<para>An encrypted network protocol using public-key cryptography that allows secure communications between systems on an insecure network. Typically used to access shell accounts but also supports tunneling, forwarding TCP ports and X11 connections, and transferring files.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="sshproxy">
 			<glossterm>SSH proxy</glossterm>
 			<glossdef>
-				<para> As used in Evergreen, a method of allowing one or more Staff Clients to communicate with one or more Evergreen servers over an unsecure network by sending data through a secure SSH tunnel. It also buffers and caches all data travelling to and from Staff Clients to speed up access to resources on Evergreen servers.</para>
+				<para> As used in Evergreen, a method of allowing one or more Staff Clients to communicate with one or more Evergreen servers over an insecure network by sending data through a secure SSH tunnel. It also buffers and caches all data travelling to and from Staff Clients to speed up access to resources on Evergreen servers.</para>
 				<glossseealso otherterm="ssh"/>
 				<glossseealso otherterm="tunneling"/>
 				<glossseealso otherterm="sshtunnel"/>
@@ -192,7 +192,7 @@
 		<glossentry id="sshtunnel">
 			<glossterm>SSH tunnel</glossterm>
 			<glossdef>
-				<para>An encrypted data channel existing over an SSH network connection. Used to securely transfer unencrypted data streams over unsecure networks.</para>
+				<para>An encrypted data channel existing over an SSH network connection. Used to securely transfer unencrypted data streams over insecure networks.</para>
 				<glossseealso otherterm="ssh"/>
 				<glossseealso otherterm="tunneling"/>
 			</glossdef>
@@ -209,7 +209,7 @@
 		<glossentry id="tunneling">
 			<glossterm>tunneling</glossterm>
 			<glossdef>
-				<para>A method of encapsulating data provided in one network protocol (the "delivery" protocol), within data in a different network protocol (the "tunneling" protocol). Used to provide a secure path and secure communications through an unsecure or incompatible network. Can be used to bypass firewalls by communicating via a protocol the firewall normally blocks, but "wrapped" inside a protocol that the firewall does not block.</para>
+				<para>A method of encapsulating data provided in one network protocol (the "delivery" protocol), within data in a different network protocol (the "tunneling" protocol). Used to provide a secure path and secure communications through an insecure or incompatible network. Can be used to bypass firewalls by communicating via a protocol the firewall normally blocks, but "wrapped" inside a protocol that the firewall does not block.</para>
 				<glossseealso otherterm="sshtunnel"/>
 			</glossdef>
 		</glossentry>
