@@ -358,36 +358,45 @@ sub received_siss_by_bib {
     my $args = shift || {};
     $$args{order} ||= 'asc';
 
+    my $global = $$args{global} == 0 ? 0 : 1;
+
     my $e = new_editor();
     my $issuances = $e->json_query({
-        select  => {'siss' => [{"transform" => "distinct", "column" => "id"}, "date_published"]},
-        from    => {
-            siss => {
-                ssub => {
-                    field  => 'id',
-                    fkey   => 'subscription'
-                },
-                sitem => {
-                    field  => 'issuance',
-                    fkey   => 'id',
-                    $$args{ou} ? ( join  => {
-                        sstr => {
-                            field => 'id',
-                            fkey  => 'stream',
-                            join  => {
-                                sdist => {
-                                    field  => 'id',
-                                    fkey   => 'distribution'
+        select  => {
+            siss => [
+                $global ? { transform => "min", column => "id", aggregate => 1 } : "id",
+                "label",
+                "date_published"
+        ]},
+        from => {
+            ssub => {
+                siss => {
+                    field => 'subscription'
+                    fkey  => 'id',
+                    join  => {
+                        sitem => {
+                            field  => 'issuance',
+                            fkey   => 'id',
+                            $$args{ou} ? ( join  => {
+                                sstr => {
+                                    field => 'id',
+                                    fkey  => 'stream',
+                                    join  => {
+                                        sdist => {
+                                            field  => 'id',
+                                            fkey   => 'distribution'
+                                        }
+                                    }
                                 }
-                            }
+                            }) : ()
                         }
-                    }) : ()
+                    }
                 }
             }
         },
         where => {
-            $$args{type} ? ( 'holding_type' => $$args{type} ) : (),
             '+ssub'  => { record_entry => $bib },
+            $$args{type} ? ( '+siss' => { 'holding_type' => $$args{type} } ) : (),
             '+sitem' => {
                 # XXX should we also take specific item statuses into account?
                 date_received => { '!=' => undef },
@@ -401,7 +410,8 @@ sub received_siss_by_bib {
         },
         $$args{limit}  ? ( limit  => $$args{limit}  ) : (),
         $$args{offset} ? ( offset => $$args{offset} ) : (),
-        order_by => [{ class => 'siss', field => 'date_published', direction => $$args{order} }]
+        order_by => [{ class => 'siss', field => 'date_published', direction => $$args{order} }],
+        distinct => 1
     });
 
     $client->respond($e->retrieve_serial_issuance($_->{id})) for @$issuances;
@@ -423,6 +433,7 @@ __PACKAGE__->register_method(
             {   name => 'args',
                 desc =>
 q/A hash of optional arguments.  Valid keys and their meanings:
+    global := If true, return only one representative version of a conceptual issuance regardless of the number of subscriptions, otherwise return all issuance objects meeting the requested criteria, including conceptual duplicates. Valid values are 0 (false) and 1 (true, default).
     order  := date_published sort direction, either "asc" (chronological, default) or "desc" (reverse chronological)
     limit  := Number of issuances to return.  Useful for paging results, or finding the oldest or newest
     offest := Number of issuance to skip before returning results.  Useful for paging.
