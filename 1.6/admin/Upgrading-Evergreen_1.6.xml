@@ -114,16 +114,16 @@
 				<screen><userinput>/openils/bin/srfsh</userinput></screen>
 				<screen><userinput>srfsh#  request opensrf.math add 2 2</userinput></screen>
 	 			<para>You should see output like:</para>
-	 			<screen>
-				Received Data: 4
-				
-	 			------------------------------------
-	 			Request Completed Successfully
-	 			Request Time in seconds: 0.007519
-	 			------------------------------------
-				
-	 			srfsh#
-				</screen>	
+<screen>
+Received Data: 4
+
+------------------------------------
+Request Completed Successfully
+Request Time in seconds: 0.007519
+------------------------------------
+
+srfsh#
+</screen>	
 				<para>If test completed successfully move onto next section. 
 				Otherwise, refer to the <link linkend="troubleshooting">troubleshooting</link> chapter 
 				of this documentation.</para> 
@@ -198,12 +198,12 @@
 				<para>As the <systemitem class="username">root</systemitem> user, build <filename>live-db-setup.pl</filename> for the cgi-bin 
 				bootstrapping scripts and <filename>offline-config.pl</filename> for the offline staff client data uploader:</para>
 				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.0.8</userinput></screen>				
-				<screen>
-				<userinput>
-				perl Open-ILS/src/support-scripts/eg_db_config.pl --create-bootstrap --create-offline --user evergreen \
-				--password evergreen --hostname localhost --port 5432 --database evergreen
-				</userinput>
-				</screen>
+<screen>
+<userinput>
+perl Open-ILS/src/support-scripts/eg_db_config.pl --create-bootstrap --create-offline --user evergreen \
+--password evergreen --hostname localhost --port 5432 --database evergreen
+</userinput>
+</screen>
 			</step>
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, update server symlink in <filename class="directory">/openils/var/web/xul/</filename>:</para>
@@ -249,11 +249,11 @@ psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.0.7-1.6.0.8-upgrade-db
 			</step>
 			<step>
 				<para>Update <filename>opensrf.xml</filename> with the database connection info:</para>
-				<screen>
-				<userinput>
-				perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all --user evergreen \
-				--password evergreen --hostname localhost --port 5432 --database evergreen
-				</userinput>
+<screen>
+<userinput>
+perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all --user evergreen \
+--password evergreen --hostname localhost --port 5432 --database evergreen
+</userinput>
 				</screen>
 			</step>
 			<step>

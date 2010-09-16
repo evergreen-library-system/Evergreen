@@ -604,8 +604,7 @@
 
          <informalfigure>
             <para><guilabel>Fast Item Add</guilabel> is another "sticky" check box that makes it
-               possible to add volume and item records from the MARC editor (see <link
-                  linkend="import-fast-item-add">here</link> for details).</para>
+               possible to add volume and item records from the MARC editor.</para>
 
 
            <para> <mediaobject>

@@ -51,7 +51,7 @@
 		<indexterm><primary>web server</primary><secondary>Apache</secondary></indexterm> for the OPAC to work correctly.</para>  
 		<para>To stop <application>Evergreen</application>, run:</para>
 		<screen><userinput>osrf_ctl.sh -l -a stop_all</userinput></screen>
-		<para>As with starting, you can choose to stop one service</para>
+		<para>As with starting, you can choose to stop services individually.</para>
 		<para>To restart <application>Evergreen</application>, run:</para>
 		<screen><userinput>osrf_ctl.sh -l -a restart_all</userinput></screen>
 	</section>
@@ -67,8 +67,7 @@
 			<secondary>PostgreSQL</secondary></indexterm>  database. You can therefore use normal 
 			<application>PostgreSQL</application> backup procedures to backup this data. For example, the simplest method of backing up the Evergreen
 			database is to use the <command>pg_dump</command> command to create a live backup of the database without having to 
-			interrupt any Evergreen services:</para>
-			<screen><userinput># pg_dump -U [username] -h [hostname] -f [output-file] [database-name]</userinput></screen> 
+			interrupt any Evergreen services. Here is an example pg_dump command which will dump a local Evergreen database into a the file <filename>evergreen_db.backup</filename>:</para>
 			<screen><userinput>pg_dump -U evergreen -h localhost -f evergreen_db.backup evergreen</userinput></screen>
 			<para>To restore the backed up database into a new database, create a new database using the 
 			template0 database template and the UTF8 encoding, and run the <command>psql</command> command, specifying the new 

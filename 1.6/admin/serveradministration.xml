@@ -171,8 +171,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	      <procedure>
 
 		 <step>
-		    <para>Open the <guilabel>Organizational Units</guilabel> interface as described in the steps
-		          <link linkend="server-main">above</link>.</para>
+		    <para>Open the <guilabel>Organizational Units</guilabel> interface.</para>
 		 </step>
 		 <step>
 		    <informalfigure>
@@ -1716,54 +1715,54 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				Create a marc template in  the directory <filename class="directory">/openils/var/templates/marc/</filename>. It should be in xml format.
 				Here is an example file <filename>k_book.xml</filename>: 
 				</para>
-    			<programlisting language="xml">
-			<![CDATA[
-			<record>
-			  <leader>00620cam a2200205Ka 4500</leader>
-			  <controlfield tag="008">070101s                            eng d</controlfield>
-			  <datafield tag="010" ind1="" ind2="">
-			    <subfield code="a"></subfield>
-			  </datafield>
-			  <datafield tag="020" ind1="" ind2="">
-			    <subfield code="a"></subfield>
-			  </datafield>
-			  <datafield tag="082" ind1="0" ind2="4">
-			    <subfield code="a"></subfield>
-			  </datafield>
-			  <datafield tag="092" ind1="" ind2="">
-			    <subfield code="a"></subfield>
-			  </datafield>
-			  <datafield tag="100" ind1="" ind2="">
-			    <subfield code="a"></subfield>
-			  </datafield>
-			  <datafield tag="245" ind1="" ind2="">
-			    <subfield code="a"></subfield>
-			    <subfield code="b"></subfield>
-			    <subfield code="c"></subfield>
-			  </datafield>
-			  <datafield tag="260" ind1="" ind2="">
-			    <subfield code="a"></subfield>
-			    <subfield code="b"></subfield>
-			    <subfield code="c"></subfield>
-			  </datafield>
-			  <datafield tag="300" ind1="" ind2="">
-			    <subfield code="a"></subfield>
-			    <subfield code="b"></subfield>
-			    <subfield code="c"></subfield>
-			  </datafield>
-			  <datafield tag="500" ind1="" ind2="">
-			    <subfield code="a"></subfield>
-			  </datafield>
-			  <datafield tag="650" ind1="" ind2="">
-			    <subfield code="a"></subfield>
-			    <subfield code="v"></subfield>
-			  </datafield>
-			  <datafield tag="650" ind1="" ind2="">
-			    <subfield code="a"></subfield>
-			  </datafield>
-			</record>
-			]]>
-			</programlisting>
+<programlisting language="xml">
+<![CDATA[
+<record>
+  <leader>00620cam a2200205Ka 4500</leader>
+  <controlfield tag="008">070101s                            eng d</controlfield>
+  <datafield tag="010" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="020" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="082" ind1="0" ind2="4">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="092" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="100" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="245" ind1="" ind2="">
+    <subfield code="a"></subfield>
+    <subfield code="b"></subfield>
+    <subfield code="c"></subfield>
+  </datafield>
+  <datafield tag="260" ind1="" ind2="">
+    <subfield code="a"></subfield>
+    <subfield code="b"></subfield>
+    <subfield code="c"></subfield>
+  </datafield>
+  <datafield tag="300" ind1="" ind2="">
+    <subfield code="a"></subfield>
+    <subfield code="b"></subfield>
+    <subfield code="c"></subfield>
+  </datafield>
+  <datafield tag="500" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+  <datafield tag="650" ind1="" ind2="">
+    <subfield code="a"></subfield>
+    <subfield code="v"></subfield>
+  </datafield>
+  <datafield tag="650" ind1="" ind2="">
+    <subfield code="a"></subfield>
+  </datafield>
+</record>
+]]>
+</programlisting>
     	
 			</step>
 			<step>
@@ -1772,7 +1771,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</step>
 			<step>
 				<para>Restart <systemitem class="service">Perl</systemitem><indexterm><primary>Perl</primary></indexterm> services for changes to take effect.</para>
-				<screen><userimput>/openils/bin/osrf_ctl.sh -l -a restart_perl</userimput></screen>
+				<screen><userinput>/openils/bin/osrf_ctl.sh -l -a restart_perl</userinput></screen>
 			</step>
 		</procedure>
 	</section>
@@ -1792,9 +1791,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		<simplesect>
 			<title>Indexed-field Weighting<indexterm><primary>relevancy</primary><secondary>indexed-field weighting</secondary></indexterm> </title>
 			<para>Indexed-field weighting is configured in the Evergreen database in the weight column
-			of the <link linkend="config.metabib_field">config.metabib_field</link> table, which follows the other four columns in this table:
+			of the <link linkend="config.table.metabib-field">config.metabib_field</link> table, which follows the other four columns in this table:
 			field_class, name, xpath, and format.</para>
-			<para>The following is one representative line from the <link linkend="config.metabib_field">config.metabib_field</link> table:</para>
+			<para>The following is one representative line from the <link linkend="config.table.metabib-field">config.metabib_field</link> table:</para>
 			<screen> author | conference | //mods32:mods/mods32:name[@type='conference']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']] | mods32 | 1 ) </screen>
 			<para>The default value for index-field weights in config.metabib_field is 1. Adjust the
 			weighting of indexed fields to boost or lower the relevance score for matches on that
@@ -2001,7 +2000,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<para> Searching the out of the box <emphasis>keyword</emphasis> does not boost the ranking for terms appearing in, the title or subject fields since  there is just one 
 			keyword index which does not distinguish terms that appear in the title field from those in the notes field for example. In comparison, the title index is actually composed of 
 			a number of separate indexes: title|proper, title|uniform, title|alternative, title|translated, etc, that collectively form the title index. You can see this in the 
-			<link linkend="config.metabib_field">config.metabib_field</link> table. The following procedure will add a keyword|title index so that terms found in the title field of an 
+			<link linkend="config.table.metabib-field">config.metabib_field</link> table. The following procedure will add a keyword|title index so that terms found in the title field of an 
 			item are given more weight than terms in other fields. </para>
 			<procedure>
 				<step>
@@ -2011,47 +2010,47 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<step>
 					<para>Clone the title|proper index to create a keyword|title index</para>
 					<para>6 = the title|proper index</para>
-					<programlisting>
-					INSERT INTO config.metabib_field 
-						(field_class, name, xpath, weight, format, search_field, facet_field)
-						SELECT 'keyword', 'title', xpath, weight, format, search_field, facet_field
-						FROM config.metabib_field
-						WHERE id = 6;
-					</programlisting>
+<programlisting>
+INSERT INTO config.metabib_field 
+	(field_class, name, xpath, weight, format, search_field, facet_field)
+	SELECT 'keyword', 'title', xpath, weight, format, search_field, facet_field
+	FROM config.metabib_field
+	WHERE id = 6;
+</programlisting>
 				</step>
 				<step>
 					<para>Populate the keyword|title index with a set of index entries cloned from the metabib.title_field_entry table;</para>
 					<para>6 = the title|proper index</para>
-					<programlisting>
-					INSERT INTO metabib.keyword_field_entry 
-						(source, field, value)
-						SELECT source, 17, value (the field value, 17, field be different in your database so you may need to check the 
-						<link linkend="config.metabib_field">config.metabib_field</link> for the id of your new index).
-						FROM metabib.title_field_entry
-						WHERE field = 6;
-					</programlisting>
+<programlisting>
+INSERT INTO metabib.keyword_field_entry 
+	(source, field, value)
+	SELECT source, 17, value (the field value, 17, field be different in your database so you may need to check the 
+	<link linkend="config.table.metabib-field">config.metabib_field</link> for the id of your new index).
+	FROM metabib.title_field_entry
+	WHERE field = 6;
+</programlisting>
 				</step>
 				<step> 
 					<para>Bump the relevance when the first search term appears first in the title in a keyword search.</para>
 					<para>17 = our new keyword|title index (This may be different in your database so you may need to check the 
-					<link linkend="config.metabib_field">config.metabib_field</link> for the id 
+					<link linkend="config.table.metabib-field">config.metabib_field</link> for the id 
 					of your new index).</para>
-					<programlisting>
-					INSERT INTO search.relevance_adjustment 
-						(active, field, bump_type, multiplier)
-					VALUES (true, 17, 'first_word', 5); 
-					</programlisting>
+<programlisting>
+INSERT INTO search.relevance_adjustment 
+	(active, field, bump_type, multiplier)
+VALUES (true, 17, 'first_word', 5); 
+</programlisting>
 				</step>
 				<step>
 					<para>Boost the relevance for search terms appearing in the title in general</para>
 					<para>17 = our new keyword|title index (This may be different in your database so you may need to check the 
-					<link linkend="config.metabib_field">config.metabib_field</link> for the id 
+					<link linkend="config.table.metabib-field">config.metabib_field</link> for the id 
 					of your new index).</para>
-					<programlisting>
-					UPDATE config.metabib_field
-					SET weight = 10
-					WHERE id = 17;
-					</programlisting>
+<programlisting>
+UPDATE config.metabib_field
+SET weight = 10
+WHERE id = 17;
+</programlisting>
 				</step>
 			</procedure>  
 		</simplesect> 
