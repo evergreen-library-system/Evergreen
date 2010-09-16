@@ -184,10 +184,10 @@ srfsh#</screen>
 			<para>or</para>
 			<screen>apache2ctl start</screen>
 			<para>You should see output:</para>
-			<screen>
-			* Starting web server apache2
-			...done.
-			</screen>
+<screen>
+* Starting web server apache2
+...done.
+</screen>
 			<para>the Apache OpenSRF modules write to the 
 			<filename>/openils/var/log/gateway.log</filename></para><indexterm><primary>logs</primary><secondary>gateway.log</secondary></indexterm>
 			<para>However, you should check all of the log files for errors:</para>

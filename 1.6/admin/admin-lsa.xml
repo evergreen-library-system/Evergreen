@@ -39,7 +39,7 @@
       <para>Items on this menu are visible to anyone logged into the staff client but usually
          require special permissions to edit. The following table describes each of the menu options. </para>
       <informaltable>
-         <tgroup cols="3" align="left" colsep="1" rowsep="1">
+         <tgroup cols="2" align="left" colsep="1" rowsep="1">
 
             <thead>
                <row>
