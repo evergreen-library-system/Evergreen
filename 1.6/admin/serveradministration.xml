@@ -233,7 +233,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 
 		 <step>
 		    <para>Open the <guilabel>Organizational Units</guilabel> interface as described in the <link
-		          linkend="server-main">previous section</link>.</para>
+		          linkend="orgunits">previous section</link>.</para>
 		 </step>
 		 <step>
 		    <informalfigure>
@@ -1809,7 +1809,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			and is configured through floating-point multipliers in the multiplier column of the
 			search.relevance_adjustment table.</para>
 			<para> Weighting can be adjusted for one, more, or all multiplier fields in
-			<link linkend="search.relevance_adjustment">search.relevance_adjustment</link>.</para>
+			<link linkend="search.relevance">search.relevance_adjustment</link>.</para>
 			<para>You can adjust the following three matchpoints:</para> 
 			<itemizedlist>
 			<listitem>
