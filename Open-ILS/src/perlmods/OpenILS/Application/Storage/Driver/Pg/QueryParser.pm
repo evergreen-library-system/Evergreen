@@ -659,8 +659,7 @@ sub flatten {
 
                 $from .= ")";
 
-                my $core_limit = $self->QueryParser->core_limit || 25000;
-                $from .= "\n\t\tLIMIT $core_limit\n\t) AS $talias ON (m.source = $talias.source)";
+                $from .= "\n\t\t) AS $talias ON (m.source = $talias.source)";
 
                 $where .= 'TRUE';
 
