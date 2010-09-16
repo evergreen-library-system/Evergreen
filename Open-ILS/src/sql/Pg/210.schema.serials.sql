@@ -68,6 +68,8 @@ CREATE TABLE serial.caption_and_pattern (
 	                          CONSTRAINT cap_type CHECK ( type in
 	                          ( 'basic', 'supplement', 'index' )),
 	create_date  TIMESTAMPTZ  NOT NULL DEFAULT now(),
+	start_date   TIMESTAMPTZ  NOT NULL DEFAULT now(),
+	end_date     TIMESTAMPTZ,
 	active       BOOL         NOT NULL DEFAULT FALSE,
 	pattern_code TEXT         NOT NULL,       -- must contain JSON
 	enum_1       TEXT,
@@ -90,6 +92,11 @@ CREATE TABLE serial.distribution (
 	record_entry          BIGINT  REFERENCES serial.record_entry (id)
 								  ON DELETE SET NULL
 								  DEFERRABLE INITIALLY DEFERRED,
+	summary_method        TEXT    CONSTRAINT sdist_summary_method_check
+	                              CHECK (summary_method IS NULL
+	                              OR summary_method IN ( 'add_to_sre',
+	                              'merge_with_sre', 'use_sre_only',
+	                              'use_sdist_only')),
 	subscription          INT     NOT NULL
 	                              REFERENCES serial.subscription (id)
 								  ON DELETE CASCADE
@@ -274,7 +281,8 @@ CREATE TABLE serial.basic_summary (
 	                            ON DELETE CASCADE
 	                            DEFERRABLE INITIALLY DEFERRED,
 	generated_coverage  TEXT    NOT NULL,
-	textual_holdings    TEXT
+	textual_holdings    TEXT,
+	show_generated      BOOL    NOT NULL DEFAULT TRUE
 );
 CREATE INDEX serial_basic_summary_dist_idx ON serial.basic_summary (distribution);
 
@@ -285,7 +293,8 @@ CREATE TABLE serial.supplement_summary (
 	                            ON DELETE CASCADE
 	                            DEFERRABLE INITIALLY DEFERRED,
 	generated_coverage  TEXT    NOT NULL,
-	textual_holdings    TEXT
+	textual_holdings    TEXT,
+	show_generated      BOOL    NOT NULL DEFAULT TRUE
 );
 CREATE INDEX serial_supplement_summary_dist_idx ON serial.supplement_summary (distribution);
 
@@ -296,7 +305,8 @@ CREATE TABLE serial.index_summary (
 	                            ON DELETE CASCADE
 	                            DEFERRABLE INITIALLY DEFERRED,
 	generated_coverage  TEXT    NOT NULL,
-	textual_holdings    TEXT
+	textual_holdings    TEXT,
+	show_generated      BOOL    NOT NULL DEFAULT TRUE
 );
 CREATE INDEX serial_index_summary_dist_idx ON serial.index_summary (distribution);
 
