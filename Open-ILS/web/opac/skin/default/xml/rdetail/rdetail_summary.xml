@@ -141,15 +141,37 @@
 						if (fetchOrgSettingDefault(
 							getLocation(), "opac.fully_compressed_serial_holdings"
 						)) {
+							var bibid = BT.textContent(item_list[0]);
 							var blob = fieldmapper.standardRequest(
 								['open-ils.serial','open-ils.serial.bib.summary_statements'],
-								[BT.textContent(item_list[0]), { orgid : getLocation(), depth : getDepth() }]
+								[bibid, { orgid : getLocation(), depth : getDepth() }]
 							);
 
-							var ret = dojo.create('div');
+							var ret = dojo.create("div");
+							var innerret = dojo.create(
+								"div", {"style":"clear;both;"}, ret
+							);
 							for (var i in blob) {
-								var br = dojo.create('br', null, ret);
-								var span = dojo.create('span',{class : 'holding_type_'+ i, innerHTML :  blob[i].join(', ') }, ret);
+								if (!blob[i].length) continue;
+								dojo.create(
+									"div", {
+										"innerHTML": blob[i].join(", "),
+										"className": "holding_type_" + i,
+										"style": "float:left;width:33%;"
+									}, innerret
+								);
+								var div = dojo.create("div", {
+									"style": "float:left;width:33%;"
+								});
+								var a = dojo.create(
+									"a", {
+										"innerHTML": "Show holdings",
+										"href": "#",
+										"onclick": "rdetailDrawExpandedHoldings(this,"+bibid+",'"+i+"');return false"
+									}, div
+								);
+								dojo.place(div, innerret);
+								dojo.create("div", {"style":"float:right;width:33%;", "expanded_holdings": i}, innerret);
 							}
 
 							dojo.removeClass(slot,'hide_me');
