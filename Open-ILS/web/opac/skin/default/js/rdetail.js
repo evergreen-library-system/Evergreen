@@ -1168,3 +1168,37 @@ function rdetailGBPViewerLoadCallback() {
 
 }
 
+function rdetailDrawExpandedHoldings(anchor, bibid, type) {
+    anchor.innerHTML = "Hide holdings"; /* XXX i18n */
+    anchor.oldonclick = anchor.onclick;
+    anchor.onclick = function() { anchor.onclick = anchor.oldonclick; anchor.innerHTML = "Show holdings"; dojo.empty(target); };
+
+    var offsets = {"basic": 0, "index": 0, "supplement": 0};
+    var limit = 10; /* XXX give user control over this? */
+    var target = dojo.query("[expanded_holdings='" + type + "']")[0];
+
+    function _load() {
+        dojo.empty(target);
+        fieldmapper.standardRequest(
+            ["open-ils.serial", "open-ils.serial.received_siss.retrieve.by_bib.atomic"], {
+                "params": [bibid, {"offset": offsets[type], "limit": limit}],
+                "async": true,
+                "oncomplete": function(r) {
+                    if (r = openils.Util.readResponse(r)) {
+                        offsets[type] += r.length;
+                        dojo.forEach(
+                            r, function(sum) {
+                                dojo.create("span", {"innerHTML": sum.label()}, target);
+                                dojo.create("br", null, target);
+                            }
+                        );
+                        /* XXX i18n */
+                        if (r.length == limit)
+                            dojo.create("a", {"style": "margin-top: 6px;", "innerHTML": "[More]", "onclick": _load}, target);
+                    }
+                }
+            }
+        );
+    }
+    _load();
+}
