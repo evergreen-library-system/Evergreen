@@ -54,7 +54,7 @@
 			<title>Previous Software Releases</title>
 			<para>Earlier releases of Evergreen are also available. Instructions for installing, configuring and testing earlier versions are found in <xref linkend="serversideinstallation-previousversions"/>.</para>
 			<para>The next most recent previous release of Evergreen is version <emphasis><emphasis role="bold">1.4.0.6</emphasis></emphasis>. Instructions for installing, configuring and testing that version are found in <xref linkend="serversideinstallation-evergreen-previous"/>.</para>
-			<para>The accompanying previous release of OpenSRF is version <emphasis><emphasis role="bold">1.0.x</emphasis></emphasis>. Instructions for installing, configuring and testing that version are found in <xref linkend="serversideinstallation-opensrf-previous"/>.</para>
+			<para>The accompanying previous release of OpenSRF is version <emphasis><emphasis role="bold">1.0.7</emphasis></emphasis>. Instructions for installing, configuring and testing that version are found in <xref linkend="serversideinstallation-opensrf-previous"/>.</para>
 		</section>
 	</section>
 	<section xml:id="serversideinstallation-all">
@@ -63,7 +63,7 @@
 		<para>As far as possible, you should perform the following steps in the exact order given since the success of many steps relies on the successful completion of earlier steps. You should make backup copies of files and environments when you are instructed to do so. In the event of installation problems those copies can allow you to back out of a step gracefully and resume the installation from a known state. See <xref linkend="adminmisc-backingup"/> for further information.</para>
 		<para>Of course, after you successfully complete and test the entire Evergreen installation you should take a final snapshot backup of your system(s). This can be the first in the series of regularly scheduled system backups that you should probably also begin.</para>
 		<section xml:id="serversideinstallation-opensrf">
-			<title>Installing OpenSRF 1.2.x On <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem></title>
+			<title>Installing OpenSRF 1.2.2 On <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem></title>
 			<para>This section describes the installation of the latest version of the Open Service Request Framework (OpenSRF), a major component of the Evergreen server-side software, on <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem> systems. Evergreen software is integrated with and depends on the OpenSRF software system.</para>
 			<para>Follow the steps outlined here and run the specified tests to ensure that OpenSRF is properly installed and configured. Do not continue with any further Evergreen installation steps until you have verified that OpenSRF has been successfully installed.</para>
 			<note>
@@ -118,7 +118,7 @@
 					</screen>
 				</figure>
 				<table xml:id="serversideinstallation-keywords-figure-1">
-					<title>Keywords Targets for <application>make</application></title>
+					<title>Keywords Targets for <application>make</application> Command</title>
 					<tgroup align="left" cols="2" colsep="1" rowsep="1">
 						<colspec colnum="1" colwidth="1*"/>
 						<colspec colnum="2" colwidth="3*"/>
@@ -252,7 +252,7 @@
 					<listitem>Comment out the line <literal>{mod_offline, []}</literal> by placing two <literal>%</literal> comment signs in front.</listitem>
 				</itemizedlist>
 			</section>
-			<section>
+			<section xml:id="serversideinstallation-opensrf-continued">
 				<title>Restart the <systemitem class="service">ejabberd</systemitem> service</title>
 				<para>As the <systemitem class="username">root</systemitem> user, restart the <systemitem class="service">ejabberd</systemitem> service to test the configuration changes and to register your users:</para>
 				<figure>
@@ -453,7 +453,7 @@
 			</section>
 		</section>
 		<section xml:id="serversideinstallation-ubuntudebian">
-			<title>Installing Evergreen 1.6.x.x On <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem></title>
+			<title>Installing Evergreen 1.6.0.7 On <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem></title>
 			<para>This section outlines the installation process for the latest stable version of Evergreen.</para>
 			<para>In this section you will download, unpack, install, configure and test the Evergreen system, including the Evergreen server and the PostgreSQL database system. You will make several configuration changes and adjustments to the software, including updates to configure the system for your own locale, and some updates needed to work around a few known issues.</para>
 			<note>
@@ -497,7 +497,7 @@
 					</screen>
 				</figure>
 				<table xml:id="serversideinstallation-keywords-figure-2">
-					<title>Keywords Targets for <application>make</application></title>
+					<title>Keywords Targets for <application>make</application> Command</title>
 					<tgroup align="left" cols="2" colsep="1" rowsep="1">
 						<colspec colnum="1" colwidth="1*"/>
 						<colspec colnum="2" colwidth="3*"/>
@@ -785,7 +785,7 @@
 						$ a2enmod ssl	     # enable mod_ssl
 						$ a2enmod rewrite    # enable mod_rewrite
 						$ a2enmod expires    # enable mod_expires
-						$ cd /home/opensrf/Evergreen-ILS-1.6.0.7
+						$ cd /home/opensrf/Evergreen-ILS-1.x.x.x
 		
 						# copy files
 						$ cp Open-ILS/examples/apache/eg.conf	 /etc/apache2/sites-available/
@@ -1449,9 +1449,9 @@
 		<section xml:id="serversideinstallation-previousversions">
 			<title>Installing Previous Versions of Evergreen</title>
 			<para>Earlier releases of Evergreen are available. Instructions for installing, configuring and testing earlier versions are found below.</para>
-			<para>The next most recent previous release of Evergreen is version <emphasis><emphasis role="bold">1.4.0.6</emphasis></emphasis>. The accompanying previous release of OpenSRF is version <emphasis><emphasis role="bold">1.0.x</emphasis></emphasis>.</para>
+			<para>The next most recent previous release of Evergreen is version <emphasis><emphasis role="bold">1.4.0.6</emphasis></emphasis>. The accompanying previous release of OpenSRF is version <emphasis><emphasis role="bold">1.0.7</emphasis></emphasis>.</para>
 			<section xml:id="serversideinstallation-evergreen-previous">
-				<title>Installing Evergreen 1.4.x.x On <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem></title>
+				<title>Installing Evergreen 1.4.0.6 On <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem></title>
 				<para>This section outlines the installation process for the previous version 1.4.0.6 of Evergreen.</para>
 				<para>In this section you will download, unpack, install, configure and test the Evergreen system, including the Evergreen server and the PostgreSQL database system. You will make several configuration changes and adjustments to the software, including updates to configure the system for your own locale, and some updates needed to work around a few known issues.</para>
 				<note>
@@ -1459,7 +1459,7 @@
 					<para>If you are starting with a clean install of <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem>, you are strongly recommended <emphasis role="bold">not</emphasis> to install the packaged PostgreSQL server. This can confuse port numbers and system configuration. Evergreen 1.4 requires PostgreSQL 8.2.</para>
 				</note>
 				<section>
-					<title>Installing OpenSRF</title>
+					<title>Installing OpenSRF 1.0.7</title>
 					<para>Evergreen software is integrated with and depends on the Open Service Request Framework (OpenSRF) software system. For further information on installing, configuring and testing OpenSRF, see <xref linkend="serversideinstallation-opensrf-previous"/>.</para>
 					<para>Follow the steps outlined in that section and run the specified tests to ensure that OpenSRF is properly installed and configured. Do not continue with any further Evergreen installation steps until you have verified that OpenSRF has been successfully installed.</para>
 				</section>
@@ -1490,7 +1490,7 @@
 						</screen>
 					</figure>
 					<table xml:id="serversideinstallation-keywords-figure-2-a">
-						<title>Keywords Targets for <application>make</application></title>
+						<title>Keywords Targets for <application>make</application> Command</title>
 						<tgroup align="left" cols="2" colsep="1" rowsep="1">
 							<colspec colnum="1" colwidth="1*"/>
 							<colspec colnum="2" colwidth="3*"/>
@@ -1660,49 +1660,197 @@
 					</note>
 				</section>
 				<section>
-					<title>Modify the Apache Configuration</title>
-					<para>The Apache configuration must be updated. See <xref linkend="serversideinstallation-modify-apache"/> for further information.</para>
-				</section>
-				<section>
-					<title>Modify the OpenSRF Configuration File</title>
-					<para>The OpenSRF configuration must be modified. See <xref linkend="serversideinstallation-opensrf-config"/> for further information.</para>
-				</section>
-				<section>
-					<title>Create Configuration Files for Users Needing <application>srfsh</application></title>
-					<para>Special configuration files are needed for all users who need to use the application <application>srfsh</application> for testing. See <xref linkend="serversideinstallation-srfsh"/> for further information.</para>
-				</section>
-				<section>
-					<title>Modify the OpenSRF Environment</title>
-					<para>Several simple changes to the OpenSRF environment are required. See <xref linkend="serversideinstallation-opensrf-env"/> for further information.</para>
-				</section>
-				<section>
-					<title>(OPTIONAL) Enabling and Disabling Language Localizations</title>
-					<para>Before starting Evergreen, you can add language localization for a number of languages beyond American English (<emphasis role="bold">en-US</emphasis>). For further information on language localization, see <xref linkend="serversideinstallation-localization"/>.</para>
-				</section>
-				<section>
-					<title>Starting Evergreen</title>
-					<para>Start Evergreen according to the instructions in <xref linkend="serversideinstallation-starting"/>.</para>
-				</section>
-				<section>
-					<title>Testing the Installation</title>
-					<para>Simple tests can be used to verify that Evergreen server-side software has been installed and configured properly and is running as expected. See <xref linkend="serversideinstallation-testing"/> for further information on testing the latest version of Evergreen. Earlier versions can be tested similarly.</para>
-				</section>
-				<section>
-					<title>Stopping Evergreen</title>
-					<para>Stop Evergreen according to the instructions in <xref linkend="serversideinstallation-stopping"/>.</para>
-				</section>
-				<section>
-					<title>Post-Installation Chores</title>
-					<para>A few additional steps must be performed after Evergreen has been successfully installed and tested. See <xref linkend="serversideinstallation-postinstallation"/> for the list of final steps.</para>
+					<title>Evergreen installation - (continued)</title>
+					<para><emphasis>The remainder of the Evergreen installation procedure is identical to that for installing the latest version of Evergreen. Continue with the instructions found in</emphasis> <xref linkend="serversideinstallation-modify-apache"/>.</para>
 				</section>
 			</section>
-			<section xml:id="serversideinstallation-opensrf-previous">
-				<title>Installing OpenSRF 1.0.x</title>
-				<indexterm>
-					<primary>ZZZ-REVIEW</primary>
-					<secondary>ADD CONTENT FOR INSTALLING OPENSRF 1.0.x </secondary>
-				</indexterm>
-				<caution>ADD CONTENT FOR INSTALLING OPENSRF 1.0.x </caution>
+		</section>
+		<section xml:id="serversideinstallation-opensrf-previous">
+			<title>Installing OpenSRF 1.0.7 On <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem></title>
+			<para>This section describes the installation of the previous version of the Open Service Request Framework (OpenSRF), a major component of the Evergreen server-side software, on <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem> systems. Evergreen software is integrated with and depends on the OpenSRF software system.</para>
+			<para>Follow the steps outlined here and run the specified tests to ensure that OpenSRF is properly installed and configured. Do not continue with any further Evergreen installation steps until you have verified that OpenSRF has been successfully installed.</para>
+			<note>
+				<para>The following steps have been tested on the x86 (32-bit) and x86-64 (64-bit) platforms. OpenSRF 1.0.7 has been tested on <systemitem class="osname">Debian Etch (4.0)</systemitem>, <systemitem class="osname">Debian Lenny</systemitem>, <systemitem class="osname">Ubuntu Hardy Heron (8.04)</systemitem>, and <systemitem class="osname">Ubuntu Intrepid Ibex (8.10)</systemitem>.</para>
+				<para>In the following instructions, you are asked to perform certain steps as either the <systemitem class="username">root</systemitem> user, the <systemitem class="username">opensrf</systemitem> user, or the <systemitem class="username">postgres</systemitem> user.</para>
+				<itemizedlist>
+					<listitem><systemitem class="osname">Debian</systemitem> -- To become the <systemitem class="username">root</systemitem> user, issue the command <command>su -</command> and enter the password of the <systemitem class="username">root</systemitem> user.</listitem>
+					<listitem><systemitem class="osname">Ubuntu</systemitem> -- To become the <systemitem class="username">root</systemitem> user, issue the command <command>sudo su -</command> and enter the password of the <systemitem class="username">root</systemitem> user.</listitem>
+				</itemizedlist>
+				<para>To switch from the <systemitem class="username">root</systemitem> user to a different user, issue the command <command>su - USERNAME</command>. For example, to switch from the <systemitem class="username">root</systemitem> user to the <systemitem class="username">opensrf</systemitem> user, issue the command <command>su - opensrf</command>. Once you have become a non-root user, to become the <systemitem class="username">root</systemitem> user again, simply issue the command <command>exit"</command>.</para>
+			</note>
+			<section>
+				<title>Add the OpenSRF User</title>
+				<para>As the <systemitem class="username">root</systemitem> user, add the opensrf user to the system. The default shell for the new user is automatically set to <command>/bin/bash</command> to inherit a reasonable environment:</para>
+				<figure>
+					<title>Commands to add <systemitem class="username">opensrf</systemitem> user</title>
+					<screen>
+				$ su - opensrf
+				$ useradd -m -s /bin/bash opensrf
+				$ passwd opensrf
+				Enter new UNIX password: ******
+				Retype new UNIX password: ******
+				passwd: password updated successfully
+				$
+				</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Download and Unpack Latest OpenSRF Version</title>
+				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract the latest version of OpenSRF. The latest version can be found here: <ulink url="http://evergreen-ils.org/downloads/OpenSRF-1.0.7.tar.gz"></ulink></para>
+				<figure>
+					<title>Commands to download and unpack OpenSRF</title>
+					<screen>
+				$ su - opensrf
+				$ wget http://evergreen-ils.org/downloads/OpenSRF-1.0.7.tar.gz
+				$ tar zxf OpenSRF-1.0.7.tar.gz
+				</screen>
+				</figure>
+				<para>The new directory <filename class="directory">/home/opensrf/OpenSRF-1.0.7</filename> will be created.</para>
+			</section>
+			<section>
+				<title>Install Prerequisites to Build OpenSRF</title>
+				<para>In this section you will install and configure a set of prerequisites that will be used to build OpenSRF. In a following step you will actually build the software using the <command>make</command> utility.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, enter the commands show below to build the prerequisites from the software distribution that you just downloaded and unpacked. Remember to replace <emphasis>[DISTRIBUTION]</emphasis> in the example with the keyword corresponding to the actual <systemitem class="osname">Linux</systemitem> distribution listed in the <link linkend="serversideinstallation-keywords-figure-1a">"Keywords"</link> figure below.</para>
+				<figure>
+					<title>Commands to install prerequisites for OpenSRF</title>
+					<screen>
+				$ su - root
+				$ cd /home/opensrf/OpenSRF-1.0.7
+				$ make -f src/extras/Makefile.install [DISTRIBUTION]
+				...
+				</screen>
+				</figure>
+				<table xml:id="serversideinstallation-keywords-figure-1a">
+					<title>Keywords Targets for <application>make</application> Command</title>
+					<tgroup align="left" cols="2" colsep="1" rowsep="1">
+						<colspec colnum="1" colwidth="1*"/>
+						<colspec colnum="2" colwidth="3*"/>
+						<thead>
+							<row>
+								<entry>Keyword</entry>
+								<entry>Description</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>debian-lenny</entry>
+								<entry>for Debian Lenny (5.0)</entry>
+							</row>
+							<row>
+								<entry>debian-etch</entry>
+								<entry>for Debian Etch (4.0)</entry>
+							</row>
+							<row>
+								<entry>ubuntu-intrepid</entry>
+								<entry>for Intrepid (8.10)</entry>
+							</row>
+							<row>
+								<entry>ubuntu-hardy</entry>
+								<entry>for Ubuntu Hardy (8.04)</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				<para>This will install a number of packages on the system that are required by OpenSRF, including some Perl modules from CPAN. You can say <literal>No</literal> to the initial CPAN configuration prompt to allow it to automatically configure itself to download and install Perl modules from CPAN. The CPAN installer will ask you a number of times whether it should install prerequisite modules - say <literal>Yes</literal>.</para>
+			</section>
+			<section>
+				<title>Configure OpenSRF</title>
+				<para>As the <systemitem class="username">opensrf</systemitem> user, return to the OpenSRF build directory and use the <command>configure</command> utility to prepare for the next step of compiling and linking the software. You can include the  <option>--enable-python</option> and <option>--enable-java</option> configuration options if you wish to include support for Python and Java, respectively:</para>
+				<figure>
+					<title>Commands to configure OpenSRF</title>
+					<screen>
+				$ su - opensrf
+				$ cd /home/opensrf/OpenSRF-1.0.7
+				$ ./configure --prefix=/openils --sysconfdir=/openils/conf
+				$ make
+				...
+				</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Compile, Link and Install OpenSRF</title>
+				<para>As the <systemitem class="username">root</systemitem> user, return to the OpenSRF build directory and use the <command>make</command> utility to compile, link and install OpenSRF:</para>
+				<figure>
+					<title>Commands to build, link and install OpenSRF</title>
+					<screen>
+				$ su - opensrf
+				$ cd /home/opensrf/OpenSRF-1.0.7
+				$ make install
+				...
+				</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Update the System Dynamic Library Path</title>
+				<para>As the <systemitem class="username">root</systemitem> user, you must update the system dynamic library path to make your system recognize the newly installed libraries. Do this by creating the new file <filename>/etc/ld.so.conf.d/osrf.conf</filename> containing a new library path, then run the command <command>ldconfig</command> to automatically read the file and modify the system dynamic library path:</para>
+				<figure>
+					<title>Commands to modify system dynamic library path</title>
+					<screen>
+				$ su - root
+				$ echo "/openils/lib" > /etc/ld.so.conf.d/osrf.conf
+				$ ldconfig
+				</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Define Public and Private OpenSRF Domains</title>
+				<para>Define your public and private OpenSRF domains. For security purposes, OpenSRF uses Jabber domains to separate services into public and private realms. Throughout these instructions, we will use the example domains <systemitem class="domainname">public.localhost</systemitem> for the public domain and <systemitem class="domainname">private.localhost</systemitem> for the private domain. On a single-server system, the easiest way to define public and private domains is to define separate hostnames by adding entries to the file <filename>/etc/hosts</filename>.</para>
+				<para>As the <systemitem class="username">root</systemitem> user, edit the file <filename>/etc/hosts</filename> and add the following entries for our example domains:</para>
+				<figure>
+					<title>Example public and private domains in /etc/hosts</title>
+					<screen>
+				127.0.1.2	public.localhost	public
+				127.0.1.3	private.localhost	private
+				</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Change File Ownerships</title>
+				<para>As the <systemitem class="username">root</systemitem> user, change the ownership of files installed in the directory <filename class="directory">/openils</filename> to the <systemitem class="username">opensrf</systemitem> user:</para>
+				<figure>
+					<title>Commands to change file ownerships</title>
+					<screen>
+				$ chown -R opensrf:opensrf /openils
+				</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Stop the <systemitem class="service">ejabberd</systemitem> Service</title>
+				<para>As the <systemitem class="username">root</systemitem> user, stop the <systemitem class="service">ejabberd</systemitem> service:</para>
+				<figure>
+					<title>Commands to stop the <systemitem class="service">ejabberd</systemitem> service</title>
+					<screen>
+				$ /etc/init.d/ejabberd stop
+				</screen>
+				</figure>
+				<para>If <systemitem class="service">ejabberd</systemitem> reports that it is already stopped, it may have run into a problem starting back at the installation stage. One possible fix is to kill any remaining <systemitem class="daemon">beam</systemitem> and <systemitem class="daemon">epmd</systemitem> processes, then edit the configuration file <filename>/etc/ejabberd/ejabberd.cfg</filename> to hardcode a domain:</para>
+				<figure>
+					<title>Commands to recover from <systemitem class="service">ejabberd</systemitem> errors</title>
+					<screen>
+				$ su - root
+				$ epmd -kill
+				$ killall beam; killall beam.smp
+				$ rm /var/lib/ejabberd/*
+				$ echo 'ERLANG_NODE=ejabberd@localhost' >> /etc/default/ejabberd
+				</screen>
+				</figure>
+			</section>
+			<section>
+				<title>Edit the <systemitem class="service">ejabberd</systemitem> configuration</title>
+				<para>As the <systemitem class="username">root</systemitem> user, edit the file <filename>/etc/ejabberd/ejabberd.cfg</filename> and make the following changes:</para>
+				<itemizedlist>
+					<listitem>Change <literal>{hosts, ["localhost"]}.</literal> to <literal>{hosts, ["localhost", "private.localhost", "public.localhost"]}.</literal></listitem>
+					<listitem>Change <literal>{max_user_sessions, 10}.</literal> to <literal>{max_user_sessions, 1000}.</literal> If you see something like this instead: <literal>{access, max_user_sessions, [{10, all}]}.</literal>, then change it to <literal>{access, max_user_sessions, [{1000, all}]}.</literal></listitem>
+					<listitem>Change all three occurrences of <literal>max_stanza_size</literal> to <literal>2000000</literal>.</listitem>
+					<listitem>Change both occurrences of <literal>maxrate</literal> to <literal>500000</literal>.</listitem>
+					<listitem>Comment out the line <literal>{mod_offline, []}</literal> by placing two <literal>%</literal> comment signs in front.</listitem>
+				</itemizedlist>
+			</section>
+			<section>
+				<title>OpenSRF installation - (continued)</title>
+				<para>
+					<emphasis>The remainder of the OpenSRF installation procedure is identical to that for installing the latest version of OpenSRF. Continue with the instructions found in <xref linkend="serversideinstallation-opensrf-continued"/>.</emphasis>
+				</para>
 			</section>
 		</section>
 		<section xml:id="serversideinstallation-postgresql">
@@ -2206,7 +2354,7 @@
 			<para>The Staff Client is automatically built by default as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software. See <xref linkend="serversideinstallation-compilingevergreen"/> to review details related to building the Staff Client in the final compile/link/install phase of the default Evergreen build process.</para>
 			<section>
 				<title>Building the Staff Client</title>
-				<para>You can also manually build the Staff Client by using the <command>make</command> utility in the Staff Client source directory (e.g., the directory <filename class="directory">/home/opensrf/Evergreen-ILS-1.6.0.x/Open-ILS/xul/staff_client</filename> for the current Evergreen version). There are a number of possible options to manually build special versions of the Staff Client on a <systemitem class="osname">Linux</systemitem> system. Following is a list of environment variables that can be passed to <command>make</command> to influence the manual build process:</para>
+				<para>You can also manually build the Staff Client by using the <command>make</command> utility in the Staff Client source directory (e.g., the directory <filename class="directory">/home/opensrf/Evergreen-ILS-1.6.0.7/Open-ILS/xul/staff_client</filename> for the current Evergreen version). There are a number of possible options to manually build special versions of the Staff Client on a <systemitem class="osname">Linux</systemitem> system. Following is a list of environment variables that can be passed to <command>make</command> to influence the manual build process:</para>
 				<section>
 					<title>Option STAFF_CLIENT_BUILD_ID</title>
 					<para>During the normal <emphasis>make install</emphasis> Evergreen server-side software build process, the variable defaults to an automatically generated date/time string, but you can also override the value of BUILD_ID.</para>
