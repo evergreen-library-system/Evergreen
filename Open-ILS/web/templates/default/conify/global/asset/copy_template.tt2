@@ -25,6 +25,7 @@
         fieldOrder="['name', 'owning_lib']"
         suppressFields="['creator','editor','edit_date', 'create_date']"
         query="{id: '*'}"
+        editStyle="pane"
         fmClass="act"
         autoHeight="true"
         editOnEnter="true">
