@@ -56,10 +56,17 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             }
             this.dijitArgs['scrollOnFocus'] = false;
 
+
             // find the field description in the IDL if not provided
             if(this.fmObject) 
                 this.fmClass = this.fmObject.classname;
             this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+
+            if(this.fmClass && !this.fmIDL) {
+                fieldmapper.IDL.load([this.fmClass]);
+                this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+            }
+
             this.suppressLinkedFields = args.suppressLinkedFields || [];
 
             if(this.selfReference) {
@@ -358,6 +365,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         _getLinkSelector : function() {
             var linkClass = this.idlField['class'];
             if(this.idlField.reltype != 'has_a')  return false;
+            if(!fieldmapper.IDL.fmclasses[linkClass]) // class neglected by AutoIDL
+                fieldmapper.IDL.load([this.fmClass]);
             if(!fieldmapper.IDL.fmclasses[linkClass].permacrud) return false;
             if(!fieldmapper.IDL.fmclasses[linkClass].permacrud.retrieve) return false;
 

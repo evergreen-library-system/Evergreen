@@ -20,6 +20,10 @@ if(!dojo._hasResource['openils.widget.AutoWidget']) {
             if(this.fmObject)
                 this.fmClass = this.fmObject.classname;
             this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+            if(!this.fmIDL) {
+                fieldmapper.IDL.load([this.fmClass]);
+                this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+            }
             this.buildSortedFieldList();
         },
 
