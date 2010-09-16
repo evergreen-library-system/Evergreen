@@ -36,14 +36,16 @@
 			worry if the INSERT statement is completely unfamiliar, we&#8217;ll talk more about
 			the syntax of the insert statement later.</simpara>
 			<formalpara><title><literal>actor.usr_note</literal> database table</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">evergreen=# INSERT INTO actor.usr_note (usr, creator, pub, title, value)
-			    VALUES (1, 1, TRUE, 'Who is this guy?', 'He''s the administrator!');
+<programlisting language="sql" linenumbering="unnumbered">
+evergreen=# INSERT INTO actor.usr_note (usr, creator, pub, title, value)
+    VALUES (1, 1, TRUE, 'Who is this guy?', 'He''s the administrator!');
 
-			evergreen=# select id, usr, creator, pub, title, value from actor.usr_note;
-			 id | usr | creator | pub |      title       |          value
-			----+-----+---------+-----+------------------+-------------------------
-			  1 |   1 |       1 | t   | Who is this guy? | He's the administrator!
-			(1 rows)</programlisting>
+evergreen=# select id, usr, creator, pub, title, value from actor.usr_note;
+ id | usr | creator | pub |      title       |          value
+----+-----+---------+-----+------------------+-------------------------
+  1 |   1 |       1 | t   | Who is this guy? | He's the administrator!
+(1 rows)
+</programlisting>
 			</para></formalpara>
 			<simpara>PostgreSQL supports table inheritance, which lets you define tables that
 			inherit the column definitions of a given parent table. A search of the data in
@@ -100,14 +102,16 @@
 			the <literal>public</literal> schema. As a result, you might not find the object that you&#8217;re
 			looking for if you don&#8217;t use the appropriate schema.</simpara>
 			<formalpara><title>Example: Creating a table without a specific schema</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">evergreen=# CREATE TABLE foobar (foo TEXT, bar TEXT);
-			CREATE TABLE
-			evergreen=# \d foobar
-			   Table "public.foobar"
-			 Column | Type | Modifiers
-			--------+------+-----------
-			 foo    | text |
-			 bar    | text |</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+evergreen=# CREATE TABLE foobar (foo TEXT, bar TEXT);
+CREATE TABLE
+evergreen=# \d foobar
+   Table "public.foobar"
+ Column | Type | Modifiers
+--------+------+-----------
+ foo    | text |
+ bar    | text |
+</programlisting>
 			</para></formalpara>
 			<formalpara><title>Example: Trying to access a unqualified table outside of the public schema</title><para>
 			<programlisting language="sql" linenumbering="unnumbered">evergreen=# SELECT * FROM usr_note;
@@ -449,20 +453,22 @@
 			<simpara>The <literal>actor.org_address</literal> table is a simple table in the Evergreen schema that
 			we can use as a concrete example of many of the properties of databases that
 			we have discussed so far.</simpara>
-			<programlisting language="sql" linenumbering="unnumbered">CREATE TABLE actor.org_address (
-			  id            SERIAL  PRIMARY KEY,      <co id="sqlCO1-1"/>
-			  valid         BOOL    NOT NULL DEFAULT TRUE, <co id="sqlCO1-2"/>
-			  address_type  TEXT    NOT NULL DEFAULT 'MAILING', <co id="sqlCO1-3"/>
-			  org_unit      INT     NOT NULL REFERENCES actor.org_unit (id)  <co id="sqlCO1-4"/>
-						  DEFERRABLE INITIALLY DEFERRED,
-			  street1       TEXT    NOT NULL,
-			  street2       TEXT, <co id="sqlCO1-5"/>
-			  city          TEXT    NOT NULL,
-			  county        TEXT,
-			  state         TEXT    NOT NULL,
-			  country       TEXT    NOT NULL,
-			  post_code     TEXT    NOT NULL
-			);</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+CREATE TABLE actor.org_address (
+  id            SERIAL  PRIMARY KEY,      <co id="sqlCO1-1"/>
+  valid         BOOL    NOT NULL DEFAULT TRUE, <co id="sqlCO1-2"/>
+  address_type  TEXT    NOT NULL DEFAULT 'MAILING', <co id="sqlCO1-3"/>
+  org_unit      INT     NOT NULL REFERENCES actor.org_unit (id)  <co id="sqlCO1-4"/>
+			  DEFERRABLE INITIALLY DEFERRED,
+  street1       TEXT    NOT NULL,
+  street2       TEXT, <co id="sqlCO1-5"/>
+  city          TEXT    NOT NULL,
+  county        TEXT,
+  state         TEXT    NOT NULL,
+  country       TEXT    NOT NULL,
+  post_code     TEXT    NOT NULL
+);
+</programlisting>
 			<calloutlist>
 			<callout arearefs="sqlCO1-1">
 			<simpara>
@@ -520,31 +526,33 @@
 			<simpara>To display the definition of a database object such as a table, issue the
 			command <literal>\d _object-name_</literal>. For example, to display the definition of the
 			actor.usr_note table:</simpara>
-			<programlisting language="sh" linenumbering="unnumbered">$ psql evergreen <co id="sqlCO2-1"/>
-			psql (8.4.1)
-			Type "help" for help.
+<programlisting language="sh" linenumbering="unnumbered">
+$ psql evergreen <co id="sqlCO2-1"/>
+psql (8.4.1)
+Type "help" for help.
 
-			evergreen=# \d actor.usr_note  <co id="sqlCO2-2"/>
-							        Table "actor.usr_note"
-			   Column    |           Type           |                          Modifiers
-			-------------+--------------------------+-------------------------------------------------------------
-			 id          | bigint                   | not null default nextval('actor.usr_note_id_seq'::regclass)
-			 usr         | bigint                   | not null
-			 creator     | bigint                   | not null
-			 create_date | timestamp with time zone | default now()
-			 pub         | boolean                  | not null default false
-			 title       | text                     | not null
-			 value       | text                     | not null
-			Indexes:
-			    "usr_note_pkey" PRIMARY KEY, btree (id)
-			    "actor_usr_note_creator_idx" btree (creator)
-			    "actor_usr_note_usr_idx" btree (usr)
-			Foreign-key constraints:
-			    "usr_note_creator_fkey" FOREIGN KEY (creator) REFERENCES actor.usr(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
-			    "usr_note_usr_fkey" FOREIGN KEY (usr) REFERENCES actor.usr(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+evergreen=# \d actor.usr_note  <co id="sqlCO2-2"/>
+				        Table "actor.usr_note"
+   Column    |           Type           |                          Modifiers
+-------------+--------------------------+-------------------------------------------------------------
+ id          | bigint                   | not null default nextval('actor.usr_note_id_seq'::regclass)
+ usr         | bigint                   | not null
+ creator     | bigint                   | not null
+ create_date | timestamp with time zone | default now()
+ pub         | boolean                  | not null default false
+ title       | text                     | not null
+ value       | text                     | not null
+Indexes:
+    "usr_note_pkey" PRIMARY KEY, btree (id)
+    "actor_usr_note_creator_idx" btree (creator)
+    "actor_usr_note_usr_idx" btree (usr)
+Foreign-key constraints:
+    "usr_note_creator_fkey" FOREIGN KEY (creator) REFERENCES actor.usr(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+    "usr_note_usr_fkey" FOREIGN KEY (usr) REFERENCES actor.usr(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 
-			evergreen=# \q    <co id="sqlCO2-3"/>
-			$</programlisting>
+evergreen=# \q    <co id="sqlCO2-3"/>
+$
+</programlisting>
 			<calloutlist>
 			<callout arearefs="sqlCO2-1">
 			<simpara>
@@ -610,10 +618,12 @@
 			<simpara>For example, to sort the rows returned from your <literal>actor.usr_address</literal> query by
 			city, with county and then zip code as the tie breakers, issue the
 			following query:</simpara>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT city, county, state
-			  FROM actor.usr_address
-			  ORDER BY city, county, post_code
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT city, county, state
+  FROM actor.usr_address
+  ORDER BY city, county, post_code
+;
+</programlisting>
 		</simplesect>
 		<simplesect id="_filtering_results_with_the_where_clause">
 			<title>Filtering results with the WHERE clause</title>
@@ -626,47 +636,55 @@
 			<simpara>For example, to restrict the results returned from your <literal>actor.usr_address</literal>
 			query to only those rows containing a state value of <emphasis>Connecticut</emphasis>, issue the
 			following query:</simpara>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT city, county, state
-			  FROM actor.usr_address
-			  WHERE state = 'Connecticut'
-			  ORDER BY city, county, post_code
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT city, county, state
+  FROM actor.usr_address
+  WHERE state = 'Connecticut'
+  ORDER BY city, county, post_code
+;
+</programlisting>
 			<simpara>You can include more conditions in the <literal>WHERE</literal> clause with the <literal>OR</literal> and <literal>AND</literal>
 			operators. For example, to further restrict the results returned from your
 			<literal>actor.usr_address</literal> query to only those rows where the state column contains a
 			value of <emphasis>Connecticut</emphasis> and the city column contains a value of <emphasis>Hartford</emphasis>,
 			issue the following query:</simpara>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT city, county, state
-			  FROM actor.usr_address
-			  WHERE state = 'Connecticut'
-			    AND city = 'Hartford'
-			  ORDER BY city, county, post_code
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT city, county, state
+  FROM actor.usr_address
+  WHERE state = 'Connecticut'
+    AND city = 'Hartford'
+  ORDER BY city, county, post_code
+;
+</programlisting>
 			<note><simpara>To return rows where the state is <emphasis>Connecticut</emphasis> and the city is <emphasis>Hartford</emphasis> or
 			<emphasis>New Haven</emphasis>, you must use parentheses to explicitly group the city value
 			conditions together, or else the database will evaluate the <literal>OR city = 'New
 			Haven'</literal> clause entirely on its own and match all rows where the city column is
 			<emphasis>New Haven</emphasis>, even though the state might not be <emphasis>Connecticut</emphasis>.</simpara></note>
 			<formalpara><title>Trouble with OR</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT city, county, state
-			  FROM actor.usr_address
-			  WHERE state = 'Connecticut'
-			    AND city = 'Hartford' OR city = 'New Haven'
-			  ORDER BY city, county, post_code
-			;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT city, county, state
+  FROM actor.usr_address
+  WHERE state = 'Connecticut'
+    AND city = 'Hartford' OR city = 'New Haven'
+  ORDER BY city, county, post_code
+;
 
-			-- Can return unwanted rows because the OR is not grouped!</programlisting>
+-- Can return unwanted rows because the OR is not grouped!
+</programlisting>
 			</para></formalpara>
 			<formalpara><title>Grouped OR&#8217;ed conditions</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT city, county, state
-			  FROM actor.usr_address
-			  WHERE state = 'Connecticut'
-			    AND (city = 'Hartford' OR city = 'New Haven')
-			  ORDER BY city, county, post_code
-			;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT city, county, state
+  FROM actor.usr_address
+  WHERE state = 'Connecticut'
+    AND (city = 'Hartford' OR city = 'New Haven')
+  ORDER BY city, county, post_code
+;
 
-			-- The parentheses ensure that the OR is applied to the cities, and the
-			-- state in either case must be 'Connecticut'</programlisting>
+-- The parentheses ensure that the OR is applied to the cities, and the
+-- state in either case must be 'Connecticut'
+</programlisting>
 			</para></formalpara>
 			<simplesect id="_comparison_operators">
 				<title>Comparison operators</title>
@@ -727,40 +745,46 @@
 			<simpara>To return rows from a table where a given column is not <literal>NULL</literal>, use the
 			<literal>IS NOT NULL</literal> comparison operator.</simpara>
 			<formalpara><title>Retrieving rows where a column is not <literal>NULL</literal></title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT id, first_given_name, family_name
-			  FROM actor.usr
-			  WHERE second_given_name IS NOT NULL
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT id, first_given_name, family_name
+  FROM actor.usr
+  WHERE second_given_name IS NOT NULL
+;
+</programlisting>
 			</para></formalpara>
 			<simpara>Similarly, to return rows from a table where a given column is <literal>NULL</literal>, use
 			the <literal>IS NULL</literal> comparison operator.</simpara>
 			<formalpara><title>Retrieving rows where a column is <literal>NULL</literal></title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT id, first_given_name, second_given_name, family_name
-			  FROM actor.usr
-			  WHERE second_given_name IS NULL
-			;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT id, first_given_name, second_given_name, family_name
+  FROM actor.usr
+  WHERE second_given_name IS NULL
+;
 
-			 id | first_given_name | second_given_name |  family_name
-			----+------------------+-------------------+----------------
-			  1 | Administrator    |                   | System Account
-			(1 row)</programlisting>
+ id | first_given_name | second_given_name |  family_name
+----+------------------+-------------------+----------------
+  1 | Administrator    |                   | System Account
+(1 row)
+</programlisting>
 			</para></formalpara>
 			<simpara>Notice that the <literal>NULL</literal> value in the output is displayed as empty space,
 			indistinguishable from an empty string; this is the default display method in
 			<literal>psql</literal>. You can change the behaviour of <literal>psql</literal> using the <literal>pset</literal> command:</simpara>
 			<formalpara><title>Changing the way <literal>NULL</literal> values are displayed in <literal>psql</literal></title><para>
-			<programlisting language="sql" linenumbering="unnumbered">evergreen=# \pset null '(null)'
-			Null display is '(null)'.
+<programlisting language="sql" linenumbering="unnumbered">
+evergreen=# \pset null '(null)'
+Null display is '(null)'.
 
-			SELECT id, first_given_name, second_given_name, family_name
-			  FROM actor.usr
-			  WHERE second_given_name IS NULL
-			;
+SELECT id, first_given_name, second_given_name, family_name
+  FROM actor.usr
+  WHERE second_given_name IS NULL
+;
 
-			 id | first_given_name | second_given_name |  family_name
-			----+------------------+-------------------+----------------
-			  1 | Administrator    | (null)            | System Account
-			(1 row)</programlisting>
+ id | first_given_name | second_given_name |  family_name
+----+------------------+-------------------+----------------
+  1 | Administrator    | (null)            | System Account
+(1 row)
+</programlisting>
 			</para></formalpara>
 			<simpara>Database queries within programming languages such as Perl and C have
 			special methods of checking for <literal>NULL</literal> values in returned results.</simpara>
@@ -776,26 +800,29 @@
 			<simpara>For example, to change the last name of a user in the <literal>actor.usr</literal> table to
 			<literal>L&#8217;estat</literal>, issue the following SQL:</simpara>
 			<formalpara><title>Escaping <literal>'</literal> in TEXT values</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">UPDATE actor.usr
-			  SET family_name = 'L''estat'
-			  WHERE profile IN (
-			    SELECT id
-			      FROM permission.grp_tree
-			      WHERE name = 'Vampire'
-			  )
-				;</programlisting>
-				</para></formalpara>
-				<simpara>When you retrieve the row from the database, the value is displayed with just
-				a single <literal>'</literal> character:</simpara>
-				<programlisting language="sql" linenumbering="unnumbered">SELECT id, family_name
-				  FROM actor.usr
-				  WHERE family_name = 'L''estat'
-				;
+<programlisting language="sql" linenumbering="unnumbered">
+UPDATE actor.usr
+  SET family_name = 'L''estat'
+  WHERE profile IN (
+    SELECT id
+      FROM permission.grp_tree
+      WHERE name = 'Vampire'
+  )
+	;</programlisting>
+			</para></formalpara>
+			<simpara>When you retrieve the row from the database, the value is displayed with just
+			a single <literal>'</literal> character:</simpara>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT id, family_name
+  FROM actor.usr
+  WHERE family_name = 'L''estat'
+;
 
-				 id | family_name
-				----+-------------
-				  1 | L'estat
-				(1 row)</programlisting>
+ id | family_name
+----+-------------
+  1 | L'estat
+(1 row)
+</programlisting>
 		</simplesect>
 		<simplesect id="_grouping_and_eliminating_results_with_the_group_by_and_having_clauses">
 			<title>Grouping and eliminating results with the GROUP BY and HAVING clauses</title>
@@ -804,101 +831,109 @@
 			results for a range of values in a single query, rather than requiring you to
 			issue one query per target value.</simpara>
 			<formalpara><title>Returning unique results of a single column with <literal>GROUP BY</literal></title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT grp
-			  FROM permission.grp_perm_map
-			  GROUP BY grp
-			  ORDER BY grp;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT grp
+  FROM permission.grp_perm_map
+  GROUP BY grp
+  ORDER BY grp;
 
-			 grp
-			-----+
-			   1
-			   2
-			   3
-			   4
-			   5
-			   6
-			   7
-			  10
-			(8 rows)</programlisting>
+ grp
+-----+
+   1
+   2
+   3
+   4
+   5
+   6
+   7
+  10
+(8 rows)
+</programlisting>
 			</para></formalpara>
 			<simpara>While <literal>GROUP BY</literal> can be useful for a single column, it is more often used
 			to return the distinct results across multiple columns. For example, the
 			following query shows us which groups have permissions at each depth in
 			the library hierarchy:</simpara>
 			<formalpara><title>Returning unique results of multiple columns with <literal>GROUP BY</literal></title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT grp, depth
-			  FROM permission.grp_perm_map
-			  GROUP BY grp, depth
-			  ORDER BY depth, grp;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT grp, depth
+  FROM permission.grp_perm_map
+  GROUP BY grp, depth
+  ORDER BY depth, grp;
 
-			 grp | depth
-			-----+-------
-			   1 |     0
-			   2 |     0
-			   3 |     0
-			   4 |     0
-			   5 |     0
-			  10 |     0
-			   3 |     1
-			   4 |     1
-			   5 |     1
-			   6 |     1
-			   7 |     1
-			  10 |     1
-			   3 |     2
-			   4 |     2
-			  10 |     2
-			(15 rows)</programlisting>
+ grp | depth
+-----+-------
+   1 |     0
+   2 |     0
+   3 |     0
+   4 |     0
+   5 |     0
+  10 |     0
+   3 |     1
+   4 |     1
+   5 |     1
+   6 |     1
+   7 |     1
+  10 |     1
+   3 |     2
+   4 |     2
+  10 |     2
+(15 rows)
+</programlisting>
 			</para></formalpara>
 			<simpara>Extending this further, you can use the <literal>COUNT()</literal> aggregate function to
 			also return the number of times each unique combination of <literal>grp</literal> and <literal>depth</literal>
 			appears in the table. <emphasis>Yes, this is a sneak peek at the use of aggregate
 			functions! Keeners.</emphasis></simpara>
 			<formalpara><title>Counting unique column combinations with <literal>GROUP BY</literal></title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT grp, depth, COUNT(grp)
-			  FROM permission.grp_perm_map
-			  GROUP BY grp, depth
-			  ORDER BY depth, grp;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT grp, depth, COUNT(grp)
+  FROM permission.grp_perm_map
+  GROUP BY grp, depth
+  ORDER BY depth, grp;
 
-			 grp | depth | count
-			-----+-------+-------
-			   1 |     0 |     6
-			   2 |     0 |     2
-			   3 |     0 |    45
-			   4 |     0 |     3
-			   5 |     0 |     5
-			  10 |     0 |     1
-			   3 |     1 |     3
-			   4 |     1 |     4
-			   5 |     1 |     1
-			   6 |     1 |     9
-			   7 |     1 |     5
-			  10 |     1 |    10
-			   3 |     2 |    24
-			   4 |     2 |     8
-			  10 |     2 |     7
-			(15 rows)</programlisting>
+ grp | depth | count
+-----+-------+-------
+   1 |     0 |     6
+   2 |     0 |     2
+   3 |     0 |    45
+   4 |     0 |     3
+   5 |     0 |     5
+  10 |     0 |     1
+   3 |     1 |     3
+   4 |     1 |     4
+   5 |     1 |     1
+   6 |     1 |     9
+   7 |     1 |     5
+  10 |     1 |    10
+   3 |     2 |    24
+   4 |     2 |     8
+  10 |     2 |     7
+(15 rows)
+</programlisting>
 			</para></formalpara>
 			<simpara>You can use the <literal>WHERE</literal> clause to restrict the returned results before grouping
 			is applied to the results. The following query restricts the results to those
 			rows that have a depth of 0.</simpara>
 			<formalpara><title>Using the <literal>WHERE</literal> clause with <literal>GROUP BY</literal></title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT grp, COUNT(grp)
-			  FROM permission.grp_perm_map
-			  WHERE depth = 0
-			  GROUP BY grp
-			  ORDER BY 2 DESC
-			;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT grp, COUNT(grp)
+  FROM permission.grp_perm_map
+  WHERE depth = 0
+  GROUP BY grp
+  ORDER BY 2 DESC
+;
 
-			 grp | count
-			-----+-------
-			   3 |    45
-			   1 |     6
-			   5 |     5
-			   4 |     3
-			   2 |     2
-			  10 |     1
-			(6 rows)</programlisting>
+ grp | count
+-----+-------
+   3 |    45
+   1 |     6
+   5 |     5
+   4 |     3
+   2 |     2
+  10 |     1
+(6 rows)
+</programlisting>
 			</para></formalpara>
 			<simpara>To restrict results after grouping has been applied to the rows, use the
 			<literal>HAVING</literal> clause; this is typically used to restrict results based on
@@ -906,21 +941,23 @@
 			the following query restricts the returned rows to those that have more than
 			5 occurrences of the same value for <literal>grp</literal> in the table.</simpara>
 			<formalpara><title><literal>GROUP BY</literal> restricted by a <literal>HAVING</literal> clause</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT grp, COUNT(grp)
-			  FROM permission.grp_perm_map
-			  GROUP BY grp
-			  HAVING COUNT(grp) &gt; 5
-			;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT grp, COUNT(grp)
+  FROM permission.grp_perm_map
+  GROUP BY grp
+  HAVING COUNT(grp) &gt; 5
+;
 
-			 grp | count
-			-----+-------
-			   6 |     9
-			   4 |    15
-			   5 |     6
-			   1 |     6
-			   3 |    72
-			  10 |    18
-			(6 rows)</programlisting>
+ grp | count
+-----+-------
+   6 |     9
+   4 |    15
+   5 |     6
+   1 |     6
+   3 |    72
+  10 |    18
+(6 rows)
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 		<simplesect id="_eliminating_duplicate_results_with_the_distinct_keyword">
@@ -934,29 +971,31 @@
 			them, then applying the <literal>DISTINCT</literal> keyword might be a sign that you are
 			papering over a real problem.</simpara>
 			<formalpara><title>Returning unique results of multiple columns with <literal>DISTINCT</literal></title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT DISTINCT grp, depth
-			  FROM permission.grp_perm_map
-			  ORDER BY depth, grp
-			;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT DISTINCT grp, depth
+  FROM permission.grp_perm_map
+  ORDER BY depth, grp
+;
 
-			 grp | depth
-			-----+-------
-			   1 |     0
-			   2 |     0
-			   3 |     0
-			   4 |     0
-			   5 |     0
-			  10 |     0
-			   3 |     1
-			   4 |     1
-			   5 |     1
-			   6 |     1
-			   7 |     1
-			  10 |     1
-			   3 |     2
-			   4 |     2
-			  10 |     2
-			(15 rows)</programlisting>
+ grp | depth
+-----+-------
+   1 |     0
+   2 |     0
+   3 |     0
+   4 |     0
+   5 |     0
+  10 |     0
+   3 |     1
+   4 |     1
+   5 |     1
+   6 |     1
+   7 |     1
+  10 |     1
+   3 |     2
+   4 |     2
+  10 |     2
+(15 rows)
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 		<simplesect id="_paging_through_results_with_the_limit_and_offset_clauses">
@@ -966,21 +1005,23 @@
 			example, in the following query we list the five most frequently used
 			circulation modifiers:</simpara>
 			<formalpara><title>Using the <literal>LIMIT</literal> clause to restrict results</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT circ_modifier, COUNT(circ_modifier)
-			  FROM asset.copy
-			  GROUP BY circ_modifier
-			  ORDER BY 2 DESC
-			  LIMIT 5
-			;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT circ_modifier, COUNT(circ_modifier)
+  FROM asset.copy
+  GROUP BY circ_modifier
+  ORDER BY 2 DESC
+  LIMIT 5
+;
 
-			 circ_modifier | count
-			---------------+--------
-			 CIRC          | 741995
-			 BOOK          | 636199
-			 SER           | 265906
-			 DOC           | 191598
-			 LAW MONO      | 126627
-			(5 rows)</programlisting>
+ circ_modifier | count
+---------------+--------
+ CIRC          | 741995
+ BOOK          | 636199
+ SER           | 265906
+ DOC           | 191598
+ LAW MONO      | 126627
+(5 rows)
+</programlisting>
 			</para></formalpara>
 			<simpara>When you use the <literal>LIMIT</literal> clause to restrict the total number of rows returned
 			by your query, you can also use the <literal>OFFSET</literal> clause to determine which subset
@@ -989,22 +1030,24 @@
 			<simpara>In the following example, we use the <literal>OFFSET</literal> clause to get results 6 through
 			10 from the same query that we prevously executed.</simpara>
 			<formalpara><title>Using the <literal>OFFSET</literal> clause to return a specific subset of rows</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT circ_modifier, COUNT(circ_modifier)
-			  FROM asset.copy
-			  GROUP BY circ_modifier
-			  ORDER BY 2 DESC
-			  LIMIT 5
-			  OFFSET 5
-			;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT circ_modifier, COUNT(circ_modifier)
+  FROM asset.copy
+  GROUP BY circ_modifier
+  ORDER BY 2 DESC
+  LIMIT 5
+  OFFSET 5
+;
 
-			 circ_modifier | count
-			---------------+--------
-			 LAW SERIAL    | 102758
-			 DOCUMENTS     |  86215
-			 BOOK_WEB      |  63786
-			 MFORM SER     |  39917
-			 REF           |  34380
-			(5 rows)</programlisting>
+ circ_modifier | count
+---------------+--------
+ LAW SERIAL    | 102758
+ DOCUMENTS     |  86215
+ BOOK_WEB      |  63786
+ MFORM SER     |  39917
+ REF           |  34380
+(5 rows)
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 	</section>
@@ -1025,31 +1068,33 @@
 				used to convert text values to upper-case, modifies the results in the
 				following set of queries:</simpara>
 				<formalpara><title>Using the UPPER() scalar function to convert text values to upper-case</title><para>
-				<programlisting language="sql" linenumbering="unnumbered">-- First, without the UPPER() function for comparison
-				SELECT shortname, name
-				  FROM actor.org_unit
-				  WHERE id &lt; 4
-				;
+<programlisting language="sql" linenumbering="unnumbered">
+-- First, without the UPPER() function for comparison
+SELECT shortname, name
+  FROM actor.org_unit
+  WHERE id &lt; 4
+;
 
-				 shortname |         name
-				-----------+-----------------------
-				 CONS      | Example Consortium
-				 SYS1      | Example System 1
-				 SYS2      | Example System 2
-				(3 rows)
+ shortname |         name
+-----------+-----------------------
+ CONS      | Example Consortium
+ SYS1      | Example System 1
+ SYS2      | Example System 2
+(3 rows)
 
-				-- Now apply the UPPER() function to the name column
-				SELECT shortname, UPPER(name)
-				  FROM actor.org_unit
-				  WHERE id &lt; 4
-				;
+-- Now apply the UPPER() function to the name column
+SELECT shortname, UPPER(name)
+  FROM actor.org_unit
+  WHERE id &lt; 4
+;
 
-				 shortname |       upper
-				-----------+--------------------
-				 CONS      | EXAMPLE CONSORTIUM
-				 SYS1      | EXAMPLE SYSTEM 1
-				 SYS2      | EXAMPLE SYSTEM 2
-				(3 rows)</programlisting>
+ shortname |       upper
+-----------+--------------------
+ CONS      | EXAMPLE CONSORTIUM
+ SYS1      | EXAMPLE SYSTEM 1
+ SYS2      | EXAMPLE SYSTEM 2
+(3 rows)
+</programlisting>
 				</para></formalpara>
 				<simpara>There are so many scalar functions in PostgreSQL that we cannot cover them
 				all here, but we can list some of the most commonly used functions:</simpara>
@@ -1133,15 +1178,17 @@
 			returned by the main SELECT statement to only those locations that have an
 			<literal>opac_visible</literal> value of <literal>TRUE</literal>:</simpara>
 			<formalpara><title>Sub-select example</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT call_number
-			  FROM asset.copy
-			  WHERE deleted IS FALSE
-			    AND location IN (
-			    SELECT id
-			      FROM asset.copy_location
-			      WHERE opac_visible IS TRUE
-			  )
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT call_number
+  FROM asset.copy
+  WHERE deleted IS FALSE
+    AND location IN (
+    SELECT id
+      FROM asset.copy_location
+      WHERE opac_visible IS TRUE
+  )
+;
+</programlisting>
 			</para></formalpara>
 			<simpara>Sub-selects can be an approachable way to breaking down a problem that
 			requires matching values between different tables, and often result in
@@ -1182,37 +1229,39 @@
 				we have to fully qualify the column names in our queries with the schema and
 				table names.</simpara>
 				<formalpara><title>A simple inner join</title><para>
-				<programlisting language="sql" linenumbering="unnumbered">SELECT *
-				  FROM actor.usr
-				    INNER JOIN actor.org_unit ON actor.usr.home_ou = actor.org_unit.id
-				    WHERE actor.org_unit.shortname = 'CONS'
-				;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT *
+  FROM actor.usr
+    INNER JOIN actor.org_unit ON actor.usr.home_ou = actor.org_unit.id
+    WHERE actor.org_unit.shortname = 'CONS'
+;
 
-				-[ RECORD 1 ]------------------+---------------------------------
-				id                             | 1
-				card                           | 1
-				profile                        | 1
-				usrname                        | admin
-				email                          |
-				...
-				mailing_address                |
-				billing_address                |
-				home_ou                        | 1
-				...
-				claims_never_checked_out_count | 0
-				id                             | 1
-				parent_ou                      |
-				ou_type                        | 1
-				ill_address                    | 1
-				holds_address                  | 1
-				mailing_address                | 1
-				billing_address                | 1
-				shortname                      | CONS
-				name                           | Example Consortium
-				email                          |
-				phone                          |
-				opac_visible                   | t
-				fiscal_calendar                | 1</programlisting>
+-[ RECORD 1 ]------------------+---------------------------------
+id                             | 1
+card                           | 1
+profile                        | 1
+usrname                        | admin
+email                          |
+...
+mailing_address                |
+billing_address                |
+home_ou                        | 1
+...
+claims_never_checked_out_count | 0
+id                             | 1
+parent_ou                      |
+ou_type                        | 1
+ill_address                    | 1
+holds_address                  | 1
+mailing_address                | 1
+billing_address                | 1
+shortname                      | CONS
+name                           | Example Consortium
+email                          |
+phone                          |
+opac_visible                   | t
+fiscal_calendar                | 1
+</programlisting>
 				</para></formalpara>
 				<simpara>Of course, you do not have to return every column from the joined tables;
 				you can (and should) continue to specify only the columns that you want to
@@ -1222,21 +1271,23 @@
 				joining the <literal>actor.org_unit</literal> table to give us access to the user&#8217;s home
 				library:</simpara>
 				<formalpara><title>Borrower Count by Profile (Adult, Child, etc)/Library</title><para>
-				<programlisting language="sql" linenumbering="unnumbered">SELECT permission.grp_tree.name, actor.org_unit.name, COUNT(permission.grp_tree.name)
-				  FROM actor.usr
-				    INNER JOIN permission.grp_tree
-				      ON actor.usr.profile = permission.grp_tree.id
-				    INNER JOIN actor.org_unit
-				      ON actor.org_unit.id = actor.usr.home_ou
-				  WHERE actor.usr.deleted IS FALSE
-				  GROUP BY permission.grp_tree.name, actor.org_unit.name
-				  ORDER BY actor.org_unit.name, permission.grp_tree.name
-				;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT permission.grp_tree.name, actor.org_unit.name, COUNT(permission.grp_tree.name)
+  FROM actor.usr
+    INNER JOIN permission.grp_tree
+      ON actor.usr.profile = permission.grp_tree.id
+    INNER JOIN actor.org_unit
+      ON actor.org_unit.id = actor.usr.home_ou
+  WHERE actor.usr.deleted IS FALSE
+  GROUP BY permission.grp_tree.name, actor.org_unit.name
+  ORDER BY actor.org_unit.name, permission.grp_tree.name
+;
 
-				 name  |        name        | count
-				-------+--------------------+-------
-				 Users | Example Consortium |     1
-				(1 row)</programlisting>
+ name  |        name        | count
+-------+--------------------+-------
+ Users | Example Consortium |     1
+(1 row)
+</programlisting>
 				</para></formalpara>
 			</simplesect>
 			<simplesect id="_aliases">
@@ -1257,21 +1308,23 @@
 				example, we can write the previous INNER JOIN statement example using aliases
 				instead of fully-qualified identifiers:</simpara>
 				<formalpara><title>Borrower Count by Profile (using aliases)</title><para>
-				<programlisting language="sql" linenumbering="unnumbered">SELECT pgt.name AS "Profile", aou.name AS "Library", COUNT(pgt.name) AS "Count"
-				  FROM actor.usr au
-				    INNER JOIN permission.grp_tree pgt
-				      ON au.profile = pgt.id
-				    INNER JOIN actor.org_unit aou
-				      ON aou.id = au.home_ou
-				  WHERE au.deleted IS FALSE
-				  GROUP BY pgt.name, aou.name
-				  ORDER BY aou.name, pgt.name
-				;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT pgt.name AS "Profile", aou.name AS "Library", COUNT(pgt.name) AS "Count"
+  FROM actor.usr au
+    INNER JOIN permission.grp_tree pgt
+      ON au.profile = pgt.id
+    INNER JOIN actor.org_unit aou
+      ON aou.id = au.home_ou
+  WHERE au.deleted IS FALSE
+  GROUP BY pgt.name, aou.name
+  ORDER BY aou.name, pgt.name
+;
 
-				 Profile |      Library       | Count
-				---------+--------------------+-------
-				 Users   | Example Consortium |     1
-				(1 row)</programlisting>
+ Profile |      Library       | Count
+---------+--------------------+-------
+ Users   | Example Consortium |     1
+(1 row)
+</programlisting>
 				</para></formalpara>
 				<simpara>A nice side effect of declaring an alias for your columns is that the alias
 				is used as the column header in the results table. The previous version of
@@ -1307,65 +1360,73 @@
 				</listitem>
 				</itemizedlist>
 				<formalpara><title>Base tables for the OUTER JOIN examples</title><para>
-				<programlisting language="sql" linenumbering="unnumbered">SELECT * FROM aaa;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT * FROM aaa;
 
-				 id | stuff
-				----+-------
-				  1 | one
-				  2 | two
-				  3 | three
-				  4 | four
-				  5 | five
-				(5 rows)
+ id | stuff
+----+-------
+  1 | one
+  2 | two
+  3 | three
+  4 | four
+  5 | five
+(5 rows)
 
-				SELECT * FROM bbb;
+SELECT * FROM bbb;
 
-				 id | stuff |   foo
-				----+-------+----------
-				  1 | one   | oneone
-				  2 | two   | twotwo
-				  5 | five  | fivefive
-				  6 | six   | sixsix
-				(4 rows)</programlisting>
+ id | stuff |   foo
+----+-------+----------
+  1 | one   | oneone
+  2 | two   | twotwo
+  5 | five  | fivefive
+  6 | six   | sixsix
+(4 rows)
+</programlisting>
 				</para></formalpara>
 				<formalpara><title>Example of a LEFT OUTER JOIN</title><para>
-				<programlisting language="sql" linenumbering="unnumbered">SELECT * FROM aaa
-				  LEFT OUTER JOIN bbb ON aaa.id = bbb.id
-				;
-				 id | stuff | id | stuff |   foo
-				----+-------+----+-------+----------
-				  1 | one   |  1 | one   | oneone
-				  2 | two   |  2 | two   | twotwo
-				  3 | three |    |       |
-				  4 | four  |    |       |
-				  5 | five  |  5 | five  | fivefive
-				(5 rows)</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT * FROM aaa
+  LEFT OUTER JOIN bbb ON aaa.id = bbb.id
+;
+ id | stuff | id | stuff |   foo
+----+-------+----+-------+----------
+  1 | one   |  1 | one   | oneone
+  2 | two   |  2 | two   | twotwo
+  3 | three |    |       |
+  4 | four  |    |       |
+  5 | five  |  5 | five  | fivefive
+(5 rows)
+</programlisting>
 				</para></formalpara>
 				<formalpara><title>Example of a RIGHT OUTER JOIN</title><para>
-				<programlisting language="sql" linenumbering="unnumbered">SELECT * FROM aaa
-				  RIGHT OUTER JOIN bbb ON aaa.id = bbb.id
-				;
-				 id | stuff | id | stuff |   foo
-				----+-------+----+-------+----------
-				  1 | one   |  1 | one   | oneone
-				  2 | two   |  2 | two   | twotwo
-				  5 | five  |  5 | five  | fivefive
-				    |       |  6 | six   | sixsix
-				(4 rows)</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT * FROM aaa
+  RIGHT OUTER JOIN bbb ON aaa.id = bbb.id
+;
+ id | stuff | id | stuff |   foo
+----+-------+----+-------+----------
+  1 | one   |  1 | one   | oneone
+  2 | two   |  2 | two   | twotwo
+  5 | five  |  5 | five  | fivefive
+    |       |  6 | six   | sixsix
+(4 rows)
+</programlisting>
 				</para></formalpara>
 				<formalpara><title>Example of a FULL OUTER JOIN</title><para>
-				<programlisting language="sql" linenumbering="unnumbered">SELECT * FROM aaa
-				  FULL OUTER JOIN bbb ON aaa.id = bbb.id
-				;
-				 id | stuff | id | stuff |   foo
-				----+-------+----+-------+----------
-				  1 | one   |  1 | one   | oneone
-				  2 | two   |  2 | two   | twotwo
-				  3 | three |    |       |
-				  4 | four  |    |       |
-				  5 | five  |  5 | five  | fivefive
-				    |       |  6 | six   | sixsix
-				(6 rows)</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT * FROM aaa
+  FULL OUTER JOIN bbb ON aaa.id = bbb.id
+;
+ id | stuff | id | stuff |   foo
+----+-------+----+-------+----------
+  1 | one   |  1 | one   | oneone
+  2 | two   |  2 | two   | twotwo
+  3 | three |    |       |
+  4 | four  |    |       |
+  5 | five  |  5 | five  | fivefive
+    |       |  6 | six   | sixsix
+(6 rows)
+</programlisting>
 				</para></formalpara>
 			</simplesect>
 			<simplesect id="_self_joins">
@@ -1382,26 +1443,28 @@
 			of columns with compatible data types: the union, intersection, and difference
 			operators.</simpara>
 			<formalpara><title>Base tables for the set operation examples</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT * FROM aaa;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT * FROM aaa;
 
-			 id | stuff
-			----+-------
-			  1 | one
-			  2 | two
-			  3 | three
-			  4 | four
-			  5 | five
-			(5 rows)
+	id | stuff
+	----+-------
+	1 | one
+	2 | two
+	3 | three
+	4 | four
+	5 | five
+	(5 rows)
 
-			SELECT * FROM bbb;
+SELECT * FROM bbb;
 
-			 id | stuff |   foo
-			----+-------+----------
-			  1 | one   | oneone
-			  2 | two   | twotwo
-			  5 | five  | fivefive
-			  6 | six   | sixsix
-			(4 rows)</programlisting>
+	id | stuff |   foo
+	----+-------+----------
+	1 | one   | oneone
+	2 | two   | twotwo
+	5 | five  | fivefive
+	6 | six   | sixsix
+(4 rows)
+</programlisting>
 			</para></formalpara>
 			<simplesect id="_union">
 				<title>Union</title>
@@ -1410,29 +1473,31 @@
 				does not return any duplicate rows. To return duplicate rows, use the
 				<literal>UNION ALL</literal> operator.</simpara>
 				<formalpara><title>Example of a UNION set operation</title><para>
-				<programlisting language="sql" linenumbering="unnumbered">-- The parentheses are not required, but are intended to help
-				-- illustrate the sets participating in the set operation
-				(
-				  SELECT id, stuff
-				    FROM aaa
-				)
-				UNION
-				(
-				  SELECT id, stuff
-				    FROM bbb
-				)
-				ORDER BY 1
-				;
+<programlisting language="sql" linenumbering="unnumbered">
+-- The parentheses are not required, but are intended to help
+-- illustrate the sets participating in the set operation
+(
+  SELECT id, stuff
+    FROM aaa
+)
+UNION
+(
+  SELECT id, stuff
+    FROM bbb
+)
+ORDER BY 1
+;
 
-				 id | stuff
-				----+-------
-				  1 | one
-				  2 | two
-				  3 | three
-				  4 | four
-				  5 | five
-				  6 | six
-				(6 rows)</programlisting>
+ id | stuff
+----+-------
+  1 | one
+  2 | two
+  3 | three
+  4 | four
+  5 | five
+  6 | six
+(6 rows)
+</programlisting>
 				</para></formalpara>
 			</simplesect>
 			<simplesect id="_intersection">
@@ -1441,24 +1506,26 @@
 				both the left-hand and right-hand tables. To return duplicate rows, use the
 				<literal>INTERSECT ALL</literal> operator.</simpara>
 				<formalpara><title>Example of an INTERSECT set operation</title><para>
-				<programlisting language="sql" linenumbering="unnumbered">(
-				  SELECT id, stuff
-				    FROM aaa
-				)
-				INTERSECT
-				(
-				  SELECT id, stuff
-				    FROM bbb
-				)
-				ORDER BY 1
-				;
+<programlisting language="sql" linenumbering="unnumbered">
+(
+  SELECT id, stuff
+    FROM aaa
+)
+INTERSECT
+(
+  SELECT id, stuff
+    FROM bbb
+)
+ORDER BY 1
+;
 
-				 id | stuff
-				----+-------
-				  1 | one
-				  2 | two
-				  5 | five
-				(3 rows)</programlisting>
+ id | stuff
+----+-------
+  1 | one
+  2 | two
+  5 | five
+(3 rows)
+</programlisting>
 				</para></formalpara>
 			</simplesect>
 			<simplesect id="_difference">
@@ -1467,42 +1534,44 @@
 				exist in the right-hand table. You are effectively subtracting the common
 				rows from the left-hand table.</simpara>
 				<formalpara><title>Example of an EXCEPT set operation</title><para>
-				<programlisting language="sql" linenumbering="unnumbered">(
-				  SELECT id, stuff
-				    FROM aaa
-				)
-				EXCEPT
-				(
-				  SELECT id, stuff
-				    FROM bbb
-				)
-				ORDER BY 1
-				;
+<programlisting language="sql" linenumbering="unnumbered">
+(
+  SELECT id, stuff
+    FROM aaa
+)
+EXCEPT
+(
+  SELECT id, stuff
+    FROM bbb
+)
+ORDER BY 1
+;
 
-				 id | stuff
-				----+-------
-				  3 | three
-				  4 | four
-				(2 rows)
+ id | stuff
+----+-------
+  3 | three
+  4 | four
+(2 rows)
 
-				-- Order matters: switch the left-hand and right-hand tables
-				-- and you get a different result
-				(
-				  SELECT id, stuff
-				    FROM bbb
-				)
-				EXCEPT
-				(
-				  SELECT id, stuff
-				    FROM aaa
-				)
-				ORDER BY 1
-				;
+-- Order matters: switch the left-hand and right-hand tables
+-- and you get a different result
+(
+  SELECT id, stuff
+    FROM bbb
+)
+EXCEPT
+(
+  SELECT id, stuff
+    FROM aaa
+)
+ORDER BY 1
+;
 
-				 id | stuff
-				----+-------
-				  6 | six
-				(1 row)</programlisting>
+ id | stuff
+----+-------
+  6 | six
+(1 row)
+</programlisting>
 				</para></formalpara>
 			</simplesect>
 		</simplesect>
@@ -1513,17 +1582,19 @@
 			and a <literal>SELECT</literal> statement on which the view is built.</simpara>
 			<simpara>The following example creates a view based on our borrower profile count:</simpara>
 			<formalpara><title>Creating a view</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">CREATE VIEW actor.borrower_profile_count AS
-			  SELECT pgt.name AS "Profile", aou.name AS "Library", COUNT(pgt.name) AS "Count"
-			    FROM actor.usr au
-			      INNER JOIN permission.grp_tree pgt
-				ON au.profile = pgt.id
-			      INNER JOIN actor.org_unit aou
-				ON aou.id = au.home_ou
-			    WHERE au.deleted IS FALSE
-			    GROUP BY pgt.name, aou.name
-			    ORDER BY aou.name, pgt.name
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+CREATE VIEW actor.borrower_profile_count AS
+  SELECT pgt.name AS "Profile", aou.name AS "Library", COUNT(pgt.name) AS "Count"
+    FROM actor.usr au
+      INNER JOIN permission.grp_tree pgt
+	ON au.profile = pgt.id
+      INNER JOIN actor.org_unit aou
+	ON aou.id = au.home_ou
+    WHERE au.deleted IS FALSE
+    GROUP BY pgt.name, aou.name
+    ORDER BY aou.name, pgt.name
+;
+</programlisting>
 			</para></formalpara>
 			<simpara>When you subsequently select results from the view, you can apply additional
 			<literal>WHERE</literal> clauses to filter the results, or <literal>ORDER BY</literal> clauses to change the
@@ -1533,27 +1604,29 @@
 			Then we issue a <literal>SELECT</literal> statement with a <literal>WHERE</literal> clause to further filter the
 			results.</simpara>
 			<formalpara><title>Selecting results from a view</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT * FROM actor.borrower_profile_count;
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT * FROM actor.borrower_profile_count;
 
-				  Profile           | Library                    | Count
-			----------------------------+----------------------------+-------
-			 Faculty                    | University Library         |   208
-			 Graduate                   | University Library         |    16
-			 Patrons                    | University Library         |    62
-			...
+	  Profile           | Library                    | Count
+----------------------------+----------------------------+-------
+ Faculty                    | University Library         |   208
+ Graduate                   | University Library         |    16
+ Patrons                    | University Library         |    62
+...
 
-			-- You can still filter your results with WHERE clauses
-			SELECT *
-			  FROM actor.borrower_profile_count
-			  WHERE "Profile" = 'Faculty';
+-- You can still filter your results with WHERE clauses
+SELECT *
+  FROM actor.borrower_profile_count
+  WHERE "Profile" = 'Faculty';
 
-			 Profile | Library                    | Count
-			---------+----------------------------+-------
-			 Faculty | University Library         |   208
-			 Faculty | College Library            |    64
-			 Faculty | College Library 2          |   102
-			 Faculty | University Library 2       |   776
-			(4 rows)</programlisting>
+ Profile | Library                    | Count
+---------+----------------------------+-------
+ Faculty | University Library         |   208
+ Faculty | College Library            |    64
+ Faculty | College Library 2          |   102
+ Faculty | University Library 2       |   776
+(4 rows)
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 		<simplesect id="_inheritance">
@@ -1599,17 +1672,19 @@
 		row in the <literal>biblio.record_entry</literal> table with every row in the <literal>metabib.full_rec</literal>
 		view:</simpara>
 		<formalpara><title>Query plan for a terrible query</title><para>
-		<programlisting language="sql" linenumbering="unnumbered">EXPLAIN SELECT *
-		  FROM biblio.record_entry
-		    FULL OUTER JOIN metabib.full_rec ON 1=1
-		;
+<programlisting language="sql" linenumbering="unnumbered">
+EXPLAIN SELECT *
+  FROM biblio.record_entry
+    FULL OUTER JOIN metabib.full_rec ON 1=1
+;
 
-				                   QUERY PLAN
-		-------------------------------------------------------------------------------//
-		 Merge Full Join  (cost=0.00..4959156437783.60 rows=132415734100864 width=1379)
-		   -&gt;  Seq Scan on record_entry  (cost=0.00..400634.16 rows=2013416 width=1292)
-		   -&gt;  Seq Scan on real_full_rec  (cost=0.00..1640972.04 rows=65766704 width=87)
-		(3 rows)</programlisting>
+		                   QUERY PLAN
+-------------------------------------------------------------------------------//
+ Merge Full Join  (cost=0.00..4959156437783.60 rows=132415734100864 width=1379)
+   -&gt;  Seq Scan on record_entry  (cost=0.00..400634.16 rows=2013416 width=1292)
+   -&gt;  Seq Scan on real_full_rec  (cost=0.00..1640972.04 rows=65766704 width=87)
+(3 rows)
+</programlisting>
 		</para></formalpara>
 		<simpara>This query plan shows that the query would return 132415734100864 rows, and it
 		plans to accomplish what you asked for by sequentially scanning (<emphasis>Seq Scan</emphasis>)
@@ -1618,43 +1693,47 @@
 		the left-hand table with every row in the right-hand table and take the saner
 		approach of using an <literal>INNER JOIN</literal> where the join condition is on the record ID.</simpara>
 		<formalpara><title>Query plan for a less terrible query</title><para>
-		<programlisting language="sql" linenumbering="unnumbered">EXPLAIN SELECT *
-		  FROM biblio.record_entry bre
-		    INNER JOIN metabib.full_rec mfr ON mfr.record = bre.id;
-				                        QUERY PLAN
-		----------------------------------------------------------------------------------------//
-		 Hash Join  (cost=750229.86..5829273.98 rows=65766704 width=1379)
-		   Hash Cond: (real_full_rec.record = bre.id)
-		   -&gt;  Seq Scan on real_full_rec  (cost=0.00..1640972.04 rows=65766704 width=87)
-		   -&gt;  Hash  (cost=400634.16..400634.16 rows=2013416 width=1292)
-			 -&gt;  Seq Scan on record_entry bre  (cost=0.00..400634.16 rows=2013416 width=1292)
-		(5 rows)</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+EXPLAIN SELECT *
+  FROM biblio.record_entry bre
+    INNER JOIN metabib.full_rec mfr ON mfr.record = bre.id;
+		                        QUERY PLAN
+----------------------------------------------------------------------------------------//
+ Hash Join  (cost=750229.86..5829273.98 rows=65766704 width=1379)
+   Hash Cond: (real_full_rec.record = bre.id)
+   -&gt;  Seq Scan on real_full_rec  (cost=0.00..1640972.04 rows=65766704 width=87)
+   -&gt;  Hash  (cost=400634.16..400634.16 rows=2013416 width=1292)
+	 -&gt;  Seq Scan on record_entry bre  (cost=0.00..400634.16 rows=2013416 width=1292)
+(5 rows)
+</programlisting>
 		</para></formalpara>
 		<simpara>This time, we will return 65766704 rows - still way too many rows. We forgot
 		to include a <literal>WHERE</literal> clause to limit the results to something meaningful. In
 		the following example, we will limit the results to deleted records that were
 		modified in the last month.</simpara>
 		<formalpara><title>Query plan for a realistic query</title><para>
-		<programlisting language="sql" linenumbering="unnumbered">EXPLAIN SELECT *
-		  FROM biblio.record_entry bre
-		    INNER JOIN metabib.full_rec mfr ON mfr.record = bre.id
-		  WHERE bre.deleted IS TRUE
-		    AND DATE_TRUNC('MONTH', bre.edit_date) &gt;
-			DATE_TRUNC ('MONTH', NOW() - '1 MONTH'::INTERVAL)
-		;
+<programlisting language="sql" linenumbering="unnumbered">
+EXPLAIN SELECT *
+  FROM biblio.record_entry bre
+    INNER JOIN metabib.full_rec mfr ON mfr.record = bre.id
+  WHERE bre.deleted IS TRUE
+    AND DATE_TRUNC('MONTH', bre.edit_date) &gt;
+	DATE_TRUNC ('MONTH', NOW() - '1 MONTH'::INTERVAL)
+;
 
-				                        QUERY PLAN
-		----------------------------------------------------------------------------------------//
-		 Hash Join  (cost=5058.86..2306218.81 rows=201669 width=1379)
-		   Hash Cond: (real_full_rec.record = bre.id)
-		   -&gt;  Seq Scan on real_full_rec  (cost=0.00..1640972.04 rows=65766704 width=87)
-		   -&gt;  Hash  (cost=4981.69..4981.69 rows=6174 width=1292)
-			 -&gt;  Index Scan using biblio_record_entry_deleted on record_entry bre
-				 (cost=0.00..4981.69 rows=6174 width=1292)
-			       Index Cond: (deleted = true)
-			       Filter: ((deleted IS TRUE) AND (date_trunc('MONTH'::text, edit_date)
-				 &gt; date_trunc('MONTH'::text, (now() - '1 mon'::interval))))
-		(7 rows)</programlisting>
+		                        QUERY PLAN
+----------------------------------------------------------------------------------------//
+ Hash Join  (cost=5058.86..2306218.81 rows=201669 width=1379)
+   Hash Cond: (real_full_rec.record = bre.id)
+   -&gt;  Seq Scan on real_full_rec  (cost=0.00..1640972.04 rows=65766704 width=87)
+   -&gt;  Hash  (cost=4981.69..4981.69 rows=6174 width=1292)
+	 -&gt;  Index Scan using biblio_record_entry_deleted on record_entry bre
+		 (cost=0.00..4981.69 rows=6174 width=1292)
+	       Index Cond: (deleted = true)
+	       Filter: ((deleted IS TRUE) AND (date_trunc('MONTH'::text, edit_date)
+		 &gt; date_trunc('MONTH'::text, (now() - '1 mon'::interval))))
+(7 rows)
+</programlisting>
 		</para></formalpara>
 		<simpara>We can see that the number of rows returned is now only 201669; that&#8217;s
 		something we can work with. Also, the overall cost of the query is 2306218,
@@ -1667,30 +1746,32 @@
 		flattened MARC subfields is a fairly common operation, we could create a
 		new index and see if that speeds up our query plan.</simpara>
 		<formalpara><title>Query plan with optimized access via a new index</title><para>
-		<programlisting language="sql" linenumbering="unnumbered">-- This index will take a long time to create on a large database
-		-- of bibliographic records
-		CREATE INDEX bib_record_idx ON metabib.real_full_rec (record);
+<programlisting language="sql" linenumbering="unnumbered">
+-- This index will take a long time to create on a large database
+-- of bibliographic records
+CREATE INDEX bib_record_idx ON metabib.real_full_rec (record);
 
-		EXPLAIN SELECT *
-		  FROM biblio.record_entry bre
-		    INNER JOIN metabib.full_rec mfr ON mfr.record = bre.id
-		  WHERE bre.deleted IS TRUE
-		    AND DATE_TRUNC('MONTH', bre.edit_date) &gt;
-			DATE_TRUNC ('MONTH', NOW() - '1 MONTH'::INTERVAL)
-		;
+EXPLAIN SELECT *
+  FROM biblio.record_entry bre
+    INNER JOIN metabib.full_rec mfr ON mfr.record = bre.id
+  WHERE bre.deleted IS TRUE
+    AND DATE_TRUNC('MONTH', bre.edit_date) &gt;
+	DATE_TRUNC ('MONTH', NOW() - '1 MONTH'::INTERVAL)
+;
 
-				                        QUERY PLAN
-		----------------------------------------------------------------------------------------//
-		 Nested Loop  (cost=0.00..1558330.46 rows=201669 width=1379)
-		   -&gt;  Index Scan using biblio_record_entry_deleted on record_entry bre
-			   (cost=0.00..4981.69 rows=6174 width=1292)
-			 Index Cond: (deleted = true)
-			 Filter: ((deleted IS TRUE) AND (date_trunc('MONTH'::text, edit_date) &gt;
-			   date_trunc('MONTH'::text, (now() - '1 mon'::interval))))
-		   -&gt;  Index Scan using bib_record_idx on real_full_rec
-			  (cost=0.00..240.89 rows=850 width=87)
-			 Index Cond: (real_full_rec.record = bre.id)
-		(6 rows)</programlisting>
+		                        QUERY PLAN
+----------------------------------------------------------------------------------------//
+ Nested Loop  (cost=0.00..1558330.46 rows=201669 width=1379)
+   -&gt;  Index Scan using biblio_record_entry_deleted on record_entry bre
+	   (cost=0.00..4981.69 rows=6174 width=1292)
+	 Index Cond: (deleted = true)
+	 Filter: ((deleted IS TRUE) AND (date_trunc('MONTH'::text, edit_date) &gt;
+	   date_trunc('MONTH'::text, (now() - '1 mon'::interval))))
+   -&gt;  Index Scan using bib_record_idx on real_full_rec
+	  (cost=0.00..240.89 rows=850 width=87)
+	 Index Cond: (real_full_rec.record = bre.id)
+(6 rows)
+</programlisting>
 		</para></formalpara>
 		<simpara>We can see that the resulting number of rows is still the same (201669), but
 		the execution estimate has dropped to 1558330 because the query planner can
@@ -1723,19 +1804,21 @@
 			<simpara>Of course, as with the rest of SQL, you can replace individual column values
 			with one or more use sub-selects:</simpara>
 			<formalpara><title>Inserting rows using sub-selects instead of integers</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">INSERT INTO permission.usr_grp_map (usr, grp)
-			  VALUES (
-			    (SELECT id FROM actor.usr
-			       WHERE family_name = 'Scott' AND first_given_name = 'Daniel'),
-			    (SELECT id FROM permission.grp_tree
-			       WHERE name = 'Local System Administrator')
-			  ), (
-			    (SELECT id FROM actor.usr
-			       WHERE family_name = 'Scott' AND first_given_name = 'Daniel'),
-			    (SELECT id FROM permission.grp_tree
-			       WHERE name = 'Circulator')
-			  )
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+INSERT INTO permission.usr_grp_map (usr, grp)
+  VALUES (
+    (SELECT id FROM actor.usr
+       WHERE family_name = 'Scott' AND first_given_name = 'Daniel'),
+    (SELECT id FROM permission.grp_tree
+       WHERE name = 'Local System Administrator')
+  ), (
+    (SELECT id FROM actor.usr
+       WHERE family_name = 'Scott' AND first_given_name = 'Daniel'),
+    (SELECT id FROM permission.grp_tree
+       WHERE name = 'Circulator')
+  )
+;
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 		<simplesect id="_inserting_data_using_a_select_statement">
@@ -1751,13 +1834,15 @@
 			the <literal>grp</literal> column value based on the <literal>id</literal> column values returned from
 			<literal>permission.grp_tree</literal>:</simpara>
 			<formalpara><title>Inserting rows via a <literal>SELECT</literal> statement</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">INSERT INTO permission.usr_grp_map (usr, grp)
-			  SELECT 1, id
-			    FROM permission.grp_tree
-			    WHERE id &gt; 2
-			;
+<programlisting language="sql" linenumbering="unnumbered">
+INSERT INTO permission.usr_grp_map (usr, grp)
+  SELECT 1, id
+    FROM permission.grp_tree
+    WHERE id &gt; 2
+;
 
-			INSERT 0 6</programlisting>
+INSERT 0 6
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 		<simplesect id="_deleting_rows">
@@ -1769,23 +1854,24 @@
 			<literal>permission.grp_perm_map</literal> table where the permission maps to
 			<literal>UPDATE_ORG_UNIT_CLOSING</literal> and the group is anything other than administrators:</simpara>
 			<formalpara><title>Deleting rows from a table</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">DELETE FROM permission.grp_perm_map
-			  WHERE grp IN (
-			    SELECT id
-			      FROM permission.grp_tree
-			      WHERE name != 'Local System Administrator'
-			  ) AND perm = (
-			    SELECT id
-			      FROM permission.perm_list
-				      WHERE code = 'UPDATE_ORG_UNIT_CLOSING'
-				  )
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+DELETE FROM permission.grp_perm_map
+  WHERE grp IN (
+    SELECT id
+      FROM permission.grp_tree
+      WHERE name != 'Local System Administrator'
+  ) AND perm = (
+    SELECT id
+      FROM permission.perm_list
+	      WHERE code = 'UPDATE_ORG_UNIT_CLOSING'
+	  )
+;
+</programlisting>
 			</para></formalpara>
 			<note><simpara>There are two main reasons that a <literal>DELETE</literal> statement may not actually
 			delete rows from a table, even when the rows meet the conditional clause.</simpara></note>
 			<orderedlist numeration="arabic">
 			<listitem>
-
 			<simpara>
 			If the row contains a value that is the target of a relational constraint,
 			for example, if another table has a foreign key pointing at your target
@@ -1831,102 +1917,114 @@
 		<simplesect id="_monthly_circulation_stats_by_collection_code_library">
 			<title>Monthly circulation stats by collection code / library</title>
 			<formalpara><title>Monthly Circulation Stats by Collection Code/Library</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT COUNT(acirc.id) AS "COUNT", aou.name AS "Library", acl.name AS "Copy Location"
-			  FROM asset.copy ac
-			    INNER JOIN asset.copy_location acl ON ac.location = acl.id
-			    INNER JOIN action.circulation acirc ON acirc.target_copy = ac.id
-			    INNER JOIN actor.org_unit aou ON acirc.circ_lib = aou.id
-			  WHERE DATE_TRUNC('MONTH', acirc.create_time) = DATE_TRUNC('MONTH', NOW() - INTERVAL '3 month')
-			    AND acirc.desk_renewal IS FALSE
-			    AND acirc.opac_renewal IS FALSE
-			    AND acirc.phone_renewal IS FALSE
-			  GROUP BY aou.name, acl.name
-			  ORDER BY aou.name, acl.name, 1
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT COUNT(acirc.id) AS "COUNT", aou.name AS "Library", acl.name AS "Copy Location"
+  FROM asset.copy ac
+    INNER JOIN asset.copy_location acl ON ac.location = acl.id
+    INNER JOIN action.circulation acirc ON acirc.target_copy = ac.id
+    INNER JOIN actor.org_unit aou ON acirc.circ_lib = aou.id
+  WHERE DATE_TRUNC('MONTH', acirc.create_time) = DATE_TRUNC('MONTH', NOW() - INTERVAL '3 month')
+    AND acirc.desk_renewal IS FALSE
+    AND acirc.opac_renewal IS FALSE
+    AND acirc.phone_renewal IS FALSE
+  GROUP BY aou.name, acl.name
+  ORDER BY aou.name, acl.name, 1
+;
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 		<simplesect id="_monthly_circulation_stats_by_borrower_stat_library">
 			<title>Monthly circulation stats by borrower stat / library</title>
 			<formalpara><title>Monthly Circulation Stats by Borrower Stat/Library</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT COUNT(acirc.id) AS "COUNT", aou.name AS "Library", asceum.stat_cat_entry AS "Borrower Stat"
-			  FROM action.circulation acirc
-			    INNER JOIN actor.org_unit aou ON acirc.circ_lib = aou.id
-			    INNER JOIN actor.stat_cat_entry_usr_map asceum ON asceum.target_usr = acirc.usr
-			    INNER JOIN actor.stat_cat astat ON asceum.stat_cat = astat.id
-			  WHERE DATE_TRUNC('MONTH', acirc.create_time) = DATE_TRUNC('MONTH', NOW() - INTERVAL '3 month')
-			    AND astat.name = 'Preferred language'
-			    AND acirc.desk_renewal IS FALSE
-			    AND acirc.opac_renewal IS FALSE
-			    AND acirc.phone_renewal IS FALSE
-			  GROUP BY aou.name, asceum.stat_cat_entry
-			  ORDER BY aou.name, asceum.stat_cat_entry, 1
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT COUNT(acirc.id) AS "COUNT", aou.name AS "Library", asceum.stat_cat_entry AS "Borrower Stat"
+  FROM action.circulation acirc
+    INNER JOIN actor.org_unit aou ON acirc.circ_lib = aou.id
+    INNER JOIN actor.stat_cat_entry_usr_map asceum ON asceum.target_usr = acirc.usr
+    INNER JOIN actor.stat_cat astat ON asceum.stat_cat = astat.id
+  WHERE DATE_TRUNC('MONTH', acirc.create_time) = DATE_TRUNC('MONTH', NOW() - INTERVAL '3 month')
+    AND astat.name = 'Preferred language'
+    AND acirc.desk_renewal IS FALSE
+    AND acirc.opac_renewal IS FALSE
+    AND acirc.phone_renewal IS FALSE
+  GROUP BY aou.name, asceum.stat_cat_entry
+  ORDER BY aou.name, asceum.stat_cat_entry, 1
+;
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 		<simplesect id="_monthly_intralibrary_loan_stats_by_library">
 			<title>Monthly intralibrary loan stats by library</title>
 			<formalpara><title>Monthly Intralibrary Loan Stats by Library</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT aou.name AS "Library", COUNT(acirc.id)
-			  FROM action.circulation acirc
-			    INNER JOIN actor.org_unit aou ON acirc.circ_lib = aou.id
-			    INNER JOIN asset.copy ac ON acirc.target_copy = ac.id
-			    INNER JOIN asset.call_number acn ON ac.call_number = acn.id
-			  WHERE acirc.circ_lib != acn.owning_lib
-			    AND DATE_TRUNC('MONTH', acirc.create_time) = DATE_TRUNC('MONTH', NOW() - INTERVAL '3 month')
-			    AND acirc.desk_renewal IS FALSE
-			    AND acirc.opac_renewal IS FALSE
-			    AND acirc.phone_renewal IS FALSE
-			  GROUP by aou.name
-			  ORDER BY aou.name, 2
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT aou.name AS "Library", COUNT(acirc.id)
+  FROM action.circulation acirc
+    INNER JOIN actor.org_unit aou ON acirc.circ_lib = aou.id
+    INNER JOIN asset.copy ac ON acirc.target_copy = ac.id
+    INNER JOIN asset.call_number acn ON ac.call_number = acn.id
+  WHERE acirc.circ_lib != acn.owning_lib
+    AND DATE_TRUNC('MONTH', acirc.create_time) = DATE_TRUNC('MONTH', NOW() - INTERVAL '3 month')
+    AND acirc.desk_renewal IS FALSE
+    AND acirc.opac_renewal IS FALSE
+    AND acirc.phone_renewal IS FALSE
+  GROUP by aou.name
+  ORDER BY aou.name, 2
+;
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 		<simplesect id="_monthly_borrowers_added_by_profile_adult_child_etc_library">
 			<title>Monthly borrowers added by profile (adult, child, etc) / library</title>
 			<formalpara><title>Monthly Borrowers Added by Profile (Adult, Child, etc)/Library</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT pgt.name AS "Profile", aou.name AS "Library", COUNT(pgt.name) AS "Count"
-			  FROM actor.usr au
-			    INNER JOIN permission.grp_tree pgt
-			      ON au.profile = pgt.id
-			    INNER JOIN actor.org_unit aou
-			      ON aou.id = au.home_ou
-			  WHERE au.deleted IS FALSE
-			    AND DATE_TRUNC('MONTH', au.create_date) = DATE_TRUNC('MONTH', NOW() - '3 months'::interval)
-			  GROUP BY pgt.name, aou.name
-			  ORDER BY aou.name, pgt.name
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT pgt.name AS "Profile", aou.name AS "Library", COUNT(pgt.name) AS "Count"
+  FROM actor.usr au
+    INNER JOIN permission.grp_tree pgt
+      ON au.profile = pgt.id
+    INNER JOIN actor.org_unit aou
+      ON aou.id = au.home_ou
+  WHERE au.deleted IS FALSE
+    AND DATE_TRUNC('MONTH', au.create_date) = DATE_TRUNC('MONTH', NOW() - '3 months'::interval)
+  GROUP BY pgt.name, aou.name
+  ORDER BY aou.name, pgt.name
+;
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 		<simplesect id="_borrower_count_by_profile_adult_child_etc_library">
 			<title>Borrower count by profile (adult, child, etc) / library</title>
 			<formalpara><title>Borrower Count by Profile (Adult, Child, etc)/Library</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT pgt.name AS "Profile", aou.name AS "Library", COUNT(pgt.name) AS "Count"
-			  FROM actor.usr au
-			    INNER JOIN permission.grp_tree pgt
-			      ON au.profile = pgt.id
-			    INNER JOIN actor.org_unit aou
-			      ON aou.id = au.home_ou
-			  WHERE au.deleted IS FALSE
-			  GROUP BY pgt.name, aou.name
-			  ORDER BY aou.name, pgt.name
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT pgt.name AS "Profile", aou.name AS "Library", COUNT(pgt.name) AS "Count"
+  FROM actor.usr au
+    INNER JOIN permission.grp_tree pgt
+      ON au.profile = pgt.id
+    INNER JOIN actor.org_unit aou
+      ON aou.id = au.home_ou
+  WHERE au.deleted IS FALSE
+  GROUP BY pgt.name, aou.name
+  ORDER BY aou.name, pgt.name
+;
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 		<simplesect id="_monthly_items_added_by_collection_library">
 			<title>Monthly items added by collection / library</title>
-			<simpara>We define a "collection" as a shelving location in Evergreen.</simpara>
+			<simpara>We define a <quote>collection</quote> as a shelving location in Evergreen.</simpara>
 			<formalpara><title>Monthly Items Added by Collection/Library</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">SELECT aou.name AS "Library", acl.name, COUNT(ac.barcode)
-			  FROM actor.org_unit aou
-			    INNER JOIN asset.call_number acn ON acn.owning_lib = aou.id
-			    INNER JOIN asset.copy ac ON ac.call_number = acn.id
-			    INNER JOIN asset.copy_location acl ON ac.location = acl.id
-			  WHERE ac.deleted IS FALSE
-			    AND acn.deleted IS FALSE
-			    AND DATE_TRUNC('MONTH', ac.create_date) = DATE_TRUNC('MONTH', NOW() - '1 month'::interval)
-			  GROUP BY aou.name, acl.name
-			  ORDER BY aou.name, acl.name
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT aou.name AS "Library", acl.name, COUNT(ac.barcode)
+  FROM actor.org_unit aou
+    INNER JOIN asset.call_number acn ON acn.owning_lib = aou.id
+    INNER JOIN asset.copy ac ON ac.call_number = acn.id
+    INNER JOIN asset.copy_location acl ON ac.location = acl.id
+  WHERE ac.deleted IS FALSE
+    AND acn.deleted IS FALSE
+    AND DATE_TRUNC('MONTH', ac.create_date) = DATE_TRUNC('MONTH', NOW() - '1 month'::interval)
+  GROUP BY aou.name, acl.name
+  ORDER BY aou.name, acl.name
+;
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 		<simplesect id="_hold_purchase_alert_by_library">
@@ -1937,48 +2035,50 @@
 			bibliographic record ID and display the title / author information for those
 			records that have more than a given threshold of holds.</simpara>
 			<formalpara><title>Hold Purchase Alert by Library</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">-- Title holds
-			SELECT all_holds.bib_id, aou.name, rmsr.title, rmsr.author, COUNT(all_holds.bib_id)
-			  FROM
-			    (
-			      (
-				SELECT target, request_lib
-				  FROM action.hold_request
-				  WHERE hold_type = 'T'
-				    AND fulfillment_time IS NULL
-				    AND cancel_time IS NULL
-			      )
-			      UNION ALL
-			      -- Volume holds
-			      (
-				SELECT bre.id, request_lib
-				  FROM action.hold_request ahr
-				    INNER JOIN asset.call_number acn ON ahr.target = acn.id
-				    INNER JOIN biblio.record_entry bre ON acn.record = bre.id
-				  WHERE ahr.hold_type = 'V'
-				    AND ahr.fulfillment_time IS NULL
-				    AND ahr.cancel_time IS NULL
-			      )
-			      UNION ALL
-			      -- Copy holds
-			      (
-				SELECT bre.id, request_lib
-				  FROM action.hold_request ahr
-				    INNER JOIN asset.copy ac ON ahr.target = ac.id
-				    INNER JOIN asset.call_number acn ON ac.call_number = acn.id
-				    INNER JOIN biblio.record_entry bre ON acn.record = bre.id
-				  WHERE ahr.hold_type = 'C'
-				    AND ahr.fulfillment_time IS NULL
-				    AND ahr.cancel_time IS NULL
-			      )
-			    ) AS all_holds(bib_id, request_lib)
-			  INNER JOIN reporter.materialized_simple_record rmsr
-			  INNER JOIN actor.org_unit aou ON aou.id = all_holds.request_lib
-			    ON rmsr.id = all_holds.bib_id
-			  GROUP BY all_holds.bib_id, aou.name, rmsr.id, rmsr.title, rmsr.author
-			  HAVING COUNT(all_holds.bib_id) &gt; 2
-			  ORDER BY aou.name
-			;</programlisting>
+<programlisting language="sql" linenumbering="unnumbered">
+-- Title holds
+SELECT all_holds.bib_id, aou.name, rmsr.title, rmsr.author, COUNT(all_holds.bib_id)
+  FROM
+    (
+      (
+	SELECT target, request_lib
+	  FROM action.hold_request
+	  WHERE hold_type = 'T'
+	    AND fulfillment_time IS NULL
+	    AND cancel_time IS NULL
+      )
+      UNION ALL
+      -- Volume holds
+      (
+	SELECT bre.id, request_lib
+	  FROM action.hold_request ahr
+	    INNER JOIN asset.call_number acn ON ahr.target = acn.id
+	    INNER JOIN biblio.record_entry bre ON acn.record = bre.id
+	  WHERE ahr.hold_type = 'V'
+	    AND ahr.fulfillment_time IS NULL
+	    AND ahr.cancel_time IS NULL
+      )
+      UNION ALL
+      -- Copy holds
+      (
+	SELECT bre.id, request_lib
+	  FROM action.hold_request ahr
+	    INNER JOIN asset.copy ac ON ahr.target = ac.id
+	    INNER JOIN asset.call_number acn ON ac.call_number = acn.id
+	    INNER JOIN biblio.record_entry bre ON acn.record = bre.id
+	  WHERE ahr.hold_type = 'C'
+	    AND ahr.fulfillment_time IS NULL
+	    AND ahr.cancel_time IS NULL
+      )
+    ) AS all_holds(bib_id, request_lib)
+  INNER JOIN reporter.materialized_simple_record rmsr
+  INNER JOIN actor.org_unit aou ON aou.id = all_holds.request_lib
+    ON rmsr.id = all_holds.bib_id
+  GROUP BY all_holds.bib_id, aou.name, rmsr.id, rmsr.title, rmsr.author
+  HAVING COUNT(all_holds.bib_id) &gt; 2
+  ORDER BY aou.name
+;
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 		<simplesect id="_update_borrower_records_with_a_different_home_library">
@@ -1991,30 +2091,32 @@
 			<simpara>Then we issue an <literal>UPDATE</literal> statement to set the home library for patrons with a
 			physical address with a city that matches the city names in our staging table.</simpara>
 			<formalpara><title>Update borrower records with a different home library</title><para>
-			<programlisting language="sql" linenumbering="unnumbered">CREATE SCHEMA staging;
-			CREATE TABLE staging.city_home_ou_map (city TEXT, ou_shortname TEXT,
-			  FOREIGN KEY (ou_shortname) REFERENCES actor.org_unit (shortname));
-			INSERT INTO staging.city_home_ou_map (city, ou_shortname)
-			  VALUES ('Southbury', 'BR1'), ('Middlebury', 'BR2'), ('Hartford', 'BR3');
-			BEGIN;
+<programlisting language="sql" linenumbering="unnumbered">
+CREATE SCHEMA staging;
+CREATE TABLE staging.city_home_ou_map (city TEXT, ou_shortname TEXT,
+  FOREIGN KEY (ou_shortname) REFERENCES actor.org_unit (shortname));
+INSERT INTO staging.city_home_ou_map (city, ou_shortname)
+  VALUES ('Southbury', 'BR1'), ('Middlebury', 'BR2'), ('Hartford', 'BR3');
+BEGIN;
 
-			UPDATE actor.usr au SET home_ou = COALESCE(
-			  (
-			    SELECT aou.id
-			      FROM actor.org_unit aou
-				INNER JOIN staging.city_home_ou_map schom ON schom.ou_shortname = aou.shortname
-				INNER JOIN actor.usr_address aua ON aua.city = schom.city
-			      WHERE au.id = aua.usr
-			      GROUP BY aou.id
-			  ), home_ou)
-			WHERE (
-			  SELECT aou.id
-			    FROM actor.org_unit aou
-			      INNER JOIN staging.city_home_ou_map schom ON schom.ou_shortname = aou.shortname
-			      INNER JOIN actor.usr_address aua ON aua.city = schom.city
-			    WHERE au.id = aua.usr
-			    GROUP BY aou.id
-			) IS NOT NULL;</programlisting>
+UPDATE actor.usr au SET home_ou = COALESCE(
+  (
+    SELECT aou.id
+      FROM actor.org_unit aou
+	INNER JOIN staging.city_home_ou_map schom ON schom.ou_shortname = aou.shortname
+	INNER JOIN actor.usr_address aua ON aua.city = schom.city
+      WHERE au.id = aua.usr
+      GROUP BY aou.id
+  ), home_ou)
+WHERE (
+  SELECT aou.id
+    FROM actor.org_unit aou
+      INNER JOIN staging.city_home_ou_map schom ON schom.ou_shortname = aou.shortname
+      INNER JOIN actor.usr_address aua ON aua.city = schom.city
+    WHERE au.id = aua.usr
+    GROUP BY aou.id
+) IS NOT NULL;
+</programlisting>
 			</para></formalpara>
 		</simplesect>
 	</section>
