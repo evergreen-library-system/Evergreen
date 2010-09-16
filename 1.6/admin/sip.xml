@@ -369,7 +369,7 @@ Escape character is '^]'.
                 		</tbody>
             		</tgroup>
         	</informaltable>
-		<simplesect xml:id="SIP_block_patron">
+		<simplesect xml:id="SIP_Block_Patron">
 			<title>01 Block Patron</title>
 			<para>A selfcheck will issue a <command>Block Patron</command> command if a patron leaves their card in a selfcheck machine or if the selfcheck detects tampering (such as attempts 
 			to disable multiple items during a single item checkout, multiple failed pin entries, etc).</para><indexterm><primary>SelfCheck</primary></indexterm>
@@ -493,7 +493,7 @@ Escape character is '^]'.
 			<title>25/26 Patron Enable</title>
 			<para>Not yet supported.</para>
 		</simplesect>
-		<simplesect xml:id="sip_Renew">
+		<simplesect xml:id="SIP_Renew">
 			<title>29/30 Renew</title>
 			<para>Evergreen ACS status message indicates <emphasis>renew</emphasis> is supported.</para>
 		</simplesect>

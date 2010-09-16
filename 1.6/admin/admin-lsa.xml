@@ -133,7 +133,7 @@
                </row>
                <row>
                   <entry>
-                     <link linkend="report-introduction">Reports</link>
+                     Reports
                   </entry>
                   <entry>Generate reports on any field in the Evergreen database</entry>                  
                </row>
@@ -145,7 +145,7 @@
                </row>
                <row>
                   <entry>
-                     <link linkend="transit">Transit List</link>
+			Transit List
                   </entry>
                   <entry>View items in transit to or from your library during selected date
                      range</entry>              
@@ -403,8 +403,7 @@
          <para>There are also options in the <guilabel>Copy Editor</guilabel> for a copy to be
                <guilabel>OPAC Visible</guilabel>-yes or no, <guilabel>Holdable</guilabel>-yes or no,
             or <guilabel>Circulate</guilabel>-yes or no.  If either the copy record or the shelving
-            location is set to Circulate-no, then the item will not be able to circulate. See <xref
-               linkend="add"/> for more about the <guilabel>Copy Editor.</guilabel></para>
+            location is set to Circulate-no, then the item will not be able to circulate.</para>
       </tip>
       <informalfigure>
          <para>This is where you see the shelving locations in the <guilabel>Copy
@@ -574,8 +573,7 @@
                      <entry>Sets language used in staff client</entry>
                      <entry><link linkend="lsa-data-types">Text</link> (dollars)</entry>
                      
-                     <entry>Can be set for each workstation at <link linkend="intro-login"
-                           >login</link></entry>
+                     <entry>Can be set for each workstation at login</entry>
                   </row>
 
                   <row xml:id="lsa-do-not-automatically-delete">

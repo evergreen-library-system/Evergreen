@@ -171,8 +171,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	      <procedure>
 
 		 <step>
-		    <para>Open the <guilabel>Organizational Units</guilabel> interface as described in the steps
-		          <link linkend="server-main">above</link>.</para>
+		    <para>Open the <guilabel>Organizational Units</guilabel> interface.</para>
 		 </step>
 		 <step>
 		    <informalfigure>
@@ -1792,9 +1791,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		<simplesect>
 			<title>Indexed-field Weighting<indexterm><primary>relevancy</primary><secondary>indexed-field weighting</secondary></indexterm> </title>
 			<para>Indexed-field weighting is configured in the Evergreen database in the weight column
-			of the <link linkend="config.metabib_field">config.metabib_field</link> table, which follows the other four columns in this table:
+			of the <link linkend="config.table.metabib-field">config.metabib_field</link> table, which follows the other four columns in this table:
 			field_class, name, xpath, and format.</para>
-			<para>The following is one representative line from the <link linkend="config.metabib_field">config.metabib_field</link> table:</para>
+			<para>The following is one representative line from the <link linkend="config.table.metabib-field">config.metabib_field</link> table:</para>
 			<screen> author | conference | //mods32:mods/mods32:name[@type='conference']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']] | mods32 | 1 ) </screen>
 			<para>The default value for index-field weights in config.metabib_field is 1. Adjust the
 			weighting of indexed fields to boost or lower the relevance score for matches on that
@@ -2001,7 +2000,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<para> Searching the out of the box <emphasis>keyword</emphasis> does not boost the ranking for terms appearing in, the title or subject fields since  there is just one 
 			keyword index which does not distinguish terms that appear in the title field from those in the notes field for example. In comparison, the title index is actually composed of 
 			a number of separate indexes: title|proper, title|uniform, title|alternative, title|translated, etc, that collectively form the title index. You can see this in the 
-			<link linkend="config.metabib_field">config.metabib_field</link> table. The following procedure will add a keyword|title index so that terms found in the title field of an 
+			<link linkend="config.table.metabib-field">config.metabib_field</link> table. The following procedure will add a keyword|title index so that terms found in the title field of an 
 			item are given more weight than terms in other fields. </para>
 			<procedure>
 				<step>
@@ -2026,7 +2025,7 @@ INSERT INTO config.metabib_field
 INSERT INTO metabib.keyword_field_entry 
 	(source, field, value)
 	SELECT source, 17, value (the field value, 17, field be different in your database so you may need to check the 
-	<link linkend="config.metabib_field">config.metabib_field</link> for the id of your new index).
+	<link linkend="config.table.metabib-field">config.metabib_field</link> for the id of your new index).
 	FROM metabib.title_field_entry
 	WHERE field = 6;
 </programlisting>
@@ -2034,7 +2033,7 @@ INSERT INTO metabib.keyword_field_entry
 				<step> 
 					<para>Bump the relevance when the first search term appears first in the title in a keyword search.</para>
 					<para>17 = our new keyword|title index (This may be different in your database so you may need to check the 
-					<link linkend="config.metabib_field">config.metabib_field</link> for the id 
+					<link linkend="config.table.metabib-field">config.metabib_field</link> for the id 
 					of your new index).</para>
 <programlisting>
 INSERT INTO search.relevance_adjustment 
@@ -2045,7 +2044,7 @@ VALUES (true, 17, 'first_word', 5);
 				<step>
 					<para>Boost the relevance for search terms appearing in the title in general</para>
 					<para>17 = our new keyword|title index (This may be different in your database so you may need to check the 
-					<link linkend="config.metabib_field">config.metabib_field</link> for the id 
+					<link linkend="config.table.metabib-field">config.metabib_field</link> for the id 
 					of your new index).</para>
 <programlisting>
 UPDATE config.metabib_field

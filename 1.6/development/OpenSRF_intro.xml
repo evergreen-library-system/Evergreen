@@ -352,9 +352,6 @@ __PACKAGE__-&gt;register_method(
 			</calloutlist>
 			<simpara>Once you have defined the new service, you must restart the OpenSRF Router
 			to retrieve the new configuration and start or restart the service itself.</simpara>
-			<simpara>Complete working examples of the <link linkend="opensrf-core-xml">opensrf_core.xml</link> and
-			<link linkend="opensrf-xml">opensrf.xml</link> configuration files are included with this article
-			for your reference.</simpara>
 		</simplesect>
 		<simplesect id="_calling_an_opensrf_method">
 			<title>Calling an OpenSRF method</title>
