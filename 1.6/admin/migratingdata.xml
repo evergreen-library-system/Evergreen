@@ -12,38 +12,41 @@
 	<section xml:id="migratingpatrons">
 		<title>Migrating Patron Data</title>
 		<para>
-		This section will explain the task of migrating your patron data from Comma Delimited Files into Evergreen. It does not deal with the process of exporting from the non-Evergreen 
+		This section will explain the task of migrating your patron data from comma delimited files<indexterm><primary>comma delimited files</primary></indexterm> into Evergreen. 
+		It does not deal with the process of exporting from the non-Evergreen 
 		system since this process may vary depending on where you are extracting your patron records. Patron could come from an ILS or it could come from a student database in the case of 
 		academic records.  		
 		</para>
 		<para>When importing records into Evergreen you will need to populate 3 tables in your Evergreen database:</para>
 		<itemizedlist>
-			<listitem><link linkend="actor.table.usr">actor.usr</link> - This is the main table for user data</listitem>
-			<listitem><link linkend="actor.table.card">actor.card</link> - Stores the barcode for users. Users can have more than 1 card but only 1 can be active at a given time.</listitem>
-			<listitem><link linkend="actor.table.usr_address">actor.usr_address</link> - Used for storing address information. A user can have more than one address.</listitem>
+			<listitem><link linkend="actor.table.usr">actor.usr</link> - The main table for user data</listitem>
+			<listitem><link linkend="actor.table.card">actor.card</link> - Stores the barcode for users; Users can have more than 1 card but only 1 can be active at a given time;</listitem>
+			<listitem><link linkend="actor.table.usr-address">actor.usr_address</link> - Used for storing address information; A user can have more than one address.</listitem>
 		</itemizedlist>
 		<para>Before following the procedures below to import patron data into Evergreen, it is a good idea to examine the fields in these tables in order to decide on a strategy 
 		for data to include 
-		in your import. It is important to understand the data types and constraints of the fields.</para>
+		in your import. It is important to understand the data types and constraints on each field.</para>
 		<procedure>
 			<step>
-				<para>Export the patron data from your existing ILS or from another source into a Comma Delimited File. The Comma Delimited File used for importing the records should 
-				use Unicode (UTF8) character encoding.</para>
+				<para>Export the patron data from your existing ILS or from another source into a comma delimited file. The comma delimited file used for importing
+				 the records should use Unicode (UTF8) <indexterm><primary>Unicode</primary></indexterm> character encoding.</para>
 			</step>
 			<step>
-				<para>Create a staging table. A staging table will allow you to tweak the data before importing. Here is an example sql statement:</para>
+				<para>Create a staging table.<indexterm><primary>staging table</primary></indexterm>  A staging table will allow you to tweak the data before importing. 
+				Here is an example sql statement:</para>
+				<indexterm><primary>sql</primary></indexterm> 
 <programlisting language="sql">
 CREATE TABLE students (
 	student_id int, barcode text, last_name text, first_name text, program_number text, program_name text, email text, address_type text, street1 text, street2 text, city text, province text, 
 	country text, postal_code text, phone text, profile int, ident_type int, home_ou int, claims_returned_count int DEFAULT 0, usrname text, net_access_level int DEFAULT 2, password text
 ); 
 </programlisting>
-				<para>Note the <varname>DEFAULT</varname> variables. These allow you to set default for your library or to populate required fields if you data allows NULL values where 
-				fields are required in Evergreen.</para>
+				<para>Note the <varname>DEFAULT</varname> variables. These allow you to set default for your library or to populate required fields if you data allows 
+				<systemitem>NULL</systemitem> values where fields are required in Evergreen.</para>
 			</step>
 			<step>
 				<para>Formatting of some fields to fit Evergreen filed formatting may be required. Here is an example of sql to adjust phone numbers in the staging 
-				table top fit the evergreen field:</para>
+				table to fit the evergreen field:</para>
 <programlisting language="sql">
 UPDATE students phone = replace(replace(replace(rpad(substring(phone from 1 for 9), 10, '-') || substring(phone from 10), '(', ''), ')', ''), ' ', '-');
 </programlisting>
@@ -78,7 +81,7 @@ UPDATE actor.usr
 </programlisting>			
 			</step>
 			<step>
-				<para>Insert records into actor.usr_address to add address information for users:</para>
+				<para>Insert records into <link linkend="actor.table.usr-address">actor.usr_address</link> to add address information for users:</para>
 <programlisting language="sql">
 INSERT INTO actor.usr_address (usr, street1, street2, city, state, country, post_code) 
 	SELECT actor.usr.id, students.street1, students.street2, students.city, students.province, students.country, students.postal_code 
@@ -87,14 +90,14 @@ INSERT INTO actor.usr_address (usr, street1, street2, city, state, country, post
 </programlisting>			
 			</step>
 			<step>
-				<para>update actor.usr.address with address id from address table.</para>
+				<para>update <link linkend="actor.table.usr-address">actor.usr.address</link> with address id from address table.</para>
 <programlisting language="sql">
 UPDATE actor.usr 
 	SET mailing_address = actor.usr_address.id, billing_address = actor.usr_address.id 
 	FROM actor.usr_address 
 	WHERE actor.usr.id = actor.usr_address.usr;
 </programlisting>	
-			<para>This assumes 1 address per student. More complex scenarios may require more sophisticated SQL.</para>		
+			<para>This assumes 1 address per patron. More complex scenarios may require more sophisticated SQL.</para>		
 			</step>
 		</procedure>
 		<simplesect>
@@ -152,8 +155,8 @@ UPDATE actor.usr
 
 COMMIT;
 </programlisting>
-					<para>Placing the sql statements between <code>BEGIN;</code> and <code>COMMIT;</code> creates a transaction block so that if any statements fail, the 
-					entire process is canceled and the database is rolled back to its original state. Lines beginning with <emphasis>--</emphasis> are comments to let you you what 
+					<para>Placing the sql statements between <code>BEGIN;</code> and <code>COMMIT;</code> creates a transaction block so that if any sql statements fail, the 
+					entire process is canceled and the database is rolled back to its original state. Lines beginning with <code>--</code> are comments to let you you what 
 					each sql statement is doing and are not processed.</para> 
 				</step>
 			</procedure>
@@ -164,9 +167,9 @@ COMMIT;
 			import script can be easily adapted to create an update script for importing new patrons from external databases. If the data import file contains only new patrons, then, 
 			the above procedures will work well to insert those patrons. However, if the data load contains all patrons, a second staging table and a procedure to remove existing 				patrons from that second staging table may be required before importing the new patrons. Moreover, additional steps to update address information and perhaps delete 
 			inactive patrons may also be desired depending on the requirements of the institution.</para>
-			<para>After developing the scripts to import and update patrons have been created, another important task of library staff is to develop an strategy and schedule 
+			<para>After developing the scripts to import and update patrons have been created, another important task for library staff is to develop an import strategy and schedule 
 			which suits the needs of the library. This could be determined by registration dates of your institution in the case of academic libraries. It is important to balance 
-			the convenience of patron loads and the cost of processing these loads vs staff adding patrons as needed.</para>   
+			the convenience of patron loads and the cost of processing these loads vs staff adding patrons manually.</para>   
 	       </simplesect> 
 	</section>
 </chapter>
