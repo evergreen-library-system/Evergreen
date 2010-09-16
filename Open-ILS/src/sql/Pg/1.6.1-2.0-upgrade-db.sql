@@ -3,7 +3,7 @@ BEGIN;
 -- Highest-numbered individual upgrade script
 -- incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0399');
+INSERT INTO config.upgrade_log (version) VALUES ('0403');
 
 -- Begin by upgrading permission.perm_list.  This is fairly complicated.
 
@@ -15350,7 +15350,12 @@ CREATE TABLE serial.distribution (
 	unit_label_suffix     TEXT,
 	record_entry          INT     REFERENCES serial.record_entry (id)
 	                              ON DELETE SET NULL
-	                              DEFERRABLE INITIALLY DEFERRED
+	                              DEFERRABLE INITIALLY DEFERRED,
+	summary_method        TEXT    CONSTRAINT summary_method_check CHECK (
+	                                  summary_method IS NULL
+	                                  OR summary_method IN ( 'add_to_sre',
+	                                  'merge_with_sre', 'use_sre_only',
+	                                  'use_sdist_only'))
 );
 
 CREATE UNIQUE INDEX one_dist_per_sre_idx ON serial.distribution (record_entry);
@@ -15410,7 +15415,9 @@ CREATE TABLE serial.caption_and_pattern (
 	chron_5      TEXT,
 	subscription INT          NOT NULL REFERENCES serial.subscription (id)
 	                          ON DELETE CASCADE
-	                          DEFERRABLE INITIALLY DEFERRED
+	                          DEFERRABLE INITIALLY DEFERRED,
+	start_date   TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+	end_date     TIMESTAMP WITH TIME ZONE
 );
 
 CREATE TABLE serial.issuance (
@@ -15510,7 +15517,8 @@ CREATE TABLE serial.basic_summary (
 	                            ON DELETE CASCADE
 	                            DEFERRABLE INITIALLY DEFERRED,
 	generated_coverage  TEXT    NOT NULL,
-	textual_holdings    TEXT
+	textual_holdings    TEXT,
+	show_generated      BOOL    NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE serial.supplement_summary (
@@ -15520,7 +15528,8 @@ CREATE TABLE serial.supplement_summary (
 	                            ON DELETE CASCADE
 	                            DEFERRABLE INITIALLY DEFERRED,
 	generated_coverage  TEXT    NOT NULL,
-	textual_holdings    TEXT
+	textual_holdings    TEXT,
+	show_generated      BOOL    NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE serial.index_summary (
@@ -15530,7 +15539,8 @@ CREATE TABLE serial.index_summary (
 	                            ON DELETE CASCADE
 	                            DEFERRABLE INITIALLY DEFERRED,
 	generated_coverage  TEXT    NOT NULL,
-	textual_holdings    TEXT
+	textual_holdings    TEXT,
+	show_generated      BOOL    NOT NULL DEFAULT TRUE
 );
 
 -- DELETE FROM action_trigger.environment WHERE event_def IN (29,30); DELETE FROM action_trigger.event where event_def IN (29,30); DELETE FROM action_trigger.event_definition WHERE id IN (29,30); DELETE FROM action_trigger.hook WHERE key IN ('money.format.payment_receipt.email','money.format.payment_receipt.print'); DELETE FROM config.upgrade_log WHERE version = '0289'; -- from testing, this sql will remove these events, etc.
@@ -17753,6 +17763,102 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
         'bool'
     );
 
+CREATE OR REPLACE FUNCTION authority.normalize_heading( TEXT ) RETURNS TEXT AS $func$
+    use strict;
+    use warnings;
+
+    use utf8;
+    use MARC::Record;
+    use MARC::File::XML (BinaryEncoding => 'UTF8');
+    use UUID::Tiny ':std';
+
+    my $xml = shift() or return undef;
+
+    my $r;
+
+    # Prevent errors in XML parsing from blowing out ungracefully
+    eval {
+        $r = MARC::Record->new_from_xml( $xml );
+        1;
+    } or do {
+       return 'BAD_MARCXML_' . create_uuid_as_string(UUID_MD5, $xml);
+    };
+
+    if (!$r) {
+       return 'BAD_MARCXML_' . create_uuid_as_string(UUID_MD5, $xml);
+    }
+
+    # From http://www.loc.gov/standards/sourcelist/subject.html
+    my $thes_code_map = {
+        a => 'lcsh',
+        b => 'lcshac',
+        c => 'mesh',
+        d => 'nal',
+        k => 'cash',
+        n => 'notapplicable',
+        r => 'aat',
+        s => 'sears',
+        v => 'rvm',
+    };
+
+    # Default to "No attempt to code" if the leader is horribly broken
+    my $fixed_field = $r->field('008');
+    my $thes_char = '|';
+    if ($fixed_field) {
+        $thes_char = substr($fixed_field->data(), 11, 1) || '|';
+    }
+
+    my $thes_code = 'UNDEFINED';
+
+    if ($thes_char eq 'z') {
+        # Grab the 040 $f per http://www.loc.gov/marc/authority/ad040.html
+        $thes_code = $r->subfield('040', 'f') || 'UNDEFINED';
+    } elsif ($thes_code_map->{$thes_char}) {
+        $thes_code = $thes_code_map->{$thes_char};
+    }
+
+    my $auth_txt = '';
+    my $head = $r->field('1..');
+    if ($head) {
+        # Concatenate all of these subfields together, prefixed by their code
+        # to prevent collisions along the lines of "Fiction, North Carolina"
+        foreach my $sf ($head->subfields()) {
+            $auth_txt .= '‡' . $sf->[0] . ' ' . $sf->[1];
+        }
+    }
+
+    # Perhaps better to parameterize the spi and pass as a parameter
+    $auth_txt =~ s/'//go;
+
+    if ($auth_txt) {
+        my $result = spi_exec_query("SELECT public.naco_normalize('$auth_txt') AS norm_text");
+        my $norm_txt = $result->{rows}[0]->{norm_text};
+        return $head->tag() . "_" . $thes_code . " " . $norm_txt;
+    }
+
+    return 'NOHEADING_' . $thes_code . ' ' . create_uuid_as_string(UUID_MD5, $xml);
+$func$ LANGUAGE 'plperlu' IMMUTABLE;
+
+COMMENT ON FUNCTION authority.normalize_heading( TEXT ) IS $$
+/**
+* Extract the authority heading, thesaurus, and NACO-normalized values
+* from an authority record. The primary purpose is to build a unique
+* index to defend against duplicated authority records from the same
+* thesaurus.
+*/
+$$;
+
+DROP INDEX authority.authority_record_unique_tcn;
+ALTER TABLE authority.record_entry DROP COLUMN arn_value;
+ALTER TABLE authority.record_entry DROP COLUMN arn_source;
+
+DROP INDEX IF EXISTS authority.unique_by_heading_and_thesaurus;
+
+CREATE INDEX by_heading_and_thesaurus
+    ON authority.record_entry (authority.normalize_heading(marc))
+    WHERE deleted IS FALSE or deleted = FALSE
+;
+
 COMMIT;
 
 -- Some operations go outside of the transaction, because they may
@@ -17800,5 +17906,40 @@ CREATE INDEX serial_item_note_item_idx ON serial.item_note (item);
 CREATE INDEX serial_basic_summary_dist_idx ON serial.basic_summary (distribution);
 CREATE INDEX serial_supplement_summary_dist_idx ON serial.supplement_summary (distribution);
 CREATE INDEX serial_index_summary_dist_idx ON serial.index_summary (distribution);
+
+\qecho if the following CREATE INDEX fails, It will be necessary to do some
+\qecho data cleanup as described in the comments.
+
+-- Do this outside of a transaction to avoid failure if duplicate
+-- authority heading / thesaurus / heading text entries already
+-- exist in the database:
+CREATE UNIQUE INDEX unique_by_heading_and_thesaurus
+    ON authority.record_entry (authority.normalize_heading(marc))
+    WHERE deleted IS FALSE or deleted = FALSE
+;
+
+-- If the unique index fails, uncomment the following to create
+-- a regular index that will help find the duplicates in a hurry:
+--CREATE INDEX by_heading_and_thesaurus
+--    ON authority.record_entry (authority.normalize_heading(marc))
+--    WHERE deleted IS FALSE or deleted = FALSE
+--;
+
+-- Then find the duplicates like so to get an idea of how much
+-- pain you're looking at to clean things up:
+--SELECT id, authority.normalize_heading(marc)
+--    FROM authority.record_entry
+--    WHERE authority.normalize_heading(marc) IN (
+--        SELECT authority.normalize_heading(marc)
+--        FROM authority.record_entry
+--        GROUP BY authority.normalize_heading(marc)
+--        HAVING COUNT(*) > 1
+--    )
+--;
+
+-- Once you have removed the duplicates and the CREATE UNIQUE INDEX
+-- statement succeeds, drop the temporary index to avoid unnecessary
+-- duplication:
+-- DROP INDEX authority.by_heading_and_thesaurus;
 
 \qecho Upgrade script completed.
