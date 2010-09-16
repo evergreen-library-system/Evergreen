@@ -106,7 +106,7 @@ CREATE TABLE acq.provider_address (
 CREATE TABLE acq.provider_contact (
 	id		SERIAL	PRIMARY KEY,
     provider    INT NOT NULL REFERENCES acq.provider (id) DEFERRABLE INITIALLY DEFERRED,
-    name    TEXT NULL NULL,
+    name    TEXT NOT NULL,
     role    TEXT, -- free-form.. e.g. "our sales guy"
     email   TEXT,
     phone   TEXT

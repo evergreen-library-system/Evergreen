@@ -17859,6 +17859,9 @@ CREATE INDEX by_heading_and_thesaurus
     WHERE deleted IS FALSE or deleted = FALSE
 ;
 
+ALTER TABLE acq.provider_contact
+	ALTER COLUMN name SET NOT NULL;
+
 COMMIT;
 
 -- Some operations go outside of the transaction, because they may
