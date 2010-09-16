@@ -7515,3 +7515,28 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
         'bool'
 );
 
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
+    VALUES
+        ('circ.holds.alert_if_local_avail',
+         oils_i18n_gettext('circ.holds.alert_if_local_avail',
+             'Holds: Local available alert', 'coust', 'label'),
+         oils_i18n_gettext('circ.holds.alert_if_local_avail',
+            'If local copy is available, alert the person making the hold', 'coust', 'description'),
+         'bool'),
+
+        ('circ.holds.deny_if_local_avail',
+         oils_i18n_gettext('circ.holds.deny_if_local_avail',
+            'Holds: Local available block', 'coust', 'label'),
+         oils_i18n_gettext('circ.holds.deny_if_local_avail',
+            'If local copy is available, deny the creation of the hold', 'coust', 'description'),
+         'bool'),
+
+        ('circ.holds.clear_shelf.no_capture_holds',
+        oils_i18n_gettext( 'circ.holds.clear_shelf.no_capture_holds',
+            'Holds: Bypass hold capture during clear shelf process', 'coust', 'label'),
+        oils_i18n_gettext( 'circ.holds.clear_shelf.no_capture_holds',
+            'During the clear shelf process, avoid capturing new holds on cleared items.', 'coust', 'description'),
+        'bool')
+;
+
+
