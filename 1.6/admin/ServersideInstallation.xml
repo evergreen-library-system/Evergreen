@@ -1853,6 +1853,16 @@
 				</para>
 			</section>
 		</section>
+		<section xml:id="serversideinstallation-ssl">
+			<title>Getting a Signed SSL Certificate</title>
+			<para>This section describes how to get a properly signed SSL certificate.</para>
+			<para>For temporary testing purposes, you can use the command <command>openssl</command> to create a new SSL key for your Apache server. This is just a self-signed certificate and will generate warnings in the Staff Client and browser during testing and development. For a public production server you should configure or purchase a properly signed SSL certificate.</para>
+			<indexterm>
+				<primary>ZZZ-REVIEW</primary>
+				<secondary>ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </secondary>
+			</indexterm>
+			<caution>ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </caution>
+		</section>
 		<section xml:id="serversideinstallation-postgresql">
 			<title>Installing PostgreSQL</title>
 			<indexterm>
@@ -2868,16 +2878,6 @@
 				<para>If everything is working correctly, you should now be able to run the Staff Client and all its data will be sent encrypted through the SSH tunnel you have just configured.</para>
 			</section>
 		</section>
-	</section>
-	<section xml:id="serversideinstallation-ssl">
-		<title>Getting a Signed SSL Certificate</title>
-		<para>This section describes how to get a properly signed SSL certificate.</para>
-		<para>For temporary testing purposes, you can use the command <command>openssl</command> to create a new SSL key for your Apache server. This is just a self-signed certificate and will generate warnings in the Staff Client and browser during testing and development. For a public production server you should configure or purchase a properly signed SSL certificate.</para>
-		<indexterm>
-			<primary>ZZZ-REVIEW</primary>
-			<secondary>ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </secondary>
-		</indexterm>
-		<caution>ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </caution>
 	</section>
 	<index/>
 </chapter>
