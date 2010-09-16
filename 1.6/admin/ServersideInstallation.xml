@@ -1684,14 +1684,14 @@
 				<figure>
 					<title>Commands to add <systemitem class="username">opensrf</systemitem> user</title>
 					<screen>
-				$ su - opensrf
-				$ useradd -m -s /bin/bash opensrf
-				$ passwd opensrf
-				Enter new UNIX password: ******
-				Retype new UNIX password: ******
-				passwd: password updated successfully
-				$
-				</screen>
+					$ su - opensrf
+					$ useradd -m -s /bin/bash opensrf
+					$ passwd opensrf
+					Enter new UNIX password: ******
+					Retype new UNIX password: ******
+					passwd: password updated successfully
+					$
+					</screen>
 				</figure>
 			</section>
 			<section>
@@ -1700,10 +1700,10 @@
 				<figure>
 					<title>Commands to download and unpack OpenSRF</title>
 					<screen>
-				$ su - opensrf
-				$ wget http://evergreen-ils.org/downloads/OpenSRF-1.0.7.tar.gz
-				$ tar zxf OpenSRF-1.0.7.tar.gz
-				</screen>
+					$ su - opensrf
+					$ wget http://evergreen-ils.org/downloads/OpenSRF-1.0.7.tar.gz
+					$ tar zxf OpenSRF-1.0.7.tar.gz
+					</screen>
 				</figure>
 				<para>The new directory <filename class="directory">/home/opensrf/OpenSRF-1.0.7</filename> will be created.</para>
 			</section>
@@ -1714,11 +1714,11 @@
 				<figure>
 					<title>Commands to install prerequisites for OpenSRF</title>
 					<screen>
-				$ su - root
-				$ cd /home/opensrf/OpenSRF-1.0.7
-				$ make -f src/extras/Makefile.install [DISTRIBUTION]
-				...
-				</screen>
+					$ su - root
+					$ cd /home/opensrf/OpenSRF-1.0.7
+					$ make -f src/extras/Makefile.install [DISTRIBUTION]
+					...
+					</screen>
 				</figure>
 				<table xml:id="serversideinstallation-keywords-figure-1a">
 					<title>Keywords Targets for <application>make</application> Command</title>
@@ -1759,12 +1759,12 @@
 				<figure>
 					<title>Commands to configure OpenSRF</title>
 					<screen>
-				$ su - opensrf
-				$ cd /home/opensrf/OpenSRF-1.0.7
-				$ ./configure --prefix=/openils --sysconfdir=/openils/conf
-				$ make
-				...
-				</screen>
+					$ su - opensrf
+					$ cd /home/opensrf/OpenSRF-1.0.7
+					$ ./configure --prefix=/openils --sysconfdir=/openils/conf
+					$ make
+					...
+					</screen>
 				</figure>
 			</section>
 			<section>
@@ -1773,11 +1773,11 @@
 				<figure>
 					<title>Commands to build, link and install OpenSRF</title>
 					<screen>
-				$ su - opensrf
-				$ cd /home/opensrf/OpenSRF-1.0.7
-				$ make install
-				...
-				</screen>
+					$ su - opensrf
+					$ cd /home/opensrf/OpenSRF-1.0.7
+					$ make install
+					...
+					</screen>
 				</figure>
 			</section>
 			<section>
@@ -1786,10 +1786,10 @@
 				<figure>
 					<title>Commands to modify system dynamic library path</title>
 					<screen>
-				$ su - root
-				$ echo "/openils/lib" > /etc/ld.so.conf.d/osrf.conf
-				$ ldconfig
-				</screen>
+					$ su - root
+					$ echo "/openils/lib" > /etc/ld.so.conf.d/osrf.conf
+					$ ldconfig
+					</screen>
 				</figure>
 			</section>
 			<section>
@@ -1799,9 +1799,9 @@
 				<figure>
 					<title>Example public and private domains in /etc/hosts</title>
 					<screen>
-				127.0.1.2	public.localhost	public
-				127.0.1.3	private.localhost	private
-				</screen>
+					127.0.1.2	public.localhost	public
+					127.0.1.3	private.localhost	private
+					</screen>
 				</figure>
 			</section>
 			<section>
@@ -1810,8 +1810,8 @@
 				<figure>
 					<title>Commands to change file ownerships</title>
 					<screen>
-				$ chown -R opensrf:opensrf /openils
-				</screen>
+					$ chown -R opensrf:opensrf /openils
+					</screen>
 				</figure>
 			</section>
 			<section>
@@ -1820,19 +1820,19 @@
 				<figure>
 					<title>Commands to stop the <systemitem class="service">ejabberd</systemitem> service</title>
 					<screen>
-				$ /etc/init.d/ejabberd stop
-				</screen>
+					$ /etc/init.d/ejabberd stop
+					</screen>
 				</figure>
 				<para>If <systemitem class="service">ejabberd</systemitem> reports that it is already stopped, it may have run into a problem starting back at the installation stage. One possible fix is to kill any remaining <systemitem class="daemon">beam</systemitem> and <systemitem class="daemon">epmd</systemitem> processes, then edit the configuration file <filename>/etc/ejabberd/ejabberd.cfg</filename> to hardcode a domain:</para>
 				<figure>
 					<title>Commands to recover from <systemitem class="service">ejabberd</systemitem> errors</title>
 					<screen>
-				$ su - root
-				$ epmd -kill
-				$ killall beam; killall beam.smp
-				$ rm /var/lib/ejabberd/*
-				$ echo 'ERLANG_NODE=ejabberd@localhost' >> /etc/default/ejabberd
-				</screen>
+					$ su - root
+					$ epmd -kill
+					$ killall beam; killall beam.smp
+					$ rm /var/lib/ejabberd/*
+					$ echo 'ERLANG_NODE=ejabberd@localhost' >> /etc/default/ejabberd
+					</screen>
 				</figure>
 			</section>
 			<section>
@@ -2810,16 +2810,14 @@
 		</section>
 		<section xml:id="serversideinstallation-proxy">
 			<title>Configuring a Proxy for the Staff Client</title>
+			<para>By using an SSH proxy and an SSH tunnel, it is possible to provide secure (encrypted) network communications between the Staff Client and one or more Evergreen servers. In addition to providing excellent data security, this method also buffers and caches data travelling to and from the Staff Client and can speed up access to resources on remote Evergreen servers. This is important if your system architecture includes many Staff Clients and Evergreen servers in a busy environment, through network firewalls, or must operate over unsecure networks.</para>
 			<section>
 				<title>Why Use a Proxy for the Staff Client?</title>
 				<para>There are several reasons for sending network traffic for the Staff Client through an SSH proxy:</para>
 				<itemizedlist>
-					<listitem>
-						<para><emphasis role="bold">Firewalls</emphasis> may prevent you from reaching the server. This may happen when you are connecting the Staff Client to a test server that should not be available generally, or it may be the result of network design priorities other than ease of use.</para>
-					</listitem>
-					<listitem>
-						<para>You may wish to <emphasis role="bold">improve security</emphasis> where Staff Client traffic may be susceptible to network eavesdropping. This is especially true when wireless is otherwise the best option for connecting a staff machine to the network.</para>
-					</listitem>
+					<listitem><emphasis role="bold">Firewalls</emphasis> may prevent you from reaching the server. This may happen when you are connecting the Staff Client to a test server that should not be available generally, or it may be the result of network design priorities other than ease of use.</listitem>
+					<listitem>You may wish to <emphasis role="bold">improve security</emphasis> where Staff Client traffic may be susceptible to network eavesdropping. This is especially true when wireless is otherwise the best option for connecting a staff machine to the network.</listitem>
+					<listitem>You may wish to buffer and cache data from remote Evergreen servers to speed up access from Staff Clients.</listitem>
 				</itemizedlist>
 			</section>
 			<section>
