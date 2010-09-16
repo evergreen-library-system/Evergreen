@@ -114,11 +114,6 @@ sub handler {
 	my $tcn_v = 'tcn_value';
 	my $tcn_s = 'tcn_source';
 
-	if ($type eq 'authority') {
-		$tcn_v = 'arn_value';
-		$tcn_s = 'arn_source';
-	}
-
 	my $holdings = $cgi->param('holdings') if ($type eq 'biblio');
 	my $location = $cgi->param('location') || 'gaaagpl'; # just because...
 

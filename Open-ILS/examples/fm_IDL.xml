@@ -1401,8 +1401,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="are" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::record_entry" oils_persist:tablename="authority.record_entry" reporter:label="Authority Record Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.record_entry_id_seq">
 			<field name="active" reporter:datatype="bool"/>
-			<field name="arn_source" />
-			<field name="arn_value" />
 			<field name="create_date" reporter:datatype="timestamp"/>
 			<field name="creator" />
 			<field name="deleted" reporter:datatype="bool"/>

@@ -2575,9 +2575,9 @@ function loadMarcEditor(pcrud, marcxml) {
     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
     win = window.open('/xul/server/cat/marcedit.xul'); // XXX version?
 
-    /* Ugly hack to satisfy arn_value and last_xact_id db schema reqs */
+    // Match marc2are.pl last_xact_id format, roughly
     var now = new Date;
-    var arn = 'AUTOGEN' + Date.parse(now);
+    var xact_id = 'IMPORT-' + Date.parse(now);
     
     win.xulG = {
         "record": {"marc": marcxml, "rtype": "are"},
@@ -2586,8 +2586,7 @@ function loadMarcEditor(pcrud, marcxml) {
             "func": function(xmlString) {
                 var rec = new are();
                 rec.marc(xmlString);
-                rec.arn_value(arn);
-                rec.last_xact_id(arn);
+                rec.last_xact_id(xact_id);
                 rec.isnew(true);
                 pcrud.create(rec, {
                     "oncomplete": function () {
