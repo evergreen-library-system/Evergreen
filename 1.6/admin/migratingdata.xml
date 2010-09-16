@@ -16,11 +16,6 @@
 		system since this process may vary depending on where you are extracting your patron records. Patron could come from an ILS or it could come from a student database in the case of 
 		academic records.  		
 		</para>
-		<para>
-		This section will explain the task of migrating your patron data from Comma Delimited Files into Evergreen. It does not deal with the process of exporting from the non-Evergreen 
-		system since this process may vary depending on where you are extracting your patron records. Patron could come from an ILS or it could come from a student database in the case of 
-		academic records.The Comma Delimited File used for importing the records should use Unicode (UTF8) character encoding.   		
-		</para>
 		<para>When importing records into Evergreen you will need to populate 3 tables in your Evergreen database:</para>
 		<itemizedlist>
 			<listitem><link linkend="actor.table.usr">actor.usr</link> - This is the main table for user data</listitem>
@@ -32,7 +27,8 @@
 		in your import. It is important to understand the data types and constraints of the fields.</para>
 		<procedure>
 			<step>
-				<para>Export the patron data from your existing ILS or from another source into a Comma Delimited File.</para>
+				<para>Export the patron data from your existing ILS or from another source into a Comma Delimited File. The Comma Delimited File used for importing the records should 
+				use Unicode (UTF8) character encoding.</para>
 			</step>
 			<step>
 				<para>Create a staging table. A staging table will allow you to tweak the data before importing. Here is an example sql statement:</para>
