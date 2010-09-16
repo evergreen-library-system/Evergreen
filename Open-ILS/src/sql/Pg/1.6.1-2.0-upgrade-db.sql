@@ -17648,8 +17648,6 @@ CREATE INDEX queued_authority_record_attr_record_idx ON vandelay.queued_authorit
 CREATE INDEX queued_bib_record_queue_idx ON vandelay.queued_bib_record (queue);
 CREATE INDEX queued_authority_record_queue_idx ON vandelay.queued_authority_record (queue);
 
-CREATE INDEX actor_card_barcode_lower_idx ON actor.card (lower(barcode));
-
 -- Start picking up call number label prefixes and suffixes
 -- from asset.copy_location
 ALTER TABLE asset.copy_location ADD COLUMN label_prefix TEXT;
@@ -17862,6 +17860,9 @@ CREATE INDEX by_heading_and_thesaurus
 ALTER TABLE acq.provider_contact
 	ALTER COLUMN name SET NOT NULL;
 
+ALTER TABLE actor.stat_cat
+	ADD COLUMN usr_summary BOOL NOT NULL DEFAULT FALSE;
+
 COMMIT;
 
 -- Some operations go outside of the transaction, because they may
@@ -17909,6 +17910,8 @@ CREATE INDEX serial_item_note_item_idx ON serial.item_note (item);
 CREATE INDEX serial_basic_summary_dist_idx ON serial.basic_summary (distribution);
 CREATE INDEX serial_supplement_summary_dist_idx ON serial.supplement_summary (distribution);
 CREATE INDEX serial_index_summary_dist_idx ON serial.index_summary (distribution);
+
+CREATE INDEX actor_card_barcode_lower_idx ON actor.card (lower(barcode));
 
 \qecho if the following CREATE INDEX fails, It will be necessary to do some
 \qecho data cleanup as described in the comments.
