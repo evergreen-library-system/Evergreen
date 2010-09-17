@@ -292,7 +292,7 @@ function handle_edit_penalty(ev) {
                     penalty.ischanged( 1 );
                     dojo.require('openils.PermaCrud');
                     var pcrud = new openils.PermaCrud( { authtoken :ses() });
-                    pcrud.apply( penalty, {
+                    pcrud.update( penalty, {
                         timeout : 10, // makes it synchronous
                         onerror : function(r) {
                             try {
@@ -303,19 +303,21 @@ function handle_edit_penalty(ev) {
                                 alert(E);
                             }
                         },
-                        oncomplete : function(r) {
-                            try {
-                                var res = openils.Util.readResponse(r,true);
-                                /* FIXME - test for success */
-                                var row_params = rows[ ids[i] ];
-                                row_params.row.my.ausp = penalty;
-                                row_params.row.my.csp = penalty.standing_penalty();
-                                list.refresh_row( row_params );
-                                document.getElementById('progress').hidden = true;
-                            } catch(E) {
-                                alert(E);
+                        oncomplete : function gen_func(p,row_id) {
+                            return function(r) {
+                                try {
+                                    var res = openils.Util.readResponse(r,true);
+                                    /* FIXME - test for success */
+                                    var row_params = rows[row_id];
+                                    row_params.row.my.ausp = p;
+                                    row_params.row.my.csp = p.standing_penalty();
+                                    list.refresh_row( row_params );
+                                    document.getElementById('progress').hidden = true;
+                                } catch(E) {
+                                    alert(E);
+                                }
                             }
-                        }
+                        }(penalty,ids[i])
                     });
                 }
             } 
@@ -346,7 +348,7 @@ function handle_archive_penalty(ev) {
                 penalty.stop_date( util.date.formatted_date(new Date(),'%F') );
                 dojo.require('openils.PermaCrud');
                 var pcrud = new openils.PermaCrud( { authtoken :ses() });
-                pcrud.apply( penalty, {
+                pcrud.update( penalty, {
                     onerror : function(r) {
                         try {
                             var res = openils.Util.readResponse(r,true);
@@ -358,21 +360,23 @@ function handle_archive_penalty(ev) {
                             document.getElementById('progress').hidden = true;
                         }
                     },
-                    oncomplete : function(r) {
-                        try {
-                            var res = openils.Util.readResponse(r,true);
-                            /* FIXME - test for success */
-                            var node = rows[ ids[i] ].my_node;
-                            var parentNode = node.parentNode;
-                            parentNode.removeChild( node );
-                            delete(rows[ ids[i] ]);
-                        } catch(E) {
-                            alert(E);
+                    oncomplete : function gen_func(row_id) {
+                        return function(r) {
+                            try {
+                                var res = openils.Util.readResponse(r,true);
+                                /* FIXME - test for success */
+                                var node = rows[row_id].my_node;
+                                var parentNode = node.parentNode;
+                                parentNode.removeChild( node );
+                                delete(rows[row_id]);
+                            } catch(E) {
+                                alert(E);
+                            }
+                            if (--outstanding_requests==0) {
+                                document.getElementById('progress').hidden = true;
+                            }
                         }
-                        if (--outstanding_requests==0) {
-                            document.getElementById('progress').hidden = true;
-                        }
-                    }
+                    }(ids[i])
                 });
             } 
             /*
