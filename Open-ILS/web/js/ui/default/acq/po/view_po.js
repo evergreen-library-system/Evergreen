@@ -448,6 +448,7 @@ function checkCouldActivatePo() {
     d.innerHTML = localeStrings.PO_CHECKING;
     var warnings = [];
     var stops = [];
+    var other = [];
 
     fieldmapper.standardRequest(
         ["open-ils.acq", "open-ils.acq.purchase_order.activate.dry_run"], {
@@ -463,6 +464,8 @@ function checkCouldActivatePo() {
                             case "ACQ_FUND_EXCEEDS_WARN_PERCENT":
                                 warnings.push(r);
                                 break;
+                            default:
+                                other.push(r);
                         }
                     }
                 }
@@ -470,11 +473,16 @@ function checkCouldActivatePo() {
             "oncomplete": function() {
                 /* XXX in the future, this might be tweaked to display info
                  * about more than one stop or warning event from the ML. */
-                if (!(warnings.length || stops.length)) {
+                if (!(warnings.length || stops.length || other.length)) {
                     d.innerHTML = localeStrings.PO_COULD_ACTIVATE;
                     openils.Util.show(a, "inline");
                 } else {
-                    if (stops.length) {
+                    if (other.length) {
+                        /* XXX make the textcode part a tooltip one day */
+                        d.innerHTML = localeStrings.NO + ": " +
+                            other[0].desc + " (" + other[0].textcode + ")";
+                        openils.Util.hide(a);
+                    } else if (stops.length) {
                         d.innerHTML =
                             dojo.string.substitute(
                                 localeStrings.PO_STOP_BLOCKS_ACTIVATION, [

@@ -669,6 +669,13 @@ sub create_lineitem_detail_debit {
         ]);
     }
 
+    unless ($lid->fund) {
+        $mgr->editor->event(
+            new OpenILS::Event("ACQ_FUND_NOT_FOUND") # close enough
+        );
+        return 0;
+    }
+
     my $amount = $li->estimated_unit_price;
     if($li->provider->currency_type ne $lid->fund->currency_type and !$no_translate) {
 
