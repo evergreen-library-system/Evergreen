@@ -3,7 +3,7 @@ BEGIN;
 -- Highest-numbered individual upgrade script
 -- incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0403');
+INSERT INTO config.upgrade_log (version) VALUES ('0405');
 
 -- Begin by upgrading permission.perm_list.  This is fairly complicated.
 
@@ -16146,6 +16146,7 @@ $$ LANGUAGE SQL;
 ALTER TABLE action.in_house_use DROP CONSTRAINT in_house_use_item_fkey;
 ALTER TABLE action.transit_copy DROP CONSTRAINT transit_copy_target_copy_fkey;
 ALTER TABLE action.hold_transit_copy DROP CONSTRAINT ahtc_tc_fkey;
+ALTER TABLE action.hold_copy_map DROP CONSTRAINT hold_copy_map_target_copy_fkey;
 
 ALTER TABLE asset.stat_cat_entry_copy_map DROP CONSTRAINT a_sc_oc_fkey;
 
