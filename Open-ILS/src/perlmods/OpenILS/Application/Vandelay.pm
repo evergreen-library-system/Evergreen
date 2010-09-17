@@ -615,6 +615,7 @@ sub import_record_list_impl {
     my $auto_overlay_1match = $$args{auto_overlay_1match};
     my $merge_profile = $$args{merge_profile};
     my $bib_source = $$args{bib_source};
+    my $report_all = $$args{report_all};
 
     my $overlay_func = 'vandelay.overlay_bib_record';
     my $auto_overlay_func = 'vandelay.auto_overlay_bib_record';
@@ -774,7 +775,7 @@ sub import_record_list_impl {
             $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
         }
 
-        $conn->respond({total => $total, progress => $count, imported => $rec_id}) if (++$count % $step) == 0;
+        $conn->respond({total => $total, progress => $count, imported => $rec_id}) if (!$report_all and ++$count % $step) == 0;
     }
 
     # see if we need to mark any queues as complete
