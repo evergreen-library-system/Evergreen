@@ -3,7 +3,7 @@ BEGIN;
 -- Highest-numbered individual upgrade script
 -- incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0405');
+INSERT INTO config.upgrade_log (version) VALUES ('0403');
 
 -- Begin by upgrading permission.perm_list.  This is fairly complicated.
 
@@ -17863,6 +17863,19 @@ ALTER TABLE acq.provider_contact
 
 ALTER TABLE actor.stat_cat
 	ADD COLUMN usr_summary BOOL NOT NULL DEFAULT FALSE;
+
+-- Recreate some foreign keys that were somehow dropped, probably
+-- by some kind of cascade from an inherited table:
+
+ALTER TABLE action.reservation_transit_copy
+	ADD CONSTRAINT artc_tc_fkey FOREIGN KEY (target_copy)
+		REFERENCES booking.resource(id)
+		ON DELETE CASCADE
+		DEFERRABLE INITIALLY DEFERRED,
+	ADD CONSTRAINT reservation_transit_copy_reservation_fkey FOREIGN KEY (reservation)
+		REFERENCES booking.reservation(id)
+		ON DELETE SET NULL
+		DEFERRABLE INITIALLY DEFERRED;
 
 COMMIT;
 
