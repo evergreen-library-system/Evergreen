@@ -10,9 +10,9 @@
 			<title>currency_type</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -103,9 +103,9 @@
 			<title>distribution_formula</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -223,9 +223,9 @@
 			<title>distribution_formula_entry</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -378,9 +378,9 @@
 			<title>exchange_rate</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -492,9 +492,9 @@
 			<title>fiscal_calendar</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -563,9 +563,9 @@
 			<title>fiscal_year</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -699,9 +699,9 @@
 			<title>fund</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -902,9 +902,9 @@
 			<title>fund_allocation</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -1074,9 +1074,9 @@
 			<title>fund_allocation_total</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -1123,9 +1123,9 @@
 			<title>fund_combined_balance</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -1172,9 +1172,9 @@
 			<title>fund_debit</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -1357,9 +1357,9 @@
 			<title>fund_debit_total</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -1417,9 +1417,9 @@
 			<title>fund_encumbrance_total</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -1466,9 +1466,9 @@
 			<title>fund_spent_balance</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -1515,9 +1515,9 @@
 			<title>fund_spent_total</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -1564,9 +1564,9 @@
 			<title>fund_tag</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -1671,9 +1671,9 @@
 			<title>fund_tag_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -1770,9 +1770,9 @@
 			<title>funding_source</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -1921,9 +1921,9 @@
 			<title>funding_source_allocation_total</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -1970,9 +1970,9 @@
 			<title>funding_source_balance</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -2019,9 +2019,9 @@
 			<title>funding_source_credit</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -2108,9 +2108,9 @@
 			<title>funding_source_credit_total</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -2157,9 +2157,9 @@
 			<title>lineitem</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -2464,9 +2464,9 @@
 			<title>lineitem_attr</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -2581,9 +2581,9 @@
 			<title>lineitem_attr_definition</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -2682,9 +2682,9 @@
 			<title>lineitem_detail</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -2910,9 +2910,9 @@
 			<title>lineitem_generated_attr_definition</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -3026,9 +3026,9 @@
 			<title>lineitem_local_attr_definition</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -3129,9 +3129,9 @@
 			<title>lineitem_marc_attr_definition</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -3245,9 +3245,9 @@
 			<title>lineitem_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -3393,9 +3393,9 @@
 			<title>lineitem_provider_attr_definition</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -3529,9 +3529,9 @@
 			<title>lineitem_usr_attr_definition</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -3652,9 +3652,9 @@
 			<title>picklist</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -3849,9 +3849,9 @@
 			<title>po_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -3997,9 +3997,9 @@
 			<title>provider</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -4194,9 +4194,9 @@
 			<title>provider_address</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -4372,9 +4372,9 @@
 			<title>provider_contact</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -4494,9 +4494,9 @@
 			<title>provider_contact_address</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -4672,9 +4672,9 @@
 			<title>provider_holding_subfield_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -4779,9 +4779,9 @@
 			<title>purchase_order</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -5017,9 +5017,9 @@
 			<title>aged_circulation</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -5465,9 +5465,9 @@
 			<title>all_circulation</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -5855,9 +5855,9 @@
 			<title>billable_circulations</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -6168,9 +6168,9 @@
 			<title>billable_cirulations</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -6481,9 +6481,9 @@
 			<title>circulation</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -6876,9 +6876,9 @@
 			<title>hold_copy_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -6977,9 +6977,9 @@
 			<title>hold_notification</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -7099,9 +7099,9 @@
 			<title>hold_request</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -7555,9 +7555,9 @@
 			<title>hold_request_cancel_cause</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -7618,9 +7618,9 @@
 			<title>hold_transit_copy</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -7790,9 +7790,9 @@
 			<title>in_house_use</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -7910,9 +7910,9 @@
 			<title>non_cat_in_house_use</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -8030,9 +8030,9 @@
 			<title>non_cataloged_circulation</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -8170,9 +8170,9 @@
 			<title>open_circulation</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -8483,9 +8483,9 @@
 			<title>reservation_transit_copy</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -8655,9 +8655,9 @@
 			<title>survey</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -8855,9 +8855,9 @@
 			<title>survey_answer</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -8946,9 +8946,9 @@
 			<title>survey_question</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -9043,9 +9043,9 @@
 			<title>survey_response</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -9196,9 +9196,9 @@
 			<title>transit_copy</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -9389,9 +9389,9 @@
 			<title>unfulfilled_hold_list</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -9493,9 +9493,9 @@
 			<title>cleanup</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -9562,9 +9562,9 @@
 			<title>collector</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -9631,9 +9631,9 @@
 			<title>environment</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -9764,9 +9764,9 @@
 			<title>event</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -9975,9 +9975,9 @@
 			<title>event_definition</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -10312,9 +10312,9 @@
 			<title>event_output</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -10413,9 +10413,9 @@
 			<title>event_params</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -10520,9 +10520,9 @@
 			<title>hook</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -10617,9 +10617,9 @@
 			<title>reactor</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -10686,9 +10686,9 @@
 			<title>validator</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -10760,9 +10760,9 @@
 			<title>card</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -10860,9 +10860,9 @@
 			<title>hours_of_operation</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -11122,9 +11122,9 @@
 			<title>org_address</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -11317,9 +11317,9 @@
 			<title>org_lasso</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -11393,9 +11393,9 @@
 			<title>org_lasso_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -11478,9 +11478,9 @@
 			<title>org_unit</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -12021,9 +12021,9 @@
 			<title>org_unit_closed</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -12123,9 +12123,9 @@
 			<title>org_unit_proximity</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -12201,9 +12201,9 @@
 			<title>org_unit_setting</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -12308,9 +12308,9 @@
 			<title>org_unit_type</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -12471,9 +12471,9 @@
 			<title>stat_cat</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -12599,9 +12599,9 @@
 			<title>stat_cat_entry</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -12721,9 +12721,9 @@
 			<title>stat_cat_entry_usr_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -12835,9 +12835,9 @@
 			<title>usr</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -13717,9 +13717,9 @@
 			<title>usr_address</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -13953,9 +13953,9 @@
 			<title>usr_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -14092,9 +14092,9 @@
 			<title>usr_org_unit_opt_in</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -14248,9 +14248,9 @@
 			<title>usr_password_reset</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -14356,9 +14356,9 @@
 			<title>usr_setting</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -14463,9 +14463,9 @@
 			<title>usr_standing_penalty</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -14621,9 +14621,9 @@
 			<title>workstation</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -14730,9 +14730,9 @@
 			<title>call_number</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -14946,9 +14946,9 @@
 			<title>call_number_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -15085,9 +15085,9 @@
 			<title>copy</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -15621,9 +15621,9 @@
 			<title>copy_location</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -15806,9 +15806,9 @@
 			<title>copy_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -15945,9 +15945,9 @@
 			<title>copy_transparency</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -16199,9 +16199,9 @@
 			<title>copy_transparency_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -16291,9 +16291,9 @@
 			<title>stat_cat</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -16419,9 +16419,9 @@
 			<title>stat_cat_entry</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -16554,9 +16554,9 @@
 			<title>stat_cat_entry_copy_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -16675,9 +16675,9 @@
 			<title>stat_cat_entry_transparency_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -16775,9 +16775,9 @@
 			<title>uri</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -16889,9 +16889,9 @@
 			<title>uri_call_number_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -16995,9 +16995,9 @@
 			<title>actor_org_unit_history</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -17208,9 +17208,9 @@
 			<title>actor_org_unit_lifecycle</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -17400,9 +17400,9 @@
 			<title>actor_usr_address_history</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -17645,9 +17645,9 @@
 			<title>actor_usr_address_lifecycle</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -17837,9 +17837,9 @@
 			<title>actor_usr_history</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -18379,9 +18379,9 @@
 			<title>actor_usr_lifecycle</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -18846,9 +18846,9 @@
 			<title>asset_call_number_history</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -19030,9 +19030,9 @@
 			<title>asset_call_number_lifecycle</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -19189,9 +19189,9 @@
 			<title>asset_copy_history</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -19591,9 +19591,9 @@
 			<title>asset_copy_lifecycle</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -19948,9 +19948,9 @@
 			<title>biblio_record_entry_history</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -20195,9 +20195,9 @@
 			<title>biblio_record_entry_lifecycle</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -20414,9 +20414,9 @@
 			<title>full_rec</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -20544,9 +20544,9 @@
 			<title>rec_descriptor</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -20622,9 +20622,9 @@
 			<title>record_entry</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -20847,9 +20847,9 @@
 			<title>record_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -20985,9 +20985,9 @@
 			<title>tracing_links</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -21138,9 +21138,9 @@
 			<title>record_entry</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -21479,9 +21479,9 @@
 			<title>record_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -21651,9 +21651,9 @@
 			<title>reservation</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -22011,9 +22011,9 @@
 			<title>reservation_attr_value_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -22112,9 +22112,9 @@
 			<title>resource</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -22311,9 +22311,9 @@
 			<title>resource_attr</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -22459,9 +22459,9 @@
 			<title>resource_attr_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -22580,9 +22580,9 @@
 			<title>resource_attr_value</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -22721,9 +22721,9 @@
 			<title>resource_type</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -22947,9 +22947,9 @@
 			<title>audience_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -23016,9 +23016,9 @@
 			<title>bib_level_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -23074,9 +23074,9 @@
 			<title>bib_source</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -23190,9 +23190,9 @@
 			<title>billing_type</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -23308,9 +23308,9 @@
 			<title>circ_matrix_circ_mod_test</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -23399,9 +23399,9 @@
 			<title>circ_matrix_circ_mod_test_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -23500,9 +23500,9 @@
 			<title>circ_matrix_matchpoint</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -23920,9 +23920,9 @@
 			<title>circ_matrix_test</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -24042,9 +24042,9 @@
 			<title>circ_modifier</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -24185,9 +24185,9 @@
 			<title>copy_status</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -24299,9 +24299,9 @@
 			<title>hold_matrix_matchpoint</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -24789,9 +24789,9 @@
 			<title>hold_matrix_test</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -24948,9 +24948,9 @@
 			<title>i18n_core</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -25052,9 +25052,9 @@
 			<title>i18n_locale</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -25161,9 +25161,9 @@
 			<title>identification_type</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -25239,9 +25239,9 @@
 			<title>idl_field_doc</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -25343,9 +25343,9 @@
 			<title>item_form_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -25420,9 +25420,9 @@
 			<title>item_type_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -25497,9 +25497,9 @@
 			<title>language_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -25568,9 +25568,9 @@
 			<title>lit_form_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -25637,9 +25637,9 @@
 			<title>metabib_field</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -25830,9 +25830,9 @@
 			<title>net_access_level</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -25908,9 +25908,9 @@
 			<title>non_cataloged_type</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -26044,9 +26044,9 @@
 			<title>rule_age_hold_protect</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -26166,9 +26166,9 @@
 			<title>rule_circ_duration</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -26308,9 +26308,9 @@
 			<title>rule_max_fine</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -26426,9 +26426,9 @@
 			<title>rule_recuring_fine</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -26570,9 +26570,9 @@
 			<title>standing</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -26648,9 +26648,9 @@
 			<title>standing_penalty</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -26756,9 +26756,9 @@
 			<title>upgrade_log</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -26816,9 +26816,9 @@
 			<title>videorecording_format_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -26893,9 +26893,9 @@
 			<title>xml_transform</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -26977,9 +26977,9 @@
 			<title>z3950_attr</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -27131,9 +27131,9 @@
 			<title>z3950_source</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -27298,9 +27298,9 @@
 			<title>biblio_record_entry_bucket</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -27464,9 +27464,9 @@
 			<title>biblio_record_entry_bucket_item</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -27588,9 +27588,9 @@
 			<title>biblio_record_entry_bucket_item_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -27666,9 +27666,9 @@
 			<title>biblio_record_entry_bucket_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -27744,9 +27744,9 @@
 			<title>biblio_record_entry_bucket_type</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -27809,9 +27809,9 @@
 			<title>call_number_bucket</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -27975,9 +27975,9 @@
 			<title>call_number_bucket_item</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -28099,9 +28099,9 @@
 			<title>call_number_bucket_item_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -28177,9 +28177,9 @@
 			<title>call_number_bucket_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -28255,9 +28255,9 @@
 			<title>call_number_bucket_type</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -28320,9 +28320,9 @@
 			<title>copy_bucket</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -28486,9 +28486,9 @@
 			<title>copy_bucket_item</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -28610,9 +28610,9 @@
 			<title>copy_bucket_item_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -28688,9 +28688,9 @@
 			<title>copy_bucket_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -28766,9 +28766,9 @@
 			<title>copy_bucket_type</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -28831,9 +28831,9 @@
 			<title>user_bucket</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -28997,9 +28997,9 @@
 			<title>user_bucket_item</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -29121,9 +29121,9 @@
 			<title>user_bucket_item_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -29199,9 +29199,9 @@
 			<title>user_bucket_note</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -29277,9 +29277,9 @@
 			<title>user_bucket_type</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -29347,9 +29347,9 @@
 			<title>full_circ_count</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -29396,9 +29396,9 @@
 			<title>global_bibs_by_holding_update</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -29456,9 +29456,9 @@
 			<title>legacy_circ_count</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -29526,9 +29526,9 @@
 			<title>author_field_entry</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -29637,9 +29637,9 @@
 			<title>full_rec</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -29752,9 +29752,9 @@
 			<title>keyword_field_entry</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -29863,9 +29863,9 @@
 			<title>metarecord</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -29963,9 +29963,9 @@
 			<title>metarecord_source_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -30048,9 +30048,9 @@
 			<title>real_full_rec</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -30187,9 +30187,9 @@
 			<title>rec_descriptor</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -30415,9 +30415,9 @@
 			<title>series_field_entry</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -30512,9 +30512,9 @@
 			<title>subject_field_entry</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -30623,9 +30623,9 @@
 			<title>title_field_entry</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -30739,9 +30739,9 @@
 			<title>billable_xact</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -30841,9 +30841,9 @@
 			<title>billable_xact_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -31022,9 +31022,9 @@
 			<title>billable_xact_with_void_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -31203,9 +31203,9 @@
 			<title>billing</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -31370,9 +31370,9 @@
 			<title>bnm_desk_payment</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -31528,9 +31528,9 @@
 			<title>bnm_payment</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -31668,9 +31668,9 @@
 			<title>bnm_payment_view</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -31794,9 +31794,9 @@
 			<title>cash_payment</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -31945,9 +31945,9 @@
 			<title>cashdrawer_payment_view</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -32049,9 +32049,9 @@
 			<title>check_payment</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -32213,9 +32213,9 @@
 			<title>collections_tracker</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -32329,9 +32329,9 @@
 			<title>credit_card_payment</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -32535,9 +32535,9 @@
 			<title>credit_payment</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -32675,9 +32675,9 @@
 			<title>desk_payment_view</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -32812,9 +32812,9 @@
 			<title>forgive_payment</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -32952,9 +32952,9 @@
 			<title>goods_payment</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -33092,9 +33092,9 @@
 			<title>grocery</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -33213,9 +33213,9 @@
 			<title>materialized_billable_xact_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -33394,9 +33394,9 @@
 			<title>non_drawer_payment_view</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -33520,9 +33520,9 @@
 			<title>open_billable_xact_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -33712,9 +33712,9 @@
 			<title>open_transaction_billing_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -33794,9 +33794,9 @@
 			<title>open_transaction_billing_type_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -33876,9 +33876,9 @@
 			<title>open_transaction_payment_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -33958,9 +33958,9 @@
 			<title>open_usr_circulation_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -34029,9 +34029,9 @@
 			<title>open_usr_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -34100,9 +34100,9 @@
 			<title>payment</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -34212,9 +34212,9 @@
 			<title>payment_view</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -34316,9 +34316,9 @@
 			<title>transaction_billing_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -34398,9 +34398,9 @@
 			<title>transaction_billing_type_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -34480,9 +34480,9 @@
 			<title>transaction_billing_with_void_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -34562,9 +34562,9 @@
 			<title>transaction_payment_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -34644,9 +34644,9 @@
 			<title>transaction_payment_with_void_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -34726,9 +34726,9 @@
 			<title>usr_circulation_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -34797,9 +34797,9 @@
 			<title>usr_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -34868,9 +34868,9 @@
 			<title>work_payment</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -35013,9 +35013,9 @@
 			<title>script</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -35149,9 +35149,9 @@
 			<title>session</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -35297,9 +35297,9 @@
 			<title>grp_penalty_threshold</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -35439,9 +35439,9 @@
 			<title>grp_perm_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -35568,9 +35568,9 @@
 			<title>grp_tree</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -35752,9 +35752,9 @@
 			<title>perm_list</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -35853,9 +35853,9 @@
 			<title>usr_grp_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -35954,9 +35954,9 @@
 			<title>usr_object_perm_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -36112,9 +36112,9 @@
 			<title>usr_perm_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -36241,9 +36241,9 @@
 			<title>usr_work_ou_map</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -36346,9 +36346,9 @@
 			<title>circ_type</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -36383,7 +36383,11 @@
 						</tbody>
 					</tgroup>
 				</informaltable>
-				<para>		
+				<para>
+				
+				
+				
+				
 		</para>
 		</simplesect>
 		
@@ -36391,9 +36395,9 @@
 			<title>currently_running</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -36473,9 +36477,9 @@
 			<title>demographic</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -36533,9 +36537,9 @@
 			<title>hold_request_record</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -36604,9 +36608,9 @@
 			<title>materialized_simple_record</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -36759,9 +36763,9 @@
 			<title>old_super_simple_record</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -36907,9 +36911,9 @@
 			<title>output_folder</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -37070,9 +37074,9 @@
 			<title>overdue_circs</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -37383,9 +37387,9 @@
 			<title>overdue_reports</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -37465,9 +37469,9 @@
 			<title>pending_reports</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -37547,9 +37551,9 @@
 			<title>report</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -37749,9 +37753,9 @@
 			<title>report_folder</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -37912,9 +37916,9 @@
 			<title>schedule</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -38177,9 +38181,9 @@
 			<title>simple_record</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -38446,9 +38450,9 @@
 			<title>super_simple_record</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -38594,9 +38598,9 @@
 			<title>template</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -38746,9 +38750,9 @@
 			<title>template_folder</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -38909,9 +38913,9 @@
 			<title>xact_billing_totals</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -38980,9 +38984,9 @@
 			<title>xact_paid_totals</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -39056,9 +39060,9 @@
 			<title>relevance_adjustment</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -39181,9 +39185,9 @@
 			<title>bib_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -39277,9 +39281,9 @@
 			<title>binding_unit</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -39384,9 +39388,9 @@
 			<title>index_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -39480,9 +39484,9 @@
 			<title>issuance</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -39610,9 +39614,9 @@
 			<title>record_entry</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -39822,9 +39826,9 @@
 			<title>subscription</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -39964,9 +39968,9 @@
 			<title>sup_summary</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -40065,9 +40069,9 @@
 			<title>fleshed_call_number</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -40268,9 +40272,9 @@
 			<title>fleshed_circulation</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -40680,9 +40684,9 @@
 			<title>fleshed_copy</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -41108,9 +41112,9 @@
 			<title>authority_attr_definition</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -41240,9 +41244,9 @@
 			<title>authority_match</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -41339,9 +41343,9 @@
 			<title>authority_queue</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -41498,9 +41502,9 @@
 			<title>bib_attr_definition</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -41630,9 +41634,9 @@
 			<title>bib_match</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -41754,9 +41758,9 @@
 			<title>bib_queue</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -41931,9 +41935,9 @@
 			<title>import_bib_trash_fields</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -42025,9 +42029,9 @@
 			<title>import_item</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -42319,9 +42323,9 @@
 			<title>import_item_attr_definition</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -42691,9 +42695,9 @@
 			<title>queue</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -42835,9 +42839,9 @@
 			<title>queued_authority_record</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -43005,9 +43009,9 @@
 			<title>queued_authority_record_attr</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -43116,9 +43120,9 @@
 			<title>queued_bib_record</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -43310,9 +43314,9 @@
 			<title>queued_bib_record_attr</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>
@@ -43421,9 +43425,9 @@
 			<title>queued_record</title>
 			<informaltable>
 				<tgroup cols="3">
-					<colspec colnum="1" colname="col1" colwidth="1*"/>
-					<colspec colnum="2" colname="col2" colwidth="1*"/>
-					<colspec colnum="3" colname="col3" colwidth="2*"/>
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
 					<thead>
 						<row>
 							<entry>Field</entry>

@@ -1049,13 +1049,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</table>	
 		</simplesect>
 	</section>
-	<section>
+	<section xml:id="admin-staff_accounts">
 	<info>
-
         <title>Staff Accounts <indexterm><primary>staff accounts</primary></indexterm></title>
     </info>
 
-    <informalfigure>
+    
         <para> New staff accounts are created in much the same way as patron accounts, using <menuchoice>
                 <guimenu>Circulation</guimenu>
                 <guimenuitem>Register Patron</guimenuitem>
@@ -1064,18 +1063,6 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                 <keycap>F1</keycap>
             </keycombo>. Select one of the staff profiles from the <guilabel>Profile
                 Group</guilabel> drop-down menu. </para>
-        <para>
-            <mediaobject>
-                <alt>User permissions screen shot</alt>
-                <imageobject>
-                    <imagedata scalefit="0" fileref="../media/profile-2.png"/>
-                </imageobject>
-
-            </mediaobject>
-        </para>
-    </informalfigure>
-
-
 
     <para xml:id="profiles-working">Each new staff account must be assigned a <guilabel>Working
             Location</guilabel><indexterm><primary>staff accounts</primary><secondary>working location</secondary></indexterm> which determines its access level in staff client interfaces.
@@ -1091,23 +1078,11 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
         </step>
 
         <step>
-            <informalfigure>
                 <para>Select <menuchoice>
                         <guimenu>Other</guimenu>
                         <guimenuitem>User Permission Editor</guimenuitem>
                     </menuchoice></para>
-                <para>
-                    <mediaobject>
-                        <alt>User permissions screen shot</alt>
-                        <imageobject>
-                            <imagedata scalefit="0" fileref="../media/profile-1.png"/>
-                        </imageobject>
-
-                    </mediaobject>
-                </para>
-            </informalfigure>
-        </step>
-
+                        </step>
         <step>
             <para>Place a check in the box next to the desired working location, then scroll to the
                 bottom of the display and click <guibutton>Save</guibutton>.</para>

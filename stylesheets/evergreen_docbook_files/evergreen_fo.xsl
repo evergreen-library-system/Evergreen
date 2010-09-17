@@ -26,7 +26,7 @@
 <xsl:param name="callout.graphics" select="1" />
 <xsl:param name="callout.graphics.extension" select="'.png'" />
 <xsl:param name="callout.graphics.path" select="'../media/'" />
- 
+<xsl:param name="tablecolumns.extension" select="0" />
 <xsl:param name="menuchoice.menu.separator"> &#x2192; </xsl:param>
 
 <xsl:param name="header.rule" select="0"/> <!-- remove header horizontal rule -->
@@ -104,9 +104,6 @@
 <xsl:attribute name="width">100%</xsl:attribute>    
     <xsl:attribute name="keep-together.within-column">auto</xsl:attribute>
   </xsl:attribute-set>
-
-
-
 
 <xsl:attribute-set name="monospace.verbatim.properties">
 <xsl:attribute name="font-family">Lucida Sans Typewriter</xsl:attribute>

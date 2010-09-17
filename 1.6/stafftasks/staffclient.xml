@@ -105,7 +105,7 @@
 
 
    </section>
-   <section>
+   <section xml:id="staffclient-navigating" >
       <info>
          <title>Navigation</title>
       </info>
@@ -154,14 +154,6 @@
                   </keycombo>   tabs backward through open tabs</para>
             </listitem>
          </itemizedlist>
-
-
-
-
-
-
-
-
          <informalfigure>
             <para>In the example below, the <guilabel>MARC Template</guilabel> tab is active. Click
                on any open tab to bring that screen to the front. You can also use <keycombo>
@@ -176,8 +168,6 @@
                </imageobject>
             </mediaobject></para>
          </informalfigure>
-
-
          <informalfigure>
             <para>Now the <guilabel>Check Out</guilabel> tab is the active screen.</para>
             <para><mediaobject>
@@ -187,40 +177,27 @@
                </imageobject>
             </mediaobject></para>
          </informalfigure>
-
-
          <para>Once you are in the selected tab, you can use the drop down menus or keyboard
             shortcuts to perform required functions. Menu functions and corresponding keyboard
             shortcuts will be demonstrated throughout this manual.</para>
       </simplesect>
-
       <simplesect>
          <info>
             <title>Keyboard Shortcuts</title>
          </info>
-
          <para>Most menu items have keyboard shorcuts that can greatly increase efficiency. Below is
             a selected list of commonly used shortcut keys:</para>
-
          <informaltable>
             <?dbfo keep-together="always" ?>
-            
-
             <tgroup cols="2" align="left" colsep="1" rowsep="1">
                <colspec colnum="1" colname="key" colwidth="1*"/>
                <colspec colnum="2" colname="function" colwidth="3*"/>
-               
-               
-
                <thead>
                   <row>
                      <entry>Key</entry>
                      <entry>Function</entry>
                   </row>
                </thead>
-
-
-
                <tbody>
                   <row>
                      <entry>
@@ -234,7 +211,6 @@
                      </entry>
                      <entry>Checkin</entry>
                   </row>
-
                   <row>
                      <entry>
                         <keycap>F3</keycap>
@@ -376,15 +352,10 @@
                      </entry>
                      <entry>Paste</entry>
                   </row>
-
-
                </tbody>
             </tgroup>
          </informaltable>
-
-
       </simplesect>
-
       <simplesect>
          <info>
             <title>Copy/Paste</title>
@@ -392,10 +363,8 @@
 
          <para>There are several methods of copying and pasting text in Evergreen, depending on
             where you are in the staff client and the type of information you are copying</para>
-
          <orderedlist>
             <listitem>
-
                <informalfigure>
                   <formalpara>
                      <title>Underlined blue text</title>
@@ -407,7 +376,6 @@
                            <keycap>V</keycap>
                         </keycombo>.</para>
                   </formalpara>
-
                   <para>
                      <mediaobject>
                         <alt>copy/paste methods</alt>
@@ -496,22 +464,12 @@
 
             </listitem>
          </orderedlist>
-
-
-
       </simplesect>
-
-
-
-
-
    </section>
-
-   <section>
+   <section xml:id="staffclient-customizing">
       <info>
          <title>Customizing the Staff Client</title>
       </info>
-
       <simplesect>
          <info>
             <title>Column Picker</title>
