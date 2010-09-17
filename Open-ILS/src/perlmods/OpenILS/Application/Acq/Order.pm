@@ -658,7 +658,9 @@ sub create_lineitem_detail_debit {
         ]);
     }
 
-    unless(ref $lid and ref $lid->fund) {
+    if(ref $lid) {
+        $lid->fund($mgr->editor->retrieve_acq_fund($lid->fund)) unless(ref $lid->fund);
+    } else {
         $lid = $mgr->editor->retrieve_acq_lineitem_detail([
             $lid,
             {   flesh => 1, 
