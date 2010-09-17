@@ -151,8 +151,11 @@
 							var innerret = dojo.create(
 								"div", {"style":"clear;both;"}, ret
 							);
+
+							var something = false;
 							for (var i in blob) {
 								if (!blob[i].length) continue;
+								something = true;
 								dojo.create(
 									"div", {
 										"innerHTML": blob[i].join(", "),
@@ -174,7 +177,7 @@
 								dojo.create("div", {"style":"float:right;width:33%;", "expanded_holdings": i}, innerret);
 							}
 
-							dojo.removeClass(slot,'hide_me');
+							if (something) dojo.removeClass(slot,'hide_me');
 							return ret.innerHTML;
 						} else {
 							return "";
