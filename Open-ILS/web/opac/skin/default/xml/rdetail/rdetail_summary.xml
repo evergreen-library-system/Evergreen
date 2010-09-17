@@ -152,10 +152,10 @@
 								"div", {"style":"clear;both;"}, ret
 							);
 
-                            var something = false;
+							var something = false;
 							for (var i in blob) {
 								if (!blob[i].length) continue;
-                                something = true;
+								something = true;
 								dojo.create(
 									"div", {
 										"innerHTML": blob[i].join(", "),
