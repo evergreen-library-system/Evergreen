@@ -371,7 +371,7 @@ sub received_siss_by_bib {
         from => {
             ssub => {
                 siss => {
-                    field => 'subscription'
+                    field => 'subscription',
                     fkey  => 'id',
                     join  => {
                         sitem => {
