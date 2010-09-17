@@ -20,7 +20,7 @@ var djConfig = {parseOnLoad:true,isDebug:false,AutoIDL:[
 'acqpo','acqpoh','acqpon','acqpoi','acqlih','acqliat','acqlin','acqlia','acqlid','acqliad','acqlimad',
 'acqligad','acqliuad','acqlipad','acqphsm','acqlilad','acqedi','acqedim','acqdf','acqdfe','acqdfa','acqda',
 'acqclt','acqclet','acqcl','acqcle','acqscl','acqscle','acqclp','acqclpa','acqlisum','acqft','acqftm',
-'jub','sdist','ssub','sstr','scap','bre','siss','act', 'acpl', 'ccm', 'aiit', 'atevdef', 'ath', 'atreact',
+'jub','sdist','ssub','sstr','scap','bre','siss','act', 'acpl', 'ccm', 'aiit', 'atevdef', 'ath', 'atreact','atclean','atenv','atevparam','atcol',
 'atval','crahp','crmf','crrf','crcd','cust','coust','cgf','czs','cbt','csp','brt','brsrc','bra','bram','brav','vaq','vbq','vqar','ccmm','ccmcmtm','citm','cifm','cvrfm']};
         </script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/dojo/dojo.js"></script>
