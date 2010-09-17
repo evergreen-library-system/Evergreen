@@ -545,7 +545,7 @@ function vlFormatViewMatches(id) {
 }
 
 function vlFormatViewMatchMARC(id) {
-    return '<a href="javascript:void(0);" onclick="vlLoadMARCHtml(' + id + ', false, '+
+    return '<a href="javascript:void(0);" onclick="vlLoadMARCHtml(' + id + ', true, '+
         'function(){displayGlobalDiv(\'vl-match-div\');});">' + this.name + '</a>';
 }
 
