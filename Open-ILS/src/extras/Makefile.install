@@ -290,7 +290,9 @@ install_cpan_marc:
 	for m in $(CPAN_MODULES_MARC); do perl -MCPAN -e "install \"$$m\";"; done
 
 install_cpan_force:
-	for m in $(CPAN_MODULES_FORCE); do perl -MCPAN -e "force install \"$$m\";"; done
+	for m in $(CPAN_MODULES_FORCE); do \
+		echo "force install $$m" | perl -MCPAN -e shell ;\
+	done
 
 # Install the Safe Perl module
 # Is this really unpackaged everywhere except for Fedora?
