@@ -324,6 +324,16 @@ if(!dojo._hasResource["openils.Util"]) {
         return openils.Util.objectProperties(o);
     }
 
+    openils.Util.uniqueObjects = function(list, field) {
+        var sorted = openils.Util.objectSort(list, field);
+        var results = [];
+        for (var i = 0; i < sorted.length; i++) {
+            if (!i || (sorted[i][field]() != sorted[i-1][field]()))
+                results.push(sorted[i]);
+        }
+        return results;
+    };
+
     /**
      * Highlight instances of each pattern in the given DOM node
      * Inspired by the jquery plugin

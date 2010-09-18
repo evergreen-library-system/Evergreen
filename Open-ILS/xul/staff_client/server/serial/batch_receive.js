@@ -226,9 +226,7 @@ function BatchReceiver() {
             function(loc) {
                 dojo.create(
                     "menuitem", {
-                        "value": loc.id(),
-                        "label": "(" + loc.owning_lib().shortname() + ") " +
-                            loc.name() /* XXX i18n */
+                        "value": loc.id(), "label": loc.name()
                     }, menupopup, "last"
                 );
             }
@@ -277,15 +275,18 @@ function BatchReceiver() {
                 "editable": "true", "className": "cn"
             });
             var menupopup = dojo.create("menupopup", null, menulist, "only");
-            this._call_number_cache.forEach(
-                function(cn) {
-                    dojo.create(
-                        "menuitem", {
-                            "value": cn.id(), "label": cn.label()
-                        }, menupopup, "last"
-                    );
-                }
-            );
+
+            openils.Util.uniqueObjects(this._call_number_cache, "label").
+                forEach(
+                    function(cn) {
+                        dojo.create(
+                            "menuitem", {
+                                "value": cn.label(), "label": cn.label()
+                            }, menupopup, "last"
+                        );
+                    }
+                );
+
             return menulist;
         } else {
             /* In this case, limit call numbers by owning_lib matching
@@ -303,7 +304,7 @@ function BatchReceiver() {
                     function(cn) {
                         dojo.create(
                             "menuitem", {
-                                "value": cn.id(), "label": cn.label()
+                                "value": cn.label(), "label": cn.label()
                             }, menupopup, "last"
                         );
                     }
@@ -312,6 +313,35 @@ function BatchReceiver() {
             }
             return dojo.clone(this._prepared_call_number_controls[lib]);
         }
+    };
+
+    this._build_batch_location_dropdown = function() {
+        var menulist = dojo.create("menulist");
+        var menupopup = dojo.create("menupopup",null,menulist);
+        dojo.create("menuitem", {"value": -1, "label": "---"}, menupopup);
+
+        fieldmapper.standardRequest(
+            ["open-ils.circ",
+                "open-ils.circ.copy_location.retrieve.distinct.atomic"],{
+                "params": [],
+                "async": false,
+                "onresponse": function(r) {
+                    if (list = openils.Util.readResponse(r)) {
+                        list.forEach(
+                            function(locname) {
+                                dojo.create(
+                                    "menuitem", {
+                                        "value": locname, "label": locname
+                                    }, menupopup
+                                );
+                            }
+                        );
+                    }
+                }
+            }
+        );
+
+        return menulist;
     };
 
     this._build_receive_toggle = function(item) {
@@ -442,12 +472,30 @@ function BatchReceiver() {
         }
     };
 
+    this._location_by_name = function(id, value) {
+        var lib = this.item_cache[id].stream().distribution().
+            holding_lib().id();
+        var winners = this._location_by_lib[lib].filter(
+            function(loc) { return loc.name() == value; }
+        );
+        if (winners.length) {
+            return winners[0].id();
+        } else {
+            return null;
+        }
+    };
+
     this._set_all_enabled_rows = function(key, value) {
         /* do NOT do trimming here, set whitespace as is. */
         for (var id in this.rows) {
             if (!this._row_disabled(id)) {
                 if (this._confirm_row_field_application(id, key, value)) {
-                    this._row_field_value(id, key, value);
+                    if (key == "location") /* kludge for this field */ {
+                        if (actual = this._location_by_name(id, value))
+                            this._row_field_value(id, key, actual);
+                    } else {
+                        this._row_field_value(id, key, value);
+                    }
                 }
             }
         }
@@ -692,13 +740,8 @@ function BatchReceiver() {
         );
 
         node_by_name("location", row).appendChild(
-            this.batch_controls.location = this._build_location_dropdown(
-                /* XXX TODO build a smarter list. rather than all copy locs
-                 * under OU #1, try building a list of copy locs available to
-                 * all OUs represented in actual items */
-                this._get_locations_for_lib(1),
-                true /* add_unset_value */
-            )
+            this.batch_controls.location =
+                this._build_batch_location_dropdown()
         );
 
         node_by_name("circ_modifier", row).appendChild(
@@ -754,8 +797,18 @@ function BatchReceiver() {
 
         function n(s) { return node_by_name(s, row); }    /* typing saver */
 
+        var stream_dist_label = item.stream().distribution().label();
+        if (item.stream().routing_label())
+            stream_dist_label += " / " + item.stream().routing_label();
+
         n("holding_lib").appendChild(
-            T(item.stream().distribution().holding_lib().shortname())
+            dojo.create(
+                "description", {
+                    "value": item.stream().distribution().
+                        holding_lib().shortname(),
+                    "tooltiptext": stream_dist_label
+                }
+            )
         );
 
         n("barcode").appendChild(

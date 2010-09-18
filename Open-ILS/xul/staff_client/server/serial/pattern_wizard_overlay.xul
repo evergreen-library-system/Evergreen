@@ -238,7 +238,7 @@
                         <rows>
                             <row>
                                 <radio
-                                    label="Select fundamental periodicity:"
+                                    label="Select frequency:"
                                     accesskey="F" selected="true"
                                     value="hard_w" />
                                 <menulist id="hard_w">
