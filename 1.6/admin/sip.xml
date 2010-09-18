@@ -261,6 +261,10 @@ Escape character is '^]'.
 		are used. The fields vary between message pairs.</para>
  		<informaltable>
             		<tgroup cols="4">
+				<colspec colnum="1" colname="pair" colwidth="0.5*"/>
+				<colspec colnum="2" colname="name" colwidth="1.0*"/>
+				<colspec colnum="3" colname="supported" colwidth="1.0*"/>
+				<colspec colnum="4" colname="details" colwidth="3.0*"/>
                 		<thead>
                     			<row>
 						<entry>Pair</entry>

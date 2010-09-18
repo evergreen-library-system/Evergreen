@@ -379,6 +379,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<table xml:id="permissiondescriptions">
 				<title>Permissions Table</title>
 				<tgroup cols="2">
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="2.5*"/>
 					<thead>
 						<row>
 							<entry>Permission Name</entry>
@@ -1112,6 +1114,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 
             <tgroup cols="7" align="center" colsep="1" rowsep="1">
 
+		<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+		<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+		<colspec colnum="3" colname="col3" colwidth="1.0*"/>
+		<colspec colnum="4" colname="col4" colwidth="1.0*"/>
+		<colspec colnum="5" colname="col5" colwidth="1.0*"/>
+		<colspec colnum="6" colname="col6" colwidth="1.0*"/>
+		<colspec colnum="7" colname="col7" colwidth="1.0*"/>
                 <thead>
                     <row>
                         <entry>Action</entry>
@@ -1465,6 +1474,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<table xml:id="copystatusestable">
 				<title>Copy Status Table</title>
 				<tgroup cols="4">
+					<colspec colnum="1" colname="col1" colwidth="0.5*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="1.0*"/>
+					<colspec colnum="4" colname="col4" colwidth="1.0*"/>
 					<thead>
 						<row>
 							<entry>ID</entry>
@@ -1812,6 +1825,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<table xml:id="search.relevance">
 			<title>search.relevance_adjustment table</title>
 			<tgroup cols="4">
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
+					<colspec colnum="3" colname="col3" colwidth="1.0*"/>
+					<colspec colnum="4" colname="col4" colwidth="1.0*"/>
 				<thead>
 					<row>
 						<entry>field_class</entry>

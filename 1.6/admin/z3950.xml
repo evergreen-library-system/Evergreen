@@ -34,6 +34,8 @@
 			supported map to Evergreen default indexes as follows:</para><indexterm><primary>Dublin Core</primary></indexterm>
 			<informaltable xml:id="dc_elements">	
 			<tgroup cols="2">
+				<colspec colnum="1" colname="element" colwidth="1.0*"/>
+				<colspec colnum="2" colname="EGindex" colwidth="1.0*"/>
 				<thead>
 					<row>
 						<entry>DC element </entry>

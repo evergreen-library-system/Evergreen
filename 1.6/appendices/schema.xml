@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<chapter id="databaseschema">
+<appendix id="databaseschema">
 	<title>Database Schema</title>
 	<para>This is the schema for the Evergreen database.</para>
 	
@@ -43534,5 +43534,5 @@
 		
 	</section>
 	
-  </chapter>
+  </appendix>
 

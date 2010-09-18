@@ -190,8 +190,8 @@
          <informaltable>
             <?dbfo keep-together="always" ?>
             <tgroup cols="2" align="left" colsep="1" rowsep="1">
-               <colspec colnum="1" colname="key" colwidth="1*"/>
-               <colspec colnum="2" colname="function" colwidth="3*"/>
+               <colspec colnum="1" colname="key" colwidth="1.0*"/>
+               <colspec colnum="2" colname="function" colwidth="3.0*"/>
                <thead>
                   <row>
                      <entry>Key</entry>
