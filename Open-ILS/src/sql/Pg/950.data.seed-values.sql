@@ -6833,6 +6833,18 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
 
 INSERT INTO config.global_flag (name, label, enabled)
     VALUES (
+        'circ.holds.usr_not_requestor',
+        oils_i18n_gettext(
+            'circ.holds.usr_not_requestor',
+            'Holds: When testing hold matrix matchpoints, use the profile group of the receiving user instead of that of the requestor (affects staff-placed holds)',
+            'cgf',
+            'label'
+        ),
+        TRUE
+    );
+
+INSERT INTO config.global_flag (name, label, enabled)
+    VALUES (
         'circ.holds.empty_issuance_ok',
         oils_i18n_gettext(
             'circ.holds.empty_issuance_ok',

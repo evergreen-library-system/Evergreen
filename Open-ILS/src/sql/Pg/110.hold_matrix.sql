@@ -75,7 +75,14 @@ BEGIN
     SELECT INTO item_object * FROM asset.copy WHERE id = match_item;
     SELECT INTO item_cn_object * FROM asset.call_number WHERE id = item_object.call_number;
     SELECT INTO rec_descriptor r.* FROM metabib.rec_descriptor r WHERE r.record = item_cn_object.record;
-    SELECT INTO current_requestor_group * FROM permission.grp_tree WHERE id = requestor_object.profile;
+
+    PERFORM * FROM config.internal_flag WHERE name = 'circ.holds.usr_not_requestor' AND enabled;
+
+    IF NOT FOUND THEN
+        SELECT INTO current_requestor_group * FROM permission.grp_tree WHERE id = requestor_object.profile;
+    ELSE
+        SELECT INTO current_requestor_group * FROM permission.grp_tree WHERE id = user_object.profile;
+    END IF;
 
     LOOP 
         -- for each potential matchpoint for this ou and group ...
