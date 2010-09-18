@@ -44,6 +44,30 @@ sub cl_retrieve_all {
 }
 
 __PACKAGE__->register_method(
+    "api_name" => "open-ils.circ.copy_location.retrieve.distinct",
+    "method" => "cl_retrieve_distinct",
+    "stream" => 1,
+    "argc" => 0,
+    "signature" => q/Retrieve copy locations with distinct names globally/
+);
+
+sub cl_retrieve_distinct {
+    my ($self, $client) = @_;
+
+    my $e = new_editor();
+    my $names = $e->json_query({
+        "select" => {
+            "acpl" => [{"transform" => "distinct", "column" => "name"}]
+        },
+        "from" => {"acpl" => {}}
+    }) or return $e->die_event;
+    $e->disconnect;
+
+    $client->respond($_->{"name"}) for @$names;
+    undef;
+}
+
+__PACKAGE__->register_method(
 	api_name		=> 'open-ils.circ.copy_location.create',
 	method		=> 'cl_create',
 	argc			=> 2,
