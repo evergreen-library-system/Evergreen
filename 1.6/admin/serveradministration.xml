@@ -380,7 +380,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<title>Permissions Table</title>
 				<tgroup cols="2">
 					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
-					<colspec colnum="2" colname="col2" colwidth="2.5*"/>
+					<colspec colnum="2" colname="col2" colwidth="1.0*"/>
 					<thead>
 						<row>
 							<entry>Permission Name</entry>
@@ -399,7 +399,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							transit destination or source</entry>
 						</row>
 						<row>
-							<entry>ASSIGN_WORK_ORG_UNIT </entry>
+							<entry>ASSIGN_WORK_ORG_UNIT</entry>
 							<entry>Allows user to define where another staff member's 
 							permissions apply via the Permissions Editor interface.</entry>
 						</row>
@@ -412,12 +412,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to cancel holds</entry>
 						</row>
 						<row>
-							<entry>CIRC_CLAIMS_RETURNED.override</entry>
+							<entry>CIRC_CLAIMS_RETURNED override</entry>
 							<entry>Allows user to check in/out an item that is claims 
 							returned</entry>
 						</row>
 						<row>
-							<entry>CIRC_EXCEEDS_COPY_RANGE.override</entry>
+							<entry>CIRC_EXCEEDS_COPY_RANGE override</entry>
 							<entry>Allows user to override the copy exceeds range event</entry>
 						</row>
 						<row>
@@ -430,12 +430,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							checkout</entry>
 						</row>
 						<row>
-							<entry>COPY_ALERT_MESSAGE.override</entry>
+							<entry>COPY_ALERT_MESSAGE override</entry>
 							<entry>Allows user to check in/out an item that has an alert 
 								message</entry>
 						</row>
 						<row>
-							<entry>COPY_BAD_STATUS.override</entry>
+							<entry>COPY_BAD_STATUS override</entry>
 							<entry>Allows user to check out an item in a non-circulating
 							status</entry>
 						</row>
@@ -448,7 +448,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to check out a copy</entry>
 						</row>
 						<row>
-							<entry>COPY_CIRC_NOT_ALLOWED.override</entry>
+							<entry>COPY_CIRC_NOT_ALLOWED override</entry>
 							<entry>Allows user to checkout an item that is marked as 
 							non-circ</entry>
 						</row>
@@ -457,21 +457,21 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to place a hold on a specific copy</entry>
 						</row>
 						<row>
-							<entry>COPY_IS_REFERENCE.override</entry>
+							<entry>COPY_IS_REFERENCE override</entry>
 							<entry>Allows user to override the copy_is_reference event</entry>
 						</row>
 					
 						<row>
-							<entry>COPY_NOT_AVAILABLE.override</entry>
+							<entry>COPY_NOT_AVAILABLE override</entry>
 							<entry>Allows user to force checkout of Missing/Lost type 
 							items</entry>
 						</row>
 						<row>
-							<entry>COPY_STATUS_LOST.override</entry>
+							<entry>COPY_STATUS_LOST override</entry>
 							<entry>Allows user to remove the lost status from a copy</entry>
 						</row>
 						<row>
-							<entry>COPY_STATUS_MISSING.override</entry>
+							<entry>COPY_STATUS_MISSING override</entry>
 							<entry>Allows user to change the missing status on a copy</entry>
 						</row>
 						<row>
@@ -510,12 +510,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							copies</entry>
 						</row>
 						<row>
-							<entry>CREATE_COPY_STAT_CAT_ENTRY</entry>
+							<entry>CREATE_COPY_STAT_CAT _ENTRY</entry>
 							<entry>Allows user to create a new entry for a copy statistical 
 							category</entry>
 						</row>
 						<row>
-							<entry>CREATE_COPY_STAT_CAT_ENTRY_MAP</entry>
+							<entry>CREATE_COPY_STAT_CAT _ENTRY_MAP</entry>
 							<entry>Allows user to link a copy to a statistical category 
 							(i.e., allows user to specify the appropriate entry for a copy and 
 							given statistical category)</entry>
@@ -551,17 +551,17 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to create a new non-cataloged item type</entry>
 						</row>
 						<row>
-							<entry>CREATE_PATRON_STAT_CAT</entry>
+							<entry>CREATE_PATRON_STAT _CAT</entry>
 							<entry>Allows user to create a new patron statistical 
 							category</entry>
 						</row>
 						<row>
-							<entry>CREATE_PATRON_STAT_CAT_ENTRY</entry>
+							<entry>CREATE_PATRON_STAT _CAT_ENTRY</entry>
 							<entry>Allows user to create a new possible entry for patron 
 							statistical categories</entry>
 						</row>
 						<row>
-							<entry>CREATE_PATRON_STAT_CAT_ENTRY_MAP</entry>
+							<entry>CREATE_PATRON_STAT _CAT_ENTRY_MAP</entry>
 							<entry>Allows user to link another user to a stat cat entry (i.e., 
 							specify the patron's entry for a given statistical category)</entry>
 						</row>
@@ -589,7 +589,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to create another user</entry>
 						</row>
 						<row>
-							<entry>CREATE_USER_GROUP_LINK</entry>
+							<entry>CREATE_USER_GROUP _LINK</entry>
 							<entry>Allows user to add other users to permission groups</entry>
 						</row>
 						<row>
@@ -606,7 +606,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							Volume Buckets, and Book Bags).</entry>
 						</row>
 						<row>
-							<entry>DELETE_CONTAINER_ITEM</entry>
+							<entry>DELETE_CONTAINER _ITEM</entry>
 							<entry>Allows user to remove items from buckets and bookbags</entry>
 						</row>
 						<row>
@@ -614,7 +614,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to delete a copy</entry>
 						</row>
 						<row>
-							<entry>DELETE_COPY_LOCATION</entry>
+							<entry>DELETE_COPY _LOCATION</entry>
 							<entry>Allows user to delete a copy location</entry>
 						</row>
 						<row>
@@ -622,16 +622,16 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to delete copy notes</entry>
 						</row>
 						<row>
-							<entry>DELETE_COPY_STAT_CAT</entry>
+							<entry>DELETE_COPY_STAT _CAT</entry>
 							<entry>Allows user to delete a copy statistical category</entry>
 						</row>
 						<row>
-							<entry>DELETE_COPY_STAT_CAT_ENTRY</entry>
+							<entry>DELETE_COPY_STAT _CAT_ENTRY</entry>
 							<entry>Allows user to delete an entry for a copy statistical 
 							category</entry>
 						</row>
 						<row>
-							<entry>DELETE_COPY_STAT_CAT_ENTRY_MAP</entry>
+							<entry>DELETE_COPY_STAT _CAT_ENTRY_MAP</entry>
 							<entry>Allows user to delete a copy stat cat entry map</entry>
 						</row>
 						<row>
@@ -641,16 +641,16 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							circulated).</entry>
 						</row>
 						<row>
-							<entry>DELETE_PATRON_STAT_CAT</entry>
+							<entry>DELETE_PATRON_STAT _CAT</entry>
 							<entry>Allows user to delete a patron statistical category</entry>
 						</row>
 						<row>
-							<entry>DELETE_PATRON_STAT_CAT_ENTRY</entry>
+							<entry>DELETE_PATRON_STAT _CAT_ENTRY</entry>
 							<entry>Allows user to delete an entry for patron statistical 
 							categories</entry>
 						</row>
 						<row>
-							<entry>DELETE_PATRON_STAT_CAT_ENTRY_MAP</entry>
+							<entry>DELETE_PATRON_STAT _CAT_ENTRY_MAP</entry>
 							<entry>Allows user to remove a patron's entry for a given 
 							statistical category</entry>
 						</row>
@@ -695,15 +695,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							interface</entry>
 						</row>
 						<row>
-							<entry>ITEM_AGE_PROTECTED.override</entry>
+							<entry>ITEM_AGE_PROTECTED override</entry>
 							<entry>Allows user to place a hold on an age-protected item</entry>
 						</row>						<row>
-							<entry>ITEM_ON_HOLDS_SHELF.override</entry>
+							<entry>ITEM_ON_HOLDS_SHELF override</entry>
 							<entry>Allows user to check out an item that is on holds shelf for a 
 							different patron</entry>
 						</row>
 						<row>
-							<entry>MAX_RENEWALS_REACHED.override</entry>
+							<entry>MAX_RENEWALS_REACHED override</entry>
 							<entry>Allows user to renew an item past the maximum renewal 
 							count</entry>
 						</row>
@@ -724,7 +724,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							batch</entry>
 						</row>
 						<row>
-							<entry>OFFLINE_UPLOAD </entry>
+							<entry>OFFLINE_UPLOAD</entry>
 							<entry>Allows user to upload an offline/standalone script</entry>
 						</row>
 						<row>
@@ -736,15 +736,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to login to the OPAC</entry>
 						</row>
 						<row>
-							<entry>patron_exceeds_checkout_count.override</entry>
+							<entry>patron_exceeds_checkout _count.override</entry>
 							<entry>Allow user to override checkout count failure</entry>
 						</row>
 						<row>
-							<entry>patron_exceeds_fines .override</entry>
+							<entry>patron_exceeds_fines override</entry>
 							<entry>Allow user to override fine amount checkout failure</entry>
 						</row>
 						<row>
-							<entry>patron_exceeds_overdue_count .override</entry>
+							<entry>patron_exceeds_overdue _count.override</entry>
 							<entry>Allow user to override overdue count failure</entry>
 						</row>
 						<row>
@@ -782,7 +782,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							and run reports</entry>
 						</row>
 						<row>
-							<entry>SET_CIRC_CLAIMS_RETURNED</entry>
+							<entry>SET_CIRC_CLAIMS _RETURNED</entry>
 							<entry>Allows user to mark an item as claimed returned</entry>
 						</row>
 						<row>
@@ -832,7 +832,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to change a copy statistical category</entry>
 						</row>
 						<row>
-							<entry>UPDATE_COPY_STAT_CAT_ENTRY</entry>
+							<entry>UPDATE_COPY_STAT _CAT_ENTRY</entry>
 							<entry>Allows user to change a copy statistical category entry</entry>
 						</row>
 						<row>
@@ -846,7 +846,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to edit a marc record</entry>
 						</row>
 						<row>
-							<entry>UPDATE_NON_CAT_TYPE</entry>
+							<entry>UPDATE_NON_CAT _TYPE</entry>
 							<entry>Allows user to update a non cataloged type</entry>
 						</row>
 						<row>
@@ -858,12 +858,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to change org unit settings</entry>
 						</row>
 						<row>
-							<entry>UPDATE_PATRON_STAT_CAT</entry>
+							<entry>UPDATE_PATRON_STAT _CAT</entry>
 							<entry>Allows user to change a patron statistical category (such as 
 							renaming the category)</entry>
 						</row>
 						<row>
-							<entry>UPDATE_PATRON_STAT_CAT_ENTRY</entry>
+							<entry>UPDATE_PATRON_STAT _CAT_ENTRY</entry>
 							<entry>Allows user to change a patron stat cat entry(such as 
 							renaming the entry)</entry>
 						</row>
@@ -890,7 +890,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to view buckets and bookbags</entry>
 						</row>
 						<row>
-							<entry>VIEW_COPY_CHECKOUT_HISTORY</entry>
+							<entry>VIEW_COPY_CHECKOUT _HISTORY</entry>
 							<entry>Allows user to view which users have checked out a given 
 							copy</entry>
 						</row>
@@ -943,7 +943,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to view another user's Patron Record</entry>
 						</row>
 						<row>
-							<entry>VIEW_USER_FINES_SUMMARY</entry>
+							<entry>VIEW_USER_FINES _SUMMARY</entry>
 							<entry>Allows user to view bill details</entry>
 						</row>
 						<row>
@@ -968,16 +968,16 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 						</row>
 				
 						<row>
-							<entry>actor.org_unit.closed_date.create</entry>
+							<entry>actor.org_unit.closed _date.create</entry>
 							<entry>Allows user to create a new closed date for a location</entry>
 						</row>
 						<row>
-							<entry>actor.org_unit.closed_date.delete</entry>
+							<entry>actor.org_unit.closed _date.delete</entry>
 							<entry>Allows user to remove a closed date interval for a given 
 							location</entry>
 						</row>
 						<row>
-							<entry>actor.org_unit.closed_date.update</entry>
+							<entry>actor.org_unit.closed _date.update</entry>
 							<entry>Allows user to update a closed date interval for a given 
 							location</entry>
 						</row>
@@ -986,32 +986,32 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 							<entry>Allows user to add/remove users to/from the User group</entry>
 						</row>
 						<row>
-							<entry>group_application.user.patron</entry>
+							<entry>group_application.user .patron</entry>
 							<entry>Allows user to add/remove users to/from the Patron 
 							group</entry>
 						</row>
 						<row>
-							<entry>group_application.user.sip_client</entry>
+							<entry>group_application.user. sip_client</entry>
 							<entry>Allows user to add/remove users to/from the SIP-Client 
 							group</entry>
 						</row>
 						<row>
-							<entry>group_application.user.staff</entry>
+							<entry>group_application.user. staff</entry>
 							<entry>Allows user to add/remove users to/from the Staff 
 							group</entry>
 						</row>
 						<row>
-							<entry>group_application.user.staff.admin.global_admin</entry>
+							<entry>group_application.user.staff. admin.global_admin</entry>
 							<entry>Allows user to add/remove users to/from the GlobalAdmin 
 							group</entry>
 						</row>
 						<row>
-							<entry>group_application.user.staff.admin.lib_manager</entry>
+							<entry>group_application.user.staff. admin.lib_manager</entry>
 							<entry>Allows user to add/remove users to/from the LibraryManager 
 							group</entry>
 						</row>
 						<row>
-							<entry>group_application.user.staff.admin.local_admin</entry>
+							<entry>group_application.user.staff. admin.local_admin</entry>
 							<entry>Allows user to add/remove users to/from the LocalAdmin 
 							group</entry>
 						</row>
@@ -1020,30 +1020,30 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 						<entry>Allows user to add/remove users to/from the Cataloger group</entry>
 						</row>
 						<row>
-							<entry>group_application.user.staff.cat.cat1</entry>
+							<entry>group_application.user. staff.cat.cat1</entry>
 							<entry>Allows user to add/remove users to/from the Cat1 group</entry>
 						</row>
 						<row>
-							<entry>group_application.user.staff.circ</entry>
+							<entry>group_application.user. staff.circ</entry>
 							<entry>Allows user to add/remove users to/from the Circulator 
 							group</entry>
 						</row>
 						<row>
-							<entry>group_application.user.staff.supercat</entry>
+							<entry>group_application.user. staff.supercat</entry>
 							<entry>Allows user to add/remove users to/from the Supercat 
 							group</entry>
 						</row>
 						<row>
-							<entry>group_application.user.vendor</entry>
+							<entry>group_application.user. vendor</entry>
 							<entry>Allows user to add/remove users to/from the Vendor 
 							group</entry>
 						</row>
 						<row>
-							<entry>money.collections_tracker.create</entry>
+							<entry>money.collections_tracker. create</entry>
 							<entry>Allows user to put someone into collections</entry>
 						</row>
 						<row>
-							<entry>money.collections_tracker.delete</entry>
+							<entry>money.collections_tracker. delete</entry>
 							<entry>Allows user to take someone out of collections</entry>
 						</row>
 					</tbody>
@@ -1114,7 +1114,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 
             <tgroup cols="7" align="center" colsep="1" rowsep="1">
 
-		<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+		<colspec colnum="1" colname="col1" align="left" colwidth="2.0*"/>
 		<colspec colnum="2" colname="col2" colwidth="1.0*"/>
 		<colspec colnum="3" colname="col3" colwidth="1.0*"/>
 		<colspec colnum="4" colname="col4" colwidth="1.0*"/>
@@ -1156,7 +1156,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                     </row>
 
                     <row>
-                        <entry>CheckIn Missing/Lost/ClaimedReturned overrides</entry>
+                        <entry>CheckIn Missing/Lost/ ClaimedReturned overrides</entry>
                         <entry/>
                         <entry/>
                         <entry>*</entry>
@@ -1175,7 +1175,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                     </row>
 
                     <row>
-                        <entry>MaxRenewalReached override</entry>
+                        <entry>MaxRenewal Reached override</entry>
                         <entry/>
                         <entry>*</entry>
                         <entry>*</entry>

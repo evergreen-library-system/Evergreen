@@ -414,7 +414,10 @@ Escape character is '^]'.
 			<screen>10&lt;resensitize>&lt;magnetic media&gt;&lt;alert&gt;&lt;xact date&gt;[Fields AO,AB,AQ,AJ,CL,AA,CK,CH,CR,CS,CT,CV,CY,DA,AF,AG]</screen>
 			<para>Example (with a remote hold):</para>
 			<screen>09N20100507    16593720100507    165937APCheckin Bin 5|AOBR1|AB1565921879|ACsip_01|</screen>
-			<screen>101YNY20100623    165731AOBR1|AB1565921879|AQBR1|AJPerl 5 desktop reference|CK001|CSQA76.73.P33V76 1996|CTBR3|CY373827|DANicholas Richard Woodard|CV02|</screen>
+<screen>
+101YNY20100623    165731AOBR1|AB1565921879|AQBR1|AJPerl 5 desktop reference|CK001|CSQA76.73.P33V76 1996
+|CTBR3|CY373827|DANicholas Richard Woodard|CV02|
+</screen>
 			<para>Here you can see a hold alert for patron <varname>CY</varname> <emphasis>373827</emphasis>, named <varname>DA</varname> <emphasis>Nicholas Richard Woodard</emphasis>, 
 			to be picked up at <varname>CT</varname> <quote>BR3</quote>. Since the transaction is happening 
 			at <varname>AO</varname> <quote>BR1</quote>, the alert type <varname>CV</varname> is 02 for <emphasis>hold at remote library</emphasis>. 
@@ -519,7 +522,10 @@ Escape character is '^]'.
 			<screen>64YYYY          00020100623    141130000000000000000000000000AE|AAbad_barcode|BLN|AOBR1|</screen>
 			<para>Attempting to retrieve patron info with a good barcode (but bad patron password):</para>
 			<screen>6300020060329    201700          AOBR1|AA999999|ADbadpwd|</screen>
-			<screen>64  Y           00020100623    141130000000000000000000000000AA999999|AEDavid J. Fiander|BHUSD|BV0.00|BD2 Meadowvale Dr. St Thomas, ON Canada</screen>
+<screen>
+64  Y           00020100623    141130000000000000000000000000AA999999|AEDavid J. Fiander|BHUSD|BV0.00
+|BD2 Meadowvale Dr. St Thomas, ON Canada
+</screen>
 			<screen>90210|BEdjfiander@somemail.com|BF(519) 555 1234|AQBR1|BLY|CQN|PB19640925|PCPatrons|PIUnfiltered|AFOK|AOBR1|</screen>
 			<para>See <link linkend='SIP_Patron_Status'>23/24 Patron Status</link> for info on <varname>BL</varname> and <varname>CQ</varname> fields.</para>
 		</simplesect>

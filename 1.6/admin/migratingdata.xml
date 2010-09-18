@@ -37,8 +37,9 @@
 				<indexterm><primary>sql</primary></indexterm> 
 <programlisting language="sql">
 CREATE TABLE students (
-	student_id int, barcode text, last_name text, first_name text, program_number text, program_name text, email text, address_type text, street1 text, street2 text, city text, province text, 
-	country text, postal_code text, phone text, profile int, ident_type int, home_ou int, claims_returned_count int DEFAULT 0, usrname text, net_access_level int DEFAULT 2, password text
+	student_id int, barcode text, last_name text, first_name text, program_number text, program_name text, email text, address_type text, street1 text, 
+	street2 text, city text, province text, country text, postal_code text, phone text, profile int, ident_type int, home_ou int, 
+	claims_returned_count int DEFAULT 0, usrname text, net_access_level int DEFAULT 2, password text
 ); 
 </programlisting>
 				<para>Note the <varname>DEFAULT</varname> variables. These allow you to set default for your library or to populate required fields if you data allows 
@@ -56,8 +57,11 @@ UPDATE students phone = replace(replace(replace(rpad(substring(phone from 1 for 
 				<para>Insert records from the staging table into the <link linkend="actor.table.usr">actor.usr</link> Evergreen table:</para>
 <programlisting language="sql">
  INSERT INTO actor.usr (
-	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, family_name, day_phone, home_ou, claims_returned_count, net_access_level) SELECT profile, students.usrname, 
-	email, student_id, ident_type, student_id, first_name, last_name, phone, home_ou, claims_returned_count, net_access_level FROM students;
+	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, family_name, day_phone, home_ou, claims_returned_count, 
+	net_access_level) 
+	SELECT profile, students.usrname, email, student_id, ident_type, student_id, first_name, last_name, phone, home_ou, claims_returned_count, 
+	net_access_level 
+	FROM students;
 </programlisting>			
 			</step>
 			<step>
@@ -117,15 +121,18 @@ BEGIN;
 
 -- Create staging table.
 CREATE TABLE students (
-	student_id int, barcode text, last_name text, first_name text, program_number text, program_name text, email text, address_type text, street1 text, street2 text, city text, province text, 
-	country text, postal_code text, phone text, profile int, ident_type int, home_ou int, claims_returned_count int DEFAULT 0, usrname text, net_access_level int DEFAULT 2, password text
+	student_id int, barcode text, last_name text, first_name text, program_number text, program_name text, email text, address_type text, 
+	street1 text, street2 text, city text, province text, country text, postal_code text, phone text, profile int, ident_type int, home_ou int, 
+	claims_returned_count int DEFAULT 0, usrname text, net_access_level int DEFAULT 2, password text
 ); 
 
 
 --Insert records from the staging table into the actor.usr table.
 INSERT INTO actor.usr (
-	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, family_name, day_phone, home_ou, claims_returned_count, net_access_level) SELECT profile, students.usrname, 
-	email, student_id, ident_type, student_id, first_name, last_name, phone, home_ou, claims_returned_count, net_access_level FROM students;
+	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, family_name, day_phone, home_ou, claims_returned_count, 
+	net_access_level) 
+	SELECT profile, students.usrname, email, student_id, ident_type, student_id, first_name, last_name, phone, home_ou, claims_returned_count, 
+	net_access_level FROM students;
 
 --Insert records from the staging table into the actor.usr table.
 INSERT INTO actor.card (usr, barcode) 
