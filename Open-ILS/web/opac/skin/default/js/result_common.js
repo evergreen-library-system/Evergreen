@@ -94,6 +94,7 @@ function resultCollectSearchIds( type, method, handler ) {
 	_debug('Raw query: ' + getTerm());
 
 	var atomfeed = "/opac/extras/opensearch/1.1/" + findOrgUnit(args.org_unit).shortname() + "/atom-full/" + getStype() + '?searchTerms=' + getTerm();
+	if (args.facets) { atomfeed += ' ' + args.facets; }
 	if (sort) { atomfeed += '&searchSort=' + sort; }
 	if (sortdir) { atomfeed += '&searchSortDir=' + sortdir; }
 	dojo.create('link', {"rel":"alternate", "href":atomfeed, "type":"application/atom+xml"}, dojo.query('head')[0]);
