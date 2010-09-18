@@ -99,6 +99,16 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                 var item_limit = parseInt(slot.getAttribute('limit'));
                                 var item_offset = parseInt(slot.getAttribute('offset')) || 0;
 
+                                var pre_render_callbacks = dojo.query( '*[type=opac/call-back+pre-render]', slot );
+                                var post_render_callbacks = dojo.query( '*[type=opac/call-back+post-render]', slot );
+                                var pre_query_callbacks = dojo.query( '*[type=opac/call-back+pre-query]', slot );
+                                var post_query_callbacks = dojo.query( '*[type=opac/call-back+post-query]', slot );
+
+                                // Do pre-query stuff
+                                dojo.forEach(pre_query_callbacks, function (cb) {
+                                    try { (new Function( 'BT', 'slotXML', 'slot', unescape(cb.innerHTML) ))(BT,bib,slot) } catch (e) {/*meh*/}
+                                });
+
                                 var item_list = dojo.query(
                                     slot.getAttribute('query'),
                                     bib
@@ -107,11 +117,14 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                 if (item_limit) {
                                     if (debug) alert('BibTemplate debug -- item list limit/offset requested: ' + item_limit + '/' + item_offset);
                                     if (item_list.length) item_list = BT.subsetNL(item_list, item_offset, item_offset + item_limit);
-                                    if (!item_list.length) return;
                                 }
 
-                                var pre_render_callbacks = dojo.query( '*[type=opac/call-back+pre-render]', slot );
-                                var post_render_callbacks = dojo.query( '*[type=opac/call-back+post-render]', slot );
+                                // Do post-query stuff, only if there's an item list!
+                                dojo.forEach(post_query_callbacks, function (cb) {
+                                    try { (new Function( 'item_list', 'BT', 'slotXML', 'slot', unescape(cb.innerHTML) ))(item_list,BT,bib,slot) } catch (e) {/*meh*/}
+                                });
+
+                                if (!item_list.length) return;
 
                                 // Do pre-render stuff
                                 dojo.forEach(pre_render_callbacks, function (cb) {
