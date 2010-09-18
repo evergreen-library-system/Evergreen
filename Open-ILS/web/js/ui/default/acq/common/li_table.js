@@ -1443,6 +1443,7 @@ function AcqLiTable() {
                     parentNode : dojo.query('[name='+field+']', row)[0],
                     orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
                     readOnly : readOnly,
+                    orgDefaultsToWs : true
                 });
 
                 widget.build(
