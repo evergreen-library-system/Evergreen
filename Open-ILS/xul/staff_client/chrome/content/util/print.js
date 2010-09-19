@@ -105,6 +105,11 @@ util.print.prototype = {
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             obj.data.init({'via':'stash'});
 
+            if (typeof obj.data.print_strategy == 'undefined') {
+                obj.data.print_strategy = {};
+                obj.data.stash('print_strategy');
+            }
+
             if (params.print_strategy || obj.data.print_strategy[obj.context] || obj.data.print_strategy['default']) {
 
                 switch(params.print_strategy || obj.data.print_strategy[obj.context] || obj.data.print_strategy['default']) {

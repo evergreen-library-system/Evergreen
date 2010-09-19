@@ -244,6 +244,56 @@ OpenILS.data.prototype = {
         }
     },
 
+    'load_saved_print_templates' : function() {
+        var obj = this;
+        try {
+            JSAN.use('util.file'); var file = new util.file('print_list_templates');
+            if (file._file.exists()) {
+                try {
+                    var x = file.get_object();
+                    if (x) {
+                        for (var i in x) {
+                            obj.print_list_templates[i] = x[i];
+                        }
+                        obj.stash('print_list_templates');
+                        obj.data_progress('Saved print templates retrieved from file. ');
+                    }
+                } catch(E) {
+                    alert(E);
+                }
+            }
+            file.close();
+        } catch(E) {
+            alert("Error in OpenILS.data, load_saved_print_templates(): " + E);
+        }
+    },
+
+    'fetch_print_strategy' : function() {
+        var obj = this;
+        try {
+            obj.print_strategy = {};
+            var print_contexts = [ 'default', 'receipt', 'label', 'mail' ];
+            for (var i in print_contexts) {
+                JSAN.use('util.file'); var file = new util.file('print_strategy.' + print_contexts[i]);
+                if (file._file.exists()) {
+                    try {
+                        var x = file.get_content();
+                        if (x) {
+                            obj.print_strategy[ print_contexts[i] ] = x;
+                            obj.data_progress('Print strategy ' + print_contexts[i] + ' retrieved from file. ');
+                        }
+                    } catch(E) {
+                        alert(E);
+                    }
+                }
+                file.close();
+            }
+            obj.stash('print_strategy');
+        } catch(E) {
+            alert('Error in OpenILS.data, fetch_print_strategy(): ' + E);
+        }
+    },
+
     'print_list_defaults' : function() {
         var obj = this;
         //if (typeof obj.print_list_templates == 'undefined') {
@@ -384,26 +434,6 @@ OpenILS.data.prototype = {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var obj = this;
 
-
-        JSAN.use('util.file'); var file = new util.file('print_list_templates');
-        obj.print_list_defaults();
-        obj.data_progress('Default print templates set. ');
-        if (file._file.exists()) {
-            try {
-                var x = file.get_object();
-                if (x) {
-                    for (var i in x) {
-                        obj.print_list_templates[i] = x[i];
-                    }
-                    obj.stash('print_list_templates');
-                    obj.data_progress('Saved print templates retrieved from file. ');
-                }
-            } catch(E) {
-                alert(E);
-            }
-        }
-        file.close();
-
         JSAN.use('util.file'); var file = new util.file('global_font_adjust');
         if (file._file.exists()) {
             try {
@@ -434,25 +464,10 @@ OpenILS.data.prototype = {
         }
         file.close();
 
-        obj.print_strategy = {};
-        var print_contexts = [ 'default', 'receipt', 'label', 'mail' ];
-        for (var i in print_contexts) {
-            JSAN.use('util.file'); var file = new util.file('print_strategy.' + print_contexts[i]);
-            if (file._file.exists()) {
-                try {
-                    var x = file.get_content();
-                    if (x) {
-                        obj.print_strategy[ print_contexts[i] ] = x;
-                        obj.data_progress('Print strategy ' + print_contexts[i] + ' retrieved from file. ');
-                    }
-                } catch(E) {
-                    alert(E);
-                }
-            }
-            file.close();
-        }
-        obj.stash('print_strategy');
-
+        obj.print_list_defaults();
+        obj.data_progress('Default print templates set. ');
+        obj.load_saved_print_templates();
+        obj.fetch_print_strategy();
         JSAN.use('util.print'); (new util.print()).GetPrintSettings();
         obj.data_progress('Printer settings retrieved. ');
 
