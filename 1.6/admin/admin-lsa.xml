@@ -40,7 +40,8 @@
          require special permissions to edit. The following table describes each of the menu options. </para>
       <informaltable>
          <tgroup cols="2" align="left" colsep="1" rowsep="1">
-
+		<colspec colnum="1" colname="menu" colwidth="1.0*"/>
+		<colspec colnum="2" colname="description" colwidth="3.0*"/>
             <thead>
                <row>
                   <entry>Menu option</entry>
@@ -450,10 +451,10 @@
             settings values.</para>
          <informaltable xml:id="lsa-library-settings-overview">
             <tgroup cols="4" align="left" colsep="1" rowsep="1">
-               <colspec colnum="1" colname="setting" colwidth="2*"/>
-               <colspec colnum="2" colname="description" colwidth="3*"/>
-               <colspec colnum="3" colname="type" colwidth="1*"/>
-               <colspec colnum="4" colname="notes" colwidth="2*"/>
+               <colspec colnum="1" colname="setting" colwidth="2.0*"/>
+               <colspec colnum="2" colname="description" colwidth="3.0*"/>
+               <colspec colnum="3" colname="type" colwidth="1.0*"/>
+               <colspec colnum="4" colname="notes" colwidth="2.0*"/>
                <thead>
                   <row>
                      <entry>Setting</entry>
@@ -854,8 +855,8 @@
          <informaltable xml:id="lsa-data-types">
 
             <tgroup cols="2" align="left" colsep="1" rowsep="1">
-               <colspec colnum="1" colname="type" colwidth="2*"/>
-               <colspec colnum="2" colname="formatting" colwidth="5*"/>
+               <colspec colnum="1" colname="type" colwidth="1.0*"/>
+               <colspec colnum="2" colname="formatting" colwidth="5.0*"/>
              
 
                <thead>
@@ -972,6 +973,8 @@
       <informaltable>
 
          <tgroup cols="2" align="left" colsep="1" rowsep="1">
+		<colspec colnum="1" colname="penalty" colwidth="1.0*"/>
+		<colspec colnum="2" colname="effect" colwidth="1.0*"/>
 
             <thead>
                <row>

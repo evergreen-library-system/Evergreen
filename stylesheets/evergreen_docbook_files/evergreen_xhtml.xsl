@@ -17,7 +17,7 @@
 <xsl:param name="callout.graphics" select="1" />
 <xsl:param name="callout.graphics.extension" select="'.png'" />
 <xsl:param name="callout.graphics.path" select="'media/'" />
- 
+<xsl:param name="use.id.as.filename" select="1"></xsl:param> 
 <!-- customized header, to add home link -->
     
     <xsl:template name="header.navigation">

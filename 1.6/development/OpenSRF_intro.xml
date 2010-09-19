@@ -1423,12 +1423,7 @@ http://localhost/osrf-http-translator <co id="CO8-4"/>
 			client issues a <literal>REQUEST</literal> message in a <emphasis>stateless</emphasis> connection, the router
 			forwards the request to the next available service and the service returns the
 			result directly to the client.</simpara>
-			<formalpara><title>REQUEST flow in a stateless connection</title><para><inlinemediaobject>
-			  <imageobject>
-			  <imagedata fileref="REQUEST.png"/>
-			  </imageobject>
-			  <textobject><phrase>REQUEST flow in a stateless connection</phrase></textobject>
-			</inlinemediaobject></para></formalpara>
+			
 			<simpara>When an OpenSRF client issues a <literal>CONNECT</literal> message to create a <emphasis>stateful</emphasis> conection, the
 			router returns the Jabber ID of the next available service to the client so
 			that the client can issue one or more <literal>REQUEST</literal> message directly to that
@@ -1439,12 +1434,7 @@ http://localhost/osrf-http-translator <co id="CO8-4"/>
 			as it avoids the intermediary step of contacting the router for each request, as
 			well as for operations that require a controlled sequence of commands, such as a
 			set of database INSERT, UPDATE, and DELETE statements within a transaction.</simpara>
-			<formalpara><title>CONNECT, REQUEST, and DISCONNECT flow in a stateful connection</title><para><inlinemediaobject>
-			  <imageobject>
-			  <imagedata fileref="CONNECT.png"/>
-			  </imageobject>
-			  <textobject><phrase>CONNECT</phrase></textobject>
-			</inlinemediaobject></para></formalpara>
+			
 		</simplesect>
 		<simplesect id="_message_body_format">
 			<title>Message body format</title>

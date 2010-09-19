@@ -21,9 +21,9 @@
         <para>Each data type has its own characteristics and uses:</para>
         <informaltable>
             <tgroup cols="3" align="left" colsep="1" rowsep="1">
-                <colspec colnum="1" colname="type" colwidth="1*"/>
-                <colspec colnum="2" colname="description" colwidth="1*"/>
-                <colspec colnum="3" colname="notes" colwidth="2*"/>
+                <colspec colnum="1" colname="type" colwidth="1.0*"/>
+                <colspec colnum="2" colname="description" colwidth="1.0*"/>
+                <colspec colnum="3" colname="notes" colwidth="2.0*"/>
                 <thead>
                     <row>
                         <entry>Data Type</entry>
@@ -124,9 +124,9 @@
         <informaltable>
             
             <tgroup cols="3" align="left" colsep="1" rowsep="1">
-                <colspec colnum="1" colname="title" colwidth="2*"/>
-                <colspec colnum="2" colname="id" colwidth="1*"/>
-                <colspec colnum="3" colname="name" colwidth="1*"/>
+                <colspec colnum="1" colname="title" colwidth="2.0*"/>
+                <colspec colnum="2" colname="id" colwidth="1.0*"/>
+                <colspec colnum="3" colname="name" colwidth="1.0*"/>
                 
                 <thead>
                     <row>

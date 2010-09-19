@@ -563,37 +563,18 @@
 			 at check in with the steps below.</para>
 			<procedure>
 				<step>
-				    	<informalfigure>
 					       <para>After adding the item select <menuchoice>
 						     <guimenu>Actions for this Record</guimenu>
 						     <guimenuitem>View Holds</guimenuitem>
 						  </menuchoice></para>
-					       <para>
-						  <mediaobject>
-						     <alt>actions for this record menu</alt>
-						     <imageobject>
-							<imagedata scalefit="0" fileref="../media/add_holdings-6.png"/>
-						     </imageobject>
-						  </mediaobject>
-					       </para>
-					</informalfigure>
 				</step>
 				 <step>
-				    <informalfigure>
 				       <para>If there are outstanding hold requests, select the hold that is next in line
 					  then choose <menuchoice>
 					     <guimenu>Actions for Selected Holds</guimenu>
 					     <guimenuitem>Find Another Target</guimenuitem>
 					  </menuchoice>. This forces Evergreen to re-target the hold and recognize the newly
-					  catalogued item.</para>
-				       <para>
-					  <mediaobject>
-					     <imageobject>
-						<imagedata scalefit="1" width="100%" fileref="../media/add_holdings-7.png"/>
-					     </imageobject>
-					  </mediaobject>
-				       </para>
-				    </informalfigure>
+					  catalogued item.</para> 
 				 </step>
 				 <step>
 				    <para> Check in the new item to capture it for the selected hold.</para>

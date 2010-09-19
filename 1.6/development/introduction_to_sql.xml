@@ -69,10 +69,10 @@ evergreen=# select id, usr, creator, pub, title, value from actor.usr_note;
 			<?dbhtml table-width="80%"?>
 			<?dbfo table-width="80%"?>
 			<tgroup cols="4">
-			<colspec colname="col_1" colwidth="85*"/>
-			<colspec colname="col_2" colwidth="85*"/>
-			<colspec colname="col_3" colwidth="85*"/>
-			<colspec colname="col_4" colwidth="85*"/>
+			<colspec colname="col_1" colwidth="1.0*"/>
+			<colspec colname="col_2" colwidth="1.0*"/>
+			<colspec colname="col_3" colwidth="1.0*"/>
+			<colspec colname="col_4" colwidth="1.0*"/>
 			<thead>
 			<row>
 			<entry align="left" valign="top">Full name </entry>
@@ -130,8 +130,8 @@ evergreen=# \d foobar
 			<?dbhtml table-width="80%"?>
 			<?dbfo table-width="80%"?>
 			<tgroup cols="2">
-			<colspec colname="col_1" colwidth="170*"/>
-			<colspec colname="col_2" colwidth="170*"/>
+			<colspec colname="col_1" colwidth="1.0*"/>
+			<colspec colname="col_2" colwidth="1.0*"/>
 			<thead>
 			<row>
 			<entry align="left" valign="top">Schema name </entry>
@@ -268,9 +268,9 @@ evergreen=# \d foobar
 			<?dbhtml table-width="90%"?>
 			<?dbfo table-width="90%"?>
 			<tgroup cols="3">
-			<colspec colname="col_1" colwidth="77*"/>
-			<colspec colname="col_2" colwidth="77*"/>
-			<colspec colname="col_3" colwidth="230*"/>
+			<colspec colname="col_1" colwidth="1.0*"/>
+			<colspec colname="col_2" colwidth="1.0*"/>
+			<colspec colname="col_3" colwidth="2.5*"/>
 			<thead>
 			<row>
 			<entry align="left" valign="top">Type name   </entry>
@@ -358,9 +358,9 @@ evergreen=# \d foobar
 				<?dbhtml table-width="90%"?>
 				<?dbfo table-width="90%"?>
 				<tgroup cols="3">
-				<colspec colname="col_1" colwidth="77*"/>
-				<colspec colname="col_2" colwidth="153*"/>
-				<colspec colname="col_3" colwidth="153*"/>
+				<colspec colname="col_1" colwidth="1.0*"/>
+				<colspec colname="col_2" colwidth="2.0*"/>
+				<colspec colname="col_3" colwidth="2.0*"/>
 				<thead>
 				<row>
 				<entry align="left" valign="top">Natural key </entry>
@@ -405,10 +405,10 @@ evergreen=# \d foobar
 				<?dbhtml table-width="100%"?>
 				<?dbfo table-width="100%"?>
 				<tgroup cols="4">
-				<colspec colname="col_1" colwidth="106*"/>
-				<colspec colname="col_2" colwidth="106*"/>
-				<colspec colname="col_3" colwidth="106*"/>
-				<colspec colname="col_4" colwidth="106*"/>
+				<colspec colname="col_1" colwidth="1.0*"/>
+				<colspec colname="col_2" colwidth="1.0*"/>
+				<colspec colname="col_3" colwidth="1.0*"/>
+				<colspec colname="col_4" colwidth="1.0*"/>
 				<thead>
 				<row>
 				<entry align="left" valign="top">Table </entry>

@@ -568,6 +568,11 @@
 			<table xml:id="holdslevelstable">
 			<title>Hold Levels Explained:</title>
 			<tgroup cols="5">
+					<colspec colnum="1" colname="col1" colwidth="1.0*"/>
+					<colspec colnum="2" colname="col2" colwidth="0.5*"/>
+					<colspec colnum="3" colname="col3" colwidth="2.0*"/>
+					<colspec colnum="4" colname="col4" colwidth="1.0*"/>
+					<colspec colnum="5" colname="col5" colwidth="2.0*"/>
 				<thead>
 					<row>
 						<entry>Hold Level</entry>
