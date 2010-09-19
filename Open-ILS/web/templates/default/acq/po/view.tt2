@@ -70,6 +70,14 @@
                             <span>Link Invoice</span>
                             <div dojoType="dijit.TooltipDialog"
                                 id="acq-po-link-invoice">
+                                <script type="dojo/connect" event="onOpen">
+                                    if (!invoiceLinkDialogManager) {
+                                        invoiceLinkDialogManager =
+                                            new InvoiceLinkDialogManager(
+                                                "po", PO
+                                            );
+                                    }
+                                </script>
                                 [% INCLUDE "default/acq/common/inv_dialog.tt2"
                                     which = "po" %]
                             </div>

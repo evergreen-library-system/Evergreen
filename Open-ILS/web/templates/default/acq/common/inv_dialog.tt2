@@ -4,14 +4,6 @@
 <table class="acq-link-invoice-dialog">
     <tr>
         <th>
-            <label for="acq-[% which %]-link-invoice-provider">Provider</label>
-        </th>
-        <td>
-            <span id="acq-[% which %]-link-invoice-provider"></span>
-        </td>
-    </tr>
-    <tr>
-        <th>
             <label for="acq-[% which %]-link-invoice-inv_ident">
                 Invoice #
             </label>
@@ -19,6 +11,14 @@
         <td>
             <input id="acq-[% which %]-link-invoice-inv_ident"
                 dojoType="dijit.form.TextBox" />
+        </td>
+    </tr>
+    <tr>
+        <th>
+            <label for="acq-[% which %]-link-invoice-provider">Provider</label>
+        </th>
+        <td>
+            <span id="acq-[% which %]-link-invoice-provider"></span>
         </td>
     </tr>
     <tr>
