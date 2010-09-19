@@ -1,10 +1,205 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter xml:id="ServersideInstallationVirtual" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
-	<info>
-		<title>Server-side Installation in Virtualized Unix Environments</title>
-		<abstract>
-			<para>placeholder</para>
-		</abstract>
-	</info>
-	<section xml:id="serversideinstallation-virtual"></section>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
+	<title>Installing In Virtualized Linux Environments</title>
+	<section xml:id="serversideinstallation-virtual">
+		<title>Overview</title>
+		<para>This section describes the installation of Evergreen software in so-called "virtualized" software environments. Evergreen software currently runs as a native application on any of several well-known x86 (32-bit) and x86-64 (64-bit) <systemitem class="osname">Linux</systemitem> distributions including <systemitem class="osname">Ubuntu</systemitem> and <systemitem class="osname">Debian</systemitem>, but it does not run as a native application on the <systemitem class="osname">Microsoft Windows</systemitem> operating system. However, it is possible to execute Evergreen on a <systemitem class="osname">Windows</systemitem> host system by running it within a virtual Linux-guest installation, which itself executes on the <systemitem class="osname">Windows</systemitem> system. The Linux environment is fully emulated and acts (with some limits) just as if it were executing on a real standalone system.</para>
+		<para>This technique of emulating a Linux environment on a <systemitem class="osname">Windows</systemitem> host is a practical way to install and run an Evergreen system if it is not possible to dedicate a physical machine solely as a Linux host for Evergreen.
+There are some performance limitations to running Evergreen in a virtualized environment, so this architecture is not recommended for large scale systems. However, this is a reasonable architecture for simple experiments, as a proof of concept, or as a conference-room pilot.</para>
+		<section>
+			<title>Installing Virtualization Software</title>
+			<para>The Linux environment is controlled by one of several popular virtualization software applications such as <application>"VirtualBox"</application>, <application>"VMware"</application> or <application>"VirtualPC"</application> which must first be installed on the <systemitem class="osname">Windows</systemitem> system. This section contains step-by-step examples of installing each of the popular virtualization applications on a <systemitem class="osname">Windows</systemitem> host system. Following this section are further descriptions of installing Linux systems on the virtualization software, then of installing and running Evergreen within those Linux systems.</para>
+			<section>
+				<title>Installing <application>"VirtualBox"</application> Virtualization Software</title>
+				<para>This section reviews the procedure for installing the <application>"VirtualBox"</application> application on <systemitem class="osname">WindowsXP Professional (SP2)</systemitem>.</para>
+				<procedure>
+					<step>
+						<para>Download <application>VirtualBox</application> from here: <ulink url="http://download.virtualbox.org/virtualbox/3.2.8/VirtualBox-3.2.8-64453-Win.exe">http://download.virtualbox.org/virtualbox/3.2.8/VirtualBox-3.2.8-64453-Win.exe</ulink>, then run the executable file. Continue with the steps shown in the first five figures until the software has been successfully installed:</para>
+						<figure>
+							<title>Starting the Windows installation file</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-1.png" scalefit="1" width="70%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+						<figure>
+							<title>Welcome to <application>VirtualBox</application> setup wizard</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-2.png" scalefit="1" width="70%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+						<figure>
+							<title>Accept the license agreement</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-3.png" scalefit="1" width="70%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+						<figure>
+							<title>Waiting for files to be copied</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-6.png" scalefit="1" width="70%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+						<figure>
+							<title>Installation is complete</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-7.png" scalefit="1" width="70%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+					</step>
+					<step>
+						<para>After successfully installating <application>VirtualBox</application>, start it for the first time and click <guibutton>"New"</guibutton> to begin defining a new virtual machine (VM). You must specify a name and operating system type for the new VM; in this example we decided to install <systemitem class="osname">Debian Lenny</systemitem>. You must set a reasonable memory size (we chose the default value of 384Mb). You must define a name and size for a virtual hard disk (we chose a name, and set the size to 4.0Gb). The next six figures illlustrate the steps in starting <application>VirtualBox</application> and defining the new VM:</para>
+						<figure>
+							<title>Starting <application>VirtualBox</application> for the first time</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-8.png" scalefit="1" width="60%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+						<figure>
+							<title>Setting VM name and OS type</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-10.png" scalefit="1" width="70%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+						<figure>
+							<title>Setting memory size</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-11.png" scalefit="1" width="70%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+						<figure>
+							<title>Setting disk type</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-12.png" scalefit="1" width="70%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+						<figure>
+							<title>Setting disk size</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-15.png" scalefit="1" width="70%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+						<figure>
+							<title>Finished defining the VM</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-18.png" scalefit="1" width="70%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+					</step>
+				</procedure>
+				<para>At this point, <application>VirtualBox</application> has been installed, started for the first time, and a new virtual machine (VM) has been created. This VM is the environment in which the Linux / Evergreen installation will execute. Please continue in <xref linkend="serversideinstallation-virtual-install-linux-ev"/> with the installation of the Linux / Evergreen distribution.</para>
+			</section>
+			<section>
+				<title>Installing <application>"VMware"</application> Virtualization Software</title>
+				<para>This section reviews the procedure for installing the <application>"VMware"</application> application on <systemitem class="osname">WindowsXP Professional (SP2)</systemitem>.</para>
+				<procedure>
+					<step>
+						<para>Download <application>VMware</application> from here: <ulink url="">link</ulink>, then run the executable file. Continue with the steps shown in the first ??? figures until the software has been successfully installed:</para>
+						<figure>
+							<title>Starting the Windows installation file</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-1.png" scalefit="1" width="70%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+					</step>
+					<step>
+						<para>After successfully installating <application>VMware</application>, start it for the first time and click <guibutton>"New"</guibutton> to begin defining a new virtual machine (VM). You must specify a name and operating system type for the new VM; in this example we decided to install <systemitem class="osname">Debian Lenny</systemitem>. You must set a reasonable memory size (we chose the default value of 384Mb). You must define a name and size for a virtual hard disk (we chose a name, and set the size to 4.0Gb). The next six figures illlustrate the steps in starting <application>VirtualBox</application> and defining the new VM:</para>
+					</step>
+				</procedure>
+				<para>At this point, <application>VirtualBox</application> has been installed, started for the first time, and a new virtual machine (VM) has been created. This VM is the environment in which the Linux / Evergreen installation will execute. Please continue in <xref linkend="serversideinstallation-virtual-install-linux-ev"/> with the installation of the Linux / Evergreen distribution.</para>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO ON VMWARE</secondary>
+				</indexterm>
+				<caution>ADD INFO ON VMWARE</caution>
+			</section>
+			<section>
+				<title>Installing <application>"VirtualPC"</application> Virtualization Software</title>
+				<para>This section reviews the procedure for installing the <application>"VirtualPC"</application> application on <systemitem class="osname">WindowsXP Professional (SP2)</systemitem>.</para>
+				<procedure>
+					<step>
+						<para>Download <application>VMware</application> from here: <ulink url="">link</ulink>, then run the executable file. Continue with the steps shown in the first ??? figures until the software has been successfully installed:</para>
+						<figure>
+							<title>Starting the Windows installation file</title>
+							<mediaobject>
+								<imageobject>
+									<imagedata fileref="../media/serversideinstallation-virtual-1.png" scalefit="1" width="70%"/>
+								</imageobject>
+							</mediaobject>
+						</figure>
+					</step>
+					<step>
+						<para>After successfully installating <application>VMware</application>, start it for the first time and click <guibutton>"New"</guibutton> to begin defining a new virtual machine (VM). You must specify a name and operating system type for the new VM; in this example we decided to install <systemitem class="osname">Debian Lenny</systemitem>. You must set a reasonable memory size (we chose the default value of 384Mb). You must define a name and size for a virtual hard disk (we chose a name, and set the size to 4.0Gb). The next six figures illlustrate the steps in starting <application>VirtualBox</application> and defining the new VM:</para>
+					</step>
+				</procedure>
+				<para>At this point, <application>VirtualBox</application> has been installed, started for the first time, and a new virtual machine (VM) has been created. This VM is the environment in which the Linux / Evergreen installation will execute. Please continue in <xref linkend="serversideinstallation-virtual-install-linux-ev"/> with the installation of the Linux / Evergreen distribution.</para>
+				<indexterm>
+					<primary>ZZZ-REVIEW</primary>
+					<secondary>ADD INFO ON VIRTUALPC</secondary>
+				</indexterm>
+				<caution>ADD INFO ON VIRTUALPC</caution>
+			</section>
+		</section>
+		<section xml:id="serversideinstallation-virtual-install-linux-ev">
+			<title>Installing Linux and Evergreen on the Virtualization Software</title>
+			<para>After the virtualization software is installed and running, there are two ways to continue:</para>
+			<itemizedlist>
+				<listitem>
+					<para>Download a sample Linux guest system containing a pre-installed Evergreen distribution.</para>
+					<para>We recommend this approach if you wish to get Evergreen running quickly, with minimal attention to configuration.</para>
+				</listitem>
+				<listitem>
+					<para>Manually install a Linux guest system, then manually install Evergreen.</para>
+					<para>We recommend this approach if you need to configure Evergreen in any special way.</para>
+				</listitem>
+			</itemizedlist>
+			<section>
+				<title>Download a pre-installed Evergreen distribution</title>
+				<para>In this section, we assume that the application <application>"VirtualBox"</application> has already been installed and started.</para>
+				<para>To get Evergreen running quickly it is simplest to just download a pre-installed Linux and Evergreen installation. The software is in the form of a compressed ISO file which can be quickly imported into VirtualBox, then started. Only a few simple configuration tasks are required.</para>
+				<procedure>
+					<step>Download the pre-installed Linux/Evergreen system</step>
+					<step>Start the system</step>
+					<step>Configure the system</step>
+				</procedure>
+			</section>
+			<section>
+				<title>Manually install Linux and Evergreen</title>
+				<para>If you need to configure Evergreen in any special way, continue as follows.</para>
+				<para>In this example, we assume that the application <application>"VirtualBox"</application> has already been installed and started:</para>
+				<procedure>
+					<step>A standard <systemitem class="osname">Ubuntu</systemitem> distribution, the so-called "Guest" operating system, is installed in the running <application>"VirtualBox"</application> environment.</step>
+					<step>The <systemitem class="osname">Ubuntu</systemitem> distribution is started ("booted") just as if it existed on a real, physical system.</step>
+					<step>Evergreen is installed on the running <systemitem class="osname">Ubuntu</systemitem> distribution, just as if installing on a standalone system.</step>
+				</procedure>
+				<para>At this point, the <systemitem class="osname">Windows</systemitem> system is hosting an <systemitem class="osname">Ubuntu</systemitem> system, which itself is hosting the Evergreen distribution. So far as Evergreen is concerned, it is happily executing in a standard <systemitem class="osname">Ubuntu</systemitem> environment and behaves exactly as if it were executing on a standalone <systemitem class="osname">Ubuntu</systemitem> system.</para>
+				<para>Of course, there are limitations to how well a virtualized <systemitem class="osname">Ubuntu</systemitem> system emulates a real one. The <application>"VirtualBox"</application> application itself consumes memory, and it contributes to the CPU load on the <systemitem class="osname">Windows</systemitem> host system. The emulated <systemitem class="osname">Ubuntu</systemitem> system will have less available memory and will execute more slowly than if it were a standalone system, therefore Evergreen itself will inherit some limitations from this overall environment.</para>
+				<para>However, this technique of using a <systemitem class="osname">Windows</systemitem> host to emulate a Linux environment is a practical way to install and run an Evergreen system even if it isn't possible to dedicate a real machine solely as a Linux host for testing. This is a reasonable architecture for simple experiments, or as a proof of concept, or as a conference-room pilot.</para>
+			</section>
+		</section>
+	</section>
+	<index/>
 </chapter>
