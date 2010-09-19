@@ -49,18 +49,18 @@ main.menu.prototype = {
 
     'init' : function( params ) {
 
+        var obj = this;
+
         urls.remote = params['server'];
 
         // Pull in local customizations
         var r = new XMLHttpRequest();
-        r.open("GET", url_prefix('/xul/server/skin/custom.js'), false);
+        r.open("GET", obj.url_prefix('/xul/server/skin/custom.js'), false);
         r.send(null);
         if (r.status == 200) {
             dump('Evaluating /xul/server/skin/custom.js\n');
             eval( r.responseText );
         }
-
-        var obj = this;
 
         var button_bar = String( obj.data.hash.aous['ui.general.button_bar'] ) == 'true';
         if (button_bar) {
