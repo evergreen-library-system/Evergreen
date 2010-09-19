@@ -295,9 +295,6 @@ function prepareInvoiceFeatures() {
             "/acq/invoice/view?create=1&attach_po=" + PO.id();
     };
 
-    if (!invoiceLinkDialogManager)
-        invoiceLinkDialogManager = new InvoiceLinkDialogManager("po", PO);
-
     openils.Util.show("acq-po-invoice-stuff", "table-cell");
 }
 

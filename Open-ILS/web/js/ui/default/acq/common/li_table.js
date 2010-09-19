@@ -68,7 +68,6 @@ function AcqLiTable() {
     this.realCopiesRow = this.realCopiesTbody.removeChild(dojo.byId('acq-lit-real-copies-row'));
     this._copy_fields_for_acqdf = ['owning_lib', 'location'];
     this.skipInitialEligibilityCheck = false;
-    this.invoiceLinkDialogManager = new InvoiceLinkDialogManager("li");
     this.claimDialog = new ClaimDialogManager(
         liClaimDialog, finalClaimDialog, this.claimEligibleLidByLi,
         function(li) {    /* callback that fires when claims are made */
@@ -501,6 +500,10 @@ function AcqLiTable() {
                 nodeByName("action_none", row).selected = true;
             };
             actLinkInvoice.onclick = function() {
+                if (!self.invoiceLinkDialogManager) {
+                    self.invoiceLinkDialogManager =
+                        new InvoiceLinkDialogManager("li");
+                }
                 self.invoiceLinkDialogManager.target = li;
                 acqLitLinkInvoiceDialog.show();
                 nodeByName("action_none", row).selected = true;
