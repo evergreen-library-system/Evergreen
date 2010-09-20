@@ -1,6 +1,6 @@
 {
-    and : '&&',
-    or  : '||',
+    and : 'AND',
+    or  : 'OR',
     more  : 'More...',
     less  : '...Less',
     classed_searches  : 'Classed Searches',
