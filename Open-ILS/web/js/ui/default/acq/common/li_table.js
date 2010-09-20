@@ -75,11 +75,10 @@ function AcqLiTable() {
         }
     );
 
-    dojo.connect(acqLitLiActionsSelector, 'onChange', 
-        function() { 
-            self.applySelectedLiAction(this.attr('value')) 
-            acqLitLiActionsSelector.attr('value', '_');
-        });
+    dojo.byId("acq-lit-li-actions-selector").onchange = function() { 
+        self.applySelectedLiAction(this.options[this.selectedIndex].value);
+        this.selectedIndex = 0;
+    };
 
     acqLitCreatePoSubmit.onClick = function() {
         if (self._confirmPoPrepaySituation()) {

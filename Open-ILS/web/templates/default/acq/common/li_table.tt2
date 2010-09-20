@@ -13,7 +13,7 @@
                             <tr>
                                 <td>
                                     <span>
-                                        <select dojoType='dijit.form.FilteringSelect' value='_' jsId='acqLitLiActionsSelector'>
+                                        <select id="acq-lit-li-actions-selector">
                                             <option mask='*'  value='_'>--Actions--</option>
                                             <option mask='sr' value='save_picklist'>Save Items To Selection List</option>
                                             <option mask='pl' value='selector_ready'>Mark Ready for Selector</option>
