@@ -164,31 +164,55 @@ There are some performance limitations to running Evergreen in a virtualized env
 			</section>
 		</section>
 		<section xml:id="serversideinstallation-virtual-install-linux-ev">
-			<title>Installing Linux and Evergreen on the Virtualization Software</title>
-			<para>After the virtualization software is installed and running, there are two ways to continue:</para>
-			<itemizedlist>
+			<title>Installing Linux / Evergreen on Virtualization Software</title>
+			<para>After the virtualization software is installed and running and a new virtual machine (VM) has been created, there are two ways to continue with installing software in this virtualized environment:</para>
+			<orderedlist>
 				<listitem>
-					<para>Download a sample Linux guest system containing a pre-installed Evergreen distribution.</para>
-					<para>We recommend this approach if you wish to get Evergreen running quickly, with minimal attention to configuration.</para>
+					<para>Download a prebuilt software image file containing a working Linux / Evergreen system.</para>
 				</listitem>
 				<listitem>
-					<para>Manually install a Linux guest system, then manually install Evergreen.</para>
-					<para>We recommend this approach if you need to configure Evergreen in any special way.</para>
+					<para>Manually install a Linux guest system, then manually install Evergreen on it.</para>
 				</listitem>
-			</itemizedlist>
+			</orderedlist>
+			<para>See the following two sections for a review of each method.</para>
 			<section>
-				<title>Download a pre-installed Evergreen distribution</title>
-				<para>In this section, we assume that the application <application>"VirtualBox"</application> has already been installed and started.</para>
-				<para>To get Evergreen running quickly it is simplest to just download a pre-installed Linux and Evergreen installation. The software is in the form of a compressed ISO file which can be quickly imported into VirtualBox, then started. Only a few simple configuration tasks are required.</para>
+				<title>Download a prebuilt software image file</title>
+				<para>Download a prebuilt software image that, when installed in <application>"VirtualBox"</application>, <application>"VMware"</application> or <application>"VirtualPC"</application>, will emulate a Linux guest system containing a running Evergreen distribution. The image is essentially a snapshot of a hard disk from a fully configured, functional Linux system with Evergreen already installed.</para>
+				<para>We recommend this approach if you wish to get Evergreen running quickly with minimal attention to configuration. After reviewing only a few configuration details you can have a working Evergreen system that integrates smoothly with the rest of your network. See <xref linkend="serversideinstall-virtual-versions"/> for a list of prebuilt software images that are currently available to download and execute:</para>
+				<table xml:id="serversideinstall-virtual-versions">
+					<title>Linux / Evergreen Virtual Images</title>
+					<tgroup align="left" cols="4" colsep="1" rowsep="1">
+						<thead>
+							<row>
+								<entry>Linux Version</entry>
+								<entry>Evergreen Version</entry>
+								<entry>OpenSRF Version</entry>
+								<entry>VirtualBox Image</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>Debin lenny (5.0)</entry>
+								<entry>1.6.0.1</entry>
+								<entry>1.4.x</entry>
+								<entry>
+									<ulink url="http://www.open-ils.org/~denials/Evergreen1601_DebianLenny.zip"> download </ulink>
+								</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+				<para>In the remainder of this section, we assume that the application <application>"VirtualBox"</application> has already been installed and started.</para>
 				<procedure>
-					<step>Download the pre-installed Linux/Evergreen system</step>
+					<step>Download the prebuilt Linux/Evergreen system</step>
 					<step>Start the system</step>
 					<step>Configure the system</step>
 				</procedure>
 			</section>
 			<section>
 				<title>Manually install Linux and Evergreen</title>
-				<para>If you need to configure Evergreen in any special way, continue as follows.</para>
+				<para>Manually install a Linux guest system, then manually install Evergreen.</para>
+				<para>We recommend this approach if you need to configure the Linux system in any special way, or if you require Evergreen to target some specific chores. This will require a detailed review of both Linux and Evergreen configuration details. You are essentially doing a normal Evergreen installation on a Linux system; it just happens that Linux is running within a virtualized environment. Refer to <xref linkend="serversideinstallation-ubuntudebian"/> for information on the normal Evergreen installation, then continue with this section.</para>
 				<para>In this example, we assume that the application <application>"VirtualBox"</application> has already been installed and started:</para>
 				<procedure>
 					<step>A standard <systemitem class="osname">Ubuntu</systemitem> distribution, the so-called "Guest" operating system, is installed in the running <application>"VirtualBox"</application> environment.</step>
