@@ -6077,7 +6077,7 @@ SELECT  usr,
 			<field reporter:label="Line Item Details" name="lineitem_details" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Line Item Notes" name="lineitem_notes" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Distribution Formulas" name="distribution_formulas" oils_persist:virtual="true" reporter:datatype="link" />
-			<field reporter:label="Envoice Enties" name="invoice_entries" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Invoice Entries" name="invoice_entries" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Order Summary" name="order_summary" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
