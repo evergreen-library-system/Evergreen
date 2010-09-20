@@ -17,7 +17,7 @@ var djConfig = {parseOnLoad:true,isDebug:false,AutoIDL:[
 'acqpro','acqpron','acqipm','acqinv','acqie','acqii','acqpa','acqpc','acqpca','acqftr','acqfc','acqfy','acqfs',
 'acqfscred','acqofscred','acqfdeb','acqf','acqfat','acqfdt','acqfet','acqfst','acqfcb','acqafat','acqafet',
 'acqafst','acqafsb','acqafcb','acqfsrcct','acqfsrcat','acqfsrcb','acqfsb','acqfa','acqfap','acqpl','acqcr',
-'acqpo','acqpoh','acqpon','acqpoi','acqlih','acqliat','acqlin','acqlia','acqlid','acqliad','acqlimad',
+'acqpo','acqpoh','acqpon','acqpoi','acqlih','acqliat','acqlin','acqlia','acqlid','acqliad','acqlimad','pgpt',
 'acqligad','acqliuad','acqlipad','acqphsm','acqlilad','acqedi','acqedim','acqdf','acqdfe','acqdfa','acqda','cnal',
 'acqclt','acqclet','acqcl','acqcle','acqscl','acqscle','acqclp','acqclpa','acqlisum','acqft','acqftm','actsce','actscecm',
 'jub','sdist','ssub','sstr','scap','bre','siss','act', 'acpl', 'ccm', 'aiit', 'atevdef', 'ath', 'atreact','atclean','atenv','atevparam','atcol','actsc','cit',
