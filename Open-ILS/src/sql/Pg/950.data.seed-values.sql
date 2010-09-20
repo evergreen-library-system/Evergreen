@@ -1389,6 +1389,7 @@ INSERT INTO permission.perm_list VALUES
     ,(398, 'ADMIN_SERIAL_SUBSCRIPTION', oils_i18n_gettext(398, 'Create/update/delete serial subscription objects', 'ppl', 'description'))
     ,(399, 'ADMIN_SERIAL_DISTRIBUTION', oils_i18n_gettext(399, 'Create/update/delete serial distribution objects', 'ppl', 'description'))
     ,(400, 'ADMIN_SERIAL_STREAM', oils_i18n_gettext(400, 'Create/update/delete serial stream objects', 'ppl', 'description'))
+    ,(401, 'RECEIVE_SERIAL', oils_i18n_gettext(401, 'Receive serial items', 'ppl', 'description'))
 ;
 
 
