@@ -89,6 +89,11 @@
         </div>
     </div>
     <div id="acq-unified-results-purchase_order" class="hidden">
+        <div class="acq-unified-result-specific-controls">
+            <button onclick="dijit.byId('acq-unified-po-grid').refresh();">
+                Refresh Grid
+            </button>
+        </div>
         <table
             id="acq-unified-po-grid"
             autoHeight="true"
@@ -111,6 +116,10 @@
     </div>
     <div id="acq-unified-results-picklist" class="hidden">
         <div class="acq-unified-result-specific-controls">
+            <button dojoType="dijit.form.Button"
+                onClick="dijit.byId('acq-unified-pl-grid').refresh();">
+                Refresh Grid
+            </button>
             <div dojoType="dijit.form.DropDownButton">
                 <span>New Selection List</span>
                 <div dojoType="dijit.TooltipDialog"
