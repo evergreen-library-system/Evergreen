@@ -3,23 +3,23 @@
 	<title>Installing In Virtualized Linux Environments</title>
 	<section xml:id="serversideinstallation-virtual">
 		<title>Overview</title>
-		<para>This section describes the installation of Evergreen software in so-called "virtualized" software environments. Evergreen software currently runs as a native application on any of several well-known x86 (32-bit) and x86-64 (64-bit) <systemitem class="osname">Linux</systemitem> distributions including <systemitem class="osname">Ubuntu</systemitem> and <systemitem class="osname">Debian</systemitem>, but it does not run as a native application on the <systemitem class="osname">Microsoft Windows</systemitem> operating system. However, it is possible to execute Evergreen on a <systemitem class="osname">Windows</systemitem> host system by running it within a virtual Linux-guest installation, which itself executes on the <systemitem class="osname">Windows</systemitem> system. The Linux environment is fully emulated and acts (with some limits) just as if it were executing on a real standalone system.</para>
+		<para>This section describes the installation of Evergreen software in so-called "virtualized" software environments. Evergreen software currently runs as a native application on any of several well-known x86 (32-bit) and x86-64 (64-bit) <systemitem class="osname">Linux</systemitem> distributions including <systemitem class="osname">Ubuntu</systemitem> and <systemitem class="osname">Debian</systemitem>, but it does not run as a native application on the <systemitem class="osname">Microsoft Windows</systemitem> operating system. However, it is possible to execute Evergreen on a <systemitem class="osname">Windows</systemitem> host system by running it within a virtual Linux-guest installation, which itself executes on the <systemitem class="osname">Windows</systemitem> system. The Linux environment is fully emulated and acts (within limits) just as if it were executing on a real standalone system.</para>
 		<para>This technique of emulating a Linux environment on a <systemitem class="osname">Windows</systemitem> host is a practical way to install and run an Evergreen system if it is not possible to dedicate a physical machine solely as a Linux host for Evergreen.
-There are some performance limitations to running Evergreen in a virtualized environment, so this architecture is not recommended for large scale systems. However, this is a reasonable architecture for simple experiments, as a proof of concept, or as a conference-room pilot.</para>
+There are some performance limitations to running Evergreen in a virtualized environment, so this architecture is not recommended for large scale systems. However, it is a reasonable architecture for simple experiments, as a proof of concept, or as a conference-room pilot.</para>
 		<section>
 			<title>Installing Virtualization Software</title>
-			<para>The Linux environment is controlled by one of several popular virtualization software applications such as <application>"VirtualBox"</application>, <application>"VMware"</application> or <application>"VirtualPC"</application> which must first be installed on the <systemitem class="osname">Windows</systemitem> system. This section contains step-by-step examples of installing each of the popular virtualization applications on a <systemitem class="osname">Windows</systemitem> host system. Following this section are further descriptions of installing Linux systems on the virtualization software, then of installing and running Evergreen within those Linux systems.</para>
+			<para>As described above, Evergreen is installed on top of an emulated Linux environment. The Linux environment, in turn, is installed on top of a software application such as <application>"VirtualBox"</application>, <application>"VMware"</application> or <application>"VirtualPC"</application> which must first be installed on the <systemitem class="osname">Windows</systemitem> system. This section contains step-by-step examples of installing each of the popular virtualization applications on a <systemitem class="osname">Windows</systemitem> host system. Following this section are further descriptions of installing Linux systems on the virtualization software, then of installing and running Evergreen within those Linux systems.</para>
 			<section>
 				<title>Installing <application>"VirtualBox"</application> Virtualization Software</title>
-				<para>This section reviews the procedure for installing the <application>"VirtualBox"</application> application on <systemitem class="osname">WindowsXP Professional (SP2)</systemitem>.</para>
+				<para>This section reviews the procedure for installing the <application>"VirtualBox"</application> application on <systemitem class="osname">WindowsXP Professional (SP2)</systemitem>. Follow these instructions:</para>
 				<procedure>
 					<step>
-						<para>Download <application>VirtualBox</application> from here: <ulink url="http://download.virtualbox.org/virtualbox/3.2.8/VirtualBox-3.2.8-64453-Win.exe">http://download.virtualbox.org/virtualbox/3.2.8/VirtualBox-3.2.8-64453-Win.exe</ulink>, then run the executable file. Continue with the steps shown in the first five figures until the software has been successfully installed:</para>
+						<para>Download <application>VirtualBox</application> from their official website: <ulink url="http://download.virtualbox.org/virtualbox/3.2.8/VirtualBox-3.2.8-64453-Win.exe">http://download.virtualbox.org/virtualbox/3.2.8/VirtualBox-3.2.8-64453-Win.exe</ulink>, then run the executable file. Continue with the steps shown in the next five figures until the software has been successfully installed:</para>
 						<figure>
 							<title>Starting the Windows installation file</title>
 							<mediaobject>
 								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-1.png" scalefit="1" width="70%"/>
+									<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-1.png" scalefit="1" width="70%"/>
 								</imageobject>
 							</mediaobject>
 						</figure>
@@ -27,7 +27,7 @@ There are some performance limitations to running Evergreen in a virtualized env
 							<title>Welcome to <application>VirtualBox</application> setup wizard</title>
 							<mediaobject>
 								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-2.png" scalefit="1" width="70%"/>
+									<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-2.png" scalefit="1" width="70%"/>
 								</imageobject>
 							</mediaobject>
 						</figure>
@@ -35,7 +35,7 @@ There are some performance limitations to running Evergreen in a virtualized env
 							<title>Accept the license agreement</title>
 							<mediaobject>
 								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-3.png" scalefit="1" width="70%"/>
+									<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-3.png" scalefit="1" width="70%"/>
 								</imageobject>
 							</mediaobject>
 						</figure>
@@ -43,7 +43,7 @@ There are some performance limitations to running Evergreen in a virtualized env
 							<title>Waiting for files to be copied</title>
 							<mediaobject>
 								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-6.png" scalefit="1" width="70%"/>
+									<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-4.png" scalefit="1" width="70%"/>
 								</imageobject>
 							</mediaobject>
 						</figure>
@@ -51,64 +51,131 @@ There are some performance limitations to running Evergreen in a virtualized env
 							<title>Installation is complete</title>
 							<mediaobject>
 								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-7.png" scalefit="1" width="70%"/>
+									<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-5.png" scalefit="1" width="70%"/>
 								</imageobject>
 							</mediaobject>
 						</figure>
 					</step>
 					<step>
-						<para>After successfully installating <application>VirtualBox</application>, start it for the first time and click <guibutton>"New"</guibutton> to begin defining a new virtual machine (VM). You must specify a name and operating system type for the new VM; in this example we decided to install <systemitem class="osname">Debian Lenny</systemitem>. You must set a reasonable memory size (we chose the default value of 384Mb). You must define a name and size for a virtual hard disk (we chose a name, and set the size to 4.0Gb). The next six figures illlustrate the steps in starting <application>VirtualBox</application> and defining the new VM:</para>
-						<figure>
-							<title>Starting <application>VirtualBox</application> for the first time</title>
-							<mediaobject>
-								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-8.png" scalefit="1" width="60%"/>
-								</imageobject>
-							</mediaobject>
-						</figure>
-						<figure>
-							<title>Setting VM name and OS type</title>
-							<mediaobject>
-								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-10.png" scalefit="1" width="70%"/>
-								</imageobject>
-							</mediaobject>
-						</figure>
-						<figure>
-							<title>Setting memory size</title>
-							<mediaobject>
-								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-11.png" scalefit="1" width="70%"/>
-								</imageobject>
-							</mediaobject>
-						</figure>
-						<figure>
-							<title>Setting disk type</title>
-							<mediaobject>
-								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-12.png" scalefit="1" width="70%"/>
-								</imageobject>
-							</mediaobject>
-						</figure>
-						<figure>
-							<title>Setting disk size</title>
-							<mediaobject>
-								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-15.png" scalefit="1" width="70%"/>
-								</imageobject>
-							</mediaobject>
-						</figure>
-						<figure>
-							<title>Finished defining the VM</title>
-							<mediaobject>
-								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-18.png" scalefit="1" width="70%"/>
-								</imageobject>
-							</mediaobject>
-						</figure>
+						<para>After successfully installating <application>VirtualBox</application>, do the following:</para>
+						<itemizedlist>
+							<listitem>Start it for the first time and select <menuchoice><guimenu>File</guimenu><guimenuitem>VirtualBox Media Manager</guimenuitem><guimenuitem>Add</guimenuitem></menuchoice> to locate the prebuilt software image just downloaded (the example shows it was extracted from the original <literal>.ZIP</literal> file into a temporary directory <literal>C:\temp</literal>). See <xref linkend="serversideinstallation-virtual-vm-install-2"/> for details.</listitem>
+							<listitem>After selecting the file, click <guibutton>Open</guibutton> to import it (see <xref linkend="serversideinstallation-virtual-vm-install-3"/> for details).</listitem>
+							<listitem>Then click <guibutton>OK</guibutton> to save the selection and return to the VirtualBox Media Manager (see <xref linkend="serversideinstallation-virtual-vm-install-4"/> for details).</listitem>
+							<listitem>Click <guibutton>New</guibutton> to start the "Virtual Machine Wizard", then <guibutton>Next</guibutton> to continue and create a new virtual machine (VM) <xref linkend="serversideinstallation-virtual-vm-install-5"/>).</listitem>
+							<listitem>Create a new name for the VM and set the operating system type, then click <guibutton>Next</guibutton> (see <xref linkend="serversideinstallation-virtual-vm-install-6"/>).</listitem>
+							<listitem>Set the memory size (we chose the default value of 384Mb), then click <guibutton>Next</guibutton> (see <xref linkend="serversideinstallation-virtual-vm-install-7"/>).</listitem>
+							<listitem>Edit the Virtual Hard Disk configuration settings; click the radio boxes "Boot Hard Disk" and "Use existing hard disk" and ensure that the disk name "Evergreen1601_DebianLenny.vmdk" is selected. Click <guibutton>Finish</guibutton> to finish the setup (see <xref linkend="serversideinstallation-virtual-vm-install-8"/>).</listitem>
+							<listitem>Return to VirtualBox and see the summary of the VM just created. Click <guibutton>Start</guibutton> to boot the new VM (see <xref linkend="serversideinstallation-virtual-vm-install-9"/>).</listitem>
+							<listitem>See the start of the Linux boot sequence. Choose "Debian Gnu/Linux, kernel 2.6.26-2-686" from the startup menu and type <guibutton>Enter</guibutton> to start Linux and Evergreen (see <xref linkend="serversideinstallation-virtual-vm-install-11"/>). After some delay you should see the command line prompt: <literal>debian-lenny login:</literal>  .  Log in with username <literal>root</literal> and password <literal>evergreen</literal> to continue (see <xref linkend="serversideinstallation-virtual-vm-install-14"/>).</listitem>
+						</itemizedlist>
+						<para>At this point, you have a running Linux / Evergreen system. If you need to modify the Evergren configuration in any way, first review the standard Evergreen installation instructions in <xref linkend="serversideinstallation-ubuntudebian"/>.</para>
 					</step>
 				</procedure>
-				<para>At this point, <application>VirtualBox</application> has been installed, started for the first time, and a new virtual machine (VM) has been created. This VM is the environment in which the Linux / Evergreen installation will execute. Please continue in <xref linkend="serversideinstallation-virtual-install-linux-ev"/> with the installation of the Linux / Evergreen distribution.</para>
+				<figure xml:id="serversideinstallation-virtual-vm-install-2">
+					<title>Starting <application>VirtualBox</application> for the first time</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-2.png" scalefit="1" width="70%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<figure xml:id="serversideinstallation-virtual-vm-install-3">
+					<title>Selecting the software image in "Virtual Media Manager"</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-3.png" scalefit="1" width="70%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<figure xml:id="serversideinstallation-virtual-vm-install-4">
+					<title>New software image added to <application>VirtualBox</application></title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-4.png" scalefit="1" width="75%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<figure xml:id="serversideinstallation-virtual-vm-install-5">
+					<title>Creating a new VM</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-5.png" scalefit="1" width="75%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<figure xml:id="serversideinstallation-virtual-vm-install-6">
+					<title>Setting the VM name and OS type</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-6.png" scalefit="1" width="75%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<figure xml:id="serversideinstallation-virtual-vm-install-7">
+					<title>Setting memory size</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-7.png" scalefit="1" width="75%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<figure xml:id="serversideinstallation-virtual-vm-install-8">
+					<title>Setting up the Virtual Hard Disk</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-8.png" scalefit="1" width="75%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<figure xml:id="serversideinstallation-virtual-vm-install-9">
+					<title>Finishing definiton of new VM</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-9.png" scalefit="1" width="75%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<figure xml:id="serversideinstallation-virtual-vm-install-10">
+					<title>Summary of the new VM</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-10.png" scalefit="1" width="75%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<figure xml:id="serversideinstallation-virtual-vm-install-11">
+					<title>Selecting VM from startup menu</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-11.png" scalefit="1" width="75%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<figure xml:id="serversideinstallation-virtual-vm-install-12">
+					<title>Starting the new VM</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-12.png" scalefit="1" width="75%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<figure xml:id="serversideinstallation-virtual-vm-install-13">
+					<title>Starting the new VM (continued)</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-13.png" scalefit="1" width="75%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<figure xml:id="serversideinstallation-virtual-vm-install-14">
+					<title>Logging in to the new VM</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata fileref="../media/serversideinstallation-virtual-vm-install-14.png" scalefit="1" width="75%"/>
+						</imageobject>
+					</mediaobject>
+				</figure>
 			</section>
 			<section>
 				<title>Installing <application>"VMware"</application> Virtualization Software</title>
@@ -120,7 +187,7 @@ There are some performance limitations to running Evergreen in a virtualized env
 							<title>Starting the Windows installation file</title>
 							<mediaobject>
 								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-1.png" scalefit="1" width="70%"/>
+									<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-1.png" scalefit="1" width="75%"/>
 								</imageobject>
 							</mediaobject>
 						</figure>
@@ -146,13 +213,13 @@ There are some performance limitations to running Evergreen in a virtualized env
 							<title>Starting the Windows installation file</title>
 							<mediaobject>
 								<imageobject>
-									<imagedata fileref="../media/serversideinstallation-virtual-1.png" scalefit="1" width="70%"/>
+									<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-1.png" scalefit="1" width="75%"/>
 								</imageobject>
 							</mediaobject>
 						</figure>
 					</step>
 					<step>
-						<para>After successfully installating <application>VMware</application>, start it for the first time and click <guibutton>"New"</guibutton> to begin defining a new virtual machine (VM). You must specify a name and operating system type for the new VM; in this example we decided to install <systemitem class="osname">Debian Lenny</systemitem>. You must set a reasonable memory size (we chose the default value of 384Mb). You must define a name and size for a virtual hard disk (we chose a name, and set the size to 4.0Gb). The next six figures illlustrate the steps in starting <application>VirtualBox</application> and defining the new VM:</para>
+						<para>After successfully installating <application>VMware</application>, start it for the first time and click <guibutton>"New"</guibutton> to begin defining a new virtual machine (VM). You must specify a name and operating system type for the new VM; in this example we decided to install <systemitem class="osname">Debian Lenny</systemitem>. You must set a reasonable memory size (we chose the default value of 512Mb). You must define a name and size for a virtual hard disk (we chose a name, and set the size to 4.0Gb). The next six figures illlustrate the steps in starting <application>VirtualBox</application> and defining the new VM:</para>
 					</step>
 				</procedure>
 				<para>At this point, <application>VirtualBox</application> has been installed, started for the first time, and a new virtual machine (VM) has been created. This VM is the environment in which the Linux / Evergreen installation will execute. Please continue in <xref linkend="serversideinstallation-virtual-install-linux-ev"/> with the installation of the Linux / Evergreen distribution.</para>
