@@ -101,6 +101,7 @@ while (<>) {
 
 	} otherwise {
 		warn "failed on record $., $partlist{marc}, for $@\n" if (!$quiet);
+		import MARC::File::XML; # reset SAX parser
 	};
 }
 
