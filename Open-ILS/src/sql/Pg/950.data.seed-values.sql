@@ -1947,7 +1947,13 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 479, 'VIEW_SERIAL_SUBSCRIPTION', oils_i18n_gettext( 479, 
     'VIEW_SERIAL_SUBSCRIPTION', 'ppl', 'description' )),
  ( 480, 'VIEW_STANDING_PENALTY', oils_i18n_gettext( 480, 
-    'VIEW_STANDING_PENALTY', 'ppl', 'description' ));
+    'VIEW_STANDING_PENALTY', 'ppl', 'description' )),
+ ( 481, 'ADMIN_SERIAL_CAPTION_PATTERN', oils_i18n_gettext( 481, 
+    'ADMIN_SERIAL_CAPTION_PATTERN', 'ppl', 'description' )),
+ ( 482, 'ADMIN_SERIAL_DISTRIBUTION', oils_i18n_gettext( 482, 
+    'ADMIN_SERIAL_DISTRIBUTION', 'ppl', 'description' )),
+ ( 483, 'ADMIN_SERIAL_STREAM', oils_i18n_gettext( 483, 
+    'ADMIN_SERIAL_STREAM', 'ppl', 'description' ));
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
