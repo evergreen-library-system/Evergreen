@@ -1385,6 +1385,10 @@ INSERT INTO permission.perm_list VALUES
     ,(394, 'ISSUANCE_HOLDS', oils_i18n_gettext( 394, 'Allow a user to place holds on serials issuances', 'ppl', 'description' ))
     ,(395, 'VIEW_CREDIT_CARD_PROCESSING', oils_i18n_gettext( 395, 'View org unit settings related to credit card processing', 'ppl', 'description' ))
     ,(396, 'ADMIN_CREDIT_CARD_PROCESSING', oils_i18n_gettext( 396, 'Update org unit settings related to credit card processing', 'ppl', 'description' ))
+    ,(397, 'ADMIN_SERIAL_CAPTION_PATTERN', oils_i18n_gettext(397, 'Create/update/delete serial caption and pattern objects', 'ppl', 'description'))
+    ,(398, 'ADMIN_SERIAL_SUBSCRIPTION', oils_i18n_gettext(398, 'Create/update/delete serial subscription objects', 'ppl', 'description'))
+    ,(399, 'ADMIN_SERIAL_DISTRIBUTION', oils_i18n_gettext(399, 'Create/update/delete serial distribution objects', 'ppl', 'description'))
+    ,(400, 'ADMIN_SERIAL_STREAM', oils_i18n_gettext(400, 'Create/update/delete serial stream objects', 'ppl', 'description'))
 ;
 
 
