@@ -148,8 +148,9 @@ There are some performance limitations to running Evergreen in a virtualized env
 				</table>
 				<indexterm>
 					<primary>ZZZ-REVIEW</primary>
-					<secondary>ADD LIST OF OTHER PREBUILS IMAGES</secondary>
+					<secondary>ADD LIST OF OTHER PREBUILT IMAGES</secondary>
 				</indexterm>
+				<caution>ADD LIST OF OTHER PREBUILT IMAGES</caution>
 				<para>After successfully installing <application>VirtualBox</application> (see <xref linkend="serversideinstallation-virtual-vbox-install"/> for details), continue with the following procedure. Refer to the accompanying figures for further information:</para>
 				<procedure>
 					<step>Start VirtualBox for the first time and select <menuchoice><guimenu>File</guimenu><guimenuitem>VirtualBox Media Manager</guimenuitem><guimenuitem>Add</guimenuitem></menuchoice> to locate the prebuilt software image just downloaded (the example shows it was extracted from the original <literal>.ZIP</literal> file into a temporary directory <literal>C:\temp</literal>). See <xref linkend="serversideinstallation-virtual-vm-install-2"/> for details.</step>
@@ -274,12 +275,30 @@ There are some performance limitations to running Evergreen in a virtualized env
 				<para>We recommend this approach if you need to configure the Linux system in any special way, or if you require Evergreen to target some specific chores. This will require a detailed review of both Linux and Evergreen configuration details. You are essentially doing a normal Evergreen installation on a Linux system; it just happens that Linux is running within a virtualized environment. Refer to <xref linkend="serversideinstallation-ubuntudebian"/> for information on the normal Evergreen installation, then continue with this section.</para>
 				<para>In this example, we assume that the application <application>"VirtualBox"</application> has already been installed and started:</para>
 				<procedure>
-					<step>A standard <systemitem class="osname">Ubuntu</systemitem> distribution, the so-called "Guest" operating system, is installed in the running <application>"VirtualBox"</application> environment.
-				<indexterm><primary>ZZZ-REVIEW</primary><secondary>ADD DETAILS ON MANUAL INSTALLATION OF LINUX</secondary></indexterm></step>
-					<step>The <systemitem class="osname">Ubuntu</systemitem> distribution is started ("booted") just as if it existed on a real, physical system.
-				<indexterm><primary>ZZZ-REVIEW</primary><secondary>ADD DETAILS ON MANUAL INSTALLATION OF VM LINUX BOOT SEQUENCE</secondary></indexterm></step>
-					<step>Evergreen is installed on the running <systemitem class="osname">Ubuntu</systemitem> distribution, just as if installing on a standalone system.
-				<indexterm><primary>ZZZ-REVIEW</primary><secondary>ADD DETAILS ON MANUAL INSTALLATION OF EVERGREEN</secondary></indexterm></step>
+					<step>
+						<para>A standard <systemitem class="osname">Ubuntu</systemitem> distribution, the so-called "Guest" operating system, is installed in the running <application>"VirtualBox"</application> environment.</para>
+						<indexterm>
+							<primary>ZZZ-REVIEW</primary>
+							<secondary>ADD DETAILS ON MANUAL INSTALLATION OF LINUX</secondary>
+						</indexterm>
+						<caution>ADD DETAILS ON MANUAL INSTALLATION OF LINUX</caution>
+					</step>
+					<step>
+						<para>The <systemitem class="osname">Ubuntu</systemitem> distribution is started ("booted") just as if it existed on a real, physical system.</para>
+						<indexterm>
+							<primary>ZZZ-REVIEW</primary>
+							<secondary>ADD DETAILS ON MANUAL INSTALLATION OF VM LINUX BOOT SEQUENCE</secondary>
+						</indexterm>
+						<caution>ADD DETAILS ON MANUAL INSTALLATION OF VM LINUX BOOT SEQUENCE</caution>
+					</step>
+					<step>
+						<para>Evergreen is installed on the running <systemitem class="osname">Ubuntu</systemitem> distribution, just as if installing on a standalone system.</para>
+						<indexterm>
+							<primary>ZZZ-REVIEW</primary>
+							<secondary>ADD DETAILS ON MANUAL INSTALLATION OF EVERGREEN</secondary>
+						</indexterm>
+						<caution>ADD DETAILS ON MANUAL INSTALLATION OF EVERGREEN</caution>
+					</step>
 				</procedure>
 				<para>At this point, the <systemitem class="osname">Windows</systemitem> system is hosting an <systemitem class="osname">Ubuntu</systemitem> system, which itself is hosting the Evergreen distribution. So far as Evergreen is concerned, it is happily executing in a standard <systemitem class="osname">Ubuntu</systemitem> environment and behaves exactly as if it were executing on a standalone <systemitem class="osname">Ubuntu</systemitem> system.</para>
 				<para>Of course, there are limitations to how well a virtualized <systemitem class="osname">Ubuntu</systemitem> system emulates a real one. The <application>"VirtualBox"</application> application itself consumes memory, and it contributes to the CPU load on the <systemitem class="osname">Windows</systemitem> host system. The emulated <systemitem class="osname">Ubuntu</systemitem> system will have less available memory and will execute more slowly than if it were a standalone system, therefore Evergreen itself will inherit some limitations from this overall environment.</para>
