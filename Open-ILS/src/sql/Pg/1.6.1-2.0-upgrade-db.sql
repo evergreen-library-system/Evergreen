@@ -6164,6 +6164,39 @@ $$;
 
 -- Extend the name change to some related views:
 
+DROP VIEW IF EXISTS stats.fleshed_circulation;
+
+DROP VIEW IF EXISTS stats.fleshed_copy;
+
+CREATE VIEW stats.fleshed_copy AS
+        SELECT  cp.*,
+        CAST(cp.create_date AS DATE) AS create_date_day,
+        CAST(cp.edit_date AS DATE) AS edit_date_day,
+        DATE_TRUNC('hour', cp.create_date) AS create_date_hour,
+        DATE_TRUNC('hour', cp.edit_date) AS edit_date_hour,
+                cn.label AS call_number_label,
+                cn.owning_lib,
+                rd.item_lang,
+                rd.item_type,
+                rd.item_form
+        FROM    asset.copy cp
+                JOIN asset.call_number cn ON (cp.call_number = cn.id)
+                JOIN metabib.rec_descriptor rd ON (rd.record = cn.record);
+
+CREATE VIEW stats.fleshed_circulation AS
+        SELECT  c.*,
+                CAST(c.xact_start AS DATE) AS start_date_day,
+                CAST(c.xact_finish AS DATE) AS finish_date_day,
+                DATE_TRUNC('hour', c.xact_start) AS start_date_hour,
+                DATE_TRUNC('hour', c.xact_finish) AS finish_date_hour,
+                cp.call_number_label,
+                cp.owning_lib,
+                cp.item_lang,
+                cp.item_type,
+                cp.item_form
+        FROM    action.circulation c
+                JOIN stats.fleshed_copy cp ON (cp.id = c.target_copy);
+
 -- Drop a view temporarily in order to alter action.all_circulation, upon
 -- which it is dependent.  We will recreate the view later.
 
@@ -14258,6 +14291,18 @@ CREATE INDEX metabib_keyword_field_entry_source_idx ON metabib.keyword_field_ent
 CREATE INDEX metabib_title_field_entry_source_idx ON metabib.title_field_entry (source);
 CREATE INDEX metabib_series_field_entry_source_idx ON metabib.series_field_entry (source);
 
+ALTER TABLE metabib.series_field_entry
+	ADD CONSTRAINT metabib_series_field_entry_source_pkey FOREIGN KEY (source)
+		REFERENCES biblio.record_entry (id)
+		ON DELETE CASCADE
+		DEFERRABLE INITIALLY DEFERRED;
+
+ALTER TABLE metabib.series_field_entry
+	ADD CONSTRAINT metabib_series_field_entry_field_pkey FOREIGN KEY (field)
+		REFERENCES config.metabib_field (id)
+		ON DELETE CASCADE
+		DEFERRABLE INITIALLY DEFERRED;
+
 CREATE TABLE acq.claim_policy_action (
 	id              SERIAL       PRIMARY KEY,
 	claim_policy    INT          NOT NULL REFERENCES acq.claim_policy
@@ -15315,21 +15360,30 @@ CREATE TABLE asset.copy_template (
 
 CREATE TABLE serial.subscription (
 	id                     SERIAL       PRIMARY KEY,
-	start_date             TIMESTAMP WITH TIME ZONE     NOT NULL,
-	end_date               TIMESTAMP WITH TIME ZONE,    -- interpret NULL as current subscription
-	record_entry           BIGINT       REFERENCES serial.record_entry (id)
-	                                    DEFERRABLE INITIALLY DEFERRED,
-	expected_date_offset   INTERVAL,
 	owning_lib             INT          NOT NULL DEFAULT 1
 	                                    REFERENCES actor.org_unit (id)
 	                                    ON DELETE SET NULL
-	                                    DEFERRABLE INITIALLY DEFERRED
+	                                    DEFERRABLE INITIALLY DEFERRED,
+	start_date             TIMESTAMP WITH TIME ZONE     NOT NULL,
+	end_date               TIMESTAMP WITH TIME ZONE,    -- interpret NULL as current subscription
+	record_entry           BIGINT       REFERENCES biblio.record_entry (id)
+	                                    ON DELETE SET NULL
+	                                    DEFERRABLE INITIALLY DEFERRED,
+	expected_date_offset   INTERVAL
 	-- acquisitions/business-side tables link to here
 );
 
 --at least one distribution per org_unit holding issues
 CREATE TABLE serial.distribution (
 	id                    SERIAL  PRIMARY KEY,
+	record_entry          BIGINT  REFERENCES serial.record_entry (id)
+	                              ON DELETE SET NULL
+	                              DEFERRABLE INITIALLY DEFERRED,
+	summary_method        TEXT    CONSTRAINT sdist_summary_method_check CHECK (
+	                                  summary_method IS NULL
+	                                  OR summary_method IN ( 'add_to_sre',
+	                                  'merge_with_sre', 'use_sre_only',
+	                                  'use_sdist_only')),
 	subscription          INT     NOT NULL
 	                              REFERENCES serial.subscription (id)
 								  ON DELETE CASCADE
@@ -15347,15 +15401,7 @@ CREATE TABLE serial.distribution (
 	bind_unit_template    INT     REFERENCES asset.copy_template (id)
 	                              DEFERRABLE INITIALLY DEFERRED,
 	unit_label_prefix     TEXT,
-	unit_label_suffix     TEXT,
-	record_entry          INT     REFERENCES serial.record_entry (id)
-	                              ON DELETE SET NULL
-	                              DEFERRABLE INITIALLY DEFERRED,
-	summary_method        TEXT    CONSTRAINT summary_method_check CHECK (
-	                                  summary_method IS NULL
-	                                  OR summary_method IN ( 'add_to_sre',
-	                                  'merge_with_sre', 'use_sre_only',
-	                                  'use_sdist_only'))
+	unit_label_suffix     TEXT
 );
 
 CREATE UNIQUE INDEX one_dist_per_sre_idx ON serial.distribution (record_entry);
@@ -15396,10 +15442,15 @@ CREATE TABLE serial.routing_list_user (
 
 CREATE TABLE serial.caption_and_pattern (
 	id           SERIAL       PRIMARY KEY,
+	subscription INT          NOT NULL REFERENCES serial.subscription (id)
+	                          ON DELETE CASCADE
+	                          DEFERRABLE INITIALLY DEFERRED,
 	type         TEXT         NOT NULL
 	                          CONSTRAINT cap_type CHECK ( type in
 	                          ( 'basic', 'supplement', 'index' )),
 	create_date  TIMESTAMPTZ  NOT NULL DEFAULT now(),
+	start_date   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+	end_date     TIMESTAMP WITH TIME ZONE,
 	active       BOOL         NOT NULL DEFAULT FALSE,
 	pattern_code TEXT         NOT NULL,       -- must contain JSON
 	enum_1       TEXT,
@@ -15412,12 +15463,7 @@ CREATE TABLE serial.caption_and_pattern (
 	chron_2      TEXT,
 	chron_3      TEXT,
 	chron_4      TEXT,
-	chron_5      TEXT,
-	subscription INT          NOT NULL REFERENCES serial.subscription (id)
-	                          ON DELETE CASCADE
-	                          DEFERRABLE INITIALLY DEFERRED,
-	start_date   TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-	end_date     TIMESTAMP WITH TIME ZONE
+	chron_5      TEXT
 );
 
 CREATE TABLE serial.issuance (
@@ -15436,15 +15482,15 @@ CREATE TABLE serial.issuance (
 	                          DEFERRABLE INITIALLY DEFERRED,
 	label           TEXT,
 	date_published  TIMESTAMP WITH TIME ZONE,
+	caption_and_pattern  INT  REFERENCES serial.caption_and_pattern (id)
+                              DEFERRABLE INITIALLY DEFERRED,
 	holding_code    TEXT,
 	holding_type    TEXT      CONSTRAINT valid_holding_type CHECK
 	                          (
 	                              holding_type IS NULL
 	                              OR holding_type IN ('basic','supplement','index')
 	                          ),
-	holding_link_id INT,
-	caption_and_pattern  INT  REFERENCES serial.caption_and_pattern (id)
-                              DEFERRABLE INITIALLY DEFERRED
+	holding_link_id INT
 	-- TODO: add columns for separate enumeration/chronology values
 );
 
@@ -15488,7 +15534,7 @@ CREATE TABLE serial.item (
 	                        DEFERRABLE INITIALLY DEFERRED,
 	date_expected   TIMESTAMP WITH TIME ZONE,
 	date_received   TIMESTAMP WITH TIME ZONE,
-	status          TEXT    CONSTRAINT value_status_check CHECK (
+	status          TEXT    CONSTRAINT valid_status CHECK (
                                status IN ( 'Bindery', 'Bound', 'Claimed', 'Discarded',
                                'Expected', 'Not Held', 'Not Published', 'Received'))
                             DEFAULT 'Expected',
@@ -16626,6 +16672,7 @@ CREATE TABLE serial.subscription_note (
 	title        TEXT   NOT NULL,
 	value        TEXT   NOT NULL
 );
+CREATE INDEX serial_subscription_note_sub_idx ON serial.subscription_note (subscription);
 
 CREATE TABLE serial.distribution_note (
 	id           SERIAL PRIMARY KEY,
@@ -17258,6 +17305,22 @@ ALTER TABLE asset.call_number ADD COLUMN label_class BIGINT DEFAULT 1 NOT NULL R
 ALTER TABLE asset.call_number ADD COLUMN label_sortkey TEXT;
 CREATE INDEX asset_call_number_label_sortkey ON asset.call_number(label_sortkey);
 
+-- Pick up the new columns in a dependent view
+
+DROP VIEW IF EXISTS stats.fleshed_call_number;
+
+CREATE VIEW stats.fleshed_call_number AS
+        SELECT  cn.*,
+            CAST(cn.create_date AS DATE) AS create_date_day,
+        CAST(cn.edit_date AS DATE) AS edit_date_day,
+        DATE_TRUNC('hour', cn.create_date) AS create_date_hour,
+        DATE_TRUNC('hour', cn.edit_date) AS edit_date_hour,
+            rd.item_lang,
+                rd.item_type,
+                rd.item_form
+        FROM    asset.call_number cn
+                JOIN metabib.rec_descriptor rd ON (rd.record = cn.record);
+
 CREATE OR REPLACE FUNCTION asset.label_normalizer() RETURNS TRIGGER AS $func$
 DECLARE
     sortkey        TEXT := '';
@@ -17876,6 +17939,10 @@ ALTER TABLE action.reservation_transit_copy
 		REFERENCES booking.reservation(id)
 		ON DELETE SET NULL
 		DEFERRABLE INITIALLY DEFERRED;
+
+CREATE INDEX user_bucket_item_target_user_idx ON container.user_bucket_item ( target_user );
+
+CREATE INDEX m_c_t_collector_idx ON money.collections_tracker ( collector );
 
 COMMIT;
 
