@@ -34,7 +34,7 @@
                 <td><div id='acq-pl-upload-agency'></div></td>
             </tr>
             <tr id='acq-pl-upload-picklist'>
-                <td>Add to Picklist</td>
+                <td>Add to Selection List</td>
                 <td>
                     <select jsId='acqPlUploadPlSelector' dojoType='dijit.form.ComboBox'></select>
                 </td>
