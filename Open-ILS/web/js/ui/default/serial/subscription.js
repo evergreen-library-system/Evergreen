@@ -8,6 +8,7 @@ dojo.require("dijit.layout.ContentPane");
 dojo.require("dojox.grid.DataGrid");
 dojo.require("openils.widget.AutoGrid");
 dojo.require("openils.widget.ProgressDialog");
+dojo.require("openils.widget.HoldingCode");
 dojo.require("openils.PermaCrud");
 
 var pcrud;

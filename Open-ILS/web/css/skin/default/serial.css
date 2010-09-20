@@ -21,3 +21,7 @@
     margin-right: 16px;
     padding: 8px 0;
 }
+.serial-holding-code { border: 0 !important; margin: 0;}
+.serial-holding-code tr { border: 0 !important; margin: 0 !important; }
+.serial-holding-code td { border: 0 !important; padding: 3px; margin: 0 !important; }
+.serial-holding-code td[colspan="2"] { text-align:center; }
