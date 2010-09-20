@@ -1953,7 +1953,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 482, 'ADMIN_SERIAL_DISTRIBUTION', oils_i18n_gettext( 482, 
     'ADMIN_SERIAL_DISTRIBUTION', 'ppl', 'description' )),
  ( 483, 'ADMIN_SERIAL_STREAM', oils_i18n_gettext( 483, 
-    'ADMIN_SERIAL_STREAM', 'ppl', 'description' ));
+    'ADMIN_SERIAL_STREAM', 'ppl', 'description' )),
+ ( 484, 'RECEIVE_SERIAL', oils_i18n_gettext(484, 'Receive serial items', 'ppl', 'description'));
+
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 

@@ -1247,6 +1247,7 @@ sub receive_items_one_unit_per {
 
     my $e = new_editor("authtoken" => $auth, "xact" => 1);
     return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed("RECEIVE_SERIAL");
 
     my $user_id = $e->requestor->id;
 
