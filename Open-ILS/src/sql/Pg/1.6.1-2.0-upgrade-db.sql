@@ -6059,6 +6059,12 @@ ADD COLUMN mint_condition boolean NOT NULL DEFAULT TRUE;
 ALTER TABLE asset.copy ADD COLUMN floating BOOL NOT NULL DEFAULT FALSE;
 ALTER TABLE auditor.asset_copy_history ADD COLUMN floating BOOL;
 
+UPDATE auditor.asset_copy_history
+SET floating  = false;
+
+ALTER TABLE auditor.asset_copy_history
+	ALTER COLUMN floating SET NOT NULL;
+
 DROP INDEX IF EXISTS asset.copy_barcode_key;
 CREATE UNIQUE INDEX copy_barcode_key ON asset.copy (barcode) WHERE deleted = FALSE OR deleted IS FALSE;
 
@@ -6163,6 +6169,15 @@ COMMENT ON TABLE config.rule_recurring_fine IS $$
 $$;
 
 -- Extend the name change to some related views:
+
+DROP VIEW IF EXISTS reporter.overdue_circs;
+
+CREATE OR REPLACE VIEW reporter.overdue_circs AS
+SELECT  *
+  FROM  action.circulation
+    WHERE checkin_time is null
+	        AND (stop_fines NOT IN ('LOST','CLAIMSRETURNED') OR stop_fines IS NULL)
+			        AND due_date < now();
 
 DROP VIEW IF EXISTS stats.fleshed_circulation;
 
@@ -7048,6 +7063,90 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+-- functions to create auditor objects
+
+CREATE FUNCTION auditor.create_auditor_seq     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+BEGIN
+    EXECUTE $$
+        CREATE SEQUENCE auditor.$$ || sch || $$_$$ || tbl || $$_pkey_seq;
+    $$;
+	RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
+CREATE FUNCTION auditor.create_auditor_history ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+BEGIN
+    EXECUTE $$
+        CREATE TABLE auditor.$$ || sch || $$_$$ || tbl || $$_history (
+            audit_id	BIGINT				PRIMARY KEY,
+            audit_time	TIMESTAMP WITH TIME ZONE	NOT NULL,
+            audit_action	TEXT				NOT NULL,
+            LIKE $$ || sch || $$.$$ || tbl || $$
+        );
+    $$;
+	RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
+CREATE FUNCTION auditor.create_auditor_func    ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+BEGIN
+    EXECUTE $$
+        CREATE FUNCTION auditor.audit_$$ || sch || $$_$$ || tbl || $$_func ()
+        RETURNS TRIGGER AS $func$
+        BEGIN
+            INSERT INTO auditor.$$ || sch || $$_$$ || tbl || $$_history
+                SELECT	nextval('auditor.$$ || sch || $$_$$ || tbl || $$_pkey_seq'),
+                    now(),
+                    SUBSTR(TG_OP,1,1),
+                    OLD.*;
+            RETURN NULL;
+        END;
+        $func$ LANGUAGE 'plpgsql';
+    $$;
+    RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
+CREATE FUNCTION auditor.create_auditor_update_trigger ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+BEGIN
+    EXECUTE $$
+        CREATE TRIGGER audit_$$ || sch || $$_$$ || tbl || $$_update_trigger
+            AFTER UPDATE OR DELETE ON $$ || sch || $$.$$ || tbl || $$ FOR EACH ROW
+            EXECUTE PROCEDURE auditor.audit_$$ || sch || $$_$$ || tbl || $$_func ();
+    $$;
+	RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
+CREATE FUNCTION auditor.create_auditor_lifecycle     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+BEGIN
+    EXECUTE $$
+        CREATE VIEW auditor.$$ || sch || $$_$$ || tbl || $$_lifecycle AS
+            SELECT	-1, now() as audit_time, '-' as audit_action, *
+              FROM	$$ || sch || $$.$$ || tbl || $$
+                UNION ALL
+            SELECT	*
+              FROM	auditor.$$ || sch || $$_$$ || tbl || $$_history;
+    $$;
+	RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
+DROP FUNCTION IF EXISTS auditor.create_auditor (TEXT, TEXT);
+
+-- The main event
+
+CREATE FUNCTION auditor.create_auditor ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+BEGIN
+    PERFORM auditor.create_auditor_seq(sch, tbl);
+    PERFORM auditor.create_auditor_history(sch, tbl);
+    PERFORM auditor.create_auditor_func(sch, tbl);
+    PERFORM auditor.create_auditor_update_trigger(sch, tbl);
+    PERFORM auditor.create_auditor_lifecycle(sch, tbl);
+	RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
 ALTER TABLE action.hold_request ADD COLUMN cut_in_line BOOL;
 
 ALTER TABLE action.hold_request
@@ -7062,13 +7161,27 @@ ALTER TABLE action.hold_request DROP CONSTRAINT hold_request_hold_type_check;
 
 UPDATE config.index_normalizer SET param_count = 0 WHERE func = 'split_date_range';
 
+CREATE INDEX actor_usr_usrgroup_idx ON actor.usr (usrgroup);
+
+-- Add claims_never_checked_out_count to actor.usr, related history
+
 ALTER TABLE actor.usr ADD COLUMN
 	claims_never_checked_out_count  INT         NOT NULL DEFAULT 0;
 
-CREATE INDEX actor_usr_usrgroup_idx ON actor.usr (usrgroup);
-
 ALTER TABLE AUDITOR.actor_usr_history ADD COLUMN 
-	claims_never_checked_out_count INT NOT NULL DEFAULT 0;
+	claims_never_checked_out_count INT;
+
+UPDATE auditor.actor_usr_history
+SET claims_never_checked_out_count = 0;
+
+ALTER TABLE AUDITOR.actor_usr_history
+	ALTER COLUMN claims_never_checked_out_count SET NOT NULL;
+
+DROP VIEW auditor.actor_usr_lifecycle;
+
+SELECT auditor.create_auditor_lifecycle( 'actor', 'usr' );
+
+-----------
 
 CREATE OR REPLACE FUNCTION action.circulation_claims_returned () RETURNS TRIGGER AS $$
 BEGIN
@@ -7944,88 +8057,6 @@ CREATE TABLE booking.reservation_attr_value_map (
 	CONSTRAINT bravm_logical_key UNIQUE(reservation, attr_value)
 );
 
-CREATE FUNCTION auditor.create_auditor_seq     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
-BEGIN
-    EXECUTE $$
-        CREATE SEQUENCE auditor.$$ || sch || $$_$$ || tbl || $$_pkey_seq;
-    $$;
-	RETURN TRUE;
-END;
-$creator$ LANGUAGE 'plpgsql';
-
-CREATE FUNCTION auditor.create_auditor_history ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
-BEGIN
-    EXECUTE $$
-        CREATE TABLE auditor.$$ || sch || $$_$$ || tbl || $$_history (
-            audit_id	BIGINT				PRIMARY KEY,
-            audit_time	TIMESTAMP WITH TIME ZONE	NOT NULL,
-            audit_action	TEXT				NOT NULL,
-            LIKE $$ || sch || $$.$$ || tbl || $$
-        );
-    $$;
-	RETURN TRUE;
-END;
-$creator$ LANGUAGE 'plpgsql';
-
-CREATE FUNCTION auditor.create_auditor_func    ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
-BEGIN
-    EXECUTE $$
-        CREATE FUNCTION auditor.audit_$$ || sch || $$_$$ || tbl || $$_func ()
-        RETURNS TRIGGER AS $func$
-        BEGIN
-            INSERT INTO auditor.$$ || sch || $$_$$ || tbl || $$_history
-                SELECT	nextval('auditor.$$ || sch || $$_$$ || tbl || $$_pkey_seq'),
-                    now(),
-                    SUBSTR(TG_OP,1,1),
-                    OLD.*;
-            RETURN NULL;
-        END;
-        $func$ LANGUAGE 'plpgsql';
-    $$;
-    RETURN TRUE;
-END;
-$creator$ LANGUAGE 'plpgsql';
-
-CREATE FUNCTION auditor.create_auditor_update_trigger ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
-BEGIN
-    EXECUTE $$
-        CREATE TRIGGER audit_$$ || sch || $$_$$ || tbl || $$_update_trigger
-            AFTER UPDATE OR DELETE ON $$ || sch || $$.$$ || tbl || $$ FOR EACH ROW
-            EXECUTE PROCEDURE auditor.audit_$$ || sch || $$_$$ || tbl || $$_func ();
-    $$;
-	RETURN TRUE;
-END;
-$creator$ LANGUAGE 'plpgsql';
-
-CREATE FUNCTION auditor.create_auditor_lifecycle     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
-BEGIN
-    EXECUTE $$
-        CREATE VIEW auditor.$$ || sch || $$_$$ || tbl || $$_lifecycle AS
-            SELECT	-1, now() as audit_time, '-' as audit_action, *
-              FROM	$$ || sch || $$.$$ || tbl || $$
-                UNION ALL
-            SELECT	*
-              FROM	auditor.$$ || sch || $$_$$ || tbl || $$_history;
-    $$;
-	RETURN TRUE;
-END;
-$creator$ LANGUAGE 'plpgsql';
-
-DROP FUNCTION IF EXISTS auditor.create_auditor (TEXT, TEXT);
-
--- The main event
-
-CREATE FUNCTION auditor.create_auditor ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
-BEGIN
-    PERFORM auditor.create_auditor_seq(sch, tbl);
-    PERFORM auditor.create_auditor_history(sch, tbl);
-    PERFORM auditor.create_auditor_func(sch, tbl);
-    PERFORM auditor.create_auditor_update_trigger(sch, tbl);
-    PERFORM auditor.create_auditor_lifecycle(sch, tbl);
-	RETURN TRUE;
-END;
-$creator$ LANGUAGE 'plpgsql';
-
 -- represents a circ chain summary
 CREATE TYPE action.circ_chain_summary AS (
     num_circs INTEGER,
@@ -8535,6 +8566,16 @@ ADD COLUMN fiscal_calendar INT NOT NULL
 ALTER TABLE auditor.actor_org_unit_history
 	ADD COLUMN fiscal_calendar INT;
 
+UPDATE auditor.actor_org_unit_history
+SET fiscal_calendar = 1;
+
+ALTER TABLE auditor.actor_org_unit_history
+	ALTER COLUMN fiscal_calendar SET NOT NULL;
+
+DROP VIEW auditor.actor_org_unit_lifecycle;
+
+SELECT auditor.create_auditor_lifecycle( 'actor', 'org_unit' );
+
 ALTER TABLE acq.funding_source_credit
 ADD COLUMN deadline_date TIMESTAMPTZ;
 
@@ -9020,11 +9061,7 @@ COMMENT ON VIEW acq.ordered_funding_source_credit IS $$
 $$;
 
 CREATE OR REPLACE VIEW money.billable_xact_summary_location_view AS
-    SELECT  m.*, COALESCE(c.circ_lib, g.billing_location, r.pickup_lib) AS billing_location
-      FROM  money.materialized_billable_xact_summary m
-            LEFT JOIN action.circulation c ON (c.id = m.id)
-            LEFT JOIN money.grocery g ON (g.id = m.id)
-            LEFT JOIN booking.reservation r ON (r.id = m.id);
+	SELECT * FROM money.materialized_billable_xact_summary;
 
 CREATE TABLE config.marc21_rec_type_map (
     code        TEXT    PRIMARY KEY,
@@ -14730,6 +14767,10 @@ ALTER TABLE biblio.record_entry ADD COLUMN share_depth INT;
 ALTER TABLE auditor.biblio_record_entry_history ADD COLUMN owner INT;
 ALTER TABLE auditor.biblio_record_entry_history ADD COLUMN share_depth INT;
 
+DROP VIEW auditor.biblio_record_entry_lifecycle;
+
+SELECT auditor.create_auditor_lifecycle( 'biblio', 'record_entry' );
+
 CREATE OR REPLACE FUNCTION public.first_word ( TEXT ) RETURNS TEXT AS $$
         SELECT COALESCE(SUBSTRING( $1 FROM $_$^\S+$_$), '');
 $$ LANGUAGE SQL STRICT IMMUTABLE;
@@ -17299,13 +17340,38 @@ UPDATE asset.call_number_class
     WHERE id = 3
 ;
  
-ALTER TABLE auditor.asset_call_number_history ADD COLUMN label_class BIGINT;
-ALTER TABLE auditor.asset_call_number_history ADD COLUMN label_sortkey TEXT;
-ALTER TABLE asset.call_number ADD COLUMN label_class BIGINT DEFAULT 1 NOT NULL REFERENCES asset.call_number_class(id) DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE asset.call_number ADD COLUMN label_sortkey TEXT;
-CREATE INDEX asset_call_number_label_sortkey ON asset.call_number(label_sortkey);
+ALTER TABLE asset.call_number
+	ADD COLUMN label_class BIGINT DEFAULT 1 NOT NULL
+		REFERENCES asset.call_number_class(id)
+		DEFERRABLE INITIALLY DEFERRED;
 
--- Pick up the new columns in a dependent view
+ALTER TABLE asset.call_number
+	ADD COLUMN label_sortkey TEXT;
+
+CREATE INDEX asset_call_number_label_sortkey
+	ON asset.call_number(label_sortkey);
+
+ALTER TABLE auditor.asset_call_number_history
+	ADD COLUMN label_class BIGINT;
+
+UPDATE auditor.asset_call_number_history
+SET label_class = 1;
+
+ALTER TABLE auditor.asset_call_number_history
+	ALTER COLUMN label_class SET NOT NULL;
+
+ALTER TABLE auditor.asset_call_number_history
+	ADD COLUMN label_sortkey TEXT;
+
+-- Pick up the new columns in dependent views
+
+DROP VIEW auditor.asset_call_number_lifecycle;
+
+SELECT auditor.create_auditor_lifecycle( 'asset', 'call_number' );
+
+DROP VIEW auditor.asset_call_number_lifecycle;
+
+SELECT auditor.create_auditor_lifecycle( 'asset', 'call_number' );
 
 DROP VIEW IF EXISTS stats.fleshed_call_number;
 
@@ -17717,6 +17783,10 @@ CREATE INDEX queued_authority_record_queue_idx ON vandelay.queued_authority_reco
 ALTER TABLE asset.copy_location ADD COLUMN label_prefix TEXT;
 ALTER TABLE asset.copy_location ADD COLUMN label_suffix TEXT;
 
+DROP VIEW auditor.asset_copy_lifecycle;
+
+SELECT auditor.create_auditor_lifecycle( 'asset', 'copy' );
+
 ALTER TABLE reporter.report RENAME COLUMN recurance TO recurrence;
 
 -- Let's not break existing reports
@@ -17940,9 +18010,35 @@ ALTER TABLE action.reservation_transit_copy
 		ON DELETE SET NULL
 		DEFERRABLE INITIALLY DEFERRED;
 
-CREATE INDEX user_bucket_item_target_user_idx ON container.user_bucket_item ( target_user );
+CREATE INDEX user_bucket_item_target_user_idx
+	ON container.user_bucket_item ( target_user );
 
-CREATE INDEX m_c_t_collector_idx ON money.collections_tracker ( collector );
+CREATE INDEX m_c_t_collector_idx
+	ON money.collections_tracker ( collector );
+
+CREATE INDEX aud_actor_usr_address_hist_id_idx
+	ON auditor.actor_usr_address_history ( id );
+
+CREATE INDEX aud_actor_usr_hist_id_idx
+	ON auditor.actor_usr_history ( id );
+
+CREATE INDEX aud_asset_cn_hist_creator_idx
+	ON auditor.asset_call_number_history ( creator );
+
+CREATE INDEX aud_asset_cn_hist_editor_idx
+	ON auditor.asset_call_number_history ( editor );
+
+CREATE INDEX aud_asset_cp_hist_creator_idx
+	ON auditor.asset_copy_history ( creator );
+
+CREATE INDEX aud_asset_cp_hist_editor_idx
+	ON auditor.asset_copy_history ( editor );
+
+CREATE INDEX aud_bib_rec_entry_hist_creator_idx
+	ON auditor.biblio_record_entry_history ( creator );
+
+CREATE INDEX aud_bib_rec_entry_hist_editor_idx
+	ON auditor.biblio_record_entry_history ( editor );
 
 COMMIT;
 
@@ -17996,14 +18092,6 @@ CREATE INDEX actor_card_barcode_lower_idx ON actor.card (lower(barcode));
 
 \qecho if the following CREATE INDEX fails, It will be necessary to do some
 \qecho data cleanup as described in the comments.
-
--- Do this outside of a transaction to avoid failure if duplicate
--- authority heading / thesaurus / heading text entries already
--- exist in the database:
-CREATE UNIQUE INDEX unique_by_heading_and_thesaurus
-    ON authority.record_entry (authority.normalize_heading(marc))
-    WHERE deleted IS FALSE or deleted = FALSE
-;
 
 -- If the unique index fails, uncomment the following to create
 -- a regular index that will help find the duplicates in a hurry:
