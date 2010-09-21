@@ -964,7 +964,10 @@ BEGIN
             PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
         END IF;
     ELSE -- we're doing an update, and we're not deleted, remap
-        PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_update' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
+        END IF;
     END IF;
 
     RETURN NEW;
