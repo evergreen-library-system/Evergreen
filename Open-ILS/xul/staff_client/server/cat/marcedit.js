@@ -2338,16 +2338,17 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
                 command : function() { 
                     // Call middle-layer function to create and save the new authority
                     var source_f = summarizeField(sf);
-                    fieldmapper.standardRequest(
+                    var new_auth = fieldmapper.standardRequest(
                         ["open-ils.cat", "open-ils.cat.authority.record.create_from_bib"],
-                        {
-                            "async": true,
-                            "params": [source_f, ses()],
-                            "oncomplete": function() {
-                                alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
-                            }
-                        }
+                        [source_f, ses()]
                     );
+                    if (new_auth && new_auth.id()) {
+                        var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">(CONS){new_auth.id()}</subfield>;
+                        sf.parent().appendChild(id_sf);
+                        var new_sf = marcSubfield(id_sf);
+                        target.parentNode.appendChild(new_sf);
+                        alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
+                    }
                 }
             })
         );
@@ -2366,7 +2367,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
                         ["open-ils.cat", "open-ils.cat.authority.record.create_from_bib.readonly"],
                         { "params": [source_f] }
                     );
-                    loadMarcEditor(pcrud, rec);
+                    loadMarcEditor(pcrud, rec, target, sf);
                 }
             })
         );
@@ -2567,7 +2568,7 @@ function onBibSourceSelect() {
     }
 }
 
-function loadMarcEditor(pcrud, marcxml) {
+function loadMarcEditor(pcrud, marcxml, target, sf) {
     /*
        To run in Firefox directly, must set signed.applets.codebase_principal_support
        to true in about:config
@@ -2589,7 +2590,15 @@ function loadMarcEditor(pcrud, marcxml) {
                 rec.last_xact_id(xact_id);
                 rec.isnew(true);
                 pcrud.create(rec, {
-                    "oncomplete": function () {
+                    "oncomplete": function (r, objs) {
+                        var new_rec = objs[0];
+                        if (!new_rec) {
+                            return '';
+                        }
+                        var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">(CONS){new_rec.id()}</subfield>;
+                        sf.parent().appendChild(id_sf);
+                        var new_sf = marcSubfield(id_sf);
+                        target.parentNode.appendChild(new_sf);
                         alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
                         win.close();
                     }
