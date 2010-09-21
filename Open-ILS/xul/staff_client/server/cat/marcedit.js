@@ -2338,16 +2338,17 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
                 command : function() { 
                     // Call middle-layer function to create and save the new authority
                     var source_f = summarizeField(sf);
-                    fieldmapper.standardRequest(
+                    var new_auth = fieldmapper.standardRequest(
                         ["open-ils.cat", "open-ils.cat.authority.record.create_from_bib"],
-                        {
-                            "async": true,
-                            "params": [source_f, ses()],
-                            "oncomplete": function() {
-                                alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
-                            }
-                        }
+                        [source_f, ses()]
                     );
+                    if (new_auth && new_auth.id()) {
+                        var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">(CONS){new_auth.id()}</subfield>;
+                        sf.parent().appendChild(id_sf);
+                        var new_sf = marcSubfield(id_sf);
+                        target.parentNode.appendChild(new_sf);
+                        alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
+                    }
                 }
             })
         );
