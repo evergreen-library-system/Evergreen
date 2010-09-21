@@ -272,7 +272,7 @@ OpenILS.data.prototype = {
         var obj = this;
         try {
             obj.print_strategy = {};
-            var print_contexts = [ 'default', 'receipt', 'label', 'mail' ];
+            var print_contexts = [ 'default', 'receipt', 'label', 'mail', 'offline' ];
             for (var i in print_contexts) {
                 JSAN.use('util.file'); var file = new util.file('print_strategy.' + print_contexts[i]);
                 if (file._file.exists()) {

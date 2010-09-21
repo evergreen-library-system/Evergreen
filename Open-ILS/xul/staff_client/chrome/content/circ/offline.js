@@ -52,7 +52,7 @@ circ.offline.prototype = {
                         'cmd_print_last_receipt' : [
                             ['command'],
                             function() { 
-                                JSAN.use('util.print'); var print = new util.print();
+                                JSAN.use('util.print'); var print = new util.print('offline');
                                 print.reprint_last();
                             }
                         ],
@@ -78,7 +78,7 @@ circ.offline.prototype = {
         data.print_list_defaults();
         data.load_saved_print_templates();
         data.fetch_print_strategy();
-        JSAN.use('util.print'); (new util.print()).GetPrintSettings();
+        JSAN.use('util.print'); (new util.print('offline')).GetPrintSettings();
     },
 
     'patron_init' : function() {

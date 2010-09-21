@@ -3400,6 +3400,7 @@
 <!ENTITY staff.printing.context.radio.receipt.label "Receipt">
 <!ENTITY staff.printing.context.radio.label.label "Label">
 <!ENTITY staff.printing.context.radio.mail.label "Mail">
+<!ENTITY staff.printing.context.radio.offline.label "Offline">
 <!ENTITY staff.printing.normal_settings.header "Normal Settings">
 <!ENTITY staff.printing.advanced_settings.header "Advanced Settings">
 <!ENTITY staff.printing.advanced.mozilla_print "Use default print strategy (Mozilla Print)">

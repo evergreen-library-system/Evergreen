@@ -113,6 +113,7 @@ function next_patron() {
             try {
                 var params = {
                     'template' : 'offline_checkin',
+                    'printer_context' : 'offline',
                     'callback' : function() {
                         g.list.clear();
                         var x = $('i_barcode'); x.value = ''; x.focus();
