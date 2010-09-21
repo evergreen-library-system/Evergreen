@@ -4619,16 +4619,6 @@ INSERT INTO action_trigger.environment (
         (35, 'pickup_lib')
 ;
 
-INSERT INTO action_trigger.validator (module, description) VALUES (
-    'HoldIsCancelled',
-    oils_i18n_gettext(
-        'HoldIsCancelled',
-        'Check whether a hold request is cancelled.',
-        'atval',
-        'description'
-    )
-);
-
 -- Create the query schema, and the tables and views therein
 
 DROP SCHEMA IF EXISTS sql CASCADE;
@@ -6069,12 +6059,6 @@ ADD COLUMN mint_condition boolean NOT NULL DEFAULT TRUE;
 ALTER TABLE asset.copy ADD COLUMN floating BOOL NOT NULL DEFAULT FALSE;
 ALTER TABLE auditor.asset_copy_history ADD COLUMN floating BOOL;
 
-UPDATE auditor.asset_copy_history
-SET floating  = false;
-
-ALTER TABLE auditor.asset_copy_history
-	ALTER COLUMN floating SET NOT NULL;
-
 DROP INDEX IF EXISTS asset.copy_barcode_key;
 CREATE UNIQUE INDEX copy_barcode_key ON asset.copy (barcode) WHERE deleted = FALSE OR deleted IS FALSE;
 
@@ -7180,12 +7164,6 @@ ALTER TABLE actor.usr ADD COLUMN
 
 ALTER TABLE AUDITOR.actor_usr_history ADD COLUMN 
 	claims_never_checked_out_count INT;
-
-UPDATE auditor.actor_usr_history
-SET claims_never_checked_out_count = 0;
-
-ALTER TABLE AUDITOR.actor_usr_history
-	ALTER COLUMN claims_never_checked_out_count SET NOT NULL;
 
 DROP VIEW auditor.actor_usr_lifecycle;
 
@@ -8575,12 +8553,6 @@ ADD COLUMN fiscal_calendar INT NOT NULL
 
 ALTER TABLE auditor.actor_org_unit_history
 	ADD COLUMN fiscal_calendar INT;
-
-UPDATE auditor.actor_org_unit_history
-SET fiscal_calendar = 1;
-
-ALTER TABLE auditor.actor_org_unit_history
-	ALTER COLUMN fiscal_calendar SET NOT NULL;
 
 DROP VIEW auditor.actor_org_unit_lifecycle;
 
@@ -17363,12 +17335,6 @@ CREATE INDEX asset_call_number_label_sortkey
 
 ALTER TABLE auditor.asset_call_number_history
 	ADD COLUMN label_class BIGINT;
-
-UPDATE auditor.asset_call_number_history
-SET label_class = 1;
-
-ALTER TABLE auditor.asset_call_number_history
-	ALTER COLUMN label_class SET NOT NULL;
 
 ALTER TABLE auditor.asset_call_number_history
 	ADD COLUMN label_sortkey TEXT;
