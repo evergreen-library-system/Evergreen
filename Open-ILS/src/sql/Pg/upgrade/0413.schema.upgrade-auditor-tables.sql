@@ -5,13 +5,6 @@ BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0413'); -- Scott McKellar
 
-UPDATE auditor.actor_org_unit_history
-SET fiscal_calendar = 1
-WHERE fiscal_calendar IS NULL;
-
-ALTER TABLE auditor.actor_org_unit_history
-    ALTER COLUMN fiscal_calendar SET NOT NULL;
-
 DROP VIEW auditor.actor_org_unit_lifecycle;
 
 SELECT auditor.create_auditor_lifecycle( 'actor', 'org_unit' );
@@ -23,23 +16,9 @@ DROP VIEW auditor.actor_usr_lifecycle;
 
 SELECT auditor.create_auditor_lifecycle( 'actor', 'usr' );
 
-UPDATE auditor.asset_call_number_history
-SET label_class = 1
-WHERE label_class IS NULL;
-
-ALTER TABLE auditor.asset_call_number_history
-    ALTER COLUMN label_class SET NOT NULL;
-
 DROP VIEW auditor.asset_call_number_lifecycle;
 
 SELECT auditor.create_auditor_lifecycle( 'asset', 'call_number' );
-
-UPDATE auditor.asset_copy_history
-SET floating  = false
-WHERE floating IS NULL;
-
-ALTER TABLE auditor.asset_copy_history
-	ALTER COLUMN floating SET NOT NULL;
 
 DROP VIEW auditor.asset_copy_lifecycle;
 
