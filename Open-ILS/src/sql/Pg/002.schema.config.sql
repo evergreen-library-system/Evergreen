@@ -52,11 +52,13 @@ CREATE TABLE config.internal_flag (
     enabled BOOL    NOT NULL DEFAULT FALSE
 );
 INSERT INTO config.internal_flag (name) VALUES ('ingest.metarecord_mapping.skip_on_insert');
+INSERT INTO config.internal_flag (name) VALUES ('ingest.metarecord_mapping.skip_on_update');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.reingest.force_on_same_marc');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_located_uri');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_full_rec');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_rec_descriptor');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_field_entry');
+INSERT INTO config.internal_flag (name) VALUES ('ingest.assume_inserts_only');
 
 CREATE TABLE config.global_flag (
     label   TEXT    NOT NULL
@@ -68,7 +70,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0409'); -- senator
+INSERT INTO config.upgrade_log (version) VALUES ('0411'); -- gmc
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
