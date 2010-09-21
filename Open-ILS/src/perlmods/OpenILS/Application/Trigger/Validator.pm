@@ -82,4 +82,13 @@ sub HoldIsAvailable {
     return 0;
 }
 
+sub HoldIsCancelled {
+    my $self = shift;
+    my $env = shift;
+
+    my $hold = $env->{target};
+
+    return ($hold->cancel_time) ? 1 : 0;
+}
+
 1;
