@@ -79,12 +79,10 @@ sub create_authority_record_from_bib_field {
     }
     $control .= '</datafield>';
 
-    # ARN, or "authority record number", needs to be unique across the database
+    # ARN, or "authority record number", used to need to be unique across the database.
     # Of course, we have no idea what's in the database, and if the
-    # cat.maintain_control_numbers flag is set to "TRUE" then the 003 will
-    # be reset to the record ID anyway. Just use time() for now and hope that
-    # two attempts to create an authority record in the same second doesn't
-    # happen too often.
+    # cat.maintain_control_numbers flag is set to "TRUE" then the 001 will
+    # be reset to the record ID anyway.
     my $arn = 'AUTOGEN-' . time();
 
     # Placeholder MARCXML; 
