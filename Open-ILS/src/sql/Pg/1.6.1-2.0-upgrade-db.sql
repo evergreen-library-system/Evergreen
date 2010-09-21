@@ -4619,6 +4619,16 @@ INSERT INTO action_trigger.environment (
         (35, 'pickup_lib')
 ;
 
+INSERT INTO action_trigger.validator (module, description) VALUES (
+    'HoldIsCancelled',
+    oils_i18n_gettext(
+        'HoldIsCancelled',
+        'Check whether a hold request is cancelled.',
+        'atval',
+        'description'
+    )
+);
+
 -- Create the query schema, and the tables and views therein
 
 DROP SCHEMA IF EXISTS sql CASCADE;

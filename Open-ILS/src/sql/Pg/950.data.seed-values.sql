@@ -7559,4 +7559,15 @@ INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
         'bool')
 ;
 
+-- 0412.data.trigger.validator.HoldIsCancelled.sql
+
+INSERT INTO action_trigger.validator (module, description) VALUES (
+    'HoldIsCancelled',
+    oils_i18n_gettext(
+        'HoldIsCancelled',
+        'Check whether a hold request is cancelled.',
+        'atval',
+        'description'
+    )
+);
 
