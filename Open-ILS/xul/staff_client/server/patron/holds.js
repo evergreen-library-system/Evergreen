@@ -309,8 +309,10 @@ patron.holds.prototype = {
                                         params: [ses()],
                                     }
                                 );
-                                if (typeof robj.ilsevent != 'undefined') { throw(robj); }
-                                print.simple( robj.template_output().data() );
+                                if (robj != null) {
+                                    if (typeof robj.ilsevent != 'undefined') { throw(robj); }
+                                    print.simple( robj.template_output().data() );
+                                }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('cmd_holds_print_full',E);
                             }
