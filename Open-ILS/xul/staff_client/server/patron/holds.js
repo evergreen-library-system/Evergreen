@@ -302,7 +302,13 @@ patron.holds.prototype = {
                                 }
                                 JSAN.use('util.print');
                                 var print = new util.print('default');
-                                var robj = obj.network.simple_request('HTML_HOLD_PULL_LIST',[ses()]);
+                                var robj = fieldmapper.standardRequest(
+                                    [ api.HTML_HOLD_PULL_LIST.app, api.HTML_HOLD_PULL_LIST.method ],
+                                    {   async: false,
+                                        timeout: 180,
+                                        params: [ses()],
+                                    }
+                                );
                                 if (typeof robj.ilsevent != 'undefined') { throw(robj); }
                                 print.simple( robj.template_output().data() );
                             } catch(E) {
