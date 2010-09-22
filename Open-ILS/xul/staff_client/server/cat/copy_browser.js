@@ -1251,7 +1251,6 @@ cat.copy_browser.prototype = {
         var obj = this;
         try {
             var org = obj.data.hash.aou[ org_id ];
-            if (obj.data.hash.aout[ org.ou_type() ].depth() == 0 && ! get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) return;
             obj.funcs.push( function() { 
                 document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
                 document.getElementById('cmd_show_libs_with_copies').setAttribute('disabled','true'); 
@@ -1376,10 +1375,8 @@ cat.copy_browser.prototype = {
             }
 
             if (document.getElementById('show_acns').checked) {
-                if (! ( obj.data.hash.aout[ org.ou_type() ].depth() == 0 && ! get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) )) {
-                    node.setAttribute('open','true');
-                    obj.funcs.push( function() { obj.on_select_org( org.id() ); } );
-                }
+                node.setAttribute('open','true');
+                obj.funcs.push( function() { obj.on_select_org( org.id() ); } );
             }
 
         } catch(E) {
