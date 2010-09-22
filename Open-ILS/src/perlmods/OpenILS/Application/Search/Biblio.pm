@@ -689,12 +689,13 @@ sub multiclass_query {
     $query =~ s/^\s+//go;
 
     # convert convenience classes (e.g. kw for keyword) to the full class name
-    $query =~ s/kw(:|\|)/keyword$1/go;
-    $query =~ s/ti(:|\|)/title$1/go;
-    $query =~ s/au(:|\|)/author$1/go;
-    $query =~ s/su(:|\|)/subject$1/go;
-    $query =~ s/se(:|\|)/series$1/go;
-    $query =~ s/name(:|\|)/author$1/og;
+    # ensure that the convenience class isn't part of a word (e.g. 'playhouse')
+    $query =~ s/(^|\s)kw(:|\|)/$1keyword$2/go;
+    $query =~ s/(^|\s)ti(:|\|)/$1title$2/go;
+    $query =~ s/(^|\s)au(:|\|)/$1author$2/go;
+    $query =~ s/(^|\s)su(:|\|)/$1subject$2/go;
+    $query =~ s/(^|\s)se(:|\|)/$1series$2/go;
+    $query =~ s/(^|\s)name(:|\|)/$1author$2/og;
 
     $logger->debug("cleansed query string => $query");
     my $search = {};
