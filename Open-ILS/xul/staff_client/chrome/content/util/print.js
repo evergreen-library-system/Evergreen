@@ -16,6 +16,10 @@ util.print = function (context) {
     var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
     var key = 'oils.printer.external.cmd.' + this.context;
     var has_key = prefs.prefHasUserValue(key);
+    if(!has_key && this.context != 'default') {
+        key = 'oils.printer.external.cmd.default';
+        has_key = prefs.prefHasUserValue(key);
+    }
     this.oils_printer_external_cmd = has_key ? prefs.getCharPref(key) : '';
 
     return this;
