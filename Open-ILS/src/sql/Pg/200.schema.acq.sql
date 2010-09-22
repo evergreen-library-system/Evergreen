@@ -673,9 +673,9 @@ CREATE TABLE acq.fund_transfer (
     src_fund         INT            NOT NULL REFERENCES acq.fund( id )
                                     DEFERRABLE INITIALLY DEFERRED,
     src_amount       NUMERIC        NOT NULL,
-    dest_fund        INT            NOT NULL REFERENCES acq.fund( id )
+    dest_fund        INT            REFERENCES acq.fund( id )
                                     DEFERRABLE INITIALLY DEFERRED,
-    dest_amount      NUMERIC        NOT NULL,
+    dest_amount      NUMERIC,
     transfer_time    TIMESTAMPTZ    NOT NULL DEFAULT now(),
     transfer_user    INT            NOT NULL REFERENCES actor.usr( id )
                                     DEFERRABLE INITIALLY DEFERRED,
