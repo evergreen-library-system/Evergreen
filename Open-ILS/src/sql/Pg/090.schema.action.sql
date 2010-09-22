@@ -146,6 +146,7 @@ CREATE INDEX circ_open_date_idx ON "action".circulation (xact_start) WHERE xact_
 CREATE INDEX circ_all_usr_idx       ON action.circulation ( usr );
 CREATE INDEX circ_circ_staff_idx    ON action.circulation ( circ_staff );
 CREATE INDEX circ_checkin_staff_idx ON action.circulation ( checkin_staff );
+CREATE INDEX action_circulation_target_copy_idx ON action.circulation (target_copy);
 CREATE UNIQUE INDEX circ_parent_idx ON action.circulation ( parent_circ ) WHERE parent_circ IS NOT NULL;
 CREATE UNIQUE INDEX only_one_concurrent_checkout_per_copy ON action.circulation(target_copy) WHERE checkin_time IS NULL;
 
@@ -185,6 +186,7 @@ CREATE INDEX aged_circ_start_idx ON "action".aged_circulation (xact_start);
 CREATE INDEX aged_circ_copy_circ_lib_idx ON "action".aged_circulation (copy_circ_lib);
 CREATE INDEX aged_circ_copy_owning_lib_idx ON "action".aged_circulation (copy_owning_lib);
 CREATE INDEX aged_circ_copy_location_idx ON "action".aged_circulation (copy_location);
+CREATE INDEX action_aged_circulation_target_copy_idx ON action.aged_circulation (target_copy);
 
 CREATE OR REPLACE VIEW action.all_circulation AS
     SELECT  id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
