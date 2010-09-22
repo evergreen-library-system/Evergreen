@@ -580,6 +580,7 @@
             w.xulG = { 
                 'url' : 'about:blank',
                 'show_print_button' : 1,
+                'printer_context' : 'label',
                 'alternate_print' : 1,
                 'no_xulG' : 1,
                 'title' : $("catStrings").getString('staff.cat.spine_labels.preview.title'),
@@ -609,6 +610,7 @@
                     'url' : 'data:text/html;charset=utf-8,'+window.escape(html),
                     'html_source' : html,
                     'show_print_button' : 1,
+                    'printer_context' : 'label',
                     'no_xulG' : 1
                 }
             );
