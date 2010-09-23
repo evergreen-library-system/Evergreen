@@ -42,7 +42,7 @@
             accesskey="&staff.circ.holds.title_transfer.accesskey;" />
         <command id="cmd_search_opac" />
         <command id="save_columns" />
-        <command id="cmd_alt_view" />
+        <command id="cmd_alt_view" disabled="true"/>
         <command id="cmd_cancelled_holds_view" />
         <command id="cmd_uncancelled_holds_view" />
         <command id="cmd_view_expired_onshelf_holds"
