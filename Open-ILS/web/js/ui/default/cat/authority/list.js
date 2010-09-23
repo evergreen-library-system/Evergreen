@@ -234,6 +234,7 @@ function displayRecords(parms) {
         + '/1' // replace with preceding line if OUs gain some meaning
         + '/' + dijit.byId('authTerm').attr('value')
         + '/' + dijit.byId('authPage').attr('value')
+        + '/' + '20' // 20 results per page
     ;
     dojo.xhrGet({"url":url, "handleAs":"xml", "content":{"format":"marcxml"}, "preventCache": true, "load":displayAuthorities });
 }
