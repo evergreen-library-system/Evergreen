@@ -76,6 +76,11 @@ sub new {
 	return $self;
 }
 
+sub DESTROY {
+        my $self = shift;
+        $self->reset;
+        return undef;
+}
 
 sub app {
 	my( $self, $app ) = @_;
