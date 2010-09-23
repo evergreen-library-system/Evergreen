@@ -68,7 +68,7 @@ sub create_active_events_for_object {
             my $uid = $target->$ufield;
             $uid = $uid->id if (ref $uid); # fleshed user object, unflesh it
 
-            my $opt_in_setting = $editor->search_actor_usr_setting(
+            my $opt_in_setting = $editor->search_actor_user_setting(
                 { usr   => $uid,
                   name  => $def->opt_in_setting,
                   value => 'true'
@@ -154,7 +154,7 @@ sub create_event_for_object_and_def {
             my $uid = $target->$ufield;
             $uid = $uid->id if (ref $uid); # fleshed user object, unflesh it
 
-            my $opt_in_setting = $editor->search_actor_usr_setting(
+            my $opt_in_setting = $editor->search_actor_user_setting(
                 { usr   => $uid,
                   name  => $def->opt_in_setting,
                   value => 'true'
