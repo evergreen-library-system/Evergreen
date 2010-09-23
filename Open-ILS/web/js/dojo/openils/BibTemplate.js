@@ -36,6 +36,9 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
             this.locale = kwargs.locale || OpenSRF.locale || 'en-US';
             this.nodelay = kwargs.delay == false;
 
+            if (this.xml && this.xml instanceof String)
+                this.xml = dojox.xml.parser.parse(this.xml);
+
             this.mode = 'biblio-record_entry';
             this.default_datatype = 'marcxml-uris';
             if (kwargs.metarecord) {
@@ -56,12 +59,11 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
         },
 
         textContent : function (node) {
-            var content = '';
             if (node) {
-                if(window.ActiveXObject) content = node.text;
-                else content = node.textContent;
+                if (node instanceof HTMLElement) return node.innerText || node.textContent;
+                return dojox.xml.parser.textContent(node);
             }
-            return content;
+            return '';
         },
 
         render : function() {

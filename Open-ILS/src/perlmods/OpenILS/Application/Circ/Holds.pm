@@ -24,6 +24,7 @@ use OpenSRF::EX qw(:try);
 use OpenILS::Perm;
 use OpenILS::Event;
 use OpenSRF::Utils;
+use OpenSRF::AppSession;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::PermitHold;
@@ -1265,22 +1266,123 @@ sub print_hold_pull_list {
     my $hold_ids = $U->storagereq(
         'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.status_filtered.atomic',
         $org_id, 10000);
-
+    
     return undef unless @$hold_ids;
     $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
-
+    
     # Holds will /NOT/ be in order after this ...
     my $holds = $e->search_action_hold_request({id => $hold_ids}, {substream => 1});
     $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
-
+    
     # ... so we must resort.
     my $hold_map = +{map { $_->id => $_ } @$holds};
     my $sorted_holds = [];
     push @$sorted_holds, $hold_map->{$_} foreach @$hold_ids;
-
+    
     return $U->fire_object_event(
         undef, "ahr.format.pull_list", $sorted_holds, $org_id
     );
+
+}
+
+__PACKAGE__->register_method(
+    method    => "print_hold_pull_list_stream",
+    api_name  => "open-ils.circ.hold_pull_list.print.stream",
+    signature => {
+        desc   => 'Returns a stream of fleshed holds',
+        params => [
+            { desc => 'Authtoken', type => 'string'},
+            { desc => 'Hash of optional param: Org unit ID (defaults to workstation org unit), limit, offset, sort (array of: acplo.position, call_number, request_time)',
+              type => 'object'
+            },
+        ],
+        return => {
+            desc => 'A stream of fleshed holds',
+            type => 'object'
+        }
+    }
+);
+
+sub print_hold_pull_list_stream {
+    my($self, $client, $auth, $params) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    delete($$params{org_id}) unless (int($$params{org_id}));
+    delete($$params{limit}) unless (int($$params{limit}));
+    delete($$params{offset}) unless (int($$params{offset}));
+
+    $$params{org_id} = (defined $$params{org_id}) ? $$params{org_id}: $e->requestor->ws_ou;
+    return $e->die_event unless $e->allowed('VIEW_HOLD', $$params{org_id });
+
+    my $sort = 'ahr.request_time';
+    if ($$params{sort} && @{ $$params{sort} }) {
+        $sort = '';
+        for my $s (@{ $$params{sort} }) {
+            if ($s eq 'acplo.position') {
+                $s = 'coalesce(acplo.position,999)';
+            } elsif ($s eq 'call_number') {
+                $s = 'acn.label';
+            } elsif ($s eq 'request_time') {
+                $s = 'ahr.request_time';
+            } else {
+                $s = '';
+            }
+
+            $sort .= ', ' if ($sort);
+            $sort .= $s;
+        }
+    }
+
+    my $req = OpenSRF::AppSession->create('open-ils.cstore')->request(
+        'open-ils.cstore.direct.action.hold_request',
+        {   capture_time => undef,
+            cancel_time => undef,
+            '-or' => [
+                { expire_time => undef },
+                { expire_time => { '>' => 'now' } }
+            ]
+        },{
+            flesh => 3,
+            flesh_fields => {
+                ahr => [ "usr","current_copy" ],
+                au  => [ "card" ],
+                acp => [ "location", "call_number" ],
+                acn => [ "record" ]
+            },
+            join => {
+                acp => { 
+                    field => 'id',
+                    fkey => 'current_copy',
+                    filter => { circ_lib => $$params{org_id}, status => [0,7] },
+                    join => {
+                        acn => {
+                            field => 'id',
+                            fkey => 'call_number' 
+                        },
+                        acplo => {
+                            field => 'org',
+                            fkey => 'circ_lib', 
+                            type => 'left'
+                        }
+                    }
+                }
+            },
+            order_by => $sort,
+            ($$params{limit} ? (limit => $$params{limit}) : ()),
+            ($$params{offset} ? (offset => $$params{offset}) : ()),
+        }
+    );
+
+    while (my $resp = $req->recv( timeout => 180 )) {
+        if ($req->failed) {
+            throw OpenSRF::EX::ERROR ($self->failed()->stringify())
+        }
+        $self->respond( $resp->content );
+    }
+
+    return $self->respond_complete;
 }
 
 

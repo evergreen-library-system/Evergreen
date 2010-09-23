@@ -26,11 +26,13 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
         session : null,
         authtoken : null,
         connnected : false,
+        authoritative : false,
 
         constructor : function ( kwargs ) {
             kwargs = kwargs || {};
 
             this.authtoken = kwargs.authtoken;
+            this.authoritative = kwargs.authoritative;
 
             this.session =
                 kwargs.session ||
@@ -66,7 +68,41 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                 return false;
             }
         },
-        
+
+        _session_request : function ( args /* hash */, commitOnComplete /* set to true, else no */ ) {
+
+            var me = this;
+            var endstyle = 'rollback';
+            if (commitOnComplete) endstyle = 'commit';
+
+            if (me.authoritative) {
+                if (!me.connected) me.connect();
+                if (args.timeout && !args.oncomplete && !args.onresponse) { // pure sync call
+                    args.oncomplete = function (r) {
+                        me.session.request('open-ils.pcrud.transaction.' + endstyle, me.auth());
+                        me.session.disconnect();
+                        me.disconnect();
+                    };
+                } else if (args.oncomplete) { // there's an oncomplete, fire that, and then end the transaction
+                    var orig_oncomplete = args.oncomplete;
+                    args.oncomplete = function (r) {
+                        var ret;
+                        try {
+                            ret = orig_oncomplete(r);
+                        } finally {
+                            me.session.request('open-ils.pcrud.transaction.' + endstyle, me.auth());
+                            me.session.disconnect();
+                            me.disconnect();
+                        }
+                        return ret;
+                    };
+                }
+
+            if (me.authoritative) me.session.request('open-ils.pcrud.transaction.begin', me.auth() );
+
+            return me.session.request( args );
+
+        },
 
         retrieve : function ( fm_class /* Fieldmapper class hint */, id /* Fieldmapper object primary key value */,  opts /* Option hash */) {
             if(!opts) opts = {};
@@ -80,7 +116,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (!opts.async && !opts.timeout) req_hash.timeout = 10;
 
             var _pcrud = this;
-            var req = this.session.request( req_hash );
+            var req = this._session_request( req_hash );
 
             if (!req.onerror)
                 req.onerror = function (r) { throw js2JSON(r); };
@@ -129,7 +165,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (!opts.async && !opts.timeout) req_hash.timeout = 10;
 
             var _pcrud = this;
-            var req = this.session.request( req_hash );
+            var req = this._session_request( req_hash );
 
             if (!req.onerror)
                 req.onerror = function (r) { throw js2JSON(r); };
@@ -175,7 +211,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (!opts.async && !opts.timeout) req_hash.timeout = 10;
 
             var _pcrud = this;
-            var req = this.session.request( req_hash );
+            var req = this._session_request( req_hash );
 
             if (!req.onerror)
                 req.onerror = function (r) { throw js2JSON(r); };
