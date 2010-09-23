@@ -1456,6 +1456,7 @@ sub test_batch_circ_events {
 __PACKAGE__->register_method(
 	method	=> "fire_circ_events", 
 	api_name	=> "open-ils.circ.fire_circ_trigger_events",
+    authoritative => 1,
     signature => q/
         General event def runner for circ objects.  If no event def ID
         is provided, the hook will be used to find the best event_def
@@ -1466,6 +1467,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "fire_circ_events", 
 	api_name	=> "open-ils.circ.fire_hold_trigger_events",
+    authoritative => 1,
     signature => q/
         General event def runner for hold objects.  If no event def ID
         is provided, the hook will be used to find the best event_def
@@ -1476,6 +1478,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "fire_circ_events", 
 	api_name	=> "open-ils.circ.fire_user_trigger_events",
+    authoritative => 1,
     signature => q/
         General event def runner for user objects.  If no event def ID
         is provided, the hook will be used to find the best event_def

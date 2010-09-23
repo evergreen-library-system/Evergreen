@@ -1216,7 +1216,7 @@ SelfCheckManager.prototype.printSessionReceipt = function(callback) {
 
     var self = this;
     fieldmapper.standardRequest(
-        ['open-ils.circ', 'open-ils.circ.fire_circ_trigger_events'],
+        ['open-ils.circ', 'open-ils.circ.fire_circ_trigger_events.authoritative'],
         {   
             async : true,
             params : params,
@@ -1285,7 +1285,7 @@ SelfCheckManager.prototype.printItemsOutReceipt = function(callback) {
 
     var self = this;
     fieldmapper.standardRequest(
-        ['open-ils.circ', 'open-ils.circ.fire_circ_trigger_events'],
+        ['open-ils.circ', 'open-ils.circ.fire_circ_trigger_events.authoritative'],
         {   
             async : true,
             params : params,
