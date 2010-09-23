@@ -656,16 +656,16 @@ sub grouped_events {
 
             # split the grouping link steps
             my @steps = split /\./, $group;
+            my $group_field = pop(@steps); # we didn't flesh to this, it's a field not an object
 
             # find the grouping object
             my $node = $e->target;
             $node = $node->$_() for ( @steps );
 
-            # get the pkey value for the grouping object on this event
-            my $node_ident = $node->Identity;
-            my $ident_value = $node->$node_ident();
+            # get the grouping value for the grouping object on this event
+            my $ident_value = $node->$group_field();
 
-            # push this event onto the event+grouping_pkey_value stack
+            # push this event onto the event+grouping_value stack
             $groups{$e->event->event_def->id}{$ident_value} ||= [];
             push @{ $groups{$e->event->event_def->id}{$ident_value} }, $e;
         } else {
