@@ -1598,7 +1598,7 @@ sub find_event_def_by_hook {
 sub fire_object_event {
     my($self, $event_def, $hook, $object, $context_org, $granularity, $user_data) = @_;
 
-    my $e = OpenILS::Utils::CStoreEditor->new;
+    my $e = OpenILS::Utils::CStoreEditor->new(xact => 1);
     my $def;
 
     my $auto_method = "open-ils.trigger.event.autocreate.by_definition";
