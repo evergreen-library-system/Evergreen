@@ -45,6 +45,10 @@ sub init {
 
     return $self if (!$self->id);
 
+    if ($self->standalone) {
+        $self->editor->xact_begin || return undef;
+    }
+
     $self->event(
         $self->editor->retrieve_action_trigger_event([
             $self->id, {
@@ -56,6 +60,10 @@ sub init {
             }
         ])
     );
+
+    if ($self->standalone) {
+        $self->editor->xact_rollback || return undef;
+    }
 
     $self->user_data(OpenSRF::Utils::JSON->JSON2perl( $self->event->user_data ))
         if (defined( $self->event->user_data ));
@@ -91,7 +99,15 @@ sub init {
     $meth =~ s/Fieldmapper:://;
     $meth =~ s/::/_/;
     
+    if ($self->standalone) {
+        $self->editor->xact_begin || return undef;
+    }
+
     $self->target( $self->editor->$meth( $self->event->target ) );
+
+    if ($self->standalone) {
+        $self->editor->xact_rollback || return undef;
+    }
 
     return $self;
 }
@@ -463,7 +479,7 @@ sub _object_by_path {
 
     my $ed = grep( /open-ils.cstore/, @{$fclass->Controller} ) ?
             $self->editor :
-            new_rstore_editor();
+            new_rstore_editor(($self->standalone ? () : (xact=>1)));
 
     my $obj = $context->$step(); 
 
@@ -473,11 +489,21 @@ sub _object_by_path {
     );
 
     if (!ref $obj) {
+
+        if ($self->standalone) {
+            $ed->xact_begin || return undef;
+        }
+
         $obj = $ed->$meth( 
             ($multi) ?
                 { $ffield => $context->$lfield() } :
                 $context->$lfield()
         );
+
+        if ($self->standalone) {
+            $ed->xact_rollback || return undef;
+        }
+
     }
 
     if (@$path) {
