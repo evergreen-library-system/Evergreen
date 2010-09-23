@@ -2326,7 +2326,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
     ;
 
     // would be good to carve this out into a separate function
-    dojo.xhrGet({"url":url, "handleAs":"xml", "load": function(records) {
+    dojo.xhrGet({"url":url, "sync": true, "handleAs":"xml", "load": function(records) {
         var create_menu = createMenu({ label: $('catStrings').getString('staff.cat.marcedit.create_authority.label')});
 
         var cm_popup = create_menu.appendChild(
