@@ -285,12 +285,25 @@ function uEditMakePhonePw() {
     }
 }
 
-function uEditResetPw(pw) { 
-    if(!pw) pw = uEditMakeRandomPw(patron);	
-	$('ue_password1').value = pw;
-	$('ue_password2').value = pw;
-    $('ue_password1').onchange();
+function uEditResetPw(pw) {
+    if(!pw) {
+        if(uEditUsePhonePw) {
+            if( (pw = patron.day_phone()) ||
+                (pw = patron.evening_phone()) || (pw = patron.other_phone()) ) {
+                    pw = pw.substring(pw.length - 4); // this is iffy
+                    uEditResetPw(pw);
+                        appendClear($('ue_password_plain'), text(pw));
+                        unHideMe($('ue_password_gen'));
+             }
+        } else {
+            pw = uEditMakeRandomPw(patron);
+        }
+        $('ue_password1').value = pw;
+        $('ue_password2').value = pw;
+        $('ue_password1').onchange();
+    }
 }
+
 
 function uEditClone(clone) {
 
