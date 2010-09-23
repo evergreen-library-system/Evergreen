@@ -328,7 +328,7 @@ sub events_by_target {
             for (grep { $_ ne '-and' } keys %{$$filter{event}});
     }
 
-    my $e = new_editor();
+    my $e = new_editor(xact=>1);
 
     my $events = $e->json_query($query);
 
@@ -595,8 +595,6 @@ sub pending_events {
     my $client = shift;
     my $granularity = shift;
 
-    my $editor = new_editor();
-
     my $query = [{ state => 'pending', run_time => {'<' => 'now'} }, { order_by => { atev => [ qw/run_time add_time/] }, 'join' => 'atevdef' }];
 
     if (defined $granularity) {
@@ -605,7 +603,7 @@ sub pending_events {
         $query->[0]->{'+atevdef'} = {granularity => undef};
     }
 
-    return $editor->search_action_trigger_event(
+    return new_editor(xact=>1)->search_action_trigger_event(
         $query, { idlist=> 1, timeout => 7200, substream => 1 }
     );
 }

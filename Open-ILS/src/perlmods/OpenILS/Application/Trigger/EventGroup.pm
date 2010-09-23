@@ -212,11 +212,11 @@ sub update_state {
     if (scalar(@oks) < scalar(@{ $self->ids })) {
         $self->editor->xact_rollback;
         return undef;
-    } else {
-        $ok = $self->editor->xact_commit;
-    }
+    } 
 
     my $updated = $self->editor->retrieve_action_trigger_event($last_updated);
+    $ok = $self->editor->xact_commit;
+
     if ($ok) {
         for my $event ( @{ $self->events } ) {
             my $e = $event->event;

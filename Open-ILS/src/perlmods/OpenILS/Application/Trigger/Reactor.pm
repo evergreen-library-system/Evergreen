@@ -57,13 +57,13 @@ my $_TT_helpers = {
     # returns the calculated copy price
     get_copy_price => sub {
         my $copy_id = shift;
-        return $U->get_copy_price(new_editor(), $copy_id);
+        return $U->get_copy_price(new_editor(xact=>1), $copy_id);
     },
 
     # given a copy, returns the title and author in a hash
     get_copy_bib_basics => sub {
         my $copy_id = shift;
-        my $copy = new_editor()->retrieve_asset_copy([
+        my $copy = new_editor(xact=>1)->retrieve_asset_copy([
             $copy_id,
             {
                 flesh => 2,
