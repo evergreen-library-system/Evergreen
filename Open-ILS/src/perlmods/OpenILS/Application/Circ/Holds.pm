@@ -1269,10 +1269,18 @@ sub print_hold_pull_list {
     return undef unless @$hold_ids;
     $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
 
+    # Holds will /NOT/ be in order after this ...
     my $holds = $e->search_action_hold_request({id => $hold_ids}, {substream => 1});
     $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
 
-    return $U->fire_object_event(undef, 'ahr.format.pull_list', $holds, $org_id);
+    # ... so we must resort.
+    my $hold_map = +{map { $_->id => $_ } @$holds};
+    my $sorted_holds = [];
+    push @$sorted_holds, $hold_map->{$_} foreach @$hold_ids;
+
+    return $U->fire_object_event(
+        undef, "ahr.format.pull_list", $sorted_holds, $org_id
+    );
 }
 
 
