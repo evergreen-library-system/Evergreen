@@ -397,7 +397,8 @@ sub build_environment {
 
         if ($self->event->event_def->group_field) {
             my @group_path = split(/\./, $self->event->event_def->group_field);
-            my $group_object = $self->_object_by_path( $self->target, undef, [], \@group_path );
+            pop(@group_path); # the last part is a field, should not get fleshed
+            my $group_object = $self->_object_by_path( $self->target, undef, [], \@group_path ) if (@group_path);
         }
     
         $self->environment->{complete} = 1;
