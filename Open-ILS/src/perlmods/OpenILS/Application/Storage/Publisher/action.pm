@@ -1294,7 +1294,7 @@ sub new_hold_copy_targeter {
 					my %circ_lib_map =  map { (''.$_->circ_lib => 1) } @$all_copies;
 					my $circ_lib_list = [keys %circ_lib_map];
 	
-					my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
+					my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
 	
 					# Grab the "biggest" loop for this hold so far
 					my $current_loop = $cstore->request(
