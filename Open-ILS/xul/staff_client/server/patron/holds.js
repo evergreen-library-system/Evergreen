@@ -150,7 +150,10 @@ patron.holds.prototype = {
                         obj.controller.view.cmd_holds_edit_request_date.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_activate.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_suspend.setAttribute('disabled','false');
-                        obj.controller.view.cmd_alt_view.setAttribute('disabled','false');
+                        obj.controller.view.cmd_alt_view.setAttribute('rendering_rows','false');
+                        if (obj.controller.view.cmd_alt_view.getAttribute('ready')=='true') {
+                            obj.controller.view.cmd_alt_view.setAttribute('disabled','false');
+                        }
                         obj.controller.view.cmd_holds_retarget.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_uncancel.setAttribute('disabled','false');
@@ -173,6 +176,7 @@ patron.holds.prototype = {
                         obj.controller.view.cmd_holds_activate.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_suspend.setAttribute('disabled','true');
                         obj.controller.view.cmd_alt_view.setAttribute('disabled','true');
+                        obj.controller.view.cmd_alt_view.setAttribute('rendering_rows','true');
                         obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_uncancel.setAttribute('disabled','true');
@@ -1346,6 +1350,14 @@ patron.holds.prototype = {
             }, 0
         );
 
+        $('cmd_alt_view').setAttribute('disabled','true');
+        xulG.when_done = function() {
+            $('cmd_alt_view').setAttribute('ready','true');
+            if ($('cmd_alt_view').getAttribute('rendering_rows') != 'true') {
+                $('cmd_alt_view').setAttribute('disabled','false');
+            }
+            dump('hold details UI ready\n');
+        }
         netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
         JSAN.use('util.browser');
         obj.browser = new util.browser();
@@ -1355,7 +1367,7 @@ patron.holds.prototype = {
                 'push_xulG' : true,
                 'alt_print' : false,
                 'browser_id' : 'hold_detail_frame',
-                'passthru_content_params' : xulG,
+                'passthru_content_params' : xulG
             }
         );
 
