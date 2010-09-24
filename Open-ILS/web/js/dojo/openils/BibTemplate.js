@@ -119,7 +119,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                     if (item_list.length) item_list = BT.subsetNL(item_list, item_offset, item_offset + item_limit);
                                 }
 
-                                // Do post-query stuff, only if there's an item list!
+                                // Do post-query stuff
                                 dojo.forEach(post_query_callbacks, function (cb) {
                                     try { (new Function( 'item_list', 'BT', 'slotXML', 'slot', unescape(cb.innerHTML) ))(item_list,BT,bib,slot) } catch (e) {/*meh*/}
                                 });
