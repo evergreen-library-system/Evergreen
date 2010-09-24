@@ -1060,6 +1060,28 @@ sub retrieve_hold_queue_status_impl {
         } 
     });
 
+    if (!@$q_holds) { # none? maybe we don't have a map ... 
+        my $q_holds = $e->json_query({
+            select => {ahr => ['id', 'cut_in_line', 'request_time']},
+            from   => 'ahr',
+            order_by => [
+                {
+                    "class" => "ahr",
+                    "field" => "cut_in_line",
+                    "transform" => "coalesce",
+                    "params" => [ 0 ],
+                    "direction" => "desc"
+                },
+                { "class" => "ahr", "field" => "request_time" }
+            ],
+            where    => {
+                hold_type => $hold->hold_type, 
+                target    => $hold->target 
+           } 
+        });
+    }
+
+
     my $qpos = 1;
     for my $h (@$q_holds) {
         last if $h->{id} == $hold->id;
