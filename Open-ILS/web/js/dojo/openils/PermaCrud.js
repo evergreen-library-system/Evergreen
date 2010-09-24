@@ -114,7 +114,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (!opts.async && !opts.timeout) req_hash.timeout = 10;
 
             var _pcrud = this;
-            var req = this.session.request( req_hash );
+            var req = this._session_request( req_hash );
 
             if (!req.onerror)
                 req.onerror = function (r) { throw js2JSON(r); };
@@ -163,7 +163,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (!opts.async && !opts.timeout) req_hash.timeout = 10;
 
             var _pcrud = this;
-            var req = this.session.request( req_hash );
+            var req = this._session_request( req_hash );
 
             if (!req.onerror)
                 req.onerror = function (r) { throw js2JSON(r); };
@@ -209,7 +209,7 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
             if (!opts.async && !opts.timeout) req_hash.timeout = 10;
 
             var _pcrud = this;
-            var req = this.session.request( req_hash );
+            var req = this._session_request( req_hash );
 
             if (!req.onerror)
                 req.onerror = function (r) { throw js2JSON(r); };
