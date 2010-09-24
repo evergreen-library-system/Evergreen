@@ -66,7 +66,41 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
                 return false;
             }
         },
-        
+
+        _session_request : function ( args /* hash */, commitOnComplete /* set to true, else no */ ) {
+
+            var me = this;
+            var endstyle = 'rollback';
+            var aopts = dojo.mixin({}, args);
+            args = aopts;
+            if (commitOnComplete) endstyle = 'commit';
+
+            if (me.authoritative) {
+                if (!me.connected) me.connect();
+                if (args.timeout && !args.oncomplete && !args.onresponse) { // pure sync call
+                    args.oncomplete = function (r) {
+                        me.session.request('open-ils.pcrud.transaction.' + endstyle, me.auth());
+                        me.session.disconnect();
+                        me.disconnect();
+                    };
+                } else if (args.oncomplete) { // there's an oncomplete, fire that, and then end the transaction
+                    var orig_oncomplete = args.oncomplete;
+                    args.oncomplete = function (r) {
+                        var ret;
+                        try {
+                            ret = orig_oncomplete(r);
+                        } finally {
+                            me.session.request('open-ils.pcrud.transaction.' + endstyle, me.auth());
+                            me.session.disconnect();
+                            me.disconnect();
+                        }
+                        return ret;
+                    };
+                }
+                me.session.request('open-ils.pcrud.transaction.begin', me.auth());
+            }
+            return me.session.request( args );
+        },
 
         retrieve : function ( fm_class /* Fieldmapper class hint */, id /* Fieldmapper object primary key value */,  opts /* Option hash */) {
             if(!opts) opts = {};
