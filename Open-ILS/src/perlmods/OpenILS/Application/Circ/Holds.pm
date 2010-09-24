@@ -1061,7 +1061,7 @@ sub retrieve_hold_queue_status_impl {
     });
 
     if (!@$q_holds) { # none? maybe we don't have a map ... 
-        my $q_holds = $e->json_query({
+        $q_holds = $e->json_query({
             select => {ahr => ['id', 'cut_in_line', 'request_time']},
             from   => 'ahr',
             order_by => [
