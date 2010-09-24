@@ -1279,7 +1279,8 @@ sub print_hold_pull_list {
     push @$sorted_holds, $hold_map->{$_} foreach @$hold_ids;
 
     return $U->fire_object_event(
-        undef, "ahr.format.pull_list", $sorted_holds, $org_id
+        undef, "ahr.format.pull_list", $sorted_holds,
+        $org_id, undef, undef, $client
     );
 }
 
