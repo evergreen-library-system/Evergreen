@@ -44,9 +44,6 @@ deck#patron_deck { border-left: solid thin black; }
 .PATRON_EXCEEDS_FINES label.bill.value { }
 .PATRON_EXCEEDS_FINES label.max_bills_indicator { display: inline; color: purple; }
 
-.PATRON_AGE_LT_18 .dob { color: purple; }
-.PATRON_AGE_LT_18 label.juvenile_indicator { display: inline; color: purple; }
-
 .PATRON_HAS_INVALID_DOB .dob { color: purple; }
 .PATRON_HAS_INVALID_DOB label.invalid_dob_indicator { display: inline; color: purple }
 
