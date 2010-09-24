@@ -1634,7 +1634,7 @@ sub fire_object_event {
 
     if($event_def) {
         $def = $e->retrieve_action_trigger_event_definition($event_def)
-            or return $e->event;
+            or return $e->die_event;
 
         $auto_method .= '.include_inactive';
 
@@ -1642,8 +1642,10 @@ sub fire_object_event {
 
         # find the most appropriate event def depending on context org
         $def = $self->find_event_def_by_hook($hook, $context_org, $e) 
-            or return $e->event;
+            or return $e->die_event;
     }
+
+    my $final_resp;
 
     if($def->group_field) {
         # we have a list of objects
@@ -1675,12 +1677,13 @@ sub fire_object_event {
             );
         }
 
-        return undef unless $resp and $resp->{events} and @{$resp->{events}};
+        if($resp and $resp->{events} and @{$resp->{events}}) {
 
-        return $e->retrieve_action_trigger_event([
-            $resp->{events}->[0]->id,
-            {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
-        ]);
+            $final_resp = $e->retrieve_action_trigger_event([
+                $resp->{events}->[0]->id,
+                {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
+            ]);
+        }
 
     } else {
 
@@ -1714,13 +1717,17 @@ sub fire_object_event {
                 $event_id
             );
         }
-        return undef unless $resp and $resp->{event};
-
-        return $e->retrieve_action_trigger_event([
-            $resp->{event}->id,
-            {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
-        ]);
+        
+        if($resp and $resp->{event}) {
+            $final_resp = $e->retrieve_action_trigger_event([
+                $resp->{event}->id,
+                {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
+            ]);
+        }
     }
+
+    $e->rollback;
+    return $final_resp;
 }
 
 
