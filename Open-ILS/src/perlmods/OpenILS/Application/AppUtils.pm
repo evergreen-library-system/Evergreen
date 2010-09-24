@@ -1176,6 +1176,35 @@ sub is_true {
 }
 
 
+sub patientreq {
+    my ($self, $client, $service, $method, @params) = @_;
+    my ($response, $err);
+
+    my $session = create OpenSRF::AppSession($service);
+    my $request = $session->request($method, @params);
+
+    my $spurt = 10;
+    my $give_up = time + 1000;
+
+    try {
+        while (time < $give_up) {
+            $response = $request->recv("timeout" => $spurt);
+            last if $request->complete;
+
+            $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
+        }
+    } catch Error with {
+        $err = shift;
+    };
+
+    if ($err) {
+        warn "received error : service=$service : method=$method : params=".Dumper(\@params) . "\n $err";
+        throw $err ("Call to $service for method $method \n failed with exception: $err : " );
+    }
+
+    return $response->content;
+}
+
 # This logic now lives in storage
 sub __patron_money_owed {
 	my( $self, $patronid ) = @_;
@@ -1596,7 +1625,7 @@ sub find_event_def_by_hook {
 # most appropriate event.  create the event, fire it, then return the resulting
 # event with fleshed template_output and error_output
 sub fire_object_event {
-    my($self, $event_def, $hook, $object, $context_org, $granularity, $user_data) = @_;
+    my($self, $event_def, $hook, $object, $context_org, $granularity, $user_data, $client) = @_;
 
     my $e = OpenILS::Utils::CStoreEditor->new(xact => 1);
     my $def;
@@ -1632,10 +1661,19 @@ sub fire_object_event {
 
         $logger->info("EVENTS = " . OpenSRF::Utils::JSON->perl2JSON(\@event_ids));
 
-        my $resp = $self->simplereq(
-            'open-ils.trigger', 
-            'open-ils.trigger.event_group.fire',
-            \@event_ids);
+        my $resp;
+        if (not defined $client) {
+            $resp = $self->simplereq(
+                'open-ils.trigger',
+                'open-ils.trigger.event_group.fire',
+                \@event_ids);
+        } else {
+            $resp = $self->patientreq(
+                $client,
+                "open-ils.trigger", "open-ils.trigger.event_group.fire",
+                \@event_ids
+            );
+        }
 
         return undef unless $resp and $resp->{events} and @{$resp->{events}};
 
@@ -1648,14 +1686,34 @@ sub fire_object_event {
 
         $object = $$object[0] if ref $object eq 'ARRAY';
 
-        my $event_id = $self->simplereq(
-            'open-ils.trigger', $auto_method, $def->id, $object, $context_org, $user_data);
+        my $event_id;
+        my $resp;
 
-        my $resp = $self->simplereq(
-            'open-ils.trigger', 
-            'open-ils.trigger.event.fire', 
-            $event_id);
+        if (not defined $client) {
+            $event_id = $self->simplereq(
+                'open-ils.trigger',
+                $auto_method, $def->id, $object, $context_org, $user_data
+            );
 
+            $resp = $self->simplereq(
+                'open-ils.trigger',
+                'open-ils.trigger.event.fire',
+                $event_id
+            );
+        } else {
+            $event_id = $self->patientreq(
+                $client,
+                'open-ils.trigger',
+                $auto_method, $def->id, $object, $context_org, $user_data
+            );
+
+            $resp = $self->patientreq(
+                $client,
+                'open-ils.trigger',
+                'open-ils.trigger.event.fire',
+                $event_id
+            );
+        }
         return undef unless $resp and $resp->{event};
 
         return $e->retrieve_action_trigger_event([
