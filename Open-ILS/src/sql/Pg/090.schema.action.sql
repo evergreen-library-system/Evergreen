@@ -778,7 +778,7 @@ BEGIN
             SELECT * INTO circ_chain_tail FROM action.circ_chain(circ_chain_head.id) ORDER BY xact_start DESC LIMIT 1;
             EXIT WHEN circ_chain_tail.xact_finish IS NULL;
 
-            -- Now get the user setings, if any, to block purging if the user wants to keep more circs
+            -- Now get the user settings, if any, to block purging if the user wants to keep more circs
             usr_keep_age.value := NULL;
             SELECT * INTO usr_keep_age FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_age';
 
@@ -794,7 +794,7 @@ BEGIN
             ELSIF usr_keep_start.value IS NOT NULL THEN
                 keep_age := AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ);
             ELSE
-                keep_age := COALESCE( org_keep_age::INTERVAL, '2000 years'::INTEVAL );
+                keep_age := COALESCE( org_keep_age::INTERVAL, '2000 years'::INTERVAL );
             END IF;
 
             EXIT WHEN AGE(NOW(), circ_chain_tail.xact_finish) < keep_age;
