@@ -1291,12 +1291,13 @@ sub get_bresv_by_returnable_resource_barcode {
     }) or return $e->die_event;
 
     if (@$rows < 1) {
+        $e->rollback;
         return $rows;
     } else {
         # More than one result might be possible, but we don't want to return
         # more than one at this time.
         my $id = $rows->[0]->{"id"};
-        return $e->retrieve_booking_reservation([
+        my $resp =$e->retrieve_booking_reservation([
             $id, {
                 "flesh" => 2,
                 "flesh_fields" => {
@@ -1305,6 +1306,8 @@ sub get_bresv_by_returnable_resource_barcode {
                 }
             }
         ]) or $e->die_event;
+        $e->rollback;
+        return $resp;
     }
 }
 
