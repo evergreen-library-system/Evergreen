@@ -186,6 +186,8 @@ OpenILS.data.prototype = {
                 break;
                 case 'actsc':
                     found = obj.network.simple_request('FM_ACTSC_RETRIEVE_VIA_PCRUD',[ ses(), { 'id' : { '=' : value } }]);
+                    if (typeof found.ilsevent != 'undefined') throw(found);
+                    found = found[0];
                 break;
                 default: return undefined; break;
             }
