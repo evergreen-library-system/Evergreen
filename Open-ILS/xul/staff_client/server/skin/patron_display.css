@@ -50,9 +50,6 @@ row#row_billing_zip { padding-bottom: 10px; }
 .PATRON_EXCEEDS_FINES label.max_bills_indicator { display: inline; color: purple; }
 .PATRON_EXCEEDS_FINES label#under_bills { color: red; }
 
-.PATRON_AGE_LT_18 .dob { color: purple; }
-.PATRON_AGE_LT_18 label.juvenile_indicator { display: inline; color: purple; }
-
 .PATRON_HAS_INVALID_DOB .dob { color: purple; }
 .PATRON_HAS_INVALID_DOB label.invalid_dob_indicator { display: inline; color: purple }
 
