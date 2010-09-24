@@ -1688,17 +1688,19 @@ sub choose_nearest_copy {
 		next unless (@capturable);
 
 		my $rand = int(rand(scalar(@capturable)));
-		while (my ($c) = splice(@capturable,$rand)) {
-			return $c if ( OpenILS::Utils::PermitHold::permit_copy_hold(
+		my %seen = ();
+		while (my ($c) = splice(@capturable, $rand, 1)) {
+			return $c if !exists($seen{$c->id}) && ( OpenILS::Utils::PermitHold::permit_copy_hold(
 				{ title => $c->call_number->record->to_fieldmapper,
 				  title_descriptor => $c->call_number->record->record_descriptor->next->to_fieldmapper,
 				  patron => $hold->usr->to_fieldmapper,
 				  copy => $c->to_fieldmapper,
 				  requestor => $hold->requestor->to_fieldmapper,
 				  request_lib => $hold->request_lib->to_fieldmapper,
-				   pickup_lib => $hold->pickup_lib->id,
+				  pickup_lib => $hold->pickup_lib->id,
 				}
 			));
+			$seen{$c->id}++;
 
 			last unless(@capturable);
 			$rand = int(rand(scalar(@capturable)));
