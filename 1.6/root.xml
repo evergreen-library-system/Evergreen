@@ -61,6 +61,7 @@
 		<xi:include href="stafftasks/staffclient.xml"/>
 		<xi:include href="stafftasks/circulation.xml"/>
 		<xi:include href="stafftasks/cataloging.xml"/>
+		<xi:include href="stafftasks/booking.xml"/>
  	</part>
 	<part xml:id="admin">
 		<info>

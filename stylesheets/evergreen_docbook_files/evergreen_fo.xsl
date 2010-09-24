@@ -37,7 +37,7 @@
 <xsl:param name="hyphenate">false</xsl:param> <!-- hyphenation pattern not installed yet, turn off to avoid output error -->
 <xsl:param name="body.font.family">serif</xsl:param>
 <xsl:param name="dingbat.font.family">serif</xsl:param>
-<xsl:param name="symbol.font.family">Symbol,ZapfDingbats</xsl:param>
+<!--<xsl:param name="symbol.font.family">Symbol,ZapfDingbats</xsl:param>-->
 <xsl:param name="footer.column.widths">8 1 1</xsl:param> <!-- set relative width of footer columns, leaving plenty of room for chapter titles -->
   
   <!-- set some footer properties -->
@@ -106,7 +106,7 @@
   </xsl:attribute-set>
 
 <xsl:attribute-set name="monospace.verbatim.properties">
-<xsl:attribute name="font-family">Lucida Sans Typewriter</xsl:attribute>
+<!--<xsl:attribute name="font-family">Lucida Sans Typewriter</xsl:attribute>-->
   <xsl:attribute name="font-size">8pt</xsl:attribute>
   <xsl:attribute name="keep-together.within-column">always</xsl:attribute>
 </xsl:attribute-set>

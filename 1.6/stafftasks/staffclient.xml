@@ -522,7 +522,7 @@
                   <guimenu>Admin (-)</guimenu>
                   <guimenuitem>Toggle Button Bar</guimenuitem>
                </menuchoice>. The buttons can be activated by default for a particular library (see
-                  <link linkend="lsa-library-settings-button">Library Settings</link> for
+                  <link linkend="lsa-library-settings">Library Settings</link> for
                details).</para>
 
             <para>
