@@ -1045,19 +1045,17 @@ sub retrieve_hold_queue_status_impl {
             { "class" => "ahr", "field" => "request_time" }
         ],
         distinct => 1,
-        where    => {
-            {
-                '+ahcm' => {
-                    target_copy => {
-                        in => {
-                            select => {ahcm => ['target_copy']},
-                            from   => 'ahcm',
-                            where  => {hold => $hold->id}
-                        } 
+        where => {
+            '+ahcm' => {
+                target_copy => {
+                    in => {
+                        select => {ahcm => ['target_copy']},
+                        from   => 'ahcm',
+                        where  => {hold => $hold->id}
                     } 
-                }
+                } 
             }
-        } 
+        }
     });
 
     if (!@$q_holds) { # none? maybe we don't have a map ... 
