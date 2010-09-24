@@ -6,7 +6,7 @@
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
         <div>Import Item Attribute Definitions</div>
         <div>
-            <button dojoType='dijit.form.Button' onClick='itemAttrGrid.showCreateDialog()'>New Definition</button>
+            <button dojoType='dijit.form.Button' onClick='itemAttrGrid.showCreatePane()'>New Definition</button>
             <button dojoType='dijit.form.Button' onClick='itemAttrGrid.deleteSelected()'>Delete Selected</button>
         </div>
     </div>
