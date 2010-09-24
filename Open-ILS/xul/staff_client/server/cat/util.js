@@ -770,6 +770,7 @@ cat.util.mark_item_as_missing_pieces = function(copy_ids) {
 
         if (r == 0) {
             var count = 0;
+            JSAN.use('cat.util');
             for (var i = 0; i < copies.length; i++) {
                 try {
                     var robj = network.simple_request('MARK_ITEM_MISSING_PIECES',[ses(),copies[i].id()]);
@@ -781,12 +782,7 @@ cat.util.mark_item_as_missing_pieces = function(copy_ids) {
                                 print.simple( robj.payload.slip.template_output().data() );
                             }
                             // Item Note
-                            win.open(
-                                urls.XUL_COPY_NOTES,
-                                $("catStrings").getString("staff.cat.copy_editor.copy_notes"),
-                                'chrome,resizable,modal',
-                                { 'copy_id' : copies[i].id() }
-                            );
+                            cat.util.spawn_copy_editor( { 'copy_ids' : [ copies[i].id() ], 'edit' : 1 } );
                             // Patron Message
                             var my_xulG = win.open(
                                 urls.XUL_NEW_STANDING_PENALTY,
