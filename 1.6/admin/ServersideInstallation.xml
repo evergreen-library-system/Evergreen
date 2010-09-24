@@ -229,7 +229,8 @@
 					$ /etc/init.d/ejabberd stop
 					</screen>
 				</figure>
-				<para>If <systemitem class="service">ejabberd</systemitem> reports that it is already stopped, it may have run into a problem starting back at the installation stage. One possible fix is to kill any remaining <systemitem class="daemon">beam</systemitem> and <systemitem class="daemon">epmd</systemitem> processes, then edit the configuration file <filename>/etc/ejabberd/ejabberd.cfg</filename> to hardcode a domain:</para>
+				<para>If <systemitem class="service">ejabberd</systemitem> eeports that it is already stopped, it may have run into a problem starting back at the installation stage. One possible fix is to kill any remaining <systemitem class="daemon">beam</systemitem> and <systemitem class="daemon">epmd</systemitem> processes, then edit the configuration file <filename>/etc/ejabberd/ejabberd.cfg</filename> to hardcode a domain:</para>
+		<xi:include href="stafftasks/cataloging.xml"/>
 				<figure>
 					<title>Commands to recover from <systemitem class="service">ejabberd</systemitem> errors</title>
 					<screen>
@@ -1350,7 +1351,7 @@
 				</section>
 				<section>
 					<title>Set Up Support For Reports</title>
-					<para>Evergreen reports are extremely powerful, but some configuration is required. See <xref linkend="report-introduction"/> for details.</para>
+					<para>Evergreen reports are extremely powerful, but some configuration is required. See <xref linkend="report_intro"/> for details.</para>
 					<itemizedlist>
 						<listitem>
 							<para>Starting the Reporter Daemon</para>
