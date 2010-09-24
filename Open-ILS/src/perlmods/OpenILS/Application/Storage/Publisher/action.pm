@@ -1271,11 +1271,12 @@ sub new_hold_copy_targeter {
 			$$prox_list[0] =
 			[
 				grep {
-					''.$_->circ_lib eq $pu_lib
+					''.$_->circ_lib eq $pu_lib &&
+                    ( $_->status == 0 || $_->status == 7 )
 				} @good_copies
 			];
 
-			$all_copies = [grep {''.$_->circ_lib ne $pu_lib } @good_copies];
+			$all_copies = [grep { $_->status == 0 || $_->status == 7 } grep {''.$_->circ_lib ne $pu_lib } @good_copies];
 			# $all_copies is now a list of copies not at the pickup library
 
 			my $best = choose_nearest_copy($hold, $prox_list);
@@ -1639,162 +1640,6 @@ __PACKAGE__->register_method(
 my $locations;
 my $statuses;
 my %cache = (titles => {}, cns => {});
-sub hold_copy_targeter {
-	my $self = shift;
-	my $client = shift;
-	my $check_expire = shift;
-	my $one_hold = shift;
-
-	$self->{user_filter} = OpenSRF::AppSession->create('open-ils.circ');
-	$self->{user_filter}->connect;
-	$self->{client} = $client;
-
-	my $time = time;
-	$check_expire ||= '12h';
-	$check_expire = interval_to_seconds( $check_expire );
-
-	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time() - $check_expire);
-	$year += 1900;
-	$mon += 1;
-	my $expire_threshold = sprintf(
-		'%s-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d-00',
-		$year, $mon, $mday, $hour, $min, $sec
-	);
-
-
-	$statuses ||= [ config::copy_status->search(holdable => 't') ];
-
-	$locations ||= [ asset::copy_location->search(holdable => 't') ];
-
-	my $holds;
-
-	%cache = (titles => {}, cns => {});
-
-	try {
-		if ($one_hold) {
-			$holds = [ action::hold_request->search(id => $one_hold) ];
-		} else {
-			$holds = [ action::hold_request->search_where(
-							{ capture_time => undef,
-							  prev_check_time => { '<=' => $expire_threshold },
-							},
-							{ order_by => 'request_time,prev_check_time' } ) ];
-			push @$holds, action::hold_request->search_where(
-							{ capture_time => undef,
-				  			  prev_check_time => undef,
-							},
-							{ order_by => 'request_time' } );
-		}
-	} catch Error with {
-		my $e = shift;
-		die "Could not retrieve uncaptured hold requests:\n\n$e\n";
-	};
-
-	for my $hold (@$holds) {
-		try {
-			#action::hold_request->db_Main->begin_work;
-			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
-				$client->respond("Cleaning up after previous transaction\n");
-				$self->method_lookup('open-ils.storage.transaction.rollback')->run;
-			}
-			$self->method_lookup('open-ils.storage.transaction.begin')->run( $client );
-			$client->respond("Processing hold ".$hold->id."...\n");
-
-			my $copies;
-
-			$copies = $self->metarecord_hold_capture($hold) if ($hold->hold_type eq 'M');
-			$self->{client}->status( new OpenSRF::DomainObject::oilsContinueStatus );
-
-			$copies = $self->title_hold_capture($hold) if ($hold->hold_type eq 'T');
-			$self->{client}->status( new OpenSRF::DomainObject::oilsContinueStatus );
-			
-			$copies = $self->volume_hold_capture($hold) if ($hold->hold_type eq 'V');
-			$self->{client}->status( new OpenSRF::DomainObject::oilsContinueStatus );
-			
-			$copies = $self->copy_hold_capture($hold) if ($hold->hold_type eq 'C');
-
-			unless (ref $copies || !@$copies) {
-				$client->respond("\tNo copies available for targeting at all!\n");
-			}
-
-			my @good_copies;
-			for my $c (@$copies) {
-				next if ( grep {$c->id == $hold->current_copy} @good_copies);
-				push @good_copies, $c if ($c);
-			}
-
-			$client->respond("\t".scalar(@good_copies)." (non-current) copies available for targeting...\n");
-
-			my $old_best = $hold->current_copy;
-			$hold->update({ current_copy => undef });
-	
-			if (!scalar(@good_copies)) {
-				$client->respond("\tNo (non-current) copies available to fill the hold.\n");
-				if ( $old_best && grep {$_->id == $hold->current_copy} @$copies ) {
-					$client->respond("\tPushing current_copy back onto the targeting list\n");
-					push @good_copies, asset::copy->retrieve( $old_best );
-				} else {
-					$client->respond("\tcurrent_copy is no longer available for targeting... NEXT HOLD, PLEASE!\n");
-					next;
-				}
-			}
-
-			my $prox_list;
-			$$prox_list[0] = [grep {$_->circ_lib == $hold->pickup_lib } @good_copies];
-			$copies = [grep {$_->circ_lib != $hold->pickup_lib } @good_copies];
-
-			my $best = choose_nearest_copy($hold, $prox_list);
-
-			if (!$best) {
-				$prox_list = create_prox_list( $self, $hold->pickup_lib, $copies );
-				$best = choose_nearest_copy($hold, $prox_list);
-			}
-
-			if ($old_best) {
-				# hold wasn't fulfilled, record the fact
-			
-				$client->respond("\tHold was not (but should have been) fulfilled by ".$old_best->id.".\n");
-				action::unfulfilled_hold_list->create(
-						{ hold => ''.$hold->id,
-						  current_copy => ''.$old_best->id,
-						  circ_lib => ''.$old_best->circ_lib,
-						});
-			}
-
-			if ($best) {
-				$hold->update( { current_copy => ''.$best->id } );
-				$client->respond("\tTargeting copy ".$best->id." for hold fulfillment.\n");
-			}
-
-			$hold->update( { prev_check_time => 'now' } );
-			$client->respond("\tUpdating hold ".$hold->id." with new 'current_copy' for hold fulfillment.\n");
-
-			$client->respond("\tProcessing of hold ".$hold->id." complete.\n");
-			$self->method_lookup('open-ils.storage.transaction.commit')->run;
-
-			#action::hold_request->dbi_commit;
-
-		} otherwise {
-			my $e = shift;
-			$log->error("Processing of hold failed:  $e");
-			$client->respond("\tProcessing of hold failed!.\n\t\t$e\n");
-			$self->method_lookup('open-ils.storage.transaction.rollback')->run;
-			#action::hold_request->dbi_rollback;
-		};
-	}
-
-	$self->{user_filter}->disconnect;
-	$self->{user_filter}->finish;
-	delete $$self{user_filter};
-	return undef;
-}
-#__PACKAGE__->register_method(
-#	api_name        => 'open-ils.storage.action.hold_request.copy_targeter',
-#	api_level       => 0,
-#	stream		=> 1,
-#	method          => 'hold_copy_targeter',
-#);
-
 
 sub copy_hold_capture {
 	my $self = shift;
@@ -1864,7 +1709,8 @@ sub choose_nearest_copy {
 	for my $p ( 0 .. int( scalar(@$prox_list) - 1) ) {
 		next unless (ref $$prox_list[$p]);
 
-		my @capturable = grep { $_->status == 0 || $_->status == 7 } @{ $$prox_list[$p] };
+        # We do this in the main body now
+		#my @capturable = grep { $_->status == 0 || $_->status == 7 } @{ $$prox_list[$p] };
 		next unless (@capturable);
 
 		my $rand = int(rand(scalar(@capturable)));
