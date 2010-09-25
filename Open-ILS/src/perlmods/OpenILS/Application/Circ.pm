@@ -1507,6 +1507,7 @@ sub fire_circ_events {
     }
 
     return undef unless @$targets;
+    $e->rollback; # paranoia
     return $U->fire_object_event($event_def, $hook, $targets, $org_id, $granularity, $user_data);
 }
 
