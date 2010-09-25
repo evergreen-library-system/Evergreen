@@ -1506,8 +1506,8 @@ sub fire_circ_events {
         $targets = $e->batch_retrieve_action_circulation($target_ids);
     }
 
-    return undef unless @$targets;
     $e->rollback; # paranoia
+    return undef unless @$targets;
     return $U->fire_object_event($event_def, $hook, $targets, $org_id, $granularity, $user_data);
 }
 
