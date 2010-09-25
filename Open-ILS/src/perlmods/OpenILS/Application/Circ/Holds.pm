@@ -119,10 +119,10 @@ __PACKAGE__->register_method(
 
 sub create_hold {
 	my( $self, $conn, $auth, $hold ) = @_;
-	my $e = new_editor(authtoken=>$auth, xact=>1);
-	return $e->event unless $e->checkauth;
-
     return -1 unless $hold;
+	my $e = new_editor(authtoken=>$auth, xact=>1);
+	return $e->die_event unless $e->checkauth;
+
 	my $override = 1 if $self->api_name =~ /override/;
 
     my @events;
@@ -133,8 +133,8 @@ sub create_hold {
     if( $requestor->id ne $hold->usr ) {
         # Make sure the requestor is allowed to place holds for 
         # the recipient if they are not the same people
-        $recipient = $e->retrieve_actor_user($hold->usr)  or return $e->event;
-        $e->allowed('REQUEST_HOLDS', $recipient->home_ou) or return $e->event;
+        $recipient = $e->retrieve_actor_user($hold->usr)  or return $e->die_event;
+        $e->allowed('REQUEST_HOLDS', $recipient->home_ou) or return $e->die_event;
     }
 
     # If the related org setting tells us to, block if patron privs have expired
@@ -172,27 +172,30 @@ sub create_hold {
     push( @events, OpenILS::Event->new('HOLD_ITEM_CHECKED_OUT')) if $checked_out;
 
     if ( $t eq OILS_HOLD_TYPE_METARECORD ) {
-        return $e->event unless $e->allowed('MR_HOLDS',     $porg);
+        return $e->die_event unless $e->allowed('MR_HOLDS',     $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_TITLE ) {
-        return $e->event unless $e->allowed('TITLE_HOLDS',  $porg);
+        return $e->die_event unless $e->allowed('TITLE_HOLDS',  $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_VOLUME ) {
-        return $e->event unless $e->allowed('VOLUME_HOLDS', $porg);
+        return $e->die_event unless $e->allowed('VOLUME_HOLDS', $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_ISSUANCE ) {
-        return $e->event unless $e->allowed('ISSUANCE_HOLDS', $porg);
+        return $e->die_event unless $e->allowed('ISSUANCE_HOLDS', $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_COPY ) {
-        return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
+        return $e->die_event unless $e->allowed('COPY_HOLDS',   $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_FORCE ) {
-        return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
+        return $e->die_event unless $e->allowed('COPY_HOLDS',   $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_RECALL ) {
-        return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
+        return $e->die_event unless $e->allowed('COPY_HOLDS',   $porg);
     }
 
     if( @events ) {
-        $override or return \@events;
+        if (!$override) {
+            $e->rollback;
+            return \@events;
+        }
         for my $evt (@events) {
             next unless $evt;
             my $name = $evt->{textcode};
-            return $e->event unless $e->allowed("$name.override", $porg);
+            return $e->die_event unless $e->allowed("$name.override", $porg);
         }
     }
 
@@ -208,7 +211,7 @@ sub create_hold {
     $hold->requestor($e->requestor->id); 
     $hold->request_lib($e->requestor->ws_ou);
     $hold->selection_ou($hold->pickup_lib) unless $hold->selection_ou;
-    $hold = $e->create_action_hold_request($hold) or return $e->event;
+    $hold = $e->create_action_hold_request($hold) or return $e->die_event;
 
 	$e->commit;
 
@@ -528,14 +531,20 @@ __PACKAGE__->register_method(
 sub uncancel_hold {
 	my($self, $client, $auth, $hold_id) = @_;
 	my $e = new_editor(authtoken=>$auth, xact=>1);
-	return $e->event unless $e->checkauth;
+	return $e->die_event unless $e->checkauth;
 
 	my $hold = $e->retrieve_action_hold_request($hold_id)
 		or return $e->die_event;
     return $e->die_event unless $e->allowed('CANCEL_HOLDS', $hold->request_lib);
 
-    return 0 if $hold->fulfillment_time;
-    return 1 unless $hold->cancel_time;
+    if ($hold->fulfillment_time) {
+        $e->rollback;
+        return 0;
+    }
+    unless ($hold->cancel_time) {
+        $e->rollback;
+        return 1;
+    }
 
     # if configured to reset the request time, also reset the expire time
     if($U->ou_ancestor_setting_value(
@@ -583,22 +592,25 @@ sub cancel_hold {
 	my($self, $client, $auth, $holdid, $cause, $note) = @_;
 
 	my $e = new_editor(authtoken=>$auth, xact=>1);
-	return $e->event unless $e->checkauth;
+	return $e->die_event unless $e->checkauth;
 
 	my $hold = $e->retrieve_action_hold_request($holdid)
-		or return $e->event;
+		or return $e->die_event;
 
 	if( $e->requestor->id ne $hold->usr ) {
-		return $e->event unless $e->allowed('CANCEL_HOLDS');
+		return $e->die_event unless $e->allowed('CANCEL_HOLDS');
 	}
 
-	return 1 if $hold->cancel_time;
+	if ($hold->cancel_time) {
+        $e->rollback;
+        return 1;
+    }
 
 	# If the hold is captured, reset the copy status
 	if( $hold->capture_time and $hold->current_copy ) {
 
 		my $copy = $e->retrieve_asset_copy($hold->current_copy)
-			or return $e->event;
+			or return $e->die_event;
 
 		if( $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
          $logger->info("canceling hold $holdid whose item is on the holds shelf");
@@ -630,7 +642,7 @@ sub cancel_hold {
     $hold->cancel_cause($cause);
     $hold->cancel_note($note);
 	$e->update_action_hold_request($hold)
-		or return $e->event;
+		or return $e->die_event;
 
 	delete_hold_copy_maps($self, $e, $hold->id);
 
@@ -698,7 +710,10 @@ sub update_hold {
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
     my $resp = update_hold_impl($self, $e, $hold, $values);
-    return $resp if $U->event_code($resp);
+    if ($U->event_code($resp)) {
+        $e->rollback;
+        return $resp;
+    }
     $e->commit;     # FIXME: update_hold_impl already does $e->commit  ??
     return $resp;
 }
@@ -1274,7 +1289,10 @@ sub print_hold_pull_list {
         'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.status_filtered.atomic',
         $org_id, 10000);
 
-    return undef unless @$hold_ids;
+    unless (@$hold_ids) {
+        $e->rollback;
+        return undef;
+    }
     $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
 
     # Holds will /NOT/ be in order after this ...
@@ -1285,6 +1303,8 @@ sub print_hold_pull_list {
     my $hold_map = +{map { $_->id => $_ } @$holds};
     my $sorted_holds = [];
     push @$sorted_holds, $hold_map->{$_} foreach @$hold_ids;
+
+    $e->rollback;
 
     return $U->fire_object_event(
         undef, "ahr.format.pull_list", $sorted_holds,
@@ -1349,7 +1369,7 @@ sub create_hold_notify {
    return $e->die_event unless 
       $e->allowed('CREATE_HOLD_NOTIFICATION', $patron->home_ou);
 
-	$note->notify_staff($e->requestor->id);
+   $note->notify_staff($e->requestor->id);
    $e->create_action_hold_notification($note) or return $e->die_event;
    $e->commit;
    return $note->id;
@@ -1447,14 +1467,14 @@ sub _reset_hold {
 	if( $hold->capture_time and $hold->current_copy ) {
 
 		my $copy = $e->retrieve_asset_copy($hold->current_copy)
-			or return $e->event;
+			or return $e->die_event;
 
 		if( $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
 			$logger->info("setting copy to status 'reshelving' on hold retarget");
 			$copy->status(OILS_COPY_STATUS_RESHELVING);
 			$copy->editor($e->requestor->id);
 			$copy->edit_date('now');
-			$e->update_asset_copy($copy) or return $e->event;
+			$e->update_asset_copy($copy) or return $e->die_event;
 
 		} elsif( $copy->status == OILS_COPY_STATUS_IN_TRANSIT ) {
 
@@ -1469,7 +1489,10 @@ sub _reset_hold {
 					$logger->info("Aborting transit [$transid] on hold [$hid] reset...");
 					my $evt = OpenILS::Application::Circ::Transit::__abort_transit($e, $trans, $copy, 1);
 					$logger->info("Transit abort completed with result $evt");
-					return $evt unless "$evt" eq 1;
+					unless ("$evt" eq 1) {
+                        $e->rollback;
+					    return $evt;
+                    }
 				}
 			}
 		}
@@ -1480,7 +1503,7 @@ sub _reset_hold {
 	$hold->clear_shelf_time;
 	$hold->clear_shelf_expire_time;
 
-	$e->update_action_hold_request($hold) or return $e->event;
+	$e->update_action_hold_request($hold) or return $e->die_event;
 	$e->commit;
 
 	$U->storagereq(
@@ -2875,7 +2898,7 @@ sub change_hold_title {
     my( $self, $client, $auth, $new_bib_id, $bib_ids ) = @_;
 
     my $e = new_editor(authtoken=>$auth, xact=>1);
-    return $e->event unless $e->checkauth;
+    return $e->die_event unless $e->checkauth;
 
     my $holds = $e->search_action_hold_request(
         [
