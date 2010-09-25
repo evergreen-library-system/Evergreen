@@ -1627,14 +1627,14 @@ sub find_event_def_by_hook {
 sub fire_object_event {
     my($self, $event_def, $hook, $object, $context_org, $granularity, $user_data, $client) = @_;
 
-    my $e = OpenILS::Utils::CStoreEditor->new(xact => 1);
+    my $e = OpenILS::Utils::CStoreEditor->new;
     my $def;
 
     my $auto_method = "open-ils.trigger.event.autocreate.by_definition";
 
     if($event_def) {
         $def = $e->retrieve_action_trigger_event_definition($event_def)
-            or return $e->die_event;
+            or return $e->event;
 
         $auto_method .= '.include_inactive';
 
@@ -1642,7 +1642,7 @@ sub fire_object_event {
 
         # find the most appropriate event def depending on context org
         $def = $self->find_event_def_by_hook($hook, $context_org, $e) 
-            or return $e->die_event;
+            or return $e->event;
     }
 
     my $final_resp;
@@ -1679,10 +1679,12 @@ sub fire_object_event {
 
         if($resp and $resp->{events} and @{$resp->{events}}) {
 
+            $e->xact_begin;
             $final_resp = $e->retrieve_action_trigger_event([
                 $resp->{events}->[0]->id,
                 {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
             ]);
+            $e->rollback;
         }
 
     } else {
@@ -1719,14 +1721,15 @@ sub fire_object_event {
         }
         
         if($resp and $resp->{event}) {
+            $e->xact_begin;
             $final_resp = $e->retrieve_action_trigger_event([
                 $resp->{event}->id,
                 {flesh => 1, flesh_fields => {atev => ['template_output', 'error_output']}}
             ]);
+            $e->rollback;
         }
     }
 
-    $e->rollback;
     return $final_resp;
 }
 
