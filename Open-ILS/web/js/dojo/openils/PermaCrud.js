@@ -26,11 +26,13 @@ if(!dojo._hasResource["openils.PermaCrud"]) {
         session : null,
         authtoken : null,
         connnected : false,
+        authoritative : false,
 
         constructor : function ( kwargs ) {
             kwargs = kwargs || {};
 
             this.authtoken = kwargs.authtoken;
+            this.authoritative = kwargs.authoritative;
 
             this.session =
                 kwargs.session ||
