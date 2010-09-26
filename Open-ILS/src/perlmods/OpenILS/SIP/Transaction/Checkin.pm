@@ -71,6 +71,13 @@ sub do_checkin {
 
     my $args = {barcode => $self->{item}->id};
 
+    if($return_date) {
+        # SIP date format is YYYYMMDD.  Translate to ISO8601
+        $return_date =~ s/(\d{4})(\d{2})(\d{2}).*/$1-$2-$3/;
+        syslog('LOG_INFO', "Checking in with backdate $return_date");
+        $args->{backdate} = $return_date;
+    }
+
     if($current_loc) { # SIP client specified a physical location
 
         my $org_id = (defined $org_sn_cache{$current_loc}) ? 
