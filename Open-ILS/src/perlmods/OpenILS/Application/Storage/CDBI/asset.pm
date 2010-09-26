@@ -10,7 +10,7 @@ use base qw/asset/;
 
 __PACKAGE__->table( 'asset_copy_location' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/name owning_lib holdable hold_verify opac_visible circulate/ );
+__PACKAGE__->columns( Essential => qw/name owning_lib holdable hold_verify opac_visible circulate label_prefix label_suffix/ );
 
 #-------------------------------------------------------------------------------
 package asset::copy_location_order;
@@ -35,7 +35,7 @@ use base qw/asset/;
 __PACKAGE__->table( 'asset_call_number' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/record label creator create_date editor
-				   edit_date record label owning_lib deleted/ );
+				   edit_date record label owning_lib deleted label_class label_sortkey/ );
 
 #-------------------------------------------------------------------------------
 package asset::call_number_note;
@@ -56,7 +56,7 @@ __PACKAGE__->columns( Essential => qw/call_number barcode creator create_date ed
 				   fine_level circulate deposit price ref opac_visible
 				   circ_as_type circ_modifier deposit_amount location mint_condition
 				   holdable dummy_title dummy_author deleted alert_message
-				   age_protect floating/ );
+				   age_protect floating cost status_changed_time/ );
 
 #-------------------------------------------------------------------------------
 package asset::stat_cat;
