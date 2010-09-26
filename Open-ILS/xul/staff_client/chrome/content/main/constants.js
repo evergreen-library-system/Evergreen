@@ -351,6 +351,8 @@ var urls = {
     'browser' : '/opac/' + LOCALE + '/skin/default/xml/advanced.xml?nps=1',
     'fieldmapper' : '/opac/common/js/fmall.js',
     'xsl_marc2html' : '/opac/extras/xsl/oilsMARC21slim2HTML.xsl',
+    'ac_jacket_small' : '/opac/extras/ac/jacket/small/',
+    'ac_jacket_large' : '/opac/extras/ac/jacket/large/',
 
     'AUDIO_good' : '/xul/server/skin/media/audio/bonus.wav',
     'AUDIO_bad' : '/xul/server/skin/media/audio/question.wav',

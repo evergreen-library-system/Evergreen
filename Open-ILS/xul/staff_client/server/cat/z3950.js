@@ -61,7 +61,19 @@ cat.z3950.prototype = {
                             document.getElementById('sel_clip').setAttribute('disabled', sel.length < 1);
                             var list = util.functional.map_list(
                                 sel,
-                                function(o) { return o.getAttribute('retrieve_id'); }
+                                function(o) {
+                                    if ( $('jacket_image') ) {
+                                        // A side-effect in this map function, mu hahaha
+                                        if (o.getAttribute('isbn')) {
+                                            $('jacket_image').setAttribute('src',urls.ac_jacket_large+o.getAttribute('isbn'));
+                                            $('jacket_image').setAttribute('tooltiptext',urls.ac_jacket_large+o.getAttribute('isbn'));
+                                        } else {
+                                            $('jacket_image').setAttribute('src','');
+                                            $('jacket_image').setAttribute('tooltiptext','');
+                                        }
+                                    }
+                                    return o.getAttribute('retrieve_id');
+                                }
                             );
                             obj.error.sdump('D_TRACE','cat/z3950: selection list = ' + js2JSON(list) );
                             obj.controller.view.marc_import.disabled = false;
@@ -656,6 +668,7 @@ cat.z3950.prototype = {
                                 }
                             }
                         );
+                        n.my_node.setAttribute('isbn', function(a){return a;}(obj.result_set[ obj.number_of_result_sets ].records[j].mvr).isbn());
                         if (!f) { n.my_node.parentNode.focus(); f = n; } 
                     }
                 } else {
