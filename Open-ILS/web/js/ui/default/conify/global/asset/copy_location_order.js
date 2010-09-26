@@ -34,12 +34,14 @@ function init() {
 function filterGrid(org) {
 
     // fetch the locations and order entries
-    var pcrud = new openils.PermaCrud({authtoken : user.authtoken});
-    orders = pcrud.search('acplo', {org : org}, {order_by : {acplo : 'position'}});
-    locations = pcrud.search('acpl', 
-        {owning_lib : fieldmapper.aou.orgNodeTrail(fieldmapper.aou.findOrgUnit(org), true)}, 
-        {order_by : {acpl : 'name'}}
-    ); 
+    if(!orders) {
+        var pcrud = new openils.PermaCrud({authtoken : user.authtoken});
+        orders = pcrud.search('acplo', {org : org}, {order_by : {acplo : 'position'}});
+        locations = pcrud.search('acpl', 
+            {owning_lib : fieldmapper.aou.orgNodeTrail(fieldmapper.aou.findOrgUnit(org), true)}, 
+            {order_by : {acpl : 'name'}}
+        ); 
+    }
 
     // init the DnD environment
     source.selectAll();
@@ -80,30 +82,10 @@ function filterGrid(org) {
 }
 
 function applyChanges() {
-    progressDialog.show(true);
-    if(orders.length) 
-        deleteOrders(createOrders);
-    else
-        createOrders();
-}
-
-function deleteOrders(onload) {
-    // delete the existing order entries in preparation for new ones
-    var pcrud = new openils.PermaCrud({authtoken : user.authtoken});
-    pcrud.eliminate(
-        orders,
-        {
-            async : true,
-            oncomplete : function() {
-                if(onload) onload();
-            }
-        }
-    );
-}
-
-function createOrders() {
+    progressDialog.show();
 
     var newOrders = [];
+    var contextOrg = contextOrgSelector.attr('value');
 
     // pull the locations out of the DnD environment and create order entries for them
     dojo.forEach(
@@ -113,21 +95,27 @@ function createOrders() {
             var o = new fieldmapper.acplo();
             o.position(newOrders.length + 1);
             o.location(item.type[0]); // location.id() is stored in DnD item type
-            o.org(contextOrgSelector.attr('value'));
+            o.org(contextOrg);
             newOrders.push(o);
         }
     );
 
-    // send the order entries off to the server
-    var pcrud = new openils.PermaCrud({authtoken : user.authtoken});
-    pcrud.create(
-        newOrders,
+    fieldmapper.standardRequest(
+        ['open-ils.circ', 'open-ils.circ.copy_location_order.update'],
         {
             async : true,
-            oncomplete : function(r) {
-                progressDialog.hide();
-                filterGrid(contextOrgSelector.attr('value'));
-            }
+            params : [openils.User.authtoken, newOrders],
+            onresponse : function(r) {
+                if(r = openils.Util.readResponse(r)) {
+                    if(r.orders) {
+                        orders = r.order;
+                        progressDialog.hide();
+                        filterGrid(contextOrg);
+                        return;
+                    } 
+                    progressDialog.update(r);
+                }
+            },
         }
     );
 }
