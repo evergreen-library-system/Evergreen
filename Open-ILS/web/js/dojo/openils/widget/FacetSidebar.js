@@ -123,13 +123,14 @@ if(!dojo._hasResource["openils.widget.FacetSidebar"]) {
                         var possible_facets = [];
                         if (x.facetOrder) {
                             dojo.forEach(x.facetOrder, function(fname) {
-                                possible_facets.push(dojo.filter(
+                                var maybe_facet = dojo.filter(
                                     openils.widget.Searcher._cache.arr.cmf,
                                     function (y) {
-                                        if (y.field_class == x.name && y.name == fname) return 1;
+                                        if (y.field_class == x.name && y.name == fname && facetData[y.id]) return 1;
                                         return 0;
                                     }
-                                )[0]);
+                                )[0];
+                                if (maybe_facet) possible_facets.push(maybe_facet);
                             });
                         } else {
                             possible_facets = dojo.filter(
