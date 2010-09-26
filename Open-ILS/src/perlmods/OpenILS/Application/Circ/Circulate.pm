@@ -2323,7 +2323,6 @@ sub do_checkin {
             $self->update_copy;
         }
     }
-    $logger->info("LFW XXX: way down here"); # LFW XXX
 
     if($self->claims_never_checked_out and 
             $U->ou_ancestor_setting_value($self->circ->circ_lib, 'circ.claim_never_checked_out.mark_missing')) {
