@@ -947,6 +947,19 @@ cat.z3950.prototype = {
                     }
                 } else {
                     alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay'));
+                    try {
+                        obj.data.marked_record_mvr = null;
+                        obj.data.marked_record = null;
+                        obj.data.stash('marked_record');
+                        obj.data.stash('marked_record_mvr');
+                        obj.controller.view.marc_import_overlay.disabled = true;
+                        if ($("overlay_tcn_indicator")) {
+                            $("overlay_tcn_indicator").setAttribute('value',$("catStrings").getString('staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label'));
+                        }
+                        xulG.set_statusbar(1, $("catStrings").getString('staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label') );
+                    } catch(E) {
+                        dump('Error in z3950.js, post-overlay: ' + E + '\n');
+                    }
                     return {
                         'id' : r.id(),
                         'on_complete' : function() {
