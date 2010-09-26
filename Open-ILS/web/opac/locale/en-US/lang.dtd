@@ -2751,9 +2751,11 @@
 <!ENTITY staff.cat.z3950.menuitem.save_columns.label "Save List Configuration">
 <!ENTITY staff.cat.z3950.marc_view.label "MARC View">
 <!ENTITY staff.cat.z3950.marc_view.accesskey "V">
-<!ENTITY staff.cat.z3950.marc_import_overlay.label "MARC Editor for Overlay">
+<!ENTITY staff.cat.z3950.marc_editor.label "MARC Editor">
+<!ENTITY staff.cat.z3950.marc_editor.accesskey "E">
+<!ENTITY staff.cat.z3950.marc_import_overlay.label "Overlay">
 <!ENTITY staff.cat.z3950.marc_import_overlay.accesskey "O">
-<!ENTITY staff.cat.z3950.result_message.marc_import.label "MARC Editor for Import">
+<!ENTITY staff.cat.z3950.result_message.marc_import.label "Import">
 <!ENTITY staff.cat.z3950.result_message.marc_import.accesskey "I">
 <!ENTITY staff.pat.barcode_entry.retrieve_patron.label "Retrieve Patron">
 <!ENTITY staff.pat.barcode_entry.barcode.label "Barcode:">

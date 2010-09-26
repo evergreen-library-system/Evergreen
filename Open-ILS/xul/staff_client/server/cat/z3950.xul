@@ -183,6 +183,7 @@
                     </button>
                     <spacer flex="1"/>
                     <button id="marc_view_btn" command="marc_view" disabled="true"/>
+                    <checkbox id="marc_editor" label="&staff.cat.z3950.marc_editor.label;" accesskey="&staff.cat.z3950.marc_editor.accesskey;" oils_persist="checked" checked="true"/> 
                     <button id="marc_import_overlay" label="&staff.cat.z3950.marc_import_overlay.label;" accesskey="&staff.cat.z3950.marc_import_overlay.accesskey;" disabled="true"/>
                     <button id="marc_import" label="&staff.cat.z3950.result_message.marc_import.label;" accesskey="&staff.cat.z3950.result_message.marc_import.accesskey;" disabled="true"/>
                     <button id="toggle_form_btn" command="toggle_form"/>
