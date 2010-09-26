@@ -99,7 +99,7 @@
 </box>
 
 <vbox id="cmvb1" flex="1">
-    <groupbox id="cmgb1" flex="1">
+    <groupbox id="cmgb1" flex="1" oils_persist="height">
         <caption label="&staff.patron_navbar.items;" />
         <vbox flex="0">
             <hbox id="items_top_ui" />
@@ -110,8 +110,8 @@
             <hbox id="items_bottom_ui" />
         </vbox>
     </groupbox>
-    <splitter><grippy/></splitter>
-    <groupbox flex="1">
+    <splitter id="splitter" oils_persist="state hidden" oils_persist_peers="cmgb1 after_splitter"><grippy/></splitter>
+    <groupbox flex="1" id="after_splitter" oils_persist="height">
         <caption label="&staff.patron_navbar.items.problem_items.caption;" />
         <vbox flex="0">
             <hbox id="items_top_ui2" />

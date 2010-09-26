@@ -58,7 +58,7 @@
     <vbox flex="1" class="my_overflow">
         <groupbox orient="vertical" flex="1">
             <caption id="caption" label="&staff.patron.bill_interface.caption.label;"/>
-            <hbox>
+            <hbox id="before_splitter1" oils_persist="height">
                 <grid flex="1">
                     <columns flex="1">
                         <column/>
@@ -116,8 +116,8 @@
                     </hbox>
                 </groupbox>
             </hbox>
-            <splitter />
-            <vbox flex="1">
+            <splitter id="splitter1" oils_persist="state hidden" oils_persist_peers="before_splitter1 after_splitter1" />
+            <vbox flex="1" id="after_splitter1" oils_persist="height">
                 <hbox>
                     <button id="bill_patron_btn" label="&staff.patron.bills_overlay.bill_patron.label;" accesskey="&staff.patron.bills_overlay.bill_patron.accesskey;" />
                     <button id="bill_history_btn" label="&staff.patron.bills_overlay.history.label;" accesskey="&staff.patron.bills_overlay.history.accesskey;" />
@@ -162,8 +162,8 @@
                     </button>
                 </hbox>
             </vbox>
-            <splitter />
-            <hbox>
+            <splitter id="splitter2" oils_persist="state hidden" oils_persist_peers="after_splitter1 after_splitter2" />
+            <hbox id="after_splitter2" oils_persist="height">
                 <vbox>
                     <hbox>
                         <label value='&staff.patron.bill_interface.voided_this_session.label;' class="emphasis1"/><label id="currently_voided" value="0.00"/>

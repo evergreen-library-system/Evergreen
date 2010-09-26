@@ -137,11 +137,11 @@
     </script>
 
     <vbox flex="1" class="my_overflow">
-        <vbox id="top_vbox" flex="1" class="my_overflow"/>
-        <splitter><grippy/></splitter>
-        <vbox id="mid_vbox" flex="1" class="my_overflow"/>
-        <splitter><grippy/></splitter>
-        <groupbox flex="1" id="circs" class="my_overflow">
+        <vbox id="top_vbox" flex="1" class="my_overflow" oils_persist="height"/>
+        <splitter id="splitter1" oils_persist="state hidden" oils_persist_peers="top_vbox mid_vbox"><grippy/></splitter>
+        <vbox id="mid_vbox" flex="1" class="my_overflow" oils_persist="height"/>
+        <splitter id="splitter2" oils_persist="state hidden" oils_persist_peers="mid_vbox circs"><grippy/></splitter>
+        <groupbox flex="1" id="circs" class="my_overflow" oils_persist="height">
             <caption label="&staff.circ.circ_summary.caption;"/>
         </groupbox>
         <hbox>

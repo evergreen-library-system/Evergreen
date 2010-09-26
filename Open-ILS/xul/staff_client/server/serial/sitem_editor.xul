@@ -66,17 +66,17 @@
 
 	<groupbox flex="1" class="my_overflow">
 		<hbox flex="1" style="overflow: auto">
-			<vbox flex="1">
+			<vbox flex="1" id="before_splitter1" oils_persist="width">
 				<label value="Item" style="font-weight: bold; font-size: large"/>
 				<vbox id="sitem_editor_left_pane" flex="1"/>
 			</vbox>
-			<splitter><grippy /></splitter>
-			<vbox flex="1">
+			<splitter id="splitter1" oils_persist="state hidden" oils_persist_peers="before_splitter1 after_splitter1"><grippy /></splitter>
+			<vbox flex="1" id="after_splitter1" oils_persist="width">
 				<label value=" " style="font-weight: bold; font-size: large"/>
 				<vbox id="sitem_editor_middle_pane" flex="1"/>
 			</vbox>
-			<splitter><grippy /></splitter>
-			<vbox flex="1">
+			<splitter id="splitter2" oils_persist="state hidden" oils_persist_peers="after_slitter1 after_splitter2"><grippy /></splitter>
+			<vbox flex="1" id="after_splitter2" oils_persist="width">
 				<button style="font-weight: bold; font-size: normal" label="Item Dates" accesskey="1" oncommand="document.getElementById('sitem_editor_right_pane').firstChild.firstChild.focus();"/>
 				<vbox id="sitem_editor_right_pane" flex="1"/>
 			</vbox>

@@ -35,7 +35,7 @@
         <hbox id="left_deck_vbox" flex="1" oils_persist="height"> 
             <deck id="patron_left_deck" oils_persist="height"/>
         </hbox>
-        <splitter id="deck_splitter" collapse="before" oils_persist="state hidden"><grippy id="splitter_grippy"/></splitter>
+        <splitter id="deck_splitter" collapse="before" oils_persist="state hidden" oils_persist_peers="left_deck_vbox right_deck_vbox"><grippy id="splitter_grippy"/></splitter>
         <hbox id="right_deck_vbox" flex="3" oils_persist="height">
             <deck id="patron_right_deck" oils_persist="height"/>
         </hbox>
