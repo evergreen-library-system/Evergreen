@@ -131,7 +131,7 @@
                         <button id="search" label="&staff.cat.z3950.search.label;" accesskey="&staff.cat.z3950.search.accesskey;" disabled="true"/>
                     </hbox>
                 </groupbox>
-                <splitter id="x_splitter" collapse="after" oils_persist="state hidden"><grippy id="splitter_grippy1"/></splitter>
+                <splitter id="x_splitter" collapse="after" oils_persist="state hidden" oils_persist_peers="x_splitter1 x_splitter2"><grippy id="splitter_grippy1"/></splitter>
                 <groupbox id="x_splitter2" oils_persist="width" flex="1">
                     <caption label="&staff.cat.z3950.service_credentials.label;"/>
                     <grid flex="1">
@@ -159,7 +159,7 @@
                     </hbox>
                 </groupbox>
             </hbox>
-            <splitter id="z_splitter" collapse="before" oils_persist="state hidden"><grippy id="splitter_grippy2"/></splitter>
+            <splitter id="z_splitter" collapse="before" oils_persist="state hidden" oils_persist_peers="top_pane z_splitter2"><grippy id="splitter_grippy2"/></splitter>
             <groupbox id="z_splitter2" oils_persist="height" flex="1">
                 <caption label="&staff.cat.z3950.results_caption.label;"/>
                 <hbox>
@@ -188,9 +188,9 @@
                     <button id="toggle_form_btn" command="toggle_form"/>
                 </hbox>
                 <hbox flex="1">
-                    <image id="jacket_image" />
-                    <splitter id="jacket_splitter" collapse="before" oils_persist="state hidden"><grippy id="jacket_splitter_grippy"/></splitter>
-                    <deck id="deck" flex="1">
+                    <image id="jacket_image" oils_persist="width"/>
+                    <splitter id="jacket_splitter" collapse="before" oils_persist="state hidden" oils_persist_peers="jacket_image deck"><grippy id="jacket_splitter_grippy" /></splitter>
+                    <deck id="deck" flex="1" oils_persist="width">
                         <tree id="results" flex="1" enableColumnDrag="true" seltype="single"/>
                         <iframe id="marc_frame" src="/xul/server/cat/marc_view.html" flex="1"/>
                     </deck>

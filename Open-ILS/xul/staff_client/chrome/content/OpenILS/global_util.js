@@ -113,6 +113,7 @@
                             }
                             prefs.setCharPref( key, value );
                             // TODO: Need to add logic for window resizing, splitter repositioning, grippy state, etc.
+                            // NOTE: oils_persist_peers and oils_persist="width" on those peers can help with the elements adjacent to a splitter
                         }
                         if (target.hasAttribute('oils_persist_peers') && ! ev.cancelable) { // We abuse the .cancelable field on the oils_persist event to prevent looping
                             var peer_list = target.getAttribute('oils_persist_peers').split(' ');
