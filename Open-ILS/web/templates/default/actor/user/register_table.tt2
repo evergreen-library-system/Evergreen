@@ -81,7 +81,7 @@
     </tr>
 
 
-    <tr fmclass='aua' fmfield='address_type' type='addr-template' required='show'/>
+    <tr fmclass='aua' fmfield='address_type' type='addr-template' required='required'/>
     <tr fmclass='aua' fmfield='post_code' type='addr-template' required='required'/>
     <tr fmclass='aua' fmfield='street1' type='addr-template' required='required'/>
     <tr fmclass='aua' fmfield='street2' type='addr-template' required='show'/>
