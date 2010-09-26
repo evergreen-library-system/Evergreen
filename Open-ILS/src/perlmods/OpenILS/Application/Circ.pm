@@ -1456,7 +1456,6 @@ sub test_batch_circ_events {
 __PACKAGE__->register_method(
 	method	=> "fire_circ_events", 
 	api_name	=> "open-ils.circ.fire_circ_trigger_events",
-    authoritative => 1,
     signature => q/
         General event def runner for circ objects.  If no event def ID
         is provided, the hook will be used to find the best event_def
@@ -1467,7 +1466,6 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "fire_circ_events", 
 	api_name	=> "open-ils.circ.fire_hold_trigger_events",
-    authoritative => 1,
     signature => q/
         General event def runner for hold objects.  If no event def ID
         is provided, the hook will be used to find the best event_def
@@ -1478,7 +1476,6 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method	=> "fire_circ_events", 
 	api_name	=> "open-ils.circ.fire_user_trigger_events",
-    authoritative => 1,
     signature => q/
         General event def runner for user objects.  If no event def ID
         is provided, the hook will be used to find the best event_def
@@ -1490,7 +1487,7 @@ __PACKAGE__->register_method(
 sub fire_circ_events {
     my($self, $conn, $auth, $org_id, $event_def, $hook, $granularity, $target_ids, $user_data) = @_;
 
-    my $e = new_editor(authtoken => $auth);
+    my $e = new_editor(authtoken => $auth, xact => 1);
 	return $e->event unless $e->checkauth;
 
     my $targets;
@@ -1505,8 +1502,11 @@ sub fire_circ_events {
         return $e->event unless $e->allowed('VIEW_CIRCULATIONS', $org_id);
         $targets = $e->batch_retrieve_action_circulation($target_ids);
     }
+    $e->rollback; # FIXME using transaction because of pgpool/slony setups, but not
+                  # simply making this method authoritative because of weirdness
+                  # with transaction handling in A/T code that causes rollback
+                  # failure down the line if handling many targets
 
-    $e->rollback; # paranoia
     return undef unless @$targets;
     return $U->fire_object_event($event_def, $hook, $targets, $org_id, $granularity, $user_data);
 }
