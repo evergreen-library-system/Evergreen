@@ -25,7 +25,7 @@ vim:noet:sw=4:ts=4:
 <?xul-overlay href="/xul/server/serial/manage_subs.xul"?>
 
 <window id="serial_serctrl_main" 
-	onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
