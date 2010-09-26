@@ -2681,7 +2681,7 @@ sub do_hold_notify {
             return;
         } 
 
-        $logger->warn("circulator:  * hold notify failed for hold $holdid");
+        $logger->debug("circulator:  * hold notify cancelled or failed for hold $holdid");
 
     } else {
         $logger->info("circulator: Not sending hold notification since the patron has no email address");
