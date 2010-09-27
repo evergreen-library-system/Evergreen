@@ -77,7 +77,7 @@ ALTER TABLE vandelay.bib_queue ADD PRIMARY KEY (id);
 CREATE TABLE vandelay.queued_bib_record (
 	queue		INT		NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	bib_source	INT		REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
-	imported_as	INT		REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
+	imported_as	BIGINT	REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (vandelay.queued_record);
 ALTER TABLE vandelay.queued_bib_record ADD PRIMARY KEY (id);
 CREATE INDEX queued_bib_record_queue_idx ON vandelay.queued_bib_record (queue);

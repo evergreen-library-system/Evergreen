@@ -411,7 +411,7 @@ CREATE INDEX ahn_hold_idx ON action.hold_notification (hold);
 CREATE INDEX ahn_notify_staff_idx ON action.hold_notification ( notify_staff );
 
 CREATE TABLE action.hold_copy_map (
-	id		SERIAL	PRIMARY KEY,
+	id		BIGSERIAL	PRIMARY KEY,
 	hold		INT	NOT NULL REFERENCES action.hold_request (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	target_copy	BIGINT	NOT NULL, -- REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, -- XXX could be an serial.issuance
 	CONSTRAINT copy_once_per_hold UNIQUE (hold,target_copy)
