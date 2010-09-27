@@ -1709,8 +1709,7 @@ sub choose_nearest_copy {
 	for my $p ( 0 .. int( scalar(@$prox_list) - 1) ) {
 		next unless (ref $$prox_list[$p]);
 
-        # We do this in the main body now
-		#my @capturable = grep { $_->status == 0 || $_->status == 7 } @{ $$prox_list[$p] };
+		my @capturable = @{ $$prox_list[$p] };
 		next unless (@capturable);
 
 		my $rand = int(rand(scalar(@capturable)));
