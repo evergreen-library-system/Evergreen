@@ -26,15 +26,15 @@ BEGIN
                             JOIN config.marc21_physical_characteristic_subfield_map s ON (s.id = p.subfield)
                             JOIN config.marc21_physical_characteristic_value_map v ON (v.id = p.value)
                       WHERE p.ptype = 'v' AND s.subfield = 'e'    ),
-                LPAD(NULLIF(REGEXP_REPLACE(biblio.marc21_extract_fixed_field( bib_id, 'Date1'), E'\\D', '0', 'g')::INT,0)::TEXT,4,'0'),
-                LPAD(NULLIF(REGEXP_REPLACE(biblio.marc21_extract_fixed_field( bib_id, 'Date2'), E'\\D', '9', 'g')::INT,9999)::TEXT,4,'0');
+                LPAD(NULLIF(REGEXP_REPLACE(NULLIF(biblio.marc21_extract_fixed_field( bib_id, 'Date1'), ''), E'\\D', '0', 'g')::INT,0)::TEXT,4,'0'),
+                LPAD(NULLIF(REGEXP_REPLACE(NULLIF(biblio.marc21_extract_fixed_field( bib_id, 'Date2'), ''), E'\\D', '9', 'g')::INT,9999)::TEXT,4,'0');
 
     RETURN;
 END;
 $func$ LANGUAGE PLPGSQL;
 
 UPDATE  metabib.rec_descriptor
-  SET   date1=LPAD(NULLIF(REGEXP_REPLACE(date1, E'\\D', '0', 'g')::INT,0)::TEXT,4,'0')
-        date2=LPAD(NULLIF(REGEXP_REPLACE(date2, E'\\D', '9', 'g')::INT,9999)::TEXT,4,'0');
+  SET   date1=LPAD(NULLIF(REGEXP_REPLACE(NULLIF(date1, ''), E'\\D', '0', 'g')::INT,0)::TEXT,4,'0'),
+        date2=LPAD(NULLIF(REGEXP_REPLACE(NULLIF(date2, ''), E'\\D', '9', 'g')::INT,9999)::TEXT,4,'0');
 
 COMMIT;
