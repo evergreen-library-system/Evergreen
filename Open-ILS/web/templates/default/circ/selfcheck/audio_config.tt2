@@ -6,8 +6,8 @@
 <script type="text/javascript">
     SelfCheckManager.audioConfig = {
         'login-success' : '',
-        'login-failure' : '[% ctx.media_prefix %]/audio/circ/question.wav',
-        'checkout-success' : '[% ctx.media_prefix %]/audio/circ/bonus.wav',
-        'checkout-failure' : '[% ctx.media_prefix %]/audio/circ/question.wav',
+        'login-failure' : '[% ctx.media_prefix %]/audio/question.wav',
+        'checkout-success' : '[% ctx.media_prefix %]/audio/bonus.wav',
+        'checkout-failure' : '[% ctx.media_prefix %]/audio/question.wav',
     }
 </script>
