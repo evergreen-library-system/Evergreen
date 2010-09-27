@@ -66,6 +66,7 @@ if(!dojo._hasResource["openils.widget.FacetSidebar"]) {
             facetCacheKey : '',
             searchBox : '',
             classOrder : null, // Array of cmc.name values, OR array of objects with name and facetOrder properties
+            displayItemLimit : 999, // Number of distinctly described entries (classes or facets), that have values, to display from classOrder
             searchSubmit : '',
             facetLimit : 10,
             maxValuesPerFacet : 100,
@@ -116,6 +117,7 @@ if(!dojo._hasResource["openils.widget.FacetSidebar"]) {
                     );
                 }
 
+                var displayedItems = 0;
                 var me = this;
                 dojo.forEach(
                     classes,
@@ -126,7 +128,12 @@ if(!dojo._hasResource["openils.widget.FacetSidebar"]) {
                                 var maybe_facet = dojo.filter(
                                     openils.widget.Searcher._cache.arr.cmf,
                                     function (y) {
-                                        if (y.field_class == x.name && y.name == fname && facetData[y.id]) return 1;
+                                        if (y.field_class == x.name && y.name == fname && facetData[y.id]) {
+                                            if (displayedItems < me.displayItemLimit) {
+                                                displayedItems++;
+                                                return 1;
+                                            }
+                                        }
                                         return 0;
                                     }
                                 )[0];
@@ -136,7 +143,12 @@ if(!dojo._hasResource["openils.widget.FacetSidebar"]) {
                             possible_facets = dojo.filter(
                                 openils.widget.Searcher._cache.arr.cmf,
                                 function (y) {
-                                    if (y.field_class == x.name && facetData[y.id]) return 1;
+                                    if (y.field_class == x.name && facetData[y.id]) {
+                                        if (displayedItems < me.displayItemLimit) {
+                                            displayedItems++;
+                                            return 1;
+                                        }
+                                    }
                                     return 0;
                                 }
                             );
