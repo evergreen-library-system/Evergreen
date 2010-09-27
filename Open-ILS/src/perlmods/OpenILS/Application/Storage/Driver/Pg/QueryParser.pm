@@ -449,44 +449,22 @@ sub toSQL {
     $desc = 'DESC' if ($self->find_modifier('descending'));
 
     if ($sort_filter eq 'rel') { # relevance ranking flips sort dir
-         if ($desc eq  'ASC') {
+        if ($desc eq  'ASC') {
             $desc = 'DESC';
         } else {
             $desc = 'ASC';
         }
     } else {
         if ($sort_filter eq 'title') {
-            my $default = $desc eq 'DESC' ? '       ' : 'zzzzzz';
-            $rank = <<"            SQL";
-( COALESCE( FIRST ((
-                SELECT  frt.value
-                  FROM  metabib.full_rec frt
-                  WHERE frt.record = m.source
-                    AND frt.tag = 'tnf'
-                    AND frt.subfield = 'a'
-                  LIMIT 1
-        )),'$default'))::TEXT
-            SQL
+            $rank = "FIRST((SELECT frt.value FROM metabib.full_rec frt WHERE frt.record = m.source AND frt.tag = 'tnf' AND frt.subfield = 'a' LIMIT 1))";
         } elsif ($sort_filter eq 'pubdate') {
-            my $default = $desc eq 'DESC' ? '0' : '99999';
-            $rank = "COALESCE( FIRST(NULLIF(LPAD(REGEXP_REPLACE(mrd.date1, E'\\\\D+', '0', 'g'),4,'0'),'0000')), '$default' )::INT";
+            $rank = "FIRST(mrd.date1)";
         } elsif ($sort_filter eq 'create_date') {
-            $rank = "( FIRST (( SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source)) )::TIMESTAMPTZ";
+            $rank = "FIRST((SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source))";
         } elsif ($sort_filter eq 'edit_date') {
-            $rank = "( FIRST (( SELECT edit_date FROM biblio.record_entry rbr WHERE rbr.id = m.source)) )::TIMESTAMPTZ";
+            $rank = "FIRST((SELECT edit_date FROM biblio.record_entry rbr WHERE rbr.id = m.source))";
         } elsif ($sort_filter eq 'author') {
-            my $default = $desc eq 'DESC' ? '       ' : 'zzzzzz';
-            $rank = <<"            SQL"
-( COALESCE( FIRST ((
-                SELECT  LTRIM(fra.value)
-                  FROM  metabib.full_rec fra
-                  WHERE fra.record = m.source
-                    AND fra.tag LIKE '1%'
-                    AND fra.subfield = 'a'
-                  ORDER BY fra.tag::text::int
-                  LIMIT 1
-        )),'$default'))::TEXT
-            SQL
+            $rank = "FIRST((SELECT fra.value FROM metabib.full_rec fra WHERE fra.record = m.source AND fra.tag LIKE '1%' AND fra.subfield = 'a' ORDER BY fra.tag LIMIT 1))";
         } else {
             # default to rel ranking
             $rank = $rel;
@@ -532,7 +510,7 @@ SELECT  $key AS id,
         ARRAY_ACCUM(DISTINCT m.source) AS records,
         $rel AS rel,
         $rank AS rank, 
-        COALESCE( FIRST(NULLIF(LPAD(REGEXP_REPLACE(mrd.date1, E'\\\\D+', '0', 'g'),4,'0'),'0000')), '0' )::INT AS tie_break
+        FIRST(mrd.date1) AS tie_break
   FROM  metabib.metarecord_source_map m
         JOIN metabib.rec_descriptor mrd ON (m.source = mrd.record)
         $$flat_plan{from}
@@ -550,7 +528,7 @@ SELECT  $key AS id,
         $bib_level
         AND $$flat_plan{where}
   GROUP BY 1
-  ORDER BY 4 $desc, 5 DESC, 3 DESC
+  ORDER BY 4 $desc NULLS LAST, 5 DESC NULLS LAST, 3 DESC
   LIMIT $core_limit
 SQL
 
