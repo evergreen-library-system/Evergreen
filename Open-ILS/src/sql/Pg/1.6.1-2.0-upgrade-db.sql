@@ -14,7 +14,7 @@ BEGIN;
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0417');
+INSERT INTO config.upgrade_log (version) VALUES ('0418');
 
 -- Begin by upgrading permission.perm_list.  This is fairly complicated.
 
@@ -6066,10 +6066,10 @@ ALTER TABLE auditor.asset_copy_history
 CREATE OR REPLACE FUNCTION asset.acp_status_changed()
 RETURNS TRIGGER AS $$
 BEGIN
-	IF NEW.status <> OLD.status THEN
-		NEW.status_changed_time := now();
-	END IF;
-	RETURN NEW;
+    IF NEW.status <> OLD.status THEN
+        NEW.status_changed_time := now();
+    END IF;
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -7258,7 +7258,7 @@ BEGIN
         END;
         $func$ LANGUAGE 'plpgsql';
     $$;
-    RETURN TRUE;
+	RETURN TRUE;
 END;
 $creator$ LANGUAGE 'plpgsql';
 
@@ -7298,7 +7298,7 @@ BEGIN
     PERFORM auditor.create_auditor_func(sch, tbl);
     PERFORM auditor.create_auditor_update_trigger(sch, tbl);
     PERFORM auditor.create_auditor_lifecycle(sch, tbl);
-	RETURN TRUE;
+    RETURN TRUE;
 END;
 $creator$ LANGUAGE 'plpgsql';
 
@@ -9119,6 +9119,133 @@ BEGIN
 
 END;
 $$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION actor.usr_purge_data(INT, INT) IS $$
+/**
+ * Finds rows dependent on a given row in actor.usr and either deletes them
+ * or reassigns them to a different user.
+ */
+$$;
+
+CREATE OR REPLACE FUNCTION actor.usr_delete(
+	src_usr  IN INTEGER,
+	dest_usr IN INTEGER
+) RETURNS VOID AS $$
+DECLARE
+	old_profile actor.usr.profile%type;
+	old_home_ou actor.usr.home_ou%type;
+	new_profile actor.usr.profile%type;
+	new_home_ou actor.usr.home_ou%type;
+	new_name    text;
+	new_dob     actor.usr.dob%type;
+BEGIN
+	SELECT
+		id || '-PURGED-' || now(),
+		profile,
+		home_ou,
+		dob
+	INTO
+		new_name,
+		old_profile,
+		old_home_ou,
+		new_dob
+	FROM
+		actor.usr
+	WHERE
+		id = src_usr;
+	--
+	-- Quit if no such user
+	--
+	IF old_profile IS NULL THEN
+		RETURN;
+	END IF;
+	--
+	perform actor.usr_purge_data( src_usr, dest_usr );
+	--
+	-- Find the root grp_tree and the root org_unit.  This would be simpler if we 
+	-- could assume that there is only one root.  Theoretically, someday, maybe,
+	-- there could be multiple roots, so we take extra trouble to get the right ones.
+	--
+	SELECT
+		id
+	INTO
+		new_profile
+	FROM
+		permission.grp_ancestors( old_profile )
+	WHERE
+		parent is null;
+	--
+	SELECT
+		id
+	INTO
+		new_home_ou
+	FROM
+		actor.org_unit_ancestors( old_home_ou )
+	WHERE
+		parent_ou is null;
+	--
+	-- Truncate date of birth
+	--
+	IF new_dob IS NOT NULL THEN
+		new_dob := date_trunc( 'year', new_dob );
+	END IF;
+	--
+	UPDATE
+		actor.usr
+		SET
+			card = NULL,
+			profile = new_profile,
+			usrname = new_name,
+			email = NULL,
+			passwd = random()::text,
+			standing = DEFAULT,
+			ident_type = 
+			(
+				SELECT MIN( id )
+				FROM config.identification_type
+			),
+			ident_value = NULL,
+			ident_type2 = NULL,
+			ident_value2 = NULL,
+			net_access_level = DEFAULT,
+			photo_url = NULL,
+			prefix = NULL,
+			first_given_name = new_name,
+			second_given_name = NULL,
+			family_name = new_name,
+			suffix = NULL,
+			alias = NULL,
+			day_phone = NULL,
+			evening_phone = NULL,
+			other_phone = NULL,
+			mailing_address = NULL,
+			billing_address = NULL,
+			home_ou = new_home_ou,
+			dob = new_dob,
+			active = FALSE,
+			master_account = DEFAULT, 
+			super_user = DEFAULT,
+			barred = FALSE,
+			deleted = TRUE,
+			juvenile = DEFAULT,
+			usrgroup = 0,
+			claims_returned_count = DEFAULT,
+			credit_forward_balance = DEFAULT,
+			last_xact_id = DEFAULT,
+			alert_message = NULL,
+			create_date = now(),
+			expire_date = now()
+	WHERE
+		id = src_usr;
+END;
+$$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION actor.usr_delete(INT, INT) IS $$
+/**
+ * Logically deletes a user.  Removes personally identifiable information,
+ * and purges associated data in other tables.
+ */
+$$;
 
 -- INSERT INTO config.copy_status (id,name) VALUES (15,oils_i18n_gettext(15, 'On reservation shelf', 'ccs', 'name'));
 
@@ -13084,13 +13211,7 @@ FROM
                 fund
         ) AS c USING ( fund );
 
-CREATE OR REPLACE FUNCTION actor.usr_merge(
-	src_usr INT,
-	dest_usr INT,
-	del_addrs BOOLEAN,
-	del_cards BOOLEAN,
-	deactivate_cards BOOLEAN
-) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION actor.usr_merge( src_usr INT, dest_usr INT, del_addrs BOOLEAN, del_cards BOOLEAN, deactivate_cards BOOLEAN ) RETURNS VOID AS $$
 DECLARE
 	suffix TEXT;
 	bucket_row RECORD;
@@ -13268,7 +13389,7 @@ BEGIN
 
     -- acq.*
     UPDATE acq.fund_allocation SET allocator = dest_usr WHERE allocator = src_usr;
-    UPDATE acq.fund_transfer SET transfer_user = dest_usr WHERE transfer_user = src_usr;
+	UPDATE acq.fund_transfer SET transfer_user = dest_usr WHERE transfer_user = src_usr;
 
 	-- transfer picklists the same way we transfer buckets (see above)
 	FOR picklist_row in
@@ -13293,8 +13414,8 @@ BEGIN
     UPDATE acq.purchase_order SET owner = dest_usr WHERE owner = src_usr;
     UPDATE acq.po_note SET creator = dest_usr WHERE creator = src_usr;
     UPDATE acq.po_note SET editor = dest_usr WHERE editor = src_usr;
-	UPDATE acq.provider_note SET creator = dest_usr WHERE creator = src_usr;
-	UPDATE acq.provider_note SET editor = dest_usr WHERE editor = src_usr;
+    UPDATE acq.provider_note SET creator = dest_usr WHERE creator = src_usr;
+    UPDATE acq.provider_note SET editor = dest_usr WHERE editor = src_usr;
     UPDATE acq.lineitem_note SET creator = dest_usr WHERE creator = src_usr;
     UPDATE acq.lineitem_note SET editor = dest_usr WHERE editor = src_usr;
     UPDATE acq.lineitem_usr_attr_definition SET usr = dest_usr WHERE usr = src_usr;
@@ -15427,23 +15548,23 @@ BEGIN
             SELECT * INTO circ_chain_tail FROM action.circ_chain(circ_chain_head.id) ORDER BY xact_start DESC LIMIT 1;
             EXIT WHEN circ_chain_tail.xact_finish IS NULL;
 
-            -- Now get the user setings, if any, to block purging if the user wants to keep more circs
+            -- Now get the user settings, if any, to block purging if the user wants to keep more circs
             usr_keep_age.value := NULL;
             SELECT * INTO usr_keep_age FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_age';
 
             usr_keep_start.value := NULL;
-            SELECT * INTO usr_keep_start FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_start_date';
+            SELECT * INTO usr_keep_start FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_start';
 
             IF usr_keep_age.value IS NOT NULL AND usr_keep_start.value IS NOT NULL THEN
-                IF oils_json_to_string(usr_keep_age.value)::INTERVAL > AGE(NOW(), oils_json_to_string(usr_keep_start.value)::TIMESTAMPTZ) THEN
-                    keep_age := AGE(NOW(), oils_json_to_string(usr_keep_start.value)::TIMESTAMPTZ);
+                IF oils_json_to_text(usr_keep_age.value)::INTERVAL > AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ) THEN
+                    keep_age := AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ);
                 ELSE
-                    keep_age := oils_json_to_string(usr_keep_age.value)::INTERVAL;
+                    keep_age := oils_json_to_text(usr_keep_age.value)::INTERVAL;
                 END IF;
             ELSIF usr_keep_start.value IS NOT NULL THEN
-                keep_age := AGE(NOW(), oils_json_to_string(usr_keep_start.value)::TIMESTAMPTZ);
+                keep_age := AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ);
             ELSE
-                keep_age := COALESCE( org_keep_age::INTERVAL, '2000 years'::INTEVAL );
+                keep_age := COALESCE( org_keep_age::INTERVAL, '2000 years'::INTERVAL );
             END IF;
 
             EXIT WHEN AGE(NOW(), circ_chain_tail.xact_finish) < keep_age;
@@ -16283,6 +16404,64 @@ $func$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION authority.propagate_changes (aid BIGINT) RETURNS SETOF BIGINT AS $func$
     SELECT authority.propagate_changes( authority, bib ) FROM authority.bib_linking WHERE authority = $1;
 $func$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION authority.flatten_marc ( TEXT ) RETURNS SETOF authority.full_rec AS $func$
+
+use MARC::Record;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
+
+my $xml = shift;
+my $r = MARC::Record->new_from_xml( $xml );
+
+return_next( { tag => 'LDR', value => $r->leader } );
+
+for my $f ( $r->fields ) {
+    if ($f->is_control_field) {
+        return_next({ tag => $f->tag, value => $f->data });
+    } else {
+        for my $s ($f->subfields) {
+            return_next({
+                tag      => $f->tag,
+                ind1     => $f->indicator(1),
+                ind2     => $f->indicator(2),
+                subfield => $s->[0],
+                value    => $s->[1]
+            });
+
+        }
+    }
+}
+
+return undef;
+
+$func$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION authority.flatten_marc ( rid BIGINT ) RETURNS SETOF authority.full_rec AS $func$
+DECLARE
+    auth    authority.record_entry%ROWTYPE;
+    output    authority.full_rec%ROWTYPE;
+    field    RECORD;
+BEGIN
+    SELECT INTO auth * FROM authority.record_entry WHERE id = rid;
+
+    FOR field IN SELECT * FROM authority.flatten_marc( auth.marc ) LOOP
+        output.record := rid;
+        output.ind1 := field.ind1;
+        output.ind2 := field.ind2;
+        output.tag := field.tag;
+        output.subfield := field.subfield;
+        IF field.subfield IS NOT NULL THEN
+            output.value := naco_normalize(field.value, field.subfield);
+        ELSE
+            output.value := field.value;
+        END IF;
+
+        CONTINUE WHEN output.value IS NULL;
+
+        RETURN NEXT output;
+    END LOOP;
+END;
+$func$ LANGUAGE PLPGSQL;
 
 -- authority.rec_descriptor appears to be unused currently
 CREATE OR REPLACE FUNCTION authority.reingest_authority_rec_descriptor( auth_id BIGINT ) RETURNS VOID AS $func$
@@ -18279,6 +18458,132 @@ ALTER TABLE action.hold_notification
 CREATE TRIGGER asset_label_sortkey_trigger
     BEFORE UPDATE OR INSERT ON asset.call_number
     FOR EACH ROW EXECUTE PROCEDURE asset.label_normalizer();
+
+CREATE OR REPLACE FUNCTION container.clear_all_expired_circ_history_items( )
+RETURNS VOID AS $$
+--
+-- Delete expired circulation bucket items for all users that have
+-- a setting for patron.max_reading_list_interval.
+--
+DECLARE
+    today        TIMESTAMP WITH TIME ZONE;
+    threshold    TIMESTAMP WITH TIME ZONE;
+	usr_setting  RECORD;
+BEGIN
+	SELECT date_trunc( 'day', now() ) INTO today;
+	--
+	FOR usr_setting in
+		SELECT
+			usr,
+			value
+		FROM
+			actor.usr_setting
+		WHERE
+			name = 'patron.max_reading_list_interval'
+	LOOP
+		--
+		-- Make sure the setting is a valid interval
+		--
+		BEGIN
+			threshold := today - CAST( translate( usr_setting.value, '"', '' ) AS INTERVAL );
+		EXCEPTION
+			WHEN OTHERS THEN
+				RAISE NOTICE 'Invalid setting patron.max_reading_list_interval for user %: ''%''',
+					usr_setting.usr, usr_setting.value;
+				CONTINUE;
+		END;
+		--
+		--RAISE NOTICE 'User % threshold %', usr_setting.usr, threshold;
+		--
+    	DELETE FROM container.copy_bucket_item
+    	WHERE
+        	bucket IN
+        	(
+        	    SELECT
+        	        id
+        	    FROM
+        	        container.copy_bucket
+        	    WHERE
+        	        owner = usr_setting.usr
+        	        AND btype = 'circ_history'
+        	)
+        	AND create_time < threshold;
+	END LOOP;
+	--
+END;
+$$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION container.clear_all_expired_circ_history_items( ) IS $$
+/*
+ * Delete expired circulation bucket items for all users that have
+ * a setting for patron.max_reading_list_interval.
+*/
+$$;
+
+CREATE OR REPLACE FUNCTION container.clear_expired_circ_history_items( 
+	 ac_usr IN INTEGER
+) RETURNS VOID AS $$
+--
+-- Delete old circulation bucket items for a specified user.
+-- "Old" means older than the interval specified by a
+-- user-level setting, if it is so specified.
+--
+DECLARE
+    threshold TIMESTAMP WITH TIME ZONE;
+BEGIN
+	-- Sanity check
+	IF ac_usr IS NULL THEN
+		RETURN;
+	END IF;
+	-- Determine the threshold date that defines "old".  Subtract the
+	-- interval from the system date, then truncate to midnight.
+	SELECT
+		date_trunc( 
+			'day',
+			now() - CAST( translate( value, '"', '' ) AS INTERVAL )
+		)
+	INTO
+		threshold
+	FROM
+		actor.usr_setting
+	WHERE
+		usr = ac_usr
+		AND name = 'patron.max_reading_list_interval';
+	--
+	IF threshold is null THEN
+		-- No interval defined; don't delete anything
+		-- RAISE NOTICE 'No interval defined for user %', ac_usr;
+		return;
+	END IF;
+	--
+	-- RAISE NOTICE 'Date threshold: %', threshold;
+	--
+	-- Threshold found; do the delete
+	delete from container.copy_bucket_item
+	where
+		bucket in
+		(
+			select
+				id
+			from
+				container.copy_bucket
+			where
+				owner = ac_usr
+				and btype = 'circ_history'
+		)
+		and create_time < threshold;
+	--
+	RETURN;
+END;
+$$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION container.clear_expired_circ_history_items( INTEGER ) IS $$
+/*
+ * Delete old circulation bucket items for a specified user.
+ * "Old" means older than the interval specified by a
+ * user-level setting, if it is so specified.
+*/
+$$;
 
 COMMIT;
 
