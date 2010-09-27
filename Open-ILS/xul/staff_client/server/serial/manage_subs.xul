@@ -65,7 +65,7 @@ vim:noet:sw=4:ts=4:
                 </popupset>
 
                 <hbox flex="1">
-                    <vbox flex="1">
+                    <vbox flex="1" id="before_splitter" oils_persist="width">
                         <hbox id="serial_sub_lib_menu"/>
                         <hbox>
                             <checkbox id="show_ssubs" label="Show Subs." />
@@ -92,8 +92,8 @@ vim:noet:sw=4:ts=4:
                         </hbox>
                         <tree id="subs_tree" flex="15" enableColumnDrag="true" context="serial_manage_subs_popup"/>
                     </vbox>
-                    <splitter state="open" collapse="before" resizebefore="closest" resizeafter="farthest"/>
-                    <deck id="serial_manage_subs_editor_deck" flex="20">
+                    <splitter state="open" collapse="before" resizebefore="closest" resizeafter="farthest" id="splitter" oils_persist="state hidden" oils_persist_peers="before_splitter serial_manage_subs_editor_deck"/>
+                    <deck id="serial_manage_subs_editor_deck" flex="20" oils_persist="width">
                         <description value="Please select an object to edit"/>
                         <vbox id="serial_ssub_editor_panel" />
                         <vbox id="serial_sdist_editor_panel" />

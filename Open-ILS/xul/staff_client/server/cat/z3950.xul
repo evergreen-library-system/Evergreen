@@ -131,7 +131,7 @@
                         <button id="search" label="&staff.cat.z3950.search.label;" accesskey="&staff.cat.z3950.search.accesskey;" disabled="true"/>
                     </hbox>
                 </groupbox>
-                <splitter id="x_splitter" collapse="after" oils_persist="state hidden"><grippy id="splitter_grippy1"/></splitter>
+                <splitter id="x_splitter" collapse="after" oils_persist="state hidden" oils_persist_peers="x_splitter1 x_splitter2"><grippy id="splitter_grippy1"/></splitter>
                 <groupbox id="x_splitter2" oils_persist="width" flex="1">
                     <caption label="&staff.cat.z3950.service_credentials.label;"/>
                     <grid flex="1">
@@ -159,7 +159,7 @@
                     </hbox>
                 </groupbox>
             </hbox>
-            <splitter id="z_splitter" collapse="before" oils_persist="state hidden"><grippy id="splitter_grippy2"/></splitter>
+            <splitter id="z_splitter" collapse="before" oils_persist="state hidden" oils_persist_peers="top_pane z_splitter2"><grippy id="splitter_grippy2"/></splitter>
             <groupbox id="z_splitter2" oils_persist="height" flex="1">
                 <caption label="&staff.cat.z3950.results_caption.label;"/>
                 <hbox>

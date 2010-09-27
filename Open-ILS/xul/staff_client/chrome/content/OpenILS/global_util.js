@@ -94,6 +94,9 @@
                             if (ev.explicitOriginalTarget != node) return;
                         } else {
                             target = ev.target;
+                            if (target == window) {
+                                target = window.document.documentElement;
+                            }
                         }
                         var filename = location.pathname.split('/')[ location.pathname.split('/').length - 1 ];
                         var base_key = 'oils_persist_' + String(location.hostname + '_' + filename + '_' + target.getAttribute('id')).replace('/','_','g') + '_' + base_key_suffix;
@@ -108,11 +111,21 @@
                             } else if ( attribute_list[j] == 'value' && ['textbox'].indexOf( target.nodeName ) > -1 ) {
                                 value = target.value;
                                 dump('\t' + value + ' <== .' + attribute_list[j] + '\n');
+                            } else if ( attribute_list[j] == 'sizemode' && ['window'].indexOf( target.nodeName ) > -1 ) {
+                                value = window.windowState;
+                                dump('\t' + value + ' <== window.windowState, @' + attribute_list[j] + '\n');
+                            } else if ( attribute_list[j] == 'height' && ['window'].indexOf( target.nodeName ) > -1 ) {
+                                value = window.outerHeight;
+                                dump('\t' + value + ' <== window.outerHeight, @' + attribute_list[j] + '\n');
+                            } else if ( attribute_list[j] == 'width' && ['window'].indexOf( target.nodeName ) > -1 ) {
+                                value = window.outerWidth;
+                                dump('\t' + value + ' <== window.outerWidth, @' + attribute_list[j] + '\n');
                             } else {
                                 dump('\t' + value + ' <== @' + attribute_list[j] + '\n');
                             }
                             prefs.setCharPref( key, value );
-                            // TODO: Need to add logic for window resizing, splitter repositioning, grippy state, etc.
+                            // TODO: Need to add logic for splitter repositioning, grippy state, etc.
+                            // NOTE: oils_persist_peers and oils_persist="width" on those peers can help with the elements adjacent to a splitter
                         }
                         if (target.hasAttribute('oils_persist_peers') && ! ev.cancelable) { // We abuse the .cancelable field on the oils_persist event to prevent looping
                             var peer_list = target.getAttribute('oils_persist_peers').split(' ');
@@ -152,6 +165,22 @@
                         } else if ( attribute_list[j] == 'value' && ['textbox'].indexOf( nodes[i].nodeName ) > -1 ) {
                             nodes[i].value = value;
                             dump('\t' + value + ' ==> .' + attribute_list[j] + '\n');
+                        } else if ( attribute_list[j] == 'sizemode' && ['window'].indexOf( nodes[i].nodeName ) > -1 ) {
+                            switch(value) {
+                                case window.STATE_MAXIMIZED:
+                                    window.maximize();
+                                    break;
+                                case window.STATE_MINIMIZED:
+                                    window.minimize();
+                                    break;
+                            };
+                            dump('\t' + value + ' ==> window.windowState, @' + attribute_list[j] + '\n');
+                        } else if ( attribute_list[j] == 'height' && ['window'].indexOf( nodes[i].nodeName ) > -1 ) {
+                            window.outerHeight = value;
+                            dump('\t' + value + ' ==> window.outerHeight, @' + attribute_list[j] + '\n');
+                        } else if ( attribute_list[j] == 'width' && ['window'].indexOf( nodes[i].nodeName ) > -1 ) {
+                            window.outerWidth = value;
+                            dump('\t' + value + ' ==> window.outerWidth, @' + attribute_list[j] + '\n');
                         } else {
                             nodes[i].setAttribute( attribute_list[j], value);
                             dump('\t' + value + ' ==> @' + attribute_list[j] + '\n');
@@ -191,29 +220,33 @@
                         false
                     );
                 } else {
+                    var node = nodes[i];
                     var event_types = [];
-                    if (nodes[i].hasAttribute('oils_persist_events')) {
-                        var event_type_list = nodes[i].getAttribute('oils_persist_events').split(' ');
+                    if (node.hasAttribute('oils_persist_events')) {
+                        var event_type_list = node.getAttribute('oils_persist_events').split(' ');
                         for (var j = 0; j < event_type_list.length; j++) {
                             event_types.push( event_type_list[j] );
                         }
                     } else {
-                        if (nodes[i].nodeName == 'textbox') { 
+                        if (node.nodeName == 'textbox') { 
                             event_types.push('change'); 
+                        } else if (node.nodeName == 'window') {
+                            event_types.push('resize'); 
+                            node = window; // xul window is an element of window.document
                         } else {
                             event_types.push('command'); 
                         }
                     }
                     for (var j = 0; j < event_types.length; j++) {
-                        nodes[i].addEventListener(
+                        node.addEventListener(
                             event_types[j],
-                            gen_event_handler(event_types[j],nodes[i]),
+                            gen_event_handler(event_types[j],node),
                             false
                         );
                     }
-                    nodes[i].addEventListener(
+                    node.addEventListener(
                         'oils_persist',
-                        gen_oils_persist_handler( base_key, nodes[i] ),
+                        gen_oils_persist_handler( base_key, node ),
                         false
                     );
                 }

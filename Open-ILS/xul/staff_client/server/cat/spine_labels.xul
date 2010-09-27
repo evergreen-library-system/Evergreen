@@ -35,7 +35,7 @@
 
     <vbox id="spine_labels_main" flex="1" class="my_overflow">
         <hbox flex="1" class="my_overflow">
-        <vbox>
+        <vbox id="before_splitter" oils_persist="width">
             <hbox>
                 <button label="&staff.cat.spine_labels.re-generate.label;"
                     accesskey="&staff.cat.spine_labels.re-generate.accesskey;" oncommand="generate()"/>
@@ -166,8 +166,8 @@
             </rows></grid>
             <button label="&staff.cat.spine_labels.available_macros.label;" oncommand="show_macros()"/>
         </vbox>
-        <splitter><grippy/></splitter>
-        <vbox id="panel" flex="1" class="my_overflow"/>
+        <splitter id="splitter" oils_persist="state hidden" oils_persist_peers="before_splitter panel"><grippy/></splitter>
+        <vbox id="panel" flex="1" class="my_overflow" oils_persist="width"/>
         </hbox>
     </vbox>
 

@@ -19,8 +19,8 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="circ_circ_brief_win" 
-    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
-    width="750" height="550"
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    width="750" height="550" oils_persist="height width sizemode"
     xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -137,11 +137,11 @@
     </script>
 
     <vbox flex="1" class="my_overflow">
-        <vbox id="top_vbox" flex="1" class="my_overflow"/>
-        <splitter><grippy/></splitter>
-        <vbox id="mid_vbox" flex="1" class="my_overflow"/>
-        <splitter><grippy/></splitter>
-        <groupbox flex="1" id="circs" class="my_overflow">
+        <vbox id="top_vbox" flex="1" class="my_overflow" oils_persist="height"/>
+        <splitter id="splitter1" oils_persist="state hidden" oils_persist_peers="top_vbox mid_vbox"><grippy/></splitter>
+        <vbox id="mid_vbox" flex="1" class="my_overflow" oils_persist="height"/>
+        <splitter id="splitter2" oils_persist="state hidden" oils_persist_peers="mid_vbox circs"><grippy/></splitter>
+        <groupbox flex="1" id="circs" class="my_overflow" oils_persist="height">
             <caption label="&staff.circ.circ_summary.caption;"/>
         </groupbox>
         <hbox>

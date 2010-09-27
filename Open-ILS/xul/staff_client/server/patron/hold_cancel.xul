@@ -18,7 +18,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="hold_cancel_win" 
-    onload="try { hold_cancel_init(); font_helper(); } catch(E) { alert(E); }"
+    onload="try { hold_cancel_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
     title="&staff.hold_list.cancel_hold_dialog.title;">
 
