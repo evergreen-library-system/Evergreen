@@ -395,8 +395,8 @@ __PACKAGE__->register_method(
 
 sub retrieve_queued_records {
     my($self, $conn, $auth, $queue_id, $options) = @_;
-    my $e = new_editor(authtoken => $auth);
-    return $e->event unless $e->checkauth;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
     $options ||= {};
     my $limit = $$options{limit} || 20;
     my $offset = $$options{offset} || 0;
@@ -409,7 +409,10 @@ sub retrieve_queued_records {
         $queue = $e->retrieve_vandelay_authority_queue($queue_id) or return $e->die_event;
     }
     my $evt = check_queue_perms($e, $type, $queue);
-    return $evt if $evt;
+    if ($evt) {;
+        $e->rollback;
+        return $evt;
+    }
 
     my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
     my $search = ($type eq 'bib') ? 
@@ -443,6 +446,7 @@ sub retrieve_queued_records {
         $rec->clear_marc if $$options{clear_marc};
         $conn->respond($rec);
     }
+    $e->rollback;
     return undef;
 }
 
@@ -650,7 +654,7 @@ sub import_record_list_impl {
         ]);
 
         unless($rec) {
-            $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
+            $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->event});
             $e->rollback;
             next;
         }
@@ -761,9 +765,9 @@ sub import_record_list_impl {
         if($imported) {
             $e->commit;
         } else {
-            $e->rollback;
+            # die_event inside of biblio_record_xml_import or import_authority_record has taken care of $e->rollback;
             # Send an update whenever there's an error
-            $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
+            $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->event});
         }
 
         $conn->respond({total => $total, progress => $count, imported => $rec_id}) if (!$report_all and ++$count % $step) == 0;
