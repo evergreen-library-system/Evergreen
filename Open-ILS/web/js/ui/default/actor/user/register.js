@@ -1213,6 +1213,10 @@ function uEditNewAddr(evt, id, mkLinks) {
             if(row.getAttribute('fmclass')) {
                 var widget = fleshFMRow(row, 'aua', {addr:id});
 
+                // make new addresses a default address type
+                if(id < 0 && row.getAttribute('fmfield') == 'address_type') 
+                    widget.widget.attr('value', localeStrings.DEFAULT_ADDRESS_TYPE); 
+
                 // make new addresses valid by default
                 if(id < 0 && row.getAttribute('fmfield') == 'valid') 
                     widget.widget.attr('value', true); 

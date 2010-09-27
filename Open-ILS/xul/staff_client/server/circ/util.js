@@ -2657,7 +2657,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     }
                     if (rv == 0) {
                         try {
-                            JSAN.use('util.print'); var print = new util.print();
+                            JSAN.use('util.print'); var print = new util.print('receipt');
                             var old_template = String( data.hash.aous['ui.circ.old_harcoded_slip_template'] ) == 'true';
                             if (old_template) {
                                 msg = msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g,'<br/>');
@@ -2787,7 +2787,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     }
                     if (rv == 0) {
                         try {
-                            JSAN.use('util.print'); var print = new util.print();
+                            JSAN.use('util.print'); var print = new util.print('receipt');
                             msg = msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g,'<br/>');
                             print.simple( msg , { 'no_prompt' : true, 'content_type' : 'text/html' } );
                         } catch(E) {
@@ -2984,7 +2984,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             }
             if (rv == 0) {
                 try {
-                    JSAN.use('util.print'); var print = new util.print();
+                    JSAN.use('util.print'); var print = new util.print('receipt');
                     var old_template = String( data.hash.aous['ui.circ.old_harcoded_slip_template'] ) == 'true';
                     if (old_template) {
                         msg = msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g,'<br/>');
