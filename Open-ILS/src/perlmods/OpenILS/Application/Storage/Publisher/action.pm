@@ -1746,15 +1746,16 @@ sub create_prox_list {
 		my ($prox) = $self->method_lookup('open-ils.storage.asset.copy.proximity')->run( $cp, $lib );
 		next unless (defined($prox));
 
+        my $copy_circ_lib = ''.$cp->circ_lib;
 		# Fetch the weighting value for hold targeting, defaulting to 1
-		$self->{target_weight}{$lib} ||= $actor->request(
-			'open-ils.actor.ou_setting.ancestor_default' => $lib.'' => 'circ.holds.org_unit_target_weight'
+		$self->{target_weight}{$copy_circ_lib} ||= $actor->request(
+			'open-ils.actor.ou_setting.ancestor_default' => $copy_circ_lib.'' => 'circ.holds.org_unit_target_weight'
 		)->gather(1);
-        $self->{target_weight}{$lib} = $self->{target_weight}{$lib}{value} if (ref $self->{target_weight}{$lib});
-        $self->{target_weight}{$lib} ||= 1;
+        $self->{target_weight}{$copy_circ_lib} = $self->{target_weight}{$copy_circ_lib}{value} if (ref $self->{target_weight}{$copy_circ_lib});
+        $self->{target_weight}{$copy_circ_lib} ||= 1;
 
 		$prox_list[$prox] = [] unless defined($prox_list[$prox]);
-		for my $w ( 1 .. $self->{target_weight}{$lib} ) {
+		for my $w ( 1 .. $self->{target_weight}{$copy_circ_lib} ) {
 			push @{$prox_list[$prox]}, $cp;
 		}
 	}
