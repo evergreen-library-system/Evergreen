@@ -469,7 +469,7 @@ sub create_batch_events {
                 '-exists' => {
                     from  => 'aus',
                     where => {
-                        name => $def->id,
+                        name => $def->opt_in_setting,
                         usr  => { '=' => { '+' . $hook_hash{$def->hook}->core_type => $def->usr_field } },
                         value=> 'true'
                     }
