@@ -1279,20 +1279,18 @@ __PACKAGE__->register_method(
 sub print_hold_pull_list {
     my($self, $client, $auth, $org_id) = @_;
 
-    my $e = new_editor(authtoken=>$auth, xact=>1);
-    return $e->die_event unless $e->checkauth;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
 
     $org_id = (defined $org_id) ? $org_id : $e->requestor->ws_ou;
-    return $e->die_event unless $e->allowed('VIEW_HOLD', $org_id);
+    return $e->event unless $e->allowed('VIEW_HOLD', $org_id);
 
     my $hold_ids = $U->storagereq(
         'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.status_filtered.atomic',
         $org_id, 10000);
 
-    unless (@$hold_ids) {
-        $e->rollback;
-        return undef;
-    }
+    return undef unless @$hold_ids;
+
     $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
 
     # Holds will /NOT/ be in order after this ...
@@ -1303,8 +1301,6 @@ sub print_hold_pull_list {
     my $hold_map = +{map { $_->id => $_ } @$holds};
     my $sorted_holds = [];
     push @$sorted_holds, $hold_map->{$_} foreach @$hold_ids;
-
-    $e->rollback;
 
     return $U->fire_object_event(
         undef, "ahr.format.pull_list", $sorted_holds,
