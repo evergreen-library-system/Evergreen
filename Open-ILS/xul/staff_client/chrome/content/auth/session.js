@@ -115,6 +115,13 @@ auth.session.prototype = {
     'close' : function () { 
         var obj = this;
         obj.error.sdump('D_AUTH','auth.session.close()\n'); 
+        try {
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            Components.classes["@mozilla.org/cookiemanager;1"]
+                .getService(Components.interfaces.nsICookieManager).removeAll();
+        } catch(E) {
+            dump('Error in auth/session.js, close(): ' + E + '\n');
+        }
         if (obj.key) obj.network.request(
             api.AUTH_DELETE.app,
             api.AUTH_DELETE.method,
