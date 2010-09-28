@@ -87,7 +87,7 @@ That is, there are no assumed defaults when the latter arguments are used.
 
 =head2 SSH KEYS:
 
-The use of ssh keys is preferred.  Explicit speicification of connection type will prevent
+The use of ssh keys is preferred.  Explicit specification of connection type will prevent
 multiple attempts to the same server.  Therefore, using the type parameter is also recommended.
 
 If the type is not explicit, we attempt to use SSH keys where they are specified or otherwise found
