@@ -7,6 +7,8 @@
 ALTER TABLE permission.grp_perm_map        DROP CONSTRAINT grp_perm_map_perm_fkey;
 ALTER TABLE permission.usr_perm_map        DROP CONSTRAINT usr_perm_map_perm_fkey;
 ALTER TABLE permission.usr_object_perm_map DROP CONSTRAINT usr_object_perm_map_perm_fkey;
+ALTER TABLE booking.resource_type          DROP CONSTRAINT brt_name_or_record_once_per_owner;
+ALTER TABLE booking.resource_type          DROP CONSTRAINT brt_name_once_per_owner;
 
 \qecho Beginning the transaction now
 
@@ -14,9 +16,15 @@ BEGIN;
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0418');
+INSERT INTO config.upgrade_log (version) VALUES ('0422');
 
--- Begin by upgrading permission.perm_list.  This is fairly complicated.
+-- Recreate one of the constraints that we just dropped,
+-- under a different name:
+
+ALTER TABLE booking.resource_type
+	ADD CONSTRAINT brt_name_and_record_once_per_owner UNIQUE(owner, name, record);
+
+-- Now upgrade permission.perm_list.  This is fairly complicated.
 
 -- Add ON UPDATE CASCADE to some foreign keys so that, when we renumber the
 -- permissions, the dependents will follow and stay in sync:
@@ -8092,7 +8100,7 @@ CREATE TABLE booking.resource_type (
 	                               DEFERRABLE INITIALLY DEFERRED,
     max_fine       NUMERIC(8,2),
     elbow_room     INTERVAL,
-    CONSTRAINT brt_name_or_record_once_per_owner UNIQUE(owner, name, record)
+    CONSTRAINT brt_name_and_record_once_per_owner UNIQUE(owner, name, record)
 );
 
 CREATE TABLE booking.resource (
@@ -10693,8 +10701,8 @@ BEGIN
                             JOIN config.marc21_physical_characteristic_subfield_map s ON (s.id = p.subfield)
                             JOIN config.marc21_physical_characteristic_value_map v ON (v.id = p.value)
                       WHERE p.ptype = 'v' AND s.subfield = 'e'    ),
-                biblio.marc21_extract_fixed_field( bib_id, 'Date1'),
-                biblio.marc21_extract_fixed_field( bib_id, 'Date2');
+                LPAD(NULLIF(REGEXP_REPLACE(NULLIF(biblio.marc21_extract_fixed_field( bib_id, 'Date1'), ''), E'\\D', '0', 'g')::INT,0)::TEXT,4,'0'),
+                LPAD(NULLIF(REGEXP_REPLACE(NULLIF(biblio.marc21_extract_fixed_field( bib_id, 'Date2'), ''), E'\\D', '9', 'g')::INT,9999)::TEXT,4,'0');
 
     RETURN;
 END;
@@ -11415,13 +11423,7 @@ BEGIN
 END;
 $creator$ LANGUAGE 'plpgsql';
 
-SELECT acq.create_acq_auditor ( 'acq', 'purchase_order' );
-CREATE INDEX acq_po_hist_id_idx            ON acq.acq_purchase_order_history( id );
-
 ALTER TABLE acq.lineitem DROP COLUMN item_count;
-
-SELECT acq.create_acq_auditor ( 'acq', 'lineitem' );
-CREATE INDEX acq_lineitem_hist_id_idx            ON acq.acq_lineitem_history( id );
 
 CREATE OR REPLACE VIEW acq.fund_debit_total AS
     SELECT  fund.id AS fund,
@@ -13781,48 +13783,33 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 ALTER TABLE acq.purchase_order
-	ADD COLUMN cancel_reason        INT REFERENCES acq.cancel_reason( id )
-	                                    DEFERRABLE INITIALLY DEFERRED;
-
-ALTER TABLE acq.acq_purchase_order_history
-	ADD COLUMN cancel_reason INTEGER;
-
-ALTER TABLE acq.purchase_order
+	ADD COLUMN cancel_reason INT
+		REFERENCES acq.cancel_reason( id )
+	    DEFERRABLE INITIALLY DEFERRED,
 	ADD COLUMN prepayment_required BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE acq.acq_purchase_order_history
-	ADD COLUMN prepayment_required BOOLEAN;
+-- Build the history table and lifecycle view
+-- for acq.purchase_order
 
-DROP VIEW IF EXISTS acq.purchase_order_lifecycle;
+SELECT acq.create_acq_auditor ( 'acq', 'purchase_order' );
 
-SELECT acq.create_acq_lifecycle( 'acq', 'purchase_order' );
-
-ALTER TABLE acq.lineitem
-	ADD COLUMN cancel_reason        INT REFERENCES acq.cancel_reason( id )
-	                                    DEFERRABLE INITIALLY DEFERRED;
-
-ALTER TABLE acq.acq_lineitem_history
-	ADD COLUMN cancel_reason INTEGER;
+CREATE INDEX acq_po_hist_id_idx            ON acq.acq_purchase_order_history( id );
 
 ALTER TABLE acq.lineitem
-	ADD COLUMN estimated_unit_price NUMERIC;
-
-ALTER TABLE acq.acq_lineitem_history
-	ADD COLUMN estimated_unit_price NUMERIC;
-
-ALTER TABLE acq.lineitem
+	ADD COLUMN cancel_reason INT
+		REFERENCES acq.cancel_reason( id )
+	    DEFERRABLE INITIALLY DEFERRED,
+	ADD COLUMN estimated_unit_price NUMERIC,
 	ADD COLUMN claim_policy INT
 		REFERENCES acq.claim_policy
-		DEFERRABLE INITIALLY DEFERRED;
+		DEFERRABLE INITIALLY DEFERRED,
+	ALTER COLUMN eg_bib_id SET DATA TYPE bigint;
 
-ALTER TABLE acq.acq_lineitem_history
-	ADD COLUMN claim_policy INT;
+-- Build the history table and lifecycle view
+-- for acq.lineitem
 
--- Rebuild the lifecycle view
-
-DROP VIEW IF EXISTS acq.acq_lineitem_lifecycle;
-
-SELECT acq.create_acq_lifecycle( 'acq', 'lineitem' );
+SELECT acq.create_acq_auditor ( 'acq', 'lineitem' );
+CREATE INDEX acq_lineitem_hist_id_idx            ON acq.acq_lineitem_history( id );
 
 ALTER TABLE acq.lineitem_detail
 	ADD COLUMN cancel_reason        INT REFERENCES acq.cancel_reason( id )
@@ -18374,13 +18361,6 @@ DROP INDEX authority.authority_record_unique_tcn;
 ALTER TABLE authority.record_entry DROP COLUMN arn_value;
 ALTER TABLE authority.record_entry DROP COLUMN arn_source;
 
-DROP INDEX IF EXISTS authority.unique_by_heading_and_thesaurus;
-
-CREATE INDEX by_heading_and_thesaurus
-    ON authority.record_entry (authority.normalize_heading(marc))
-    WHERE deleted IS FALSE or deleted = FALSE
-;
-
 ALTER TABLE acq.provider_contact
 	ALTER COLUMN name SET NOT NULL;
 
@@ -18585,6 +18565,39 @@ COMMENT ON FUNCTION container.clear_expired_circ_history_items( INTEGER ) IS $$
 */
 $$;
 
+CREATE OR REPLACE VIEW reporter.hold_request_record AS
+SELECT  id,
+    target,
+    hold_type,
+    CASE
+        WHEN hold_type = 'T'
+            THEN target
+        WHEN hold_type = 'I'
+            THEN (SELECT ssub.record_entry FROM serial.subscription ssub JOIN serial.issuance si ON (si.subscription = ssub.id) WHERE si.id = ahr.target)
+        WHEN hold_type = 'V'
+            THEN (SELECT cn.record FROM asset.call_number cn WHERE cn.id = ahr.target)
+        WHEN hold_type IN ('C','R','F')
+            THEN (SELECT cn.record FROM asset.call_number cn JOIN asset.copy cp ON (cn.id = cp.call_number) WHERE cp.id = ahr.target)
+        WHEN hold_type = 'M'
+            THEN (SELECT mr.master_record FROM metabib.metarecord mr WHERE mr.id = ahr.target)
+    END AS bib_record
+  FROM  action.hold_request ahr;
+
+UPDATE  metabib.rec_descriptor
+  SET   date1=LPAD(NULLIF(REGEXP_REPLACE(NULLIF(date1, ''), E'\\D', '0', 'g')::INT,0)::TEXT,4,'0'),
+        date2=LPAD(NULLIF(REGEXP_REPLACE(NULLIF(date2, ''), E'\\D', '9', 'g')::INT,9999)::TEXT,4,'0');
+
+-- Change some ints to bigints:
+
+ALTER TABLE container.biblio_record_entry_bucket_item
+	ALTER COLUMN target_biblio_record_entry SET DATA TYPE bigint;
+
+ALTER TABLE vandelay.queued_bib_record
+	ALTER COLUMN imported_as SET DATA TYPE bigint;
+
+ALTER TABLE action.hold_copy_map
+	ALTER COLUMN id SET DATA TYPE bigint;
+
 COMMIT;
 
 -- Some operations go outside of the transaction, because they may
@@ -18641,8 +18654,14 @@ CREATE INDEX cp_editor_idx                  ON asset.copy ( editor );
 
 CREATE INDEX actor_card_barcode_lower_idx ON actor.card (lower(barcode));
 
-\qecho if the following CREATE INDEX fails, It will be necessary to do some
+DROP INDEX IF EXISTS authority.unique_by_heading_and_thesaurus;
+
+\qecho If the following CREATE INDEX fails, It will be necessary to do some
 \qecho data cleanup as described in the comments.
+
+CREATE UNIQUE INDEX unique_by_heading_and_thesaurus
+    ON authority.record_entry (authority.normalize_heading(marc))
+	WHERE deleted IS FALSE or deleted = FALSE;
 
 -- If the unique index fails, uncomment the following to create
 -- a regular index that will help find the duplicates in a hurry:
