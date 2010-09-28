@@ -5436,8 +5436,8 @@ $$
         <tbody>
         [% FOREACH detail IN li.lineitem_details.sort('owning_lib') %]
             [% 
-                IF copy.eg_copy_id;
-                    SET copy = copy.eg_copy_id;
+                IF detail.eg_copy_id;
+                    SET copy = detail.eg_copy_id;
                     SET cn_label = copy.call_number.label;
                 ELSE; 
                     SET copy = detail; 
