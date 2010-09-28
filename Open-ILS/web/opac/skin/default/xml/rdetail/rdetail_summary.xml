@@ -135,7 +135,7 @@
 				name="serial_holdings_label"
 				class="result_table_title_cell hide_me"
 				type="opac/slot-data"
-				query="datafield[tag=901] subfield[code=c]">
+				query="datafield[tag='901'] subfield[code='c']">
 				<td colspan="2">Issues Held: ${holdingsStatement}
 					<span class="hide_me" name="holdingsStatement" type="opac/template-value"><![CDATA[
 						if (fetchOrgSettingDefault(

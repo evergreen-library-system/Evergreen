@@ -66,7 +66,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
 
         render : function() {
 
-            var all_slots = dojo.query('*[type^=opac/slot-data]', this.root);
+            var all_slots = dojo.query('*[type^="opac/slot-data"]', this.root);
             var default_datatype = this.default_datatype;
         
             var slots = {};
@@ -99,10 +99,10 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                 var item_limit = parseInt(slot.getAttribute('limit'));
                                 var item_offset = parseInt(slot.getAttribute('offset')) || 0;
 
-                                var pre_render_callbacks = dojo.query( '*[type=opac/call-back+pre-render]', slot );
-                                var post_render_callbacks = dojo.query( '*[type=opac/call-back+post-render]', slot );
-                                var pre_query_callbacks = dojo.query( '*[type=opac/call-back+pre-query]', slot );
-                                var post_query_callbacks = dojo.query( '*[type=opac/call-back+post-query]', slot );
+                                var pre_render_callbacks = dojo.query( '*[type="opac/call-back+pre-render"]', slot );
+                                var post_render_callbacks = dojo.query( '*[type="opac/call-back+post-render"]', slot );
+                                var pre_query_callbacks = dojo.query( '*[type="opac/call-back+pre-query"]', slot );
+                                var post_query_callbacks = dojo.query( '*[type="opac/call-back+post-query"]', slot );
 
                                 // Do pre-query stuff
                                 dojo.forEach(pre_query_callbacks, function (cb) {
@@ -139,7 +139,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                     var template_value_count = 0;
 
                                     dojo.query(
-                                        '*[type=opac/template-value]',
+                                        '*[type="opac/template-value"]',
                                         slot
                                     ).orphan().forEach(function(x) {
                                         var name = x.getAttribute('name');
@@ -154,7 +154,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                     if (template_value_count > 0) slot.innerHTML = dojo.string.substitute( unescape(slot.innerHTML), template_values );
                                 }
 
-                                var handler_node = dojo.query( '*[type=opac/slot-format]', slot )[0];
+                                var handler_node = dojo.query( '*[type="opac/slot-format"]', slot )[0];
                                 if (handler_node) slot_handler = new Function('item_list', 'BT', 'slotXML', 'slot', 'item', dojox.xml.parser.textContent(handler_node) || handler_node.innerHTML);
                                 else slot_handler = new Function('item_list', 'BT', 'slotXML', 'slot', 'item','return dojox.xml.parser.textContent(item) || item.innerHTML;');
 
