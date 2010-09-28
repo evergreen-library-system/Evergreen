@@ -672,15 +672,6 @@ sub grouped_events {
 
         $e->editor->disconnect;
     }
-    # Could report on how the "found" events were grouped, but who's going to
-    # consume that information?
-    for my $key (keys %groups) {
-        if (@{ $groups{$key} }) {
-            $client->respond({"status" => "found"});
-            last;
-        }
-    }
-
 
     return \%groups;
 }
@@ -696,6 +687,15 @@ sub run_all_events {
     my $granularity = shift;
 
     my ($groups) = $self->method_lookup('open-ils.trigger.event.find_pending_by_group')->run($granularity);
+
+    # Could report on how the "found" events were grouped, but who's going to
+    # consume that information?
+    for my $key (keys %$groups) {
+        if (@{ $$groups{$key} }) {
+            $client->respond({"status" => "found"});
+            last;
+        }
+    }
 
     for my $def ( keys %$groups ) {
         if ($def eq '*') {
