@@ -41,7 +41,12 @@ sub new {
 
     if ($key ne 'usr' and $key ne 'barcode') {
         syslog("LOG_ERROR", "Patron (card) lookup requested by illegeal key '$key'");
-        return;
+        return undef;
+    }
+
+    unless(defined $patron_id) {
+        syslog("LOG_WARNING", "No patron ID provided to ILS::Patron->new");
+        return undef;
     }
 
     my $type = ref($class) || $class;
@@ -50,36 +55,34 @@ sub new {
     syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s => %s): searching...", $key, $patron_id);
 
     my $e = OpenILS::SIP->editor();
+    
+    my $user_id = $patron_id;
+    if($key eq 'barcode') {
+        my $card = $e->search_actor_card({barcode => $patron_id})->[0];
+        unless($card) {
+            syslog("LOG_WARNING", "No such patron barcode: $patron_id");
+            return undef;
+        }
+        $user_id = $card->usr;
+    }
 
-    my $c = $e->search_actor_card({$key => $patron_id}, {idlist=>1});
-	my $user;
-
-	if( @$c ) {
-
-		$user = $e->search_actor_user(
-			[
-				{ card => $$c[0] },
-				{
-					flesh => 2,
-					flesh_fields => {
-						"au" => [
-							#"cards",
-							"card",
-							"standing_penalties",
-							"addresses",
-							"billing_address",
-							"mailing_address",
-							#"stat_cat_entries",
-							'profile',
-						],
-                        ausp => ['standing_penalty']
-					}
-				}
-			]
-		);
-
-		$user = (@$user) ? $$user[0] : undef;
-	 }
+	my $user = $e->retrieve_actor_user([
+        $user_id,
+        {
+            flesh => 2,
+            flesh_fields => {
+                au => [
+                    "card",
+                    "standing_penalties",
+                    "addresses",
+                    "billing_address",
+                    "mailing_address",
+                    'profile',
+                ],
+                ausp => ['standing_penalty']
+            }
+        }
+    ]);
 
     if(!$user) {
         syslog("LOG_WARNING", "OILS: Unable to find patron %s => %s", $key, $patron_id);
@@ -227,7 +230,7 @@ sub recall_overdue {
 sub check_password {
 	my ($self, $pwd) = @_;
 	syslog('LOG_DEBUG', 'OILS: Patron->check_password()');
-	return md5_hex($pwd) eq $self->{user}->passwd;
+	return $pwd and (md5_hex($pwd) eq $self->{user}->passwd);
 }
 
 
