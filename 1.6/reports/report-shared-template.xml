@@ -28,17 +28,8 @@
                   the grey arrow or folder icon.  Do not click on the blue underlined hyperlink. </para>
       </step>
  <step>
-         <informalfigure>
             <para>Click on the subfolder.</para>
-            <para>
-               <mediaobject>
-                  <imageobject>
-                     <imagedata scalefit="0" fileref="../media/shared-template-5.png"/>
-                  </imageobject>
-               </mediaobject>
-            </para>
-         </informalfigure>
-      </step>
+</step>
       <step>
          <informalfigure>
             <para>Select the template you wish to clone.  From the

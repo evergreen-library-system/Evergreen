@@ -202,11 +202,103 @@ srfsh#</screen>
 			<indexterm><primary>configuration files</primary><secondary>Apache</secondary><tertiery>eg.conf</tertiery></indexterm>
 			<indexterm><primary>configuration files</primary><secondary>Apache</secondary><tertiery>eg_vhost.conf</tertiery></indexterm>
 		</step>
+
+		<step>
+					<title>Testing with <command>settings-tester.pl</command></title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, run the script <command>settings-tester.pl</command> to see if it finds any 
+					system configuration problems.</para>
+<screen>					
+<userinput>cd /home/opensrf/Evergreen-ILS-1.6.0.0</userinput>
+<userinput>perl Open-ILS/src/support-scripts/settings-tester.pl</userinput>
+</screen>
+					<para>Here is example output from running <command>settings-tester.pl</command>:</para>
+<screen>
+LWP::UserAgent version 5.810
+XML::LibXML version 1.70
+XML::LibXML::XPathContext version 1.70
+XML::LibXSLT version 1.70
+Net::Server::PreFork version 0.97
+Cache::Memcached version 1.24
+Class::DBI version 0.96
+Class::DBI::AbstractSearch version 0.07
+Template version 2.19
+DBD::Pg version 2.8.2
+Net::Z3950::ZOOM version 1.24
+MARC::Record version 2.0.0
+MARC::Charset version 1.1
+MARC::File::XML version 0.92
+Text::Aspell version 0.04
+CGI version 3.29
+DateTime::TimeZone version 0.7701
+DateTime version 0.42
+DateTime::Format::ISO8601 version 0.06
+DateTime::Format::Mail version 0.3001
+Unix::Syslog version 1.1
+GD::Graph3d version 0.63
+JavaScript::SpiderMonkey version 0.19
+Log::Log4perl version 1.16
+Email::Send version 2.192
+Text::CSV version 1.06
+Text::CSV_XS version 0.52
+Spreadsheet::WriteExcel::Big version 2.20
+Tie::IxHash version 1.21
+Parse::RecDescent version 1.95.1
+SRU version 0.99
+JSON::XS version 2.27
+
+Checking Jabber connection for user opensrf, domain private.localhost
+* Jabber successfully connected
+
+Checking Jabber connection for user opensrf, domain public.localhost
+* Jabber successfully connected
+
+Checking Jabber connection for user router, domain public.localhost
+* Jabber successfully connected
+
+Checking Jabber connection for user router, domain private.localhost
+* Jabber successfully connected
+
+Checking database connections
+* /opensrf/default/reporter/setup :: Successfully connected to database dbi:Pg:dbname=evergreen;host=localhost;port=5432
+  * Database has the expected server encoding UTF8.
+* /opensrf/default/apps/open-ils.storage/app_settings/databases :: Successfully connected to database dbi:...
+  * Database has the expected server encoding UTF8.
+* /opensrf/default/apps/open-ils.cstore/app_settings :: Successfully connected to database dbi:Pg:dbname...
+  * Database has the expected server encoding UTF8.
+* /opensrf/default/apps/open-ils.pcrud/app_settings :: Successfully connected to database dbi:Pg:dbname...
+  * Database has the expected server encoding UTF8.
+* /opensrf/default/apps/open-ils.reporter-store/app_settings :: Successfully connected to database dbi:Pg:dbname...
+  * Database has the expected server encoding UTF8.
+
+Checking database drivers to ensure &lt;driver&gt; matches &lt;language&gt;
+* OK: Pg language is undefined for reporter base configuration
+* OK: Pg language is undefined for reporter base configuration
+* OK: Pg language is perl in /opensrf/default/apps/open-ils.storage/language
+* OK: pgsql language is C in /opensrf/default/apps/open-ils.cstore/language
+* OK: pgsql language is C in /opensrf/default/apps/open-ils.pcrud/language
+* OK: pgsql language is C in /opensrf/default/apps/open-ils.reporter-store/language
+
+Checking libdbi and libdbi-drivers
+  * OK - found locally installed libdbi.so and libdbdpgsql.so in shared library path
+
+Checking hostname
+ * OK: found hostname 'localhost' in &lt;hosts&gt; section of opensrf.xml
+$
+</screen>
+					<para>If the output from the script does not help you find the problem, please do not make any further significant changes to your configuration. 
+					Follow the steps in the troubleshooting guide in <xref linkend="troubleshooting"/>.</para>
+		</step>
 		<step>
 			<para>Try to login from the <link linkend="staffclient-login">staff client</link></para>
 		</step>
-		<step>
-			<para>Try to search the catalog from the OPAC</para>
+		<step xml:id="testing-opac">
+					<title>Testing the Catalog</title>
+					<para>By default, the OPAC will live at the URL <uri>http://my.domain.com/opac/</uri>.</para>
+					<para>Navigate to this URL and the front page of the OPAC should load. There is a basic text entry field with some extra search options. If you have any 
+					problems loading this page, check the Apache error logs. If the page loads but does not function correctly, then check for possible javascript errors. We 
+					highly recommend testing with the <application>Firefox</application> browser because of the helpful javascript debugging tools.</para>
+					<para>Assuming that the OPAC is functioning and there is data in your database, you can now perform other simple functional tests 
+					(e.g., searching the catalog).</para>
 		</step>	
 	</procedure>	
 </chapter>
