@@ -672,6 +672,15 @@ sub grouped_events {
 
         $e->editor->disconnect;
     }
+    # Could report on how the "found" events were grouped, but who's going to
+    # consume that information?
+    for my $key (keys %groups) {
+        if (@{ $groups{$key} }) {
+            $client->respond({"status" => "found"});
+            last;
+        }
+    }
+
 
     return \%groups;
 }
