@@ -83,7 +83,7 @@
         <menu id="main.menu.admin" />
         <menu id="main.menu.help" />
     </menubar>
-    <toolbar id="main_toolbar" hidden="true" class="chromeclass-toolbar">
+    <toolbar id="main_toolbar" hidden="true">
         <toolbarbutton id="tb_checkout" 
             command="cmd_circ_checkout" 
             image="chrome://open_ils_staff_client/skin/media/images/Arrow-rightup-small.png" 
