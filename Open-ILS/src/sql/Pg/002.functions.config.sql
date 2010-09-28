@@ -272,33 +272,37 @@ BEGIN
     select_list := ARRAY_APPEND( select_list, key || '::INT AS key' );
 
     FOR i IN 1 .. ARRAY_UPPER(xpath_list,1) LOOP
-        select_list := ARRAY_APPEND(
-            select_list,
-            $sel$
-            EXPLODE_ARRAY(
-                COALESCE(
-                    NULLIF(
-                        oils_xpath(
-                            $sel$ ||
-                                quote_literal(
-                                    CASE
-                                        WHEN xpath_list[i] ~ $re$/[^/[]*@[^/]+$$re$ OR xpath_list[i] ~ $re$text\(\)$$re$ THEN xpath_list[i]
-                                        ELSE xpath_list[i] || '//text()'
-                                    END
-                                ) ||
-                            $sel$,
-                            $sel$ || document_field || $sel$
+        IF xpath_list[i] = 'null()' THEN
+            select_list := ARRAY_APPEND( select_list, 'NULL::TEXT AS c_' || i );
+        ELSE
+            select_list := ARRAY_APPEND(
+                select_list,
+                $sel$
+                EXPLODE_ARRAY(
+                    COALESCE(
+                        NULLIF(
+                            oils_xpath(
+                                $sel$ ||
+                                    quote_literal(
+                                        CASE
+                                            WHEN xpath_list[i] ~ $re$/[^/[]*@[^/]+$$re$ OR xpath_list[i] ~ $re$text\(\)$$re$ THEN xpath_list[i]
+                                            ELSE xpath_list[i] || '//text()'
+                                        END
+                                    ) ||
+                                $sel$,
+                                $sel$ || document_field || $sel$
+                            ),
+                           '{}'::TEXT[]
                         ),
-                       '{}'::TEXT[]
-                    ),
-                    '{NULL}'::TEXT[]
-                )
-            ) AS c_$sel$ || i
-        );
-        where_list := ARRAY_APPEND(
-            where_list,
-            'c_' || i || ' IS NOT NULL'
-        );
+                        '{NULL}'::TEXT[]
+                    )
+                ) AS c_$sel$ || i
+            );
+            where_list := ARRAY_APPEND(
+                where_list,
+                'c_' || i || ' IS NOT NULL'
+            );
+        END IF;
     END LOOP;
 
     q := $q$
