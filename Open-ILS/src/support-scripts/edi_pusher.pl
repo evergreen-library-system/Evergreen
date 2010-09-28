@@ -48,8 +48,6 @@ my $defs = $e->search_action_trigger_event_definition({
 
 $opts->{verbose} = 0 if $opts->{quiet};
 
-
-# print Dumper($defs);
 print "\nHook '$hook' is used in ", scalar(@$defs), " event definition(s):\n";
 
 $Data::Dumper::Indent = 1;
@@ -99,7 +97,8 @@ foreach my $def (@$defs) {
     if ($opts->{verbose}) {
         # $subq->{'select'}->{'acqedim'} = ['id', 'purchase_order', 'message_type', 'status'];
         my $excluded = $e->json_query($subq);
-        print "Excluded: ", scalar(@$excluded), " purchase order(s):\n", Dumper(\@$excluded), "\n";
+        print "Excluded: ", scalar(@$excluded), " purchase order(s):\n";
+        print join("\n", sort map {sprintf "%7d", $_->{purchase_order}} @$excluded), "\n";
     }
 
     my $events = $e->json_query($query);
