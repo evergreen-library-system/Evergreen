@@ -6523,7 +6523,7 @@ SELECT  usr,
 			<field name="owner" reporter:datatype="link"/>
 			<field name="create_time" reporter:datatype="timestamp"/>
 			<field name="template" reporter:datatype="link"/>
-			<field name="data" reporter:datatype="link"/>
+			<field name="data" reporter:datatype="text"/>
 			<field name="folder" reporter:datatype="link"/>
 			<field name="recur" reporter:datatype="bool"/>
 			<field name="recurrence" reporter:datatype="interval"/>
