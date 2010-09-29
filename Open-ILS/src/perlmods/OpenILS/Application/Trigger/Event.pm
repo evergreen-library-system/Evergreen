@@ -352,6 +352,7 @@ sub update_state {
     $e->state( $state );
 
     $e->clear_start_time() if ($e->state eq 'pending');
+    $e->complete_time( 'now' ) if ($e->state eq 'complete');
 
     my $ok = $self->editor->update_action_trigger_event( $e );
     if (!$ok) {

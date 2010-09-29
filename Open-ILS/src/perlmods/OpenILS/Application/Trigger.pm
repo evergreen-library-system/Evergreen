@@ -593,11 +593,16 @@ sub pending_events {
     my $self = shift;
     my $client = shift;
     my $granularity = shift;
+    my $granflag = shift;
 
     my $query = [{ state => 'pending', run_time => {'<' => 'now'} }, { order_by => { atev => [ qw/run_time add_time/] }, 'join' => 'atevdef' }];
 
     if (defined $granularity) {
-        $query->[0]->{'+atevdef'} = {'-or' => [ {granularity => $granularity}, {granularity => undef} ] };
+        if ($granflag) {
+            $query->[0]->{'+atevdef'} = {granularity => $granularity};
+        } else {
+            $query->[0]->{'+atevdef'} = {'-or' => [ {granularity => $granularity}, {granularity => undef} ] };
+        }
     } else {
         $query->[0]->{'+atevdef'} = {granularity => undef};
     }
@@ -616,8 +621,9 @@ sub grouped_events {
     my $self = shift;
     my $client = shift;
     my $granularity = shift;
+    my $granflag = shift;
 
-    my ($events) = $self->method_lookup('open-ils.trigger.event.find_pending')->run($granularity);
+    my ($events) = $self->method_lookup('open-ils.trigger.event.find_pending')->run($granularity, $granflag);
 
     my %groups = ( '*' => [] );
 
@@ -685,8 +691,9 @@ sub run_all_events {
     my $self = shift;
     my $client = shift;
     my $granularity = shift;
+    my $granflag = shift;
 
-    my ($groups) = $self->method_lookup('open-ils.trigger.event.find_pending_by_group')->run($granularity);
+    my ($groups) = $self->method_lookup('open-ils.trigger.event.find_pending_by_group')->run($granularity, $granflag);
 
     # Could report on how the "found" events were grouped, but who's going to
     # consume that information?
