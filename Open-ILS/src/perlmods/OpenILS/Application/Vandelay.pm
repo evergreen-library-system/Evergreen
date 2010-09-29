@@ -641,6 +641,7 @@ sub import_record_list_impl {
         $rec_class = 'vqar';
     }
 
+    my @success_rec_ids;
     for my $rec_id (@$rec_ids) {
 
         my $overlay_target = $overlay_map->{$rec_id};
@@ -766,6 +767,7 @@ sub import_record_list_impl {
         }
 
         if($imported) {
+            push @success_rec_ids, $rec_id;
             $e->commit;
         } else {
             # Send an update whenever there's an error
@@ -794,6 +796,8 @@ sub import_record_list_impl {
         } 
     	$e->rollback;
     }
+
+    import_record_asset_list_impl($conn, \@success_rec_ids, $requestor);
 
     $conn->respond({total => $total, progress => $count});
     return undef;
@@ -961,7 +965,7 @@ sub retrieve_queue_summary {
 
 __PACKAGE__->register_method(  
     api_name    => "open-ils.vandelay.bib_record.list.asset.import",
-    method      => 'import_record_list_assets',
+    method      => 'noop_import_items',
     api_level   => 1,
     argc        => 2,
     stream      => 1,
@@ -969,40 +973,42 @@ __PACKAGE__->register_method(
 );
 __PACKAGE__->register_method(  
     api_name    => "open-ils.vandelay.bib_record.queue.asset.import",
-    method      => 'import_record_queue_assets',
+    method      => 'noop_import_items',
     api_level   => 1,
     argc        => 2,
     stream      => 1,
     record_type => 'bib'
 );
 
-sub import_record_list_assets {
-    my($self, $conn, $auth, $import_def, $rec_ids) = @_;
-    my $e = new_editor(xact=>1, authtoken => $auth);
-    return $e->die_event unless $e->checkauth;
-    my $err = import_record_asset_list_impl($conn, $import_def, $rec_ids, $e->requestor);
-    $e->rollback;
-    return $err if $err;
-    return {complete => 1};
-}
+sub noop_import_items { return {complete => 1} }
 
-sub import_record_queue_assets {
-    my($self, $conn, $auth, $import_def, $q_id) = @_;
-    my $e = new_editor(xact=>1, authtoken => $auth);
-    return $e->die_event unless $e->checkauth;
-    my $rec_ids = $e->search_vandelay_queued_bib_record(
-        {queue => $q_id, import_time => {'!=' => undef}}, {idlist => 1});
-    my $err = import_record_asset_list_impl($conn, $import_def, $rec_ids, $e->requestor);
-    $e->rollback;
-    return $err if $err;
-    return {complete => 1};
-}
+#sub import_record_list_assets {
+#    my($self, $conn, $auth, $import_def, $rec_ids) = @_;
+#    my $e = new_editor(xact=>1, authtoken => $auth);
+#    return $e->die_event unless $e->checkauth;
+#    my $err = import_record_asset_list_impl($conn, $import_def, $rec_ids, $e->requestor);
+#    $e->rollback;
+#    return $err if $err;
+#    return {complete => 1};
+#}
+#
+#sub import_record_queue_assets {
+#    my($self, $conn, $auth, $import_def, $q_id) = @_;
+#    my $e = new_editor(xact=>1, authtoken => $auth);
+#    return $e->die_event unless $e->checkauth;
+#    my $rec_ids = $e->search_vandelay_queued_bib_record(
+#        {queue => $q_id, import_time => {'!=' => undef}}, {idlist => 1});
+#    my $err = import_record_asset_list_impl($conn, $import_def, $rec_ids, $e->requestor);
+#    $e->rollback;
+#    return $err if $err;
+#    return {complete => 1};
+#}
 
 # --------------------------------------------------------------------------------
 # Given a list of queued record IDs, imports all items attached to those records
 # --------------------------------------------------------------------------------
 sub import_record_asset_list_impl {
-    my($conn, $import_def, $rec_ids, $requestor) = @_;
+    my($conn, $rec_ids, $requestor) = @_;
 
     my $total = @$rec_ids;
     my $try_count = 0;
@@ -1012,7 +1018,7 @@ sub import_record_asset_list_impl {
     for my $rec_id (@$rec_ids) {
         my $rec = $roe->retrieve_vandelay_queued_bib_record($rec_id);
         next unless $rec and $rec->import_time;
-        my $item_ids = $roe->search_vandelay_import_item({definition => $import_def, record => $rec->id}, {idlist=>1});
+        my $item_ids = $roe->search_vandelay_import_item({record => $rec->id}, {idlist=>1});
 
         for my $item_id (@$item_ids) {
             my $e = new_editor(requestor => $requestor, xact => 1);
