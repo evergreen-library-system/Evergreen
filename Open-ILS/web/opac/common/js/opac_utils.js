@@ -536,6 +536,7 @@ function setSessionCookie(ses) {
 	if ses != G.user.session, we also force a grab */
 function grabUser(ses, force) {
 
+    _debug("grabUser auth token = " + ses);
 	if(!ses && isXUL()) {
 		stash = fetchXULStash();
 		ses = stash.session.key
@@ -545,6 +546,7 @@ function grabUser(ses, force) {
 	if(!ses) {
 		ses = cookieManager.read(COOKIE_SES);
 		/* https cookies don't show up in http servers.. */
+		_debug("cookie auth token = " + ses);
 	}
 
 	if(!ses) return false;
@@ -563,6 +565,7 @@ function grabUser(ses, force) {
 
         if(isXUL()) {
             dojo.require('openils.XUL');
+            dump('getNewSession in opac_utils.js\n');
             openils.XUL.getNewSession( 
                 function(success, authtoken) { 
                     if(success) {

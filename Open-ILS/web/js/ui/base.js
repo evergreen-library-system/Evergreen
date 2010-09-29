@@ -19,6 +19,11 @@ function oilsSetupUser() {
     openils.User.authtoken = null;
     openils.User.workstation = null;
 
+    if(!authtoken && openils.XUL.isXUL()) {
+		stash = openils.XUL.getStash();
+		authtoken = stash.session.key
+	}
+
     if(authtoken) {
         user = new openils.User();
         delete user.sessionCache[authtoken];
@@ -38,6 +43,7 @@ function oilsSetupUser() {
             dojo.addOnLoad(function(){
                 if(openils.XUL.isXUL()) {
                     // let XUL handle the login dialog
+                    dump('getNewSession in base.js\n');
                     openils.XUL.getNewSession( function() { location.href = location.href } );
                 } else {
                     // in web-only mode, use the dojo login dialog
