@@ -7,7 +7,6 @@
 			of the software is straightforward if you follow some simple directions.</para>
 		</abstract>
 	</info>
-	<section xml:id="serversideinstallation-overview">
 		<para>Installing, configuring and testing the Evergreen server-side software is straightforward with the current stable software release. See 
 		<xref linkend="serversideinstallation-all"/> for instructions tailored to installing on some particular distributions of the <systemitem class="osname">Linux</systemitem> 
 		operating system. Earlier software distributions are described in <xref linkend="serversideinstallation-previousversions"/>.</para>
@@ -20,11 +19,7 @@
 		<systemitem class="osname">Linux</systemitem> environment). It can also be installed to run on other <systemitem class="osname">Linux</systemitem> systems via virtualized 
 		environments (using, for example, <application>"VirtualBox"</application> or <application>"VMware"</application>). More information on virtualized environments can be 
 		found in <xref linkend="serversideinstallation-virtual"/>.</para>
-		<para>Installation of some sub-components of the Evergreen server-side software is mentioned only in abbreviated form in this section. More detailed information 
-		is available in <xref linkend="serversideinstallation-postgresql"/> and <xref linkend="serversideinstallation-apache"/>.</para>
-		<para>Finally, installation of the Evergreen Staff Client software is reviewed in <xref linkend="serversideinstallation-staffclient"/>. </para>
-		<simplesect>
-			<title>Evergreen Software Dependencies</title>
+		<para>Installation of the Evergreen Staff Client software is reviewed in <xref linkend="serversideinstallation-staffclient"/>. </para>
 			<para>The Evergreen server-side software has dependencies on particular versions of certain major software sub-components. Successful installation of Evergreen 
 			software requires that software versions agree with those listed here:</para>
 			<table xml:id="serversideinstall-software-dependencies">
@@ -47,39 +42,9 @@
 							<entry>1.2</entry>
 							<entry>8.2 / 8.3</entry>
 						</row>
-						<row>
-							<entry>1.4.x</entry>
-							<entry>1.0</entry>
-							<entry>8.1 / 8.2</entry>
-						</row>
-						<row>
-							<entry>1.2.x</entry>
-							<entry>0.9</entry>
-							<entry>8.1 / 8.2</entry>
-						</row>
 					</tbody>
 				</tgroup>
-			</table>
-		</simplesect>	
-		<simplesect>
-			<title>Current Stable Software Release</title>
-			<para>The current stable release of Evergreen is version <emphasis><emphasis role="bold">1.6.0.7</emphasis></emphasis>. Instructions for installing, configuring 
-			and testing that version on the <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem> 
-			<systemitem class="osname">Linux</systemitem> systems are found in <xref linkend="serversideinstallation-ubuntudebian"/>.</para>
-			<para>This release of Evergreen software is dependent on the Open Service Request Framework (OpenSRF). The current stable release of OpenSRF is 
-			version <emphasis><emphasis role="bold">1.2.2</emphasis></emphasis>. Instructions for installing, configuring and testing that version are found in 
-			<xref linkend="serversideinstallation-opensrf"/>.</para>
-			</simplesect>
-			<simplesect>
-			<title>Previous Software Releases</title>
-			<para>Earlier releases of Evergreen are also available. Instructions for installing, configuring and testing earlier versions are found in 
-			<xref linkend="serversideinstallation-previousversions"/>.</para>
-			<para>The next most recent previous release of Evergreen is version <emphasis><emphasis role="bold">1.4.0.6</emphasis></emphasis>. Instructions for installing, configuring 
-			and testing that version are found in <xref linkend="serversideinstallation-evergreen-previous"/>.</para>
-			<para>The accompanying previous release of OpenSRF is version <emphasis><emphasis role="bold">1.0.7</emphasis></emphasis>. Instructions for installing, configuring and testing 
-			that version are found in <xref linkend="serversideinstallation-opensrf-previous"/>.</para>
-		</simplesect>
-	</section>
+			</table>	
 	<section xml:id="serversideinstallation-all">
 		<title>Installing Server-Side Software</title>
 		<para>This section describes the installation of the major components of Evergreen server-side software.</para>
@@ -118,7 +83,6 @@
 					<para>As the <systemitem class="username">root</systemitem> user, add the opensrf user to the system. The default shell for the new user is automatically set to 
 					<command>/bin/bash</command> to inherit a reasonable environment:</para>
 <screen>
-<userinput>su - opensrf</userinput>
 <userinput>useradd -m -s /bin/bash opensrf</userinput>
 <userinput>passwd opensrf</userinput>
 </screen>
@@ -128,7 +92,6 @@
 					<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract the latest version of OpenSRF. The latest version can be found here: 
 					<ulink url="http://evergreen-ils.org/downloads/OpenSRF-1.2.2.tar.gz"></ulink></para>
 <screen>
-<userinput>su - opensrf</userinput>
 <userinput>wget http://evergreen-ils.org/downloads/OpenSRF-1.2.2.tar.gz</userinput>
 <userinput>tar zxf OpenSRF-1.2.2.tar.gz</userinput>
 </screen>		
@@ -143,7 +106,6 @@
 					<systemitem class="osname">Linux</systemitem> distribution listed in the <link linkend="serversideinstallation-keywords-opensrf">distribution 
 					keywords</link>table.</para>
 <screen>
-<userinput>su - root</userinput>
 <userinput>cd /home/opensrf/OpenSRF-1.2.2</userinput>
 <userinput>make -f src/extras/Makefile.install [DISTRIBUTION]</userinput>
 </screen>
@@ -198,7 +160,6 @@
 					utility to prepare for the next step of compiling and linking the software. You can include the  <option>--enable-python</option> and 
 					<option>--enable-java</option> configuration options if you wish to include support for Python and Java, respectively:</para>
 <screen>
-<userinput>su - opensrf</userinput>
 <userinput>cd /home/opensrf/OpenSRF-1.2.2</userinput>
 <userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput>
 <userinput>make</userinput>
@@ -210,7 +171,6 @@
 					<para>As the <systemitem class="username">root</systemitem> user, return to the OpenSRF build directory and use the <command>make</command> utility to compile, 
 					link and install OpenSRF:</para>			
 <screen>
-<userinput>su - opensrf</userinput>
 <userinput>cd /home/opensrf/OpenSRF-1.2.2</userinput>
 <userinput>make install</userinput>
 </screen>
@@ -222,7 +182,6 @@
 					command <command>ldconfig</command> to automatically read the file and modify the system dynamic library path:</para>
 				
 <screen>
-<userinput>su - root</userinput>
 <userinput>echo "/openils/lib" > /etc/ld.so.conf.d/osrf.conf</userinput>
 <userinput>ldconfig</userinput>
 </screen>
@@ -260,7 +219,6 @@ $ /etc/init.d/ejabberd stop
 					<systemitem class="daemon">epmd</systemitem> processes, then edit the configuration file <filename>/etc/ejabberd/ejabberd.cfg</filename> to hardcode a 
 					domain:</para>
 <screen>
-<userinput>su - root</userinput>
 <userinput>epmd -kill</userinput>
 <userinput>killall beam; killall beam.smp</userinput>
 <userinput>rm /var/lib/ejabberd/*</userinput>
@@ -314,7 +272,6 @@ $ /etc/init.d/ejabberd stop
 					<para>As the <systemitem class="username">opensrf</systemitem> user, use the example templates to create the configuration files 
 					<filename>/openils/conf/opensrf_core.xml</filename> and <filename>/openils/conf/opensrf.xml</filename>:</para>
 <screen>
-<userinput>su - root</userinput>
 <userinput>cd /openils/conf</userinput>
 <userinput>cp opensrf.xml.example      opensrf.xml</userinput>
 <userinput>cp opensrf_core.xml.example opensrf_core.xml</userinput>
@@ -330,35 +287,33 @@ $ /etc/init.d/ejabberd stop
 							file.</emphasis>
 						</para>
 					</note>
-						<title>Updates needed in the file <filename>/openils/conf/opensrf_core.xml</filename></title>
-					<itemizedlist>
-						<listitem>/config/opensrf/username = <systemitem class="username">opensrf</systemitem></listitem>
-						<listitem>/config/opensrf/passwd = password for <systemitem class="domainname">private.localhost</systemitem> 
-						<systemitem class="username">opensrf</systemitem> user</listitem>
-						<listitem>/config/opensrf/passwd = password for <systemitem class="domainname">private.localhost</systemitem> 
-						<systemitem class="username">opensrf</systemitem>  user</listitem>
-						<listitem>/config/gateway/username = <systemitem class="username">opensrf</systemitem></listitem>
-						<listitem>/config/gateway/passwd = password for <systemitem class="domainname">public.localhost</systemitem> 
-						<systemitem class="username">opensrf</systemitem>  user</listitem>
-						<listitem>/config/routers/router/transport  (first entry, where 
-						<quote>transport/server</quote> ==<systemitem class="domainname">public.localhost</systemitem>) 
+						
+						<para>/config/opensrf/username = <systemitem class="username">opensrf</systemitem></para>
+						<para>/config/opensrf/passwd = password for <systemitem class="domainname">private.localhost</systemitem> 
+						<systemitem class="username">opensrf</systemitem> user</para>
+						<para>/config/opensrf/passwd = password for <systemitem class="domainname">private.localhost</systemitem> 
+						<systemitem class="username">opensrf</systemitem>  user</para>
+						<para>/config/gateway/username = <systemitem class="username">opensrf</systemitem></para>
+						<para>/config/gateway/passwd = password for <systemitem class="domainname">public.localhost</systemitem>
+						<systemitem class="username">opensrf</systemitem>  user</para>
+						<para>/config/routers/router/transport  (first entry, where 
+						<quote>transport/server</quote> ==<systemitem class="domainname">public.localhost</systemitem>)</para>
 							<itemizedlist>
 								<listitem>username = <systemitem class="username">router</systemitem></listitem> 
 								<listitem>password = password for <systemitem class="domainname">public.localhost</systemitem> 
 								<systemitem class="username">router</systemitem> 
 								user</listitem>
 							</itemizedlist>
-						</listitem>
-						<listitem>/config/routers/router/transport  (second entry, where 
-						<quote>transport/server</quote> == <systemitem class="domainname">private.localhost</systemitem>) 
+						
+						<para>/config/routers/router/transport  (second entry, where 
+						<quote>transport/server</quote> == <systemitem class="domainname">private.localhost</systemitem>) </para>
 							<itemizedlist>
 								<listitem>username = <systemitem class="username">router</systemitem></listitem> 
 								<listitem>password = password for <systemitem class="domainname">private.localhost</systemitem> 
 								<systemitem class="username">router</systemitem> 
 								user</listitem>
 							</itemizedlist>
-						</listitem>
-					</itemizedlist>
+						
 					<para>You also need to specify the domains from which <systemitem class="service">OpenSRF</systemitem> will accept and to which 
 					<systemitem class="service">OpenSRF</systemitem> will make connections. If you are installing <application>OpenSRF</application> on a single server and using the 
 					<systemitem class="domainname">private.localhost</systemitem> / <systemitem class="domainname">public.localhost</systemitem> domains, these will already be set to 
@@ -418,7 +373,6 @@ $ /etc/init.d/ejabberd stop
 					<para>As the <systemitem class="username">opensrf</systemitem> user, modify the environmental variable <envar>PATH</envar> by adding a new file path to 
 					the <systemitem class="username">opensrf</systemitem> user's shell configuration file <filename>.bashrc</filename>:</para>
 <screen>
-<userinput>su - opensrf</userinput>
 <userinput>echo "export PATH=/openils/bin:\$PATH" >> ~/.bashrc</userinput>
 </screen>
 				
@@ -428,13 +382,11 @@ $ /etc/init.d/ejabberd stop
 					<para>As the <systemitem class="username">root</systemitem> user, start the <systemitem class="service">ejabberd</systemitem> and 
 					<systemitem class="service">memcached</systemitem> services:</para>			
 <screen>
-<userinput>su - root</userinput>
 <userinput>/etc/init.d/ejabberd start</userinput>
 <userinput>/etc/init.d/memcached start</userinput>
 </screen>			
 					<para>Finally, as the <systemitem class="username">opensrf</systemitem> user, start OpenSRF:</para>
 <screen>
-<userinput>su - opensrf</userinput>
 <userinput>start the OpenSRF service:</userinput>
 <userinput>use "-l" to force hostname to be "localhost"</userinput>
 <userinput>osrf_ctl.sh -l -a start_all</userinput>    
@@ -459,7 +411,6 @@ $ /etc/init.d/ejabberd stop
 					<systemitem class="service">math</systemitem> service:</para>
 				
 <screen>
-<userinput>su - opensrf</userinput>
 <userinput>/openils/bin/srfsh</userinput>
 <prompt>srfsh#</prompt> <userinput>request opensrf.math add 2 2</userinput>
 Received Data: 4
@@ -476,7 +427,6 @@ Request Time in seconds: 0.007519
 					<title>Stopping OpenSRF</title>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, stop OpenSRF:</para>
 <screen>
-<userinput>su - opensrf</userinput>
 <userinput>osrf_ctl.sh -l -a stop_all</userinput>
 </screen>		
 				</step>
@@ -517,7 +467,6 @@ Request Time in seconds: 0.007519
 					<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract the latest version of Evergreen. The latest version can be found here: 
 					<ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.0.7.tar.gz"></ulink></para>
 <screen>
-<userinput>su - opensrf</userinput>
 <userinput>wget http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.0.7.tar.gz</userinput>
 <userinput>tar zxf Evergreen-ILS-1.6.0.7.tar.gz</userinput>
 </screen>
@@ -532,7 +481,6 @@ Request Time in seconds: 0.007519
 					<systemitem class="osname">Linux</systemitem> distribution listed in the 
 					<link linkend="serversideinstallation-keywords-evergreen">distribution keywords</link> table.</para>
 <screen>
-<userinput>su - root</userinput>
 <userinput>cd /home/opensrf/Evergreen-ILS-1.6.0.7</userinput>
 <userinput>make -f Open-ILS/src/extras/Makefile.install [distribution]</userinput>
 </screen>
@@ -596,7 +544,7 @@ Request Time in seconds: 0.007519
 					<title>(OPTIONAL) Install the PostgreSQL Server</title>
 					<para>Since the PostgreSQL server is usually a standalone server in multi-server production systems, the prerequisite installer Makefile in the previous step 
 					does not automatically install PostgreSQL. If your PostgreSQL server is on a different system, just skip this step.</para>
-					<para>For further information on manually installing PostgreSQL, see <xref linkend="serversideinstallation-postgresql"/>.</para>
+					<para>For further information on manually installing PostgreSQL, visit the <link xl:href="http://www.postgresql.org/">PostgreSQL Site</link>.</para>
 					<para>If your PostgreSQL server will be on the same system as your Evergreen software, then as the <systemitem class="username">root</systemitem> user install the 
 					required PostgreSQL server packages:</para>
 					<screen><userinput>su - root</userinput></screen>
@@ -610,14 +558,13 @@ Request Time in seconds: 0.007519
 						<command>psql</command>. Then type <userinput>SELECT version();</userinput> to get detailed information of your version of PostgreSQL.</para>
 					</note>
 				</step>
-				<step>
-					<title>Install Perl Modules on PostgreSQL Server (OPTIONAL) </title>
+				<step performance="optional">
+					<title>Install Perl Modules on PostgreSQL Server</title>
 					<para>If PostgreSQL is running on the same system as your Evergreen software, then the Perl modules will automatically be available. Just skip this step.</para>
 					<para>Otherwise, if your PostgreSQL server is running on another system, then as the <systemitem class="username">root</systemitem> user install the following Perl 
 					modules on that system:</para>
 					<para>ensure the gcc compiler is installed:</para>
 <screen>
-<userinput>su - root</userinput>
 <userinput>apt-get install gcc</userinput>
 </screen>
 				<para>install the Perl modules</para>
@@ -627,7 +574,7 @@ Request Time in seconds: 0.007519
 <prompt>cpan></prompt> <userinput>install MARC::Record</userinput>
 <prompt>cpan></prompt> <userinput>install MARC::File::XML</userinput>
 </screen>
-				<para>For more information on installing Perl Modules vist the <link xml:href="http://www.cpan.org/">CPAN</link> site.</para>
+				<para>For more information on installing Perl Modules vist the <link xl:href="http://www.cpan.org/">CPAN</link> site.</para>
 				</step>					
 				<step>
 					<title>Update the System Dynamic Library Path</title>
@@ -646,10 +593,7 @@ Request Time in seconds: 0.007519
 					<title>Restart the PostgreSQL Server</title>
 					<para>If PostgreSQL is running on the same system as the rest of Evergreen, as the <systemitem class="username">root</systemitem> user you must restart 
 					PostgreSQL. If PostgreSQL is running on another system, you may skip this step.</para>		
-<screen>
-<userinput>su - root</userinput>
-<userinput>/etc/init.d/postgresql-[PGSQL_VERSION] restart</userinput>
-</screen>
+					<screen><userinput>/etc/init.d/postgresql-[PGSQL_VERSION] restart</userinput></screen>
 					<para>Where <literal>PGSQL_VERSION</literal> is your installed PostgreSQL version (e.g. <literal>8.3</literal>).</para>
 				</step>
 				<step xml:id="serversideinstallation-configure">
@@ -657,7 +601,6 @@ Request Time in seconds: 0.007519
 					<para>As the <systemitem class="username">opensrf</systemitem> user, return to the Evergreen build directory and use the <command>configure</command> utility to 
 					prepare for the next step of compiling and linking the software:</para>
 <screen>
-<userinput>su - opensrf</userinput>
 <userinput>cd /home/opensrf/Evergreen-ILS-1.6.0.7</userinput>
 <userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput>
 <userinput>make</userinput>
@@ -670,7 +613,6 @@ Request Time in seconds: 0.007519
 					shown below. The Staff Client will also be automatically built, but you must remember to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version 						of the Staff Client you will use to connect to the Evergreen server.</para>
 					<para>For further information on manually building the Staff Client, see <xref linkend="serversideinstallation-building-staffclient"/>.</para>
 <screen>
-<userinput>su - root</userinput>
 <userinput>cd /home/opensrf/Evergreen-ILS-1.6.0.7</userinput>
 <userinput>make STAFF_CLIENT_BUILD_ID=rel_1_6_0_7 install</userinput>
 </screen>
@@ -679,7 +621,6 @@ Request Time in seconds: 0.007519
 					in the head of the Staff Client directory <filename class="directory">/openils/var/web/xul</filename> that points to the subdirectory 
 					<filename class="directory">/server</filename> of the new Staff Client build:</para>	
 <screen>
-<userinput>su - root</userinput>
 <userinput>cd /openils/var/web/xul</userinput>
 <userinput>ln -sf rel_1_6_0_7/server server</userinput>
 </screen>
@@ -690,7 +631,6 @@ Request Time in seconds: 0.007519
 					files that you set up in a previous step when you installed and tested OpenSRF. You should also create backup copies of the old files for troubleshooting 
 					purposes. Finally, change the ownership on the installed files to the <systemitem class="username">opensrf</systemitem> user:</para>
 <screen>
-<userinput>su - root</userinput>
 <userinput>cp /openils/conf/opensrf.xml.example      /openils/conf/opensrf.xml</userinput>
 <userinput>cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml</userinput>
 <userinput>cp /openils/conf/oils_web.xml.example     /openils/conf/oils_web.xml</userinput>
@@ -713,13 +653,12 @@ Request Time in seconds: 0.007519
 							paths:</para>
 							<para>Create the database:</para>
 <screen>
-<userinput>su - postgres</userinput>
 <userinput>createdb -E UNICODE evergreen</userinput>
 <userinput>createlang plperl   evergreen</userinput>
 <userinput>createlang plperlu  evergreen</userinput>
 <userinput>createlang plpgsql  evergreen</userinput>
 </screen>
-							<para>Adjust the paths</para>
+							<para>Adjust the paths:</para>
 <screen>
 <userinput>psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/tablefunc.sql evergreen</userinput>
 <userinput>psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/tsearch2.sql  evergreen</userinput>
@@ -730,12 +669,8 @@ Request Time in seconds: 0.007519
 						<step>
 							<title>Create a new Evergreen superuser</title>
 							<para>As the <systemitem class="username">postgres</systemitem> user on the PostgreSQL system, create the new database 
-							<systemitem class="username">evergreen</systemitem> user and assign a password:</para>
-										
-<screen>
-<userinput>su - postgres</userinput>
-<userinput>createuser -P -s evergreen</userinput>
-</screen>	
+							<systemitem class="username">evergreen</systemitem> user and assign a password:</para>				
+							<screen><userinput>createuser -P -s evergreen</userinput></screen>	
 							<para>Enter the password twice for new role when prompted.</para>					
 						</step>
 						<step>
@@ -869,30 +804,26 @@ Request Time in seconds: 0.007519
 				<systemitem class="domainname">public.localhost</systemitem> domains, these will already be set to the correct values. Otherwise, search and replace to match 
 				your customized values.</para>
 				<para>The following example uses common XPath syntax on the left-hand side to indicate the approximate position needing changes within the XML file:</para>
-				<itemizedlist>
-					<listitem>/config/opensrf/username = <systemitem class="username">opensrf</systemitem></listitem>
-					<listitem>/config/opensrf/passwd = password for <systemitem class="domainname">private.localhost</systemitem> 
-					<systemitem class="username">opensrf</systemitem> user</listitem>
-					<listitem>/config/opensrf/passwd = password for <systemitem class="domainname">private.localhost</systemitem> 
-					<systemitem class="username">opensrf</systemitem>  user</listitem>
-					<listitem>/config/gateway/username = <systemitem class="username">opensrf</systemitem></listitem>
-					<listitem>/config/gateway/passwd = password for <systemitem class="domainname">public.localhost</systemitem> 
-					<systemitem class="username">opensrf</systemitem>  user</listitem>
-					<listitem>/config/routers/router/transport  (first entry, where <quote>transport/server</quote> == <systemitem class="domainname">public.localhost</systemitem>) 
+				<para>/config/opensrf/username = <systemitem class="username">opensrf</systemitem></para>
+					<para>/config/opensrf/passwd = password for <systemitem class="domainname">private.localhost</systemitem>
+					<systemitem class="username">opensrf</systemitem> user</para>
+					<para>/config/gateway/username = <systemitem class="username">opensrf</systemitem></para>
+					<para>/config/gateway/passwd = password for <systemitem class="domainname">public.localhost</systemitem> 
+					<systemitem class="username">opensrf</systemitem>  user</para>
+					<para>/config/routers/router/transport  (first entry, where <quote>transport/server</quote> == <systemitem class="domainname">public.localhost</systemitem>)</para>
 						<itemizedlist>
 							<listitem>username = <systemitem class="username">router</systemitem></listitem> 
 							<listitem>password = password for <systemitem class="domainname">public.localhost</systemitem> <systemitem class="username">router</systemitem> 
 							user</listitem>
 						</itemizedlist>
-					</listitem>
-					<listitem>/config/routers/router/transport  (second entry, where <quote>transport/server</quote> == <systemitem class="domainname">private.localhost</systemitem>) 
+					<para>/config/routers/router/transport  (second entry, where <quote>transport/server</quote> == <systemitem 
+					class="domainname">private.localhost</systemitem>) </para>
 						<itemizedlist>
 							<listitem>username = <systemitem class="username">router</systemitem></listitem> 
 							<listitem>password = password for <systemitem class="domainname">private.localhost</systemitem> <systemitem class="username">router</systemitem> 
 							user</listitem>
 						</itemizedlist>
-					</listitem>
-				</itemizedlist>
+					
 			</step>
 			<step xml:id="serversideinstallation-srfsh">
 				<title>Create Configuration Files for Users Needing <application>"srfsh"</application></title>
@@ -958,7 +889,6 @@ Request Time in seconds: 0.007519
 						<para>As the <systemitem class="username">root</systemitem> user, start the <systemitem class="service">ejabberd</systemitem> and 
 						<systemitem class="service">memcached</systemitem> services (if they are not already running):</para>
 <screen>
-<userinput>su - root</userinput>
 <userinput>/etc/init.d/ejabberd start</userinput>
 <userinput>/etc/init.d/memcached start</userinput>
 </screen>
