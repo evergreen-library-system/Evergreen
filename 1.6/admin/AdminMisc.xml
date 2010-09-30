@@ -214,63 +214,51 @@ size 50M
 			<step>
 				<para>Install the application <application>stow</application> on your system if it is not already installed. Issue the following command as 
 				the <systemitem class="username">root</systemitem> user:</para>
-				
-					<title>Installing <application>stow</application></title>
-					<screen>
-					$ apt-get install stow
-					...
-					</screen>
+<screen>
+<userinput>apt-get install stow</userinput>
+</screen>
 			</step>
 			<step>
 				<para>Download, compile, and install the latest release for PostgreSQL 8.2 (which was version <literal>8.2.12</literal> at the time of this writing). 
 				As the <systemitem class="username">root</systemitem> user, follow these steps:</para>
-				<figure>
-					<title>Installing PostgreSQL</title>
-					<screen>
-					$ wget http://wwwmaster.postgresql.org/redir/198/h/source/v8.2.17/postgresql-8.2.17.tar.bz2
-					$ tar xzf postgresql-8.2.17.tar.gz
-					$ cd postgresql-8.2.17
-					$ ./configure --with-perl --enable-integer-datetimes --with-openssl --prefix=/usr/local/stow/pgsql
-					...
-					$ make
-					...
-					$ make install
-					...
-					$ cd contrib
-					$ make
-					...
-					$ make install
-					$ cd xml2
-					$ make
-					...
-					$ make install
-					$ cd /usr/local/stow
-					$ stow pgsql
-					</screen>
-				</figure>
+				
+<screen>
+<userinput>
+wget http://wwwmaster.postgresql.org/redir/198/h/source/v8.2.17/postgresql-8.2.17.tar.bz2
+tar xzf postgresql-8.2.17.tar.gz
+cd postgresql-8.2.17
+./configure --with-perl --enable-integer-datetimes --with-openssl --prefix=/usr/local/stow/pgsql
+make
+make install
+cd contrib
+make
+make install
+cd xml2
+make
+make install
+cd /usr/local/stow
+stow pgsql
+</userinput>
+</screen>
+				
 			</step>
 			<step>
 				<para>Create the new user <systemitem class="username">postgres</systemitem> to run the PostgreSQL processes. 
 				As the <systemitem class="username">root</systemitem> user, execute this command:</para>
-				<figure>
-					<title>Adding <systemitem class="username">postgres</systemitem></title>
-					<screen>
-					$ adduser postgres
-					</screen>
-				</figure>
+				<screen><userinput>adduser postgres</userinput></screen>
 			</step>
 			<step>
 				<para>Initialize the database directory and start up PostgreSQL. As the <systemitem class="username">root</systemitem> user, follow these steps:</para>
-				<figure>
-					<title>Adding <systemitem class="username">postgres</systemitem></title>
-					<screen>
-					$ mkdir -p /usr/local/pgsql/data
-					$ chown postgres /usr/local/pgsql/data
-					$ su - postgres
-					$ initdb -D /usr/local/pgsql/data -E UNICODE --locale=C
-					$ pg_ctl -D /usr/local/pgsql/data -l /home/postgres/logfile start
-					</screen>
-				</figure>
+				
+<screen>
+<userinput>
+mkdir -p /usr/local/pgsql/data
+chown postgres /usr/local/pgsql/data
+su - postgres
+initdb -D /usr/local/pgsql/data -E UNICODE --locale=C
+pg_ctl -D /usr/local/pgsql/data -l /home/postgres/logfile start
+</userinput>
+</screen>
 				<note>
 					<para>If an error occurs during the final step above, review the path of the home directory for the 
 					<systemitem class="username">postgres</systemitem> user. It may be <literal>/var/lib/postresql</literal> instead of <literal>/home/postres</literal>.</para>
