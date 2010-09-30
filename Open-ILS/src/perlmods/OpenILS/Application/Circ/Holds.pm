@@ -647,6 +647,10 @@ sub cancel_hold {
 	delete_hold_copy_maps($self, $e, $hold->id);
 
 	$e->commit;
+
+    $U->create_events_for_hook('hold_request.cancel.staff', $hold, $hold->pickup_lib)
+        if $e->requestor->id != $hold->usr;
+
 	return 1;
 }
 
