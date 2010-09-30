@@ -281,9 +281,9 @@ name='Default' csstype='color'/&gt;
 		<para>The Slimpac is the an alternative OPAC display for browsers or devices without JavaScript or which may have screen size limitations. There is both a simple and advanced search 
 		option for the Slimpac.</para> 
 		<para>The html files for customizing the Slimpac search display are located in the folder <filename class="directory">/openils/var/web/opac/extras/slimpac</filename>.</para>
-		<para><filename>start.html</filename> is the basic search display and <filename>advanced.html</filename> is the display for the advanced search option in the Slimpac.</para>  
-		<para>By default, the Slimpac files include the same locale dtd as the regular OPAC (<filename>opac.dtd</filename>). However the slimpac files do not use the same CSS files as the 
-		regular OPAC which means that if you change the OPAC color scheme for the OPAC, you must also change the Slimpac colors.</para>
+		<para><filename>start.html</filename> is the basic search display and <filename>advanced.html</filename> is the display for the advanced search option.</para>  
+		<para>By default, the Slimpac files include the same locale dtd as the regular OPAC (<filename>opac.dtd</filename>). However, the slimpac files do not use the same CSS files as the 
+		regular OPAC which means that if you change the OPAC color scheme, you must also edit the Slimpac files.</para>
 	</section>
 	<section xml:id="integratingsearchforms">
 		<title>Integrating a Evergreen Search Form on a Web Page</title>
