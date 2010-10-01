@@ -1310,6 +1310,120 @@ sub print_hold_pull_list {
         undef, "ahr.format.pull_list", $sorted_holds,
         $org_id, undef, undef, $client
     );
+
+}
+
+__PACKAGE__->register_method(
+    method    => "print_hold_pull_list_stream",
+    stream   => 1,
+    api_name  => "open-ils.circ.hold_pull_list.print.stream",
+    signature => {
+        desc   => 'Returns a stream of fleshed holds',
+        params => [
+            { desc => 'Authtoken', type => 'string'},
+            { desc => 'Hash of optional param: Org unit ID (defaults to workstation org unit), limit, offset, sort (array of: acplo.position, call_number, request_time)',
+              type => 'object'
+            },
+        ],
+        return => {
+            desc => 'A stream of fleshed holds',
+            type => 'object'
+        }
+    }
+);
+
+sub print_hold_pull_list_stream {
+    my($self, $client, $auth, $params) = @_;
+
+    my $e = new_editor(authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    delete($$params{org_id}) unless (int($$params{org_id}));
+    delete($$params{limit}) unless (int($$params{limit}));
+    delete($$params{offset}) unless (int($$params{offset}));
+
+    $$params{org_id} = (defined $$params{org_id}) ? $$params{org_id}: $e->requestor->ws_ou;
+    return $e->die_event unless $e->allowed('VIEW_HOLD', $$params{org_id });
+
+    my $sort = [];
+    if ($$params{sort} && @{ $$params{sort} }) {
+        for my $s (@{ $$params{sort} }) {
+            if ($s eq 'acplo.position') {
+                push @$sort, {
+                    "class" => "acplo", "field" => "position",
+                    "transform" => "coalesce", "params" => [999]
+                };
+            } elsif ($s eq 'call_number') {
+                push @$sort, {"class" => "acn", "field" => "label"};
+            } elsif ($s eq 'request_time') {
+                push @$sort, {"class" => "ahr", "field" => "request_time"};
+            }
+        }
+    } else {
+        push @$sort, {"class" => "ahr", "field" => "request_time"};
+    }
+
+    my $holds_ids = $e->json_query(
+        {
+            "select" => {"ahr" => ["id"]},
+            "from" => {
+                "ahr" => {
+                    "acp" => { 
+                        "field" => "id",
+                        "fkey" => "current_copy",
+                        "filter" => {
+                            "circ_lib" => $$params{org_id}, "status" => [0,7]
+                        },
+                        "join" => {
+                            "acn" => {
+                                "field" => "id",
+                                "fkey" => "call_number" 
+                            },
+                            "acplo" => {
+                                "field" => "org",
+                                "fkey" => "circ_lib", 
+                                "type" => "left",
+                                "filter" => {
+                                    "location" => {"=" => {"+acp" => "location"}}
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "where" => {
+                "+ahr" => {
+                    "capture_time" => undef,
+                    "cancel_time" => undef,
+                    "-or" => [
+                        {"expire_time" => undef },
+                        {"expire_time" => {">" => "now"}}
+                    ]
+                }
+            },
+            (@$sort ? (order_by => $sort) : ()),
+            ($$params{limit} ? (limit => $$params{limit}) : ()),
+            ($$params{offset} ? (offset => $$params{offset}) : ())
+        }, {"subquery" => 1}
+    ) or return $e->die_event;
+
+    $logger->info("about to stream back " . scalar(@$holds_ids) . " holds");
+
+    $client->respond(
+        $e->retrieve_action_hold_request([
+            $_->{"id"}, {
+                "flesh" => 3,
+                "flesh_fields" => {
+                    "ahr" => ["usr", "current_copy"],
+                    "acp" => ["location", "call_number"],
+                    "acn" => ["record"]
+                }
+            }
+        ])
+    ) foreach @$holds_ids;
+
+    $e->disconnect;
+    undef;
 }
 
 

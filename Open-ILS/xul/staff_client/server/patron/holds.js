@@ -327,6 +327,43 @@ patron.holds.prototype = {
                             }
                         }
                     ],
+                    'cmd_holds_print_alt' : [
+                        ['command'],
+                        function() {
+                            try {
+                                var content_params = {
+                                    "session": ses(),
+                                    "authtime": ses("authtime"),
+                                    "no_xulG": false,
+                                    "show_nav_buttons": true,
+                                    "show_print_button": false
+                                };
+                                ["url_prefix", "new_tab", "set_tab",
+                                    "close_tab", "new_patron_tab",
+                                    "set_patron_tab", "volume_item_creator",
+                                    "get_new_session",
+                                    "holdings_maintenance_tab", "set_tab_name",
+                                    "open_chrome_window", "url_prefix",
+                                    "network_meter", "page_meter",
+                                    "set_statusbar", "set_help_context"
+                                ].forEach(function(k) {
+                                    content_params[k] = xulG[k];
+                                });
+
+                                var loc = urls.XUL_BROWSER + "?url=" + window.escape(
+                                    xulG.url_prefix("/opac/extras/circ/alt_pull_list.html")
+                                );
+                                xulG.new_tab(
+                                    loc, {
+                                        "tab_name": "Printable Pull List", /* XXX i18n */
+                                        "browser": false
+                                    }, content_params
+                                );
+                            } catch (E) {
+                                g.error.sdump("D_ERROR", E);
+                            }
+                        }
+                    ],
                     'cmd_holds_print' : [
                         ['command'],
                         function() {
