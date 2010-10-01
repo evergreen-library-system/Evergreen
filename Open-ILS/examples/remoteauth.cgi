@@ -69,7 +69,7 @@ if (!($u || $usrname || $barcode) || !$p) {
 	if ($seed) {
 		my $response = OpenSRF::AppSession
 			->create('open-ils.auth')
-			->request( 'open-ils.auth.authenticate.complete', { $nametype => $u, password => md5_hex($seed . md5_hex($p)), type => 'temp' })
+			->request( 'open-ils.auth.authenticate.complete', { $nametype => $u, password => md5_hex($seed . md5_hex($p)), type => 'opac' })
 			->gather(1);
 		if ($response->{payload}->{authtoken}) {
 			my $user = OpenSRF::AppSession
