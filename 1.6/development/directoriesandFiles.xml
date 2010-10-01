@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="filesandvdirectories" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<info>
+        	<title>Evergreen File Structure and Configuration Files</title>
+		<abstract><para>This section will describe tha basic file structure and cover key configuration files. Understanding the directory and file structure of Evergreen will allow you 
+		to be able to customize your Evergreen software and take full advantage of many features.</para></abstract>
+	</info>
+	
+	<section xml:id="EvergreenDirectoryStructure">	
+		<title>Evergreen Directory Structure</title>
+		<para>This is the top level directory structure of Evergreen located in the default installation directory <filename class="directory">/openils</filename>:</para>
+		<table>
+			<title xml:id="EvergreenDirectoryStructureTable">Evergreen Directory Structure</title>
+			<tgroup align="left" cols="2" colsep="1" rowsep="1">
+				<colspec colnum="1" colwidth="1.0*"/>
+				<colspec colnum="2" colwidth="3.0*"/>
+				<thead>
+					<row>
+						<entry>Directory</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><filename class="directory">bin</filename></entry>
+						<entry>Contains many critical Perl and shell scripts such as <filename class="directory">autogen.sh</filename> and 
+						<filename class="directory">oils.ctl</filename>. </entry>
+					</row>
+					<row>
+						<entry><filename class="directory">conf</filename></entry>
+						<entry>Contains the configuration scripts including the 2 most important base configuration files <filename>opensrf_core.xml</filename> and 							<filename>opensrf.xml</filename>.</entry>
+					</row>
+					<row>
+						<entry><filename class="directory">include</filename></entry>
+						<entry>Contains the header files used by the scripts written in C.</entry>
+					</row>
+					<row>
+						<entry><filename class="directory">lib</filename></entry>
+						<entry>Contains the core code of Evergreen including the C code and perl modules. In particular, the perl modules in the 
+						subdirectory<filename class="directory">perl5/OpenILS</filename>  
+						are of particular interest to developers. </entry>
+					</row>
+					<row>
+						<entry><filename class="directory">var</filename></entry>
+						<entry>Largest directory and includes the web directories (<filename class="directory">web</filename>), lock pid fies 
+						(<filename class="directory">run</filename>), circ setting files (<filename class="directory">circ</filename>) templates 
+						(<filename class="directory">templates</filename>) and log (<filename class="directory">templates</filename> and 
+						<filename class="directory">data</filename>) files.</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+		<section xml:id="EvergreenFiles">	
+			<title>Evergreen Configuration Files</title>
+			
+			<table>
+			<title xml:id="EvergreenConfigurationFilesTable">Key Evergreen Configuration Files</title>
+			<tgroup align="left" cols="2" colsep="1" rowsep="1">
+				<colspec colnum="1" colwidth="1.0*"/>
+				<colspec colnum="2" colwidth="3.0*"/>
+				<thead>
+					<row>
+						<entry>File</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><filename>/openils/conf/opensrf_core.xml</filename></entry>
+						<entry>Files which controls which Evergreen services are run on the public and private routers. For a service to run, it must be registered in this file. 							This file also controls the loglevel and points to the log file for the srvices. An Evergreen restart is required for changes to take effect.</entry>
+					</row>
+					<row>
+						<entry><filename>/openils/conf/opensrf.xml</filename></entry>
+						<entry>Use this file to set directory locations, the default locale, default notice settings and settings for all Evergreen services. 
+						It is critical for any administrator to understand the settings in this file. An Evergreen restart is required for changes to take effect.</entry>
+					</row>
+					<row>
+						<entry><filename>/openils/conf/fm_IDL.xml</filename></entry>
+						<entry>Used for linking the OpenSRF/Evergreen services to the Evergreen database tables. An Evergreen restart is required for changes to take 
+						effect. Running autogen.sh is also required.</entry>
+					</row>
+					<row>
+						<entry>/etc/apache2/eg_vhost.conf</entry>
+						<entry>Controls the Evergreen virtual site. Allows to configure the skin for the OPAC or configure  various directories within the Apache webserver. 
+						An Apache restart is requred for changes to this file to take effect.</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+		<table>
+			<title xml:id="EvergreenScriptsTable">Useful Evergreen Scripts</title>
+			<tgroup align="left" cols="2" colsep="1" rowsep="1">
+				<colspec colnum="1" colwidth="1.0*"/>
+				<colspec colnum="2" colwidth="3.0*"/>
+				<thead>
+					<row>
+						<entry>File</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><filename>/openils/bin/autogen.sh</filename></entry>
+						<entry>Used to update changes to org units and the fm_IDL.xml file. Will generate web and staff client pages based on contents of files and 
+						Evergreen database entries.</entry>
+					</row>
+					<row>
+						<entry><filename>/openils/bin/clark-kent.pl</filename></entry>
+						<entry>Perl script for starting the reporter.</entry>
+					</row>
+					<row>
+						<entry><filename>/openils/bin/action_trigger_runner.pl</filename></entry>
+						<entry>Perl script used to trigger the actions set up in the action trigger tool in the staff client.</entry>
+					</row>
+					<row>
+						<entry>/openils/bin/osrf_ctl.sh</entry>
+						<entry>The start up script for OpenSF and Evergreen. </entry>
+					</row>
+					<row>
+						<entry>/openils/bin/reshelving_complete.srfsh</entry>
+						<entry>Make items in <quote>reshelving</quote> mode for a certain amount of time become <quote>available</quote>. </entry>
+					</row>
+					<row>
+						<entry>/openils/bin/srfsh</entry>
+						<entry>Used to start the OpenSRF shell.</entry>
+					</row>
+					
+				</tbody>
+			</tgroup>
+		</table>
+		</section>
+	</section>
+</chapter>

@@ -96,6 +96,48 @@
 				<para>To start a search, enter a term in the search box at the top of the page and click <emphasis>Go!</emphasis></para>
 				<para><emphasis role="bold">If using a public computer be sure to log out!</emphasis></para>
 		</simplesect>
+		<simplesect xml:id="myaccountpasswordreset">
+				<title>Password Reset</title>
+					<para>Evergreen 1.6.1 introduced a new feature to allow patrons to reset forgotten passwords from the My Account login screen.</para>  
+					<para>To reset your password:</para> 
+					<Procedure>
+					<step>
+						<para>click on the the <guibutton>Forgot your password?</guibutton> link located under the <guibutton>login</guibutton> button</para>
+					</step>
+					<step>
+						<para>Fill in the <guilabel>Barcode</guilabel> and <guilabel>User name</guilabel> text boxes.</para>
+					</step>
+					<step>
+						<para>A message should appear similar to this:</para>
+						 <para>
+							<mediaobject>
+								<imageobject>
+									<imagedata width="100%" scalefit="1" fileref="../media/passwordresetmessage.png"/>
+								</imageobject>
+							</mediaobject>
+						</para>
+
+					</step>
+					<step>
+						<para>An email will be sent to the email addressed you have registered with your Evergreen library. You should click on the link included in the email 
+						to open the password reset page.</para>
+						<note><para>You will need to have an email account set up in Evergreen for this to work. Processing time may vary.</para></note>
+					</step>
+						<step>
+						<para>At the reset email page you should enter the new password in the <guilabel>New password</guilabel> field and re-enter it in the 
+						<guilabel>Re-enter new password</guilabel> field.</para>
+						
+					</step>
+					<step>
+						<para>Click <guibutton>Submit</guibutton></para>
+					</step>
+					<step>
+						<para>A message should appear on the page indicating that your password has been reset.</para>
+					</step>
+					<step>
+						<para>Login to your account with your new password.</para>
+					</step>
+		</simplesect>
 		<simplesect xml:id="myaccountsummary">
 				<title>Account Summary</title>
 					<para>
