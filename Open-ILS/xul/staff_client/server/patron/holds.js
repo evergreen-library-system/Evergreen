@@ -351,7 +351,7 @@ patron.holds.prototype = {
                                 });
 
                                 var loc = urls.XUL_BROWSER + "?url=" + window.escape(
-                                    xulG.url_prefix("/opac/extras/circ/alt_pull_list.html")
+                                    xulG.url_prefix("/opac/extras/circ/alt_pull_list.html").replace("http:","https:")
                                 );
                                 xulG.new_tab(
                                     loc, {
