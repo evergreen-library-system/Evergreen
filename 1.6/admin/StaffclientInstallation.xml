@@ -3,7 +3,7 @@
 	<section xml:id="serversideinstallation-prebuilt-staffclient">
 		<title>Installing a Pre-Built Staff Client</title>
 		<para>You can install the Staff Client from pre-built images and packages without actually having to first build it. Pre-built packages are currently available for Windows, MAC OS X, and Linux. If you need to manually build the Staff Client, see the section <link linkend="serversideinstallation-building-staffclient">"Manually Building the Staff Client"</link>.</para>
-		<section>
+		<simplesect>
 			<title>Installing on Windows</title>
 			<para>A standard Microsoft Windows installer that contains the current version of the Staff Client is available from the downloads section of the Evergreen website at <ulink url="http://www.evergreen-ils.org/downloads.php">http://www.evergreen-ils.org/downloads.php</ulink>. Download the staff client installer, then run it. A screen that looks similar to this should appear:</para>
 			<figure>
@@ -26,8 +26,8 @@
 			</figure>
 			<para>First, configure the server you would like to connect to in the <emphasis role="bold">Server</emphasis> section. For example, the PINES demo system is <emphasis role="bold">demo.gapines.org</emphasis>. After selecting a server, click the <emphasis role="bold">Re-Test Server</emphasis> button.</para>
 			<para>Because this is the initial run of the staff client, the <emphasis role="bold">Workstation</emphasis> section in the upper-right states: <emphasis role="bold">Not yet configured for the specified server</emphasis>. The first thing that must be done to the Staff Client on every workstation is to assign it a workstation name. This is covered in the section <link linkend="serversideinstallation-workstationnames">"Assigning Workstation Names"</link>.</para>
-		</section>
-		<section>
+		</simplesect>
+		<simplesect>
 			<title>Installing on Mac OS X</title>
 			<para>A Mac package that contains the current version of the Staff Client is available for use with XULRunner.</para>
 			<section>
@@ -205,8 +205,8 @@
 					<listitem>Put a Mac format icon file named <emphasis>Evergreen.icns</emphasis> in Resources.</listitem>
 				</orderedlist>
 			</section>
-		</section>
-		<section xml:id="serversideinstallation-staffclient">
+		</simplesect>
+		<simplesect xml:id="serversideinstallation-staffclient">
 			<title>Installing on Linux</title>
 			<section>
 				<title>Quick Upgrade of the Staff Client</title>
@@ -430,8 +430,8 @@
 				<title>Running the Staff Client over an SSH Tunnel</title>
 				<para>The Staff Client can use an SSH tunnel as a SOCKS 5 proxy. For more details, see the section <link linkend="serversideinstallation-proxy">Configuring a Proxy for the Staff Client</link>.</para>
 			</section>
-		</section>
-		<section xml:id="serversideinstallation-workstationnames">
+		</simplesect>
+		<simplesect xml:id="serversideinstallation-workstationnames">
 			<title>Assigning Workstation Names</title>
 			<para>The Staff Client must be assigned to a library and given a unique name before it will connect fully to the Evergreen server. The only restriction is that the workstation's name must be unique within the assigned library. Make sure to select a workstation name that you will remember later, and reflects the role, purpose, and/or location of a particular computer. These names will come up later in statistical reporting, and can also be handy when troubleshooting.</para>
 			<figure>
@@ -462,12 +462,12 @@
 				</mediaobject>
 			</figure>
 			<para>You are now ready to log into the Staff Client for the first time. Type in your password again, and hit <emphasis role="bold">Login</emphasis>.</para>
-		</section>
+		</simplesect>
 	</section>
 	<section xml:id="serversideinstallation-building-staffclient">
 		<title>Manually Building the Staff Client</title>
 		<para>The Staff Client is automatically built by default as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software. See the section <link linkend="serversideinstallation-compilingevergreen">"Compile, Link and Install Evergreen"</link> to review details related to building the Staff Client in the final compile/link/install phase of the default Evergreen build process.</para>
-		<section>
+		<simplesect>
 			<title>Building the Staff Client</title>
 			<para>You can also manually build the Staff Client by using the <emphasis>make</emphasis> utility in the Staff Client source directory (e.g., the directory <emphasis>/home/opensrf/Evergreen-ILS-1.6.0.x/Open-ILS/xul/staff_client</emphasis> for the current Evergreen version). There are a number of possible options to manually build special versions of the Staff Client on a Linux system. Following is a list of environment variables that can be passed to <emphasis>make</emphasis> to influence the manual build process:</para>
 			<section>
@@ -547,8 +547,8 @@
 					</screen>
 				</figure>
 			</section>
-		</section>
-		<section>
+		</simplesect>
+		<simplesect>
 			<title>Advanced Build Options</title>
 			<para>In addition to the basic options listed above, there are a number of advanced options for building the Staff Client. Most are target names for the <emphasis>make</emphasis> utility and require that you build the Staff Client from its source directory. See the following table for a list of possible <emphasis>make</emphasis> target keywords:</para>
 			<table>
@@ -679,8 +679,8 @@
 					<para>For more information on Automatic Updates, see the section <link linkend="serversideinstallation-staffclient-autoupdate">"Automatic Updates"</link>.</para>
 				</listitem>
 			</itemizedlist>
-		</section>
-		<section>
+		</simplesect>
+		<simplesect>
 			<title>Installing and Activating a Manually Built Staff Client</title>
 			<para>The Staff Client is automatically built, installed and activated as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software. However, if you manually build the Staff Client, then you need to take additional steps to properly install and activate it. You also have the option of installing the Staff Client on the same machine it was built on, or on a different machine.</para>
 			<para>Assuming you have already built the Staff Client, and that your installation is in the directory <emphasis>/openils/var/web/xul</emphasis>, as the <emphasis role="bold">opensrf</emphasis> user, change directory to the Staff Client source directory, then execute the following commands:</para>
@@ -693,8 +693,8 @@
 				$ cp -R build/server "/openils/var/web/xul/$(cat build/BUILD_ID)"
 				</screen>
 			</figure>
-		</section>
-		<section>
+		</simplesect>
+		<simplesect>
 			<title>Packaging the Staff Client</title>
 			<para>Once the Staff Client has been built, you can create several forms of client packages by using some targetted <emphasis>make</emphasis> commands in the Staff Client source directory.</para>
 			<itemizedlist>
@@ -774,8 +774,8 @@
 					</figure>
 				</listitem>
 			</itemizedlist>
-		</section>
-		<section xml:id="serversideinstallation-staffclient-autoupdate">
+		</simplesect>
+		<simplesect xml:id="serversideinstallation-staffclient-autoupdate">
 			<title>Staff Client Automatic Updates</title>
 			<para>It is possible to set up support for automatic Staff Client updates, either during the normal Evergreen server-side build process, or by manually building the Staff Client with certain special options.</para>
 			<section>
@@ -885,8 +885,8 @@
 					</screen>
 				</figure>
 			</section>
-		</section>
-		<section>
+		</simplesect>
+		<simplesect>
 			<title>Other tips</title>
 			<section>
 				<title>Multiple workstations on one install</title>
@@ -909,7 +909,7 @@
 				<para>This may be confusing if you are not careful, but you can log in to multiple Evergreen servers at the same time, or a single Evergreen server multiple times. In either case you will need to create an additional profile for each additional server or workstation you want to log in as (see previous tip).</para>
 				<para>Once you have created the profiles, run <emphasis>XULRunner</emphasis> with the option "-no-remote" (in addition to "-profilemanger" or "-P" if neeeded). Instead of <emphasis>XULRunner</emphasis> opening a new login window on your existing session it will start a new session instead, which can then be logged in to a different server or workstation ID.</para>
 			</section>
-		</section>
+		</simplesect>
 	</section>
 	<section xml:id="serversideinstallation-running-staffclient">
 		<title>Running the Staff Client</title>
@@ -925,7 +925,7 @@
 	</section>
 	<section xml:id="serversideinstallation-proxy">
 		<title>Configuring a Proxy for the Staff Client</title>
-		<section>
+		<simplesect>
 			<title>Why Use a Proxy for the Staff Client?</title>
 			<para>There are several reasons for sending network traffic for the Staff Client through an SSH proxy:</para>
 			<itemizedlist>
@@ -936,8 +936,8 @@
 					<para>You may wish to <emphasis role="bold">improve security</emphasis> where Staff Client traffic may be susceptible to network eavesdropping. This is especially true when wireless is otherwise the best option for connecting a staff machine to the network.</para>
 				</listitem>
 			</itemizedlist>
-		</section>
-		<section>
+		</simplesect>
+		<simplesect>
 			<title>Setting Up an SSH Tunnel</title>
 			<para>You will need a server that allows you to log in via SSH and has network access to the Evergreen server you want to reach. You will use your username and password for that SSH server to set up a tunnel.</para>
 			<para>For Windows users, one good solution is the open-source utility <ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</ulink>, a free telnet/SSH client]]. When setting up a PuTTY session:</para>
@@ -957,8 +957,8 @@
 				<listitem>Use the menu on the left to go back to "Session", and enter the host name of the SSH server.</listitem>
 				<listitem>A window will open up so that you can enter your username and password. Once you are logged in, the tunnel is open.</listitem>
 			</orderedlist>
-		</section>
-		<section>
+		</simplesect>
+		<simplesect>
 			<title>Configuring the Staff Client to Use the SSH Tunnel</title>
 			<para>In order to tell the Staff Client that all traffic should be sent through the SSH tunnel just configured, you must edit the file <emphasis>C:\Program Files\Evergreen Staff Client\greprefs\all.js</emphasis>. Search this file for the word <emphasis role="bold">socks</emphasis> to find the appropriate section for the following changes.</para>
 			<figure>
@@ -983,6 +983,6 @@
 				</mediaobject>
 			</figure>
 			<para>If everything is working correctly, you should now be able to run the Staff Client and all its data will be sent encrypted through the SSH tunnel you have just configured.</para>
-		</section>
+		</simplesect>
 	</section>
 </chapter>
