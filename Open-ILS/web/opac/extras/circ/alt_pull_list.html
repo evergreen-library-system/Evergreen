@@ -1,0 +1,139 @@
+<html>
+    <head>
+        <title>Printable Pull List</title>
+        <style type="text/css">
+            @import url('/js/dojo/dojo/resources/dojo.css');
+            @import url('/js/dojo/dijit/themes/tundra/tundra.css');
+            @import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
+            @import url('/opac/skin/default/css/layout.css');
+        </style>
+        <style type="text/css">
+           /* html, body {
+                height: 100%;
+                width: 100%;
+                margin: 0px 0px 0px 0px;
+                padding: 0px 0px 0px 0px;
+                overflow: hidden;
+            } */
+            td {
+                padding-right: 1em;
+                padding-bottom: 1em;
+                border-bottom: 1px #999 dashed;
+            }
+            th {
+                text-align: left; font-weight: bold;
+                border-bottom: 1px #000 solid;
+                border-right: 1px #000 solid;
+                padding: 0.5em;
+            }
+        </style>
+        <!-- The OpenSRF API writ JS -->
+        <script language='javascript' src='/opac/common/js/utils.js' type='text/javascript'></script>
+        <script language='javascript' src='/opac/common/js/Cookies.js' type='text/javascript'></script>
+        <script language='javascript' src='/opac/common/js/CGI.js' type='text/javascript'></script>
+        <script language='javascript' src='/opac/common/js/JSON_v1.js' type='text/javascript'></script>
+        <!-- Dojo goodness -->
+        <script type="text/javascript">
+            var djConfig = {parseOnLoad:true,isDebug:false,AutoIDL:['aou','aout','pgt','ahr','acp','acn']};
+            var sort_order = ["acplo.position", "call_number", "request_time"];
+        </script>
+        <script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" src="/js/dojo/dojo/openils_dojo.js"></script>
+        <script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
+        <script type="text/javascript" src="/js/dojo/openils/AutoIDL.js"></script>
+        <script type="text/javascript" src="/js/dojo/openils/User.js"></script>
+        <script type="text/javascript" src="/js/dojo/openils/Util.js"></script>
+        <script type="text/javascript">
+            dojo.require("dojo.cookie");
+            dojo.require("dojox.xml.parser");
+            dojo.require("openils.BibTemplate");
+            dojo.require("openils.widget.ProgressDialog");
+
+            function my_init() {
+                var cgi = new CGI();
+                var ses = (typeof ses == "function" ? ses() : 0) ||
+                    cgi.param("ses") || dojo.cookie("ses");
+                var user = new openils.User({"authtoken": ses});
+
+                progress_dialog.show(true);
+                fieldmapper.standardRequest(
+                    ['open-ils.circ','open-ils.circ.hold_pull_list.print.stream'],
+                    { async : true,
+                      params: [
+                        user.authtoken,
+                        { org_id   : cgi.param('o'),
+                          limit    : cgi.param('limit'),
+                          offset   : cgi.param('offset'),
+                          sort     : sort_order
+                        }
+                      ],
+                      onresponse : function (r) {
+                        var hold_fm = openils.Util.readResponse(r);
+
+                        // hashify the hold
+                        var hold = hold_fm.toHash(true);
+                        hold.current_copy = hold_fm.current_copy().toHash(true);
+                        hold.current_copy.location = hold_fm.current_copy().location().toHash(true);
+                        hold.current_copy.call_number = hold_fm.current_copy().call_number().toHash(true);
+                        hold.current_copy.call_number.record = hold_fm.current_copy().call_number().record().toHash(true);
+
+                        // clone the template's html
+                        var tr = dojo.clone(
+                            dojo.query("tr", dojo.byId('template'))[0]
+                        );
+                        dojo.query("td:not([type])", tr).forEach(
+                            function(td) {
+                                td.innerHTML =
+                                    dojo.string.substitute(td.innerHTML, hold);
+                            }
+                        );
+
+                        new openils.BibTemplate({
+                            root : tr,
+                            xml  : dojox.xml.parser.parse(hold.current_copy.call_number.record.marc),
+                            delay: false
+                        });
+
+                        dojo.place(tr, "target");
+
+
+                      },
+                    oncomplete : function () {
+                     progress_dialog.hide(); window.print() }
+                    }
+                );
+            }
+            dojo.addOnLoad(my_init);
+        </script>
+    </head>
+    <body class='tundra'>
+
+        <div dojoType="openils.widget.ProgressDialog" jsId="progress_dialog"></div>
+<!-- START OF TEMPLATE SECTION -->
+
+        <table>
+            <tbody id='target'>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Shelving Location</th>
+                    <th>Call Number</th>
+                    <th>Barcode</th>
+                </tr>
+            </tbody>
+            <tbody id='template' class='hide_me'>
+                <tr>
+                    <td type='opac/slot-data' query='datafield[tag=245]'></td>
+                    <td type='opac/slot-data' query='datafield[tag^=1]' limit='1'> </td>
+                    <td>${current_copy.location.name}</td>
+                    <td>${current_copy.call_number.label}</td>
+                    <td>${current_copy.barcode}</td>
+                </tr>
+            </tbody>
+        </table>
+
+<!-- END OF TEMPLATE SECTION -->
+
+
+    </body>
+</html>
