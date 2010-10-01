@@ -108,6 +108,7 @@
 			<title>Development</title>
 		</info>
 		<xi:include href="development/development_intro.xml"/>
+		<xi:include href="development/directoriesandFiles.xml"/>	
 		<xi:include href="development/customize_opac.xml"/>
 		<xi:include href="development/OpenSRF_intro.xml"/>
 		<xi:include href="development/datamodelsandaccess.xml"/>
