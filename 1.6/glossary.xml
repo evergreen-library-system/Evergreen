@@ -15,7 +15,12 @@
 	</glossdiv>
 	<glossdiv>
 		<title>B</title>
-		<glossentry></glossentry>
+		<glossentry id="Book Bags">
+			<glossterm>Book Bags</glossterm>
+			<glossdef>
+				<caution>PLEASE ADD CONTENT</caution>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>C</title>
@@ -79,6 +84,12 @@
 				<para>(Internet Protocol address) A numerical label consisting of four numbers separated by periods (e.g., "192.168.1.15") assigned to individual members of networked computing systems. It uniquely identifies each system on the network and allows controlled communication between such systems. The numerical label scheme must adhere to a strictly defined naming convention that is currently defined and overseen by the Internet Corporation for Assigned Names and Numbers ("ICANN").</para>
 			</glossdef>
 		</glossentry>
+		<glossentry id="Item Buckets">
+			<glossterm>Item Buckets</glossterm>
+			<glossdef>
+				<caution>PLEASE ADD CONTENT</caution>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>J</title>
@@ -100,6 +111,12 @@
 	</glossdiv>
 	<glossdiv>
 		<title>M</title>
+		<glossentry id="MARC">
+			<glossterm>MARC</glossterm>
+			<glossdef>
+				<caution>PLEASE ADD CONTENT</caution>
+			</glossdef>
+		</glossentry>
 		<glossentry id="McCoy">
 			<glossterm>McCoy</glossterm>
 			<glossdef>
@@ -168,6 +185,12 @@
 	</glossdiv>
 	<glossdiv>
 		<title>S</title>
+		<glossentry id="SIP2">
+			<glossterm>SIP2</glossterm>
+			<glossdef>
+				<caution>PLEASE ADD CONTENT</caution>
+			</glossdef>
+		</glossentry>
 		<glossentry id="srfsh">
 			<glossterm>srfsh</glossterm>
 			<glossdef>
@@ -246,6 +269,12 @@
 				<glossseealso otherterm="virtualization"/>
 			</glossdef>
 		</glossentry>
+		<glossentry id="Volume Buckets">
+			<glossterm>Volume Buckets</glossterm>
+			<glossdef>
+				<caution>PLEASE ADD CONTENT</caution>
+			</glossdef>
+		</glossentry>
 		<glossentry id="vmware">
 			<glossterm>VMware</glossterm>
 			<glossdef>
@@ -304,6 +333,11 @@
 	</glossdiv>
 	<glossdiv>
 		<title>Z</title>
-		<glossentry></glossentry>
+		<glossentry id="Z39.50">
+			<glossterm>Z39.50</glossterm>
+			<glossdef>
+				<caution>PLEASE ADD CONTENT</caution>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 </glossary>
