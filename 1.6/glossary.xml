@@ -117,6 +117,12 @@
 				<caution>PLEASE ADD CONTENT</caution>
 			</glossdef>
 		</glossentry>
+		<glossentry id="MARCXML">
+			<glossterm>MARCXML</glossterm>
+			<glossdef>
+				<caution>PLEASE ADD CONTENT</caution>
+			</glossdef>
+		</glossentry>
 		<glossentry id="McCoy">
 			<glossterm>McCoy</glossterm>
 			<glossdef>
@@ -195,6 +201,12 @@
 			<glossterm>srfsh</glossterm>
 			<glossdef>
 				<para>A command language interpreter (shell) that executes commands read from the standard input. It is used to test the Open Service Request Framework (OpenSRF).</para>
+			</glossdef>
+		</glossentry>
+		<glossentry id="SRU">
+			<glossterm>SRU</glossterm>
+			<glossdef>
+				<caution>PLEASE ADD CONTENT</caution>
 			</glossdef>
 		</glossentry>
 		<glossentry id="ssh">
@@ -329,7 +341,18 @@
 	</glossdiv>
 	<glossdiv>
 		<title>Y</title>
-		<glossentry></glossentry>
+		<glossentry id="YAZ">
+			<glossterm>YAZ</glossterm>
+			<glossdef>
+				<caution>PLEASE ADD CONTENT</caution>
+			</glossdef>
+		</glossentry>
+		<glossentry id="yaz-client">
+			<glossterm>yaz-client</glossterm>
+			<glossdef>
+				<caution>PLEASE ADD CONTENT</caution>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>Z</title>
