@@ -9,7 +9,7 @@
 	</info>
 	<para>Installing, configuring and testing the Evergreen server-side software is straightforward with the current stable software release. See 
 		<xref linkend="serversideinstallation-all"/> for instructions tailored to installing on some particular distributions of the <systemitem class="osname">Linux</systemitem> 
-		operating system. Earlier software distributions are described in <xref linkend="serversideinstallation-previousversions"/>.</para>
+		operating system.</para>
 	<para>The current version of the Evergreen server-side software runs as a native application on any of several well-known <systemitem class="osname">Linux</systemitem> 
 		distributions (e.g., <systemitem class="osname">Ubuntu</systemitem> and <systemitem class="osname">Debian</systemitem>). It does not currently run as a native application 
 		on the <systemitem class="osname">Microsoft Windows</systemitem> operating system (e.g., <systemitem class="osname">WindowsXP</systemitem>, 
@@ -1314,140 +1314,15 @@ Request Time in seconds: 1.336568
 				</section>
 			</simplesect>
 		</section>
-		<section xml:id="serversideinstallation-postgresql">
-			<title>Installing PostgreSQL</title>
-			<para>In production Evergreen systems, the PostgreSQL database server may reside on the same system on which Evergreen is installed or on another standalone system so, by default, PostgreSQL is not automatically installed along with Evergreen. This section details the steps needed to manually install PostgreSQL on a <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem> system.</para>
-			<para>If your PostgreSQL server will be on the same system as your Evergreen software, return to the previous section <xref linkend="serversideinstallation-postgresql-default"/> and follow those instructions. Otherwise, to manually install PostgreSQL on a system, continue with the instructions below.</para>
-			<note>
-				<para>Some <systemitem class="osname">Linux</systemitem> distributions, such as <systemitem class="osname">Debian Etch (4.0)</systemitem>, do not offer PostgreSQL version 8.2 as an installable package. Before you continue, examine the software dependencies listed in <xref linkend="serversideinstall-software-dependencies"/> to ensure that your Linux distribution supports the required version of PostgreSQL.</para>
-			</note>
-			<procedure>
-				<step>
-					<para>Install the application <application>"stow"</application> on your system if it is not already installed. Issue the following command as the <systemitem class="username">root</systemitem> user:</para>
-					<figure>
-						<title>Installing <application>"stow"</application></title>
-						<screen>
-						$ apt-get install stow
-						...
-						</screen>
-					</figure>
-				</step>
-				<step>
-					<para>Download, compile, and install the latest release for PostgreSQL 8.2 (which was version <literal>8.2.12</literal> at the time of this writing). As the <systemitem class="username">root</systemitem> user, follow these steps:</para>
-					<figure>
-						<title>Installing PostgreSQL</title>
-						<screen>
-						$ wget http://wwwmaster.postgresql.org/redir/198/h/source/v8.2.17/postgresql-8.2.17.tar.bz2
-						$ tar xzf postgresql-8.2.17.tar.gz
-						$ cd postgresql-8.2.17
-						$ ./configure --with-perl --enable-integer-datetimes --with-openssl --prefix=/usr/local/stow/pgsql
-						...
-						$ make
-						...
-						$ make install
-						...
-						$ cd contrib
-						$ make
-						...
-						$ make install
-						$ cd xml2
-						$ make
-						...
-						$ make install
-						$ cd /usr/local/stow
-						$ stow pgsql
-						</screen>
-					</figure>
-				</step>
-				<step>
-					<para>Create the new user <systemitem class="username">postgres</systemitem> to run the PostgreSQL processes. As the <systemitem class="username">root</systemitem> user, execute this command:</para>
-					<figure>
-						<title>Adding <systemitem class="username">postgres</systemitem></title>
-						<screen>
-						$ adduser postgres
-						</screen>
-					</figure>
-				</step>
-				<step>
-					<para>Initialize the database directory and start up PostgreSQL. As the <systemitem class="username">root</systemitem> user, follow these steps:</para>
-					<figure>
-						<title>Adding <systemitem class="username">postgres</systemitem></title>
-						<screen>
-						$ mkdir -p /usr/local/pgsql/data
-						$ chown postgres /usr/local/pgsql/data
-						$ su - postgres
-						$ initdb -D /usr/local/pgsql/data -E UNICODE --locale=C
-						$ pg_ctl -D /usr/local/pgsql/data -l /home/postgres/logfile start
-						</screen>
-					</figure>
-					<note>
-						<para>If an error occurs during the final step above, review the path of the home directory for the <systemitem class="username">postgres</systemitem> user. It may be <literal>/var/lib/postresql</literal> instead of <literal>/home/postres</literal>.</para>
-					</note>
-				</step>
-				<step>
-					<para>The values of several PostreSQL configuration parameters may be changed for enhanced performance. The following table lists the default values and some suggested updates for several useful parameters:</para>
-					<table>
-						<title>Suggested configuration values</title>
-						<tgroup align="left" cols="3" colsep="1" rowsep="1">
-							<colspec colnum="1" colwidth="1*"/>
-							<colspec colnum="2" colwidth="1*"/>
-							<colspec colnum="3" colwidth="1*"/>
-							<thead>
-								<row>
-									<entry>Parameter</entry>
-									<entry>Default</entry>
-									<entry>Suggested</entry>
-								</row>
-							</thead>
-							<tbody>
-								<row>
-									<entry>default_statistics_target</entry>
-									<entry>10</entry>
-									<entry>100</entry>
-								</row>
-								<row>
-									<entry>work_mem</entry>
-									<entry>4Mb</entry>
-									<entry>128Mb</entry>
-								</row>
-								<row>
-									<entry>shared_buffers</entry>
-									<entry>8Mb</entry>
-									<entry>512Mb</entry>
-								</row>
-								<row>
-									<entry>effective_cache_size</entry>
-									<entry>128Mb</entry>
-									<entry>4Gb</entry>
-								</row>
-							</tbody>
-						</tgroup>
-					</table>
-					<indexterm>
-						<primary>ZZZ-REVIEW</primary>
-						<secondary>ADD CONTENT ON HOW TO UPDATE POSTRESQL PARAMETERS</secondary>
-					</indexterm>
-					<caution>ADD CONTENT ON HOW TO UPDATE POSTRESQL PARAMETERS </caution>
-				</step>
-			</procedure>
-		</section>
-		<section xml:id="serversideinstallation-apache">
-			<title>Installing Apache</title>
-			<simplesect>
-				<title>Securing Apache (httpd)</title>
-				<para>The main consideration is to secure the directory <filename class="directory">cgi-bin</filename>. The only persons that need access to this directory are Evergreen system administrators. This directory should be restricted by both IP (to those workstations designated as Evergeen Administration systems), and by username/password.</para>
-				<indexterm>
-					<primary>ZZZ-REVIEW</primary>
-					<secondary>ADD CONTENT ON HOW TO RESTRICT APACHE BY IP AND USERNAME/PASSWORD </secondary>
-				</indexterm>
-				<caution>ADD CONTENT ON HOW TO RESTRICT APACHE BY IP AND USERNAME/PASSWORD </caution>
-				<para>A user could add new libraries, re-arrange consortia, or change user groups; or a staff member could access the directory, and change his associated security group to administrative level privileges.</para>
-			</simplesect>
+		<section xml:id="serversideinstallation-ssl">
+			<title>Getting a Signed SSL Certificate</title>
+			<para>This section describes how to get a properly signed SSL certificate.</para>
+			<para>For temporary testing purposes, you can use the command <command>openssl</command> to create a new SSL key for your Apache server. This is just a self-signed certificate and will generate warnings in the Staff Client and browser during testing and development. For a public production server you should configure or purchase a properly signed SSL certificate.</para>
 			<indexterm>
 				<primary>ZZZ-REVIEW</primary>
-				<secondary>ADD MORE CONTENT FOR APACHE </secondary>
+				<secondary>ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </secondary>
 			</indexterm>
-			<caution>ADD MORE CONTENT FOR APACHE </caution>
+			<caution>ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </caution>
 		</section>
 	</section>
 </chapter>
