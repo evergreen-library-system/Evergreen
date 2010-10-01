@@ -221,20 +221,19 @@ sub card_lost {
     return $self->{user}->card->active eq 'f';
 }
 
-sub recall_overdue {
+sub recall_overdue {        # not implemented
     my $self = shift;
     return 0;
 }
 
-
 sub check_password {
 	my ($self, $pwd) = @_;
 	syslog('LOG_DEBUG', 'OILS: Patron->check_password()');
-	return $pwd and (md5_hex($pwd) eq $self->{user}->passwd);
+    return 0 unless (defined $pwd and $self->{user});
+	return md5_hex($pwd) eq $self->{user}->passwd;
 }
 
-
-sub currency {
+sub currency {              # not really implemented
 	my $self = shift;
 	syslog('LOG_DEBUG', 'OILS: Patron->currency()');
 	return 'USD';
@@ -283,12 +282,12 @@ sub screen_msg {
 	return 'OK';
 }
 
-sub print_line {
+sub print_line {            # not implemented
     my $self = shift;
 	return '';
 }
 
-sub too_many_charged {
+sub too_many_charged {      # not implemented
     my $self = shift;
 	return 0;
 }
