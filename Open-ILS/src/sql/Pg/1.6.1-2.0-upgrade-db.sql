@@ -18598,6 +18598,10 @@ ALTER TABLE vandelay.queued_bib_record
 ALTER TABLE action.hold_copy_map
 	ALTER COLUMN id SET DATA TYPE bigint;
 
+-- Make due times get pushed to 23:59:59 on insert OR update
+DROP TRIGGER push_due_date_tgr ON action.circulation;
+CREATE TRIGGER push_due_date_tgr BEFORE INSERT OR UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.push_circ_due_time();
+
 COMMIT;
 
 -- Some operations go outside of the transaction, because they may

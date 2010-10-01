@@ -164,7 +164,7 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE TRIGGER push_due_date_tgr BEFORE INSERT ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.push_circ_due_time();
+CREATE TRIGGER push_due_date_tgr BEFORE INSERT OR UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.push_circ_due_time();
 
 CREATE TABLE action.aged_circulation (
 	usr_post_code		TEXT,
