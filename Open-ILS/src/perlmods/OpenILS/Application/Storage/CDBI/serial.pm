@@ -46,5 +46,16 @@ __PACKAGE__->columns( Essential => qw/call_number barcode creator create_date ed
 				   holdable dummy_title dummy_author deleted alert_message label
 				   age_protect floating label_sort_key contents/ );
 
+#-------------------------------------------------------------------------------
+package serial::record_entry;
+use base qw/serial/;
+
+__PACKAGE__->table( 'serial_record_entry' );
+__PACKAGE__->columns( Primary => qw/id/ );
+__PACKAGE__->columns( Essential => qw/active record create_date creator
+                        deleted edit_date editor id last_xact_id marc source
+                        owning_lib/ );
+
+
 1;
 
