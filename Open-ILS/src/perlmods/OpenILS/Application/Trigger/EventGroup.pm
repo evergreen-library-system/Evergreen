@@ -28,7 +28,7 @@ sub new {
                     OpenILS::Application::Trigger::Event->new($_, $editor)
             } @ids
         ],
-        ids         => \@ids,
+        ids         => [ map { ref($_) ? $_->id : $_ } @ids ],
         editor      => $editor
     } => $class;
 

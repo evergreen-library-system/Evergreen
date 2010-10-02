@@ -444,6 +444,29 @@ sub _fm_class_by_hint {
     return $class;
 }
 
+my %_object_by_path_cache = ();
+sub ClearObjectCache {
+    for my $did ( keys %_object_by_path_cache ) {
+        my $phash = $_object_by_path_cache{$did};
+        for my $path ( keys %$phash ) {
+            my $shash = $phash{$path};
+            for my $step ( keys %$shash ) {
+                my $fhash = $shash{$step};
+                for my $ffield ( keys %$fhash ) {
+                    my $lhash = $fhash{$ffield};
+                    for my $lfield ( keys %$lhash ) {
+                        delete $$lhash{$lfield};
+                    }
+                    delete $$fhash{$ffield};
+                }
+                delete $$shash{$step};
+            }
+            delete $$phash{$path};
+        }
+        delete $_object_by_path_cache{$did};
+    }
+}
+        
 sub _object_by_path {
     my $self = shift;
     my $context = shift;
@@ -495,11 +518,14 @@ sub _object_by_path {
             $ed->xact_begin || return undef;
         }
 
-        $obj = $ed->$meth( 
-            ($multi) ?
-                { $ffield => $context->$lfield() } :
-                $context->$lfield()
-        );
+        $obj = $_object_by_path_cache{$self->event->event_def->id}{join('.',@$path)}{$step}{$ffield}{$context->$lfield()} ||
+            $ed->$meth( 
+                ($multi) ?
+                    { $ffield => $context->$lfield() } :
+                    $context->$lfield()
+            );
+
+        $_object_by_path_cache{$self->event->event_def->id}{join('.',@$path)}{$ffield}{$context->$lfield()} ||= $obj;
 
         if ($self->standalone) {
             $ed->xact_rollback || return undef;

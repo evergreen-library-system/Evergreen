@@ -539,6 +539,7 @@ sub fire_single_event {
     my $event_id = shift;
 
     my $e = OpenILS::Application::Trigger::Event->new($event_id);
+    OpenILS::Application::Trigger::Event->ClearObjectCache();
 
     if ($e->validate->valid) {
         $logger->info("trigger: Event is valid, reacting...");
@@ -567,6 +568,7 @@ sub fire_event_group {
     my $events = shift;
 
     my $e = OpenILS::Application::Trigger::EventGroup->new(@$events);
+    OpenILS::Application::Trigger::Event->ClearObjectCache();
 
     if ($e->validate->valid) {
         $logger->info("trigger: Event group is valid, reacting...");
@@ -679,6 +681,7 @@ sub grouped_events {
         $e->editor->disconnect;
     }
 
+    OpenILS::Application::Trigger::Event->ClearObjectCache();
     return \%groups;
 }
 __PACKAGE__->register_method(
@@ -737,8 +740,6 @@ sub run_all_events {
             $logger->info("trigger: run_all_events completed firing events for grouped event def=$def");
         }
     }
-                
-            
 }
 __PACKAGE__->register_method(
     api_name => 'open-ils.trigger.event.run_all_pending',
