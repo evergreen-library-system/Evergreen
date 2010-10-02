@@ -419,11 +419,11 @@ sub toSQL {
     }
 
     if (($filters{preferred_language} || $self->QueryParser->default_preferred_language) && ($filters{preferred_language_multiplier} || $self->QueryParser->default_preferred_language_multiplier)) {
-        $rel = "($rel * CASE WHEN FIRST(mrd.item_lang) = ". $self->QueryParser->quote_value( $filters{preferred_language} ? $filters{preferred_language} : $self->QueryParser->default_preferred_language ) . " THEN ";
-        $rel .= $filters{preferred_language_multiplier} ? $filters{preferred_language_multiplier} : $self->QueryParser->default_preferred_language_multiplier;
-        $rel .= " ELSE 1 END)";
+        my $pl = $self->QueryParser->quote_value( $filters{preferred_language} ? $filters{preferred_language} : $self->QueryParser->default_preferred_language );
+        my $plw = $filters{preferred_language_multiplier} ? $filters{preferred_language_multiplier} : $self->QueryParser->default_preferred_language_multiplier;
+        $rel = "($rel * COALESCE( NULLIF( FIRST(mrd.item_lang) = $pl , FALSE )::INT * $plw, 1))";
     }
-    $rel .= "::NUMERIC";
+    $rel .= '::NUMERIC';
 
     for my $f ( qw/audience vr_format item_type item_form lit_form language bib_level/ ) {
         my $col = $f;
@@ -458,7 +458,7 @@ sub toSQL {
         if ($sort_filter eq 'title') {
             $rank = "FIRST((SELECT frt.value FROM metabib.full_rec frt WHERE frt.record = m.source AND frt.tag = 'tnf' AND frt.subfield = 'a' LIMIT 1))";
         } elsif ($sort_filter eq 'pubdate') {
-            $rank = "FIRST(mrd.date1)";
+            $rank = "FIRST(mrd.date1)::NUMERIC";
         } elsif ($sort_filter eq 'create_date') {
             $rank = "FIRST((SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source))";
         } elsif ($sort_filter eq 'edit_date') {
@@ -548,13 +548,13 @@ sub rel_bump {
     return '' if (!@$only_atoms);
 
     if ($bump eq 'first_word') {
-        return " /* first_word */ COALESCE(NULLIF( (naco_normalize(".$node->table_alias.".value) ~ ('^'||naco_normalize(".$self->QueryParser->quote_value($only_atoms->[0]->content).")))::BOOL::INT, 0 ) * $multiplier, 1)";
+        return " /* first_word */ COALESCE(NULLIF( (naco_normalize(".$node->table_alias.".value) ~ ('^'||naco_normalize(".$self->QueryParser->quote_value($only_atoms->[0]->content)."))), FALSE )::INT * $multiplier, 1)";
     } elsif ($bump eq 'full_match') {
         return " /* full_match */ COALESCE(NULLIF( (naco_normalize(".$node->table_alias.".value) ~ ('^'||".
-                    join( "||' '||", map { "naco_normalize(".$self->QueryParser->quote_value($_->content).")" } @$only_atoms )."||'\$'))::BOOL::INT, 0 ) * $multiplier, 1)";
+                    join( "||' '||", map { "naco_normalize(".$self->QueryParser->quote_value($_->content).")" } @$only_atoms )."||'\$')), FALSE )::INT * $multiplier, 1)";
     } elsif ($bump eq 'word_order') {
         return " /* word_order */ COALESCE(NULLIF( (naco_normalize(".$node->table_alias.".value) ~ (".
-                    join( "||'.*'||", map { "naco_normalize(".$self->QueryParser->quote_value($_->content).")" } @$only_atoms )."))::BOOL::INT, 0 ) * $multiplier, 1)";
+                    join( "||'.*'||", map { "naco_normalize(".$self->QueryParser->quote_value($_->content).")" } @$only_atoms ).")), FALSE )::INT * $multiplier, 1)";
     }
 
     return '';
@@ -583,21 +583,23 @@ sub flatten {
                 my $node_rank = $node->rank . " * ${talias}.weight";
 
                 my $core_limit = $self->QueryParser->core_limit || 25000;
-                $from .= "\n\tLEFT JOIN (\n\t\tSELECT fe.*, fe_weight.weight /* search */\n\t\t  FROM  $table AS fe";
+                $from .= "\n\tLEFT JOIN (\n\t\tSELECT fe.*, fe_weight.weight, x.tsq /* search */\n\t\t  FROM  $table AS fe";
                 $from .= "\n\t\t\tJOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
-                $from .= "\n\t\t  WHERE fe.index_vector @@ (" .$node->tsquery . ')';
+                $from .= "\n\t\t\tJOIN (SELECT ".$node->tsquery ." AS tsq ) AS x ON (fe.index_vector @@ x.tsq)";
 
                 my @bump_fields;
                 if (@{$node->fields} > 0) {
                     @bump_fields = @{$node->fields};
-                    $from .= "\n\t\t\tAND fe_weight.field_class = ". $self->QueryParser->quote_value($node->classname) ." AND fe_weight.name IN (";
-                    $from .= join(",", map { $self->QueryParser->quote_value($_) } @{$node->fields}) . ")";
+
+                    my @field_ids;
+                    push(@field_ids, $self->QueryParser->search_field_ids_by_class( $node->classname, $_ )->[0]) for (@bump_fields);
+                    $from .= "\n\t\t\tWHERE fe_weight.id IN  (". join(',', @field_ids) .")";
 
                 } else {
                     @bump_fields = @{$self->QueryParser->search_fields->{$node->classname}};
                 }
 
-                $from .= "\n\t\tLIMIT $core_limit\n\t) AS $talias ON (m.source = $talias.source)";
+                $from .= "\n\t\tLIMIT $core_limit\n\t) AS $talias ON (m.source = ${talias}.source)";
 
 
                 my %used_bumps;
@@ -616,7 +618,7 @@ sub flatten {
                 }
 
                 $where .= '(' . $talias . ".id IS NOT NULL";
-                $where .= ' AND ' . join(' AND ', map {"$talias.value ~* ".$self->QueryParser->quote_value($_)} @{$node->phrases}) if (@{$node->phrases});
+                $where .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_value($_)} @{$node->phrases}) if (@{$node->phrases});
                 $where .= ')';
 
                 push @rank_list, $node_rank;
@@ -626,18 +628,16 @@ sub flatten {
                 my $table = $node->table;
                 my $talias = $node->table_alias;
 
-                $from .= "\n\tJOIN (\n\t\tSELECT * /* facet */\n\t\t  FROM metabib.facet_entry\n\t\t  WHERE ".
-                         "SUBSTRING(value,1,1024) IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")".
-                         "\n\t\t\tAND field IN (SELECT id FROM config.metabib_field WHERE field_class = ". $self->QueryParser->quote_value($node->classname) ." AND facet_field";
-
+                my @field_ids;
                 if (@{$node->fields} > 0) {
-                    $from .= " AND name IN (";
-                    $from .= join(",", map { $self->QueryParser->quote_value($_) } @{$node->fields}) . ")";
+                    push(@field_ids, $self->QueryParser->facet_field_ids_by_class( $node->classname, $_ )->[0]) for (@{$node->fields});
+                } else {
+                    @field_ids = @{ $self->QueryParser->facet_field_ids_by_class( $node->classname ) };
                 }
 
-                $from .= ")";
-
-                $from .= "\n\t\t) AS $talias ON (m.source = $talias.source)";
+                $from .= "\n\tJOIN /* facet */ metabib.facet_entry $talias ON (\n\t\tm.source = ${talias}.source\n\t\t".
+                         "AND SUBSTRING(${talias}.value,1,1024) IN (" . join(",", map { $self->QueryParser->quote_value($_) } @{$node->values}) . ")\n\t\t".
+                         "AND ${talias}.field IN (". join(',', @field_ids) . ")\n\t)";
 
                 $where .= 'TRUE';
 
@@ -814,7 +814,7 @@ sub tsquery {
 sub rank {
     my $self = shift;
     return $self->{rank} if ($self->{rank});
-    return $self->{rank} = 'rank(' . $self->table_alias . '.index_vector, ' . $self->tsquery . ')';
+    return $self->{rank} = 'rank(' . $self->table_alias . '.index_vector, ' . $self->table_alias . '.tsq)';
 }
 
 
