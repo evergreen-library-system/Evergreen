@@ -100,7 +100,7 @@
 				<title>Password Reset</title>
 					<para>Evergreen 1.6.1 introduced a new feature to allow patrons to reset forgotten passwords from the My Account login screen.</para>  
 					<para>To reset your password:</para> 
-					<Procedure>
+					<procedure>
 					<step>
 						<para>click on the the <guibutton>Forgot your password?</guibutton> link located under the <guibutton>login</guibutton> button</para>
 					</step>
@@ -137,6 +137,7 @@
 					<step>
 						<para>Login to your account with your new password.</para>
 					</step>
+			</procedure>
 		</simplesect>
 		<simplesect xml:id="myaccountsummary">
 				<title>Account Summary</title>
