@@ -1341,6 +1341,9 @@ sub print_hold_pull_list_stream {
     delete($$params{org_id}) unless (int($$params{org_id}));
     delete($$params{limit}) unless (int($$params{limit}));
     delete($$params{offset}) unless (int($$params{offset}));
+    delete($$params{chunk_size}) unless (int($$params{chunk_size}));
+    delete($$params{chunk_size}) if  ($$params{chunk_size} && $$params{chunk_size} > 50); # keep the size reasonable
+    $$params{chunk_size} ||= 10;
 
     $$params{org_id} = (defined $$params{org_id}) ? $$params{org_id}: $e->requestor->ws_ou;
     return $e->die_event unless $e->allowed('VIEW_HOLD', $$params{org_id });
@@ -1409,21 +1412,28 @@ sub print_hold_pull_list_stream {
 
     $logger->info("about to stream back " . scalar(@$holds_ids) . " holds");
 
-    $client->respond(
-        $e->retrieve_action_hold_request([
+    my @chunk;
+    for my $hid (@$holds_ids) {
+        push @chunk, $e->retrieve_action_hold_request([
             $_->{"id"}, {
                 "flesh" => 3,
                 "flesh_fields" => {
                     "ahr" => ["usr", "current_copy"],
+                    "au"  => ["card"],
                     "acp" => ["location", "call_number"],
                     "acn" => ["record"]
                 }
             }
-        ])
-    ) foreach @$holds_ids;
+        ]);
 
+        if (@chunk >= $$params{chunk_size}) {
+            $client->respond( \@chunk );
+            @chunk = ();
+        }
+    }
+    $client->respond_complete( \@chunk ) if (@chunk);
     $e->disconnect;
-    undef;
+    return undef;
 }
 
 
