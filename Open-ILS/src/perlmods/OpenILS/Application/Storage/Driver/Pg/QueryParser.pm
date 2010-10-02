@@ -423,6 +423,7 @@ sub toSQL {
         my $plw = $filters{preferred_language_multiplier} ? $filters{preferred_language_multiplier} : $self->QueryParser->default_preferred_language_multiplier;
         $rel = "($rel * COALESCE( NULLIF( FIRST(mrd.item_lang) = $pl , FALSE )::INT * $plw, 1))";
     }
+    $rel .= '::NUMERIC';
 
     for my $f ( qw/audience vr_format item_type item_form lit_form language bib_level/ ) {
         my $col = $f;
@@ -457,7 +458,7 @@ sub toSQL {
         if ($sort_filter eq 'title') {
             $rank = "FIRST((SELECT frt.value FROM metabib.full_rec frt WHERE frt.record = m.source AND frt.tag = 'tnf' AND frt.subfield = 'a' LIMIT 1))";
         } elsif ($sort_filter eq 'pubdate') {
-            $rank = "FIRST(mrd.date1)";
+            $rank = "FIRST(mrd.date1)::NUMERIC";
         } elsif ($sort_filter eq 'create_date') {
             $rank = "FIRST((SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source))";
         } elsif ($sort_filter eq 'edit_date') {
