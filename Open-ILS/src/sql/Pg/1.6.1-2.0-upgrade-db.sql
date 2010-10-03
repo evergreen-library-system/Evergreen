@@ -16,7 +16,7 @@ BEGIN;
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0422');
+INSERT INTO config.upgrade_log (version) VALUES ('0424');
 
 -- Recreate one of the constraints that we just dropped,
 -- under a different name:
@@ -10963,8 +10963,7 @@ CREATE TRIGGER aaa_indexing_ingest_or_delete AFTER INSERT OR UPDATE ON biblio.re
 
 DROP TRIGGER IF EXISTS zzz_update_materialized_simple_rec_delete_tgr ON biblio.record_entry;
 
-CREATE OR REPLACE FUNCTION oils_xpath_table ( key TEXT, document_field TEXT, relation_name TEXT, xpaths TEXT, criteria TEXT )
-RETURNS SETOF RECORD AS $func$
+CREATE OR REPLACE FUNCTION oils_xpath_table ( key TEXT, document_field TEXT, relation_name TEXT, xpaths TEXT, criteria TEXT ) RETURNS SETOF RECORD AS $func$
 DECLARE
     xpath_list  TEXT[];
     select_list TEXT[];
@@ -10974,52 +10973,56 @@ DECLARE
     empty_test  RECORD;
 BEGIN
     xpath_list := STRING_TO_ARRAY( xpaths, '|' );
-
+ 
     select_list := ARRAY_APPEND( select_list, key || '::INT AS key' );
-
+ 
     FOR i IN 1 .. ARRAY_UPPER(xpath_list,1) LOOP
-        select_list := ARRAY_APPEND(
-            select_list,
-            $sel$
-            EXPLODE_ARRAY(
-                COALESCE(
-                    NULLIF(
-                        oils_xpath(
-                            $sel$ ||
-                                quote_literal(
-                                    CASE
-                                        WHEN xpath_list[i] ~ $re$/[^/[]*@[^/]+$$re$ OR xpath_list[i] ~ $re$text\(\)$$re$ THEN xpath_list[i]
-                                        ELSE xpath_list[i] || '//text()'
-                                    END
-                                ) ||
-                            $sel$,
-                            $sel$ || document_field || $sel$
+        IF xpath_list[i] = 'null()' THEN
+            select_list := ARRAY_APPEND( select_list, 'NULL::TEXT AS c_' || i );
+        ELSE
+            select_list := ARRAY_APPEND(
+                select_list,
+                $sel$
+                EXPLODE_ARRAY(
+                    COALESCE(
+                        NULLIF(
+                            oils_xpath(
+                                $sel$ ||
+                                    quote_literal(
+                                        CASE
+                                            WHEN xpath_list[i] ~ $re$/[^/[]*@[^/]+$$re$ OR xpath_list[i] ~ $re$text\(\)$$re$ THEN xpath_list[i]
+                                            ELSE xpath_list[i] || '//text()'
+                                        END
+                                    ) ||
+                                $sel$,
+                                $sel$ || document_field || $sel$
+                            ),
+                           '{}'::TEXT[]
                         ),
-                       '{}'::TEXT[]
-                    ),
-                    '{NULL}'::TEXT[]
-                )
-            ) AS c_$sel$ || i
-        );
-        where_list := ARRAY_APPEND(
-            where_list,
-            'c_' || i || ' IS NOT NULL'
-        );
+                        '{NULL}'::TEXT[]
+                    )
+                ) AS c_$sel$ || i
+            );
+            where_list := ARRAY_APPEND(
+                where_list,
+                'c_' || i || ' IS NOT NULL'
+            );
+        END IF;
     END LOOP;
-
+ 
     q := $q$
 SELECT * FROM (
     SELECT $q$ || ARRAY_TO_STRING( select_list, ', ' ) || $q$ FROM $q$ || relation_name || $q$ WHERE ($q$ || criteria || $q$)
 )x WHERE $q$ || ARRAY_TO_STRING( where_list, ' AND ' );
     -- RAISE NOTICE 'query: %', q;
-
+ 
     FOR out_record IN EXECUTE q LOOP
         RETURN NEXT out_record;
     END LOOP;
-
+ 
     RETURN;
 END;
-$func$ LANGUAGE PLPGSQL;
+$func$ LANGUAGE PLPGSQL IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION vandelay.ingest_items ( import_id BIGINT, attr_def_id BIGINT ) RETURNS SETOF vandelay.import_item AS $$
 DECLARE
@@ -18599,7 +18602,7 @@ ALTER TABLE action.hold_copy_map
 	ALTER COLUMN id SET DATA TYPE bigint;
 
 -- Make due times get pushed to 23:59:59 on insert OR update
-DROP TRIGGER push_due_date_tgr ON action.circulation;
+DROP TRIGGER IF EXISTS push_due_date_tgr ON action.circulation;
 CREATE TRIGGER push_due_date_tgr BEFORE INSERT OR UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.push_circ_due_time();
 
 COMMIT;
