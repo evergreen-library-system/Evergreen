@@ -160,6 +160,12 @@
 				<para>The "Online Public Access Catalog"; an online database of a library's holdings; used to find resources in their collections; possibly searchable by keyword, title, author, subject or call number.</para>
 			</glossdef>
 		</glossentry>
+		<glossentry id="OpenSRF">
+			<glossterm>OpenSRF</glossterm>
+			<glossdef>
+				<para>The "Open Scalable Request Framework" (pronounced 'open surf') is a stateful, decentralized service architecture that allows developers to create applications for Evergreen with a minimum of knowledge of its structure.</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>P</title>
