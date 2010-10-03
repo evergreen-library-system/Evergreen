@@ -992,6 +992,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-1.png" scalefit="1" width="70%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Starting the Windows installation file</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure>
@@ -1000,6 +1003,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-2.png" scalefit="1" width="70%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Welcome to VirtualBox setup wizard</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure>
@@ -1008,6 +1014,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-3.png" scalefit="1" width="70%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Accept the license agreement</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure>
@@ -1016,6 +1025,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-4.png" scalefit="1" width="70%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Waiting for files to be copied</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure>
@@ -1024,6 +1036,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-5.png" scalefit="1" width="70%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Installation is complete</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 				</section>
@@ -1036,6 +1051,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-1.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Starting the Windows installation file</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<indexterm>
@@ -1054,6 +1072,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-1.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Starting the Windows installation file</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<indexterm>
@@ -1176,6 +1197,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-2.png" scalefit="1" width="70%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Starting VirtualBox for the first time</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure xml:id="serversideinstallation-virtual-vm-install-3">
@@ -1184,6 +1208,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-3.png" scalefit="1" width="70%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Selecting the software image in Virtual Media Manager</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure xml:id="serversideinstallation-virtual-vm-install-4">
@@ -1192,6 +1219,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-4.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>New software image added to VirtualBox</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure xml:id="serversideinstallation-virtual-vm-install-5">
@@ -1200,6 +1230,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-5.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Creating a new VM</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure xml:id="serversideinstallation-virtual-vm-install-6">
@@ -1208,6 +1241,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-6.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Setting the VM name and OS type</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure xml:id="serversideinstallation-virtual-vm-install-7">
@@ -1216,6 +1252,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-7.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Setting memory size</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure xml:id="serversideinstallation-virtual-vm-install-8">
@@ -1224,6 +1263,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-8.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Setting up the Virtual Hard Disk</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure xml:id="serversideinstallation-virtual-vm-install-9">
@@ -1232,6 +1274,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-9.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Finishing definition of new VM</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure xml:id="serversideinstallation-virtual-vm-install-10">
@@ -1240,6 +1285,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-10.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Summary of the new VM</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure xml:id="serversideinstallation-virtual-vm-install-11">
@@ -1248,6 +1296,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-11.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Selecting VM from startup menu</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure xml:id="serversideinstallation-virtual-vm-install-12">
@@ -1256,6 +1307,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-12.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Starting the new VM</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure xml:id="serversideinstallation-virtual-vm-install-13">
@@ -1264,6 +1318,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-13.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Starting the new VM (continued)</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 					<figure xml:id="serversideinstallation-virtual-vm-install-14">
@@ -1272,6 +1329,9 @@ Request Time in seconds: 1.336568
 							<imageobject>
 								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-14.png" scalefit="1" width="75%"/>
 							</imageobject>
+							<textobject>
+								<phrase>Logging into the new VM</phrase>
+							</textobject>
 						</mediaobject>
 					</figure>
 				</section>
