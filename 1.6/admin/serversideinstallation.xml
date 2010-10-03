@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter xml:id="ServersideInstallation" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
+<chapter xml:id="serversideinstallation" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
 	<info>
 		<title>Server-side Installation of Evergreen Software</title>
 		<abstract>
@@ -19,7 +19,7 @@
 		<systemitem class="osname">Linux</systemitem> environment). It can also be installed to run on other <systemitem class="osname">Linux</systemitem> systems via virtualized 
 		environments (using, for example, <application>"VirtualBox"</application> or <application>"VMware"</application>). More information on virtualized environments can be 
 		found in <xref linkend="serversideinstallation-virtual"/>.</para>
-	<para>Installation of the Evergreen Staff Client software is reviewed in <xref linkend="serversideinstallation-staffclient"/>. </para>
+	<para>Installation of the Evergreen Staff Client software is reviewed in <xref linkend="staffclientinstallation"/>. </para>
 	<para>The Evergreen server-side software has dependencies on particular versions of certain major software sub-components. Successful installation of Evergreen 
 			software requires that software versions agree with those listed here:</para>
 	<table xml:id="serversideinstall-software-dependencies">
@@ -607,7 +607,7 @@ Request Time in seconds: 0.007519
 					<para>In this step you will actually compile, link and install Evergreen and the default Evergreen Staff Client.</para>
 					<para>As the <systemitem class="username">root</systemitem> user, return to the Evergreen build directory and use the <command>make</command> utility as 
 					shown below. The Staff Client will also be automatically built, but you must remember to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version 						of the Staff Client you will use to connect to the Evergreen server.</para>
-					<para>For further information on manually building the Staff Client, see <xref linkend="serversideinstallation-building-staffclient"/>.</para>
+					<para>For further information on manually building the Staff Client, see <xref linkend="staffclientinstallation-building-staffclient"/>.</para>
 					<screen>
 						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.0.7</userinput>
 						<userinput>make STAFF_CLIENT_BUILD_ID=rel_1_6_0_7 install</userinput>
