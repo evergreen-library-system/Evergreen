@@ -539,7 +539,6 @@ sub fire_single_event {
     my $event_id = shift;
 
     my $e = OpenILS::Application::Trigger::Event->new($event_id);
-    OpenILS::Application::Trigger::Event->ClearObjectCache();
 
     if ($e->validate->valid) {
         $logger->info("trigger: Event is valid, reacting...");
@@ -547,6 +546,7 @@ sub fire_single_event {
     }
 
     $e->editor->disconnect;
+    OpenILS::Application::Trigger::Event->ClearObjectCache();
 
     return {
         valid     => $e->valid,
@@ -568,7 +568,6 @@ sub fire_event_group {
     my $events = shift;
 
     my $e = OpenILS::Application::Trigger::EventGroup->new(@$events);
-    OpenILS::Application::Trigger::Event->ClearObjectCache();
 
     if ($e->validate->valid) {
         $logger->info("trigger: Event group is valid, reacting...");
@@ -576,6 +575,7 @@ sub fire_event_group {
     }
 
     $e->editor->disconnect;
+    OpenILS::Application::Trigger::Event->ClearObjectCache();
 
     return {
         valid     => $e->valid,
