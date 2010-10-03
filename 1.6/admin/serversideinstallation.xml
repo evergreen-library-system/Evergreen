@@ -1,0 +1,1328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="ServersideInstallation" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
+	<info>
+		<title>Server-side Installation of Evergreen Software</title>
+		<abstract>
+			<para>This section describes installation of the Evergreen server-side software and its associated components. Installation, configuration, testing and verification 
+			of the software is straightforward if you follow some simple directions.</para>
+		</abstract>
+	</info>
+	<para>Installing, configuring and testing the Evergreen server-side software is straightforward with the current stable software release. See 
+		<xref linkend="serversideinstallation-all"/> for instructions tailored to installing on some particular distributions of the <systemitem class="osname">Linux</systemitem> 
+		operating system.</para>
+	<para>The current version of the Evergreen server-side software runs as a native application on any of several well-known <systemitem class="osname">Linux</systemitem> 
+		distributions (e.g., <systemitem class="osname">Ubuntu</systemitem> and <systemitem class="osname">Debian</systemitem>). It does not currently run as a native application 
+		on the <systemitem class="osname">Microsoft Windows</systemitem> operating system (e.g., <systemitem class="osname">WindowsXP</systemitem>, 
+		<systemitem class="osname">WindowsXP Professional</systemitem>, <systemitem class="osname">Windows7</systemitem>), but the software can still be installed and run on 
+		<systemitem class="osname">Windows</systemitem> via a so-called <emphasis>virtualized</emphasis> Linux-guest Operating System (using, for example, 
+		<application>"VirtualBox"</application>, or <application>"VMware"</application>, or <application>"VirtualPC"</application> to emulate a 
+		<systemitem class="osname">Linux</systemitem> environment). It can also be installed to run on other <systemitem class="osname">Linux</systemitem> systems via virtualized 
+		environments (using, for example, <application>"VirtualBox"</application> or <application>"VMware"</application>). More information on virtualized environments can be 
+		found in <xref linkend="serversideinstallation-virtual"/>.</para>
+	<para>Installation of the Evergreen Staff Client software is reviewed in <xref linkend="serversideinstallation-staffclient"/>. </para>
+	<para>The Evergreen server-side software has dependencies on particular versions of certain major software sub-components. Successful installation of Evergreen 
+			software requires that software versions agree with those listed here:</para>
+	<table xml:id="serversideinstall-software-dependencies">
+		<title>Evergreen Software Dependencies</title>
+		<tgroup align="left" cols="3" colsep="1" rowsep="1">
+			<colspec colname="Evergreen" colnum="1" colwidth="1.0*"/>
+			<colspec colname="OpenSRF" colnum="2" colwidth="1.0*"/>
+			<colspec colname="PostgreSQL" colnum="3" colwidth="1.0*"/>
+			<thead>
+				<row>
+					<entry>Evergreen</entry>
+					<entry>OpenSRF</entry>
+					<entry>PostgreSQL</entry>
+				</row>
+			</thead>
+			<tbody>
+				<row>
+					<entry>1.6.x</entry>
+					<entry>1.2</entry>
+					<entry>8.2 / 8.3</entry>
+				</row>
+				<row>
+					<entry>1.4.x</entry>
+					<entry>1.0</entry>
+					<entry>8.1 / 8.2</entry>
+				</row>
+				<row>
+					<entry>1.2.x</entry>
+					<entry>0.9</entry>
+					<entry>8.1 / 8.2</entry>
+				</row>
+			</tbody>
+		</tgroup>
+	</table>
+	<section xml:id="serversideinstallation-all">
+		<title>Installing Server-Side Software</title>
+		<para>This section describes the installation of the major components of Evergreen server-side software.</para>
+		<para>As far as possible, you should perform the following steps in the exact order given since the success of many steps relies on the successful completion of earlier steps. You 
+		should make backup copies of files and environments when you are instructed to do so. In the event of installation problems those copies can allow you to back out of a step gracefully 
+		and resume the installation from a known state. See <xref linkend="backingup"/> for further information.</para>
+		<para>Of course, after you successfully complete and test the entire Evergreen installation you should take a final snapshot backup of your system(s). This can be the first in 
+		the series of regularly scheduled system backups that you should probably also begin.</para>
+		<section xml:id="serversideinstallation-opensrf">
+			<title>Installing OpenSRF 1.2.2 On <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem></title>
+			<para>This section describes the installation of the latest version of the Open Service Request Framework (OpenSRF), a major component of the Evergreen server-side software, 
+			on <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem> systems. Evergreen software is integrated with and depends on the 
+			OpenSRF software system.</para>
+			<para>Follow the steps outlined here and run the specified tests to ensure that OpenSRF is properly installed and configured. Do not continue with any further 
+			Evergreen installation steps until you have verified that OpenSRF has been successfully installed.</para>
+			<note>
+				<para>The following steps have been tested on the x86 (32-bit) and x86-64 (64-bit) platforms. OpenSRF 1.2.2 has been tested on <systemitem class="osname">Debian Etch 
+				(4.0)</systemitem>, <systemitem class="osname">Debian Lenny</systemitem>, <systemitem class="osname">Ubuntu Hardy Heron (8.04)</systemitem>, and 
+				<systemitem class="osname">Ubuntu Intrepid Ibex (8.10)</systemitem>.</para>
+				<para>In the following instructions, you are asked to perform certain steps as either the <systemitem class="username">root</systemitem> user, the 
+				<systemitem class="username">opensrf</systemitem> user, or the <systemitem class="username">postgres</systemitem> user.</para>
+				<itemizedlist>
+					<listitem><systemitem class="osname">Debian</systemitem> -- To become the <systemitem class="username">root</systemitem> user, issue the command 
+					<command>su -</command> and enter the password of the <systemitem class="username">root</systemitem> user.</listitem>
+					<listitem><systemitem class="osname">Ubuntu</systemitem> -- To become the <systemitem class="username">root</systemitem> user, issue the command 
+					<command>sudo su -</command> and enter the password of the <systemitem class="username">root</systemitem> user.</listitem>
+				</itemizedlist>
+				<para>To switch from the <systemitem class="username">root</systemitem> user to a different user, issue the command <command>su - USERNAME</command>. For example, to 
+				switch from the <systemitem class="username">root</systemitem> user to the <systemitem class="username">opensrf</systemitem> user, issue the command 
+				<command>su - opensrf</command>. Once you have become a non-root user, to become the <systemitem class="username">root</systemitem> user again, simply issue 
+				the command <command>exit"</command>.</para>
+			</note>
+			<procedure>
+				<step>
+					<title>Add the OpenSRF User</title>
+					<para>As the <systemitem class="username">root</systemitem> user, add the opensrf user to the system. The default shell for the new user is automatically set to 
+					<command>/bin/bash</command> to inherit a reasonable environment:</para>
+					<screen>
+						<userinput>useradd -m -s /bin/bash opensrf</userinput>
+						<userinput>passwd opensrf</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Download and Unpack Latest OpenSRF Version</title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract the latest version of OpenSRF. The latest version can be found here: 
+					<ulink url="http://evergreen-ils.org/downloads/OpenSRF-1.2.2.tar.gz"></ulink></para>
+					<screen>
+						<userinput>wget http://evergreen-ils.org/downloads/OpenSRF-1.2.2.tar.gz</userinput>
+						<userinput>tar zxf OpenSRF-1.2.2.tar.gz</userinput>
+					</screen>
+					<para>The new directory <filename class="directory">/home/opensrf/OpenSRF-1.2.2</filename> will be created.</para>
+				</step>
+				<step>
+					<title>Install Prerequisites to Build OpenSRF</title>
+					<para>In this section you will install and configure a set of prerequisites that will be used to build OpenSRF. In a following step you will actually build the 
+					software using the <command>make</command> utility.</para>
+					<para>As the <systemitem class="username">root</systemitem> user, enter the commands show below to build the prerequisites from the software distribution that 
+					you just downloaded and unpacked. Remember to replace <emphasis>[DISTRIBUTION]</emphasis> in the example with the keyword corresponding to the actual 
+					<systemitem class="osname">Linux</systemitem> distribution listed in the <link linkend="serversideinstallation-keywords-opensrf">distribution 
+					keywords</link>table.</para>
+					<screen>
+						<userinput>cd /home/opensrf/OpenSRF-1.2.2</userinput>
+						<userinput>make -f src/extras/Makefile.install [DISTRIBUTION]</userinput>
+					</screen>
+					<table xml:id="serversideinstallation-keywords-opensrf">
+						<title>Keywords Targets for <application>"make"</application> Command</title>
+						<tgroup align="left" cols="2" colsep="1" rowsep="1">
+							<colspec colnum="1" colwidth="1.0*"/>
+							<colspec colnum="2" colwidth="3.0*"/>
+							<thead>
+								<row>
+									<entry>Keyword</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>debian-lenny</entry>
+									<entry>for Debian Lenny (5.0)</entry>
+								</row>
+								<row>
+									<entry>debian-etch</entry>
+									<entry>for Debian Etch (4.0)</entry>
+								</row>
+								<row>
+									<entry>ubuntu-karmic</entry>
+									<entry>for Ubuntu Karmic (9.10)</entry>
+								</row>
+								<row>
+									<entry>ubuntu-intrepid</entry>
+									<entry>for Ubuntu Jaunty (9.04) or Intrepid (8.10)</entry>
+								</row>
+								<row>
+									<entry>ubuntu-hardy</entry>
+									<entry>for Ubuntu Hardy (8.04)</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</table>
+					<indexterm>
+						<primary>ZZZ-REVIEW</primary>
+						<secondary>ADD INFO FOR OTHER LINUX DISTRIBUTIONS </secondary>
+					</indexterm>
+					<caution>ADD INFO FOR OTHER LINUX DISTRIBUTIONS </caution>
+					<para>This will install a number of packages on the system that are required by OpenSRF, including some Perl modules from CPAN. You can say <literal>No</literal> to 
+					the initial CPAN configuration prompt to allow it to automatically configure itself to download and install Perl modules from CPAN. The CPAN installer will 
+					ask you a number of times whether it should install prerequisite modules - say <literal>Yes</literal>.</para>
+				</step>
+				<step>
+					<title>Configure OpenSRF</title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, return to the OpenSRF build directory and use the <command>configure</command> 
+					utility to prepare for the next step of compiling and linking the software. You can include the  <option>--enable-python</option> and 
+					<option>--enable-java</option> configuration options if you wish to include support for Python and Java, respectively:</para>
+					<screen>
+						<userinput>cd /home/opensrf/OpenSRF-1.2.2</userinput>
+						<userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput>
+						<userinput>make</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Compile, Link and Install OpenSRF</title>
+					<para>As the <systemitem class="username">root</systemitem> user, return to the OpenSRF build directory and use the <command>make</command> utility to compile, 
+					link and install OpenSRF:</para>
+					<screen>
+						<userinput>cd /home/opensrf/OpenSRF-1.2.2</userinput>
+						<userinput>make install</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Update the System Dynamic Library Path</title>
+					<para>As the <systemitem class="username">root</systemitem> user, you must update the system dynamic library path to make your system recognize the newly 
+					installed libraries. Do this by creating the new file <filename>/etc/ld.so.conf.d/osrf.conf</filename> containing a new library path, then run the 
+					command <command>ldconfig</command> to automatically read the file and modify the system dynamic library path:</para>
+					<screen>
+						<userinput>echo "/openils/lib" > /etc/ld.so.conf.d/osrf.conf</userinput>
+						<userinput>ldconfig</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Define Public and Private OpenSRF Domains</title>
+					<para>Define your public and private OpenSRF domains. For security purposes, OpenSRF uses Jabber domains to separate services into public and private realms. 
+					Throughout these instructions, we will use the example domains <systemitem class="domainname">public.localhost</systemitem> for the public domain and 
+					<systemitem class="domainname">private.localhost</systemitem> for the private domain. On a single-server system, the easiest way to define public and 
+					private domains is to define separate host names by adding entries to the file <filename>/etc/hosts</filename>.</para>
+					<para>As the <systemitem class="username">root</systemitem> user, edit the file <filename>/etc/hosts</filename> and add the following entries for 
+					our example domains:</para>
+					<screen>
+127.0.1.2	public.localhost	public
+127.0.1.3	private.localhost	private
+</screen>
+				</step>
+				<step>
+					<title>Change File Ownerships</title>
+					<para>As the <systemitem class="username">root</systemitem> user, change the ownership of files installed in the directory 
+					<filename class="directory">/openils</filename> to the <systemitem class="username">opensrf</systemitem> user:</para>
+					<screen>
+						<userinput>chown -R opensrf:opensrf /openils</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Stop the <systemitem class="service">ejabberd</systemitem> Service</title>
+					<para>As the <systemitem class="username">root</systemitem> user, stop the <systemitem class="service">ejabberd</systemitem> service:</para>
+					<screen>
+$ /etc/init.d/ejabberd stop
+</screen>
+					<para>If <systemitem class="service">ejabberd</systemitem> eeports that it is already stopped, it may have run into a problem starting back at the 
+					installation stage. One possible fix is to kill any remaining <systemitem class="daemon">beam</systemitem> and 
+					<systemitem class="daemon">epmd</systemitem> processes, then edit the configuration file <filename>/etc/ejabberd/ejabberd.cfg</filename> to hardcode a 
+					domain:</para>
+					<screen>
+						<userinput>epmd -kill</userinput>
+						<userinput>killall beam; killall beam.smp</userinput>
+						<userinput>rm /var/lib/ejabberd/*</userinput>
+						<userinput>echo 'ERLANG_NODE=ejabberd@localhost' >> /etc/default/ejabberd</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Edit the <systemitem class="service">ejabberd</systemitem> configuration</title>
+					<para>As the <systemitem class="username">root</systemitem> user, edit the file <filename>/etc/ejabberd/ejabberd.cfg</filename> and make the following 
+					changes:</para>
+					<itemizedlist>
+						<listitem>Change <literal>{hosts, ["localhost"]}.</literal> to <literal>{hosts, ["localhost", "private.localhost", "public.localhost"]}.</literal></listitem>
+						<listitem>Change <literal>{max_user_sessions, 10}.</literal> to <literal>{max_user_sessions, 10000}.</literal> If you see something like this instead: 
+						<literal>{access, max_user_sessions, [{10, all}]}.</literal>, then change it to <literal>{access, max_user_sessions, [{10000, all}]}.</literal></listitem>
+						<listitem>Change all three occurrences of <literal>max_stanza_size</literal> to <literal>2000000</literal>.</listitem>
+						<listitem>Change both occurrences of <literal>maxrate</literal> to <literal>500000</literal>.</listitem>
+						<listitem>Comment out the line <literal>{mod_offline, []}</literal> by placing two <literal>%</literal> comment signs in front.</listitem>
+					</itemizedlist>
+				</step>
+				<step xml:id="serversideinstallation-opensrf-continued">
+					<title>Restart the <systemitem class="service">ejabberd</systemitem> service</title>
+					<para>As the <systemitem class="username">root</systemitem> user, restart the <systemitem class="service">ejabberd</systemitem> service to test the configuration 
+					changes and to register your users:</para>
+					<screen>
+						<userinput>/etc/init.d/ejabberd start</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Register <systemitem class="username">router</systemitem> and <systemitem class="username">ejabberd</systemitem> users</title>
+					<para>On each domain, you need two <systemitem class="service">ejabberd</systemitem> users to manage the OpenSRF communications:</para>
+					<itemizedlist>
+						<listitem>a <systemitem class="username">router</systemitem> user, to whom all requests to connect to an OpenSRF service will be routed; this 
+						<systemitem class="service">ejabberd</systemitem> user must be named <systemitem class="username">router</systemitem></listitem>
+						<listitem>an <systemitem class="username">opensrf</systemitem> user, which clients use to connect to OpenSRF services; this user can be named anything you 
+						like, but we will use <literal>opensrf</literal> in our examples</listitem>
+					</itemizedlist>
+					<para>As the <systemitem class="username">root</systemitem> user, use the <command>ejabberdctl</command> utility to register your ejabber users 
+					<emphasis>router</emphasis> and <emphasis>opensrf</emphasis> for the OpenSRF router service on each domain. The users should have different passwords on 
+					each domain. The syntax for registering a user with ejabberdctl is  <command>ejabberdctl register &lt;user> &lt;domain> &lt;password></command>
+					These users will correspond to those configured in the file <filename>/openils/conf/opensrf_core.xml</filename>:</para>
+					<screen>
+						<userinput>ejabberdctl register router private.localhost  &lt;password></userinput>
+						<userinput>ejabberdctl register opensrf private.localhost &lt;password></userinput>
+						<userinput>ejabberdctl register router public.localhost   &lt;password></userinput>
+						<userinput>ejabberdctl register opensrf public.localhost  &lt;password></userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Create configuration files</title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, use the example templates to create the configuration files 
+					<filename>/openils/conf/opensrf_core.xml</filename> and <filename>/openils/conf/opensrf.xml</filename>:</para>
+					<screen>
+						<userinput>cd /openils/conf</userinput>
+						<userinput>cp opensrf.xml.example      opensrf.xml</userinput>
+						<userinput>cp opensrf_core.xml.example opensrf_core.xml</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Edit opensrf_core.xml</title>
+					<para>Edit the file <filename>/openils/conf/opensrf_core.xml</filename> to change the <systemitem class="service">ejabberd</systemitem> usernames and passwords as 
+					follows.</para>
+					<note>
+						<para>
+							<emphasis>The following example uses common XPath syntax on the left-hand side to indicate the approximate position needing changes within the XML 
+							file.</emphasis>
+						</para>
+					</note>
+					<para>/config/opensrf/username = <systemitem class="username">opensrf</systemitem></para>
+					<para>/config/opensrf/passwd = password for <systemitem class="domainname">private.localhost</systemitem><systemitem class="username">opensrf</systemitem> user</para>
+					<para>/config/opensrf/passwd = password for <systemitem class="domainname">private.localhost</systemitem><systemitem class="username">opensrf</systemitem>  user</para>
+					<para>/config/gateway/username = <systemitem class="username">opensrf</systemitem></para>
+					<para>/config/gateway/passwd = password for <systemitem class="domainname">public.localhost</systemitem><systemitem class="username">opensrf</systemitem>  user</para>
+					<para>/config/routers/router/transport  (first entry, where 
+						<quote>transport/server</quote> ==<systemitem class="domainname">public.localhost</systemitem>)</para>
+					<itemizedlist>
+						<listitem>username = <systemitem class="username">router</systemitem></listitem>
+						<listitem>password = password for <systemitem class="domainname">public.localhost</systemitem><systemitem class="username">router</systemitem> 
+								user</listitem>
+					</itemizedlist>
+					<para>/config/routers/router/transport  (second entry, where 
+						<quote>transport/server</quote> == <systemitem class="domainname">private.localhost</systemitem>) </para>
+					<itemizedlist>
+						<listitem>username = <systemitem class="username">router</systemitem></listitem>
+						<listitem>password = password for <systemitem class="domainname">private.localhost</systemitem><systemitem class="username">router</systemitem> 
+								user</listitem>
+					</itemizedlist>
+					<para>You also need to specify the domains from which <systemitem class="service">OpenSRF</systemitem> will accept and to which 
+					<systemitem class="service">OpenSRF</systemitem> will make connections. If you are installing <application>OpenSRF</application> on a single server and using the 
+					<systemitem class="domainname">private.localhost</systemitem> / <systemitem class="domainname">public.localhost</systemitem> domains, these will already be set to 
+					the correct values. Otherwise, search and replace to match your values.</para>
+				</step>
+				<step>
+					<title>Modify the file <filename>opensrf.xml</filename></title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, edit the file <filename>/openils/conf/opensrf.xml</filename> to set the location of the 
+					persistent database in the <literal>dbfile</literal> element near the end of the file:</para>
+					<programlisting language="xml"><![CDATA[
+<!-- Example of an app-specific setting override -->
+<opensrf.persist>
+  <app_settings>
+    <dbfile>/tmp/persist.db</dbfile>
+  </app_settings>
+</opensrf.persist>
+]]></programlisting>
+				</step>
+				<step>
+					<title>Create Configuration Files for Users Needing <command>srfsh</command></title>
+					<para>In this section you will set up a special configuration file for each user who will need to run the <command>srfsh</command> 
+					(pronounced <emphasis>surf shell</emphasis>) utility.</para>
+					<para>The software installation will automatically create <command>srfsh</command>. This is a command line diagnostic tool for testing and interacting with 
+					<application>OpenSRF</application>. It will be used in a future step to complete and test the Evergreen installation. 
+					See <xref linkend="serversideinstallation-testing"/> for further information.</para>
+					<para>As the <systemitem class="username">root</systemitem> user, copy the short sample configuration file <filename>/openils/conf/srfsh.xml.example</filename> 
+					to the file <filename>.srfsh.xml</filename> (note the leading dot!) in the home directory of each user who will use <command>srfsh</command>. Finally, 
+					edit each file <filename>.srfsh.xml</filename> and make the following changes. When you finish, remember to change the owner of the file to match the owner of the 
+					home directory.</para>
+					<itemizedlist>
+						<listitem>Modify <literal>domain</literal> to be the router hostname (following our domain examples, 
+						<systemitem class="domainname">private.localhost</systemitem> will give <command>srfsh</command> access to all OpenSRF services, 
+						while <systemitem class="domainname">public.localhost</systemitem> will only allow access to those OpenSRF services that are publicly exposed).</listitem>
+						<listitem>Modify <literal>username</literal> and <literal>password</literal> to match the <literal>opensrf</literal> Jabber user for the chosen 
+						domain</listitem>
+						<listitem>Modify <literal>logfile</literal> to be the full path for a log file to which the user has write access</listitem>
+						<listitem>Modify <literal>loglevel</literal> as needed for testing</listitem>
+					</itemizedlist>
+					<programlisting language="xml"><![CDATA[
+<?xml version="1.0"?>
+<!-- This file follows the standard bootstrap config file layout -->
+<!-- found in opensrf_core.xml -->
+<srfsh>
+<router_name>router</router_name>
+<domain>private.localhost</domain>
+<username>opensrf</username>
+<passwd>privsrf</passwd>
+<port>5222</port>
+<logfile>/tmp/srfsh.log</logfile>
+<!-- 0 None, 1 Error, 2 Warning, 3 Info, 4 debug, 5 Internal (Nasty) -->
+<loglevel>4</loglevel>
+</srfsh>
+]]></programlisting>
+				</step>
+				<step>
+					<title>Modify Environmental Variable PATH for <systemitem class="username">opensrf</systemitem> User</title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, modify the environmental variable <envar>PATH</envar> by adding a new file path to 
+					the <systemitem class="username">opensrf</systemitem> user's shell configuration file <filename>.bashrc</filename>:</para>
+					<screen>
+						<userinput>echo "export PATH=/openils/bin:\$PATH" >> ~/.bashrc</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Start OpenSRF</title>
+					<para>As the <systemitem class="username">root</systemitem> user, start the <systemitem class="service">ejabberd</systemitem> and 
+					<systemitem class="service">memcached</systemitem> services:</para>
+					<screen>
+						<userinput>/etc/init.d/ejabberd start</userinput>
+						<userinput>/etc/init.d/memcached start</userinput>
+					</screen>
+					<para>Finally, as the <systemitem class="username">opensrf</systemitem> user, start OpenSRF:</para>
+					<screen>
+						<userinput>start the OpenSRF service:</userinput>
+						<userinput>use "-l" to force hostname to be "localhost"</userinput>
+						<userinput>osrf_ctl.sh -l -a start_all</userinput>
+					</screen>
+					<note>
+						<para>If you receive the error message <errortext>bash: osrf_ctl.sh: command not found</errortext>, then your environment variable <envar>PATH</envar> does 
+						not include the <filename class="directory">/openils/bin</filename> directory; 
+						this should have been set by <filename>.bashrc</filename> when you logged in as the <systemitem class="username">opensrf</systemitem> user, but you 
+						can manually set it using the following command:</para>
+						<screen>
+							<userinput>export PATH=$PATH:/openils/bin</userinput>
+						</screen>
+					</note>
+					<para>You can also start Evergreen <emphasis role="bold">without</emphasis> the <option>-l</option> flag, but <command>osrf_ctl.sh</command> must know the 
+					fully qualified domain name for the system on which it will execute. That hostname may have been specified in the configuration file 
+					<filename>opensrf.xml</filename>, 
+					which you configured in a previous step.</para>
+				</step>
+				<step>
+					<title>Test connections to OpenSRF</title>
+					<para>Once you have installed and started OpenSRF, as the <systemitem class="username">root</systemitem> user, test your connection to 
+					<systemitem class="service">OpenSRF</systemitem> 
+					using the <command>srfsh</command> utility and trying to call the <command>add</command> method on the OpenSRF 
+					<systemitem class="service">math</systemitem> service:</para>
+					<screen><userinput>/openils/bin/srfsh</userinput><prompt>srfsh#</prompt> <userinput>request opensrf.math add 2 2</userinput>
+Received Data: 4
+------------------------------------
+Request Completed Successfully
+Request Time in seconds: 0.007519
+------------------------------------
+<prompt>srfsh#</prompt></screen>
+					<para>For other <command>srfsh</command> commands, type <userinput>help</userinput> in at the prompt.</para>
+				</step>
+				<step>
+					<title>Stopping OpenSRF</title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, stop OpenSRF:</para>
+					<screen>
+						<userinput>osrf_ctl.sh -l -a stop_all</userinput>
+					</screen>
+				</step>
+			</procedure>
+		</section>
+		<section xml:id="serversideinstallation-ubuntudebian">
+			<title>Installing Evergreen 1.6.0.7 On <systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem></title>
+			<para>This section outlines the installation process for the latest stable version of Evergreen.</para>
+			<para>In this section you will download, unpack, install, configure and test the Evergreen system, including the Evergreen server and the PostgreSQL database system. You 
+			will make several configuration changes and adjustments to the software, including updates to configure the system for your own locale, and some updates needed to work 
+			around a few known issues.</para>
+			<note>
+				<para>The following steps have been tested on the x86 (32-bit) and x86-64 (64-bit) architectures. There may be differences between the Desktop and Server editions 
+				of <systemitem class="osname">Ubuntu</systemitem>. These instructions assume the Server edition.</para>
+				<para>In the following instructions, you are asked to perform certain steps as either the <systemitem class="username">root</systemitem> user, the 
+				<systemitem class="username">opensrf</systemitem> user, or the <systemitem class="username">postgres</systemitem> user.</para>
+				<itemizedlist>
+					<listitem><systemitem class="osname">Debian</systemitem> -- To become the <systemitem class="username">root</systemitem> user, issue the command 
+					<command>su -</command> and enter the password of the <systemitem class="username">root</systemitem> user.</listitem>
+					<listitem><systemitem class="osname">Ubuntu</systemitem> -- To become the <systemitem class="username">root</systemitem> user, issue the command <command>sudo 
+					su -</command> and enter the password of the <systemitem class="username">root</systemitem> user.</listitem>
+				</itemizedlist>
+				<para>To switch from the <systemitem class="username">root</systemitem> user to a different user, issue the command <command>su - USERNAME</command>. For example, to 
+				switch from the <systemitem class="username">root</systemitem> user to the <systemitem class="username">opensrf</systemitem> user, issue the command 
+				<command>su - opensrf</command>. Once you have become a non-root user, to become the <systemitem class="username">root</systemitem> user again, simply issue the 
+				command <command>exit</command>.</para>
+			</note>
+			<procedure>
+				<step>
+					<title>Install OpenSRF</title>
+					<para>Evergreen software is integrated with and depends on the Open Service Request Framework (OpenSRF) software system. For further information on installing, 
+					configuring and testing OpenSRF, see <xref linkend="serversideinstallation-opensrf"/>.</para>
+					<para>Follow the steps outlined in that section and run the specified tests to ensure that OpenSRF is properly installed and configured. Do not continue with any 
+					further Evergreen installation steps until you have verified that OpenSRF has been successfully installed.</para>
+				</step>
+				<step>
+					<title>Download and Unpack Latest Evergreen Version</title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract the latest version of Evergreen. The latest version can be found here: 
+					<ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.0.7.tar.gz"></ulink></para>
+					<screen>
+						<userinput>wget http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.0.7.tar.gz</userinput>
+						<userinput>tar zxf Evergreen-ILS-1.6.0.7.tar.gz</userinput>
+					</screen>
+					<para>The new directory <filename class="directory">/home/opensrf/Evergreen-ILS-1.6.0.7</filename> will be created.</para>
+				</step>
+				<step>
+					<title>Install Prerequisites to Build Evergreen</title>
+					<para>In this section you will install and configure a set of prerequisites that will be used to build Evergreen. In a following step you will actually build 
+					the software using the <command>make</command> utility.</para>
+					<para>As the <systemitem class="username">root</systemitem> user, enter the commands show below to build the prerequisites from the software distribution that you 
+					just downloaded and unpacked. Remember to replace <emphasis>[distribution]</emphasis> in the example with the keyword corresponding to the actual 
+					<systemitem class="osname">Linux</systemitem> distribution listed in the 
+					<link linkend="serversideinstallation-keywords-evergreen">distribution keywords</link> table.</para>
+					<screen>
+						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.0.7</userinput>
+						<userinput>make -f Open-ILS/src/extras/Makefile.install [distribution]</userinput>
+					</screen>
+					<table xml:id="serversideinstallation-keywords-evergreen">
+						<tgroup align="left" cols="2" colsep="1" rowsep="1">
+							<colspec colnum="1" colwidth="1.0*"/>
+							<colspec colnum="2" colwidth="3.0*"/>
+							<thead>
+								<row>
+									<entry>Keyword</entry>
+									<entry>Description</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>debian-lenny</entry>
+									<entry>for Debian Lenny (5.0), the most recent version</entry>
+								</row>
+								<row>
+									<entry>debian-etch</entry>
+									<entry>for Debian Etch (4.0)</entry>
+								</row>
+								<row>
+									<entry>ubuntu-karmic</entry>
+									<entry>for Ubuntu Lucid (10.04) [same as for Karmic]</entry>
+								</row>
+								<row>
+									<entry>ubuntu-karmic</entry>
+									<entry>for Ubuntu Karmic (9.10)</entry>
+								</row>
+								<row>
+									<entry>ubuntu-intrepid</entry>
+									<entry>for Ubuntu Intrepid (8.10)</entry>
+								</row>
+								<row>
+									<entry>ubuntu-hardy</entry>
+									<entry>for Ubuntu Hardy (8.04)</entry>
+								</row>
+								<row>
+									<entry>ubuntu-gutsy</entry>
+									<entry>for Ubuntu Gutsy (7.10)</entry>
+								</row>
+								<row>
+									<entry>gentoo</entry>
+									<entry>generic for Gentoo versions</entry>
+								</row>
+								<row>
+									<entry>centos</entry>
+									<entry>generic for Centos versions</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</table>
+					<indexterm>
+						<primary>ZZZ-REVIEW</primary>
+						<secondary>ADD INFO FOR OTHER LINUX DISTRIBUTIONS </secondary>
+					</indexterm>
+					<caution>ADD INFO FOR OTHER LINUX DISTRIBUTIONS </caution>
+				</step>
+				<step xml:id="serversideinstallation-postgresql-default">
+					<title>(OPTIONAL) Install the PostgreSQL Server</title>
+					<para>Since the PostgreSQL server is usually a standalone server in multi-server production systems, the prerequisite installer Makefile in the previous step 
+					does not automatically install PostgreSQL. If your PostgreSQL server is on a different system, just skip this step.</para>
+					<para>For further information on manually installing PostgreSQL, visit the <link xl:href="http://www.postgresql.org/">PostgreSQL Site</link>.</para>
+					<para>If your PostgreSQL server will be on the same system as your Evergreen software, then as the <systemitem class="username">root</systemitem> user install the 
+					required PostgreSQL server packages:</para>
+					<screen>
+						<userinput>su - root</userinput>
+					</screen>
+					<para>For <systemitem class="osname">Debian Lenny</systemitem> and <systemitem class="osname">Ubuntu Hardy (8.04)</systemitem>:</para>
+					<screen>
+						<userinput>make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_83</userinput>
+					</screen>
+					<para>For <systemitem class="osname">Ubuntu Karmic (9.10)</systemitem> and <systemitem class="osname">Ubuntu Lucid (10.04)</systemitem>:</para>
+					<screen>
+						<userinput>make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_84</userinput>
+					</screen>
+					<note>
+						<para>Postgresql 8.3 or 8.4 are the recommended versions to work with Evergreen 1.6. If you have an older version of PostgreSQL, you should upgrade before 
+						installing Evergreen. To find the running version of PostgreSQL, switch to the <systemitem class="username">postgres</systemitem> user and run the 
+						<command>psql</command>. Then type <userinput>SELECT version();</userinput> to get detailed information of your version of PostgreSQL.</para>
+					</note>
+				</step>
+				<step performance="optional">
+					<title>Install Perl Modules on PostgreSQL Server</title>
+					<para>If PostgreSQL is running on the same system as your Evergreen software, then the Perl modules will automatically be available. Just skip this step.</para>
+					<para>Otherwise, if your PostgreSQL server is running on another system, then as the <systemitem class="username">root</systemitem> user install the following Perl 
+					modules on that system:</para>
+					<para>ensure the gcc compiler is installed:</para>
+					<screen>
+						<userinput>apt-get install gcc</userinput>
+					</screen>
+					<para>install the Perl modules</para>
+					<screen><userinput>perl -MCPAN -e shell</userinput><prompt>cpan></prompt> <userinput>install JSON::XS</userinput><prompt>cpan></prompt> <userinput>install MARC::Record</userinput><prompt>cpan></prompt> <userinput>install MARC::File::XML</userinput></screen>
+					<para>For more information on installing Perl Modules vist the <link xl:href="http://www.cpan.org/">CPAN</link> site.</para>
+				</step>
+				<step>
+					<title>Update the System Dynamic Library Path</title>
+					<para>As the <systemitem class="username">root</systemitem> user, you must update the system dynamic library path to make your system recognize the newly 
+					installed libraries. Do this by creating the new file <filename>/etc/ld.so.conf.d/eg.conf</filename> containing two new library path.</para>
+					<para>Create a file named /etc/ld.so.conf.d/eg.conf containing the following lines:</para>
+					<programlisting>
+/usr/local/lib
+/usr/local/lib/dbd
+</programlisting>
+					<para>Then run the command <command>ldconfig</command> to automatically read the file and modify the system dynamic library path:</para>
+					<screen>
+						<userinput>ldconfig</userinput>
+					</screen>
+				</step>
+				<step preformance="optional">
+					<title>Restart the PostgreSQL Server</title>
+					<para>If PostgreSQL is running on the same system as the rest of Evergreen, as the <systemitem class="username">root</systemitem> user you must restart 
+					PostgreSQL. If PostgreSQL is running on another system, you may skip this step.</para>
+					<screen>
+						<userinput>/etc/init.d/postgresql-[PGSQL_VERSION] restart</userinput>
+					</screen>
+					<para>Where <literal>PGSQL_VERSION</literal> is your installed PostgreSQL version (e.g. <literal>8.3</literal>).</para>
+				</step>
+				<step xml:id="serversideinstallation-configure">
+					<title>Configure Evergreen</title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, return to the Evergreen build directory and use the <command>configure</command> utility to 
+					prepare for the next step of compiling and linking the software:</para>
+					<screen>
+						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.0.7</userinput>
+						<userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput>
+						<userinput>make</userinput>
+					</screen>
+				</step>
+				<step xml:id="serversideinstallation-compilingevergreen">
+					<title>Compile, Link and Install Evergreen</title>
+					<para>In this step you will actually compile, link and install Evergreen and the default Evergreen Staff Client.</para>
+					<para>As the <systemitem class="username">root</systemitem> user, return to the Evergreen build directory and use the <command>make</command> utility as 
+					shown below. The Staff Client will also be automatically built, but you must remember to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version 						of the Staff Client you will use to connect to the Evergreen server.</para>
+					<para>For further information on manually building the Staff Client, see <xref linkend="serversideinstallation-building-staffclient"/>.</para>
+					<screen>
+						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.0.7</userinput>
+						<userinput>make STAFF_CLIENT_BUILD_ID=rel_1_6_0_7 install</userinput>
+					</screen>
+					<para>The above commands will create a new subdirectory <filename class="directory">/openils/var/web/xul/rel_1_6_0_7</filename> containing the Staff Client.</para>
+					<para>To complete the Staff Client installation, as the <systemitem class="username">root</systemitem> user create a symbolic link named <emphasis>server</emphasis> 
+					in the head of the Staff Client directory <filename class="directory">/openils/var/web/xul</filename> that points to the subdirectory 
+					<filename class="directory">/server</filename> of the new Staff Client build:</para>
+					<screen>
+						<userinput>cd /openils/var/web/xul</userinput>
+						<userinput>ln -sf rel_1_6_0_7/server server</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Copy the OpenSRF Configuration Files</title>
+					<para>As the <systemitem class="username">root</systemitem> user, copy the example OpenSRF configuration files into place. This replaces the configuration 
+					files that you set up in a previous step when you installed and tested OpenSRF. You should also create backup copies of the old files for troubleshooting 
+					purposes. Finally, change the ownership on the installed files to the <systemitem class="username">opensrf</systemitem> user:</para>
+					<screen>
+						<userinput>cp /openils/conf/opensrf.xml.example      /openils/conf/opensrf.xml</userinput>
+						<userinput>cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml</userinput>
+						<userinput>cp /openils/conf/oils_web.xml.example     /openils/conf/oils_web.xml</userinput>
+						<userinput>chown -R opensrf:opensrf /openils/</userinput>
+					</screen>
+				</step>
+				<step>
+					<title>Create and Configure PostgreSQL Database</title>
+					<para>As the <systemitem class="username">postgres</systemitem> user on your PostgreSQL server, create the Evergreen database.</para>
+					<para>In the commands below, remember to adjust the path of the <emphasis role="bold">contrib</emphasis> repository to match your PostgreSQL server layout. For 
+					example, if you built PostgreSQL from source the path would be <filename class="directory">/usr/local/share/contrib</filename>; if you installed the PostgreSQL 8.3 
+					server packages on <systemitem class="osname">Ubuntu 8.04</systemitem>, the path would be 
+					<filename class="directory">/usr/share/postgresql/8.3/contrib/</filename>.</para>
+					<substeps>
+						<step>
+							<para>
+								<emphasis role="bold">Create and configure the database</emphasis>
+							</para>
+							<para>As the <systemitem class="username">postgres</systemitem> user on the PostgreSQL system create the PostgreSQL database, then set some internal 
+							paths:</para>
+							<para>Create the database:</para>
+							<screen>
+								<userinput>createdb -E UNICODE evergreen</userinput>
+								<userinput>createlang plperl   evergreen</userinput>
+								<userinput>createlang plperlu  evergreen</userinput>
+								<userinput>createlang plpgsql  evergreen</userinput>
+							</screen>
+							<para>Adjust the paths:</para>
+							<screen>
+								<userinput>psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/tablefunc.sql evergreen</userinput>
+								<userinput>psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/tsearch2.sql  evergreen</userinput>
+								<userinput>psql -f /usr/share/postgresql/PGSQL_VERSION/contrib/pgxml.sql     evergreen</userinput>
+							</screen>
+							<para>Where <literal>PGSQL_VERSION</literal> is your installed PostgreSQL version (e.g. <literal>8.3</literal>).</para>
+						</step>
+						<step>
+							<title>Create a new Evergreen superuser</title>
+							<para>As the <systemitem class="username">postgres</systemitem> user on the PostgreSQL system, create the new database 
+							<systemitem class="username">evergreen</systemitem> user and assign a password:</para>
+							<screen>
+								<userinput>createuser -P -s evergreen</userinput>
+							</screen>
+							<para>Enter the password twice for new role when prompted.</para>
+						</step>
+						<step>
+							<title>Create Database Schema</title>
+							<para>As the <systemitem class="username">root</systemitem> user, create the database schema and configure your system with the corresponding 
+							database authentication details for the <emphasis>evergreen</emphasis> database user that you created in the previous step.</para>
+							<para>Enter the following commands and replace <emphasis>HOSTNAME, PORT, PASSWORD</emphasis> and <emphasis>DATABASENAME</emphasis> with appropriate 
+							values.</para>
+							<screen>
+								<userinput>cd /home/opensrf/Evergreen-ILS-1.6.0.7</userinput>
+								<userinput>perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
+	--service all --create-schema --create-bootstrap --create-offline \
+	--hostname HOSTNAME --port PORT \
+	--user evergreen --password PASSWORD --database DATABASENAME</userinput>
+							</screen>
+							<para>On most systems, <emphasis>HOSTNAME</emphasis> will be <emphasis role="bold">localhost</emphasis>, <emphasis>PORT</emphasis> will be 
+							<emphasis role="bold">5432</emphasis>, and <emphasis>PASSWORD</emphasis> and <emphasis>DATABASENAME</emphasis> will be
+							 <emphasis role="bold">evergreen</emphasis>.</para>
+							<note>
+								<para>If you are entering the above command on a single line, do not include the <literal>\</literal> (backslash) characters. 
+									If you are using the <command>bash</command> shell, these should only be used at the end of a line at a bash prompt to indicate 
+									that the command is continued on the next line.</para>
+							</note>
+						</step>
+						<step>
+							<title>Modify the Apache configuration files for the Evergreen site.</title>
+							<substeps>
+								<step>
+									<para>Enable some built-in Apache modules with the utility <command>a2enmod</command>, and install some additional Apache 
+									configuration files. As the <systemitem class="username">root</systemitem> user, enable some modules in the Apache server, then copy 
+									the new configuration files to the Apache server directories:</para>
+									<para>Enable the required Apache Modules:</para>
+									<screen>
+										<userinput>a2enmod ssl	     # enable mod_ssl</userinput>
+										<userinput>a2enmod rewrite    # enable mod_rewrite</userinput>
+										<userinput>a2enmod expires    # enable mod_expires</userinput>
+										<userinput>cd /home/opensrf/Evergreen-ILS-1.x.x.x</userinput>
+									</screen>
+								</step>
+								<step>
+									<para>Copy the Apache configuration files from the Evergreen installation dierectory:</para>
+									<screen>
+										<userinput>cp Open-ILS/examples/apache/eg.conf	 /etc/apache2/sites-available/</userinput>
+										<userinput>cp Open-ILS/examples/apache/eg_vhost.conf   /etc/apache2/</userinput>
+										<userinput>cp Open-ILS/examples/apache/startup.pl      /etc/apache2/</userinput>
+									</screen>
+								</step>
+								<step xml:id="serversideinstallation-createsslkey">
+									<para>Create a new Security Certificate (SSL Key) for the Apache server with the command <command>openssl</command>. For a 
+									public production server you should configure or purchase a signed SSL certificate, but for now you can just use a 
+									self-signed certificate and accept the warnings in the Staff Client and browser during testing and development:</para>
+									<screen>
+										<userinput>mkdir /etc/apache2/ssl</userinput>
+										<userinput>cd /etc/apache2/ssl</userinput>
+										<userinput>openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key</userinput>
+									</screen>
+									<note>
+										<para>This generates a self-signed SSL certificate. You should acquire a proper SSL certificate for a public 
+										production system to avoid warning messages when users login to their account through the OPAC or when staff 
+										login through the staff client.</para>
+										<para>For further information on getting a proper SSL certificate, see <xref linkend="serversideinstallation-ssl"/>.</para>
+									</note>
+								</step>
+								<step>
+									<para>Several changes are needed in the new Apache configuration file <filename>/etc/apache2/sites-available/eg.conf</filename>. 
+								As the <systemitem class="username">root</systemitem> user, edit the file and make the following changes:</para>
+									<substeps>
+										<step>
+											<para>Comment out the line <literal>Listen 443</literal>, since it conflicts with the same declaration in the configuration 
+										file: <filename>/etc/apache2/ports.conf</filename>. <systemitem class="osname">Debian Etch</systemitem> users should not 
+										do this since the conflict does not apply to that OS.</para>
+										</step>
+										<step>
+											<para>For the <systemitem class="osname">Linux</systemitem> distributions 
+										<systemitem class="osname">Ubuntu Hardy</systemitem> 
+										or <systemitem class="osname">Debian Etch</systemitem>, as the <systemitem class="username">root</systemitem> user, edit the 
+										Apache configuration file <filename>/etc/apache2/apache2.conf</filename> and change <literal>User www-data</literal> to 
+										<literal>User opensrf</literal>.</para>
+											<para>For the <systemitem class="osname">Linux</systemitem> distributions <systemitem class="osname">Ubuntu 
+										Karmic</systemitem> or 	<systemitem class="osname">Ubuntu Lucid</systemitem> or 
+										<systemitem class="osname">Debian Lenny</systemitem>, as the <systemitem class="username">root</systemitem> user, 
+										edit the Apache configuration file <filename>/etc/apache2/envvars</filename> and 
+										change the line <literal>export APACHE_RUN_USER=www-data</literal> to  <literal>export APACHE_RUN_USER=opensrf</literal>.
+										</para>
+											<para>The following updates are needed to allow the logs to function properly, but it may break other Apache applications 
+										on your server.</para>
+										</step>
+									</substeps>
+								</step>
+								<step>
+									<para>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file 
+								<filename>/etc/apache2/apache2.conf</filename> and add the lines <literal>KeepAliveTimeout 1</literal> and 
+								<literal>MaxKeepAliveRequests 100</literal>, or modify any existing lines.</para>
+								</step>
+							</substeps>
+						</step>
+						<step performance="optional">
+							<title>Performance Modifications for Apache</title>
+							<para>Some further configuration changes to Apache may be necessary for busy systems. These changes increase the number of Apache server processes that are 
+						started to support additional browser connections.</para>
+							<para>As the <systemitem class="username">root</systemitem> user, edit the Apache configuration file <filename>/etc/apache2/apache2.conf</filename>, 
+						locate and modify the section related to <emphasis>prefork configuration</emphasis> to suit the load on your system.</para>
+							<programlisting language="xml"><![CDATA[
+<IfModule mpm_prefork_module>
+   StartServers		  20
+   MinSpareServers	   5
+   MaxSpareServers	  15
+   MaxClients		 150
+   MaxRequestsPerChild 10000
+</IfModule>
+]]></programlisting>
+						</step>
+						<step>
+							<para>Finally, as the <systemitem class="username">root</systemitem> user, execute the following Apache configuration commands to disable the default 
+						<emphasis>It Works</emphasis> web page and to enable the Evergreen web site:</para>
+							<screen>
+								<userinput>a2dissite default</userinput>
+								<userinput>a2ensite eg.conf</userinput>
+							</screen>
+						</step>
+					</substeps>
+				</step>
+				<step xml:id="serversideinstallation-opensrf-config">
+					<title>Modify the OpenSRF Configuration File</title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, edit the OpenSRF configuration file <filename>/openils/conf/opensrf_core.xml</filename> to 
+				update the Jabber usernames and passwords, and to specify the domain from which we will accept and to which we will make connections.</para>
+					<para>If you are installing Evergreen on a single server and using the <systemitem class="domainname">private.localhost</systemitem> / 
+				<systemitem class="domainname">public.localhost</systemitem> domains, these will already be set to the correct values. Otherwise, search and replace to match 
+				your customized values.</para>
+					<para>The following example uses common XPath syntax on the left-hand side to indicate the approximate position needing changes within the XML file:</para>
+					<para>/config/opensrf/username = <systemitem class="username">opensrf</systemitem></para>
+					<para>/config/opensrf/passwd = password for <systemitem class="domainname">private.localhost</systemitem><systemitem class="username">opensrf</systemitem> user</para>
+					<para>/config/gateway/username = <systemitem class="username">opensrf</systemitem></para>
+					<para>/config/gateway/passwd = password for <systemitem class="domainname">public.localhost</systemitem><systemitem class="username">opensrf</systemitem>  user</para>
+					<para>/config/routers/router/transport  (first entry, where <quote>transport/server</quote> == <systemitem class="domainname">public.localhost</systemitem>)</para>
+					<itemizedlist>
+						<listitem>username = <systemitem class="username">router</systemitem></listitem>
+						<listitem>password = password for <systemitem class="domainname">public.localhost</systemitem> <systemitem class="username">router</systemitem> 
+							user</listitem>
+					</itemizedlist>
+					<para>/config/routers/router/transport  (second entry, where <quote>transport/server</quote> == <systemitem class="domainname">private.localhost</systemitem>) </para>
+					<itemizedlist>
+						<listitem>username = <systemitem class="username">router</systemitem></listitem>
+						<listitem>password = password for <systemitem class="domainname">private.localhost</systemitem> <systemitem class="username">router</systemitem> 
+							user</listitem>
+					</itemizedlist>
+				</step>
+				<step xml:id="serversideinstallation-srfsh">
+					<title>Create Configuration Files for Users Needing <command>srfsh</command></title>
+					<para>The software installation will automatically create a utility named <command>srfsh</command> (surf shell). This is a command line diagnostic tool for 
+				testing and interacting with the OpenSRF network software. It will be used in a future step to complete and test the Evergreen installation. 
+				See <xref linkend="serversideinstallation-testing"/> for further information.</para>
+					<para>In this section you will set up a special configuration file for each user who will need to run the utility. Copy the short sample configuration 
+				file <filename>/openils/conf/srfsh.xml.example</filename> to the file <filename>.srfsh.xml</filename> (note the leading dot!) in the home directory of 
+				each user who will use <command>srfsh</command>. Finally, edit each users' <filename>.srfsh.xml</filename> file and make the following changes:</para>
+					<substeps>
+						<step>
+							<para>Modify <emphasis role="bold">domain</emphasis> to be the router hostname (following our domain examples, 
+						<systemitem class="domainname">private.localhost</systemitem>> will give <command>srfsh</command> access to all OpenSRF services, 
+						while <systemitem class="domainname">public.localhost</systemitem> will only allow access to those OpenSRF services that are publicly exposed).</para>
+						</step>
+						<step>
+							<para>Modify <emphasis role="bold">username</emphasis> and <emphasis role="bold">password</emphasis> to match the 
+						<systemitem class="username">opensrf</systemitem> Jabber user for the chosen domain.</para>
+						</step>
+						<step>
+							<para>Modify <emphasis role="bold">logfile</emphasis> to be the full path for a log file to which the user has write access.</para>
+						</step>
+						<step>
+							<para>Modify <emphasis role="bold">loglevel</emphasis> as needed for testing.</para>
+						</step>
+					</substeps>
+					<programlisting language="xml"><![CDATA[
+<?xml version="1.0"?>
+<!-- This file follows the standard bootstrap config file layout -->
+<!-- found in opensrf_core.xml -->
+<srfsh>
+<router_name>router</router_name>
+<domain>private.localhost</domain>
+<username>opensrf</username>
+<passwd>evergreen</passwd>
+<port>5222</port>
+<logfile>/tmp/srfsh.log</logfile>
+<!-- 0 None, 1 Error, 2 Warning, 3 Info, 4 debug, 5 Internal (Nasty) -->
+<loglevel>4</loglevel>
+</srfsh>
+]]></programlisting>
+				</step>
+				<step xml:id="serversideinstallation-opensrf-env">
+					<title>Modify the OpenSRF Environment</title>
+					<para>Modify the shell configuration file <filename>~/.bashrc</filename> for <systemitem class="username">opensrf</systemitem> by adding a Perl environmental 
+				variable and execute the shell configuration file to load the new variables into your current environment.</para>
+					<note>
+						<para>
+							<emphasis>In a multi-server environment, you must add any modifications to <filename>~/.bashrc</filename> to the top of the file 
+						<emphasis>before</emphasis> the line <literal>[ -z "$PS1" ] &amp;&amp; return </literal>. This will allow headless (scripted) logins to 
+						load the correct environment.</emphasis>
+						</para>
+					</note>
+					<screen>
+						<userinput>echo "export PERL5LIB=/openils/lib/perl5:\$PERL5LIB" >> ~/.bashrc</userinput>
+						<userinput>. ~/.bashrc</userinput>
+					</screen>
+				</step>
+				<step xml:id="serversideinstallation-starting">
+					<title>Start Evergreen</title>
+					<substeps>
+						<step>
+							<para>As the <systemitem class="username">root</systemitem> user, start the <systemitem class="service">ejabberd</systemitem> and 
+						<systemitem class="service">memcached</systemitem> services (if they are not already running):</para>
+							<screen>
+								<userinput>/etc/init.d/ejabberd start</userinput>
+								<userinput>/etc/init.d/memcached start</userinput>
+							</screen>
+						</step>
+						<step>
+							<para>As the <systemitem class="username">opensrf</systemitem> user, start Evergreen.</para>
+							<para>Use the flag <option>-l</option> to force Evergreen to use <systemitem class="domainname">localhost</systemitem> 
+						(your current system) as the hostname. 
+						Using the <option>start_all</option> option will start the OpenSRF <systemitem class="service">router</systemitem> , 
+						<systemitem class="service">Perl</systemitem> , and <systemitem class="service">C</systemitem> services:</para>
+							<screen>$ osrf_ctl.sh -l -a start_all</screen>
+							<note>
+								<para>
+									<emphasis>You can also start Evergreen <emphasis role="bold">without</emphasis> the <option>-l</option> flag, but the 
+								<command>osrf_ctl.sh</command> utility must know the fully qualified domain name for the system on which it will execute. 
+								That hostname may have been specified in the configuration file <filename>opensrf.xml</filename>, which you configured in a 
+								previous step.</emphasis>
+								</para>
+								<para>Use the <command>hostname</command> command to determine the fully qualified domain name of your system.</para>
+							</note>
+							<itemizedlist>
+								<listitem>
+									<para>If you receive an error message similar to <emphasis>osrf_ctl.sh: command not found</emphasis>, then your environment 
+								variable <envar>PATH</envar> does not include the directory <filename class="directory">/openils/bin</filename>. 
+								As the <systemitem class="username">opensrf</systemitem> user, edit the configuration file <filename>/home/opensrf/.bashrc</filename> 
+								and add the following line: <literal>export PATH=$PATH:/openils/bin</literal></para>
+								</listitem>
+								<listitem>
+									<para>If you receive an error message similar to <errortext>Can't locate OpenSRF/System.pm in @INC ... 
+								BEGIN failed--compilation aborted</errortext>, then your environment variable <emphasis role="bold">PERL5LIB</emphasis> does not 
+								include the directory <filename class="directory">/openils/lib/perl5</filename>. As the 
+								<systemitem class="username">opensrf</systemitem> user, edit the configuration file <filename>/home/opensrf/.bashrc</filename> 
+								and add the following line: <literal>export PERL5LIB=$PERL5LIB:/openils/lib/perl5</literal></para>
+								</listitem>
+							</itemizedlist>
+						</step>
+						<step>
+							<para>As the <systemitem class="username">opensrf</systemitem> user, generate the Web files needed by the Staff Client and catalog, 
+						and calculate the proximity of locations in the Organizational Unit tree (which allows <emphasis>Holds</emphasis> to work properly).</para>
+							<para>You must do this the first time you start Evergreen, and after making any changes to the library hierarchy.</para>
+							<screen><userinput>cd /openils/bin</userinput><userinput>./autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
+Updating Evergreen organization tree and IDL using '/openils/conf/opensrf_core.xml'
+Updating fieldmapper
+</screen>
+						</step>
+						<step>
+							<para>As the <systemitem class="username">root</systemitem> user, restart the Apache Web server:</para>
+							<screen>/etc/init.d/apache2 restart</screen>
+							<note>
+								<para>If the Apache Web server was running when you started the OpenSRF services, you might not be able to successfully log in to the OPAC or Staff 
+						Client until the Apache Web server is restarted.</para>
+							</note>
+						</step>
+					</substeps>
+				</step>
+			</procedure>
+		</section>
+		<section xml:id="serversideinstallation-testing">
+			<title>Testing the Installation</title>
+			<para>This section describes several simple tests you can perform to verify that the Evergreen server-side software has been installed and configured properly 
+				and is running as expected.</para>
+			<simplesect xml:id="serversideinstallation-testing-connections">
+				<title>Testing Connections to Evergreen</title>
+				<para>Once you have installed and started Evergreen, test your connection to Evergreen. As the <systemitem class="username">opensrf</systemitem> user start 
+					the <command>srfsh</command> application and try logging onto the Evergreen server using the default administrator username and password. Following 
+					is sample output generated by executing that script after a successful Evergreen installation:</para>
+				<screen><userinput>/openils/bin/srfsh</userinput><prompt>srfsh%</prompt> <userinput>login admin open-ils</userinput>
+Received Data: "250bf1518c7527a03249858687714376"
+------------------------------------
+Request Completed Successfully
+Request Time in seconds: 0.045286
+------------------------------------
+Received Data: {
+   "ilsevent":0,
+   "textcode":"SUCCESS",
+   "desc":" ",
+   "pid":21616,
+   "stacktrace":"oils_auth.c:304",
+   "payload":{
+      "authtoken":"e5f9827cc0f93b503a1cc66bee6bdd1a",
+      "authtime":420
+   }
+}
+------------------------------------
+Request Completed Successfully
+Request Time in seconds: 1.336568
+------------------------------------
+</screen>
+				<para>The first argument is how many sets of 4 queries (+ - * /) are sent to <systemitem class="service">opensrf.math</systemitem>. When the response is 
+					successful, you will see the string of <literal>+</literal> symbols. If the system is not running correctly, you will either get an exception or no result at 
+					all.</para>
+				<para>For other <command>srfsh</command> commands, type <userinput>help</userinput> in at the prompt.</para>
+				<para/>
+				<para>If this test fails or you have any other problems during installation, refer to the <xref linkend="troubleshooting"/> chapter.</para>
+			</simplesect>
+		</section>
+		<section xml:id="serversideinstallation-virtual">
+			<title>Installing In Virtualized <systemitem class="osname">Linux</systemitem> Environments</title>
+			<para>This section describes the installation of Evergreen software in so-called "virtualized" software environments. Evergreen software runs as a native application on any of several well-known x86 (32-bit) and x86-64 (64-bit) <systemitem class="osname">Linux</systemitem> distributions including <systemitem class="osname">Ubuntu</systemitem> and <systemitem class="osname">Debian</systemitem> but it does not run as a native application on the <systemitem class="osname">Microsoft Windows</systemitem> operating system. However, it is possible to execute Evergreen on a <systemitem class="osname">Windows</systemitem> host system by running it within a virtual Linux-guest installation, which itself executes on the <systemitem class="osname">Windows</systemitem> system. The <systemitem class="osname">Linux</systemitem> environment is fully emulated and acts (within limits) just as if it were executing on a real standalone system.</para>
+			<para>This technique of emulating a <systemitem class="osname">Linux</systemitem> environment on a <systemitem class="osname">Windows</systemitem> host is a practical way to install and run an Evergreen system if it is not possible to dedicate a physical machine solely as a <systemitem class="osname">Linux</systemitem> host for Evergreen. This architecture is not recommended for large scale systems since there are performance limitations to running Evergreen in a virtualized environment. However, it is a reasonable architecture for smaller experimental systems, as a proof of concept, or as a conference-room pilot.</para>
+			<simplesect>
+				<title>Installing Virtualization Software</title>
+				<para>As described above, Evergreen can be installed on top of an emulated <systemitem class="osname">Linux</systemitem> environment. The <systemitem class="osname">Linux</systemitem> environment, in turn, is installed on top of a software application such as <application>"VirtualBox"</application>, <application>"VMware"</application> or <application>"VirtualPC"</application> which must first be installed on the <systemitem class="osname">Windows</systemitem> system. This section contains step-by-step examples that show installing popular virtualization applications on a <systemitem class="osname">Windows</systemitem> host system. Following this section are further descriptions of installing <systemitem class="osname">Linux</systemitem> and Evergreen systems using that virtualization software.</para>
+				<section xml:id="serversideinstallation-virtual-vbox-install">
+					<title>Installing <application>"VirtualBox"</application> Virtualization Software</title>
+					<para>This section reviews installation of the <application>"VirtualBox"</application> application on <systemitem class="osname">WindowsXP Professional (SP2)</systemitem>. Download <application>VirtualBox</application> from their official website: <ulink url="http://download.virtualbox.org/virtualbox/3.2.8/VirtualBox-3.2.8-64453-Win.exe">http://download.virtualbox.org/virtualbox/3.2.8/VirtualBox-3.2.8-64453-Win.exe</ulink>, then run the executable file. Continue with the steps shown in the next five figures until the software has been successfully installed:</para>
+					<figure>
+						<title>Starting the Windows installation file</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-1.png" scalefit="1" width="70%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure>
+						<title>Welcome to <application>VirtualBox</application> setup wizard</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-2.png" scalefit="1" width="70%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure>
+						<title>Accept the license agreement</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-3.png" scalefit="1" width="70%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure>
+						<title>Waiting for files to be copied</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-4.png" scalefit="1" width="70%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure>
+						<title>Installation is complete</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-5.png" scalefit="1" width="70%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+				</section>
+				<section>
+					<title>Installing <application>"VMware"</application> Virtualization Software</title>
+					<para>This section reviews installation of the <application>"VMware"</application> application on <systemitem class="osname">WindowsXP Professional (SP2)</systemitem>. Download <application>VMware</application> from their official website: <ulink url="">link</ulink>, then run the executable file. Continue with the steps shown in the figures until the software has been successfully installed:</para>
+					<figure>
+						<title>Starting the Windows installation file</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-1.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<indexterm>
+						<primary>ZZZ-REVIEW</primary>
+						<secondary>ADD INFO ON VMWARE</secondary>
+					</indexterm>
+					<caution>ADD INFO ON VMWARE</caution>
+					<para>At this point, <application>VirtualBox</application> has been installed, started for the first time, and a new virtual machine (VM) has been created. This VM is the environment in which the <systemitem class="osname">Linux</systemitem> / Evergreen installation will execute. Please continue in <xref linkend="serversideinstallation-virtual-install-linux-ev"/> with the installation of the <systemitem class="osname">Linux</systemitem> / Evergreen distribution.</para>
+				</section>
+				<section>
+					<title>Installing <application>"VirtualPC"</application> Virtualization Software</title>
+					<para>This section reviews installation of the <application>"VirtualPC"</application> application on <systemitem class="osname">WindowsXP Professional (SP2)</systemitem>. Download <application>VMware</application> from their official website: <ulink url="">link</ulink>, then run the executable file. Continue with the steps shown in the figures until the software has been successfully installed:</para>
+					<figure>
+						<title>Starting the Windows installation file</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-1.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<indexterm>
+						<primary>ZZZ-REVIEW</primary>
+						<secondary>ADD INFO ON VIRTUALPC</secondary>
+					</indexterm>
+					<caution>ADD INFO ON VIRTUALPC</caution>
+					<para>At this point, <application>VirtualBox</application> has been installed, started for the first time, and a new virtual machine (VM) has been created. This VM is the environment in which the <systemitem class="osname">Linux</systemitem> / Evergreen installation will execute. Please continue in <xref linkend="serversideinstallation-virtual-install-linux-ev"/> with the installation of the <systemitem class="osname">Linux</systemitem> / Evergreen distribution.</para>
+				</section>
+			</simplesect>
+			<simplesect xml:id="serversideinstallation-virtual-install-linux-ev">
+				<title>Installing <systemitem class="osname">Linux</systemitem> / Evergreen on Virtualization Software</title>
+				<para>After the virtualization software is installed and running, there are two ways to continue with installing <systemitem class="osname">Linux</systemitem> and Evergreen software in the new virtualized environment:</para>
+				<orderedlist>
+					<listitem>
+						<para>Download and install a prebuilt software image that contains a working <systemitem class="osname">Linux</systemitem> / Evergreen system (see <xref linkend="serversideinstall-virtual-prebuilt"/> for details)</para>
+					</listitem>
+					<listitem>
+						<para>Manually install a <systemitem class="osname">Linux</systemitem> guest system, then manually install Evergreen on it (see <xref linkend="serversideinstall-virtual-manual"/> for details)</para>
+					</listitem>
+				</orderedlist>
+				<para>We review each method in the following sections.</para>
+				<section xml:id="serversideinstall-virtual-prebuilt">
+					<title>Download and install a prebuilt software image</title>
+					<para>You can download a prebuilt software image that, when installed with your virtualization software, emulates a <systemitem class="osname">Linux</systemitem> guest system containing a running Evergreen distribution. The image is essentially a snapshot of a hard disk from a fully configured, functional <systemitem class="osname">Linux</systemitem> system with Evergreen already installed.</para>
+					<para>We recommend this approach if you wish to get Evergreen running quickly with minimal attention to configuration. After reviewing only a few configuration details you can have a working Evergreen system that integrates smoothly with the rest of your network. See <xref linkend="serversideinstall-virtual-versions"/> for a list of prebuilt software images that are currently available to download and install</para>
+					<note>DISCLAIMER: The following virtual images have been contributed by members of the Evergreen community for the purposes of testing, evaluation, training, and development.</note>
+					<table xml:id="serversideinstall-virtual-versions">
+						<title>Linux / Evergreen Virtual Images</title>
+						<tgroup align="left" cols="4" colsep="1" rowsep="1">
+							<thead>
+								<row>
+									<entry>Linux Version</entry>
+									<entry>Evergreen Version</entry>
+									<entry>Image</entry>
+									<entry>Comments</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Debian lenny (5.0)</entry>
+									<entry>1.6.0.1</entry>
+									<entry>
+										<ulink url="http://www.open-ils.org/~denials/Evergreen1601_DebianLenny.zip"> download </ulink>
+									</entry>
+									<entry>VirtualBox image</entry>
+								</row>
+								<row>
+									<entry>Ubuntu karmic koala (9.10)</entry>
+									<entry>1.6.0.0</entry>
+									<entry>
+										<ulink url="http://www.open-ils.org/~denials/Evergreen-1600-Karmic.zip"> download </ulink>
+									</entry>
+									<entry>VirtualBox image</entry>
+								</row>
+								<row>
+									<entry>Ubuntu hardy heron (8.04)</entry>
+									<entry>1.2.3.1</entry>
+									<entry>
+										<ulink url="http://open-ils.org/dokuwiki/doku.php?id=server:1.2:ubuntu804:readme"> download </ulink>
+									</entry>
+									<entry>VirtualBox image; no preloaded data</entry>
+								</row>
+								<row>
+									<entry>Debian etch (4.0)</entry>
+									<entry>1.2.2.3</entry>
+									<entry>
+										<ulink url="http://open-ils.org/dokuwiki/doku.php?id=vmware:debian"> download </ulink>
+									</entry>
+									<entry>VMware image; preloaded with 13,000 Gutenberg records</entry>
+								</row>
+								<row>
+									<entry>Ubuntu gutsy gibbon (7.10)</entry>
+									<entry>1.2.1.4</entry>
+									<entry>
+										<ulink url="http://www.open-ils.org/downloads/vmware/Evergreen_1.2.1.4_on_Ubuntu_7.10.zip"> download </ulink>
+									</entry>
+									<entry>VMware image</entry>
+								</row>
+								<row>
+									<entry>Gentoo</entry>
+									<entry>1.1.5</entry>
+									<entry>
+										<ulink url="http://www.open-ils.org/~denials/Evergreen_1.1.5_Gentoo_x86.zip"> download </ulink>
+									</entry>
+									<entry>VMware image</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</table>
+					<indexterm>
+						<primary>ZZZ-REVIEW</primary>
+						<secondary>EXPAND LIST OF OTHER PREBUILT IMAGES</secondary>
+					</indexterm>
+					<caution>EXPAND LIST OF OTHER PREBUILT IMAGES</caution>
+					<para>For the following example, we have already installed the <application>VirtualBox</application> application (see <xref linkend="serversideinstallation-virtual-vbox-install"/> for details). Continue with the steps as shown; refer to the accompanying figures for further information:</para>
+					<procedure>
+						<step>Start VirtualBox for the first time and select <menuchoice><guimenu>File</guimenu><guimenuitem>VirtualBox Media Manager</guimenuitem><guimenuitem>Add</guimenuitem></menuchoice> to locate the prebuilt software image just downloaded (the example shows it was extracted from the original <literal>.ZIP</literal> file into a temporary directory <literal>C:\temp</literal>). See <xref linkend="serversideinstallation-virtual-vm-install-2"/> for details.</step>
+						<step>After selecting the file, click <guibutton>Open</guibutton> to import it (see <xref linkend="serversideinstallation-virtual-vm-install-3"/> for details).</step>
+						<step>Then click <guibutton>OK</guibutton> to save the selection and return to the VirtualBox Media Manager (see <xref linkend="serversideinstallation-virtual-vm-install-4"/> for details).</step>
+						<step>Click <guibutton>New</guibutton> to start the "Virtual Machine Wizard", then <guibutton>Next</guibutton> to continue and create a new virtual machine (VM) <xref linkend="serversideinstallation-virtual-vm-install-5"/>).</step>
+						<step>Create a new name for the VM and set the operating system type, then click <guibutton>Next</guibutton> (see <xref linkend="serversideinstallation-virtual-vm-install-6"/>).</step>
+						<step>Set the memory size (we chose the default value of 512Mb), then click <guibutton>Next</guibutton> (see <xref linkend="serversideinstallation-virtual-vm-install-7"/>).</step>
+						<step>Edit the Virtual Hard Disk configuration settings; click the radio boxes "Boot Hard Disk" and "Use existing hard disk" and ensure that the disk name "Evergreen1601_DebianLenny.vmdk" is selected. Click <guibutton>Finish</guibutton> to finish the setup (see <xref linkend="serversideinstallation-virtual-vm-install-8"/>).</step>
+						<step>
+							<para>Install the <application>VirtualBox Guest Additions</application> (really a required upgrade to VirtualBox)</para>
+							<indexterm>
+								<primary>ZZZ-REVIEW</primary>
+								<secondary>ADD INFO ON INSTALLING VIRTUALBOX GUEST ADDITIONS</secondary>
+							</indexterm>
+							<caution>ADD INFO ON INSTALLING VIRTUALBOX GUEST ADDITIONS</caution>
+						</step>
+						<step>Return to VirtualBox and see the summary of the VM just created. Click <guibutton>Start</guibutton> to boot the new VM (see <xref linkend="serversideinstallation-virtual-vm-install-9"/>).</step>
+						<step>See the start of the <systemitem class="osname">Linux</systemitem> boot sequence. Choose "Debian Gnu/Linux, kernel 2.6.26-2-686" from the startup menu and type <guibutton>Enter</guibutton> to start <systemitem class="osname">Linux</systemitem> and Evergreen (see <xref linkend="serversideinstallation-virtual-vm-install-11"/>). After some delay you should see the command line prompt: <literal>debian-lenny login:</literal>  .  Log in with username <literal>root</literal> and password <literal>evergreen</literal> to continue (see <xref linkend="serversideinstallation-virtual-vm-install-14"/>).</step>
+					</procedure>
+					<para>At this point you have a running <systemitem class="osname">Linux</systemitem> / Evergreen system. If you need to modify the Evergreen configuration in any way, review the sectons of the standard Evergreen installation instructions in <xref linkend="serversideinstallation-ubuntudebian"/> that deal with configuration.</para>
+					<figure xml:id="serversideinstallation-virtual-vm-install-2">
+						<title>Starting <application>VirtualBox</application> for the first time</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-2.png" scalefit="1" width="70%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure xml:id="serversideinstallation-virtual-vm-install-3">
+						<title>Selecting the software image in Virtual Media Manager</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-3.png" scalefit="1" width="70%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure xml:id="serversideinstallation-virtual-vm-install-4">
+						<title>New software image added to <application>VirtualBox</application></title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-4.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure xml:id="serversideinstallation-virtual-vm-install-5">
+						<title>Creating a new VM</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-5.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure xml:id="serversideinstallation-virtual-vm-install-6">
+						<title>Setting the VM name and OS type</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-6.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure xml:id="serversideinstallation-virtual-vm-install-7">
+						<title>Setting memory size</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-7.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure xml:id="serversideinstallation-virtual-vm-install-8">
+						<title>Setting up the Virtual Hard Disk</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-8.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure xml:id="serversideinstallation-virtual-vm-install-9">
+						<title>Finishing definition of new VM</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-9.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure xml:id="serversideinstallation-virtual-vm-install-10">
+						<title>Summary of the new VM</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-10.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure xml:id="serversideinstallation-virtual-vm-install-11">
+						<title>Selecting VM from startup menu</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-11.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure xml:id="serversideinstallation-virtual-vm-install-12">
+						<title>Starting the new VM</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-12.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure xml:id="serversideinstallation-virtual-vm-install-13">
+						<title>Starting the new VM (continued)</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-13.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<figure xml:id="serversideinstallation-virtual-vm-install-14">
+						<title>Logging into the new VM</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-14.png" scalefit="1" width="75%"/>
+							</imageobject>
+						</mediaobject>
+					</figure>
+				</section>
+				<section xml:id="serversideinstall-virtual-manual">
+					<title>Manually install <systemitem class="osname">Linux</systemitem> and Evergreen</title>
+					<para>You can manually install a <systemitem class="osname">Linux</systemitem> guest system and Evergreen on your virtualization software.</para>
+					<para>We recommend this approach if you need to specially configure either the <systemitem class="osname">Linux</systemitem> system or Evergreen itself. This will require a detailed review of both <systemitem class="osname">Linux</systemitem> and Evergreen configuration details. You are essentially doing a normal Evergreen installation on a <systemitem class="osname">Linux</systemitem> system; it just happens that <systemitem class="osname">Linux</systemitem> is running within a virtualized environment. Refer to <xref linkend="serversideinstallation-ubuntudebian"/> for information on the normal Evergreen installation, then continue with this section.</para>
+					<para>For the following example, we have already installed the <application>VirtualBox</application> application (see <xref linkend="serversideinstallation-virtual-vbox-install"/> for details). Continue with the steps as shown; refer to the accompanying figures for further information:</para>
+					<procedure>
+						<step>
+							<para>Download and install a standard <systemitem class="osname">Ubuntu</systemitem> distribution in <application>"VirtualBox"</application>.</para>
+							<para>You can download a software image of a prebuilt <systemitem class="osname">Ubuntu</systemitem> distribution and immediately import it into <application>"VirtualBox"</application> , or you can download and install 
+</para>
+							<indexterm>
+								<primary>ZZZ-REVIEW</primary>
+								<secondary>ADD DETAILS ON MANUAL INSTALLATION OF LINUX</secondary>
+							</indexterm>
+							<caution>ADD DETAILS ON MANUAL INSTALLATION OF LINUX</caution>
+						</step>
+						<step>
+							<para>Start (boot) <systemitem class="osname">Ubuntu</systemitem>.</para>
+							<indexterm>
+								<primary>ZZZ-REVIEW</primary>
+								<secondary>ADD DETAILS ON VM LINUX BOOT SEQUENCE</secondary>
+							</indexterm>
+							<caution>ADD DETAILS ON VM LINUX BOOT SEQUENCE</caution>
+						</step>
+						<step>
+							<para>Install Evergreen on <systemitem class="osname">Ubuntu</systemitem>.</para>
+							<indexterm>
+								<primary>ZZZ-REVIEW</primary>
+								<secondary>ADD DETAILS ON MANUAL INSTALLATION OF EVERGREEN</secondary>
+							</indexterm>
+							<caution>ADD DETAILS ON MANUAL INSTALLATION OF EVERGREEN</caution>
+						</step>
+					</procedure>
+					<para>At this point, the <systemitem class="osname">Windows</systemitem> system is hosting an <systemitem class="osname">Ubuntu</systemitem> system, which itself is hosting the Evergreen distribution. So far as Evergreen is concerned, it is happily executing in a standard <systemitem class="osname">Ubuntu</systemitem> environment and behaves exactly as if it were executing on a standalone <systemitem class="osname">Ubuntu</systemitem> system.</para>
+					<para>Of course, there are limitations to how well a virtualized <systemitem class="osname">Ubuntu</systemitem> system emulates a real one. The <application>"VirtualBox"</application> application itself consumes memory, and it contributes to the CPU load on the <systemitem class="osname">Windows</systemitem> host system. The emulated <systemitem class="osname">Ubuntu</systemitem> system will have less available memory and will execute more slowly than if it were a standalone system, therefore Evergreen itself will inherit some limitations from this overall environment.</para>
+					<para>However, this technique of using a <systemitem class="osname">Windows</systemitem> host to emulate a <systemitem class="osname">Linux</systemitem> environment is a practical way to install and run an Evergreen system even if it isn't possible to dedicate a real machine solely as a <systemitem class="osname">Linux</systemitem> host for testing. This is a reasonable architecture for simple experiments, or as a proof of concept, or as a conference-room pilot.</para>
+				</section>
+			</simplesect>
+		</section>
+		<section xml:id="serversideinstallation-ssl">
+			<title>Getting a Signed SSL Certificate</title>
+			<para>This section describes how to get a properly signed SSL certificate.</para>
+			<para>For temporary testing purposes, you can use the command <command>openssl</command> to create a new SSL key for your Apache server. This is just a self-signed certificate and will generate warnings in the Staff Client and browser during testing and development. For a public production server you should configure or purchase a properly signed SSL certificate.</para>
+			<indexterm>
+				<primary>ZZZ-REVIEW</primary>
+				<secondary>ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </secondary>
+			</indexterm>
+			<caution>ADD INFO ON HOW TO GET A SIGNED SSL CERTIFICATE </caution>
+		</section>
+	</section>
+</chapter>
