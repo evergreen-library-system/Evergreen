@@ -19,7 +19,7 @@
 					<title>Running the Staff Client installer</title>
 					<mediaobject>
 						<imageobject>
-							<imagedata fileref="../media/staffclientinstallation-staffclient-1.png" scalefit="1" width="70%"/>
+							<imagedata fileref="../media/staffclientinstallation-staffclient-1.png" format="PNG" scalefit="1" width="70%"/>
 						</imageobject>
 						<textobject>
 							<phrase>Running the Staff Client installer</phrase>
@@ -32,7 +32,7 @@
 					<title>Running the Staff Client for the first time</title>
 					<mediaobject>
 						<imageobject>
-							<imagedata fileref="../media/staffclientinstallation-staffclient-2.png" scalefit="1" width="70%"/>
+							<imagedata fileref="../media/staffclientinstallation-staffclient-2.png" format="PNG" scalefit="1" width="70%"/>
 						</imageobject>
 						<textobject>
 							<phrase>Running the Staff Client for the first time</phrase>
@@ -60,7 +60,7 @@
 							<title>Running the Staff Client installer</title>
 							<mediaobject>
 								<imageobject>
-									<imagedata fileref="../media/staffclientinstallation-staffclient-3.png" scalefit="1" width="20%"/>
+									<imagedata fileref="../media/staffclientinstallation-staffclient-3.png" format="PNG" scalefit="1" width="20%"/>
 								</imageobject>
 								<textobject>
 									<phrase>Running the Staff Client installer</phrase>
@@ -73,7 +73,7 @@
 							<title>Finishing the installation</title>
 							<mediaobject>
 								<imageobject>
-									<imagedata fileref="../media/staffclientinstallation-staffclient-4.png" scalefit="1" width="20%"/>
+									<imagedata fileref="../media/staffclientinstallation-staffclient-4.png" format="PNG" scalefit="1" width="20%"/>
 								</imageobject>
 								<textobject>
 									<phrase>Finishing the installation</phrase>
@@ -460,7 +460,7 @@
 						<title>Example of unconfigured Staff Client</title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/staffclientinstallation-staffclient-workstationnames-1.png" scalefit="1" width="70%"/>
+								<imagedata fileref="../media/staffclientinstallation-staffclient-workstationnames-1.png" format="PNG" scalefit="1" width="70%"/>
 							</imageobject>
 							<textobject>
 								<phrase>Example of unconfigured Staff Client</phrase>
@@ -472,7 +472,7 @@
 						<title>Example of configured Staff Client</title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/staffclientinstallation-staffclient-workstationnames-2.png" scalefit="1" width="70%"/>
+								<imagedata fileref="../media/staffclientinstallation-staffclient-workstationnames-2.png" format="PNG" scalefit="1" width="70%"/>
 							</imageobject>
 							<textobject>
 								<phrase>Example of configured Staff Client</phrase>
@@ -485,7 +485,7 @@
 						<title>Example of registered Staff Client</title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/staffclientinstallation-staffclient-workstationnames-3.png" scalefit="1" width="70%"/>
+								<imagedata fileref="../media/staffclientinstallation-staffclient-workstationnames-3.png" format="PNG" scalefit="1" width="70%"/>
 							</imageobject>
 							<textobject>
 								<phrase>Example of registered Staff Client</phrase>
@@ -978,7 +978,7 @@
 					<title>Setting up an SSH tunnel in PuTTY</title>
 					<mediaobject>
 						<imageobject>
-							<imagedata fileref="../media/staffclientinstallation-proxy-putty.png" scalefit="1" width="70%"/>
+							<imagedata fileref="../media/staffclientinstallation-proxy-putty.png" format="PNG" scalefit="1" width="70%"/>
 						</imageobject>
 						<textobject>
 							<phrase>Setting up an SSH tunnel in PuTTY</phrase>
@@ -1002,7 +1002,7 @@
 					<title>The SOCKS section of "all.js" before changes</title>
 					<mediaobject>
 						<imageobject>
-							<imagedata fileref="../media/staffclientinstallation-proxy-socks-1.png" scalefit="1" width="70%"/>
+							<imagedata fileref="../media/staffclientinstallation-proxy-socks-1.png" format="PNG" scalefit="1" width="70%"/>
 						</imageobject>
 						<textobject>
 							<phrase>The SOCKS section of "all.js" before changes</phrase>
@@ -1018,7 +1018,7 @@
 					<title>The SOCKS section of "all.js" after changes</title>
 					<mediaobject>
 						<imageobject>
-							<imagedata fileref="../media/staffclientinstallation-proxy-socks-2.png" scalefit="1" width="70%"/>
+							<imagedata fileref="../media/staffclientinstallation-proxy-socks-2.png" format="PNG" scalefit="1" width="70%"/>
 						</imageobject>
 						<textobject>
 							<phrase>The SOCKS section of "all.js" after changes</phrase>
