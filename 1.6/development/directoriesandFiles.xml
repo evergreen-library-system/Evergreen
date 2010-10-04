@@ -3,7 +3,7 @@
     xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<info>
         	<title>Evergreen File Structure and Configuration Files</title>
-		<abstract><para>This section will describe tha basic file structure and cover key configuration files. Understanding the directory and file structure of Evergreen will allow you 
+		<abstract><para>This section will describe the basic file structure and cover key configuration files. Understanding the directory and file structure of Evergreen will allow you 
 		to be able to customize your Evergreen software and take full advantage of many features.</para></abstract>
 	</info>
 	
@@ -29,7 +29,7 @@
 					</row>
 					<row>
 						<entry><filename class="directory">conf</filename></entry>
-						<entry>Contains the configuration scripts including the 2 most important base configuration files <filename>opensrf_core.xml</filename> and 							<filename>opensrf.xml</filename>.</entry>
+						<entry>Contains the configuration scripts including the two most important base configuration files <filename>opensrf_core.xml</filename> and 							<filename>opensrf.xml</filename>.</entry>
 					</row>
 					<row>
 						<entry><filename class="directory">include</filename></entry>
@@ -68,7 +68,7 @@
 				<tbody>
 					<row>
 						<entry><filename>/openils/conf/opensrf_core.xml</filename></entry>
-						<entry>Files which controls which Evergreen services are run on the public and private routers. For a service to run, it must be registered in this file. 							This file also controls the loglevel and points to the log file for the srvices. An Evergreen restart is required for changes to take effect.</entry>
+						<entry>Files which controls which Evergreen services are run on the public and private routers. For a service to run, it must be registered in this file. 							This file also controls the loglevel and points to the log file for the services. An Evergreen restart is required for changes to take effect.</entry>
 					</row>
 					<row>
 						<entry><filename>/openils/conf/opensrf.xml</filename></entry>
@@ -81,9 +81,9 @@
 						effect. Running autogen.sh is also required.</entry>
 					</row>
 					<row>
-						<entry>/etc/apache2/eg_vhost.conf</entry>
-						<entry>Controls the Evergreen virtual site. Allows to configure the skin for the OPAC or configure  various directories within the Apache webserver. 
-						An Apache restart is requred for changes to this file to take effect.</entry>
+						<entry><filename>/etc/apache2/eg_vhost.conf</filename></entry>
+						<entry>Controls the Evergreen virtual site. Allows to configure the skin for the OPAC or configure  various directories within the Apache web server. 
+						An Apache restart is required for changes to this file to take effect.</entry>
 					</row>
 				</tbody>
 			</tgroup>
@@ -92,7 +92,7 @@
 			<title xml:id="EvergreenScriptsTable">Useful Evergreen Scripts</title>
 			<tgroup align="left" cols="2" colsep="1" rowsep="1">
 				<colspec colnum="1" colwidth="1.0*"/>
-				<colspec colnum="2" colwidth="3.0*"/>
+				<colspec colnum="2" colwidth="2.0*"/>
 				<thead>
 					<row>
 						<entry>File</entry>
@@ -114,15 +114,15 @@
 						<entry>Perl script used to trigger the actions set up in the action trigger tool in the staff client.</entry>
 					</row>
 					<row>
-						<entry>/openils/bin/osrf_ctl.sh</entry>
-						<entry>The start up script for OpenSF and Evergreen. </entry>
+						<entry><filename>/openils/bin/osrf_ctl.sh</filename></entry>
+						<entry>The start up script for OpenSRF and Evergreen. </entry>
 					</row>
 					<row>
-						<entry>/openils/bin/reshelving_complete.srfsh</entry>
-						<entry>Make items in <quote>reshelving</quote> mode for a certain amount of time become <quote>available</quote>. </entry>
+						<entry><filename>/openils/bin/reshelving_complete.srfsh</filename></entry>
+						<entry>Change status from <quote>reshelving</quote> to <quote>available</quote> for items which have been in reshelving for a certain amount of time.</entry>
 					</row>
 					<row>
-						<entry>/openils/bin/srfsh</entry>
+						<entry><filename>/openils/bin/srfsh</filename></entry>
 						<entry>Used to start the OpenSRF shell.</entry>
 					</row>
 					
