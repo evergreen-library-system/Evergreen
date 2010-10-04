@@ -196,6 +196,7 @@
 						}
 
 						editor_pane_application_perm.setValue( this.store.getValue( current_group, 'application_perm' ) );
+						editor_pane_hold_priority.setValue( this.store.getValue( current_group, 'hold_priority' ) );
 
 						editor_pane_usergroup.setChecked( this.store.getValue( current_group, 'usergroup' ) == 't' ? true : false );
 ]]>
@@ -281,6 +282,24 @@
 <![CDATA[
 											if (current_group && this.getValue()) {
 												group_store.setValue( current_group, "application_perm", this.getValue() );
+											}
+]]>
+										</script>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th>&conify.grp_tree.hold_priority.label;</th>
+								<td>
+									<div
+									  id="editor_pane_hold_priority"
+									  dojoType="dijit.form.NumberSpinner"
+									  jsId="editor_pane_hold_priority"
+									>
+										<script type="dojo/connect" event="onChange">
+<![CDATA[
+											if (current_group && this.getValue()) {
+												group_store.setValue( current_group, "hold_priority", this.getValue() );
 											}
 ]]>
 										</script>
