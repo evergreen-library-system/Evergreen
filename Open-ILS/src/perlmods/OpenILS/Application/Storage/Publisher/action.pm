@@ -285,13 +285,15 @@ sub nearest_hold {
 	my $age = shift() || '0 seconds';
     my $fifo = shift();
 
-    my $holdsort = $fifo ? "h.request_time, h.selection_depth DESC, p.prox " : "p.prox, h.selection_depth DESC, h.request_time ";
+    my $holdsort = $fifo ? "pgt.hold_priority, h.request_time, h.selection_depth DESC, p.prox " : "p.prox, pgt.hold_priority, h.selection_depth DESC, h.request_time ";
 
 	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $here, $cp, $age);
 		SELECT	h.id
 		  FROM	action.hold_request h
 			JOIN actor.org_unit_proximity p ON (p.from_org = ? AND p.to_org = h.pickup_lib)
 		  	JOIN action.hold_copy_map hm ON (hm.hold = h.id)
+		  	JOIN actor.usr au ON (au.id = h.usr)
+		  	JOIN permission.grp_tree pgt ON (au.profile = pgt.id)
 		  WHERE hm.target_copy = ?
 		  	AND (AGE(NOW(),h.request_time) >= CAST(? AS INTERVAL) OR p.prox = 0)
 			AND h.capture_time IS NULL
