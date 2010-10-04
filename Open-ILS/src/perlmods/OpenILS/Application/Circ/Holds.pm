@@ -2611,6 +2611,7 @@ sub uber_hold_impl {
         patron_first   => $user->first_given_name,
         patron_last    => $user->family_name,
         patron_barcode => $card->barcode,
+        patron_alias   => $user->alias,
         %$details
     };
 }

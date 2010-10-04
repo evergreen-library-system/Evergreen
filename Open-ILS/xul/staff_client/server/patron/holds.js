@@ -85,6 +85,7 @@ patron.holds.prototype = {
                                     row.my.patron_family_name = blob.patron_last;
                                     row.my.patron_first_given_name = blob.patron_first;
                                     row.my.patron_barcode = blob.patron_barcode;
+                                    row.my.patron_alias = blob.patron_alias;
                                     row.my.total_holds = blob.total_holds;
                                     row.my.queue_position = blob.queue_position;
                                     row.my.potential_copies = blob.potential_copies;

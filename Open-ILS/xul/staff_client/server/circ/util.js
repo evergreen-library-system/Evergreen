@@ -2089,6 +2089,15 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.patron_family_name ? my.patron_family_name : ""; }
         },
         {
+            "persist": "hidden width ordinal",
+            "id": "patron_alias",
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.patron_alias'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return my.patron_alias ? my.patron_alias : ""; }
+        },
+        {
             'persist' : 'hidden width ordinal',
             'id' : 'patron_first_given_name',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.patron_first_given_name'),

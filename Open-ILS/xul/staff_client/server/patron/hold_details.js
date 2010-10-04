@@ -143,6 +143,7 @@ function a_list_of_one() {
                         'patron_family_name' : g.blob.patron_last,
                         'patron_first_given_name' : g.blob.patron_first,
                         'patron_barcode' : g.blob.patron_barcode,
+                        'patron_alias' : g.blob.patron_alias,
                         'total_holds' : g.blob.total_holds,
                         'queue_position' : g.blob.queue_position,
                         'potential_copies' : g.blob.potential_copies,
