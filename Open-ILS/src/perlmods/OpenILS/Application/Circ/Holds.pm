@@ -1415,7 +1415,7 @@ sub print_hold_pull_list_stream {
     my @chunk;
     for my $hid (@$holds_ids) {
         push @chunk, $e->retrieve_action_hold_request([
-            $_->{"id"}, {
+            $hid->{"id"}, {
                 "flesh" => 3,
                 "flesh_fields" => {
                     "ahr" => ["usr", "current_copy"],
