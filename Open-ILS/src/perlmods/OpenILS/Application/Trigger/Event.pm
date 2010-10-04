@@ -449,11 +449,11 @@ sub ClearObjectCache {
     for my $did ( keys %_object_by_path_cache ) {
         my $phash = $_object_by_path_cache{$did};
         for my $path ( keys %$phash ) {
-            my $shash = $phash{$path};
+            my $shash = $$phash{$path};
             for my $step ( keys %$shash ) {
-                my $fhash = $shash{$step};
+                my $fhash = $$shash{$step};
                 for my $ffield ( keys %$fhash ) {
-                    my $lhash = $fhash{$ffield};
+                    my $lhash = $$fhash{$ffield};
                     for my $lfield ( keys %$lhash ) {
                         delete $$lhash{$lfield};
                     }
@@ -525,7 +525,7 @@ sub _object_by_path {
                     $context->$lfield()
             );
 
-        $_object_by_path_cache{$self->event->event_def->id}{join('.',@$path)}{$ffield}{$context->$lfield()} ||= $obj;
+        $_object_by_path_cache{$self->event->event_def->id}{join('.',@$path)}{$step}{$ffield}{$context->$lfield()} ||= $obj;
 
         if ($self->standalone) {
             $ed->xact_rollback || return undef;
