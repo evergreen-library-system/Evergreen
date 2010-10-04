@@ -7,6 +7,7 @@ var googleBooksLink = true;
 
 var resultFetchAllRecords = false;
 var resultCompiledSearch = null;
+var allRecordsReceivedAndProcessed = false;
 
 /* set up the event handlers */
 if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
@@ -15,7 +16,7 @@ if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
 	G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
 	G.evt.result.allRecordsReceived.push(resultBuildCaches, resultDrawSubjects, 
       resultDrawAuthors, resultDrawSeries, function(){unHideMe($('result_info_2'))},
-	  fetchGoogleBooksLink);
+	  fetchGoogleBooksLink, function() { allRecordsReceivedAndProcessed = true; });
 
 	attachEvt('result','lowHits',resultLowHits);
 	attachEvt('result','zeroHits',resultZeroHits);
@@ -599,6 +600,8 @@ function resultBuildFormatIcons( row, rec, is_mr ) {
 }
 
 function fetchGoogleBooksLink () {
+    if (allRecordsReceivedAndProcessed) { return; }
+
     if (isbnList && googleBooksLink) {
         var scriptElement = document.createElement("script");
         scriptElement.setAttribute("id", "jsonScript");

@@ -6,6 +6,8 @@ var authorCache = {};
 var seriesCache = {};
 
 function resultBuildCaches(records) {
+    if (allRecordsReceivedAndProcessed) { return; }
+
 	for( var r in records ) {
 		var rec = records[r];
 		for( var s in rec.subject() ) 
@@ -17,6 +19,7 @@ function resultBuildCaches(records) {
 
 function resultSortSubjects(a, b) { return -(a.count - b.count); } /* sort in reverse */
 function resultDrawSubjects() {
+    if (allRecordsReceivedAndProcessed) { return; }
 
 	var subjs = [];
 	for( var s in subjectCache )
@@ -34,6 +37,8 @@ function resultDrawSubjects() {
 }
 
 function resultDrawAuthors() {
+    if (allRecordsReceivedAndProcessed) { return; }
+
 	var auths = new Array();
 	for( var s in authorCache ) auths.push(s);
 
@@ -45,6 +50,8 @@ function resultDrawAuthors() {
 }
 
 function resultDrawSeries() {
+    if (allRecordsReceivedAndProcessed) { return; }
+
 	var sers = new Array();
 	for( var s in seriesCache ) sers.push(s);
 	resultDrawSidebarTrees( 
