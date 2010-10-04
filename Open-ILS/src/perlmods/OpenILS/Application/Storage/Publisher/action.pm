@@ -286,14 +286,16 @@ sub nearest_hold {
 	my $fifo = shift();
 
 	my $holdsort = isTrue($fifo) ?
-            "CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END, h.request_time, h.selection_depth DESC, p.prox " :
-            "p.prox, CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END, h.selection_depth DESC, h.request_time ";
+            "pgt.hold_priority, CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END, h.request_time, h.selection_depth DESC, p.prox " :
+            "p.prox, pgt.hold_priority, CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END, h.selection_depth DESC, h.request_time ";
 
 	my $ids = action::hold_request->db_Main->selectcol_arrayref(<<"	SQL", {}, $here, $cp, $age);
 		SELECT	h.id
 		  FROM	action.hold_request h
 			JOIN actor.org_unit_proximity p ON (p.from_org = ? AND p.to_org = h.pickup_lib)
 		  	JOIN action.hold_copy_map hm ON (hm.hold = h.id)
+		  	JOIN actor.usr au ON (au.id = h.usr)
+		  	JOIN permission.grp_tree pgt ON (au.profile = pgt.id)
 		  WHERE hm.target_copy = ?
 		  	AND (AGE(NOW(),h.request_time) >= CAST(? AS INTERVAL) OR p.prox = 0)
 			AND h.capture_time IS NULL
