@@ -1339,7 +1339,7 @@ function vlShowProfileEditor() {
     };
 
     new openils.User().buildPermOrgSelector(
-        '"ADMIN_MERGE_PROFILE', profileContextOrgSelector, null, connect);
+        'ADMIN_MERGE_PROFILE', profileContextOrgSelector, null, connect);
 }
 
 function buildProfileGrid() {
