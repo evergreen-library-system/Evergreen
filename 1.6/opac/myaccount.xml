@@ -108,20 +108,13 @@
 						<para>Fill in the <guilabel>Barcode</guilabel> and <guilabel>User name</guilabel> text boxes.</para>
 					</step>
 					<step>
-						<para>A message should appear similar to this:</para>
-						 <para>
-							<mediaobject>
-								<imageobject>
-									<imagedata width="100%" scalefit="1" fileref="../media/passwordresetmessage.png"/>
-								</imageobject>
-							</mediaobject>
-						</para>
-
+						<para>A pop up message should appear indicating that your request has been processed and that you will recieve an email with further instructions.</para>
 					</step>
 					<step>
 						<para>An email will be sent to the email addressed you have registered with your Evergreen library. You should click on the link included in the email 
-						to open the password reset page.</para>
-						<note><para>You will need to have an email account set up in Evergreen for this to work. Processing time may vary.</para></note>
+						to open the password reset page. Processing time may vary.</para>
+						<note><para>You will need to have a valid email account set up in Evergreen for you to reset your password. Otherwise, you will need to 
+						contact your library to have your password reset by library staff.</para></note>
 					</step>
 						<step>
 						<para>At the reset email page you should enter the new password in the <guilabel>New password</guilabel> field and re-enter it in the 

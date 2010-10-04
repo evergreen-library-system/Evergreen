@@ -6,7 +6,7 @@
 <xsl:import href="evergreen_xhtml_graphics.xsl"/> 
 
 <xsl:param name="img.src.path" select="''"/>
-<xsl:param name="default.image.width" select="'900px'"/>
+<!--<xsl:param name="default.image.width" select="'900px'"/>-->
 <xsl:param name="keep.relative.image.uris" select="0"/>
 <xsl:param name="use.role.for.media.object" select="1"/>
 <xsl:param name="html.stylesheet" select="'../evergreen_doc.css'"/>
