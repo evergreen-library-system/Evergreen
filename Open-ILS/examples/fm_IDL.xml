@@ -4515,6 +4515,7 @@ SELECT  usr,
 			<field reporter:label="User Expiration Interval" name="perm_interval" reporter:datatype="interval"/>
 			<field reporter:label="Required Permission" name="application_perm" reporter:datatype="text"/>
 			<field reporter:label="Is User Group" name="usergroup" reporter:datatype="bool"/>
+			<field reporter:label="Hold Priority" name="hold_priority" reporter:datatype="int"/>
 		</fields>
 		<links>
 			<link field="parent" reltype="has_a" key="id" map="" class="pgt"/>
