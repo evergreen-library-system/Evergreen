@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<appendix xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="install_checklist">
+	<info>
+		<title>Evergreen Installation Checklist</title>
+		<abstract>
+			<para>This appendix is a checklist of things to do to istall and configure Evergreen. It will refer to the necessary chapter with the specific instructions for each item.</para>
+		</abstract>
+	</info>
+	<orderdlist>
+		<listitem>
+			<para><link linkend="serversideinstallation-opensrf">Install OpenSRF</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="serversideinstallation-ubuntudebian">Install Evergreen server software</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="staffclientinstallation">Install Evergreen staff client</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="backingup">Establish a back up strategy for Evergreen data and files</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="configuringPostgreSQL">Configure PostgreSQL for better performance</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="logfiles">Configure Evergreen error logging</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="orgtypes">Set up organizational unit types</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="orgunits">Set up organizational units</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="languagesandlocalization">Customize localization and languages</link> (optional)</para>
+		</listitem>
+		<listitem>
+			<para><link linkend="circmodifiers">Add circ modifiers</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="copystatus">Configure copy statuses</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="catalogingtemplates">Add cataloguing templates</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="permissions">Add user groups and assign permissions</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="lsa">Adjust various Local Administration Settings</link></para>
+		</listitem>
+		<listitem>
+			<para>Adjust circulation policies and <link linkend="lsa-group-penalty">penalty threshholds</link> for groups</para>
+		</listitem>
+		<listitem>
+			<para><link linkend="admin-staff_accounts">Add staff users</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="Customizing_OPAC">Customize OPAC</link> as needed</para>
+		</listitem>
+		<listitem>
+			<para><link linkend="migratingdata">Import data</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="report_intro">Start the reporter service and set up reports</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="notifications">Set up email notifications for holds and overdue items</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="actiontriggers">Set up action triggers</link></para>
+		</listitem>
+		<listitem>
+			<para><link linkend="z3950">Set up z39.50 server</link> (optional)</para>
+		</listitem>
+		<listitem>
+			<para><link linkend="relevancyrankings">Adjust search relevancy settings</link> if required (optional)</para>
+		</listitem>
+		<listitem>
+			<para><link linkend="sipserver">Install SIP server</link> (optional) - for communications with automated devices such as self check stations, autmated sorters and other devices using SIP</para>
+		</listitem>
+	</orderedlist>
+</appendix>

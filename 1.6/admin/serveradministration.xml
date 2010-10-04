@@ -2047,4 +2047,7 @@ WHERE id = 17;
 			</procedure>  
 		</simplesect> 
 	</section>
+	<section xml:id="notifications">
+		<title>Notifications</title>
+	</section>
 </chapter>

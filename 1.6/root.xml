@@ -80,6 +80,7 @@
  		<xi:include href="admin/sip.xml"/>
 		<xi:include href="admin/serveradministration.xml"/>
 		<xi:include href="admin/admin-lsa.xml"/>
+		<xi:include href="admin/actiontriggers.xml"/>
 	
 	</part>
 	<part xml:id="reports">
@@ -120,6 +121,8 @@
 		<info>
 			<title>Appendices</title>
 		</info>
+
+		<xi:include href="appendices/installchecklist.xml"/>
 		<xi:include href="appendices/schema.xml"/>
 		<xi:include href="appendices/about_this_documentation.xml"/>
 		<xi:include href="glossary.xml"/>
