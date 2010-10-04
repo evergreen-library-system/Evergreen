@@ -7,7 +7,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="install_checklist"
 			<para>This appendix is a checklist of things to do to istall and configure Evergreen. It will refer to the necessary chapter with the specific instructions for each item.</para>
 		</abstract>
 	</info>
-	<orderdlist>
+	<orderedlist>
 		<listitem>
 			<para><link linkend="serversideinstallation-opensrf">Install OpenSRF</link></para>
 		</listitem>
