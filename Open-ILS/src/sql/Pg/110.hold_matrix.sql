@@ -57,7 +57,6 @@ CREATE TABLE config.hold_matrix_matchpoint (
 CREATE OR REPLACE FUNCTION action.find_hold_matrix_matchpoint( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS INT AS $func$
 DECLARE
     current_requestor_group    permission.grp_tree%ROWTYPE;
-    root_ou            actor.org_unit%ROWTYPE;
     requestor_object    actor.usr%ROWTYPE;
     user_object        actor.usr%ROWTYPE;
     item_object        asset.copy%ROWTYPE;
@@ -69,7 +68,6 @@ DECLARE
     current_mp        config.hold_matrix_matchpoint%ROWTYPE;
     matchpoint        config.hold_matrix_matchpoint%ROWTYPE;
 BEGIN
-    SELECT INTO root_ou * FROM actor.org_unit WHERE parent_ou IS NULL;
     SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
     SELECT INTO requestor_object * FROM actor.usr WHERE id = match_requestor;
     SELECT INTO item_object * FROM asset.copy WHERE id = match_item;
@@ -129,27 +127,27 @@ BEGIN
 
 
             -- caclulate the rule match weight
-            IF current_mp.item_owning_ou IS NOT NULL AND current_mp.item_owning_ou <> root_ou.id THEN
+            IF current_mp.item_owning_ou IS NOT NULL THEN
                 SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_owning_ou, item_cn_object.owning_lib)::FLOAT + 1.0)::FLOAT;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
-            IF current_mp.item_circ_ou IS NOT NULL AND current_mp.item_circ_ou <> root_ou.id THEN
+            IF current_mp.item_circ_ou IS NOT NULL THEN
                 SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_circ_ou, item_object.circ_lib)::FLOAT + 1.0)::FLOAT;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
-            IF current_mp.pickup_ou IS NOT NULL AND current_mp.pickup_ou <> root_ou.id THEN
+            IF current_mp.pickup_ou IS NOT NULL THEN
                 SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.pickup_ou, pickup_ou)::FLOAT + 1.0)::FLOAT;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
-            IF current_mp.request_ou IS NOT NULL AND current_mp.request_ou <> root_ou.id THEN
+            IF current_mp.request_ou IS NOT NULL THEN
                 SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.request_ou, request_ou)::FLOAT + 1.0)::FLOAT;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
-            IF current_mp.user_home_ou IS NOT NULL AND current_mp.user_home_ou <> root_ou.id THEN
+            IF current_mp.user_home_ou IS NOT NULL THEN
                 SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.user_home_ou, user_object.home_ou)::FLOAT + 1.0)::FLOAT;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
