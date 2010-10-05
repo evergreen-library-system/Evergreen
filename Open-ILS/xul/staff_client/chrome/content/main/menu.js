@@ -143,7 +143,7 @@ main.menu.prototype = {
                 function() {
                     if (obj.new_tab(null,{'focus':true},null) == false)
                     {
-                        if(window.confirm("Sorry, we can't create any more tabs in this window.\nWould you like to create a new tab in another window?"))
+                        if(window.confirm(offlineStrings.getString('menu.new_tab.max_tab_dialog')))
                         {
                             var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
                                 getService(Components.interfaces.nsIWindowMediator);
@@ -1342,7 +1342,7 @@ main.menu.prototype = {
         var obj = this;
         var max_tabs = 0;
         try {
-            var max_tabs = xulG.pref.getIntPref('open-ils.window_max_tabs', max_tabs);
+            var max_tabs = xulG.pref.getIntPref('open-ils.window_max_tabs') || max_tabs;
         }
         catch (e) {}
         if(max_tabs > 0 && this.controller.view.tabs.childNodes.length > max_tabs) return false;
