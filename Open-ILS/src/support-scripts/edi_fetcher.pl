@@ -140,8 +140,6 @@ print "\ndone\n";
 
 __END__
 
-=pod
-
 =head1 NAME
 
 edi_fetcher.pl - A script for retrieving and processing EDI files from remote accounts.
@@ -159,8 +157,8 @@ the environmental variable FTP_PASSIVE like:
 
 =head1 OPTIONS
 
-    --account=[id]  Target one account, whether or not it is inactive.
-    --inactive      Includes inactive provider accounts (default OFF, forced ON if --account specified)
+  --account=[id]  Target one account, whether or not it is inactive.
+  --inactive      Includes inactive provider accounts (default OFF, forced ON if --account specified)
 
 =head1 ARGUMENTS
 

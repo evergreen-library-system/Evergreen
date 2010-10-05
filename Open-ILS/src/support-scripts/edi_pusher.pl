@@ -32,6 +32,7 @@ INIT {
 
 my %defaults = (
     'quiet' => 0,
+    'test'  => 0,   # TODO
     'max-batch-size=i' => -1
 );
 
@@ -47,6 +48,8 @@ my $defs = $e->search_action_trigger_event_definition({
 });
 
 $opts->{verbose} = 0 if $opts->{quiet};
+
+print "FTP_PASSIVE is ", ($ENV{FTP_PASSIVE} ? "ON" : "OFF"),  "\n";
 
 print "\nHook '$hook' is used in ", scalar(@$defs), " event definition(s):\n";
 
@@ -154,6 +157,10 @@ foreach my $def (@$defs) {
 
         print "\ntarget->provider->edi_default->id: ", $target->provider->edi_default->id, "\n";
         my $logstr2 = sprintf "event %s, PO %s, template_output %s", $_->{id}, $message->purchase_order, $event->template_output->id;
+        if ($opts->{test}) {
+            print "Test mode, skipping translation/send\n";
+        }
+
         printf "\nNow calling attempt_translation for $logstr2\n\n";
 
         unless (OpenILS::Application::Acq::EDI->attempt_translation($message, 1)) {
@@ -191,3 +198,41 @@ foreach my $def (@$defs) {
 }
 
 print "\ndone\n";
+
+__END__
+
+=head1 NAME
+
+edi_pusher.pl - A script for generating and sending EDI files to remote accounts.
+
+=head1 DESCRIPTION
+
+This script is expected to be run via crontab, for the purpose of retrieving vendor EDI files.
+
+=head1 OPTIONS
+
+  --max-batch-size=i  Limit the processing to a set number of events.
+
+=head1 TODO
+
+More docs here.
+
+=head1 USAGE
+
+B<FTP_PASSIVE=1> is recommended.  Depending on your vendors' and your own network environments, you may want to set/export
+the environmental variable FTP_PASSIVE like:
+
+    export FTP_PASSIVE=1
+    # or
+    FTP_PASSIVE=1 Open-ILS/src/support-scripts/edi_pusher.pl
+
+=head1 SEE ALSO
+
+    OpenILS::Utils::Cronscript
+    edi_fetcher.pl
+
+=head1 AUTHOR
+
+Joe Atzberger <jatzberger@esilibrary.com>
+
+=cut
