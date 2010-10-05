@@ -78,6 +78,17 @@ function xml_escape_unicode ( str ) {
     );
 }
 
+function wrap_long_fields (node) {
+    var text_size = dojo.attr(node, 'size');
+    var hard_width = 100; 
+    if (text_size > hard_width) {
+        dojo.attr(node, 'multiline', 'true');
+        dojo.attr(node, 'cols', hard_width);
+        var text_rows = (text_size / hard_width) + 1;
+        dojo.attr(node, 'rows', text_rows);
+    }
+}
+
 function my_init() {
     try {
 
@@ -371,6 +382,31 @@ function createCheckbox (attrs) {
     return createComplexXULElement('checkbox', attrs, Array.prototype.slice.apply(arguments, [1]) );
 }
 
+// Find the next textbox that we can use for a focus point
+// For control fields, use the first editable text box
+// For data fields, focus on the first subfield text box
+function setFocusToNextTag (row, direction) {
+    var keep_looking = true;
+    while (keep_looking && (direction == 'up' ? row = row.previousSibling : row = row.nextSibling)) {
+        // Is it a datafield?
+        dojo.query('hbox hbox textbox', row).forEach(function(node, index, arr) {
+            node.focus();
+            keep_looking = false;
+        });
+
+        // No, it's a control field; use the first textbox
+        if (keep_looking) {
+            dojo.query('textbox', row).forEach(function(node, index, arr) {
+                node.focus();
+                keep_looking = false;
+            });
+        }
+    }
+
+    return true;
+}
+
+
 function createMARCTextbox (element,attrs) {
 
     var box = createComplexXULElement('textbox', attrs, Array.prototype.slice.apply(arguments, [2]) );
@@ -507,6 +543,14 @@ function createMARCTextbox (element,attrs) {
                     event.preventDefault();
 
                     return false;
+                } else {
+                    if (event.keyCode == 38) {
+                        return setFocusToNextTag(row, 'up');
+                    }
+                    if (event.keyCode == 40) {
+                        return setFocusToNextTag(row, 'down');
+                    }
+                    return false;
                 }
 
             } else if (event.keyCode == 46 && event.ctrlKey) { // ctrl+del
@@ -566,7 +610,15 @@ function createMARCTextbox (element,attrs) {
                 createControlField('008','                                        ');
                 loadRecord(xml_record);
             }
+
             return true;
+
+        } else { // event on a control field
+            if (event.keyCode == 38) { 
+                return setFocusToNextTag(row, 'up'); 
+            } else if (event.keyCode == 40) { 
+                return setFocusToNextTag(row, 'down');
+            }
         }
     };
 
@@ -1103,6 +1155,16 @@ function toggleFFE () {
 function changeFFEditor (type) {
     var grid = document.getElementById('leaderGrid');
     grid.setAttribute('type',type);
+
+    // Hide FFEditor rows that we don't need for our current type
+    // If all of the labels for a given row do not include our
+    // desired type in their set attribute, we can hide that row
+    dojo.query('rows row', grid).forEach(function(node, index, arr) {
+        if (dojo.query('label[set~=' + type + ']', node).length == 0) {
+            node.hidden = true;
+        }
+    });
+
 }
 
 function fillFixedFields (rec) {
@@ -1418,6 +1480,8 @@ function marcDatafield (field) {
         sf_box.appendChild(
             marcSubfield(sf)
         );
+
+        dojo.query('.marcSubfield', sf_box).forEach(wrap_long_fields);
 
         if (sf.@code == '' && (!current_focus || current_focus.className.match(/Ind/)))
             current_focus = sf_box.lastChild.childNodes[1];
