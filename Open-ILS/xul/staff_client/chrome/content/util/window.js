@@ -17,18 +17,6 @@ util.window.prototype = {
     // list of documents for debugging.  BROKEN
     'doc_list' : [],    
 
-    // Windows need unique names.  This number helps.
-    'window_name_increment' :  function() {
-        JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-        if (typeof data.window_name_increment == 'undefined') {
-            data.window_name_increment = 1;
-        } else {
-            data.window_name_increment++;
-        }
-        data.stash('window_name_increment');
-        return data.window_name_increment;
-    },
-
     // This number gets put into the title bar for Top Level menu interface windows
     'appshell_name_increment' : function() {
         JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
@@ -74,7 +62,7 @@ util.window.prototype = {
     'open' : function(url,title,features,my_xulG) {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var key;
-        if (!title) title = 'anon' + this.window_name_increment();
+        if (!title) title = '_blank';
         if (!features) features = 'chrome';
         this.error.sdump('D_WIN', 'opening ' + url + ', ' + title + ', ' + features + ' from ' + this.win + '\n');
         var data;

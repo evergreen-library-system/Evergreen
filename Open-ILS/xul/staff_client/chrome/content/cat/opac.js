@@ -497,7 +497,7 @@ function create_mfhd() {
         JSAN.use('util.window'); var win = new util.window();
         win.open(
             xulG.url_prefix(urls.XUL_SERIAL_SELECT_AOU),
-            'sel_bucket_win' + win.window_name_increment(),
+            '_blank',
             'chrome,resizable,modal,centerscreen'
         );
         if (!g.data.create_mfhd_aou) {
@@ -634,7 +634,7 @@ function add_to_bucket() {
     JSAN.use('util.window'); var win = new util.window();
     win.open(
         xulG.url_prefix(urls.XUL_RECORD_BUCKETS_QUICK),
-        'sel_bucket_win' + win.window_name_increment(),
+        '_blank',
         'chrome,resizable,modal,centerscreen',
         {
             record_ids: [ docid ]
