@@ -1339,6 +1339,7 @@ main.menu.prototype = {
     },
 
     'new_tab' : function(url,params,content_params) {
+        var obj = this;
         var max_tabs = 0;
         try {
             var max_tabs = xulG.pref.getIntPref('open-ils.window_max_tabs', max_tabs);
