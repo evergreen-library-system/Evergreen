@@ -159,6 +159,7 @@ foreach my $def (@$defs) {
         my $logstr2 = sprintf "event %s, PO %s, template_output %s", $_->{id}, $message->purchase_order, $event->template_output->id;
         if ($opts->{test}) {
             print "Test mode, skipping translation/send\n";
+            next;
         }
 
         printf "\nNow calling attempt_translation for $logstr2\n\n";
