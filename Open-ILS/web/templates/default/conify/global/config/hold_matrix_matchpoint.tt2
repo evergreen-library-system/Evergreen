@@ -18,7 +18,7 @@
     <table  jsId="hmGrid" 
             autoHeight='true'
             dojoType="openils.widget.AutoGrid" 
-            fieldOrder="['id', 'user_home_ou', 'request_ou', 'pickup_ou', 'item_owning_ou', 'item_circ_ou', 'usr_grp', 'requestor_grp', 'circ_modifier']"
+            fieldOrder="['id', 'user_home_ou', 'request_ou', 'pickup_ou', 'item_owning_ou', 'item_circ_ou', 'requestor_grp', 'circ_modifier']"
             defaultCellWidth='"auto"'
             query="{id: '*'}" 
             fmClass='chmm' 
