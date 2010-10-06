@@ -222,8 +222,7 @@ The following items are 90 days overdue and have been marked LOST.
 					</row>
 					<row>
 						<entry><guilabel>Passive</guilabel></entry>
-						<entry>Indicates whether or not a hook requires the running of action_trigger_runner.pl with the <option>--process-hooks</option> option to 
-						be processed. <quote>False</quote> means that the script is required for processing.</entry>
+						<entry>Indicates whether or not an event is created by direct user action or is circumstantial.</entry>
 					</row>
 				</tbody>	
 			</tgroup>
