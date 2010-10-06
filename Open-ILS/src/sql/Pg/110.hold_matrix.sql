@@ -31,6 +31,7 @@ BEGIN;
 CREATE TABLE config.hold_matrix_matchpoint (
     id                      SERIAL    PRIMARY KEY,
     active                  BOOL    NOT NULL DEFAULT TRUE,
+    strict_ou_match         BOOL    NOT NULL DEFAULT FALSE,
     user_home_ou            INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
     request_ou              INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
     pickup_ou               INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
@@ -128,27 +129,47 @@ BEGIN
 
             -- caclulate the rule match weight
             IF current_mp.item_owning_ou IS NOT NULL THEN
-                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_owning_ou, item_cn_object.owning_lib)::FLOAT + 1.0)::FLOAT;
+                IF NOT current_mp.strict_ou_match THEN
+                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_owning_ou, item_cn_object.owning_lib)::FLOAT + 1.0)::FLOAT;
+                ELSE
+                    tmp_weight := CASE WHEN current_mp.item_owning_ou = item_cn_object.owning_lib THEN 1.0 ELSE 0.0 END;
+                END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
             IF current_mp.item_circ_ou IS NOT NULL THEN
-                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_circ_ou, item_object.circ_lib)::FLOAT + 1.0)::FLOAT;
+                IF NOT current_mp.strict_ou_match THEN
+                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_circ_ou, item_object.circ_lib)::FLOAT + 1.0)::FLOAT;
+                ELSE
+                    tmp_weight := CASE WHEN current_mp.item_circ_ou = item_object.circ_lib THEN 1.0 ELSE 0.0 END;
+                END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
             IF current_mp.pickup_ou IS NOT NULL THEN
-                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.pickup_ou, pickup_ou)::FLOAT + 1.0)::FLOAT;
+                IF NOT current_mp.strict_ou_match THEN
+                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.pickup_ou, pickup_ou)::FLOAT + 1.0)::FLOAT;
+                ELSE
+                    tmp_weight := CASE WHEN current_mp.pickup_ou = pickiup_ou THEN 1.0 ELSE 0.0 END;
+                END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
             IF current_mp.request_ou IS NOT NULL THEN
-                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.request_ou, request_ou)::FLOAT + 1.0)::FLOAT;
+                IF NOT current_mp.strict_ou_match THEN
+                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.request_ou, request_ou)::FLOAT + 1.0)::FLOAT;
+                ELSE
+                    tmp_weight := CASE WHEN current_mp.request_ou = request_ou THEN 1.0 ELSE 0.0 END;
+                END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
             IF current_mp.user_home_ou IS NOT NULL THEN
-                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.user_home_ou, user_object.home_ou)::FLOAT + 1.0)::FLOAT;
+                IF NOT current_mp.strict_ou_match THEN
+                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.user_home_ou, user_object.home_ou)::FLOAT + 1.0)::FLOAT;
+                ELSE
+                    tmp_weight := CASE WHEN current_mp.user_home_ou = user_object.home_lib THEN 1.0 ELSE 0.0 END;
+                END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
