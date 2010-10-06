@@ -172,7 +172,7 @@ BEGIN
                 IF NOT current_mp.strict_ou_match THEN
                     SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.user_home_ou, user_object.home_ou)::FLOAT + 1.0)::FLOAT;
                 ELSE
-                    tmp_weight := CASE WHEN current_mp.user_home_ou = user_object.home_lib THEN 1.0 ELSE 0.0 END;
+                    tmp_weight := CASE WHEN current_mp.user_home_ou = user_object.home_ou THEN 1.0 ELSE 0.0 END;
                 END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
