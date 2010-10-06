@@ -1196,7 +1196,8 @@ sub get_circ_policy {
         max_fine_rule => $max_fine_rule->name,
         max_fine => $self->get_max_fine_amount($max_fine_rule),
         fine_interval => $recurring_fine_rule->recurrence_interval,
-        renewal_remaining => $duration_rule->max_renewals
+        renewal_remaining => $duration_rule->max_renewals,
+        duration_date_ceiling => $duration_rule->date_ceiling
     };
 
     $policy->{duration} = $duration_rule->shrt
@@ -1760,10 +1761,12 @@ sub build_checkout_circ_object {
    my $recurring  = $self->recurring_fines_rule;
    my $copy       = $self->copy;
    my $patron     = $self->patron;
+   my $duration_date_ceiling;
 
     if( $duration ) {
 
         my $policy = $self->get_circ_policy($duration, $recurring, $max);
+        $duration_date_ceiling = $policy->{duration_date_ceiling};
 
         my $dname = $duration->name;
         my $mname = $max->name;
@@ -1816,7 +1819,7 @@ sub build_checkout_circ_object {
 
     # if a patron is renewing, 'requestor' will be the patron
     $circ->circ_staff($self->editor->requestor->id);
-    $circ->due_date( $self->create_due_date($circ->duration) ) if $circ->duration;
+    $circ->due_date( $self->create_due_date($circ->duration, $duration_date_ceiling) ) if $circ->duration;
 
     $self->circ($circ);
 }
@@ -2016,7 +2019,7 @@ sub apply_modified_due_date {
 
 
 sub create_due_date {
-    my( $self, $duration ) = @_;
+    my( $self, $duration, $date_ceiling ) = @_;
 
     # if there is a raw time component (e.g. from postgres), 
     # turn it into an interval that interval_to_seconds can parse
@@ -2027,6 +2030,14 @@ sub create_due_date {
 
     # add the circ duration
     $due_date->add(seconds => OpenSRF::Utils->interval_to_seconds($duration));
+
+    if($date_ceiling) {
+        my $cdate = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($date_ceiling));
+        if ($cdate > DateTime->now and $cdate < $due_date) {
+            $logger->info("circulator: overriding due date with date ceiling: $date_ceiling");
+            $due_date = $cdate;
+        }
+    }
 
     # return ISO8601 time with timezone
     return $due_date->strftime('%FT%T%z');
