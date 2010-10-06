@@ -250,7 +250,8 @@ CREATE TABLE config.rule_circ_duration (
 	extended	INTERVAL	NOT NULL,
 	normal		INTERVAL	NOT NULL,
 	shrt		INTERVAL	NOT NULL,
-	max_renewals	INT		NOT NULL
+	max_renewals	INT		NOT NULL,
+	date_ceiling    TIMESTAMPTZ
 );
 COMMENT ON TABLE config.rule_circ_duration IS $$
 /*
@@ -275,6 +276,14 @@ COMMENT ON TABLE config.rule_circ_duration IS $$
  * GNU General Public License for more details.
  */
 $$;
+
+CREATE TABLE config.hard_due_date (
+    id              SERIAL      PRIMARY KEY,
+    duration_rule   INT         NOT NULL REFERENCES config.rule_circ_duration (id)
+                                DEFERRABLE INITIALLY DEFERRED,
+    ceiling_date    TIMESTAMPTZ NOT NULL,
+    active_date     TIMESTAMPTZ NOT NULL
+);
 
 CREATE TABLE config.rule_max_fine (
     id          SERIAL          PRIMARY KEY,
