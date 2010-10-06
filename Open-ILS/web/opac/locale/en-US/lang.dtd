@@ -1904,6 +1904,7 @@
 <!ENTITY staff.server.admin.index.library_settings "Library Settings Editor">
 <!ENTITY staff.server.admin.index.non_cataloged_types "Non-cataloged Types Editor">
 <!ENTITY staff.server.admin.index.statistical_categories "Statistical Categories Editor">
+<!ENTITY staff.server.admin.index.expired_holds_shelf "Expired Holds Shelf Printable Listing">
 <!ENTITY staff.server.admin.index.hold_pull_list "Pull List for Hold Requests">
 <!ENTITY staff.server.admin.index.testing "(Testing)">
 <!ENTITY staff.server.admin.index.hold_pull_list_classic "Pull List for Hold Requests (Classic)">
@@ -1914,14 +1915,6 @@
 <!ENTITY staff.server.admin.index.conify "Server Settings">
 <!ENTITY staff.server.admin.index.external_text_editor.label "External Text Editor Command">
 <!ENTITY staff.server.admin.index.external_text_editor.accesskey "x">
-
-<!ENTITY staff.server.admin.index.booking "Booking">
-<!ENTITY staff.server.admin.index.booking.reservation "Create/Cancel Reservations">
-<!ENTITY staff.server.admin.index.booking.pull_list "Pull List">
-<!ENTITY staff.server.admin.index.booking.capture "Capture">
-<!ENTITY staff.server.admin.index.booking.pickup "Pickup Reservations">
-<!ENTITY staff.server.admin.index.booking.return "Return Reservations">
-
 
 <!ENTITY staff.server.admin.org_settings.title "Evergreen: Library Settings Editor">
 <!-- This will be followed by the user's name -->
