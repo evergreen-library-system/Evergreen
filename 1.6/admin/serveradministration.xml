@@ -2048,8 +2048,8 @@ WHERE id = 17;
 		</simplesect> 
 	</section>
 	<section xml:id="notifications">
-		<title>Email Notifications</title>
-		<para>Email notifications can be set up for Holds, Overdue items and Predue items. There are two ways to configure notifications for each of these type of notifications.</para>
+		<title>Notifications</title>
+		<para>Notifications can be set up for Holds, Overdue items and Predue items. There are two ways to configure notifications for each of these type of notifications.</para>
 		<section xml:id="Holdnotifications">
 			<title>Hold Notifications</title>
 			<para>Hold notifications can be used that that library users are sent an email when their items are available for pickup. This notification is triggered when the item being held 
@@ -2070,9 +2070,6 @@ WHERE id = 17;
 
 				<step>
 					<para>Locate the Action Trigger Definition with the <guilabel>Name</guilabel> <guilabel>Hold Ready for Pickup Email Notification</guilabel>.</para>
-				</step>
-				<step>
-					<para>Double click on the item row to open the editing page, but <emphasis role="bold">not</emphasis> on the hyperlinked <guilabel>Name</guilabel></para>
 				</step>
 				<step>
 					<para>Double click on the item row to open the editing page, but <emphasis role="bold">not</emphasis> on the hyperlinked <guilabel>Name</guilabel></para>
@@ -2148,9 +2145,6 @@ WHERE id = 17;
 
 				<step>
 					<para>Locate the Action Trigger Definition you wish to activate. There are several overdue notices preloaded wit Evergreen 1.6.</para>
-				</step>
-				<step>
-					<para>Double click on the item row to open the editing page, but <emphasis role="bold">not</emphasis> on the hyperlinked <guilabel>Name</guilabel></para>
 				</step>
 				<step>
 					<para>Double click on the item row to open the editing page, but <emphasis role="bold">not</emphasis> on the hyperlinked <guilabel>Name</guilabel></para>
@@ -2235,7 +2229,7 @@ WHERE id = 17;
 						<para>Locate the templates and edit as desired. Use the example templates provided as guides.</para>
 					</step>
 					<step>
-						<para>From the configuration file you may also set the default email sender address. however, this is just the default and the email sender 
+						<para>From the configuration file you may also set the default email sender address. However, this is just the default and the email sender 
 						address for specific organizational units can be specified in the <link linkend="lsa-library-settings">library settings editor</link> 
 						from the staff client.</para>
 					</step>
