@@ -1749,8 +1749,8 @@ sub fetch_captured_holds {
 	my( $self, $conn, $auth, $org ) = @_;
 
 	my $e = new_editor(authtoken => $auth);
-	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('VIEW_HOLD'); # XXX rely on editor perm
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('VIEW_HOLD'); # XXX rely on editor perm
 
 	$org ||= $e->requestor->ws_ou;
 
@@ -1800,6 +1800,84 @@ sub fetch_captured_holds {
     }
 
     return undef;
+}
+
+__PACKAGE__->register_method(
+    method    => "print_expired_holds_stream",
+    api_name  => "open-ils.circ.captured_holds.expired.print.stream",
+    stream    => 1
+);
+
+sub print_expired_holds_stream {
+    my ($self, $client, $auth, $params) = @_;
+
+    # No need to check specific permissions: we're going to call another method
+    # that will do that.
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    delete($$params{org_id}) unless (int($$params{org_id}));
+    delete($$params{limit}) unless (int($$params{limit}));
+    delete($$params{offset}) unless (int($$params{offset}));
+    delete($$params{chunk_size}) unless (int($$params{chunk_size}));
+    delete($$params{chunk_size}) if  ($$params{chunk_size} && $$params{chunk_size} > 50); # keep the size reasonable
+    $$params{chunk_size} ||= 10;
+
+    $$params{org_id} = (defined $$params{org_id}) ? $$params{org_id}: $e->requestor->ws_ou;
+
+    my @hold_ids = $self->method_lookup(
+        "open-ils.circ.captured_holds.id_list.expired_on_shelf.retrieve"
+    )->run($auth, $params->{"org_id"});
+
+    if (!@hold_ids) {
+        $e->disconnect;
+        return;
+    } elsif (defined $U->event_code($hold_ids[0])) {
+        $e->disconnect;
+        return $hold_ids[0];
+    }
+
+    $logger->info("about to stream back up to " . scalar(@hold_ids) . " expired holds");
+
+    while (@hold_ids) {
+        my @hid_chunk = splice @hold_ids, 0, $params->{"chunk_size"};
+
+        my $result_chunk = $e->json_query({
+            "select" => {
+                "acp" => ["barcode"],
+                "au" => [qw/
+                    first_given_name second_given_name family_name alias
+                /],
+                "acn" => ["label"],
+                "bre" => ["marc"],
+                "acpl" => ["name"]
+            },
+            "from" => {
+                "ahr" => {
+                    "acp" => {
+                        "field" => "id", "fkey" => "current_copy",
+                        "join" => {
+                            "acn" => {
+                                "field" => "id", "fkey" => "call_number",
+                                "join" => {
+                                    "bre" => {
+                                        "field" => "id", "fkey" => "record"
+                                    }
+                                }
+                            },
+                            "acpl" => {"field" => "id", "fkey" => "location"}
+                        }
+                    },
+                    "au" => {"field" => "id", "fkey" => "usr"}
+                }
+            },
+            "where" => {"+ahr" => {"id" => \@hid_chunk}}
+        }) or return $e->die_event;
+        $client->respond($result_chunk);
+    }
+
+    $e->disconnect;
+    undef;
 }
 
 __PACKAGE__->register_method(

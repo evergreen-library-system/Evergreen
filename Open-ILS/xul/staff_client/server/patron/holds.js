@@ -352,7 +352,7 @@ patron.holds.prototype = {
                                 });
 
                                 var loc = urls.XUL_BROWSER + "?url=" + window.escape(
-                                    xulG.url_prefix("/opac/extras/circ/alt_pull_list.html").replace("http:","https:")
+                                    xulG.url_prefix("/opac/extras/circ/alt_holds_print.html").replace("http:","https:")
                                 );
                                 xulG.new_tab(
                                     loc, {
@@ -1335,6 +1335,7 @@ patron.holds.prototype = {
         var x_clear_shelf_widgets = document.getElementById('clear_shelf_widgets');
         var x_expired_checkbox = document.getElementById('expired_checkbox');
         var x_print_full_pull_list = document.getElementById('print_full_btn');
+        var x_print_full_pull_list_alt = document.getElementById('print_alt_btn');
         switch(obj.hold_interface_type) {
             case 'shelf':
                 obj.render_lib_menus({'pickup_lib':true});
@@ -1342,10 +1343,12 @@ patron.holds.prototype = {
                 if (x_lib_type_menu) x_lib_type_menu.hidden = false;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = false;
                 if (x_clear_shelf_widgets) x_clear_shelf_widgets.hidden = false;
+                if (x_print_full_pull_list_alt) x_print_full_pull_list_alt.hidden = true;
             break;
             case 'pull' :
                 if (x_fetch_more) x_fetch_more.hidden = false;
                 if (x_print_full_pull_list) x_print_full_pull_list.hidden = false;
+                if (x_print_full_pull_list_alt) x_print_full_pull_list_alt.hidden = false;
                 if (x_lib_type_menu) x_lib_type_menu.hidden = true;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = true;
             break;
@@ -1353,6 +1356,7 @@ patron.holds.prototype = {
                 obj.render_lib_menus({'pickup_lib':true,'request_lib':true});
                 if (x_lib_filter_checkbox) x_lib_filter_checkbox.hidden = false;
                 if (x_lib_type_menu) x_lib_type_menu.hidden = false;
+                if (x_print_full_pull_list_alt) x_print_full_pull_list_alt.hidden = true;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = false;
             break;
             default:
@@ -1361,6 +1365,7 @@ patron.holds.prototype = {
                 if (x_lib_type_menu) x_lib_type_menu.hidden = true;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = true;
                 if (x_show_cancelled_deck) x_show_cancelled_deck.hidden = false;
+                if (x_print_full_pull_list_alt) x_print_full_pull_list_alt.hidden = true;
             break;
         }
         setTimeout( // We do this because render_lib_menus above creates and appends a DOM node, but until this thread exits, it doesn't really happen
