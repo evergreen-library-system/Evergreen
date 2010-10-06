@@ -697,15 +697,16 @@ sub run_all_events {
     my $granflag = shift;
 
     my ($groups) = $self->method_lookup('open-ils.trigger.event.find_pending_by_group')->run($granularity, $granflag);
+    $client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
     # Could report on how the "found" events were grouped, but who's going to
     # consume that information?
-    for my $key (keys %$groups) {
-        if (@{ $$groups{$key} }) {
-            $client->respond({"status" => "found"});
-            last;
-        }
-    }
+#    for my $key (keys %$groups) {
+#        if (@{ $$groups{$key} }) {
+#            $client->respond({"status" => "found"});
+#            last;
+#        }
+#    }
 
     for my $def ( keys %$groups ) {
         if ($def eq '*') {
