@@ -96,7 +96,11 @@ BEGIN
                     CASE WHEN m.marc_vr_format    IS NOT NULL THEN 2 ELSE 0 END +
                     CASE WHEN m.ref_flag        IS NOT NULL THEN 1 ELSE 0 END DESC LOOP
 
-            current_mp_weight := 5.0;
+            IF NOT current_mp.strict_ou_match THEN
+                current_mp_weight := 5.0;
+            ELSE
+                current_mp_weight := 0.0;
+            END IF;
 
             IF current_mp.circ_modifier IS NOT NULL THEN
                 CONTINUE WHEN current_mp.circ_modifier <> item_object.circ_modifier OR item_object.circ_modifier IS NULL;
