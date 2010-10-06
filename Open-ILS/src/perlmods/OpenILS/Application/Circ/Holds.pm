@@ -2412,6 +2412,7 @@ sub find_nearest_permitted_hold {
 				copy				=> $copy,
 				pickup_lib			=> $hold->pickup_lib,
 				request_lib			=> $rlib,
+				retarget			=> 1
 			} 
 		);
 

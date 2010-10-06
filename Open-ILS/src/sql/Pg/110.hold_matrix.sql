@@ -170,7 +170,7 @@ END;
 $func$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT, retargetting BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
 DECLARE
     matchpoint_id        INT;
     user_object        actor.usr%ROWTYPE;
@@ -272,22 +272,7 @@ BEGIN
         END IF;
     END IF;
  
-    FOR standing_penalty IN
-        SELECT  DISTINCT csp.*
-          FROM  actor.usr_standing_penalty usp
-                JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
-          WHERE usr = match_user
-                AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
-                AND (usp.stop_date IS NULL or usp.stop_date > NOW())
-                AND csp.block_list LIKE '%HOLD%' LOOP
-
-        result.fail_part := standing_penalty.name;
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-    END LOOP;
-
-    IF hold_test.stop_blocked_user IS TRUE THEN
+    IF NOT retargetting THEN
         FOR standing_penalty IN
             SELECT  DISTINCT csp.*
               FROM  actor.usr_standing_penalty usp
@@ -295,28 +280,45 @@ BEGIN
               WHERE usr = match_user
                     AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
                     AND (usp.stop_date IS NULL or usp.stop_date > NOW())
-                    AND csp.block_list LIKE '%CIRC%' LOOP
+                    AND csp.block_list LIKE '%HOLD%' LOOP
     
             result.fail_part := standing_penalty.name;
             result.success := FALSE;
             done := TRUE;
             RETURN NEXT result;
         END LOOP;
-    END IF;
-
-    IF hold_test.max_holds IS NOT NULL THEN
-        SELECT    INTO hold_count COUNT(*)
-          FROM    action.hold_request
-          WHERE    usr = match_user
-            AND fulfillment_time IS NULL
-            AND cancel_time IS NULL
-            AND CASE WHEN hold_test.include_frozen_holds THEN TRUE ELSE frozen IS FALSE END;
-
-        IF hold_count >= hold_test.max_holds THEN
-            result.fail_part := 'config.hold_matrix_test.max_holds';
-            result.success := FALSE;
-            done := TRUE;
-            RETURN NEXT result;
+    
+        IF hold_test.stop_blocked_user IS TRUE THEN
+            FOR standing_penalty IN
+                SELECT  DISTINCT csp.*
+                  FROM  actor.usr_standing_penalty usp
+                        JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
+                  WHERE usr = match_user
+                        AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
+                        AND (usp.stop_date IS NULL or usp.stop_date > NOW())
+                        AND csp.block_list LIKE '%CIRC%' LOOP
+        
+                result.fail_part := standing_penalty.name;
+                result.success := FALSE;
+                done := TRUE;
+                RETURN NEXT result;
+            END LOOP;
+        END IF;
+    
+        IF hold_test.max_holds IS NOT NULL THEN
+            SELECT    INTO hold_count COUNT(*)
+              FROM    action.hold_request
+              WHERE    usr = match_user
+                AND fulfillment_time IS NULL
+                AND cancel_time IS NULL
+                AND CASE WHEN hold_test.include_frozen_holds THEN TRUE ELSE frozen IS FALSE END;
+    
+            IF hold_count >= hold_test.max_holds THEN
+                result.fail_part := 'config.hold_matrix_test.max_holds';
+                result.success := FALSE;
+                done := TRUE;
+                RETURN NEXT result;
+            END IF;
         END IF;
     END IF;
 
@@ -346,6 +348,14 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+    SELECT * FROM action.hold_request_permit_test(pickup_ou, request_ou, match_item, match_user, match_requestor, FALSE);
+$func$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION action.hold_retarget_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+    SELECT * FROM action.hold_request_permit_test(pickup_ou, request_ou, match_item, match_user, match_requestor, TRUE);
+$func$ LANGUAGE SQL;
 
 COMMIT;
 
