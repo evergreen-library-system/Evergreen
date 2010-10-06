@@ -514,23 +514,26 @@ sub _object_by_path {
 
     if (!ref $obj) {
 
-        if ($self->standalone) {
-            $ed->xact_begin || return undef;
+        my $lval = $context->$lfield();
+
+        if(defined $lval) {
+
+            my $def_id = $self->event->event_def->id;
+            my $str_path = join('.', @$path);
+
+            if ($self->standalone) {
+                $ed->xact_begin || return undef;
+            }
+
+            $obj = $_object_by_path_cache{$def_id}{$str_path}{$step}{$ffield}{$lval} ||
+                $ed->$meth( ($multi) ? { $ffield => $lval } : $lval);
+
+            $_object_by_path_cache{$def_id}{$str_path}{$step}{$ffield}{$lval} ||= $obj;
+
+            if ($self->standalone) {
+                $ed->xact_rollback || return undef;
+            }
         }
-
-        $obj = $_object_by_path_cache{$self->event->event_def->id}{join('.',@$path)}{$step}{$ffield}{$context->$lfield()} ||
-            $ed->$meth( 
-                ($multi) ?
-                    { $ffield => $context->$lfield() } :
-                    $context->$lfield()
-            );
-
-        $_object_by_path_cache{$self->event->event_def->id}{join('.',@$path)}{$step}{$ffield}{$context->$lfield()} ||= $obj;
-
-        if ($self->standalone) {
-            $ed->xact_rollback || return undef;
-        }
-
     }
 
     if (@$path) {
