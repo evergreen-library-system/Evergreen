@@ -16,7 +16,7 @@ BEGIN;
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0424');
+INSERT INTO config.upgrade_log (version) VALUES ('0428');
 
 -- Recreate one of the constraints that we just dropped,
 -- under a different name:
@@ -6353,7 +6353,6 @@ UPDATE config.z3950_attr SET truncation = 1 WHERE source = 'biblios' AND truncat
 CREATE OR REPLACE FUNCTION action.find_hold_matrix_matchpoint( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS INT AS $func$
 DECLARE
     current_requestor_group    permission.grp_tree%ROWTYPE;
-    root_ou            actor.org_unit%ROWTYPE;
     requestor_object    actor.usr%ROWTYPE;
     user_object        actor.usr%ROWTYPE;
     item_object        asset.copy%ROWTYPE;
@@ -6365,7 +6364,6 @@ DECLARE
     current_mp        config.hold_matrix_matchpoint%ROWTYPE;
     matchpoint        config.hold_matrix_matchpoint%ROWTYPE;
 BEGIN
-    SELECT INTO root_ou * FROM actor.org_unit WHERE parent_ou IS NULL;
     SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
     SELECT INTO requestor_object * FROM actor.usr WHERE id = match_requestor;
     SELECT INTO item_object * FROM asset.copy WHERE id = match_item;
@@ -6425,27 +6423,27 @@ BEGIN
 
 
             -- caclulate the rule match weight
-            IF current_mp.item_owning_ou IS NOT NULL AND current_mp.item_owning_ou <> root_ou.id THEN
+            IF current_mp.item_owning_ou IS NOT NULL THEN
                 SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_owning_ou, item_cn_object.owning_lib)::FLOAT + 1.0)::FLOAT;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
-            IF current_mp.item_circ_ou IS NOT NULL AND current_mp.item_circ_ou <> root_ou.id THEN
+            IF current_mp.item_circ_ou IS NOT NULL THEN
                 SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_circ_ou, item_object.circ_lib)::FLOAT + 1.0)::FLOAT;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
-            IF current_mp.pickup_ou IS NOT NULL AND current_mp.pickup_ou <> root_ou.id THEN
+            IF current_mp.pickup_ou IS NOT NULL THEN
                 SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.pickup_ou, pickup_ou)::FLOAT + 1.0)::FLOAT;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
-            IF current_mp.request_ou IS NOT NULL AND current_mp.request_ou <> root_ou.id THEN
+            IF current_mp.request_ou IS NOT NULL THEN
                 SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.request_ou, request_ou)::FLOAT + 1.0)::FLOAT;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
-            IF current_mp.user_home_ou IS NOT NULL AND current_mp.user_home_ou <> root_ou.id THEN
+            IF current_mp.user_home_ou IS NOT NULL THEN
                 SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.user_home_ou, user_object.home_ou)::FLOAT + 1.0)::FLOAT;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
@@ -6467,7 +6465,7 @@ BEGIN
 END;
 $func$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT, retargetting BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
 DECLARE
     matchpoint_id        INT;
     user_object        actor.usr%ROWTYPE;
@@ -6569,22 +6567,7 @@ BEGIN
         END IF;
     END IF;
  
-    FOR standing_penalty IN
-        SELECT  DISTINCT csp.*
-          FROM  actor.usr_standing_penalty usp
-                JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
-          WHERE usr = match_user
-                AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
-                AND (usp.stop_date IS NULL or usp.stop_date > NOW())
-                AND csp.block_list LIKE '%HOLD%' LOOP
-
-        result.fail_part := standing_penalty.name;
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-    END LOOP;
-
-    IF hold_test.stop_blocked_user IS TRUE THEN
+    IF NOT retargetting THEN
         FOR standing_penalty IN
             SELECT  DISTINCT csp.*
               FROM  actor.usr_standing_penalty usp
@@ -6592,28 +6575,45 @@ BEGIN
               WHERE usr = match_user
                     AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
                     AND (usp.stop_date IS NULL or usp.stop_date > NOW())
-                    AND csp.block_list LIKE '%CIRC%' LOOP
+                    AND csp.block_list LIKE '%HOLD%' LOOP
     
             result.fail_part := standing_penalty.name;
             result.success := FALSE;
             done := TRUE;
             RETURN NEXT result;
         END LOOP;
-    END IF;
-
-    IF hold_test.max_holds IS NOT NULL THEN
-        SELECT    INTO hold_count COUNT(*)
-          FROM    action.hold_request
-          WHERE    usr = match_user
-            AND fulfillment_time IS NULL
-            AND cancel_time IS NULL
-            AND CASE WHEN hold_test.include_frozen_holds THEN TRUE ELSE frozen IS FALSE END;
-
-        IF hold_count >= hold_test.max_holds THEN
-            result.fail_part := 'config.hold_matrix_test.max_holds';
-            result.success := FALSE;
-            done := TRUE;
-            RETURN NEXT result;
+    
+        IF hold_test.stop_blocked_user IS TRUE THEN
+            FOR standing_penalty IN
+                SELECT  DISTINCT csp.*
+                  FROM  actor.usr_standing_penalty usp
+                        JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
+                  WHERE usr = match_user
+                        AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
+                        AND (usp.stop_date IS NULL or usp.stop_date > NOW())
+                        AND csp.block_list LIKE '%CIRC%' LOOP
+        
+                result.fail_part := standing_penalty.name;
+                result.success := FALSE;
+                done := TRUE;
+                RETURN NEXT result;
+            END LOOP;
+        END IF;
+    
+        IF hold_test.max_holds IS NOT NULL THEN
+            SELECT    INTO hold_count COUNT(*)
+              FROM    action.hold_request
+              WHERE    usr = match_user
+                AND fulfillment_time IS NULL
+                AND cancel_time IS NULL
+                AND CASE WHEN hold_test.include_frozen_holds THEN TRUE ELSE frozen IS FALSE END;
+    
+            IF hold_count >= hold_test.max_holds THEN
+                result.fail_part := 'config.hold_matrix_test.max_holds';
+                result.success := FALSE;
+                done := TRUE;
+                RETURN NEXT result;
+            END IF;
         END IF;
     END IF;
 
@@ -6643,6 +6643,14 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+    SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, FALSE);
+$func$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION action.hold_retarget_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+    SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, TRUE );
+$func$ LANGUAGE SQL;
 
 -- New post-delete trigger to propagate deletions to parent(s)
 
