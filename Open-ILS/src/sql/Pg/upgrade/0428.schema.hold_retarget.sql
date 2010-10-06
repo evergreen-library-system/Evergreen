@@ -182,11 +182,11 @@ END;
 $func$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
-    SELECT * FROM action.hold_request_permit_test(pickup_ou, request_ou, match_item, match_user, match_requestor, FALSE);
+    SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, FALSE);
 $func$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION action.hold_retarget_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
-    SELECT * FROM action.hold_request_permit_test(pickup_ou, request_ou, match_item, match_user, match_requestor, TRUE);
+    SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, TRUE );
 $func$ LANGUAGE SQL;
 
 COMMIT;
