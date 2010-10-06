@@ -295,27 +295,22 @@ The following items are 90 days overdue and have been marked LOST.
 		<para>To run the action triggers, an Evergreen administrator will need to run the trigger processing script <command>/openils/bin/action_trigger_runner.pl 
 		<option>--process-hooks</option> <option>--run-pending</option></command>. This should be set up as a cron job to run 
 		periodically.</para> 
-		<para>You will need to add some Hooks to the /openils/conf/action_trigger_filters.json file. Below is an example to add the <emphasis>password.reset_request</emphasis>, 
-		<emphasis>hold.available</emphasis> and <emphasis>checkout.due</emphasis> hooks so that they will be processed by <command>action_trigger_runner.pl</command>.</para> 
-			
-<programlisting><![CDATA[
-{
-	"password.reset_request" : { },
-
-        "hold.available": {},
-
-	"checkout.due" :
-	    { "context_org" : "circ_lib", "filter"      :
-		    { "checkin_time"  : null,
-		      "-or"           :
-		            [ { "stop_fines"  : ["MAXFINES", "LONGOVERDUE"] },
-		              { "stop_fines"  : null }
-		            ]
-		    }
-	    }
-}
-]]>
-</programlisting>
+		<para>You have several options when running the script:</para>
+		<itemizedlist>
+			<listitem><option>--run-pending</option>: Run the pending events.</listitem>
+			<listitem><option>--process-hooks</option>: Create hook events</listitem>
+			<listitem><option>--osrf-config=[<varname>config_file</varname>]</option>: OpenSRF core config file.  Defaults to: 
+			<filename>/openils/conf/opensrf_core.xml</filename>.</listitem>
+			<listitem><option>--custom-filters=[<varname>filter_file</varname>]</option>: File containing a JSON Object which describes any hooks that should
+        		use a user-defined filter to find their target objects.  Defaults to: <filename>/openils/conf/action_trigger_filters.json</filename></listitem>
+			<listitem><option>--max-sleep=[<varname>seconds</varname>]</option>: When in process-hooks mode, wait up to [<varname>seconds</varname>] for the lock file to go away.  
+			Defaults to 3600 (1 hour).</listitem>
+			<listitem><option>--hooks=hook1[,hook2,hook3,...]</option>: Define which hooks to create events for.  If none are defined, it defaults to the list of hooks defined 
+			in the <option>--custom-filters</option> option.</listitem>
+			<listitem><option>--debug-stdout</option>: Print server responses to stdout (as JSON) for debugging.</listitem>
+			<listitem><option>--lock-file=[<varname>file_name</varname>]</option>: Sets the lock file for the process.</listitem>
+			<listitem><option>--help</option>: Show help information.</listitem>
+		</itemizedlist>
 	</section>																	
 </chapter>
 
