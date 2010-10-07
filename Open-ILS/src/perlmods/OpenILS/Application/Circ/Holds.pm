@@ -34,6 +34,8 @@ use OpenILS::Application::Actor::Friends;
 use DateTime;
 use DateTime::Format::ISO8601;
 use OpenSRF::Utils qw/:datetime/;
+use Digest::MD5 qw(md5_hex);
+use OpenSRF::Utils::Cache;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
 
@@ -1407,7 +1409,7 @@ sub print_hold_pull_list_stream {
             (@$sort ? (order_by => $sort) : ()),
             ($$params{limit} ? (limit => $$params{limit}) : ()),
             ($$params{offset} ? (offset => $$params{offset}) : ())
-        }, {"subquery" => 1}
+        }, {"substream" => 1}
     ) or return $e->die_event;
 
     $logger->info("about to stream back " . scalar(@$holds_ids) . " holds");
@@ -2754,6 +2756,86 @@ sub find_hold_mvr {
 	return ( $U->record_to_mvr($title), $volume, $copy, $issuance );
 }
 
+__PACKAGE__->register_method(
+    method    => 'clear_shelf_cache',
+    api_name  => 'open-ils.circ.hold.clear_shelf.get_cache',
+    stream    => 1,
+    signature => {
+        desc => q/
+            Returns the holds processed with the given cache key
+        /
+    }
+);
+
+sub clear_shelf_cache {
+    my($self, $client, $auth, $cache_key, $chunk_size) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth and $e->allowed('VIEW_HOLD');
+
+    $chunk_size ||= 25;
+    my $hold_data = OpenSRF::Utils::Cache->new('global')->get_cache($cache_key);
+
+    if (!$hold_data) {
+        $logger->info("no hold data found in cache"); # XXX TODO return event
+        $e->rollback;
+        return undef;
+    }
+
+    my $maximum = 0;
+    foreach (keys %$hold_data) {
+        $maximum += scalar(@{ $hold_data->{$_} });
+    }
+    $client->respond({"maximum" => $maximum, "progress" => 0});
+
+    for my $action (sort keys %$hold_data) {
+        while (@{$hold_data->{$action}}) {
+            my @hid_chunk = splice @{$hold_data->{$action}}, 0, $chunk_size;
+
+            my $result_chunk = $e->json_query({
+                "select" => {
+                    "acp" => ["barcode"],
+                    "au" => [qw/
+                        first_given_name second_given_name family_name alias
+                    /],
+                    "acn" => ["label"],
+                    "bre" => ["marc"],
+                    "acpl" => ["name"],
+                    "ahr" => ["id"]
+                },
+                "from" => {
+                    "ahr" => {
+                        "acp" => {
+                            "field" => "id", "fkey" => "current_copy",
+                            "join" => {
+                                "acn" => {
+                                    "field" => "id", "fkey" => "call_number",
+                                    "join" => {
+                                        "bre" => {
+                                            "field" => "id", "fkey" => "record"
+                                        }
+                                    }
+                                },
+                                "acpl" => {"field" => "id", "fkey" => "location"}
+                            }
+                        },
+                        "au" => {"field" => "id", "fkey" => "usr"}
+                    }
+                },
+                "where" => {"+ahr" => {"id" => \@hid_chunk}}
+            }, {"substream" => 1}) or return $e->die_event;
+
+            $client->respond([
+                map {
+                    +{"action" => $action, "hold_details" => $_}
+                } @$result_chunk
+            ]);
+        }
+    }
+
+    $e->rollback;
+    return undef;
+}
+
 
 __PACKAGE__->register_method(
     method    => 'clear_shelf_process',
@@ -2776,6 +2858,7 @@ sub clear_shelf_process {
 
 	my $e = new_editor(authtoken=>$auth, xact => 1);
 	$e->checkauth or return $e->die_event;
+	my $cache = OpenSRF::Utils::Cache->new('global');
 
     $org_id ||= $e->requestor->ws_ou;
 	$e->allowed('UPDATE_HOLD', $org_id) or return $e->die_event;
@@ -2793,8 +2876,9 @@ sub clear_shelf_process {
         { idlist => 1 }
     );
 
-
     my @holds;
+    my $chunk_size = 25; # chunked status updates
+    my $counter = 0;
     for my $hold_id (@$hold_ids) {
 
         $logger->info("Clear shelf processing hold $hold_id");
@@ -2821,51 +2905,47 @@ sub clear_shelf_process {
         }
 
         push(@holds, $hold);
+        $client->respond({maximum => scalar(@holds), progress => $counter}) if ( (++$counter % $chunk_size) == 0);
     }
 
     if ($e->commit) {
 
+        my %cache_data = (
+            hold => [],
+            transit => [],
+            shelf => []
+        );
+
         for my $hold (@holds) {
 
             my $copy = $hold->current_copy;
-
             my ($alt_hold) = __PACKAGE__->find_nearest_permitted_hold($e, $copy, $e->requestor, 1);
 
             if($alt_hold) {
 
-                # copy is needed for a hold
-                $client->respond({action => 'hold', copy => $copy, hold_id => $hold->id});
+                push(@{$cache_data{hold}}, $hold->id); # copy is needed for a hold
 
             } elsif($copy->circ_lib != $e->requestor->ws_ou) {
 
-                # copy needs to transit
-                $client->respond({action => 'transit', copy => $copy, hold_id => $hold->id});
+                push(@{$cache_data{transit}}, $hold->id); # copy needs to transit
 
             } else {
 
-                # copy needs to go back to the shelf
-                $client->respond({action => 'shelf', copy => $copy, hold_id => $hold->id});
+                push(@{$cache_data{shelf}}, $hold->id); # copy needs to go back to the shelf
             }
         }
 
+        my $cache_key = md5_hex(time . $$ . rand());
+        $logger->info("clear_shelf_cache: storing under $cache_key");
+        $cache->put_cache($cache_key, \%cache_data, 7200); # TODO: 2 hours.  configurable?
+
         # tell the client we're done
-        $client->respond_complete;
+        $client->respond_complete({cache_key => $cache_key});
 
-        # fire off the hold cancelation trigger
-        my $trigger = OpenSRF::AppSession->connect('open-ils.trigger');
-
-        for my $hold (@holds) {
-
-            my $req = $trigger->request(
-                'open-ils.trigger.event.autocreate', 
-                'hold_request.cancel.expire_holds_shelf', 
-                $hold, $org_id);
-
-            # wait for response so don't flood the service
-            $req->recv;
-        }
-
-        $trigger->disconnect;
+        # fire off the hold cancelation trigger and wait for response so don't flood the service
+        $U->create_events_for_hook(
+            'hold_request.cancel.expire_holds_shelf', 
+            $_, $org_id, undef, undef, 1) for @holds;
 
     } else {
         # tell the client we're done
