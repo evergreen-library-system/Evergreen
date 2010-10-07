@@ -8,13 +8,9 @@
             @import url('/opac/skin/default/css/layout.css');
         </style>
         <style type="text/css">
-           /* html, body {
-                height: 100%;
-                width: 100%;
-                margin: 0px 0px 0px 0px;
-                padding: 0px 0px 0px 0px;
-                overflow: hidden;
-            } */
+            #clear_holds_deck { margin-bottom: 1em; }
+            a { color: blue; text-decoration: underline; }
+            small { font-size: 9pt; }
             body { font-size: 14pt; }
             td {
                 padding-right: 1em;
@@ -44,180 +40,23 @@
         <script type="text/javascript" src="/js/dojo/openils/AutoIDL.js"></script>
         <script type="text/javascript" src="/js/dojo/openils/User.js"></script>
         <script type="text/javascript" src="/js/dojo/openils/Util.js"></script>
+        <script type="text/javascript" src="/opac/extras/circ/alt_holds_print.js"></script>
         <script type="text/javascript">
-            dojo.require("dojo.cookie");
-            dojo.require("dojox.xml.parser");
-            dojo.require("openils.BibTemplate");
-            dojo.require("openils.widget.ProgressDialog");
-
-            function do_pull_list(user, cgi) {
-                progress_dialog.show(true);
-
-                var any = false;
-
-                fieldmapper.standardRequest(
-                    ['open-ils.circ','open-ils.circ.hold_pull_list.print.stream'],
-                    { async : true,
-                      params: [
-                        user.authtoken,
-                        { org_id     : cgi.param('o'),
-                          limit      : cgi.param('limit'),
-                          offset     : cgi.param('offset'),
-                          chunk_size : cgi.param('chunk_size'),
-                          sort       : sort_order
-                        }
-                      ],
-                      onresponse : function (r) {
-                        any = true;
-                        dojo.forEach( openils.Util.readResponse(r), function (hold_fm) {
-    
-                            // hashify the hold
-                            var hold = hold_fm.toHash(true);
-                            hold.usr = hold_fm.usr().toHash(true);
-                            hold.usr.card = hold_fm.usr().card().toHash(true);
-                            hold.current_copy = hold_fm.current_copy().toHash(true);
-                            hold.current_copy.location = hold_fm.current_copy().location().toHash(true);
-                            hold.current_copy.call_number = hold_fm.current_copy().call_number().toHash(true);
-                            hold.current_copy.call_number.record = hold_fm.current_copy().call_number().record().toHash(true);
-    
-                            // clone the template's html
-                            var tr = dojo.clone(
-                                dojo.query("tr", dojo.byId('template'))[0]
-                            );
-                            dojo.query("td:not([type])", tr).forEach(
-                                function(td) {
-                                    td.innerHTML =
-                                        dojo.string.substitute(td.innerHTML, hold);
-                                }
-                            );
-    
-                            new openils.BibTemplate({
-                                root : tr,
-                                xml  : dojox.xml.parser.parse(hold.current_copy.call_number.record.marc),
-                                delay: false
-                            });
-    
-                            dojo.place(tr, "target");
-                        });
-                      },
-                      oncomplete : function () {
-                        progress_dialog.hide();
-                        if (any)
-                            window.print();
-                        else
-                            alert(dojo.byId("no_results").innerHTML);
-                      }
-                    }
-                );
-            }
-
-            function place_by_sortkey(node, container) {
-                /*Don't use a forEach() or anything like that here. too slow.*/
-                var sortkey = dojo.attr(node, "sortkey");
-                for (var i = 0; i < container.childNodes.length; i++) {
-                    var rover = container.childNodes[i];
-                    if (rover.nodeType != 1) continue;
-                    if (dojo.attr(rover, "sortkey") > sortkey) {
-                        dojo.place(node, rover, "before");
-                        return;
-                    }
-                }
-                dojo.place(node, container, "last");
-            }
-
-            function do_shelf_expired_holds(user, cgi) {
-                progress_dialog.show(true);
-
-                var any = false;
-                var target = dojo.byId("target");
-                fieldmapper.standardRequest(
-                    ["open-ils.circ",
-                        "open-ils.circ.captured_holds.expired.print.stream"], {
-                        "async": true,
-                        "params": [
-                            user.authtoken, {
-                                "org_id": cgi.param("o"),
-                                "limit": cgi.param("limit"),
-                                "offset": cgi.param("offset"),
-                                "chunk_size": cgi.param("chunk_size"),
-                                "sort": sort_order
-                            }
-                        ],
-                        "onresponse": function(r) {
-                            dojo.forEach(
-                                openils.Util.readResponse(r),
-                                function(hold_fields) {
-                                    any = true;
-                                    /* munge this object to make it look like
-                                       the template expects */
-                                    var hold  = {
-                                        "usr": {},
-                                        "current_copy": {
-                                            "barcode": hold_fields.barcode,
-                                            "call_number": {
-                                                "label": hold_fields.label,
-                                                "record": {"marc": hold_fields.marc}
-                                            },
-                                            "location": {"name": hold_fields.name}
-                                        }
-                                    };
-                                    if (hold_fields.alias) {
-                                        hold.usr.display_name = hold_fields.alias;
-                                    } else {
-                                        hold.usr.display_name = [
-                                            (hold_fields.family_name ? hold_fields.family_name : ""),
-                                            (hold_fields.first_given_name ? hold_fields.first_given_name : ""),
-                                            (hold_fields.second_given_name ? hold_fields.second_given_name : "")
-                                        ].join(" ");
-                                    }
-                                    ["first_given_name","second_given_name","family_name","alias"].forEach(function(k) {hold.usr[k] = hold_fields[k]; });
-    
-                                    // clone the template's html
-                                    var tr = dojo.clone(
-                                        dojo.query("tr", dojo.byId('template'))[0]
-                                    );
-                                    dojo.query("td:not([type])", tr).forEach(
-                                        function(td) {
-                                            td.innerHTML =
-                                                dojo.string.substitute(td.innerHTML, hold);
-                                        }
-                                    );
-            
-                                    new openils.BibTemplate({
-                                        "root": tr,
-                                        "xml": dojox.xml.parser.parse(hold.current_copy.call_number.record.marc),
-                                        "delay": false
-                                    });
-            
-                                    dojo.attr(
-                                        tr, "sortkey", hold.usr.display_name
-                                    );
-                                    place_by_sortkey(tr, target);
-                                }
-                            );
-                        },
-                        "oncomplete": function() {
-                            progress_dialog.hide();
-                            if (any)
-                                window.print();
-                            else
-                                alert(dojo.byId("no_results").innerHTML);
-                        }
-                    }
-                );
-            }
-
             function my_init() {
-                var cgi = new CGI();
-                var ses = (typeof ses == "function" ? ses() : 0) ||
+                cgi = new CGI();
+                authtoken = (typeof ses == "function" ? ses() : 0) ||
                     cgi.param("ses") || dojo.cookie("ses");
-                var user = new openils.User({"authtoken": ses});
 
                 if (cgi.param("do") == "shelf_expired_holds") {
-                    do_shelf_expired_holds(user, cgi);
+                    dojo.byId("clear_holds_launcher").onclick = function() {
+                        if (confirm("Are you sure you're ready to clear the expired holds from the shelf?")) { /* XXX i18n */
+                            do_clear_holds(cgi);
+                        }
+                    };
+                    openils.Util.show("clear_holds_deck");
                 } else {
                     dojo.query("[only='shelf_expired_holds']").forEach(dojo.destroy);
-                    do_pull_list(user, cgi);
+                    do_pull_list(cgi);
                 }
             }
             dojo.addOnLoad(my_init);
@@ -225,24 +64,34 @@
     </head>
     <body class='tundra'>
 
-        <div dojoType="openils.widget.ProgressDialog" jsId="progress_dialog"></div>
+        <div style="width: 320px;"
+            dojoType="openils.widget.ProgressDialog"
+            jsId="progress_dialog"></div>
         <div class="hide_me" id="no_results">No results</div>
+        <div class="hide_me" id="clear_holds_deck">
+            [ <a id="clear_holds_launcher"
+                href="javascript:void(0);">Clear expired holds</a> ]
+            <small><em id="clear_holds_set_label"></em></small>
+        </div>
 <!-- START OF TEMPLATE SECTION -->
-
         <table>
-            <tbody id='target'>
+            <thead>
                 <tr>
                     <th only="shelf_expired_holds">Patron</th>
+                    <th only="shelf_expired_holds">Action</th>
                     <th>Title</th>
                     <th>Author</th>
                     <th>Shelving Location</th>
                     <th>Call Number</th>
                     <th>Barcode</th>
                 </tr>
+            </thead>
+            <tbody id='target'>
             </tbody>
             <tbody id='template' class='hide_me'>
                 <tr>
                     <td only="shelf_expired_holds">${usr.display_name}</td>
+                    <td only="shelf_expired_holds">${action}</td>
                     <td type='opac/slot-data' query='datafield[tag=245]'></td>
                     <td type='opac/slot-data' query='datafield[tag^=1]' limit='1'> </td>
                     <td>${current_copy.location.name}</td>
@@ -251,9 +100,6 @@
                 </tr>
             </tbody>
         </table>
-
 <!-- END OF TEMPLATE SECTION -->
-
-
     </body>
 </html>
