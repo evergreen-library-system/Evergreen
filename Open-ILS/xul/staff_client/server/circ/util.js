@@ -2418,6 +2418,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             'route_to' : '',
             'route_to_msg' : '',
             'route_to_org_fullname' : '',
+            'destination_shelf' : '',
+            'destination_shelf_msg' : '',
             'courier_code' : '',
             'street1' : '',
             'street2' : '',
@@ -2525,6 +2527,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                                     print_data.route_to = check.route_to;
                                 }
                             }
+                            print_data.destination_shelf_msg = print_data.route_to_msg;
+                            print_data.destination_shelf = print_data.route_to;
                             msg += print_data.route_to_msg;
                             msg += '\n';
                         }
@@ -2979,6 +2983,23 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 print_data.request_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.request_date', [print_data.request_date]);
                 msg += print_data.request_date_msg;
                 msg += '\n';
+                var destination_shelf = document.getElementById('circStrings').getString('staff.circ.route_to.hold_shelf');
+                print_data.destination_shelf_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [destination_shelf]);
+                print_data.destination_shelf = destination_shelf;
+                var behind_the_desk_support = String( data.hash.aous['circ.holds.behind_desk_pickup_supported'] ) == 'true';
+                if (behind_the_desk_support) {
+                   var usr_settings = network.simple_request('FM_AUS_RETRIEVE',[ses(),check.payload.hold.usr()]); 
+                    if (typeof usr_settings['circ.holds_behind_desk'] != 'undefined') {
+                        print_data.prefer_behind_holds_desk = true;
+                        destination_shelf = document.getElementById('circStrings').getString('staff.circ.route_to.private_hold_shelf');
+                        print_data.destination_shelf_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [destination_shelf]);
+                        print_data.destination_shelf = destination_shelf;
+                    } else {
+                        destination_shelf = document.getElementById('circStrings').getString('staff.circ.route_to.public_hold_shelf');
+                        print_data.destination_shelf_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [destination_shelf]);
+                        print_data.destination_shelf = destination_shelf;
+                    }
+                }
             }
             var rv = 0;
             var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];
