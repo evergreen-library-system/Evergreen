@@ -232,22 +232,22 @@
         <table>
             <tbody id='target'>
                 <tr>
+                    <th only="shelf_expired_holds">Patron</th>
                     <th>Title</th>
                     <th>Author</th>
                     <th>Shelving Location</th>
                     <th>Call Number</th>
                     <th>Barcode</th>
-                    <th only="shelf_expired_holds">Patron</th>
                 </tr>
             </tbody>
             <tbody id='template' class='hide_me'>
                 <tr>
+                    <td only="shelf_expired_holds">${usr.display_name}</td>
                     <td type='opac/slot-data' query='datafield[tag=245]'></td>
                     <td type='opac/slot-data' query='datafield[tag^=1]' limit='1'> </td>
                     <td>${current_copy.location.name}</td>
                     <td>${current_copy.call_number.label}</td>
                     <td>${current_copy.barcode}</td>
-                    <td only="shelf_expired_holds">${usr.display_name}</td>
                 </tr>
             </tbody>
         </table>
