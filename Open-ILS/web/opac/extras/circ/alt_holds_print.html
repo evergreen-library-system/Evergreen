@@ -111,10 +111,25 @@
                 );
             }
 
+            function place_by_sortkey(node, container) {
+                /*Don't use a forEach() or anything like that here. too slow.*/
+                var sortkey = dojo.attr(node, "sortkey");
+                for (var i = 0; i < container.childNodes.length; i++) {
+                    var rover = container.childNodes[i];
+                    if (rover.nodeType != 1) continue;
+                    if (dojo.attr(rover, "sortkey") > sortkey) {
+                        dojo.place(node, rover, "before");
+                        return;
+                    }
+                }
+                dojo.place(node, container, "last");
+            }
+
             function do_shelf_expired_holds(user, cgi) {
                 progress_dialog.show(true);
 
                 var any = false;
+                var target = dojo.byId("target");
                 fieldmapper.standardRequest(
                     ["open-ils.circ",
                         "open-ils.circ.captured_holds.expired.print.stream"], {
@@ -174,7 +189,10 @@
                                         "delay": false
                                     });
             
-                                    dojo.place(tr, "target");
+                                    dojo.attr(
+                                        tr, "sortkey", hold.usr.display_name
+                                    );
+                                    place_by_sortkey(tr, target);
                                 }
                             );
                         },
