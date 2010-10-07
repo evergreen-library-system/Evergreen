@@ -144,7 +144,7 @@ function do_clear_holds() {
 function do_clear_holds_from_cache(cache_key) {
     progress_dialog.show(true);
 
-    var any = false;
+    var any = 0;
     var target = dojo.byId("target");
     dojo.empty(target);
     var template = dojo.query("tr", dojo.byId("template"))[0];
@@ -166,7 +166,7 @@ function do_clear_holds_from_cache(cache_key) {
                         hold.action = resp.action;
 
                         var tr = dojo.clone(template);
-                        any = true;
+                        any++;
 
                         dojo.query("td:not([type])", tr).forEach(
                             function(td) {
@@ -185,9 +185,9 @@ function do_clear_holds_from_cache(cache_key) {
 
                         dojo.attr(tr, "sortkey", hold.usr.display_name);
                         place_by_sortkey(tr, target);
-                        progress_dialog.update({"progress": 1});
                     }
                 );
+                progress_dialog.update({"progress": any});
             },
             "oncomplete": function() {
                 progress_dialog.hide();
