@@ -8,10 +8,10 @@
 	</info>
 	<section xml:id="staffclientinstallation-installing-staffclient">
 		<title>Installing the Staff Client</title>
-		<para>The Staff Client is automatically built by default as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software. See the section <xref linkend="serversideinstallation-compilingevergreen"/> to review details related to building the Staff Client in the final compile/link/install phase of the default Evergreen build process. See the section <xref linkend="staffclientinstallation-building-staffclient"/> for help on manually building the Staff Client. Otherwise, continue with the following sections to install a pre-built Staff Client.</para>
+		<para>The Staff Client is automatically built by default as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software. See <xref linkend="serversideinstallation-compilingevergreen"/> to review details related to building the Staff Client in the final compile/link/install phase of the default Evergreen build process. See <xref linkend="staffclientinstallation-building-staffclient"/> for help on manually building the Staff Client. Otherwise, continue with the following sections to install a pre-built Staff Client.</para>
 		<simplesect xml:id="staffclientinstallation-prebuilt-staffclient">
 			<title>Installing a Pre-Built Staff Client</title>
-			<para>You can install the Staff Client from pre-built images and packages without actually having to first build it. Pre-built packages are currently available for Windows, MAC OS, and Linux. If you need to manually build the Staff Client, see the section <xref linkend="staffclientinstallation-building-staffclient"/>.</para>
+			<para>You can install the Staff Client from pre-built images and packages without actually having to first build it. Pre-built packages are currently available for Windows, MAC OS, and Linux. If you need to manually build the Staff Client, see <xref linkend="staffclientinstallation-building-staffclient"/>.</para>
 			<section>
 				<title>Installing on Windows</title>
 				<para>A standard Microsoft Windows installer that contains the current version of the Staff Client is available from the downloads section of the Evergreen website at <ulink url="http://www.evergreen-ils.org/downloads.php">http://www.evergreen-ils.org/downloads.php</ulink>. Download the Staff Client installer, then run it. A screen that looks similar to this should appear:</para>
@@ -510,7 +510,7 @@
 		</simplesect>
 		<simplesect xml:id="staffclientinstallation-building-staffclient">
 			<title>Manually Building the Staff Client</title>
-			<para>The Staff Client is automatically built by default as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software. See the section <xref linkend="serversideinstallation-compilingevergreen"/> to review details related to building the Staff Client in the final compile/link/install phase of the default Evergreen build process.</para>
+			<para>The Staff Client is automatically built by default as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side software. See <xref linkend="serversideinstallation-compilingevergreen"/> to review details related to building the Staff Client in the final compile/link/install phase of the default Evergreen build process.</para>
 			<section>
 				<title>Building the Staff Client</title>
 				<para>You can also manually build the Staff Client by using the <command>make</command> utility in the Staff Client source directory (e.g., the directory <filename class="directory">/home/opensrf/Evergreen-ILS-1.6.0.x/Open-ILS/xul/staff_client</filename> for the current Evergreen version). There are a number of possible options to manually build special versions of the Staff Client on a Linux system. Following is a list of environment variables that can be passed to <command>make</command> to influence the manual build process:</para>
@@ -720,7 +720,7 @@
 							...
 							</screen>
 						</figure>
-						<para>For more information on Automatic Updates, see the section <xref linkend="staffclientinstallation-autoupdate"/>.</para>
+						<para>For more information on Automatic Updates, see <xref linkend="staffclientinstallation-autoupdate"/>.</para>
 					</listitem>
 				</itemizedlist>
 			</section>
@@ -843,7 +843,7 @@
 					<itemizedlist>
 						<listitem>
 							<para>At configuration time for the normal build of Evergreen server-side software</para>
-							<para>This must be done when the Evergreen server-side software is first configured (see the section <xref linkend="serversideinstallation-configure"/>). As the <systemitem class="username">opensrf</systemitem> user, use the utility "configure" as shown:</para>
+							<para>This must be done when the Evergreen server-side software is first configured (see <xref linkend="serversideinstallation-configure"/>). As the <systemitem class="username">opensrf</systemitem> user, use the utility "configure" as shown:</para>
 							<figure>
 								<title>Commands to configure Evergreen</title>
 								<screen>
