@@ -590,6 +590,15 @@ vim:et:ts=4:sw=4:
                     <min_spare_children>1</min_spare_children>
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
+                <app_settings>
+                    <!-- number of parallel open-ils.trigger processes to use for collection and reaction -->
+                    <!--
+                    <parallel>
+                        <collect>3</collect>
+                        <react>3</react>
+                    </parallel>
+                    -->
+                </app_settings>
             </open-ils.trigger>
 
             <opensrf.math>

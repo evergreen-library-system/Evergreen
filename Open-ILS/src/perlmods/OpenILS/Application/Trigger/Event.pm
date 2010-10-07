@@ -2,13 +2,10 @@ package OpenILS::Application::Trigger::Event;
 use strict; use warnings;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::JSON;
-
 use OpenSRF::Utils::Logger qw/$logger/;
-
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Application::Trigger::ModRunner;
-
 use Safe;
 
 my $log = 'OpenSRF::Utils::Logger';
@@ -19,10 +16,16 @@ sub new {
     my $editor = shift;
     $class = ref($class) || $class;
 
-    return $id if (ref($id) && ref($id) eq $class);
-
     my $standalone = $editor ? 0 : 1;
     $editor ||= new_editor();
+
+    if (ref($id) && ref($id) eq $class) {
+        $id->environment->{EventProcessor} = $id
+             if ($id->environment->{complete}); # in case it came over an opensrf tube
+        $id->editor( $editor );
+        $id->standalone( $standalone );
+        return $id;
+    }
 
     my $self = bless { id => $id, editor => $editor, standalone => $standalone } => $class;
 
