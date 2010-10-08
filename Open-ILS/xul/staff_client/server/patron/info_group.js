@@ -439,13 +439,19 @@ function link_patron(direction) {
                     break;
             }
 
+            var horizontal_interface = String( g.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
             netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
             var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto"><description>' + second_msg + '</description>';
             top_xml += '<hbox><spacer flex="1"/><button label="'+$("patronStrings").getString('staff.patron.info_group.link_patron.move.label')+'"';
             top_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.info_group.link_patron.move.accesskey')+'" name="fancy_submit"/>';
             top_xml += '<button label="'+$("patronStrings").getString('staff.patron.info_group.link_patron.done.label')+'"';
             top_xml += ' accesskey="'+$("patronStrings").getString('staff.patron.info_group.link_patron.done.accesskey')+'" name="fancy_cancel"/></hbox></vbox>';
-            var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical"><hbox flex="1">';
+            var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: vertical">';
+            if (horizontal_interface) {
+                xml += '<vbox flex="1">';
+            } else {
+                xml += '<hbox flex="1">';
+            }
             /************/
             xml += '<vbox flex="1">';
             xml += '<hbox><spacer flex="1"/>';
@@ -470,7 +476,12 @@ function link_patron(direction) {
             xml += '?show_name=1&amp;id=' + patron_b.id() + '"/>';
             xml += '</vbox>';
             /************/
-            xml += '</hbox></vbox>';
+            if (horizontal_interface) {
+                xml += '</vbox>';
+            } else {
+                xml += '</hbox>';
+            }
+            xml += '</vbox>';
             
             var bot_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto"><hbox>';
             bot_xml += '</hbox></vbox>';
