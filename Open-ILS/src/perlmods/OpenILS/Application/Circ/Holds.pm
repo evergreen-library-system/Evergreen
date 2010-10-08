@@ -2871,7 +2871,9 @@ sub clear_shelf_process {
             pickup_lib        => $org_id,
             cancel_time       => undef,
             fulfillment_time  => undef,
-            shelf_time        => {'!=' => undef}
+            shelf_time        => {'!=' => undef},
+            capture_time      => {'!=' => undef},
+            current_copy      => {'!=' => undef},
         },
         { idlist => 1 }
     );
