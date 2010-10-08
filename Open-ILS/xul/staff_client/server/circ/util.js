@@ -2517,10 +2517,16 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             if (behind_the_desk_support) {
                                var usr_settings = network.simple_request('FM_AUS_RETRIEVE',[ses(),check.payload.hold.usr()]); 
                                 if (typeof usr_settings['circ.holds_behind_desk'] != 'undefined') {
-                                    print_data.prefer_behind_holds_desk = true;
-                                    check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.private_hold_shelf');
-                                    print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
-                                    print_data.route_to = check.route_to;
+                                    if (user_settings['circ.holds_behind_desk']) {
+                                        print_data.prefer_behind_holds_desk = true;
+                                        check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.private_hold_shelf');
+                                        print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+                                        print_data.route_to = check.route_to;
+                                    } else {
+                                        check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.public_hold_shelf');
+                                        print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+                                        print_data.route_to = check.route_to;
+                                    }
                                 } else {
                                     check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.public_hold_shelf');
                                     print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
@@ -2990,10 +2996,16 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 if (behind_the_desk_support) {
                    var usr_settings = network.simple_request('FM_AUS_RETRIEVE',[ses(),check.payload.hold.usr()]); 
                     if (typeof usr_settings['circ.holds_behind_desk'] != 'undefined') {
-                        print_data.prefer_behind_holds_desk = true;
-                        destination_shelf = document.getElementById('circStrings').getString('staff.circ.route_to.private_hold_shelf');
-                        print_data.destination_shelf_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [destination_shelf]);
-                        print_data.destination_shelf = destination_shelf;
+                        if (usr_settings['circ.holds_behind_desk']) {
+                            print_data.prefer_behind_holds_desk = true;
+                            destination_shelf = document.getElementById('circStrings').getString('staff.circ.route_to.private_hold_shelf');
+                            print_data.destination_shelf_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [destination_shelf]);
+                            print_data.destination_shelf = destination_shelf;
+                        } else {
+                            destination_shelf = document.getElementById('circStrings').getString('staff.circ.route_to.public_hold_shelf');
+                            print_data.destination_shelf_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [destination_shelf]);
+                            print_data.destination_shelf = destination_shelf;
+                        }
                     } else {
                         destination_shelf = document.getElementById('circStrings').getString('staff.circ.route_to.public_hold_shelf');
                         print_data.destination_shelf_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [destination_shelf]);
