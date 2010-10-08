@@ -214,6 +214,110 @@ sub template_overlay_biblio_record_entry {
 }
 
 __PACKAGE__->register_method(
+	method	=> "template_overlay_container",
+	api_name	=> "open-ils.cat.container.template_overlay",
+    stream  => 1,
+    signature => q#
+        Overlays biblio.record_entry MARC values
+        @param auth The authtoken
+        @param container The container, um, containing the records to be updated by the template
+        @param template The overlay template, or nothing and the method will look for a negative bib id in the container
+        @return Stream of hashes record id in the key "record" and t or f for the success of the overlay operation in key "success"
+    #
+);
+
+__PACKAGE__->register_method(
+	method	=> "template_overlay_container",
+	api_name	=> "open-ils.cat.container.template_overlay.background",
+    stream  => 1,
+    signature => q#
+        Overlays biblio.record_entry MARC values
+        @param auth The authtoken
+        @param container The container, um, containing the records to be updated by the template
+        @param template The overlay template, or nothing and the method will look for a negative bib id in the container
+        @return Cache key to check for status of the container overlay
+    #
+);
+
+sub template_overlay_container {
+    my($self, $conn, $auth, $container, $template) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $actor = OpenSRF::AppSession->create('open-ils.actor') if ($self->api_name =~ /background$/);
+
+    my $items = $e->search_container_biblio_record_entry_bucket_item({ bucket => $container });
+
+    if (!$template) {
+        my $titem = $e->retrieve_biblio_record_entry(
+            map { $_->target_biblio_record_entry }
+            grep { $_->target_biblio_record_entry < 0 } @$items
+        );
+
+        if (!$titem) {
+            $e->rollback;
+            return undef;
+        }
+
+        $template = $titem->marc;
+        return $e->die_event unless ($e->delete_container_biblio_record_entry_bucket_item($titem));
+    }
+
+    my $responses = [];
+
+    $self->respond_complete(
+        $actor->request('open-ils.actor.anon_cache.set_value', $responses)->gather(1)
+    ) if ($actor);
+
+    for my $item ( @$items ) {
+        my $rec = $e->retrieve_biblio_record_entry($item->target_biblio_record_entry);
+        next unless $rec;
+
+        my $success = 'f';
+        if ($e->allowed('UPDATE_RECORD', $rec->owner, $rec)) {
+            $success = $e->json_query(
+                { from => [ 'vandelay.template_overlay_bib_record', $template, $rec->id ] }
+            )->[0]->{'vandelay.template_overlay_bib_record'};
+        }
+
+        if ($actor) {
+            push @$responses, { record => $rec->id, success => $success };
+            $actor->request('open-ils.actor.anon_cache.set_value', $responses);
+        } else {
+            $conn->respond({ record => $rec->id, success => $success });
+        }
+
+        unless ($e->delete_container_biblio_record_entry_bucket_item($item)) {
+            $e->rollback;
+            if ($actor) {
+                push @$responses, { complete => 1, success => 'f' };
+                $actor->request('open-ils.actor.anon_cache.set_value', $responses);
+                return undef;
+            } else {
+                return { complete => 1, success => 'f' };
+            }
+        }
+    }
+
+    if ($e->commit) {
+        if ($actor) {
+            push @$responses, { complete => 1, success => 't' };
+            $actor->request('open-ils.actor.anon_cache.set_value', $responses);
+        } else {
+            return { complete => 1, success => 't' };
+        }
+    } else {
+        if ($actor) {
+            push @$responses, { complete => 1, success => 'f' };
+            $actor->request('open-ils.actor.anon_cache.set_value', $responses);
+        } else {
+            return { complete => 1, success => 'f' };
+        }
+    }
+    return undef;
+}
+
+__PACKAGE__->register_method(
 	method	=> "update_biblio_record_entry",
 	api_name	=> "open-ils.cat.biblio.record_entry.update",
     signature => q/
