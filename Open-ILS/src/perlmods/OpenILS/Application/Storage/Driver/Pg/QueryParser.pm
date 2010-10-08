@@ -599,7 +599,8 @@ sub flatten {
                     @bump_fields = @{$self->QueryParser->search_fields->{$node->classname}};
                 }
 
-                $from .= "\n\t\tLIMIT $core_limit\n\t) AS $talias ON (m.source = ${talias}.source)";
+                ###$from .= "\n\t\tLIMIT $core_limit";
+                $from .= "\n\t) AS $talias ON (m.source = ${talias}.source)";
 
 
                 my %used_bumps;
