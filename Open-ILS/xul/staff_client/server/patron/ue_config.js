@@ -1154,6 +1154,8 @@ function uEditCheckDOB(field) {
         if( dob < base ) { /* patron is of age */
             ident_field.required = false;
 	        uEditFindFieldByKey('juvenile').widget.node.checked = false;
+            patron.juvenile(0);
+            patron.ischanged(1);
             if(!uEditNodeVal(ident_field))
                 hideMe(ident_field.widget.node.parentNode.parentNode.parentNode);
             return;
@@ -1169,10 +1171,13 @@ function uEditCheckDOB(field) {
     }
 
     unHideMe(ident_field.widget.node.parentNode.parentNode.parentNode);
-    if(!uEditFindFieldByKey('juvenile').widget.node.checked)
-	    uEditFindFieldByKey('juvenile').widget.node.checked = true;
-	ident_field.required = true;
-	uEditCheckErrors();
+    if(!uEditFindFieldByKey('juvenile').widget.node.checked) {
+        uEditFindFieldByKey('juvenile').widget.node.checked = true;
+        patron.juvenile(1);
+        patron.ischanged(1);
+    }
+    ident_field.required = true;
+    uEditCheckErrors();
 }
 
 
