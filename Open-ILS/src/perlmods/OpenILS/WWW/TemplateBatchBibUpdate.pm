@@ -58,16 +58,19 @@ sub handler {
     my $usr = verify_login($authid);
     return show_template($r) unless ($usr);
 
-
     my $template = $cgi->param('template');
     return show_template($r) unless ($template);
 
+
+    my $rsource = $cgi->param('recordSource');
     # find some IDs ...
     my @records;
 
-    @records = map { $_ ? ($_) : () } $cgi->param('recid');
+    if ($rsource eq 'r') {
+        @records = map { $_ ? ($_) : () } $cgi->param('recid');
+    }
 
-    if (!@records) { # try for a file
+    if ($rsource eq 'c') { # try for a file
         my $file = $cgi->param('idfile');
         if ($file) {
             my $col = $cgi->param('idcolumn') || 0;
@@ -89,23 +92,25 @@ sub handler {
 
     # still no records ...
     my $container = $cgi->param('containerid');
-    if ($container) {
-        my $bucket = $e->request(
-            'open-ils.cstore.direct.container.biblio_record_entry_bucket.retrieve',
-            $container
-        )->gather(1);
-        unless($bucket) {
-            $e->request('open-ils.cstore.transaction.rollback')->gather(1);
-            $e->disconnect;
-            $r->log->error("No such bucket $container");
-            $logger->error("No such bucket $container");
-            return Apache2::Const::NOT_FOUND;
+    if ($rsource eq 'b') {
+        if ($container) {
+            my $bucket = $e->request(
+                'open-ils.cstore.direct.container.biblio_record_entry_bucket.retrieve',
+                $container
+            )->gather(1);
+            unless($bucket) {
+                $e->request('open-ils.cstore.transaction.rollback')->gather(1);
+                $e->disconnect;
+                $r->log->error("No such bucket $container");
+                $logger->error("No such bucket $container");
+                return Apache2::Const::NOT_FOUND;
+            }
+            my $recs = $e->request(
+                'open-ils.cstore.direct.container.biblio_record_entry_bucket_item.search.atomic',
+                { bucket => $container }
+            )->gather(1);
+            @records = map { ($_->target_biblio_record_entry) } @$recs;
         }
-        my $recs = $e->request(
-            'open-ils.cstore.direct.container.biblio_record_entry_bucket_item.search.atomic',
-            { bucket => $container }
-        )->gather(1);
-        @records = map { ($_->target_biblio_record_entry) } @$recs;
     }
 
     unless (@records) {
@@ -275,7 +280,7 @@ sub show_processing_template {
         </script>
     </head>
 
-    <body class='tundra'>
+    <body style="margin:10px;" class='tundra'>
         <div class="hide_me"><div dojoType="openils.widget.ProgressDialog" jsId="progress_dialog"></div></div>
 
         <table style="width:100%; margin-top:100px;">
@@ -485,21 +490,22 @@ sub show_template {
         </script>
     </head>
 
-    <body class='tundra'>
+    <body style="margin:10px;" class='tundra'>
 
         <div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data" action="" method="POST">
                 <script type='dojo/method' event='onSubmit'>
                     var rec = ruleset_to_record();
 
-                    // no-op to force replace mode
-                    rec.appendFields(
-                        new MARC.Field ({
-                            tag : '905',
-                            ind1 : ' ',
-                            ind2 : ' ',
-                            subfields : [['r','901c']]
-                        })
-                    );
+                    if (rec.subfield('905','r') == '') { // no-op to force replace mode
+                        rec.appendFields(
+                            new MARC.Field ({
+                                tag : '905',
+                                ind1 : ' ',
+                                ind2 : ' ',
+                                subfields : [['r','901c']]
+                            })
+                        );
+                    }
 
                     dojo.byId('template_value').value = rec.toXmlString();
                     return true;
@@ -507,14 +513,47 @@ sub show_template {
 
             <input type='hidden' id='template_value' name='template'/>
 
-            <table>
+            <label for='inputTypeSelect'>Record source:</label>
+            <select name='recordSource' dojoType='dijit.form.FilteringSelect'>
+                <script type='dojo/method' event='onChange' args="val">
+                    switch (val) {
+                        case 'b':
+                            dojo.removeClass('bucketListContainer','hide_me');
+                            dojo.addClass('csvContainer','hide_me');
+                            dojo.addClass('recordContainer','hide_me');
+                            break;
+                        case 'c':
+                            dojo.addClass('bucketListContainer','hide_me');
+                            dojo.removeClass('csvContainer','hide_me');
+                            dojo.addClass('recordContainer','hide_me');
+                            break;
+                        case 'r':
+                            dojo.addClass('bucketListContainer','hide_me');
+                            dojo.addClass('csvContainer','hide_me');
+                            dojo.removeClass('recordContainer','hide_me');
+                            break;
+                    };
+                </script>
+                <script type='dojo/method' event='postCreate'>
+                    if (cgi.param('recordSource')) {
+                        this.attr('value',cgi.param('recordSource'));
+                        this.onChange(cgi.param('recordSource'));
+                    }
+                </script>
+                <option value='b'>a Bucket</option>
+                <option value='c'>a CSV File</option>
+                <option value='r'>a specific record ID</option>
+            </select>
+
+            <table style='margin:10px; margin-bottom:20px;'>
+<!--
                 <tr>
-                    <th>Optional merge queue name:</th>
-                    <td><input id='bucketName' type='text' dojoType='dijit.form.TextBox' name='bname' value=''/></td>
+                    <th>Merge template name (optional):</th>
+                    <td><input id='bucketName' jsId='bucketName' type='text' dojoType='dijit.form.TextBox' name='bname' value=''/></td>
                 </tr>
-                <tr>
-                    <th>Batch update records in Bucket:</th>
-                    <td>
+-->
+                <tr class='' id='bucketListContainer'>
+                    <td>Bucket named: 
                         <div name='containerid' jsId='bucketList' dojoType='dijit.form.FilteringSelect' store='bucketStore' searchAttr='name' id='bucketList'>
                             <script type='dojo/method' event='postCreate'>
                                 if (cgi.param('containerid')) this.attr('value',cgi.param('containerid'));
@@ -522,19 +561,23 @@ sub show_template {
                         </div>
                     </td>
                 </tr>
-                <tr><th colspan='2'><div style='text-align: center;'>or</div></hd></tr>
-                <tr>
-                    <th>Batch update records from CSV file:</th>
-                    <td><input id='idfile' type="file" name="idfile"/><br/>Column <input style='width:75px;' type='text' dojoType='dijit.form.NumberSpinner' name='idcolumn' value='0' constraints='{min:0,max:100,places:0}' /> starting from 0</td>
+                <tr class='hide_me' id='csvContainer'>
+                    <td>
+                        Column <input style='width:75px;' type='text' dojoType='dijit.form.NumberSpinner' name='idcolumn' value='0' constraints='{min:0,max:100,places:0}' /> (starting from 0) of: 
+                        <input id='idfile' type="file" name="idfile"/>
+                    </td>
                 </tr>
-                <tr><th colspan='2'><div style='text-align: center;'>or</div></th></tr>
-                <tr>
-                    <th>Test Ruleset by applying to one record:</th>
-                    <td><input name='recid' style='width:75px;' type='text' dojoType='dijit.form.NumberTextBox' name='id' value='' constraints='{min:0}' /></td>
+                <tr class='hide_me' id='recordContainer'>
+                    <td>Record ID:
+                        <input name='recid' style='width:75px;' type='text' dojoType='dijit.form.NumberTextBox' name='id' value='' constraints='{min:0}'></input>
+                    </td>
                 </tr>
             </table>
 
             <button type="submit" dojoType='dijit.form.Button'>Apply Ruleset</button>
+
+            <br/>
+            <br/>
 
         </div> <!-- end of the form -->
 
@@ -570,8 +613,9 @@ sub show_template {
                         <td name='tagContainer'><input style='with: 2em;' name='tag' type='text'></input</td>
                     </td>
                     <tr>
-                        <th>Optional Subfields</th>
+                        <th>Subfields (optional)</th>
                         <td name='sfContainer'><input name='sf' type='text'/></td>
+                        <td>No spaces, no delimiters, eg: abcnp</td>
                     </tr>
                     <tr>
                         <th>MARC Data</th>
