@@ -211,7 +211,7 @@ help() and exit unless ($opt_run_pending or $opt_process_hooks);
 
 # check the lockfile
 if (-e $opt_lockfile) {
-    die "I'm already running with lockfile $opt_lockfile\n" if (!$opt_process_hooks);
+    die "I'm already running with lockfile $opt_lockfile\n" unless ($opt_process_hooks or $opt_granularity);
     # sleeping loop if we're in --process-hooks mode
     while ($max_sleep >= 0 && sleep(1)) {
         last unless ( -e $opt_lockfile ); 
