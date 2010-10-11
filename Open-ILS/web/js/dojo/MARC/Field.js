@@ -40,7 +40,7 @@ if(!dojo._hasResource["MARC.Field"]) {
 
         subfield : function (code) {
             var list = dojo.filter( this.subfields, function (s) {
-                if (s[0] == code) return true; return true;
+                if (s[0] == code) return true; return false;
             });
             if (list.length == 1) return list[0];
             return list;
