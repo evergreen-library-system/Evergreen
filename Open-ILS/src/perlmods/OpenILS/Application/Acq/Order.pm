@@ -1581,12 +1581,12 @@ sub update_lineitem_fund_batch {
 
 
 __PACKAGE__->register_method(
-	method => 'lineitem_detail_CUD_batch_api',
-	api_name => 'open-ils.acq.lineitem_detail.cud.batch',
-    stream => 1,
-	signature => {
-        desc => q/Creates a new purchase order line item detail.  
-            Additionally creates the associated fund_debit/,
+    method    => 'lineitem_detail_CUD_batch_api',
+    api_name  => 'open-ils.acq.lineitem_detail.cud.batch',
+    stream    => 1,
+    signature => {
+        desc   => q/Creates a new purchase order line item detail. / .
+                  q/Additionally creates the associated fund_debit/,
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'List of lineitem_details to create', type => 'array'},
@@ -1597,9 +1597,9 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-	method => 'lineitem_detail_CUD_batch_api',
-	api_name => 'open-ils.acq.lineitem_detail.cud.batch.dry_run',
-    stream => 1,
+    method    => 'lineitem_detail_CUD_batch_api',
+    api_name  => 'open-ils.acq.lineitem_detail.cud.batch.dry_run',
+    stream    => 1,
     signature => { 
         desc => q/
             Dry run version of open-ils.acq.lineitem_detail.cud.batch.
@@ -1691,8 +1691,8 @@ sub handle_changed_lid {
 
 
 __PACKAGE__->register_method(
-	method => 'receive_po_api',
-	api_name	=> 'open-ils.acq.purchase_order.receive'
+    method   => 'receive_po_api',
+    api_name => 'open-ils.acq.purchase_order.receive'
 );
 
 sub receive_po_api {
@@ -1930,13 +1930,13 @@ sub rollback_receive_lineitem_detail_api {
 }
 
 __PACKAGE__->register_method(
-	method => 'rollback_receive_lineitem_api',
-	api_name	=> 'open-ils.acq.lineitem.receive.rollback',
-	signature => {
-        desc => 'Mark a lineitem as Un-received',
+    method    => 'rollback_receive_lineitem_api',
+    api_name  => 'open-ils.acq.lineitem.receive.rollback',
+    signature => {
+        desc   => 'Mark a lineitem as Un-received',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'lineitem ID', type => 'number'}
+            {desc => 'lineitem ID',          type => 'number'}
         ],
         return => {desc =>
             "on success, object describing changes to LI and possibly PO; " .
@@ -1975,13 +1975,13 @@ sub rollback_receive_lineitem_api {
 
 
 __PACKAGE__->register_method(
-	method => 'set_lineitem_price_api',
-	api_name	=> 'open-ils.acq.lineitem.price.set',
-	signature => {
-        desc => 'Set lineitem price.  If debits already exist, update them as well',
+    method    => 'set_lineitem_price_api',
+    api_name  => 'open-ils.acq.lineitem.price.set',
+    signature => {
+        desc   => 'Set lineitem price.  If debits already exist, update them as well',
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'lineitem ID', type => 'number'}
+            {desc => 'lineitem ID',          type => 'number'}
         ],
         return => {desc => 'status blob, Event on error'}
     }
@@ -2024,10 +2024,10 @@ sub set_lineitem_price_api {
 
 
 __PACKAGE__->register_method(
-	method => 'clone_picklist_api',
-	api_name	=> 'open-ils.acq.picklist.clone',
-	signature => {
-        desc => 'Clones a picklist, including lineitem and lineitem details',
+    method    => 'clone_picklist_api',
+    api_name  => 'open-ils.acq.picklist.clone',
+    signature => {
+        desc   => 'Clones a picklist, including lineitem and lineitem details',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Picklist ID', type => 'number'},
@@ -2072,10 +2072,10 @@ sub clone_picklist_api {
 
 
 __PACKAGE__->register_method(
-	method => 'merge_picklist_api',
-	api_name	=> 'open-ils.acq.picklist.merge',
-	signature => {
-        desc => 'Merges 2 or more picklists into a single list',
+    method    => 'merge_picklist_api',
+    api_name  => 'open-ils.acq.picklist.merge',
+    signature => {
+        desc   => 'Merges 2 or more picklists into a single list',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Lead Picklist ID', type => 'number'},
@@ -2119,13 +2119,13 @@ sub merge_picklist_api {
 
 
 __PACKAGE__->register_method(
-	method => 'delete_picklist_api',
-	api_name	=> 'open-ils.acq.picklist.delete',
-	signature => {
-        desc => q/Deletes a picklist.  It also deletes any lineitems in the "new" state.  
-            Other attached lineitems are detached'/,
+    method    => 'delete_picklist_api',
+    api_name  => 'open-ils.acq.picklist.delete',
+    signature => {
+        desc   => q/Deletes a picklist.  It also deletes any lineitems in the "new" state. / .
+                  q/Other attached lineitems are detached/,
         params => [
-            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Authentication token',  type => 'string'},
             {desc => 'Picklist ID to delete', type => 'number'}
         ],
         return => {desc => '1 on success, Event on error'}
@@ -2146,17 +2146,16 @@ sub delete_picklist_api {
 
 
 __PACKAGE__->register_method(
-	method => 'activate_purchase_order',
-	api_name	=> 'open-ils.acq.purchase_order.activate.dry_run'
+    method   => 'activate_purchase_order',
+    api_name => 'open-ils.acq.purchase_order.activate.dry_run'
 );
 
 __PACKAGE__->register_method(
-	method => 'activate_purchase_order',
-	api_name	=> 'open-ils.acq.purchase_order.activate',
-	signature => {
-        desc => q/Activates a purchase order.  This updates the status of the PO
-            and Lineitems to 'on-order'.  Activated PO's are ready for EDI delivery
-            if appropriate./,
+    method    => 'activate_purchase_order',
+    api_name  => 'open-ils.acq.purchase_order.activate',
+    signature => {
+        desc => q/Activates a purchase order.  This updates the status of the PO / .
+                q/and Lineitems to 'on-order'.  Activated PO's are ready for EDI delivery if appropriate./,
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Purchase ID', type => 'number'}
@@ -2245,14 +2244,14 @@ sub activate_purchase_order_impl {
 
 
 __PACKAGE__->register_method(
-	method => 'split_purchase_order_by_lineitems',
-	api_name	=> 'open-ils.acq.purchase_order.split_by_lineitems',
-	signature => {
-        desc => q/Splits a PO into many POs, 1 per lineitem.  Only works for
-        POs a) with more than one lineitems, and b) in the "pending" state./,
+    method    => 'split_purchase_order_by_lineitems',
+    api_name  => 'open-ils.acq.purchase_order.split_by_lineitems',
+    signature => {
+        desc   => q/Splits a PO into many POs, 1 per lineitem.  Only works for / .
+                  q/POs a) with more than one lineitems, and b) in the "pending" state./,
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'Purchase order ID', type => 'number'}
+            {desc => 'Purchase order ID',    type => 'number'}
         ],
         return => {desc => 'list of new PO IDs on success, Event on error'}
     }
