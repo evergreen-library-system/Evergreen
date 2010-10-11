@@ -2,6 +2,7 @@
 <div style='display:none;' dojoType="dijit.Dialog" jsId='oilsLoginDialog' class='oils-login-dialog'>
     <script>dojo.require('dijit.form.TextBox');</script>
     <b>Please Login</b>
+    <div class='hidden oils-notify-text' id='oils-login-failed'>Login Failed</div>
     <form>
         <table>
             <tr>

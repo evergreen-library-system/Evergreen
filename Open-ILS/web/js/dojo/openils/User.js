@@ -24,6 +24,7 @@ if(!dojo._hasResource["openils.User"]) {
     dojo.require('fieldmapper.Fieldmapper');
     dojo.require('fieldmapper.OrgUtils');
     dojo.require('openils.Util');
+    dojo.require('dojo.cookie');
 
     dojo.declare('openils.User', null, {
 
@@ -50,6 +51,7 @@ if(!dojo._hasResource["openils.User"]) {
             this.authcookie = kwargs.authcookie || openils.User.authcookie;
             this.permOrgStoreCache = {}; /* permName => permOrgUnitStore map */
 
+            if (this.authcookie) this.authtoken = dojo.cookie(this.authcookie);
             if (this.id && this.authtoken) this.user = this.getById( this.id );
             else if (this.authtoken) this.getBySession();
             else if (kwargs.login) this.login();
@@ -137,13 +139,16 @@ if(!dojo._hasResource["openils.User"]) {
                 var authReq = OpenSRF.CachedClientSession('open-ils.auth').request('open-ils.auth.authenticate.complete', loginInfo);
                 authReq.oncomplete = function(rr) {
                     var data = rr.recv().content();
+
+                    if(!data || !data.payload)
+                        throw new Error("Login Failed: " + js2JSON(data));
+
                     _u.authtoken = data.payload.authtoken;
 					if (!openils.User.authtoken) openils.User.authtoken = _u.authtoken;
                     _u.authtime = data.payload.authtime;
 					if (!openils.User.authtime) openils.User.authtime = _u.authtime;
                     _u.getBySession(onComplete);
                     if(_u.authcookie) {
-                        dojo.require('dojo.cookie');
                         dojo.cookie(_u.authcookie, _u.authtoken, {path:'/'});
                     }
                 }
@@ -179,15 +184,18 @@ if(!dojo._hasResource["openils.User"]) {
                 [loginInfo]
             );
 
+            if(!data || !data.payload) return false;
+
             _u.authtoken = data.payload.authtoken;
             if (!openils.User.authtoken) openils.User.authtoken = _u.authtoken;
             _u.authtime = data.payload.authtime;
             if (!openils.User.authtime) openils.User.authtime = _u.authtime;
 
             if(_u.authcookie) {
-                dojo.require('dojo.cookie');
                 dojo.cookie(_u.authcookie, _u.authtoken, {path:'/'});
             }
+
+            return true;
         },
 
     

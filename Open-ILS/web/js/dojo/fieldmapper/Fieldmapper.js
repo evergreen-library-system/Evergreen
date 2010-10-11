@@ -53,7 +53,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 					obj.a[i] = thing.clone();
 				} else {
 
-					if(instanceOf(thing, Array)) {
+					if(dojo.isArray(thing)) {
 						obj.a[i] = new Array();
 
 						for( var j in thing ) {
@@ -71,10 +71,102 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 			return obj;
 		},
 
+        RequiredField : function (f) {
+            if (!f) return;
+            if (fieldmapper.IDL && fieldmapper.IDL.loaded)
+                return this.Structure.fields[f].required;
+            return;
+        },
+
+        ValidateField : function (f) {
+            if (!f) return;
+            if (fieldmapper.IDL && fieldmapper.IDL.loaded) {
+                if (this.Structure.fields[f] && this.Structure.fields[f].validate) {
+                    return this.Structure.fields[f].validate.test(this[f]());
+                }
+                return true;
+            }
+            return;
+        }
+            
+
+ 
+/*
 		isnew : function(n) { if(arguments.length == 1) this.a[0] =n; return this.a[0]; },
 		ischanged : function(n) { if(arguments.length == 1) this.a[1] =n; return this.a[1]; },
 		isdeleted : function(n) { if(arguments.length == 1) this.a[2] =n; return this.a[2]; }
+*/
+
 	});
+
+    fieldmapper.vivicateClass = function (cl) {
+		dojo.provide( cl );
+		dojo.declare( cl , fieldmapper.Fieldmapper, {
+			constructor : function () {
+				if (!this.a) this.a = [];
+				this.classname = this.declaredClass;
+                this._fields = [];
+
+                if (fieldmapper.IDL && fieldmapper.IDL.loaded) {
+                    this.Structure = fieldmapper.IDL.fmclasses[this.classname]
+
+                    for (var f in fieldmapper.IDL.fmclasses[this.classname].fields) {
+                        var field = fieldmapper.IDL.fmclasses[this.classname].fields[f];
+                        var p = field.array_position;
+    	    			this._fields.push( field.name );
+			    		this[field.name]=new Function('n', 'if(arguments.length==1)this.a['+p+']=n;return this.a['+p+'];');
+                    }
+                } else {
+				    this._fields = fmclasses[this.classname];
+
+    				for( var pos = 0; pos <  this._fields.length; pos++ ) {
+    					var p = parseInt(pos);
+	    				var f = this._fields[pos];
+		    			this[f]=new Function('n', 'if(arguments.length==1)this.a['+p+']=n;return this.a['+p+'];');
+			    	}
+                }
+
+			}
+		});
+		fieldmapper[cl] = window[cl]; // alias into place
+        if (fieldmapper.IDL && fieldmapper.IDL.loaded) fieldmapper[cl].Identifier = fieldmapper.IDL.fmclasses[cl].pkey;
+    };
+
+    if (!window.fmclasses) dojo.require("fieldmapper.fmall", true);
+    for( var cl in fmclasses ) {
+        fieldmapper.vivicateClass(cl);
+    }
+
+    // if we were NOT called by the IDL loader ...
+    // XXX This is now deprecated in preference to fieldmapper.AutoIDL
+    if ( !(fieldmapper.IDL && fieldmapper.IDL.loaded) ) {
+
+        fieldmapper.cmsa.Identifier = 'alias';
+        fieldmapper.cmc.Identifier = 'name';
+    	fieldmapper.i18n_l.Identifier = 'code';
+    	fieldmapper.ccpbt.Identifier = 'code';
+    	fieldmapper.ccnbt.Identifier = 'code';
+    	fieldmapper.cbrebt.Identifier = 'code';
+    	fieldmapper.cubt.Identifier = 'code';
+    	fieldmapper.ccm.Identifier = 'code';
+    	fieldmapper.cvrfm.Identifier = 'code';
+    	fieldmapper.clm.Identifier = 'code';
+    	fieldmapper.cam.Identifier = 'code';
+    	fieldmapper.cifm.Identifier = 'code';
+    	fieldmapper.citm.Identifier = 'code';
+    	fieldmapper.cblvl.Identifier = 'code';
+    	fieldmapper.clfm.Identifier = 'code';
+    	fieldmapper.mous.Identifier = 'usr';
+    	fieldmapper.moucs.Identifier = 'usr';
+    	fieldmapper.mucs.Identifier = 'usr';
+    	fieldmapper.mus.Identifier = 'usr';
+    	fieldmapper.rxbt.Identifier = 'xact';
+    	fieldmapper.rxpt.Identifier = 'xact';
+    	fieldmapper.cxt.Identifier = 'name';
+    	fieldmapper.amtr.Identifier = 'matchpoint';
+    	fieldmapper.coust.Identifier = 'name';
+
+    }
 
 	fieldmapper._request = function ( meth, staff, params ) {
 		var ses = OpenSRF.CachedClientSession( meth[0] );
@@ -90,7 +182,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 			if (dojo.isObject(params)) {
 				args = params;
 			} else {
-                args.params = [].splice.call(arguments, 1, arguments.length - 1);
+                args.params = [].splice.call(arguments, 2, arguments.length - 2);
 			}
 
 		}
@@ -135,76 +227,6 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
 	fieldmapper.staffRequest = function (meth, params) { return fieldmapper._request(meth, true, params) };
 	fieldmapper.Fieldmapper.prototype.staffRequest = fieldmapper.staffRequest;
-
-    // if we were called by the IDL loader ...
-    if ( fieldmapper.IDL && fieldmapper.IDL.loaded ) {
-    	for( var cl in fieldmapper.IDL.fmclasses ) {
-    		dojo.provide( cl );
-    		dojo.declare( cl , fieldmapper.Fieldmapper, {
-    			constructor : function () {
-    				if (!this.a) this.a = [];
-    				this.classname = this.declaredClass;
-                    this._fields = [];
-                    this.Structure = fieldmapper.IDL.fmclasses[this.classname]
-
-                    for (var f in fieldmapper.IDL.fmclasses[this.classname].fields) {
-                        var field = fieldmapper.IDL.fmclasses[this.classname].fields[f];
-                        var p = field.array_position;
-        				this._fields.push( field.name );
-    					this[field.name]=new Function('n', 'if(arguments.length==1)this.a['+p+']=n;return this.a['+p+'];');
-                    }
-    			}
-    		});
-    		fieldmapper[cl] = window[cl]; // alias into place
-    		fieldmapper[cl].Identifier = fieldmapper.IDL.fmclasses[cl].pkey;
-    	}
-
-    // ... otherwise we need to get the oldschool fmall.js stuff, which will lack .structure
-    } else {
-    	if (!window.fmclasses)
-            dojo.require("fieldmapper.fmall", true);
-
-    	for( var cl in fmclasses ) {
-    		dojo.provide( cl );
-    		dojo.declare( cl , fieldmapper.Fieldmapper, {
-    			constructor : function () {
-    				if (!this.a) this.a = [];
-    				this.classname = this.declaredClass;
-    				this._fields = fmclasses[this.classname];
-    				for( var pos = 0; pos <  this._fields.length; pos++ ) {
-    					var p = parseInt(pos);
-    					var f = this._fields[pos];
-    					this[f]=new Function('n', 'if(arguments.length==1)this.a['+p+']=n;return this.a['+p+'];');
-    				}
-    			}
-    		});
-    		fieldmapper[cl] = window[cl]; // alias into place
-    		fieldmapper[cl].Identifier = 'id'; // alias into place
-    	}
-
-    	fieldmapper.i18n_l.Identifier = 'code';
-    	fieldmapper.ccpbt.Identifier = 'code';
-    	fieldmapper.ccnbt.Identifier = 'code';
-    	fieldmapper.cbrebt.Identifier = 'code';
-    	fieldmapper.cubt.Identifier = 'code';
-    	fieldmapper.ccm.Identifier = 'code';
-    	fieldmapper.cvrfm.Identifier = 'code';
-    	fieldmapper.clm.Identifier = 'code';
-    	fieldmapper.cam.Identifier = 'code';
-    	fieldmapper.cifm.Identifier = 'code';
-    	fieldmapper.citm.Identifier = 'code';
-    	fieldmapper.cblvl.Identifier = 'code';
-    	fieldmapper.clfm.Identifier = 'code';
-    	fieldmapper.mous.Identifier = 'usr';
-    	fieldmapper.moucs.Identifier = 'usr';
-    	fieldmapper.mucs.Identifier = 'usr';
-    	fieldmapper.mus.Identifier = 'usr';
-    	fieldmapper.rxbt.Identifier = 'xact';
-    	fieldmapper.rxpt.Identifier = 'xact';
-    	fieldmapper.cxt.Identifier = 'name';
-    	fieldmapper.amtr.Identifier = 'matchpoint';
-
-    }
 
 	fieldmapper.OpenSRF = {};
 
@@ -291,7 +313,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 		FETCH_MR_DESCRIPTORS : ['open-ils.search','open-ils.search.metabib.record_to_descriptors'],
 		FETCH_HIGHEST_PERM_ORG : ['open-ils.actor','open-ils.actor.user.perm.highest_org.batch'],
 		FETCH_USER_NOTES : ['open-ils.actor','open-ils.actor.note.retrieve.all'],
-		FETCH_ORG_BY_SHORTNAME : ['open-ils.actor','open-ils.actor.org_unit.retrieve_by_shorname'],
+		FETCH_ORG_BY_SHORTNAME : ['open-ils.actor','open-ils.actor.org_unit.retrieve_by_shortname'],
 		FETCH_BIB_ID_BY_BARCODE : ['open-ils.search','open-ils.search.bib_id.by_barcode'],
 		FETCH_ORG_SETTING : ['open-ils.actor','open-ils.actor.ou_setting.ancestor_default'],
 		FETCH_ORG_SETTING_BATCH : ['open-ils.actor','open-ils.actor.ou_setting.ancestor_default.batch']

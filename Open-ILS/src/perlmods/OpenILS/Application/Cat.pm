@@ -175,6 +175,156 @@ sub biblio_record_replace_marc  {
 }
 
 __PACKAGE__->register_method(
+	method	=> "template_overlay_biblio_record_entry",
+	api_name	=> "open-ils.cat.biblio.record_entry.template_overlay",
+    stream  => 1,
+    signature => q#
+        Overlays biblio.record_entry MARC values
+        @param auth The authtoken
+        @param records The record ids to be updated by the template
+        @param template The overlay template
+        @return Stream of hashes record id in the key "record" and t or f for the success of the overlay operation in key "success"
+    #
+);
+
+sub template_overlay_biblio_record_entry {
+    my($self, $conn, $auth, $records, $template) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    $records = [$records] if (!ref($records));
+
+    for my $rid ( @$records ) {
+        my $rec = $e->retrieve_biblio_record_entry($rid);
+        next unless $rec;
+
+        unless ($e->allowed('UPDATE_RECORD', $rec->owner, $rec)) {
+            $conn->respond({ record => $rid, success => 'f' });
+            next;
+        }
+
+        my $success = $e->json_query(
+            { from => [ 'vandelay.template_overlay_bib_record', $template, $rid ] }
+        )->[0]->{'vandelay.template_overlay_bib_record'};
+
+        $conn->respond({ record => $rid, success => $success });
+    }
+
+    $e->commit;
+    return undef;
+}
+
+__PACKAGE__->register_method(
+	method	=> "template_overlay_container",
+	api_name	=> "open-ils.cat.container.template_overlay",
+    stream  => 1,
+    signature => q#
+        Overlays biblio.record_entry MARC values
+        @param auth The authtoken
+        @param container The container, um, containing the records to be updated by the template
+        @param template The overlay template, or nothing and the method will look for a negative bib id in the container
+        @return Stream of hashes record id in the key "record" and t or f for the success of the overlay operation in key "success"
+    #
+);
+
+__PACKAGE__->register_method(
+	method	=> "template_overlay_container",
+	api_name	=> "open-ils.cat.container.template_overlay.background",
+    stream  => 1,
+    signature => q#
+        Overlays biblio.record_entry MARC values
+        @param auth The authtoken
+        @param container The container, um, containing the records to be updated by the template
+        @param template The overlay template, or nothing and the method will look for a negative bib id in the container
+        @return Cache key to check for status of the container overlay
+    #
+);
+
+sub template_overlay_container {
+    my($self, $conn, $auth, $container, $template) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $actor = OpenSRF::AppSession->create('open-ils.actor') if ($self->api_name =~ /background$/);
+
+    my $items = $e->search_container_biblio_record_entry_bucket_item({ bucket => $container });
+
+    my $titem;
+    if (!$template) {
+        ($titem) = grep { $_->target_biblio_record_entry < 0 } @$items;
+        if (!$titem) {
+            $e->rollback;
+            return undef;
+        }
+        $items = [grep { $_->target_biblio_record_entry > 0 } @$items];
+
+        $template = $e->retrieve_biblio_record_entry( $titem->target_biblio_record_entry )->marc;
+    }
+
+    my $responses = [];
+    my $some_failed = 0;
+
+    $self->respond_complete(
+        $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses)->gather(1)
+    ) if ($actor);
+
+    for my $item ( @$items ) {
+        my $rec = $e->retrieve_biblio_record_entry($item->target_biblio_record_entry);
+        next unless $rec;
+
+        my $success = 'f';
+        if ($e->allowed('UPDATE_RECORD', $rec->owner, $rec)) {
+            $success = $e->json_query(
+                { from => [ 'vandelay.template_overlay_bib_record', $template, $rec->id ] }
+            )->[0]->{'vandelay.template_overlay_bib_record'};
+        }
+
+        $some_failed++ if ($success eq 'f');
+
+        if ($actor) {
+            push @$responses, { record => $rec->id, success => $success };
+            $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
+        } else {
+            $conn->respond({ record => $rec->id, success => $success });
+        }
+
+        if ($success eq 't') {
+            unless ($e->delete_container_biblio_record_entry_bucket_item($item)) {
+                $e->rollback;
+                if ($actor) {
+                    push @$responses, { complete => 1, success => 'f' };
+                    $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
+                    return undef;
+                } else {
+                    return { complete => 1, success => 'f' };
+                }
+            }
+        }
+    }
+
+    if ($titem && !$some_failed) {
+        return $e->die_event unless ($e->delete_container_biblio_record_entry_bucket_item($titem));
+    }
+
+    if ($e->commit) {
+        if ($actor) {
+            push @$responses, { complete => 1, success => 't' };
+            $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
+        } else {
+            return { complete => 1, success => 't' };
+        }
+    } else {
+        if ($actor) {
+            push @$responses, { complete => 1, success => 'f' };
+            $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
+        } else {
+            return { complete => 1, success => 'f' };
+        }
+    }
+    return undef;
+}
+
+__PACKAGE__->register_method(
 	method	=> "update_biblio_record_entry",
 	api_name	=> "open-ils.cat.biblio.record_entry.update",
     signature => q/

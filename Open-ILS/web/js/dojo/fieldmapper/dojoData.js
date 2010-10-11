@@ -26,10 +26,10 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 	function _fromStoreItem (data) {
 		this.fromHash(data);
 
-		for (var i in this._ignore_fields)
+		for (var i = 0; this._ignore_fields && i < this._ignore_fields.length; i++)
 			this[this._ignore_fields[i]](null);
 
-		for ( var i=0; i < this._fields.length; i++) {
+		for (var i = 0; this._fields && i < this._fields.length; i++) {
 			if (dojo.isArray( this[this._fields[i]]() ))
 				this[this._fields[i]]( this[this._fields[i]]()[0] );
 		}
@@ -53,22 +53,22 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 		if (!params) params = {};
         var data = this.initStoreData(label, params);
 
-		for (var i in list) data.items.push( list[i].toHash(true, params.virtualFields) );
+		for (var i = 0; list && i < list.length; i++) data.items.push( list[i].toHash(true, params.virtualFields) );
 
 		if (params.children && params.parent) {
 			var _hash_list = data.items;
 
 			var _find_root = {};
-			for (var i in _hash_list) {
+			for (var i = 0; _hash_list && i < _hash_list.length; i++) {
 				_find_root[_hash_list[i][params.identifier]] = _hash_list[i]; 
 			}
 
 			var item_data = [];
-			for (var i in _hash_list) {
+			for (var i = 0; _hash_list && i < _hash_list.length; i++) {
 				var obj = _hash_list[i]
 				obj[params.children] = [];
 
-				for (var j in _hash_list) {
+				for (var j = 0; _hash_list && j < _hash_list.length; j++) {
 					var kid = _hash_list[j];
 					if (kid[params.parent] == obj[params.identifier]) {
 						obj[params.children].push( { _reference : kid[params.identifier] } );
@@ -92,15 +92,18 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 		return data;
 	}
 
-	for (var i in fmclasses) fieldmapper[i].prototype.fromStoreItem = _fromStoreItem;
-	for (var i in fmclasses) fieldmapper[i].toStoreData = _toStoreData;
-	for (var i in fmclasses) fieldmapper[i].toStoreItem = _toStoreItem;
-	for (var i in fmclasses) fieldmapper[i].prototype.toStoreItem = function ( args ) { return _toStoreItem(this, args) };
-	for (var i in fmclasses) fieldmapper[i].initStoreData = _initStoreData;
+	for (var i in fmclasses) {
+		fieldmapper[i].prototype.fromStoreItem = _fromStoreItem;
+		fieldmapper[i].prototype.fromStoreItem = _fromStoreItem;
+		fieldmapper[i].toStoreData = _toStoreData;
+		fieldmapper[i].toStoreItem = _toStoreItem;
+		fieldmapper[i].prototype.toStoreItem = function ( args ) { return _toStoreItem(this, args) };
+		fieldmapper[i].initStoreData = _initStoreData;
+	}
 
-	fieldmapper.aou.prototype._ignore_fields = ['children'];
-	fieldmapper.aout.prototype._ignore_fields = ['children'];
-	fieldmapper.pgt.prototype._ignore_fields = ['children'];
+	if (fieldmapper.aou) fieldmapper.aou.prototype._ignore_fields = ['children'];
+	if (fieldmapper.aout) fieldmapper.aout.prototype._ignore_fields = ['children'];
+	if (fieldmapper.pgt) fieldmapper.pgt.prototype._ignore_fields = ['children'];
 
 	fieldmapper.aou.toStoreData = function (list, label) {
 		if (!label) label = 'shortname';

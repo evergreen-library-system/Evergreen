@@ -56,3 +56,4 @@ body { font-size: 80%; background-color:#FFF; }
     border-bottom:1px solid #ACA899;
 }
 
+.oils-notify-text { color: red; font-weight:bold; }
