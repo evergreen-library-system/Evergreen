@@ -101,7 +101,9 @@ foreach my $def (@$defs) {
         # $subq->{'select'}->{'acqedim'} = ['id', 'purchase_order', 'message_type', 'status'];
         my $excluded = $e->json_query($subq);
         print "Excluded: ", scalar(@$excluded), " purchase order(s):\n";
-        print join("\n", sort map {sprintf "%7d", $_->{purchase_order}} @$excluded), "\n";
+        my $z = 0;
+        print map {sprintf "%7d%s", $_, (++$z % 5) ? '' : "\n"} sort {$a <=> $b} map {$_->{purchase_order}} @$excluded;
+        print "\n";
     }
 
     my $events = $e->json_query($query);
