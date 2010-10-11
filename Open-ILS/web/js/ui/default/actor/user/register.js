@@ -384,14 +384,14 @@ function uEditFetchUserSettings(userId) {
 
     /* fetch any values set for this user */
     userSettings = fieldmapper.standardRequest(
-        ['open-ils.actor', 'open-ils.actor.patron.settings.retrieve'],
+        ['open-ils.actor', 'open-ils.actor.patron.settings.retrieve.authoritative'],
         {params : [openils.User.authtoken, userId, names]});
 }
 
 
 function uEditLoadUser(userId) {
     var patron = fieldmapper.standardRequest(
-        ['open-ils.actor', 'open-ils.actor.user.fleshed.retrieve'],
+        ['open-ils.actor', 'open-ils.actor.user.fleshed.retrieve.authoritative'],
         {params : [openils.User.authtoken, userId]}
     );
     openils.Event.parse_and_raise(patron);
