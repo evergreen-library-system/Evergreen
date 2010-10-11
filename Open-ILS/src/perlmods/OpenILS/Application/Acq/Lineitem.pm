@@ -16,10 +16,10 @@ my $U = 'OpenILS::Application::AppUtils';
 
 
 __PACKAGE__->register_method(
-	method => 'create_lineitem',
-	api_name	=> 'open-ils.acq.lineitem.create',
-	signature => {
-        desc => 'Creates a lineitem',
+    method    => 'create_lineitem',
+    api_name  => 'open-ils.acq.lineitem.create',
+    signature => {
+        desc   => 'Creates a lineitem',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'The lineitem object to create', type => 'object'},
@@ -67,10 +67,10 @@ sub create_lineitem {
 
 
 __PACKAGE__->register_method(
-	method => 'retrieve_lineitem',
-	api_name	=> 'open-ils.acq.lineitem.retrieve',
-	signature => {
-        desc => 'Retrieves a lineitem',
+    method    => 'retrieve_lineitem',
+    api_name  => 'open-ils.acq.lineitem.retrieve',
+    signature => {
+        desc   => 'Retrieves a lineitem',
         params => [
             {desc => 'Authentication token',    type => 'string'},
             {desc => 'lineitem ID to retrieve', type => 'number'},
@@ -149,15 +149,15 @@ sub retrieve_lineitem_impl {
         }
     }
 
-    return $e->event unless (
+    return $e->event unless ((
         $li->purchase_order and 
             ($no_auth or $e->allowed(['VIEW_PURCHASE_ORDER', 'CREATE_PURCHASE_ORDER'], 
                 $li->purchase_order->ordering_agency, $li->purchase_order))
-    ) or (
+        ) or (
         $li->picklist and !$li->purchase_order and # user doesn't have view_po perms
             ($no_auth or $e->allowed(['VIEW_PICKLIST', 'CREATE_PICKLIST'], 
                 $li->picklist->org_unit, $li->picklist))
-    );
+    ));
 
     unless ($$options{flesh_po}) {
         $li->purchase_order(
@@ -173,12 +173,12 @@ sub retrieve_lineitem_impl {
 
 
 __PACKAGE__->register_method(
-	method => 'delete_lineitem',
-	api_name	=> 'open-ils.acq.lineitem.delete',
-	signature => {
-        desc => 'Deletes a lineitem',
+    method    => 'delete_lineitem',
+    api_name  => 'open-ils.acq.lineitem.delete',
+    signature => {
+        desc   => 'Deletes a lineitem',
         params => [
-            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Authentication token',  type => 'string'},
             {desc => 'lineitem ID to delete', type => 'number'},
         ],
         return => {desc => '1 on success, Event on error'}
@@ -221,12 +221,12 @@ sub delete_lineitem {
 
 
 __PACKAGE__->register_method(
-	method => 'update_lineitem',
-	api_name	=> 'open-ils.acq.lineitem.update',
-	signature => {
-        desc => 'Update one or many lineitems',
+    method    => 'update_lineitem',
+    api_name  => 'open-ils.acq.lineitem.update',
+    signature => {
+        desc   => 'Update one or many lineitems',
         params => [
-            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Authentication token',   type => 'string'},
             {desc => 'lineitem object update', type => 'object'}
         ],
         return => {desc => '1 on success, Event on error'}
