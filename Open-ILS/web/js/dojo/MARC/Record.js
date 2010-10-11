@@ -57,7 +57,11 @@ if(!dojo._hasResource["MARC.Record"]) {
             return list;
         },
 
-        subfield : function (spec, code) { return this.field(spec)[0].subfield(code) },
+        subfield : function (spec, code) {
+            var f = this.field(spec);
+            if (dojo.isArray(f)) f = f[0];
+            return f.subfield(code)
+        },
 
         appendFields : function () {
             var me = this;
