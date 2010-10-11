@@ -174,6 +174,7 @@ sub set_ou_settings {
 
 __PACKAGE__->register_method(
     method   => "user_settings",
+    authoritative => 1,
     api_name => "open-ils.actor.patron.settings.retrieve",
 );
 sub user_settings {
