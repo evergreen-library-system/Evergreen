@@ -248,25 +248,23 @@ sub template_overlay_container {
 
     my $items = $e->search_container_biblio_record_entry_bucket_item({ bucket => $container });
 
+    my $titem;
     if (!$template) {
-        my $titem = $e->retrieve_biblio_record_entry(
-            map { $_->target_biblio_record_entry }
-            grep { $_->target_biblio_record_entry < 0 } @$items
-        );
-
+        ($titem) = grep { $_->target_biblio_record_entry < 0 } @$items;
         if (!$titem) {
             $e->rollback;
             return undef;
         }
+        $items = [grep { $_->target_biblio_record_entry > 0 } @$items];
 
-        $template = $titem->marc;
-        return $e->die_event unless ($e->delete_container_biblio_record_entry_bucket_item($titem));
+        $template = $e->retrieve_biblio_record_entry( $titem->target_biblio_record_entry )->marc;
     }
 
     my $responses = [];
+    my $some_failed = 0;
 
     $self->respond_complete(
-        $actor->request('open-ils.actor.anon_cache.set_value', $responses)->gather(1)
+        $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses)->gather(1)
     ) if ($actor);
 
     for my $item ( @$items ) {
@@ -280,36 +278,44 @@ sub template_overlay_container {
             )->[0]->{'vandelay.template_overlay_bib_record'};
         }
 
+        $some_failed++ if ($success eq 'f');
+
         if ($actor) {
             push @$responses, { record => $rec->id, success => $success };
-            $actor->request('open-ils.actor.anon_cache.set_value', $responses);
+            $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
         } else {
             $conn->respond({ record => $rec->id, success => $success });
         }
 
-        unless ($e->delete_container_biblio_record_entry_bucket_item($item)) {
-            $e->rollback;
-            if ($actor) {
-                push @$responses, { complete => 1, success => 'f' };
-                $actor->request('open-ils.actor.anon_cache.set_value', $responses);
-                return undef;
-            } else {
-                return { complete => 1, success => 'f' };
+        if ($success eq 't') {
+            unless ($e->delete_container_biblio_record_entry_bucket_item($item)) {
+                $e->rollback;
+                if ($actor) {
+                    push @$responses, { complete => 1, success => 'f' };
+                    $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
+                    return undef;
+                } else {
+                    return { complete => 1, success => 'f' };
+                }
             }
         }
+    }
+
+    if ($titem && !$some_failed) {
+        return $e->die_event unless ($e->delete_container_biblio_record_entry_bucket_item($titem));
     }
 
     if ($e->commit) {
         if ($actor) {
             push @$responses, { complete => 1, success => 't' };
-            $actor->request('open-ils.actor.anon_cache.set_value', $responses);
+            $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
         } else {
             return { complete => 1, success => 't' };
         }
     } else {
         if ($actor) {
             push @$responses, { complete => 1, success => 'f' };
-            $actor->request('open-ils.actor.anon_cache.set_value', $responses);
+            $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
         } else {
             return { complete => 1, success => 'f' };
         }

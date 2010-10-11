@@ -138,7 +138,10 @@ sub handler {
     # create the new container for the records and the template
     my $bucket = Fieldmapper::container::biblio_record_entry_bucket->new;
     $bucket->owner($usr->id);
-    $bucket->name('Temporary Merge Bucket');
+    $bucket->btype('template_merge');
+
+    my $bname = $cgi->param('bname') || 'Temporary Merge Bucket '. localtime() . ' ' . $usr->id;
+    $bucket->name($bname);
 
     $bucket = $e->request('open-ils.cstore.direct.container.biblio_record_entry_bucket.create', $bucket )->gather(1);
 
@@ -159,8 +162,8 @@ sub handler {
 
     # fire the background bucket processor
     my $cache_key = OpenSRF::AppSession
-        ->create('open-ils.actor')
-        ->request('open-ils.cat.container.template_overlay.background', $bucket->id)
+        ->create('open-ils.cat')
+        ->request('open-ils.cat.container.template_overlay.background', $authid, $bucket->id)
         ->gather(1);
 
     return show_processing_template($r, $bucket->id, \@records, $cache_key);
@@ -221,29 +224,29 @@ sub show_processing_template {
             dojo.require('fieldmapper.dojoData');
             dojo.require('openils.User');
             dojo.require('openils.CGI');
-            dojo.require('openils.widget.PogressDialog');
+            dojo.require('openils.widget.ProgressDialog');
 
             var cgi = new openils.CGI();
             var u = new openils.User({ authcookie : 'ses' });
 
-            var rec_count = $rec_string;
-            var cache_key = '$cache_key';
-
             dojo.addOnLoad(function () {
                 progress_dialog.show(true);
-                progress_dialog.update({maximum:rec_ids.length});
+                progress_dialog.update({maximum:$rec_string});
 
-                setInterval( function() {
+                var interval;
+                interval = setInterval( function() {
                     fieldmapper.standardRequest(
                         ['open-ils.actor','open-ils.actor.anon_cache.get_value'],
                         { async : false,
-                          params: [ cache_key ],
+                          params: [ u.authtoken, 'res_list' ],
+                          onerror : function (r) { progress_dialog.hide(); },
                           onresponse : function (r) {
                             var counter = { success : 0, fail : 0, total : 0 };
                             dojo.forEach( openils.Util.readResponse(r), function(x) {
                                 if (x.complete) {
+                                    clearInterval(interval);
                                     progress_dialog.hide();
-                                    if (x.success == 'f') dojo.byId('complete_msg').innerHTML = 'Overlay completed successfully';
+                                    if (x.success == 't') dojo.byId('complete_msg').innerHTML = 'Overlay completed successfully';
                                     else dojo.byId('complete_msg').innerHTML = 'Overlay did not complet successfully';
                                 } else {
                                     counter.total++;
@@ -487,34 +490,49 @@ sub show_template {
         <div dojoType="dijit.form.Form" id="myForm" jsId="myForm" encType="multipart/form-data" action="" method="POST">
                 <script type='dojo/method' event='onSubmit'>
                     var rec = ruleset_to_record();
+
+                    // no-op to force replace mode
+                    rec.appendFields(
+                        new MARC.Field ({
+                            tag : '905',
+                            ind1 : ' ',
+                            ind2 : ' ',
+                            subfields : [['r','901c']]
+                        })
+                    );
+
                     dojo.byId('template_value').value = rec.toXmlString();
                     return true;
                 </script>
 
             <input type='hidden' id='template_value' name='template'/>
 
-            <div>
-                <label for='bucketList'>Batch update records in Bucket:</label>
-                <div name='containerid' jsId='bucketList' dojoType='dijit.form.FilteringSelect' store='bucketStore' searchAttr='name' id='bucketList'>
-                    <script type='dojo/method' event='postCreate'>
-                        if (cgi.param('containerid')) this.attr('value',cgi.param('containerid'));
-                    </script>
-                </div>
-            </div>
-    
-            <div style='text-align: center; width: 50%;'>or</div>
-    
-            <div>
-                <label for='idfile'>Batch update records from column <input style='width:75px;' type='text' dojoType='dijit.form.NumberSpinner' name='idcolumn' value='0' constraints='{min:0,max:100,places:0}' /> (starting from 0) in CSV file:</label>
-                <input id='idfile' type="file" name="idfile"/>
-            </div>
-    
-            <div style='text-align: center; width: 50%;'>or</div>
-
-            <label for='recid'>Test Ruleset by applying to one record:</label> <input name='recid' style='width:75px;' type='text' dojoType='dijit.form.NumberTextBox' name='id' value='' constraints='{min:0}' />
-
-            <br/>
-            <br/>
+            <table>
+                <tr>
+                    <th>Optional merge queue name:</th>
+                    <td><input id='bucketName' type='text' dojoType='dijit.form.TextBox' name='bname' value=''/></td>
+                </tr>
+                <tr>
+                    <th>Batch update records in Bucket:</th>
+                    <td>
+                        <div name='containerid' jsId='bucketList' dojoType='dijit.form.FilteringSelect' store='bucketStore' searchAttr='name' id='bucketList'>
+                            <script type='dojo/method' event='postCreate'>
+                                if (cgi.param('containerid')) this.attr('value',cgi.param('containerid'));
+                            </script>
+                        </div>
+                    </td>
+                </tr>
+                <tr><th colspan='2'><div style='text-align: center;'>or</div></hd></tr>
+                <tr>
+                    <th>Batch update records from CSV file:</th>
+                    <td><input id='idfile' type="file" name="idfile"/><br/>Column <input style='width:75px;' type='text' dojoType='dijit.form.NumberSpinner' name='idcolumn' value='0' constraints='{min:0,max:100,places:0}' /> starting from 0</td>
+                </tr>
+                <tr><th colspan='2'><div style='text-align: center;'>or</div></th></tr>
+                <tr>
+                    <th>Test Ruleset by applying to one record:</th>
+                    <td><input name='recid' style='width:75px;' type='text' dojoType='dijit.form.NumberTextBox' name='id' value='' constraints='{min:0}' /></td>
+                </tr>
+            </table>
 
             <button type="submit" dojoType='dijit.form.Button'>Apply Ruleset</button>
 
@@ -541,10 +559,9 @@ sub show_template {
                         <th>Rule Type</th>
                         <td name='typeSelectContainer'>
                             <select name='typeSelect'>
+                                <option value='r'>Replace</option>
                                 <option value='a'>Add</option>
                                 <option value='d'>Delete</option>
-                                <option value='r'>Replace</option>
-                                <option value='p'>Preserve</option>
                             </select>
                         </td>
                     </tr>
