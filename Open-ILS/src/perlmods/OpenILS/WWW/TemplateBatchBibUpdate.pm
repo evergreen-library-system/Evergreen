@@ -325,7 +325,8 @@ sub show_template {
             @import '/js/dojo/dojo/resources/dojo.css';
             @import '/js/dojo/dijit/themes/tundra/tundra.css';
             .hide_me { display: none; visibility: hidden; }
-            th       { font-weight: bold; }
+            table.ruleTable th { padding: 5px; border-collapse: collapse; border-bottom: solid 1px gray; font-weight: bold; }
+            table.ruleTable td { padding: 5px; border-collapse: collapse; border-bottom: solid 1px gray; }
         </style>
 
         <script type="text/javascript">
@@ -599,8 +600,13 @@ sub show_template {
 
         <div class='hide_me' id='ruleTemplate'>
         <div name='ruleTable'>
-            <table>
+            <table class='ruleTable'>
                 <tbody>
+                    <tr>
+                        <th style="text-align:center;">Rule Setup</th>
+                        <th style="text-align:center;">Data</th>
+                        <th style="text-align:center;">Help</th>
+                    </tr>
                     <tr>
                         <th>Action (Rule Type)</th>
                         <td name='typeSelectContainer'>
@@ -610,11 +616,12 @@ sub show_template {
                                 <option value='d'>Delete</option>
                             </select>
                         </td>
-                        <td>Three characters, no spaces, no indicators, etc. eg: 245</td>
+                        <td>How to change the existing records</td>
                     </tr>
                     <tr>
                         <th>MARC Tag</th>
                         <td name='tagContainer'><input style='with: 2em;' name='tag' type='text'></input</td>
+                        <td>Three characters, no spaces, no indicators, etc. eg: 245</td>
                     </td>
                     <tr>
                         <th>Subfields (optional)</th>
@@ -627,7 +634,7 @@ sub show_template {
                         <td>MARC-Breaker formatted data with indicators and subfield delimiters, eg:<br/>245 04$aThe End</td>
                     </tr>
                     <tr>
-                        <th colspan='2' style='padding-top: 10px; text-align: center;'>Advanced Matching Restriction (Optional)</th>
+                        <th colspan='3' style='padding-top: 20px; text-align: center;'>Advanced Matching Restriction (Optional)</th>
                     </tr>
                     <tr>
                         <th>Subfield</th>
@@ -641,8 +648,7 @@ sub show_template {
                         </td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td>
+                        <td colspan='3' style='padding-top: 20px; text-align: center;'>
                             <button name='removeButton'>Remove this Template Rule</button>
                         </td>
                     </tr>
