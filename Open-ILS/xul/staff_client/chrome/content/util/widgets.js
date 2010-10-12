@@ -27,6 +27,7 @@ util.widgets.EXPORT_OK    = [
     'set_text',
     'save_attributes',
     'load_attributes',
+    'find_descendants_by_name'
 ];
 util.widgets.EXPORT_TAGS    = { ':all' : util.widgets.EXPORT_OK };
 
@@ -447,6 +448,12 @@ util.widgets.removeProperty = function(e, c) {
 		}
 	}
 	e.setAttribute('properties', prop_class_string);
+}
+
+util.widgets.find_descendants_by_name = function(top_node,name) {
+    top_node = util.widgets.get(top_node);
+    if (!top_node) { return []; }
+    return top_node.getElementsByAttribute('name',name);
 }
 
 dump('exiting util/widgets.js\n');

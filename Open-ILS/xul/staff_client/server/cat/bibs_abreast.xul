@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="main_bibs_abreast" 
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;
+    </script>
+    <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="bibs_abreast.js"/>
+
+    <hbox id="merge_bar" hidden="true">
+        <description>&staff.cat.record_buckets.merge_records.merge_lead;</description>
+        <button id="merge_button" disabled="true"
+            label="&staff.cat.record_buckets.merge_records.button.label;"
+            accesskey="&staff.cat.record_buckets.merge_records.button.accesskey;"
+        />
+        <button id="cancel_button" 
+            label="&staff.cat.record_buckets.merge_records.cancel_button.label;"
+            accesskey="&staff.cat.record_buckets.merge_records.cancel_button.accesskey;"
+        />
+    </hbox>
+    <hbox id="main" class="my_overflow" flex="1">
+        <vbox name="template" hidden="true" flex="1">
+            <hbox name="merge_bar" hidden="true">
+                <input name="lead_button" type="radio" xmlns="http://www.w3.org/1999/xhtml"></input>
+                &staff.cat.record_buckets.merge_records.lead;
+            </hbox>
+            <iframe name="bib_brief" flex="1" />
+            <hbox>
+                <radiogroup flex="0" orient="horizontal">
+                    <radio name="view_bib" label="View Bib" />
+                    <radio name="edit_bib" label="Edit Bib" />
+                    <radio name="holdings" label="Holdings" />
+                </radiogroup>
+                <spacer flex="1"/>
+                <button name="remove_me"
+                    image="/xul/server/skin/media/images/icon_delete.gif"
+                    label="&staff.cat.record_buckets.merge_records.remove_from_consideration;" />
+            </hbox>
+            <deck name="bib_deck" flex="3" />
+        </vbox>
+        <splitter name="template2" hidden="true"><grippy /></splitter>
+    </hbox>
+
+</window>
+

@@ -330,6 +330,13 @@
 <!ENTITY staff.cat.popup.edit.record.window.key "">
 <!ENTITY staff.cat.popup.edit_record.tab "Edit Record (Tab)">
 <!ENTITY staff.cat.popup.edit_record.window "Edit Record (Window)">
+<!ENTITY staff.cat.record_buckets.merge_records.merge_lead "Merge these records? (Select the 'lead' record first)">
+<!ENTITY staff.cat.record_buckets.merge_records.button.label "Merge">
+<!ENTITY staff.cat.record_buckets.merge_records.button.accesskey "M">
+<!ENTITY staff.cat.record_buckets.merge_records.cancel_button.label "Cancel">
+<!ENTITY staff.cat.record_buckets.merge_records.cancel_button.accesskey "C">
+<!ENTITY staff.cat.record_buckets.merge_records.lead "Lead Record?">
+<!ENTITY staff.cat.record_buckets.merge_records.remove_from_consideration "Remove from consideration?">
 <!ENTITY staff.cat.search_advanced "Advanced">
 <!ENTITY staff.cat.search_advanced.key "V">
 <!ENTITY staff.cat.search_all "Keyword">

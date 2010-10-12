@@ -653,75 +653,24 @@ cat.record_buckets.prototype = {
                                     }
                                 );
 
-                                netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
-                                var top_xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" >';
-                                top_xml += '<description>' + $("catStrings").getString('staff.cat.record_buckets.merge_records.merge_lead') + '</description>';
-                                top_xml += '<hbox>';
-                                top_xml += '<button id="lead" disabled="true" label="'
-                                        + $("catStrings").getString('staff.cat.record_buckets.merge_records.button.label') + '" name="fancy_submit"/>';
-                                top_xml += '<button label="' + $("catStrings").getString('staff.cat.record_buckets.merge_records.cancel_button.label') +'" accesskey="'
-                                        + $("catStrings").getString('staff.cat.record_buckets.merge_records.cancel_button.accesskey') +'" name="fancy_cancel"/></hbox></vbox>';
-
-                                var xml = '<form xmlns="http://www.w3.org/1999/xhtml">';
-                                xml += '<table><tr valign="top">';
-                                for (var i = 0; i < record_ids.length; i++) {
-                                    xml += '<td><input value="' + $("catStrings").getString('staff.cat.record_buckets.merge_records.lead')
-                                    xml += '" id="record_' + record_ids[i] + '" type="radio" name="lead"';
-                                    xml += ' onclick="' + "try { var x = $('lead'); x.setAttribute('value',";
-                                    xml += record_ids[i] + '); x.disabled = false; } catch(E) { alert(E); }">';
-                                    xml += '</input>' + $("catStrings").getFormattedString('staff.cat.record_buckets.merge_records.lead_record_number',[record_ids[i]]) + '</td>';
-                                }
-                                xml += '</tr><tr valign="top">';
-                                for (var i = 0; i < record_ids.length; i++) {
-                                    xml += '<td nowrap="nowrap"><iframe src="' + urls.XUL_BIB_BRIEF; 
-                                    xml += '?docid=' + record_ids[i] + '"/></td>';
-                                }
-                                xml += '</tr><tr valign="top">';
-                                for (var i = 0; i < record_ids.length; i++) {
-                                    xml += '<td nowrap="nowrap"><iframe style="min-height: 1000px; min-width: 300px;" flex="1" src="' + urls.XUL_MARC_VIEW + '?docid=' + record_ids[i] + ' "/></td>';
-                                }
-                                xml += '</tr></table></form>';
-                                //obj.data.temp_merge_top = top_xml; obj.data.stash('temp_merge_top');
-                                //obj.data.temp_merge_mid = xml; obj.data.stash('temp_merge_mid');
-                                JSAN.use('util.window'); var win = new util.window();
-                                var fancy_prompt_data = win.open(
-                                    urls.XUL_FANCY_PROMPT,
-                                    //+ '?xml_in_stash=temp_merge_mid'
-                                    //+ '&top_xml_in_stash=temp_merge_top'
-                                    //+ '&title=' + window.escape('Record Merging'),
-                                    'fancy_prompt', 'chrome,resizable,modal,width=700,height=500',
-                                    {
-                                        'top_xml' : top_xml, 'xml' : xml, 'title' : $("catStrings").getString('staff.cat.record_buckets.merge_records.fancy_prompt_title')
+                                xulG.new_tab(
+                                    '/xul/server/cat/bibs_abreast.xul',{
+                                        'tab_name' : $("catStrings").getString('staff.cat.record_buckets.merge_records.fancy_prompt_title')
+                                    },{
+                                        'merge' : true,
+                                        'on_merge' : function() {
+                                            obj.render_pending_records(); // FIXME -- need a generic refresh for lists
+                                            setTimeout(
+                                                function() {
+                                                    JSAN.use('util.widgets'); 
+                                                    util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
+                                                }, 0
+                                            );
+                                        },
+                                        'record_ids':record_ids
                                     }
                                 );
-                                //obj.data.stash_retrieve();
 
-                                if (typeof fancy_prompt_data.fancy_status == 'undefined' || fancy_prompt_data.fancy_status == 'incomplete') {
-                                    alert($("catStrings").getString('staff.cat.record_buckets.merge_records.fancy_prompt.alert'));
-                                    return;
-                                }
-                                var robj = obj.network.simple_request('MERGE_RECORDS', 
-                                    [ 
-                                        ses(), 
-                                        fancy_prompt_data.lead, 
-                                        util.functional.filter_list( record_ids,
-                                            function(o) {
-                                                return o != fancy_prompt_data.lead;
-                                            }
-                                        )
-                                    ]
-                                );
-                                if (typeof robj.ilsevent != 'undefined') {
-                                    throw(robj);
-                                }
-
-                                obj.render_pending_records(); // FIXME -- need a generic refresh for lists
-                                setTimeout(
-                                    function() {
-                                        JSAN.use('util.widgets'); 
-                                        util.widgets.dispatch('change_bucket',obj.controller.view.bucket_menulist);
-                                    }, 0
-                                );
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.record_buckets.merge_records.catch.std_unex_error'),E);
                             }
