@@ -81,6 +81,10 @@
                     document.getElementById('browser_print').hidden = false;
                 }
 
+                if (xul_param('show_toolbar')) {
+                    document.getElementById('browser_toolbar').hidden = xul_param('show_toolbar');
+                }
+
                 if (xul_param('title')) {
                     try { document.title = xul_param('title'); } catch(E) {}
                     try { window.title = xul_param('title'); } catch(E) {}
@@ -124,7 +128,7 @@
     </popupset>
 
     <vbox flex="1">
-        <hbox>
+        <hbox id="browser_toolbar">
             <button id="back" command="cmd_back" disabled="true" hidden="true"/>
             <button id="reload" command="cmd_reload" disabled="false" hidden="false"/>
             <button id="forward" command="cmd_forward" disabled="true" hidden="true"/>
