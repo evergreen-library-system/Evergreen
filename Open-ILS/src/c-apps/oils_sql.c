@@ -4788,23 +4788,10 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 			return NULL;
 		}
 
-		const ClassInfo* order_class_info = search_alias( class_alias );
-		if( ! order_class_info ) {
-			osrfLogWarn( OSRF_LOG_MARK, "%s: ORDER BY clause references class \"%s\" "
-				"not in FROM clause, skipping it", modulename, class_alias );
-			continue;
-		}
-
 		const char* class_alias =
 			jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "class" ));
 		const char* field =
 			jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "field" ));
-
-		// Add a separating comma, except at the beginning
-		if( first )
-			first = 0;
-		else
-			OSRF_BUFFER_ADD( order_buf, ", " );
 
 		if( !field || !class_alias ) {
 			osrfLogError( OSRF_LOG_MARK,
@@ -4821,6 +4808,19 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 			buffer_free( order_buf );
 			return NULL;
 		}
+
+		const ClassInfo* order_class_info = search_alias( class_alias );
+		if( ! order_class_info ) {
+			osrfLogWarn( OSRF_LOG_MARK, "%s: ORDER BY clause references class \"%s\" "
+				"not in FROM clause, skipping it", modulename, class_alias );
+			continue;
+		}
+
+		// Add a separating comma, except at the beginning
+		if( first )
+			first = 0;
+		else
+			OSRF_BUFFER_ADD( order_buf, ", " );
 
 		osrfHash* field_def = osrfHashGet( order_class_info->fields, field );
 		if( !field_def ) {
