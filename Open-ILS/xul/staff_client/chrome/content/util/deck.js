@@ -1,19 +1,19 @@
 dump('entering util/deck.js\n');
 
 if (typeof util == 'undefined') util = {};
-util.deck = function (id) {
+util.deck = function (id_or_node) {
 
-    this.node = document.getElementById(id);
+    this.node = typeof id_or_node == 'object' ? id_or_node : document.getElementById(id_or_node);
 
     JSAN.use('util.error'); this.error = new util.error();
 
     if (!this.node) {
-        var error = 'util.deck: Could not find element ' + id;
+        var error = 'util.deck: Could not find element ' + id_or_node;
         this.error.sdump('D_ERROR',error);
         throw(error);
     }
     if (this.node.nodeName != 'deck') {
-        var error = 'util.deck: ' + id + 'is not a deck' + "\nIt's a " + this.node.nodeName;
+        var error = 'util.deck: ' + id_or_node + 'is not a deck' + "\nIt's a " + this.node.nodeName;
         this.error.sdump('D_ERROR',error);
         throw(error);
     }
