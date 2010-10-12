@@ -58,10 +58,11 @@ The purpose of this script is to consolidate a lot of the annoying
 and error-prone tasks associated with an upgrade for a developer.
 
 Considerations:
- * Run as opensrf.  
+ * Run as opensrf user
  * opensrf needs sudo 
- * Assumes opensrf has a configured (as in ./configure) both ILS and 
-   OpenSRF as svn or git-svn checkouts
+ * Assumes opensrf has OpenILS and OpenSRF repositories as svn or git-svn 
+   checkouts and both have been configured (as in ./configure) 
+  
 END_OF_USAGE
 }
 
@@ -98,6 +99,7 @@ BASE=~      # default to $HOME (~ doesn't like :- syntax for whatever reason)
 OSRF=${OPT_OSRFDIR:-$BASE/OpenSRF/trunk};
 ILS=${OPT_EGDIR:-$(pwd)};
 XUL="$INSTALL/var/web/xul";
+JSDIR="$INSTALL/lib/javascript";    # only used for FULL install
 
 # ----------------------------------
 # TEST and SANITY CHECK
@@ -150,6 +152,10 @@ if [ -n "$OPT_FULL"  ]; then
     cd $OSRF && make;
     cd $ILS  && make;
     cd $OSRF && sudo make install;
+    if [ -d "$JSDIR" ]; then
+        echo "Copying OpenSRF javascript files into $JSDIR";
+        cp ./src/javascript/* $JSDIR;
+    fi
 fi
 sudo chown -R opensrf:opensrf $INSTALL
 
