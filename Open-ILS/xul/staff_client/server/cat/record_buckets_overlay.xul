@@ -44,6 +44,10 @@
     <command id="cmd_add_sel_pending_to_record_bucket" />
 
     <command id="cmd_merge_records" disabled="true" />
+    <command id="cmd_marc_batch_edit"
+        label="&staff.cat.record_buckets_overlay.marc_batch_edit.label;" 
+        accesskey="&staff.cat.record_buckets_overlay.marc_batch_edit.accesskey;" 
+        disabled="true" />
     <command id="cmd_transfer_title_holds" 
         label="&staff.cat.record_buckets_overlay.transfer_title_holds.label;" 
         accesskey="&staff.cat.record_buckets_overlay.transfer_title_holds.accesskey;" 
@@ -216,6 +220,7 @@
         <button command="cmd_transfer_title_holds" />
         <button command="cmd_delete_records" label="&staff.cat.record_buckets_overlay.del_records.label;"/>
         <button command="cmd_merge_records" label="&staff.cat.record_buckets_overlay.merge_records.label;"/>
+        <button command="cmd_marc_batch_edit" />
         <button id="record_buckets_export_records" label="&staff.cat.record_buckets_overlay.export_records.label;" type="menu" allowevents="true" disabled="true">
             <menupopup id="record_buckets_export_record_types" allowevents="true">
                 <menuitem command="cmd_export_records_usmarc" label="&staff.cat.record_buckets_overlay.menuitem.export_usmarc.label;"/>

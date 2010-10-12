@@ -353,6 +353,7 @@ var urls = {
     'xsl_marc2html' : '/opac/extras/xsl/oilsMARC21slim2HTML.xsl',
     'ac_jacket_small' : '/opac/extras/ac/jacket/small/',
     'ac_jacket_large' : '/opac/extras/ac/jacket/large/',
+    'MARC_BATCH_EDIT' : '/opac/extras/merge_template/',
 
     'AUDIO_good' : '/xul/server/skin/media/audio/bonus.wav',
     'AUDIO_bad' : '/xul/server/skin/media/audio/question.wav',

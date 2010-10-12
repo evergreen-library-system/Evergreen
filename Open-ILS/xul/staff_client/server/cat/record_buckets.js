@@ -342,6 +342,7 @@ cat.record_buckets.prototype = {
                                     obj.controller.view.cmd_delete_records.setAttribute('disabled','true');
                                     obj.controller.view.cmd_sel_opac.setAttribute('disabled','true');
                                     obj.controller.view.cmd_transfer_title_holds.setAttribute('disabled','true');
+                                    obj.controller.view.cmd_marc_batch_edit.setAttribute('disabled','true');
                                     obj.controller.view.record_buckets_list_actions.disabled = true;
                                     var bucket = obj.network.simple_request(
                                         'BUCKET_FLESH',
@@ -363,6 +364,7 @@ cat.record_buckets.prototype = {
                                         obj.controller.view.cmd_delete_records.setAttribute('disabled','false');
                                         obj.controller.view.cmd_sel_opac.setAttribute('disabled','false');
                                         obj.controller.view.cmd_transfer_title_holds.setAttribute('disabled','false');
+                                        obj.controller.view.cmd_marc_batch_edit.setAttribute('disabled','false');
                                         obj.controller.view.record_buckets_list_actions.disabled = false;
 
                                         var x = document.getElementById('info_box');
@@ -553,6 +555,7 @@ cat.record_buckets.prototype = {
                                 obj.controller.view.cmd_delete_records.setAttribute('disabled','true');
                                 obj.controller.view.cmd_sel_opac.setAttribute('disabled','true');
                                 obj.controller.view.cmd_transfer_title_holds.setAttribute('disabled','true');
+                                obj.controller.view.cmd_marc_batch_edit.setAttribute('disabled','true');
                                 obj.controller.view.record_buckets_list_actions.disabled = true;
                                 obj.controller.render('record_buckets_menulist_placeholder');
                                 setTimeout(
@@ -795,6 +798,25 @@ cat.record_buckets.prototype = {
                                 }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.record_buckets.cmd_sel_opac.catch.std_unex_err'),E);
+                            }
+                        }
+                    ],
+                    'cmd_marc_batch_edit' : [
+                        ['command'],
+                        function() {
+                            try {
+                                var bucket_id = obj.controller.view.bucket_menulist.value;
+                                if (!bucket_id) return;
+                                obj.list2.select_all();
+                                xulG.new_tab(
+                                    urls.MARC_BATCH_EDIT + '?containerid='+bucket_id+'&recordSource=b', 
+                                    {
+                                        'tab_name' : $('offlineStrings').getString('menu.cmd_marc_batch_edit.tab')
+                                    },
+                                    {}
+                                );
+                            } catch(E) {
+                                alert('Error in record_buckets.js, cmd_marc_batch_edit: ' + E);
                             }
                         }
                     ],

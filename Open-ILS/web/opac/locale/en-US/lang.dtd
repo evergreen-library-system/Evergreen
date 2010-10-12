@@ -842,6 +842,8 @@
 <!ENTITY staff.main.menu.cat.edit_user_buckets.label "Manage User Buckets">
 <!ENTITY staff.main.menu.cat.key "a">
 <!ENTITY staff.main.menu.cat.label "Cataloging">
+<!ENTITY staff.main.menu.cat.marc_batch_edit.label "MARC Batch Edit">
+<!ENTITY staff.main.menu.cat.marc_batch_edit.accesskey "E">
 <!ENTITY staff.main.menu.cat.retrieve_last_record.accesskey "L">
 <!ENTITY staff.main.menu.cat.retrieve_last_record.label "Retrieve Last Record">
 <!ENTITY staff.main.menu.cat.search_tcn.accesskey "T">
@@ -2654,7 +2656,9 @@
 <!ENTITY staff.cat.record_buckets_overlay.box.label "Batch:">
 <!ENTITY staff.cat.record_buckets_overlay.sel_opac.label "Show All in Catalog">
 <!ENTITY staff.cat.record_buckets_overlay.transfer_title_holds.label "Transfer Title Holds">
-<!ENTITY staff.cat.record_buckets_overlay.transfer_title_holds.accesskey "Transfer Title Holds">
+<!ENTITY staff.cat.record_buckets_overlay.transfer_title_holds.accesskey "T">
+<!ENTITY staff.cat.record_buckets_overlay.marc_batch_edit.label "MARC Batch Edit">
+<!ENTITY staff.cat.record_buckets_overlay.marc_batch_edit.accesskey "">
 <!ENTITY staff.cat.record_buckets_overlay.del_records.label "Delete All Records">
 <!ENTITY staff.cat.record_buckets_overlay.merge_records.label "Merge All Records">
 <!ENTITY staff.cat.record_buckets_overlay.export_records.label "Export All Records">
