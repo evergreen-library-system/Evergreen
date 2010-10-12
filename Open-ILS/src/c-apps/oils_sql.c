@@ -4416,26 +4416,10 @@ char* SELECT (
 
 				ClassInfo* order_class_info = search_alias( class_itr->key );
 				if( ! order_class_info ) {
-					osrfLogError( OSRF_LOG_MARK,
-						"%s: Invalid class \"%s\" referenced in ORDER BY clause",
+					osrfLogWarn( OSRF_LOG_MARK,
+						"%s: Invalid class \"%s\" referenced in ORDER BY clause, skipping it",
 						modulename, class_itr->key );
-					if( ctx )
-						osrfAppSessionStatus(
-							ctx->session,
-							OSRF_STATUS_INTERNALSERVERERROR,
-							"osrfMethodException",
-							ctx->request,
-							"Invalid class referenced in ORDER BY clause -- "
-							"see error log for more details"
-						);
-					jsonIteratorFree( class_itr );
-					buffer_free( order_buf );
-					free( having_buf );
-					buffer_free( group_buf );
-					buffer_free( sql_buf );
-					if( defaultselhash )
-						jsonObjectFree( defaultselhash );
-					return NULL;
+					continue;
 				}
 
 				osrfHash* field_list_def = order_class_info->fields;
@@ -4804,6 +4788,13 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 			return NULL;
 		}
 
+		const ClassInfo* order_class_info = search_alias( class_alias );
+		if( ! order_class_info ) {
+			osrfLogWarn( OSRF_LOG_MARK, "%s: ORDER BY clause references class \"%s\" "
+				"not in FROM clause, skipping it", modulename, class_alias );
+			continue;
+		}
+
 		const char* class_alias =
 			jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "class" ));
 		const char* field =
@@ -4828,22 +4819,6 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 					"Malformed ORDER BY clause -- see error log for more details"
 				);
 			buffer_free( order_buf );
-			return NULL;
-		}
-
-		const ClassInfo* order_class_info = search_alias( class_alias );
-		if( ! order_class_info ) {
-			osrfLogError( OSRF_LOG_MARK, "%s: ORDER BY clause references class \"%s\" "
-				"not in FROM clause", modulename, class_alias );
-			if( ctx )
-				osrfAppSessionStatus(
-					ctx->session,
-					OSRF_STATUS_INTERNALSERVERERROR,
-					"osrfMethodException",
-					ctx->request,
-					"Invalid class referenced in ORDER BY clause -- see error log for more details"
-				);
-			free( order_buf );
 			return NULL;
 		}
 
