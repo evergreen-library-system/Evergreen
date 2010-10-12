@@ -325,7 +325,8 @@ sub show_template {
             @import '/js/dojo/dojo/resources/dojo.css';
             @import '/js/dojo/dijit/themes/tundra/tundra.css';
             .hide_me { display: none; visibility: hidden; }
-            th       { font-weight: bold; }
+            table.ruleTable th { padding: 5px; border-collapse: collapse; border-bottom: solid 1px gray; font-weight: bold; }
+            table.ruleTable td { padding: 5px; border-collapse: collapse; border-bottom: solid 1px gray; }
         </style>
 
         <script type="text/javascript">
@@ -563,18 +564,19 @@ sub show_template {
                 </tr>
                 <tr class='hide_me' id='csvContainer'>
                     <td>
-                        Column <input style='width:75px;' type='text' dojoType='dijit.form.NumberSpinner' name='idcolumn' value='0' constraints='{min:0,max:100,places:0}' /> (starting from 0) of: 
+                        Column <input style='width:75px;' type='text' dojoType='dijit.form.NumberSpinner' name='idcolumn' value='0' constraints='{min:0,max:100,places:0}' /> of: 
                         <input id='idfile' type="file" name="idfile"/>
+                        <br/>
+                        <br/>
+                        Columns are numbered starting at 0.  For instance, when looking at a CSV file in Excel, the column labeled A is the same as column 0, and the column labeled B is the same as column 1.
                     </td>
                 </tr>
                 <tr class='hide_me' id='recordContainer'>
-                    <td>Record ID:
-                        <input name='recid' style='width:75px;' type='text' dojoType='dijit.form.NumberTextBox' name='id' value='' constraints='{min:0}'></input>
-                    </td>
+                    <td>Record ID: <input dojoType='dijit.form.TextBox' name='recid' style='width:75px;' type='text' value=''/></td>
                 </tr>
             </table>
 
-            <button type="submit" dojoType='dijit.form.Button'>Apply Ruleset</button>
+            <button type="submit" dojoType='dijit.form.Button'>GO!</button> (After setting up your template below.)
 
             <br/>
             <br/>
@@ -596,10 +598,15 @@ sub show_template {
 
         <div class='hide_me' id='ruleTemplate'>
         <div name='ruleTable'>
-            <table>
+            <table class='ruleTable'>
                 <tbody>
                     <tr>
-                        <th>Rule Type</th>
+                        <th style="text-align:center;">Rule Setup</th>
+                        <th style="text-align:center;">Data</th>
+                        <th style="text-align:center;">Help</th>
+                    </tr>
+                    <tr>
+                        <th>Action (Rule Type)</th>
                         <td name='typeSelectContainer'>
                             <select name='typeSelect'>
                                 <option value='r'>Replace</option>
@@ -607,10 +614,12 @@ sub show_template {
                                 <option value='d'>Delete</option>
                             </select>
                         </td>
+                        <td>How to change the existing records</td>
                     </tr>
                     <tr>
                         <th>MARC Tag</th>
                         <td name='tagContainer'><input style='with: 2em;' name='tag' type='text'></input</td>
+                        <td>Three characters, no spaces, no indicators, etc. eg: 245</td>
                     </td>
                     <tr>
                         <th>Subfields (optional)</th>
@@ -620,23 +629,25 @@ sub show_template {
                     <tr>
                         <th>MARC Data</th>
                         <td name='marcDataContainer'><input name='marcData' type='text'/></td>
+                        <td>MARC-Breaker formatted data with indicators and subfield delimiters, eg:<br/>245 04$aThe End</td>
                     </tr>
                     <tr>
-                        <th colspan='2' style='padding-top: 10px; text-align: center;'>Optionally Restrict By</th>
+                        <th colspan='3' style='padding-top: 20px; text-align: center;'>Advanced Matching Restriction (Optional)</th>
                     </tr>
                     <tr>
                         <th>Subfield</th>
                         <td name='matchSFContainer'><input style='with: 2em;' name='matchSF' type='text'></input</td>
-                    </td>
+                        <td>A single subfield code, no delimiters, eg: a</td>
                     <tr>
                         <th>Regular Expression</th>
                         <td name='matchREContainer'><input name='matchRE' type='text'/></td>
+                        <td>See <a href="http://perldoc.perl.org/perlre.html#Regular-Expressions" target="_blank">the Perl documentation</a>
+                            for an explanation of Regular Expressions.
+                        </td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td>
-                            <button name='removeButton'>Remove Merge Rule
-                            </button>
+                        <td colspan='3' style='padding-top: 20px; text-align: center;'>
+                            <button name='removeButton'>Remove this Template Rule</button>
                         </td>
                     </tr>
                 </tbody>
