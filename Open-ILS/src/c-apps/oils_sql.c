@@ -4416,7 +4416,7 @@ char* SELECT (
 
 				ClassInfo* order_class_info = search_alias( class_itr->key );
 				if( ! order_class_info ) {
-					osrfLogWarn( OSRF_LOG_MARK,
+					osrfLogWarning( OSRF_LOG_MARK,
 						"%s: Invalid class \"%s\" referenced in ORDER BY clause, skipping it",
 						modulename, class_itr->key );
 					continue;
@@ -4811,7 +4811,7 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 
 		const ClassInfo* order_class_info = search_alias( class_alias );
 		if( ! order_class_info ) {
-			osrfLogWarn( OSRF_LOG_MARK, "%s: ORDER BY clause references class \"%s\" "
+			osrfLogWarning( OSRF_LOG_MARK, "%s: ORDER BY clause references class \"%s\" "
 				"not in FROM clause, skipping it", modulename, class_alias );
 			continue;
 		}
