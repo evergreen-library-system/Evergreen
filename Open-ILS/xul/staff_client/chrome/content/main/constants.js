@@ -364,6 +364,7 @@ var urls = {
     'AUTHORITY_MANAGE' : '/eg/cat/authority/list',
     'XUL_AUTH_SIMPLE' : '/xul/server/main/simple_auth.xul',
     'XUL_BIB_BRIEF' : '/xul/server/cat/bib_brief.xul',
+    'XUL_BIB_BRIEF_VERTICAL' : '/xul/server/cat/bib_brief_vertical.xul',
     'XUL_BROWSER' : 'chrome://open_ils_staff_client/content/util/browser.xul',
     'XUL_CHECKIN' : '/xul/server/circ/checkin.xul',
     'XUL_BACKDATE' : '/xul/server/circ/backdate_post_checkin.xul',
