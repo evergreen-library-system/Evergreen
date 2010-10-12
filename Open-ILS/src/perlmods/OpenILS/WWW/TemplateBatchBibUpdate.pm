@@ -572,13 +572,11 @@ sub show_template {
                     </td>
                 </tr>
                 <tr class='hide_me' id='recordContainer'>
-                    <td>Record ID:
-                        <input name='recid' style='width:75px;' type='text' dojoType='dijit.form.NumberTextBox' name='id' value='' constraints='{min:0}'></input>
-                    </td>
+                    <td>Record ID: <input dojoType='dijit.form.TextBox' name='recid' style='width:75px;' type='text' value=''/></td>
                 </tr>
             </table>
 
-            <button type="submit" dojoType='dijit.form.Button'>Apply Ruleset</button>
+            <button type="submit" dojoType='dijit.form.Button'>GO!</button> (After setting up your template below.)
 
             <br/>
             <br/>
