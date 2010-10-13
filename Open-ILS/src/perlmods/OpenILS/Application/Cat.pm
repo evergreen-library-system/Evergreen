@@ -280,7 +280,7 @@ sub template_overlay_container {
         next unless $rec;
 
         my $success = 'f';
-        if ($e->allowed('UPDATE_RECORD', $rec->owner, $rec)) {
+        if ($e->allowed('UPDATE_RECORD')) {
             $success = $e->json_query(
                 { from => [ 'vandelay.template_overlay_bib_record', $template, $rec->id ] }
             )->[0]->{'vandelay.template_overlay_bib_record'};
