@@ -294,7 +294,6 @@ $_$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.template_overlay_bib_record ( v_marc TEXT, eg_id BIGINT ) RETURNS BOOL AS $$
 DECLARE
-    merge_profile   vandelay.merge_profile%ROWTYPE;
     dyn_profile     vandelay.compile_profile%ROWTYPE;
     editor_string   TEXT;
     editor_id       INT;
