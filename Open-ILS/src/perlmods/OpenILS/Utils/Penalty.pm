@@ -26,41 +26,53 @@ sub calculate_penalties {
     my $penalties = $e->json_query({from => ['actor.calculate_system_penalties',$user_id, $context_org]});
 
     my $user = $e->retrieve_actor_user( $user_id );
-    my $ses = OpenSRF::AppSession->create('open-ils.trigger') if (@$penalties);
+    my @existing_penalties = grep { defined $_->{id} } @$penalties;
+    my @wanted_penalties = grep { !defined $_->{id} } @$penalties;
+    my @trigger_events;
 
     my %csp;
-    for my $pen_obj (@$penalties) {
-
-        next if grep { # leave duplicate penalties in place
-            $_->{org_unit} == $pen_obj->{org_unit} and
-            $_->{standing_penalty} == $pen_obj->{standing_penalty} and
-            ($_->{id} || '') ne ($pen_obj->{id} || '') } @$penalties;
+    for my $pen_obj (@wanted_penalties) {
 
         my $pen = Fieldmapper::actor::user_standing_penalty->new;
         $pen->$_($pen_obj->{$_}) for keys %$pen_obj;
 
-        if(defined $pen_obj->{id}) {
-            $e->delete_actor_user_standing_penalty($pen) or return $e->die_event;
+        # let's see if this penalty is accounted for already
+        my ($existing) = grep { 
+                $_->{org_unit} == $pen_obj->{org_unit} and
+                $_->{standing_penalty} == $pen_obj->{standing_penalty}
+            } @existing_penalties;
+
+        if($existing) { 
+            # we have one of these already.  Leave it be, but remove it from the 
+            # existing set so it's not deleted in the subsequent loop
+            @existing_penalties = grep { $_->{id} ne $existing->{id} }  @existing_penalties;
 
         } else {
+
+            # this is a new penalty
             $e->create_actor_user_standing_penalty($pen) or return $e->die_event;
 
-            my $csp_obj = $csp{$pen->standing_penalty} ||
+            my $csp_obj = $csp{$pen->standing_penalty} || 
                 $e->retrieve_config_standing_penalty( $pen->standing_penalty );
 
             # cache for later
             $csp{$pen->standing_penalty} = $csp_obj;
 
-            $ses->request(
-                'open-ils.trigger.event.autocreate',
-                'penalty.' . $csp_obj->name,
-                $pen,
-                $pen->org_unit
-            );
+            push(@trigger_events, ['penalty.' . $csp_obj->name, $pen, $pen->org_unit]);
         }
     }
 
+    # at this point, any penalties remaining in the existing 
+    # penalty set are unaccounted for and should be removed
+    for my $pen_obj (@existing_penalties) {
+        my $pen = Fieldmapper::actor::user_standing_penalty->new;
+        $pen->$_($pen_obj->{$_}) for keys %$pen_obj;
+        $e->delete_actor_user_standing_penalty($pen) or return $e->die_event;
+    }
+
     $e->commit if $commit;
+
+    $U->create_events_for_hook($$_[0], $$_[1], $$_[2]) for @trigger_events;
     return undef;
 }
 
