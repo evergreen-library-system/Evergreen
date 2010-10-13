@@ -802,6 +802,18 @@ main.menu.prototype = {
                 }
             ],
 
+            'cmd_marc_batch_edit' : [
+                ['oncommand'],
+                function() {
+                    obj.set_tab(
+                        obj.url_prefix(urls.MARC_BATCH_EDIT),{
+                            'tab_name' : offlineStrings.getString('menu.cmd_marc_batch_edit.tab')
+                        },
+                        {}
+                    );
+                }
+            ],
+
             /* Admin menu */
             'cmd_change_session' : [
                 ['oncommand'],

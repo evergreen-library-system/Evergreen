@@ -121,6 +121,10 @@
         <command id="cmd_add_sel_pending_to_record_bucket" />
 
         <command id="cmd_merge_records" disabled="true" />
+        <command id="cmd_marc_batch_edit"
+            label="&staff.cat.record_buckets_overlay.marc_batch_edit.label;" 
+            accesskey="&staff.cat.record_buckets_overlay.marc_batch_edit.accesskey;" 
+            disabled="true" />
         <command id="cmd_export_records_usmarc" />
         <command id="cmd_export_records_unimarc" />
         <command id="cmd_export_records_xml" />

@@ -168,6 +168,7 @@
         <button command="cmd_sel_opac" label="&staff.cat.record_buckets_overlay.sel_opac.label;" accesskey=""/>
         <button command="cmd_delete_records" label="&staff.cat.record_buckets_overlay.del_records.label;"/>
         <button command="cmd_merge_records" label="&staff.cat.record_buckets_overlay.merge_records.label;"/>
+        <button command="cmd_marc_batch_edit" />
         <button id="record_buckets_export_records" label="&staff.cat.record_buckets_overlay.export_records.label;" type="menu" allowevents="true" disabled="true">
             <menupopup id="record_buckets_export_record_types" allowevents="true">
                 <menuitem command="cmd_export_records_usmarc" label="&staff.cat.record_buckets_overlay.menuitem.export_usmarc.label;"/>

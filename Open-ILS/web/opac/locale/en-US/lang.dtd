@@ -292,6 +292,13 @@
 <!ENTITY staff.cat.popup.edit.record.window.key "">
 <!ENTITY staff.cat.popup.edit_record.tab "Edit Record (Tab)">
 <!ENTITY staff.cat.popup.edit_record.window "Edit Record (Window)">
+<!ENTITY staff.cat.record_buckets.merge_records.merge_lead "Merge these records? (Select the 'lead' record first)">
+<!ENTITY staff.cat.record_buckets.merge_records.button.label "Merge">
+<!ENTITY staff.cat.record_buckets.merge_records.button.accesskey "M">
+<!ENTITY staff.cat.record_buckets.merge_records.cancel_button.label "Cancel">
+<!ENTITY staff.cat.record_buckets.merge_records.cancel_button.accesskey "C">
+<!ENTITY staff.cat.record_buckets.merge_records.lead "Lead Record?">
+<!ENTITY staff.cat.record_buckets.merge_records.remove_from_consideration "Remove from consideration?">
 <!ENTITY staff.cat.search_advanced "Advanced">
 <!ENTITY staff.cat.search_advanced.key "V">
 <!ENTITY staff.cat.search_all "Keyword">
@@ -713,6 +720,8 @@
 <!ENTITY staff.main.menu.cat.edit_user_buckets.label "Manage User Buckets">
 <!ENTITY staff.main.menu.cat.key "a">
 <!ENTITY staff.main.menu.cat.label "Cataloging">
+<!ENTITY staff.main.menu.cat.marc_batch_edit.label "MARC Batch Edit">
+<!ENTITY staff.main.menu.cat.marc_batch_edit.accesskey "E">
 <!ENTITY staff.main.menu.cat.retrieve_last_record.accesskey "L">
 <!ENTITY staff.main.menu.cat.retrieve_last_record.label "Retrieve Last Record">
 <!ENTITY staff.main.menu.cat.search_tcn.accesskey "T">
@@ -2250,6 +2259,8 @@
 <!ENTITY staff.cat.record_buckets_overlay.menuitem.save_columns2.label "Save List Configuration">
 <!ENTITY staff.cat.record_buckets_overlay.box.label "Batch:">
 <!ENTITY staff.cat.record_buckets_overlay.sel_opac.label "Show All in Catalog">
+<!ENTITY staff.cat.record_buckets_overlay.marc_batch_edit.label "MARC Batch Edit">
+<!ENTITY staff.cat.record_buckets_overlay.marc_batch_edit.accesskey "">
 <!ENTITY staff.cat.record_buckets_overlay.del_records.label "Delete All Records">
 <!ENTITY staff.cat.record_buckets_overlay.merge_records.label "Merge All Records">
 <!ENTITY staff.cat.record_buckets_overlay.export_records.label "Export All Records">

@@ -265,6 +265,7 @@ const urls = {
     'isodate_lib_remote' : '/opac/common/js/DP_DateExtensions.js',
     'isodate_lib_local' : 'chrome://open_ils_staff_client/content/OpenILS/util/DP_DateExtensions.js',
     'xsl_marc2html' : '/opac/extras/xsl/oilsMARC21slim2HTML.xsl',
+    'MARC_BATCH_EDIT' : '/opac/extras/merge_template/',
 
     'AUDIO_GOOD_SOUND' : '/xul/server/skin/media/audio/bonus.wav',
     'AUDIO_BAD_SOUND' : '/xul/server/skin/media/audio/question.wav',
@@ -274,6 +275,7 @@ const urls = {
 
     'XUL_AUTH_SIMPLE' : '/xul/server/main/simple_auth.xul',
     'XUL_BIB_BRIEF' : '/xul/server/cat/bib_brief.xul',
+    'XUL_BIB_BRIEF_VERTICAL' : '/xul/server/cat/bib_brief_vertical.xul',
     'XUL_BROWSER' : 'chrome://open_ils_staff_client/content/util/browser.xul',
     'XUL_CHECKIN' : '/xul/server/circ/checkin.xul',
     'XUL_CHECKOUT' : '/xul/server/circ/checkout.xul',
