@@ -1,5 +1,9 @@
 BEGIN;
 
+/* this makes us require PG 8.3+ */
+CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT, ANYARRAY ) RETURNS TEXT[] AS 'SELECT XPATH( $1, $2::XML, $3 )::TEXT[];' LANGUAGE SQL IMMUTABLE;
+CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT ) RETURNS TEXT[] AS 'SELECT XPATH( $1, $2::XML )::TEXT[];' LANGUAGE SQL IMMUTABLE;
+
 -- Start picking up call number label prefixes and suffixes
 -- from asset.copy_location
 ALTER TABLE asset.copy_location ADD COLUMN label_prefix TEXT;
