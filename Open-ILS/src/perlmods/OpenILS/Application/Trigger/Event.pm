@@ -485,7 +485,7 @@ sub _object_by_path {
 
     my $outer = 0;
     if (!$ed) {
-        $ed = new_rstore_editor(xact=>1);
+        $ed = new_editor(xact=>1);
         $outer = 1;
     }
 
