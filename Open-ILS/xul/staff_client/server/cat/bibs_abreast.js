@@ -14,6 +14,7 @@ function my_init() {
         JSAN.use('util.functional');
         JSAN.use('util.widgets');
         JSAN.use('cat.util');
+        JSAN.use('util.deck');
         JSAN.use('util.network');
 
         network = new util.network();
