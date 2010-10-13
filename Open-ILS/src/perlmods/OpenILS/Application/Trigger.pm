@@ -644,7 +644,7 @@ sub gather_events {
             $logger->error("trigger: Event creation failed with ".shift());
         };
 
-        next unless $e; 
+        next if !$e or $e->event->state eq 'invalid'; 
 
         try {
             $e->build_environment;
@@ -717,9 +717,16 @@ sub grouped_events {
             my @steps = split /\./, $group;
             my $group_field = pop(@steps); # we didn't flesh to this, it's a field not an object
 
-            # find the grouping object
-            my $node = $e->target;
-            $node = $node->$_() for ( @steps );
+            my $node;
+            eval {
+                $node = $e->target;
+                $node = $node->$_() for ( @steps );
+            };
+
+            unless($node) { # should not get here, but to be safe..
+                $e->update_state('invalid');
+                next;
+            }
 
             # get the grouping value for the grouping object on this event
             my $ident_value = $node->$group_field();

@@ -112,6 +112,11 @@ sub init {
         $self->editor->xact_rollback || return undef;
     }
 
+    unless($self->target) {
+        $self->update_state('invalid');
+        $self->valid(0);
+    }
+
     return $self;
 }
 
