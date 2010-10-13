@@ -4416,10 +4416,26 @@ char* SELECT (
 
 				ClassInfo* order_class_info = search_alias( class_itr->key );
 				if( ! order_class_info ) {
-					osrfLogInternal( OSRF_LOG_MARK,
-						"%s: Invalid class \"%s\" referenced in ORDER BY clause, skipping it",
+					osrfLogError( OSRF_LOG_MARK,
+						"%s: Invalid class \"%s\" referenced in ORDER BY clause",
 						modulename, class_itr->key );
-					continue;
+					if( ctx )
+						osrfAppSessionStatus(
+							ctx->session,
+							OSRF_STATUS_INTERNALSERVERERROR,
+							"osrfMethodException",
+							ctx->request,
+							"Invalid class referenced in ORDER BY clause -- "
+								"see error log for more details"
+						);
+					jsonIteratorFree( class_itr );
+					buffer_free( order_buf );
+					free( having_buf );
+					buffer_free( group_buf );
+					buffer_free( sql_buf );
+					if( defaultselhash )
+						jsonObjectFree( defaultselhash );
+					return NULL;
 				}
 
 				osrfHash* field_list_def = order_class_info->fields;
@@ -5094,10 +5110,11 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 				jsonIterator* class_itr = jsonNewIterator( order_by );
 				while( (snode = jsonIteratorNext( class_itr )) ) {  // For each class:
 
-					if( !jsonObjectGetKeyConst( selhash, class_itr->key ))
-						continue;    // class not referenced by SELECT clause?  Ignore it.
+					ClassInfo* order_class_info = search_alias( class_itr->key );
+					if( ! order_class_info )
+						continue;    // class not referenced by FROM clause?  Ignore it.
 
-					if( snode->type == JSON_HASH ) {
+					if( JSON_HASH == snode->type ) {
 
 						// If the data for the current class is a JSON_HASH, then it is
 						// keyed on field name.
@@ -5106,10 +5123,12 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 						jsonIterator* order_itr = jsonNewIterator( snode );
 						while( (onode = jsonIteratorNext( order_itr )) ) {  // For each field
 
-							osrfHash* field_def = oilsIDLFindPath( "/%s/fields/%s",
-								class_itr->key, order_itr->key );
+							osrfHash* field_def = osrfHashGet(
+								order_class_info->fields, order_itr->key );
 							if( !field_def )
 								continue;    // Field not defined in IDL?  Ignore it.
+							if( str_is_true( osrfHashGet( field_def, "virtual")))
+								continue;    // Field is virtual?  Ignore it.
 
 							char* field_str = NULL;
 							char* direction = NULL;
@@ -5174,10 +5193,33 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 
 						jsonIteratorFree( order_itr );
 
-					} else {
-						// The data for the current class is not a JSON_HASH, so we expect
-						// it to be a JSON_STRING with a single field name.
+					} else if( JSON_STRING == snode->type ) {
+						// We expect a comma-separated list of sort fields.
 						const char* str = jsonObjectGetString( snode );
+						if( strchr( str, ';' )) {
+							// No semicolons allowed.  It is theoretically possible for a
+							// legitimate semicolon to occur within quotes, but it's not likely
+							// to occur in practice in the context of an ORDER BY list.
+							osrfLogError( OSRF_LOG_MARK, "%s: Possible attempt at SOL injection -- "
+								"semicolon found in ORDER BY list: \"%s\"", modulename, str );
+							if( ctx ) {
+								osrfAppSessionStatus(
+									ctx->session,
+									OSRF_STATUS_INTERNALSERVERERROR,
+									"osrfMethodException",
+									ctx->request,
+									"Possible attempt at SOL injection -- "
+										"semicolon found in ORDER BY list"
+								);
+							}
+							jsonIteratorFree( class_itr );
+							buffer_free( order_buf );
+							buffer_free( sql_buf );
+							if( defaultselhash )
+								jsonObjectFree( defaultselhash );
+							clear_query_stack();
+							return NULL;
+						}
 						buffer_add( order_buf, str );
 						break;
 					}
