@@ -138,7 +138,7 @@ function set_item_pane(deck,record_id) {
 
 function set_edit_pane(deck,record_id) {
     var my_xulG = {
-        'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + record_id, "id": record_id, "rtype": "bre" },
+        'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + record_id, "rtype": "bre" },
         'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
             try {
                 return cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
