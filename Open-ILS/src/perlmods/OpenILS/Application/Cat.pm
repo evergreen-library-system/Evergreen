@@ -194,6 +194,7 @@ sub template_overlay_biblio_record_entry {
 
     $records = [$records] if (!ref($records));
 
+    my @good;
     for my $rid ( @$records ) {
         my $rec = $e->retrieve_biblio_record_entry($rid);
         next unless $rec;
@@ -208,9 +209,15 @@ sub template_overlay_biblio_record_entry {
         )->[0]->{'vandelay.template_overlay_bib_record'};
 
         $conn->respond({ record => $rid, success => $success });
+        push(@good, $rid) if ($success eq 't'); 
     }
 
     $e->commit;
+    $conn->respond_complete;
+
+    my $ses = OpenSRF::AppSession->create('open-ils.ingest');
+    $ses->request('open-ils.ingest.full.biblio.record', $_)->gather(1) for (@good);
+
     return undef;
 }
 
@@ -257,7 +264,6 @@ sub template_overlay_container {
             return undef;
         }
         $items = [grep { $_->target_biblio_record_entry > 0 } @$items];
-
         $template = $e->retrieve_biblio_record_entry( $titem->target_biblio_record_entry )->marc;
     }
 
@@ -268,6 +274,7 @@ sub template_overlay_container {
         $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses)->gather(1)
     ) if ($actor);
 
+    my @good;
     for my $item ( @$items ) {
         my $rec = $e->retrieve_biblio_record_entry($item->target_biblio_record_entry);
         next unless $rec;
@@ -289,6 +296,7 @@ sub template_overlay_container {
         }
 
         if ($success eq 't') {
+            push(@good, $rid) if ($success eq 't'); 
             unless ($e->delete_container_biblio_record_entry_bucket_item($item)) {
                 $e->rollback;
                 if ($actor) {
@@ -311,8 +319,10 @@ sub template_overlay_container {
             push @$responses, { complete => 1, success => 't' };
             $actor->request('open-ils.actor.anon_cache.set_value', $auth, res_list => $responses);
         } else {
-            return { complete => 1, success => 't' };
+            $conn->respond_complete( { complete => 1, success => 't' } );
         }
+        my $ses = OpenSRF::AppSession->create('open-ils.ingest');
+        $ses->request('open-ils.ingest.full.biblio.record', $_)->gather(1) for (@good);
     } else {
         if ($actor) {
             push @$responses, { complete => 1, success => 'f' };
