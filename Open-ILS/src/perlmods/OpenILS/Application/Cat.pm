@@ -296,7 +296,7 @@ sub template_overlay_container {
         }
 
         if ($success eq 't') {
-            push(@good, $rid) if ($success eq 't'); 
+            push(@good, $rec->id) if ($success eq 't'); 
             unless ($e->delete_container_biblio_record_entry_bucket_item($item)) {
                 $e->rollback;
                 if ($actor) {
