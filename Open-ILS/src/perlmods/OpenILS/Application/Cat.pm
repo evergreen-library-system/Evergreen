@@ -199,7 +199,7 @@ sub template_overlay_biblio_record_entry {
         my $rec = $e->retrieve_biblio_record_entry($rid);
         next unless $rec;
 
-        unless ($e->allowed('UPDATE_RECORD', $rec->owner, $rec)) {
+        unless ($e->allowed('UPDATE_RECORD')) {
             $conn->respond({ record => $rid, success => 'f' });
             next;
         }
