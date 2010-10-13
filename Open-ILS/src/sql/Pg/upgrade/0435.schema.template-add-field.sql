@@ -1,7 +1,7 @@
 
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0435') -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0435'); -- miker
 
 CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT, field TEXT ) RETURNS TEXT AS $_$
 
