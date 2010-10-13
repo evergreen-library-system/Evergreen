@@ -159,7 +159,7 @@ sub handler {
 
     my %seen;
     for my $r (@records) {
-        next unless ($seen{$r})
+        next unless ($seen{$r});
         $item->target_biblio_record_entry($r);
         $e->request('open-ils.cstore.direct.container.biblio_record_entry_bucket_item.create', $item )->gather(1);
         $seen{$r}++;
