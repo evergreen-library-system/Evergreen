@@ -19,6 +19,6 @@ BEGIN;
 INSERT INTO config.upgrade_log(version) VALUES ('1.6.0.9');
 
 DROP INDEX asset.asset_call_number_upper_label_id_owning_lib_idx;
-CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (cast(upper(label) to bytea),id,owning_lib);
+CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (cast(upper(label) as bytea),id,owning_lib);
 
 COMMIT;
