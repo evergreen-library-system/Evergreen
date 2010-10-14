@@ -2189,7 +2189,8 @@
 <!ENTITY staff.cat.marcedit.validate.accesskey "V">
 <!ENTITY staff.cat.marcedit.save-button.accesskey "d">
 <!ENTITY staff.cat.marcedit.help.label "Help">
-<!ENTITY staff.cat.marcedit.swapEditor.label "Swap Editor Type">
+<!ENTITY staff.cat.marcedit.flatTextEditor.label "Flat-Text Editor">
+<!ENTITY staff.cat.marcedit.flatTextEditor.accesskey "">
 <!ENTITY staff.cat.marcedit.help.accesskey "H">
 <!ENTITY staff.cat.marcedit.caption.label "MARC Record">
 <!ENTITY staff.cat.marcedit.toggleFFE.label "Fixed Fields -- Record type: ">
