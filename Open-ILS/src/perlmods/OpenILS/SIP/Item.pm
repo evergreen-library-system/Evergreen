@@ -125,12 +125,15 @@ sub new {
         syslog('LOG_DEBUG', "OILS: Open circulation exists on $item_id : user = $bc");
     }
 
-    $self->{id} = $item_id;
-    $self->{copy}        = $copy;
-    $self->{volume}      = $copy->call_number;
-    $self->{record}      = $copy->call_number->record;
+    $self->{id}         = $item_id;
+    $self->{copy}       = $copy;
+    $self->{volume}     = $copy->call_number;
+    $self->{record}     = $copy->call_number->record;
     $self->{call_number} = $copy->call_number->label;
-    $self->{mods} = $U->record_to_mvr($self->{record}) if $self->{record}->marc;
+    $self->{mods}       = $U->record_to_mvr($self->{record}) if $self->{record}->marc;
+    $self->{transit}    = $self->fetch_transit;
+    $self->{hold}       = $self->fetch_hold;
+
 
     # use the non-translated version of the copy location as the
     # collection code, since it may be used for additional routing
@@ -139,26 +142,12 @@ sub new {
         $e->retrieve_asset_copy_location([
             $copy->location, {no_i18n => 1}])->name;
 
-    if ($copy->status->id == OILS_COPY_STATUS_IN_TRANSIT) {
-        my $transit = $e->search_action_transit_copy([
-            {
-                target_copy    => $copy->id,    # NOT barcode ($self->id)
-                dest_recv_time => undef
-            },
-            {
-                flesh => 1,
-                flesh_fields => {
-                    atc => [ 'dest' ]
-                }
-            }
-        ])->[0];
 
-        if ($transit) {
-            $self->{transit} = $transit;
-            $self->{destination_loc} = $transit->dest->shortname;
-        } else {
-            syslog('LOG_WARNING', "OILS: Item('$item_id') status is In Transit, but no action.transit_copy found!");
-        }
+    if($self->{transit}) {
+        $self->{destination_loc} = $self->{transit}->dest->shortname;
+
+    } elsif($self->{hold}) {
+        $self->{destination_loc} = $self->{hold}->pickup_lib->shortname;
     }
 
     syslog("LOG_DEBUG", "OILS: Item('$item_id'): found with title '%s'", $self->title_id);
@@ -180,6 +169,71 @@ sub new {
     }
 
     return $self;
+}
+
+# fetch copy transit
+sub fetch_transit {
+    my $self = shift;
+    my $copy = $self->{copy} or return;
+    my $e = OpenILS::SIP->editor();
+
+    if ($copy->status->id == OILS_COPY_STATUS_IN_TRANSIT) {
+        my $transit = $e->search_action_transit_copy([
+            {
+                target_copy    => $copy->id,    # NOT barcode ($self->id)
+                dest_recv_time => undef
+            },
+            {
+                flesh => 1,
+                flesh_fields => {
+                    atc => ['dest']
+                }
+            }
+        ])->[0];
+
+        syslog('LOG_WARNING', "OILS: Item(".$copy->barcode.
+            ") status is In Transit, but no action.transit_copy found!") unless $transit;
+            
+        return $transit;
+    }
+    
+    return undef;
+}
+
+# fetch captured hold.
+# Assume transit has already beeen fetched
+sub fetch_hold {
+    my $self = shift;
+    my $copy = $self->{copy} or return;
+    my $e = OpenILS::SIP->editor();
+
+    if( ($copy->status->id == OILS_COPY_STATUS_ON_HOLDS_SHELF) ||
+        ($self->{transit} and $self->{transit}->copy_status == OILS_COPY_STATUS_ON_HOLDS_SHELF) ) {
+        # item has been captured for a hold
+
+        my $hold = $e->search_action_hold_request([
+            {
+                current_copy        => $copy->id,
+                capture_time        => {'!=' => undef},
+                cancel_time         => undef,
+                fulfillment_time    => undef
+            },
+            {
+                limit => 1,
+                flesh => 1,
+                flesh_fields => {
+                    ahr => ['pickup_lib']
+                }
+            }
+        ])->[0];
+
+        syslog('LOG_WARNING', "OILS: Item(".$copy->barcode.
+            ") is captured for a hold, but there is no matching hold request") unless $hold;
+
+        return $hold;
+    }
+
+    return undef;
 }
 
 sub run_attr_script {
@@ -373,46 +427,28 @@ my %shelf_expire_setting_cache;
 sub hold_pickup_date {  
     my $self = shift;
     my $copy = $self->{copy};
+    my $hold = $self->{hold} or return 0;
 
-    if( ($copy->status->id == OILS_COPY_STATUS_ON_HOLDS_SHELF) ||
-        ($self->{transit} and $self->{transit}->copy_status == OILS_COPY_STATUS_ON_HOLDS_SHELF) ) {
+    my $date = $hold->shelf_expire_time;
 
-        # item has been captured for a hold
+    if(!$date) {
+        # hold has not hit the shelf.  create a best guess.
 
-        my $e = OpenILS::SIP->editor();
-        my $hold = $e->search_action_hold_request([
-            {
-                current_copy        => $copy->id,
-                capture_time        => {'!=' => undef},
-                cancel_time         => undef,
-                fulfillment_time    => undef
-            },
-            {limit => 1}
-        ])->[0];
-        
-        if($hold) {
-            my $date = $hold->shelf_expire_time;
+        my $interval = $shelf_expire_setting_cache{$hold->pickup_lib->id} ||
+            $U->ou_ancestor_setting_value(
+                $hold->pickup_lib->id, 
+                'circ.holds.default_shelf_expire_interval');
 
-            if(!$date) {
-                # hold has not hit the shelf.  create a best guess.
+        $shelf_expire_setting_cache{$hold->pickup_lib->id} = $interval;
 
-                my $interval = $shelf_expire_setting_cache{$hold->pickup_lib} ||
-                    $U->ou_ancestor_setting_value(
-                        $hold->pickup_lib, 
-                        'circ.holds.default_shelf_expire_interval');
-
-                $shelf_expire_setting_cache{$hold->pickup_lib} = $interval;
-
-                if($interval) {
-                    my $seconds = OpenSRF::Utils->interval_to_seconds($interval);
-                    $date = DateTime->now->add(seconds => $seconds);
-                    $date = $date->strftime('%FT%T%z') if $date;
-                }
-            }
-
-            return OpenILS::SIP->format_date($date) if $date;
+        if($interval) {
+            my $seconds = OpenSRF::Utils->interval_to_seconds($interval);
+            $date = DateTime->now->add(seconds => $seconds);
+            $date = $date->strftime('%FT%T%z') if $date;
         }
     }
+
+    return OpenILS::SIP->format_date($date) if $date;
 
     return 0;
 }
