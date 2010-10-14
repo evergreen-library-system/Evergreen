@@ -305,7 +305,7 @@ sub cn_browse {
 			},
 			{ flesh		=> 1,
 			  flesh_fields	=> { acn => [qw/record owning_lib/] },
-			  order_by	=> { acn => "label_sortkey, upper(label) desc, id desc, owning_lib desc" },
+			  order_by	=> { acn => "label_sortkey desc, upper(label) desc, id desc, owning_lib desc" },
 			  limit		=> $before_limit,
 			  offset	=> abs($page) * $page_size - $before_offset,
 			}
