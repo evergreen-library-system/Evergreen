@@ -58,6 +58,9 @@ GetOptions(
 
 my $max_sleep = $opt_max_sleep;
 
+#XXX need to figure out why this is required...
+$opt_gran_only = $opt_granularity ? 1 : 0;
+
 $opt_lockfile .= '.' . $opt_granularity if ($opt_granularity && $opt_gran_only);
 
 # typical passive hook filters

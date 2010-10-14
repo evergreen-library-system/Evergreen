@@ -2,13 +2,10 @@ package OpenILS::Application::Trigger::Event;
 use strict; use warnings;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::JSON;
-
 use OpenSRF::Utils::Logger qw/$logger/;
-
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Application::Trigger::ModRunner;
-
 use Safe;
 
 my $log = 'OpenSRF::Utils::Logger';
@@ -19,10 +16,16 @@ sub new {
     my $editor = shift;
     $class = ref($class) || $class;
 
-    return $id if (ref($id) && ref($id) eq $class);
-
     my $standalone = $editor ? 0 : 1;
     $editor ||= new_editor();
+
+    if (ref($id) && ref($id) eq $class) {
+        $id->environment->{EventProcessor} = $id
+             if ($id->environment->{complete}); # in case it came over an opensrf tube
+        $id->editor( $editor );
+        $id->standalone( $standalone );
+        return $id;
+    }
 
     my $self = bless { id => $id, editor => $editor, standalone => $standalone } => $class;
 
@@ -107,6 +110,11 @@ sub init {
 
     if ($self->standalone) {
         $self->editor->xact_rollback || return undef;
+    }
+
+    unless($self->target) {
+        $self->update_state('invalid');
+        $self->valid(0);
     }
 
     return $self;
@@ -473,10 +481,15 @@ sub _object_by_path {
     my $collector = shift;
     my $label = shift;
     my $path = shift;
+    my $ed = shift;
 
+    my $outer = 0;
+    if (!$ed) {
+        $ed = new_editor(xact=>1);
+        $outer = 1;
+    }
 
     my $step = shift(@$path);
-
 
     my $fhint = Fieldmapper->publish_fieldmapper->{$context->class_name}{links}{$step}{class};
     my $fclass = $self->_fm_class_by_hint( $fhint );
@@ -501,10 +514,6 @@ sub _object_by_path {
     $meth =~ s/Fieldmapper:://;
     $meth =~ s/::/_/g;
 
-    my $ed = grep( /open-ils.cstore/, @{$fclass->Controller} ) ?
-            $self->editor :
-            new_rstore_editor(($self->standalone ? () : (xact=>1)));
-
     my $obj = $context->$step(); 
 
     $logger->debug(
@@ -521,18 +530,10 @@ sub _object_by_path {
             my $def_id = $self->event->event_def->id;
             my $str_path = join('.', @$path);
 
-            if ($self->standalone) {
-                $ed->xact_begin || return undef;
-            }
-
             $obj = $_object_by_path_cache{$def_id}{$str_path}{$step}{$ffield}{$lval} ||
                 $ed->$meth( ($multi) ? { $ffield => $lval } : $lval);
 
             $_object_by_path_cache{$def_id}{$str_path}{$step}{$ffield}{$lval} ||= $obj;
-
-            if ($self->standalone) {
-                $ed->xact_rollback || return undef;
-            }
         }
     }
 
@@ -547,7 +548,7 @@ sub _object_by_path {
 
         for (@$obj_list) {
             my @path_clone = @$path;
-            $self->_object_by_path( $_, $collector, $label, \@path_clone );
+            $self->_object_by_path( $_, $collector, $label, \@path_clone, $ed );
         }
 
         $obj = $$obj_list[0] if (!$multi || $rtype eq 'might_have');
@@ -590,6 +591,7 @@ sub _object_by_path {
         }
     }
 
+    $ed->rollback if ($outer);
     return $obj;
 }
 
