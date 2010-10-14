@@ -295,10 +295,6 @@ function uEditDefineData(patron) {
                 id            : 'ue_day_phone',
                 type        : 'input',
                 regex        :  phoneRegex,
-                onblur      : function() {
-                    if(uEditUsePhonePw)
-                        uEditMakePhonePw();
-                },
                 onpostchange: function(field, newval) {
                     /*  if this is a new patron and we are using the phone number for
                         the password and the staff edits the phone number after entering
@@ -318,11 +314,7 @@ function uEditDefineData(patron) {
             widget    : {
                 id            : 'ue_night_phone',
                 type        : 'input',
-                regex        :  phoneRegex,
-                onblur      : function() {
-                    if(uEditUsePhonePw)
-                        uEditMakePhonePw();
-                }
+                regex        :  phoneRegex
             }
         },
         {
@@ -333,11 +325,7 @@ function uEditDefineData(patron) {
             widget    : {
                 id            : 'ue_other_phone',
                 type        : 'input',
-                regex        :  phoneRegex,
-                onblur      : function() {
-                    if(uEditUsePhonePw)
-                        uEditMakePhonePw();
-                }
+                regex        :  phoneRegex
             }
         },
         {
