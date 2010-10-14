@@ -230,9 +230,9 @@ sub cn_browse_pagedown {
 		        $table cn
 		where
 			not deleted
-		        and (upper(label) > ? or ( cn.id > ? and upper(label) = ? ))
+		        and (cast(upper(label) to bytea) > ? or ( cn.id > ? and cast(upper(label) to bytea) = ? ))
 			and owning_lib in ($orgs)
-		order by upper(label), 4, 2
+		order by cast(upper(label) to bytea), 4, 2
 		limit $size;
 	SQL
 
@@ -285,9 +285,9 @@ sub cn_browse_pageup {
 			        $table cn
 			where
 				not deleted
-			        and (upper(label) < ? or ( cn.id < ? and upper(label) = ? ))
+			        and (cast(upper(label) to bytea) < ? or ( cn.id < ? and cast(upper(label) to bytea) = ? ))
 				and owning_lib in ($orgs)
-			order by upper(label) desc, 4 desc, 2 desc
+			order by cast(upper(label) to bytea) desc, 4 desc, 2 desc
 			limit $size
 		) as bar
 		order by 1,4,2;
@@ -343,9 +343,9 @@ sub cn_browse_target {
 			        $table cn
 			where
 				not deleted
-			        and upper(label) < ?
+			        and cast(upper(label) to bytea) < ?
 				and owning_lib in ($orgs)
-			order by upper(label) desc, 4 desc, 2 desc
+			order by cast(upper(label) to bytea) desc, 4 desc, 2 desc
 			limit $topsize
 		) as bar
 		order by 1,4,2;
@@ -361,9 +361,9 @@ sub cn_browse_target {
 		        $table cn
 		where
 			not deleted
-		        and upper(label) >= ?
+		        and cast(upper(label) to bytea) >= ?
 			and owning_lib in ($orgs)
-		order by upper(label),4,2
+		order by cast(upper(label) to bytea),4,2
 		limit $bottomsize;
 	SQL
 
