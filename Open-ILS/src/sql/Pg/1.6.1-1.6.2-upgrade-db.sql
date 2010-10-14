@@ -1,5 +1,8 @@
 BEGIN;
 
+DROP INDEX asset.asset_call_number_upper_label_id_owning_lib_idx;
+CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (cast(upper(label) as bytea),id,owning_lib);
+
 /* this makes us require PG 8.3+ */
 CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT, ANYARRAY ) RETURNS TEXT[] AS 'SELECT XPATH( $1, $2::XML, $3 )::TEXT[];' LANGUAGE SQL IMMUTABLE;
 CREATE OR REPLACE FUNCTION oils_xpath ( TEXT, TEXT ) RETURNS TEXT[] AS 'SELECT XPATH( $1, $2::XML )::TEXT[];' LANGUAGE SQL IMMUTABLE;
