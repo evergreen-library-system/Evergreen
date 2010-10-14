@@ -17770,7 +17770,7 @@ ALTER TABLE asset.call_number
 	ADD COLUMN label_sortkey TEXT;
 
 CREATE INDEX asset_call_number_label_sortkey
-	ON asset.call_number(label_sortkey);
+	ON asset.call_number(cast(label_sortkey as bytea));
 
 ALTER TABLE auditor.asset_call_number_history
 	ADD COLUMN label_class BIGINT;
