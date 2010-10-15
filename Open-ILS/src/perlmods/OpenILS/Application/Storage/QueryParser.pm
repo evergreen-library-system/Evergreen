@@ -442,7 +442,7 @@ sub decompose {
 
             for my $alias ( @{$pkg->search_field_aliases->{$class}{$field}} ) {
                 $alias = qr/$alias/;
-                s/\b$alias[:=]/$class\|$field:/g;
+                s/(^|\s+)$alias[:=]/$1$class\|$field:/g;
             }
         }
 
