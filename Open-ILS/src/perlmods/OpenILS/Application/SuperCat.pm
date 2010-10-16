@@ -287,7 +287,7 @@ sub cn_browse {
 			},
 			{ flesh		=> 1,
 			  flesh_fields	=> { acn => [qw/record owning_lib/] },
-			  order_by	=> { acn => "cast(upper(label) as bytea) desc, id desc, owning_lib desc" },
+			  order_by	=> { acn => "oils_text_as_bytea(upper(label)) desc, id desc, owning_lib desc" },
 			  limit		=> $before_limit,
 			  offset	=> abs($page) * $page_size - $before_offset,
 			}
@@ -304,7 +304,7 @@ sub cn_browse {
 			},
 			{ flesh		=> 1,
 			  flesh_fields	=> { acn => [qw/record owning_lib/] },
-			  order_by	=> { acn => "cast(upper(label) as bytea), id, owning_lib" },
+			  order_by	=> { acn => "oils_text_as_bytea(upper(label)), id, owning_lib" },
 			  limit		=> $after_limit,
 			  offset	=> abs($page) * $page_size - $after_offset,
 			}
