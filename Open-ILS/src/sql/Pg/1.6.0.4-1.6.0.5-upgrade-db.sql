@@ -149,14 +149,13 @@ BEGIN
 END;
 $func$ LANGUAGE plpgsql;
 
--- allow more than one 260 in summary data
 CREATE OR REPLACE VIEW reporter.old_super_simple_record AS
 SELECT  r.id,
     r.fingerprint,
     r.quality,
     r.tcn_source,
     r.tcn_value,
-    title.value AS title,
+    FIRST(title.value) AS title,
     FIRST(author.value) AS author,
     ARRAY_TO_STRING(ARRAY_ACCUM( DISTINCT publisher.value), ', ') AS publisher,
     ARRAY_TO_STRING(ARRAY_ACCUM( DISTINCT SUBSTRING(pubdate.value FROM $$\d+$$) ), ', ') AS pubdate,
@@ -169,7 +168,6 @@ SELECT  r.id,
     LEFT JOIN metabib.full_rec pubdate ON (r.id = pubdate.record AND pubdate.tag = '260' AND pubdate.subfield = 'c')
     LEFT JOIN metabib.full_rec isbn ON (r.id = isbn.record AND isbn.tag IN ('024', '020') AND isbn.subfield IN ('a','z'))
     LEFT JOIN metabib.full_rec issn ON (r.id = issn.record AND issn.tag = '022' AND issn.subfield = 'a')
-  GROUP BY 1,2,3,4,5,6;
-
+  GROUP BY 1,2,3,4,5;
 
 COMMIT;
