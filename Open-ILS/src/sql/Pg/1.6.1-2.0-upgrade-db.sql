@@ -1,6 +1,10 @@
 -- Before starting the transaction: drop some constraints that
 -- may or may not exist.
 
+DROP INDEX asset.asset_call_number_upper_label_id_owning_lib_idx;
+CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (oils_text_as_bytea(upper(label)),id,owning_lib);
+
+
 \qecho Before starting the transaction: drop some constraints.
 \qecho If a DROP fails because the constraint doesn't exist, ignore the failure.
 
@@ -13,9 +17,6 @@ ALTER TABLE booking.resource_type          DROP CONSTRAINT brt_name_once_per_own
 \qecho Beginning the transaction now
 
 BEGIN;
-
-DROP INDEX asset.asset_call_number_upper_label_id_owning_lib_idx;
-CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (cast(upper(label) as bytea),id,owning_lib);
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
@@ -17773,7 +17774,7 @@ ALTER TABLE asset.call_number
 	ADD COLUMN label_sortkey TEXT;
 
 CREATE INDEX asset_call_number_label_sortkey
-	ON asset.call_number(cast(label_sortkey as bytea));
+	ON asset.call_number(oils_text_as_bytea(label_sortkey));
 
 ALTER TABLE auditor.asset_call_number_history
 	ADD COLUMN label_class BIGINT;

@@ -293,8 +293,8 @@ CREATE INDEX asset_call_number_record_idx ON asset.call_number (record);
 CREATE INDEX asset_call_number_creator_idx ON asset.call_number (creator);
 CREATE INDEX asset_call_number_editor_idx ON asset.call_number (editor);
 CREATE INDEX asset_call_number_dewey_idx ON asset.call_number (public.call_number_dewey(label));
-CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (cast(upper(label) as bytea),id,owning_lib);
-CREATE INDEX asset_call_number_label_sortkey ON asset.call_number(cast(label_sortkey as bytea));
+CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (oils_text_as_bytea(upper(label)),id,owning_lib);
+CREATE INDEX asset_call_number_label_sortkey ON asset.call_number(oils_text_as_bytea(label_sortkey));
 CREATE UNIQUE INDEX asset_call_number_label_once_per_lib ON asset.call_number (record, owning_lib, label) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE RULE protect_cn_delete AS ON DELETE TO asset.call_number DO INSTEAD UPDATE asset.call_number SET deleted = TRUE WHERE OLD.id = asset.call_number.id;
 CREATE TRIGGER asset_label_sortkey_trigger
