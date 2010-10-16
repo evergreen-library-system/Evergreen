@@ -18,8 +18,12 @@ BEGIN;
 
 INSERT INTO config.upgrade_log(version) VALUES ('1.6.0.9');
 
+CREATE OR REPLACE FUNCTION oils_text_as_bytea (TEXT) RETURNS BYTEA AS $_$
+    SELECT CAST(REGEXP_REPLACE($1, $$\\$$, $$\\\\$$, 'g') AS BYTEA);
+$_$ LANGUAGE SQL IMMUTABLE;
+
 DROP INDEX asset.asset_call_number_upper_label_id_owning_lib_idx;
-CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (cast(upper(label) as bytea),id,owning_lib);
+CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (oils_text_as_bytea(upper(label)),id,owning_lib);
 
 CREATE OR REPLACE VIEW reporter.old_super_simple_record AS
 SELECT  r.id,
