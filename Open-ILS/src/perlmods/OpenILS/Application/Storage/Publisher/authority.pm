@@ -33,11 +33,7 @@ sub validate_tag {
 	for my $t ( @tags ) {
 		for my $search ( @searches ) {
 			my $sf = $$search{subfield};
-			my $term = NFD(lc($$search{term}));
-
-			$term =~ s/\pM+//sgo;
-			$term =~ s/\pC+//sgo;
-			$term =~ s/\W+$//o;
+			my $term = OpenILS::Application::Storage::FTS::naco_normalize($$search{term}, $sf);
 
 			$tag = [$tag] if (!ref($tag));
 

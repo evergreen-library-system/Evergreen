@@ -85,6 +85,7 @@ patron.holds.prototype = {
                                     row.my.patron_family_name = blob.patron_last;
                                     row.my.patron_first_given_name = blob.patron_first;
                                     row.my.patron_barcode = blob.patron_barcode;
+                                    row.my.patron_alias = blob.patron_alias;
                                     row.my.total_holds = blob.total_holds;
                                     row.my.queue_position = blob.queue_position;
                                     row.my.potential_copies = blob.potential_copies;
@@ -150,7 +151,10 @@ patron.holds.prototype = {
                         obj.controller.view.cmd_holds_edit_request_date.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_activate.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_suspend.setAttribute('disabled','false');
-                        obj.controller.view.cmd_alt_view.setAttribute('disabled','false');
+                        obj.controller.view.cmd_alt_view.setAttribute('rendering_rows','false');
+                        if (obj.controller.view.cmd_alt_view.getAttribute('ready')=='true') {
+                            obj.controller.view.cmd_alt_view.setAttribute('disabled','false');
+                        }
                         obj.controller.view.cmd_holds_retarget.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_cancel.setAttribute('disabled','false');
                         obj.controller.view.cmd_holds_uncancel.setAttribute('disabled','false');
@@ -173,6 +177,7 @@ patron.holds.prototype = {
                         obj.controller.view.cmd_holds_activate.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_suspend.setAttribute('disabled','true');
                         obj.controller.view.cmd_alt_view.setAttribute('disabled','true');
+                        obj.controller.view.cmd_alt_view.setAttribute('rendering_rows','true');
                         obj.controller.view.cmd_holds_retarget.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_cancel.setAttribute('disabled','true');
                         obj.controller.view.cmd_holds_uncancel.setAttribute('disabled','true');
@@ -320,6 +325,43 @@ patron.holds.prototype = {
                                 progressmeter.mode = 'determined';
                                 progressmeter.hidden = true;
                                 x_print_full_pull_list.disabled = false;
+                            }
+                        }
+                    ],
+                    'cmd_holds_print_alt' : [
+                        ['command'],
+                        function() {
+                            try {
+                                var content_params = {
+                                    "session": ses(),
+                                    "authtime": ses("authtime"),
+                                    "no_xulG": false,
+                                    "show_nav_buttons": true,
+                                    "show_print_button": false
+                                };
+                                ["url_prefix", "new_tab", "set_tab",
+                                    "close_tab", "new_patron_tab",
+                                    "set_patron_tab", "volume_item_creator",
+                                    "get_new_session",
+                                    "holdings_maintenance_tab", "set_tab_name",
+                                    "open_chrome_window", "url_prefix",
+                                    "network_meter", "page_meter",
+                                    "set_statusbar", "set_help_context"
+                                ].forEach(function(k) {
+                                    content_params[k] = xulG[k];
+                                });
+
+                                var loc = urls.XUL_BROWSER + "?url=" + window.escape(
+                                    xulG.url_prefix("/opac/extras/circ/alt_holds_print.html").replace("http:","https:")
+                                );
+                                xulG.new_tab(
+                                    loc, {
+                                        "tab_name": "Printable Pull List", /* XXX i18n */
+                                        "browser": false
+                                    }, content_params
+                                );
+                            } catch (E) {
+                                g.error.sdump("D_ERROR", E);
                             }
                         }
                     ],
@@ -1293,6 +1335,7 @@ patron.holds.prototype = {
         var x_clear_shelf_widgets = document.getElementById('clear_shelf_widgets');
         var x_expired_checkbox = document.getElementById('expired_checkbox');
         var x_print_full_pull_list = document.getElementById('print_full_btn');
+        var x_print_full_pull_list_alt = document.getElementById('print_alt_btn');
         switch(obj.hold_interface_type) {
             case 'shelf':
                 obj.render_lib_menus({'pickup_lib':true});
@@ -1300,10 +1343,12 @@ patron.holds.prototype = {
                 if (x_lib_type_menu) x_lib_type_menu.hidden = false;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = false;
                 if (x_clear_shelf_widgets) x_clear_shelf_widgets.hidden = false;
+                if (x_print_full_pull_list_alt) x_print_full_pull_list_alt.hidden = true;
             break;
             case 'pull' :
                 if (x_fetch_more) x_fetch_more.hidden = false;
                 if (x_print_full_pull_list) x_print_full_pull_list.hidden = false;
+                if (x_print_full_pull_list_alt) x_print_full_pull_list_alt.hidden = false;
                 if (x_lib_type_menu) x_lib_type_menu.hidden = true;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = true;
             break;
@@ -1311,6 +1356,7 @@ patron.holds.prototype = {
                 obj.render_lib_menus({'pickup_lib':true,'request_lib':true});
                 if (x_lib_filter_checkbox) x_lib_filter_checkbox.hidden = false;
                 if (x_lib_type_menu) x_lib_type_menu.hidden = false;
+                if (x_print_full_pull_list_alt) x_print_full_pull_list_alt.hidden = true;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = false;
             break;
             default:
@@ -1319,6 +1365,7 @@ patron.holds.prototype = {
                 if (x_lib_type_menu) x_lib_type_menu.hidden = true;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = true;
                 if (x_show_cancelled_deck) x_show_cancelled_deck.hidden = false;
+                if (x_print_full_pull_list_alt) x_print_full_pull_list_alt.hidden = true;
             break;
         }
         setTimeout( // We do this because render_lib_menus above creates and appends a DOM node, but until this thread exits, it doesn't really happen
@@ -1346,6 +1393,14 @@ patron.holds.prototype = {
             }, 0
         );
 
+        $('cmd_alt_view').setAttribute('disabled','true');
+        xulG.when_done = function() {
+            $('cmd_alt_view').setAttribute('ready','true');
+            if ($('cmd_alt_view').getAttribute('rendering_rows') != 'true') {
+                $('cmd_alt_view').setAttribute('disabled','false');
+            }
+            dump('hold details UI ready\n');
+        }
         netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
         JSAN.use('util.browser');
         obj.browser = new util.browser();
@@ -1355,7 +1410,7 @@ patron.holds.prototype = {
                 'push_xulG' : true,
                 'alt_print' : false,
                 'browser_id' : 'hold_detail_frame',
-                'passthru_content_params' : xulG,
+                'passthru_content_params' : xulG
             }
         );
 

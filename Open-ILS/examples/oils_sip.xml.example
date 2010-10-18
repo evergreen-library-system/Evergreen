@@ -105,6 +105,15 @@
 					-->
 				</options>
 
+                <checkin_override>
+                    <event>COPY_ALERT_MESSAGE</event>
+                    <event>COPY_BAD_STATUS</event>
+                    <event>COPY_STATUS_MISSING</event>
+                    <!--
+                    <event>COPY_STATUS_LOST</event>
+                    -->
+                </checkin_override>
+
                 <!-- If uncommented, overrides the legacy_script_support value in opensrf.xml for SIP. -->
                 <!--
                 <legacy_script_support>false</legacy_script_support>

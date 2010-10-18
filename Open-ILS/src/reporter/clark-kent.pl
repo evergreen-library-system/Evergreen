@@ -423,6 +423,8 @@ sub build_excel {
 	$sheetname =~ s/\W/_/gos;
 	
 	my $sheet = $xls->add_worksheet($sheetname);
+	# don't try to write formulas, just write anything that starts with = as a text cell
+	$sheet->add_write_handler(qr/^=/, sub { return shift->write_string(@_); } );
 
 	$sheet->write_row('A1', $r->{column_labels});
 

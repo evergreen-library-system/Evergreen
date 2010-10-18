@@ -65,7 +65,7 @@
         <vbox id="bib_brief_box" flex="1" style="min-height: 10em;"/>
     </vbox>
 
-    <splitter><grippy/></splitter>
+    <splitter id="splitter1" oils_persist="state hidden" oils_persist_peers="v1 v2"><grippy/></splitter>
 
     <vbox id="v2" flex="1" oils_persist="height">
         <vbox flex="1">
@@ -74,9 +74,9 @@
         </vbox>
     </vbox>
 
-    <splitter><grippy/></splitter>
+    <splitter id="splitter2" oils_persist="state hidden" oils_persist_peers="v2 after_splitter2"><grippy/></splitter>
 
-    <tabbox flex="1">
+    <tabbox flex="1" id="after_splitter2" oils_persist="height">
         <tabs>
             <tab label="&staff.patron.holds.notes_tab.label;" accesskey="&staff.patron.holds.notes_tab.accesskey;" />
             <tab label="&staff.patron.holds.notices_tab.label;" accesskey="&staff.patron.holds.notices_tab.accesskey;" />

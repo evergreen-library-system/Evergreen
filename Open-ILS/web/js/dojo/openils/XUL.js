@@ -16,15 +16,17 @@ if(!dojo._hasResource["openils.XUL"]) {
         if(openils.XUL.isXUL()) {
             try {
                 if(openils.XUL.enableXPConnect()) {
-			        var CacheClass = new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
-			        return new CacheClass().wrappedJSObject.OpenILS.prototype.data;
+                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+                    var CacheClass = new Components.Constructor("@mozilla.org/openils_data_cache;1", "nsIOpenILS");
+                    return new CacheClass().wrappedJSObject.OpenILS.prototype.data;
                 }
             } catch(e) {
                 console.log("Error loading XUL stash: " + e);
+                return { 'error' : e };
             }
         }
 
-        return {};
+        return { 'error' : 'openils.XUL.isXUL() == false' };
     }
 
     openils.XUL.newTab = function(path, tabInfo, options) {

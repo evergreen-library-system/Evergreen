@@ -80,7 +80,7 @@ sub handler {
         my $base = $cgi->url(-base=>1);
 		$base =~ s/^http:/https:/o;
 		print "Location: $base".$apache->unparsed_uri."\n\n";
-		return Apache2::Const::OK;
+		return Apache2::Const::REDIRECT;
 	}
 
 	if (!$auth_ses) {

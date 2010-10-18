@@ -351,6 +351,9 @@ var urls = {
     'browser' : '/opac/' + LOCALE + '/skin/default/xml/advanced.xml?nps=1',
     'fieldmapper' : '/opac/common/js/fmall.js',
     'xsl_marc2html' : '/opac/extras/xsl/oilsMARC21slim2HTML.xsl',
+    'ac_jacket_small' : '/opac/extras/ac/jacket/small/',
+    'ac_jacket_large' : '/opac/extras/ac/jacket/large/',
+    'MARC_BATCH_EDIT' : '/opac/extras/merge_template/',
 
     'AUDIO_good' : '/xul/server/skin/media/audio/bonus.wav',
     'AUDIO_bad' : '/xul/server/skin/media/audio/question.wav',
@@ -362,6 +365,7 @@ var urls = {
     'AUTHORITY_MANAGE' : '/eg/cat/authority/list',
     'XUL_AUTH_SIMPLE' : '/xul/server/main/simple_auth.xul',
     'XUL_BIB_BRIEF' : '/xul/server/cat/bib_brief.xul',
+    'XUL_BIB_BRIEF_VERTICAL' : '/xul/server/cat/bib_brief_vertical.xul',
     'XUL_BROWSER' : 'chrome://open_ils_staff_client/content/util/browser.xul',
     'XUL_CHECKIN' : '/xul/server/circ/checkin.xul',
     'XUL_BACKDATE' : '/xul/server/circ/backdate_post_checkin.xul',

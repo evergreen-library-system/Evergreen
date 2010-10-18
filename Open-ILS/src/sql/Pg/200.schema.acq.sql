@@ -482,7 +482,7 @@ CREATE TABLE acq.lineitem (
 	create_time         TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
 	edit_time           TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
 	marc                TEXT                        NOT NULL,
-	eg_bib_id           INT                         REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
+	eg_bib_id           BIGINT                      REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
 	source_label        TEXT,
 	state               TEXT                        NOT NULL DEFAULT 'new',
 	cancel_reason       INT                         REFERENCES acq.cancel_reason( id )

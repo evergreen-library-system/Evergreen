@@ -19,7 +19,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="admin_offline_manage_xacts_win" 
-    onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -55,7 +55,7 @@
 
     <vbox id="admin_offline_manage_xacts_main" flex="1">
 
-        <groupbox flex="1">
+        <groupbox flex="1" id="before_splitter" oils_persist="height">
             <caption label="&staff.server.admin.offline.xacts.caption;"/>
             <hbox>
                 <button id="refresh" label="&common.refresh;" accesskey="&staff.server.admin.offline.xacts.refresh.accesskey;"/>
@@ -66,8 +66,8 @@
             </hbox>
             <tree id="session_tree" enableColumnDrag="true" seltype="single" flex="1"/>
         </groupbox>
-            <splitter><grippy/></splitter>
-        <deck flex="1" id="deck">
+        <splitter id="splitter" oils_persist="state" oils_persist_peers="before_splitter deck"><grippy/></splitter>
+        <deck flex="1" id="deck" oils_persist="height">
             <label value=" "/>
             <groupbox flex="1">
                 <caption id="status_caption" label="&staff.server.admin.offline.xacts.status.label;"/>

@@ -21,8 +21,8 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="pre_cat_fields" title="&staff.circ.pre_cat.window.title;"
-    orient="vertical" style="overflow: auto"
-    onload="try{my_init();font_helper(); }catch(E){alert(E);}"
+    orient="vertical" style="overflow: auto" oils_persist="height width sizemode"
+    onload="try{ my_init(); font_helper(); persist_helper(); }catch(E){alert(E);}"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

@@ -82,9 +82,9 @@ vim:noet:sw=4:ts=4:
                 </menu>
             </menubar>
         </hbox>
-        <tree id="item_tree" flex="2" enableColumnDrag="true" context="serial_manage_items_popup"/>
-        <splitter state="open" collapse="after" resizebefore="closest" resizeafter="farthest"/>
-        <hbox align="center">
+        <tree id="item_tree" flex="2" enableColumnDrag="true" context="serial_manage_items_popup" oils_persist="height"/>
+        <splitter state="open" collapse="after" resizebefore="closest" resizeafter="farthest" id="splitter" oils_persist="state hidden" oils_persist_peers="item_tree after_splitter"/>
+        <hbox align="center" id="after_splitter" oils_persist="height">
             <label style="font-weight: bold" value="Showing: "/>
             <label id="serial_workarea_mode_label" value="Recently Received"/>
             <spacer flex="1"/>

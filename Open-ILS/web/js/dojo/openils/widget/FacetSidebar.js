@@ -14,6 +14,40 @@
  * ---------------------------------------------------------------------------
  */
 
+/*  Example markup:
+
+<div id='facetSidebarContainer' class='hide_me'>
+
+    <div class="side_bar_item" style="margin-top: 10px; font-weight: bold;">
+        <span>&navigate.facetRefine;</span>
+    </div>
+
+    <div
+        dojoType='openils.widget.FacetSidebar'
+        searchBox='facet_box'
+        searchSubmit='search_submit'
+        facetLimit='5'
+        maxValuesPerFacet='10'
+        classOrder='[{"name":"author","facetOrder":["personal","corporate"]},{"name":"subject","facetOrder":["topic"]},"series",{"name":"subject","facetOrder":["name","geographic"]}]'
+    >
+        <script type='dojo/method' event='populate'><![CDATA[
+            var f_sidebar = this;
+            attachEvt("result", "allRecordsReceived", function () {
+                if(!resultFacetKey) return;
+                if (f_sidebar.facetCacheKey) return; // already rendered it
+
+                dojo.removeClass('facetSidebarContainer','hide_me');
+
+                f_sidebar.facetCacheKey = resultFacetKey;
+                f_sidebar.render();
+            });
+        ]]></script>
+    </div>
+</div>
+
+ */
+
+
 if(!dojo._hasResource["openils.widget.FacetSidebar"]) {
 
     dojo._hasResource["openils.widget.FacetSidebar"] = true;
@@ -31,7 +65,8 @@ if(!dojo._hasResource["openils.widget.FacetSidebar"]) {
             facetData : {},
             facetCacheKey : '',
             searchBox : '',
-            classOrder : null,
+            classOrder : null, // Array of cmc.name values, OR array of objects with name and facetOrder properties
+            displayItemLimit : 999, // Number of distinctly described entries (classes or facets), that have values, to display from classOrder
             searchSubmit : '',
             facetLimit : 10,
             maxValuesPerFacet : 100,
@@ -75,21 +110,49 @@ if(!dojo._hasResource["openils.widget.FacetSidebar"]) {
                     classes = [];
                     dojo.forEach(
                         this.classOrder,
-                        function(x) { classes.push({name:x}); }
+                        function(x) {
+                            if (dojo.isObject(x)) classes.push(x);
+                            else classes.push({name:x});
+                        }
                     );
                 }
 
+                var displayedItems = 0;
                 var me = this;
                 dojo.forEach(
                     classes,
                     function (x) {
-                        var possible_facets = dojo.filter(
-                            openils.widget.Searcher._cache.arr.cmf,
-                            function (y) {
-                                if (y.field_class == x.name && facetData[y.id]) return 1;
-                                return 0;
-                            }
-                        );
+                        var possible_facets = [];
+                        if (x.facetOrder) {
+                            dojo.forEach(x.facetOrder, function(fname) {
+                                var maybe_facet = dojo.filter(
+                                    openils.widget.Searcher._cache.arr.cmf,
+                                    function (y) {
+                                        if (y.field_class == x.name && y.name == fname && facetData[y.id]) {
+                                            if (displayedItems < me.displayItemLimit) {
+                                                displayedItems++;
+                                                return 1;
+                                            }
+                                        }
+                                        return 0;
+                                    }
+                                )[0];
+                                if (maybe_facet) possible_facets.push(maybe_facet);
+                            });
+                        } else {
+                            possible_facets = dojo.filter(
+                                openils.widget.Searcher._cache.arr.cmf,
+                                function (y) {
+                                    if (y.field_class == x.name && facetData[y.id]) {
+                                        if (displayedItems < me.displayItemLimit) {
+                                            displayedItems++;
+                                            return 1;
+                                        }
+                                    }
+                                    return 0;
+                                }
+                            );
+                        }
                         if (possible_facets.length > 0) me.addClass( x.name, possible_facets );
                     }
                 );

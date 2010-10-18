@@ -48,7 +48,7 @@ if(!dojo._hasResource['openils.widget.ProgressDialog']) {
                 }
                     
                 this.inherited(arguments);
-            },
+            }
         }
     );
 }

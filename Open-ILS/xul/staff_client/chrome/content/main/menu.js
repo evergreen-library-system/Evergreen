@@ -27,18 +27,6 @@ main.menu = function () {
         },
         false
     );
-
-    if (xulG.pref.getBoolPref('open-ils.disable_accesskeys_on_tabs')) {
-        var tabs = document.getElementById('main_tabs');
-        for (var i = 0; i < tabs.childNodes.length; i++) {
-            tabs.childNodes[i].setAttribute('accesskey','');
-        }
-    }
-
-    if (xulG.pref.getBoolPref('open-ils.enable_join_tabs')) {
-        document.getElementById('join_tabs_menuitem_vertical').hidden = false;
-        document.getElementById('join_tabs_menuitem_horizontal').hidden = false;
-    }
 }
 
 main.menu.prototype = {
@@ -145,29 +133,24 @@ main.menu.prototype = {
             'cmd_new_window' : [
                 ['oncommand'],
                 function() {
-                    obj.data.stash_retrieve();
-                    var mframe = obj.window.open(
-                        obj.url_prefix(urls.XUL_MENU_FRAME)
-                        + '?server='+window.escape(urls.remote),
-                        'main' + obj.window.window_name_increment(),
-                        'chrome,resizable'); 
-                    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-                    mframe.xulG = xulG;
-                    /* This window should get its own objects for these */
-                    delete mframe.xulG['_data'];
+                    var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
+                        getService(Components.interfaces.nsIWindowMediator);
+                    wm.getMostRecentWindow('eg_main').new_tabs(Array('new'));
                 }
             ],
             'cmd_new_tab' : [
                 ['oncommand'],
-                function() { obj.new_tab(null,{'focus':true},null); }
-            ],
-            'cmd_join_tabs_vertical' : [
-                ['oncommand'],
-                function() { obj.join_tabs({'orient':'vertical'}); }
-            ],
-            'cmd_join_tabs_horizontal' : [
-                ['oncommand'],
-                function() { obj.join_tabs({'orient':'horizontal'}); }
+                function() {
+                    if (obj.new_tab(null,{'focus':true},null) == false)
+                    {
+                        if(window.confirm(offlineStrings.getString('menu.new_tab.max_tab_dialog')))
+                        {
+                            var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
+                                getService(Components.interfaces.nsIWindowMediator);
+                            wm.getMostRecentWindow('eg_main').new_tabs(Array('tab'));
+                        }
+                    }
+                }
             ],
             'cmd_close_tab' : [
                 ['oncommand'],
@@ -1042,6 +1025,18 @@ main.menu.prototype = {
                 }
             ],
 
+            'cmd_marc_batch_edit' : [
+                ['oncommand'],
+                function() {
+                    obj.set_tab(
+                        obj.url_prefix(urls.MARC_BATCH_EDIT),{
+                            'tab_name' : offlineStrings.getString('menu.cmd_marc_batch_edit.tab')
+                        },
+                        {}
+                    );
+                }
+            ],
+
             /* Admin menu */
             'cmd_change_session' : [
                 ['oncommand'],
@@ -1283,7 +1278,6 @@ main.menu.prototype = {
                     }
                 }
             ],
-
         };
 
         JSAN.use('util.controller');
@@ -1292,12 +1286,20 @@ main.menu.prototype = {
         obj.controller.init( { 'window_knows_me_by' : 'g.menu.controller', 'control_map' : cmd_map } );
 
         obj.controller.view.tabbox = window.document.getElementById('main_tabbox');
-        obj.controller.view.tabs = obj.controller.view.tabbox.firstChild;
-        obj.controller.view.panels = obj.controller.view.tabbox.lastChild;
-
-        obj.new_tab(null,{'focus':true},null);
-
-        obj.init_tab_focus_handlers();
+        // Despite what the docs say:
+        // The "tabs" element need not be the first child
+        // The "panels" element need not be the second/last
+        // Nor need they be the only ones there.
+        // Thus, use the IDs for robustness.
+        obj.controller.view.tabs = window.document.getElementById('main_tabs');
+        obj.controller.view.panels = window.document.getElementById('main_panels');
+        obj.controller.view.tabscroller = window.document.getElementById('main_tabs_scrollbox');
+        if(params['firstURL']) {
+            obj.new_tab(params['firstURL'],{'focus':true},null);
+        }
+        else {
+            obj.new_tab(null,{'focus':true},null);
+        }
     },
 
     'spawn_search' : function(s) {
@@ -1306,55 +1308,11 @@ main.menu.prototype = {
         obj.new_patron_tab( {}, { 'doit' : 1, 'query' : js2JSON(s) } );
     },
 
-    'init_tab_focus_handlers' : function() {
-        var obj = this;
-        for (var i = 0; i < obj.controller.view.tabs.childNodes.length; i++) {
-            var tab = obj.controller.view.tabs.childNodes[i];
-            var panel = obj.controller.view.panels.childNodes[i];
-            tab.addEventListener(
-                'command',
-                function(p) {
-                    return function() {
-                        try {
-                            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                            if (p
-                                && p.firstChild 
-                                && ( p.firstChild.nodeName == 'iframe' || p.firstChild.nodeName == 'browser' )
-                                && p.firstChild.contentWindow 
-                            ) {
-                                var cw = p.firstChild.contentWindow;
-                                var help_params = {
-                                    'protocol' : cw.location.protocol,
-                                    'hostname' : cw.location.hostname,
-                                    'port' : cw.location.port,
-                                    'pathname' : cw.location.pathname,
-                                    'src' : ''
-                                };
-                                obj.set_help_context(help_params);
-                                if (typeof cw.default_focus == 'function') {
-                                    cw.default_focus();
-                                }
-                            }
-                        } catch(E) {
-                            obj.error.sdump('D_ERROR','init_tab_focus_handler: ' + js2JSON(E));
-                        }
-                    }
-                }(panel),
-                false
-            );
-        }
-    },
-
-    // We keep a reference to content_params fed to tabs, so if we manipulate the DOM (say, via join_tabs),
-    // we can re-inject the content_params into the content if needed.  We have to watch out for memory leaks
-    // doing this.
-    'preserved_content_params' : {},
-
     'close_all_tabs' : function() {
         var obj = this;
         try {
             var count = obj.controller.view.tabs.childNodes.length;
-            for (var i = 0; i < count; i++) obj.close_tab();
+            for (var i = 1; i < count; i++) obj.close_tab();
             setTimeout( function(){ obj.controller.view.tabs.firstChild.focus(); }, 0);
         } catch(E) {
             obj.error.standard_unexpected_error_alert(offlineStrings.getString('menu.close_all_tabs.error'),E);
@@ -1363,154 +1321,101 @@ main.menu.prototype = {
 
     'close_tab' : function (specific_idx) {
         var idx = specific_idx || this.controller.view.tabs.selectedIndex;
-        var tab = this.controller.view.tabs.childNodes[idx];
         var panel = this.controller.view.panels.childNodes[ idx ];
-        while ( panel.lastChild ) panel.removeChild( panel.lastChild );
-        if (idx == 0) {
-            try {
-                this.controller.view.tabs.advanceSelectedTab(+1);
-            } catch(E) {
-                this.error.sdump('D_TAB','failed tabs.advanceSelectedTab(+1):'+js2JSON(E) + '\n');
-                try {
-                    this.controller.view.tabs.advanceSelectedTab(-1);
-                } catch(E) {
-                    this.error.sdump('D_TAB','failed again tabs.advanceSelectedTab(-1):'+
-                        js2JSON(E) + '\n');
-                }
-            }
-        } else {
-            try {
-                this.controller.view.tabs.advanceSelectedTab(-1);
-            } catch(E) {
-                this.error.sdump('D_TAB','failed tabs.advanceSelectedTab(-1):'+js2JSON(E) + '\n');
-                try {
-                    this.controller.view.tabs.advanceSelectedTab(+1);
-                } catch(E) {
-                    this.error.sdump('D_TAB','failed again tabs.advanceSelectedTab(+1):'+
-                        js2JSON(E) + '\n');
-                }
-            }
-
+        this.controller.view.tabs.removeItemAt(idx);
+        this.controller.view.panels.removeChild(panel);
+        if(this.controller.view.tabs.childNodes.length > idx) {
+            this.controller.view.tabbox.selectedIndex = idx;
         }
-        
-        this.error.sdump('D_TAB','\tnew tabbox.selectedIndex = ' + this.controller.view.tabbox.selectedIndex + '\n');
-
-        this.controller.view.tabs.childNodes[ idx ].hidden = true;
-        this.error.sdump('D_TAB','tabs.childNodes[ ' + idx + ' ].hidden = true;\n');
-
+        else {
+            this.controller.view.tabbox.selectedIndex = idx - 1;
+        }
+        this.controller.view.tabscroller.ensureElementIsVisible(this.controller.view.tabs.selectedItem);
+        this.update_all_tab_names();
         // Make sure we keep at least one tab open.
-        var tab_flag = true;
-        for (var i = 0; i < this.controller.view.tabs.childNodes.length; i++) {
-            var tab = this.controller.view.tabs.childNodes[i];
-            if (!tab.hidden)
-                tab_flag = false;
-        }
-        if (tab_flag) {
-            this.controller.view.tabs.selectedIndex = 0;
+        if(this.controller.view.tabs.childNodes.length == 1) {
             this.new_tab(); 
         }
     },
-
-    'join_tabs' : function(params) {
-        try {
-            if (!params) { params = {}; }
-            if (!params.orient) { params.orient = 'horizontal'; }
-
-            var left_idx = params.specific_idx || this.controller.view.tabs.selectedIndex;
-            var left_tab = this.controller.view.tabs.childNodes[left_idx];
-            var left_panel = this.controller.view.panels.childNodes[ left_idx ];
-
-            // Find next not-hidden tab
-            var right_idx;
-            for (var i = left_idx + 1; i<this.controller.view.tabs.childNodes.length; i++) {
-                var tab = this.controller.view.tabs.childNodes[i];
-                if (!tab.hidden && !right_idx) {
-                    right_idx = i;
-                }
+    
+    'update_all_tab_names' : function() {
+        var doAccessKeys = !xulG.pref.getBoolPref('open-ils.disable_accesskeys_on_tabs');
+        for(var i = 1; i < this.controller.view.tabs.childNodes.length; ++i) {
+            var tab = this.controller.view.tabs.childNodes[i];
+            tab.curindex = i;
+            tab.label = i + ' ' + tab.origlabel;
+            if(doAccessKeys && offlineStrings.testString('menu.tab' + i + '.accesskey')) {
+                tab.accessKey = offlineStrings.getString('menu.tab' + i + '.accesskey');
             }
-            if (!right_idx) { return; }
-
-            // Grab the content
-            var right_tab = this.controller.view.tabs.childNodes[right_idx];
-            var right_panel = this.controller.view.panels.childNodes[ right_idx ];
-
-            var left_content = left_panel.removeChild( left_panel.firstChild );
-            var right_content = right_panel.removeChild( right_panel.firstChild );
-
-            // Create a wrapper and shuffle the content
-            var box = params.orient == 'vertical' ? document.createElement('vbox') : document.createElement('hbox');
-            box.setAttribute('flex',1);
-            left_panel.appendChild(box);
-            box.appendChild(left_content);
-            var splitter = document.createElement('splitter');
-            splitter.appendChild( document.createElement('grippy') );
-            box.appendChild(splitter);
-            box.appendChild(right_content);
-
-            right_tab.hidden = true;
-            // FIXME: if we really want to combine labels for joined tabs, need to handle the cases where the content dynamically set their tab 
-            // labels with xulG.set_tab_name
-            left_tab.setAttribute('unadornedlabel', left_tab.getAttribute('unadornedlabel') + ' / ' + right_tab.getAttribute('unadornedlabel'));
-            left_tab.setAttribute('label', left_tab.getAttribute('label') + ' / ' + right_tab.getAttribute('unadornedlabel'));
-
-            // Re-apply content params, etc.
-            var left_params = this.preserved_content_params[ left_idx ];
-            var right_params = this.preserved_content_params[ right_idx ];
-            this.preserved_content_params[ left_idx ] = function() {
-                try {
-                    left_params();
-                    right_params();
-                } catch(E) {
-                    alert('Error re-applying content params after join_tabs');
-                }
-            };
-            this.preserved_content_params[ left_idx ]();
-
-        } catch(E) {
-            alert('Error in menu.js with join_tabs(): ' + E);
         }
-    },
-
-    'find_free_tab' : function() {
-        var last_not_hidden = -1;
-        for (var i = 0; i<this.controller.view.tabs.childNodes.length; i++) {
-            var tab = this.controller.view.tabs.childNodes[i];
-            if (!tab.hidden)
-                last_not_hidden = i;
-        }
-        if (last_not_hidden == this.controller.view.tabs.childNodes.length - 1)
-            last_not_hidden = -1;
-        // If the one next to last_not_hidden is hidden, we want it.
-        // Basically, we fill in tabs after existing tabs for as 
-        // long as possible.
-        var idx = last_not_hidden + 1;
-        var candidate = this.controller.view.tabs.childNodes[ idx ];
-        if (candidate.hidden)
-            return idx;
-        // Alright, find the first hidden then
-        for (var i = 0; i<this.controller.view.tabs.childNodes.length; i++) {
-            var tab = this.controller.view.tabs.childNodes[i];
-            if (tab.hidden)
-                return i;
-        }
-        return -1;
     },
 
     'new_tab' : function(url,params,content_params) {
-        var tc = this.find_free_tab();
-        if (tc == -1) { return null; } // 9 tabs max
-        var tab = this.controller.view.tabs.childNodes[ tc ];
-        tab.hidden = false;
+        var obj = this;
+        var max_tabs = 0;
+        try {
+            var max_tabs = xulG.pref.getIntPref('open-ils.window_max_tabs') || max_tabs;
+        }
+        catch (e) {}
+        if(max_tabs > 0 && this.controller.view.tabs.childNodes.length > max_tabs) return false;
+        var tab = this.w.document.createElement('tab');
+        var panel = this.w.document.createElement('tabpanel');
+        var tabscroller = this.controller.view.tabscroller;
+        this.controller.view.tabs.appendChild(tab);
+        this.controller.view.panels.appendChild(panel);
+        tab.curindex = this.controller.view.tabs.childNodes.length - 1;
+        if(!xulG.pref.getBoolPref('open-ils.disable_accesskeys_on_tabs')) {
+            if(offlineStrings.testString('menu.tab' + tab.curindex + '.accesskey')) {
+                tab.accessKey = offlineStrings.getString('menu.tab' + tab.curindex + '.accesskey');
+            }
+        }
+        var tabs = this.controller.view.tabs;
+        tab.addEventListener(
+            'command',
+            function() {
+                try {
+                    tabscroller.ensureElementIsVisible(tab);
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    if (panel
+                        && panel.firstChild 
+                        && ( panel.firstChild.nodeName == 'iframe' || panel.firstChild.nodeName == 'browser' )
+                        && panel.firstChild.contentWindow 
+                    ) {
+                        var cw = panel.firstChild.contentWindow;
+                        var help_params = {
+                            'protocol' : cw.location.protocol,
+                            'hostname' : cw.location.hostname,
+                            'port' : cw.location.port,
+                            'pathname' : cw.location.pathname,
+                            'src' : ''
+                        };
+                        obj.set_help_context(help_params);
+                        if (typeof cw.default_focus == 'function') {
+                            cw.default_focus();
+                        }
+                    }
+                } catch(E) {
+                    obj.error.sdump('D_ERROR','init_tab_focus_handler: ' + js2JSON(E));
+                }
+            }
+            ,
+            false
+        );
         if (!content_params) content_params = {};
         if (!params) params = {};
         if (!params.tab_name) params.tab_name = offlineStrings.getString('menu.new_tab.tab');
         if (!params.nofocus) params.focus = true; /* make focus the default */
         try {
-            if (params.focus) this.controller.view.tabs.selectedIndex = tc;
-            params.index = tc;
+            if (params.focus) {
+                this.controller.view.tabs.selectedItem = tab;
+                tabscroller.ensureElementIsVisible(tab);
+            }
+            params.index = tab.curindex;
             this.set_tab(url,params,content_params);
+            return true;
         } catch(E) {
             this.error.sdump('D_ERROR',E);
+            return false;
         }
     },
 
@@ -1640,8 +1545,19 @@ main.menu.prototype = {
             if (params.src) { help_btn.setAttribute('src', params.src); }
         }
     },
-    'augment_content_params' : function(idx,tab,params,content_params) {
+    'set_tab' : function(url,params,content_params) {
         var obj = this;
+        if (!url) url = '/xul/server/';
+        if (!url.match(/:\/\//) && !url.match(/^data:/)) url = urls.remote + url;
+        if (!params) params = {};
+        if (!content_params) content_params = {};
+        var idx = this.controller.view.tabs.selectedIndex;
+        if (params && typeof params.index != 'undefined') idx = params.index;
+        var tab = this.controller.view.tabs.childNodes[ idx ];
+        if (params.focus) tab.focus();
+        var panel = this.controller.view.panels.childNodes[ idx ];
+        while ( panel.lastChild ) panel.removeChild( panel.lastChild );
+
         content_params.new_tab = function(a,b,c) { return obj.new_tab(a,b,c); };
         content_params.set_tab = function(a,b,c) { return obj.set_tab(a,b,c); };
         content_params.close_tab = function() { return obj.close_tab(); };
@@ -1650,7 +1566,7 @@ main.menu.prototype = {
         content_params.volume_item_creator = function(a) { return obj.volume_item_creator(a); };
         content_params.get_new_session = function(a) { return obj.get_new_session(a); };
         content_params.holdings_maintenance_tab = function(a,b,c) { return obj.holdings_maintenance_tab(a,b,c); };
-        content_params.set_tab_name = function(name) { tab.setAttribute('unadornedlabel',name); tab.setAttribute('label',(idx + 1) + ' ' + name); };
+        content_params.set_tab_name = function(name) { tab.label = tab.curindex + ' ' + name; tab.origlabel = name; };
         content_params.set_help_context = function(params) { return obj.set_help_context(params); };
         content_params.open_chrome_window = function(a,b,c) { return xulG.window.open(a,b,c); };
         content_params.url_prefix = function(url) { return obj.url_prefix(url); };
@@ -1662,24 +1578,6 @@ main.menu.prototype = {
         };
         content_params.chrome_xulG = xulG;
         content_params._data = xulG._data;
-
-        return content_params;
-    },
-    'set_tab' : function(url,params,content_params) {
-        var obj = this;
-        if (!url) url = '/xul/server/';
-        if (!url.match(/:\/\//) && !url.match(/^data:/)) url = urls.remote + url;
-        if (!params) params = {};
-        if (!content_params) content_params = {};
-        var idx = this.controller.view.tabs.selectedIndex;
-        if (obj.preserved_content_params[idx]) { delete obj.preserved_content_params[ idx ]; }
-        if (params && typeof params.index != 'undefined') idx = params.index;
-        var tab = this.controller.view.tabs.childNodes[ idx ];
-        if (params.focus) tab.focus();
-        var panel = this.controller.view.panels.childNodes[ idx ];
-        while ( panel.lastChild ) panel.removeChild( panel.lastChild );
-
-        content_params = obj.augment_content_params(idx,tab,params,content_params);
         if (params && params.tab_name) content_params.set_tab_name( params.tab_name );
         
         var frame;
@@ -1706,9 +1604,6 @@ main.menu.prototype = {
                             'passthru_content_params' : content_params,
                         }
                     );
-                    obj.preserved_content_params[ idx ] = function() {
-                        b.passthru_content_params = content_params;
-                    }
                 } catch(E) {
                     alert(E);
                 }
@@ -1718,40 +1613,37 @@ main.menu.prototype = {
                 panel.appendChild(frame);
                 dump('creating iframe with src = ' + url + '\n');
                 frame.setAttribute('src',url);
-                obj.preserved_content_params[ idx ] = function() {
-                    try {
-                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                        var cw = frame.contentWindow;
-                        if (typeof cw.wrappedJSObject != 'undefined') cw = cw.wrappedJSObject;
-                        cw.IAMXUL = true;
-                        cw.xulG = content_params;
-                        cw.addEventListener(
-                            'load',
-                            function() {
-                                try {
-                                    if (typeof cw.help_context_set_locally == 'undefined') {
-                                        var help_params = {
-                                            'protocol' : cw.location.protocol,
-                                            'hostname' : cw.location.hostname,
-                                            'port' : cw.location.port,
-                                            'pathname' : cw.location.pathname,
-                                            'src' : ''
-                                        };
-                                        obj.set_help_context(help_params);
-                                    } else if (typeof cw.default_focus == 'function') {
-                                        cw.default_focus();
-                                    }
-                                } catch(E) {
-                                    obj.error.sdump('D_ERROR', 'main.menu, set_tab, onload: ' + E);
+                try {
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                    var cw = frame.contentWindow;
+                    if (typeof cw.wrappedJSObject != 'undefined') cw = cw.wrappedJSObject;
+                    cw.IAMXUL = true;
+                    cw.xulG = content_params;
+                    cw.addEventListener(
+                        'load',
+                        function() {
+                            try {
+                                if (typeof cw.help_context_set_locally == 'undefined') {
+                                    var help_params = {
+                                        'protocol' : cw.location.protocol,
+                                        'hostname' : cw.location.hostname,
+                                        'port' : cw.location.port,
+                                        'pathname' : cw.location.pathname,
+                                        'src' : ''
+                                    };
+                                    obj.set_help_context(help_params);
+                                } else if (typeof cw.default_focus == 'function') {
+                                    cw.default_focus();
                                 }
-                            },
-                            false
-                        );
-                    } catch(E) {
-                        this.error.sdump('D_ERROR', 'main.menu: ' + E);
-                    }
-                };
-                obj.preserved_content_params[ idx ]();
+                            } catch(E) {
+                                obj.error.sdump('D_ERROR', 'main.menu, set_tab, onload: ' + E);
+                            }
+                        },
+                        false
+                    );
+                } catch(E) {
+                    this.error.sdump('D_ERROR', 'main.menu: ' + E);
+                }
             }
         } catch(E) {
             this.error.sdump('D_ERROR', 'main.menu:2: ' + E);

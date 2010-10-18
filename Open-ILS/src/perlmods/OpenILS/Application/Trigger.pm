@@ -7,6 +7,7 @@ use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::JSON;
 
 use OpenSRF::AppSession;
+use OpenSRF::MultiSession;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::Utils qw/:datetime/;
@@ -21,8 +22,16 @@ use OpenILS::Application::Trigger::EventGroup;
 
 
 my $log = 'OpenSRF::Utils::Logger';
+my $parallel_collect;
+my $parallel_react;
 
-sub initialize {}
+sub initialize {
+
+    my $conf = OpenSRF::Utils::SettingsClient->new;
+    $parallel_collect = $conf->config_value( apps => 'open-ils.trigger' => app_settings => parallel => 'collect') || 1;
+    $parallel_react = $conf->config_value( apps => 'open-ils.trigger' => app_settings => parallel => 'react') || 1;
+
+}
 sub child_init {}
 
 sub create_active_events_for_object {
@@ -68,7 +77,7 @@ sub create_active_events_for_object {
             my $uid = $target->$ufield;
             $uid = $uid->id if (ref $uid); # fleshed user object, unflesh it
 
-            my $opt_in_setting = $editor->search_actor_usr_setting(
+            my $opt_in_setting = $editor->search_actor_user_setting(
                 { usr   => $uid,
                   name  => $def->opt_in_setting,
                   value => 'true'
@@ -154,7 +163,7 @@ sub create_event_for_object_and_def {
             my $uid = $target->$ufield;
             $uid = $uid->id if (ref $uid); # fleshed user object, unflesh it
 
-            my $opt_in_setting = $editor->search_actor_usr_setting(
+            my $opt_in_setting = $editor->search_actor_user_setting(
                 { usr   => $uid,
                   name  => $def->opt_in_setting,
                   value => 'true'
@@ -328,7 +337,7 @@ sub events_by_target {
             for (grep { $_ ne '-and' } keys %{$$filter{event}});
     }
 
-    my $e = new_editor();
+    my $e = new_editor(xact=>1);
 
     my $events = $e->json_query($query);
 
@@ -469,7 +478,7 @@ sub create_batch_events {
                 '-exists' => {
                     from  => 'aus',
                     where => {
-                        name => $def->id,
+                        name => $def->opt_in_setting,
                         usr  => { '=' => { '+' . $hook_hash{$def->hook}->core_type => $def->usr_field } },
                         value=> 'true'
                     }
@@ -502,7 +511,6 @@ sub create_batch_events {
             $event->event_def( $def->id );
             $event->run_time( $run_time );
             $event->user_data( OpenSRF::Utils::JSON->perl2JSON($user_data) ) if (defined($user_data));
-            $event->granularity($granularity) if (defined $granularity);
 
             $editor->create_action_trigger_event( $event );
 
@@ -547,6 +555,7 @@ sub fire_single_event {
     }
 
     $e->editor->disconnect;
+    OpenILS::Application::Trigger::Event->ClearObjectCache();
 
     return {
         valid     => $e->valid,
@@ -575,6 +584,7 @@ sub fire_event_group {
     }
 
     $e->editor->disconnect;
+    OpenILS::Application::Trigger::Event->ClearObjectCache();
 
     return {
         valid     => $e->valid,
@@ -594,18 +604,21 @@ sub pending_events {
     my $self = shift;
     my $client = shift;
     my $granularity = shift;
-
-    my $editor = new_editor();
+    my $granflag = shift;
 
     my $query = [{ state => 'pending', run_time => {'<' => 'now'} }, { order_by => { atev => [ qw/run_time add_time/] }, 'join' => 'atevdef' }];
 
     if (defined $granularity) {
-        $query->[0]->{'+atevdef'} = {'-or' => [ {granularity => $granularity}, {granularity => undef} ] };
+        if ($granflag) {
+            $query->[0]->{'+atevdef'} = {granularity => $granularity};
+        } else {
+            $query->[0]->{'+atevdef'} = {'-or' => [ {granularity => $granularity}, {granularity => undef} ] };
+        }
     } else {
         $query->[0]->{'+atevdef'} = {granularity => undef};
     }
 
-    return $editor->search_action_trigger_event(
+    return new_editor(xact=>1)->search_action_trigger_event(
         $query, { idlist=> 1, timeout => 7200, substream => 1 }
     );
 }
@@ -615,12 +628,52 @@ __PACKAGE__->register_method(
     api_level=> 1
 );
 
+sub gather_events {
+    my $self = shift;
+    my $client = shift;
+    my $e_ids = shift;
+
+    $e_ids = [$e_ids] if (!ref($e_ids));
+
+    my @events;
+    for my $e_id (@$e_ids) {
+        my $e;
+        try {
+           $e = OpenILS::Application::Trigger::Event->new($e_id);
+        } catch Error with {
+            $logger->error("trigger: Event creation failed with ".shift());
+        };
+
+        next if !$e or $e->event->state eq 'invalid'; 
+
+        try {
+            $e->build_environment;
+        } catch Error with {
+            $logger->error("trigger: Event environment building failed with ".shift());
+        };
+
+        $e->editor->disconnect;
+        $e->environment->{EventProcessor} = undef; # remove circular ref for json encoding
+        $client->respond($e);
+    }
+
+    OpenILS::Application::Trigger::Event->ClearObjectCache();
+
+    return undef;
+}
+__PACKAGE__->register_method(
+    api_name => 'open-ils.trigger.event.gather',
+    method   => 'gather_events',
+    api_level=> 1
+);
+
 sub grouped_events {
     my $self = shift;
     my $client = shift;
     my $granularity = shift;
+    my $granflag = shift;
 
-    my ($events) = $self->method_lookup('open-ils.trigger.event.find_pending')->run($granularity);
+    my ($events) = $self->method_lookup('open-ils.trigger.event.find_pending')->run($granularity, $granflag);
 
     my %groups = ( '*' => [] );
 
@@ -631,50 +684,66 @@ sub grouped_events {
         return \%groups;
     }
 
-    for my $e_id ( @$events ) {
-        $logger->info("trigger: processing event $e_id");
+    my @fleshed_events;
 
-        # let the client know we're still chugging along TODO add osrf support for method_lookup $client's
+    if ($parallel_collect == 1 or @$events == 1) { # use method lookup
+        @fleshed_events = $self->method_lookup('open-ils.trigger.event.gather')->run($events);
+    } else {
+        my $self_multi = OpenSRF::MultiSession->new(
+            app                 => 'open-ils.trigger',
+            cap                 => $parallel_collect,
+            success_handler     => sub {
+                my $self = shift;
+                my $req = shift;
+
+                push @fleshed_events,
+                    map { OpenILS::Application::Trigger::Event->new($_) }
+                    map { $_->content }
+                    @{ $req->{response} };
+            },
+        );
+
+        $self_multi->request( 'open-ils.trigger.event.gather' => $_ ) for ( @$events );
         $client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
-        my $e;
-        try {
-           $e = OpenILS::Application::Trigger::Event->new($e_id);
-        } catch Error with {
-            $logger->error("trigger: Event creation failed with ".shift());
-        };
+        $self_multi->session_wait(1);
+        $client->status( new OpenSRF::DomainObject::oilsContinueStatus );
+    }
 
-        next unless $e; 
-
-        try {
-            $e->build_environment;
-        } catch Error with {
-            $logger->error("trigger: Event environment building failed with ".shift());
-        };
-
+    for my  $e (@fleshed_events) {
         if (my $group = $e->event->event_def->group_field) {
 
             # split the grouping link steps
             my @steps = split /\./, $group;
+            my $group_field = pop(@steps); # we didn't flesh to this, it's a field not an object
 
-            # find the grouping object
-            my $node = $e->target;
-            $node = $node->$_() for ( @steps );
+            my $node;
+            eval {
+                $node = $e->target;
+                $node = $node->$_() for ( @steps );
+            };
 
-            # get the pkey value for the grouping object on this event
-            my $node_ident = $node->Identity;
-            my $ident_value = $node->$node_ident();
+            unless($node) { # should not get here, but to be safe..
+                $e->update_state('invalid');
+                next;
+            }
 
-            # push this event onto the event+grouping_pkey_value stack
+            # get the grouping value for the grouping object on this event
+            my $ident_value = $node->$group_field();
+            if(ref $ident_value) {
+                my $ident_field = $ident_value->Identity; 
+                $ident_value = $ident_value->$ident_field()
+            }
+
+            # push this event onto the event+grouping_value stack
             $groups{$e->event->event_def->id}{$ident_value} ||= [];
             push @{ $groups{$e->event->event_def->id}{$ident_value} }, $e;
         } else {
             # it's a non-grouped event
             push @{ $groups{'*'} }, $e;
         }
-
-        $e->editor->disconnect;
     }
+
 
     return \%groups;
 }
@@ -688,44 +757,80 @@ sub run_all_events {
     my $self = shift;
     my $client = shift;
     my $granularity = shift;
+    my $granflag = shift;
 
-    my ($groups) = $self->method_lookup('open-ils.trigger.event.find_pending_by_group')->run($granularity);
+    my ($groups) = $self->method_lookup('open-ils.trigger.event.find_pending_by_group')->run($granularity, $granflag);
+    $client->respond({"status" => "found"}) if (keys(%$groups) > 1 || @{$$groups{'*'}});
+
+    my $self_multi;
+    if ($parallel_react > 1 and (keys(%$groups) > 1 || @{$$groups{'*'}} > 1)) {
+        $self_multi = OpenSRF::MultiSession->new(
+            app                   => 'open-ils.trigger',
+            cap                   => $parallel_react,
+            session_hash_function => sub {
+                my $args = shift;
+                return $args->{target_id};
+            },
+            success_handler       => sub {
+                my $me = shift;
+                my $req = shift;
+                $client->respond( $req->{response}->[0]->content );
+            }
+        );
+    }
 
     for my $def ( keys %$groups ) {
         if ($def eq '*') {
             $logger->info("trigger: run_all_events firing un-grouped events");
             for my $event ( @{ $$groups{'*'} } ) {
                 try {
-                    $client->respond(
-                        $self
-                            ->method_lookup('open-ils.trigger.event.fire')
-                            ->run($event)
-                    );
+                    if ($self_multi) {
+                        $event->environment->{EventProcessor} = undef; # remove circular ref for json encoding
+                        $self_multi->request({target_id => $event->id}, 'open-ils.trigger.event.fire', $event);
+                    } else {
+                        $client->respond(
+                            $self
+                                ->method_lookup('open-ils.trigger.event.fire')
+                                ->run($event)
+                        );
+                    }
                 } catch Error with { 
                     $logger->error("trigger: event firing failed with ".shift());
                 };
             }
-            $logger->info("trigger: run_all_events completed firing un-grouped events");
+            $logger->info("trigger: run_all_events completed queuing un-grouped events");
+            $client->status( new OpenSRF::DomainObject::oilsContinueStatus );
 
         } else {
             my $defgroup = $$groups{$def};
             $logger->info("trigger: run_all_events firing events for grouped event def=$def");
             for my $ident ( keys %$defgroup ) {
+                $logger->info("trigger: run_all_events firing group for grouped event def=$def and grp ident $ident");
                 try {
-                    $client->respond(
-                        $self
-                            ->method_lookup('open-ils.trigger.event_group.fire')
-                            ->run($$defgroup{$ident})
-                    );
+                    if ($self_multi) {
+                        $_->environment->{EventProcessor} = undef for @{$$defgroup{$ident}}; # remove circular ref for json encoding
+                        $self_multi->request({target_id => $ident}, 'open-ils.trigger.event_group.fire', $$defgroup{$ident});
+                    } else {
+                        $client->respond(
+                            $self
+                                ->method_lookup('open-ils.trigger.event_group.fire')
+                                ->run($$defgroup{$ident})
+                        );
+                    }
+                    $client->status( new OpenSRF::DomainObject::oilsContinueStatus );
                 } catch Error with {
                     $logger->error("trigger: event firing failed with ".shift());
                 };
             }
-            $logger->info("trigger: run_all_events completed firing events for grouped event def=$def");
+            $logger->info("trigger: run_all_events completed queuing events for grouped event def=$def");
         }
     }
-                
-            
+
+    $self_multi->session_wait(1) if ($self_multi);
+    $logger->info("trigger: run_all_events completed firing events");
+
+    $client->respond_complete();
+    return undef;
 }
 __PACKAGE__->register_method(
     api_name => 'open-ils.trigger.event.run_all_pending',

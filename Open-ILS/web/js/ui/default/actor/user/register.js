@@ -384,14 +384,14 @@ function uEditFetchUserSettings(userId) {
 
     /* fetch any values set for this user */
     userSettings = fieldmapper.standardRequest(
-        ['open-ils.actor', 'open-ils.actor.patron.settings.retrieve'],
+        ['open-ils.actor', 'open-ils.actor.patron.settings.retrieve.authoritative'],
         {params : [openils.User.authtoken, userId, names]});
 }
 
 
 function uEditLoadUser(userId) {
     var patron = fieldmapper.standardRequest(
-        ['open-ils.actor', 'open-ils.actor.user.fleshed.retrieve'],
+        ['open-ils.actor', 'open-ils.actor.user.fleshed.retrieve.authoritative'],
         {params : [openils.User.authtoken, userId]}
     );
     openils.Event.parse_and_raise(patron);
@@ -1212,6 +1212,10 @@ function uEditNewAddr(evt, id, mkLinks) {
 
             if(row.getAttribute('fmclass')) {
                 var widget = fleshFMRow(row, 'aua', {addr:id});
+
+                // make new addresses a default address type
+                if(id < 0 && row.getAttribute('fmfield') == 'address_type') 
+                    widget.widget.attr('value', localeStrings.DEFAULT_ADDRESS_TYPE); 
 
                 // make new addresses valid by default
                 if(id < 0 && row.getAttribute('fmfield') == 'valid') 

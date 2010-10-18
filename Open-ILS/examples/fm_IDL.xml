@@ -999,6 +999,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<fields oils_persist:primary="id" oils_persist:sequence="config.hold_matrix_matchpoint_id_seq">
 			<field reporter:label="Matchpoint ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Active?" name="active" reporter:datatype="bool"/>
+			<field reporter:label="Strict OU matches?" name="strict_ou_match" reporter:datatype="bool"/>
 			<field reporter:label="User Home Library" name="user_home_ou" reporter:datatype="org_unit"/>
 			<field reporter:label="Request Library" name="request_ou" reporter:datatype="org_unit"/>
 			<field reporter:label="Pickup Library" name="pickup_ou" reporter:datatype="org_unit"/>
@@ -1868,6 +1869,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="name" reporter:datatype="text"/>
 			<field name="normal" reporter:datatype="interval"/>
 			<field name="shrt" reporter:datatype="interval"/>
+			<field name="date_ceiling" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 		</links>
@@ -1880,6 +1882,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+
+	<class id="chdd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::hard_due_date" oils_persist:tablename="config.hard_due_date" reporter:label="Hard Due Date">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.hard_due_date_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Duration Rule" name="duration_rule" reporter:datatype="link"/>
+			<field reporter:label="Ceiling Date" name="ceiling_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Active Date" name="active_date" reporter:datatype="timestamp"/>
+		</fields>
+		<links>
+			<link field="duration_rule" reltype="has_a" key="id" map="" class="crcd"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		</permacrud>
+	</class>
+
 	<class id="mobts" controller="open-ils.cstore" oils_obj:fieldmapper="money::open_billable_transaction_summary" oils_persist:tablename="money.open_billable_xact_summary" reporter:label="Open Billable Transaction Summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field name="balance_owed" reporter:datatype="money"/>
@@ -4515,6 +4532,7 @@ SELECT  usr,
 			<field reporter:label="User Expiration Interval" name="perm_interval" reporter:datatype="interval"/>
 			<field reporter:label="Required Permission" name="application_perm" reporter:datatype="text"/>
 			<field reporter:label="Is User Group" name="usergroup" reporter:datatype="bool"/>
+			<field reporter:label="Hold Priority" name="hold_priority" reporter:datatype="int"/>
 		</fields>
 		<links>
 			<link field="parent" reltype="has_a" key="id" map="" class="pgt"/>
@@ -6523,7 +6541,7 @@ SELECT  usr,
 			<field name="owner" reporter:datatype="link"/>
 			<field name="create_time" reporter:datatype="timestamp"/>
 			<field name="template" reporter:datatype="link"/>
-			<field name="data" reporter:datatype="link"/>
+			<field name="data" reporter:datatype="text"/>
 			<field name="folder" reporter:datatype="link"/>
 			<field name="recur" reporter:datatype="bool"/>
 			<field name="recurrence" reporter:datatype="interval"/>

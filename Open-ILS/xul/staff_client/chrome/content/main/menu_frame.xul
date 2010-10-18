@@ -31,6 +31,7 @@
     onload="try { my_init(); font_helper(); } catch(E) { alert(E); }"
     orient="vertical" width="1024" height="740"
     sizemode="maximized" persist="width height sizemode" title="&staff.main.menu.title;"
+    windowtype="eg_menu"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -86,6 +87,7 @@
                 JSAN.use('main.menu'); g.menu = new main.menu();
                 g.menu.init( { 
                     'server' : g.cgi.param('server'),
+                    'firstURL' : g.cgi.param('firstURL'),
                 } );
 
                 JSAN.use('util.window'); g.window = new util.window();

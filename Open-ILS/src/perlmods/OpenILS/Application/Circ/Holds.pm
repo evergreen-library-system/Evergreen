@@ -34,6 +34,8 @@ use OpenILS::Application::Actor::Friends;
 use DateTime;
 use DateTime::Format::ISO8601;
 use OpenSRF::Utils qw/:datetime/;
+use Digest::MD5 qw(md5_hex);
+use OpenSRF::Utils::Cache;
 my $apputils = "OpenILS::Application::AppUtils";
 my $U = $apputils;
 
@@ -119,10 +121,10 @@ __PACKAGE__->register_method(
 
 sub create_hold {
 	my( $self, $conn, $auth, $hold ) = @_;
-	my $e = new_editor(authtoken=>$auth, xact=>1);
-	return $e->event unless $e->checkauth;
-
     return -1 unless $hold;
+	my $e = new_editor(authtoken=>$auth, xact=>1);
+	return $e->die_event unless $e->checkauth;
+
 	my $override = 1 if $self->api_name =~ /override/;
 
     my @events;
@@ -133,8 +135,8 @@ sub create_hold {
     if( $requestor->id ne $hold->usr ) {
         # Make sure the requestor is allowed to place holds for 
         # the recipient if they are not the same people
-        $recipient = $e->retrieve_actor_user($hold->usr)  or return $e->event;
-        $e->allowed('REQUEST_HOLDS', $recipient->home_ou) or return $e->event;
+        $recipient = $e->retrieve_actor_user($hold->usr)  or return $e->die_event;
+        $e->allowed('REQUEST_HOLDS', $recipient->home_ou) or return $e->die_event;
     }
 
     # If the related org setting tells us to, block if patron privs have expired
@@ -172,27 +174,30 @@ sub create_hold {
     push( @events, OpenILS::Event->new('HOLD_ITEM_CHECKED_OUT')) if $checked_out;
 
     if ( $t eq OILS_HOLD_TYPE_METARECORD ) {
-        return $e->event unless $e->allowed('MR_HOLDS',     $porg);
+        return $e->die_event unless $e->allowed('MR_HOLDS',     $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_TITLE ) {
-        return $e->event unless $e->allowed('TITLE_HOLDS',  $porg);
+        return $e->die_event unless $e->allowed('TITLE_HOLDS',  $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_VOLUME ) {
-        return $e->event unless $e->allowed('VOLUME_HOLDS', $porg);
+        return $e->die_event unless $e->allowed('VOLUME_HOLDS', $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_ISSUANCE ) {
-        return $e->event unless $e->allowed('ISSUANCE_HOLDS', $porg);
+        return $e->die_event unless $e->allowed('ISSUANCE_HOLDS', $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_COPY ) {
-        return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
+        return $e->die_event unless $e->allowed('COPY_HOLDS',   $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_FORCE ) {
-        return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
+        return $e->die_event unless $e->allowed('COPY_HOLDS',   $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_RECALL ) {
-        return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
+        return $e->die_event unless $e->allowed('COPY_HOLDS',   $porg);
     }
 
     if( @events ) {
-        $override or return \@events;
+        if (!$override) {
+            $e->rollback;
+            return \@events;
+        }
         for my $evt (@events) {
             next unless $evt;
             my $name = $evt->{textcode};
-            return $e->event unless $e->allowed("$name.override", $porg);
+            return $e->die_event unless $e->allowed("$name.override", $porg);
         }
     }
 
@@ -208,7 +213,7 @@ sub create_hold {
     $hold->requestor($e->requestor->id); 
     $hold->request_lib($e->requestor->ws_ou);
     $hold->selection_ou($hold->pickup_lib) unless $hold->selection_ou;
-    $hold = $e->create_action_hold_request($hold) or return $e->event;
+    $hold = $e->create_action_hold_request($hold) or return $e->die_event;
 
 	$e->commit;
 
@@ -528,14 +533,20 @@ __PACKAGE__->register_method(
 sub uncancel_hold {
 	my($self, $client, $auth, $hold_id) = @_;
 	my $e = new_editor(authtoken=>$auth, xact=>1);
-	return $e->event unless $e->checkauth;
+	return $e->die_event unless $e->checkauth;
 
 	my $hold = $e->retrieve_action_hold_request($hold_id)
 		or return $e->die_event;
     return $e->die_event unless $e->allowed('CANCEL_HOLDS', $hold->request_lib);
 
-    return 0 if $hold->fulfillment_time;
-    return 1 unless $hold->cancel_time;
+    if ($hold->fulfillment_time) {
+        $e->rollback;
+        return 0;
+    }
+    unless ($hold->cancel_time) {
+        $e->rollback;
+        return 1;
+    }
 
     # if configured to reset the request time, also reset the expire time
     if($U->ou_ancestor_setting_value(
@@ -583,22 +594,25 @@ sub cancel_hold {
 	my($self, $client, $auth, $holdid, $cause, $note) = @_;
 
 	my $e = new_editor(authtoken=>$auth, xact=>1);
-	return $e->event unless $e->checkauth;
+	return $e->die_event unless $e->checkauth;
 
 	my $hold = $e->retrieve_action_hold_request($holdid)
-		or return $e->event;
+		or return $e->die_event;
 
 	if( $e->requestor->id ne $hold->usr ) {
-		return $e->event unless $e->allowed('CANCEL_HOLDS');
+		return $e->die_event unless $e->allowed('CANCEL_HOLDS');
 	}
 
-	return 1 if $hold->cancel_time;
+	if ($hold->cancel_time) {
+        $e->rollback;
+        return 1;
+    }
 
 	# If the hold is captured, reset the copy status
 	if( $hold->capture_time and $hold->current_copy ) {
 
 		my $copy = $e->retrieve_asset_copy($hold->current_copy)
-			or return $e->event;
+			or return $e->die_event;
 
 		if( $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
          $logger->info("canceling hold $holdid whose item is on the holds shelf");
@@ -630,11 +644,15 @@ sub cancel_hold {
     $hold->cancel_cause($cause);
     $hold->cancel_note($note);
 	$e->update_action_hold_request($hold)
-		or return $e->event;
+		or return $e->die_event;
 
 	delete_hold_copy_maps($self, $e, $hold->id);
 
 	$e->commit;
+
+    $U->create_events_for_hook('hold_request.cancel.staff', $hold, $hold->pickup_lib)
+        if $e->requestor->id != $hold->usr;
+
 	return 1;
 }
 
@@ -698,7 +716,10 @@ sub update_hold {
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
     my $resp = update_hold_impl($self, $e, $hold, $values);
-    return $resp if $U->event_code($resp);
+    if ($U->event_code($resp)) {
+        $e->rollback;
+        return $resp;
+    }
     $e->commit;     # FIXME: update_hold_impl already does $e->commit  ??
     return $resp;
 }
@@ -1033,11 +1054,7 @@ sub retrieve_hold_queue_status_impl {
         # fetch cut_in_line and request_time since they're in the order_by
         # and we're asking for distinct values
         select => {ahr => ['id', 'cut_in_line', 'request_time']},
-        from   => {
-            ahr => {
-                ahcm => {type => 'left'} # there may be no copy maps 
-            }
-        },
+        from   => { ahr => 'ahcm' },
         order_by => [
             {
                 "class" => "ahr",
@@ -1049,28 +1066,40 @@ sub retrieve_hold_queue_status_impl {
             { "class" => "ahr", "field" => "request_time" }
         ],
         distinct => 1,
-        where    => {
-            '-or' => [
-                {
-                    '+ahcm' => {
-                        target_copy => {
-                            in => {
-                                select => {ahcm => ['target_copy']},
-                                from   => 'ahcm',
-                                where  => {hold => $hold->id}
-                            } 
-                        } 
-                    }
-                },
-                {
-                    '+ahr' => {
-                        hold_type => $hold->hold_type,
-                        target    => $hold->target
-                    }
-                }
-            ]
-        }, 
+        where => {
+            '+ahcm' => {
+                target_copy => {
+                    in => {
+                        select => {ahcm => ['target_copy']},
+                        from   => 'ahcm',
+                        where  => {hold => $hold->id}
+                    } 
+                } 
+            }
+        }
     });
+
+    if (!@$q_holds) { # none? maybe we don't have a map ... 
+        $q_holds = $e->json_query({
+            select => {ahr => ['id', 'cut_in_line', 'request_time']},
+            from   => 'ahr',
+            order_by => [
+                {
+                    "class" => "ahr",
+                    "field" => "cut_in_line",
+                    "transform" => "coalesce",
+                    "params" => [ 0 ],
+                    "direction" => "desc"
+                },
+                { "class" => "ahr", "field" => "request_time" }
+            ],
+            where    => {
+                hold_type => $hold->hold_type, 
+                target    => $hold->target 
+           } 
+        });
+    }
+
 
     my $qpos = 1;
     for my $h (@$q_holds) {
@@ -1256,23 +1285,157 @@ __PACKAGE__->register_method(
 sub print_hold_pull_list {
     my($self, $client, $auth, $org_id) = @_;
 
-    my $e = new_editor(authtoken=>$auth, xact=>1);
-    return $e->die_event unless $e->checkauth;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
 
     $org_id = (defined $org_id) ? $org_id : $e->requestor->ws_ou;
-    return $e->die_event unless $e->allowed('VIEW_HOLD', $org_id);
+    return $e->event unless $e->allowed('VIEW_HOLD', $org_id);
 
     my $hold_ids = $U->storagereq(
         'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.status_filtered.atomic',
         $org_id, 10000);
 
     return undef unless @$hold_ids;
+
     $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
 
+    # Holds will /NOT/ be in order after this ...
     my $holds = $e->search_action_hold_request({id => $hold_ids}, {substream => 1});
     $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
 
-    return $U->fire_object_event(undef, 'ahr.format.pull_list', $holds, $org_id);
+    # ... so we must resort.
+    my $hold_map = +{map { $_->id => $_ } @$holds};
+    my $sorted_holds = [];
+    push @$sorted_holds, $hold_map->{$_} foreach @$hold_ids;
+
+    return $U->fire_object_event(
+        undef, "ahr.format.pull_list", $sorted_holds,
+        $org_id, undef, undef, $client
+    );
+
+}
+
+__PACKAGE__->register_method(
+    method    => "print_hold_pull_list_stream",
+    stream   => 1,
+    api_name  => "open-ils.circ.hold_pull_list.print.stream",
+    signature => {
+        desc   => 'Returns a stream of fleshed holds',
+        params => [
+            { desc => 'Authtoken', type => 'string'},
+            { desc => 'Hash of optional param: Org unit ID (defaults to workstation org unit), limit, offset, sort (array of: acplo.position, call_number, request_time)',
+              type => 'object'
+            },
+        ],
+        return => {
+            desc => 'A stream of fleshed holds',
+            type => 'object'
+        }
+    }
+);
+
+sub print_hold_pull_list_stream {
+    my($self, $client, $auth, $params) = @_;
+
+    my $e = new_editor(authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+
+    delete($$params{org_id}) unless (int($$params{org_id}));
+    delete($$params{limit}) unless (int($$params{limit}));
+    delete($$params{offset}) unless (int($$params{offset}));
+    delete($$params{chunk_size}) unless (int($$params{chunk_size}));
+    delete($$params{chunk_size}) if  ($$params{chunk_size} && $$params{chunk_size} > 50); # keep the size reasonable
+    $$params{chunk_size} ||= 10;
+
+    $$params{org_id} = (defined $$params{org_id}) ? $$params{org_id}: $e->requestor->ws_ou;
+    return $e->die_event unless $e->allowed('VIEW_HOLD', $$params{org_id });
+
+    my $sort = [];
+    if ($$params{sort} && @{ $$params{sort} }) {
+        for my $s (@{ $$params{sort} }) {
+            if ($s eq 'acplo.position') {
+                push @$sort, {
+                    "class" => "acplo", "field" => "position",
+                    "transform" => "coalesce", "params" => [999]
+                };
+            } elsif ($s eq 'call_number') {
+                push @$sort, {"class" => "acn", "field" => "label"};
+            } elsif ($s eq 'request_time') {
+                push @$sort, {"class" => "ahr", "field" => "request_time"};
+            }
+        }
+    } else {
+        push @$sort, {"class" => "ahr", "field" => "request_time"};
+    }
+
+    my $holds_ids = $e->json_query(
+        {
+            "select" => {"ahr" => ["id"]},
+            "from" => {
+                "ahr" => {
+                    "acp" => { 
+                        "field" => "id",
+                        "fkey" => "current_copy",
+                        "filter" => {
+                            "circ_lib" => $$params{org_id}, "status" => [0,7]
+                        },
+                        "join" => {
+                            "acn" => {
+                                "field" => "id",
+                                "fkey" => "call_number" 
+                            },
+                            "acplo" => {
+                                "field" => "org",
+                                "fkey" => "circ_lib", 
+                                "type" => "left",
+                                "filter" => {
+                                    "location" => {"=" => {"+acp" => "location"}}
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "where" => {
+                "+ahr" => {
+                    "capture_time" => undef,
+                    "cancel_time" => undef,
+                    "-or" => [
+                        {"expire_time" => undef },
+                        {"expire_time" => {">" => "now"}}
+                    ]
+                }
+            },
+            (@$sort ? (order_by => $sort) : ()),
+            ($$params{limit} ? (limit => $$params{limit}) : ()),
+            ($$params{offset} ? (offset => $$params{offset}) : ())
+        }, {"substream" => 1}
+    ) or return $e->die_event;
+
+    $logger->info("about to stream back " . scalar(@$holds_ids) . " holds");
+
+    my @chunk;
+    for my $hid (@$holds_ids) {
+        push @chunk, $e->retrieve_action_hold_request([
+            $hid->{"id"}, {
+                "flesh" => 3,
+                "flesh_fields" => {
+                    "ahr" => ["usr", "current_copy"],
+                    "au"  => ["card"],
+                    "acp" => ["location", "call_number"],
+                    "acn" => ["record"]
+                }
+            }
+        ]);
+
+        if (@chunk >= $$params{chunk_size}) {
+            $client->respond( \@chunk );
+            @chunk = ();
+        }
+    }
+    $client->respond_complete( \@chunk ) if (@chunk);
+    $e->disconnect;
+    return undef;
 }
 
 
@@ -1332,7 +1495,7 @@ sub create_hold_notify {
    return $e->die_event unless 
       $e->allowed('CREATE_HOLD_NOTIFICATION', $patron->home_ou);
 
-	$note->notify_staff($e->requestor->id);
+   $note->notify_staff($e->requestor->id);
    $e->create_action_hold_notification($note) or return $e->die_event;
    $e->commit;
    return $note->id;
@@ -1430,14 +1593,14 @@ sub _reset_hold {
 	if( $hold->capture_time and $hold->current_copy ) {
 
 		my $copy = $e->retrieve_asset_copy($hold->current_copy)
-			or return $e->event;
+			or return $e->die_event;
 
 		if( $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
 			$logger->info("setting copy to status 'reshelving' on hold retarget");
 			$copy->status(OILS_COPY_STATUS_RESHELVING);
 			$copy->editor($e->requestor->id);
 			$copy->edit_date('now');
-			$e->update_asset_copy($copy) or return $e->event;
+			$e->update_asset_copy($copy) or return $e->die_event;
 
 		} elsif( $copy->status == OILS_COPY_STATUS_IN_TRANSIT ) {
 
@@ -1452,7 +1615,10 @@ sub _reset_hold {
 					$logger->info("Aborting transit [$transid] on hold [$hid] reset...");
 					my $evt = OpenILS::Application::Circ::Transit::__abort_transit($e, $trans, $copy, 1);
 					$logger->info("Transit abort completed with result $evt");
-					return $evt unless "$evt" eq 1;
+					unless ("$evt" eq 1) {
+                        $e->rollback;
+					    return $evt;
+                    }
 				}
 			}
 		}
@@ -1463,7 +1629,7 @@ sub _reset_hold {
 	$hold->clear_shelf_time;
 	$hold->clear_shelf_expire_time;
 
-	$e->update_action_hold_request($hold) or return $e->event;
+	$e->update_action_hold_request($hold) or return $e->die_event;
 	$e->commit;
 
 	$U->storagereq(
@@ -1585,8 +1751,8 @@ sub fetch_captured_holds {
 	my( $self, $conn, $auth, $org ) = @_;
 
 	my $e = new_editor(authtoken => $auth);
-	return $e->event unless $e->checkauth;
-	return $e->event unless $e->allowed('VIEW_HOLD'); # XXX rely on editor perm
+	return $e->die_event unless $e->checkauth;
+	return $e->die_event unless $e->allowed('VIEW_HOLD'); # XXX rely on editor perm
 
 	$org ||= $e->requestor->ws_ou;
 
@@ -1636,6 +1802,84 @@ sub fetch_captured_holds {
     }
 
     return undef;
+}
+
+__PACKAGE__->register_method(
+    method    => "print_expired_holds_stream",
+    api_name  => "open-ils.circ.captured_holds.expired.print.stream",
+    stream    => 1
+);
+
+sub print_expired_holds_stream {
+    my ($self, $client, $auth, $params) = @_;
+
+    # No need to check specific permissions: we're going to call another method
+    # that will do that.
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    delete($$params{org_id}) unless (int($$params{org_id}));
+    delete($$params{limit}) unless (int($$params{limit}));
+    delete($$params{offset}) unless (int($$params{offset}));
+    delete($$params{chunk_size}) unless (int($$params{chunk_size}));
+    delete($$params{chunk_size}) if  ($$params{chunk_size} && $$params{chunk_size} > 50); # keep the size reasonable
+    $$params{chunk_size} ||= 10;
+
+    $$params{org_id} = (defined $$params{org_id}) ? $$params{org_id}: $e->requestor->ws_ou;
+
+    my @hold_ids = $self->method_lookup(
+        "open-ils.circ.captured_holds.id_list.expired_on_shelf.retrieve"
+    )->run($auth, $params->{"org_id"});
+
+    if (!@hold_ids) {
+        $e->disconnect;
+        return;
+    } elsif (defined $U->event_code($hold_ids[0])) {
+        $e->disconnect;
+        return $hold_ids[0];
+    }
+
+    $logger->info("about to stream back up to " . scalar(@hold_ids) . " expired holds");
+
+    while (@hold_ids) {
+        my @hid_chunk = splice @hold_ids, 0, $params->{"chunk_size"};
+
+        my $result_chunk = $e->json_query({
+            "select" => {
+                "acp" => ["barcode"],
+                "au" => [qw/
+                    first_given_name second_given_name family_name alias
+                /],
+                "acn" => ["label"],
+                "bre" => ["marc"],
+                "acpl" => ["name"]
+            },
+            "from" => {
+                "ahr" => {
+                    "acp" => {
+                        "field" => "id", "fkey" => "current_copy",
+                        "join" => {
+                            "acn" => {
+                                "field" => "id", "fkey" => "call_number",
+                                "join" => {
+                                    "bre" => {
+                                        "field" => "id", "fkey" => "record"
+                                    }
+                                }
+                            },
+                            "acpl" => {"field" => "id", "fkey" => "location"}
+                        }
+                    },
+                    "au" => {"field" => "id", "fkey" => "usr"}
+                }
+            },
+            "where" => {"+ahr" => {"id" => \@hid_chunk}}
+        }) or return $e->die_event;
+        $client->respond($result_chunk);
+    }
+
+    $e->disconnect;
+    undef;
 }
 
 __PACKAGE__->register_method(
@@ -2248,6 +2492,7 @@ sub find_nearest_permitted_hold {
 				copy				=> $copy,
 				pickup_lib			=> $hold->pickup_lib,
 				request_lib			=> $rlib,
+				retarget			=> 1
 			} 
 		);
 
@@ -2447,6 +2692,7 @@ sub uber_hold_impl {
         patron_first   => $user->first_given_name,
         patron_last    => $user->family_name,
         patron_barcode => $card->barcode,
+        patron_alias   => $user->alias,
         %$details
     };
 }
@@ -2510,6 +2756,86 @@ sub find_hold_mvr {
 	return ( $U->record_to_mvr($title), $volume, $copy, $issuance );
 }
 
+__PACKAGE__->register_method(
+    method    => 'clear_shelf_cache',
+    api_name  => 'open-ils.circ.hold.clear_shelf.get_cache',
+    stream    => 1,
+    signature => {
+        desc => q/
+            Returns the holds processed with the given cache key
+        /
+    }
+);
+
+sub clear_shelf_cache {
+    my($self, $client, $auth, $cache_key, $chunk_size) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth and $e->allowed('VIEW_HOLD');
+
+    $chunk_size ||= 25;
+    my $hold_data = OpenSRF::Utils::Cache->new('global')->get_cache($cache_key);
+
+    if (!$hold_data) {
+        $logger->info("no hold data found in cache"); # XXX TODO return event
+        $e->rollback;
+        return undef;
+    }
+
+    my $maximum = 0;
+    foreach (keys %$hold_data) {
+        $maximum += scalar(@{ $hold_data->{$_} });
+    }
+    $client->respond({"maximum" => $maximum, "progress" => 0});
+
+    for my $action (sort keys %$hold_data) {
+        while (@{$hold_data->{$action}}) {
+            my @hid_chunk = splice @{$hold_data->{$action}}, 0, $chunk_size;
+
+            my $result_chunk = $e->json_query({
+                "select" => {
+                    "acp" => ["barcode"],
+                    "au" => [qw/
+                        first_given_name second_given_name family_name alias
+                    /],
+                    "acn" => ["label"],
+                    "bre" => ["marc"],
+                    "acpl" => ["name"],
+                    "ahr" => ["id"]
+                },
+                "from" => {
+                    "ahr" => {
+                        "acp" => {
+                            "field" => "id", "fkey" => "current_copy",
+                            "join" => {
+                                "acn" => {
+                                    "field" => "id", "fkey" => "call_number",
+                                    "join" => {
+                                        "bre" => {
+                                            "field" => "id", "fkey" => "record"
+                                        }
+                                    }
+                                },
+                                "acpl" => {"field" => "id", "fkey" => "location"}
+                            }
+                        },
+                        "au" => {"field" => "id", "fkey" => "usr"}
+                    }
+                },
+                "where" => {"+ahr" => {"id" => \@hid_chunk}}
+            }, {"substream" => 1}) or return $e->die_event;
+
+            $client->respond([
+                map {
+                    +{"action" => $action, "hold_details" => $_}
+                } @$result_chunk
+            ]);
+        }
+    }
+
+    $e->rollback;
+    return undef;
+}
+
 
 __PACKAGE__->register_method(
     method    => 'clear_shelf_process',
@@ -2532,6 +2858,7 @@ sub clear_shelf_process {
 
 	my $e = new_editor(authtoken=>$auth, xact => 1);
 	$e->checkauth or return $e->die_event;
+	my $cache = OpenSRF::Utils::Cache->new('global');
 
     $org_id ||= $e->requestor->ws_ou;
 	$e->allowed('UPDATE_HOLD', $org_id) or return $e->die_event;
@@ -2544,13 +2871,16 @@ sub clear_shelf_process {
             pickup_lib        => $org_id,
             cancel_time       => undef,
             fulfillment_time  => undef,
-            shelf_time        => {'!=' => undef}
+            shelf_time        => {'!=' => undef},
+            capture_time      => {'!=' => undef},
+            current_copy      => {'!=' => undef},
         },
         { idlist => 1 }
     );
 
-
     my @holds;
+    my $chunk_size = 25; # chunked status updates
+    my $counter = 0;
     for my $hold_id (@$hold_ids) {
 
         $logger->info("Clear shelf processing hold $hold_id");
@@ -2577,51 +2907,47 @@ sub clear_shelf_process {
         }
 
         push(@holds, $hold);
+        $client->respond({maximum => scalar(@holds), progress => $counter}) if ( (++$counter % $chunk_size) == 0);
     }
 
     if ($e->commit) {
 
+        my %cache_data = (
+            hold => [],
+            transit => [],
+            shelf => []
+        );
+
         for my $hold (@holds) {
 
             my $copy = $hold->current_copy;
-
             my ($alt_hold) = __PACKAGE__->find_nearest_permitted_hold($e, $copy, $e->requestor, 1);
 
             if($alt_hold) {
 
-                # copy is needed for a hold
-                $client->respond({action => 'hold', copy => $copy, hold_id => $hold->id});
+                push(@{$cache_data{hold}}, $hold->id); # copy is needed for a hold
 
             } elsif($copy->circ_lib != $e->requestor->ws_ou) {
 
-                # copy needs to transit
-                $client->respond({action => 'transit', copy => $copy, hold_id => $hold->id});
+                push(@{$cache_data{transit}}, $hold->id); # copy needs to transit
 
             } else {
 
-                # copy needs to go back to the shelf
-                $client->respond({action => 'shelf', copy => $copy, hold_id => $hold->id});
+                push(@{$cache_data{shelf}}, $hold->id); # copy needs to go back to the shelf
             }
         }
 
+        my $cache_key = md5_hex(time . $$ . rand());
+        $logger->info("clear_shelf_cache: storing under $cache_key");
+        $cache->put_cache($cache_key, \%cache_data, 7200); # TODO: 2 hours.  configurable?
+
         # tell the client we're done
-        $client->respond_complete;
+        $client->respond_complete({cache_key => $cache_key});
 
-        # fire off the hold cancelation trigger
-        my $trigger = OpenSRF::AppSession->connect('open-ils.trigger');
-
-        for my $hold (@holds) {
-
-            my $req = $trigger->request(
-                'open-ils.trigger.event.autocreate', 
-                'hold_request.cancel.expire_holds_shelf', 
-                $hold, $org_id);
-
-            # wait for response so don't flood the service
-            $req->recv;
-        }
-
-        $trigger->disconnect;
+        # fire off the hold cancelation trigger and wait for response so don't flood the service
+        $U->create_events_for_hook(
+            'hold_request.cancel.expire_holds_shelf', 
+            $_, $org_id, undef, undef, 1) for @holds;
 
     } else {
         # tell the client we're done
@@ -2858,7 +3184,7 @@ sub change_hold_title {
     my( $self, $client, $auth, $new_bib_id, $bib_ids ) = @_;
 
     my $e = new_editor(authtoken=>$auth, xact=>1);
-    return $e->event unless $e->checkauth;
+    return $e->die_event unless $e->checkauth;
 
     my $holds = $e->search_action_hold_request(
         [

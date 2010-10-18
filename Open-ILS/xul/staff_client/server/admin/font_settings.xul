@@ -18,7 +18,7 @@
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 
 <window id="font_settings_win" 
-    onload="try { my_init(); } catch(E) { alert(E); }" style="background: white;"
+    onload="try { my_init(); persist_helper(); } catch(E) { alert(E); }" style="background: white;"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->

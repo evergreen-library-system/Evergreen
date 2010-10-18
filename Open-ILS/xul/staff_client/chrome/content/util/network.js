@@ -490,7 +490,7 @@ util.network.prototype = {
             if ( 
                 (typeof result.ilsevent != 'undefined') && 
                 (
-                    (override_params.overridable_events.indexOf( result.ilsevent == null ? null : Number(result.ilsevent) ) != -1) ||
+                    (override_params.overridable_events.indexOf( result.ilsevent == null || result.ilsevent == '' ? null : Number(result.ilsevent) ) != -1) ||
                     (override_params.overridable_events.indexOf( result.textcode ) != -1)
                 )
             ) {
@@ -501,7 +501,7 @@ util.network.prototype = {
                     if ( 
                         (result[i].ilsevent != 'undefined') && 
                         (
-                            (override_params.overridable_events.indexOf( result[i].ilsevent == null ? null : Number(result[i].ilsevent) ) != -1) ||
+                            (override_params.overridable_events.indexOf( result[i].ilsevent == null || result.ilsevent == '' ? null : Number(result[i].ilsevent) ) != -1) ||
                             (override_params.overridable_events.indexOf( result[i].textcode ) != -1) 
                         )
                     ) {

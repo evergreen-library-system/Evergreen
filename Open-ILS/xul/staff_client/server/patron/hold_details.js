@@ -21,6 +21,10 @@ function my_init() {
 
         if (xulG.ahr_id) fetch_and_render_all();
 
+        if (xul_param('when_done')) {
+            xul_param('when_done')();
+        }
+
     } catch(E) {
         try { g.error.standard_unexpected_error_alert('/xul/server/patron/hold_notices.xul',E); } catch(E) { alert('FIXME: ' + js2JSON(E)); }
     }
@@ -121,33 +125,39 @@ function init_list() {
             },
         }
     );
+    dump('hold details init_list done\n');
 }
 
 function a_list_of_one() {
-    g.list.clear();
-    g.list.append(
-        {
-            'row' : {
-                'my' : {
-                    'ahr' : g.ahr,
-                    'status' : g.blob.status,
-                    'acp' : g.blob.copy,
-                    'acn' : g.blob.volume,
-                    'mvr' : g.blob.mvr,
-                    'patron_family_name' : g.blob.patron_last,
-                    'patron_first_given_name' : g.blob.patron_first,
-                    'patron_barcode' : g.blob.patron_barcode,
-                    'total_holds' : g.blob.total_holds,
-                    'queue_position' : g.blob.queue_position,
-                    'potential_copies' : g.blob.potential_copies,
-                    'estimated_wait' : g.blob.estimated_wait,
-                    'ahrn_count' : g.blob.hold.notes().length,
-                    'blob' : g.blob
-                }
-            },
-            'no_auto_select' : true,
-        }
-    );
+    try {
+        g.list.clear();
+        g.list.append(
+            {
+                'row' : {
+                    'my' : {
+                        'ahr' : g.ahr,
+                        'status' : g.blob.status,
+                        'acp' : g.blob.copy,
+                        'acn' : g.blob.volume,
+                        'mvr' : g.blob.mvr,
+                        'patron_family_name' : g.blob.patron_last,
+                        'patron_first_given_name' : g.blob.patron_first,
+                        'patron_barcode' : g.blob.patron_barcode,
+                        'patron_alias' : g.blob.patron_alias,
+                        'total_holds' : g.blob.total_holds,
+                        'queue_position' : g.blob.queue_position,
+                        'potential_copies' : g.blob.potential_copies,
+                        'estimated_wait' : g.blob.estimated_wait,
+                        'ahrn_count' : g.blob.hold.notes().length,
+                        'blob' : g.blob
+                    }
+                },
+                'no_auto_select' : true,
+            }
+        );
+    } catch(E) {
+        alert('Error in hold_details.js, a_list_of_one(): ' + E);
+    }
 }
 
 function retrieve_notifications() {

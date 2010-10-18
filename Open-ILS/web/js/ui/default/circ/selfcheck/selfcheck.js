@@ -1447,6 +1447,7 @@ SelfCheckManager.prototype.printFinesReceipt = function(callback) {
  * Logout the patron and return to the login page
  */
 SelfCheckManager.prototype.logoutPatron = function(print) {
+    progressDialog.show(true); // prevent patron from clicking logout link twice
     if(print && this.checkouts.length) {
         this.printSessionReceipt(
             function() {

@@ -2089,6 +2089,15 @@ circ.util.hold_columns = function(modify,params) {
             'editable' : false, 'render' : function(my) { return my.patron_family_name ? my.patron_family_name : ""; }
         },
         {
+            "persist": "hidden width ordinal",
+            "id": "patron_alias",
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.patron_alias'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return my.patron_alias ? my.patron_alias : ""; }
+        },
+        {
             'persist' : 'hidden width ordinal',
             'id' : 'patron_first_given_name',
             'label' : document.getElementById('circStrings').getString('staff.circ.utils.patron_first_given_name'),
@@ -2409,6 +2418,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             'route_to' : '',
             'route_to_msg' : '',
             'route_to_org_fullname' : '',
+            'destination_shelf' : '',
+            'destination_shelf_msg' : '',
             'courier_code' : '',
             'street1' : '',
             'street2' : '',
@@ -2506,16 +2517,24 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             if (behind_the_desk_support) {
                                var usr_settings = network.simple_request('FM_AUS_RETRIEVE',[ses(),check.payload.hold.usr()]); 
                                 if (typeof usr_settings['circ.holds_behind_desk'] != 'undefined') {
-                                    print_data.prefer_behind_holds_desk = true;
-                                    check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.private_hold_shelf');
-                                    print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
-                                    print_data.route_to = check.route_to;
+                                    if (usr_settings['circ.holds_behind_desk']) {
+                                        print_data.prefer_behind_holds_desk = true;
+                                        check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.private_hold_shelf');
+                                        print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+                                        print_data.route_to = check.route_to;
+                                    } else {
+                                        check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.public_hold_shelf');
+                                        print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+                                        print_data.route_to = check.route_to;
+                                    }
                                 } else {
                                     check.route_to = document.getElementById('circStrings').getString('staff.circ.route_to.public_hold_shelf');
                                     print_data.route_to_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
                                     print_data.route_to = check.route_to;
                                 }
                             }
+                            print_data.destination_shelf_msg = print_data.route_to_msg;
+                            print_data.destination_shelf = print_data.route_to;
                             msg += print_data.route_to_msg;
                             msg += '\n';
                         }
@@ -2891,6 +2910,26 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 JSAN.use('patron.util');
                 var au_obj = patron.util.retrieve_fleshed_au_via_id( session, check.payload.hold.usr() );
                 print_data.user = au_obj;
+                print_data.user_stat_cat_entries = [];
+                var entries = au_obj.stat_cat_entries();
+                for (var i = 0; i < entries.length; i++) {
+                    var stat_cat = data.hash.my_actsc[ entries[i].stat_cat() ];
+                    if (!stat_cat) {
+                        stat_cat = data.lookup('actsc', entries[i].stat_cat());
+                    }
+                    print_data.user_stat_cat_entries.push( { 
+                        'id' : entries[i].id(),
+                        'stat_cat' : {
+                            'id' : stat_cat.id(),
+                            'name' : stat_cat.name(),
+                            'opac_visible' : stat_cat.opac_visible(),
+                            'owner' : stat_cat.owner(),
+                            'usr_summary' : stat_cat.usr_summary()
+                        },
+                        'stat_cat_entry' : entries[i].stat_cat_entry(),
+                        'target_usr' : entries[i].target_usr() 
+                    } );
+                }
                 msg += '\n';
                 if (au_obj.alias()) {
                     print_data.hold_for_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron_alias',  [au_obj.alias()]);
@@ -2950,6 +2989,29 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 print_data.request_date_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.request_date', [print_data.request_date]);
                 msg += print_data.request_date_msg;
                 msg += '\n';
+                var destination_shelf = document.getElementById('circStrings').getString('staff.circ.route_to.hold_shelf');
+                print_data.destination_shelf_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [destination_shelf]);
+                print_data.destination_shelf = destination_shelf;
+                var behind_the_desk_support = String( data.hash.aous['circ.holds.behind_desk_pickup_supported'] ) == 'true';
+                if (behind_the_desk_support) {
+                   var usr_settings = network.simple_request('FM_AUS_RETRIEVE',[ses(),check.payload.hold.usr()]); 
+                    if (typeof usr_settings['circ.holds_behind_desk'] != 'undefined') {
+                        if (usr_settings['circ.holds_behind_desk']) {
+                            print_data.prefer_behind_holds_desk = true;
+                            destination_shelf = document.getElementById('circStrings').getString('staff.circ.route_to.private_hold_shelf');
+                            print_data.destination_shelf_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [destination_shelf]);
+                            print_data.destination_shelf = destination_shelf;
+                        } else {
+                            destination_shelf = document.getElementById('circStrings').getString('staff.circ.route_to.public_hold_shelf');
+                            print_data.destination_shelf_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [destination_shelf]);
+                            print_data.destination_shelf = destination_shelf;
+                        }
+                    } else {
+                        destination_shelf = document.getElementById('circStrings').getString('staff.circ.route_to.public_hold_shelf');
+                        print_data.destination_shelf_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [destination_shelf]);
+                        print_data.destination_shelf = destination_shelf;
+                    }
+                }
             }
             var rv = 0;
             var suppress_popups = data.hash.aous['ui.circ.suppress_checkin_popups'];

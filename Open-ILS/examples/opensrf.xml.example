@@ -326,14 +326,14 @@ vim:et:ts=4:sw=4:
             <!-- memcache servers -->
             <global>
                 <servers>
-                    <server>localhost:11211</server>
+                    <server>127.0.0.1:11211</server>
                 </servers>
                 <max_cache_time>86400</max_cache_time>
             </global>
             <anon>
                 <!-- anonymous cache.  currently, primarily used for web session caching -->
                 <servers>
-                    <server>localhost:11211</server>
+                    <server>127.0.0.1:11211</server>
                 </servers>
                 <max_cache_time>1800</max_cache_time>
                 <!-- maximum size of a single cache entry / default = 100k-->
@@ -590,6 +590,15 @@ vim:et:ts=4:sw=4:
                     <min_spare_children>1</min_spare_children>
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
+                <app_settings>
+                    <!-- number of parallel open-ils.trigger processes to use for collection and reaction -->
+                    <!--
+                    <parallel>
+                        <collect>3</collect>
+                        <react>3</react>
+                    </parallel>
+                    -->
+                </app_settings>
             </open-ils.trigger>
 
             <opensrf.math>

@@ -1390,6 +1390,15 @@ INSERT INTO permission.perm_list VALUES
     ,(399, 'ADMIN_SERIAL_DISTRIBUTION', oils_i18n_gettext(399, 'Create/update/delete serial distribution objects', 'ppl', 'description'))
     ,(400, 'ADMIN_SERIAL_STREAM', oils_i18n_gettext(400, 'Create/update/delete serial stream objects', 'ppl', 'description'))
     ,(401, 'RECEIVE_SERIAL', oils_i18n_gettext(401, 'Receive serial items', 'ppl', 'description'))
+    ,(402, 'ADMIN_ACQ_DISTRIB_FORMULA', oils_i18n_gettext(402, 'Create/update/delete distribution formulae', 'ppl', 'description'))
+    ,(403, 'ADMIN_ACQ_CLAIM', oils_i18n_gettext(403, 'Create/update/delete acquisitions claims', 'ppl', 'description'))
+    ,(404, 'ADMIN_ACQ_CLAIM_EVENT_TYPE', oils_i18n_gettext(404, 'Create/update/delete acquisitions claim event types', 'ppl', 'description'))
+    ,(405, 'ADMIN_ACQ_CLAIM_TYPE', oils_i18n_gettext(405, 'Create/update/delete acquisitions claim types', 'ppl', 'description'))
+    ,(406, 'ADMIN_ACQ_FISCAL_YEAR', oils_i18n_gettext(406, 'Create/update/delete acquisitions fiscal years', 'ppl', 'description'))
+    ,(407, 'ADMIN_ACQ_FUND_ALLOCATION_PERCENT', oils_i18n_gettext(407, 'Create/update/delete acquisitions fund allocation percentages', 'ppl', 'description'))
+    ,(408, 'ADMIN_ACQ_FUND_TAG', oils_i18n_gettext(408, 'Create/update/delete acquisitions fund tags', 'ppl', 'description'))
+    ,(409, 'ADMIN_ACQ_LINEITEM_ALERT_TEXT', oils_i18n_gettext(409, 'Create/update/delete acquisitions lineitem alert text', 'ppl', 'description'))
+
 ;
 
 
@@ -2336,6 +2345,7 @@ INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('misc
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('staff_client', oils_i18n_gettext('staff_client', 'General Staff Client container', 'cbrebt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('bookbag', oils_i18n_gettext('bookbag', 'Book Bag', 'cbrebt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('reading_list', oils_i18n_gettext('reading_list', 'Reading List', 'cbrebt', 'label'));
+INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('template_merge',oils_i18n_gettext('template_merge','Template Merge Container', 'cbrebt', 'label'));
 
 INSERT INTO container.user_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'cubt', 'label'));
 INSERT INTO container.user_bucket_type (code,label) VALUES ('folks', oils_i18n_gettext('folks', 'Friends', 'cubt', 'label'));
@@ -4872,8 +4882,8 @@ $$
         <tbody>
         [% FOREACH detail IN li.lineitem_details.sort('owning_lib') %]
             [% 
-                IF copy.eg_copy_id;
-                    SET copy = copy.eg_copy_id;
+                IF detail.eg_copy_id;
+                    SET copy = detail.eg_copy_id;
                     SET cn_label = copy.call_number.label;
                 ELSE; 
                     SET copy = detail; 
@@ -4940,9 +4950,19 @@ INSERT INTO action_trigger.reactor (module, description)
 
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, cleanup_success, cleanup_failure, delay, delay_field, group_field, template) 
-    VALUES (23, true, 1, 'PO JEDI', 'acqpo.activated', 'Acq::PurchaseOrderEDIRequired', 'GeneratePurchaseOrderJEDI', NULL, NULL, '00:05:00', NULL, NULL,
+    VALUES (23, true, 1, 'PO JEDI', 'acqpo.activated', 'Acq::PurchaseOrderEDIRequired', 'GeneratePurchaseOrderJEDI', NULL, NULL, '00:00:00', NULL, NULL,
 $$[%- USE date -%]
-[%# start JEDI document -%]
+[%# start JEDI document 
+  # Vendor specific kludges:
+  # BT      - vendcode goes to NAD/BY *suffix*  w/ 91 qualifier
+  # INGRAM  - vendcode goes to NAD/BY *segment* w/ 91 qualifier (separately)
+  # BRODART - vendcode goes to FTX segment (lineitem level)
+-%]
+[%- 
+IF target.provider.edi_default.vendcode && target.provider.code == 'BRODART';
+    xtra_ftx = target.provider.edi_default.vendcode;
+END;
+-%]
 [%- BLOCK big_block -%]
 {
    "recipient":"[% target.provider.san %]",
@@ -4951,23 +4971,27 @@ $$[%- USE date -%]
      "ORDERS":[ "order", {
         "po_number":[% target.id %],
         "date":"[% date.format(date.now, '%Y%m%d') %]",
-        "buyer":[{
-            [%- IF target.provider.edi_default.vendcode -%]
-                "id":"[% target.ordering_agency.mailing_address.san _ ' ' _ target.provider.edi_default.vendcode %]", 
-                "id-qualifier": 91
+        "buyer":[
+            [%   IF   target.provider.edi_default.vendcode && (target.provider.code == 'BT' || target.provider.name.match('(?i)^BAKER & TAYLOR'))  -%]
+                {"id-qualifier": 91, "id":"[% target.ordering_agency.mailing_address.san _ ' ' _ target.provider.edi_default.vendcode %]"}
+            [%- ELSIF target.provider.edi_default.vendcode && target.provider.code == 'INGRAM' -%]
+                {"id":"[% target.ordering_agency.mailing_address.san %]"},
+                {"id-qualifier": 91, "id":"[% target.provider.edi_default.vendcode %]"}
             [%- ELSE -%]
-                "id":"[% target.ordering_agency.mailing_address.san %]"
-            [%- END  -%]
-        }],
-        "vendor":[ 
+                {"id":"[% target.ordering_agency.mailing_address.san %]"}
+            [%- END -%]
+        ],
+        "vendor":[
             [%- # target.provider.name (target.provider.id) -%]
             "[% target.provider.san %]",
             {"id-qualifier": 92, "id":"[% target.provider.id %]"}
         ],
         "currency":"[% target.provider.currency_type %]",
+                
         "items":[
-        [% FOR li IN target.lineitems %]
+        [%- FOR li IN target.lineitems %]
         {
+            "line_index":"[% li.id %]",
             "identifiers":[   [%-# li.isbns = helpers.get_li_isbns(li.attributes) %]
             [% FOR isbn IN helpers.get_li_isbns(li.attributes) -%]
                 [% IF isbn.length == 13 -%]
@@ -4976,23 +5000,35 @@ $$[%- USE date -%]
                 {"id-qualifier":"IB","id":"[% isbn %]"},
                 [%- END %]
             [% END %]
-                {"id-qualifier":"SA","id":"[% li.id %]"}
+                {"id-qualifier":"IN","id":"[% li.id %]"}
             ],
             "price":[% li.estimated_unit_price || '0.00' %],
             "desc":[
-                {"BTI":"[% helpers.get_li_attr('title',     '', li.attributes) %]"}, 
+                {"BTI":"[% helpers.get_li_attr('title',     '', li.attributes) %]"},
                 {"BPU":"[% helpers.get_li_attr('publisher', '', li.attributes) %]"},
                 {"BPD":"[% helpers.get_li_attr('pubdate',   '', li.attributes) %]"},
                 {"BPH":"[% helpers.get_li_attr('pagination','', li.attributes) %]"}
             ],
+            [%- ftx_vals = []; 
+                FOR note IN li.lineitem_notes; 
+                    NEXT UNLESS note.vendor_public == 't'; 
+                    ftx_vals.push(note.value); 
+                END; 
+                IF xtra_ftx;           ftx_vals.unshift(xtra_ftx); END; 
+                IF ftx_vals.size == 0; ftx_vals.unshift('');       END;  # BT needs FTX+LIN for every LI, even if it is an empty one
+            -%]
+
+            "free-text":[ 
+                [% FOR note IN ftx_vals -%] "[% note %]"[% UNLESS loop.last %], [% END %][% END %] 
+            ],            
             "quantity":[% li.lineitem_details.size %]
         }[% UNLESS loop.last %],[% END %]
         [%-# TODO: lineitem details (later) -%]
         [% END %]
         ],
         "line_items":[% target.lineitems.size %]
-     }]  [% # close ORDERS array %]
-   }]    [% # close  body  array %]
+     }]  [%# close ORDERS array %]
+   }]    [%# close  body  array %]
 }
 [% END %]
 [% tempo = PROCESS big_block; helpers.escape_json(tempo) %]

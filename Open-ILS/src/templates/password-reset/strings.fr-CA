@@ -1,0 +1,15 @@
+BUTTON_SUBMIT=Envoyer
+REQUEST_TITLE=Formulaire de demande de réinitialisation du mot de passe du réseau de la Bibliothèque
+IDENTIFY_YOURSELF=Entrez votre nom d’utilisateur ou votre code à barres pour indiquer votre compte de bibliothèque et demander la réinitialisation de votre mot de passe.
+REQUEST_SUCCESS=Votre nom d’utilisateur ou votre code à barres a été présenté pour la réinitialisation de votre mot de passe. S’il existe un compte correspondant assorti d’une adresse électronique, vous recevrez bientôt à cette adresse un message contenant les instructions pour réinitialiser votre mot de passe.
+BARCODE_PROMPT=Code à barres :
+USERNAME_PROMPT=Nom d’utilisateur :
+EMAIL_PROMPT=Adresse électronique liée au compte :
+NO_SESSION=Impossible de trouver la session de réinitialisation du mot de passe demandée.
+NO_MATCH=Les mots de passe ne concordent pas. Veuillez réessayer.
+NOT_ACTIVE=Cette demande de réinitialisation du mot de passe est inactive. Votre mot de passe n’a pas été réinitialisé.
+NOT_STRONG=Le mot de passe que vous avez choisi n’est pas assez complexe pour protéger votre compte. Votre mot de passe n’a pas été réinitialisé.
+SUCCESS=Mot de passe réinitialisé.
+TITLE=Réinitialiser le mot de passe du réseau de la Bibliothèque
+PASSWORD_PROMPT=Nouveau mot de passe :
+PASSWORD_PROMPT2=Entrez de nouveau le mot de passe :

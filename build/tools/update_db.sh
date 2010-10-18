@@ -60,21 +60,36 @@ VERSION=$(psql -c "select max(version) from config.upgrade_log" -t $PSQL_ACCESS)
 # [ $VERBOSE ] && echo RAW VERSION: $VERSION     # TODO: for verbose mode
 VERSION=$(echo $VERSION | sed -e 's/^ *0*//');    # This is a separate step so we can check $? above.
 [ -z "$VERSION" ] && usage_die "config.upgrade_log missing ANY installed version data!";
-echo "* Last installed version -> $VERSION";
+echo "* Last installed version  ->  $VERSION";
 
 if [ -d ./Open-ILS/src/sql/Pg ] ; then
     cd ./Open-ILS/src/sql/Pg ;
 fi
 [ -d ./upgrade ] || usage_die "No ./upgrade directory found.  Please run from Open-ILS/src/sql/Pg";
 
+MAX=$(ls upgrade/[0-9][0-9][0-9][0-9]* 2>/dev/null | tail -1 | cut -c9-12 );   # could take an optional arg to set this, if we wanted.
+echo "* Last upgrade file found -> $MAX";
+MAX=$(echo $MAX | sed -e 's/^ *0*//');      # remove leading zeroes
+
 declare -a FILES;
+declare -a SKIPPED;
 while true; do
     VERSION=$(($VERSION + 1));
+    [ $VERSION -gt $MAX ] && break;
     PREFIX=$(printf "%0.4d" $VERSION);
     FILE=$(ls upgrade/$PREFIX* 2>/dev/null);
-    [ ! -f "$FILE" ] && break;
-    FILES[${#FILES[@]}]=$FILE;      # "push" onto FILES array
-    echo "* Pending $FILE";
+    if [ -f "$FILE" ] ; then
+        # Note: we only report skipped files once we find the next one.  
+        # Otherwise, we'd report everything from $VERSION+1 to $MAX
+        for skip in ${SKIPPED[@]} ; do
+            echo "* WARNING: Upgrade $skip NOT FOUND.  Skipping it."; 
+        done
+        SKIPPED=();                     # After we reported them, reset array.
+        FILES[${#FILES[@]}]=$FILE;      # "push" onto FILES array
+        # echo "* Pending $FILE";
+    else
+        SKIPPED[${#SKIPPED[@]}]=$PREFIX; # "push" onto SKIPPED array
+    fi
 done;
 
 COUNT=${#FILES[@]};

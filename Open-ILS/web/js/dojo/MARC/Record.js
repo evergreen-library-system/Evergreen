@@ -27,7 +27,7 @@ if(!dojo._hasResource["MARC.Record"]) {
 
         constructor : function(kwargs) {
             this.fields = [];
-            this.leader = '';
+            this.leader = '00000cam a2200205Ka 4500';
 
             if (kwargs.delimiter) this.delimiter = kwargs.delimiter;
             if (kwargs.onLoad) this.onLoad = kwargs.onLoad;
@@ -57,7 +57,11 @@ if(!dojo._hasResource["MARC.Record"]) {
             return list;
         },
 
-        subfield : function (spec, code) { return this.field(spec)[0].subfield(code) },
+        subfield : function (spec, code) {
+            var f = this.field(spec);
+            if (dojo.isArray(f)) f = f[0];
+            return f.subfield(code)
+        },
 
         appendFields : function () {
             var me = this;
@@ -151,7 +155,7 @@ if(!dojo._hasResource["MARC.Record"]) {
 
         fromXmlDocument : function (mxml) {
             var me = this;
-            me.leader = dojox.xml.parser.textContent(dojo.query('leader', mxml)[0]) || '';
+            me.leader = dojox.xml.parser.textContent(dojo.query('leader', mxml)[0]) || '00000cam a2200205Ka 4500';
 
             dojo.forEach( dojo.query('controlfield', mxml), function (cf) {
                 me.fields.push(
@@ -240,7 +244,7 @@ if(!dojo._hasResource["MARC.Record"]) {
                     // skip comment lines
                 } else if (isControlField(current_line)) {
                     if (line_tag(current_line) == 'LDR') {
-                        me.leader = cf_line_data(current_line) || '';
+                        me.leader = cf_line_data(current_line) || '00000cam a2200205Ka 4500';
                     } else {
                         me.fields.push(
                             new MARC.Field({

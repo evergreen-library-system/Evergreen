@@ -2,13 +2,10 @@ package OpenILS::Application::Trigger::Event;
 use strict; use warnings;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::JSON;
-
 use OpenSRF::Utils::Logger qw/$logger/;
-
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Application::Trigger::ModRunner;
-
 use Safe;
 
 my $log = 'OpenSRF::Utils::Logger';
@@ -19,10 +16,16 @@ sub new {
     my $editor = shift;
     $class = ref($class) || $class;
 
-    return $id if (ref($id) && ref($id) eq $class);
-
     my $standalone = $editor ? 0 : 1;
     $editor ||= new_editor();
+
+    if (ref($id) && ref($id) eq $class) {
+        $id->environment->{EventProcessor} = $id
+             if ($id->environment->{complete}); # in case it came over an opensrf tube
+        $id->editor( $editor );
+        $id->standalone( $standalone );
+        return $id;
+    }
 
     my $self = bless { id => $id, editor => $editor, standalone => $standalone } => $class;
 
@@ -45,6 +48,10 @@ sub init {
 
     return $self if (!$self->id);
 
+    if ($self->standalone) {
+        $self->editor->xact_begin || return undef;
+    }
+
     $self->event(
         $self->editor->retrieve_action_trigger_event([
             $self->id, {
@@ -56,6 +63,10 @@ sub init {
             }
         ])
     );
+
+    if ($self->standalone) {
+        $self->editor->xact_rollback || return undef;
+    }
 
     $self->user_data(OpenSRF::Utils::JSON->JSON2perl( $self->event->user_data ))
         if (defined( $self->event->user_data ));
@@ -91,7 +102,20 @@ sub init {
     $meth =~ s/Fieldmapper:://;
     $meth =~ s/::/_/;
     
+    if ($self->standalone) {
+        $self->editor->xact_begin || return undef;
+    }
+
     $self->target( $self->editor->$meth( $self->event->target ) );
+
+    if ($self->standalone) {
+        $self->editor->xact_rollback || return undef;
+    }
+
+    unless($self->target) {
+        $self->update_state('invalid');
+        $self->valid(0);
+    }
 
     return $self;
 }
@@ -336,6 +360,7 @@ sub update_state {
     $e->state( $state );
 
     $e->clear_start_time() if ($e->state eq 'pending');
+    $e->complete_time( 'now' ) if ($e->state eq 'complete');
 
     my $ok = $self->editor->update_action_trigger_event( $e );
     if (!$ok) {
@@ -397,7 +422,8 @@ sub build_environment {
 
         if ($self->event->event_def->group_field) {
             my @group_path = split(/\./, $self->event->event_def->group_field);
-            my $group_object = $self->_object_by_path( $self->target, undef, [], \@group_path );
+            pop(@group_path); # the last part is a field, should not get fleshed
+            my $group_object = $self->_object_by_path( $self->target, undef, [], \@group_path ) if (@group_path);
         }
     
         $self->environment->{complete} = 1;
@@ -426,16 +452,44 @@ sub _fm_class_by_hint {
     return $class;
 }
 
+my %_object_by_path_cache = ();
+sub ClearObjectCache {
+    for my $did ( keys %_object_by_path_cache ) {
+        my $phash = $_object_by_path_cache{$did};
+        for my $path ( keys %$phash ) {
+            my $shash = $$phash{$path};
+            for my $step ( keys %$shash ) {
+                my $fhash = $$shash{$step};
+                for my $ffield ( keys %$fhash ) {
+                    my $lhash = $$fhash{$ffield};
+                    for my $lfield ( keys %$lhash ) {
+                        delete $$lhash{$lfield};
+                    }
+                    delete $$fhash{$ffield};
+                }
+                delete $$shash{$step};
+            }
+            delete $$phash{$path};
+        }
+        delete $_object_by_path_cache{$did};
+    }
+}
+        
 sub _object_by_path {
     my $self = shift;
     my $context = shift;
     my $collector = shift;
     my $label = shift;
     my $path = shift;
+    my $ed = shift;
 
+    my $outer = 0;
+    if (!$ed) {
+        $ed = new_editor(xact=>1);
+        $outer = 1;
+    }
 
     my $step = shift(@$path);
-
 
     my $fhint = Fieldmapper->publish_fieldmapper->{$context->class_name}{links}{$step}{class};
     my $fclass = $self->_fm_class_by_hint( $fhint );
@@ -460,10 +514,6 @@ sub _object_by_path {
     $meth =~ s/Fieldmapper:://;
     $meth =~ s/::/_/g;
 
-    my $ed = grep( /open-ils.cstore/, @{$fclass->Controller} ) ?
-            $self->editor :
-            new_rstore_editor();
-
     my $obj = $context->$step(); 
 
     $logger->debug(
@@ -472,11 +522,19 @@ sub _object_by_path {
     );
 
     if (!ref $obj) {
-        $obj = $ed->$meth( 
-            ($multi) ?
-                { $ffield => $context->$lfield() } :
-                $context->$lfield()
-        );
+
+        my $lval = $context->$lfield();
+
+        if(defined $lval) {
+
+            my $def_id = $self->event->event_def->id;
+            my $str_path = join('.', @$path);
+
+            $obj = $_object_by_path_cache{$def_id}{$str_path}{$step}{$ffield}{$lval} ||
+                $ed->$meth( ($multi) ? { $ffield => $lval } : $lval);
+
+            $_object_by_path_cache{$def_id}{$str_path}{$step}{$ffield}{$lval} ||= $obj;
+        }
     }
 
     if (@$path) {
@@ -490,7 +548,7 @@ sub _object_by_path {
 
         for (@$obj_list) {
             my @path_clone = @$path;
-            $self->_object_by_path( $_, $collector, $label, \@path_clone );
+            $self->_object_by_path( $_, $collector, $label, \@path_clone, $ed );
         }
 
         $obj = $$obj_list[0] if (!$multi || $rtype eq 'might_have');
@@ -533,6 +591,7 @@ sub _object_by_path {
         }
     }
 
+    $ed->rollback if ($outer);
     return $obj;
 }
 

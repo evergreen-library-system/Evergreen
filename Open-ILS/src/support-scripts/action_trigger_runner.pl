@@ -37,6 +37,7 @@ my $opt_verbose;
 my $opt_hooks;
 my $opt_process_hooks = 0;
 my $opt_granularity   = undef;
+my $opt_gran_only     = undef;
 
 (-f $opt_custom_filter) or undef($opt_custom_filter);   # discard default if no file exists
 
@@ -46,6 +47,7 @@ GetOptions(
     'run-pending'      => \$opt_run_pending,
     'hooks=s'          => \$opt_hooks,
     'granularity=s'    => \$opt_granularity,
+    'granularity-only' => \$opt_gran_only,
     'process-hooks'    => \$opt_process_hooks,
     'debug-stdout'     => \$opt_debug_stdout,
     'custom-filters=s' => \$opt_custom_filter,
@@ -55,6 +57,11 @@ GetOptions(
 );
 
 my $max_sleep = $opt_max_sleep;
+
+#XXX need to figure out why this is required...
+$opt_gran_only = $opt_granularity ? 1 : 0;
+
+$opt_lockfile .= '.' . $opt_granularity if ($opt_granularity && $opt_gran_only);
 
 # typical passive hook filters
 my $hook_handlers = {
@@ -108,6 +115,9 @@ $0 : Create and process action/trigger events
 
     --granularity=<label>
         Run events with {label} granularity setting, or no granularity setting
+
+    --granularity-only
+        Used in combination with --granularity, prevents the running of events with no granularity setting
 
     --debug-stdout
         Print server responses to stdout (as JSON) for debugging
@@ -169,10 +179,22 @@ sub process_hooks {
 
 sub run_pending {
     $opt_verbose and print "run_pending: " .
-        ($opt_run_pending ? ($opt_granularity || 'ALL granularity') : 'SKIPPING') . "\n";
+        ($opt_run_pending ?
+            ($opt_granularity ?
+                ( $opt_granularity . (
+                    $opt_gran_only ?
+                        ' ONLY' : 
+                        ' and NON-GRANULAR'
+                    )
+                ) :
+                'NON-GRANULAR'
+            ) :
+            'SKIPPING'
+        ) . "\n";
+
     return unless $opt_run_pending;
     my $ses = OpenSRF::AppSession->create('open-ils.trigger');
-    my $req = $ses->request('open-ils.trigger.event.run_all_pending' => $opt_granularity);
+    my $req = $ses->request('open-ils.trigger.event.run_all_pending' => $opt_granularity => $opt_gran_only);
 
     my $check_lockfile = 1;
     while (my $resp = $req->recv(timeout => $req_timeout)) {
@@ -192,7 +214,7 @@ help() and exit unless ($opt_run_pending or $opt_process_hooks);
 
 # check the lockfile
 if (-e $opt_lockfile) {
-    die "I'm already running with lockfile $opt_lockfile\n" if (!$opt_process_hooks);
+    die "I'm already running with lockfile $opt_lockfile\n" unless ($opt_process_hooks or $opt_granularity);
     # sleeping loop if we're in --process-hooks mode
     while ($max_sleep >= 0 && sleep(1)) {
         last unless ( -e $opt_lockfile ); 

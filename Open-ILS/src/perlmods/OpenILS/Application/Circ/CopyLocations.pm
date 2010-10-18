@@ -182,7 +182,39 @@ sub fetch_loc {
 	return $cl;
 }
 
+__PACKAGE__->register_method(
+    api_name => "open-ils.circ.copy_location_order.update",
+    method => 'update_clo',
+    argc =>	2,
+);
+
+sub update_clo {
+    my($self, $client, $auth, $orders) = @_;
+    return [] unless $orders and @$orders;
+
+    my $e = new_editor(authtoken => $auth, xact =>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $org = $$orders[0]->org;
+    return $e->die_event unless $e->allowed('ADMIN_COPY_LOCATION_ORDER', $org);
+
+    # clear out the previous order entries
+    my $existing = $e->search_asset_copy_location_order({org => $org});
+    $e->delete_asset_copy_location_order($_) or return $e->die_event for @$existing;
+
+    # create the new order entries
+    my $progress = 0; 
+    for my $order (@$orders) {
+        return $e->die_event(OpenILS::Event->new('BAD_PARAMS')) unless $order->org == $org;
+        $e->create_asset_copy_location_order($order) or return $e->die_event;
+        $client->respond({maximum => scalar(@$orders), progress => $progress}) unless ($progress++ % 10);
+    }
+
+    # fetch the new entries
+    $orders = $e->search_asset_copy_location_order({org => $org});
+    $e->commit;
+    return {orders => $orders};
+}
 
 
-
-23;
+1;

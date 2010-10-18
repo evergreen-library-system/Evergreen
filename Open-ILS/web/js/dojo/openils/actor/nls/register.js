@@ -1,4 +1,5 @@
 {
+    "DEFAULT_ADDRESS_TYPE" : "MAILING",
     "DELETE_ADDRESS" : "Delete address ${0}?",
     "NEED_ADDRESS" : "An address is required during registration.",
     "DUPE_PATRON_NAME" : "Found ${0} patron(s) with the same name",

@@ -1487,7 +1487,7 @@ __PACKAGE__->register_method(
 sub fire_circ_events {
     my($self, $conn, $auth, $org_id, $event_def, $hook, $granularity, $target_ids, $user_data) = @_;
 
-    my $e = new_editor(authtoken => $auth);
+    my $e = new_editor(authtoken => $auth, xact => 1);
 	return $e->event unless $e->checkauth;
 
     my $targets;
@@ -1502,6 +1502,10 @@ sub fire_circ_events {
         return $e->event unless $e->allowed('VIEW_CIRCULATIONS', $org_id);
         $targets = $e->batch_retrieve_action_circulation($target_ids);
     }
+    $e->rollback; # FIXME using transaction because of pgpool/slony setups, but not
+                  # simply making this method authoritative because of weirdness
+                  # with transaction handling in A/T code that causes rollback
+                  # failure down the line if handling many targets
 
     return undef unless @$targets;
     return $U->fire_object_event($event_def, $hook, $targets, $org_id, $granularity, $user_data);

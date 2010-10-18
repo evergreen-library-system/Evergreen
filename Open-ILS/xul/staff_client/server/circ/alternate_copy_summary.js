@@ -1,6 +1,8 @@
 var error; 
 var network;
 var data;
+var transit_list;
+var hold_list;
 
 function my_init() {
     try {
@@ -38,6 +40,16 @@ function my_init() {
                 false
             );
         }
+
+        JSAN.use('circ.util'); 
+        JSAN.use('util.list'); 
+
+        var columns = circ.util.transit_columns({});
+        transit_list = new util.list('transit');
+        transit_list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
+
+        hold_list = new util.list('hold');
+        hold_list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
 
         // timeout so xulG gets a chance to get pushed in
         setTimeout(
@@ -169,7 +181,11 @@ function load_item() {
             set("copy_circ_lib" , typeof details.copy.circ_lib() == 'object' ? details.copy.circ_lib().shortname() : data.hash.aou[ details.copy.circ_lib() ].shortname()); 
             set_tooltip("copy_circ_lib" , typeof details.copy.circ_lib() == 'object' ? details.copy.circ_lib().name() : data.hash.aou[ details.copy.circ_lib() ].name()); 
             var cm = details.copy.circ_modifier();
-            set("circ_modifier", document.getElementById('commonStrings').getFormattedString('staff.circ_modifier.display',[cm,data.hash.ccm[cm].name(),data.hash.ccm[cm].description()])); 
+            if (typeof data.hash.ccm[cm] != 'undefined') {
+                set("circ_modifier", document.getElementById('commonStrings').getFormattedString('staff.circ_modifier.display',[cm,data.hash.ccm[cm].name(),data.hash.ccm[cm].description()])); 
+            } else {
+                set("circ_modifier","");
+            }
             set("circulate", get_localized_bool( details.copy.circulate() )); 
             set("copy_number", details.copy.copy_number()); 
             set("copy_create_date", util.date.formatted_date( details.copy.create_date(), '%{localized}' )); 
@@ -285,11 +301,9 @@ function load_item() {
         set("hold_transit_copy", '');
 
         if (details.transit) {
-            JSAN.use('circ.util'); var columns = circ.util.transit_columns({});
 
-            JSAN.use('util.list'); var list = new util.list('transit');
-            list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
-            list.append( { 'row' : { 'my' : { 'atc' : details.transit, } } });
+            transit_list.clear();
+            transit_list.append( { 'row' : { 'my' : { 'atc' : details.transit, } } });
 
             var transit_copy_status = typeof details.transit.copy_status() == 'object' ? details.transit.copy_status() : data.hash.ccs[ details.transit.copy_status() ];
                 set("transit_copy_status", transit_copy_status.name() );
@@ -589,9 +603,8 @@ function load_item() {
                 } 
             );
 
-            JSAN.use('util.list'); var list = new util.list('hold');
-            list.init( { 'columns' : columns, 'map_row_to_columns' : circ.util.std_map_row_to_columns(), });
-            list.append( { 'row' : { 'my' : { 'ahr' : better_fleshed_hold_blob.hold, 'acp' : details.copy, 'status' : status_robj, } } });
+            hold_list.clear();
+            hold_list.append( { 'row' : { 'my' : { 'ahr' : better_fleshed_hold_blob.hold, 'acp' : details.copy, 'status' : status_robj, } } });
 
             JSAN.use('patron.util'); 
             var au_obj = patron.util.retrieve_fleshed_au_via_id( ses(), details.hold.usr() );

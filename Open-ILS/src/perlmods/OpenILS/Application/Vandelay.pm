@@ -68,9 +68,10 @@ sub create_bib_queue {
     return $e->die_event unless $e->allowed('CREATE_BIB_IMPORT_QUEUE');
     $owner ||= $e->requestor->id;
 
-    return OpenILS::Event->new('BIB_QUEUE_EXISTS') 
-        if $e->search_vandelay_bib_queue(
-            {name => $name, owner => $owner, queue_type => $type})->[0];
+    if ($e->search_vandelay_bib_queue( {name => $name, owner => $owner, queue_type => $type})->[0]) {
+        $e->rollback;
+        return OpenILS::Event->new('BIB_QUEUE_EXISTS') 
+    }
 
     my $queue = new Fieldmapper::vandelay::bib_queue();
     $queue->name( $name );
@@ -106,9 +107,10 @@ sub create_auth_queue {
     return $e->die_event unless $e->allowed('CREATE_AUTHORITY_IMPORT_QUEUE');
     $owner ||= $e->requestor->id;
 
-    return OpenILS::Event->new('AUTH_QUEUE_EXISTS') 
-        if $e->search_vandelay_bib_queue(
-            {name => $name, owner => $owner, queue_type => $type})->[0];
+    if ($e->search_vandelay_bib_queue({name => $name, owner => $owner, queue_type => $type})->[0]) {
+        $e->rollback;
+        return OpenILS::Event->new('AUTH_QUEUE_EXISTS') 
+    }
 
     my $queue = new Fieldmapper::vandelay::authority_queue();
     $queue->name( $name );
@@ -242,7 +244,7 @@ sub process_spool {
     }
 
     my $evt = check_queue_perms($e, $type, $queue);
-    return $evt if $evt;
+    return $evt if ($evt);
 
     my $cache = new OpenSRF::Utils::Cache();
 
@@ -395,8 +397,8 @@ __PACKAGE__->register_method(
 
 sub retrieve_queued_records {
     my($self, $conn, $auth, $queue_id, $options) = @_;
-    my $e = new_editor(authtoken => $auth);
-    return $e->event unless $e->checkauth;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
     $options ||= {};
     my $limit = $$options{limit} || 20;
     my $offset = $$options{offset} || 0;
@@ -409,7 +411,7 @@ sub retrieve_queued_records {
         $queue = $e->retrieve_vandelay_authority_queue($queue_id) or return $e->die_event;
     }
     my $evt = check_queue_perms($e, $type, $queue);
-    return $evt if $evt;
+    return $evt if ($evt);
 
     my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
     my $search = ($type eq 'bib') ? 
@@ -443,6 +445,7 @@ sub retrieve_queued_records {
         $rec->clear_marc if $$options{clear_marc};
         $conn->respond($rec);
     }
+    $e->rollback;
     return undef;
 }
 
@@ -481,10 +484,11 @@ __PACKAGE__->register_method(
 
 sub import_record_list {
     my($self, $conn, $auth, $rec_ids, $args) = @_;
-    my $e = new_editor(authtoken => $auth);
-    return $e->event unless $e->checkauth;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
     $args ||= {};
     my $err = import_record_list_impl($self, $conn, $rec_ids, $e->requestor, $args);
+    $e->rollback;
     return $err if $err;
     return {complete => 1};
 }
@@ -532,8 +536,8 @@ __PACKAGE__->register_method(
 );
 sub import_queue {
     my($self, $conn, $auth, $q_id, $options) = @_;
-    my $e = new_editor(authtoken => $auth);
-    return $e->event unless $e->checkauth;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
     $options ||= {};
     my $type = $self->{record_type};
     my $class = ($type eq 'bib') ? 'vqbr' : 'vqar';
@@ -549,6 +553,7 @@ sub import_queue {
         'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
     my $rec_ids = $e->$search($query, {idlist => 1});
     my $err = import_record_list_impl($self, $conn, $rec_ids, $e->requestor, $options);
+    $e->rollback;
     return $err if $err;
     return {complete => 1};
 }
@@ -620,6 +625,7 @@ sub import_record_list_impl {
     my %bib_sources;
     my $editor = new_editor();
     my $sources = $editor->search_config_bib_source({id => {'!=' => undef}});
+
     foreach my $src (@$sources) {
         $bib_sources{$src->id} = $src->source;
     }
@@ -635,6 +641,7 @@ sub import_record_list_impl {
         $rec_class = 'vqar';
     }
 
+    my @success_rec_ids;
     for my $rec_id (@$rec_ids) {
 
         my $overlay_target = $overlay_map->{$rec_id};
@@ -650,7 +657,7 @@ sub import_record_list_impl {
         ]);
 
         unless($rec) {
-            $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
+            $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->event});
             $e->rollback;
             next;
         }
@@ -746,6 +753,7 @@ sub import_record_list_impl {
                 if($U->event_code($record)) {
 
                     $e->event($record); 
+                    $e->rollback;
 
                 } else {
 
@@ -759,11 +767,11 @@ sub import_record_list_impl {
         }
 
         if($imported) {
+            push @success_rec_ids, $rec_id;
             $e->commit;
         } else {
-            $e->rollback;
             # Send an update whenever there's an error
-            $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
+            $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->event});
         }
 
         $conn->respond({total => $total, progress => $count, imported => $rec_id}) if (!$report_all and ++$count % $step) == 0;
@@ -789,6 +797,8 @@ sub import_record_list_impl {
     	$e->rollback;
     }
 
+    import_record_asset_list_impl($conn, \@success_rec_ids, $requestor);
+
     $conn->respond({total => $total, progress => $count});
     return undef;
 }
@@ -813,7 +823,7 @@ __PACKAGE__->register_method(
 
 sub owner_queue_retrieve {
     my($self, $conn, $auth, $owner_id, $filters) = @_;
-    my $e = new_editor(authtoken => $auth);
+    my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
     $owner_id = $e->requestor->id; # XXX add support for viewing other's queues?
     my $queues;
@@ -829,6 +839,7 @@ sub owner_queue_retrieve {
             [$search, {order_by => {vaq => 'lower(name)'}}]);
     }
     $conn->respond($_) for @$queues;
+    $e->rollback;
     return undef;
 }
 
@@ -888,17 +899,18 @@ __PACKAGE__->register_method(
 
 sub queued_record_html {
     my($self, $conn, $auth, $rec_id) = @_;
-    my $e = new_editor(authtoken => $auth);
-    return $e->event unless $e->checkauth;
+    my $e = new_editor(xact=>1,authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
     my $rec;
     if($self->{record_type} eq 'bib') {
         $rec = $e->retrieve_vandelay_queued_bib_record($rec_id)
-            or return $e->event;
+            or return $e->die_event;
     } else {
         $rec = $e->retrieve_vandelay_queued_authority_record($rec_id)
-            or return $e->event;
+            or return $e->die_event;
     }
 
+    $e->rollback;
     return $U->simplereq(
         'open-ils.search',
         'open-ils.search.biblio.record.html', undef, 1, $rec->marc);
@@ -924,17 +936,17 @@ __PACKAGE__->register_method(
 
 sub retrieve_queue_summary {
     my($self, $conn, $auth, $queue_id) = @_;
-    my $e = new_editor(authtoken => $auth);
-    return $e->event unless $e->checkauth;
+    my $e = new_editor(xact=>1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
 
     my $queue;
     my $type = $self->{record_type};
     if($type eq 'bib') {
         $queue = $e->retrieve_vandelay_bib_queue($queue_id)
-            or return $e->event;
+            or return $e->die_event;
     } else {
         $queue = $e->retrieve_vandelay_authority_queue($queue_id)
-            or return $e->event;
+            or return $e->die_event;
     }
 
     my $evt = check_queue_perms($e, $type, $queue);
@@ -953,7 +965,7 @@ sub retrieve_queue_summary {
 
 __PACKAGE__->register_method(  
     api_name    => "open-ils.vandelay.bib_record.list.asset.import",
-    method      => 'import_record_list_assets',
+    method      => 'noop_import_items',
     api_level   => 1,
     argc        => 2,
     stream      => 1,
@@ -961,48 +973,52 @@ __PACKAGE__->register_method(
 );
 __PACKAGE__->register_method(  
     api_name    => "open-ils.vandelay.bib_record.queue.asset.import",
-    method      => 'import_record_queue_assets',
+    method      => 'noop_import_items',
     api_level   => 1,
     argc        => 2,
     stream      => 1,
     record_type => 'bib'
 );
 
-sub import_record_list_assets {
-    my($self, $conn, $auth, $import_def, $rec_ids) = @_;
-    my $e = new_editor(authtoken => $auth);
-    return $e->event unless $e->checkauth;
-    my $err = import_record_asset_list_impl($conn, $import_def, $rec_ids, $e->requestor);
-    return $err if $err;
-    return {complete => 1};
-}
+sub noop_import_items { return {complete => 1} }
 
-sub import_record_queue_assets {
-    my($self, $conn, $auth, $import_def, $q_id) = @_;
-    my $e = new_editor(authtoken => $auth);
-    return $e->event unless $e->checkauth;
-    my $rec_ids = $e->search_vandelay_queued_bib_record(
-        {queue => $q_id, import_time => {'!=' => undef}}, {idlist => 1});
-    my $err = import_record_asset_list_impl($conn, $import_def, $rec_ids, $e->requestor);
-    return $err if $err;
-    return {complete => 1};
-}
+#sub import_record_list_assets {
+#    my($self, $conn, $auth, $import_def, $rec_ids) = @_;
+#    my $e = new_editor(xact=>1, authtoken => $auth);
+#    return $e->die_event unless $e->checkauth;
+#    my $err = import_record_asset_list_impl($conn, $import_def, $rec_ids, $e->requestor);
+#    $e->rollback;
+#    return $err if $err;
+#    return {complete => 1};
+#}
+#
+#sub import_record_queue_assets {
+#    my($self, $conn, $auth, $import_def, $q_id) = @_;
+#    my $e = new_editor(xact=>1, authtoken => $auth);
+#    return $e->die_event unless $e->checkauth;
+#    my $rec_ids = $e->search_vandelay_queued_bib_record(
+#        {queue => $q_id, import_time => {'!=' => undef}}, {idlist => 1});
+#    my $err = import_record_asset_list_impl($conn, $import_def, $rec_ids, $e->requestor);
+#    $e->rollback;
+#    return $err if $err;
+#    return {complete => 1};
+#}
 
 # --------------------------------------------------------------------------------
 # Given a list of queued record IDs, imports all items attached to those records
 # --------------------------------------------------------------------------------
 sub import_record_asset_list_impl {
-    my($conn, $import_def, $rec_ids, $requestor) = @_;
+    my($conn, $rec_ids, $requestor) = @_;
 
     my $total = @$rec_ids;
     my $try_count = 0;
     my $in_count = 0;
-    my $roe = new_editor(requestor => $requestor);
+    my $roe = new_editor(xact=> 1, requestor => $requestor);
 
     for my $rec_id (@$rec_ids) {
         my $rec = $roe->retrieve_vandelay_queued_bib_record($rec_id);
         next unless $rec and $rec->import_time;
-        my $item_ids = $roe->search_vandelay_import_item({definition => $import_def, record => $rec->id}, {idlist=>1});
+        my $item_ids = $roe->search_vandelay_import_item({record => $rec->id}, {idlist=>1});
 
         for my $item_id (@$item_ids) {
             my $e = new_editor(requestor => $requestor, xact => 1);
@@ -1087,6 +1103,7 @@ sub import_record_asset_list_impl {
             respond_with_status($conn, $total, $try_count, ++$in_count, undef, imported_as => $copy->id);
         }
     }
+    $roe->rollback;
     return undef;
 }
 

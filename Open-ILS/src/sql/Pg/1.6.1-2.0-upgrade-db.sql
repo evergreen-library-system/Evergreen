@@ -1,24 +1,44 @@
+-- Before starting the transaction: drop some constraints that
+-- may or may not exist.
+
+DROP INDEX asset.asset_call_number_upper_label_id_owning_lib_idx;
+CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (oils_text_as_bytea(upper(label)),id,owning_lib);
+
+
+\qecho Before starting the transaction: drop some constraints.
+\qecho If a DROP fails because the constraint doesn't exist, ignore the failure.
+
+ALTER TABLE permission.grp_perm_map        DROP CONSTRAINT grp_perm_map_perm_fkey;
+ALTER TABLE permission.usr_perm_map        DROP CONSTRAINT usr_perm_map_perm_fkey;
+ALTER TABLE permission.usr_object_perm_map DROP CONSTRAINT usr_object_perm_map_perm_fkey;
+ALTER TABLE booking.resource_type          DROP CONSTRAINT brt_name_or_record_once_per_owner;
+ALTER TABLE booking.resource_type          DROP CONSTRAINT brt_name_once_per_owner;
+
+\qecho Beginning the transaction now
+
 BEGIN;
 
--- Highest-numbered individual upgrade script
--- incorporated herein:
+-- Highest-numbered individual upgrade script incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0403');
+INSERT INTO config.upgrade_log (version) VALUES ('0433');
 
--- Begin by upgrading permission.perm_list.  This is fairly complicated.
+-- Recreate one of the constraints that we just dropped,
+-- under a different name:
+
+ALTER TABLE booking.resource_type
+	ADD CONSTRAINT brt_name_and_record_once_per_owner UNIQUE(owner, name, record);
+
+-- Now upgrade permission.perm_list.  This is fairly complicated.
 
 -- Add ON UPDATE CASCADE to some foreign keys so that, when we renumber the
 -- permissions, the dependents will follow and stay in sync:
 
-ALTER TABLE permission.grp_perm_map DROP CONSTRAINT grp_perm_map_perm_fkey;
 ALTER TABLE permission.grp_perm_map ADD CONSTRAINT grp_perm_map_perm_fkey FOREIGN KEY (perm)
     REFERENCES permission.perm_list (id) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE permission.usr_perm_map DROP CONSTRAINT usr_perm_map_perm_fkey;
 ALTER TABLE permission.usr_perm_map ADD CONSTRAINT usr_perm_map_perm_fkey FOREIGN KEY (perm)
     REFERENCES permission.perm_list (id) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE permission.usr_object_perm_map DROP CONSTRAINT usr_object_perm_map_perm_fkey;
 ALTER TABLE permission.usr_object_perm_map ADD CONSTRAINT usr_object_perm_map_perm_fkey FOREIGN KEY (perm)
     REFERENCES permission.perm_list (id) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED;
 
@@ -885,99 +905,108 @@ INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 389, 'VIEW_C
      'View org unit settings related to credit card processing' );
 INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 390, 'ADMIN_CREDIT_CARD_PROCESSING',
      'Update org unit settings related to credit card processing' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 391, 'ADMIN_SERIAL_CAPTION_PATTERN',
+	'Create/update/delete serial caption and pattern objects' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 392, 'ADMIN_SERIAL_SUBSCRIPTION',
+	'Create/update/delete serial subscription objects' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 393, 'ADMIN_SERIAL_DISTRIBUTION',
+	'Create/update/delete serial distribution objects' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 394, 'ADMIN_SERIAL_STREAM',
+	'Create/update/delete serial stream objects' );
+INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 395, 'RECEIVE_SERIAL',
+	'Receive serial items' );
 
 -- Now for the permissions from the IDL.  We don't have descriptions for them.
 
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 391, 'ADMIN_ACQ_CLAIM' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 392, 'ADMIN_ACQ_CLAIM_EVENT_TYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 393, 'ADMIN_ACQ_CLAIM_TYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 394, 'ADMIN_ACQ_DISTRIB_FORMULA' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 395, 'ADMIN_ACQ_FISCAL_YEAR' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 396, 'ADMIN_ACQ_FUND_ALLOCATION_PERCENT' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 397, 'ADMIN_ACQ_FUND_TAG' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 398, 'ADMIN_ACQ_LINEITEM_ALERT_TEXT' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 399, 'ADMIN_AGE_PROTECT_RULE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 400, 'ADMIN_ASSET_COPY_TEMPLATE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 401, 'ADMIN_BOOKING_RESERVATION_ATTR_MAP' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 402, 'ADMIN_CIRC_MATRIX_MATCHPOINT' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 403, 'ADMIN_CIRC_MOD' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 404, 'ADMIN_CLAIM_POLICY' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 405, 'ADMIN_CONFIG_REMOTE_ACCOUNT' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 406, 'ADMIN_FIELD_DOC' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 407, 'ADMIN_GLOBAL_FLAG' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 408, 'ADMIN_GROUP_PENALTY_THRESHOLD' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 409, 'ADMIN_HOLD_CANCEL_CAUSE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 410, 'ADMIN_HOLD_MATRIX_MATCHPOINT' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 411, 'ADMIN_IDENT_TYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 412, 'ADMIN_IMPORT_ITEM_ATTR_DEF' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 413, 'ADMIN_INDEX_NORMALIZER' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 414, 'ADMIN_INVOICE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 415, 'ADMIN_INVOICE_METHOD' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 416, 'ADMIN_INVOICE_PAYMENT_METHOD' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 417, 'ADMIN_LINEITEM_MARC_ATTR_DEF' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 418, 'ADMIN_MARC_CODE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 419, 'ADMIN_MAX_FINE_RULE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 420, 'ADMIN_MERGE_PROFILE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 421, 'ADMIN_ORG_UNIT_SETTING_TYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 422, 'ADMIN_RECURRING_FINE_RULE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 423, 'ADMIN_SERIAL_SUBSCRIPTION' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 424, 'ADMIN_STANDING_PENALTY' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 425, 'ADMIN_SURVEY' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 426, 'ADMIN_USER_REQUEST_TYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 427, 'ADMIN_USER_SETTING_GROUP' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 428, 'ADMIN_USER_SETTING_TYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 429, 'ADMIN_Z3950_SOURCE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 430, 'CREATE_BIB_BTYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 431, 'CREATE_BIBLIO_FINGERPRINT' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 432, 'CREATE_BIB_SOURCE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 433, 'CREATE_BILLING_TYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 434, 'CREATE_CN_BTYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 435, 'CREATE_COPY_BTYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 436, 'CREATE_INVOICE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 437, 'CREATE_INVOICE_ITEM_TYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 438, 'CREATE_INVOICE_METHOD' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 439, 'CREATE_MERGE_PROFILE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 440, 'CREATE_METABIB_CLASS' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 441, 'CREATE_METABIB_SEARCH_ALIAS' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 442, 'CREATE_USER_BTYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 443, 'DELETE_BIB_BTYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 444, 'DELETE_BIBLIO_FINGERPRINT' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 445, 'DELETE_BIB_SOURCE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 446, 'DELETE_BILLING_TYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 447, 'DELETE_CN_BTYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 448, 'DELETE_COPY_BTYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 449, 'DELETE_INVOICE_ITEM_TYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 450, 'DELETE_INVOICE_METHOD' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 451, 'DELETE_MERGE_PROFILE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 452, 'DELETE_METABIB_CLASS' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 453, 'DELETE_METABIB_SEARCH_ALIAS' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 454, 'DELETE_USER_BTYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 455, 'MANAGE_CLAIM' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 456, 'UPDATE_BIB_BTYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 457, 'UPDATE_BIBLIO_FINGERPRINT' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 458, 'UPDATE_BIB_SOURCE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 459, 'UPDATE_BILLING_TYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 460, 'UPDATE_CN_BTYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 461, 'UPDATE_COPY_BTYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 462, 'UPDATE_INVOICE_ITEM_TYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 463, 'UPDATE_INVOICE_METHOD' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 464, 'UPDATE_MERGE_PROFILE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 465, 'UPDATE_METABIB_CLASS' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 466, 'UPDATE_METABIB_SEARCH_ALIAS' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 467, 'UPDATE_USER_BTYPE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 468, 'user_request.create' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 469, 'user_request.delete' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 470, 'user_request.update' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 471, 'user_request.view' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 472, 'VIEW_ACQ_FUND_ALLOCATION_PERCENT' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 473, 'VIEW_CIRC_MATRIX_MATCHPOINT' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 474, 'VIEW_CLAIM' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 475, 'VIEW_GROUP_PENALTY_THRESHOLD' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 476, 'VIEW_HOLD_MATRIX_MATCHPOINT' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 477, 'VIEW_INVOICE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 478, 'VIEW_MERGE_PROFILE' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 479, 'VIEW_SERIAL_SUBSCRIPTION' );
-INSERT INTO permission.temp_perm ( id, code ) VALUES ( 480, 'VIEW_STANDING_PENALTY' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 396, 'ADMIN_ACQ_CLAIM' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 397, 'ADMIN_ACQ_CLAIM_EVENT_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 398, 'ADMIN_ACQ_CLAIM_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 399, 'ADMIN_ACQ_DISTRIB_FORMULA' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 400, 'ADMIN_ACQ_FISCAL_YEAR' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 401, 'ADMIN_ACQ_FUND_ALLOCATION_PERCENT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 402, 'ADMIN_ACQ_FUND_TAG' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 403, 'ADMIN_ACQ_LINEITEM_ALERT_TEXT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 404, 'ADMIN_AGE_PROTECT_RULE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 405, 'ADMIN_ASSET_COPY_TEMPLATE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 406, 'ADMIN_BOOKING_RESERVATION_ATTR_MAP' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 407, 'ADMIN_CIRC_MATRIX_MATCHPOINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 408, 'ADMIN_CIRC_MOD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 409, 'ADMIN_CLAIM_POLICY' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 410, 'ADMIN_CONFIG_REMOTE_ACCOUNT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 411, 'ADMIN_FIELD_DOC' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 412, 'ADMIN_GLOBAL_FLAG' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 413, 'ADMIN_GROUP_PENALTY_THRESHOLD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 414, 'ADMIN_HOLD_CANCEL_CAUSE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 415, 'ADMIN_HOLD_MATRIX_MATCHPOINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 416, 'ADMIN_IDENT_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 417, 'ADMIN_IMPORT_ITEM_ATTR_DEF' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 418, 'ADMIN_INDEX_NORMALIZER' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 419, 'ADMIN_INVOICE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 420, 'ADMIN_INVOICE_METHOD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 421, 'ADMIN_INVOICE_PAYMENT_METHOD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 422, 'ADMIN_LINEITEM_MARC_ATTR_DEF' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 423, 'ADMIN_MARC_CODE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 424, 'ADMIN_MAX_FINE_RULE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 425, 'ADMIN_MERGE_PROFILE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 426, 'ADMIN_ORG_UNIT_SETTING_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 427, 'ADMIN_RECURRING_FINE_RULE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 428, 'ADMIN_STANDING_PENALTY' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 429, 'ADMIN_SURVEY' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 430, 'ADMIN_USER_REQUEST_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 431, 'ADMIN_USER_SETTING_GROUP' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 432, 'ADMIN_USER_SETTING_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 433, 'ADMIN_Z3950_SOURCE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 434, 'CREATE_BIB_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 435, 'CREATE_BIBLIO_FINGERPRINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 436, 'CREATE_BIB_SOURCE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 437, 'CREATE_BILLING_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 438, 'CREATE_CN_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 439, 'CREATE_COPY_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 440, 'CREATE_INVOICE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 441, 'CREATE_INVOICE_ITEM_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 442, 'CREATE_INVOICE_METHOD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 443, 'CREATE_MERGE_PROFILE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 444, 'CREATE_METABIB_CLASS' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 445, 'CREATE_METABIB_SEARCH_ALIAS' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 446, 'CREATE_USER_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 447, 'DELETE_BIB_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 448, 'DELETE_BIBLIO_FINGERPRINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 449, 'DELETE_BIB_SOURCE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 450, 'DELETE_BILLING_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 451, 'DELETE_CN_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 452, 'DELETE_COPY_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 453, 'DELETE_INVOICE_ITEM_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 454, 'DELETE_INVOICE_METHOD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 455, 'DELETE_MERGE_PROFILE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 456, 'DELETE_METABIB_CLASS' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 457, 'DELETE_METABIB_SEARCH_ALIAS' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 458, 'DELETE_USER_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 459, 'MANAGE_CLAIM' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 460, 'UPDATE_BIB_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 461, 'UPDATE_BIBLIO_FINGERPRINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 462, 'UPDATE_BIB_SOURCE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 463, 'UPDATE_BILLING_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 464, 'UPDATE_CN_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 465, 'UPDATE_COPY_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 466, 'UPDATE_INVOICE_ITEM_TYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 467, 'UPDATE_INVOICE_METHOD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 468, 'UPDATE_MERGE_PROFILE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 469, 'UPDATE_METABIB_CLASS' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 470, 'UPDATE_METABIB_SEARCH_ALIAS' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 471, 'UPDATE_USER_BTYPE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 472, 'user_request.create' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 473, 'user_request.delete' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 474, 'user_request.update' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 475, 'user_request.view' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 476, 'VIEW_ACQ_FUND_ALLOCATION_PERCENT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 477, 'VIEW_CIRC_MATRIX_MATCHPOINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 478, 'VIEW_CLAIM' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 479, 'VIEW_GROUP_PENALTY_THRESHOLD' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 480, 'VIEW_HOLD_MATRIX_MATCHPOINT' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 481, 'VIEW_INVOICE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 482, 'VIEW_MERGE_PROFILE' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 483, 'VIEW_SERIAL_SUBSCRIPTION' );
+INSERT INTO permission.temp_perm ( id, code ) VALUES ( 484, 'VIEW_STANDING_PENALTY' );
 
 -- For every permission in the temp_perm table that has a matching
 -- permission in the real table: record the original id.
@@ -3234,8 +3263,19 @@ INSERT INTO action_trigger.environment (
 INSERT INTO action_trigger.event_definition
 (id, active, owner, name, hook, validator, reactor, cleanup_success, cleanup_failure, delay, delay_field, group_field, template) VALUES
 (23, true, 1, 'PO JEDI', 'acqpo.activated', 'Acq::PurchaseOrderEDIRequired', 'GeneratePurchaseOrderJEDI', NULL, NULL, '00:05:00', NULL, NULL,
-$$[%- USE date -%]
-[%# start JEDI document -%]
+$$
+[%- USE date -%]
+[%# start JEDI document 
+  # Vendor specific kludges:
+  # BT      - vendcode goes to NAD/BY *suffix*  w/ 91 qualifier
+  # INGRAM  - vendcode goes to NAD/BY *segment* w/ 91 qualifier (separately)
+  # BRODART - vendcode goes to FTX segment (lineitem level)
+-%]
+[%- 
+IF target.provider.edi_default.vendcode && target.provider.code == 'BRODART';
+    xtra_ftx = target.provider.edi_default.vendcode;
+END;
+-%]
 [%- BLOCK big_block -%]
 {
    "recipient":"[% target.provider.san %]",
@@ -3244,23 +3284,27 @@ $$[%- USE date -%]
      "ORDERS":[ "order", {
         "po_number":[% target.id %],
         "date":"[% date.format(date.now, '%Y%m%d') %]",
-        "buyer":[{
-            [%- IF target.provider.edi_default.vendcode -%]
-                "id":"[% target.ordering_agency.mailing_address.san _ ' ' _ target.provider.edi_default.vendcode %]", 
-                "id-qualifier": 91
+        "buyer":[
+            [%   IF   target.provider.edi_default.vendcode && (target.provider.code == 'BT' || target.provider.name.match('(?i)^BAKER & TAYLOR'))  -%]
+                {"id-qualifier": 91, "id":"[% target.ordering_agency.mailing_address.san _ ' ' _ target.provider.edi_default.vendcode %]"}
+            [%- ELSIF target.provider.edi_default.vendcode && target.provider.code == 'INGRAM' -%]
+                {"id":"[% target.ordering_agency.mailing_address.san %]"},
+                {"id-qualifier": 91, "id":"[% target.provider.edi_default.vendcode %]"}
             [%- ELSE -%]
-                "id":"[% target.ordering_agency.mailing_address.san %]"
-            [%- END  -%]
-        }],
-        "vendor":[ 
+                {"id":"[% target.ordering_agency.mailing_address.san %]"}
+            [%- END -%]
+        ],
+        "vendor":[
             [%- # target.provider.name (target.provider.id) -%]
             "[% target.provider.san %]",
             {"id-qualifier": 92, "id":"[% target.provider.id %]"}
         ],
         "currency":"[% target.provider.currency_type %]",
+                
         "items":[
-        [% FOR li IN target.lineitems %]
+        [%- FOR li IN target.lineitems %]
         {
+            "line_index":"[% li.id %]",
             "identifiers":[   [%-# li.isbns = helpers.get_li_isbns(li.attributes) %]
             [% FOR isbn IN helpers.get_li_isbns(li.attributes) -%]
                 [% IF isbn.length == 13 -%]
@@ -3269,28 +3313,40 @@ $$[%- USE date -%]
                 {"id-qualifier":"IB","id":"[% isbn %]"},
                 [%- END %]
             [% END %]
-                {"id-qualifier":"SA","id":"[% li.id %]"}
+                {"id-qualifier":"IN","id":"[% li.id %]"}
             ],
             "price":[% li.estimated_unit_price || '0.00' %],
             "desc":[
-                {"BTI":"[% helpers.get_li_attr('title',     '', li.attributes) %]"}, 
+                {"BTI":"[% helpers.get_li_attr('title',     '', li.attributes) %]"},
                 {"BPU":"[% helpers.get_li_attr('publisher', '', li.attributes) %]"},
                 {"BPD":"[% helpers.get_li_attr('pubdate',   '', li.attributes) %]"},
                 {"BPH":"[% helpers.get_li_attr('pagination','', li.attributes) %]"}
             ],
+            [%- ftx_vals = []; 
+                FOR note IN li.lineitem_notes; 
+                    NEXT UNLESS note.vendor_public == 't'; 
+                    ftx_vals.push(note.value); 
+                END; 
+                IF xtra_ftx;           ftx_vals.unshift(xtra_ftx); END; 
+                IF ftx_vals.size == 0; ftx_vals.unshift('');       END;  # BT needs FTX+LIN for every LI, even if it is an empty one
+            -%]
+
+            "free-text":[ 
+                [% FOR note IN ftx_vals -%] "[% note %]"[% UNLESS loop.last %], [% END %][% END %] 
+            ],            
             "quantity":[% li.lineitem_details.size %]
         }[% UNLESS loop.last %],[% END %]
         [%-# TODO: lineitem details (later) -%]
         [% END %]
         ],
         "line_items":[% target.lineitems.size %]
-     }]  [% # close ORDERS array %]
-   }]    [% # close  body  array %]
+     }]  [%# close ORDERS array %]
+   }]    [%# close  body  array %]
 }
 [% END %]
 [% tempo = PROCESS big_block; helpers.escape_json(tempo) %]
-$$
-);
+
+$$);
 
 INSERT INTO action_trigger.environment (event_def, path) VALUES 
   (23, 'lineitems.attributes'), 
@@ -6049,10 +6105,10 @@ ALTER TABLE auditor.asset_copy_history
 CREATE OR REPLACE FUNCTION asset.acp_status_changed()
 RETURNS TRIGGER AS $$
 BEGIN
-	IF NEW.status <> OLD.status THEN
-		NEW.status_changed_time := now();
-	END IF;
-	RETURN NEW;
+    IF NEW.status <> OLD.status THEN
+        NEW.status_changed_time := now();
+    END IF;
+    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -6263,6 +6319,23 @@ CREATE UNIQUE INDEX only_one_concurrent_checkout_per_copy ON action.circulation(
 
 ALTER TABLE action.circulation DROP CONSTRAINT action_circulation_target_copy_fkey;
 
+-- Rebuild dependent views
+
+DROP VIEW IF EXISTS action.billable_circulations;
+
+CREATE OR REPLACE VIEW action.billable_circulations AS
+    SELECT  *
+      FROM  action.circulation
+      WHERE xact_finish IS NULL;
+
+DROP VIEW IF EXISTS action.open_circulation;
+
+CREATE OR REPLACE VIEW action.open_circulation AS
+    SELECT  *
+      FROM  action.circulation
+      WHERE checkin_time IS NULL
+      ORDER BY due_date;
+
 CREATE OR REPLACE FUNCTION action.age_circ_on_delete () RETURNS TRIGGER AS $$
 DECLARE
 found char := 'N';
@@ -6308,7 +6381,122 @@ UPDATE config.z3950_attr SET truncation = 1 WHERE source = 'biblios' AND truncat
 
 -- Adding circ.holds.target_skip_me OU setting logic to the pre-matchpoint tests
 
-CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+CREATE OR REPLACE FUNCTION action.find_hold_matrix_matchpoint( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS INT AS $func$
+DECLARE
+    current_requestor_group    permission.grp_tree%ROWTYPE;
+    requestor_object    actor.usr%ROWTYPE;
+    user_object        actor.usr%ROWTYPE;
+    item_object        asset.copy%ROWTYPE;
+    item_cn_object        asset.call_number%ROWTYPE;
+    rec_descriptor        metabib.rec_descriptor%ROWTYPE;
+    current_mp_weight    FLOAT;
+    matchpoint_weight    FLOAT;
+    tmp_weight        FLOAT;
+    current_mp        config.hold_matrix_matchpoint%ROWTYPE;
+    matchpoint        config.hold_matrix_matchpoint%ROWTYPE;
+BEGIN
+    SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
+    SELECT INTO requestor_object * FROM actor.usr WHERE id = match_requestor;
+    SELECT INTO item_object * FROM asset.copy WHERE id = match_item;
+    SELECT INTO item_cn_object * FROM asset.call_number WHERE id = item_object.call_number;
+    SELECT INTO rec_descriptor r.* FROM metabib.rec_descriptor r WHERE r.record = item_cn_object.record;
+
+    PERFORM * FROM config.internal_flag WHERE name = 'circ.holds.usr_not_requestor' AND enabled;
+
+    IF NOT FOUND THEN
+        SELECT INTO current_requestor_group * FROM permission.grp_tree WHERE id = requestor_object.profile;
+    ELSE
+        SELECT INTO current_requestor_group * FROM permission.grp_tree WHERE id = user_object.profile;
+    END IF;
+
+    LOOP 
+        -- for each potential matchpoint for this ou and group ...
+        FOR current_mp IN
+            SELECT    m.*
+              FROM    config.hold_matrix_matchpoint m
+              WHERE    m.requestor_grp = current_requestor_group.id AND m.active
+              ORDER BY    CASE WHEN m.circ_modifier    IS NOT NULL THEN 16 ELSE 0 END +
+                    CASE WHEN m.juvenile_flag    IS NOT NULL THEN 16 ELSE 0 END +
+                    CASE WHEN m.marc_type        IS NOT NULL THEN 8 ELSE 0 END +
+                    CASE WHEN m.marc_form        IS NOT NULL THEN 4 ELSE 0 END +
+                    CASE WHEN m.marc_vr_format    IS NOT NULL THEN 2 ELSE 0 END +
+                    CASE WHEN m.ref_flag        IS NOT NULL THEN 1 ELSE 0 END DESC LOOP
+
+            current_mp_weight := 5.0;
+
+            IF current_mp.circ_modifier IS NOT NULL THEN
+                CONTINUE WHEN current_mp.circ_modifier <> item_object.circ_modifier OR item_object.circ_modifier IS NULL;
+            END IF;
+
+            IF current_mp.marc_type IS NOT NULL THEN
+                IF item_object.circ_as_type IS NOT NULL THEN
+                    CONTINUE WHEN current_mp.marc_type <> item_object.circ_as_type;
+                ELSE
+                    CONTINUE WHEN current_mp.marc_type <> rec_descriptor.item_type;
+                END IF;
+            END IF;
+
+            IF current_mp.marc_form IS NOT NULL THEN
+                CONTINUE WHEN current_mp.marc_form <> rec_descriptor.item_form;
+            END IF;
+
+            IF current_mp.marc_vr_format IS NOT NULL THEN
+                CONTINUE WHEN current_mp.marc_vr_format <> rec_descriptor.vr_format;
+            END IF;
+
+            IF current_mp.juvenile_flag IS NOT NULL THEN
+                CONTINUE WHEN current_mp.juvenile_flag <> user_object.juvenile;
+            END IF;
+
+            IF current_mp.ref_flag IS NOT NULL THEN
+                CONTINUE WHEN current_mp.ref_flag <> item_object.ref;
+            END IF;
+
+
+            -- caclulate the rule match weight
+            IF current_mp.item_owning_ou IS NOT NULL THEN
+                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_owning_ou, item_cn_object.owning_lib)::FLOAT + 1.0)::FLOAT;
+                current_mp_weight := current_mp_weight - tmp_weight;
+            END IF; 
+
+            IF current_mp.item_circ_ou IS NOT NULL THEN
+                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_circ_ou, item_object.circ_lib)::FLOAT + 1.0)::FLOAT;
+                current_mp_weight := current_mp_weight - tmp_weight;
+            END IF; 
+
+            IF current_mp.pickup_ou IS NOT NULL THEN
+                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.pickup_ou, pickup_ou)::FLOAT + 1.0)::FLOAT;
+                current_mp_weight := current_mp_weight - tmp_weight;
+            END IF; 
+
+            IF current_mp.request_ou IS NOT NULL THEN
+                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.request_ou, request_ou)::FLOAT + 1.0)::FLOAT;
+                current_mp_weight := current_mp_weight - tmp_weight;
+            END IF; 
+
+            IF current_mp.user_home_ou IS NOT NULL THEN
+                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.user_home_ou, user_object.home_ou)::FLOAT + 1.0)::FLOAT;
+                current_mp_weight := current_mp_weight - tmp_weight;
+            END IF; 
+
+            -- set the matchpoint if we found the best one
+            IF matchpoint_weight IS NULL OR matchpoint_weight > current_mp_weight THEN
+                matchpoint = current_mp;
+                matchpoint_weight = current_mp_weight;
+            END IF;
+
+        END LOOP;
+
+        EXIT WHEN current_requestor_group.parent IS NULL OR matchpoint.id IS NOT NULL;
+
+        SELECT INTO current_requestor_group * FROM permission.grp_tree WHERE id = current_requestor_group.parent;
+    END LOOP;
+
+    RETURN matchpoint.id;
+END;
+$func$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT, retargetting BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
 DECLARE
     matchpoint_id        INT;
     user_object        actor.usr%ROWTYPE;
@@ -6410,22 +6598,7 @@ BEGIN
         END IF;
     END IF;
  
-    FOR standing_penalty IN
-        SELECT  DISTINCT csp.*
-          FROM  actor.usr_standing_penalty usp
-                JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
-          WHERE usr = match_user
-                AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
-                AND (usp.stop_date IS NULL or usp.stop_date > NOW())
-                AND csp.block_list LIKE '%HOLD%' LOOP
-
-        result.fail_part := standing_penalty.name;
-        result.success := FALSE;
-        done := TRUE;
-        RETURN NEXT result;
-    END LOOP;
-
-    IF hold_test.stop_blocked_user IS TRUE THEN
+    IF NOT retargetting THEN
         FOR standing_penalty IN
             SELECT  DISTINCT csp.*
               FROM  actor.usr_standing_penalty usp
@@ -6433,28 +6606,45 @@ BEGIN
               WHERE usr = match_user
                     AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
                     AND (usp.stop_date IS NULL or usp.stop_date > NOW())
-                    AND csp.block_list LIKE '%CIRC%' LOOP
+                    AND csp.block_list LIKE '%HOLD%' LOOP
     
             result.fail_part := standing_penalty.name;
             result.success := FALSE;
             done := TRUE;
             RETURN NEXT result;
         END LOOP;
-    END IF;
-
-    IF hold_test.max_holds IS NOT NULL THEN
-        SELECT    INTO hold_count COUNT(*)
-          FROM    action.hold_request
-          WHERE    usr = match_user
-            AND fulfillment_time IS NULL
-            AND cancel_time IS NULL
-            AND CASE WHEN hold_test.include_frozen_holds THEN TRUE ELSE frozen IS FALSE END;
-
-        IF hold_count >= hold_test.max_holds THEN
-            result.fail_part := 'config.hold_matrix_test.max_holds';
-            result.success := FALSE;
-            done := TRUE;
-            RETURN NEXT result;
+    
+        IF hold_test.stop_blocked_user IS TRUE THEN
+            FOR standing_penalty IN
+                SELECT  DISTINCT csp.*
+                  FROM  actor.usr_standing_penalty usp
+                        JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
+                  WHERE usr = match_user
+                        AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
+                        AND (usp.stop_date IS NULL or usp.stop_date > NOW())
+                        AND csp.block_list LIKE '%CIRC%' LOOP
+        
+                result.fail_part := standing_penalty.name;
+                result.success := FALSE;
+                done := TRUE;
+                RETURN NEXT result;
+            END LOOP;
+        END IF;
+    
+        IF hold_test.max_holds IS NOT NULL THEN
+            SELECT    INTO hold_count COUNT(*)
+              FROM    action.hold_request
+              WHERE    usr = match_user
+                AND fulfillment_time IS NULL
+                AND cancel_time IS NULL
+                AND CASE WHEN hold_test.include_frozen_holds THEN TRUE ELSE frozen IS FALSE END;
+    
+            IF hold_count >= hold_test.max_holds THEN
+                result.fail_part := 'config.hold_matrix_test.max_holds';
+                result.success := FALSE;
+                done := TRUE;
+                RETURN NEXT result;
+            END IF;
         END IF;
     END IF;
 
@@ -6484,6 +6674,14 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+    SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, FALSE);
+$func$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION action.hold_retarget_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+    SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, TRUE );
+$func$ LANGUAGE SQL;
 
 -- New post-delete trigger to propagate deletions to parent(s)
 
@@ -7107,7 +7305,7 @@ BEGIN
         END;
         $func$ LANGUAGE 'plpgsql';
     $$;
-    RETURN TRUE;
+	RETURN TRUE;
 END;
 $creator$ LANGUAGE 'plpgsql';
 
@@ -7147,7 +7345,7 @@ BEGIN
     PERFORM auditor.create_auditor_func(sch, tbl);
     PERFORM auditor.create_auditor_update_trigger(sch, tbl);
     PERFORM auditor.create_auditor_lifecycle(sch, tbl);
-	RETURN TRUE;
+    RETURN TRUE;
 END;
 $creator$ LANGUAGE 'plpgsql';
 
@@ -7175,7 +7373,7 @@ ALTER TABLE actor.usr ADD COLUMN
 ALTER TABLE AUDITOR.actor_usr_history ADD COLUMN 
 	claims_never_checked_out_count INT;
 
-DROP VIEW auditor.actor_usr_lifecycle;
+DROP VIEW IF EXISTS auditor.actor_usr_lifecycle;
 
 SELECT auditor.create_auditor_lifecycle( 'actor', 'usr' );
 
@@ -7941,7 +8139,7 @@ CREATE TABLE booking.resource_type (
 	                               DEFERRABLE INITIALLY DEFERRED,
     max_fine       NUMERIC(8,2),
     elbow_room     INTERVAL,
-    CONSTRAINT brt_name_or_record_once_per_owner UNIQUE(owner, name, record)
+    CONSTRAINT brt_name_and_record_once_per_owner UNIQUE(owner, name, record)
 );
 
 CREATE TABLE booking.resource (
@@ -8564,7 +8762,7 @@ ADD COLUMN fiscal_calendar INT NOT NULL
 ALTER TABLE auditor.actor_org_unit_history
 	ADD COLUMN fiscal_calendar INT;
 
-DROP VIEW auditor.actor_org_unit_lifecycle;
+DROP VIEW IF EXISTS auditor.actor_org_unit_lifecycle;
 
 SELECT auditor.create_auditor_lifecycle( 'actor', 'org_unit' );
 
@@ -8969,6 +9167,133 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+COMMENT ON FUNCTION actor.usr_purge_data(INT, INT) IS $$
+/**
+ * Finds rows dependent on a given row in actor.usr and either deletes them
+ * or reassigns them to a different user.
+ */
+$$;
+
+CREATE OR REPLACE FUNCTION actor.usr_delete(
+	src_usr  IN INTEGER,
+	dest_usr IN INTEGER
+) RETURNS VOID AS $$
+DECLARE
+	old_profile actor.usr.profile%type;
+	old_home_ou actor.usr.home_ou%type;
+	new_profile actor.usr.profile%type;
+	new_home_ou actor.usr.home_ou%type;
+	new_name    text;
+	new_dob     actor.usr.dob%type;
+BEGIN
+	SELECT
+		id || '-PURGED-' || now(),
+		profile,
+		home_ou,
+		dob
+	INTO
+		new_name,
+		old_profile,
+		old_home_ou,
+		new_dob
+	FROM
+		actor.usr
+	WHERE
+		id = src_usr;
+	--
+	-- Quit if no such user
+	--
+	IF old_profile IS NULL THEN
+		RETURN;
+	END IF;
+	--
+	perform actor.usr_purge_data( src_usr, dest_usr );
+	--
+	-- Find the root grp_tree and the root org_unit.  This would be simpler if we 
+	-- could assume that there is only one root.  Theoretically, someday, maybe,
+	-- there could be multiple roots, so we take extra trouble to get the right ones.
+	--
+	SELECT
+		id
+	INTO
+		new_profile
+	FROM
+		permission.grp_ancestors( old_profile )
+	WHERE
+		parent is null;
+	--
+	SELECT
+		id
+	INTO
+		new_home_ou
+	FROM
+		actor.org_unit_ancestors( old_home_ou )
+	WHERE
+		parent_ou is null;
+	--
+	-- Truncate date of birth
+	--
+	IF new_dob IS NOT NULL THEN
+		new_dob := date_trunc( 'year', new_dob );
+	END IF;
+	--
+	UPDATE
+		actor.usr
+		SET
+			card = NULL,
+			profile = new_profile,
+			usrname = new_name,
+			email = NULL,
+			passwd = random()::text,
+			standing = DEFAULT,
+			ident_type = 
+			(
+				SELECT MIN( id )
+				FROM config.identification_type
+			),
+			ident_value = NULL,
+			ident_type2 = NULL,
+			ident_value2 = NULL,
+			net_access_level = DEFAULT,
+			photo_url = NULL,
+			prefix = NULL,
+			first_given_name = new_name,
+			second_given_name = NULL,
+			family_name = new_name,
+			suffix = NULL,
+			alias = NULL,
+			day_phone = NULL,
+			evening_phone = NULL,
+			other_phone = NULL,
+			mailing_address = NULL,
+			billing_address = NULL,
+			home_ou = new_home_ou,
+			dob = new_dob,
+			active = FALSE,
+			master_account = DEFAULT, 
+			super_user = DEFAULT,
+			barred = FALSE,
+			deleted = TRUE,
+			juvenile = DEFAULT,
+			usrgroup = 0,
+			claims_returned_count = DEFAULT,
+			credit_forward_balance = DEFAULT,
+			last_xact_id = DEFAULT,
+			alert_message = NULL,
+			create_date = now(),
+			expire_date = now()
+	WHERE
+		id = src_usr;
+END;
+$$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION actor.usr_delete(INT, INT) IS $$
+/**
+ * Logically deletes a user.  Removes personally identifiable information,
+ * and purges associated data in other tables.
+ */
+$$;
+
 -- INSERT INTO config.copy_status (id,name) VALUES (15,oils_i18n_gettext(15, 'On reservation shelf', 'ccs', 'name'));
 
 ALTER TABLE acq.fund
@@ -9053,7 +9378,11 @@ COMMENT ON VIEW acq.ordered_funding_source_credit IS $$
 $$;
 
 CREATE OR REPLACE VIEW money.billable_xact_summary_location_view AS
-	SELECT * FROM money.materialized_billable_xact_summary;
+    SELECT  m.*, COALESCE(c.circ_lib, g.billing_location, r.pickup_lib) AS billing_location
+      FROM  money.materialized_billable_xact_summary m
+            LEFT JOIN action.circulation c ON (c.id = m.id)
+            LEFT JOIN money.grocery g ON (g.id = m.id)
+            LEFT JOIN booking.reservation r ON (r.id = m.id);
 
 CREATE TABLE config.marc21_rec_type_map (
     code        TEXT    PRIMARY KEY,
@@ -10359,6 +10688,8 @@ INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_full_rec
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_rec_descriptor');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_field_entry');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_authority_linking');
+INSERT INTO config.internal_flag (name) VALUES ('ingest.metarecord_mapping.skip_on_update');
+INSERT INTO config.internal_flag (name) VALUES ('ingest.assume_inserts_only');
 
 CREATE TABLE authority.bib_linking (
     id          BIGSERIAL   PRIMARY KEY,
@@ -10387,7 +10718,10 @@ $func$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION metabib.reingest_metabib_rec_descriptor( bib_id BIGINT ) RETURNS VOID AS $func$
 BEGIN
-    DELETE FROM metabib.rec_descriptor WHERE record = bib_id;
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
+    IF NOT FOUND THEN
+        DELETE FROM metabib.rec_descriptor WHERE record = bib_id;
+    END IF;
     INSERT INTO metabib.rec_descriptor (record, item_type, item_form, bib_level, control_type, enc_level, audience, lit_form, type_mat, cat_form, pub_status, item_lang, vr_format, date1, date2)
         SELECT  bib_id,
                 biblio.marc21_extract_fixed_field( bib_id, 'Type' ),
@@ -10406,8 +10740,8 @@ BEGIN
                             JOIN config.marc21_physical_characteristic_subfield_map s ON (s.id = p.subfield)
                             JOIN config.marc21_physical_characteristic_value_map v ON (v.id = p.value)
                       WHERE p.ptype = 'v' AND s.subfield = 'e'    ),
-                biblio.marc21_extract_fixed_field( bib_id, 'Date1'),
-                biblio.marc21_extract_fixed_field( bib_id, 'Date2');
+                LPAD(NULLIF(REGEXP_REPLACE(NULLIF(biblio.marc21_extract_fixed_field( bib_id, 'Date1'), ''), E'\\D', '0', 'g')::INT,0)::TEXT,4,'0'),
+                LPAD(NULLIF(REGEXP_REPLACE(NULLIF(biblio.marc21_extract_fixed_field( bib_id, 'Date2'), ''), E'\\D', '9', 'g')::INT,9999)::TEXT,4,'0');
 
     RETURN;
 END;
@@ -10436,12 +10770,14 @@ DECLARE
     fclass          RECORD;
     ind_data        metabib.field_entry_template%ROWTYPE;
 BEGIN
-    FOR fclass IN SELECT * FROM config.metabib_class LOOP
-        -- RAISE NOTICE 'Emptying out %', fclass.name;
-        EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
-    END LOOP;
-
-    DELETE FROM metabib.facet_entry WHERE source = bib_id;
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
+    IF NOT FOUND THEN
+        FOR fclass IN SELECT * FROM config.metabib_class LOOP
+            -- RAISE NOTICE 'Emptying out %', fclass.name;
+            EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
+        END LOOP;
+        DELETE FROM metabib.facet_entry WHERE source = bib_id;
+    END IF;
 
     FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
         IF ind_data.field < 0 THEN
@@ -10583,7 +10919,10 @@ $func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION metabib.reingest_metabib_full_rec( bib_id BIGINT ) RETURNS VOID AS $func$
 BEGIN
-    DELETE FROM metabib.real_full_rec WHERE record = bib_id;
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
+    IF NOT FOUND THEN
+        DELETE FROM metabib.real_full_rec WHERE record = bib_id;
+    END IF;
     INSERT INTO metabib.real_full_rec (record, tag, ind1, ind2, subfield, value)
         SELECT record, tag, ind1, ind2, subfield, value FROM biblio.flatten_marc( bib_id );
 
@@ -10648,7 +10987,10 @@ BEGIN
             PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
         END IF;
     ELSE -- we're doing an update, and we're not deleted, remap
-        PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_update' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
+        END IF;
     END IF;
 
     RETURN NEW;
@@ -10660,8 +11002,7 @@ CREATE TRIGGER aaa_indexing_ingest_or_delete AFTER INSERT OR UPDATE ON biblio.re
 
 DROP TRIGGER IF EXISTS zzz_update_materialized_simple_rec_delete_tgr ON biblio.record_entry;
 
-CREATE OR REPLACE FUNCTION oils_xpath_table ( key TEXT, document_field TEXT, relation_name TEXT, xpaths TEXT, criteria TEXT )
-RETURNS SETOF RECORD AS $func$
+CREATE OR REPLACE FUNCTION oils_xpath_table ( key TEXT, document_field TEXT, relation_name TEXT, xpaths TEXT, criteria TEXT ) RETURNS SETOF RECORD AS $func$
 DECLARE
     xpath_list  TEXT[];
     select_list TEXT[];
@@ -10671,52 +11012,56 @@ DECLARE
     empty_test  RECORD;
 BEGIN
     xpath_list := STRING_TO_ARRAY( xpaths, '|' );
-
+ 
     select_list := ARRAY_APPEND( select_list, key || '::INT AS key' );
-
+ 
     FOR i IN 1 .. ARRAY_UPPER(xpath_list,1) LOOP
-        select_list := ARRAY_APPEND(
-            select_list,
-            $sel$
-            EXPLODE_ARRAY(
-                COALESCE(
-                    NULLIF(
-                        oils_xpath(
-                            $sel$ ||
-                                quote_literal(
-                                    CASE
-                                        WHEN xpath_list[i] ~ $re$/[^/[]*@[^/]+$$re$ OR xpath_list[i] ~ $re$text\(\)$$re$ THEN xpath_list[i]
-                                        ELSE xpath_list[i] || '//text()'
-                                    END
-                                ) ||
-                            $sel$,
-                            $sel$ || document_field || $sel$
+        IF xpath_list[i] = 'null()' THEN
+            select_list := ARRAY_APPEND( select_list, 'NULL::TEXT AS c_' || i );
+        ELSE
+            select_list := ARRAY_APPEND(
+                select_list,
+                $sel$
+                EXPLODE_ARRAY(
+                    COALESCE(
+                        NULLIF(
+                            oils_xpath(
+                                $sel$ ||
+                                    quote_literal(
+                                        CASE
+                                            WHEN xpath_list[i] ~ $re$/[^/[]*@[^/]+$$re$ OR xpath_list[i] ~ $re$text\(\)$$re$ THEN xpath_list[i]
+                                            ELSE xpath_list[i] || '//text()'
+                                        END
+                                    ) ||
+                                $sel$,
+                                $sel$ || document_field || $sel$
+                            ),
+                           '{}'::TEXT[]
                         ),
-                       '{}'::TEXT[]
-                    ),
-                    '{NULL}'::TEXT[]
-                )
-            ) AS c_$sel$ || i
-        );
-        where_list := ARRAY_APPEND(
-            where_list,
-            'c_' || i || ' IS NOT NULL'
-        );
+                        '{NULL}'::TEXT[]
+                    )
+                ) AS c_$sel$ || i
+            );
+            where_list := ARRAY_APPEND(
+                where_list,
+                'c_' || i || ' IS NOT NULL'
+            );
+        END IF;
     END LOOP;
-
+ 
     q := $q$
 SELECT * FROM (
     SELECT $q$ || ARRAY_TO_STRING( select_list, ', ' ) || $q$ FROM $q$ || relation_name || $q$ WHERE ($q$ || criteria || $q$)
 )x WHERE $q$ || ARRAY_TO_STRING( where_list, ' AND ' );
     -- RAISE NOTICE 'query: %', q;
-
+ 
     FOR out_record IN EXECUTE q LOOP
         RETURN NEXT out_record;
     END LOOP;
-
+ 
     RETURN;
 END;
-$func$ LANGUAGE PLPGSQL;
+$func$ LANGUAGE PLPGSQL IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION vandelay.ingest_items ( import_id BIGINT, attr_def_id BIGINT ) RETURNS SETOF vandelay.import_item AS $$
 DECLARE
@@ -11120,11 +11465,7 @@ BEGIN
 END;
 $creator$ LANGUAGE 'plpgsql';
 
-SELECT acq.create_acq_auditor ( 'acq', 'purchase_order' );
-CREATE INDEX acq_po_hist_id_idx            ON acq.acq_purchase_order_history( id );
-
-SELECT acq.create_acq_auditor ( 'acq', 'lineitem' );
-CREATE INDEX acq_lineitem_hist_id_idx            ON acq.acq_lineitem_history( id );
+ALTER TABLE acq.lineitem DROP COLUMN item_count;
 
 CREATE OR REPLACE VIEW acq.fund_debit_total AS
     SELECT  fund.id AS fund,
@@ -12649,7 +12990,7 @@ CREATE TABLE acq.user_request (
 
 CREATE TABLE acq.lineitem_alert_text (
 	id               SERIAL         PRIMARY KEY,
-	code             TEXT           UNIQUE NOT NULL,
+	code             TEXT           NOT NULL,
 	description      TEXT,
 	owning_lib       INT            NOT NULL
 	                                REFERENCES actor.org_unit(id)
@@ -12914,13 +13255,7 @@ FROM
                 fund
         ) AS c USING ( fund );
 
-CREATE OR REPLACE FUNCTION actor.usr_merge(
-	src_usr INT,
-	dest_usr INT,
-	del_addrs BOOLEAN,
-	del_cards BOOLEAN,
-	deactivate_cards BOOLEAN
-) RETURNS VOID AS $$
+CREATE OR REPLACE FUNCTION actor.usr_merge( src_usr INT, dest_usr INT, del_addrs BOOLEAN, del_cards BOOLEAN, deactivate_cards BOOLEAN ) RETURNS VOID AS $$
 DECLARE
 	suffix TEXT;
 	bucket_row RECORD;
@@ -13098,7 +13433,7 @@ BEGIN
 
     -- acq.*
     UPDATE acq.fund_allocation SET allocator = dest_usr WHERE allocator = src_usr;
-    UPDATE acq.fund_transfer SET transfer_user = dest_usr WHERE transfer_user = src_usr;
+	UPDATE acq.fund_transfer SET transfer_user = dest_usr WHERE transfer_user = src_usr;
 
 	-- transfer picklists the same way we transfer buckets (see above)
 	FOR picklist_row in
@@ -13123,8 +13458,8 @@ BEGIN
     UPDATE acq.purchase_order SET owner = dest_usr WHERE owner = src_usr;
     UPDATE acq.po_note SET creator = dest_usr WHERE creator = src_usr;
     UPDATE acq.po_note SET editor = dest_usr WHERE editor = src_usr;
-	UPDATE acq.provider_note SET creator = dest_usr WHERE creator = src_usr;
-	UPDATE acq.provider_note SET editor = dest_usr WHERE editor = src_usr;
+    UPDATE acq.provider_note SET creator = dest_usr WHERE creator = src_usr;
+    UPDATE acq.provider_note SET editor = dest_usr WHERE editor = src_usr;
     UPDATE acq.lineitem_note SET creator = dest_usr WHERE creator = src_usr;
     UPDATE acq.lineitem_note SET editor = dest_usr WHERE editor = src_usr;
     UPDATE acq.lineitem_usr_attr_definition SET usr = dest_usr WHERE usr = src_usr;
@@ -13271,6 +13606,10 @@ $$ LANGUAGE PLPGSQL;
 -- Refresh the mat view with the corrected underlying view
 TRUNCATE money.materialized_billable_xact_summary;
 INSERT INTO money.materialized_billable_xact_summary SELECT * FROM money.billable_xact_summary;
+
+-- Now redefine the view as a window onto the materialized view
+CREATE OR REPLACE VIEW money.billable_xact_summary AS
+    SELECT * FROM money.materialized_billable_xact_summary;
 
 CREATE OR REPLACE FUNCTION permission.usr_has_perm_at_nd(
     user_id    IN INTEGER,
@@ -13486,40 +13825,33 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 ALTER TABLE acq.purchase_order
-	ADD COLUMN cancel_reason        INT REFERENCES acq.cancel_reason( id )
-	                                    DEFERRABLE INITIALLY DEFERRED;
-
-ALTER TABLE acq.acq_purchase_order_history
-	ADD COLUMN cancel_reason INTEGER;
-
-ALTER TABLE acq.purchase_order
+	ADD COLUMN cancel_reason INT
+		REFERENCES acq.cancel_reason( id )
+	    DEFERRABLE INITIALLY DEFERRED,
 	ADD COLUMN prepayment_required BOOLEAN NOT NULL DEFAULT FALSE;
 
-ALTER TABLE acq.acq_purchase_order_history
-	ADD COLUMN prepayment_required BOOLEAN NOT NULL DEFAULT FALSE;
+-- Build the history table and lifecycle view
+-- for acq.purchase_order
+
+SELECT acq.create_acq_auditor ( 'acq', 'purchase_order' );
+
+CREATE INDEX acq_po_hist_id_idx            ON acq.acq_purchase_order_history( id );
 
 ALTER TABLE acq.lineitem
-	ADD COLUMN cancel_reason        INT REFERENCES acq.cancel_reason( id )
-	                                    DEFERRABLE INITIALLY DEFERRED;
-
-ALTER TABLE acq.acq_lineitem_history
-	ADD COLUMN cancel_reason INTEGER;
-
-ALTER TABLE acq.lineitem
-	ADD COLUMN estimated_unit_price NUMERIC;
-
-ALTER TABLE acq.acq_lineitem_history
-	ADD COLUMN estimated_unit_price NUMERIC;
-
-ALTER TABLE acq.lineitem
+	ADD COLUMN cancel_reason INT
+		REFERENCES acq.cancel_reason( id )
+	    DEFERRABLE INITIALLY DEFERRED,
+	ADD COLUMN estimated_unit_price NUMERIC,
 	ADD COLUMN claim_policy INT
 		REFERENCES acq.claim_policy
-		DEFERRABLE INITIALLY DEFERRED;
+		DEFERRABLE INITIALLY DEFERRED,
+	ALTER COLUMN eg_bib_id SET DATA TYPE bigint;
 
-ALTER TABLE acq.acq_lineitem_history
-	ADD COLUMN claim_policy INT
-		REFERENCES acq.claim_policy
-		DEFERRABLE INITIALLY DEFERRED;
+-- Build the history table and lifecycle view
+-- for acq.lineitem
+
+SELECT acq.create_acq_auditor ( 'acq', 'lineitem' );
+CREATE INDEX acq_lineitem_hist_id_idx            ON acq.acq_lineitem_history( id );
 
 ALTER TABLE acq.lineitem_detail
 	ADD COLUMN cancel_reason        INT REFERENCES acq.cancel_reason( id )
@@ -13818,10 +14150,10 @@ BEGIN
         END IF;
     END IF;
 
-    add_rule := add_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="a"]/text()',incoming_xml),''),'');
-    strip_rule := strip_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="d"]/text()',incoming_xml),''),'');
-    replace_rule := replace_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="r"]/text()',incoming_xml),''),'');
-    preserve_rule := preserve_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="p"]/text()',incoming_xml),''),'');
+    add_rule := add_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="a"]/text()',incoming_xml),','),'');
+    strip_rule := strip_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="d"]/text()',incoming_xml),','),'');
+    replace_rule := replace_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="r"]/text()',incoming_xml),','),'');
+    preserve_rule := preserve_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="p"]/text()',incoming_xml),','),'');
 
     output.add_rule := BTRIM(add_rule,',');
     output.replace_rule := BTRIM(replace_rule,',');
@@ -14398,7 +14730,8 @@ $function$ LANGUAGE PLPGSQL;
 UPDATE config.metabib_field SET label = name;
 ALTER TABLE config.metabib_field ALTER COLUMN label SET NOT NULL;
 
-ALTER TABLE config.metabib_field ADD CONSTRAINT field_class_fkey FOREIGN KEY (field_class) REFERENCES config.metabib_class (name);
+ALTER TABLE config.metabib_field ADD CONSTRAINT metabib_field_field_class_fkey
+	 FOREIGN KEY (field_class) REFERENCES config.metabib_class (name);
 
 ALTER TABLE config.metabib_field DROP CONSTRAINT metabib_field_field_class_check;
 
@@ -14753,7 +15086,12 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-ALTER TABLE biblio.record_entry ADD COLUMN owner INT REFERENCES actor.org_unit (id);
+ALTER TABLE biblio.record_entry ADD COLUMN owner INT;
+ALTER TABLE biblio.record_entry
+	 ADD CONSTRAINT biblio_record_entry_owner_fkey FOREIGN KEY (owner)
+	 REFERENCES actor.org_unit (id)
+	 DEFERRABLE INITIALLY DEFERRED;
+
 ALTER TABLE biblio.record_entry ADD COLUMN share_depth INT;
 
 ALTER TABLE auditor.biblio_record_entry_history ADD COLUMN owner INT;
@@ -15239,23 +15577,23 @@ BEGIN
             SELECT * INTO circ_chain_tail FROM action.circ_chain(circ_chain_head.id) ORDER BY xact_start DESC LIMIT 1;
             EXIT WHEN circ_chain_tail.xact_finish IS NULL;
 
-            -- Now get the user setings, if any, to block purging if the user wants to keep more circs
+            -- Now get the user settings, if any, to block purging if the user wants to keep more circs
             usr_keep_age.value := NULL;
             SELECT * INTO usr_keep_age FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_age';
 
             usr_keep_start.value := NULL;
-            SELECT * INTO usr_keep_start FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_start_date';
+            SELECT * INTO usr_keep_start FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_start';
 
             IF usr_keep_age.value IS NOT NULL AND usr_keep_start.value IS NOT NULL THEN
-                IF oils_json_to_string(usr_keep_age.value)::INTERVAL > AGE(NOW(), oils_json_to_string(usr_keep_start.value)::TIMESTAMPTZ) THEN
-                    keep_age := AGE(NOW(), oils_json_to_string(usr_keep_start.value)::TIMESTAMPTZ);
+                IF oils_json_to_text(usr_keep_age.value)::INTERVAL > AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ) THEN
+                    keep_age := AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ);
                 ELSE
-                    keep_age := oils_json_to_string(usr_keep_age.value)::INTERVAL;
+                    keep_age := oils_json_to_text(usr_keep_age.value)::INTERVAL;
                 END IF;
             ELSIF usr_keep_start.value IS NOT NULL THEN
-                keep_age := AGE(NOW(), oils_json_to_string(usr_keep_start.value)::TIMESTAMPTZ);
+                keep_age := AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ);
             ELSE
-                keep_age := COALESCE( org_keep_age::INTERVAL, '2000 years'::INTEVAL );
+                keep_age := COALESCE( org_keep_age::INTERVAL, '2000 years'::INTERVAL );
             END IF;
 
             EXIT WHEN AGE(NOW(), circ_chain_tail.xact_finish) < keep_age;
@@ -15405,6 +15743,8 @@ CREATE TABLE serial.subscription (
 	expected_date_offset   INTERVAL
 	-- acquisitions/business-side tables link to here
 );
+CREATE INDEX serial_subscription_record_idx ON serial.subscription (record_entry);
+CREATE INDEX serial_subscription_owner_idx ON serial.subscription (owning_lib);
 
 --at least one distribution per org_unit holding issues
 CREATE TABLE serial.distribution (
@@ -15436,6 +15776,8 @@ CREATE TABLE serial.distribution (
 	unit_label_prefix     TEXT,
 	unit_label_suffix     TEXT
 );
+CREATE INDEX serial_distribution_sub_idx ON serial.distribution (subscription);
+CREATE INDEX serial_distribution_holding_lib_idx ON serial.distribution (holding_lib);
 
 CREATE UNIQUE INDEX one_dist_per_sre_idx ON serial.distribution (record_entry);
 
@@ -15447,6 +15789,7 @@ CREATE TABLE serial.stream (
 	                        DEFERRABLE INITIALLY DEFERRED,
 	routing_label   TEXT
 );
+CREATE INDEX serial_stream_dist_idx ON serial.stream (distribution);
 
 CREATE UNIQUE INDEX label_once_per_dist
 	ON serial.stream (distribution, routing_label)
@@ -15472,6 +15815,8 @@ CREATE TABLE serial.routing_list_user (
 		(reader IS NULL AND department IS NOT NULL)
 	)
 );
+CREATE INDEX serial_routing_list_user_stream_idx ON serial.routing_list_user (stream);
+CREATE INDEX serial_routing_list_user_reader_idx ON serial.routing_list_user (reader);
 
 CREATE TABLE serial.caption_and_pattern (
 	id           SERIAL       PRIMARY KEY,
@@ -15498,6 +15843,7 @@ CREATE TABLE serial.caption_and_pattern (
 	chron_4      TEXT,
 	chron_5      TEXT
 );
+CREATE INDEX serial_caption_and_pattern_sub_idx ON serial.caption_and_pattern (subscription);
 
 CREATE TABLE serial.issuance (
 	id              SERIAL    PRIMARY KEY,
@@ -15526,12 +15872,20 @@ CREATE TABLE serial.issuance (
 	holding_link_id INT
 	-- TODO: add columns for separate enumeration/chronology values
 );
+CREATE INDEX serial_issuance_sub_idx ON serial.issuance (subscription);
+CREATE INDEX serial_issuance_caption_and_pattern_idx ON serial.issuance (caption_and_pattern);
+CREATE INDEX serial_issuance_date_published_idx ON serial.issuance (date_published);
 
 CREATE TABLE serial.unit (
 	label           TEXT,
 	label_sort_key  TEXT,
 	contents        TEXT    NOT NULL
 ) INHERITS (asset.copy);
+CREATE UNIQUE INDEX unit_barcode_key ON serial.unit (barcode) WHERE deleted = FALSE OR deleted IS FALSE;
+CREATE INDEX unit_cn_idx ON serial.unit (call_number);
+CREATE INDEX unit_avail_cn_idx ON serial.unit (call_number);
+CREATE INDEX unit_creator_idx  ON serial.unit ( creator );
+CREATE INDEX unit_editor_idx   ON serial.unit ( editor );
 
 ALTER TABLE serial.unit ADD PRIMARY KEY (id);
 
@@ -15573,6 +15927,12 @@ CREATE TABLE serial.item (
                             DEFAULT 'Expected',
 	shadowed        BOOL    NOT NULL DEFAULT FALSE
 );
+CREATE INDEX serial_item_stream_idx ON serial.item (stream);
+CREATE INDEX serial_item_issuance_idx ON serial.item (issuance);
+CREATE INDEX serial_item_unit_idx ON serial.item (unit);
+CREATE INDEX serial_item_uri_idx ON serial.item (uri);
+CREATE INDEX serial_item_date_received_idx ON serial.item (date_received);
+CREATE INDEX serial_item_status_idx ON serial.item (status);
 
 CREATE TABLE serial.item_note (
 	id          SERIAL  PRIMARY KEY,
@@ -15588,6 +15948,7 @@ CREATE TABLE serial.item_note (
 	title       TEXT    NOT NULL,
 	value       TEXT    NOT NULL
 );
+CREATE INDEX serial_item_note_item_idx ON serial.item_note (item);
 
 CREATE TABLE serial.basic_summary (
 	id                  SERIAL  PRIMARY KEY,
@@ -15599,6 +15960,7 @@ CREATE TABLE serial.basic_summary (
 	textual_holdings    TEXT,
 	show_generated      BOOL    NOT NULL DEFAULT TRUE
 );
+CREATE INDEX serial_basic_summary_dist_idx ON serial.basic_summary (distribution);
 
 CREATE TABLE serial.supplement_summary (
 	id                  SERIAL  PRIMARY KEY,
@@ -15610,6 +15972,7 @@ CREATE TABLE serial.supplement_summary (
 	textual_holdings    TEXT,
 	show_generated      BOOL    NOT NULL DEFAULT TRUE
 );
+CREATE INDEX serial_supplement_summary_dist_idx ON serial.supplement_summary (distribution);
 
 CREATE TABLE serial.index_summary (
 	id                  SERIAL  PRIMARY KEY,
@@ -15621,6 +15984,7 @@ CREATE TABLE serial.index_summary (
 	textual_holdings    TEXT,
 	show_generated      BOOL    NOT NULL DEFAULT TRUE
 );
+CREATE INDEX serial_index_summary_dist_idx ON serial.index_summary (distribution);
 
 -- DELETE FROM action_trigger.environment WHERE event_def IN (29,30); DELETE FROM action_trigger.event where event_def IN (29,30); DELETE FROM action_trigger.event_definition WHERE id IN (29,30); DELETE FROM action_trigger.hook WHERE key IN ('money.format.payment_receipt.email','money.format.payment_receipt.print'); DELETE FROM config.upgrade_log WHERE version = '0289'; -- from testing, this sql will remove these events, etc.
 
@@ -16070,6 +16434,64 @@ CREATE OR REPLACE FUNCTION authority.propagate_changes (aid BIGINT) RETURNS SETO
     SELECT authority.propagate_changes( authority, bib ) FROM authority.bib_linking WHERE authority = $1;
 $func$ LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION authority.flatten_marc ( TEXT ) RETURNS SETOF authority.full_rec AS $func$
+
+use MARC::Record;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
+
+my $xml = shift;
+my $r = MARC::Record->new_from_xml( $xml );
+
+return_next( { tag => 'LDR', value => $r->leader } );
+
+for my $f ( $r->fields ) {
+    if ($f->is_control_field) {
+        return_next({ tag => $f->tag, value => $f->data });
+    } else {
+        for my $s ($f->subfields) {
+            return_next({
+                tag      => $f->tag,
+                ind1     => $f->indicator(1),
+                ind2     => $f->indicator(2),
+                subfield => $s->[0],
+                value    => $s->[1]
+            });
+
+        }
+    }
+}
+
+return undef;
+
+$func$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION authority.flatten_marc ( rid BIGINT ) RETURNS SETOF authority.full_rec AS $func$
+DECLARE
+    auth    authority.record_entry%ROWTYPE;
+    output    authority.full_rec%ROWTYPE;
+    field    RECORD;
+BEGIN
+    SELECT INTO auth * FROM authority.record_entry WHERE id = rid;
+
+    FOR field IN SELECT * FROM authority.flatten_marc( auth.marc ) LOOP
+        output.record := rid;
+        output.ind1 := field.ind1;
+        output.ind2 := field.ind2;
+        output.tag := field.tag;
+        output.subfield := field.subfield;
+        IF field.subfield IS NOT NULL THEN
+            output.value := naco_normalize(field.value, field.subfield);
+        ELSE
+            output.value := field.value;
+        END IF;
+
+        CONTINUE WHEN output.value IS NULL;
+
+        RETURN NEXT output;
+    END LOOP;
+END;
+$func$ LANGUAGE PLPGSQL;
+
 -- authority.rec_descriptor appears to be unused currently
 CREATE OR REPLACE FUNCTION authority.reingest_authority_rec_descriptor( auth_id BIGINT ) RETURNS VOID AS $func$
 BEGIN
@@ -16152,8 +16574,6 @@ BEGIN
             NEW.marc,
             E'(</(?:[^:]*?:)?record>)',
             E'<datafield tag="901" ind1=" " ind2=" ">' ||
-                '<subfield code="a">' || NEW.arn_value || E'</subfield>' ||
-                '<subfield code="b">' || NEW.arn_source || E'</subfield>' ||
                 '<subfield code="c">' || NEW.id || E'</subfield>' ||
                 '<subfield code="t">' || TG_TABLE_SCHEMA || E'</subfield>' ||
              E'</datafield>\\1'
@@ -16249,6 +16669,18 @@ INSERT INTO config.global_flag (name, label, enabled)
         oils_i18n_gettext(
             'circ.holds.empty_issuance_ok',
             'Holds: Allow holds on empty issuances',
+            'cgf',
+            'label'
+        ),
+        TRUE
+    );
+
+INSERT INTO config.global_flag (name, label, enabled)
+    VALUES (
+        'circ.holds.usr_not_requestor',
+        oils_i18n_gettext(
+            'circ.holds.usr_not_requestor',
+            'Holds: When testing hold matrix matchpoints, use the profile group of the receiving user instead of that of the requestor (affects staff-placed holds)',
             'cgf',
             'label'
         ),
@@ -16721,6 +17153,7 @@ CREATE TABLE serial.distribution_note (
 	title        TEXT   NOT NULL,
 	value        TEXT   NOT NULL
 );
+CREATE INDEX serial_distribution_note_dist_idx ON serial.distribution_note (distribution);
 
 ------- Begin surgery on serial.unit
 
@@ -17341,7 +17774,7 @@ ALTER TABLE asset.call_number
 	ADD COLUMN label_sortkey TEXT;
 
 CREATE INDEX asset_call_number_label_sortkey
-	ON asset.call_number(label_sortkey);
+	ON asset.call_number(oils_text_as_bytea(label_sortkey));
 
 ALTER TABLE auditor.asset_call_number_history
 	ADD COLUMN label_class BIGINT;
@@ -17970,13 +18403,6 @@ DROP INDEX authority.authority_record_unique_tcn;
 ALTER TABLE authority.record_entry DROP COLUMN arn_value;
 ALTER TABLE authority.record_entry DROP COLUMN arn_source;
 
-DROP INDEX IF EXISTS authority.unique_by_heading_and_thesaurus;
-
-CREATE INDEX by_heading_and_thesaurus
-    ON authority.record_entry (authority.normalize_heading(marc))
-    WHERE deleted IS FALSE or deleted = FALSE
-;
-
 ALTER TABLE acq.provider_contact
 	ALTER COLUMN name SET NOT NULL;
 
@@ -18026,6 +18452,198 @@ CREATE INDEX aud_bib_rec_entry_hist_creator_idx
 CREATE INDEX aud_bib_rec_entry_hist_editor_idx
 	ON auditor.biblio_record_entry_history ( editor );
 
+CREATE TABLE action.hold_request_note (
+
+    id     BIGSERIAL PRIMARY KEY,
+    hold   BIGINT    NOT NULL REFERENCES action.hold_request (id)
+                              ON DELETE CASCADE
+                              DEFERRABLE INITIALLY DEFERRED,
+    title  TEXT      NOT NULL,
+    body   TEXT      NOT NULL,
+    slip   BOOL      NOT NULL DEFAULT FALSE,
+    pub    BOOL      NOT NULL DEFAULT FALSE,
+    staff  BOOL      NOT NULL DEFAULT FALSE  -- created by staff
+
+);
+CREATE INDEX ahrn_hold_idx ON action.hold_request_note (hold);
+
+-- Tweak a constraint to add a CASCADE
+
+ALTER TABLE action.hold_notification DROP CONSTRAINT hold_notification_hold_fkey;
+
+ALTER TABLE action.hold_notification
+	ADD CONSTRAINT hold_notification_hold_fkey
+		FOREIGN KEY (hold) REFERENCES action.hold_request (id)
+		ON DELETE CASCADE
+		DEFERRABLE INITIALLY DEFERRED;
+
+CREATE TRIGGER asset_label_sortkey_trigger
+    BEFORE UPDATE OR INSERT ON asset.call_number
+    FOR EACH ROW EXECUTE PROCEDURE asset.label_normalizer();
+
+CREATE OR REPLACE FUNCTION container.clear_all_expired_circ_history_items( )
+RETURNS VOID AS $$
+--
+-- Delete expired circulation bucket items for all users that have
+-- a setting for patron.max_reading_list_interval.
+--
+DECLARE
+    today        TIMESTAMP WITH TIME ZONE;
+    threshold    TIMESTAMP WITH TIME ZONE;
+	usr_setting  RECORD;
+BEGIN
+	SELECT date_trunc( 'day', now() ) INTO today;
+	--
+	FOR usr_setting in
+		SELECT
+			usr,
+			value
+		FROM
+			actor.usr_setting
+		WHERE
+			name = 'patron.max_reading_list_interval'
+	LOOP
+		--
+		-- Make sure the setting is a valid interval
+		--
+		BEGIN
+			threshold := today - CAST( translate( usr_setting.value, '"', '' ) AS INTERVAL );
+		EXCEPTION
+			WHEN OTHERS THEN
+				RAISE NOTICE 'Invalid setting patron.max_reading_list_interval for user %: ''%''',
+					usr_setting.usr, usr_setting.value;
+				CONTINUE;
+		END;
+		--
+		--RAISE NOTICE 'User % threshold %', usr_setting.usr, threshold;
+		--
+    	DELETE FROM container.copy_bucket_item
+    	WHERE
+        	bucket IN
+        	(
+        	    SELECT
+        	        id
+        	    FROM
+        	        container.copy_bucket
+        	    WHERE
+        	        owner = usr_setting.usr
+        	        AND btype = 'circ_history'
+        	)
+        	AND create_time < threshold;
+	END LOOP;
+	--
+END;
+$$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION container.clear_all_expired_circ_history_items( ) IS $$
+/*
+ * Delete expired circulation bucket items for all users that have
+ * a setting for patron.max_reading_list_interval.
+*/
+$$;
+
+CREATE OR REPLACE FUNCTION container.clear_expired_circ_history_items( 
+	 ac_usr IN INTEGER
+) RETURNS VOID AS $$
+--
+-- Delete old circulation bucket items for a specified user.
+-- "Old" means older than the interval specified by a
+-- user-level setting, if it is so specified.
+--
+DECLARE
+    threshold TIMESTAMP WITH TIME ZONE;
+BEGIN
+	-- Sanity check
+	IF ac_usr IS NULL THEN
+		RETURN;
+	END IF;
+	-- Determine the threshold date that defines "old".  Subtract the
+	-- interval from the system date, then truncate to midnight.
+	SELECT
+		date_trunc( 
+			'day',
+			now() - CAST( translate( value, '"', '' ) AS INTERVAL )
+		)
+	INTO
+		threshold
+	FROM
+		actor.usr_setting
+	WHERE
+		usr = ac_usr
+		AND name = 'patron.max_reading_list_interval';
+	--
+	IF threshold is null THEN
+		-- No interval defined; don't delete anything
+		-- RAISE NOTICE 'No interval defined for user %', ac_usr;
+		return;
+	END IF;
+	--
+	-- RAISE NOTICE 'Date threshold: %', threshold;
+	--
+	-- Threshold found; do the delete
+	delete from container.copy_bucket_item
+	where
+		bucket in
+		(
+			select
+				id
+			from
+				container.copy_bucket
+			where
+				owner = ac_usr
+				and btype = 'circ_history'
+		)
+		and create_time < threshold;
+	--
+	RETURN;
+END;
+$$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION container.clear_expired_circ_history_items( INTEGER ) IS $$
+/*
+ * Delete old circulation bucket items for a specified user.
+ * "Old" means older than the interval specified by a
+ * user-level setting, if it is so specified.
+*/
+$$;
+
+CREATE OR REPLACE VIEW reporter.hold_request_record AS
+SELECT  id,
+    target,
+    hold_type,
+    CASE
+        WHEN hold_type = 'T'
+            THEN target
+        WHEN hold_type = 'I'
+            THEN (SELECT ssub.record_entry FROM serial.subscription ssub JOIN serial.issuance si ON (si.subscription = ssub.id) WHERE si.id = ahr.target)
+        WHEN hold_type = 'V'
+            THEN (SELECT cn.record FROM asset.call_number cn WHERE cn.id = ahr.target)
+        WHEN hold_type IN ('C','R','F')
+            THEN (SELECT cn.record FROM asset.call_number cn JOIN asset.copy cp ON (cn.id = cp.call_number) WHERE cp.id = ahr.target)
+        WHEN hold_type = 'M'
+            THEN (SELECT mr.master_record FROM metabib.metarecord mr WHERE mr.id = ahr.target)
+    END AS bib_record
+  FROM  action.hold_request ahr;
+
+UPDATE  metabib.rec_descriptor
+  SET   date1=LPAD(NULLIF(REGEXP_REPLACE(NULLIF(date1, ''), E'\\D', '0', 'g')::INT,0)::TEXT,4,'0'),
+        date2=LPAD(NULLIF(REGEXP_REPLACE(NULLIF(date2, ''), E'\\D', '9', 'g')::INT,9999)::TEXT,4,'0');
+
+-- Change some ints to bigints:
+
+ALTER TABLE container.biblio_record_entry_bucket_item
+	ALTER COLUMN target_biblio_record_entry SET DATA TYPE bigint;
+
+ALTER TABLE vandelay.queued_bib_record
+	ALTER COLUMN imported_as SET DATA TYPE bigint;
+
+ALTER TABLE action.hold_copy_map
+	ALTER COLUMN id SET DATA TYPE bigint;
+
+-- Make due times get pushed to 23:59:59 on insert OR update
+DROP TRIGGER IF EXISTS push_due_date_tgr ON action.circulation;
+CREATE TRIGGER push_due_date_tgr BEFORE INSERT OR UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.push_circ_due_time();
+
 COMMIT;
 
 -- Some operations go outside of the transaction, because they may
@@ -18046,38 +18664,50 @@ ADD COLUMN shelf_expire_time TIMESTAMPTZ;
 \qecho If any of these CREATE INDEX statements fails because the index already
 \qecho exists, ignore the failure.
 
-CREATE INDEX serial_subscription_record_idx ON serial.subscription (record_entry);
-CREATE INDEX serial_subscription_owner_idx ON serial.subscription (owning_lib);
-CREATE INDEX serial_caption_and_pattern_sub_idx ON serial.caption_and_pattern (subscription);
-CREATE INDEX serial_distribution_sub_idx ON serial.distribution (subscription);
-CREATE INDEX serial_distribution_holding_lib_idx ON serial.distribution (holding_lib);
-CREATE INDEX serial_distribution_note_dist_idx ON serial.distribution_note (distribution);
-CREATE INDEX serial_stream_dist_idx ON serial.stream (distribution);
-CREATE INDEX serial_routing_list_user_stream_idx ON serial.routing_list_user (stream);
-CREATE INDEX serial_routing_list_user_reader_idx ON serial.routing_list_user (reader);
-CREATE INDEX serial_issuance_sub_idx ON serial.issuance (subscription);
-CREATE INDEX serial_issuance_caption_and_pattern_idx ON serial.issuance (caption_and_pattern);
-CREATE INDEX serial_issuance_date_published_idx ON serial.issuance (date_published);
-CREATE UNIQUE INDEX unit_barcode_key ON serial.unit (barcode) WHERE deleted = FALSE OR deleted IS FALSE;
-CREATE INDEX unit_cn_idx ON serial.unit (call_number);
-CREATE INDEX unit_avail_cn_idx ON serial.unit (call_number);
-CREATE INDEX unit_creator_idx  ON serial.unit ( creator );
-CREATE INDEX unit_editor_idx   ON serial.unit ( editor );
-CREATE INDEX serial_item_stream_idx ON serial.item (stream);
-CREATE INDEX serial_item_issuance_idx ON serial.item (issuance);
-CREATE INDEX serial_item_unit_idx ON serial.item (unit);
-CREATE INDEX serial_item_uri_idx ON serial.item (uri);
-CREATE INDEX serial_item_date_received_idx ON serial.item (date_received);
-CREATE INDEX serial_item_status_idx ON serial.item (status);
-CREATE INDEX serial_item_note_item_idx ON serial.item_note (item);
-CREATE INDEX serial_basic_summary_dist_idx ON serial.basic_summary (distribution);
-CREATE INDEX serial_supplement_summary_dist_idx ON serial.supplement_summary (distribution);
-CREATE INDEX serial_index_summary_dist_idx ON serial.index_summary (distribution);
+CREATE INDEX acq_picklist_owner_idx   ON acq.picklist ( owner );
+CREATE INDEX acq_picklist_creator_idx ON acq.picklist ( creator );
+CREATE INDEX acq_picklist_editor_idx  ON acq.picklist ( editor );
+CREATE INDEX acq_po_note_creator_idx  ON acq.po_note ( creator );
+CREATE INDEX acq_po_note_editor_idx   ON acq.po_note ( editor );
+CREATE INDEX fund_alloc_allocator_idx ON acq.fund_allocation ( allocator );
+CREATE INDEX li_creator_idx   ON acq.lineitem ( creator );
+CREATE INDEX li_editor_idx    ON acq.lineitem ( editor );
+CREATE INDEX li_selector_idx  ON acq.lineitem ( selector );
+CREATE INDEX li_note_creator_idx  ON acq.lineitem_note ( creator );
+CREATE INDEX li_note_editor_idx   ON acq.lineitem_note ( editor );
+CREATE INDEX li_usr_attr_def_usr_idx  ON acq.lineitem_usr_attr_definition ( usr );
+CREATE INDEX po_editor_idx   ON acq.purchase_order ( editor );
+CREATE INDEX po_creator_idx  ON acq.purchase_order ( creator );
+CREATE INDEX acq_po_org_name_order_date_idx ON acq.purchase_order( ordering_agency, name, order_date );
+CREATE INDEX action_in_house_use_staff_idx  ON action.in_house_use ( staff );
+CREATE INDEX action_non_cat_circ_patron_idx ON action.non_cataloged_circulation ( patron );
+CREATE INDEX action_non_cat_circ_staff_idx  ON action.non_cataloged_circulation ( staff );
+CREATE INDEX action_survey_response_usr_idx ON action.survey_response ( usr );
+CREATE INDEX ahn_notify_staff_idx           ON action.hold_notification ( notify_staff );
+CREATE INDEX circ_all_usr_idx               ON action.circulation ( usr );
+CREATE INDEX circ_circ_staff_idx            ON action.circulation ( circ_staff );
+CREATE INDEX circ_checkin_staff_idx         ON action.circulation ( checkin_staff );
+CREATE INDEX hold_request_fulfillment_staff_idx ON action.hold_request ( fulfillment_staff );
+CREATE INDEX hold_request_requestor_idx     ON action.hold_request ( requestor );
+CREATE INDEX non_cat_in_house_use_staff_idx ON action.non_cat_in_house_use ( staff );
+CREATE INDEX actor_usr_note_creator_idx     ON actor.usr_note ( creator );
+CREATE INDEX actor_usr_standing_penalty_staff_idx ON actor.usr_standing_penalty ( staff );
+CREATE INDEX usr_org_unit_opt_in_staff_idx  ON actor.usr_org_unit_opt_in ( staff );
+CREATE INDEX asset_call_number_note_creator_idx ON asset.call_number_note ( creator );
+CREATE INDEX asset_copy_note_creator_idx    ON asset.copy_note ( creator );
+CREATE INDEX cp_creator_idx                 ON asset.copy ( creator );
+CREATE INDEX cp_editor_idx                  ON asset.copy ( editor );
 
 CREATE INDEX actor_card_barcode_lower_idx ON actor.card (lower(barcode));
 
-\qecho if the following CREATE INDEX fails, It will be necessary to do some
+DROP INDEX IF EXISTS authority.unique_by_heading_and_thesaurus;
+
+\qecho If the following CREATE INDEX fails, It will be necessary to do some
 \qecho data cleanup as described in the comments.
+
+CREATE UNIQUE INDEX unique_by_heading_and_thesaurus
+    ON authority.record_entry (authority.normalize_heading(marc))
+	WHERE deleted IS FALSE or deleted = FALSE;
 
 -- If the unique index fails, uncomment the following to create
 -- a regular index that will help find the duplicates in a hurry:

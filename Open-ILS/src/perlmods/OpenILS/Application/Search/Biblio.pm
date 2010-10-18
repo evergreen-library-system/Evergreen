@@ -1108,6 +1108,7 @@ sub staged_search {
     my $search_duration;
     my $user_offset = $search_hash->{offset} ||  0; # user-specified offset
     my $user_limit  = $search_hash->{limit}  || 10;
+    my $ignore_facet_classes  = $search_hash->{ignore_facet_classes};
     $user_offset = ($user_offset >= 0) ? $user_offset :  0;
     $user_limit  = ($user_limit  >= 0) ? $user_limit  : 10;
 
@@ -1262,7 +1263,7 @@ sub staged_search {
         }
     );
 
-    cache_facets($facet_key, $new_ids, $IAmMetabib) if $docache;
+    cache_facets($facet_key, $new_ids, $IAmMetabib, $ignore_facet_classes) if $docache;
 
     return undef;
 }
@@ -1368,9 +1369,13 @@ __PACKAGE__->register_method(
 
 sub cache_facets {
     # add facets for this search to the facet cache
-    my($key, $results, $metabib) = @_;
+    my($key, $results, $metabib, $ignore) = @_;
     my $data = $cache->get_cache($key);
     $data ||= {};
+
+    if (!ref($ignore)) {
+        $ignore = ['identifier']; # ignore the identifier class by default
+    }
 
     return undef unless (@$results);
 
@@ -1398,11 +1403,13 @@ sub cache_facets {
             },
             from    => {
                 mfae => {
-                    mmrsm => { field => 'source', fkey => 'source' }
+                    mmrsm => { field => 'source', fkey => 'source' },
+                    cmf   => { field => 'id', fkey => 'field' }
                 }
             },
             where   => {
-                '+mmrsm' => { $count_field => $results }
+                '+mmrsm' => { $count_field => $results },
+                '+cmf'   => { field_class => { 'not in' => $ignore } }
             }
         }
     );

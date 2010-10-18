@@ -19,6 +19,7 @@
         <command id="cmd_csv_to_file" />
         <command id="cmd_holds_print" />
         <command id="cmd_holds_print_full" />
+        <command id="cmd_holds_print_alt" />
         <command id="cmd_show_catalog" />
         <command id="cmd_retrieve_patron" />
         <command id="cmd_holds_edit_desire_mint_condition" />
@@ -42,7 +43,7 @@
             accesskey="&staff.circ.holds.title_transfer.accesskey;" />
         <command id="cmd_search_opac" />
         <command id="save_columns" />
-        <command id="cmd_alt_view" />
+        <command id="cmd_alt_view" disabled="true"/>
         <command id="cmd_cancelled_holds_view" />
         <command id="cmd_uncancelled_holds_view" />
         <command id="cmd_view_expired_onshelf_holds"
@@ -188,6 +189,7 @@
 
         <button id="holds_print" label="&staff.patron.holds_overlay.print.label;" command="cmd_holds_print" accesskey="&staff.patron.holds_overlay.print.accesskey;" />
         <button id="print_full_btn" hidden="true" label="&staff.patron.holds_overlay.print_full_pull_list.label;" command="cmd_holds_print_full" accesskey="&staff.patron.holds_overlay.print_full_pull_list.accesskey;" />
+        <button id="print_alt_btn" hidden="true" label="&staff.patron.holds_overlay.print_alt_pull_list.label;" command="cmd_holds_print_alt" accesskey="&staff.patron.holds_overlay.print_alt_pull_list.accesskey;" />
         <spacer flex="1"/>
     </hbox>
 

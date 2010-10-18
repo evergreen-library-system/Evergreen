@@ -305,12 +305,20 @@ util.list.prototype = {
             }
             /* local file will trump remote file if allowed, so save ourselves an http request if this is the case */
             if (obj.data.hash.aous['url.remote_column_settings'] && ! my_cols ) {
-                var x = new XMLHttpRequest();
-                var url = obj.data.hash.aous['url.remote_column_settings'] + '/tree_columns_for_' + window.escape(id);
-                x.open("GET", url, false);
-                x.send(null);
-                if (x.status == 200) {
-                    my_cols = JSON2js( x.responseText );
+                try {
+                    var x = new XMLHttpRequest();
+                    var url = obj.data.hash.aous['url.remote_column_settings'] + '/tree_columns_for_' + window.escape(id);
+                    x.open("GET", url, false);
+                    x.send(null);
+                    if (x.status == 200) {
+                        my_cols = JSON2js( x.responseText );
+                    }
+                } catch(E) {
+                    // This can happen in the offline interface if you logged in previously and url.remote_column_settings is set.
+                    // 1) You may be really "offline" now
+                    // 2) the URL may just be a path component without a hostname (ie "/xul/column_settings/"), which won't work
+                    // when appended to chrome://open_ils_staff_client/
+                    dump('Error retrieving column settings from ' + url + ': ' + E + '\n');
                 }
             }
 

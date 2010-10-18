@@ -77,7 +77,7 @@ ALTER TABLE vandelay.bib_queue ADD PRIMARY KEY (id);
 CREATE TABLE vandelay.queued_bib_record (
 	queue		INT		NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	bib_source	INT		REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
-	imported_as	INT		REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
+	imported_as	BIGINT	REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
 ) INHERITS (vandelay.queued_record);
 ALTER TABLE vandelay.queued_bib_record ADD PRIMARY KEY (id);
 CREATE INDEX queued_bib_record_queue_idx ON vandelay.queued_bib_record (queue);
@@ -347,12 +347,18 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
     for my $f ( keys %fields) {
         if ( @{$fields{$f}{sf}} ) {
             for my $from_field ($source_r->field( $f )) {
-                for my $to_field ($target_r->field( $f )) {
-                    if (exists($fields{$f}{match})) {
-                        next unless (grep { $_ =~ $fields{$f}{match}{re} } $to_field->subfield($fields{$f}{match}{sf}));
+                my @tos = $target_r->field( $f );
+                if (!@tos) {
+                    my @new_fields = map { $_->clone } $source_r->field( $f );
+                    $target_r->insert_fields_ordered( @new_fields );
+                } else {
+                    for my $to_field (@tos) {
+                        if (exists($fields{$f}{match})) {
+                            next unless (grep { $_ =~ $fields{$f}{match}{re} } $to_field->subfield($fields{$f}{match}{sf}));
+                        }
+                        my @new_sf = map { ($_ => $from_field->subfield($_)) } @{$fields{$f}{sf}};
+                        $to_field->add_subfields( @new_sf );
                     }
-                    my @new_sf = map { ($_ => $from_field->subfield($_)) } @{$fields{$f}{sf}};
-                    $to_field->add_subfields( @new_sf );
                 }
             }
         } else {
@@ -469,10 +475,10 @@ BEGIN
         END IF;
     END IF;
 
-    add_rule := add_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="a"]/text()',incoming_xml),''),'');
-    strip_rule := strip_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="d"]/text()',incoming_xml),''),'');
-    replace_rule := replace_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="r"]/text()',incoming_xml),''),'');
-    preserve_rule := preserve_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="p"]/text()',incoming_xml),''),'');
+    add_rule := add_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="a"]/text()',incoming_xml),','),'');
+    strip_rule := strip_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="d"]/text()',incoming_xml),','),'');
+    replace_rule := replace_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="r"]/text()',incoming_xml),','),'');
+    preserve_rule := preserve_rule || ',' || COALESCE(ARRAY_TO_STRING(oils_xpath('//*[@tag="905"]/*[@code="p"]/text()',incoming_xml),','),'');
 
     output.add_rule := BTRIM(add_rule,',');
     output.replace_rule := BTRIM(replace_rule,',');

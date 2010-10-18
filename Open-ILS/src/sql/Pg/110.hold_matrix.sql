@@ -31,6 +31,7 @@ BEGIN;
 CREATE TABLE config.hold_matrix_matchpoint (
     id                      SERIAL    PRIMARY KEY,
     active                  BOOL    NOT NULL DEFAULT TRUE,
+    strict_ou_match         BOOL    NOT NULL DEFAULT FALSE,
     user_home_ou            INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
     request_ou              INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
     pickup_ou               INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
@@ -57,7 +58,6 @@ CREATE TABLE config.hold_matrix_matchpoint (
 CREATE OR REPLACE FUNCTION action.find_hold_matrix_matchpoint( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS INT AS $func$
 DECLARE
     current_requestor_group    permission.grp_tree%ROWTYPE;
-    root_ou            actor.org_unit%ROWTYPE;
     requestor_object    actor.usr%ROWTYPE;
     user_object        actor.usr%ROWTYPE;
     item_object        asset.copy%ROWTYPE;
@@ -69,7 +69,6 @@ DECLARE
     current_mp        config.hold_matrix_matchpoint%ROWTYPE;
     matchpoint        config.hold_matrix_matchpoint%ROWTYPE;
 BEGIN
-    SELECT INTO root_ou * FROM actor.org_unit WHERE parent_ou IS NULL;
     SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
     SELECT INTO requestor_object * FROM actor.usr WHERE id = match_requestor;
     SELECT INTO item_object * FROM asset.copy WHERE id = match_item;
@@ -97,7 +96,11 @@ BEGIN
                     CASE WHEN m.marc_vr_format    IS NOT NULL THEN 2 ELSE 0 END +
                     CASE WHEN m.ref_flag        IS NOT NULL THEN 1 ELSE 0 END DESC LOOP
 
-            current_mp_weight := 5.0;
+            IF NOT current_mp.strict_ou_match THEN
+                current_mp_weight := 5.0;
+            ELSE
+                current_mp_weight := 0.0;
+            END IF;
 
             IF current_mp.circ_modifier IS NOT NULL THEN
                 CONTINUE WHEN current_mp.circ_modifier <> item_object.circ_modifier OR item_object.circ_modifier IS NULL;
@@ -129,28 +132,48 @@ BEGIN
 
 
             -- caclulate the rule match weight
-            IF current_mp.item_owning_ou IS NOT NULL AND current_mp.item_owning_ou <> root_ou.id THEN
-                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_owning_ou, item_cn_object.owning_lib)::FLOAT + 1.0)::FLOAT;
+            IF current_mp.item_owning_ou IS NOT NULL THEN
+                IF NOT current_mp.strict_ou_match THEN
+                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_owning_ou, item_cn_object.owning_lib)::FLOAT + 1.0)::FLOAT;
+                ELSE
+                    tmp_weight := CASE WHEN current_mp.item_owning_ou = item_cn_object.owning_lib THEN 1.0 ELSE 0.0 END;
+                END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
-            IF current_mp.item_circ_ou IS NOT NULL AND current_mp.item_circ_ou <> root_ou.id THEN
-                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_circ_ou, item_object.circ_lib)::FLOAT + 1.0)::FLOAT;
+            IF current_mp.item_circ_ou IS NOT NULL THEN
+                IF NOT current_mp.strict_ou_match THEN
+                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_circ_ou, item_object.circ_lib)::FLOAT + 1.0)::FLOAT;
+                ELSE
+                    tmp_weight := CASE WHEN current_mp.item_circ_ou = item_object.circ_lib THEN 1.0 ELSE 0.0 END;
+                END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
-            IF current_mp.pickup_ou IS NOT NULL AND current_mp.pickup_ou <> root_ou.id THEN
-                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.pickup_ou, pickup_ou)::FLOAT + 1.0)::FLOAT;
+            IF current_mp.pickup_ou IS NOT NULL THEN
+                IF NOT current_mp.strict_ou_match THEN
+                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.pickup_ou, pickup_ou)::FLOAT + 1.0)::FLOAT;
+                ELSE
+                    tmp_weight := CASE WHEN current_mp.pickup_ou = pickiup_ou THEN 1.0 ELSE 0.0 END;
+                END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
-            IF current_mp.request_ou IS NOT NULL AND current_mp.request_ou <> root_ou.id THEN
-                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.request_ou, request_ou)::FLOAT + 1.0)::FLOAT;
+            IF current_mp.request_ou IS NOT NULL THEN
+                IF NOT current_mp.strict_ou_match THEN
+                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.request_ou, request_ou)::FLOAT + 1.0)::FLOAT;
+                ELSE
+                    tmp_weight := CASE WHEN current_mp.request_ou = request_ou THEN 1.0 ELSE 0.0 END;
+                END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
-            IF current_mp.user_home_ou IS NOT NULL AND current_mp.user_home_ou <> root_ou.id THEN
-                SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.user_home_ou, user_object.home_ou)::FLOAT + 1.0)::FLOAT;
+            IF current_mp.user_home_ou IS NOT NULL THEN
+                IF NOT current_mp.strict_ou_match THEN
+                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.user_home_ou, user_object.home_ou)::FLOAT + 1.0)::FLOAT;
+                ELSE
+                    tmp_weight := CASE WHEN current_mp.user_home_ou = user_object.home_ou THEN 1.0 ELSE 0.0 END;
+                END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
@@ -172,7 +195,7 @@ END;
 $func$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT, retargetting BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
 DECLARE
     matchpoint_id        INT;
     user_object        actor.usr%ROWTYPE;
@@ -306,7 +329,7 @@ BEGIN
         END LOOP;
     END IF;
 
-    IF hold_test.max_holds IS NOT NULL THEN
+    IF hold_test.max_holds IS NOT NULL AND NOT retargetting THEN
         SELECT    INTO hold_count COUNT(*)
           FROM    action.hold_request
           WHERE    usr = match_user
@@ -348,6 +371,14 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+    SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, FALSE );
+$func$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION action.hold_retarget_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+    SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, TRUE );
+$func$ LANGUAGE SQL;
 
 COMMIT;
 

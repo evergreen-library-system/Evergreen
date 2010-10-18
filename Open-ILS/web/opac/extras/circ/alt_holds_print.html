@@ -1,0 +1,105 @@
+<html>
+    <head>
+        <title>Printable Pull List</title>
+        <style type="text/css">
+            @import url('/js/dojo/dojo/resources/dojo.css');
+            @import url('/js/dojo/dijit/themes/tundra/tundra.css');
+            @import url('/js/dojo/dojox/widget/Toaster/Toaster.css');
+            @import url('/opac/skin/default/css/layout.css');
+        </style>
+        <style type="text/css">
+            #clear_holds_deck { margin-bottom: 1em; }
+            a { color: blue; text-decoration: underline; }
+            small { font-size: 9pt; }
+            body { font-size: 14pt; }
+            td {
+                padding-right: 1em;
+                padding-bottom: 1em;
+                border-bottom: 1px #999 dashed;
+            }
+            th {
+                text-align: left; font-weight: bold;
+                border-bottom: 1px #000 solid;
+                border-right: 1px #000 solid;
+                padding: 0.5em;
+            }
+        </style>
+        <!-- The OpenSRF API writ JS -->
+        <script language='javascript' src='/opac/common/js/utils.js' type='text/javascript'></script>
+        <script language='javascript' src='/opac/common/js/Cookies.js' type='text/javascript'></script>
+        <script language='javascript' src='/opac/common/js/CGI.js' type='text/javascript'></script>
+        <script language='javascript' src='/opac/common/js/JSON_v1.js' type='text/javascript'></script>
+        <!-- Dojo goodness -->
+        <script type="text/javascript">
+            var djConfig = {parseOnLoad:true,isDebug:false,AutoIDL:['aou','aout','pgt','ahr','acp','acn']};
+            var sort_order = ["acplo.position", "call_number", "request_time"];
+        </script>
+        <script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" src="/js/dojo/dojo/openils_dojo.js"></script>
+        <script type="text/javascript" src="/js/dojo/dijit/dijit.js"></script>
+        <script type="text/javascript" src="/js/dojo/openils/AutoIDL.js"></script>
+        <script type="text/javascript" src="/js/dojo/openils/User.js"></script>
+        <script type="text/javascript" src="/js/dojo/openils/Util.js"></script>
+        <script type="text/javascript" src="/opac/extras/circ/alt_holds_print.js"></script>
+        <script type="text/javascript">
+            function my_init() {
+                cgi = new CGI();
+                authtoken = (typeof ses == "function" ? ses() : 0) ||
+                    cgi.param("ses") || dojo.cookie("ses");
+
+                if (cgi.param("do") == "shelf_expired_holds") {
+                    dojo.byId("clear_holds_launcher").onclick = function() {
+                        if (confirm("Are you sure you're ready to clear the expired holds from the shelf?")) { /* XXX i18n */
+                            do_clear_holds(cgi);
+                        }
+                    };
+                    openils.Util.show("clear_holds_deck");
+                } else {
+                    dojo.query("[only='shelf_expired_holds']").forEach(dojo.destroy);
+                    do_pull_list(cgi);
+                }
+            }
+            dojo.addOnLoad(my_init);
+        </script>
+    </head>
+    <body class='tundra'>
+
+        <div style="width: 320px;"
+            dojoType="openils.widget.ProgressDialog"
+            jsId="progress_dialog"></div>
+        <div class="hide_me" id="no_results">No results</div>
+        <div class="hide_me" id="clear_holds_deck">
+            [ <a id="clear_holds_launcher"
+                href="javascript:void(0);">Clear expired holds</a> ]
+            <small><em id="clear_holds_set_label"></em></small>
+        </div>
+<!-- START OF TEMPLATE SECTION -->
+        <table>
+            <thead>
+                <tr>
+                    <th only="shelf_expired_holds">Patron</th>
+                    <th only="shelf_expired_holds">Action</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Shelving Location</th>
+                    <th>Call Number</th>
+                    <th>Barcode</th>
+                </tr>
+            </thead>
+            <tbody id='target'>
+            </tbody>
+            <tbody id='template' class='hide_me'>
+                <tr>
+                    <td only="shelf_expired_holds">${usr.display_name}</td>
+                    <td only="shelf_expired_holds">${action}</td>
+                    <td type='opac/slot-data' query='datafield[tag=245]'></td>
+                    <td type='opac/slot-data' query='datafield[tag^=1]' limit='1'> </td>
+                    <td>${current_copy.location.name}</td>
+                    <td>${current_copy.call_number.label}</td>
+                    <td>${current_copy.barcode}</td>
+                </tr>
+            </tbody>
+        </table>
+<!-- END OF TEMPLATE SECTION -->
+    </body>
+</html>

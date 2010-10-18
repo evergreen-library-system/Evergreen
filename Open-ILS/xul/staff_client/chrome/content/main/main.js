@@ -4,6 +4,9 @@ dump('entering main/main.js\n');
 var xulG;
 var offlineStrings;
 var authStrings;
+var openTabs = new Array();
+var tempWindow = null;
+var tempFocusWindow = null;
 
 function grant_perms(url) {
     var perms = "UniversalXPConnect UniversalPreferencesWrite UniversalBrowserWrite UniversalPreferencesRead UniversalBrowserRead UniversalFileRead";
@@ -71,10 +74,126 @@ function start_js_shell() {
     );
 };
 
+function new_tabs(aTabList, aContinue) {
+    if(aTabList != null) {
+        openTabs = openTabs.concat(aTabList);
+    }
+    if(G.data.session) { // Just add to the list of stuff to open unless we are logged in
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        var targetwindow = null;
+        var focuswindow = null;
+        var focustab = {'focus' : true};
+        if(aContinue == true && tempWindow.closed == false) {
+            if(tempWindow.g == undefined || tempWindow.g.menu == undefined) {
+                setTimeout(
+                    function() {
+                        new_tabs(null, true);
+                    }, 300);
+                return null;
+            }
+            targetwindow = tempWindow;
+            tempWindow = null;
+            focuswindow = tempFocusWindow;
+            tempFocusWindow = null;
+            focustab = {'nofocus' : true};
+        }
+        else if(tempWindow != null) { // In theory, we are waiting on a setTimeout
+            if(tempWindow.closed == true) // But someone closed our window?
+            {
+                tempWindow = null;
+                tempFocusWindow = null;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        var newTab;
+        var firstURL;
+        var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
+            getService(Components.interfaces.nsIWindowMediator);
+            // This may look out of place, but this is so we can continue this loop from down below
+opentabs:
+            while(openTabs.length > 0) {
+            newTab = openTabs.shift();
+            if(newTab == 'new' || newTab == 'init') {
+                if(newTab != 'init' && openTabs.length > 0 && openTabs[0] != 'new') {
+                    firstURL = openTabs.shift();
+                    if(firstURL != 'tab') { // 'new' followed by 'tab' should be equal to 'init' in functionality, this should do that
+                        if(urls[firstURL]) {
+                            firstURL = urls[firstURL];
+                        }
+                        firstURL = '&firstURL=' + window.escape(firstURL);
+                    }
+                    else {
+                        firstURL = '';
+                    }
+                }
+                else {
+                    firstURL = '';
+                }
+                targetwindow = xulG.window.open(urls.XUL_MENU_FRAME
+                    + '?server='+window.escape(G.data.server) + firstURL,
+                    '_blank','chrome,resizable'
+                );
+                targetwindow.xulG = xulG;
+                if (focuswindow == null) {
+                    focuswindow = targetwindow;
+                }
+                tempWindow = targetwindow;
+                tempFocusWindow = focuswindow;
+                setTimeout(
+                    function() {
+                        new_tabs(null, true);
+                    }, 300);
+                return null;
+            }
+            else {
+                if(newTab == 'tab') {
+                    newTab = null;
+                }
+                else if(urls[newTab]) {
+                    newTab = urls[newTab];
+                }
+                if(targetwindow != null) { // Already have a previous target window? Use it first.
+                    if(targetwindow.g.menu.new_tab(newTab,focustab,null)) {
+                        focustab = {'nofocus' : true};
+                        continue;
+                    }
+                }
+                var enumerator = wm.getEnumerator('eg_menu');
+                while(enumerator.hasMoreElements()) {
+                    targetwindow = enumerator.getNext();
+                    if(targetwindow.g.menu.new_tab(newTab,focustab,null)) {
+                        focustab = {'nofocus' : true};
+                        if (focuswindow == null) {
+                            focuswindow = targetwindow;
+                        }
+                        continue opentabs;
+                    }
+                }
+                // No windows found to add the tab to? Make a new one.
+                if(newTab == null) { // Were we making a "default" tab?
+                    openTabs.unshift('init'); // 'init' does that for us!
+                }
+                else {
+                    openTabs.unshift('new',newTab);
+                }
+            }
+        }
+        if(focuswindow != null) {
+            focuswindow.focus();
+        }
+    }
+}
+
 function main_init() {
     dump('entering main_init()\n');
     try {
         clear_the_cache();
+        if("arguments" in window && window.arguments.length > 0 && window.arguments[0].wrappedJSObject != undefined && window.arguments[0].wrappedJSObject.openTabs != undefined) {
+            openTabs = openTabs.concat(window.arguments[0].wrappedJSObject.openTabs);
+        }
 
         // Now we can safely load the strings without the cache getting wiped
         offlineStrings = document.getElementById('offlineStrings');
@@ -353,15 +472,7 @@ function main_init() {
             'command',
             function() {
                 if (G.data.session) {
-                    try {
-                        //G.data_xul.g.open_menu();
-                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                        var mframe = xulG.window.open(( String(urls.XUL_MENU_FRAME).match(/^chrome:/) ? '' : G.data.server ) + urls.XUL_MENU_FRAME
-                            + '?server='+window.escape(G.data.server),
-                            'main'+xulG.window.window_name_increment(),'chrome,resizable'
-                        );
-                        mframe.xulG = xulG; 
-                    } catch(E) { alert(E); }
+                    new_tabs(Array('new'), null, null);
                 } else {
                     alert ( offlineStrings.getString('main.new_window_btn.login_first_warning') );
                 }

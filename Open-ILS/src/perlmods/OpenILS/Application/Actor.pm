@@ -174,6 +174,7 @@ sub set_ou_settings {
 
 __PACKAGE__->register_method(
     method   => "user_settings",
+    authoritative => 1,
     api_name => "open-ils.actor.patron.settings.retrieve",
 );
 sub user_settings {
@@ -1275,10 +1276,11 @@ sub update_passwd {
     my $api = $self->api_name;
 
     if( $api =~ /password/o ) {
-
         # make sure the original password matches the in-database password
-        return OpenILS::Event->new('INCORRECT_PASSWORD')
-            if md5_hex($orig_pw) ne $db_user->passwd;
+        if (md5_hex($orig_pw) ne $db_user->passwd) {
+            $e->rollback;
+            return new OpenILS::Event('INCORRECT_PASSWORD');
+        }
         $db_user->passwd($new_val);
 
     } else {
@@ -1291,7 +1293,10 @@ sub update_passwd {
 
             # make sure no one else has this username
             my $exist = $e->search_actor_user({usrname=>$new_val},{idlist=>1}); 
-			return OpenILS::Event->new('USERNAME_EXISTS') if @$exist;
+            if (@$exist) {
+                $e->rollback;
+                return new OpenILS::Event('USERNAME_EXISTS');
+            }
             $db_user->usrname($new_val);
 
         } elsif( $api =~ /email/o ) {
@@ -2477,13 +2482,13 @@ __PACKAGE__->register_method(
 sub update_user_note {
 	my( $self, $conn, $auth, $note ) = @_;
 	my $e = new_editor(authtoken=>$auth, xact=>1);
-	return $e->event unless $e->checkauth;
+	return $e->die_event unless $e->checkauth;
 	my $patron = $e->retrieve_actor_user($note->usr)
-		or return $e->event;
-	return $e->event unless 
+		or return $e->die_event;
+	return $e->die_event unless 
 		$e->allowed('UPDATE_USER', $patron->home_ou);
 	$e->update_actor_user_note($note)
-		or return $e->event;
+		or return $e->die_event;
 	$e->commit;
 	return 1;
 }
@@ -2883,7 +2888,7 @@ sub new_flesh_user {
          	"flesh_fields" =>  { "au" => $fields }
       	}
    	]
-	) or return $e->event;
+	) or return $e->die_event;
 
 
 	if( grep { $_ eq 'addresses' } @$fields ) {
@@ -3258,7 +3263,7 @@ __PACKAGE__->register_method (
 sub apply_friend_perms {
     my($self, $conn, $auth, $user_id, $delegate_id, @perms) = @_;
     my $e = new_editor(authtoken => $auth, xact => 1);
-    return $e->event unless $e->checkauth;
+    return $e->die_event unless $e->checkauth;
 
     if($user_id != $e->requestor->id) {
         my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
@@ -3285,7 +3290,7 @@ __PACKAGE__->register_method (
 sub update_user_pending_address {
     my($self, $conn, $auth, $addr) = @_;
     my $e = new_editor(authtoken => $auth, xact => 1);
-    return $e->event unless $e->checkauth;
+    return $e->die_event unless $e->checkauth;
 
     if($addr->usr != $e->requestor->id) {
         my $user = $e->retrieve_actor_user($addr->usr) or return $e->die_event;

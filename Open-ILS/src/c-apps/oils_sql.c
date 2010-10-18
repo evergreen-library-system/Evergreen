@@ -90,8 +90,11 @@ static char* searchINPredicate ( const char*, osrfHash*,
 								 jsonObject*, const char*, osrfMethodContext* );
 static char* searchPredicate ( const ClassInfo*, osrfHash*, jsonObject*, osrfMethodContext* );
 static char* searchJOIN ( const jsonObject*, const ClassInfo* left_info );
-static char* searchWHERE ( const jsonObject*, const ClassInfo*, int, osrfMethodContext* );
-static char* buildSELECT ( jsonObject*, jsonObject*, osrfHash*, osrfMethodContext* );
+static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo*, int, osrfMethodContext* );
+static char* buildSELECT( const jsonObject*, jsonObject* rest_of_query,
+	osrfHash* meta, osrfMethodContext* ctx );
+static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* order_array );
+
 char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags );
 
 char* SELECT ( osrfMethodContext*, jsonObject*, const jsonObject*, const jsonObject*,
@@ -4277,7 +4280,6 @@ char* SELECT (
 		jsonIteratorFree( selclass_itr );
 	}
 
-
 	char* col_list = buffer_release( select_buf );
 
 	// Make sure the SELECT list isn't empty.  This can happen, for example,
@@ -4392,172 +4394,23 @@ char* SELECT (
 			}
 		}
 
-		growing_buffer* order_buf = NULL;  // to collect ORDER BY list
-
 		// Build an ORDER BY clause, if there is one
 		if( NULL == order_hash )
 			;  // No ORDER BY? do nothing
 		else if( JSON_ARRAY == order_hash->type ) {
-			// Array of field specifications, each specification being a
-			// hash to define the class, field, and other details
-			int order_idx = 0;
-			jsonObject* order_spec;
-			while( (order_spec = jsonObjectGetIndex( order_hash, order_idx++ ) ) ) {
-
-				if( JSON_HASH != order_spec->type ) {
-					osrfLogError( OSRF_LOG_MARK,
-						 "%s: Malformed field specification in ORDER BY clause; expected JSON_HASH, found %s",
-						modulename, json_type( order_spec->type ) );
-					if( ctx )
-						osrfAppSessionStatus(
-							 ctx->session,
-							OSRF_STATUS_INTERNALSERVERERROR,
-							"osrfMethodException",
-							ctx->request,
-							"Malformed ORDER BY clause -- see error log for more details"
-						);
-					buffer_free( order_buf );
-					free( having_buf );
-					buffer_free( group_buf );
-					buffer_free( sql_buf );
-					if( defaultselhash )
-						jsonObjectFree( defaultselhash );
-					return NULL;
-				}
-
-				const char* class_alias =
-						jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "class" ) );
-				const char* field =
-						jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "field" ) );
-
-				if( order_buf )
-					OSRF_BUFFER_ADD( order_buf, ", " );
-				else
-					order_buf = buffer_init( 128 );
-
-				if( !field || !class_alias ) {
-					osrfLogError( OSRF_LOG_MARK,
-						"%s: Missing class or field name in field specification "
-						"of ORDER BY clause",
-						modulename );
-					if( ctx )
-						osrfAppSessionStatus(
-							ctx->session,
-							OSRF_STATUS_INTERNALSERVERERROR,
-							"osrfMethodException",
-							ctx->request,
-							"Malformed ORDER BY clause -- see error log for more details"
-						);
-					buffer_free( order_buf );
-					free( having_buf );
-					buffer_free( group_buf );
-					buffer_free( sql_buf );
-					if( defaultselhash )
-						jsonObjectFree( defaultselhash );
-					return NULL;
-				}
-
-				ClassInfo* order_class_info = search_alias( class_alias );
-				if( ! order_class_info ) {
-					osrfLogError( OSRF_LOG_MARK, "%s: ORDER BY clause references class \"%s\" "
-							"not in FROM clause", modulename, class_alias );
-					if( ctx )
-						osrfAppSessionStatus(
-							ctx->session,
-							OSRF_STATUS_INTERNALSERVERERROR,
-							"osrfMethodException",
-							ctx->request,
-							"Invalid class referenced in ORDER BY clause -- "
-							"see error log for more details"
-						);
-					free( having_buf );
-					buffer_free( group_buf );
-					buffer_free( sql_buf );
-					if( defaultselhash )
-						jsonObjectFree( defaultselhash );
-					return NULL;
-				}
-
-				osrfHash* field_def = osrfHashGet( order_class_info->fields, field );
-				if( !field_def ) {
-					osrfLogError( OSRF_LOG_MARK,
-						"%s: Invalid field \"%s\".%s referenced in ORDER BY clause",
-						modulename, class_alias, field );
-					if( ctx )
-						osrfAppSessionStatus(
-							ctx->session,
-							OSRF_STATUS_INTERNALSERVERERROR,
-							"osrfMethodException",
-							ctx->request,
-							"Invalid field referenced in ORDER BY clause -- "
-							"see error log for more details"
-						);
-					free( having_buf );
-					buffer_free( group_buf );
-					buffer_free( sql_buf );
-					if( defaultselhash )
-						jsonObjectFree( defaultselhash );
-					return NULL;
-				} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
-					osrfLogError( OSRF_LOG_MARK, "%s: Virtual field \"%s\" in ORDER BY clause",
-								 modulename, field );
-					if( ctx )
-						osrfAppSessionStatus(
-							ctx->session,
-							OSRF_STATUS_INTERNALSERVERERROR,
-							"osrfMethodException",
-							ctx->request,
-							"Virtual field in ORDER BY clause -- see error log for more details"
-						);
-					buffer_free( order_buf );
-					free( having_buf );
-					buffer_free( group_buf );
-					buffer_free( sql_buf );
-					if( defaultselhash )
-						jsonObjectFree( defaultselhash );
-					return NULL;
-				}
-
-				if( jsonObjectGetKeyConst( order_spec, "transform" ) ) {
-					char* transform_str = searchFieldTransform(
-							class_alias, field_def, order_spec );
-					if( ! transform_str ) {
-						if( ctx )
-							osrfAppSessionStatus(
-								ctx->session,
-								OSRF_STATUS_INTERNALSERVERERROR,
-								"osrfMethodException",
-								ctx->request,
-								"Severe query error in ORDER BY clause -- "
-								"see error log for more details"
-							);
-						buffer_free( order_buf );
-						free( having_buf );
-						buffer_free( group_buf );
-						buffer_free( sql_buf );
-						if( defaultselhash )
-							jsonObjectFree( defaultselhash );
-						return NULL;
-					}
-
-					OSRF_BUFFER_ADD( order_buf, transform_str );
-					free( transform_str );
-				}
-				else
-					buffer_fadd( order_buf, "\"%s\".%s", class_alias, field );
-
-				const char* direction =
-						jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "direction" ) );
-				if( direction ) {
-					if( direction[ 0 ] || 'D' == direction[ 0 ] )
-						OSRF_BUFFER_ADD( order_buf, " DESC" );
-					else
-						OSRF_BUFFER_ADD( order_buf, " ASC" );
-				}
+			order_by_list = buildOrderByFromArray( ctx, order_hash );
+			if( !order_by_list ) {
+				free( having_buf );
+				buffer_free( group_buf );
+				buffer_free( sql_buf );
+				if( defaultselhash )
+					jsonObjectFree( defaultselhash );
+				return NULL;
 			}
 		} else if( JSON_HASH == order_hash->type ) {
 			// This hash is keyed on class alias.  Each class has either
 			// an array of field names or a hash keyed on field name.
+			growing_buffer* order_buf = NULL;  // to collect ORDER BY list
 			jsonIterator* class_itr = jsonNewIterator( order_hash );
 			while( (snode = jsonIteratorNext( class_itr )) ) {
 
@@ -4573,7 +4426,7 @@ char* SELECT (
 							"osrfMethodException",
 							ctx->request,
 							"Invalid class referenced in ORDER BY clause -- "
-							"see error log for more details"
+								"see error log for more details"
 						);
 					jsonIteratorFree( class_itr );
 					buffer_free( order_buf );
@@ -4820,6 +4673,8 @@ char* SELECT (
 				}
 			} // end while
 			jsonIteratorFree( class_itr );
+			if( order_buf )
+				order_by_list = buffer_release( order_buf );
 		} else {
 			osrfLogError( OSRF_LOG_MARK,
 				"%s: Malformed ORDER BY clause; expected JSON_HASH or JSON_ARRAY, found %s",
@@ -4832,7 +4687,6 @@ char* SELECT (
 					ctx->request,
 					"Malformed ORDER BY clause -- see error log for more details"
 				);
-			buffer_free( order_buf );
 			free( having_buf );
 			buffer_free( group_buf );
 			buffer_free( sql_buf );
@@ -4840,11 +4694,7 @@ char* SELECT (
 				jsonObjectFree( defaultselhash );
 			return NULL;
 		}
-
-		if( order_buf )
-			order_by_list = buffer_release( order_buf );
 	}
-
 
 	string = buffer_release( group_buf );
 
@@ -4891,26 +4741,199 @@ char* SELECT (
 
 } // end of SELECT()
 
-static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrfHash* meta, osrfMethodContext* ctx ) {
+/**
+	@brief Build a list of ORDER BY expressions.
+	@param ctx Pointer to the method context.
+	@param order_array Pointer to a JSON_ARRAY of field specifications.
+	@return Pointer to a string containing a comma-separated list of ORDER BY expressions.
+	Each expression may be either a column reference or a function call whose first parameter
+	is a column reference.
+
+	Each entry in @a order_array must be a JSON_HASH with values for "class" and "field".
+	It may optionally include entries for "direction" and/or "transform".
+
+	The calling code is responsible for freeing the returned string.
+*/
+static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* order_array ) {
+	if( ! order_array ) {
+		osrfLogError( OSRF_LOG_MARK, "%s: Logic error: NULL pointer for ORDER BY clause",
+			modulename );
+		if( ctx )
+			osrfAppSessionStatus(
+				ctx->session,
+				OSRF_STATUS_INTERNALSERVERERROR,
+				"osrfMethodException",
+				ctx->request,
+				"Logic error: ORDER BY clause expected, not found; "
+					"see error log for more details"
+			);
+		return NULL;
+	} else if( order_array->type != JSON_ARRAY ) {
+		osrfLogError( OSRF_LOG_MARK,
+			"%s: Logic error: Expected JSON_ARRAY for ORDER BY clause, not found", modulename );
+		if( ctx )
+			osrfAppSessionStatus(
+			ctx->session,
+			OSRF_STATUS_INTERNALSERVERERROR,
+			"osrfMethodException",
+			ctx->request,
+			"Logic error: Unexpected format for ORDER BY clause; see error log for more details" );
+		return NULL;
+	}
+
+	growing_buffer* order_buf = buffer_init( 128 );
+	int first = 1;        // boolean
+	int order_idx = 0;
+	jsonObject* order_spec;
+	while( (order_spec = jsonObjectGetIndex( order_array, order_idx++ ))) {
+
+		if( JSON_HASH != order_spec->type ) {
+			osrfLogError( OSRF_LOG_MARK,
+				"%s: Malformed field specification in ORDER BY clause; "
+				"expected JSON_HASH, found %s",
+				modulename, json_type( order_spec->type ) );
+			if( ctx )
+				osrfAppSessionStatus(
+					 ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Malformed ORDER BY clause -- see error log for more details"
+				);
+			buffer_free( order_buf );
+			return NULL;
+		}
+
+		const char* class_alias =
+			jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "class" ));
+		const char* field =
+			jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "field" ));
+
+		if( !field || !class_alias ) {
+			osrfLogError( OSRF_LOG_MARK,
+				"%s: Missing class or field name in field specification of ORDER BY clause",
+				modulename );
+			if( ctx )
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Malformed ORDER BY clause -- see error log for more details"
+				);
+			buffer_free( order_buf );
+			return NULL;
+		}
+
+		const ClassInfo* order_class_info = search_alias( class_alias );
+		if( ! order_class_info ) {
+			osrfLogInternal( OSRF_LOG_MARK, "%s: ORDER BY clause references class \"%s\" "
+				"not in FROM clause, skipping it", modulename, class_alias );
+			continue;
+		}
+
+		// Add a separating comma, except at the beginning
+		if( first )
+			first = 0;
+		else
+			OSRF_BUFFER_ADD( order_buf, ", " );
+
+		osrfHash* field_def = osrfHashGet( order_class_info->fields, field );
+		if( !field_def ) {
+			osrfLogError( OSRF_LOG_MARK,
+				"%s: Invalid field \"%s\".%s referenced in ORDER BY clause",
+				modulename, class_alias, field );
+			if( ctx )
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Invalid field referenced in ORDER BY clause -- "
+					"see error log for more details"
+				);
+			free( order_buf );
+			return NULL;
+		} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
+			osrfLogError( OSRF_LOG_MARK, "%s: Virtual field \"%s\" in ORDER BY clause",
+				modulename, field );
+			if( ctx )
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Virtual field in ORDER BY clause -- see error log for more details"
+				);
+			buffer_free( order_buf );
+			return NULL;
+		}
+
+		if( jsonObjectGetKeyConst( order_spec, "transform" )) {
+			char* transform_str = searchFieldTransform( class_alias, field_def, order_spec );
+			if( ! transform_str ) {
+				if( ctx )
+					osrfAppSessionStatus(
+						ctx->session,
+						OSRF_STATUS_INTERNALSERVERERROR,
+						"osrfMethodException",
+						ctx->request,
+						"Severe query error in ORDER BY clause -- "
+						"see error log for more details"
+					);
+				buffer_free( order_buf );
+				return NULL;
+			}
+
+			OSRF_BUFFER_ADD( order_buf, transform_str );
+			free( transform_str );
+		}
+		else
+			buffer_fadd( order_buf, "\"%s\".%s", class_alias, field );
+
+		const char* direction =
+			jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "direction" ) );
+		if( direction ) {
+			if( direction[ 0 ] || 'D' == direction[ 0 ] )
+				OSRF_BUFFER_ADD( order_buf, " DESC" );
+			else
+				OSRF_BUFFER_ADD( order_buf, " ASC" );
+		}
+	}
+
+	return buffer_release( order_buf );
+}
+
+/**
+	@brief Build a SELECT statement.
+	@param search_hash Pointer to a JSON_HASH or JSON_ARRAY encoding the WHERE clause.
+	@param rest_of_query Pointer to a JSON_HASH containing any other SQL clauses.
+	@param meta Pointer to the class metadata for the core class.
+	@param ctx Pointer to the method context.
+	@return Pointer to a character string containing the WHERE clause; or NULL upon error.
+
+	Within the rest_of_query hash, the meaningful keys are "join", "select", "no_i18n",
+	"order_by", "limit", and "offset".
+
+	The SELECT statements built here are distinct from those built for the json_query method.
+*/
+static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_query,
+	osrfHash* meta, osrfMethodContext* ctx ) {
 
 	const char* locale = osrf_message_get_last_locale();
 
 	osrfHash* fields = osrfHashGet( meta, "fields" );
-	char* core_class = osrfHashGet( meta, "classname" );
+	const char* core_class = osrfHashGet( meta, "classname" );
 
-	const jsonObject* join_hash = jsonObjectGetKeyConst( order_hash, "join" );
+	const jsonObject* join_hash = jsonObjectGetKeyConst( rest_of_query, "join" );
 
-	jsonObject* node = NULL;
-	jsonObject* snode = NULL;
-	jsonObject* onode = NULL;
-	const jsonObject* _tmp = NULL;
 	jsonObject* selhash = NULL;
 	jsonObject* defaultselhash = NULL;
 
 	growing_buffer* sql_buf = buffer_init( 128 );
 	growing_buffer* select_buf = buffer_init( 128 );
 
-	if( !(selhash = jsonObjectGetKey( order_hash, "select" )) ) {
+	if( !(selhash = jsonObjectGetKey( rest_of_query, "select" )) ) {
 		defaultselhash = jsonNewObjectType( JSON_HASH );
 		selhash = defaultselhash;
 	}
@@ -4932,20 +4955,24 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 		jsonObjectSetKey( selhash, core_class, field_list );
 	}
 
+	// Build a list of columns for the SELECT clause
 	int first = 1;
+	const jsonObject* snode = NULL;
 	jsonIterator* class_itr = jsonNewIterator( selhash );
-	while( (snode = jsonIteratorNext( class_itr )) ) {
+	while( (snode = jsonIteratorNext( class_itr )) ) {        // For each class
 
+		// If the class isn't in the IDL, ignore it
 		const char* cname = class_itr->key;
 		osrfHash* idlClass = osrfHashGet( oilsIDL(), cname );
 		if( !idlClass )
 			continue;
 
-		if( strcmp(core_class,class_itr->key )) {
+		// If the class isn't the core class, and isn't in the JOIN clause, ignore it
+		if( strcmp( core_class, class_itr->key )) {
 			if( !join_hash )
 				continue;
 
-			jsonObject* found =  jsonObjectFindPath( join_hash, "//%s", class_itr->key );
+			jsonObject* found = jsonObjectFindPath( join_hash, "//%s", class_itr->key );
 			if( !found->size ) {
 				jsonObjectFree( found );
 				continue;
@@ -4954,6 +4981,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 			jsonObjectFree( found );
 		}
 
+		const jsonObject* node = NULL;
 		jsonIterator* select_itr = jsonNewIterator( snode );
 		while( (node = jsonIteratorNext( select_itr )) ) {
 			const char* item_str = jsonObjectGetString( node );
@@ -4971,7 +4999,7 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 
 			if( locale ) {
 				const char* i18n;
-				const jsonObject* no_i18n_obj = jsonObjectGetKeyConst( order_hash, "no_i18n" );
+				const jsonObject* no_i18n_obj = jsonObjectGetKeyConst( rest_of_query, "no_i18n" );
 				if( obj_is_true( no_i18n_obj ) )    // Suppress internationalization?
 					i18n = NULL;
 				else
@@ -5019,9 +5047,13 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 				ctx->request,
 				"Unable to build query frame for core class"
 			);
+		buffer_free( sql_buf );
+		if( defaultselhash )
+			jsonObjectFree( defaultselhash );
 		return NULL;
 	}
 
+	// Add the JOIN clauses, if any
 	if( join_hash ) {
 		char* join_clause = searchJOIN( join_hash, &curr_query->core );
 		OSRF_BUFFER_ADD_CHAR( sql_buf, ' ' );
@@ -5030,10 +5062,11 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 	}
 
 	osrfLogDebug( OSRF_LOG_MARK, "%s pre-predicate SQL =  %s",
-				  modulename, OSRF_BUFFER_C_STR( sql_buf ));
+		modulename, OSRF_BUFFER_C_STR( sql_buf ));
 
 	OSRF_BUFFER_ADD( sql_buf, " WHERE " );
 
+	// Add the conditions in the WHERE clause
 	char* pred = searchWHERE( search_hash, &curr_query->core, AND_OP_JOIN, ctx );
 	if( !pred ) {
 		osrfAppSessionStatus(
@@ -5053,112 +5086,166 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 		free( pred );
 	}
 
-	if( order_hash ) {
-		char* string = NULL;
-		if( (_tmp = jsonObjectGetKeyConst( order_hash, "order_by" )) ){
+	// Add the ORDER BY, LIMIT, and/or OFFSET clauses, if present
+	if( rest_of_query ) {
+		const jsonObject* order_by = NULL;
+		if( ( order_by = jsonObjectGetKeyConst( rest_of_query, "order_by" )) ){
 
-			growing_buffer* order_buf = buffer_init( 128 );
+			char* order_by_list = NULL;
 
-			first = 1;
-			jsonIterator* class_itr = jsonNewIterator( _tmp );
-			while( (snode = jsonIteratorNext( class_itr )) ) {
+			if( JSON_ARRAY == order_by->type ) {
+				order_by_list = buildOrderByFromArray( ctx, order_by );
+				if( !order_by_list ) {
+					buffer_free( sql_buf );
+					if( defaultselhash )
+						jsonObjectFree( defaultselhash );
+					clear_query_stack();
+					return NULL;
+				}
+			} else if( JSON_HASH == order_by->type ) {
+				// We expect order_by to be a JSON_HASH keyed on class names.  Traverse it
+				// and build a list of ORDER BY expressions.
+				growing_buffer* order_buf = buffer_init( 128 );
+				first = 1;
+				jsonIterator* class_itr = jsonNewIterator( order_by );
+				while( (snode = jsonIteratorNext( class_itr )) ) {  // For each class:
 
-				if( !jsonObjectGetKeyConst( selhash,class_itr->key ))
-					continue;
+					ClassInfo* order_class_info = search_alias( class_itr->key );
+					if( ! order_class_info )
+						continue;    // class not referenced by FROM clause?  Ignore it.
 
-				if( snode->type == JSON_HASH ) {
+					if( JSON_HASH == snode->type ) {
 
-					jsonIterator* order_itr = jsonNewIterator( snode );
-					while( (onode = jsonIteratorNext( order_itr )) ) {
+						// If the data for the current class is a JSON_HASH, then it is
+						// keyed on field name.
 
-						osrfHash* field_def = oilsIDLFindPath( "/%s/fields/%s",
-								class_itr->key, order_itr->key );
-						if( !field_def )
-							continue;
+						const jsonObject* onode = NULL;
+						jsonIterator* order_itr = jsonNewIterator( snode );
+						while( (onode = jsonIteratorNext( order_itr )) ) {  // For each field
 
-						char* direction = NULL;
-						if( onode->type == JSON_HASH ) {
-							if( jsonObjectGetKeyConst( onode, "transform" ) ) {
-								string = searchFieldTransform( class_itr->key, field_def, onode );
-								if( ! string ) {
-									osrfAppSessionStatus(
-										ctx->session,
-										OSRF_STATUS_INTERNALSERVERERROR,
-										"osrfMethodException",
-										ctx->request,
-										"Severe query error in ORDER BY clause -- "
-										"see error log for more details"
-									);
-									jsonIteratorFree( order_itr );
-									jsonIteratorFree( class_itr );
-									buffer_free( order_buf );
-									buffer_free( sql_buf );
-									if( defaultselhash )
-										jsonObjectFree( defaultselhash );
-									clear_query_stack();
-									return NULL;
+							osrfHash* field_def = osrfHashGet(
+								order_class_info->fields, order_itr->key );
+							if( !field_def )
+								continue;    // Field not defined in IDL?  Ignore it.
+							if( str_is_true( osrfHashGet( field_def, "virtual")))
+								continue;    // Field is virtual?  Ignore it.
+
+							char* field_str = NULL;
+							char* direction = NULL;
+							if( onode->type == JSON_HASH ) {
+								if( jsonObjectGetKeyConst( onode, "transform" ) ) {
+									field_str = searchFieldTransform(
+										class_itr->key, field_def, onode );
+									if( ! field_str ) {
+										osrfAppSessionStatus(
+											ctx->session,
+											OSRF_STATUS_INTERNALSERVERERROR,
+											"osrfMethodException",
+											ctx->request,
+											"Severe query error in ORDER BY clause -- "
+											"see error log for more details"
+										);
+										jsonIteratorFree( order_itr );
+										jsonIteratorFree( class_itr );
+										buffer_free( order_buf );
+										buffer_free( sql_buf );
+										if( defaultselhash )
+											jsonObjectFree( defaultselhash );
+										clear_query_stack();
+										return NULL;
+									}
+								} else {
+									growing_buffer* field_buf = buffer_init( 16 );
+									buffer_fadd( field_buf, "\"%s\".%s",
+										class_itr->key, order_itr->key );
+									field_str = buffer_release( field_buf );
+								}
+
+								if( ( order_by = jsonObjectGetKeyConst( onode, "direction" )) ) {
+									const char* dir = jsonObjectGetString( order_by );
+									if(!strncasecmp( dir, "d", 1 )) {
+										direction = " DESC";
+									}
 								}
 							} else {
-								growing_buffer* field_buf = buffer_init( 16 );
-								buffer_fadd( field_buf, "\"%s\".%s",
-									class_itr->key, order_itr->key );
-								string = buffer_release( field_buf );
-							}
-
-							if( (_tmp = jsonObjectGetKeyConst( onode, "direction" )) ) {
-								const char* dir = jsonObjectGetString( _tmp );
-								if(!strncasecmp( dir, "d", 1 )) {
+								field_str = strdup( order_itr->key );
+								const char* dir = jsonObjectGetString( onode );
+								if( !strncasecmp( dir, "d", 1 )) {
 									direction = " DESC";
+								} else {
+									direction = " ASC";
 								}
 							}
-						} else {
-							string = strdup( order_itr->key );
-							const char* dir = jsonObjectGetString( onode );
-							if( !strncasecmp( dir, "d", 1 )) {
-								direction = " DESC";
+
+							if( first ) {
+								first = 0;
 							} else {
-								direction = " ASC";
+								buffer_add( order_buf, ", " );
 							}
-						}
 
-						if( first ) {
-							first = 0;
-						} else {
-							buffer_add( order_buf, ", " );
-						}
+							buffer_add( order_buf, field_str );
+							free( field_str );
 
-						buffer_add( order_buf, string );
-						free( string );
+							if( direction ) {
+								buffer_add( order_buf, direction );
+							}
+						} // end while; looping over ORDER BY expressions
 
-						if( direction ) {
-							buffer_add( order_buf, direction );
+						jsonIteratorFree( order_itr );
+
+					} else if( JSON_STRING == snode->type ) {
+						// We expect a comma-separated list of sort fields.
+						const char* str = jsonObjectGetString( snode );
+						if( strchr( str, ';' )) {
+							// No semicolons allowed.  It is theoretically possible for a
+							// legitimate semicolon to occur within quotes, but it's not likely
+							// to occur in practice in the context of an ORDER BY list.
+							osrfLogError( OSRF_LOG_MARK, "%s: Possible attempt at SOL injection -- "
+								"semicolon found in ORDER BY list: \"%s\"", modulename, str );
+							if( ctx ) {
+								osrfAppSessionStatus(
+									ctx->session,
+									OSRF_STATUS_INTERNALSERVERERROR,
+									"osrfMethodException",
+									ctx->request,
+									"Possible attempt at SOL injection -- "
+										"semicolon found in ORDER BY list"
+								);
+							}
+							jsonIteratorFree( class_itr );
+							buffer_free( order_buf );
+							buffer_free( sql_buf );
+							if( defaultselhash )
+								jsonObjectFree( defaultselhash );
+							clear_query_stack();
+							return NULL;
 						}
+						buffer_add( order_buf, str );
+						break;
 					}
 
-					jsonIteratorFree( order_itr );
+				} // end while; looping over order_by classes
 
-				} else {
-					const char* str = jsonObjectGetString( snode );
-					buffer_add( order_buf, str );
-					break;
-				}
+				jsonIteratorFree( class_itr );
+				order_by_list = buffer_release( order_buf );
 
+			} else {
+				osrfLogWarning( OSRF_LOG_MARK,
+					"\"order_by\" object in a query is not a JSON_HASH or JSON_ARRAY;"
+					"no ORDER BY generated" );
 			}
 
-			jsonIteratorFree( class_itr );
-
-			string = buffer_release( order_buf );
-
-			if( *string ) {
+			if( order_by_list && *order_by_list ) {
 				OSRF_BUFFER_ADD( sql_buf, " ORDER BY " );
-				OSRF_BUFFER_ADD( sql_buf, string );
+				OSRF_BUFFER_ADD( sql_buf, order_by_list );
 			}
 
-			free( string );
+			free( order_by_list );
 		}
 
-		if( (_tmp = jsonObjectGetKeyConst( order_hash, "limit" )) ) {
-			const char* str = jsonObjectGetString( _tmp );
+		const jsonObject* limit = jsonObjectGetKeyConst( rest_of_query, "limit" );
+		if( limit ) {
+			const char* str = jsonObjectGetString( limit );
 			buffer_fadd(
 				sql_buf,
 				" LIMIT %d",
@@ -5166,9 +5253,9 @@ static char* buildSELECT ( jsonObject* search_hash, jsonObject* order_hash, osrf
 			);
 		}
 
-		_tmp = jsonObjectGetKeyConst( order_hash, "offset" );
-		if( _tmp ) {
-			const char* str = jsonObjectGetString( _tmp );
+		const jsonObject* offset = jsonObjectGetKeyConst( rest_of_query, "offset" );
+		if( offset ) {
+			const char* str = jsonObjectGetString( offset );
 			buffer_fadd(
 				sql_buf,
 				" OFFSET %d",

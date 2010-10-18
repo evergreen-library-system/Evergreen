@@ -146,6 +146,7 @@ CREATE INDEX circ_open_date_idx ON "action".circulation (xact_start) WHERE xact_
 CREATE INDEX circ_all_usr_idx       ON action.circulation ( usr );
 CREATE INDEX circ_circ_staff_idx    ON action.circulation ( circ_staff );
 CREATE INDEX circ_checkin_staff_idx ON action.circulation ( checkin_staff );
+CREATE INDEX action_circulation_target_copy_idx ON action.circulation (target_copy);
 CREATE UNIQUE INDEX circ_parent_idx ON action.circulation ( parent_circ ) WHERE parent_circ IS NOT NULL;
 CREATE UNIQUE INDEX only_one_concurrent_checkout_per_copy ON action.circulation(target_copy) WHERE checkin_time IS NULL;
 
@@ -163,7 +164,7 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
-CREATE TRIGGER push_due_date_tgr BEFORE INSERT ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.push_circ_due_time();
+CREATE TRIGGER push_due_date_tgr BEFORE INSERT OR UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.push_circ_due_time();
 
 CREATE TABLE action.aged_circulation (
 	usr_post_code		TEXT,
@@ -185,6 +186,7 @@ CREATE INDEX aged_circ_start_idx ON "action".aged_circulation (xact_start);
 CREATE INDEX aged_circ_copy_circ_lib_idx ON "action".aged_circulation (copy_circ_lib);
 CREATE INDEX aged_circ_copy_owning_lib_idx ON "action".aged_circulation (copy_owning_lib);
 CREATE INDEX aged_circ_copy_location_idx ON "action".aged_circulation (copy_location);
+CREATE INDEX action_aged_circulation_target_copy_idx ON action.aged_circulation (target_copy);
 
 CREATE OR REPLACE VIEW action.all_circulation AS
     SELECT  id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
@@ -409,7 +411,7 @@ CREATE INDEX ahn_hold_idx ON action.hold_notification (hold);
 CREATE INDEX ahn_notify_staff_idx ON action.hold_notification ( notify_staff );
 
 CREATE TABLE action.hold_copy_map (
-	id		SERIAL	PRIMARY KEY,
+	id		BIGSERIAL	PRIMARY KEY,
 	hold		INT	NOT NULL REFERENCES action.hold_request (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	target_copy	BIGINT	NOT NULL, -- REFERENCES asset.copy (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED, -- XXX could be an serial.issuance
 	CONSTRAINT copy_once_per_hold UNIQUE (hold,target_copy)
@@ -776,7 +778,7 @@ BEGIN
             SELECT * INTO circ_chain_tail FROM action.circ_chain(circ_chain_head.id) ORDER BY xact_start DESC LIMIT 1;
             EXIT WHEN circ_chain_tail.xact_finish IS NULL;
 
-            -- Now get the user setings, if any, to block purging if the user wants to keep more circs
+            -- Now get the user settings, if any, to block purging if the user wants to keep more circs
             usr_keep_age.value := NULL;
             SELECT * INTO usr_keep_age FROM actor.usr_setting WHERE usr = circ_chain_head.usr AND name = 'history.circ.retention_age';
 
@@ -792,7 +794,7 @@ BEGIN
             ELSIF usr_keep_start.value IS NOT NULL THEN
                 keep_age := AGE(NOW(), oils_json_to_text(usr_keep_start.value)::TIMESTAMPTZ);
             ELSE
-                keep_age := COALESCE( org_keep_age::INTERVAL, '2000 years'::INTEVAL );
+                keep_age := COALESCE( org_keep_age::INTERVAL, '2000 years'::INTERVAL );
             END IF;
 
             EXIT WHEN AGE(NOW(), circ_chain_tail.xact_finish) < keep_age;

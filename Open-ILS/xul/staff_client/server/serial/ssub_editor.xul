@@ -14,12 +14,12 @@
         <vbox id="brief_display_box"/>
 
 		<hbox flex="1" style="overflow: auto">
-			<vbox flex="1">
+			<vbox flex="1" id="before_splitter" oils_persist="width">
 				<label value="Subscription" style="font-weight: bold; font-size: large"/>
 				<vbox id="left_pane" flex="1"/>
 			</vbox>
-			<splitter><grippy /></splitter>
-			<vbox flex="1">
+			<splitter id="splitter" oils_persist="state hidden" oils_persist_peers="before_splitter after_splitter"><grippy /></splitter>
+			<vbox flex="1" id="after_splitter" oils_persist="width">
 				<label value=" " style="font-weight: bold; font-size: large"/>
 				<vbox id="right_pane" flex="1"/>
 			</vbox>

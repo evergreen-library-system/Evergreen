@@ -91,15 +91,22 @@ function wrap_long_fields (node) {
     }
 }
 
-function swap_editors () {
+function set_flat_editor (useFlatText) {
 
     dojo.require('MARC.Record');
 
     var xe = $('xul-editor');
     var te = $('text-editor');
 
-    te.hidden = te.hidden ? false : true;
-    xe.hidden = xe.hidden ? false : true;
+    if (useFlatText) {
+        if (xe.hidden) { return; }
+        te.hidden = false;
+        xe.hidden = true;
+    } else {
+        if (te.hidden) { return; }
+        te.hidden = true;
+        xe.hidden = false;
+    }
 
     if (te.hidden) {
         // get the marcxml from the text box
@@ -168,7 +175,7 @@ function my_init() {
 
         document.getElementById('save-button').setAttribute('label', window.xulG.save.label);
         document.getElementById('save-button').setAttribute('oncommand',
-            'if ($("xul-editor").hidden) swap_editors(); ' +
+            'if ($("xul-editor").hidden) set_flat_editor(false); ' +
             'mangle_005(); ' + 
             'var xml_string = xml_escape_unicode( xml_record.toXMLString() ); ' + 
             'save_attempt( xml_string ); ' +
@@ -2326,7 +2333,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
     ;
 
     // would be good to carve this out into a separate function
-    dojo.xhrGet({"url":url, "handleAs":"xml", "load": function(records) {
+    dojo.xhrGet({"url":url, "sync": true, "handleAs":"xml", "load": function(records) {
         var create_menu = createMenu({ label: $('catStrings').getString('staff.cat.marcedit.create_authority.label')});
 
         var cm_popup = create_menu.appendChild(

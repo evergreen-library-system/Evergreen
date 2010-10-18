@@ -330,6 +330,13 @@
 <!ENTITY staff.cat.popup.edit.record.window.key "">
 <!ENTITY staff.cat.popup.edit_record.tab "Edit Record (Tab)">
 <!ENTITY staff.cat.popup.edit_record.window "Edit Record (Window)">
+<!ENTITY staff.cat.record_buckets.merge_records.merge_lead "Merge these records? (Select the 'lead' record first)">
+<!ENTITY staff.cat.record_buckets.merge_records.button.label "Merge">
+<!ENTITY staff.cat.record_buckets.merge_records.button.accesskey "M">
+<!ENTITY staff.cat.record_buckets.merge_records.cancel_button.label "Cancel">
+<!ENTITY staff.cat.record_buckets.merge_records.cancel_button.accesskey "C">
+<!ENTITY staff.cat.record_buckets.merge_records.lead "Lead Record?">
+<!ENTITY staff.cat.record_buckets.merge_records.remove_from_consideration "Remove from consideration?">
 <!ENTITY staff.cat.search_advanced "Advanced">
 <!ENTITY staff.cat.search_advanced.key "V">
 <!ENTITY staff.cat.search_all "Keyword">
@@ -835,6 +842,8 @@
 <!ENTITY staff.main.menu.cat.edit_user_buckets.label "Manage User Buckets">
 <!ENTITY staff.main.menu.cat.key "a">
 <!ENTITY staff.main.menu.cat.label "Cataloging">
+<!ENTITY staff.main.menu.cat.marc_batch_edit.label "MARC Batch Edit">
+<!ENTITY staff.main.menu.cat.marc_batch_edit.accesskey "E">
 <!ENTITY staff.main.menu.cat.retrieve_last_record.accesskey "L">
 <!ENTITY staff.main.menu.cat.retrieve_last_record.label "Retrieve Last Record">
 <!ENTITY staff.main.menu.cat.search_tcn.accesskey "T">
@@ -1904,6 +1913,7 @@
 <!ENTITY staff.server.admin.index.library_settings "Library Settings Editor">
 <!ENTITY staff.server.admin.index.non_cataloged_types "Non-cataloged Types Editor">
 <!ENTITY staff.server.admin.index.statistical_categories "Statistical Categories Editor">
+<!ENTITY staff.server.admin.index.expired_holds_shelf "Expired Holds Shelf Printable Listing">
 <!ENTITY staff.server.admin.index.hold_pull_list "Pull List for Hold Requests">
 <!ENTITY staff.server.admin.index.testing "(Testing)">
 <!ENTITY staff.server.admin.index.hold_pull_list_classic "Pull List for Hold Requests (Classic)">
@@ -1914,14 +1924,6 @@
 <!ENTITY staff.server.admin.index.conify "Server Settings">
 <!ENTITY staff.server.admin.index.external_text_editor.label "External Text Editor Command">
 <!ENTITY staff.server.admin.index.external_text_editor.accesskey "x">
-
-<!ENTITY staff.server.admin.index.booking "Booking">
-<!ENTITY staff.server.admin.index.booking.reservation "Create/Cancel Reservations">
-<!ENTITY staff.server.admin.index.booking.pull_list "Pull List">
-<!ENTITY staff.server.admin.index.booking.capture "Capture">
-<!ENTITY staff.server.admin.index.booking.pickup "Pickup Reservations">
-<!ENTITY staff.server.admin.index.booking.return "Return Reservations">
-
 
 <!ENTITY staff.server.admin.org_settings.title "Evergreen: Library Settings Editor">
 <!-- This will be followed by the user's name -->
@@ -2580,7 +2582,8 @@
 <!ENTITY staff.cat.marcedit.validate.accesskey "V">
 <!ENTITY staff.cat.marcedit.save-button.accesskey "d">
 <!ENTITY staff.cat.marcedit.help.label "Help">
-<!ENTITY staff.cat.marcedit.swapEditor.label "Swap Editor Type">
+<!ENTITY staff.cat.marcedit.flatTextEditor.label "Flat-Text Editor">
+<!ENTITY staff.cat.marcedit.flatTextEditor.accesskey "">
 <!ENTITY staff.cat.marcedit.help.accesskey "H">
 <!ENTITY staff.cat.marcedit.caption.label "MARC Record">
 <!ENTITY staff.cat.marcedit.toggleFFE.label "Fixed Fields -- Record type: ">
@@ -2654,7 +2657,9 @@
 <!ENTITY staff.cat.record_buckets_overlay.box.label "Batch:">
 <!ENTITY staff.cat.record_buckets_overlay.sel_opac.label "Show All in Catalog">
 <!ENTITY staff.cat.record_buckets_overlay.transfer_title_holds.label "Transfer Title Holds">
-<!ENTITY staff.cat.record_buckets_overlay.transfer_title_holds.accesskey "Transfer Title Holds">
+<!ENTITY staff.cat.record_buckets_overlay.transfer_title_holds.accesskey "T">
+<!ENTITY staff.cat.record_buckets_overlay.marc_batch_edit.label "MARC Batch Edit">
+<!ENTITY staff.cat.record_buckets_overlay.marc_batch_edit.accesskey "">
 <!ENTITY staff.cat.record_buckets_overlay.del_records.label "Delete All Records">
 <!ENTITY staff.cat.record_buckets_overlay.merge_records.label "Merge All Records">
 <!ENTITY staff.cat.record_buckets_overlay.export_records.label "Export All Records">
@@ -2751,9 +2756,11 @@
 <!ENTITY staff.cat.z3950.menuitem.save_columns.label "Save List Configuration">
 <!ENTITY staff.cat.z3950.marc_view.label "MARC View">
 <!ENTITY staff.cat.z3950.marc_view.accesskey "V">
-<!ENTITY staff.cat.z3950.marc_import_overlay.label "MARC Editor for Overlay">
+<!ENTITY staff.cat.z3950.marc_editor.label "MARC Editor">
+<!ENTITY staff.cat.z3950.marc_editor.accesskey "E">
+<!ENTITY staff.cat.z3950.marc_import_overlay.label "Overlay">
 <!ENTITY staff.cat.z3950.marc_import_overlay.accesskey "O">
-<!ENTITY staff.cat.z3950.result_message.marc_import.label "MARC Editor for Import">
+<!ENTITY staff.cat.z3950.result_message.marc_import.label "Import">
 <!ENTITY staff.cat.z3950.result_message.marc_import.accesskey "I">
 <!ENTITY staff.pat.barcode_entry.retrieve_patron.label "Retrieve Patron">
 <!ENTITY staff.pat.barcode_entry.barcode.label "Barcode:">
@@ -2991,6 +2998,8 @@
 <!ENTITY staff.patron.holds_overlay.print.accesskey "P">
 <!ENTITY staff.patron.holds_overlay.print_full_pull_list.label "Print Full Pull List">
 <!ENTITY staff.patron.holds_overlay.print_full_pull_list.accesskey "u">
+<!ENTITY staff.patron.holds_overlay.print_alt_pull_list.label "Print Full Pull List (Alternate strategy)">
+<!ENTITY staff.patron.holds_overlay.print_alt_pull_list.accesskey "y">
 <!ENTITY staff.patron.holds_overlay.place_hold.label "Place Hold">
 <!ENTITY staff.patron.holds_overlay.place_hold.accesskey "H">
 <!ENTITY staff.patron.holds_overlay.show_cancelled_holds.label "Show Cancelled Holds">

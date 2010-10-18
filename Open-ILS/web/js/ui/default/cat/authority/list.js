@@ -176,16 +176,29 @@ function authListInit() {
         dijit.byId('authTerm').attr('value', term);
         displayRecords();
     }
-    dojo.connect(dijit.byId('authTerm'), 'onBlur', function() {
-        dijit.byId('authPage').attr('value', 0);
-        displayRecords();
+
+    dojo.connect(dijit.byId('authAxis'), 'onKeyPress', function(evt) {
+        if (evt.keyCode == dojo.keys.ENTER) {
+            dijit.byId('authPage').attr('value', 0);
+            displayRecords();
+        }
+    }); 
+
+    dojo.connect(dijit.byId('authPage'), 'onKeyPress', function(evt) {
+        if (evt.keyCode == dojo.keys.ENTER) {
+            dijit.byId('authPage').attr('value', 0);
+            displayRecords();
+        }
     });
+
     dojo.connect(dijit.byId('authTerm'), 'onKeyPress', function(evt) {
         if (evt.keyCode == dojo.keys.ENTER) {
             dijit.byId('authPage').attr('value', 0);
             displayRecords();
         }
     });
+
+    dijit.byId('authTerm').focus();
 
 }
 dojo.addOnLoad(authListInit);
@@ -221,6 +234,7 @@ function displayRecords(parms) {
         + '/1' // replace with preceding line if OUs gain some meaning
         + '/' + dijit.byId('authTerm').attr('value')
         + '/' + dijit.byId('authPage').attr('value')
+        + '/' + '20' // 20 results per page
     ;
     dojo.xhrGet({"url":url, "handleAs":"xml", "content":{"format":"marcxml"}, "preventCache": true, "load":displayAuthorities });
 }

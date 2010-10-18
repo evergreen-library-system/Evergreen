@@ -224,17 +224,13 @@
             }
 
             g.open_menu = function() {
-                try {
-                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-                    var mframe = xulG.window.open(urls.XUL_MENU_FRAME
-                        + '?server='+window.escape(xulG.url),
-                        'main'+xulG.window.window_name_increment(),'chrome,resizable'
-                    );
-                    delete xulG['_sound']; // This came from util.error but I want menu.js to have its own
-                    mframe.xulG = xulG; // This is the xulG from main.js, with auth, url, and window
-                } catch(E) {
-                    alert(E);
-                }
+                delete xulG['_sound'];
+                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                var wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].
+                    getService(Components.interfaces.nsIWindowMediator);
+                var eg_main = wm.getMostRecentWindow('eg_main');
+                eg_main.openTabs.unshift('init');
+                wm.getMostRecentWindow('eg_main').new_tabs(null);
             }
 
             g.data.init();

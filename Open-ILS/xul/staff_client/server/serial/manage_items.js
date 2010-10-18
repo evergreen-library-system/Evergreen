@@ -496,7 +496,7 @@ serial.manage_items.prototype = {
             JSAN.use('util.window'); var win = new util.window();
             win.open(
                 xulG.url_prefix(urls.XUL_SERIAL_SELECT_UNIT),
-                'sel_serial_sunit_win_' + win.window_name_increment(),
+                '_blank',
                 'chrome,resizable,modal,centerscreen'
             );
             if (!g.serial_items_sunit_select) {

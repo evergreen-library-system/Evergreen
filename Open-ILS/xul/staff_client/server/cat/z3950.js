@@ -61,7 +61,19 @@ cat.z3950.prototype = {
                             document.getElementById('sel_clip').setAttribute('disabled', sel.length < 1);
                             var list = util.functional.map_list(
                                 sel,
-                                function(o) { return o.getAttribute('retrieve_id'); }
+                                function(o) {
+                                    if ( $('jacket_image') ) {
+                                        // A side-effect in this map function, mu hahaha
+                                        if (o.getAttribute('isbn')) {
+                                            $('jacket_image').setAttribute('src',urls.ac_jacket_large+o.getAttribute('isbn'));
+                                            $('jacket_image').setAttribute('tooltiptext',urls.ac_jacket_large+o.getAttribute('isbn'));
+                                        } else {
+                                            $('jacket_image').setAttribute('src','');
+                                            $('jacket_image').setAttribute('tooltiptext','');
+                                        }
+                                    }
+                                    return o.getAttribute('retrieve_id');
+                                }
                             );
                             obj.error.sdump('D_TRACE','cat/z3950: selection list = ' + js2JSON(list) );
                             obj.controller.view.marc_import.disabled = false;
@@ -656,6 +668,7 @@ cat.z3950.prototype = {
                                 }
                             }
                         );
+                        n.my_node.setAttribute('isbn', function(a){return a;}(obj.result_set[ obj.number_of_result_sets ].records[j].mvr).isbn());
                         if (!f) { n.my_node.parentNode.focus(); f = n; } 
                     }
                 } else {
@@ -705,119 +718,126 @@ cat.z3950.prototype = {
 
     'spawn_marc_editor' : function(my_marcxml,biblio_source) {
         var obj = this;
-        xulG.new_tab(
-            xulG.url_prefix(urls.XUL_MARC_EDIT), 
-            { 'tab_name' : 'MARC Editor' }, 
-            { 
-                'record' : { 'marc' : my_marcxml, "rtype": "bre" },
-                'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
-                    try {
-                        JSAN.use('cat.util'); return cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
-                    } catch(E) {
-                        alert(E);
-                    }
-                },
-                'save' : {
-                    'label' : 'Import Record',
-                    'func' : function (new_marcxml) {
-                        try {
-                            var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), new_marcxml, biblio_source ]);
-                            if (typeof r.ilsevent != 'undefined') {
-                                switch(Number(r.ilsevent)) {
-                                    case 1704 /* TCN_EXISTS */ :
-                                        var msg = $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor.same_tcn', [r.payload.tcn]);
-                                        var title = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.title');
-                                        var btn1 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.btn1_overlay');
-                                        var btn2 = typeof r.payload.new_tcn == 'undefined' ? null : $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor.btn2_import', [r.payload.new_tcn]);
-                                        if (btn2) {
-                                            obj.data.init({'via':'stash'});
-                                            var robj = obj.network.simple_request(
-                                                'PERM_CHECK',[
-                                                    ses(),
-                                                    obj.data.list.au[0].id(),
-                                                    obj.data.list.au[0].ws_ou(),
-                                                    [ 'ALLOW_ALT_TCN' ]
-                                                ]
-                                            );
-                                            if (typeof robj.ilsevent != 'undefined') {
-                                                obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.permission_error'),E);
-                                            }
-                                            if (robj.length != 0) btn2 = null;
-                                        }
-                                        var btn3 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.btn3_cancel_import');
-                                        var p = obj.error.yns_alert(msg,title,btn1,btn2,btn3,$("catStrings").getString('staff.cat.z3950.spawn_marc_editor.confirm_action'));
-                                        obj.error.sdump('D_ERROR','option ' + p + 'chosen');
-                                        switch(p) {
-                                            case 0:
-                                                var r3 = obj.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), r.payload.dup_record, new_marcxml, biblio_source ]);
-                                                if (typeof r3.ilsevent != 'undefined') {
-                                                    throw(r3);
-                                                } else {
-                                                    alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_overlay'));
-                                                    return {
-                                                        'id' : r3.id(),
-                                                        'on_complete' : function() {
-                                                            try {
-                                                                obj.replace_tab_with_opac(r3.id());
-                                                            } catch(E) {
-                                                                alert(E);
-                                                            }
-                                                        }
-                                                    };
-                                                }
-                                            break;
-                                            case 1:
-                                                var r2 = obj.network.request(
-                                                    api.MARC_XML_RECORD_IMPORT.app,
-                                                    api.MARC_XML_RECORD_IMPORT.method + '.override',
-                                                    [ ses(), new_marcxml, biblio_source ]
-                                                );
-                                                if (typeof r2.ilsevent != 'undefined') {
-                                                    throw(r2);
-                                                } else {
-                                                    alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_import_with_new_tcn'));
-                                                    return {
-                                                        'id' : r2.id(),
-                                                        'on_complete' : function() {
-                                                            try {
-                                                                obj.replace_tab_with_opac(r2.id());
-                                                            } catch(E) {
-                                                                alert(E);
-                                                            }
-                                                        }
-                                                    };
-                                                }
-                                            break;
-                                            case 2:
-                                            default:
-                                                alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.import_cancelled'));
-                                            break;
-                                        }
-                                    break;
-                                    default:
-                                        throw(r);
-                                    break;
+
+        function save_marc (new_marcxml) {
+            try {
+                var r = obj.network.simple_request('MARC_XML_RECORD_IMPORT', [ ses(), new_marcxml, biblio_source ]);
+                if (typeof r.ilsevent != 'undefined') {
+                    switch(Number(r.ilsevent)) {
+                        case 1704 /* TCN_EXISTS */ :
+                            var msg = $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor.same_tcn', [r.payload.tcn]);
+                            var title = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.title');
+                            var btn1 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.btn1_overlay');
+                            var btn2 = typeof r.payload.new_tcn == 'undefined' ? null : $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor.btn2_import', [r.payload.new_tcn]);
+                            if (btn2) {
+                                obj.data.init({'via':'stash'});
+                                var robj = obj.network.simple_request(
+                                    'PERM_CHECK',[
+                                        ses(),
+                                        obj.data.list.au[0].id(),
+                                        obj.data.list.au[0].ws_ou(),
+                                        [ 'ALLOW_ALT_TCN' ]
+                                    ]
+                                );
+                                if (typeof robj.ilsevent != 'undefined') {
+                                    obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.permission_error'),E);
                                 }
-                            } else {
-                                alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_import'));
-                                return {
-                                    'id' : r.id(),
-                                    'on_complete' : function() {
-                                        try {
-                                            obj.replace_tab_with_opac(r.id());
-                                        } catch(E) {
-                                            alert(E);
-                                        }
-                                    }
-                                };
+                                if (robj.length != 0) btn2 = null;
                             }
-                        } catch(E) {
-                            obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.import_error'),E);
-                        }
+                            var btn3 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.btn3_cancel_import');
+                            var p = obj.error.yns_alert(msg,title,btn1,btn2,btn3,$("catStrings").getString('staff.cat.z3950.spawn_marc_editor.confirm_action'));
+                            obj.error.sdump('D_ERROR','option ' + p + 'chosen');
+                            switch(p) {
+                                case 0:
+                                    var r3 = obj.network.simple_request('MARC_XML_RECORD_UPDATE', [ ses(), r.payload.dup_record, new_marcxml, biblio_source ]);
+                                    if (typeof r3.ilsevent != 'undefined') {
+                                        throw(r3);
+                                    } else {
+                                        alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_overlay'));
+                                        return {
+                                            'id' : r3.id(),
+                                            'on_complete' : function() {
+                                                try {
+                                                    obj.replace_tab_with_opac(r3.id());
+                                                } catch(E) {
+                                                    alert(E);
+                                                }
+                                            }
+                                        };
+                                    }
+                                break;
+                                case 1:
+                                    var r2 = obj.network.request(
+                                        api.MARC_XML_RECORD_IMPORT.app,
+                                        api.MARC_XML_RECORD_IMPORT.method + '.override',
+                                        [ ses(), new_marcxml, biblio_source ]
+                                    );
+                                    if (typeof r2.ilsevent != 'undefined') {
+                                        throw(r2);
+                                    } else {
+                                        alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_import_with_new_tcn'));
+                                        return {
+                                            'id' : r2.id(),
+                                            'on_complete' : function() {
+                                                try {
+                                                    obj.replace_tab_with_opac(r2.id());
+                                                } catch(E) {
+                                                    alert(E);
+                                                }
+                                            }
+                                        };
+                                    }
+                                break;
+                                case 2:
+                                default:
+                                    alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.import_cancelled'));
+                                break;
+                            }
+                        break;
+                        default:
+                            throw(r);
+                        break;
                     }
+                } else {
+                    alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.successful_import'));
+                    return {
+                        'id' : r.id(),
+                        'on_complete' : function() {
+                            try {
+                                obj.replace_tab_with_opac(r.id());
+                            } catch(E) {
+                                alert(E);
+                            }
+                        }
+                    };
                 }
-            } 
-        );
+            } catch(E) {
+                obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor.import_error'),E);
+            }
+        };
+
+        if ( $('marc_editor').checked ) {
+            xulG.new_tab(
+                xulG.url_prefix(urls.XUL_MARC_EDIT), 
+                { 'tab_name' : 'MARC Editor' }, 
+                { 
+                    'record' : { 'marc' : my_marcxml, "rtype": "bre" },
+                    'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
+                        try {
+                            JSAN.use('cat.util'); return cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
+                        } catch(E) {
+                            alert(E);
+                        }
+                    },
+                    'save' : {
+                        'label' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.save_button_label'),
+                        'func' : save_marc
+                    }
+                } 
+            );
+        } else {
+            save_marc(my_marcxml);
+        }
     },
 
     'confirm_overlay' : function(record_ids) {
@@ -865,100 +885,119 @@ cat.z3950.prototype = {
             return;
         }
 
-        xulG.new_tab(
-            xulG.url_prefix(urls.XUL_MARC_EDIT), 
-            { 'tab_name' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name') },
-            { 
-                'record' : { 'marc' : my_marcxml },
-                'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
-                    try {
-                        JSAN.use('cat.util'); cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
-                    } catch(E) {
-                        alert(E);
-                    }
-                },
-                'save' : {
-                    'label' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_record_label'),
-                    'func' : function (new_marcxml) {
-                        try {
-                            if (! obj.confirm_overlay( [ obj.data.marked_record ] ) ) { return; }
-                            var r = obj.network.simple_request('MARC_XML_RECORD_REPLACE', [ ses(), obj.data.marked_record, new_marcxml, biblio_source ]);
-                            if (typeof r.ilsevent != 'undefined') {
-                                switch(Number(r.ilsevent)) {
-                                    case 1704 /* TCN_EXISTS */ :
-                                        var msg = $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn', [r.payload.tcn]);
-                                        var title = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision');
-                                        var btn1 = typeof r.payload.new_tcn == 'undefined' ? null : $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay', [r.payload.new_tcn]);
-                                        if (btn1) {
-                                            var robj = obj.network.simple_request(
-                                                'PERM_CHECK',[
-                                                    ses(),
-                                                    obj.data.list.au[0].id(),
-                                                    obj.data.list.au[0].ws_ou(),
-                                                    [ 'ALLOW_ALT_TCN' ]
-                                                ]
-                                            );
-                                            if (typeof robj.ilsevent != 'undefined') {
-                                                obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error'),E);
-                                            }
-                                            if (robj.length != 0) btn1 = null;
-                                        }
-                                        var btn2 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel');
-                                        var p = obj.error.yns_alert(msg,title,btn1,btn2,null, $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action'));
-                                        obj.error.sdump('D_ERROR','option ' + p + 'chosen');
-                                        switch(p) {
-                                            case 0:
-                                                var r2 = obj.network.request(
-                                                    api.MARC_XML_RECORD_REPLACE.app,
-                                                    api.MARC_XML_RECORD_REPLACE.method + '.override',
-                                                    [ ses(), obj.data.marked_record, new_marcxml, biblio_source ]
-                                                );
-                                                if (typeof r2.ilsevent != 'undefined') {
-                                                    throw(r2);
-                                                } else {
-                                                    alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN'));
-                                                    return {
-                                                        'id' : r2.id(),
-                                                        'on_complete' : function() {
-                                                            try {
-                                                                obj.replace_tab_with_opac(r2.id());
-                                                            } catch(E) {
-                                                                alert(E);
-                                                            }
-                                                        }
-                                                    };
-                                                }
-                                            break;
-                                            case 1:
-                                            default:
-                                                alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.cancelled_overlay'));
-                                            break;
-                                        }
-                                    break;
-                                    default:
-                                        throw(r);
-                                    break;
+        function overlay_marc (new_marcxml) {
+            try {
+                if (! obj.confirm_overlay( [ obj.data.marked_record ] ) ) { return; }
+                var r = obj.network.simple_request('MARC_XML_RECORD_REPLACE', [ ses(), obj.data.marked_record, new_marcxml, biblio_source ]);
+                if (typeof r.ilsevent != 'undefined') {
+                    switch(Number(r.ilsevent)) {
+                        case 1704 /* TCN_EXISTS */ :
+                            var msg = $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor_for_overlay.same_tcn', [r.payload.tcn]);
+                            var title = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.import_collision');
+                            var btn1 = typeof r.payload.new_tcn == 'undefined' ? null : $("catStrings").getFormattedString('staff.cat.z3950.spawn_marc_editor_for_overlay.btn1_overlay', [r.payload.new_tcn]);
+                            if (btn1) {
+                                var robj = obj.network.simple_request(
+                                    'PERM_CHECK',[
+                                        ses(),
+                                        obj.data.list.au[0].id(),
+                                        obj.data.list.au[0].ws_ou(),
+                                        [ 'ALLOW_ALT_TCN' ]
+                                    ]
+                                );
+                                if (typeof robj.ilsevent != 'undefined') {
+                                    obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.permission_error'),E);
                                 }
-                            } else {
-                                alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay'));
-                                return {
-                                    'id' : r.id(),
-                                    'on_complete' : function() {
-                                        try {
-                                            obj.replace_tab_with_opac(r.id());
-                                        } catch(E) {
-                                            alert(E);
-                                        }
-                                    }
-                                };
+                                if (robj.length != 0) btn1 = null;
                             }
-                        } catch(E) {
-                            obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error'),E);
-                        }
+                            var btn2 = $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.btn2_cancel');
+                            var p = obj.error.yns_alert(msg,title,btn1,btn2,null, $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.confirm_action'));
+                            obj.error.sdump('D_ERROR','option ' + p + 'chosen');
+                            switch(p) {
+                                case 0:
+                                    var r2 = obj.network.request(
+                                        api.MARC_XML_RECORD_REPLACE.app,
+                                        api.MARC_XML_RECORD_REPLACE.method + '.override',
+                                        [ ses(), obj.data.marked_record, new_marcxml, biblio_source ]
+                                    );
+                                    if (typeof r2.ilsevent != 'undefined') {
+                                        throw(r2);
+                                    } else {
+                                        alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.successful_overlay_with_new_TCN'));
+                                        return {
+                                            'id' : r2.id(),
+                                            'on_complete' : function() {
+                                                try {
+                                                    obj.replace_tab_with_opac(r2.id());
+                                                } catch(E) {
+                                                    alert(E);
+                                                }
+                                            }
+                                        };
+                                    }
+                                break;
+                                case 1:
+                                default:
+                                    alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.cancelled_overlay'));
+                                break;
+                            }
+                        break;
+                        default:
+                            throw(r);
+                        break;
                     }
+                } else {
+                    alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.success_overlay'));
+                    try {
+                        obj.data.marked_record_mvr = null;
+                        obj.data.marked_record = null;
+                        obj.data.stash('marked_record');
+                        obj.data.stash('marked_record_mvr');
+                        obj.controller.view.marc_import_overlay.disabled = true;
+                        if ($("overlay_tcn_indicator")) {
+                            $("overlay_tcn_indicator").setAttribute('value',$("catStrings").getString('staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label'));
+                        }
+                        xulG.set_statusbar(1, $("catStrings").getString('staff.cat.z3950.marked_record_for_overlay_indicator.no_record.label') );
+                    } catch(E) {
+                        dump('Error in z3950.js, post-overlay: ' + E + '\n');
+                    }
+                    return {
+                        'id' : r.id(),
+                        'on_complete' : function() {
+                            try {
+                                obj.replace_tab_with_opac(r.id());
+                            } catch(E) {
+                                alert(E);
+                            }
+                        }
+                    };
                 }
-            } 
-        );
+            } catch(E) {
+                obj.error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_error'),E);
+            }
+        }
+
+        if ( $('marc_editor').checked ) {
+            xulG.new_tab(
+                xulG.url_prefix(urls.XUL_MARC_EDIT), 
+                { 'tab_name' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.tab_name') },
+                { 
+                    'record' : { 'marc' : my_marcxml },
+                    'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
+                        try {
+                            JSAN.use('cat.util'); cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
+                        } catch(E) {
+                            alert(E);
+                        }
+                    },
+                    'save' : {
+                        'label' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor_for_overlay.overlay_record_label'),
+                        'func' : overlay_marc
+                    }
+                } 
+            );
+        } else {
+            overlay_marc(my_marcxml);
+        }
     },
 
 

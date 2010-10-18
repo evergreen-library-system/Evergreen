@@ -161,7 +161,7 @@ CREATE TABLE container.biblio_record_entry_bucket_item (
 							ON UPDATE CASCADE
 							DEFERRABLE
 							INITIALLY DEFERRED,
-	target_biblio_record_entry	INT	NOT NULL
+	target_biblio_record_entry	BIGINT	NOT NULL
 						REFERENCES biblio.record_entry (id)
 							ON DELETE CASCADE
 							ON UPDATE CASCADE

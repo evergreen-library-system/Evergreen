@@ -38,7 +38,8 @@ CREATE TABLE permission.grp_tree (
 	usergroup		BOOL	NOT NULL DEFAULT TRUE,
 	perm_interval		INTERVAL DEFAULT '3 years'::interval NOT NULL,
 	description		TEXT,
-	application_perm	TEXT
+	application_perm	TEXT,
+	hold_priority       INT   NOT NULL DEFAULT 0
 );
 CREATE INDEX grp_tree_parent_idx ON permission.grp_tree (parent);
 

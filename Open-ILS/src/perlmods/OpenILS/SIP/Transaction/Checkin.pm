@@ -44,6 +44,8 @@ sub new {
 
     @{$self}{keys %fields} = values %fields;        # copying defaults into object
 
+    $self->load_override_events;
+
     return bless $self, $class;
 }
 
@@ -51,6 +53,16 @@ sub resensitize {
     my $self = shift;
     return 0 if !$self->{item};
     return !$self->{item}->magnetic;
+}
+
+my %override_events;
+sub load_override_events {
+    return if %override_events;
+    my $override = OpenILS::SIP->config->{implementation_config}->{checkin_override};
+    return unless $override;
+    my $events = $override->{event};
+    $events = [$events] unless ref $events eq 'ARRAY';
+    $override_events{$_} = 1 for @$events;
 }
 
 my %org_sn_cache;
@@ -71,6 +83,13 @@ sub do_checkin {
 
     my $args = {barcode => $self->{item}->id};
 
+    if($return_date) {
+        # SIP date format is YYYYMMDD.  Translate to ISO8601
+        $return_date =~ s/(\d{4})(\d{2})(\d{2}).*/$1-$2-$3/;
+        syslog('LOG_INFO', "Checking in with backdate $return_date");
+        $args->{backdate} = $return_date;
+    }
+
     if($current_loc) { # SIP client specified a physical location
 
         my $org_id = (defined $org_sn_cache{$current_loc}) ? 
@@ -83,24 +102,36 @@ sub do_checkin {
         $args->{circ_lib} = $phys_location = $org_id if defined $org_id;
     }
 
-    my $resp = $U->simplereq(
-        'open-ils.circ',
-        'open-ils.circ.checkin',
-        $self->{authtoken}, $args
-    );
+    my $override = 0;
+    my ($resp, $txt, $code);
 
-    if ($debug) {
-        my $s = Dumper($resp);
-        $s =~ s/\n//mog;
-        syslog('LOG_INFO', "OILS: Checkin response: $s");
+    while(1) {
+
+        my $method = 'open-ils.circ.checkin';
+        $method .= '.override' if $override;
+
+        $resp = $U->simplereq('open-ils.circ', $method, $self->{authtoken}, $args);
+
+        if ($debug) {
+            my $s = Dumper($resp);
+            $s =~ s/\n//mog;
+            syslog('LOG_INFO', "OILS: Checkin response: $s");
+        }
+
+        # In oddball cases, we can receive an array of events.
+        # The first event received should be treated as the main result.
+        $resp = $$resp[0] if ref($resp) eq 'ARRAY';
+        $code = $U->event_code($resp);
+        $txt  = (defined $code) ? $resp->{textcode} : '';
+
+        last if $override;
+
+        if ( $override_events{$txt} ) {
+            $override = 1;
+        } else {
+            last;
+        }
     }
-
-    # In oddball cases, we can receive an array of events.
-    # The first event received should be treated as the main result.
-    $resp = $$resp[0] if ref($resp) eq 'ARRAY';
-
-    my $code = $U->event_code($resp);
-    my $txt  = (defined $code) ? $resp->{textcode} : '';
 
     syslog('LOG_INFO', "OILS: Checkin resulted in event: $txt, phys_location: $phys_location");
 
@@ -119,13 +150,21 @@ sub do_checkin {
     
     my $payload = $resp->{payload} || {};
 
-    # Two places to look for hold data.  These are more important and more definitive than above.
-    if ($payload->{remote_hold}) {
-        # actually only used for checkin at non-owning branch w/ hold at same branch
-        $self->item->hold($payload->{remote_hold});     
+    my ($circ, $copy);
 
-    } elsif ($payload->{hold}) {
-        $self->item->hold($payload->{hold});
+    if(ref $payload eq 'HASH') {
+
+        # Two places to look for hold data.  These are more important and more definitive than above.
+        if ($payload->{remote_hold}) {
+            # actually only used for checkin at non-owning branch w/ hold at same branch
+            $self->item->hold($payload->{remote_hold});     
+
+        } elsif ($payload->{hold}) {
+            $self->item->hold($payload->{hold});
+        }
+
+        $circ = $resp->{payload}->{circ} || '';
+        $copy = $resp->{payload}->{copy} || '';
     }
 
     if ($self->item->hold) {
@@ -142,10 +181,8 @@ sub do_checkin {
 
     $self->alert(1) if defined $self->alert_type;  # alert_type could be "00", hypothetically
 
-    my $circ = $resp->{payload}->{circ} || '';
-    my $copy = $resp->{payload}->{copy} || '';
-
     if ( $circ ) {
+        $self->{circ_user_id} = $circ->usr;
         $self->ok(1);
     } elsif ($txt eq 'NO_CHANGE' or $txt eq 'SUCCESS' or $txt eq 'ROUTE_ITEM') {
         $self->ok(1); # NO_CHANGE means it wasn't checked out anyway, no problem

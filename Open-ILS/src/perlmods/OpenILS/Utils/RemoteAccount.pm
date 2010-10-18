@@ -1,4 +1,4 @@
-package   OpenILS::Utils::RemoteAccount;
+package OpenILS::Utils::RemoteAccount;
 
 # use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw/:logger/;
@@ -45,12 +45,18 @@ my %fields = (
 );
 
 
-=pod 
+=head1 NAME 
+
+OpenILS::Utils::RemoteAccount - Encapsulate FTP, SFTP and SSH file transactions for Evergreen
+
+=head1 DESCRIPTION
 
 The Remote Account module attempts to transfer a file to/from a remote server.
 Net::uFTP is used, encapsulating the available options of SCP, FTP and SFTP.
 
-All information is expected to be gathered by the Event Definition through event parameters:
+=head1 PARAMETERS
+
+All information is expected to be supplied by the caller via parameters:
    ~ remote_host (required)
    ~ remote_user
    ~ remote_password
@@ -79,15 +85,16 @@ Note that specifying a password will require you to specify a user.
 Similarly, specifying an account requires both user and password.
 That is, there are no assumed defaults when the latter arguments are used.
 
-SSH KEYS:
+=head2 SSH KEYS:
 
-The use of ssh keys is preferred. 
+The use of ssh keys is preferred.  Explicit specification of connection type will prevent
+multiple attempts to the same server.  Therefore, using the type parameter is also recommended.
 
-We attempt to use SSH keys where they are specified or otherwise found
+If the type is not explicit, we attempt to use SSH keys where they are specified or otherwise found
 in the runtime environment.  If only one key is specified, we attempt to derive
 the corresponding filename based on the ssh-keygen defaults.  If either key is
 specified, but both are not found (and readable) then the result is failure.  If
-no key is specified, but keys are found, the key-based connections will be attempted,
+no key or type is specified, but keys are found, the key-based connections will be attempted,
 but failure will be non-fatal.
 
 =cut

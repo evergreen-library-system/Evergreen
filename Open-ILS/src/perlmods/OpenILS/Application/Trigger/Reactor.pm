@@ -57,13 +57,13 @@ my $_TT_helpers = {
     # returns the calculated copy price
     get_copy_price => sub {
         my $copy_id = shift;
-        return $U->get_copy_price(new_editor(), $copy_id);
+        return $U->get_copy_price(new_editor(xact=>1), $copy_id);
     },
 
     # given a copy, returns the title and author in a hash
     get_copy_bib_basics => sub {
         my $copy_id = shift;
-        my $copy = new_editor()->retrieve_asset_copy([
+        my $copy = new_editor(xact=>1)->retrieve_asset_copy([
             $copy_id,
             {
                 flesh => 2,
@@ -156,6 +156,7 @@ sub run_TT {
         my $t_o = Fieldmapper::action_trigger::event_output->new;
         $t_o->data( ($error) ? $error : $output );
         $t_o->is_error( ($error) ? 't' : 'f' );
+        $logger->info("trigger: writing " . length($t_o->data) . " bytes to template output");
 
         $env->{EventProcessor}->editor->xact_begin;
         $t_o = $env->{EventProcessor}->editor->create_action_trigger_event_output( $t_o );
