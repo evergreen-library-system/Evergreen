@@ -809,8 +809,8 @@ function apply_payment() {
                                 'payment' : o[1],
                                 'last_billing_type' : g.bill_map[ o[0] ].transaction.last_billing_type(),
                                 'last_billing_note' : g.bill_map[ o[0] ].transaction.last_billing_note(),
-                                'title' : typeof g.bill_map[ o[0] ].title != 'undefined' ? g.bill_map[ o[0] ].title : '', 
-                                'barcode' : typeof g.bill_map[ o[0] ].barcode != 'undefined' ? g.bill_map[ o[0] ].barcode : ''
+                                'title' : typeof g.bill_map[ o[0] ].record != 'undefined' ? g.bill_map[ o[0] ].record.title() : '', 
+                                'barcode' : typeof g.bill_map[ o[0] ].copy != 'undefined' ? g.bill_map[ o[0] ].copy.barcode() : ''
                             };
                         }
                     ),
