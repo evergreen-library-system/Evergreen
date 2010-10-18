@@ -213,6 +213,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
             },
 
             performEditAction : function(opts) {
+                var self = this;
                 var fields = this.getFields();
                 if(this.mode == 'create')
                     this.fmObject = new fieldmapper[this.fmClass]();
@@ -221,7 +222,7 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 if(this.mode == 'create' && this.fmIDL.pkey_sequence)
                     this.fmObject[this.fmIDL.pkey](null);
                 if (typeof(this.onSubmit) == "function") {
-                    this.onSubmit(this.fmObject);
+                    this.onSubmit(this.fmObject, opts, self);
                 } else {
                     (new openils.PermaCrud())[this.mode](this.fmObject, opts);
                 }

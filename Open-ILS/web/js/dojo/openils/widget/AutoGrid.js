@@ -15,6 +15,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
         {
 
             /* if true, pop up an edit dialog when user hits Enter on a give row */
+            editPaneOnSubmit : null,
+            createPaneOnSubmit : null,
             editOnEnter : false, 
             defaultCellWidth : null,
             editStyle : 'dialog',
@@ -404,6 +406,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     }
                 });
 
+                if (typeof this.editPaneOnSubmit == "function")
+                    pane.onSubmit = this.editPaneOnSubmit;
                 pane.fieldOrder = this.fieldOrder;
                 pane.mode = 'update';
                 return pane;
@@ -438,6 +442,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         if(onCancel) onCancel();
                     }
                 });
+                if (typeof this.createPaneOnSubmit == "function")
+                    pane.onSubmit = this.createPaneOnSubmit;
                 pane.fieldOrder = this.fieldOrder;
                 pane.mode = 'create';
                 return pane;

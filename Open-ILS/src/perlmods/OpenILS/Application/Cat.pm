@@ -1191,4 +1191,35 @@ HERE
 	return $mfhd->id;
 }
 
+__PACKAGE__->register_method(
+    method		=> "create_update_asset_copy_template",
+    api_name    => "open-ils.cat.asset.copy_template.create_or_update"
+);
+
+sub create_update_asset_copy_template {
+    my ($self, $client, $authtoken, $act) = @_;
+
+    my $e = new_editor("xact" => 1, "authtoken" => $authtoken);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed(
+        "ADMIN_ASSET_COPY_TEMPLATE", $act->owning_lib
+    );
+
+    $act->editor($e->requestor->id);
+    $act->edit_date("now");
+
+    my $retval;
+    if (!$act->id) {
+        $act->creator($e->requestor->id);
+        $act->create_date("now");
+
+        $e->create_asset_copy_template($act) or return $e->die_event;
+        $retval = $e->data;
+    } else {
+        $e->update_asset_copy_template($act) or return $e->die_event;
+        $retval = $e->retrieve_asset_copy_template($e->data);
+    }
+    $e->commit and return $retval;
+}
+
 1;
