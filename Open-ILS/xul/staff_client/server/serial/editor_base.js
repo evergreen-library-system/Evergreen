@@ -45,6 +45,11 @@ serial.editor_base = {
             if (!retrieve_params) {
                 retrieve_params = [];
             }
+            if (params.xul_id_prefix) {
+                obj.xul_id_prefix = params.xul_id_prefix;
+            } else {
+                obj.xul_id_prefix = fm_type;
+            }
 
             /******************************************************************************************************/
             /* Get the fm_type ids from various sources and flesh them */
@@ -136,7 +141,7 @@ serial.editor_base = {
                 }
 
                 if (obj.do_edit) {
-                    $(fm_type + '_save').setAttribute('hidden','false'); 
+                    $(obj.xul_id_prefix + '_save').setAttribute('hidden','false'); 
                 } else {
                     $('top_nav').setAttribute('hidden','true');
                 }
@@ -147,14 +152,14 @@ serial.editor_base = {
 
             if (obj[fm_type_plural].length > 0 && obj[fm_type_plural][0].isnew()) {
                 obj.mode = 'create';
-                if (obj.can_have_notes) $(fm_type + '_notes').setAttribute('hidden','true');
-                $(fm_type + '_save').setAttribute('label', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.create'));
-                $(fm_type + '_save').setAttribute('accesskey', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.create.accesskey'));
+                if (obj.can_have_notes) $(obj.xul_id_prefix + '_notes').setAttribute('hidden','true');
+                $(obj.xul_id_prefix + '_save').setAttribute('label', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.create'));
+                $(obj.xul_id_prefix + '_save').setAttribute('accesskey', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.create.accesskey'));
             } else if (obj.mode == 'create') { // switching from create to modify
                 obj.mode = 'modify';
-                if (obj.can_have_notes) $(fm_type + '_notes').setAttribute('hidden','false');
-                $(fm_type + '_save').setAttribute('label', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.modify'));
-                $(fm_type + '_save').setAttribute('accesskey', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.modify.accesskey'));
+                if (obj.can_have_notes) $(obj.xul_id_prefix + '_notes').setAttribute('hidden','false');
+                $(obj.xul_id_prefix + '_save').setAttribute('label', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.modify'));
+                $(obj.xul_id_prefix + '_save').setAttribute('accesskey', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.modify.accesskey'));
             }
 /*else {
                 obj.panes_and_field_names.left_pane = 
