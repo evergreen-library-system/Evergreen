@@ -501,7 +501,8 @@ main.menu.prototype = {
             'cmd_standalone' : [
                 ['oncommand'],
                 function() { 
-                    obj.set_tab(obj.url_prefix(urls.XUL_STANDALONE),{},{});
+                    //obj.set_tab(obj.url_prefix(urls.XUL_STANDALONE),{},{});
+                    window.open(urls.XUL_STANDALONE,'Offline','chrome,resizable');
                 }
             ],
 
