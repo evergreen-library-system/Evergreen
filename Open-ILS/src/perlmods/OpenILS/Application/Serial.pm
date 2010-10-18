@@ -1123,23 +1123,25 @@ sub _find_or_create_call_number {
 }
 
 sub _issuances_received {
+    # XXX TODO: Add some caching or something. This is getting called
+    # more often than it has to be.
     my ($e, $sitem) = @_;
 
     my $results = $e->json_query({
-        "select" => {
-            "sitem" => [
-                {"transform" => "distinct", "column" => "issuance"}
-            ]
-        },
+        "select" => {"sitem" => ["issuance"]},
         "from" => {"sitem" => {"sstr" => {}, "siss" => {}}},
         "where" => {
             "+sstr" => {"distribution" => $sitem->stream->distribution->id},
             "+siss" => {"holding_type" => $sitem->issuance->holding_type},
             "+sitem" => {"date_received" => {"!=" => undef}}
+        },
+        "order_by" => {
+            "siss" => {"date_published" => {"direction" => "asc"}}
         }
     }) or return $e->die_event;
 
-    return [ map { $e->retrieve_serial_issuance($_->{"issuance"}) } @$results ];
+    my $uniq = +{map { $_->{"issuance"} => 1 } @$results};
+    return [ map { $e->retrieve_serial_issuance($_) } keys %$uniq ];
 }
 
 # XXX _prepare_unit_label() duplicates some code from unitize_items().
@@ -1207,6 +1209,45 @@ sub _prepare_summaries {
     return $e->die_event unless $e->$method($summary);
 }
 
+sub _unit_by_iss_and_str {
+    my ($e, $issuance, $stream) = @_;
+
+    my $unit = $e->json_query({
+        "select" => {"sunit" => ["id"]},
+        "from" => {"sitem" => {"sunit" => {}}},
+        "where" => {
+            "+sitem" => {
+                "issuance" => $issuance->id,
+                "stream" => $stream->id
+            }
+        }
+    }) or return $e->die_event;
+
+    $e->retrieve_serial_unit($unit->[0]->{"id"}) or $e->die_event;
+}
+
+sub move_previous_unit {
+    my ($e, $prev_iss, $curr_item, $new_loc) = @_;
+
+    my $prev_unit = _unit_by_iss_and_str($e,$prev_iss,$curr_item->stream);
+    return $prev_unit if defined $U->event_code($prev_unit);
+
+    if ($prev_unit->location != $new_loc) {
+        $prev_unit->location($new_loc);
+        $e->update_serial_unit($prev_unit) or return $e->die_event;
+    }
+    0;
+}
+
+# _previous_issuance() assumes $existing is an ordered array
+sub _previous_issuance {
+    my ($existing, $issuance) = @_;
+
+    my $last = $existing->[-1];
+    return undef unless $last;
+    return ($last->id == $issuance->id ? $existing->[-2] : $last);
+}
+
 __PACKAGE__->register_method(
     "method" => "receive_items_one_unit_per",
     "api_name" => "open-ils.serial.receive_items.one_unit_per",
@@ -1249,6 +1290,7 @@ sub receive_items_one_unit_per {
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed("RECEIVE_SERIAL");
 
+    my $prev_loc_setting_map = {};
     my $user_id = $e->requestor->id;
 
     # Get a list of all the non-virtual field names in a serial::unit for
@@ -1263,6 +1305,42 @@ sub receive_items_one_unit_per {
     foreach my $item (@$items) {
         # Note that we expect a certain fleshing on the items we're getting.
         my $sdist = $item->stream->distribution;
+
+        # Fetch a list of issuances with received copies already existing
+        # on this distribution (and with the same holding type on the
+        # issuance).  This will be used in up to two places: once when building
+        # a summary, once when changing the copy location of the previous
+        # issuance's copy.
+        my $issuances_received = _issuances_received($e, $item);
+        if ($U->event_code($issuances_received)) {
+            $e->rollback;
+            return $issuances_received;
+        }
+
+        # Find out if we need to to deal with previous copy location changing.
+        my $ou = $sdist->holding_lib->id;
+        unless (exists $prev_loc_setting_map->{$ou}) {
+            $prev_loc_setting_map->{$ou} = $U->ou_ancestor_setting_value(
+                $ou, "serial.prev_issuance_copy_location", $e
+            );
+        }
+
+        # If there is a previous copy location setting, we need the previous
+        # issuance, from which we can in turn look up the item attached to the
+        # same stream we're on now.
+        if ($prev_loc_setting_map->{$ou}) {
+            if (my $prev_iss =
+                _previous_issuance($issuances_received, $item->issuance)) {
+
+                # Now we can change the copy location of the previous unit,
+                # if needed.
+                return $e->event if defined $U->event_code(
+                    move_previous_unit(
+                        $e, $prev_iss, $item, $prev_loc_setting_map->{$ou}
+                    )
+                );
+            }
+        }
 
         # Create unit if given by user
         if (ref $item->unit) {
@@ -1308,16 +1386,8 @@ sub receive_items_one_unit_per {
                 return $evt;
             }
 
-            # fetch a list of issuances with received copies already existing
-            # on this distribution.
-            my $issuances = _issuances_received($e, $item); #XXX optimize later
-            if ($U->event_code($issuances)) {
-                $e->rollback;
-                return $issuances;
-            }
-
             # create/update summary objects related to this distribution
-            $evt = _prepare_summaries($e, $item, $issuances);
+            $evt = _prepare_summaries($e, $item, $issuances_received);
             if ($U->event_code($evt)) {
                 $e->rollback;
                 return $evt;
