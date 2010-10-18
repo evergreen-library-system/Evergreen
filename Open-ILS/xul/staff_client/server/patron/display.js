@@ -932,9 +932,13 @@ patron.display.prototype = {
                     }
                 }
                 var penalties = obj.patron.standing_penalties();
-                if (penalties.length > 0) { msg += '<dl>'; }
+                var dl_flag_opened = false;
                 for (var i = 0; i < penalties.length; i++) {
                     if (penalties[i].standing_penalty().block_list() || penalties[i].standing_penalty().id() == 20 /* ALERT_NOTE */) {
+                        if (!dl_flag_opened) {
+                            msg += '<dl>';
+                            dl_flag_opened = true;
+                        }
                         msg += '<dt>';
                         msg += obj.OpenILS.data.hash.aou[ penalties[i].org_unit() ].shortname() + ' : ' + penalties[i].standing_penalty().label() + '<br/>';
                         msg += '</dt><dd>';
@@ -942,7 +946,7 @@ patron.display.prototype = {
                         msg += '</dd>';
                     }
                 }
-                if (penalties.length > 0) { msg += '</dl>'; }
+                if (dl_flag_opened) { msg += '</dl>'; }
                 var holds = params.holds_summary;
                 if (holds.ready && holds.ready > 0) {
                     msg += $("patronStrings").getFormattedString('staff.patron.display.init.holds_ready', [holds.ready]);
