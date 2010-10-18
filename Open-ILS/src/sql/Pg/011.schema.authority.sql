@@ -24,8 +24,6 @@ CREATE SCHEMA authority;
 
 CREATE TABLE authority.record_entry (
 	id		BIGSERIAL	PRIMARY KEY,
-	arn_source	TEXT		NOT NULL DEFAULT 'AUTOGEN',
-	arn_value	TEXT		NOT NULL,
 	creator		INT		NOT NULL DEFAULT 1,
 	editor		INT		NOT NULL DEFAULT 1,
 	create_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
@@ -39,7 +37,6 @@ CREATE TABLE authority.record_entry (
 );
 CREATE INDEX authority_record_entry_creator_idx ON authority.record_entry ( creator );
 CREATE INDEX authority_record_entry_editor_idx ON authority.record_entry ( editor );
-CREATE UNIQUE INDEX authority_record_unique_tcn ON authority.record_entry (arn_source,arn_value) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE TRIGGER a_marcxml_is_well_formed BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.check_marcxml_well_formed();
 CREATE TRIGGER b_maintain_901 BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE maintain_901();
 CREATE TRIGGER c_maintain_control_numbers BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE maintain_control_numbers();

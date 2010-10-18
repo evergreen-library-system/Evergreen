@@ -271,6 +271,7 @@ function next_patron(cancel) {
                 var params = {
                     'patron_barcode' : $('p_barcode').value,
                     'template' : 'offline_checkout',
+                    'printer_context' : 'offline',
                     'callback' : function() {
                         g.list.clear();
                         var x = $('i_barcode'); x.value = '';

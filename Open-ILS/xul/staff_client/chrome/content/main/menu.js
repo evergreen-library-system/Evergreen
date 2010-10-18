@@ -54,18 +54,18 @@ main.menu.prototype = {
 
     'init' : function( params ) {
 
+        var obj = this;
+
         urls.remote = params['server'];
 
         // Pull in local customizations
         var r = new XMLHttpRequest();
-        r.open("GET", url_prefix('/xul/server/skin/custom.js'), false);
+        r.open("GET", obj.url_prefix('/xul/server/skin/custom.js'), false);
         r.send(null);
         if (r.status == 200) {
             dump('Evaluating /xul/server/skin/custom.js\n');
             eval( r.responseText );
         }
-
-        var obj = this;
 
         var button_bar = String( obj.data.hash.aous['ui.general.button_bar'] ) == 'true';
         if (button_bar) {
@@ -617,6 +617,22 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/permission/grp_penalty_threshold'); }
             ],
+            'cmd_server_admin_config_rule_circ_duration' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/rule_circ_duration'); }
+            ],
+            'cmd_server_admin_config_rule_recurring_fine' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/rule_recurring_fine'); }
+            ],
+            'cmd_server_admin_config_rule_max_fine' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/rule_max_fine'); }
+            ],
+            'cmd_server_admin_config_rule_age_hold_protect' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/rule_age_hold_protect'); }
+            ],
             'cmd_local_admin_external_text_editor' : [
                 ['oncommand'],
                 function() {
@@ -666,6 +682,12 @@ main.menu.prototype = {
                         { 'tab_name' : offlineStrings.getString('menu.local_admin.work_log.tab') },
                         {}
                     );
+                }
+            ],
+            "cmd_local_admin_copy_template": [
+                ["oncommand"],
+                function() {
+                    open_eg_web_page("conify/global/asset/copy_template");
                 }
             ],
             'cmd_local_admin_patrons_due_refunds' : [
@@ -1009,6 +1031,14 @@ main.menu.prototype = {
                 function() {
                     obj.data.stash_retrieve();
                     obj.set_tab(obj.url_prefix(urls.XUL_MARC_NEW),{},{});
+                }
+            ],
+
+            'cmd_authority_manage' : [
+                ['oncommand'],
+                function() {
+                    obj.data.stash_retrieve();
+                    obj.set_tab(obj.url_prefix(urls.AUTHORITY_MANAGE),{},{});
                 }
             ],
 

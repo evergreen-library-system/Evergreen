@@ -62,10 +62,16 @@
 					<td class='holds_cell'><b id='holds_copy'/> </td>
 				</tr>
 
+				<tr class='hide_me' id='holds_issuance_row'>
+					<td class='holds_cell'>&common.issuance_label.label;</td>
+					<td class='holds_cell'><b id='holds_issuance_label'/> </td>
+				</tr>
+
 				<tr class='hide_me' id='holds_type_row'>
 					<td class='holds_cell'>&common.hold.type.label;</td>
 					<td class='holds_cell hide_me' id='holds_is_cn'><b>&common.hold.volume;</b></td>
 					<td class='holds_cell hide_me' id='holds_is_copy'><b>&common.hold.copy;</b></td>
+					<td class='holds_cell hide_me' id='holds_is_issuance'><b>&common.hold.issuance;</b></td>
 				</tr>
 
 				<tr>

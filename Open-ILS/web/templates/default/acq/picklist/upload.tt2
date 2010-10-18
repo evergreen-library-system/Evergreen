@@ -1,5 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/upload.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/upload.js'> </script>
 
 <h1>Upload</h1><br/>
 <form id="acq-pl-upload-form" enctype="multipart/form-data">
@@ -34,7 +34,7 @@
                 <td><div id='acq-pl-upload-agency'></div></td>
             </tr>
             <tr id='acq-pl-upload-picklist'>
-                <td>Add to Picklist</td>
+                <td>Add to Selection List</td>
                 <td>
                     <select jsId='acqPlUploadPlSelector' dojoType='dijit.form.ComboBox'></select>
                 </td>

@@ -1,0 +1,36 @@
+#!/bin/bash
+echo "Content-Type: text/xml"
+cat <<HEAD
+
+<?xml version="1.0"?>
+<updates>
+HEAD
+UPDATE_LOC=$(dirname $PWD)
+PATH_INFO=${PATH_INFO#/}
+CHANNEL=${PATH_INFO%%/*}
+PATH_INFO=${PATH_INFO#*/}
+VERSION=${PATH_INFO%%/*}
+if [ ! -f "$UPDATE_LOC/patch/$CHANNEL/VERSION" ]; then
+	CHANNEL=""
+else
+	CHANNEL="$CHANNEL/"
+fi
+if [ -f "$UPDATE_LOC/patch/${CHANNEL}VERSION" ]; then
+	URLBASE="http://$HTTP_HOST$(dirname $SCRIPT_NAME)/${CHANNEL}"
+	CURVERSION=$(cat $UPDATE_LOC/patch/${CHANNEL}VERSION)
+	[ -f "$UPDATE_LOC/patch/${CHANNEL}DETAILS" ] && DETAILSURL=$(cat $UPDATE_LOC/${CHANNEL}DETAILS)
+	[ -n "$DETAILSURL" ] && DETAILSURL=" detailsURL=\"$DETAILSURL\""
+	if [ -n "$CURVERSION" -a "$VERSION" != "$CURVERSION" ]; then
+		if [ -f "$UPDATE_LOC/pub/${CHANNEL}$CURVERSION.mar" -a -f "$UPDATE_LOC/patch/${CHANNEL}$CURVERSION.patchline" ]; then
+			echo "<update type=\"minor\" version=\"$CURVERSION\"$DETAILSURL>"
+			sed -e "s|URL=\"|URL=\"$URLBASE|" "$UPDATE_LOC/patch/${CHANNEL}$CURVERSION.patchline"
+			if [ -f "$UPDATE_LOC/pub/${CHANNEL}$VERSION-$CURVERSION.mar" -a -f "$UPDATE_LOC/patch/${CHANNEL}$VERSION-$CURVERSION.patchline" ]; then
+				sed -e "s|URL=\"|URL=\"$URLBASE|" "$UPDATE_LOC/patch/${CHANNEL}$VERSION-$CURVERSION.patchline"
+			fi
+			echo "</update>"
+		fi
+	fi
+fi
+cat <<FOOTER
+</updates>
+FOOTER

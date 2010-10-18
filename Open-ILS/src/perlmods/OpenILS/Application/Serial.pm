@@ -37,13 +37,16 @@ package OpenILS::Application::Serial;
 use strict;
 use warnings;
 
+
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 use OpenILS::Application::AppUtils;
+use OpenILS::Event;
 use OpenSRF::AppSession;
-use OpenSRF::Utils qw/:datetime/;;
-use OpenSRF::Utils::Logger qw($logger);
+use OpenSRF::Utils qw/:datetime/;
+use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
+use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::MFHD;
 use MARC::File::XML (BinaryEncoding => 'utf8');
 my $U = 'OpenILS::Application::AppUtils';
@@ -57,7 +60,7 @@ my %MFHD_NAMES_BY_TAG = (  '853' => $MFHD_NAMES[0],
 my %MFHD_TAGS_BY_NAME = (  $MFHD_NAMES[0] => '853',
                         $MFHD_NAMES[1] => '854',
                         $MFHD_NAMES[2] => '855');
-
+my $_strp_date = new DateTime::Format::Strptime(pattern => '%F');
 
 # helper method for conforming dates to ISO8601
 sub _cleanse_dates {
@@ -68,6 +71,14 @@ sub _cleanse_dates {
         $item->$field(OpenSRF::Utils::clense_ISO8601($item->$field)) if $item->$field;
     }
     return 0;
+}
+
+sub _get_mvr {
+    $U->simplereq(
+        "open-ils.search",
+        "open-ils.search.biblio.record.mods_slim.retrieve",
+        @_
+    );
 }
 
 
@@ -310,6 +321,181 @@ sub fleshed_serial_issuance_retrieve_batch {
         });
 }
 
+__PACKAGE__->register_method(
+    method  => "pub_fleshed_serial_issuance_retrieve_batch",
+    api_name    => "open-ils.serial.issuance.pub_fleshed.batch.retrieve",
+    signature => {
+        desc => q/
+            Public (i.e. OPAC) call for getting at the sub and 
+            ultimately the record entry from an issuance
+        /,
+        params => [{name => 'ids', desc => 'Array of IDs', type => 'array'}],
+        return => {
+            desc => q/
+                issuance objects, fleshed with subscriptions
+            /,
+            class => 'siss'
+        }
+    }
+);
+sub pub_fleshed_serial_issuance_retrieve_batch {
+    my( $self, $client, $ids ) = @_;
+    return [] unless $ids and @$ids;
+    return new_editor()->search_serial_issuance([
+        { id => $ids },
+        { 
+            flesh => 1,
+            flesh_fields => {siss => [ qw/subscription/ ]}
+        }
+    ]);
+}
+
+sub received_siss_by_bib {
+    my $self = shift;
+    my $client = shift;
+    my $bib = shift;
+
+    my $args = shift || {};
+    $$args{order} ||= 'asc';
+
+    my $global = $$args{global} == 0 ? 0 : 1;
+
+    my $e = new_editor();
+    my $issuances = $e->json_query({
+        select  => {
+            siss => [
+                $global ? { transform => "min", column => "id", aggregate => 1 } : "id",
+                "label",
+                "date_published"
+        ]},
+        from => {
+            ssub => {
+                siss => {
+                    field => 'subscription',
+                    fkey  => 'id',
+                    join  => {
+                        sitem => {
+                            field  => 'issuance',
+                            fkey   => 'id',
+                            $$args{ou} ? ( join  => {
+                                sstr => {
+                                    field => 'id',
+                                    fkey  => 'stream',
+                                    join  => {
+                                        sdist => {
+                                            field  => 'id',
+                                            fkey   => 'distribution'
+                                        }
+                                    }
+                                }
+                            }) : ()
+                        }
+                    }
+                }
+            }
+        },
+        where => {
+            '+ssub'  => { record_entry => $bib },
+            $$args{type} ? ( '+siss' => { 'holding_type' => $$args{type} } ) : (),
+            '+sitem' => {
+                # XXX should we also take specific item statuses into account?
+                date_received => { '!=' => undef },
+                $$args{status} ? ( 'status' => $$args{status} ) : ()
+            },
+            $$args{ou} ? ( '+sdist' => {
+                holding_lib => {
+                    'in' => $U->get_org_descendants($$args{ou}, $$args{depth})
+                }
+            }) : ()
+        },
+        $$args{limit}  ? ( limit  => $$args{limit}  ) : (),
+        $$args{offset} ? ( offset => $$args{offset} ) : (),
+        order_by => [{ class => 'siss', field => 'date_published', direction => $$args{order} }],
+        distinct => 1
+    });
+
+    $client->respond($e->retrieve_serial_issuance($_->{id})) for @$issuances;
+    return undef;
+}
+__PACKAGE__->register_method(
+    method    => 'received_siss_by_bib',
+    api_name  => 'open-ils.serial.received_siss.retrieve.by_bib',
+    api_level => 1,
+    argc      => 1,
+    stream    => 1,
+    signature => {
+        desc   => 'Receives a Bib ID and other optional params and returns "siss" (issuance) objects',
+        params => [
+            {   name => 'bibid',
+                desc => 'id of the bre to which the issuances belong',
+                type => 'number'
+            },
+            {   name => 'args',
+                desc =>
+q/A hash of optional arguments.  Valid keys and their meanings:
+    global := If true, return only one representative version of a conceptual issuance regardless of the number of subscriptions, otherwise return all issuance objects meeting the requested criteria, including conceptual duplicates. Valid values are 0 (false) and 1 (true, default).
+    order  := date_published sort direction, either "asc" (chronological, default) or "desc" (reverse chronological)
+    limit  := Number of issuances to return.  Useful for paging results, or finding the oldest or newest
+    offest := Number of issuance to skip before returning results.  Useful for paging.
+    orgid  := OU id used to scope retrieval, based on distribution.holding_lib
+    depth  := OU depth used to range the scope of orgid
+    type   := Holding type filter. Valid values are "basic", "supplement" and "index". Can be a scalar (one) or arrayref (one or more).
+    status := Item status filter. Valid values are "Bindery", "Bound", "Claimed", "Discarded", "Expected", "Not Held", "Not Published" and "Received". Can be a scalar (one) or arrayref (one or more).
+/
+            }
+        ]
+    }
+);
+
+
+sub scoped_bib_holdings_summary {
+    my $self = shift;
+    my $client = shift;
+    my $bibid = shift;
+    my $args = shift || {};
+
+    $args->{order} = 'asc';
+
+    my ($issuances) = $self->method_lookup('open-ils.serial.received_siss.retrieve.by_bib.atomic')->run( $bibid => $args );
+
+    # split into issuance type sets
+    my %type_blob = (basic => [], supplement => [], index => []);
+    push @{ $type_blob{ $_->holding_type } }, $_ for (@$issuances);
+
+    # generate a statement list for each type
+    my %statement_blob;
+    for my $type ( keys %type_blob ) {
+        my ($mfhd,$list) = _summarize_contents(new_editor(), $type_blob{$type});
+        $statement_blob{$type} = $list;
+    }
+
+    return \%statement_blob;
+}
+__PACKAGE__->register_method(
+    method    => 'scoped_bib_holdings_summary',
+    api_name  => 'open-ils.serial.bib.summary_statements',
+    api_level => 1,
+    argc      => 1,
+    signature => {
+        desc   => 'Receives a Bib ID and other optional params and returns set of holdings statements',
+        params => [
+            {   name => 'bibid',
+                desc => 'id of the bre to which the issuances belong',
+                type => 'number'
+            },
+            {   name => 'args',
+                desc =>
+q/A hash of optional arguments.  Valid keys and their meanings:
+    orgid  := OU id used to scope retrieval, based on distribution.holding_lib
+    depth  := OU depth used to range the scope of orgid
+    type   := Holding type filter. Valid values are "basic", "supplement" and "index". Can be a scalar (one) or arrayref (one or more).
+    status := Item status filter. Valid values are "Bindery", "Bound", "Claimed", "Discarded", "Expected", "Not Held", "Not Published" and "Received". Can be a scalar (one) or arrayref (one or more).
+/
+            }
+        ]
+    }
+);
+
 
 ##########################################################################
 # unit methods
@@ -482,12 +668,38 @@ sub make_predictions {
 
     my $editor = OpenILS::Utils::CStoreEditor->new();
     my $ssub_id = $args->{ssub_id};
+    my $all_dists = $args->{all_dists};
     my $mfhd = MFHD->new(MARC::Record->new());
 
     my $ssub = $editor->retrieve_serial_subscription([$ssub_id]);
     my $scaps = $editor->search_serial_caption_and_pattern({ subscription => $ssub_id, active => 't'});
     my $sdists = $editor->search_serial_distribution( [{ subscription => $ssub->id }, {  flesh => 1,
-              flesh_fields => {sdist => [ qw/ streams / ]}, limit => 1 }] ); #TODO: 'deleted' support?
+              flesh_fields => {sdist => [ qw/ streams / ]}, $all_dists ? () : (limit => 1) }] ); #TODO: 'deleted' support?
+
+    if ($all_dists) {
+        my $total_streams = 0;
+        foreach (@$sdists) {
+            $total_streams += scalar(@{$_->streams});
+        }
+        if ($total_streams < 1) {
+            $editor->disconnect;
+            # XXX TODO new event type
+            return new OpenILS::Event(
+                "BAD_PARAMS", note =>
+                    "There are no streams to direct items. Can't predict."
+            );
+        }
+    }
+
+    unless (@$scaps) {
+        $editor->disconnect;
+        # XXX TODO new event type
+        return new OpenILS::Event(
+            "BAD_PARAMS", note =>
+                "There are no active caption-and-pattern objects associated " .
+                "with this subscription. Can't predict."
+        );
+    }
 
     my @predictions;
     my $link_id = 1;
@@ -498,7 +710,9 @@ sub make_predictions {
         my $options = {
                 'caption' => $caption_field,
                 'scap_id' => $scap->id,
-                'num_to_predict' => $args->{num_to_predict}
+                'num_to_predict' => $args->{num_to_predict},
+                'end_date' => defined $args->{end_date} ?
+                    $_strp_date->parse_datetime($args->{end_date}) : undef
                 };
         if ($args->{base_issuance}) { # predict from a given issuance
             $options->{predict_from} = _revive_holding($args->{base_issuance}->holding_code, $caption_field, 1); # fresh MFHD Record, so we simply default to 1 for seqno
@@ -510,9 +724,21 @@ sub make_predictions {
                 );
             if ($last_published->[0]) {
                 my $last_siss = $last_published->[0];
+                unless ($last_siss->holding_code) {
+                    $editor->disconnect;
+                    # XXX TODO new event type
+                    return new OpenILS::Event(
+                        "BAD_PARAMS", note =>
+                            "Last issuance has no holding code. Can't predict."
+                    );
+                }
                 $options->{predict_from} = _revive_holding($last_siss->holding_code, $caption_field, 1);
             } else {
-                #TODO: throw event (can't predict from nothing!)
+                $editor->disconnect;
+                # XXX TODO make a new event type instead of hijacking this one
+                return new OpenILS::Event(
+                    "BAD_PARAMS", note => "No issuance from which to predict!"
+                );
             }
         }
         push( @predictions, _generate_issuance_values($mfhd, $options) );
@@ -577,6 +803,7 @@ sub _generate_issuance_values {
     my $caption = $options->{caption};
     my $scap_id = $options->{scap_id};
     my $num_to_predict = $options->{num_to_predict};
+    my $end_date = $options->{end_date};
     my $predict_from = $options->{predict_from};   # issuance to predict from
     #my $last_rec_date = $options->{last_rec_date};   # expected or actual
 
@@ -603,12 +830,11 @@ sub _generate_issuance_values {
 # add a note marker for system use (?)
     $predict_from->notes('private', ['AUTOGEN']);
 
-    my $strp = new DateTime::Format::Strptime(pattern => '%F');
     my $pub_date;
     my @issuance_values;
-    my @predictions = $mfhd->generate_predictions({'base_holding' => $predict_from, 'num_to_predict' => $num_to_predict});
+    my @predictions = $mfhd->generate_predictions({'base_holding' => $predict_from, 'num_to_predict' => $num_to_predict, 'end_date' => $end_date});
     foreach my $prediction (@predictions) {
-        $pub_date = $strp->parse_datetime($prediction->chron_to_date);
+        $pub_date = $_strp_date->parse_datetime($prediction->chron_to_date);
         push(
                 @issuance_values,
                 {
@@ -867,13 +1093,285 @@ sub unitize_items {
     return {'num_items_received' => scalar @$items, 'new_unit_id' => $new_unit_id};
 }
 
+sub _find_or_create_call_number {
+    my ($e, $lib, $cn_string, $record) = @_;
+
+    my $existing = $e->search_asset_call_number({
+        "owning_lib" => $lib,
+        "label" => $cn_string,
+        "record" => $record,
+        "deleted" => "f"
+    }) or return $e->die_event;
+
+    if (@$existing) {
+        return $existing->[0]->id;
+    } else {
+        return $e->die_event unless
+            $e->allowed("CREATE_VOLUME", $lib);
+
+        my $acn = new Fieldmapper::asset::call_number;
+
+        $acn->creator($e->requestor->id);
+        $acn->editor($e->requestor->id);
+        $acn->record($record);
+        $acn->label($cn_string);
+        $acn->owning_lib($lib);
+
+        $e->create_asset_call_number($acn) or return $e->die_event;
+        return $e->data->id;
+    }
+}
+
+sub _issuances_received {
+    my ($e, $sitem) = @_;
+
+    my $results = $e->json_query({
+        "select" => {
+            "sitem" => [
+                {"transform" => "distinct", "column" => "issuance"}
+            ]
+        },
+        "from" => {"sitem" => {"sstr" => {}, "siss" => {}}},
+        "where" => {
+            "+sstr" => {"distribution" => $sitem->stream->distribution->id},
+            "+siss" => {"holding_type" => $sitem->issuance->holding_type},
+            "+sitem" => {"date_received" => {"!=" => undef}}
+        }
+    }) or return $e->die_event;
+
+    return [ map { $e->retrieve_serial_issuance($_->{"issuance"}) } @$results ];
+}
+
+# XXX _prepare_unit_label() duplicates some code from unitize_items().
+# Hopefully we can unify code paths down the road.
+sub _prepare_unit_label {
+    my ($e, $sunit, $sdist, $issuance) = @_;
+
+    my ($mfhd, $formatted_parts) = _summarize_contents($e, [$issuance]);
+
+    # special case for single formatted_part (may have summarized version)
+    if (@$formatted_parts == 1) {
+        #TODO: MFHD.pm should have a 'format_summary' method for this
+    }
+
+    $sunit->detailed_contents(
+        join(
+            " ",
+            $sdist->unit_label_prefix,
+            join(", ", @$formatted_parts),
+            $sdist->unit_label_suffix
+        )
+    );
+
+    # TODO: change this when real summary contents are available
+    $sunit->summary_contents($sunit->detailed_contents);
+
+    # Create sort_key by left padding numbers to 6 digits.
+    (my $sort_key = $sunit->detailed_contents) =~
+        s/(\d+)/sprintf '%06d', $1/eg;
+    $sunit->sort_key($sort_key);
+}
+
+# XXX duplicates a block of code from unitize_items().  Once I fully understand
+# what's going on and I'm sure it's working right, I'd like to have
+# unitize_items() just use this, keeping the logic in one place.
+sub _prepare_summaries {
+    my ($e, $sitem, $issuances) = @_;
+
+    my $dist_id = $sitem->stream->distribution->id;
+    my $type = $sitem->issuance->holding_type;
+
+    # Make sure @$issuances contains the new issuance from sitem.
+    unless (grep { $_->id == $sitem->issuance->id } @$issuances) {
+        push @$issuances, $sitem->issuance;
+    }
+
+    my ($mfhd, $formatted_parts) = _summarize_contents($e, $issuances);
+
+    my $search_method = "search_serial_${type}_summary";
+    my $summary = $e->$search_method([{"distribution" => $dist_id}]);
+
+    my $cu_method = "update";
+
+    if (@$summary) {
+        $summary = $summary->[0];
+    } else {
+        my $class = "Fieldmapper::serial::${type}_summary";
+        $summary = $class->new;
+        $summary->distribution($dist_id);
+        $cu_method = "create";
+    }
+
+    $summary->generated_coverage(join(", ", @$formatted_parts));
+    my $method = "${cu_method}_serial_${type}_summary";
+    return $e->die_event unless $e->$method($summary);
+}
+
+__PACKAGE__->register_method(
+    "method" => "receive_items_one_unit_per",
+    "api_name" => "open-ils.serial.receive_items.one_unit_per",
+    "stream" => 1,
+    "api_level" => 1,
+    "argc" => 3,
+    "signature" => {
+        "desc" => "Marks items in a list as received, creates a new unit for each item if any unit is fleshed on, and updates summaries as needed",
+        "params" => [
+            {
+                 "name" => "auth",
+                 "desc" => "authtoken",
+                 "type" => "string"
+            },
+            {
+                 "name" => "items",
+                 "desc" => "array of serial items, possibly fleshed with units and definitely fleshed with stream->distribution",
+                 "type" => "array"
+            },
+            {
+                "name" => "record",
+                "desc" => "id of bib record these items are associated with
+                    (XXX could/should be derived from items)",
+                "type" => "number"
+            }
+        ],
+        "return" => {
+            "desc" => "The item ID for each item successfully received",
+            "type" => "int"
+        }
+    }
+);
+
+sub receive_items_one_unit_per {
+    # XXX This function may be temporary, as it does some of what
+    # unitize_items() does, just in a different way.
+    my ($self, $client, $auth, $items, $record) = @_;
+
+    my $e = new_editor("authtoken" => $auth, "xact" => 1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed("RECEIVE_SERIAL");
+
+    my $user_id = $e->requestor->id;
+
+    # Get a list of all the non-virtual field names in a serial::unit for
+    # merging given unit objects with template-built units later.
+    # XXX move this somewhere global so it isn't re-run all the time
+    my $all_unit_fields =
+        $Fieldmapper::fieldmap->{"Fieldmapper::serial::unit"}->{"fields"};
+    my @real_unit_fields = grep {
+        not $all_unit_fields->{$_}->{"virtual"}
+    } keys %$all_unit_fields;
+
+    foreach my $item (@$items) {
+        # Note that we expect a certain fleshing on the items we're getting.
+        my $sdist = $item->stream->distribution;
+
+        # Create unit if given by user
+        if (ref $item->unit) {
+            # detach from the item, as we need to create separately
+            my $user_unit = $item->unit;
+
+            # get a unit based on associated template
+            my $template_unit = _build_unit($e, $sdist, "receive", 1);
+            if ($U->event_code($template_unit)) {
+                $e->rollback;
+                $template_unit->{"note"} = "Item ID: " . $item->id;
+                return $template_unit;
+            }
+
+            # merge built unit with provided unit from user
+            foreach (@real_unit_fields) {
+                unless ($user_unit->$_) {
+                    $user_unit->$_($template_unit->$_);
+                }
+            }
+
+            # Treat call number specially: the provided value from the
+            # user will really be a string.
+            if ($user_unit->call_number) {
+                my $real_cn = _find_or_create_call_number(
+                    $e, $sdist->holding_lib->id,
+                    $user_unit->call_number, $record
+                );
+
+                if ($U->event_code($real_cn)) {
+                    $e->rollback;
+                    return $real_cn;
+                } else {
+                    $user_unit->call_number($real_cn);
+                }
+            }
+
+            my $evt = _prepare_unit_label(
+                $e, $user_unit, $sdist, $item->issuance
+            );
+            if ($U->event_code($evt)) {
+                $e->rollback;
+                return $evt;
+            }
+
+            # fetch a list of issuances with received copies already existing
+            # on this distribution.
+            my $issuances = _issuances_received($e, $item); #XXX optimize later
+            if ($U->event_code($issuances)) {
+                $e->rollback;
+                return $issuances;
+            }
+
+            # create/update summary objects related to this distribution
+            $evt = _prepare_summaries($e, $item, $issuances);
+            if ($U->event_code($evt)) {
+                $e->rollback;
+                return $evt;
+            }
+
+            # set the incontrovertibles on the unit
+            $user_unit->edit_date("now");
+            $user_unit->create_date("now");
+            $user_unit->editor($user_id);
+            $user_unit->creator($user_id);
+
+            return $e->die_event unless $e->create_serial_unit($user_unit);
+
+            # save reference to new unit
+            $item->unit($e->data->id);
+        }
+
+        # Create notes if given by user
+        if (ref($item->notes) and @{$item->notes}) {
+            foreach my $note (@{$item->notes}) {
+                $note->creator($user_id);
+                $note->create_date("now");
+
+                return $e->die_event unless $e->create_serial_item_note($note);
+            }
+
+            $item->clear_notes; # They're saved; we no longer want them here.
+        }
+
+        # Set the incontrovertibles on the item
+        $item->status("Received");
+        $item->date_received("now");
+        $item->edit_date("now");
+        $item->editor($user_id);
+
+        return $e->die_event unless $e->update_serial_item($item);
+
+        # send client a response
+        $client->respond($item->id);
+    }
+
+    $e->commit or return $e->die_event;
+    undef;
+}
+
 sub _build_unit {
     my $editor = shift;
     my $sdist = shift;
     my $mode = shift;
+    my $skip_call_number = shift;
 
     my $attr = $mode . '_unit_template';
-    my $template = $editor->retrieve_asset_copy_template($sdist->$attr);
+    my $template = $editor->retrieve_asset_copy_template($sdist->$attr) or
+        return new OpenILS::Event("SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE");
 
     my @parts = qw( status location loan_duration fine_level age_protect circulate deposit ref holdable deposit_amount price circ_modifier circ_as_type alert_message opac_visible floating mint_condition );
 
@@ -888,8 +1386,15 @@ sub _build_unit {
     $unit->circ_lib($sdist->holding_lib);
     $unit->creator($editor->requestor->id);
     $unit->editor($editor->requestor->id);
-    $attr = $mode . '_call_number';
-    $unit->call_number($sdist->$attr);
+
+    unless ($skip_call_number) {
+        $attr = $mode . '_call_number';
+        my $cn = $sdist->$attr or
+            return new OpenILS::Event("SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER");
+
+        $unit->call_number($cn);
+    }
+
     $unit->barcode('AUTO');
     $unit->sort_key('');
     $unit->summary_contents('');
@@ -1602,6 +2107,223 @@ sub serial_caption_and_pattern_retrieve_batch {
         "open-ils.cstore.direct.serial.caption_and_pattern.search.atomic",
         { id => $ids }
     );
+}
+
+__PACKAGE__->register_method(
+    "method" => "bre_by_identifier",
+    "api_name" => "open-ils.serial.biblio.record_entry.by_identifier",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Find instances of biblio.record_entry given a search token" .
+            " that could be a value for any identifier defined in " .
+            "config.metabib_field",
+        "params" => [
+            {"desc" => "Search token", "type" => "string"},
+            {"desc" => "Options: require_subscriptions, add_mvr, is_actual_id" .
+                " (all boolean)", "type" => "object"}
+        ],
+        "return" => {
+            "desc" => "Any matching BREs, or if the add_mvr option is true, " .
+                "objects with a 'bre' key/value pair, and an 'mvr' " .
+                "key-value pair.  BREs have subscriptions fleshed on.",
+            "type" => "object"
+        }
+    }
+);
+
+sub bre_by_identifier {
+    my ($self, $client, $term, $options) = @_;
+
+    return new OpenILS::Event("BAD_PARAMS") unless $term;
+
+    $options ||= {};
+    my $e = new_editor();
+
+    my @ids;
+
+    if ($options->{"is_actual_id"}) {
+        @ids = ($term);
+    } else {
+        my $cmf =
+            $e->search_config_metabib_field({"field_class" => "identifier"})
+                or return $e->die_event;
+
+        my @identifiers = map { $_->name } @$cmf;
+        my $query = join(" || ", map { "id|$_: $term" } @identifiers);
+
+        my $search = create OpenSRF::AppSession("open-ils.search");
+        my $search_result = $search->request(
+            "open-ils.search.biblio.multiclass.query.staff", {}, $query
+        )->gather(1);
+        $search->disconnect;
+
+        # Un-nest results. They tend to look like [[1],[2],[3]] for some reason.
+        @ids = map { @{$_} } @{$search_result->{"ids"}};
+
+        unless (@ids) {
+            $e->disconnect;
+            return undef;
+        }
+    }
+
+    my $bre = $e->search_biblio_record_entry([
+        {"id" => \@ids}, {
+            "flesh" => 2, "flesh_fields" => {
+                "bre" => ["subscriptions"],
+                "ssub" => ["owning_lib"]
+            }
+        }
+    ]) or return $e->die_event;
+
+    if (@$bre && $options->{"require_subscriptions"}) {
+        $bre = [ grep { @{$_->subscriptions} } @$bre ];
+    }
+
+    $e->disconnect;
+
+    if (@$bre) { # re-evaluate after possible grep
+        if ($options->{"add_mvr"}) {
+            $client->respond(
+                {"bre" => $_, "mvr" => _get_mvr($_->id)}
+            ) foreach (@$bre);
+        } else {
+            $client->respond($_) foreach (@$bre);
+        }
+    }
+
+    undef;
+}
+
+__PACKAGE__->register_method(
+    "method" => "get_receivable_items",
+    "api_name" => "open-ils.serial.items.receivable.by_subscription",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Return all receivable items under a given subscription",
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "Subscription ID", "type" => "number"},
+        ],
+        "return" => {
+            "desc" => "All receivable items under a given subscription",
+            "type" => "object"
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    "method" => "get_receivable_items",
+    "api_name" => "open-ils.serial.items.receivable.by_issuance",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Return all receivable items under a given issuance",
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "Issuance ID", "type" => "number"},
+        ],
+        "return" => {
+            "desc" => "All receivable items under a given issuance",
+            "type" => "object"
+        }
+    }
+);
+
+sub get_receivable_items {
+    my ($self, $client, $auth, $term)  = @_;
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    # XXX permissions
+
+    my $by = ($self->api_name =~ /by_(\w+)$/)[0];
+
+    my %where = (
+        "issuance" => {"issuance" => $term},
+        "subscription" => {"+siss" => {"subscription" => $term}}
+    );
+
+    my $item_ids = $e->json_query(
+        {
+            "select" => {"sitem" => ["id"]},
+            "from" => {"sitem" => "siss"},
+            "where" => {
+                %{$where{$by}}, "date_received" => undef
+            },
+            "order_by" => {"sitem" => ["id"]}
+        }
+    ) or return $e->die_event;
+
+    return undef unless @$item_ids;
+
+    foreach (map { $_->{"id"} } @$item_ids) {
+        $client->respond(
+            $e->retrieve_serial_item([
+                $_, {
+                    "flesh" => 3,
+                    "flesh_fields" => {
+                        "sitem" => ["stream", "issuance"],
+                        "sstr" => ["distribution"],
+                        "sdist" => ["holding_lib"]
+                    }
+                }
+            ])
+        );
+    }
+
+    $e->disconnect;
+    undef;
+}
+
+__PACKAGE__->register_method(
+    "method" => "get_receivable_issuances",
+    "api_name" => "open-ils.serial.issuances.receivable",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Return all issuances with receivable items given " .
+            "a subscription ID",
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "Subscription ID", "type" => "number"},
+        ],
+        "return" => {
+            "desc" => "All issuances with receivable items " .
+                "(but not the items themselves)", "type" => "object"
+        }
+    }
+);
+
+sub get_receivable_issuances {
+    my ($self, $client, $auth, $sub_id) = @_;
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    # XXX permissions
+
+    my $issuance_ids = $e->json_query({
+        "select" => {
+            "siss" => [
+                {"transform" => "distinct", "column" => "id"},
+                "date_published"
+            ]
+        },
+        "from" => {"siss" => "sitem"},
+        "where" => {
+            "subscription" => $sub_id,
+            "+sitem" => {"date_received" => undef}
+        },
+        "order_by" => {
+            "siss" => {"date_published" => {"direction" => "asc"}}
+        }
+
+    }) or return $e->die_event;
+
+    $client->respond($e->retrieve_serial_issuance($_->{"id"}))
+        foreach (@$issuance_ids);
+
+    $e->disconnect;
+    undef;
 }
 
 1;

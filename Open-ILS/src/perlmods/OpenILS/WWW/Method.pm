@@ -155,5 +155,7 @@ sub perform_method {
 	return 1;
 }
 
+# This module appears unfinshed and/or obsolete with many unconditional warns/dumps.
+# File is not referenced elsewhere in the codebase.  Candidate for deletion.
 
 1;

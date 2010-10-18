@@ -68,7 +68,6 @@ function AcqLiTable() {
     this.realCopiesRow = this.realCopiesTbody.removeChild(dojo.byId('acq-lit-real-copies-row'));
     this._copy_fields_for_acqdf = ['owning_lib', 'location'];
     this.skipInitialEligibilityCheck = false;
-    this.invoiceLinkDialogManager = new InvoiceLinkDialogManager("li");
     this.claimDialog = new ClaimDialogManager(
         liClaimDialog, finalClaimDialog, this.claimEligibleLidByLi,
         function(li) {    /* callback that fires when claims are made */
@@ -76,11 +75,10 @@ function AcqLiTable() {
         }
     );
 
-    dojo.connect(acqLitLiActionsSelector, 'onChange', 
-        function() { 
-            self.applySelectedLiAction(this.attr('value')) 
-            acqLitLiActionsSelector.attr('value', '_');
-        });
+    dojo.byId("acq-lit-li-actions-selector").onchange = function() { 
+        self.applySelectedLiAction(this.options[this.selectedIndex].value);
+        this.selectedIndex = 0;
+    };
 
     acqLitCreatePoSubmit.onClick = function() {
         if (self._confirmPoPrepaySituation()) {
@@ -274,11 +272,12 @@ function AcqLiTable() {
             );
         }
 
+        nodeByName("liid", row).innerHTML += li.id();
+
         if(li.eg_bib_id()) {
             openils.Util.show(nodeByName('catalog', row), 'inline');
             nodeByName("catalog_link", row).onclick = this.generateMakeRecTab(li.eg_bib_id());
         } else {
-            // TODO: Add discovery mechanism for bib linking
             openils.Util.show(nodeByName('link_to_catalog', row), 'inline');
             nodeByName("link_to_catalog_link", row).onclick = function() { self.drawBibFinder(li) };
         }
@@ -500,6 +499,10 @@ function AcqLiTable() {
                 nodeByName("action_none", row).selected = true;
             };
             actLinkInvoice.onclick = function() {
+                if (!self.invoiceLinkDialogManager) {
+                    self.invoiceLinkDialogManager =
+                        new InvoiceLinkDialogManager("li");
+                }
                 self.invoiceLinkDialogManager.target = li;
                 acqLitLinkInvoiceDialog.show();
                 nodeByName("action_none", row).selected = true;
@@ -732,7 +735,8 @@ function AcqLiTable() {
 
         fieldmapper.standardRequest(
             ['open-ils.acq', 'open-ils.acq.lineitem.price.set'],
-            {   async : true,
+            {   async : false, // redundant w/ timeout
+                timeout : 10,
                 params : [this.authtoken, li.id(), price],
                 oncomplete : function(r) {
                     openils.Util.readResponse(r);
@@ -1441,6 +1445,7 @@ function AcqLiTable() {
                     parentNode : dojo.query('[name='+field+']', row)[0],
                     orgLimitPerms : ['CREATE_PICKLIST', 'CREATE_PURCHASE_ORDER'],
                     readOnly : readOnly,
+                    orgDefaultsToWs : true
                 });
 
                 widget.build(
@@ -2076,8 +2081,7 @@ function AcqLiTable() {
                     progressDialog.hide();
                     var evt = openils.Util.readResponse(r);
                     if(evt && evt.template_output()) {
-                        win = window.open('','', 'resizable,width=800,height=600,scrollbars=1');
-                        win.document.body.innerHTML = evt.template_output().data();
+                        openils.Util.printHtmlString(evt.template_output().data());
                     }
                 }
             }
@@ -2309,7 +2313,7 @@ function AcqLiTable() {
         }
         var self = this;
         win.xulG = {
-            record : {marc : li.marc()},
+            record : {marc : li.marc(), "rtype": "bre"},
             save : {
                 label: 'Save Record', // XXX I18N
                 func: function(xmlString) {

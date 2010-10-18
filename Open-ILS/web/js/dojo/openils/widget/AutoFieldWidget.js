@@ -44,6 +44,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          *  dataLoader : Bypass the default PermaCrud linked data fetcher and use this function instead.
          *      Function arguments are (link class name, search filter, callback)
          *      The fetched objects should be passed to the callback as an array
+         *  disableQuery : dojo.data query passed to FilteringTreeSelect-based widgets to disable
+         *      (but leave visible) certain options.  
          */
         constructor : function(args) {
             for(var k in args)
@@ -54,10 +56,17 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             }
             this.dijitArgs['scrollOnFocus'] = false;
 
+
             // find the field description in the IDL if not provided
             if(this.fmObject) 
                 this.fmClass = this.fmObject.classname;
             this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+
+            if(this.fmClass && !this.fmIDL) {
+                fieldmapper.IDL.load([this.fmClass]);
+                this.fmIDL = fieldmapper.IDL.fmclasses[this.fmClass];
+            }
+
             this.suppressLinkedFields = args.suppressLinkedFields || [];
 
             if(this.selfReference) {
@@ -149,10 +158,9 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     }
                 case 'timestamp':
                     if (!value) return '';
-                    dojo.require('dojo.date.locale');
-                    dojo.require('dojo.date.stamp');
-                    var date = dojo.date.stamp.fromISOString(value);
-                    return dojo.date.locale.format(date, {formatLength:'short'});
+                    return openils.Util.timeStamp(
+                        value, {"formatLength": "short"}
+                    );
                 case 'org_unit':
                     if(value === null || value === undefined) return '';
                     return fieldmapper.aou.findOrgUnit(value).shortname();
@@ -175,8 +183,15 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 // core widget provided for us, attach and move on
                 if(this.parentNode) // may already be in the "right" place
                     this.parentNode.appendChild(this.widget.domNode);
-                if(this.widget.attr('value') == null)
+                if (this.shove) {
+                    if (this.shove.mode == "update")
+                        this.widget.attr("value", this.widgetValue);
+                    else
+                        this.widgetValue = this.shove.create;
                     this._widgetLoaded();
+                } else if (this.widget.attr("value") == null) {
+                    this._widgetLoaded();
+                }
                 return;
             }
             
@@ -228,12 +243,11 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         dojo.require('dijit.form.DateTextBox');
                         dojo.require('dojo.date.stamp');
                         this.widget = new dijit.form.DateTextBox(this.dijitArgs, this.parentNode);
-                        if(this.widgetValue != null) 
-                            this.widgetValue = dojo.date.stamp.fromISOString(
-                                // Kludge until the ML returning ISO timestamps with a colon in the timezone offset,
-                                // which dojo.date.stamp.fromISOString requires
-                                this.widgetValue.replace( /^(\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\d-\d\d)(\d\d)$/, '$1:$2') 
+                        if (this.widgetValue != null) {
+                            this.widgetValue = openils.Util.timeStampAsDateObj(
+                                this.widgetValue
                             );
+                        }
                         break;
 
                     case 'bool':
@@ -351,6 +365,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         _getLinkSelector : function() {
             var linkClass = this.idlField['class'];
             if(this.idlField.reltype != 'has_a')  return false;
+            if(!fieldmapper.IDL.fmclasses[linkClass]) // class neglected by AutoIDL
+                fieldmapper.IDL.load([linkClass]);
             if(!fieldmapper.IDL.fmclasses[linkClass].permacrud) return false;
             if(!fieldmapper.IDL.fmclasses[linkClass].permacrud.retrieve) return false;
 
@@ -560,6 +576,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
         _buildPermGrpSelector : function() {
             dojo.require('openils.widget.FilteringTreeSelect');
             this.widget = new openils.widget.FilteringTreeSelect(this.dijitArgs, this.parentNode);
+            this.widget.disableQuery = this.disableQuery;
             this.widget.searchAttr = 'name';
 
             if(this.cache.permGrpTree) {

@@ -52,7 +52,7 @@ circ.offline.prototype = {
                         'cmd_print_last_receipt' : [
                             ['command'],
                             function() { 
-                                JSAN.use('util.print'); var print = new util.print();
+                                JSAN.use('util.print'); var print = new util.print('offline');
                                 print.reprint_last();
                             }
                         ],
@@ -74,55 +74,11 @@ circ.offline.prototype = {
     },
 
     'receipt_init' : function() {
-        function backup_receipt_templates() {
-            data.print_list_templates = {
-                'offline_checkout' : {
-                    'type' : 'offline_checkout',
-                    'header' : 'Patron %patron_barcode%<br/>\r\nYou checked out the following items:<hr/><ol>',
-                    'line_item' : '<li>Barcode: %barcode%<br/>\r\nDue: %due_date%\r\n',
-                    'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
-                },
-                'offline_checkin' : {
-                    'type' : 'offline_checkin',
-                    'header' : 'You checked in the following items:<hr/><ol>',
-                    'line_item' : '<li>Barcode: %barcode%\r\n',
-                    'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
-                },
-                'offline_renew' : {
-                    'type' : 'offline_renew',
-                    'header' : 'You renewed the following items:<hr/><ol>',
-                    'line_item' : '<li>Barcode: %barcode%\r\n',
-                    'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
-                },
-                'offline_inhouse_use' : {
-                    'type' : 'offline_inhouse_use',
-                    'header' : 'You marked the following in-house items used:<hr/><ol>',
-                    'line_item' : '<li>Barcode: %barcode%\r\nUses: %count%',
-                    'footer' : '</ol><hr />%TODAY_TRIM%<br/>\r\n<br/>\r\n',
-                },
-            };
-            data.stash('print_list_templates');
-        }
-
         JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-        JSAN.use('util.file'); var file = new util.file('print_list_templates');
-        if (file._file.exists()) {
-            try {
-                var x = file.get_object();
-                if (x) {
-                    data.print_list_templates = x;
-                    data.stash('print_list_templates');
-                } else {
-                    backup_receipt_templates();
-                }
-            } catch(E) {
-                alert(E);
-                backup_receipt_templates();
-            }
-        } else {
-            backup_receipt_templates();
-        }
-        file.close();
+        data.print_list_defaults();
+        data.load_saved_print_templates();
+        data.fetch_print_strategy();
+        JSAN.use('util.print'); (new util.print('offline')).GetPrintSettings();
     },
 
     'patron_init' : function() {

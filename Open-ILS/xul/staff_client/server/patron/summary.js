@@ -2,6 +2,7 @@ dump('entering patron.summary.js\n');
 
 function $(id) { return document.getElementById(id); }
 var patronStrings = $('patronStrings');
+var offlineStrings = $('offlineStrings');
 
 if (typeof patron == 'undefined') patron = {};
 patron.summary = function (params) {
@@ -125,31 +126,44 @@ patron.summary.prototype = {
                         ['command'],
                         function() {
                             try {
+                                var rows = $('patron_info_rows');
                                 obj.stat_cat_list.clear();
                                 var entries = obj.patron.stat_cat_entries();
                                 for (var i = 0; i < entries.length; i++) {
                                     var stat_cat = obj.OpenILS.data.hash.my_actsc[ entries[i].stat_cat() ];
                                     if (!stat_cat) {
-                                        stat_cat = obj.OpenILS.data.hash.actsc[ entries[i].stat_cat() ];
-                                    }
-                                    if (!stat_cat) {
-                                        var robj = obj.network.simple_request('FM_ACTSC_RETRIEVE_VIA_PCRUD',[ ses(), { 'id' : { '=' : entries[i].stat_cat() } }]);
-                                        if (typeof robj == 'object' && typeof robj.ilsevent != 'undefined') {
-                                            obj.OpenILS.data.hash.actsc[ entries[i].stat_cat() ] = robj;
-                                            obj.OpenILS.data.stash( 'hash' );
-                                            stat_cat = robj;
-                                        }
+                                        stat_cat = obj.OpenILS.data.lookup('actsc',entries[i].stat_cat());
                                     }
                                     if (!stat_cat) { continue; }
-                                    if (get_bool( stat_cat.usr_summary() )) {
-                                        obj.stat_cat_list.append( {
-                                            'row' : {
-                                                'my' : {
-                                                    'actsc' : stat_cat,
-                                                    'actscecm' : entries[i],
-                                                }
+                                    // Every stat cat gets rendered in the Stat Cats tab
+                                    obj.stat_cat_list.append( {
+                                        'row' : {
+                                            'my' : {
+                                                'actsc' : stat_cat,
+                                                'actscecm' : entries[i],
                                             }
-                                        } );
+                                        }
+                                    } );
+                                    // But only a proud few share the Patron Info pane
+                                    if (rows && get_bool( stat_cat.usr_summary() )) {
+                                        var row_id = 'stat_cat_id_' + stat_cat.id();
+                                        var row; var label1; var label2;
+                                        if ($(row_id)) {
+                                            row = $(row_id);
+                                            label1 = row.firstChild;
+                                            label2 = row.lastChild;
+                                        } else {
+                                            row = document.createElement('row');
+                                            row.setAttribute('id',row_id);
+                                            label1 = document.createElement('label');
+                                            label2 = document.createElement('label');
+                                            row.appendChild(label1);
+                                            row.appendChild(label2);
+                                            rows.appendChild(row);
+                                        }
+                                        label1.setAttribute('value',stat_cat.name());
+                                        label1.setAttribute('tooltiptext','stat cat id ' + stat_cat.id());
+                                        label2.setAttribute('value',entries[i].stat_cat_entry());
                                     }
                                 }
                             } catch(E) {
@@ -368,13 +382,24 @@ patron.summary.prototype = {
                                     function(req) {
                                         try {
                                             var robj = req.getResultObject();
-                                            util.widgets.set_text(e, robj.out + robj.overdue + robj.claims_returned + robj.long_overdue );
+                                            var do_not_tally_claims_returned = String( obj.OpenILS.data.hash.aous['circ.do_not_tally_claims_returned'] ) == 'true';
+                                            util.widgets.set_text(e,
+                                                robj.out
+                                                + robj.overdue
+                                                + (do_not_tally_claims_returned ? 0 : robj.claims_returned)
+                                                + robj.long_overdue
+                                            );
                                             if (e2) util.widgets.set_text(e2, robj.overdue    );
                                             if (e3) util.widgets.set_text(e3, robj.claims_returned    );
                                             if (e4) util.widgets.set_text(e4, robj.long_overdue    );
                                             if (e5) util.widgets.set_text(e5, robj.lost    );
                                             if (under_btn) util.widgets.set_text(under_btn, 
-                                                String( robj.out + robj.overdue + robj.claims_returned + robj.long_overdue) 
+                                                String(
+                                                    robj.out
+                                                    + robj.overdue
+                                                    + (do_not_tally_claims_returned ? 0 : robj.claims_returned)
+                                                    + robj.long_overdue
+                                                ) 
                                                 /* + ( robj.overdue > 0 ? '*' : '' ) */
                                             );
                                         } catch(E) {
@@ -671,10 +696,14 @@ patron.summary.prototype = {
                         ['render'],
                         function(e) {
                             return function() { 
-                                util.widgets.set_text(e,
-                                    obj.patron.mailing_address().street1()
-                                );
-                                if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
+                                if (obj.patron.mailing_address()) {
+                                    util.widgets.set_text(e,
+                                        obj.patron.mailing_address().street1()
+                                    );
+                                    if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
+                                } else {
+                                    util.widgets.set_text(e,'');
+                                }
                             };
                         }
                     ],
@@ -682,10 +711,14 @@ patron.summary.prototype = {
                         ['render'],
                         function(e) {
                             return function() { 
-                                util.widgets.set_text(e,
-                                    obj.patron.mailing_address().street2()
-                                );
-                                if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
+                                if (obj.patron.mailing_address()) {
+                                    util.widgets.set_text(e,
+                                        obj.patron.mailing_address().street2()
+                                    );
+                                    if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
+                                } else {
+                                    util.widgets.set_text(e,'');
+                                }
                             };
                         }
                     ],
@@ -693,10 +726,14 @@ patron.summary.prototype = {
                         ['render'],
                         function(e) {
                             return function() { 
-                                util.widgets.set_text(e,
-                                    obj.patron.mailing_address().city()
-                                );
-                                if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
+                                if (obj.patron.mailing_address()) {
+                                    util.widgets.set_text(e,
+                                        obj.patron.mailing_address().city()
+                                    );
+                                    if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
+                                } else {
+                                    util.widgets.set_text(e,'');
+                                }
                             };
                         }
                     ],
@@ -704,10 +741,14 @@ patron.summary.prototype = {
                         ['render'],
                         function(e) {
                             return function() { 
-                                util.widgets.set_text(e,
-                                    obj.patron.mailing_address().state()
-                                );
-                                if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
+                                if (obj.patron.mailing_address()) {
+                                    util.widgets.set_text(e,
+                                        obj.patron.mailing_address().state()
+                                    );
+                                    if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
+                                } else {
+                                    util.widgets.set_text(e,'');
+                                }
                             };
                         }
                     ],
@@ -715,10 +756,14 @@ patron.summary.prototype = {
                         ['render'],
                         function(e) {
                             return function() { 
-                                util.widgets.set_text(e,
-                                    obj.patron.mailing_address().post_code()
-                                );
-                                if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
+                                if (obj.patron.mailing_address()) {
+                                    util.widgets.set_text(e,
+                                        obj.patron.mailing_address().post_code()
+                                    );
+                                    if (!get_bool(obj.patron.mailing_address().valid())){e.setAttribute('style','color: red');}
+                                } else {
+                                    util.widgets.set_text(e,'');
+                                }
                             };
                         }
                     ],
@@ -726,54 +771,74 @@ patron.summary.prototype = {
                         ['render'],
                         function(e) {
                             return function() { 
-                                util.widgets.set_text(e,
-                                    obj.patron.billing_address().street1()
-                                );
-                                if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
+                                if (obj.patron.billing_address()) {
+                                    util.widgets.set_text(e,
+                                        obj.patron.billing_address().street1()
+                                    );
+                                    if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
+                                } else {
+                                    util.widgets.set_text(e,'');
+                                }
                             };
                         }
                     ],
                     'patron_physical_address_street2' : [
                         ['render'],
                         function(e) {
-                            return function() { 
-                                util.widgets.set_text(e,
-                                    obj.patron.billing_address().street2()
-                                );
-                                if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
+                            return function() {
+                                if (obj.patron.billing_address()) { 
+                                    util.widgets.set_text(e,
+                                        obj.patron.billing_address().street2()
+                                    );
+                                    if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
+                                } else {
+                                    util.widgets.set_text(e,'');
+                                }
                             };
                         }
                     ],
                     'patron_physical_address_city' : [
                         ['render'],
                         function(e) {
-                            return function() { 
-                                util.widgets.set_text(e,
-                                    obj.patron.billing_address().city()
-                                );
-                                if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
+                            return function() {
+                                if (obj.patron.billing_address()) { 
+                                    util.widgets.set_text(e,
+                                        obj.patron.billing_address().city()
+                                    );
+                                    if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
+                                } else {
+                                    util.widgets.set_text(e,'');
+                                }
                             };
                         }
                     ],
                     'patron_physical_address_state' : [
                         ['render'],
                         function(e) {
-                            return function() { 
-                                util.widgets.set_text(e,
-                                    obj.patron.billing_address().state()
-                                );
-                                if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
+                            return function() {
+                                if (obj.patron.billing_address()) { 
+                                    util.widgets.set_text(e,
+                                        obj.patron.billing_address().state()
+                                    );
+                                    if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
+                                } else {
+                                    util.widgets.set_text(e,'');
+                                }
                             };
                         }
                     ],
                     'patron_physical_address_post_code' : [
                         ['render'],
                         function(e) {
-                            return function() { 
-                                util.widgets.set_text(e,
-                                    obj.patron.billing_address().post_code()
-                                );
-                                if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
+                            return function() {
+                                if (obj.patron.billing_address()) { 
+                                    util.widgets.set_text(e,
+                                        obj.patron.billing_address().post_code()
+                                    );
+                                    if (!get_bool(obj.patron.billing_address().valid())){e.setAttribute('style','color: red');}
+                                } else {
+                                    util.widgets.set_text(e,'');
+                                }
                             };
                         }
                     ]
@@ -899,7 +964,12 @@ patron.summary.prototype = {
             */
 
             // Update the screen
-            chain.push( function() { obj.controller.render(); } );
+            chain.push( function() {
+                obj.controller.render();
+                if ($('stat_cat_tab')) {
+                    util.widgets.dispatch('command','stat_cat_tab'); 
+                }
+            } );
 
             // On Complete
 

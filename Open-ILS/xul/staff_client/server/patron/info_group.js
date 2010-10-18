@@ -116,7 +116,7 @@ function tree_init() {
                         return row;
                     }
 
-                    patron.util.retrieve_fleshed_au_via_id( ses(), id, function(req) {
+                    patron.util.retrieve_fleshed_au_via_id( ses(), id, null, function(req) {
                         row.my.au = req.getResultObject();
                         process_and_return();
                     });
@@ -428,7 +428,7 @@ function link_patron(direction) {
         if (g.sel_list.length == 0) g.sel_list[0] = g.patron_id;
         for (var i = 0; i < g.sel_list.length; i++) {    
 
-            var patron_a = patron.util.retrieve_fleshed_au_via_id(ses(),g.sel_list[i]);
+            var patron_a = patron.util.retrieve_fleshed_au_via_id(ses(),g.sel_list[i],null);
             if (typeof patron_a.ilsevent != 'undefined') throw(patron_a);
             switch(direction) {
                 case true:

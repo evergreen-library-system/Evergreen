@@ -2,7 +2,7 @@
 [% ctx.page_title = 'Funds' %]
 
 <!-- load the page-specific JS -->
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_funds.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_funds.js'> </script>
 <script type="text/javascript">
     function getFundName(rowIndex, item) {
         if (!item) return null;

@@ -36,6 +36,9 @@ const MODE_EXCL     = 0x80;
 const PERMS_FILE      = 0644;
 const PERMS_DIR      = 0755;
 
+const CLIENT_VERSION = '';
+const CLIENT_STAMP   = '';
+
 var my_constants = {
     'magical_statuses' : {
         '1' : { 'disable_in_copy_editor' : true, 'block_mark_item_damaged' : false, 'block_mark_item_action' : true }, /* | Checked out    | t */
@@ -126,6 +129,7 @@ var api = {
     'FM_AHR_PULL_LIST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_pull_list.retrieve' },
     'FM_AHR_PULL_LIST_COUNT' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_pull_list.retrieve.count' },
     'FM_AHR_ID_LIST_PULL_LIST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_pull_list.id_list.retrieve', 'secure' : false },
+    'HTML_HOLD_PULL_LIST' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.hold_pull_list.print' },
     'FM_AHR_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.on_shelf.retrieve' },
     'FM_AHR_ID_LIST_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.id_list.on_shelf.retrieve', 'secure' : false },
     'FM_AHR_ID_LIST_EXPIRED_ONSHELF_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.captured_holds.id_list.expired_on_shelf.retrieve', 'secure' : false },
@@ -355,6 +359,7 @@ var urls = {
     'AUDIO_circ_bad' : '/xul/server/skin/media/audio/question.wav',
     'AUDIO_event_ASSET_COPY_NOT_FOUND' : '/xul/server/skin/media/audio/redalert.wav',
 
+    'AUTHORITY_MANAGE' : '/eg/cat/authority/list',
     'XUL_AUTH_SIMPLE' : '/xul/server/main/simple_auth.xul',
     'XUL_BIB_BRIEF' : '/xul/server/cat/bib_brief.xul',
     'XUL_BROWSER' : 'chrome://open_ils_staff_client/content/util/browser.xul',
@@ -389,6 +394,7 @@ var urls = {
     'XUL_IN_HOUSE_USE' : '/xul/server/circ/in_house_use.xul',
     'XUL_LIST_CLIPBOARD' : '/xul/server/util/list_clipboard.xul',
     'XUL_LOCAL_ADMIN' : '/xul/server/admin/index.xhtml',
+    'XUL_LOGIN_DATA' : '/xul/server/main/data.xul', 
     'XUL_MARC_NEW' : '/xul/server/cat/marc_new.xul',
     'XUL_MARC_EDIT' : '/xul/server/cat/marcedit.xul',
     'XUL_MARC_VIEW' : '/xul/server/cat/marc_view.xul',
@@ -450,6 +456,7 @@ var urls = {
     'XUL_VOLUME_COPY_CREATOR' : '/xul/server/cat/volume_copy_creator.xul',
     'XUL_VOLUME_EDITOR' : '/xul/server/cat/volume_editor.xul',
     'XUL_WORK_LOG' : '/xul/server/admin/work_log.xul',
+    'XUL_WORKSTATION_INFO' : '/xul/server/main/ws_info.xul',
     'XUL_Z3950_IMPORT' : '/xul/server/cat/z3950.xul',
     'TEST_HTML' : '/xul/server/main/test.html',
     'TEST_XUL' : '/xul/server/main/test.xul',
@@ -457,5 +464,6 @@ var urls = {
     'EG_WEB_BASE' : '/eg',
     'XUL_LOCAL_ADMIN_BASE' : '/xul/server/admin',
     'XUL_REPORTS' : '/reports/oils_rpt.xhtml',
-    'EG_ACQ_PO_VIEW' : '/eg/acq/po/view'
+    'EG_ACQ_PO_VIEW' : '/eg/acq/po/view',
+    'XUL_SERIAL_BATCH_RECEIVE': '/xul/server/serial/batch_receive.xul'
 }

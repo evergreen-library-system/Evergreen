@@ -390,7 +390,7 @@ patron.display.prototype = {
                             xulG.new_tab(
                                 "/eg/booking/reservation",
                                 {
-                                    "tab_name": offlineStrings.getString(
+                                    "tab_name": $("offlineStrings").getString(
                                         "menu.cmd_booking_reservation.tab"
                                     ),
                                     "browser": false
@@ -411,7 +411,7 @@ patron.display.prototype = {
                             xulG.new_tab(
                                 "/eg/booking/pickup",
                                 {
-                                    "tab_name": offlineStrings.getString(
+                                    "tab_name": $("offlineStrings").getString(
                                         "menu.cmd_booking_reservation_pickup.tab"
                                     ),
                                     "browser": false
@@ -432,7 +432,7 @@ patron.display.prototype = {
                             xulG.new_tab(
                                 "/eg/booking/return",
                                 {
-                                    "tab_name": offlineStrings.getString(
+                                    "tab_name": $("offlineStrings").getString(
                                         "menu.cmd_booking_reservation_return.tab"
                                     ),
                                     "browser": false
@@ -932,11 +932,17 @@ patron.display.prototype = {
                     }
                 }
                 var penalties = obj.patron.standing_penalties();
+                if (penalties.length > 0) { msg += '<dl>'; }
                 for (var i = 0; i < penalties.length; i++) {
                     if (penalties[i].standing_penalty().block_list() || penalties[i].standing_penalty().id() == 20 /* ALERT_NOTE */) {
+                        msg += '<dt>';
                         msg += obj.OpenILS.data.hash.aou[ penalties[i].org_unit() ].shortname() + ' : ' + penalties[i].standing_penalty().label() + '<br/>';
+                        msg += '</dt><dd>';
+                        msg += penalties[i].note();
+                        msg += '</dd>';
                     }
                 }
+                if (penalties.length > 0) { msg += '</dl>'; }
                 var holds = params.holds_summary;
                 if (holds.ready && holds.ready > 0) {
                     msg += $("patronStrings").getFormattedString('staff.patron.display.init.holds_ready', [holds.ready]);

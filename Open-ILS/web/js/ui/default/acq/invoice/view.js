@@ -472,11 +472,19 @@ function addInvoiceEntry(entry) {
 
     nodeByName('detach', row).onclick = function() {
         var cost = widgetRegistry.acqie[entry.id()].cost_billed.getFormattedValue();
+        var idents = [];
+        dojo.forEach(['isbn', 'upc', 'issn'], 
+            function(ident) { 
+                var val = liMarcAttr(entry.lineitem(), ident);
+                if(val) idents.push(val); 
+            }
+        );
+
         var msg = dojo.string.substitute(
             localeStrings.INVOICE_CONFIRM_ENTRY_DETACH, [
                 cost || 0,
-                liMarcAttr(lineitem, 'title'),
-                liMarcAttr(lineitem, 'author'),
+                liMarcAttr(entry.lineitem(), 'title'),
+                liMarcAttr(entry.lineitem(), 'author'),
                 idents.join(',')
             ]
         );

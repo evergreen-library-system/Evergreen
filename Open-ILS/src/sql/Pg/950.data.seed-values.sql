@@ -955,9 +955,11 @@ INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES
     (9, 6, 5, 'BM1', oils_i18n_gettext(9, 'Example Bookmobile 1', 'aou', 'name'));
 SELECT SETVAL('actor.org_unit_id_seq'::TEXT, 100);
 
-INSERT INTO actor.org_address VALUES (DEFAULT,DEFAULT,DEFAULT,1,'123 Main St.',NULL,'Anywhere',NULL,'GA','US','30303');
+INSERT INTO actor.org_address (org_unit, street1, city, state, country, post_code)
+SELECT id, '123 Main St.', 'Anywhere', 'GA', 'US', '30303'
+FROM actor.org_unit;
 
-UPDATE actor.org_unit SET holds_address = 1, ill_address = 1, billing_address = 1, mailing_address = 1;
+UPDATE actor.org_unit SET holds_address = id, ill_address = id, billing_address = id, mailing_address = id;
 
 INSERT INTO config.billing_type (id, name, owner) VALUES
 	( 1, oils_i18n_gettext(1, 'Overdue Materials', 'cbt', 'name'), 1);
@@ -1258,7 +1260,7 @@ INSERT INTO permission.perm_list VALUES
     (277,'UPDATE_VOLUME_NOTE', oils_i18n_gettext(277,'FIXME: Need description for UPDATE_VOLUME_NOTE', 'ppl', 'description')),
     (278,'UPDATE_VR_FORMAT', oils_i18n_gettext(278,'FIXME: Need description for UPDATE_VR_FORMAT', 'ppl', 'description')),
     (279,'UPDATE_XML_TRANSFORM', oils_i18n_gettext(279,'FIXME: Need description for UPDATE_XML_TRANSFORM', 'ppl', 'description')),
-    (280,'MERGE_BIB_RECORDS', oils_i18n_gettext(280,'FIXME: Need description for MERGE_BIB_RECORDS', 'ppl', 'description')),
+    (280,'MERGE_BIB_RECORDS', oils_i18n_gettext(280,'Allow a user to merge bibliographic records and associated assets', 'ppl', 'description')),
     (281,'UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', oils_i18n_gettext(281,'FIXME: Need description for UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF', 'ppl', 'description')),
     (282,'CREATE_ACQ_FUNDING_SOURCE', oils_i18n_gettext(282,'FIXME: Need description for CREATE_ACQ_FUNDING_SOURCE', 'ppl', 'description')),
     (283,'CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF', oils_i18n_gettext(283,'FIXME: Need description for CREATE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF', 'ppl', 'description')),
@@ -1379,7 +1381,17 @@ INSERT INTO permission.perm_list VALUES
     (390, 'OVERRIDE_HOLD_HAS_LOCAL_COPY', oils_i18n_gettext( 390, 'Allow a user to override the circ.holds.hold_has_copy_at.block setting', 'ppl', 'description' ))
     ,(391, 'UPDATE_PICKUP_LIB_FROM_TRANSIT', oils_i18n_gettext( 391, 'Allow a user to change the pickup and transit destination for a captured hold item already in transit', 'ppl', 'description' ))
     ,(392, 'COPY_NEEDED_FOR_HOLD.override', oils_i18n_gettext( 392, 'Allow a user to force renewal of an item that could fulfill a hold request', 'ppl', 'description' ))
+    ,(393, 'MERGE_AUTH_RECORDS', oils_i18n_gettext( 393, 'Allow a user to merge authority records together', 'ppl', 'description' ))
+    ,(394, 'ISSUANCE_HOLDS', oils_i18n_gettext( 394, 'Allow a user to place holds on serials issuances', 'ppl', 'description' ))
+    ,(395, 'VIEW_CREDIT_CARD_PROCESSING', oils_i18n_gettext( 395, 'View org unit settings related to credit card processing', 'ppl', 'description' ))
+    ,(396, 'ADMIN_CREDIT_CARD_PROCESSING', oils_i18n_gettext( 396, 'Update org unit settings related to credit card processing', 'ppl', 'description' ))
+    ,(397, 'ADMIN_SERIAL_CAPTION_PATTERN', oils_i18n_gettext(397, 'Create/update/delete serial caption and pattern objects', 'ppl', 'description'))
+    ,(398, 'ADMIN_SERIAL_SUBSCRIPTION', oils_i18n_gettext(398, 'Create/update/delete serial subscription objects', 'ppl', 'description'))
+    ,(399, 'ADMIN_SERIAL_DISTRIBUTION', oils_i18n_gettext(399, 'Create/update/delete serial distribution objects', 'ppl', 'description'))
+    ,(400, 'ADMIN_SERIAL_STREAM', oils_i18n_gettext(400, 'Create/update/delete serial stream objects', 'ppl', 'description'))
+    ,(401, 'RECEIVE_SERIAL', oils_i18n_gettext(401, 'Receive serial items', 'ppl', 'description'))
 ;
+
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
@@ -1514,6 +1526,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SE
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_MFHD_RECORD'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'DELETE_MFHD_RECORD'), 1, false);
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'UPDATE_RECORD'), 1, false);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (4, (SELECT id FROM permission.perm_list WHERE code = 'MERGE_AUTH_RECORDS'), 1, false);
 
 -- Add basic circulation permissions to the Circulators group
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (5, (SELECT id FROM permission.perm_list WHERE code = 'CREATE_TRANSACTION'), 0, false);
@@ -1688,7 +1701,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.hold_stalling.soft',
   'Holds: Soft stalling interval',
-  'How long to wait before allowing remote items to be opportunisticaly captured for a hold.  Example "5 days"',
+  'How long to wait before allowing remote items to be opportunistically captured for a hold.  Example "5 days"',
   'interval' ),
 
 ( 'circ.hold_stalling_hard',
@@ -1718,12 +1731,12 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.item_checkout_history.max',
   'Maximum previous checkouts displayed',
-  'This is maximum number of previous circulations the staff client will display when investigating item details',
+  'This is the maximum number of previous circulations the staff client will display when investigating item details',
   'integer' ),
 
 ( 'circ.reshelving_complete.interval',
   'Change reshelving status interval',
-  'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples "1 day", "6 hours"',
+  'Amount of time to wait before changing an item from "reshelving" status to "available".  Examples: "1 day", "6 hours"',
   'interval' ),
 
 ( 'circ.holds.default_estimated_wait_interval',
@@ -1738,7 +1751,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.selfcheck.patron_login_timeout',
   'Selfcheck: Patron Login Timeout (in seconds)',
-  'Number of seconds of inactivity before the patron is logged out of the selfcheck interfacer',
+  'Number of seconds of inactivity before the patron is logged out of the selfcheck interface',
   'integer' ),
 
 ( 'circ.selfcheck.alert.popup',
@@ -1966,6 +1979,36 @@ INSERT into config.org_unit_setting_type
     'Credit card processing: PayPal test mode',
     '',
     'bool' ),
+('credit.processor.payflowpro.enabled',
+    'Credit card processing: Enable PayflowPro payments',
+    'This is NOT the same thing as the settings labeled with just "PayPal."',
+    'bool'
+),
+('credit.processor.payflowpro.login',
+    'Credit card processing: PayflowPro login/merchant ID',
+    'Often the same thing as the PayPal manager login',
+    'string'
+),
+('credit.processor.payflowpro.password',
+    'Credit card processing: PayflowPro password',
+    'PayflowPro password',
+    'string'
+),
+('credit.processor.payflowpro.testmode',
+    'Credit card processing: PayflowPro test mode',
+    'Do not really process transactions, but stay in test mode - uses pilot-payflowpro.paypal.com instead of the usual host',
+    'bool'
+),
+('credit.processor.payflowpro.vendor',
+    'Credit card processing: PayflowPro vendor',
+    'Often the same thing as the login',
+    'string'
+),
+('credit.processor.payflowpro.partner',
+    'Credit card processing: PayflowPro partner',
+    'Often "PayPal" or "VeriSign", sometimes others',
+    'string'
+),
 
 ( 'ui.admin.work_log.max_entries',
     oils_i18n_gettext('ui.admin.work_log.max_entries', 'GUI: Work Log: Maximum Actions Logged', 'coust', 'label'),
@@ -2000,8 +2043,24 @@ INSERT into config.org_unit_setting_type
 ( 'circ.password_reset_request_throttle',
     oils_i18n_gettext('circ.password_reset_request_throttle', 'Circulation: Maximum concurrently active self-serve password reset requests', 'coust', 'label'),
     oils_i18n_gettext('circ.password_reset_request_throttle', 'Prevent the creation of new self-serve password reset requests until the number of active requests drops back below this number.', 'coust', 'description'),
-    'string')
+    'string'),
+
+( 'opac.fully_compressed_serial_holdings',
+    'OPAC: Use fully compressed serial holdings',
+    'Show fully compressed serial holdings for all libraries at and below
+    the current context unit',
+    'bool')
 ;
+
+UPDATE config.org_unit_setting_type
+    SET view_perm = (SELECT id FROM permission.perm_list
+        WHERE code = 'VIEW_CREDIT_CARD_PROCESSING' LIMIT 1)
+    WHERE name LIKE 'credit.processor%' AND view_perm IS NULL;
+
+UPDATE config.org_unit_setting_type
+    SET update_perm = (SELECT id FROM permission.perm_list
+        WHERE code = 'ADMIN_CREDIT_CARD_PROCESSING' LIMIT 1)
+    WHERE name LIKE 'credit.processor%' AND update_perm IS NULL;
 
 -- 0234.data.org-setting-ui.circ.suppress_checkin_popups.sql
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
@@ -2215,7 +2274,7 @@ INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, ident )
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (12, 'publisher',oils_i18n_gettext(12, 'Publisher', 'vqbrad', 'description'),'//*[@tag="260"]/*[@code="b"][1]');
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath, remove ) VALUES (13, 'pubdate',oils_i18n_gettext(13, 'Publication Date', 'vqbrad', 'description'),'//*[@tag="260"]/*[@code="c"][1]',$r$\D$r$);
 INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (14, 'edition',oils_i18n_gettext(14, 'Edition', 'vqbrad', 'description'),'//*[@tag="250"]/*[@code="a"][1]');
-INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (15, 'item_barcode',oils_i18n_gettext(15, 'Item Barcode', 'vqbrad', 'description'),'//*[@tag="852p"]/*[@code="a"][1]');
+INSERT INTO vandelay.bib_attr_definition ( id, code, description, xpath ) VALUES (15, 'item_barcode',oils_i18n_gettext(15, 'Item Barcode', 'vqbrad', 'description'),'//*[@tag="852"]/*[@code="p"][1]');
 SELECT SETVAL('vandelay.bib_attr_definition_id_seq'::TEXT, 100);
 
 INSERT INTO vandelay.import_item_attr_definition (
@@ -3370,7 +3429,7 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
   [% END %]
   <tr>
     <td/><td/><td/><td/>
-    <td>Sub Total</td>
+    <td>Subtotal</td>
     <td>[% subtotal %]</td>
   </tr>
   </tbody>
@@ -3534,7 +3593,7 @@ Dear [% user.family_name %], [% user.first_given_name %]
 
 You requested hold(s) on the following item(s), but unfortunately
 we have not been able to fulfill your request after a considerable
-length of time.  If you would still like to recieve these items,
+length of time.  If you would still like to receive these items,
 no action is required.
 
 [% FOR hold IN target %]
@@ -4154,13 +4213,13 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
     'hold_request.cancel.expire_holds_shelf',
     'ahr',
-    'A hold is cancelled becuase it was on the holds shelf too long'
+    'A hold is cancelled because it was on the holds shelf too long'
 );
 
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
     'hold_request.cancel.staff',
     'ahr',
-    'A hold is cancelled becuase it was cancelled by staff'
+    'A hold is cancelled because it was cancelled by staff'
 );
 
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
@@ -4267,7 +4326,7 @@ INSERT INTO config.index_normalizer (name, description, func, param_count) VALUE
 
 INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
 	'Replace',
-	'Replace all occurances of first parameter in the string with the second parameter.',
+	'Replace all occurences of first parameter in the string with the second parameter.',
 	'replace',
 	2
 );
@@ -4368,7 +4427,7 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
     VALUES (
         'circ.holds.uncancel.reset_request_time',
         'Holds: Reset request time on un-cancel',
-        'When a holds is uncanceled, reset the request time to push it to the end of the queue',
+        'When a hold is uncanceled, reset the request time to push it to the end of the queue',
         'bool'
     );
 
@@ -4417,7 +4476,7 @@ INSERT INTO action_trigger.reactor (module,description) VALUES
 (   'ApplyPatronPenalty',
     oils_i18n_gettext(
         'ApplyPatronPenalty',
-        'Applies the conifigured penalty to a patron.  Required named environment variables are "user", which refers to the user object, and "context_org", which refers to the org_unit object that acts as the focus for the penalty.',
+        'Applies the configured penalty to a patron.  Required named environment variables are "user", which refers to the user object, and "context_org", which refers to the org_unit object that acts as the focus for the penalty.',
         'atreact',
         'description'
     )
@@ -5575,7 +5634,7 @@ INSERT INTO acq.invoice_item_type (code,name) VALUES ('PRO',oils_i18n_gettext('P
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('SHP',oils_i18n_gettext('SHP', 'Shipping Charge', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('HND',oils_i18n_gettext('HND', 'Handling Charge', 'aiit', 'name'));
 INSERT INTO acq.invoice_item_type (code,name) VALUES ('ITM',oils_i18n_gettext('ITM', 'Non-library Item', 'aiit', 'name'));
-INSERT INTO acq.invoice_item_type (code,name) VALUES ('SUB',oils_i18n_gettext('SUB', 'Searial Subscription', 'aiit', 'name'));
+INSERT INTO acq.invoice_item_type (code,name) VALUES ('SUB',oils_i18n_gettext('SUB', 'Serial Subscription', 'aiit', 'name'));
 
 INSERT INTO acq.invoice_method (code,name) VALUES ('EDI',oils_i18n_gettext('EDI', 'EDI', 'acqim', 'name'));
 INSERT INTO acq.invoice_method (code,name) VALUES ('PPR',oils_i18n_gettext('PPR', 'Paper', 'acqit', 'name'));
@@ -6216,6 +6275,30 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
         'bool'
     );
 
+INSERT INTO config.global_flag (name, label, enabled)
+    VALUES (
+        'circ.holds.usr_not_requestor',
+        oils_i18n_gettext(
+            'circ.holds.usr_not_requestor',
+            'Holds: When testing hold matrix matchpoints, use the profile group of the receiving user instead of that of the requestor (affects staff-placed holds)',
+            'cgf',
+            'label'
+        ),
+        TRUE
+    );
+
+INSERT INTO config.global_flag (name, label, enabled)
+    VALUES (
+        'circ.holds.empty_issuance_ok',
+        oils_i18n_gettext(
+            'circ.holds.empty_issuance_ok',
+            'Holds: Allow holds on empty issuances',
+            'cgf',
+            'label'
+        ),
+        TRUE
+    );
+
 INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
     VALUES (
         'ingest.disable_authority_linking',
@@ -6447,13 +6530,13 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, f
 VALUES (
     'serial.prev_issuance_copy_location',
     oils_i18n_gettext(
-        'setting.name',
+        'serial.prev_issuance_copy_location',
         'Serials: Previous Issuance Copy Location',
         'coust',
         'label'
     ),
     oils_i18n_gettext(
-        'setting.name',
+        'serial.prev_issuance_copy_location',
         'When a serial issuance is received, copies (units) of the previous issuance will be automatically moved into the configured shelving location',
         'coust',
         'descripton'
@@ -6466,13 +6549,13 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, f
 VALUES (
     'cat.default_classification_scheme',
     oils_i18n_gettext(
-        'setting.name',
+        'cat.default_classification_scheme',
         'Cataloging: Default Classification Scheme',
         'coust',
         'label'
     ),
     oils_i18n_gettext(
-        'setting.name',
+        'cat.default_classification_scheme',
         'Defines the default classification scheme for new call numbers: 1 = Generic; 2 = Dewey; 3 = LC',
         'coust',
         'descripton'
@@ -6620,4 +6703,311 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
             'description'),
         'integer'
 );
+
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
+    VALUES
+        ('circ.holds.alert_if_local_avail',
+         oils_i18n_gettext('circ.holds.alert_if_local_avail',
+             'Holds: Local available alert', 'coust', 'label'),
+         oils_i18n_gettext('circ.holds.alert_if_local_avail',
+            'If local copy is available, alert the person making the hold', 'coust', 'description'),
+         'bool'),
+
+        ('circ.holds.deny_if_local_avail',
+         oils_i18n_gettext('circ.holds.deny_if_local_avail',
+            'Holds: Local available block', 'coust', 'label'),
+         oils_i18n_gettext('circ.holds.deny_if_local_avail',
+            'If local copy is available, deny the creation of the hold', 'coust', 'description'),
+         'bool'),
+
+        ('circ.holds.clear_shelf.no_capture_holds',
+        oils_i18n_gettext( 'circ.holds.clear_shelf.no_capture_holds',
+            'Holds: Bypass hold capture during clear shelf process', 'coust', 'label'),
+        oils_i18n_gettext( 'circ.holds.clear_shelf.no_capture_holds',
+            'During the clear shelf process, avoid capturing new holds on cleared items.', 'coust', 'description'),
+        'bool')
+;
+
+-- 0379.data.org-setting-circ.missing_pieces.copy_status.sql
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, fm_class ) VALUES (
+        'circ.missing_pieces.copy_status',
+        oils_i18n_gettext(
+            'circ.missing_pieces.copy_status',
+            'Circulation: Item Status for Missing Pieces', 
+            'coust', 
+            'label'),
+        oils_i18n_gettext(
+            'circ.missing_pieces.copy_status',
+            'This is the Item Status to use for items that have been marked or scanned as having Missing Pieces.  In the absence of this setting, the Damaged status is used.',
+            'coust', 
+            'description'),
+        'link',
+        'ccs'
+);
+
+-- 0380.data.spine_label.sql Add spine label preferences
+INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
+    VALUES
+        ('cat.label.font.size',
+            oils_i18n_gettext('cat.label.font.size',
+                'Cataloging: Spine and pocket label font size', 'coust', 'label'),
+            oils_i18n_gettext('cat.label.font.size',
+                'Set the default font size for spine and pocket labels', 'coust', 'description'),
+            'integer'
+        )
+        ,('cat.label.font.family',
+            oils_i18n_gettext('cat.label.font.family',
+                'Cataloging: Spine and pocket label font family', 'coust', 'label'),
+            oils_i18n_gettext('cat.label.font.family',
+                'Set the preferred font family for spine and pocket labels. You can specify a list of fonts, separated by commas, in order of preference; the system will use the first font it finds with a matching name. For example, "Arial, Helvetica, serif".',
+                'coust', 'description'),
+            'string'
+        )
+        ,('cat.spine.line.width',
+            oils_i18n_gettext('cat.spine.line.width',
+                'Cataloging: Spine label line width', 'coust', 'label'),
+            oils_i18n_gettext('cat.spine.line.width',
+                'Set the default line width for spine labels in number of characters. This specifies the boundary at which lines must be wrapped.',
+                'coust', 'description'),
+            'integer'
+        )
+        ,('cat.spine.line.height',
+            oils_i18n_gettext('cat.spine.line.height',
+                'Cataloging: Spine label maximum lines', 'coust', 'label'),
+            oils_i18n_gettext('cat.spine.line.height',
+                'Set the default maximum number of lines for spine labels.',
+                'coust', 'description'),
+            'integer'
+        )
+        ,('cat.spine.line.margin',
+            oils_i18n_gettext('cat.spine.line.margin',
+                'Cataloging: Spine label left margin', 'coust', 'label'),
+            oils_i18n_gettext('cat.spine.line.margin',
+                'Set the left margin for spine labels in number of characters.',
+                'coust', 'description'),
+            'integer'
+        )
+        ,('cat.label.font.weight',
+            oils_i18n_gettext('cat.label.font.weight',
+                'Cataloging: Spine and pocket label font weight', 'coust', 'label'),
+            oils_i18n_gettext('cat.label.font.weight',
+                'Set the preferred font weight for spine and pocket labels. You can specify "normal", "bold", "bolder", or "lighter".',
+                'coust', 'description'),
+            'string'
+        )
+;
+
+INSERT INTO actor.org_unit_setting (org_unit, name, value) VALUES
+    (1, 'cat.spine.line.margin', 0)
+    ,(1, 'cat.spine.line.height', 9)
+    ,(1, 'cat.spine.line.width', 8)
+    ,(1, 'cat.label.font.family', '"monospace"')
+    ,(1, 'cat.label.font.size', 10)
+    ,(1, 'cat.label.font.weight', '"normal"')
+;
+
+-- 0383.data.org-setting-circ.do_not_tally_claims_returned.sql
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+        'circ.do_not_tally_claims_returned',
+        oils_i18n_gettext(
+            'circ.do_not_tally_claims_returned',
+            'Circulation: Do not include outstanding Claims Returned circulations in lump sum tallies in Patron Display.', 
+            'coust', 
+            'label'),
+        oils_i18n_gettext(
+            'circ.do_not_tally_claims_returned',
+            'In the Patron Display interface, the number of total active circulations for a given patron is presented in the Summary sidebar and underneath the Items Out navigation button.  This setting will prevent Claims Returned circulations from counting toward these tallies.',
+            'coust', 
+            'description'),
+        'bool'
+);
+
+-- 0384.data.hold_pull_list_template.sql
+
+INSERT INTO action_trigger.hook (key,core_type,description,passive) 
+    VALUES (   
+        'ahr.format.pull_list',
+        'ahr', 
+        oils_i18n_gettext(
+            'ahr.format.pull_list',
+            'Format holds pull list for printing',
+            'ath',
+            'description'
+        ), 
+        FALSE
+    );
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        group_field,
+        granularity,
+        template
+    ) VALUES (
+        35,
+        TRUE,
+        1,
+        'Holds Pull List',
+        'ahr.format.pull_list',
+        'NOOP_True',
+        'ProcessTemplate',
+        'pickup_lib',
+        'print-on-demand',
+$$
+[%- USE date -%]
+<style>
+    table { border-collapse: collapse; } 
+    td { padding: 5px; border-bottom: 1px solid #888; } 
+    th { font-weight: bold; }
+</style>
+[% 
+    # Sort the holds into copy-location buckets
+    # In the main print loop, sort each bucket by callnumber before printing
+    SET holds_list = [];
+    SET loc_data = [];
+    SET current_location = target.0.current_copy.location.id;
+    FOR hold IN target;
+        IF current_location != hold.current_copy.location.id;
+            SET current_location = hold.current_copy.location.id;
+            holds_list.push(loc_data);
+            SET loc_data = [];
+        END;
+        SET hold_data = {
+            'hold' => hold,
+            'callnumber' => hold.current_copy.call_number.label
+        };
+        loc_data.push(hold_data);
+    END;
+    holds_list.push(loc_data)
+%]
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Shelving Location</th>
+            <th>Call Number</th>
+            <th>Barcode</th>
+            <th>Patron</th>
+        </tr>
+    </thead>
+    <tbody>
+    [% FOR loc_data IN holds_list  %]
+        [% FOR hold_data IN loc_data.sort('callnumber') %]
+            [% 
+                SET hold = hold_data.hold;
+                SET copy_data = helpers.get_copy_bib_basics(hold.current_copy.id);
+            %]
+            <tr>
+                <td>[% copy_data.title | truncate %]</td>
+                <td>[% copy_data.author | truncate %]</td>
+                <td>[% hold.current_copy.location.name %]</td>
+                <td>[% hold.current_copy.call_number.label %]</td>
+                <td>[% hold.current_copy.barcode %]</td>
+                <td>[% hold.usr.card.barcode %]</td>
+            </tr>
+        [% END %]
+    [% END %]
+    <tbody>
+</table>
+$$
+);
+
+INSERT INTO action_trigger.environment (
+        event_def,
+        path
+    ) VALUES
+        (35, 'current_copy.location'),
+        (35, 'current_copy.call_number'),
+        (35, 'usr.card'),
+        (35, 'pickup_lib')
+;
+
+-- 0386.data.org-setting-patron-clone-copy-addr.sql
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+        'circ.patron_edit.clone.copy_address',
+        oils_i18n_gettext(
+            'circ.patron_edit.clone.copy_address',
+            'Patron Registration: Cloned patrons get address copy',
+            'coust', 
+            'label'
+        ),
+        oils_i18n_gettext(
+            'circ.patron_edit.clone.copy_address',
+            'In the Patron editor, copy addresses from the cloned user instead of linking directly to the address',
+            'coust', 
+            'description'
+        ),
+        'bool'
+);
+
+-- 0388.data.org-setting-ui.patron.editor_defaults.sql
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype, fm_class ) VALUES (
+        'ui.patron.default_ident_type',
+        oils_i18n_gettext(
+            'ui.patron.default_ident_type',
+            'GUI: Default Ident Type for Patron Registration', 
+            'coust', 
+            'label'),
+        oils_i18n_gettext(
+            'ui.patron.default_ident_type',
+            'This is the default Ident Type for new users in the patron editor.',
+            'coust', 
+            'description'),
+        'link',
+        'cit'
+);
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+        'ui.patron.default_country',
+        oils_i18n_gettext(
+            'ui.patron.default_country',
+            'GUI: Default Country for New Addresses in Patron Editor', 
+            'coust', 
+            'label'),
+        oils_i18n_gettext(
+            'ui.patron.default_country',
+            'This is the default Country for new addresses in the patron editor.',
+            'coust', 
+            'description'),
+        'string'
+);
+
+-- 0392.data.org-setting-ui.patron.editor_address_requirement.sql
+
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+        'ui.patron.registration.require_address',
+        oils_i18n_gettext(
+            'ui.patron.registration.require_address',
+            'GUI: Require at least one address for Patron Registration', 
+            'coust', 
+            'label'),
+        oils_i18n_gettext(
+            'ui.patron.registration.require_address',
+            'Enforces a requirement for having at least one address for a patron during registration.',
+            'coust', 
+            'description'),
+        'bool'
+);
+
+-- 0412.data.trigger.validator.HoldIsCancelled.sql
+
+INSERT INTO action_trigger.validator (module, description) VALUES (
+    'HoldIsCancelled',
+    oils_i18n_gettext(
+        'HoldIsCancelled',
+        'Check whether a hold request is cancelled.',
+        'atval',
+        'description'
+    )
+);
+
 

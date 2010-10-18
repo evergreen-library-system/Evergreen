@@ -444,9 +444,16 @@ sub record_copy_status_location_count {
 	my $cl_table = asset::copy_location->table;
 	my $cs_table = config::copy_status->table;
 
+	# FIXME using oils_i18n_xlate here is exposing a hitherto unexposed
+	# implementation detail of json_query; doing it this way because
+	# json_query currently doesn't grok joining a function to tables
 	my $sql = <<"	SQL";
 
-		SELECT	cp.circ_lib, cn.label, cl.name, cp.status, count(cp.id)
+		SELECT	cp.circ_lib,
+				cn.label, 
+				oils_i18n_xlate('asset.copy_location', 'acpl', 'name', 'id', cl.id::TEXT, ?),
+				cp.status,
+				count(cp.id)
 		  FROM	$cp_table cp,
 		  	$cn_table cn,
 			$cl_table cl,
@@ -465,7 +472,8 @@ sub record_copy_status_location_count {
 	SQL
 
 	my $sth = biblio::record_entry->db_Main->prepare_cached($sql);
-	$sth->execute($ou, $depth, "$rec" );
+	my $ses_locale = $client->session ? $client->session->session_locale : 'en-US';
+	$sth->execute($ses_locale, $ou, $depth, "$rec" );
 
 	my %data = ();
 	for my $row (@{$sth->fetchall_arrayref}) {

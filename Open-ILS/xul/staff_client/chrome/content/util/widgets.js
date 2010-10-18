@@ -113,6 +113,7 @@ util.widgets.make_menulist = function( items, dvalue ) {
     var menulist = document.createElement('menulist');
     var menupopup = document.createElement('menupopup'); menulist.appendChild(menupopup);
     for (var i = 0; i < items.length; i++) {
+        if (typeof items[i] == 'undefined') { continue; }
         var label = items[i][0]; var value = items[i][1]; var disabled = items[i][2]; var indent = items[i][3];
         if (indent) {
             for (var j = 0; j < Number(indent); j++) {

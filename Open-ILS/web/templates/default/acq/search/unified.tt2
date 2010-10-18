@@ -1,10 +1,10 @@
 [% WRAPPER "default/base.tt2" %]
 [% ctx.page_title = "Acquisitions Search" %]
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/search/unified.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/search/invoice.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/search/picklist.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/search/purchase_order.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/unified.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/invoice.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/picklist.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/search/purchase_order.js"></script>
 <div id="acq-unified-body" class="hidden">
     <div id="acq-unified-heading">
         <span id="acq-unified-heading-actual">Acquisitions Search</span>
@@ -89,6 +89,11 @@
         </div>
     </div>
     <div id="acq-unified-results-purchase_order" class="hidden">
+        <div class="acq-unified-result-specific-controls">
+            <button onclick="dijit.byId('acq-unified-po-grid').refresh();">
+                Refresh Grid
+            </button>
+        </div>
         <table
             id="acq-unified-po-grid"
             autoHeight="true"
@@ -111,6 +116,10 @@
     </div>
     <div id="acq-unified-results-picklist" class="hidden">
         <div class="acq-unified-result-specific-controls">
+            <button dojoType="dijit.form.Button"
+                onClick="dijit.byId('acq-unified-pl-grid').refresh();">
+                Refresh Grid
+            </button>
             <div dojoType="dijit.form.DropDownButton">
                 <span>New Selection List</span>
                 <div dojoType="dijit.TooltipDialog"
@@ -201,6 +210,9 @@
     </div>
     <div id="acq-unified-results-invoice" class="hidden">
         <div class="acq-unified-result-specific-controls">
+            <button onclick="dijit.byId('acq-unified-inv-grid').refresh();">
+                Refresh Grid
+            </button>
             <button onclick="printInvoiceVouchers();">
                 Print Selected Invoices
             </button>
@@ -217,7 +229,7 @@
             <thead>
                 <tr>
                     <th field="inv_ident" get="getInvIdent"
-                        formatter="formatInvIdent">Vendor Invoice ID</th>
+                        formatter="formatInvIdent"></th>
                 </tr>
             </thead>
         </table>
@@ -229,5 +241,6 @@
         [% INCLUDE "default/acq/common/li_table_pager.tt2" %]
         [% INCLUDE "default/acq/common/li_table.tt2" %]
     </div>
+    <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog'/>
 </div>
 [% END %]

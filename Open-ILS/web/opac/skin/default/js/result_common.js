@@ -93,6 +93,12 @@ function resultCollectSearchIds( type, method, handler ) {
 	_debug('Search args: ' + js2JSON(args));
 	_debug('Raw query: ' + getTerm());
 
+	var atomfeed = "/opac/extras/opensearch/1.1/" + findOrgUnit(args.org_unit).shortname() + "/atom-full/" + getStype() + '?searchTerms=' + getTerm();
+	if (args.facets) { atomfeed += ' ' + args.facets; }
+	if (sort) { atomfeed += '&searchSort=' + sort; }
+	if (sortdir) { atomfeed += '&searchSortDir=' + sortdir; }
+	dojo.create('link', {"rel":"alternate", "href":atomfeed, "type":"application/atom+xml"}, dojo.query('head')[0]);
+
 	var req = new Request(method, args, getTerm(), 1);
 	req.callback(handler);
 	req.send();
@@ -433,6 +439,7 @@ function unhideGoogleBooksLink (data) {
 		zero based position the record should have in the display table */
 function resultDisplayRecord(rec, pos, is_mr) {
 
+    fieldmapper.IDL.load(['mvr']);
 	if(rec == null) rec = new mvr(); /* so the page won't die if there was an error */
 	recordsHandled++;
 	recordsCache.push(rec);

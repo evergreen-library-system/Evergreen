@@ -1,0 +1,3 @@
+dimple.png derived from:
+http://mxr.mozilla.org/mozilla-central/source/toolkit/themes/pinstripe/global/splitter/dimple.png
+Mozilla Public License/GPL/GLPL

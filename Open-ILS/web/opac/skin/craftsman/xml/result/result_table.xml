@@ -141,6 +141,11 @@
 		config.names.result.format_pic = 'format_pic'
 	</script>
 
+    <!-- ChiliFresh setup -->
+    <script language='javascript' type='text/javascript'>
+        var chilifresh = false;
+    </script>
+
 </div>
 
 

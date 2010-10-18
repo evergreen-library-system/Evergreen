@@ -96,7 +96,7 @@
                                         <menuitem id="payment_type_menuitem1" label="&staff.patron.bills_overlay.cash.label;" value="cash_payment"/>
                                         <menuitem id="payment_type_menuitem2" label="&staff.patron.bills_overlay.check.label;" value="check_payment"/>
                                         <menuitem id="payment_type_menuitem3" label="&staff.patron.bills_overlay.credit_card.label;" value="credit_card_payment"/>
-                                        <menuitem id="payment_type_menuitem4" label="&staff.patron.bills_overlay.patron_credit.label;" value="credit_payment" />
+                                        <menuitem id="payment_type_menuitem4" class="hide_patron_credit" label="&staff.patron.bills_overlay.patron_credit.label;" value="credit_payment" />
                                         <menuitem id="payment_type_menuitem5" label="&staff.patron.bills_overlay.word.label;" value="work_payment"/>
                                         <menuitem id="payment_type_menuitem6" label="&staff.patron.bills_overlay.forgive.label;" value="forgive_payment"/>
                                         <menuitem id="payment_type_menuitem7" label="&staff.patron.bills_overlay.goods.label;" value="goods_payment"/>
@@ -169,7 +169,7 @@
                         <label value='&staff.patron.bill_interface.voided_this_session.label;' class="emphasis1"/><label id="currently_voided" value="0.00"/>
                     </hbox>
                     <hbox><label value='&staff.patron.bill_interface.change_due_upon_payment.label;' class="big_emphasis1"/><label id="change_due" value="0.00" class="big_emphasis1"/></hbox>
-                    <checkbox id="convert_change_to_credit" label="&staff.patron.bills_overlay.convert_change_to_credit.label;" accesskey="&staff.patron.bills_overlay.convert_change_to_credit.accesskey;"/>
+                    <checkbox id="convert_change_to_credit" class="hide_patron_credit" label="&staff.patron.bills_overlay.convert_change_to_credit.label;" accesskey="&staff.patron.bills_overlay.convert_change_to_credit.accesskey;"/>
                 </vbox>
                 <spacer flex="1"/>
                 <grid>

@@ -35,8 +35,8 @@ SHELL=/bin/bash
 
 LIBJS=js-1.7.0
 LIBJS_PERL=JavaScript-SpiderMonkey-0.20
-LIBJS_URL=ftp://ftp.mozilla.org/pub/mozilla.org/js/$(LIBJS).tar.gz
-LIBJS_PERL_URL=ftp://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJS_PERL).tar.gz
+LIBJS_URL=http://ftp.mozilla.org/pub/mozilla.org/js/$(LIBJS).tar.gz
+LIBJS_PERL_URL=http://mirror.datapipe.net/pub/CPAN/authors/id/T/TB/TBUSCH/$(LIBJS_PERL).tar.gz
 # used for installing libjs lib and header files
 JS_INSTALL_PREFIX=/usr/
 
@@ -91,6 +91,7 @@ DEBS =  \
 	libnet-server-perl\
 	libnspr4-dev\
 	libole-storage-lite-perl\
+	libparent-perl \
 	libpq-dev\
 	libreadline5-dev\
 	libspreadsheet-writeexcel-perl\
@@ -141,7 +142,6 @@ CENTOS = \
 	perl-Text-CSV
 
 CENTOS_PERL = \
-	Class::DBI::Frozen::301 \
 	Encode \
 	DBIx::ContextualFetch \
 	Getopt::Long \
@@ -163,6 +163,7 @@ FEDORA_13_RPMS = \
 	mod_ssl \
 	ncurses-devel \
 	ncurses-libs \
+	perl-parent \
 	perl-Business-CreditCard \
 	perl-Business-ISBN \
 	perl-Business-ISBN-Data \
@@ -186,7 +187,6 @@ FEDORA_13_RPMS = \
 FEDORA_13_CPAN = \
 	Business::OnlinePayment \
 	Business::OnlinePayment::AuthorizeNet \
-	Class::DBI::Frozen::301 \
 	MARC::Record
 
 PGSQL_84_RPMS = \
@@ -224,6 +224,7 @@ DEB_APACHE_DISMODS = \
 # Chronically unpackaged CPAN modules
 CPAN_MODULES = \
     Business::EDI \
+    Library::CallNumber::LC \
     Net::uFTP \
     Net::Z3950::Simple2ZOOM \
     SRU
@@ -246,30 +247,34 @@ CPAN_MODULES_MARC = \
     MARC::File::XML \
     Net::Z3950::ZOOM
 
+CPAN_MODULES_FORCE = \
+	Class::DBI::Frozen::301
+
 # ----------------------------------------------------------------------------
 
 all: 
 	@echo "please specify an OS" && exit 0
 
 # these should be the same for any distro
-install: install_cpan install_js_sm install_libdbi install_library_callnumber_lc
+install: install_cpan install_js_sm install_libdbi install_cpan_force
 
-centos: install_centos_pgsql install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe
-rhel: install_redhat_pgsql install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe
+centos: install_centos_pgsql centos_like
+rhel: install_redhat_pgsql centos_like
+centos_like: install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe install_cpan_force
 
-fedora-13: install_fedora_13_rpms install_cpan install_cpan_fedora install_cpan_marc install_spidermonkey install_library_callnumber_lc
+fedora-13: install_fedora_13_rpms install_cpan install_cpan_fedora install_cpan_marc install_spidermonkey install_cpan_force
 
 debian-lenny: lenny generic_debian install_cpan_more install_cpan_safe
 debian-squeeze: squeeze generic_debian
 lenny: install_pgsql_client_debs_83 install_extra_debs
 squeeze: install_pgsql_client_debs_84  install_extra_debs_squeeze
-generic_debian:  install_debs install debian_sys_config
+generic_debian:  install_debs install debian_sys_config install_cpan_force
 
 ubuntu-hardy: hardy generic_ubuntu
 ubuntu-lucid: lucid generic_ubuntu
 hardy: install_pgsql_client_debs_82 install_yaz install_cpan_marc install_extra_encode
 lucid: install_pgsql_client_debs_84 install_extra_debs
-generic_ubuntu: install_debs install debian_sys_config install_cpan_more install_cpan_safe
+generic_ubuntu: install_debs install debian_sys_config install_cpan_more install_cpan_safe install_cpan_force
 
 # - COMMON TARGETS ---------------------------------------------------------
 
@@ -283,6 +288,11 @@ install_cpan_more:
 # Install the CPAN modules for MARC functionality
 install_cpan_marc: 
 	for m in $(CPAN_MODULES_MARC); do perl -MCPAN -e "install \"$$m\";"; done
+
+install_cpan_force:
+	for m in $(CPAN_MODULES_FORCE); do \
+		echo "force install $$m" | perl -MCPAN -e shell ;\
+	done
 
 # Install the Safe Perl module
 # Is this really unpackaged everywhere except for Fedora?
@@ -331,10 +341,6 @@ install_libdbi:
 	cd $(LIBDBI) && ./configure --disable-docs && make all install
 	cd $(LIBDBI_DRIVERS) && ./configure  \
 		--disable-docs --with-pgsql --enable-libdbi && make all install  
-
-install_library_callnumber_lc:
-	if [ ! -d Library-CallNumber-LC ]; then svn checkout http://library-callnumber-lc.googlecode.com/svn/trunk/perl/Library-CallNumber-LC; fi;
-	cd Library-CallNumber-LC && perl Makefile.PL && make install
 
 clean:
 	make -C $(LIBDBI) clean

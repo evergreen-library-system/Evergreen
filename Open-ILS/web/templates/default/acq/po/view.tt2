@@ -1,11 +1,14 @@
 [% WRAPPER 'default/base.tt2' %]
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"> </script>
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/po/view_po.js'> </script>
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/po/item_table.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"></script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/po/view_po.js'></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/po/item_table.js"></script>
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
     <div>
         <div id='oils-acq-picklist-header'>
-            <big>Purchase Order</big>
+            <big>
+                Purchase Order (<span id="acq-po-view-state"></span>) 
+            </big>
+            <span id='acq-po-activated-on' class='hidden'></span>
             <table class="oils-generic-table acq-po-info">
                 <tr>
                     <th>ID</th><td><a id="acq-po-view-id"/></td>
@@ -67,6 +70,14 @@
                             <span>Link Invoice</span>
                             <div dojoType="dijit.TooltipDialog"
                                 id="acq-po-link-invoice">
+                                <script type="dojo/connect" event="onOpen">
+                                    if (!invoiceLinkDialogManager) {
+                                        invoiceLinkDialogManager =
+                                            new InvoiceLinkDialogManager(
+                                                "po", PO
+                                            );
+                                    }
+                                </script>
                                 [% INCLUDE "default/acq/common/inv_dialog.tt2"
                                     which = "po" %]
                             </div>
@@ -96,9 +107,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>Status</th>
-                    <td><span id="acq-po-view-state"/></td>
-                    <td>
+                    <td colspan='3'>
                         <a class="hidden" id="acq-po-split" href="javascript:void(0);"
                             onclick="if (confirm(localeStrings.CONFIRM_SPLIT_PO)) splitPo();">
                             Split Order by Lineitems

@@ -2,7 +2,7 @@
 <script type="text/javascript"> var fundingSourceID = [% ctx.page_args.0 %]; </script>
 
 <!-- load the page-specific JS -->
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/financial/view_funding_source.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/view_funding_source.js'> </script>
 
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>Funding Source Details</div>

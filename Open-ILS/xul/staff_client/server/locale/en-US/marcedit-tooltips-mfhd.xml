@@ -1,0 +1,2063 @@
+<?xml version="1.0"?>
+<fields>
+  <field tag="001" repeatable="false">
+    <name>Control Number</name>
+    <description>System control number assigned to a separate holdings record. For interchange purposes, documentation of the structure of the control number and input conventions are provided to exchange partners by the organization initiating the interchange.</description>
+  </field>
+  <field tag="003" repeatable="false">
+    <name>Control Number Identifier</name>
+    <description>MARC code for the agency whose system control number is present in field 001 (Control Number).</description>
+  </field>
+  <field tag="004" repeatable="false">
+    <name>Control Number for Related Bibliographic Record</name>
+    <description>System control number of the MARC bibliographic record for which a separate holdings record was created.</description>
+  </field>
+  <field tag="005" repeatable="false">
+    <name>Date and Time of Latest Transaction</name>
+    <description>Sixteen characters that specify the date and time of the latest record transaction and serve as a version identifier for the record. They are recorded according to (ISO 8601). The date requires 8 numeric characters in the pattern (4 for the year, 2 for the month, and 2 for the day). The time requires 8 numeric characters in the pattern (2 for the hour, 2 for the minute, 2 for the second, and 2 for a decimal fraction of the second, including the decimal point)expressed in terms of the 24-hour (00-23) clock.</description>
+  </field>
+  <field tag="007" repeatable="false">
+    <name>Physical Description Fixed Field</name>
+    <description>Codes that describe the physical characteristics of the copy of the bibliographic item for which holdings are recorded. See the description of in the for complete character position definitions and the content designators defined for this field. The Category of material code (007/00) may be described textually in field 842 (Textual Physical Form Designator).</description>
+  </field>
+  <field tag="008" repeatable="false">
+    <name>Fixed-Length Data Elements-General Information</name>
+    <description>Thirty-two character positions (00-31) that contain data elements that provide coded information about the record. The data elements are positionally defined. Each defined character position must contain either a defined code or a fill character ( | ). The fill character is used when no attempt is made to supply a defined code for a specific character position.</description>
+  </field>
+  <field tag="010" repeatable="false">
+    <name>Library of Congress Control Number</name>
+    <description>Control number, assigned by the Library of Congress, of the related MARC bibliographic record for which a separate holdings record is made.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>LC control number</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>NUCMC control number</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Canceled or invalid LC control number</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="014" repeatable="true">
+    <name>Linkage Number</name>
+    <description>Control number, assigned by a bibliographic network, of a separate holdings record or its related bibliographic record for which a separate holdings record is made.</description>
+    <indicator position="1" value="0">
+      <description>Holdings record number</description>
+    </indicator>
+    <indicator position="1" value="1">
+      <description>Bibliographic record number</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Linkage number</description>
+    </subfield>
+    <subfield code="b" repeatable="false">
+      <description>Source of number</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Canceled or invalid linkage number</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+  </field>
+  <field tag="016" repeatable="true">
+    <name>National Bibliographic Agency Control Number</name>
+    <description>Control number, assigned by a national bibliographic agency other than the Library of Congress, of the related bibliographic record for which a separate holdings record is made.</description>
+    <indicator position="1" value="#">
+      <description>Library and Archives Canada</description>
+    </indicator>
+    <indicator position="1" value="7">
+      <description>Source specified in subfield $2</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Record control number</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Canceled or invalid control number</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Source</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="017" repeatable="true">
+    <name>Copyright or Legal Deposit Number</name>
+    <description>Copyright registration or legal deposit number for an item that was acquired by copyright or legal deposit.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Copyright or legal deposit number</description>
+    </indicator>
+    <indicator position="2" value="8">
+      <description>No display constant generated</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Copyright or legal deposit number</description>
+    </subfield>
+    <subfield code="b" repeatable="false">
+      <description>Assigning agency</description>
+    </subfield>
+    <subfield code="d" repeatable="false">
+      <description>Date</description>
+    </subfield>
+    <subfield code="i" repeatable="false">
+      <description>Display text</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Canceled/invalid copyright or legal deposit number</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Source</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="020" repeatable="true">
+    <name>International Standard Book Number</name>
+    <description>International Standard Book Number (ISBN) copied from subfield $a of field 020 (International Standard Book Number) of the MARC bibliographic record that represents the description of the item for which a separate holdings record is created.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>International Standard Book Number</description>
+    </subfield>
+    <subfield code="c" repeatable="false">
+      <description>Terms of availability</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Canceled/invalid ISBN</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="022" repeatable="true">
+    <name>International Standard Serial Number</name>
+    <description>International Standard Serial Number (ISSN) copied from subfield $a of field 022 (International Standard Serial Number) of the MARC bibliographic record that represents the description of the item for which a separate holdings record is created.</description>
+    <indicator position="1" value="#">
+      <description>No level specified</description>
+    </indicator>
+    <indicator position="1" value="0">
+      <description>Continuing resource of international interest</description>
+    </indicator>
+    <indicator position="1" value="1">
+      <description>Continuing resource not of international interest</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>International Standard Serial Number</description>
+    </subfield>
+    <subfield code="l" repeatable="false">
+      <description>ISSN-L</description>
+    </subfield>
+    <subfield code="m" repeatable="true">
+      <description>Canceled ISSN-L</description>
+    </subfield>
+    <subfield code="y" repeatable="true">
+      <description>Incorrect ISSN</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Canceled ISSN</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="024" repeatable="true">
+    <name>Other Standard Identifier</name>
+    <description>Standard number or code published on an item which cannot be accommodated in another field (e.g., field 020 (International Standard Book Number), 022 (International Standard Serial Number), 027 (Standard Technical Report Number)). The type of standard number or code is identified in the first indicator position or in subfield $2 (Source of number or code).</description>
+    <indicator position="1" value="0">
+      <description>International Standard Recording Code</description>
+    </indicator>
+    <indicator position="1" value="1">
+      <description>Universal Product Code</description>
+    </indicator>
+    <indicator position="1" value="2">
+      <description>International Standard Music Number</description>
+    </indicator>
+    <indicator position="1" value="3">
+      <description>International Article Number</description>
+    </indicator>
+    <indicator position="1" value="4">
+      <description>Serial Item and Contribution Identifier</description>
+    </indicator>
+    <indicator position="1" value="7">
+      <description>Source specified in subfield $2</description>
+    </indicator>
+    <indicator position="1" value="8">
+      <description>Unspecified type of standard number or code</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="2" value="0">
+      <description>No difference</description>
+    </indicator>
+    <indicator position="2" value="1">
+      <description>Difference</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Standard number or code</description>
+    </subfield>
+    <subfield code="c" repeatable="false">
+      <description>Terms of availability</description>
+    </subfield>
+    <subfield code="d" repeatable="false">
+      <description>Additional codes following the standard number or code</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Canceled/invalid standard number or code</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Source of number or code</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="027" repeatable="true">
+    <name>Standard Technical Report Number</name>
+    <description>International Standard Technical Report number (ISRN) or a Standard Technical Report Number (STRN) copied from subfield $a of field 027 of the MARC bibliographic record that represents the description of the item for which a separate holdings record is created.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Standard Technical Report Number</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Canceled/invalid STRN</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="030" repeatable="false">
+    <name>CODEN Designation</name>
+    <description>CODEN designation, a unique identifier for scientific and technical periodical titles, copied from field 030 of the MARC bibliographic record that represents the description of the item for which a separate holdings record is created.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>CODEN</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Canceled/invalid CODEN</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="035" repeatable="true">
+    <name>System Control Number</name>
+    <description>Control number, assigned by any agency, of a holdings record or a related bibliographic record for which a separate holdings record is made.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>System control number</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Canceled or invalid control number</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="040" repeatable="false">
+    <name>Record Source</name>
+    <description>MARC code for or the name of the organization(s) that created the original, assigned MARC content designation and transcribed the record into machine-readable form, or modified an existing MARC record. These data and the code in 008/39 (Cataloging source) specify the parties responsible for the content, content designation, and transcription of the bibliographic record.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Original cataloging agency</description>
+    </subfield>
+    <subfield code="b" repeatable="false">
+      <description>Language of cataloging</description>
+    </subfield>
+    <subfield code="c" repeatable="false">
+      <description>Transcribing agency</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Modifying agency</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="066" repeatable="false">
+    <name>Character Sets Present</name>
+    <description>Used in records encoded with characters from sets other than ISO 10646 (or Unicode) to specify the character sets for data content that are present in the record. A detailed description of the standard escape sequences used in MARC records is provided in .</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Primary G0 character set</description>
+    </subfield>
+    <subfield code="b" repeatable="false">
+      <description>Primary G1 character set</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Alternate G0 or G1 character set</description>
+    </subfield>
+  </field>
+  <field tag="337" repeatable="true">
+    <name>Media Type</name>
+    <description>Media type reflects the general type of intermediation device required to view, play, run, etc., the content of a resource. Used as an alternative to or in addition to the coded expression of Media type in field 007/00 (Category of material). Field 337 information enables indication of more specific media types and media types from various lists.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Media type term</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Media type code</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Source</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="338" repeatable="true">
+    <name>Carrier Type</name>
+    <description>Carrier type reflects the format of the storage medium and housing of a carrier in combination with the media type (which indicates the intermediation device required to view, play, run, etc., the content of a resource). Used as an alternative to or in addition to the coded expression of carrier type in field 007/01 (Specific material designation). Field 338 information enables indication of more specific carrier types and carrier types from various lists.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Carrier type term</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Source</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="506" repeatable="true">
+    <name>Restrictions on Access Note</name>
+    <description>Information about restrictions imposed on access to the described materials.</description>
+    <indicator position="1" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="1" value="0">
+      <description>No restrictions</description>
+    </indicator>
+    <indicator position="1" value="1">
+      <description>Restrictions apply</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Terms governing access</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Jurisdiction</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Physical access provisions</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Authorized users</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Authorization</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Standardized terminology for access restriction</description>
+    </subfield>
+    <subfield code="u" repeatable="true">
+      <description>Uniform Resource Identifier</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Source of term</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="5" repeatable="false">
+      <description>Institution to which field applies</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="538" repeatable="true">
+    <name>System Details Note</name>
+    <description>Technical information about an item, such as the presence or absence of certain kinds of codes; or the physical characteristics of a computer file, such as recording densities, parity, blocking factors, mode of access, software programming language, computer requirements, peripheral requirements, trade name or recording systems, number of lines of resolution, and modulation frequency. For sound and videorecordings, information about the trade name or recording system(s) (e.g., VHS), modulation frequency and number of lines of resolution may be included.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>System details note</description>
+    </subfield>
+    <subfield code="i" repeatable="false">
+      <description>Display text</description>
+    </subfield>
+    <subfield code="u" repeatable="true">
+      <description>Uniform Resource Identifier</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="5" repeatable="true">
+      <description>Institution to which field applies</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="541" repeatable="true">
+    <name>Immediate Source of Acquisition Note</name>
+    <description>Information on the immediate source of acquisition of the described materials. Used primarily for original or historical items or other archival collections.</description>
+    <indicator position="1" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="1" value="0">
+      <description>Private</description>
+    </indicator>
+    <indicator position="1" value="1">
+      <description>Not private</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Source of acquisition</description>
+    </subfield>
+    <subfield code="b" repeatable="false">
+      <description>Address</description>
+    </subfield>
+    <subfield code="c" repeatable="false">
+      <description>Method of acquisition</description>
+    </subfield>
+    <subfield code="d" repeatable="false">
+      <description>Date of acquisition</description>
+    </subfield>
+    <subfield code="e" repeatable="false">
+      <description>Accession number</description>
+    </subfield>
+    <subfield code="f" repeatable="false">
+      <description>Owner</description>
+    </subfield>
+    <subfield code="h" repeatable="false">
+      <description>Purchase price</description>
+    </subfield>
+    <subfield code="n" repeatable="true">
+      <description>Extent</description>
+    </subfield>
+    <subfield code="o" repeatable="true">
+      <description>Type of unit</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="5" repeatable="false">
+      <description>Institution to which field applies</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="561" repeatable="true">
+    <name>Ownership and Custodial History</name>
+    <description>Information concerning the ownership and custodial history of the described materials from the time of their creation to the time of their accessioning, including the time at which individual items or group of items were first brought together in their current arrangement or collation.</description>
+    <indicator position="1" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="1" value="0">
+      <description>Private</description>
+    </indicator>
+    <indicator position="1" value="1">
+      <description>Not private</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>History</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="5" repeatable="false">
+      <description>Institution to which field applies</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="562" repeatable="true">
+    <name>Copy and Version Identification Note</name>
+    <description>Information that distinguishes the copy(s) or version(s) of materials held by an archive or manuscript repository when more than one copy or version exists or could exist.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Identifying markings</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Copy identification</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Version identification</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Presentation format</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Number of copies</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="5" repeatable="false">
+      <description>Institution to which field applies</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="563" repeatable="true">
+    <name>Binding Information</name>
+    <description>Binding information intended primarily for use with antiquarian materials, rare books, and other special collections.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Binding note</description>
+    </subfield>
+    <subfield code="u" repeatable="true">
+      <description>Uniform Resource Identifier</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="5" repeatable="false">
+      <description>Institution to which field applies</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="583" repeatable="true">
+    <name>Action Note</name>
+    <description>Information about processing and reference or preservation actions related to the bibliographic item for which a separate holdings record is created. For those using the field to record preservation activities, a list of may be used and the authority for the terminology may be indicated in subfield $2.</description>
+    <indicator position="1" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="1" value="0">
+      <description>Private</description>
+    </indicator>
+    <indicator position="1" value="1">
+      <description>Not private</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Action</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Action identification</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Time/date of action</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Action interval</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Contingency for action</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Authorization</description>
+    </subfield>
+    <subfield code="h" repeatable="true">
+      <description>Jurisdiction</description>
+    </subfield>
+    <subfield code="i" repeatable="true">
+      <description>Method of action</description>
+    </subfield>
+    <subfield code="j" repeatable="true">
+      <description>Site of action</description>
+    </subfield>
+    <subfield code="k" repeatable="true">
+      <description>Action agent</description>
+    </subfield>
+    <subfield code="l" repeatable="true">
+      <description>Status</description>
+    </subfield>
+    <subfield code="n" repeatable="true">
+      <description>Extent</description>
+    </subfield>
+    <subfield code="o" repeatable="true">
+      <description>Type of unit</description>
+    </subfield>
+    <subfield code="u" repeatable="true">
+      <description>Uniform Resource Identifier</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Nonpublic note</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Public note</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Source of term</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="5" repeatable="false">
+      <description>Institution to which field applies</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="841" repeatable="false">
+    <name>Holdings Coded Data Values</name>
+    <description>When holdings data are embedded in a bibliographic record, this field contains certain coded information that would apply to the holdings information if it were in a separate holdings record in field 008 (Fixed-Length Data Elements).</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Type of record</description>
+    </subfield>
+    <subfield code="b" repeatable="false">
+      <description>Fixed-length data elements</description>
+    </subfield>
+    <subfield code="e" repeatable="false">
+      <description>Encoding level</description>
+    </subfield>
+  </field>
+  <field tag="842" repeatable="false">
+    <name>Textual Physical Form Designator</name>
+    <description>Designation in textual form of the physical form of the item. The physical form designator specifies the physical medium or form, or type of material of the unit held. The general physical form designator in coded form is recorded in field 007 (Physical Description Fixed Field).</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Textual physical form designator</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="843" repeatable="true">
+    <name>Reproduction Note</name>
+    <description>Description of an item that is a reproduction of original materials. Used when an institution chooses to have the main portion of the bibliographic record description reflect the original and the notes in field 843 reflect information about the copy.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Type of reproduction</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Place of reproduction</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Agency responsible for reproduction</description>
+    </subfield>
+    <subfield code="d" repeatable="false">
+      <description>Date of reproduction</description>
+    </subfield>
+    <subfield code="e" repeatable="false">
+      <description>Physical description of reproduction</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Series statement of reproduction</description>
+    </subfield>
+    <subfield code="m" repeatable="true">
+      <description>Dates of publication and/or sequential designation of issues reproduced</description>
+    </subfield>
+    <subfield code="n" repeatable="true">
+      <description>Note about reproduction</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="5" repeatable="false">
+      <description>Institution to which field applies</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="7" repeatable="false">
+      <description>Fixed-length data elements of reproduction</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="844" repeatable="false">
+    <name>Name of Unit</name>
+    <description>Bibliographic title or a supplied designation describing a basic bibliographic unit, supplementary material, or an index. A supplement or index designation used as a caption is contained in fields 853-855 (Captions and Pattern), subfield $a-$h (Enumeration captions).</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Name of unit</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="845" repeatable="true">
+    <name>Terms Governing Use and Reproduction Note</name>
+    <description>Terms governing the use and reproduction of a bibliographic item when the holding organization will lend (008/20, Lending policy, code a) and reproduce (008/21, Reproduction policy, code a) the item.</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Terms governing use and reproduction</description>
+    </subfield>
+    <subfield code="b" repeatable="false">
+      <description>Jurisdiction</description>
+    </subfield>
+    <subfield code="c" repeatable="false">
+      <description>Authorization</description>
+    </subfield>
+    <subfield code="d" repeatable="false">
+      <description>Authorized users</description>
+    </subfield>
+    <subfield code="u" repeatable="true">
+      <description>Uniform Resource Identifier</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="5" repeatable="false">
+      <description>Institution to which field applies</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="852" repeatable="true">
+    <name>Location</name>
+    <description>Organization holding the item or from which it is available. May also contain detailed information about how to locate the item in a collection.</description>
+    <indicator position="1" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="1" value="0">
+      <description>Library of Congress classification</description>
+    </indicator>
+    <indicator position="1" value="1">
+      <description>Dewey Decimal classification</description>
+    </indicator>
+    <indicator position="1" value="2">
+      <description>National Library of Medicine classification</description>
+    </indicator>
+    <indicator position="1" value="3">
+      <description>Superintendent of Documents classification</description>
+    </indicator>
+    <indicator position="1" value="4">
+      <description>Shelving control number</description>
+    </indicator>
+    <indicator position="1" value="5">
+      <description>Title</description>
+    </indicator>
+    <indicator position="1" value="6">
+      <description>Shelved separately</description>
+    </indicator>
+    <indicator position="1" value="7">
+      <description>Source specified in subfield $2</description>
+    </indicator>
+    <indicator position="1" value="8">
+      <description>Other scheme</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="2" value="0">
+      <description>Not enumeration</description>
+    </indicator>
+    <indicator position="2" value="1">
+      <description>Primary enumeration</description>
+    </indicator>
+    <indicator position="2" value="2">
+      <description>Alternative enumeration</description>
+    </indicator>
+    <subfield code="a" repeatable="false">
+      <description>Location</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Sublocation or collection</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Shelving location</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Former shelving location</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Address</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Coded location qualifier</description>
+    </subfield>
+    <subfield code="g" repeatable="true">
+      <description>Non-coded location qualifier</description>
+    </subfield>
+    <subfield code="h" repeatable="false">
+      <description>Classification part</description>
+    </subfield>
+    <subfield code="i" repeatable="true">
+      <description>Item part</description>
+    </subfield>
+    <subfield code="j" repeatable="false">
+      <description>Shelving control number</description>
+    </subfield>
+    <subfield code="k" repeatable="true">
+      <description>Call number prefix</description>
+    </subfield>
+    <subfield code="l" repeatable="false">
+      <description>Shelving form of title</description>
+    </subfield>
+    <subfield code="m" repeatable="true">
+      <description>Call number suffix</description>
+    </subfield>
+    <subfield code="n" repeatable="false">
+      <description>Country code</description>
+    </subfield>
+    <subfield code="p" repeatable="false">
+      <description>Piece designation</description>
+    </subfield>
+    <subfield code="q" repeatable="false">
+      <description>Piece physical condition</description>
+    </subfield>
+    <subfield code="s" repeatable="true">
+      <description>Copyright article-fee code</description>
+    </subfield>
+    <subfield code="t" repeatable="false">
+      <description>Copy number</description>
+    </subfield>
+    <subfield code="u" repeatable="true">
+      <description>Uniform Resource Identifier</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Nonpublic note</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Public note</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Source of classification or shelving scheme</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="false">
+      <description>Sequence number</description>
+    </subfield>
+  </field>
+  <field tag="853" repeatable="true">
+    <name>Captions and Pattern - Basic Bibliographic Unit</name>
+    <description>Captions that identify the enumeration and chronology levels and codes that define the publication pattern of the holdings described in the 863-865 Enumeration and Chronology fields. Any related 853-855 and 863-865 fields are linked by a number in subfield $8 (Field link and sequence number).</description>
+    <indicator position="1" value="0">
+      <description>Cannot compress or expand</description>
+    </indicator>
+    <indicator position="1" value="1">
+      <description>Can compress but not expand</description>
+    </indicator>
+    <indicator position="1" value="2">
+      <description>Can compress or expand</description>
+    </indicator>
+    <indicator position="1" value="3">
+      <description>Unknown</description>
+    </indicator>
+    <indicator position="2" value="0">
+      <description>Captions verified; all levels present</description>
+    </indicator>
+    <indicator position="2" value="1">
+      <description>Captions verified; all levels may not be present</description>
+    </indicator>
+    <indicator position="2" value="2">
+      <description>Captions unverified; all levels present</description>
+    </indicator>
+    <indicator position="2" value="3">
+      <description>Captions unverified; all levels may not be present</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>First level of enumeration</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Second level of enumeration</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Third level of enumeration</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Fourth level of enumeration</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Fifth level of enumeration</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Sixth level of enumeration</description>
+    </subfield>
+    <subfield code="g" repeatable="true">
+      <description>Alternative numbering scheme, first level of enumeration</description>
+    </subfield>
+    <subfield code="h" repeatable="true">
+      <description>Alternative numbering scheme, second level of enumeration</description>
+    </subfield>
+    <subfield code="i" repeatable="true">
+      <description>First level of chronology</description>
+    </subfield>
+    <subfield code="j" repeatable="true">
+      <description>Second level of chronology</description>
+    </subfield>
+    <subfield code="k" repeatable="true">
+      <description>Third level of chronology</description>
+    </subfield>
+    <subfield code="l" repeatable="true">
+      <description>Fourth level of chronology</description>
+    </subfield>
+    <subfield code="m" repeatable="true">
+      <description>Alternative numbering scheme, chronology</description>
+    </subfield>
+    <subfield code="n" repeatable="true">
+      <description>Pattern note</description>
+    </subfield>
+    <subfield code="o" repeatable="true">
+      <description>Type of unit</description>
+    </subfield>
+    <subfield code="p" repeatable="true">
+      <description>Number of pieces per issuance</description>
+    </subfield>
+    <subfield code="t" repeatable="true">
+      <description>Copy</description>
+    </subfield>
+    <subfield code="u" repeatable="true">
+      <description>Bibliographic units per next higher level</description>
+    </subfield>
+    <subfield code="v" repeatable="true">
+      <description>Numbering continuity</description>
+    </subfield>
+    <subfield code="w" repeatable="true">
+      <description>Frequency</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Calendar change</description>
+    </subfield>
+    <subfield code="y" repeatable="true">
+      <description>Regularity pattern</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Numbering scheme</description>
+    </subfield>
+    <subfield code="2" repeatable="true">
+      <description>Source of caption abbreviation</description>
+    </subfield>
+    <subfield code="3" repeatable="true">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="true">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="854" repeatable="true">
+    <name>Captions and Pattern - Supplementary Material</name>
+    <description>Captions that identify the enumeration and chronology levels and codes that define the publication pattern of the holdings described in the 863-865 Enumeration and Chronology fields. Any related 853-855 and 863-865 fields are linked by a number in subfield $8 (Field link and sequence number).</description>
+    <indicator position="1" value="0">
+      <description>Cannot compress or expand</description>
+    </indicator>
+    <indicator position="1" value="1">
+      <description>Can compress but not expand</description>
+    </indicator>
+    <indicator position="1" value="2">
+      <description>Can compress or expand</description>
+    </indicator>
+    <indicator position="1" value="3">
+      <description>Unknown</description>
+    </indicator>
+    <indicator position="2" value="0">
+      <description>Captions verified; all levels present</description>
+    </indicator>
+    <indicator position="2" value="1">
+      <description>Captions verified; all levels may not be present</description>
+    </indicator>
+    <indicator position="2" value="2">
+      <description>Captions unverified; all levels present</description>
+    </indicator>
+    <indicator position="2" value="3">
+      <description>Captions unverified; all levels may not be present</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>First level of enumeration</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Second level of enumeration</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Third level of enumeration</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Fourth level of enumeration</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Fifth level of enumeration</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Sixth level of enumeration</description>
+    </subfield>
+    <subfield code="g" repeatable="true">
+      <description>Alternative numbering scheme, first level of enumeration</description>
+    </subfield>
+    <subfield code="h" repeatable="true">
+      <description>Alternative numbering scheme, second level of enumeration</description>
+    </subfield>
+    <subfield code="i" repeatable="true">
+      <description>First level of chronology</description>
+    </subfield>
+    <subfield code="j" repeatable="true">
+      <description>Second level of chronology</description>
+    </subfield>
+    <subfield code="k" repeatable="true">
+      <description>Third level of chronology</description>
+    </subfield>
+    <subfield code="l" repeatable="true">
+      <description>Fourth level of chronology</description>
+    </subfield>
+    <subfield code="m" repeatable="true">
+      <description>Alternative numbering scheme, chronology</description>
+    </subfield>
+    <subfield code="n" repeatable="true">
+      <description>Pattern note</description>
+    </subfield>
+    <subfield code="o" repeatable="true">
+      <description>Type of unit</description>
+    </subfield>
+    <subfield code="p" repeatable="true">
+      <description>Number of pieces per issuance</description>
+    </subfield>
+    <subfield code="t" repeatable="true">
+      <description>Copy</description>
+    </subfield>
+    <subfield code="u" repeatable="true">
+      <description>Bibliographic units per next higher level</description>
+    </subfield>
+    <subfield code="v" repeatable="true">
+      <description>Numbering continuity</description>
+    </subfield>
+    <subfield code="w" repeatable="true">
+      <description>Frequency</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Calendar change</description>
+    </subfield>
+    <subfield code="y" repeatable="true">
+      <description>Regularity pattern</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Numbering scheme</description>
+    </subfield>
+    <subfield code="2" repeatable="true">
+      <description>Source of caption abbreviation</description>
+    </subfield>
+    <subfield code="3" repeatable="true">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="true">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="855" repeatable="true">
+    <name>Captions and Pattern - Indexes</name>
+    <description>Captions that identify the enumeration and chronology levels and codes that define the publication pattern of the holdings described in the 863-865 Enumeration and Chronology fields. Any related 853-855 and 863-865 fields are linked by a number in subfield $8 (Field link and sequence number).</description>
+    <indicator position="1" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>First level of enumeration</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Second level of enumeration</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Third level of enumeration</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Fourth level of enumeration</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Fifth level of enumeration</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Sixth level of enumeration</description>
+    </subfield>
+    <subfield code="g" repeatable="true">
+      <description>Alternative numbering scheme, first level of enumeration</description>
+    </subfield>
+    <subfield code="h" repeatable="true">
+      <description>Alternative numbering scheme, second level of enumeration</description>
+    </subfield>
+    <subfield code="i" repeatable="true">
+      <description>First level of chronology</description>
+    </subfield>
+    <subfield code="j" repeatable="true">
+      <description>Second level of chronology</description>
+    </subfield>
+    <subfield code="k" repeatable="true">
+      <description>Third level of chronology</description>
+    </subfield>
+    <subfield code="l" repeatable="true">
+      <description>Fourth level of chronology</description>
+    </subfield>
+    <subfield code="m" repeatable="true">
+      <description>Alternative numbering scheme, chronology</description>
+    </subfield>
+    <subfield code="n" repeatable="true">
+      <description>Pattern note</description>
+    </subfield>
+    <subfield code="o" repeatable="true">
+      <description>Type of unit</description>
+    </subfield>
+    <subfield code="p" repeatable="true">
+      <description>Number of pieces per issuance</description>
+    </subfield>
+    <subfield code="t" repeatable="true">
+      <description>Copy</description>
+    </subfield>
+    <subfield code="u" repeatable="true">
+      <description>Bibliographic units per next higher level</description>
+    </subfield>
+    <subfield code="v" repeatable="true">
+      <description>Numbering continuity</description>
+    </subfield>
+    <subfield code="w" repeatable="true">
+      <description>Frequency</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Calendar change</description>
+    </subfield>
+    <subfield code="y" repeatable="true">
+      <description>Regularity pattern</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Numbering scheme</description>
+    </subfield>
+    <subfield code="2" repeatable="true">
+      <description>Source of caption abbreviation</description>
+    </subfield>
+    <subfield code="3" repeatable="true">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="true">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="856" repeatable="true">
+    <name>Electronic Location and Access</name>
+    <description>Information required to locate an electronic resource. The information identifies the electronic location containing the resource or from which it is available. It also contains information needed to retrieve the resource by the access method identified in the first indicator position. The relationship of the electronic location and access information in field 856 to the resource identified by the record as a whole is identified by the second indicator. The information contained in this field is sufficient to allow for the electronic transfer of a file, subscription to an electronic journal, or logon to an electronic resource. In some cases, only unique data elements are recorded which allow the user to access a locator table on a remote host containing the remaining information needed to access the resource.</description>
+    <indicator position="1" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="1" value="0">
+      <description>Email</description>
+    </indicator>
+    <indicator position="1" value="1">
+      <description>FTP</description>
+    </indicator>
+    <indicator position="1" value="2">
+      <description>Remote login (Telnet)</description>
+    </indicator>
+    <indicator position="1" value="3">
+      <description>Dial-up</description>
+    </indicator>
+    <indicator position="1" value="4">
+      <description>HTTP</description>
+    </indicator>
+    <indicator position="1" value="7">
+      <description>Method specified in subfield $2</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="2" value="0">
+      <description>Resource</description>
+    </indicator>
+    <indicator position="2" value="1">
+      <description>Version of resource</description>
+    </indicator>
+    <indicator position="2" value="2">
+      <description>Related resource</description>
+    </indicator>
+    <indicator position="2" value="8">
+      <description>No display constant generated</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Host name</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Access number</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Compression information</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Path</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Electronic name</description>
+    </subfield>
+    <subfield code="h" repeatable="false">
+      <description>Processor of request</description>
+    </subfield>
+    <subfield code="i" repeatable="true">
+      <description>Instruction</description>
+    </subfield>
+    <subfield code="j" repeatable="false">
+      <description>Bits per second</description>
+    </subfield>
+    <subfield code="k" repeatable="false">
+      <description>Password</description>
+    </subfield>
+    <subfield code="l" repeatable="false">
+      <description>Logon</description>
+    </subfield>
+    <subfield code="m" repeatable="true">
+      <description>Contact for access assistance</description>
+    </subfield>
+    <subfield code="n" repeatable="false">
+      <description>Name of location of host</description>
+    </subfield>
+    <subfield code="o" repeatable="false">
+      <description>Operating system</description>
+    </subfield>
+    <subfield code="p" repeatable="false">
+      <description>Port</description>
+    </subfield>
+    <subfield code="q" repeatable="false">
+      <description>Electronic format type</description>
+    </subfield>
+    <subfield code="r" repeatable="false">
+      <description>Settings</description>
+    </subfield>
+    <subfield code="s" repeatable="true">
+      <description>File size</description>
+    </subfield>
+    <subfield code="t" repeatable="true">
+      <description>Terminal emulation</description>
+    </subfield>
+    <subfield code="u" repeatable="true">
+      <description>Uniform Resource Identifier</description>
+    </subfield>
+    <subfield code="v" repeatable="true">
+      <description>Hours access method available</description>
+    </subfield>
+    <subfield code="w" repeatable="true">
+      <description>Record control number</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Nonpublic note</description>
+    </subfield>
+    <subfield code="y" repeatable="true">
+      <description>Link text</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Public note</description>
+    </subfield>
+    <subfield code="2" repeatable="false">
+      <description>Access method</description>
+    </subfield>
+    <subfield code="3" repeatable="false">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="863" repeatable="true">
+    <name>Enumeration and Chronology - Basic Bibliographic Unit</name>
+    <description>Description of the holdings of a bibliographic item in the collections of the reporting organization. The captions that identify the enumeration and chronology levels and the codes that define the publication pattern of the holdings are contained in the Captions and Pattern fields (853-855) that are linked to the 863-865 fields by a number in subfield $8 (Field link and sequence number).</description>
+    <indicator position="1" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="1" value="3">
+      <description>Holdings level 3</description>
+    </indicator>
+    <indicator position="1" value="4">
+      <description>Holdings level 4</description>
+    </indicator>
+    <indicator position="1" value="5">
+      <description>Holdings level 4 with piece designation</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="2" value="0">
+      <description>Compressed</description>
+    </indicator>
+    <indicator position="2" value="1">
+      <description>Uncompressed</description>
+    </indicator>
+    <indicator position="2" value="2">
+      <description>Compressed, use textual display</description>
+    </indicator>
+    <indicator position="2" value="3">
+      <description>Uncompressed, use textual display</description>
+    </indicator>
+    <indicator position="2" value="4">
+      <description>Item(s) not published</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>First level of enumeration</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Second level of enumeration</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Third level of enumeration</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Fourth level of enumeration</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Fifth level of enumeration</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Sixth level of enumeration</description>
+    </subfield>
+    <subfield code="g" repeatable="true">
+      <description>Alternative numbering scheme, first level of enumeration</description>
+    </subfield>
+    <subfield code="h" repeatable="true">
+      <description>Alternative numbering scheme, second level of enumeration</description>
+    </subfield>
+    <subfield code="i" repeatable="true">
+      <description>First level of chronology</description>
+    </subfield>
+    <subfield code="j" repeatable="true">
+      <description>Second level of chronology</description>
+    </subfield>
+    <subfield code="k" repeatable="true">
+      <description>Third level of chronology</description>
+    </subfield>
+    <subfield code="l" repeatable="true">
+      <description>Fourth level of chronology</description>
+    </subfield>
+    <subfield code="m" repeatable="true">
+      <description>Alternative numbering scheme, chronology</description>
+    </subfield>
+    <subfield code="n" repeatable="true">
+      <description>Converted Gregorian year</description>
+    </subfield>
+    <subfield code="o" repeatable="true">
+      <description>Type of unit</description>
+    </subfield>
+    <subfield code="p" repeatable="true">
+      <description>Piece designation</description>
+    </subfield>
+    <subfield code="q" repeatable="true">
+      <description>Piece physical condition</description>
+    </subfield>
+    <subfield code="s" repeatable="true">
+      <description>Copyright article-fee code</description>
+    </subfield>
+    <subfield code="t" repeatable="true">
+      <description>Copy number</description>
+    </subfield>
+    <subfield code="v" repeatable="true">
+      <description>Issuing date</description>
+    </subfield>
+    <subfield code="w" repeatable="true">
+      <description>Break indicator</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Nonpublic note</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Public note</description>
+    </subfield>
+    <subfield code="6" repeatable="true">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="864" repeatable="true">
+    <name>Enumeration and Chronology - Supplementary Material</name>
+    <description>Description of the holdings of a bibliographic item in the collections of the reporting organization. The captions that identify the enumeration and chronology levels and the codes that define the publication pattern of the holdings are contained in the Captions and Pattern fields (853-855) that are linked to the 863-865 fields by a number in subfield $8 (Field link and sequence number).</description>
+    <indicator position="1" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="1" value="3">
+      <description>Holdings level 3</description>
+    </indicator>
+    <indicator position="1" value="4">
+      <description>Holdings level 4</description>
+    </indicator>
+    <indicator position="1" value="5">
+      <description>Holdings level 4 with piece designation</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="2" value="0">
+      <description>Compressed</description>
+    </indicator>
+    <indicator position="2" value="1">
+      <description>Uncompressed</description>
+    </indicator>
+    <indicator position="2" value="2">
+      <description>Compressed, use textual display</description>
+    </indicator>
+    <indicator position="2" value="3">
+      <description>Uncompressed, use textual display</description>
+    </indicator>
+    <indicator position="2" value="4">
+      <description>Item(s) not published</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>First level of enumeration</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Second level of enumeration</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Third level of enumeration</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Fourth level of enumeration</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Fifth level of enumeration</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Sixth level of enumeration</description>
+    </subfield>
+    <subfield code="g" repeatable="true">
+      <description>Alternative numbering scheme, first level of enumeration</description>
+    </subfield>
+    <subfield code="h" repeatable="true">
+      <description>Alternative numbering scheme, second level of enumeration</description>
+    </subfield>
+    <subfield code="i" repeatable="true">
+      <description>First level of chronology</description>
+    </subfield>
+    <subfield code="j" repeatable="true">
+      <description>Second level of chronology</description>
+    </subfield>
+    <subfield code="k" repeatable="true">
+      <description>Third level of chronology</description>
+    </subfield>
+    <subfield code="l" repeatable="true">
+      <description>Fourth level of chronology</description>
+    </subfield>
+    <subfield code="m" repeatable="true">
+      <description>Alternative numbering scheme, chronology</description>
+    </subfield>
+    <subfield code="n" repeatable="true">
+      <description>Converted Gregorian year</description>
+    </subfield>
+    <subfield code="o" repeatable="true">
+      <description>Type of unit</description>
+    </subfield>
+    <subfield code="p" repeatable="true">
+      <description>Piece designation</description>
+    </subfield>
+    <subfield code="q" repeatable="true">
+      <description>Piece physical condition</description>
+    </subfield>
+    <subfield code="s" repeatable="true">
+      <description>Copyright article-fee code</description>
+    </subfield>
+    <subfield code="t" repeatable="true">
+      <description>Copy number</description>
+    </subfield>
+    <subfield code="v" repeatable="true">
+      <description>Issuing date</description>
+    </subfield>
+    <subfield code="w" repeatable="true">
+      <description>Break indicator</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Nonpublic note</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Public note</description>
+    </subfield>
+    <subfield code="6" repeatable="true">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="865" repeatable="true">
+    <name>Enumeration and Chronology - Indexes</name>
+    <description>Description of the holdings of a bibliographic item in the collections of the reporting organization. The captions that identify the enumeration and chronology levels and the codes that define the publication pattern of the holdings are contained in the Captions and Pattern fields (853-855) that are linked to the 863-865 fields by a number in subfield $8 (Field link and sequence number).</description>
+    <indicator position="1" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="1" value="4">
+      <description>Holdings level 4</description>
+    </indicator>
+    <indicator position="1" value="5">
+      <description>Holdings level 4 with piece designation</description>
+    </indicator>
+    <indicator position="2" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="2" value="1">
+      <description>Uncompressed</description>
+    </indicator>
+    <indicator position="2" value="3">
+      <description>Uncompressed, use textual display</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>First level of enumeration</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Second level of enumeration</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Third level of enumeration</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Fourth level of enumeration</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Fifth level of enumeration</description>
+    </subfield>
+    <subfield code="f" repeatable="true">
+      <description>Sixth level of enumeration</description>
+    </subfield>
+    <subfield code="g" repeatable="true">
+      <description>Alternative numbering scheme, first level of enumeration</description>
+    </subfield>
+    <subfield code="h" repeatable="true">
+      <description>Alternative numbering scheme, second level of enumeration</description>
+    </subfield>
+    <subfield code="i" repeatable="true">
+      <description>First level of chronology</description>
+    </subfield>
+    <subfield code="j" repeatable="true">
+      <description>Second level of chronology</description>
+    </subfield>
+    <subfield code="k" repeatable="true">
+      <description>Third level of chronology</description>
+    </subfield>
+    <subfield code="l" repeatable="true">
+      <description>Fourth level of chronology</description>
+    </subfield>
+    <subfield code="m" repeatable="true">
+      <description>Alternative numbering scheme, chronology</description>
+    </subfield>
+    <subfield code="n" repeatable="true">
+      <description>Converted Gregorian year</description>
+    </subfield>
+    <subfield code="o" repeatable="true">
+      <description>Type of unit</description>
+    </subfield>
+    <subfield code="p" repeatable="true">
+      <description>Piece designation</description>
+    </subfield>
+    <subfield code="q" repeatable="true">
+      <description>Piece physical condition</description>
+    </subfield>
+    <subfield code="s" repeatable="true">
+      <description>Copyright article-fee code</description>
+    </subfield>
+    <subfield code="t" repeatable="true">
+      <description>Copy number</description>
+    </subfield>
+    <subfield code="v" repeatable="true">
+      <description>Issuing date</description>
+    </subfield>
+    <subfield code="w" repeatable="true">
+      <description>Break indicator</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Nonpublic note</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Public note</description>
+    </subfield>
+    <subfield code="6" repeatable="true">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="866" repeatable="true">
+    <name>Textual Holdings - Basic Bibliographic Unit</name>
+    <description>Textual description which may include both the captions and enumeration and chronology for the holdings of a bibliographic item in the collections of the reporting organization. These fields are normally not used in holdings for single-part items. They may be used the coded 853-855 Captions and Pattern and 863-865 Enumeration and Chronology fields for multipart and serial items when those fields cannot be used adequately to describe the holdings. The 866-868 fields may also be used an Enumeration and Chronology field and any related Captions and Pattern field to record and generate an alternative display for all or part of the enumeration and chronology and captions and pattern fields.</description>
+    <indicator position="1" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="1" value="3">
+      <description>Holdings level 3</description>
+    </indicator>
+    <indicator position="1" value="4">
+      <description>Holdings level 4</description>
+    </indicator>
+    <indicator position="1" value="5">
+      <description>Holdings level 4 with piece designation</description>
+    </indicator>
+    <indicator position="2" value="0">
+      <description>Non-standard</description>
+    </indicator>
+    <indicator position="2" value="1">
+      <description>ANSI/NISO Z39.71 or ISO 10324</description>
+    </indicator>
+    <indicator position="2" value="2">
+      <description>ANSI Z39.42</description>
+    </indicator>
+    <indicator position="2" value="7">
+      <description>Source specified in subfield $2</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Textual holdings</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Nonpublic note</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Public note</description>
+    </subfield>
+    <subfield code="2" repeatable="true">
+      <description>Source of notation</description>
+    </subfield>
+    <subfield code="6" repeatable="true">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="867" repeatable="true">
+    <name>Textual Holdings - Supplementary Material</name>
+    <description>Textual description which may include both the captions and enumeration and chronology for the holdings of a bibliographic item in the collections of the reporting organization. These fields are normally not used in holdings for single-part items. They may be used the coded 853-855 Captions and Pattern and 863-865 Enumeration and Chronology fields for multipart and serial items when those fields cannot be used adequately to describe the holdings. The 866-868 fields may also be used an Enumeration and Chronology field and any related Captions and Pattern field to record and generate an alternative display for all or part of the enumeration and chronology and captions and pattern fields.</description>
+    <indicator position="1" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="1" value="3">
+      <description>Holdings level 3</description>
+    </indicator>
+    <indicator position="1" value="4">
+      <description>Holdings level 4</description>
+    </indicator>
+    <indicator position="1" value="5">
+      <description>Holdings level 4 with piece designation</description>
+    </indicator>
+    <indicator position="2" value="0">
+      <description>Non-standard</description>
+    </indicator>
+    <indicator position="2" value="1">
+      <description>ANSI/NISO Z39.71 or ISO 10324</description>
+    </indicator>
+    <indicator position="2" value="2">
+      <description>ANSI Z39.42</description>
+    </indicator>
+    <indicator position="2" value="7">
+      <description>Source specified in subfield $2</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Textual holdings</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Nonpublic note</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Public note</description>
+    </subfield>
+    <subfield code="2" repeatable="true">
+      <description>Source of notation</description>
+    </subfield>
+    <subfield code="6" repeatable="true">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="868" repeatable="true">
+    <name>Textual Holdings - Indexes</name>
+    <description>Textual description which may include both the captions and enumeration and chronology for the holdings of a bibliographic item in the collections of the reporting organization. These fields are normally not used in holdings for single-part items. They may be used the coded 853-855 Captions and Pattern and 863-865 Enumeration and Chronology fields for multipart and serial items when those fields cannot be used adequately to describe the holdings. The 866-868 fields may also be used an Enumeration and Chronology field and any related Captions and Pattern field to record and generate an alternative display for all or part of the enumeration and chronology and captions and pattern fields.</description>
+    <indicator position="1" value="#">
+      <description>No information provided</description>
+    </indicator>
+    <indicator position="1" value="3">
+      <description>Holdings level 3</description>
+    </indicator>
+    <indicator position="1" value="4">
+      <description>Holdings level 4</description>
+    </indicator>
+    <indicator position="1" value="5">
+      <description>Holdings level 4 with piece designation</description>
+    </indicator>
+    <indicator position="2" value="0">
+      <description>Non-standard</description>
+    </indicator>
+    <indicator position="2" value="1">
+      <description>ANSI/NISO Z39.71 or ISO 10324</description>
+    </indicator>
+    <indicator position="2" value="2">
+      <description>ANSI Z39.42</description>
+    </indicator>
+    <indicator position="2" value="7">
+      <description>Source specified in subfield $2</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Textual holdings</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Nonpublic note</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Public note</description>
+    </subfield>
+    <subfield code="2" repeatable="true">
+      <description>Source of notation</description>
+    </subfield>
+    <subfield code="6" repeatable="true">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="876" repeatable="true">
+    <name>Item Information - Basic Bibliographic Unit</name>
+    <description>Item level information about the pieces to the item specified in the holdings record. They contain various data elements that it may be desirable to record for specific items for use in acquisition or circulation applications, among others.</description>
+    <indicator position="1" value="#">
+        <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+        <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Internal item number</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Invalid or canceled internal item number</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Cost</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Date acquired</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Source of acquisition</description>
+    </subfield>
+    <subfield code="h" repeatable="true">
+      <description>Use restrictions</description>
+    </subfield>
+    <subfield code="j" repeatable="true">
+      <description>Item status</description>
+    </subfield>
+    <subfield code="l" repeatable="true">
+      <description>Temporary location</description>
+    </subfield>
+    <subfield code="p" repeatable="true">
+      <description>Piece designation</description>
+    </subfield>
+    <subfield code="r" repeatable="true">
+      <description>Invalid or canceled piece designation</description>
+    </subfield>
+    <subfield code="t" repeatable="true">
+      <description>Copy number</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Nonpublic note</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Public note</description>
+    </subfield>
+    <subfield code="3" repeatable="true">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="true">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="877" repeatable="true">
+    <name>Item Information - Supplementary Material</name>
+    <description>Item level information about the pieces to the item specified in the holdings record. They contain various data elements that it may be desirable to record for specific items for use in acquisition or circulation applications, among others.</description>
+    <indicator position="1" value="#">
+        <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+        <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Internal item number</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Invalid or canceled internal item number</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Cost</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Date acquired</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Source of acquisition</description>
+    </subfield>
+    <subfield code="h" repeatable="true">
+      <description>Use restrictions</description>
+    </subfield>
+    <subfield code="j" repeatable="true">
+      <description>Item status</description>
+    </subfield>
+    <subfield code="l" repeatable="true">
+      <description>Temporary location</description>
+    </subfield>
+    <subfield code="p" repeatable="true">
+      <description>Piece designation</description>
+    </subfield>
+    <subfield code="r" repeatable="true">
+      <description>Invalid or canceled piece designation</description>
+    </subfield>
+    <subfield code="t" repeatable="true">
+      <description>Copy number</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Nonpublic note</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Public note</description>
+    </subfield>
+    <subfield code="3" repeatable="true">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="true">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="878" repeatable="true">
+    <name>Item Information - Indexes</name>
+    <description>Item level information about the pieces to the item specified in the holdings record. They contain various data elements that it may be desirable to record for specific items for use in acquisition or circulation applications, among others.</description>
+    <indicator position="1" value="#">
+        <description>Undefined</description>
+    </indicator>
+    <indicator position="2" value="#">
+        <description>Undefined</description>
+    </indicator>
+    <subfield code="a" repeatable="true">
+      <description>Internal item number</description>
+    </subfield>
+    <subfield code="b" repeatable="true">
+      <description>Invalid or canceled internal item number</description>
+    </subfield>
+    <subfield code="c" repeatable="true">
+      <description>Cost</description>
+    </subfield>
+    <subfield code="d" repeatable="true">
+      <description>Date acquired</description>
+    </subfield>
+    <subfield code="e" repeatable="true">
+      <description>Source of acquisition</description>
+    </subfield>
+    <subfield code="h" repeatable="true">
+      <description>Use restrictions</description>
+    </subfield>
+    <subfield code="j" repeatable="true">
+      <description>Item status</description>
+    </subfield>
+    <subfield code="l" repeatable="true">
+      <description>Temporary location</description>
+    </subfield>
+    <subfield code="p" repeatable="true">
+      <description>Piece designation</description>
+    </subfield>
+    <subfield code="r" repeatable="true">
+      <description>Invalid or canceled piece designation</description>
+    </subfield>
+    <subfield code="t" repeatable="true">
+      <description>Copy number</description>
+    </subfield>
+    <subfield code="x" repeatable="true">
+      <description>Nonpublic note</description>
+    </subfield>
+    <subfield code="z" repeatable="true">
+      <description>Public note</description>
+    </subfield>
+    <subfield code="3" repeatable="true">
+      <description>Materials specified</description>
+    </subfield>
+    <subfield code="6" repeatable="true">
+      <description>Linkage</description>
+    </subfield>
+    <subfield code="8" repeatable="true">
+      <description>Field link and sequence number</description>
+    </subfield>
+  </field>
+  <field tag="880" repeatable="true">
+    <name>Alternate Graphic Representation</name>
+    <description>Fully content-designated, alternate graphic representation of another field in the same record. Field 880 is linked to the associated regular field by subfield $6 (Linkage). A subfield $6 in the associated field links that field to the 880 field. When an associated field does not exist in the record, field 880 is constructed as if it did and a reserved occurrence number (00) is used to indicate the special situation. The data in field 880 may be in more than one script.</description>
+    <subfield code="6" repeatable="false">
+      <description>Linkage</description>
+    </subfield>
+  </field>
+</fields>

@@ -144,6 +144,9 @@ openils.acq.Lineitem.fetchAndRender = function(liId, args, callback) {
                 var orderDate = '';
                 var liLink = '';
 
+                if(pl.name() == '') // special pl
+                    pl = null;
+
                 if(po) {
                     liLink = oilsBasePath + '/acq/po/view/' + po.id() + '/' + lineitem.id();
                     if(po.order_date()) {
@@ -175,7 +178,9 @@ openils.acq.Lineitem.fetchAndRender = function(liId, args, callback) {
                         lineitem.order_summary().encumbrance_amount() || '0.00',
                         lineitem.order_summary().paid_amount() || '0.00',
                         orderDate,
-                        liLink
+                        liLink,
+                        (po) ? 'foo' : '', // forces class='hiddenfoo' i.e. not hidden
+                        (pl) ? 'foo' : '', // ditto
                     ]
                 );
 

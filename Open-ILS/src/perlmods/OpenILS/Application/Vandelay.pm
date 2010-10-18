@@ -44,6 +44,7 @@ my %record_types = (
         x => 'holdings',
         y => 'holdings',
         z => 'auth',
+      ' ' => 'bib',
 );
 
 sub initialize {}
@@ -280,15 +281,6 @@ sub process_spool {
         $logger->info("processing record $count");
 
         try {
-            # Avoid an over-eager MARC::File::XML that may try to convert
-            # our record from MARC8 to UTF8 and break because the record
-            # is obviously already UTF8
-            my $ldr = $r->leader();
-            if (($marctype eq 'XML') && (substr($ldr, 9, 1) ne 'a')) {
-                $logger->warn("MARCXML record LDR/09 was not 'a'; record leader may be corrupt");
-                substr($ldr,9,1,'a');
-                $r->leader($ldr);
-            }
             (my $xml = $r->as_xml_record()) =~ s/\n//sog;
             $xml =~ s/^<\?xml.+\?\s*>//go;
             $xml =~ s/>\s+</></go;
@@ -614,6 +606,7 @@ sub import_record_list_impl {
     my $auto_overlay_1match = $$args{auto_overlay_1match};
     my $merge_profile = $$args{merge_profile};
     my $bib_source = $$args{bib_source};
+    my $report_all = $$args{report_all};
 
     my $overlay_func = 'vandelay.overlay_bib_record';
     my $auto_overlay_func = 'vandelay.auto_overlay_bib_record';
@@ -623,6 +616,13 @@ sub import_record_list_impl {
     my $retrieve_queue_func = 'retrieve_vandelay_bib_queue';
     my $update_queue_func = 'update_vandelay_bib_queue';
     my $rec_class = 'vqbr';
+
+    my %bib_sources;
+    my $editor = new_editor();
+    my $sources = $editor->search_config_bib_source({id => {'!=' => undef}});
+    foreach my $src (@$sources) {
+        $bib_sources{$src->id} = $src->source;
+    }
 
     if($type eq 'auth') {
         $overlay_func =~ s/bib/auth/o;
@@ -737,8 +737,7 @@ sub import_record_list_impl {
                 # No overlay / merge occurred.  Do a traditional record import by creating a new record
             
                 if($type eq 'bib') {
-                    $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import($e, $rec->marc); #$rec->bib_source
-
+                    $record = OpenILS::Application::Cat::BibCommon->biblio_record_xml_import($e, $rec->marc, $bib_sources{$rec->bib_source});
                 } else {
 
                     $record = OpenILS::Application::Cat::AuthCommon->import_authority_record($e, $rec->marc); #$source);
@@ -767,7 +766,7 @@ sub import_record_list_impl {
             $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->die_event});
         }
 
-        $conn->respond({total => $total, progress => $count, imported => $rec_id}) if (++$count % $step) == 0;
+        $conn->respond({total => $total, progress => $count, imported => $rec_id}) if (!$report_all and ++$count % $step) == 0;
     }
 
     # see if we need to mark any queues as complete

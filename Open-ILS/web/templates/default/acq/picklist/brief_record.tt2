@@ -1,5 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/brief_record.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/brief_record.js'> </script>
 
 <h1>New Brief Record</h1><br/>
 <form dojoType='dijit.form.Form'>

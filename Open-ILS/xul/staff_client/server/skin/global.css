@@ -7,6 +7,8 @@ help { -moz-binding: url('/xul/server/main/bindings.xml#help'); }
 messagecatalog { -moz-binding: url('/xul/server/main/bindings.xml#messagecatalog'); }
 .shrinkable_groupbox { font-weight: bold; -moz-binding: url('/xul/server/main/bindings.xml#caption'); }
 
+window:not([active="true"]) menubar > menu { color: menutext !important }
+
 treechildren::-moz-tree-checkbox(checked) {
     /* css for checked cells */
     list-style-image: url("chrome://global/skin/checkbox/cbox-check.gif");
@@ -100,6 +102,7 @@ iframe { background: #CDCED3 url("chrome://browser/skin/icons/box-background.png
 
 .header { font-weight: bold; }
 .header1 { font-weight: bold; font-size: large; }
+.emphasis { font-weight: bold; }
 
 .tan { background-color: #D2B48C; }
 .sandy_brown { background-color: #F4A460; }

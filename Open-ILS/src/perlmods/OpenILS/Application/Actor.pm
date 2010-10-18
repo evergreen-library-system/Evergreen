@@ -1528,6 +1528,73 @@ sub user_fines_summary {
 }
 
 
+__PACKAGE__->register_method(
+    method        => "user_opac_vitals",
+    api_name      => "open-ils.actor.user.opac.vital_stats",
+    argc          => 1,
+    authoritative => 1,
+    signature     => {
+        desc   => 'Returns a short summary of the users vital stats, including '  .
+                  'identification information, accumulated balance, number of holds, ' .
+                  'and current open circulation stats' ,
+        params => [
+            {desc => 'Authentication token',                          type => 'string'},
+            {desc => 'Optional User ID, for use in the staff client', type => 'number'}  # number?
+        ],
+        return => {
+            desc => "An object with four properties: user, fines, checkouts and holds."
+        }
+    }
+);
+
+sub user_opac_vitals {
+	my( $self, $client, $auth, $user_id ) = @_;
+
+	my $e = new_editor(authtoken=>$auth);
+	return $e->event unless $e->checkauth;
+
+    $user_id ||= $e->requestor->id;
+
+    my $user = $e->retrieve_actor_user( $user_id );
+
+    my ($fines) = $self
+        ->method_lookup('open-ils.actor.user.fines.summary')
+        ->run($auth => $user_id);
+    return $fines if (defined($U->event_code($fines)));
+
+    if (!$fines) {
+        $fines = new Fieldmapper::money::open_user_summary ();
+        $fines->balance_owed(0.00);
+        $fines->total_owed(0.00);
+        $fines->total_paid(0.00);
+        $fines->usr($user_id);
+    }
+
+    my ($holds) = $self
+        ->method_lookup('open-ils.actor.user.hold_requests.count')
+        ->run($auth => $user_id);
+    return $holds if (defined($U->event_code($holds)));
+
+    my ($out) = $self
+        ->method_lookup('open-ils.actor.user.checked_out.count')
+        ->run($auth => $user_id);
+    return $out if (defined($U->event_code($out)));
+
+    return {
+        user => {
+            first_given_name  => $user->first_given_name,
+            second_given_name => $user->second_given_name,
+            family_name       => $user->family_name,
+            alias             => $user->alias,
+            usrname           => $user->usrname
+        },
+        fines => $fines->to_bare_hash,
+        checkouts => $out,
+        holds => $holds
+    };
+}
+
+
 ##### a small consolidation of related method registrations
 my $common_params = [
     { desc => 'Authentication token', type => 'string' },

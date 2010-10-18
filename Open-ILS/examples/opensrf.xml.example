@@ -262,16 +262,8 @@ vim:et:ts=4:sw=4:
 
         <added_content>
 
-            <!-- XXX If you use the Amazon plugin, you must link back to Amazon in the OPAC -->
-
-            <!-- load the Amazon added content module -->
-            <module>OpenILS::WWW::AddedContent::Amazon</module>
-            <!--
-            Base URL for Amazon added content fetching.  This URL may
-            need to be shortened when new (read: non-image) content 
-            fetching capabilities are added
-            -->
-            <base_url>http://images.amazon.com/images/P/</base_url>
+            <!-- load the OpenLibrary added content module -->
+            <module>OpenILS::WWW::AddedContent::OpenLibrary</module>
 
             <!--
             Max number of seconds to wait for an added content request to 
@@ -295,6 +287,11 @@ vim:et:ts=4:sw=4:
 
             <!-- If a userid is required to access the added content.. -->
             <userid>MY_USER_ID</userid>
+
+            <!--
+            Base URL for Amazon added content fetching. Not needed by OpenLibrary
+            <base_url>http://images.amazon.com/images/P/</base_url>
+            -->
 
             <!--
             Segregating the details for ContentCafe out for easier use.  At some point, we
@@ -529,6 +526,8 @@ vim:et:ts=4:sw=4:
                 <app_settings>
                     <marctemplates>
                         <K_book>LOCALSTATEDIR/templates/marc/k_book.xml</K_book>
+                        <K_audio>LOCALSTATEDIR/templates/marc/k_audio.xml</K_audio>
+                        <K_video>LOCALSTATEDIR/templates/marc/k_video.xml</K_video>
                     </marctemplates>
                 </app_settings>
             </open-ils.booking>
@@ -793,6 +792,12 @@ vim:et:ts=4:sw=4:
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
+                    <!-- default_preferred_language: Set the global, default preferred languange -->
+                    <default_preferred_language>eng</default_preferred_language>
+
+                    <!-- default_preferred_language_weight: Set the weight (higher is "better") for the preferred language -->
+                    <default_preferred_language_weight>5</default_preferred_language_weight>
+
                     <script_path>LIBDIR/javascript/</script_path>
                     <script_path>LOCALSTATEDIR/catalog/</script_path>
                     <scripts>

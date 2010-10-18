@@ -29,33 +29,57 @@ patron.search_result.prototype = {
         JSAN.use('util.list'); obj.list = new util.list('patron_list');
 
         JSAN.use('patron.util');
-        var columns = patron.util.columns(
-            {
-                /* 'active' : { 'hidden' : 'false' }, */
-                'barred' : { 'hidden' : 'false' },
-                'family_name' : { 'hidden' : 'false' },
-                'first_given_name' : { 'hidden' : 'false' },
-                'second_given_name' : { 'hidden' : 'false' },
-                'dob' : { 'hidden' : obscure_dob }
-            },
-            {
-                'except_these' : [
-                    'au_barcode',
-                ]
-            }
+        var columns = obj.list.fm_columns('au',{
+            '*' : { 'remove_virtual' : true, 'expanded_label' : false, 'hidden' : true },
+            'au_barcode' : { 'hidden' : false },
+            'au_barred' : { 'hidden' : false },
+            'au_family_name' : { 'hidden' : false },
+            'au_first_given_name' : { 'hidden' : false },
+            'au_second_given_name' : { 'hidden' : false },
+            'au_dob' : { 'hidden' : false }
+        }).concat(
+            obj.list.fm_columns('ac',{
+                '*' : { 'remove_virtual' : true, 'expanded_label' : true, 'hidden' : true },
+                'ac_barcode' : { 'hidden' : false }
+            })
+        ).concat(
+            obj.list.fm_columns('aua',{
+                '*' : {
+                    'dataobj' : 'billing_aua',
+                    'remove_virtual' : true,
+                    'label_prefix' : $('patronStrings').getString('staff.patron.search_result.billing_address_column_label_prefix'),
+                    'hidden' : true
+                }
+            },'billing_')
+        ).concat(
+            obj.list.fm_columns('aua',{
+                '*' : {
+                    'dataobj' : 'mailing_aua',
+                    'remove_virtual' : true,
+                    'label_prefix' : $('patronStrings').getString('staff.patron.search_result.mailing_address_column_label_prefix'),
+                    'hidden' : true
+                }
+            },'mailing_')
         );
+
         obj.list.init(
             {
                 'columns' : columns,
                 'map_row_to_columns' : patron.util.std_map_row_to_columns(),
                 'retrieve_row' : function(params) {
                     var id = params.retrieve_id;
-                    var au_obj = patron.util.retrieve_au_via_id( ses(), id,
+                    var au_obj = patron.util.retrieve_fleshed_au_via_id(
+                        ses(),
+                        id,
+                        ["card","billing_address","mailing_address"],
                         function(req) {
                             try {
                                 var row = params.row;
                                 if (typeof row.my == 'undefined') row.my = {};
                                 row.my.au = req.getResultObject();
+                                row.my.ac = row.my.au.card();
+                                row.my.billing_aua = row.my.au.billing_address();
+                                row.my.mailing_aua = row.my.au.mailing_address();
                                 if (typeof params.on_retrieve == 'function') {
                                     params.on_retrieve(row);
                                 } else {

@@ -1,6 +1,6 @@
 [% WRAPPER "default/base.tt2" %]
 [% ctx.page_title = "Items by Bibliographic ID" %]
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/picklist/from_bib.js">
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/picklist/from_bib.js">
 </script>
 <div id="acq-frombib-upload-box">
     <div class="oils-acq-basic-roomy">

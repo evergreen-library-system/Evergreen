@@ -78,6 +78,12 @@ function event_listeners() {
             false
         );
 
+        $('refund').addEventListener(
+            'command',
+            handle_refund,
+            false
+        );
+
         $('opac').addEventListener(
             'command',
             handle_opac,
@@ -95,7 +101,7 @@ function event_listeners() {
             function(ev) {
                 if ($('payment_type').value == 'credit_payment') {
                     JSAN.use('util.money');
-                    JSAN.use('patron.util'); g.patron = patron.util.retrieve_au_via_id(ses(),g.patron_id);
+                    JSAN.use('patron.util'); g.patron = patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id,null);
                     var proposed = util.money.dollars_float_to_cents_integer(ev.target.value);
                     var available = util.money.dollars_float_to_cents_integer(g.patron.credit_forward_balance());
                     if (proposed > available) {
@@ -319,6 +325,33 @@ function tally_all() {
     }
 }
 
+function handle_refund() {
+    if(g.bill_list_selection.length > 1) {
+        var msg = $("patronStrings").getFormattedString('staff.patron.bills.handle_refund.message_plural', [g.bill_list_selection]);
+    } else {
+        var msg = $("patronStrings").getFormattedString('staff.patron.bills.handle_refund.message_singular', [g.bill_list_selection]);
+    }
+        
+    var r = g.error.yns_alert(msg,
+        $("patronStrings").getString('staff.patron.bills.handle_refund.title'),
+        $("patronStrings").getString('staff.patron.bills.handle_refund.btn_yes'),
+        $("patronStrings").getString('staff.patron.bills.handle_refund.btn_no'),null,
+        $("patronStrings").getString('staff.patron.bills.handle_refund.confirm_message'));
+    if (r == 0) {
+        for (var i = 0; i < g.bill_list_selection.length; i++) {
+            var bill_id = g.bill_list_selection[i];
+            //alert('g.check_map['+bill_id+'] = '+g.check_map[bill_id]+' bill_map['+bill_id+'] = ' + js2JSON(g.bill_map[bill_id]));
+            g.check_map[bill_id] = true;
+            var row_params = g.row_map[bill_id];
+            row_params.row.my.checked = true;
+            g.bill_list.refresh_row(row_params);
+        }
+    }
+    tally_all();
+    distribute_payment();
+}
+
+
 function check_all() {
     try {
         for (var i in g.bill_map) {
@@ -438,6 +471,7 @@ function init_lists() {
             $('details').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('add').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('voidall').setAttribute('disabled', g.bill_list_selection.length == 0);
+            $('refund').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('opac').setAttribute('disabled', g.bill_list_selection.length == 0);
             $('copy_details').setAttribute('disabled', g.bill_list_selection.length == 0);
         },
@@ -647,8 +681,10 @@ function print_bills() {
     try {
         var template = 'bills_historical'; if (xul_param('current')) template = 'bills_current';
         JSAN.use('patron.util');
+        g.patron = patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id,null); 
         var params = { 
-            'patron' : patron.util.retrieve_au_via_id(ses(),g.patron_id), 
+            'patron' : g.patron,
+            'printer_context' : 'receipt',
             'template' : template
         };
         g.bill_list.print(params);
@@ -782,7 +818,7 @@ function apply_payment() {
                 };
                 g.error.sdump('D_DEBUG',js2JSON(params));
                 if (! $('printer_prompt').hasAttribute('checked')) params.no_prompt = true;
-                JSAN.use('util.print'); var print = new util.print();
+                JSAN.use('util.print'); var print = new util.print('receipt');
                 print.tree_list( params ); 
             } catch(E) {
                 g.error.standard_unexpected_error_alert('bill receipt', E);
@@ -898,7 +934,7 @@ function void_all_billings(mobts_id) {
 
 function refresh_patron() {
     JSAN.use('patron.util'); JSAN.use('util.money');
-    patron.util.retrieve_au_via_id(ses(),g.patron_id, function(req) {
+    patron.util.retrieve_fleshed_au_via_id(ses(),g.patron_id,null,function(req) {
         var au_obj = req.getResultObject();
         if (typeof au_obj.ilsevent == 'undefined') {
             g.patron = au_obj;

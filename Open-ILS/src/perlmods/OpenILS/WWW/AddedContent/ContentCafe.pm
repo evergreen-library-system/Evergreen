@@ -61,7 +61,9 @@ sub toc_html {
     my $doc = XML::LibXML->new->parse_string($xml);
     $doc->documentElement->setNamespace('http://ContentCafe2.btol.com', 'cc');
     my $html = '';
-    foreach my $node ( $doc->findnodes('//cc:Toc') ) {
+    my @nodes = $doc->findnodes('//cc:Toc');
+    return 0 if (scalar(@nodes) < 1);
+    foreach my $node ( @nodes ) {
         $html .= $node->textContent . '</P></P>';
     }
     return $self->send_html($html);
@@ -87,7 +89,9 @@ sub anotes_html {
     my $doc = XML::LibXML->new->parse_string($xml);
     $doc->documentElement->setNamespace('http://ContentCafe2.btol.com', 'cc');
     my $html = '';
-    foreach my $node ( $doc->findnodes('//cc:Biography') ) {
+    my @nodes = $doc->findnodes('//cc:Biography');
+    return 0 if (scalar(@nodes) < 1);
+    foreach my $node ( @nodes ) {
         $html .= '<P class="biography">' . $node->textContent . '</P>';
     }
     return $self->send_html($html);
@@ -114,7 +118,9 @@ sub excerpt_html {
     my $doc = XML::LibXML->new->parse_string($xml);
     $doc->documentElement->setNamespace('http://ContentCafe2.btol.com', 'cc');
     my $html = '';
-    foreach my $node ( $doc->findnodes('//cc:Excerpt') ) {
+    my @nodes = $doc->findnodes('//cc:Excerpt');
+    return 0 if (scalar(@nodes) < 1);
+    foreach my $node ( @nodes ) {
         $html .= $node->textContent;
     }
     return $self->send_html($html);
@@ -140,7 +146,9 @@ sub reviews_html {
     my $doc = XML::LibXML->new->parse_string($xml);
     $doc->documentElement->setNamespace('http://ContentCafe2.btol.com', 'cc');
     my $html = '<ul>';
-    foreach my $node ( $doc->findnodes('//cc:ReviewItem') ) {
+    my @nodes = $doc->findnodes('//cc:ReviewItem');
+    return 0 if (scalar(@nodes) < 1);
+    foreach my $node ( @nodes ) {
         my @s_nodes = $node->findnodes('./cc:Supplier');
         my @p_nodes = $node->findnodes('./cc:Publication');
         my @i_nodes = $node->findnodes('./cc:Issue');
@@ -174,7 +182,9 @@ sub summary_html {
     my $doc = XML::LibXML->new->parse_string($xml);
     $doc->documentElement->setNamespace('http://ContentCafe2.btol.com', 'cc');
     my $html = '<ul>';
-    foreach my $node ( $doc->findnodes('//cc:AnnotationItem') ) {
+    my @nodes = $doc->findnodes('//cc:AnnotationItem');
+    return 0 if (scalar(@nodes) < 1);
+    foreach my $node ( @nodes ) {
         my @s_nodes = $node->findnodes('./cc:Supplier');
         my @a_nodes = $node->findnodes('./cc:Annotation');
         $html .= '<li><b>' . (scalar(@s_nodes) ? $s_nodes[0]->textContent : '') . '</b><br/>';

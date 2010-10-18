@@ -29,6 +29,8 @@ CREATE TABLE asset.copy_location (
 	hold_verify	BOOL	NOT NULL DEFAULT FALSE,
 	opac_visible	BOOL	NOT NULL DEFAULT TRUE,
 	circulate	BOOL	NOT NULL DEFAULT TRUE,
+	label_prefix	TEXT,
+	label_suffix	TEXT,
 	CONSTRAINT acl_name_once_per_lib UNIQUE (name, owning_lib)
 );
 
@@ -158,6 +160,7 @@ CREATE TABLE asset.copy_note (
 	value		TEXT				NOT NULL
 );
 CREATE INDEX asset_copy_note_creator_idx ON asset.copy_note ( creator );
+CREATE INDEX asset_copy_note_owning_copy_idx ON asset.copy_note ( owning_copy );
 
 CREATE TABLE asset.uri (
     id  SERIAL  PRIMARY KEY,

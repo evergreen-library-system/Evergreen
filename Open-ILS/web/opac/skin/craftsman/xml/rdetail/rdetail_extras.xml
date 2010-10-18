@@ -84,4 +84,10 @@
 	<div id='rdetail_preview_full_text' class='hide_me'>&rdetail.extras.preview.fulltext;</div>
 	<div id='rdetail_preview_title' class='hide_me'>&rdetail.extras.preview.title;</div>
 	<div id='rdetail_preview_badge' class='hide_me'>&rdetail.extras.preview.badge;</div>
+
+    <!-- ChiliFresh setup -->
+    <script language='javascript' type='text/javascript'>
+        var chilifresh = false;
+    </script>
+
 </div>

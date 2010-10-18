@@ -1,6 +1,6 @@
 [% WRAPPER "default/base.tt2" %]
-<script src="[% ctx.media_prefix %]/js/ui/default/booking/common.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/booking/pull_list.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/common.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/pull_list.js"></script>
 <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/booking.css" />
 <script type="text/javascript">openils.Util.addOnLoad(my_init);</script>
 <div id="auto_l10n_start_here">

@@ -177,7 +177,13 @@ sub create_hold {
         return $e->event unless $e->allowed('TITLE_HOLDS',  $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_VOLUME ) {
         return $e->event unless $e->allowed('VOLUME_HOLDS', $porg);
+    } elsif ( $t eq OILS_HOLD_TYPE_ISSUANCE ) {
+        return $e->event unless $e->allowed('ISSUANCE_HOLDS', $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_COPY ) {
+        return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
+    } elsif ( $t eq OILS_HOLD_TYPE_FORCE ) {
+        return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
+    } elsif ( $t eq OILS_HOLD_TYPE_RECALL ) {
         return $e->event unless $e->allowed('COPY_HOLDS',   $porg);
     }
 
@@ -213,58 +219,6 @@ sub create_hold {
         undef, $hold->id ) unless $U->is_true($hold->frozen);
 
 	return undef;
-}
-
-sub __create_hold {
-	my( $self, $client, $login_session, @holds) = @_;
-
-	if(!@holds){return 0;}
-	my( $user, $evt ) = $apputils->checkses($login_session);
-	return $evt if $evt;
-
-	my $holdsref = (ref($holds[0]) eq 'ARRAY') ? $holds[0] : [ @holds ];
-
-	$logger->debug("Iterating over " . scalar(@$holdsref) . " holds requests...");
-
-	for my $hold (@$holdsref) {
-        $hold or next;
-		my $type = $hold->hold_type;
-
-		$logger->activity("User " . $user->id . 
-			" creating new hold of type $type for user " . $hold->usr);
-
-		my $recipient;
-		if($user->id ne $hold->usr) {
-			( $recipient, $evt ) = $apputils->fetch_user($hold->usr);
-			return $evt if $evt;
-		} else {
-			$recipient = $user;
-		}
-
-		# am I allowed to place holds for this user?
-		if($hold->requestor ne $hold->usr) {
-			my $perm = _check_request_holds_perm($user->id, $user->home_ou);
-            return $perm if $perm;
-		}
-
-		# is this user allowed to have holds of this type?
-		my $perm = _check_holds_perm($type, $hold->requestor, $recipient->home_ou);
-        return $perm if $perm;
-
-		#enforce the fact that the login is the one requesting the hold
-		$hold->requestor($user->id); 
-		$hold->selection_ou($recipient->home_ou) unless $hold->selection_ou;
-
-		my $resp = $apputils->simplereq(
-			'open-ils.storage',
-			'open-ils.storage.direct.action.hold_request.create', $hold );
-
-		if(!$resp) { 
-			return OpenSRF::EX::ERROR ("Error creating hold"); 
-		}
-	}
-
-	return 1;
 }
 
 # makes sure that a user has permission to place the type of requested hold
@@ -1284,6 +1238,46 @@ sub hold_pull_list {
 }
 
 __PACKAGE__->register_method(
+    method    => "print_hold_pull_list",
+    api_name  => "open-ils.circ.hold_pull_list.print",
+    signature => {
+        desc   => 'Returns an HTML-formatted holds pull list',
+        params => [
+            { desc => 'Authtoken', type => 'string'},
+            { desc => 'Org unit ID.  Optional, defaults to workstation org unit', type => 'number'},
+        ],
+        return => {
+            desc => 'HTML string',
+            type => 'string'
+        }
+    }
+);
+
+sub print_hold_pull_list {
+    my($self, $client, $auth, $org_id) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    $org_id = (defined $org_id) ? $org_id : $e->requestor->ws_ou;
+    return $e->die_event unless $e->allowed('VIEW_HOLD', $org_id);
+
+    my $hold_ids = $U->storagereq(
+        'open-ils.storage.direct.action.hold_request.pull_list.id_list.current_copy_circ_lib.status_filtered.atomic',
+        $org_id, 10000);
+
+    return undef unless @$hold_ids;
+    $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
+
+    my $holds = $e->search_action_hold_request({id => $hold_ids}, {substream => 1});
+    $client->status(new OpenSRF::DomainObject::oilsContinueStatus);
+
+    return $U->fire_object_event(undef, 'ahr.format.pull_list', $holds, $org_id);
+}
+
+
+
+__PACKAGE__->register_method(
     method        => 'fetch_hold_notify',
     api_name      => 'open-ils.circ.hold_notification.retrieve_by_hold',
     authoritative => 1,
@@ -1486,7 +1480,7 @@ __PACKAGE__->register_method(
 		Returns a list ids of un-fulfilled holds for a given title id
 		@param authtoken The login session key
 		@param id the id of the item whose holds we want to retrieve
-		@param type The hold type - M, T, V, C
+		@param type The hold type - M, T, I, V, C, F, R
 	/
 );
 
@@ -1699,11 +1693,12 @@ The named fields in the hash are:
  depth        - hold range depth          (default 0)
  pickup_lib   - destination for hold, fallback value for selection_ou
  selection_ou - ID of org_unit establishing hard and soft hold boundary settings
+ issuanceid   - ID of the issuance to be held, required for Issuance level hold
  titleid      - ID (BRN) of the title to be held, required for Title level hold
  volume_id    - required for Volume level hold
  copy_id      - required for Copy level hold
  mrid         - required for Meta-record level hold
- hold_type    - T,C,V or M for Title, Copy, Volume or Meta-record  (default "T")
+ hold_type    - T, C (or R or F), I, V or M for Title, Copy, Issuance, Volume or Meta-record  (default "T")
 
 All key/value pairs are passed on to do_possibility_checks.
 
@@ -1789,6 +1784,7 @@ sub check_title_hold {
 sub do_possibility_checks {
     my($e, $patron, $request_lib, $depth, %params) = @_;
 
+    my $issuanceid   = $params{issuanceid}      || "";
     my $titleid      = $params{titleid}      || "";
     my $volid        = $params{volume_id};
     my $copyid       = $params{copy_id};
@@ -1802,7 +1798,7 @@ sub do_possibility_checks {
 	my $volume;
 	my $title;
 
-	if( $hold_type eq OILS_HOLD_TYPE_COPY ) {
+	if( $hold_type eq OILS_HOLD_TYPE_FORCE || $hold_type eq OILS_HOLD_TYPE_RECALL || $hold_type eq OILS_HOLD_TYPE_COPY ) {
 
         return $e->event unless $copy   = $e->retrieve_asset_copy($copyid);
         return $e->event unless $volume = $e->retrieve_asset_call_number($copy->call_number);
@@ -1825,6 +1821,12 @@ sub do_possibility_checks {
 
 		return _check_title_hold_is_possible(
 			$titleid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
+        );
+
+	} elsif( $hold_type eq OILS_HOLD_TYPE_ISSUANCE ) {
+
+		return _check_issuance_hold_is_possible(
+			$issuanceid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
         );
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
@@ -1976,7 +1978,7 @@ sub _check_title_hold_is_possible {
 
          unless($title) { # grab the title if we don't already have it
             my $vol = $e->retrieve_asset_call_number(
-               [ $copy->call_number, { flesh => 1, flesh_fields => { acn => ['record'] } } ] );
+               [ $copy->call_number, { flesh => 1, flesh_fields => { bre => ['fixed_fields'], acn => ['record'] } } ] );
             $title = $vol->record;
          }
    
@@ -1987,6 +1989,140 @@ sub _check_title_hold_is_possible {
       }
     }
 
+    return @status;
+}
+
+sub _check_issuance_hold_is_possible {
+    my( $issuanceid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+   
+    my $e = new_editor();
+    my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
+
+    # this monster will grab the id and circ_lib of all of the "holdable" copies for the given record
+    my $copies = $e->json_query(
+        { 
+            select => { acp => ['id', 'circ_lib'] },
+              from => {
+                acp => {
+                    sitem => {
+                        field  => 'unit',
+                        fkey   => 'id',
+                        filter => { issuance => $issuanceid }
+                    },
+                    acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
+                    ccs  => { field => 'id', filter => { holdable => 't'}, fkey => 'status'   }
+                }
+            }, 
+            where => {
+                '+acp' => { circulate => 't', deleted => 'f', holdable => 't', %org_filter }
+            },
+            distinct => 1
+        }
+    );
+
+    $logger->info("issuance possible found ".scalar(@$copies)." potential copies");
+
+    my $empty_ok;
+    if (!@$copies) {
+        $empty_ok = $e->retrieve_config_global_flag('circ.holds.empty_issuance_ok');
+        $empty_ok = ($empty_ok and $U->is_true($empty_ok->enabled));
+
+        return (
+            0, 0, [
+                new OpenILS::Event(
+                    "HIGH_LEVEL_HOLD_HAS_NO_COPIES",
+                    "payload" => {"fail_part" => "no_ultimate_items"}
+                )
+            ]
+        ) unless $empty_ok;
+
+        return (1, 0);
+    }
+
+    # -----------------------------------------------------------------------
+    # sort the copies into buckets based on their circ_lib proximity to 
+    # the patron's home_ou.  
+    # -----------------------------------------------------------------------
+
+    my $home_org = $patron->home_ou;
+    my $req_org = $request_lib->id;
+
+    $logger->info("prox cache $home_org " . $prox_cache{$home_org});
+
+    $prox_cache{$home_org} = 
+        $e->search_actor_org_unit_proximity({from_org => $home_org})
+        unless $prox_cache{$home_org};
+    my $home_prox = $prox_cache{$home_org};
+
+    my %buckets;
+    my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
+    push( @{$buckets{ $hash{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
+
+    my @keys = sort { $a <=> $b } keys %buckets;
+
+
+    if( $home_org ne $req_org ) {
+      # -----------------------------------------------------------------------
+      # shove the copies close to the request_lib into the primary buckets 
+      # directly before the farthest away copies.  That way, they are not 
+      # given priority, but they are checked before the farthest copies.
+      # -----------------------------------------------------------------------
+        $prox_cache{$req_org} = 
+            $e->search_actor_org_unit_proximity({from_org => $req_org})
+            unless $prox_cache{$req_org};
+        my $req_prox = $prox_cache{$req_org};
+
+        my %buckets2;
+        my %hash2 = map { ($_->to_org => $_->prox) } @$req_prox;
+        push( @{$buckets2{ $hash2{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
+
+        my $highest_key = $keys[@keys - 1];  # the farthest prox in the exising buckets
+        my $new_key = $highest_key - 0.5; # right before the farthest prox
+        my @keys2   = sort { $a <=> $b } keys %buckets2;
+        for my $key (@keys2) {
+            last if $key >= $highest_key;
+            push( @{$buckets{$new_key}}, $_ ) for @{$buckets2{$key}};
+        }
+    }
+
+    @keys = sort { $a <=> $b } keys %buckets;
+
+    my $title;
+    my %seen;
+    my @status;
+    OUTER: for my $key (@keys) {
+      my @cps = @{$buckets{$key}};
+
+      $logger->info("looking at " . scalar(@{$buckets{$key}}). " copies in proximity bucket $key");
+
+      for my $copyid (@cps) {
+
+         next if $seen{$copyid};
+         $seen{$copyid} = 1; # there could be dupes given the merged buckets
+         my $copy = $e->retrieve_asset_copy($copyid);
+         $logger->debug("looking at bucket_key=$key, copy $copyid : circ_lib = " . $copy->circ_lib);
+
+         unless($title) { # grab the title if we don't already have it
+            my $vol = $e->retrieve_asset_call_number(
+               [ $copy->call_number, { flesh => 1, flesh_fields => { bre => ['fixed_fields'], acn => ['record'] } } ] );
+            $title = $vol->record;
+         }
+   
+         @status = verify_copy_for_hold(
+            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib);
+
+         last OUTER if $status[0];
+      }
+    }
+
+    if (!$status[0]) {
+        if (!defined($empty_ok)) {
+            $empty_ok = $e->retrieve_config_global_flag('circ.holds.empty_issuance_ok');
+            $empty_ok = ($empty_ok and $U->is_true($empty_ok->enabled));
+        }
+
+        return (1,0) if ($empty_ok);
+    }
     return @status;
 }
 
@@ -2327,6 +2463,7 @@ sub find_hold_mvr {
 	my $tid;
 	my $copy;
 	my $volume;
+    my $issuance;
 
 	if( $hold->hold_type eq OILS_HOLD_TYPE_METARECORD ) {
 		my $mr = $e->retrieve_metabib_metarecord($hold->target)
@@ -2341,11 +2478,21 @@ sub find_hold_mvr {
 			or return $e->event;
 		$tid = $volume->record;
 
+    } elsif( $hold->hold_type eq OILS_HOLD_TYPE_ISSUANCE ) {
+        $issuance = $e->retrieve_serial_issuance([
+            $hold->target,
+            {flesh => 1, flesh_fields => {siss => [ qw/subscription/ ]}}
+        ]) or return $e->event;
+
+        $tid = $issuance->subscription->record_entry;
+
 	} elsif( $hold->hold_type eq OILS_HOLD_TYPE_COPY ) {
-		$copy = $e->retrieve_asset_copy($hold->target)
-			or return $e->event;
-		$volume = $e->retrieve_asset_call_number($copy->call_number)
-			or return $e->event;
+		$copy = $e->retrieve_asset_copy([
+            $hold->target, 
+            {flesh => 1, flesh_fields => {acp => ['call_number']}}
+        ]) or return $e->event;
+        
+		$volume = $copy->call_number;
 		$tid = $volume->record;
 	}
 
@@ -2360,7 +2507,7 @@ sub find_hold_mvr {
 
     # TODO return metarcord mvr for M holds
 	my $title = $e->retrieve_biblio_record_entry($tid);
-	return ( $U->record_to_mvr($title), $volume, $copy );
+	return ( $U->record_to_mvr($title), $volume, $copy, $issuance );
 }
 
 
@@ -2638,14 +2785,22 @@ sub hold_item_is_checked_out {
         limit => 1
     };
 
-    if($hold_type eq 'C') {
+    if($hold_type eq 'C' || $hold_type eq 'R' || $hold_type eq 'F') {
 
         $query->{where}->{'+acp'}->{id}->{in}->{where}->{'target_copy'} = $hold_target;
 
     } elsif($hold_type eq 'V') {
 
         $query->{where}->{'+acp'}->{call_number} = $hold_target;
-    
+
+     } elsif($hold_type eq 'I') {
+
+        $query->{from}->{acp}->{sitem} = {
+            field  => 'unit',
+            fkey   => 'id',
+            filter => {issuance => $hold_target},
+        };
+
     } elsif($hold_type eq 'T') {
 
         $query->{from}->{acp}->{acn} = {

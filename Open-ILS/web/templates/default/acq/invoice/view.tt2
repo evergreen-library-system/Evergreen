@@ -1,7 +1,7 @@
 [% WRAPPER 'default/base.tt2' %]
 [% ctx.page_title = 'Invoicing' %]
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/common.js'> </script>
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/view.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/common.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/view.js'> </script>
 <script type="text/javascript">var invoiceId = '[% ctx.page_args.0 %]';</script>
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
 
@@ -42,6 +42,7 @@
                     </td>
                     <td class='acq-invoice-center-col'>
                         <span name='inv_item_count'></span>&nbsp;/&nbsp;<span name='phys_item_count'></span>
+                    </td>
                     <td class='acq-invoice-billed-col'><div name='cost_billed'/></td>
                     <td class='acq-invoice-paid-col'><div name='amount_paid'/></td>
                     <td class='acq-invoice-center-col hide-complete'><a href='javascript:void(0);' name='detach'>Detach</a></td>

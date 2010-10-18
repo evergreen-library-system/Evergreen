@@ -1,0 +1,52 @@
+<div dojoType="dijit.layout.ContentPane" layout="top">
+    <table id="scap_editor" class="hidden">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Pattern Code</th>
+                <th>Create Date</th>
+                <th>Active</th>
+                <th>Remove</th>
+                <th>Save Changes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td name="id">
+                    <span control="true"></span>
+                </td>
+                <td name="type">
+                    <select control="true">
+                        <option value="basic">(853) Basic</option>
+                        <option value="supplement">(854) Supplement</option>
+                        <option value="index">(855) Index</option>
+                    </select>
+                </td>
+                <td name="pattern_code">
+                    <input type="text" size="16" control="true" />
+                    <button>Wizard ...</button>
+                </td>
+                <td name="create_date">
+                    <span control="true"></span>
+                </td>
+                <td name="active">
+                    <input type="checkbox" control="true" />
+                </td>
+                <td name="remover">
+                    <button>X</button>
+                </td>
+                <td name="save">
+                    <button>Save Changes</button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="7">
+                    <button name="add">Add Caption and Pattern</button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

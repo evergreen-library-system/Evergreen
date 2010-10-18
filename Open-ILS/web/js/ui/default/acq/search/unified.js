@@ -169,6 +169,13 @@ function TermSelectorFactory(terms) {
                             w.focus();
                         if (typeof(callback) == "function")
                             callback(term, widgetKey);
+
+                        // submit on enter
+                        openils.Util.registerEnterHandler(w.domNode,
+                            function() { 
+                                resultManager.go(termManager.buildSearchObject());
+                            }
+                        );
                     }
                 );
             }
@@ -801,6 +808,7 @@ function URIManager() {
                     {"state": "on-order"}
                 ]
             },
+            "half_search": true,
             "result_type": "purchase_order",
             "conjunction": "and",
             "order_by": [
@@ -826,6 +834,7 @@ function URIManager() {
                     {"receiver": openils.User.user.ws_ou()}
                 ]
             },
+            "half_search": true,
             "result_type": "invoice",
             "conjunction": "and",
             "order_by": [
@@ -869,10 +878,13 @@ openils.Util.addOnLoad(
 
         uriManager = new URIManager();
         if (uriManager.search_object) {
-            hideForm();
+            if (!uriManager.half_search)
+                hideForm();
             openils.Util.show("acq-unified-body");
             termManager.reflect(uriManager.search_object);
-            resultManager.search(uriManager, termManager);
+
+            if (!uriManager.half_search)
+                resultManager.search(uriManager, termManager);
         } else {
             termManager.addRow();
             openils.Util.show("acq-unified-body");

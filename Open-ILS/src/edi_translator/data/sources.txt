@@ -1,0 +1,8 @@
+
+
+http://www.bergware.net/bisacwww/orddatas.htm
+http://www.edidev.net/edidev-ca/samples/vbNetEdifactTran/WebFrmTran.aspx
+
+# interesting one-off... binary data element
+http://stackoverflow.com/questions/807871/does-anyone-have-a-sample-file-in-x12-or-edifact-that-contains-binary-data
+

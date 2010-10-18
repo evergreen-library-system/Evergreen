@@ -27,6 +27,9 @@ CREATE TABLE permission.perm_list (
 	description	TEXT
 );
 CREATE INDEX perm_list_code_idx ON permission.perm_list (code);
+CREATE TRIGGER maintain_perm_i18n_tgr
+    AFTER UPDATE ON permission.perm_list
+    FOR EACH ROW EXECUTE PROCEDURE oils_i18n_id_tracking('ppl');
 
 CREATE TABLE permission.grp_tree (
 	id			SERIAL	PRIMARY KEY,
@@ -51,7 +54,7 @@ CREATE TABLE permission.grp_penalty_threshold (
 CREATE TABLE permission.grp_perm_map (
 	id		SERIAL	PRIMARY KEY,
 	grp		INT	NOT NULL REFERENCES permission.grp_tree (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED,
 	depth		INT	NOT NULL,
 	grantable	BOOL	NOT NULL DEFAULT FALSE,
 		CONSTRAINT perm_grp_once UNIQUE (grp,perm)
@@ -60,7 +63,7 @@ CREATE TABLE permission.grp_perm_map (
 CREATE TABLE permission.usr_perm_map (
 	id		SERIAL	PRIMARY KEY,
 	usr		INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED,
 	depth		INT	NOT NULL,
 	grantable	BOOL	NOT NULL DEFAULT FALSE,
 		CONSTRAINT perm_usr_once UNIQUE (usr,perm)
@@ -69,7 +72,7 @@ CREATE TABLE permission.usr_perm_map (
 CREATE TABLE permission.usr_object_perm_map (
 	id		SERIAL	PRIMARY KEY,
 	usr		INT	NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	perm		INT	NOT NULL REFERENCES permission.perm_list (id) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED,
     object_type TEXT NOT NULL,
     object_id   TEXT NOT NULL,
 	grantable	BOOL	NOT NULL DEFAULT FALSE,

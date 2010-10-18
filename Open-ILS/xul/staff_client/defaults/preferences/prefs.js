@@ -5,6 +5,7 @@
 // These are specific to Evergreen
 pref("open-ils.write_in_user_chrome_directory", true);
 pref("open-ils.disable_accesskeys_on_tabs", false);
+pref("toolkit.singletonWindowType", "eg_main");
 
 // Toggles for experimental features that may later become org unit settings
 pref("open-ils.enable_join_tabs", true);

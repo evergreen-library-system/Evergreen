@@ -33,7 +33,7 @@
      <xsl:apply-templates select="xhtml:abbr[@class='unapi-id']"/>
     </div>
     <br/>
-    <xsl:apply-templates select="hold:volumes"/>
+    <xsl:apply-templates select="hold:holdings/hold:volumes"/>
     <br/>
   </xsl:template>
 

@@ -4,7 +4,6 @@ var marc_view_reset = true;
 var marc_edit_reset = true;
 var copy_browser_reset = true;
 var hold_browser_reset = true;
-var acq_orders_reset = true;
 var serctrl_view_reset = true;
 
 function $(id) { return document.getElementById(id); }
@@ -122,7 +121,7 @@ function set_marc_edit() {
     var a =    xulG.url_prefix( urls.XUL_MARC_EDIT );
     var b =    {};
     var c =    {
-            'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid },
+            'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid, "id": docid, "rtype": "bre" },
             'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
                 try {
                     var cat = { util: {} }; /* FIXME: kludge since we can't load remote JSAN libraries into chrome */
@@ -269,17 +268,72 @@ function set_hold_browser() {
     bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
 }
 
-function set_acq_orders() {
-    g.view = 'acq_orders';
-    var url = xulG.url_prefix( '/eg/acq/lineitem/related/' ) + window.escape(docid) + '?target=bib';
-    if (acq_orders_reset) {
-        bottom_pane.reset_iframe(url,{},xulG);
-        acq_orders_reset = false;
-    } else {
-        bottom_pane.set_iframe(url,{},xulG);
+
+function open_acq_orders() {
+    try {
+        var content_params = {
+            "session": ses(),
+            "authtime": ses("authtime"),
+            "no_xulG": false,
+            "show_nav_buttons": true,
+            "show_print_button": false
+        };
+
+        ["url_prefix", "new_tab", "set_tab", "close_tab", "new_patron_tab",
+            "set_patron_tab", "volume_item_creator", "get_new_session",
+            "holdings_maintenance_tab", "set_tab_name", "open_chrome_window",
+            "url_prefix", "network_meter", "page_meter", "set_statusbar",
+            "set_help_context"
+        ].forEach(function(k) { content_params[k] = xulG[k]; });
+
+        var loc = urls.XUL_BROWSER + "?url=" + window.escape(
+            xulG.url_prefix("/eg/acq/lineitem/related/") +
+            docid + "?target=bib"
+        );
+        xulG.new_tab(
+            loc, {
+                "tab_name": $("offlineStrings").getString(
+                    "staff.cat.opac.related_items"
+                ),
+                "browser": false
+            }, content_params
+        );
+    } catch (E) {
+        g.error.sdump("D_ERROR", E);
     }
-    opac_wrapper_set_help_context(); 
-    bottom_pane.get_contentWindow().addEventListener('load',opac_wrapper_set_help_context,false);
+}
+
+function open_alt_serial_mgmt() {
+    try {
+        var content_params = {
+            "session": ses(),
+            "authtime": ses("authtime"),
+            "show_nav_buttons": true,
+            "no_xulG": false,
+            "show_print_button": false
+        };
+
+        ["url_prefix", "new_tab", "set_tab", "close_tab", "new_patron_tab",
+            "set_patron_tab", "volume_item_creator", "get_new_session",
+            "holdings_maintenance_tab", "set_tab_name", "open_chrome_window",
+            "url_prefix", "network_meter", "page_meter", "set_statusbar",
+            "set_help_context"
+        ].forEach(function(k) { content_params[k] = xulG[k]; });
+
+        var loc = urls.XUL_BROWSER + "?url=" + window.escape(
+            xulG.url_prefix("/eg/serial/list_subscription/") + docid
+        );
+        xulG.new_tab(
+            loc, {
+                "tab_name": $("offlineStrings").getString(
+                    "staff.cat.opac.serial_alt_mgmt"
+                ),
+                "browser": false
+            }, content_params
+        );
+    } catch (E) {
+        g.error.sdump("D_ERROR", E);
+    }
 }
 
 function set_opac() {
@@ -545,6 +599,30 @@ function bib_in_new_tab() {
     }
 }
 
+function batch_receive_in_new_tab() {
+    try {
+        var content_params = {"session": ses(), "authtime": ses("authtime")};
+
+        ["url_prefix", "new_tab", "set_tab", "close_tab", "new_patron_tab",
+            "set_patron_tab", "volume_item_creator", "get_new_session",
+            "holdings_maintenance_tab", "set_tab_name", "open_chrome_window",
+            "url_prefix", "network_meter", "page_meter", "set_statusbar",
+            "set_help_context"
+        ].forEach(function(k) { content_params[k] = xulG[k]; });
+
+        xulG.new_tab(
+            xulG.url_prefix(urls.XUL_SERIAL_BATCH_RECEIVE) +
+                "?docid=" + window.escape(docid), {
+                "tab_name": $("offlineStrings").getString(
+                    "menu.cmd_serial_batch_receive.tab"
+                )
+            }, content_params
+        );
+    } catch (E) {
+        g.error.sdump("D_ERROR", E);
+    }
+}
+
 function remove_me() {
     var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid);
     dump('removing ' + url + '\n');
@@ -667,7 +745,6 @@ function refresh_display(id) {
         marc_edit_reset = true;
         copy_browser_reset = true;
         hold_browser_reset = true;
-        acq_orders_reset = true;
         while(top_pane.node.lastChild) top_pane.node.removeChild( top_pane.node.lastChild );
         var children = bottom_pane.node.childNodes;
         for (var i = 0; i < children.length; i++) {
@@ -690,7 +767,6 @@ function refresh_display(id) {
             case 'marc_edit' : set_marc_edit(); break;
             case 'copy_browser' : set_copy_browser(); break;
             case 'hold_browser' : set_hold_browser(); break;
-            case 'acq_orders' : set_acq_orders(); break;
             case 'serctrl_view' : set_serctrl_view(); break;
             case 'opac' :
             default: set_opac(); break;

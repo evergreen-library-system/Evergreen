@@ -1,6 +1,6 @@
 [% WRAPPER 'default/base.tt2' %]
 [% ctx.page_title = 'Lineitem Search' %]
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/lineitem/search.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/lineitem/search.js"></script>
 <!-- later: "[% ctx.page_args.0 %]" -->
 <div id="oils-acq-li-search-form-holder" class="hidden">
     <h1 class="oils-acq-li-search">Lineitem Search</h1>

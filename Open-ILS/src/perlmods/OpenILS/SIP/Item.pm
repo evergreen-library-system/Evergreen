@@ -151,10 +151,11 @@ sub new {
                     atc => [ 'dest' ]
                 }
             }
-        ]);
-        # warn "Item transit: " . Dumper($transit) . "\nItem transit->dest: " . Dumper($transit->dest);;
+        ])->[0];
+
         if ($transit) {
-            $self->{destination_loc} = $transit->[0]->dest->shortname;
+            $self->{transit} = $transit;
+            $self->{destination_loc} = $transit->dest->shortname;
         } else {
             syslog('LOG_WARNING', "OILS: Item('$item_id') status is In Transit, but no action.transit_copy found!");
         }
@@ -163,11 +164,12 @@ sub new {
     syslog("LOG_DEBUG", "OILS: Item('$item_id'): found with title '%s'", $self->title_id);
 
     my $config = OpenILS::SIP->config();    # FIXME : will not always match!
-
     my $legacy = $config->{implementation_config}->{legacy_script_support} || undef;
+
     if( defined $legacy ) {
         $self->{legacy_script_support} = ($legacy =~ /t(rue)?/io) ? 1 : 0;
         syslog("LOG_DEBUG", "legacy_script_support is set in SIP config: " . $self->{legacy_script_support});
+
     } else {
         my $lss = OpenSRF::Utils::SettingsClient->new->config_value(
             apps         => 'open-ils.circ',
@@ -364,8 +366,54 @@ sub recall_date {       # TODO
     return 0;
 }
 
-sub hold_pickup_date {  # TODO
+
+# Note: If the held item is in transit, this will be an approximation of shelf 
+# expire time, since the time is not set until the item is  checked in at the pickup location
+my %shelf_expire_setting_cache;
+sub hold_pickup_date {  
     my $self = shift;
+    my $copy = $self->{copy};
+
+    if( ($copy->status->id == OILS_COPY_STATUS_ON_HOLDS_SHELF) ||
+        ($self->{transit} and $self->{transit}->copy_status == OILS_COPY_STATUS_ON_HOLDS_SHELF) ) {
+
+        # item has been captured for a hold
+
+        my $e = OpenILS::SIP->editor();
+        my $hold = $e->search_action_hold_request([
+            {
+                current_copy        => $copy->id,
+                capture_time        => {'!=' => undef},
+                cancel_time         => undef,
+                fulfillment_time    => undef
+            },
+            {limit => 1}
+        ])->[0];
+        
+        if($hold) {
+            my $date = $hold->shelf_expire_time;
+
+            if(!$date) {
+                # hold has not hit the shelf.  create a best guess.
+
+                my $interval = $shelf_expire_setting_cache{$hold->pickup_lib} ||
+                    $U->ou_ancestor_setting_value(
+                        $hold->pickup_lib, 
+                        'circ.holds.default_shelf_expire_interval');
+
+                $shelf_expire_setting_cache{$hold->pickup_lib} = $interval;
+
+                if($interval) {
+                    my $seconds = OpenSRF::Utils->interval_to_seconds($interval);
+                    $date = DateTime->now->add(seconds => $seconds);
+                    $date = $date->strftime('%FT%T%z') if $date;
+                }
+            }
+
+            return OpenILS::SIP->format_date($date) if $date;
+        }
+    }
+
     return 0;
 }
 

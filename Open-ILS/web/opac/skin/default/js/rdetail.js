@@ -155,7 +155,11 @@ function rdetailDraw() {
     }
 
 
-	if (rdetailDisplaySerialHoldings) {
+	if (rdetailDisplaySerialHoldings && (
+        isXUL() || !fetchOrgSettingDefault(
+            getLocation(), "opac.fully_compressed_serial_holdings")
+        )
+    ) {
 		var req = new Request(FETCH_MFHD_SUMMARY, getRid());
 		req.callback(_holdingsDraw);
 		req.send();
@@ -241,7 +245,7 @@ function OpenMarcEditWindow(pcrud, rec) {
 	dojo.require('openils.PermaCrud');
 
 	win.xulG = {
-		"record": {"marc": rec.marc()},
+		"record": {"marc": rec.marc(), "rtype": "sre"},
 		"save": {
 			"label": opac_strings.SAVE_MFHD_LABEL,
 			"func": function(xmlString) {
@@ -353,6 +357,10 @@ function _holdingsDrawMFHD(holdings, entryNum) {
 		var mfhd_edit = new dijit.Menu({});
 		new dijit.MenuItem({onClick: function(){loadMarcEditor(holdings.sre_id())}, label:opac_strings.EDIT_MFHD_RECORD}).placeAt(mfhd_edit, "first");
 		new dijit.MenuItem({onClick:function(){
+			// Avoid accidental deletion of MFHD records
+			if (!confirm(opac_strings.DELETE_MFHD_CONFIRM)) {
+				return;
+			}
 			var pcrud = new openils.PermaCrud({"authtoken": G.user.session});
 			var mfhd_rec = pcrud.retrieve("sre", holdings.sre_id());
 			if (mfhd_rec) {
@@ -1160,3 +1168,37 @@ function rdetailGBPViewerLoadCallback() {
 
 }
 
+function rdetailDrawExpandedHoldings(anchor, bibid, type) {
+    anchor.innerHTML = "Hide holdings"; /* XXX i18n */
+    anchor.oldonclick = anchor.onclick;
+    anchor.onclick = function() { anchor.onclick = anchor.oldonclick; anchor.innerHTML = "Show holdings"; dojo.empty(target); };
+
+    var offsets = {"basic": 0, "index": 0, "supplement": 0};
+    var limit = 10; /* XXX give user control over this? */
+    var target = dojo.query("[expanded_holdings='" + type + "']")[0];
+
+    function _load() {
+        dojo.empty(target);
+        fieldmapper.standardRequest(
+            ["open-ils.serial", "open-ils.serial.received_siss.retrieve.by_bib.atomic"], {
+                "params": [bibid, {"offset": offsets[type], "limit": limit}],
+                "async": true,
+                "oncomplete": function(r) {
+                    if (r = openils.Util.readResponse(r)) {
+                        offsets[type] += r.length;
+                        dojo.forEach(
+                            r, function(sum) {
+                                dojo.create("span", {"innerHTML": sum.label()}, target);
+                                dojo.create("br", null, target);
+                            }
+                        );
+                        /* XXX i18n */
+                        if (r.length == limit)
+                            dojo.create("a", {"style": "margin-top: 6px;", "innerHTML": "[More]", "onclick": _load}, target);
+                    }
+                }
+            }
+        );
+    }
+    _load();
+}

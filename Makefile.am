@@ -15,6 +15,7 @@ export ETCDIR=@sysconfdir@
 export WEBDIR=@localstatedir@/web
 export CGIDIR=@localstatedir@/cgi-bin
 export TEMPLATEDIR=@localstatedir@/templates
+export UPDATESDIR=@localstatedir@/updates
 
 export datadir=@localstatedir@/data
 export circrulesdir=@localstatedir@/circ
@@ -38,5 +39,5 @@ export DBI_LIBS = @DBI_LIBS@
 export OPENSRF_HEADERS = @OPENSRF_HEADERS@
 export OPENSRF_LIBS = @OPENSRF_LIBS@
 
-SUBDIRS = Open-ILS/src Open-ILS/web Open-ILS/xul/staff_client
+SUBDIRS = Open-ILS/src Open-ILS/web Open-ILS/updates Open-ILS/xul/staff_client
 

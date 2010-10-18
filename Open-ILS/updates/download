@@ -1,0 +1,11 @@
+#!/bin/bash
+FILENAME=$(basename "$PATH_INFO")
+FILENAME=${FILENAME%.xpi}
+if [ -n "$FILENAME" -a -f "./clients/$FILENAME.xpi" ]; then
+echo "Content-Disposition: attachment"
+echo ""
+cat "./clients/$FILENAME.xpi"
+else
+echo ""
+echo "?"
+fi

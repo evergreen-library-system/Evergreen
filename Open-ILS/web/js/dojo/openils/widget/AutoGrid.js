@@ -20,6 +20,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             editStyle : 'dialog',
             editReadOnly : false,
             suppressFields : null,
+            suppressEditFields : null,
             hideSelector : false,
             selectorWidth : '1.5',
             showColumnPicker : false,
@@ -86,14 +87,10 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         style : 'padding-right:6px;',
                         href : 'javascript:void(0);', 
                         onclick : function() { 
-                            self.resetStore();
                             self.cachedQueryOpts.offset = self.displayOffset -= self.displayLimit;
                             if(self.displayOffset < 0)
                                 self.cachedQueryOpts.offset = self.displayOffset = 0;
-                            if(self.dataLoader)
-                                self.dataLoader()
-                            else
-                                self.loadAll(self.cachedQueryOpts, self.cachedQuerySearch);
+                            self.refresh();
                         }
                     });
 
@@ -102,12 +99,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         style : 'padding-right:6px;',
                         href : 'javascript:void(0);', 
                         onclick : function() { 
-                            self.resetStore();
                             self.cachedQueryOpts.offset = self.displayOffset += self.displayLimit;
-                            if(self.dataLoader)
-                                self.dataLoader()
-                            else
-                                self.loadAll(self.cachedQueryOpts, self.cachedQuerySearch);
+                            self.refresh();
                         }
                     });
 
@@ -384,6 +377,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
                     requiredFields : this.requiredFields,
+                    suppressFields : this.suppressEditFields,
                     onPostSubmit : function() {
                         for(var i in fmObject._fields) {
                             var field = fmObject._fields[i];
@@ -424,6 +418,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                     overrideWidgetArgs : this.overrideWidgetArgs,
                     disableWidgetTest : this.disableWidgetTest,
                     requiredFields : this.requiredFields,
+                    suppressFields : this.suppressEditFields,
                     onPostSubmit : function(req, cudResults) {
                         var fmObject = cudResults[0];
                         if(grid.onPostCreate)
@@ -552,6 +547,14 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             
             resetStore : function() {
                 this.setStore(this.buildAutoStore());
+            },
+
+            refresh : function() {
+                this.resetStore();
+                if (this.dataLoader)
+                    this.dataLoader()
+                else
+                    this.loadAll(this.cachedQueryOpts, this.cachedQuerySearch);
             },
 
             loadAll : function(opts, search) {

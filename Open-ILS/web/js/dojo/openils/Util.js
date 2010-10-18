@@ -28,6 +28,16 @@ if(!dojo._hasResource["openils.Util"]) {
     dojo.declare('openils.Util', null, {});
 
 
+    openils.Util.timeStampRegexp =
+        /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+-]\d{2})(\d{2})$/;
+
+    openils.Util.timeStampAsDateObj = function(s) {
+        if (s.constructor.name == "Date") return s;
+        return dojo.date.stamp.fromISOString(
+            s.replace(openils.Util.timeStampRegexp, "$1:$2")
+        );
+    }
+
     /**
      * Returns a locale-appropriate representation of a timestamp when the
      * timestamp (first argument) is actually a string as provided by
@@ -39,12 +49,7 @@ if(!dojo._hasResource["openils.Util"]) {
         if (typeof(opts) == "undefined") opts = {};
 
         return dojo.date.locale.format(
-            dojo.date.stamp.fromISOString(
-                s.replace(
-                    /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+-]\d{2})(\d{2})$/,
-                    "$1:$2"
-                )
-            ), opts
+            openils.Util.timeStampAsDateObj(s), opts
         );
     };
 
@@ -319,6 +324,16 @@ if(!dojo._hasResource["openils.Util"]) {
         return openils.Util.objectProperties(o);
     }
 
+    openils.Util.uniqueObjects = function(list, field) {
+        var sorted = openils.Util.objectSort(list, field);
+        var results = [];
+        for (var i = 0; i < sorted.length; i++) {
+            if (!i || (sorted[i][field]() != sorted[i-1][field]()))
+                results.push(sorted[i]);
+        }
+        return results;
+    };
+
     /**
      * Highlight instances of each pattern in the given DOM node
      * Inspired by the jquery plugin
@@ -359,6 +374,37 @@ if(!dojo._hasResource["openils.Util"]) {
 
         // descend the tree for each pattern, since nodes are changed during highlighting
         dojo.forEach(patterns, function(pat) { _hilightNode(node, pat); });
+    };
+
+
+    /**
+     * Takes a chunk of HTML, inserts it into a new window, prints the window, 
+     * then closes the windw.  To provide ample printer queueing time, automatically
+     * wait a short time before closing the window after calling .print().  The amount
+     * of time to wait is based on the size of the data to be printed.
+     * @param html The HTML string
+     * @param callback Optional post-printing callback
+     */
+    openils.Util.printHtmlString = function(html, callback) {
+
+        var win = window.open('', 'Print Window', 'resizable,width=800,height=600,scrollbars=1'); 
+
+        // force the new window to the background
+        win.blur(); 
+        window.focus(); 
+
+        win.document.body.innerHTML = html;
+        win.print();
+
+        setTimeout(
+            function() { 
+                win.close();
+                if(callback)
+                    callback();
+            },
+            // 1k == 1 second pause, max 10 seconds
+            Math.min(html.length, 10000)
+        );
     };
 
 }

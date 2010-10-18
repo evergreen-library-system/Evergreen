@@ -482,9 +482,8 @@ sub complete_lineitem_detail {
         $lid->location($loc);
     }
 
-    if(!$lid->circ_modifier and my $mod = get_default_circ_modifier($mgr, $lid->owning_lib)) {
-        $lid->circ_modifier($mod);
-    }
+    $lid->circ_modifier(get_default_circ_modifier($mgr, $lid->owning_lib))
+        unless defined $lid->circ_modifier;
 
     $mgr->editor->update_acq_lineitem_detail($lid) or return 0;
     return $lid;
@@ -492,10 +491,9 @@ sub complete_lineitem_detail {
 
 sub get_default_circ_modifier {
     my($mgr, $org) = @_;
-    my $mod = $mgr->cache($org, 'def_circ_mod');
-    return $mod if $mod;
-    $mod = $U->ou_ancestor_setting_value($org, 'acq.default_circ_modifier');
-    return $mgr->cache($org, 'def_circ_mod', $mod) if $mod;
+    my $code = $mgr->cache($org, 'def_circ_mod');
+    $code = $U->ou_ancestor_setting_value($org, 'acq.default_circ_modifier') unless defined $code;
+    return $mgr->cache($org, 'def_circ_mod', $code) if defined $code;
     return undef;
 }
 
@@ -660,13 +658,22 @@ sub create_lineitem_detail_debit {
         ]);
     }
 
-    unless(ref $lid and ref $lid->fund) {
+    if(ref $lid) {
+        $lid->fund($mgr->editor->retrieve_acq_fund($lid->fund)) unless(ref $lid->fund);
+    } else {
         $lid = $mgr->editor->retrieve_acq_lineitem_detail([
             $lid,
             {   flesh => 1, 
                 flesh_fields => {acqlid => ['fund']}
             }
         ]);
+    }
+
+    unless ($lid->fund) {
+        $mgr->editor->event(
+            new OpenILS::Event("ACQ_FUND_NOT_FOUND") # close enough
+        );
+        return 0;
     }
 
     my $amount = $li->estimated_unit_price;
@@ -988,7 +995,7 @@ sub create_lineitem_assets {
             $volume = create_volume($mgr, $li, $lid) or return 0;
             $mgr->cache($org, "cn.$bibid.$label", $volume);
         }
-        create_copy($mgr, $volume, $lid) or return 0;
+        create_copy($mgr, $volume, $lid, $li) or return 0;
     }
 
     return { li => $li, new_bib => $new_bib };
@@ -1036,7 +1043,7 @@ sub create_volume {
 }
 
 sub create_copy {
-    my($mgr, $volume, $lid) = @_;
+    my($mgr, $volume, $lid, $li) = @_;
     my $copy = Fieldmapper::asset::copy->new;
     $copy->isnew(1);
     $copy->loan_duration(2);
@@ -1047,6 +1054,10 @@ sub create_copy {
     $copy->call_number($volume->id);
     $copy->circ_lib($volume->owning_lib);
     $copy->circ_modifier($lid->circ_modifier);
+
+    # AKA list price.  We might need a $li->list_price field since 
+    # estimated price is not necessarily the same as list price
+    $copy->price($li->estimated_unit_price); 
 
     my $evt = OpenILS::Application::Cat::AssetCommon->create_copy($mgr->editor, $volume, $copy);
     if($evt) {
@@ -1158,9 +1169,9 @@ sub zsearch_build_pl {
 # ----------------------------------------------------------------------------
 
 __PACKAGE__->register_method(
-    method => 'upload_records',
+    method   => 'upload_records',
     api_name => 'open-ils.acq.process_upload_records',
-    stream => 1,
+    stream   => 1,
 );
 
 sub upload_records {
@@ -1173,14 +1184,14 @@ sub upload_records {
     my $cache = OpenSRF::Utils::Cache->new;
 
     my $data = $cache->get_cache("vandelay_import_spool_$key");
-	my $purpose = $data->{purpose};
-    my $filename = $data->{path};
-    my $provider = $data->{provider};
-    my $picklist = $data->{picklist};
-    my $create_po = $data->{create_po};
-    my $activate_po = $data->{activate_po};
+    my $purpose         = $data->{purpose};
+    my $filename        = $data->{path};
+    my $provider        = $data->{provider};
+    my $picklist        = $data->{picklist};
+    my $create_po       = $data->{create_po};
+    my $activate_po     = $data->{activate_po};
     my $ordering_agency = $data->{ordering_agency};
-    my $create_assets = $data->{create_assets};
+    my $create_assets   = $data->{create_assets};
     my $po;
     my $evt;
 
@@ -1212,8 +1223,7 @@ sub upload_records {
 
     $logger->info("acq processing MARC file=$filename");
 
-    my $marctype = 'USMARC'; # ?
-	my $batch = new MARC::Batch ($marctype, $filename);
+	my $batch = new MARC::Batch ('USMARC', $filename);
 	$batch->strict_off;
 
 	my $count = 0;
@@ -1221,10 +1231,8 @@ sub upload_records {
 
 	while(1) {
 
-	    my $err;
-        my $xml;
+	    my ($err, $xml, $r);
 		$count++;
-        my $r;
 
 		try {
             $r = $batch->next;
@@ -1281,7 +1289,7 @@ sub upload_records {
     unlink($filename);
     $cache->delete_cache('vandelay_import_spool_' . $key);
 
-    if($create_assets) {
+    if ($create_assets) {
         create_lineitem_list_assets($mgr, \@li_list) or return $e->die_event;
     }
 
@@ -1313,14 +1321,15 @@ sub import_lineitem_details {
         last unless $$compiled{quantity};
 
         for(1..$$compiled{quantity}) {
-            my $lid = create_lineitem_detail($mgr, 
-                lineitem => $li->id,
-                owning_lib => $$compiled{owning_lib},
-                cn_label => $$compiled{call_number},
-                fund => $$compiled{fund},
-                circ_modifier => $$compiled{circ_modifier},
-                note => $$compiled{note},
-                location => $$compiled{copy_location},
+            my $lid = create_lineitem_detail(
+                $mgr, 
+                lineitem        => $li->id,
+                owning_lib      => $$compiled{owning_lib},
+                cn_label        => $$compiled{call_number},
+                fund            => $$compiled{fund},
+                circ_modifier   => $$compiled{circ_modifier},
+                note            => $$compiled{note},
+                location        => $$compiled{copy_location},
                 collection_code => $$compiled{collection_code}
             ) or return 0;
         }
@@ -1386,21 +1395,20 @@ sub extract_lineitem_detail_data {
     # ---------------------------------------------------------------------
     # Circ Modifier
     my $code = $compiled{circ_modifier};
-    my $mod;
 
-    if($code) {
+    if(defined $code) {
 
-        $mod = $mgr->cache($base_org, "mod.$code") ||
+        # verify this is a valid circ modifier
+        return $killme->("invlalid circ_modifier $code") unless 
+            defined $mgr->cache($base_org, "mod.$code") or 
             $mgr->editor->retrieve_config_circ_modifier($code);
-        return $killme->("invlalid circ_modifier $code") unless $mod;
-        $mgr->cache($base_org, "mod.$code", $mod);
+
+            # if valid, cache for future tests
+            $mgr->cache($base_org, "mod.$code", $code);
 
     } else {
-        # try the default
-        $mod = get_default_circ_modifier($mgr, $base_org);
+        $compiled{circ_modifier} = get_default_circ_modifier($mgr, $base_org);
     }
-
-    $compiled{circ_modifier} = $mod if $mod;
 
 
     # ---------------------------------------------------------------------
@@ -1482,10 +1490,10 @@ sub create_po_assets {
 
 
 __PACKAGE__->register_method(
-	method => 'create_purchase_order_api',
-	api_name	=> 'open-ils.acq.purchase_order.create',
-	signature => {
-        desc => 'Creates a new purchase order',
+    method    => 'create_purchase_order_api',
+    api_name  => 'open-ils.acq.purchase_order.create',
+    signature => {
+        desc   => 'Creates a new purchase order',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'purchase_order to create', type => 'object'}
@@ -1505,10 +1513,10 @@ sub create_purchase_order_api {
 
     # create the PO
     my %pargs = (ordering_agency => $e->requestor->ws_ou); # default
-    $pargs{provider} = $po->provider if $po->provider;
-    $pargs{ordering_agency} = $po->ordering_agency if $po->ordering_agency;
-    $pargs{prepayment_required} = $po->prepayment_required
-        if $po->prepayment_required;
+    $pargs{provider}            = $po->provider            if $po->provider;
+    $pargs{ordering_agency}     = $po->ordering_agency     if $po->ordering_agency;
+    $pargs{prepayment_required} = $po->prepayment_required if $po->prepayment_required;
+        
     $po = create_purchase_order($mgr, %pargs) or return $e->die_event;
 
     my $li_ids = $$args{lineitems};
@@ -1543,14 +1551,11 @@ sub create_purchase_order_api {
 
 
 __PACKAGE__->register_method(
-	method => 'update_lineitem_fund_batch',
-	api_name => 'open-ils.acq.lineitem.fund.update.batch',
-    stream => 1,
+    method   => 'update_lineitem_fund_batch',
+    api_name => 'open-ils.acq.lineitem.fund.update.batch',
+    stream   => 1,
     signature => { 
-        desc => q/
-            Given a set of lineitem IDS, updates the fund for all attached
-            lineitem details
-        /
+        desc => q/Given a set of lineitem IDS, updates the fund for all attached lineitem details/
     }
 );
 
@@ -1833,8 +1838,8 @@ sub receive_lineitem_api {
 
 
 __PACKAGE__->register_method(
-	method => 'rollback_receive_po_api',
-	api_name	=> 'open-ils.acq.purchase_order.receive.rollback'
+    method   => 'rollback_receive_po_api',
+    api_name => 'open-ils.acq.purchase_order.receive.rollback'
 );
 
 sub rollback_receive_po_api {
@@ -1862,10 +1867,10 @@ sub rollback_receive_po_api {
 
 
 __PACKAGE__->register_method(
-	method => 'rollback_receive_lineitem_detail_api',
-	api_name	=> 'open-ils.acq.lineitem_detail.receive.rollback',
-	signature => {
-        desc => 'Mark a lineitem_detail as Un-received',
+    method    => 'rollback_receive_lineitem_detail_api',
+    api_name  => 'open-ils.acq.lineitem_detail.receive.rollback',
+    signature => {
+        desc   => 'Mark a lineitem_detail as Un-received',
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'lineitem detail ID', type => 'number'}
@@ -2191,11 +2196,24 @@ sub activate_purchase_order_impl {
     update_purchase_order($mgr, $po) or return $e->die_event;
 
     my $query = [
-        {purchase_order => $po_id, state => 'pending-order'},
+        {
+            purchase_order => $po_id, 
+            '-or' => [{state => 'pending-order'}, {state => 'new'}]
+        },
         {limit => 1}
     ];
 
-    while( my $li = $e->search_acq_lineitem($query)->[0] ) {
+    while( my $li_id = $e->search_acq_lineitem($query, {idlist => 1})->[0] ) {
+
+        my $li;
+        if($dry_run) {
+            $li = $e->retrieve_acq_lineitem($li_id);
+        } else {
+            # can't activate a PO w/o assets.  Create lineitem assets as necessary
+            my $data = create_lineitem_assets($mgr, $li_id) or return $e->die_event;
+            $li = $data->{li};
+        }
+
         $li->state('on-order');
         create_lineitem_debits($mgr, $li, $dry_run) or return $e->die_event;
         update_lineitem($mgr, $li) or return $e->die_event;
@@ -3110,4 +3128,48 @@ sub fetch_and_check_li {
 }
 
 
+__PACKAGE__->register_method(
+	method => "clone_distrib_form",
+	api_name => "open-ils.acq.distribution_formula.clone",
+    stream => 1,
+	signature => {
+        desc => q/Clone a distribution formula/,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "Original formula ID", type => 'integer'},
+            {desc => "Name of new formula", type => 'string'},
+        ],
+        return => {desc => "ID of newly created formula"}
+    }
+);
+
+sub clone_distrib_form {
+    my($self, $client, $auth, $form_id, $new_name) = @_;
+
+    my $e = new_editor("xact"=> 1, "authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $old_form = $e->retrieve_acq_distribution_formula($form_id) or return $e->die_event;
+    return $e->die_event unless $e->allowed('ADMIN_ACQ_DISTRIB_FORMULA', $old_form->owner);
+
+    my $new_form = Fieldmapper::acq::distribution_formula->new;
+
+    $new_form->owner($old_form->owner);
+    $new_form->name($new_name);
+    $e->create_acq_distribution_formula($new_form) or return $e->die_event;
+
+    my $entries = $e->search_acq_distribution_formula_entry({formula => $form_id});
+    for my $entry (@$entries) {
+       my $new_entry = Fieldmapper::acq::distribution_formula_entry->new;
+       $new_entry->$_($entry->$_()) for $entry->real_fields;
+       $new_entry->formula($new_form->id);
+       $new_entry->clear_id;
+       $e->create_acq_distribution_formula_entry($new_entry) or return $e->die_event;
+    }
+
+    $e->commit;
+    return $new_form->id;
+}
+
 1;
+

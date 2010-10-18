@@ -43,8 +43,8 @@ pointing to the JUB model (and store) that you have created.
         .grid_container {width: 100%; height: 100%;}
     </style>
 
-    <script src='[% ctx.media_prefix %]/js/ui/default/acq/common/jubgrid.js'> </script>
-    <script src='[% ctx.media_prefix %]/js/dojo/openils/CopyLocation.js'> </script>
+    <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/common/jubgrid.js'> </script>
+    <script type="text/javascript" src='[% ctx.media_prefix %]/js/dojo/openils/CopyLocation.js'> </script>
     <script type="text/javascript">
     JUBGrid.getPO = function(rowIndex) {
         var data = JUBGrid.jubGrid.model.getRow(rowIndex);

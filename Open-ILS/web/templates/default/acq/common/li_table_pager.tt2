@@ -1,4 +1,4 @@
-<script src="[% ctx.media_prefix %]/js/ui/default/acq/common/li_table_pager.js">
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/li_table_pager.js">
 </script>
 <div id="acq-litpager-controls">
     <button id="acq-litpager-controls-prev" disabled="disabled">

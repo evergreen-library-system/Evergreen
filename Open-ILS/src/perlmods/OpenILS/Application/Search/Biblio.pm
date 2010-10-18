@@ -260,7 +260,7 @@ sub record_id_to_copy_count {
     return [] unless $record_id;
 
     my $key = $self->api_name =~ /metarecord/ ? 'metarecord' : 'record';
-    my $staff =~ $self->api_name =~ /staff/ ? 't' : 'f';
+    my $staff = $self->api_name =~ /staff/ ? 't' : 'f';
 
     my $data = $U->cstorereq(
         "open-ils.cstore.json_query.atomic",
@@ -689,12 +689,13 @@ sub multiclass_query {
     $query =~ s/^\s+//go;
 
     # convert convenience classes (e.g. kw for keyword) to the full class name
-    $query =~ s/kw(:|\|)/keyword$1/go;
-    $query =~ s/ti(:|\|)/title$1/go;
-    $query =~ s/au(:|\|)/author$1/go;
-    $query =~ s/su(:|\|)/subject$1/go;
-    $query =~ s/se(:|\|)/series$1/go;
-    $query =~ s/name(:|\|)/author$1/og;
+    # ensure that the convenience class isn't part of a word (e.g. 'playhouse')
+    $query =~ s/(^|\s)kw(:|\|)/$1keyword$2/go;
+    $query =~ s/(^|\s)ti(:|\|)/$1title$2/go;
+    $query =~ s/(^|\s)au(:|\|)/$1author$2/go;
+    $query =~ s/(^|\s)su(:|\|)/$1subject$2/go;
+    $query =~ s/(^|\s)se(:|\|)/$1series$2/go;
+    $query =~ s/(^|\s)name(:|\|)/$1author$2/og;
 
     $logger->debug("cleansed query string => $query");
     my $search = {};
@@ -789,8 +790,10 @@ sub multiclass_query {
         if $sclient->config_value(apps => 'open-ils.search',
             app_settings => 'use_staged_search') =~ /true/i;
 
-    $arghash->{preferred_language} = $U->get_org_locale($arghash->{org_unit})
-        unless $arghash->{preferred_language};
+    # XXX This stops the session locale from doing the right thing.
+    # XXX Revisit this and have it translate to a lang instead of a locale.
+    #$arghash->{preferred_language} = $U->get_org_locale($arghash->{org_unit})
+    #    unless $arghash->{preferred_language};
 
 	$method = $self->method_lookup($method);
     my ($data) = $method->run($arghash, $docache);
@@ -1316,10 +1319,28 @@ sub retrieve_cached_facets {
     my $self   = shift;
     my $client = shift;
     my $key    = shift;
+    my $limit    = shift;
 
     return undef unless ($key and $key =~ /_facets$/);
 
-    return $cache->get_cache($key) || {};
+    my $blob = $cache->get_cache($key) || {};
+
+    my $facets = {};
+    if ($limit) {
+       for my $f ( keys %$blob ) {
+            my @sorted = map{ { $$_[1] => $$_[0] } } sort {$$b[0] <=> $$a[0] || $$a[1] cmp $$b[1]} map { [$$blob{$f}{$_}, $_] } keys %{ $$blob{$f} };
+            @sorted = @sorted[0 .. $limit - 1] if (scalar(@sorted) > $limit);
+            for my $s ( @sorted ) {
+                my ($k) = keys(%$s);
+                my ($v) = values(%$s);
+                $$facets{$f}{$k} = $v;
+            }
+        }
+    } else {
+        $facets = $blob;
+    }
+
+    return $facets;
 }
 
 __PACKAGE__->register_method(

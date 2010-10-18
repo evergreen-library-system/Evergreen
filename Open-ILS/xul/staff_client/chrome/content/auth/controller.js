@@ -388,7 +388,13 @@ auth.controller.prototype = {
                     if (x.status == 200) {
                         window.open('data:text/html,'+window.escape(x.responseText),'upgrade','chrome,resizable,modal,centered');
                     } else {
-                        alert(document.getElementById('authStrings').getString('staff.auth.controller.version_mismatch'));
+                        if(typeof(G.upgradeCheck) == "function")
+                        {
+                            if (confirm("This server does not support your version of the staff client, an upgrade may be required. If you wish to check for an upgrade please press Ok. Otherwise please press cancel."))
+                                G.upgradeCheck();
+                        } else {
+                            alert(document.getElementById('authStrings').getString('staff.auth.controller.version_mismatch'));
+                        }
                     }
                     obj.controller.view.server_prompt.disabled = false;
                 } catch(E) {

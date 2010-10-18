@@ -2,6 +2,7 @@ dump('entering serial/scap_editor.js\n');
 // vim:noet:sw=4:ts=4:
 
 JSAN.use('serial.editor_base');
+var pattern_code_key = 'Pattern Code (temporary)';
 
 if (typeof serial == 'undefined') serial = {};
 serial.scap_editor = function (params) {
@@ -98,7 +99,7 @@ serial.scap_editor.prototype = {
                 }
             ],
             [
-                'Pattern Code (temporary)',
+                pattern_code_key,
                 { 
                     render: 'fm.pattern_code() == null ? "" : fm.pattern_code();',
                     input: 'c = function(v){ obj.apply("pattern_code",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.pattern_code); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
@@ -130,6 +131,24 @@ serial.scap_editor.prototype = {
     'save' : function() {
         var obj = this;
         obj.editor_base_save('open-ils.serial.caption_and_pattern.batch.update');
+    },
+
+    /* Pattern/caption wizard */
+    "pattern_wizard": function() {
+        var obj = this;
+
+        var onsubmit = function(value) {
+            obj.apply("pattern_code", value);
+            obj.summarize(obj.scaps);
+            obj.render();
+        };
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+        window.openDialog(
+            xulG.url_prefix("/xul/server/serial/pattern_wizard.xul"),
+            "pattern_wizard",
+            "scrollbars=yes", /* XXX FIXME: scrollbars aren't working. what to do? */
+            onsubmit
+        );
     },
 
     /******************************************************************************************************/

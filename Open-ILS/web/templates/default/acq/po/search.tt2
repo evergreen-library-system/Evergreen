@@ -20,7 +20,7 @@
     <span><a class="hidden" attr="activator" href="javascript:void(0);">Activate Order</a></span>
 </div>
 <!-- load the page-specific JS -->
-<script src='[% ctx.media_prefix %]/js/ui/default/acq/po/search.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/po/search.js'> </script>
 
 <script type="text/javascript">
     function formatId(id) {

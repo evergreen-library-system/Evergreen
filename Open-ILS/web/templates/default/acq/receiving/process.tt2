@@ -1,5 +1,5 @@
 [% WRAPPER default/base.tt2 %]
-    <script src='[% ctx.media_prefix %]/js/ui/default/acq/receiving/process.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/receiving/process.js'> </script>
     <h1>Receiving Processing</h1><br/>
     <div id='oils-acq-recv-search-block' class='container'>
         <form dojoType='dijit.form.Form' action='' method=''>

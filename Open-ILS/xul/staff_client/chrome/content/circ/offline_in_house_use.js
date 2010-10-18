@@ -116,6 +116,7 @@ function next_patron() {
             try {
                 var params = {
                     'template' : 'offline_inhouse_use',
+                    'printer_context' : 'offline',
                     'callback' : function() {
                         g.list.clear();
                         var x = $('i_barcode'); x.value = ''; x.focus();

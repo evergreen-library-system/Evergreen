@@ -26,6 +26,7 @@ util.browser.prototype = {
             obj.debug_label = params['debug_label'];
             obj.passthru_content_params = params['passthru_content_params'];
             obj.on_url_load = params['on_url_load'];
+            obj.printer_context = params['printer_context'] || 'default';
 
             JSAN.use('util.controller'); obj.controller = new util.controller();
             obj.controller.init(
@@ -49,7 +50,7 @@ util.browser.prototype = {
                                 try {
                                     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                     var content = obj.get_content();
-                                    JSAN.use('util.print'); var p = new util.print();
+                                    JSAN.use('util.print'); var p = new util.print(obj.printer_context);
                                     var print_params = {};
                                     if (obj.html_source) {
                                         print_params.msg = obj.html_source;
@@ -58,10 +59,25 @@ util.browser.prototype = {
                                     if (typeof content.printable_output == 'function') {
                                         print_params.msg = content.printable_output();
                                         print_params.content_type = 'text/plain';
+                                        content = print_params.msg;
                                     }
                                     JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
-                                    if (data.print_strategy == 'webBrowserPrint' || !data.print_strategy) {
-                                        // Override the print strategy temporarily in this context
+                                    // Override the print strategy temporarily if it's not set or is equal to webBrowserPrint (which is buggy here)
+                                    if (data.print_strategy) {
+                                        if (data.print_strategy[obj.printer_context] || data.print_strategy['default']) {
+                                            if (data.print_strategy[obj.printer_context]) {
+                                                if (data.print_strategy[obj.printer_context] == 'webBrowserPrint') {
+                                                    print_params.print_strategy = 'window.print';
+                                                }
+                                            } else {
+                                                if (data.print_strategy['default'] == 'webBrowserPrint') {
+                                                    print_params.print_strategy = 'window.print';
+                                                }
+                                            }
+                                        } else {
+                                            print_params.print_strategy = 'window.print';
+                                        }
+                                    } else {
                                         print_params.print_strategy = 'window.print';
                                     }
                                     p.NSPrint(content,false,print_params);

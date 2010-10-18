@@ -951,8 +951,11 @@ sub authority_tag_sf_browse {
 		my $before = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
 			{ select	=> { afr => [qw/record value/] },
-			  from		=> 'afr',
-			  where		=> { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
+			  from		=> { 'are', 'afr' },
+			  where		=> {
+				'+afr' => { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
+				'+are' => { 'deleted' => 'f' }
+			  },
 			  order_by	=> { afr => { value => 'desc' } },
 			  limit		=> $before_limit,
 			  offset	=> abs($page) * $page_size - $before_offset,
@@ -965,8 +968,11 @@ sub authority_tag_sf_browse {
 		my $after = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
 			{ select	=> { afr => [qw/record value/] },
-			  from		=> 'afr',
-			  where		=> { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } }, 
+			  from		=> { 'are', 'afr' },
+			  where		=> {
+				'+afr' => { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } },
+				'+are' => { 'deleted' => 'f' }
+			  },
 			  order_by	=> { afr => { value => 'asc' } },
 			  limit		=> $after_limit,
 			  offset	=> abs($page) * $page_size - $after_offset,
@@ -1362,8 +1368,11 @@ sub authority_tag_sf_startwith {
 		my $before = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
 			{ select	=> { afr => [qw/record value/] },
-			  from		=> 'afr',
-			  where		=> { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
+			  from		=> { 'afr', 'are' },
+			  where		=> {
+				'+afr' => { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
+				'+are' => { deleted => 'f' }
+			  },
 			  order_by	=> { afr => { value => 'desc' } },
 			  limit		=> $limit,
 			  offset	=> $offset
@@ -1376,8 +1385,11 @@ sub authority_tag_sf_startwith {
 		my $after = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
 			{ select	=> { afr => [qw/record value/] },
-			  from		=> 'afr',
-			  where		=> { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } }, 
+			  from		=> { 'afr', 'are' },
+			  where		=> {
+				'+afr' => { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } },
+				'+are' => { deleted => 'f' }
+			  },
 			  order_by	=> { afr => { value => 'asc' } },
 			  limit		=> $limit,
 			  offset	=> $offset
@@ -2665,6 +2677,7 @@ sub as_xml {
 
     $xml .= 'id="tag:open-ils.org:asset-call_number/' . $self->obj->id . '" ';
     $xml .= 'lib="' . $self->escape( $self->obj->owning_lib->shortname ) . '" ';
+    $xml .= 'opac_visible="' . $self->obj->owning_lib->opac_visible . '" ';
     $xml .= 'label="' . $self->escape( $self->obj->label ) . '">';
     $xml .= "\n";
 
@@ -3091,13 +3104,13 @@ sub as_xml {
     $xml .= ">\n";
 
     $xml .= '        <status ident="' . $self->obj->status->id . '">' . $self->escape( $self->obj->status->name  ) . "</status>\n";
-    $xml .= '        <location ident="' . $self->obj->location->id . '">' . $self->escape( $self->obj->location->name  ) . "</location>\n";
-    $xml .= '        <circlib ident="' . $self->obj->circ_lib->id . '">' . $self->escape( $self->obj->circ_lib->name  ) . "</circlib>\n";
+    $xml .= '        <location ident="' . $self->obj->location->id . '" opac_visible="'.$self->obj->location->opac_visible.'">' . $self->escape( $self->obj->location->name  ) . "</location>\n";
+    $xml .= '        <circlib ident="' . $self->obj->circ_lib->id . '" opac_visible="'.$self->obj->circ_lib->opac_visible.'">' . $self->escape( $self->obj->circ_lib->name  ) . "</circlib>\n";
 
     $xml .= '        <circ_lib xmlns="http://open-ils.org/spec/actors/v1" ';
     $xml .= 'id="tag:open-ils.org:actor-org_unit/' . $self->obj->circ_lib->id . '" ';
     $xml .= 'shortname="'.$self->escape( $self->obj->circ_lib->shortname ) .'" ';
-    $xml .= 'name="'.$self->escape( $self->obj->circ_lib->name ) .'"/>';
+    $xml .= 'name="'.$self->escape( $self->obj->circ_lib->name ) .'" opac_visible="'.$self->obj->circ_lib->opac_visible.'"/>';
     $xml .= "\n";
 
 	$xml .= "        <copy_notes>\n";

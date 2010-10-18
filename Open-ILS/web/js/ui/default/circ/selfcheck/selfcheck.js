@@ -341,7 +341,16 @@ SelfCheckManager.prototype.loginPatron = function(barcode, passwd) {
     );
 
     var evt = openils.Event.parse(this.patron);
-    if(evt) {
+    
+    // verify validity of the card used to log in
+    var inactiveCard = false;
+    if(!evt) {
+        var card = this.patron.cards().filter(
+            function(c) { return (c.barcode() == barcode); })[0];
+        inactiveCard = !openils.Util.isTrue(card.active());
+    }
+
+    if(evt || inactiveCard) {
         this.handleAlert(
             dojo.string.substitute(localeStrings.LOGIN_FAILED, [barcode]),
             false, 'login-failure'
@@ -669,12 +678,12 @@ SelfCheckManager.prototype.drawHoldsPage = function() {
                 }
 
                 fieldmapper.standardRequest( // fetch the hold objects with fleshed details
-                    ['open-ils.circ', 'open-ils.circ.hold.details.batch.retrieve.atomic'],
+                    ['open-ils.circ', 'open-ils.circ.hold.details.batch.retrieve'],
                     {   async : true,
                         params : [self.authtoken, ids],
-
-                        oncomplete : function(rr) {
-                            self.drawHolds(openils.Util.readResponse(rr));
+                        onresponse : function(rr) {
+                            progressDialog.hide();
+                            self.insertHold(openils.Util.readResponse(rr));
                         }
                     }
                 );
@@ -683,54 +692,45 @@ SelfCheckManager.prototype.drawHoldsPage = function() {
     );
 }
 
-/**
- * Fetch and add a single hold to the list of holds
- */
-SelfCheckManager.prototype.drawHolds = function(holds) {
+SelfCheckManager.prototype.insertHold = function(data) {
+    var row = this.holdTemplate.cloneNode(true);
 
-    holds = holds.sort(
-        // sort available holds to the top of the list
-        // followed by queue position order
-        function(a, b) {
-            if(a.status == 4) return -1;
-            if(a.queue_position < b.queue_position) return -1;
-            return 1;
-        }
-    );
-
-    this.holds = holds;
-
-    progressDialog.hide();
-
-    for(var i in holds) {
-
-        var data = holds[i];
-        var row = this.holdTemplate.cloneNode(true);
-
-        if(data.mvr.isbn()) {
-            this.byName(row, 'jacket').setAttribute('src', '/opac/extras/ac/jacket/small/' + data.mvr.isbn());
-        }
-
-        this.byName(row, 'title').innerHTML = data.mvr.title();
-        this.byName(row, 'author').innerHTML = data.mvr.author();
-
-        if(data.status == 4) {
-
-            // hold is ready for pickup
-            this.byName(row, 'status').innerHTML = localeStrings.HOLD_STATUS_READY;
-
-        } else {
-
-            // hold is still pending
-            this.byName(row, 'status').innerHTML = 
-                dojo.string.substitute(
-                    localeStrings.HOLD_STATUS_WAITING,
-                    [data.queue_position, data.potential_copies]
-                );
-        }
-
-        this.holdTbody.appendChild(row);
+    if(data.mvr.isbn()) {
+        this.byName(row, 'jacket').setAttribute('src', '/opac/extras/ac/jacket/small/' + data.mvr.isbn());
     }
+
+    this.byName(row, 'title').innerHTML = data.mvr.title();
+    this.byName(row, 'author').innerHTML = data.mvr.author();
+
+    if(data.status == 4) {
+
+        // hold is ready for pickup
+        this.byName(row, 'status').innerHTML = localeStrings.HOLD_STATUS_READY;
+
+    } else {
+
+        // hold is still pending
+        this.byName(row, 'status').innerHTML = 
+            dojo.string.substitute(
+                localeStrings.HOLD_STATUS_WAITING,
+                [data.queue_position, data.potential_copies]
+            );
+    }
+
+    // find the correct place the table to slot in the hold based on queue position
+
+    var position = (data.status == 4) ? 0 : data.queue_position;
+    row.setAttribute('position', position);
+
+    for(var i = 0; i < this.holdTbody.childNodes.length; i++) {
+        var node = this.holdTbody.childNodes[i];
+        if(Number(node.getAttribute('position')) >= position) {
+            this.holdTbody.insertBefore(row, node);
+            return;
+        }
+    }
+
+    this.holdTbody.appendChild(row);
 }
 
 

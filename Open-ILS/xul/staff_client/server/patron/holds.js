@@ -15,8 +15,8 @@ patron.holds.prototype = {
     'hold_interface_type' : null,
 
     'pull_from_shelf_interface' : {
-        '_default' : { 'limit' : 50, 'offset' : 0 },
-        'current' : { 'limit' : 50, 'offset' : 0 }
+        '_default' : { 'limit' : 100, 'offset' : 0 },
+        'current' : { 'limit' : 100, 'offset' : 0 }
     },
 
     'filter_lib' : null,
@@ -232,7 +232,8 @@ patron.holds.prototype = {
                                     xulG.patron_rendered_elsewhere = (obj.hold_interface_type == 'patron');
                                     xulG.bib_rendered_elsewhere = (obj.hold_interface_type == 'record');
                                     f.xulG = xulG;
-                                    f.fetch_and_render_all();
+                                    f.xulG.clear_and_retrieve = function() { obj.clear_and_retrieve(); };
+                                    f.fetch_and_render_all(true);
                                 }
                             } catch(E) {
                                 alert('Error in holds.js, cmd_alt_view handler: ' + E);
@@ -289,7 +290,39 @@ patron.holds.prototype = {
                             );
                         }
                     ],
-
+                    'cmd_holds_print_full' : [
+                        ['command'],
+                        function() {
+                            var x_print_full_pull_list = document.getElementById('print_full_btn');
+                            try {
+                                if (progressmeter) {
+                                    progressmeter.mode = 'undetermined';
+                                    progressmeter.hidden = false;
+                                    x_print_full_pull_list.disabled = true;
+                                }
+                                JSAN.use('util.print');
+                                var print = new util.print('default');
+                                var robj = fieldmapper.standardRequest(
+                                    [ api.HTML_HOLD_PULL_LIST.app, api.HTML_HOLD_PULL_LIST.method ],
+                                    {   async: false,
+                                        timeout: 180,
+                                        params: [ses()],
+                                    }
+                                );
+                                if (robj != null) {
+                                    if (typeof robj.ilsevent != 'undefined') { throw(robj); }
+                                    print.simple( robj.template_output().data() );
+                                }
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('cmd_holds_print_full',E);
+                            }
+                            if (progressmeter) {
+                                progressmeter.mode = 'determined';
+                                progressmeter.hidden = true;
+                                x_print_full_pull_list.disabled = false;
+                            }
+                        }
+                    ],
                     'cmd_holds_print' : [
                         ['command'],
                         function() {
@@ -1259,6 +1292,7 @@ patron.holds.prototype = {
         var x_show_cancelled_deck = document.getElementById('show_cancelled_deck');
         var x_clear_shelf_widgets = document.getElementById('clear_shelf_widgets');
         var x_expired_checkbox = document.getElementById('expired_checkbox');
+        var x_print_full_pull_list = document.getElementById('print_full_btn');
         switch(obj.hold_interface_type) {
             case 'shelf':
                 obj.render_lib_menus({'pickup_lib':true});
@@ -1269,6 +1303,7 @@ patron.holds.prototype = {
             break;
             case 'pull' :
                 if (x_fetch_more) x_fetch_more.hidden = false;
+                if (x_print_full_pull_list) x_print_full_pull_list.hidden = false;
                 if (x_lib_type_menu) x_lib_type_menu.hidden = true;
                 if (x_lib_menu_placeholder) x_lib_menu_placeholder.hidden = true;
             break;

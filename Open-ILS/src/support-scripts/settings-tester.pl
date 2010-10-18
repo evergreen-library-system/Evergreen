@@ -212,7 +212,7 @@ foreach my $host (@hosts) {
 
 # Check for oils_web.xml, required for acquisitions and many administration
 # interfaces as of Evergreen 1.6
-if (!-t '/openils/conf/oils_web.xml') {
+if (!-T '/openils/conf/oils_web.xml') {
 	my $de = "* WARNING: As of Evergreen 1.6, /openils/conf/oils_web.xml " .
 		"is a required configuration file. Copying " .
 		"/openils/conf/oils_web.xml.example should resolve this " .

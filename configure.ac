@@ -52,6 +52,7 @@ AM_PROG_CC_C_O
 #    yes) openils_all=true;
 #	 openils_core=true;
 #	 openils_web=true;
+#	 openils_updates=true;
 #	 openils_reporter=true;
 #	 openils_client_xul=true;
 #	 openils_server_xul=true ;;
@@ -84,6 +85,26 @@ esac],
 [openils_web=true])
 
 AM_CONDITIONAL([BUILDILSWEB], [test x$openils_web = xtrue])
+
+# install evergreen-updates?
+
+AC_ARG_ENABLE([updates],
+[  --disable-updates    disables installation of the Evergreen updates folder ],
+[case "${enableval}" in
+    yes) openils_updates=true ;;
+    no)  openils_updates=false ;;
+  *) AC_MSG_ERROR([please choose another value for --disable-updates (supported values are yes or no])
+esac],
+[openils_updates=true])
+
+AM_CONDITIONAL([BUILDILSUPDATES], [test x$openils_updates = xtrue])
+
+# Default updates host?
+AC_ARG_WITH([updateshost],
+[  --with-updateshost=hostname    default hostname for automatic updates (default is blank)],
+[AUTOUPDATE_HOST=${withval}],
+[AUTOUPDATE_HOST=])
+AC_SUBST([AUTOUPDATE_HOST])
 
 # install Evergreen Apache modules?
 AC_ARG_ENABLE([apache-modules],
@@ -350,6 +371,7 @@ fi
 AC_CONFIG_FILES([Makefile
 		 Open-ILS/src/Makefile
 		 Open-ILS/web/Makefile
+		 Open-ILS/updates/Makefile
 		 Open-ILS/xul/staff_client/Makefile
 		 Open-ILS/src/extras/eg_config
 		 Open-ILS/src/extras/fast-extract],
@@ -382,6 +404,11 @@ if test "$openils_web" = "true" ; then
         AC_MSG_RESULT([Evergreen Web:			yes])
 else
         AC_MSG_RESULT([Evergreen Web:			no])
+fi
+if test "$openils_updates" = "true" ; then
+        AC_MSG_RESULT([Evergreen Updates:		yes])
+else
+        AC_MSG_RESULT([Evergreen Updates:		no])
 fi
 if test "$openils_reporter" = "true" ; then
         AC_MSG_RESULT([Evergreen Reporter:		yes])

@@ -22,7 +22,7 @@
     onload="try { main_init(); } catch(E) { alert(E); }"
     onunload="try { G.auth.logoff(); } catch(E) { alert(E); }"
     title="&staff.auth.title;"
-    width="640" height="480"
+    width="640" height="480" windowtype="eg_main"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 
@@ -92,7 +92,15 @@
     <groupbox id="main_groupbox" flex="1" style="overflow: auto;">
         <caption id="main_caption" label="&staff.main.auth.caption;"/>
         <hbox>
-            <button id="about_btn" label="&staff.auth.about_btn.label;" accesskey="&staff.auth.about_btn.accesskey;" />
+            <button type="menu" label="Help" accesskey="l">
+                <menupopup>
+                    <menuitem id="about_btn" label="&staff.auth.about_btn.label;" accesskey="&staff.auth.about_btn.accesskey;" />
+                    <menuitem id="contents_menu" label="Contents" accesskey="c" disabled="true" />
+                    <menuseparator id="check_upgrade_sep" hidden="true" />
+                    <menuitem id="check_upgrade" label="Check for upgrades" accesskey="" hidden="true" />
+                </menupopup>
+            </button>
+
 
             <button id="new_window_btn" label="&staff.auth.new_window_btn.label;" accesskey="&staff.auth.new_window_btn.accesskey;" />
 

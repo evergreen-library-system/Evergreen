@@ -875,7 +875,7 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) { return my.acp.circ_modifier(); }
+            'editable' : false, 'render' : function(my) { var cm = my.acp.circ_modifier(); return document.getElementById('commonStrings').getFormattedString('staff.circ_modifier.display',[cm,data.hash.ccm[cm].name(),data.hash.ccm[cm].description()]); }
         },
         {
             'id' : 'status_changed_time',
@@ -1233,6 +1233,16 @@ circ.util.columns = function(modify,params) {
             'primary' : false,
             'hidden' : true,
             'editable' : false, 'render' : function(my) { return my.circ ? util.date.formatted_date( my.circ.checkin_scan_time(), '%{localized}' ) : ""; },
+        },
+        {
+            'persist' : 'hidden width ordinal',
+            'fm_class' : 'bre',
+            'id' : 'owner',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.owner'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) { return my.bre ? (typeof my.bre.owner() == 'object' ? my.bre.owner().shortname() : data.hash.aou[my.bre.owner()].shortname() ) : ''; }
         },
         {
             'persist' : 'hidden width ordinal',
@@ -2428,7 +2438,9 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             'request_date' : '',
             'request_date_msg' : '',
             'slip_date' : '',
-            'slip_date_msg' : ''
+            'slip_date_msg' : '',
+            'user' : '',
+            'user_stat_cat_entries' : ''
         };
 
         if (check.payload && check.payload.cancelled_hold_transit) {
@@ -2531,6 +2543,26 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         msg += '\n';
                         var au_obj = patron.util.retrieve_fleshed_au_via_id( session, check.payload.hold.usr() );
                         print_data.user = au_obj;
+                        print_data.user_stat_cat_entries = [];
+                        var entries = au_obj.stat_cat_entries();
+                        for (var i = 0; i < entries.length; i++) {
+                            var stat_cat = data.hash.my_actsc[ entries[i].stat_cat() ];
+                            if (!stat_cat) {
+                                stat_cat = data.lookup('actsc', entries[i].stat_cat());
+                            }
+                            print_data.user_stat_cat_entries.push( { 
+                                'id' : entries[i].id(),
+                                'stat_cat' : {
+                                    'id' : stat_cat.id(),
+                                    'name' : stat_cat.name(),
+                                    'opac_visible' : stat_cat.opac_visible(),
+                                    'owner' : stat_cat.owner(),
+                                    'usr_summary' : stat_cat.usr_summary()
+                                },
+                                'stat_cat_entry' : entries[i].stat_cat_entry(),
+                                'target_usr' : entries[i].target_usr() 
+                            } );
+                        }
                         msg += '\n';
                         if (au_obj.alias()) {
                             print_data.hold_for_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.hold.patron_alias',  [au_obj.alias()]);
@@ -2689,6 +2721,87 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         var m = document.getElementById('no_change_label').getAttribute('value');
                         var needs_cat = document.getElementById('circStrings').getFormattedString('staff.circ.utils.needs_cataloging', [params.barcode]);
                         document.getElementById('no_change_label').setAttribute('value', m + needs_cat + '  ');
+                        document.getElementById('no_change_label').setAttribute('hidden','false');
+                    }
+                break;
+                case 15: // ON_RESERVATION_SHELF
+                    check.route_to = 'RESERVATION SHELF';
+                    check.what_happened = "reservation_shelf";
+                    if (check.payload.reservation) {
+                        if (check.payload.reservation.pickup_lib() != data.list.au[0].ws_ou()) {
+                            msg += document.getElementById('commonStrings').getString('common.error');
+                            msg += '\nFIXME: ';
+                            msg += document.getElementById('circStrings').getString('staff.circ.utils.route_item_error');
+                            msg += '\n';
+                        } else {
+                            msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.route_to.msg', [check.route_to]);
+                            msg += '.\n';
+                        }
+                    } else {
+                        msg += document.getElementById('commonStrings').getString('common.error');
+                        msg += '\nFIXME: ';
+                        msg += document.getElementById('circStrings').getString('staff.circ.utils.reservation_status_error');
+                        msg += '\n';
+                    }
+                    JSAN.use('util.date');
+                    if (check.payload.reservation) {
+                        JSAN.use('patron.util');
+                        msg += '\n';
+                        msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.reservation.barcode', [check.payload.copy.barcode()]);
+                        msg += '\n';
+                        var payload_title  = (check.payload.record ? check.payload.record.title() : check.payload.copy.dummy_title() );
+                        msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.reservation.title', [payload_title]);
+                        msg += '\n';
+                        var au_obj =
+                            typeof(check.payload.reservation.usr().card) == "function" ?
+                                check.payload.reservation.usr() :
+                                patron.util.retrieve_fleshed_au_via_id(session, check.payload.reservation.usr());
+                        msg += '\n';
+                        if (au_obj.alias()) {
+                            msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.reservation.patron_alias',  [au_obj.alias()]);
+                        } else {
+                            msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.reservation.patron',  [au_obj.family_name() || "", au_obj.first_given_name() || "", au_obj.second_given_name() || ""]);
+                        }
+                        msg += '\n';
+                        msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.reservation.barcode', [au_obj.card().barcode()]);
+                        msg += '\n';
+                        msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.reservation.request_date', [util.date.formatted_date(check.payload.reservation.request_time(),'%F %H:%M')]);
+                        msg += '\n';
+
+                        msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.reservation.start_date', [util.date.formatted_date(check.payload.reservation.start_time(),'%F %H:%M')]);
+                        msg += '\n';
+                    }
+                    var rv = 0;
+                    msg += document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.reservation.slip_date', [util.date.formatted_date(new Date(),'%F')]);
+                    msg += '\n';
+                    if (!auto_print) {
+                        rv = error.yns_alert_formatted(
+                            msg,
+                            document.getElementById('circStrings').getString('staff.circ.utils.reservation_slip'),
+                            document.getElementById('circStrings').getString('staff.circ.utils.reservation_slip.print.yes'),
+                            document.getElementById('circStrings').getString('staff.circ.utils.reservation_slip.print.no'),
+                            null,
+                            document.getElementById('circStrings').getString('staff.circ.confirm.msg'),
+                            '/xul/server/skin/media/images/turtle.gif'
+                        );
+                    }
+                    if (rv == 0) {
+                        try {
+                            JSAN.use('util.print'); var print = new util.print();
+                            msg = msg.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g,'<br/>');
+                            print.simple( msg , { 'no_prompt' : true, 'content_type' : 'text/html' } );
+                        } catch(E) {
+                            var err_msg = document.getElementById('commonStrings').getString('common.error');
+                            err_msg += '\nFIXME: ' + E + '\n';
+                            dump(err_msg);
+                            alert(err_msg);
+                        }
+                    }
+                    msg = '';
+                    if (document.getElementById('no_change_label')) {
+                        var m = document.getElementById('no_change_label').getAttribute('value');
+                        m += document.getElementById('circStrings').getFormattedString('staff.circ.utils.reservation_capture', [params.barcode]);
+                        document.getElementById('no_change_label').setAttribute('value', m);
                         document.getElementById('no_change_label').setAttribute('hidden','false');
                     }
                 break;

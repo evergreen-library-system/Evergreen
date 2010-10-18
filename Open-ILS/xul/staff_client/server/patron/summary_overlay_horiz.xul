@@ -100,7 +100,7 @@
                 <column/>
                 <column/>
             </columns>
-            <rows>
+            <rows id="patron_info_rows">
                 <row>
                     <label id="PatronSummaryContact_date_of_birth_label" click_to_hide_dob="true" class="copyable text_left dob label click_link" value="&staff.patron_display.date_of_birth.label;"/>
                     <description id="patron_date_of_birth" class="copyable dob value" hide_value="true" oils_persist="hide_value"/>

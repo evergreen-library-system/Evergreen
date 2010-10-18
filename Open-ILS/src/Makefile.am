@@ -153,7 +153,7 @@ oilsinclude_HEADERS = $(headsdir)/idl_fieldmapper.h $(headsdir)/oils_constants.h
 
 # Install everything that did not get installed by autotools
 
-install-data-hook: $(OILSCORE_INST) $(OILSWEB_INST) $(OILSREP_INST)
+install-data-hook: $(OILSCORE_INST) $(OILSWEB_INST) $(OILSUPDATES_INST) $(OILSREP_INST)
 
 uninstall-hook:
 	rm -R $(perldir)

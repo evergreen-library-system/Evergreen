@@ -44,6 +44,7 @@ var cloneUserObj;
 var stageUser;
 var optInSettings;
 var allCardsTemplate;
+var uEditCloneCopyAddr; // if true, copy addrs on clone instead of link
 
 var dupeUsrname = false;
 var dupeBarcode = false;
@@ -81,12 +82,18 @@ function load() {
         'global.juvenile_age_threshold',
         'patron.password.use_phone',
         'ui.patron.default_inet_access_level',
-        'circ.holds.behind_desk_pickup_supported'
+        'ui.patron.default_ident_type',
+        'ui.patron.default_country',
+        'ui.patron.registration.require_address',
+        'circ.holds.behind_desk_pickup_supported',
+        'circ.patron_edit.clone.copy_address'
     ]);
+
     for(k in orgSettings)
         if(orgSettings[k])
             orgSettings[k] = orgSettings[k].value;
 
+    uEditCloneCopyAddr = orgSettings['circ.patron_edit.clone.copy_address'];
     uEditUsePhonePw = orgSettings['patron.password.use_phone'];
     uEditFetchUserSettings(userId);
 
@@ -285,34 +292,69 @@ function uEditLoadStageUser(stageUname) {
 function uEditCopyCloneData(patron) {
     cloneUserObj = uEditLoadUser(cloneUser);
 
-    dojo.forEach( [
+    var cloneFields = [
         'home_ou', 
         'day_phone', 
         'evening_phone', 
         'other_phone',
-        'billing_address',
-        'usrgroup',
-        'mailing_address' ], 
+        'usrgroup'
+    ];
+
+    if(!uEditCloneCopyAddr) 
+        cloneFields = cloneFields.concat(['mailing_address', 'billing_address']);
+
+    dojo.forEach(
+        cloneFields, 
         function(field) {
             patron[field](cloneUserObj[field]());
         }
     );
 
-    // don't grab all addresses().  the only ones we can link to are billing/mailing
-    if(patron.billing_address()) {
-        var t = patron.addresses();
-            if (!t) { t = []; }
-            t.push(patron.billing_address());
-            patron.addresses(t);
-    }
+    if(uEditCloneCopyAddr) {
+        var billAddr, mailAddr;
 
-    if(patron.mailing_address() && (
-            patron.addresses().length == 0 || 
-            patron.mailing_address().id() != patron.billing_address().id()) ) {
-        var t = patron.addresses();
-            if (!t) { t = []; }
-            t.push(patron.mailing_address());
-            patron.addresses(t);
+        // copy the billing and mailing addresses into new addresses
+        function cloneAddr(addr) {
+            var newAddr = addr.clone();
+            newAddr.isnew(true);
+            newAddr.id(uEditAddrVirtId--);
+            newAddr.usr(patron.id());
+            patron.addresses().push(newAddr);
+            return newAddr;
+        }
+
+        if(billAddr = cloneUserObj.billing_address()) 
+            patron.billing_address(cloneAddr(billAddr));
+
+        if(mailAddr = cloneUserObj.mailing_address()) {
+            if (billAddr && billAddr.id() == mailAddr.id()) {
+                patron.mailing_address(patron.billing_address());
+            } else {
+                patron.mailing_address(cloneAddr(mailAddr));
+            }
+        }
+
+        if(!billAddr) // if there was no billing addr, use the mailing addr
+            patron.billing_address(patron.mailing_address());
+
+    } else {
+
+        // link the billing and mailing addresses
+        if(patron.billing_address()) {
+            var t = patron.addresses();
+                if (!t) { t = []; }
+                t.push(patron.billing_address());
+                patron.addresses(t);
+        }
+
+        if(patron.mailing_address() && (
+                patron.addresses().length == 0 || 
+                patron.mailing_address().id() != patron.billing_address().id()) ) {
+            var t = patron.addresses();
+                if (!t) { t = []; }
+                t.push(patron.mailing_address());
+                patron.addresses(t);
+        }
     }
 }
 
@@ -415,6 +457,9 @@ function loadStatCats() {
         var stat = statCats[idx];
         var row = statCatTemplate.cloneNode(true);
         row.id = 'stat-cat-row-' + idx;
+        row.setAttribute('stat_cat_owner',stat.owner());
+        row.setAttribute('stat_cat_name',stat.name());
+        row.setAttribute('stat_cat_id',stat.id());
         tbody.appendChild(row);
         getByName(row, 'name').innerHTML = stat.name();
         var valtd = getByName(row, 'widget');
@@ -481,6 +526,8 @@ function fleshFMRow(row, fmcls, args) {
     var wclass = row.getAttribute('wclass');
     var wstyle = row.getAttribute('wstyle');
     var wconstraints = row.getAttribute('wconstraints');
+    /* use CSS to set the zindex for widgets you want to disable. */
+    var disabled = dojo.style(row, 'zIndex') == -1 ? true : false;
 
     var isPasswd2 = (fmfield == 'passwd2');
     if(isPasswd2) fmfield = 'passwd';
@@ -510,7 +557,6 @@ function fleshFMRow(row, fmcls, args) {
     wtd.appendChild(span);
 
     var fmObject = null;
-    var disabled = false;
     switch(fmcls) {
         case 'au' : fmObject = patron; break;
         case 'ac' : fmObject = patron.card(); break;
@@ -549,12 +595,7 @@ function fleshFMRow(row, fmcls, args) {
     if(value !== null)
         dijitArgs.value = value;
 
-    // fetch profile groups non-async so existing expire_date is
-    // not overwritten when the profile groups arrive and update
-    var sync = (fmfield == 'profile') ? true : false;
-
-    var widget = new openils.widget.AutoFieldWidget({
-        forceSync : sync,
+    var wargs = {
         idlField : fieldIdl,
         fmObject : fmObject,
         fmClass : fmcls,
@@ -563,8 +604,18 @@ function fleshFMRow(row, fmcls, args) {
         dijitArgs : dijitArgs,
         orgDefaultsToWs : true,
         orgLimitPerms : ['UPDATE_USER'],
-    });
+    };
 
+    if(fmfield == 'profile') {
+        // fetch profile groups non-async so existing expire_date is
+        // not overwritten when the profile groups arrive and update
+        wargs.forceSync = true;
+        wargs.disableQuery = {usergroup : 'f'};
+    } else {
+        wargs.forceSync = false;
+    }
+
+    var widget = new openils.widget.AutoFieldWidget(wargs);
     widget.build();
 
     // now put it back before we register the widget
@@ -959,6 +1010,7 @@ function uEditNewPatron() {
     patron.card(card);
     patron.cards([card]);
     patron.net_access_level(orgSettings['ui.patron.default_inet_access_level'] || 1);
+    patron.ident_type(orgSettings['ui.patron.default_ident_type']);
     patron.stat_cat_entries([]);
     patron.survey_responses([]);
     patron.addresses([]);
@@ -1016,6 +1068,7 @@ function _uEditSave(doClone) {
                     addr.id(w._addr);
                     addr.isnew(1);
                     addr.usr(patron.id());
+                    addr.country(orgSettings['ui.patron.default_country']);
                     var t = patron.addresses();
                         if (!t) { t = []; }
                         t.push(addr);
@@ -1164,6 +1217,10 @@ function uEditNewAddr(evt, id, mkLinks) {
                 if(id < 0 && row.getAttribute('fmfield') == 'valid') 
                     widget.widget.attr('value', true); 
 
+                // make new addresses use the org setting for default country 
+                if(id < 0 && row.getAttribute('fmfield') == 'country') 
+                    widget.widget.attr('value',orgSettings['ui.patron.default_country']);
+
             } else if(row.getAttribute('name') == 'uedit-addr-pending-row') {
 
                 // if it's a pending address, show the 'approve' button
@@ -1292,9 +1349,24 @@ function uEditApproveAddress(addr) {
 
 
 function uEditDeleteAddr(id, noAlert) {
-    if(!noAlert) {
-        if(!confirm('Delete address ' + id)) return; /* XXX i18n */
+    if (patron.isnew() && orgSettings['ui.patron.registration.require_address']) {
+        if (dojo.query('tr[name=uedit-addr-divider]').length < 2) {
+            alert(localeStrings.NEED_ADDRESS);
+            return;
+        }
     }
+    if(!noAlert) {
+        if(!confirm(dojo.string.substitute(localeStrings.DELETE_ADDRESS, [id]))) return;
+    }
+    var addr = patron.addresses().filter(function(i){return (i.id() == id)})[0];
+    if (addr) { addr.isdeleted(1); }
+    var m_a = patron.mailing_address();
+        if (typeof m_a == 'object' && m_a != null) { m_a = m_a.id(); }
+        if (m_a == id) { patron.mailing_address(null); }
+    var b_a = patron.billing_address();
+        if (typeof b_a == 'object' && b_a != null) { b_a = b_a.id(); }
+        if (b_a == id) { patron.billing_address(null); }
+
     var rows = dojo.query('tr[addr='+id+']', tbody);
     for(var i = 0; i < rows.length; i++)
         rows[i].parentNode.removeChild(rows[i]);

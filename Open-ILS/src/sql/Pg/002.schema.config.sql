@@ -52,11 +52,13 @@ CREATE TABLE config.internal_flag (
     enabled BOOL    NOT NULL DEFAULT FALSE
 );
 INSERT INTO config.internal_flag (name) VALUES ('ingest.metarecord_mapping.skip_on_insert');
+INSERT INTO config.internal_flag (name) VALUES ('ingest.metarecord_mapping.skip_on_update');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.reingest.force_on_same_marc');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_located_uri');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_full_rec');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_rec_descriptor');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.disable_metabib_field_entry');
+INSERT INTO config.internal_flag (name) VALUES ('ingest.assume_inserts_only');
 
 CREATE TABLE config.global_flag (
     label   TEXT    NOT NULL
@@ -68,7 +70,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0375'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0412'); -- phasefx
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -646,6 +648,34 @@ CREATE TABLE config.i18n_core (
 );
 
 CREATE UNIQUE INDEX i18n_identity ON config.i18n_core (fq_field,identity_value,translation);
+
+CREATE OR REPLACE FUNCTION oils_i18n_update_apply(old_ident TEXT, new_ident TEXT, hint TEXT) RETURNS VOID AS $_$
+BEGIN
+
+    EXECUTE $$
+        UPDATE  config.i18n_core
+          SET   identity_value = $$ || quote_literal(new_ident) || $$ 
+          WHERE fq_field LIKE '$$ || hint || $$.%' 
+                AND identity_value = $$ || quote_literal(old_ident) || $$::TEXT;$$;
+
+    RETURN;
+
+END;
+$_$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION oils_i18n_id_tracking(/* hint */) RETURNS TRIGGER AS $_$
+BEGIN
+    PERFORM oils_i18n_update_apply( OLD.id::TEXT, NEW.id::TEXT, TG_ARGV[0]::TEXT );
+    RETURN NEW;
+END;
+$_$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION oils_i18n_code_tracking(/* hint */) RETURNS TRIGGER AS $_$
+BEGIN
+    PERFORM oils_i18n_update_apply( OLD.code::TEXT, NEW.code::TEXT, TG_ARGV[0]::TEXT );
+    RETURN NEW;
+END;
+$_$ LANGUAGE PLPGSQL;
 
 CREATE TABLE config.billing_type (
     id              SERIAL  PRIMARY KEY,

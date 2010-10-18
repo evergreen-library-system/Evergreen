@@ -316,6 +316,10 @@
 <!ENTITY staff.cat.opac.view_holds.label "View Holds">
 <!ENTITY staff.cat.opac.view_orders.accesskey "r">
 <!ENTITY staff.cat.opac.view_orders.label "View/Place Orders">
+<!ENTITY staff.cat.opac.alt_serial.accesskey "a">
+<!ENTITY staff.cat.opac.alt_serial.label "Alternate Serial Control">
+<!ENTITY staff.cat.opac.batch_receive.accesskey "i">
+<!ENTITY staff.cat.opac.batch_receive.label "Serials Batch Receive">
 <!ENTITY staff.cat.popup.add_to_bucket "Add to Bucket">
 <!ENTITY staff.cat.popup.add_to_bucket.key "">
 <!ENTITY staff.cat.popup.browse.record.tab.key "">
@@ -680,6 +684,8 @@
 <!ENTITY staff.main.menu.admin.local_admin.hold_matrix_matchpoint.label "Hold Policies">
 <!ENTITY staff.main.menu.admin.local_admin.work_log.label "Work Log">
 <!ENTITY staff.main.menu.admin.local_admin.work_log.accesskey "W">
+<!ENTITY staff.main.menu.admin.local_admin.copy_template.label "Copy Template Editor">
+<!ENTITY staff.main.menu.admin.local_admin.copy_template.accesskey "T">
 <!ENTITY staff.main.menu.admin.local_admin.patrons_due_refunds.label "Patrons with Negative Balances">
 <!ENTITY staff.main.menu.admin.local_admin.patrons_due_refunds.accesskey "N">
 
@@ -695,6 +701,10 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_modifier.label "Circulation Modifiers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.org_unit_setting_type "Organization Unit Setting Types">
 <!ENTITY staff.main.menu.admin.server_admin.conify.usr_setting_type "User Setting Types">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_circ_duration "Circulation Duration Rules">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_recurring_fine "Circulation Recurring Fine Rules">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_max_fine "Circulation Max Fine Rules">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_age_hold_protect "Age Hold Protect Rules">
 <!ENTITY staff.main.menu.admin.server_admin.conify.global_flag.label "Global Flags">
 
 <!ENTITY staff.main.menu.admin.server_admin.acq.label "Acquisitions">
@@ -747,6 +757,19 @@
 <!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr_map.label "Resource Attribute Maps">
 <!ENTITY staff.main.menu.admin.server_admin.booking.resource_attr_map.accesskey "M">
 
+<!ENTITY staff.main.menu.admin.server_admin.serial.label "Serials">
+<!ENTITY staff.main.menu.admin.server_admin.serial.accesskey "S">
+<!ENTITY staff.main.menu.admin.server_admin.serial.subscription.label "Subscriptions">
+<!ENTITY staff.main.menu.admin.server_admin.serial.subscription.accesskey "S">
+<!ENTITY staff.main.menu.admin.server_admin.serial.distribution.label "Distributions">
+<!ENTITY staff.main.menu.admin.server_admin.serial.distribution.accesskey "D">
+<!ENTITY staff.main.menu.admin.server_admin.serial.stream.label "Streams">
+<!ENTITY staff.main.menu.admin.server_admin.serial.stream.accesskey "T">
+<!ENTITY staff.main.menu.admin.server_admin.serial.routing_list_user.label "Routing List Users">
+<!ENTITY staff.main.menu.admin.server_admin.serial.routing_list_user.accesskey "R">
+<!ENTITY staff.main.menu.admin.server_admin.serial.caption_and_pattern.label "Captions and Patterns">
+<!ENTITY staff.main.menu.admin.server_admin.serial.caption_and_pattern.accesskey "C">
+
 <!ENTITY staff.main.menu.admin.developer.label "For developers...">
 <!ENTITY staff.main.menu.admin.download_patrons.accesskey "D">
 <!ENTITY staff.main.menu.admin.download_patrons.label "Download Offline Patron List">
@@ -789,6 +812,8 @@
 <!ENTITY staff.main.menu.cat.add_copy.label "Add Item">
 <!ENTITY staff.main.menu.cat.add_volume.key "V">
 <!ENTITY staff.main.menu.cat.add_volume.label "Add Volume">
+<!ENTITY staff.main.menu.cat.authority_manage.accesskey "t">
+<!ENTITY staff.main.menu.cat.authority_manage.label "Manage Authorities">
 <!ENTITY staff.main.menu.cat.bib_search.accesskey "S">
 <!ENTITY staff.main.menu.cat.bib_search.label "Search the Catalog">
 <!ENTITY staff.main.menu.cat.bib_status.key "B">
@@ -849,6 +874,11 @@
 <!ENTITY staff.main.menu.acq.view_local_inv.accesskey "I">
 <!ENTITY staff.main.menu.acq.create_invoice.label "Create Invoice">
 <!ENTITY staff.main.menu.acq.create_invoice.accesskey "V">
+
+<!ENTITY staff.main.menu.serial.label "Serials">
+<!ENTITY staff.main.menu.serial.accesskey "S">
+<!ENTITY staff.main.menu.serial.batch_receive.label "Batch Receive">
+<!ENTITY staff.main.menu.serial.batch_receive.accesskey "B">
 
 <!ENTITY staff.main.menu.booking.label "Booking">
 <!ENTITY staff.main.menu.booking.accesskey "B">
@@ -1543,6 +1573,9 @@
 <!ENTITY staff.serial.mfhd_menu.add.label "Add MFHD Record">
 <!ENTITY staff.serial.mfhd_menu.edit.label "Edit MFHD Record">
 <!ENTITY staff.serial.mfhd_menu.delete.label "Delete MFHD Record">
+<!ENTITY staff.serial.scap_editor.pattern_wizard "Pattern Code Wizard">
+<!ENTITY staff.serial.scap_editor.pattern_wizard.accesskey "Z">
+<!ENTITY staff.serial.scap_editor.modify.accesskey "M">
 <!ENTITY staff.serial.scap_editor.modify "Modify Caption and Pattern(s)">
 <!ENTITY staff.serial.scap_editor.modify.accesskey "M">
 <!ENTITY staff.serial.scap_editor.create "Create Caption and Pattern(s)">
@@ -1574,6 +1607,38 @@
 <!ENTITY staff.serial.ssub_editor.create.accesskey "C">
 <!ENTITY staff.serial.ssub_editor.notes "Subscription Notes">
 <!ENTITY staff.serial.ssub_editor.notes.accesskey "N">
+
+<!ENTITY staff.serial.batch_receive "Batch Receive">
+<!ENTITY staff.serial.batch_receive.bib_search_term "Enter an identifier for a bibliographic record:">
+<!ENTITY staff.serial.batch_receive.bib_search_term.accesskey "B">
+<!ENTITY staff.serial.batch_receive.find_record "Find Record">
+<!ENTITY staff.serial.batch_receive.find_record.accesskey "F">
+<!ENTITY staff.serial.batch_receive.title "Title:">
+<!ENTITY staff.serial.batch_receive.author "Author:">
+<!ENTITY staff.serial.batch_receive.fulfilling_sub "Fulfilling Subscription:">
+<!ENTITY staff.serial.batch_receive.choose_sub "Choose a Subscription:">
+<!ENTITY staff.serial.batch_receive.choose_sub.accesskey "S">
+<!ENTITY staff.serial.batch_receive.choose_issuance "Choose an Issuance:">
+<!ENTITY staff.serial.batch_receive.choose_issuance.accesskey "I">
+<!ENTITY staff.serial.batch_receive.next "Next">
+<!ENTITY staff.serial.batch_receive.next.accesskey "N">
+<!ENTITY staff.serial.batch_receive.issuance "Issuance:">
+<!ENTITY staff.serial.batch_receive.no_items "There are no items to receive for this subscription.">
+<!ENTITY staff.serial.batch_receive.org_unit "Org Unit">
+<!ENTITY staff.serial.batch_receive.barcode "Barcode">
+<!ENTITY staff.serial.batch_receive.circ_modifier "Circ Modifier">
+<!ENTITY staff.serial.batch_receive.call_number "Call Number">
+<!ENTITY staff.serial.batch_receive.note "Note">
+<!ENTITY staff.serial.batch_receive.location "Copy Location">
+<!ENTITY staff.serial.batch_receive.price "Price">
+<!ENTITY staff.serial.batch_receive.receive "Receive?">
+<!ENTITY staff.serial.batch_receive.auto_generate "Auto-generate?">
+<!ENTITY staff.serial.batch_receive.recieve_selected "Receive Selected Items">
+<!ENTITY staff.serial.batch_receive.start_over "Start Over">
+<!ENTITY staff.serial.batch_receive.start_over.accesskey "O">
+<!ENTITY staff.serial.batch_receive.with_units "Create Units For Received Items">
+<!ENTITY staff.serial.batch_receive.with_units.accesskey "U">
+
 <!ENTITY staff.survey.wizard.page1 "Initial Settings">
 <!ENTITY staff.survey.wizard.page2 "Add Questions for Survey:">
 <!ENTITY staff.survey.wizard.title "Add a Survey Wizard">
@@ -1765,10 +1830,14 @@
 <!ENTITY staff.server.admin.copy_locations.editor.help "Help">
 <!ENTITY staff.server.admin.copy_locations.editor.opac_visible "OPAC Visible">
 <!ENTITY staff.server.admin.copy_locations.editor.circulate "Circulate">
+<!ENTITY staff.server.admin.copy_locations.editor.create "Create">
 <!ENTITY staff.server.admin.copy_locations.editor.edit "Edit">
 <!ENTITY staff.server.admin.copy_locations.editor.delete "Delete">
 <!ENTITY staff.server.admin.copy_locations.editor.help.holdable "If a copy location is 'Holdable', copies in that location may have holds placed on them.">
 <!ENTITY staff.server.admin.copy_locations.editor.delete.confirm "Are you sure you wish to delete the selected copy location?  Note: If copies are currently attached to this location, the delete operation will fail.">
+<!ENTITY staff.server.admin.copy_locations.editor.prefix "Label prefix">
+<!ENTITY staff.server.admin.copy_locations.editor.suffix "Label suffix">
+<!ENTITY staff.server.admin.copy_locations.editor.welcome "Welcome">
 <!ENTITY staff.server.admin.copy_locations.submit "Submit">
 <!ENTITY staff.server.admin.copy_locations.cancel "Cancel">
 <!ENTITY staff.server.admin.copy_locations.update_success "Update Succeeded">
@@ -2249,11 +2318,17 @@
 <!ENTITY staff.cat.bib_brief.author.accesskey "">
 <!ENTITY staff.cat.bib_brief.edition.label "Edition:">
 <!ENTITY staff.cat.bib_brief.edition.accesskey "">
-<!ENTITY staff.cat.bib_brief.pub_date.label "Publication Date:">
+<!ENTITY staff.cat.bib_brief.pub_date.label "Pub Date:">
 <!ENTITY staff.cat.bib_brief.pub_date.accesskey "">
+<!ENTITY staff.cat.bib_brief.call_number.label "Bib Call #:">
+<!ENTITY staff.cat.bib_brief.call_number.accesskey "">
 <!-- "TCN" is an abbreviation for "title control number" -->
 <!ENTITY staff.cat.bib_brief.title_control_number.label "TCN:">
 <!ENTITY staff.cat.bib_brief.title_control_number.accesskey "">
+<!ENTITY staff.cat.bib_brief.biblio_record_entry_id.label "Record ID:">
+<!ENTITY staff.cat.bib_brief.biblio_record_entry_id.accesskey "">
+<!ENTITY staff.cat.bib_brief.biblio_record_entry_owner.label "Record Owner:">
+<!ENTITY staff.cat.bib_brief.biblio_record_entry_owner.accesskey "">
 <!ENTITY staff.cat.bib_brief.created_by.label "Created By:">
 <!ENTITY staff.cat.bib_brief.created_by.accesskey "">
 <!ENTITY staff.cat.bib_brief.last_edited_by.label "Last Edited By:">
@@ -2362,7 +2437,8 @@
 <!ENTITY staff.cat.copy_browser.actions.cmd_refresh_list.label "Refresh Listing">
 <!ENTITY staff.cat.copy_browser.actions.cmd_refresh_list.accesskey "R">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.caption "Holdings Maintenance">
-<!ENTITY staff.cat.copy_browser.holdings_maintenance.legend "Green in the list below means the library has volumes for this record.">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.legend "Green and bold in the list below means the library has volumes for this record.">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.depth_filter_menu "Limit:">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.consortial_total "Consortial Total:">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.consortial_available "Available:">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.show_acns "Show Volumes">
@@ -2508,6 +2584,8 @@
 <!ENTITY staff.cat.marcedit.help.accesskey "H">
 <!ENTITY staff.cat.marcedit.caption.label "MARC Record">
 <!ENTITY staff.cat.marcedit.toggleFFE.label "Fixed Fields -- Record type: ">
+<!ENTITY staff.cat.marcedit.source.caption "Bibliographic source">
+<!ENTITY staff.cat.marcedit.source.submit.label "Update source">
 <!ENTITY staff.cat.marc_new.load.label "Load">
 <!ENTITY staff.cat.marc_new.load.accesskey "L">
 <!ENTITY staff.cat.marc_view.title "MARC View">
@@ -2599,16 +2677,19 @@
 <!ENTITY staff.cat.spine_labels.close_window.label "Close Window">
 <!ENTITY staff.cat.spine_labels.close_window.accesskey "C">
 <!ENTITY staff.cat.spine_labels.font_size.label "Font size (in points):">
+<!ENTITY staff.cat.spine_labels.font_weight.label 'Font weight ("normal" or "bold"):'>
 <!ENTITY staff.cat.spine_labels.spine_label.label "Spine Label">
 <!ENTITY staff.cat.spine_labels.spine_label.left_margin.label "Left Margin (in characters):">
 <!ENTITY staff.cat.spine_labels.spine_label.label_width.label "Label Width (in characters):">
 <!ENTITY staff.cat.spine_labels.spine_label.label_length.label "Label Length (in lines):">
 <!ENTITY staff.cat.spine_labels.pocket_label.label "Pocket Label">
+<!ENTITY staff.cat.spine_labels.pocket_label.enabled.label "Enabled">
 <!ENTITY staff.cat.spine_labels.pocket_label.middle_margin.label "Middle Margin (in characters):">
 <!ENTITY staff.cat.spine_labels.pocket_label.label_width.label "Label Width (in characters):">
 <!ENTITY staff.cat.spine_labels.pocket_label.label_length.label "Label Length (in lines):">
 <!ENTITY staff.cat.spine_labels.pocket_label.title.label "Include Title (wraps on word at label width)">
 <!ENTITY staff.cat.spine_labels.on_line.label "On line:">
+<!ENTITY staff.cat.spine_labels.pocket_label.include_author.label "Include Author">
 <!ENTITY staff.cat.spine_labels.pocket_label.include_title.label "Include Title (segment after wrapping)">
 <!ENTITY staff.cat.spine_labels.indent_title.label "Indent a space?">
 <!ENTITY staff.cat.spine_labels.inc_call_number.label "Include Call Number">
@@ -2908,6 +2989,8 @@
 <!ENTITY staff.patron.holds_overlay.holds_export.label "Export">
 <!ENTITY staff.patron.holds_overlay.print.label "Print">
 <!ENTITY staff.patron.holds_overlay.print.accesskey "P">
+<!ENTITY staff.patron.holds_overlay.print_full_pull_list.label "Print Full Pull List">
+<!ENTITY staff.patron.holds_overlay.print_full_pull_list.accesskey "u">
 <!ENTITY staff.patron.holds_overlay.place_hold.label "Place Hold">
 <!ENTITY staff.patron.holds_overlay.place_hold.accesskey "H">
 <!ENTITY staff.patron.holds_overlay.show_cancelled_holds.label "Show Cancelled Holds">
@@ -3246,7 +3329,8 @@
 <!ENTITY staff.circ.alternate_copy_summary.Alert.label "Alert">
 <!ENTITY staff.circ.alternate_copy_summary.Alternate_View.label "Alternate View">
 <!ENTITY staff.circ.alternate_copy_summary.Barcode.label "Barcode">
-<!ENTITY staff.circ.alternate_copy_summary.Call_Number.label "Call Number">
+<!ENTITY staff.circ.alternate_copy_summary.Call_Number.label "Item Call #">
+<!ENTITY staff.circ.alternate_copy_summary.Call_Number.accesskey "">
 <!ENTITY staff.circ.alternate_copy_summary.Cataloging_Info.label "Cataloging Info">
 <!ENTITY staff.circ.alternate_copy_summary.Cataloging_Info.accesskey "I">
 <!ENTITY staff.circ.alternate_copy_summary.Checkin_Scan_Time.label "Checkin Scan Time">
@@ -3310,6 +3394,13 @@
 <!ENTITY staff.util.timestamp_dialog.apply_btn.accesskey "A">
 <!ENTITY staff.printing.set_default "Set Default Printer and Print Test Page">
 <!ENTITY staff.printing.page_settings "Page Settings">
+<!ENTITY staff.printing.context.header "Printer Context">
+<!ENTITY staff.printing.context.desc "Different printer settings may be configured for different contexts within the staff client (such as circulation, label printing, etc.).  If settings have not been made for a given context, the staff client will fall back on the 'default' context.">
+<!ENTITY staff.printing.context.radio.default.label "Default">
+<!ENTITY staff.printing.context.radio.receipt.label "Receipt">
+<!ENTITY staff.printing.context.radio.label.label "Label">
+<!ENTITY staff.printing.context.radio.mail.label "Mail">
+<!ENTITY staff.printing.context.radio.offline.label "Offline">
 <!ENTITY staff.printing.normal_settings.header "Normal Settings">
 <!ENTITY staff.printing.advanced_settings.header "Advanced Settings">
 <!ENTITY staff.printing.advanced.mozilla_print "Use default print strategy (Mozilla Print)">

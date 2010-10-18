@@ -153,11 +153,14 @@ if [ -n "$OPT_FULL"  ]; then
 fi
 sudo chown -R opensrf:opensrf $INSTALL
 
-BID=$(date +"%Y-%m-%dT%H:%M:%S");   # or "current"
-cd $ILS && sudo make install STAFF_CLIENT_BUILD_ID=$BID;
+BIDDATE=$(date +"%Y-%m-%dT%H:%M:%S");
+BID=${STAFF_CLIENT_BUILD_ID:-$BIDDATE};   # or "current"
+
+rm -f "$XUL/current" || rm -rf "$XUL/current";      # removing the old link/build
+cd $ILS && sudo make install STAFF_CLIENT_STAMP_ID=$BID STAFF_CLIENT_BUILD_ID=$BID;
 sudo chown -R opensrf:opensrf $INSTALL
 
-[ -d "$XUL/$BID" ] || die_msg "New build directory $XUL/$BID was not created.  sudo make install failed?"
+[ -d "$XUL/$BID" ] || die_msg "New build directory $XUL/$BID was not created.  sudo make install failed?";
 
 if [ -z "$OPT_VERBOSE" ] ; then
     exec 1>&3   # Restore STDOUT
@@ -168,12 +171,25 @@ pwd;
 rm -f $XUL/current-client-build.zip;
 cp -r "$ILS/Open-ILS/xul/staff_client/build" ./
 zip -rq current-client-build.zip build;
-cat ./build/BUILD_ID
+echo -n "BUILD_ID: ";
+cat ./build/BUILD_ID;
+echo -n "STAMP_ID: ";
+cat ./build/STAMP_ID;
+echo -n " VERSION: ";
+cat ./build/VERSION;
 rm -rf ./build;
 
+echo "build ID is '$BID'";
+
+if [ "$BID" != "$BIDDDATE" ] ; then
+    mv $BID $BIDDATE;    # Move the non-timestamp directory to timestamp-based spot
+    ln -s $BIDDATE $BID; # link back to it
+fi
 
 rm -f current;      # removing the link to the old build
-ln -s $BID current; # linking "current" to the new build
+ln -s $BIDDATE current; # linking "current" to the new build
+
+rm -f server;
 ln -s current/server server;
     
 

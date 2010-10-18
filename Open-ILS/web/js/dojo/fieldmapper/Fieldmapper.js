@@ -53,7 +53,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 					obj.a[i] = thing.clone();
 				} else {
 
-					if(instanceOf(thing, Array)) {
+					if(dojo.isArray(thing)) {
 						obj.a[i] = new Array();
 
 						for( var j in thing ) {

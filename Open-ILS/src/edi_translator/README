@@ -26,7 +26,7 @@ components (on debian lenny linux).
 There is no such thing (yet?) as "push" from a vendor of their EDI responses.  Basically
 they just put responses in an FTP directory somewhere that you are expected to check.  It
 would be cool if there were a better way to do that like consuming some RSS feed or 
-remote API callbacks.  
+remote API callbacks.  Similarly, nobody seems willing to utilize interactive EDI.  
 
 Evergreen will only support one delivery address per PO.  That limitation is based
 on the mapping to the delivery address via the ordering_agency org_unit.  If items
@@ -35,11 +35,6 @@ need to be shipped someplace else, then they need a different PO, for now at lea
 If we want to support multiple vendor profiles, then we drop the unique constraint
 on SAN, add a new one on SAN + profile_code.  Profile code then goes in the template.
 The template logic could get rather complex to support all the optional data elements.
-
-mbklein says:
-'order' mapper won't work for EDIFACT versions later than D.96A, because of a change
-to the structure of the BGM segment.  But as long as all the supported vendors will
-accept a D.96A ORDERS (which I think they do), that's not a problem.
 
 SEE ALSO:
     http://github.com/mbklein/openils-mapper

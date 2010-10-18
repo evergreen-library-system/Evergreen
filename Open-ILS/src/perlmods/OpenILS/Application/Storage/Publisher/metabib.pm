@@ -2359,7 +2359,7 @@ sub staged_fts {
 
         my @locales = config::i18n_locale->search_where({ code => { '<>' => '' } });
         for my $locale ( @locales ) {
-            $locale_map{$locale->code} = $locale->marc_code;
+            $locale_map{lc($locale->code)} = $locale->marc_code;
         }
         $locale_map{COMPLETE} = 1;
 
@@ -2405,7 +2405,7 @@ sub staged_fts {
     if (!defined($args{preferred_language})) {
 		my $ses_locale = $client->session ? $client->session->session_locale : $default_preferred_language;
         $args{preferred_language} =
-            $locale_map{ $ses_locale } || 'eng';
+            $locale_map{ lc($ses_locale) } || 'eng';
     }
 
     if (!defined($args{preferred_language_weight})) {
@@ -2817,7 +2817,7 @@ sub query_parser_fts {
 
         my @locales = config::i18n_locale->search_where({ code => { '<>' => '' } });
         for my $locale ( @locales ) {
-            $locale_map{$locale->code} = $locale->marc_code;
+            $locale_map{lc($locale->code)} = $locale->marc_code;
         }
         $locale_map{COMPLETE} = 1;
 
@@ -2846,7 +2846,7 @@ sub query_parser_fts {
         $parser->default_preferred_language( $args{preferred_language} );
         if (!$parser->default_preferred_language) {
 		    my $ses_locale = $client->session ? $client->session->session_locale : '';
-            $parser->default_preferred_language( $locale_map{ $ses_locale } );
+            $parser->default_preferred_language( $locale_map{ lc($ses_locale) } );
         }
         $parser->default_preferred_language(
             OpenSRF::Utils::SettingsClient->new->config_value(
@@ -3098,7 +3098,7 @@ sub query_parser_fts_wrapper {
 
         my @locales = config::i18n_locale->search_where({ code => { '<>' => '' } });
         for my $locale ( @locales ) {
-            $locale_map{$locale->code} = $locale->marc_code;
+            $locale_map{lc($locale->code)} = $locale->marc_code;
         }
         $locale_map{COMPLETE} = 1;
 

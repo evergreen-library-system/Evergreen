@@ -676,6 +676,44 @@ sub in_db_merge {
     return $count;
 }
 
+__PACKAGE__->register_method(
+    method    => 'in_db_auth_merge',
+    api_name  => 'open-ils.cat.authority.records.merge',
+    signature => q/
+        Merges a group of authority records
+        @param auth The login session key
+        @param master The id of the record all other records should be merged into
+        @param records Array of records to be merged into the master record
+        @return 1 on success, Event on error.
+    /
+);
+
+sub in_db_auth_merge {
+    my( $self, $conn, $auth, $master, $records ) = @_;
+
+    my $editor = new_editor( authtoken => $auth, xact => 1 );
+    return $editor->die_event unless $editor->checkauth;
+    return $editor->die_event unless $editor->allowed('MERGE_AUTH_RECORDS'); # TODO see below about record ownership
+
+    my $count = 0;
+    for my $source ( @$records ) {
+        $count += $editor->json_query({
+            select => {
+                are => [{
+                    alias => 'count',
+                    transform => 'authority.merge_records',
+                    column => 'id',
+                    params => [$source]
+                }]
+            },
+            from   => 'are',
+            where  => { id => $master }
+        })->[0]->{count}; # count of objects moved, of all types
+    }
+
+    $editor->commit;
+    return $count;
+}
 
 __PACKAGE__->register_method(
 	method	=> "fleshed_volume_update",

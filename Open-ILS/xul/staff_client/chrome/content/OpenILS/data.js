@@ -184,6 +184,9 @@ OpenILS.data.prototype = {
                 case 'acpl': 
                     found = obj.network.simple_request('FM_ACPL_RETRIEVE_VIA_ID.authoritative',[ value ]);
                 break;
+                case 'actsc':
+                    found = obj.network.simple_request('FM_ACTSC_RETRIEVE_VIA_PCRUD',[ ses(), { 'id' : { '=' : value } }]);
+                break;
                 default: return undefined; break;
             }
             if (typeof found.ilsevent != 'undefined') throw(found);
@@ -238,6 +241,56 @@ OpenILS.data.prototype = {
             }
         } catch(E) {
             this.error.sdump('D_ERROR','Error in OpenILS.data._debug_stash(): ' + js2JSON(E) );
+        }
+    },
+
+    'load_saved_print_templates' : function() {
+        var obj = this;
+        try {
+            JSAN.use('util.file'); var file = new util.file('print_list_templates');
+            if (file._file.exists()) {
+                try {
+                    var x = file.get_object();
+                    if (x) {
+                        for (var i in x) {
+                            obj.print_list_templates[i] = x[i];
+                        }
+                        obj.stash('print_list_templates');
+                        obj.data_progress('Saved print templates retrieved from file. ');
+                    }
+                } catch(E) {
+                    alert(E);
+                }
+            }
+            file.close();
+        } catch(E) {
+            alert("Error in OpenILS.data, load_saved_print_templates(): " + E);
+        }
+    },
+
+    'fetch_print_strategy' : function() {
+        var obj = this;
+        try {
+            obj.print_strategy = {};
+            var print_contexts = [ 'default', 'receipt', 'label', 'mail', 'offline' ];
+            for (var i in print_contexts) {
+                JSAN.use('util.file'); var file = new util.file('print_strategy.' + print_contexts[i]);
+                if (file._file.exists()) {
+                    try {
+                        var x = file.get_content();
+                        if (x) {
+                            obj.print_strategy[ print_contexts[i] ] = x;
+                            obj.data_progress('Print strategy ' + print_contexts[i] + ' retrieved from file. ');
+                        }
+                    } catch(E) {
+                        alert(E);
+                    }
+                }
+                file.close();
+            }
+            obj.stash('print_strategy');
+        } catch(E) {
+            alert('Error in OpenILS.data, fetch_print_strategy(): ' + E);
         }
     },
 
@@ -381,26 +434,6 @@ OpenILS.data.prototype = {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         var obj = this;
 
-
-        JSAN.use('util.file'); var file = new util.file('print_list_templates');
-        obj.print_list_defaults();
-        obj.data_progress('Default print templates set. ');
-        if (file._file.exists()) {
-            try {
-                var x = file.get_object();
-                if (x) {
-                    for (var i in x) {
-                        obj.print_list_templates[i] = x[i];
-                    }
-                    obj.stash('print_list_templates');
-                    obj.data_progress('Saved print templates retrieved from file. ');
-                }
-            } catch(E) {
-                alert(E);
-            }
-        }
-        file.close();
-
         JSAN.use('util.file'); var file = new util.file('global_font_adjust');
         if (file._file.exists()) {
             try {
@@ -431,21 +464,10 @@ OpenILS.data.prototype = {
         }
         file.close();
 
-        JSAN.use('util.file'); var file = new util.file('print_strategy');
-        if (file._file.exists()) {
-            try {
-                var x = file.get_content();
-                if (x) {
-                    obj.print_strategy = x;
-                    obj.stash('print_strategy');
-                    obj.data_progress('Print strategy retrieved from file. ');
-                }
-            } catch(E) {
-                alert(E);
-            }
-        }
-        file.close();
-
+        obj.print_list_defaults();
+        obj.data_progress('Default print templates set. ');
+        obj.load_saved_print_templates();
+        obj.fetch_print_strategy();
         JSAN.use('util.print'); (new util.print()).GetPrintSettings();
         obj.data_progress('Printer settings retrieved. ');
 
@@ -512,9 +534,11 @@ OpenILS.data.prototype = {
         this.chain.push(
             function() {
                 try {
-                    var robj = obj.network.simple_request('CIRC_MODIFIER_LIST',[]);
+                    var robj = obj.network.simple_request('CIRC_MODIFIER_LIST',[{'full':true}]);
                     if (typeof robj.ilsevent != 'undefined') throw(robj);
-                    obj.list.circ_modifier = robj;
+                    obj.list.ccm = robj == null ? [] : robj;
+                    obj.hash.ccm = util.functional.convert_object_list_to_hash( obj.list.ccm );
+                    obj.list.circ_modifier = util.functional.map_list( obj.list.ccm, function(o) { return o.code(); } );
                     obj.data_progress('Retrieved circ modifier list. ');
                 } catch(E) {
                     var error = 'Error: ' + js2JSON(E);
