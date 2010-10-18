@@ -9,6 +9,21 @@ var pcrud;
 var actOwner;
 var actList;
 
+function create_or_update_act(obj, opts, edit_pane) {
+    fieldmapper.standardRequest(
+        ["open-ils.cat", "open-ils.cat.asset.copy_template.create_or_update"], {
+            "params": [openils.User.authtoken, obj],
+            "async": true,
+            "oncomplete": function(r) {
+                if (r = openils.Util.readResponse(r)) {
+                    if (edit_pane.onPostSubmit)
+                        edit_pane.onPostSubmit();
+                }
+            }
+        }
+    );
+}
+
 function actInit() {
     pcrud = new openils.PermaCrud();
 
