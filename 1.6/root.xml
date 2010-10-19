@@ -81,6 +81,7 @@
 		<xi:include href="admin/serveradministration.xml"/>
 		<xi:include href="admin/admin-lsa.xml"/>
 		<xi:include href="admin/actiontriggers.xml"/>
+		<xi:include href="admin/admin-booking.xml"/>
 	
 	</part>
 	<part xml:id="reports">
