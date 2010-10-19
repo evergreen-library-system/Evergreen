@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<chapter xml:id="style-tips" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <info>
+
+        <title>Miscellaneous Tips</title>
+    </info>
+
+
+    <simplesect>
+        <title>Table column width</title>
+
+        <para>If column width is not specified in the XML, tables will look different depending on
+            the output format. In HTML the columns automatically adjust to fit contents, but in PDF
+            the page width is divided evenly by the number of columns. This often wastes space in
+            PDF tables so setting relative column widths for all tables is recommended.</para>
+        <para>In the example below, the <emphasis>colwidth</emphasis> parameter defines relative
+            column width. Columns 1 and 2 are of equal width, each using a quarter of the page.
+            Column 3 is twice the size and covers the remaining half of the page.</para>
+
+        <programlisting><![CDATA[ 
+<table>
+   <title>Title of Table Here</title>
+      <tgroup cols="3" align="left" colsep="1" rowsep="1">
+         <colspec colnum="1" colname="issues" colwidth="1*"/>
+         <colspec colnum="2" colname="actions" colwidth="1*"/>
+         <colspec colnum="3" colname="tasks" colwidth="2*"/>]]>
+    
+        </programlisting>
+
+        <para>For details see <link
+                xlink:href="http://www.sagehill.net/docbookxsl/ColumnWidths.html"
+                xlink:title="http://www.sagehill.net/docbookxsl/ColumnWidths.html">DocBook XSL: The
+                Complete Guide</link>.</para>
+
+    </simplesect>
+
+   
+
+</chapter>
