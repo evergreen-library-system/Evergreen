@@ -1419,6 +1419,7 @@ BEGIN
 
     IF NEW.deleted IS TRUE THEN -- If this authority is deleted
         DELETE FROM authority.bib_linking WHERE authority = NEW.id; -- Avoid updating fields in bibs that are no longer visible
+        DELETE FROM authority.full_rec WHERE record = NEW.id; -- Avoid validating fields against deleted authority records
           -- Should remove matching $0 from controlled fields at the same time?
         RETURN NEW; -- and we're done
     END IF;
