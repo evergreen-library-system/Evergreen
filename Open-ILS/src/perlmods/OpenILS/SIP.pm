@@ -151,7 +151,8 @@ sub clean_text {
 
 sub shortname_from_id {
     my $id = shift or return;
-    return editor()->search_actor_org_unit({id => $id})->[0]->shortname;
+    return $id->shortname if ref $id;
+    return editor()->retrieve_actor_org_unit($id)->shortname;
 }
 sub patron_barcode_from_id {
     my $id = shift or return;

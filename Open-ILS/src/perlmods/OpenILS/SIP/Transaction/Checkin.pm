@@ -168,14 +168,24 @@ sub do_checkin {
     }
 
     if ($self->item->hold) {
-        my $holder = OpenILS::SIP->find_patron('usr' => $self->item->hold->usr) or
-            syslog('LOG_WARNING', "OpenILS::SIP->find_patron cannot find hold usr => '" . $self->item->hold->usr . "'");
+        my ($pickup_lib_id, $pickup_lib_sn);
 
-        $self->item->hold_patron_bcode( $holder->id   );
-        $self->item->hold_patron_name(  $holder->name );     # Item already had the holder ID, we really just needed the name
-        $self->item->destination_loc( OpenILS::SIP::shortname_from_id($self->item->hold->pickup_lib) );   # must use pickup_lib as method
+        my $holder = OpenILS::SIP->find_patron('usr' => $self->item->hold->usr);
 
-        my $atype = ($self->item->hold->pickup_lib == $phys_location) ? '01' : '02';
+        if (ref $self->item->hold->pickup_lib) {
+            $pickup_lib_id = $self->item->hold->pickup_lib->id;
+            $pickup_lib_sn = $self->item->hold->pickup_lib->shortname;
+
+        } else {
+            $pickup_lib_id = $self->item->hold->pickup_lib;
+            $pickup_lib_sn = OpenILS::SIP::shortname_from_id($pickup_lib_id);
+        }
+
+        $self->item->hold_patron_bcode($holder->id);
+        $self->item->hold_patron_name($holder->name); 
+        $self->item->destination_loc($pickup_lib_sn); 
+
+        my $atype = ($pickup_lib_id == $phys_location) ? '01' : '02';
         $self->alert_type($atype);
     }
 
