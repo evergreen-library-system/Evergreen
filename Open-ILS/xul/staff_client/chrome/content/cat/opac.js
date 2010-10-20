@@ -321,7 +321,8 @@ function open_alt_serial_mgmt() {
         ].forEach(function(k) { content_params[k] = xulG[k]; });
 
         var loc = urls.XUL_BROWSER + "?url=" + window.escape(
-            xulG.url_prefix("/eg/serial/list_subscription/") + docid
+            xulG.url_prefix("/eg/serial/list_subscription?record_entry=") +
+            docid
         );
         xulG.new_tab(
             loc, {

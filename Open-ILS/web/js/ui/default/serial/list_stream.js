@@ -4,8 +4,11 @@ dojo.require("dijit.form.TextBox");
 dojo.require("openils.widget.AutoGrid");
 dojo.require("openils.widget.ProgressDialog");
 dojo.require("openils.PermaCrud");
+dojo.require("openils.CGI");
 
 var pcrud;
+var dist_id;
+var cgi;
 
 function format_routing_label(routing_label) {
     return routing_label ? routing_label : "[None]";
@@ -27,7 +30,13 @@ function load_sdist_display() {
         "sdist", dist_id, {
             "onresponse": function(r) {
                 if (r = openils.Util.readResponse(r)) {
-                    dojo.byId("sdist_label_here").innerHTML = r.label();
+                    var link = dojo.byId("sdist_label_here");
+                    link.onclick = function() {
+                        location.href = oilsBasePath +
+                            "/eg/serial/subscription?id=" +
+                            r.subscription() + "&tab=distributions";
+                    }
+                    link.innerHTML = r.label();
                     load_sdist_org_unit_display(r);
                 }
             }
@@ -65,7 +74,10 @@ function create_many_streams(fields) {
 
 openils.Util.addOnLoad(
     function() {
+        cgi = new openils.CGI();
         pcrud = new openils.PermaCrud();
+
+        dist_id = cgi.param("distribution");
         load_sdist_display();
         load_sstr_grid();
     }

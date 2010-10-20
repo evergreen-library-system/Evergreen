@@ -1,7 +1,6 @@
 [% WRAPPER "default/base.tt2" %]
 <script>
     var cap_editor;
-    var sub_id = "[% ctx.page_args.0 %]";
 </script>
 <script src="[% ctx.media_prefix %]/js/ui/default/serial/subscription.js">
 </script>
@@ -19,7 +18,8 @@
     </div>
 </div>
 
-<div dojoType="dijit.layout.TabContainer" class="oils-serial-tab-container">
+<div dojoType="dijit.layout.TabContainer" jsId="tab_container"
+    class="oils-serial-tab-container">
 
     <!-- Subscription Summary -->
     <div dojoType="dijit.layout.ContentPane" title="Summary" selected="true">
@@ -51,7 +51,7 @@
     </div>
 
     <!-- Distributions -->
-    <div dojoType="dijit.layout.ContentPane"
+    <div dojoType="dijit.layout.ContentPane" jsId="distributions_tab"
         title="Distributions" layoutAlign="client">
         <script type="dojo/connect" event="onShow">
             if (!dist_grid._fresh) {

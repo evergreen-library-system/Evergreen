@@ -2,9 +2,13 @@ dojo.require("dijit.form.Button");
 dojo.require("openils.widget.AutoGrid");
 dojo.require("openils.widget.OrgUnitFilteringSelect");
 dojo.require("openils.BibTemplate");
+dojo.require("openils.CGI");
+
+var terms;
+var cgi;
 
 function format_ssub_link(id) {
-    return "<a href='" + oilsBasePath + "/serial/subscription/" +
+    return "<a href='" + oilsBasePath + "/serial/subscription?id=" +
         id + "'>" + id + "</a>";
 }
 
@@ -15,6 +19,16 @@ function load_ssub_grid() {
 
 openils.Util.addOnLoad(
     function() {
+        cgi = new openils.CGI();
+
+        terms = {
+            "owning_lib": aou.orgNodeTrail(
+                aou.findOrgUnit(openils.User.user.ws_ou()),
+                true /* asId */
+            ),
+            "record_entry": cgi.param("record_entry") || _fallback_record_entry
+        };
+
         if (terms.record_entry)
             new openils.BibTemplate({"record": terms.record_entry}).render();
 

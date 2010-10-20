@@ -5,15 +5,7 @@
     src="[% ctx.media_prefix %]/js/ui/default/serial/list_subscription.js">
 </script>
 <script type="text/javascript">
-    var terms = {
-        "owning_lib": aou.orgNodeTrail(
-            aou.findOrgUnit(openils.User.user.ws_ou()),
-            true /* asId */
-        )
-    };
-
-    if (docid = "[% ctx.page_args.0 %]") /* assignment intentional */
-        terms.record_entry = docid;
+    var _fallback_record_entry = "[% ctx.page_args.0 %]";
 </script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane"
