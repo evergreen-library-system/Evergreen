@@ -224,6 +224,15 @@ function selfckPatronLogin(barcode) {
             $('selfck-patron-login-input').select();
             return;
         }
+        for (var i =0; i < patron.cards().length; i++) {
+            if (patron.cards()[i].barcode() == barcode) {
+                if (!isTrue(patron.cards()[i].active())) {
+                    unHideMe($('selfck-patron-not-found'));
+                    $('selfck-patron-login-input').select();
+                    return;
+                }
+            }
+        }
 
         $('selfck-patron-login-input').value = ''; // reset the input
         hideMe($('selfck-patron-login-container'));
