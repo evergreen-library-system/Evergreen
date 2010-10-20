@@ -1064,6 +1064,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Duration Rule" name="duration_rule" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Max Fine Rule" name="max_fine_rule" reporter:datatype="link" oils_obj:required="true"/>
+            <field reporter:label="Hard Due Date" name="hard_due_date" reporter:datatype="link"/>
 			<field reporter:label="Script Test" name="script_test" reporter:datatype="text"/>
 			<field name="total_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Total Copy/Hold Ratio"/>
 			<field name="available_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Available Copy/Hold Ratio"/>
@@ -1080,6 +1081,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="duration_rule" reltype="has_a" key="id" map="" class="crcd"/>
 			<link field="max_fine_rule" reltype="has_a" key="id" map="" class="crmf"/>
 			<link field="recurring_fine_rule" reltype="has_a" key="id" map="" class="crrf"/>
+            <link field="hard_due_date" reltype="has_a" key="id" map="" class="chdd"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -1869,7 +1871,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="name" reporter:datatype="text"/>
 			<field name="normal" reporter:datatype="interval"/>
 			<field name="shrt" reporter:datatype="interval"/>
-			<field name="date_ceiling" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 		</links>
@@ -1885,15 +1886,42 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="chdd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::hard_due_date" oils_persist:tablename="config.hard_due_date" reporter:label="Hard Due Date">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.hard_due_date_id_seq">
-			<field reporter:label="ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Duration Rule" name="duration_rule" reporter:datatype="link"/>
-			<field reporter:label="Ceiling Date" name="ceiling_date" reporter:datatype="timestamp"/>
-			<field reporter:label="Active Date" name="active_date" reporter:datatype="timestamp"/>
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+            <field reporter:label="Always Use?" name="forceto" reporter:datatype="bool"/>
+			<field reporter:label="Current Ceiling Date" name="ceiling_date" reporter:datatype="timestamp"/>
+            <field reporter:label="Owner" name="owner" reporter:datatype="org_unit"/>
 		</fields>
 		<links>
-			<link field="duration_rule" reltype="has_a" key="id" map="" class="crcd"/>
+            <link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_CIRC_DURATION" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_CIRC_DURATION" global_required="true"/>
+                <delete permission="DELETE_CIRC_DURATION" global_required="true"/>
+            </actions>
+		</permacrud>
+	</class>
+
+	<class id="chddv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::hard_due_date_values" oils_persist:tablename="config.hard_due_date_values" reporter:label="Hard Due Date Values">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.hard_due_date_vales_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Hard Due Date" name="hard_due_date" reporter:datatype="link"/>
+			<field reporter:label="Ceiling Date" name="ceiling_date" reporter:datatype="timestamp"/>
+            <field reporter:label="Active Date" name="active_date" reporter:datatype="timestamp"/>
+		</fields>
+		<links>
+			<link field="hard_due_date" reltype="has_a" key="id" map="" class="chdd"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_CIRC_DURATION" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_CIRC_DURATION" global_required="true"/>
+                <delete permission="DELETE_CIRC_DURATION" global_required="true"/>
+            </actions>
 		</permacrud>
 	</class>
 
