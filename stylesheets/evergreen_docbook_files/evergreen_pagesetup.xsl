@@ -2216,6 +2216,13 @@ xmlns:fo="http://www.w3.org/1999/XSL/Format"
         <xsl:with-param name="gentext-key" select="$gentext-key"/>
       </xsl:call-template>
     </fo:block>
+<fo:block font-size="8pt"
+      font-family="sans-serif"
+      border-after-color="black"
+      border-after-style="solid"
+      border-after-width="0.1pt">
+      Report errors in this documentation using <fo:basic-link color="green" text-decoration="underline" external-destination="https://bugs.launchpad.net/evergreen/+filebug">Launchpad</fo:basic-link>.
+   </fo:block>
   </fo:static-content>
 
   <fo:static-content flow-name="xsl-region-after-even">
@@ -2226,6 +2233,13 @@ xmlns:fo="http://www.w3.org/1999/XSL/Format"
         <xsl:with-param name="gentext-key" select="$gentext-key"/>
       </xsl:call-template>
     </fo:block>
+	<fo:block font-size="8pt"
+      font-family="sans-serif"
+      border-after-color="black"
+      border-after-style="solid"
+      border-after-width="0.1pt">
+      Report any errors in this documentation using <fo:basic-link color="green" text-decoration="underline" external-destination="https://bugs.launchpad.net/evergreen/+filebug">Launchpad</fo:basic-link>.
+   </fo:block>
   </fo:static-content>
 
   <fo:static-content flow-name="xsl-region-after-blank">
