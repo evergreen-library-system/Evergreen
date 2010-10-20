@@ -6,6 +6,7 @@ package OpenILS::SIP;
 use warnings; use strict;
 
 use Sys::Syslog qw(syslog);
+use Time::HiRes q/time/;
 
 use OpenILS::SIP::Item;
 use OpenILS::SIP::Patron;
@@ -149,10 +150,12 @@ sub clean_text {
     return $text;
 }
 
+my %org_sn_cache;
 sub shortname_from_id {
     my $id = shift or return;
     return $id->shortname if ref $id;
-    return editor()->retrieve_actor_org_unit($id)->shortname;
+    return $org_sn_cache{$id} if $org_sn_cache{$id};
+    return $org_sn_cache{$id} = editor()->retrieve_actor_org_unit($id)->shortname;
 }
 sub patron_barcode_from_id {
     my $id = shift or return;
@@ -364,6 +367,8 @@ sub checkin {
 	my ($self, $item_id, $inst_id, $trans_date, $return_date,
         $current_loc, $item_props, $cancel) = @_;
 
+    my $start_time = time();
+
 	$self->verify_session;
 
 	syslog('LOG_DEBUG', "OILS: OpenILS::Checkin of item=$item_id (to $inst_id)");
@@ -386,12 +391,11 @@ sub checkin {
         delete $item->{patron};
         delete $item->{due_date};
         syslog('LOG_INFO', "OILS: Checkin succeeded");
-        #editor()->commit;
     } else {
-        #editor()->xact_rollback;
         syslog('LOG_WARNING', "OILS: Checkin failed");
     }
 
+    syslog('LOG_INFO', "OILS: SIP Checkin request took %0.3f seconds", (time() - $start_time));
 	return $xact;
 }
 
