@@ -1776,18 +1776,20 @@ sub run_checkout_scripts {
 sub build_checkout_circ_object {
     my $self = shift;
 
-   my $circ       = Fieldmapper::action::circulation->new;
-   my $duration   = $self->duration_rule;
-   my $max        = $self->max_fine_rule;
-   my $recurring  = $self->recurring_fines_rule;
-   my $hard_due_date    = $self->hard_due_date;
-   my $copy       = $self->copy;
-   my $patron     = $self->patron;
-   my $duration_date_ceiling_force;
+    my $circ       = Fieldmapper::action::circulation->new;
+    my $duration   = $self->duration_rule;
+    my $max        = $self->max_fine_rule;
+    my $recurring  = $self->recurring_fines_rule;
+    my $hard_due_date    = $self->hard_due_date;
+    my $copy       = $self->copy;
+    my $patron     = $self->patron;
+    my $duration_date_ceiling;
+    my $duration_date_ceiling_force;
 
     if( $duration ) {
 
         my $policy = $self->get_circ_policy($duration, $recurring, $max, $hard_due_date);
+        $duration_date_ceiling = $policy->{duration_date_ceiling};
         $duration_date_ceiling_force = $policy->{duration_date_ceiling_force};
 
         my $dname = $duration->name;
