@@ -3115,7 +3115,6 @@ sub as_xml {
     }
 
 	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->subscription )->as_xml({ %$args, no_issuances=>1 }) if (!$args->{no_subscription});
-	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->subscription )->as_xml({ %$args, no_issuances=>1 }) if (!$args->{no_subscription});
     $xml .= "      </issuance>\n";
 
     return $xml;
