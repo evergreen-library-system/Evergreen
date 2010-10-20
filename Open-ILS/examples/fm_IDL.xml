@@ -3554,6 +3554,7 @@ SELECT  usr,
 			<field name="distribution" reporter:datatype="link"/>
 			<field name="generated_coverage" reporter:datatype="text"/>
 			<field name="textual_holdings" reporter:datatype="text"/>
+			<field name="show_generated" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="distribution" reltype="has_a" key="id" map="" class="sdist"/>
@@ -3574,6 +3575,7 @@ SELECT  usr,
 			<field name="distribution" reporter:datatype="link"/>
 			<field name="generated_coverage" reporter:datatype="text"/>
 			<field name="textual_holdings" reporter:datatype="text"/>
+			<field name="show_generated" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="distribution" reltype="has_a" key="id" map="" class="sdist"/>
@@ -3594,6 +3596,7 @@ SELECT  usr,
 			<field name="distribution" reporter:datatype="link"/>
 			<field name="generated_coverage" reporter:datatype="text"/>
 			<field name="textual_holdings" reporter:datatype="text"/>
+			<field name="show_generated" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="distribution" reltype="has_a" key="id" map="" class="sdist"/>
