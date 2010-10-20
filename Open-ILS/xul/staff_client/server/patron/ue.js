@@ -291,17 +291,16 @@ function uEditResetPw(pw) {
             if( (pw = patron.day_phone()) ||
                 (pw = patron.evening_phone()) || (pw = patron.other_phone()) ) {
                     pw = pw.substring(pw.length - 4); // this is iffy
-                    uEditResetPw(pw);
-                        appendClear($('ue_password_plain'), text(pw));
-                        unHideMe($('ue_password_gen'));
+                    appendClear($('ue_password_plain'), text(pw));
+                    unHideMe($('ue_password_gen'));
              }
         } else {
             pw = uEditMakeRandomPw(patron);
         }
-        $('ue_password1').value = pw;
-        $('ue_password2').value = pw;
-        $('ue_password1').onchange();
     }
+    $('ue_password1').value = pw;
+    $('ue_password2').value = pw;
+    $('ue_password1').onchange();
 }
 
 
