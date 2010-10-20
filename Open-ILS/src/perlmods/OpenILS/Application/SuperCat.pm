@@ -1815,8 +1815,8 @@ sub new_record_holdings {
         },
 		{ flesh		=> 5,
 		  flesh_fields	=> {
-		  			ssub	=> [qw/sdist siss sercap/],
-		  			sdist	=> [qw/bib_summaries sup_summaries index_summaries streams/],
+		  			ssub	=> [qw/distributions issuances scaps owning_lib/],
+		  			sdist	=> [qw/basic_summary supplement_summary index_summary streams holding_lib/],
 					sstr	=> [qw/items/],
 					sitem	=> [qw/notes unit/],
 				},
@@ -1841,7 +1841,7 @@ sub new_record_holdings {
 
 
 	for my $ssub (@$ssubs) {
-		next unless (@{$ssub->distributions} or @{$ssub->issuances} or @{$ssub->captions_and_patterns});
+		next unless (@{$ssub->distributions} or @{$ssub->issuances} or @{$ssub->scaps});
 
 		# We don't want O:A:S:unAPI::ssub to return the record, we've got that already
 		# In the context of BibTemplate, copies aren't necessary because we pull those
@@ -1934,7 +1934,8 @@ sub escape {
 	$text =~ s/&/&amp;/gsom;
 	$text =~ s/</&lt;/gsom;
 	$text =~ s/>/&gt;/gsom;
-	$text =~ s/"/\\"/gsom;
+	$text =~ s/"/&quot;/gsom;
+	$text =~ s/'/&apos;/gsom;
 	return $text;
 }
 
@@ -2765,14 +2766,14 @@ sub as_xml {
     }
 
     if (!$args->{no_captions_and_patterns}) {
-        if (ref($self->obj->captions_and_patterns) && @{ $self->obj->captions_and_patterns }) {
+        if (ref($self->obj->scaps) && @{ $self->obj->scaps }) {
             $xml .= "      <captions_and_patterns>\n" . join(
                 '',
                 map {
                     OpenILS::Application::SuperCat::unAPI
                         ->new( $_ )
                         ->as_xml({ %$args, no_subscription=>1 })
-                } @{ $self->obj->captions_and_patterns }
+                } @{ $self->obj->scaps }
             ) . "      </captions_and_patterns>\n";
 
         } else {
@@ -2816,6 +2817,40 @@ sub as_xml {
     return $xml;
 }
 
+package OpenILS::Application::SuperCat::unAPI::ssum_base;
+use base qw/OpenILS::Application::SuperCat::unAPI/;
+
+sub as_xml {
+    my $self = shift;
+    my $args = shift;
+
+    (my $type = ref($self)) =~ s/^.+([^:]+)$/$1/;
+
+    my $xml = "    <serial_summary xmlns=\"http://open-ils.org/spec/holdings/v1\" type=\"$type\" ";
+
+    $xml .= "id=\"tag:open-ils.org:serial-summary-$type/" . $self->obj->id . '" ';
+    $xml .= 'generated_coverage="' . $self->escape( $self->obj->generated_coverage ) . '" ';
+    $xml .= 'show_generated="' . $self->escape( $self->obj->show_generated ) . '" ';
+    $xml .= 'textual_holdings="' . $self->escape( $self->obj->textual_holdings ) . '">';
+    $xml .= "\n";
+
+	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->distribution )->as_xml({ %$args, no_summaries=>1 }) if (!$args->{no_distribution});
+
+    $xml .= "    </serial_summary>\n";
+
+    return $xml;
+}
+
+
+package OpenILS::Application::SuperCat::unAPI::sssum;
+use base qw/OpenILS::Application::SuperCat::unAPI::ssum_base/;
+
+package OpenILS::Application::SuperCat::unAPI::sbsum;
+use base qw/OpenILS::Application::SuperCat::unAPI::ssum_base/;
+
+package OpenILS::Application::SuperCat::unAPI::sisum;
+use base qw/OpenILS::Application::SuperCat::unAPI::ssum_base/;
+
 package OpenILS::Application::SuperCat::unAPI::sdist;
 use base qw/OpenILS::Application::SuperCat::unAPI/;
 
@@ -2827,12 +2862,12 @@ sub as_xml {
 
     $xml .= 'id="tag:open-ils.org:serial-distribution/' . $self->obj->id . '" ';
     $xml .= 'label="' . $self->escape( $self->obj->label ) . '" ';
-    $xml .= 'unit_label_base="' . $self->escape( $self->obj->unit_label_base ) . '" ';
+    $xml .= 'unit_label_prefix="' . $self->escape( $self->obj->unit_label_prefix ) . '" ';
     $xml .= 'unit_label_suffix="' . $self->escape( $self->obj->unit_label_suffix ) . '">';
     $xml .= "\n";
 
     if (!$args->{no_distributions}) {
-        if (ref($self->obj->distributions) && @{ $self->obj->distributions }) {
+        if (ref($self->obj->streams) && @{ $self->obj->streams }) {
             $xml .= "      <streams>\n" . join(
                 '',
                 map {
@@ -2849,30 +2884,29 @@ sub as_xml {
 
     if (!$args->{no_summaries}) {
         $xml .= "      <summaries>\n";
-        if (ref($self->obj->bib_summaries) && @{ $self->obj->bib_summaries }) {
-            $xml .= join ('',
-                map {
-                    OpenILS::Application::SuperCat::unAPI
-                        ->new( $_ )
-                        ->as_xml({ %$args, no_distribution=>1 })
-                } ( @{ $self->obj->bib_summaries }, @{ $self->obj->sup_summaries }, @{ $self->obj->index_summaries } )
-            );
+        $xml .= join ('',
+        map {
+            defined $_ ?
+                OpenILS::Application::SuperCat::unAPI
+                ->new( $_ )
+                ->as_xml({ %$args, no_distribution=>1 }) : ""
+        } ($self->obj->basic_summary, $self->obj->supplement_summary, $self->obj->index_summary)
+        );
 
-        }
-		$xml .= "      </summaries>\n";
-	}
+        $xml .= "      </summaries>\n";
+    }
 
 
     $xml .= '      <holding_lib xmlns="http://open-ils.org/spec/actors/v1" ';
-    $xml .= 'id="tag:open-ils.org:actor-org_unit/' . $self->obj->owning_lib->id . '" ';
-    $xml .= 'shortname="'.$self->escape( $self->obj->owning_lib->shortname ) .'" ';
-    $xml .= 'name="'.$self->escape( $self->obj->owning_lib->name ) .'"/>';
+    $xml .= 'id="tag:open-ils.org:actor-org_unit/' . $self->obj->holding_lib->id . '" ';
+    $xml .= 'shortname="'.$self->escape( $self->obj->holding_lib->shortname ) .'" ';
+    $xml .= 'name="'.$self->escape( $self->obj->holding_lib->name ) .'"/>';
     $xml .= "\n";
 
 	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->subscription )->as_xml({ %$args, no_distributions=>1 }) if (!$args->{no_subscription});
 
     if (!$args->{no_record} && $self->obj->record_entry) {
-        my $rec_tag = "tag:open-ils.org:serial-record_entry/".$self->obj->record->id ;
+        my $rec_tag = "tag:open-ils.org:serial-record_entry/".$self->obj->record_entry->id ;
 
         my $r_doc = $parser->parse_string($self->obj->record_entry->marc);
         $r_doc->documentElement->setAttribute( id => $rec_tag );
@@ -3028,7 +3062,7 @@ sub as_xml {
     return $xml;
 }
 
-package OpenILS::Application::SuperCat::unAPI::sercap;
+package OpenILS::Application::SuperCat::unAPI::scap;
 use base qw/OpenILS::Application::SuperCat::unAPI/;
 
 sub as_xml {
@@ -3039,7 +3073,7 @@ sub as_xml {
         'id="tag:open-ils.org:serial-caption_and_pattern/' . $self->obj->id . '" ';
 
     $xml .= $_ . '="' . $self->escape( $self->obj->$_  ) . '" ' for (qw/
-        create_time type active pattern_code enum_1 enum_2 enum_3 enum_4
+        create_date type active pattern_code enum_1 enum_2 enum_3 enum_4
 		enum_5 enum_6 chron_1 chron_2 chron_3 chron_4 chron_5
     /);
     $xml .= ">\n";
@@ -3080,6 +3114,7 @@ sub as_xml {
         }
     }
 
+	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->subscription )->as_xml({ %$args, no_issuances=>1 }) if (!$args->{no_subscription});
 	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->subscription )->as_xml({ %$args, no_issuances=>1 }) if (!$args->{no_subscription});
     $xml .= "      </issuance>\n";
 
