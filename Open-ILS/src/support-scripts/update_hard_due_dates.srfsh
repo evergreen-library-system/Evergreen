@@ -1,0 +1,7 @@
+#!/openils/bin/srfsh
+open open-ils.cstore
+request open-ils.cstore open-ils.cstore.transaction.begin
+request open-ils.cstore open-ils.cstore.json_query {"from":["config.update_hard_due_dates"]}
+request open-ils.cstore open-ils.cstore.transaction.commit
+close open-ils.cstore
+

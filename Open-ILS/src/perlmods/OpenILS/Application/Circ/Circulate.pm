@@ -467,6 +467,7 @@ my @AUTOLOAD_FIELDS = qw/
     recurring_fines_rule
     max_fine_rule
     renewal_remaining
+    hard_due_date
     due_date
     fulfilled_holds
     transit
@@ -1075,7 +1076,7 @@ sub run_indb_circ_test {
                 $mp,
                 {   flesh => 1,
                     flesh_fields => {ccmm => 
-                        ['duration_rule', 'recurring_fine_rule', 'max_fine_rule']}
+                        ['duration_rule', 'recurring_fine_rule', 'max_fine_rule', 'hard_due_date']}
                 }
             ])
         );
@@ -1113,9 +1114,10 @@ sub do_inspect {
         my $duration_rule = $self->circ_matrix_matchpoint->duration_rule;
         my $recurring_fine_rule = $self->circ_matrix_matchpoint->recurring_fine_rule;
         my $max_fine_rule = $self->circ_matrix_matchpoint->max_fine_rule;
+        my $hard_due_date = $self->circ_matrix_matchpoint->hard_due_date;
     
         my $policy = $self->get_circ_policy(
-            $duration_rule, $recurring_fine_rule, $max_fine_rule);
+            $duration_rule, $recurring_fine_rule, $max_fine_rule, $hard_due_date);
     
         $$results{$_} = $$policy{$_} for keys %$policy;
     }
@@ -1128,7 +1130,7 @@ sub do_inspect {
 # fine based on the current copy
 # ---------------------------------------------------------------------
 sub get_circ_policy {
-    my($self, $duration_rule, $recurring_fine_rule, $max_fine_rule) = @_;
+    my($self, $duration_rule, $recurring_fine_rule, $max_fine_rule, $hard_due_date) = @_;
 
     my $policy = {
         duration_rule => $duration_rule->name,
@@ -1136,9 +1138,17 @@ sub get_circ_policy {
         max_fine_rule => $max_fine_rule->name,
         max_fine => $self->get_max_fine_amount($max_fine_rule),
         fine_interval => $recurring_fine_rule->recurance_interval,
-        renewal_remaining => $duration_rule->max_renewals,
-        duration_date_ceiling => $duration_rule->date_ceiling
+        renewal_remaining => $duration_rule->max_renewals
     };
+
+    if($hard_due_date) {
+        $policy->{duration_date_ceiling} = $hard_due_date->ceiling_date;
+        $policy->{duration_date_ceiling_force} = $hard_due_date->forceto;
+    }
+    else {
+        $policy->{duration_date_ceiling} = undef;
+        $policy->{duration_date_ceiling_force} = undef;
+    }
 
     $policy->{duration} = $duration_rule->shrt
         if $self->copy->loan_duration == OILS_CIRC_DURATION_SHORT;
@@ -1560,15 +1570,18 @@ sub run_checkout_scripts {
     my $duration;
     my $recurring;
     my $max_fine;
+    my $hard_due_date;
     my $duration_name;
     my $recurring_name;
     my $max_fine_name;
+    my $hard_due_date_name;
 
     if(!$self->legacy_script_support) {
         $self->run_indb_circ_test();
         $duration = $self->circ_matrix_matchpoint->duration_rule;
         $recurring = $self->circ_matrix_matchpoint->recurring_fine_rule;
         $max_fine = $self->circ_matrix_matchpoint->max_fine_rule;
+        $hard_due_date = $self->circ_matrix_matchpoint->hard_due_date;
 
     } else {
 
@@ -1580,6 +1593,7 @@ sub run_checkout_scripts {
        $duration_name   = $result->{durationRule};
        $recurring_name  = $result->{recurringFinesRule};
        $max_fine_name   = $result->{maxFine};
+       $hard_due_date_name  = $result->{hardDueDate};
     }
 
     $duration_name = $duration->name if $duration;
@@ -1594,6 +1608,11 @@ sub run_checkout_scripts {
         
             ($max_fine, $evt) = $U->fetch_max_fine_by_name($max_fine_name);
             return $self->bail_on_events($evt) if ($evt && !$nobail);
+
+            if($hard_due_date_name) {
+                ($hard_due_date, $evt) = $U->fetch_hard_due_date_by_name($hard_due_date_name);
+                return $self->bail_on_events($evt) if ($evt && !$nobail);
+            }
         }
 
     } else {
@@ -1602,11 +1621,13 @@ sub run_checkout_scripts {
         $duration   = undef;
         $recurring  = undef;
         $max_fine   = undef;
+        $hard_due_date = undef;
     }
 
    $self->duration_rule($duration);
    $self->recurring_fines_rule($recurring);
    $self->max_fine_rule($max_fine);
+   $self->hard_due_date($hard_due_date);
 }
 
 
@@ -1617,21 +1638,28 @@ sub build_checkout_circ_object {
    my $duration   = $self->duration_rule;
    my $max        = $self->max_fine_rule;
    my $recurring  = $self->recurring_fines_rule;
+   my $hard_due_date    = $self->hard_due_date;
    my $copy       = $self->copy;
    my $patron     = $self->patron;
    my $duration_date_ceiling;
+   my $duration_date_ceiling_force;
 
     if( $duration ) {
 
-        my $policy = $self->get_circ_policy($duration, $recurring, $max);
+        my $policy = $self->get_circ_policy($duration, $recurring, $max, $hard_due_date);
         $duration_date_ceiling = $policy->{duration_date_ceiling};
+        $duration_date_ceiling_force = $policy->{duration_date_ceiling_force};
 
         my $dname = $duration->name;
         my $mname = $max->name;
         my $rname = $recurring->name;
+        my $hdname;
+        if($hard_due_date) {
+            $hdname = $hard_due_date->name;
+        }
 
         $logger->debug("circulator: building circulation ".
-            "with duration=$dname, maxfine=$mname, recurring=$rname");
+            "with duration=$dname, maxfine=$mname, recurring=$rname, hard due date=$hdname");
     
         $circ->duration($policy->{duration});
         $circ->recuring_fine($policy->{recurring_fine});
@@ -1672,7 +1700,7 @@ sub build_checkout_circ_object {
 
    # if a patron is renewing, 'requestor' will be the patron
    $circ->circ_staff($self->editor->requestor->id);
-    $circ->due_date( $self->create_due_date($circ->duration, $duration_date_ceiling) ) if $circ->duration;
+    $circ->due_date( $self->create_due_date($circ->duration, $duration_date_ceiling, $duration_date_ceiling_force) ) if $circ->duration;
 
     $self->circ($circ);
 }
@@ -1872,7 +1900,7 @@ sub apply_modified_due_date {
 
 
 sub create_due_date {
-    my( $self, $duration, $date_ceiling ) = @_;
+    my( $self, $duration, $date_ceiling, $force_date ) = @_;
 
     # if there is a raw time component (e.g. from postgres), 
     # turn it into an interval that interval_to_seconds can parse
@@ -1886,7 +1914,7 @@ sub create_due_date {
 
     if($date_ceiling) {
         my $cdate = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($date_ceiling));
-        if ($cdate > DateTime->now and $cdate < $due_date) {
+        if ($cdate > DateTime->now and ($cdate < $due_date or $force_date)) {
             $logger->info("circulator: overriding due date with date ceiling: $date_ceiling");
             $due_date = $cdate;
         }
