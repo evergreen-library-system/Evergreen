@@ -1,15 +1,10 @@
-#
-# An object to handle checkin status
-#
-
 package OpenILS::SIP::Transaction::Checkin;
-
-use warnings;
-use strict;
+use warnings; use strict;
 
 use POSIX qw(strftime);
 use Sys::Syslog qw(syslog);
 use Data::Dumper;
+use Time::HiRes q/time/;
 
 use OpenILS::SIP;
 use OpenILS::SIP::Transaction;
@@ -110,7 +105,9 @@ sub do_checkin {
         my $method = 'open-ils.circ.checkin';
         $method .= '.override' if $override;
 
+        my $start_time = time();
         $resp = $U->simplereq('open-ils.circ', $method, $self->{authtoken}, $args);
+        syslog('LOG_INFO', "OILS: Checkin API call took %0.3f seconds", (time() - $start_time));
 
         if ($debug) {
             my $s = Dumper($resp);
@@ -170,7 +167,10 @@ sub do_checkin {
     if ($self->item->hold) {
         my ($pickup_lib_id, $pickup_lib_sn);
 
-        my $holder = OpenILS::SIP->find_patron('usr' => $self->item->hold->usr);
+        my $holder = OpenILS::SIP->editor()->retrieve_actor_user(
+            [$self->item->hold->usr, {flesh => 1, flesh_fields => {au => ['card']}}]);
+
+        my $holder_name = OpenILS::SIP::Patron::format_name($holder);
 
         if (ref $self->item->hold->pickup_lib) {
             $pickup_lib_id = $self->item->hold->pickup_lib->id;
@@ -181,8 +181,8 @@ sub do_checkin {
             $pickup_lib_sn = OpenILS::SIP::shortname_from_id($pickup_lib_id);
         }
 
-        $self->item->hold_patron_bcode($holder->id);
-        $self->item->hold_patron_name($holder->name); 
+        $self->item->hold_patron_bcode( ($holder->card) ? $holder->card->barcode : '');
+        $self->item->hold_patron_name($holder_name);
         $self->item->destination_loc($pickup_lib_sn); 
 
         my $atype = ($pickup_lib_id == $phys_location) ? '01' : '02';

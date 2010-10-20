@@ -97,7 +97,6 @@ sub new {
     syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s => %s): found patron : barred=%s, card:active=%s", 
         $key, $patron_id, $user->barred, $user->card->active );
 
-
     bless $self, $type;
     return $self;
 }
@@ -109,13 +108,16 @@ sub id {
 
 sub name {
     my $self = shift;
-    my $u = $self->{user};
+    return format_name($self->{user});
+}
+
+sub format_name {
+    my $u = shift;
     return OpenILS::SIP::clean_text(
         sprintf('%s %s %s', 
             ($u->first_given_name || ''),
             ($u->second_given_name || ''),
             ($u->family_name || '')));
-   
 }
 
 sub home_library {
