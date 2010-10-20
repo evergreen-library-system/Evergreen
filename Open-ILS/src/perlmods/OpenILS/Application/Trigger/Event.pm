@@ -482,6 +482,7 @@ sub _object_by_path {
     my $label = shift;
     my $path = shift;
     my $ed = shift;
+    my $red = shift;
 
     my $outer = 0;
     if (!$ed) {
@@ -531,7 +532,11 @@ sub _object_by_path {
             my $str_path = join('.', @$path);
 
             $obj = $_object_by_path_cache{$def_id}{$str_path}{$step}{$ffield}{$lval} ||
-                $ed->$meth( ($multi) ? { $ffield => $lval } : $lval);
+                (
+                    (grep /cstore/, @{
+                        Fieldmapper->publish_fieldmapper->{$fclass}{controller}
+                    }) ? $ed : ($red ||= new_rstore_editor(xact=>1))
+                )->$meth( ($multi) ? { $ffield => $lval } : $lval);
 
             $_object_by_path_cache{$def_id}{$str_path}{$step}{$ffield}{$lval} ||= $obj;
         }
@@ -548,7 +553,7 @@ sub _object_by_path {
 
         for (@$obj_list) {
             my @path_clone = @$path;
-            $self->_object_by_path( $_, $collector, $label, \@path_clone, $ed );
+            $self->_object_by_path( $_, $collector, $label, \@path_clone, $ed, $red );
         }
 
         $obj = $$obj_list[0] if (!$multi || $rtype eq 'might_have');
@@ -591,7 +596,10 @@ sub _object_by_path {
         }
     }
 
-    $ed->rollback if ($outer);
+    if ($outer) {
+        $ed->rollback;
+        $red->rollback if $red;
+    }
     return $obj;
 }
 
