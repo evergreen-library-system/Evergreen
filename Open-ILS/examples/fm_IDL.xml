@@ -3196,6 +3196,8 @@ SELECT  usr,
 			<field reporter:label="Subscription" name="subscription" reporter:datatype="link"/>
 			<field reporter:label="Type" name="type" reporter:datatype="text"/>
 			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Start Date" name="start_date" reporter:datatype="timestamp"/>
+			<field reporter:label="End Date" name="end_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Active?" name="active" reporter:datatype="bool"/>
 			<field reporter:label="Pattern Code" name="pattern_code" reporter:datatype="text"/>
 			<field reporter:label="Enum 1" name="enum_1" reporter:datatype="text"/>
