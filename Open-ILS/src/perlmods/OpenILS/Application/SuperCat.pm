@@ -3074,7 +3074,7 @@ sub as_xml {
 
     $xml .= $_ . '="' . $self->escape( $self->obj->$_  ) . '" ' for (qw/
         create_date type active pattern_code enum_1 enum_2 enum_3 enum_4
-		enum_5 enum_6 chron_1 chron_2 chron_3 chron_4 chron_5
+		enum_5 enum_6 chron_1 chron_2 chron_3 chron_4 chron_5 start_date end_date
     /);
     $xml .= ">\n";
 	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->subscription )->as_xml({ %$args, no_captions_and_patterns=>1 }) if (!$args->{no_subscription});
