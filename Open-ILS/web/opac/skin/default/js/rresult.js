@@ -31,7 +31,7 @@ function rresultCollectIds() {
 	var ids;
 
     var rtype = getRtype();
-    if (rtype.indexOf('|') > -1)
+    if (rtype && rtype.indexOf('|') > -1)
         rtype = rtype.substring(0,rtype.indexOf('|'));
 
 	switch(rtype) {
