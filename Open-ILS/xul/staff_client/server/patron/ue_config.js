@@ -296,7 +296,7 @@ function uEditDefineData(patron) {
 				type		: 'input',
 				regex		:  phoneRegex,
                 onblur      : function() {
-                    if(uEditUsePhonePw)
+                    if(uEditUsePhonePw && patron.isnew())
                         uEditMakePhonePw();
                 },
                 onpostchange: function(field, newval) {
@@ -320,7 +320,7 @@ function uEditDefineData(patron) {
 				type		: 'input',
 				regex		:  phoneRegex,
                 onblur      : function() {
-                    if(uEditUsePhonePw)
+                    if(uEditUsePhonePw && patron.isnew())
                         uEditMakePhonePw();
                 }
 			}
@@ -335,7 +335,7 @@ function uEditDefineData(patron) {
 				type		: 'input',
 				regex		:  phoneRegex,
                 onblur      : function() {
-                    if(uEditUsePhonePw)
+                    if(uEditUsePhonePw && patron.isnew())
                         uEditMakePhonePw();
                 }
 			}
