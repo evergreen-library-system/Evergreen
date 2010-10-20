@@ -4,9 +4,6 @@
     type="text/javascript"
     src="[% ctx.media_prefix %]/js/ui/default/serial/list_stream.js">
 </script>
-<script type="text/javascript">
-    var dist_id = "[% ctx.page_args.0 %]";
-</script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane"
         layoutAlign="top" class="oils-header-panel">
@@ -26,7 +23,7 @@
     </div>
     <div>
         Showing streams attached to the distribution,
-        <em id="sdist_label_here"></em>
+        <em><a href="javascript:void(0);" id="sdist_label_here"></a></em>
         (<span id="sdist_org_unit_name_here"></span>).
     </div>
     <table jsId="sstr_grid"

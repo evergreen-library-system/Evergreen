@@ -10,9 +10,12 @@ dojo.require("openils.widget.AutoGrid");
 dojo.require("openils.widget.ProgressDialog");
 dojo.require("openils.widget.HoldingCode");
 dojo.require("openils.PermaCrud");
+dojo.require("openils.CGI");
 
 var pcrud;
+var cgi;
 var sub;
+var sub_id;
 
 /* typing save: add {get,set}Value() to all HTML <select> elements */
 HTMLSelectElement.prototype.getValue = function() {
@@ -27,7 +30,7 @@ HTMLSelectElement.prototype.setValue = function(s) {
     }
 }
 
-function load_sub_grid(id) {
+function load_sub_grid(id, oncomplete) {
     if (!pcrud) return; /* first run, onLoad hasn't fired yet */
     if (!sub_grid._fresh) {
         pcrud.retrieve(
@@ -42,6 +45,9 @@ function load_sub_grid(id) {
                         );
                         sub_grid._fresh = true;
                     }
+                },
+                "oncomplete": function() {
+                    if (oncomplete) oncomplete();
                 }
             }
         );
@@ -77,8 +83,9 @@ function format_bib(bib_id) {
                 }
             }
         );
-        return "<a href='" + oilsBasePath + "/serial/list_subscription/" +
-            bib_id + "'>" + result + "</a>";
+        return "<a href='" + oilsBasePath +
+            "/serial/list_subscription?record_entry=" + bib_id + "'>" +
+            result + "</a>";
     }
 }
 
@@ -101,7 +108,7 @@ function get_sdist(rowIndex, item) {
 function format_sdist_label(blob) {
     if (!blob.id) return "";
     var link = "<a href='" +
-        oilsBasePath + "/serial/list_stream/" + blob.id +
+        oilsBasePath + "/serial/list_stream?distribution=" + blob.id +
         "'>" + (blob.label ? blob.label : "[None]") + "</a>" + /* XXX i18n */
         "<span id='dist_link_" + blob.id + "'></span>";
 
@@ -147,7 +154,15 @@ function open_batch_receive() {
 
 openils.Util.addOnLoad(
     function() {
+        cgi = new openils.CGI();
         pcrud = new openils.PermaCrud();
-        load_sub_grid(sub_id);
+
+        sub_id = cgi.param("id");
+        load_sub_grid(
+            sub_id,
+            (cgi.param("tab") == "distributions") ?
+                function() { tab_container.selectChild(distributions_tab); } :
+                null
+        );
     }
 );
