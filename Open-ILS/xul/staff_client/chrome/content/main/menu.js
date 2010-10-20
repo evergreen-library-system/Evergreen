@@ -261,8 +261,8 @@ main.menu.prototype = {
             /* Search Menu */
             'cmd_patron_search' : [
                 ['oncommand'],
-                function() {
-                    obj.set_patron_tab();
+                function(event) {
+                    obj.set_patron_tab({},{},event);
                 }
             ],
             'cmd_search_opac' : [
@@ -345,16 +345,16 @@ main.menu.prototype = {
             ],
             'cmd_copy_status' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_COPY_STATUS),{},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_COPY_STATUS),{},{});
                 }
             ],
 
             /* Circulation Menu */
             'cmd_patron_register' : [
                 ['oncommand'],
-                function() {
+                function(event) {
 
                     function log_registration(p) {
                         try {
@@ -403,7 +403,8 @@ main.menu.prototype = {
                     obj.data.stash_retrieve();
                     var loc = obj.url_prefix( urls.XUL_BROWSER ) 
                         + '?url=' + window.escape( obj.url_prefix(urls.XUL_PATRON_EDIT) );
-                    obj.set_tab(
+                    obj.command_tab(
+                        event,
                         loc, 
                         {}, 
                         { 
@@ -428,9 +429,9 @@ main.menu.prototype = {
             ],
             'cmd_circ_checkin' : [
                 ['oncommand'],
-                function() { 
+                function(event) { 
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_CHECKIN),{},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_CHECKIN),{},{});
                 }
             ],
             'cmd_circ_renew' : [
@@ -442,9 +443,9 @@ main.menu.prototype = {
             ],
             'cmd_circ_checkout' : [
                 ['oncommand'],
-                function() { 
+                function(event) { 
                     obj.data.stash_retrieve();
-                    obj.set_tab(obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY),{},{});
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_PATRON_BARCODE_ENTRY),{},{});
                 }
             ],
             'cmd_circ_hold_capture' : [
@@ -1351,6 +1352,37 @@ main.menu.prototype = {
         }
     },
 
+    'command_tab' : function(event,url,params,content_params) {
+        var newTab = false;
+        if(event && event.explicitOriginalTarget.nodeName == 'toolbarbutton' && event.explicitOriginalTarget.command == event.originalTarget.id) {
+            var value = xulG.pref.getIntPref('ui.key.accelKey');
+            switch(value) {
+                case 17:
+                    newTab = event.ctrlKey;
+                    break;
+                case 18:
+                    newTab = event.altKey;
+                    break;
+                case 224:
+                    newTab = event.metaKey;
+                    break;
+            }
+            try {
+                if(xulG.pref.getBoolPref('open-ils.toolbar.defaultnewtab')) {
+                    newTab = !newTab;
+                }
+            }
+            catch (e) {
+            }
+        }
+        if(newTab) {
+            this.new_tab(url,params,content_params);
+        }
+        else {
+            this.set_tab(url,params,content_params);
+        }
+    },
+
     'new_tab' : function(url,params,content_params) {
         var obj = this;
         var max_tabs = 0;
@@ -1489,11 +1521,11 @@ main.menu.prototype = {
             }
         }
     },
-    'set_patron_tab' : function(params,content_params) {
+    'set_patron_tab' : function(params,content_params,event) {
         var obj = this;
         var horizontal_interface = String( obj.data.hash.aous['ui.circ.patron_summary.horizontal'] ) == 'true';
         var url = obj.url_prefix( horizontal_interface ? urls.XUL_PATRON_HORIZ_DISPLAY : urls.XUL_PATRON_DISPLAY );
-        obj.set_tab(url,params ? params : {},content_params ? content_params : {});
+        obj.command_tab(event,url,params ? params : {},content_params ? content_params : {});
     },
     'new_patron_tab' : function(params,content_params) {
         var obj = this;

@@ -17,4 +17,4 @@ pref("open-ils.repository.revision","$Revision$");
 pref("open-ils.repository.date","$Date$");
 pref("open-ils.repository.id","$Id$");
 
-
+pref("open-ils.toolbar.defaultnewtab", false);

@@ -34,7 +34,7 @@ util.controller.prototype = {
                             case 'oncommand':
                                 if (!this.window_knows_me_by) 
                                     throw('util.controller: on_command requires window_knows_me_by');
-                                var s = 'try{'+this.window_knows_me_by+".cmds."+i+"();}catch(E){alert(E);}";
+                                var s = 'try{'+this.window_knows_me_by+".cmds."+i+"(event);}catch(E){alert(E);}";
                                 cmd.setAttribute(ev_type, s);
                                 this.cmds[i] = this.control_map[i][1];
                             break;
