@@ -6609,7 +6609,7 @@ SELECT  usr,
 			<link field="folder" reltype="has_a" key="id" map="" class="rof"/>
 		</links>
 	</class>
-	<class id="rmsr" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::materialized_simple_record" oils_persist:tablename="reporter.materialized_simple_record" reporter:label="Fast Simple Record Extracts">
+	<class id="rmsr" controller="open-ils.reporter-store open-ils.cstore" oils_obj:fieldmapper="reporter::materialized_simple_record" oils_persist:tablename="reporter.materialized_simple_record" reporter:label="Fast Simple Record Extracts">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Record ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Fingerprint" name="fingerprint" reporter:datatype="text"/>
