@@ -110,6 +110,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
     duration_rule        INT     NOT NULL REFERENCES config.rule_circ_duration (id) DEFERRABLE INITIALLY DEFERRED,
     recurring_fine_rule  INT     NOT NULL REFERENCES config.rule_recurring_fine (id) DEFERRABLE INITIALLY DEFERRED,
     max_fine_rule        INT     NOT NULL REFERENCES config.rule_max_fine (id) DEFERRABLE INITIALLY DEFERRED,
+    hard_due_date        INT     REFERENCES config.hard_due_date (id) DEFERRABLE INITIALLY DEFERRED,
     script_test          TEXT,                           -- javascript source 
     total_copy_hold_ratio     FLOAT,
     available_copy_hold_ratio FLOAT,

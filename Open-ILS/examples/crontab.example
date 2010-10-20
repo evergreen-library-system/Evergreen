@@ -51,14 +51,19 @@ EG_BIN_DIR = /openils/bin
 # 5  2  * * *   . ~/.bashrc && oils_ctl.sh -d $OPENILS/var/pid -s $OPENILS/conf/oils_sip.xml -a stop_sip
 # 8  2  * * *   . ~/.bashrc && oils_ctl.sh -d $OPENILS/var/pid -s $OPENILS/conf/oils_sip.xml -a start_sip
 
+# Run the circ history cleanup job
+# Note: destroys link between user and item
+#2  0  * * *   . ~/.bashrc && $EG_BIN_DIR/clear_expired_circ_history.srfsh
+
+# Run the hard due date updater
+2  3  * * *   . ~/.bashrc && $EG_BIN_DIR/update_hard_due_dates.srfsh
+
 # Action/Trigger entries ----
 
 # Runs all pending A/T events every half hour
 0 */2 * * * . ~/.bashrc && $EG_BIN_DIR/action_trigger_runner.pl --osrf-config $SRF_CORE --run-pending
 
 # Passive A/T event generation.
-# Note: the --granularity flag is not supported in 1.6
-# Note: passive event defs with no granularity will be processed regardless of any granularity flags
 # Note: push these back to 3am so they will run after the fine generator and spread out the start minute to reduce dogpiling
 0 * * * *   . ~/.bashrc && $EG_BIN_DIR/action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity hourly
 5 3 * * *   . ~/.bashrc && $EG_BIN_DIR/action_trigger_runner.pl --osrf-config $SRF_CORE --process-hooks --granularity daily
@@ -70,7 +75,6 @@ EG_BIN_DIR = /openils/bin
 # Legacy overdue/predue notice generator.  Change to suit.
 #XML_FILE_PREFIX = /openils/var/data/overdue/overdue
 #0 3 * * * . ~/.bashrc && cd $EG_BIN_DIR && ./generate_circ_notices.pl --osrf_config $SRF_CORE --notice-types overdue,predue --generate-global-templates --send-email > $XML_FILE_PREFIX.$(date +"\%F").xml
-
 
 # TODO: add other entries
 

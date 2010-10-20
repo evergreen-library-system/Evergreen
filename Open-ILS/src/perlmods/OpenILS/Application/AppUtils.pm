@@ -888,6 +888,17 @@ sub fetch_max_fine_by_name {
 	return ($obj, $evt);
 }
 
+sub fetch_hard_due_date_by_name {
+	my( $self, $name ) = @_;
+	my( $obj, $evt );
+	$obj = $self->simplereq(
+		'open-ils.cstore', 
+		'open-ils.cstore.direct.config.hard_due_date.search.atomic', { name => $name } );
+	$obj = $obj->[0];
+	$evt = OpenILS::Event->new('CONFIG_RULES_HARD_DUE_DATE_NOT_FOUND') unless $obj;
+	return ($obj, $evt);
+}
+
 sub storagereq {
 	my( $self, $method, @params ) = @_;
 	return $self->simplereq(
