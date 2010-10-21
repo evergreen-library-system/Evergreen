@@ -2,7 +2,7 @@
 -- may or may not exist.
 
 DROP INDEX asset.asset_call_number_upper_label_id_owning_lib_idx;
-CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (oils_text_as_bytea(upper(label)),id,owning_lib);
+CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (oils_text_as_bytea(label),id,owning_lib);
 
 
 \qecho Before starting the transaction: drop some constraints.

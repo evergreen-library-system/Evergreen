@@ -598,7 +598,7 @@ return;
 $func$ LANGUAGE PLPERLU;
 
 CREATE OR REPLACE FUNCTION oils_text_as_bytea (TEXT) RETURNS BYTEA AS $_$
-    SELECT CAST(REGEXP_REPLACE($1, $$\\$$, $$\\\\$$, 'g') AS BYTEA);
+    SELECT CAST(REGEXP_REPLACE(UPPER($1), $$\\$$, $$\\\\$$, 'g') AS BYTEA);
 $_$ LANGUAGE SQL IMMUTABLE;
 
 COMMIT;
