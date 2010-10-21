@@ -281,13 +281,13 @@ sub cn_browse {
 	if ($page <= 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { "<" => { transform => "upper", value => ["upper", $label] } },
+			{ label		=> { "<" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
 			},
 			{ flesh		=> 1,
 			  flesh_fields	=> { acn => [qw/record owning_lib/] },
-			  order_by	=> { acn => "oils_text_as_bytea(upper(label)) desc, id desc, owning_lib desc" },
+			  order_by	=> { acn => "oils_text_as_bytea(label) desc, id desc, owning_lib desc" },
 			  limit		=> $before_limit,
 			  offset	=> abs($page) * $page_size - $before_offset,
 			}
@@ -298,13 +298,13 @@ sub cn_browse {
 	if ($page >= 0) {
 		my $after = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { ">=" => { transform => "upper", value => ["upper", $label] } },
+			{ label		=> { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
 			},
 			{ flesh		=> 1,
 			  flesh_fields	=> { acn => [qw/record owning_lib/] },
-			  order_by	=> { acn => "oils_text_as_bytea(upper(label)), id, owning_lib" },
+			  order_by	=> { acn => "oils_text_as_bytea(label), id, owning_lib" },
 			  limit		=> $after_limit,
 			  offset	=> abs($page) * $page_size - $after_offset,
 			}
