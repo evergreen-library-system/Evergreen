@@ -230,9 +230,9 @@ sub cn_browse_pagedown {
 		        $table cn
 		where
 			not deleted
-		        and (oils_text_as_bytea(upper(label)) > ? or ( cn.id > ? and oils_text_as_bytea(upper(label)) = ? ))
+		        and (oils_text_as_bytea(label) > ? or ( cn.id > ? and oils_text_as_bytea(label) = ? ))
 			and owning_lib in ($orgs)
-		order by oils_text_as_bytea(upper(label)), 4, 2
+		order by oils_text_as_bytea(label), 4, 2
 		limit $size;
 	SQL
 
@@ -285,9 +285,9 @@ sub cn_browse_pageup {
 			        $table cn
 			where
 				not deleted
-			        and (oils_text_as_bytea(upper(label)) < ? or ( cn.id < ? and oils_text_as_bytea(upper(label)) = ? ))
+			        and (oils_text_as_bytea(label) < ? or ( cn.id < ? and oils_text_as_bytea(label) = ? ))
 				and owning_lib in ($orgs)
-			order by oils_text_as_bytea(upper(label)) desc, 4 desc, 2 desc
+			order by oils_text_as_bytea(label) desc, 4 desc, 2 desc
 			limit $size
 		) as bar
 		order by 1,4,2;
@@ -343,9 +343,9 @@ sub cn_browse_target {
 			        $table cn
 			where
 				not deleted
-			        and oils_text_as_bytea(upper(label)) < ?
+			        and oils_text_as_bytea(label) < ?
 				and owning_lib in ($orgs)
-			order by oils_text_as_bytea(upper(label)) desc, 4 desc, 2 desc
+			order by oils_text_as_bytea(label) desc, 4 desc, 2 desc
 			limit $topsize
 		) as bar
 		order by 1,4,2;
@@ -361,9 +361,9 @@ sub cn_browse_target {
 		        $table cn
 		where
 			not deleted
-		        and oils_text_as_bytea(upper(label)) >= ?
+		        and oils_text_as_bytea(label) >= ?
 			and owning_lib in ($orgs)
-		order by oils_text_as_bytea(upper(label)),4,2
+		order by oils_text_as_bytea(label),4,2
 		limit $bottomsize;
 	SQL
 
