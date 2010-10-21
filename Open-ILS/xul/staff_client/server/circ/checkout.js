@@ -952,7 +952,7 @@ circ.checkout.prototype = {
                                     if (typeof robj.ilsevent == 'undefined') {
                                         obj.checkout(params);
                                     } else {
-                                        switch(robj.ilsevent) {
+                                        switch(Number(robj.ilsevent)) {
                                             case 1225 /* TRANSIT_ABORT_NOT_ALLOWED */ :
                                                 alert(robj.desc);
                                             break;

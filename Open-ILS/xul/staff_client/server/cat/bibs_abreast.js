@@ -182,7 +182,7 @@ function merge_records() {
             ]
         );
         if (typeof robj.ilsevent != 'undefined') {
-            switch(robj.ilsevent) {
+            switch(Number(robj.ilsevent)) {
                 case 5000 /* PERM_FAILURE */: break;
                 default: throw(robj);
             }
