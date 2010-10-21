@@ -109,12 +109,13 @@ function format_sdist_label(blob) {
     if (!blob.id) return "";
     var link = "<a href='" +
         oilsBasePath + "/serial/list_stream?distribution=" + blob.id +
-        "'>" + (blob.label ? blob.label : "[None]") + "</a>" + /* XXX i18n */
-        "<span id='dist_link_" + blob.id + "'></span>";
+        "'>" + (blob.label ? blob.label : "[None]") + "</a>"; /* XXX i18n */
 
-    /* XXX kludgy kludge kludge */
-    setTimeout(function() { append_stream_count(blob.id); }, 200);
-
+    var sstr_list = pcrud.search(
+        "sstr",{"distribution":blob.id},{"id_list":true}
+    );
+    count = sstr_list ? sstr_list.length : 0;
+    link += "&nbsp;&nbsp; " + count + " stream(s)";
     return link;
 }
 
