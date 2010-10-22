@@ -65,14 +65,3 @@
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/RemoteRequest.js' type='text/javascript'></script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/init.js' type='text/javascript'></script>
 	<script language='javascript' src='<!--#echo var="OILS_JS_BASE"-->/added_content.js' type='text/javascript'></script>
-
-	<script language="javascript" type="text/javascript">
-		dojo.addOnLoad(init);
-		dojo.require("dijit._Calendar");
-		dojo.require("dijit.form.DateTextBox");
-		dojo.require("dijit.form.FilteringSelect");
-		dojo.require("dojo.date.locale");
-		dojo.require("dojo.date.stamp");
-		dojo.require("dojo.parser");
-		dojo.require("openils.widget.FacetSidebar"); // pulls in Searcher and I18N
-	</script>

@@ -208,7 +208,7 @@
 		config.ids.rdetail.image				= 'rdetail_image';
 		config.ids.rdetail.tor_pic				= 'rdetail_tor_pic';
 
-        dojo.addOnLoad( function () {
+        setTiemout( function () {
             var here = findOrgUnit(getLocation());
             if (getDepth() > 0 || getDepth === 0 ) {
                 while (getDepth() < findOrgDepth(here))
@@ -217,7 +217,7 @@
 
             dojo.require('openils.BibTemplate');
             new openils.BibTemplate({ record : new CGI().param('r'), org_unit : here.shortname() }).render();
-        });
+        }, 0);
 	]]></script>
 
 </div> <!-- details_body -->
