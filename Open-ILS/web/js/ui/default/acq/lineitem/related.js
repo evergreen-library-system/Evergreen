@@ -86,7 +86,7 @@ function createLi(oncomplete) {
                         "flesh_notes": true
                     }
                 ],
-                "async": true,
+                "async": false,
                 "onresponse": function(r) {
                     var li = openils.Util.readResponse(r);
                     if (typeof(li) == "object") {
