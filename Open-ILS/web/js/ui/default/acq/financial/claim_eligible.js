@@ -213,8 +213,8 @@ function init() {
     if (filter && filter.indexOf(":") != -1) {
         filter.split(",").forEach(
             function(chunk) {
-                var [key, value] = chunk.split(":");
-                finished_filter[key] = value;
+                var kvlist = chunk.split(":");
+                finished_filter[kvlist[0]] = kvlist[1];
             }
         );
     }

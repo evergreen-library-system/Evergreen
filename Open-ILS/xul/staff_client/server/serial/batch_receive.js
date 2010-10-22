@@ -925,7 +925,9 @@ function BatchReceiver() {
 
     this.autogen_if_appropriate = function(textbox, item_id) {
         if (this._user_wants_autogen() && textbox.value) {
-            var [list, question] = this._get_autogen_potentials(item_id);
+            var kvlist = this._get_autogen_potentials(item_id);
+            var list = kvlist[0];
+            var question = kvlist[1];
             if (list.length) {
                 if (question && !confirm(S("autogen_barcodes.questionable")))
                     return;
