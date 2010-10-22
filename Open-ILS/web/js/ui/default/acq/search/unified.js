@@ -519,7 +519,9 @@ function TermManager() {
         var so = {};
 
         for (var id in this.widgets) {
-            var [hint, attr] = this._selector(id).getValue().split(":");
+            var kvlist = this._selector(id).getValue().split(":");
+            var hint = kvlist[0];
+            var attr = kvlist[1];
             if (!(hint && attr)) continue;
 
             var match_how =
