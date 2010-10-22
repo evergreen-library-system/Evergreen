@@ -208,16 +208,18 @@
 		config.ids.rdetail.image				= 'rdetail_image';
 		config.ids.rdetail.tor_pic				= 'rdetail_tor_pic';
 
-        setTimeout( function () {
-            var here = findOrgUnit(getLocation());
-            if (getDepth() > 0 || getDepth === 0 ) {
-                while (getDepth() < findOrgDepth(here))
-                    here = findOrgUnit( here.parent_ou() );
-            }
-
-            dojo.require('openils.BibTemplate');
-            new openils.BibTemplate({ record : new CGI().param('r'), org_unit : here.shortname() }).render();
-        }, 0);
+        dojo.addOnLoad(function() {
+            setTimeout( function () {
+                var here = findOrgUnit(getLocation());
+                if (getDepth() > 0 || getDepth === 0 ) {
+                    while (getDepth() < findOrgDepth(here))
+                        here = findOrgUnit( here.parent_ou() );
+                }
+    
+                dojo.require('openils.BibTemplate');
+                new openils.BibTemplate({ record : new CGI().param('r'), org_unit : here.shortname() }).render();
+            }, 0);
+        });
 	]]></script>
 
 </div> <!-- details_body -->
