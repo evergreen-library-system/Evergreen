@@ -208,7 +208,7 @@
 		config.ids.rdetail.image				= 'rdetail_image';
 		config.ids.rdetail.tor_pic				= 'rdetail_tor_pic';
 
-        setTiemout( function () {
+        setTimeout( function () {
             var here = findOrgUnit(getLocation());
             if (getDepth() > 0 || getDepth === 0 ) {
                 while (getDepth() < findOrgDepth(here))
