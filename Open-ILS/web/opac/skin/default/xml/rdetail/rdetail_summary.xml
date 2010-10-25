@@ -33,6 +33,7 @@
                         for (var i = 0; i < list.length; i++) {
                             out += BT.textContent(list[i]) + ' ';
                         }
+                        document.title += ': ' + out;
                         return out;
                     ]]></script>
                 </td>
@@ -88,24 +89,31 @@
                  *** summary screen with complex information, such as new search links on subjects. -->
             <tr>
                 <td nowrap='nowrap' class='rdetail_desc'>&rdetail.summary.subjects;</td>
-                <td type='opac/slot-data' query='datafield[tag="650"]' class='rdetail_item'>
+                <td type='opac/slot-data' query='datafield[tag^="6"]' class='rdetail_item'>
                     <script type='opac/slot-format'><![CDATA[
                         var cgi = new CGI();
                         var other_params = [ 'd', 'l', 'r', 'av', 's', 'sd' ];
                         var total = '';
                         var output = [];
                         var list = dojo.query( 'subfield', item );
-                        for (var i =0; i < list.length; i++) {
-                            total += BT.textContent(list[i]) + ' ';
-                            var current = '<a href="rresult.xml?rt=subject&tp=subject&t=' + total;
-                            for (var p in other_params) {
-                                if (cgi.param(other_params[p]))
-                                    current += '&' + other_params[p] + '=' + cgi.param(other_params[p]);
+                        for (var i = 0; i < list.length; i++) {
+                            var sub_code = list[i].getAttribute('code');
+                            if ( sub_code.match(/[a-z]/i) ) {
+                                var current = '';
+                                if ( sub_code.match(/[vxyz]/) ) {
+                                    current += '&#x2d;&#x2d; ';
+                                }
+                                total += BT.textContent(list[i]) + ' ';
+                                current += '<a href="rresult.xml?rt=subject&tp=subject&t=' + total.replace(/\s+$/, '');
+                                for (var p in other_params) {
+                                    if (cgi.param(other_params[p]))
+                                        current += '&' + other_params[p] + '=' + cgi.param(other_params[p]);
+                                }
+                                current += '">' + BT.textContent(list[i]) + '</a>'
+                                output.push(current);
                             }
-                            current += '">' + BT.textContent(list[i]) + '</a>'
-                            output.push(current);
                         }
-                        return '<span>' + output.join(' &#x2d;&#x2d; ') + '</span><br/>';
+                        return '<span>' + output.join(' ') + '</span><br/>';
                     ]]></script>
                 </td>
             </tr>
