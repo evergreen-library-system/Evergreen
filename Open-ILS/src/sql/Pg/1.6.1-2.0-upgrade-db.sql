@@ -1,9 +1,12 @@
 -- Before starting the transaction: drop some constraints that
 -- may or may not exist.
 
+CREATE OR REPLACE FUNCTION oils_text_as_bytea (TEXT) RETURNS BYTEA AS $_$
+    SELECT CAST(REGEXP_REPLACE(UPPER($1), $$\\$$, $$\\\\$$, 'g') AS BYTEA);
+$_$ LANGUAGE SQL IMMUTABLE;
+
 DROP INDEX asset.asset_call_number_upper_label_id_owning_lib_idx;
 CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (oils_text_as_bytea(label),id,owning_lib);
-
 
 \qecho Before starting the transaction: drop some constraints.
 \qecho If a DROP fails because the constraint doesn't exist, ignore the failure.
@@ -20,7 +23,90 @@ BEGIN;
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0433');
+INSERT INTO config.upgrade_log (version) VALUES ('0445');
+
+-- Remove some uses of the connectby() function from the tablefunc contrib module
+CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT, INT ) RETURNS SETOF actor.org_unit AS $$
+    WITH RECURSIVE descendant_depth AS (
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN anscestor_depth ad ON (ad.id = ou.id)
+          WHERE ad.depth = $2
+            UNION ALL
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN descendant_depth ot ON (ot.id = ou.parent_ou)
+    ), anscestor_depth AS (
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+          WHERE ou.id = $1
+            UNION ALL
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
+    ) SELECT ou.* FROM actor.org_unit ou JOIN descendant_depth USING (id);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT ) RETURNS SETOF actor.org_unit AS $$
+    WITH RECURSIVE descendant_depth AS (
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+          WHERE ou.id = $1
+            UNION ALL
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN descendant_depth ot ON (ot.id = ou.parent_ou)
+    ), anscestor_depth AS (
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+          WHERE ou.id = $1
+            UNION ALL
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
+    ) SELECT ou.* FROM actor.org_unit ou JOIN descendant_depth USING (id);
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION actor.org_unit_ancestors( INT ) RETURNS SETOF actor.org_unit AS $$
+    WITH RECURSIVE anscestor_depth AS (
+        SELECT  ou.id,
+                ou.parent_ou
+          FROM  actor.org_unit ou
+          WHERE ou.id = $1
+            UNION ALL
+        SELECT  ou.id,
+                ou.parent_ou
+          FROM  actor.org_unit ou
+                JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
+    ) SELECT ou.* FROM actor.org_unit ou JOIN anscestor_depth USING (id);
+$$ LANGUAGE SQL;
+
+-- Support merge template buckets
+INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('template_merge','Template Merge Container');
 
 -- Recreate one of the constraints that we just dropped,
 -- under a different name:
@@ -6205,7 +6291,6 @@ CREATE TABLE config.hard_due_date_values (
 );
 
 ALTER TABLE config.circ_matrix_matchpoint ADD COLUMN hard_due_date INT REFERENCES config.hard_due_date (id);
-ALTER TABLE config.rule_circ_duration DROP COLUMN date_ceiling;
 
 CREATE OR REPLACE FUNCTION config.update_hard_due_dates () RETURNS INT AS $func$
 DECLARE
@@ -6831,50 +6916,50 @@ $$ LANGUAGE PLPGSQL;
 DROP TABLE IF EXISTS config.index_normalizer CASCADE;
 
 CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $func$
-	use Unicode::Normalize;
-	use Encode;
+    use Unicode::Normalize;
+    use Encode;
 
-	# When working with Unicode data, the first step is to decode it to
-	# a byte string; after that, lowercasing is safe
-	my $txt = lc(decode_utf8(shift));
-	my $sf = shift;
+    # When working with Unicode data, the first step is to decode it to
+    # a byte string; after that, lowercasing is safe
+    my $txt = lc(decode_utf8(shift));
+    my $sf = shift;
 
-	$txt = NFD($txt);
-	$txt =~ s/\pM+//go;	# Remove diacritics
+    $txt = NFD($txt);
+    $txt =~ s/\pM+//go;     # Remove diacritics
 
-	$txt =~ s/\xE6/AE/go;	# Convert ae digraph
-	$txt =~ s/\x{153}/OE/go;# Convert oe digraph
-	$txt =~ s/\xFE/TH/go;	# Convert Icelandic thorn
+    $txt =~ s/\xE6/AE/go;   # Convert ae digraph
+    $txt =~ s/\x{153}/OE/go;# Convert oe digraph
+    $txt =~ s/\xFE/TH/go;   # Convert Icelandic thorn
 
-	$txt =~ tr/\x{2070}\x{2071}\x{2072}\x{2073}\x{2074}\x{2075}\x{2076}\x{2077}\x{2078}\x{2079}\x{207A}\x{207B}/0123456789+-/;# Convert superscript numbers
-	$txt =~ tr/\x{2080}\x{2081}\x{2082}\x{2083}\x{2084}\x{2085}\x{2086}\x{2087}\x{2088}\x{2089}\x{208A}\x{208B}/0123456889+-/;# Convert subscript numbers
+    $txt =~ tr/\x{2070}\x{2071}\x{2072}\x{2073}\x{2074}\x{2075}\x{2076}\x{2077}\x{2078}\x{2079}\x{207A}\x{207B}/0123456789+-/;# Convert superscript numbers
+    $txt =~ tr/\x{2080}\x{2081}\x{2082}\x{2083}\x{2084}\x{2085}\x{2086}\x{2087}\x{2088}\x{2089}\x{208A}\x{208B}/0123456889+-/;# Convert subscript numbers
 
-	$txt =~ tr/\x{0251}\x{03B1}\x{03B2}\x{0262}\x{03B3}/AABGG/;	 	# Convert Latin and Greek
-	$txt =~ tr/\x{2113}\xF0\x{111}\!\"\(\)\-\{\}\<\>\;\:\.\?\xA1\xBF\/\\\@\*\%\=\xB1\+\xAE\xA9\x{2117}\$\xA3\x{FFE1}\xB0\^\_\~\`/LDD /;	# Convert Misc
-	$txt =~ tr/\'\[\]\|//d;							# Remove Misc
+    $txt =~ tr/\x{0251}\x{03B1}\x{03B2}\x{0262}\x{03B3}/AABGG/;         # Convert Latin and Greek
+    $txt =~ tr/\x{2113}\xF0\x{111}\!\"\(\)\-\{\}\<\>\;\:\.\?\xA1\xBF\/\\\@\*\%\=\xB1\+\xAE\xA9\x{2117}\$\xA3\x{FFE1}\xB0\^\_\~\`/LDD /;     # Convert Misc
+    $txt =~ tr/\'\[\]\|//d;                         # Remove Misc
 
-	if ($sf && $sf =~ /^a/o) {
-		my $commapos = index($txt,',');
-		if ($commapos > -1) {
-			if ($commapos != length($txt) - 1) {
-				my @list = split /,/, $txt;
-				my $first = shift @list;
-				$txt = $first . ',' . join(' ', @list);
-			} else {
-				$txt =~ s/,/ /go;
-			}
-		}
-	} else {
-		$txt =~ s/,/ /go;
-	}
+    if ($sf && $sf =~ /^a/o) {
+        my $commapos = index($txt,',');
+        if ($commapos > -1) {
+            if ($commapos != length($txt) - 1) {
+                my @list = split /,/, $txt;
+                my $first = shift @list;
+                $txt = $first . ',' . join(' ', @list);
+            } else {
+                $txt =~ s/,/ /go;
+            }
+        }
+    } else {
+        $txt =~ s/,/ /go;
+    }
 
-	$txt =~ s/\s+/ /go;	# Compress multiple spaces
-	$txt =~ s/^\s+//o;	# Remove leading space
-	$txt =~ s/\s+$//o;	# Remove trailing space
+    $txt =~ s/\s+/ /go;     # Compress multiple spaces
+    $txt =~ s/^\s+//o;      # Remove leading space
+    $txt =~ s/\s+$//o;      # Remove trailing space
 
-	# Encoding the outgoing string is good practice, but not strictly
-	# necessary in this case because we've stripped everything from it
-	return encode_utf8($txt);
+    # Encoding the outgoing string is good practice, but not strictly
+    # necessary in this case because we've stripped everything from it
+    return encode_utf8($txt);
 $func$ LANGUAGE 'plperlu' STRICT IMMUTABLE;
 
 -- Some handy functions, based on existing ones, to provide optional ingest normalization
@@ -13960,12 +14045,18 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
     for my $f ( keys %fields) {
         if ( @{$fields{$f}{sf}} ) {
             for my $from_field ($source_r->field( $f )) {
-                for my $to_field ($target_r->field( $f )) {
-                    if (exists($fields{$f}{match})) {
-                        next unless (grep { $_ =~ $fields{$f}{match}{re} } $to_field->subfield($fields{$f}{match}{sf}));
+                my @tos = $target_r->field( $f );
+                if (!@tos) {
+                    my @new_fields = map { $_->clone } $source_r->field( $f );
+                    $target_r->insert_fields_ordered( @new_fields );
+                } else {
+                    for my $to_field (@tos) {
+                        if (exists($fields{$f}{match})) {
+                            next unless (grep { $_ =~ $fields{$f}{match}{re} } $to_field->subfield($fields{$f}{match}{sf}));
+                        }
+                        my @new_sf = map { ($_ => $from_field->subfield($_)) } @{$fields{$f}{sf}};
+                        $to_field->add_subfields( @new_sf );
                     }
-                    my @new_sf = map { ($_ => $from_field->subfield($_)) } @{$fields{$f}{sf}};
-                    $to_field->add_subfields( @new_sf );
                 }
             }
         } else {
