@@ -449,6 +449,7 @@ sub build_html {
 			th { background-color: lightgray; }
 			td,th { border: solid black 1px; }
 			* { font-family: sans-serif; font-size: 10px; }
+			.dim { color: lightblue; }
 		</style>
 	</head>
 	<body>
@@ -467,6 +468,24 @@ sub build_html {
 
 	# add a link to the CSV output
 	push @links, "<a href='report-data.csv'>CSV Output</a>" if ($r->{csv_format});
+
+	# debugging output
+	push @links, "<a class='dim' href='report-data.html.debug.html'>Debugging Info</a>";
+
+	my $debug = new FileHandle (">$file.debug.html") or die "Cannot write to '$file.debug.html'";
+	print $debug "<html><head><title>DEBUG: $$r{report}{name}</title></head><body>";
+
+	{	no warnings;
+		print $debug '<h1>Generated SQL</h1><pre>' . $r->{resultset}->toSQL() . "</pre><a href='$file'>Back to output index</a><hr/>";
+		print $debug '<h1>Template</h1><pre>' . Dumper( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{template}->{data} ) ) . "</pre><a href='$file'>Back to output index</a><hr/>";
+		print $debug '<h1>Report Parameter</h1><pre>' . Dumper( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{data} ) ) . "</pre><a href='$file'>Back to output index</a><hr/>";
+		print $debug '<h1>Report Run Time</h1><pre>' . $r->{resultset}->relative_time . "</pre><a href='$file'>Back to output index</a><hr/>";
+		print $debug '<h1>OpenILS::Reporter::SQLBuilder::ResultSet Object</h1><pre>' . Dumper( $r->{resultset} ) . "</pre><a href='$file'>Back to output index</a>";
+	}
+
+	print $debug '</body></html>';
+
+	$debug->close;
 
 	print $index join(' -- ', @links);
 	print $index "<br/><br/><br/><br/></center>";
