@@ -153,7 +153,8 @@
                                 <textbox name="max_fine_rule" readonly="true" context="clipboard"/>
                             </row>
                             <row>
-                                <spacer /><spacer />
+                                <label value="&staff.circ.alternate_copy_summary.Floating.label;" />
+                                <textbox name="floating" readonly="true" context="clipboard"/>
                                 <label value="&staff.circ.alternate_copy_summary.Holdable.label;" />
                                 <textbox name="holdable" readonly="true" context="clipboard"/>
                                 <spacer /><spacer />

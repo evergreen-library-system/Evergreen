@@ -3358,6 +3358,7 @@
 <!ENTITY staff.circ.alternate_copy_summary.Status_Changed_Time.label "Status Changed">
 <!ENTITY staff.circ.alternate_copy_summary.Due_Date.label "Due Date">
 <!ENTITY staff.circ.alternate_copy_summary.Edition.label "Edition">
+<!ENTITY staff.circ.alternate_copy_summary.Floating.label "Floating">
 <!ENTITY staff.circ.alternate_copy_summary.Holdable.label "Holdable">
 <!ENTITY staff.circ.alternate_copy_summary.Hold_Shelf_Location.label "Hold Shelf Location">
 <!ENTITY staff.circ.alternate_copy_summary.Holds_Transit.label "Holds/Transit">
