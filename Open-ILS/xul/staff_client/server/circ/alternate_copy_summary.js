@@ -132,6 +132,7 @@ function load_item() {
         set_tooltip("copy_circ_lib" , '');
         set("circ_modifier", '');
         set("circulate", '');
+        set("floating", '');
         set("copy_number", '');
         set("copy_create_date", '');
         set("status_changed_time", '');
@@ -187,6 +188,7 @@ function load_item() {
                 set("circ_modifier","");
             }
             set("circulate", get_localized_bool( details.copy.circulate() )); 
+            set("floating", get_localized_bool( details.copy.floating() )); 
             set("copy_number", details.copy.copy_number()); 
             set("copy_create_date", util.date.formatted_date( details.copy.create_date(), '%{localized}' )); 
             set("status_changed_time", util.date.formatted_date( details.copy.status_changed_time(), '%{localized}' )); 
