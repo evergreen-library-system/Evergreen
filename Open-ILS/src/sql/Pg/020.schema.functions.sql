@@ -156,36 +156,84 @@ CREATE OR REPLACE FUNCTION tableoid2name ( oid ) RETURNS TEXT AS $$
 	END;
 $$ language 'plpgsql';
 
+CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT, INT ) RETURNS SETOF actor.org_unit AS $$
+    WITH RECURSIVE descendant_depth AS (
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN anscestor_depth ad ON (ad.id = ou.id)
+          WHERE ad.depth = $2
+            UNION ALL
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN descendant_depth ot ON (ot.id = ou.parent_ou)
+    ), anscestor_depth AS (
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+          WHERE ou.id = $1
+            UNION ALL
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
+    ) SELECT ou.* FROM actor.org_unit ou JOIN descendant_depth USING (id);
+$$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION actor.org_unit_descendants ( INT ) RETURNS SETOF actor.org_unit AS $$
-	SELECT	a.*
-	  FROM	connectby('actor.org_unit'::text,'id'::text,'parent_ou'::text,'name'::text,$1::text,100,'.'::text)
-	  		AS t(keyid text, parent_keyid text, level int, branch text,pos int)
-		JOIN actor.org_unit a ON a.id::text = t.keyid::text
-	  ORDER BY  CASE WHEN a.parent_ou IS NULL THEN 0 ELSE 1 END, a.name;
-$$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT ) RETURNS SETOF actor.org_unit AS $$
+    WITH RECURSIVE descendant_depth AS (
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+          WHERE ou.id = $1
+            UNION ALL
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN descendant_depth ot ON (ot.id = ou.parent_ou)
+    ), anscestor_depth AS (
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+          WHERE ou.id = $1
+            UNION ALL
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+          FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
+    ) SELECT ou.* FROM actor.org_unit ou JOIN descendant_depth USING (id);
+$$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION actor.org_unit_ancestors ( INT ) RETURNS SETOF actor.org_unit AS $$
-	SELECT	a.*
-	  FROM	connectby('actor.org_unit'::text,'parent_ou'::text,'id'::text,'name'::text,$1::text,100,'.'::text)
-	  		AS t(keyid text, parent_keyid text, level int, branch text,pos int)
-		JOIN actor.org_unit a ON a.id::text = t.keyid::text
-        JOIN actor.org_unit_type tp ON tp.id = a.ou_type 
-        ORDER BY tp.depth, a.name;
-$$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION actor.org_unit_descendants ( INT,INT ) RETURNS SETOF actor.org_unit AS $$
-	SELECT	a.*
-	  FROM	connectby('actor.org_unit'::text,'id'::text,'parent_ou'::text,'name'::text,
-	  			(SELECT	x.id
-				   FROM	actor.org_unit_ancestors($1) x
-				   	JOIN actor.org_unit_type y ON x.ou_type = y.id
-				  WHERE	y.depth = $2)::text
-		,100,'.'::text)
-	  		AS t(keyid text, parent_keyid text, level int, branch text,pos int)
-		JOIN actor.org_unit a ON a.id::text = t.keyid::text
-	  ORDER BY  CASE WHEN a.parent_ou IS NULL THEN 0 ELSE 1 END, a.name;
-$$ LANGUAGE SQL STABLE;
+CREATE OR REPLACE FUNCTION actor.org_unit_ancestors( INT ) RETURNS SETOF actor.org_unit AS $$
+    WITH RECURSIVE anscestor_depth AS (
+        SELECT  ou.id,
+                ou.parent_ou
+          FROM  actor.org_unit ou
+          WHERE ou.id = $1
+            UNION ALL
+        SELECT  ou.id,
+                ou.parent_ou
+          FROM  actor.org_unit ou
+                JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
+    ) SELECT ou.* FROM actor.org_unit ou JOIN anscestor_depth USING (id);
+$$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_at_depth ( INT,INT ) RETURNS actor.org_unit AS $$
 	SELECT	a.*
