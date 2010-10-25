@@ -70,6 +70,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 						<entry>Anderson County Library</entry>
 					</row>
 					<row>
+						<entry>Sally Fortin</entry>
+						<entry>Equinox Software</entry>
+					</row>	
+					<row>
 						<entry>Tina Ji</entry>
 						<entry>SITKA</entry>
 					</row>
@@ -129,7 +133,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 						<entry>D. Ceabron Williams</entry>
 						<entry>Flint River Regional Library System </entry>
 					</row>
-				
+					<row>
+						<entry>Tigran Zargaryan</entry>
+						<entry>Fundamental Scientific Library of the National Academy of Sciences</entry>
+					</row>
 				</tbody>
 			</tgroup>
 		</table>
