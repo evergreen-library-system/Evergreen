@@ -517,18 +517,8 @@
                     <link xlink:href="http://www.docbook.org/tdg5/en/html/date.html">date</link>
                 </glossterm>
                 <glossdef>
-                    <para>Wrapper for date info in any context. Mandatory component of chapter
-                            <markup linkend="revision">revision</markup> entries.  Format is YYYY-MM-DD</para>
+                    <para>Wrapper for date info in any context. Format is YYYY-MM-DD</para>
                     
-                </glossdef></glossentry>
-            <glossentry xml:id="authorinitials">
-                <glossterm>
-                    <link xlink:href="http://www.docbook.org/tdg5/en/html/authorinitials.html"
-                        >authorinitials</link>
-                </glossterm>
-                <glossdef>
-                    <para>An author's initials, mandatory componenet of the chapter <markup linkend="revision">revision</markup> element.
-                    </para>
                 </glossdef></glossentry>
             <glossentry xml:id="simplesect">
                 <glossterm><link xlink:href="http://www.docbook.org/tdg5/en/html/simplesect.html"
