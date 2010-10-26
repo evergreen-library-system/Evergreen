@@ -285,6 +285,8 @@ sub nearest_hold {
 	my $age = shift() || '0 seconds';
 	my $fifo = shift();
 
+	local $OpenILS::Application::Storage::WRITE = 1;
+
 	my $holdsort = isTrue($fifo) ?
             "pgt.hold_priority, CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END, h.request_time, h.selection_depth DESC, p.prox " :
             "p.prox, pgt.hold_priority, CASE WHEN h.cut_in_line IS TRUE THEN 0 ELSE 1 END, h.selection_depth DESC, h.request_time ";
