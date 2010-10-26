@@ -45,6 +45,12 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $
 	$txt = NFD($txt);
 	$txt =~ s/\pM+//go;	# Remove diacritics
 
+	# remove non-combining diacritics
+	# this list of characters follows the NACO normalization spec,
+	# but a looser but more comprehensive version might be
+	# $txt =~ s/\pLm+//go;
+	$txt =~ tr/\x{02B9}\x{02BA}\x{02BB}\x{02BC}//d;
+
 	$txt =~ s/\xE6/AE/go;	# Convert ae digraph
 	$txt =~ s/\x{153}/OE/go;# Convert oe digraph
 	$txt =~ s/\xFE/TH/go;	# Convert Icelandic thorn
