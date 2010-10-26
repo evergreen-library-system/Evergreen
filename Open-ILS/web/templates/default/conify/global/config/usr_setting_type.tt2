@@ -1,24 +1,6 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'User Setting Types' %]
 
-<script type ="text/javascript">
-    dojo.require('dijit.form.FilteringSelect');
-    dojo.require('openils.widget.AutoGrid');
-
-    openils.Util.addOnLoad(
-        function() {
-            ustGrid.overrideEditWidgets.datatype = dTypeSelector;
-            ustGrid.loadAll({order_by:{cust : 'name'}});
-        }
-    );
-
-    function formatDatatype(dtype) {
-        // pull the label from the type selector
-        return dojo.query('[value=' + dtype +']', dTypeSelector.domNode)[0].innerHTML;
-    }
-
-</script>
-
 <div class='hidden'>
     <select dojoType="dijit.form.FilteringSelect" jsId="dTypeSelector">
         <option value='string' selected='selected'>String</option>
@@ -60,5 +42,23 @@
         </thead>
     </table>
  </div>
+
+<script type ="text/javascript">
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+
+    openils.Util.addOnLoad(
+        function() {
+            ustGrid.overrideEditWidgets.datatype = dTypeSelector;
+            ustGrid.loadAll({order_by:{cust : 'name'}});
+        }
+    );
+
+    function formatDatatype(dtype) {
+        // pull the label from the type selector
+        return dojo.query('[value=' + dtype +']', dTypeSelector.domNode)[0].innerHTML;
+    }
+
+</script>
 
 [% END %]

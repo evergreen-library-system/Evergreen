@@ -1,38 +1,5 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Providers' %]
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/provider.js'> </script>
-
-<script type="text/javascript"> 
-    var providerId = '[% ctx.page_args.0 %]';
-
-function getInvIdent(rowIndex, item) {
-    if (!item) return {};
-    return {
-          "id": this.grid.store.getValue(item, "id"),
-        "name": this.grid.store.getValue(item, "inv_ident")
-    };
-}
-
-function formatInvIdent(o) {
-    return "<a href='" + oilsBasePath + "/acq/invoice/view/" + o.id + "'>" + o.name + "</a>";
-}
-
-function getProviderName(rowIndex, item) {
-    if(!item) return '';
-    var name = this.grid.store.getValue(item, 'name');
-    var id   = this.grid.store.getValue(item, 'id');
-    return id + ':' + name;
-}
-
-function formatName(value) {
-    if(value) {
-        var vals = value.split(/:/);
-        return '<a href="[% ctx.base_path %]/conify/global/acq/provider/'+vals[0]+'">'+vals[1]+'</a>';
-    }
-}
-
-</script>
-
 
 <div class="hidden">
     <select dojoType="dijit.form.FilteringSelect" jsId="nameSelect">
@@ -201,5 +168,39 @@ function formatName(value) {
     </div>
 </div>
 </div>
+
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/acq/provider.js'> </script>
+
+<script type="text/javascript"> 
+    var providerId = '[% ctx.page_args.0 %]';
+
+function getInvIdent(rowIndex, item) {
+    if (!item) return {};
+    return {
+          "id": this.grid.store.getValue(item, "id"),
+        "name": this.grid.store.getValue(item, "inv_ident")
+    };
+}
+
+function formatInvIdent(o) {
+    return "<a href='" + oilsBasePath + "/acq/invoice/view/" + o.id + "'>" + o.name + "</a>";
+}
+
+function getProviderName(rowIndex, item) {
+    if(!item) return '';
+    var name = this.grid.store.getValue(item, 'name');
+    var id   = this.grid.store.getValue(item, 'id');
+    return id + ':' + name;
+}
+
+function formatName(value) {
+    if(value) {
+        var vals = value.split(/:/);
+        return '<a href="[% ctx.base_path %]/conify/global/acq/provider/'+vals[0]+'">'+vals[1]+'</a>';
+    }
+}
+
+</script>
+
 [% END %]
 

@@ -1,14 +1,5 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Exchange Rates' %]
-<script type="text/javascript">
-    dojo.require('openils.widget.AutoGrid');
-    dojo.require('dijit.form.FilteringSelect');
-    openils.Util.addOnLoad(
-        function() {
-            erGrid.loadAll({order_by:{acqpro : 'name'}});
-        }
-    );
-</script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
     <div>Exchange Rates</div>
     <div>
@@ -27,6 +18,16 @@
             editOnEnter='true'>
     </table>
 </div>
+
+<script type="text/javascript">
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require('dijit.form.FilteringSelect');
+    openils.Util.addOnLoad(
+        function() {
+            erGrid.loadAll({order_by:{acqpro : 'name'}});
+        }
+    );
+</script>
 [% END %]
 
 

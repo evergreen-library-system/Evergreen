@@ -1,20 +1,5 @@
 [% WRAPPER "default/base.tt2" %]
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/common.js"></script>
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/populator.js"></script>
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/return.js"></script>
 <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/booking.css" />
-<script type="text/javascript">
-    dojo.require("dojox.grid.DataGrid");
-    openils.Util.addOnLoad(my_init);
-
-    function act(f) {
-        var key = f.barcode_type.options[f.barcode_type.selectedIndex].value;
-        var obj = {};
-        obj[key] = f.barcode.value;
-        p.populate(obj);
-        return false; /* Always. */
-    }
-</script>
 <div id="auto_l10n_start_here">
     <h1 class="booking AUTO_return_h1"></h1>
     <div class="nice_vertical_padding" id="contains_barcode_control">
@@ -84,4 +69,20 @@
         </form>
     </div>
 </div>
+
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/common.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/populator.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/booking/return.js"></script>
+<script type="text/javascript">
+    dojo.require("dojox.grid.DataGrid");
+    openils.Util.addOnLoad(my_init);
+
+    function act(f) {
+        var key = f.barcode_type.options[f.barcode_type.selectedIndex].value;
+        var obj = {};
+        obj[key] = f.barcode.value;
+        p.populate(obj);
+        return false; /* Always. */
+    }
+</script>
 [% END %]

@@ -1,15 +1,5 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Resource Attribute Values' %]
-<script type ="text/javascript">
-    dojo.require('dijit.form.FilteringSelect');
-    dojo.require('openils.widget.AutoGrid');
-
-    openils.Util.addOnLoad(
-        function() {
-            bravGrid.loadAll({order_by:{brav : 'attr'}}, {"id": {"!=": null}});
-        }
-    );
-</script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
         <div>Resource Attribute Values</div>
@@ -27,4 +17,15 @@
             editOnEnter='true'>
     </table>
 </div>
+
+<script type ="text/javascript">
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+
+    openils.Util.addOnLoad(
+        function() {
+            bravGrid.loadAll({order_by:{brav : 'attr'}}, {"id": {"!=": null}});
+        }
+    );
+</script>
 [% END %]

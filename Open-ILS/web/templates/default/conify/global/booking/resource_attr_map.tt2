@@ -1,13 +1,5 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Resource Attribute Maps' %]
-<script type ="text/javascript">
-    dojo.require('dijit.form.FilteringSelect');
-    dojo.require('openils.widget.AutoGrid');
-
-    openils.Util.addOnLoad(
-        function() { bramGrid.loadAll({order_by:{bram : 'resource_attr'}}); }
-    );
-</script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
         <div>Resource Attribute Maps</div>
@@ -25,4 +17,13 @@
             editOnEnter='true'>
     </table>
 </div>
+
+<script type ="text/javascript">
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+
+    openils.Util.addOnLoad(
+        function() { bramGrid.loadAll({order_by:{bram : 'resource_attr'}}); }
+    );
+</script>
 [% END %]

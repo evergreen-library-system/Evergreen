@@ -1,12 +1,5 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Invoice Payment Methods' %]
-<script type="text/javascript">
-    dojo.require("openils.widget.AutoGrid");
-    dojo.require("dijit.form.FilteringSelect");
-    openils.Util.addOnLoad(
-        function() { acqipmGrid.loadAll({"order_by": {"acqipm": "name"}}); }
-    );
-</script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
     <div>Invoice Payment Methods</div>
     <div>
@@ -24,4 +17,12 @@
             editOnEnter="true">
     </table>
 </div>
+
+<script type="text/javascript">
+    dojo.require("openils.widget.AutoGrid");
+    dojo.require("dijit.form.FilteringSelect");
+    openils.Util.addOnLoad(
+        function() { acqipmGrid.loadAll({"order_by": {"acqipm": "name"}}); }
+    );
+</script>
 [% END %]

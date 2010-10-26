@@ -1,16 +1,4 @@
 [% WRAPPER default/base.tt2 %]
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/action/survey.js'></script>
-<script type="text/javascript">
-    function formatName(inDatum) {
-        for(var i in svCache){
-            var sv = svCache[i];
-            var id = sv.id();
-            if (inDatum  == sv.name()){
-                return '<a href="[% ctx.base_path %]/conify/global/action/survey/edit/'+id+'">'+inDatum+'</a>';
-            }
-        }
-    }
-</script>
    <div dojoType="dijit.layout.ContentPane" layoutAlign='top'>
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Survey List</div>
@@ -91,6 +79,18 @@
         </table>
 </div>
 
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/action/survey.js'></script>
+<script type="text/javascript">
+    function formatName(inDatum) {
+        for(var i in svCache){
+            var sv = svCache[i];
+            var id = sv.id();
+            if (inDatum  == sv.name()){
+                return '<a href="[% ctx.base_path %]/conify/global/action/survey/edit/'+id+'">'+inDatum+'</a>';
+            }
+        }
+    }
+</script>
 [% END %]
 
 

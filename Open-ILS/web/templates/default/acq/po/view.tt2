@@ -1,8 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
 [% ctx.page_title = "Purchase Order" %]
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"></script>
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/po/view_po.js'></script>
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/po/item_table.js"></script>
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
     <div>
         <div id='oils-acq-picklist-header'>
@@ -118,6 +115,9 @@
             </table>
         </div>
     </div>
+    <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/base64.js"></script>
+    <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/po/view_po.js'></script>
+    <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/po/item_table.js"></script>
     <script type="text/javascript">
         var poId = "[% ctx.page_args.1 %]";
         var liFocus = "[% ctx.page_args.0 %]";

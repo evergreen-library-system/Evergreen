@@ -1,16 +1,4 @@
 [% WRAPPER default/base.tt2 %]
-<script type="text/javascript">
-    dojo.require('dijit.layout.ContentPane');
-    dojo.require('dijit.form.Button');
-    dojo.require('openils.widget.AutoGrid');
-    dojo.require('openils.Util');
-    openils.Util.addOnLoad(
-        function() {
-            ctGrid.loadAll({order_by:{acqct : 'code'}});
-        }
-    );
-</script>
-
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
     <div>Currency Type</div>
     <div>
@@ -29,6 +17,19 @@
             editOnEnter='true'>
     </table>
 </div>
+
+<script type="text/javascript">
+    dojo.require('dijit.layout.ContentPane');
+    dojo.require('dijit.form.Button');
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require('openils.Util');
+    openils.Util.addOnLoad(
+        function() {
+            ctGrid.loadAll({order_by:{acqct : 'code'}});
+        }
+    );
+</script>
+
 [% END %]
 
 

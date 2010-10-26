@@ -1,13 +1,4 @@
 <div id='oils-menu-div'>
-    <script type="text/javascript">
-        dojo.require('openils.XUL');
-        if(openils.XUL.isXUL()) 
-            openils.Util.hide('oils-menu-div')
-        dojo.require('dijit.form.Button');
-        dojo.require('dijit.Toolbar');
-        dojo.require('dijit.Menu');
-    </script>
-
     <div dojoType="dijit.Toolbar" class='menuBar'>
 
         <div dojoType="dijit.form.DropDownButton">
@@ -124,4 +115,13 @@
         </div>
     </div>
 </div>
+
+    <script type="text/javascript">
+        dojo.require('openils.XUL');
+        if(openils.XUL.isXUL()) 
+            openils.Util.hide('oils-menu-div')
+        dojo.require('dijit.form.Button');
+        dojo.require('dijit.Toolbar');
+        dojo.require('dijit.Menu');
+    </script>
 

@@ -1,15 +1,5 @@
 [% WRAPPER "default/base.tt2" %]
 [% ctx.page_title = "PO History" %]
-<script type="text/javascript">
-    dojo.require('openils.Util');
-    dojo.require('openils.widget.AutoGrid');
-    var poId = "[% ctx.page_args.0 %]";
-    openils.Util.addOnLoad(
-        function() {
-            pohGrid.loadAll({order_by : {acqpoh :  'audit_time DESC'}}, {id : poId});
-        }
-    );
-</script>
 <h1>Purchase Order History</h1>
 <br/>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -26,4 +16,15 @@
             showPaginator='true'>
     </table>
 </div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    var poId = "[% ctx.page_args.0 %]";
+    openils.Util.addOnLoad(
+        function() {
+            pohGrid.loadAll({order_by : {acqpoh :  'audit_time DESC'}}, {id : poId});
+        }
+    );
+</script>
 [% END %]

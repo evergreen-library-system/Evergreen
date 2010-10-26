@@ -1,6 +1,5 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Group Penalty Thresholds' %]
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/permission/grp_penalty_threshold.js'> </script>    
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
     <div>Penalty Threshold</div>
@@ -31,6 +30,7 @@
     </table>    
 </div>
     
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/permission/grp_penalty_threshold.js'> </script>    
 <script type='javascript/text'>
     var org_id = openils.User.user.ws_ou();
     var list = fieldmapper.aou.findOrgUnit(org_id).orgNodeTrail().map( 

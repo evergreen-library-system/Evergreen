@@ -1,10 +1,5 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Age Hold Protect Rules' %]
-<script type="text/javascript">
-    dojo.require('openils.Util');
-    dojo.require('openils.widget.AutoGrid');
-    openils.Util.addOnLoad( function() { ruleAgeProtectGrid.loadAll(); } );
-</script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
         <div>Age Hold Protect Rules</div>
@@ -22,6 +17,12 @@
             fmClass='crahp'
             editOnEnter='true'/>
 </div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { ruleAgeProtectGrid.loadAll(); } );
+</script>
 [% END %]
 
 

@@ -1,10 +1,5 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Recurring Fine Rules' %]
-<script type="text/javascript">
-    dojo.require('openils.Util');
-    dojo.require('openils.widget.AutoGrid');
-    openils.Util.addOnLoad( function() { ruleRecurringFineGrid.loadAll(); } );
-</script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
         <div>Recurring Fine Rules</div>
@@ -22,6 +17,12 @@
             fmClass='crrf'
             editOnEnter='true'/>
 </div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( function() { ruleRecurringFineGrid.loadAll(); } );
+</script>
 [% END %]
 
 

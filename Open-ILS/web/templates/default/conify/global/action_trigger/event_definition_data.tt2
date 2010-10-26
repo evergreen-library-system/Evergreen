@@ -1,10 +1,4 @@
 [% WRAPPER default/base.tt2 %]
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/action_trigger/event_definition.js'></script>
-<script type="text/javascript">
-    eventDefId = [% ctx.page_args.0 %];
-    openils.Util.addOnLoad(loadEventDefData)
-</script>
-
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
     <h2 id='at-event-def-name'/>
 </div>
@@ -82,6 +76,12 @@
     </div>
 
 </div>
+
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/action_trigger/event_definition.js'></script>
+<script type="text/javascript">
+    eventDefId = [% ctx.page_args.0 %];
+    openils.Util.addOnLoad(loadEventDefData)
+</script>
 
 [% END %]
 

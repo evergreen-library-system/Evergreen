@@ -1,15 +1,5 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Global Flags' %]
-<script type="text/javascript">
-    dojo.require('openils.Util');
-    dojo.require('openils.widget.AutoGrid');
-    openils.Util.addOnLoad( 
-        function() { 
-            gfGrid.overrideWidgetArgs.name = {readOnly : true};
-            gfGrid.loadAll(); 
-        } 
-    );
-</script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
         <div>Global Flags</div>
@@ -26,6 +16,17 @@
             hideSelector='true'
             editOnEnter='true'/>
 </div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    openils.Util.addOnLoad( 
+        function() { 
+            gfGrid.overrideWidgetArgs.name = {readOnly : true};
+            gfGrid.loadAll(); 
+        } 
+    );
+</script>
 [% END %]
 
 

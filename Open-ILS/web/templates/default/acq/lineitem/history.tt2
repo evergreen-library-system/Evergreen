@@ -1,15 +1,5 @@
 [% WRAPPER "default/base.tt2" %]
 [% ctx.page_title = "Lineitem History" %]
-<script type="text/javascript">
-    dojo.require('openils.Util');
-    dojo.require('openils.widget.AutoGrid');
-    var liId = "[% ctx.page_args.0 %]";
-    openils.Util.addOnLoad(
-        function() {
-            lhGrid.loadAll({order_by : {acqlih :  'audit_time DESC'}}, {id : liId});
-        }
-    );
-</script>
 <h1>Lineitem History</h1>
 <br/>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
@@ -26,4 +16,15 @@
             showPaginator='true'>
     </table>
 </div>
+
+<script type="text/javascript">
+    dojo.require('openils.Util');
+    dojo.require('openils.widget.AutoGrid');
+    var liId = "[% ctx.page_args.0 %]";
+    openils.Util.addOnLoad(
+        function() {
+            lhGrid.loadAll({order_by : {acqlih :  'audit_time DESC'}}, {id : liId});
+        }
+    );
+</script>
 [% END %]
