@@ -17,7 +17,7 @@ function create_or_update_act(obj, opts, edit_pane) {
             "oncomplete": function(r) {
                 if (r = openils.Util.readResponse(r)) {
                     if (edit_pane.onPostSubmit)
-                        edit_pane.onPostSubmit();
+                        edit_pane.onPostSubmit(null, [r]);
                 }
             }
         }
