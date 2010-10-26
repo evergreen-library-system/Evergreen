@@ -19,8 +19,6 @@
     <span>Status: <span attr="state"></span></span>
     <span><a class="hidden" attr="activator" href="javascript:void(0);">Activate Order</a></span>
 </div>
-<!-- load the page-specific JS -->
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/po/search.js'> </script>
 
 <script type="text/javascript">
     function formatId(id) {
@@ -46,6 +44,7 @@
 
         <label for='state'>State</label></td>
         <script type="text/javascript">
+            dojo.require('dojo.data.ItemFileReadStore');
             var stateStore = new dojo.data.ItemFileReadStore({
                 data : {
                     identifier:"value",
@@ -138,4 +137,7 @@
     </table>
 </div>
 [% INCLUDE 'default/acq/common/li_table.tt2' %]
+
+<!-- load the page-specific JS -->
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/po/search.js'> </script>
 [% END %]

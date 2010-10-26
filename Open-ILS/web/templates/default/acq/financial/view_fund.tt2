@@ -1,10 +1,6 @@
 [% WRAPPER 'default/base.tt2' %]
 <script type="text/javascript"> var fundID = [% ctx.page_args.0 %] </script>
 
-<!-- load the page-specific JS -->
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/tag_manager.js"></script>
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/view_fund.js'></script>
-
 <div id='oils-acq-list-header' class='container'>
     <div id='oils-acq-list-header-label'>Fund Details</div>
 </div>
@@ -253,4 +249,9 @@
         </div>
     </div>
 </div>
+
+<!-- load the page-specific JS -->
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/common/tag_manager.js"></script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/view_fund.js'></script>
+
 [% END %]

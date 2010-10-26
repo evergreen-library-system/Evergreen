@@ -1,7 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
 [% ctx.page_title = 'Invoicing' %]
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/common.js'> </script>
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/view.js'> </script>
 <script type="text/javascript">var invoiceId = '[% ctx.page_args.0 %]';</script>
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
 
@@ -134,4 +132,6 @@
         <button dojoType='dijit.form.Button' jsId='extraCopiesGo'>Add New Items</button>
     </div>
 </div>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/common.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/invoice/view.js'> </script>
 [% END %]

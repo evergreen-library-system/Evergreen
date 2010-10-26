@@ -1,5 +1,4 @@
 [% WRAPPER 'default/base.tt2' %]
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/upload.js'> </script>
 
 <h1>Upload</h1><br/>
 <form id="acq-pl-upload-form" enctype="multipart/form-data">
@@ -94,4 +93,5 @@
         </div>
     </div>
 </form>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/upload.js'> </script>
 [% END %]

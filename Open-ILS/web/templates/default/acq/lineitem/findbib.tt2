@@ -1,6 +1,5 @@
 [% WRAPPER "default/base.tt2" %]
 [% ctx.page_title = "Locate Bib Record" %]
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/lineitem/findbib.js"></script>
 <script type="text/javascript">
     function iterateSubfields(item) {
         var out = '';
@@ -70,4 +69,5 @@
 </div>
 <div jsId='progressDialog' dojoType='openils.widget.ProgressDialog' message='Searching....'/>
 
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/acq/lineitem/findbib.js"></script>
 [% END %]

@@ -2,7 +2,6 @@
 [% ctx.page_title = 'Funds' %]
 
 <!-- load the page-specific JS -->
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_funds.js'> </script>
 <script type="text/javascript">
     function getFundName(rowIndex, item) {
         if (!item) return null;
@@ -159,4 +158,5 @@
     </table>
 </div>
 <div dojoType="openils.widget.ProgressDialog" jsId="progressDialog"></div>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_funds.js'> </script>
 [% END %]

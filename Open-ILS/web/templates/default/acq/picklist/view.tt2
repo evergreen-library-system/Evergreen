@@ -1,6 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
 [% ctx.page_title = 'Selection List' %]
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/view.js'></script>
 <div dojoType="dijit.layout.ContentPane" style="height:100%">
     <div class='container'>
         <div id='oils-acq-picklist-header'>
@@ -16,5 +15,6 @@
     <script type="text/javascript">var plId = '[% ctx.page_args.0 %]';</script>
     [% INCLUDE 'default/acq/common/li_table.tt2' %]
 </div>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/picklist/view.js'></script>
 [% END %]
 

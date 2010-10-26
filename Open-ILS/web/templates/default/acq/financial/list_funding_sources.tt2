@@ -1,8 +1,5 @@
 [% WRAPPER 'default/base.tt2' %]
 
-<!-- load the page-specific JS -->
-<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_funding_sources.js'></script>
-
 <!-- The main grid lives here -->
 <script type="text/javascript">
     function getName(rowIndex, item) {
@@ -48,6 +45,7 @@
     </table>
 </div>
 
-
+<!-- load the page-specific JS -->
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/acq/financial/list_funding_sources.js'></script>
 
 [% END %]
