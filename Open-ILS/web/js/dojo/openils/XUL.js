@@ -8,6 +8,7 @@ if(!dojo._hasResource["openils.XUL"]) {
         return Boolean(dojo.cookie('xul')) || Boolean(window.IAMXUL);
     }
 
+ try {
     openils.XUL.buildId = function() {
         return window.XUL_BUILD_ID || '';
     }
@@ -155,4 +156,5 @@ if(!dojo._hasResource["openils.XUL"]) {
             return 0;
         }
     };
+ }catch (e) {/*meh*/}
 }
