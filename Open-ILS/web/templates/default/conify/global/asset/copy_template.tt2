@@ -7,7 +7,7 @@
         <div>Copy Templates</div>
         <div>
             <button dojoType="dijit.form.Button"
-                onClick="actGrid.showCreateDialog()">New Copy Template</button>
+                onClick="actGrid.showCreatePane()">New Copy Template</button>
             <button dojoType="dijit.form.Button"
                 onClick="actGrid.deleteSelected()">Delete Selected</button>
         </div>
