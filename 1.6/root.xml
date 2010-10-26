@@ -52,6 +52,7 @@
 		<xi:include href="opac/search_URL.xml"/>
 		<xi:include href="opac/searchresults.xml"/>
 		<xi:include href="opac/myaccount.xml"/>
+		<xi:include href="opac/simpleselfcheck.xml"/>
 	</part>
 	<part xml:id="core_tasks">
 		<info>
@@ -111,6 +112,7 @@
 		</info>
 		<xi:include href="development/development_intro.xml"/>
 		<xi:include href="development/directoriesandFiles.xml"/>	
+		<xi:include href="development/customizingstaffclient.xml"/>
 		<xi:include href="development/customize_opac.xml"/>
 		<xi:include href="development/OpenSRF_intro.xml"/>
 		<xi:include href="development/datamodelsandaccess.xml"/>
@@ -127,7 +129,7 @@
 		<xi:include href="appendices/schema.xml"/>
 		<xi:include href="appendices/about_this_documentation.xml"/>
 		<xi:include href="appendices/more_info.xml"/>
-		<xi:include href="gppendecis/glossary.xml"/>
+		<xi:include href="appendices/glossary.xml"/>
 		<xi:include href="appendices/bookindex.xml"/>
 	</part>
 </book>
