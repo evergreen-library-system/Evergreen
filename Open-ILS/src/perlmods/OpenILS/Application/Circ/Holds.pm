@@ -2477,13 +2477,18 @@ sub find_nearest_permitted_hold {
 
 	# for each potential hold, we have to run the permit script
 	# to make sure the hold is actually permitted.
+    my %reqr_cache;
+    my %org_cache;
 	for my $holdid (@$best_holds) {
 		next unless $holdid;
 		$logger->info("circulator: checking if hold $holdid is permitted for copy $bc");
 
 		my $hold = $editor->retrieve_action_hold_request($holdid) or next;
-		my $reqr = $editor->retrieve_actor_user($hold->requestor) or next;
-		my $rlib = $editor->retrieve_actor_org_unit($hold->request_lib) or next;
+		my $reqr = $reqr_cache{$hold->requestor} || $editor->retrieve_actor_user($hold->requestor);
+		my $rlib = $org_cache{$hold->request_lib} || $editor->retrieve_actor_org_unit($hold->request_lib);
+
+		$reqr_cache{$hold->requestor} = $reqr;
+		$org_cache{$hold->request_lib} = $rlib;
 
 		# see if this hold is permitted
 		my $permitted = OpenILS::Utils::PermitHold::permit_copy_hold(
