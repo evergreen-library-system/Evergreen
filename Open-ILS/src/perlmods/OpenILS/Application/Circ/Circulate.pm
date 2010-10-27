@@ -750,17 +750,23 @@ sub mk_env {
 		$patron = $e->search_actor_user([{card => $card->id}, $flesh])->[0]
 			or return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'));
 
-	} else {
-		if( my $copy = $self->copy ) {
-			my $circs = $e->search_action_circulation(
-				{target_copy => $copy->id, checkin_time => undef});
+    } else {
+        if( my $copy = $self->copy ) {
 
-			if( my $circ = $circs->[0] ) {
-				$patron = $e->retrieve_actor_user([$circ->usr, $flesh])
-					or return $e->event;
-			}
-		}
-	}
+            $flesh->{flesh} = 2;
+            $flesh->{flesh_fields}->{circ} = ['usr'];
+
+            my $circ = $e->search_action_circulation([
+                {target_copy => $copy->id, checkin_time => undef}, $flesh
+            ])->[0];
+
+            if($circ) {
+                $patron = $circ->usr;
+                $circ->usr($patron->id); # de-flesh for consistency
+                $self->circ($circ); 
+            }
+        }
+    }
 
     return $self->bail_on_events(OpenILS::Event->new('ACTOR_USER_NOT_FOUND'))
         unless $self->patron($patron) or $self->is_checkin;
@@ -1808,7 +1814,7 @@ sub build_checkout_circ_object {
         my $dname = $duration->name;
         my $mname = $max->name;
         my $rname = $recurring->name;
-        my $hdname;
+        my $hdname = ''; 
         if($hard_due_date) {
             $hdname = $hard_due_date->name;
         }
@@ -2191,19 +2197,21 @@ sub do_checkin {
         OpenILS::Event->new('ASSET_COPY_NOT_FOUND')) 
         unless $self->copy;
 
-    # the renew code will have already found our circulation object
-    unless( $self->is_renewal and $self->circ ) {
+    # the renew code and mk_env should have already found our circulation object
+    unless( $self->circ ) {
+
         my $circs = $self->editor->search_action_circulation(
             { target_copy => $self->copy->id, checkin_time => undef });
+
         $self->circ($$circs[0]);
 
         # for now, just warn if there are multiple open circs on a copy
         $logger->warn("circulator: we have ".scalar(@$circs).
             " open circs for copy " .$self->copy->id."!!") if @$circs > 1;
-
-        # run the fine generator against this circ, if this circ is there
-        $self->generate_fines_start if (@$circs);
     }
+
+    # run the fine generator against this circ, if this circ is there
+    $self->generate_fines_start if $self->circ;
 
 
     if( $self->checkin_check_holds_shelf() ) {
@@ -3077,19 +3085,6 @@ sub checkin_handle_backdate {
     }
 }
 
-
-
-
-sub find_patron_from_copy {
-    my $self = shift;
-    my $circs = $self->editor->search_action_circulation(
-        { target_copy => $self->copy->id, checkin_time => undef });
-    my $circ = $circs->[0];
-    return unless $circ;
-    my $u = $self->editor->retrieve_actor_user($circ->usr)
-        or return $self->bail_on_events($self->editor->event);
-    $self->patron($u);
-}
 
 sub check_checkin_copy_status {
     my $self = shift;
