@@ -419,8 +419,8 @@ sub ro_biblio_ingest_single_object {
     }
 
     if (!$max_uri) {
-        my $cn = $cstore->request( 'open-ils.cstore.direct.asset.call_number.search' => { id => { '!=' => undef } }, { limit => 1, order_by => { acn => 'id desc' } } )->gather(1);
-        $max_uri = int($cn->id) + 1000;
+        my $uri = $cstore->request( 'open-ils.cstore.direct.asset.uri.search' => { id => { '!=' => undef } }, { limit => 1, order_by => { auri => 'id desc' } } )->gather(1);
+        $max_uri = int($uri->id) + 1000;
     }
 
     $cstore->disconnect;
