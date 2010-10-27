@@ -44,11 +44,11 @@ function doit(ev) {
                 dump(e + ' result = ' + js2JSON(result) + '\n');
                 if (typeof result.progress != 'undefined') {
 
-                    $('results_label').setAttribute('value', $('adminStrings').getFormattedString('staff.admin.age_overdue_circulations_to_lost.completed_so_far',[result.progress]) );
+                    $('results_label').setAttribute('value', $('adminStrings').getFormattedString('staff.admin.age_overdue_circulations_to_lost.chunks_processed',[result.progress]) );
 
                 } else if (typeof result.created != 'undefined') {
 
-                    $('results_label').setAttribute('value', $('adminStrings').getFormattedString('staff.admin.age_overdue_circulations_to_lost.completed_total',[result.created]) );
+                    $('results_label').setAttribute('value', $('adminStrings').getFormattedString('staff.admin.age_overdue_circulations_to_lost.events_created',[result.created]) );
                     $('deck').selectedIndex = 0;
 
                 } else if (typeof result.error != 'undefined') {
