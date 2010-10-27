@@ -8,11 +8,34 @@ dojo.requireLocalization('openils.conify', 'conify');
 var localeStrings = dojo.i18n.getLocalization('openils.conify', 'conify');
 
 
-var formCache = [];
+var formCache = {};
 var formula, entryTbody, entryTemplate, dndSource;
 var virtualId = -1;
 var pcrud;
 
+
+function gridDataLoader() {
+    fListGrid.resetStore();
+    fListGrid.showLoadProgressIndicator();
+    fieldmapper.standardRequest(
+        ["open-ils.acq", "open-ils.acq.distribution_formula.ranged.retrieve"], {
+            "async": true,
+            "params": [
+                openils.User.authtoken,
+                fListGrid.displayOffset,
+                fListGrid.displayLimit
+            ],
+            "onresponse": function(r) {
+                var form = openils.Util.readResponse(r);
+                formCache[form.id()] = form;
+                fListGrid.store.newItem(form.toStoreItem());
+            },
+            "oncomplete": function() {
+                fListGrid.hideLoadProgressIndicator();
+            }
+        }
+    );
+}
 
 function draw() {
 
@@ -28,21 +51,8 @@ function draw() {
             location.href = location.href + '/' + fmObject.id();
         }
 
-        fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.distribution_formula.ranged.retrieve'],
-            {   async: true,
-                params: [openils.User.authtoken],
-                onresponse: function (r) { 
-                    var form = openils.Util.readResponse(r);
-                    formCache[form.id()] = form;
-                    fListGrid.store.newItem(form.toStoreItem());
-                },
-                oncomplete: function() {
-                    fListGrid.hideLoadProgressIndicator();
-                }
-            }
-        );
-
+        fListGrid.dataLoader = gridDataLoader;
+        gridDataLoader();
     }
 }
 

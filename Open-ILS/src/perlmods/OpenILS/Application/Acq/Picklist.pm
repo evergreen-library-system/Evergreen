@@ -456,13 +456,19 @@ __PACKAGE__->register_method(
         desc => 'Ranged distribution formulas, fleshed with entries',
         params => [
             {desc => 'Authentication token', type => 'string'},
+            {desc => "offset", type => "number"},
+            {desc => "limit", type => "number"}
         ],
         return => {desc => 'List of distribution formulas'}
     }
 );
 
 sub ranged_distrib_formulas {
-    my($self, $conn, $auth, $org) = @_;
+    my ($self, $conn, $auth, $offset, $limit) = @_;
+
+    $offset ||= 0;
+    $limit ||= 10;
+
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     my $orgs = $U->user_has_work_perm_at($e, 'CREATE_PICKLIST', {descendants =>1});
@@ -472,9 +478,11 @@ sub ranged_distrib_formulas {
         {
             flesh => 1, 
             flesh_fields => {acqdf => ['entries']},
-            order_by => {acqdfe => ['position']}
+            order_by => {acqdf => "name"},
+            limit => $limit,
+            offset => $offset
         }
-    ]);
+    ]) or return $e->die_event;
 
     for (@$forms) {
 
