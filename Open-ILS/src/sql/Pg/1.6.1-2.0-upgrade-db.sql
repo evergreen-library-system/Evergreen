@@ -4742,41 +4742,6 @@ INSERT INTO action_trigger.validator (module, description) VALUES (
     ) 
 );
 
-INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES 
-    (   'circ.staff_age_to_lost',
-        'circ', 
-        oils_i18n_gettext(
-            'circ.staff_age_to_lost',
-            'An overdue circulation should be aged to a Lost status.',
-            'ath',
-            'description'
-        ), 
-        TRUE
-    )
-;
-
-INSERT INTO action_trigger.event_definition (
-        id,
-        active,
-        owner,
-        name,
-        hook,
-        validator,
-        reactor,
-        delay_field
-    ) VALUES (
-        36,
-        FALSE,
-        1,
-        'circ.staff_age_to_lost',
-        'circ.staff_age_to_lost',
-        'CircIsOverdue',
-        'MarkItemLost',
-        'due_date'
-    )
-;
-
-
 -- Create the query schema, and the tables and views therein
 
 DROP SCHEMA IF EXISTS sql CASCADE;
