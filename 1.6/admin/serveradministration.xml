@@ -21,6 +21,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			Evergreen. Evergreen can support organizations as simple as a single library with one or more 
 			branches or as complex as a consortium composed of many independently governed library 
 			systems. Organizational unit types should never have proper names since they are only generic types .</para>
+			<tip><para>It is a good idea to set up all of your organizational types and units before loading other data. In many cases, editing or deleting organizational units and types 
+			may be difficult once you have loaded records or users. </para></tip>
 			<para>The fields in the organizational unit type record include:</para>
 			<itemizedlist>
 				<listitem>Type Name - The name of the organization unit type.</listitem>
@@ -55,6 +57,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				to be have the organization units of this type as their home unit.</para></step>
 				<step><para>Click <guibutton>Save</guibutton> to save your new organization type.
 				</para></step>	
+				<step><para>From the server command line, run autogen to apply the changes to the database and scripts. Run the following command as the opensrf user:</para>
+<screen>
+<userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
+</screen> 
+				</step>	
+				<step><para>The staff client will need to be restarted for changes to appear.</para>
+				</step>	
 			</procedure>
 			<procedure>
 				<title>Deleting Organization Types<indexterm><primary>organization types</primary><secondary>deleting</secondary></indexterm></title>
@@ -62,12 +71,20 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				tree.</para></step>
 				<step><para>Click <guibutton>Delete</guibutton>.</para></step>
 				<step><para>Click <guibutton>OK</guibutton> on the warning alert box.</para></step>
+				<step><para>From the server command line, run autogen to apply the changes to the database and scripts. Run the following command as the opensrf user:</para>
+<screen>
+<userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
+</screen> 
+				</step>	
+				<step><para>The staff client will need to be restarted for changes to appear.</para>
+				</step>					
 				<note>
 					<para>You will not be able to delete organization types if organization units are 
 					assigned to that type. Before you can delete the organization 
 					Type, you must change the organization type of the units associated with the type 
 					or delete the units.</para>
 				</note>
+
 			</procedure>
 			<procedure>
 				<title>Editing Organization Types<indexterm><primary>organization types</primary><secondary>editing</secondary></indexterm></title>
@@ -75,6 +92,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				organization type tree.</para></step>
 				<step><para>Make the changes in the right pane.</para></step>
 				<step><para>Click <guibutton>Save</guibutton> to save your changes.</para></step>
+				<step><para>From the server command line, run autogen to apply the changes to the database and scripts. Run the following command as the opensrf user:</para>
+<screen>
+<userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
+</screen> 
+				</step>	
+				<step><para>The staff client will need to be restarted for changes to appear.</para>
+				</step>					
 			</procedure>
 		</simplesect>
 	
@@ -113,18 +137,32 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			and copies</secondary></indexterm></para></step>
 			<step><para>Check the <guilabel>OPAC Visible</guilabel> check box if you want this location to be 
 			visible in the OPAC for searching.<indexterm><primary>Organization Units</primary><secondary>opac visible</secondary></indexterm></para></step>
-			<step><para>Click <guibutton>Save</guibutton> to save your new organizational unit.</para></step>	
+			<step><para>Click <guibutton>Save</guibutton> to save your new organizational unit.</para></step>
+			<step><para>From the server command line, run autogen to apply the changes to the database and scripts. Run the following command as the opensrf user:</para>
+<screen>
+<userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
+</screen> 
+				</step>	
+				<step><para>The staff client will need to be restarted for changes to appear.</para>
+				</step>		
 		</procedure>
 		<procedure>
 			<title>Deleting Organizational Units <indexterm><primary>organization units</primary><secondary>deleting</secondary></indexterm></title>
 			<step><para>Select the <emphasis>organizational unit</emphasis> you wish to delete from the organizational unit tree in the left pane.</para></step>
 			<step><para>Click<guibutton>Delete</guibutton>.</para></step>
 			<step><para>Click <guibutton>OK</guibutton> on the warning alert box.</para></step>
+			<step><para>From the server command line, run autogen to apply the changes to the database and scripts. Run the following command as the opensrf user:</para>
+<screen>
+<userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
+</screen> 
+				</step>	
+				<step><para>The staff client will need to be restarted for changes to appear.</para>
+				</step>	
 			<note>
 				<para>You will not be able to delete organizational units if you have 
 				users, workstations or copies assigned to the unit. Before you can delete the 
 				organizational unit, you must move its users, workstations, copies and other associated resources to other 
-				organizational units units.</para>
+				organizational units.</para>
 			</note>
 		</procedure>
 		<procedure>
@@ -133,6 +171,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			organizational unit tree in the left pane.</para></step>
 			<step><para>Edit the fields in the right pane.</para></step>
 			<step><para>Click <guibutton>Save</guibutton> to save your changes.</para></step>
+			<step><para>From the server command line, run autogen to apply the changes to the database and scripts. Run the following command as the opensrf user:</para>
+<screen>
+<userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
+</screen> 
+			</step>	
+			<step><para>The staff client will need to be restarted for changes to appear.</para>
+			</step>	
 		</procedure>
 		
 		</simplesect>

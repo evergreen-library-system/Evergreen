@@ -9,6 +9,152 @@
 			as well as knowledge of how to export data from your current system or access to data export files from your current system.</para>
         	</abstract>
 	</info>    
+	<section xml:id="migratingbibrecords">
+		<title>Migrating Bibliographic Records</title>
+		<para>
+		One of the most important and challenging  tasks is migrating your bibliographic records to a new system. The procedure may be different depending on the system from which you 
+		are migrating  and the content of the marc records exported from the existing system. The proecedures in this section deal with the process once the data from the existing system 
+		is exporterd into marc records. It does not cover exporting data from your existing non-Evergreen system.</para>
+		<para>Several tools for importing bibliographic records into Evergreen can be found in the Evergreen installation folder 
+		(<filename class="directory">/home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/src/extras/import/</filename> ) and are also available from the Evergreen repository 
+		(<link xl:href="http://svn.open-ils.org/trac/ILS/browser/branches/rel_1_6_1/Open-ILS/src/extras/import" xl:title="import scripts - Evergreen repository">
+		http://svn.open-ils.org/trac/ILS/browser/branches/rel_1_6_1/Open-ILS/src/extras/import</link>).</para> 
+		<simplesect>
+			<title>Converting MARC records to Evergreen BRE JSON format</title>
+			<para>If you are starting with MARC records from your existing system or another source, use the marc2bre.pl script to create the JSON representation of a bibliographic 
+			record entry (hence bre) in Evergreen. <filename>marc2bre.pl</filename> can perform the following functions:</para>
+     			<itemizedlist> 
+				<listitem><para>Converts <systemitem>MARC-8</systemitem> encoded records to <systemitem>UTF-8</systemitem> encoding</para></listitem>
+      				<listitem><para>Converts <systemitem>MARC21</systemitem> to <systemitem>MARCXML21</systemitem></para></listitem>
+     				<listitem><para>Select the unique record number field (common choices are '035' or '001'; check your records as you might be surprised how a supposedly unique field 
+				actually has duplicates, though marc2bre.pl will select a unique identifier for subsequent duplicates)</para></listitem>
+     				<listitem><para>Extracts certain pertinent fields indexing and display purposes (along with the complete MARCXML21 record)</para></listitem>
+     				<listitem><para>Sets the ID number of the first record from this batch to be imported into the biblio.record_entry table (hint - run the following 
+				<systemitem>SQL</systemitem> to determine what this number should be to avoid conflicts:</para>
+<screen>
+<userinput>psql -U postgres evergreen</userinput>
+<userinput> # SELECT MAX(id)+1 FROM biblio.record_entry;</userinput>
+</screen>
+			</listitem>
+            		<listitem>
+				<para>If you are processing multiple sets of MARC records with <command>marc2bre.pl</command>before loading the records into the database, you will need to keep track 
+				of the starting ID number for each subsequent batch of records that you are importing. For example, if you are processing three files of MARC records with 10000 
+				records each into a clean database, you would use <option>–startid 1</option>, <option>–startid 10001</option>, and <option>–startid 20001</option> 
+				parameters for each respective file.</para>
+			</listitem>
+      			<listitem>
+				<para>Ignore <quote>trash</quote> fields that you do not want to retain in Evergreen</para>
+			</listitem>
+			<listitem>
+				<para>If you use <filename>marc2bre.pl</filename> to convert your MARC records from the <systemitem>MARC-8</systemitem> encoding to the UTF-8 encoding, it relies
+				 on the <systemitem>MARC::Charset Perl</systemitem> module to complete the conversion. When importing a large set of items, you can speed up the process by using a 
+				utility like <systemitem>marc4j</systemitem> or <systemitem>marcdumper</systemitem> to convert the records 
+				to <systemitem>MARC21XML</systemitem> and <systemitem>UTF-8</systemitem> before running them through <command>marc2bre.pl</command> with the 
+				<option>–marctype=XML</option> flag to tell <command>marc2bre.pl</command> that the records are already in <systemitem>MARC21XML</systemitem> format with 
+				the <systemitem>UTF-8 </systemitem>encoding. If you take this approach, due to a current limitation of <systemitem>MARC::File::XML</systemitem> you have to do a 
+				horrible thing and ensure that there are no namespace prefixes in front of the element names. <filename>marc2bre.pl</filename> cannot parse the following 
+				example:</para>
+
+<programlisting language="xml">
+<![CDATA[
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<marc:collection xmlns:marc="http://www.loc.gov/MARC21/slim" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.loc.gov/MARC/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <marc:record>
+    <marc:leader>00677nam a2200193 a 4500</marc:leader>
+    <marc:controlfield tag="001">H01-0000844</marc:controlfield>
+    <marc:controlfield tag="007">t </marc:controlfield>
+    <marc:controlfield tag="008">060420s1950    xx            000 u fre d</marc:controlfield>
+    <marc:datafield tag="040" ind1=" " ind2=" ">
+      <marc:subfield code="a">CaOHCU</marc:subfield>
+      <marc:subfield code="b">fre</marc:subfield>
+    </marc:datafield>
+...
+]]>;
+</programlisting>
+			
+			<para>But marc2bre.pl can parse the same example with the namespace prefixes removed:</para>
+<programlisting language="xml">
+<![CDATA[
+<?xml version="1.0" encoding="UTF-8" ?>
+<collection xmlns:marc="http://www.loc.gov/MARC21/slim" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.loc.gov/MARC/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <record>
+    <leader>00677nam a2200193 a 4500</leader>
+    <controlfield tag="001">H01-0000844</controlfield>
+    <controlfield tag="007">t </controlfield>
+    <controlfield tag="008">060420s1950    xx            000 u fre d</controlfield>
+    <datafield tag="040" ind1=" " ind2=" ">
+      <subfield code="a">CaOHCU</subfield>
+      <subfield code="b">fre</subfield>
+    </datafield>
+...
+]]>;
+</programlisting>
+				</listitem>
+			</itemizedlist>
+		</simplesect>
+		<simplesect>
+			<title>Converting Records for Import into PostgreSQL</title>
+			<para>Once you have your records in Evergreen's <systemitem>BRE JSON</systemitem> format, you then need to use <command>direct_ingest.pl</command> to convert the records 
+			into the generic ingest <systemitem>JSON</systemitem> format for Open-ILS. 
+			This step uses the <systemitem>open-ils.ingest</systemitem> application to extract the data that will be indexed in the database. </para>
+			<para>Once you have your records in Open-ILS <systemitem>JSON</systemitem> ingest format, you then need to use <command>pg_loader.pl</command> to convert these records into a 
+			set of <systemitem>SQL</systemitem> statements that you can use to 
+			load the records into PostgreSQL. The <option>–order</option> and <option>–autoprimary</option> command line options (bre, mrd, mfr, etc) map to class IDs defined in 
+			<filename>/openils/conf/fm_IDL.xml</filename>.</para>
+		</simplesect>		
+		<simplesect>
+			<title>Adding Metarecords to the Database</title>
+			<para>One you have loaded the records into PostgreSQL, you can create metarecord entries in the <link linkend="metabib.table.metarecord">metabib.metarecord</link> table by 				running the following <systemitem>SQL</systemitem>:</para>
+<screen>
+<userinput>psql evergreen</userinput>
+<userinput># \i /home/opensrf/Evergreen-ILS-1.6*/src/extras/import/quick_metarecord_map.sql</userinput>
+</screen>
+			<para>Metarecords are required to place holds on items, among other actions.</para>
+		</simplesect>	
+	</section>
+	<section xml:id="migratingbibrecordcopies">
+		<title>Adding Copies to Bibliographic Records</title>	
+		<para>Once you've loaded the bibliographic records in Evergreen, you can search and view the records in the staff client, but they will not be visible in the catalogue. By 
+		default, bibliographic records will not be visible in the catalogue until you add a copy representing a physical manifestation of that resource. You can add a copy manually through 
+		the staff client via the Holdings maintenance screen, but if you're bulk-importing MARC records you probably want to bulk load the associated copies, call numbers, and barcodes as 
+		well.</para>
+		<simplesect>
+			<title>Importing volumes and copies from <systemitem>MARC21XML</systemitem> holdings</title>
+			<para>There is currently no simple method for importing holdings based on the contents of the MARC holdings field (852, as specified by 
+			<link xml:href="http://www.loc.gov/marc/holdings/">http://www.loc.gov/marc/holdings/</link>). 
+			However, a more or less automated method could be built that performs the following steps:</para>
+			<procedure>
+				<step><para>Create a tab-delimited file that contains your holdings information</para>
+				<itemizedlist>
+					<listitem>Required fields: bibliographic ID, barcode, and call number</listitem>		
+					<listitem>Optional fields: shelving location (text) – see  the <link linkend="asset.table.copy">asset.copy table</link> for 
+					possible fields to include</listitem>
+				</itemizedlist>		
+				</step>
+				<step><para>Create a staging table that matches the contents of your tab-delimited file.</para>
+				</step>
+				<step><para>Insert the contents of your tab-delimited file into the table.</para>
+				</step>
+				<step><para>Generate <systemitem>SQL</systemitem> scripts for item import to match the staging table that you created.</para>
+				</step>
+				<step><para>Run the <systemitem>SQL</systemitem> scripts to create the holdings in Evergreen.</para>
+				</step>
+			</procedure>
+			<para>If an ILS has the concept of <quote>item categories</quote>, these may be mapped to Evergreen via statistical categories in the 
+			<link linkend="asset.table.stat_cat">asset.stat_cat table</link> . Note that statistical categories cannot be used as search filters; individual branches can define 
+			their own statistical categories; and define their own statistical category entries for individual items - best use case for statistical categories is probably for gifts.</para>
+			<para>In 2009, Conifer placed their <link xl:href="http://svn.open-ils.org/trac/ILS-Contrib/browser/conifer/branches/rel_1_6_1/tools/migration-scripts"  
+			xl:title="Conifer migration tools">migration tools</link> 
+			in the <link xl:href="http://svn.open-ils.org/trac/ILS-Contrib/browser/conifer" xl:title="Conifer ILS-Contrib SVN repository">Conifer ILS-Contrib SVN repository</link>, which might be useful samples augmenting the 
+			basic staging table import approach.</para>
+			<para>In 2010, Equinox contributed a set of <link xl:href="http://git.esilibrary.com/?p=migration-tools.git;a=summary"  xl:title="Equinox migration utilities">migration utilities</link></para>
+		</simplesect>
+	</section>
 	<section xml:id="migratingpatrons">
 		<title>Migrating Patron Data</title>
 		<para>
@@ -178,5 +324,57 @@ COMMIT;
 			which suits the needs of the library. This could be determined by registration dates of your institution in the case of academic libraries. It is important to balance 
 			the convenience of patron loads and the cost of processing these loads vs staff adding patrons manually.</para>   
 	       </simplesect> 
+	</section>
+	<section xml:id="electronicresourcesvisible">	
+		<title>Making electronic resources visible in the catalogue</title>
+		<para>For electronic resources that should be visible in the catalogue without any copies, you must set the source column value in the record.biblio_entry row for the respective 
+		bibliographic record to a value that matches the corresponding ID of the <link linkend="config.table.bib-source">config.bib_source</link> where the transcendant value is 
+		<emphasis>TRUE</emphasis>. Here's a practical example:</para>
+		<procedure>
+		  	 <step>
+				<para>Connect to your Evergreen database with <command>psql</command> (substitute username / database name as required):</para>
+<screen>
+<userinput>psql -U postgres evergreen</userinput>
+</screen>
+			</step>
+		 	 <step>
+				<para>Add a source for your electronic resources:</para>
+<screen>
+<userinput># INSERT INTO config.bib_source(quality, source, transcendant) VALUES (50, 'Institutional repository', TRUE);</userinput>
+</screen>
+			</step>
+		 	 <step>
+				<para>Find the ID that was generated for your new source:</para>
+<screen>
+<userinput># SELECT ID FROM config.bib_source WHERE source = 'Institutional repository';</userinput>
+</screen>
+			</step>
+		 	 <step>
+				<para>Update the source column for your bibliographic record for the electronic resource (for the sake of the example, let's assume that the ID returned from the new 
+				source was 4, and that we know that the bib record with ID 75 is an electronic resource from your institutional repository):</para>
+<screen>
+<userinput># UPDATE biblio.record_entry SET source = 4 where biblio.record_entry.id=75;</userinput>
+</screen>
+			</step>
+		</procedure>
+	</section>
+	<section xml:id="emptydatabase">
+		<title>Restoring your Evergreen Database to an Empty State</title>
+		<para>If you've done a test import of records and you want to quickly get Evergreen back to a pristine state, you can create a clean Evergreen database schema by performing the 
+		following:</para>
+		<procedure>
+			<step> 
+<screen>
+<userinput>cd ILS/Open-ILS/src/sql/Pg/</userinput>
+</screen>
+			</step>
+			 <step> 
+				 <para>Rebuild the database schema:</para>
+<screen>
+<userinput>./build-db.sh [db-hostname> [db-port] [db-name] [db-user] [db-password] [db-version]</userinput>
+</screen>
+				<caution><para>This will remove all of your data from the database and restore the default values.</para></caution> 		
+			</step>
+		</procedure>
 	</section>
 </chapter>

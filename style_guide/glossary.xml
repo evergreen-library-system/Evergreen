@@ -529,6 +529,90 @@
                         subdivided with <markup linkend="section">section</markup> or <markup
                             linkend="simplesect">simplesect</markup> elements.</para>
                 </glossdef></glossentry>
+	<glossentry xml:id="systemitem">
+                <glossterm>
+                    <link xlink:href="http://www.docbook.org/tdg5/en/html/systemitem.html">systemitem</link>
+                </glossterm>
+                <glossdef>
+                    <para>Indicates various system related resources and items. See the Docbook entry for classification possibilities. Use this in place of emphasis where applicable.</para>
+                </glossdef></glossentry>
+	<glossentry xml:id="command">
+                <glossterm>
+                    <link xlink:href="http://www.docbook.org/tdg5/en/html/command.html">command</link>
+                </glossterm>
+                <glossdef>
+                    <para>The name of an executable program or other software command. Use this instead of <markup linkend="emphasis">emphasis</markup> where applicable.</para>
+                </glossdef></glossentry>
+	<glossentry xml:id="option">
+                <glossterm>
+                    <link xlink:href="http://www.docbook.org/tdg5/en/html/option.html">option</link>
+                </glossterm>
+                <glossdef>
+                    <para>Specify an option for a software command. Use this instead of <markup linkend="emphasis">emphasis</markup> where applicable.</para>
+                </glossdef></glossentry>
+	<glossentry xml:id="filename">
+                <glossterm>
+                    <link xlink:href="http://www.docbook.org/tdg5/en/html/filename.html">filename</link>
+                </glossterm>
+                <glossdef>
+                    <para>Specify a name of a file or directory. See docbook entrey for class options.</para>
+                </glossdef></glossentry>
+	<glossentry xml:id="screen">
+                <glossterm>
+                    <link xlink:href="http://www.docbook.org/tdg5/en/html/screen.html">screen</link>
+                </glossterm>
+                <glossdef>
+                    <para>Text that a user sees or might see on a computer screen</para>
+                </glossdef></glossentry>
+	<glossentry xml:id="userinput">
+                <glossterm>
+                    <link xlink:href="http://www.docbook.org/tdg5/en/html/userinput.html">userinput</link>
+                </glossterm>
+                <glossdef>
+                    <para>Data entered by the user. Used with <markup linkend="screen">screen</markup> to differentiate input from output.</para>
+                </glossdef></glossentry>
+	<glossentry xml:id="computeroutput">
+                <glossterm>
+                    <link xlink:href="http://www.docbook.org/tdg5/en/html/computeroutput.html">computeroutput</link>
+                </glossterm>
+                <glossdef>
+                    <para>Computer generated output. Used with <markup linkend="screen">screen</markup> to differentiate output from input.</para>
+                </glossdef></glossentry>
+	<glossentry xml:id="code">
+                <glossterm>
+                    <link xlink:href="http://www.docbook.org/tdg5/en/html/code.html">code</link>
+                </glossterm>
+                <glossdef>
+                    <para>An inline code fragment.</para>
+                </glossdef></glossentry>
+	<glossentry xml:id="errortext">
+                <glossterm>
+                    <link xlink:href="http://www.docbook.org/tdg5/en/html/errortext.html">errortext</link>
+                </glossterm>
+                <glossdef>
+                    <para>An error message.</para>
+                </glossdef></glossentry>
+	<glossentry xml:id="function">
+                <glossterm>
+                    <link xlink:href="http://www.docbook.org/tdg5/en/html/function.html">function</link>
+                </glossterm>
+                <glossdef>
+                    <para>The name of a function or subroutine, as in a programming language.</para>
+                </glossdef></glossentry>
+	<glossentry xml:id="prompt">
+                <glossterm>
+                    <link xlink:href="http://www.docbook.org/tdg5/en/html/prompt.html">prompt</link>
+                </glossterm>
+                <glossdef>
+                    <para>A character or string indicating the start of an input field in a computer display. Used with <markup linkend="screen">screen</markup> to indicate a prompt for user input.</para>
+                </glossdef></glossentry>
+	<glossentry xml:id="varname">
+                <glossterm>
+                    <link xlink:href="http://www.docbook.org/tdg5/en/html/varname.html">varname</link>
+                </glossterm>
+                <glossdef>
+                    <para>The name of a variable. Use this instead of <markup linkend="emphasis">emphasis</markup> where applicable.</para>
+                </glossdef></glossentry>
         </glossary>
     </section>
     <section>
@@ -581,7 +665,6 @@
                             green, red, and yellow
                             respectively.</para></formalpara></glossdef>
                 </glossentry>
-            
         </glossary>
     </section>
 </chapter>
