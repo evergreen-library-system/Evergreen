@@ -1736,8 +1736,6 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'Allow a user to delete trigger validators', 'ppl', 'description' )),
  ( 374, 'UPDATE_TRIGGER_VALIDATOR', oils_i18n_gettext( 374, 
     'Allow a user to update trigger validators', 'ppl', 'description' )),
- ( 375, 'HOLD_LOCAL_AVAIL_OVERRIDE', oils_i18n_gettext( 375, 
-    'Allow a user to place a hold despite the availability of a local copy', 'ppl', 'description' )),
  ( 376, 'ADMIN_BOOKING_RESOURCE', oils_i18n_gettext( 376, 
     'Enables the user to create/update/delete booking resources', 'ppl', 'description' )),
  ( 377, 'ADMIN_BOOKING_RESOURCE_TYPE', oils_i18n_gettext( 377, 
@@ -7563,20 +7561,6 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
     VALUES
-        ('circ.holds.alert_if_local_avail',
-         oils_i18n_gettext('circ.holds.alert_if_local_avail',
-             'Holds: Local available alert', 'coust', 'label'),
-         oils_i18n_gettext('circ.holds.alert_if_local_avail',
-            'If local copy is available, alert the person making the hold', 'coust', 'description'),
-         'bool'),
-
-        ('circ.holds.deny_if_local_avail',
-         oils_i18n_gettext('circ.holds.deny_if_local_avail',
-            'Holds: Local available block', 'coust', 'label'),
-         oils_i18n_gettext('circ.holds.deny_if_local_avail',
-            'If local copy is available, deny the creation of the hold', 'coust', 'description'),
-         'bool'),
-
         ('circ.holds.clear_shelf.no_capture_holds',
         oils_i18n_gettext( 'circ.holds.clear_shelf.no_capture_holds',
             'Holds: Bypass hold capture during clear shelf process', 'coust', 'label'),

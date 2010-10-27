@@ -945,8 +945,6 @@ INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 373, 'DELETE
      'Allow a user to delete trigger validators' );
 INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 374, 'UPDATE_TRIGGER_VALIDATOR',
      'Allow a user to update trigger validators' );
-INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 375, 'HOLD_LOCAL_AVAIL_OVERRIDE',
-     'Allow a user to place a hold despite the availability of a local copy' );
 INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 376, 'ADMIN_BOOKING_RESOURCE',
      'Enables the user to create/update/delete booking resources' );
 INSERT INTO permission.temp_perm ( id, code, description ) VALUES ( 377, 'ADMIN_BOOKING_RESOURCE_TYPE',
@@ -2148,19 +2146,6 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
             'description'),
         'integer'
 );
-
-INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
-    VALUES 
-        ('circ.holds.alert_if_local_avail',
-         'Holds: Local available alert',
-         'If local copy is available, alert the person making the hold',
-         'bool'),
-
-        ('circ.holds.deny_if_local_avail',
-         'Holds: Local available block',
-         'If local copy is available, deny the creation of the hold',
-         'bool')
-    ;
 
 INSERT INTO config.org_unit_setting_type ( name, label, description, datatype )
     VALUES ( 
