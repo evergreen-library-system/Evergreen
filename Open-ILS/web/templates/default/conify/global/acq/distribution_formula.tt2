@@ -38,6 +38,7 @@
                 query="{id: '*'}"
                 defaultCellWidth='12'
                 fmClass='acqdf'
+                autoHeight='true'
                 editOnEnter='true'>
             <thead>
                 <tr>
