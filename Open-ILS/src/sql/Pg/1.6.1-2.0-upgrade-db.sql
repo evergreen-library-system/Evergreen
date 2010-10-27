@@ -23,7 +23,7 @@ BEGIN;
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0445');
+INSERT INTO config.upgrade_log (version) VALUES ('0449');
 
 -- Remove some uses of the connectby() function from the tablefunc contrib module
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT, INT ) RETURNS SETOF actor.org_unit AS $$
@@ -4742,6 +4742,41 @@ INSERT INTO action_trigger.validator (module, description) VALUES (
     ) 
 );
 
+INSERT INTO action_trigger.hook (key,core_type,description,passive) VALUES 
+    (   'circ.staff_age_to_lost',
+        'circ', 
+        oils_i18n_gettext(
+            'circ.staff_age_to_lost',
+            'An overdue circulation should be aged to a Lost status.',
+            'ath',
+            'description'
+        ), 
+        TRUE
+    )
+;
+
+INSERT INTO action_trigger.event_definition (
+        id,
+        active,
+        owner,
+        name,
+        hook,
+        validator,
+        reactor,
+        delay_field
+    ) VALUES (
+        36,
+        FALSE,
+        1,
+        'circ.staff_age_to_lost',
+        'circ.staff_age_to_lost',
+        'CircIsOverdue',
+        'MarkItemLost',
+        'due_date'
+    )
+;
+
+
 -- Create the query schema, and the tables and views therein
 
 DROP SCHEMA IF EXISTS sql CASCADE;
@@ -8042,7 +8077,7 @@ BEGIN
     END IF;
 
     -- Fail if the item isn't in a circulateable status on a non-renewal
-    IF NOT renewal AND item_object.status NOT IN ( 0, 7, 8 ) THEN
+    IF NOT renewal AND item_object.status NOT IN ( 0, 7, 8 ) THEN 
         result.fail_part := 'asset.copy.status';
         result.success := FALSE;
         done := TRUE;
@@ -8106,7 +8141,7 @@ BEGIN
           FROM  actor.usr_standing_penalty usp
                 JOIN config.standing_penalty csp ON (csp.id = usp.standing_penalty)
           WHERE usr = match_user
-                AND usp.org_unit IN ( SELECT * FROM explode_array(context_org_list) )
+                AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
                 AND (usp.stop_date IS NULL or usp.stop_date > NOW())
                 AND csp.block_list LIKE penalty_type LOOP
 
@@ -8122,7 +8157,7 @@ BEGIN
           FROM  action.circulation circ
             JOIN asset.copy cp ON (cp.id = circ.target_copy)
           WHERE circ.usr = match_user
-               AND circ.circ_lib IN ( SELECT * FROM explode_array(context_org_list) )
+               AND circ.circ_lib IN ( SELECT * FROM unnest(context_org_list) )
             AND circ.checkin_time IS NULL
             AND (circ.stop_fines IN ('MAXFINES','LONGOVERDUE') OR circ.stop_fines IS NULL)
             AND cp.circ_modifier IN (SELECT circ_mod FROM config.circ_matrix_circ_mod_test_map WHERE circ_mod_test = out_by_circ_mod.id);
@@ -8514,36 +8549,35 @@ BEGIN
 
     IF max_fines.threshold IS NOT NULL THEN
 
-        FOR existing_sp_row IN
-                SELECT  *
-                  FROM  actor.usr_standing_penalty
-                  WHERE usr = match_user
-                        AND org_unit = max_fines.org_unit
-                        AND (stop_date IS NULL or stop_date > NOW())
-                        AND standing_penalty = 1
-                LOOP
-            RETURN NEXT existing_sp_row;
-        END LOOP;
+        RETURN QUERY
+            SELECT  *
+              FROM  actor.usr_standing_penalty
+              WHERE usr = match_user
+                    AND org_unit = max_fines.org_unit
+                    AND (stop_date IS NULL or stop_date > NOW())
+                    AND standing_penalty = 1;
+
+        SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( max_fines.org_unit );
 
         SELECT  SUM(f.balance_owed) INTO current_fines
           FROM  money.materialized_billable_xact_summary f
                 JOIN (
                     SELECT  r.id
                       FROM  booking.reservation r
-                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (r.pickup_lib = fp.id)
-                      WHERE usr = match_user
+                      WHERE r.usr = match_user
+                            AND r.pickup_lib IN (SELECT * FROM unnest(context_org_list))
                             AND xact_finish IS NULL
                                 UNION ALL
                     SELECT  g.id
                       FROM  money.grocery g
-                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (g.billing_location = fp.id)
-                      WHERE usr = match_user
+                      WHERE g.usr = match_user
+                            AND g.billing_location IN (SELECT * FROM unnest(context_org_list))
                             AND xact_finish IS NULL
                                 UNION ALL
                     SELECT  circ.id
                       FROM  action.circulation circ
-                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (circ.circ_lib = fp.id)
-                      WHERE usr = match_user
+                      WHERE circ.usr = match_user
+                            AND circ.circ_lib IN (SELECT * FROM unnest(context_org_list))
                             AND xact_finish IS NULL ) l USING (id);
 
         IF current_fines >= max_fines.threshold THEN
@@ -8585,16 +8619,13 @@ BEGIN
 
     IF max_overdue.threshold IS NOT NULL THEN
 
-        FOR existing_sp_row IN
-                SELECT  *
-                  FROM  actor.usr_standing_penalty
-                  WHERE usr = match_user
-                        AND org_unit = max_overdue.org_unit
-                        AND (stop_date IS NULL or stop_date > NOW())
-                        AND standing_penalty = 2
-                LOOP
-            RETURN NEXT existing_sp_row;
-        END LOOP;
+        RETURN QUERY
+            SELECT  *
+              FROM  actor.usr_standing_penalty
+              WHERE usr = match_user
+                    AND org_unit = max_overdue.org_unit
+                    AND (stop_date IS NULL or stop_date > NOW())
+                    AND standing_penalty = 2;
 
         SELECT  INTO items_overdue COUNT(*)
           FROM  action.circulation circ
@@ -8644,16 +8675,13 @@ BEGIN
     -- Fail if the user has too many items checked out
     IF max_items_out.threshold IS NOT NULL THEN
 
-        FOR existing_sp_row IN
-                SELECT  *
-                  FROM  actor.usr_standing_penalty
-                  WHERE usr = match_user
-                        AND org_unit = max_items_out.org_unit
-                        AND (stop_date IS NULL or stop_date > NOW())
-                        AND standing_penalty = 3
-                LOOP
-            RETURN NEXT existing_sp_row;
-        END LOOP;
+        RETURN QUERY
+            SELECT  *
+              FROM  actor.usr_standing_penalty
+              WHERE usr = match_user
+                    AND org_unit = max_items_out.org_unit
+                    AND (stop_date IS NULL or stop_date > NOW())
+                    AND standing_penalty = 3;
 
         SELECT  INTO items_out COUNT(*)
           FROM  action.circulation circ
@@ -8700,37 +8728,36 @@ BEGIN
 
     IF max_fines.threshold IS NOT NULL THEN
 
-        FOR existing_sp_row IN
-                SELECT  *
-                  FROM  actor.usr_standing_penalty
-                  WHERE usr = match_user
-                        AND org_unit = max_fines.org_unit
-                        AND (stop_date IS NULL or stop_date > NOW())
-                        AND standing_penalty = 4
-                LOOP
-            RETURN NEXT existing_sp_row;
-        END LOOP;
+        RETURN QUERY
+            SELECT  *
+              FROM  actor.usr_standing_penalty
+              WHERE usr = match_user
+                    AND org_unit = max_fines.org_unit
+                    AND (stop_date IS NULL or stop_date > NOW())
+                    AND standing_penalty = 4;
+
+        SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( max_fines.org_unit );
 
         SELECT  SUM(f.balance_owed) INTO current_fines
           FROM  money.materialized_billable_xact_summary f
                 JOIN (
                     SELECT  r.id
                       FROM  booking.reservation r
-                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (r.pickup_lib = fp.id)
-                      WHERE usr = match_user
-                            AND xact_finish IS NULL
+                      WHERE r.usr = match_user
+                            AND r.pickup_lib IN (SELECT * FROM unnest(context_org_list))
+                            AND r.xact_finish IS NULL
                                 UNION ALL
                     SELECT  g.id
                       FROM  money.grocery g
-                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (g.billing_location = fp.id)
-                      WHERE usr = match_user
-                            AND xact_finish IS NULL
+                      WHERE g.usr = match_user
+                            AND g.billing_location IN (SELECT * FROM unnest(context_org_list))
+                            AND g.xact_finish IS NULL
                                 UNION ALL
                     SELECT  circ.id
                       FROM  action.circulation circ
-                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (circ.circ_lib = fp.id)
-                      WHERE usr = match_user
-                            AND xact_finish IS NULL ) l USING (id);
+                      WHERE circ.usr = match_user
+                            AND circ.circ_lib IN (SELECT * FROM unnest(context_org_list))
+                            AND circ.xact_finish IS NULL ) l USING (id);
 
         IF current_fines >= max_fines.threshold THEN
             new_sp_row.usr := match_user;
@@ -8772,27 +8799,29 @@ BEGIN
 
     IF max_fines.threshold IS NOT NULL THEN
 
+        SELECT INTO context_org_list ARRAY_ACCUM(id) FROM actor.org_unit_full_path( max_fines.org_unit );
+
         -- first, see if the user had paid down to the threshold
         SELECT  SUM(f.balance_owed) INTO current_fines
           FROM  money.materialized_billable_xact_summary f
                 JOIN (
                     SELECT  r.id
                       FROM  booking.reservation r
-                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (r.pickup_lib = fp.id)
-                      WHERE usr = match_user
-                            AND xact_finish IS NULL
+                      WHERE r.usr = match_user
+                            AND r.pickup_lib IN (SELECT * FROM unnest(context_org_list))
+                            AND r.xact_finish IS NULL
                                 UNION ALL
                     SELECT  g.id
                       FROM  money.grocery g
-                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (g.billing_location = fp.id)
-                      WHERE usr = match_user
-                            AND xact_finish IS NULL
+                      WHERE g.usr = match_user
+                            AND g.billing_location IN (SELECT * FROM unnest(context_org_list))
+                            AND g.xact_finish IS NULL
                                 UNION ALL
                     SELECT  circ.id
                       FROM  action.circulation circ
-                            JOIN  actor.org_unit_full_path( max_fines.org_unit ) fp ON (circ.circ_lib = fp.id)
-                      WHERE usr = match_user
-                            AND xact_finish IS NULL ) l USING (id);
+                      WHERE circ.usr = match_user
+                            AND circ.circ_lib IN (SELECT * FROM unnest(context_org_list))
+                            AND circ.xact_finish IS NULL ) l USING (id);
 
         IF current_fines IS NULL OR current_fines <= max_fines.threshold THEN
             -- patron has paid down enough
@@ -8809,18 +8838,13 @@ BEGIN
 
                 WHILE tmp_depth >= tmp_penalty.org_depth LOOP
 
-                    FOR existing_sp_row IN
-                            SELECT  *
-                            FROM  actor.usr_standing_penalty
-                            WHERE usr = match_user
-                                    AND org_unit = tmp_org.id
-                                    AND (stop_date IS NULL or stop_date > NOW())
-                                    AND standing_penalty = 30 
-                            LOOP
-
-                        -- Penalty exists, return it for removal
-                        RETURN NEXT existing_sp_row;
-                    END LOOP;
+                    RETURN QUERY
+                        SELECT  *
+                          FROM  actor.usr_standing_penalty
+                          WHERE usr = match_user
+                                AND org_unit = tmp_org.id
+                                AND (stop_date IS NULL or stop_date > NOW())
+                                AND standing_penalty = 30;
 
                     IF tmp_org.parent_ou IS NULL THEN
                         EXIT;
@@ -8834,17 +8858,13 @@ BEGIN
 
                 -- no penalty depth is defined, look for exact matches
 
-                FOR existing_sp_row IN
-                        SELECT  *
-                        FROM  actor.usr_standing_penalty
-                        WHERE usr = match_user
-                                AND org_unit = max_fines.org_unit
-                                AND (stop_date IS NULL or stop_date > NOW())
-                                AND standing_penalty = 30 
-                        LOOP
-                    -- Penalty exists, return it for removal
-                    RETURN NEXT existing_sp_row;
-                END LOOP;
+                RETURN QUERY
+                    SELECT  *
+                      FROM  actor.usr_standing_penalty
+                      WHERE usr = match_user
+                            AND org_unit = max_fines.org_unit
+                            AND (stop_date IS NULL or stop_date > NOW())
+                            AND standing_penalty = 30;
             END IF;
     
         END IF;
@@ -18848,3 +18868,4 @@ CREATE UNIQUE INDEX unique_by_heading_and_thesaurus
 -- DROP INDEX authority.by_heading_and_thesaurus;
 
 \qecho Upgrade script completed.
+
