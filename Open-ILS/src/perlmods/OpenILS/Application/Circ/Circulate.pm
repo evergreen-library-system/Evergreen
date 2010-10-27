@@ -2323,23 +2323,27 @@ sub do_checkin {
     if(!$self->noop) { # /not/ a no-op checkin, capture for hold or put item into transit
 
         if (!$self->remote_hold) {
-            my $potential_hold = $self->hold_capture_is_possible;
-            my $potential_reservation = $self->use_booking && $self->reservation_capture_is_possible;
+            if ($self->use_booking) {
+                my $potential_hold = $self->hold_capture_is_possible;
+                my $potential_reservation = $self->reservation_capture_is_possible;
 
-            if ($potential_hold and $potential_reservation) {
-                $logger->info("circulator: item could fulfill either hold or reservation");
-                $self->push_events(new OpenILS::Event(
-                    "HOLD_RESERVATION_CONFLICT",
-                    "hold" => $potential_hold,
-                    "reservation" => $potential_reservation
-                ));
-                return if $self->bail_out;
-            } elsif ($potential_hold) {
-                $needed_for_something =
-                    $self->attempt_checkin_hold_capture;
-            } elsif ($potential_reservation) {
-                $needed_for_something =
-                    $self->attempt_checkin_reservation_capture;
+                if ($potential_hold and $potential_reservation) {
+                    $logger->info("circulator: item could fulfill either hold or reservation");
+                    $self->push_events(new OpenILS::Event(
+                        "HOLD_RESERVATION_CONFLICT",
+                        "hold" => $potential_hold,
+                        "reservation" => $potential_reservation
+                    ));
+                    return if $self->bail_out;
+                } elsif ($potential_hold) {
+                    $needed_for_something =
+                        $self->attempt_checkin_hold_capture;
+                } elsif ($potential_reservation) {
+                    $needed_for_something =
+                        $self->attempt_checkin_reservation_capture;
+                }
+            } else {
+                $needed_for_something = $self->attempt_checkin_hold_capture;
             }
         }
         return if $self->bail_out;
