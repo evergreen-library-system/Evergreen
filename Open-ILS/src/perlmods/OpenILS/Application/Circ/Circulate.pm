@@ -2191,6 +2191,21 @@ sub do_checkin {
         OpenILS::Event->new('ASSET_COPY_NOT_FOUND')) 
         unless $self->copy;
 
+    # the renew code will have already found our circulation object
+    unless( $self->is_renewal and $self->circ ) {
+        my $circs = $self->editor->search_action_circulation(
+            { target_copy => $self->copy->id, checkin_time => undef });
+        $self->circ($$circs[0]);
+
+        # for now, just warn if there are multiple open circs on a copy
+        $logger->warn("circulator: we have ".scalar(@$circs).
+            " open circs for copy " .$self->copy->id."!!") if @$circs > 1;
+
+        # run the fine generator against this circ, if this circ is there
+        $self->generate_fines_start if (@$circs);
+    }
+
+
     if( $self->checkin_check_holds_shelf() ) {
         $self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
         $self->hold($U->fetch_open_hold_by_copy($self->copy->id));
@@ -2205,20 +2220,6 @@ sub do_checkin {
 
     $self->push_events($self->check_copy_alert());
     $self->push_events($self->check_checkin_copy_status());
-
-    # the renew code will have already found our circulation object
-    unless( $self->is_renewal and $self->circ ) {
-        my $circs = $self->editor->search_action_circulation(
-            { target_copy => $self->copy->id, checkin_time => undef });
-        $self->circ($$circs[0]);
-
-        # for now, just warn if there are multiple open circs on a copy
-        $logger->warn("circulator: we have ".scalar(@$circs).
-            " open circs for copy " .$self->copy->id."!!") if @$circs > 1;
-    }
-
-    # run the fine generator against this circ, if this circ is there
-    $self->generate_fines if ($self->circ);
 
     # if the circ is marked as 'claims returned', add the event to the list
     $self->push_events(OpenILS::Event->new('CIRC_CLAIMS_RETURNED'))
@@ -2404,6 +2405,9 @@ sub do_checkin {
         $self->push_events(OpenILS::Event->new('SUCCESS')) 
             unless @{$self->events};
     }
+
+    # gather any updates to the circ after fine generation, if there was a circ
+    $self->generate_fines_finish if ($self->circ);
 
     OpenILS::Utils::Penalty->calculate_penalties(
         $self->editor, $self->patron->id, $self->circ_lib) if $self->patron;
@@ -2867,20 +2871,36 @@ sub put_hold_on_shelf {
 sub generate_fines {
    my $self = shift;
    my $reservation = shift;
-   my $evt;
-   my $obt;
+
+   $self->generate_fines_start($reservation);
+   $self->generate_fines_finish($reservation);
+
+   return undef;
+}
+
+sub generate_fines_start {
+   my $self = shift;
+   my $reservation = shift;
 
    my $id = $reservation ? $self->reservation->id : $self->circ->id;
 
-   my $st = OpenSRF::AppSession->connect('open-ils.storage');
+   $self->{_gen_fines_req} = OpenSRF::AppSession->create('open-ils.storage') 
+       ->request(
+          'open-ils.storage.action.circulation.overdue.generate_fines',
+          undef,
+          $id
+       );
 
-   $st->request(
-      'open-ils.storage.action.circulation.overdue.generate_fines',
-      undef,
-      $id
-   )->wait_complete;
+   return undef;
+}
 
-   $st->disconnect;
+sub generate_fines_finish {
+   my $self = shift;
+   my $reservation = shift;
+
+   my $id = $reservation ? $self->reservation->id : $self->circ->id;
+
+   $self->{_gen_fines_req}->wait_complete;
 
    # refresh the circ in case the fine generator set the stop_fines field
    $self->reservation($self->editor->retrieve_booking_reservation($id)) if $reservation;
@@ -3177,25 +3197,14 @@ sub do_renew {
     # Make sure there is an open circ to renew that is not
     # marked as LOST, CLAIMSRETURNED, or LONGOVERDUE
     my $usrid = $self->patron->id if $self->patron;
-    my $circ;
-    if ($usrid) {
-        # If we have a patron, match them to the circ
-        $circ = $self->editor->search_action_circulation(
-            {target_copy => $self->copy->id, usr => $usrid,  stop_fines => undef})->[0];
-    } else {
-        $circ = $self->editor->search_action_circulation(
-            {target_copy => $self->copy->id, stop_fines => undef})->[0];
-    }
-
-    if(!$circ) {
-        if ($usrid) {
-            $circ = $self->editor->search_action_circulation(
-                {target_copy => $self->copy->id, usr => $usrid, stop_fines => OILS_STOP_FINES_MAX_FINES, checkin_time => undef})->[0];
-        } else {
-            $circ = $self->editor->search_action_circulation(
-                {target_copy => $self->copy->id, stop_fines => OILS_STOP_FINES_MAX_FINES, checkin_time => undef})->[0];
-        }
-    }
+    my $circ = $self->editor->search_action_circulation({
+        target_copy => $self->copy->id,
+        ($usrid ? (usr => $usrid) : ()),
+        '-or' => [
+            {stop_fines => undef},
+            {stop_fines => OILS_STOP_FINES_MAX_FINES}
+        ]
+    })->[0];
 
     return $self->bail_on_events($self->editor->event) unless $circ;
 
@@ -3213,6 +3222,9 @@ sub do_renew {
     $self->parent_circ($circ->id);
     $self->renewal_remaining( $circ->renewal_remaining - 1 );
     $self->circ($circ);
+
+    # Run the fine generator against the old circ
+    $self->generate_fines_start;
 
     $self->run_renew_permit;
 
