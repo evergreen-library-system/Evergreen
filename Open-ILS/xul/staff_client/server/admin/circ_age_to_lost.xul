@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Example Template for remote xul -->
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- STYLESHEETS -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- LOCALIZATION -->
+<!DOCTYPE window PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<!-- OVERLAYS -->
+<?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
+
+<window id="circ_age_to_lost_win" 
+    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- BEHAVIOR -->
+    <script type="text/javascript">
+        var myPackageDir = 'open_ils_staff_client'; var IAMXUL = true;
+    </script>
+    <scripts id="openils_util_scripts"/>
+
+    <script type="text/javascript" src="/xul/server/main/JSAN.js"/>
+    <script type="text/javascript" src="circ_age_to_lost.js"/>
+
+    <messagecatalog id="adminStrings" src="/xul/server/locale/<!--#echo var='locale'-->/admin.properties"/>
+
+    <vbox flex="1">
+        <grid>
+            <columns>
+                <column/>
+                <column/>
+            </columns>
+            <rows>
+                <row>
+                    <spacer/>
+                    <description>&staff.server.admin.index.age_overdue_circulations_to_lost.description;</description>
+                </row>
+                <row>
+                    <label value="&staff.server.admin.index.age_overdue_circulations_to_lost.user_profile;" /><vbox id="x_profile" />
+                </row>
+                <row>
+                    <label value="&staff.server.admin.index.age_overdue_circulations_to_lost.circ_lib;" /><vbox id="x_circ_lib" />
+                </row>
+                <row>
+                    <checkbox id="checkbox" label="&staff.server.admin.index.age_overdue_circulations_to_lost.confirm;" oncommand="$('doit').disabled = ! this.checked"/>
+                    <deck id="deck">
+                        <button id="doit" label="&staff.server.admin.index.age_overdue_circulations_to_lost.action;" disabled="true"/>
+                        <progressmeter mode="undetermined" />
+                    </deck>
+                </row>
+            </rows>
+        </grid>
+        <label id="results_label" style="font-size: x-large;"/>
+    </vbox>
+</window>
+
