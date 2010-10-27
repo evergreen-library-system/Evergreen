@@ -204,6 +204,7 @@ my $LEGACY_HOLD_EVENT_MAP = {
 sub indb_hold_permit {
     my $params = shift;
 
+    my $function = $$params{retarget} ? 'action.hold_retarget_permit_test' : 'action.hold_request_permit_test';
     my $patron_id = 
         ref($$params{patron}) ? $$params{patron}->id : $$params{patron_id};
     my $request_lib = 
@@ -211,7 +212,7 @@ sub indb_hold_permit {
 
     my $HOLD_TEST = {
         from => [
-            'action.hold_request_permit_test',
+            $function,
             $$params{pickup_lib}, 
             $request_lib,
             $$params{copy}->id, 
