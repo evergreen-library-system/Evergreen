@@ -26,14 +26,13 @@ circ.checkin.prototype = {
                 'barcode' : { 'hidden' : false },
                 'title' : { 'hidden' : false },
                 'location' : { 'hidden' : false },
-                'call_number' : { 'hidden' : false },
                 'status' : { 'hidden' : false },
                 'route_to' : { 'hidden' : false },
                 'alert_message' : { 'hidden' : false },
                 'checkin_time' : { 'hidden' : false }
             },
             {
-                'except_these' : [ 'uses', 'checkin_time_full' ]
+                'except_these' : [ 'uses', 'checkin_time_full', 'call_number' ]
             }
         ).concat(
             patron.util.columns( { 'family_name' : { 'hidden' : 'false' } } )
@@ -447,7 +446,14 @@ circ.checkin.prototype = {
     'checkin' : function() {
         var obj = this;
         try {
-            var barcode = obj.controller.view.checkin_barcode_entry_textbox.value;
+            var textbox = obj.controller.view.checkin_barcode_entry_textbox;
+            var async = false;
+            var async_checkbox = document.getElementById('async_checkin');
+            if (async_checkbox) { async = async_checkbox.getAttribute('checked') == 'true'; }
+            var barcode = textbox.value;
+            if (async) {
+                textbox.value = ''; textbox.focus();
+            }
             if (!barcode) return;
             if (barcode) {
                 if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
@@ -459,16 +465,18 @@ circ.checkin.prototype = {
             var params = { 
                 'barcode' : barcode,
                 'disable_textbox' : function() { 
-                    obj.controller.view.checkin_barcode_entry_textbox.disabled = true; 
-                    obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'true'); 
+                    if (!async) {
+                        textbox.disabled = true; 
+                        textbox.setAttribute('disabled', 'true'); 
+                    }
                 },
                 'enable_textbox' : function() { 
-                    obj.controller.view.checkin_barcode_entry_textbox.disabled = false; 
-                    obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
+                    textbox.disabled = false; 
+                    textbox.setAttribute('disabled', 'false'); 
                 },
                 'checkin_result' : function(checkin) {
-                    obj.controller.view.checkin_barcode_entry_textbox.disabled = false;
-                    obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
+                    textbox.disabled = false;
+                    //obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
                     obj.checkin2(checkin,backdate);
                 }
             }; 
@@ -482,7 +490,8 @@ circ.checkin.prototype = {
                 ses(), 
                 params,
                 backdate, 
-                auto_print
+                auto_print,
+                async
             );
         } catch(E) {
             obj.error.standard_unexpected_error_alert(document.getElementById('circStrings').getFormattedString('staff.circ.checkin.exception', [E]), E);
@@ -569,16 +578,26 @@ circ.checkin.prototype = {
     },
 
     'on_checkin' : function() {
-        this.controller.view.checkin_barcode_entry_textbox.disabled = false;
-        this.controller.view.checkin_barcode_entry_textbox.select();
-        this.controller.view.checkin_barcode_entry_textbox.value = '';
-        this.controller.view.checkin_barcode_entry_textbox.focus();
+        var async = false;
+        var async_checkbox = document.getElementById('async_checkin');
+        if (async_checkbox) { async = async_checkbox.getAttribute('checked') == 'true'; }
+        if (!async) {
+            this.controller.view.checkin_barcode_entry_textbox.disabled = false;
+            this.controller.view.checkin_barcode_entry_textbox.select();
+            this.controller.view.checkin_barcode_entry_textbox.value = '';
+            this.controller.view.checkin_barcode_entry_textbox.focus();
+        }
     },
 
     'on_failure' : function() {
-        this.controller.view.checkin_barcode_entry_textbox.disabled = false;
-        this.controller.view.checkin_barcode_entry_textbox.select();
-        this.controller.view.checkin_barcode_entry_textbox.focus();
+        var async = false;
+        var async_checkbox = document.getElementById('async_checkin');
+        if (async_checkbox) { async = async_checkbox.getAttribute('checked') == 'true'; }
+        if (!async) {
+            this.controller.view.checkin_barcode_entry_textbox.disabled = false;
+            this.controller.view.checkin_barcode_entry_textbox.select();
+            this.controller.view.checkin_barcode_entry_textbox.focus();
+        }
     },
     
     'spawn_copy_editor' : function() {

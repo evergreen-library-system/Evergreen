@@ -156,6 +156,7 @@
         command="cmd_checkin_print"
         accesskey="&staff.checkin.print_receipt.accesskey;"/>
     <checkbox id="trim_list" label="&staff.circ.checkin_overlay.trim_list.label;" checked="true" oils_persist="checked"/> 
+    <checkbox id="async_checkin" label="&staff.circ.checkin_overlay.async_checkin.label;" checked="false" oils_persist="checked"/> 
     <checkbox id="strict_barcode" label="&staff.circ.checkin_overlay.strict_barcode.label;" checked="false" oils_persist="checked"/> 
     <spacer id="pcii3s" flex="1"/>
     <button id="checkin_modifiers" oncommand="this.firstChild.showPopup();"
