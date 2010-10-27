@@ -9,92 +9,88 @@
 	<simplesect xml:id="myaccountloginpasswordupdate">
 		
 				<title>First Login Password Update</title>
-			<para>Patrons are given temporary <emphasis>dummy</emphasis> barcodes when new accounts are created, or forgotten passwords are reset. Patrons MUST change their password to something more secure with their <emphasis role="bold">first ever</emphasis> OPAC login or <emphasis role="bold">first</emphasis> login after a password reset. Once the password is updated, they will not have to repeat this process for subsequent logins.</para>
+			<para>Patrons are given temporary passwords when new accounts are created, or forgotten passwords are reset by staff. Patrons MUST change their password to something more 
+			secure when they login or for the first time. Once the password is updated, they will not have to repeat this process for subsequent logins.</para>
 			
 				<procedure>
 					<step>
-						<para>Open a web browser and go to: [URL]</para>
+						<para>Open a web browser and go to  your Evergreen OPAC</para>
 					</step>
 					<step>
 						<para>Click <emphasis>My Account</emphasis></para>
 					</step>
 					<step>
-						<para>Enter your <emphasis>Username</emphasis> and <emphasis>Password</emphasis></para>
+						<para>Enter your <guilabel>Username</guilabel> and <guilabel>Password</guilabel></para>
 						<itemizedlist>
 							<listitem>
 								<para>By default, your username is your library card number.</para>
 							</listitem>
 							<listitem>
-								<para>Your password is a 4 digit code provided when your account was created. If you have forgotten your password, contact your local library to have it reset.</para>
+								<para>Your password is a 4 digit code provided when your account was created. If you have forgotten your password, contact your 
+								 library to have it reset or use the online <xref linkend="myaccountpasswordreset" /> tool.</para>
 							</listitem>
 						</itemizedlist>
 					</step>
 					<step>
-						<para>Click <emphasis>Login</emphasis>; you will be prompted to change your password</para>
+						<para>Click <guibutton>Login</guibutton>. You will be prompted to change your password.</para>
 						<substeps>
 							<step>
-								<para>Enter your current password</para>
+								<para>Enter your <guilabel>current password</guilabel>.</para>
 							</step>
 							<step>
-								<para>Enter a new password</para>
+								<para>Enter a <guilabel>new password</guilabel>.</para>
 							</step>
 							<step>
-								<para>Enter the new password again</para>
+								<para>Enter the <guilabel>new password again</guilabel>.</para>
 							</step>
 							<step>
-								<para>Click <emphasis>Update Password</emphasis></para>
+								<para>Click <guibutton>Update Password</guibutton>.</para>
 							</step>
 							<step>
-								<para>At <emphasis role="bold">Password successfully updated</emphasis> pop-up click <emphasis>OK</emphasis>; you will be returned to the login screen</para>
+								<para>Click <guibutton>OK</guibutton>. You will be returned to the login screen.</para>
 							</step>
 						</substeps>
 					</step>
 					<step>
-						<para>Enter your <emphasis>Username</emphasis> and <emphasis role="bold">new</emphasis> <emphasis>Password</emphasis></para>
+						<para>Enter your <guilabel>Username</guilabel> and <emphasis role="bold">new</emphasis> <guilabel>Password</guilabel></para>
 					</step>
 					<step>
-						<para>Your <emphasis role="bold">Account Summary</emphasis> page displays.</para>
+						<para>Your <guilabel>Account Summary</guilabel> page displays.</para>
 					</step>
 				</procedure>
-				<para/>
-				<para>To view your account details, click one of the <emphasis role="bold">My Account</emphasis> tabs</para>
-				<para>To start a search, enter a term in the search box at the top of the page and click Go!</para>
-				<caution><para>If using a public computer be sure to log out!
-				</para></caution>
-				<para/>
 		</simplesect>
 		<simplesect xml:id="myaccountlogin">
 				<title>Logging In</title>
 				<procedure>
-				<title>Logging into your account from the  online catalog</title>	
+				<title>Logging into your account from the online catalog</title>	
 					<step>
-						<para>Open a web browser and go to: [URL]</para>
+						<para>Open a web browser and navigate to your Evergreen OPAC</para>
 					</step>
 					<step>
-						<para>Click <emphasis>My Account</emphasis></para>
+						<para>Click <guibutton>My Account</guibutton></para>
 					</step>
 					<step>
-						<para>Enter your <emphasis>Username</emphasis> and <emphasis>Password</emphasis></para>
+						<para>Enter your <guilabel>Username</guilabel> and <guilabel>Password</guilabel></para>
 						<itemizedlist>
 							<listitem><para>By default, your username is your library card number.</para></listitem>
 							<listitem><para>Your password is a 4 digit code provided when your account was created. If you have forgotten your password, contact your local 
-							library to have it reset.</para></listitem>
+							library to have it reset or use the <xref linkend="myaccountpasswordreset" /> tool.</para></listitem>
 						</itemizedlist>
 					</step>
 					<step>
-						<para>Click <emphasis>Login</emphasis></para>
+						<para>Click <guibutton>Login</guibutton></para>
 						<itemizedlist>
-							<listitem><para>At the first login, or following a password reset, you will be prompted to change your password.</para></listitem>
-							<listitem><para>After updating the password, you must enter your Username and Password again</para></listitem>
+							<listitem><para>At the first login, you will be prompted to change your password.</para></listitem>
+							<listitem><para>After updating the password, you must enter your Username and Password again.</para></listitem>
 						</itemizedlist>
 					</step>
 					<step>
 						<para>Your <emphasis role="bold">Account Summary</emphasis> page displays</para>
 					</step>
 				</procedure>
-				<para>To view your account details, click one of the <emphasis role="bold">My Account</emphasis> tabs</para>
-				<para>To start a search, enter a term in the search box at the top of the page and click <emphasis>Go!</emphasis></para>
-				<para><emphasis role="bold">If using a public computer be sure to log out!</emphasis></para>
+				<para>To view your account details, click one of the <guilabel>My Account</guilabel> tabs</para>
+				<para>To start a search, enter a term in the search box at the top of the page and click <guibutton>Go!</guibutton></para>
+				<caution><para>If using a public computer be sure to log out!</para></caution>
 		</simplesect>
 		<simplesect xml:id="myaccountpasswordreset">
 				<title>Password Reset</title>
@@ -134,35 +130,28 @@
 		</simplesect>
 		<simplesect xml:id="myaccountsummary">
 				<title>Account Summary</title>
-					<para>
-						<emphasis>Users can view Staff Notes, home library, address, and phone numbers. They can also change account username, password, and email.</emphasis>
-					</para>
+					<para>Users can view Staff Notes, home library, address, and phone numbers. They can also change their username, password, and email.</para>
 		</simplesect>
 		<simplesect xml:id="myaccountitemscheckedout">
 				<title>Items Checked Out</title>
-					<para>
-						Users can manage items currently checked out and view overdue items and see renewals remaining.</para>
-				
+					<para>Users can manage items currently checked out, view overdue items and see how many renewals they have remaining for specific item.</para>		
 		</simplesect>
 		<simplesect xml:id="myaccountitemsonhold">
-				<title>Items On Hold</title>
-					<para>
-						<emphasis>Manage items currently being requested</emphasis>
-					</para>
+				<title>Items On Hold</title>	
 				<para>From My Account patrons can manage items currently being requested.</para>
 					<para>Actions include:</para>
 					<itemizedlist>
 						<listitem>
-							<para>Suspend ~ set a period of time during which the hold will not become active, such as during a vacation</para>
+							<para><guimenuitem>Suspend</guimenuitem> - set a period of time during which the hold will not become active, such as during a vacation</para>
 						</listitem>
 						<listitem>
-							<para>Activate ~ manually remove the suspension</para>
+							<para><guimenuitem>Activate</guimenuitem> - manually remove the suspension</para>
 						</listitem>
 						<listitem>
-							<para>Set Active Date ~ specify a date at which the suspension will be lifted</para>
+							<para><guimenuitem>Set Active Date</guimenuitem> - specify a date at which the suspension will be lifted</para>
 						</listitem>
 						<listitem>
-							<para>Cancel ~remove the hold request</para>
+							<para><guimenuitem>Cancel</guimenuitem> - remove the hold request</para>
 						</listitem>
 					</itemizedlist>
 				
@@ -170,25 +159,25 @@
 
 					<itemizedlist>
 						<listitem>
-							<para>Enable/disable phone notifications</para>
+							<para><guimenuitem>Enable/disable phone notifications</guimenuitem> </para>
 						</listitem>
 						<listitem>
-							<para>Change telephone number for notification</para>
+							<para><guimenuitem>Change telephone number for notification</guimenuitem> </para>
 						</listitem>
 						<listitem>
-							<para>Enable/disable email notification</para>
+							<para><guimenuitem>Enable/disable email notification</guimenuitem> </para>
 						</listitem>
 						<listitem>
-							<para>Change pick up library</para>
+							<para><guimenuitem>Change pick up library</guimenuitem> </para>
 						</listitem>
 						<listitem>
-							<para>Change expiration date</para>
+							<para><guimenuitem>Change expiration date</guimenuitem> </para>
 						</listitem>
 						<listitem>
-							<para>Suspend</para>
+							<para><guimenuitem>Suspend</guimenuitem> </para>
 						</listitem>
 						<listitem>
-							<para>Activate date</para>
+							<para><guimenuitem>Activate date</guimenuitem> </para>
 						</listitem>
 					</itemizedlist>
 				<procedure>
@@ -200,47 +189,55 @@
 						<para>Select the hold to modify</para>
 					</step>
 					<step>
-						<para>Click <emphasis>Edit</emphasis> or <emphasis>Actions for Selected Holds</emphasis>~</para>
+						<para>Click <guibutton>Edit</guibutton> or <guimenu>Actions for Selected Holds</guimenu></para>
 					</step>
 					<step>
-						<para>Select the change to make, follow the steps on the screen</para>
+						<para>Select the change to make and follow the instructions.</para>
 					</step>
 				</procedure>
 		</simplesect>
 		<simplesect xml:id="myaccountfines">
 				<title>Fines</title>
-					<para>
-						<emphasis>Manage fines on items currently checked out</emphasis>
-					</para>
+					<para>Clicking on the fines tab will allow you to see your <guilabel>Total Owed</guilabel>, <guilabel>Total Paid</guilabel> and <guilabel>Balance 
+					Owed</guilabel>.</para>
 		</simplesect>
 		<simplesect xml:id="myaccountpreferences">
 				<title>Preferences</title>
-					<para>
-						<emphasis>Manage preferences for an account</emphasis>
-					</para>
+					<para>From here you can manage display preferences including:</para>
+					<itemizedlist>
+						<listitem>Search hits per page - how many items to appear on each page in results.</listitem>
+						<listitem>Default Font Size</listitem>
+						<listitem>Default Hold Notification Method - What is the preferred method for being notified for a hold pick up: email or phone. </listitem>
+						<listitem>Default Search Location - Which is the preferred default location for searching. By default youer home library is selected.</listitem>
+						<listitem>Default Search Range - What is the range of your search (e.g. location, library, system, consortium, etc...)</listitem>
+					</itemizedlist>
+					<para>After changing any of these settings, remember to click <guibutton>Save Preference Changes</guibutton>.</para> 					
 		</simplesect>
 		<simplesect xml:id="myaccountbookbags">
 				<title>Bookbags</title>
-				<para>My Bookbags is a feature that allows you to create lists of library materials (books, audiobooks, videos, etc.) These lists create links to records in the catalog, but are otherwise completely private and only accessible by you when logged in to your My Account.</para>
-				<para>You have the option to share <emphasis role="bold">specific</emphasis> lists with people whom you choose (send them the direct URL), or more generally via RSS feed. Shared bookbags do <emphasis role="bold">NOT</emphasis> create a link to your personal library account information or private bookbags. You can share or un-share bookbags at any time.</para>
+				<para>My Bookbags is a feature that allows you to create lists of library materials (books, audiobooks, videos, etc.) These lists create links to records in the 
+				catalog, but are otherwise completely private and only accessible by you when logged in to your Account.</para>
+				<para>You have the option to share specific lists with people whom you choose (send them the direct URL), or more generally via RSS feed. Shared bookbags do 
+				<emphasis role="bold">NOT</emphasis> create a link to your personal library account information or private bookbags. You can share or un-share bookbags at any time.</para>
 				<para>You can create as many bookbags and you want. Your bookbags will stay in your account until you delete them.</para>
-				<para>Items remain in bookbags until you remove them. Even if the item record is removed from the catalog, the bookbag entry will remain (but there will be no link to the catalog.)</para>
+				<para>Items remain in bookbags until you remove them. Even if the item record is removed from the catalog, the bookbag entry will remain (but there will be no link to 
+				the catalog.)</para>
 				<procedure>
 				<title>Create a new Bookbag</title>
 					<step>
-						<para>Login to <emphasis>My Account</emphasis> , click <emphasis>My Bookbags</emphasis></para>
+						<para>Login to <guilabel>My Account</guilabel> , click <guibutton>My Bookbags</guibutton></para>
 					</step>
 					<step>
-						<para>At <emphasis>Create a new Bookbag</emphasis>, enter the name of the new Bookbag</para>
+						<para>At <guilabel>Create a new Bookbag</guilabel>, enter the name of the new Bookbag</para>
 					</step>
 					<step>
-						<para>Share - yes or no</para>
+						<para>Select <guilabel>yes</guilabel> or <guilabel>no</guilabel> for the <guilabel>Share this Bookbag</guilabel> option.</para>
 					</step>
 					<step>
-						<para>Click <emphasis>Submit</emphasis></para>
+						<para>Click <guibutton>Submit</guibutton></para>
 					</step>
 					<step>
-						<para>Click <emphasis>OK</emphasis></para>
+						<para>Click <guibutton>OK</guibutton></para>
 					</step>
 				</procedure>
 				<procedure>
@@ -249,31 +246,31 @@
 						<para>Search for an item, open the Title Record</para>
 					</step>
 					<step>
-						<para>Open the <emphasis>More Actions...</emphasis> list; click the Bookbag name</para>
+						<para>Open the <guilabel>More Actions...</guilabel> list; click the Bookbag name</para>
 					</step>
 					<step>
-						<para>Click <emphasis>OK</emphasis></para>
+						<para>Click <guibutton>OK</guibutton></para>
 					</step>
 				</procedure>
 				<procedure>
 				<title>Share a Bookbag</title>
 					<step>
-						<para>Login to <emphasis>My Account</emphasis>, click <emphasis>My Bookbags</emphasis></para>
+						<para>Login to <guilabel>My Account</guilabel>, click <guibutton>My Bookbags</guibutton>.</para>
 					</step>
 					<step>
-						<para>Find the Bookbag to share, click <emphasis>Share this Bookbag</emphasis></para>
+						<para>Find the Bookbag to share, click <guibutton>Share this Bookbag</guibutton>.</para>
 					</step>
 					<step>
-						<para>Click <emphasis>OK</emphasis></para>
+						<para>Click <guibutton>OK</guibutton>.</para>
 					</step>
 					<step>
-						<para>Click <emphasis>OK</emphasis></para>
+						<para>Click <guibutton>View</guibutton> to open the list as a webpage.</para> 
 					</step>
 					<step>
-						<para>Click <emphasis>View</emphasis> to open the list as a webpage - copy and send this URL to selected recipients or embed in another website</para>
+						<para>copy and send this URL to selected recipients or embed in another website.</para>
 					</step>
 					<step>
-						<para>Click the RSS symbol add the list to an RSS reader</para>
+						<para>Click the <guiicon>RSS</guiicon> icon add the list to an RSS reader.</para>
 					</step>
 				</procedure>
 		</simplesect>
