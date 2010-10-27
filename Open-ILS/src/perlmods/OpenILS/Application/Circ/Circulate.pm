@@ -2207,14 +2207,6 @@ sub do_checkin {
     $self->push_events($self->check_copy_alert());
     $self->push_events($self->check_checkin_copy_status());
 
-    # gather any updates to the circ after fine generation, if there was a circ
-    $self->generate_fines_finish if ($self->circ);
-
-    # if the circ is marked as 'claims returned', add the event to the list
-    $self->push_events(OpenILS::Event->new('CIRC_CLAIMS_RETURNED'))
-        if ($self->circ and $self->circ->stop_fines 
-                and $self->circ->stop_fines eq OILS_STOP_FINES_CLAIMSRETURNED);
-
     $self->check_circ_deposit();
 
     # handle the overridable events 
@@ -2394,6 +2386,16 @@ sub do_checkin {
         $self->push_events(OpenILS::Event->new('SUCCESS')) 
             unless @{$self->events};
     }
+
+    # gather any updates to the circ after fine generation, if there was a circ
+    $self->generate_fines_finish if ($self->circ);
+
+    # if the circ is marked as 'claims returned', add the event to the list
+    $self->push_events(OpenILS::Event->new('CIRC_CLAIMS_RETURNED'))
+        if ($self->circ and $self->circ->stop_fines 
+                and $self->circ->stop_fines eq OILS_STOP_FINES_CLAIMSRETURNED);
+
+    $self->override_events; # One final time to handle CIRC_CLAIMS_RETURNED
 
     OpenILS::Utils::Penalty->calculate_penalties(
         $self->editor, $self->patron->id, $self->circ_lib) if $self->patron;
