@@ -1338,8 +1338,6 @@ INSERT INTO permission.perm_list VALUES
     (350, 'ADMIN_COPY_LOCATION_ORDER', oils_i18n_gettext(350, 'Allow a user to create/view/update/delete a copy location order', 'ppl', 'description')),
 
 -- additional permissions
-    (351, 'HOLD_LOCAL_AVAIL_OVERRIDE', oils_i18n_gettext(351, 'Allow a user to place a hold despite the availability of a local copy', 'ppl', 'description')),
-
     (352, 'ADMIN_BOOKING_RESOURCE', oils_i18n_gettext(352, 'Enables the user to create/update/delete booking resources', 'ppl', 'description')),
     (353, 'ADMIN_BOOKING_RESOURCE_TYPE', oils_i18n_gettext(353, 'Enables the user to create/update/delete booking resource types', 'ppl', 'description')),
     (354, 'ADMIN_BOOKING_RESOURCE_ATTR', oils_i18n_gettext(354, 'Enables the user to create/update/delete booking resource attributes', 'ppl', 'description')),
@@ -6742,20 +6740,6 @@ INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) 
 
 INSERT INTO config.org_unit_setting_type (name, label, description, datatype)
     VALUES
-        ('circ.holds.alert_if_local_avail',
-         oils_i18n_gettext('circ.holds.alert_if_local_avail',
-             'Holds: Local available alert', 'coust', 'label'),
-         oils_i18n_gettext('circ.holds.alert_if_local_avail',
-            'If local copy is available, alert the person making the hold', 'coust', 'description'),
-         'bool'),
-
-        ('circ.holds.deny_if_local_avail',
-         oils_i18n_gettext('circ.holds.deny_if_local_avail',
-            'Holds: Local available block', 'coust', 'label'),
-         oils_i18n_gettext('circ.holds.deny_if_local_avail',
-            'If local copy is available, deny the creation of the hold', 'coust', 'description'),
-         'bool'),
-
         ('circ.holds.clear_shelf.no_capture_holds',
         oils_i18n_gettext( 'circ.holds.clear_shelf.no_capture_holds',
             'Holds: Bypass hold capture during clear shelf process', 'coust', 'label'),
