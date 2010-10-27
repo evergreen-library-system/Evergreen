@@ -18,8 +18,6 @@ CREATE TABLE config.hard_due_date_values (
 
 ALTER TABLE config.circ_matrix_matchpoint ADD COLUMN hard_due_date INT REFERENCES config.hard_due_date (id);
 
-ALTER TABLE config.rule_circ_duration DROP COLUMN date_ceiling;
-
 CREATE OR REPLACE FUNCTION config.update_hard_due_dates () RETURNS INT AS $func$
 DECLARE
     temp_value  config.hard_due_date_values%ROWTYPE;
