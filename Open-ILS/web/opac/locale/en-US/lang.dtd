@@ -68,6 +68,8 @@
 <!ENTITY common.browser.find.accesskey "i">
 <!ENTITY common.browser.set_url.label "Modify URL">
 <!ENTITY common.browser.set_url.accesskey "U">
+<!ENTITY common.browser.view_source.label "View Source">
+<!ENTITY common.browser.view_source.accesskey "V">
 
 <!ENTITY common.textbox.cut "Cut">
 <!ENTITY common.textbox.copy "Copy">

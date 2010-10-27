@@ -44,6 +44,14 @@ util.browser.prototype = {
                                 if (url) { obj.get_content().location.href = url; }
                             }
                         ],
+                        'cmd_view_source' : [
+                            ['command'],
+                            function() {
+                                var curr_url = obj.get_content().location.href;
+                                //obj.get_content().location.href = 'view-source:' + curr_url; // This works too, but the openDialog below is more feature-rich
+                                window.openDialog("chrome://global/content/viewSource.xul", "", "all,dialog=no", curr_url);
+                            }
+                        ],
                         'cmd_print' : [
                             ['command'],
                             function() {
