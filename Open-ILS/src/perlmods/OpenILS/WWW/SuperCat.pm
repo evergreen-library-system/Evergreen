@@ -53,8 +53,8 @@ $browse_types{call_number}{xml} = sub {
 		my $cn_label = $cn->label;
 
 		$cn_label =~ s/\n//gos;
-		$cn_label =~ s/'/&apos;/go;
 		$cn_label =~ s/&/&amp;/go;
+		$cn_label =~ s/'/&apos;/go;
 		$cn_label =~ s/</&lt;/go;
 		$cn_label =~ s/>/&gt;/go;
 
