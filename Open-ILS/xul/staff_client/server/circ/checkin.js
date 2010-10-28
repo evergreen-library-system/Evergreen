@@ -54,7 +54,25 @@ circ.checkin.prototype = {
                         var sel = obj.list.retrieve_selection();
                         obj.selection_list = util.functional.map_list(
                             sel,
-                            function(o) { var p = JSON2js(o.getAttribute('retrieve_id')); p.unique_row_counter = o.getAttribute('unique_row_counter'); return p; }
+                            function(o) { 
+                                if (o.getAttribute('retrieve_id')) {
+                                    try {
+                                        var p = JSON2js(o.getAttribute('retrieve_id')); 
+                                        p.unique_row_counter = o.getAttribute('unique_row_counter'); 
+                                        return p; 
+                                    } catch(E) {
+                                        return -1;
+                                    }
+                                } else {
+                                    return -1;
+                                }
+                            }
+                        );
+                        obj.selection_list = util.functional.filter_list(
+                            obj.selection_list,
+                            function(o) {
+                                return o != -1;
+                            }
                         );
                         obj.error.sdump('D_TRACE', 'circ/copy_status: selection list = ' + js2JSON(obj.selection_list) );
                         if (obj.selection_list.length == 0) {
@@ -458,6 +476,19 @@ circ.checkin.prototype = {
             if (barcode) {
                 if ( obj.test_barcode(barcode) ) { /* good */ } else { /* bad */ return; }
             }
+            var placeholder_item = new acp();
+            placeholder_item.barcode( barcode );
+            var row_params = obj.list.append( { 
+                    'row' : {
+                        'my' : { 
+                            'acp' : placeholder_item
+                        } 
+                    },
+                    'to_top' : true,
+                    'on_append' : function(rparams) { obj.row_map[ rparams.unique_row_counter ] = rparams; },
+                    'on_remove' : function(unique_row_counter) { delete obj.row_map[ unique_row_counter ]; }
+            } );
+            
             var backdate = obj.controller.view.checkin_effective_datepicker.value;
             var auto_print = document.getElementById('checkin_auto_print_slips');
             if (auto_print) auto_print = auto_print.getAttribute('checked') == 'true';
@@ -477,7 +508,10 @@ circ.checkin.prototype = {
                 'checkin_result' : function(checkin) {
                     textbox.disabled = false;
                     //obj.controller.view.cmd_checkin_submit_barcode.setAttribute('disabled', 'false'); 
-                    obj.checkin2(checkin,backdate);
+                    obj.checkin2(checkin,backdate,row_params);
+                },
+                'info_blurb' : function(text) {
+                    try { row_params.row.my.acp.alert_message( text ); } catch(E) {dump('error: ' + E + '\n');}
                 }
             }; 
             var suppress_holds_and_transits = document.getElementById('suppress_holds_and_transits');
@@ -508,10 +542,13 @@ circ.checkin.prototype = {
 
     },
 
-    'checkin2' : function(checkin,backdate) {
+    'checkin2' : function(checkin,backdate,row_params) {
         var obj = this;
         try {
-            if (!checkin) return obj.on_failure(); /* circ.util.checkin handles errors and returns null currently */
+            if (!checkin) {/* circ.util.checkin used to be sole handler of errors and returns null currently */
+                obj.list.refresh_row( row_params ); /* however, let's refresh the row because we're shoving error text into the dummy placeholder item's alert_message field  */
+                return obj.on_failure();
+            }
             if (checkin.ilsevent == 7010 /* COPY_ALERT_MESSAGE */
                 || checkin.ilsevent == 1203 /* COPY_BAD_STATUS */
                 || checkin.ilsevent == -1 /* offline */
@@ -519,33 +556,30 @@ circ.checkin.prototype = {
                 || checkin.ilsevent == 1203 /* COPY_BAD_STATUS */
                 || checkin.ilsevent == 7009 /* CIRC_CLAIMS_RETURNED */ 
                 || checkin.ilsevent == 7011 /* COPY_STATUS_LOST */ 
-                || checkin.ilsevent == 7012 /* COPY_STATUS_MISSING */) return obj.on_failure();
+                || checkin.ilsevent == 7012 /* COPY_STATUS_MISSING */) {
+                obj.list.refresh_row( row_params ); 
+                return obj.on_failure();
+            }
             var retrieve_id = js2JSON( { 'circ_id' : checkin.circ ? checkin.circ.id() : null , 'copy_id' : checkin.copy.id(), 'barcode' : checkin.copy.barcode(), 'doc_id' : (typeof checkin.record != 'undefined' ? ( typeof checkin.record.ilsevent == 'undefined' ? checkin.record.doc_id() : null ) : null ) } );
             if (checkin.circ && checkin.circ.checkin_time() == 'now') checkin.circ.checkin_time(backdate);
             if (document.getElementById('trim_list')) {
                 var x = document.getElementById('trim_list');
                 if (x.checked) { obj.list.trim_list = 20; } else { obj.list.trim_list = null; }
             }
-            obj.list.append(
-                {
-                    'retrieve_id' : retrieve_id,
-                    'row' : {
-                        'my' : {
-                            'circ' : checkin.circ,
-                            'mbts' : checkin.circ ? checkin.circ.billable_transaction().summary() : null,
-                            'mvr' : checkin.record,
-                            'acp' : checkin.copy,
-                            'au' : checkin.patron,
-                            'status' : checkin.status,
-                            'route_to' : checkin.route_to,
-                            'message' : checkin.message
-                        }
-                    },
-                    'to_top' : true,
-                    'on_append' : function(rparams) { obj.row_map[ rparams.unique_row_counter ] = rparams; },
-                    'on_remove' : function(unique_row_counter) { delete obj.row_map[ unique_row_counter ]; }
+            row_params['retrieve_id'] = retrieve_id;
+            row_params['row'] =  {
+                'my' : {
+                    'circ' : checkin.circ,
+                    'mbts' : checkin.circ ? checkin.circ.billable_transaction().summary() : null,
+                    'mvr' : checkin.record,
+                    'acp' : checkin.copy,
+                    'au' : checkin.patron,
+                    'status' : checkin.status,
+                    'route_to' : checkin.route_to,
+                    'message' : checkin.message
                 }
-            );
+            };
+            obj.list.refresh_row( row_params );
             obj.list.node.view.selection.select(0);
 
             JSAN.use('util.sound'); var sound = new util.sound(); sound.circ_good();

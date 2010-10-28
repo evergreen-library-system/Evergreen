@@ -2473,8 +2473,12 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 check.what_happened = 'no_change';
                 if (document.getElementById('no_change_label')) {
                     var m = document.getElementById('no_change_label').getAttribute('value');
-                    document.getElementById('no_change_label').setAttribute('value', m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.item_checked_in', [params.barcode]) + '  ');
+                    var text = document.getElementById('circStrings').getFormattedString('staff.circ.utils.item_checked_in', [params.barcode]);
+                    document.getElementById('no_change_label').setAttribute('value', m + text + '  ');
                     document.getElementById('no_change_label').setAttribute('hidden','false');
+                    if (typeof params.info_blurb == 'function') {
+                        params.info_blurb( text );
+                    }
                 }
             }
             if (check.ilsevent == 1202 /* ITEM_NOT_CATALOGED */ && check.copy.status() != 11) {
@@ -2706,9 +2710,13 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     msg = '';
                     if (document.getElementById('no_change_label')) {
                         var m = document.getElementById('no_change_label').getAttribute('value');
-                        m += document.getElementById('circStrings').getFormattedString('staff.circ.utils.capture', [params.barcode]);
+                        var text = document.getElementById('circStrings').getFormattedString('staff.circ.utils.capture', [params.barcode]);
+                        m += text + '  ';
                         document.getElementById('no_change_label').setAttribute('value', m);
                         document.getElementById('no_change_label').setAttribute('hidden','false');
+                        if (typeof params.info_blurb == 'function') {
+                            params.info_blurb( text );
+                        }
                     }
                 break;
                 case 6: /* IN TRANSIT */
@@ -2741,6 +2749,9 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         var needs_cat = document.getElementById('circStrings').getFormattedString('staff.circ.utils.needs_cataloging', [params.barcode]);
                         document.getElementById('no_change_label').setAttribute('value', m + needs_cat + '  ');
                         document.getElementById('no_change_label').setAttribute('hidden','false');
+                        if (typeof params.info_blurb == 'function') {
+                            params.info_blurb( needs_cat );
+                        }
                     }
                 break;
                 case 15: // ON_RESERVATION_SHELF
@@ -2819,9 +2830,13 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     msg = '';
                     if (document.getElementById('no_change_label')) {
                         var m = document.getElementById('no_change_label').getAttribute('value');
-                        m += document.getElementById('circStrings').getFormattedString('staff.circ.utils.reservation_capture', [params.barcode]);
+                        var text = document.getElementById('circStrings').getFormattedString('staff.circ.utils.reservation_capture', [params.barcode]);
+                        m += text + '  ';
                         document.getElementById('no_change_label').setAttribute('value', m);
                         document.getElementById('no_change_label').setAttribute('hidden','false');
+                        if (typeof params.info_blurb == 'function') {
+                            params.info_blurb( text );
+                        }
                     }
                 break;
                 default:
@@ -3078,6 +3093,9 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 var trans_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.in_transit', [params.barcode]);
                 document.getElementById('no_change_label').setAttribute('value', m + trans_msg + '  ');
                 document.getElementById('no_change_label').setAttribute('hidden','false');
+                if (typeof params.info_blurb == 'function') {
+                    params.info_blurb( trans_msg );
+                }
             }
 
         } else /* ASSET_COPY_NOT_FOUND */ if (check.ilsevent == 1502) {
@@ -3103,6 +3121,9 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 var m = document.getElementById('no_change_label').getAttribute('value');
                 document.getElementById('no_change_label').setAttribute('value',m + mis_scan_msg + '  ');
                 document.getElementById('no_change_label').setAttribute('hidden','false');
+                if (typeof params.info_blurb == 'function') {
+                    params.info_blurb( mis_scan_msg );
+                }
             }
 
         } else /* HOLD_CAPTURE_DELAYED */ if (check.ilsevent == 7019) {
@@ -3200,6 +3221,9 @@ circ.util.renew_via_barcode = function ( params, async ) {
                                 var m = document.getElementById('no_change_label').getAttribute('value');
                                 document.getElementById('no_change_label').setAttribute('value',m + mis_scan_msg + '  ');
                                 document.getElementById('no_change_label').setAttribute('hidden','false');
+                                if (typeof params.info_blurb == 'function') {
+                                    params.info_blurb( mis_scan_msg );
+                                }
                             }
                         break;
                         case 7002 /* PATRON_EXCEEDS_CHECKOUT_COUNT */ : break;
