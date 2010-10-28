@@ -1907,6 +1907,13 @@
 <!ENTITY staff.server.admin.index.testing "(Testing)">
 <!ENTITY staff.server.admin.index.hold_pull_list_classic "Pull List for Hold Requests (Classic)">
 <!ENTITY staff.server.admin.index.reports "Reports">
+<!ENTITY staff.server.admin.index.age_overdue_circulations_to_lost.label "Age Overdue Circs to Lost">
+<!ENTITY staff.server.admin.index.age_overdue_circulations_to_lost.accesskey "">
+<!ENTITY staff.server.admin.index.age_overdue_circulations_to_lost.description "Choose the user profile and circulation library for the overdue circulations you wish to age to a Lost status.  Note that descendents of these values (sub-groups, sub-libraries) will also be affected.">
+<!ENTITY staff.server.admin.index.age_overdue_circulations_to_lost.user_profile "User Profile:">
+<!ENTITY staff.server.admin.index.age_overdue_circulations_to_lost.circ_lib "Circulation Library:">
+<!ENTITY staff.server.admin.index.age_overdue_circulations_to_lost.confirm "Are you sure?">
+<!ENTITY staff.server.admin.index.age_overdue_circulations_to_lost.action "Queue for Aging">
 <!ENTITY staff.server.admin.index.cash_reports "Cash Reports">
 <!ENTITY staff.server.admin.index.transits "Transits">
 <!ENTITY staff.server.admin.index.transit_list "Transit List">

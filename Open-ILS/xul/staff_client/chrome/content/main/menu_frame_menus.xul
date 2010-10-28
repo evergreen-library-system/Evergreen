@@ -120,6 +120,9 @@
     <command id="cmd_local_admin_action_trigger"/>
     <command id="cmd_local_admin_survey"/>
     <command id="cmd_local_admin_reports"/>
+    <command id="cmd_local_admin_age_overdue_circulations_to_lost"
+        label="&staff.server.admin.index.age_overdue_circulations_to_lost.label;"
+        accesskey="&staff.server.admin.index.age_overdue_circulations_to_lost.accesskey;"/>
     <command id="cmd_local_admin_cash_reports"/>
     <command id="cmd_local_admin_transit_list"/>
     <command id="cmd_local_admin_circ_matrix_matchpoint"/>
@@ -347,6 +350,7 @@
 
         <menu id="main.menu.admin.local" label="&staff.main.menu.admin.local_admin.label;">
             <menupopup id="main.menu.admin.local.popup">
+                <menuitem command="cmd_local_admin_age_overdue_circulations_to_lost"/>
                 <menuitem label="&staff.server.admin.index.cash_reports;" command="cmd_local_admin_cash_reports"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.circ_matrix_matchpoint.label;" command="cmd_local_admin_circ_matrix_matchpoint"/>
                 <menuitem label="&staff.server.admin.index.closed_dates;" command="cmd_local_admin_closed_dates"/>

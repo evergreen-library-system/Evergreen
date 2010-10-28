@@ -559,6 +559,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_admin_page('transit_list.xul', 'menu.cmd_local_admin_transit_list.tab'); }
             ],
+            'cmd_local_admin_age_overdue_circulations_to_lost' : [
+                ['oncommand'],
+                function() { open_admin_page('circ_age_to_lost.xul', 'menu.cmd_local_admin_age_overdue_circulations_to_lost.tab', true); }
+            ],
             'cmd_local_admin_cash_reports' : [
                 ['oncommand'],
                 function() { open_admin_page('cash_reports.xhtml', 'menu.cmd_local_admin_cash_reports.tab', true); }
