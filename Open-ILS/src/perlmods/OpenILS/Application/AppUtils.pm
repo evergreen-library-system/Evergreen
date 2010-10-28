@@ -655,6 +655,27 @@ sub fetch_permission_group_tree {
 		'open-ils.actor.groups.tree.retrieve' );
 }
 
+sub fetch_permission_group_descendants {
+    my( $self, $profile ) = @_;
+    my $group_tree = $self->fetch_permission_group_tree();
+    my $start_here;
+    my @groups;
+
+    # FIXME: okay, so it's not an org tree, but it is compatible
+    $self->walk_org_tree($group_tree, sub {
+        my $g = shift;
+        if ($g->id == $profile) {
+            $start_here = $g;
+        }
+    });
+
+    $self->walk_org_tree($start_here, sub {
+        my $g = shift;
+        push(@groups,$g->id);
+    });
+
+    return \@groups;
+}
 
 sub fetch_patron_circ_summary {
 	my( $self, $userid ) = @_;

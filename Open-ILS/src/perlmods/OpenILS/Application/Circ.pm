@@ -234,6 +234,92 @@ sub title_from_transaction {
 	return $apputils->record_to_mvr($title);
 }
 
+__PACKAGE__->register_method(
+	method	=> "staff_age_to_lost",
+	api_name	=> "open-ils.circ.circulation.age_to_lost",
+    stream => 1,
+	signature	=> q/
+        This fires a circ.staff_age_to_lost Action-Trigger event against all
+        overdue circulations in scope of the specified context library and
+        user profile, which effectively marks the associated items as Lost.
+        This is likely to be done at the end of a semester in an academic
+        library, etc.
+		@param auth
+		@param args : circ_lib, user_profile
+	/
+);
+
+sub staff_age_to_lost {
+    my( $self, $conn, $auth, $args ) = @_;
+
+    my $orgs = $U->get_org_descendants($args->{'circ_lib'});
+    my $profiles = $U->fetch_permission_group_descendants($args->{'user_profile'});
+
+    my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+
+    my $method = 'open-ils.trigger.passive.event.autocreate.batch';
+    my $hook = 'circ.staff_age_to_lost';
+    my $context_org = 'circ_lib';
+    my $opt_granularity = undef;
+    my $filter = { 
+        "checkin_time" => undef,
+        "due_date" => { "<" => "now" }, 
+        "-or" => [ 
+            { "stop_fines"  => ["MAXFINES", "LONGOVERDUE"] }, # FIXME: CLAIMSRETURNED also?
+            { "stop_fines"  => undef }
+        ],
+        "-and" => [
+            {"-exists" => {
+                "select" => {"au" => ["id"]},
+                "from"   => "au",
+                "where"  => {
+                    "profile" => $profiles,
+                    "id" => { "=" => {"+circ" => "usr"} }
+                }
+            }},
+            {"-exists" => {
+                "select" => {"aou" => ["id"]},
+                "from"   => "aou",
+                "where"  => {
+                    "-and" => [
+                        {"id" => { "=" => {"+circ" => "circ_lib"} }},
+                        {"id" => $orgs}
+                    ]
+                }
+            }}
+        ]
+    };
+    my $req_timeout = 10800;
+    my $chunk_size = 100;
+    my $progress = 1;
+
+    my $req = $ses->request($method, $hook, $context_org, $filter, $opt_granularity);
+    my @event_ids; my @chunked_ids;
+    while (my $resp = $req->recv(timeout => $req_timeout)) {
+        push(@event_ids, $resp->content);
+        push(@chunked_ids, $resp->content);
+        if (scalar(@chunked_ids) > $chunk_size) {
+            $conn->respond({'progress'=>$progress++}); # 'event_ids'=>@chunked_ids
+            @chunked_ids = ();
+        }
+    }
+    if (scalar(@chunked_ids) > 0) {
+        $conn->respond({'progress'=>$progress++}); # 'event_ids'=>@chunked_ids
+    }
+
+    if(@event_ids) {
+        $logger->info("staff_age_to_lost: created ".scalar(@event_ids)." events for circ.staff_age_to_lost");
+        $conn->respond_complete({'total_progress'=>$progress-1,'created'=>scalar(@event_ids)});
+    } elsif($req->complete) {
+        $logger->info("staff_age_to_lost: no events to create for circ.staff_age_to_lost");
+        $conn->respond_complete({'total_progress'=>$progress-1,'created'=>0});
+    } else {
+        $logger->warn("staff_age_to_lost: timeout occurred during event creation for circ.staff_age_to_lost");
+        $conn->respond_complete({'total_progress'=>$progress-1,'error'=>'timeout'});
+    }
+
+    return undef;
+}
 
 
 __PACKAGE__->register_method(
