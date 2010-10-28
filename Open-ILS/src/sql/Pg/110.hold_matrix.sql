@@ -165,7 +165,7 @@ END;
 $func$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT, retargetting BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
 DECLARE
     matchpoint_id        INT;
     user_object        actor.usr%ROWTYPE;
@@ -287,7 +287,7 @@ BEGIN
         END LOOP;
     END IF;
 
-    IF hold_test.max_holds IS NOT NULL THEN
+    IF hold_test.max_holds IS NOT NULL AND NOT retargetting THEN
         SELECT    INTO hold_count COUNT(*)
           FROM    action.hold_request
           WHERE    usr = match_user
@@ -329,6 +329,14 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+    SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, FALSE);
+$func$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION action.hold_retarget_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS SETOF action.matrix_test_result AS $func$
+    SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, TRUE );
+$func$ LANGUAGE SQL;
 
 COMMIT;
 
