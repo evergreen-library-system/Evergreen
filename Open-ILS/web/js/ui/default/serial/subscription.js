@@ -33,15 +33,18 @@ HTMLSelectElement.prototype.setValue = function(s) {
 function load_sub_grid(id, oncomplete) {
     if (!pcrud) return; /* first run, onLoad hasn't fired yet */
     if (!sub_grid._fresh) {
+        var dist_ids = pcrud.search(
+            "sdist", {"subscription": id}, {"id_list": true}
+        );
         pcrud.retrieve(
             "ssub", id, {
                 "onresponse": function(r) {
                     if (r = openils.Util.readResponse(r)) {
                         sub = r;
+                        var data = ssub.toStoreData([r]);
+                        data.items[0].num_dist = dist_ids ? dist_ids.length : 0;
                         sub_grid.setStore(
-                            new dojo.data.ItemFileReadStore(
-                                {"data": ssub.toStoreData([r])}
-                            )
+                            new dojo.data.ItemFileReadStore({"data": data})
                         );
                         sub_grid._fresh = true;
                     }
