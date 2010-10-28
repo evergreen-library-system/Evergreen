@@ -268,7 +268,7 @@ sub run_method {
     $circulator->is_checkin(1) if $api =~ /checkin/;
 
     $circulator->mk_env();
-    $circulator->noop if $circulator->claims_never_checked_out;
+    $circulator->noop(1) if $circulator->claims_never_checked_out;
 
     if($legacy_script_support and not $circulator->is_checkin) {
         $circulator->mk_script_runner();
