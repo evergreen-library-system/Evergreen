@@ -45,6 +45,7 @@
                         Bibliographic Record
                     </th>
                     <th field="expected_date_offset">Expected Date Offset</th>
+                    <th field="num_dist">Number of Distributions</th>
                 </tr>
             </thead>
         </table>

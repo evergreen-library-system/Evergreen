@@ -55,6 +55,7 @@ function BatchReceiver() {
         this._call_number_cache = null;
         this._prepared_call_number_controls = {};
         this._location_by_lib = {};
+        this._copy_template_cache = {};
 
         /* empty the entry receiving table if we're starting over */
         if (this.item_cache) {
@@ -209,6 +210,7 @@ function BatchReceiver() {
             dojo.query("menupopup", control)[0],
             "first"
         );
+        control.value = -1;
         return control;
     };
 
@@ -379,10 +381,18 @@ function BatchReceiver() {
 
         var node = dojo.query("*", node_by_name(field, row))[0];
 
-        if (typeof(value) == "undefined")
+        if (typeof(value) == "undefined") {
             return node.value;
-        else
+        } else {
+            /* XXX The new two lines /should/ each do the same thing, but
+             * apparently they don't.  With only one or the other, I get
+             * skipped fields when this is called by the code that
+             * pre-populates fields based on copy templates.  This may
+             * have something to do with Dojo and XUL not getting along
+             * completely? */
+            dojo.attr(node, "value", value);
             node.value = value;
+        }
     }
 
 	this._user_wants_autogen = function() {
@@ -649,6 +659,53 @@ function BatchReceiver() {
 
     };
 
+    this._update_copy_template_cache = function() {
+        var templates_needed = openils.Util.uniqueElements(
+            openils.Util.objectProperties(this.item_cache).map(
+                function(id) {
+                    return self.item_cache[id].stream().distribution().
+                        receive_unit_template();
+                }
+            )
+        ).filter(
+            function(id) { return !self._copy_template_cache[id]; }
+        );
+
+        if (templates_needed.length) {
+            this.pcrud.search("act", {"id": templates_needed}).forEach(
+                function(tmpl) {
+                    self._copy_template_cache[tmpl.id()] = tmpl;
+                }
+            );
+        }
+    }
+
+    this.apply_copy_templates = function() {
+        this._update_copy_template_cache(); /* sync */
+
+        for (var id in this.item_cache) {
+            var item = this.item_cache[id];
+            var template_id =
+                item.stream().distribution().receive_unit_template();
+            var template = this._copy_template_cache[template_id];
+
+            var row = this.rows[id];
+
+            var tmpl_mod = template.circ_modifier();
+            var tmpl_loc = template.location();
+            var tmpl_price = template.price();
+            if (tmpl_mod != null) {
+                this._row_field_value(
+                    row, "circ_modifier", tmpl_mod == "" ? 0 : tmpl_mod
+                );
+            }
+            if (tmpl_loc)
+                this._row_field_value(row, "location", tmpl_loc);
+            if (tmpl_price > 0)
+                this._row_field_value(row, "price", tmpl_price);
+        }
+    };
+
     this.load_entry_form = function(issuance) {
         if (typeof(issuance) == "undefined") {
             var issuance_id = dojo.byId("issuance_chooser").value;
@@ -673,7 +730,6 @@ function BatchReceiver() {
                     busy(false);
 
                     if (list = openils.Util.readResponse(r, false, true)) {
-
                         if (list.length) {
                             busy(true);
                             show("form_holder");
@@ -681,7 +737,12 @@ function BatchReceiver() {
                             list.forEach(function(o) {self.add_entry_row(o);});
 
                             self.build_batch_entry_row();
-                            dojo.byId("batch_receive_with_units").doCommand();
+
+                            var recv_with_units =
+                                dojo.byId("batch_receive_with_units");
+                            recv_with_units.doCommand();
+                            if (recv_with_units.checked)
+                                self.apply_copy_templates();
 
                             show("batch_receive_entry");
                             busy(false);
