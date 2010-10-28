@@ -175,8 +175,13 @@ sub process_retrieval {
     $e->create_acq_edi_message($incoming);
     $e->xact_commit;
     # refresh: send process_jedi the updated row
-    my $res = __PACKAGE__->process_jedi($e->retrieve_acq_edi_message($incoming->id), $server, $account, $e);
+    $e->xact_begin;
     my $outgoing = $e->retrieve_acq_edi_message($incoming->id);  # refresh again!
+    $e->xact_rollback;
+    my $res = __PACKAGE__->process_jedi($outgoing, $server, $account, $e);
+    $e->xact_begin;
+    $outgoing = $e->retrieve_acq_edi_message($incoming->id);  # refresh again!
+    $e->xact_rollback;
     $outgoing->status($res ? 'processed' : 'proc_error');
     if ($res) {
         $e->xact_begin;
@@ -196,7 +201,9 @@ sub send_core {
     ($account and scalar @$message_ids) or return;
     $e ||= new_editor();
 
+    $e->xact_begin;
     my @messageset = map {$e->retrieve_acq_edi_message($_)} @$message_ids;
+    $e->xact_rollback;
     my $m_count = scalar(@messageset);
     (scalar(@$message_ids) == $m_count) or
         $logger->warn(scalar(@$message_ids) - $m_count . " bad IDs passed to send_core (ignored)");
