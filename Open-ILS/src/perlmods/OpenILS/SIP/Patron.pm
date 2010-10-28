@@ -38,6 +38,7 @@ sub new {
     my $class = shift;
     my $key   = (@_ > 1) ? shift : 'barcode';  # if we have multiple args, the first is the key index (default barcode)
     my $patron_id = shift;
+    my %args = @_;
 
     if ($key ne 'usr' and $key ne 'barcode') {
         syslog("LOG_ERROR", "Patron (card) lookup requested by illegeal key '$key'");
@@ -55,34 +56,43 @@ sub new {
     syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s => %s): searching...", $key, $patron_id);
 
     my $e = OpenILS::SIP->editor();
+
+    my $usr_flesh = {
+        flesh => 2,
+        flesh_fields => {
+            au => [
+                "card",
+                "standing_penalties",
+                "addresses",
+                "billing_address",
+                "mailing_address",
+                'profile',
+            ],
+            ausp => ['standing_penalty']
+        }
+    };
+
+    # in some cases, we don't need all of this data.  Only fetch the user + barcode
+    $usr_flesh = {flesh => 1, flesh_fields => {au => ['card']}} if $args{slim_user};
     
-    my $user_id = $patron_id;
-    if($key eq 'barcode') {
-        my $card = $e->search_actor_card({barcode => $patron_id})->[0];
-        unless($card) {
+    my $user;
+    if($key eq 'barcode') { # retrieve user by barcode
+
+        $$usr_flesh{flesh} += 1;
+        $$usr_flesh{flesh_fields}{ac} = ['usr'];
+
+        my $card = $e->search_actor_card([{barcode => $patron_id}, $usr_flesh])->[0];
+
+        if(!$card) {
             syslog("LOG_WARNING", "No such patron barcode: $patron_id");
             return undef;
         }
-        $user_id = $card->usr;
-    }
 
-	my $user = $e->retrieve_actor_user([
-        $user_id,
-        {
-            flesh => 2,
-            flesh_fields => {
-                au => [
-                    "card",
-                    "standing_penalties",
-                    "addresses",
-                    "billing_address",
-                    "mailing_address",
-                    'profile',
-                ],
-                ausp => ['standing_penalty']
-            }
-        }
-    ]);
+        $user = $card->usr;
+
+    } else {
+	    $user = $e->retrieve_actor_user([$patron_id, $usr_flesh]);
+    }
 
     if(!$user) {
         syslog("LOG_WARNING", "OILS: Unable to find patron %s => %s", $key, $patron_id);

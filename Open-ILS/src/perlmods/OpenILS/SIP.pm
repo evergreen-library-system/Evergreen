@@ -387,7 +387,7 @@ sub checkin {
 	$xact->do_checkin( $self, $inst_id, $trans_date, $return_date, $current_loc, $item_props );
 	
 	if ($xact->ok) {
-        $xact->patron($self->find_patron(usr => $xact->{circ_user_id})) if $xact->{circ_user_id};
+        $xact->patron($self->find_patron(usr => $xact->{circ_user_id}, slim_user => 1)) if $xact->{circ_user_id};
         delete $item->{patron};
         delete $item->{due_date};
         syslog('LOG_INFO', "OILS: Checkin succeeded");
