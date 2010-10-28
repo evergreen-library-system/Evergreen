@@ -1456,6 +1456,7 @@ sub choose_nearest_copy {
 				  requestor => $hold->requestor->to_fieldmapper,
 				  request_lib => $hold->request_lib->to_fieldmapper,
 				  pickup_lib => $hold->pickup_lib->id,
+				  retarget => 1
 				}
 			));
 			$seen{$c->id}++;
