@@ -562,7 +562,9 @@ sub _build_volume_list {
 	$search_hash->{deleted} = 'f';
 	my $e = new_editor();
 
-	my $vols = $e->search_asset_call_number($search_hash);
+	my $vols = $e->search_asset_call_number([$search_hash, { 'order_by' => {
+		'acn' => 'label'
+	} } ] );
 
 	my @volumes;
 
