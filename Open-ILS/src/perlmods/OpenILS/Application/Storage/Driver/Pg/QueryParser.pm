@@ -17,6 +17,20 @@ sub quote_value {
     return "\$_$$\$$value\$_$$\$";
 }
 
+sub quote_phrase_value {
+    my $self = shift;
+    my $value = shift;
+
+    my $left_anchored  = $value =~ m/^\^/;
+    my $right_anchored = $value =~ m/\$$/;
+    $value =~ s/\^//   if $left_anchored;
+    $value =~ s/\$$//  if $right_anchored;
+    $value =~ quotemeta($value);
+    $value = '^' . $value if $left_anchored;
+    $value = "$value\$"   if $right_anchored;
+    return $self->quote_value($value);
+}
+
 sub init {
     my $class = shift;
 
@@ -619,7 +633,7 @@ sub flatten {
                 }
 
                 $where .= '(' . $talias . ".id IS NOT NULL";
-                $where .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_value($_)} @{$node->phrases}) if (@{$node->phrases});
+                $where .= ' AND ' . join(' AND ', map {"${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_)} @{$node->phrases}) if (@{$node->phrases});
                 $where .= ')';
 
                 push @rank_list, $node_rank;
