@@ -656,12 +656,21 @@ sub eg_li {
         $logger->warn("EDI ORDRSP RFF/1153 unexpected value ('$val_1153', not 'LI').  Attempting failover to LIN/1082");
     }
 
-    if ($id and $val_1082 and $val_1082 ne $id) {
-        $logger->warn("EDI ORDRSP LIN/1082 Line Item ID mismatch ($id vs. $val_1082): cannot target update");
+    # FIXME - the line item ID in LIN/1082 ought to match RFF/1154, but
+    # not all materials vendors obey this.  Commenting out check for now
+    # as being too strict.
+    #if ($id and $val_1082 and $val_1082 ne $id) {
+    #    $logger->warn("EDI ORDRSP LIN/1082 Line Item ID mismatch ($id vs. $val_1082): cannot target update");
+    #    return;
+    #}
+
+    $id ||= $val_1082 || '';
+    if ($id eq '') {
+        $logger->warn('Cannot identify line item from EDI message');
         return;
     }
-    $id ||= $val_1082 || '';
-    print STDERR "EDI retrieve/update lineitem $id\n";
+
+    $logger->info("EDI retrieve/update lineitem $id");
 
     my $li = OpenILS::Application::Acq::Lineitem::retrieve_lineitem_impl($e, $id, {
         flesh_li_details => 1,
