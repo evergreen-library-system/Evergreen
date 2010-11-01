@@ -9404,14 +9404,10 @@ ALTER TABLE acq.fund
 	ADD COLUMN active BOOL NOT NULL DEFAULT TRUE;
 
 ALTER TABLE acq.fund
-    ADD COLUMN balance_warning_percent INT
-    CONSTRAINT balance_warning_percent_limit
-        CHECK( balance_warning_percent <= 100 );
+    ADD COLUMN balance_warning_percent INT;
 
 ALTER TABLE acq.fund
-    ADD COLUMN balance_stop_percent INT
-    CONSTRAINT balance_stop_percent_limit
-        CHECK( balance_stop_percent <= 100 );
+    ADD COLUMN balance_stop_percent INT;
 
 CREATE VIEW acq.ordered_funding_source_credit AS
 	SELECT
