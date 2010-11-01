@@ -23,14 +23,14 @@
 
 	<br/>
 
-    <form id='login_form'>
+    <form id='login_form' method='POST'>
         <table id='login_table' class='data_grid' style='margin-left: 20px;' width='95%'>
             <tbody id='login_tbody'>
                 <tr>
                     <td><span class='login_text'>&login.username;</span></td>
                     <td>
                         <span class='login_text'>
-                            <input id='login_username' type='text' size='16' />
+                            <input id='login_username' name='login_username' type='text' size='16'></input>
                         </span>
                     </td>
                 </tr>
@@ -40,7 +40,7 @@
                     </td>
                     <td>
                         <span class='login_text'>
-                            <input id='login_password' type='password' size='16' />
+                            <input id='login_password' name='login_password' type='password' size='16'></input>
                         </span>
                     </td>
                 </tr>
@@ -48,10 +48,10 @@
                 <tr class='color_1'>
                     <td colspan='2' align='center'>
                         <span class='login_text' style='margin-right: 20px;'>
-                        <input type='submit' value='&common.login;'  id='login_button'/>
+                        <input type='submit' value='&common.login;' name='login_button' id='login_button'></input>
                         </span>
                         <span class='login_text' style='margin-left: 20px;'>
-                            <input type='submit' id='login_cancel_button' value='&common.cancel;'/>
+                            <input type='submit' name='login_cancel_button' id='login_cancel_button' value='&common.cancel;'></input>
                         </span>
                     </td>
                 </tr>
