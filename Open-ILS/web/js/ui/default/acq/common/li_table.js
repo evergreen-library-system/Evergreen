@@ -794,7 +794,7 @@ function AcqLiTable() {
             return handler(li);
         
         fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.lineitem.retrieve'],
+            ['open-ils.acq', 'open-ils.acq.lineitem.retrieve.authoritative'],
             {   async: true,
 
                 params: [self.authtoken, liId, {
