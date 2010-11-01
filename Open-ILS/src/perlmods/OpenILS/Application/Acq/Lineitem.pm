@@ -69,6 +69,7 @@ sub create_lineitem {
 __PACKAGE__->register_method(
     method    => 'retrieve_lineitem',
     api_name  => 'open-ils.acq.lineitem.retrieve',
+    authoritative => 1,
     signature => {
         desc   => 'Retrieves a lineitem',
         params => [

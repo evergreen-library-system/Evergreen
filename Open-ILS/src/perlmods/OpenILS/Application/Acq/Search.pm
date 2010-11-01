@@ -602,10 +602,12 @@ sub bib_search {
 
     $logger->info("created @li_ids new lineitems for picklist $picklist");
 
-    # new editor, no transaction needed this time
-    $e = new_editor("authtoken" => $auth) or return $e->die_event;
+    # new editor, but still using transaction to ensure correct retrieval
+    # in a replicated setup
+    $e = new_editor("authtoken" => $auth, xact => 1) or return $e->die_event;
     return $e->die_event unless $e->checkauth;
     $conn->respond($RETRIEVERS{"lineitem"}->($e, $_, $opts)) foreach @li_ids;
+    $e->rollback;
     $e->disconnect;
 
     undef;
