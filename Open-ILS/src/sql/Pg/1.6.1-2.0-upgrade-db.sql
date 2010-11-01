@@ -23,7 +23,7 @@ BEGIN;
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0449');
+INSERT INTO config.upgrade_log (version) VALUES ('0453');
 
 -- Remove some uses of the connectby() function from the tablefunc contrib module
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT, INT ) RETURNS SETOF actor.org_unit AS $$
@@ -14010,6 +14010,7 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
             for my $from_field ($source_r->field( $f )) {
                 my @tos = $target_r->field( $f );
                 if (!@tos) {
+                    next if (exists($fields{$f}{match}));
                     my @new_fields = map { $_->clone } $source_r->field( $f );
                     $target_r->insert_fields_ordered( @new_fields );
                 } else {

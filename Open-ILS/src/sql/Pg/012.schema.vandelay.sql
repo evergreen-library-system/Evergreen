@@ -347,9 +347,18 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
     for my $f ( keys %fields) {
         if ( @{$fields{$f}{sf}} ) {
             for my $from_field ($source_r->field( $f )) {
-                for my $to_field ($target_r->field( $f )) {
-                    if (exists($fields{$f}{match})) {
-                        next unless (grep { $_ =~ $fields{$f}{match}{re} } $to_field->subfield($fields{$f}{match}{sf}));
+                my @tos = $target_r->field( $f );
+                if (!@tos) {
+                    next if (exists($fields{$f}{match}));
+                    my @new_fields = map { $_->clone } $source_r->field( $f );
+                    $target_r->insert_fields_ordered( @new_fields );
+                } else {
+                    for my $to_field (@tos) {
+                        if (exists($fields{$f}{match})) {
+                            next unless (grep { $_ =~ $fields{$f}{match}{re} } $to_field->subfield($fields{$f}{match}{sf}));
+                        }
+                        my @new_sf = map { ($_ => $from_field->subfield($_)) } @{$fields{$f}{sf}};
+                        $to_field->add_subfields( @new_sf );
                     }
                     my @new_sf = map { ($_ => $from_field->subfield($_)) } @{$fields{$f}{sf}};
                     $to_field->add_subfields( @new_sf );
