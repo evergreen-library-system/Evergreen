@@ -1791,7 +1791,7 @@ sub new_record_holdings {
 	$year += 1900;
 	$month += 1;
 
-	$client->respond("<holdings xmlns='http://open-ils.org/spec/holdings/v1'><counts>\n")
+	$client->respond("<holdings xmlns='http://open-ils.org/spec/holdings/v1'><counts>\n");
 
 	my $copy_counts = $count_req->gather(1);
 	my $staff_copy_counts = $staff_count_req->gather(1);
