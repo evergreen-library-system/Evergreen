@@ -1721,15 +1721,8 @@ sub new_record_holdings {
         $o_search
     )->gather(1);
 
-    my $top_org = defined($depth) ? 
-        $_storage->request(
-            'open-ils.cstore.json_query',
-            { from => [ 'actor.org_unit_ancestor_at_depth', $one_org->id, $depth ] }
-        )->gather(1)->{id} :
-        $one_org->id;
-
-    my $count_req = $_search->request('open-ils.search.biblio.record.copy_count' => $top_org => $bib);
-    my $staff_count_req = $_search->request('open-ils.search.biblio.record.copy_count.staff' => $top_org => $bib);
+    my $count_req = $_search->request('open-ils.search.biblio.record.copy_count' => $one_org->id => $bib);
+    my $staff_count_req = $_search->request('open-ils.search.biblio.record.copy_count.staff' => $one_org->id => $bib);
 
     my $orgs = $_storage->request(
         'open-ils.cstore.json_query.atomic',
