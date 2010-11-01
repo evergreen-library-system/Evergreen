@@ -121,6 +121,7 @@ function set_marc_edit() {
     var a =    xulG.url_prefix( urls.XUL_MARC_EDIT );
     var b =    {};
     var c =    {
+            'marc_control_number_identifier' : g.data.hash.aous['cat.marc_control_number_identifier'] || 'Set cat.marc_control_number_identifier in Library Settings',
             'record' : { 'url' : '/opac/extras/supercat/retrieve/marcxml/record/' + docid, "id": docid, "rtype": "bre" },
             'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
                 try {
