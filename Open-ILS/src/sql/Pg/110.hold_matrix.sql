@@ -133,45 +133,55 @@ BEGIN
 
             -- caclulate the rule match weight
             IF current_mp.item_owning_ou IS NOT NULL THEN
+                CONTINUE WHEN current_mp.item_owning_ou NOT IN (SELECT (actor.org_unit_ancestors(item_cn_object.owning_lib)).id);
                 IF NOT current_mp.strict_ou_match THEN
                     SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_owning_ou, item_cn_object.owning_lib)::FLOAT + 1.0)::FLOAT;
                 ELSE
+                    CONTINUE WHEN current_mp.item_owning_ou <> item_cn_object.owning_lib;
                     tmp_weight := CASE WHEN current_mp.item_owning_ou = item_cn_object.owning_lib THEN 1.0 ELSE 0.0 END;
                 END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
             IF current_mp.item_circ_ou IS NOT NULL THEN
+                CONTINUE WHEN current_mp.item_circ_ou NOT IN (SELECT (actor.org_unit_ancestors(item_object.circ_lib)).id);
                 IF NOT current_mp.strict_ou_match THEN
                     SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_circ_ou, item_object.circ_lib)::FLOAT + 1.0)::FLOAT;
                 ELSE
+                    CONTINUE WHEN current_mp.item_circ_ou <> item_object.circ_lib;
                     tmp_weight := CASE WHEN current_mp.item_circ_ou = item_object.circ_lib THEN 1.0 ELSE 0.0 END;
                 END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
             IF current_mp.pickup_ou IS NOT NULL THEN
+                CONTINUE WHEN current_mp.pickup_ou NOT IN (SELECT (actor.org_unit_ancestors(pickup_ou)).id);
                 IF NOT current_mp.strict_ou_match THEN
                     SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.pickup_ou, pickup_ou)::FLOAT + 1.0)::FLOAT;
                 ELSE
+                    CONTINUE WHEN current_mp.pickup_ou <> pickup_ou;
                     tmp_weight := CASE WHEN current_mp.pickup_ou = pickiup_ou THEN 1.0 ELSE 0.0 END;
                 END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
             IF current_mp.request_ou IS NOT NULL THEN
+                CONTINUE WHEN current_mp.request_ou NOT IN (SELECT (actor.org_unit_ancestors(request_ou)).id);
                 IF NOT current_mp.strict_ou_match THEN
                     SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.request_ou, request_ou)::FLOAT + 1.0)::FLOAT;
                 ELSE
+                    CONTINUE WHEN current_mp.request_ou <> request_ou;
                     tmp_weight := CASE WHEN current_mp.request_ou = request_ou THEN 1.0 ELSE 0.0 END;
                 END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
             END IF; 
 
             IF current_mp.user_home_ou IS NOT NULL THEN
+                CONTINUE WHEN current_mp.user_home_ou NOT IN (SELECT (actor.org_unit_ancestors(user_object.home_ou)).id);
                 IF NOT current_mp.strict_ou_match THEN
                     SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.user_home_ou, user_object.home_ou)::FLOAT + 1.0)::FLOAT;
                 ELSE
+                    CONTINUE WHEN current_mp.user_home_ou <> user_object.home_ou;
                     tmp_weight := CASE WHEN current_mp.user_home_ou = user_object.home_ou THEN 1.0 ELSE 0.0 END;
                 END IF;
                 current_mp_weight := current_mp_weight - tmp_weight;
