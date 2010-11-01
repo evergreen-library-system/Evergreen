@@ -1728,8 +1728,8 @@ sub new_record_holdings {
         )->gather(1)->{id} :
         $one_org->id;
 
-    my $count_req = $_search->request('open-ils.search.biblio.record.copy_count.atomic' => $top_org => $bib);
-    my $staff_count_req = $_search->request('open-ils.search.biblio.record.copy_count.staff.atomic' => $top_org => $bib);
+    my $count_req = $_search->request('open-ils.search.biblio.record.copy_count' => $top_org => $bib);
+    my $staff_count_req = $_search->request('open-ils.search.biblio.record.copy_count.staff' => $top_org => $bib);
 
     my $orgs = $_storage->request(
         'open-ils.cstore.json_query.atomic',
