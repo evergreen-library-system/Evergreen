@@ -1430,6 +1430,8 @@ BEGIN
         IF NOT FOUND AND OLD.marc = NEW.marc THEN -- don't do anything if the MARC didn't change
             RETURN NEW;
         END IF;
+        -- Propagate these updates to any linked bib records
+        PERFORM authority.propagate_changes(NEW.id) FROM authority.record_entry WHERE id = NEW.id;
     END IF;
 
     -- Flatten and insert the afr data
