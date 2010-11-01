@@ -142,6 +142,7 @@ function my_init() {
             window.xulG = {};
             window.xulG.record = {};
             window.xulG.save = {};
+            window.xulG.marc_control_number_identifier = 'CONS';
 
             window.xulG.save.label = $('catStrings').getString('staff.cat.marcedit.save.label');
             window.xulG.save.func = function (r) { alert(r); }
@@ -2350,7 +2351,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
                         [source_f, ses()]
                     );
                     if (new_auth && new_auth.id()) {
-                        var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">(CONS){new_auth.id()}</subfield>;
+                        var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">({xulG.marc_control_number_identifier}){new_auth.id()}</subfield>;
                         sf.parent().appendChild(id_sf);
                         var new_sf = marcSubfield(id_sf);
                         target.parentNode.appendChild(new_sf);
@@ -2602,7 +2603,7 @@ function loadMarcEditor(pcrud, marcxml, target, sf) {
                         if (!new_rec) {
                             return '';
                         }
-                        var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">(CONS){new_rec.id()}</subfield>;
+                        var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">({xulG.marc_control_number_identifier}){new_rec.id()}</subfield>;
                         sf.parent().appendChild(id_sf);
                         var new_sf = marcSubfield(id_sf);
                         target.parentNode.appendChild(new_sf);
