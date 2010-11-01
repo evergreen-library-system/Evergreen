@@ -1709,6 +1709,7 @@ sub new_record_holdings {
     my $offset = $$paging[1] || 0;
 
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+	my $_search = OpenSRF::AppSession->create( 'open-ils.search' );
 
 	my $o_search = { shortname => uc($ou) };
 	if (!$ou || $ou eq '-') {
@@ -1719,6 +1720,16 @@ sub new_record_holdings {
         "open-ils.cstore.direct.actor.org_unit.search",
         $o_search
     )->gather(1);
+
+    my $top_org = defined($depth) ? 
+        $_storage->request(
+            'open-ils.cstore.json_query',
+            { from => [ 'actor.org_unit_ancestor_at_depth', $one_org->id, $depth ] }
+        )->gather(1)->{id} :
+        $one_org->id;
+
+    my $count_req = $_search->request('open-ils.search.biblio.record.copy_count.atomic' => $top_org => $bib);
+    my $staff_count_req = $_search->request('open-ils.search.biblio.record.copy_count.staff.atomic' => $top_org => $bib);
 
     my $orgs = $_storage->request(
         'open-ils.cstore.json_query.atomic',
@@ -1780,7 +1791,26 @@ sub new_record_holdings {
 	$year += 1900;
 	$month += 1;
 
-	$client->respond("<holdings xmlns='http://open-ils.org/spec/holdings/v1'><volumes>\n");
+	$client->respond("<holdings xmlns='http://open-ils.org/spec/holdings/v1'><counts>\n")
+
+	my $copy_counts = $count_req->gather(1);
+	my $staff_copy_counts = $staff_count_req->gather(1);
+
+	for my $c (@$copy_counts) {
+		$$c{transcendant} ||= 0;
+		my $out = "<count type='public'";
+		$out .= " $_='$$c{$_}'" for (qw/count available unshadow transcendant org_unit depth/);
+		$client->respond("$out/>\n")
+	}
+
+	for my $c (@$staff_copy_counts) {
+		$$c{transcendant} ||= 0;
+		my $out = "<count type='staff'";
+		$out .= " $_='$$c{$_}'" for (qw/count available unshadow transcendant org_unit depth/);
+		$client->respond("$out/>\n")
+	}
+
+    $client->respond("</counts><volumes>\n");
     
 	for my $cn (@$cns) {
 		next unless (@{$cn->copies} > 0 or (ref($cn->uri_maps) and @{$cn->uri_maps}));
