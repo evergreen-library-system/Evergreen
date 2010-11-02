@@ -18756,6 +18756,12 @@ ALTER TABLE action.hold_copy_map
 DROP TRIGGER IF EXISTS push_due_date_tgr ON action.circulation;
 CREATE TRIGGER push_due_date_tgr BEFORE INSERT OR UPDATE ON action.circulation FOR EACH ROW EXECUTE PROCEDURE action.push_circ_due_time();
 
+INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath, remove )
+SELECT 'upc', 'UPC', '//*[@tag="024" and @ind1="1"]/*[@code="a"]', $r$(?:-|\s.+$)$r$
+WHERE NOT EXISTS (
+    SELECT 1 FROM acq.lineitem_marc_attr_definition WHERE code = 'upc'
+);
+
 COMMIT;
 
 -- Some operations go outside of the transaction, because they may
