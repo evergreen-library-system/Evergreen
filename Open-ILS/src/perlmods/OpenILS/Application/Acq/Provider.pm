@@ -93,7 +93,12 @@ sub retrieve_org_providers {
         $U->user_has_work_perm_at($e, $limit_perm, {descendants =>1});
 
     return [] unless @$org_ids;
-    $conn->respond($_) for @{$e->search_acq_provider({owner => $org_ids})};
+    $conn->respond($_) for @{
+        $e->search_acq_provider([
+            {owner => $org_ids, active => 't'},
+            {order_by => {acqpro => 'code'}}
+        ])
+    };
 
     return undef;
 }
