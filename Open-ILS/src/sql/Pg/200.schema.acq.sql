@@ -1073,20 +1073,31 @@ BEGIN
 
             xpath_string := REGEXP_REPLACE(xpath_string,$re$//?text\(\)$$re$,'');
 
-            pos := 1;
-
-            LOOP
-    			SELECT extract_acq_marc_field(id, xpath_string || '[' || pos || ']', adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
-
+            IF (adef.code = 'title' OR adef.code = 'author') THEN
+                -- title and author should not be split
+                -- FIXME: once oils_xpath can grok XPATH 2.0 functions, we can use
+                -- string-join in the xpath and remove this special case
+    			SELECT extract_acq_marc_field(id, xpath_string, adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
     			IF (value IS NOT NULL AND value <> '') THEN
-	    			INSERT INTO acq.lineitem_attr (lineitem, definition, attr_type, attr_name, attr_value)
-		    			VALUES (NEW.id, adef.id, atype, adef.code, value);
-                ELSE
-                    EXIT;
-			    END IF;
+				    INSERT INTO acq.lineitem_attr (lineitem, definition, attr_type, attr_name, attr_value)
+	     			    VALUES (NEW.id, adef.id, atype, adef.code, value);
+                END IF;
+            ELSE
+                pos := 1;
 
-                pos := pos + 1;
-            END LOOP;
+                LOOP
+    			    SELECT extract_acq_marc_field(id, xpath_string || '[' || pos || ']', adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
+
+    			    IF (value IS NOT NULL AND value <> '') THEN
+	    			    INSERT INTO acq.lineitem_attr (lineitem, definition, attr_type, attr_name, attr_value)
+		    			    VALUES (NEW.id, adef.id, atype, adef.code, value);
+                    ELSE
+                        EXIT;
+			        END IF;
+
+                    pos := pos + 1;
+                END LOOP;
+            END IF;
 
 		END IF;
 
