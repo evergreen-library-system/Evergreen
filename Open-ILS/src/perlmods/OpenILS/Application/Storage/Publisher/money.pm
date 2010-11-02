@@ -199,7 +199,7 @@ select
 		(my $real_sql = $SQL) =~ s/XX/$o_txt/gsm;
 
 		my $sth = money::collections_tracker->db_Main->prepare($real_sql);
-		$sth->execute( $org->id, $age, $org->id, $age, $amount );
+		$sth->execute( $org->id, $age, $org->id, $age, $org->id, $age, $amount );
 
 		while (my $row = $sth->fetchrow_hashref) {
 			#$row->{usr} = actor::user->retrieve($row->{usr})->to_fieldmapper;
