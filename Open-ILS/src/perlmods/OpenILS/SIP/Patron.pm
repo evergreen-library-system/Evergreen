@@ -51,7 +51,7 @@ sub new {
     }
 
     my $type = ref($class) || $class;
-    my $self = {};
+    my $self = bless({}, $type);
 
     syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s => %s): searching...", $key, $patron_id);
 
@@ -62,13 +62,11 @@ sub new {
         flesh_fields => {
             au => [
                 "card",
-                "standing_penalties",
                 "addresses",
                 "billing_address",
                 "mailing_address",
                 'profile',
             ],
-            ausp => ['standing_penalty']
         }
     };
 
@@ -99,6 +97,10 @@ sub new {
         return undef;
     }
 
+    # now grab the user's penalties
+
+    $self->flesh_user_penalties($user, $e) unless $args{slim_user};
+
     $self->{editor} = $e;
     $self->{user}   = $user;
     $self->{id}     = ($key eq 'barcode') ? $patron_id : $user->card->barcode;   # The barcode IS the ID to SIP.  
@@ -107,8 +109,60 @@ sub new {
     syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s => %s): found patron : barred=%s, card:active=%s", 
         $key, $patron_id, $user->barred, $user->card->active );
 
-    bless $self, $type;
     return $self;
+}
+
+# grab patron penalties.  Only grab non-archived penalties that are for fines,
+# excessive overdues, or otherwise block circluation activity
+sub flesh_user_penalties {
+    my ($self, $user, $e) = @_;
+
+    $user->standing_penalties(
+        $e->search_actor_user_standing_penalty([
+            {   
+                usr => $user->id,
+                '-or' => [
+
+                    # ignore "archived" penalties
+                    {stop_date => undef},
+                    {stop_date => {'>' => 'now'}}
+                ],
+
+                org_unit => {
+                    in  => {
+                        select => {
+                            aou => [{
+                                column => 'id', 
+                                transform => 'actor.org_unit_ancestors', 
+                                result_field => 'id'
+                            }]
+                        },
+                        from => 'aou',
+
+                        # at this point, there is no concept of "here", so fetch penalties 
+                        # for the patron's home lib plus ancestors
+                        where => {id => $user->home_ou}, 
+                        distinct => 1
+                    }
+                },
+
+                # in addition to fines and excessive overdue penalties, 
+                # we only care about penalties that result in blocks
+                standing_penalty => {
+                    in => {
+                        select => {csp => ['id']},
+                        from => 'csp',
+                        where => {
+                            '-or' => [
+                                {id => [1,2]}, # fines / overdues
+                                {block_list => {'!=' => undef}}
+                            ]
+                        },
+                    }
+                }
+            },
+        ])
+    );
 }
 
 sub id {
@@ -132,7 +186,7 @@ sub format_name {
 
 sub home_library {
     my $self = shift;
-    my $lib = $self->{editor}->retrieve_actor_org_unit($self->{user}->home_ou)->shortname;
+    my $lib = OpenILS::SIP::shortname_from_id($self->{user}->home_ou);
 	syslog('LOG_DEBUG', "OILS: Patron->home_library() = $lib");
     return $lib;
 }
@@ -269,6 +323,7 @@ sub fee_amount {
 sub screen_msg {
 	my $self = shift;
 	my $u = $self->{user};
+
 	return 'barred' if $u->barred eq 't';
 
 	my $b = 'blocked';
@@ -276,19 +331,11 @@ sub screen_msg {
 	return $b if $u->active eq 'f';
 	return $b if $u->card->active eq 'f';
 
-	if( $u->standing_penalties ) {
-		return $b if 
-			grep { $_->standing_penalty->name eq 'PATRON_EXCEEDS_OVERDUE_COUNT' } 
-				@{$u->standing_penalties};
+    # if we have any penalties at this point, they are blocking penalties
+    return $b if $u->standing_penalties and @{$u->standing_penalties};
 
-		return $b if 
-			grep { $_->standing_penalty->name eq 'PATRON_EXCEEDS_FINES' } 
-				@{$u->standing_penalties};
-	}
-
-	my $expire = DateTime::Format::ISO8601->new->parse_datetime(
-		cleanse_ISO8601($u->expire_date));
-
+    # has the patron account expired?
+	my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
 	return $b if CORE::time > $expire->epoch;
 
 	return 'OK';
@@ -304,13 +351,11 @@ sub too_many_charged {      # not implemented
 	return 0;
 }
 
-sub too_many_overdue {
+sub too_many_overdue { 
 	my $self = shift;
-	if( $self->{user}->standing_penalties ) {
-		return grep { $_->standing_penalty->name eq 'PATRON_EXCEEDS_OVERDUE_COUNT' } 
-			@{$self->{user}->standing_penalties};
-	}
-	return 0;
+    return scalar( # PATRON_EXCEEDS_OVERDUE_COUNT
+        grep { $_->standing_penalty == 2 } @{$self->{user}->standing_penalties}
+    );
 }
 
 # not completely sure what this means
@@ -331,27 +376,18 @@ sub too_many_lost {
     return 0;
 }
 
-sub excessive_fines {
+sub excessive_fines { 
     my $self = shift;
-	syslog('LOG_DEBUG', 'OILS: Patron->excessive_fines()');
-	if( $self->{user}->standing_penalties ) {
-		return grep { $_->standing_penalty->name eq 'PATRON_EXCEEDS_FINES' } 
-			@{$self->{user}->standing_penalties};
-	}
-	return 0;
+    return scalar( # PATRON_EXCEEDS_FINES
+        grep { $_->standing_penalty == 1 } @{$self->{user}->standing_penalties}
+    );
 }
-
 
 # Until someone suggests otherwise, fees and fines are the same
 
 sub excessive_fees {
 	my $self = shift;
-	syslog('LOG_DEBUG', 'OILS: Patron->excessive_fees()');
-	if( $self->{user}->standing_penalties ) {
-		return grep { $_->standing_penalty->name eq 'PATRON_EXCEEDS_FINES' } 
-			@{$self->{user}->standing_penalties};
-	}
-	return 0;
+    return $self->excessive_fines;
 }
 
 # not relevant, handled by fines/fees
