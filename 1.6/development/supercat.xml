@@ -265,17 +265,16 @@
 	</section>
 	<section xml:id="addingsupercatformats">
 		<title>Adding new SuperCat Formats</title>
-		<para>Adding SuperCat formats requires experience editing XSL files and familiarity with XML and Perl.</systemitem>.</para>	
+		<para>Adding SuperCat formats requires experience editing XSL files and familiarity with XML and Perl.</para>	
 		<para>SuperCat web services are based on the OpenSRF service, <systemitem class="service">>open-ils.supercat</systemitem>.</para> 
-		<para>Developers are able to add new formats by adding the <emphasis>xsl</emphasis> 
-		stylesheet for the format. By default, the location of the stylesheets is <filename class="directory">/openils/var/xsl/</filename>. You must also add the feed  to the perl 
+		<para>Developers are able to add new formats by adding the <emphasis>xsl</emphasis> stylesheet for the format. By default, the location of the stylesheets is <filename class="directory">/openils/var/xsl/</filename>. You must also add the feed  to the perl 
 		modules <filename>openils/lib/perl5/OpenILS/WWW/SuperCat/feed.pm</filename> and <filename>openils/lib/perl5/OpenILS/WWW/SuperCat.pm</filename>. An Evergreen restart is 
 		required for the feed to be activated.</para>
 		<tip><para>Use an existing xsl stylesheet and Perl module entry as a template for your new format.</para></tip>
 	</section>
 	<section xml:id="editingsupercatformats">
 		<title>Customizing SuperCat Formats</title>	
-		<para>Editing SuperCat formats requires experience editing XSL files and familiarity with XML.</systemitem>.</para>	
+		<para>Editing SuperCat formats requires experience editing XSL files and familiarity with XML..</para>	
 		<para>It is possible to customize existing supercat formats using XSL stylesheets. You arwe able to change the content to be displayed and the design of the pages.</para> 
 		<para>In order to change the display of a specific format, edit the corresponding XSL file(s) for the particular format. The default location for the XSL stylesheets is 
 		<filename class="directory">/openils/var/xsl/</filename>. </para>
