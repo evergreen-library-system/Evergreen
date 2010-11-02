@@ -413,8 +413,10 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             this.widget = new dijit.form.FilteringSelect(this.dijitArgs, this.parentNode);
             this.widget.searchAttr = this.widget.labelAttr = vfield.selector || vfield.name;
             this.widget.valueAttr = vfield.name;
+            this.widget.attr('disabled', true);
 
             var oncomplete = function(list) {
+                self.widget.attr('disabled', false);
 
                 if(self.labelFormat) 
                     self.widget.labelAttr = '_label';
@@ -476,6 +478,9 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 oncomplete();
 
             } else {
+
+                if(!this.dataLoader && openils.widget.AutoFieldWidget.defaultLinkedDataLoader[linkClass])
+                    this.dataLoader = openils.widget.AutoFieldWidget.defaultLinkedDataLoader[linkClass];
 
                 if(this.dataLoader) {
 
@@ -651,5 +656,30 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
 
     openils.widget.AutoFieldWidget.localeStrings = dojo.i18n.getLocalization("openils.widget", "AutoFieldWidget");
     openils.widget.AutoFieldWidget.cache = {};
+    openils.widget.AutoFieldWidget.defaultLinkedDataLoader = {};
+
+    /* Custom provider-as-link-class fetcher.  Fitler is ignored.  
+     * All viewable providers are retrieved.
+     */
+    openils.widget.AutoFieldWidget.defaultLinkedDataLoader.acqpro = 
+            function(linkClass, fitler, oncomplete) { 
+
+        fieldmapper.standardRequest(
+            ['open-ils.acq', 'open-ils.acq.provider.org.retrieve'],
+            {
+                async : true,
+                params : [openils.User.authtoken],
+                oncomplete : function(r) {
+                    var resp;
+                    var list = [];
+                    while(resp = r.recv()) {
+                        var pro = resp.content();
+                        if(pro) list.push(pro);
+                    }
+                    oncomplete(list);
+                }
+            }
+        );
+    }
 }
 
