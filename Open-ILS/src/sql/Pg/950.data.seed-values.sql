@@ -4011,10 +4011,8 @@ INSERT INTO action_trigger.event_definition (
         'ProcessTemplate',
         'print-on-demand',
 $$
-[% FILTER collapse %]
 [%- SET invoice = target -%]
-<!-- This lacks totals, info about funds (for invoice entries,
-    funds are per-LID!), and general refinement -->
+<!-- This lacks general refinement -->
 <div class="acq-invoice-voucher">
     <h1>Invoice</h1>
     <div>
@@ -4125,9 +4123,19 @@ $$
             </li>
         [% END %]
     </ul>
+    <div>
+        Amounts spent per fund:
+        <table>
+        [% FOR blob IN user_data %]
+            <tr>
+                <th style="text-align: left;">[% blob.fund.code %] ([% blob.fund.year %]):</th>
+                <td>$[% blob.total %]</td>
+            </tr>
+        [% END %]
+        </table>
+    </div>
 </div>
-[% END %]
-$$
+[% END %]$$
 );
 
 

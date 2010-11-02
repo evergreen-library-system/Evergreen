@@ -233,6 +233,44 @@ sub entry_amount_per_item {
     return $entry->amount_paid / $entry->phys_item_count;
 }
 
+sub easy_money { # TODO XXX replace with something from a library
+    my ($val) = @_;
+
+    my $rounded = int($val * 100) / 100.0;
+    if ($rounded == $val) {
+        return sprintf("%.02f", $val);
+    } else {
+        return sprintf("%g", $val);
+    }
+}
+
+# 0 on failure (caller should call $e->die_event), array on success
+sub amounts_spent_per_fund {
+    my ($e, $inv_id) = @_;
+
+    my $entries = $e->search_acq_invoice_entry({"invoice" => $inv_id}) or
+        return 0;
+
+    my %totals_by_fund;
+    foreach my $entry (@$entries) {
+        my $debits = find_entry_debits($e, $entry, "f") or return 0;
+        foreach (@$debits) {
+            $totals_by_fund{$_->fund} ||= 0.0;
+            $totals_by_fund{$_->fund} += $_->amount;
+        }
+    }
+
+    my @totals;
+    foreach my $fund_id (keys %totals_by_fund) {
+        my $fund = $e->retrieve_acq_fund($fund_id) or return 0;
+        push @totals, {
+            "fund" => $fund->to_bare_hash,
+            "total" => easy_money($totals_by_fund{$fund_id})
+        };
+    }
+
+    return \@totals;
+}
 
 # there is no direct link between invoice_entry and fund debits.
 # when we need to retrieve the related debits, we have to do some searching
@@ -496,10 +534,13 @@ sub print_html_invoice {
         return $e->die_event unless
             $e->allowed("VIEW_INVOICE", $invoice->receiver);
 
+        my $amounts = amounts_spent_per_fund($e, $invoice->id) or
+            return $e->die_event;
+
         $conn->respond(
             $U->fire_object_event(
                 undef, "format.acqinv.html", $invoice, $invoice->receiver,
-                "print-on-demand"
+                "print-on-demand", $amounts
             )
         );
     }
