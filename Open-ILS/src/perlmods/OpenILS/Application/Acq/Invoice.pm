@@ -272,6 +272,7 @@ sub find_entry_debits {
 __PACKAGE__->register_method(
 	method => 'build_invoice_api',
 	api_name	=> 'open-ils.acq.invoice.retrieve',
+    authoritative => 1,
 	signature => {
         desc => q/Creates a new stub invoice/,
         params => [

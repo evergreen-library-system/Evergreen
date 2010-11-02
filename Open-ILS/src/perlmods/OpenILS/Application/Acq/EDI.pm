@@ -62,6 +62,7 @@ sub add_a_msg {
 __PACKAGE__->register_method(
 	method    => 'retrieve',
 	api_name  => 'open-ils.acq.edi.retrieve',
+    authoritative => 1,
 	signature => {
         desc   => 'Fetch incoming message(s) from EDI accounts.  ' .
                   'Optional arguments to restrict to one vendor and/or a max number of messages.  ' .
