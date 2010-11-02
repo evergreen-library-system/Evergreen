@@ -612,6 +612,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/booking/resource_attr_map'); }
             ],
+            'cmd_server_admin_config_hard_due_date' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/hard_due_date'); }
+            ],
             'cmd_acq_view_picklist' : [
                 ['oncommand'],
                 function() { open_eg_web_page('acq/picklist/list', 'menu.cmd_acq_view_picklist.tab'); }

@@ -1599,7 +1599,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="chddv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::hard_due_date_values" oils_persist:tablename="config.hard_due_date_values" reporter:label="Hard Due Date Values">
-		<fields oils_persist:primary="id" oils_persist:sequence="config.hard_due_date_vales_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.hard_due_date_values_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Hard Due Date" name="hard_due_date" reporter:datatype="link"/>
 			<field reporter:label="Ceiling Date" name="ceiling_date" reporter:datatype="timestamp"/>

@@ -126,6 +126,7 @@
     <command id="cmd_server_admin_billing_type"/>
     <command id="cmd_server_admin_z39_source"/>
     <command id="cmd_server_admin_circ_mod"/>
+    <command id="cmd_server_admin_config_hard_due_date"/>
 
     <command id="cmd_server_admin_booking_resource" />
     <command id="cmd_server_admin_booking_resource_type" />
@@ -329,6 +330,7 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.perm_list.label;" command="cmd_server_admin_perm_list"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.copy_status.label;" command="cmd_server_admin_copy_status"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.marc_code_maps.label;" command="cmd_server_admin_marc_code"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.config_hard_due_date;" command="cmd_server_admin_config_hard_due_date"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.billing_type.label;" command="cmd_server_admin_billing_type"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.z3950_source.label;" command="cmd_server_admin_z39_source"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.circulation_modifier.label;" command="cmd_server_admin_circ_mod"/>
