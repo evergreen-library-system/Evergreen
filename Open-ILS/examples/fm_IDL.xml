@@ -1905,7 +1905,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 
 	<class id="chddv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::hard_due_date_values" oils_persist:tablename="config.hard_due_date_values" reporter:label="Hard Due Date Values">
-		<fields oils_persist:primary="id" oils_persist:sequence="config.hard_due_date_vales_id_seq">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.hard_due_date_values_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Hard Due Date" name="hard_due_date" reporter:datatype="link"/>
 			<field reporter:label="Ceiling Date" name="ceiling_date" reporter:datatype="timestamp"/>
@@ -2464,6 +2464,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_HARD_DUE_DATE" global_required="true" />
+				<retrieve />
+				<update permission="ADMIN_HARD_DUE_DATE" global_required="true" />
+				<delete permission="ADMIN_HARD_DUE_DATE" global_required="true" />
+			</actions>
 		</permacrud>
 	</class>
 

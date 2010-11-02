@@ -613,6 +613,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/rule_circ_duration'); }
             ],
+            'cmd_server_admin_config_hard_due_date' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/hard_due_date'); }
+            ],
             'cmd_server_admin_config_rule_recurring_fine' : [
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/rule_recurring_fine'); }

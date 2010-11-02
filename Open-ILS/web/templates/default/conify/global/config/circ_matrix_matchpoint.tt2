@@ -7,7 +7,7 @@
 </div>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <table  jsId="cmGrid"
-            autoHeight='true'
+            style="height: 600px;"
             dojoType="openils.widget.AutoGrid"
             fieldOrder="['org_unit', 'active', 'grp', 'circ_modifier', 'marc_type', 'marc_form', 'marc_vr_format']"
             defaultCellWidth='"auto"'
@@ -17,6 +17,12 @@
             editOnEnter='true'
             showColumnPicker='true'
             columnPickerPrefix='"conify.config.circ_matrix_matchpoint"'>
+            <thead>
+                <tr>
+                    <th field="hard_due_date" formatter="format_hard_due_date">
+                    </th>
+                </tr>
+            </thead>
     </table>
 </div>
 
@@ -51,5 +57,12 @@
 
 <div class='hidden'><div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/></div>
 
+<script type="text/javascript">
+    function format_hard_due_date(name) {
+        return "<a href='" + oilsBasePath +
+            "/conify/global/config/hard_due_date?name=" +
+            encodeURIComponent(name) + "'>" + name + "</a>";
+    }
+</script>
 [% END %]
 
