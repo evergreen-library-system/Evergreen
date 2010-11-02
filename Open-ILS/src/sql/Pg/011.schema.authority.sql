@@ -196,21 +196,13 @@ DECLARE
     bib_id        INT := 0;
     bib_rec       biblio.record_entry%ROWTYPE;
     auth_link     authority.bib_linking%ROWTYPE;
+    ingest_same   boolean;
 BEGIN
 
-    -- 1. Make source_record MARC a copy of the target_record to get auto-sync in linked bib records
-    UPDATE authority.record_entry
-      SET marc = (
-        SELECT marc
-          FROM authority.record_entry
-          WHERE id = target_record
-      )
-      WHERE id = source_record;
-
-    -- 2. Update all bib records with the ID from target_record in their $0
+    -- 1. Update all bib records with the ID from target_record in their $0
     FOR bib_rec IN SELECT bre.* FROM biblio.record_entry bre 
       INNER JOIN authority.bib_linking abl ON abl.bib = bre.id
-      WHERE abl.authority = target_record LOOP
+      WHERE abl.authority = source_record LOOP
 
         UPDATE biblio.record_entry
           SET marc = REGEXP_REPLACE(marc, 
@@ -221,9 +213,33 @@ BEGIN
           moved_objects := moved_objects + 1;
     END LOOP;
 
-    -- 3. "Delete" source_record
+    -- 2. Grab the current value of reingest on same MARC flag
+    SELECT enabled INTO ingest_same
+      FROM config.internal_flag
+      WHERE name = 'ingest.reingest.force_on_same_marc'
+    ;
+
+    -- 3. Temporarily set reingest on same to TRUE
+    UPDATE config.internal_flag
+      SET enabled = TRUE
+      WHERE name = 'ingest.reingest.force_on_same_marc'
+    ;
+
+    -- 4. Make a harmless update to target_record to trigger auto-update
+    --    in linked bibliographic records
+    UPDATE authority.record_entry
+      SET deleted = FALSE
+      WHERE id = source_record;
+
+    -- 5. "Delete" source_record
     DELETE FROM authority.record_entry
       WHERE id = source_record;
+
+    -- 6. Set "reingest on same MARC" flag back to initial value
+    UPDATE config.internal_flag
+      SET enabled = ingest_same
+      WHERE name = 'ingest.reingest.force_on_same_marc'
+    ;
 
     RETURN moved_objects;
 END;
