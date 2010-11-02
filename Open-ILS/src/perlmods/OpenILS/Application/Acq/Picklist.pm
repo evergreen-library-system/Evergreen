@@ -88,6 +88,7 @@ sub update_picklist {
 __PACKAGE__->register_method(
 	method => 'retrieve_picklist',
 	api_name	=> 'open-ils.acq.picklist.retrieve',
+    authoritative => 1,
 	signature => {
         desc => 'Retrieves a picklist',
         params => [
@@ -149,6 +150,7 @@ sub retrieve_lineitem_count {
 __PACKAGE__->register_method(
 	method => 'retrieve_picklist_name',
 	api_name	=> 'open-ils.acq.picklist.name.retrieve',
+    authoritative => 1,
 	signature => {
         desc => 'Retrieves a picklist by name.  Owner is implied by the caller',
         params => [

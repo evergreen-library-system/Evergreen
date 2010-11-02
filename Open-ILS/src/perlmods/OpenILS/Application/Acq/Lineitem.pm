@@ -726,6 +726,7 @@ sub update_li_edit_time {
 __PACKAGE__->register_method(
     method    => 'retrieve_lineitem_detail',
     api_name  => 'open-ils.acq.lineitem_detail.retrieve',
+    authoritative => 1,
     signature => {
         desc   => q/Updates a lineitem detail/,
         params => [
@@ -872,6 +873,7 @@ sub set_lineitem_attr {
 __PACKAGE__->register_method(
     method    => 'get_lineitem_attr_defs',
     api_name  => 'open-ils.acq.lineitem_attr_definition.retrieve.all',
+    authoritative => 1,
     signature => {
         desc   => 'Retrieve lineitem attr definitions',
         params => [ { desc => 'Authentication token', type => 'string' }, ],
@@ -965,6 +967,7 @@ sub ranged_line_item_alert_text {
 __PACKAGE__->register_method(
     method => "retrieve_lineitem_by_copy_id",
     api_name => "open-ils.acq.lineitem.retrieve.by_copy_id",
+    authoritative => 1,
     signature => {
         desc => q/Manage lineitem notes/,
         params => [

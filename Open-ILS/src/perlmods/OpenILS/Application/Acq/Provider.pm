@@ -40,6 +40,7 @@ sub create_provider {
 __PACKAGE__->register_method(
 	method => 'retrieve_provider',
 	api_name	=> 'open-ils.acq.provider.retrieve',
+    authoritative => 1,
 	signature => {
         desc => 'Retrieves a new provider',
         params => [

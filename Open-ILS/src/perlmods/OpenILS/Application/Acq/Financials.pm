@@ -67,6 +67,7 @@ sub delete_funding_source {
 __PACKAGE__->register_method(
 	method => 'retrieve_funding_source',
 	api_name	=> 'open-ils.acq.funding_source.retrieve',
+    authoritative => 1,
 	signature => {
         desc => 'Retrieves a new funding_source',
         params => [
@@ -237,6 +238,7 @@ sub delete_fund {
 __PACKAGE__->register_method(
 	method => 'retrieve_fund',
 	api_name	=> 'open-ils.acq.fund.retrieve',
+    authoritative => 1,
 	signature => {
         desc => 'Retrieves a new fund',
         params => [
@@ -345,6 +347,7 @@ sub retrieve_org_funds {
 __PACKAGE__->register_method(
 	method => 'retrieve_fund_summary',
 	api_name	=> 'open-ils.acq.fund.summary.retrieve',
+    authoritative => 1,
 	signature => {
         desc => 'Returns a summary of credits/debits/encumbrances for a fund',
         params => [
@@ -520,6 +523,7 @@ sub delete_fund_alloc {
 __PACKAGE__->register_method(
 	method => 'retrieve_fund_alloc',
 	api_name	=> 'open-ils.acq.fund_allocation.retrieve',
+    authoritative => 1,
 	signature => {
         desc => 'Retrieves a new fund_allocation',
         params => [
@@ -550,6 +554,7 @@ sub retrieve_fund_alloc {
 __PACKAGE__->register_method(
 	method => 'retrieve_funding_source_allocations',
 	api_name	=> 'open-ils.acq.funding_source.allocations.retrieve',
+    authoritative => 1,
 	signature => {
         desc => 'Retrieves a new fund_allocation',
         params => [
