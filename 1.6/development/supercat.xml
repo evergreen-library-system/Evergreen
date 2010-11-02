@@ -4,17 +4,20 @@
 	<info>
         	<title>SuperCat</title>
 	</info>
-	<para>SuperCat allows Evergreen record and information retrieval from a web browser using a based on a number of open web standards and formats. The following record types are supported:</para>
-	<itemizedlist>
-		<listitem>isbn</listitem>
-		<listitem>metarecord</listitem>
-		<listitem>record</listitem>
-	</itemizedlist>
-	<simplesect>
-		<title>Return a list of ISBNs for related records</title>
-		<para>Similar to the OCLC xISBN service, Evergreen can return a list of related records based on its oISBN algorithm:</para>
-		<para><uri>http://&lt;hostname&gt;/opac/extras/osibn/&lt;ISBN&gt;</uri></para>
-		<para>For example, <uri>http://dev.gapines.org/opac/extras/oisbn/0439136350</uri> returns:</para>
+	<section xml:id="usingsupercat">>
+		<title>Using SuperCat</title> 
+		<para>SuperCat allows Evergreen record and information retrieval from a web browser using a based on a number of open web standards and formats. The following record types are 
+		supported:</para>
+		<itemizedlist>
+			<listitem>isbn</listitem>
+			<listitem>metarecord</listitem>
+			<listitem>record</listitem>
+		</itemizedlist>
+		<simplesect>
+			<title>Return a list of ISBNs for related records</title>
+			<para>Similar to the OCLC xISBN service, Evergreen can return a list of related records based on its oISBN algorithm:</para>
+			<para><uri>http://&lt;hostname&gt;/opac/extras/osibn/&lt;ISBN&gt;</uri></para>
+			<para>For example, <uri>http://dev.gapines.org/opac/extras/oisbn/0439136350</uri> returns:</para>
 <screen>
 &lt;idlist metarecord="302670"&gt;
 &lt;isbn record="250060"&gt;0790783525&lt;/isbn&gt;
@@ -31,12 +34,12 @@
 &lt;isbn record="1231"&gt;0738301477&lt;/isbn&gt;
 &lt;/idlist&gt;
 </screen>
-	 </simplesect>
-	 <simplesect>
-		<title>Return records</title>
-		<para>SuperCat can return records and metarecords in many different formats (see <xref linkend='supportedsupercatformats' /></para>
-		<para><uri>http://&lt;hostname&gt;/opac/extras/supercat/retrieve/&lt;format&gt;/&lt;record-type&gt;/&lt;bib-ID&gt;</uri></para>
-		<para>For example, <uri>http://dev.gapines.org/opac/extras/supercat/retrieve/mods/record/555</uri> returns:</para>
+		 </simplesect>
+		 <simplesect>
+			<title>Return records</title>
+			<para>SuperCat can return records and metarecords in many different formats (see <xref linkend='supportedsupercatformats' /></para>
+			<para><uri>http://&lt;hostname&gt;/opac/extras/supercat/retrieve/&lt;format&gt;/&lt;record-type&gt;/&lt;bib-ID&gt;</uri></para>
+			<para>For example, <uri>http://dev.gapines.org/opac/extras/supercat/retrieve/mods/record/555</uri> returns:</para>
 <screen>
 &lt;mods:modsCollection version="3.0"&gt;
 	&lt;mods:mods xsi:schemaLocation="http://www.loc.gov/mods/ http://www.loc.gov/standards/mods/mods.xsd"&gt;
@@ -76,21 +79,21 @@
   	&lt;/mods:mods&gt;
 &lt;/mods:modsCollection&gt;
 </screen>
-	 </simplesect>
-	 <simplesect>
-		<title>Return a feed of recently edited or created records</title>
-		<para>SuperCat can return feeds of recently edited or created authority and bibliographic records:</para>
-		<para><uri>http://&lt;hostname&gt;/opac/extras/feed/freshmeat/&lt;feed-type&gt;/[authority|biblio]/[import|edit]/&lt;limit&gt;/&lt;date&gt;</uri></para>
-		<para>The limit records imported or edited following the supplied date will be returned. If you do not supply a date, then the most recent limit records will be returned.</para>
-		<para>If you do not supply a limit, then up to 10 records will be returned.</para>	
-		<para>Feed-type can be one of atom, html, htmlholdings, marcxml, mods, mods3, or rss2.</para>		
-		<para><uri>For example, http://dev.gapines.org/opac/extras/feed/freshmeat/atom/biblio/import/10/2008-01-01</uri></para>
-	</simplesect>
-	 <simplesect>
-		<title>Browse records</title>
-		<para>SuperCat can browse records in HTML and XML formats:</para>
-		<para><uri>http://&lt;hostname&gt;/opac/extras/supercat/browse/&lt;format&gt;/call_number/&lt;org_unit&gt;/&lt;call_number&gt;</uri></para>
-		<para>For example, <uri>http://dev.gapines.org/opac/extras/browse/xml/call_number/-/GV</uri> returns:</para>
+		 </simplesect>
+		 <simplesect>
+			<title>Return a feed of recently edited or created records</title>
+			<para>SuperCat can return feeds of recently edited or created authority and bibliographic records:</para>
+			<para><uri>http://&lt;hostname&gt;/opac/extras/feed/freshmeat/&lt;feed-type&gt;/[authority|biblio]/[import|edit]/&lt;limit&gt;/&lt;date&gt;</uri></para>
+			<para>The limit records imported or edited following the supplied date will be returned. If you do not supply a date, then the most recent limit records will be returned.</para>
+			<para>If you do not supply a limit, then up to 10 records will be returned.</para>	
+			<para>Feed-type can be one of atom, html, htmlholdings, marcxml, mods, mods3, or rss2.</para>		
+			<para><uri>For example, http://dev.gapines.org/opac/extras/feed/freshmeat/atom/biblio/import/10/2008-01-01</uri></para>
+		</simplesect>
+		 <simplesect>
+			<title>Browse records</title>
+			<para>SuperCat can browse records in HTML and XML formats:</para>
+			<para><uri>http://&lt;hostname&gt;/opac/extras/supercat/browse/&lt;format&gt;/call_number/&lt;org_unit&gt;/&lt;call_number&gt;</uri></para>
+			<para>For example, <uri>http://dev.gapines.org/opac/extras/browse/xml/call_number/-/GV</uri> returns:</para>
 <screen>
 &lt;hold:volumes xmlns:hold='http://open-ils.org/spec/holdings/v1'&gt;
 	&lt;hold:volume id="tag:open-ils.org,2008:asset-call_number/130607" lib="FRRLS-FA" label="GUTCHEON BETH"&gt;
@@ -113,12 +116,12 @@
 	&lt;/hold:volume&gt;
 &lt;/hold:volumes&gt;	
 </screen>
-	</simplesect>
-	 <simplesect xml:id="supportedsupercatformats">
-		<title>Supported formats</title>
-		<para>SuperCat maintains a list of supported formats for records and metarecords:</para>
-		<para><uri>http://&lt;hostname&gt;/opac/extras/supercat/formats/&lt;record-type&gt;</uri></para>
-		<para>For example, <uri>http://dev.gapines.org/opac/extras/supercat/formats/record</uri> returns:</para>
+		</simplesect>
+		 <simplesect xml:id="supportedsupercatformats">
+			<title>Supported formats</title>
+			<para>SuperCat maintains a list of supported formats for records and metarecords:</para>
+			<para><uri>http://&lt;hostname&gt;/opac/extras/supercat/formats/&lt;record-type&gt;</uri></para>
+			<para>For example, <uri>http://dev.gapines.org/opac/extras/supercat/formats/record</uri> returns:</para>
 <screen>
 &lt;formats&gt;
 
@@ -258,15 +261,24 @@
   &lt;/format&gt;
 &lt;/formats&gt;
 </screen>
-	</simplesect>
-	<simplesect>
-		<title>Adding new SuperCat formats</title>	
+		</simplesect>
+	</section>
+	<section xml:id="addingsupercatformats">
+		<title>Adding new SuperCat Formats</title>
+		<para>Adding SuperCat formats requires experience editing XSL files and familiarity with XML and Perl.</systemitem>.</para>	
 		<para>SuperCat web services are based on the OpenSRF service, <systemitem class="service">>open-ils.supercat</systemitem>.</para> 
 		<para>Developers are able to add new formats by adding the <emphasis>xsl</emphasis> 
-		stylesheet for the format in the directory<filename class="directory">/openils/var/web/opac/extras/xsl/</filename>, and by adding the feed references to the perl modules 
-		<filename>openils/lib/perl5/OpenILS/WWW/SuperCat/feed.pm</filename> and <filename>openils/lib/perl5/OpenILS/WWW/SuperCat.pm</filename>. An Evergreen restart is 
-		required for the new format to be activated.</para>
-		<tip><para>Use an existing xsl stylesheet and perm module entry as a guide for your new format.</para></tip>
-	</simplesect>
+		stylesheet for the format. By default, the location of the stylesheets is <filename class="directory">/openils/var/xsl/</filename>. You must also add the feed  to the perl 
+		modules <filename>openils/lib/perl5/OpenILS/WWW/SuperCat/feed.pm</filename> and <filename>openils/lib/perl5/OpenILS/WWW/SuperCat.pm</filename>. An Evergreen restart is 
+		required for the feed to be activated.</para>
+		<tip><para>Use an existing xsl stylesheet and Perl module entry as a template for your new format.</para></tip>
+	</section>
+	<section xml:id="editingsupercatformats">
+		<title>Customizing SuperCat Formats</title>	
+		<para>Editing SuperCat formats requires experience editing XSL files and familiarity with XML.</systemitem>.</para>	
+		<para>It is possible to customize existing supercat formats using XSL stylesheets. You arwe able to change the content to be displayed and the design of the pages.</para> 
+		<para>In order to change the display of a specific format, edit the corresponding XSL file(s) for the particular format. The default location for the XSL stylesheets is 
+		<filename class="directory">/openils/var/xsl/</filename>. </para>
+	</section>
 </chapter>
 

@@ -288,10 +288,15 @@ name='Default' csstype='color'/&gt;
 			<title>Customizing the Slimpac Results Display</title>
 			<para>Two files control the display results for the slimpac. Edit the XSL stylesheet (<filename>/openils/var/xsl/ATOM2XHTML.xsl</filename>) to edit the elements of the 
 			record as pulled from the XML output. 
-			You may also change the style of the page by editing the CSS stylesheet for the results display (<filename>/openils/var/web/opac/extras/os.css</filename>). To edit the 
-			holdings display which contains the details of the specific record linked from the results display, edit the CSS stylesheet for the holdings/details page 
-			(<filename>/openils/var/web/opac/extras/htmlcard.css</filename>). You may also control the holdings content by editing <filename>MARC21slim2HTMLCard.xsl</filename>. 
+			You may also change the style of the page by editing the CSS stylesheet for the results display (<filename>/openils/var/web/opac/extras/os.css</filename>).</para> 
+		</simplesect>
+		<simplesect>
+			<title>Customizing the Slimpac Details/Holdings Display</title>	
+			<para>It is also possible to customize the details page when viewing specific items from the results list. To edit the holdings display which contains the details of the specific 
+			record linked from the results display, edit the CSS stylesheet for the holdings/details page 
+			(<filename>/openils/var/web/opac/extras/htmlcard.css</filename>). You may also control the content of the record by editing <filename>MARC21slim2HTMLCard.xsl</filename>. 
 			Holdings data may also be controlled by editing <filename>MARC21slim2HTMLCard-holdings.xsl</filename>.</para>     
+		</simplesect>
 	</section>
 	<section xml:id="integratingsearchforms">
 		<title>Integrating a Evergreen Search Form on a Web Page</title>
