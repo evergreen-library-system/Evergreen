@@ -768,7 +768,7 @@ sub fund_exceeds_balance_percent {
 
         if ( 
             $allocations == 0 || # if no allocations were ever made, assume we have hit the stop percent
-            (($allocations - $balance + $debit_amount) / $allocations) * 100) > $fund->$method_name
+            ((($allocations - $balance + $debit_amount) / $allocations) * 100) > $fund->$method_name
         ) {
             $logger->info("fund would hit a limit: " . $fund->id . ", $balance, $debit_amount, $allocations, $method_name");
             $e->event(
