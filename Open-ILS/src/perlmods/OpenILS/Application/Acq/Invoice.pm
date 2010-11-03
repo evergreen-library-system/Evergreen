@@ -251,6 +251,9 @@ sub amounts_spent_per_fund {
     my $entries = $e->search_acq_invoice_entry({"invoice" => $inv_id}) or
         return 0;
 
+    my $items = $e->search_acq_invoice_item({"invoice" => $inv_id}) or
+        return 0;
+
     my %totals_by_fund;
     foreach my $entry (@$entries) {
         my $debits = find_entry_debits($e, $entry, "f") or return 0;
@@ -258,6 +261,12 @@ sub amounts_spent_per_fund {
             $totals_by_fund{$_->fund} ||= 0.0;
             $totals_by_fund{$_->fund} += $_->amount;
         }
+    }
+
+    foreach my $item (@$items) {
+        next unless $item->fund and $item->amount_paid;
+        $totals_by_fund{$item->fund} ||= 0.0;
+        $totals_by_fund{$item->fund} += $item->amount_paid;
     }
 
     my @totals;
