@@ -112,9 +112,9 @@
 					<para>The Staff Client data from the directory <filename class="directory">./staff_client/build</filename> must be placed somewhere on the machine 
 					(e.g. <filename class="directory">~/Desktop/Evergreen_Staff_Client</filename>). Remember to call XULRunner with the full path to the binary, followed by the 
 					install command and the path to the client data:</para>
-					<screen>
-					<userinput>/Library/Frameworks/XUL.framework/xulrunner-bin --install-app ~/Desktop/Evergreen_Staff_Client</userinput>
-					</screen>
+<screen>
+<userinput>/Library/Frameworks/XUL.framework/xulrunner-bin --install-app ~/Desktop/Evergreen_Staff_Client</userinput>
+</screen>
 					<para>This command should exit quietly. The folder <filename class="directory">/Applications/OpenILS</filename> will be created, containing a launcher 
 					named <application>open_ils_staff_client</application>.</para>
 				</simplesect>
@@ -129,10 +129,10 @@
 					<simplesect>
 						<title>Flush Receiptdb file:</title>
 						<para>First, get the package identifier, then purge/forget the build that was initially installed:</para>
-						<screen>
-						<userinput>sudo pkgutil --pkgs > /tmp/pkgs.txt</userinput>
-						<userinput>sudo pkgutil --forget org.mozilla.xulrunner</userinput>
-						</screen>
+<screen>
+<userinput>sudo pkgutil --pkgs > /tmp/pkgs.txt</userinput>
+<userinput>sudo pkgutil --forget org.mozilla.xulrunner</userinput>
+</screen>
 						<note>It may not be necessary to edit the file <filename>/Library/Receipts/InstallHistory.plist</filename> after deleting the folder 
 						<filename class="directory">XUL.framework</filename>. 
 						See <ulink url="http://lists.apple.com/archives/Installer-dev/2009/Jul/msg00008.html">
@@ -150,75 +150,74 @@
 					    * MacOS
 					</screen>
 					<para>Create an APP folder structure with the following commands:</para>
-					<screen>
-					<userinput>mkdir -p Evergreen.app/Contents/Frameworks</userinput>
-					<userinput>mkdir -p Evergreen.app/Contents/Resources</userinput>
-					<userinput>mkdir -p Evergreen.app/Contents/MacOS</userinput>
-					</screen>
+<screen>
+<userinput>mkdir -p Evergreen.app/Contents/Frameworks</userinput>
+<userinput>mkdir -p Evergreen.app/Contents/Resources</userinput>
+<userinput>mkdir -p Evergreen.app/Contents/MacOS</userinput>
+</screen>
 					<para/>
 					<orderedlist>
 						<listitem>
 							<para>Create a new file in the folder <filename class="directory">Evergreen.app/Contents/Info.plist</filename> containing the following data 
 							(adjust for your version of Evergreen):</para>
-							<programlisting language="xml"><![CDATA[
-							<?xml version="1.0" encoding="UTF-8"?>
-							<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-							<plist version="1.0">
-							<dict>
-							       <key>CFBundleExecutable</key>
-							       <string>xulrunner</string>
-							       <key>CFBundleGetInfoString</key>
-							       <string>OpenILS open_ils_staff_client rel_1_6_0_7</string>
-							       <key>CFBundleInfoDictionaryVersion</key>
-							       <string>6.0</string>
-							       <key>CFBundleName</key>
-							       <string>Evergreen Staff Client</string>
-							       <key>CFBundlePackageType</key>
-							       <string>APPL</string>
-							       <key>CFBundleShortVersionString</key>
-							       <string>rel_1_6_0_7</string>
-							       <key>CFBundleVersion</key>
-							       <string>rel_1_6_0_7.rel_1_6_0_7</string>
-							       <key>NSAppleScriptEnabled</key>
-							       <true/>
-							       <key>CFBundleTypeIconFile</key>
-							       <string>Evergreen.icns</string>
-							</dict>
-							</plist>
-							]]></programlisting>
-							
+<programlisting language="xml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+       <key>CFBundleExecutable</key>
+       <string>xulrunner</string>
+       <key>CFBundleGetInfoString</key>
+       <string>OpenILS open_ils_staff_client rel_1_6_0_7</string>
+       <key>CFBundleInfoDictionaryVersion</key>
+       <string>6.0</string>
+       <key>CFBundleName</key>
+       <string>Evergreen Staff Client</string>
+       <key>CFBundlePackageType</key>
+       <string>APPL</string>
+       <key>CFBundleShortVersionString</key>
+       <string>rel_1_6_0_7</string>
+       <key>CFBundleVersion</key>
+       <string>rel_1_6_0_7.rel_1_6_0_7</string>
+       <key>NSAppleScriptEnabled</key>
+       <true/>
+       <key>CFBundleTypeIconFile</key>
+       <string>Evergreen.icns</string>
+</dict>
+</plist>
+]]></programlisting>						
 						</listitem>
 						<listitem>Download and install an appropriate Mac OS package of XULRunner from the Mozilla website (see above for recommendations).</listitem>
 						<listitem>
 							<para>Make a copy of the folder <filename class="directory">/Library/Frameworks/XUL.Framework</filename> inside your APP file. It should 
 							look something like this:</para>
-							<screen>
-								* Evergreen.app/
-								__* Contents/
-								____* Frameworks/
-								______* XUL.Framework/
-								______* Versions/
-								________* Current -> 1.9.1.3 (symlink)
-								________* 1.9.1.3/
-								______* XUL -> Versions/Current/XUL
-								______* libxpcom.dylib -> Versions/Current/libxpcom.dylib
-								______* xulrunner-bin -> Versions/Current/xulrunner-bin
-							</screen>
+<screen>
+* Evergreen.app/
+__* Contents/
+____* Frameworks/
+______* XUL.Framework/
+______* Versions/
+________* Current -> 1.9.1.3 (symlink)
+________* 1.9.1.3/
+______* XUL -> Versions/Current/XUL
+______* libxpcom.dylib -> Versions/Current/libxpcom.dylib
+______* xulrunner-bin -> Versions/Current/xulrunner-bin
+</screen>
 						</listitem>
 						<listitem>Copy <filename>XUL.Framework/Versions/Current/xulrunner</filename> into the folder <filename class="directory">Evergreen.app/MacOS</filename> 
 						(do not symlink; copy the file).</listitem>
 						<listitem>
 							<para>Make <filename>Evergreen.app/Resources</filename> the root of your Evergreen application files like this:</para>
-							<screen>
-							* Evergreen.app/
-							__* Contents/
-							____* Resources/
-							______* BUILD_ID
-							______* application.ini
-							______* chrome/
-							______* components/
-							______* etc.
-							</screen>
+<screen>
+* Evergreen.app/
+__* Contents/
+____* Resources/
+______* BUILD_ID
+______* application.ini
+______* chrome/
+______* components/
+______* etc.
+</screen>
 						</listitem>
 						<listitem>Put a Mac format icon file named <filename>Evergreen.icns</filename> in <filename class="resources">Resources</filename>.</listitem>
 					</orderedlist>
@@ -236,35 +235,35 @@
 					in the following example.</para>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, change directory to the Staff Client source directory, then recursively copy the 
 					entire directory tree to the remote workstation:</para>
-					<screen>
-					<userinput>su - opensrf</userinput>
-					<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-					<userinput>scp -r build user@client.linux.machine:~/eg-client-x.x.x.x/</userinput>
-					</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>scp -r build user@client.linux.machine:~/eg-client-x.x.x.x/</userinput>
+</screen>
 					<para>To test the newly copied Staff Client, as the <systemitem class="username">opensrf</systemitem> user log into the remote workstation and execute it as 
 					shown:</para>
-					<screen>
-					<userinput>su - opensrf</userinput>
-					<userinput>xulrunner ~/eg-client-x.x.x.x/build/application.ini</userinput>
-					</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>xulrunner ~/eg-client-x.x.x.x/build/application.ini</userinput>
+</screen>
 				</simplesect>
 				<simplesect>
 					<title>Building the Staff Client on the Server</title>
 					<para>A Linux Staff Client is automatically built on the server as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side 
 					software, using a procedure similar to this:</para>
-					<screen>
-					<userinput>cd ~/ILS/Open-ILS/xul/staff_client</userinput>
-					<userinput>make STAFF_CLIENT_BUILD_ID='12345'</userinput>
-					<userinput>mkdir /openils/var/web/xul/</userinput>
-					<userinput>mkdir /openils/var/web/xul/12345/</userinput>
-					<userinput>cd build/</userinput>
-					<userinput>cp -R server/ /openils/var/web/xul/12345/</userinput>
-					</screen>
+<screen>
+<userinput>cd ~/ILS/Open-ILS/xul/staff_client</userinput>
+<userinput>make STAFF_CLIENT_BUILD_ID='12345'</userinput>
+<userinput>mkdir /openils/var/web/xul/</userinput>
+<userinput>mkdir /openils/var/web/xul/12345/</userinput>
+<userinput>cd build/</userinput>
+<userinput>cp -R server/ /openils/var/web/xul/12345/</userinput>
+</screen>
 					<para>The Staff Client can be run from the build directory using this command:</para>
-					<screen>
-					<userinput>su - opensrf</userinput>
-					<userinput>xulrunner application.ini</userinput>
-					</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>xulrunner application.ini</userinput>
+</screen>
 					<para>In order to install a compatible Staff Client on another Linux system, just copy the applicable files from the server to that system, or even manually 
 					build it on that system. Ensure that the BUILD_ID you choose on the server matches the BUILD_ID for each Staff Client you use on other systems.</para>
 					<para>If you will be using a pre-packaged Windows version on some systems, you may want to choose the BUILD_ID on both server and other versions to match that 
@@ -273,11 +272,11 @@
 					<para>If you are allowed to make changes on the Evergreen server, another option is to create a symbolic link. In order for a copy of the Staff Client and server 
 					to work together, the BUILD_ID must match the name of the directory containing the server components of the Staff Client, or the name of a symbolic link to 
 					that directory.</para>
-					<screen>
-					<userinput>su - root</userinput>
-					<userinput>cd /openils/var/web/xul</userinput>
-					<userinput>ln -s SERVER_BUILD_ID/ CLIENT_BUILD_ID</userinput>
-					</screen>
+<screen>
+<userinput>su - root</userinput>
+<userinput>cd /openils/var/web/xul</userinput>
+<userinput>ln -s SERVER_BUILD_ID/ CLIENT_BUILD_ID</userinput>
+</screen>
 				</simplesect>
 				<simplesect>
 					<title>Building the Staff Client on the client Machine</title>
@@ -293,10 +292,10 @@
 							<application>subversion</application> and <application>xulrunner</application>. You can also use <command>synaptic</command>, the graphical 
 							user interface for <command>apt-get</command>. For <application>subversion</application>, select the latest version; for 
 							<application>xulrunner</application>, select version <emphasis>1.8.1.4-2ubuntu5</emphasis>.</para>
-							<screen>
-							<userinput>sudo apt-get install subversion</userinput>
-							<userinput>sudo apt-get install xulrunner</userinput>
-							</screen>
+<screen>
+<userinput>sudo apt-get install subversion</userinput>
+<userinput>sudo apt-get install xulrunner</userinput>
+</screen>
 						</step>
 						<step>
 							<para>Download the Source Code</para>
@@ -320,11 +319,11 @@
 									<para>As the <systemitem class="username">opensrf</systemitem> user, open a terminal (command-line prompt) and navigate 
 									to the directory in which you wish to download the Staff Client. Use the following commands to download the proper version of
 									the source code by tag name:</para>
-									<screen>
-									<userinput>su - opensrf</userinput>
-									<userinput>cd /YOUR/DOWNLOAD/DIRECTORY</userinput>
-									<userinput>svn co rel_1_2_1_4/</userinput>
-									</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /YOUR/DOWNLOAD/DIRECTORY</userinput>
+<userinput>svn co rel_1_2_1_4/</userinput>
+</screen>
 									<para>Remember to change "rel_1_6_1_2" to the appropriate tag for your installation.</para>
 								</listitem>
 							</itemizedlist>
@@ -340,12 +339,12 @@
 									determine whether or not a connecting client is supported. For instance, for the PINES installation (version 1.2.1.4) the 
 									supported BUILD_ID is "rel_1_2_1_4". Modify the following commands accordingly.</para>
 									<para>As the <systemitem class="username">opensrf</systemitem> user, run the following commands to build the Staff Client:</para>
-									<screen>
-									<userinput>su - opensrf</userinput>
-									<userinput>cd /YOUR/DOWNLOAD/DIRECTORY</userinput>
-									<userinput>cd Open-ILS/xul/staff_client</userinput>
-									<userinput>make STAFF_CLIENT_BUILD_ID='rel_1_6_1_2'</userinput>
-									</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /YOUR/DOWNLOAD/DIRECTORY</userinput>
+<userinput>cd Open-ILS/xul/staff_client</userinput>
+<userinput>make STAFF_CLIENT_BUILD_ID='rel_1_6_1_2'</userinput>
+</screen>
 								</listitem>
 							</itemizedlist>
 						</step>
@@ -353,10 +352,10 @@
 							<para>Run the Staff Client (from the command line)</para>
 							<para>As the <systemitem class="username">opensrf</systemitem> user, navigate to the <filename class="directory">build/</filename> subdirectory 
 							(not <filename class="directory">staff_client/</filename>) and run the following command:</para>
-							<screen>
-							<userinput>su - opensrf</userinput>
-							<userinput>xulrunner application.ini</userinput>
-							</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>xulrunner application.ini</userinput>
+</screen>
 						</step>
 						<step>
 							<para>Cleaning Up / Creating Shortcuts</para>
@@ -364,21 +363,21 @@
 							to remove them to save space, or to create a clean directory containing the built Staff Client that can be copied to other machines. As 
 							the <systemitem class="username">opensrf</systemitem> user, issue the following commands to create a clean "staging" directory in which to place 
 							the finished Staff Client, and to copy into it the "staff_client" directory:</para>
-							<screen>
-							<userinput>su - opensrf</userinput>
-							<userinput>mkdir ~/&lt;Destination Directory&gt;</userinput>
-							<userinput>cd ~/&lt;Download Directory>/Open-ILS/xul/</userinput>
-							<userinput>cp -r staff_client ~/&lt;Destination Directory&gt;</userinput>
-							</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>mkdir ~/&lt;Destination Directory&gt;</userinput>
+<userinput>cd ~/&lt;Download Directory>/Open-ILS/xul/</userinput>
+<userinput>cp -r staff_client ~/&lt;Destination Directory&gt;</userinput>
+</screen>
 							<para>Finally, test the Staff Client to verify that all the necessary files were moved to the destination directory:</para>
-							<screen>
-							<userinput>cd ~/&lt;Destination Directory>/staff_client/build</userinput>
-							<userinput>xulrunner application.ini</userinput>
-							</screen>
+<screen>
+<userinput>cd ~/&lt;Destination Directory>/staff_client/build</userinput>
+<userinput>xulrunner application.ini</userinput>
+</screen>
 							<para>If there were no problems, then finish the cleanup by removing the original download directory and all subdirectories:</para>
-							<screen>
-							<userinput>rm -r -f ~/&lt;Download Directory&gt;</userinput>
-							</screen>
+<screen>
+<userinput>rm -r -f ~/&lt;Download Directory&gt;</userinput>
+</screen>
 							<para>You may wish to create <menuchoice><guimenu>Desktop</guimenu><guimenuitem>Start Menu</guimenuitem><guimenuitem>K-Menu</guimenuitem>
 							</menuchoice> shortcuts for the Staff Client using the command <command>xulrunner ~/&lt;Destination Directory>/staff_client/build/application.ini
 							</command> as the target.</para>
@@ -396,29 +395,29 @@
 					<orderedlist>
 						<listitem>
 							<para>Install wine</para>
-							<screen>
-							<userinput>sudo apt-get install wine</userinput>
-							</screen>
+<screen>
+<userinput>sudo apt-get install wine</userinput>
+</screen>
 						</listitem>
 						<listitem>
 							<para>Download Windows installer for the Staff Client</para>
 							<para>As the <systemitem class="username">opensrf</systemitem> user, run the following commands to download the Windows installer for the 
 							proper Staff Client from the <ulink url="http://open-ils.org">open-ils.org</ulink> website and place it in a temporary directory:</para>
-							<screen>
-							<userinput>su - opensrf</userinput>
-							<userinput>cd /YOUR/DOWNLOAD/DIRECTORY</userinput>
-							<userinput>wget http://open-ils.org/downloads/evergreen-setup-rel_version-number.exe</userinput>
-							</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /YOUR/DOWNLOAD/DIRECTORY</userinput>
+<userinput>wget http://open-ils.org/downloads/evergreen-setup-rel_version-number.exe</userinput>
+</screen>
 						</listitem>
 						<listitem>
 							<para>Run the downloaded Windows installer</para>
 							<para>As the <systemitem class="username">opensrf</systemitem> user, navigate to the directory where you downloaded the Windows executable 
 							file, then execute it:</para>
-							<screen>
-							<userinput>su - opensrf</userinput>
-							<userinput>cd /YOUR/DOWNLOAD/DIRECTORY</userinput>
-							<userinput>wine evergreen-setup-rel_version-number.exe</userinput>
-							</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /YOUR/DOWNLOAD/DIRECTORY</userinput>
+<userinput>wine evergreen-setup-rel_version-number.exe</userinput>
+</screen>
 							<para>If this step fails, you may need to configure Wine first to properly emulate Windows XP. To do so, type "winecfg" from the command line; 
 							in the "Applications" tab of the window that pops up, select "Default Settings" and choose "Windows XP" from the drop-down menu, then 
 							click <guibutton>Apply</guibutton>.</para>
@@ -481,19 +480,19 @@
 					<para>During the normal <emphasis>make install</emphasis> Evergreen server-side software build process, the variable defaults to an automatically generated 
 					date/time string, but you can also override the value of BUILD_ID.</para>
 					<para>The following commands could be used during the normal build process:</para>
-					<screen>
-					<userinput>su - root</userinput>
-					<userinput>cd /home/opensrf/[Evergreen Install Directory]</userinput>
-					<userinput>make STAFF_CLIENT_BUILD_ID=[version ID] install</userinput>
-					</screen>
+<screen>
+<userinput>su - root</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]</userinput>
+<userinput>make STAFF_CLIENT_BUILD_ID=[version ID] install</userinput>
+</screen>
 					<para>The following commands will manually build the Staff Client using a different BUILD_ID.</para>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, change directory to the Staff Client source directory, then set the variable and build 
 					the Staff Client:</para>			
-					<screen>
-					<userinput>su - opensrf</userinput>
-					<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-					<userinput>make STAFF_CLIENT_BUILD_ID=my_test_id  build</userinput>
-					</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>make STAFF_CLIENT_BUILD_ID=my_test_id  build</userinput>
+</screen>
 			</simplesect>
 			<simplesect>
 					<title>Option STAFF_CLIENT_VERSION</title>
@@ -501,43 +500,43 @@
 					in the Evergreen source root. The variable defaults to <emphasis>0trunk.revision</emphasis>, where the value of "revision" is automatically generated. You 
 					can override the value of VERSION similarly to the BUILD_ID.</para>
 					<para>The following commands could be used during the normal build process:</para>
-					<screen>
-					<userinput>su - root</userinput>
-					<userinput>cd /home/opensrf/[Evergreen Install Directory]</userinput>
-					<userinput>make STAFF_CLIENT_VERSION=0mytest.200 install</userinput>
-					</screen>
+<screen>
+<userinput>su - root</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]</userinput>
+<userinput>make STAFF_CLIENT_VERSION=0mytest.200 install</userinput>
+</screen>
 					<para>The following commands will manually build the Staff Client using a different VERSION.</para>
 					<para>If you plan to make extensions update automatically, the VERSION needs to conform to the format recommended in 
 					<ulink url="https://developer.mozilla.org/en/Toolkit_version_format">Toolkit Version Format</ulink> and newer versions need to be "higher" than older 
 					versions.</para>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, change directory to the Staff Client source directory, then set the variable and build 
 					the Staff Client:</para>
-					<screen>
-					<userinput>su - opensrf</userinput>
-					<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-					<userinput>make STAFF_CLIENT_VERSION=0mytest.200  build</userinput>
-					</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>make STAFF_CLIENT_VERSION=0mytest.200  build</userinput>
+</screen>
 				</simplesect>
 				<simplesect>
 					<title>Option STAFF_CLIENT_STAMP_ID variable</title>
 					<para>During the normal <emphasis>make install</emphasis> Evergreen server-side software build process, this variable is generated from STAFF_CLIENT_VERSION. 
 						You can override the value of STAMP_ID similarly to the BUILD_ID.</para>
 					<para>The following commands could be used during the normal build process:</para>
-					<screen>
-					<userinput>su - root</userinput>
-					<userinput>cd /home/opensrf/[Evergreen Install Directory]</userinput>
-					<userinput>make STAFF_CLIENT_STAMP_ID=my_test_stamp install</userinput>
-					</screen>
+<screen>
+<userinput>su - root</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]</userinput>
+<userinput>make STAFF_CLIENT_STAMP_ID=my_test_stamp install</userinput>
+</screen>
 					<para>The following commands will manually build the Staff Client using a different STAMP_ID.</para>
 					<para>It is possible to have multiple versions of the Staff Client by specifying a different STAMP_ID for each, possibly for different uses or 
 					client-side customizations.</para>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, change directory to the Staff Client source directory, then set the variable and build 
 					the Staff Client:</para>
-					<screen>
-					<userinput>su - opensrf</userinput>
-					<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-					<userinput>make STAFF_CLIENT_STAMP_ID=my_test_stamp  build</userinput>
-					</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>make STAFF_CLIENT_STAMP_ID=my_test_stamp  build</userinput>
+</screen>
 				</simplesect>
 			</simplesect>
 			<simplesect>
@@ -616,11 +615,11 @@
 						<para>You can create a so-called "developer build" of the Staff Client by substituting "devbuild" for "build" when running <command>make</command>. 
 						The build will contain an extra configuration file that enables some developer options.</para>
 						<para>As the <systemitem class="username">opensrf</systemitem> user, run <command>make</command> from the Staff Client source directory:</para>
-						<screen>
-						<userinput>su - opensrf</userinput>
-						<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-						<userinput>make devbuild</userinput>
-						</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>make devbuild</userinput>
+</screen>
 					</listitem>
 					<listitem>
 						<para>Compressed Javascript</para>
@@ -628,38 +627,38 @@
 						by substituting <option>compress-javascript</option> for "build" when running <command>make</command>. For more information see 
 						<ulink url="http://code.google.com/closure/compiler/">Google Closure Compiler</ulink>.</para>
 						<para>As the <systemitem class="username">opensrf</systemitem> user, run the following commands from the Staff Client source directory:</para>
-						<screen>
-						<userinput>su - opensrf</userinput>
-						<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-						<userinput>make compress-javascript</userinput>
-						</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>make compress-javascript</userinput>
+</screen>
 						<para>You can also combine Javascript review and compression, and also perform a "developer build".</para>
 						<para>As the <systemitem class="username">opensrf</systemitem> user, run the following commands from the Staff Client source directory:</para>
 						<note><para>In the following <command>make</command> below, the order of options is important!</para></note>
-						<screen>
-						<userinput>su - opensrf</userinput>
-						<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-						<userinput>make  devbuild  compress-javascript</userinput>
-						</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>make  devbuild  compress-javascript</userinput>
+</screen>
 					</listitem>
 					<listitem>
 						<para>Automatic Update Host</para>
 						<para>The host used to check for automatic Staff Client updates can be overridden by specifying the <option>AUTOUPDATE_HOST</option> option. The 
 						following commands could have been used during the normal build process:</para>
-						<screen>
-						<userinput>su - root</userinput>
-						<userinput>cd /home/opensrf/[Evergreen Install Directory]</userinput>
-						<userinput>make AUTOUPDATE_HOST=localhost install</userinput>
-						</screen>
+<screen>
+<userinput>su - root</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]</userinput>
+<userinput>make AUTOUPDATE_HOST=localhost install</userinput>
+</screen>
 						<para>You can manually set <option>AUTOUPDATE_HOST</option> to set up automatic update checking. The following commands will manually build the Staff 
 						Client using a different <option>AUTOUPDATE_HOST</option>.</para>
 						<para>As the <systemitem class="username">opensrf</systemitem> user, change directory to the Staff Client source directory, then set the variable and 
 						build the Staff Client:</para>
-						<screen>
-						<userinput>su - opensrf</userinput>
-						<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-						<userinput>make AUTOUPDATE_HOST=localhost build</userinput>
-						</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>make AUTOUPDATE_HOST=localhost build</userinput>
+</screen>
 						<para>For more information on Automatic Updates, see <xref linkend="staffclientinstallation-autoupdate"/>.</para>
 					</listitem>
 				</itemizedlist>
@@ -671,12 +670,12 @@
 				option of installing the Staff Client on the same machine it was built on, or on a different machine.</para>
 				<para>Assuming you have already built the Staff Client, and that your installation is in the directory <filename class="directory">/openils/var/web/xul</filename>, as 
 				the <systemitem class="username">opensrf</systemitem> user, change directory to the Staff Client source directory, then execute the following commands:</para>
-				<screen>
-				<userinput>su - opensrf</userinput>
-				<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-				<userinput>mkdir -p "/openils/var/web/xul/$(cat build/BUILD_ID)"</userinput>
-				<userinput>cp -R build/server "/openils/var/web/xul/$(cat build/BUILD_ID)"</userinput>
-				</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>mkdir -p "/openils/var/web/xul/$(cat build/BUILD_ID)"</userinput>
+<userinput>cp -R build/server "/openils/var/web/xul/$(cat build/BUILD_ID)"</userinput>
+</screen>
 			</simplesect>
 			<simplesect>
 				<title>Packaging the Staff Client</title>
@@ -690,11 +689,11 @@
 						suitable for use with the <application>xulrunner</application> parameter <option>--install-app</option>>.</para>
 						<para>As the <systemitem class="username">opensrf</systemitem> user, change directory to the Staff Client source directory, then execute the 
 						following commands:</para>
-						<screen>
-						<userinput>su - opensrf</userinput>
-						<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-						<userinput>make generic-client</userinput>
-						</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>make generic-client</userinput>
+</screen>
 					</listitem>
 					<listitem>
 						<para>Packaging a Windows Client</para>
@@ -728,11 +727,11 @@
 						</table>
 						<para>As the <systemitem class="username">opensrf</systemitem> user, change directory to the Staff Client source directory, then execute the 
 						following commands:</para>
-						<screen>
-						<userinput>su - opensrf</userinput>
-						<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-						<userinput>make win-client</userinput>
-						</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>make win-client</userinput>
+</screen>
 					</listitem>
 					<listitem>
 						<para>Packaging a Linux Client</para>
@@ -740,11 +739,11 @@
 						creates the output file "evergreen_staff_client.tar.bz2".</para>
 						<para>As the <systemitem class="username">opensrf</systemitem> user, change directory to the Staff Client source directory, then execute the 
 						following commands:</para>
-						<screen>
-						<userinput>su - opensrf</userinput>
-						<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-						<userinput>make linux-client</userinput>
-						</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>make linux-client</userinput>
+</screen>
 					</listitem>
 					<listitem>
 						<para>Packaging a Firefox Extension</para>
@@ -752,11 +751,11 @@
 						as a Firefox extension and creates the output file <filename>evergreen.xpi</filename>.</para>
 						<para>As the <systemitem class="username">opensrf</systemitem> user, change directory to the Staff Client source directory, then execute the 
 						following commands:</para>
-						<screen>
-						<userinput>su - opensrf</userinput>
-						<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
-						<userinput>make extension</userinput>
-						</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
+<userinput>make extension</userinput>
+</screen>
 					</listitem>
 				</itemizedlist>
 			</simplesect>
@@ -790,12 +789,12 @@
 							<para>At configuration time for the normal build of Evergreen server-side software</para>
 							<para>This must be done when the Evergreen server-side software is first configured (see <xref linkend="serversideinstallation-configure"/>). As 
 							the <systemitem class="username">opensrf</systemitem> user, use the utility "configure" as shown:</para>
-							<screen>
-							<userinput>su - opensrf</userinput>
-							<userinput>cd /home/opensrf/[Evergreen Install Directory]</userinput>
-							<userinput>./configure --prefix=/openils --sysconfdir=/openils/conf --with-updateshost=hostname</userinput>
-							<userinput>make</userinput>
-							</screen>
+<screen>
+<userinput>su - opensrf</userinput>
+<userinput>cd /home/opensrf/[Evergreen Install Directory]</userinput>
+<userinput>./configure --prefix=/openils --sysconfdir=/openils/conf --with-updateshost=hostname</userinput>
+<userinput>make</userinput>
+</screen>
 						</listitem>
 						<listitem>
 							<para>During a manual Staff Client build process</para>

@@ -16,9 +16,11 @@
 	<glossdiv>
 		<title>B</title>
 		<glossentry id="Book Bags">
-			<glossterm>Book Bags</glossterm>
+			<glossterm>Bookbags</glossterm>
 			<glossdef>
-				<caution>PLEASE ADD CONTENT</caution>
+				<para>Bookbags are lists of items that can be used for any number of purposes. For example, to keep track of what books you have read, books you would like to read, 
+				to maintain a class reading list, to maintain a reading list for a book club, to keep a list of books you would like for your birthday. There are an unlimited number 
+				of uses.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -85,9 +87,10 @@
 			</glossdef>
 		</glossentry>
 		<glossentry id="Item Buckets">
-			<glossterm>Item Buckets</glossterm>
+			<glossterm>Item/copy Buckets</glossterm>
 			<glossdef>
-				<caution>PLEASE ADD CONTENT</caution>
+				<para>Virtual <quote>containers</quote> to use in batch processing of item or copy records. They can be used to perform various cataloging/holdings maintenance tasks 
+				in batch.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -114,13 +117,13 @@
 		<glossentry id="MARC">
 			<glossterm>MARC</glossterm>
 			<glossdef>
-				<caution>PLEASE ADD CONTENT</caution>
+				<para>The MARC formats are standards for the representation and communication of bibliographic and related information in machine-readable form.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="MARCXML">
 			<glossterm>MARCXML</glossterm>
 			<glossdef>
-				<caution>PLEASE ADD CONTENT</caution>
+				<para>Framework for working with MARC data in a XML environment.<para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="McCoy">
@@ -132,7 +135,9 @@
 		<glossentry id="memcached">
 			<glossterm>memcached</glossterm>
 			<glossdef>
-				<para>A general-purpose distributed memory caching system, usually with a client~server architecture spread over multiple computing systems. It reduces the number of times a data source (e.g., a database) must be directly accessed by temporarily caching data in memory, therefore dramatically speeding up database-driven web applications.</para>
+				<para>A general-purpose distributed memory caching system, usually with a client~server architecture spread over multiple computing systems. It reduces the number of 
+				times a data source (e.g., a database) must be directly accessed by temporarily caching data in memory, therefore dramatically speeding up database-driven 
+				web applications.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -157,13 +162,15 @@
 		<glossentry id="OPAC">
 			<glossterm>OPAC</glossterm>
 			<glossdef>
-				<para>The "Online Public Access Catalog"; an online database of a library's holdings; used to find resources in their collections; possibly searchable by keyword, title, author, subject or call number.</para>
+				<para>The "Online Public Access Catalog"; an online database of a library's holdings; used to find resources in their collections; possibly searchable by keyword, 
+				title, author, subject or call number.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="OpenSRF">
 			<glossterm>OpenSRF</glossterm>
 			<glossdef>
-				<para>The "Open Scalable Request Framework" (pronounced 'open surf') is a stateful, decentralized service architecture that allows developers to create applications for Evergreen with a minimum of knowledge of its structure.</para>
+				<para>The "Open Scalable Request Framework" (pronounced 'open surf') is a stateful, decentralized service architecture that allows developers to create applications 
+				for Evergreen with a minimum of knowledge of its structure.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -178,7 +185,8 @@
 		<glossentry id="putty">
 			<glossterm>Putty</glossterm>
 			<glossdef>
-				<para>A popular open-source telnet/ssh client for the Windows and Unix platforms. More information is available at <ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/">http://www.chiark.greenend.org.uk/~sgtatham/putty/</ulink>.</para>
+				<para>A popular open-source telnet/ssh client for the Windows and Unix platforms. More information is available at 
+				<ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/">http://www.chiark.greenend.org.uk/~sgtatham/putty/</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -198,9 +206,10 @@
 	<glossdiv>
 		<title>S</title>
 		<glossentry id="SIP2">
-			<glossterm>SIP2</glossterm>
+			<glossterm></glossterm>
 			<glossdef>
-				<caution>PLEASE ADD CONTENT</caution>
+				<para>SIP, standing for Standard Interchange Protocol, was developed by the 3M Corporation to be a common protocol for data transfer between ILS' and third party 
+				devices.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="srfsh">
@@ -212,13 +221,15 @@
 		<glossentry id="SRU">
 			<glossterm>SRU</glossterm>
 			<glossdef>
-				<caution>PLEASE ADD CONTENT</caution>
+				<para>SRU is a standard XML-focused search protocol for Internet search queries, utilizing CQL (Contextual Query Language), a standard syntax for representing 
+				queries.</para> 
 			</glossdef>
 		</glossentry>
 		<glossentry id="ssh">
 			<glossterm>SSH</glossterm>
 			<glossdef>
-				<para>An encrypted network protocol using public-key cryptography that allows secure communications between systems on an insecure network. Typically used to access shell accounts but also supports tunneling, forwarding TCP ports and X11 connections, and transferring files.</para>
+				<para>An encrypted network protocol using public-key cryptography that allows secure communications between systems on an insecure network. Typically used to access 
+				shell accounts but also supports tunneling, forwarding TCP ports and X11 connections, and transferring files.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="sshproxy">
@@ -241,7 +252,9 @@
 		<glossentry id="SSL Certificate">
 			<glossterm>SSL Certificate</glossterm>
 			<glossdef>
-				<para>A special electronic document used to guarantee authenticity of a digital message. Also known as a "public key", or "identity" or "digital" certificate. It combines an identity (of a person or an organization) and a unique public key to form a so-called digital signature, and is used to verify that the public key does, in fact, belong with that particular identity.</para>
+				<para>A special electronic document used to guarantee authenticity of a digital message. Also known as a "public key", or "identity" or "digital" certificate. It 
+				combines an identity (of a person or an organization) and a unique public key to form a so-called digital signature, and is used to verify that the public key does, 
+				in fact, belong with that particular identity.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -250,7 +263,9 @@
 		<glossentry id="tunneling">
 			<glossterm>tunneling</glossterm>
 			<glossdef>
-				<para>A method of encapsulating data provided in one network protocol (the "delivery" protocol), within data in a different network protocol (the "tunneling" protocol). Used to provide a secure path and secure communications through an insecure or incompatible network. Can be used to bypass firewalls by communicating via a protocol the firewall normally blocks, but "wrapped" inside a protocol that the firewall does not block.</para>
+				<para>A method of encapsulating data provided in one network protocol (the "delivery" protocol), within data in a different network protocol (the "tunneling" 
+				protocol). Used to provide a secure path and secure communications through an insecure or incompatible network. Can be used to bypass firewalls by communicating via 
+				a protocol the firewall normally blocks, but "wrapped" inside a protocol that the firewall does not block.</para>
 				<glossseealso otherterm="sshtunnel"/>
 			</glossdef>
 		</glossentry>
@@ -260,7 +275,8 @@
 		<glossentry id="Ubuntu">
 			<glossterm>Ubuntu</glossterm>
 			<glossdef>
-				<para>A popular open-source operating system using the <systemitem class="osname">Linux</systemitem> kernel that was originally based on the <systemitem class="osname">Debian GNU/Linux</systemitem> operating system. More information is available at <ulink url="http://www.ubuntu.com">www.ubuntu.com</ulink>.</para>
+				<para>A popular open-source operating system using the <systemitem class="osname">Linux</systemitem> kernel that was originally based on the 
+				<systemitem class="osname">Debian GNU/Linux</systemitem> operating system. More information is available at <ulink url="http://www.ubuntu.com">www.ubuntu.com</ulink>.</para>
 				<glossseealso otherterm="Debian"/>
 			</glossdef>
 		</glossentry>
@@ -270,27 +286,36 @@
 		<glossentry id="virtualization">
 			<glossterm>Virtualization</glossterm>
 			<glossdef>
-				<para>A method of executing software in a special environment that is partitioned or separated from the real underlying hardware and software resources. In typical usage, it allows a "host" operating system to encapsulate or emulate another operating system environment in such a way that the emulated environment is completely unaware of the hosting environment. For instance, it allows a <systemitem class="osname">Linux</systemitem> application to execute within a <systemitem class="osname">Windows</systemitem> environment.</para>
+				<para>A method of executing software in a special environment that is partitioned or separated from the real underlying hardware and software resources. In typical 
+				usage, it allows a <emphasis>host</emphasis> operating system to encapsulate or emulate another operating system environment in such a way that the emulated environment 
+				is completely unaware of the hosting environment. For instance, it allows a <systemitem class="osname">Linux</systemitem> application to execute within a 
+				<systemitem class="osname">Windows</systemitem> environment.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="virtualbox">
 			<glossterm>VirtualBox</glossterm>
 			<glossdef>
-				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It can be installed on  <systemitem class="osname">Linux</systemitem>, <systemitem class="osname">Mac OS X</systemitem>, <systemitem class="osname">Windows</systemitem> or <systemitem class="osname">Solaris</systemitem> "host" operating systems and allows other "guest" (typically including <systemitem class="osname">Linux</systemitem> and <systemitem class="osname">Windows</systemitem>) operating systems to be loaded and executed.</para>
+				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It can be installed on  
+				<systemitem class="osname">Linux</systemitem>, <systemitem class="osname">Mac OS X</systemitem>, <systemitem class="osname">Windows</systemitem> or 
+				<systemitem class="osname">Solaris</systemitem> "host" operating systems and allows other "guest" (typically including <systemitem class="osname">Linux</systemitem> 
+				and <systemitem class="osname">Windows</systemitem>) operating systems to be loaded and executed.</para>
 				<glossseealso otherterm="virtualization"/>
 			</glossdef>
 		</glossentry>
 		<glossentry id="virtualpc">
 			<glossterm>Virtual PC</glossterm>
 			<glossdef>
-				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It is installed on a Windows "host" operating system and allows other "guest" (typically including <systemitem class="osname">Linux</systemitem> and <systemitem class="osname">Windows</systemitem>) operating systems to be loaded and executed.</para>
+				<para>A popular commercial package of virtualization software that emulates the x86 microprocessor architecture. It is installed on a Windows "host" operating system 
+				and allows other "guest" (typically including <systemitem class="osname">Linux</systemitem> and <systemitem class="osname">Windows</systemitem>) operating systems to 
+				be loaded and executed.</para>
 				<glossseealso otherterm="virtualization"/>
 			</glossdef>
 		</glossentry>
 		<glossentry id="Volume Buckets">
 			<glossterm>Volume Buckets</glossterm>
 			<glossdef>
-				<caution>PLEASE ADD CONTENT</caution>
+				<para>Virtual <quote>containers</quote> to use in batch processing of multiple volumes. They can be used to perform various cataloging/holdings maintenance tasks 
+				in batch.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="vmware">
@@ -306,7 +331,8 @@
 		<glossentry id="wine">
 			<glossterm>Wine</glossterm>
 			<glossdef>
-				<para>A popular open-source application that allows <systemitem class="osname">Linux</systemitem> and <systemitem class="osname">Unix</systemitem> systems to run <systemitem class="osname">Windows</systemitem> executables. More information is available at <ulink url="http://www.winehq.org/">http://www.winehq.org/</ulink>.</para>
+				<para>A popular open-source application that allows <systemitem class="osname">Linux</systemitem> and <systemitem class="osname">Unix</systemitem> systems to 
+				run <systemitem class="osname">Windows</systemitem> executables. More information is available at <ulink url="http://www.winehq.org/">http://www.winehq.org/</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -315,32 +341,41 @@
 		<glossentry id="xml">
 			<glossterm>XML</glossterm>
 			<glossdef>
-				<para>The eXtensible Markup Language, a subset of SGML; a set of rules for encoding information in a way that is both human- and machine-readable. It is primarily used to define documents but can also be used to define arbitrary data structures. It was originally defined by the World Wide Web Consortium (W3C).</para>
+				<para>The eXtensible Markup Language, a subset of SGML; a set of rules for encoding information in a way that is both human- and machine-readable. It is primarily 
+				used to define documents but can also be used to define arbitrary data structures. It was originally defined by the World Wide Web Consortium (W3C).</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="XMPP">
 			<glossterm>XMPP</glossterm>
 			<glossdef>
-				<para>An open-standard communications protocol, based on XML, used in message-oriented middleware. It supports the concept of a consistent "domain" of message types that flow between software applications, possibly on different operating systems and architectures. More information is available at <ulink url="http://xmpp.org">xmpp.org</ulink>.</para>
+				<para>An open-standard communications protocol, based on XML, used in message-oriented middleware. It supports the concept of a consistent <emphasis>domain</emphasis> 
+				of message types that flow between software applications, possibly on different operating systems and architectures. More information is available at 
+				<ulink url="http://xmpp.org">xmpp.org</ulink>.</para>
 				<glossseealso otherterm="Jabber"/>
 			</glossdef>
 		</glossentry>
 		<glossentry id="xpath">
 			<glossterm>xpath</glossterm>
 			<glossdef>
-				<para>The XML Path Language, a query language based on a tree representation of an XML document. It is used to programmatically select nodes from an XML document and to do minor computation involving strings, numbers and Boolean values. It allows you to identify parts of the XML document tree, to navigate around the tree, and to uniquely select nodes. The currently version is "XPath 2.0". It was originally defined by the World Wide Web Consortium (W3C).</para>
+				<para>The XML Path Language, a query language based on a tree representation of an XML document. It is used to programmatically select nodes from an XML document and to 
+				do minor computation involving strings, numbers and Boolean values. It allows you to identify parts of the XML document tree, to navigate around the tree, and to 
+				uniquely select nodes. The currently version is "XPath 2.0". It was originally defined by the World Wide Web Consortium (W3C).</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="xul">
 			<glossterm>XUL</glossterm>
 			<glossdef>
-				<para>The XML User Interface Language, a specialized interface language that allows building cross-platform applications that drive <application>Mozilla</application>-based browsers such as <application>Firefox</application>. More information is available at <ulink url="https://developer.mozilla.org/en/XUL">https://developer.mozilla.org/en/XUL</ulink>.</para>
+				<para>The XML User Interface Language, a specialized interface language that allows building cross-platform applications that drive <application>Mozilla</application>
+				-based browsers such as <application>Firefox</application>. More information is available at 
+				<ulink url="https://developer.mozilla.org/en/XUL">https://developer.mozilla.org/en/XUL</ulink>.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="xulrunner">
 			<glossterm>xulrunner</glossterm>
 			<glossdef>
-				<para>A specialized run-time application environment that provides support for installing, upgrading and uninstalling <application>XUL</application> applications. It operates with <application>Mozilla</application>-based applications such as the <application>Firefox</application> browser. More information is available at <ulink url="https://developer.mozilla.org/en/XULRunner">https://developer.mozilla.org/en/XULRunner</ulink>.</para>
+				<para>A specialized run-time application environment that provides support for installing, upgrading and uninstalling <application>XUL</application> applications. 
+				It operates with <application>Mozilla</application>-based applications such as the <application>Firefox</application> browser. More information is available at 
+				<ulink url="https://developer.mozilla.org/en/XULRunner">https://developer.mozilla.org/en/XULRunner</ulink>.</para>
 				<glossseealso otherterm="xul"/>
 			</glossdef>
 		</glossentry>
@@ -350,13 +385,13 @@
 		<glossentry id="YAZ">
 			<glossterm>YAZ</glossterm>
 			<glossdef>
-				<caution>PLEASE ADD CONTENT</caution>
+				<para>A programmers’ toolkit supporting the development of Z39.50/SRW/SRU clients and servers.</para> 
 			</glossdef>
 		</glossentry>
 		<glossentry id="yaz-client">
 			<glossterm>yaz-client</glossterm>
 			<glossdef>
-				<caution>PLEASE ADD CONTENT</caution>
+				<para>Z39.50/SRU client for connecting to YAZ servers.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -365,7 +400,7 @@
 		<glossentry id="Z39.50">
 			<glossterm>Z39.50</glossterm>
 			<glossdef>
-				<caution>PLEASE ADD CONTENT</caution>
+				<para>A client–server protocol for searching and retrieving information from remote computer databases.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
