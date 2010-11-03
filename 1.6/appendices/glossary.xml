@@ -123,13 +123,14 @@
 		<glossentry id="MARCXML">
 			<glossterm>MARCXML</glossterm>
 			<glossdef>
-				<para>Framework for working with MARC data in a XML environment.<para>
+				<para>Framework for working with MARC data in a XML environment.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="McCoy">
 			<glossterm>McCoy</glossterm>
 			<glossdef>
-				<para>An open-source application that allows add-on authors to provide secure updates to their users. More information is available at <ulink url="https://developer.mozilla.org/en/McCoy">developer.mozilla.org/en/McCoy</ulink>.</para>
+				<para>An open-source application that allows add-on authors to provide secure updates to their users. More information is available at 
+				<ulink url="https://developer.mozilla.org/en/McCoy">developer.mozilla.org/en/McCoy</ulink>.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="memcached">
@@ -153,7 +154,8 @@
 		<glossentry id="nsis">
 			<glossterm>nsis</glossterm>
 			<glossdef>
-				<para>An open-source software tool used to create Windows installers. More information is available at <ulink url="http://nsis.sourceforge.net">http://nsis.sourceforge.net</ulink>.</para>
+				<para>An open-source software tool used to create Windows installers. More information is available at <ulink url="http://nsis.sourceforge.net">
+			http://nsis.sourceforge.net</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
