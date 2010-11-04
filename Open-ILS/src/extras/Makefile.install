@@ -146,7 +146,6 @@ CENTOS_PERL = \
 	DBIx::ContextualFetch \
 	Getopt::Long \
 	Net::SSH2 \
-	Net::uFTP \
 	Net::XMPP \
 	Net::Z3950::ZOOM
 
@@ -225,7 +224,6 @@ DEB_APACHE_DISMODS = \
 CPAN_MODULES = \
     Business::EDI \
     Library::CallNumber::LC \
-    Net::uFTP \
     Net::Z3950::Simple2ZOOM \
     SRU
 

@@ -4,8 +4,8 @@ package OpenILS::Utils::RemoteAccount;
 use OpenSRF::Utils::Logger qw/:logger/;
 
 use Data::Dumper;
-use Net::uFTP;
-use Net::SSH2;      # because uFTP doesn't handle SSH keys (yet?)
+use Net::FTP;
+use Net::SSH2;
 use File::Temp;
 use File::Basename;
 use File::Spec;
@@ -52,7 +52,7 @@ OpenILS::Utils::RemoteAccount - Encapsulate FTP, SFTP and SSH file transactions 
 =head1 DESCRIPTION
 
 The Remote Account module attempts to transfer a file to/from a remote server.
-Net::uFTP is used, encapsulating the available options of SCP, FTP and SFTP.
+Either Net::FTP or Net::SSH2 is used.
 
 =head1 PARAMETERS
 
@@ -66,8 +66,6 @@ All information is expected to be supplied by the caller via parameters:
    ~ type (FTP, SFTP or SCP -- default FTP)
    ~ port
    ~ debug
-
-The latter three are optionally passed to the Net::uFTP constructor.
 
 Note: none of the parameters are actually required, except remote_host.
 That is because remote_user, remote_password and remote_account can all be 
@@ -101,7 +99,7 @@ but failure will be non-fatal.
 
 sub plausible_dirs {
     # returns plausible locations of a .ssh subdir where SSH keys might be stashed
-    # NOTE: these would need to be properly genericized w/ Makefule vars
+    # NOTE: these would need to be properly genericized w/ Makefile vars
     # in order to support Debian packaging and multiple EG's on one box.
     # Until that happens, we just rely on $HOME
 
@@ -228,8 +226,7 @@ sub key_check {
 
 
 # TOP LEVEL methods
-# TODO: delete for both uFTP and SSH2
-# TODO: handle IO::Scalar and IO::File for uFTP
+# TODO: delete for both FTP and SSH2
 
 sub get {
     my $self   = shift;
@@ -240,19 +237,17 @@ sub get {
 
     $self->init($params);   # secondary init
 
-    $self->{get_args} = [$self->remote_file];      # same for scp_put and uFTP put
+    $self->{get_args} = [$self->remote_file];      # same for scp_put and FTP put
     push @{$self->{get_args}}, $self->local_file if defined $self->local_file;
     
     # $self->content($content);
 
-    my %keys = $self->key_check($params);
-    if (%keys) {
-        my $try = $self->get_ssh2(\%keys, @{$self->{get_args}});
-        return $try if $try;  # if we had keys and they worked, we're done
+    if ($self->type eq "FTP") {
+        return $self->get_ftp(@{$self->{get_args}});
+    } else {
+        my %keys = $self->key_check($params);
+        return $self->get_ssh2(\%keys, @{$self->{get_args}});
     }
-
-    # Otherwise, try w/ non-key uFTP methods
-    return $self->get_uftp(@{$self->{get_args}});
 }
 
 sub put {
@@ -266,7 +261,7 @@ sub put {
    
     my $local_file = $self->outbound_file($params) or return;
 
-    $self->{put_args} = [$local_file];      # same for scp_put and uFTP put
+    $self->{put_args} = [$local_file];      # same for scp_put and FTP put
     if (defined $self->remote_path and not defined $self->remote_file) {
         my $rpath = $self->remote_path;
         my $fname = basename($local_file);
@@ -290,14 +285,12 @@ sub put {
         push @{$self->{put_args}}, $self->remote_file;   # user can specify remote_file name, optionally
     }
 
-    my %keys = $self->key_check($params);
-    if (%keys) {
+    if ($self->type eq "FTP") {
+        return $self->put_ftp(@{$self->{put_args}});
+    } else {
+        my %keys = $self->key_check($params);
         $self->put_ssh2(\%keys, @{$self->{put_args}}) and return $self->remote_file;
-        # if we had keys and they worked, we're done
     }
-
-    # Otherwise, try w/ non-key uFTP methods
-    return $self->put_uftp(@{$self->{put_args}});
 }
 
 sub ls {
@@ -320,15 +313,13 @@ sub ls {
 
     $self->{ls_args} = \@targets;
 
-    my %keys = $self->key_check($params);
-    if (%keys) {
+    if ($self->type eq "FTP") {
+        return $self->ls_ftp(@targets);
+    } else {
+        my %keys = $self->key_check($params);
         # $logger->info("*** calling ls_ssh2(keys, '" . join("', '", (scalar(@targets) ? map {defined $_ ? $_ : '' } @targets : ())) . "') with ssh keys");
-        my @try = $self->ls_ssh2(\%keys, @targets);
-        return @try if @try;  # if we had keys and they worked, we're done
+        return $self->ls_ssh2(\%keys, @targets);
     }
-
-    # Otherwise, try w/ non-key uFTP methods
-    return $self->ls_uftp(@targets);
 }
 
 # Checks if the filename part of a pathname has one or more glob characters
@@ -363,15 +354,26 @@ sub _ssh2 {
     my $success  = 0;
     my @privates = keys %$keys;
     my $count    = scalar @privates;
-    foreach (@privates) {
-        if ($self->auth_ssh2($ssh2, $self->auth_ssh2_args($_, $keys->{$_}))) {
-            $success++;
-            last;
+
+    if ($count) {
+        foreach (@privates) {
+            if ($self->auth_ssh2($ssh2,$self->auth_ssh2_args($_,$keys->{$_}))) {
+                $success++;
+                last;
+            }
         }
-    }
-    unless ($success) {
-        $logger->error($self->error("All ($count) keypair(s) FAILED for " . $self->remote_host));
-        return;
+        unless ($success) {
+            $logger->error(
+                $self->error(
+                    "All ($count) keypair(s) FAILED for " . $self->remote_host
+                )
+            );
+            return;
+        }
+    } else {
+        $logger->error(
+            $self->error("Login FAILED for " . $self->remote_host)
+        ) unless $self->auth_ssh2($ssh2, $self->auth_ssh2_args);
     }
     return $self->{ssh2} = $ssh2;
 }
@@ -506,17 +508,21 @@ sub _slash_path {
     return $dir . ($dir =~ /\/$/ ? '' : '/') . $file;
 }
 
-sub _uftp {
+sub _ftp {
     my $self = shift;
     my %options = ();
-    $self->{uftp} and return $self->{uftp};     # caching
-    foreach (qw/debug type port/) {
-        $options{$_} = $self->{$_} if $self->{$_};
+    $self->{ftp} and return $self->{ftp};   # caching
+    foreach (qw/debug port/) {
+        $options{ucfirst($_)} = $self->{$_} if $self->{$_};
     }
-    
-    my $ftp = Net::uFTP->new($self->remote_host, %options);
+
+    my $ftp = new Net::FTP($self->remote_host, %options);
     unless ($ftp) {
-        $logger->error($self->_error('Net::uFTP->new("' . $self->remote_host . ", ...) FAILED: $@"));
+        $logger->error(
+            $self->_error(
+                "new Net::FTP('" . $self->remote_host . ", ...) FAILED: $@"
+            )
+        );
         return;
     }
 
@@ -528,58 +534,88 @@ sub _uftp {
     my $login_ok = 0;
     eval { $login_ok = $ftp->login(@login_args) };
     if ($@ or !$login_ok) {
-        $logger->error($self->_error("failed login to", $self->remote_host,  "w/ args(" . join(',', @login_args) . ") : $@"));
+        $logger->error(
+            $self->_error(
+                "failed login to", $self->remote_host, "w/ args(" .
+                join(',', @login_args) . ") : $@"
+            )
+        ); # XXX later, maybe keep passwords out of the logs?
         return;
     }
-    return $self->{uftp} = $ftp;
+    return $self->{ftp} = $ftp;
 }
 
-sub put_uftp {
+sub put_ftp {
     my $self = shift;
-    my $ftp = $self->_uftp or return;
     my $filename;
-    eval { $filename = $ftp->put(@{$self->{put_args}}) };
-    if ($@ or ! $filename) {
-        $logger->error($self->_error("put to", $self->remote_host, "failed with error: $@"));
+
+    eval { $filename = $self->_ftp->put(@{$self->{put_args}}) };
+    if ($@ or not $filename) {
+        $logger->error(
+            $self->_error(
+                "put to", $self->remote_host, "failed with error: $@"
+            )
+        );
         return;
     }
+
     $self->remote_file($filename);
-    $logger->info(_pkg("successfully sent", $self->remote_host, $self->local_file, '-->', $filename));
+    $logger->info(
+        _pkg(
+            "successfully sent", $self->remote_host, $self->local_file, '-->',
+            $filename
+        )
+    );
     return $filename;
 }
 
-sub get_uftp {
+sub get_ftp {
     my $self = shift;
-    my $ftp = $self->_uftp or return;
     my $filename;
-    eval { $filename = $ftp->get(@{$self->{get_args}}) };
-    if ($@ or ! $filename) {
-        $logger->error($self->_error("get from", $self->remote_host, "failed with error: $@"));
+
+    eval { $filename = $self->_ftp->get(@{$self->{get_args}}) };
+    if ($@ or not $filename) {
+        $logger->error(
+            $self->_error(
+                "get from", $self->remote_host, "failed with error: $@"
+            )
+        );
         return;
     }
+
     $self->local_file($filename);
-    $logger->info(_pkg("successfully retrieved $filename <--", $self->remote_host . '/' . $self->remote_file));
+    $logger->info(
+        _pkg(
+            "successfully retrieved $filename <--", $self->remote_host . '/' .
+            $self->remote_file
+        )
+    );
     return $self->local_file;
 }
 
-sub ls_uftp {   # returns full path like: dir/path/file.ext
+sub ls_ftp {   # returns full path like: dir/path/file.ext
     my $self = shift;
-    my $ftp = $self->_uftp or return;
     my @list;
+
     foreach (@_) {
         my @part;
         my ($dirpath, $regex) = $self->glob_parse($_);
         my $dirtarget = $dirpath || $_;
         $dirtarget =~ s/\/+$//;
-        eval { @part = $ftp->ls($dirtarget) };      # this ls returns relative/path/filenames.  defer filename glob filtering for below.
+        eval { @part = $self->_ftp->ls($dirtarget) };      # this ls returns relative/path/filenames.  defer filename glob filtering for below.
         if ($@) {
-            $logger->error($self->_error("ls from",  $self->remote_host, "failed with error: $@"));
+            $logger->error(
+                $self->_error(
+                    "ls from",  $self->remote_host, "failed with error: $@"
+                )
+            );
             next;
         }
-        if ($dirtarget and $dirtarget ne '.' and $dirtarget ne './' and $ftp->is_dir($dirtarget)) {
+        if ($dirtarget and $dirtarget ne '.' and $dirtarget ne './' and
+            $self->_ftp->is_dir($dirtarget)) {
             foreach my $file (@part) {   # we ensure full(er) path
                 $file =~ /^$dirtarget\// and next;
-                $logger->debug("ls_uftp: prepending $dirtarget/ to $file");
+                $logger->debug("ls_ftp: prepending $dirtarget/ to $file");
                 $file = File::Spec->catdir($dirtarget, $file);
             }
         }
@@ -598,10 +634,8 @@ sub ls_uftp {   # returns full path like: dir/path/file.ext
     return @list;
 }
 
-sub delete_uftp {
-    my $self = shift;
-    my $ftp = $self->_uftp or return;
-    return $ftp->delete(shift);
+sub delete_ftp { # XXX not yet used
+    $_[0]->_ftp->delete($_[1]);
 }
 
 sub _pkg {      # Not OO
@@ -654,7 +688,7 @@ sub DESTROY {
 	# in order to create, we must first ...
 	my $self  = shift;
     $self->{ssh2} and $self->{ssh2}->disconnect();  # let the other end know we're done.
-    $self->{uftp} and $self->{uftp}->quit();  # let the other end know we're done.
+    $self->{ftp} and $self->{ftp}->quit();  # let the other end know we're done.
 }
 
 sub AUTOLOAD {
