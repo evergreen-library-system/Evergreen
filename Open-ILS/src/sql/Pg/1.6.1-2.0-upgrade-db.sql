@@ -23,7 +23,7 @@ BEGIN;
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0453');
+INSERT INTO config.upgrade_log (version) VALUES ('0458');
 
 -- Remove some uses of the connectby() function from the tablefunc contrib module
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT, INT ) RETURNS SETOF actor.org_unit AS $$
@@ -3877,6 +3877,132 @@ $$
 $$
 );
 
+UPDATE action_trigger.event_definition SET template = $$[% FILTER collapse %]
+[%- SET invoice = target -%]
+<!-- This lacks general refinement -->
+<div class="acq-invoice-voucher">
+    <h1>Invoice</h1>
+    <div>
+        <strong>No.</strong> [% invoice.inv_ident %]
+        [% IF invoice.inv_type %]
+            / <strong>Type:</strong>[% invoice.inv_type %]
+        [% END %]
+    </div>
+    <div>
+        <dl>
+            [% BLOCK ent_with_address %]
+            <dt>[% ent_label %]: [% ent.name %] ([% ent.code %])</dt>
+            <dd>
+                [% IF ent.addresses.0 %]
+                    [% SET addr = ent.addresses.0 %]
+                    [% addr.street1 %]<br />
+                    [% IF addr.street2 %][% addr.street2 %]<br />[% END %]
+                    [% addr.city %],
+                    [% IF addr.county %] [% addr.county %], [% END %]
+                    [% IF addr.state %] [% addr.state %] [% END %]
+                    [% IF addr.post_code %][% addr.post_code %][% END %]<br />
+                    [% IF addr.country %] [% addr.country %] [% END %]
+                [% END %]
+                <p>
+                    [% IF ent.phone %] Phone: [% ent.phone %]<br />[% END %]
+                    [% IF ent.fax_phone %] Fax: [% ent.fax_phone %]<br />[% END %]
+                    [% IF ent.url %] URL: [% ent.url %]<br />[% END %]
+                    [% IF ent.email %] E-mail: [% ent.email %] [% END %]
+                </p>
+            </dd>
+            [% END %]
+            [% INCLUDE ent_with_address
+                ent = invoice.provider
+                ent_label = "Provider" %]
+            [% INCLUDE ent_with_address
+                ent = invoice.shipper
+                ent_label = "Shipper" %]
+            <dt>Receiver</dt>
+            <dd>
+                [% invoice.receiver.name %] ([% invoice.receiver.shortname %])
+            </dd>
+            <dt>Received</dt>
+            <dd>
+                [% helpers.format_date(invoice.recv_date) %] by
+                [% invoice.recv_method %]
+            </dd>
+            [% IF invoice.note %]
+                <dt>Note</dt>
+                <dd>
+                    [% invoice.note %]
+                </dd>
+            [% END %]
+        </dl>
+    </div>
+    <ul>
+        [% FOR entry IN invoice.entries %]
+            <li>
+                [% IF entry.lineitem %]
+                    Title: [% helpers.get_li_attr(
+                        "title", "", entry.lineitem.attributes
+                    ) %]<br />
+                    Author: [% helpers.get_li_attr(
+                        "author", "", entry.lineitem.attributes
+                    ) %]
+                [% END %]
+                [% IF entry.purchase_order %]
+                    (PO: [% entry.purchase_order.name %])
+                [% END %]<br />
+                Invoice item count: [% entry.inv_item_count %]
+                [% IF entry.phys_item_count %]
+                    / Physical item count: [% entry.phys_item_count %]
+                [% END %]
+                <br />
+                [% IF entry.cost_billed %]
+                    Cost billed: [% entry.cost_billed %]
+                    [% IF entry.billed_per_item %](per item)[% END %]
+                    <br />
+                [% END %]
+                [% IF entry.actual_cost %]
+                    Actual cost: [% entry.actual_cost %]<br />
+                [% END %]
+                [% IF entry.amount_paid %]
+                    Amount paid: [% entry.amount_paid %]<br />
+                [% END %]
+                [% IF entry.note %]Note: [% entry.note %][% END %]
+            </li>
+        [% END %]
+        [% FOR item IN invoice.items %]
+            <li>
+                [% IF item.inv_item_type %]
+                    Item Type: [% item.inv_item_type %]<br />
+                [% END %]
+                [% IF item.title %]Title/Description:
+                    [% item.title %]<br />
+                [% END %]
+                [% IF item.author %]Author: [% item.author %]<br />[% END %]
+                [% IF item.purchase_order %]PO: [% item.purchase_order %]<br />[% END %]
+                [% IF item.note %]Note: [% item.note %]<br />[% END %]
+                [% IF item.cost_billed %]
+                    Cost billed: [% item.cost_billed %]<br />
+                [% END %]
+                [% IF item.actual_cost %]
+                    Actual cost: [% item.actual_cost %]<br />
+                [% END %]
+                [% IF item.amount_paid %]
+                    Amount paid: [% item.amount_paid %]<br />
+                [% END %]
+            </li>
+        [% END %]
+    </ul>
+    <div>
+        Amounts spent per fund:
+        <table>
+        [% FOR blob IN user_data %]
+            <tr>
+                <th style="text-align: left;">[% blob.fund.code %] ([% blob.fund.year %]):</th>
+                <td>$[% blob.total %]</td>
+            </tr>
+        [% END %]
+        </table>
+    </div>
+</div>
+[% END %]$$ WHERE id = 22;
 INSERT INTO action_trigger.environment (event_def, path) VALUES
     (22, 'provider'),
     (22, 'provider.addresses'),
@@ -14777,64 +14903,64 @@ CREATE TABLE acq.claim_policy_action (
 
 CREATE OR REPLACE FUNCTION public.ingest_acq_marc ( ) RETURNS TRIGGER AS $function$
 DECLARE
-	value		TEXT;
-	atype		TEXT;
-	prov		INT;
-	pos 		INT;
-	adef		RECORD;
-	xpath_string	TEXT;
+    value       TEXT; 
+    atype       TEXT; 
+    prov        INT;
+    pos         INT;
+    adef        RECORD;
+    xpath_string    TEXT;
 BEGIN
-	FOR adef IN SELECT *,tableoid FROM acq.lineitem_attr_definition LOOP
-
-		SELECT relname::TEXT INTO atype FROM pg_class WHERE oid = adef.tableoid;
-
-		IF (atype NOT IN ('lineitem_usr_attr_definition','lineitem_local_attr_definition')) THEN
-			IF (atype = 'lineitem_provider_attr_definition') THEN
-				SELECT provider INTO prov FROM acq.lineitem_provider_attr_definition WHERE id = adef.id;
-				CONTINUE WHEN NEW.provider IS NULL OR prov <> NEW.provider;
-			END IF;
-			
-			IF (atype = 'lineitem_provider_attr_definition') THEN
-				SELECT xpath INTO xpath_string FROM acq.lineitem_provider_attr_definition WHERE id = adef.id;
-			ELSIF (atype = 'lineitem_marc_attr_definition') THEN
-				SELECT xpath INTO xpath_string FROM acq.lineitem_marc_attr_definition WHERE id = adef.id;
-			ELSIF (atype = 'lineitem_generated_attr_definition') THEN
-				SELECT xpath INTO xpath_string FROM acq.lineitem_generated_attr_definition WHERE id = adef.id;
-			END IF;
-
+    FOR adef IN SELECT *,tableoid FROM acq.lineitem_attr_definition LOOP
+    
+        SELECT relname::TEXT INTO atype FROM pg_class WHERE oid = adef.tableoid;
+      
+        IF (atype NOT IN ('lineitem_usr_attr_definition','lineitem_local_attr_definition')) THEN
+            IF (atype = 'lineitem_provider_attr_definition') THEN
+                SELECT provider INTO prov FROM acq.lineitem_provider_attr_definition WHERE id = adef.id;
+                CONTINUE WHEN NEW.provider IS NULL OR prov <> NEW.provider;
+            END IF;
+            
+            IF (atype = 'lineitem_provider_attr_definition') THEN
+                SELECT xpath INTO xpath_string FROM acq.lineitem_provider_attr_definition WHERE id = adef.id;
+            ELSIF (atype = 'lineitem_marc_attr_definition') THEN
+                SELECT xpath INTO xpath_string FROM acq.lineitem_marc_attr_definition WHERE id = adef.id;
+            ELSIF (atype = 'lineitem_generated_attr_definition') THEN
+                SELECT xpath INTO xpath_string FROM acq.lineitem_generated_attr_definition WHERE id = adef.id;
+            END IF;
+      
             xpath_string := REGEXP_REPLACE(xpath_string,$re$//?text\(\)$$re$,'');
 
             IF (adef.code = 'title' OR adef.code = 'author') THEN
                 -- title and author should not be split
                 -- FIXME: once oils_xpath can grok XPATH 2.0 functions, we can use
                 -- string-join in the xpath and remove this special case
-    			SELECT extract_acq_marc_field(id, xpath_string, adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
-    			IF (value IS NOT NULL AND value <> '') THEN
-				    INSERT INTO acq.lineitem_attr (lineitem, definition, attr_type, attr_name, attr_value)
-	     			    VALUES (NEW.id, adef.id, atype, adef.code, value);
+                SELECT extract_acq_marc_field(id, xpath_string, adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
+                IF (value IS NOT NULL AND value <> '') THEN
+                    INSERT INTO acq.lineitem_attr (lineitem, definition, attr_type, attr_name, attr_value)
+                        VALUES (NEW.id, adef.id, atype, adef.code, value);
                 END IF;
             ELSE
                 pos := 1;
 
                 LOOP
-    			    SELECT extract_acq_marc_field(id, xpath_string || '[' || pos || ']', adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
-
-    			    IF (value IS NOT NULL AND value <> '') THEN
-	    			    INSERT INTO acq.lineitem_attr (lineitem, definition, attr_type, attr_name, attr_value)
-		    			    VALUES (NEW.id, adef.id, atype, adef.code, value);
+                    SELECT extract_acq_marc_field(id, xpath_string || '[' || pos || ']', adef.remove) INTO value FROM acq.lineitem WHERE id = NEW.id;
+      
+                    IF (value IS NOT NULL AND value <> '') THEN
+                        INSERT INTO acq.lineitem_attr (lineitem, definition, attr_type, attr_name, attr_value)
+                            VALUES (NEW.id, adef.id, atype, adef.code, value);
                     ELSE
                         EXIT;
-			        END IF;
+                    END IF;
 
                     pos := pos + 1;
                 END LOOP;
             END IF;
 
-		END IF;
+        END IF;
 
-	END LOOP;
+    END LOOP;
 
-	RETURN NULL;
+    RETURN NULL;
 END;
 $function$ LANGUAGE PLPGSQL;
 
@@ -17176,24 +17302,16 @@ DECLARE
     bib_id        INT := 0;
     bib_rec       biblio.record_entry%ROWTYPE;
     auth_link     authority.bib_linking%ROWTYPE;
+    ingest_same   boolean;
 BEGIN
 
-    -- 1. Make source_record MARC a copy of the target_record to get auto-sync in linked bib records
-    UPDATE authority.record_entry
-      SET marc = (
-        SELECT marc
-          FROM authority.record_entry
-          WHERE id = target_record
-      )
-      WHERE id = source_record;
-
-    -- 2. Update all bib records with the ID from target_record in their $0
-    FOR bib_rec IN SELECT bre.* FROM biblio.record_entry bre 
+    -- 1. Update all bib records with the ID from target_record in their $0
+    FOR bib_rec IN SELECT bre.* FROM biblio.record_entry bre
       INNER JOIN authority.bib_linking abl ON abl.bib = bre.id
-      WHERE abl.authority = target_record LOOP
+      WHERE abl.authority = source_record LOOP
 
         UPDATE biblio.record_entry
-          SET marc = REGEXP_REPLACE(marc, 
+          SET marc = REGEXP_REPLACE(marc,
             E'(<subfield\\s+code="0"\\s*>[^<]*?\\))' || source_record || '<',
             E'\\1' || target_record || '<', 'g')
           WHERE id = bib_rec.id;
@@ -17201,9 +17319,33 @@ BEGIN
           moved_objects := moved_objects + 1;
     END LOOP;
 
-    -- 3. "Delete" source_record
+    -- 2. Grab the current value of reingest on same MARC flag
+    SELECT enabled INTO ingest_same
+      FROM config.internal_flag
+      WHERE name = 'ingest.reingest.force_on_same_marc'
+    ;
+
+    -- 3. Temporarily set reingest on same to TRUE
+    UPDATE config.internal_flag
+      SET enabled = TRUE
+      WHERE name = 'ingest.reingest.force_on_same_marc'
+    ;
+
+    -- 4. Make a harmless update to target_record to trigger auto-update
+    --    in linked bibliographic records
+    UPDATE authority.record_entry
+      SET DELETED = FALSE
+      WHERE id = source_record;
+
+    -- 5. "Delete" source_record
     DELETE FROM authority.record_entry
       WHERE id = source_record;
+
+    -- 6. Set "reingest on same MARC" flag back to initial value
+    UPDATE config.internal_flag
+      SET enabled = ingest_same
+      WHERE name = 'ingest.reingest.force_on_same_marc'
+    ;
 
     RETURN moved_objects;
 END;
@@ -18760,7 +18902,7 @@ INSERT INTO acq.lineitem_marc_attr_definition ( code, description, xpath, remove
 SELECT 'upc', 'UPC', '//*[@tag="024" and @ind1="1"]/*[@code="a"]', $r$(?:-|\s.+$)$r$
 WHERE NOT EXISTS (
     SELECT 1 FROM acq.lineitem_marc_attr_definition WHERE code = 'upc'
-);
+);  
 
 COMMIT;
 

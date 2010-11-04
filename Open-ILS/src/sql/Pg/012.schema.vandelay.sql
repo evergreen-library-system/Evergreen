@@ -360,8 +360,6 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
                         my @new_sf = map { ($_ => $from_field->subfield($_)) } @{$fields{$f}{sf}};
                         $to_field->add_subfields( @new_sf );
                     }
-                    my @new_sf = map { ($_ => $from_field->subfield($_)) } @{$fields{$f}{sf}};
-                    $to_field->add_subfields( @new_sf );
                 }
             }
         } else {
