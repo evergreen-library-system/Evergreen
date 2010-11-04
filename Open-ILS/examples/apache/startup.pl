@@ -5,7 +5,6 @@ use OpenILS::WWW::SuperCat qw( /openils/conf/opensrf_core.xml );
 use OpenILS::WWW::AddedContent qw( /openils/conf/opensrf_core.xml );
 use OpenILS::WWW::Proxy ('/openils/conf/opensrf_core.xml');
 use OpenILS::WWW::Vandelay qw( /openils/conf/opensrf_core.xml );
-use OpenILS::WWW::TemplateBatchBibUpdate qw( /openils/conf/opensrf_core.xml );
 use OpenILS::WWW::EGWeb ('/openils/conf/oils_web.xml');
 use OpenILS::WWW::PasswordReset ('/openils/conf/opensrf_core.xml');
 
