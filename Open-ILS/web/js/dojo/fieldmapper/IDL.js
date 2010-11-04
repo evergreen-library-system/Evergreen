@@ -20,6 +20,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     for (var i = 0; i < classlist.length; i++) {
                         var trim_class = classlist[i];
                         if (!trim_class) continue;
+                        if (fieldmapper.IDL.fmclasses && fieldmapper.IDL.fmclasses[trim_class]) continue;
 
                         if (i > 0) idl_url += '&';
                         idl_url += 'class=' + trim_class;
