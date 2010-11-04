@@ -3,6 +3,7 @@ use strict; use warnings;
 use Template;
 use DateTime;
 use DateTime::Format::ISO8601;
+use Unicode::Normalize;
 use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Application::AppUtils;
@@ -45,6 +46,15 @@ my $_TT_helpers = {
     escape_json => sub {
         my $str = shift;
         $str =~ s/([\x{0080}-\x{fffd}])/sprintf('\u%0.4x',ord($1))/sgoe;
+        return $str;
+    },
+
+    # strip non-ASCII characters after splitting base characters and diacritics
+    # least common denominator for EDIFACT messages using the UNOB character set
+    force_jedi_unob => sub {
+        my $str = shift;
+        $str = NFD($str);
+        $str =~ s/[\x{0080}-\x{fffd}]//g;
         return $str;
     },
 
