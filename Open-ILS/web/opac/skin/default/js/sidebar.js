@@ -157,12 +157,6 @@ function strongPassword(pass, alrt) {
 
 function initLogin() {
 
-	G.ui.login.button.onclick = function(evt) { G.ui.login.form.setAttribute('action','javascript:loginDance();'); };
-	G.ui.login.username.onkeydown = 
-		function(evt) {if(userPressedEnter(evt)) G.ui.login.form.setAttribute('action','javascript:loginDance();');};
-	G.ui.login.password.onkeydown = 
-		function(evt) {if(userPressedEnter(evt)) G.ui.login.form.setAttribute('action','javascript:loginDance();');};
-    
 //	if(loginBoxVisible) {
 //		showCanvas();
 //	} else {

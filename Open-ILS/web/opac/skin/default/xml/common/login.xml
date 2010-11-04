@@ -23,7 +23,7 @@
 
 	<br/>
 
-    <form id='login_form' method='POST'>
+    <form id='login_form' method='POST' action='javascript:loginDance();'>
         <table id='login_table' class='data_grid' style='margin-left: 20px;' width='95%'>
             <tbody id='login_tbody'>
                 <tr>
