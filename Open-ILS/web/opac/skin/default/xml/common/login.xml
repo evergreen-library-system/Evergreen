@@ -4,6 +4,7 @@
 	<script language='javascript' type='text/javascript'>
 		config.ids.login = {};
 		config.css.login = {};
+		config.ids.login.form			= "login_form";
 		config.ids.login.box			= "login_box";
 		config.ids.login.tbody			= "login_tbody";
 		config.ids.login.username	= "login_username";
@@ -22,39 +23,41 @@
 
 	<br/>
 
-	<table id='login_table' class='data_grid' style='margin-left: 20px;' width='95%'>
-		<tbody id='login_tbody'>
-			<tr>
-				<td><span class='login_text'>&login.username;</span></td>
-				<td>
-					<span class='login_text'>
-						<input id='login_username' type='text' size='16' />
-					</span>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<span class='login_text'>&common.password;</span>
-				</td>
-				<td>
-					<span class='login_text'>
-						<input id='login_password' type='password' size='16' />
-					</span>
-				</td>
-			</tr>
-			<tr><td><br/></td><td/></tr>
-			<tr class='color_1'>
-				<td colspan='2' align='center'>
-					<span class='login_text' style='margin-right: 20px;'>
-					<input type='submit' value='&common.login;'  id='login_button'/>
-					</span>
-					<span class='login_text' style='margin-left: 20px;'>
-						<input type='submit' id='login_cancel_button' value='&common.cancel;'/>
-					</span>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+    <form id='login_form' method='POST' action='javascript:loginDance();'>
+        <table id='login_table' class='data_grid' style='margin-left: 20px;' width='95%'>
+            <tbody id='login_tbody'>
+                <tr>
+                    <td><span class='login_text'>&login.username;</span></td>
+                    <td>
+                        <span class='login_text'>
+                            <input id='login_username' name='login_username' type='text' size='16'></input>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class='login_text'>&common.password;</span>
+                    </td>
+                    <td>
+                        <span class='login_text'>
+                            <input id='login_password' name='login_password' type='password' size='16'></input>
+                        </span>
+                    </td>
+                </tr>
+                <tr><td><br/></td><td/></tr>
+                <tr class='color_1'>
+                    <td colspan='2' align='center'>
+                        <span class='login_text' style='margin-right: 20px;'>
+                        <input type='submit' value='&common.login;' name='login_button' id='login_button'></input>
+                        </span>
+                        <span class='login_text' style='margin-left: 20px;'>
+                            <input type='submit' name='login_cancel_button' id='login_cancel_button' value='&common.cancel;'></input>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
 
 	<table id='change_pw_table' class='data_grid hide_me' style='margin-left: 20px;' width='95%'>
 		<thead>

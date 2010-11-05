@@ -157,12 +157,6 @@ function strongPassword(pass, alrt) {
 
 function initLogin() {
 
-	G.ui.login.button.onclick = loginDance;
-	G.ui.login.username.onkeydown = 
-		function(evt) {if(userPressedEnter(evt)) loginDance();};
-	G.ui.login.password.onkeydown = 
-		function(evt) {if(userPressedEnter(evt)) loginDance();};
-
 //	if(loginBoxVisible) {
 //		showCanvas();
 //	} else {
@@ -171,9 +165,9 @@ function initLogin() {
 //	}
 
 //	loginBoxVisible = !loginBoxVisible;
-	G.ui.login.cancel.onclick = showCanvas;
+	G.ui.login.cancel.onclick = function(evt) { G.ui.login.form.setAttribute('action','javascript:showCanvas();'); };
 	if(findCurrentPage() == MYOPAC) 
-		G.ui.login.cancel.onclick = goHome;
+		G.ui.login.cancel.onclick = function(evt) { G.ui.login.form.setAttribute('action','javascript:goHome();'); };
 }
 
 function setSidebarLinks() {
