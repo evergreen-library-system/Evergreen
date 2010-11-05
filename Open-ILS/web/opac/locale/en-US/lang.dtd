@@ -602,6 +602,8 @@
 <!ENTITY staff.main.button_bar.check_out.accesskey "">
 <!ENTITY staff.main.button_bar.check_in.label "Check In">
 <!ENTITY staff.main.button_bar.check_in.accesskey "">
+<!ENTITY staff.main.button_bar.search_opac.label "Search Catalog">
+<!ENTITY staff.main.button_bar.search_opac.accesskey "">
 <!ENTITY staff.main.button_bar.item_status.label "Item Status">
 <!ENTITY staff.main.button_bar.item_status.accesskey "">
 <!ENTITY staff.main.button_bar.patron_search.label "Patron Search">

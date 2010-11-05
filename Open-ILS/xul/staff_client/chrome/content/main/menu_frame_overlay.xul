@@ -90,6 +90,12 @@
             image="chrome://open_ils_staff_client/skin/media/images/center.png" 
             label="&staff.main.button_bar.check_in.label;" 
             accesskey="&staff.main.button_bar.check_in.accesskey;" />
+        <toolbarseparator />
+        <toolbarbutton id="tb_search_opac" 
+            command="cmd_search_opac" 
+            image="chrome://open_ils_staff_client/skin/media/images/Search_Items_32x32.png" 
+            label="&staff.main.button_bar.search_opac.label;" 
+            accesskey="&staff.main.button_bar.search_opac.accesskey;" />
         <toolbarbutton id="tb_item_status" 
             command="cmd_copy_status" 
             image="chrome://open_ils_staff_client/skin/media/images/HILLBLU_libro_32x32.png" 
