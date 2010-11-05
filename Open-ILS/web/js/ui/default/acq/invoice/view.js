@@ -52,7 +52,7 @@ function init() {
 
     } else {
         fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.invoice.retrieve.authoritative'],
+            ['open-ils.acq', 'open-ils.acq.invoice.retrieve'],
             {
                 params : [openils.User.authtoken, invoiceId],
                 oncomplete : function(r) {

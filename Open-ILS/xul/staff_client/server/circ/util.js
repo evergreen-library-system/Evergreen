@@ -3402,7 +3402,7 @@ circ.util.batch_hold_update = function ( hold_ids, field_changes, params ) {
 circ.util.find_acq_po = function(session, copy_id) {
     dojo.require("openils.Util");
     fieldmapper.standardRequest(
-        ["open-ils.acq", "open-ils.acq.lineitem.retrieve.by_copy_id.authoritative"], {
+        ["open-ils.acq", "open-ils.acq.lineitem.retrieve.by_copy_id"], {
             "params": [session, copy_id, {"clear_marc": true}],
             "onresponse": function(r) {
                 if (r = openils.Util.readResponse(r)) {

@@ -68,7 +68,7 @@ function createPL(fields) {
         function(plId) {
             fieldmapper.standardRequest(
 
-                ['open-ils.acq', 'open-ils.acq.picklist.retrieve.authoritative'],
+                ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
                 {   async: true,
                     params: [openils.User.authtoken, plId,
                         {flesh_lineitem_count:1, flesh_owner:1}],

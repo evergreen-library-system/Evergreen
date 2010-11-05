@@ -119,7 +119,7 @@ openils.acq.Lineitem.fetchAndRender = function(liId, args, callback) {
     });
 
     fieldmapper.standardRequest(
-        ['open-ils.acq', 'open-ils.acq.lineitem.retrieve.authoritative'],
+        ['open-ils.acq', 'open-ils.acq.lineitem.retrieve'],
         {
             params : [ openils.User.authtoken, liId, args ],
 

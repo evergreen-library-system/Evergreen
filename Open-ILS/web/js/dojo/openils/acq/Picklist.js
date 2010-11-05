@@ -57,7 +57,7 @@ dojo.declare('openils.acq.Picklist', null, {
         //
         // Fetch the picklist information
         fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.picklist.retrieve.authoritative'],
+            ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
             {   async: false,
                 params: [openils.User.authtoken, pl_id, {flesh_lineitem_count:1}],
                 oncomplete: function(r) {
