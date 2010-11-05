@@ -335,6 +335,7 @@ var api = {
     'MARC_XML_TEMPLATE_RETRIEVE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.marc_template.retrieve', 'secure' : false },
     'MARC_XML_TEMPLATE_LIST' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.marc_template.types.retrieve', 'secure' : false },
     'MERGE_RECORDS' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.biblio.records.merge' },
+    'MFHD_XML_RECORD_CREATE' : { 'app': 'open-ils.cat', 'method': 'open-ils.cat.serial.record.xml.create' },
     'PATRON_BARCODE_EXISTS' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.barcode.exists' },
     'PATRON_BARCODE_EXISTS.authoritative' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.barcode.exists.authoritative' },
     'RECALCULATE_STANDING_PENALTIES' : { 'app' : 'open-ils.actor', 'method' : 'open-ils.actor.user.penalties.update' },
