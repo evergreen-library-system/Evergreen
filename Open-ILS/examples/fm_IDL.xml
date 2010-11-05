@@ -2808,7 +2808,7 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="brt" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="booking::resource_type" reporter:core="true" oils_persist:tablename="booking.resource_type" reporter:label="Resource Type">
+	<class id="brt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource_type" oils_persist:tablename="booking.resource_type" reporter:label="Resource Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="booking.resource_type_id_seq">
 			<field reporter:label="Resource Type ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Resource Type Name" name="name" reporter:datatype="text"/>
@@ -2841,7 +2841,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="brsrc" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" reporter:core="true" oils_obj:fieldmapper="booking::resource" oils_persist:tablename="booking.resource" reporter:label="Resource">
+	<class id="brsrc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource" oils_persist:tablename="booking.resource" reporter:label="Resource">
 		<fields oils_persist:primary="id" oils_persist:sequence="booking.resource_id_seq">
 			<field reporter:label="Resource ID" name="id" reporter:datatype="id" reporter:selector="barcode" />
 			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit"/>
@@ -2946,7 +2946,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 	
-	<class id="bresv" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="booking::reservation" reporter:core="true" oils_persist:tablename="booking.reservation" reporter:label="Reservation">
+	<class id="bresv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::reservation" oils_persist:tablename="booking.reservation" reporter:label="Reservation">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field reporter:label="Transaction ID" name="id" reporter:datatype="id" />
 			<field reporter:label="User" name="usr" reporter:datatype="link"/>
