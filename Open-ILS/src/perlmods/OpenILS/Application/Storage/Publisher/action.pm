@@ -1,7 +1,10 @@
 package OpenILS::Application::Storage::Publisher::action;
-use base qw/OpenILS::Application::Storage::Publisher/;
+use parent qw/OpenILS::Application::Storage/;
+use strict;
+use warnings;
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::Utils qw/:datetime/;
+use OpenSRF::Utils::JSON;
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
 use OpenILS::Utils::Fieldmapper;
@@ -1406,6 +1409,7 @@ sub new_hold_copy_targeter {
 			} else {
 				$hold->update( { prev_check_time => 'now' } );
 				$log->info( "\tThere were no targetable copies for the hold" );
+				process_recall($actor, $log, $hold, \@good_copies);
 			}
 
 			$self->method_lookup('open-ils.storage.transaction.commit')->run;
@@ -1434,6 +1438,88 @@ __PACKAGE__->register_method(
 	api_level	=> 1,
 	method		=> 'new_hold_copy_targeter',
 );
+
+sub process_recall {
+    my ($actor, $log, $hold, $good_copies) = @_;
+
+    # Bail early if we don't have required settings to avoid spurious requests
+    my $recall_threshold = $actor->request(
+        'open-ils.actor.ou_setting.ancestor_default', ''.$hold->pickup_lib, 'circ.holds.recall_threshold'
+    )->gather(1)->{value};
+
+    if (!$recall_threshold) {
+        $log->info("Recall threshold was not set; bailing out on hold ".$hold->id." processing.");
+        return;
+    }
+
+    my $return_interval = $actor->request(
+        'open-ils.actor.ou_setting.ancestor_default', ''.$hold->pickup_lib, 'circ.holds.recall_return_interval'
+    )->gather(1)->{value};
+
+    if (!$return_interval) {
+        $log->info("Recall return interval was not set; bailing out on hold ".$hold->id." processing.");
+        return;
+    }
+
+    my $fine_rules = $actor->request(
+        'open-ils.actor.ou_setting.ancestor_default', ''.$hold->pickup_lib, 'circ.holds.recall_fine_rules'
+    )->gather(1)->{value};
+
+    $log->info("Recall threshold: $recall_threshold; return interval: $return_interval");
+
+    # We want checked out copies (status = 1) at the hold pickup lib
+    my $all_copies = [grep { $_->status == 1 } grep {''.$_->circ_lib eq ''.$hold->pickup_lib } @$good_copies];
+
+    my @copy_ids = map { $_->id } @$all_copies;
+
+    $log->info("Found " . scalar(@$all_copies) . " eligible checked-out copies for recall");
+
+    my $return_date = DateTime->now(time_zone => 'local')->add(seconds => interval_to_seconds($return_interval))->iso8601();
+
+    # Iterate over the checked-out copies to find a copy with a
+    # loan period longer than the recall threshold:
+    my $circs = [ action::circulation->search_where(
+        { target_copy => \@copy_ids, checkin_time => undef, duration => { '>' => $recall_threshold } },
+        { order_by => 'due_date ASC' }
+    )];
+
+    # If we have a candidate copy, then:
+    if ($circs) {
+        my $circ = $circs->[0];
+        $log->info("Recalling circ ID : " . $circ->id);
+
+        # Give the user a new due date of either a full recall threshold,
+        # or the return interval, whichever is further in the future
+        my $threshold_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->xact_start))->add(seconds => interval_to_seconds($recall_threshold))->iso8601();
+        if (DateTime->compare(DateTime::Format::ISO8601->parse_datetime($threshold_date), DateTime::Format::ISO8601->parse_datetime($return_date)) == 1) {
+            $return_date = $threshold_date;
+        }
+
+        my $update_fields = {
+            due_date => $return_date,
+            renewal_remaining => 0,
+        };
+
+        # If the OU hasn't defined new fine rules for recalls, keep them
+        # as they were
+        if ($fine_rules) {
+            $log->info("Apply recall fine rules: $fine_rules");
+            my $rules = OpenSRF::Utils::JSON->JSON2perl($fine_rules);
+            $update_fields->{recurring_fine} = $rules->[0];
+            $update_fields->{fine_interval} = $rules->[1];
+            $update_fields->{max_fine} = $rules->[2];
+        }
+
+        # Adjust circ for current user
+        $circ->update($update_fields);
+
+        # Create trigger event for notifying current user
+        my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+        $ses->request('open-ils.trigger.event.autocreate', 'circ.recall.target', $circ, $circ->circ_lib->id);
+    }
+
+    $log->info("Processing of hold ".$hold->id." for recall is now complete.");
+}
 
 sub reservation_targeter {
 	my $self = shift;
