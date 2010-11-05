@@ -1,5 +1,5 @@
 package OpenILS::Application::Storage::Publisher::action;
-use parent qw/OpenILS::Application::Storage/;
+use parent qw/OpenILS::Application::Storage::Publisher/;
 use strict;
 use warnings;
 use OpenSRF::Utils::Logger qw/:level/;
