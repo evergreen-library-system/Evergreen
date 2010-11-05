@@ -15699,8 +15699,6 @@ ALTER TABLE config.circ_modifier
 --CREATE INDEX actor_usr_password_reset_request_time_idx ON actor.usr_password_reset (request_time);
 --CREATE INDEX actor_usr_password_reset_has_been_reset_idx ON actor.usr_password_reset (has_been_reset);
 
-ALTER TABLE actor.usr_password_reset ALTER COLUMN request_time TYPE TIMESTAMP WITH TIME ZONE;
-
 -- Use the identifier search class tsconfig
 DROP TRIGGER IF EXISTS metabib_identifier_field_entry_fti_trigger ON metabib.identifier_field_entry;
 CREATE TRIGGER metabib_identifier_field_entry_fti_trigger
