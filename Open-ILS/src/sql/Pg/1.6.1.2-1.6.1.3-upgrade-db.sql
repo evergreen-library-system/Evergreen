@@ -180,5 +180,7 @@ CREATE OR REPLACE FUNCTION action.hold_retarget_permit_test( pickup_ou INT, requ
     SELECT * FROM action.hold_request_permit_test( $1, $2, $3, $4, $5, TRUE );
 $func$ LANGUAGE SQL;
 
+ALTER TABLE actor.usr_password_reset ALTER COLUMN request_time TYPE TIMESTAMP WITH TIME ZONE;
+
 COMMIT;
 
