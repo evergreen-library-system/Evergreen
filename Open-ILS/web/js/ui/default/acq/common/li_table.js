@@ -323,7 +323,7 @@ function AcqLiTable() {
                 this.plCache[li.picklist()] = 
                 this.plCache[li.picklist()] || 
                 fieldmapper.standardRequest(
-                    ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
+                    ['open-ils.acq', 'open-ils.acq.picklist.retrieve.authoritative'],
                     {params: [this.authtoken, li.picklist()]});
             if (pl) {
                 if (pl.name() == "") {
