@@ -553,7 +553,7 @@ sub import_queue {
         'search_vandelay_queued_bib_record' : 'search_vandelay_queued_authority_record';
     my $rec_ids = $e->$search($query, {idlist => 1});
     my $err = import_record_list_impl($self, $conn, $rec_ids, $e->requestor, $options);
-    $e->rollback;
+    try {$e->rollback} otherwise {}; # only using this to make the read authoritative -- don't die from it
     return $err if $err;
     return {complete => 1};
 }
@@ -1034,7 +1034,6 @@ sub import_record_asset_list_impl {
 
             if($evt) {
                 respond_with_status($conn, $total, $try_count, $in_count, $evt);
-                $e->rollback;
                 next;
             }
 
@@ -1065,12 +1064,11 @@ sub import_record_asset_list_impl {
             #if($copy->circ_modifier and not $e->retrieve_config_circ_modifier($item->circ_modifier)) {
             if($copy->circ_modifier and not $e->search_config_circ_modifier({code=>$item->circ_modifier})->[0]) {
                 respond_with_status($conn, $total, $try_count, $in_count, $e->die_event);
-                $e->rollback;
                 next;
             }
 
             if($evt = OpenILS::Application::Cat::AssetCommon->create_copy($e, $vol, $copy)) {
-                $e->rollback;
+                try { $e->rollback } otherwise {}; # sometimes calls die_event, sometimes not
                 respond_with_status($conn, $total, $try_count, $in_count, $evt);
                 next;
             }
@@ -1083,7 +1081,6 @@ sub import_record_asset_list_impl {
 
             if($evt) {
                 respond_with_status($conn, $total, $try_count, $in_count, $evt);
-                $e->rollback;
                 next;
             }
 
@@ -1092,7 +1089,6 @@ sub import_record_asset_list_impl {
 
             if($evt) {
                 respond_with_status($conn, $total, $try_count, $in_count, $evt);
-                $e->rollback;
                 next;
             }
 
