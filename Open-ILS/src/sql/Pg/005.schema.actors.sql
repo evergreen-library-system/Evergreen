@@ -528,7 +528,7 @@ CREATE TABLE actor.usr_password_reset (
   id SERIAL PRIMARY KEY,
   uuid TEXT NOT NULL, 
   usr BIGINT NOT NULL REFERENCES actor.usr(id) DEFERRABLE INITIALLY DEFERRED, 
-  request_time TIMESTAMP NOT NULL DEFAULT NOW(), 
+  request_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(), 
   has_been_reset BOOL NOT NULL DEFAULT false
 );
 COMMENT ON TABLE actor.usr_password_reset IS $$
