@@ -1,1 +1,223 @@
-#ChangeLog
+2010-09-06  dbs
+
+	* Backport just the bib-source setting portion of r17403
+	  
+	  When importing a set of records from Vandelay, the bib source
+	  selection widget
+	  on the Vandelay screen should actually affect the
+	  biblio.record_entry.source
+	  value of the imported records.
+
+2010-09-10  dbs
+
+	* Update version stamp for Evergreen service, adopting branch
+	  convention from trunk
+	  
+	  http://hostname/gateway?service=open-ils.actor&method=opensrf.open-ils.system.ils_version
+	  was returning "1-5" for a number of systems we checked; in trunk,
+	  we have adopted the
+	  "x-y" convention for branches, so in the 1.6 branches we will
+	  follow the "x-y-z"
+	  approach for a little more clarity.
+
+2010-09-20  miker
+
+	* Backport r17847 from Dan Scott: protect non-search,
+	  colon-delimited strings from breaking searches
+
+2010-09-23  miker
+
+	* Forward-port of a patch from Steve Callendar, via James Fournie,
+	  via launchpad:
+	  
+	  When the patron.password.use_phone is set, new patrons are
+	  created with their password set to the last 4 digits of their
+	  phone number, HOWEVER, when a patron's password is reset, it does
+	  not work properly. Although the little underlined summary shows
+	  the proper 4 digits, the password box displays 9-ish digits, and
+	  is not the last 4 digits of the password.
+	  
+	  The attached patch was created by Steve Callender and is
+	  confirmed working on 1.6.0
+	  
+	  This patch will not work on 2.0 as that has a new user editor,
+	  but it would presumably be worthwhile to verify this
+	  functionality works in that editor as well.
+
+2010-09-24  phasefx
+
+	* merge r17958 from trunk for patron display juvenile CSS
+
+2010-09-24  gmc
+
+	* improve hold targetting
+	  
+	  * all potential capturable copies are now checked (up to the
+	  first
+	  one that is permitted for the request), instead of a small random
+	  subset of them
+	  * don't do redundant permission checks
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-10-01  miker
+
+	* Backporting mod_deflate config from trunk -- big speed win, yay!
+
+2010-10-04  phasefx
+
+	* prevent repeat renderings of opac sidebar (relevant subjects,
+	  authors, etc.) in Firefox. What's happening is that the
+	  rresultHandleMods is not firing immediately with each record
+	  retrieve, and so we get a flurry at the end where
+	  resultPageIsDone() returns true for all of them, triggering the
+	  allRecordsReceived event more than once. So now at the end of the
+	  first allRecordsReceived event chain, we set a global variable,
+	  and have these render functions check to see if it has been set.
+
+2010-10-08  dbs
+
+	* Avoid scary SSL / HTTPS errors in Apache configuration
+	  
+	  When port 443 is the last listener port, Apache generates lots
+	  of "unknown protocol speaking not SSL to HTTPS port!?" errors in
+	  the logs - which are scary, but harmless. Putting port 80 last
+	  avoids those errors entirely, per
+	  http://wiki.apache.org/httpd/InternalDummyConnection
+
+2010-10-08  phasefx
+
+	* make sure we change the juvenile flag on the patron object when
+	  we automatically change the juvenile checkbox in the UI
+
+2010-10-11  phasefx
+
+	* fix Actions for this Record -> Add Volumes. backport was missing
+	  this
+
+2010-10-14  miker
+
+	* get ready for the new stuff
+
+2010-10-14  gmc
+
+	* sort call numbers better regardless of database locale
+	  
+	  rel_1_6 version of r18333, accounting for fact that 1.6.x does
+	  not
+	  have label_sortkey
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-10-14  miker
+
+	* "as" not "to" ... you pointed that out the first time, miker,
+	  what is your deal?
+
+2010-10-16  gmc
+
+	* backporting r17243 all the way down to reduce errors on upgrade
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>.
+
+	* restoring dbs' better ISSN extraction for
+	  r.old_super_simple_record
+	  
+	  Had gottten lost in the shuffle in rel_1_6
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-10-16  miker
+
+	* Backport oils_text_as_bytea work from the 1.6 branch
+
+2010-10-20  phasefx
+
+	* backport r18355 and r18399 for better phone-derived password
+	  behavior
+
+	* fix record result page in opac so that lack of an rt parameter
+	  works correctly
+
+2010-10-21  gmc
+
+	* improve call number sorting
+	  
+	  oils_text_as_bytea now does uppercasing in addition
+	  to converting strings to bytea, working around
+	  the limitation that json_query can't stack transforms
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-10-25  miker
+
+	* Dump some debugging output from clark; may later make this
+	  optional, but we usually need it when looking for the cause of
+	  problems.
+
+2010-10-26  miker
+
+	* include more information in the debugging dump; correct the "back
+	  to index" link
+
+2010-10-27  dbs
+
+	* Prevent ingest errors when asset.uri ID value outstrips
+	  asset.call_number
+	  
+	  We were basing IDs in asset.uri on the max ID of
+	  asset.call_number,
+	  which occasionally led to major ingest problems as attempts to
+	  insert
+	  the next ID into asset.uri failed because that ID already
+	  existed. Using
+	  the max ID from asset.uri for asset.uri inserts seems to make
+	  more sense
+	  and does resolve that problem.
+	  
+	  The bigger problem of not using the sequences that are already on
+	  these
+	  tables to generate the IDs will not be an issue in 2.0, when we
+	  move to
+	  in-database ingest and can use the normal lastval() approach to
+	  populate
+	  asset.uri_call_number_map with the new values.
+
+2010-10-28  dbs
+
+	* Backport r18516: Ensure call numbers are returned to the holdings
+	  editor in ascending sorted order
+	  
+	  James Fournie in https://bugs.launchpad.net/evergreen/+bug/635121
+	  reported
+	  that call numbers were being displayed in the order that they had
+	  been
+	  added to the database, rather than in sorted call number label
+	  order.
+	  
+	  Although I have been unable to reproduce this problem on two
+	  different
+	  test systems, the patch he provided for 1.6.1 (which fixes the
+	  problem on their
+	  test system) shouldn't hurt other systems.
+
+2010-10-28  gmc
+
+	* adjust user tests that get done when retargeting holds
+	  
+	  Fixes bug where a user having the maximum number of
+	  active hold requests allowed to them by policy would
+	  prevent items from being targeted to fill their requests.
+	  
+	  Backport of r18507
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-05  miker
+
+	* .: Tagging 1.6.1.3
+
+	* Open-ILS/src/perlmods/OpenILS/Application.pm,
+	  Open-ILS/src/sql/Pg/002.schema.config.sql, README: bumping
+	  version number
+
