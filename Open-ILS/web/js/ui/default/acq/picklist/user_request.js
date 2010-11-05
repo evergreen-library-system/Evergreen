@@ -90,7 +90,7 @@ function fooPicklist() {
 
 function viewPicklist() {
     var lineitem = fieldmapper.standardRequest(
-        [ 'open-ils.acq', 'open-ils.acq.lineitem.retrieve' ],
+        [ 'open-ils.acq', 'open-ils.acq.lineitem.retrieve.authoritative' ],
         {
             params: [openils.User.authtoken, aur_obj.lineitem()]
         }
