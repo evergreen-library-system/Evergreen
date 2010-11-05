@@ -4963,9 +4963,15 @@ $$[%- USE date -%]
   # BT      - vendcode goes to NAD/BY *suffix*  w/ 91 qualifier
   # INGRAM  - vendcode goes to NAD/BY *segment* w/ 91 qualifier (separately)
   # BRODART - vendcode goes to FTX segment (lineitem level)
+  # In the logic below, vendors are identified by their SANs, as that
+  # is the identifier most likely to be the same from library to library.
+  # Baker & Taylor = 1556150
+  # Brodart        = 1697684
+  # Ingram         = 1697978
+  # Midwest Tapes  = 2549913
 -%]
 [%- 
-IF target.provider.edi_default.vendcode && target.provider.code == 'BRODART';
+IF target.provider.edi_default.vendcode && target.provider.san == '1697684';
     xtra_ftx = target.provider.edi_default.vendcode;
 END;
 -%]
@@ -4978,9 +4984,9 @@ END;
         "po_number":[% target.id %],
         "date":"[% date.format(date.now, '%Y%m%d') %]",
         "buyer":[
-            [%   IF   target.provider.edi_default.vendcode && (target.provider.code == 'BT' || target.provider.name.match('(?i)^BAKER & TAYLOR'))  -%]
+            [%   IF   target.provider.edi_default.vendcode && (target.provider.san == '1556150')  -%]
                 {"id-qualifier": 91, "id":"[% target.ordering_agency.mailing_address.san _ ' ' _ target.provider.edi_default.vendcode %]"}
-            [%- ELSIF target.provider.edi_default.vendcode && target.provider.code == 'INGRAM' -%]
+            [%- ELSIF target.provider.edi_default.vendcode && target.provider.san == '1697978' -%]
                 {"id":"[% target.ordering_agency.mailing_address.san %]"},
                 {"id-qualifier": 91, "id":"[% target.provider.edi_default.vendcode %]"}
             [%- ELSE -%]
@@ -5005,6 +5011,9 @@ END;
                 [% ELSE -%]
                 {"id-qualifier":"IB","id":"[% isbn %]"},
                 [%- END %]
+            [% END %]
+            [% IF helpers.get_li_attr('upc', '', li.attributes) %]
+                {"id-qualifier":"UP","id":"[% helpers.get_li_attr('upc', '', li.attributes) %]"}
             [% END %]
                 {"id-qualifier":"IN","id":"[% li.id %]"}
             ],

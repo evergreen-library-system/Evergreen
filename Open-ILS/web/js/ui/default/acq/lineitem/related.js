@@ -14,7 +14,7 @@ var paramPO;
 
 function fetchLi() {
     fieldmapper.standardRequest(
-        ["open-ils.acq", "open-ils.acq.lineitem.retrieve"], {
+        ["open-ils.acq", "open-ils.acq.lineitem.retrieve.authoritative"], {
             "async": true,
             "params": [openils.User.authtoken, targetId, {
                 "flesh_attrs": true,

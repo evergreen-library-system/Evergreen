@@ -30,7 +30,7 @@ function drawBriefRecordForm(fields) {
         openils.Util.hide('acq-brief-record-po-row');
 
         fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.picklist.retrieve'],
+            ['open-ils.acq', 'open-ils.acq.picklist.retrieve.authoritative'],
             {   async: true,
                 params: [openils.User.authtoken, paramPL], 
                 oncomplete : function(r) {
