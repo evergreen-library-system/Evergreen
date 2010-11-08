@@ -169,6 +169,7 @@ FEDORA_13_RPMS = \
 	perl-Business-CreditCard \
 	perl-Business-ISBN \
 	perl-Business-ISBN-Data \
+	perl-DBD-Pg \
 	perl-Email-Send \
 	perl-GDGraph3d \
 	perl-Net-SSH2 \
@@ -305,7 +306,9 @@ install_cpan_safe:
 
 # Install the CPAN modules for Fedora 13
 install_cpan_fedora: 
-	for m in $(FEDORA_13_CPAN); do perl -MCPAN -e "install \"$$m\";"; done
+	for m in $(FEDORA_13_CPAN); do \
+		echo "force install $$m" | perl -MCPAN -e shell;\
+	done
 
 # Install a known working version of YAZ
 install_yaz:    
