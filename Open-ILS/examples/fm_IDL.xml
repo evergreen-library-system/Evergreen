@@ -128,6 +128,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</fields>
 	</class>
 
+	<class id="rhr" oils_obj:fieldmapper="resolver::holdings_record" oils_persist:virtual="true">
+		<fields>
+			<field name="public_name" oils_persist:virtual="true" />
+			<field name="target_url" oils_persist:virtual="true" />
+			<field name="target_coverage" oils_persist:virtual="true" />
+			<field name="target_embargo" oils_persist:virtual="true" />
+		</fields>
+	</class>
 
 	<!-- Actually in the DB -->
 	<class id="vmp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::merge_profile" oils_persist:tablename="vandelay.merge_profile" reporter:label="Bib Import Merge Profile">
