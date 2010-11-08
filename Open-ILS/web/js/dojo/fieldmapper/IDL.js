@@ -33,6 +33,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     handleAs : 'xml',
                     sync : true,
                     timeout : 10000,
+                    preventCache : true,
                     load : function (response) {
                         self._parse(response);
                         fieldmapper.IDL.loaded = true;
