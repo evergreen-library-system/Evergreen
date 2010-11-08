@@ -17,7 +17,7 @@
 # 	- or -
 # 	make -f Makefile.install ubuntu-lucid
 # 	- or -
-# 	make -f Makefile.install fedora-13
+# 	make -f Makefile.install fedora13
 # 	- or -
 # 	make -f Makefile.install centos
 # 	- or -
@@ -60,8 +60,11 @@ APT_TOOL=aptitude -yq
 # 64 or 32 bit os?
 LBITS=$(shell getconf LONG_BIT)
 
+# Fedora?
+FEDORA=$(shell uname -r | grep "\.fc[0-9][0-9]\.")
+
 # Fedora 64-bit?
-FEDORA_64=$(shell uname -r | grep "fc[0-9][0-9].x86_64")
+FEDORA_64=$(shell uname -r | grep "\.fc[0-9][0-9]\.x86_64")
 
 #RHEL/Centos PGSQL 
 PGSQL_HOST=http://yum.pgsqlrpms.org/reporpms/8.4
@@ -178,6 +181,7 @@ FEDORA_13_RPMS = \
 	postgresql-devel \
 	readline-devel \
 	tcp_wrappers-devel \
+	wget \
 	yaz
 
 # Note: B:O:AuthorizeNet 3.21 fails with https://rt.cpan.org/Public/Bug/Display.html?id=55172
@@ -260,7 +264,8 @@ centos: install_centos_pgsql centos_like
 rhel: install_redhat_pgsql centos_like
 centos_like: install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe install_cpan_force
 
-fedora-13: install_fedora_13_rpms install_cpan install_cpan_fedora install_cpan_marc install_spidermonkey install_cpan_force
+fedora13: install_fedora_13_rpms install_cpan install_cpan_fedora install_cpan_marc install_spidermonkey install_cpan_force
+fedora14: fedora13
 
 debian-lenny: lenny generic_debian install_cpan_more install_cpan_safe
 debian-squeeze: squeeze generic_debian
@@ -325,6 +330,8 @@ install_spidermonkey:
 	tar -zxf $(LIBJS_PERL).tar.gz
 	if [ ! -z $(FEDORA_64) ]; then \
 		sed -i -e 's/"\/usr\/lib"/"\/usr\/lib64"/' $(LIBJS_PERL)/Makefile.PL ; \
+	fi;
+	if [ ! -z $(FEDORA) ]; then \
 		sed -i -e 's/js32.dll/libjs.so/' $(LIBJS_PERL)/Makefile.PL ; \
 	fi;
 	cd $(LIBJS_PERL) && perl Makefile.PL -E4X -JS_THREADSAFE && make && make test && make install
