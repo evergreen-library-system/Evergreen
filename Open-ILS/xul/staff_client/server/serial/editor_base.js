@@ -176,7 +176,7 @@ serial.editor_base = {
             }*/
 
             if (obj[fm_type_plural].length != 1) {
-                document.getElementById(fm_type + '_notes').setAttribute('hidden','true');
+                if (obj.can_have_notes) $(obj.xul_id_prefix + '_notes').setAttribute('hidden','true');
             }
 
             // clear change markers

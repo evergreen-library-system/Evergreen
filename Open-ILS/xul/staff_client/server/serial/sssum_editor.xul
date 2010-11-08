@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!-- Application: Evergreen Staff Client -->
+<!-- Screen: Supplement Summary Editor Overlay -->
+
+<!-- LOCALIZATION -->
+<!DOCTYPE overlay PUBLIC "" ""[
+    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+]>
+
+<overlay id="serial_sssum_editor_panel_overlay" 
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<vbox flex="1" id="serial_sssum_editor_panel" class="my_overflow">
+        <vbox id="brief_display_box"/>
+
+		<hbox flex="1" style="overflow: auto">
+			<vbox flex="1">
+				<label value="Supplement Summary" style="font-weight: bold; font-size: large"/>
+				<vbox id="sssum_editor_left_pane" flex="1"/>
+			</vbox>
+        </hbox>
+
+		<hbox id="sssum_editor_nav">
+			<spacer flex="1"/>
+			<button id="sssum_save" label="&staff.serial.sssum_editor.modify;" hidden="true" accesskey="&staff.serial.sssum_editor.modify.accesskey;" oncommand="g.manage_dists.sssum_editor.save()" />
+			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
+		</hbox>
+
+		<spacer/>
+	</vbox>
+
+</overlay>
+

@@ -1557,7 +1557,7 @@ serial.manage_subs.prototype = {
             var columns = [
                 {
                     'id' : 'tree_location',
-                    'label' : document.getElementById('catStrings').getString('staff.cat.copy_browser.list_init.tree_location'),
+                    'label' : 'Location',
                     'flex' : 1, 'primary' : true, 'hidden' : false, 
                     'render' : function(my) { return my.sdist ? my.sdist.label() : my.siss ? my.siss.label() : my.scap ? 'C/P : #' + my.scap.id() : my.ssub ? 'Subscription : #' + my.ssub.id() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : my.label ? my.label : "???"; },
                 },

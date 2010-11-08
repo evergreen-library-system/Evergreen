@@ -10,7 +10,9 @@ vim:noet:sw=4:ts=4:
 
 <?xul-overlay href="/xul/server/serial/sdist2_editor.xul"?>
 <?xul-overlay href="/xul/server/serial/sstr_editor.xul"?>
-<?xul-overlay href="/xul/server/serial/act_editor.xul"?>
+<?xul-overlay href="/xul/server/serial/sbsum_editor.xul"?>
+<?xul-overlay href="/xul/server/serial/sisum_editor.xul"?>
+<?xul-overlay href="/xul/server/serial/sssum_editor.xul"?>
 <overlay id="serial_manage_dists_overlay" 
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -92,8 +94,9 @@ vim:noet:sw=4:ts=4:
                         <description value="Please select an object to edit"/>
                         <vbox id="serial_sdist2_editor_panel" />
                         <vbox id="serial_sstr_editor_panel" />
-                        <vbox id="serial_summary_editor_panel" />
-                        <vbox id="serial_act_editor_panel" />
+                        <vbox id="serial_sbsum_editor_panel" />
+                        <vbox id="serial_sssum_editor_panel" />
+                        <vbox id="serial_sisum_editor_panel" />
                     </deck>
                 </hbox>
             </tabpanel>
