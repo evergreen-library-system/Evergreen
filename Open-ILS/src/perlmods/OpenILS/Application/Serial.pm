@@ -990,6 +990,7 @@ sub unitize_items {
             my $unit;
             my $sdists = $editor->search_serial_distribution([{"+sstr" => {"id" => $stream_id}}, { "join" => {"sstr" => {}} }]);
             $unit = _build_unit($editor, $sdists->[0], $mode, 0, $barcodes->{$item->id});
+            # TODO: catch events from _build_unit
             my $evt =  _create_sunit($editor, $unit);
             return $evt if $evt;
             if ($unit_id == -2) {
@@ -2093,6 +2094,25 @@ sub retrieve_dist_tree {
 }
 
 
+__PACKAGE__->register_method(
+    method  => "distribution_orgs_for_title",
+    authoritative => 1,
+    api_name    => "open-ils.serial.distribution.retrieve_orgs_by_title"
+);
+
+sub distribution_orgs_for_title {
+    my( $self, $client, $record_id ) = @_;
+
+    my $dists = $U->cstorereq(
+        "open-ils.cstore.direct.serial.distribution.search.atomic",
+        { '+ssub' => { record_entry => $record_id } },
+        { 'join' => {'ssub' => {}} }); # TODO: filter on !deleted?
+
+    my $orgs = { map {$_->holding_lib => 1 } @$dists };
+    return [ keys %$orgs ];
+}
+
+
 ##########################################################################
 # caption and pattern methods
 #
@@ -2311,6 +2331,173 @@ sub serial_stream_retrieve_batch {
     $logger->info("Fetching streams @$ids");
     return $U->cstorereq(
         "open-ils.cstore.direct.serial.stream.search.atomic",
+        { id => $ids }
+    );
+}
+
+
+##########################################################################
+# summary methods
+#
+__PACKAGE__->register_method(
+    method    => 'sum_alter',
+    api_name  => 'open-ils.serial.basic_summary.batch.update',
+    api_level => 1,
+    argc      => 2,
+    signature => {
+        desc     => 'Receives an array of one or more summaries and updates the database as needed',
+        'params' => [ {
+                 name => 'authtoken',
+                 desc => 'Authtoken for current user session',
+                 type => 'string'
+            },
+            {
+                 name => 'sbsums',
+                 desc => 'Array of basic summaries',
+                 type => 'array'
+            }
+
+        ],
+        'return' => {
+            desc => 'Returns 1 if successful, event if failed',
+            type => 'mixed'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => 'sum_alter',
+    api_name  => 'open-ils.serial.supplement_summary.batch.update',
+    api_level => 1,
+    argc      => 2,
+    signature => {
+        desc     => 'Receives an array of one or more summaries and updates the database as needed',
+        'params' => [ {
+                 name => 'authtoken',
+                 desc => 'Authtoken for current user session',
+                 type => 'string'
+            },
+            {
+                 name => 'sbsums',
+                 desc => 'Array of supplement summaries',
+                 type => 'array'
+            }
+
+        ],
+        'return' => {
+            desc => 'Returns 1 if successful, event if failed',
+            type => 'mixed'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => 'sum_alter',
+    api_name  => 'open-ils.serial.index_summary.batch.update',
+    api_level => 1,
+    argc      => 2,
+    signature => {
+        desc     => 'Receives an array of one or more summaries and updates the database as needed',
+        'params' => [ {
+                 name => 'authtoken',
+                 desc => 'Authtoken for current user session',
+                 type => 'string'
+            },
+            {
+                 name => 'sbsums',
+                 desc => 'Array of index summaries',
+                 type => 'array'
+            }
+
+        ],
+        'return' => {
+            desc => 'Returns 1 if successful, event if failed',
+            type => 'mixed'
+        }
+    }
+);
+
+sub sum_alter {
+    my( $self, $conn, $auth, $sums ) = @_;
+    return 1 unless ref $sums;
+
+    $self->api_name =~ /serial\.(\w*)_summary/;
+    my $type = $1;
+
+    my( $reqr, $evt ) = $U->checkses($auth);
+    return $evt if $evt;
+    my $editor = new_editor(requestor => $reqr, xact => 1);
+    my $override = $self->api_name =~ /override/;
+
+# TODO: permission check
+#        return $editor->event unless
+#            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
+
+    for my $sum (@$sums) {
+        my $sumid = $sum->id;
+
+        # XXX: (for now, at least) summaries should be created/deleted by the distribution functions
+        if( $sum->isdeleted ) {
+            $evt = OpenILS::Event->new('SERIAL_SUMMARIES_NOT_INDEPENDENT');
+        } elsif( $sum->isnew ) {
+            $evt = OpenILS::Event->new('SERIAL_SUMMARIES_NOT_INDEPENDENT');
+        } else {
+            $evt = _update_sum( $editor, $override, $sum, $type );
+        }
+    }
+
+    if( $evt ) {
+        $logger->info("${type}_summary-alter failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
+        $editor->rollback;
+        return $evt;
+    }
+    $logger->debug("${type}_summary-alter: done updating ${type}_summary batch");
+    $editor->commit;
+    $logger->info("${type}_summary-alter successfully updated ".scalar(@$sums)." ${type}_summaries");
+    return 1;
+}
+
+sub _update_sum {
+    my ($editor, $override, $sum, $type) = @_;
+
+    $logger->info("${type}_summary-alter: retrieving ${type}_summary ".$sum->id);
+    my $retrieve_method = "retrieve_serial_${type}_summary";
+    my $orig_sum = $editor->$retrieve_method($sum->id);
+
+    $logger->info("${type}_summary-alter: original ${type}_summary ".OpenSRF::Utils::JSON->perl2JSON($orig_sum));
+    $logger->info("${type}_summary-alter: updated ${type}_summary ".OpenSRF::Utils::JSON->perl2JSON($sum));
+    my $update_method = "update_serial_${type}_summary";
+    return $editor->event unless $editor->$update_method($sum);
+    return 0;
+}
+
+__PACKAGE__->register_method(
+    method  => "serial_summary_retrieve_batch",
+    authoritative => 1,
+    api_name    => "open-ils.serial.basic_summary.batch.retrieve"
+);
+
+__PACKAGE__->register_method(
+    method  => "serial_summary_retrieve_batch",
+    authoritative => 1,
+    api_name    => "open-ils.serial.supplement_summary.batch.retrieve"
+);
+
+__PACKAGE__->register_method(
+    method  => "serial_summary_retrieve_batch",
+    authoritative => 1,
+    api_name    => "open-ils.serial.index_summary.batch.retrieve"
+);
+
+sub serial_summary_retrieve_batch {
+    my( $self, $client, $ids ) = @_;
+
+    $self->api_name =~ /serial\.(\w*)_summary/;
+    my $type = $1;
+
+    $logger->info("Fetching ${type}_summaries @$ids");
+    return $U->cstorereq(
+        "open-ils.cstore.direct.serial.".$type."_summary.search.atomic",
         { id => $ids }
     );
 }
