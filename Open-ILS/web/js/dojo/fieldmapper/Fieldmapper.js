@@ -138,6 +138,8 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
             fieldmapper[cl].toStoreItem = _toStoreItem;
             fieldmapper[cl].prototype.toStoreItem = function ( args ) { return _toStoreItem(this, args) };
             fieldmapper[cl].initStoreData = _initStoreData;
+            fieldmapper[cl].prototype.toHash = _toHash;
+            fieldmapper[cl].toHash = _toHash;
         }
 
     };
