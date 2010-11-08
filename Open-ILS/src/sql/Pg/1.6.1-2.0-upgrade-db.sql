@@ -23,7 +23,7 @@ BEGIN;
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0458');
+INSERT INTO config.upgrade_log (version) VALUES ('0461');
 
 -- Remove some uses of the connectby() function from the tablefunc contrib module
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT, INT ) RETURNS SETOF actor.org_unit AS $$
@@ -14065,7 +14065,7 @@ INSERT INTO acq.cancel_reason ( id, org_unit, label, description ) VALUES (
 INSERT INTO acq.cancel_reason ( id, org_unit, label, description ) VALUES (
 	2, 1, 'postpone', oils_i18n_gettext( 2, 'Title has been postponed', 'acqcr', 'label' ));
 
-CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT, field TEXT ) RETURNS TEXT AS $_$
+CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT, field TEXT, force_add INT ) RETURNS TEXT AS $_$
 
     use MARC::Record;
     use MARC::File::XML (BinaryEncoding => 'UTF-8');
@@ -14074,6 +14074,7 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
     my $target_xml = shift;
     my $source_xml = shift;
     my $field_spec = shift;
+    my $force_add = shift || 0;
 
     my $target_r = MARC::Record->new_from_xml( $target_xml );
     my $source_r = MARC::Record->new_from_xml( $source_xml );
@@ -14109,7 +14110,7 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
             for my $from_field ($source_r->field( $f )) {
                 my @tos = $target_r->field( $f );
                 if (!@tos) {
-                    next if (exists($fields{$f}{match}));
+                    next if (exists($fields{$f}{match}) and !$force_add);
                     my @new_fields = map { $_->clone } $source_r->field( $f );
                     $target_r->insert_fields_ordered( @new_fields );
                 } else {
@@ -14136,6 +14137,10 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
     return $target_xml;
 
 $_$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT, field TEXT ) RETURNS TEXT AS $_$
+    SELECT vandelay.add_field( $1, $2 $3, 0 );
+$_$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS TEXT AS $_$
 
@@ -14197,8 +14202,22 @@ CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS
 $_$ LANGUAGE PLPERLU;
 
 CREATE OR REPLACE FUNCTION vandelay.replace_field ( target_xml TEXT, source_xml TEXT, field TEXT ) RETURNS TEXT AS $_$
-    SELECT vandelay.add_field( vandelay.strip_field( $1, $3), $2, $3 );
-$_$ LANGUAGE SQL;
+DECLARE
+    xml_output TEXT;
+BEGIN
+    xml_output := vandelay.strip_field( target_xml, field);
+
+    IF xml_output <> target_xml  AND field ~ E'~' THEN
+        -- we removed something, and there was a regexp restriction in the field definition, so proceed
+        xml_output := vandelay.add_field( xml_output, source_xml, field, 1 );
+    ELSIF field !~ E'~' THEN
+        -- No regexp restriction, add the field
+        xml_output := vandelay.add_field( xml_output, source_xml, field, 0 );
+    END IF;
+
+    RETURN xml_output;
+END;
+$_$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION vandelay.preserve_field ( incumbent_xml TEXT, incoming_xml TEXT, field TEXT ) RETURNS TEXT AS $_$
     SELECT vandelay.add_field( vandelay.strip_field( $2, $3), $1, $3 );
@@ -19004,5 +19023,4 @@ INSERT INTO action_trigger.event_definition (
 
 
 \qecho Upgrade script completed.
-
 
