@@ -14,7 +14,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
             if(!fieldmapper.IDL.fmclasses || (classlist && classlist.length)) {
                 var idl_url = this._URL_PATH;
 
-                if (classlist.length) {
+                if (classlist.length > 1 || classlist[0] != '*') {
                     idl_url += '?';
 
                     for (var i = 0; i < classlist.length; i++) {
