@@ -132,7 +132,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
         if (fieldmapper.IDL && fieldmapper.IDL.loaded) fieldmapper[cl].Identifier = fieldmapper.IDL.fmclasses[cl].pkey;
 
         if (dojo._hasResource['fieldmapper.dojoData'] && dojo.filter(['aou','aout','pgt'], function(x){return x == cl}).length == 0) {
-            fieldmapper[cl].prototype.fromStoreItem = _fromtoreItem;
+            fieldmapper[cl].prototype.fromStoreItem = _fromStoreItem;
             fieldmapper[cl].prototype.fromStoreItem = _fromStoreItem;
             fieldmapper[cl].toStoreData = _toStoreData;
             fieldmapper[cl].toStoreItem = _toStoreItem;
