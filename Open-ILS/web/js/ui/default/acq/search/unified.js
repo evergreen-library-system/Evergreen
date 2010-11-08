@@ -140,7 +140,11 @@ function TermSelectorFactory(terms) {
                         w.updateCount();
                     }
                 );
-            } else if (term.hint == "acqlia") {
+            } else if (term.hint == "acqlia" ||
+                (term.hint == "jub" && term.field == "eg_bib_id")) {
+                /* The test for jub.eg_bib_id is a special case to prevent
+                 * AutoFieldWidget from trying to render a ridiculous dropdown
+                 * of every bib record ID in the system. */
                 wStore[widgetKey] = dojo.create(
                     "input", {"type": "text"}, parentNode, "only"
                 );
@@ -306,8 +310,9 @@ function TermManager() {
             can_do_fuzzy = false;
             can_do_in = true;
         } else if (term.datatype == "link") {
-            can_do_fuzzy = (self.getLinkTarget(term) == "au");
-            can_do_in = false; /* XXX might revise later */
+            var target = self.getLinkTarget(term);
+            can_do_fuzzy = (target == "au");
+            can_do_in = (target == "bre"); /* XXX might revise later */
         } else if (typeof(w.declaredClass) != "undefined") {
             can_do_fuzzy = can_do_in =
                 Boolean(w.declaredClass.match(/form\.Text|XULT/));
