@@ -384,23 +384,18 @@ sub retrieve_holds {
         $notes_filter = {} if $e->allowed('VIEW_HOLD', $user->home_ou);
     }
 
-    my $holds;
+    my $holds_query = {
+        select => {ahr => ['id']},
+        from => 'ahr', 
+        where => {usr => $user_id, fulfillment_time => undef}
+    };
 
-    if($self->api_name !~ /canceled/) {
-
-        # Fetch the active holds
-
-        $holds = $e->search_action_hold_request([
-            {   usr =>  $user_id , 
-                fulfillment_time => undef,
-                cancel_time      => undef,
-            }, 
-            {order_by => {ahr => "request_time"}}
-        ]);
-
-    } else {
+    if($self->api_name =~ /canceled/) {
 
         # Fetch the canceled holds
+        # order cancelled holds by cancel time, most recent first
+
+        $holds_query->{order_by} = [{class => 'ahr', field => 'cancel_time', direction => 'desc'}];
 
         my $cancel_age;
         my $cancel_count = $U->ou_ancestor_setting_value(
@@ -409,48 +404,52 @@ sub retrieve_holds {
         unless($cancel_count) {
             $cancel_age = $U->ou_ancestor_setting_value(
                 $e->requestor->ws_ou, 'circ.holds.canceled.display_age', $e);
+
+            # if no settings are defined, default to last 10 cancelled holds
+            $cancel_count = 10 unless $cancel_age;
         }
 
         if($cancel_count) { # limit by count
 
-            # find at most cancel_count canceled holds
-            $holds = $e->search_action_hold_request([
-                {   usr =>  $user_id , 
-                    fulfillment_time => undef,
-                    cancel_time      => {'!=' => undef},
-                }, 
-                {order_by => {ahr => "cancel_time desc"}, limit => $cancel_count}
-            ]);
+            $holds_query->{where}->{cancel_time} = {'!=' => undef};
+            $holds_query->{limit} = $cancel_count;
 
         } elsif($cancel_age) { # limit by age
 
             # find all of the canceled holds that were canceled within the configured time frame
             my $date = DateTime->now->subtract(seconds => OpenSRF::Utils::interval_to_seconds($cancel_age));
             $date = $U->epoch2ISO8601($date->epoch);
-
-            $holds = $e->search_action_hold_request([
-                {   usr =>  $user_id , 
-                    fulfillment_time => undef,
-                    cancel_time      => {'>=' => $date},
-                }, 
-                {order_by => {ahr => "cancel_time desc"}}
-            ]);
+            $holds_query->{where}->{cancel_time} = {'>=' => $date};
         }
+
+    } else {
+
+        # order non-cancelled holds by ready-for-pickup, then active, followed by suspended
+        $holds_query->{order_by} = {ahr => ['shelf_time', 'frozen', 'request_time']};
+        $holds_query->{where}->{cancel_time} = undef;
     }
 
-    if( $self->api_name !~ /id_list/ ) {
-        for my $hold ( @$holds ) {
-            $hold->notes($e->search_action_hold_request_note({hold => $hold->id, %$notes_filter}));
-            $hold->transit(
-                $e->search_action_hold_transit_copy([
-                    {hold => $hold->id},
-                    {order_by => {ahtc => 'id desc'}, limit => 1}])->[0]
-            );
-        }
-        return $holds;
+    my $hold_ids = $e->json_query($holds_query);
+    $hold_ids = [ map { $_->{id} } @$hold_ids ];
+
+    return $hold_ids if $self->api_name =~ /id_list/;
+
+    my @holds;
+    for my $hold_id ( @$hold_ids ) {
+
+        my $hold = $e->retrieve_action_hold_request($hold_id);
+        $hold->notes($e->search_action_hold_request_note({hold => $hold_id, %$notes_filter}));
+
+        $hold->transit(
+            $e->search_action_hold_transit_copy([
+                {hold => $hold->id},
+                {order_by => {ahtc => 'source_send_time desc'}, limit => 1}])->[0]
+        );
+
+        push(@holds, $hold);
     }
-    # else id_list
-    return [ map { $_->id } @$holds ];
+
+    return \@holds;
 }
 
 
