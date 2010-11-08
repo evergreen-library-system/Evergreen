@@ -379,7 +379,7 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
 $_$ LANGUAGE PLPERLU;
 
 CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT, field TEXT ) RETURNS TEXT AS $_$
-    SELECT vandelay.add_field( $1, $2 $3, 0 );
+    SELECT vandelay.add_field( $1, $2, $3, 0 );
 $_$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS TEXT AS $_$
