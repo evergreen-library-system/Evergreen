@@ -190,7 +190,8 @@ FEDORA_13_RPMS = \
 FEDORA_13_CPAN = \
 	Business::OnlinePayment \
 	Business::OnlinePayment::AuthorizeNet \
-	MARC::Record
+	MARC::Record \
+	UUID::Tiny
 
 PGSQL_84_RPMS = \
 	postgresql-8.4* \
