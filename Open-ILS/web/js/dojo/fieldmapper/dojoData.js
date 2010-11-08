@@ -94,7 +94,6 @@ if(!dojo._hasResource['fieldmapper.dojoData']){
 
 	for (var i in fmclasses) {
 		fieldmapper[i].prototype.fromStoreItem = _fromStoreItem;
-		fieldmapper[i].prototype.fromStoreItem = _fromStoreItem;
 		fieldmapper[i].toStoreData = _toStoreData;
 		fieldmapper[i].toStoreItem = _toStoreItem;
 		fieldmapper[i].prototype.toStoreItem = function ( args ) { return _toStoreItem(this, args) };
