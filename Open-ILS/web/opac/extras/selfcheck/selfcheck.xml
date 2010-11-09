@@ -59,8 +59,6 @@
         <script language='javascript' type='text/javascript' 
             src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/RemoteRequest.js'></script>
         <script language='javascript' type='text/javascript' 
-            src='<!--#echo var="OILS_OPAC_JS_HOST"-->/common/js/DP_DateExtensions.js'></script>
-        <script language='javascript' type='text/javascript' 
             src='<!--#echo var="OILS_OPAC_JS_HOST"-->/extras/selfcheck/selfcheck.js'></script>
         <link type='text/css' rel='stylesheet' title='Regular'
             href="<!--#echo var='OILS_OPAC_CSS_HOST'-->/extras/selfcheck/selfcheck.css"/>
