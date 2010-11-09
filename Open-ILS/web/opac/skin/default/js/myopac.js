@@ -599,14 +599,14 @@ function _trimTime(time) {
     time = time.replace(/(T\d\d:\d\d:\d\d)([+-]\d\d)(\d)/, "$1$2:$3");
     var d = dojo.date.stamp.fromISOString(time);
     if(!d) return ""; /* date parse failed */
-    return d.iso8601Format('YMD');
+    return dojo.date.locale.format(d, {"formatLength": "medium"});
 }
 
 function _trimSeconds(time) { 
     if(!time) return ""; 
     var d = dojo.date.stamp.fromISOString(time.replace(/(T\d\d:\d\d:\d\d)([+-]\d\d)(\d)/, "$1$2:$3"));
     if(!d) return ""; /* date parse failed */
-    return d.iso8601Format('YMDHM',null,true,true);
+    return dojo.date.locale.format(d, { "timePattern" : "h:ma", "formatLength" : "medium" });
 }
 
 function myOPACShowTransactions(r) {
@@ -847,7 +847,7 @@ function _myOPACSummaryShowUer(r) {
 
     var expireDate = dojo.date.stamp.fromISOString(user.expire_date());
     if( expireDate < new Date() ) {
-        appendClear($('myopac.expired.date'), expireDate.iso8601Format('YMD'));
+        appendClear($('myopac.expired.date'), dojo.date.locale.format(expireDate, { "formatLength" : "medium", "selector" : "date" }));
         unHideMe($('myopac.expired.alert'));
     }
 
