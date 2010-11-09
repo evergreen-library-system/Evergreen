@@ -8,7 +8,7 @@
 	</info>
 	<simplesect xml:id="myaccountloginpasswordupdate">
 		
-				<title>First Login Password Update</title>
+				<title>First Login Password Update</title><indexterm><primary>My Account</primary><secondary>first login</secondary></indexterm>
 			<para>Patrons are given temporary passwords when new accounts are created, or forgotten passwords are reset by staff. Patrons MUST change their password to something more 
 			secure when they login or for the first time. Once the password is updated, they will not have to repeat this process for subsequent logins.</para>
 			
@@ -60,7 +60,7 @@
 				</procedure>
 		</simplesect>
 		<simplesect xml:id="myaccountlogin">
-				<title>Logging In</title>
+				<title>Logging In</title><indexterm><primary>My Account</primary><secondary>logging in</secondary></indexterm>
 				<procedure>
 				<title>Logging into your account from the online catalog</title>	
 					<step>
@@ -93,7 +93,7 @@
 				<caution><para>If using a public computer be sure to log out!</para></caution>
 		</simplesect>
 		<simplesect xml:id="myaccountpasswordreset">
-				<title>Password Reset</title>
+				<title>Password Reset</title><indexterm><primary>My Account</primary><secondary>password reset</secondary></indexterm>
 					<para>Evergreen 1.6.1 introduced a new feature to allow patrons to reset forgotten passwords from the My Account login screen.</para>  
 					<para>To reset your password:</para> 
 					<procedure>
@@ -129,7 +129,7 @@
 			</procedure>
 		</simplesect>
 		<simplesect xml:id="myaccountsummary">
-				<title>Account Summary</title>
+				<title>Account Summary</title><indexterm><primary>My Account</primary><secondary>account summary</secondary></indexterm>
 					<para>Users can view Staff Notes, home library, address, and phone numbers. They can also change their username, password, and email.</para>
 		</simplesect>
 		<simplesect xml:id="myaccountitemscheckedout">
@@ -137,7 +137,7 @@
 					<para>Users can manage items currently checked out, view overdue items and see how many renewals they have remaining for specific item.</para>		
 		</simplesect>
 		<simplesect xml:id="myaccountitemsonhold">
-				<title>Items On Hold</title>	
+				<title>Items On Hold</title><indexterm><primary>My Account</primary><secondary>items on hold</secondary></indexterm>
 				<para>From My Account patrons can manage items currently being requested.</para>
 					<para>Actions include:</para>
 					<itemizedlist>
@@ -197,12 +197,12 @@
 				</procedure>
 		</simplesect>
 		<simplesect xml:id="myaccountfines">
-				<title>Fines</title>
+				<title>Fines</title><indexterm><primary>My Account</primary><secondary>fines</secondary></indexterm>
 					<para>Clicking on the fines tab will allow you to see your <guilabel>Total Owed</guilabel>, <guilabel>Total Paid</guilabel> and <guilabel>Balance 
 					Owed</guilabel>.</para>
 		</simplesect>
 		<simplesect xml:id="myaccountpreferences">
-				<title>Preferences</title>
+				<title>Preferences</title><indexterm><primary>My Account</primary><secondary>preferences</secondary></indexterm>
 					<para>From here you can manage display preferences including:</para>
 					<itemizedlist>
 						<listitem>Search hits per page - how many items to appear on each page in results.</listitem>
@@ -214,7 +214,7 @@
 					<para>After changing any of these settings, remember to click <guibutton>Save Preference Changes</guibutton>.</para> 					
 		</simplesect>
 		<simplesect xml:id="myaccountbookbags">
-				<title>Bookbags</title>
+				<title>Bookbags</title><indexterm><primary>My Account</primary><secondary>bookbags</secondary></indexterm>
 				<para>My Bookbags is a feature that allows you to create lists of library materials (books, audiobooks, videos, etc.) These lists create links to records in the 
 				catalog, but are otherwise completely private and only accessible by you when logged in to your Account.</para>
 				<para>You have the option to share specific lists with people whom you choose (send them the direct URL), or more generally via RSS feed. Shared bookbags do 

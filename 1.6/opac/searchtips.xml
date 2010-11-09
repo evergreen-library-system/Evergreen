@@ -11,7 +11,7 @@
             <para>Do not use an AND operator to join search terms. </para>
             <itemizedlist>
                <listitem>
-                  <para>An AND operator is automatically used to join all search terms. So, a search
+                  <para>An AND operator is automatically used to join all search terms. So, a search<indexterm><primary>boolean</primary><secondary>AND operator</secondary></indexterm>
                      for <emphasis>golden compass </emphasis>will search for entries that contain
                      both <emphasis>golden </emphasis><emphasis role="bold">and
                         </emphasis><emphasis>compass</emphasis>.</para>
@@ -23,7 +23,7 @@
                         <emphasis>golden compass</emphasis>. Putting it another way, there are no
                         <emphasis>stop </emphasis>words that are automatically ignored by the search
                      engine. So, a title search for <emphasis>the and or not </emphasis>of (and in
-                     any order) yields a list of titles with those words. </para>
+                     any order) yields a list of titles with those words. </para><indexterm><primary>boolean</primary></indexterm>
                </listitem>
             </itemizedlist>
          </listitem>

@@ -8,12 +8,12 @@
 	<para>Here is a basic search URL structure:</para>
 		<screen><emphasis>[hostname]</emphasis>/opac/<emphasis>[locale]</emphasis>/skin/default/xml/rresult.xml?<emphasis role='bold'>rt</emphasis>=keyword&amp;<emphasis role='bold'>tp</emphasis>=keyword&amp;<emphasis role='bold'>t</emphasis>=<emphasis>[search term]</emphasis>&amp;<emphasis role='bold'>l</emphasis>=<emphasis>[location id]</emphasis>&amp;<emphasis role='bold'>d</emphasis>=0</screen>	
     	<simplesect>
-		<title><emphasis>l</emphasis> Parameter</title>
+		<title><emphasis>l</emphasis> Parameter</title><indexterm><primary>searching parameters</primary><secondary>location</secondary></indexterm>
 		<para>This is the id of the search location. It is an integer and maches the id of the location the user selected in the location drop down menu.</para>
 	<para>This is accompanied by a <emphasis>d</emphasis> parameter which indicated the depth of the location selected. For example, <emphasis>0</emphasis> would be the highest level and <emphasis>1</emphasis> would represent the next depth level.</para>
  	</simplesect>
 	<simplesect>
-		<title><emphasis>rt</emphasis> Parameter</title>
+		<title><emphasis>rt</emphasis> Parameter</title><indexterm><primary>searching parameters</primary><secondary>request types</secondary></indexterm>
 		<para>The <emphasis>rt</emphasis> parameter in the URL represents the search type values and represent one of the following search or request types:</para>
 	 	<itemizedlist>
 			<listitem>keyword</listitem>
@@ -25,8 +25,8 @@
 		<para>These match the options in the search type drop-down box.</para>
  	</simplesect>
 	<simplesect>
-		<title>Sorting</title>
-		<para>The <emphasis>s</emphasis> parameter sorts the results on one of these  criteria.</para>
+		<title>Sorting</title><indexterm><primary>searching parameters</primary><secondary>sorting criteria</secondary></indexterm>
+		<para>The <emphasis>s</emphasis> parameter sorts the results on one of these criteria.</para>
 	 	<itemizedlist>
 			<listitem>pubdate (publication date) - chronological order</listitem>
 			<listitem>title - Alphabetical order</listitem>

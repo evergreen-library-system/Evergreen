@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
 	    xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="simpleselfcheck">
-	<title>Simple Self Check Interface</title>
+	<title>Simple Self Check Interface</title><indexterm><primary>self check</primary></indexterm>
 	<note>
 		<para>This section deals with the simple self check front end that comes with Evergreen. For information on setting up a SIP server for communicating with self check hardware, 
 		please refer to <link linkend="sipserver">Setting up a SIP Server</link>.</para></note> 

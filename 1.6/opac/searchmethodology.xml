@@ -3,7 +3,7 @@
 	    xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="catalogue-search-methodology">
 	<title>Search Methodology</title>
      	 <simplesect xml:id="catalogue-search-methodology-stemming">
-		 <title>Stemming</title>
+		 <title>Stemming</title><indexterm><primary>search methodology</primary><secondary>stemming</secondary></indexterm>
 		 <para>A search for <emphasis>dogs</emphasis> will also return hits with the word
 		       <emphasis>dog</emphasis> and a search for <emphasis>parenting</emphasis> will return
 		    results with the words <emphasis>parent</emphasis> and<emphasis> parental</emphasis>.
@@ -25,12 +25,12 @@
 		    a stem of <emphasis>golden</emphasis>.</para>
       </simplesect>
       <simplesect>
-		 <title>Truncation</title>
+		 <title>Truncation</title><indexterm><primary>search methodology</primary><secondary>truncation</secondary></indexterm>
 		 <para>Truncation is not currently supported in Evergreen. </para>
       </simplesect>
       <simplesect xml:id="catalogue-search-methodology-order-of-results"
 		 xreflabel="Order of Results">
-		 <title> Order of Results </title>
+		 <title> Order of Results </title><indexterm><primary>search methodology</primary><secondary>order of results</secondary></indexterm>
 		 <para>By default, the results are listed in order of relevance, similar
 		    to a search engine like Google. The relevance is determined using a number of factors,
 		    including how often and where the search terms appear in the item description, and
