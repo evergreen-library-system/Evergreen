@@ -11,6 +11,7 @@
 		<title>Locating Records</title>
 		<simplesect xml:id="staffclientrecordsearch">
 			<title>Search</title>
+			<indexterm><primary>cataloguing</primary><secondary>locating records</secondary></indexterm>
 			<para>Search functionality may be functioned through:
 				<itemizedlist>
 					<listitem><menuchoice><guimenu>Cataloging</guimenu><guimenuitem>Search the Catalog</guimenuitem></menuchoice> </listitem>
@@ -45,12 +46,15 @@
 		</simplesect>
 		<simplesect xml:id="addingandeditingitems">
 			<title>Adding and Editing Items</title>
+			<indexterm><primary>cataloguing</primary><secondary>adding and editing items</secondary></indexterm>
 			<simplesect xml:id="adingholdingstotitlerecords">
-				<title>Adding Holdings to Title Rrcords</title>			
+				<title>Adding Holdings to Title Rrcords</title>	
+				<indexterm><primary>cataloguing</primary><secondary>adding holdings</secondary></indexterm>		
 				<procedure>
 					<step><para>Retrieve an existing bibliographic record.</para></step>
 					<step><para>Actions for this Record->Holdings Maintenance.</para></step>
-					<step><para>The Record opens in <emphasis>record summary</emphasis> view. To display existing volume and copy records, check the boxes for <emphasis>Show Volumes</emphasis> and <emphasis>Show Items.</emphasis> 
+					<step><para>The Record opens in <emphasis>record summary</emphasis> view. To display existing volume and copy records, check the boxes for 
+					<emphasis>Show Volumes</emphasis> and <emphasis>Show Items.</emphasis> 
 					These boxes are <emphasis>sticky</emphasis> and will remain checked for the login until manually de-selected.</para></step>
 					
 					<step><para>Highlight the appropriate library from the display.</para></step>
@@ -68,8 +72,10 @@
 		</simplesect>
 		<simplesect xml:id="copyalertsandnotes">
 			<title>Copy Alerts and Notes</title>
+			
 			<simplesect xml:id="copyalerts">
 				<title>Copy Alerts</title>
+				<indexterm><primary>cataloguing</primary><secondary>copy alerts</secondary></indexterm>	
 				<para>Copy alerts are useful alerts for physical item copies.</para>
 				<para>Staff must be granted permission to override alerts at checkout or checkin.</para> 
 					
@@ -102,6 +108,7 @@
 			</simplesect>
 			<simplesect xml:id="copynotes">
 				<title>Copy Notes</title>
+				<indexterm><primary>cataloguing</primary><secondary>copy notes</secondary></indexterm>
 				<para>Copy notes are informational only. They may be internal or made available to the public in the OPAC.</para>	
 				<procedure>
 					<title>Accessing copy notes from the copy editor:</title>
@@ -117,9 +124,11 @@
 	</section>
 	<section xml:id="addingnewbibliographicrecords">
 		<title>Adding New Bibliographic Records</title>
+		<indexterm><primary>cataloguing</primary><secondary>adding bibliographic records</secondary></indexterm>
 		<para>Evergreen allows new bibliographic records to be added to the database through Z39.50 searching, MARC record file uploads, and original cataloging.</para> 
 		<simplesect xml:id="ImportingMARCRecords-Z39">
 			<title>Importing MARC Records via the Z39.50 Interface</title>
+			<indexterm><primary>Z39.50</primary><secondary>importing records</secondary></indexterm>
 			<procedure>
 				<step><para><menuchoice><guimenu>Cataloging</guimenu> <guimenuitem>Import Record from Z39.50</guimenuitem></menuchoice></para></step>
 				<step><para>Select single or multiple pre configured Z39.50 targets from the list. Only subscription services require logins. Once databases have 
@@ -145,6 +154,7 @@
 		</simplesect>		
 		<simplesect xml:id="importingrecords">
 			<title>Importing Records</title>
+			<indexterm><primary>cataloguing</primary><secondary>importing records</secondary></indexterm>
 			<procedure>
 				<step><para>Highlight the record and click <guibutton>MARC Editor for Import</guibutton>.</para></step>
 				<step><para>The record opens in the MARC Editor. Edit fixed and bibliographic fields. </para></step>
@@ -158,7 +168,8 @@
 				<emphasis>sticky</emphasis> for the login.</para></note>
 		</simplesect>	
 		<simplesect xml:id="uploadingMARCfiles">
-			<title>Uploading MARC files</title>
+			<title>Uploading MARC Files</title>
+			<indexterm><primary>cataloguing</primary><secondary>uploading MARC files</secondary></indexterm>
 			<para>Title records that do not already exist in the Evergreen database may be uploaded directly to the catalog through vendor-supplied MARC files. Multiple title records 
 			can be uploaded and added at the same time.</para>
 			<procedure>
@@ -182,6 +193,7 @@
 		</simplesect>			
 		<simplesect xml:id="creatingnewMARCrecords">
 			<title>Creating New MARC Records</title>
+			<indexterm><primary>cataloguing</primary><secondary>creating new MARC records</secondary></indexterm>
 			<para>New MARC records may be created in Evergreen using MARC templates. For detailed information on MARC standards, visit the Library of Congress website: 
 			<ulink url='http://www.loc.gov/marc/'>http://www.loc.gov/marc/</ulink></para>
 			<procedure>
@@ -201,11 +213,13 @@
 	</section>
 	<section xml:id="MARCeditor">
 		<title>Working with the MARC Editor</title>
+		<indexterm><primary>cataloguing</primary><secondary>MARC editor</secondary></indexterm>
 		<para>The MARC Editor allows MARC tags, sub-fields, and indicators to be edited.</para> 
 		<para>OPAC icons for text, moving pictures and sound rely on correct MARC coding in the leader and the 008, as do OPAC search filters such as publication date, item type, or 
 		target audience. Bibliographic matching and de-duplicating also rely on correct MARC coding and consistency in use and content in particular MARC tags.</para> 
 		<simplesect xml:id="editingMARCrecords">
 			<title>Editing MARC Records</title>
+			<indexterm><primary>cataloguing</primary><secondary>editing MARC records</secondary></indexterm>
 			<procedure>
 				<step><para>Retrieve the record.</para></step>
 				<step><para><menuchoice><guimenu>Actions for this Record</guimenu> <guimenuitem>MARC Edit</guimenuitem></menuchoice>. </para></step>
@@ -222,11 +236,13 @@
 		</simplesect>	
 		<simplesect xml:id="MARCrecordleader">
 			<title>MARC Record Leader and MARC fixed field 008</title>
+			<indexterm><primary>MARC</primary><secondary>MARC leader</secondary></indexterm>
+			<indexterm><primary>MARC</primary><secondary>fixed field 008</secondary></indexterm>
 			<para>Parts of the leader and the 008 field can be edited in the MARC Editor via the fixed field editor box displayed above the MARC record. Information about the leader and 
 			the 008 can be found on the Library of Congress’s MARC Standards page at <ulink url='http://www.loc.gov/marc/'>http://www.loc.gov/marc/</ulink>.</para>
 					
 			<procedure>
-				<title>To edit the MARC record leader:</title>				
+				<title>To edit the MARC record leader</title>				
 				<step><para>Retrieve and display the appropriate record in MARC Edit view.</para></step>
 				<step><para><emphasis>Click</emphasis> into any box displayed in the fixed field editor.</para></step>
 				<step><para>Press <keycap>Tab</keycap> or use the mouse to move between fields. </para></step>			
@@ -238,19 +254,20 @@
 		</simplesect>	
 		<simplesect xml:id="overlayingMARCrecords">
 			<title>Overlaying MARC Records</title>
+			<indexterm><primary>cataloguing</primary><secondary>overlaying MARC records</secondary></indexterm>
 			<para>Overlaying a MARC record replaces an existing MARC record while leaving all holdings, holds, active circulations, bills, and fines intact.</para>
 			<para>In Evergreen, a record must be <emphasis>marked</emphasis> for overlay. The mark for overlay is by login. Only one record at a time may be marked for overlay. When another 
 			record is marked for overlay, the previously marked item is <emphasis>de-marked</emphasis>. Once a record is marked, it remains marked until overlaid or until the user logs out 
 			of Evergreen.</para> 
 					
 			<procedure>
-				<title>Marking a record for overlay:</title>
+				<title>Marking a record for overlay</title>
 				<step><para>Search for and retrieve a record for overlay.</para></step>
 				<step><para>Select <menuchoice><guimenu>Actions for this Record</guimenu> <guimenuitem>Mark for Overlay</guimenuitem></menuchoice>. Record is now 
 				<emphasis>marked</emphasis>.</para></step>
 			</procedure>	
 			<procedure>
-				<title>Overlaying the marked record:</title>
+				<title>Overlaying the marked record</title>
 				<step><para>Once the record is marked for overlay, proceed to search for and import the new record from a Z39.50 target.</para></step>
 				<step><para>Select <menuchoice><guimenu>Cataloging</guimenu> <guimenuitem>Import Record from Z39.50</guimenuitem></menuchoice>.</para></step>
 				<step><para>Choose targets and enter search terms.</para></step>
@@ -265,11 +282,12 @@
 	</section>
 	<section xml:id="cattemplates">
 		<title>Cataloging Templates</title>
+		<indexterm><primary>cataloguing</primary><secondary>templates</secondary></indexterm>
 		<para>This simplesect explains creating, using, exporting, and importing item record templates for cataloging. Use of templates enhances item creation and helps ensure 
 		consistency in record format in the database.</para> 
 				
 		<procedure>
-			<title>Creating item templates:</title>
+			<title>Creating item templates</title>
 			<step><para>Search for and retrieve a record.</para></step>
 			<step><para>Select <menuchoice><guimenu>Actions for this Record</guimenu> <guimenuitem>Holdings Maintenance</guimenuitem></menuchoice>.</para></step>	
 			<step><para>Select an item record in list and click <menuchoice><guimenu>Actionsfor Selected Rows</guimenu> <guimenuitem>Edit Item Attributes</guimenuitem></menuchoice>.
@@ -315,6 +333,7 @@
 	</section>					
 	<section xml:id="buckets">
 		<title>Buckets</title>
+		<indexterm><primary>cataloguing</primary><secondary>buckets</secondary></indexterm>
 		<para>The Buckets function in Evergreen groups records together and allows for batch changes and the creation of pull lists.</para> 
 		<para>Batch changes allow many records to be grouped together for changes to be enacted on them all at once, instead performing individual edits. Buckets allow materials to be 
 		tracked and worked by multiple staff members. </para> 	
@@ -337,7 +356,7 @@
 		</procedure>
 				
 		<procedure>
-			<title>Creating record buckets from within a record:</title>
+			<title>Creating record buckets from within a record</title>
 			<step><para>Search for, retrieve, and display the desired bibliographic record.</para></step>
 			<step><para>Choose <menuchoice><guimenu>Actions for this Record</guimenu> <guimenuitem>Add to Bucket</guimenuitem></menuchoice>.</para></step>	
 			<step><para>Select <guimenuitem>Add to New Bucket</guimenuitem>.</para></step>	
@@ -352,7 +371,7 @@
 			<step><para>Continue to add records, if required.</para></step>	
 		</procedure>	
 		<procedure>
-			<title>To work from within the buckets module:</title>	
+			<title>To work from within the buckets module</title>	
 			<step><para>Choose <menuchoice><guimenu>Cataloging </guimenu> <guimenuitem> Manage Record Buckets</guimenuitem></menuchoice>.</para></step>
 			<step><para>Select the Record Query tab on the left side of the screen.</para></step>	
 			<step><para>Select the appropriate bucket and click <guibutton>Add to Selected Bucket</guibutton>.</para></step>	
@@ -372,6 +391,7 @@
 		</tip>
 		<simplesect xml:id="addingcopyrecordscopybuckets">
 			<title>Adding Copy Records to Copy Buckets</title>
+			<indexterm><primary>cataloguing</primary><secondary>copy buckets</secondary></indexterm>
 			<para>While creating copy buckets is similar to creating record buckets (simply choose Copy Buckets in the menu choice), there are significant differences in adding copy 
 			records to a bucket. Records must be added to copy buckets from the copy record level. This may be done from several locations within the Evergreen client.</para>	
 					
@@ -401,10 +421,12 @@
 		</simplesect>
 		<simplesect xml:id="WorkingwithRecordsinaBucket">
 			<title>Working with Records in a Bucket</title>
+			<indexterm><primary>cataloguing</primary><secondary>record buckets</secondary></indexterm>
 			<para>Once records have been placed in a bucket, a variety of functions may be performed. </para>	
 					
 			<procedure>
 				<title>To batch edit records:</title>
+				<indexterm><primary>cataloguing</primary><secondary>record buckets</secondary><tertiary>batch edit</tertiary></indexterm>
 				<step><para>Access the Copy Bucket view by choosing <menuchoice><guimenu>Edit</guimenu> 
 				<guimenuitem>Copy Buckets</guimenuitem>
 				</menuchoice>.</para></step>
@@ -418,16 +440,18 @@
 				<step><para>Click <guibutton>OK</guibutton>.</para></step>	
 				<step><para>The desired changes are made for all selected items.</para></step>			
 			</procedure>
-			<caution><para>Use caution when using the Transfer to Specific Volume action.</para></caution>  	
+			<caution><para>Use caution when using the <guilabel>Transfer to Specific Volume</guilabel> action.</para></caution>  	
 			<procedure>
-				<title>Removing records from buckets:</title>
+				<title>Removing records from buckets</title>
+				<indexterm><primary>cataloguing</primary><secondary>buckets</secondary><tertiary>removing records</tertiary></indexterm>
 				<step><para>select the desired record.</para></step>
 				<step><para>Click <guibutton>Remove Selected from Bucket</guibutton></para></step>
 			</procedure>
 			<para>The same procedure is used for both Record and Copy Buckets</para>
 				
 			<procedure>
-				<title>Retrieving shared buckets:</title>	
+				<title>Retrieving </title>
+				<indexterm><primary>cataloguing</primary><secondary>shared buckets</secondary></indexterm>
 				<step><para>Access the copy or record bucket management screen as described above.</para></step>
 				<step><para>In drop down menu beside <guimenu>Choose a bucket…</guimenu> select <guimenuitem>Retrieve shared bucket</guimenuitem>.</para></step>
 				<step><para>Enter the desired bucket number and click <guibutton>OK</guibutton>.</para></step>
@@ -437,6 +461,7 @@
 	</section>
 	<section xml:id="MergingBibliographicRecords">
 		<title>Merging Bibliographic Records</title>
+		<indexterm><primary>cataloguing</primary><secondary>merging bibliographic records</secondary></indexterm>
 		<para>A common application for the merge function in Evergreen is to replace brief records with full records. This is only necessary when a full record cannot be located 
 		in a Z39.50 target.</para>
 		<para>Any volume and copy records or holds associated with the brief record will be transferred to the full record upon merging.</para>	
@@ -454,6 +479,7 @@
 	</section>
 	<section xml:id="Addingholdings">
 	     	<title>Adding holdings to title records</title>
+		<indexterm><primary>cataloguing</primary><secondary>adding holdings</secondary></indexterm>
 		<para>This lesson demonstrates adding your library’s volume and copy records to a title record. </para>
 		<procedure>
 		      <step>
@@ -584,6 +610,8 @@
 	</section>	
 	<section xml:id="PrintingSpineandPocketLabels">
 		<title>Printing Spine and Pocket Labels</title>
+		<indexterm><primary>labels</primary><secondary>spine</secondary></indexterm>
+		<indexterm><primary>labels</primary><secondary>pocket</secondary></indexterm>
 		<para>Copy buckets may be used to group items requiring labels.</para>	
 		<procedure>
 			<step><para>Locate the correct copy bucket.</para></step>
@@ -604,7 +632,7 @@
 	</section>
 	<section xml:id="DeletingRecords">
 		<title>Deleting Records</title>
-				
+			<indexterm><primary>cataloguing</primary><secondary>deleting records</secondary></indexterm>	
 		<procedure>
 			<title>Batch deletions:</title>
 			<step><para>Create a copy bucket for the items to be deleted (<menuchoice><guimenu>Cataloging</guimenu> <guimenuitem>Manage Copy Buckets</guimenuitem>

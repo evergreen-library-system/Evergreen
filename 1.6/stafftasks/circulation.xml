@@ -7,7 +7,7 @@
 			<para>This chapter presents explains the circulation procedures carried out from the staff client.</para>
         	</abstract>
 	</info>    
-	<section xml:id="patronrecords">
+	<section xml:id="patronrecords"><indexterm><primary>circulation</primary><secondary>patron records</secondary></indexterm>
 		<title>Patron Records</title>
 		<simplesect xml:id="searchingpatrons">
 		<title>Searching Patrons</title>
@@ -21,7 +21,7 @@
 		
 		</simplesect>
 		<simplesect xml:id="Registeringpatrons">
-		<title>Registering New Patrons</title>
+		<title>Registering New Patrons</title><indexterm><primary>circulation</primary><secondary>registering new patrons</secondary></indexterm>
 		
 			<itemizedlist>
 				<listitem>Mandatory fields = Red.</listitem>
@@ -31,7 +31,7 @@
 			</itemizedlist>
 		</simplesect>
 		<simplesect xml:id="CloneUser">
-			<title>Clone User from Existing Group Member</title>
+			<title>Clone User from Existing Group Member</title><indexterm><primary>circulation</primary><secondary>cloning users</secondary></indexterm>
 			<procedure>
 				<step><para>Open patron record, click <guibutton>Other</guibutton>.</para></step>
 				<step><para>Select Group.</para></step>
@@ -45,7 +45,7 @@
 			</procedure>
 		</simplesect>
 		<simplesect xml:id="Updatingpatroninformation">
-		<title>Updating patron information</title>
+		<title>Updating Patron Information</title><indexterm><primary>circulation</primary><secondary>updating patron information</secondary></indexterm>
 			<procedure>
 				<step><para>Retrieve the patron record</para></step>
 				<step><para>Edit</para></step>
@@ -54,7 +54,7 @@
 			</procedure>
 		</simplesect>
 		<simplesect xml:id="renewinglibrarycards">
-			<title>Extend Account Expiration Date</title>
+			<title>Extend Account Expiration Date</title><indexterm><primary>circulation</primary><secondary>extending account expiration date</secondary></indexterm>
 			<para>All patron accounts are set to <emphasis>expire</emphasis> in one year – this allows staff to verify patron contact information annually and update any out-of-date 
 			information.</para>
 			<note><para>There is no warning that the account will soon expire. </para></note>
@@ -68,7 +68,7 @@
 			</procedure>
 		</simplesect>
 		<simplesect xml:id="lostlibrarycards">
-			<title>Lost Library Cards</title>
+			<title>Lost Library Cards</title><indexterm><primary>circulation</primary><secondary>lost library cards</secondary></indexterm>
 			<procedure>
 				<step><para>Retrieve the patron record.</para></step>
 				<step><para>Click <guibutton>Mark Lost</guibutton> button.</para></step>
@@ -81,7 +81,7 @@
 			</caution>			
 		</simplesect>
 		<simplesect xml:id="Resettingpatronpassword">
-		<title>Resetting a Patron's Password</title>
+		<title>Resetting a Patron's Password</title><indexterm><primary>circulation</primary><secondary>resetting patron password</secondary></indexterm>
 			<procedure>
 				<step><para>Retrieve the record.</para></step>
 				<step><para>Click <guibutton>Reset</guibutton> Button next to <guilabel>password</guilabel> field</para></step>
@@ -91,7 +91,7 @@
 			</note>			
 		</simplesect>
 		<simplesect xml:id="barringapatron">
-		<title>Barring a Patron</title>
+		<title>Barring a Patron</title><indexterm><primary>circulation</primary><secondary>barring patrons</secondary></indexterm>
 			<procedure>
 				<step><para>Select <guimenuitem>4: Groups and Permissions</guimenuitem>. Select the <guilabel>Barred</guilabel> checkbox.</para></step>
 				<step><para>The Alert Message is required.</para></step>
@@ -113,7 +113,7 @@
 			to override blocks.</para>
 		</simplesect>
 		<simplesect xml:id="patronalerts">
-			<title>Patron Alerts</title>
+			<title>Patron Alerts</title><indexterm><primary>circulation</primary><secondary>patron alerts</secondary></indexterm>
 			<para>There are two types of Patron Alerts:
 				<itemizedlist>
 					<listitem>System-generated alerts: once the cause is resolved (e.g. patron's account has been renewed), the message 
@@ -144,7 +144,7 @@
 			<para>A notice appears when a staff person tries to checkout an item to blocked patrons, but staff may be given permissions 
 			to override blocks.</para>
 		</simplesect>
-		<simplesect xml:id="patronnotes">
+		<simplesect xml:id="patronnotes"><indexterm><primary>circulation</primary><secondary>patron notes</secondary></indexterm>
 			<title>Patron Notes</title>
 			<para>See Notes message appears</para>
 			<para>Notes are strictly communicative and may made visible to the patron, via their account on the OPAC.</para>
@@ -163,7 +163,7 @@
 			</procedure>	
 		</simplesect>
 		<simplesect xml:id="mergingpatronrecords">
-		<title>Merging Patron Records</title>
+		<title>Merging Patron Records</title><indexterm><primary>circulation</primary><secondary>merging patron records</secondary></indexterm>
 			<procedure>
 				<title>Merging patron Records From the patron search screen:</title>				
 				<step><para>Search by the terms shared by the two records</para></step>
@@ -194,7 +194,7 @@
 		</simplesect>
 	</section>
 	<section xml:id="circulatingitems">
-		<title>Circulating Items</title>
+		<title>Circulating Items</title><indexterm><primary>circulation</primary><secondary>circulating items</secondary></indexterm>
 		<para>Regular circulation: circulation of items in the regular collection.</para>		
 		<para>Pre-cataloged circulation: circulation of items that have a barcode but have not yet been cataloged. These items 
 		may be checked out and then sent to cataloging when returned.</para>
@@ -214,7 +214,7 @@
 			</procedure>
 		</simplesect>
 		<simplesect xml:id="Precatalogeditems">
-			<title>Pre-cataloged Items</title>
+			<title>Pre-cataloged Items</title><indexterm><primary>circulation</primary><secondary>pre-cataloged items</secondary></indexterm>
 			<para>Pre-cat items are those items that have yet to be added to the database or that have barcode labels, but are not attached to an existing bibliographic record.</para>
 			<caution><para>ONLY use Pre-Cat Checkout as a last resort, such as when a patron brings the item to the desk from the shelf and MUST have it that day. Otherwise, 
 			ask the patron to wait until you can have the item correctly processed.</para></caution>					
@@ -239,7 +239,7 @@
 			</procedure>
 		</simplesect>
 		<simplesect xml:id="noncatalogeditems">
-			<title>Non-cataloged Items</title>
+			<title>Non-cataloged Items</title><indexterm><primary>circulation</primary><secondary>non-cataloged items</secondary></indexterm>
 			<para>Non-cataloged items may be more familiar as <emphasis>Ephemeral</emphasis> items – they are those items that libraries do not wish to catalog, 
 			but do wish to track for circulation statistics.</para> 					
 			<para>Items are checked out with a due date but when the due date expires, the items disappear from the 
@@ -264,7 +264,7 @@
 		<para>Click OK.</para>
 		</simplesect>
 		<simplesect xml:id="duedates">
-			<title>Due Dates</title>
+			<title>Due Dates</title><indexterm><primary>circulation</primary><secondary>due dates</secondary></indexterm>
 			<para>Circulation periods are pre-set. When items are checked out, due dates are automatically calculated and 
 			inserted into circulation records if the Due Date is set Normal on the Check Out screen.  Different due dates 
 			may be set to override this circulation period.</para>
@@ -281,6 +281,7 @@
 		</simplesect>
 		<simplesect xml:id="checkin">
 			<title>Check In (<keycap>F2</keycap>)</title>
+			<indexterm><primary>circulation</primary><secondary>check in</secondary></indexterm>
 			<procedure>
 				<title>Regular check in:</title>				
 				<step><para>Click <guibutton>Check In</guibutton> button or hit <keycap>F2</keycap> to open Item Check In tab.
@@ -291,7 +292,7 @@
 			</procedure>
 		</simplesect>
 		<simplesect xml:id="backdatedcheckin">
-			<title>Backdated Check In</title>
+			<title>Backdated Check In</title><indexterm><primary>circulation</primary><secondary>backdated check in</secondary></indexterm>
 			<para>Used for checking items in from bookdrops or for unexpected closings.</para>
 			<procedure>
 				<step><para>Click the <guibutton>Check In</guibutton> button or hit <keycap>F2</keycap>.</para></step> 
@@ -304,7 +305,8 @@
 			</procedure>
 		</simplesect>
 		<simplesect xml:id="Renewaleditingduedate">
-			<title>Renewal and Editing Item's Due Date</title>
+			<title>Renewal and Editing an Item's Due Date</title>
+			<indexterm><primary>circulation</primary><secondary>renewel</secondary><tertiary>Editing an item's due date</tertiary></indexterm>
 			<para>Checked-out items can be renewed according to library policy. The new due date is calculated from the renewal 
 			date. Existing loans may be extended to a specific date by editing the due date.</para>
 			<procedure>
@@ -331,6 +333,7 @@
 		</simplesect>
 		<simplesect xml:id="lostclaimedreturned">
 			<title>Marking Items <emphasis>Lost</emphasis> and <emphasis>Claimed Returned</emphasis></title>
+			<indexterm><primary>circulation</primary><secondary>lost items</secondary></indexterm>
 			<procedure>
 				<title>To mark items as lost:</title>
 				<step><para>Retrieve the patron record.</para></step> 
@@ -346,7 +349,7 @@
 			If the lost item is returned, the bill and payment (if bill has been paid) will not be cancelled/refunded automatically. 					
 			These bills must be dealt with manually, as per local policy.</para></note>
 			<procedure>
-				<title>Marking items as <emphasis>Claimed Returned:</emphasis></title>
+				<title>Marking items as <emphasis>Claimed Returned:</emphasis></title><indexterm><primary>circulation</primary><secondary>claimed returned</secondary></indexterm>
 				<step><para>Retrieve the patron record.</para></step> 
 				<step><para>Click <guibutton>Items Out</guibutton>.</para></step> 
 				<step><para>Select item(s).</para></step>
@@ -365,7 +368,7 @@
 			<para>There are no alerts indicating claims returned items.</para>
 			</note>
 		</simplesect>
-		<simplesect xml:id="inhouseuse">
+		<simplesect xml:id="inhouseuse"><indexterm><primary>circulation</primary><secondary>in-house use</secondary></indexterm>
 			<title>In-house Use (<keycap>F6</keycap>)</title>
 			<para>May be used to record in-house use for both cataloged and non-cataloged items.</para>
 
@@ -379,7 +382,7 @@
 			<para>The statistics on in-house use are separated from circulation statistics. In-house use count 
 			of cataloged items is not included in the items' total use count.</para>
 		</simplesect>
-		<simplesect xml:id="itemstatus">
+		<simplesect xml:id="itemstatus"><indexterm><primary>circulation</primary><secondary>item status</secondary></indexterm>
 			<title>Item Status (<keycap>F5</keycap>)</title>
 			<para>Many functions may be performed from the Item Status screen.  This section will cover circulation-related functions:
  			checking item status, viewing past circulations, inserting item alert messages, and marking items missing or damaged.
@@ -405,7 +408,9 @@
 			<para>Past circulations can also be retrieved from a patron's Items Out screen.</para>	
 		</simplesect>
 		<simplesect xml:id="markingitemsdamaged">
-			<title>Marking items <emphasis>damaged</emphasis> or <emphasis>missing</emphasis></title>	
+			<title>Marking items <emphasis>damaged</emphasis> or <emphasis>missing</emphasis></title>
+			<indexterm><primary>circulation</primary><secondary>damaged items</secondary></indexterm>
+			<indexterm><primary>circulation</primary><secondary>missing items</secondary></indexterm>	
 			<procedure>
 					<step><para>Retrieve the item.</para></step> 
 					<step><para>Select the item. </para></step> 
@@ -417,6 +422,7 @@
 		</simplesect>
 		<simplesect xml:id="itemalerts">
 			<title>Item alerts</title>
+				<indexterm><primary>circulation</primary><secondary>item alerts</secondary></indexterm>
 			<para>The Edit Item Attributes function on Actions for Selected Items allows editing of item records, such as inserting 
 			item alerts.</para>
 			<procedure>
@@ -432,6 +438,7 @@
 	</section>
 	<section xml:id="billsandpayments">
 		<title>Bills and Payments</title>
+		<indexterm><primary>bills and payments</primary></indexterm>
 		<simplesect xml:id="circulationgrocerybills">
 			<title>Circulation vs. Grocery Bills</title>
 			<para>There are two types of bills in Evergreen: Circulation bills and Grocery bills. </para>
@@ -441,7 +448,8 @@
 			<para>Grocery bills: staff-applied to patron accounts.</para>		
 		</simplesect>		
 		<simplesect xml:id="makingpayments">
-			<title>Making Payments</title>			
+			<title>Making Payments</title>	
+			<indexterm><primary>bills and payments</primary><secondary>making payments</secondary></indexterm>		
 			<procedure>
 				<step><para>Retrieve the patron record.</para></step> 
 				<step><para>Bills</para></step> 
@@ -456,24 +464,29 @@
 			<tip><para>You may choose to annotate payment and fill in resulting text box according to library policy.</para></tip>
 		</simplesect>
 		<simplesect xml:id="makingchange">
-			<title>Making Change</title>	
+			<title>Making Change</title>
+			<indexterm><primary>bills and payments</primary><secondary>making change</secondary></indexterm>	
 			<para>Change will be calculated if the payment amount is over the selected bill amount. After typing in a payment amount, click into the 
 			<guilabel>=Change</guilabel> field. The change amount will
  			display. </para>
 		</simplesect>
 		<simplesect xml:id="voidforgive">
 			<title>Void vs. Forgive</title>	
+			
 			<para>Void clears all history of the bill, while forgive retains the history.</para>		
-			<procedure>
-				<title>Forgiving bills:</title>	
-				<step><para>Retrieve the patron record.</para></step> 
-				<step><para>Choose <guimenuitem>forgive</guimenuitem> as the payment type </para></step> 
-				<step><para>Enter the amount to be forgiven. </para></step>
-				<step><para>Apply Payment.</para></step> 
-			</procedure>
+			<simplesect xml:id="forgivebills">
+				<title>Forgiving Bills</title><indexterm><primary>bills and payments</primary><secondary>forgiving bills</secondary></indexterm>			
+				<procedure>
+					<step><para>Retrieve the patron record.</para></step> 
+					<step><para>Choose <guimenuitem>forgive</guimenuitem> as the payment type </para></step> 
+					<step><para>Enter the amount to be forgiven. </para></step>
+					<step><para>Apply Payment.</para></step> 
+				</procedure>
+			</simplesect>
 			
 			<simplesect xml:id="voidbills">
-				<para>Voiding bills:</para>
+				<title>Voiding Bills</title>
+				<indexterm><primary>bills and payments</primary><secondary>voiding bills</secondary></indexterm>
 				<para>Bills under one transaction are grouped in one bill line. Bills may be voided in part or in whole.</para>		
 				<procedure>			
 					<step><para>Click <guibutton>Void All Billings</guibutton></para></step> 
@@ -492,9 +505,10 @@
 		</simplesect>
 		<simplesect xml:id="newgrocerybills">
 			<title>Adding New Grocery Bills</title>
+			<indexterm><primary>bills and payments</primary><secondary>adding new grocery bills</secondary></indexterm>
 			<para>A grocery bill can be added as a new bill or to an existing bill.</para>					
 			<procedure>	
-				<title>To add as a new bill:</title>
+				<title>To add as a new bill</title>
 				<step><para>Retrieve the patron record. </para></step> 
 				<step><para>Select <guimenuitem>Bills</guimenuitem>.</para></step>
 				<step><para>Click <guibutton>Bill Patron</guibutton>.</para></step> 
@@ -515,6 +529,7 @@
 		</simplesect>
 		<simplesect xml:id="billhistory">
 			<title>Bill History</title>
+			<indexterm><primary>bills and payments</primary><secondary>bill history</secondary></indexterm>
 			<para>The Bill History view includes specific details about the item as well as information about the 
 			bill and payments.</para>			
 			<procedure>
@@ -529,7 +544,8 @@
 			after the deletion.</para></note>
 		</simplesect>
 		<simplesect xml:id="bills-refund">
-			      <info><title>Refund</title></info>
+			      <title>Refund</title>
+				<indexterm><primary>bills and payments</primary><secondary>refunds</secondary></indexterm>
 			      <para>Sometimes paid bills need to be voided, such as when lost and paid items are returned. A negative balance may be 
 				 created once such bills are voided. To close such bills, staff may refund the balance amount or add a bill entry.</para>
 			   <procedure>
@@ -546,10 +562,12 @@
 	</section>
 	<section xml:id="Holds">
 		<title>Holds</title>
+		<indexterm><primary>holds</primary></indexterm>
 		<note><para>Items may be deleted from the catalog even if a charge for that item is still attached to the patron's record.  The charge will remain on the patron's account 
 		after the deletion.</para></note>
 		<simplesect xml:id="ViewingHolds">
 			<title>Viewing Holds</title>
+			<indexterm><primary>holds</primary><secondary>viewing holds</secondary></indexterm>
 			<procedure>
 				<step><para>Under Actions for this Record (<keycombo><keycap>Alt</keycap><keycap>A</keycap></keycombo>), select View Holds 
 				(<keycombo><keycap>Alt</keycap><keycap>S</keycap></keycombo>). You can do this from any record view. You do not have to be in 
@@ -559,11 +577,13 @@
 		</simplesect>	
 		<simplesect xml:id="placingholds">
 			<title>Placing Holds</title>
+			<indexterm><primary>holds</primary><secondary>placing holds</secondary></indexterm>
 			<para>Holds may be placed by staff through the staff client or by patrons through the OPAC. This chapter explains placing holds through the client which can be placed for 
 			from several different places.</para> 
 		</simplesect>
 		<simplesect xml:id="holdslevels">
 			<title>Holds Levels</title>
+			<indexterm><primary>holds</primary><secondary>levels</secondary></indexterm>
 			<para>Evergreen has four hold levels. Library staff may place holds at all four levels, while patrons may only place Meta-record and Title-level holds.</para> 
 			<table xml:id="holdslevelstable">
 			<title>Hold Levels Explained:</title>
@@ -654,6 +674,7 @@
 		</simplesect>
 		<simplesect xml:id="managingholds">
 			<title>Managing Holds</title>
+			<indexterm><primary>holds</primary><secondary>managing</secondary></indexterm>
 			<para>Holds may be cancelled at any time by staff or patrons.</para>		
 			<para>Before holds are captured, staff or patrons may:			
 				<itemizedlist>
@@ -687,6 +708,7 @@
 		</simplesect>		
 		<simplesect xml:id="TransferringHolds">
 			<title>Transferring Holds</title>
+			<indexterm><primary>holds</primary><secondary>transferring</secondary></indexterm>
 			<procedure>
 				<step><para>Open the record you need to transfer the hold from in one tab and the record you need to transfer the hold to in another tab.</para></step> 
 				<step><para>View the holds on the record where the hold is currently.</para></step>
@@ -702,6 +724,7 @@
 		</simplesect>	
 		<simplesect xml:id="CancelingHolds">
 			<title>Canceling Holds</title>
+			<indexterm><primary>holds</primary><secondary>canceling</secondary></indexterm>
 			<procedure>
 				<step><para>View the holds for the item.</para></step> 
 				<step><para>Highlight the hold you need to cancel.</para></step>
@@ -714,6 +737,7 @@
 		</simplesect>
 		<simplesect xml:id="RetargetingHolds">
 			<title>Retargeting Holds</title>
+			<indexterm><primary>holds</primary><secondary>retargeting</secondary></indexterm>
 			<para>Holds need to be retargeted whenever a new item is added to a record, or after some types of item status changes, for instance when an item is changed from On Order 
 			to In Process. The system does not automatically recognize the newly added items as available to fill holds.  This also needs to be done if items marked as Damaged or 
 			Missing or set to other non-circulating statuses are once again made available for circulation.</para> 
@@ -733,6 +757,7 @@
 		</simplesect>
 		<simplesect xml:id="holdspulllist">
 			<title>Holds Pull List</title>
+			<indexterm><primary>holds</primary><secondary>pull list</secondary></indexterm>
 			<para>Holds may have one of three statuses: <emphasis>Waiting for Copy</emphasis>, <emphasis>Waiting for Capture</emphasis>, or 
 			<emphasis>Ready for Pickup</emphasis>.</para>		
 			<para><emphasis>Waiting-for-copy</emphasis>: all copies are checked out or otherwise unavailable.</para>
@@ -750,6 +775,7 @@
 			from the list. </para></note>
 			<simplesect xml:id="capturingholds">
 				<title>Capturing Holds</title>
+				<indexterm><primary>holds</primary><secondary>capturing</secondary></indexterm>
 				<para>Holds may be captured when a checked-out item is returned (checked in) or when an item on the Holds Pull List is retrieved and captured. When a hold is captured, a 
 				hold slip may be printed and an email notification will be sent out, if enabled for the hold.</para>	
 				<procedure>
@@ -763,6 +789,7 @@
 		</simplesect>	
 		<simplesect xml:id="holdsshelflist">
 			<title>Holds Shelf List</title>
+			<indexterm><primary>holds</primary><secondary>shelf list</secondary></indexterm>
 			<para>Items with Ready-for-pickup status are displayed on the Hold Shelf List. Hold Shelf List can help manage items on the hold shelf.</para>	
 			<para>To view the holds shelf list:</para>
 			<procedure>
@@ -775,6 +802,7 @@
 	</section>
 	<section xml:id="transititems">
 		<title>Transit Items</title>
+		<indexterm><primary>transit items</primary></indexterm>
 		<para>Evergreen’s In Transit feature tracks items transferring among branches. It allows patrons to return items at any branch and for holds to be placed on items at other branches.</para>
 		<para>When will an item go In Transit?</para>	
 		<orderedlist>
@@ -785,11 +813,13 @@
 		</orderedlist>
 		<simplesect xml:id="receivingtransititems">
 			<title>Receiving In Transit Items</title>
+			<indexterm><primary>transit items</primary><secondary>receiving</secondary></indexterm>
 			<para>All items received through transit must be checked in by the receiving branch.  This changes the items' statuses from <emphasis>In Transit</emphasis> to 
 			<emphasis>Reshelving</emphasis> or <emphasis>Ready for Pickup</emphasis>.</para> 
 		</simplesect>
 		<simplesect xml:id="transitlist">
 			<title>Transit List</title>
+			<indexterm><primary>transit items</primary><secondary>rlist</secondary></indexterm>
 			<para>The Transit List report may be used to as a tool to help manage your incoming and outgoing transits.</para>
 			<para>To access and use the Transit List report:</para>
 			<procedure>
@@ -803,6 +833,7 @@
 		</simplesect>
 		<simplesect xml:id="abortingtransits">
 			<title>Aborting Transits</title>
+			<indexterm><primary>transit items</primary><secondary>aborting</secondary></indexterm>
 			<para>Transits may be aborted (cancelled) from multiple locations within Evergreen.</para>
 			<para>Use when processing missing in transit items or a patron requests an item that has just been returned and is in transit to its home library for reshelving. 
 			This procedure can be performed from the <emphasis>Transit List</emphasis> or from the <emphasis>Item Status</emphasis> screen.</para>
@@ -814,6 +845,7 @@
 			</procedure>	
 			<simplesect xml:id="cancellingtransitscheckout">
 				<title>Cancelling Transits at Checkout</title>
+				<indexterm><primary>transit items</primary><secondary>cancelling</secondary></indexterm>
 				<para>Items with a status of <emphasis>in transit</emphasis> trigger a notification when an attempt is made to check them out.  To allow <emphasis>in transit</emphasis> 
 				items to be checked out, override the block by clicking Abort Transit on the alert screen.  Proceed by clicking <guibutton>Checkout</guibutton>.</para> 
 				
@@ -834,12 +866,12 @@
 	</section>
 	<section xml:id="offlinetransactions">
 	      <title>Offline Transactions</title>
-	     
+	     <indexterm><primary>offline transactions</primary></indexterm>
 	   <para>Evergreen's Standalone Interface/Offline Interface is designed to log transactions during
 	      network outage, which can be uploaded and processed once network operations are
 	      restored.</para>
 
-	   <para>The terms “Offline Interface” and “Standalone Interface” mean the same thing - a separate
+	   <para>The terms <emphasis>Offline Interface</emphasis> and <emphasis>Standalone Interface</emphasis> mean the same thing - a separate
 	      program to handle simple circulation tasks while the network is down. </para>
 
 	   <informalfigure>
@@ -867,6 +899,7 @@
 	   <simplesect>
 	      <info>
 		 <title>Patron Registration</title>
+		  <indexterm><primary>offline transactions</primary><secondary>patron registration</secondary><seealso>circulation</seealso></indexterm>
 	      </info>
 	      <para>Patron registration on Evergreen Offline Interface records the minimum patron
 		 information necessary to register a new patron.</para>
@@ -922,6 +955,7 @@
 	   <simplesect xml:id="offline-check-out">
 	      <info>
 		 <title>Check Out</title>
+		<indexterm><primary>offline transactions</primary><secondary>check out</secondary><seealso>circulation</seealso></indexterm>
 	      </info>
 	      <procedure>
 		 <step>
@@ -1037,6 +1071,7 @@
 	   <simplesect>
 	      <info>
 		 <title>Renew</title>
+		<indexterm><primary>offline transactions</primary><secondary>renew</secondary><seealso>circulation</seealso></indexterm>
 	      </info>
 	      <para>To renew, you must know items barcode number. Patron's barcode is optional.</para>
 	      <procedure>
@@ -1073,6 +1108,7 @@
 	   <simplesect>
 	      <info>
 		 <title>In House Use</title>
+		<indexterm><primary>offline transactions</primary><secondary>in house use</secondary><seealso>circulation</seealso></indexterm>
 	      </info>
 	      <para/>
 	      <procedure>
@@ -1138,6 +1174,7 @@
 	   <simplesect>
 	      <info>
 		 <title>Check In</title>
+		<indexterm><primary>offline transactions</primary><secondary>Check In</secondary><seealso>circulation</seealso></indexterm>
 	      </info>
 	      <procedure>
 		 <step>
@@ -1206,6 +1243,7 @@
 	   <simplesect>
       <info>
          <title>Uploading offline transactions</title>
+	<indexterm><primary>offline transactions</primary><secondary>uploading</secondary></indexterm>
       </info>
       <para>Once you are able to connect to the server, you need to upload the offline transactions.
           It is good practice to do this as soon as possible, but if the local system administrator
@@ -1243,6 +1281,7 @@
       <simplesect xml:id="offline-create">
          <info>
             <title>Create a Session</title>
+	<indexterm><primary>offline transactions</primary><secondary>create a session</secondary></indexterm>
          </info>
          <procedure>
             <step>
@@ -1326,6 +1365,7 @@
       <simplesect xml:id="offline-upload">
          <info>
             <title>Upload Workstation Transactions to a Session</title>
+	<indexterm><primary>offline transactions</primary><secondary>upload workstation transactions to a session</secondary></indexterm>
          </info>
 
          <para>Wait until the local system administrator has created a session and told you that
@@ -1397,6 +1437,7 @@
       <simplesect xml:id="offline-process">
          <info>
             <title>Process the Transactions</title>
+		<indexterm><primary>offline transactions</primary><secondary>process transactions</secondary></indexterm>
          </info>
          <para>Wait until all the appropriate staff workstations have uploaded their transactions to
             your session. You should see the workstations listed in the <guilabel>Uploaded
@@ -1470,6 +1511,7 @@
       <simplesect>
          <info>
             <title>Exceptions</title>
+		<indexterm><primary>offline transactions</primary><secondary>exceptions</secondary></indexterm>
          </info>
          <para>Exceptions are problems that were encountered during processing.  For example, a
             mis-scanned patron barcode, an open circulation, or an item that wasn’t checked in

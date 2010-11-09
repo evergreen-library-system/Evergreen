@@ -9,7 +9,7 @@
 
    <section>
       <info>
-         <title>Logging in to Evergreen</title>
+         <title>Logging in to Evergreen</title><indexterm><primary>staff client</primary><secondary>logging into</secondary></indexterm>
       </info>
 
       <para>To log in you must first install the Evergreen Staff Client, available for download from
@@ -107,7 +107,7 @@
    </section>
    <section xml:id="staffclient-navigating" >
       <info>
-         <title>Navigation</title>
+         <title>Navigation</title><indexterm><primary>staff client</primary><secondary>navigating</secondary></indexterm>
       </info>
 
       <simplesect>
@@ -183,7 +183,7 @@
       </simplesect>
       <simplesect>
          <info>
-            <title>Keyboard Shortcuts</title>
+            <title>Keyboard Shortcuts</title><indexterm><primary>staff client</primary><secondary>keyboard shortcuts</secondary></indexterm>
          </info>
          <para>Most menu items have keyboard shorcuts that can greatly increase efficiency. Below is
             a selected list of commonly used shortcut keys:</para>
@@ -358,7 +358,7 @@
       </simplesect>
       <simplesect>
          <info>
-            <title>Copy/Paste</title>
+            <title>Copy/Paste</title><indexterm><primary>staff client</primary><secondary>copy/paste</secondary></indexterm>
          </info>
 
          <para>There are several methods of copying and pasting text in Evergreen, depending on
@@ -468,7 +468,7 @@
    </section>
    <section xml:id="staffclient-customizing">
       <info>
-         <title>Customizing the Staff Client</title>
+         <title>Customizing the Staff Client</title><indexterm><primary>staff client</primary><secondary>customizing</secondary></indexterm>
       </info>
       <simplesect>
          <info>

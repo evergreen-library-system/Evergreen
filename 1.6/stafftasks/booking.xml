@@ -12,6 +12,7 @@
 	</info>    
 	<section xml:id="CreatingaReservation">
 		<title>Creating a Booking Reservation</title>
+		<indexterm><primary>booking reservation</primary><secondary>creating</secondary></indexterm>
 		<para>Only staff members can create reservations. To initiate a reservation, staff can 
 			<itemizedlist>
 				<listitem>search the catalog,</listitem>
@@ -120,6 +121,7 @@
 	</section>
 	<section xml:id="CancellingaReservation">
 		<title>Cancelling a Reservation</title>
+		<indexterm><primary>booking reservation</primary><secondary>cancelling</secondary></indexterm>
 		<para>Staff members can cancel a patron’s reservation through the Create or Cancel Reservations tab available in a patron’s record.  Staff members can also cancel a 
 		reservation immediately after it has been made.</para>
 		<simplesect>	
@@ -151,6 +153,7 @@
 	</section>
 	<section xml:id="CreatingaPullList">
 		<title>Creating a Pull List</title>
+		<indexterm><primary>booking reservation</primary><secondary>creating a pull list</secondary></indexterm>
 		<para>Staff members can create a pull list to retrieve items from the stacks.</para>
 		<procedure>			
 			<step><para>To create a pull list, select <menuchoice><guimenu>Booking</guimenu><guimenuitem>Pull List</guimenuitem></menuchoice>.</para></step>
@@ -163,6 +166,7 @@
 	</section>
 	<section xml:id="CapturingItemsforReservations">
 		<title>Capturing Items for Reservations</title>
+		<indexterm><primary>booking reservation</primary><secondary>capturing items</secondary></indexterm>
 		<para>Staff members can capture items for reservations.</para>
 		<procedure>			
 			<step><para>In the staff client, select <menuchoice><guimenu>Booking</guimenu><guimenuitem>Capture Resources</guimenuitem></menuchoice>.</para></step>
@@ -173,6 +177,7 @@
 	</section>
 	<section xml:id="PickingUpReservations">
 		<title>Picking Up Reservations</title>
+		<indexterm><primary>booking reservation</primary><secondary>picking up</secondary></indexterm>
 		<para>Staff members can help users pick up their reservations.</para>
 		<procedure>			
 			<step><para>In the staff client, select <menuchoice><guimenu>Booking</guimenu><guimenuitem>Pick Up Reservations</guimenuitem></menuchoice></para></step>
@@ -183,6 +188,7 @@
 	</section>
 	<section xml:id="ReturningReservations">
 		<title>Returning Reservations</title>
+		<indexterm><primary>booking reservation</primary><secondary>returning</secondary></indexterm>
 		<para>Staff members can help users return their reservations.</para>
 		<procedure>			
 			<step><para>In the staff client, select <menuchoice><guimenu>Booking</guimenu><guimenuitem>Return Reservations</guimenuitem></menuchoice>.</para></step>
