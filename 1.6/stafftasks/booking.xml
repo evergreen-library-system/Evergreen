@@ -11,7 +11,7 @@
         	</abstract>
 	</info>    
 	<section xml:id="CreatingaReservation">
-		<title>CreatingaBookingReservation</title>
+		<title>Creating a Booking Reservation</title>
 		<para>Only staff members can create reservations. To initiate a reservation, staff can 
 			<itemizedlist>
 				<listitem>search the catalog,</listitem>

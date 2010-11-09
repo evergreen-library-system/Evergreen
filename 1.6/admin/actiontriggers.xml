@@ -151,7 +151,7 @@ The following items are 90 days overdue and have been marked LOST.
 ]]>
 </programlisting>	
 			</step>	
-			<step><para>Once you are satisfied with your new event trigger , click the <guibutton>Save</guibutton>button located at the bottom of the 
+			<step><para>Once you are satisfied with your new event trigger , click the <guibutton>Save</guibutton> button located at the bottom of the 
 			form</para></step>
 		</procedure>
 		<tip><para>A quick and easy way to create new action triggers is to clone an existing action trigger.</para></tip>
@@ -252,7 +252,7 @@ The following items are 90 days overdue and have been marked LOST.
 					</row>
 					<row>
 						<entry><guilabel>Description</guilabel></entry>
-						<entry>Decription of the Action to be carried out.</entry>
+						<entry>Description of the Action to be carried out.</entry>
 					</row>
 				</tbody>	
 			</tgroup>
@@ -282,7 +282,7 @@ The following items are 90 days overdue and have been marked LOST.
 					</row>
 					<row>
 						<entry><guilabel>Description</guilabel></entry>
-						<entry>Decription of validation test to run.</entry>
+						<entry>Description of validation test to run.</entry>
 					</row>
 				</tbody>	
 			</tgroup>
