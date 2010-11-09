@@ -43,7 +43,7 @@
 				<listitem>Configuration interface bugs addressed (ongoing improvement from 1.6.0.4).</listitem>
 				<listitem>Action/Trigger (notifications, etc) bugs addressed.</listitem><indexterm><primary>action triggers</primary></indexterm>
 				<listitem>In-Database record merging <indexterm><primary>In-Database</primary><secondary>record merging</secondary></indexterm> bug fixes (indicators, Located URIs)</listitem>
-				<listitem>In-Database hold testing stored procedure bug fixed – patch from John Craig.</listitem><indexterm><primary>In-Database</primary><secondary>hold testing</secondary>
+				<listitem>In-Database hold testing stored procedure bug fixed – patch from John Craig.</listitem><indexterm><primary>In-Database</primary><secondary>hold testing</secondary></indexterm>
 			</itemizedlist> 
 		</simplesect>
 	</simplesect>
@@ -116,7 +116,8 @@
 				<listitem>Prevent colons from being incorrectly inserted into titles in search results display.</listitem>
 				<listitem>Fix survey interface in patron editor to enable it to save results correctly.</listitem>
 				<listitem>Corrections in in-database circulation: enable check-out and renewal of pre-cataloged items, process non-cataloged items.</listitem><indexterm><primary>in-database</primary><secondary>circulation</secondary></indexterm>
-				<listitem>Correct Unicode handling in SRU/Z39.50 server.</listitem></listitem><indexterm><primary>Z39.50</primary><secondary>Unicode</secondary></indexterm>			
+				<listitem>Correct Unicode handling in SRU/Z39.50 server.</listitem>
+				<indexterm><primary>Z39.50</primary><secondary>Unicode</secondary></indexterm>			
 			</itemizedlist> 
 		</simplesect>
 	</simplesect>
