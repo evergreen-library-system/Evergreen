@@ -12,7 +12,7 @@
 			<title>New features</title>
 			<itemizedlist>
 				<listitem>Added index for case insensitive barcode searching (1.6.0.7) for speed.</listitem>
-				<listitem>Move to BibTemplate for general title detail display, not just overlay of MVR-based display.</listitem>
+				<listitem>Move to BibTemplate<indexterm><primary>BibTemplate</primary></indexterm> for general title detail display, not just overlay of MVR-based display.</listitem>
 			</itemizedlist> 
 		</simplesect>
 		<simplesect>
@@ -21,7 +21,7 @@
 				<listitem>Offline transaction timestamp and export fixes.</listitem>
 				<listitem>More configuration interface improvements.</listitem>
 				<listitem>Printing improvements to avoid the dreaded <quote>inner print_tree</quote> errors.</listitem>
-				<listitem>Fix Google Books full-text functionality.</listitem>
+				<listitem>Fix Google Books<indexterm><primary>Google Books</primary></indexterm> full-text functionality.</listitem>
 				<listitem>User Editor improvements (addresses, appropriate required fields).</listitem>
 			</itemizedlist> 
 		</simplesect>
@@ -37,13 +37,13 @@
 		<simplesect>
 			<title>Bug fixes</title>
 			<itemizedlist>
-				<listitem>FIFO Holds Org Setting name in the Library Settings Editor did not match that used by the SQL – repaired.</listitem>
-				<listitem>Repaired Authority Record ingest.</listitem>
+				<listitem>FIFO Holds Org<indexterm><primary>holds</primary><secondary>FIFO</secondary></indexterm> Setting name in the Library Settings Editor did not match that used by the SQL – repaired.</listitem>
+				<listitem>Repaired Authority Record ingest.<indexterm><primary>authority record ingest</primary></indexterm></listitem>
 				<listitem>Backdating timestamp format bug fixed – patch from James Fournie at SITKA.</listitem>
 				<listitem>Configuration interface bugs addressed (ongoing improvement from 1.6.0.4).</listitem>
-				<listitem>Action/Trigger (notifications, etc) bugs addressed.</listitem>
-				<listitem>In-Database record merging bug fixes (indicators, Located URIs)</listitem>
-				<listitem>In-Database hold testing stored procedure bug fixed – patch from John Craig.</listitem>
+				<listitem>Action/Trigger (notifications, etc) bugs addressed.</listitem><indexterm><primary>action triggers</primary></indexterm>
+				<listitem>In-Database record merging <indexterm><primary>In-Database</primary><secondary>record merging</secondary></indexterm> bug fixes (indicators, Located URIs)</listitem>
+				<listitem>In-Database hold testing stored procedure bug fixed – patch from John Craig.</listitem><indexterm><primary>In-Database</primary><secondary>hold testing</secondary>
 			</itemizedlist> 
 		</simplesect>
 	</simplesect>
@@ -62,7 +62,7 @@
 			<itemizedlist>
 				<listitem>Remove a call to a non-existent method.</listitem>
 				<listitem>Add debugging messages to the action-trigger script and server code</listitem>
-			</itemizedlist> 
+			</itemizedlist><indexterm><primary>action triggers</primary></indexterm> 
 		</simplesect>
 	</simplesect>
 	<simplesect>
@@ -71,7 +71,7 @@
 			<title>New features</title>
 			<itemizedlist>
 				<listitem> Patch from James Fournie to add a setting for first-in, first-out (FIFO) holds resolution so that items checked in will be assigned to holds 
-				by request date first, rather than proximity.</listitem>
+				by request date first, rather than proximity.</listitem><indexterm><primary>holds</primary><secondary>FIFO</secondary></indexterm>
 			</itemizedlist> 
 		</simplesect>
 		<simplesect>
@@ -98,7 +98,7 @@
 			<itemizedlist>
 				<listitem>Patch from Jason Stephenson to allow the EVERYTHING permission in permission.usr_has_perm_at_nd.</listitem>
 				<listitem>Patch from Warren Layton to remove a debugging alert in the permission creation interface.</listitem>
-				<listitem>Patch from Warren Layton to sort Z39.50 servers in Z39.50 import interface.</listitem>
+				<listitem>Patch from Warren Layton to sort Z39.50 servers in Z39.50 import interface.</listitem><indexterm><primary>Z39.50</primary></indexterm>
 				<listitem>Patch from Galen Charlton to prevent legacy 852 fields from being exported during bib+holdings export.</listitem>
 				<listitem>Patch from Galen Charlton to prevent one bad MARC record from spoiling the rest of the export.</listitem>
 				<listitem>Patch from Galen Charlton to remove empty XML elements and control fields when ingesting a bib record.</listitem>
@@ -115,8 +115,8 @@
 				<listitem>Fix ISSN quicksearch (bug reported by Dan Wells).</listitem>
 				<listitem>Prevent colons from being incorrectly inserted into titles in search results display.</listitem>
 				<listitem>Fix survey interface in patron editor to enable it to save results correctly.</listitem>
-				<listitem>Corrections in in-database circulation: enable check-out and renewal of pre-cataloged items, process non-cataloged items.</listitem>
-				<listitem>Correct Unicode handling in SRU/Z39.50 server.</listitem>			
+				<listitem>Corrections in in-database circulation: enable check-out and renewal of pre-cataloged items, process non-cataloged items.</listitem><indexterm><primary>in-database</primary><secondary>circulation</secondary></indexterm>
+				<listitem>Correct Unicode handling in SRU/Z39.50 server.</listitem></listitem><indexterm><primary>Z39.50</primary><secondary>Unicode</secondary></indexterm>			
 			</itemizedlist> 
 		</simplesect>
 	</simplesect>
@@ -143,7 +143,7 @@
 		<simplesect>
 			<title>Bug fixes</title>
 			<itemizedlist>
-				<listitem>Fix for search bug introduced in 1.6.0.1 which primarily effected Z39.50 searches against Evergreen.</listitem>
+				<listitem>Fix for search bug introduced in 1.6.0.1 which primarily effected Z39.50 searches against Evergreen.</listitem><indexterm><primary>Z39.50</primary></indexterm>
 				<listitem>Fix for offline patron blocked list generation (Patch from Joe Atzberger).</listitem>
 				<listitem>General translation and internationalization improvements.</listitem>
 				<listitem>Force at least one non-system billing type to exist (Identified by Dan Wells).</listitem>
@@ -155,19 +155,20 @@
 		<simplesect>
 			<title>Bug fixes</title>
 			<itemizedlist>
-				<listitem>Overdue notice XML normalization and encoding fixes.</listitem>
-				<listitem>Remove cosmetic issues with Offline Mode.</listitem>
+				<listitem>Overdue notice XML normalization and encoding fixes.</listitem><indexterm><primary>notices</primary><secondary>overdue</secondary></indexterm> 
+				<listitem>Remove cosmetic issues with Offline Mode.</listitem><indexterm><primary>offline mode</primary></indexterm> 
 				<listitem>Backport compatibility-improved triggers for summary data collection.
 					<itemizedlist>
 						<listitem>(fixed super-simple record extract view issues for isbn and issn)</listitem>
 					</itemizedlist>
 				</listitem>
-				<listitem>Interface fixes for Self Check.
+				<listitem>Interface fixes for Self Check.<indexterm><primary>self check</primary><secondary>overdue</secondary></indexterm>
 					<itemizedlist>
 						<listitem>(prevent login of patrons who are marked as invalid)</listitem>
 					</itemizedlist>
 				</listitem>
 				<listitem>General grid-related interface cleanups.
+
 					<itemizedlist>
 						<listitem>(fixed pixel and alignment issues in table views accessible from admin settings)</listitem>
 					</itemizedlist>
@@ -194,7 +195,7 @@
 					will return results)</listitem>
 					</itemizedlist>
 				</listitem>
-				<listitem>Fix for Z39.50 searches containing diacritical marks (Dan Scott).
+				<listitem>Fix for Z39.50 searches containing diacritical marks (Dan Scott).<indexterm><primary>Z39.50</primary></indexterm> 
 					<itemizedlist>
 						<listitem>(the SRU is now better at detecting incoming encoding)</listitem>
 					</itemizedlist>
@@ -221,9 +222,9 @@
 						<listitem>British English (submitted via Launchpad)</listitem>
 						<listitem>Spanish (submitted via Launchpad)</listitem>
 						<listitem>Brazilian Portuguese (submitted via Launchpad)</listitem>
-					</itemizedlist>
+					</itemizedlist><indexterm><primary>languages</primary></indexterm> 
 				</listitem>
-				<listitem>More places to access Record Buckets in the staff client</listitem>
+				<listitem>More places to access Record Buckets in the staff client</listitem><indexterm><primary>record buckets</primary></indexterm> 
 				<listitem>Virtual due date for non-cataloged circulations honors closed dates</listitem>
 				<listitem>Differentiated messages for inactive vs. non-existent users.
 					<itemizedlist>
@@ -235,7 +236,7 @@
 		<simplesect>
 			<title>New features (server/administration)</title>
 			<itemizedlist>	
-				<listitem>Action/Trigger initiator script.
+				<listitem>Action/Trigger initiator script.<indexterm><primary>action triggers</primary></indexterm> 
 					<itemizedlist>
 						<listitem>(1.6.0.1 includes the default script to initiate system scheduling for action/trigger events - for use in cron jobs)</listitem>
 					</itemizedlist>	
@@ -245,11 +246,11 @@
 						<listitem>(improved instructions in the read me files and relaxed database constraints)</listitem>
 					</itemizedlist>	
 				</listitem>					
-				<listitem>SIP2 configurable encoding support.</listitem>
+				<listitem>SIP2 configurable encoding support.</listitem><indexterm><primary>SIP</primary></indexterm> 
 				<listitem>SIP1 renew-or-checkout support for some 3M equipment which support older SIP protocols.</listitem>
 				<listitem>Updated Linux distribution support.</listitem>
 				<listitem>Automatic update of OpenSRF support files when OpenSRF is upgraded.</listitem>
-			</itemizedlist> 
+			</itemizedlist><indexterm><primary>OpenSRF</primary></indexterm> 
 		</simplesect>
 	</simplesect>
 	<simplesect>
@@ -261,7 +262,7 @@
 				<listitem> Added <quote>insert copy above</quote> (<keycombo><keycap>CTRL</keycap> <keycap>up</keycap></keycombo>) and <quote>insert 
 				copy below</quote> (<keycombo><keycap>CTRL</keycap> <keycap>down</keycap></keycombo>) functionality in the MARC Editor.</listitem>
 				<listitem>Summary editing in MARC Format for Holdings Data</listitem>
-				<listitem> BibTemplate OPAC templating – Any field from any version of a record that Evergreen can deliver, with or without embedded holdings, 
+				<listitem> BibTemplate OPAC templating – Any field from any version of a record that Evergreen can deliver, with or without embedded holdings,<indexterm><primary>BibTemplate</primary></indexterm>  
 				is now available for display using a simple template language which is further extended with basic JavaScript.
 					<itemizedlist>
 						<listitem> Template customization is now supported that allows specific data fields to be pulled from the MARC and displayed in the OPAC.</listitem>
@@ -284,7 +285,7 @@
 						<listitem>(improved instructions in the read me files and relaxed database constraints)</listitem>
 					</itemizedlist>	
 				</listitem>	
-				<listitem>SRU(search/retrieval via url) and Z39.50 searches can now be scoped to specific locations.
+				<listitem>SRU(search/retrieval via url) and Z39.50 searches can now be scoped to specific locations.<indexterm><primary>Z39.50</primary></indexterm>
 					<itemizedlist>
 						<listitem>As of Evergreen 1.6, you can append an optional organization unit shortname for search scoping purposes, and you 
 						can also append /holdings if you want to expose the holdings for any returned records. So your zurl could be 
@@ -296,16 +297,16 @@
 				<listitem>Staff-placed holds for patrons follow patron settings more closely (no longer pull notification preferences from staff settings) – 
 				Patch from Jeff Godin of TADL.</listitem>
 				<listitem>Improved default configuration for LoC Z39.50 target - added support for required truncation specific to LoC.</listitem>
-				<listitem>Added a new default indexing definition for “all subjects” which will return more results when subject searching in the OPAC.</listitem>
+				<listitem>Added a new default indexing definition for <quote>all subjects</quote> which will return more results when subject searching in the OPAC.</listitem>
 				<listitem>Many new server configuration interfaces for functions such as circulation policies, hold policies, and notifications.</listitem>
-				<listitem>Added time granularity display to Patron Items Out screen in the Staff Client. “Due time” now displays along with due date.</listitem>
-				<listitem>Added RefWorks (online bibliographic management program) export capability.</listitem>
+				<listitem>Added time granularity display to Patron Items Out screen in the Staff Client. <guilabel>Due time</guilabel> now displays along with <guilabel>due date</guilabel>.</listitem>
+				<listitem>Added RefWorks (online bibliographic management program) export capability.</listitem><indexterm><primary>RefWorks</primary></indexterm>
 				<listitem> Zotero compatability improvements (MODS namespacing).
-					<itemizedlist>
+					<itemizedlist><indexterm><primary>Zotero</primary></indexterm>
 						<listitem>For more information on MODS, see this page.</listitem>
-					</itemizedlist>	
+					</itemizedlist>	<indexterm><primary>MODS</primary></indexterm>
 				</listitem>
-				<listitem>Ability to import holdings via the standard Record Importer (Vandelay).</listitem>
+				<listitem>Ability to import holdings via the standard Record Importer (Vandelay).</listitem><indexterm><primary>Vandelay</primary></indexterm>
 				<listitem>Google Book Preview support as added-content</listitem>
 				<listitem>Improvements made to cloned patron search; fixing issues with records not returning due to cloned fields.</listitem>
 				<listitem>Acquisitions Preview includes a sneak peek at the preliminary work for manual funding management, PO creation, cataloging and receiving processes. 
@@ -338,8 +339,8 @@
 				<listitem>Formal support for IE8, including a bug fix where titles with the “@” symbol would display as a http link.</listitem>
 				<listitem>Spaces in user names are being deprecated as they can cause authentication failure -CamelCase will be supported from this point forward.</listitem>
 				<listitem>Supercat: added support for returning records in Federal Geographic Data Committee (FGDC) Content Standard for 
-				Digital Geospatial Metadata (CSDGM) format.</listitem>
-				<listitem>Increased the re-shelving-complete process speed; making the “flipping” process from re-shelving to available much faster – 
+				Digital Geospatial Metadata (CSDGM) format.</listitem><indexterm><primary>Digital Geospatial Metadata (CSDGM)</primary></indexterm>
+				<listitem>Increased the re-shelving-complete process speed; making the <quote>flipping</quote> process from re-shelving to available much faster – 
 				on suggestion from Bill Ott of GRPL.</listitem>	
 				<listitem>Reporter fix to the display of ISBN and ISSN in some reports, and in some environments (environments which had newer versions 
 				of Perl database drivers that affected some reports).</listitem>
