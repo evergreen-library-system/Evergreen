@@ -495,19 +495,19 @@ function set_serctrl_view() {
 
 function create_mfhd() {
     try {
-        g.data.create_mfhd_aou = '';
         JSAN.use('util.window'); var win = new util.window();
-        win.open(
+        var select_aou_window = win.open(
             xulG.url_prefix(urls.XUL_SERIAL_SELECT_AOU),
             '_blank',
-            'chrome,resizable,modal,centerscreen'
+            'chrome,resizable,modal,centerscreen',
+            {'server_unadorned' : g.data.server_unadorned}
         );
-        if (!g.data.create_mfhd_aou) {
+        if (!select_aou_window.create_mfhd_aou) {
             return;
         }
         var r = g.network.simple_request(
                 'MFHD_XML_RECORD_CREATE',
-                [ ses(), 1, g.data.create_mfhd_aou, docid ]
+                [ ses(), 1, select_aou_window.create_mfhd_aou, docid ]
             );
         if (typeof r.ilsevent != 'undefined') {
             throw(r);
