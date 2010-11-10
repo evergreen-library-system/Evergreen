@@ -1880,10 +1880,11 @@ sub do_reservation_pickup {
 
     if (
         $self->reservation->current_resource &&
-        $self->reservation->current_resource->catalog_item
+        $U->is_true($self->reservation->target_resource_type->catalog_item)
     ) {
-        $self->copy( $self->reservation->current_resource->catalog_item );
-        $self->patron( $self->reservation->usr );
+        # We used to try to set $self->copy and $self->patron here,
+        # but that should already be done.
+
         $self->run_checkout_scripts(1);
 
         my $duration   = $self->duration_rule;
@@ -1897,7 +1898,7 @@ sub do_reservation_pickup {
             my $mname = $max->name;
             my $rname = $recurring->name;
 
-            $logger->debug("circulator: building reservation ".
+            $logger->debug("circulator: updating reservation ".
                 "with duration=$dname, maxfine=$mname, recurring=$rname");
 
             $self->reservation->fine_amount($policy->{recurring_fine});
@@ -1909,9 +1910,15 @@ sub do_reservation_pickup {
         $self->update_copy();
 
     } else {
-        $self->reservation->fine_amount($self->reservation->fine_amount);
-        $self->reservation->max_fine($self->reservation->max_fine);
-        $self->reservation->fine_interval($self->reservation->fine_interval);
+        $self->reservation->fine_amount(
+            $self->reservation->target_resource_type->fine_amount
+        );
+        $self->reservation->max_fine(
+            $self->reservation->target_resource_type->max_fine
+        );
+        $self->reservation->fine_interval(
+            $self->reservation->target_resource_type->fine_interval
+        );
     }
 
     $self->update_reservation();
