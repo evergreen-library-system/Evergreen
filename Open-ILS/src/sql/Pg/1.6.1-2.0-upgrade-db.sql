@@ -11,6 +11,8 @@ CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_numbe
 \qecho Before starting the transaction: drop some constraints.
 \qecho If a DROP fails because the constraint doesn't exist, ignore the failure.
 
+-- ARG! VIM! '
+
 ALTER TABLE permission.grp_perm_map        DROP CONSTRAINT grp_perm_map_perm_fkey;
 ALTER TABLE permission.usr_perm_map        DROP CONSTRAINT usr_perm_map_perm_fkey;
 ALTER TABLE permission.usr_object_perm_map DROP CONSTRAINT usr_object_perm_map_perm_fkey;
@@ -20,6 +22,8 @@ ALTER TABLE booking.resource_type          DROP CONSTRAINT brt_name_once_per_own
 \qecho Beginning the transaction now
 
 BEGIN;
+
+UPDATE biblio.record_entry SET marc = '<record xmlns="http://www.loc.gov/MARC21/slim"/>' WHERE id = -1;
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
@@ -14856,8 +14860,6 @@ $_$ LANGUAGE PLPGSQL;
 CREATE INDEX claim_lid_idx ON acq.claim( lineitem_detail );
 
 CREATE OR REPLACE RULE protect_bib_rec_delete AS ON DELETE TO biblio.record_entry DO INSTEAD (UPDATE biblio.record_entry SET deleted = TRUE WHERE OLD.id = biblio.record_entry.id; DELETE FROM metabib.metarecord_source_map WHERE source = OLD.id);
-
-UPDATE biblio.record_entry SET marc = '<record xmlns="http://www.loc.gov/MARC21/slim"/>' WHERE id = -1;
 
 CREATE INDEX metabib_title_field_entry_value_idx ON metabib.title_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_author_field_entry_value_idx ON metabib.author_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
