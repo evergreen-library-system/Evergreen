@@ -15476,7 +15476,7 @@ CREATE TABLE config.global_flag (
 ) INHERITS (config.internal_flag);
 ALTER TABLE config.global_flag ADD PRIMARY KEY (name);
 
-INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
+INSERT INTO config.global_flag (name, label, enabled)
     VALUES (
         'cat.bib.use_id_for_tcn',
         oils_i18n_gettext(
@@ -15484,7 +15484,8 @@ INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
             'Cat: Use Internal ID for TCN Value',
             'cgf', 
             'label'
-        )
+        ),
+        TRUE
     );
 
 -- resolves performance issue noted by EG Indiana
@@ -16884,7 +16885,7 @@ ALTER TABLE asset.stat_cat_entry_copy_map DROP CONSTRAINT a_sc_oc_fkey;
 ALTER TABLE authority.record_entry ADD COLUMN owner INT;
 ALTER TABLE serial.record_entry ADD COLUMN owner INT;
 
-INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
+INSERT INTO config.global_flag (name, label, enabled)
     VALUES (
         'cat.maintain_control_numbers',
         oils_i18n_gettext(
@@ -16892,7 +16893,8 @@ INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
             'Cat: Maintain 001/003/035 according to the MARC21 specification',
             'cgf', 
             'label'
-        )
+        ),
+        TRUE
     );
 
 INSERT INTO config.global_flag (name, label, enabled)

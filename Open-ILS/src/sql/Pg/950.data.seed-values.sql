@@ -6363,7 +6363,7 @@ INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
         )
     );
 
-INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
+INSERT INTO config.global_flag (name, label, enabled)
     VALUES (
         'cat.bib.use_id_for_tcn',
         oils_i18n_gettext(
@@ -6371,7 +6371,8 @@ INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
             'Cat: Use Internal ID for TCN Value',
             'cgf', 
             'label'
-        )
+        ),
+        TRUE
     );
 
 INSERT INTO config.global_flag (name,label,enabled)
@@ -6385,7 +6386,7 @@ INSERT INTO config.global_flag (name,label,enabled)
         TRUE
     );
 
-INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
+INSERT INTO config.global_flag (name, label, enabled)
     VALUES (
         'cat.maintain_control_numbers',
         oils_i18n_gettext(
@@ -6393,7 +6394,8 @@ INSERT INTO config.global_flag (name, label) -- defaults to enabled=FALSE
             'Cat: Maintain 001/003/035 according to the MARC21 specification',
             'cgf', 
             'label'
-        )
+        ),
+        TRUE
     );
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
