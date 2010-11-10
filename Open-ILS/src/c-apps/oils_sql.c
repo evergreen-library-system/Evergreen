@@ -100,8 +100,12 @@ char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags );
 char* SELECT ( osrfMethodContext*, jsonObject*, const jsonObject*, const jsonObject*,
 	const jsonObject*, const jsonObject*, const jsonObject*, const jsonObject*, int );
 
+static osrfStringArray* getPermLocationCache( osrfMethodContext*, const char* );
+static void setPermLocationCache( osrfMethodContext*, const char*, osrfStringArray* );
+
 void userDataFree( void* );
 static void sessionDataFree( char*, void* );
+static void pcacheFree( char*, void* );
 static int obj_is_true( const jsonObject* obj );
 static const char* json_type( int code );
 static const char* get_primitive( osrfHash* field );
@@ -115,7 +119,7 @@ static ClassInfo* add_joined_class( const char* alias, const char* classname );
 static void clear_query_stack( void );
 
 static const jsonObject* verifyUserPCRUD( osrfMethodContext* );
-static int verifyObjectPCRUD( osrfMethodContext*, const jsonObject* );
+static int verifyObjectPCRUD( osrfMethodContext*, const jsonObject*, const int );
 static const char* org_tree_root( osrfMethodContext* ctx );
 static jsonObject* single_hash( const char* key, const char* value );
 
@@ -135,6 +139,7 @@ static dbi_conn dbhandle; /* our CURRENT db connection */
 
 static int max_flesh_depth = 100;
 
+static int perm_at_threshold = 5;
 static int enforce_pcrud = 0;     // Boolean
 static char* modulename = NULL;
 
@@ -505,11 +510,16 @@ void userDataFree( void* blob ) {
 	that it will free whatever else needs freeing.
 */
 static void sessionDataFree( char* key, void* item ) {
-	if( !strcmp( key, "xact_id" )
-	     || !strcmp( key, "authkey" ) ) {
+	if( !strcmp( key, "xact_id" ) || !strcmp( key, "authkey" ) ) 
 		free( item );
-	} else if( !strcmp( key, "user_login" ) )
+	else if( !strcmp( key, "user_login" ) )
 		jsonObjectFree( (jsonObject*) item );
+	else if( !strcmp( key, "pcache" ) )
+		osrfHashFree( (osrfHash*) item );
+}
+
+static void pcacheFree( char* key, void* item ) {
+	osrfStringArrayFree( (osrfStringArray*) item );
 }
 
 /**
@@ -561,6 +571,59 @@ static inline void clearXactId( osrfMethodContext* ctx ) {
 		osrfHashRemove( ctx->session->userData, "xact_id" );
 }
 /*@}*/
+
+/**
+	@brief Stash the location for a particular perm in the sessionData cache
+	@param ctx Pointer to the method context.
+	@param perm Name of the permission we're looking at
+	@param array StringArray of perm location ids
+*/
+static void setPermLocationCache( osrfMethodContext* ctx, const char* perm, osrfStringArray* locations ) {
+	if( ctx && ctx->session ) {
+		osrfAppSession* session = ctx->session;
+
+		osrfHash* cache = session->userData;
+
+		// If the session doesn't already have a hash, create one.  Make sure
+		// that the application session frees the hash when it terminates.
+		if( NULL == cache ) {
+			session->userData = cache = osrfNewHash();
+			osrfHashSetCallback( cache, &sessionDataFree );
+			ctx->session->userDataFree = &userDataFree;
+		}
+
+		osrfHash* pcache = osrfHashGet(cache, "pcache");
+
+		if( NULL == pcache ) {
+			pcache = osrfNewHash();
+			osrfHashSetCallback( pcache, &pcacheFree );
+			osrfHashSet( cache, pcache, "pcache" );
+		}
+
+		if( perm && locations )
+			osrfHashSet( pcache, locations, strdup(perm) );
+	}
+}
+
+/**
+	@brief Grab stashed location for a particular perm in the sessionData cache
+	@param ctx Pointer to the method context.
+	@param perm Name of the permission we're looking at
+*/
+static osrfStringArray* getPermLocationCache( osrfMethodContext* ctx, const char* perm ) {
+	if( ctx && ctx->session ) {
+		osrfAppSession* session = ctx->session;
+		osrfHash* cache = session->userData;
+		if( cache ) {
+			osrfHash* pcache = osrfHashGet(cache, "pcache");
+			if( pcache ) {
+				return osrfHashGet( pcache, perm );
+			}
+		}
+	}
+
+	return NULL;
+}
 
 /**
 	@brief Save the user's login in the userData for the current application session.
@@ -1136,7 +1199,7 @@ int doSearch( osrfMethodContext* ctx ) {
 	jsonObject* cur = 0;
 	unsigned long res_idx = 0;
 	while((cur = jsonObjectGetIndex( obj, res_idx++ ) )) {
-		if( enforce_pcrud && !verifyObjectPCRUD( ctx, cur ))
+		if( enforce_pcrud && !verifyObjectPCRUD( ctx, cur, obj->size ))
 			continue;
 		osrfAppRespond( ctx, cur );
 	}
@@ -1228,7 +1291,7 @@ int doIdList( osrfMethodContext* ctx ) {
 	jsonObject* cur;
 	unsigned long res_idx = 0;
 	while((cur = jsonObjectGetIndex( obj, res_idx++ ) )) {
-		if( enforce_pcrud && !verifyObjectPCRUD( ctx, cur ))
+		if( enforce_pcrud && !verifyObjectPCRUD( ctx, cur, obj->size ))
 			continue;        // Suppress due to lack of permission
 		else
 			osrfAppRespond( ctx,
@@ -1277,7 +1340,7 @@ static int verifyObjectClass ( osrfMethodContext* ctx, const jsonObject* param )
 	}
 
 	if( enforce_pcrud )
-		return verifyObjectPCRUD( ctx, param );
+		return verifyObjectPCRUD( ctx, param, 1 );
 	else
 		return 1;
 }
@@ -1349,7 +1412,7 @@ static const jsonObject* verifyUserPCRUD( osrfMethodContext* ctx ) {
 
 	The @a obj parameter points to a JSON_HASH of column values, keyed on column name.
 */
-static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) {
+static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj, const int rs_size ) {
 
 	dbhandle = writehandle;
 
@@ -1714,9 +1777,54 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 	// In other words permissions are additive.
 	int i = 0;
 	while( (perm = osrfStringArrayGetString(permission, i++)) ) {
+		dbi_result result;
+
+        osrfStringArray* pcache = NULL;
+        if (rs_size > perm_at_threshold) { // grab and cache locations of user perms
+			pcache = getPermLocationCache(ctx, perm);
+
+			if (!pcache) {
+        		pcache = osrfNewStringArray(0);
+	
+				result = dbi_conn_queryf(
+					writehandle,
+					"SELECT permission.usr_has_perm_at_all(%d, '%s') AS at;",
+					userid,
+					perm
+				);
+		
+				if( result ) {
+					osrfLogDebug(
+						OSRF_LOG_MARK,
+						"Received a result for permission [%s] for user %d",
+						perm,
+						userid
+					);
+		
+					if( dbi_result_first_row( result )) {
+	                    do {
+	    					jsonObject* return_val = oilsMakeJSONFromResult( result );
+		    				osrfStringArrayAdd( pcache, jsonObjectGetString( jsonObjectGetKeyConst( return_val, "at" ) ) );
+	                        jsonObjectFree( return_val );
+					    } while( dbi_result_next_row( result ));
+
+						setPermLocationCache(ctx, perm, pcache);
+					}
+		
+					dbi_result_free( result );
+	            }
+			}
+        }
+
 		int j = 0;
 		while( (context_org = osrfStringArrayGetString( context_org_array, j++ )) ) {
-			dbi_result result;
+
+            if (rs_size > perm_at_threshold) {
+                if (osrfStringArrayContains( pcache, context_org )) {
+                    OK = 1;
+                    break;
+                }
+            }
 
 			if( pkey_value ) {
 				osrfLogDebug(
@@ -1788,6 +1896,8 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 				}
 			}
 
+            if (rs_size > perm_at_threshold) break;
+
 			osrfLogDebug( OSRF_LOG_MARK,
 					"Checking non-object permission [%s] for user %d at org %d",
 					perm, userid, atoi(context_org) );
@@ -1828,6 +1938,7 @@ static int verifyObjectPCRUD (  osrfMethodContext* ctx, const jsonObject* obj ) 
 			}
 
 		}
+
 		if( OK )
 			break;
 	}
@@ -2237,7 +2348,7 @@ int doRetrieve( osrfMethodContext* ctx ) {
 	jsonObjectFree( list );
 
 	if( enforce_pcrud ) {
-		if(!verifyObjectPCRUD( ctx, obj )) {
+		if(!verifyObjectPCRUD( ctx, obj, 1 )) {
 			jsonObjectFree( obj );
 
 			growing_buffer* msg = buffer_init( 128 );
@@ -5975,7 +6086,7 @@ int doDelete( osrfMethodContext* ctx ) {
 
 		id = oilsFMGetString( jsonObjectGetIndex(ctx->params, _obj_pos), pkey );
 	} else {
-		if( enforce_pcrud && !verifyObjectPCRUD( ctx, NULL )) {
+		if( enforce_pcrud && !verifyObjectPCRUD( ctx, NULL, 1 )) {
 			osrfAppRespondComplete( ctx, NULL );
 			return -1;
 		}
