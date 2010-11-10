@@ -668,7 +668,7 @@ sub make_predictions {
 
     my $editor = OpenILS::Utils::CStoreEditor->new();
     my $ssub_id = $args->{ssub_id};
-    my $all_dists = $args->{all_dists};
+    my $all_dists = $args->{all_dists}; #TODO: this option supports test-level code, will be removed (i.e. always 'true')
     my $mfhd = MFHD->new(MARC::Record->new());
 
     my $ssub = $editor->retrieve_serial_subscription([$ssub_id]);
@@ -893,17 +893,47 @@ __PACKAGE__->register_method(
                  name => 'items',
                  desc => 'array of serial items',
                  type => 'array'
+            },
+            {
+                 name => 'barcodes',
+                 desc => 'hash of item_ids => barcodes',
+                 type => 'hash'
             }
         ],
         'return' => {
-            desc => 'Returns number of received items',
-            type => 'int'
+            desc => 'Returns number of received items (num_items) and new unit ID, if applicable (new_unit_id)',
+            type => 'hashref'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => 'unitize_items',
+    api_name  => 'open-ils.serial.bind_items',
+    api_level => 1,
+    argc      => 1,
+    signature => {
+        desc     => 'Marks an item as bound, updates the shelving unit (creating a new shelving unit if needed)',
+        'params' => [ {
+                 name => 'items',
+                 desc => 'array of serial items',
+                 type => 'array'
+            },
+            {
+                 name => 'barcodes',
+                 desc => 'hash of item_ids => barcodes',
+                 type => 'hash'
+            }
+        ],
+        'return' => {
+            desc => 'Returns number of bound items (num_items) and new unit ID, if applicable (new_unit_id)',
+            type => 'hashref'
         }
     }
 );
 
 sub unitize_items {
-    my ($self, $conn, $auth, $items) = @_;
+    my ($self, $conn, $auth, $items, $barcodes) = @_;
 
     my( $reqr, $evt ) = $U->checkses($auth);
     return $evt if $evt;
@@ -959,7 +989,8 @@ sub unitize_items {
         if ($unit_id == -1 or (!$new_unit_id and $unit_id == -2)) { # create unit per item
             my $unit;
             my $sdists = $editor->search_serial_distribution([{"+sstr" => {"id" => $stream_id}}, { "join" => {"sstr" => {}} }]);
-            $unit = _build_unit($editor, $sdists->[0], $mode);
+            $unit = _build_unit($editor, $sdists->[0], $mode, 0, $barcodes->{$item->id});
+            # TODO: catch events from _build_unit
             my $evt =  _create_sunit($editor, $unit);
             return $evt if $evt;
             if ($unit_id == -2) {
@@ -995,7 +1026,7 @@ sub unitize_items {
     foreach my $unit_id (keys %found_unit_ids) {
 
         # get all the needed issuances for unit
-        my $issuances = $editor->search_serial_issuance([ {"+sitem" => {"unit" => $unit_id, "status" => "Received"}}, {"join" => {"sitem" => {}}, "order_by" => {"siss" => "date_published"}} ]);
+        my $issuances = $editor->search_serial_issuance([ {"+sitem" => {"unit" => $unit_id, "status" => ["Received", "Bindery"]}}, {"join" => {"sitem" => {}}, "order_by" => {"siss" => "date_published"}} ]);
         #TODO: evt on search failure
 
         my ($mfhd, $formatted_parts) = _summarize_contents($editor, $issuances);
@@ -1038,7 +1069,11 @@ sub unitize_items {
         return $evt if $evt;
     }
 
-    # TODO: cleanup 'dead' units (units which are now emptied of their items)
+    # cleanup 'dead' units (units which are now emptied of their items)
+    my $dead_units = $editor->search_serial_unit([{'+sitem' => {'id' => undef}, 'deleted' => 'f'}, {'join' => {'sitem' => {'type' => 'left'}}}]);
+    foreach my $unit (@$dead_units) {
+        _delete_sunit($editor, undef, $unit);
+    }
 
     if ($mode eq 'receive') { # the summary holdings do not change when binding
         # deal with stream level summaries
@@ -1090,7 +1125,7 @@ sub unitize_items {
     }
 
     $editor->commit;
-    return {'num_items_received' => scalar @$items, 'new_unit_id' => $new_unit_id};
+    return {'num_items' => scalar @$items, 'new_unit_id' => $new_unit_id};
 }
 
 sub _find_or_create_call_number {
@@ -1438,6 +1473,7 @@ sub _build_unit {
     my $sdist = shift;
     my $mode = shift;
     my $skip_call_number = shift;
+    my $barcode = shift;
 
     my $attr = $mode . '_unit_template';
     my $template = $editor->retrieve_asset_copy_template($sdist->$attr) or
@@ -1465,7 +1501,11 @@ sub _build_unit {
         $unit->call_number($cn);
     }
 
-    $unit->barcode('AUTO');
+    if ($barcode) {
+        $unit->barcode($barcode);
+    } else {
+        $unit->barcode('AUTO');
+    }
     $unit->sort_key('');
     $unit->summary_contents('');
     $unit->detailed_contents('');
@@ -2068,6 +2108,81 @@ sub fleshed_serial_distribution_retrieve_batch {
         });
 }
 
+__PACKAGE__->register_method(
+    method  => "retrieve_dist_tree",
+    authoritative => 1,
+    api_name    => "open-ils.serial.distribution_tree.retrieve"
+);
+
+__PACKAGE__->register_method(
+    method  => "retrieve_dist_tree",
+    api_name    => "open-ils.serial.distribution_tree.global.retrieve"
+);
+
+sub retrieve_dist_tree {
+    my( $self, $client, $user_session, $docid, @org_ids ) = @_;
+
+    if(ref($org_ids[0])) { @org_ids = @{$org_ids[0]}; }
+
+    $docid = "$docid";
+
+    # TODO: permission support
+    if(!@org_ids and $user_session) {
+        my $user_obj =
+            OpenILS::Application::AppUtils->check_user_session( $user_session ); #throws EX on error
+            @org_ids = ($user_obj->home_ou);
+    }
+
+    my $e = new_editor();
+
+    if( $self->api_name =~ /global/ ) {
+        return $e->search_serial_distribution([{'+ssub' => { record_entry => $docid }},
+            {   flesh => 1,
+                flesh_fields => {sdist => [ qw/ holding_lib receive_call_number receive_unit_template bind_call_number bind_unit_template streams basic_summary supplement_summary index_summary / ]},
+                order_by => {'sdist' => 'id'},
+                'join' => {'ssub' => {}}
+            }
+        ]); # TODO: filter for !deleted?
+
+    } else {
+        my @all_dists;
+        for my $orgid (@org_ids) {
+            my $dists = $e->search_serial_distribution([{'+ssub' => { record_entry => $docid }, holding_lib => $orgid},
+                {   flesh => 1,
+                    flesh_fields => {sdist => [ qw/ holding_lib receive_call_number receive_unit_template bind_call_number bind_unit_template streams basic_summary supplement_summary index_summary / ]},
+                    order_by => {'sdist' => 'id'},
+                    'join' => {'ssub' => {}}
+                }
+            ]); # TODO: filter for !deleted?
+            push( @all_dists, @$dists ) if $dists;
+        }
+
+        return \@all_dists;
+    }
+
+    return undef;
+}
+
+
+__PACKAGE__->register_method(
+    method  => "distribution_orgs_for_title",
+    authoritative => 1,
+    api_name    => "open-ils.serial.distribution.retrieve_orgs_by_title"
+);
+
+sub distribution_orgs_for_title {
+    my( $self, $client, $record_id ) = @_;
+
+    my $dists = $U->cstorereq(
+        "open-ils.cstore.direct.serial.distribution.search.atomic",
+        { '+ssub' => { record_entry => $record_id } },
+        { 'join' => {'ssub' => {}} }); # TODO: filter on !deleted?
+
+    my $orgs = { map {$_->holding_lib => 1 } @$dists };
+    return [ keys %$orgs ];
+}
+
+
 ##########################################################################
 # caption and pattern methods
 #
@@ -2179,6 +2294,288 @@ sub serial_caption_and_pattern_retrieve_batch {
     );
 }
 
+##########################################################################
+# stream methods
+#
+__PACKAGE__->register_method(
+    method    => 'sstr_alter',
+    api_name  => 'open-ils.serial.stream.batch.update',
+    api_level => 1,
+    argc      => 2,
+    signature => {
+        desc     => 'Receives an array of one or more streams and updates the database as needed',
+        'params' => [ {
+                 name => 'authtoken',
+                 desc => 'Authtoken for current user session',
+                 type => 'string'
+            },
+            {
+                 name => 'sstrs',
+                 desc => 'Array of streams',
+                 type => 'array'
+            }
+
+        ],
+        'return' => {
+            desc => 'Returns 1 if successful, event if failed',
+            type => 'mixed'
+        }
+    }
+);
+
+sub sstr_alter {
+    my( $self, $conn, $auth, $sstrs ) = @_;
+    return 1 unless ref $sstrs;
+    my( $reqr, $evt ) = $U->checkses($auth);
+    return $evt if $evt;
+    my $editor = new_editor(requestor => $reqr, xact => 1);
+    my $override = $self->api_name =~ /override/;
+
+# TODO: permission check
+#        return $editor->event unless
+#            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
+
+    for my $sstr (@$sstrs) {
+        my $sstrid = $sstr->id;
+
+        if( $sstr->isdeleted ) {
+            $evt = _delete_sstr( $editor, $override, $sstr);
+        } elsif( $sstr->isnew ) {
+            $evt = _create_sstr( $editor, $sstr );
+        } else {
+            $evt = _update_sstr( $editor, $override, $sstr );
+        }
+    }
+
+    if( $evt ) {
+        $logger->info("stream-alter failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
+        $editor->rollback;
+        return $evt;
+    }
+    $logger->debug("stream-alter: done updating stream batch");
+    $editor->commit;
+    $logger->info("stream-alter successfully updated ".scalar(@$sstrs)." streams");
+    return 1;
+}
+
+sub _delete_sstr {
+    my ($editor, $override, $sstr) = @_;
+    $logger->info("stream-alter: delete stream ".OpenSRF::Utils::JSON->perl2JSON($sstr));
+    my $sitems = $editor->search_serial_item(
+            { stream => $sstr->id }, { limit => 1 } ); #TODO: 'deleted' support?
+    return OpenILS::Event->new(
+            'SERIAL_STREAM_HAS_ITEMS', payload => $sstr->id ) if (@$sitems);
+
+    return $editor->event unless $editor->delete_serial_stream($sstr);
+    return 0;
+}
+
+sub _create_sstr {
+    my ($editor, $sstr) = @_;
+
+    $logger->info("stream-alter: new stream ".OpenSRF::Utils::JSON->perl2JSON($sstr));
+    return $editor->event unless $editor->create_serial_stream($sstr);
+    return 0;
+}
+
+sub _update_sstr {
+    my ($editor, $override, $sstr) = @_;
+
+    $logger->info("stream-alter: retrieving stream ".$sstr->id);
+    my $orig_sstr = $editor->retrieve_serial_stream($sstr->id);
+
+    $logger->info("stream-alter: original stream ".OpenSRF::Utils::JSON->perl2JSON($orig_sstr));
+    $logger->info("stream-alter: updated stream ".OpenSRF::Utils::JSON->perl2JSON($sstr));
+    return $editor->event unless $editor->update_serial_stream($sstr);
+    return 0;
+}
+
+__PACKAGE__->register_method(
+    method  => "serial_stream_retrieve_batch",
+    authoritative => 1,
+    api_name    => "open-ils.serial.stream.batch.retrieve"
+);
+
+sub serial_stream_retrieve_batch {
+    my( $self, $client, $ids ) = @_;
+    $logger->info("Fetching streams @$ids");
+    return $U->cstorereq(
+        "open-ils.cstore.direct.serial.stream.search.atomic",
+        { id => $ids }
+    );
+}
+
+
+##########################################################################
+# summary methods
+#
+__PACKAGE__->register_method(
+    method    => 'sum_alter',
+    api_name  => 'open-ils.serial.basic_summary.batch.update',
+    api_level => 1,
+    argc      => 2,
+    signature => {
+        desc     => 'Receives an array of one or more summaries and updates the database as needed',
+        'params' => [ {
+                 name => 'authtoken',
+                 desc => 'Authtoken for current user session',
+                 type => 'string'
+            },
+            {
+                 name => 'sbsums',
+                 desc => 'Array of basic summaries',
+                 type => 'array'
+            }
+
+        ],
+        'return' => {
+            desc => 'Returns 1 if successful, event if failed',
+            type => 'mixed'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => 'sum_alter',
+    api_name  => 'open-ils.serial.supplement_summary.batch.update',
+    api_level => 1,
+    argc      => 2,
+    signature => {
+        desc     => 'Receives an array of one or more summaries and updates the database as needed',
+        'params' => [ {
+                 name => 'authtoken',
+                 desc => 'Authtoken for current user session',
+                 type => 'string'
+            },
+            {
+                 name => 'sbsums',
+                 desc => 'Array of supplement summaries',
+                 type => 'array'
+            }
+
+        ],
+        'return' => {
+            desc => 'Returns 1 if successful, event if failed',
+            type => 'mixed'
+        }
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => 'sum_alter',
+    api_name  => 'open-ils.serial.index_summary.batch.update',
+    api_level => 1,
+    argc      => 2,
+    signature => {
+        desc     => 'Receives an array of one or more summaries and updates the database as needed',
+        'params' => [ {
+                 name => 'authtoken',
+                 desc => 'Authtoken for current user session',
+                 type => 'string'
+            },
+            {
+                 name => 'sbsums',
+                 desc => 'Array of index summaries',
+                 type => 'array'
+            }
+
+        ],
+        'return' => {
+            desc => 'Returns 1 if successful, event if failed',
+            type => 'mixed'
+        }
+    }
+);
+
+sub sum_alter {
+    my( $self, $conn, $auth, $sums ) = @_;
+    return 1 unless ref $sums;
+
+    $self->api_name =~ /serial\.(\w*)_summary/;
+    my $type = $1;
+
+    my( $reqr, $evt ) = $U->checkses($auth);
+    return $evt if $evt;
+    my $editor = new_editor(requestor => $reqr, xact => 1);
+    my $override = $self->api_name =~ /override/;
+
+# TODO: permission check
+#        return $editor->event unless
+#            $editor->allowed('UPDATE_COPY', $class->copy_perm_org($vol, $copy));
+
+    for my $sum (@$sums) {
+        my $sumid = $sum->id;
+
+        # XXX: (for now, at least) summaries should be created/deleted by the distribution functions
+        if( $sum->isdeleted ) {
+            $evt = OpenILS::Event->new('SERIAL_SUMMARIES_NOT_INDEPENDENT');
+        } elsif( $sum->isnew ) {
+            $evt = OpenILS::Event->new('SERIAL_SUMMARIES_NOT_INDEPENDENT');
+        } else {
+            $evt = _update_sum( $editor, $override, $sum, $type );
+        }
+    }
+
+    if( $evt ) {
+        $logger->info("${type}_summary-alter failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
+        $editor->rollback;
+        return $evt;
+    }
+    $logger->debug("${type}_summary-alter: done updating ${type}_summary batch");
+    $editor->commit;
+    $logger->info("${type}_summary-alter successfully updated ".scalar(@$sums)." ${type}_summaries");
+    return 1;
+}
+
+sub _update_sum {
+    my ($editor, $override, $sum, $type) = @_;
+
+    $logger->info("${type}_summary-alter: retrieving ${type}_summary ".$sum->id);
+    my $retrieve_method = "retrieve_serial_${type}_summary";
+    my $orig_sum = $editor->$retrieve_method($sum->id);
+
+    $logger->info("${type}_summary-alter: original ${type}_summary ".OpenSRF::Utils::JSON->perl2JSON($orig_sum));
+    $logger->info("${type}_summary-alter: updated ${type}_summary ".OpenSRF::Utils::JSON->perl2JSON($sum));
+    my $update_method = "update_serial_${type}_summary";
+    return $editor->event unless $editor->$update_method($sum);
+    return 0;
+}
+
+__PACKAGE__->register_method(
+    method  => "serial_summary_retrieve_batch",
+    authoritative => 1,
+    api_name    => "open-ils.serial.basic_summary.batch.retrieve"
+);
+
+__PACKAGE__->register_method(
+    method  => "serial_summary_retrieve_batch",
+    authoritative => 1,
+    api_name    => "open-ils.serial.supplement_summary.batch.retrieve"
+);
+
+__PACKAGE__->register_method(
+    method  => "serial_summary_retrieve_batch",
+    authoritative => 1,
+    api_name    => "open-ils.serial.index_summary.batch.retrieve"
+);
+
+sub serial_summary_retrieve_batch {
+    my( $self, $client, $ids ) = @_;
+
+    $self->api_name =~ /serial\.(\w*)_summary/;
+    my $type = $1;
+
+    $logger->info("Fetching ${type}_summaries @$ids");
+    return $U->cstorereq(
+        "open-ils.cstore.direct.serial.".$type."_summary.search.atomic",
+        { id => $ids }
+    );
+}
+
+
+##########################################################################
+# other methods
+#
 __PACKAGE__->register_method(
     "method" => "bre_by_identifier",
     "api_name" => "open-ils.serial.biblio.record_entry.by_identifier",
