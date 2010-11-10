@@ -133,7 +133,6 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
         if (dojo._hasResource['fieldmapper.dojoData'] && dojo.filter(['aou','aout','pgt'], function(x){return x == cl}).length == 0) {
             fieldmapper[cl].prototype.fromStoreItem = _fromStoreItem;
-            fieldmapper[cl].prototype.fromStoreItem = _fromStoreItem;
             fieldmapper[cl].toStoreData = _toStoreData;
             fieldmapper[cl].toStoreItem = _toStoreItem;
             fieldmapper[cl].prototype.toStoreItem = function ( args ) { return _toStoreItem(this, args) };
