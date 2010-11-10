@@ -1,26 +1,24 @@
-dump('entering serial/manage_subs.js\n');
+dump('entering serial/manage_dists.js\n');
 // vim:noet:sw=4:ts=4:
 
 if (typeof serial == 'undefined') serial = {};
-serial.manage_subs = function (params) {
+serial.manage_dists = function (params) {
     try {
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         JSAN.use('util.error'); this.error = new util.error();
     } catch(E) {
-        dump('serial/manage_subs: ' + E + '\n');
+        dump('serial/manage_dists: ' + E + '\n');
     }
 };
 
-serial.manage_subs.prototype = {
+serial.manage_dists.prototype = {
 
     'map_tree' : {},
-    'map_ssub' : {},
     'map_sdist' : {},
-    'map_siss' : {},
-    'map_scap' : {},
+    //'map_sstr' : {},
     'sel_list' : [],
     'funcs' : [],
-    'editor_indexes' : { 'ssub' : 1, 'sdist' : 2, 'siss' : 3, 'scap' : 4 },
+    'editor_indexes' : { 'sdist' : 1, 'sstr' : 2, 'sbsum' : 3, 'sssum' : 4, 'sisum' : 5 },
 
     'ids_from_sel_list' : function(type) {
         var obj = this;
@@ -44,7 +42,7 @@ serial.manage_subs.prototype = {
     'editor_init' : function(type, mode, params) {
         var obj = this;
         try {
-            $('serial_manage_subs_editor_deck').selectedIndex = obj.editor_indexes[type];
+            $('serial_manage_dists_editor_deck').selectedIndex = obj.editor_indexes[type];
             var editor_type = type + '_editor';
             if (typeof obj[editor_type] == 'undefined') {
                 JSAN.use('serial.' + editor_type);
@@ -164,18 +162,6 @@ serial.manage_subs.prototype = {
                                 obj.show_my_libs(); 
                             }
                         ],
-                        'cmd_show_all_libs' : [
-                            ['command'],
-                            function() {
-                                obj.show_all_libs();
-                            }
-                        ],
-                        'cmd_show_libs_with_distributions' : [
-                            ['command'],
-                            function() {
-                                obj.show_libs_with_distributions();
-                            }
-                        ],
                         'cmd_clear' : [
                             ['command'],
                             function() {
@@ -183,49 +169,11 @@ serial.manage_subs.prototype = {
                                 obj.list.clear();
                             }
                         ],
-                        'cmd_add_scap' : [
-                            ['command'],
-                            function() {
-                                try {
-                                    var list = obj.ids_from_sel_list('ssub');
-                                    if (list.length == 0) list = obj.ids_from_sel_list('scap-group');
-                                    if (list.length == 0) return;
-
-                                    /*TODO: permission check?
-                                    //populate 'list' with owning_libs of subs, TODO
-                                    var edit = 0;
-                                    try {
-                                        edit = obj.network.request(
-                                            api.PERM_MULTI_ORG_CHECK.app,
-                                            api.PERM_MULTI_ORG_CHECK.method,
-                                            [ 
-                                                ses(), 
-                                                obj.data.list.au[0].id(), 
-                                                list,
-                                                [ 'CREATE_COPY' ]
-                                            ]
-                                        ).length == 0 ? 1 : 0;
-                                    } catch(E) {
-                                        obj.error.sdump('D_ERROR','batch permission check: ' + E);
-                                    }
-
-                                    if (edit==0) return; // no read-only view for this interface */
-                                    var new_scap = new scap();
-                                    new_scap.subscription(list[0]);//TODO: add multiple at once support?
-                                    new_scap.isnew(1);
-                                    var params = {};
-                                    params.scaps = [new_scap];
-                                    obj.editor_init('scap', 'add', params);
-                                } catch(E) {
-                                    obj.error.standard_unexpected_error_alert(document.getElementById('serialStrings').getString('staff.serial.manage_subs.add.error'),E);
-                                }
-                            }
-                        ],
                         'cmd_add_siss' : [
                             ['command'],
                             function() {
                                 try {
-                                    var list = obj.ids_from_sel_list('ssub');
+                                    var list = obj.ids_from_sel_list('sdist');
                                     if (list.length == 0) list = obj.ids_from_sel_list('siss-group');
                                     if (list.length == 0) return;
 
@@ -259,12 +207,12 @@ serial.manage_subs.prototype = {
                                 }
                             }
                         ],
-                        'cmd_add_sdist' : [
+                        'cmd_add_sstr' : [
                             ['command'],
                             function() {
                                 try {
-                                    var list = obj.ids_from_sel_list('ssub');
-                                    if (list.length == 0) list = obj.ids_from_sel_list('sdist-group');
+                                    var list = obj.ids_from_sel_list('sdist');
+                                    if (list.length == 0) list = obj.ids_from_sel_list('sstr-group');
                                     if (list.length == 0) return;
 
                                     /*TODO: permission check?
@@ -286,34 +234,25 @@ serial.manage_subs.prototype = {
                                     }
 
                                     if (edit==0) return; // no read-only view for this interface */
-                                    var new_sdist = new sdist();
-                                    new_sdist.subscription(list[0]);//TODO: add multiple at once support?
-                                    new_sdist.holding_lib(obj.map_ssub['ssub_' + list[0]].owning_lib());//default to sub owning lib
-                                    new_sdist.label('Default');
-                                    new_sdist.isnew(1);
+                                    var new_sstr = new sstr();
+                                    new_sstr.subscription(list[0]);//TODO: add multiple at once support?
+                                    new_sstr.holding_lib(obj.map_sdist['sdist_' + list[0]].owning_lib());//default to sub owning lib
+                                    new_sstr.label('Default');
+                                    new_sstr.isnew(1);
                                     var params = {};
-                                    params.sdists = [new_sdist];
-                                    obj.editor_init('sdist', 'add', params);
+                                    params.sstrs = [new_sstr];
+                                    obj.editor_init('sstr', 'add', params);
                                 } catch(E) {
                                     obj.error.standard_unexpected_error_alert(document.getElementById('serialStrings').getString('staff.serial.manage_subs.add.error'),E);
                                 }
                             }
                         ],
-                        'cmd_delete_scap' : [
-                            ['command'],
-                            function() {
-                                var overridable_events = [
-                                    11001 // SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES
-                                ];
-                                obj.do_delete('scap', 'open-ils.serial.caption_and_pattern.batch.update', overridable_events);
-                            }
-                        ],
-                        'cmd_delete_sdist' : [
+                        'cmd_delete_sstr' : [
                             ['command'],
                             function() {
                                 var overridable_events = [ //TODO: proper overrides
                                 ];
-                                obj.do_delete('sdist', 'open-ils.serial.distribution.fleshed.batch.update', overridable_events);
+                                obj.do_delete('sstr', 'open-ils.serial.distribution.fleshed.batch.update', overridable_events);
                             }
                         ],
                         'cmd_delete_siss' : [
@@ -324,84 +263,15 @@ serial.manage_subs.prototype = {
                                 obj.do_delete('siss', 'open-ils.serial.issuance.fleshed.batch.update', overridable_events);
                             }
                         ],
-                        'cmd_delete_ssub' : [
+                        'cmd_delete_sdist' : [
                             ['command'],
                             function() {
                                 var overridable_events = [
                                     11000 // SERIAL_SUBSCRIPTION_NOT_EMPTY
                                 ];
-                                obj.do_delete('ssub', 'open-ils.serial.subscription.fleshed.batch.update', overridable_events);
+                                obj.do_delete('sdist', 'open-ils.serial.subscription.fleshed.batch.update', overridable_events);
                             }
                         ],
-                        /*dbw2 'cmd_delete_ssub' : [
-                            ['command'],
-                            function() {
-                                try {
-                                    JSAN.use('util.functional');
-
-                                    var list = util.functional.filter_list(
-                                        obj.sel_list,
-                                        function (o) {
-                                            return o.split(/_/)[0] == 'ssub';
-                                        }
-                                    );
-
-                                    list = util.functional.map_list(
-                                        list,
-                                        function (o) {
-                                            return JSON2js( js2JSON( obj.map_ssub[ 'ssub_' + o.split(/_/)[1] ] ) );
-                                        }
-                                    );
-
-                                    var del_prompt;
-                                    if (list.length == 1) {
-                                        //TODO: correct prompts
-                                        del_prompt = document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.prompt');
-                                    } else {
-                                        del_prompt = document.getElementById('catStrings').getFormattedString('staff.cat.copy_browser.delete_volume.prompt.plural', [list.length]);
-                                    }
-
-                                    var r = obj.error.yns_alert(
-                                            del_prompt,
-                                            document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.title'),
-                                            document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.delete'),
-                                            document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.cancel'),
-                                            null,
-                                            document.getElementById('commonStrings').getString('common.confirm')
-                                    );
-
-                                    if (r == 0) {
-                                        for (var i = 0; i < list.length; i++) {
-                                            list[i].isdeleted('1');
-                                        }
-                                        var robj = obj.network.simple_request(
-                                            'FM_ACN_TREE_UPDATE', 
-                                            [ ses(), list, true ],
-                                            null,
-                                            {
-                                                'title' : document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.override'),
-                                                'overridable_events' : [
-                                                ]
-                                            }
-                                        );
-                                        if (robj == null) throw(robj);
-                                        if (typeof robj.ilsevent != 'undefined') {
-                                            if (robj.ilsevent == 1206 ) { // VOLUME_NOT_EMPTY
-                                                alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.copies_remain'));
-                                                return;
-                                            }
-                                            if (robj.ilsevent != 0) throw(robj);
-                                        }
-                                        alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.success'));
-                                        obj.refresh_list();
-                                    }
-                                } catch(E) {
-                                    obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.exception'),E);
-                                    obj.refresh_list();
-                                }
-
-                            }
-                        ], dbw2*/
                         'cmd_mark_library' : [
                             ['command'],
                             function() {
@@ -422,19 +292,19 @@ serial.manage_subs.prototype = {
                                                 );
                                     }
                                 } catch(E) {
-                                    obj.error.standard_unexpected_error_alert('manage_subs.js -> mark library',E);
+                                    obj.error.standard_unexpected_error_alert('manage_dists.js -> mark library',E);
                                 }
                             }
                         ],
 
-                        'cmd_mark_subscription' : [
+                        'cmd_mark_distribution' : [
                             ['command'],
                             function() {
                                 try {
-                                    var list = obj.ids_from_sel_list('ssub');
+                                    var list = obj.ids_from_sel_list('sdist');
                                     if (list.length == 1) {
-                                        obj.data.marked_subscription = list[0];
-                                        obj.data.stash('marked_subscription');
+                                        obj.data.marked_distribution = list[0];
+                                        obj.data.stash('marked_distribution');
                                         alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.mark_volume.alert'));
                                     } else {
                                         obj.error.yns_alert(
@@ -447,11 +317,11 @@ serial.manage_subs.prototype = {
                                                 );
                                     }
                                 } catch(E) {
-                                    obj.error.standard_unexpected_error_alert('manage_subs.js -> mark subscription',E);
+                                    obj.error.standard_unexpected_error_alert('manage_dists.js -> mark distribution',E);
                                 }
                             }
                         ],
-                        'cmd_add_subscriptions' : [
+                        'cmd_add_distributions' : [
                             ['command'],
                             function() {
                                 try {
@@ -478,19 +348,19 @@ serial.manage_subs.prototype = {
                                         alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.add_volume.permission_error'));
                                         return; // no read-only view for this interface
                                     } */
-                                    var new_ssub = new ssub();
-                                    new_ssub.owning_lib(list[0]);//TODO: add multiple at once support?
-                                    new_ssub.isnew(1);
-                                    new_ssub.record_entry(obj.docid);
+                                    var new_sdist = new sdist();
+                                    new_sdist.owning_lib(list[0]);//TODO: add multiple at once support?
+                                    new_sdist.isnew(1);
+                                    new_sdist.record_entry(obj.docid);
                                     var params = {};
-                                    params.ssubs = [new_ssub];
-                                    obj.editor_init('ssub', 'add', params);
+                                    params.sdists = [new_sdist];
+                                    obj.editor_init('sdist', 'add', params);
                                 } catch(E) {
                                     obj.error.standard_unexpected_error_alert(document.getElementById('serialStrings').getString('staff.serial.manage_subs.add.error'),E);
                                 }
                             }
                         ],
-                        'cmd_transfer_subscription' : [
+                        'cmd_transfer_distribution' : [
                             ['command'],
                             function() {
                                 try {
@@ -500,22 +370,22 @@ serial.manage_subs.prototype = {
                                         return;
                                     }
                                     
-                                    var list = obj.ids_from_sel_list('ssub');
+                                    var list = obj.ids_from_sel_list('sdist');
 
                                     netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect UniversalBrowserWrite');
 
                                     JSAN.use('util.functional');
 
-                                    var ssub_list = util.functional.map_list(
+                                    var sdist_list = util.functional.map_list(
                                         list,
                                         function (o) {
-                                            return obj.map_ssub[ 'ssub_' + o ].start_date();
+                                            return obj.map_sdist[ 'sdist_' + o ].start_date();
                                         }
                                     ).join(document.getElementById('commonStrings').getString('common.grouping_string'));
 
                                     var xml = '<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" flex="1" style="overflow: auto">';
                                     xml += '<description>';
-                                    xml += document.getElementById('catStrings').getFormattedString('staff.cat.copy_browser.transfer.prompt', [ssub_list, obj.data.hash.aou[ obj.data.marked_library.lib ].shortname()]);
+                                    xml += document.getElementById('catStrings').getFormattedString('staff.cat.copy_browser.transfer.prompt', [sdist_list, obj.data.hash.aou[ obj.data.marked_library.lib ].shortname()]);
                                     xml += '</description>';
                                     xml += '<hbox><button label="' + document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.submit.label') + '" name="fancy_submit"/>';
                                     xml += '<button label="' 
@@ -547,7 +417,7 @@ serial.manage_subs.prototype = {
 
                                     var robj = obj.network.simple_request(
                                         'FM_ACN_TRANSFER', 
-                                        [ ses(), { 'docid' : obj.data.marked_library.docid, 'lib' : obj.data.marked_library.lib, 'subscriptions' : list } ],
+                                        [ ses(), { 'docid' : obj.data.marked_library.docid, 'lib' : obj.data.marked_library.lib, 'distributions' : list } ],
                                         null,
                                         {
                                             'title' : document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer.override.failure'),
@@ -575,26 +445,26 @@ serial.manage_subs.prototype = {
                             }
                         ],
 
-                        'cmd_transfer_sdists' : [
+                        'cmd_transfer_sstrs' : [
                             ['command'],
                             function() {
                                 try {
                                     obj.data.stash_retrieve();
-                                    if (!obj.data.marked_subscription) {
+                                    if (!obj.data.marked_distribution) {
                                         alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.transfer_items.missing_volume'));
                                         return;
                                     }
                                     
                                     JSAN.use('util.functional');
 
-                                    var list = obj.ids_from_sel_list('sdist');
-                                    var subscription = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ obj.data.marked_subscription ]);
+                                    var list = obj.ids_from_sel_list('sstr');
+                                    var distribution = obj.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ obj.data.marked_distribution ]);
 
                                     JSAN.use('cat.util'); cat.util.transfer_copies( { 
                                         'distribution_ids' : list, 
-                                        'docid' : subscription.record(),
-                                        'subscription_label' : subscription.start_date(),
-                                        'owning_lib' : subscription.owning_lib(),
+                                        'docid' : distribution.record(),
+                                        'distribution_label' : distribution.start_date(),
+                                        'owning_lib' : distribution.owning_lib(),
                                     } );
 
                                 } catch(E) {
@@ -609,62 +479,6 @@ serial.manage_subs.prototype = {
                                 obj.refresh_list();
                             }
                         ],
-                        'cmd_make_predictions' : [
-                            ['command'],
-                            function() {
-                                try {
-                                    var list = obj.ids_from_sel_list('ssub');
-                                    if (list.length == 0) {
-                                        alert('You must select a subscription before predicting issuances.'); //TODO: better error
-                                        return;
-                                    }
-
-                                    var num_to_predict = prompt('How many items would you like to predict?',
-                                            '12',
-                                            'Number of Predicted Items');
-                                    num_to_predict = String( num_to_predict ).replace(/\D/g,'');
-                                    if (num_to_predict == '') {
-                                        alert('Invalid number entered!'); //TODO: better error
-                                        return;
-                                    }
-
-                                    for (i = 0; i < list.length; i++) {
-                                        var robj = obj.network.request(
-                                                'open-ils.serial',
-                                                'open-ils.serial.make_predictions',
-                                                [ ses(), {"ssub_id":list[i], "num_to_predict":num_to_predict, "last_rec_date":"2010-07-07"}]
-                                        );
-                                        util.functional.map_list(
-                                            robj,
-                                            function(o) {
-                                                alert('debug: ' + o.date_expected());
-                                            }
-                                        );
-                                    }
-                                    return;
-
-                                    /*JSAN.use('util.functional');
-                                    var list = util.functional.map_list(
-                                            robj,
-                                            function (o) {
-                                                o.distribution(obj.sdist_id);
-                                                return o;
-                                            }
-                                        );*/
-
-                                    var robj = obj.network.request(
-                                                'open-ils.serial',
-                                                'open-ils.serial.item.fleshed.batch.update',
-                                                [ ses(), list ]
-                                            );
-
-                                    //obj.refresh_list('main');
-
-                                } catch(E) {
-                                    obj.error.standard_unexpected_error_alert('cmd_make_predictions failed!',E);
-                                }
-                            }
-                        ],
 /*dbw2                      'sel_distribution_details' : [
                             ['command'],
                             function() {
@@ -673,7 +487,7 @@ serial.manage_subs.prototype = {
                                 var list = util.functional.filter_list(
                                     obj.sel_list,
                                     function (o) {
-                                        return o.split(/_/)[0] == 'sdist';
+                                        return o.split(/_/)[0] == 'sstr';
                                     }
                                 );
 
@@ -690,7 +504,7 @@ serial.manage_subs.prototype = {
                                 }
                             }
                         ],
-                        'cmd_edit_sdists' : [
+                        'cmd_edit_sstrs' : [
                             ['command'],
                             function() {
                                 try {
@@ -699,7 +513,7 @@ serial.manage_subs.prototype = {
                                     var list = util.functional.filter_list(
                                         obj.sel_list,
                                         function (o) {
-                                            return o.split(/_/)[0] == 'sdist';
+                                            return o.split(/_/)[0] == 'sstr';
                                         }
                                     );
 
@@ -728,14 +542,14 @@ serial.manage_subs.prototype = {
                                     var list = util.functional.filter_list(
                                         obj.sel_list,
                                         function (o) {
-                                            return o.split(/_/)[0] == 'sdist';
+                                            return o.split(/_/)[0] == 'sstr';
                                         }
                                     );
 
                                     list = util.functional.map_list(
                                         list,
                                         function (o) {
-                                            return obj.map_sdist[ o ];
+                                            return obj.map_sstr[ o ];
                                         }
                                     );
 
@@ -750,132 +564,15 @@ serial.manage_subs.prototype = {
                                     obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.print_spine.error'),E);
                                 }
                             }
-                        ],
-                        'cmd_edit_subscriptions' : [
-                            ['command'],
-                            function() {
-                                try {
-                                    JSAN.use('util.functional');
-                                    var list = util.functional.map_list(
-                                        util.functional.filter_list(
-                                            obj.sel_list,
-                                            function (o) {
-                                                return o.split(/_/)[0] == 'ssub';
-                                            }
-                                        ),
-                                        function (o) {
-                                            return o.split(/_/)[1];
-                                        }
-                                    );
-                                    if (list.length == 0) return;
-
-                                    var edit = 0;
-                                    try {
-                                        edit = obj.network.request(
-                                            api.PERM_MULTI_ORG_CHECK.app,
-                                            api.PERM_MULTI_ORG_CHECK.method,
-                                            [ 
-                                                ses(), 
-                                                obj.data.list.au[0].id(), 
-                                                util.functional.map_list(
-                                                    list,
-                                                    function (o) {
-                                                        return obj.map_ssub[ 'ssub_' + o ].owning_lib();
-                                                    }
-                                                ),
-                                                [ 'UPDATE_VOLUME' ]
-                                            ]
-                                        ).length == 0 ? 1 : 0;
-                                    } catch(E) {
-                                        obj.error.sdump('D_ERROR','batch permission check: ' + E);
-                                    }
-
-                                    if (edit==0) {
-                                        alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.permission_error'));
-                                        return; // no read-only view for this interface
-                                    }
-
-                                    list = util.functional.map_list(
-                                        list,
-                                        function (o) {
-                                            var my_ssub = obj.map_ssub['ssub_' + o];
-                                            return function(r){return r;}(my_ssub);
-                                        }
-                                    );
-
-                                    var title;
-                                    if (list.length == 1) {
-                                        title = document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.title');
-                                    } else {
-                                        title = document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.title.plural');
-                                    }
-
-                                    JSAN.use('util.window'); var win = new util.window();
-                                    //obj.data.volumes_temp = js2JSON( list );
-                                    //obj.data.stash('volumes_temp');
-                                    var my_xulG = win.open(
-                                        window.xulG.url_prefix(urls.XUL_VOLUME_EDITOR),
-                                        title,
-                                        'chrome,modal,resizable',
-                                        { 'subscriptions' : JSON2js(js2JSON(list)) }
-                                    );
-
-                                    // FIXME -- need to unique the temp space, and not rely on modalness of window
-                                    //obj.data.stash_retrieve();
-                                    if (typeof my_xulG.update_these_subscriptions == 'undefined') { return; }
-                                    var subscriptions = my_xulG.subscriptions;
-                                    if (!subscriptions) return;
-                                
-                                    subscriptions = util.functional.filter_list(
-                                        subscriptions,
-                                        function (o) {
-                                            return o.ischanged() == '1';
-                                        }
-                                    );
-
-                                    subscriptions = util.functional.map_list(
-                                        subscriptions,
-                                        function (o) {
-                                            o.record( obj.docid ); // staff client 2 did not do this.  Does it matter?
-                                            return o;
-                                        }
-                                    );
-
-                                    if (subscriptions.length == 0) return;
-
-                                    try {
-                                        var r = obj.network.request(
-                                            api.FM_ACN_TREE_UPDATE.app,
-                                            api.FM_ACN_TREE_UPDATE.method,
-                                            [ ses(), subscriptions, true ]
-                                        );
-                                        if (typeof r.ilsevent != 'undefined') {
-                                            switch(Number(r.ilsevent)) {
-                                                case 1705 : // VOLUME_LABEL_EXISTS
-                                                    alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.failed'));
-                                                    break;
-                                                default: throw(r);
-                                            }
-                                        } else {
-                                            alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.success'));
-                                        }
-                                    } catch(E) {
-                                        obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.error'),E);
-                                    }
-                                    obj.refresh_list();
-
-                                } catch(E) {
-                                    obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_volume.exception'),E);
-                                }
-                            }
-                        ], dbw2*/
+                        ]
+                        dbw2*/
                     }
                 }
             );
 
             obj.list_init(params);
 
-            obj.org_ids = obj.network.simple_request('FM_SSUB_AOU_IDS_RETRIEVE_VIA_RECORD_ID.authoritative',[ obj.docid ]);
+            obj.org_ids = obj.network.simple_request('FM_SDIST_AOU_IDS_RETRIEVE_VIA_RECORD_ID.authoritative',[ obj.docid ]);
             if (typeof obj.org_ids.ilsevent != 'undefined') throw(obj.org_ids);
             JSAN.use('util.functional'); 
             obj.org_ids = util.functional.map_list( obj.org_ids, function (o) { return Number(o); });
@@ -892,8 +589,11 @@ serial.manage_subs.prototype = {
             file = new util.file('offline_ou_list'); 
             if (file._file.exists()) {
                 list_data = file.get_object(); file.close();
+                for (var i = 0; i < list_data[0].length; i++) { // make sure all entries are enabled
+                    list_data[0][i][2] = false;
+                }
                 ml = util.widgets.make_menulist( list_data[0], list_data[1] );
-                ml.setAttribute('id','lib_menu'); document.getElementById('serial_sub_lib_menu').appendChild(ml);
+                ml.setAttribute('id','sdist_lib_menu'); document.getElementById('serial_dist_lib_menu').appendChild(ml);
                 //TODO: class this menu properly
                 for (var i = 0; i < obj.org_ids.length; i++) {
                     ml.getElementsByAttribute('value',obj.org_ids[i])[0].setAttribute('class','has_distributions');
@@ -916,8 +616,8 @@ serial.manage_subs.prototype = {
                     'command',
                     function(ev) {
                         if (document.getElementById('refresh_button')) document.getElementById('refresh_button').focus(); 
-                        JSAN.use('util.file'); var file = new util.file('manage_subs_prefs.'+obj.data.server_unadorned);
-                        util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_ssubs' : [ 'checked' ], 'show_groups' : [ 'checked' ] });
+                        JSAN.use('util.file'); var file = new util.file('manage_dists_prefs.'+obj.data.server_unadorned);
+                        util.widgets.save_attributes(file, { 'sdist_lib_menu' : [ 'value' ], 'show_sdists' : [ 'checked' ], 'show_groups' : [ 'checked' ] });
                         obj.refresh_list();
                     },
                     false
@@ -926,19 +626,21 @@ serial.manage_subs.prototype = {
                 throw(document.getElementById('catStrings').getString('staff.cat.copy_browser.missing_library') + '\n');
             }
 
-            file = new util.file('manage_subs_prefs.'+obj.data.server_unadorned);
+            file = new util.file('manage_dists_prefs.'+obj.data.server_unadorned);
             util.widgets.load_attributes(file);
-            ml.value = ml.getAttribute('value');
-            if (! ml.value) {
-                ml.value = org.id();
-                ml.setAttribute('value',ml.value);
+            obj.default_lib = ml.getAttribute('value');
+            ml.value = obj.default_lib;
+            if (! obj.default_lib) {
+                obj.default_lib = org.id();
+                ml.setAttribute('value',obj.default_lib);
+                ml.value = obj.default_lib;
             }
 
-            document.getElementById('show_ssubs').addEventListener(
+            document.getElementById('show_sdists').addEventListener(
                 'command',
                 function(ev) {
-                    JSAN.use('util.file'); var file = new util.file('manage_subs_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_ssubs' : [ 'checked' ], 'show_groups' : [ 'checked' ] });
+                    JSAN.use('util.file'); var file = new util.file('manage_dists_prefs.'+obj.data.server_unadorned);
+                    util.widgets.save_attributes(file, { 'sdist_lib_menu' : [ 'value' ], 'show_sdists' : [ 'checked' ], 'show_groups' : [ 'checked' ] });
                 },
                 false
             );
@@ -946,20 +648,20 @@ serial.manage_subs.prototype = {
             document.getElementById('show_groups').addEventListener(
                 'command',
                 function(ev) {
-                    JSAN.use('util.file'); var file = new util.file('manage_subs_prefs.'+obj.data.server_unadorned);
-                    util.widgets.save_attributes(file, { 'lib_menu' : [ 'value' ], 'show_ssubs' : [ 'checked' ], 'show_groups' : [ 'checked' ] });
+                    JSAN.use('util.file'); var file = new util.file('manage_dists_prefs.'+obj.data.server_unadorned);
+                    util.widgets.save_attributes(file, { 'sdist_lib_menu' : [ 'value' ], 'show_sdists' : [ 'checked' ], 'show_groups' : [ 'checked' ] });
                 },
                 false
             );
 
-            obj.show_my_libs( ml.value );
+            obj.show_my_libs( obj.default_lib );
 
             JSAN.use('util.exec'); var exec = new util.exec(20); exec.timer(obj.funcs,100);
 
             obj.toggle_actions(); // disable menus initially
 
         } catch(E) {
-            this.error.standard_unexpected_error_alert('serial/manage_subs.init: ',E);
+            this.error.standard_unexpected_error_alert('serial/manage_dists.init: ',E);
         }
     },
 
@@ -972,103 +674,6 @@ serial.manage_subs.prototype = {
                 if (typeof org != 'object') org = obj.data.hash.aou[ org ];
             }
             obj.show_libs( org, false );
-        
-            var p_org = obj.data.hash.aou[ org.parent_ou() ];
-            if (p_org) {
-                obj.funcs.push( function() { 
-                    document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
-                    document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','true'); 
-                    document.getElementById('lib_menu').setAttribute('disabled','true'); 
-                } );
-                for (var i = 0; i < p_org.children().length; i++) {
-                    obj.funcs.push(
-                        function(o) {
-                            return function() {
-                                obj.show_libs( o, false );
-                            }
-                        }( p_org.children()[i] )
-                    );
-                }
-                obj.funcs.push( function() { 
-                    document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
-                    document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','false'); 
-                    document.getElementById('lib_menu').setAttribute('disabled','false'); 
-                } );
-            }
-        } catch(E) {
-            alert(E);
-        }
-    },
-
-    'show_all_libs' : function() {
-        var obj = this;
-        try {
-            obj.show_my_libs();
-
-            obj.show_libs( obj.data.tree.aou );
-
-            obj.funcs.push( function() { 
-                document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
-                document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','true'); 
-                document.getElementById('lib_menu').setAttribute('disabled','true'); 
-            } );
-
-            for (var i = 0; i < obj.data.tree.aou.children().length; i++) {
-                obj.funcs.push(
-                    function(o) {
-                        return function() {
-                            obj.show_libs( o );
-                        }
-                    }( obj.data.tree.aou.children()[i] )
-                );
-            }
-            obj.funcs.push( function() { 
-                document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
-                document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','false'); 
-                document.getElementById('lib_menu').setAttribute('disabled','false'); 
-            } );
-
-        } catch(E) {
-            alert(E);
-        }
-    },
-
-    'show_libs_with_distributions' : function() {
-        var obj = this;
-        try {
-            JSAN.use('util.functional');
-
-            var orgs = util.functional.map_list(
-                obj.org_ids,
-                function(id) { return obj.data.hash.aou[id]; }
-            ).sort(
-                function( a, b ) {
-                    if (a.shortname() < b.shortname()) return -1;
-                    if (a.shortname() > b.shortname()) return 1;
-                    return 0;
-                }
-            );
-            obj.funcs.push( function() { 
-                document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
-                document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','true'); 
-                document.getElementById('lib_menu').setAttribute('disabled','true'); 
-            } );
-
-            for (var i = 0; i < orgs.length; i++) {
-                obj.funcs.push(
-                    function(o) {
-                        return function() {
-                            obj.show_libs(o,false);
-                        }
-                    }( orgs[i] )
-                );
-            }
-            obj.funcs.push( function() { 
-                document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
-                document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','false'); 
-                document.getElementById('lib_menu').setAttribute('disabled','false'); 
-            } );
-
         } catch(E) {
             alert(E);
         }
@@ -1141,7 +746,7 @@ serial.manage_subs.prototype = {
             if (twisty) {
                 switch(row_type) {
                     case 'aou' : obj.on_click_aou(id,twisty); break;
-                    case 'ssub' : obj.on_select_ssub(id,twisty); break;
+                    case 'sdist' : obj.on_select_sdist(id,twisty); break;
                     default: break;
                 }
             }
@@ -1160,68 +765,95 @@ serial.manage_subs.prototype = {
         }
     },
 
-    'on_select_ssub' : function(ssub_id,twisty) {
+    'on_select_sdist' : function(sdist_id,twisty) {
         var obj = this;
         try {
-            //typo? var ssub_tree = obj.map_sdist[ 'ssub_' + ssub_id ];
-            var ssub_tree = obj.map_ssub[ 'ssub_' + ssub_id ];
+            var sdist_tree = obj.map_sdist[ 'sdist_' + sdist_id ];
             obj.funcs.push( function() { 
                 document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
-                document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','true'); 
-                document.getElementById('lib_menu').setAttribute('disabled','true'); 
+                document.getElementById('sdist_lib_menu').setAttribute('disabled','true'); 
             } );
-            if (ssub_tree.distributions()) {
-                for (var i = 0; i < ssub_tree.distributions().length; i++) {
+            if (sdist_tree.basic_summary()) {
+                obj.funcs.push(
+                    function(c,a) {
+                        return function() {
+                            obj.append_member(c,a,[],'sbsum', false);
+                        }
+                    }( sdist_tree.basic_summary(), sdist_tree )
+                );
+            }
+            if (sdist_tree.supplement_summary()) {
+                obj.funcs.push(
+                    function(c,a) {
+                        return function() {
+                            obj.append_member(c,a,[],'sssum', false);
+                        }
+                    }( sdist_tree.supplement_summary(), sdist_tree )
+                );
+            }
+            if (sdist_tree.index_summary()) {
+                obj.funcs.push(
+                    function(c,a) {
+                        return function() {
+                            obj.append_member(c,a,[],'sisum', false);
+                        }
+                    }( sdist_tree.index_summary(), sdist_tree )
+                );
+            }
+            if (sdist_tree.streams()) {
+                for (var i = 0; i < sdist_tree.streams().length; i++) {
                     obj.funcs.push(
                         function(c,a) {
                             return function() {
-                                obj.append_member(c,a,[],'sdist');
+                                obj.append_member(c,a,[],'sstr', true);
                             }
-                        }( ssub_tree.distributions()[i], ssub_tree )
+                        }( sdist_tree.streams()[i], sdist_tree )
                     )
                 }
             }
-            if (ssub_tree.issuances()) {
-                for (var i = 0; i < ssub_tree.issuances().length; i++) {
+            /* TODO: template editing would be convenient here, but a little too confusing
+            // add template nodes
+            var same_templates;
+            var has_bind_template;
+            if (sdist_tree.receive_unit_template()) {
+                if (sdist_tree.bind_unit_template()) {
+                    has_bind_template = true;                    
+                    if (sdist_tree.receive_unit_template().id() == sdist_tree.bind_unit_template().id()) {
+                        same_templates = true;
+                        obj.funcs.push(
+                            function(c,a) {
+                                return function() {
+                                    obj.append_member(c,a,[],'act', false, 'Receive/Bind Unit Template');
+                                }
+                            }( sdist_tree.receive_unit_template(), sdist_tree )
+                        )
+                    }
+                }
+
+                if (!same_templates) {
                     obj.funcs.push(
                         function(c,a) {
                             return function() {
-                                obj.append_member(c,a,[],'siss');
+                                obj.append_member(c,a,[],'act', false, 'Receive Unit Template');
                             }
-                        }( ssub_tree.issuances()[i], ssub_tree )
+                        }( sdist_tree.receive_unit_template(), sdist_tree )
                     )
                 }
             }
-            if (ssub_tree.scaps()) {
-                for (var i = 0; i < ssub_tree.scaps().length; i++) {
-                    obj.funcs.push(
-                        function(c,a) {
-                            return function() {
-                                obj.append_member(c,a,[],'scap');
-                            }
-                        }( ssub_tree.scaps()[i], ssub_tree )
-                    )
-                }
+            if (has_bind_template && !same_templates) {
+                obj.funcs.push(
+                    function(c,a) {
+                        return function() {
+                            obj.append_member(c,a,[],'act', false, 'Bind Unit Template');
+                        }
+                    }( sdist_tree.bind_unit_template(), sdist_tree )
+                )
             }
+            */
             obj.funcs.push( function() { 
                 document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
-                document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','false'); 
-                document.getElementById('lib_menu').setAttribute('disabled','false'); 
+                document.getElementById('sdist_lib_menu').setAttribute('disabled','false'); 
             } );
-        } catch(E) {
-            alert(E);
-        }
-    },
-
-    'on_click_ssub' : function(ssub_ids,twisty) {
-        var obj = this;
-        try {
-            // draw sdist editor
-            if (typeof twisty == 'undefined') {
-                var params = {};
-                params.ssub_ids = ssub_ids;
-                obj.editor_init('ssub', 'edit', params);
-            }
         } catch(E) {
             alert(E);
         }
@@ -1234,6 +866,7 @@ serial.manage_subs.prototype = {
             if (typeof twisty == 'undefined') {
                 var params = {};
                 params.sdist_ids = sdist_ids;
+                params.xul_id_prefix = 'sdist2';
                 obj.editor_init('sdist', 'edit', params);
             }
         } catch(E) {
@@ -1241,28 +874,56 @@ serial.manage_subs.prototype = {
         }
     },
 
-    'on_click_siss' : function(siss_ids,twisty) {
+    'on_click_sstr' : function(sstr_ids,twisty) {
         var obj = this;
         try {
-            // draw siss editor
+            // draw sstr editor
             if (typeof twisty == 'undefined') {
                 var params = {};
-                params.siss_ids = siss_ids;
-                obj.editor_init('siss', 'edit', params);
+                params.sstr_ids = sstr_ids;
+                obj.editor_init('sstr', 'edit', params);
             }
         } catch(E) {
             alert(E);
         }
     },
 
-    'on_click_scap' : function(scap_ids,twisty) {
+    'on_click_sbsum' : function(sbsum_ids,twisty) {
         var obj = this;
         try {
-            // draw scap editor
+            // draw sbsum editor
             if (typeof twisty == 'undefined') {
                 var params = {};
-                params.scap_ids = scap_ids;
-                obj.editor_init('scap', 'edit', params);
+                params.sbsum_ids = sbsum_ids;
+                obj.editor_init('sbsum', 'edit', params);
+            }
+        } catch(E) {
+            alert(E);
+        }
+    },
+
+    'on_click_sssum' : function(sssum_ids,twisty) {
+        var obj = this;
+        try {
+            // draw sssum editor
+            if (typeof twisty == 'undefined') {
+                var params = {};
+                params.sssum_ids = sssum_ids;
+                obj.editor_init('sssum', 'edit', params);
+            }
+        } catch(E) {
+            alert(E);
+        }
+    },
+
+    'on_click_sisum' : function(sisum_ids,twisty) {
+        var obj = this;
+        try {
+            // draw sisum editor
+            if (typeof twisty == 'undefined') {
+                var params = {};
+                params.sisum_ids = sisum_ids;
+                obj.editor_init('sisum', 'edit', params);
             }
         } catch(E) {
             alert(E);
@@ -1272,42 +933,44 @@ serial.manage_subs.prototype = {
     'on_click_aou' : function(org_id,twisty) {
         var obj = this;
         var org = obj.data.hash.aou[ org_id ];
+        var default_aou = obj.data.hash.aou[obj.default_lib];
         obj.funcs.push( function() { 
             document.getElementById('cmd_refresh_list').setAttribute('disabled','true'); 
-            document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','true'); 
-            document.getElementById('lib_menu').setAttribute('disabled','true'); 
+            document.getElementById('sdist_lib_menu').setAttribute('disabled','true'); 
         } );
         if (org.children()) {
             for (var i = 0; i < org.children().length; i++) {
-                obj.funcs.push(
-                    function(o,p) {
-                        return function() {
-                            obj.append_org(o,p)
-                        }
-                    }(org.children()[i],org)
-                );
+                var child = org.children()[i];
+                if (orgIsMine(default_aou,child)) {
+                    obj.funcs.push(
+                        function(o,p) {
+                            return function() {
+                                obj.append_org(o,p)
+                            }
+                        }(child,org)
+                    );
+                }
             }
         } 
-        if (obj.map_ssub[ 'aou_' + org_id ]) {
-            for (var i = 0; i < obj.map_ssub[ 'aou_' + org_id ].length; i++) {
+        if (obj.map_sdist[ 'aou_' + org_id ]) {
+            for (var i = 0; i < obj.map_sdist[ 'aou_' + org_id ].length; i++) {
                 obj.funcs.push(
                     function(o,a) {
                         return function() {
-                            obj.append_ssub(o,a);
+                            obj.append_sdist(o,a);
                         }
-                    }( org, obj.map_ssub[ 'aou_' + org_id ][i] )
+                    }( org, obj.map_sdist[ 'aou_' + org_id ][i] )
                 );
             }
         }
         obj.funcs.push( function() { 
             document.getElementById('cmd_refresh_list').setAttribute('disabled','false'); 
-            document.getElementById('cmd_show_libs_with_distributions').setAttribute('disabled','false'); 
-            document.getElementById('lib_menu').setAttribute('disabled','false'); 
+            document.getElementById('sdist_lib_menu').setAttribute('disabled','false'); 
         } );
 
         // remove current editor
         if (typeof twisty == 'undefined') {
-            document.getElementById('serial_manage_subs_editor_deck').selectedIndex = 0;
+            document.getElementById('serial_manage_dists_editor_deck').selectedIndex = 0;
         }
     },
 
@@ -1336,40 +999,28 @@ serial.manage_subs.prototype = {
                 'no_auto_select' : true,
             };
         
-            var ssub_tree_list;
+            var sdist_tree_list;
             if ( obj.org_ids.indexOf( Number( org.id() ) ) == -1 ) {
                 if ( get_bool( obj.data.hash.aout[ org.ou_type() ].can_have_vols() ) ) {
-                    data.row.my.subscription_count = '0';
-                    //data.row.my.distribution_count = '<0>';
+                    data.row.my.distribution_count = '0';
                 } else {
-                    data.row.my.subscription_count = '';
-                    //data.row.my.distribution_count = '';
+                    data.row.my.distribution_count = '';
                 }
             } else {
-                var v_count = 0; var d_count = 0;
-                ssub_tree_list = obj.network.simple_request(
-                    'FM_SSUB_TREE_LIST_RETRIEVE_VIA_RECORD_ID_AND_ORG_IDS.authoritative',
+                var d_count = 0;
+                sdist_tree_list = obj.network.simple_request(
+                    'FM_SDIST_TREE_LIST_RETRIEVE_VIA_RECORD_ID_AND_ORG_IDS.authoritative',
                     [ ses(), obj.docid, [ org.id() ] ]
                 );
-                for (var i = 0; i < ssub_tree_list.length; i++) {
-                    v_count++;
-                    obj.map_ssub[ 'ssub_' + ssub_tree_list[i].id() ] = function(r){return r;}(ssub_tree_list[i]);
-                    var distributions = ssub_tree_list[i].distributions();
-                    //if (distributions) d_count += distributions.length;
-                    for (var j = 0; j < distributions.length; j++) {
-                        obj.map_sdist[ 'sdist_' + distributions[j].id() ] = function(r){return r;}(distributions[j]);
-                    }
-                    var issuances = ssub_tree_list[i].issuances();
-                    for (var j = 0; j < issuances.length; j++) {
-                        obj.map_siss[ 'siss_' + issuances[j].id() ] = function(r){return r;}(issuances[j]);
-                    }
-                    var scaps = ssub_tree_list[i].scaps();
-                    for (var j = 0; j < scaps.length; j++) {
-                        obj.map_scap[ 'scap_' + scaps[j].id() ] = function(r){return r;}(scaps[j]);
-                    }
+                for (var i = 0; i < sdist_tree_list.length; i++) {
+                    d_count++;
+                    obj.map_sdist[ 'sdist_' + sdist_tree_list[i].id() ] = function(r){return r;}(sdist_tree_list[i]);
+                    /*var streams = sdist_tree_list[i].streams();
+                    for (var j = 0; j < streams.length; j++) {
+                        obj.map_sstr[ 'sstr_' + streams[j].id() ] = function(r){return r;}(streams[j]);
+                    }*/
                 }
-                data.row.my.subscription_count = v_count;
-                //data.row.my.distribution_count = '<' + d_count + '>';
+                data.row.my.distribution_count = d_count;
             }
             if (parent_org) {
                 data.node = obj.map_tree[ 'aou_' + parent_org.id() ];
@@ -1395,12 +1046,12 @@ serial.manage_subs.prototype = {
                 obj.map_tree[ 'aou_' + org.id() ].setAttribute('open','true');
             }
 
-            if (ssub_tree_list) {
-                obj.map_ssub[ 'aou_' + org.id() ] = ssub_tree_list;
+            if (sdist_tree_list) {
+                obj.map_sdist[ 'aou_' + org.id() ] = sdist_tree_list;
                 node.setAttribute('container','true');
             }
 
-            if (document.getElementById('show_ssubs').checked) {
+            if (document.getElementById('show_sdists').checked) {
                 obj.funcs.push( function() { obj.on_click_aou( org.id() ); } );
                 node.setAttribute('open','true');
             }
@@ -1411,11 +1062,11 @@ serial.manage_subs.prototype = {
         }
     },
 
-    'append_ssub' : function( org, ssub_tree, params ) {
+    'append_sdist' : function( org, sdist_tree, params ) {
         var obj = this;
         try {
-            if (obj.map_tree[ 'ssub_' + ssub_tree.id() ]) {
-                var x = obj.map_tree[ 'ssub_' + ssub_tree.id() ];
+            if (obj.map_tree[ 'sdist_' + sdist_tree.id() ]) {
+                var x = obj.map_tree[ 'sdist_' + sdist_tree.id() ];
                 if (params) {
                     for (var i in params) {
                         x.setAttribute(i,params[i]);
@@ -1429,84 +1080,52 @@ serial.manage_subs.prototype = {
                 'row' : {
                     'my' : {
                         'aou' : org,
-                        'ssub' : ssub_tree,
-                        'subscription_count' : '',
-                        //'distribution_count' : ssub_tree.distributions() ? ssub_tree.distributions().length : '0',
+                        'sdist' : sdist_tree,
+                        'distribution_count' : ''
                     }
                 },
                 'skip_all_columns_except' : [0,1,2],
-                'retrieve_id' : 'ssub_' + ssub_tree.id(),
+                'retrieve_id' : 'sdist_' + sdist_tree.id(),
                 'node' : parent_node,
                 'to_bottom' : true,
                 'no_auto_select' : true,
             };
             var nparams = obj.list.append(data);
             var node = nparams.my_node;
-            obj.map_tree[ 'ssub_' + ssub_tree.id() ] =  node;
+            obj.map_tree[ 'sdist_' + sdist_tree.id() ] =  node;
             if (params) {
                 for (var i in params) {
                     node.setAttribute(i,params[i]);
                 }
             }
-            if (ssub_tree.distributions() || ssub_tree.scaps() || ssub_tree.issuances()) {
-                //did this support a later typo? obj.map_sdist[ 'ssub_' + ssub_tree.id() ] = ssub_tree;
-                node.setAttribute('container','true');
-            }
+            node.setAttribute('container','true');
             if (document.getElementById('show_groups').checked) {
                 node.setAttribute('open','true');
-                obj.funcs.push( function() { obj.on_select_ssub( ssub_tree.id(), true ); } );
+                obj.funcs.push( function() { obj.on_select_sdist( sdist_tree.id(), true ); } );
             }
-            var sdist_group_node_data = {
+            var sstr_group_node_data = {
                 'row' : {
                     'my' : {
-                        'label' : 'Distributions',
+                        'label' : 'Streams',
                     }
                 },
-                'retrieve_id' : 'sdist-group_' + ssub_tree.id(),
+                'retrieve_id' : 'sstr-group_' + sdist_tree.id(),
                 'node' : node,
                 'to_bottom' : true,
                 'no_auto_select' : true,
             };
-            nparams = obj.list.append(sdist_group_node_data);
-            obj.map_tree[ 'ssub_sdist_group_' + ssub_tree.id() ] =  nparams.my_node;
-
-            var siss_group_node_data = {
-                'row' : {
-                    'my' : {
-                        'label' : 'Issuances',
-                    }
-                },
-                'retrieve_id' : 'siss-group_' + ssub_tree.id(),
-                'node' : node,
-                'to_bottom' : true,
-                'no_auto_select' : true,
-            };
-            nparams = obj.list.append(siss_group_node_data);
-            obj.map_tree[ 'ssub_siss_group_' + ssub_tree.id() ] =  nparams.my_node;
-
-            var scap_group_node_data = {
-                'row' : {
-                    'my' : {
-                        'label' : 'Captions/Patterns',
-                    }
-                },
-                'retrieve_id' : 'scap-group_' + ssub_tree.id(),
-                'node' : node,
-                'to_bottom' : true,
-                'no_auto_select' : true,
-            };
-            nparams = obj.list.append(scap_group_node_data);
-            obj.map_tree[ 'ssub_scap_group_' + ssub_tree.id() ] =  nparams.my_node;
+            nparams = obj.list.append(sstr_group_node_data);
+            obj.map_tree[ 'sdist_sstr_group_' + sdist_tree.id() ] =  nparams.my_node;
         } catch(E) {
             dump(E+'\n');
             alert(E);
         }
     },
 
-    'append_member' : function( item, ssub_tree, attributes, type ) {
+    'append_member' : function( item, sdist_tree, attributes, type, group, label ) {
         var obj = this;
         try {
-            if (obj.map_tree[ type + '_' + item.id() ]) {
+            if (obj.map_tree[ type + '_' + sdist_tree.id() + '_' + item.id() ]) {
                 var x = obj.map_tree[ type + '_' + item.id() ];
                 if (attributes) {
                     for (var i in attributes) {
@@ -1516,14 +1135,18 @@ serial.manage_subs.prototype = {
                 return x;
             }
 
-            var parent_node = obj.map_tree[ 'ssub_' + type + '_group_' + ssub_tree.id() ];
+            var parent_node;
+            if (group) {
+                parent_node = obj.map_tree[ 'sdist_' + type + '_group_' + sdist_tree.id() ];
+            } else {
+                parent_node = obj.map_tree[ 'sdist_' + sdist_tree.id() ];
+            }
             var data = {
                 'row' : {
                     'my' : {
-                        'aou' : obj.data.hash.aou[ ssub_tree.owning_lib() ],
-                        'ssub' : ssub_tree,
-                        'subscription_count' : '',
-                        //'distribution_count' : '',
+                        'aou' : obj.data.hash.aou[ sdist_tree.holding_lib() ],
+                        'sdist' : sdist_tree,
+                        'distribution_count' : ''
                     }
                 },
                 'retrieve_id' : type + '_' + item.id(),
@@ -1534,7 +1157,10 @@ serial.manage_subs.prototype = {
             data['row']['my'][type] = item; // TODO: future optimization: get only the IDs of these leaves, then fetch the full row in 'retrieve_row'
             var nparams = obj.list.append(data);
             var node = nparams.my_node;
-            obj.map_tree[ type + '_' + item.id() ] =  node;
+            obj.map_tree[ type + '_' + sdist_tree.id() + '_' + item.id() ] =  node;
+            if (label) {
+                data['row']['my']['label'] = label;
+            }
             if (attributes) {
                 for (var i in attributes) {
                     node.setAttribute(i,attributes[i]);
@@ -1559,23 +1185,16 @@ serial.manage_subs.prototype = {
                     'id' : 'tree_location',
                     'label' : 'Location',
                     'flex' : 1, 'primary' : true, 'hidden' : false, 
-                    'render' : function(my) { return my.sdist ? my.sdist.label() : my.siss ? my.siss.label() : my.scap ? 'C/P : #' + my.scap.id() : my.ssub ? 'Subscription : #' + my.ssub.id() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : my.label ? my.label : "???"; },
+                    'render' : function(my) { return my.label ? my.label : my.sstr ? 'Stream : #' + my.sstr.id() : my.sbsum ? 'Basic Summary' : my.sssum ? 'Supplement Summary' : my.sisum ? 'Index Summary' : my.sdist ? my.sdist.label() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : "???"; },
                 },
                 {
-                    'id' : 'subscription_count',
-                    'label' : 'Subscriptions',
-                    'flex' : 0, 'primary' : false, 'hidden' : false, 
-                    'render' : function(my) { return my.subscription_count; },
-                },
-                /*{
                     'id' : 'distribution_count',
-                    'label' : 'Members',
-                    'flex' : 0,
-                    'primary' : false, 'hidden' : false, 
+                    'label' : 'Distributions',
+                    'flex' : 0, 'primary' : false, 'hidden' : false, 
                     'render' : function(my) { return my.distribution_count; },
-                },*/
+                }
             ];
-            JSAN.use('util.list'); obj.list = new util.list('subs_tree');
+            JSAN.use('util.list'); obj.list = new util.list('sdists_tree');
             obj.list.init(
                 {
                     'no_auto_select' : true,
@@ -1640,7 +1259,7 @@ serial.manage_subs.prototype = {
             obj.controller.render();
 
         } catch(E) {
-            this.error.sdump('D_ERROR','serial/manage_subs.list_init: ' + E + '\n');
+            this.error.sdump('D_ERROR','serial/manage_dists.list_init: ' + E + '\n');
             alert(E);
         }
     },
@@ -1648,66 +1267,44 @@ serial.manage_subs.prototype = {
     'toggle_actions' : function() {
         var obj = this;
         try {
-            var found_aou = false; var found_ssub = false; var found_sdist = false; var found_siss = false; var found_scap = false; var found_sdist_group = false; var found_siss_group = false; var found_scap_group = false;
+            var found_aou = false; var found_sdist = false; var found_sstr = false; var found_sbsum = false; var found_sssum = false; var found_sisum = false; var found_sstr_group = false;
             for (var i = 0; i < obj.sel_list.length; i++) {
                 var type = obj.sel_list[i].split(/_/)[0];
                 switch(type) {
                     case 'aou' : 
                         found_aou = true; 
                     break;
-                    case 'ssub' : found_ssub = true; break;
                     case 'sdist' : found_sdist = true; break;
-                    case 'siss' : found_siss = true; break;
-                    case 'scap' : found_scap = true; break;
-                    case 'sdist-group' : found_sdist_group = true; break;
-                    case 'siss-group' : found_siss_group = true; break;
-                    case 'scap-group' : found_scap_group = true; break;
+                    case 'sstr' : found_sstr = true; break;
+                    case 'sbsum' : found_sbsum = true; break;
+                    case 'sssum' : found_sssum = true; break;
+                    case 'sisum' : found_sisum = true; break;
+                    case 'sstr-group' : found_sstr_group = true; break;
                 }
             }
-            obj.controller.view.cmd_add_sdist.setAttribute('disabled','true');
-            obj.controller.view.cmd_add_siss.setAttribute('disabled','true');
-            obj.controller.view.cmd_add_scap.setAttribute('disabled','true');
-            obj.controller.view.cmd_make_predictions.setAttribute('disabled','true');
-            obj.controller.view.cmd_delete_sdist.setAttribute('disabled','true');
-            obj.controller.view.cmd_delete_siss.setAttribute('disabled','true');
-            obj.controller.view.cmd_delete_scap.setAttribute('disabled','true');
-            obj.controller.view.cmd_add_subscriptions.setAttribute('disabled','true');
+            obj.controller.view.cmd_add_sstr.setAttribute('disabled','true');
+            obj.controller.view.cmd_delete_sstr.setAttribute('disabled','true');
             obj.controller.view.cmd_mark_library.setAttribute('disabled','true');
-            obj.controller.view.cmd_delete_ssub.setAttribute('disabled','true');
-            obj.controller.view.cmd_mark_subscription.setAttribute('disabled','true');
-            obj.controller.view.cmd_transfer_subscription.setAttribute('disabled','true');
-            obj.controller.view.cmd_transfer_sdists.setAttribute('disabled','true');
+            obj.controller.view.cmd_delete_sdist.setAttribute('disabled','true');
             if (found_aou) {
-                obj.controller.view.cmd_add_subscriptions.setAttribute('disabled','false');
                 obj.controller.view.cmd_mark_library.setAttribute('disabled','false');
-            }
-            if (found_ssub) {
-                obj.controller.view.cmd_delete_ssub.setAttribute('disabled','false');
-                obj.controller.view.cmd_mark_subscription.setAttribute('disabled','false');
-                obj.controller.view.cmd_add_sdist.setAttribute('disabled','false');
-                obj.controller.view.cmd_add_siss.setAttribute('disabled','false');
-                obj.controller.view.cmd_add_scap.setAttribute('disabled','false');
-                obj.controller.view.cmd_transfer_subscription.setAttribute('disabled','false');
-                obj.controller.view.cmd_make_predictions.setAttribute('disabled','false');
-            }
-            if (found_sdist_group) {
-                obj.controller.view.cmd_add_sdist.setAttribute('disabled','false');
-            }
-            if (found_siss_group) {
-                obj.controller.view.cmd_add_siss.setAttribute('disabled','false');
-            }
-            if (found_scap_group) {
-                obj.controller.view.cmd_add_scap.setAttribute('disabled','false');
             }
             if (found_sdist) {
                 obj.controller.view.cmd_delete_sdist.setAttribute('disabled','false');
-                obj.controller.view.cmd_transfer_sdists.setAttribute('disabled','false');
+                obj.controller.view.cmd_add_sstr.setAttribute('disabled','false');
             }
-            if (found_siss) {
-                obj.controller.view.cmd_delete_siss.setAttribute('disabled','false');
+            if (found_sstr_group) {
+                obj.controller.view.cmd_add_sstr.setAttribute('disabled','false');
             }
-            if (found_scap) {
-                obj.controller.view.cmd_delete_scap.setAttribute('disabled','false');
+            if (found_sstr) {
+                obj.controller.view.cmd_delete_sstr.setAttribute('disabled','false');
+                obj.controller.view.cmd_transfer_sstrs.setAttribute('disabled','false');
+            }
+            if (found_sbsum) {
+            }
+            if (found_sssum) {
+            }
+            if (found_sisum) {
             }
         } catch(E) {
             obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.actions.error'),E);
@@ -1719,11 +1316,9 @@ serial.manage_subs.prototype = {
             var obj = this;
             obj.list.clear();
             obj.map_tree = {};
-            obj.map_ssub = {};
             obj.map_sdist = {};
-            obj.map_siss = {};
-            obj.map_scap = {};
-            obj.org_ids = obj.network.simple_request('FM_SSUB_AOU_IDS_RETRIEVE_VIA_RECORD_ID.authoritative',[ obj.docid ]);
+            //obj.map_sstr = {};
+            obj.org_ids = obj.network.simple_request('FM_SDIST_AOU_IDS_RETRIEVE_VIA_RECORD_ID.authoritative',[ obj.docid ]);
             if (typeof obj.org_ids.ilsevent != 'undefined') throw(obj.org_ids);
             JSAN.use('util.functional'); 
             obj.org_ids = util.functional.map_list( obj.org_ids, function (o) { return Number(o); });
@@ -1731,11 +1326,12 @@ serial.manage_subs.prototype = {
             var org = obj.data.hash.aou[ obj.data.list.au[0].ws_ou() ];
             obj.show_libs( org );
             */
-            obj.show_my_libs( document.getElementById('lib_menu').value );
+            obj.default_lib = document.getElementById('sdist_lib_menu').value;
+            obj.show_my_libs( obj.default_lib );
         } catch(E) {
             this.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.refresh_list.error'),E);
         }
     },
 };
 
-dump('exiting serial/manage_subs.js\n');
+dump('exiting serial/manage_dists.js\n');

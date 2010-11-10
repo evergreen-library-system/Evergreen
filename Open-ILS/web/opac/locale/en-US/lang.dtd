@@ -1583,6 +1583,12 @@
 <!ENTITY staff.serial.scap_editor.create.accesskey "C">
 <!ENTITY staff.serial.scap_editor.notes "Caption and Pattern Notes">
 <!ENTITY staff.serial.scap_editor.notes.accesskey "N">
+<!ENTITY staff.serial.sbsum_editor.modify "Modify Basic Summary">
+<!ENTITY staff.serial.sbsum_editor.modify.accesskey "M">
+<!ENTITY staff.serial.sisum_editor.modify "Modify Index Summary">
+<!ENTITY staff.serial.sisum_editor.modify.accesskey "M">
+<!ENTITY staff.serial.sssum_editor.modify "Modify Supplement Summary">
+<!ENTITY staff.serial.sssum_editor.modify.accesskey "M">
 <!ENTITY staff.serial.sdist_editor.modify "Modify Distribution(s)">
 <!ENTITY staff.serial.sdist_editor.modify.accesskey "M">
 <!ENTITY staff.serial.sdist_editor.create "Create Distribution(s)">
@@ -1602,6 +1608,10 @@
 <!ENTITY staff.serial.sitem_editor.create.accesskey "C">
 <!ENTITY staff.serial.sitem_editor.notes "Item Notes">
 <!ENTITY staff.serial.sitem_editor.notes.accesskey "N">
+<!ENTITY staff.serial.sstr_editor.modify "Modify Stream(s)">
+<!ENTITY staff.serial.sstr_editor.modify.accesskey "M">
+<!ENTITY staff.serial.sstr_editor.create "Create Stream(s)">
+<!ENTITY staff.serial.sstr_editor.create.accesskey "C">
 <!ENTITY staff.serial.ssub_editor.modify "Modify Subscription(s)">
 <!ENTITY staff.serial.ssub_editor.modify.accesskey "M">
 <!ENTITY staff.serial.ssub_editor.create "Create Subscription(s)">

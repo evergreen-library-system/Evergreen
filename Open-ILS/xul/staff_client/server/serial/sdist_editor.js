@@ -27,7 +27,10 @@ serial.sdist_editor = function (params) {
     if (parent_g.mfhd) {
         var mfhd_details = parent_g.mfhd.details;
         for (var i = 0; i < mfhd_details.length; i++) {
-            var mfhd_detail = mfhd_details[i];
+            var mfhd_detail = {};
+            for (j in mfhd_details[i]) {
+                mfhd_detail[j] = mfhd_details[i][j];
+            }
             mfhd_detail.label = mfhd_detail.label + ' (' + (mfhd_detail.entryNum + 1) + ')';
             var sre_id = mfhd_detail.id;
             var org_unit_id = mfhd_detail.owning_lib;
@@ -144,7 +147,7 @@ serial.sdist_editor.prototype = {
         obj.panes_and_field_names = {
 
         /* These get shown in the left panel */
-        'sdist_editor_left_pane' :
+        '_editor_left_pane' :
         [
             [
                 'ID',
@@ -180,7 +183,7 @@ serial.sdist_editor.prototype = {
             ],
         ],
         /* These get shown in the right panel */
-            'sdist_editor_right_pane' :
+            '_editor_right_pane' :
         [
             [
                 'Holding Lib',
@@ -193,7 +196,7 @@ serial.sdist_editor.prototype = {
             ],
         ],
         /* These get shown in the right 'library-specific-options' panel */
-        'sdist_editor_lso_pane' :
+        '_editor_lso_pane' :
         [
             [
                 'Legacy Record Entry',
@@ -243,6 +246,9 @@ serial.sdist_editor.prototype = {
         ],
 
         };
+        for (i in obj.panes_and_field_names) {
+            obj.panes_and_field_names[obj.xul_id_prefix + i] = obj.panes_and_field_names[i];
+        }
     },
 
     /******************************************************************************************************/
