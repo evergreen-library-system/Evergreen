@@ -23,10 +23,10 @@ function oilsInitReports() {
 	}
 
 
-	oilsRptCookie = new HTTP.Cookies();
+    dojo.require('dojo.cookie');
 	oilsRptCurrentOrg = USER.ws_ou();
-	cookieManager.write(COOKIE_SES, SESSION, -1, '/');
-	cookieManager.write('ws_ou', USER.ws_ou(), -1, '/');
+	dojo.cookie(COOKIE_SES, SESSION, { 'path' : '/'});
+	dojo.cookie('ws_ou', USER.ws_ou(), { 'path' : '/'});
 
 	oilsRptFetchOrgTree(
 		function() {

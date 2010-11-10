@@ -5,8 +5,6 @@
 function isXUL() { try { if(IAMXUL) return true;}catch(e){return false;}; }
 
 
-var cookieManager = new HTTP.Cookies();
-
 var __ilsEvent; /* the last event the occurred */
 
 var DEBUGSLIM;
@@ -222,13 +220,14 @@ function clearSearchParams() {
 
 
 function initCookies() {
+    dojo.require('dojo.cookie');
 	FONTSIZE = "regular";
-	var font = cookieManager.read(COOKIE_FONT);
+	var font = dojo.cookie(COOKIE_FONT);
 	scaleFonts(font);
 	if(font) FONTSIZE = font;
-	SKIN = cookieManager.read(COOKIE_SKIN);
+	SKIN = dojo.cookie(COOKIE_SKIN);
     if(findCurrentPage() == HOME)
-        cookieManager.remove(COOKIE_SEARCH);
+        dojo.cookie(COOKIE_SEARCH,null,{'expires':-1});
 }
 
 /* URL param accessors */
@@ -522,7 +521,7 @@ function buildSearchLink(type, string, linknode, trunc) {
 }
 
 function setSessionCookie(ses) {
-	cookieManager.write(COOKIE_SES, ses, -1);
+	dojo.cookie(COOKIE_SES, ses);
 }
 
 
@@ -544,7 +543,7 @@ function grabUser(ses, force) {
 	}
 
 	if(!ses) {
-		ses = cookieManager.read(COOKIE_SES);
+		ses = dojo.cookie(COOKIE_SES);
 		/* https cookies don't show up in http servers.. */
 		_debug("cookie auth token = " + ses);
 	}
@@ -636,8 +635,8 @@ function grabFleshedUser() {
   	G.user = req.result();
 
 	if(!G.user || G.user.length == 0) { 
+		dojo.cookie(COOKIE_SES,null,{'expires':-1});
 		G.user = null; return false; 
-		cookieManager.write(COOKIE_SES,"");
 	}
 
 	G.user.session = ses;
@@ -661,7 +660,7 @@ function checkUserSkin(new_skin) {
 		if(grabUser()) {
 			if(grabUserPrefs()) {
 				user_skin = G.user.prefs["opac.skin"];
-				cookieManager.write( COOKIE_SKIN, user_skin, '+1y' );
+				dojo.cookie( COOKIE_SKIN, user_skin, { 'expires' : 365 } );
 			}
 		}
 	}
@@ -794,10 +793,10 @@ function doLogout() {
 
 	/* remove any cached data */
     dojo.require('dojo.cookie');
-    dojo.cookie(COOKIE_SES, '', {expires:-1});
-    dojo.cookie(COOKIE_RIDS, '', {expires:-1});
-    dojo.cookie(COOKIE_SKIN, '', {expires:-1});
-    dojo.cookie(COOKIE_SEARCH, '', {expires:-1});
+    dojo.cookie(COOKIE_SES, null, {expires:-1});
+    dojo.cookie(COOKIE_RIDS, null, {expires:-1});
+    dojo.cookie(COOKIE_SKIN, null, {expires:-1});
+    dojo.cookie(COOKIE_SEARCH, null, {expires:-1});
 
 
 	checkUserSkin("default");
@@ -887,7 +886,7 @@ function orgSelect(id) {
 
 function setFontSize(size) {
 	scaleFonts(size);
-	cookieManager.write(COOKIE_FONT, size, '+1y');
+	dojo.cookie(COOKIE_FONT, size, { 'expires' : 365});
 }
 
 var resourceFormats = [

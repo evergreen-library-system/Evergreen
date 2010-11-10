@@ -129,8 +129,6 @@
             //cache_me('/xul/server/patron/ue_ui.js','http');
             //cache_me('/xul/server/patron/ue.js','http');
             //cache_me('/opac/common/js//config.js','http');
-            //cache_me('/opac/common/js/Cookie.js','http');
-            //cache_me('/opac/common/js/Cookies.js','http');
             //cache_me('/opac/common/js/opac_utils.js','http');
             //cache_me('/opac/common/js/init.js','http');
             //cache_me('/opac/common/js/jscalendar/calendar-brown.css','http');

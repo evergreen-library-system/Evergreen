@@ -22,6 +22,7 @@ dojo.require('openils.PermaCrud');
 dojo.require('dojo.parser');
 dojo.require('dojo.string');
 dojo.require('dojo.data.ItemFileWriteStore');
+dojo.require('dojo.cookie');
 dojo.require('dijit.form.TextBox');
 dojo.require('dijit.form.ValidationTextBox');
 dojo.require('dijit.form.Textarea');
@@ -35,8 +36,7 @@ dojo.requireLocalization("openils.conify", "conify");
 
 // some handy globals
 var cgi = new CGI();
-var cookieManager = new HTTP.Cookies();
-var ses = cookieManager.read('ses') || cgi.param('ses');
+var ses = dojo.cookie('ses') || cgi.param('ses');
 var pCRUD = new openils.PermaCrud({authtoken:ses});
 
 var current_status;

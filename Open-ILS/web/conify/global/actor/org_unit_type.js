@@ -20,6 +20,7 @@ dojo.require('fieldmapper.dojoData');
 dojo.require('openils.widget.TranslatorPopup');
 dojo.require('openils.PermaCrud');
 dojo.require('dojo.parser');
+dojo.require('dojo.cookie');
 dojo.require('dojo.data.ItemFileWriteStore');
 dojo.require('dojo.date.stamp');
 dojo.require('dijit.form.NumberSpinner');
@@ -39,8 +40,7 @@ dojo.requireLocalization("openils.conify", "conify");
 
 // some handy globals
 var cgi = new CGI();
-var cookieManager = new HTTP.Cookies();
-var ses = cookieManager.read('ses') || cgi.param('ses');
+var ses = dojo.cookie('ses') || cgi.param('ses');
 var pCRUD = new openils.PermaCrud({authtoken:ses});
 
 var current_type;
