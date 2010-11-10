@@ -19,6 +19,7 @@
    </info>
    <section xml:id="MakeCataloguedItemBookable">
       <title>Make a Cataloged Item Bookable in Advance</title>
+	<indexterm><primary>booking reservation</primary><secondary>making a cataloged item bookable</secondary></indexterm>
       <para>If their permission settings allow, staff members can make items bookable. Staff members
          can do this in advance of a booking request, or they can do it on the fly.</para>
       <para>If you know in advance of the request that an item will need to be booked, you can make
@@ -97,6 +98,7 @@
    </section>
    <section xml:id="MakeNon-CataloguedItemBookable">
       <title>Create a Bookable Status for Non-Bibliographic Items</title>
+	<indexterm><primary>booking reservation</primary><secondary>non-bibliographic items</secondary></indexterm>
       <para>Staff with the required permissions can create a bookable status for non-bibliographic
          items. For example, staff can book conference rooms or laptops. You will be able to create
          types of resources, specify the names of individual resources within each type, and set
@@ -232,6 +234,7 @@
    </section>
    <section xml:id="SettingBookingPermissions">
       <title>Setting Booking Permissions</title>
+	<indexterm><primary>booking reservation</primary><secondary>setting booking permissions</secondary></indexterm>
       <para>Administrators can set permissions so that staff members can view reservations, make
          reservations, and make bibliographic or non-bibliographic items bookable.</para>
 

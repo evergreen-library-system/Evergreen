@@ -171,6 +171,8 @@
    <section xml:id="lsa-font">
       <info>
          <title>Global Font and Sound Settings</title>
+	<indexterm><primary>staff client</primary><secondary>fonts</secondary></indexterm>
+	
       </info>
       <para><guilabel>Global Font and Sound Settings</guilabel> apply to the current workstation
          only. Use to turn staff client sounds on/off or to adjust the font size in the staff client
@@ -185,6 +187,7 @@
          </step>
          <step>
             <informalfigure>
+		<indexterm><primary>staff client</primary><secondary>sounds</secondary></indexterm>
                <para>To turn off the system sounds, like the noise that happens when a patron with a
                   block is retrieved check the <guilabel>disable sound</guilabel> box and click
                      <guibutton>Save to Disk</guibutton>.  </para>
@@ -218,6 +221,7 @@
    <section xml:id="lsa-printer">
       <info>
          <title>Printer Settings Editor</title>
+	<indexterm><primary>staff client</primary><secondary>printer settings</secondary></indexterm>
       </info>
       <para>Use the <guilabel>Printer Settings Editor</guilabel> to configure printer output for
          each workstation.</para>
@@ -264,6 +268,7 @@
    <section xml:id="lsa-closed">
       <info>
          <title>Closed Dates Editor</title>
+	<indexterm><primary>closed dates editor</primary></indexterm>
       </info>
       <para>These dates are in addition to your regular weekly closed days (see <xref
             linkend="server-hours"/>).    Both regular closed days and those entered in the
@@ -272,6 +277,7 @@
          <listitem>
             <formalpara>
                <title>Due dates</title>
+		<indexterm><primary>closed dates editor</primary><secondary>due dates</secondary></indexterm>
                <para>Due dates that would fall on closed days are automatically pushed forward to
                   the next open day. Likewise, if an item is checked out at 8pm, for example, and
                   would normally be due on a day when the library closes before 8pm, Evergreen
@@ -281,6 +287,7 @@
          <listitem>
             <formalpara>
                <title>Overdue fines</title>
+		<indexterm><primary>closed dates editor</primary><secondary>fines</secondary></indexterm>
                <para>Overdue fines are not charged on days when the library is closed.</para>
             </formalpara>
          </listitem>
@@ -353,6 +360,7 @@
    <section xml:id="lsa-copy-locations">
       <info>
          <title>Copy Locations Editor</title>
+	<indexterm><primary>copy locations editor</primary></indexterm>
       </info>
       <procedure>
          <step>
@@ -432,6 +440,7 @@
    <section xml:id="lsa-library-settings">
       <info>
          <title>Library Settings Editor</title>
+	<indexterm><primary>library settings editor</primary></indexterm>
       </info>
       <para>With the <guilabel>Library Settings Editor</guilabel> Local System Admnistrators (LSAs)
          can optionally customize Evergreen's behaviour for a particular library or library system.
@@ -901,6 +910,7 @@
    <section xml:id="lsa-noncat">
       <info>
          <title>Non-Catalogued Type Editor </title>
+	<indexterm><primary>non-catalogued type editor</primary></indexterm>
       </info>
 
       <para>This is where you configure your non-catalogued types that appear in the dropdown menu
@@ -960,6 +970,7 @@
    <section xml:id="lsa-group-penalty">
       <info>
          <title>Group Penalty Thresholds</title>
+	<indexterm><primary>group penalty thresholds</primary></indexterm>
       </info>
          <para>Group Penalty Thresholds block circulation transactions for users who exceed maximum
             check out limits, number of overdue items, or fines. Settings for your library are
@@ -1092,7 +1103,7 @@
 
       <simplesect xml:id="lsa-group-create">
          <title>Creating local penalty thresholds</title>
-
+	<indexterm><primary>group penalty thresholds</primary><secondary>creating local penalty thresholds</secondary></indexterm>
          <para>Local System Administrators can override the system defaults by creating local penalty
             thresholds for selected patron groups.</para>
 
@@ -1221,6 +1232,7 @@
    <section xml:id="lsa-statcat">
       <info>
          <title>Statistical Categories Editor</title>
+	<indexterm><primary>statistical categories editor</primary></indexterm>
       </info>
       <para>This is where you configure your statistical categories (stat cats).  Stat cats are a
          way to save and report on additional information that doesn’t fit elsewhere in Evergreen's
@@ -1252,7 +1264,8 @@
          </step>
       </procedure>
       <formalpara>
-         <title>Copy stat cats</title>
+         <title>Copy Stat Cats</title>
+	<indexterm><primary>copy stat cats</primary></indexterm>
          <para>The image above shows some examples of copy stat cats. You would see these when
             editing items in the <guilabel>Copy Editor</guilabel>, also known as the <guilabel>Edit
                Item Attributes</guilabel> screen. You might use copy stat cats to track books you
@@ -1275,6 +1288,7 @@
       <informalfigure>
          <formalpara>
             <title>Patron stat cats</title>
+		<indexterm><primary>patron stat cats</primary></indexterm>
             <para>Below are some examples of patron stat cats.  Patron stat cats can be used to keep
                track of information like the high school a patron attends, or the home library for a
                consortium patron, e.g. Interlink. You would see these in the fifth screen of patron
@@ -1306,6 +1320,7 @@
    <section xml:id="lsa-cash-reports">
       <info>
          <title>Cash Reports</title>
+	<indexterm><primary>cash reports</primary></indexterm>
       </info>
       <procedure>
          <step>

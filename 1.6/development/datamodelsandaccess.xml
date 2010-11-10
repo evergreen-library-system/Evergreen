@@ -65,6 +65,7 @@
 	</section>
 	<section id="_evergreen_interface_definition_language_idl">
 		<title>Evergreen Interface Definition Language (IDL)</title>
+		<indexterm><primary>Evergreen Interface Definition Language (IDL)</primary></indexterm>
 		<simpara>Defines properties and required permissions for Evergreen classes.
 		To reduce network overhead, a given object is identified via a
 		class-hint and serialized as a JSON array of properties (no named properties).</simpara>
@@ -75,7 +76,8 @@
 		<itemizedlist>
 		<listitem>
 		<simpara>
-		&#8230; oils_persist:readonly tells us, if true, that the data lives in the database, but is pulled from the SELECT statement defined in the &lt;oils_persist:source_definition&gt; child element
+		&#8230; oils_persist:readonly tells us, if true, that the data lives in the database, but is pulled from the SELECT statement defined in the &lt;oils_persist:source_definition&gt; 
+		child element
 		</simpara>
 		</listitem>
 		</itemizedlist>
@@ -110,6 +112,7 @@
 			The <literal>class</literal> element defines the attributes and permissions for classes,
 			and relationships between classes.
 			</simpara>
+			<indexterm><primary>Evergreen Interface Definition Language (IDL)</primary><secondary>class element</secondary></indexterm>
 			<itemizedlist>
 			<listitem>
 			<simpara>
@@ -163,6 +166,7 @@ Received Data: [
 			<simpara>
 			The <literal>fields</literal> element defines the list of fields for the class.
 			</simpara>
+			<indexterm><primary>Evergreen Interface Definition Language (IDL)</primary><secondary>fields element</secondary></indexterm>
 			<itemizedlist>
 			<listitem>
 			<simpara>
@@ -182,6 +186,7 @@ Received Data: [
 			<simpara>
 			Each <literal>field</literal> element defines one property of the class.
 			</simpara>
+			<indexterm><primary>Evergreen Interface Definition Language (IDL)</primary><secondary>field element</secondary></indexterm>
 			<itemizedlist>
 			<listitem>
 			<simpara>
@@ -218,12 +223,14 @@ Received Data: [
 			</callout>
 			<callout arearefs="dmCO5-8">
 			<simpara>
+			<indexterm><primary>Evergreen Interface Definition Language (IDL)</primary><secondary>permacrud element</secondary></indexterm>
 			The <literal>permacrud</literal> element defines the permissions (if any) required
 			to <emphasis role="strong">c</emphasis>reate, <emphasis role="strong">r</emphasis>etrieve, <emphasis role="strong">u</emphasis>pdate, 
 			and <emphasis role="strong">d</emphasis>elete data for this
 			class. <literal>open-ils.permacrud</literal> must be defined as a controller for the class
 			for the permissions to be applied.
 			</simpara>
+			
 			</callout>
 			<callout arearefs="dmCO5-9">
 			<simpara>
@@ -245,6 +252,7 @@ Received Data: [
 			</simpara>
 			</listitem>
 			<listitem>
+			<indexterm><primary>Evergreen Interface Definition Language (IDL)</primary><secondary>action element</secondary></indexterm>
 			<simpara>
 			An action element may contain a <literal>&lt;context_field&gt;</literal> element that
 			defines the linked class (identified by the <literal>link</literal> attribute) and
@@ -253,6 +261,7 @@ Received Data: [
 			</simpara>
 			<itemizedlist>
 			<listitem>
+			<indexterm><primary>Evergreen Interface Definition Language (IDL)</primary><secondary>context_field element</secondary></indexterm>
 			<simpara>
 			If the <literal>&lt;context_field&gt;</literal> element contains a <literal>jump</literal> attribute,
 			then it defines a link to a link to a class with a field identifying
@@ -375,6 +384,7 @@ Received Data: [
 	</section>
 	<section id="open_ils_cstore_literal_data_access_interfaces">
 		<title><literal>open-ils.cstore</literal> data access interfaces</title>
+		<indexterm><primary>cstore</primary></indexterm>
 		<simpara>For each class documented in the IDL, the <literal>open-ils.cstore</literal> service
 		automatically generates a set of data access methods, based on the
 		<literal>oils_persist:tablename</literal> class attribute.</simpara>
@@ -421,6 +431,7 @@ Received Data: [
 	</section>
 	<section id="_open_ils_pcrud_data_access_interfaces">
 		<title>open-ils.pcrud data access interfaces</title>
+		<indexterm><primary>pcrud</primary></indexterm>
 		<simpara>For each class documented in the IDL, the <literal>open-ils.pcrud</literal> service
 		automatically generates a set of data access methods, based on the
 		<literal>oils_persist:tablename</literal> class attribute.</simpara>
@@ -541,6 +552,7 @@ Received Data: [
 		srfsh# close open-ils.cstore</screen>
 		<simplesect id="_json_queries">
 			<title>JSON Queries</title>
+			<indexterm><primary>JSON</primary></indexterm>
 			<simpara>Beyond simply retrieving objects by their ID using the <literal>\*.retrieve</literal>
 			methods, you can issue queries against the <literal>\*.delete</literal> and <literal>\*.search</literal>
 			methods using JSON to filter results with simple or complex search

@@ -4,6 +4,7 @@
 	<info>
 		
 	<title>Server Operations and Maintenance</title>
+	<indexterm><primary>receipt template editor</primary></indexterm>
 		<abstract>
 			<para>This chapter deals with basic server operations such as starting and stopping <application>Evergreen</application> as well wall 
 			security, backing up and troubleshooting <application>Evergreen</application>.</para>
@@ -57,6 +58,8 @@
 	</section>
 	<section xml:id="backingup">
 		<title>Backing Up</title>
+		<indexterm><primary>databases</primary><secondary>backing up</secondary></indexterm>
+	
 		<para>Backing up your system files and data is a critical task for server and database administrators. 
 		Having a strategy for backing up and recovery could be the difference between a minor annoyance for users and
 		a complete catastrophe.</para>   
@@ -83,6 +86,7 @@
 		</simplesect>
 		<simplesect>
 			<title>Backing up Evergreen Files</title>
+			<indexterm><primary>directories</primary><secondary>backing up</secondary></indexterm>
 			<para>When you deploy Evergreen, you will probably customize many aspects of your system including 
 			the system configuration files, <application>Apache</application> configuration files, OPAC and Staff Client. In order to 
 			protect your investment of time, you should carefully consider the best approach to backing up 
@@ -116,6 +120,7 @@
 	</section>
 	<section xml:id="security">
 		<title>Security</title>
+		<indexterm><primary>security</primary></indexterm>
 		<para>As with an ILS and resource accessible from the world wide web careful consideration needs to be 
 		given to the security of your <application>Evergreen</application> servers and database. While it is impossible to cover all aspects 
 		of security, it is important to take several precautions when setting up production <application>Evergreen</application> site.</para>
@@ -148,10 +153,12 @@
 	</section>
 	<section xml:id="logfiles">
 		<title>Managing Log Files</title>
+		<indexterm><primary>logs</primary><secondary>managing</secondary></indexterm>
 		<para><application>Evergreen</application> comes with a sophisticated logging system, but it is important to manage the <application>OpenSRF</application> 
 		and <application>Evergreen</application> logs. This section will provide a couple of log management techniques and tools.</para> 	
 		<simplesect>
-			<title>Using the Log Rotate<indexterm><primary>logrotate</primary></indexterm> Utility to Manage Log Size</title> 
+			<title>Using the <systemitem class="service">logrotate</systemitem> Utility to Manage Log Size</title> 
+			<indexterm><primary>logs</primary><secondary>Log Rotate</secondary></indexterm>
 			 <para>Fortunately, this is not a new problem for <systemitem class="osname">Unix</systemitem> administrators, and there are a number of ways of keeping your logs under control. 
 			On <systemitem class="osname">Debian</systemitem> and <systemitem class="osname">Ubuntu</systemitem>, for example, 
 			the <systemitem class="service">logrotate</systemitem> utility controls when old log files are compressed and a new log file is started. 
@@ -175,6 +182,7 @@ size 50M
 		</simplesect>
 		<simplesect>
 			<title>Changing Logging Level for <application>Evergreen</application></title>
+			<indexterm><primary>logs</primary><secondary>logging levels</secondary></indexterm>
 			<para>Change the Log Levels in your config files. Changing the level of logging will help 
 			narrow down errors.</para> 
 			<tip>
@@ -200,6 +208,7 @@ size 50M
 	</section>
 	<section xml:id="InstallingPostgreSQL">
 		<title>Installing PostgreSQL from Source</title>
+		<indexterm><primary>databases</primary><secondary>PostgreSQL</secondary></indexterm>
 		<para>Some <systemitem class="osname">Linux</systemitem> distributions, such as <systemitem class="osname">Debian Etch (4.0)</systemitem>, do not offer PostgreSQL 
 		version 8.2 as an installable package. Before you continue, examine the software dependencies listed in <xref linkend="serversideinstall-software-dependencies"/> 
 		to ensure that your Linux distribution supports the required version of PostgreSQL.</para>
@@ -268,6 +277,7 @@ pg_ctl -D /usr/local/pgsql/data -l /home/postgres/logfile start
 	</section>
 	<section xml:id="configuringPostgreSQL">
 		<title>Configuring PostgreSQL</title>
+		<indexterm><primary>databases</primary><secondary>PostgreSQL</secondary></indexterm>
 		<para>The values of several PostreSQL configuration parameters may be changed for enhanced performance. The following table lists the default values 
 		and some suggested updates for several useful parameters:</para>
 		<table>

@@ -102,10 +102,6 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 						<entry>Alpha-G Consulting</entry>
 					</row>
 					<row>
-						<entry>Chris Sharp</entry>
-						<entry>Georgia Public Library Service</entry>
-					</row>
-					<row>
 						<entry>Steve Sheppard</entry>
 						<entry>Open</entry>
 					</row>
@@ -175,7 +171,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 		would not be possible.</para>	
 	</section>
 	<section xml:id="howtoParticipate">
-		<title>How to Participate</title>
+		<title>How to Participate</title><indexterm><primary>Documentation Interest Group (DIG)</primary></indexterm>
 		<para>Contributing to documentation is an excellent way to support Evergreen, even if you are new to documentation. In fact, beginners often have a distinct advantage over the 
 		experts, more easily spotting the places where documentation is lacking or where it is unclear.</para>
 		<para>We welcome your contribution with planning, writing, editing, testing, translating to DocBook, and other tasks. Whatever your background or experience we are keen to 
@@ -184,7 +180,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 		<itemizedlist>
 			<listitem>Join the Evergreen  documentation listserv: <link xl:href="http://list.georgialibraries.org/mailman/listinfo/open-ils-documentation" 
 			xl:title="Join the DIG listserv">list.georgialibraries.org/mailman/listinfo/open-ils-documentation</link> . This is the primary way we communicate with each other. 
-			Please send an email introducing yourself to the list.</listitem>
+			Please send an email introducing yourself to the list.</listitem><indexterm><primary>mailing lists</primary></indexterm>
 			<listitem>Add yourself to the <link xl:href="http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-docs:digparticipants"> participant list</link> 
 			if you have an Evergreen DokuWiki account, or send a request to <email>docs@evergreen-ils.org</email>.</listitem>
 			<listitem>Check out the <link xl:href="http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-docs:outline">documentation outline</link> to see which areas need work, 
@@ -203,7 +199,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="about_this_documen
 				<listitem>XML conversion – Convert existing documentation to DocBook format.</listitem>
 				<listitem>Editorial review – Ensuring the documentation is clear and follows <link xl:href="http://docs.evergreen-ils.org/style_guide/html/">Evergreen DIG style 
 				guide</link> conventions.</listitem>
-				<listitem>Style and Design – Edit the DocBook style sheets or post style tips and suggestions on the DIG list.</listitem>
+				<listitem>Style and Design – Edit the DocBook style sheets or post style tips and suggestions on the DIG list.</listitem><indexterm><primary>DocBook</primary></indexterm>
 			</itemizedlist>
 		</simplesect>
 	</section>		

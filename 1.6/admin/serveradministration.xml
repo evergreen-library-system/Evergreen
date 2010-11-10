@@ -13,6 +13,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		<title>Organizational Unit Types and Organizational Units</title>
 		<simplesect xml:id="orgtypes">
 			<title>Organizational Unit Types</title>
+			<indexterm><primary>organizational unit types</primary></indexterm>
 			<para>Organizational Unit Types are the terms used to refer to levels in the hierarchy of your 
 			library system(s). Examples could include>All-Encompassing Consortium, Consortium Within a 
 			Consortium, Library System, Branch, Bookmobile, Sub-Branch, Twig, etc.</para>
@@ -25,15 +26,15 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			may be difficult once you have loaded records or users. </para></tip>
 			<para>The fields in the organizational unit type record include:</para>
 			<itemizedlist>
-				<listitem>Type Name - The name of the organization unit type.</listitem>
-				<listitem>Opac Label - This is the label displayed in the OPAC to describe the search 
+				<listitem><guilabel>Type Name</guilabel> - The name of the organization unit type.</listitem>
+				<listitem><guilabel>Opac Label</guilabel> - This is the label displayed in the OPAC to describe the search 
 				range and the copy count columns for results. They are <emphasis>range 
 				relative</emphasis> labels.</listitem>
 				
-				<listitem>Parent Type - The parent organizational unit type of this type.</listitem>
-				<listitem>Can Have Volumes - Flag that allows an organizational unit of this type to contain 
+				<listitem><guilabel>Parent Type</guilabel> - The parent organizational unit type of this type.</listitem>
+				<listitem><guilabel>Can Have Volumes</guilabel> - Flag that allows an organizational unit of this type to contain 
 				Volumes/Call Numbers and thus Copies.</listitem>
-			 	<listitem>Can Have Users - Flag that allows an Organizational unit of this type to be home to 
+			 	<listitem><guilabel>Can Have Users</guilabel> - Flag that allows an Organizational unit of this type to be home to 
 				Users.</listitem>
 			</itemizedlist>
 			<para>An organizational unit type can be added, edited, or removed using  the staff client.</para>
@@ -45,7 +46,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 					</menuchoice>
 			</para>
 			<procedure>
-				<title>Adding Organization Types<indexterm><primary>organization types</primary><secondary>adding</secondary></indexterm></title>
+				<title>Adding Organization Types<indexterm><primary>organizational unit types</primary><secondary>adding</secondary></indexterm></title>
 				<step><para>Select an organization type from the organization type tree on the left and 
 				click <guibutton>New Child</guibutton>.</para></step>
 				<step><para>Make sure your new type is selected and edit the <guilabel>Type Name</guilabel>, 
@@ -66,7 +67,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				</step>	
 			</procedure>
 			<procedure>
-				<title>Deleting Organization Types<indexterm><primary>organization types</primary><secondary>deleting</secondary></indexterm></title>
+				<title>Deleting Organization Types</title>
+				<indexterm><primary>organizational unit types</primary><secondary>deleting</secondary></indexterm>
 				<step><para>Select the <guilabel>organization type</guilabel> from the <guilabel>Organization Type</guilabel> 
 				tree.</para></step>
 				<step><para>Click <guibutton>Delete</guibutton>.</para></step>
@@ -87,7 +89,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 
 			</procedure>
 			<procedure>
-				<title>Editing Organization Types<indexterm><primary>organization types</primary><secondary>editing</secondary></indexterm></title>
+				<title>Editing Organization Types<indexterm><primary>organizational unit types</primary><secondary>editing</secondary></indexterm></title>
 				<step><para>Select the <guilabel>organization type</guilabel> you wish to edit from the 
 				organization type tree.</para></step>
 				<step><para>Make the changes in the right pane.</para></step>
@@ -103,7 +105,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		</simplesect>
 	
 		<simplesect xml:id="orgunits">
-		<title>Organizational Units<indexterm><primary>organization units</primary></indexterm></title>
+		<title>Organizational Units</title>
+		<indexterm><primary>organizational units</primary></indexterm>
 		<abstract>
 		<para>Organizational Units are the specific instances of the organization unit types that 
 		make up your library's hierarchy. These can include  consortia, systems, branches, 
@@ -118,7 +121,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</menuchoice>
 		</para>
 		<procedure>
-			<title>Adding Organizational Units<indexterm><primary>organization units</primary><secondary>adding</secondary></indexterm></title>
+			<title>Adding Organizational Units</title>
+			<indexterm><primary>organization units</primary><secondary>adding</secondary></indexterm>
 			<step><para>Select an <guilabel>Organizational Unit</guilabel> from the organizational unit tree on the left and click 
 			<guibutton>New Child</guibutton>.</para></step>
 			<step><para>Make sure your new unit is selected and edit the <guilabel>Organizational Unit 
@@ -147,7 +151,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				</step>		
 		</procedure>
 		<procedure>
-			<title>Deleting Organizational Units <indexterm><primary>organization units</primary><secondary>deleting</secondary></indexterm></title>
+			<title>Deleting Organizational Units</title>
+			 <indexterm><primary>organization units</primary><secondary>deleting</secondary></indexterm>
 			<step><para>Select the <emphasis>organizational unit</emphasis> you wish to delete from the organizational unit tree in the left pane.</para></step>
 			<step><para>Click<guibutton>Delete</guibutton>.</para></step>
 			<step><para>Click <guibutton>OK</guibutton> on the warning alert box.</para></step>
@@ -1511,6 +1516,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	</section>
 	<section xml:id="copystatus">
 		<title>Copy Status</title>
+		 <indexterm><primary>copy status</primary></indexterm>
 		<para>To navigate to the copy status editor from the staff client menu, select 
 			<menuchoice><guimenu>Admin</guimenu>  <guisubmenu>Server Administration</guisubmenu> 
 				<guisubmenu>Copy Statuses </guisubmenu></menuchoice></para>
@@ -1668,12 +1674,14 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	</section>
 	<section xml:id="billingtypes">
 		<title>Billing Types</title>
+		<indexterm><primary>billing types</primary></indexterm>
 		<para>The billing types editor is used for creating, editing and deleting billing types.</para>    
 		<para>To navigate to the billing types editor from the staff client menu, select 
 			<menuchoice><guimenu>Admin</guimenu>  <guisubmenu>Server Administration</guisubmenu> 
 				<guisubmenu>Billing Types</guisubmenu></menuchoice></para>
 			<procedure>
 				<title>Adding Billing Types</title>
+				<indexterm><primary>billing types</primary><secondary>adding</secondary></indexterm>
 				<step><para>Click <guibutton>New Billing Type</guibutton>.</para></step>
 				<step><para>Enter the name of the billing type.</para></step>
 				<step><para>Select the <guilabel>Org Unit</guilabel> to use this billing type.</para></step>
@@ -1684,6 +1692,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</procedure>
 			<procedure>
 				<title>Deleting Billing Types</title>
+				<indexterm><primary>billing types</primary><secondary>deleting</secondary></indexterm>
 				<step><para>Check the check box of the billing type(s) you wish to delete.</para></step>
 				<step><para>Click <guibutton>Delete Selected</guibutton>.
 					<caution><para>The selected billing types will be deleted without a 
@@ -1692,6 +1701,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</procedure>
 			<procedure>
 				<title>Editing Billing Types</title>
+				<indexterm><primary>billing types</primary><secondary>editing</secondary></indexterm>
 				<step><para>Double click on a billing types to open the editing window.</para></step> 
 				<step><para>Make desired changes to the <guilabel>name</guilabel>, 
 				<guilabel>Org Unit</guilabel> and <guilabel>Default Price</guilabel>.</para></step>
@@ -1702,6 +1712,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	</section>
 	<section xml:id="circmodifiers">
 		<title>Circulation Modifiers</title>
+		<indexterm><primary>circulation modifiers</primary></indexterm>
 		<para>The circulation modifier editor is used to create, edit and delete modifier categories to control 
 		circulation policies on specific groups of items.</para> 
 		<para>To navigate to the circulation modifiers editor from the staff client menu, select 
@@ -1711,6 +1722,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		</para>
 			<procedure>
 				<title>Adding Circulation Modifiers</title>
+				<indexterm><primary>circulation modifiers</primary><secondary>adding</secondary></indexterm>
 				<step><para>Click <guibutton>New Circ Modifier</guibutton>.</para></step>
 				<step><para>Enter a <guilabel>Code</guilabel>, <guilabel>Name</guilabel> and  
 				<guilabel>Description</guilabel>.</para></step>
@@ -1722,6 +1734,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</procedure>
 			<procedure>
 				<title>Deleting Circulation Modifiers</title>
+				<indexterm><primary>circulation modifiers</primary><secondary>deleting</secondary></indexterm>
 				<step><para>Check the check box(es) next to the circulation modifiers(s) you wish to 
 				delete.</para></step>
 				<step><para>Click <guibutton>Delete Selected</guibutton> near the top of the page.
@@ -1731,6 +1744,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</procedure>
 			<procedure>
 				<title>Editing Circulation Modifiers</title>
+				<indexterm><primary>circulation modifiers</primary><secondary>editing</secondary></indexterm>
 				<step><para>Double click on the row of the circulation modifier you wish to 
 				edit.</para></step> 
 				<step><para>Make desired changes.</para></step>
@@ -1740,6 +1754,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	</section>
 	<section xml:id="catalogingtemplates">
 		<title>Cataloging Templates</title>
+		<indexterm><primary>cataloging</primary><secondary>templates</secondary></indexterm>
 		<para>Cataloging templates are essential for making the cataloging process more efficient. Templates are used that that the basic structure of specific types of cataloging records can 			loaded when the cataloger adds a new record</para>
 		<procedure>
 			<title>Adding Cataloging Templates</title>
@@ -1810,6 +1825,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	</section>
 	<section xml:id="relevancyrankings">
 		<title>Adjusting Search Relevancy Rankings</title>
+		<indexterm><primary>search relevancy</primary></indexterm>
 		<info>
 			<abstract>
 				<para>This section describes indexed field weighting and matchpoint weighting, which
@@ -1822,7 +1838,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</abstract>
 		</info>
 		<simplesect>
-			<title>Indexed-field Weighting<indexterm><primary>relevancy</primary><secondary>indexed-field weighting</secondary></indexterm> </title>
+			<title>Indexed-field Weighting<indexterm><primary>search relevancy</primary><secondary>indexed-field weighting</secondary></indexterm> </title>
 			<para>Indexed-field weighting is configured in the Evergreen database in the weight column
 			of the <link linkend="config.table.metabib-field">config.metabib_field</link> table, which follows the other four columns in this table:
 			field_class, name, xpath, and format.</para>
@@ -1837,7 +1853,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<emphasis role="bold">jaguar</emphasis> in another indexed field. </para>
 		</simplesect>
 		<simplesect>
-			<title>Match point Weighting<indexterm><primary>relevancy</primary><secondary>match point weighting</secondary></indexterm></title>
+			<title>Match point Weighting</title>
+			<indexterm><primary>search relevancy</primary><secondary>match point weighting</secondary></indexterm>
 			<para> Match point weighting provides another way to fine-tune Evergreen relevance ranking,
 			and is configured through floating-point multipliers in the multiplier column of the
 			search.relevance_adjustment table.</para>
@@ -2021,6 +2038,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		</simplesect>
 		<simplesect>
 			<title>Combining Index Weighting and Match point Weighting</title>
+			<indexterm><primary>search relevancy</primary><secondary>combining index weighting and match point weighting</secondary></indexterm>
+			
 			<para>Index weighting and matchpoint weighting may be combined. The relevance boost of the combined 
 			weighting is equal to the product of the two multiplied values. </para>
 			<para>If the relevance setting in the config.metabib_field were increased to 2, and the multiplier 
@@ -2033,7 +2052,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</note>
 		</simplesect>
 		<simplesect>
-			<title>Adjusting Relevancy for Keyword Searches<indexterm><primary>relevancy</primary><secondary>keyword searches</secondary></indexterm></title>
+			<title>Adjusting Relevancy for Keyword Searches</title>
+			<indexterm><primary>search relevancy</primary><secondary>keyword search adjusting</secondary></indexterm>
 			<para> Searching the out of the box <emphasis>keyword</emphasis> does not boost the ranking for terms appearing in, the title or subject fields since  there is just one 
 			keyword index which does not distinguish terms that appear in the title field from those in the notes field for example. In comparison, the title index is actually composed of 
 			a number of separate indexes: title|proper, title|uniform, title|alternative, title|translated, etc, that collectively form the title index. You can see this in the 
@@ -2097,6 +2117,7 @@ WHERE id = 17;
 		<para>Notifications can be set up for Holds, Overdue items and Predue items. There are two ways to configure notifications for each of these type of notifications.</para>
 		<section xml:id="Holdnotifications">
 			<title>Hold Notifications</title>
+			<indexterm><primary>notifications</primary><secondary>hold</secondary></indexterm>
 			<para>Hold notifications can be used that that library users are sent an email when their items are available for pickup. This notification is triggered when the item being held 
 			is <emphasis>captured</emphasis> by a library staff member and the item is in the <emphasis>on holds shelf</emphasis> status. </para>
 			<simplesect>			
@@ -2175,7 +2196,8 @@ WHERE id = 17;
 			<title>Overdue and Predue Notifications</title> 
 			<para>Overdue and Predue email notifications can be used to inform users that they have materials which are overdue or to warn them that materials are almost overdue.</para>  
 			<simplesect>			
-				<title>Activating Overdue Existing Overdue Action Triggers</title> 
+				<title>Activating the Existing Overdue Action Triggers</title> 
+				<indexterm><primary>notifications</primary><secondary>overdue</secondary><tertiary>activating action triggers</tertiary></indexterm>
 				<para>The easiest way to set up overdue notifications is to use the <link linkend="actiontriggers">Action Trigger</link> mechanism introduced in Evergreen 1.6.</para> 			
 				<procedure>
 				<step>
@@ -2212,6 +2234,8 @@ WHERE id = 17;
 			</simplesect>	
 			<simplesect>			
 				<title>Creating Overdue and Predue Notifications by Cloning Existing Action Triggers</title> 
+				<indexterm><primary>notifications</primary><secondary>overdue</secondary><tertiary>creating using action triggers</tertiary></indexterm>
+				<indexterm><primary>notifications</primary><secondary>predue</secondary><tertiary>creating using action triggers</tertiary></indexterm>
 				<para>If you wish to add overdue notices for different periods of time or wish to create a predue notice simply clone an existing overdue note, give it a 
 				unique <guilabel>Name</guilabel>, customize as needed. and save.</para>
  				<para>There are no pre-existing predue notices so they will need to be created by cloning an existing overdue notice. 
@@ -2219,7 +2243,9 @@ WHERE id = 17;
 				due date, use the value <emphasis>-1 days</emphasis>.</para> 			
 			</simplesect>
 			<simplesect>			
-				<title>Creating Overdue and Predue Notices using the Evergreen Configuration File</title> 
+				<title>Creating Overdue and Predue Notices using the Evergreen Configuration File</title>
+				<indexterm><primary>notifications</primary><secondary>overdue</secondary><tertiary>creating using the configuration file</tertiary></indexterm>
+				<indexterm><primary>notifications</primary><secondary>predue</secondary><tertiary>creating using the configuration file</tertiary></indexterm> 
 				<para>It is also possible to create overdue and predue notices using the Evergreen configuration file <filename>/openils/conf/opensrf.xml</filename></para> 	
 				<procedure>
 				<step>

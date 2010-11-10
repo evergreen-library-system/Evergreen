@@ -3,6 +3,7 @@
     xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
     <info>
         <title>Surveys</title>
+	<indexterm><primary>surveys</primary></indexterm>
     </info>
     <para>This section illustrates how to create a survey, shows where the survey responses are saved
         in the patron record, and explains how to report on surveys.</para>

@@ -9,6 +9,7 @@
 	</abstract>	
 	<section id="intro_to_databases">
 			<title>Introduction to SQL Databases</title>
+			<indexterm><primary>sql</primary></indexterm>
 		<simplesect>
 			<title>Introduction</title>
 			<simpara>Over time, the SQL database has become the standard method of storing,
@@ -28,6 +29,7 @@
 		</simplesect>
 		<simplesect id="_tables">
 			<title>Tables</title>
+			<indexterm><primary>sql</primary><secondary>tables</secondary></indexterm>
 			<simpara>The table is the cornerstone of a SQL database. Conceptually, a database table
 			is similar to a single sheet in a spreadsheet: every table has one or more
 			columns, with each row in the table containing values for each column. Each

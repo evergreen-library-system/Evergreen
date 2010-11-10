@@ -29,7 +29,8 @@
 	</section>	  
 	<section xml:id="hardwareconfigurations">
 		<info>
-    			<title>Server Hardware Configurations and Clustering</title><indexterm><primary>hardware</primary><secondary>clustering</secondary></indexterm>
+    			<title>Server Hardware Configurations and Clustering</title>
+			<indexterm><primary>hardware</primary><secondary>clustering</secondary></indexterm>
 		</info>
 		<para>The hardware requirements for running a functional <application>Evergreen</application> server are minimal. It is also possible to scale up your evergreen configuration to be 
 		spread your <application>Evergreen</application> resources and services over several or even many servers in a clustered approach for the purpose 
@@ -76,9 +77,7 @@
    			<listitem><para>512Mb of RAM</para></listitem>
 		</itemizedlist>
   		<simplesect>
-			<info>
-	    			<title>Barcode Scanners</title>   
-			</info>
+	    		<title>Barcode Scanners</title>   
 				<para><application>Evergreen</application> will work with virtually any barcode scanner<indexterm><primary>barcode scanner</primary></indexterm> – 
 				if it worked with your legacy system it should work on <application>Evergreen</application>.</para>
     		</simplesect>

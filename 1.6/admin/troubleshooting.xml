@@ -289,10 +289,11 @@ $
 					Follow the steps in the troubleshooting guide in <xref linkend="troubleshooting"/>.</para>
 		</step>
 		<step>
-			<para>Try to login from the <link linkend="staffclient-login">staff client</link></para>
+			<para>Try to login from the <link linkend="staffclient-login">staff client</link></para><indexterm><primary>staff client</primary><secondary>testing</secondary></indexterm>
 		</step>
 		<step xml:id="testing-opac">
 					<title>Testing the Catalog</title>
+					<indexterm><primary>OPAC</primary><secondary>testing</secondary></indexterm>
 					<para>By default, the OPAC will live at the URL <uri>http://my.domain.com/opac/</uri>.</para>
 					<para>Navigate to this URL and the front page of the OPAC should load. There is a basic text entry field with some extra search options. If you have any 
 					problems loading this page, check the Apache error logs. If the page loads but does not function correctly, then check for possible javascript errors. We 

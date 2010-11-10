@@ -2,7 +2,8 @@
 <chapter xml:id="actiontriggers" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
     xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
     <info>
-        <title>Action Triggers</title>    
+        <title>Action Triggers</title>
+	<indexterm><primary>action triggers</primary></indexterm>    
 	</info>
 	<para>Action Triggers were introduced to Evergreen in 1.6. They allow administrators the ability to set up actions for specific events. They are useful for notification events such as 
 	hold notifications.</para>
@@ -21,6 +22,7 @@
 		
 	<section xml:id="eventdefinitions">
 		<title>Event Definitions</title>
+		<indexterm><primary>action triggers</primary><secondary>event definitions</secondary></indexterm>   
 		<para><guilabel>Event Definitions</guilabel> is the main tab and contains the key fields when working with action triggers. These fields include:</para>
 			<table xml:id="eventdefinitionstable">
 				<title>Action Trigger Event Definitions</title>
@@ -86,7 +88,8 @@
 			</table>
 		
 		<procedure>
-		<title>Creating New Action Triggers</title>
+		<title>Creating Action Triggers</title>
+		<indexterm><primary>action triggers</primary><secondary>creating</secondary></indexterm>  
 			<step>
 				<para>From the top menu, select
 					<menuchoice>
@@ -195,6 +198,7 @@ The following items are 90 days overdue and have been marked LOST.
 	</section>
 	<section xml:id="Hooks">
 		<title>Hooks</title>
+		<indexterm><primary>action triggers</primary><secondary>hooks</secondary></indexterm>
 		<para><guilabel>Hooks</guilabel> define the Fieldmapper class in the core_type column off of which the rest of the field definitions <quote>hang</quote>.</para>
 		<table xml:id="Hookstable">
 			<title>Hooks</title>
@@ -231,6 +235,7 @@ The following items are 90 days overdue and have been marked LOST.
 	</section>	
 	<section xml:id="Reactors">
 		<title>Reactors</title>
+		<indexterm><primary>action triggers</primary><secondary>reactors</secondary></indexterm>
 		<para><guilabel>Reactors</guilabel> link the trigger definition to the action to be carried out.</para>
 		<table xml:id="Reactorstable">
 			<title>Action Trigger Reactors</title>
@@ -261,6 +266,7 @@ The following items are 90 days overdue and have been marked LOST.
 	</section>	
 	<section xml:id="Validators">
 		<title>Validators</title>
+		<indexterm><primary>action triggers</primary><secondary>validators</secondary></indexterm>
 		<para><guilabel>Validators</guilabel> set the validation test to be preformed to determine whether the action trigger is executed.</para>
 		<table xml:id="Validatorstable">
 			<title>Action Trigger Validators</title>
@@ -291,6 +297,7 @@ The following items are 90 days overdue and have been marked LOST.
 	</section>	
 	<section xml:id="ProcessingActionTriggers">	
 		<title>Processing Action Triggers</title>
+		<indexterm><primary>action triggers</primary><secondary>processing</secondary></indexterm>
 		<para>To run the action triggers, an Evergreen administrator will need to run the trigger processing script <command>/openils/bin/action_trigger_runner.pl 
 		<option>--process-hooks</option> <option>--run-pending</option></command>. This should be set up as a cron job to run 
 		periodically.</para> 

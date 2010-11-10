@@ -14,6 +14,7 @@
 	</abstract>
 	<section id="_introducing_opensrf">
 		<title>Introducing OpenSRF</title>
+	<indexterm><primary>OpenSRF</primary></indexterm>
 		<simpara>OpenSRF is a message routing network that offers scalability and failover
 		support for individual services and entire servers with minimal development and
 		deployment overhead. You can use OpenSRF to build loosely-coupled applications
@@ -68,6 +69,7 @@
 			Protocol</ulink> (XMPP, sometimes referred to as Jabber) - provides the base messaging
 			infrastructure between OpenSRF clients and services
 			</simpara>
+			<indexterm><primary>XMPP</primary></indexterm>
 			</listitem>
 			<listitem>
 			<simpara>
@@ -79,12 +81,14 @@
 			<simpara>
 			<ulink url="http://memcached.org">memcached</ulink> - provides the caching service
 			</simpara>
+			<indexterm><primary>memcached</primary></indexterm>
 			</listitem>
 			<listitem>
 			<simpara>
 			<ulink url="http://tools.ietf.org/html/rfc5424">syslog</ulink> - the standard UNIX logging
 			service
 			</simpara>
+			<indexterm><primary>syslog</primary></indexterm>
 			</listitem>
 			</itemizedlist>
 			<simpara>Unfortunately, the
@@ -97,6 +101,7 @@
 			The recommended option for would-be developers of another language binding is
 			to use the Python implementation as the cleanest basis for a port to another
 			language.</simpara>
+			<indexterm><primary>Python</primary></indexterm>
 		</simplesect>
 	</section>
 	<section id="writing_an_opensrf_service">
@@ -190,11 +195,13 @@ __PACKAGE__-&gt;register_method(
 			this for a new service if the new service needs to be accessible via the
 			public router.
 			</simpara>
+			<indexterm><primary>configuration files</primary><secondary>opensrf_core.xml</secondary></indexterm>
 			</listitem>
 			</itemizedlist>
 			<simpara>Begin by defining the service itself in <literal>opensrf.xml</literal>. To register the
 			<literal>opensrf.simple-text</literal> service, add the following section to the <literal>&lt;apps&gt;</literal>
 			element (corresponding to the XPath <literal>/opensrf/default/apps/</literal>):</simpara>
+			<indexterm><primary>configuration files</primary><secondary>opensrf.xml</secondary></indexterm>
 <programlisting language="xml" linenumbering="unnumbered">
 &lt;apps&gt;
   &lt;opensrf.simple-text&gt; <co id="CO1-1"/> 
@@ -355,6 +362,7 @@ __PACKAGE__-&gt;register_method(
 		</simplesect>
 		<simplesect id="_calling_an_opensrf_method">
 			<title>Calling an OpenSRF method</title>
+			<indexterm><primary>srfsh</primary></indexterm>
 			<simpara>OpenSRF clients in any supported language can invoke OpenSRF services in any
 			supported language. So let&#8217;s see a few examples of how we can call our fancy
 			new <literal>opensrf.simple-text.reverse()</literal> method:</simpara>
@@ -649,6 +657,7 @@ __PACKAGE__-&gt;register_method(
 			relationships to other objects, the permissions required to create, read,
 			update, or delete objects of that type, and the database table or view on which
 			they are based.</simpara>
+			<indexterm><primary>Fieldmapper</primary></indexterm>
 			<simpara>The Evergreen fieldmapper offers a great deal of convenience for working with
 			complex system objects beyond the basic mapping of classes to database
 			schemas. Although the result is passed over the wire as a JSON object
@@ -1001,6 +1010,7 @@ my $logger = OpenSRF::Utils::Logger;
 		</simplesect>
 		<simplesect id="_caching_results_one_secret_of_scalability">
 			<title>Caching results: one secret of scalability</title>
+			<indexterm><primary>search results</primary><secondary>caching</secondary></indexterm>
 			<simpara>If you have ever used an application that depends on a remote Web service
 			outside of your control&#8201;&#8212;&#8201;say, if you need to retrieve results from a
 			microblogging service&#8201;&#8212;&#8201;you know the pain of latency and dependability (or the
@@ -1163,6 +1173,7 @@ sub test_cache {
 	</section>
 	<section id="_getting_under_the_covers_with_opensrf">
 		<title>OpenSRF Communication Flows</title>
+		<indexterm><primary>OpenSRF</primary><secondary>Communication Flows</secondary></indexterm>
 		<simpara>Now that you have seen that it truly is easy to create an OpenSRF service, we
 		can take a look at what is going on under the covers to make all of this work
 		for you.</simpara>
@@ -1194,6 +1205,7 @@ sub test_cache {
 		</simplesect>
 		<simplesect id="_opensrf_communication_flows_over_xmpp">
 			<title>OpenSRF communication flows over XMPP</title>
+			<indexterm><primary>XMPP</primary></indexterm>
 			<simpara>In a minimal OpenSRF deployment, two XMPP users named "router" connect to the
 			XMPP server, with one connected to the private XMPP domain and one connected to
 			the public XMPP domain. Similarly, two XMPP users named "opensrf" connect to
@@ -1233,6 +1245,7 @@ sub test_cache {
 		</simplesect>
 		<simplesect id="OpenSRFOverHTTP">
 			<title>OpenSRF communication flows over HTTP</title>
+			<indexterm><primary>HTTP</primary><secondary>translator</secondary></indexterm>
 			<simpara>In some contexts, access to a full XMPP client is not a practical option. For
 			example, while XMPP clients have been implemented in JavaScript, you might
 			be concerned about browser compatibility and processing overhead - or you might

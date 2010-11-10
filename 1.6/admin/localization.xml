@@ -11,6 +11,7 @@
 		all interfaces. Only a few steps are required to enable or disable one or more languages.</para>
 		<simplesect>
 			<title>Enabling a Localization</title>
+			<indexterm><primary>languages</primary><secondary>enabling a localization</secondary></indexterm>
 			<para>To enable the translated labels for a given language to display in Evergreen, just populate the database with the translated labels and enable the localization. The 
 			following example illustrates how to enable Canadian French (<emphasis role="bold">fr-CA</emphasis>) support in the database. These same steps can be used with any of the 
 			languages bundled with Evergreen, or you can create and add your own localization.</para>
@@ -56,6 +57,7 @@ VALUES ('fr-CA', 'fre', 'French (Canada)', 'Canadian French');
 		</simplesect>
 		<simplesect>
 			<title>Disabling a Localization</title>
+			<indexterm><primary>languages</primary><secondary>disabling a localization</secondary></indexterm>
 			<para>You might not want to offer all of the localizations that are preconfigured in Evergreen. If you choose to disable the dynamic labels for a locale, just delete those 
 			entries from the table <literal>config.i18n_locale</literal> using the <command>psql</command> utility:</para>
 <screen>

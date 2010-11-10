@@ -3,6 +3,7 @@
     xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
 	<info>
         	<title>JSON Queries</title>
+	<indexterm><primary>JSON</primary></indexterm>
 	</info>
 	<para>The json_query facility provides a way for client applications to query the database over the network. Instead of constructing its own SQL, the application encodes a query in the 
 	form of a JSON string and passes it to the json_query service. Then the json_query service parses the JSON, constructs and executes the corresponding SQL, and returns the results to 
@@ -75,6 +76,7 @@ FROM
 	 </simplesect>
 	<simplesect>
 		<title>Default SELECT Clauses</title>
+		<indexterm><primary>JSON</primary><secondary>SELECT clauses</secondary></indexterm>
 		<para>The default SELECT clause includes every column that the IDL defines it as a non-virtual field for the class in question. If a column is present in the database but 
 		not defined in the IDL, json_query doesn't know about it. In the case of the example shown above, all the columns are defined in the IDL, so they all show up in the default 
 		SELECT clause.</para>

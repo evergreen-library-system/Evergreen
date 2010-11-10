@@ -13,6 +13,7 @@
 	</note>	
 	<section xml:id="ColorScheme">
 		<title>Change the Color Scheme</title>
+		<indexterm><primary>OPAC</primary><secondary>customizing</secondary><tertiary>changing the color scheme</tertiary></indexterm>
 		<para>To change the color scheme of the default Evergreen skin, edit <filename>/openils/var/web/opac/theme/default/css/colors.css</filename>. From this one file you can 
 		change the 4 base color scheme as well as colors of specific elements.     
 		</para>							 
@@ -44,6 +45,7 @@ name='Default' csstype='color'/&gt;
 	</section>
 	<section xml:id="customizing_opac_text">
 		<title>customizing Opac Text and Labels</title>
+		<indexterm><primary>OPAC</primary><secondary>customizing</secondary><tertiary>text and labels</tertiary></indexterm>
 		<para>To change text and links used throughout the OPAC, edit the following files:</para>
 		<itemizedlist>
 			<listitem><filename>/openils/var/web/opac/locale/<emphasis role="bold">[your locale]</emphasis>/lang.dtd</filename></listitem>
@@ -81,6 +83,7 @@ name='Default' csstype='color'/&gt;
 	</section>
 	<section xml:id="AddedContent">
 		<title>Added Content</title>
+		<indexterm><primary>OPAC</primary><secondary>added content</secondary></indexterm>
 		<para>By default Evergreen includes customizable <quote>Added Content</quote> features to enhance the OPAC experience for your user. These features include Amazon book covers 
 		and Google books searching. These features can be turned off or customized.</para>
 		<simplesect xml:id="bookcovers">
@@ -105,6 +108,7 @@ name='Default' csstype='color'/&gt;
 		</simplesect>
 		<simplesect xml:id="googlebookslink">
 			<title>Google Books Link</title>
+			<indexterm><primary>OPAC</primary><secondary>added content</secondary><tertiary>Google Books</tertiary></indexterm>
 			<para>The results page will display a <emphasis role="bold">Browse in Google Books Search</emphasis> link for items in the results page which have corresponding entries
 			 in <systemitem class="resource">Google Books</systemitem>. 
 			This will link to Google Books content including table of contents and complete versions of the work if it exists in Google Books. Items not in Google Books will not 
@@ -127,6 +131,7 @@ name='Default' csstype='color'/&gt;
 	</section>
 	<section xml:id="deatailspage">
 		<title>Customizing the Details Page</title>
+		<indexterm><primary>OPAC</primary><secondary>customizing</secondary><tertiary>details page</tertiary></indexterm>
 		<para>There are many options when customizing the details page in Evergreen. The default settings are effective for most libraries, but it is important to understand the full potential 
 		of Evergreen when displaying the details of items.</para>  		
 		<para>Some quick features can be turned on and off by changing variable values in the file <filename>/openils/var/web/opac/skin/default/js/rdedail.js</filename>. 

@@ -10,7 +10,7 @@
 			service interruptions. All of the steps in this chapter are to be completed from the command line.</para>
         	</abstract>
 	</info>    
-		<para>In the following instructions, you are asked to perform certain steps as either the root <systemitem class="username"></systemitem>  or <systemitem class="username">opensrf</systemitem> user.</para>
+		<para>In the following instructions, you are asked to perform certain steps as either the <systemitem class="username">root</systemitem>  or <systemitem class="username">opensrf</systemitem> user.</para>
       		<itemizedlist>
 			<listitem>Debian: To become the <systemitem class="username">root</systemitem> user, issue the <command>su</command> command and enter the password of the 
 			<systemitem class="username">root</systemitem> user.</listitem>
@@ -43,7 +43,7 @@
 		</procedure>
 	</simplesect>
 	<simplesect>
-		<title>Upgrading OpenSRF to 1.4</title><indexterm><primary>OpenSRF</primary><secondary>1.2</secondary></indexterm>
+		<title>Upgrading OpenSRF to 1.4</title><indexterm><primary>OpenSRF</primary></indexterm>
 		<procedure>
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract the source files for <application>OpenSRF</application> 
@@ -174,14 +174,14 @@ tar xzf Evergreen-ILS-1.6.1.2.tar.gz
 				these values for your distribution of Debian or Ubuntu:</para>
 				<itemizedlist>
 					<listitem>
-						<para><option>debian-etch</option> for <systemitem class="osname">Debian Etch (4.0)</systemitem></para>
+						<para><option>debian-etch</option> for <systemitem class="osname">Debian Etch (4.0)</systemitem></para><indexterm><primary>Linux</primary><secondary>Debian</secondary></indexterm>
 					</listitem>
 					<listitem>
 						<para><option>debian-lenny</option> for <systemitem class="osname">Debian Lenny (5.0)</systemitem></para>
 					</listitem>
 					<listitem>
 						<para><option>ubuntu-hardy</option> for <systemitem class="osname">Ubuntu Hardy Heron 
-						(8.04)</systemitem></para>
+						(8.04)</systemitem></para><indexterm><primary>Linux</primary><secondary>Ubuntu</secondary></indexterm>
 					</listitem>
 					<listitem>
 						<para><option>ubuntu-intrepid</option> for <systemitem class="osname">Ubuntu Intrepid Ibex 
@@ -365,7 +365,7 @@ psql -f /usr/share/postgresql/8.4/contrib/pgxml.sql evergreen
 </screen>		
 			</step>
 			<step>
-				<para>As the postgres user on the PostgreSQL server, create a PostgreSQL user named <systemitem class="username">evergreen</systemitem> for the database cluster:</para>
+				<para>As the <systemitem class="username">postgres</systemitem> user on the PostgreSQL server, create a PostgreSQL user named <systemitem class="username">evergreen</systemitem> for the database cluster:</para>
 				<screen><userinput>createuser -P -s evergreen</userinput></screen>
 				<para>Enter the password for the new PostgreSQL superuser (<systemitem class="username">evergreen</systemitem>)</para>	
 			</step>			

@@ -8,11 +8,13 @@
 	</info>
 	<section xml:id="staffclientinstallation-installing-staffclient">
 		<title>Installing the Staff Client</title>
+		<indexterm><primary>staff client</primary><secondary>installing</secondary></indexterm>
 		<simplesect>
 			<title>Installing a Pre-Built Staff Client</title>
 			<para>You can install the pre-built Staff Client available for Windows, MAC or Linux.</para>
 			<simplesect>
 				<title>Installing on Windows</title>
+				<indexterm><primary>staff client</primary><secondary>installing</secondary><tertiary>Windows</tertiary></indexterm>
 				<para>A standard Microsoft Windows installer that contains the current version of the Staff Client is available from the downloads section of the Evergreen website 
 				at <ulink url="http://www.evergreen-ils.org/downloads.php">http://www.evergreen-ils.org/downloads.php</ulink>. Download the Staff Client installer, then run it. 
 				A screen that looks similar to this should appear:</para>
@@ -44,6 +46,7 @@
 			</simplesect>
 			<simplesect>
 				<title>Installing on Mac OS</title>
+				<indexterm><primary>staff client</primary><secondary>installing</secondary><tertiary>Mac OS</tertiary></indexterm>
 				<para>A Mac package that contains the current version of the Staff Client is available for use with XULRunner.</para>
 				<simplesect>
 					<title>Evergreen Indiana Pkg file [Evergreen v1.2.3.0]</title>
@@ -85,6 +88,8 @@
 				</simplesect>
 				<simplesect>
 					<title>Running directly using XULRunner</title>
+					<indexterm><primary>staff client</primary><secondary>XULRunner</secondary></indexterm>
+					<indexterm><primary>XULRunner</primary></indexterm>
 					<para>You must install an apropriate version of XULRunner to match the Evergreen version. See the following table for the recommended version of XULRunner:</para>
 					<table>
 						<title>Evergreen / XULRunner Dependencies</title>
@@ -120,6 +125,7 @@
 				</simplesect>
 				<simplesect xml:id="staffclientinstallation-remove-xulrunner">
 					<title>Removing previously installed XULRunner versions</title>
+					<indexterm><primary>XULRunner</primary><secondary>removing previous versions</secondary></indexterm>
 					<para>If you already have a newer version installed, per the release notes, you will need to remove the entire directory 
 					<filename class="directory">/Library/Frameworks/XUL.framework</filename> before downgrading.</para>
 					<para>In addition, you may also need to remove the previous file <filename>/Library/Receipts/xulrunner-ver-mak.pkg</filename> .</para>
@@ -249,6 +255,7 @@ ______* etc.
 				</simplesect>
 				<simplesect>
 					<title>Building the Staff Client on the Server</title>
+					<indexterm><primary>staff client</primary><secondary>building on the server</secondary></indexterm>
 					<para>A Linux Staff Client is automatically built on the server as part of the normal <emphasis>make install</emphasis> process for Evergreen server-side 
 					software, using a procedure similar to this:</para>
 <screen>
@@ -385,7 +392,8 @@ ______* etc.
 					</procedure>
 				</simplesect>
 				<simplesect>
-					<title>Using Wine to Install On Linux</title>
+					<title>Using Wine to Install on Linux</title>
+					<indexterm><primary>staff client</primary><secondary>using wine to install on Linux</secondary></indexterm>
 					<para>The Linux application <application>Wine</application> is another alternative if you wish to install the packaged Windows versions rather than building 
 					the Staff Client manually. Wine is a Linux application that allows users to directly run Windows executables, and is a simple way for casual Linux users to use 
 					the Staff Client. More information about Wine can be found at 
@@ -432,6 +440,7 @@ ______* etc.
 				</simplesect>
 				<simplesect xml:id="staffclientinstallation-workstationnames">
 					<title>Assigning Workstation Names</title>
+					<indexterm><primary>staff client</primary><secondary>assigning workstation names</secondary></indexterm>
 					<para>The Staff Client must be assigned to a library and given a unique name before it will connect fully to the Evergreen server. The only restriction is that 
 					the workstation's name must be unique within the assigned library. Make sure to select a workstation name that you will remember later, and reflects the 
 					role, purpose, and/or location of a particular computer. These names will come up later in statistical reporting, and can also be handy when troubleshooting.</para>
@@ -471,6 +480,7 @@ ______* etc.
 			</simplesect>
 			<simplesect>
 			<title>Building the Staff Client</title>
+			<indexterm><primary>staff client</primary><secondary>building</secondary></indexterm>
 			<para>You can also manually build the Staff Client by using the <command>make</command> utility in the Staff Client source directory (e.g., the directory 
 			<filename class="directory">/home/opensrf/Evergreen-ILS-1.6.0.x/Open-ILS/xul/staff_client</filename> for the current Evergreen version). There are a number of 
 			possible options to manually build special versions of the Staff Client on a Linux system. Following is a list of environment variables that can be passed to 
@@ -541,6 +551,7 @@ ______* etc.
 			</simplesect>
 			<simplesect>
 				<title>Advanced Build Options</title>
+				<indexterm><primary>staff client</primary><secondary>building</secondary><tertiary>advanced build options</tertiary></indexterm>
 				<para>In addition to the basic options listed above, there are a number of advanced options for building the Staff Client. Most are target names for the 
 				<command>make</command> utility and require that you build the Staff Client from its source directory. See the following table for a list of possible 
 				<command>make</command> target keywords:</para>
@@ -612,7 +623,7 @@ ______* etc.
 				<itemizedlist>
 					<listitem>
 						<para>Developer Build</para>
-						<para>You can create a so-called "developer build" of the Staff Client by substituting "devbuild" for "build" when running <command>make</command>. 
+						<para>You can create a so-called <emphasis>developer build</emphasis> of the Staff Client by substituting <option>devbuild</option> for <option>build</option> when running <command>make</command>. 
 						The build will contain an extra configuration file that enables some developer options.</para>
 						<para>As the <systemitem class="username">opensrf</systemitem> user, run <command>make</command> from the Staff Client source directory:</para>
 <screen>
@@ -623,7 +634,8 @@ ______* etc.
 					</listitem>
 					<listitem>
 						<para>Compressed Javascript</para>
-						<para>You can execute the Google "Closure Compiler" utility to automatically review and compress Javascript code after the build process completes, 
+						<para>You can execute the Google  <systemitem class="resource">Closure Compiler</systemitem> utility to automatically review and compress 
+						Javascript code after the build process completes, 
 						by substituting <option>compress-javascript</option> for "build" when running <command>make</command>. For more information see 
 						<ulink url="http://code.google.com/closure/compiler/">Google Closure Compiler</ulink>.</para>
 						<para>As the <systemitem class="username">opensrf</systemitem> user, run the following commands from the Staff Client source directory:</para>
@@ -632,7 +644,7 @@ ______* etc.
 <userinput>cd /home/opensrf/[Evergreen Install Directory]/Open-ILS/xul/staff_client</userinput>
 <userinput>make compress-javascript</userinput>
 </screen>
-						<para>You can also combine Javascript review and compression, and also perform a "developer build".</para>
+						<para>You can also combine Javascript review and compression, and also perform a <emphasis>developer build</emphasis>.</para>
 						<para>As the <systemitem class="username">opensrf</systemitem> user, run the following commands from the Staff Client source directory:</para>
 						<note><para>In the following <command>make</command> below, the order of options is important!</para></note>
 <screen>
@@ -761,10 +773,10 @@ ______* etc.
 			</simplesect>
 			<simplesect xml:id="staffclientinstallation-autoupdate">
 				<title>Staff Client Automatic Updates</title>
+				<indexterm><primary>staff client</primary><secondary>automatic updates</secondary></indexterm>
 				<para>It is possible to set up support for automatic Staff Client updates, either during the normal Evergreen server-side build process, or by manually building the 
 				Staff Client with certain special options.</para>
-				<simplesect>
-					<title>WARNINGS</title>
+				<caution>
 					<para>Automatic update server certificate requirements are more strict than normal server requirements. Firefox and <application>XULRunner</application> will 
 					both ignore any automatic update server that is not validated by a trusted certificate authority. Servers with exceptions added to force the Staff Client to 
 					accept them <emphasis>WILL NOT WORK</emphasis>.</para>
@@ -775,7 +787,7 @@ ______* etc.
 					</orderedlist>
 					<para>You can pre-install the signing key into the file <filename>install.rdf</filename> directly, or install it into a copy as 
 					<filename>install.mccoy.rdf</filename>. If the latter exists it will be copied into the build instead of the original file <filename>install.rdf</filename>.</para>
-				</simplesect>
+				</caution>
 				<simplesect>
 					<title>Autoupdate Host</title>
 					<para>The name of the automatic update host can be provided in either of two ways:</para>
@@ -809,6 +821,7 @@ ______* etc.
 				</simplesect>
 				<simplesect>
 					<title>Building Updates</title>
+					<indexterm><primary>staff client</primary><secondary>automatic updates</secondary><tertiary>building</tertiary></indexterm>
 					<para>Similar to building clients, the targets <option>generic-updates</option>, <option>win-updates</option>, <option>linux-updates</option>, and 
 					<option>extension-updates</option> can be used individually 
 					with <command>make</command> to build the update files for the Staff Client. To build all the targets at once, simply use the target <option>updates</option>.</para>
@@ -842,6 +855,7 @@ ______* etc.
 				</simplesect>
 				<simplesect>
 					<title>Building updates with clients</title>
+					<indexterm><primary>staff client</primary><secondary>automatic updates</secondary><tertiary>building with clients</tertiary></indexterm>
 					<para>To save time and effort you can build updates and manual download clients at the same time by adding <option>-client</option> to each target 
 					name. For instance, you can specify <option>win-updates-client</option>. You can also specify <option>updates-client</option> to build all the targets at once. 
 					This does not work for <option>extension-updates</option>.</para>
@@ -871,6 +885,7 @@ ______* etc.
 				</simplesect>
 				<simplesect>
 					<title>Activating the Update Server</title>
+					<indexterm><primary>staff client</primary><secondary>automatic updates</secondary><tertiary>activating the update server</tertiary></indexterm>
 					<para>This section reviews scripts associated with the update server, and requires some final adjustments to file permissions.</para>
 					<para>The Apache example configuration creates an "updates" directory that, by default, points to the directory 
 					<filename class="directory">/openils/var/updates/pub</filename>. This directory contains one HTML file and several specially-named script files.</para>
@@ -917,6 +932,7 @@ ______* etc.
 	</section>
 	<section xml:id="staffclientinstallation-running-staffclient">
 		<title>Running the Staff Client</title>
+		<indexterm><primary>staff client</primary><secondary>running</secondary><tertiary>linux</tertiary></indexterm>
 		<para>Run the Staff Client on a Linux system by using the application <application>XULRunner</application> (installed automatically and by default with Firefox version 3.0 and later 
 		on Ubuntu and Debian distributions).</para>
 		<para>For example, if the source files for the Evergreen installation are in the directory <filename class="directory">/home/opensrf/[Evergreen Install Directory]/</filename>, start 
@@ -927,6 +943,7 @@ ______* etc.
 		</screen>
 		<simplesect xml:id="staffclientinstallation-proxy">
 			<title>Running the Staff Client over an SSH Tunnel</title>
+			<indexterm><primary>staff client</primary><secondary>running through an SSH tunnel</secondary></indexterm>
 			<para>The Staff Client can use an SSH tunnel as a SOCKS 5 proxy.</para>
 			<simplesect>
 				<title>Configuring a Proxy for the Staff Client</title>

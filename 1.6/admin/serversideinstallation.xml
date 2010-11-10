@@ -32,6 +32,7 @@
 	listed here:</para>
 	<table xml:id="serversideinstall-software-dependencies">
 		<title>Evergreen Software Dependencies</title>
+		<indexterm><primary>Evergreen software dependencies</primary></indexterm>
 		<tgroup align="left" cols="3" colsep="1" rowsep="1">
 			<colspec colname="Evergreen" colnum="1" colwidth="1.0*"/>
 			<colspec colname="OpenSRF" colnum="2" colwidth="1.0*"/>
@@ -79,8 +80,11 @@
 		take a final snapshot backup of your system(s). This can be the first in the series of regularly
 		scheduled system backups that you should probably also begin.</para>
 		<section xml:id="serversideinstallation-opensrf">
+		<indexterm><primary>OpenSRF</primary><secondary>installation</secondary></indexterm>
 			<title>Installing OpenSRF 1.4.x On <systemitem class="osname">Ubuntu</systemitem> or
 				<systemitem class="osname">Debian</systemitem></title>
+			<indexterm><primary>Linux</primary><secondary>Debian</secondary></indexterm>
+			<indexterm><primary>Linux</primary><secondary>Ubuntu</secondary></indexterm>
 			<para>This section describes the installation of the latest version of the Open Service Request
 			Framework (OpenSRF), a major component of the Evergreen server-side software, on 
 			<systemitem class="osname">Ubuntu</systemitem> or <systemitem class="osname">Debian</systemitem>
@@ -133,6 +137,7 @@
 				</step>
 				<step>
 					<title>Download and Unpack Latest OpenSRF Version</title>
+					<indexterm><primary>OpenSRF</primary><secondary>download</secondary></indexterm>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, download
 					and extract the latest version of OpenSRF. The latest version can be found here:
 					<ulink url="http://evergreen-ils.org/downloads/OpenSRF-1.4.0.tar.gz"></ulink></para>
@@ -204,6 +209,7 @@
 					<substeps>
 						<step>
 							<title>Configure OpenSRF</title>
+							<indexterm><primary>OpenSRF</primary><secondary>configure</secondary></indexterm>
 							<para>As the <systemitem class="username">opensrf</systemitem>
 							user, return to the OpenSRF build directory and use the
 							<command>configure</command> utility to prepare for the next
@@ -254,6 +260,7 @@
 							<filename>/etc/hosts</filename>.</para> <para>As the <systemitem class="username">root</systemitem> user, edit the file
 							<filename>/etc/hosts</filename> and add the following entries
 							for our example domains:</para>
+							<indexterm><primary>Jabber</primary></indexterm>
 <screen>
 <userinput>127.0.1.2	public.localhost	public</userinput>
 <userinput>127.0.1.3	private.localhost	private</userinput>
@@ -273,6 +280,7 @@
 				</step>
 				<step>
 					<title>Stop the <systemitem class="service">ejabberd</systemitem> Service</title>
+					<indexterm><primary>ejabberd</primary></indexterm>
 					<para>As the <systemitem class="username">root</systemitem> user, stop the
 					<systemitem class="service">ejabberd</systemitem> service:</para>
 <screen>
@@ -498,6 +506,7 @@ ejabberdctl register opensrf public.localhost  <password>
 					<para>In this section you will set up a special configuration file for each user
 					who will need to run the <command>srfsh</command> (pronounced <emphasis>surf
 					shell</emphasis>) utility.</para>
+					<indexterm><primary>srfsh</primary></indexterm>
 					<para>The software installation will automatically create
 					<command>srfsh</command>. This is a command line diagnostic tool for testing and
 					interacting with <application>OpenSRF</application>. It will be used in a future
@@ -622,6 +631,8 @@ srfsh#
 		<section xml:id="serversideinstallation-ubuntudebian">
 			<title>Installing Evergreen 1.6.1.x On <systemitem class="osname">Ubuntu</systemitem> or
 				<systemitem class="osname">Debian</systemitem></title>
+				<indexterm><primary>Linux</primary><secondary>Debian</secondary></indexterm>
+				<indexterm><primary>Linux</primary><secondary>Ubuntu</secondary></indexterm>
 			<para>This section outlines the installation process for the latest stable version of
 			Evergreen.</para>
 			<para>In this section you will download, unpack, install, configure and test the Evergreen
@@ -736,8 +747,9 @@ srfsh#
 						</tgroup>
 					</table>
 				</step>
-				<step xml:id="serversideinstallation-postgresql-default">
+				<step xml:id="serversideinstallation-postgresql-default" performance="optional">
 					<title>(OPTIONAL) Install the PostgreSQL Server</title>
+					<indexterm><primary>databases</primary><secondary>PostgreSQL</secondary></indexterm>
 					<para>Since the PostgreSQL server is usually a standalone server in multi-server
 					production systems, the prerequisite installer Makefile in the previous step
 					does not automatically install PostgreSQL. You must install the PostgreSQL server
@@ -790,6 +802,7 @@ srfsh#
 </screen>
 					<para>For more information on installing Perl Modules vist the official
 					<link xl:href="http://www.cpan.org/">CPAN</link> site.</para>
+					<indexterm><primary>Perl</primary><secondary>CPAN</secondary></indexterm>
 				</step>
 				<step>
 					<title>Update the System Dynamic Library Path</title>
@@ -807,7 +820,7 @@ srfsh#
 </screen>
 				</step>
 				<step performance="optional">
-					<title>(OPTIONAL) Restart the PostgreSQL Server</title>
+					<title>Restart the PostgreSQL Server</title>
 					<para>If PostgreSQL is running on the same system as the rest of Evergreen, as
 					the <systemitem class="username">root</systemitem> user you must restart
 					PostgreSQL to re-read the new library paths just configured. If PostgreSQL is
@@ -873,6 +886,7 @@ srfsh#
 				</step>
 				<step>
 					<title>Create and Configure PostgreSQL Database</title>
+					<indexterm><primary>databases</primary><secondary>PostgreSQL</secondary></indexterm>
 					<para>In this step you will create the Evergreen database. In the commands
 					below, remember to adjust the path of the <emphasis role="bold">contrib</emphasis> repository to match your PostgreSQL server
 					layout. For example, if you built PostgreSQL from source the path would be
@@ -949,6 +963,7 @@ srfsh#
 						</step>
 						<step>
 							<title>Configure the Apache web server</title>
+							<indexterm><primary>web server</primary><secondary>Apache</secondary></indexterm>
 							<para>In this step you will configure the Apache web server to
 							support Evergreen software.</para>
 							<para>First, you must enable some built-in Apache modules and install
@@ -1079,32 +1094,6 @@ srfsh#
 											APACHE_RUN_USER=opensrf</literal>.</para>
 										</listitem>
 									</itemizedlist>
-								</step>
-								<step performance="optional">
-									<title>(OPTIONAL) Apache Performance Modifications</title>
-									<para>Some further configuration changes to Apache may be
-									necessary for busy systems. These changes increase the
-									number of Apache server processes that are started to
-									support additional browser connections.</para>
-									<para>As the <systemitem class="username">root</systemitem> 
-									user, edit the Apache configuration file
-									<filename>/etc/apache2/apache2.conf</filename> and add the
-									lines <literal>KeepAliveTimeout 1</literal> and
-									<literal>MaxKeepAliveRequests 100</literal>, or modify any
-									existing lines. Then locate the section related to
-									<emphasis>prefork configuration</emphasis> and modify it
-									to suit the load on your system:</para>
-<programlisting language="xml">
-<![CDATA[
-<IfModule mpm_prefork_module>
-   StartServers		  20
-   MinSpareServers	   5
-   MaxSpareServers	  15
-   MaxClients		 150
-   MaxRequestsPerChild 10000
-</IfModule>
-]]>
-</programlisting>
 								</step>
 								<step>
 									<title>Enable the Evergreen web site</title>
@@ -1458,7 +1447,7 @@ Updating fieldmapper
 			</simplesect>
 		</section>
 		<section xml:id="serversideinstallation-virtual">
-			<title>(OPTIONAL) Installing In Virtualized <systemitem class="osname">Linux</systemitem> Environments</title>
+			<title>Installing In Virtualized <systemitem class="osname">Linux</systemitem> Environments</title>
 			<para>This section describes the installation of Evergreen software in so-called "virtualized"
 			software environments. Evergreen software runs as a native application on any of several
 			well-known x86 (32-bit) and x86-64 (64-bit) <systemitem class="osname">Linux</systemitem>
@@ -1499,7 +1488,8 @@ Updating fieldmapper
 					<link xl:href="http://virtualbox.org" xl:title="virtual box">http://virtualbox.org</link> and follow the on screen instructions to install the software.</para>
 				</simplesect>
 				<simplesect>
-					<title>Installing <application>"VMware"</application> Virtualization Software</title>
+					<title>Installing VMware Virtualization Software</title>
+					<indexterm><primary>virtualization software</primary><secondary>VMware</secondary></indexterm>
 					<para>This section reviews installation of the
 					<application>"VMware"</application> application on <systemitem class="osname">WindowsXP Professional (SP2)</systemitem>. Find and Download the free virtual 
 					machine software of from the VMware official website: <ulink url="http://downloads.vmware.com">http://downloads.vmware.com</ulink> and follow the on 
@@ -1581,6 +1571,7 @@ Updating fieldmapper
 			
 					<procedure>
 						<title>VirtualBox Example</title>
+						<indexterm><primary>virtualization software</primary><secondary>VirtualBox</secondary></indexterm>
 						<step>
 							<para>Start VirtualBox for the first time and select
 							<menuchoice><guimenu>File</guimenu><guimenuitem>VirtualBox Media

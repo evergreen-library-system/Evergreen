@@ -11,6 +11,7 @@
 	</info>    
 	<section xml:id="migratingbibrecords">
 		<title>Migrating Bibliographic Records</title>
+		<indexterm><primary>migrating</primary><secondary>importing bibliographic records</secondary></indexterm>
 		<para>
 		One of the most important and challenging  tasks is migrating your bibliographic records to a new system. The procedure may be different depending on the system from which you 
 		are migrating  and the content of the marc records exported from the existing system. The proecedures in this section deal with the process once the data from the existing system 
@@ -21,6 +22,7 @@
 		http://svn.open-ils.org/trac/ILS/browser/branches/rel_1_6_1/Open-ILS/src/extras/import</link>).</para> 
 		<simplesect>
 			<title>Converting MARC records to Evergreen BRE JSON format</title>
+			<indexterm><primary>BRE JSON</primary></indexterm>
 			<para>If you are starting with MARC records from your existing system or another source, use the marc2bre.pl script to create the JSON representation of a bibliographic 
 			record entry (hence bre) in Evergreen. <filename>marc2bre.pl</filename> can perform the following functions:</para>
      			<itemizedlist> 
@@ -99,6 +101,7 @@
 		</simplesect>
 		<simplesect>
 			<title>Converting Records for Import into PostgreSQL</title>
+			<indexterm><primary>migrating</primary><secondary>import into PostgreSQL</secondary></indexterm>
 			<para>Once you have your records in Evergreen's <systemitem>BRE JSON</systemitem> format, you then need to use <command>direct_ingest.pl</command> to convert the records 
 			into the generic ingest <systemitem>JSON</systemitem> format for Open-ILS. 
 			This step uses the <systemitem>open-ils.ingest</systemitem> application to extract the data that will be indexed in the database. </para>
@@ -109,6 +112,7 @@
 		</simplesect>		
 		<simplesect>
 			<title>Adding Metarecords to the Database</title>
+			<indexterm><primary>migrating</primary><secondary>adding metarecords</secondary></indexterm>
 			<para>One you have loaded the records into PostgreSQL, you can create metarecord entries in the <link linkend="metabib.table.metarecord">metabib.metarecord</link> table by 				running the following <systemitem>SQL</systemitem>:</para>
 <screen>
 <userinput>psql evergreen</userinput>
@@ -118,13 +122,15 @@
 		</simplesect>	
 	</section>
 	<section xml:id="migratingbibrecordcopies">
-		<title>Adding Copies to Bibliographic Records</title>	
+		<title>Adding Copies to Bibliographic Records</title>
+		<indexterm><primary>migrating</primary><secondary>adding copies</secondary></indexterm>	
 		<para>Once you've loaded the bibliographic records in Evergreen, you can search and view the records in the staff client, but they will not be visible in the catalogue. By 
 		default, bibliographic records will not be visible in the catalogue until you add a copy representing a physical manifestation of that resource. You can add a copy manually through 
 		the staff client via the Holdings maintenance screen, but if you're bulk-importing MARC records you probably want to bulk load the associated copies, call numbers, and barcodes as 
 		well.</para>
 		<simplesect>
 			<title>Importing volumes and copies from <systemitem>MARC21XML</systemitem> holdings</title>
+			<indexterm><primary>migrating</primary><secondary>importing volumes</secondary></indexterm>	
 			<para>There is currently no simple method for importing holdings based on the contents of the MARC holdings field (852, as specified by 
 			<link xml:href="http://www.loc.gov/marc/holdings/">http://www.loc.gov/marc/holdings/</link>). 
 			However, a more or less automated method could be built that performs the following steps:</para>
@@ -157,6 +163,7 @@
 	</section>
 	<section xml:id="migratingpatrons">
 		<title>Migrating Patron Data</title>
+		<indexterm><primary>migrating</primary><secondary>importing patrons</secondary></indexterm>
 		<para>
 		This section will explain the task of migrating your patron data from comma delimited files<indexterm><primary>comma delimited files</primary></indexterm> into Evergreen. 
 		It does not deal with the process of exporting from the non-Evergreen 
@@ -316,6 +323,7 @@ COMMIT;
 		</simplesect>
 		<simplesect>
 			<title>Batch Updating Patron Data</title>
+			<indexterm><primary>migrating</primary><secondary>batch updating patrons</secondary></indexterm>
 			<para>For academic libraries, doing batch updates to add new patrons to the Evergreen database is a critical task. The above procedures and 
 			import script can be easily adapted to create an update script for importing new patrons from external databases. If the data import file contains only new patrons, then, 
 			the above procedures will work well to insert those patrons. However, if the data load contains all patrons, a second staging table and a procedure to remove existing 				patrons from that second staging table may be required before importing the new patrons. Moreover, additional steps to update address information and perhaps delete 
@@ -326,7 +334,8 @@ COMMIT;
 	       </simplesect> 
 	</section>
 	<section xml:id="electronicresourcesvisible">	
-		<title>Making electronic resources visible in the catalogue</title>
+		<title>Making Electronic Resources Visible in the Catalogue</title>
+		<indexterm><primary>migrating</primary><secondary>importing bibliographic records</secondary><tertiary>electronic resources </tertiary></indexterm>
 		<para>For electronic resources that should be visible in the catalogue without any copies, you must set the source column value in the record.biblio_entry row for the respective 
 		bibliographic record to a value that matches the corresponding ID of the <link linkend="config.table.bib-source">config.bib_source</link> where the transcendant value is 
 		<emphasis>TRUE</emphasis>. Here's a practical example:</para>
@@ -360,6 +369,8 @@ COMMIT;
 	</section>
 	<section xml:id="emptydatabase">
 		<title>Restoring your Evergreen Database to an Empty State</title>
+		<indexterm><primary>databases</primary><secondary>restoring Evergreen to an empty state</secondary></indexterm>
+		<secondary>importing bibliographic records</secondary>
 		<para>If you've done a test import of records and you want to quickly get Evergreen back to a pristine state, you can create a clean Evergreen database schema by performing the 
 		following:</para>
 		<procedure>

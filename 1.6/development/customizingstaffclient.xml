@@ -2,6 +2,7 @@
 <chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
 	    xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="customizingstaffclient">
 	<title>Customizing the Staff Client</title>
+	<indexterm><primary>staff client</primary><secondary>customizing</secondary></indexterm>
 	<para>This chapter will give you some guidance on customizing the staff client.</para>  
 	<para>The  files related to the staff client are located in the directory <filename class="directory">/openils/var/web/xul/[staff client version]/server/</filename></para>  
      	 <section xml:id="staffclient_Changingcolors">
@@ -13,6 +14,7 @@
       	</section>
 	<section xml:id="staffclient_Changinglabels">
 		 <title>Changing Labels and Messages</title>
+		<indexterm><primary>staff client</primary><secondary>customizing</secondary><tertiary>labels and messages</tertiary></indexterm>
 		 <para>You can customize labels in the staff client by editing the corresponding DTD files. The staff client uses the same <filename>lang.dtd</filename> used by the OPAC. This file is located in <filename class="directory">/openils/var/web/opac/locale/[<emphasis>your locale</emphasis>]</filename>. Other labels are controlled by the staff client specific <filename>lang.dtd</filename> file in <filename class="directory">/openils/var/web/xul/<emphasis>client version</emphasis>]/server/locale/[<emphasis>your locale</emphasis>]/</filename>.</para>
 	</section>
 	 <section xml:id="staffclient_searchskin">

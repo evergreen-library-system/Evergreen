@@ -68,20 +68,24 @@
 				<tbody>
 					<row>
 						<entry><filename>/openils/conf/opensrf_core.xml</filename></entry>
+						<indexterm><primary>configuration files</primary><secondary>opensrf_core.xml</secondary></indexterm>
 						<entry>Files which controls which Evergreen services are run on the public and private routers. For a service to run, it must be registered in this file. 							This file also controls the loglevel and points to the log file for the services. An Evergreen restart is required for changes to take effect.</entry>
 					</row>
 					<row>
 						<entry><filename>/openils/conf/opensrf.xml</filename></entry>
+						<indexterm><primary>configuration files</primary><secondary>opensrf.xml</secondary></indexterm>
 						<entry>Use this file to set directory locations, the default locale, default notice settings and settings for all Evergreen services. 
 						It is critical for any administrator to understand the settings in this file. An Evergreen restart is required for changes to take effect.</entry>
 					</row>
 					<row>
 						<entry><filename>/openils/conf/fm_IDL.xml</filename></entry>
+						<indexterm><primary>configuration files</primary><secondary>fm_IDL.xml</secondary></indexterm>
 						<entry>Used for linking the OpenSRF/Evergreen services to the Evergreen database tables. An Evergreen restart is required for changes to take 
 						effect. Running autogen.sh is also required.</entry>
 					</row>
 					<row>
 						<entry><filename>/etc/apache2/eg_vhost.conf</filename></entry>
+						<indexterm><primary>configuration files</primary><secondary>Apache</secondary></indexterm>
 						<entry>Controls the Evergreen virtual site. Allows to configure the skin for the OPAC or configure  various directories within the Apache web server. 
 						An Apache restart is required for changes to this file to take effect.</entry>
 					</row>
@@ -102,15 +106,18 @@
 				<tbody>
 					<row>
 						<entry><filename>/openils/bin/autogen.sh</filename></entry>
+						<indexterm><primary>autogen</primary></indexterm>
 						<entry>Used to update changes to org units and the fm_IDL.xml file. Will generate web and staff client pages based on contents of files and 
 						Evergreen database entries.</entry>
 					</row>
 					<row>
 						<entry><filename>/openils/bin/clark-kent.pl</filename></entry>
+						<indexterm><primary>reports</primary><secondary>starting</secondary></indexterm>
 						<entry>Perl script for starting the reporter.</entry>
 					</row>
 					<row>
 						<entry><filename>/openils/bin/action_trigger_runner.pl</filename></entry>
+							<indexterm><primary>action triggers</primary><secondary>runner</secondary></indexterm>
 						<entry>Perl script used to trigger the actions set up in the action trigger tool in the staff client.</entry>
 					</row>
 					<row>
@@ -123,6 +130,7 @@
 					</row>
 					<row>
 						<entry><filename>/openils/bin/srfsh</filename></entry>
+						<indexterm><primary>srfsh</primary></indexterm>
 						<entry>Used to start the OpenSRF shell.</entry>
 					</row>
 					
