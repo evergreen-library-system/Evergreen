@@ -36,11 +36,11 @@ for (var c in _preload_fieldmapper_IDL) {
         </xsl:choose>
     </xsl:template>
  
-    <xsl:template match="idl:class"><xsl:value-of select="@id"/>:{name:"<xsl:value-of select="@id"/>",label:"<xsl:value-of select="@reporter:label"/>",restrict_primary:"<xsl:value-of select="@oils_persist:restrict_primary"/>",virtual:<xsl:call-template name='trueFalse'><xsl:with-param name='tf' select="@oils_persist:virtual"/></xsl:call-template>,pkey:"<xsl:value-of select="idl:fields/@oils_persist:primary"/>",pkey_sequence:"<xsl:value-of select="idl:fields/@oils_persist:sequence"/>",<xsl:apply-templates select="idl:fields"/>}</xsl:template>
+    <xsl:template match="idl:class"><xsl:value-of select="@id"/>:{name:"<xsl:value-of select="@id"/>",label:"<xsl:call-template name='defaultValue'><xsl:with-param name='v' select="@reporter:label"/><xsl:with-param name='d' select="@id"/></xsl:call-template>",restrict_primary:"<xsl:value-of select="@oils_persist:restrict_primary"/>",virtual:<xsl:call-template name='trueFalse'><xsl:with-param name='tf' select="@oils_persist:virtual"/></xsl:call-template>,pkey:"<xsl:value-of select="idl:fields/@oils_persist:primary"/>",pkey_sequence:"<xsl:value-of select="idl:fields/@oils_persist:sequence"/>",<xsl:apply-templates select="idl:fields"/>}</xsl:template>
  
     <xsl:template match="idl:fields">fields:[<xsl:for-each select="idl:field"><xsl:call-template name="printField"><xsl:with-param name='pos' select="position()"/></xsl:call-template><xsl:if test="not(position() = last())">,</xsl:if></xsl:for-each>]</xsl:template>
  
-<xsl:template name='printField'><xsl:param name="pos"/>{name:"<xsl:value-of select="@name"/>",label:"<xsl:value-of select="@reporter:label"/>",datatype:<xsl:call-template name='dataType'><xsl:with-param name='d' select="@reporter:datatype"/></xsl:call-template>,primitive:"<xsl:value-of select="@oils_persist:primitive"/>",selector:"<xsl:value-of select="@reporter:selector"/>",array_position:"<xsl:value-of select="$pos - 1"/>",<xsl:call-template name='fieldOrLink'><xsl:with-param name='f' select="."/></xsl:call-template>,virtual:<xsl:call-template name='trueFalse'><xsl:with-param name='tf' select="@oils_persist:virtual"/></xsl:call-template>,required:<xsl:call-template name='trueFalse'><xsl:with-param name='tf' select="@oils_obj:required"/></xsl:call-template>,i18n:<xsl:call-template name='trueFalse'><xsl:with-param name='tf' select="@oils_persist:i18n"/></xsl:call-template>}</xsl:template>
+<xsl:template name='printField'><xsl:param name="pos"/>{name:"<xsl:value-of select="@name"/>",label:"<xsl:call-template name='defaultValue'><xsl:with-param name='v' select="@reporter:label"/><xsl:with-param name='d' select="@name"/></xsl:call-template>",datatype:"<xsl:call-template name='defaultValue'><xsl:with-param name='v' select="@reporter:label"/><xsl:with-param name='d' select="string('text')"/></xsl:call-template>",primitive:"<xsl:value-of select="@oils_persist:primitive"/>",selector:"<xsl:value-of select="@reporter:selector"/>",array_position:"<xsl:value-of select="$pos - 3"/>",<xsl:call-template name='fieldOrLink'><xsl:with-param name='f' select="."/></xsl:call-template>,virtual:<xsl:call-template name='trueFalse'><xsl:with-param name='tf' select="@oils_persist:virtual"/></xsl:call-template>,required:<xsl:call-template name='trueFalse'><xsl:with-param name='tf' select="@oils_obj:required"/></xsl:call-template>,i18n:<xsl:call-template name='trueFalse'><xsl:with-param name='tf' select="@oils_persist:i18n"/></xsl:call-template>}</xsl:template>
  
 <xsl:template name="fieldOrLink">
     <xsl:param name="f"/>
@@ -60,11 +60,12 @@ for (var c in _preload_fieldmapper_IDL) {
     </xsl:choose>
 </xsl:template>
 
-<xsl:template name="dataType">
+<xsl:template name="defaultValue">
+    <xsl:param name="v"/>
     <xsl:param name="d"/>
     <xsl:choose>
-        <xsl:when test="string-length($d)=0">"text"</xsl:when>
-        <xsl:otherwise>"<xsl:value-of select="$d"/>"</xsl:otherwise>
+        <xsl:when test="string-length($v)=0"><xsl:value-of select="$d"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="$v"/></xsl:otherwise>
     </xsl:choose>
 </xsl:template>
  
