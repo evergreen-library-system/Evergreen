@@ -86,7 +86,7 @@ sub create_authority_record_from_bib_field {
     my $arn = 'AUTOGEN-' . time();
 
     # Placeholder MARCXML; 
-    #   001/003 can be filled in via database triggers
+    #   001/003 can be be properly filled in via database triggers
     #   005 will be filled in automatically at creation time
     #   008 needs to be set by a cataloguer (could be some OU settings, I suppose)
     #   040 should come from OU settings / OU shortname
@@ -94,7 +94,6 @@ sub create_authority_record_from_bib_field {
     my $marc_xml = <<MARCXML;
 <record xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns="http://www.loc.gov/MARC21/slim"><leader>     nz  a22     o  4500</leader>
 <controlfield tag="001">$arn</controlfield>
-<controlfield tag="003">CONS</controlfield>
 <controlfield tag="008">      ||||||||||||||||||||||||||||||||||</controlfield>
 <datafield tag="040" ind1=" " ind2=" "><subfield code="a">CONS</subfield><subfield code="c">CONS</subfield></datafield>
 $control
