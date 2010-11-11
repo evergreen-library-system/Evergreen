@@ -34,10 +34,10 @@ sub import {
 # parse the IDL, loaded from the network
 my $__initted = 0;
 sub child_init {
-	$__initted = 1;
-	OpenSRF::System->bootstrap_client(config_file => $bs_config);
-	my $sclient	= OpenSRF::Utils::SettingsClient->new();
-	my $idl_file = $sclient->config_value("IDL");
+    $__initted = 1;
+    OpenSRF::System->bootstrap_client(config_file => $bs_config);
+    my $sclient	= OpenSRF::Utils::SettingsClient->new();
+    my $idl_file = $sclient->config_value("IDL");
     $idl_doc = XML::LibXML->load_xml(location => $idl_file);
 }
 
