@@ -250,6 +250,7 @@ function OpenMarcEditWindow(pcrud, rec) {
 			"label": opac_strings.SAVE_MFHD_LABEL,
 			"func": function(xmlString) {
 				rec.marc(xmlString);
+				rec.edit_date('now');
 				rec.ischanged(true);
 				pcrud.update(rec);
 			}

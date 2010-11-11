@@ -153,6 +153,7 @@ function loadMarcEditor(pcrud, rec) {
             "label": "Save",
             "func": function(xmlString) {
                 rec.marc(xmlString);
+                rec.edit_date('now');
                 rec.ischanged(true);
                 pcrud.update(rec);
                 alert("Record was saved");
