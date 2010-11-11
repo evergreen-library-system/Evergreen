@@ -18,7 +18,8 @@
 var _preload_fieldmapper_IDL = {<xsl:apply-templates select="idl:IDL"/>};
 for (var c in _preload_fieldmapper_IDL) {
     var x = _preload_fieldmapper_IDL[c]; x.field_map = {};
-    for (var n in ['isnew','ischanged','isdeleted']) x.fields[n] = {name:n,type:'field',virtual:true,array_position:x.fields.length};
+    var p = x.fields.length;
+    for (var n in {isnew:1,ischanged:1,isdeleted:1}) x.fields[p] = {name:n,type:'field',virtual:true,array_position:p++};
     for (var f in x.fields) x.field_map[x.fields[f].name] = x.fields[f];
 }
     </xsl:template>
