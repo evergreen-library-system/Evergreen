@@ -16962,7 +16962,6 @@ if ($ous_rv->{processed}) {
 }
 
 my ($create, $munge) = (0, 0);
-my ($orig_001, $orig_003) = ('', '');
 
 # Incoming MARC records may have multiple 001s or 003s, despite the spec
 my @control_ids = $record->field('003');
@@ -17002,8 +17001,9 @@ foreach my $id_field ('001', '003') {
     }
 }
 
-# Now, if we need to munge the 001, we will first push the existing 001/003 into the 035
-if ($munge) {
+# Now, if we need to munge the 001, we will first push the existing 001/003 into the 035;
+# but if the record did not have a 003 to begin with, skip this process
+if ($munge && scalar(@control_ids) > 0) {
     my $scn = "(" . $record->field('003')->data() . ")" . $record->field('001')->data();
 
     # Do not create duplicate 035 fields
