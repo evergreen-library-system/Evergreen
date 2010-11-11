@@ -267,10 +267,10 @@ main.menu.prototype = {
             ],
             'cmd_search_opac' : [
                 ['oncommand'],
-                function() {
+                function(event) {
                     obj.data.stash_retrieve();
                     var content_params = { 'session' : ses(), 'authtime' : ses('authtime') };
-                    obj.set_tab(obj.url_prefix(urls.XUL_OPAC_WRAPPER), {'tab_name':offlineStrings.getString('menu.cmd_search_opac.tab')}, content_params);
+                    obj.command_tab(event,obj.url_prefix(urls.XUL_OPAC_WRAPPER), {'tab_name':offlineStrings.getString('menu.cmd_search_opac.tab')}, content_params);
                 }
             ],
             'cmd_search_tcn' : [
