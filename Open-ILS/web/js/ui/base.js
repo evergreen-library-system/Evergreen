@@ -37,8 +37,8 @@ function oilsSetupUser() {
 
         if(!authtoken) {
 
-            dojo.cookie('ses', openils.User.authtoken, {expires:-1, path:'/'}); // remove the cookie
-            dojo.cookie('ses', openils.User.authtoken, {expires:-1, path:oilsBasePath}); // remove the cookie
+            dojo.cookie('ses', null, {expires:-1, path:'/'}); // remove the cookie
+            dojo.cookie('ses', null, {expires:-1, path:oilsBasePath}); // remove the cookie
 
             dojo.addOnLoad(function(){
                 if(openils.XUL.isXUL()) {

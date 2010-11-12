@@ -45,8 +45,9 @@ var SET_AUTO_OVERRIDE_EVENTS = 'circ.selfcheck.auto_override_checkout_events';
 
 
 function selfckInit() {
+    dojo.require('dojo.cookie');
     var cgi = new CGI();
-    var staff = grabUser(cookieManager.read(STAFF_SES_PARAM) || cgi.param(STAFF_SES_PARAM));
+    var staff = grabUser(dojo.cookie(STAFF_SES_PARAM) || cgi.param(STAFF_SES_PARAM));
 
     selfckSetupPrinter();
 
@@ -122,9 +123,9 @@ function selfckSetupPrinter() {
 }
 
 function selfckTryPatronCookie() {
-    var pb = cookieManager.read(PATRON_BARCODE_COOKIE);
+    var pb = dojo.cookie(PATRON_BARCODE_COOKIE);
     if(pb) {
-        cookieManager.write(PATRON_BARCODE_COOKIE, '');
+        dojo.cookie(PATRON_BARCODE_COOKIE, null, {'expires':-1});
         $('selfck-patron-login-input').value = pb;
         selfckPatronLogin();
     }
@@ -245,7 +246,7 @@ function selfckPatronLogin(barcode) {
 }
 
 function selfckLogoutStaff() {
-    cookieManager.remove(STAFF_SES_PARAM);
+    dojo.cookie(STAFF_SES_PARAM,null,{'expires':-1});
     location.reload(true);
 }
 
@@ -256,7 +257,7 @@ function selfckLogoutStaff() {
 function selfckCheckPatronBarcode(itemBc) {
     if(patronBarcodeRegex) {
         if(itemBc.match(patronBarcodeRegex)) {
-            cookieManager.write(PATRON_BARCODE_COOKIE, itemBc, -1);
+            dojo.cookie(PATRON_BARCODE_COOKIE, itemBc);
             selfckLogoutPatron();
             return true;
         }

@@ -38,7 +38,7 @@ function rresultCollectIds() {
 	switch(rtype) {
 
 		case RTYPE_COOKIE:
-			ids = JSON2js(cookieManager.read(COOKIE_RIDS));
+			ids = JSON2js(dojo.cookie(COOKIE_RIDS));
 			_rresultHandleIds( ids, ids.length );
 			break;
 
@@ -245,7 +245,7 @@ function rresultHandleRIds(r) {
 function _rresultHandleIds(ids, count) {
 	//var json = js2JSON({ids:ids,count:count});
 	/*
-	cookieManager.write(COOKIE_SRIDS, json, '+1d');
+	dojo.cookie(COOKIE_SRIDS, json, {'expires':1});
 	*/
 
 	HITCOUNT = parseInt(count);
@@ -321,7 +321,8 @@ function rresultFilterSearchResults(r) {
 
     resultFacetKey = result.facet_key;
     resultCompiledSearch = result.compiled_search;
-    cookieManager.write(COOKIE_SEARCH, js2JSON(result.compiled_search), -1);
+    dojo.require('dojo.cookie');
+    dojo.cookie(COOKIE_SEARCH, js2JSON(result.compiled_search));
 	_rresultHandleIds( ids, result.count );
 }
 

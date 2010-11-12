@@ -68,7 +68,8 @@ function loginDance() {
 
 		if(!strongPassword( G.ui.login.password.value ) ) {
 
-			cookieManager.write(COOKIE_SES, "");
+            dojo.require('dojo.cookie');
+			dojo.cookie(COOKIE_SES, "");
 			hideMe($('login_table'));
 			unHideMe($('change_pw_table'));
 			$('change_pw_current').focus();

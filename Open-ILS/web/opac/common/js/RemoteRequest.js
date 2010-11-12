@@ -244,7 +244,7 @@ RemoteRequest.prototype.send = function(blocking) {
 
 	try {
 		var auth;
-		try { auth = cookieManager.read(COOKIE_SES) } catch(ee) {}
+		try { dojo.require('dojo.cookie'); auth = dojo.cookie(COOKIE_SES) } catch(ee) {}
 		if( isXUL() ) auth = fetchXULStash().session.key;
 		if( auth ) 
 			this.xmlhttp.setRequestHeader('X-OILS-Authtoken', auth);

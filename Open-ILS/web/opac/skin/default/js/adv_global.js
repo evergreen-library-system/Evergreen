@@ -8,7 +8,8 @@ var advSelectedOrg = null;
 function advgInit() {
 
 	/* XXX */
-	if( cookieManager.read(COOKIE_NOGROUP_RECORDS) || SHOW_MR_DEFAULT )
+    dojo.require('dojo.cookie');
+	if( dojo.cookie(COOKIE_NOGROUP_RECORDS) || SHOW_MR_DEFAULT )
 		$('adv_group_titles').checked = true;
 
 	$n($('adv_global_tbody'), 'term').focus();
@@ -112,7 +113,7 @@ function initSearchBoxes() {
     /* loads the compiled search from the search cookie 
         and sets the widgets accordingly */
 
-    search = cookieManager.read(COOKIE_SEARCH);
+    search = dojo.cookie(COOKIE_SEARCH);
     if(!search) return;
     _debug("loaded compiled search cookie: " + search);
 
@@ -260,9 +261,9 @@ function advSubmitGlobal() {
 	}
 
 	if($('adv_group_titles').checked ) 
-		cookieManager.write(COOKIE_NOGROUP_RECORDS,'1',-1);
+		dojo.cookie(COOKIE_NOGROUP_RECORDS,'1');
 	else
-		cookieManager.write(COOKIE_NOGROUP_RECORDS,'');
+		dojo.cookie(COOKIE_NOGROUP_RECORDS,null,{'expires':-1});
 
 
 	goTo(buildOPACLink(args));

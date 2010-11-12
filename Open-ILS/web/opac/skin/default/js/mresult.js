@@ -49,7 +49,8 @@ function mresultHandleMRIds(r) {
 	var res = r.getResultObject();
     resultFacetKey = res.facet_key;
     resultCompiledSearch = res.compiled_search;
-    cookieManager.write(COOKIE_SEARCH, js2JSON(res.compiled_search), -1);
+    dojo.require('dojo.cookie');
+    dojo.cookie(COOKIE_SEARCH, js2JSON(res.compiled_search));
 	if(res.count != null) {
 		if( getOffset() == 0 ) HITCOUNT = res.count;
 		runEvt('result', 'hitCountReceived');
