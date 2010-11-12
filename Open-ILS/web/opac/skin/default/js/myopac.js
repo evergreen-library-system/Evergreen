@@ -21,6 +21,8 @@ function clearNodes( node, keepArray ) {
 
 function myOPACInit() {
 
+    fieldmapper.IDL.load(['mous']);
+
     var orgHiding = checkOrgHiding();
     if (orgHiding) {
         hideMe($('prefs_def_location_row'));
