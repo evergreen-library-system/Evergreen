@@ -16,7 +16,25 @@ my $idl_doc;
 sub import {
     my $self = shift;
     $bs_config = shift;
-    my $xsl_file = shift;
+}
+
+# parse the IDL, loaded from the network
+my $__initted = 0;
+sub child_init {
+    $__initted = 1;
+
+    OpenSRF::System->bootstrap_client(config_file => $bs_config);
+    my $sclient = OpenSRF::Utils::SettingsClient->new();
+
+    my $xsl_file = $sclient->config_value('IDL2js');
+
+    unless($xsl_file) {
+        warn "XSL2js XSL file required for IDL2js Apache module\n";
+        return;
+    }
+
+    $xsl_file = $sclient->config_value(dirs => 'xsl')."/$xsl_file";
+    my $idl_file = $sclient->config_value("IDL");
 
     my $xslt = XML::LibXSLT->new();
 
@@ -29,15 +47,7 @@ sub import {
         my $e = shift;
         warn "Invalid XSL File: $xsl_file: $e\n";
     };
-}
 
-# parse the IDL, loaded from the network
-my $__initted = 0;
-sub child_init {
-    $__initted = 1;
-    OpenSRF::System->bootstrap_client(config_file => $bs_config);
-    my $sclient	= OpenSRF::Utils::SettingsClient->new();
-    my $idl_file = $sclient->config_value("IDL");
     $idl_doc = XML::LibXML->load_xml(location => $idl_file);
 }
 

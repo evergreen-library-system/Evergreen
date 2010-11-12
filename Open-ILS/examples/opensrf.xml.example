@@ -31,6 +31,8 @@ vim:et:ts=4:sw=4:
         </share>
 
         <IDL>SYSCONFDIR/fm_IDL.xml</IDL> <!-- top level IDL file -->
+        <IDL2js>fm_IDL2js.xsl</IDL2js> <!-- IDL JS XSLT -->
+
 
         <server_type>prefork</server_type> <!-- net::server type -->
 
