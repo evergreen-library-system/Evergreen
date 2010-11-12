@@ -1,4 +1,5 @@
 if(!dojo._hasResource["fieldmapper.IDL"]) {
+    dojo._hasResource['fieldmapper.IDL'] = true;
     dojo.require("DojoSRF");
     dojo.provide("fieldmapper.IDL");
     dojo.declare('fieldmapper.IDL', null, {
@@ -11,10 +12,30 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
 
         constructor : function(classlist) {
 
+            var preload = [];
+            if (window._preload_fieldmapper_IDL) {
+                if (!fieldmapper.IDL.fmclasses) fieldmapper.IDL.fmclasses = {};
+                if (!window.fmclasses) window.fmclasses = {};
+
+                for (var c in window._preload_fieldmapper_IDL) {
+                    preload.push(c);
+                    fieldmapper.IDL.fmclasses[c] = window._preload_fieldmapper_IDL[c];
+
+                    window.fmclasses[c] = [];
+                    dojo.forEach(fieldmapper.IDL.fmclasses[c].fields, function(obj){ window.fmclasses[c].push(obj.name) });
+
+                    if (classlist && classlist.length)
+                        classlist = dojo.filter(classlist, function(x){return x != c;});
+                }
+
+                fieldmapper.IDL.loaded = true;
+                window._preload_fieldmapper_IDL = null;
+            }
+
             if(!fieldmapper.IDL.fmclasses || (classlist && classlist.length)) {
                 var idl_url = this._URL_PATH;
 
-                if (classlist.length) {
+                if (classlist.length > 1 || classlist[0] != '*') {
                     idl_url += '?';
 
                     for (var i = 0; i < classlist.length; i++) {
@@ -27,24 +48,31 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     }
                 }
                         
-                var self = this;
-                dojo.xhrGet({
-                    url : idl_url,
-                    handleAs : 'xml',
-                    sync : true,
-                    timeout : 10000,
-                    preventCache : true,
-                    load : function (response) {
-                        self._parse(response);
-                        fieldmapper.IDL.loaded = true;
-                    },
-                    error : function (response) {
-                        fieldmapper.IDL.loaded = false;
-                        dojo.require('fieldmapper.fmall', true);
-                    }
-                });
+                if( !idl_url.match(/\?$/) ) { // make sure we have classes that need loading
+
+                    console.log("Fetching classes from server at " + idl_url + ':' + classlist);
+
+                    var self = this;
+                    dojo.xhrGet({
+                        url : idl_url,
+                        handleAs : 'xml',
+                        sync : true,
+                        timeout : 10000,
+                        load : function (response) {
+                            self._parse(response);
+                            fieldmapper.IDL.loaded = true;
+                        },
+                        error : function (response) {
+                            fieldmapper.IDL.loaded = false;
+                            dojo.require('fieldmapper.fmall', true);
+                        }
+                    });
+                }
             }
             dojo.require('fieldmapper.Fieldmapper'); 
+
+            if (preload.length)
+                dojo.forEach( classlist, function (c) { fieldmapper.vivicateClass(c); } );
 
             if (classlist && classlist.length)
                 dojo.forEach( classlist, function (c) { fieldmapper.vivicateClass(c); } );

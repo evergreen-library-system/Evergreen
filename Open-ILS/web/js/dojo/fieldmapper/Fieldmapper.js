@@ -16,17 +16,17 @@
 */
 
 if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
+	dojo._hasResource["fieldmapper.Fieldmapper"] = true;
+
+	dojo.provide("fieldmapper.Fieldmapper");
+	dojo.require("DojoSRF");
+
 
 /* generate fieldmapper javascript classes.  This expects a global variable
 	called 'fmclasses' to be fleshed with the classes we need to build */
 
 	function FMEX(message) { this.message = message; }
 	FMEX.toString = function() { return "FieldmapperException: " + this.message + "\n"; }
-
-
-	dojo._hasResource["fieldmapper.Fieldmapper"] = true;
-	dojo.provide("fieldmapper.Fieldmapper");
-	dojo.require("DojoSRF");
 
 	dojo.declare( "fieldmapper.Fieldmapper", null, {
 
@@ -88,16 +88,9 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
             }
             return;
         }
-            
-
- 
-/*
-		isnew : function(n) { if(arguments.length == 1) this.a[0] =n; return this.a[0]; },
-		ischanged : function(n) { if(arguments.length == 1) this.a[1] =n; return this.a[1]; },
-		isdeleted : function(n) { if(arguments.length == 1) this.a[2] =n; return this.a[2]; }
-*/
 
 	});
+
 
     fieldmapper.vivicateClass = function (cl) {
 		dojo.provide( cl );
@@ -128,10 +121,13 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
 			}
 		});
-		fieldmapper[cl] = window[cl]; // alias into place
-        if (fieldmapper.IDL && fieldmapper.IDL.loaded) fieldmapper[cl].Identifier = fieldmapper.IDL.fmclasses[cl].pkey;
 
-        if (dojo._hasResource['fieldmapper.dojoData'] && dojo.filter(['aou','aout','pgt'], function(x){return x == cl}).length == 0) {
+		fieldmapper[cl] = window[cl]; // alias into place
+
+        if (fieldmapper.IDL && fieldmapper.IDL.loaded) 
+            fieldmapper[cl].Identifier = fieldmapper.IDL.fmclasses[cl].pkey;
+
+        //if (dojo.filter(['aou','aout','pgt'], function(x){return x == cl}).length == 0) {
             fieldmapper[cl].prototype.fromStoreItem = _fromStoreItem;
             fieldmapper[cl].toStoreData = _toStoreData;
             fieldmapper[cl].toStoreItem = _toStoreItem;
@@ -139,45 +135,10 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
             fieldmapper[cl].initStoreData = _initStoreData;
             fieldmapper[cl].prototype.toHash = _toHash;
             fieldmapper[cl].toHash = _toHash;
-        }
-
+            fieldmapper[cl].prototype.fromHash = _fromHash;
+            fieldmapper[cl].fromHash = _fromHash;
+        //}
     };
-
-    if (!window.fmclasses) dojo.require("fieldmapper.fmall", true);
-    for( var cl in fmclasses ) {
-        fieldmapper.vivicateClass(cl);
-    }
-
-    // if we were NOT called by the IDL loader ...
-    // XXX This is now deprecated in preference to fieldmapper.AutoIDL
-    if ( !(fieldmapper.IDL && fieldmapper.IDL.loaded) ) {
-
-        fieldmapper.cmsa.Identifier = 'alias';
-        fieldmapper.cmc.Identifier = 'name';
-    	fieldmapper.i18n_l.Identifier = 'code';
-    	fieldmapper.ccpbt.Identifier = 'code';
-    	fieldmapper.ccnbt.Identifier = 'code';
-    	fieldmapper.cbrebt.Identifier = 'code';
-    	fieldmapper.cubt.Identifier = 'code';
-    	fieldmapper.ccm.Identifier = 'code';
-    	fieldmapper.cvrfm.Identifier = 'code';
-    	fieldmapper.clm.Identifier = 'code';
-    	fieldmapper.cam.Identifier = 'code';
-    	fieldmapper.cifm.Identifier = 'code';
-    	fieldmapper.citm.Identifier = 'code';
-    	fieldmapper.cblvl.Identifier = 'code';
-    	fieldmapper.clfm.Identifier = 'code';
-    	fieldmapper.mous.Identifier = 'usr';
-    	fieldmapper.moucs.Identifier = 'usr';
-    	fieldmapper.mucs.Identifier = 'usr';
-    	fieldmapper.mus.Identifier = 'usr';
-    	fieldmapper.rxbt.Identifier = 'xact';
-    	fieldmapper.rxpt.Identifier = 'xact';
-    	fieldmapper.cxt.Identifier = 'name';
-    	fieldmapper.amtr.Identifier = 'matchpoint';
-    	fieldmapper.coust.Identifier = 'name';
-
-    }
 
 	fieldmapper._request = function ( meth, staff, params ) {
 		var ses = OpenSRF.CachedClientSession( meth[0] );
@@ -246,89 +207,178 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 		have a staff counterpart and should have ".staff" appended to the method 
 		before the method is called when in XUL mode */
 	fieldmapper.OpenSRF.methods = {
-		SEARCH_MRS : ['open-ils.search','open-ils.search.metabib.multiclass',true],
-		SEARCH_RS : ['open-ils.search','open-ils.search.biblio.multiclass',true],
-		SEARCH_MRS_QUERY : ['open-ils.search','open-ils.search.metabib.multiclass.query',true],
-		SEARCH_RS_QUERY : ['open-ils.search','open-ils.search.biblio.multiclass.query',true],
-		FETCH_SEARCH_RIDS : ['open-ils.search','open-ils.search.biblio.record.class.search',true],
-		FETCH_MRMODS : ['open-ils.search','open-ils.search.biblio.metarecord.mods_slim.retrieve'],
-		FETCH_MODS_FROM_COPY : ['open-ils.search','open-ils.search.biblio.mods_from_copy'],
-		FETCH_MR_COPY_COUNTS : ['open-ils.search','open-ils.search.biblio.metarecord.copy_count',true],
-		FETCH_RIDS : ['open-ils.search','open-ils.search.biblio.metarecord_to_records',true],
-		FETCH_RMODS : ['open-ils.search','open-ils.search.biblio.record.mods_slim.retrieve'],
-		FETCH_R_COPY_COUNTS : ['open-ils.search','open-ils.search.biblio.record.copy_count',true],
-		FETCH_FLESHED_USER : ['open-ils.actor','open-ils.actor.user.fleshed.retrieve'],
-		FETCH_SESSION : ['open-ils.auth','open-ils.auth.session.retrieve'],
-		LOGIN_INIT : ['open-ils.auth','open-ils.auth.authenticate.init'],
-		LOGIN_COMPLETE : ['open-ils.auth','open-ils.auth.authenticate.complete'],
-		LOGIN_DELETE : ['open-ils.auth','open-ils.auth.session.delete'],
-		FETCH_USER_PREFS : ['open-ils.actor','open-ils.actor.patron.settings.retrieve'], 
-		UPDATE_USER_PREFS : ['open-ils.actor','open-ils.actor.patron.settings.update'], 
-		FETCH_COPY_STATUSES : ['open-ils.search','open-ils.search.config.copy_status.retrieve.all'],
-		FETCH_COPY_COUNTS_SUMMARY : ['open-ils.search','open-ils.search.biblio.copy_counts.summary.retrieve'],
-		FETCH_MARC_HTML : ['open-ils.search','open-ils.search.biblio.record.html'],
-		FETCH_CHECKED_OUT_SUM : ['open-ils.actor','open-ils.actor.user.checked_out'],
-		FETCH_HOLDS : ['open-ils.circ','open-ils.circ.holds.retrieve'],
-		FETCH_FINES_SUMMARY : ['open-ils.actor','open-ils.actor.user.fines.summary'],
-		FETCH_TRANSACTIONS : ['open-ils.actor','open-ils.actor.user.transactions.have_charge.fleshed'],
-		FETCH_MONEY_BILLING : ['open-ils.circ','open-ils.circ.money.billing.retrieve.all'],
-		FETCH_CROSSREF : ['open-ils.search','open-ils.search.authority.crossref'],
-		FETCH_CROSSREF_BATCH : ['open-ils.search','open-ils.search.authority.crossref.batch'],
-		CREATE_HOLD : ['open-ils.circ','open-ils.circ.holds.create'],
-		CREATE_HOLD_OVERRIDE : ['open-ils.circ','open-ils.circ.holds.create.override'],
-		CANCEL_HOLD : ['open-ils.circ','open-ils.circ.hold.cancel'],
-		UPDATE_USERNAME : ['open-ils.actor','open-ils.actor.user.username.update'],
-		UPDATE_PASSWORD : ['open-ils.actor','open-ils.actor.user.password.update'],
-		UPDATE_EMAIL : ['open-ils.actor','open-ils.actor.user.email.update'],
-		RENEW_CIRC : ['open-ils.circ','open-ils.circ.renew'],
-		CHECK_SPELL : ['open-ils.search','open-ils.search.spellcheck'],
-		FETCH_REVIEWS : ['open-ils.search','open-ils.search.added_content.review.retrieve.all'],
-		FETCH_TOC : ['open-ils.search','open-ils.search.added_content.toc.retrieve'],
-		FETCH_ACONT_SUMMARY : ['open-ils.search','open-ils.search.added_content.summary.retrieve'],
-		FETCH_USER_BYBARCODE : ['open-ils.actor','open-ils.actor.user.fleshed.retrieve_by_barcode'],
-		FETCH_ADV_MARC_MRIDS : ['open-ils.search','open-ils.search.biblio.marc',true],
-		FETCH_ADV_ISBN_RIDS : ['open-ils.search','open-ils.search.biblio.isbn'],
-		FETCH_ADV_ISSN_RIDS : ['open-ils.search','open-ils.search.biblio.issn'],
-		FETCH_ADV_TCN_RIDS : ['open-ils.search','open-ils.search.biblio.tcn'],
-		FETCH_CNBROWSE : ['open-ils.search','open-ils.search.callnumber.browse'],
-		FETCH_CONTAINERS : ['open-ils.actor','open-ils.actor.container.retrieve_by_class'],
-		FETCH_CONTAINERS : ['open-ils.actor','open-ils.actor.container.retrieve_by_class'],
-		CREATE_CONTAINER : ['open-ils.actor','open-ils.actor.container.create'],
-		DELETE_CONTAINER : ['open-ils.actor','open-ils.actor.container.full_delete'],
-		CREATE_CONTAINER_ITEM : ['open-ils.actor','open-ils.actor.container.item.create'],
-		DELETE_CONTAINER_ITEM : ['open-ils.actor','open-ils.actor.container.item.delete'],
-		FLESH_CONTAINER : ['open-ils.actor','open-ils.actor.container.flesh'],
-		FLESH_PUBLIC_CONTAINER : ['open-ils.actor','open-ils.actor.container.public.flesh'],
-		UPDATE_CONTAINER : ['open-ils.actor','open-ils.actor.container.update'],
-		FETCH_COPY : ['open-ils.search','open-ils.search.asset.copy.retrieve'],
-		FETCH_FLESHED_COPY : ['open-ils.search','open-ils.search.asset.copy.fleshed2.retrieve'],
-		CHECK_HOLD_POSSIBLE : ['open-ils.circ','open-ils.circ.title_hold.is_possible'],
-		UPDATE_HOLD : ['open-ils.circ','open-ils.circ.hold.update'],
-		FETCH_COPIES_FROM_VOLUME : ['open-ils.search','open-ils.search.asset.copy.retrieve_by_cn_label',true],
-		FETCH_VOLUME_BY_INFO : ['open-ils.search','open-ils.search.call_number.retrieve_by_info'], /* XXX staff method? */
-		FETCH_VOLUME : ['open-ils.search','open-ils.search.asset.call_number.retrieve'],
-		FETCH_COPY_LOCATIONS : ['open-ils.circ','open-ils.circ.copy_location.retrieve.all'],
-		FETCH_COPY_NOTES : ['open-ils.circ','open-ils.circ.copy_note.retrieve.all'],
-		FETCH_COPY_STAT_CATS : ['open-ils.circ','open-ils.circ.asset.stat_cat_entries.fleshed.retrieve_by_copy'],
-		FETCH_LIT_FORMS : ['open-ils.search','open-ils.search.biblio.lit_form_map.retrieve.all'],
-		FETCH_ITEM_FORMS : ['open-ils.search','open-ils.search.biblio.item_form_map.retrieve.all'],
-		FETCH_ITEM_TYPES : ['open-ils.search','open-ils.search.biblio.item_type_map.retrieve.all'],
-		FETCH_AUDIENCES : ['open-ils.search','open-ils.search.biblio.audience_map.retrieve.all'],
-		FETCH_HOLD_STATUS : ['open-ils.circ','open-ils.circ.hold.status.retrieve'],
-		FETCH_NON_CAT_CIRCS : ['open-ils.circ','open-ils.circ.open_non_cataloged_circulation.user'],
-		FETCH_NON_CAT_CIRC : ['open-ils.circ','open-ils.circ.non_cataloged_circulation.retrieve'],
-		FETCH_NON_CAT_TYPES : ['open-ils.circ','open-ils.circ.non_cat_types.retrieve.all'],
-		FETCH_BRE : ['open-ils.search','open-ils.search.biblio.record_entry.slim.retrieve'],
-		CHECK_USERNAME : ['open-ils.actor','open-ils.actor.username.exists'],
-		FETCH_CIRC_BY_ID : ['open-ils.circ','open-ils.circ.retrieve'],
-		FETCH_MR_DESCRIPTORS : ['open-ils.search','open-ils.search.metabib.record_to_descriptors'],
-		FETCH_HIGHEST_PERM_ORG : ['open-ils.actor','open-ils.actor.user.perm.highest_org.batch'],
-		FETCH_USER_NOTES : ['open-ils.actor','open-ils.actor.note.retrieve.all'],
 		FETCH_ORG_BY_SHORTNAME : ['open-ils.actor','open-ils.actor.org_unit.retrieve_by_shortname'],
-		FETCH_BIB_ID_BY_BARCODE : ['open-ils.search','open-ils.search.bib_id.by_barcode'],
 		FETCH_ORG_SETTING : ['open-ils.actor','open-ils.actor.ou_setting.ancestor_default'],
 		FETCH_ORG_SETTING_BATCH : ['open-ils.actor','open-ils.actor.ou_setting.ancestor_default.batch']
 	};
+   
+    
+    //** FROM HASH **/
+	function _fromHash (_hash) {
+		for ( var i=0; i < this._fields.length; i++) {
+			if (_hash[this._fields[i]] != null)
+				this[this._fields[i]]( _hash[this._fields[i]] );
+		}
+		return this;
+	}
+
+	function _toHash (includeNulls, virtFields) {
+		var _hash = {};
+		for ( var i=0; i < this._fields.length; i++) {
+			if (includeNulls || this[this._fields[i]]() != null) {
+				if (this[this._fields[i]]() == null)
+                    _hash[this._fields[i]] = null;
+                else
+				    _hash[this._fields[i]] = '' + this[this._fields[i]]();
+            }
+		}
+
+		if (virtFields && virtFields.length > 0) {
+			for (var i = 0; i < virtFields.length; i++) {
+				if (!_hash[virtFields[i]])
+					_hash[virtFields[i]] = null;
+			}
+		}
+
+		return _hash;
+	}
+    //** FROM HASH **/
+
+
+    /** FROM dojoData **/
+	function _fromStoreItem (data) {
+		this.fromHash(data);
+
+		for (var i = 0; this._ignore_fields && i < this._ignore_fields.length; i++)
+			this[this._ignore_fields[i]](null);
+
+		for (var i = 0; this._fields && i < this._fields.length; i++) {
+			if (dojo.isArray( this[this._fields[i]]() ))
+				this[this._fields[i]]( this[this._fields[i]]()[0] );
+		}
+		return this;
+	}
+
+    function _initStoreData(label, params) {
+		if (!params) params = {};
+		if (!params.identifier) params.identifier = this.Identifier;
+		if (!label) label = params.label;
+		if (!label) label = params.identifier;
+		return { label : label, identifier : params.identifier, items : [] };
+    }
+
+    function _toStoreItem(fmObj, params) {
+		if (!params) params = {};
+        return fmObj.toHash(true, params.virtualFields);
+    }
+
+	function _toStoreData (list, label, params) {
+		if (!params) params = {};
+        var data = this.initStoreData(label, params);
+
+		for (var i = 0; list && i < list.length; i++) data.items.push( list[i].toHash(true, params.virtualFields) );
+
+		if (params.children && params.parent) {
+			var _hash_list = data.items;
+
+			var _find_root = {};
+			for (var i = 0; _hash_list && i < _hash_list.length; i++) {
+				_find_root[_hash_list[i][params.identifier]] = _hash_list[i]; 
+			}
+
+			var item_data = [];
+			for (var i = 0; _hash_list && i < _hash_list.length; i++) {
+				var obj = _hash_list[i]
+				obj[params.children] = [];
+
+				for (var j = 0; _hash_list && j < _hash_list.length; j++) {
+					var kid = _hash_list[j];
+					if (kid[params.parent] == obj[params.identifier]) {
+						obj[params.children].push( { _reference : kid[params.identifier] } );
+						kid._iskid = true;
+						if (_find_root[kid[params.identifier]]) delete _find_root[kid[params.identifier]];
+					}
+				}
+
+				item_data.push( obj );
+			}
+
+			for (var j in _find_root) {
+				_find_root[j]['_top'] = 'true';
+				if (!_find_root[j][params.parent])
+					_find_root[j]['_trueRoot'] = 'true';
+			}
+
+			data.items = item_data;
+		}
+
+		return data;
+	}
+    /** FROM dojoData **/
+
+
+
+    /** ! Begin code that executes on page parse */
+
+    if (!window.fmclasses) dojo.require("fieldmapper.fmall", true);
+    for( var cl in fmclasses ) {
+        fieldmapper.vivicateClass(cl);
+    }
+
+    // if we were NOT called by the IDL loader ...
+    // XXX This is now deprecated in preference to fieldmapper.AutoIDL
+    if ( !(fieldmapper.IDL && fieldmapper.IDL.loaded) ) {
+
+        fieldmapper.cmsa.Identifier = 'alias';
+        fieldmapper.cmc.Identifier = 'name';
+        fieldmapper.i18n_l.Identifier = 'code';
+        fieldmapper.ccpbt.Identifier = 'code';
+        fieldmapper.ccnbt.Identifier = 'code';
+        fieldmapper.cbrebt.Identifier = 'code';
+        fieldmapper.cubt.Identifier = 'code';
+        fieldmapper.ccm.Identifier = 'code';
+        fieldmapper.cvrfm.Identifier = 'code';
+        fieldmapper.clm.Identifier = 'code';
+        fieldmapper.cam.Identifier = 'code';
+        fieldmapper.cifm.Identifier = 'code';
+        fieldmapper.citm.Identifier = 'code';
+        fieldmapper.cblvl.Identifier = 'code';
+        fieldmapper.clfm.Identifier = 'code';
+        fieldmapper.mous.Identifier = 'usr';
+        fieldmapper.moucs.Identifier = 'usr';
+        fieldmapper.mucs.Identifier = 'usr';
+        fieldmapper.mus.Identifier = 'usr';
+        fieldmapper.rxbt.Identifier = 'xact';
+        fieldmapper.rxpt.Identifier = 'xact';
+        fieldmapper.cxt.Identifier = 'name';
+        fieldmapper.amtr.Identifier = 'matchpoint';
+        fieldmapper.coust.Identifier = 'name';
+
+    }
+
+
+    /** FROM dojoData **/
+    /* set up some known class attributes */
+	if (fieldmapper.aou) fieldmapper.aou.prototype._ignore_fields = ['children'];
+	if (fieldmapper.aout) fieldmapper.aout.prototype._ignore_fields = ['children'];
+	if (fieldmapper.pgt) fieldmapper.pgt.prototype._ignore_fields = ['children'];
+
+	fieldmapper.aou.toStoreData = function (list, label) {
+		if (!label) label = 'shortname';
+		return _toStoreData.call(this, list, label, { 'parent' : 'parent_ou', 'children' : 'children' });
+	}
+
+	fieldmapper.aout.toStoreData = function (list, label) {
+		if (!label) label = 'name';
+		return _toStoreData.call(this, list, label, { 'parent' : 'parent', 'children' : 'children' });
+	}
+
+	fieldmapper.pgt.toStoreData = function (list, label) {
+		if (!label) label = 'name';
+		return _toStoreData.call(this, list, label, { 'parent' : 'parent', 'children' : 'children' });
+	}
+    /** FROM dojoData **/
+    
 
 }
 

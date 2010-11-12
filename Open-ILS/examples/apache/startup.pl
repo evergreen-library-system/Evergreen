@@ -7,6 +7,7 @@ use OpenILS::WWW::Proxy ('/openils/conf/opensrf_core.xml');
 use OpenILS::WWW::Vandelay qw( /openils/conf/opensrf_core.xml );
 use OpenILS::WWW::EGWeb ('/openils/conf/oils_web.xml');
 use OpenILS::WWW::PasswordReset ('/openils/conf/opensrf_core.xml');
+use OpenILS::WWW::IDL2js ('/openils/conf/opensrf_core.xml');
 
 # - Uncoment the following 2 lines to make use of the IP redirection code
 # - The IP file should to contain a map with the following format:

@@ -20,7 +20,6 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 	dojo._hasResource["fieldmapper.OrgUtils"] = true;
 	dojo.provide("fieldmapper.OrgUtils");
 	dojo.require("fieldmapper.Fieldmapper");
-	dojo.require("fieldmapper.hash");
 	dojo.require("fieldmapper.OrgTree", true);
 	dojo.require("fieldmapper.OrgLasso", true);
 
