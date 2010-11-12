@@ -266,16 +266,27 @@ if(!dojo._hasResource["openils.widget.Searcher"]) {
     openils.widget.Searcher._cache = {arr : {}, obj : {}, store : {}};
 
     dojo.forEach(
-        [ {ident:'name',classname:'cmc',label:'label'}, {ident:'id',classname:'cmf',label:'label'}, {ident:'alias',classname:'cmsa',label:'alias'} ],
+        [ {ident:'name',classname:'cmc',label:'label',fields:null,cookie:true}, {ident:'id',classname:'cmf',label:'label',fields:['id','field_class','name','search_field','facet_field','label']} ],
+        // [ {ident:'name',classname:'cmc',label:'label',fields:null}, {ident:'id',classname:'cmf',label:'label',fields:null}, {ident:'alias',classname:'cmsa',label:'alias',fields:null} ],
         function (c) {
 
-            var q = {};
-            q[c.ident] = { '!=' :  null };
+            var fielder_result = c.cookie ? dojo.cookie('SRCHR' + c.classname) : null;
+            if (fielder_result) {
+                fielder_result = dojo.fromJson(fielder_result);
+            } else {
+                var q = {};
+                q[c.ident] = { '!=' :  null };
 
-            var fielder_result = fieldmapper.standardRequest(
-                [ 'open-ils.fielder', 'open-ils.fielder.'+c.classname+'.atomic'],
-                [ { cache : 1, query : q } ]
-            );
+                fielder_result = fieldmapper.standardRequest(
+                    [ 'open-ils.fielder', 'open-ils.fielder.'+c.classname+'.atomic'],
+                    [ { cache : 1, query : q, fields: c.fields } ]
+                );
+                if (c.cookie) dojo.cookie(
+                    'SRCHR' + c.classname,
+                    dojo.toJson(fielder_result),
+                    { path : location.href.replace(/^https?:\/\/[^\/]+(\/.*\w{2}-\w{2}\/).*/, "$1") }
+                );
+            }
 
             var sorted_fielder_result = fielder_result.sort( function(a,b) {
                 if(a[c.label] > b[c.label]) return 1;
