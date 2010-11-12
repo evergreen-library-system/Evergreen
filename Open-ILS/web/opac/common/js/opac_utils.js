@@ -827,17 +827,34 @@ function drawOrgTree() {
 	//setTimeout( 'buildOrgSelector(G.ui.common.org_tree, orgTreeSelector);', 10 );
 	setTimeout( 'buildOrgSelector(G.ui.common.org_tree, orgTreeSelector);', 1 );
 }
-	
+
+var checkOrgHiding_cached = false;
+var checkOrgHiding_cached_context_org;
+var checkOrgHiding_cached_depth;
 function checkOrgHiding() {
-	var context_org = getOrigLocation() || globalOrgTree.id();
-	var depth = fetchOrgSettingDefault( context_org, 'opac.org_unit_hiding.depth');
-	if (isXUL()) {
-		return false; // disable org hiding for staff client
-	}
-	if ( findOrgDepth( context_org ) < depth ) {
-		return false; // disable org hiding if Original Location doesn't make sense with setting depth (avoids disjointed org selectors)
-	}
-	return { 'org' : findOrgUnit(context_org), 'depth' : depth };
+    if (isXUL()) {
+        return false; // disable org hiding for staff client
+    }
+    var context_org = getOrigLocation() || globalOrgTree.id();
+    var depth;
+    if (checkOrgHiding_cached) {
+        if (checkOrgHiding_cached_context_org != context_org) {
+            checkOrgHiding_cached_context_org = context_org;
+            checkOrgHiding_cached_depth = undefined;
+            checkOrgHiding_cached = false;
+        } else {
+            depth = checkOrgHiding_cached_depth;
+        }
+    } else {
+        depth = fetchOrgSettingDefault( context_org, 'opac.org_unit_hiding.depth');
+        checkOrgHiding_cached_depth = depth;
+        checkOrgHiding_cached_context_org = context_org;
+        checkOrgHiding_cached = true;
+    }
+    if ( findOrgDepth( context_org ) < depth ) {
+        return false; // disable org hiding if Original Location doesn't make sense with setting depth (avoids disjointed org selectors)
+    }
+    return { 'org' : findOrgUnit(context_org), 'depth' : depth };
 }
 
 var orgTreeSelector;
