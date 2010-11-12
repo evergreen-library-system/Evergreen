@@ -25,7 +25,18 @@ if(!dojo._hasResource["openils.I18N"]) {
 
     dojo.declare('openils.I18N', null, {});
 
-	openils.I18N.BaseLocales = fieldmapper.standardRequest( [ 'open-ils.fielder', 'open-ils.fielder.i18n_l.atomic'], [ { cache : 1, query : { code : { '!=' :  null }  } } ] );
+	var x = dojo.cookie('I18Nset');
+	if (x) {
+		openils.I18N.BaseLocales = dojo.fromJson(x);
+	} else {
+		openils.I18N.BaseLocales = fieldmapper.standardRequest( [ 'open-ils.fielder', 'open-ils.fielder.i18n_l.atomic'], [ { cache : 1, query : { code : { '!=' :  null }  } } ] );
+		dojo.cookie(
+			'I18Nset',
+			dojo.toJson(openils.I18N.BaseLocales),
+			{ path : location.href.replace(/^https?:\/\/[^\/]+(\/.*\w{2}-\w{2}\/).*/, "$1") }
+		);
+	}
+
 	openils.I18N.localeStore = new dojo.data.ItemFileWriteStore( { data : {identifier : 'locale', label : 'label', items : [] } } );
 	openils.I18N.BaseLocales = openils.I18N.BaseLocales.sort(
         function(a, b) {
