@@ -2,21 +2,20 @@
 # Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
 # This file is distributed under the same license as the evergreen package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/common.properties
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: 2010-02-27 07:17+0000\n"
-"Last-Translator: A. Emmanuel Mendoza <Unknown>\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2010-06-25 08:32+0000\n"
+"Last-Translator: Jonay <jonay.santana@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Launchpad-Export-Date: 2010-02-28 04:56+0000\n"
-"X-Accelerator-Marker: &\n"
+"X-Launchpad-Export-Date: 2010-06-26 03:59+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: common.exception
 msgid ""
@@ -25,10 +24,14 @@ msgid ""
 "%1$s\n"
 "%2$s\n"
 msgstr ""
+"!! Este software ha encontrado un error. Por favor notifique a su amigable "
+"administrador de sistemas o desarrollador de software lo siguiente:\n"
+"%1$s\n"
+"%2$s\n"
 
 #: common.jsan.missing
 msgid "The JSAN library object is missing."
-msgstr "El objeto de la libreria JSAN está ausente."
+msgstr "El objeto de la librería JSAN no se ha encontrado."
 
 #: common.error
 msgid "Please inform your help desk or developers of this error:"
@@ -47,17 +50,14 @@ msgstr "Limpiar"
 msgid "Check here to confirm this message."
 msgstr "Marque aquí para confirmar este mensaje."
 
-#: common.cancelled
-msgid "Action Cancelled"
-msgstr ""
-
 #: common.error.default
 msgid "Please report that this happened."
-msgstr "Por favor informe que esto a ocurrido."
+msgstr "Por favor informe que esto ha ocurrido."
 
 #: common.barcode.status.warning
 msgid "Warning: As of %1$s, this barcode (%2$s) was flagged %3$s."
 msgstr ""
+"Advertencia: A partir de %1$s, este código de barras (%2$s) fue marcado %3$s."
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
@@ -68,9 +68,10 @@ msgid "Expired"
 msgstr "Caducado"
 
 #: common.barcode.status.warning.barred
-msgctxt "common.barcode.status.warning.barred"
-msgid "Barred"
-msgstr ""
+msgid ""
+"_: common.barcode.status.warning.barred\n"
+"Barred"
+msgstr "Prohibido"
 
 #: common.barcode.status.warning.blocked
 msgid "Blocked"
@@ -82,25 +83,26 @@ msgstr "con un código desconocido: %1$s"
 
 #: common.date.invalid
 msgid "Invalid Date"
-msgstr "Fecha inválida"
+msgstr "Fecha no válida"
 
 #: common.action_complete
 msgid "Action completed."
-msgstr "Acción completa."
+msgstr "Acción completada."
 
 #. # common.grouping_string = the string that should be inserted between elements of a grouped list
 #: common.grouping_string
-msgid ", "
-msgstr ""
+msgid ","
+msgstr ","
 
 #: common.unimplemented
 msgid "Not yet implemented"
 msgstr "No implementado aún"
 
 #: common.yes
-msgctxt "common.yes"
-msgid "Yes"
-msgstr "Si"
+msgid ""
+"_: common.yes\n"
+"Yes"
+msgstr "Sí"
 
 #: common.no
 msgid "No"
@@ -112,40 +114,36 @@ msgstr "Marque aquí para confirmar este mensaje"
 
 #: lang.version
 msgid "remote v1"
-msgstr ""
+msgstr "remoto v1"
 
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
-msgstr ""
+msgstr "Problema al vaciar caché: %1$s"
 
 #: openils.global_util.clipboard.error
 msgid "Clipboard action failed: %1$s"
-msgstr ""
+msgstr "Acción del portapapeles falló: %1$s"
 
 #: openils.global_util.clipboard
 msgid "Copied \"%1$s\" to clipboard."
-msgstr ""
+msgstr "\"%1$s\" copiado al portapapeles."
 
 #: openils.global_util.content_window_jsobject.error
 msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
-msgstr ""
+msgstr "Error en get_contentWindow(%1$s) y wrappedJSObject: %2$s"
 
 #: openils.global_util.content_window.error
 msgid "Error with get_contentWindow(%1$s): %2$s"
-msgstr ""
+msgstr "Error con get_contentWindow(%1$s): %2$s"
 
 #: openils.global_util.font_size.error
 msgid "Error adjusting the font size: %1$s"
-msgstr ""
-
-#. # Appended to notes with certain settings enabled.  First position is staff initials, and second position is a date for when the initials were added.
-#: staff.initials.format
-msgid "[ %1$s %2$s @ %3$s ]"
-msgstr ""
+msgstr "Error al ajustar el tamaño de la fuente: %1$s"
 
 #: staff.acp_label_barcode
-msgctxt "staff.acp_label_barcode"
-msgid "Barcode"
+msgid ""
+"_: staff.acp_label_barcode\n"
+"Barcode"
 msgstr "Código de barras"
 
 #: staff.acp_label_call_number
@@ -170,7 +168,7 @@ msgstr "Copiar número"
 
 #: staff.acp_label_deposit_amount
 msgid "Deposit Amount"
-msgstr ""
+msgstr "Depositar monto"
 
 #: staff.acp_label_fine_level
 msgid "Fine Level"
@@ -193,8 +191,9 @@ msgid "Price"
 msgstr "Precio"
 
 #: staff.acp_label_status
-msgctxt "staff.acp_label_status"
-msgid "Status"
+msgid ""
+"_: staff.acp_label_status\n"
+"Status"
 msgstr "Estado"
 
 #: staff.ahr_current_copy_label
@@ -218,8 +217,9 @@ msgid "Fulfillment Time"
 msgstr ""
 
 #: staff.ahr_hold_type_label
-msgctxt "staff.ahr_hold_type_label"
-msgid "Type"
+msgid ""
+"_: staff.ahr_hold_type_label\n"
+"Type"
 msgstr "Tipo"
 
 #: staff.ahr_holdable_formats_label
@@ -248,15 +248,16 @@ msgstr "Solicitante"
 
 #: staff.ahr_selection_depth_label
 msgid "Selection Depth"
-msgstr ""
+msgstr "Profundidad de selección"
 
 #: staff.ahr_top_of_queue_label
 msgid "Top of Queue"
-msgstr ""
+msgstr "Principio de la cola"
 
 #: staff.ahr_status_label
-msgctxt "staff.ahr_status_label"
-msgid "Status"
+msgid ""
+"_: staff.ahr_status_label\n"
+"Status"
 msgstr "Estado"
 
 #: staff.ahr_target_label
@@ -264,8 +265,9 @@ msgid "Target"
 msgstr "Destino"
 
 #: staff.ahr_usr_label
-msgctxt "staff.ahr_usr_label"
-msgid "User"
+msgid ""
+"_: staff.ahr_usr_label\n"
+"User"
 msgstr "Usuario"
 
 #: staff.circ_label_due_date
@@ -282,11 +284,12 @@ msgstr ""
 
 #: staff.circ_label_renewal_remaining
 msgid "Remaining Renewals"
-msgstr ""
+msgstr "Renovaciones Pendientes"
 
 #: staff.mvr_label_author
-msgctxt "staff.mvr_label_author"
-msgid "Author"
+msgid ""
+"_: staff.mvr_label_author\n"
+"Author"
 msgstr "Autor"
 
 #: staff.mvr_label_doc_id
@@ -294,8 +297,9 @@ msgid "Document ID"
 msgstr "ID del documento"
 
 #: staff.mvr_label_title
-msgctxt "staff.mvr_label_title"
-msgid "Title"
+msgid ""
+"_: staff.mvr_label_title\n"
+"Title"
 msgstr "Título"
 
 #: staff.bills_xact_dates_label
@@ -339,62 +343,47 @@ msgid "Blocks Holds?"
 msgstr ""
 
 #: staff.csp_block_circ_yes
-msgctxt "staff.csp_block_circ_yes"
-msgid "Yes"
-msgstr "Si"
-
-#: staff.csp_block_circ_no
-msgctxt "staff.csp_block_circ_no"
-"staff.csp_block_circ_no"
 msgid ""
-msgstr ""
+"_: staff.csp_block_circ_yes\n"
+"Yes"
+msgstr "Si"
 
 #: staff.csp_block_renew_yes
-msgctxt "staff.csp_block_renew_yes"
-msgid "Yes"
-msgstr "Si"
-
-#: staff.csp_block_renew_no
-msgctxt "staff.csp_block_renew_no"
 msgid ""
-msgstr ""
+"_: staff.csp_block_renew_yes\n"
+"Yes"
+msgstr "Si"
 
 #: staff.csp_block_hold_yes
-msgctxt "staff.csp_block_hold_yes"
-msgid "Yes"
+msgid ""
+"_: staff.csp_block_hold_yes\n"
+"Yes"
 msgstr "Si"
 
-#: staff.csp_block_hold_no
-msgctxt "staff.csp_block_hold_no"
-msgid ""
-msgstr ""
-
 #: staff.ausp_id_label
-msgid "Penalty ID "
+msgid "Penalty ID"
 msgstr ""
 
 #: staff.ausp_staff_label
-#, fuzzy
-msgid "Applied By "
+msgid "Applied By"
 msgstr "Aplicado por"
 
 #: staff.ausp_set_date_label
-#, fuzzy
-msgid "Applied On "
+msgid "Applied On"
 msgstr "Aplicado en"
 
 #: staff.ausp_note_label
-#, fuzzy
-msgid "Note "
+msgid ""
+"_: staff.ausp_note_label\n"
+"Note"
 msgstr "Nota"
 
 #: staff.ausp_org_unit_label
-#, fuzzy
-msgid "Library "
+msgid "Library"
 msgstr "Biblioteca"
 
 #: staff.mbts_id_label
-msgid "Bill # "
+msgid "Bill #"
 msgstr ""
 
 #: staff.mbts_xact_start_label
@@ -406,8 +395,9 @@ msgid "Finish"
 msgstr "Finalizar"
 
 #: staff.mbts_xact_type_label
-msgctxt "staff.mbts_xact_type_label"
-msgid "Type"
+msgid ""
+"_: staff.mbts_xact_type_label\n"
+"Type"
 msgstr "Tipo"
 
 #: staff.mbts_total_owed_label
@@ -423,8 +413,9 @@ msgid "Balance Owed"
 msgstr ""
 
 #: staff.mbts_usr_label
-msgctxt "staff.mbts_usr_label"
-msgid "User"
+msgid ""
+"_: staff.mbts_usr_label\n"
+"User"
 msgstr "Usuario"
 
 #: staff.mbts_last_billing_note_label
@@ -453,16 +444,18 @@ msgstr "Último pago"
 
 #: staff.mb_billing_type_label
 msgid "Billing Type"
-msgstr ""
+msgstr "Tipo de facturación"
 
 #: staff.mb_xact_label
-msgctxt "staff.mb_xact_label"
-msgid "Transaction ID"
-msgstr ""
+msgid ""
+"_: staff.mb_xact_label\n"
+"Transaction ID"
+msgstr "ID de la operación"
 
 #: staff.mb_billing_ts_label
-msgctxt "staff.mb_billing_ts_label"
-msgid "When"
+msgid ""
+"_: staff.mb_billing_ts_label\n"
+"When"
 msgstr "Cuando"
 
 #: staff.mb_void_time_label
@@ -470,13 +463,15 @@ msgid "Void Time"
 msgstr ""
 
 #: staff.mb_note_label
-msgctxt "staff.mb_note_label"
-msgid "Note"
+msgid ""
+"_: staff.mb_note_label\n"
+"Note"
 msgstr "Nota"
 
 #: staff.mb_amount_label
-msgctxt "staff.mb_amount_label"
-msgid "Amount"
+msgid ""
+"_: staff.mb_amount_label\n"
+"Amount"
 msgstr "Monto"
 
 #: staff.mb_voider_label
@@ -484,9 +479,10 @@ msgid "Voider"
 msgstr ""
 
 #: staff.mb_voided_label
-msgctxt "staff.mb_voided_label"
-msgid "Voided"
-msgstr ""
+msgid ""
+"_: staff.mb_voided_label\n"
+"Voided"
+msgstr "Invalidado"
 
 #: staff.mb_id_label
 msgid "Billing ID"
@@ -494,15 +490,16 @@ msgstr ""
 
 #: staff.mp_credit_card_payment_label
 msgid "Credit Card Payment"
-msgstr ""
+msgstr "Pago con Tajeta de Crédito"
 
 #: staff.mp_forgive_payment_label
 msgid "Forgive Payment"
 msgstr ""
 
 #: staff.mp_payment_timestamp_label
-msgctxt "staff.mp_payment_timestamp_label"
-msgid "When"
+msgid ""
+"_: staff.mp_payment_timestamp_label\n"
+"When"
 msgstr "Cuando"
 
 #: staff.mp_payment_type_label
@@ -510,8 +507,9 @@ msgid "Payment Type"
 msgstr "Forma de pago"
 
 #: staff.mp_voided_label
-msgctxt "staff.mp_voided_label"
-msgid "Voided"
+msgid ""
+"_: staff.mp_voided_label\n"
+"Voided"
 msgstr ""
 
 #: staff.mp_id_label
@@ -523,8 +521,9 @@ msgid "Goods Payment"
 msgstr ""
 
 #: staff.mp_xact_label
-msgctxt "staff.mp_xact_label"
-msgid "Transaction ID"
+msgid ""
+"_: staff.mp_xact_label\n"
+"Transaction ID"
 msgstr ""
 
 #: staff.mp_credit_payment_label
@@ -536,23 +535,24 @@ msgid "Work Payment"
 msgstr ""
 
 #: staff.mp_note_label
-msgctxt "staff.mp_note_label"
-msgid "Note"
+msgid ""
+"_: staff.mp_note_label\n"
+"Note"
 msgstr "Nota"
 
 #: staff.mp_cash_payment_label
-#, fuzzy
 msgid "Cash Payment"
-msgstr "Último pago"
+msgstr ""
 
 #: staff.mp_amount_label
-msgctxt "staff.mp_amount_label"
-msgid "Amount"
+msgid ""
+"_: staff.mp_amount_label\n"
+"Amount"
 msgstr "Monto"
 
 #: staff.mp_check_payment_label
 msgid "Check Payment"
-msgstr ""
+msgstr "Comprobar Pago"
 
 #: staff.mp_cash_drawer_label
 msgid "Workstation"
@@ -563,8 +563,9 @@ msgid "Staff"
 msgstr "Personal"
 
 #: staff.card_barcode_label
-msgctxt "staff.card_barcode_label"
-msgid "Barcode"
+msgid ""
+"_: staff.card_barcode_label\n"
+"Barcode"
 msgstr "Código de barras"
 
 #: staff.au_active_label
@@ -580,8 +581,9 @@ msgid "Profile"
 msgstr "Perfil"
 
 #: staff.au_barred_label
-msgctxt "staff.au_barred_label"
-msgid "Barred"
+msgid ""
+"_: staff.au_barred_label\n"
+"Barred"
 msgstr ""
 
 #: staff.au_alert_message_label
@@ -641,14 +643,12 @@ msgid "Identification Type"
 msgstr "Tipo de identificación"
 
 #: staff.au_ident_value_label
-#, fuzzy
 msgid "Identification Value"
-msgstr "Tipo de identificación"
+msgstr ""
 
 #: staff.au_ident_type2_label
-#, fuzzy
 msgid "Identification Type 2"
-msgstr "Tipo de identificación"
+msgstr ""
 
 #: staff.au_ident_value2_label
 msgid "Identification Value 2"
@@ -691,8 +691,9 @@ msgid "Suffix"
 msgstr "Sufijo"
 
 #: staff.z39_50.search_class.author
-msgctxt "staff.z39_50.search_class.author"
-msgid "Author"
+msgid ""
+"_: staff.z39_50.search_class.author\n"
+"Author"
 msgstr "Autor"
 
 #: staff.z39_50.search_class.isbn
@@ -733,7 +734,7 @@ msgstr ""
 
 #: staff.z39_50.search_class.item_type.rec
 msgid "Sound recordings"
-msgstr ""
+msgstr "Grabaciones de sonido"
 
 #: staff.z39_50.search_class.item_type.sco
 msgid "Musical scores"
@@ -768,8 +769,9 @@ msgid "Accession #"
 msgstr ""
 
 #: staff.z39_50.search_class.title
-msgctxt "staff.z39_50.search_class.title"
-msgid "Title"
+msgid ""
+"_: staff.z39_50.search_class.title\n"
+"Title"
 msgstr "Título"
 
 #: staff.z39_50_import_interface_label
@@ -778,14 +780,14 @@ msgstr ""
 
 #: staff.main.data.loaded
 msgid "Data loaded."
-msgstr ""
+msgstr "Datos cargados."
 
 #: staff.main.gen_offline_widgets.synced
 msgid "Offline interface synchronized with server."
 msgstr ""
 
 #: staff.main.gen_offline_widgets.noncat_sort.error
-msgid "error in noncat sorting: "
+msgid "error in noncat sorting:"
 msgstr ""
 
 #: staff.main.gen_offline_widgets.please_wait
@@ -794,15 +796,15 @@ msgstr "Por favor, espere"
 
 #: staff.main.gen_offline_widgets.workstation_registration_denied
 msgid "You do not have permission to register a workstation."
-msgstr ""
+msgstr "No tiene permiso para registrar una estación de trabajo."
 
 #: staff.main.gen_offline_widgets.registration.override
 msgid "Override Registration Failure?"
-msgstr ""
+msgstr "¿Ignorar Fallo de Registro?"
 
 #: staff.main.gen_offline_widgets.registration.error
 msgid "Workstation Registration error (%1$s)"
-msgstr ""
+msgstr "Error de registro de la estación de trabajo (%1$s)"
 
 #: staff.main.gen_offline_widgets.registration.success
 msgid "Registration successful"
@@ -810,11 +812,11 @@ msgstr "Registro exitoso"
 
 #: staff.util.timestamp_dialog.future_date_disallowed
 msgid "Future dates disallowed."
-msgstr ""
+msgstr "Fechas futuras no permitidas."
 
 #: staff.util.timestamp_dialog.past_date_disallowed
 msgid "Past dates disallowed."
-msgstr ""
+msgstr "Fechas pasadas no permitidas."
 
 #: staff.util.timestamp_dialog.today_disallowed
 msgid "Today disallowed."
@@ -823,6 +825,3 @@ msgstr ""
 #: tab.label.triggered_events_for_copy
 msgid "Triggered Events: %1$s"
 msgstr "Eventos disparados: %1$s"
-
-#~ msgid ","
-#~ msgstr ","

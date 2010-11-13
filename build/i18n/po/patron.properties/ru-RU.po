@@ -1,17 +1,16 @@
-#. extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
 "PO-Revision-Date: 2010-04-02 06:44+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
 "X-Launchpad-Export-Date: 2010-04-03 03:55+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
@@ -59,8 +58,9 @@ msgid "Deny"
 msgstr "Отвергать"
 
 #: staff.patron.barcode_entry.patron_consent_confirm
-msgctxt "staff.patron.barcode_entry.patron_consent_confirm"
-msgid "Check here to confirm this message"
+msgid ""
+"_: staff.patron.barcode_entry.patron_consent_confirm\n"
+"Check here to confirm this message"
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
 
 #: staff.patron.barcode_entry.patron_display_error
@@ -71,30 +71,29 @@ msgstr "Порождение отображения патрона"
 msgid "spawning user perm editor"
 msgstr "Порождение полномочий пользовательского редактора"
 
-#: staff.patron.bill_interface.payment_pending.column_header
-msgid "Payment Pending"
-msgstr ""
-
 #: staff.patron.bill_cc_info.need_cc_number
 msgid "You must provide a credit card number"
 msgstr "Вы должны предоставить номер кредитной карты"
 
 #: staff.patron.bill_cc_info.need_approval_code
 msgid "You must provide an approval code or an imprint slip number"
-msgstr "Вы должны предоставить подтверждающий код  или регистрационный  номер"
+msgstr ""
+"Вы должны предоставить подтверждающий код  или регистрационный  номер"
 
 #: staff.patron.bill_details.my_init.error
 msgid "bill_details.xul, my_init:"
 msgstr "bill_details.xul, my_init:"
 
 #: staff.patron.bill_details.handle_edit_bill_note.note_dialog.title
-msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.title"
-msgid "Replacement Note"
+msgid ""
+"_: staff.patron.bill_details.handle_edit_bill_note.note_dialog.title\n"
+"Replacement Note"
 msgstr "Замещающее  примечание"
 
 #: staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt
-msgctxt "staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt"
-msgid "Enter new note:"
+msgid ""
+"_: staff.patron.bill_details.handle_edit_bill_note.note_dialog.prompt\n"
+"Enter new note:"
 msgstr "Введите новое примечание"
 
 #: staff.patron.bill_details.handle_edit_bill_note.failure
@@ -102,13 +101,15 @@ msgid "Note for selected bills not likely updated."
 msgstr "Примечание для выбранного счета вряд ли обновлено"
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.title
-msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.title"
-msgid "Replacement Note"
+msgid ""
+"_: staff.patron.bill_details.handle_edit_payment_note.note_dialog.title\n"
+"Replacement Note"
 msgstr "Замещающее  примечание"
 
 #: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt
-msgctxt "staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt"
-msgid "Enter new note:"
+msgid ""
+"_: staff.patron.bill_details.handle_edit_payment_note.note_dialog.prompt\n"
+"Enter new note:"
 msgstr "Введите новое примечание"
 
 #: staff.patron.bill_details.handle_edit_payment_note.failure
@@ -120,34 +121,48 @@ msgid "All selected billings have already voided."
 msgstr "Все выбранные  счета  уже недействительны"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing
-msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing"
-msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
-msgstr "Вы уверены что хотите отклонить $%1$s стоимость строка-позиция счетов?"
+msgid ""
+"_: staff.patron.bill_details.handle_void.confirm_void_billing\n"
+"Are you sure you would like to void $%1$s worth of line-item billings?"
+msgstr ""
+"Вы уверены что хотите отклонить $%1$s стоимость строка-позиция счетов?"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_title
-msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_title"
-msgid "Voiding Bills"
+msgid ""
+"_: staff.patron.bill_details.handle_void.confirm_void_billing_title\n"
+"Voiding Bills"
 msgstr "Аннулирование счетов"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_yes
-msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_yes"
-msgid "Yes"
+msgid ""
+"_: staff.patron.bill_details.handle_void.confirm_void_billing_yes\n"
+"Yes"
 msgstr "Да"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_no
-msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_no"
-msgid "No"
+msgid ""
+"_: staff.patron.bill_details.handle_void.confirm_void_billing_no\n"
+"No"
 msgstr "Нет"
 
 #: staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message
-msgctxt "staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message"
-msgid "Check here to confirm this message"
+msgid ""
+"_: "
+"staff.patron.bill_details.handle_void.confirm_void_billing_confirm_message\n"
+"Check here to confirm this message"
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
 
 #: staff.patron.bill_details.handle_void.voiding_error
-msgctxt "staff.patron.bill_details.handle_void.voiding_error"
-msgid "Error voiding bills."
+msgid ""
+"_: staff.patron.bill_details.handle_void.voiding_error\n"
+"Error voiding bills."
 msgstr "Ошибка при аннулировании счетов"
+
+#: staff.patron.bill_details.handle_void.billings_voided
+msgid ""
+"_: staff.patron.bill_details.handle_void.billings_voided\n"
+"Billings voided."
+msgstr "Счета аннулированы"
 
 #: staff.patron.bill_history.retrieve_mbts_for_list.close_win_try_again
 msgid "Please close this window and try again."
@@ -174,71 +189,26 @@ msgid "Bill Patron"
 msgstr "Счет патрона"
 
 #: staff.patron.bill_history.handle_add.btn_yes
-msgctxt "staff.patron.bill_history.handle_add.btn_yes"
-msgid "Yes"
+msgid ""
+"_: staff.patron.bill_history.handle_add.btn_yes\n"
+"Yes"
 msgstr "Да"
 
 #: staff.patron.bill_history.handle_add.btn_no
-msgctxt "staff.patron.bill_history.handle_add.btn_no"
-msgid "No"
+msgid ""
+"_: staff.patron.bill_history.handle_add.btn_no\n"
+"No"
 msgstr "Нет"
 
 #: staff.patron.bill_history.handle_add.confirm_message
-msgctxt "staff.patron.bill_history.handle_add.confirm_message"
-msgid "Check here to confirm this message"
-msgstr "Отметите здесь, чтобы подтвердить это сообщение"
-
-#: staff.patron.bill_history.handle_void.message_plural
-#, fuzzy
-msgid "Are you sure you would like to void all billings on bills %1$s?"
-msgstr "Вы уверены, что хотите добавить  счет к накладным %1$s?"
-
-#: staff.patron.bill_history.handle_void.message_singular
-#, fuzzy
-msgid "Are you sure you would like to void all billings on bill %1$s?"
-msgstr "Вы уверены, что хотите добавить  счет к накладной %1$s?"
-
-#: staff.patron.bill_history.handle_void.title
-#, fuzzy
-msgctxt "staff.patron.bill_history.handle_void.title"
-msgid "Void All Billings"
-msgstr "Аннулировать все счета"
-
-#: staff.patron.bill_history.handle_void.btn_yes
-#, fuzzy
-msgctxt "staff.patron.bill_history.handle_void.btn_yes"
-msgid "Yes"
-msgstr "Да"
-
-#: staff.patron.bill_history.handle_void.btn_no
-#, fuzzy
-msgctxt "staff.patron.bill_history.handle_void.btn_no"
-msgid "No"
-msgstr "Нет"
-
-#: staff.patron.bill_history.handle_void.confirm_message
-#, fuzzy
-msgctxt "staff.patron.bill_history.handle_void.confirm_message"
-msgid "Check here to confirm this message"
+msgid ""
+"_: staff.patron.bill_history.handle_add.confirm_message\n"
+"Check here to confirm this message"
 msgstr "Отметите здесь, чтобы подтвердить это сообщение"
 
 #: staff.patron.bill_history.print_bills.print_error
 msgid "printing bills"
 msgstr "Печать счетов"
-
-#: staff.patron.bill_history.column.xact_type.label
-msgid "Transaction Type"
-msgstr ""
-
-#: staff.patron.bill_history.column.last_billing_type.label
-msgid "Last Billing Type"
-msgstr ""
-
-#: staff.patron.bill_history.column.title.label
-#, fuzzy
-msgctxt "staff.patron.bill_history.column.title.label"
-msgid "Title"
-msgstr "Заглавие"
 
 #: staff.patron.bills.init_controller.money_summary_label
 msgid "Money Summary"
@@ -280,18 +250,10 @@ msgstr ""
 msgid "Bill payment likely failed"
 msgstr "Счет оплаты не удался"
 
-#: staff.patron.bills.info_box.label_value.reservation
-msgid "Reservation"
-msgstr ""
-
-#. # 1 - Resource Barcode  2 - Resource Type Name
-#: staff.patron.bills.info_box.value_format.reservation
-msgid "%1$s : %2$s"
-msgstr ""
-
 #: staff.patron.bills.info_box.label_value.title
-msgctxt "staff.patron.bills.info_box.label_value.title"
-msgid "Title"
+msgid ""
+"_: staff.patron.bills.info_box.label_value.title\n"
+"Title"
 msgstr "Заглавие"
 
 #: staff.patron.bills.info_box.label_value.type
@@ -311,8 +273,6 @@ msgid "Refund"
 msgstr "Возврат"
 
 #: staff.patron.bills.info_box.label_value.void_all_billings
-#, fuzzy
-msgctxt "staff.patron.bills.info_box.label_value.void_all_billings"
 msgid "Void All Billings"
 msgstr "Аннулировать все счета"
 
@@ -325,38 +285,46 @@ msgid "All billings already voided on this bill."
 msgstr "Все счета уже аннулированы в накладной"
 
 #: staff.patron.bills.void_all_billings.void.message
-msgctxt "staff.patron.bills.void_all_billings.void.message"
-msgid "Are you sure you would like to void $%1$s worth of line-item billings?"
-msgstr "Вы уверены, что хотите аннулировать $%1$s худший из  выделенной строки"
+msgid ""
+"_: staff.patron.bills.void_all_billings.void.message\n"
+"Are you sure you would like to void $%1$s worth of line-item billings?"
+msgstr ""
+"Вы уверены, что хотите аннулировать $%1$s худший из  выделенной строки"
 
 #: staff.patron.bills.void_all_billings.void.title
-msgctxt "staff.patron.bills.void_all_billings.void.title"
-msgid "Voiding Bills"
+msgid ""
+"_: staff.patron.bills.void_all_billings.void.title\n"
+"Voiding Bills"
 msgstr "Аннулирование счетов"
 
 #: staff.patron.bills.void_all_billings.void.yes
-msgctxt "staff.patron.bills.void_all_billings.void.yes"
-msgid "Yes"
+msgid ""
+"_: staff.patron.bills.void_all_billings.void.yes\n"
+"Yes"
 msgstr "Да"
 
 #: staff.patron.bills.void_all_billings.void.no
-msgctxt "staff.patron.bills.void_all_billings.void.no"
-msgid "No"
+msgid ""
+"_: staff.patron.bills.void_all_billings.void.no\n"
+"No"
 msgstr "Нет"
 
 #: staff.patron.bills.void_all_billings.void.confirm_message
-msgctxt "staff.patron.bills.void_all_billings.void.confirm_message"
-msgid "Check here to confirm this message"
+msgid ""
+"_: staff.patron.bills.void_all_billings.void.confirm_message\n"
+"Check here to confirm this message"
 msgstr "Проверьте здесь, чтобы подтвердить это сообщение"
 
 #: staff.patron.bills.void_all_billings.error_voiding_bills
-msgctxt "staff.patron.bills.void_all_billings.error_voiding_bills"
-msgid "Error voiding bills."
+msgid ""
+"_: staff.patron.bills.void_all_billings.error_voiding_bills\n"
+"Error voiding bills."
 msgstr "Ошибка при аннулировании счета"
 
 #: staff.patron.bills.void_all_billings.billings_voided
-#, fuzzy
-msgid "Billings voided."
+msgid ""
+"_: staff.patron.bills.void_all_billings.billings_voided\n"
+"Billings voided."
 msgstr "Счета аннулированы"
 
 #: staff.patron.bill_wizard.patron_bill_finish.billing_added
@@ -413,11 +381,6 @@ msgstr ""
 "Пожалуйста, введите штрих-код  пользователя  пункта назначения, чтобы  он "
 "мог получить  удаленные  другим пользователем  артефакты (отчеты, и т. п.)"
 
-#: staff.patron.display.cmd_patron_delete.dest_user.default_value
-msgctxt "staff.patron.display.cmd_patron_delete.dest_user.default_value"
-msgid ""
-msgstr ""
-
 #: staff.patron.display.cmd_patron_delete.dest_user.title
 msgid "Destination User"
 msgstr "Пользователь  пункта назначения"
@@ -437,8 +400,9 @@ msgstr ""
 "назначения. Удаление пользователя прервано."
 
 #: staff.patron.display.spawn_editor.editing_related_patron
-msgctxt "staff.patron.display.spawn_editor.editing_related_patron"
-msgid "Editing Related Patron"
+msgid ""
+"_: staff.patron.display.spawn_editor.editing_related_patron\n"
+"Editing Related Patron"
 msgstr "Редактирование родственного пользователя"
 
 #: staff.patron.display.init.retrieving_patron
@@ -479,8 +443,7 @@ msgstr "Тревога"
 
 #: staff.patron.display.init.network_request.window_message
 msgid ""
-"Press a navigation button above (for example, Check Out) to clear this "
-"alert."
+"Press a navigation button above (for example, Check Out) to clear this alert."
 msgstr ""
 "Нажмите кнопку навигации наверху (например, Выдача) для очистки этого "
 "предупреждения"
@@ -518,18 +481,21 @@ msgid "Method"
 msgstr "Метод"
 
 #: staff.patron.hold_notices.note
-msgctxt "staff.patron.hold_notices.note"
-msgid "Note"
+msgid ""
+"_: staff.patron.hold_notices.note\n"
+"Note"
 msgstr "Заметка"
 
 #: staff.patron.hold_notices.cancel
-msgctxt "staff.patron.hold_notices.cancel"
-msgid "Cancel"
+msgid ""
+"_: staff.patron.hold_notices.cancel\n"
+"Cancel"
 msgstr "Отмена"
 
 #: staff.patron.hold_notices.cancel_accesskey
-msgctxt "staff.patron.hold_notices.cancel_accesskey"
-msgid "C"
+msgid ""
+"_: staff.patron.hold_notices.cancel_accesskey\n"
+"C"
 msgstr "C"
 
 #: staff.patron.hold_notices.add_notif_record
@@ -537,8 +503,9 @@ msgid "Add Notification Record"
 msgstr "Добавить предупреждающий запись"
 
 #: staff.patron.hold_notices.add_notif_record_accesskey
-msgctxt "staff.patron.hold_notices.add_notif_record_accesskey"
-msgid "A"
+msgid ""
+"_: staff.patron.hold_notices.add_notif_record_accesskey\n"
+"A"
 msgstr "A"
 
 #: staff.patron.hold_notices.new_notification.not_created
@@ -550,18 +517,21 @@ msgid "ID: %1$s Hold ID: %2$s Staff ID: %3$s"
 msgstr "ID: %1$s  ID Хранения: %2$s  ID Персонала: %3$s"
 
 #: staff.patron.hold_notes.new_note
-msgctxt "staff.patron.hold_notes.new_note"
-msgid "New Note"
+msgid ""
+"_: staff.patron.hold_notes.new_note\n"
+"New Note"
 msgstr "Новое примечание"
 
 #: staff.patron.hold_notes.title
-msgctxt "staff.patron.hold_notes.title"
-msgid "Title"
+msgid ""
+"_: staff.patron.hold_notes.title\n"
+"Title"
 msgstr "Заглавие"
 
 #: staff.patron.hold_notes.body
-msgctxt "staff.patron.hold_notes.body"
-msgid "Note"
+msgid ""
+"_: staff.patron.hold_notes.body\n"
+"Note"
 msgstr "Примечание"
 
 #: staff.patron.hold_notes.public
@@ -585,8 +555,7 @@ msgid "By Staff"
 msgstr "Персоналом"
 
 #: staff.patron.hold_notes.by_patron
-#, fuzzy
-msgid "By Patron "
+msgid "By Patron"
 msgstr "Пользователем библиотеки"
 
 #: staff.patron.hold_notes.new_note.public
@@ -598,28 +567,33 @@ msgid "Print on slip?"
 msgstr "Печатать на карточке?"
 
 #: staff.patron.hold_notes.cancel
-msgctxt "staff.patron.hold_notes.cancel"
-msgid "Cancel"
+msgid ""
+"_: staff.patron.hold_notes.cancel\n"
+"Cancel"
 msgstr "Отменить"
 
 #: staff.patron.hold_notes.cancel_accesskey
-msgctxt "staff.patron.hold_notes.cancel_accesskey"
-msgid "C"
+msgid ""
+"_: staff.patron.hold_notes.cancel_accesskey\n"
+"C"
 msgstr "С"
 
 #: staff.patron.hold_notes.add_note
-msgctxt "staff.patron.hold_notes.add_note"
-msgid "Add Note"
+msgid ""
+"_: staff.patron.hold_notes.add_note\n"
+"Add Note"
 msgstr "Добавить примечание"
 
 #: staff.patron.hold_notes.add_note.accesskey
-msgctxt "staff.patron.hold_notes.add_note.accesskey"
-msgid "A"
+msgid ""
+"_: staff.patron.hold_notes.add_note.accesskey\n"
+"A"
 msgstr "А"
 
 #: staff.patron.hold_notes.new_note.not_created
-msgctxt "staff.patron.hold_notes.new_note.not_created"
-msgid "The note was not likely created."
+msgid ""
+"_: staff.patron.hold_notes.new_note.not_created\n"
+"The note was not likely created."
 msgstr "Примечание возможно не создано"
 
 #: staff.patron.holds.init.hold_num_error
@@ -630,58 +604,60 @@ msgstr "Ошибка при восстановлении  деталей для 
 msgid "Error rendering or retrieving hold notifications."
 msgstr "Ошибка при исполнении или добавлении заметок о хранении"
 
-#: staff.patron.holds.total_count
-msgid "Total Holds: %1$s"
-msgstr ""
-
 #: staff.patron.holds.holds_edit_selection_depth.choose_hold_range
 msgid "Please choose a Hold Range:"
 msgstr "Пожалуйста, выберите диапазон Хранений:"
 
 #: staff.patron.holds.holds_edit_selection_depth.done.label
-msgctxt "staff.patron.holds.holds_edit_selection_depth.done.label"
-msgid "Done"
+msgid ""
+"_: staff.patron.holds.holds_edit_selection_depth.done.label\n"
+"Done"
 msgstr "Выполнен"
 
 #: staff.patron.holds.holds_edit_selection_depth.done.accesskey
-msgctxt "staff.patron.holds.holds_edit_selection_depth.done.accesskey"
-msgid "D"
+msgid ""
+"_: staff.patron.holds.holds_edit_selection_depth.done.accesskey\n"
+"D"
 msgstr "D"
 
 #: staff.patron.holds.holds_edit_selection_depth.cancel.label
-msgctxt "staff.patron.holds.holds_edit_selection_depth.cancel.label"
-msgid "Cancel"
+msgid ""
+"_: staff.patron.holds.holds_edit_selection_depth.cancel.label\n"
+"Cancel"
 msgstr "Отменить"
 
 #: staff.patron.holds.holds_edit_selection_depth.cancel.accesskey
-msgctxt "staff.patron.holds.holds_edit_selection_depth.cancel.accesskey"
-msgid "C"
+msgid ""
+"_: staff.patron.holds.holds_edit_selection_depth.cancel.accesskey\n"
+"C"
 msgstr "С"
 
 #: staff.patron.holds.holds_edit_selection_depth.choose_library
-msgctxt "staff.patron.holds.holds_edit_selection_depth.choose_library"
-msgid "Choose a Pick Up Library"
+msgid ""
+"_: staff.patron.holds.holds_edit_selection_depth.choose_library\n"
+"Choose a Pick Up Library"
 msgstr "Выберите библиотеку Получения"
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular
 msgid ""
-"Are you sure you would like to change the Hold Range for hold %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for hold %1$s to "
+"\"%2$s\"?;"
 msgstr ""
-"Вы уверены, что хотите изменить Диапазон Хранения для хранения %1$s  на  \"%"
-"2$s\"?;"
+"Вы уверены, что хотите изменить Диапазон Хранения для хранения %1$s  на  "
+"\"%2$s\"?;"
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural
 msgid ""
-"Are you sure you would like to change the Hold Range for holds %1$s to \"%"
-"2$s\"?;"
+"Are you sure you would like to change the Hold Range for holds %1$s to "
+"\"%2$s\"?;"
 msgstr ""
-"Вы уверены, что хотите изменить Диапазон Хранения для хранения %1$s  на  \"%"
-"2$s\"?;"
+"Вы уверены, что хотите изменить Диапазон Хранения для хранения %1$s  на  "
+"\"%2$s\"?;"
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_title
-msgctxt "staff.patron.holds.holds_edit_selection_depth.modify_holds_title"
-msgid "Modifying Holds"
+msgid ""
+"_: staff.patron.holds.holds_edit_selection_depth.modify_holds_title\n"
+"Modifying Holds"
 msgstr "Обновление  Хранений"
 
 #: staff.patron.holds.holds_not_modified
@@ -693,49 +669,55 @@ msgid "Please choose a new Pickup Library:"
 msgstr "Пожалуйста выберите новую библиотеку Получения"
 
 #: staff.patron.holds.holds_edit_pickup_lib.done.label
-msgctxt "staff.patron.holds.holds_edit_pickup_lib.done.label"
-msgid "Done"
+msgid ""
+"_: staff.patron.holds.holds_edit_pickup_lib.done.label\n"
+"Done"
 msgstr "Выполнен"
 
 #: staff.patron.holds.holds_edit_pickup_lib.done.accesskey
-msgctxt "staff.patron.holds.holds_edit_pickup_lib.done.accesskey"
-msgid "D"
+msgid ""
+"_: staff.patron.holds.holds_edit_pickup_lib.done.accesskey\n"
+"D"
 msgstr "D"
 
 #: staff.patron.holds.holds_edit_pickup_lib.cancel.label
-msgctxt "staff.patron.holds.holds_edit_pickup_lib.cancel.label"
-msgid "Cancel"
+msgid ""
+"_: staff.patron.holds.holds_edit_pickup_lib.cancel.label\n"
+"Cancel"
 msgstr "Отменить"
 
 #: staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey
-msgctxt "staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey"
-msgid "C"
+msgid ""
+"_: staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey\n"
+"C"
 msgstr "С"
 
 #: staff.patron.holds.holds_edit_pickup_lib.choose_lib
-msgctxt "staff.patron.holds.holds_edit_pickup_lib.choose_lib"
-msgid "Choose a Pick Up Library"
+msgid ""
+"_: staff.patron.holds.holds_edit_pickup_lib.choose_lib\n"
+"Choose a Pick Up Library"
 msgstr "Выберите библиотеку Получения"
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular
 msgid ""
-"Are you sure you would like to change the Pick Up Library for hold %1$s to %"
-"2$s?"
+"Are you sure you would like to change the Pick Up Library for hold %1$s to "
+"%2$s?"
 msgstr ""
-"Вы уверены, что хотите изменить  библиотеку Получения для хранения  %1$s на "
-" %2$s?"
+"Вы уверены, что хотите изменить  библиотеку Получения для хранения  %1$s на  "
+"%2$s?"
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural
 msgid ""
 "Are you sure you would like to change the Pick Up Library for holds %1$s to "
 "%2$s?"
 msgstr ""
-"Вы уверены, что хотите изменить  библиотеку Получения для хранения  %1$s на "
-" %2$s?"
+"Вы уверены, что хотите изменить  библиотеку Получения для хранения  %1$s на  "
+"%2$s?"
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_title
-msgctxt "staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_title"
-msgid "Modifying Holds"
+msgid ""
+"_: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_title\n"
+"Modifying Holds"
 msgstr "Обновление  хранений"
 
 #: staff.patron.holds.holds_edit_phone_notify.new_phone_number
@@ -747,23 +729,27 @@ msgstr ""
 "поле пустым для блокировки телефонного уведомления )"
 
 #: staff.patron.holds.holds_edit_phone_notify.btn_done.label
-msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_done.label"
-msgid "Done"
+msgid ""
+"_: staff.patron.holds.holds_edit_phone_notify.btn_done.label\n"
+"Done"
 msgstr "Выполнен"
 
 #: staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey
-msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey"
-msgid "D"
+msgid ""
+"_: staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey\n"
+"D"
 msgstr "D"
 
 #: staff.patron.holds.holds_edit_phone_notify.btn_cancel.label
-msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_cancel.label"
-msgid "Cancel"
+msgid ""
+"_: staff.patron.holds.holds_edit_phone_notify.btn_cancel.label\n"
+"Cancel"
 msgstr "Отменить"
 
 #: staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey
-msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey"
-msgid "C"
+msgid ""
+"_: staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey\n"
+"C"
 msgstr "С"
 
 #: staff.patron.holds.holds_edit_phone_notify.choose_phone_number
@@ -775,8 +761,8 @@ msgid ""
 "Are you sure you would like to change the Notification Phone Number for hold "
 "%1$s to \"%2$s\"?"
 msgstr ""
-"Вы уверены, что хотите изменить номер телефона уведомления для хранения \"%"
-"1$s\\ в \"%2$s?"
+"Вы уверены, что хотите изменить номер телефона уведомления для хранения "
+"\"%1$s\\ в \"%2$s?"
 
 #: staff.patron.holds.holds_edit_phone_notify.confirm_phone_number_change.plural
 msgid ""
@@ -787,8 +773,9 @@ msgstr ""
 "в  \"%2$s\"?"
 
 #: staff.patron.holds.holds_edit_phone_notify.modifying_holds_title
-msgctxt "staff.patron.holds.holds_edit_phone_notify.modifying_holds_title"
-msgid "Modifying Holds"
+msgid ""
+"_: staff.patron.holds.holds_edit_phone_notify.modifying_holds_title\n"
+"Modifying Holds"
 msgstr "Обновление  Хранений"
 
 #: staff.patron.holds.holds_edit_email_notify.description
@@ -812,18 +799,21 @@ msgid "No Email"
 msgstr "Нет эл. почты"
 
 #: staff.patron.holds.holds_edit_email_notify.btn_no_email.accesskey
-msgctxt "staff.patron.holds.holds_edit_email_notify.btn_no_email.accesskey"
-msgid "N"
+msgid ""
+"_: staff.patron.holds.holds_edit_email_notify.btn_no_email.accesskey\n"
+"N"
 msgstr "N"
 
 #: staff.patron.holds.holds_edit_email_notify.btn_cancel.label
-msgctxt "staff.patron.holds.holds_edit_email_notify.btn_cancel.label"
-msgid "Cancel"
+msgid ""
+"_: staff.patron.holds.holds_edit_email_notify.btn_cancel.label\n"
+"Cancel"
 msgstr "Отменить"
 
 #: staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey
-msgctxt "staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey"
-msgid "C"
+msgid ""
+"_: staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey\n"
+"C"
 msgstr "С"
 
 #: staff.patron.holds.holds_edit_email_notify.set_notifs
@@ -831,7 +821,8 @@ msgid "Set Email Notification for Holds"
 msgstr "Установка уведомлений  по эл. почте для Хранений"
 
 #: staff.patron.holds.holds_edit_email_notify.enable_email.singular
-msgid "Are you sure you would like to enable email notification for hold %1$s?"
+msgid ""
+"Are you sure you would like to enable email notification for hold %1$s?"
 msgstr ""
 "Вы уверены, что хотите разрешить получение уведомлений по e-mail  для "
 "хранения  %1$s?"
@@ -858,8 +849,9 @@ msgstr ""
 "хранений % 1 $ S?"
 
 #: staff.patron.holds.holds_edit_email_notify.mod_holds_title
-msgctxt "staff.patron.holds.holds_edit_email_notify.mod_holds_title"
-msgid "Modifying Holds"
+msgid ""
+"_: staff.patron.holds.holds_edit_email_notify.mod_holds_title\n"
+"Modifying Holds"
 msgstr "Обновление  Хранений"
 
 #: staff.patron.holds.holds_cut_in_line.description
@@ -883,18 +875,21 @@ msgid "No Top of Queue"
 msgstr "Не начало очереди"
 
 #: staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey
-msgctxt "staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey"
-msgid "N"
+msgid ""
+"_: staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey\n"
+"N"
 msgstr "N"
 
 #: staff.patron.holds.holds_cut_in_line.btn_cancel.label
-msgctxt "staff.patron.holds.holds_cut_in_line.btn_cancel.label"
-msgid "Cancel"
+msgid ""
+"_: staff.patron.holds.holds_cut_in_line.btn_cancel.label\n"
+"Cancel"
 msgstr "Отменить"
 
 #: staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey
-msgctxt "staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey"
-msgid "C"
+msgid ""
+"_: staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey\n"
+"C"
 msgstr "С"
 
 #: staff.patron.holds.holds_cut_in_line.set_notifs
@@ -921,8 +916,9 @@ msgid "Are you sure you would like to disable Top of Queue for holds %1$s?"
 msgstr "Вы уверены, что хотите запретить первоочередность Хранениям %1$s?"
 
 #: staff.patron.holds.holds_cut_in_line.mod_holds_title
-msgctxt "staff.patron.holds.holds_cut_in_line.mod_holds_title"
-msgid "Modifying Holds"
+msgid ""
+"_: staff.patron.holds.holds_cut_in_line.mod_holds_title\n"
+"Modifying Holds"
 msgstr "Обновление  Хранений"
 
 #: staff.patron.holds.holds_desire_mint_condition.description
@@ -942,18 +938,21 @@ msgid "Any Condition"
 msgstr "Любое состояние"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey
-msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
-msgid "A"
+msgid ""
+"_: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey\n"
+"A"
 msgstr "А"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_cancel.label
-msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_cancel.label"
-msgid "Cancel"
+msgid ""
+"_: staff.patron.holds.holds_desire_mint_condition.btn_cancel.label\n"
+"Cancel"
 msgstr "Отменить"
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey
-msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey"
-msgid "C"
+msgid ""
+"_: staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey\n"
+"C"
 msgstr "С"
 
 #: staff.patron.holds.holds_desire_mint_condition.set_notifs
@@ -962,16 +961,16 @@ msgstr "Установить требуемый качественный экз�
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.singular
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for hold %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for hold "
+"%1$s?"
 msgstr ""
 "Вы уверены, что вы хотели бы отделить копии  хороших экземпляров для "
 "Хранения % 1 $ S?"
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.plural
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for holds %"
-"1$s?"
+"Are you sure you would like to restrict to Good Condition copies for holds "
+"%1$s?"
 msgstr ""
 "Вы уверены, что вы хотели бы отделить копии  хороших экземпляров для "
 "Хранений %1$s?"
@@ -993,8 +992,9 @@ msgstr ""
 "Хранений %1$s?"
 
 #: staff.patron.holds.holds_desire_mint_condition.mod_holds_title
-msgctxt "staff.patron.holds.holds_desire_mint_condition.mod_holds_title"
-msgid "Modifying Holds"
+msgid ""
+"_: staff.patron.holds.holds_desire_mint_condition.mod_holds_title\n"
+"Modifying Holds"
 msgstr "Обновление  Хранений"
 
 #: staff.patron.holds.holds_retarget.reset_hold_message.singular
@@ -1054,13 +1054,15 @@ msgstr ""
 "соответствующую запись из каталога."
 
 #: staff.patron.holds.show_catalog.retrieving_title
-msgctxt "staff.patron.holds.show_catalog.retrieving_title"
-msgid "Retrieving title..."
+msgid ""
+"_: staff.patron.holds.show_catalog.retrieving_title\n"
+"Retrieving title..."
 msgstr "Извлечение заглавия..."
 
 #: staff.patron.holds.lib_menus.missing_library_list
-msgctxt "staff.patron.holds.lib_menus.missing_library_list"
-msgid "Missing library list."
+msgid ""
+"_: staff.patron.holds.lib_menus.missing_library_list\n"
+"Missing library list."
 msgstr "Отсутствие библиотечного списка"
 
 #: staff.patron.info_group.retrieve_group_members.failure
@@ -1091,13 +1093,13 @@ msgstr "Регистрация клона  патрона  для группы"
 msgid "error spawning user editors"
 msgstr "ошибка при порождении редактиров пользователя"
 
-#: staff.patron.info_group.spawn_editor.editing_patron
-#, fuzzy
-msgctxt "staff.patron.info_group.spawn_editor.editing_patron"
-msgid "Editing Related Patron"
-msgstr "Редактирование родственного пользователя"
+#: staff.patron.info_group.spwan_editor.editing_patron
+msgid ""
+"_: staff.patron.info_group.spwan_editor.editing_patron\n"
+"Editing Related Patron"
+msgstr "Редактирование зависимого   пользователя"
 
-#: staff.patron.info_group.spawn_search
+#: staff.patron.info_group.spwan_search
 msgid "spawn search"
 msgstr "порождение поиска"
 
@@ -1150,13 +1152,15 @@ msgid "M"
 msgstr "M"
 
 #: staff.patron.info_group.link_patron.done.label
-msgctxt "staff.patron.info_group.link_patron.done.label"
-msgid "Done"
+msgid ""
+"_: staff.patron.info_group.link_patron.done.label\n"
+"Done"
 msgstr "Выполнен"
 
 #: staff.patron.info_group.link_patron.done.accesskey
-msgctxt "staff.patron.info_group.link_patron.done.accesskey"
-msgid "D"
+msgid ""
+"_: staff.patron.info_group.link_patron.done.accesskey\n"
+"D"
 msgstr "D"
 
 #: staff.patron.info_group.link_patron.move_patron_to_usergroup
@@ -1175,45 +1179,14 @@ msgstr "Группы пользователей обновлены"
 msgid "error linking patrons"
 msgstr "Ошибка при подключении  пользователей"
 
-#: staff.patron.info_group.column.circs_out.label
-msgid "Items Out"
-msgstr ""
-
-#: staff.patron.info_group.column.circs_overdue.label
-msgid "Items Overdue"
-msgstr ""
-
-#: staff.patron.info_group.column.circs_claimed_returned.label
-msgid "Items Claimed Returned"
-msgstr ""
-
-#: staff.patron.info_group.column.circs_long_overdue.label
-msgid "Items Long Overdue"
-msgstr ""
-
-#: staff.patron.info_group.column.circs_lost.label
-msgid "Items Lost"
-msgstr ""
-
-#: staff.patron.info_group.total_owed.label
-msgid "Total Owed: %1$s"
-msgstr ""
-
-#: staff.patron.info_group.total_out.label
-msgid "Total Items Out: %1$s"
-msgstr ""
-
-#: staff.patron.info_group.total_overdue.label
-msgid "Total Items Overdue: %1$s"
-msgstr ""
-
 #: staff.patron.info_notes.render_notes.add_new_note.label
 msgid "Add New Note"
 msgstr "Добавить новое примечание"
 
 #: staff.patron.info_notes.render_notes.add_new_note.accesskey
-msgctxt "staff.patron.info_notes.render_notes.add_new_note.accesskey"
-msgid "A"
+msgid ""
+"_: staff.patron.info_notes.render_notes.add_new_note.accesskey\n"
+"A"
 msgstr "А"
 
 #: staff.patron.info_notes.render_notes.tooltiptext
@@ -1261,8 +1234,9 @@ msgid "Print"
 msgstr "Принт"
 
 #: staff.patron.info_notes.new_note.label
-msgctxt "staff.patron.info_notes.new_note.label"
-msgid "New Note"
+msgid ""
+"_: staff.patron.info_notes.new_note.label\n"
+"New Note"
 msgstr "Новое примечание"
 
 #: staff.patron.info_notes.new_note.patron_visible.value
@@ -1270,48 +1244,55 @@ msgid "Patron Visible?"
 msgstr "Патрон видим?"
 
 #: staff.patron.info_notes.new_note.title.value
-msgctxt "staff.patron.info_notes.new_note.title.value"
-msgid "Title"
+msgid ""
+"_: staff.patron.info_notes.new_note.title.value\n"
+"Title"
 msgstr "Заглавие"
 
 #: staff.patron.info_notes.new_note.note.value
-msgctxt "staff.patron.info_notes.new_note.note.value"
-msgid "Note"
+msgid ""
+"_: staff.patron.info_notes.new_note.note.value\n"
+"Note"
 msgstr "Примечание"
 
-#: staff.patron.info_notes.new_note.initials.value
-msgid "Initials"
-msgstr ""
-
 #: staff.patron.info_notes.new_note.cancel.label
-msgctxt "staff.patron.info_notes.new_note.cancel.label"
-msgid "Cancel"
+msgid ""
+"_: staff.patron.info_notes.new_note.cancel.label\n"
+"Cancel"
 msgstr "Отменить"
 
 #: staff.patron.info_notes.new_note.cancel.accesskey
-msgctxt "staff.patron.info_notes.new_note.cancel.accesskey"
-msgid "C"
+msgid ""
+"_: staff.patron.info_notes.new_note.cancel.accesskey\n"
+"C"
 msgstr "С"
 
 #: staff.patron.info_notes.new_note.add.label
-msgctxt "staff.patron.info_notes.new_note.add.label"
-msgid "Add Note"
+msgid ""
+"_: staff.patron.info_notes.new_note.add.label\n"
+"Add Note"
 msgstr "Добавить примечание"
 
 #: staff.patron.info_notes.new_note.add.accesskey
-msgctxt "staff.patron.info_notes.new_note.add.accesskey"
-msgid "A"
+msgid ""
+"_: staff.patron.info_notes.new_note.add.accesskey\n"
+"A"
 msgstr "А"
 
 #: staff.patron.info_notes.new_note.add_note_title
-#, fuzzy
-msgctxt "staff.patron.info_notes.new_note.add_note_title"
-msgid "Add Note"
+msgid ""
+"_: staff.patron.info_notes.new_note.add_note_title\n"
+"Add Note"
 msgstr "Добавить примечание"
 
+#: staff.patron.info_notes.new_note.add_note_title
+msgid "Note added."
+msgstr "Примечание добавлено"
+
 #: staff.patron.info_notes.new_note.note_not_created
-msgctxt "staff.patron.info_notes.new_note.note_not_created"
-msgid "The note was not likely created."
+msgid ""
+"_: staff.patron.info_notes.new_note.note_not_created\n"
+"The note was not likely created."
 msgstr "Примечание возможно не создано"
 
 #: staff.patron.info_stat_cats.retrieve_fleshed_patron.failed
@@ -1416,7 +1397,8 @@ msgstr "Продлить дату возврата"
 
 #: staff.patron.items.items_edit.renew_with_date.prompt
 msgid "Enter a new due date for these items to be renewed: %1$s"
-msgstr "Введите новую дату возврата для этих единиц которые будут  возобновлены"
+msgstr ""
+"Введите новую дату возврата для этих единиц которые будут  возобновлены"
 
 #: staff.patron.items.items_edit.cancel_renew_with_date
 msgid "Missing Due Date. Renewal canceled."
@@ -1499,13 +1481,16 @@ msgid "%1$s is not cataloged"
 msgstr "%1$s не каталогизирован"
 
 #: staff.patron.items.show_catalog.retrieving_title
-msgctxt "staff.patron.items.show_catalog.retrieving_title"
-msgid "Retrieving title..."
+msgid ""
+"_: staff.patron.items.show_catalog.retrieving_title\n"
+"Retrieving title..."
 msgstr "Извлечение заглавия..."
 
 #: staff.patron.items.retrieve_row.callback_error
-msgid "Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
-msgstr "Ошибка при вызове  для FM_CIRC_DETAILS.authoritative в patron/items.js"
+msgid ""
+"Error in callback for FM_CIRC_DETAILS.authoritative in patron/items.js"
+msgstr ""
+"Ошибка при вызове  для FM_CIRC_DETAILS.authoritative в patron/items.js"
 
 #: staff.patron.items.retrieve_row.error_in_retrieve_row
 msgid "error in patron/items.js retrieve_row():"
@@ -1591,30 +1576,6 @@ msgstr "Удалить"
 msgid "No Blocks/Penalties"
 msgstr "Нет блока [данных]/Штрафы"
 
-#: staff.patron.summary.group_list.column.family_name.label
-msgid "Family Name"
-msgstr ""
-
-#: staff.patron.summary.group_list.column.first_given_name.label
-msgid "First Name"
-msgstr ""
-
-#: staff.patron.summary.group_list.column.second_given_name.label
-msgid "Middle Name"
-msgstr ""
-
-#: staff.patron.summary.group_list.column.home_ou.label
-msgid "Home Lib"
-msgstr ""
-
-#: staff.patron.summary.group_list.column.balance_owed.label
-msgid "Balance Owed"
-msgstr ""
-
-#: staff.patron.summary.tab.group_list_with_total_owed.label
-msgid "Group: %1$s"
-msgstr ""
-
 #: staff.patron.staged.register_patron
 msgid "Registering Pending Patron: %1$s"
 msgstr "Регистрация ожидающего клиента: %1$s"
@@ -1628,8 +1589,9 @@ msgid "Error deleting pending patron with row_id = %1$s"
 msgstr "Ошибка  при удалении ожидающего клиента из ряда_id = %1$s"
 
 #: staff.patron.staged.lib_menus.missing_library_list
-msgctxt "staff.patron.staged.lib_menus.missing_library_list"
-msgid "Missing library list."
+msgid ""
+"_: staff.patron.staged.lib_menus.missing_library_list\n"
+"Missing library list."
 msgstr "Отсутствие библиотечного списка"
 
 #: staff.patron.standing_penalty.apply_error
@@ -1649,8 +1611,9 @@ msgid "Error retrieving block/standing penalty."
 msgstr "Ошибка извлечения блока [данных]/взыскание штрафа"
 
 #: staff.patron.ue.uEditInit.session_no_defined
-msgctxt "staff.patron.ue.uEditInit.session_no_defined"
-msgid "User session is not defined"
+msgid ""
+"_: staff.patron.ue.uEditInit.session_no_defined\n"
+"User session is not defined"
 msgstr "Сессия пользователя не определена"
 
 #: staff.patron.ue.uEditSaveuser.error_creating_note
@@ -1658,8 +1621,8 @@ msgid "Error creating patron guardian or parent note"
 msgstr "Ошибка создания патрона опекуна  или заметка родителя."
 
 #: staff.patron.ue.uEditShowSearch.search
-msgctxt "staff.patron.ue.uEditShowSearch.search"
 msgid ""
+"_: staff.patron.ue.uEditShowSearch.search\n"
 "Search would be:\n"
 "%1$s"
 msgstr ""
@@ -1711,13 +1674,15 @@ msgid "Merge"
 msgstr "Обьединить"
 
 #: staff.patron.usr_buckets.merge_records.cancel_button.label
-msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.label"
-msgid "Cancel"
+msgid ""
+"_: staff.patron.usr_buckets.merge_records.cancel_button.label\n"
+"Cancel"
 msgstr "Отменить"
 
 #: staff.patron.usr_buckets.merge_records.cancel_button.accesskey
-msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.accesskey"
-msgid "C"
+msgid ""
+"_: staff.patron.usr_buckets.merge_records.cancel_button.accesskey\n"
+"C"
 msgstr "С"
 
 #: staff.patron.usr_buckets.merge_records.lead_record_number
@@ -1768,13 +1733,14 @@ msgstr ""
 "%6$s, %8$s %9$s"
 
 #: web.staff.patron.ue.session_no_defined
-msgctxt "web.staff.patron.ue.session_no_defined"
-msgid "User session is not defined"
+msgid ""
+"_: web.staff.patron.ue.session_no_defined\n"
+"User session is not defined"
 msgstr "Сессия  пользователя   не определена"
 
 #: web.staff.patron.ue.uedit_show_search.search_would_be
-msgctxt "web.staff.patron.ue.uedit_show_search.search_would_be"
 msgid ""
+"_: web.staff.patron.ue.uedit_show_search.search_would_be\n"
 "Search would be:\n"
 "%1$s"
 msgstr ""
@@ -1786,11 +1752,3 @@ msgid ""
 "<div>Replaces address <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
 msgstr ""
 "<div>Заменяет адрес <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
-
-#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
-#: staff.circ.work_log_patron_edit.message
-msgid "%1$s edited %3$s (%2$s)"
-msgstr ""
-
-#~ msgid "Note added."
-#~ msgstr "Примечание добавлено"
