@@ -4,19 +4,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > patron.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:03-0400\n"
-"PO-Revision-Date: 2009-11-24 21:11+0000\n"
-"Last-Translator: Warren Layton <Unknown>\n"
+"POT-Creation-Date: 2009-11-23 23:36-0400\n"
+"PO-Revision-Date: 2008-11-27 14:04-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
 "Language-Team: French - Canadian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
-"X-Launchpad-Export-Date: 2009-11-25 04:52+0000\n"
-"X-Poedit-Country: Canada\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Translate Toolkit 1.3.0\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: Canada\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
 msgid "User Permission Editor"
@@ -75,10 +75,6 @@ msgstr "affichage d’ensemble de clients"
 #: staff.patron.barcode_entry.user_perm_display_error
 msgid "spawning user perm editor"
 msgstr "éditeur de permission pour l’ensemble des utilisateurs"
-
-#: staff.patron.bill_interface.payment_pending.column_header
-msgid "Payment Pending"
-msgstr ""
 
 #: staff.patron.bill_cc_info.need_cc_number
 msgid "You must provide a credit card number"
@@ -155,6 +151,11 @@ msgctxt "staff.patron.bill_details.handle_void.voiding_error"
 msgid "Error voiding bills."
 msgstr "Une erreur s’est produite lors de l’annulation des factures."
 
+#: staff.patron.bill_details.handle_void.billings_voided
+msgctxt "staff.patron.bill_details.handle_void.billings_voided"
+msgid "Billings voided."
+msgstr "Facturations annulées."
+
 #: staff.patron.bill_history.retrieve_mbts_for_list.close_win_try_again
 msgid "Please close this window and try again."
 msgstr "Veuillez fermer cette fenêtre et essayer de nouveau."
@@ -196,59 +197,9 @@ msgctxt "staff.patron.bill_history.handle_add.confirm_message"
 msgid "Check here to confirm this message"
 msgstr "Cochez ici pour confirmer ce message"
 
-#: staff.patron.bill_history.handle_void.message_plural
-#, fuzzy
-msgid "Are you sure you would like to void all billings on bills %1$s?"
-msgstr ""
-"Êtes vous certain de vouloir ajouter une facturation à vos factures %1$s?"
-
-#: staff.patron.bill_history.handle_void.message_singular
-#, fuzzy
-msgid "Are you sure you would like to void all billings on bill %1$s?"
-msgstr ""
-"Êtes vous certain de vouloir ajouter une facturation à vos factures %1$s?"
-
-#: staff.patron.bill_history.handle_void.title
-#, fuzzy
-msgctxt "staff.patron.bill_history.handle_void.title"
-msgid "Void All Billings"
-msgstr "Annuler toutes les facturations"
-
-#: staff.patron.bill_history.handle_void.btn_yes
-#, fuzzy
-msgctxt "staff.patron.bill_history.handle_void.btn_yes"
-msgid "Yes"
-msgstr "Oui"
-
-#: staff.patron.bill_history.handle_void.btn_no
-#, fuzzy
-msgctxt "staff.patron.bill_history.handle_void.btn_no"
-msgid "No"
-msgstr "Non"
-
-#: staff.patron.bill_history.handle_void.confirm_message
-#, fuzzy
-msgctxt "staff.patron.bill_history.handle_void.confirm_message"
-msgid "Check here to confirm this message"
-msgstr "Cochez ici pour confirmer ce message."
-
 #: staff.patron.bill_history.print_bills.print_error
 msgid "printing bills"
 msgstr "impression des factures"
-
-#: staff.patron.bill_history.column.xact_type.label
-msgid "Transaction Type"
-msgstr ""
-
-#: staff.patron.bill_history.column.last_billing_type.label
-msgid "Last Billing Type"
-msgstr ""
-
-#: staff.patron.bill_history.column.title.label
-#, fuzzy
-msgctxt "staff.patron.bill_history.column.title.label"
-msgid "Title"
-msgstr "Titre"
 
 #: staff.patron.bills.init_controller.money_summary_label
 msgid "Money Summary"
@@ -291,15 +242,6 @@ msgstr ""
 msgid "Bill payment likely failed"
 msgstr "Le paiement de la facture a probablement échoué"
 
-#: staff.patron.bills.info_box.label_value.reservation
-msgid "Reservation"
-msgstr ""
-
-#. # 1 - Resource Barcode  2 - Resource Type Name
-#: staff.patron.bills.info_box.value_format.reservation
-msgid "%1$s : %2$s"
-msgstr ""
-
 #: staff.patron.bills.info_box.label_value.title
 msgctxt "staff.patron.bills.info_box.label_value.title"
 msgid "Title"
@@ -322,8 +264,6 @@ msgid "Refund"
 msgstr "Remboursement"
 
 #: staff.patron.bills.info_box.label_value.void_all_billings
-#, fuzzy
-msgctxt "staff.patron.bills.info_box.label_value.void_all_billings"
 msgid "Void All Billings"
 msgstr "Annuler toutes les facturations"
 
@@ -367,7 +307,7 @@ msgid "Error voiding bills."
 msgstr "Une erreur s’est produite lors de l’annulation de factures."
 
 #: staff.patron.bills.void_all_billings.billings_voided
-#, fuzzy
+msgctxt "staff.patron.bills.void_all_billings.billings_voided"
 msgid "Billings voided."
 msgstr "Facturations annulées."
 
@@ -421,10 +361,27 @@ msgid ""
 "miscellaneous staff artifacts (reports, etc.):"
 msgstr ""
 
+# extracted from ../../Open-ILS/xul/staff_client/server/locale/en-US/patron.properties
 #: staff.patron.display.cmd_patron_delete.dest_user.default_value
-msgctxt "staff.patron.display.cmd_patron_delete.dest_user.default_value"
 msgid ""
+"_: staff.patron.display.cmd_patron_delete.dest_user.default_value\n"
+""
 msgstr ""
+"Project-Id-Version: Evergreen ILS > patron.properties.po\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-16 11:08-0400\n"
+"PO-Revision-Date: 2008-11-27 14:04-0500\n"
+"Last-Translator: Warren Layton <warren.layton@gmail.com>\n"
+"Language-Team: French - Canadian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Translate Toolkit 1.1.1\n"
+"X-Accelerator-Marker: &\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Country: Canada\n"
 
 #: staff.patron.display.cmd_patron_delete.dest_user.title
 msgid "Destination User"
@@ -597,7 +554,7 @@ msgid "By Staff"
 msgstr ""
 
 #: staff.patron.hold_notes.by_patron
-msgid "By Patron "
+msgid "By Patron"
 msgstr ""
 
 #: staff.patron.hold_notes.new_note.public
@@ -644,10 +601,6 @@ msgid "Error rendering or retrieving hold notifications."
 msgstr ""
 "Une erreur s’est produite lors de la production ou de la récupération des "
 "notifications."
-
-#: staff.patron.holds.total_count
-msgid "Total Holds: %1$s"
-msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.choose_hold_range
 msgid "Please choose a Hold Range:"
@@ -1114,13 +1067,12 @@ msgstr "Inscrire le clône du client à un groupe"
 msgid "error spawning user editors"
 msgstr "une erreur s’est produite dans les éditeurs d’ensemble des utilisateurs"
 
-#: staff.patron.info_group.spawn_editor.editing_patron
-#, fuzzy
-msgctxt "staff.patron.info_group.spawn_editor.editing_patron"
+#: staff.patron.info_group.spwan_editor.editing_patron
+msgctxt "staff.patron.info_group.spwan_editor.editing_patron"
 msgid "Editing Related Patron"
-msgstr "Modification du client associé"
+msgstr "Édition des clients associés"
 
-#: staff.patron.info_group.spawn_search
+#: staff.patron.info_group.spwan_search
 msgid "spawn search"
 msgstr "recherche dans l’ensemble"
 
@@ -1192,7 +1144,7 @@ msgstr "Transférer le client vers le groupe d’utilisateurs"
 msgid "error linking patron (ID=%1$s)"
 msgstr ""
 "une erreur s’est produite lors de l’établissement de lien vers le client "
-"(ID=%1$s)"
+"(ID=%1$s) "
 
 #: staff.patron.info_group.link_patron.usergroups_updated
 msgid "User groups updated."
@@ -1202,38 +1154,6 @@ msgstr "Groupes d’utilisateurs mis à jour."
 msgid "error linking patrons"
 msgstr ""
 "une erreur s’est produite lors de l’établissement de lien entre les clients"
-
-#: staff.patron.info_group.column.circs_out.label
-msgid "Items Out"
-msgstr ""
-
-#: staff.patron.info_group.column.circs_overdue.label
-msgid "Items Overdue"
-msgstr ""
-
-#: staff.patron.info_group.column.circs_claimed_returned.label
-msgid "Items Claimed Returned"
-msgstr ""
-
-#: staff.patron.info_group.column.circs_long_overdue.label
-msgid "Items Long Overdue"
-msgstr ""
-
-#: staff.patron.info_group.column.circs_lost.label
-msgid "Items Lost"
-msgstr ""
-
-#: staff.patron.info_group.total_owed.label
-msgid "Total Owed: %1$s"
-msgstr ""
-
-#: staff.patron.info_group.total_out.label
-msgid "Total Items Out: %1$s"
-msgstr ""
-
-#: staff.patron.info_group.total_overdue.label
-msgid "Total Items Overdue: %1$s"
-msgstr ""
 
 #: staff.patron.info_notes.render_notes.add_new_note.label
 msgid "Add New Note"
@@ -1307,10 +1227,6 @@ msgctxt "staff.patron.info_notes.new_note.note.value"
 msgid "Note"
 msgstr "Note"
 
-#: staff.patron.info_notes.new_note.initials.value
-msgid "Initials"
-msgstr ""
-
 #: staff.patron.info_notes.new_note.cancel.label
 msgctxt "staff.patron.info_notes.new_note.cancel.label"
 msgid "Cancel"
@@ -1332,10 +1248,13 @@ msgid "A"
 msgstr "A"
 
 #: staff.patron.info_notes.new_note.add_note_title
-#, fuzzy
 msgctxt "staff.patron.info_notes.new_note.add_note_title"
 msgid "Add Note"
 msgstr "Ajouter une note"
+
+#: staff.patron.info_notes.new_note.add_note_title
+msgid "Note added."
+msgstr "Note ajoutée."
 
 #: staff.patron.info_notes.new_note.note_not_created
 msgctxt "staff.patron.info_notes.new_note.note_not_created"
@@ -1564,7 +1483,7 @@ msgid ""
 msgstr ""
 "Une erreur s’est produite lors de l’actualisation de la rangée list\n"
 "circ_id = %1$s\n"
-"nparams = %2$s"
+"nparams = %2$s "
 
 #: staff.patron.items.retrieve.err_retrieving_circulations
 msgid "Error retrieving circulations."
@@ -1624,30 +1543,6 @@ msgstr ""
 
 #: staff.patron.summary.standing_penalty.none
 msgid "No Blocks/Penalties"
-msgstr ""
-
-#: staff.patron.summary.group_list.column.family_name.label
-msgid "Family Name"
-msgstr ""
-
-#: staff.patron.summary.group_list.column.first_given_name.label
-msgid "First Name"
-msgstr ""
-
-#: staff.patron.summary.group_list.column.second_given_name.label
-msgid "Middle Name"
-msgstr ""
-
-#: staff.patron.summary.group_list.column.home_ou.label
-msgid "Home Lib"
-msgstr ""
-
-#: staff.patron.summary.group_list.column.balance_owed.label
-msgid "Balance Owed"
-msgstr ""
-
-#: staff.patron.summary.tab.group_list_with_total_owed.label
-msgid "Group: %1$s"
 msgstr ""
 
 #: staff.patron.staged.register_patron
@@ -1818,11 +1713,3 @@ msgstr ""
 msgid ""
 "<div>Replaces address <b>%1$s</b><br/> %2$s %3$s<br/> %4$s, %5$s %6$s</div>"
 msgstr ""
-
-#. # 1 - Staff Username  2 - Patron Family  3 - Patron Barcode
-#: staff.circ.work_log_patron_edit.message
-msgid "%1$s edited %3$s (%2$s)"
-msgstr ""
-
-#~ msgid "Note added."
-#~ msgstr "Note ajoutée."
