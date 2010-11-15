@@ -2035,3 +2035,6 @@ INSERT INTO action_trigger.environment ( event_def, path) VALUES
 
 SELECT SETVAL('action_trigger.event_definition_id_seq'::TEXT, 100);
 
+-- Create seed data for the asset.uri table
+INSERT INTO asset.uri (id, href, active) VALUES (-1, 'http://example.com/fake', FALSE);
+
