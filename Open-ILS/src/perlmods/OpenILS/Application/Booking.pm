@@ -791,7 +791,7 @@ sub could_capture {
 
     my $e = new_editor("authtoken" => $auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed("CAPTURE_RESERVATION");
+    return $e->die_event unless $e->allowed("COPY_CHECKIN");
 
     my $dt_parser = new DateTime::Format::ISO8601;
     my $now = now DateTime; # sic
@@ -940,7 +940,7 @@ sub capture_resource_for_reservation {
 
     my $e = new_editor(authtoken => $auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed("CAPTURE_RESERVATION");
+    return $e->die_event unless $e->allowed("COPY_CHECKIN");
 
     my $uncaptured = get_uncaptured_bresv_for_brsrc(
         $e, {"barcode" => $barcode}
@@ -987,7 +987,7 @@ sub capture_reservation {
 
     my $e = new_editor("xact" => 1, "authtoken" => $auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('CAPTURE_RESERVATION');
+    return $e->die_event unless $e->allowed("COPY_CHECKIN");
     my $here = $e->requestor->ws_ou;
 
     my $reservation = $e->retrieve_booking_reservation([
