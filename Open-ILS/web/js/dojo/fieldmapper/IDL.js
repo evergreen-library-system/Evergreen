@@ -35,7 +35,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
             if(!fieldmapper.IDL.fmclasses || (classlist && classlist.length)) {
                 var idl_url = this._URL_PATH;
 
-                if (classlist.length > 1 || classlist[0] != '*') {
+                if (classlist.length && (classlist.length > 1 || classlist[0] != '*')) {
                     idl_url += '?';
 
                     for (var i = 0; i < classlist.length; i++) {
@@ -49,8 +49,6 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                 }
                         
                 if( !idl_url.match(/\?$/) ) { // make sure we have classes that need loading
-
-                    console.log("Fetching classes from server at " + idl_url + ':' + classlist);
 
                     var self = this;
                     dojo.xhrGet({
