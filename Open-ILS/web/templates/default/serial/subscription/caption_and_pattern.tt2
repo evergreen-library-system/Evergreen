@@ -31,7 +31,7 @@
                     <span control="true"></span>
                 </td>
                 <td name="active">
-                    <input type="checkbox" control="true" />
+                    <input type="checkbox" control="true" checked="checked" />
                 </td>
                 <td name="remover">
                     <button>X</button>
