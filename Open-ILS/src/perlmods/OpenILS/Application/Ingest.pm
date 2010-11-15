@@ -1096,6 +1096,11 @@ sub _data_tag_to_full_rows {
         # Split date ranges and ISSNs on the hyphen
         $val =~ s/(\d{4})-(\d{3,4}x?)/ $1 $2 /goi;
         $val =~ s/(\w+)\/(\w+)/$1 $2/sgo;
+
+        # Remove leading and trailing space
+        $val =~ s/^\s*//;
+        $val =~ s/\s*$//;
+
         $ns->value( lc($val) );
 
         push @$ns_list, $ns;
