@@ -19,9 +19,10 @@ if(!dojo._hasResource["openils.I18N"]) {
 
     dojo._hasResource["openils.I18N"] = true;
     dojo.provide("openils.I18N");
-    dojo.require("fieldmapper.dojoData");
-    dojo.require("DojoSRF");
+	dojo.require("dojo.cookie");
 	dojo.require("dojo.data.ItemFileWriteStore");
+    dojo.require("DojoSRF");
+    dojo.require("fieldmapper.Fieldmapper");
 
     dojo.declare('openils.I18N', null, {});
 
