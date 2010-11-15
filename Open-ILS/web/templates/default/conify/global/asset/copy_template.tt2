@@ -33,5 +33,20 @@
         editPaneOnSubmit="create_or_update_act"
         editOnEnter="true">
     </table>
+    <div class="hidden">
+        <!-- these FilteringSelects will be attached manually to actGrid -->
+        <select required="false" dojoType="dijit.form.FilteringSelect"
+            jsId="special_fine_level">
+            <option value="1">Low</option>
+            <option value="2">Normal</option>
+            <option value="3">High</option>
+        </select>
+        <select required="false" dojoType="dijit.form.FilteringSelect"
+            jsId="special_loan_duration">
+            <option value="1">Short</option>
+            <option value="2">Normal</option>
+            <option value="3">Long</option>
+        </select>
+    </div>
 </div>
 [% END %]

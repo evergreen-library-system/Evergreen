@@ -25,6 +25,12 @@ function create_or_update_act(obj, opts, edit_pane) {
 }
 
 function actInit() {
+    actGrid.overrideEditWidgets.fine_level = special_fine_level;
+    actGrid.overrideEditWidgets.fine_level.shove = {"create": 2};
+
+    actGrid.overrideEditWidgets.loan_duration = special_loan_duration;
+    actGrid.overrideEditWidgets.loan_duration.shove = {"create": 2};
+
     pcrud = new openils.PermaCrud();
 
     new openils.User().buildPermOrgSelector(
