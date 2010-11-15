@@ -710,6 +710,17 @@ function createMARCTextbox (element,attrs) {
         true
     );
 
+    // 'input' event catches the box value after the keypress
+    box.addEventListener(
+        'input', 
+        function () {
+            if (element.nodeKind() == 'attribute') element[0]=box.value;
+            else element.setChildren( box.value );
+            return true;
+        },
+        true
+    );
+
     box.addEventListener(
         'keyup', 
         function () {
