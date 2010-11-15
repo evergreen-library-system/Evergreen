@@ -21,7 +21,6 @@ if(!dojo._hasResource["openils.widget.Searcher"]) {
 
     dojo.require("fieldmapper.AutoIDL");
     dojo.require("openils.I18N");
-    dojo.require("fieldmapper.dojoData");
     dojo.require("DojoSRF");
     dojo.require("dojo.data.ItemFileReadStore");
     dojo.require("dijit._Widget");
@@ -29,6 +28,7 @@ if(!dojo._hasResource["openils.widget.Searcher"]) {
     dojo.require("dijit.form.Button");
     dojo.require("dijit.form.TextBox");
     dojo.require("dijit.form.FilteringSelect");
+    dojo.require("dojo.cookie");
     dojo.requireLocalization("openils.widget", "Searcher");
 
     fieldmapper.IDL.load(['cmf','cmc','cmsa']);
