@@ -1,1 +1,249 @@
-#ChangeLog
+2010-11-08  dbs
+
+	* Improve Fedora prerequisite installer
+	  
+	  * Explicitly install wget, which isn't installed in a minimal
+	  install
+	  * Hack JavaScript-SpiderMonkey Makefile.PL for 32-bit Fedora
+	  * Provide a fedora14 target
+	  * Change "fedora-13" to "fedora13" to match OpenSRF prereq
+	  installer
+
+	* Add UUID::Tiny to Fedora prerequisites
+
+	* Further Fedora prereq installer tweaks
+	  
+	  * Install the Perl DBD::Pg module
+	  * Force the CPAN modules, as
+	  Business::OnlinePayment::AuthorizeNet
+	  still suffers from an install-crippling bug
+
+2010-11-08  erickson
+
+	* holds retrieval API call sorting and cleanup; sort non-cancelled
+	  holds by ready-for pickup, then active, then suspended; use
+	  json_query to fetch IDs first, so id_list calls can avoid
+	  fetching the full hold objects in the ML. sort fleshed transit by
+	  send time to pick up the latest transit
+
+2010-11-08  miker
+
+	* Backporting r18652: Teach vandelay.replace_field to be a little
+	  smarter by allowing simple cases of both replacing and
+	  regexp-testing the same subfield
+
+	* 1.6-2.0 upgrade script syncing, re r18652
+
+	* Bacport r18657: syntax problem spotted by Jason Etheridge
+
+	* More fixing related to r18657
+
+2010-11-08  senator
+
+	* Backport r18662 from trunk: don't try to render dropdown of all
+	  bib IDs
+
+2010-11-08  miker
+
+	* Backporting IDL bug fixes
+
+2010-11-08  erickson
+
+	* dynamically loaded classes also need access to toHash
+
+2010-11-09  phasefx
+
+	* merge r18675 from trunk for DP_DateExtension removal
+
+2010-11-10  gmc
+
+	* do not use TRUNCATE when refreshing
+	  reporter.materialized_simple_record
+	  
+	  Previous behavior would break Slony replication after doing a
+	  bib load. Since a deletion is slower than a truncate, if you're
+	  not using Slony replication, you may prefer to truncate rmsr
+	  prior to calling
+	  reporter.enable_materialized_simple_record_trigger.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-10  miker
+
+	* Move the magic-bib update to the top of the file, avoiding
+	  triggers that care about XML namespaces
+
+2010-11-10  senator
+
+	* Backport r18688 from trunk: booking bugfix
+
+	* Backport r18685 and r18691 from trunk: serials-integration work +
+	  patch from
+	  Dan Wells
+
+2010-11-10  dbs
+
+	* Enable "maintain control numbers" and "record ID as TCN" behavior
+	  by default
+	  
+	  Per http://ur1.ca/2bgc4, this behavior hews more closely to the
+	  MARC21
+	  specification. Note, however, that duplicate bib detection in the
+	  "Import via Z39.50" interface will be somewhat affected; a more
+	  trustworthy workaround is to include the "Local catalog" in
+	  Z39.50 searches to
+	  determine if a matching record already exists in the database.
+
+2010-11-11  dbs
+
+	* Update the edit dates for authority and MFHD records when they
+	  are edited
+	  
+	  Addresses the oversight in the original implementation that
+	  missed this;
+	  important if we're going to differentiate between creating and
+	  editing
+	  a record for triggers.
+
+2010-11-11  erickson
+
+	* wraps tips appendChild in try/catch to prevent occaisonal
+	  exeptions.
+
+2010-11-11  dbs
+
+	* Do not supply a default value for 003 in new authority records
+	  
+	  With cat.maintain_control_numbers enabled by default, we can
+	  trust
+	  the database trigger to create the appropriate 003 for us - and
+	  by
+	  not supplying a 003 in the new record, we won't create a spurious
+	  035 for a brand new record.
+
+	* Avoid munging 035 when a new record is created
+	  
+	  If there is no 003 in the record when it is created, then we will
+	  not attempt
+	  to generate a 035. If the incoming record contains a 001 and 003,
+	  then we will
+	  create a 035.
+
+2010-11-12  phasefx
+
+	* merge r18687 from trunk for cookie library changes
+
+	* ensure that we only fetch this setting once per page
+
+2010-11-12  erickson
+
+	* Back-port of 18712 and related changes: Server-generated IDL JS
+	  
+	  
+	  The goal is to reduce use of pre-onload XHR, which is known to
+	  cause
+	  problems (dreaded white-screen-of-death) in firefox/xulrunner.
+	  Change
+	  allows opac, staff client, and embedded browser interfaces to
+	  load
+	  a pre-formatted JS object instead of IDL XML via XHR. In addition
+	  to
+	  dropping the XHR, clients no longer parse the XML, which should
+	  reduce
+	  page render time. Finally, in the staff interfaces, the full IDL
+	  is
+	  once again loaded, so there is no need to specifiy per-page
+	  classes.
+	  Per-page classes are still supported and used in the OPAC to
+	  reduce the
+	  up-front load time.
+	  
+	  Change requires an update to the Evergreen Apache config.
+	  
+	  Part of this change included condensing fieldmapper.hash and
+	  fielmapper.dojoData content into fieldmapper.Fieldmapper to avoid
+	  circular dependencies, which was causing problems with IE. Will
+	  eventually want to deprecate .hash and .dojoData, but for now
+	  they still
+	  function as before.
+
+2010-11-12  miker
+
+	* Trim the set of classes and fields pulled in by Searcher; Cache
+	  the cmc data (cmf is too big)
+
+	* Cache the language set (per locale) in a cookie
+
+	* Backporting r18686 for great justice (and PCRUD speed)
+
+2010-11-12  erickson
+
+	* in some scenarios, the 'mous' class may not have loaded yet.
+	  pre-load the class in myopac init
+
+2010-11-13  dbs
+
+	* Merge translations from Launchpad
+
+2010-11-15  dbs
+
+	* Do not cache the authority context menu
+	  
+	  Caching would be great, except when you add an authority in the
+	  flow and you expect to see it the next time you right-click
+	  on the authority that you just added.
+
+	* Fix negative paging issue in
+	  open-ils.supercat.authority.author.startwith
+	  
+	  When paging backwards through authority lists, we were skipping
+	  the
+	  first page of results. By reducing the offset by the value of one
+	  page, we restore the expected order.
+	  
+	  The same problem might affect other paging interfaces: to be
+	  determined.
+	  
+	  Closes Launchpad bug 669247
+
+	* Prevent creation of authority records that are truncated by one
+	  letter
+	  
+	  The summarizeField() function grabbed the values of the XUL
+	  elements,
+	  which were set by the keypress event listeners on the XUL
+	  elements.
+	  However, the keypress event listener seems to capture the value
+	  of
+	  the XUL element before the value of the new key is appended to
+	  the
+	  existing value in a textbox - so, when you typed a new subfield,
+	  then
+	  right-clicked to create an authority, the value that was captured
+	  was
+	  missing the final character.
+	  
+	  Adding the "input" event to the registered listeners captures the
+	  actual value for creating an authority and solves the problem. It
+	  might be possible to remove the keypress event listeners, but for
+	  now we'll take the cautious route.
+	  
+	  Address Launchpad bug 669445
+
+2010-11-15  miker
+
+	* Reverting and extending r18472 to correct implementation thinko
+
+2010-11-15  erickson
+
+	* make sure dojo.cookie is loaded before use; removed unnecessary
+	  import of dojoData
+
+2010-11-15  miker
+
+	* .: Tagging 2.0-beta2
+
+	* Open-ILS/src/perlmods/OpenILS/Application.pm,
+	  Open-ILS/src/sql/Pg/002.schema.config.sql, README: bumping
+	  version numbers
+
