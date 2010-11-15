@@ -127,17 +127,15 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
         if (fieldmapper.IDL && fieldmapper.IDL.loaded) 
             fieldmapper[cl].Identifier = fieldmapper.IDL.fmclasses[cl].pkey;
 
-        //if (dojo.filter(['aou','aout','pgt'], function(x){return x == cl}).length == 0) {
-            fieldmapper[cl].prototype.fromStoreItem = _fromStoreItem;
-            fieldmapper[cl].toStoreData = _toStoreData;
-            fieldmapper[cl].toStoreItem = _toStoreItem;
-            fieldmapper[cl].prototype.toStoreItem = function ( args ) { return _toStoreItem(this, args) };
-            fieldmapper[cl].initStoreData = _initStoreData;
-            fieldmapper[cl].prototype.toHash = _toHash;
-            fieldmapper[cl].toHash = _toHash;
-            fieldmapper[cl].prototype.fromHash = _fromHash;
-            fieldmapper[cl].fromHash = _fromHash;
-        //}
+        fieldmapper[cl].prototype.fromStoreItem = _fromStoreItem;
+        fieldmapper[cl].toStoreData = _toStoreData;
+        fieldmapper[cl].toStoreItem = _toStoreItem;
+        fieldmapper[cl].prototype.toStoreItem = function ( args ) { return _toStoreItem(this, args) };
+        fieldmapper[cl].initStoreData = _initStoreData;
+        fieldmapper[cl].prototype.toHash = _toHash;
+        fieldmapper[cl].toHash = _toHash;
+        fieldmapper[cl].prototype.fromHash = _fromHash;
+        fieldmapper[cl].fromHash = _fromHash;
     };
 
 	fieldmapper._request = function ( meth, staff, params ) {
@@ -318,7 +316,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
 
 
-    /** ! Begin code that executes on page parse */
+    /** ! Begin code that executes on page load */
 
     if (!window.fmclasses) dojo.require("fieldmapper.fmall", true);
     for( var cl in fmclasses ) {
