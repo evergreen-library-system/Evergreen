@@ -1365,6 +1365,9 @@ sub authority_tag_sf_startwith {
 	my @list = ();
 
 	if ($page < 0) {
+		# Don't skip the first actual page of results in descending order
+		$offset = $offset - $limit;
+
 		my $before = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
 			{ select	=> { afr => [qw/record value/] },
