@@ -59,7 +59,7 @@ function prepare_prediction_dialog() {
 }
 
 function generate_predictions(fields) {
-    var args = {"ssub_id": sub.id(), "all_dists": true};
+    var args = {"ssub_id": sub.id()};
 
     if (fields.end_how == "date") {
         args.end_date = sub.end_date();
