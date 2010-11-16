@@ -549,8 +549,8 @@ Indexes:
     "actor_usr_note_creator_idx" btree (creator)
     "actor_usr_note_usr_idx" btree (usr)
 Foreign-key constraints:
-    "usr_note_creator_fkey" FOREIGN KEY (creator) REFERENCES actor.usr(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
-    "usr_note_usr_fkey" FOREIGN KEY (usr) REFERENCES actor.usr(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+    "usr_note_creator_fkey" FOREIGN KEY (creator) REFERENCES actor.usr(id) ON ...
+    "usr_note_usr_fkey" FOREIGN KEY (usr) REFERENCES actor.usr(id) ON DELETE ....
 
 evergreen=# \q    <co id="sqlCO2-3"/>
 $

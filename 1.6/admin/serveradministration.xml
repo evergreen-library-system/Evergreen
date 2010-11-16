@@ -1843,7 +1843,10 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			of the <link linkend="config.table.metabib-field">config.metabib_field</link> table, which follows the other four columns in this table:
 			field_class, name, xpath, and format.</para>
 			<para>The following is one representative line from the <link linkend="config.table.metabib-field">config.metabib_field</link> table:</para>
-			<screen> author | conference | //mods32:mods/mods32:name[@type='conference']/mods32:namePart[../mods32:role/mods32:roleTerm[text()='creator']] | mods32 | 1 ) </screen>
+<screen>
+author | conference | //mods32:mods/mods32:name[@type='conference']/mods32:namePart[../mods32:role/mods32:
+roleTerm[text()='creator']] | mods32 | 1 ) 
+</screen>
 			<para>The default value for index-field weights in config.metabib_field is 1. Adjust the
 			weighting of indexed fields to boost or lower the relevance score for matches on that
 			indexed field. The weight value may be increased or decreased by whole integers. </para>
@@ -2081,8 +2084,9 @@ INSERT INTO config.metabib_field
 <programlisting>
 INSERT INTO metabib.keyword_field_entry 
 	(source, field, value)
-	SELECT source, 17, value (the field value, 17, field be different in your database so you may need to check the 
-	<link linkend="config.table.metabib-field">config.metabib_field</link> for the id of your new index).
+	SELECT source, 17, value (the field value, 17, field be different in your database 
+	so you may need to check the <link linkend="config.table.metabib-field">config.metabib_field</link> 
+	for the id of your new index).
 	FROM metabib.title_field_entry
 	WHERE field = 6;
 </programlisting>
@@ -2259,7 +2263,8 @@ WHERE id = 17;
                 <!-- Notify at 7 days overdue -->
                 <notify_interval>7 days</notify_interval>
                 <!-- Options include always, noemail, and never.  'noemail' means a notice
-                     will be appended to the notice file only if the patron has no valid email address.  -->
+                     will be appended to the notice file only if the patron has no 
+		     valid email address.  -->
                 <file_append>noemail</file_append>
                 <!-- do we attempt email notification? -->
                 <email_notify>true</email_notify>

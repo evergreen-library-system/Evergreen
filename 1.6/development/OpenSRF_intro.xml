@@ -977,30 +977,30 @@ my $logger = OpenSRF::Utils::Logger;
 			only see the INFO, WARN, and ERR messages, as follows:</simpara>
 			<formalpara><title>Results of logging calls at the default level of INFO</title><para>
 <screen>
-[2010-03-17 22:27:30] opensrf.simple-text [ERR :5681:SimpleText.pm:277:] Hmm, something bad DEFINITELY happened!
-[2010-03-17 22:27:30] opensrf.simple-text [WARN:5681:SimpleText.pm:278:] Hmm, something bad might have happened.
-[2010-03-17 22:27:30] opensrf.simple-text [INFO:5681:SimpleText.pm:279:] Something happened.
+[2010-03-17 22:27:30] opensrf.simple-text [ERR :5681:SimpleText.pm:277:] 
+[2010-03-17 22:27:30] opensrf.simple-text [WARN:5681:SimpleText.pm:278:] 
+[2010-03-17 22:27:30] opensrf.simple-text [INFO:5681:SimpleText.pm:279:] 
 </screen>
 			</para></formalpara>
 			<simpara>If you then increase the the logging level to INTERNAL (5), the logs will
 			contain much more information, as follows:</simpara>
 			<formalpara><title>Results of logging calls at the default level of INTERNAL</title><para>
 <screen>
-[2010-03-17 22:48:11] opensrf.simple-text [ERR :5934:SimpleText.pm:277:] Hmm, something bad DEFINITELY happened!
-[2010-03-17 22:48:11] opensrf.simple-text [WARN:5934:SimpleText.pm:278:] Hmm, something bad might have happened.
-[2010-03-17 22:48:11] opensrf.simple-text [INFO:5934:SimpleText.pm:279:] Something happened.
-[2010-03-17 22:48:11] opensrf.simple-text [DEBG:5934:SimpleText.pm:280:] Something happened; here are some more details.
-[2010-03-17 22:48:11] opensrf.simple-text [INTL:5934:SimpleText.pm:281:] Something happened; here are all the gory details.
-[2010-03-17 22:48:11] opensrf.simple-text [ERR :5934:SimpleText.pm:283:] Resolver did not find a cache hit
-[2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:Cache.pm:125:] Stored opensrf.simple-text.test_cache.masaa =&gt; "here" in memcached server
-[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:Application.pm:579:] Coderef for [OpenSRF::Application::Demo::SimpleText::test_cache]...
-[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:Application.pm:586:] A top level Request object is responding de nada
-[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:Application.pm:190:] Method duration for [opensrf.simple-text.test_cache]:  10.005
+[2010-03-17 22:48:11] opensrf.simple-text [ERR :5934:SimpleText.pm:277:] 
+[2010-03-17 22:48:11] opensrf.simple-text [WARN:5934:SimpleText.pm:278:] 
+[2010-03-17 22:48:11] opensrf.simple-text [INFO:5934:SimpleText.pm:279:] 
+[2010-03-17 22:48:11] opensrf.simple-text [DEBG:5934:SimpleText.pm:280:] 
+[2010-03-17 22:48:11] opensrf.simple-text [INTL:5934:SimpleText.pm:281:] 
+[2010-03-17 22:48:11] opensrf.simple-text [ERR :5934:SimpleText.pm:283:] 
+[2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:Cache.pm:125:] 
+[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:Application.pm:579:] 
+[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:Application.pm:586:] 
+[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:Application.pm:190:] 
 [2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:AppSession.pm:780:] Calling queue_wait(0)
 [2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:AppSession.pm:769:] Resending...0
 [2010-03-17 22:48:21] opensrf.simple-text [INTL:5934:AppSession.pm:450:] In send
-[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:AppSession.pm:506:] AppSession sending RESULT to opensrf@private.localhost/... 
-[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:AppSession.pm:506:] AppSession sending STATUS to opensrf@private.localhost/... 
+[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:AppSession.pm:506:] 
+[2010-03-17 22:48:21] opensrf.simple-text [DEBG:5934:AppSession.pm:506:] 
 ...
 </screen>
 			</para></formalpara>

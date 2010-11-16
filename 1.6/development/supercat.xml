@@ -101,17 +101,17 @@
 <screen>
 &lt;hold:volumes xmlns:hold='http://open-ils.org/spec/holdings/v1'&gt;
 	&lt;hold:volume id="tag:open-ils.org,2008:asset-call_number/130607" lib="FRRLS-FA" label="GUTCHEON BETH"&gt;
-	    	&lt;act:owning_lib id="tag:open-ils.org,2008:actor-org_unit/111" name="Fayette County Public Library"/&gt;
-	    	&lt;record xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/ 
-		      	standards/marcxml/schema/MARC21slim.xsd"
-		      	id="tag:open-ils.org,2008:biblio-record_entry/21669/FRRLS-FA"&gt;
-		      	&lt;leader&gt;09319pam a2200961 a 4500&lt;/leader&gt;
-		      	&lt;controlfield tag="001"/&gt;
-		      	&lt;controlfield tag="005"&gt;20000302124754.0&lt;/controlfield&gt;
-		      	&lt;controlfield tag="008"&gt;990817s2000    nyu           000 1 eng  &lt;/controlfield&gt;
-		      	&lt;datafield tag="010" ind1=" " ind2=" "&gt;
-				&lt;subfield code="a"&gt;   99045936&lt;/subfield&gt;
-		      	&lt;/datafield&gt;
+	    &lt;act:owning_lib id="tag:open-ils.org,2008:actor-org_unit/111" name="Fayette County Public Library"/&gt;
+	    &lt;record xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/ 
+	      	standards/marcxml/schema/MARC21slim.xsd"
+	      	id="tag:open-ils.org,2008:biblio-record_entry/21669/FRRLS-FA"&gt;
+	      	&lt;leader&gt;09319pam a2200961 a 4500&lt;/leader&gt;
+	      	&lt;controlfield tag="001"/&gt;
+	      	&lt;controlfield tag="005"&gt;20000302124754.0&lt;/controlfield&gt;
+	      	&lt;controlfield tag="008"&gt;990817s2000    nyu           000 1 eng  &lt;/controlfield&gt;
+	      	&lt;datafield tag="010" ind1=" " ind2=" "&gt;
+			&lt;subfield code="a"&gt;   99045936&lt;/subfield&gt;
+	      	&lt;/datafield&gt;
 		      	..
 	    	&lt;/record&gt;
 	    	&lt;record&gt;

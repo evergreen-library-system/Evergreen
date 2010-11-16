@@ -21,7 +21,8 @@
 					the translation. Load the translated labels into the Evergreen database using the command <command>psql</command>, substituting your user, host and 
 					database connection information accordingly:</para>
 <programlisting language="xml"><![CDATA[
-$ psql -U <username> -h <hostname> -d <database> -f /path/to/Evergreen-source/Open-ILS/src/sql/Pg/950.data.seed-values-fr-CA.sql
+$ psql -U <username> -h <hostname> -d <database> \ 
+-f /path/to/Evergreen-source/Open-ILS/src/sql/Pg/950.data.seed-values-fr-CA.sql
 ]]></programlisting>
 				</listitem>
 				<listitem>

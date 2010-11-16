@@ -1119,9 +1119,6 @@ srfsh#
 										avoid warning messages when users login to their
 										account through the OPAC or when staff login
 										through the staff client.</para>
-										<para>For further information on getting a proper
-										SSL certificate, see
-										<xref linkend="serversideinstallation-ssl"/>.</para>
 									</note>
 								</step>
 								<step xml:id="serversideinstallation-modify-apache">
@@ -1369,7 +1366,7 @@ srfsh#
 					<title>(OPTIONAL) Enable and Disable Language Localizations</title>
 					<para>You can load translations such as Armenian (hy-AM), Canadian French
 					(fr-CA), and others into the database to complete the translations available in
-					the OPAC and staff client. For further information, see <xref linkend="localization"/>.</para>
+					the OPAC and staff client. For further information, see <xref linkend="enabling_and_disabling_localization"/>.</para>
 				</step>
 			</procedure>
 		</section>
@@ -1700,8 +1697,7 @@ Updating fieldmapper
 					</listitem>
 					<listitem>
 						<para>Manually install a <systemitem class="osname">Linux</systemitem>
-						guest system, then manually install Evergreen on it (see 
-						<xref linkend="serversideinstall-virtual-manual"/> for details)</para>
+						guest system, then manually install Evergreen on it.</para>
 					</listitem>
 				</orderedlist>
 				<para>We review each method in the following sections.</para>

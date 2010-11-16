@@ -63,7 +63,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <marc:collection xmlns:marc="http://www.loc.gov/MARC21/slim" 
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xsi:schemaLocation="http://www.loc.gov/MARC/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  xsi:schemaLocation="http://www.loc.gov/MARC/slim 
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
   <marc:record>
     <marc:leader>00677nam a2200193 a 4500</marc:leader>
     <marc:controlfield tag="001">H01-0000844</marc:controlfield>
@@ -83,7 +84,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <collection xmlns:marc="http://www.loc.gov/MARC21/slim" 
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xsi:schemaLocation="http://www.loc.gov/MARC/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  xsi:schemaLocation="http://www.loc.gov/MARC/slim 
+http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
   <record>
     <leader>00677nam a2200193 a 4500</leader>
     <controlfield tag="001">H01-0000844</controlfield>
@@ -152,7 +154,7 @@
 				</step>
 			</procedure>
 			<para>If an ILS has the concept of <quote>item categories</quote>, these may be mapped to Evergreen via statistical categories in the 
-			<link linkend="asset.table.stat_cat">asset.stat_cat table</link> . Note that statistical categories cannot be used as search filters; individual branches can define 
+			<link linkend="asset.table.stat-cat">asset.stat_cat table</link> . Note that statistical categories cannot be used as search filters; individual branches can define 
 			their own statistical categories; and define their own statistical category entries for individual items - best use case for statistical categories is probably for gifts.</para>
 			<para>In 2009, Conifer placed their <link xl:href="http://svn.open-ils.org/trac/ILS-Contrib/browser/conifer/branches/rel_1_6_1/tools/migration-scripts"  
 			xl:title="Conifer migration tools">migration tools</link> 
@@ -190,9 +192,10 @@
 				<indexterm><primary>sql</primary></indexterm> 
 <programlisting language="sql">
 CREATE TABLE students (
-	student_id int, barcode text, last_name text, first_name text, program_number text, program_name text, email text, address_type text, street1 text, 
-	street2 text, city text, province text, country text, postal_code text, phone text, profile int, ident_type int, home_ou int, 
-	claims_returned_count int DEFAULT 0, usrname text, net_access_level int DEFAULT 2, password text
+	 student_id int, barcode text, last_name text, first_name text, program_number text, program_name text,
+	 email text, address_type text, street1 text, street2 text, city text, province text, country text, 
+	 postal_code text, phone text, profile int, ident_type int, home_ou int, 
+	 claims_returned_count int DEFAULT 0, usrname text, net_access_level int DEFAULT 2, password text
 ); 
 </programlisting>
 				<para>Note the <varname>DEFAULT</varname> variables. These allow you to set default for your library or to populate required fields if you data allows 
@@ -202,7 +205,8 @@ CREATE TABLE students (
 				<para>Formatting of some fields to fit Evergreen filed formatting may be required. Here is an example of sql to adjust phone numbers in the staging 
 				table to fit the evergreen field:</para>
 <programlisting language="sql">
-UPDATE students phone = replace(replace(replace(rpad(substring(phone from 1 for 9), 10, '-') || substring(phone from 10), '(', ''), ')', ''), ' ', '-');
+UPDATE students phone = replace(replace(replace(rpad(substring(phone from 1 for 9), 10, '-') || 
+substring(phone from 10), '(', ''), ')', ''), ' ', '-');
 </programlisting>
 				<para>Data <quote>massaging</quote> may be required to fit formats used in Evergreen.</para>
 			</step>
@@ -210,10 +214,10 @@ UPDATE students phone = replace(replace(replace(rpad(substring(phone from 1 for 
 				<para>Insert records from the staging table into the <link linkend="actor.table.usr">actor.usr</link> Evergreen table:</para>
 <programlisting language="sql">
  INSERT INTO actor.usr (
-	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, family_name, day_phone, home_ou, claims_returned_count, 
-	net_access_level) 
-	SELECT profile, students.usrname, email, student_id, ident_type, student_id, first_name, last_name, phone, home_ou, claims_returned_count, 
-	net_access_level 
+	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, family_name, day_phone, 
+	home_ou, claims_returned_count, net_access_level) 
+	SELECT profile, students.usrname, email, student_id, ident_type, student_id, first_name, last_name, 
+	phone, home_ou, claims_returned_count, net_access_level 
 	FROM students;
 </programlisting>			
 			</step>
@@ -241,7 +245,8 @@ UPDATE actor.usr
 				<para>Insert records into <link linkend="actor.table.usr-address">actor.usr_address</link> to add address information for users:</para>
 <programlisting language="sql">
 INSERT INTO actor.usr_address (usr, street1, street2, city, state, country, post_code) 
-	SELECT actor.usr.id, students.street1, students.street2, students.city, students.province, students.country, students.postal_code 
+	SELECT actor.usr.id, students.street1, students.street2, students.city, students.province, 
+	students.country, students.postal_code 
 	FROM students 
 	INNER JOIN actor.usr ON students.usrname = actor.usr.usrname;
 </programlisting>			
@@ -274,18 +279,19 @@ BEGIN;
 
 -- Create staging table.
 CREATE TABLE students (
-	student_id int, barcode text, last_name text, first_name text, program_number text, program_name text, email text, address_type text, 
-	street1 text, street2 text, city text, province text, country text, postal_code text, phone text, profile int, ident_type int, home_ou int, 
+	student_id int, barcode text, last_name text, first_name text, program_number text, program_name text, 
+	email text, address_type text, street1 text, street2 text, city text, province text, country text, 
+	postal_code text, phone text, profile int, ident_type int, home_ou int, 
 	claims_returned_count int DEFAULT 0, usrname text, net_access_level int DEFAULT 2, password text
 ); 
 
 
 --Insert records from the staging table into the actor.usr table.
 INSERT INTO actor.usr (
-	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, family_name, day_phone, home_ou, claims_returned_count, 
-	net_access_level) 
-	SELECT profile, students.usrname, email, student_id, ident_type, student_id, first_name, last_name, phone, home_ou, claims_returned_count, 
-	net_access_level FROM students;
+	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, family_name, day_phone, 
+	home_ou, claims_returned_count, net_access_level) 
+	SELECT profile, students.usrname, email, student_id, ident_type, student_id, first_name, last_name, 
+	phone, home_ou, claims_returned_count, net_access_level FROM students;
 
 --Insert records from the staging table into the actor.usr table.
 INSERT INTO actor.card (usr, barcode) 
@@ -302,7 +308,8 @@ UPDATE actor.usr
 
 --INSERT records INTO actor.usr_address from staging table.
 INSERT INTO actor.usr_address (usr, street1, street2, city, state, country, post_code) 
-	SELECT actor.usr.id, students.street1, students.street2, students.city, students.province, students.country, students.postal_code 
+	SELECT actor.usr.id, students.street1, students.street2, students.city, students.province, 
+	students.country, students.postal_code 
 	FROM students 
 	INNER JOIN actor.usr ON students.usrname = actor.usr.usrname;
 
@@ -349,7 +356,9 @@ COMMIT;
 		 	 <step>
 				<para>Add a source for your electronic resources:</para>
 <screen>
-<userinput># INSERT INTO config.bib_source(quality, source, transcendant) VALUES (50, 'Institutional repository', TRUE);</userinput>
+<userinput>
+# INSERT INTO config.bib_source(quality, source, transcendant) 
+	VALUES (50, 'Institutional repository', TRUE);</userinput>
 </screen>
 			</step>
 		 	 <step>
@@ -369,8 +378,6 @@ COMMIT;
 	</section>
 	<section xml:id="emptydatabase">
 		<title>Restoring your Evergreen Database to an Empty State</title>
-		<indexterm><primary>databases</primary><secondary>restoring Evergreen to an empty state</secondary></indexterm>
-		<secondary>importing bibliographic records</secondary>
 		<para>If you've done a test import of records and you want to quickly get Evergreen back to a pristine state, you can create a clean Evergreen database schema by performing the 
 		following:</para>
 		<procedure>

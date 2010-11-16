@@ -235,7 +235,9 @@ Escape character is '^]'.
 					<para>Now just copy in the following line (with variables replaced) you don't need to hit enter, just paste!</para>
 					<screen>2300120080623    172148AO**$instid**|AA**$barcode**|AC$password|AD**$password**</screen>
 					<para>You will get back the patron information for $barcode (something similar to the what's below).</para>
-					<screen>24  Y           00120100113    170738AEFirstName MiddleName LastName|AA**$barcode**|BLY|CQY|BHUSD|BV0.00|AFOK|AO**$instid**|</screen>
+<screen>24  Y           00120100113    170738AEFirstName MiddleName LastName|AA**$barcode**|BLY|CQY
+|BHUSD|BV0.00|AFOK|AO**$instid**|
+</screen>
 					<para>The response declares it is a valid patron <varname>BLY</varname> with a valid password <varname>CQY</varname> and shows the user's 
 					<varname>$name</varname>.</para>
 				</step>
@@ -458,12 +460,17 @@ Escape character is '^]'.
 			<screen>17&lt;xact_date&gt;[fields: AO,AB,AC]</screen>
 			<para>The request is very terse. <varname>AC</varname> is optional.</para>
 			<para>The following response structure is for <systemitem class="protocol">SIP2</systemitem>. (Version 1 of the protocol had only 6 total fields.)</para>
-			<screen>18&lt;circulation_status&gt;&lt;security_marker&gt;&lt;fee_type&gt;&lt;xact_date&gt;[fields: CF,AH,CJ,CM,AB,AJ,BG,BH,BV,CK,AQ,AP,CH,AF,AG,+CT,+CS]</screen>
+<screen>
+18&lt;circulation_status&gt;&lt;security_marker&gt;&lt;fee_type&gt;&lt;xact_date&gt;
+[fields: CF,AH,CJ,CM,AB,AJ,BG,BH,BV,CK,AQ,AP,CH,AF,AG,+CT,+CS]
+</screen>
 			<para>Example:</para>
 			<screen>1720060110    215612AOBR1|ABno_such_barcode|</screen>
 			<screen>1801010120100609    162510ABno_such_barcode|AJ|</screen>
 			<screen>1720060110    215612AOBR1|AB1565921879|</screen>
-			<screen>1810020120100623    171415AB1565921879|AJPerl 5 desktop reference|CK001|AQBR1|APBR1|BGBR1|CTBR3|CSQA76.73.P33V76 1996|</screen>
+<screen>1810020120100623    171415AB1565921879|AJPerl 5 desktop reference|CK001|AQBR1|APBR1|BGBR1
+|CTBR3|CSQA76.73.P33V76 1996|
+</screen>
 			<para>The first case is with a bogus barcode. The latter shows an item with a circulation_status of <emphasis>10</emphasis> for <emphasis>in transit between libraries</emphasis>. 
 			The known values of <varname>circulation_status</varname> are enumerated in the spec.</para>
 			<para>EXTENSIONS: The <varname>CT</varname> field for <emphasis>destination location</emphasis> and <varname>CS</varname> <emphasis>call number</emphasis> are used by 
@@ -526,7 +533,9 @@ Escape character is '^]'.
 64  Y           00020100623    141130000000000000000000000000AA999999|AEDavid J. Fiander|BHUSD|BV0.00
 |BD2 Meadowvale Dr. St Thomas, ON Canada
 </screen>
-			<screen>90210|BEdjfiander@somemail.com|BF(519) 555 1234|AQBR1|BLY|CQN|PB19640925|PCPatrons|PIUnfiltered|AFOK|AOBR1|</screen>
+<screen>90210|BEdjfiander@somemail.com|BF(519) 555 1234|AQBR1|BLY|CQN|PB19640925|PCPatrons
+|PIUnfiltered|AFOK|AOBR1|
+</screen>
 			<para>See <link linkend='SIP_Patron_Status'>23/24 Patron Status</link> for info on <varname>BL</varname> and <varname>CQ</varname> fields.</para>
 		</simplesect>
 		<simplesect xml:id="SIP_Renew_All">
@@ -560,8 +569,14 @@ Escape character is '^]'.
 					<listitem>max print width - 3 characters - the integer number of characters the client can print</listitem>
 					<listitem>protocol version - 4 characters - x.xx</listitem>
 			</itemizedlist>
-			<screen>98&lt;on-line status&gt;&lt;checkin ok&gt;&lt;checkout ok&gt;&lt;ACS renewal policy&gt;&lt;status update ok&gt;&lt;offline ok&gt;&lt;timeout period&gt;</screen>
-			<screen>&lt;retries allowed&gt;&lt;date/time sync&gt;&lt;protocol version&gt;&lt;institution id&gt;&lt;library name&gt;&lt;supported messages&gt;&lt;terminal</screen> 
+<screen>
+98&lt;on-line status&gt;&lt;checkin ok&gt;&lt;checkout ok&gt;&lt;ACS renewal policy&gt;
+&lt;status update ok&gt;&lt;offline ok&gt;&lt;timeout period&gt;
+</screen>
+<screen>
+&lt;retries allowed&gt;&lt;date/time sync&gt;&lt;protocol version&gt;&lt;institution id&gt;
+&lt;library name&gt;&lt;supported messages&gt;&lt;terminal
+</screen> 
 			<screen>location&gt;&lt;screen message&gt;&lt;print line&gt;</screen>
 			<para>Example:</para>
 			<screen>9910302.00</screen>
