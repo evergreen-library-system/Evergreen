@@ -29,6 +29,9 @@ UPDATE biblio.record_entry SET marc = '<record xmlns="http://www.loc.gov/MARC21/
 
 INSERT INTO config.upgrade_log (version) VALUES ('0461');
 
+-- Push the auri serial in case it's out of date
+SELECT SETVAL('asset.uri'::TEXT, GREATEST((SELECT MAX(id) + 1 FROM asset.uri)));
+
 -- Remove some uses of the connectby() function from the tablefunc contrib module
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT, INT ) RETURNS SETOF actor.org_unit AS $$
     WITH RECURSIVE descendant_depth AS (
