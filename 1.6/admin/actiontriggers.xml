@@ -126,8 +126,8 @@ Our records indicate the following items are overdue.
 
 [%- USE date -%]
 [%- user = target.0.usr -%]
-To: robert.soulliere@mohawkcollege.ca
-From: robert.soulliere@mohawkcollege.ca
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || default_sender %]
 Subject: Overdue Items Marked Lost
 
 Dear [% user.family_name %], [% user.first_given_name %]
