@@ -13,20 +13,26 @@ function oilsSetupUser() {
     var authtoken = cgi.param('ses') || dojo.cookie('ses');
     var workstation = cgi.param('ws') || dojo.cookie('ws');
     var user;
+    var ses_user;
 
     openils.User.user = null;
     openils.User.authtoken = null;
     openils.User.workstation = null;
 
-    if(!authtoken && openils.XUL.isXUL()) {
+    if(openils.XUL.isXUL()) {
 		stash = openils.XUL.getStash();
 		authtoken = stash.session.key
+        ses_user = stash.list.au[0];
 	}
 
     if(authtoken) {
         user = new openils.User();
         delete user.sessionCache[authtoken];
         user.authtoken = authtoken;
+        if(ses_user) {
+            user.user = ses_user;
+            user.sessionCache[authtoken] = ses_user;
+        }
         user.user = user.getBySession();
     }
 

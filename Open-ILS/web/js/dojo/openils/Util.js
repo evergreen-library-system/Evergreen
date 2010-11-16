@@ -143,7 +143,22 @@ if(!dojo._hasResource["openils.Util"]) {
         if(e = openils.Event.parse(testval)) {
             if(eventOk) return e;
             console.log(e.toString());
-            if(openils.Util.alertEvent)
+
+            // session timed out.  Stop propagation of requests queued by Util.onload 
+            // and launch the XUL login dialog if possible
+            var retryLogin = false;
+            if(e.textcode == 'NO_SESSION') {
+                openils.User.authtoken = null; 
+                if(openils.XUL.isXUL()) {
+                    retryLogin = true;
+                    openils.XUL.getNewSession( function() { location.href = location.href } );
+                } else {
+                    // TODO: make the oilsLoginDialog templated via dojo so it can be 
+                    // used as a standalone widget
+                }
+            }
+
+            if(openils.Util.alertEvent && !retryLogin)
                 alert(e);
             return null;
         }
