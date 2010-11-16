@@ -668,27 +668,23 @@ sub make_predictions {
 
     my $editor = OpenILS::Utils::CStoreEditor->new();
     my $ssub_id = $args->{ssub_id};
-    my $all_dists = $args->{all_dists}; #TODO: this option supports test-level code, will be removed (i.e. always 'true')
     my $mfhd = MFHD->new(MARC::Record->new());
 
     my $ssub = $editor->retrieve_serial_subscription([$ssub_id]);
     my $scaps = $editor->search_serial_caption_and_pattern({ subscription => $ssub_id, active => 't'});
-    my $sdists = $editor->search_serial_distribution( [{ subscription => $ssub->id }, {  flesh => 1,
-              flesh_fields => {sdist => [ qw/ streams / ]}, $all_dists ? () : (limit => 1) }] ); #TODO: 'deleted' support?
+    my $sdists = $editor->search_serial_distribution( [{ subscription => $ssub->id }, { flesh => 1, flesh_fields => {sdist => [ qw/ streams / ]} }] ); #TODO: 'deleted' support?
 
-    if ($all_dists) {
-        my $total_streams = 0;
-        foreach (@$sdists) {
-            $total_streams += scalar(@{$_->streams});
-        }
-        if ($total_streams < 1) {
-            $editor->disconnect;
-            # XXX TODO new event type
-            return new OpenILS::Event(
-                "BAD_PARAMS", note =>
-                    "There are no streams to direct items. Can't predict."
-            );
-        }
+    my $total_streams = 0;
+    foreach (@$sdists) {
+        $total_streams += scalar(@{$_->streams});
+    }
+    if ($total_streams < 1) {
+        $editor->disconnect;
+        # XXX TODO new event type
+        return new OpenILS::Event(
+            "BAD_PARAMS", note =>
+                "There are no streams to direct items. Can't predict."
+        );
     }
 
     unless (@$scaps) {
@@ -990,7 +986,12 @@ sub unitize_items {
             my $unit;
             my $sdists = $editor->search_serial_distribution([{"+sstr" => {"id" => $stream_id}}, { "join" => {"sstr" => {}} }]);
             $unit = _build_unit($editor, $sdists->[0], $mode, 0, $barcodes->{$item->id});
-            # TODO: catch events from _build_unit
+            # if _build_unit fails, $unit is an event, so return it
+            if ($U->event_code($unit)) {
+                $editor->rollback;
+                $unit->{"note"} = "Item ID: " . $item->id;
+                return $unit;
+            }
             my $evt =  _create_sunit($editor, $unit);
             return $evt if $evt;
             if ($unit_id == -2) {
