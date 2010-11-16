@@ -19,11 +19,16 @@
 </div>
 
 <script type ="text/javascript">
-    dojo.require('dijit.form.FilteringSelect');
+    dojo.require("openils.widget.PCrudAutocompleteBox");
     dojo.require('openils.widget.AutoGrid');
 
     openils.Util.addOnLoad(
         function() {
+            braGrid.overrideEditWidgets.resource_type =
+                new openils.widget.PCrudAutocompleteBox({
+                    "fmclass": "brt", "searchAttr": "name"
+                });
+            braGrid.overrideEditWidgets.resource_type.shove = {"create": ""};
             braGrid.loadAll({order_by:{bra : 'name'}}, {"id": {"!=": null}});
         }
     );

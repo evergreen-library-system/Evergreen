@@ -109,7 +109,6 @@ function createLi(oncomplete) {
 function prepareButtons() {
     addToPlButton.onClick = createLi(
         function() { /* oncomplete */
-            liTable._loadPLSelect(paramPL);
             acqLitSavePlDialog.show();
         }
     );

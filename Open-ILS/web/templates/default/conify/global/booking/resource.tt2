@@ -22,12 +22,19 @@
 <script type ="text/javascript">
     dojo.require('dijit.form.FilteringSelect');
     dojo.require('openils.widget.AutoGrid');
+    dojo.require("openils.widget.PCrudAutocompleteBox");
 
     openils.Util.addOnLoad(
         function() {
             var search = {"id": {"!=": null}};
             if (xulG && xulG.resultant_brsrc)
                 search = {id: xulG.resultant_brsrc};
+
+            brsrcGrid.overrideEditWidgets.type =
+                new openils.widget.PCrudAutocompleteBox({
+                    "fmclass": "brt", "searchAttr": "name"
+                });
+            brsrcGrid.overrideEditWidgets.type.shove = {"create": ""};
             brsrcGrid.loadAll({order_by:{brsrc : 'barcode'}}, search);
         }
     );
