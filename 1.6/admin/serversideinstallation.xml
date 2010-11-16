@@ -167,7 +167,7 @@
 				<step>
 					<title>Install Prerequisites to Build OpenSRF</title>
 					<para>In this section you will install and configure a set of prerequisites that will be
-					used to build OpenSRF. In the following step you will actually build the OpenSRF software 
+					used to build OpenSRF. In a following step you will actually build the OpenSRF software 
 					using the <command>make</command> utility.</para>
 					<para>As the <systemitem class="username">root</systemitem> user, enter the commands show
 					below to build the prerequisites from the software distribution that you just downloaded
@@ -220,6 +220,10 @@
 								<row>
 									<entry>centos</entry>
 									<entry>for Centos</entry>
+								</row>
+								<row>
+									<entry>rhel</entry>
+									<entry>for RHEL</entry>
 								</row>
 								<row>
 									<entry>gentoo</entry>
@@ -468,8 +472,7 @@ ejabberdctl register opensrf public.localhost  <password #2>
 								<row>
 									<entry>/config/opensrf/passwd </entry>
 									<entry>password for
-									<systemitem class="domainname">private.localhost</systemitem>
-									<systemitem class="username">opensrf</systemitem> user
+									<systemitem class="domainname">private.localhost</systemitem><systemitem class="username">opensrf</systemitem> user
 									</entry>
 								</row>
 								<row>
@@ -481,8 +484,7 @@ ejabberdctl register opensrf public.localhost  <password #2>
 								<row>
 									<entry>/config/gateway/passwd</entry>
 									<entry>password for
-									<systemitem class="domainname">public.localhost</systemitem>
-									<systemitem class="username">opensrf</systemitem> user
+									<systemitem class="domainname">public.localhost</systemitem><systemitem class="username">opensrf</systemitem> user
 									</entry>
 								</row>
 								<row>
@@ -498,8 +500,7 @@ ejabberdctl register opensrf public.localhost  <password #2>
 									first entry where transport/server == public.localhost: 
 									password</entry>
 									<entry>password for 
-									<systemitem class="domainname">public.localhost</systemitem>
-									<systemitem class="username">router</systemitem> user
+									<systemitem class="domainname">public.localhost</systemitem><systemitem class="username">router</systemitem> user
 									</entry>
 								</row>
 								<row>
@@ -515,8 +516,7 @@ ejabberdctl register opensrf public.localhost  <password #2>
 									second entry where transport/server == private.localhost:
 									password</entry>
 									<entry>password for 
-									<systemitem class="domainname">private.localhost</systemitem>
-									<systemitem class="username">router</systemitem> user
+									<systemitem class="domainname">private.localhost</systemitem><systemitem class="username">router</systemitem> user
 									</entry>
 								</row>
 							</tbody>
@@ -754,10 +754,12 @@ srfsh#
 					<para>As the <systemitem class="username">root</systemitem> user, enter the
 					commands show below to build the prerequisites from the software distribution
 					that you just downloaded and unpacked. Remember to replace
-					<emphasis>[DISTRIBUTION]</emphasis> in the example with the keyword
-					corresponding to the name of the <systemitem class="osname">Linux</systemitem>
-					distribution listed in the distribution keywords table 
-					<xref linkend="serversideinstallation-keywords-evergreen"/> .</para>
+					<emphasis>[DISTRIBUTION]</emphasis> in the following example with the keyword
+					corresponding to the name of one of the <systemitem class="osname">Linux</systemitem>
+					distributions listed in the following distribution keywords table 
+					<xref linkend="serversideinstallation-keywords-evergreen"/> .
+					For example, to install the prerequisites for Ubuntu version 9.10 (Karmic Koala) you would
+					enter this command: <command>make -f Open-ILS/src/extras/Makefile.install ubuntu-karmic</command> .</para>
 					<screen>
 						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
 						<userinput>make -f Open-ILS/src/extras/Makefile.install [DISTRIBUTION]</userinput>
@@ -776,23 +778,39 @@ srfsh#
 							<tbody>
 								<row>
 									<entry>debian-etch</entry>
-									<entry>for Debian Etch (4.0)</entry>
+									<entry>for Debian "Etch" (4.0)</entry>
 								</row>
 								<row>
 									<entry>debian-lenny</entry>
-									<entry>for Debian Lenny (5.0)</entry>
+									<entry>for Debian "Lenny" (5.0)</entry>
 								</row>
 								<row>
 									<entry>ubuntu-hardy</entry>
-									<entry>for Ubuntu Hardy Heron (8.04)</entry>
+									<entry>for Ubuntu "Hardy Heron" (8.04)</entry>
+								</row>
+								<row>
+									<entry>ubuntu-intrepid</entry>
+									<entry>for Ubuntu "Intrepid Ibex" (8.10)</entry>
 								</row>
 								<row>
 									<entry>ubuntu-karmic</entry>
-									<entry>for Ubuntu Karmic Koala (9.10)</entry>
+									<entry>for Ubuntu "Karmic Koala" (9.10)</entry>
 								</row>
 								<row>
 									<entry>ubuntu-karmic</entry>
-									<entry>for Ubuntu Lucid Lynx (10.04)</entry>
+									<entry>for Ubuntu "Lucid Lynx" (10.04)</entry>
+								</row>
+								<row>
+									<entry>centos</entry>
+									<entry>for Centos</entry>
+								</row>
+								<row>
+									<entry>rhel</entry>
+									<entry>for RHEL</entry>
+								</row>
+								<row>
+									<entry>gentoo</entry>
+									<entry>for Gentoo</entry>
 								</row>
 							</tbody>
 						</tgroup>
@@ -865,7 +883,8 @@ srfsh#
 					<title>Update the System Dynamic Library Path</title>
 					<para>You must update the system dynamic library path to force your system to
 					recognize the newly installed libraries. As the <systemitem class="username">root</systemitem>
-					user, create a file named /etc/ld.so.conf.d/eg.conf containing the new library paths:</para>
+					user, create a file named <filename>/etc/ld.so.conf.d/eg.conf</filename>
+					containing these new library paths:</para>
 					<programlisting>
 /usr/local/lib
 /usr/local/lib/dbd
@@ -901,32 +920,50 @@ srfsh#
 						<userinput>make</userinput>
 					</screen>
 				</step>
-				<step xml:id="serversideinstallation-compilingevergreen"><title>Compile, Link and Install Evergreen</title><para>In this step you will actually compile, link and install Evergreen and the default
-					Evergreen Staff Client.</para><para>As the <systemitem class="username">root</systemitem>
-					user, return to the Evergreen build directory and use the <command>make</command> utility
-					as shown below. The Staff Client will also be automatically built, but you must remember
+				<step>
+					<title>Compile, Link and Install Evergreen</title>
+					<para>In this step you will actually compile, link and install Evergreen and the 
+					default Evergreen Staff Client.</para>
+					<para>As the <systemitem class="username">root</systemitem> user, return to the
+					Evergreen build directory and use the <command>make</command> utility as shown below:</para>
+					<screen>
+						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
+						<userinput>make STAFF_CLIENT_BUILD_ID=rel_1_6_1_2 install</userinput>
+					</screen>
+					<para>The Staff Client will also be automatically built, but you must remember
 					to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version of the Staff
-					Client you will use to connect to the Evergreen server.</para><para>For further information on manually building the Staff Client, see 
-					<xref linkend="staffclientinstallation-building-staffclient"/>.</para><screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput><userinput>make STAFF_CLIENT_BUILD_ID=rel_1_6_1_2 install</userinput></screen><para>The above commands will create a new subdirectory
+					Client you will use to connect to the Evergreen server. For further information on manually
+					building the Staff Client, see 
+					<xref linkend="staffclientinstallation-building-staffclient"/>.</para>
+					<para>The above commands will create a new subdirectory
 					<filename class="directory">/openils/var/web/xul/rel_1_6_1_2</filename> 
-					containing the Staff Client.</para> <para>To complete the Staff Client installation, 
+					containing the Staff Client.</para>
+					<para>To complete the Staff Client installation, 
 					as the <systemitem class="username">root</systemitem> user create a symbolic link 
 					named <emphasis>server</emphasis> in the head of the Staff Client directory 
 					<filename class="directory">/openils/var/web/xul</filename> that points to the
 					subdirectory <filename class="directory">/server</filename> of the new Staff
-					Client build:</para><screen><userinput>cd /openils/var/web/xul</userinput><userinput>ln -sf rel_1_6_1_2/server server</userinput></screen></step>
+					Client build:</para>
+					<screen>
+						<userinput>cd /openils/var/web/xul</userinput>
+						<userinput>ln -sf rel_1_6_1_2/server server</userinput>
+					</screen>
+				</step>
 				<step>
 					<title>Copy the OpenSRF Configuration Files</title>
-					<para>As the <systemitem class="username">root</systemitem> user, copy the
-					example OpenSRF configuration files into place. This replaces the configuration
-					files that you set up in a previous step when you installed and tested
-					OpenSRF. You should also create backup copies of the old files for
-					troubleshooting purposes. Finally, change the ownership on the installed files
-					to the <systemitem class="username">opensrf</systemitem> user:</para>
+					<para>As the <systemitem class="username">root</systemitem> user, execute the
+					following commands to copy the example OpenSRF configuration files into place
+					after first creating backup copies of the old files for troubleshooting purposes.
+					These files replace the configuration files that you set up in a previous step
+					when you installed and tested OpenSRF. Finally, change the ownership on
+					the installed files to the <systemitem class="username">opensrf</systemitem> user:</para>
 					<screen>
-						<userinput>cp /openils/conf/opensrf.xml.example      /openils/conf/opensrf.xml</userinput>
-						<userinput>cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml</userinput>
-						<userinput>cp /openils/conf/oils_web.xml.example     /openils/conf/oils_web.xml</userinput>
+						<userinput>cd /openils/conf</userinput>
+						<userinput>cp opensrf.xml      opensrf.xml.BAK</userinput>
+						<userinput>cp opensrf_core.xml opensrf_core.xml.BAK</userinput>
+						<userinput>cp opensrf.xml.example      opensrf.xml</userinput>
+						<userinput>cp opensrf_core.xml.example opensrf_core.xml</userinput>
+						<userinput>cp oils_web.xml.example     oils_web.xml</userinput>
 						<userinput>chown -R opensrf:opensrf /openils/</userinput>
 					</screen>
 				</step>
@@ -952,14 +989,14 @@ srfsh#
 							<para>As the <systemitem class="username">postgres</systemitem>
 							user on the PostgreSQL system create the PostgreSQL database,
 							then set some internal paths:</para>
-							<para>Create the database:</para>
 							<screen>
-								<userinput>createdb -E UNICODE evergreen</userinput>
+								<userinput>createdb evergreen -E UTF8 -T template0</userinput>
 								<userinput>createlang plperl   evergreen</userinput>
 								<userinput>createlang plperlu  evergreen</userinput>
 								<userinput>createlang plpgsql  evergreen</userinput>
 							</screen>
-							<para>Adjust the paths as shown, where
+							<para>Continue as user <systemitem class="username">postgres</systemitem>
+							and execute the SQL scripts as shown below, adjusting the paths as needed, where
 							<literal>[PGSQL_VERSION]</literal> is your installed PostgreSQL
 							version (e.g. <literal>8.3</literal>).</para>
 							<screen>
@@ -976,8 +1013,8 @@ srfsh#
 							assign a password:</para>
 							<screen>
 								<userinput>createuser -P -s evergreen</userinput>
-								<prompt>Enter password for new role: MYNEWPASSWORD</prompt>
-								<prompt>Enter it again: MYNEWPASSWORD</prompt>
+								<prompt>Enter password for new role: <userinput>MYNEWPASSWORD</userinput></prompt>
+								<prompt>Enter it again: <userinput>MYNEWPASSWORD</userinput></prompt>
 							</screen>
 						</step>
 						<step>
@@ -1000,9 +1037,15 @@ srfsh#
 							</screen>
 							<para>On most systems, <emphasis>HOSTNAME</emphasis> will be
 							<emphasis role="bold">localhost</emphasis>,
-							<emphasis>PORT</emphasis> will be <emphasis role="bold">5432</emphasis>,
-							and <emphasis>PASSWORD</emphasis> and <emphasis>DATABASENAME</emphasis> 
-							will be <emphasis role="bold">evergreen</emphasis>.</para>
+							<emphasis>PORT</emphasis> will be <emphasis role="bold">5432</emphasis>.
+							Values for <emphasis>PASSWORD</emphasis> and <emphasis>DATABASENAME</emphasis> 
+							will match the values you used in the previous step when you created the
+							database and and set a password for the
+							<systemitem class="username">evergreen</systemitem> user.
+							Adjust the values to match your own systems.</para>
+							<para>As the command executes, you may see warnings similar to:
+							<literal>ERROR: schema SOMENAME does not exist</literal> (in fact,
+							you may see one warning per schema) but they can be safely ignored.</para>
 							<note>
 								<para>If you are entering the above command on a single
 								line, do not include the <literal>\</literal>
@@ -1036,11 +1079,13 @@ srfsh#
 										<userinput>a2enmod rewrite # enable mod_rewrite</userinput>
 										<userinput>a2enmod expires # enable mod_expires</userinput>
 									</screen>
+									<para>As the commands execute, you may see warnings similar to:
+									<literal>Module SOMEMODULE already enabled</literal> but you can safely ignore them.</para>
 								</step>
 								<step>
 									<title>Copy Apache configuration files</title>
 									<para>You must copy the Apache configuration
-									files from the Evergreen installation dierectory
+									files from the Evergreen installation directory
 									to the Apache directory. As the 
 									<systemitem class="username">root</systemitem> 
 									user, perform the following commands:</para>
@@ -1090,25 +1135,16 @@ srfsh#
 										<listitem>
 											<para>Comment out the line <literal>Allow
 											from 10.0.0.0/8</literal> and uncomment
-											the line <literal>Allow from
-											all</literal>.</para>
-											<para>This change allows access to your
-											configuration CGI scripts from 
-											<emphasis role="bold">any</emphasis> workstation on
-											<emphasis role="bold">any</emphasis>
-											network. This is only a temporary change
-											to expedite testing and should be removed
-											after you have finished and successfully
-											tested the Evergreen installation.</para>
-											<warning>
-												<para>
-													<emphasis>You must remove these changes
-												after testing is completed. See 
-												<xref linkend="serversideinstallation-postinstallation"/>
-												for further details on removing this change 
-												after the Evergreen installation is
-												complete.</emphasis>
-												</para>
+											the line <literal>Allow from all</literal>.</para>
+											<warning>This change allows access to your
+											configuration CGI scripts from any workstation on
+											any network. This is only a temporary change to
+											expedite testing and should be removed after you
+											have finished and successfully tested the Evergreen
+											installation. See 
+											<xref linkend="serversideinstallation-postinstallation"/>
+											for further details on removing this change after
+											the Evergreen installation is complete.
 											</warning>
 										</listitem>
 										<listitem>
@@ -1361,7 +1397,7 @@ srfsh#
 					<systemitem class="service">Perl</systemitem> , and
 					<systemitem class="service">C</systemitem> services:</para>
 					<screen>
-						<userinput>$ osrf_ctl.sh -l -a start_all</userinput>
+						<userinput>osrf_ctl.sh -l -a start_all</userinput>
 					</screen>
 					<note>
 						<para>
@@ -1498,6 +1534,99 @@ Updating fieldmapper
 					system configuration.</listitem>
 				</itemizedlist>
 			</simplesect>
+		</section>
+		<section xml:id="serversideinstallation-postinstallation">
+			<title>Post-Installation Chores</title>
+			<para>There are several additional steps you may need to complete after Evergreen has been
+			successfully installed and tested. Some steps may not be needed (e.g., setting up support for
+			Reports).</para>
+			<section>
+				<title>Remove temporary Apache configuration changes</title>
+				<para>You modified the Apache configuration file
+				<filename>/etc/apache2/sites-available/eg.conf</filename> in an earlier step as a
+				temporary measure to expedite testing (see 
+				<xref linkend="serversideinstallation-modify-apache"/> for further information).  
+				Those changes must now be reversed in order to deny unwanted access to your CGI 
+				scripts from users on other public networks.</para>
+				<warning>
+					<para>
+						<emphasis>This temporary network update was done to expedite
+						testing. You <emphasis role="bold"> must</emphasis> correct
+						this for a public production system.</emphasis>
+					</para>
+				</warning>
+				<para>As the <systemitem class="username">root</systemitem> user, edit the configuration
+				file again and comment out the line <literal>Allow from all</literal> and uncomment the
+				line <literal>Allow from 10.0.0.0/8</literal>, then change it to match your network
+				address scheme.</para>
+			</section>
+			<section>
+				<title>Configure a permanent SSL key</title>
+				<para>In a previous step, you used the command <command>openssl</command> to temporarily
+				create a new SSL key for the Apache server. This self-signed certificate was adequate
+				during testing and development, but will continue to generate warnings in the Staff Client 
+				and browser. For a public production server you should configure or purchase a signed SSL
+				certificate.</para>
+				<warning>
+					<para>
+						<emphasis>The temporary SSL key was only created to expedite
+						testing. You should install a proper SSL certificate for a public
+						production system.</emphasis>
+					</para>
+				</warning>
+			</section>
+			<section>
+				<title>Set Up Support For Reports</title>
+				<para>Evergreen reports are extremely powerful but require some simple configuration.
+				This section describes starting and stopping the Reporter daemon processes.</para>
+				<itemizedlist>
+					<listitem>
+						<para>Starting the Reporter Daemon</para>
+						<para>Once the <systemitem class="daemon">open-ils.reporter</systemitem>
+						process is running and enabled on the gateway, you can start the
+						Reporter daemon. That process periodically checks for requests for new
+						or scheduled reports, then starts them as required.</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user,
+						start the Reporter daemon using the following command:</para>
+						<screen>
+							<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/src/reporter</userinput>
+							<userinput>./clark-kent.pl --daemon</userinput>
+						</screen>
+						<para>You can control how the <command>clark-kent.pl</command> utility behaves
+						by specifying any of several command-line options:</para>
+						<itemizedlist>
+							<listitem><option>--sleep=interval</option> : number of seconds
+							to sleep between checks for new reports to run; defaults to
+							<literal>10</literal></listitem>
+							<listitem><option>--lockfile=filename</option> : where to place
+							the lockfile for the process; defaults to
+							<filename>/tmp/reporter-LOCK</filename></listitem>
+							<listitem><option>--concurrency=integer</option> : number of
+							Reporter daemon processes to run; defaults to
+							<literal>1</literal></listitem>
+							<listitem><option>--bootstrap=filename</option> : OpenSRF
+							bootstrap configuration file; defaults to
+							<filename>/openils/conf/opensrf_core.xml</filename></listitem>
+						</itemizedlist>
+					</listitem>
+					<listitem>
+						<para>Stopping the Reporter Daemon</para>
+						<para>To stop the Reporter daemon, you must kill the process and remove
+						the lockfile. The daemon may have just a single associated process or
+						there may be several processes if the daemon was started with the optional
+						<literal>--concurrency</literal> switch. It will also have a lockfile
+						in the default location.</para>
+						<para>As the <systemitem class="username">opensrf</systemitem> user,
+						execute the following shell commands:</para>
+						<screen>
+							<userinput># find and kill the process ID number(s)</userinput>
+							<userinput>kill `ps wax | grep "Clark Kent" | grep -v grep | cut -b1-6`</userinput>
+							<userinput># remove the lock file</userinput>
+							<userinput>rm /tmp/reporter-LOCK</userinput>
+						</screen>
+					</listitem>
+				</itemizedlist>
+			</section>
 		</section>
 		<section xml:id="serversideinstallation-virtual">
 			<title>Installing In Virtualized <systemitem class="osname">Linux</systemitem> Environments</title>
