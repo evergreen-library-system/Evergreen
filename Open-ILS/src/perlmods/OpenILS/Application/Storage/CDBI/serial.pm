@@ -21,7 +21,8 @@ __PACKAGE__->table( 'serial_issuance' );
 __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/creator editor create_date edit_date
                                       subscription label date_published
-                                      holding_code holding_type holding_link_id/ );
+                                      caption_and_pattern holding_code
+                                      holding_type holding_link_id/ );
 
 #-------------------------------------------------------------------------------
 package serial::item;
@@ -43,8 +44,8 @@ __PACKAGE__->columns( Essential => qw/call_number barcode creator create_date ed
 				   edit_date copy_number status loan_duration circ_lib
 				   fine_level circulate deposit price ref opac_visible dummy_isbn
 				   circ_as_type circ_modifier deposit_amount location mint_condition
-				   holdable dummy_title dummy_author deleted alert_message label
-				   age_protect floating label_sort_key contents/ );
+				   holdable dummy_title dummy_author deleted alert_message
+				   age_protect floating summary_contents detailed_contents/ );
 
 #-------------------------------------------------------------------------------
 package serial::record_entry;

@@ -3408,12 +3408,14 @@ SELECT  usr,
 			<field reporter:label="Holding Code" name="holding_code" reporter:datatype="text"/>
 			<field reporter:label="Holding Type" name="holding_type" reporter:datatype="text"/>
 			<field reporter:label="Holding Link ID" name="holding_link_id" reporter:datatype="int"/>
+			<field reporter:label="Items" name="items" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="subscription" reltype="has_a" key="id" map="" class="ssub"/>
 			<link field="caption_and_pattern" reltype="has_a" key="id" map="" class="scap"/>
+			<link field="items" reltype="has_many" key="issuance" map="" class="sitem"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
