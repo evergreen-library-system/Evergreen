@@ -835,8 +835,7 @@ sub issuance_ranged_tree {
     # ... and add all /their/ items to the target issuance
     for my $i ( @similar_iss ) {
         for my $it ( $i->items() ) {
-    
-            next if ($it->unit->deleted);
+            next unless $it->unit and not $it->unit->deleted;
             next unless (grep { $it->unit->circ_lib eq $_ } @$ou_list);
     
             my $unit = $it->unit->to_fieldmapper;

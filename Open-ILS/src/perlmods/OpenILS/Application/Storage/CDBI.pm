@@ -535,7 +535,7 @@ sub modify_from_fieldmapper {
 
 	serial::unit->has_many( items => 'serial::item' );
 
-	serial::issuance->has_a( subscription => 'serial::subsription' );
+	serial::issuance->has_a( subscription => 'serial::subscription' );
 	serial::issuance->has_many( items => 'serial::item' );
 
 	serial::subscription->has_a( record_entry => 'biblio::record_entry' );
