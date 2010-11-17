@@ -13,6 +13,7 @@ dojo.require('openils.widget.AutoFieldWidget');
 dojo.require('dojo.data.ItemFileReadStore');
 dojo.require('openils.widget.ProgressDialog');
 dojo.require('openils.PermaCrud');
+dojo.require("openils.widget.PCrudAutocompleteBox");
 
 dojo.requireLocalization('openils.acq', 'acq');
 var localeStrings = dojo.i18n.getLocalization('openils.acq', 'acq');
@@ -1851,7 +1852,6 @@ function AcqLiTable() {
                 break;
 
             case 'save_picklist':
-                this._loadPLSelect();
                 acqLitSavePlDialog.show();
                 break;
 
@@ -2411,29 +2411,6 @@ function AcqLiTable() {
             widget.build(function(w) { self.createPoAgencySelector = w; });
         }
     };
-
-    this._loadPLSelect = function(preSel) {
-        if(this._plSelectLoaded) return;
-        var plList = [];
-        function handleResponse(r) {
-            plList.push(r.recv().content());
-        }
-        var method = 'open-ils.acq.picklist.user.retrieve';
-        fieldmapper.standardRequest(
-            ['open-ils.acq', method],
-            {   async: true,
-                params: [this.authtoken],
-                onresponse: handleResponse,
-                oncomplete: function() {
-                    self._plSelectLoaded = true;
-                    acqLitAddExistingSelect.store = 
-                        new dojo.data.ItemFileReadStore({data:acqpl.toStoreData(plList)});
-
-                    acqLitAddExistingSelect.setValue(preSel);
-                }
-            }
-        );
-    }
 
     this.showRealCopyEditUI = function(li) {
         copyList = [];

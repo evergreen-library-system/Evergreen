@@ -377,8 +377,7 @@
                 <tr>
                     <td><label for="existing_pl">Add to Selection List: </label></td>
                     <td>
-                        <input jsId='acqLitAddExistingSelect' dojoType="dijit.form.FilteringSelect" 
-                            name="existing_pl" searchAttr='name' displayAttr='name'/>
+                        <input jsId="acqLitAddExistingSelect" dojoType="openils.widget.PCrudAutocompleteBox" fmclass="acqpl" searchAttr="name" name="existing_pl" />
                     </td>
                 </tr>
                 <tr>

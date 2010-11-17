@@ -1,18 +1,5 @@
 [% WRAPPER default/base.tt2 %]
 [% ctx.page_title = 'Resources' %]
-<script type ="text/javascript">
-    dojo.require('dijit.form.FilteringSelect');
-    dojo.require('openils.widget.AutoGrid');
-
-    openils.Util.addOnLoad(
-        function() {
-            var search = {"id": {"!=": null}};
-            if (xulG && xulG.resultant_brsrc)
-                search = {id: xulG.resultant_brsrc};
-            brsrcGrid.loadAll({order_by:{brsrc : 'barcode'}}, search);
-        }
-    );
-</script>
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
     <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class="oils-header-panel">
         <div>Resources</div>
@@ -31,4 +18,24 @@
             editOnEnter='true'>
     </table>
 </div>
+<script type ="text/javascript">
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require("openils.widget.PCrudAutocompleteBox");
+
+    openils.Util.addOnLoad(
+        function() {
+            var search = {"id": {"!=": null}};
+            if (xulG && xulG.resultant_brsrc)
+                search = {id: xulG.resultant_brsrc};
+
+            brsrcGrid.overrideEditWidgets.type =
+                new openils.widget.PCrudAutocompleteBox({
+                    "fmclass": "brt", "searchAttr": "name"
+                });
+            brsrcGrid.overrideEditWidgets.type.shove = {"create": ""};
+            brsrcGrid.loadAll({order_by:{brsrc : 'barcode'}}, search);
+        }
+    );
+</script>
 [% END %]
