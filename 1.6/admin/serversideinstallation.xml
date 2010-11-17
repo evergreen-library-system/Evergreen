@@ -932,9 +932,7 @@ srfsh#
 					</screen>
 					<para>The Staff Client will also be automatically built, but you must remember
 					to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version of the Staff
-					Client you will use to connect to the Evergreen server. For further information on manually
-					building the Staff Client, see 
-					<xref linkend="staffclientinstallation-building-staffclient"/>.</para>
+					Client you will use to connect to the Evergreen server.</para>
 					<para>The above commands will create a new subdirectory
 					<filename class="directory">/openils/var/web/xul/rel_1_6_1_2</filename> 
 					containing the Staff Client.</para>

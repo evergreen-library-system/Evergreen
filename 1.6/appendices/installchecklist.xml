@@ -63,7 +63,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="install_checklist"
 			<para><link linkend="migratingdata">Import data</link></para><indexterm><primary>migrating</primary><secondary>importing data</secondary></indexterm>
 		</listitem>
 		<listitem>
-			<para><link linkend="report_intro">Start the reporter service and set up reports</link></para><indexterm><primary>reports</primary><secondary>starting</secondary></indexterm>
+			<para><link linkend="report-introduction">Start the reporter service and set up reports</link></para><indexterm><primary>reports</primary><secondary>starting</secondary></indexterm>
 		</listitem>
 		<listitem>
 			<para><link linkend="notifications">Set up email notifications for holds and overdue items</link></para><indexterm><primary>notifications</primary></indexterm>

@@ -1103,7 +1103,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 	</section>
 	<section xml:id="admin-staff_accounts">
 	<info>
-        <title>Staff Accounts <indexterm><primary>staff accounts</primary></indexterm></title>
+        <title>Staff Accounts</title>
     </info>
 
     
@@ -1114,7 +1114,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                 <keycap>Shift</keycap>
                 <keycap>F1</keycap>
             </keycombo>. Select one of the staff profiles from the <guilabel>Profile
-                Group</guilabel> drop-down menu. </para>
+                Group</guilabel> drop-down menu. <indexterm><primary>staff accounts</primary></indexterm></para>
 
     <para xml:id="profiles-working">Each new staff account must be assigned a <guilabel>Working
             Location</guilabel><indexterm><primary>staff accounts</primary><secondary>working location</secondary></indexterm> which determines its access level in staff client interfaces.
