@@ -1563,52 +1563,18 @@
                   status from within the <guilabel>Standalone Interface</guilabel> at check-out
                   time.</para>
             </listitem>
-            <listitem>
-               <formalpara>
-                  <title>ROUTE-ITEM</title>
-                  <para>Indicates the book should be routed to another branch or library system.
-                     You'll need to find the book and re-check it in (online) to get the
-                        <guilabel>Transit Slip</guilabel> to print.</para>
-               </formalpara>
-            </listitem>
-            <listitem>
-               <formalpara>
-                  <title>COPY_STATUS_LOST</title>
-                  <para>Indicates a book previously marked as lost was found and checked in.</para>
-               </formalpara>
-            </listitem>
-            <listitem>
-               <formalpara>
-                  <title>CIRC_CLAIMS_RETURNED</title>
-                  <para>Indicates a book previously marked as claimed-returned was found and checked
-                     in.</para>
-               </formalpara>
-            </listitem>
-            <listitem>
-               <formalpara>
-                  <title>ASSET_COPY_NOT_FOUND</title>
-                  <para>Indicates the item barcode was mis-scanned/mis-typed.</para>
-               </formalpara>
-            </listitem>
-            <listitem>
-               <formalpara>
-                  <title>ACTOR_CARD_NOT_FOUND</title>
-                  <para>Indicates the patron's library barcode was mis-scanned/ mis-typed.</para>
-               </formalpara>
-            </listitem>
-            <listitem>
-               <formalpara>
-                  <title>OPEN_CIRCULATION_EXISTS</title>
-                  <para>Indicates a book was checked out that had never been checked in.</para>
-               </formalpara>
-            </listitem>
-            <listitem>
-               <formalpara>
-                  <title>MAX_RENEWALS_REACHED</title>
-                  <para>Indicates the item has already been renewed the maximum times allowed (or
-                     it’s a video/DVD).</para>
-               </formalpara>
-            </listitem>
+ </orderedlist>
+    <para>Common error messages:</para>
+<orderedlist inheritnum="ignore" continuation="restarts">
+            <listitem><errortext>ROUTE-ITEM</errortext> - Indicates the book should be routed to another branch or library system.
+                     You'll need to find the book and re-check it in (online) to get the <guilabel>Transit Slip</guilabel> to print.</listitem>
+           
+ <listitem><errortext>COPY_STATUS_LOST</errortext> - Indicates a book previously marked as lost was found and checked in. </listitem>
+            <listitem><errortext>CIRC_CLAIMS_RETURNED</errortext> - Indicates a book previously marked as claimed-returned was found and checked in.</listitem>
+           <listitem> <errortext>ASSET_COPY_NOT_ FOUND</errortext> - Indicates the item barcode was mis-scanned/mis-typed.</listitem>
+           <listitem><errortext>ACTOR_CARD_NOT_ FOUND</errortext> - Indicates the patron's library barcode was mis-scanned/ mis-typed.</listitem>
+            <listitem><errortext>OPEN_CIRCULATION_ EXISTS</errortext> - Indicates a book was checked out that had never been checked in.</listitem>
+            <listitem><errortext>MAX_RENEWALS_ REACHED</errortext> - Indicates the item has already been renewed the maximum times allowed (or it’s a video/DVD).</listitem>
          </orderedlist>
       </simplesect>
    </simplesect>

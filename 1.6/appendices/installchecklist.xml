@@ -7,7 +7,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="install_checklist"
 			<para>This appendix is a checklist of things to do to istall and configure Evergreen. It will refer to the necessary chapter with the specific instructions for each item.</para>
 		</abstract>
 	</info>
-	<orderedlist>
+	<orderedlist numeration="loweralpha">
 		<listitem>
 			<para><link linkend="serversideinstallation-opensrf">Install OpenSRF</link></para><indexterm><primary>OpenSRF</primary></indexterm>
 		</listitem>
@@ -63,7 +63,9 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="install_checklist"
 			<para><link linkend="migratingdata">Import data</link></para><indexterm><primary>migrating</primary><secondary>importing data</secondary></indexterm>
 		</listitem>
 		<listitem>
-			<para><link linkend="report-introduction">Start the reporter service and set up reports</link></para><indexterm><primary>reports</primary><secondary>starting</secondary></indexterm>
+			<para><link linkend="report_starting_reporter_service">Start the reporter service and set up reports</link> 
+			<indexterm><primary>reports</primary><secondary>starting</secondary></indexterm></para>
+			
 		</listitem>
 		<listitem>
 			<para><link linkend="notifications">Set up email notifications for holds and overdue items</link></para><indexterm><primary>notifications</primary></indexterm>

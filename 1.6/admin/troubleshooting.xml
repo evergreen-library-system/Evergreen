@@ -245,7 +245,8 @@ Tie::IxHash version 1.21
 Parse::RecDescent version 1.95.1
 SRU version 0.99
 JSON::XS version 2.27
-
+</screen>
+<screen>
 Checking Jabber connection for user opensrf, domain private.localhost
 * Jabber successfully connected
 

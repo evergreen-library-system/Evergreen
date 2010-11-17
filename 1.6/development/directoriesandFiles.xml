@@ -123,7 +123,7 @@
 						<entry>The start up script for OpenSRF and Evergreen. </entry>
 					</row>
 					<row>
-						<entry><filename>/openils/bin/reshelving_complete.srfsh</filename></entry>
+						<entry><filename>/openils/bin/reshelving_ complete.srfsh</filename></entry>
 						<entry>Change status from <quote>reshelving</quote> to <quote>available</quote> for items which have been in reshelving for a certain amount of time.</entry>
 					</row>
 					<row>

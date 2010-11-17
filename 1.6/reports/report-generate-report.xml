@@ -159,23 +159,8 @@
 
 
             <step>
-                <informalfigure>
                     <para>Select a value for the <guilabel>Circulating Library</guilabel>.</para>
-
-                    <para>
-                        <mediaobject>
-                            <imageobject>
-                                <imagedata scalefit="1" fileref="../media/generate-report-9.png"/>
-                            </imageobject>
-
-                        </mediaobject>
-                    </para>
-
-                </informalfigure>
-
-            
-
-            </step>
+		</step>
 
             <step>
                 <informalfigure>

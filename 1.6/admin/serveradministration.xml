@@ -426,6 +426,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 		</simplesect>
 		<simplesect>
 			<title>Permissions</title>
+			
 			<table xml:id="permissiondescriptions">
 				<title>Permissions Table</title>
 				<tgroup cols="2">
@@ -1098,7 +1099,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 						</row>
 					</tbody>
 				</tgroup>
-			</table>	
+			</table>
+	
 		</simplesect>
 	</section>
 	<section xml:id="admin-staff_accounts">
@@ -1179,7 +1181,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
                         <entry>Circ + Copy Edit</entry>
                         <entry>Circ + Full Cat</entry>
                         <entry>Catalogers</entry>
-                        <entry>Local System Administrator (LSA)</entry>
+                        <entry>Local System Admin.</entry>
                     </row>
                 </thead>
 
@@ -1844,8 +1846,8 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			field_class, name, xpath, and format.</para>
 			<para>The following is one representative line from the <link linkend="config.table.metabib-field">config.metabib_field</link> table:</para>
 <screen>
-author | conference | //mods32:mods/mods32:name[@type='conference']/mods32:namePart[../mods32:role/mods32:
-roleTerm[text()='creator']] | mods32 | 1 ) 
+author | conference | //mods32:mods/mods32:name[@type='conference']/mods32:
+namePart[../mods32:role/mods32:roleTerm[text()='creator']] | mods32 | 1 ) 
 </screen>
 			<para>The default value for index-field weights in config.metabib_field is 1. Adjust the
 			weighting of indexed fields to boost or lower the relevance score for matches on that
@@ -2269,7 +2271,9 @@ WHERE id = 17;
                 <!-- do we attempt email notification? -->
                 <email_notify>true</email_notify>
                 <!-- notice template file -->
-                <email_template>/openils/var/data/templates/overdue_7day.example</email_template>
+                <email_template>
+			/openils/var/data/templates/overdue_7day.example
+		</email_template>
             </notice>
         </overdue>
 <!-- Courtesy notices -->
@@ -2284,7 +2288,9 @@ WHERE id = 17;
                 <notify_interval>1 day</notify_interval>
                 <file_append>false</file_append>
                 <email_notify>true</email_notify>
-                <email_template>/openils/var/data/templates/predue_1day.example</email_template>
+                <email_template>
+			/openils/var/data/templates/predue_1day.example
+		</email_template>
             </notice>
         </predue>
 ...

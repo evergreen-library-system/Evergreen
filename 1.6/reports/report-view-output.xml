@@ -54,21 +54,10 @@
             </para>
         </step>
         <step>
-            <informalfigure>
                 <para>A new tab will open for the report output. Select either <guilabel>Tabular
                         Output</guilabel> or <guilabel>Excel Output</guilabel>. If <guilabel>Bar
                         Charts</guilabel> was selected during report definition the chart will also
-                    appear.</para>
-
-                <para>
-                    <mediaobject>
-                        <imageobject>
-                            <imagedata scalefit="1" fileref="../media/view-output-3.png"/>
-                        </imageobject>
-
-                    </mediaobject>
-                </para>
-            </informalfigure>
+                    appear.</para>   
         </step>
 
         <step>

@@ -22,18 +22,8 @@
             </mediaobject>
          </para>
       </informalfigure>
-      <informalfigure>
          <para>This menu is new in Evergreen 1.6 and provides shortcuts to settings also available
-            from the <guilabel>Local Administration</guilabel> page shown below:</para>
-         <para>
-            <mediaobject>
-               <alt>screenshot of staff client</alt>
-               <imageobject>
-                  <imagedata scalefit="0" fileref="../media/lsa-2.jpg"/>
-               </imageobject>
-            </mediaobject>
-         </para>
-      </informalfigure>
+            from the <guilabel>Local Administration</guilabel> page.</para>
       <para>Either access point can be used, but examples in this manual use the more comprehensive
             <guilabel>Local Administration</guilabel> rollover menu.</para>
       <para>Items on this menu are visible to anyone logged into the staff client but usually

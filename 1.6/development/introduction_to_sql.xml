@@ -68,10 +68,10 @@ evergreen=# select id, usr, creator, pub, title, value from actor.usr_note;
 			rowsep="1" colsep="1"
 			>
 			<title>Examples: database object names</title>
-			<?dbhtml table-width="80%"?>
-			<?dbfo table-width="80%"?>
+			<?dbhtml table-width="100%"?>
+			<?dbfo table-width="100%"?>
 			<tgroup cols="4">
-			<colspec colname="col_1" colwidth="1.0*"/>
+			<colspec colname="col_1" colwidth="2.0*"/>
 			<colspec colname="col_2" colwidth="1.0*"/>
 			<colspec colname="col_3" colwidth="1.0*"/>
 			<colspec colname="col_4" colwidth="1.0*"/>

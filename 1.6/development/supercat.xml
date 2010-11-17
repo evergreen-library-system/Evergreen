@@ -129,142 +129,15 @@
 			<para>For example, <uri>http://dev.gapines.org/opac/extras/supercat/formats/record</uri> returns:</para>
 <screen>
 &lt;formats&gt;
-
   &lt;format&gt;
     &lt;name&gt;opac&lt;/name&gt;
     &lt;type&gt;text/html&lt;/type&gt;
   &lt;/format&gt;
-
   &lt;format&gt;
     &lt;name&gt;htmlholdings&lt;/name&gt;
     &lt;type&gt;text/html&lt;/type&gt;
   &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;html&lt;/name&gt;
-    &lt;type&gt;text/html&lt;/type&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;htmlholdings-full&lt;/name&gt;
-    &lt;type&gt;text/html&lt;/type&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;html-full&lt;/name&gt;
-    &lt;type&gt;text/html&lt;/type&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;marcxml&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-    &lt;namespace_uri&gt;http://www.loc.gov/MARC21/slim&lt;/namespace_uri&gt;
-    &lt;docs&gt;http://www.loc.gov/marcxml/&lt;/docs&gt;
- 
-    &lt;schema_location&gt;
-    http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd
-    &lt;/schema_location&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;marcxml-full&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-    &lt;namespace_uri&gt;http://www.loc.gov/MARC21/slim&lt;/namespace_uri&gt;
-    &lt;docs&gt;http://www.loc.gov/marcxml/&lt;/docs&gt;
- 
-    &lt;schema_location&gt;
-    http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd
-    &lt;/schema_location&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;rss2&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;rss2-full&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;rdf_dc&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-    &lt;namespace_uri&gt;http://purl.org/dc/elements/1.1/&lt;/namespace_uri&gt;
-    &lt;schema_location&gt;http://purl.org/dc/elements/1.1/&lt;/schema_location&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;oai_dc&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-    &lt;namespace_uri&gt;http://www.openarchives.org/OAI/2.0/oai_dc/&lt;/namespace_uri&gt;
-    &lt;schema_location&gt;http://www.openarchives.org/OAI/2.0/oai_dc.xsd&lt;/schema_location&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;srw_dc&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-    &lt;namespace_uri&gt;info:srw/schema/1/dc-schema&lt;/namespace_uri&gt;
- 
-    &lt;schema_location&gt;
-    http://www.loc.gov/z3950/agency/zing/srw/dc-schema.xsd
-    &lt;/schema_location&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;mods32&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-    &lt;namespace_uri&gt;http://www.loc.gov/mods/v3&lt;/namespace_uri&gt;
-    &lt;docs&gt;http://www.loc.gov/mods/&lt;/docs&gt;
-    &lt;schema_location&gt;http://www.loc.gov/standards/mods/v3/mods-3-2.xsd&lt;/schema_location&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;mods3&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-    &lt;namespace_uri&gt;http://www.loc.gov/mods/v3&lt;/namespace_uri&gt;
-    &lt;docs&gt;http://www.loc.gov/mods/&lt;/docs&gt;
-    &lt;schema_location&gt;http://www.loc.gov/standards/mods/v3/mods-3-1.xsd&lt;/schema_location&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;mods3-full&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-    &lt;namespace_uri&gt;http://www.loc.gov/mods/v3&lt;/namespace_uri&gt;
-    &lt;docs&gt;http://www.loc.gov/mods/&lt;/docs&gt;
-    &lt;schema_location&gt;http://www.loc.gov/standards/mods/v3/mods-3-1.xsd&lt;/schema_location&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;mods&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-    &lt;namespace_uri&gt;http://www.loc.gov/mods/&lt;/namespace_uri&gt;
-    &lt;docs&gt;http://www.loc.gov/mods/&lt;/docs&gt;
-    &lt;schema_location&gt;http://www.loc.gov/standards/mods/mods.xsd&lt;/schema_location&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;mods-full&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-    &lt;namespace_uri&gt;http://www.loc.gov/mods/&lt;/namespace_uri&gt;
-    &lt;docs&gt;http://www.loc.gov/mods/&lt;/docs&gt;
-    &lt;schema_location&gt;http://www.loc.gov/standards/mods/mods.xsd&lt;/schema_location&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;atom&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-    &lt;namespace_uri&gt;http://www.w3.org/2005/Atom&lt;/namespace_uri&gt;
-    &lt;docs&gt;http://www.ietf.org/rfc/rfc4287.txt&lt;/docs&gt;
-  &lt;/format&gt;
- 
-  &lt;format&gt;
-    &lt;name&gt;atom-full&lt;/name&gt;
-    &lt;type&gt;application/xml&lt;/type&gt;
-    &lt;namespace_uri&gt;http://www.w3.org/2005/Atom&lt;/namespace_uri&gt;
-    &lt;docs&gt;http://www.ietf.org/rfc/rfc4287.txt&lt;/docs&gt;
-  &lt;/format&gt;
-&lt;/formats&gt;
+...
 </screen>
 		</simplesect>
 	</section>
