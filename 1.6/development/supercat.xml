@@ -101,8 +101,8 @@
 <screen>
 &lt;hold:volumes xmlns:hold='http://open-ils.org/spec/holdings/v1'&gt;
 	&lt;hold:volume id="tag:open-ils.org,2008:asset-call_number/130607" lib="FRRLS-FA" label="GUTCHEON BETH"&gt;
-	    &lt;act:owning_lib id="tag:open-ils.org,2008:actor-org_unit/111" name="Fayette County Public Library"/&gt;
-	    &lt;record xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/ 
+	  &lt;act:owning_lib id="tag:open-ils.org,2008:actor-org_unit/111" name="Fayette County Public Library"/&gt;
+	  &lt;record xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/ 
 	      	standards/marcxml/schema/MARC21slim.xsd"
 	      	id="tag:open-ils.org,2008:biblio-record_entry/21669/FRRLS-FA"&gt;
 	      	&lt;leader&gt;09319pam a2200961 a 4500&lt;/leader&gt;
@@ -116,7 +116,7 @@
 	    	&lt;/record&gt;
 	    	&lt;record&gt;
 	    		..
-	    	&lt;/record&gt;
+	  &lt;/record&gt;
 	&lt;/hold:volume&gt;
 &lt;/hold:volumes&gt;	
 </screen>

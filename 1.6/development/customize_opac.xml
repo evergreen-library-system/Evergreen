@@ -197,7 +197,8 @@ name='Default' csstype='color'/&gt;
 			specified in the CSS3 selector.</para>
 			<para>Example of a slot formatter:</para>
 <programlisting>
-	&lt;td class='rdetail_item' id='rdetail_online' type='opac/slot-data' query='volumes volume uris uri' join=", "&gt;
+	&lt;td class='rdetail_item' id='rdetail_online' type='opac/slot-data' 
+	query='volumes volume uris uri' join=", "&gt;
 		&lt;script type='opac/slot-format'&gt;&lt;![CDATA[
 	 		var link = '&lt;a href="' + item.getAttribute('href') + '"&gt;' + item.getAttribute('label') + '&lt;/a&gt;';
 			if (item.getAttribute('use_restriction'))
@@ -217,7 +218,8 @@ name='Default' csstype='color'/&gt;
 <programlisting>
 	dojo.require('openils.BibTemplate'); // Tell Dojo to load BibTemplate, if it is not already loaded
 	
-	// Create a renderer supplying the record id and the short name of the org unit, if known, and call the render() method  					
+	// Create a renderer supplying the record id and the short name of the org unit, if known, 
+	// and call the render() method  					
 	new openils.BibTemplate({ record : new CGI().param('r'), org_unit : here.shortname() }).render(); 
 </programlisting>
 			<para>The argument hash supplied to the new <systemitem>openils.BibTemplate()</systemitem> constructor can have the following properties:</para>
@@ -311,7 +313,8 @@ name='Default' csstype='color'/&gt;
 <form action="http://[domain name]/opac/[locale]/skin/default/xml/rresult.xml" method="get">
 <div>
         Quick Catalog Search:<br />
-        <input type="text" alt="Input Box for Catalog Search" maxlength="250" size="20" id="t" name="t" value=""  />
+        <input type="text" alt="Input Box for Catalog Search" maxlength="250" 
+	size="20" id="t" name="t" value=""  />
         <input type="hidden" id="rt" name="rt" value="keyword" />
         <input type="hidden" id="tp" name="tp" value="keyword" />
         <input type="hidden" id="l" name="l" value="2" />
