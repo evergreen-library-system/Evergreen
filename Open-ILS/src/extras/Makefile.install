@@ -92,6 +92,7 @@ DEBS =  \
 	libmarc-record-perl\
 	libncurses5-dev\
 	libnet-server-perl\
+	libnet-ssh2-perl\
 	libnspr4-dev\
 	libole-storage-lite-perl\
 	libparent-perl \
