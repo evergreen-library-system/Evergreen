@@ -3113,7 +3113,7 @@ sub query_parser_fts_wrapper {
 
     $query = "estimation_strategy($args{estimation_strategy}) $query" if ($args{estimation_strategy});
     $query = "site($args{org_unit}) $query" if ($args{org_unit});
-    $query = "depth($args{depth}) $query" if ($args{depth});
+    $query = "depth($args{depth}) $query" if (defined($args{depth}));
     $query = "sort($args{sort}) $query" if ($args{sort});
     $query = "limit($args{limit}) $query" if ($args{limit});
     $query = "core_limit($args{core_limit}) $query" if ($args{core_limit});
