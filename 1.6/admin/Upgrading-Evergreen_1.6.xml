@@ -229,8 +229,9 @@ tar xzf Evergreen-ILS-1.6.1.2.tar.gz
 				bootstrapping scripts and <filename>offline-config.pl</filename> for the offline staff client data uploader:</para>
 <screen><userinput>
 cd /home/opensrf/Evergreen-ILS-1.6.1.2
-perl Open-ILS/src/support-scripts/eg_db_config.pl --create-bootstrap --create-offline --user evergreen \
---password evergreen --hostname localhost --port 5432 --database evergreen
+perl Open-ILS/src/support-scripts/eg_db_config.pl --create-bootstrap --create-offline \ 
+--user evergreen --password evergreen --hostname localhost --port 5432 \
+--database evergreen
 </userinput></screen>
 			</step>
 			<step>
