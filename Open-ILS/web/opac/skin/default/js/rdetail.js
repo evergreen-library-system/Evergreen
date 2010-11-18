@@ -1185,17 +1185,35 @@ function rdetailDrawExpandedHoldings(anchor, bibid, type) {
                 "params": [bibid, {"offset": offsets[type], "limit": limit}],
                 "async": true,
                 "oncomplete": function(r) {
-                    if (r = openils.Util.readResponse(r)) {
-                        offsets[type] += r.length;
-                        dojo.forEach(
-                            r, function(sum) {
-                                dojo.create("span", {"innerHTML": sum.label()}, target);
-                                dojo.create("br", null, target);
-                            }
-                        );
-                        /* XXX i18n */
-                        if (r.length == limit)
-                            dojo.create("a", {"style": "margin-top: 6px;", "innerHTML": "[More]", "onclick": _load}, target);
+                    try {
+                        if (msg = r.recv().content()) { /* sic, assignment */
+                            offsets[type] += msg.length;
+                            dojo.forEach(
+                                msg, function(iss) {
+                                    dojo.create(
+                                        "span", {
+                                            "innerHTML": iss.label(),
+                                            "style": "padding-right: 1em;"
+                                        }, target
+                                    );
+                                    dojo.create(
+                                        "a", {
+                                            "href":"#","onclick":function() {
+                                                holdsDrawEditor({
+                                                    "type":"I","issuance":iss.id()
+                                                });
+                                            }, "innerHTML":"Place hold"/*XXX i18n*/
+                                        }, target
+                                    );
+                                    dojo.create("br", null, target);
+                                }
+                            );
+                            /* XXX i18n */
+                            if (r.length == limit)
+                                dojo.create("a", {"style": "margin-top: 6px;", "innerHTML": "[More]", "onclick": _load}, target);
+                        }
+                    } catch (E) {
+                        void(0);
                     }
                 }
             }

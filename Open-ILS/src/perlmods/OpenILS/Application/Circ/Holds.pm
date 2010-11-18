@@ -94,10 +94,11 @@ __PACKAGE__->register_method(
                 'exception is returned',
         params => [
             { desc => 'Authentication token',               type => 'string' },
-            { desc => 'Hold object for hold to be created', type => 'object' }
+            { desc => 'Hold object for hold to be created',
+                type => 'object', class => 'ahr' }
         ],
         return => {
-            desc => 'Undef on success, -1 on missing arg, event (or ref to array of events) on error(s)',
+            desc => 'New ahr ID on success, -1 on missing arg, event (or ref to array of events) on error(s)',
         },
     }
 );
@@ -110,11 +111,14 @@ __PACKAGE__->register_method(
         desc  => "If the recipient is not allowed to receive the requested hold, " .
                  "call this method to attempt the override",
         params => [
-           { desc => 'Authentication token',               type => 'string' },
-           { desc => 'Hold object for hold to be created', type => 'object' }
+            { desc => 'Authentication token',               type => 'string' },
+            {
+                desc => 'Hold object for hold to be created',
+                type => 'object', class => 'ahr'
+            }
         ],
         return => {
-            desc => 'Undef on success, -1 on missing arg, event (or ref to array of events) on error(s)',
+            desc => 'New hold (ahr) ID on success, -1 on missing arg, event (or ref to array of events) on error(s)',
         },
     }
 );

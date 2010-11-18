@@ -436,7 +436,7 @@ q/A hash of optional arguments.  Valid keys and their meanings:
     global := If true, return only one representative version of a conceptual issuance regardless of the number of subscriptions, otherwise return all issuance objects meeting the requested criteria, including conceptual duplicates. Valid values are 0 (false) and 1 (true, default).
     order  := date_published sort direction, either "asc" (chronological, default) or "desc" (reverse chronological)
     limit  := Number of issuances to return.  Useful for paging results, or finding the oldest or newest
-    offest := Number of issuance to skip before returning results.  Useful for paging.
+    offset := Number of issuance to skip before returning results.  Useful for paging.
     orgid  := OU id used to scope retrieval, based on distribution.holding_lib
     depth  := OU depth used to range the scope of orgid
     type   := Holding type filter. Valid values are "basic", "supplement" and "index". Can be a scalar (one) or arrayref (one or more).

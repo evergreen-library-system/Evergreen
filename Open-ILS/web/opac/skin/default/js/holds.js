@@ -589,7 +589,7 @@ function holdsParseMRFormats(str) {
 
 function holdsSetFormatSelector() {
 	var type = holdArgs.type;
-	if( type == 'C' || type == 'V' || holdArgs.editHold ) return;
+	if( type == 'C' || type == 'V' || type == "I" || holdArgs.editHold ) return;
 
 	var data				= holdsGetFormats();
 	var avail_formats	= data.avail_formats;
@@ -729,6 +729,7 @@ function holdsCheckPossibility(pickuplib, hold, recurse) {
 		titleid : holdArgs.record,
 		mrid : holdArgs.metarecord,
 		volume_id : holdArgs.volume,
+		issuanceid : holdArgs.issuance,
 		copy_id : holdArgs.copy,
 		hold_type : holdArgs.type,
 		patronid : holdArgs.recipient.id(),
