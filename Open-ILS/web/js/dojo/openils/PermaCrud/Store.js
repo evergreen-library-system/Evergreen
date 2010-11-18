@@ -613,6 +613,11 @@ if (!dojo._hasResource["openils.PermaCrud.Store"]) {
             //      the *onItem* callback from the *keywordArgs* object.  If we
             //      tried to retrieve the item with pcrud but didn't get an item
             //      back, issue the *onError* callback.
+           if (keywordArgs.identity == undefined)
+                return null; // Identity API spec unclear whether error callback
+                             // would need to be run, so we won't.  Matters
+                             // because in some cases pcrud times out when attempting
+                             // to retrieve by a null PK value
             var callback_scope = keywordArgs.scope || dojo.global;
             var test_item = this._stored_items[keywordArgs.identity];
 
