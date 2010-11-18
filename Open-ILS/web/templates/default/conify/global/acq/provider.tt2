@@ -57,6 +57,7 @@
             <table  jsId="paListGrid"
                     dojoType="openils.widget.AutoGrid"
                     fieldOrder="['id', 'address_type', 'provider', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
+                    requiredFields="['street1', 'city', 'state', 'country', 'post_code']"
                     query="{id: '*'}"
                     fmClass='acqpa'
                     defaultCellWidth='"auto"' 
@@ -77,6 +78,7 @@
             <table  jsId="pcListGrid"
                     dojoType="openils.widget.AutoGrid"
                     fieldOrder="['id', 'name', 'provider', 'role', 'email']"
+                    requiredFields="['name']"
                     defaultCellWidth='"auto"'
                     query="{id: '*'}"
                     fmClass='acqpc'
@@ -95,6 +97,7 @@
             <table  jsId="pcaListGrid"
                     dojoType="openils.widget.AutoGrid"
                     fieldOrder="['id', 'address_type', 'contact', 'street1', 'street2', 'city', 'county', 'state', 'country', 'post_code']"
+                    requiredFields="['street1', 'city', 'state', 'country', 'post_code']"
                     query="{id: '*'}"
                     fmClass='acqpca'
                     defaultCellWidth='"auto"' 
@@ -115,6 +118,7 @@
             <table  jsId="padListGrid"
                     dojoType="openils.widget.AutoGrid"
                     fieldOrder="['id', 'provider', 'code', 'description',  'provider', 'ident', 'remove',  'tag', 'subfield', 'xpath']"
+                    requiredFields="['code', 'description', 'xpath']"
                     query="{id: '*'}"
                     fmClass='acqlipad'
                     editOnEnter='true'>
@@ -141,6 +145,7 @@
             <table  jsId="phsListGrid"
                     dojoType="openils.widget.AutoGrid"
                     fieldOrder="['id', 'provider', 'name', 'subfield']"
+                    requiredFields="['name', 'subfield']"
                     query="{id: '*'}"
                     fmClass='acqphsm'
                     editOnEnter='true'>

@@ -25,6 +25,7 @@
         <table  jsId="pListGrid"
                 dojoType="openils.widget.AutoGrid"
                 fieldOrder="['id', 'label', 'host', 'username', 'password', 'account', 'owner', 'last_activity', 'provider', 'path', 'in_dir', 'vendacct', 'vendcode']"
+                requiredFields="['label', 'host', 'provider', 'owner']"
                 query="{id: '*'}"
                 defaultCellWidth='"auto"'
                 fmClass='acqedi'
