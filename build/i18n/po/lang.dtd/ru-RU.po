@@ -8424,7 +8424,7 @@ msgid ""
 "staff.circ.copy_status_overlay.copy_actions.sel_mark_items_missing.accesskey"
 "\n"
 "Mark Item Missin&g"
-msgstr "Отметь единицу как Отсутствующу&"
+msgstr "Отметь единицу как &Отсутствующу"
 
 #: staff.circ.copy_status_overlay.item_status.label
 msgid ""
