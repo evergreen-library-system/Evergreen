@@ -289,7 +289,7 @@
 								<userinput>ldconfig</userinput>
 							</screen>
 						</step>
-						<step>
+						<step xml:id="serversideinstallation-definedomains">
 							<title>Define Public and Private OpenSRF Domains</title>
 							<para>For security purposes, OpenSRF uses Jabber domains to separate services
 							into public and private realms. On a single-server system the easiest way to
@@ -307,8 +307,8 @@
 								<primary>Jabber</primary>
 							</indexterm>
 							<screen>
-								<userinput>127.0.1.2	public.localhost	public</userinput>
-								<userinput>127.0.1.3	private.localhost	private</userinput>
+								<userinput>127.0.1.2  public.localhost   public</userinput>
+								<userinput>127.0.1.3  private.localhost  private</userinput>
 							</screen>
 						</step>
 						<step>
@@ -401,9 +401,10 @@
 					<systemitem class="username">opensrf</systemitem> must be registered 
 					and configured to manage OpenSRF router service and communications 
 					for the two domains <literal>public.localhost</literal> and
-					<literal>private.localhost</literal>
-					that you added to the file <filename>/etc/hosts</filename>
-					in a previous step:</para>
+					<literal>private.localhost</literal> that you added to the file
+					<filename>/etc/hosts</filename> in a previous step
+					(see <xref linkend="serversideinstallation-definedomains"/>).
+					The users include:</para>
 					<itemizedlist>
 						<listitem>
 							<para>the <systemitem class="username">router</systemitem> user,
@@ -434,7 +435,7 @@
 					will be used again in the file <filename>/openils/conf/opensrf_core.xml</filename>
 					in the next steps.</para>
 				</step>
-				<step>
+				<step xml:id="serversideinstallation-opensrf-createconfig">
 					<title>Create OpenSRF configuration files</title>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, 
 					execute the following commands to create the new configuration files
@@ -671,14 +672,12 @@
 					<systemitem class="service">math</systemitem> service:</para>
 					<screen>
 						<userinput>/openils/bin/srfsh</userinput>
-						<computeroutput>srfsh#</computeroutput>
-						<computeroutput>request opensrf.math add 2 2</computeroutput>
+						<computeroutput>srfsh# <userinput>request opensrf.math add 2 2</userinput></computeroutput> 
 						<computeroutput>Received Data: 4</computeroutput>
 						<computeroutput>------------------------------------</computeroutput>
 						<computeroutput>Request Completed Successfully</computeroutput>
 						<computeroutput>Request Time in seconds: 0.007519</computeroutput>
 						<computeroutput>------------------------------------</computeroutput>
-						<computeroutput>srfsh#</computeroutput>
 					</screen>
 					<para>For other <command>srfsh</command> commands, type in
 					<userinput>help</userinput> at the prompt.</para>
@@ -769,7 +768,7 @@
 					<filename class="directory">/home/opensrf/Evergreen-ILS-1.6.1.2</filename>
 					will be created.</para>
 				</step>
-				<step>
+				<step xml:id="serversideinstallation-installprereq">
 					<title>Install Prerequisites to Build Evergreen</title>
 					<para>In this section you will install and configure a set of prerequisites that
 					will be used to build Evergreen. In a following step you will actually build the
@@ -845,7 +844,8 @@
 						<secondary>PostgreSQL</secondary>
 					</indexterm>
 					<para>Since the PostgreSQL server is usually a standalone server in multi-server
-					production systems, the prerequisite installer Makefile in the previous step
+					production systems, the prerequisite installer Makefile in the previous section
+					(see <xref linkend="serversideinstallation-installprereq"/>)
 					does not automatically install PostgreSQL. You must install the PostgreSQL server
 					yourself, either on the same system as Evergreen itself or on another system.
 					If your PostgreSQL server is on a different system, just skip this step.</para>
@@ -971,16 +971,18 @@
 				</step>
 				<step>
 					<title>Copy the OpenSRF Configuration Files</title>
-					<para>As the <systemitem class="username">root</systemitem> user, execute the
-					following commands to copy the example OpenSRF configuration files into place
-					after first creating backup copies of the old files for troubleshooting purposes.
-					These files replace the configuration files that you set up in a previous step
-					when you installed and tested OpenSRF. Finally, change the ownership on
-					the installed files to the <systemitem class="username">opensrf</systemitem> user:</para>
+					<para>You must copy several example OpenSRF configuration files into place after first
+					creating backup copies for troubleshooting purposes, then change all the file ownerships
+					to <systemitem class="username">opensrf</systemitem>. These files replace the
+					configuration files that you set up in a previous step
+					(see <xref linkend="serversideinstallation-opensrf-createconfig"/>)
+					when you installed and tested OpenSRF.
+					As the <systemitem class="username">root</systemitem> user, execute the
+					following commands:</para>
 					<screen>
 						<userinput>cd /openils/conf</userinput>
-						<userinput>cp opensrf.xml	      opensrf.xml.BAK</userinput>
-						<userinput>cp opensrf_core.xml	 opensrf_core.xml.BAK</userinput>
+						<userinput>cp opensrf.xml              opensrf.xml.BAK</userinput>
+						<userinput>cp opensrf_core.xml         opensrf_core.xml.BAK</userinput>
 						<userinput>cp opensrf.xml.example      opensrf.xml</userinput>
 						<userinput>cp opensrf_core.xml.example opensrf_core.xml</userinput>
 						<userinput>cp oils_web.xml.example     oils_web.xml</userinput>
@@ -1025,7 +1027,7 @@
 								<userinput>psql -f /usr/share/postgresql/[PGSQL_VERSION]/contrib/pgxml.sql     evergreen</userinput>
 							</screen>
 						</step>
-						<step>
+						<step xml:id="serversideinstallation-postgresqlcreateuser">
 							<title>Create <systemitem class="username">evergreen</systemitem> PostgreSQL user</title>
 							<para>As the <systemitem class="username">postgres</systemitem>
 							user on the PostgreSQL system, create a new PostgreSQL user
@@ -1042,8 +1044,9 @@
 							<para>As the <systemitem class="username">root</systemitem>
 							user, create the database schema and configure your system with
 							the corresponding database authentication details for the
-							<emphasis>evergreen</emphasis> database user that you created in
-							the previous step.</para>
+							<emphasis>evergreen</emphasis> database user that you just created 
+							in the previous step
+							(see <xref linkend="serversideinstallation-postgresqlcreateuser"/>).</para>
 							<para>Enter the following commands and replace
 							<emphasis>HOSTNAME, PORT, PASSWORD</emphasis> and
 							<emphasis>DATABASENAME</emphasis> with appropriate
@@ -1060,7 +1063,9 @@
 							<emphasis>PORT</emphasis> will be <emphasis role="bold">5432</emphasis>.
 							Of course, values for <emphasis>PASSWORD</emphasis> and
  							<emphasis>DATABASENAME</emphasis> must match the values you used in the
- 							previous step when you created the database and and set a password for the
+ 							previous step
+							(see <xref linkend="serversideinstallation-postgresqlcreateuser"/>)
+							when you created the database and and set a password for the
  							<systemitem class="username">evergreen</systemitem> user.</para>
 							<para>As the command executes, you may see warnings similar to:
 							<literal>ERROR: schema SOMENAME does not exist</literal> (in fact,
@@ -1111,12 +1116,12 @@
 									user, perform the following commands:</para>
 									<screen>
 										<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
-										<userinput>cp Open-ILS/examples/apache/eg.conf	/etc/apache2/sites-available/</userinput>
+										<userinput>cp Open-ILS/examples/apache/eg.conf        /etc/apache2/sites-available/</userinput>
 										<userinput>cp Open-ILS/examples/apache/eg_vhost.conf  /etc/apache2/</userinput>
 										<userinput>cp Open-ILS/examples/apache/startup.pl     /etc/apache2/</userinput>
 									</screen>
 								</step>
-								<step>
+								<step xml:id="serversideinstallation-createcertificate">
 									<title>Create a Security Certificate</title>
 									<para>You must create a new Security Certificate (SSL Key)
 									for the Apache server using the <command>openssl</command>
@@ -1556,8 +1561,8 @@
 				<filename>/etc/apache2/sites-available/eg.conf</filename> in an earlier step as a
 				temporary measure to expedite testing (see 
 				<xref linkend="serversideinstallation-modify-apache"/> for further information).
-				Those changes must now be reversed in order to deny unwanted access to your CGI 
-				scripts from users on other public networks.</para>
+				Those changes must now be reversed in order to deny unwanted access to your 
+				CGI scripts from users on other public networks.</para>
 				<warning>
 					<para>
 						<emphasis>This temporary network update was done to expedite
@@ -1572,7 +1577,8 @@
 			</section>
 			<section>
 				<title>Configure a permanent SSL key</title>
-				<para>In a previous step, you used the command <command>openssl</command> to temporarily
+				<para>In a previous step (see <xref linkend="serversideinstallation-createcertificate"/>)
+				you used the command <command>openssl</command> to temporarily
 				create a new SSL key for the Apache server. This self-signed certificate was adequate
 				during testing and development, but will continue to generate warnings in the Staff Client 
 				and browser. For a public production server you should configure or purchase a signed SSL
