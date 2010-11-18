@@ -811,10 +811,9 @@ msgstr ""
 "для каждого"
 
 #: staff.admin.work_log.refresh_btn.label
-msgid ""
-"_: staff.admin.work_log.refresh_btn.label\n"
-"Refresh"
-msgstr "Освежить"
+#: staff.admin.work_log.refresh_btn.accesskey
+msgid "Refresh"
+msgstr "&Освежить"
 
 #: staff.admin.work_log.list1.retrieve_item_btn.label
 #: staff.admin.work_log.list1.retrieve_item_btn.accesskey
