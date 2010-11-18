@@ -671,28 +671,5 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
     openils.widget.AutoFieldWidget.cache = {};
     openils.widget.AutoFieldWidget.defaultLinkedDataLoader = {};
 
-    /* Custom provider-as-link-class fetcher.  Fitler is ignored.  
-     * All viewable providers are retrieved.
-     */
-    openils.widget.AutoFieldWidget.defaultLinkedDataLoader.acqpro = 
-            function(linkClass, fitler, oncomplete) { 
-
-        fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.provider.org.retrieve'],
-            {
-                async : true,
-                params : [openils.User.authtoken],
-                oncomplete : function(r) {
-                    var resp;
-                    var list = [];
-                    while(resp = r.recv()) {
-                        var pro = resp.content();
-                        if(pro) list.push(pro);
-                    }
-                    oncomplete(list);
-                }
-            }
-        );
-    }
 }
 

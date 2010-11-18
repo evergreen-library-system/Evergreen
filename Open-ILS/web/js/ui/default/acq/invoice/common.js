@@ -5,7 +5,7 @@ dojo.require('openils.widget.EditPane');
 function drawInvoicePane(parentNode, inv, args) {
     args = args || {};
 
-    var override;
+    var override = {};
     if(!inv) {
         override = {
             recv_date : {widgetValue : dojo.date.stamp.toISOString(new Date())},
@@ -13,6 +13,11 @@ function drawInvoicePane(parentNode, inv, args) {
             recv_method : {widgetValue : 'PPR'}
         };
     }
+
+    dojo.mixin(override, {
+        provider : { dijitArgs : { store_options : { base_filter : { active :"t" } } } },
+        shipper  : { dijitArgs : { store_options : { base_filter : { active :"t" } } } }
+    });
 
     for(var field in args) {
         override[field] = {widgetValue : args[field]};
