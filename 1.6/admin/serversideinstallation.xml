@@ -102,8 +102,9 @@
 			systems. Evergreen software is integrated with and depends on the OpenSRF software
 			system.</para>
 			<para>Follow the steps outlined here and run the specified tests to ensure that OpenSRF is
-			properly installed and configured. Do not continue with any further Evergreen installation steps
-			until you have verified that OpenSRF has been successfully installed.</para>
+			properly installed and configured. Do <emphasis><emphasis role="bold">not</emphasis></emphasis>
+			continue with any further Evergreen installation steps
+			until you have verified that OpenSRF has been successfully installed and tested.</para>
 			<note>
 				<para>The following steps have been tested on the x86 (32-bit) and x86-64 (64-bit)
 				platforms. OpenSRF 1.4.0 has been tested on <systemitem class="osname">Debian Etch
@@ -189,45 +190,45 @@
 							<thead>
 								<row>
 									<entry>Keyword</entry>
-									<entry>Description</entry>
+									<entry>Linux Version</entry>
 								</row>
 							</thead>
 							<tbody>
 								<row>
 									<entry>debian-etch</entry>
-									<entry>for Debian "Etch" (4.0)</entry>
+									<entry>Debian "Etch" (4.0)</entry>
 								</row>
 								<row>
 									<entry>debian-lenny</entry>
-									<entry>for Debian "Lenny" (5.0)</entry>
+									<entry>Debian "Lenny" (5.0)</entry>
 								</row>
 								<row>
 									<entry>ubuntu-hardy</entry>
-									<entry>for Ubuntu "Hardy Heron" (8.04)</entry>
+									<entry>Ubuntu "Hardy Heron" (8.04)</entry>
 								</row>
 								<row>
 									<entry>ubuntu-karmic</entry>
-									<entry>for Ubuntu "Karmic Koala" (9.10)</entry>
+									<entry>Ubuntu "Karmic Koala" (9.10)</entry>
 								</row>
 								<row>
 									<entry>ubuntu-lucid</entry>
-									<entry>for Ubuntu "Lucid Lynx" (10.04)</entry>
+									<entry>Ubuntu "Lucid Lynx" (10.04)</entry>
 								</row>
 								<row>
 									<entry>fedora13</entry>
-									<entry>for Fedora "Goddard" (13)</entry>
+									<entry>Fedora "Goddard" (13)</entry>
 								</row>
 								<row>
 									<entry>centos</entry>
-									<entry>for Centos</entry>
+									<entry>Centos</entry>
 								</row>
 								<row>
 									<entry>rhel</entry>
-									<entry>for RHEL</entry>
+									<entry>RHEL</entry>
 								</row>
 								<row>
 									<entry>gentoo</entry>
-									<entry>for Gentoo</entry>
+									<entry>Gentoo</entry>
 								</row>
 							</tbody>
 						</tgroup>
@@ -240,7 +241,7 @@
 				</step>
 				<step>
 					<title>Build OpenSRF</title>
-					<para>In this section you will configure and build the OpenSRF
+					<para>In this section you will configure, build and install the OpenSRF
 					components that support other Evergreen services.</para>
 					<substeps>
 						<step>
@@ -418,22 +419,25 @@
 					</itemizedlist>
 					<para>As the <systemitem class="username">root</systemitem> user, execute the
 					<command>ejabberdctl</command> utility as shown below to register and create passwords
-					for the two users on each domain. Note that the users correspond to those configured
-					in the file <filename>/openils/conf/opensrf_core.xml</filename>  in the next steps.</para>
-					<programlisting language="xml"><![CDATA[
-# The syntax for registering a user with ejabberdctl is:
-#    ejabberdctl register <user> <domain> <password>
-#
-ejabberdctl register router  private.localhost <password #1>
-ejabberdctl register router  public.localhost  <password #1>
-ejabberdctl register opensrf private.localhost <password #2>
-ejabberdctl register opensrf public.localhost  <password #2>
-]]></programlisting>
+					for the users <systemitem class="username">router</systemitem> and
+					<systemitem class="username">opensrf</systemitem> on each domain:</para>
+					<screen>
+						<prompt># The syntax for registering a user with ejabberdctl is:</prompt>
+						<prompt>#    ejabberdctl register USER DOMAIN PASSWORD</prompt>
+						<userinput>ejabberdctl register router  private.localhost NEWPASSWORD</userinput>
+						<userinput>ejabberdctl register router  public.localhost  NEWPASSWORD</userinput>
+						<userinput>ejabberdctl register opensrf private.localhost NEWPASSWORD</userinput>
+						<userinput>ejabberdctl register opensrf public.localhost  NEWPASSWORD</userinput>
+					</screen>
+					<para>Note that the users <systemitem class="username">router</systemitem> and
+					<systemitem class="username">opensrf</systemitem> and their respective passwords 
+					will be used again in the file <filename>/openils/conf/opensrf_core.xml</filename>
+					in the next steps.</para>
 				</step>
 				<step>
-					<title>Create configuration files</title>
-					<para>As the <systemitem class="username">opensrf</systemitem> user, execute
-					the following commands to create the new configuration files
+					<title>Create OpenSRF configuration files</title>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, 
+					execute the following commands to create the new configuration files
 					<filename>/openils/conf/opensrf_core.xml</filename> and
 					<filename>/openils/conf/opensrf.xml</filename> from the example templates:</para>
 					<screen>
@@ -443,10 +447,10 @@ ejabberdctl register opensrf public.localhost  <password #2>
 					</screen>
 				</step>
 				<step>
-					<title>Change Jabber usernames and passwords</title>
+					<title>Update usernames and passwords in the OpenSRF configuration file</title>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, edit the
 					OpenSRF configuration file <filename>/openils/conf/opensrf_core.xml</filename>
-					and update the Jabber usernames and passwords to match the values shown in the
+					and update the usernames and passwords to match the values shown in the
 					following table. The left-hand side of <xref linkend="serversideinstallation-xpath-table-1"/>
 					shows common XPath syntax to indicate the approximate position within the XML
 					file that needs changes. The right-hand side of the table shows the replacement
@@ -454,7 +458,7 @@ ejabberdctl register opensrf public.localhost  <password #2>
 					<table xml:id="serversideinstallation-xpath-table-1">
 						<title>Sample XPath syntax for editing "opensrf_core.xml"</title>
 						<tgroup align="left" cols="2" colsep="1" rowsep="1">
-							<colspec colname="Xpath" colnum="1" colwidth="1.5*"/>
+							<colspec colname="Xpath" colnum="1" colwidth="1.6*"/>
 							<colspec colname="Value" colnum="2" colwidth="2.0*"/>
 							<thead>
 								<row>
@@ -471,8 +475,9 @@ ejabberdctl register opensrf public.localhost  <password #2>
 								</row>
 								<row>
 									<entry>/config/opensrf/passwd </entry>
-									<entry>password for
-									<systemitem class="domainname">private.localhost</systemitem><systemitem class="username">opensrf</systemitem> user
+									<entry><systemitem class="domainname">private.localhost</systemitem>
+									password for
+									<systemitem class="username">opensrf</systemitem> user
 									</entry>
 								</row>
 								<row>
@@ -483,40 +488,39 @@ ejabberdctl register opensrf public.localhost  <password #2>
 								</row>
 								<row>
 									<entry>/config/gateway/passwd</entry>
-									<entry>password for
-									<systemitem class="domainname">public.localhost</systemitem><systemitem class="username">opensrf</systemitem> user
+									<entry><systemitem class="domainname">public.localhost</systemitem>
+									password for
+									<systemitem class="username">opensrf</systemitem> user
 									</entry>
 								</row>
 								<row>
-									<entry>/config/routers/router/transport, 
-									first entry where transport/server == public.localhost: 
-									username</entry>
+									<entry>/config/routers/router/transport/username, 
+									first entry where server == public.localhost</entry>
 									<entry>
 										<systemitem class="username">router</systemitem>
 									</entry>
 								</row>
 								<row>
-									<entry>/config/routers/router/transport,
-									first entry where transport/server == public.localhost: 
-									password</entry>
-									<entry>password for 
-									<systemitem class="domainname">public.localhost</systemitem><systemitem class="username">router</systemitem> user
+									<entry>/config/routers/router/transport/password,
+									first entry where server == public.localhost</entry>
+									<entry><systemitem class="domainname">public.localhost</systemitem>
+									password for
+									<systemitem class="username">router</systemitem> user
 									</entry>
 								</row>
 								<row>
-									<entry>/config/routers/router/transport,
-									second entry where transport/server == private.localhost:
-									username</entry>
+									<entry>/config/routers/router/transport/username,
+									second entry where server == private.localhost</entry>
 									<entry>
 										<systemitem class="username">router</systemitem>
 									</entry>
 								</row>
 								<row>
-									<entry>/config/routers/router/transport,
-									second entry where transport/server == private.localhost:
-									password</entry>
-									<entry>password for 
-									<systemitem class="domainname">private.localhost</systemitem><systemitem class="username">router</systemitem> user
+									<entry>/config/routers/router/transport/password,
+									second entry where server == private.localhost</entry>
+									<entry><systemitem class="domainname">private.localhost</systemitem>
+									password for
+									<systemitem class="username">router</systemitem> user
 									</entry>
 								</row>
 							</tbody>
@@ -532,7 +536,7 @@ ejabberdctl register opensrf public.localhost  <password #2>
 					to match values for your own systems.</para>
 				</step>
 				<step>
-					<title>Set location of persistent database</title>
+					<title>Set location of the persistent database</title>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, edit the
 					file <filename>/openils/conf/opensrf.xml</filename>, then find and modify the 
 					element <literal>dbfile</literal> (near the end of the file) to set the 
@@ -546,40 +550,49 @@ ejabberdctl register opensrf public.localhost  <password #2>
 </opensrf.persist>
 ]]></programlisting>
 				</step>
-				<step>
-					<title>Create Configuration Files for Users Needing <command>srfsh</command></title>
+				<step xml:id="serversideinstallation-srfsh">
+					<title>Create configuration files for users needing <command>srfsh</command></title>
 					<para>In this section you will set up a special configuration file for each user
 					who will need to run the <command>srfsh</command> (pronounced <emphasis>surf
 					shell</emphasis>) utility.</para>
 					<indexterm>
 						<primary>srfsh</primary>
 					</indexterm>
-					<para>The software installation will automatically create
-					<command>srfsh</command>. This is a command line diagnostic tool for testing and
-					interacting with <application>OpenSRF</application>. It will be used in a future
-					step to complete and test the Evergreen installation. See 
-					<xref linkend="serversideinstallation-testing"/> for further information.</para>
+					<para>The software installation will automatically create a utility named
+					<command>srfsh</command> (surf shell). This is a command line diagnostic tool for testing 
+					and interacting with <application>OpenSRF</application>. It will be used in a future
+					step to complete and test the Evergreen installation. 
+					See  <xref linkend="serversideinstallation-testing"/> for further information.</para>
 					<para>As the <systemitem class="username">root</systemitem> user, copy the short
 					sample configuration file <filename>/openils/conf/srfsh.xml.example</filename>
-					to the file <filename>.srfsh.xml</filename> (note the leading dot!) in the home
+					to <filename>~/.srfsh.xml</filename> (note the leading dot!), the home
 					directory of each user who will use <command>srfsh</command>. Finally, edit each
-					file <filename>.srfsh.xml</filename> and make the following changes. When you
+					file <filename>~/.srfsh.xml</filename> and make the following changes; when you
 					finish, remember to change the owner of the file to match the owner of the home
-					directory.</para>
+					directory:</para>
 					<itemizedlist>
-						<listitem>Modify <literal>domain</literal> to be the router hostname
-						(following our domain examples,
-						<systemitem class="domainname">private.localhost</systemitem> will give
-						<command>srfsh</command> access to all OpenSRF services, while
-						<systemitem class="domainname">public.localhost</systemitem> will only
-						allow access to those OpenSRF services that are publicly
-						exposed).</listitem>
-						<listitem>Modify <literal>username</literal> and
-						<literal>password</literal> to match the <literal>opensrf</literal>
-						Jabber user for the chosen domain</listitem>
-						<listitem>Modify <literal>logfile</literal> to be the full path for a
-						log file to which the user has write access</listitem>
-						<listitem>Modify <literal>loglevel</literal> as needed for testing</listitem>
+						<listitem>
+							<para>Modify <literal>domain</literal> to be the router hostname
+							(following our domain examples,
+							<systemitem class="domainname">private.localhost</systemitem> will give
+							<command>srfsh</command> access to all OpenSRF services, while
+							<systemitem class="domainname">public.localhost</systemitem>
+							will only allow access to those OpenSRF services that are
+							publicly exposed).</para>
+						</listitem>
+						<listitem>
+							<para>Modify <literal>username</literal> and
+							<literal>password</literal> to match the
+							<literal>opensrf</literal> Jabber user for the chosen
+							domain</para>
+						</listitem>
+						<listitem>
+							<para>Modify <literal>logfile</literal> to be the full path for
+							a log file to which the user has write access</para>
+						</listitem>
+						<listitem>
+							<para>Modify <literal>loglevel</literal> as needed for testing</para>
+						</listitem>
 					</itemizedlist>
 					<programlisting language="xml"><![CDATA[
 <?xml version="1.0"?>
@@ -589,7 +602,7 @@ ejabberdctl register opensrf public.localhost  <password #2>
 <router_name>router</router_name>
 <domain>private.localhost</domain>
 <username>opensrf</username>
-<passwd>privsrf</passwd>
+<passwd>SOMEPASSWORD</passwd>
 <port>5222</port>
 <logfile>/tmp/srfsh.log</logfile>
 <!-- 0 None, 1 Error, 2 Warning, 3 Info, 4 debug, 5 Internal (Nasty) -->
@@ -598,12 +611,12 @@ ejabberdctl register opensrf public.localhost  <password #2>
 ]]></programlisting>
 				</step>
 				<step>
-					<title>Modify Environmental Variable PATH for
-						<systemitem class="username">opensrf</systemitem> User</title>
+					<title>Modify the environmental variable <envar>PATH</envar> for the
+						<systemitem class="username">opensrf</systemitem> user</title>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, modify the
 					environmental variable <envar>PATH</envar> by adding a new file path to the
 					<systemitem class="username">opensrf</systemitem> user's shell configuration
-					file <filename>.bashrc</filename>:</para>
+					file <filename>~/.bashrc</filename>:</para>
 					<screen>
 						<userinput>echo "export PATH=/openils/bin:\$PATH" >> ~/.bashrc</userinput>
 					</screen>
@@ -617,28 +630,37 @@ ejabberdctl register opensrf public.localhost  <password #2>
 						<userinput>/etc/init.d/ejabberd start</userinput>
 						<userinput>/etc/init.d/memcached start</userinput>
 					</screen>
-					<para>Finally, as the <systemitem class="username">opensrf</systemitem> user,
-					start OpenSRF. Use "-l" to force hostname to be "localhost":</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user,
+					start OpenSRF as follows:</para>
 					<screen>
 						<userinput>osrf_ctl.sh -l -a start_all</userinput>
 					</screen>
-					<note>
-						<para>If you receive the error message <errortext>bash: osrf_ctl.sh:
-						command not found</errortext>, then your environment variable
-						<envar>PATH</envar> does not include the 
-						<filename class="directory">/openils/bin</filename> directory;
-						 this should have been set by <filename>.bashrc</filename> when you 
-						logged in as the <systemitem class="username">opensrf</systemitem> user, 
-						but you can manually set it using the following command:</para>
-						<screen>
-							<userinput>export PATH=$PATH:/openils/bin</userinput>
-						</screen>
-					</note>
-					<para>You can also start Evergreen <emphasis role="bold">without</emphasis> the
-					<option>-l</option> flag, but <command>osrf_ctl.sh</command> must know the fully
-					qualified domain name for the system on which it will execute. That hostname may
-					have been specified in the configuration file <filename>opensrf.xml</filename>,
-					which you configured in a previous step.</para>
+					<para>The flag <option>-l</option> forces Evergreen to use 
+					<systemitem class="domainname">localhost</systemitem> (your current system) 
+					as the hostname. The flag <option>-a start_all</option>  starts the other 
+					OpenSRF <systemitem class="service">router</systemitem> , 
+					<systemitem class="service">Perl</systemitem> , and
+					<systemitem class="service">C</systemitem> services.</para>
+					<itemizedlist>
+						<listitem>
+							<para>You can also start Evergreen without the
+							<option>-l</option> flag, but the <command>osrf_ctl.sh</command>
+							utility must know the fully qualified domain name for the system
+							on which it will execute. That hostname was probably specified
+							in the configuration file <filename>opensrf.xml</filename> which
+							you configured in a previous step.</para>
+						</listitem>
+						<listitem>
+							<para>If you receive an error message similar to
+							<emphasis>osrf_ctl.sh: command not found</emphasis>, then your
+							environment variable <envar>PATH</envar> does not include the
+							directory <filename class="directory">/openils/bin</filename>.
+							As the <systemitem class="username">opensrf</systemitem> user,
+							edit the configuration file <filename>~/.bashrc</filename> and
+							add the following line: 
+							<literal>export PATH=$PATH:/openils/bin</literal></para>
+						</listitem>
+					</itemizedlist>
 				</step>
 				<step>
 					<title>Test connections to OpenSRF</title>
@@ -649,24 +671,24 @@ ejabberdctl register opensrf public.localhost  <password #2>
 					<systemitem class="service">math</systemitem> service:</para>
 					<screen>
 						<userinput>/openils/bin/srfsh</userinput>
-						<computeroutput>
-srfsh#
-request opensrf.math add 2 2
-Received Data: 4
-------------------------------------
-Request Completed Successfully
-Request Time in seconds: 0.007519
-------------------------------------
-
-srfsh#
-</computeroutput>
+						<computeroutput>srfsh#</computeroutput>
+						<computeroutput>request opensrf.math add 2 2</computeroutput>
+						<computeroutput>Received Data: 4</computeroutput>
+						<computeroutput>------------------------------------</computeroutput>
+						<computeroutput>Request Completed Successfully</computeroutput>
+						<computeroutput>Request Time in seconds: 0.007519</computeroutput>
+						<computeroutput>------------------------------------</computeroutput>
+						<computeroutput>srfsh#</computeroutput>
 					</screen>
 					<para>For other <command>srfsh</command> commands, type in
 					<userinput>help</userinput> at the prompt.</para>
 				</step>
 				<step>
-					<title>Stopping OpenSRF</title>
-					<para>As the <systemitem class="username">opensrf</systemitem> user, stop OpenSRF:</para>
+					<title>Stop OpenSRF</title>
+					<para>After OpenSRF has started, you can stop it at any time by using the
+					<command>osrf_ctl.sh</command> again. As the 
+					<systemitem class="username">opensrf</systemitem> 
+					user, stop OpenSRF as follows:</para>
 					<screen>
 						<userinput>osrf_ctl.sh -l -a stop_all</userinput>
 					</screen>
@@ -729,9 +751,10 @@ srfsh#
 					installing, configuring and testing OpenSRF, see 
 					<xref linkend="serversideinstallation-opensrf"/>.</para>
 					<para>Follow the steps outlined in that section and run the specified tests to
-					ensure that OpenSRF is properly installed and configured. Do not continue with
+					ensure that OpenSRF is properly installed and configured. Do 
+					<emphasis><emphasis role="bold">not</emphasis></emphasis> continue with
 					any further Evergreen installation steps until you have verified that OpenSRF
-					has been successfully installed.</para>
+					has been successfully installed and tested.</para>
 				</step>
 				<step>
 					<title>Download and Unpack Latest Evergreen Version</title>
@@ -751,15 +774,14 @@ srfsh#
 					<para>In this section you will install and configure a set of prerequisites that
 					will be used to build Evergreen. In a following step you will actually build the
 					Evergreen software using the <command>make</command> utility.</para>
-					<para>As the <systemitem class="username">root</systemitem> user, enter the
-					commands show below to build the prerequisites from the software distribution
-					that you just downloaded and unpacked. Remember to replace
-					<emphasis>[DISTRIBUTION]</emphasis> in the following example with the keyword
-					corresponding to the name of one of the <systemitem class="osname">Linux</systemitem>
-					distributions listed in the following distribution keywords table 
-					<xref linkend="serversideinstallation-keywords-evergreen"/> .
-					For example, to install the prerequisites for Ubuntu version 9.10 (Karmic Koala) you would
-					enter this command: <command>make -f Open-ILS/src/extras/Makefile.install ubuntu-karmic</command> .</para>
+					<para>As the <systemitem class="username">root</systemitem> user, enter the commands show
+					below to build the prerequisites from the software distribution that you just downloaded
+					and unpacked. Remember to replace <emphasis>[DISTRIBUTION]</emphasis> in the following
+					example with the keyword corresponding to the name of one of the 
+					<systemitem class="osname">Linux</systemitem> distributions listed in the following distribution
+					keywords table <xref linkend="serversideinstallation-keywords-evergreen"/> . For example,
+					to install the prerequisites for Ubuntu version 9.10 (Karmic Koala) you would enter this
+					command: <command>make -f Open-ILS/src/extras/Makefile.install ubuntu-karmic</command>.</para>
 					<screen>
 						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
 						<userinput>make -f Open-ILS/src/extras/Makefile.install [DISTRIBUTION]</userinput>
@@ -772,45 +794,45 @@ srfsh#
 							<thead>
 								<row>
 									<entry>Keyword</entry>
-									<entry>Description</entry>
+									<entry>Linux Version</entry>
 								</row>
 							</thead>
 							<tbody>
 								<row>
 									<entry>debian-etch</entry>
-									<entry>for Debian "Etch" (4.0)</entry>
+									<entry>Debian "Etch" (4.0)</entry>
 								</row>
 								<row>
 									<entry>debian-lenny</entry>
-									<entry>for Debian "Lenny" (5.0)</entry>
+									<entry>Debian "Lenny" (5.0)</entry>
 								</row>
 								<row>
 									<entry>ubuntu-hardy</entry>
-									<entry>for Ubuntu "Hardy Heron" (8.04)</entry>
+									<entry>Ubuntu "Hardy Heron" (8.04)</entry>
 								</row>
 								<row>
 									<entry>ubuntu-intrepid</entry>
-									<entry>for Ubuntu "Intrepid Ibex" (8.10)</entry>
+									<entry>Ubuntu "Intrepid Ibex" (8.10)</entry>
 								</row>
 								<row>
 									<entry>ubuntu-karmic</entry>
-									<entry>for Ubuntu "Karmic Koala" (9.10)</entry>
+									<entry>Ubuntu "Karmic Koala" (9.10)</entry>
 								</row>
 								<row>
 									<entry>ubuntu-karmic</entry>
-									<entry>for Ubuntu "Lucid Lynx" (10.04)</entry>
+									<entry>Ubuntu "Lucid Lynx" (10.04)</entry>
 								</row>
 								<row>
 									<entry>centos</entry>
-									<entry>for Centos</entry>
+									<entry>Centos</entry>
 								</row>
 								<row>
 									<entry>rhel</entry>
-									<entry>for RHEL</entry>
+									<entry>RHEL</entry>
 								</row>
 								<row>
 									<entry>gentoo</entry>
-									<entry>for Gentoo</entry>
+									<entry>Gentoo</entry>
 								</row>
 							</tbody>
 						</tgroup>
@@ -861,15 +883,15 @@ srfsh#
 					<systemitem class="username">root</systemitem> user install the following Perl
 					modules:</para>
 					<screen>
-						<userinput># first, ensure the gcc compiler is installed:</userinput>
+						<prompt># first, ensure the gcc compiler is installed:</prompt>
 						<userinput>apt-get install gcc</userinput>
-						<userinput># then install the Perl modules:</userinput>
+						<prompt># then install the Perl modules:</prompt>
 						<userinput>perl -MCPAN -e shell</userinput>
-						<prompt>cpan></prompt>
+						<computeroutput>cpan></computeroutput>
 						<userinput>install JSON::XS</userinput>
-						<prompt>cpan></prompt>
+						<computeroutput>cpan></computeroutput>
 						<userinput>install MARC::Record</userinput>
-						<prompt>cpan></prompt>
+						<computeroutput>cpan></computeroutput>
 						<userinput>install MARC::File::XML</userinput>
 					</screen>
 					<para>For more information on installing Perl Modules vist the official
@@ -881,17 +903,14 @@ srfsh#
 				</step>
 				<step>
 					<title>Update the System Dynamic Library Path</title>
-					<para>You must update the system dynamic library path to force your system to
-					recognize the newly installed libraries. As the <systemitem class="username">root</systemitem>
-					user, create a file named <filename>/etc/ld.so.conf.d/eg.conf</filename>
-					containing these new library paths:</para>
-					<programlisting>
-/usr/local/lib
-/usr/local/lib/dbd
-</programlisting>
-					<para>Then run the command <command>ldconfig</command> to automatically read the
-					file and modify the system dynamic library path:</para>
+					<para>You must update the system dynamic library path to force your system to recognize
+					the newly installed libraries. As the <systemitem class="username">root</systemitem> user,
+					do this by creating the new file <filename>/etc/ld.so.conf.d/osrf.conf</filename>
+					containing a new library path, then run the command <command>ldconfig</command> to
+					automatically read the file and modify the system dynamic library path:</para>
 					<screen>
+						<userinput>echo "/usr/local/lib"     >> /etc/ld.so.conf.d/osrf.conf</userinput>
+						<userinput>echo "/usr/local/lib/dbd" >> /etc/ld.so.conf.d/osrf.conf</userinput>
 						<userinput>ldconfig</userinput>
 					</screen>
 				</step>
@@ -900,8 +919,9 @@ srfsh#
 					<para>If PostgreSQL is running on the same system as the rest of Evergreen, as
 					the <systemitem class="username">root</systemitem> user you must restart
 					PostgreSQL to re-read the new library paths just configured. If PostgreSQL is
-					running on another system, you may skip this step. As the <systemitem class="username">opensrf</systemitem>
-					user, execute the following command, where
+					running on another system, you may skip this step.
+					As the <systemitem class="username">opensrf</systemitem> user,
+					execute the following command, where
 					<literal>[PGSQL_VERSION]</literal> is your installed PostgreSQL version
 					(e.g. <literal>8.3</literal>):</para>
 					<screen>
@@ -932,7 +952,9 @@ srfsh#
 					</screen>
 					<para>The Staff Client will also be automatically built, but you must remember
 					to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version of the Staff
-					Client you will use to connect to the Evergreen server.</para>
+					Client you will use to connect to the Evergreen server. For further information on manually
+					building the Staff Client, see 
+					<xref linkend="staffclientinstallation-building-staffclient"/>.</para>
 					<para>The above commands will create a new subdirectory
 					<filename class="directory">/openils/var/web/xul/rel_1_6_1_2</filename> 
 					containing the Staff Client.</para>
@@ -957,8 +979,8 @@ srfsh#
 					the installed files to the <systemitem class="username">opensrf</systemitem> user:</para>
 					<screen>
 						<userinput>cd /openils/conf</userinput>
-						<userinput>cp opensrf.xml      opensrf.xml.BAK</userinput>
-						<userinput>cp opensrf_core.xml opensrf_core.xml.BAK</userinput>
+						<userinput>cp opensrf.xml	      opensrf.xml.BAK</userinput>
+						<userinput>cp opensrf_core.xml	 opensrf_core.xml.BAK</userinput>
 						<userinput>cp opensrf.xml.example      opensrf.xml</userinput>
 						<userinput>cp opensrf_core.xml.example opensrf_core.xml</userinput>
 						<userinput>cp oils_web.xml.example     oils_web.xml</userinput>
@@ -1011,12 +1033,12 @@ srfsh#
 							assign a password:</para>
 							<screen>
 								<userinput>createuser -P -s evergreen</userinput>
-								<prompt>Enter password for new role: <userinput>MYNEWPASSWORD</userinput></prompt>
-								<prompt>Enter it again: <userinput>MYNEWPASSWORD</userinput></prompt>
+								<computeroutput>Enter password for new role: <userinput>MYNEWPASSWORD</userinput></computeroutput>
+								<computeroutput>Enter it again: <userinput>MYNEWPASSWORD</userinput></computeroutput>
 							</screen>
 						</step>
 						<step>
-							<title>Create Database Schema</title>
+							<title>Create database schema</title>
 							<para>As the <systemitem class="username">root</systemitem>
 							user, create the database schema and configure your system with
 							the corresponding database authentication details for the
@@ -1034,13 +1056,12 @@ srfsh#
 								<userinput>  --user evergreen --password PASSWORD --database DATABASENAME</userinput>
 							</screen>
 							<para>On most systems, <emphasis>HOSTNAME</emphasis> will be
-							<emphasis role="bold">localhost</emphasis>,
+							<emphasis role="bold">localhost</emphasis> and
 							<emphasis>PORT</emphasis> will be <emphasis role="bold">5432</emphasis>.
-							Values for <emphasis>PASSWORD</emphasis> and <emphasis>DATABASENAME</emphasis> 
-							will match the values you used in the previous step when you created the
-							database and and set a password for the
-							<systemitem class="username">evergreen</systemitem> user.
-							Adjust the values to match your own systems.</para>
+							Of course, values for <emphasis>PASSWORD</emphasis> and
+ 							<emphasis>DATABASENAME</emphasis> must match the values you used in the
+ 							previous step when you created the database and and set a password for the
+ 							<systemitem class="username">evergreen</systemitem> user.</para>
 							<para>As the command executes, you may see warnings similar to:
 							<literal>ERROR: schema SOMENAME does not exist</literal> (in fact,
 							you may see one warning per schema) but they can be safely ignored.</para>
@@ -1068,9 +1089,9 @@ srfsh#
 							<substeps>
 								<step>
 									<title>Enable the required Apache Modules</title>
-									<para>As the <systemitem class="username">root</systemitem> user, enable
-									some modules in the Apache server, then copy the
-									new configuration files to the Apache server
+									<para>As the <systemitem class="username">root</systemitem> 
+									user, enable some modules in the Apache server, then 
+									copy the new configuration files to the Apache server
 									directories:</para>
 									<screen>
 										<userinput>a2enmod ssl     # enable mod_ssl</userinput>
@@ -1078,7 +1099,8 @@ srfsh#
 										<userinput>a2enmod expires # enable mod_expires</userinput>
 									</screen>
 									<para>As the commands execute, you may see warnings similar to:
-									<literal>Module SOMEMODULE already enabled</literal> but you can safely ignore them.</para>
+									<literal>Module SOMEMODULE already enabled</literal>
+									but you can safely ignore them.</para>
 								</step>
 								<step>
 									<title>Copy Apache configuration files</title>
@@ -1116,21 +1138,26 @@ srfsh#
 										certificate for a public production system to
 										avoid warning messages when users login to their
 										account through the OPAC or when staff login
-										through the staff client.</para>
+										through the Staff Client.</para>
+										<para>For further information on getting a proper
+										SSL certificate, see
+										<xref linkend="serversideinstallation-ssl"/>.</para>
 									</note>
 								</step>
 								<step xml:id="serversideinstallation-modify-apache">
 									<title>Update Apache configuration file</title>
 									<para>You must make several changes to the new Apache
 									configuration file
-									<filename>/etc/apache2/sites-available/eg.conf</filename>. As
-									the <systemitem class="username">root</systemitem> user,
+									<filename>/etc/apache2/sites-available/eg.conf</filename> . 
+									As the <systemitem class="username">root</systemitem> user,
 									edit the file and make the following changes:</para>
 									<itemizedlist>
 										<listitem>
-											<para>Comment out the line <literal>Allow
-											from 10.0.0.0/8</literal> and uncomment
-											the line <literal>Allow from all</literal>.</para>
+											<para>In the section
+											<literal>&lt;Directory "/openils/var/cgi-bin"></literal>
+											replace this line:
+											<literal>Allow from 10.0.0.0/8</literal> 
+											with this line: <literal>Allow from all</literal>.</para>
 											<warning>This change allows access to your
 											configuration CGI scripts from any workstation on
 											any network. This is only a temporary change to
@@ -1167,17 +1194,57 @@ srfsh#
 											to <literal>User opensrf</literal>.</para>
 											<para>For the <systemitem class="osname">Linux</systemitem> 
 											distributions <systemitem class="osname">Ubuntu
-											Karmic</systemitem> or 
+											Karmic</systemitem>, 
 											<systemitem class="osname">Ubuntu Lucid</systemitem> 
-											or <systemitem class="osname">Debian
-											Lenny</systemitem>, as the 
-											<systemitem class="username">root</systemitem> 
+											or <systemitem class="osname">Debian Lenny</systemitem>,
+											as the <systemitem class="username">root</systemitem> 
 											user, edit the Apache configuration file
-											<filename>/etc/apache2/envvars</filename> and
-											change the line <literal>export
-											APACHE_RUN_USER=www-data</literal> to
-											<literal>export
-											APACHE_RUN_USER=opensrf</literal>.</para>
+											and change these lines:</para>
+											<screen>
+												<userinput>export APACHE_RUN_USER=www-data</userinput>
+												<userinput>export APACHE_RUN_GROUP=www-data</userinput>
+											</screen>
+											<para>to instead read:</para>
+											<screen>
+												<userinput>export APACHE_RUN_USER=opensrf</userinput>
+												<userinput>export APACHE_RUN_GROUP=opensrf</userinput>
+											</screen>
+										</listitem>
+										<listitem>
+											<para>As the 
+											<systemitem class="username">root</systemitem> user,
+											edit the Apache configuration file
+											<filename>/etc/apache2/apache2.conf</filename> and
+											modify the values for <literal>KeepAliveTimeout</literal>
+											and <literal>MaxKeepAliveRequests</literal> to match
+											the following:</para>
+											<screen>
+												<userinput>KeepAliveTimeout       1</userinput>
+												<userinput>MaxKeepAliveRequests 100</userinput>
+											</screen>
+										</listitem>
+										<listitem>
+											<para>Further configuration changes to
+											Apache may be necessary for busy systems. These
+											changes increase the number of Apache server
+											processes that are started to support additional
+											browser connections.</para>
+											<para>As the <systemitem
+											class="username">root</systemitem> user, edit the
+											Apache configuration file
+											<filename>/etc/apache2/apache2.conf</filename>,
+											locate and modify the section related to
+											<emphasis>prefork configuration</emphasis> to suit
+											the load on your system:</para>
+											<programlisting language="xml"><![CDATA[
+<IfModule mpm_prefork_module>
+   StartServers           20
+   MinSpareServers         5
+   MaxSpareServers        15
+   MaxClients            150
+   MaxRequestsPerChild 10000
+</IfModule>
+]]></programlisting>
 										</listitem>
 									</itemizedlist>
 								</step>
@@ -1187,10 +1254,13 @@ srfsh#
 									<systemitem class="username">root</systemitem> user, execute
 									the following Apache configuration commands to disable the default
 									<emphasis>It Works</emphasis> web page and enable the
-									Evergreen web site:</para>
+									Evergreen web site, and then restart the Apache server:</para>
 									<screen>
+										<prompt># disable/enable web sites</prompt>
 										<userinput>a2dissite default</userinput>
 										<userinput>a2ensite eg.conf</userinput>
+										<prompt># restart the server</prompt>
+										<userinput>/etc/init.d/apache2 reload</userinput>
 									</screen>
 								</step>
 							</substeps>
@@ -1198,7 +1268,7 @@ srfsh#
 					</substeps>
 				</step>
 				<step xml:id="serversideinstallation-opensrf-config">
-					<title>Modify the OpenSRF Configuration File</title>
+					<title>Update the OpenSRF Configuration File</title>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, edit the
 					OpenSRF configuration file <filename>/openils/conf/opensrf_core.xml</filename>
 					to update the Jabber usernames and passwords, and to specify the domain from
@@ -1215,7 +1285,7 @@ srfsh#
 					<table xml:id="serversideinstallation-xpath-table-2">
 						<title>Sample XPath syntax for editing "opensrf_core.xml"</title>
 						<tgroup align="left" cols="2" colsep="1" rowsep="1">
-							<colspec colname="Xpath" colnum="1" colwidth="1.5*"/>
+							<colspec colname="Xpath" colnum="1" colwidth="1.6*"/>
 							<colspec colname="Value" colnum="2" colwidth="2.0*"/>
 							<thead>
 								<row>
@@ -1232,8 +1302,9 @@ srfsh#
 								</row>
 								<row>
 									<entry>/config/opensrf/passwd </entry>
-									<entry>password for
-									<systemitem class="domainname">private.localhost</systemitem><systemitem class="username">opensrf</systemitem> user
+									<entry><systemitem class="domainname">private.localhost</systemitem>
+									password for
+									<systemitem class="username">opensrf</systemitem> user
 									</entry>
 								</row>
 								<row>
@@ -1244,100 +1315,54 @@ srfsh#
 								</row>
 								<row>
 									<entry>/config/gateway/passwd</entry>
-									<entry>password for
-									<systemitem class="domainname">public.localhost</systemitem><systemitem class="username">opensrf</systemitem> user
+									<entry><systemitem class="domainname">public.localhost</systemitem>
+									password for
+									<systemitem class="username">opensrf</systemitem> user
 									</entry>
 								</row>
 								<row>
-									<entry>/config/routers/router/transport, 
-									first entry where transport/server == public.localhost: 
-									username</entry>
+									<entry>/config/routers/router/transport/username,
+									first entry where server == public.localhost</entry>
 									<entry>
 										<systemitem class="username">router</systemitem>
 									</entry>
 								</row>
 								<row>
-									<entry>/config/routers/router/transport,
-									first entry where transport/server == public.localhost: 
-									password</entry>
-									<entry>password for 
-									<systemitem class="domainname">public.localhost</systemitem><systemitem class="username">router</systemitem> user
+									<entry>/config/routers/router/transport/password,
+									first entry where server == public.localhost</entry>
+									<entry><systemitem class="domainname">public.localhost</systemitem>
+									password for
+									<systemitem class="username">router</systemitem> user
 									</entry>
 								</row>
 								<row>
-									<entry>/config/routers/router/transport,
-									second entry where transport/server == private.localhost:
-									username</entry>
+									<entry>/config/routers/router/transport/username,
+									second entry where server == private.localhost</entry>
 									<entry>
 										<systemitem class="username">router</systemitem>
 									</entry>
 								</row>
 								<row>
-									<entry>/config/routers/router/transport,
-									second entry where transport/server == private.localhost:
-									password</entry>
-									<entry>password for 
-									<systemitem class="domainname">private.localhost</systemitem><systemitem class="username">router</systemitem> user
+									<entry>/config/routers/router/transport/password,
+									second entry where server == private.localhost</entry>
+									<entry><systemitem class="domainname">private.localhost</systemitem>
+									password for
+									<systemitem class="username">router</systemitem> user
 									</entry>
 								</row>
 							</tbody>
 						</tgroup>
 					</table>
 				</step>
-				<step xml:id="serversideinstallation-srfsh">
+				<step>
 					<title>Create Configuration Files for Users Needing <command>srfsh</command></title>
-					<para>The software installation will automatically create a utility named
+					<para>When OpenSRF was installed in a previous step (see
+					<xref linkend="serversideinstallation-opensrf"/> for further information),
+					the software installation automatically created a utility named
 					<command>srfsh</command> (surf shell). This is a command line diagnostic tool
-					for testing and interacting with the OpenSRF network software. It will be used
+					for testing and interacting with <application>OpenSRF</application> It will be used
 					in a future step to complete and test the Evergreen installation. See 
 					<xref linkend="serversideinstallation-testing"/> for further information.</para>
-					<para>In this section you will set up a special configuration file for each user
-					who will need to run the utility. Copy the short sample configuration file
-					<filename>/openils/conf/srfsh.xml.example</filename> to the file
-					<filename>.srfsh.xml</filename> (note the leading dot!) in the home directory of
-					each user who will use <command>srfsh</command>. Finally, edit each user's
-					<filename>.srfsh.xml</filename> file and make the following changes:</para>
-					<substeps>
-						<step>
-							<para>Modify <emphasis role="bold">domain</emphasis> to be the
-							router hostname (following our domain examples, 
-							<systemitem class="domainname">private.localhost</systemitem>>
-							 will give <command>srfsh</command> access to all OpenSRF services,
-							while <systemitem class="domainname">public.localhost</systemitem>
-							will only allow access to those OpenSRF services that are
-							publicly exposed).</para>
-						</step>
-						<step>
-							<para>Modify <emphasis role="bold">username</emphasis> and
-							<emphasis role="bold">password</emphasis> to match the
-							<systemitem class="username">opensrf</systemitem> Jabber user
-							for the chosen domain.</para>
-						</step>
-						<step>
-							<para>Modify <emphasis role="bold">logfile</emphasis> to be the
-							full path for a log file to which the user has write
-							access.</para>
-						</step>
-						<step>
-							<para>Modify <emphasis role="bold">loglevel</emphasis> as needed
-							for testing.</para>
-						</step>
-					</substeps>
-					<programlisting language="xml"><![CDATA[
-<?xml version="1.0"?>
-<!-- This file follows the standard bootstrap config file layout -->
-<!-- found in opensrf_core.xml -->
-<srfsh>
-<router_name>router</router_name>
-<domain>private.localhost</domain>
-<username>opensrf</username>
-<passwd>evergreen</passwd>
-<port>5222</port>
-<logfile>/tmp/srfsh.log</logfile>
-<!-- 0 None, 1 Error, 2 Warning, 3 Info, 4 debug, 5 Internal (Nasty) -->
-<loglevel>4</loglevel>
-</srfsh>
-]]></programlisting>
 				</step>
 				<step xml:id="serversideinstallation-opensrf-env">
 					<title>Modify the OpenSRF Environment</title>
@@ -1364,7 +1389,7 @@ srfsh#
 					<title>(OPTIONAL) Enable and Disable Language Localizations</title>
 					<para>You can load translations such as Armenian (hy-AM), Canadian French
 					(fr-CA), and others into the database to complete the translations available in
-					the OPAC and staff client. For further information, see <xref linkend="enabling_and_disabling_localization"/>.</para>
+					the OPAC and Staff Client. For further information, see <xref linkend="enabling_and_disabling_localization"/>.</para>
 				</step>
 			</procedure>
 		</section>
@@ -1374,159 +1399,149 @@ srfsh#
 				<step>
 					<para>As the <systemitem class="username">root</systemitem>
 					user, start the <systemitem class="service">ejabberd</systemitem> and 
-					<systemitem class="service">memcached</systemitem> services
-					 (if they are not already running):</para>
+					<systemitem class="service">memcached</systemitem> services as follows:</para>
 					<screen>
 						<userinput>/etc/init.d/ejabberd start</userinput>
 						<userinput>/etc/init.d/memcached start</userinput>
 					</screen>
 				</step>
 				<step>
-					<para>As the <systemitem class="username">opensrf</systemitem>
-					user, start Evergreen.</para>
-					<para>Use the flag <option>-l</option> to force Evergreen to use
-					<systemitem class="domainname">localhost</systemitem> (your
-					current system) as the hostname. Using the
-					<option>start_all</option> option will start the OpenSRF
-					<systemitem class="service">router</systemitem> , 
-					<systemitem class="service">Perl</systemitem> , and
-					<systemitem class="service">C</systemitem> services:</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user,
+					start Evergreen as follows:</para>
 					<screen>
 						<userinput>osrf_ctl.sh -l -a start_all</userinput>
 					</screen>
-					<note>
-						<para>
-							<emphasis>You can also start Evergreen 
-							<emphasis role="bold">without</emphasis> 
-							the <option>-l</option> flag, but the
-							<command>osrf_ctl.sh</command> utility must know
-							the fully qualified domain name for the system
-							on which it will execute. That hostname may have
-							been specified in the configuration file
-							<filename>opensrf.xml</filename>, which you
-							configured in a previous step.</emphasis>
-						</para>
-						<para>Use the <command>hostname</command> command to
-						determine the fully qualified domain name of your
-						system.</para>
-					</note>
+					<para>The flag <option>-l</option> forces Evergreen to use 
+					<systemitem class="domainname">localhost</systemitem> (your current system) 
+					as the hostname. The flag <option>-a start_all</option>  starts the other 
+					OpenSRF <systemitem class="service">router</systemitem> , 
+					<systemitem class="service">Perl</systemitem> , and
+					<systemitem class="service">C</systemitem> services.</para>
 					<itemizedlist>
 						<listitem>
-							<para>If you receive an error message similar to
-							<emphasis>osrf_ctl.sh: command not found</emphasis>,
-							then your environment variable
-							<envar>PATH</envar> does not include the directory
-							<filename class="directory">/openils/bin</filename>.
-							As the								
-							<systemitem class="username">opensrf</systemitem>
-							user, edit the configuration file
-							<filename>/home/opensrf/.bashrc</filename> and
-							add the following line:
-							<literal>export PATH=$PATH:/openils/bin</literal></para>
+							<para>You can also start Evergreen without the
+							<option>-l</option> flag, but the <command>osrf_ctl.sh</command>
+							utility must know the fully qualified domain name for the system
+							on which it will execute. That hostname was probably specified
+							in the configuration file <filename>opensrf.xml</filename> which
+							you configured in a previous step.</para>
 						</listitem>
 						<listitem>
 							<para>If you receive an error message similar to
-							<emphasis>Can't locate OpenSRF/System.pm in
-							@INC ... BEGIN failed--compilation
-							aborted</emphasis>, then your environment variable
-							<emphasis role="bold">PERL5LIB</emphasis> does not
-							 include the directory
-							<filename class="directory">/openils/lib/perl5</filename>.
-							As the
-							<systemitem class="username">opensrf</systemitem> 
-							user, edit the configuration file
-							<filename>/home/opensrf/.bashrc</filename> and
-							add the following line:
+							<emphasis>osrf_ctl.sh: command not found</emphasis>, then your
+							environment variable <envar>PATH</envar> does not include the
+							directory <filename class="directory">/openils/bin</filename>.
+							As the <systemitem class="username">opensrf</systemitem> user,
+							edit the configuration file <filename>~/.bashrc</filename> and
+							add the following line: 
+							<literal>export PATH=$PATH:/openils/bin</literal></para>
+						</listitem>
+						<listitem>
+							<para>If you receive an error message similar to <emphasis>Can't
+							locate OpenSRF/System.pm in @INC ... BEGIN failed--compilation
+							aborted</emphasis>, then your environment variable 
+							<emphasis role="bold">PERL5LIB</emphasis> does not include the 
+							directory <filename class="directory">/openils/lib/perl5</filename>.
+							As the <systemitem class="username">opensrf</systemitem> user, 
+							edit the configuration file <filename>~/.bashrc</filename> and
+							add the following line: 
 							<literal>export PERL5LIB=$PERL5LIB:/openils/lib/perl5</literal></para>
 						</listitem>
 					</itemizedlist>
 				</step>
 				<step>
-					<para>As the <systemitem class="username">opensrf</systemitem>
-					user, generate the Web files needed by the Staff Client and
-					catalog, and calculate the proximity of locations in the
-					Organizational Unit tree (which allows
-					<emphasis>Holds</emphasis> to work properly):</para>
+					<para>In this step you will generate the Web files needed by the Staff Client
+					and catalog, and calculate the proximity of locations in the Organizational Unit
+					tree (which allows <emphasis>Holds</emphasis> to work properly). You must do
+					this the first time you start Evergreen and after making any changes to the
+					library hierarchy. As the <systemitem class="username">opensrf</systemitem>
+					user, execute the following commands:</para>
 					<screen>
 						<userinput>cd /openils/bin</userinput>
 						<userinput>./autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
-						<computeroutput>
-Updating Evergreen organization tree and IDL using '/openils/conf/opensrf_core.xml'
-Updating fieldmapper
-</computeroutput>
+						<computeroutput>Updating Evergreen organization tree and IDL using '/openils/conf/opensrf_core.xml'</computeroutput>
+						<computeroutput>Updating fieldmapper</computeroutput>
 					</screen>
-					<para>You must do this the first time you start Evergreen, and
-					after making any changes to the library hierarchy.</para>
 				</step>
 				<step>
-					<para>As the <systemitem class="username">root</systemitem>
-					user, restart the Apache Web server:</para>
+					<para>As the <systemitem class="username">root</systemitem> user, restart the
+					Apache Web server:</para>
 					<screen>
 						<userinput>/etc/init.d/apache2 restart</userinput>
 					</screen>
 					<note>
-						<para>If the Apache Web server was running when you
-						started the OpenSRF services, you might not be able to
-						successfully log in to the OPAC or Staff Client until
-						the Apache Web server is restarted.</para>
+						<para>If the Apache Web server was running when you started the OpenSRF
+						services, you might not be able to successfully log into the OPAC or
+						Staff Client until the Apache Web server has been restarted.</para>
 					</note>
 				</step>
 			</procedure>
 		</section>
 		<section xml:id="serversideinstallation-testing">
-			<title>Testing the Installation</title>
+			<title>Testing Your Evergreen Installation</title>
 			<para>This section describes several simple tests you can perform to verify that the Evergreen
 			server-side software has been installed and configured properly and is running as
 			expected.</para>
 			<simplesect xml:id="serversideinstallation-testing-connections">
 				<title>Testing Connections to Evergreen</title>
-				<para>Once you have installed and started Evergreen, test your connection to
-				Evergreen. As the <systemitem class="username">opensrf</systemitem> user start the
-				<command>srfsh</command> application and try logging onto the Evergreen server using the
-				default administrator username and password. Following is sample output generated by
-				executing <command>srfsh</command> after a successful Evergreen installation.
-				For help with <command>srfsh</command> commands, type <userinput>help</userinput>
-				at the prompt:</para>
+
+				<para>Once you have installed and started Evergreen, test your connection to Evergreen. Start the
+				<command>srfsh</command> application and try logging onto the Evergreen server using the default
+				administrator username and password. Following is sample output generated by executing
+				<command>srfsh</command> after a successful Evergreen installation. For help with
+				<command>srfsh</command> commands, type <userinput>help</userinput> at the prompt.
+				Execute the following commands to test your Evergreen connection:</para>
 				<screen>
 					<userinput>/openils/bin/srfsh</userinput>
-					<prompt>srfsh%</prompt>
+					<computeroutput>srfsh%</computeroutput>
 					<userinput>login admin open-ils</userinput>
-					<prompt>Received Data: "250bf1518c7527a03249858687714376"</prompt>
-					<prompt>------------------------------------</prompt>
-					<prompt>Request Completed Successfully</prompt>
-					<prompt>Request Time in seconds: 0.045286</prompt>
-					<prompt>------------------------------------</prompt>
-					<prompt>Received Data: {</prompt>
-					<prompt>   "ilsevent":0,</prompt>
-					<prompt>   "textcode":"SUCCESS",</prompt>
-					<prompt>   "desc":" ",</prompt>
-					<prompt>   "pid":21616,</prompt>
-					<prompt>   "stacktrace":"oils_auth.c:304",</prompt>
-					<prompt>   "payload":{</prompt>
-					<prompt>      "authtoken":"e5f9827cc0f93b503a1cc66bee6bdd1a",</prompt>
-					<prompt>      "authtime":420</prompt>
-					<prompt>   }</prompt>
-					<prompt>}</prompt>
-					<prompt>------------------------------------</prompt>
-					<prompt>Request Completed Successfully</prompt>
-					<prompt>Request Time in seconds: 1.336568</prompt>
-					<prompt>------------------------------------</prompt>
+					<computeroutput>Received Data: "250bf1518c7527a03249858687714376"</computeroutput>
+					<computeroutput>------------------------------------</computeroutput>
+					<computeroutput>Request Completed Successfully</computeroutput>
+					<computeroutput>Request Time in seconds: 0.045286</computeroutput>
+					<computeroutput>------------------------------------</computeroutput>
+					<computeroutput>Received Data: {</computeroutput>
+					<computeroutput>   "ilsevent":0,</computeroutput>
+					<computeroutput>   "textcode":"SUCCESS",</computeroutput>
+					<computeroutput>   "desc":" ",</computeroutput>
+					<computeroutput>   "pid":21616,</computeroutput>
+					<computeroutput>   "stacktrace":"oils_auth.c:304",</computeroutput>
+					<computeroutput>   "payload":{</computeroutput>
+					<computeroutput>      "authtoken":"e5f9827cc0f93b503a1cc66bee6bdd1a",</computeroutput>
+					<computeroutput>      "authtime":420</computeroutput>
+					<computeroutput>   }</computeroutput>
+					<computeroutput>}</computeroutput>
+					<computeroutput>------------------------------------</computeroutput>
+					<computeroutput>Request Completed Successfully</computeroutput>
+					<computeroutput>Request Time in seconds: 1.336568</computeroutput>
+					<computeroutput>------------------------------------</computeroutput>
 				</screen>
 				<para>If this does not work, try the following:</para>
 				<itemizedlist>
-					<listitem>As the <systemitem class="username">opensrf</systemitem> user, run the
-					script <filename>Open-ILS/src/support-scripts/settings-tester.pl</filename> to
-					see if it finds any system configuration problems. If the output of
-					<command>settings-tester.pl</command> does not help you find the problem, please
-					do not make any significant changes to your configuration.</listitem>
-					<listitem>Follow the steps in the troubleshooting guide in 
-					<xref linkend="troubleshooting"/>.</listitem>
-					<listitem>If you have followed the entire set of installation steps listed here
-					closely, you are probably extremely close to a working system. Gather your
-					configuration files and log files and contact the 
-					<ulink url="http://open-ils.org/listserv.php">Evergreen Development Mailing List</ulink>
-					list for assistance before making any drastic changes to your
-					system configuration.</listitem>
+					<listitem>
+						<para>As the <systemitem class="username">opensrf</systemitem> user, run the
+						<filename>settings-tester.pl</filename> utility to review your Evergreen
+						installation for any system configuration problems:</para>
+						<screen>
+							<userinput>cd /home/opensrf</userinput>
+							<userinput>./Evergreen-ILS-1.6.1.2/Open-ILS/src/support-scripts/settings-tester.pl</userinput>
+						</screen>
+						<para>If the output of <command>settings-tester.pl</command> does not help you
+						find the problem, please do not make any significant changes to your
+						configuration.</para>
+					</listitem>
+					<listitem>
+						<para>Follow the steps in the troubleshooting guide in 
+						<xref linkend="troubleshooting"/>.</para>
+					</listitem>
+					<listitem>
+						<para>If you have followed the entire set of installation steps listed here
+						closely, you are probably extremely close to a working system. Gather your
+						configuration files and log files and contact the 
+						<ulink url="http://open-ils.org/listserv.php">Evergreen Development Mailing List</ulink>
+						list for assistance before making any drastic changes to your system
+						configuration.</para>
+					</listitem>
 				</itemizedlist>
 			</simplesect>
 		</section>
@@ -1540,7 +1555,7 @@ Updating fieldmapper
 				<para>You modified the Apache configuration file
 				<filename>/etc/apache2/sites-available/eg.conf</filename> in an earlier step as a
 				temporary measure to expedite testing (see 
-				<xref linkend="serversideinstallation-modify-apache"/> for further information).  
+				<xref linkend="serversideinstallation-modify-apache"/> for further information).
 				Those changes must now be reversed in order to deny unwanted access to your CGI 
 				scripts from users on other public networks.</para>
 				<warning>
@@ -1614,9 +1629,9 @@ Updating fieldmapper
 						<para>As the <systemitem class="username">opensrf</systemitem> user,
 						execute the following shell commands:</para>
 						<screen>
-							<userinput># find and kill the process ID number(s)</userinput>
+							<prompt># find and kill the process ID number(s)</prompt>
 							<userinput>kill `ps wax | grep "Clark Kent" | grep -v grep | cut -b1-6`</userinput>
-							<userinput># remove the lock file</userinput>
+							<prompt># remove the lock file</prompt>
 							<userinput>rm /tmp/reporter-LOCK</userinput>
 						</screen>
 					</listitem>
