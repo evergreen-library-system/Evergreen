@@ -1274,13 +1274,14 @@ function AcqLiTable() {
      * This method formerly would not refetch the DF formulas if they'd been
      * loaded already, but now it always re-fetches, since use_count changes.
      */
+    /** TODO: port distrib-formula selector to autofieldwidget+pcrud/dojo store */
     this._fetchDistribFormulas = function(onload) {
         fieldmapper.standardRequest(
             ["open-ils.acq",
                 "open-ils.acq.distribution_formula.ranged.retrieve.atomic"],
             {
                 "async": true,
-                "params": [openils.User.authtoken],
+                "params": [openils.User.authtoken, 0, 500],
                 "oncomplete": function(r) {
                     self.distribForms = openils.Util.readResponse(r);
                     if(!self.distribForms || self.distribForms.length == 0) {
