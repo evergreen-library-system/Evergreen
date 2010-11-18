@@ -116,6 +116,11 @@ sub __addr_string {
         $addr->post_code);
 }
 
+sub internal_id {
+    my $self = shift;
+    return $self->{user}->id;
+}
+
 sub address {
 	my $self = shift;
 	my $u = $self->{user};
