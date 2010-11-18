@@ -1,1 +1,52 @@
-#ChangeLog
+2010-11-10  gmc
+
+	* do not use TRUNCATE when refreshing
+	  reporter.materialized_simple_record
+	  
+	  Previous behavior would break Slony replication after doing a
+	  bib load. Since a deletion is slower than a truncate, if you're
+	  not using Slony replication, you may prefer to truncate rmsr
+	  prior to calling
+	  reporter.enable_materialized_simple_record_trigger.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-15  miker
+
+	* Reverting and extending r18472 to correct implementation thinko
+
+2010-11-15  senator
+
+	* Backport r17447 from trunk: don't forget this branch
+
+2010-11-15  dbs
+
+	* asset.uri needs a seed entry for queries of its ID values
+	  
+	  To fix a problem with ingesting URIs, Ingest.pm was changed to
+	  reflect
+	  the maximum asset.uri.id value rather than the
+	  asset.call_number.id
+	  value. However, with no entries in asset.uri, the query returned
+	  a
+	  NULL object which broke ingest entirely. Adding a seed entry
+	  avoids
+	  this problem.
+
+	* Trim leading and trailing whitespace from metabib.full_rec values
+	  - fixes ISSN quicksearch (thanks for noticing this, Dan Wells!)
+
+2010-11-16  phasefx
+
+	* backport r18757 from trunk for opac org hiding extension to place
+	  hold pickup lib menu
+
+2010-11-18  erickson
+
+	* back-porting 17292: added custom internal_id handler to SIP
+	  patron module
+
+2010-11-18  miker
+
+	* .: Tagging 1.6.1.4
+
