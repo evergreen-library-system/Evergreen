@@ -491,19 +491,18 @@ serial.manage_items.prototype = {
 	'set_other_sunit' : function() {
 		var obj = this;
 		try {
-            g.serial_items_sunit_select = '';
-            g.serial_items_sdist_ids = obj.sdist_ids;
             JSAN.use('util.window'); var win = new util.window();
-            win.open(
+            var select_unit_window = win.open(
                 xulG.url_prefix(urls.XUL_SERIAL_SELECT_UNIT),
                 '_blank',
-                'chrome,resizable,modal,centerscreen'
+                'chrome,resizable,modal,centerscreen',
+                {'sdist_ids' : obj.sdist_ids}
             );
-            if (!g.serial_items_sunit_select) {
+            if (!select_unit_window.sunit_selection) {
                 return;
             }
 
-            var selection = g.serial_items_sunit_select;
+            var selection = select_unit_window.sunit_selection;
             var sunit_id = selection.sunit;
             var sdist_id = selection.sdist;
             var sstr_id = selection.sstr;
