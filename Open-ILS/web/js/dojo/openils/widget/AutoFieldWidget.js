@@ -405,6 +405,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 return this._buildOrgSelector();
             if(linkClass == 'acpl')
                 return this._buildCopyLocSelector();
+            if(linkClass == 'acqpro')
+                return this._buildAutoCompleteSelector(linkClass, vfield.selector);
 
 
             dojo.require('dojo.data.ItemFileReadStore');
@@ -650,6 +652,17 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 }
             });
 
+            return true;
+        },
+
+        _buildAutoCompleteSelector : function(linkClass, searchAttr) {
+            dojo.require("openils.widget.PCrudAutocompleteBox");
+            dojo.mixin(this.dijitArgs, {
+                fmclass : linkClass,
+                searchAttr : searchAttr,
+            });
+            this.widget = new openils.widget.PCrudAutocompleteBox(this.dijitArgs, this.parentNode);
+            this._widgetLoaded();
             return true;
         }
     });
