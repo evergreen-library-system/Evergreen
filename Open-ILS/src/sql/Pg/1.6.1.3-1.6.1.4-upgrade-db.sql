@@ -15,3 +15,6 @@
  */
 
 INSERT INTO config.upgrade_log(version) VALUES ('1.6.1.4');
+
+-- Create seed data for the asset.uri table
+INSERT INTO asset.uri (id, href, active) VALUES (-1, 'http://example.com/fake', FALSE);
