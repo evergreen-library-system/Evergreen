@@ -456,14 +456,19 @@ sub apply_invalid_addr_penalty {
 sub flesh_user {
 	my $id = shift;
     my $e = shift;
-	return new_flesh_user($id, [
+    my $home_ou = shift;
+
+    my $fields = [
 		"cards",
 		"card",
 		"standing_penalties",
 		"addresses",
 		"billing_address",
 		"mailing_address",
-		"stat_cat_entries" ], $e );
+		"stat_cat_entries"
+    ];
+    push @$fields, "home_ou" if $home_ou;
+	return new_flesh_user($id, $fields, $e );
 }
 
 
@@ -1024,7 +1029,7 @@ __PACKAGE__->register_method(
 	api_name	=> "open-ils.actor.user.fleshed.retrieve_by_barcode",);
 
 sub user_retrieve_by_barcode {
-	my($self, $client, $auth, $barcode) = @_;
+	my($self, $client, $auth, $barcode, $flesh_home_ou) = @_;
 
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
@@ -1032,8 +1037,10 @@ sub user_retrieve_by_barcode {
     my $card = $e->search_actor_card({barcode => $barcode})->[0]
         or return $e->event;
 
-	my $user = flesh_user($card->usr, $e);
-    return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
+	my $user = flesh_user($card->usr, $e, $flesh_home_ou);
+    return $e->event unless $e->allowed(
+        "VIEW_USER", $flesh_home_ou ? $user->home_ou->id : $user->home_ou
+    );
     return $user;
 }
 

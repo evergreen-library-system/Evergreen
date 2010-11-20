@@ -2794,4 +2794,134 @@ sub get_receivable_issuances {
     undef;
 }
 
+
+__PACKAGE__->register_method(
+    "method" => "get_routing_list_users",
+    "api_name" => "open-ils.serial.routing_list_users.fleshed_and_ordered",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Return all routing list users with reader fleshed " .
+            "(with card and home_ou) for a given stream ID, sorted by pos",
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "Stream ID", "type" => "number"},
+        ],
+        "return" => {
+            "desc" => "Stream of routing list users", "type" => "object",
+                "class" => "srlu"
+        }
+    }
+);
+
+sub get_routing_list_users {
+    my ($self, $client, $auth, $stream_id) = @_;
+
+    return undef unless $stream_id = int $stream_id; # sic, assignment
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $users = $e->search_serial_routing_list_user([
+        {"stream" => $stream_id}, {
+            "order_by" => {"srlu" => "pos"},
+            "flesh" => 2,
+            "flesh_fields" => {
+                "srlu" => [qw/reader stream/],
+                "au" => [qw/card home_ou/],
+                "sstr" => ["distribution"]
+            }
+        }
+    ]) or return $e->die_event;
+
+    return undef unless @$users;
+
+    # The ADMIN_SERIAL_STREAM permission is used simply to avoid the
+    # need for any new permission.  The context OU will be the same
+    # for every result of the above query, so we need only check once.
+    return $e->die_event unless $e->allowed(
+        "ADMIN_SERIAL_STREAM", $users->[0]->stream->distribution->holding_lib
+    );
+
+    $e->disconnect;
+
+    # Now we can strip the stream/distribution info (only used for perm
+    # checking) and send back the srlu's to the caller.
+    $client->respond($_) for map { $_->stream($_->stream->id); $_ } @$users;
+
+    undef;
+}
+
+
+__PACKAGE__->register_method(
+    "method" => "replace_routing_list_users",
+    "api_name" => "open-ils.serial.routing_list_users.replace",
+    "signature" => {
+        "desc" => "Replace all routing list users on the specified streams " .
+            "with those in the list argument",
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "List of srlu objects", "type" => "array"},
+        ],
+        "return" => {
+            "desc" => "event on failure, undef on success"
+        }
+    }
+);
+
+sub replace_routing_list_users {
+    my ($self, $client, $auth, $users) = @_;
+
+    return undef unless ref $users eq "ARRAY";
+
+    if (grep { ref $_ ne "Fieldmapper::serial::routing_list_user" } @$users) {
+        return new OpenILS::Event("BAD_PARAMS", "note" => "Only srlu objects");
+    }
+
+    my $e = new_editor("authtoken" => $auth, "xact" => 1);
+    return $e->die_event unless $e->checkauth;
+
+    my %streams_ok = ();
+    my $pos = 0;
+
+    foreach my $user (@$users) {
+        unless (exists $streams_ok{$user->stream}) {
+            my $stream = $e->retrieve_serial_stream([
+                $user->stream, {
+                    "flesh" => 1,
+                    "flesh_fields" => {"sstr" => ["distribution"]}
+                }
+            ]) or return $e->die_event;
+            $e->allowed(
+                "ADMIN_SERIAL_STREAM", $stream->distribution->holding_lib
+            ) or return $e->die_event;
+
+            my $to_delete = $e->search_serial_routing_list_user(
+                {"stream" => $user->stream}
+            ) or return $e->die_event;
+
+            $logger->info(
+                "Deleting srlu: [" .
+                join(", ", map { $_->id; } @$to_delete) .
+                "]"
+            );
+
+            foreach (@$to_delete) {
+                $e->delete_serial_routing_list_user($_) or
+                    return $e->die_event;
+            }
+
+            $streams_ok{$user->stream} = 1;
+        }
+
+        next if $user->isdeleted;
+
+        $user->clear_id;
+        $user->pos($pos++);
+        $e->create_serial_routing_list_user($user) or return $e->die_event;
+    }
+
+    $e->commit or return $e->die_event;
+    undef;
+}
+
 1;
