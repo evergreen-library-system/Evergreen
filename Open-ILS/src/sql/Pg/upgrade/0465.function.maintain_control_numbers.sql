@@ -118,4 +118,7 @@ if ($create or $munge) {
     return "MODIFY";
 }
 
+return;
+$func$ LANGUAGE PLPERLU;
+
 COMMIT;
