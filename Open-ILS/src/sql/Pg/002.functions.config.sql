@@ -513,8 +513,6 @@ if ($ous_rv->{processed}) {
 
 my ($create, $munge) = (0, 0);
 
-# Incoming MARC records may have multiple 001s or 003s, despite the spec
-my @control_ids = $record->field('003');
 my @scns = $record->field('035');
 
 foreach my $id_field ('001', '003') {
@@ -528,32 +526,27 @@ foreach my $id_field ('001', '003') {
     }
 
     # Create the 001/003 if none exist
-    if (scalar(@controls) == 0) {
-        $record->insert_fields_ordered(MARC::Field->new($id_field, $spec_value));
-        $create = 1;
-    } elsif (scalar(@controls) > 1) {
-        # Do we already have the right 001/003 value in the existing set?
+    if (scalar(@controls) == 1) {
+        # Only one field; check to see if we need to munge it
         unless (grep $_->data() eq $spec_value, @controls) {
             $munge = 1;
         }
-
+    } else {
         # Delete the other fields, as with more than 1 001/003 we do not know which 003/001 to match
         foreach my $control (@controls) {
             unless ($control->data() eq $spec_value) {
                 $record->delete_field($control);
             }
         }
-    } else {
-        # Only one field; check to see if we need to munge it
-        unless (grep $_->data() eq $spec_value, @controls) {
-            $munge = 1;
-        }
+        $record->insert_fields_ordered(MARC::Field->new($id_field, $spec_value));
+        $create = 1;
     }
 }
 
-# Now, if we need to munge the 001, we will first push the existing 001/003 into the 035;
-# but if the record did not have a 003 to begin with, skip this process
-if ($munge && scalar(@control_ids) > 0) {
+# Now, if we need to munge the 001, we will first push the existing 001/003
+# into the 035; but if the record did not have one (and one only) 001 and 003
+# to begin with, skip this process
+if ($munge and not $create) {
     my $scn = "(" . $record->field('003')->data() . ")" . $record->field('001')->data();
 
     # Do not create duplicate 035 fields
