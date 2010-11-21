@@ -9,7 +9,7 @@
 		<glossentry id="Apache">
 			<glossterm>Apache</glossterm><indexterm><primary>Apache</primary></indexterm>
 			<glossdef>
-				<para>Open-source web server software used to serve both static content and dynamic web pages in a secure and reliable way. More information is available at <ulink url="http://apache.org">apache.org</ulink>.</para>
+				<para>Open-source web server software used to serve both static content and dynamic web pages in a secure and reliable way. More information is available at <ulink url="http://apache.org">http://apache.org</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -26,6 +26,12 @@
 	</glossdiv>
 	<glossdiv>
 		<title>C</title>
+		<glossentry id="CentOS">
+			<glossterm>CentOS</glossterm><indexterm><primary>Linux</primary><secondary>CentOS</secondary></indexterm>
+			<glossdef>
+				<para>A popular open-source operating system based on Red Hat Enterprises <systemitem class="osname">Linux</systemitem> (a.k.a. "RHEL") and often used for in web servers. More information is available at <ulink url="http://www.centos.org">http://www.centos.org</ulink>.</para>
+			</glossdef>
+		</glossentry>
 		<glossentry id="closure">
 			<glossterm>Closure Compiler</glossterm>
 			<glossdef>
@@ -35,7 +41,7 @@
 		<glossentry id="CPAN">
 			<glossterm>CPAN</glossterm><indexterm><primary>Perl</primary><secondary>CPAN</secondary></indexterm>
 			<glossdef>
-				<para>An open-source archive of software modules written in <application>Perl</application>. More information is available at <ulink url="http://www.cpan.org">www.cpan.org</ulink>.</para>
+				<para>An open-source archive of software modules written in <application>Perl</application>. More information is available at <ulink url="http://www.cpan.org">http://www.cpan.org</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -44,7 +50,7 @@
 		<glossentry id="Debian">
 			<glossterm>Debian</glossterm><indexterm><primary>Linux</primary><secondary>Debian</secondary></indexterm>
 			<glossdef>
-				<para>One of the most popular open-source operating system using the <systemitem class="osname">Linux</systemitem> kernel that provides over 25000 useful precompiled software packages. Also known as <systemitem class="osname">Debian GNU/Linux</systemitem>. More information is available at <ulink url="http://www.debian.org">www.debian.org</ulink>.</para>
+				<para>One of the most popular open-source operating system using the <systemitem class="osname">Linux</systemitem> kernel that provides over 25000 useful precompiled software packages. Also known as <systemitem class="osname">Debian GNU/Linux</systemitem>. More information is available at <ulink url="http://www.debian.org">http://www.debian.org</ulink>.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry>
@@ -72,7 +78,12 @@
 	</glossdiv>
 	<glossdiv>
 		<title>G</title>
-		<glossentry></glossentry>
+		<glossentry id="Gentoo">
+			<glossterm>Gentoo</glossterm><indexterm><primary>Linux</primary><secondary>Gentoo</secondary></indexterm>
+			<glossdef>
+				<para>A popular open-source operating system built on the <systemitem class="osname">Linux</systemitem> kernel. More information is available at <ulink url="http://www.gentoo.org">http://www.gentoo.org</ulink>.</para>
+			</glossdef>
+		</glossentry>
 	</glossdiv>
 	<glossdiv>
 		<title>H</title>
@@ -131,7 +142,7 @@
 			<glossterm>McCoy</glossterm>
 			<glossdef>
 				<para>An open-source application that allows add-on authors to provide secure updates to their users. More information is available at 
-				<ulink url="https://developer.mozilla.org/en/McCoy">developer.mozilla.org/en/McCoy</ulink>.</para>
+				<ulink url="https://developer.mozilla.org/en/McCoy">http://developer.mozilla.org/en/McCoy</ulink>.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="memcached">
@@ -155,8 +166,7 @@
 		<glossentry id="nsis">
 			<glossterm>nsis</glossterm>
 			<glossdef>
-				<para>An open-source software tool used to create Windows installers. More information is available at <ulink url="http://nsis.sourceforge.net">
-			http://nsis.sourceforge.net</ulink>.</para>
+				<para>An open-source software tool used to create Windows installers. More information is available at <ulink url="http://nsis.sourceforge.net">http://nsis.sourceforge.net</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -203,6 +213,12 @@
 			<glossterm>Resource Hacker</glossterm>
 			<glossdef>
 				<para>An open-source utility used to view, modify, rename, add, delete and extract resources in 32bit Windows executables</para>
+			</glossdef>
+		</glossentry>
+		<glossentry id="RHEL">
+			<glossterm>RHEL</glossterm><indexterm><primary>Linux</primary><secondary>RHEL</secondary></indexterm>
+			<glossdef>
+				<para>Also known as "Red Hat Enterprises <systemitem class="osname">Linux</systemitem>". An official <systemitem class="osname">Linux</systemitem> distribution that is targeted at the commercial market. It is the basis of other popular <systemitem class="osname">Linux</systemitem> distributions, e.g., <systemitem class="osname">CentOS</systemitem>. More information is available at <ulink url="http://www.redhat.com">http://www.redhat.com</ulink>.</para>
 			</glossdef>
 		</glossentry>
 	</glossdiv>
@@ -279,7 +295,7 @@
 			<glossterm>Ubuntu</glossterm><indexterm><primary>Linux</primary><secondary>Ubuntu</secondary></indexterm>
 			<glossdef>
 				<para>A popular open-source operating system using the <systemitem class="osname">Linux</systemitem> kernel that was originally based on the 
-				<systemitem class="osname">Debian GNU/Linux</systemitem> operating system. More information is available at <ulink url="http://www.ubuntu.com">www.ubuntu.com</ulink>.</para>
+				<systemitem class="osname">Debian GNU/Linux</systemitem> operating system. More information is available at <ulink url="http://www.ubuntu.com">http://www.ubuntu.com</ulink>.</para>
 				<glossseealso otherterm="Debian"/>
 			</glossdef>
 		</glossentry>
@@ -353,7 +369,7 @@
 			<glossdef>
 				<para>An open-standard communications protocol, based on XML, used in message-oriented middleware. It supports the concept of a consistent <emphasis>domain</emphasis> 
 				of message types that flow between software applications, possibly on different operating systems and architectures. More information is available at 
-				<ulink url="http://xmpp.org">xmpp.org</ulink>.</para>
+				<ulink url="http://xmpp.org">http://xmpp.org</ulink>.</para>
 				<glossseealso otherterm="Jabber"/>
 			</glossdef>
 		</glossentry>
