@@ -314,6 +314,50 @@ __PACKAGE__->register_method(
 	method		=> 'nearest_hold',
 );
 
+sub targetable_holds {
+    my $self = shift;
+    my $client = shift;
+    my $check_expire = shift;
+
+    $check_expire ||= '12h';
+
+    local $OpenILS::Application::Storage::WRITE = 1;
+
+    # json_query can *almost* represent this query, but can't
+    # handle the CASE statement or the interval arithmetic
+    my $query = <<"    SQL";
+        SELECT ahr.id, mmsm.metarecord
+        FROM action.hold_request ahr
+        JOIN reporter.hold_request_record USING (id)
+        JOIN metabib.metarecord_source_map mmsm ON (bib_record = source)
+        WHERE capture_time IS NULL
+        AND (prev_check_time IS NULL or prev_check_time < (NOW() - ?::interval))
+        AND fulfillment_time IS NULL
+        AND cancel_time IS NULL
+        AND NOT frozen
+        ORDER BY CASE WHEN ahr.hold_type = 'F' THEN 0 ELSE 1 END, selection_depth DESC, request_time;
+    SQL
+    my $sth = action::hold_request->db_Main->prepare_cached($query);
+    $sth->execute($check_expire);
+
+    $client->respond( $_ ) for ( $sth->fetchall_arrayref );
+    return undef;
+}
+
+__PACKAGE__->register_method(
+    api_name    => 'open-ils.storage.action.hold_request.targetable_holds.id_list',
+    api_level   => 1,
+    stream      => 1,
+    method      => 'targetable_holds',
+    signature   => q/
+        Returns ordered list of hold request and metarecord IDs
+        for all hold requests that are available for initial targeting
+        or retargeting.
+        @param check interval
+        @return list of pairs of hold request and metarecord IDs
+/,
+);
+
 sub next_resp_group_id {
 	my $self = shift;
 	my $client = shift;

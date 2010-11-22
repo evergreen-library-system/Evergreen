@@ -130,6 +130,16 @@ vim:et:ts=4:sw=4:
         </predue>
       </notifications>
 
+        <!-- Settings for the hold targeter cron job -->
+        <hold_targeter>
+            <!-- number of parallel processes to use during hold targeting;
+                 increasing can speed up (re)targeting a large number of
+                 hold requests, but with diminishing returns after a point;
+                 if increasing this value, it is recommend to do so slowly
+            -->
+            <parallel>1</parallel>
+        </hold_targeter>
+        
         <reporter>
             <!--
             Settings for the reporter daemon process 
