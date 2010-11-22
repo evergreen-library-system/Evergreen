@@ -1839,12 +1839,14 @@ sub new_record_holdings {
 		{ record_entry  => $bib,
           %subselect
         },
-		{ flesh		=> 5,
+		{ flesh		=> 7,
 		  flesh_fields	=> {
 		  			ssub	=> [qw/distributions issuances scaps owning_lib/],
 		  			sdist	=> [qw/basic_summary supplement_summary index_summary streams holding_lib/],
 					sstr	=> [qw/items/],
 					sitem	=> [qw/notes unit/],
+					sunit	=> [qw/notes location status circ_lib stat_cat_entries call_number/],
+					acn	=> [qw/owning_lib/],
 				},
           ( $limit > -1 ? ( limit  => $limit  ) : () ),
           ( $offset     ? ( offset => $offset ) : () ),
@@ -3016,10 +3018,10 @@ sub as_xml {
 
 	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->issuance )->as_xml({ %$args, no_items=>1 }) if (!$args->{no_issuance});
 	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->stream )->as_xml({ %$args, no_items=>1 }) if (!$args->{no_stream});
-	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->unit )->as_xml({ %$args, no_items=>1, no_volumes=>1 }) if (!$args->{no_unit});
-	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->uri )->as_xml({ %$args, no_items=>1, no_volumes=>1 }) if (!$args->{no_uri});
+	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->unit )->as_xml({ %$args, no_items=>1, no_volumes=>1 }) if ($self->obj->unit && !$args->{no_unit});
+	$xml .= OpenILS::Application::SuperCat::unAPI->new( $self->obj->uri )->as_xml({ %$args, no_items=>1, no_volumes=>1 }) if ($self->obj->uri && !$args->{no_uri});
 
-    $xml .= "    </stream>\n";
+    $xml .= "    </serial_item>\n";
 
     return $xml;
 }
@@ -3031,13 +3033,13 @@ sub as_xml {
     my $self = shift;
     my $args = shift;
 
-    my $xml = '      <serial_item xmlns="http://open-ils.org/spec/holdings/v1" '.
+    my $xml = '      <serial_unit xmlns="http://open-ils.org/spec/holdings/v1" '.
         'id="tag:open-ils.org:serial-unit/' . $self->obj->id . '" ';
 
     $xml .= $_ . '="' . $self->escape( $self->obj->$_  ) . '" ' for (qw/
         create_date edit_date copy_number circulate deposit ref holdable deleted
-        deposit_amount price barcode circ_modifier circ_as_type opac_visible
-		status_changed_time floating mint_condition label label_sort_key contents
+        deposit_amount price barcode circ_modifier circ_as_type opac_visible cost
+	status_changed_time floating mint_condition detailed_contents sort_key summary_contents
     /);
 
     $xml .= ">\n";
@@ -3083,7 +3085,7 @@ sub as_xml {
         }
     }
 
-    $xml .= "      </serial_item>\n";
+    $xml .= "      </serial_unit>\n";
 
     return $xml;
 }
