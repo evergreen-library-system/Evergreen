@@ -232,6 +232,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
             this.feed_uri = kwargs.uri;
             this.item_query = kwargs.query;
             this.sync = kwargs.sync == true;
+            this.preventCache = kwargs.preventCache == true;
             this.nodelay = kwargs.delay == false;
             this.reverseSort = kwargs.reverseSort == true;
             this.relativePosition = 'last';
@@ -246,7 +247,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                 dojo.query( me.item_query, xmldoc ).forEach(
                     function (item) {
                         var template = me.root.cloneNode(true);
-                        dojo.place( template, place, me.relativePosition );
+                        dojo.place( template, me.place, me.relativePosition );
                         new openils.BibTemplate({ delay : false, xml : item, root : template });
                     }
                 );
@@ -256,10 +257,10 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                 process_feed(this.xml);
             } else {
                 dojo.xhrGet({
-                    url: this.feed_uri,
+                    url: me.feed_uri,
                     handleAs: 'xml',
-                    sync: this.sync,
-                    preventCache: true,
+                    sync: me.sync,
+                    preventCache: me.preventCache,
                     load: process_feed
                 });
             }
