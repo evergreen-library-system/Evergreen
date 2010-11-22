@@ -2,6 +2,7 @@ dojo.require('openils.Util');
 dojo.require('openils.BibTemplate');
 dojo.require('fieldmapper.OrgUtils');
 dojo.require('openils.CGI');
+dojo.require('dijit.form.Button');
 dojo.require('openils.widget.ProgressDialog');
 
 var limit = 15;
