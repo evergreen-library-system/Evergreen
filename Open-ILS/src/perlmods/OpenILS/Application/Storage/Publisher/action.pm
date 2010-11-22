@@ -1487,27 +1487,35 @@ sub process_recall {
     my ($actor, $log, $hold, $good_copies) = @_;
 
     # Bail early if we don't have required settings to avoid spurious requests
-    my $recall_threshold = $actor->request(
-        'open-ils.actor.ou_setting.ancestor_default', ''.$hold->pickup_lib, 'circ.holds.recall_threshold'
-    )->gather(1)->{value};
+    my ($recall_threshold, $return_interval, $fine_rules);
 
-    if (!$recall_threshold) {
+    my $rv = $actor->request(
+        'open-ils.actor.ou_setting.ancestor_default', ''.$hold->pickup_lib, 'circ.holds.recall_threshold'
+    )->gather(1);
+
+    if (!$rv) {
         $log->info("Recall threshold was not set; bailing out on hold ".$hold->id." processing.");
         return;
     }
+    $recall_threshold = $rv->{value};
 
-    my $return_interval = $actor->request(
+    $rv = $actor->request(
         'open-ils.actor.ou_setting.ancestor_default', ''.$hold->pickup_lib, 'circ.holds.recall_return_interval'
-    )->gather(1)->{value};
+    )->gather(1);
 
-    if (!$return_interval) {
+    if (!$rv) {
         $log->info("Recall return interval was not set; bailing out on hold ".$hold->id." processing.");
         return;
     }
+    $return_interval = $rv->{value};
 
-    my $fine_rules = $actor->request(
+    $rv = $actor->request(
         'open-ils.actor.ou_setting.ancestor_default', ''.$hold->pickup_lib, 'circ.holds.recall_fine_rules'
-    )->gather(1)->{value};
+    )->gather(1);
+
+    if ($rv) {
+        $fine_rules = $rv->{value};
+    }
 
     $log->info("Recall threshold: $recall_threshold; return interval: $return_interval");
 
