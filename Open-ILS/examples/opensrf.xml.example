@@ -139,6 +139,12 @@ vim:et:ts=4:sw=4:
             -->
             <parallel>1</parallel>
         </hold_targeter>
+
+        <!-- Settings for the fine generator cron job -->
+        <fine_generator>
+            <!-- number of parallel processes to use during fine generation -->
+            <parallel>1</parallel>
+        </fine_generator>
         
         <reporter>
             <!--

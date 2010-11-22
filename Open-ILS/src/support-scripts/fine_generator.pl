@@ -8,6 +8,8 @@ use strict;
 use warnings;
 use OpenSRF::Utils::JSON;
 use OpenSRF::System;
+use OpenSRF::Utils::SettingsClient;
+use OpenSRF::MultiSession;
 
 my $config = shift || die "bootstrap config required\n";
 my $lockfile = shift || "/tmp/generate_fines-LOCK";
@@ -35,11 +37,35 @@ print F $$;
 close F;
 
 OpenSRF::System->bootstrap_client( config_file => $config );
+my $settings = OpenSRF::Utils::SettingsClient->new;
+my $parallel = $settings->config_value( fine_generator => 'parallel' ) || 1; 
 
-my $r = OpenSRF::AppSession
-		->create( 'open-ils.storage' )
-		->request( 'open-ils.storage.action.circulation.overdue.generate_fines' => $grace );
+if ($parallel == 1) {
 
-while (!$r->complete) { $r->recv };
+    my $r = OpenSRF::AppSession
+            ->create( 'open-ils.storage' )
+            ->request( 'open-ils.storage.action.circulation.overdue.generate_fines' => $grace );
+
+    while (!$r->complete) { $r->recv };
+
+} else {
+
+    my $multi_generator = OpenSRF::MultiSession->new(
+        app => 'open-ils.storage', 
+        cap => $parallel, 
+        api_level => 1,
+    );
+
+    my $storage = OpenSRF::AppSession->create("open-ils.storage");
+    my $r = $storage->request('open-ils.storage.action.circulation.overdue.id_list', $grace);
+    while (my $resp = $r->recv) {
+        my $circ_id = $resp->content;
+        $multi_generator->request( 'open-ils.storage.action.circulation.overdue.generate_fines', $grace, $circ_id );
+    }
+    $storage->disconnect();
+    $multi_generator->session_wait(1);
+    $multi_generator->disconnect;
+
+}
 
 unlink $lockfile;
