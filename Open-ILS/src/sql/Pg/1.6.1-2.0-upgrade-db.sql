@@ -19139,4 +19139,8 @@ INSERT INTO action_trigger.event_definition (
 
 
 \qecho Upgrade script completed.
-
+\qecho But wait, there's more: please run reingest-1.6-2.0.pl
+\qecho in order to create an SQL script to run to partially reindex 
+\qecho the bib records; this is required to make the new facet
+\qecho sidebar in OPAC search results work and to upgrade the keyword 
+\qecho indexes to use the revised NACO normalization routine.
