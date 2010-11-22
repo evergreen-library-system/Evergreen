@@ -1552,7 +1552,8 @@ patron.holds.prototype = {
                                 'hold_id' : hold_id,
                                 'post_clear_shelf_action' : obj.post_clear_shelf_hold_action_map[ hold_id ]
                             }
-                        }
+                        },
+                        'to_bottom' : true
                     }
                 );
             }
