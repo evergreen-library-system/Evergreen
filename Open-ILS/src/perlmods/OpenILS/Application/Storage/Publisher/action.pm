@@ -278,8 +278,13 @@ sub grab_overdue {
 __PACKAGE__->register_method(
 	api_name        => 'open-ils.storage.action.circulation.overdue',
 	api_level       => 1,
-	stream		=> 1,
+	stream		    => 1,
 	method          => 'grab_overdue',
+	signature       => q/
+		Return list of overdue circulations and reservations to be used for fine generation.
+		Despite the name, this is not a generic method for retrieving all overdue loans,
+		as it excludes loans that have already hit the maximum fine limit.
+/,
 );
 __PACKAGE__->register_method(
 	api_name        => 'open-ils.storage.action.circulation.overdue.id_list',
