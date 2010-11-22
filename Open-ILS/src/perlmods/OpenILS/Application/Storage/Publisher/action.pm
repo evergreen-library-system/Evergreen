@@ -97,6 +97,7 @@ __PACKAGE__->register_method(
 sub overdue_circs {
 	my $grace = shift;
     my $upper_interval = shift || '1 millennium';
+	my $idlist = shift;
 
 	my $c_t = action::circulation->table;
 
@@ -117,7 +118,7 @@ sub overdue_circs {
 	my $sth = action::circulation->db_Main->prepare_cached($sql);
 	$sth->execute($upper_interval);
 
-	my @circs = map { action::circulation->construct($_) } $sth->fetchall_hash;
+	my @circs = map { $idlist ? $_->{id} : action::circulation->construct($_) } $sth->fetchall_hash;
 
 	$c_t = booking::reservation->table;
 	$sql = <<"	SQL";
@@ -132,7 +133,7 @@ sub overdue_circs {
 	$sth = action::circulation->db_Main->prepare_cached($sql);
 	$sth->execute();
 
-    push @circs, map { booking::reservation->construct($_) } $sth->fetchall_hash;
+    push @circs, map { $idlist ? $_->{id} : booking::reservation->construct($_) } $sth->fetchall_hash;
 
     return @circs;
 }
@@ -267,13 +268,21 @@ sub grab_overdue {
 	my $client = shift;
 	my $grace = shift || '';
 
-	$client->respond( $_->to_fieldmapper ) for ( overdue_circs($grace) );
+	my $idlist = $self->api_name =~/id_list/o ? 1 : 0;
+    
+	$client->respond( $idlist ? $_ : $_->to_fieldmapper ) for ( overdue_circs($grace, '', $idlist) );
 
 	return undef;
 
 }
 __PACKAGE__->register_method(
 	api_name        => 'open-ils.storage.action.circulation.overdue',
+	api_level       => 1,
+	stream		=> 1,
+	method          => 'grab_overdue',
+);
+__PACKAGE__->register_method(
+	api_name        => 'open-ils.storage.action.circulation.overdue.id_list',
 	api_level       => 1,
 	stream		=> 1,
 	method          => 'grab_overdue',
