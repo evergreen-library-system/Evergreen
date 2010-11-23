@@ -1,1 +1,300 @@
-#ChangeLog
+2010-11-15  senator
+
+	* Backport r18745 from trunk: serials ease-of-use issues
+	  
+	  It's comical how near a miss this commit is to making it into
+	  beta2, but it's
+	  fairly minor stuff.
+
+2010-11-15  erickson
+
+	* return AutoIDL to its original state of loading the while IDL if
+	  no classes are selected. This will ease the process of moving to
+	  /IDL2js; other minor cleanup
+
+2010-11-16  miker
+
+	* push the asset.uri pkey serial into reality -- before 2.0 we did
+	  not use the serial
+
+2010-11-16  dbwells
+
+	* Backport r18760: small serial fixes
+
+2010-11-17  gmc
+
+	* add libnet-ssh2-perl to Debian package deps
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-17  miker
+
+	* pass the supplied depth parameter to the query parser for use
+
+	* 0 (zero) is a valid depth, so allow it via defined()
+
+2010-11-17  dbs
+
+	* Add authority control support for 630 and 648 fields
+	  
+	  Thanks to Ole Kerpel <oke@iisg.nl> for providing the additional
+	  definitions for this support to bring us closer to MARC
+	  authority control norms.
+
+2010-11-17  senator
+
+	* Hold targeting didn't work right on type I (issuance) holds, but
+	  now it does
+
+	* Backport r18762 from trunk:
+	  
+	  Wonder of wonders, a Dojo data store supporting lazy loading
+	  objects via pcrud!
+	  
+	  So openils.PermaCrud.Store was dreamt up and directed by Mike
+	  Rylander, and
+	  implemented by me. Right now it gives us a new way to provide
+	  widgets for
+	  selecting objects in Dojo-based interfaces.
+	  
+	  Where previously we had some dropdowns here and there that really
+	  shouldn't
+	  be dropdowns (such as one for selection lists in Acq, and several
+	  for resources
+	  and resource types in Booking -- these examples I've replaced,
+	  but there are
+	  surely more) because loading a dropdown with potentially zillions
+	  of items
+	  to choose from can take forever and break the interface, now we
+	  can have
+	  autocompleting textboxes that only load items matching what you
+	  type (and
+	  even then with a low-ish default limit so that if you're vague in
+	  your input
+	  you still don't get huge unwieldy result sets).
+	  
+	  Easiest way to see an example is if you already have any acq
+	  selection lists.
+	  Just go to any catalog record, choose Actions for this Record,
+	  choose View/Place
+	  orders, then click "Add to Selection List." In the resulting
+	  dialog, that
+	  second field used to be a dropdown, but now it's an
+	  autocompleting textbox.
+	  
+	  Alternatively, you can see these in the affected booking
+	  interfaces (see files
+	  modified in this commit) under Admin -> Server Administration ->
+	  Booking.
+	  
+	  The future promises even better things for this store. When it
+	  implements the
+	  Dojo Write API, interfaces using grids can potentially be vastly
+	  simplified
+	  by relying on the store to save its own dirty objects. The
+	  Notification API
+	  would facilitate easy use of single stores with multiple widgets.
+	  All good
+	  things for faster-to-write interfaces.
+	  
+	  ------------------------------------------------------------------------
+
+2010-11-18  erickson
+
+	* Apparently, IE versions 6+ can handle ssl+keepalive. this apache
+	  change should help speed up IE w/ ssl and reduce server
+	  back-and-forth
+
+	* fetch more than the default 10 (per page) distrib formulas; 500
+	  is arbitrary, but still notably less than the infinity that was
+	  in effect before paging. todo: research optiosn for using the new
+	  autofieldwidget/dojo/pcrud-store instead
+
+2010-11-18  gmc
+
+	* fetchItemByIdentity now returns null immediately upon null
+	  identity
+	  
+	  Besides being trivially more efficient, this avoids a situation
+	  where pcrud can sometimes time out when attempting to retrieve
+	  a row by a null PK value.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* use pcrud auto-complete widget when selecting providers
+	  
+	  Fixes general slowness working with invoice and PO forms if
+	  more than a couple hundred providers are defined.
+	  
+	  This could be generalized with a bit of work with Fieldmapper
+	  to define "has-one-chosen-by-user-from-cast-of-thousands"
+	  relationships that should trigger use the auto-complete widget.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* mark some non-NULL provider and EDI fields as required
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-18  dbwells
+
+	* Replace deprecated use of window.opener in unit selection window.
+
+2010-11-18  dbs
+
+	* Unbreak the Russian translation
+	  
+	  Ampersands at the end of msgstr entries break translate-toolkit
+	  but good.
+
+	* Stomp another ru-RU PO problem in lang.dtd
+
+2010-11-18  gmc
+
+	* only allow choice from active providers when creating POs and
+	  invoices
+	  
+	  Also removed cusotm defaultLinkedDataLoader for the provider
+	  selection widget;
+	  no longer necessary since pcrud handles filter by OUs
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-19  phasefx
+
+	* no one likes the persisting call number with fast add, not even
+	  me :)
+
+2010-11-20  dbs
+
+	* Address maintain_control_numbers() database function bug #677160
+	  
+	  Jason Stephenson reported a bug handling records with multiple
+	  001 or 003 fields, and supplied a set of test records to
+	  reproduce the condition. The bug caused the ingest process
+	  to throw a database error, rolling back the transaction and
+	  preventing the actual ingest of those records.
+	  
+	  The solution was to simplify the logic in
+	  maintain_control_numbers().
+	  Now, in the case that there are either multiple 001s or 003s in
+	  the
+	  incoming record, we simply delete all of the 003s and 001s and
+	  create the desired 001 and 003. Also, if there are not exactly
+	  one
+	  001 and one 003 in the incoming record, we do not try to preserve
+	  one of those values in the 035 as it would be close to
+	  meaningless.
+	  
+	  Many thanks to Jason for the clear bug report and test cases!
+
+2010-11-22  gmc
+
+	* hold targeter: add option to run parallel targeter processes
+	  
+	  Permit the hold targeter to divvy up the work and run more than
+	  one process
+	  at a time by setting the opensrf.xml setting
+	  hold_targeter/parallel to a
+	  value greater than one. Doing so can significantly reduce the
+	  time it takes to (re)target a large number of hold requests,
+	  although
+	  only up to a point (in other words, if increasing the number of
+	  parallel
+	  targeters beyond one, it is recommended to do so slowly.)
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* parallel fine generator
+	  
+	  The fine generator cronjob can now use multiple
+	  parallel processes by setting fine_generator/parallel
+	  in opensrf.xml to a value greater than 1. This
+	  can speed up periodic fine generation in a database
+	  containing a large number of overdue loans.
+	  
+	  Also added a service to return just the list of
+	  IDs of overdue loans and reservations - fleshing
+	  the entire set of overdue loans when generating fines
+	  has been observed to cause significant swap-thrashing in
+	  at least one large database.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-22  miker
+
+	* add field to IDL needed by, well, a bunch of stuff:
+	  sstr-[has_many]->items
+
+	* more SuperCat XML fixup needed to support serials data --
+	  important for opac customization though BibTemplate (as in, "do
+	  not blow up")
+
+2010-11-22  gmc
+
+	* bug #680096 - upgrade script to partially reingest bibs after
+	  upgrade to 2.0
+	  
+	  This solves the problem of the new facets sidebar showing up
+	  empty in
+	  OPAC search results. Since the process of populating
+	  metabib.facet_entry
+	  and updating metabib.*_field_entry can take a long time on large
+	  databases,
+	  the update SQL is generated by a separate script,
+	  reingest-1.6-2.0.pl. Usage
+	  from an example run is:
+	  
+	  ./reingest-1.6-2.0.pl: generate SQL script to reingest bibs
+	  during an upgrade to Evergreen 2.0
+	  
+	  By default, the script writes to the file reingest-1.6-2.0.sql.
+	  To modify
+	  this script's behavior, you can supply the following options:
+	  
+	  --config /path/to/opensrf_core.xml used to get connection
+	  information to
+	  the Evergreen database
+	  --chunk_size n number of bibs to reingest in a chunk;
+	  specify if you don't want all of the
+	  bibs in the database to be reindexes
+	  in a single transaction
+	  --output /path/to/output_file.sql path of output SQL file
+	  
+	  Writing output to file reingest-1.6-2.0.sql
+	  
+	  SQL script complete. To perform the reingest, please run the
+	  script using
+	  the psql program, e.g.,
+	  
+	  psql {connection parameters} < reingest-1.6-2.0.sql
+	  
+	  If you are running a large Evergreen installation, it is
+	  recommend that you
+	  examine the script first; note that a reingest of a large
+	  Evergreen database
+	  can take several hours.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-22  phasefx
+
+	* append to bottom of list for xul-based hold list interfaces. The
+	  result of this is that rows appended off-screen (with just the
+	  hold id) will not make a network request for fleshing until they
+	  either become visible, or a column sort action is initiated
+
+2010-11-22  miker
+
+	* minor FeedTemplate bug fixes
+
+2010-11-22  gmc
+
+	* fix missing dep that prevented acq bib search form from working
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-23  miker
+
+	* .: Tagging 2.0-beta3
+
