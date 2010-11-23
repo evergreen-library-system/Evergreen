@@ -1121,7 +1121,7 @@
 										<userinput>cp Open-ILS/examples/apache/startup.pl     /etc/apache2/</userinput>
 									</screen>
 								</step>
-								<step xml:id="serversideinstallation-createcertificate">
+								<step xml:id="serversideinstallation-createsslcertificate">
 									<title>Create a Security Certificate</title>
 									<para>You must create a new Security Certificate (SSL Key)
 									for the Apache server using the <command>openssl</command>
@@ -1144,8 +1144,8 @@
 										avoid warning messages when users login to their
 										account through the OPAC or when staff login
 										through the Staff Client.</para>
-										<para>For further information on getting a proper
-										SSL certificate, see
+										<para>For further information on installing 
+										a proper SSL certificate, see
 										<xref linkend="serversideinstallation-ssl"/>.</para>
 									</note>
 								</step>
@@ -1573,9 +1573,9 @@
 				line <literal>Allow from 10.0.0.0/8</literal>, then change it to match your network
 				address scheme.</para>
 			</section>
-			<section>
+			<section xml:id="serversideinstallation-ssl">
 				<title>Configure a permanent SSL key</title>
-				<para>In a previous step (see <xref linkend="serversideinstallation-createcertificate"/>)
+				<para>In a previous step (see <xref linkend="serversideinstallation-createsslcertificate"/>)
 				you used the command <command>openssl</command> to temporarily
 				create a new SSL key for the Apache server. This self-signed security certificate was adequate
 				during testing and development, but will continue to generate warnings in the Staff Client 
@@ -1583,12 +1583,18 @@
 				certificate.</para>
 				<para>There are several open source software solutions that provide schemes to generate and
 				maintain public key security certificates for your library system. Some popular projects are
-				listed below; please review them for background information on why you need such a system and how
-				you can provide it:</para>
+				listed below; please review them for background information on why you need such a system and 
+				how you can provide it:</para>
 				<itemizedlist>
-					<listitem><ulink url="http://www.openca.org/projects/openca/">http://www.openca.org/projects/openca/</ulink></listitem>
-					<listitem><ulink url="http://sourceforge.net/projects/ejbca/">http://sourceforge.net/projects/ejbca/</ulink></listitem>
-					<listitem><ulink url="http://pki.fedoraproject.org">http://pki.fedoraproject.org</ulink></listitem>
+					<listitem>
+						<ulink url="http://www.openca.org/projects/openca/">http://www.openca.org/projects/openca/</ulink>
+					</listitem>
+					<listitem>
+						<ulink url="http://sourceforge.net/projects/ejbca/">http://sourceforge.net/projects/ejbca/</ulink>
+					</listitem>
+					<listitem>
+						<ulink url="http://pki.fedoraproject.org">http://pki.fedoraproject.org</ulink>
+					</listitem>
 				</itemizedlist>
 				<warning>
 					<para>
