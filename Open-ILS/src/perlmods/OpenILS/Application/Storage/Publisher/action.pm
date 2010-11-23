@@ -1550,7 +1550,7 @@ sub process_recall {
     )];
 
     # If we have a candidate copy, then:
-    if ($circs) {
+    if (scalar(@$circs)) {
         my $circ = $circs->[0];
         $log->info("Recalling circ ID : " . $circ->id);
 
@@ -1581,7 +1581,7 @@ sub process_recall {
 
         # Create trigger event for notifying current user
         my $ses = OpenSRF::AppSession->create('open-ils.trigger');
-        $ses->request('open-ils.trigger.event.autocreate', 'circ.recall.target', $circ, $circ->circ_lib->id);
+        $ses->request('open-ils.trigger.event.autocreate', 'circ.recall.target', $circ->to_fieldmapper(), $circ->circ_lib->id);
     }
 
     $log->info("Processing of hold ".$hold->id." for recall is now complete.");
