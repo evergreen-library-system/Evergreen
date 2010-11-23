@@ -1258,6 +1258,7 @@ sub _unit_by_iss_and_str {
             }
         }
     }) or return $e->die_event;
+    return 0 if not @$unit;
 
     $e->retrieve_serial_unit($unit->[0]->{"id"}) or $e->die_event;
 }
@@ -1267,6 +1268,7 @@ sub move_previous_unit {
 
     my $prev_unit = _unit_by_iss_and_str($e,$prev_iss,$curr_item->stream);
     return $prev_unit if defined $U->event_code($prev_unit);
+    return 0 if not $prev_unit;
 
     if ($prev_unit->location != $new_loc) {
         $prev_unit->location($new_loc);
