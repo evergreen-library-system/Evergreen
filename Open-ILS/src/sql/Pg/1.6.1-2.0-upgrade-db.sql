@@ -16340,6 +16340,21 @@ this stylesheet will transform it to the equivalent of
     
 </xsl:stylesheet>$$);
 
+-- fix broken prefix and namespace URI for the
+-- mods32 transform found in some databases
+-- that started out at version 1.2 or earlier
+UPDATE config.xml_transform
+SET namespace_uri = 'http://www.loc.gov/mods/v3'
+WHERE name = 'mods32'
+AND namespace_uri = 'http://www.loc.gov/mods/'
+AND xslt LIKE '%xmlns="http://www.loc.gov/mods/v3"%';
+
+UPDATE config.xml_transform
+SET prefix = 'mods32'
+WHERE name = 'mods32'
+AND prefix = 'mods'
+AND EXISTS (SELECT xpath FROM config.metabib_field WHERE xpath ~ 'mods32:');
+
 -- Splitting the ingest trigger up into little bits
 
 CREATE TEMPORARY TABLE eg_0301_check_if_has_contents (
