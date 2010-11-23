@@ -1655,6 +1655,8 @@
 <!ENTITY staff.serial.batch_receive.note "Note">
 <!ENTITY staff.serial.batch_receive.location "Copy Location">
 <!ENTITY staff.serial.batch_receive.price "Price">
+<!ENTITY staff.serial.batch_receive.print_routing "Routing List">
+<!ENTITY staff.serial.batch_receive.print_routing.tooltip "Print this item's routing list upon receipt, if it has one.">
 <!ENTITY staff.serial.batch_receive.receive "Receive?">
 <!ENTITY staff.serial.batch_receive.auto_generate "Auto-generate?">
 <!ENTITY staff.serial.batch_receive.recieve_selected "Receive Selected Items">

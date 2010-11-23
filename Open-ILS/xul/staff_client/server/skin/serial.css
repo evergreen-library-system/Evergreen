@@ -20,3 +20,4 @@ checkbox:focus:not([label]) .checkbox-label-box {
     border: none;
 }
 .padded_bottom { padding-bottom: 10px; }
+description#print_routing_desc { margin: 0; padding: 0 1em; }

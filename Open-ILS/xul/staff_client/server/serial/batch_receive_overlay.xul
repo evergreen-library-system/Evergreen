@@ -108,6 +108,12 @@
                                 <h:th name="price">
                                     &staff.serial.batch_receive.price;
                                 </h:th>
+                                <h:th name="print_routing">
+                                    <description
+                                        id="print_routing_desc"
+                                        value="&staff.serial.batch_receive.print_routing;"
+                                        tooltiptext="&staff.serial.batch_receive.print_routing.tooltip;" />
+                                </h:th>
                                 <h:th>
                                     &staff.serial.batch_receive.receive;
                                 </h:th>
@@ -126,11 +132,12 @@
                                 <h:td name="note"></h:td>
                                 <h:td name="location" align="center"></h:td>
                                 <h:td name="price"></h:td>
+                                <h:td name="print_routing" align="center"></h:td>
                                 <h:td name="receive" align="center"></h:td>
                                 <h:td name="apply"></h:td>
                             </h:tr>
                             <h:tr>
-                                <h:td colspan="8">
+                                <h:td colspan="9">
                                     <h:hr size="4" />
                                 </h:td>
                             </h:tr>
@@ -144,6 +151,7 @@
                                 <h:td name="note"></h:td>
                                 <h:td name="location" align="center"></h:td>
                                 <h:td name="price"></h:td>
+                                <h:td name="print_routing" align="center"></h:td>
                                 <h:td name="receive" align="center"></h:td>
                             </h:tr>
                         </h:tbody>

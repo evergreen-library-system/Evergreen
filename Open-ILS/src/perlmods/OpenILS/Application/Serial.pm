@@ -2806,7 +2806,7 @@ __PACKAGE__->register_method(
             "(with card and home_ou) for a given stream ID, sorted by pos",
         "params" => [
             {"desc" => "Authtoken", "type" => "string"},
-            {"desc" => "Stream ID", "type" => "number"},
+            {"desc" => "Stream ID (int or array of ints)", "type" => "mixed"},
         ],
         "return" => {
             "desc" => "Stream of routing list users", "type" => "object",
@@ -2817,8 +2817,6 @@ __PACKAGE__->register_method(
 
 sub get_routing_list_users {
     my ($self, $client, $auth, $stream_id) = @_;
-
-    return undef unless $stream_id = int $stream_id; # sic, assignment
 
     my $e = new_editor("authtoken" => $auth);
     return $e->die_event unless $e->checkauth;
@@ -2846,9 +2844,11 @@ sub get_routing_list_users {
 
     $e->disconnect;
 
-    # Now we can strip the stream/distribution info (only used for perm
-    # checking) and send back the srlu's to the caller.
-    $client->respond($_) for map { $_->stream($_->stream->id); $_ } @$users;
+    my @users = map { $_->stream($_->stream->id); $_ } @$users;
+    @users = sort { $a->stream cmp $b->stream } @users if
+        ref $stream_id eq "ARRAY";
+
+    $client->respond($_) for @users;
 
     undef;
 }

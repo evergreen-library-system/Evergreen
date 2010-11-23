@@ -4,6 +4,7 @@ dojo.require("dojo.cookie");
 dojo.require("openils.Util");
 dojo.require("openils.User");
 dojo.require("openils.CGI");
+dojo.require("openils.XUL");
 dojo.require("openils.PermaCrud");
 
 var batch_receiver;
@@ -56,6 +57,7 @@ function BatchReceiver() {
         this._prepared_call_number_controls = {};
         this._location_by_lib = {};
         this._copy_template_cache = {};
+        this._wants_print_routing = {};
 
         /* empty the entry receiving table if we're starting over */
         if (this.item_cache) {
@@ -346,20 +348,37 @@ function BatchReceiver() {
         return menulist;
     };
 
+    this._build_print_routing_toggle = function(item) {
+        var start = true;
+        var checkbox = dojo.create(
+            "checkbox", {
+                "oncommand": function(ev) {
+	                self._print_routing(item.id(), ev.target.checked);
+                },
+                "checked": start.toString()
+            }
+        );
+        this._print_routing(item.id(), start);
+        return checkbox;
+    }
+
     this._build_receive_toggle = function(item) {
         return dojo.create(
             "checkbox", {
                 "oncommand": function(ev) {
 	                self._disable_row(item.id(), !ev.target.checked);
                 },
-                "checked": "true"
+                "checked": "true",
+                "name": "receive_" + item.id()
             }
         );
     }
 
     this._disable_row = function(item_id, disabled) {
         var row = this.rows[item_id];
-        dojo.query("textbox,menulist", row).forEach(
+        dojo.query(
+            "textbox,menulist,checkbox:not([name^='receive_'])", row
+        ).forEach(
             function(element) { element.disabled = disabled; }
         );
         this._row_disabled(row, disabled);
@@ -368,10 +387,23 @@ function BatchReceiver() {
     this._row_disabled = function(row, disabled) {
         if (typeof(row) == "string") row = this.rows[row];
 
-        var checkbox = dojo.query("checkbox", row)[0];
+        var checkbox = dojo.query("checkbox", row)[1];
 
         if (typeof(disabled) != "undefined")
             checkbox.checked = !disabled;
+
+        return !checkbox.checked;
+    };
+
+    this._row_print_routing_disabled = function(row, disabled) {
+        if (typeof(row) == "string") row = this.rows[row];
+
+        var checkbox = dojo.query("checkbox", row)[0];
+
+        if (typeof(disabled) != "undefined") {
+            checkbox.checked = !disabled;
+            checkbox.doCommand();
+        }
 
         return !checkbox.checked;
     };
@@ -394,6 +426,10 @@ function BatchReceiver() {
             node.value = value;
         }
     }
+
+    this._print_routing = function(id, value) {
+        this._wants_print_routing[id] = value;
+    };
 
 	this._user_wants_autogen = function() {
         return dojo.byId("autogen_barcodes").checked;
@@ -509,6 +545,32 @@ function BatchReceiver() {
                 }
             }
         }
+    };
+
+    this.print_routing_lists = function(streams) {
+        fieldmapper.standardRequest(
+            ["open-ils.serial",
+                "open-ils.serial.routing_list_users.fleshed_and_ordered.atomic"],{
+                "params": [
+                    this.authtoken, streams.map(function(o) { return o.id(); })
+                ],
+                "async": false,
+                "oncomplete": function(r) {
+                    if ((r = openils.Util.readResponse(r)) && r.length) {
+                        openils.XUL.newTabEasy(
+                            "/eg/serial/print_routing_list_users",
+                            S("print_routing_list_users"), {
+                                "show_print_button": false, /* we supply one */
+                                "routing_list_data": {
+                                    "streams": streams, "mvr": self.bibdata.mvr,
+                                    "issuance": self.issuance, "users": r
+                                }
+                            }, true /* wrap_in_browser */
+                        );
+                    }
+                }
+            }
+        );
     };
 
     this.bib_lookup = function(bib_search_term, evt, is_actual_id, sub_id) {
@@ -791,6 +853,12 @@ function BatchReceiver() {
         }
     };
 
+    this.toggle_all_print_routing = function(checked) {
+        for (var id in this.rows) {
+            this._row_print_routing_disabled(id, !checked);
+        }
+    };
+
     this.build_batch_entry_row = function() {
         var row = dojo.byId("entry_batch_row");
 
@@ -818,6 +886,17 @@ function BatchReceiver() {
 
         node_by_name("price", row).appendChild(
             this.batch_controls.price = dojo.create("textbox", {"size": 9})
+        );
+
+        node_by_name("print_routing", row).appendChild(
+            dojo.create(
+                "checkbox", {
+                    "oncommand": function(ev) {
+                        self.toggle_all_print_routing(ev.target.checked);
+                    },
+                    "checked": "true"
+                }
+            )
         );
 
         node_by_name("receive", row).appendChild(
@@ -896,6 +975,7 @@ function BatchReceiver() {
         n("circ_modifier").appendChild(this._build_circ_modifier_dropdown());
         n("call_number").appendChild(this._build_call_number_control(item));
         n("price").appendChild(dojo.create("textbox", {"size": 9}));
+        n("print_routing").appendChild(this._build_print_routing_toggle(item));
         n("receive").appendChild(this._build_receive_toggle(item));
 
         this.entry_tbody.appendChild(row);
@@ -966,8 +1046,17 @@ function BatchReceiver() {
                 "async": true,
                 "oncomplete": function(r) {
                     try {
-                        while (item_id = openils.Util.readResponse(r))
+                        var streams_for_printing = [];
+                        while (item_id = openils.Util.readResponse(r)) {
+                            if (self._wants_print_routing[item_id]) {
+                                streams_for_printing.push(
+                                    self.item_cache[item_id].stream()
+                                );
+                            }
                             self.finish_receipt(item_id);
+                        }
+                        if (streams_for_printing.length)
+                            self.print_routing_lists(streams_for_printing);
                     } catch (E) {
                         alert(E);
                     }
