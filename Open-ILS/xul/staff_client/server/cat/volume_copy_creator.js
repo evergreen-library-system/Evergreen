@@ -486,6 +486,7 @@ g.stash_and_close = function(param) {
             }
         }
 
+        var dont_close = false;
         JSAN.use('util.window'); var win = new util.window();
         if (copies.length > 0) {
             JSAN.use('cat.util');
@@ -507,13 +508,13 @@ g.stash_and_close = function(param) {
                 //case 1706 /* ITEM_BARCODE_EXISTS */ :
                 if (copies && copies.length > 0 && $('print_labels').checked) {
                     JSAN.use('util.functional');
-                    JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
-                    data.temp_barcodes_for_labels = util.functional.map_list( copies, function(o){return o.barcode();}) ; 
-                    data.stash('temp_barcodes_for_labels');
-                    var w = win.open(
+                    dont_close = true;
+                    xulG.set_tab(
                         urls.XUL_SPINE_LABEL,
-                        'spine_labels',
-                        'chrome,resizable,width=750,height=550'
+                        { 'tab_name' : $("catStrings").getString('staff.cat.util.spine_editor.tab_name') },
+                        {
+                            'barcodes' : util.functional.map_list( copies, function(o){return o.barcode();}) 
+                        }
                     );
                 }
             } catch(E) {
@@ -521,10 +522,10 @@ g.stash_and_close = function(param) {
             }
         }
 
-        if (typeof window.refresh == 'function') { window.refresh(); }
-        if (typeof g.refresh == 'function') { g.refresh(); }
+        try { if (typeof window.refresh == 'function') { window.refresh(); } } catch(E) { dump(E+'\n'); }
+        try { if (typeof g.refresh == 'function') { g.refresh(); } } catch(E) { dump(E+'\n'); }
 
-        window.close();
+        if (! dont_close) { xulG.close_tab(); }
 
     } catch(E) {
         g.error.standard_unexpected_error_alert($(catStrings).getString('staff.cat.volume_copy_creator.stash_and_close.tree_err3'),E);

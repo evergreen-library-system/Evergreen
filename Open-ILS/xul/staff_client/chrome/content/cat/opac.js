@@ -814,11 +814,9 @@ function add_volumes() {
 
         var title = document.getElementById('offlineStrings').getFormattedString('staff.circ.copy_status.add_volumes.title', [docid]);
 
-        JSAN.use('util.window'); var win = new util.window();
-        var w = win.open(
+        var w = xulG.new_tab(
             window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
-            title,
-            'chrome,resizable',
+            { 'tab_name' : title },
             { 'doc_id' : docid, 'ou_ids' : [ ses('ws_ou') ] }
         );
     } catch(E) {
