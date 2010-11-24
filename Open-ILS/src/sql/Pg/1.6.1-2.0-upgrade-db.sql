@@ -19152,6 +19152,8 @@ INSERT INTO action_trigger.event_definition (
     )
 ;
 
+-- Speed up item-age browse axis (new books feed)
+CREATE INDEX cp_create_date  ON asset.copy (create_date);
 
 \qecho Upgrade script completed.
 \qecho But wait, there's more: please run reingest-1.6-2.0.pl
