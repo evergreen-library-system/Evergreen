@@ -359,6 +359,7 @@
                 <menuitem label="&staff.server.admin.index.closed_dates;" command="cmd_local_admin_closed_dates"/>
                 <menuitem label="&staff.server.admin.index.copy_locations;" command="cmd_local_admin_copy_locations"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.copy_location_order.label;" command="cmd_local_admin_copy_location_order"/>
+                <menuitem label="&staff.main.menu.admin.local_admin.copy_template.label;" accesskey="&staff.main.menu.admin.local_admin.copy_template.accesskey;" command="cmd_local_admin_copy_template"/>
                 <menuitem command="cmd_local_admin_external_text_editor"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.idl_field_doc.label;" command="cmd_local_admin_idl_field_doc"/>
                 <menuitem label="&staff.server.admin.index.fonts_and_sounds;" command="cmd_local_admin_fonts_and_sounds"/>
@@ -377,7 +378,6 @@
                 <menuitem label="&staff.main.menu.admin.local_admin.conify.survey.label;" command="cmd_local_admin_survey"/>
                 <menuitem label="&staff.server.admin.index.transit_list;" command="cmd_local_admin_transit_list"/>
                 <menuitem label="&staff.main.menu.admin.local_admin.work_log.label;" accesskey="&staff.main.menu.admin.local_admin.work_log.accesskey;" command="cmd_local_admin_work_log"/>
-                <menuitem label="&staff.main.menu.admin.local_admin.copy_template.label;" accesskey="&staff.main.menu.admin.local_admin.copy_template.accesskey;" command="cmd_local_admin_copy_template"/>
             </menupopup>
         </menu>
         <menu id="main.menu.admin.server" label="&staff.main.menu.admin.server_admin.label;">
