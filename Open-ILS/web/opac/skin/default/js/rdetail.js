@@ -7,6 +7,16 @@ attachEvt("rdetail", "recordDrawn", rdetailBuildStatusColumns);
 attachEvt("rdetail", "recordDrawn", rdetailBuildInfoRows);
 attachEvt("rdetail", "recordDrawn", rdetailGetPageIds);
 
+G.evt.rdetail.recordDrawn.push(
+    function(){
+        if(new CGI().param('place_hold')) {
+            // This will force the login dialog to display if the user is not logged in
+            holdsDrawEditor({record:record.doc_id(), type: 'T'});
+        }
+    }
+);
+
+
 /* Per-skin configuration settings */
 var rdetailLocalOnly = true;
 var rdetailShowLocal = true;
@@ -461,8 +471,24 @@ function _rdetailDraw(r) {
 	}
 	buildunAPISpan( span, 'biblio-record_entry', record.doc_id() );
 
-	$('rdetail_place_hold').setAttribute(
-			'href','javascript:holdsDrawEditor({record:"'+record.doc_id()+'",type:"T"});');
+	$('rdetail_place_hold').onclick = function() {
+        var src = location.href;
+
+        if(forceLoginSSL && src.match(/^http:/)) {
+
+            src = src.replace(/^http:/, 'https:');
+
+            if(!src.match(/&place_hold=1/)) {
+                src += '&place_hold=1';
+            }
+
+            location.href = src;
+
+        } else {
+            holdsDrawEditor({record:record.doc_id(), type:'T'});
+        }
+    }
+
 
 	var RW = $('rdetail_exp_refworks');
 	if (RW && rdetailEnableRefWorks) {

@@ -16,6 +16,17 @@ if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
 	G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
 	G.evt.result.allRecordsReceived.push( function(){unHideMe($('result_info_2'))}, fetchGoogleBooksLink, fetchChiliFreshReviews);
 
+    G.evt.result.allRecordsReceived.push( 
+        function(){
+            var cgi = new CGI();
+            var hold_target = cgi.param('hold_target');
+            if(hold_target) {
+                // This will force the login dialog to display if the user is not logged in
+                holdsDrawEditor({record:hold_target, type: (findCurrentPage() == MRESULT) ? 'M' : 'T'});
+            }
+        }
+    );
+
 	attachEvt('result','lowHits',resultLowHits);
 	attachEvt('result','zeroHits',resultZeroHits);
 	attachEvt( "common", "locationUpdated", resultSBSubmit );
@@ -525,8 +536,8 @@ function resultDisplayRecord(rec, pos, is_mr) {
 		}
 
 		unHideMe($n(r,'place_hold_span'));
-		$n(r,'place_hold_link').setAttribute(
-			'href','javascript:holdsDrawEditor({record:"'+rec.doc_id()+'",type:"M"});');
+		$n(r,'place_hold_link').onclick = function() { resultDrawHoldsWindow(rec.doc_id(), 'M'); }
+            
 
 	} else {
 		onlyrec = rec.doc_id();
@@ -540,9 +551,7 @@ function resultDisplayRecord(rec, pos, is_mr) {
 		pic.parentNode.setAttribute("href", buildOPACLink(args));
 
 		unHideMe($n(r,'place_hold_span'));
-		$n(r,'place_hold_link').setAttribute(
-			'href','javascript:holdsDrawEditor({record:"'+rec.doc_id()+'",type:"T"});');
-
+		$n(r,'place_hold_link').onclick = function() { resultDrawHoldsWindow(rec.doc_id(), 'T'); }
 	}
 
 	buildSearchLink(STYPE_AUTHOR, rec.author(), author_link);
@@ -604,6 +613,29 @@ function resultDisplayRecord(rec, pos, is_mr) {
 	}
 	*/
 }
+
+function resultDrawHoldsWindow(hold_target, hold_type) {
+    var src = location.href;
+
+    if(forceLoginSSL && src.match(/^http:/)) {
+
+        src = src.replace(/^http:/, 'https:');
+
+        if(src.match(/&hold_target=/)) {
+            src.replace(/&hold_target=(\d+)/, hold_target);
+
+        } else {
+            src += '&hold_target=' + hold_target;
+        }
+
+        location.href = src;
+
+    } else {
+        holdsDrawEditor({record:hold_target, type:hold_type});
+    }
+}
+
+
 
 function _resultFindRec(id) {
 	for( var i = 0; i != recordsCache.length; i++ ) {
