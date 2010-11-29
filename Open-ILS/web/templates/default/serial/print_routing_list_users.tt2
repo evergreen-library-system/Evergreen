@@ -7,8 +7,8 @@
         <div class="item-dist-and-stream">
             (<span name="distribution_holding_lib"></span>)
             <span name="distribution_label"></span> /
-            <span name="stream_routing_label"></span>
-            <em name="stream_id_container">
+            <span name="stream_routing_label" class="hidden"></span>
+            <em name="stream_id_container" class="hidden">
                 Unlabeled stream ID #<span name="stream_id"></span>
             </em>
         </div>

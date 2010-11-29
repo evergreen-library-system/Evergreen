@@ -10,6 +10,10 @@ function ListRenderer() {
     this.render = function() {
         for (var i = 0; i < this.streams.length; i++) {
             var stream = this.streams[i];
+
+            if (!this.users_by_stream[stream.id()])
+                continue; /* no users on this stream */
+
             var list = dojo.clone(this.list_template);
             n("title", list).innerHTML = this.mvr.title();
             n("issuance_label", list).innerHTML = this.issuance.label();
