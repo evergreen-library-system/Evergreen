@@ -4520,7 +4520,7 @@ SELECT  usr,
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Circ Lib" name="circ_lib" reporter:datatype="link"/>
 			<field reporter:label="Status" name="status" reporter:datatype="int"/>
-			<field reporter:label="Location" name="location" reporter:datatype="int"/>
+			<field reporter:label="Location" name="location" reporter:datatype="link"/>
 			<field reporter:label="Loan Duration" name="loan_duration" reporter:datatype="int"/>
 			<field reporter:label="Fine Level" name="fine_level" reporter:datatype="int"/>
 			<field reporter:label="Age Protect" name="age_protect" reporter:datatype="int"/>
@@ -4530,7 +4530,7 @@ SELECT  usr,
 			<field reporter:label="Holdable?" name="holdable" reporter:datatype="bool"/>
 			<field reporter:label="Deposit Amount" name="deposit_amount" reporter:datatype="money"/>
 			<field reporter:label="Price" name="price" reporter:datatype="money"/>
-			<field reporter:label="Circ Modifier" name="circ_modifier" reporter:datatype="text"/>
+			<field reporter:label="Circ Modifier" name="circ_modifier" reporter:datatype="link"/>
 			<field reporter:label="Circ As Type" name="circ_as_type" reporter:datatype="text"/>
 			<field reporter:label="Alert Message" name="alert_message" reporter:datatype="text"/>
 			<field reporter:label="OPAC Visible?" name="opac_visible" reporter:datatype="bool"/>
@@ -4542,6 +4542,8 @@ SELECT  usr,
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
+			<link field="location" reltype="has_a" key="id" map="" class="acpl"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
