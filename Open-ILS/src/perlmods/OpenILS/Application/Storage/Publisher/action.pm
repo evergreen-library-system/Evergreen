@@ -1210,7 +1210,7 @@ sub new_hold_copy_targeter {
 				$log->debug("\tUpdating hold [".$hold->id."] with new 'current_copy' [".$best->id."] for hold fulfillment.");
 			} elsif (
 				$old_best &&
-				action::hold_request
+				!action::hold_request
 					->search_where(
 						{ current_copy => $old_best->id,
 						  fulfillment_time => undef,
