@@ -346,7 +346,7 @@ patron.holds.prototype = {
                                         return [
                                             o.name() ? sname + ' ' + o.name() : o.shortname(),
                                             o.id(),
-                                            ( obj.data.hash.aout[ o.ou_type() ].can_have_users() == 0),
+                                            ( !isTrue(obj.data.hash.aout[ o.ou_type() ].can_have_users()) ),
                                             ( obj.data.hash.aout[ o.ou_type() ].depth() * 2),
                                         ]; 
                                     }
