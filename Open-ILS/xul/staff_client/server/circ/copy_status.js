@@ -532,14 +532,9 @@ circ.copy_status.prototype = {
     
                                     var title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.add_items.title', [r]);
     
-                                    JSAN.use('util.window'); var win = new util.window();
-                                    var w = win.open(
+                                    var w = xulG.new_tab(
                                         window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
-                                            //+'?doc_id=' + window.escape(r)
-                                            //+'&ou_ids=' + window.escape( js2JSON(list) )
-                                            //+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut[r]) ),
-                                        title,
-                                        'chrome,resizable',
+                                        { 'tab_name' : title },
                                         { 'doc_id' : r, 'ou_ids' : list, 'copy_shortcut' : copy_shortcut[r] }
                                     );
                                 }
@@ -687,13 +682,9 @@ circ.copy_status.prototype = {
 
                                     var title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.add_volumes.title', [r]);
 
-                                    JSAN.use('util.window'); var win = new util.window();
-                                    var w = win.open(
+                                    var w = xulG.new_tab(
                                         window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
-                                            //+'?doc_id=' + window.escape(r)
-                                            //+'&ou_ids=' + window.escape( js2JSON(list) ),
-                                        title,
-                                        'chrome,resizable',
+                                        { 'tab_name' : title },
                                         { 'doc_id' : r, 'ou_ids' : list }
                                     );
 

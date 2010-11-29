@@ -20,6 +20,9 @@
                     g.barcodes = g.barcodes.concat( g.data.temp_barcodes_for_labels );
                     g.data.temp_barcodes_for_labels = null; g.data.stash('temp_barcodes_for_labels');
                 }
+                if (xulG.barcodes) {
+                    g.barcodes = g.barcodes.concat( xulG.barcodes );
+                }
 
                 JSAN.use('circ.util');
                 g.cols = circ.util.columns( {} );
@@ -579,6 +582,7 @@
             var w = win.open( loc, 'spine_preview', 'chrome,resizable,width=750,height=550');
             w.xulG = { 
                 'url' : 'about:blank',
+                'url_prefix' : function (u) { return xulG.url_prefix(u); },
                 'show_print_button' : 1,
                 'printer_context' : 'label',
                 'alternate_print' : 1,

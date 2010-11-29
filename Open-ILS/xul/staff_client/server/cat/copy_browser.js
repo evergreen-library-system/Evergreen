@@ -288,17 +288,16 @@ cat.copy_browser.prototype = {
 
                                     var title = document.getElementById('catStrings').getString('staff.cat.copy_browser.add_item.title');
 
-                                    JSAN.use('util.window'); var win = new util.window();
-                                    var w = win.open(
+                                    var w = xulG.new_tab(
                                         window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
-                                            //+'?doc_id=' + window.escape(obj.docid)
-                                            //+'&ou_ids=' + window.escape( js2JSON(list) )
-                                            //+'&copy_shortcut=' + window.escape( js2JSON(copy_shortcut) ),
-                                        title,
-                                        'chrome,resizable'
+                                        { 'tab_name' : title },
+                                        {
+                                            'doc_id' : obj.docid, 
+                                            'ou_ids' : list, 
+                                            'copy_shortcut' : copy_shortcut,
+                                            'refresh' : function() { obj.refresh_list(); }
+                                        }
                                     );
-                                    w.refresh = function() { obj.refresh_list(); }
-                                    w.xulG = { 'doc_id':obj.docid, 'ou_ids' : list, 'copy_shortcut' : copy_shortcut };
                                 } catch(E) {
                                     obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.add_item.error'),E);
                                 }
@@ -485,12 +484,12 @@ cat.copy_browser.prototype = {
                                         }
                                     );
 
-                                    obj.data.temp_barcodes_for_labels = util.functional.map_list( list, function(o){return o.barcode();}) ; 
-                                    obj.data.stash('temp_barcodes_for_labels');
                                     xulG.new_tab(
                                         xulG.url_prefix( urls.XUL_SPINE_LABEL ),
                                         { 'tab_name' : document.getElementById('catStrings').getString('staff.cat.copy_browser.print_spine.tab') },
-                                        {}
+                                        {
+                                            'barcodes' : util.functional.map_list( list, function(o){return o.barcode();})
+                                        }
                                     );
                                 } catch(E) {
                                     obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.print_spine.error'),E);
@@ -537,17 +536,12 @@ cat.copy_browser.prototype = {
 
                                     var title = document.getElementById('catStrings').getString('staff.cat.copy_browser.add_volume.title');
 
-                                    JSAN.use('util.window'); var win = new util.window();
-                                    var w = win.open(
+                                    var w = xulG.new_tab(
                                         window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
-                                            //+'?doc_id=' + window.escape(obj.docid)
-                                            //+'&ou_ids=' + window.escape( js2JSON(list) ),
-                                        title,
-                                        'chrome,resizable'
+                                        { 'tab_name' : title },
+                                        { 'doc_id' : obj.docid, 'ou_ids' : list, 'refresh' : function() { obj.refresh_list(); } }
                                     );
 
-                                    w.refresh = function() { obj.refresh_list() };
-                                    w.xulG = { 'doc_id' : obj.docid, 'ou_ids' : list };
                                 } catch(E) {
                                     obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.add_volume.error'),E);
                                 }

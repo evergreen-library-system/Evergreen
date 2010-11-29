@@ -1528,11 +1528,9 @@ main.menu.prototype = {
     },
     'volume_item_creator' : function(params) {
         var obj = this;
-        JSAN.use('util.window'); var win = new util.window();
-        var w = win.open(
+        var w = obj.new_tab(
             obj.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
-            document.getElementById('offlineStrings').getString('staff.cat.create_or_rebarcode_items'),
-            'chrome,resizable',
+            { 'tab_name' : document.getElementById('offlineStrings').getString('staff.cat.create_or_rebarcode_items') },
             params
         );
     },

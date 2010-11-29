@@ -189,13 +189,12 @@ cat.util.spawn_spine_editor = function(selection_list) {
     JSAN.use('util.error'); var error = new util.error();
     try {
         JSAN.use('util.functional');
-        JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
-        data.temp_barcodes_for_labels = util.functional.map_list( selection_list, function(o){return o.barcode;}) ; 
-        data.stash('temp_barcodes_for_labels');
         xulG.new_tab(
             xulG.url_prefix( urls.XUL_SPINE_LABEL ),
             { 'tab_name' : $("catStrings").getString('staff.cat.util.spine_editor.tab_name') },
-            {}
+            {
+                'barcodes' : util.functional.map_list( selection_list, function(o){return o.barcode;}) 
+            }
         );
     } catch(E) {
         error.standard_unexpected_error_alert($("catStrings").getString('staff.cat.util.spine_editor.spine_editor_error'),E);
