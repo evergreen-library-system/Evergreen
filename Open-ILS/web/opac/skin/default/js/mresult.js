@@ -79,6 +79,7 @@ function mresultSetRecords(idstruct) {
 
 
 
+var recsReceivedCalled = false;
 function mresultCollectRecords() {
 	if(getHitCount() > 0 ) runEvt("result", "preCollectRecords");
 	var i = 0;
@@ -95,7 +96,8 @@ function mresultCollectRecords() {
 		req.request.abortCallback(
 			function(){
 				recordsHandled++;
-				if(resultPageIsDone()) {
+				if(resultPageIsDone()  && !recsReceivedCalled) {
+                    recsReceivedCalled = true;
 					runEvt('result', 'allRecordsReceived', recordsCache);
 					unHideMe($('copyright_block'));
 				}

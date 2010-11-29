@@ -285,11 +285,13 @@ function rresultCollectRecords(ids, base) {
 }
 
 
+var recsReceivedCalled = false;
 function rresultHandleMods(r) {
 	var rec = r.getResultObject();
 	runEvt('result', 'recordReceived', rec, r.userdata, false);
 	resultCollectCopyCounts(rec, r.userdata, FETCH_R_COPY_COUNTS);
-	if(resultPageIsDone()) {
+	if(resultPageIsDone() && !recsReceivedCalled) {
+        recsReceivedCalled = true;
 		runEvt('result', 'allRecordsReceived', recordsCache);
 		unHideMe($('copyright_block')); 
 	}
