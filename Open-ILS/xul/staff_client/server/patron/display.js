@@ -762,10 +762,10 @@ patron.display.prototype = {
             );
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             obj.search_window = get_contentWindow(form_frame);
-            obj._checkout_spawned = true;
+            obj._already_defaulted_once = true;
     },
 
-    '_checkout_spawned' : false,
+    '_already_defaulted_once' : false,
 
     'refresh_deck' : function(url) {
         var obj = this;
@@ -870,19 +870,19 @@ patron.display.prototype = {
                     }
                 }
 
-                if (display_params['show']) {
-                    setTimeout(
-                        function() {
-                            switch(display_params['show']) {
-                                case 'bills' : util.widgets.dispatch('command','cmd_patron_bills'); break;
-                            }
-                        },
-                        0
-                    );
-                } else {
-                    if (!obj._checkout_spawned) {
+                if (!obj._already_defaulted_once) {
+                    obj._already_defaulted_once = true;
+                    if (display_params['show']) {
+                        setTimeout(
+                            function() {
+                                switch(display_params['show']) {
+                                    case 'bills' : util.widgets.dispatch('command','cmd_patron_bills'); break;
+                                }
+                            },
+                            0
+                        );
+                    } else {
                         obj.spawn_checkout_interface();
-                        obj._checkout_spawned = true;
                     }
                 }
 
