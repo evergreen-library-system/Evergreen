@@ -2404,9 +2404,12 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
 
         if (!check.route_to) { check.route_to = '   '; }
 
-        if (document.getElementById('no_change_label')) {
-            document.getElementById('no_change_label').setAttribute('value','');
-            document.getElementById('no_change_label').setAttribute('hidden','true');
+        var no_change_label = document.getElementById('no_change_label');
+
+        if (no_change_label) {
+            no_change_label.setAttribute('value','');
+            no_change_label.setAttribute('hidden','true');
+            no_change_label.setAttribute('onclick','');
         }
 
         var msg = '';
@@ -2471,11 +2474,12 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             if (check.ilsevent == 3 /* NO_CHANGE */) {
                 //msg = 'This item is already checked in.\n';
                 check.what_happened = 'no_change';
-                if (document.getElementById('no_change_label')) {
-                    var m = document.getElementById('no_change_label').getAttribute('value');
+                if (no_change_label) {
+                    var m = no_change_label.getAttribute('value');
                     var text = document.getElementById('circStrings').getFormattedString('staff.circ.utils.item_checked_in', [params.barcode]);
-                    document.getElementById('no_change_label').setAttribute('value', m + text + '  ');
-                    document.getElementById('no_change_label').setAttribute('hidden','false');
+                    no_change_label.setAttribute('value', m + text + '  ');
+                    no_change_label.setAttribute('hidden','false');
+                    no_change_label.setAttribute('onclick','');
                     if (typeof params.info_blurb == 'function') {
                         params.info_blurb( text );
                     }
@@ -2708,12 +2712,13 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         }
                     }
                     msg = '';
-                    if (document.getElementById('no_change_label')) {
-                        var m = document.getElementById('no_change_label').getAttribute('value');
+                    if (no_change_label) {
+                        var m = no_change_label.getAttribute('value');
                         var text = document.getElementById('circStrings').getFormattedString('staff.circ.utils.capture', [params.barcode]);
                         m += text + '  ';
-                        document.getElementById('no_change_label').setAttribute('value', m);
-                        document.getElementById('no_change_label').setAttribute('hidden','false');
+                        no_change_label.setAttribute('value', m);
+                        no_change_label.setAttribute('hidden','false');
+                        no_change_label.setAttribute('onclick','');
                         if (typeof params.info_blurb == 'function') {
                             params.info_blurb( text );
                         }
@@ -2744,11 +2749,12 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                             sound.circ_bad();
                         }
                     }
-                    if (document.getElementById('no_change_label')) {
-                        var m = document.getElementById('no_change_label').getAttribute('value');
+                    if (no_change_label) {
+                        var m = no_change_label.getAttribute('value');
                         var needs_cat = document.getElementById('circStrings').getFormattedString('staff.circ.utils.needs_cataloging', [params.barcode]);
-                        document.getElementById('no_change_label').setAttribute('value', m + needs_cat + '  ');
-                        document.getElementById('no_change_label').setAttribute('hidden','false');
+                        no_change_label.setAttribute('value', m + needs_cat + '  ');
+                        no_change_label.setAttribute('hidden','false');
+                        no_change_label.setAttribute('onclick','');
                         if (typeof params.info_blurb == 'function') {
                             params.info_blurb( needs_cat );
                         }
@@ -2828,12 +2834,13 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         }
                     }
                     msg = '';
-                    if (document.getElementById('no_change_label')) {
-                        var m = document.getElementById('no_change_label').getAttribute('value');
+                    if (no_change_label) {
+                        var m = no_change_label.getAttribute('value');
                         var text = document.getElementById('circStrings').getFormattedString('staff.circ.utils.reservation_capture', [params.barcode]);
                         m += text + '  ';
-                        document.getElementById('no_change_label').setAttribute('value', m);
-                        document.getElementById('no_change_label').setAttribute('hidden','false');
+                        no_change_label.setAttribute('value', m);
+                        no_change_label.setAttribute('hidden','false');
+                        no_change_label.setAttribute('onclick','');
                         if (typeof params.info_blurb == 'function') {
                             params.info_blurb( text );
                         }
@@ -3088,11 +3095,12 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     alert(err_msg);
                 }
             }
-            if (document.getElementById('no_change_label')) {
-                var m = document.getElementById('no_change_label').getAttribute('value');
+            if (no_change_label) {
+                var m = no_change_label.getAttribute('value');
                 var trans_msg = document.getElementById('circStrings').getFormattedString('staff.circ.utils.payload.in_transit', [params.barcode]);
-                document.getElementById('no_change_label').setAttribute('value', m + trans_msg + '  ');
-                document.getElementById('no_change_label').setAttribute('hidden','false');
+                no_change_label.setAttribute('value', m + trans_msg + '  ');
+                no_change_label.setAttribute('hidden','false');
+                no_change_label.setAttribute('onclick','');
                 if (typeof params.info_blurb == 'function') {
                     params.info_blurb( trans_msg );
                 }
@@ -3117,10 +3125,11 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 // FIXME: add SFX and/or GFX
                 sound.circ_bad();
             }
-            if (document.getElementById('no_change_label')) {
-                var m = document.getElementById('no_change_label').getAttribute('value');
-                document.getElementById('no_change_label').setAttribute('value',m + mis_scan_msg + '  ');
-                document.getElementById('no_change_label').setAttribute('hidden','false');
+            if (no_change_label) {
+                var m = no_change_label.getAttribute('value');
+                no_change_label.setAttribute('value',m + mis_scan_msg + '  ');
+                no_change_label.setAttribute('hidden','false');
+                no_change_label.setAttribute('onclick','');
                 if (typeof params.info_blurb == 'function') {
                     params.info_blurb( mis_scan_msg );
                 }
@@ -3217,10 +3226,11 @@ circ.util.renew_via_barcode = function ( params, async ) {
                                 null,
                                 document.getElementById('circStrings').getString('staff.circ.confirm.msg')
                             );
-                            if (document.getElementById('no_change_label')) {
-                                var m = document.getElementById('no_change_label').getAttribute('value');
-                                document.getElementById('no_change_label').setAttribute('value',m + mis_scan_msg + '  ');
-                                document.getElementById('no_change_label').setAttribute('hidden','false');
+                            if (no_change_label) {
+                                var m = no_change_label.getAttribute('value');
+                                no_change_label.setAttribute('value',m + mis_scan_msg + '  ');
+                                no_change_label.setAttribute('hidden','false');
+                                no_change_label.setAttribute('onclick','');
                                 if (typeof params.info_blurb == 'function') {
                                     params.info_blurb( mis_scan_msg );
                                 }

@@ -408,16 +408,18 @@ circ.checkin.prototype = {
                 var row = params.row;
                 if (typeof params.on_retrieve == 'function') params.on_retrieve(row);
 
-                if (row.my.mbts && ( document.getElementById('no_change_label') || document.getElementById('fine_tally') ) ) {
+                var no_change_label = document.getElementById('no_change_label');
+                if (row.my.mbts && ( no_change_label || document.getElementById('fine_tally') ) ) {
                     var bill = row.my.mbts;
                     if (Number(bill.balance_owed()) == 0) { return; }
-                    if (document.getElementById('no_change_label')) {
-                        var m = document.getElementById('no_change_label').getAttribute('value');
-                        document.getElementById('no_change_label').setAttribute(
+                    if (no_change_label) {
+                        var m = no_change_label.getAttribute('value');
+                        no_change_label.setAttribute(
                             'value', 
                             m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.billable.amount', [row.my.acp.barcode(), util.money.sanitize(bill.balance_owed())]) + '  '
                         );
-                        document.getElementById('no_change_label').setAttribute('hidden','false');
+                        no_change_label.setAttribute('hidden','false');
+                        no_change_label.setAttribute('onclick','xulG.new_patron_tab({},{"id" : '+bill.usr()+' })');
                     }
                     if (document.getElementById('fine_tally')) {
                         var amount = Number( document.getElementById('fine_tally').getAttribute('amount') ) + Number( bill.balance_owed() );
