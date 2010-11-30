@@ -50,7 +50,8 @@
                     'barcode' : xul_param('barcode'),
                     'id' : xul_param('id'),
                     'query' : xul_param('query'),
-                    'doit' : xul_param('doit')
+                    'doit' : xul_param('doit'),
+                    'show' : xul_param('show')
                 } );
 
             //document.documentElement.style.setProperty('font-size-adjust','1','important');

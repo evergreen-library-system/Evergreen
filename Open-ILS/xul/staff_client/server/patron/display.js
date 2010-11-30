@@ -620,7 +620,7 @@ patron.display.prototype = {
                     'barcode' : obj.barcode,
                     'id' : obj.id,
                     'refresh' : function() { obj.refresh_all(); },
-                    'on_finished' : obj.gen_patron_summary_finish_func(),
+                    'on_finished' : obj.gen_patron_summary_finish_func(params),
                     'stop_sign_page' : obj.gen_patron_stop_sign_page_func(),
                     'spawn_group_interface' : function() { obj.spawn_group_interface(); },
                     'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); },
@@ -643,6 +643,7 @@ patron.display.prototype = {
             );
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
             obj.summary_window = get_contentWindow(frame);
+
         } else {
             obj.render_search_form(params);
         }
@@ -843,7 +844,7 @@ patron.display.prototype = {
         }
     },
 
-    'gen_patron_summary_finish_func' : function() {
+    'gen_patron_summary_finish_func' : function(display_params) {
         var obj = this;
 
         return function(patron,params) {
@@ -869,9 +870,20 @@ patron.display.prototype = {
                     }
                 }
 
-                if (!obj._checkout_spawned) {
-                    obj.spawn_checkout_interface();
-                    obj._checkout_spawned = true;
+                if (display_params['show']) {
+                    setTimeout(
+                        function() {
+                            switch(display_params['show']) {
+                                case 'bills' : util.widgets.dispatch('command','cmd_patron_bills'); break;
+                            }
+                        },
+                        0
+                    );
+                } else {
+                    if (!obj._checkout_spawned) {
+                        obj.spawn_checkout_interface();
+                        obj._checkout_spawned = true;
+                    }
                 }
 
                 if (obj.stop_checkouts && obj.checkout_window) {

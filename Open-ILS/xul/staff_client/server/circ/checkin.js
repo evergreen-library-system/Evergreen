@@ -419,7 +419,7 @@ circ.checkin.prototype = {
                             m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.billable.amount', [row.my.acp.barcode(), util.money.sanitize(bill.balance_owed())]) + '  '
                         );
                         no_change_label.setAttribute('hidden','false');
-                        no_change_label.setAttribute('onclick','xulG.new_patron_tab({},{"id" : '+bill.usr()+' })');
+                        no_change_label.setAttribute('onclick','xulG.new_patron_tab({},{"id" : '+bill.usr()+', "show" : "bills" })');
                     }
                     if (document.getElementById('fine_tally')) {
                         var amount = Number( document.getElementById('fine_tally').getAttribute('amount') ) + Number( bill.balance_owed() );
