@@ -876,6 +876,7 @@ sub changes_feed {
 	my ($type,$rtype,$axis,$limit,$date) = split '/', $path;
 	my $flesh_feed = ($type =~ /-full$/o) ? 1 : 0;
 	$limit ||= 10;
+	$limit = 10 if $limit !~ /^\d+$/;
 
 	my $list = $supercat->request("open-ils.supercat.$rtype.record.$axis.recent", $date, $limit)->gather(1);
 
@@ -1327,6 +1328,7 @@ sub string_browse {
 	$page_size ||= $cgi->param('count') || 9;
 
 	$page = 0 if ($page !~ /^-?\d+$/);
+	$page_size = 9 if $page_size !~ /^\d+$/;
 
 	my $prev = join('/', $base,$format,$axis,$site,$string,$page - 1,$page_size);
 	my $next = join('/', $base,$format,$axis,$site,$string,$page + 1,$page_size);
@@ -1393,6 +1395,7 @@ sub item_age_browse {
 	$page_size ||= $cgi->param('count') || 10;
 
 	$page = 1 if ($page !~ /^-?\d+$/ || $page < 1);
+	$page_size = 10 if $page_size !~ /^\d+$/;
 
 	my $prev = join('/', $base,$format,$axis,$site,$page - 1,$page_size);
 	my $next = join('/', $base,$format,$axis,$site,$page + 1,$page_size);
