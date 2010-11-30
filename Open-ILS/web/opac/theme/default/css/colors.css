@@ -123,8 +123,7 @@ a:focus { background: #E0F0E0; color: #000000;}
 .copy_count_div {	border-left: 2px solid #E0F6E0; border-right: 2px solid #E0F6E0; }
 
 #rdetail_image_cell { border: 1px solid white; border-right: 1px solid #A7EA9D;}
-
-
+#rdetail_img_link { display: block; margin-left: 1em; margin-bottom: 1em; }
 
 .x_mark { color: red; }
 .check_mark { color: green; }
