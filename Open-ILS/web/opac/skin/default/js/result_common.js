@@ -16,17 +16,6 @@ if( findCurrentPage() == MRESULT || findCurrentPage() == RRESULT ) {
 	G.evt.result.copyCountsReceived.push(resultDisplayCopyCounts);
 	G.evt.result.allRecordsReceived.push( function(){unHideMe($('result_info_2'))}, fetchGoogleBooksLink, fetchChiliFreshReviews);
 
-    G.evt.result.allRecordsReceived.push( 
-        function(){
-            var cgi = new CGI();
-            var hold_target = cgi.param('hold_target');
-            if(hold_target) {
-                // This will force the login dialog to display if the user is not logged in
-                holdsDrawEditor({record:hold_target, type: (findCurrentPage() == MRESULT) ? 'M' : 'T'});
-            }
-        }
-    );
-
 	attachEvt('result','lowHits',resultLowHits);
 	attachEvt('result','zeroHits',resultZeroHits);
 	attachEvt( "common", "locationUpdated", resultSBSubmit );

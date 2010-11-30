@@ -7,16 +7,6 @@ attachEvt("rdetail", "recordDrawn", rdetailBuildStatusColumns);
 attachEvt("rdetail", "recordDrawn", rdetailBuildInfoRows);
 attachEvt("rdetail", "recordDrawn", rdetailGetPageIds);
 
-G.evt.rdetail.recordDrawn.push(
-    function(){
-        if(new CGI().param('place_hold')) {
-            // This will force the login dialog to display if the user is not logged in
-            holdsDrawEditor({record:record.doc_id(), type: 'T'});
-        }
-    }
-);
-
-
 /* Per-skin configuration settings */
 var rdetailLocalOnly = true;
 var rdetailShowLocal = true;
@@ -55,6 +45,11 @@ var rdetailEnd = null;
 
 var mfhdDetails = [];
 var orgHiding = false;
+
+if(location.href.match(/&place_hold=1/)) {
+    // prevent load flicker between canvases
+    hideMe(dojo.byId('canvas_main'));
+}
 
 /* serials are currently the only use of Dojo strings in the OPAC */
 if (rdetailDisplaySerialHoldings) {
@@ -117,7 +112,22 @@ function _rdetailNav(id, offset) {
 	goTo(buildOPACLink(args));
 }
 
+function rdetailHandlePlaceHold() {
+    function reload() {
+        location.href = location.href.replace(/&place_hold=1/, '');
+    }
+    attachEvt("common", "holdUpdated", reload);
+    attachEvt("common", "holdUpdateCanceled", reload);
+    attachEvt("common", "loginCanceled", reload);
+    holdsDrawEditor({record:getRid(), type: 'T'});
+}
+
 function rdetailDraw() {
+
+    if(new CGI().param('place_hold')) {
+        rdetailHandlePlaceHold();
+        return;
+    }
 
 	detachAllEvt('common','depthChanged');
 	detachAllEvt('common','locationUpdated');

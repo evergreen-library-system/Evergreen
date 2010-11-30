@@ -31,6 +31,13 @@ function rresultDoSearch() {
 function rresultCollectIds() {
 	var ids;
 
+
+    var holdTarget = new CGI().param('hold_target');
+    if(holdTarget != null) {
+        rresultHandlePlaceHold(holdTarget);
+        return;
+    }
+
     var rtype = getRtype();
     if (rtype && rtype.indexOf('|') > -1)
         rtype = rtype.substring(0,rtype.indexOf('|'));
@@ -329,4 +336,13 @@ function rresultFilterSearchResults(r) {
 }
 
 
+function rresultHandlePlaceHold(target) {
+    function reload() {
+        location.href = location.href.replace(/&hold_target=\d+/, '');
+    }
+    attachEvt("common", "holdUpdated", reload);
+    attachEvt("common", "holdUpdateCanceled", reload);
+    attachEvt("common", "loginCanceled", reload);
+    holdsDrawEditor({record:target, type: 'T'});
+}
 

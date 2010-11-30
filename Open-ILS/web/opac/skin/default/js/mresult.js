@@ -24,6 +24,13 @@ function mresultDoSearch() {
 	swapCanvas($('loading_alt'));
 	table = G.ui.result.main_table;
 
+    var holdTarget = new CGI().param('hold_target');
+    if(holdTarget != null) {
+        mresultHandlePlaceHold(holdTarget);
+        return;
+    }
+
+
 	while( table.parentNode.rows.length <= (getDisplayCount() + 1) )  
 		table.appendChild(G.ui.result.row_template.cloneNode(true));
 
@@ -121,5 +128,14 @@ function mresultHandleMods(r) {
 }
 
 
+function mresultHandlePlaceHold(target) {
+    function reload() {
+        location.href = location.href.replace(/&hold_target=\d+/, '');
+    }
+    attachEvt("common", "holdUpdated", reload);
+    attachEvt("common", "holdUpdateCanceled", reload);
+    attachEvt("common", "loginCanceled", reload);
+    holdsDrawEditor({record:target, type: 'M'});
+}
 
 

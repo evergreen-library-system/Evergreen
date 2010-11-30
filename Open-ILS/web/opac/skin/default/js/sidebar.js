@@ -157,18 +157,18 @@ function strongPassword(pass, alrt) {
 }
 
 function initLogin() {
+    swapCanvas(G.ui.login.box);
+    try{G.ui.login.username.focus();} catch(e) {}
 
-//	if(loginBoxVisible) {
-//		showCanvas();
-//	} else {
-		swapCanvas(G.ui.login.box);
-		try{G.ui.login.username.focus();}catch(e){}
-//	}
+    G.ui.login.cancel.onclick = function(evt) { 
+        G.ui.login.form.setAttribute('action',
+            'javascript:showCanvas();runEvt("common", "loginCanceled");'); 
+    };
 
-//	loginBoxVisible = !loginBoxVisible;
-	G.ui.login.cancel.onclick = function(evt) { G.ui.login.form.setAttribute('action','javascript:showCanvas();'); };
-	if(findCurrentPage() == MYOPAC) 
-		G.ui.login.cancel.onclick = function(evt) { G.ui.login.form.setAttribute('action','javascript:goHome();'); };
+    if(findCurrentPage() == MYOPAC) {
+        G.ui.login.cancel.onclick = function(evt) { 
+            G.ui.login.form.setAttribute('action','javascript:goHome();'); };
+    }
 }
 
 function setSidebarLinks() {
