@@ -143,6 +143,7 @@
     <command id="cmd_server_admin_acq_invoice_payment_method"/>
     <command id="cmd_server_admin_acq_cancel_reason"/>
     <command id="cmd_server_admin_acq_lineitem_alert"/>
+    <command id="cmd_server_admin_acq_lineitem_marc_attr_def"/>
     <command id="cmd_server_admin_acq_fund_tag"/>
     <command id="cmd_server_admin_acq_claim_type"/>
     <command id="cmd_server_admin_acq_claim_event_type"/>
@@ -418,6 +419,7 @@
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.invoice_payment_method.label;" accesskey="&staff.main.menu.admin.server_admin.acq.invoice_payment_method.accesskey;" command="cmd_server_admin_acq_invoice_payment_method"/>
                         <menuseparator />
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.lineitem_alert.label;" accesskey="&staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey;" command="cmd_server_admin_acq_lineitem_alert"/>
+                        <menuitem label="&staff.main.menu.admin.server_admin.acq.lineitem_marc_attr_def.label;" accesskey="&staff.main.menu.admin.server_admin.acq.lineitem_marc_attr_def.accesskey;" command="cmd_server_admin_acq_lineitem_marc_attr_def"/>
                         <menuitem label="&staff.main.menu.admin.server_admin.acq.cancel_reason.label;" accesskey="&staff.main.menu.admin.server_admin.acq.cancel_reason.accesskey;" command="cmd_server_admin_acq_cancel_reason"/>
                     </menupopup>
                 </menu>
