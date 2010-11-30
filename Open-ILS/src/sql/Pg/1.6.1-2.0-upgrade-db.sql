@@ -11204,6 +11204,7 @@ $func$ LANGUAGE PLPGSQL;
 CREATE TRIGGER fingerprint_tgr BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.fingerprint_trigger ('eng','BKS');
 CREATE TRIGGER aaa_indexing_ingest_or_delete AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.indexing_ingest_or_delete ();
 
+DROP TRIGGER IF EXISTS zzz_update_materialized_simple_record_tgr ON metabib.real_full_rec;
 DROP TRIGGER IF EXISTS zzz_update_materialized_simple_rec_delete_tgr ON biblio.record_entry;
 
 CREATE OR REPLACE FUNCTION oils_xpath_table ( key TEXT, document_field TEXT, relation_name TEXT, xpaths TEXT, criteria TEXT ) RETURNS SETOF RECORD AS $func$
@@ -18540,7 +18541,21 @@ SELECT	r.id,
   GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14;
 
 CREATE OR REPLACE FUNCTION reporter.disable_materialized_simple_record_trigger () RETURNS VOID AS $$
-    DROP TRIGGER IF EXISTS zzz_update_materialized_simple_record_tgr ON metabib.real_full_rec;
+    DROP TRIGGER IF EXISTS bbb_simple_rec_trigger ON biblio.record_entry;
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION reporter.enable_materialized_simple_record_trigger () RETURNS VOID AS $$
+
+    DELETE FROM reporter.materialized_simple_record;
+
+    INSERT INTO reporter.materialized_simple_record
+        (id,fingerprint,quality,tcn_source,tcn_value,title,author,publisher,pubdate,isbn,issn)
+        SELECT DISTINCT ON (id) * FROM reporter.old_super_simple_record;
+
+    CREATE TRIGGER bbb_simple_rec_trigger
+        AFTER INSERT OR UPDATE OR DELETE ON biblio.record_entry
+        FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_trigger();
+
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION reporter.simple_rec_trigger () RETURNS TRIGGER AS $func$
@@ -18555,7 +18570,7 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE TRIGGER bbb_simple_rec_trigger AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_trigger ();
+CREATE TRIGGER bbb_simple_rec_trigger AFTER INSERT OR UPDATE OR DELETE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_trigger ();
 
 ALTER TABLE extend_reporter.legacy_circ_count DROP CONSTRAINT legacy_circ_count_id_fkey;
 
