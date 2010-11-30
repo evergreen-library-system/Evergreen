@@ -21,17 +21,6 @@
 			</tr>
 		</tbody>
 	</table>
-	<script language='javascript' type='text/javascript'>isFrontPage = true;</script>
-	<script language="javascript" type='text/javascript'>
-		dojo.addOnLoad(home_init);
-		try { 
-			document.getElementById('toptable').style.display = 'table'; 
-		} catch(e) {
-			try {
-				document.getElementById('toptable').style.display = ''; 
-			} catch(ee) {}
-		}
-	</script>
 	<!--#include virtual='../footer.xml'-->
     <center>
         <div id='gcfPrompt' class='hide_me'>
@@ -53,7 +42,18 @@
     </script>
 
     <script language="javascript" type="text/javascript">
+        isFrontPage = true;
         dojo.addOnLoad(init);
+        dojo.addOnLoad(home_init);
+
+        try { 
+            dojo.style(dojo.byId('toptable'), 'display', 'table'); 
+        } catch(e) {
+            try {
+                dojo.style(dojo.byId('toptable'), 'display', ''); 
+            } catch(ee) {}
+        }
+
         dojo.require("dijit._Calendar");
         dojo.require("dijit.form.DateTextBox");
         dojo.require("dijit.form.FilteringSelect");
