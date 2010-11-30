@@ -208,55 +208,8 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION reporter.simple_rec_sync () RETURNS TRIGGER AS $$
-DECLARE
-    r_id        BIGINT;
-    deleted     BOOL;
-BEGIN
-    IF TG_OP IN ('DELETE') THEN
-        r_id := OLD.record;
-        deleted := TRUE;
-    ELSE
-        r_id := NEW.record;
-        deleted := FALSE;
-    END IF;
-
-    PERFORM reporter.simple_rec_update(r_id, deleted);
-
-    IF deleted THEN
-        RETURN OLD;
-    ELSE
-        RETURN NEW;
-    END IF;
-
-END;
-$$ LANGUAGE PLPGSQL;
-
---
--- Disabling this by default for now, but we'll keep it around
---
---CREATE TRIGGER zzz_update_materialized_simple_record_tgr
---    AFTER INSERT OR UPDATE OR DELETE ON metabib.real_full_rec
---    FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_sync();
-
-CREATE OR REPLACE FUNCTION reporter.simple_rec_bib_sync () RETURNS TRIGGER AS $$
-BEGIN
-    IF NEW.deleted THEN
-        DELETE FROM reporter.materialized_simple_record WHERE id = NEW.id;
-        RETURN NEW;
-    ELSE
-        RETURN NEW;
-    END IF;
-END;
-$$ LANGUAGE PLPGSQL;
-
---CREATE TRIGGER zzz_update_materialized_simple_rec_delete_tgr
---    AFTER UPDATE ON biblio.record_entry
---    FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_bib_sync();
-
-
 CREATE OR REPLACE FUNCTION reporter.disable_materialized_simple_record_trigger () RETURNS VOID AS $$
-    DROP TRIGGER IF EXISTS zzz_update_materialized_simple_record_tgr ON metabib.real_full_rec;
+    DROP TRIGGER IF EXISTS bbb_simple_rec_trigger ON biblio.record_entry;
 $$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION reporter.enable_materialized_simple_record_trigger () RETURNS VOID AS $$
@@ -267,9 +220,9 @@ CREATE OR REPLACE FUNCTION reporter.enable_materialized_simple_record_trigger ()
         (id,fingerprint,quality,tcn_source,tcn_value,title,author,publisher,pubdate,isbn,issn)
         SELECT DISTINCT ON (id) * FROM reporter.old_super_simple_record;
 
-    CREATE TRIGGER zzz_update_materialized_simple_record_tgr
-        AFTER INSERT OR UPDATE OR DELETE ON metabib.real_full_rec
-        FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_sync();
+    CREATE TRIGGER bbb_simple_rec_trigger
+        AFTER INSERT OR UPDATE OR DELETE ON biblio.record_entry
+        FOR EACH ROW EXECUTE PROCEDURE reporter.simple_rec_trigger();
 
 $$ LANGUAGE SQL;
 
