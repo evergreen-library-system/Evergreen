@@ -733,6 +733,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/acq/lineitem_alert'); }
             ],
+            'cmd_server_admin_acq_lineitem_marc_attr_def' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/acq/lineitem_marc_attr_def'); }
+            ],
             'cmd_server_admin_acq_fund_tag' : [
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/acq/fund_tag'); }
