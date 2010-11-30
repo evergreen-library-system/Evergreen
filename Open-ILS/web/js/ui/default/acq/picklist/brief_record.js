@@ -168,7 +168,7 @@ function compileBriefRecord(fields, editMarc) {
         'xmlns="http://www.loc.gov/MARC21/slim" ' +
         'xmlns:marc="http://www.loc.gov/MARC21/slim" ' +
         'xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/ standards/marcxml/schema/MARC21slim.xsd">' +
-        '<leader/></record>';
+        '<leader>00000nam a22000007a 4500</leader></record>';
 
     var doc = new DOMParser().parseFromString(baseString, 'text/xml');
 
