@@ -144,7 +144,7 @@ openils.acq.Lineitem.fetchAndRender = function(liId, args, callback) {
                 var orderDate = '';
                 var liLink = '';
 
-                if(pl.name() == '') // special pl
+                if(pl && pl.name() == '') // special pl
                     pl = null;
 
                 if(po) {
