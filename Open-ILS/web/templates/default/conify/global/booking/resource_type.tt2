@@ -23,6 +23,7 @@
             fieldOrder="['name', 'fine_interval', 'fine_amount',
                 'owner', 'catalog_item', 'transferable']"
             suppressFields="['record']"
+            suppressEditFields="['record']"
             query="{id: '*'}"
             fmClass='brt'
             showPaginator='true'

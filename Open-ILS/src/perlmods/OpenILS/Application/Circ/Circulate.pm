@@ -13,6 +13,21 @@ my $U = "OpenILS::Application::AppUtils";
 my %scripts;
 my $script_libs;
 my $legacy_script_support = 0;
+my $booking_status;
+
+sub determine_booking_status {
+    unless (defined $booking_status) {
+        my $ses = create OpenSRF::AppSession("router");
+        $booking_status = grep {$_ eq "open-ils.booking"} @{
+            $ses->request("opensrf.router.info.class.list")->gather(1)
+        };
+        $ses->disconnect;
+        $logger->info("booking status: " . ($booking_status ? "on" : "off"));
+    }
+
+    return $booking_status;
+}
+
 
 my $MK_ENV_FLESH = { 
     flesh => 2, 
@@ -64,7 +79,6 @@ sub initialize {
         "legacy script support = ". ($legacy_script_support) ? 'yes' : 'no'
         );
 }
-
 
 __PACKAGE__->register_method(
     method  => "run_method",
@@ -180,12 +194,14 @@ sub run_method {
 
     return circ_events($circulator) if $circulator->bail_out;
 
+    $circulator->use_booking(determine_booking_status());
+
     # --------------------------------------------------------------------------
     # First, check for a booking transit, as the barcode may not be a copy
     # barcode, but a resource barcode, and nothing else in here will work
     # --------------------------------------------------------------------------
 
-    if ((my $bc = $circulator->copy_barcode) && $api !~ /checkout|inspect/) { # do we have a barcode?
+    if ($circulator->use_booking && (my $bc = $circulator->copy_barcode) && $api !~ /checkout|inspect/) { # do we have a barcode?
         my $resources = $circulator->editor->search_booking_resource( { barcode => $bc } ); # any resources by this barcode?
         if (@$resources) { # yes!
 
@@ -238,18 +254,14 @@ sub run_method {
     # of the objects we need
     # --------------------------------------------------------------------------
 
-    # XXX I wanted to make this better so it might support blocking renewals
-    # if a reservation has been placed on an item, but that will need more
-    # design, as institutions will differ in their policy on that.  In the
-    # meantime making sure we're trying some kind of checkin will at least
-    # keep OPAC renewals from breaking since patrons don't have VIEW_USER...
+    if ($circulator->use_booking) {
+        $circulator->is_res_checkin($circulator->is_checkin(1))
+            if $api =~ /reservation.return/ or (
+                $api =~ /checkin/ and $circulator->seems_like_reservation()
+            );
 
-    $circulator->is_res_checkin($circulator->is_checkin(1))
-        if $api =~ /reservation.return/ or (
-            $api =~ /checkin/ and $circulator->seems_like_reservation()
-        );
-
-    $circulator->is_res_checkout(1) if $api =~ /reservation.pickup/;
+        $circulator->is_res_checkout(1) if $api =~ /reservation.pickup/;
+    }
 
     $circulator->is_renewal(1) if $api =~ /renew/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
@@ -490,6 +502,7 @@ my @AUTOLOAD_FIELDS = qw/
     rental_billing
     capture
     noop
+    use_booking
 /;
 
 
@@ -1748,6 +1761,7 @@ sub booking_adjusted_due_date {
     my $circ = $self->circ;
     my $copy = $self->copy;
 
+    return undef unless $self->use_booking;
 
     my $changed;
 
@@ -2087,23 +2101,27 @@ sub do_checkin {
 
         my $needed_for_something = 0; # formerly "needed_for_hold"
         if (!$self->remote_hold) {
-            my $potential_hold = $self->hold_capture_is_possible;
-            my $potential_reservation = $self->reservation_capture_is_possible;
+            if ($self->use_booking) {
+                my $potential_hold = $self->hold_capture_is_possible;
+                my $potential_reservation = $self->reservation_capture_is_possible;
 
-            if ($potential_hold and $potential_reservation) {
-                $logger->info("circulator: item could fulfill either hold or reservation");
-                $self->push_events(new OpenILS::Event(
-                    "HOLD_RESERVATION_CONFLICT",
-                    "hold" => $potential_hold,
-                    "reservation" => $potential_reservation
-                ));
-                return if $self->bail_out;
-            } elsif ($potential_hold) {
-                $needed_for_something =
-                    $self->attempt_checkin_hold_capture;
-            } elsif ($potential_reservation) {
-                $needed_for_something =
-                    $self->attempt_checkin_reservation_capture;
+                if ($potential_hold and $potential_reservation) {
+                    $logger->info("circulator: item could fulfill either hold or reservation");
+                    $self->push_events(new OpenILS::Event(
+                        "HOLD_RESERVATION_CONFLICT",
+                        "hold" => $potential_hold,
+                        "reservation" => $potential_reservation
+                    ));
+                    return if $self->bail_out;
+                } elsif ($potential_hold) {
+                    $needed_for_something =
+                        $self->attempt_checkin_hold_capture;
+                } elsif ($potential_reservation) {
+                    $needed_for_something =
+                        $self->attempt_checkin_reservation_capture;
+                }
+            } else {
+                $needed_for_something = $self->attempt_checkin_hold_capture;
             }
         }
         return if $self->bail_out;
