@@ -76,6 +76,11 @@ sub new {
 	return $self;
 }
 
+sub DESTROY {
+        my $self = shift;
+        $self->reset;
+        return undef;
+}
 
 sub app {
 	my( $self, $app ) = @_;
@@ -289,13 +294,24 @@ sub rollback_savepoint {
 # -----------------------------------------------------------------------------
 sub rollback {
 	my $self = shift;
-	$self->xact_rollback;
-	$self->disconnect;
+    my $err;
+    my $ret;
+	try {
+        $self->xact_rollback;
+    } catch Error with  {
+        $err = shift
+    } finally {
+        $ret = $self->disconnect
+    };
+    throw $err if ($err);
+    return $ret;
 }
 
 sub disconnect {
 	my $self = shift;
-	$self->session->disconnect if $self->{session};
+	$self->session->disconnect if 
+        $self->{session} and 
+        $self->{session}->state == OpenSRF::AppSession::CONNECTED();
     delete $self->{session};
 }
 
@@ -327,8 +343,17 @@ sub reset {
 # -----------------------------------------------------------------------------
 sub finish {
 	my $self = shift;
-	$self->commit;
-	$self->reset;
+    my $err;
+    my $ret;
+	try {
+        $self->commit;
+    } catch Error with  {
+        $err = shift
+    } finally {
+        $ret = $self->reset
+    };
+    throw $err if ($err);
+    return $ret;
 }
 
 
