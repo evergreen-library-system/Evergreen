@@ -191,7 +191,6 @@
 					var r = g.network.simple_request('FM_'+g.function_type+'_CREATE',[ ses(), note ]);
 					if (typeof r.ilsevent != 'undefined') throw(r);
 					setTimeout(function() {
-						alert($('catStrings').getString('staff.cat.copy_notes.new_note.success'));
 						refresh();},0
 					);
 				}

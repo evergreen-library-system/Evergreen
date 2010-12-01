@@ -632,7 +632,7 @@ serial.manage_subs.prototype = {
                                         var robj = obj.network.request(
                                                 'open-ils.serial',
                                                 'open-ils.serial.make_predictions',
-                                                [ ses(), {"ssub_id":list[i], "num_to_predict":num_to_predict, "last_rec_date":"2010-07-07"}]
+                                                [ ses(), {"ssub_id":list[i], "num_to_predict":num_to_predict}]
                                         );
                                         util.functional.map_list(
                                             robj,
