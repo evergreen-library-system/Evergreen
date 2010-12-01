@@ -641,9 +641,10 @@ circ.checkout.prototype = {
                         },
                         '7004' : function(r) {
                             try {
-                                return r.payload.status().name();
+                                status_name = obj.data.hash.ccs[ r.payload.status() ].name();
+                                return status_name;
                             } catch (E) {
-                                return "copy not available: (Unexpected error: payload not available)";  // XXX
+                                return "Could not retrieve the name of the current status for the copy";  // XXX
                             }
                         },
                         '7010' : function(r) {
@@ -800,7 +801,7 @@ circ.checkout.prototype = {
                             found_handled = true;
                         break;
                         case 7004 /* COPY_NOT_AVAILABLE */ :
-                            msg += test_permit[i].desc + '\n' + document.getElementById('circStrings').getFormattedString('staff.circ.checkout.copy_status', [test_permit[i].payload.status().name()]) + '\n';
+                            msg += test_permit[i].desc + '\n' + document.getElementById('circStrings').getFormattedString('staff.circ.checkout.copy_status', [obj.data.hash.ccs [test_permit[i].payload.status() ].name()]) + '\n';
                             found_handled = true;
                         break;
                         case 7006 /* COPY_IS_REFERENCE */ :
