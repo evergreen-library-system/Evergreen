@@ -23,6 +23,7 @@ vim:noet:sw=4:ts=4:
 <?xul-overlay href="/xul/server/OpenILS/util_overlay.xul"?>
 <?xul-overlay href="/xul/server/serial/manage_items.xul"?>
 <?xul-overlay href="/xul/server/serial/manage_subs.xul"?>
+<?xul-overlay href="/xul/server/serial/manage_dists.xul"?>
 
 <window id="serial_serctrl_main" 
 	onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
@@ -47,6 +48,7 @@ vim:noet:sw=4:ts=4:
 		<command id="cmd_add_scap"/>
 		<command id="cmd_add_sdist"/>
 		<command id="cmd_add_siss"/>
+		<command id="cmd_add_sstr"/>
 		<command id="cmd_add_subscriptions"/>
 		<command id="cmd_broken" />
 		<command id="cmd_clear" />
@@ -54,14 +56,17 @@ vim:noet:sw=4:ts=4:
         <command id="cmd_edit_sdists"/>
         <command id="cmd_edit_subscriptions"/>
 		<command id="cmd_edit_sunit"/>
+		<command id="cmd_edit_sstr"/>
 		<command id="cmd_delete_items"/>
 		<command id="cmd_delete_scap"/>
 		<command id="cmd_delete_sdist"/>
 		<command id="cmd_delete_siss"/>
+        <command id="cmd_delete_sstr"/>
         <command id="cmd_delete_ssub"/>
         <command id="cmd_make_predictions"/>
         <command id="cmd_mark_library"/>
         <command id="cmd_mark_subscription"/>
+        <command id="cmd_mark_sdist"/>
 		<command id="cmd_predict_items"/>
 		<command id="cmd_print_spine_labels"/>
 		<command id="cmd_receive_items"/>
@@ -74,13 +79,12 @@ vim:noet:sw=4:ts=4:
         <command id="cmd_show_my_libs" />
 		<command id="cmd_transfer_items"/>
         <command id="cmd_transfer_sdists"/>
+        <command id="cmd_transfer_sstrs"/>
         <command id="cmd_transfer_subscription"/>
 		<command id="save_columns" />
 		<command id="sel_clip" />
 		<command id="sel_mark_items_damaged" />
 		<command id="sel_mark_items_missing" />
-        <command id="sel_mark_sdists_damaged" />
-        <command id="sel_mark_sdists_missing" />
 	</commandset>
 
 	<!--<popupset>
@@ -106,14 +110,14 @@ vim:noet:sw=4:ts=4:
             <tabs>
                 <tab label="Items" />
                 <tab label="Units" />
-                <tab label="Distributions" />
+                <tab id="serial_manage_dists_tab" label="Distributions" />
                 <tab id="serial_manage_subs_tab" label="Subscriptions" />
                 <tab label="Claims" />
             </tabs>
             <tabpanels flex="1">
                 <tabpanel id="serial_manage_items" />
                 <tabpanel id="serial_manage_units"><description>This tab will contain an alternative unit view/editor.</description></tabpanel>
-                <tabpanel id="serial_manage_distributions"><description>This tab will contain a tree of distributions with editors for templates, summaries, and streams.</description></tabpanel>
+                <tabpanel id="serial_manage_dists" />
                 <tabpanel id="serial_manage_subs" />
                 <tabpanel id="serial_manage_claims"><description>This tab will contain a claims interface.</description></tabpanel>
             </tabpanels>
