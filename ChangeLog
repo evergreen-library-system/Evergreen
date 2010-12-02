@@ -1,1 +1,194 @@
-#ChangeLog
+2010-11-23  gmc
+
+	* fix broken prefix and namespace URI for the mods32 transform
+	  
+	  This breakage can be found in databases that started out at
+	  version 1.2 or earlier; matters since in-DB ingest is stricter
+	  with its XPATH processing.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-23  senator
+
+	* Backport r18838 from trunk
+	  
+	  Serials: Fix error in batch receiving when trying to change the
+	  shelving
+	  location of the previous item in the stream when there /is/ no
+	  previous
+	  item in the stream
+
+2010-11-24  dbs
+
+	* Add an index on asset.copy(create_date) for item-age browse
+	  
+	  Running an item-age browse against a database with a reasonable
+	  number of entries in asset.copy is dog-slow without an index
+	  like this.
+
+2010-11-24  senator
+
+	* Backport r18845 from trunk
+	  
+	  Everything else in the menu is alphabetized (in English anyway),
+	  so Copy
+	  Template Editor may as well be too.
+
+2010-11-24  dbs
+
+	* Add the asset.copy(create_date) index to the 1.6.1-2.0 update
+	  script
+
+2010-11-28  dbs
+
+	* Address 1.6.1-2.0 upgrade problems reported by Ben Shum
+	  
+	  1. We were attempting to update the asset.uri ID sequence value
+	  with the wrong syntax; also, adding just 1 would return an error
+	  in the event that only the seed value for asset.uri had been
+	  inserted.
+	  
+	  2. Somehow the body of the maintain_control_numbers() function
+	  was pasted twice, resulting in a syntax error.
+
+2010-11-29  phasefx
+
+	* merge r18841 from trunk for label interface bug
+	  https://bugs.launchpad.net/evergreen/+bug/677628
+
+2010-11-29  miker
+
+	* Patch from Jeff Godin, backported from trunkified version:
+	  
+	  In the staff client, the holds context menu option "Edit
+	  PickupLibrary" displays and allows selection of org units that it
+	  shouldn't.
+	  
+	  Org units whose type has can_have_users = FALSE are not valid
+	  pickup locations.
+	  
+	  Using the default types as an example, CONS and SYS1 are invalid
+	  pickup locations.
+	  
+	  The OPAC enforces this when allowing patrons to edit a hold.
+	  
+	  The staff client does not enforce this when staff edit a hold.
+	  
+	  The can_have_users() method of the au object returns a string 't'
+	  or 'f' which is then compared to 0.
+	  
+	  The attached patch corrects this issue. ( foo == 0 becomes
+	  !isTrue(foo) ).
+
+	* logic error (inversion) in retargetting of previous copy when no
+	  other holds are looking at it
+
+2010-11-30  gmc
+
+	* fix failure when attempting to create invoice
+	  
+	  Occurred for line items that were not part of a selection list
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* straighten out triggers that maintain rmsr
+	  
+	  In particular, make sure that the old zzz_
+	  trigger on metabib.real_full_rec is completely removed, as
+	  it needlessly slows down bib ingest.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-30  phasefx
+
+	* menu entry for Admin->Server Administration->Acquisitions->Line
+	  Item MARC Attribute Definitions
+
+2010-11-30  gmc
+
+	* specify default leader for acq brief bibs
+	  
+	  In particular, avoid fun that could ensue if the
+	  Leader/09 is not set to 'a'.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-30  dbs
+
+	* Enable GET params to be added properly in buildOPACLink()
+	  
+	  Symptom was that the "?l=#" parameter wasn't being added to the
+	  home screen "Advanced Search" link. Cause was that the
+	  dojo.addOnLoad(init) call was being made after the
+	  dojo.addOnLoad(home_init) call, which depended on globals being
+	  set by init(). This started happening when the JavaScript was
+	  shifted around in an attempt to kill the white screen of death.
+	  
+	  There may be other similar issues in other interfaces; keep
+	  your eyes open!
+
+2010-11-30  gmc
+
+	* protect some of the supercat browse interfaces from unboundedness
+	  
+	  E.g., browsing from a call number that contains forward slashes,
+	  e.g.,
+	  
+	  "02/05/2004"
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-30  dbs
+
+	* Clean up some of the Apache config mod_rewrite rules
+	  
+	  Thomas Berezansky suggested some improvements to the mod_rewrite
+	  rules in eg_vhost.conf on the -devel mailing list; this is a stab
+	  at correcting the most egregious problems.
+	  
+	  Tested with Zotero and unAPI still works; tested with the staff
+	  client and language-switching still works, as do the Conify and
+	  Vandelay interfaces. Seems reasonably good.
+
+	* Move Google Preview badge below the book cover image, if there is
+	  one
+	  
+	  There might be a more correct way to do this in CSS, but works++
+	  
+	  Also, give a little room between the images.
+
+2010-11-30  gmc
+
+	* test case for minimum required version of Perl modules
+	  
+	  Encode > 2.12 particularly matters, but there are likely
+	  others of significance.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-12-01  dbwells
+
+	* Assorted small serials fixes
+
+2010-12-01  dbs
+
+	* Return the copy status name when a copy is not available
+	  
+	  It looks like the checkout operation used to return a fleshed
+	  config.copy_status object, but that changed and we now get a
+	  raw ccs ID back.
+	  
+	  Retrieve the status name using the ccs ID and present that
+	  to the users. Also, in case problems like this happen in
+	  the future, provide a more specific error message and var
+	  name so that it will be (hopefully!) a little clearer what
+	  payload was expected in the first place :)
+	  
+	  Resolves https://bugs.launchpad.net/evergreen/+bug/680575
+	  
+	  Thanks to Jason Etheridge for a major assist with this bug.
+
+2010-12-02  miker
+
+	* .: Tagging beta4 of 2.0
+
