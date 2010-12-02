@@ -67,7 +67,7 @@ function init_lists() {
             'columns' : columns,
             'map_row_to_columns' : column_mapper_func,
             'on_select' : function(ev) {
-                JSAN.use('util.functional'); var sel = list1.retrieve_selection();
+                JSAN.use('util.functional'); var sel = list2.retrieve_selection();
                 selected2 = util.functional.map_list( sel, function(o) { return JSON2js(o.getAttribute('retrieve_id')); });
                 if (selected2.length == 0) { 
                     cmd_retrieve_patron2.setAttribute('disabled','true');
