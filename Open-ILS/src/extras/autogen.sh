@@ -88,6 +88,10 @@ fi;
 JSDIR="LOCALSTATEDIR/web/opac/common/js/";
 FMDOJODIR="LOCALSTATEDIR/web/js/dojo/fieldmapper/";
 SLIMPACDIR="LOCALSTATEDIR/web/opac/extras/slimpac/";
+SKINDIR='LOCALSTATEDIR/web/opac/skin';
+
+COMPRESSOR="" # TODO: set via ./configure
+#COMPRESSOR="java -jar /opt/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar"
 
 echo "Updating Evergreen organization tree and IDL using '$CONFIG'"
 echo ""
@@ -123,7 +127,32 @@ then
 	perl org_tree_proximity.pl "$CONFIG";
 fi
 
-echo "";
+echo "Creating combined JS..."
+cd $JSDIR;
+
+for skin in $(ls $SKINDIR); do
+
+    files=$(sed -n -e "/<\!--START COMPRESSION-->/,/<\!--END COMPRESSION-->/  s/.*\?\/\([^']*\.js\)'.*/\1/p" $SKINDIR/$skin/xml/common/js_common.xml);
+
+    if [ -n "$files" ]; then
+
+        # add the selected files to one combined file
+        COMPRESS_FILE="$SKINDIR/$skin/js/combined.js"
+        cat $files > $COMPRESS_FILE
+
+        # if a compressor is configured, compress and report the size savings
+        if [ -n "$COMPRESSOR" ]; then
+
+            echo -n "before: "; du -h $COMPRESS_FILE;
+
+            $COMPRESSOR $COMPRESS_FILE > $COMPRESS_FILE.t;
+            mv $COMPRESS_FILE.t $COMPRESS_FILE;
+
+            echo -n "after:  "; du -h $COMPRESS_FILE;
+        fi;
+    fi;
+done;
+
 echo "Done";
 
 )
