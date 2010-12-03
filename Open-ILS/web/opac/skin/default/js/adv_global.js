@@ -293,7 +293,8 @@ function advBuildSearchBlob() {
 				break;
 
 			case 'nocontains' : {
-				var words = term.split(" ");
+	    			// Normalize spaces so we don't get "- " embedded in the query
+	    			var words = term.replace(/\s+/g,' ').replace(/^\s*/,'').replace(/\s*$/,'').split(" ");
 					for( var j in words ) 
 						string += " -" + words[j];
 				}
