@@ -151,7 +151,15 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                     });
 
                                     if (debug) alert('BibTemplate debug -- template values:\n' + dojo.toJson( template_values ));
-                                    if (template_value_count > 0) slot.innerHTML = dojo.string.substitute( unescape(slot.innerHTML), template_values );
+                                    if (template_value_count > 0) {
+                                        dojo.attr(
+                                            slot, "innerHTML",
+                                            dojo.string.substitute(
+                                                unescape(slot.innerHTML),
+                                                template_values
+                                            )
+                                        );
+                                    }
                                 }
 
                                 var handler_node = dojo.query( '*[type="opac/slot-format"]', slot )[0];
@@ -163,7 +171,7 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                     if (templated) {
                                         if (handler_node) handler_node.parentNode.replaceChild( dojo.doc.createTextNode( content ), handler_node );
                                     } else {
-                                        slot.innerHTML = content;
+                                        dojo.attr(slot, "innerHTML", content);
                                     }
                                 }
 
