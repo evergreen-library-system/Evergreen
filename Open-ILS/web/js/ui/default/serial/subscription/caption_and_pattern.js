@@ -207,3 +207,135 @@ function SCAPEditor() {
 
     this.init.apply(this, arguments);
 }
+
+function SCAPImporter() {
+    var self = this;
+
+    this.init = function(sub) {
+        this.sub = sub;
+
+        this.template = dojo.byId("record_template");
+        this.template = this.template.parentNode.removeChild(this.template);
+        this.template.removeAttribute("id");
+
+        dojo.byId("scaps_from_bib").onclick = function() { self.launch(); };
+    };
+
+    this.launch = function() {
+        this.reset();
+        progress_dialog.show(true);
+
+        fieldmapper.standardRequest(
+            ["open-ils.serial",
+                "open-ils.serial.caption_and_pattern.find_legacy_by_bib_record"], {
+                "params": [openils.User.authtoken, this.sub.record_entry()],
+                "timeout": 10, /* sync */
+                "onresponse": function(r) {
+                    if (r = openils.Util.readResponse(r)) {
+                        self.add_record(r);
+                    }
+                }
+            }
+        );
+
+        progress_dialog.hide();
+        if (this.any_records())
+            scaps_from_bib_dialog.show();
+        else /* XXX i18n */
+            alert("No related records with any caption and pattern fields.");
+    };
+
+    this.reset = function() {
+        dojo.empty("record_holder");
+        this._records = [];
+    };
+
+    this.any_records = function() {
+        return Boolean(this._records.length);
+    }
+
+    this.add_record = function(obj) {
+        var row = dojo.clone(this.template);
+
+        var checkbox = dojo.query("input[type='checkbox']", row)[0];
+        obj._checkbox = checkbox;
+
+        this._records.push(obj);
+
+        if (obj.classname == "bre") {
+            /* XXX i18n */
+            node_by_name("obj_class", row).innerHTML = "Bibliographic";
+            node_by_name("obj_id", row).innerHTML = obj.tcn_value();
+            if (obj.owner()) {
+                openils.Util.show(
+                    node_by_name("obj_owner_container", row), "inline"
+                );
+                node_by_name("obj_owner", row).innerHTML = obj.owner();
+            }
+        } else {
+            /* XXX i18n */
+            node_by_name("obj_class", row).innerHTML = "Legacy serial";
+            node_by_name("obj_id", row).innerHTML = obj.id();
+            node_by_name("obj_owner", row).innerHTML = obj.owning_lib();
+            openils.Util.show(
+                node_by_name("obj_owner_container", row), "inline"
+            );
+        }
+
+        if (!openils.Util.isTrue(obj.active()))
+            openils.Util.show(node_by_name("obj_inactive", row), "inline");
+
+        node_by_name("obj_create", row).innerHTML =
+            /* XXX i18n */
+            dojo.string.substitute(
+                "${0}, ${1} ${2}", [
+                    obj.creator().family_name(),
+                    obj.creator().first_given_name(),
+                    obj.creator().second_given_name(),
+                ].map(function(o) { return o || ""; })
+            ) + " on " + openils.Util.timeStamp(obj.create_date());
+
+        node_by_name("obj_edit", row).innerHTML =
+            /* XXX i18n */
+            dojo.string.substitute(
+                "${0}, ${1} ${2}", [
+                    obj.editor().family_name(),
+                    obj.editor().first_given_name(),
+                    obj.editor().second_given_name(),
+                ].map(function(o) { return o || ""; })
+            ) + " on " + openils.Util.timeStamp(obj.edit_date());
+
+        dojo.place(row, "record_holder", "last");
+    };
+
+    this.import = function() {
+        var documents = this._records.filter(
+            function(o) { return o._checkbox.checked; }
+        ).map(
+            function(o) { return o.marc(); }
+        );
+
+        if (!documents.length) {
+            /* XXX i18n */
+            alert("You have selected no records from which to import.");
+        } else {
+            progress_dialog.show(true);
+            fieldmapper.standardRequest(
+                ["open-ils.serial",
+                    "open-ils.serial.caption_and_pattern.create_from_records"],{
+                    "params": [openils.User.authtoken,this.sub.id(),documents],
+                    "async": false,
+                    "onresponse": function(r) {
+                        if (r = openils.Util.readResponse(r)) {
+                            cap_editor.add_row(r);
+                        }
+                    }
+                }
+            );
+            progress_dialog.hide();
+        }
+
+    };
+
+    this.init.apply(this, arguments);
+}

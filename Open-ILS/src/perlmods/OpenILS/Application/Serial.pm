@@ -2926,4 +2926,113 @@ sub replace_routing_list_users {
     undef;
 }
 
+__PACKAGE__->register_method(
+    "method" => "get_records_with_marc_85x",
+    "api_name"=>"open-ils.serial.caption_and_pattern.find_legacy_by_bib_record",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Return the specified BRE itself and/or any related SRE ".
+            "whenever they have 853-855 tags",
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "bib record ID", "type" => "number"},
+        ],
+        "return" => {
+            "desc" => "objects, either bre or sre", "type" => "object"
+        }
+    }
+);
+
+sub get_records_with_marc_85x { # specifically, 853-855
+    my ($self, $client, $auth, $bre_id) = @_;
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $bre = $e->search_biblio_record_entry([
+        {"id" => $bre_id, "deleted" => "f"}, {
+            "flesh" => 1,
+            "flesh_fields" => {"bre" => [qw/creator editor owner/]}
+        }
+    ]) or return $e->die_event;
+
+    return undef unless @$bre;
+    $bre = $bre->[0];
+
+    my $record = MARC::Record->new_from_xml($bre->marc);
+    $client->respond($bre) if $record->field("85[3-5]");
+    # XXX Is passing a regex to ->field() an abuse of MARC::Record ?
+
+    my $sres = $e->search_serial_record_entry([
+        {"record" => $bre_id, "deleted" => "f"}, {
+            "flesh" => 1,
+            "flesh_fields" => {"sre" => [qw/creator editor owning_lib/]}
+        }
+    ]) or return $e->die_event;
+
+    $e->disconnect;
+
+    foreach my $sre (@$sres) {
+        $client->respond($sre) if
+            MARC::Record->new_from_xml($sre->marc)->field("85[3-5]");
+    }
+
+    undef;
+}
+
+__PACKAGE__->register_method(
+    "method" => "create_scaps_from_marcxml",
+    "api_name" => "open-ils.serial.caption_and_pattern.create_from_records",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Create caption and pattern objects from 853-855 tags " .
+            "in MARCXML documents",
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "Subscription ID", "type" => "number"},
+            {"desc" => "list of MARCXML documents as strings",
+                "type" => "array"},
+        ],
+        "return" => {
+            "desc" => "Newly created caption and pattern objects",
+            "type" => "object", "class" => "scap"
+        }
+    }
+);
+
+sub create_scaps_from_marcxml {
+    my ($self, $client, $auth, $sub_id, $docs) = @_;
+
+    return undef unless ref $docs eq "ARRAY";
+
+    my $e = new_editor("authtoken" => $auth, "xact" => 1);
+    return $e->die_event unless $e->checkauth;
+
+    # Retrieve the subscription just for perm checking (whether we can create
+    # scaps at the owning lib).
+    my $sub = $e->retrieve_serial_subscription($sub_id) or return $e->die_event;
+    return $e->die_event unless
+        $e->allowed("ADMIN_SERIAL_CAPTION_PATTERN", $sub->owning_lib);
+
+    foreach my $record (map { MARC::Record->new_from_xml($_) } @$docs) {
+        foreach my $field ($record->field("85[3-5]")) {
+            my $scap = new Fieldmapper::serial::caption_and_pattern;
+            $scap->subscription($sub_id);
+            $scap->type($MFHD_NAMES_BY_TAG{$field->tag});
+            $scap->pattern_code(
+                OpenSRF::Utils::JSON->perl2JSON(
+                    [ $field->indicator(1), $field->indicator(2),
+                        map { @$_ } $field->subfields ] # flattens nested array
+                )
+            );
+            $e->create_serial_caption_and_pattern($scap) or
+                return $e->die_event;
+            $client->respond($e->data);
+        }
+    }
+
+    $e->commit or return $e->die_event;
+    undef;
+}
+
 1;

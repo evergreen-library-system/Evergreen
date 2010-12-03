@@ -43,10 +43,38 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="7">
-                    <button name="add">Add Caption and Pattern</button>
+                <td colspan="7" align="center">
+                    <button name="add">Add New</button>
+                    &nbsp;
+                    <button id="scaps_from_bib">
+                        Import From Bibliographic or Legacy Serial Records
+                    </button>
                 </td>
             </tr>
         </tfoot>
     </table>
+</div>
+<div class="hidden">
+    <div id="record_template" style="padding-bottom: 0.5em;">
+        <input type="checkbox" />&nbsp; <span name="obj_class"></span> record
+        #<span name="obj_id"></span>
+        <span name="obj_owner_container" class="hidden">
+            (<span name="obj_owner"></span>)
+        </span><br />
+        &nbsp; Created by <span name="obj_create"></span><br />
+        &nbsp; Edited by <span name="obj_edit"></span><br />
+        <em class="hidden" name="obj_inactive">(Inactive)</em>
+    </div>
+    <div dojoType="dijit.Dialog" execute="cap_importer.import()"
+        jsId="scaps_from_bib_dialog">
+        <div>
+            <em>
+                Select records from which to import caption and pattern fields.
+            </em>
+        </div>
+        <div id="record_holder" style="padding: 1em 0;"></div>
+        <button dojoType="dijit.form.Button" type="submit">
+            Import
+        </button>
+    </div>
 </div>

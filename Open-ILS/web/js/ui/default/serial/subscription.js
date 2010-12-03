@@ -17,6 +17,10 @@ var cgi;
 var sub;
 var sub_id;
 
+function node_by_name(name, ctx) {
+    return dojo.query("[name='" + name + "']", ctx)[0];
+}
+
 /* typing save: add {get,set}Value() to all HTML <select> elements */
 HTMLSelectElement.prototype.getValue = function() {
     return this.options[this.selectedIndex].value;
