@@ -15503,6 +15503,9 @@ CREATE INDEX scecm_owning_copy_idx ON asset.stat_cat_entry_copy_map(owning_copy)
 
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'identifier', oils_i18n_gettext('identifier', 'Identifier', 'cmc', 'name') );
 
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
+    (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject//text()$$ );
+
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
     (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="001"]/text()$$, TRUE );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
