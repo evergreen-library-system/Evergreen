@@ -15020,7 +15020,6 @@ INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('eg.subject'
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('dc.subject','subject');
 INSERT INTO config.metabib_search_alias (alias,field_class,field) VALUES ('bib.subjectplace','subject',11);
 INSERT INTO config.metabib_search_alias (alias,field_class,field) VALUES ('bib.subjectname','subject',12);
-INSERT INTO config.metabib_search_alias (alias,field_class,field) VALUES ('bib.subjectoccupation','subject',16);
 
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('se','series');
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('eg.series','series');
@@ -15503,8 +15502,9 @@ CREATE INDEX scecm_owning_copy_idx ON asset.stat_cat_entry_copy_map(owning_copy)
 
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'identifier', oils_i18n_gettext('identifier', 'Identifier', 'cmc', 'name') );
 
-INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject//text()$$ );
+INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
+    SELECT  16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject//text()$$
+      WHERE NOT EXISTS (select id from config.metabib_field where field_class = 'subject' and name = 'complete'); -- in case it's already there
 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES
     (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marcxml', $$//marcxml:datafield[tag="001"]/text()$$, TRUE );
@@ -15530,6 +15530,7 @@ SELECT SETVAL('config.metabib_field_id_seq'::TEXT, (SELECT MAX(id) FROM config.m
 
 DELETE FROM config.metabib_search_alias WHERE alias = 'dc.identifier';
 
+INSERT INTO config.metabib_search_alias (alias,field_class,field) VALUES ('bib.subjectoccupation','subject',16);
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('id','identifier');
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('dc.identifier','identifier');
 INSERT INTO config.metabib_search_alias (alias,field_class,field) VALUES ('eg.isbn','identifier', 18);
