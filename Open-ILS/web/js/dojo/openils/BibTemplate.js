@@ -59,11 +59,12 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
         },
 
         textContent : function (node) {
+            var content = '';
             if (node) {
-                return node.innerText || node.textContent ||
-                    dojox.xml.parser.textContent(node) || "";
+                if(window.ActiveXObject) content = node.text;
+                else content = node.textContent;
             }
-            return '';
+            return content;
         },
 
         render : function() {
