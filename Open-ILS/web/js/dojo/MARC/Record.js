@@ -201,8 +201,8 @@ if(!dojo._hasResource["MARC.Record"]) {
                 var f_node = doc.createElementNS( 'http://www.loc.gov/MARC21/slim', element );
                 f_node.setAttribute('tag', f.tag);
                 
-                if (f.isControlfield() && f.data) {
-                    dojox.xml.parser.textContent(f_node, f.data);
+                if (f.isControlfield()) {
+                    if (f.data) dojox.xml.parser.textContent(f_node, f.data);
                 } else {
                     f_node.setAttribute('ind1', f.indicator(1));
                     f_node.setAttribute('ind2', f.indicator(2));
@@ -227,8 +227,8 @@ if(!dojo._hasResource["MARC.Record"]) {
         fromBreaker : function (marctxt) {
             var me = this;
 
-            function cf_line_data (l) { return l.substring(4) };
-            function df_line_data (l) { return l.substring(6) };
+            function cf_line_data (l) { return l.substring(4) || '' };
+            function df_line_data (l) { return l.substring(6) || '' };
             function line_tag (l) { return l.substring(0,3) };
             function df_ind1 (l) { return l.substring(4,5).replace('\\',' ') };
             function df_ind2 (l) { return l.substring(5,6).replace('\\',' ') };
@@ -285,8 +285,9 @@ if(!dojo._hasResource["MARC.Record"]) {
             var mtxt = '=LDR ' + this.leader + '\n';
 
             mtxt += dojo.map( this.fields, function (f) {
-                if (f.isControlfield() && f.data) {
-                    return '=' + f.tag + ' ' + f.data.replace(' ','\\','g');
+                if (f.isControlfield()) {
+                    if (f.data) return '=' + f.tag + ' ' + f.data.replace(' ','\\','g');
+                    return '=' + f.tag;
                 } else {
                     return '=' + f.tag + ' ' +
                         f.indicator(1).replace(' ','\\') + 
