@@ -1719,7 +1719,7 @@ sub do_reservation_pickup {
 
             $self->reservation->fine_amount($policy->{recurring_fine});
             $self->reservation->max_fine($policy->{max_fine});
-            $self->reservation->fine_interval($recurring->recurrence_interval);
+            $self->reservation->fine_interval($recurring->recurance_interval);
         }
 
         $self->copy->status(OILS_COPY_STATUS_CHECKED_OUT);
