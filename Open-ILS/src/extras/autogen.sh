@@ -132,6 +132,8 @@ cd $JSDIR;
 
 for skin in $(ls $SKINDIR); do
 
+    [ ! -f $SKINDIR/$skin/xml/common/js_common.xml ] && continue;
+
     files=$(sed -n -e "/<\!--START COMPRESSION-->/,/<\!--END COMPRESSION-->/  s/.*\?\/\([^']*\.js\)'.*/\1/p" $SKINDIR/$skin/xml/common/js_common.xml);
 
     if [ -n "$files" ]; then
