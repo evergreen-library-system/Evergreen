@@ -1156,13 +1156,13 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
         <info>
             <title>Staff Account Permissions <indexterm><primary>staff accounts</primary><secondary>permissions</secondary></indexterm> </title>
         </info>
-        <para>Below is a general outline of staff account permission levels. To view a detailed list
+        <para> To view a detailed list
             of permissions for a particular Evergreen account go to <menuchoice>
                 <guimenu>Admin (-)</guimenu>
                 <guimenuitem>User permission editor</guimenuitem>
             </menuchoice> in the staff client.</para>
 
-        <informaltable>
+       <!-- <informaltable>
 
             <tgroup cols="7" align="center" colsep="1" rowsep="1">
 
@@ -1399,7 +1399,7 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 
                 </tbody>
             </tgroup>
-        </informaltable>
+        </informaltable>-->
     </simplesect>
 
     <simplesect xml:id="profiles-grant-permissions">
