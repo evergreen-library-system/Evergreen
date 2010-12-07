@@ -89,7 +89,7 @@
             <spacer flex="1"/>
             <button id="copy_notes" label="&staff.cat.copy_editor.copy_notes.label;" accesskey="&staff.cat.copy_editor.copy_notes.accesskey;" oncommand="g.copy_notes();"/>
             <button id="save" label="&staff.cat.copy_editor.save.label;" hidden="true" accesskey="&staff.cat.copy_editor.save.accesskey;" oncommand="g.stash_and_close();"/>
-            <button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>
+            <button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="JSAN.use('util.widgets'); util.widgets.dispatch('close',window);"/>
         </hbox>
 
         <spacer/>

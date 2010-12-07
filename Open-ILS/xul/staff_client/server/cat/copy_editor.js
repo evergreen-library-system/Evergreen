@@ -388,6 +388,7 @@ g.reset = function() {
     g.summarize( g.copies );
     g.render();
     g.check_for_unmet_required_fields();
+    oils_unlock_page();
 }
 
 /******************************************************************************************************/
@@ -414,6 +415,8 @@ g.apply = function(field,value) {
             alert(E);
         }
     }
+
+    oils_lock_page();
 }
 
 /******************************************************************************************************/
@@ -447,6 +450,8 @@ g.apply_stat_cat = function(sc_id,entry_id) {
             g.error.standard_unexpected_error_alert('apply_stat_cat',E);
         }
     }
+
+    oils_lock_page();
 }
 
 /******************************************************************************************************/
@@ -480,6 +485,8 @@ g.apply_owning_lib = function(ou_id) {
             g.error.standard_unexpected_error_alert('apply_stat_cat',E);
         }
     }
+
+    oils_lock_page();
 }
 
 /******************************************************************************************************/
@@ -1262,6 +1269,8 @@ g.render_input = function(node,blob) {
 
 g.stash_and_close = function() {
     try {
+        oils_unlock_page();
+
         if (g.handle_update) {
             try {
                 var r = g.network.request(
@@ -1281,9 +1290,10 @@ g.stash_and_close = function() {
         //g.data.stash('temp_copies');
         xulG.copies = g.copies;
         update_modal_xulG(xulG);
-        window.close();
+        JSAN.use('util.widgets');
+        util.widgets.dispatch('close',window);
     } catch(E) {
-        g.error.standard_unexpected_error_alert('stash and close',E);
+        alert('Error in copy_editor.js, g.stash_and_close(): '+E);
     }
 }
 

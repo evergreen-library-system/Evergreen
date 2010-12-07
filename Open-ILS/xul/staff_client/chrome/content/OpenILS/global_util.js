@@ -1,6 +1,7 @@
     function $(id) { return document.getElementById(id); }
 
     function oils_lock_page(params) {
+        dump('oils_lock_page\n');
         if (!params) { params = {}; }
         if (window.oils_lock) {
             if (!params.allow_multiple_locks) {
@@ -17,6 +18,7 @@
     }
 
     function oils_unlock_page(params) {
+        dump('oils_unlock_page\n');
         window.oils_lock = false;
         if (typeof xulG != 'undefined') {
             if (typeof xulG.unlock_tab == 'function') {
@@ -29,7 +31,8 @@
     window.addEventListener(
         'close',
         function(ev) {
-
+            try {
+                dump('oils_lock_page/oils_unlock_page onclose handler\n');
                 if (window.oils_lock) {
                     var confirmation = window.confirm($('offlineStrings').getString('menu.close_window.unsaved_data_warning'));
                     if (!confirmation) {
@@ -45,7 +48,22 @@
                     }
                 }
 
+                // Dispatching the window close event doesn't always close the window, even though the event does happen
+                setTimeout(
+                    function() {
+                        try {
+                            window.close();
+                        } catch(E) {
+                            dump('Error inside global_util.js, onclose handler, setTimeout window.close KLUDGE: ' + E + '\n');
+                        }
+                    }, 0
+                );
+
                 return true;
+            } catch(E) {
+                dump('Error inside global_util.js, onclose handler: ' + E + '\n');
+                return true;
+            }
         },
         false
     );
