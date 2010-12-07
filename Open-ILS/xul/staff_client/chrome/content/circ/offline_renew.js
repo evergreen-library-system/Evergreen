@@ -1,4 +1,6 @@
 var offlineStrings;
+var local_lock = false;
+
 function my_init() {
     try {
         offlineStrings = $('offlineStrings');
@@ -27,14 +29,23 @@ function my_init() {
         var todayPlus = new Date(); todayPlus.setTime( today.getTime() + 24*60*60*1000*14 );
         todayPlus = util.date.formatted_date(todayPlus,"%F");
 
+        function handle_lock(ev) {
+            if (!local_lock) {
+                local_lock = true;
+                xulG.lock();
+            }
+        }
+
         $('duedate').setAttribute('value',todayPlus);
         $('duedate').addEventListener('change',check_date,false);
 
+        $('p_barcode').addEventListener('change',handle_lock,false);
         $('p_barcode').addEventListener('change',test_patron,false);
 
         $('p_barcode').addEventListener('keypress',handle_keypress,false);
         $('p_barcode').focus();    
 
+        $('i_barcode').addEventListener('change',handle_lock,false);
         $('i_barcode').addEventListener('keypress',handle_keypress,false);
         $('enter').addEventListener('command',handle_enter,false);
 
@@ -199,6 +210,11 @@ function append_to_list(checkout_type,count) {
 
         var x = $('i_barcode'); x.value = ''; x.focus();
 
+        if (!local_lock) {
+            local_lock = true;
+            xulG.lock();
+        }
+
     } catch(E) {
 
         dump(E+'\n'); alert(E);
@@ -220,7 +236,12 @@ function next_patron(cancel) {
                     file.append_object(row);
                 }
                 file.close();
-                
+
+                if (local_lock) {
+                    local_lock = false;
+                    xulG.unlock();
+                }
+               
                 if ($('print_receipt').checked) {
                     try {
                         var params = {

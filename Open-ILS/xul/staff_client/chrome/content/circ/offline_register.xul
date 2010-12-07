@@ -127,7 +127,7 @@
         </hbox>
         <hbox>
             <spacer flex="1"/>
-            <button id="cancel" label="&common.cancel;" />
+            <button id="cancel" hidden="true" label="&common.cancel;" />
             <button id="submit" label="&staff.circ.offline_register.submit.label;" accesskey="&staff.circ.offline_register.submit.accesskey;" />
         </hbox>
     </groupbox>

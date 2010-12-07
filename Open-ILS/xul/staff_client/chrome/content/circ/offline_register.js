@@ -1,4 +1,5 @@
 var offlineStrings;
+var local_lock = false;
 
 function my_init() {
     try {
@@ -20,6 +21,48 @@ function my_init() {
         $('barcode').addEventListener('change',test_patron,false);
         $('barcode').addEventListener('keypress',handle_keypress,false);
         $('submit').addEventListener('command',next_patron,false);
+
+        function handle_lock(ev) {
+            if (!local_lock) {
+                local_lock = true;
+                xulG.lock();
+            }
+        }
+        $('barcode').addEventListener('change',handle_lock,false);
+        $('passwd').addEventListener('change',handle_lock,false);
+        $('ident_value').addEventListener('change',handle_lock,false);
+        $('first_given_name').addEventListener('change',handle_lock,false);
+        $('family_name').addEventListener('change',handle_lock,false);
+        $('dob').addEventListener('change',handle_lock,false);
+        $('street1').addEventListener('change',handle_lock,false);
+        $('street2').addEventListener('change',handle_lock,false);
+        $('city').addEventListener('change',handle_lock,false);
+        $('state').addEventListener('change',handle_lock,false);
+        $('country').addEventListener('change',handle_lock,false);
+        $('post_code').addEventListener('change',handle_lock,false);
+
+        $('cancel').addEventListener(
+            'command',
+            function(ev) {
+                $('barcode').value = '';
+                $('passwd').value = '';
+                $('ident_value').value = '';
+                $('first_given_name').value = '';
+                $('family_name').value = '';
+                $('dob').value = '';
+                $('street1').value = '';
+                $('street2').value = '';
+                $('city').value = '';
+                $('state').value = '';
+                $('country').value = '';
+                $('post_code').value = '';
+                if (local_lock) {
+                    local_lock = false;
+                    xulG.unlock();
+                }
+            },
+            false
+        );
 
         JSAN.use('util.file');
         JSAN.use('util.widgets');
@@ -315,6 +358,11 @@ function next_patron() {
         obj.delta = g.delta;
         file.append_object(obj);
         file.close();
+
+        if (local_lock) {
+            local_lock = false;
+            xulG.unlock();
+        }
 
         alert(offlineStrings.getString('circ.offline_register.patron.saved'));
 

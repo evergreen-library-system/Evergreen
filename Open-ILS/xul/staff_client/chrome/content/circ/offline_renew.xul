@@ -100,7 +100,7 @@
                 </hbox>
                 <hbox>
                     <spacer flex="1"/>
-                    <button id="cancel" label="&common.cancel;" />
+                    <button id="cancel" hidden="true" label="&common.cancel;" />
                     <button id="submit" label="&common.save_transactions.label;" accesskey="&common.save_transactions.accesskey;" />
                 </hbox>
             </vbox>

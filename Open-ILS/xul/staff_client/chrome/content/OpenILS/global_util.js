@@ -3,37 +3,39 @@
     function oils_lock_page(params) {
         dump('oils_lock_page\n');
         if (!params) { params = {}; }
-        if (window.oils_lock) {
+        if (window.oils_lock > 0) {
             if (!params.allow_multiple_locks) {
-                return 'already locked';
+                return window.oils_lock;
             }
         }
-        window.oils_lock = true;
+        window.oils_lock++;
         if (typeof xulG != 'undefined') {
             if (typeof xulG.unlock_tab == 'function') {
                 xulG.lock_tab();
             }
         }
-        return 'locked';
+        return window.oils_lock;
     }
 
     function oils_unlock_page(params) {
         dump('oils_unlock_page\n');
-        window.oils_lock = false;
+        window.oils_lock--;
+        if (window.oils_lock < 0) { window.oils_lock = 0; }
         if (typeof xulG != 'undefined') {
             if (typeof xulG.unlock_tab == 'function') {
                 xulG.unlock_tab();
             }
         }
-        return 'unlocked';
+        return window.oils_lock;
     }
 
+    window.oils_lock = 0;
     window.addEventListener(
         'close',
         function(ev) {
             try {
                 dump('oils_lock_page/oils_unlock_page onclose handler\n');
-                if (window.oils_lock) {
+                if (window.oils_lock > 0) {
                     var confirmation = window.confirm($('offlineStrings').getString('menu.close_window.unsaved_data_warning'));
                     if (!confirmation) {
                         ev.preventDefault();
@@ -41,7 +43,7 @@
                     }
                 }
 
-                window.oils_lock = false;
+                window.oils_lock = 0;
                 if (typeof xulG != 'undefined') {
                     if (typeof xulG.unlock_tab == 'function') {
                         xulG.unlock_tab();

@@ -31,23 +31,68 @@ circ.offline.prototype = {
                         ],
                         'cmd_checkout' : [
                             ['command'],
-                            function() { obj.deck.set_iframe('offline_checkout.xul',{},{}); }
+                            function() {
+                                obj.deck.set_iframe(
+                                    'offline_checkout.xul',
+                                    {},
+                                    {
+                                        'lock' : function() { oils_lock_page({'allow_multiple_locks':true}); },
+                                        'unlock' : oils_unlock_page
+                                    }
+                                );
+                            }
                         ],
                         'cmd_renew' : [
                             ['command'],
-                            function() { obj.deck.set_iframe('offline_renew.xul',{},{}); }
+                            function() {
+                                obj.deck.set_iframe(
+                                    'offline_renew.xul',
+                                    {},
+                                    {
+                                        'lock' : function() { oils_lock_page({'allow_multiple_locks':true}); },
+                                        'unlock' : oils_unlock_page
+                                    }
+                                );
+                            }
                         ],
                         'cmd_in_house_use' : [
                             ['command'],
-                            function() { obj.deck.set_iframe('offline_in_house_use.xul',{},{}); }
+                            function() {
+                                obj.deck.set_iframe(
+                                    'offline_in_house_use.xul',
+                                    {},
+                                    {
+                                        'lock' : function() { oils_lock_page({'allow_multiple_locks':true}); },
+                                        'unlock' : oils_unlock_page
+                                    }
+                                );
+                            }
                         ],
                         'cmd_checkin' : [
                             ['command'],
-                            function() { obj.deck.set_iframe('offline_checkin.xul',{},{}); }
+                            function() {
+                                obj.deck.set_iframe(
+                                    'offline_checkin.xul',
+                                    {},
+                                    {
+                                        'lock' : function() { oils_lock_page({'allow_multiple_locks':true}); },
+                                        'unlock' : oils_unlock_page
+                                    }
+                                );
+                            }
                         ],
                         'cmd_register_patron' : [
                             ['command'],
-                            function() { obj.deck.set_iframe('offline_register.xul',{},{}); }
+                            function() {
+                                obj.deck.set_iframe(
+                                    'offline_register.xul',
+                                    {},
+                                    {
+                                        'lock' : function() { oils_lock_page({'allow_multiple_locks':true}); },
+                                        'unlock' : oils_unlock_page
+                                    }
+                                );
+                            }
                         ],
                         'cmd_print_last_receipt' : [
                             ['command'],
@@ -58,7 +103,14 @@ circ.offline.prototype = {
                         ],
                         'cmd_exit' : [
                             ['command'],
-                            function() { try { xulG.close_tab(); } catch(E) { window.close(); } }
+                            function() {
+                                try {
+                                    xulG.close_tab();
+                                } catch(E) {
+                                    JSAN.use('util.widgets');
+                                    util.widgets.dispatch('close',window);
+                                }
+                            }
                         ],
                     }
                 }

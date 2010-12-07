@@ -1,4 +1,5 @@
 var offlineStrings;
+var local_lock = false;
 
 function my_init() {
     try {
@@ -26,6 +27,13 @@ function my_init() {
 
         JSAN.use('util.date');
 
+        function handle_lock(ev) {
+            if (!local_lock) {
+                local_lock = true;
+                xulG.lock();
+            }
+        }
+        $('i_barcode').addEventListener('change',handle_lock,false);
         $('i_barcode').addEventListener('keypress',handle_keypress,false);
         $('i_barcode').focus();    
 
@@ -92,6 +100,11 @@ function append_to_list() {
 
         var x = $('i_barcode'); x.value = ''; x.focus();
 
+        if (!local_lock) {
+            local_lock = true;
+            xulG.lock();
+        }
+
     } catch(E) {
 
         dump(E+'\n'); alert(E);
@@ -108,6 +121,11 @@ function next_patron() {
             file.append_object(row);
         }
         file.close();
+
+        if (local_lock) {
+            local_lock = false;
+            xulG.unlock();
+        }
 
         if ($('print_receipt').checked) {
             try {
