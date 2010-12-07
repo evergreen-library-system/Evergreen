@@ -1,5 +1,55 @@
     function $(id) { return document.getElementById(id); }
 
+    function oils_lock_page(params) {
+        if (!params) { params = {}; }
+        if (window.oils_lock) {
+            if (!params.allow_multiple_locks) {
+                return 'already locked';
+            }
+        }
+        window.oils_lock = true;
+        if (typeof xulG != 'undefined') {
+            if (typeof xulG.unlock_tab == 'function') {
+                xulG.lock_tab();
+            }
+        }
+        return 'locked';
+    }
+
+    function oils_unlock_page(params) {
+        window.oils_lock = false;
+        if (typeof xulG != 'undefined') {
+            if (typeof xulG.unlock_tab == 'function') {
+                xulG.unlock_tab();
+            }
+        }
+        return 'unlocked';
+    }
+
+    window.addEventListener(
+        'close',
+        function(ev) {
+
+                if (window.oils_lock) {
+                    var confirmation = window.confirm($('offlineStrings').getString('menu.close_window.unsaved_data_warning'));
+                    if (!confirmation) {
+                        ev.preventDefault();
+                        return false;
+                    }
+                }
+
+                window.oils_lock = false;
+                if (typeof xulG != 'undefined') {
+                    if (typeof xulG.unlock_tab == 'function') {
+                        xulG.unlock_tab();
+                    }
+                }
+
+                return true;
+        },
+        false
+    );
+
     function ses(a,params) {
         try {
             if (!params) params = {};
