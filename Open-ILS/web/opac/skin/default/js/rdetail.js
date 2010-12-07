@@ -1170,32 +1170,71 @@ function rdetailGBPViewerLoadCallback() {
 }
 
 function rdetailDrawExpandedHoldings(anchor, bibid, type) {
-    anchor.innerHTML = "Hide holdings"; /* XXX i18n */
-    anchor.oldonclick = anchor.onclick;
-    anchor.onclick = function() { anchor.onclick = anchor.oldonclick; anchor.innerHTML = "Show holdings"; dojo.empty(target); };
-
     var offsets = {"basic": 0, "index": 0, "supplement": 0};
     var limit = 10; /* XXX give user control over this? */
-    var target = dojo.query("[expanded_holdings='" + type + "']")[0];
+    var target_id = "holding_type_" + type;
+    var target = dojo.byId(target_id);
+
+    anchor.innerHTML = "[-]";
+    anchor.oldonclick = anchor.onclick;
+    anchor.onclick = function() {
+        anchor.onclick = anchor.oldonclick;
+        anchor.innerHTML = "[+]";
+        dojo.empty(target);
+    };
 
     function _load() {
         dojo.empty(target);
         fieldmapper.standardRequest(
-            ["open-ils.serial", "open-ils.serial.received_siss.retrieve.by_bib.atomic"], {
+            ["open-ils.serial",
+                "open-ils.serial.received_siss.retrieve.by_bib.atomic"], {
                 "params": [bibid, {"offset": offsets[type], "limit": limit}],
                 "async": true,
                 "oncomplete": function(r) {
-                    if (r = openils.Util.readResponse(r)) {
-                        offsets[type] += r.length;
-                        dojo.forEach(
-                            r, function(sum) {
-                                dojo.create("span", {"innerHTML": sum.label()}, target);
+                    try {
+                        if (msg = r.recv().content()) { /* sic, assignment */
+                            offsets[type] += msg.length;
+                            dojo.forEach(
+                                msg, function(o) {
+                                    dojo.create("br", null, target);
+                                    dojo.create(
+                                        "span", {
+                                            "innerHTML": o.issuance.label(),
+                                            "style": {"padding": "0 2em"}
+                                        }, target
+                                    );
+
+                                    if (!o.has_units) return;
+                                    /* can't place holds if no units */
+                                    dojo.create(
+                                        "a", {
+                                            "href":"javascript:void(0);",
+                                            "onclick": function() {
+                                                holdsDrawEditor({
+                                                    "type": "I",
+                                                    "issuance": o.issuance.id()
+                                                });
+                                            },
+                                            "innerHTML": "[" +
+                                                opac_strings.PLACE_HOLD + "]"
+                                        }, target
+                                    );
+                                }
+                            );
+                            if (msg.length == limit) {
                                 dojo.create("br", null, target);
+                                dojo.create(
+                                    "a", {
+                                        "href": "javascript:void(0);",
+                                        "innerHTML":
+                                            "[" + opac_strings.MORE + "]",
+                                        "onclick": _load
+                                    }, target
+                                );
                             }
-                        );
-                        /* XXX i18n */
-                        if (r.length == limit)
-                            dojo.create("a", {"style": "margin-top: 6px;", "innerHTML": "[More]", "onclick": _load}, target);
+                        }
+                    } catch (E) {
+                        void(0);
                     }
                 }
             }

@@ -32,5 +32,7 @@
 	"ONLINE_VOLUMES": "Online volumes",
 	"SAVE_MFHD_LABEL": "Save MFHD",
 	"SUPPLEMENT_HOLDINGS": "Supplements",
-	"SUPPLEMENT_HOLDINGS_ADD": "Additional Supplement Information"
+	"SUPPLEMENT_HOLDINGS_ADD": "Additional Supplement Information",
+    "PLACE_HOLD": "Place hold",
+    "MORE": "More"
 }
