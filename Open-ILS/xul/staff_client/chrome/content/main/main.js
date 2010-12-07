@@ -541,6 +541,30 @@ function main_init() {
             }
         }
 
+        window.addEventListener(
+            'close',
+            function(ev) {
+
+                G.data.stash_retrieve();
+                if (typeof G.data.unsaved_data != 'undefined') {
+                    if (G.data.unsaved_data > 0) {
+                        var confirmation = window.confirm(offlineStrings.getString('menu.shutdown.unsaved_data_warning'));
+                        if (!confirmation) {
+                            ev.preventDefault();
+                            return false;
+                        }
+                    }
+                }
+                G.data.unsaved_data = 0;
+                G.data.stash('unsaved_data');
+
+                return true;
+
+            },
+            false
+        );
+
+
     } catch(E) {
         var error = offlineStrings.getFormattedString('common.exception', [E, '']);
         try { G.error.sdump('D_ERROR',error); } catch(E) { dump(error); }

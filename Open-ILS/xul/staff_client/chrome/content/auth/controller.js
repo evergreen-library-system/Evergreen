@@ -511,6 +511,16 @@ auth.controller.prototype = {
     },
 
     'logoff' : function() { 
+
+        this.data.stash_retrieve();
+        if (typeof this.data.unsaved_data != 'undefined') {
+            if (this.data.unsaved_data > 0) {
+                var confirmation = window.confirm( document.getElementById('offlineStrings').getString('menu.logoff.unsaved_data_warning') );
+                if (!confirmation) { return; }
+                this.data.unsaved_data = 0;
+                this.data.stash('unsaved_data');
+            }
+        }
     
         this.error.sdump('D_AUTH','logoff' + this.w + '\n'); 
         this.controller.view.progress_bar.value = 0; 
@@ -552,7 +562,18 @@ auth.controller.prototype = {
     
         this.error.sdump('D_AUTH','close' + this.w + '\n');
 
-        if (window.confirm(document.getElementById('authStrings').getString('staff.auth.controller.confirm_close'))) {
+        var confirm_string = document.getElementById('authStrings').getString('staff.auth.controller.confirm_close');
+
+        this.data.stash_retrieve();
+        if (typeof this.data.unsaved_data != 'undefined') {
+            if (this.data.unsaved_data > 0) {
+                confirm_string = document.getElementById('offlineStrings').getString('menu.shutdown.unsaved_data_warning');
+            }
+        }
+ 
+        if (window.confirm(confirm_string)) {
+            this.data.unsaved_data = 0;
+            this.data.stash('unsaved_data');
             this.logoff();
             this.w.close(); /* Probably won't go any further */
 

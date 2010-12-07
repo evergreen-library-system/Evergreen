@@ -138,6 +138,12 @@ main.menu.prototype = {
                     }
                 }
 
+                for (var id in obj.tab_semaphores) {
+                    if (obj.tab_semaphores[id] > 0) {
+                        obj.global_unsaved_data_P();
+                    }
+                }
+
                 return true;
 
             },
@@ -1305,7 +1311,16 @@ main.menu.prototype = {
             'cmd_shutdown' : [
                 ['oncommand'],
                 function() {
-                    if (window.confirm(offlineStrings.getString('menu.cmd_shutdown.prompt'))) {
+                    var confirm_string = offlineStrings.getString('menu.cmd_shutdown.prompt');
+                    obj.data.stash_retrieve();
+                    if (typeof obj.data.unsaved_data != 'undefined') {
+                        if (obj.data.unsaved_data > 0) {
+                            confirm_string = offlineStrings.getString('menu.shutdown.unsaved_data_warning');
+                        }
+                    }
+                    if (window.confirm(confirm_string)) {
+                        obj.data.unsaved_data = 0; // just in case the program doesn't close somehow
+                        obj.data.stash('unsaved_data');
                         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                         var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
                         var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);
@@ -1371,8 +1386,9 @@ main.menu.prototype = {
             if (this.tab_semaphores[id] > 0) {
                 var confirmation = window.confirm(offlineStrings.getString('menu.close_tab.unsaved_data_warning'));
                 if (!confirmation) { return; }
-                delete this.tab_semaphores[id];
+                obj.global_unsaved_data_P();
             }
+            delete this.tab_semaphores[id];
         }
 
         this.controller.view.tabs.removeItemAt(idx);
@@ -1630,6 +1646,22 @@ main.menu.prototype = {
 
     'tab_semaphores' : {},
 
+    'global_unsaved_data_V' : function() {
+        var obj = this;
+        obj.data.stash_retrieve();
+        if (typeof obj.data.unsaved_data == 'undefined') { obj.data.unsaved_data = 0; }
+        obj.data.unsaved_data++;
+        obj.data.stash('unsaved_data');
+    },
+    'global_unsaved_data_P' : function() {
+        var obj = this;
+        obj.data.stash_retrieve();
+        if (typeof obj.data.unsaved_data == 'undefined') { obj.data.unsaved_data = 0; }
+        obj.data.unsaved_data++;
+        if (obj.data.unsaved_data < 0) { obj.data.unsaved_data = 0; }
+        obj.data.stash('unsaved_data');
+    },
+
     'set_tab' : function(url,params,content_params) {
         var obj = this;
         if (!url) url = '/xul/server/';
@@ -1646,8 +1678,9 @@ main.menu.prototype = {
                 if (obj.tab_semaphores[id] > 0) {
                     var confirmation = window.confirm(offlineStrings.getString('menu.replace_tab.unsaved_data_warning'));
                     if (!confirmation) { return; }
-                    delete obj.tab_semaphores[id];
+                    obj.global_unsaved_data_P();
                 }
+                delete obj.tab_semaphores[id];
             }
         }
         var unique_id = idx + ':' + new Date();
@@ -1662,6 +1695,7 @@ main.menu.prototype = {
                 obj.tab_semaphores[id] = 0;
             }
             obj.tab_semaphores[id]++; 
+            obj.global_unsaved_data_V();
             return obj.tab_semaphores[id]; 
         };
         content_params.unlock_tab = function() { 
@@ -1671,6 +1705,7 @@ main.menu.prototype = {
             }
             obj.tab_semaphores[id]--;
             if (obj.tab_semaphores[id] < 0) { obj.tab_semaphores[id] = 0; } 
+            obj.global_unsaved_data_P();
             return obj.tab_semaphores[id]; 
         };
         content_params.inspect_tab = function() {
