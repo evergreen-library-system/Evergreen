@@ -119,6 +119,31 @@ main.menu.prototype = {
             );
         }
 
+        window.addEventListener(
+            'close',
+            function(ev) {
+
+                var unsaved_data = false;
+                for (var id in obj.tab_semaphores) {
+                    if (obj.tab_semaphores[id] > 0) {
+                        unsaved_data = true;
+                    }
+                }
+
+                if (unsaved_data) {
+                    var confirmation = window.confirm(offlineStrings.getString('menu.close_window.unsaved_data_warning'));
+                    if (!confirmation) {
+                        ev.preventDefault();
+                        return false;
+                    }
+                }
+
+                return true;
+
+            },
+            false
+        );
+
         var cmd_map = {
             'cmd_broken' : [
                 ['oncommand'],
@@ -128,7 +153,10 @@ main.menu.prototype = {
             /* File Menu */
             'cmd_close_window' : [ 
                 ['oncommand'], 
-                function() { window.close(); } 
+                function() {
+                    JSAN.use('util.widgets');
+                    util.widgets.dispatch('close',window);
+                }
             ],
             'cmd_new_window' : [
                 ['oncommand'],
