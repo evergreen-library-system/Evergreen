@@ -367,7 +367,16 @@ sub received_siss_by_bib {
                 $global ? { transform => "min", column => "id", aggregate => 1 } : "id",
                 "label",
                 "date_published"
-        ]},
+            ],
+            "sitem" => [
+                # We're not really interested in the minimum here.  This is
+                # just a way to distinguish issuances whose items have units
+                # from issuances whose items have no units, without altogether
+                # excluding the latter type of issuances.
+                {"transform" => "min", "alias" => "has_units",
+                    "column" => "unit", "aggregate" => 1}
+            ]
+        },
         from => {
             ssub => {
                 siss => {
@@ -414,7 +423,11 @@ sub received_siss_by_bib {
         distinct => 1
     });
 
-    $client->respond($e->retrieve_serial_issuance($_->{id})) for @$issuances;
+    $client->respond({
+        "issuance" => $e->retrieve_serial_issuance($_->{"id"}),
+        "has_units" => $_->{"has_units"} ? 1 : 0
+    }) for @$issuances;
+
     return undef;
 }
 __PACKAGE__->register_method(
@@ -460,7 +473,8 @@ sub scoped_bib_holdings_summary {
 
     # split into issuance type sets
     my %type_blob = (basic => [], supplement => [], index => []);
-    push @{ $type_blob{ $_->holding_type } }, $_ for (@$issuances);
+    push @{ $type_blob{ $_->{"issuance"}->holding_type } }, $_->{"issuance"}
+        for (@$issuances);
 
     # generate a statement list for each type
     my %statement_blob;

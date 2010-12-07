@@ -139,57 +139,62 @@
 					]]></script>
 				</td>
 			</tr>
-			<tr templated="true"
-				name="serial_holdings_label"
-				class="result_table_title_cell hide_me"
-				type="opac/slot-data"
-				query="datafield[tag='901'] subfield[code='c']">
-				<td colspan="2">Issues Held: ${holdingsStatement}
+			<tr name="serial_holdings_label"
+				class="result_table_title_cell hide_me">
+                <td class="rdetail_desc">&rdetail.summary.issues_held;</td>
+                <td templated="true" type="opac/slot-data"
+                    query="datafield[tag='901'] subfield[code='c']"
+                    class="rdetail_item">
+                    ${holdingsStatement}
 					<span class="hide_me" name="holdingsStatement" type="opac/template-value"><![CDATA[
-						if (fetchOrgSettingDefault(
-							getLocation(), "opac.fully_compressed_serial_holdings"
-						)) {
-							var bibid = BT.textContent(item_list[0]);
-							var blob = fieldmapper.standardRequest(
-								['open-ils.serial','open-ils.serial.bib.summary_statements'],
-								[bibid, { orgid : getLocation(), depth : getDepth() }]
-							);
+                        if (fetchOrgSettingDefault(
+                            getLocation(),
+                            "opac.fully_compressed_serial_holdings"
+                        )) {
+                            var bibid = BT.textContent(item_list[0]);
+                            var blob = fieldmapper.standardRequest(
+                                ["open-ils.serial",
+                                    "open-ils.serial.bib.summary_statements"],
+                                [bibid, {
+                                    "orgid": getLocation(), "depth": getDepth()
+                                }]
+                            );
 
-							var ret = dojo.create("div");
-							var innerret = dojo.create(
-								"div", {"style":"clear;both;"}, ret
-							);
+                            var fake = dojo.create("td");
+                            var something = false;
 
-							var something = false;
-							for (var i in blob) {
-								if (!blob[i].length) continue;
-								something = true;
-								dojo.create(
-									"div", {
-										"innerHTML": blob[i].join(", "),
-										"className": "holding_type_" + i,
-										"style": "float:left;width:33%;"
-									}, innerret
-								);
-								var div = dojo.create("div", {
-									"style": "float:left;width:33%;"
-								});
-								var a = dojo.create(
-									"a", {
-										"innerHTML": "Show holdings",
-										"href": "#",
-										"onclick": "rdetailDrawExpandedHoldings(this,"+bibid+",'"+i+"');return false"
-									}, div
-								);
-								dojo.place(div, innerret);
-								dojo.create("div", {"style":"float:right;width:33%;", "expanded_holdings": i}, innerret);
-							}
+                            for (var i in blob) {
+                                if (!blob[i].length) continue;
+                                if (something) dojo.create("br", null, fake);
+                                something = true;
 
-							if (something) dojo.removeClass(slot,'hide_me');
-							return ret.innerHTML;
-						} else {
-							return "";
-						}
+                                var a = dojo.create(
+                                    "a", {
+                                        "innerHTML": "[+]",
+                                        "href": "javascript:void(0);",
+                                        "onclick":
+                                            "rdetailDrawExpandedHoldings(this,"+
+                                            bibid + ",'" + i + "');",
+                                        "style": {"marginRight": "1.5em"}
+                                    }, fake
+                                );
+                                dojo.create(
+                                    "span", {
+                                        "innerHTML": blob[i].join(", ")
+                                    }, fake
+                                );
+                                dojo.create(
+                                    "span", {"id": "holding_type_" + i}, fake
+                                );
+                            }
+
+                            if (something)
+                                unHideMe(slot.parentNode);
+
+                            return fake.innerHTML;
+                        } else {
+                            return "";
+                        }
 					]]></span>
 				</td>
 			</tr>
