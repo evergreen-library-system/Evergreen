@@ -1336,6 +1336,17 @@ main.menu.prototype = {
     'close_tab' : function (specific_idx) {
         var idx = specific_idx || this.controller.view.tabs.selectedIndex;
         var panel = this.controller.view.panels.childNodes[ idx ];
+
+        var tab = this.controller.view.tabs.getItemAtIndex( idx );
+        var id = tab.getAttribute('id');
+        if (typeof this.tab_semaphores[id] != 'undefined') {
+            if (this.tab_semaphores[id] > 0) {
+                var confirmation = window.confirm(offlineStrings.getString('menu.close_tab.unsaved_data_warning'));
+                if (!confirmation) { return; }
+                delete this.tab_semaphores[id];
+            }
+        }
+
         this.controller.view.tabs.removeItemAt(idx);
         this.controller.view.panels.removeChild(panel);
         if(this.controller.view.tabs.childNodes.length > idx) {
@@ -1588,6 +1599,9 @@ main.menu.prototype = {
             if (params.src) { help_btn.setAttribute('src', params.src); }
         }
     },
+
+    'tab_semaphores' : {},
+
     'set_tab' : function(url,params,content_params) {
         var obj = this;
         if (!url) url = '/xul/server/';
@@ -1597,10 +1611,44 @@ main.menu.prototype = {
         var idx = this.controller.view.tabs.selectedIndex;
         if (params && typeof params.index != 'undefined') idx = params.index;
         var tab = this.controller.view.tabs.childNodes[ idx ];
+
+        var id = tab.getAttribute('id');
+        if (id) {
+            if (typeof obj.tab_semaphores[id] != 'undefined') {
+                if (obj.tab_semaphores[id] > 0) {
+                    var confirmation = window.confirm(offlineStrings.getString('menu.replace_tab.unsaved_data_warning'));
+                    if (!confirmation) { return; }
+                    delete obj.tab_semaphores[id];
+                }
+            }
+        }
+        var unique_id = idx + ':' + new Date();
+        tab.setAttribute('id',unique_id);
         if (params.focus) tab.focus();
         var panel = this.controller.view.panels.childNodes[ idx ];
         while ( panel.lastChild ) panel.removeChild( panel.lastChild );
 
+        content_params.lock_tab = function() { 
+            var id = tab.getAttribute('id');
+            if (typeof obj.tab_semaphores[id] == 'undefined') {
+                obj.tab_semaphores[id] = 0;
+            }
+            obj.tab_semaphores[id]++; 
+            return obj.tab_semaphores[id]; 
+        };
+        content_params.unlock_tab = function() { 
+            var id = tab.getAttribute('id');
+            if (typeof obj.tab_semaphores[id] == 'undefined') {
+                obj.tab_semaphores[id] = 0;
+            }
+            obj.tab_semaphores[id]--;
+            if (obj.tab_semaphores[id] < 0) { obj.tab_semaphores[id] = 0; } 
+            return obj.tab_semaphores[id]; 
+        };
+        content_params.inspect_tab = function() {
+            var id = tab.getAttribute('id');
+            return 'id = ' + id + ' semaphore = ' + obj.tab_semaphores[id];
+        }
         content_params.new_tab = function(a,b,c) { return obj.new_tab(a,b,c); };
         content_params.set_tab = function(a,b,c) { return obj.set_tab(a,b,c); };
         content_params.close_tab = function() { return obj.close_tab(); };

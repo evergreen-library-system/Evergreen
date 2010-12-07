@@ -458,6 +458,9 @@ function set_opac() {
         content_params.new_tab = xulG.new_tab;
         content_params.set_tab = xulG.set_tab;
         content_params.close_tab = xulG.close_tab;
+        content_params.lock_tab = xulG.lock_tab;
+        content_params.unlock_tab = xulG.unlock_tab;
+        content_params.inspect_tab = xulG.inspect_tab;
         content_params.new_patron_tab = xulG.new_patron_tab;
         content_params.set_patron_tab = xulG.set_patron_tab;
         content_params.volume_item_creator = xulG.volume_item_creator;
@@ -582,6 +585,9 @@ function bib_in_new_tab() {
         content_params.new_tab = xulG.new_tab;
         content_params.set_tab = xulG.set_tab;
         content_params.close_tab = xulG.close_tab;
+        content_params.lock_tab = xulG.lock_tab;
+        content_params.unlock_tab = xulG.unlock_tab;
+        content_params.inspect_tab = xulG.inspect_tab;
         content_params.new_patron_tab = xulG.new_patron_tab;
         content_params.set_patron_tab = xulG.set_patron_tab;
         content_params.volume_item_creator = xulG.volume_item_creator;
