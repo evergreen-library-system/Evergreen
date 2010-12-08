@@ -15,6 +15,9 @@
 			<listitem><para>An available desktop, server or virtual image<indexterm><primary>virtual image</primary></indexterm></para></listitem>
 			<listitem><para>1GB RAM, or more if your server also runs a graphical desktop</para></listitem>			
 			<listitem><para><systemitem class="osname">Linux</systemitem> Operating System</para><indexterm><primary>Linux</primary></indexterm></listitem>
+			<listitem><para>Ports 80 and 443 should be opened in your firewall for <systemitem class="proptocol">TCP</systemitem> connections to allow OPAC and staff 
+			client connections to the Evergreen server.</para></listitem>
+			
 		</itemizedlist>
 		<tip>
 			<para><systemitem class="osname">Debian</systemitem><indexterm><primary>Linux</primary><secondary>Debian</secondary></indexterm> and 
@@ -75,6 +78,8 @@
 		or <systemitem class="osname">Linux</systemitem> operating system</para></listitem>
     			<listitem><para>a reliable high speed Internet connection</para></listitem>
    			<listitem><para>512Mb of RAM</para></listitem>
+			<listitem><para>The staff client uses the <systemitem class="proptocol">TCP</systemitem> protocal on ports <systemitem>80</systemitem> and <systemitem>443</systemitem> to 
+			communicate with the Evergreen server.</para></listitem>
 		</itemizedlist>
   		<simplesect>
 	    		<title>Barcode Scanners</title>   

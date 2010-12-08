@@ -137,10 +137,9 @@
 				<systemitem class="username">opensrf</systemitem> users</para>     
 			</listitem>
 			<listitem>
-				<para>Open ports in the firewall<indexterm><primary>firewall</primary></indexterm>  with caution - It is necessary to open some ports to the 
-				server such as port 80 for <systemitem class="protocal">http</systemitem> <indexterm><primary>HTTP</primary></indexterm> and  443 
-				for <systemitem class="protocal">ssl</systemitem><indexterm><primary>SSL</primary></indexterm> , and it can be helpful to open ports for 
-				remote access to the database or staff client. It is also critical for administrators to 
+				<para>Open ports in the firewall<indexterm><primary>firewall</primary></indexterm> with caution - It is only necessary to open ports 
+				<systemitem class="protocol">80</systemitem> and <systemitem class="protocol">443</systemitem>
+				for <systemitem class="protocol">TCP</systemitem> connections to the Evergreen server from the OPAC and the staff client.  It is critical for administrators to 
 				understand the concepts of network security and take precautions to minimize vulnerabilities. 
 				</para>
 			</listitem>
