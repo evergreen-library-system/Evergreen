@@ -725,4 +725,15 @@ sub next {
     return ($next);
 }
 
+# return a simple subfields list
+sub subfields_list {
+    my $self = shift;
+    my @subfields;
+
+    foreach my $subfield ($self->subfields) {
+        push(@subfields, $subfield->[0], $subfield->[1]);
+    }
+    return @subfields;
+}
+
 1;
