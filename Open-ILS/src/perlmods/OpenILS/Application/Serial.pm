@@ -48,6 +48,7 @@ use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::MFHD;
+use DateTime::Format::ISO8601;
 use MARC::File::XML (BinaryEncoding => 'utf8');
 my $U = 'OpenILS::Application::AppUtils';
 my @MFHD_NAMES = ('basic','supplement','index');
@@ -716,6 +717,11 @@ sub make_predictions {
     foreach my $scap (@$scaps) {
         my $caption_field = _revive_caption($scap);
         $caption_field->update('8' => $link_id);
+        my $using_fake_chron = 0;
+        # if we have no chronology, add one for prediction puposes
+        if (!$caption_field->subfield('i') and !$caption_field->enumeration_is_chronology) {
+            $using_fake_chron = 1;
+        }
         $mfhd->append_fields($caption_field);
         my $options = {
                 'caption' => $caption_field,
@@ -726,6 +732,7 @@ sub make_predictions {
                 };
         if ($args->{base_issuance}) { # predict from a given issuance
             $options->{predict_from} = _revive_holding($args->{base_issuance}->holding_code, $caption_field, 1); # fresh MFHD Record, so we simply default to 1 for seqno
+            $options->{faked_chron_date} = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($args->{base_issuance}->date_published)) if $using_fake_chron;
         } else { # default to predicting from last published
             my $last_published = $editor->search_serial_issuance([
                     {'caption_and_pattern' => $scap->id,
@@ -743,6 +750,7 @@ sub make_predictions {
                     );
                 }
                 $options->{predict_from} = _revive_holding($last_siss->holding_code, $caption_field, 1);
+                $options->{faked_chron_date} = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($last_siss->date_published)) if $using_fake_chron;
             } else {
                 $editor->disconnect;
                 # XXX TODO make a new event type instead of hijacking this one
@@ -799,6 +807,7 @@ sub make_predictions {
 # num_to_predict : the number of issues you wish to predict
 # last_rec_date : the date of the last received issue, to be used as an offset
 #                 for predicting future issues
+# faked_chron_date : if the serial does not actually have a chronology caption (but we need one for prediction's sake), base predictions on this date
 #
 # The basic method is to first convert to a single holding if compressed, then
 # increment the holding and save the resulting values to @issuances.
@@ -815,10 +824,8 @@ sub _generate_issuance_values {
     my $num_to_predict = $options->{num_to_predict};
     my $end_date = $options->{end_date};
     my $predict_from = $options->{predict_from};   # issuance to predict from
+    my $faked_chron_date = $options->{faked_chron_date};   # serial does not have a chronology caption, so add one (temporarily) based on this date 
     #my $last_rec_date = $options->{last_rec_date};   # expected or actual
-
-    # TODO: add support for predicting serials with no chronology by passing in
-    # a last_pub_date option?
 
 
 # Only needed for 'real' MFHD records, not our temp records
@@ -840,11 +847,27 @@ sub _generate_issuance_values {
 # add a note marker for system use (?)
     $predict_from->notes('private', ['AUTOGEN']);
 
+    # our basic method for dealing with 'faked' chronologies will be to add it in, do the predicting, then take it back out
+    my $orig_caption;
+    my $faked_caption;
+    if ($faked_chron_date) {
+        $orig_caption = $predict_from->caption;
+        # because of the way MFHD::Caption and Holding work, it is simplest
+        # to recreate rather than try to update
+        $faked_caption = new MFHD::Caption(new MARC::Field($orig_caption->tag, $orig_caption->indicator(1), $orig_caption->indicator(2), $orig_caption->subfields_list, 'i' => '(year)', 'j' => '(month)', 'k' => '(day)'));
+        $predict_from = new MFHD::Holding($predict_from->seqno, new MARC::Field($predict_from->tag, $predict_from->indicator(1), $predict_from->indicator(2), $predict_from->subfields_list, 'i' => $faked_chron_date->year, 'j' => $faked_chron_date->month, 'k' => $faked_chron_date->day), $faked_caption);
+    }
+
+    my @predictions = $mfhd->generate_predictions({'base_holding' => $predict_from, 'num_to_predict' => $num_to_predict, 'end_date' => $end_date});
+
     my $pub_date;
     my @issuance_values;
-    my @predictions = $mfhd->generate_predictions({'base_holding' => $predict_from, 'num_to_predict' => $num_to_predict, 'end_date' => $end_date});
     foreach my $prediction (@predictions) {
         $pub_date = $_strp_date->parse_datetime($prediction->chron_to_date);
+        if ($faked_chron_date) { # get rid of the chronology portions and restore original caption
+            $prediction->delete_subfield(code => ['i', 'j', 'k']);
+            $prediction = new MFHD::Holding($prediction->seqno, new MARC::Field($prediction->tag, $prediction->indicator(1), $prediction->indicator(2), $prediction->subfields_list), $orig_caption);
+        }
         push(
                 @issuance_values,
                 {
