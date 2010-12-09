@@ -161,7 +161,9 @@ function spawn_editor(p,func) {
                 'new_patron_tab' : xulG.new_patron_tab,
                 'on_save' : function(p) { patron.util.work_log_patron_edit(p); if (typeof func == 'function') { func(p); } },
                 'params' : p
-            }
+            },
+            'lock_tab' : xulG.lock_tab,
+            'unlock_tab' : xulG.unlock_tab
         }
     );
 }

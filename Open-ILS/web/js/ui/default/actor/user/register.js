@@ -50,7 +50,7 @@ var dupeUsrname = false;
 var dupeBarcode = false;
 
 if(!window.xulG) var xulG = null;
-
+var lock_ready = false;
 
 function load() {
     staff = new openils.User().user;
@@ -146,6 +146,8 @@ function load() {
     } else {
         input.widget.attr('disabled', true).attr('readOnly', true);
     }
+
+    lock_ready = true;
 }
 
 
@@ -679,6 +681,16 @@ function checkClaimsNoCheckoutCountPerm() {
 
 function attachWidgetEvents(fmcls, fmfield, widget) {
 
+    dojo.connect(
+        widget.widget,
+        'onChange',
+        function(){
+            if (lock_ready && xulG && typeof xulG.lock_tab == 'function') {
+                xulG.lock_tab();
+            }
+        }
+    );
+
     if(fmcls == 'ac') {
         if(fmfield == 'barcode') {
             dojo.connect(widget.widget, 'onChange',
@@ -1134,6 +1146,8 @@ function _uEditSave(doClone) {
         {   async: true,
             params: [openils.User.authtoken, patron],
             oncomplete: function(r) {
+                lock_ready = false;
+                if (xulG && typeof xulG.unlock_tab == 'function') { xulG.unlock_tab(); }
                 newPatron = openils.Util.readResponse(r);
                 if(newPatron) {
                     uEditUpdateUserSettings(newPatron.id());

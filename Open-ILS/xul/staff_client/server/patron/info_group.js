@@ -333,6 +333,8 @@ function clone_patron() {
                     },
                     'url_prefix' : xulG.url_prefix,
                     'new_tab' : xulG.new_tab,
+                    'lock_tab' : xulG.lock_tab,
+                    'unlock_tab' : xulG.unlock_tab
                 }
             );
         }
@@ -363,7 +365,9 @@ function spawn_editor(p) {
             'tab_name' : $("patronStrings").getString('staff.patron.info_group.spawn_editor.editing_patron'),
             'passthru_content_params' : passthru,
             'url_prefix' : xulG.url_prefix,
-            'new_tab' : xulG.new_tab
+            'new_tab' : xulG.new_tab,
+            'lock_tab' : xulG.lock_tab,
+            'unlock_tab' : xulG.unlock_tab
         }
     );
 

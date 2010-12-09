@@ -251,7 +251,9 @@ patron.display.prototype = {
                                                     JSAN.use('patron.util');
                                                     patron.util.work_log_patron_edit(p_obj);
                                                 }
-                                            }
+                                            },
+                                            'lock_tab' : function() { return xulG.lock_tab(); },
+                                            'unlock_tab' : function() { return xulG.unlock_tab(); }
                                         }
                                     );
                                 }
@@ -289,7 +291,9 @@ patron.display.prototype = {
                                         'get_new_session' : function(a) { return xulG.get_new_session(a); },
                                         'new_tab' : function(a,b,c) { return xulG.new_tab(a,b,c); },
                                         'new_patron_tab' : function(a,b) { return xulG.new_patron_tab(a,b); }
-                                    }
+                                    },
+                                    'lock_tab' : function() { return xulG.lock_tab(); },
+                                    'unlock_tab' : function() { return xulG.unlock_tab(); }
                                 }
                             );
                         }

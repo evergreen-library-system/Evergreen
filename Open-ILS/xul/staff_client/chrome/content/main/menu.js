@@ -1674,6 +1674,7 @@ main.menu.prototype = {
         while ( panel.lastChild ) panel.removeChild( panel.lastChild );
 
         content_params.lock_tab = function() { 
+            dump('lock_tab\n');
             var id = tab.getAttribute('id');
             if (typeof obj.tab_semaphores[id] == 'undefined') {
                 obj.tab_semaphores[id] = 0;
@@ -1683,6 +1684,7 @@ main.menu.prototype = {
             return obj.tab_semaphores[id]; 
         };
         content_params.unlock_tab = function() { 
+            dump('unlock_tab\n');
             var id = tab.getAttribute('id');
             if (typeof obj.tab_semaphores[id] == 'undefined') {
                 obj.tab_semaphores[id] = 0;
