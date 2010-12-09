@@ -997,7 +997,11 @@ sub changes_feed {
 	#	return 302;
 	#}
 
-	my $feed = create_record_feed( 'record', $type, $list, $unapi, $org_unit->[0]->shortname, undef, $flesh_feed);
+	my $search = 'record';
+	if ($rtype = 'authority') {
+		$search = 'authority';
+	}
+	my $feed = create_record_feed( $search, $type, $list, $unapi, $org_unit->[0]->shortname, undef, $flesh_feed);
 	$feed->root($root);
 
 	if ($date) {
