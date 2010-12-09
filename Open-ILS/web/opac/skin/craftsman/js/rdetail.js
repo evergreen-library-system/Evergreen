@@ -246,7 +246,9 @@ function OpenMarcEditWindow(pcrud, rec) {
 				rec.ischanged(true);
 				pcrud.update(rec);
 			}
-		}
+		},
+        'lock_tab' : typeof xulG != 'undefined' ? (typeof xulG['lock_tab'] != 'undefined' ? xulG.lock_tab : undefined) : undefined,
+        'unlock_tab' : typeof xulG != 'undefined' ? (typeof xulG['unlock_tab'] != 'undefined' ? xulG.unlock_tab : undefined) : undefined
 	};
 }
 

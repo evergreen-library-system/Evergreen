@@ -233,7 +233,9 @@ function set_marc_edit() {
                             g.error.standard_unexpected_error_alert(document.getElementById('offlineStrings').getString("cat.save.failure"), E);
                     }
                 }
-            }
+            },
+            'lock_tab' : xulG.lock_tab,
+            'unlock_tab' : xulG.unlock_tab
         };
     if (marc_edit_reset) {
         bottom_pane.reset_iframe( a,b,c );

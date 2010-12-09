@@ -832,7 +832,9 @@ cat.z3950.prototype = {
                     'save' : {
                         'label' : $("catStrings").getString('staff.cat.z3950.spawn_marc_editor.save_button_label'),
                         'func' : save_marc
-                    }
+                    },
+                    'lock_tab' : xulG.lock_tab,
+                    'unlock_tab' : xulG.unlock_tab
                 } 
             );
         } else {

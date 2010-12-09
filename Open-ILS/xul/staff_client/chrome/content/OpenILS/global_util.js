@@ -29,11 +29,14 @@
         window.oils_lock++;
         if (typeof xulG != 'undefined') {
             if (typeof xulG.unlock_tab == 'function') {
+                dump('\twith xulG.lock_tab\n');
                 xulG.lock_tab();
             } else {
+                dump('\twithout xulG.lock_tab\n');
                 oils_unsaved_data_V();
             }
         } else {
+            dump('\twithout xulG.lock_tab\n');
             oils_unsaved_data_V();
         }
         return window.oils_lock;
@@ -45,11 +48,14 @@
         if (window.oils_lock < 0) { window.oils_lock = 0; }
         if (typeof xulG != 'undefined') {
             if (typeof xulG.unlock_tab == 'function') {
+                dump('\twith xulG.unlock_tab\n');
                 xulG.unlock_tab();
             } else {
+                dump('\twithout xulG.unlock_tab\n');
                 oils_unsaved_data_P();
             }
         } else {
+            dump('\twithout xulG.unlock_tab\n');
             oils_unsaved_data_P();
         }
         return window.oils_lock;

@@ -468,6 +468,7 @@ function setFocusToNextTag (row, direction) {
 function createMARCTextbox (element,attrs) {
 
     var box = createComplexXULElement('textbox', attrs, Array.prototype.slice.apply(arguments, [2]) );
+    box.addEventListener('change',function(ev) { oils_lock_page(); },false);
     box.onkeypress = function (event) {
         var root_node;
         var node = element;
@@ -1585,6 +1586,7 @@ function save_attempt(xml_string) {
     try {
         var result = window.xulG.save.func( xml_string );   
         if (result) {
+            oils_unlock_page();
             if (result.id) fastItemAdd_attempt(result.id);
             if (typeof result.on_complete == 'function') result.on_complete();
         }

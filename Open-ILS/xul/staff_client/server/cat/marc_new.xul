@@ -136,7 +136,9 @@
                                             );
                                         }
                                     }
-                                }
+                                },
+                                'lock_tab' : xulG.lock_tab,
+                                'unlock_tab' : xulG.unlock_tab
                             };
                             var marc_editor = document.createElement('iframe');
                             $('marc_editor_box').appendChild(marc_editor);

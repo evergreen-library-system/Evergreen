@@ -162,7 +162,9 @@ function set_edit_pane(deck,record_id) {
                     alert('Error in bibs_abreast.js, set_edit_pane, save: ' + E);
                 }
             }
-        }
+        },
+        'lock_tab' : xulG.lock_tab(),
+        'unlock_tab' : xulG.unlock_tab()
     };
     for (var i in xulG) { my_xulG[i] = xulG[i]; }
     deck.set_iframe( urls.XUL_MARC_EDIT, {}, my_xulG );
