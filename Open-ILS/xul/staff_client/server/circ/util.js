@@ -3055,7 +3055,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         var template = check.payload.hold ? 'hold_transit_slip' : 'transit_slip';
                         var params = {
                             'patron' : print_data.user,
-                            'lib' : data.hash.aou[ check.payload.hold ? check.payload.hold.pickup_lib() : check.payload.transit.source() ],
+                            'lib' : data.hash.aou[ check.payload.hold ? check.payload.hold.pickup_lib() : (check.payload.transit ? check.payload.transit.dest() : check.org) ],
                             'staff' : data.list.au[0],
                             'header' : data.print_list_templates[ template ].header,
                             'line_item' : data.print_list_templates[ template ].line_item,
