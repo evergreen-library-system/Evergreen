@@ -1,5 +1,22 @@
     function $(id) { return document.getElementById(id); }
 
+    function oils_unsaved_data_V() {
+        JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+        data.stash_retrieve();
+        if (typeof data.unsaved_data == 'undefined') { data.unsaved_data = 0; }
+        data.unsaved_data++;
+        data.stash('unsaved_data');
+    }
+
+    function oils_unsaved_data_P() {
+        JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
+        data.stash_retrieve();
+        if (typeof data.unsaved_data == 'undefined') { data.unsaved_data = 0; }
+        data.unsaved_data--;
+        if (data.unsaved_data < 0) { data.unsaved_data = 0; }
+        data.stash('unsaved_data');
+    }
+
     function oils_lock_page(params) {
         dump('oils_lock_page\n');
         if (!params) { params = {}; }
@@ -12,7 +29,11 @@
         if (typeof xulG != 'undefined') {
             if (typeof xulG.unlock_tab == 'function') {
                 xulG.lock_tab();
+            } else {
+                oils_unsaved_data_V();
             }
+        } else {
+            oils_unsaved_data_V();
         }
         return window.oils_lock;
     }
@@ -24,7 +45,11 @@
         if (typeof xulG != 'undefined') {
             if (typeof xulG.unlock_tab == 'function') {
                 xulG.unlock_tab();
+            } else {
+                oils_unsaved_data_P();
             }
+        } else {
+            oils_unsaved_data_P();
         }
         return window.oils_lock;
     }

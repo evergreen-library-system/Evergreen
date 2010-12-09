@@ -140,7 +140,7 @@ main.menu.prototype = {
 
                 for (var id in obj.tab_semaphores) {
                     if (obj.tab_semaphores[id] > 0) {
-                        obj.global_unsaved_data_P();
+                        oils_unsaved_data_P();
                     }
                 }
 
@@ -1386,7 +1386,7 @@ main.menu.prototype = {
             if (this.tab_semaphores[id] > 0) {
                 var confirmation = window.confirm(offlineStrings.getString('menu.close_tab.unsaved_data_warning'));
                 if (!confirmation) { return; }
-                obj.global_unsaved_data_P();
+                oils_unsaved_data_P();
             }
             delete this.tab_semaphores[id];
         }
@@ -1646,22 +1646,6 @@ main.menu.prototype = {
 
     'tab_semaphores' : {},
 
-    'global_unsaved_data_V' : function() {
-        var obj = this;
-        obj.data.stash_retrieve();
-        if (typeof obj.data.unsaved_data == 'undefined') { obj.data.unsaved_data = 0; }
-        obj.data.unsaved_data++;
-        obj.data.stash('unsaved_data');
-    },
-    'global_unsaved_data_P' : function() {
-        var obj = this;
-        obj.data.stash_retrieve();
-        if (typeof obj.data.unsaved_data == 'undefined') { obj.data.unsaved_data = 0; }
-        obj.data.unsaved_data++;
-        if (obj.data.unsaved_data < 0) { obj.data.unsaved_data = 0; }
-        obj.data.stash('unsaved_data');
-    },
-
     'set_tab' : function(url,params,content_params) {
         var obj = this;
         if (!url) url = '/xul/server/';
@@ -1678,7 +1662,7 @@ main.menu.prototype = {
                 if (obj.tab_semaphores[id] > 0) {
                     var confirmation = window.confirm(offlineStrings.getString('menu.replace_tab.unsaved_data_warning'));
                     if (!confirmation) { return; }
-                    obj.global_unsaved_data_P();
+                    oils_unsaved_data_P();
                 }
                 delete obj.tab_semaphores[id];
             }
@@ -1695,7 +1679,7 @@ main.menu.prototype = {
                 obj.tab_semaphores[id] = 0;
             }
             obj.tab_semaphores[id]++; 
-            obj.global_unsaved_data_V();
+            oils_unsaved_data_V();
             return obj.tab_semaphores[id]; 
         };
         content_params.unlock_tab = function() { 
@@ -1705,7 +1689,7 @@ main.menu.prototype = {
             }
             obj.tab_semaphores[id]--;
             if (obj.tab_semaphores[id] < 0) { obj.tab_semaphores[id] = 0; } 
-            obj.global_unsaved_data_P();
+            oils_unsaved_data_P();
             return obj.tab_semaphores[id]; 
         };
         content_params.inspect_tab = function() {
