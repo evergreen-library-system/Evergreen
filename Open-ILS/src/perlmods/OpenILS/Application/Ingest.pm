@@ -2,6 +2,7 @@ package OpenILS::Application::Ingest;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 
+use strict;
 use Unicode::Normalize;
 use OpenSRF::EX qw/:try/;
 
@@ -128,13 +129,13 @@ sub rw_biblio_ingest_single_object {
     # update uri stuff ...
 
     # gather URI call numbers for this record
-    my $uri_cns = $u->{call_number} = $cstore->request(
+    my $uri_cns = $cstore->request(
         'open-ils.cstore.direct.asset.call_number.id_list.atomic' => { record => $bib->id, label => '##URI##' }
     )->gather(1);
 
     if (@$uri_cns) {
         # gather the maps for those call numbers
-        my $uri_maps = $u->{call_number} = $cstore->request(
+        my $uri_maps = $cstore->request(
             'open-ils.cstore.direct.asset.uri_call_number_map.id_list.atomic' => { call_number => $uri_cns }
         )->gather(1);
     
@@ -149,7 +150,6 @@ sub rw_biblio_ingest_single_object {
 
     # now, add CNs, URIs and maps
     my %new_cns_by_owner;
-    my %new_uris_by_owner;
     for my $u ( @{ $blob->{uri} } ) {
 
         my $owner = $u->{call_number}->owning_lib;
@@ -166,13 +166,9 @@ sub rw_biblio_ingest_single_object {
         }
 
         if ($u->{uri}->isnew) {
-            if ($new_uris_by_owner{$owner}) {
-                $u->{uri} = $new_uris_by_owner{$owner};
-            } else {
-                $u->{uri} = $new_uris_by_owner{$owner} = $cstore->request(
-                    'open-ils.cstore.direct.asset.uri.create' => $u->{uri}
-                )->gather(1);
-            }
+            $u->{uri} = $cstore->request(
+                'open-ils.cstore.direct.asset.uri.create' => $u->{uri}
+            )->gather(1);
         }
 
         # Check for an existing CN-URI map
@@ -901,8 +897,8 @@ sub class_index_string_xml {
             $value =~ s/\W+$//sgo;
 
             # hack to normalize ratio-like strings
-            while ($term =~ /\b\d{1}:[, ]?\d+(?:[ ,]\d+[^:])+/o) {
-                $term = $` . join ('', split(/[, ]/, $&)) . $';
+            while ($value =~ /\b\d{1}:[, ]?\d+(?:[ ,]\d+[^:])+/o) {
+                $value = $` . join ('', split(/[, ]/, $&)) . $';
             }
 
             $value =~ s/\b\.+\b//sgo;
@@ -1030,7 +1026,7 @@ sub _marcxml_to_full_rows {
         next unless $tagline;
         _data_tag_to_full_rows($type, $tagline, \@ns_list, $tagline->getAttribute( "tag" ));
 
-        if ($xmltype eq 'metabib' and $tag eq '245') {
+        if ($xmltype eq 'metabib' and $tagline->getAttribute( "tag" ) eq '245') {
             _data_tag_to_full_rows($type, $tagline, \@ns_list, 'tnf');
         }
     }
@@ -1159,7 +1155,7 @@ sub flat_marc_record {
     my @rows = $self->method_lookup("open-ils.ingest.flat_marc.$type.xml")->run($r->marc);
     for my $row (@rows) {
         $client->respond($row);
-        $log->debug(OpenSRF::Utils::JSON->perl2JSON($row), DEBUG);
+        $log->debug(OpenSRF::Utils::JSON->perl2JSON($row));
     }
     return undef;
 }
@@ -1253,7 +1249,7 @@ sub _extract_856_uris {
         # see if we need to create a call number
         my $cn = $cn_cache{$org->id};
         $cn = $cn->clone if ($cn);
-        $cn->clear_isnew if ($cn);
+        $cn->clear_isnew if ($cn && $cn->isnew() != 1);
 
         $cn ||= $cstore
             ->request( 'open-ils.cstore.direct.asset.call_number.search' => { owning_lib => $org->id, record => $recid, label => '##URI##' } )
@@ -1351,7 +1347,7 @@ sub biblio_fingerprint_record {
     return undef unless ($r and $r->marc);
 
     my ($fp) = $self->method_lookup('open-ils.ingest.fingerprint.xml')->run($r->marc);
-    $log->debug("Returning [$fp] as fingerprint for record $rec", INFO);
+    $log->debug("Returning [$fp] as fingerprint for record $rec");
     $fp->{quality} = int($fp->{quality});
     return $fp;
 }
