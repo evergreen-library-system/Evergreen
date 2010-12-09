@@ -1974,7 +1974,12 @@ sub recent_changes {
 	my $limit = shift;
 
 	my $type = 'biblio';
-	$type = 'authority' if ($self->api_name =~ /authority/o);
+	my $hint = 'bre';
+
+	if ($self->api_name =~ /authority/o) {
+		$type = 'authority';
+		$hint = 'are';
+	}
 
 	my $axis = 'create_date';
 	$axis = 'edit_date' if ($self->api_name =~ /edit/o);
@@ -1984,7 +1989,7 @@ sub recent_changes {
 	return $_storage->request(
 		"open-ils.cstore.direct.$type.record_entry.id_list.atomic",
 		{ $axis => { ">" => $when }, id => { '>' => 0 } },
-		{ order_by => { bre => "$axis desc" }, limit => $limit }
+		{ order_by => { $hint => "$axis desc" }, limit => $limit }
 	)->gather(1);
 }
 
