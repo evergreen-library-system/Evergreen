@@ -140,7 +140,7 @@ main.menu.prototype = {
 
                 for (var id in obj.tab_semaphores) {
                     if (obj.tab_semaphores[id] > 0) {
-                        oils_unsaved_data_P();
+                        oils_unsaved_data_P( obj.tab_semaphores[id] );
                     }
                 }
 
@@ -1386,7 +1386,7 @@ main.menu.prototype = {
             if (this.tab_semaphores[id] > 0) {
                 var confirmation = window.confirm(offlineStrings.getString('menu.close_tab.unsaved_data_warning'));
                 if (!confirmation) { return; }
-                oils_unsaved_data_P();
+                oils_unsaved_data_P( this.tab_semaphores[id] );
             }
             delete this.tab_semaphores[id];
         }
@@ -1662,7 +1662,7 @@ main.menu.prototype = {
                 if (obj.tab_semaphores[id] > 0) {
                     var confirmation = window.confirm(offlineStrings.getString('menu.replace_tab.unsaved_data_warning'));
                     if (!confirmation) { return; }
-                    oils_unsaved_data_P();
+                    oils_unsaved_data_P( obj.tab_semaphores[id] );
                 }
                 delete obj.tab_semaphores[id];
             }

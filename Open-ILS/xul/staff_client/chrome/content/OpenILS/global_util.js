@@ -8,11 +8,12 @@
         data.stash('unsaved_data');
     }
 
-    function oils_unsaved_data_P() {
+    function oils_unsaved_data_P(count) {
+        if (!count) { count = 1; }
         JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
         data.stash_retrieve();
         if (typeof data.unsaved_data == 'undefined') { data.unsaved_data = 0; }
-        data.unsaved_data--;
+        data.unsaved_data -= count;
         if (data.unsaved_data < 0) { data.unsaved_data = 0; }
         data.stash('unsaved_data');
     }
@@ -68,12 +69,16 @@
                     }
                 }
 
-                window.oils_lock = 0;
                 if (typeof xulG != 'undefined') {
                     if (typeof xulG.unlock_tab == 'function') {
                         xulG.unlock_tab();
+                    } else {
+                        oils_unsaved_data_P( window.oils_lock );
                     }
+                } else {
+                    oils_unsaved_data_P( window.oils_lock );
                 }
+                window.oils_lock = 0;
 
                 // Dispatching the window close event doesn't always close the window, even though the event does happen
                 setTimeout(
