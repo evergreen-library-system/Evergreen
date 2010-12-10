@@ -2055,7 +2055,6 @@ sub user_transaction_history {
     $filter ||= {};
     $options ||= {};
 
-	# run inside of a transaction to prevent replication delays
 	my $e = new_editor(authtoken=>$auth);
 	return $e->die_event unless $e->checkauth;
 
