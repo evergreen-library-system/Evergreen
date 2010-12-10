@@ -1,1 +1,1077 @@
-#ChangeLog
+2010-06-18  dbs
+
+	* Backport security fix r16747 from trunk
+	  
+	  1. Disable fleshing for PCRUD. Otherwise fleshing would provide a
+	  back door whereby a user could see stuff he has no permission to
+	  see.
+	  
+	  2. For the id_list method: strip out the "flesh_fields" entry,
+	  not
+	  the "flesh_columns" entry (which doesn't exist). This actually
+	  makes
+	  no difference, but if we're going to do something useless, we
+	  might
+	  as well do it right.
+
+2010-06-22  miker
+
+	* remove attempts to install staging and query schemas in 1.6.x
+
+2010-06-28  senator
+
+	* Patch from Don McMorris. Good catch, Don.
+	  
+	  He writes:
+	  
+	  In the branch rel_1_6 version of 950.data.seed-values.sql [1],
+	  lines
+	  138-142 create the OU setting
+	  'circ.booking_reservation.default_elbow_room' via the query:
+	  
+	  INSERT INTO actor.org_unit_setting (org_unit, name, value) VALUES
+	  (
+	  (SELECT id FROM actor.org_unit WHERE parent_ou IS NULL),
+	  'circ.booking_reservation.default_elbow_room',
+	  '"1 day"'
+	  );
+	  
+	  However, it appears that actor.org_unit does not start to get
+	  populated until line 853. As such, the "SELECT id FROM
+	  actor.org_unit
+	  WHERE parent_ou IS NULL" portion of the insert will return NULL,
+	  and
+	  actor.org_unit_setting.org_unit has a 'NOT NULL' contraint - as
+	  such,
+	  the insert fails.
+	  
+	  [...]
+
+2010-07-01  gmc
+
+	* backport r16838 from trunk
+	  
+	  bug #600021: fix lookup of FIFO holds OU setting
+	  
+	  Patch from Anoop Atre that fixes enabling FIFO
+	  holds via the circ.holds_fifo org unit setting.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-07-07  miker
+
+	* Forward port of r16867: add missing event definition required by
+	  vandelay authority import
+
+2010-07-08  dbs
+
+	* Give the "About" button a legitimate accesskey
+	  
+	  r15562 contained a fix for this to rel_1_6_0, but apparently I
+	  never
+	  forward-ported that "fix". Unfortunately, this leads to broken
+	  interfaces in
+	  the i18n build (bug re-found by Robert Souilliere in the 1.6.1.1
+	  release).
+
+	* Get the 1.6.0.4-1.6.0.5 updates into the rel_1_6/rel_1_6_0 stream
+	  
+	  This may end up in someone who has followed the entire 1.6.0.x
+	  upgrade train applying these two updates twice, but it shouldn't
+	  hurt - and ensures that someone who jumped to 1.6.1.0 or 1.6.1.1
+	  gets these important updates.
+
+2010-07-09  miker
+
+	* Patch from James Fournie to address backdating timestamp format
+	  error
+
+2010-07-13  dbs
+
+	* Backport the submit button from trunk. It's hard to submit a form
+	  without this.
+
+2010-07-16  erickson
+
+	* back-porting action trigger fixes 16956 and 16953
+
+	* replace line lost during conflict resolution
+
+2010-07-20  miker
+
+	* use the correct table and field, holy moly
+
+	* Patch from John Craig providing a saner timestamp cleansing setup
+	  for backdated circs, 1.6 edition
+
+2010-07-21  miker
+
+	* index which /greatly/ speeds collection of pending active events
+
+2010-07-22  miker
+
+	* backport of r17007: retain the indicators on located uri 856
+	  merge during asset merge
+
+2010-07-22  gmc
+
+	* bug #608937: make barcode search from main patron search form
+	  case-insensitive
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-07-23  miker
+
+	* Forward-port r17024: include null fields, via .toStoreItem(),
+	  when creating a permission map store item
+
+2010-08-05  gmc
+
+	* bug 613703: normalize backdate on item checkin better
+	  
+	  Fixes bug that appears to cause all checkins uploaded
+	  via offline circ to fail with an "invalid date format"
+	  error.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-08-06  gmc
+
+	* bug 614132: fix glitch when used cached permission group widget
+	  
+	  Fixes bug where the initial permission group value in a circ or
+	  hold matrix entry was not displayed when editing an
+	  existing matchpoint.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* bug 614150: bail out on ACTOR_USER_NOT_FOUND
+	  
+	  This fixes a bug where uploading an offline checkout
+	  that refers to a missing patron returns an INTERNAL_SERVER_ERROR
+	  instead of ACTOR_USER_NOT_FOUND. More generally, this avoids
+	  an exception in case case where a circ operation is made
+	  without checking the existence of the patron record beforehand.
+	  
+	  mk_env could use a better name, too.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* bug 532217: work around caching issue resulting doubled title
+	  display
+	  
+	  Quick hack shamelessly borrowed from Dan Scott to fix problem
+	  of title being displayed twice on bib details page when back
+	  button is used in OPAC or staff client.
+	  
+	  This is a temporary fix in lieu of rewriting the bib details
+	  display to use BibTemplate exclusively.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-08-09  dbs
+
+	* Patch from Ben Ostrowsky <ben@esilibrary.com> to specify "staff
+	  account" in proxied pages
+	  
+	  This change will make it a bit more clear that we're not looking
+	  for a
+	  patron barcode/PIN in the Selfcheck Login screen (and make the
+	  wording
+	  consistent across similar login pages).
+
+2010-08-10  gmc
+
+	* fix age protection proximity test for in-DB circ
+	  
+	  Patch from John Craig.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* bug 592777: allow authoritative version of open-ils.circ.retrieve
+	  
+	  Part of a fix to avoid race condition that can occur
+	  when patron renews an item in the OPAC in a database
+	  that uses pgpool and replication, which sometimes
+	  results in an erroneous 'action_circulation_not_found' error.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-08-11  dbs
+
+	* Add schema upgrades for r16982, r16996, r17009, r17159 to 1.6.1.2
+
+2010-08-12  dbs
+
+	* Remove broken old JavaScript in Google Book preview code
+	  
+	  I /think/ this was supposed to change the title of the "Preview"
+	  link to
+	  "Read this online" or the like in the case that the full text is
+	  available,
+	  but it was relying on a function that didn't exist (setText) and
+	  trying
+	  to reference an ID that didn't exists. So it broke in those rare
+	  cases
+	  where Google Books did provide the full text.
+
+	* Enable "Delete address" button to work in rel_1_6
+	  
+	  In some ways the inverse of r17023, the else clause that enabled
+	  the delete button to be enabled was never being reached because
+	  the preceding clauses caught all cases.
+	  
+	  Moving it outside of the foreach() loop entirely seems to resolve
+	  the problem.
+
+	* Show the "Active?" checkbox as part of the required (minimal) set
+	  of fields
+	  
+	  As we're registering users, it's probably a good idea to ensure
+	  that staff
+	  can set the user to active at the same time that they enter the
+	  minimal
+	  patron information.
+
+	* And get that closing brace back in place for the Dojo user editor
+
+2010-08-13  phasefx
+
+	* opac.org_unit_hiding.depth
+	  
+	  This org unit setting will hide certain org units in the public
+	  OPAC if the Original Location (url param 'ol') for the OPAC
+	  inherits this setting. This setting specifies an org unit depth,
+	  that together with the OPAC Original
+	  Location determines which section of the Org Hierarchy should be
+	  visible in the OPAC. For example, a stock Evergreen installation
+	  will have a 3-tier hierarchy (Consortium/System/Branch), where
+	  System has a depth of 1 and Branch
+	  has a depth of 2. If this setting contains a depth of 1 in such
+	  an installation, then every library in the System in which the
+	  Original Location belongs will be visible, and everything else
+	  will be hidden. A depth of 0 will
+	  effectively make every org visible. The embedded OPAC in the
+	  staff client ignores this setting.
+	  
+	  Thanks to Bill Ott for trailblazing this area and blogging about
+	  it.
+	  
+	  We're modifying the library selector in the default skin, the
+	  depth selector (search This Branch, Local Library System, etc.),
+	  the availability summary columns in search results, the copy
+	  details in the Record Summary page, and
+	  the search preferences under My Account (we're simply hiding
+	  those if needed).
+	  
+	  TODO: forward-port to trunk (which handles org unit settings a
+	  bit differently). port to craftsman?
+
+2010-08-13  dbs
+
+	* Grant permissions related to booking/reservations to circulators
+	  and admins
+	  
+	  This should make for a better out-of-the-box experience for
+	  Evergreen adopters.
+	  The permissions in the upgrade script are outside of the
+	  transaction to avoid
+	  rolling back the entire upgrade if a site has already assigned
+	  these
+	  permissions.
+	  
+	  TODO: Document the new permissions as part of the 1.6.1 release
+	  notes so
+	  that sites can alter the upgrade script according to their
+	  desires if they
+	  don't like the defaults.
+
+	* Grant booking/reservation permissions in a way that is valid SQL
+
+2010-08-18  miker
+
+	* Backport of 17243: so, some datasets have records with multiple
+	  245a subfields. yeah, really.
+
+2010-08-18  erickson
+
+	* provide an explicit import() sub to collect the boostrap config
+	  name at import. force child_init to run (once) if not run by
+	  Apache
+
+2010-08-21  miker
+
+	* backport of r17299: we need an index on LOWER(barcode) with
+	  r17018
+
+2010-08-24  atz
+
+	* 1-line fix for false 404 from sylvar
+	  
+	  solves "The requested URL
+	  /xul/rel_1_6_0_7/server/patron/ue.xhtml&clone=112879 was not
+	  found on this server."
+
+2010-08-26  senator
+
+	* Backport r17346 to fix broken OPAC renewals
+
+2010-08-27  dbs
+
+	* Backport spine label editing enhancements to rel_1_6
+
+2010-08-30  dbs
+
+	* Backport spine label prefix/suffix and printing fixes for XUL
+	  1.9.0 from trunk
+
+	* Backport r17369 from trunk: Display blank instead of 'undefined'
+	  for undefined label prefixes and suffixes
+
+	* Merge fixes from r17372 for printing label font and margin
+	  settings
+
+2010-08-31  dbs
+
+	* Backport bib-source selector from trunk (r13793)
+	  
+	  Enables one to edit the bib source of a given MARC record in the
+	  MARC editor
+
+	* Backport r71394 and r17395 from trunk: bib_source selection in
+	  Vandelay
+	  
+	  When importing a set of records from Vandelay, the bib source
+	  selection widget
+	  on the Vandelay screen should actually affect the
+	  biblio.record_entry.source
+	  value of the imported records.
+	  
+	  We also pass the record types to the MARC editor from the
+	  Vandelay and
+	  acquisitions interfaces, for however much good that does for us
+	  (not much
+	  at the moment).
+
+2010-08-31  senator
+
+	* Backport r17405: fix start/end date selection problem with
+	  reservations
+
+2010-08-31  phasefx
+
+	* fixes a bug when purging offline transactions after an Export
+
+2010-09-10  senator
+
+	* Backport r17391 from trunk, in support of the next commit I'll
+	  make
+
+	* Backport r17563 from trunk: booking bugfix
+
+2010-09-10  dbs
+
+	* Update version stamp for Evergreen service, adopting branch
+	  convention from trunk
+	  
+	  http://hostname/gateway?service=open-ils.actor&method=opensrf.open-ils.system.ils_version
+	  was returning "1-5" for a number of systems we checked; in trunk,
+	  we have adopted the
+	  "x-y" convention for branches, so in the 1.6 branches we will
+	  follow the "x-y-z"
+	  approach for a little more clarity.
+
+2010-09-16  dbs
+
+	* Enable bookbags to have a target searchOrg that sets the
+	  appropriate search scope in opac mode
+	  
+	  For example,
+	  http://example.com/opac/extras/feed/bookbag/opac/2378?skin=sparkly&searchOrg=BR1
+	  would resolve to a scope of BR1 in the dynamic OPAC.
+	  
+	  There is a more sophisticated version of this in 2.0/trunk; this
+	  is just a
+	  stop-gap measure until then.
+
+2010-09-20  gmc
+
+	* marc_add_ids - better failure recovery
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-09-20  dbs
+
+	* Make query parser a bit more careful when converting convenience
+	  classes to search classes
+	  
+	  Queries like "Heart disease: a global problem" were getting
+	  converted to series searches
+	  due to the trailing "se:" in the search terms. This change
+	  ensures that the convenience
+	  class is either at the start of the input or preceded by
+	  whitespace.
+
+2010-09-23  miker
+
+	* Forward-port of a patch from Steve Callendar, via James Fournie,
+	  via launchpad:
+	  
+	  When the patron.password.use_phone is set, new patrons are
+	  created with their password set to the last 4 digits of their
+	  phone number, HOWEVER, when a patron's password is reset, it does
+	  not work properly. Although the little underlined summary shows
+	  the proper 4 digits, the password box displays 9-ish digits, and
+	  is not the last 4 digits of the password.
+	  
+	  The attached patch was created by Steve Callender and is
+	  confirmed working on 1.6.0
+	  
+	  This patch will not work on 2.0 as that has a new user editor,
+	  but it would presumably be worthwhile to verify this
+	  functionality works in that editor as well.
+
+2010-09-24  phasefx
+
+	* merge r17958 from trunk for patron display juvenile CSS
+
+2010-09-24  gmc
+
+	* improve hold targetting
+	  
+	  * all potential capturable copies are now checked (up to the
+	  first
+	  one that is permitted for the request), instead of a small random
+	  subset of them
+	  * don't do redundant permission checks
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-10-01  miker
+
+	* Backporting mod_deflate config from trunk -- big speed win, yay!
+
+2010-10-01  dbs
+
+	* Set due times for durations measured in days to 23:59:59 after
+	  inserts OR updates
+	  
+	  The existing trigger acted only on the initial insert of a
+	  circulation
+	  transaction for duration intervals perfectly divisible by 24
+	  hours.
+	  If updates to those due dates were subsequently issued, then the
+	  due
+	  time would revert to 00:00:00 - which could cause surprising
+	  overdue
+	  fines to be generated on the due date, rather than after the due
+	  date.
+	  
+	  This commit makes the trigger take effect on both INSERT and
+	  UPDATE
+	  to the action.circulation table.
+
+2010-10-04  scottmk
+
+	* Add hold_priority column to permission.grp_tree table.
+	  
+	  For trunk and 1.6, and eventually for 1.6.2 and 2.1, but *not*
+	  for 1.6.1 or 2.0.
+	  
+	  A
+	  Open-ILS/src/sql/Pg/upgrade/0425.schema.perm-grp-tree-hold-priority.sql
+	  M Open-ILS/src/sql/Pg/006.schema.permissions.sql
+	  M
+	  Open-ILS/src/perlmods/OpenILS/Application/Storage/CDBI/permission.pm
+	  M Open-ILS/examples/fm_IDL.xml
+
+2010-10-04  miker
+
+	* Backport r18151 from trunk: add support for hold_priority sorting
+	  in open-ils.storage.action.hold_request.nearest_hold
+
+2010-10-04  phasefx
+
+	* prevent repeat renderings of opac sidebar (relevant subjects,
+	  authors, etc.) in Firefox. What's happening is that the
+	  rresultHandleMods is not firing immediately with each record
+	  retrieve, and so we get a flurry at the end where
+	  resultPageIsDone() returns true for all of them, triggering the
+	  allRecordsReceived event more than once. So now at the end of the
+	  first allRecordsReceived event chain, we set a global variable,
+	  and have these render functions check to see if it has been set.
+
+2010-10-04  senator
+
+	* Backport r18150: Hold priority control
+
+2010-10-05  dbs
+
+	* Backport MARC Editor user interface enhancements from trunk
+	  
+	  r16878 - Enable plain up-arrow and down-arrow to jump to next row
+	  in MARC editor
+	  
+	  As TAB/shift-TAB move between each editable element of the MARC
+	  record,
+	  we already have fine-grained keyboard navigation. However, moving
+	  down
+	  10 data fields requires around 50 TAB presses or more, depending
+	  on how
+	  many subfields are in the intervening data fields, or a looonng
+	  hold of
+	  the tab key; not good for RSI.
+	  
+	  The up-arrow and down-arrow keys, then, move directly to the next
+	  or
+	  previous row, placing the focus in the first editable subfield
+	  element
+	  rather than in the tag name (under the assumption that
+	  cataloguers are
+	  most likely to want to edit the contents of a given subfield, and
+	  not
+	  the tag name or indicators).
+	  
+	  Now, in the worst-case scenario, a cataloguer who wants to edit
+	  the tag
+	  name of a field 10 rows below their current position will have to
+	  make 14 key presses (10 down arrows, 4 shift-TABs). Not too
+	  shabby.
+	  
+	  r16884 - Reclaim cataloguing real estate by hiding unnecessary
+	  rows in fixed field grid editor
+	  
+	  The fixed field grid editor currently shows blank rows for fixed
+	  field
+	  attributes that don't apply to the currently displayed MARC
+	  record type. We
+	  can hide these rows and offer more screen real estate for the
+	  MARC record
+	  proper.
+	  
+	  r16897 - Initial support for wrapping long subfields in the MARC
+	  editor
+	  
+	  Limitations of the current approach are that the line width is
+	  arbitrarily set
+	  to break at 100 characters, and is only calculated on a
+	  per-subfield basis. So
+	  if a given field contains 50 subfields, each with 90 characters,
+	  this commit
+	  isn't going to help you. (But really... in that scenario, you're
+	  beyond help
+	  anyway!)
+	  
+	  Also, the double-dagger aligns itself at the top of the box
+	  rather than the
+	  middle once the box goes into multiline mode, which is annoying;
+	  but long 505
+	  fields that scroll ten screens to the right are more annoying, so
+	  I'll commit
+	  this for now rather than waste more time trying to CSS it into
+	  shape.
+	  
+	  r16903 - Refactor cursor up/down and wrap long fields using Dojo
+
+2010-10-06  scottmk
+
+	* Two changes to config schema:
+	  
+	  1. Add new column date_ceiling to rule_circ_duration table.
+	  
+	  2. New table hard_due_date.
+	  
+	  For trunk, v1.6, v1.6.2 (eventually), and v2.1 (eventually).
+	  
+	  NOT for v1.6.1 or v2.0.
+	  
+	  M Open-ILS/src/sql/Pg/002.schema.config.sql
+	  A
+	  Open-ILS/src/sql/Pg/upgrade/0432.schema.config_hard_due_date.sql
+	  M Open-ILS/examples/fm_IDL.xml
+
+2010-10-06  erickson
+
+	* added support for honoring the due date ceiling from the duration
+	  rule. AKA, end-of-semester due dates
+
+2010-10-08  dbs
+
+	* Avoid scary SSL / HTTPS errors in Apache configuration
+	  
+	  When port 443 is the last listener port, Apache generates lots
+	  of "unknown protocol speaking not SSL to HTTPS port!?" errors in
+	  the logs - which are scary, but harmless. Putting port 80 last
+	  avoids those errors entirely, per
+	  http://wiki.apache.org/httpd/InternalDummyConnection
+
+2010-10-08  phasefx
+
+	* make sure we change the juvenile flag on the patron object when
+	  we automatically change the juvenile checkbox in the UI
+
+2010-10-11  miker
+
+	* Backporting batch update functionality for 1.6.2, along with some
+	  deps
+
+	* rolling back some extra bits from trunk
+
+2010-10-11  phasefx
+
+	* fix Actions for this Record -> Add Volumes. backport was missing
+	  this
+
+2010-10-11  miker
+
+	* Backporting r18271 and r18272 from trunk
+
+2010-10-12  miker
+
+	* Backport UI improvements from trunk
+
+2010-10-13  miker
+
+	* backport bits of Vandelay required to perform the appropriate XML
+	  mangling for batch update in the db
+
+	* sync upgrade script with required reality
+
+	* force reingest via open-ils.ingest
+
+	* deduplicate bibs going into the merge queue
+
+	* backport oils_xpath wrappers
+
+	* thinko supporting multiple rules of the same type in in-line
+	  merge rulesets
+
+2010-10-13  phasefx
+
+	* Backport new record merge interface and some batch MARC edit
+	  entrypoints from trunk, and example eg_vhost.conf. r18255,
+	  r18287, r18288, r18289, r18294
+
+	* missed some pieces for r18306. A vertical version of the xul bib
+	  summary and the multi-bib side by side UI
+
+2010-10-13  miker
+
+	* backport editor swapping functionality from 2.0 for 1.6.2
+
+	* some left over cruft from the backport
+
+2010-10-13  phasefx
+
+	* overzealous trimming of cat.properties
+
+	* wrong identifier
+
+2010-10-13  miker
+
+	* no owner in 1.6
+
+	* Again, no owner in 1.6
+
+2010-10-13  phasefx
+
+	* reworking bib_brief_vertical.xul for 1.6 to support improved
+	  record merging, since it's radically different from trunk
+
+	* util.deck isn't loaded in the util_overlay in 1.6
+
+	* don't pass in the 'id' here or we'll get a pcrud cbs error. No
+	  source selector now, but no error either
+
+2010-10-14  phasefx
+
+	* change the Swap Editor button to a persisted checkbox
+
+2010-10-14  gmc
+
+	* sort call numbers better regardless of database locale
+	  
+	  rel_1_6 version of r18333, accounting for fact that 1.6.x does
+	  not
+	  have label_sortkey
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-10-14  miker
+
+	* "as" not "to" ... you pointed that out the first time, miker,
+	  what is your deal?
+
+2010-10-15  phasefx
+
+	* populate the password widget under all "reset" conditions
+
+2010-10-16  gmc
+
+	* backporting r17243 all the way down to reduce errors on upgrade
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.coM.
+
+	* restoring dbs' better ISSN extraction for
+	  r.old_super_simple_record
+	  
+	  Had gottten lost in the shuffle in rel_1_6
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* sync 1.6.0.3-1.6.0.4-upgrade-db.sql from rel_1_6_0
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-10-16  miker
+
+	* Backport oils_text_as_bytea work from 2.0
+
+2010-10-20  miker
+
+	* Backporting r18396 from trunk: Patch from Thomas Berezansky
+	  providing an alternate implementation of Hard Due Dates
+
+2010-10-20  phasefx
+
+	* channeling Bill Ott and Steve Calendar and making this change
+	  password on phone entry behavior work only for patron
+	  registration. Thanks guys!
+
+	* fix record result page in opac so that lack of an rt parameter
+	  works correctly
+
+2010-10-20  miker
+
+	* 1.6.1-1.6.2 upgrade script needs to fall in line with reality, re
+	  0442
+
+2010-10-21  gmc
+
+	* improve call number sorting
+	  
+	  oils_text_as_bytea now does uppercasing in addition
+	  to converting strings to bytea, working around
+	  the limitation that json_query can't stack transforms
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-10-25  miker
+
+	* Dump some debugging output from clark; may later make this
+	  optional, but we usually need it when looking for the cause of
+	  problems.
+
+2010-10-26  miker
+
+	* include more information in the debugging dump; correct the "back
+	  to index" link
+
+2010-10-27  dbs
+
+	* Prevent ingest errors when asset.uri ID value outstrips
+	  asset.call_number
+	  
+	  We were basing IDs in asset.uri on the max ID of
+	  asset.call_number,
+	  which occasionally led to major ingest problems as attempts to
+	  insert
+	  the next ID into asset.uri failed because that ID already
+	  existed. Using
+	  the max ID from asset.uri for asset.uri inserts seems to make
+	  more sense
+	  and does resolve that problem.
+	  
+	  The bigger problem of not using the sequences that are already on
+	  these
+	  tables to generate the IDs will not be an issue in 2.0, when we
+	  move to
+	  in-database ingest and can use the normal lastval() approach to
+	  populate
+	  asset.uri_call_number_map with the new values.
+
+2010-10-27  miker
+
+	* This column does not exist in 1.6.1, no good trying to DROP it.
+
+2010-10-27  gmc
+
+	* adjust user tests that get done when retargeting holds
+	  
+	  Fixes bug where a user having the maximum number of
+	  active hold requests allowed to them by policy would
+	  prevent items from being targeted to fill their requests.
+	  
+	  Backport of rel_2_0 commits r18189, r18197, r18201, and
+	  r18229 by Mike Rylander and Galen Charlton.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-10-28  dbs
+
+	* Backport r18516: Ensure call numbers are returned to the holdings
+	  editor in ascending sorted order
+	  
+	  James Fournie in https://bugs.launchpad.net/evergreen/+bug/635121
+	  reported
+	  that call numbers were being displayed in the order that they had
+	  been
+	  added to the database, rather than in sorted call number label
+	  order.
+	  
+	  Although I have been unable to reproduce this problem on two
+	  different
+	  test systems, the patch he provided for 1.6.1 (which fixes the
+	  problem on their
+	  test system) shouldn't hurt other systems.
+
+2010-10-28  phasefx
+
+	* missing clear_expired_circ_history.srfsh was breaking the build,
+	  copied from trunk
+
+	* backport r18498-18499 from trunk for staff-initiated age overdue
+	  circ/item to Lost functionality, with upgrade script
+
+2010-11-01  miker
+
+	* Backporting r18561 from trunk: Make vandelay.add_field smarter
+	  about applying add rules when no target field exists before hand
+
+2010-11-02  miker
+
+	* Patch from Steve Callender to address a booking-related
+	  collection agency reporting problem
+
+2010-11-02  senator
+
+	* Backport r18535 from trunk: hard due date config UIs
+
+2010-11-03  miker
+
+	* add the Batch Bib Update module to startup.pl
+
+2010-11-04  miker
+
+	* cut down on reloading of IDL classes
+
+2010-11-05  phasefx
+
+	* backporting r18609 patch from bshum for catalog search in button
+	  bar
+
+2010-11-05  gmc
+
+	* fix user password reset request time column def
+	  
+	  Needs to be a timestamp with time zone; fixes a bug
+	  where it was interpreted as a UTC time, throwing off
+	  the calculation of the expiration of the password reset
+	  request.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-08  miker
+
+	* Backporting r18652: Teach vandelay.replace_field to be a little
+	  smarter by allowing simple cases of both replacing and
+	  regexp-testing the same subfield
+
+	* Bacport r18657: syntax problem spotted by Jason Etheridge
+
+2010-11-10  gmc
+
+	* do not use TRUNCATE when refreshing
+	  reporter.materialized_simple_record
+	  
+	  Previous behavior would break Slony replication after doing a
+	  bib load. Since a deletion is slower than a truncate, if you're
+	  not using Slony replication, you may prefer to truncate rmsr
+	  prior to calling
+	  reporter.enable_materialized_simple_record_trigger.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-11-10  senator
+
+	* Backport r18688 from trunk: booking bugfix
+
+2010-11-15  senator
+
+	* Backport r17447 from trunk: fix wrong-headed permissions tests in
+	  booking
+	  
+	  This should have been backported to rel_1_6 immediately. :-(
+
+2010-11-15  miker
+
+	* Reverting and extending r18472 to correct implementation thinko
+
+2010-11-15  dbs
+
+	* asset.uri needs a seed entry for queries of its ID values
+	  
+	  To fix a problem with ingesting URIs, Ingest.pm was changed to
+	  reflect
+	  the maximum asset.uri.id value rather than the
+	  asset.call_number.id
+	  value. However, with no entries in asset.uri, the query returned
+	  a
+	  NULL object which broke ingest entirely. Adding a seed entry
+	  avoids
+	  this problem.
+
+	* Trim leading and trailing whitespace from metabib.full_rec values
+	  - fixes ISSN quicksearch (thanks for noticing this, Dan Wells!)
+
+2010-11-16  phasefx
+
+	* backport r18757 from trunk for opac org hiding extension to place
+	  hold pickup lib menu
+
+2010-11-18  erickson
+
+	* back-porting 17292: added custom internal_id handler to SIP
+	  patron module
+
+2010-11-19  phasefx
+
+	* merge r18716 from rel_2_0 to cache this setting. Thanks to James
+	  Fournie for https://bugs.launchpad.net/evergreen/+bug/677311 We
+	  should probably do this as a cookie instead for even fewer
+	  network calls. I can't see the setting changing all that
+	  frequently
+
+2010-11-29  miker
+
+	* Patch from Jeff Godin, backported from trunkified version:
+	  
+	  In the staff client, the holds context menu option "Edit
+	  PickupLibrary" displays and allows selection of org units that it
+	  shouldn't.
+	  
+	  Org units whose type has can_have_users = FALSE are not valid
+	  pickup locations.
+	  
+	  Using the default types as an example, CONS and SYS1 are invalid
+	  pickup locations.
+	  
+	  The OPAC enforces this when allowing patrons to edit a hold.
+	  
+	  The staff client does not enforce this when staff edit a hold.
+	  
+	  The can_have_users() method of the au object returns a string 't'
+	  or 'f' which is then compared to 0.
+	  
+	  The attached patch corrects this issue. ( foo == 0 becomes
+	  !isTrue(foo) ).
+
+	* logic error (inversion) in retargetting of previous copy when no
+	  other holds are looking at it
+
+2010-11-30  erickson
+
+	* back-porting cstoreditor fixes to help prevent transaction
+	  leaking
+
+2010-11-30  senator
+
+	* Backport some booking related commits from trunk.
+	  
+	  r17980: more transaction cleanups
+	  --
+	  r18502: Booking: make the circ module avoid booking code if the
+	  booking service
+	  isn't up
+	  
+	  Previously, it was not possible to turn the booking service off
+	  and have
+	  working circ. Now you should be able to turn it off if you don't
+	  need it.
+	  --
+	  r18514: If we already know we're not using booking, skip a
+	  redundant and
+	  expensive test for the possibility of capturing a hold. We're
+	  just going to
+	  try actually doing it a little farther down.
+
+2010-11-30  gmc
+
+	* protect some of the supercat browse interfaces from unboundedness
+	  
+	  E.g., browsing from a call number that contains forward slashes,
+	  e.g.,
+	  
+	  "02/05/2004"
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-12-03  miker
+
+	* Normalize spaces in notcontains advance search query terms to
+	  address bug https://bugs.launchpad.net/evergreen/+bug/677122
+
+2010-12-03  senator
+
+	* Be consistent with a misspelled field. Credit to Robert Soulliere
+	  for pointing
+	  out my mistaken understanding of where this was already fixed and
+	  where it
+	  wasn't.
+
+2010-12-03  miker
+
+	* protect against empty control fields (bad MARC)
+
+2010-12-09  dbs
+
+	* Enable Ingest to ingest multiple located URIs for a single
+	  org-unit at once
+	  
+	  Previous logic incorrectly restricted a given bib record to have
+	  one located
+	  URI per org-unit - unless you reingested it multiple times, each
+	  time adding
+	  one more URI per org-unit.
+	  
+	  We also add the strict pragma and adjust some syntax accordingly.
+
+2010-12-09  phasefx
+
+	* transit isn't in payload first time through with ROUTE_ITEM
+	  checkin, fallback on check.org
+
+	* big thinko. Going by the stock receipt template, this should be
+	  the workstation lib. Destination is handled by a different
+	  variable
+
+2010-12-10  miker
+
+	* partial backport of r18957 to capture the fixes for
+	  vandelay.replace_field -- specifically, normalizing the XML for
+	  comparison when deciding if the "add" side of a replace should
+	  proceed
+
+	* Forward-port of r18962: Addressing
+	  https://bugs.launchpad.net/evergreen/+bug/638309 -- Thanks to
+	  Steve Callender for the original report and diagnosis
+
+	* Patch from James Fournie to address
+	  https://bugs.launchpad.net/evergreen/+bug/622908 wherein we learn
+	  that related item physical description might be used as the main
+	  PD of the main item, if the main item lacks such a field in the
+	  MARC
+
+2010-12-10  phasefx
+
+	* backport r14033 from trunk for unsetting (nullifying) a circ
+	  modifier
+
+2010-12-10  miker
+
+	* upgrade cleanup in prep for cutting 1.6.2.0
+
+	* Branching for 1.6.2.x
+
+	* .: Tagging 1.6.2.0-rc1
+
