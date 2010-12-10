@@ -132,6 +132,7 @@ CREATE OR REPLACE FUNCTION authority.generate_overlay_template ( TEXT, BIGINT ) 
     return undef unless ($id); # We need an ID!
 
     my $tmpl = MARC::Record->new();
+    $tmpl->encoding( 'UTF-8' );
 
     my @rule_fields;
     for my $field ( $r->field( '1..' ) ) { # Get main entry fields from the authority record
