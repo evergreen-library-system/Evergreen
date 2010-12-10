@@ -376,6 +376,29 @@ if(!dojo._hasResource["openils.Util"]) {
         dojo.forEach(patterns, function(pat) { _hilightNode(node, pat); });
     };
 
+    openils.Util._legacyModulePaths = {};
+    /*****
+     * Take the URL of a JS file and magically turn it into something that
+     * dojo.require can load by registering a module path for it ... and load it.
+     *****/
+    openils.Util.requireLegacy = function(url) {
+        var bURL = url.replace(/\/[^\/]+$/,'');
+        var file = url.replace(/^.*\/([^\/]+)$/,'$1');
+        var libname = url.replace(/^.*?\/(.+)\/[^\/]+$/,'$1').replace(/[^a-z]/ig,'_');
+        var modname = libname + '.' + file.replace(/\.js$/,'');
+
+        if (!openils.Util._legacyModulePaths[libname]) {
+            dojo.registerModulePath(libname,bURL);
+            openils.Util._legacyModulePaths[libname] = {};
+        }
+
+        if (!openils.Util._legacyModulePaths[libname][modname]) {
+            dojo.require(modname, true);
+            openils.Util._legacyModulePaths[libname][modname] = true;
+        }
+
+        return openils.Util._legacyModulePaths[libname][modname];
+    };
 
     /**
      * Takes a chunk of HTML, inserts it into a new window, prints the window, 
