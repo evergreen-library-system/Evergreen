@@ -26,9 +26,9 @@ my $edition_xpath		= "//mods:mods/mods:originInfo//mods:edition[1]";
 my $abstract_xpath	= "//mods:mods/mods:abstract";
 my $related_xpath		= "";
 my $online_loc_xpath = "//mods:location/mods:url";
-my $physical_desc		= "(//mods:physicalDescription/mods:form|//mods:physicalDescription/mods:extent|".
-	"//mods:physicalDescription/mods:reformattingQuality|//mods:physicalDescription/mods:internetMediaType|".
-	"//mods:physicalDescription/mods:digitalOrigin)";
+my $physical_desc		= "(//mods:mods/mods:physicalDescription/mods:form|//mods:mods/mods:physicalDescription/mods:extent|".
+	"//mods:mods/mods:physicalDescription/mods:reformattingQuality|//mods:mods/mods:physicalDescription/mods:internetMediaType|".
+	"//mods:mods/mods:physicalDescription/mods:digitalOrigin)";
 my $toc_xpath			= "//mods:tableOfContents";
 
 my $xpathset = {
