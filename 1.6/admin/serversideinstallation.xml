@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<chapter xml:id="serversideinstallation" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
+<chapter version="5.0" xml:id="serversideinstallation" xml:lang="EN" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
 	<info>
 		<title>Server-side Installation of Evergreen Software</title>
 		<abstract>
@@ -110,8 +110,8 @@
 				platforms. OpenSRF 1.4.0 has been tested on <systemitem class="osname">Debian Etch
 				(4.0)</systemitem>, <systemitem class="osname">Debian Lenny (5.0)</systemitem> and
 				<systemitem class="osname">Ubuntu Lucid Lynx (10.04)</systemitem>.</para>
-				<para>In the following instructions, you are asked to perform certain steps as either
-				the <systemitem class="username">root</systemitem> user, the 
+				<para>In the following instructions, you are asked to perform certain steps as 
+				either the <systemitem class="username">root</systemitem> user, the 
 				<systemitem class="username">opensrf</systemitem> user, or the 
 				<systemitem class="username">postgres</systemitem> user.</para>
 				<itemizedlist>
@@ -138,9 +138,10 @@
 			</note>
 			<procedure>
 				<step>
-					<title>Add the OpenSRF User</title>
+					<title>Add New <systemitem class="username">opensrf</systemitem> User</title>
 					<para>As the <systemitem class="username">root</systemitem> user, add the
-					opensrf user to the system. The default shell for the new user is automatically
+					<systemitem class="username">opensrf</systemitem> user to the system.
+					The default shell for the new user is automatically
 					set to <command>/bin/bash</command> to inherit a reasonable environment:</para>
 					<screen>
 						<userinput>useradd -m -s /bin/bash opensrf</userinput>
@@ -158,7 +159,7 @@
 					and extract the latest version of OpenSRF. The latest version can be found here:
 					<ulink url="http://evergreen-ils.org/downloads/OpenSRF-1.4.0.tar.gz"></ulink></para>
 					<screen>
-						<userinput>cd /home/opensrf/OpenSRF-1.4.0</userinput>
+						<userinput>cd /home/opensrf</userinput>
 						<userinput>wget http://evergreen-ils.org/downloads/OpenSRF-1.4.0.tar.gz</userinput>
 						<userinput>tar zxf OpenSRF-1.4.0.tar.gz</userinput>
 					</screen>
@@ -323,7 +324,7 @@
 						</step>
 					</substeps>
 				</step>
-				<step>
+				<step xml:id="stop-ejabberd-service">
 					<title>Stop the <systemitem class="service">ejabberd</systemitem> Service</title>
 					<indexterm>
 						<primary>ejabberd</primary>
@@ -354,14 +355,14 @@
 					it is started again.
 					As the <systemitem class="username">root</systemitem> user, edit the file
 					<filename>/etc/ejabberd/ejabberd.cfg</filename> and make the following changes:</para>
-					<itemizedlist>
-						<listitem>
+					<substeps>
+						<step>
 							<para>Change the line:
 							<screen><userinput>{hosts, ["localhost"]}.</userinput></screen>
 							to:
 							<screen><userinput>{hosts, ["localhost", "private.localhost", "public.localhost"]}.</userinput></screen></para>
-						</listitem>
-						<listitem>
+						</step>
+						<step>
 							<para>Change the line:
 							<screen><userinput>{max_user_sessions, 10}.</userinput></screen> to:
 							<screen><userinput>{max_user_sessions, 10000}.</userinput></screen></para>
@@ -369,20 +370,20 @@
 							<screen><userinput>{access, max_user_sessions, [{10, all}]}.</userinput></screen>
 							then change it to:
 							<screen><userinput>{access, max_user_sessions, [{10000, all}]}</userinput></screen></para>
-						</listitem>
-						<listitem>
+						</step>
+						<step>
 							<para>Change all three occurrences of: <literal>max_stanza_size</literal>
 							to: <literal>2000000</literal>.</para>
-						</listitem>
-						<listitem>
+						</step>
+						<step>
 							<para>Change both occurrences of: <literal>maxrate</literal> to:
 							<literal>500000</literal>.</para>
-						</listitem>
-						<listitem>
+						</step>
+						<step>
 							<para>Comment out the line <literal>{mod_offline, []}</literal> 
 							by placing two <literal>%</literal> comment signs in front.</para>
-						</listitem>
-					</itemizedlist>
+						</step>
+					</substeps>
 				</step>
 				<step xml:id="serversideinstallation-opensrf-continued">
 					<title>Restart the <systemitem class="service">ejabberd</systemitem> service</title>
@@ -559,18 +560,21 @@
 					<indexterm>
 						<primary>srfsh</primary>
 					</indexterm>
-					<para>The software installation will automatically create a utility named
-					<command>srfsh</command> (surf shell). This is a command line diagnostic tool for testing 
-					and interacting with <application>OpenSRF</application>. It will be used in a future
-					step to complete and test the Evergreen installation. 
-					See  <xref linkend="serversideinstallation-testing"/> for further information.</para>
-					<para>As the <systemitem class="username">root</systemitem> user, copy the short
+					<para>The software installation will automatically create the utility
+					<command>srfsh</command> (surf shell), a command line diagnostic tool for
+					testing and interacting with <application>OpenSRF</application>. It will be used
+					in a future step to complete and test the Evergreen installation. See 
+					<xref linkend="serversideinstallation-testing"/> for further information.</para>
+					<para>As the <systemitem class="username">root</systemitem> user, copy the
 					sample configuration file <filename>/openils/conf/srfsh.xml.example</filename>
-					to <filename>~/.srfsh.xml</filename> (note the leading dot!), the home
-					directory of each user who will use <command>srfsh</command>. Finally, edit each
-					file <filename>~/.srfsh.xml</filename> and make the following changes; when you
-					finish, remember to change the owner of the file to match the owner of the home
-					directory:</para>
+					to the home directory of each user who will use <command>srfsh</command>. 
+					For instance, do the following for the 
+					<systemitem class="username">opensrf</systemitem> user:</para>
+					<screen>
+						<userinput>cp /openils/conf/srfsh.xml.example  /home/opensrf/.srfsh.xml</userinput>
+					</screen>
+					<para>Edit each user's file <filename>~/.srfsh.xml</filename> and make the
+					following changes:</para>
 					<itemizedlist>
 						<listitem>
 							<para>Modify <literal>domain</literal> to be the router hostname
@@ -594,7 +598,11 @@
 						<listitem>
 							<para>Modify <literal>loglevel</literal> as needed for testing</para>
 						</listitem>
+						<listitem>
+							<para>Change the owner of the file to match the owner of the home directory</para>
+						</listitem>
 					</itemizedlist>
+					<para>Following is a sample of the file:</para>
 					<programlisting language="xml"><![CDATA[
 <?xml version="1.0"?>
 <!-- This file follows the standard bootstrap config file layout -->
@@ -1071,176 +1079,93 @@
 							<literal>ERROR: schema SOMENAME does not exist</literal> (in fact,
 							you may see one warning per schema) but they can be safely ignored.</para>
 							<note>
-								<para>If you are entering the above command on a single
-								line, do not include the <literal>\</literal>
-								(backslash) characters. If you are using the
-								<command>bash</command> shell, these should only be used
-								at the end of a line at a bash prompt to indicate that
-								the command is continued on the next line.</para>
+								<para>If you are entering the above command on a single line, do
+								not include the <literal>\</literal> (backslash) characters. If
+								you are using the <command>bash</command> shell, these should only
+								be used at the end of a line at a <command>bash</command> prompt
+								to indicate that the command is continued on the next line.</para>
 							</note>
 						</step>
-						<step>
-							<title>Configure the Apache web server</title>
-							<indexterm>
-								<primary>web server</primary>
-								<secondary>Apache</secondary>
-							</indexterm>
-							<para>In this step you will configure the Apache web server to
-							support Evergreen software.</para>
-							<para>First, you must enable some built-in Apache modules and install
-							some additional Apache configuration files. Then you will create a new
-							Security Certificate. Finally, you must make several changes to the Apache
-							configuration file.</para>
-							<substeps>
-								<step>
-									<title>Enable the required Apache Modules</title>
-									<para>As the <systemitem class="username">root</systemitem> 
-									user, enable some modules in the Apache server, then 
-									copy the new configuration files to the Apache server
-									directories:</para>
-									<screen>
-										<userinput>a2enmod ssl     # enable mod_ssl</userinput>
-										<userinput>a2enmod rewrite # enable mod_rewrite</userinput>
-										<userinput>a2enmod expires # enable mod_expires</userinput>
-									</screen>
-									<para>As the commands execute, you may see warnings similar to:
-									<literal>Module SOMEMODULE already enabled</literal>
-									but you can safely ignore them.</para>
-								</step>
-								<step>
-									<title>Copy Apache configuration files</title>
-									<para>You must copy the Apache configuration
-									files from the Evergreen installation directory
-									to the Apache directory. As the 
-									<systemitem class="username">root</systemitem> 
-									user, perform the following commands:</para>
-									<screen>
-										<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
-										<userinput>cp Open-ILS/examples/apache/eg.conf	/etc/apache2/sites-available/</userinput>
-										<userinput>cp Open-ILS/examples/apache/eg_vhost.conf  /etc/apache2/</userinput>
-										<userinput>cp Open-ILS/examples/apache/startup.pl     /etc/apache2/</userinput>
-									</screen>
-								</step>
-								<step xml:id="serversideinstallation-createsslcertificate">
-									<title>Create a Security Certificate</title>
-									<para>You must create a new Security Certificate (SSL Key)
-									for the Apache server using the <command>openssl</command>
-									command. For a public production server you must configure
-									or purchase a signed SSL certificate, but for now you can
-									just use a self-signed certificate and accept the warnings
-									in the Staff Client and browser during testing and
-									development. As the
+					</substeps>
+				</step>
+				<step><title>Configure the Apache web server</title><indexterm><primary>web server</primary><secondary>Apache</secondary></indexterm><para>In this step you will configure the Apache web server to support Evergreen
+					software.</para> <para>First, you must enable some built-in Apache modules and
+					install some additional Apache configuration files. Then you will create a new
+					Security Certificate. Finally, you must make several changes to the Apache
+					configuration file.</para><substeps><step><title>Enable the required Apache Modules</title><para>As the <systemitem class="username">root</systemitem>
+							user, enable some modules in the Apache server, then copy the
+							new configuration files to the Apache server directories:</para><indexterm><primary>Apache</primary></indexterm><screen><userinput>a2enmod ssl     # enable mod_ssl</userinput><userinput>a2enmod rewrite # enable mod_rewrite</userinput><userinput>a2enmod expires # enable mod_expires</userinput></screen><para>As the commands execute, you may see warnings similar to:
+							<literal>Module SOMEMODULE already enabled</literal> but you can
+							safely ignore them.</para></step><step><title>Copy Apache configuration files</title><para>You must copy the Apache configuration files from the
+							Evergreen installation directory to the Apache directory. As the
+							<systemitem class="username">root</systemitem> user, perform the
+							following commands:</para><screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput><userinput>cp Open-ILS/examples/apache/eg.conf	/etc/apache2/sites-available/</userinput><userinput>cp Open-ILS/examples/apache/eg_vhost.conf  /etc/apache2/</userinput><userinput>cp Open-ILS/examples/apache/startup.pl     /etc/apache2/</userinput></screen></step><step xml:id="serversideinstallation-createsslcertificate"><title>Create a Security Certificate</title><para>You must create a new Security Certificate (SSL Key) for
+							the Apache server using the <command>openssl</command>
+							command. For a public production server you must configure or
+							purchase a signed SSL certificate, but for now you can just use
+							a self-signed certificate and accept the warnings in the Staff
+							Client and browser during testing and development. As the
+							<systemitem class="username">root</systemitem> user, perform the
+							following commands:</para><screen><userinput>mkdir /etc/apache2/ssl</userinput><userinput>cd /etc/apache2/ssl</userinput><userinput>openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key</userinput></screen><note><para>This step generates a self-signed SSL
+								certificate. You must install a proper SSL certificate
+								for a public production system to avoid warning messages
+								when users login to their account through the OPAC or
+								when staff login through the Staff Client.</para><para>For further information on installing a proper SSL
+								certificate, see <xref linkend="serversideinstallation-ssl"/>.</para></note></step><step xml:id="serversideinstallation-modify-apache"><title>Update Apache configuration file</title><para>You must make several changes to the new Apache
+							configuration file
+							<filename>/etc/apache2/sites-available/eg.conf</filename> . 
+							As the <systemitem class="username">root</systemitem> user,
+							edit the file and make the following changes:</para><itemizedlist><listitem><para>In the section
+									<literal>&lt;Directory "/openils/var/cgi-bin"></literal>
+									replace this line:
+									<literal>Allow from 10.0.0.0/8</literal> 
+									with this line: <literal>Allow from all</literal>.</para><warning>This change allows access to your configuration
+									CGI scripts from any workstation on any network. This is
+									only a temporary change to expedite testing and should be
+									removed after you have finished and successfully tested
+									the Evergreen installation. See 
+									<xref linkend="serversideinstallation-postinstallation"/> 
+									for further details on removing this change after the
+									Evergreen installation is complete.
+									</warning></listitem><listitem><para>Comment out the line <literal>Listen 443</literal>,
+									since it conflicts with the same declaration in the
+									configuration file:
+									<filename>/etc/apache2/ports.conf</filename>.  Note that
+									<systemitem class="osname">Debian </systemitem> users
+									should not do this since the conflict does not apply to
+									that operating system.</para></listitem><listitem><para>The following updates are needed to allow the logs
+									to function properly, but it may break other Apache
+									applications on your server:</para><para>For the 
+									<systemitem class="osname">Linux</systemitem> distributions
+									<systemitem class="osname">Ubuntu Hardy</systemitem> or
+									<systemitem class="osname">Debian Etch</systemitem>, as
+									the <systemitem class="username">root</systemitem> user,
+									edit the Apache configuration file
+									<filename>/etc/apache2/apache2.conf</filename> and change
+									the line <literal>User www-data</literal> to <literal>User
+									opensrf</literal>.</para> <para>For the
+									<systemitem class="osname">Linux</systemitem> distributions
+									<systemitem class="osname">Ubuntu Karmic</systemitem>,
+									<systemitem class="osname">Ubuntu Lucid</systemitem> or
+									<systemitem class="osname">Debian Lenny</systemitem>, as
+									the <systemitem class="username">root</systemitem> user,
+									edit the Apache configuration file and change these
+									lines:</para><screen><userinput>export APACHE_RUN_USER=www-data</userinput><userinput>export APACHE_RUN_GROUP=www-data</userinput></screen><para>to instead read:</para><screen><userinput>export APACHE_RUN_USER=opensrf</userinput><userinput>export APACHE_RUN_GROUP=opensrf</userinput></screen></listitem><listitem><para>As the 
+									<systemitem class="username">root</systemitem> user,
+									edit the Apache configuration file
+									<filename>/etc/apache2/apache2.conf</filename> and
+									modify the values for <literal>KeepAliveTimeout</literal>
+									and <literal>MaxKeepAliveRequests</literal> to match
+									the following:</para><screen><userinput>KeepAliveTimeout       1</userinput><userinput>MaxKeepAliveRequests 100</userinput></screen></listitem><listitem><para>Further configuration changes to Apache may be
+									necessary for busy systems. These changes increase the
+									number of Apache server processes that are started to
+									support additional browser connections.</para><para>As the 
 									<systemitem class="username">root</systemitem> user, 
-									perform the following commands:</para>
-									<screen>
-										<userinput>mkdir /etc/apache2/ssl</userinput>
-										<userinput>cd /etc/apache2/ssl</userinput>
-										<userinput>openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key</userinput>
-									</screen>
-									<note>
-										<para>This step generates a self-signed SSL
-										certificate. You must install a proper SSL
-										certificate for a public production system to
-										avoid warning messages when users login to their
-										account through the OPAC or when staff login
-										through the Staff Client.</para>
-										<para>For further information on installing 
-										a proper SSL certificate, see
-										<xref linkend="serversideinstallation-ssl"/>.</para>
-									</note>
-								</step>
-								<step xml:id="serversideinstallation-modify-apache">
-									<title>Update Apache configuration file</title>
-									<para>You must make several changes to the new Apache
-									configuration file
-									<filename>/etc/apache2/sites-available/eg.conf</filename> . 
-									As the <systemitem class="username">root</systemitem> user,
-									edit the file and make the following changes:</para>
-									<itemizedlist>
-										<listitem>
-											<para>In the section
-											<literal>&lt;Directory "/openils/var/cgi-bin"></literal>
-											replace this line:
-											<literal>Allow from 10.0.0.0/8</literal> 
-											with this line: <literal>Allow from all</literal>.</para>
-											<warning>This change allows access to your
-											configuration CGI scripts from any workstation on
-											any network. This is only a temporary change to
-											expedite testing and should be removed after you
-											have finished and successfully tested the Evergreen
-											installation. See 
-											<xref linkend="serversideinstallation-postinstallation"/>
-											for further details on removing this change after
-											the Evergreen installation is complete.
-											</warning>
-										</listitem>
-										<listitem>
-											<para>Comment out the line <literal>Listen
-											443</literal>, since it conflicts with the
-											same declaration in the configuration file:
-											<filename>/etc/apache2/ports.conf</filename>.
-											Note that <systemitem class="osname">Debian
-											</systemitem> users should not do this
-											since the conflict does not apply to that
-											operating system.</para>
-										</listitem>
-										<listitem>
-											<para>The following updates are needed to allow
-											the logs to function properly, but it may break
-											other Apache applications on your server:</para>
-											<para>For the <systemitem class="osname">Linux</systemitem> 
-											distributions <systemitem class="osname">Ubuntu
-											Hardy</systemitem> or
-											<systemitem class="osname">Debian Etch</systemitem>, 
-											as the <systemitem class="username">root</systemitem>
-											user, edit the Apache configuration file
-											<filename>/etc/apache2/apache2.conf</filename> and
-											change the line <literal>User www-data</literal>
-											to <literal>User opensrf</literal>.</para>
-											<para>For the <systemitem class="osname">Linux</systemitem> 
-											distributions <systemitem class="osname">Ubuntu
-											Karmic</systemitem>, 
-											<systemitem class="osname">Ubuntu Lucid</systemitem> 
-											or <systemitem class="osname">Debian Lenny</systemitem>,
-											as the <systemitem class="username">root</systemitem> 
-											user, edit the Apache configuration file
-											and change these lines:</para>
-											<screen>
-												<userinput>export APACHE_RUN_USER=www-data</userinput>
-												<userinput>export APACHE_RUN_GROUP=www-data</userinput>
-											</screen>
-											<para>to instead read:</para>
-											<screen>
-												<userinput>export APACHE_RUN_USER=opensrf</userinput>
-												<userinput>export APACHE_RUN_GROUP=opensrf</userinput>
-											</screen>
-										</listitem>
-										<listitem>
-											<para>As the 
-											<systemitem class="username">root</systemitem> user,
-											edit the Apache configuration file
-											<filename>/etc/apache2/apache2.conf</filename> and
-											modify the values for <literal>KeepAliveTimeout</literal>
-											and <literal>MaxKeepAliveRequests</literal> to match
-											the following:</para>
-											<screen>
-												<userinput>KeepAliveTimeout       1</userinput>
-												<userinput>MaxKeepAliveRequests 100</userinput>
-											</screen>
-										</listitem>
-										<listitem>
-											<para>Further configuration changes to
-											Apache may be necessary for busy systems. These
-											changes increase the number of Apache server
-											processes that are started to support additional
-											browser connections.</para>
-											<para>As the <systemitem class="username">root</systemitem> user, edit the
-											Apache configuration file
-											<filename>/etc/apache2/apache2.conf</filename>,
-											locate and modify the section related to
-											<emphasis>prefork configuration</emphasis> to suit
-											the load on your system:</para>
-											<programlisting language="xml"><![CDATA[
+									edit the Apache configuration file
+									<filename>/etc/apache2/apache2.conf</filename>, locate 
+									and modify the section related to <emphasis>prefork
+									configuration</emphasis> to suit the load on your
+									system:</para><programlisting language="xml"><![CDATA[
 <IfModule mpm_prefork_module>
    StartServers	   20
    MinSpareServers	 5
@@ -1248,29 +1173,11 @@
    MaxClients	    150
    MaxRequestsPerChild 10000
 </IfModule>
-]]></programlisting>
-										</listitem>
-									</itemizedlist>
-								</step>
-								<step>
-									<title>Enable the Evergreen web site</title>
-									<para>Finally, you must enable the Evergreen web site. As the 
-									<systemitem class="username">root</systemitem> user, execute
-									the following Apache configuration commands to disable the default
-									<emphasis>It Works</emphasis> web page and enable the
-									Evergreen web site, and then restart the Apache server:</para>
-									<screen>
-										<prompt># disable/enable web sites</prompt>
-										<userinput>a2dissite default</userinput>
-										<userinput>a2ensite eg.conf</userinput>
-										<prompt># restart the server</prompt>
-										<userinput>/etc/init.d/apache2 reload</userinput>
-									</screen>
-								</step>
-							</substeps>
-						</step>
-					</substeps>
-				</step>
+]]></programlisting></listitem></itemizedlist></step><step><title>Enable the Evergreen web site</title><para>Finally, you must enable the Evergreen web site. As the
+							<systemitem class="username">root</systemitem> user, execute the
+							following Apache configuration commands to disable the default
+							<emphasis>It Works</emphasis> web page and enable the Evergreen
+							web site, and then restart the Apache server:</para><screen><prompt># disable/enable web sites</prompt><userinput>a2dissite default</userinput><userinput>a2ensite eg.conf</userinput><prompt># restart the server</prompt><userinput>/etc/init.d/apache2 reload</userinput></screen></step></substeps></step>
 				<step xml:id="serversideinstallation-opensrf-config">
 					<title>Update the OpenSRF Configuration File</title>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, edit the
