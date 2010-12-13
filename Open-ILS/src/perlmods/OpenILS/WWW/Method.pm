@@ -41,7 +41,7 @@ sub handler {
 	if( ! $service || ! $method ) {
 		$err = { 
 			is_err	=> 1, 
-			err_msg	=> "Service name and method name required to fulfil request",
+			err_msg	=> "Service name and method name required to fulfill request",
 		};
 	}
 
