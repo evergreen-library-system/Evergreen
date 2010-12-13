@@ -27,7 +27,7 @@ BEGIN
       SELECT  DISTINCT ON (hard_due_date) *
         FROM  config.hard_due_date_values
         WHERE active_date <= NOW() -- We've passed (or are at) the rollover time
-        ORDER BY active_date DESC -- Latest (nearest to us) active time
+        ORDER BY hard_due_date, active_date DESC -- Latest (nearest to us) active time
    LOOP
         UPDATE  config.hard_due_date
           SET   ceiling_date = temp_value.ceiling_date
