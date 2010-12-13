@@ -832,7 +832,7 @@
 		<desc xml:lang="en-US"> Copy is reference material </desc>
 	</event>
 	<event code='7007' textcode='COPY_NEEDED_FOR_HOLD'>
-		<desc xml:lang="en-US"> Copy is needed to fulfil a hold </desc>
+		<desc xml:lang="en-US"> Copy is needed to fulfill a hold </desc>
 	</event>
 	<event code='7008' textcode='MAX_RENEWALS_REACHED'>
 		<desc xml:lang="en-US"> Circulation has no more renewals remaining </desc>
