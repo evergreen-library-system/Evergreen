@@ -70,7 +70,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0469'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0470'); -- berick
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -358,7 +358,6 @@ CREATE TABLE config.hard_due_date_values (
     active_date         TIMESTAMPTZ NOT NULL
 );
 
-
 CREATE OR REPLACE FUNCTION config.update_hard_due_dates () RETURNS INT AS $func$
 DECLARE
     temp_value  config.hard_due_date_values%ROWTYPE;
@@ -368,7 +367,7 @@ BEGIN
       SELECT  DISTINCT ON (hard_due_date) *
         FROM  config.hard_due_date_values
         WHERE active_date <= NOW() -- We've passed (or are at) the rollover time
-        ORDER BY active_date DESC -- Latest (nearest to us) active time
+        ORDER BY hard_due_date, active_date DESC -- Latest (nearest to us) active time
    LOOP
         UPDATE  config.hard_due_date
           SET   ceiling_date = temp_value.ceiling_date
