@@ -2088,7 +2088,7 @@ sub create_due_date {
 
     if($date_ceiling) {
         my $cdate = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($date_ceiling));
-        if ($cdate > DateTime->now and ($cdate < $due_date or $force_date)) {
+        if ($cdate > DateTime->now and ($cdate < $due_date or $U->is_true( $force_date ))) {
             $logger->info("circulator: overriding due date with date ceiling: $date_ceiling");
             $due_date = $cdate;
         }
