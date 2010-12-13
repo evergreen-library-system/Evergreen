@@ -1004,8 +1004,9 @@ function BatchReceiver() {
 
                 ["price", "location", "circ_modifier"].forEach(
                     function(field) {
-                        var value = self._row_field_value(id, field).trim();
-                        if (value) unit[field](value);
+                        var value = self._row_field_value(id, field);
+                        if (value)
+                            unit[field](value.trim ? value.trim() : value);
                     }
                 );
 
