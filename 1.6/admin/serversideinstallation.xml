@@ -1,6 +1,5 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
-	xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="EN" xml:id="serversideinstallation">
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter version="5.0" xml:id="serversideinstallation" xml:lang="EN" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
 	<info>
 		<title>Server-side Installation of Evergreen Software</title>
 		<abstract>
@@ -142,9 +141,11 @@
 					<title>Add New <systemitem class="username">opensrf</systemitem> User</title>
 					<para>As the <systemitem class="username">root</systemitem> user, add the
 					<systemitem class="username">opensrf</systemitem> user to the system.
-					The default shell for the new user is automatically
-					set to <command>/bin/bash</command> to inherit a reasonable environment:</para>
+					In the following example, the default shell for the 
+					<systemitem class="username">opensrf</systemitem> user is automatically set
+					to <command>/bin/bash</command> to inherit a reasonable environment:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>useradd -m -s /bin/bash opensrf</userinput>
 						<userinput>passwd opensrf</userinput>
 					</screen>
@@ -155,17 +156,18 @@
 						<primary>OpenSRF</primary>
 						<secondary>download</secondary>
 					</indexterm>
-					<para>As the <systemitem class="username">opensrf</systemitem> user, change to
+					<para>The latest version of OpenSRF can be found here:
+					<ulink url="http://evergreen-ils.org/downloads/OpenSRF-1.4.0.tar.gz"></ulink> .
+					As the <systemitem class="username">opensrf</systemitem> user, change to
 					the directory <filename class="directory">/home/opensrf</filename> then download
-					and extract the latest version of OpenSRF. The latest version can be found here:
-					<ulink url="http://evergreen-ils.org/downloads/OpenSRF-1.4.0.tar.gz"></ulink></para>
+					and extract OpenSRF. The new subdirectory
+					<filename class="directory">/home/opensrf/OpenSRF-1.4.0</filename> will be created:</para>
 					<screen>
+						<prompt># as the opensrf user:</prompt>
 						<userinput>cd /home/opensrf</userinput>
 						<userinput>wget http://evergreen-ils.org/downloads/OpenSRF-1.4.0.tar.gz</userinput>
 						<userinput>tar zxf OpenSRF-1.4.0.tar.gz</userinput>
 					</screen>
-					<para>The new directory
-					<filename class="directory">/home/opensrf/OpenSRF-1.4.0</filename> will be created.</para>
 				</step>
 				<step>
 					<title>Install Prerequisites to Build OpenSRF</title>
@@ -181,6 +183,7 @@
 					For example, to install the prerequisites for Ubuntu version 10.04 (Lucid Lynx) you would
 					enter this command: <command>make -f src/extras/Makefile.install ubuntu-lucid</command> .</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>cd /home/opensrf/OpenSRF-1.4.0</userinput>
 						<userinput>make -f src/extras/Makefile.install [DISTRIBUTION]</userinput>
 					</screen>
@@ -253,28 +256,32 @@
 								<secondary>configure</secondary>
 							</indexterm>
 							<para>As the <systemitem class="username">opensrf</systemitem>
-							user, return to the OpenSRF build directory and use the
+							user, return to the new OpenSRF build directory and use the
 							<command>configure</command> utility to prepare for the next
 							step of compiling and linking the software. If you wish to
 							include support for Python and Java, add the configuration
 							options <option>--enable-python</option> and
 							<option>--enable-java</option>, respectively:</para>
 							<screen>
+								<prompt># as the opensrf user:</prompt>
 								<userinput>cd /home/opensrf/OpenSRF-1.4.0</userinput>
 								<userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput>
 								<userinput>make</userinput>
 							</screen>
+							<para>This step will take several minutes to complete.</para>
 						</step>
 						<step>
 							<title>Compile, Link and Install OpenSRF</title>
 							<para>As the <systemitem class="username">root</systemitem>
-							user, return to the OpenSRF build directory and use the
+							user, return to the new OpenSRF build directory and use the
 							<command>make</command> utility to compile, link and install
 							OpenSRF:</para>
 							<screen>
+								<prompt># as the root user:</prompt>
 								<userinput>cd /home/opensrf/OpenSRF-1.4.0</userinput>
 								<userinput>make install</userinput>
 							</screen>
+							<para>This step will take several minutes to complete.</para>
 						</step>
 						<step>
 							<title>Update the System Dynamic Library Path</title>
@@ -287,6 +294,7 @@
 							<command>ldconfig</command> to automatically read the file and
 							modify the system dynamic library path:</para>
 							<screen>
+								<prompt># as the root user:</prompt>
 								<userinput>echo "/openils/lib" > /etc/ld.so.conf.d/osrf.conf</userinput>
 								<userinput>ldconfig</userinput>
 							</screen>
@@ -309,6 +317,7 @@
 								<primary>Jabber</primary>
 							</indexterm>
 							<screen>
+								<prompt># as the root user:</prompt>
 								<userinput>127.0.1.2  public.localhost   public</userinput>
 								<userinput>127.0.1.3  private.localhost  private</userinput>
 							</screen>
@@ -320,6 +329,7 @@
 							directory <filename class="directory">/openils</filename> to the
 							user <systemitem class="username">opensrf</systemitem>:</para>
 							<screen>
+								<prompt># as the root user:</prompt>
 								<userinput>chown -R opensrf:opensrf /openils</userinput>
 							</screen>
 						</step>
@@ -334,6 +344,7 @@
 					you must stop that service. As the <systemitem class="username">root</systemitem> user,
 					execute the following command to stop the service:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>/etc/init.d/ejabberd stop</userinput>
 					</screen>
 					<para>If <systemitem class="service">ejabberd</systemitem> reports that it 
@@ -343,6 +354,7 @@
 					<systemitem class="daemon">epmd</systemitem> 
 					you may need to perform the following commands to kill them:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>epmd -kill</userinput>
 						<userinput>killall beam; killall beam.smp</userinput>
 						<userinput>rm /var/lib/ejabberd/*</userinput>
@@ -358,31 +370,64 @@
 					<filename>/etc/ejabberd/ejabberd.cfg</filename> and make the following changes:</para>
 					<substeps>
 						<step>
-							<para>Change the line:
-							<screen><userinput>{hosts, ["localhost"]}.</userinput></screen>
-							to:
-							<screen><userinput>{hosts, ["localhost", "private.localhost", "public.localhost"]}.</userinput></screen></para>
+							<para>Change the line:</para>
+							<screen>
+								<prompt>{hosts, ["localhost"]}.</prompt>
+							</screen>
+							<para>to instead read:</para>
+							<screen>
+								<userinput>{hosts, ["localhost", "private.localhost", "public.localhost"]}.</userinput>
+							</screen>
 						</step>
 						<step>
-							<para>Change the line:
-							<screen><userinput>{max_user_sessions, 10}.</userinput></screen> to:
-							<screen><userinput>{max_user_sessions, 10000}.</userinput></screen></para>
-							<para>If the line looks something like this:
-							<screen><userinput>{access, max_user_sessions, [{10, all}]}.</userinput></screen>
-							then change it to:
-							<screen><userinput>{access, max_user_sessions, [{10000, all}]}</userinput></screen></para>
+							<para>Change the line:</para>
+							<screen>
+								<prompt>{max_user_sessions, 10}</prompt>
+							</screen>
+							<para>to instead read:</para>
+							<screen>
+								<userinput>{max_user_sessions, 10000}</userinput>
+							</screen>
+							<para/>
+							<para>If the line looks something like this:</para>
+							<screen>
+								<prompt>{access, max_user_sessions, [{10, all}]}</prompt>
+							</screen>
+							<para>then change it to instead read:</para>
+							<screen>
+								<userinput>{access, max_user_sessions, [{10000, all}]}</userinput>
+							</screen>
 						</step>
 						<step>
-							<para>Change all three occurrences of: <literal>max_stanza_size</literal>
-							to: <literal>2000000</literal>.</para>
+							<para>Change all three occurrences of:</para>
+							<screen>
+								<prompt>max_stanza_size</prompt>
+							</screen>
+							<para>to instead read:</para>
+							<screen>
+								<userinput>2000000</userinput>
+							</screen>
 						</step>
 						<step>
-							<para>Change both occurrences of: <literal>maxrate</literal> to:
-							<literal>500000</literal>.</para>
+							<para>Change both occurrences of:</para>
+							<screen>
+								<prompt>maxrate</prompt>
+							</screen>
+							<para>to instead read:</para>
+							<screen>
+								<userinput>500000</userinput>
+							</screen>
 						</step>
 						<step>
-							<para>Comment out the line <literal>{mod_offline, []}</literal> 
-							by placing two <literal>%</literal> comment signs in front.</para>
+							<para>Comment out the line:</para>
+							<screen>
+								<prompt>{mod_offline, []}</prompt>
+							</screen>
+							<para>by placing two <literal>%</literal> comment signs in front
+							so it instead reads:</para>
+							<screen>
+								<userinput>%%{mod_offline, []}</userinput>
+							</screen>
 						</step>
 					</substeps>
 				</step>
@@ -392,12 +437,14 @@
 					<systemitem class="service">ejabberd</systemitem> service to test the
 					configuration changes and to register your users:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>/etc/init.d/ejabberd start</userinput>
 					</screen>
 				</step>
 				<step>
 					<title>Register <systemitem class="username">router</systemitem> and
-						<systemitem class="username">ejabberd</systemitem> users</title>
+						<systemitem class="username">opensrf</systemitem> as
+						<systemitem class="service">ejabberd</systemitem> users</title>
 					<para>The two <systemitem class="service">ejabberd</systemitem> users 
 					<systemitem class="username">router</systemitem> and 
 					<systemitem class="username">opensrf</systemitem> must be registered 
@@ -425,7 +472,8 @@
 					for the users <systemitem class="username">router</systemitem> and
 					<systemitem class="username">opensrf</systemitem> on each domain:</para>
 					<screen>
-						<prompt># The syntax for registering a user with ejabberdctl is:</prompt>
+						<prompt># as the root user:</prompt>
+						<prompt># Note: the syntax for registering a user with ejabberdctl is:</prompt>
 						<prompt>#    ejabberdctl register USER DOMAIN PASSWORD</prompt>
 						<userinput>ejabberdctl register router  private.localhost NEWPASSWORD</userinput>
 						<userinput>ejabberdctl register router  public.localhost  NEWPASSWORD</userinput>
@@ -434,8 +482,8 @@
 					</screen>
 					<para>Note that the users <systemitem class="username">router</systemitem> and
 					<systemitem class="username">opensrf</systemitem> and their respective passwords 
-					will be used again in the file <filename>/openils/conf/opensrf_core.xml</filename>
-					in the next steps.</para>
+					will be used again in <xref linkend="serversideinstallation-passwords"/> when
+					we modify the OpenSRF configuration file <filename>/openils/conf/opensrf_core.xml</filename> .</para>
 				</step>
 				<step xml:id="serversideinstallation-opensrf-createconfig">
 					<title>Create OpenSRF configuration files</title>
@@ -444,12 +492,13 @@
 					<filename>/openils/conf/opensrf_core.xml</filename> and
 					<filename>/openils/conf/opensrf.xml</filename> from the example templates:</para>
 					<screen>
+						<prompt># as the opensrf user:</prompt>
 						<userinput>cd /openils/conf</userinput>
 						<userinput>cp opensrf.xml.example      opensrf.xml</userinput>
 						<userinput>cp opensrf_core.xml.example opensrf_core.xml</userinput>
 					</screen>
 				</step>
-				<step>
+				<step xml:id="serversideinstallation-passwords">
 					<title>Update usernames and passwords in the OpenSRF configuration file</title>
 					<para>As the <systemitem class="username">opensrf</systemitem> user, edit the
 					OpenSRF configuration file <filename>/openils/conf/opensrf_core.xml</filename>
@@ -543,7 +592,15 @@
 					<para>As the <systemitem class="username">opensrf</systemitem> user, edit the
 					file <filename>/openils/conf/opensrf.xml</filename>, then find and modify the 
 					element <literal>dbfile</literal> (near the end of the file) to set the 
-					location of the persistent database:</para>
+					location of the persistent database. Change the default line:</para>
+					<screen>
+						<prompt>/openils/var/persist.db</prompt>
+					</screen>
+					<para>to instead read:</para>
+					<screen>
+						<userinput>/tmp/persist.db</userinput>
+					</screen>
+					<para>Following is a sample modification of that portion of the file:</para>
 					<programlisting language="xml"><![CDATA[
 <!-- Example of an app-specific setting override -->
 <opensrf.persist>
@@ -572,8 +629,8 @@
 					For instance, do the following for the 
 					<systemitem class="username">opensrf</systemitem> user:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>cp /openils/conf/srfsh.xml.example  /home/opensrf/.srfsh.xml</userinput>
-
 					</screen>
 					<para>Edit each user's file <filename>~/.srfsh.xml</filename> and make the
 					following changes:</para>
@@ -629,6 +686,7 @@
 					<systemitem class="username">opensrf</systemitem> user's shell configuration
 					file <filename>~/.bashrc</filename>:</para>
 					<screen>
+						<prompt># as the opensrf user:</prompt>
 						<userinput>echo "export PATH=/openils/bin:\$PATH" >> ~/.bashrc</userinput>
 					</screen>
 				</step>
@@ -638,12 +696,14 @@
 					<systemitem class="service">ejabberd</systemitem> and 
 					<systemitem class="service">memcached</systemitem> services:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>/etc/init.d/ejabberd start</userinput>
 						<userinput>/etc/init.d/memcached start</userinput>
 					</screen>
 					<para>As the <systemitem class="username">opensrf</systemitem> user,
 					start OpenSRF as follows:</para>
 					<screen>
+						<prompt># as the opensrf user:</prompt>
 						<userinput>osrf_ctl.sh -l -a start_all</userinput>
 					</screen>
 					<para>The flag <option>-l</option> forces Evergreen to use 
@@ -681,6 +741,7 @@
 					utility and trying to call the <command>add</command> method on the OpenSRF 
 					<systemitem class="service">math</systemitem> service:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>/openils/bin/srfsh</userinput>
 						<computeroutput>srfsh# <userinput>request opensrf.math add 2 2</userinput></computeroutput>
 						<computeroutput>Received Data: 4</computeroutput>
@@ -699,6 +760,7 @@
 					<systemitem class="username">opensrf</systemitem> 
 					user, stop OpenSRF as follows:</para>
 					<screen>
+						<prompt># as the opensrf user:</prompt>
 						<userinput>osrf_ctl.sh -l -a stop_all</userinput>
 					</screen>
 				</step>
@@ -771,6 +833,7 @@
 					and extract the latest version of Evergreen. The latest version can be found here:
 					<ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.1.2.tar.gz"></ulink></para>
 					<screen>
+						<prompt># as the opensrf user:</prompt>
 						<userinput>wget http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.1.2.tar.gz</userinput>
 						<userinput>tar zxf Evergreen-ILS-1.6.1.2.tar.gz</userinput>
 					</screen>
@@ -792,6 +855,7 @@
 					to install the prerequisites for Ubuntu version 9.10 (Karmic Koala) you would enter this
 					command: <command>make -f Open-ILS/src/extras/Makefile.install ubuntu-karmic</command>.</para>
 					<screen>
+						<prompt># as the opensrf user:</prompt>
 						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
 						<userinput>make -f Open-ILS/src/extras/Makefile.install [DISTRIBUTION]</userinput>
 					</screen>
@@ -867,11 +931,13 @@
 					<para>For <systemitem class="osname">Debian Lenny</systemitem> and 
 					<systemitem class="osname">Ubuntu Hardy (8.04)</systemitem>:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_83</userinput>
 					</screen>
 					<para>For <systemitem class="osname">Ubuntu Karmic (9.10)</systemitem> and
 					<systemitem class="osname">Ubuntu Lucid (10.04)</systemitem>:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_84</userinput>
 					</screen>
 					<note>
@@ -893,6 +959,7 @@
 					<systemitem class="username">root</systemitem> user install the following Perl
 					modules:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<prompt># first, ensure the gcc compiler is installed:</prompt>
 						<userinput>apt-get install gcc</userinput>
 						<prompt># then install the Perl modules:</prompt>
@@ -919,6 +986,7 @@
 					containing a new library path, then run the command <command>ldconfig</command> to
 					automatically read the file and modify the system dynamic library path:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>echo "/usr/local/lib"     >> /etc/ld.so.conf.d/osrf.conf</userinput>
 						<userinput>echo "/usr/local/lib/dbd" >> /etc/ld.so.conf.d/osrf.conf</userinput>
 						<userinput>ldconfig</userinput>
@@ -935,6 +1003,7 @@
 					<literal>[PGSQL_VERSION]</literal> is your installed PostgreSQL version
 					(e.g. <literal>8.3</literal>):</para>
 					<screen>
+						<prompt># as the opensrf user:</prompt>
 						<userinput>/etc/init.d/postgresql-[PGSQL_VERSION] restart</userinput>
 					</screen>
 				</step>
@@ -945,6 +1014,7 @@
 					<command>make</command> utilities to configure Evergreen so it can be compiled
 					and linked in the next step:</para>
 					<screen>
+						<prompt># as the opensrf user:</prompt>
 						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
 						<userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput>
 						<userinput>make</userinput>
@@ -957,6 +1027,7 @@
 					<para>As the <systemitem class="username">root</systemitem> user, return to the
 					Evergreen build directory and use the <command>make</command> utility as shown below:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
 						<userinput>make STAFF_CLIENT_BUILD_ID=rel_1_6_1_2 install</userinput>
 					</screen>
@@ -975,6 +1046,7 @@
 					subdirectory <filename class="directory">/server</filename> of the new Staff
 					Client build:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>cd /openils/var/web/xul</userinput>
 						<userinput>ln -sf rel_1_6_1_2/server server</userinput>
 					</screen>
@@ -990,6 +1062,7 @@
 					As the <systemitem class="username">root</systemitem> user, execute the
 					following commands:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>cd /openils/conf</userinput>
 						<userinput>cp opensrf.xml	      opensrf.xml.BAK</userinput>
 						<userinput>cp opensrf_core.xml	 opensrf_core.xml.BAK</userinput>
@@ -1022,6 +1095,7 @@
 							user on the PostgreSQL system create the PostgreSQL database,
 							then set some internal paths:</para>
 							<screen>
+								<prompt># as the postgres user:</prompt>
 								<userinput>createdb evergreen -E UTF8 -T template0</userinput>
 								<userinput>createlang plperl   evergreen</userinput>
 								<userinput>createlang plperlu  evergreen</userinput>
@@ -1032,6 +1106,7 @@
 							<literal>[PGSQL_VERSION]</literal> is your installed PostgreSQL
 							version (e.g. <literal>8.3</literal>).</para>
 							<screen>
+								<prompt># as the postgres user:</prompt>
 								<userinput>psql -f /usr/share/postgresql/[PGSQL_VERSION]/contrib/tablefunc.sql evergreen</userinput>
 								<userinput>psql -f /usr/share/postgresql/[PGSQL_VERSION]/contrib/tsearch2.sql  evergreen</userinput>
 								<userinput>psql -f /usr/share/postgresql/[PGSQL_VERSION]/contrib/pgxml.sql     evergreen</userinput>
@@ -1044,6 +1119,7 @@
 							named <systemitem class="username">evergreen</systemitem> and
 							assign a password:</para>
 							<screen>
+								<prompt># as the root user:</prompt>
 								<userinput>createuser -P -s evergreen</userinput>
 								<computeroutput>Enter password for new role: <userinput>MYNEWPASSWORD</userinput></computeroutput>
 								<computeroutput>Enter it again: <userinput>MYNEWPASSWORD</userinput></computeroutput>
@@ -1062,6 +1138,7 @@
 							<emphasis>DATABASENAME</emphasis> with appropriate
 							values:</para>
 							<screen>
+								<prompt># as the root user:</prompt>
 								<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
 								<userinput>perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \</userinput>
 								<userinput>  --service all --create-schema --create-bootstrap --create-offline \</userinput>
@@ -1112,6 +1189,7 @@
 								<primary>Apache modules</primary>
 							</indexterm>
 							<screen>
+								<prompt># as the root user:</prompt>
 								<userinput>a2enmod ssl     # enable mod_ssl</userinput>
 								<userinput>a2enmod rewrite # enable mod_rewrite</userinput>
 								<userinput>a2enmod expires # enable mod_expires</userinput>
@@ -1127,6 +1205,7 @@
 							<systemitem class="username">root</systemitem> user, perform the
 							following commands:</para>
 							<screen>
+								<prompt># as the root user:</prompt>
 								<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
 								<userinput>cp Open-ILS/examples/apache/eg.conf	/etc/apache2/sites-available/</userinput>
 								<userinput>cp Open-ILS/examples/apache/eg_vhost.conf  /etc/apache2/</userinput>
@@ -1144,6 +1223,7 @@
 							<systemitem class="username">root</systemitem> user, perform the
 							following commands:</para>
 							<screen>
+								<prompt># as the root user:</prompt>
 								<userinput>mkdir /etc/apache2/ssl</userinput>
 								<userinput>cd /etc/apache2/ssl</userinput>
 								<userinput>openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key</userinput>
@@ -1155,8 +1235,7 @@
 								when users login to their account through the OPAC or
 								when staff login through the Staff Client.</para>
 								<para>For further information on installing a proper SSL
-								certificate, see <xref
-								linkend="serversideinstallation-ssl"/>.</para>
+								certificate, see <xref linkend="serversideinstallation-ssl"/>.</para>
 							</note>
 						</step>
 						<step xml:id="serversideinstallation-modify-apache">
@@ -1192,11 +1271,9 @@
 									should not do this since the conflict does not apply to
 									that operating system.</para>
 								</listitem>
-								<listitem>
-									<para>The following updates are needed to allow the logs
+								<listitem><para>The following updates are needed to allow the logs
 									to function properly, but it may break other Apache
-									applications on your server:</para>
-									<para>For the 
+									applications on your server:</para><para>For the 
 									<systemitem class="osname">Linux</systemitem> distributions
 									<systemitem class="osname">Ubuntu Hardy</systemitem> or
 									<systemitem class="osname">Debian Etch</systemitem>, as
@@ -1211,17 +1288,7 @@
 									<systemitem class="osname">Debian Lenny</systemitem>, as
 									the <systemitem class="username">root</systemitem> user,
 									edit the Apache configuration file and change these
-									lines:</para>
-									<screen>
-										<userinput>export APACHE_RUN_USER=www-data</userinput>
-										<userinput>export APACHE_RUN_GROUP=www-data</userinput>
-									</screen>
-									<para>to instead read:</para>
-									<screen>
-										<userinput>export APACHE_RUN_USER=opensrf</userinput>
-										<userinput>export APACHE_RUN_GROUP=opensrf</userinput>
-									</screen>
-								</listitem>
+									lines:</para><screen><prompt># as the root user:</prompt><userinput>export APACHE_RUN_USER=www-data</userinput><userinput>export APACHE_RUN_GROUP=www-data</userinput></screen><para>to instead read:</para><screen><prompt># as the root user:</prompt><userinput>export APACHE_RUN_USER=opensrf</userinput><userinput>export APACHE_RUN_GROUP=opensrf</userinput></screen></listitem>
 								<listitem>
 									<para>As the 
 									<systemitem class="username">root</systemitem> user,
@@ -1231,6 +1298,7 @@
 									and <literal>MaxKeepAliveRequests</literal> to match
 									the following:</para>
 									<screen>
+										<prompt># as the root user:</prompt>
 										<userinput>KeepAliveTimeout       1</userinput>
 										<userinput>MaxKeepAliveRequests 100</userinput>
 									</screen>
@@ -1267,6 +1335,7 @@
 							<emphasis>It Works</emphasis> web page and enable the Evergreen
 							web site, and then restart the Apache server:</para>
 							<screen>
+								<prompt># as the root user:</prompt>
 								<prompt># disable/enable web sites</prompt>
 								<userinput>a2dissite default</userinput>
 								<userinput>a2ensite eg.conf</userinput>
@@ -1375,7 +1444,8 @@
 				</step>
 				<step xml:id="serversideinstallation-opensrf-env">
 					<title>Modify the OpenSRF Environment</title>
-					<para>Modify the shell configuration file <filename>~/.bashrc</filename> for
+					<para>As the <systemitem class="username">opensrf</systemitem> user,
+					modify the shell configuration file <filename>~/.bashrc</filename> for
 					user <systemitem class="username">opensrf</systemitem> by adding a Perl environmental
 					variable, then execute the shell configuration file to load the new variables into
 					your current environment.</para>
@@ -1390,6 +1460,7 @@
 						</para>
 					</note>
 					<screen>
+						<prompt># as the opensrf user:</prompt>
 						<userinput>echo "export PERL5LIB=/openils/lib/perl5:\$PERL5LIB" >> ~/.bashrc</userinput>
 						<userinput>. ~/.bashrc</userinput>
 					</screen>
@@ -1398,7 +1469,8 @@
 					<title>(OPTIONAL) Enable and Disable Language Localizations</title>
 					<para>You can load translations such as Armenian (hy-AM), Canadian French
 					(fr-CA), and others into the database to complete the translations available in
-					the OPAC and Staff Client. For further information, see <xref linkend="enabling_and_disabling_localization"/>.</para>
+					the OPAC and Staff Client. For further information, see
+					<xref linkend="enabling_and_disabling_localization"/>.</para>
 				</step>
 			</procedure>
 		</section>
@@ -1410,6 +1482,7 @@
 					user, start the <systemitem class="service">ejabberd</systemitem> and 
 					<systemitem class="service">memcached</systemitem> services as follows:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>/etc/init.d/ejabberd start</userinput>
 						<userinput>/etc/init.d/memcached start</userinput>
 					</screen>
@@ -1418,6 +1491,7 @@
 					<para>As the <systemitem class="username">opensrf</systemitem> user,
 					start Evergreen as follows:</para>
 					<screen>
+						<prompt># as the opensrf user:</prompt>
 						<userinput>osrf_ctl.sh -l -a start_all</userinput>
 					</screen>
 					<para>The flag <option>-l</option> forces Evergreen to use 
@@ -1466,6 +1540,7 @@
 					library hierarchy. As the <systemitem class="username">opensrf</systemitem>
 					user, execute the following commands:</para>
 					<screen>
+						<prompt># as the opensrf user:</prompt>
 						<userinput>cd /openils/bin</userinput>
 						<userinput>./autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
 						<computeroutput>Updating Evergreen organization tree and IDL using '/openils/conf/opensrf_core.xml'</computeroutput>
@@ -1476,6 +1551,7 @@
 					<para>As the <systemitem class="username">root</systemitem> user, restart the
 					Apache Web server:</para>
 					<screen>
+						<prompt># as the root user:</prompt>
 						<userinput>/etc/init.d/apache2 restart</userinput>
 					</screen>
 					<note>
@@ -1498,8 +1574,10 @@
 				administrator username and password. Following is sample output generated by executing
 				<command>srfsh</command> after a successful Evergreen installation. For help with
 				<command>srfsh</command> commands, type <userinput>help</userinput> at the prompt.
-				Execute the following commands to test your Evergreen connection:</para>
+				As the <systemitem class="username">opensrf</systemitem> user,
+				execute the following commands to test your Evergreen connection:</para>
 				<screen>
+					<prompt># as the opensrf user:</prompt>
 					<userinput>/openils/bin/srfsh</userinput>
 					<computeroutput>srfsh%</computeroutput>
 					<userinput>login admin open-ils</userinput>
@@ -1531,6 +1609,7 @@
 						<filename>settings-tester.pl</filename> utility to review your Evergreen
 						installation for any system configuration problems:</para>
 						<screen>
+							<prompt># as the opensrf user:</prompt>
 							<userinput>cd /home/opensrf</userinput>
 							<userinput>./Evergreen-ILS-1.6.1.2/Open-ILS/src/support-scripts/settings-tester.pl</userinput>
 						</screen>
@@ -1623,6 +1702,7 @@
 						<para>As the <systemitem class="username">opensrf</systemitem> user,
 						start the Reporter daemon using the following command:</para>
 						<screen>
+							<prompt># as the opensrf user:</prompt>
 							<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/src/reporter</userinput>
 							<userinput>./clark-kent.pl --daemon</userinput>
 						</screen>
@@ -1653,6 +1733,7 @@
 						<para>As the <systemitem class="username">opensrf</systemitem> user,
 						execute the following shell commands:</para>
 						<screen>
+							<prompt># as the root user:</prompt>
 							<prompt># find and kill the process ID number(s)</prompt>
 							<userinput>kill `ps wax | grep "Clark Kent" | grep -v grep | cut -b1-6`</userinput>
 							<prompt># remove the lock file</prompt>
