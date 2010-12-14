@@ -1,0 +1,5 @@
+<partintro xmlns:xl="http://www.w3.org/1999/xlink" xml:id="report_intro">
+<para>Reports are a powerful tool in Evergreen and can be used for statistical comparisons or collection maintenance. The following part covers everything dealing with reports from starting the reporter daemon to viewing reports your library has created. The range of topics in this part is quite broad and different chapters will be useful to different roles in an Evergreen library system.</para>
+</partintro>
+
+
