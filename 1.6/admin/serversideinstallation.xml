@@ -829,33 +829,36 @@
 				</step>
 				<step>
 					<title>Download and Unpack Latest Evergreen Version</title>
-					<para>As the <systemitem class="username">opensrf</systemitem> user, download
-					and extract the latest version of Evergreen. The latest version can be found here:
-					<ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.1.2.tar.gz"></ulink></para>
+					<para>The latest version of Evergreen can be found here:
+					<ulink url="http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.1.2.tar.gz"></ulink> .
+					As the <systemitem class="username">opensrf</systemitem> user, change to
+					the directory <filename class="directory">/home/opensrf</filename> then download
+					and extract Evergreen. The new subdirectory
+					<filename class="directory">/home/opensrf/Evergreen-ILS-1.6.1.2</filename> will be created:</para>
 					<screen>
 						<prompt># as the opensrf user:</prompt>
+						<userinput>cd /home/opensrf</userinput>
 						<userinput>wget http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.1.2.tar.gz</userinput>
 						<userinput>tar zxf Evergreen-ILS-1.6.1.2.tar.gz</userinput>
 					</screen>
-					<para>The new directory
-					<filename class="directory">/home/opensrf/Evergreen-ILS-1.6.1.2</filename>
-					will be created.</para>
 				</step>
 				<step xml:id="serversideinstallation-installprereq">
 					<title>Install Prerequisites to Build Evergreen</title>
-					<para>In this section you will install and configure a set of prerequisites that
-					will be used to build Evergreen. In a following step you will actually build the
-					Evergreen software using the <command>make</command> utility.</para>
+					<para>In this section you will install and configure a set of prerequisites that will be
+					used later in <xref linkend="serversideinstallation-configure"/> and 
+					<xref linkend="serversideinstallation-compile"/> to build the Evergreen software 
+					using the <command>make</command> utility.</para>
 					<para>As the <systemitem class="username">root</systemitem> user, enter the commands show
 					below to build the prerequisites from the software distribution that you just downloaded
 					and unpacked. Remember to replace <emphasis>[DISTRIBUTION]</emphasis> in the following
 					example with the keyword corresponding to the name of one of the 
-					<systemitem class="osname">Linux</systemitem> distributions listed in the following distribution
-					keywords table <xref linkend="serversideinstallation-keywords-evergreen"/> . For example,
-					to install the prerequisites for Ubuntu version 9.10 (Karmic Koala) you would enter this
-					command: <command>make -f Open-ILS/src/extras/Makefile.install ubuntu-karmic</command>.</para>
+					<systemitem class="osname">Linux</systemitem> distributions listed in the following
+					distribution keywords table <xref linkend="serversideinstallation-keywords-evergreen"/> .
+					For example, to install the prerequisites for Ubuntu version 9.10 (Karmic Koala) you would
+					enter this command: <command>make -f Open-ILS/src/extras/Makefile.install
+					ubuntu-karmic</command>.</para>
 					<screen>
-						<prompt># as the opensrf user:</prompt>
+						<prompt># as the root user:</prompt>
 						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
 						<userinput>make -f Open-ILS/src/extras/Makefile.install [DISTRIBUTION]</userinput>
 					</screen>
@@ -922,32 +925,33 @@
 					(see <xref linkend="serversideinstallation-installprereq"/>)
 					does not automatically install PostgreSQL. You must install the PostgreSQL server
 					yourself, either on the same system as Evergreen itself or on another system.
-					If your PostgreSQL server is on a different system, just skip this step.</para>
-					<para>For further information on manually installing PostgreSQL, visit the official
+					If your PostgreSQL server is on a different system, just skip this step.
+					If your PostgreSQL server will be on the same system as your Evergreen
+					software, then install the required PostgreSQL server packages as follows.
+					For further information on manually installing PostgreSQL, visit the official
 					<link xl:href="http://www.postgresql.org/">PostgreSQL Site</link>.</para>
-					<para>If your PostgreSQL server will be on the same system as your Evergreen
-					software, then as the <systemitem class="username">root</systemitem> user
-					install the required PostgreSQL server packages:</para>
 					<para>For <systemitem class="osname">Debian Lenny</systemitem> and 
-					<systemitem class="osname">Ubuntu Hardy (8.04)</systemitem>:</para>
+					<systemitem class="osname">Ubuntu Hardy (8.04)</systemitem>, execute these commands:</para>
 					<screen>
 						<prompt># as the root user:</prompt>
+						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
 						<userinput>make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_83</userinput>
 					</screen>
 					<para>For <systemitem class="osname">Ubuntu Karmic (9.10)</systemitem> and
-					<systemitem class="osname">Ubuntu Lucid (10.04)</systemitem>:</para>
+					<systemitem class="osname">Ubuntu Lucid (10.04)</systemitem>, execute these commands:</para>
 					<screen>
 						<prompt># as the root user:</prompt>
+						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
 						<userinput>make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_84</userinput>
 					</screen>
 					<note>
 						<para>PostgreSQL versions 8.3 or 8.4 are the recommended versions to work 
-						with Evergreen 1.6. If you have an older version of PostgreSQL, you should
-						upgrade before installing Evergreen. To find the running version of
+						with Evergreen 1.6.1.2 . If you have an older version of PostgreSQL, you 
+						should upgrade before installing Evergreen. To find the running version of
 						PostgreSQL, as the <systemitem class="username">postgres</systemitem> 
-						user, run the <command>psql</command>. Then type <userinput>SELECT
-						version();</userinput> to get detailed information about your version 
-						of PostgreSQL.</para>
+						user execute the command <command>psql</command>, then type 
+						<userinput>SELECT version();</userinput> to get detailed information 
+						about your version of PostgreSQL.</para>
 					</note>
 				</step>
 				<step performance="optional">
@@ -1009,10 +1013,11 @@
 				</step>
 				<step xml:id="serversideinstallation-configure">
 					<title>Configure Evergreen</title>
-					<para>As the <systemitem class="username">opensrf</systemitem> user, return to
-					the Evergreen build directory and use the <command>configure</command> and
+					<para>In this step you will use the <command>configure</command> and
 					<command>make</command> utilities to configure Evergreen so it can be compiled
-					and linked in the next step:</para>
+					and linked later in <xref linkend="serversideinstallation-compile"/>.</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, return to
+					the Evergreen build directory and execute these commands:</para>
 					<screen>
 						<prompt># as the opensrf user:</prompt>
 						<userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.2</userinput>
@@ -1020,7 +1025,7 @@
 						<userinput>make</userinput>
 					</screen>
 				</step>
-				<step>
+				<step xml:id="serversideinstallation-compile">
 					<title>Compile, Link and Install Evergreen</title>
 					<para>In this step you will actually compile, link and install Evergreen and the 
 					default Evergreen Staff Client.</para>
@@ -1039,12 +1044,12 @@
 					<para>The above commands will create a new subdirectory
 					<filename class="directory">/openils/var/web/xul/rel_1_6_1_2</filename> 
 					containing the Staff Client.</para>
-					<para>To complete the Staff Client installation, 
-					as the <systemitem class="username">root</systemitem> user create a symbolic link 
-					named <emphasis>server</emphasis> in the head of the Staff Client directory 
-					<filename class="directory">/openils/var/web/xul</filename> that points to the
-					subdirectory <filename class="directory">/server</filename> of the new Staff
-					Client build:</para>
+					<para>To complete the Staff Client installation, as the
+					<systemitem class="username">root</systemitem> user execute the following commands to
+					create a symbolic link named <emphasis>server</emphasis> in the head of the Staff Client
+					directory <filename class="directory">/openils/var/web/xul</filename> that points to the
+					subdirectory <filename class="directory">/server</filename> of the new Staff Client
+					build:</para>
 					<screen>
 						<prompt># as the root user:</prompt>
 						<userinput>cd /openils/var/web/xul</userinput>
@@ -1053,14 +1058,14 @@
 				</step>
 				<step>
 					<title>Copy the OpenSRF Configuration Files</title>
+					<para>In this step you will replace some OpenSRF configuration files that you set up in
+					<xref linkend="serversideinstallation-opensrf-createconfig"/> when you installed and
+					tested OpenSRF.</para>
 					<para>You must copy several example OpenSRF configuration files into place after first
 					creating backup copies for troubleshooting purposes, then change all the file ownerships
-					to <systemitem class="username">opensrf</systemitem>. These files replace the
-					configuration files that you set up in a previous step
-					(see <xref linkend="serversideinstallation-opensrf-createconfig"/>)
-					when you installed and tested OpenSRF.
-					As the <systemitem class="username">root</systemitem> user, execute the
-					following commands:</para>
+					to <systemitem class="username">opensrf</systemitem>.  
+					As the <systemitem class="username">root</systemitem> user, execute the following
+					commands:</para>
 					<screen>
 						<prompt># as the root user:</prompt>
 						<userinput>cd /openils/conf</userinput>
@@ -1101,7 +1106,7 @@
 								<userinput>createlang plperlu  evergreen</userinput>
 								<userinput>createlang plpgsql  evergreen</userinput>
 							</screen>
-							<para>Continue as user <systemitem class="username">postgres</systemitem>
+							<para>Continue as the <systemitem class="username">postgres</systemitem> user
 							and execute the SQL scripts as shown below, adjusting the paths as needed, where
 							<literal>[PGSQL_VERSION]</literal> is your installed PostgreSQL
 							version (e.g. <literal>8.3</literal>).</para>
@@ -1119,7 +1124,7 @@
 							named <systemitem class="username">evergreen</systemitem> and
 							assign a password:</para>
 							<screen>
-								<prompt># as the root user:</prompt>
+								<prompt># as the postgres user:</prompt>
 								<userinput>createuser -P -s evergreen</userinput>
 								<computeroutput>Enter password for new role: <userinput>MYNEWPASSWORD</userinput></computeroutput>
 								<computeroutput>Enter it again: <userinput>MYNEWPASSWORD</userinput></computeroutput>
@@ -1127,15 +1132,13 @@
 						</step>
 						<step>
 							<title>Create database schema</title>
-							<para>As the <systemitem class="username">root</systemitem>
-							user, create the database schema and configure your system with
-							the corresponding database authentication details for the
-							<emphasis>evergreen</emphasis> database user that you just created 
-							in the previous step
-							(see <xref linkend="serversideinstallation-postgresqlcreateuser"/>).</para>
-							<para>Enter the following commands and replace
-							<emphasis>HOSTNAME, PORT, PASSWORD</emphasis> and
-							<emphasis>DATABASENAME</emphasis> with appropriate
+							<para>In this step you will create the database schema and configure your
+							system with the corresponding database authentication details for the
+							<emphasis>evergreen</emphasis> database user that you just created in
+							<xref linkend="serversideinstallation-postgresqlcreateuser"/>.</para>
+							<para>As the <systemitem class="username">root</systemitem> user, enter
+							the following commands and replace <emphasis>HOSTNAME, PORT,
+							PASSWORD</emphasis> and <emphasis>DATABASENAME</emphasis> with appropriate
 							values:</para>
 							<screen>
 								<prompt># as the root user:</prompt>
@@ -1149,11 +1152,8 @@
 							<emphasis role="bold">localhost</emphasis> and
 							<emphasis>PORT</emphasis> will be <emphasis role="bold">5432</emphasis>.
 							Of course, values for <emphasis>PASSWORD</emphasis> and
- 							<emphasis>DATABASENAME</emphasis> must match the values you used in the
- 							previous step
-							(see <xref linkend="serversideinstallation-postgresqlcreateuser"/>)
-							when you created the database and and set a password for the
- 							<systemitem class="username">evergreen</systemitem> user.</para>
+ 							<emphasis>DATABASENAME</emphasis> must match the values you used in 
+ 							<xref linkend="serversideinstallation-postgresqlcreateuser"/>.</para>
 							<para>As the command executes, you may see warnings similar to:
 							<literal>ERROR: schema SOMENAME does not exist</literal> (in fact,
 							you may see one warning per schema) but they can be safely ignored.</para>
@@ -1214,20 +1214,24 @@
 						</step>
 						<step xml:id="serversideinstallation-createsslcertificate">
 							<title>Create a Security Certificate</title>
-							<para>You must create a new Security Certificate (SSL Key) for
-							the Apache server using the <command>openssl</command>
-							command. For a public production server you must configure or
-							purchase a signed SSL certificate, but for now you can just use
-							a self-signed certificate and accept the warnings in the Staff
-							Client and browser during testing and development. As the
-							<systemitem class="username">root</systemitem> user, perform the
-							following commands:</para>
+							<para>In this step you will create a new Security Certificate (SSL Key)
+							for the Apache server using the <command>openssl</command> command. For a
+							public production server you must configure or purchase a signed SSL
+							certificate, but for now you can just use a self-signed certificate and
+							accept the warnings in the Staff Client and browser during testing and
+							development. As the <systemitem class="username">root</systemitem> user,
+							perform the following commands:</para>
 							<screen>
 								<prompt># as the root user:</prompt>
 								<userinput>mkdir /etc/apache2/ssl</userinput>
 								<userinput>cd /etc/apache2/ssl</userinput>
 								<userinput>openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key</userinput>
 							</screen>
+							<para>You will be prompted for several items of information; enter
+							the appropriate information for each item. The new files
+							<filename>server.crt</filename> and <filename>server.key</filename> will
+							be created in the directory 
+							<filename class="directory">/etc/apache2/ssl</filename> .</para>
 							<note>
 								<para>This step generates a self-signed SSL
 								certificate. You must install a proper SSL certificate
@@ -1271,9 +1275,11 @@
 									should not do this since the conflict does not apply to
 									that operating system.</para>
 								</listitem>
-								<listitem><para>The following updates are needed to allow the logs
+								<listitem>
+									<para>The following updates are needed to allow the logs
 									to function properly, but it may break other Apache
-									applications on your server:</para><para>For the 
+									applications on your server:</para>
+									<para>For the 
 									<systemitem class="osname">Linux</systemitem> distributions
 									<systemitem class="osname">Ubuntu Hardy</systemitem> or
 									<systemitem class="osname">Debian Etch</systemitem>, as
@@ -1281,14 +1287,27 @@
 									edit the Apache configuration file
 									<filename>/etc/apache2/apache2.conf</filename> and change
 									the line <literal>User www-data</literal> to <literal>User
-									opensrf</literal>.</para> <para>For the
+									opensrf</literal>.</para>
+									<para>For the
 									<systemitem class="osname">Linux</systemitem> distributions
 									<systemitem class="osname">Ubuntu Karmic</systemitem>,
 									<systemitem class="osname">Ubuntu Lucid</systemitem> or
 									<systemitem class="osname">Debian Lenny</systemitem>, as
 									the <systemitem class="username">root</systemitem> user,
 									edit the Apache configuration file and change these
-									lines:</para><screen><prompt># as the root user:</prompt><userinput>export APACHE_RUN_USER=www-data</userinput><userinput>export APACHE_RUN_GROUP=www-data</userinput></screen><para>to instead read:</para><screen><prompt># as the root user:</prompt><userinput>export APACHE_RUN_USER=opensrf</userinput><userinput>export APACHE_RUN_GROUP=opensrf</userinput></screen></listitem>
+									lines:</para>
+									<screen>
+										<prompt># as the root user:</prompt>
+										<userinput>export APACHE_RUN_USER=www-data</userinput>
+										<userinput>export APACHE_RUN_GROUP=www-data</userinput>
+									</screen>
+									<para>to instead read:</para>
+									<screen>
+										<prompt># as the root user:</prompt>
+										<userinput>export APACHE_RUN_USER=opensrf</userinput>
+										<userinput>export APACHE_RUN_GROUP=opensrf</userinput>
+									</screen>
+								</listitem>
 								<listitem>
 									<para>As the 
 									<systemitem class="username">root</systemitem> user,
@@ -1432,15 +1451,15 @@
 						</tgroup>
 					</table>
 				</step>
-				<step>
-					<title>Create Configuration Files for Users Needing <command>srfsh</command></title>
-					<para>When OpenSRF was installed in a previous step (see
-					<xref linkend="serversideinstallation-opensrf"/> for further information),
-					the software installation automatically created a utility named
-					<command>srfsh</command> (surf shell). This is a command line diagnostic tool
-					for testing and interacting with <application>OpenSRF</application> It will be used
-					in a future step to complete and test the Evergreen installation. See 
-					<xref linkend="serversideinstallation-testing"/> for further information.</para>
+				<step performance="optional">
+					<title>(OPTIONAL) Create Configuration Files for Users Needing <command>srfsh</command></title>
+					<para>When OpenSRF was installed in <xref linkend="serversideinstallation-opensrf"/>, the
+					software installation automatically created a utility named <command>srfsh</command> (surf
+					shell). This is a command line diagnostic tool for testing and interacting with
+					OpenSRF. It will be used in a future step to complete and test the Evergreen installation.
+					Earlier in <xref linkend="serversideinstallation-srfsh"/> you also created a configuration 
+					file <filename>~/.srfsh.xml</filename> for each user that might need to use the utility.
+					See <xref linkend="serversideinstallation-testing"/> for further information.</para>
 				</step>
 				<step xml:id="serversideinstallation-opensrf-env">
 					<title>Modify the OpenSRF Environment</title>
@@ -1465,7 +1484,7 @@
 						<userinput>. ~/.bashrc</userinput>
 					</screen>
 				</step>
-				<step>
+				<step performance="optional">
 					<title>(OPTIONAL) Enable and Disable Language Localizations</title>
 					<para>You can load translations such as Armenian (hy-AM), Canadian French
 					(fr-CA), and others into the database to complete the translations available in
