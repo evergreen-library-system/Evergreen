@@ -2903,12 +2903,14 @@ sub generate_fines_start {
 
    my $id = $reservation ? $self->reservation->id : $self->circ->id;
 
-   $self->{_gen_fines_req} = OpenSRF::AppSession->create('open-ils.storage') 
-       ->request(
-          'open-ils.storage.action.circulation.overdue.generate_fines',
-          undef,
-          $id
-       );
+   if (!exists($self->{_gen_fines_req})) {
+      $self->{_gen_fines_req} = OpenSRF::AppSession->create('open-ils.storage') 
+          ->request(
+             'open-ils.storage.action.circulation.overdue.generate_fines',
+             undef,
+             $id
+          );
+   }
 
    return undef;
 }
@@ -2920,6 +2922,7 @@ sub generate_fines_finish {
    my $id = $reservation ? $self->reservation->id : $self->circ->id;
 
    $self->{_gen_fines_req}->wait_complete;
+   delete($self->{_gen_fines_req});
 
    # refresh the circ in case the fine generator set the stop_fines field
    $self->reservation($self->editor->retrieve_booking_reservation($id)) if $reservation;
@@ -3205,6 +3208,7 @@ sub do_renew {
     my $usrid = $self->patron->id if $self->patron;
     my $circ = $self->editor->search_action_circulation({
         target_copy => $self->copy->id,
+        xact_finish => undef,
         ($usrid ? (usr => $usrid) : ()),
         '-or' => [
             {stop_fines => undef},
