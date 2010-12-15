@@ -46,6 +46,15 @@
 
             netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 
+            // XXX: We're reproducing what's in main.js just for a time so we can have this immediately in some environments
+            // without requiring a new staff client build be deployed
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Ci['nsIPrefBranch']);                                             if (prefs.prefHasUserValue('general.useragent.override')) {
+                // don't want an ever-growing useragent
+            } else {
+                prefs.setCharPref('general.useragent.override',navigator.userAgent + ' oils_xulrunner /xul/server/');
+            }
+
             if (typeof JSAN == 'undefined') {
                 throw(document.getElementById("commonStrings").getString('common.jsan.missing'));
             }
