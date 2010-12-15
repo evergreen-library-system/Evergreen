@@ -19066,6 +19066,9 @@ INSERT INTO action_trigger.event_definition (
 -- Speed up item-age browse axis (new books feed)
 CREATE INDEX cp_create_date  ON asset.copy (create_date);
 
+-- Speed up call number browsing
+CREATE INDEX asset_call_number_label_sortkey_browse ON asset.call_number(oils_text_as_bytea(label_sortkey), oils_text_as_bytea(label), id, owning_lib) WHERE deleted IS FALSE OR deleted = FALSE;
+
 \qecho Upgrade script completed.
 \qecho But wait, there's more: please run reingest-1.6-2.0.pl
 \qecho in order to create an SQL script to run to partially reindex 
