@@ -215,6 +215,9 @@ function main_init() {
         G =  {};
         
         G.pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+        if (! G.pref.prefHasUserValue('general.useragent.override')) {
+            G.pref.setCharPref('general.useragent.override',navigator.userAgent + ' oils_xulrunner /xul/server/');
+        }
 
         JSAN.use('util.error');
         G.error = new util.error();
