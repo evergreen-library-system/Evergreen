@@ -22,9 +22,9 @@
     </div>
     <table jsId="actGrid"
         dojoType="openils.widget.AutoGrid"
-        fieldOrder="['name', 'owning_lib']"
-        suppressFields="['creator','editor','edit_date','create_date']"
-        suppressEditFields="['creator','editor','edit_date','create_date']"
+        fieldOrder="['name','owning_lib','circulate','holdable','opac_visible','loan_duration','fine_level','location','circ_modifier','floating','deposit','ref','mint_condition']"
+        suppressFields="['creator','editor','edit_date','create_date','circ_lib']"
+        suppressEditFields="['creator','editor','edit_date','create_date','circ_lib']"
         query="{id: '*'}"
         editStyle="pane"
         fmClass="act"
