@@ -1557,13 +1557,27 @@
 					tree (which allows <emphasis>Holds</emphasis> to work properly). You must do
 					this the first time you start Evergreen and after making any changes to the
 					library hierarchy. As the <systemitem class="username">opensrf</systemitem>
-					user, execute the following commands:</para>
+					user, execute the following command and review the results:</para>
 					<screen>
 						<prompt># as the opensrf user:</prompt>
 						<userinput>cd /openils/bin</userinput>
 						<userinput>./autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
 						<computeroutput>Updating Evergreen organization tree and IDL using '/openils/conf/opensrf_core.xml'</computeroutput>
 						<computeroutput>Updating fieldmapper</computeroutput>
+						<computeroutput>Updating web_fieldmapper</computeroutput>
+						<computeroutput>Updating OrgTree</computeroutput>
+						<computeroutput>removing OrgTree from the cache for locale hy-AM...</computeroutput>
+						<computeroutput>removing OrgTree from the cache for locale cs-CZ...</computeroutput>
+						<computeroutput>removing OrgTree from the cache for locale en-CA...</computeroutput>
+						<computeroutput>removing OrgTree from the cache for locale en-US...</computeroutput>
+						<computeroutput>removing OrgTree from the cache for locale fr-CA...</computeroutput>
+						<computeroutput>removing OrgTree from the cache for locale ru-RU...</computeroutput>
+						<computeroutput>Updating OrgTree HTML</computeroutput>
+						<computeroutput>Updating locales selection HTML</computeroutput>
+						<computeroutput>Updating Search Groups</computeroutput>
+						<computeroutput>Refreshing proximity of org units</computeroutput>
+						<computeroutput>Successfully updated the organization proximity</computeroutput>
+						<computeroutput>Done</computeroutput>
 					</screen>
 				</step>
 				<step>
@@ -1649,6 +1663,60 @@
 						configuration.</para>
 					</listitem>
 				</itemizedlist>
+			</simplesect>
+			<simplesect xml:id="serversideinstallation-running-staffclient">
+				<title>Testing the Staff Client on Linux</title>
+				<para>In this section you will confirm that a basic login on the Staff Client works
+				properly.</para>
+				<para>Run the Evergreen Staff Client on a Linux system by using the application
+				<emphasis>XULRunner</emphasis> (installed automatically and by default with Firefox
+				version 3.0 and later on Ubuntu and Debian distributions).</para>
+				<para>As the <systemitem class="username">root</systemitem> user, start the Staff Client
+				as shown:</para>
+				<screen>
+					<prompt># as the root user:</prompt>
+					<userinput>xulrunner /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client/build/application.ini</userinput>
+				</screen>
+				<para>The login screen for the Staff Client should appear.</para>
+				<para>Log in using the username <literal>admin</literal> and the password
+				<literal>open-ils</literal> :</para>
+				<mediaobject>
+					<alt>Logging into the Staff Client</alt>
+					<imageobject>
+						<imagedata fileref="../media/serversideinstallation-staffclient-running-1.png" format="PNG" scalefit="1" width="70%"/>
+					</imageobject>
+				</mediaobject>
+				<para>If the login is successful, you will see the following screen:</para>
+				<mediaobject>
+					<alt>Logging into the Staff Client</alt>
+					<imageobject>
+						<imagedata fileref="../media/serversideinstallation-staffclient-running-4.png" format="PNG" scalefit="1" width="70%"/>
+					</imageobject>
+				</mediaobject>
+				<para>Otherwise, you may need to click <guibutton>Add SSL Exception</guibutton> in the
+				main window. You will see a popup window labeled "Add Security Exception":</para>
+				<mediaobject>
+					<alt>Logging into the Staff Client</alt>
+					<imageobject>
+						<imagedata fileref="../media/serversideinstallation-staffclient-running-2.png" format="PNG" scalefit="1" width="70%"/>
+					</imageobject>
+				</mediaobject>
+				<para>Click <guibutton>Get Certificate</guibutton>, then click <guibutton>Confirm
+				Security Exception</guibutton>, then click <guibutton>Re-Test Server</guibutton> in the
+				main window and try to log in again.</para>
+			</simplesect>
+			<simplesect xml:id="serversideinstallation-starting-apache-server">
+				<title>Testing the Apache Web Server</title>
+				<para>In this section you will test the Apache configuration file(s), then restart the
+				Apache web server.</para>
+				<para>As the <emphasis role="bold">root</emphasis> user, execute the following
+				commands. Note the use of <emphasis>restart</emphasis> to force the new Evergreen
+				modules to be reloaded even if the Apache server is already running. Any problems found
+				with your configuration files should be displayed:</para>
+				<screen>
+					<prompt># as the root user:</prompt>
+					<userinput>apache2ctl configtest &amp;&amp; /etc/init.d/apache2 restart</userinput>
+				</screen>
 			</simplesect>
 		</section>
 		<section xml:id="serversideinstallation-postinstallation">
