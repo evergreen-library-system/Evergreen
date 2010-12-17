@@ -2410,6 +2410,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             no_change_label.setAttribute('value','');
             no_change_label.setAttribute('hidden','true');
             no_change_label.setAttribute('onclick','');
+            removeCSSClass(no_change_label,'click_link');
         }
 
         var msg = '';

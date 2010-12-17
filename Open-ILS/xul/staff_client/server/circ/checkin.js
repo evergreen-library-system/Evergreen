@@ -420,6 +420,7 @@ circ.checkin.prototype = {
                         );
                         no_change_label.setAttribute('hidden','false');
                         no_change_label.setAttribute('onclick','xulG.new_patron_tab({},{"id" : '+bill.usr()+', "show" : "bills" })');
+                        addCSSClass(no_change_label,'click_link');                        
                     }
                     if (document.getElementById('fine_tally')) {
                         var amount = Number( document.getElementById('fine_tally').getAttribute('amount') ) + Number( bill.balance_owed() );
