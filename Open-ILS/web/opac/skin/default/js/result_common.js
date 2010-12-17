@@ -668,7 +668,7 @@ function fetchGoogleBooksLink () {
 
 function fetchChiliFreshReviews() {
     if (chilifresh && chilifresh != '(none)') {
-        try { chili_init(); } catch(E) { dump(E + '\n'); }
+        try { chili_init(); } catch(E) { console.log(E + '\n'); }
     }
 }
 

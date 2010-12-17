@@ -518,7 +518,7 @@ function _rdetailDraw(r) {
         try {
             chili_init();
         } catch(E) {
-            dump(E + '\n');
+            console.log(E + '\n');
             hideMe($('rdetail_reviews_link'));
             hideMe($('rdetail_chilifresh_reviews'));
         }
