@@ -119,37 +119,6 @@ main.menu.prototype = {
             );
         }
 
-        window.addEventListener(
-            'close',
-            function(ev) {
-
-                var unsaved_data = false;
-                for (var id in obj.tab_semaphores) {
-                    if (obj.tab_semaphores[id] > 0) {
-                        unsaved_data = true;
-                    }
-                }
-
-                if (unsaved_data) {
-                    var confirmation = window.confirm(offlineStrings.getString('menu.close_window.unsaved_data_warning'));
-                    if (!confirmation) {
-                        ev.preventDefault();
-                        return false;
-                    }
-                }
-
-                for (var id in obj.tab_semaphores) {
-                    if (obj.tab_semaphores[id] > 0) {
-                        oils_unsaved_data_P( obj.tab_semaphores[id] );
-                    }
-                }
-
-                return true;
-
-            },
-            false
-        );
-
         var cmd_map = {
             'cmd_broken' : [
                 ['oncommand'],
@@ -1321,6 +1290,7 @@ main.menu.prototype = {
                     if (window.confirm(confirm_string)) {
                         obj.data.unsaved_data = 0; // just in case the program doesn't close somehow
                         obj.data.stash('unsaved_data');
+                        dump('forcing data.unsaved_data == ' + obj.data.unsaved_data + '\n');
                         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                         var windowManager = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService();
                         var windowManagerInterface = windowManager.QueryInterface(Components.interfaces.nsIWindowMediator);

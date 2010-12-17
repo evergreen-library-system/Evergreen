@@ -5,17 +5,28 @@
         data.stash_retrieve();
         if (typeof data.unsaved_data == 'undefined') { data.unsaved_data = 0; }
         data.unsaved_data++;
+        window.oils_lock++;
         data.stash('unsaved_data');
+        dump('incrementing window.oils_lock\n');
+        dump(location.href + ' window.oils_lock == ' + window.oils_lock + '\n');
+        dump('incrementing data.unsaved_data\n');
+        dump('data.unsaved_data == ' + data.unsaved_data + '\n');
     }
 
     function oils_unsaved_data_P(count) {
         if (!count) { count = 1; }
+        dump('decrementing window.oils_lock by ' + count + '\n');
+        window.oils_lock -= count;
+        if (window.oils_lock < 0) { window.oils_lock = 0; }
+        dump(location.href + ' window.oils_lock == ' + window.oils_lock + '\n');
         JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
         data.stash_retrieve();
         if (typeof data.unsaved_data == 'undefined') { data.unsaved_data = 0; }
+        dump('decrementing data.unsaved_data by ' + count + '\n');
         data.unsaved_data -= count;
         if (data.unsaved_data < 0) { data.unsaved_data = 0; }
         data.stash('unsaved_data');
+        dump('data.unsaved_data == ' + data.unsaved_data + '\n');
     }
 
     function oils_lock_page(params) {
@@ -26,7 +37,6 @@
                 return window.oils_lock;
             }
         }
-        window.oils_lock++;
         if (typeof xulG != 'undefined') {
             if (typeof xulG.unlock_tab == 'function') {
                 dump('\twith xulG.lock_tab\n');
@@ -44,8 +54,6 @@
 
     function oils_unlock_page(params) {
         dump('oils_unlock_page\n');
-        window.oils_lock--;
-        if (window.oils_lock < 0) { window.oils_lock = 0; }
         if (typeof xulG != 'undefined') {
             if (typeof xulG.unlock_tab == 'function') {
                 dump('\twith xulG.unlock_tab\n');
@@ -62,6 +70,7 @@
     }
 
     window.oils_lock = 0;
+    dump(location.href + ' init window.oils_lock == ' + window.oils_lock + '\n');
     window.addEventListener(
         'close',
         function(ev) {
@@ -85,6 +94,7 @@
                     oils_unsaved_data_P( window.oils_lock );
                 }
                 window.oils_lock = 0;
+                dump(location.href + ' forcing window.oils_lock == ' + window.oils_lock + '\n');
 
                 // Dispatching the window close event doesn't always close the window, even though the event does happen
                 setTimeout(
