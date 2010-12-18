@@ -34,28 +34,34 @@ function displayAuthorities(data) {
     var idArr = [];
     // Grab each record from the returned authority records
     dojo.query("record", data).forEach(function(node) {
-        authText = '';
-        authId = 0;
+        var auth = {};
+        auth.text = '';
+        auth.id = 0;
 
         // Grab each authority record field from the authority record
         dojo.query("datafield[tag^='1']", node).forEach(function(dfNode) {
-            authText += dojox.xml.parser.textContent(dfNode); 
+            auth.text += dojox.xml.parser.textContent(dfNode); 
+            auth.name = dojo.attr(dfNode, 'tag');
+            auth.ind1 = dojo.attr(dfNode, 'ind1');
+            auth.ind2 = dojo.attr(dfNode, 'ind2');
         });
+
+        
         // Grab the ID of the authority record
         dojo.query("datafield[tag='901'] subfield[code='c']", node).forEach(function(dfNode) {
-            authId = dojox.xml.parser.textContent(dfNode); 
+            auth.id = dojox.xml.parser.textContent(dfNode); 
         });
 
-        idArr.push(parseInt(authId));
+        idArr.push(parseInt(auth.id));
 
         // Create the authority record listing entry
-        dojo.place('<div class="authEntry" id="auth' + authId + '"><span class="text" id="authLabel' + authId + '">' + authText + '</span></div>', "authlist-div", "last");
+        dojo.place('<div class="authEntry" id="auth' + auth.id + '"><span class="text" id="authLabel' + auth.id + '">' + auth.text + '</span></div>', "authlist-div", "last");
 
         // Add the menu of new/edit/delete/mark-for-merge options
         var auth_menu = new dijit.Menu({});
 
         // "Edit" menu item
-        new dijit.MenuItem({"id": "edit_" + authId, "onClick": function(){
+        new dijit.MenuItem({"id": "edit_" + auth.id, "onClick": function(){
             recId = this.id.slice(this.id.lastIndexOf('_') + 1);
             pcrud = new openils.PermaCrud();
             auth_rec = pcrud.retrieve("are", recId);
@@ -65,11 +71,11 @@ function displayAuthorities(data) {
         }, "label":"Edit"}).placeAt(auth_menu, "first");
 
         // "Merge" menu item
-        new dijit.MenuItem({"id": "merge_" + authId, "onClick":function(){
-            authText = '';
+        new dijit.MenuItem({"id": "merge_" + auth.id, "onClick":function(){
+            auth.text = '';
             recId = this.id.slice(this.id.lastIndexOf('_') + 1);
             dojo.query('#auth' + recId + ' span.text').forEach(function(node) {
-                authText += dojox.xml.parser.textContent(node); 
+                auth.text += dojox.xml.parser.textContent(node); 
             });
 
             // If there is a toMerge item already, this is a target record
@@ -80,12 +86,14 @@ function displayAuthorities(data) {
             } else {
                 mergeRole += 'Master</td>';
             }
-            dojo.place('<tr class="toMerge" id="toMerge_' + recId + '">' + mergeRole + '<td style="border: 1px solid black; padding-left: 1em;">' + authText + '</td></tr>', 'mergebox-tbody', 'last');
+
+            dojo.place('<tr class="toMerge" id="toMerge_' + recId + '"><td>' + mergeRole + '</td><td  style="border: 1px solid black;" id="mergeMeta_' + recId + '"></td><td style="border: 1px solid black; padding-left: 1em; padding-right: 1em;" >' + auth.text + '</td></tr>', 'mergebox-tbody', 'last');
+            dojo.place('<span class="authmeta" style="font-family: monospace;">' + auth.name + ' ' + auth.ind1 + auth.ind2 + '</span>', 'mergeMeta_' + recId, 'last');
             dojo.removeClass('mergebox-div', 'hidden');
         }, "label":"Mark for Merge"}).placeAt(auth_menu, "last");
 
         // "Delete" menu item
-        new dijit.MenuItem({"id": "delete_" + authId, "onClick":function(){
+        new dijit.MenuItem({"id": "delete_" + auth.id, "onClick":function(){
             recId = this.id.slice(this.id.lastIndexOf('_') + 1);
 
             // Deleting an authority record is unusual; let's be 100% sure
@@ -101,8 +109,8 @@ function displayAuthorities(data) {
             }
         }, "label":"Delete"}).placeAt(auth_menu, "last");
 
-        auth_mb = new dijit.form.DropDownButton({dropDown: auth_menu, label:"Actions", id:"menu" + authId});
-        auth_mb.placeAt("auth" + authId, "first");
+        auth_mb = new dijit.form.DropDownButton({dropDown: auth_menu, label:"Actions", id:"menu" + auth.id});
+        auth_mb.placeAt("auth" + auth.id, "first");
         auth_menu.startup();
     });
 
@@ -166,9 +174,9 @@ function loadMarcEditor(pcrud, rec) {
 }
 
 function authListInit() {
-    term = cgi.param('authTerm') || '';
-    page = cgi.param('authPage') || 0;
-    axis = cgi.param('authAxis') || 'authority.author';
+    var term = cgi.param('authTerm') || '';
+    var page = cgi.param('authPage') || 0;
+    var axis = cgi.param('authAxis') || 'authority.author';
     if (axis) {
         dijit.byId('authAxis').attr('value', axis);
     }
@@ -226,12 +234,12 @@ function displayRecords(parms) {
     }
 
     /* Clear out the current contents of the page */
-    widgets = dijit.findWidgets(dojo.byId('authlist-div'));
+    var widgets = dijit.findWidgets(dojo.byId('authlist-div'));
     dojo.forEach(widgets, function(w) { w.destroyRecursive(true); });
 
     dojo.query("#authlist-div div").orphan();
 
-    url = '/opac/extras/startwith/marcxml/'
+    var url = '/opac/extras/startwith/marcxml/'
         + dijit.byId('authAxis').attr('value')
         // + '/' + dijit.byId('authOU').attr('value')
         + '/1' // replace with preceding line if OUs gain some meaning
@@ -243,12 +251,12 @@ function displayRecords(parms) {
 }
 
 function clearMergeRecords() {
-    records = dojo.query('.toMerge').orphan();
+    var records = dojo.query('.toMerge').orphan();
     dojo.addClass('mergebox-div', 'hidden');
 }
 
 function mergeRecords() {
-    records = dojo.query('.toMerge').attr('id');
+    var records = dojo.query('.toMerge').attr('id');
     dojo.forEach(records, function(item, idx) {
         records[idx] = parseInt(item.slice(item.lastIndexOf('_') + 1));
     });
