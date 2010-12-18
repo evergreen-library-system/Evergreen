@@ -2446,7 +2446,8 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
 
             dojo.query('datafield[tag^="1"], datafield[tag^="5"]', record).forEach(function(field) {
                 var row = createRow(
-                    {},
+                    { },
+                    createLabel( { "value" : dojo.attr(field, 'tag') } ),
                     createLabel( { "value" : dojo.attr(field, 'ind1') } ),
                     createLabel( { "value" : dojo.attr(field, 'ind2') } )
                 );
