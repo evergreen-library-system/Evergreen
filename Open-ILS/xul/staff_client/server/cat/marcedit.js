@@ -2347,7 +2347,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
         page = 0;
     }
 
-    var url = '/opac/extras/startwith/marcxml/'
+    var url = '/opac/extras/browse/marcxml/'
         + type
         + '/1' // OU - currently unscoped
         + '/' + sf.toString()
