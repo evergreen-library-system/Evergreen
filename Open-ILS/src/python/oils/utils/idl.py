@@ -123,9 +123,10 @@ class IDLParser(object):
         for link in [l for l in links.childNodes if l.nodeName == 'link']:
             obj = IDLLink(
                 field = idlobj.get_field(self._get_attr(link, 'field')),
-                rel_type = self._get_attr(link, 'rel_type'),
+                reltype = self._get_attr(link, 'reltype'),
                 key = self._get_attr(link, 'key'),
-                map = self._get_attr(link, 'map')
+                map = self._get_attr(link, 'map'),
+                class_ = self._get_attr(link, 'class')
             )
             idlobj.links.append(obj)
 
@@ -156,6 +157,7 @@ class IDLParser(object):
             )
 
             idlobj.fields.append(obj)
+            idlobj.field_map[obj.name] = obj
             position += 1
 
         for name in ['isnew', 'ischanged', 'isdeleted']: 
@@ -183,15 +185,31 @@ class IDLClass(object):
         self.sequence = kwargs.get('sequence')
         self.fields = []
         self.links = []
+        self.field_map = {}
 
         if self.virtual and self.virtual.lower() == 'true':
             self.virtual = True
         else:
             self.virtual = False
 
+    def __str__(self):
+        ''' Stringify the parsed IDL ''' # TODO: improve the format/content
+
+        s = '-'*60 + '\n'
+        s += "%s [%s] %s\n" % (self.label, self.name, self.tablename)
+        s += '-'*60 + '\n'
+        idx = 0
+        for f in self.fields:
+            s += "[%d] " % idx
+            if idx < 10: s += " "
+            s += str(f) + '\n'
+            idx += 1
+
+        return s
+
     def get_field(self, field_name):
         try:
-            return [f for f in self.fields if f.name == field_name][0]
+            return self.field_map[field_name]
         except:
             msg = "No field '%s' in IDL class '%s'" % (field_name, self.name)
             osrf.log.log_warn(msg)
@@ -216,6 +234,18 @@ class IDLField(object):
         else:
             self.virtual = False
 
+    def __str__(self):
+        ''' Format as field name and data type, plus linked class for links. '''
+        s = self.name
+        if self.rpt_datatype:
+            s += " [" + self.rpt_datatype
+            if self.rpt_datatype == 'link':
+                link = [ l for l in self.idl_class.links if l.field.name == self.name ]
+                if len(link) > 0 and link[0].class_:
+                    s += " @%s" % link[0].class_
+            s += ']'
+        return s
+
 
 class IDLLink(object):
     def __init__(self, field, **kwargs):
@@ -223,8 +253,7 @@ class IDLLink(object):
             @param field The IDLField object this link references
         '''
         self.field = field
-        self.rel_type = kwargs.get('rel_type')
+        self.reltype = kwargs.get('reltype')
         self.key = kwargs.get('key')
         self.map = kwargs.get('map')
-
-
+        self.class_ = kwargs.get('class_')
