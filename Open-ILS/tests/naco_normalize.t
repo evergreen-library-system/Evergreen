@@ -2,9 +2,11 @@ use strict;
 use warnings;
 use utf8;
 
-use Test::More;
+use Test::More tests => 50;
 use Unicode::Normalize;
 use DBI;
+
+use OpenILS::Application::Storage::FTS;
 
 # This could be made better in at least one of two ways (or both);
 # 1. put PL/Perl code that doesn't require a database into external
@@ -23,11 +25,6 @@ my $db_name   = 'evergreen';
 my $db_user   = 'evergreen';
 my $db_pw     = 'evergreen';
 my $dsn       = "dbi:" . $db_driver . ":dbname=" . $db_name .';host=' . $db_host . ';port=' . $db_port;
-
-my $dbh = DBI->connect($dsn, $db_user, $db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, PrintError => 0});
-if (!defined($dbh)) {
-    plan skip_all => "Failed to connect to database: $DBI::errstr";
-}
 
 binmode STDOUT, ':utf8';
 binmode STDERR, ':utf8';
@@ -60,24 +57,35 @@ my @test_cases = (
     [ '♭©®♯', '♭ ♯', 'other symbols' ],
 );
 
-my $sth1 = $dbh->prepare_cached('SELECT public.naco_normalize(?)');
-my $sth2 = $dbh->prepare_cached('SELECT public.naco_normalize(?, ?)');
-sub naco_normalize_wrapper {
-    my ($str, $sf) = @_;
-    if (defined $sf) {
-        $sth2->execute($str, $sf);
-        return $sth2->fetchrow_array;
-    } else {
-        $sth1->execute($str);
-        return $sth1->fetchrow_array;
-    }
-}
-
+# test copy of naco_normalize in OpenILS::Application::Storage::FTS
 foreach my $case (@test_cases) {
-    is(naco_normalize_wrapper($case->[0]), $case->[1], $case->[2]);    
+    is(OpenILS::Application::Storage::FTS::naco_normalize($case->[0]), $case->[1], $case->[2] . ' (FTS.pm)');
 }
+is(OpenILS::Application::Storage::FTS::naco_normalize('Smith, Jane. Poet, painter, and author', 'a'),
+    'smith, jane poet painter and author',
+    'retain first comma (FTS.pm)');
 
-is(naco_normalize_wrapper('Smith, Jane. Poet, painter, and author', 'a'), 'smith, jane poet painter and author', 
-    'retain first comma');
+SKIP: {
+    my $dbh = DBI->connect($dsn, $db_user, $db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, PrintError => 0});
+    skip "Failed to connect to database: $DBI::errstr", 25 if (!defined($dbh));
 
-done_testing;
+    # test stored procedure
+    my $sth1 = $dbh->prepare_cached('SELECT public.naco_normalize(?)');
+    my $sth2 = $dbh->prepare_cached('SELECT public.naco_normalize(?, ?)');
+    sub naco_normalize_wrapper {
+        my ($str, $sf) = @_;
+        if (defined $sf) {
+            $sth2->execute($str, $sf);
+            return $sth2->fetchrow_array;
+        } else {
+            $sth1->execute($str);
+            return $sth1->fetchrow_array;
+        }
+    }
+
+    foreach my $case (@test_cases) {
+        is(naco_normalize_wrapper($case->[0]), $case->[1], $case->[2] . ' (stored procedure)');
+    }
+    is(naco_normalize_wrapper('Smith, Jane. Poet, painter, and author', 'a'), 'smith, jane poet painter and author',
+        'retain first comma (stored procedure)');
+}
