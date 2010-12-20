@@ -806,7 +806,7 @@ function doLogout() {
 	var args = {};
 	args[PARAM_TERM] = "";
 	args[PARAM_LOCATION] = getOrigLocation();
-	args[PARAM_DEPTH] = findOrgDepth(getOrigLocation());
+    args[PARAM_DEPTH] = findOrgDepth(getOrigLocation() || globalOrgTree);
 	args.page = "home";
 
 	
