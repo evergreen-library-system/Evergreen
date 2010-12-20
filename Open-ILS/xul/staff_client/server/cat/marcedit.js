@@ -1,4 +1,23 @@
-// vim: et:sw=4:ts=4:
+/* vim: et:sw=4:ts=4:
+ *
+ * Copyright (C) 2004-2008  Georgia Public Library Service
+ * Copyright (C) 2008-2010  Equinox Software, Inc.
+ * Mike Rylander <miker@esilibrary.com> 
+ *
+ * Copyright (C) 2010 Dan Scott <dan@coffeecode.net>
+ * Copyright (C) 2010 Internationaal Instituut voor Sociale Geschiedenis <info@iisg.nl>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.  
+ *
+ */
 var xmlDeclaration = /^<\?xml version[^>]+?>/;
 
 var serializer = new XMLSerializer();
@@ -1914,9 +1933,18 @@ function getAuthorityContextMenu (target, sf) {
     return true;
 }
 
-function applyAuthority ( target, ui_sf, e4x_sf ) {
+/* Apply the complete 1xx */
+function applyFullAuthority ( target, ui_sf, e4x_sf ) {
+    var new_vals = dojo.query('*[tag^="1"]', target);
+    return applyAuthority( target, ui_sf, e4x_sf, new_vals );
+}
 
+function applySelectedAuthority ( target, ui_sf, e4x_sf ) {
     var new_vals = target.getElementsByAttribute('checked','true');
+    return applyAuthority( target, ui_sf, e4x_sf, new_vals );
+}
+
+function applyAuthority ( target, ui_sf, e4x_sf, new_vals ) {
     var field = e4x_sf.parent();
 
     for (var i = 0; i < new_vals.length; i++) {
@@ -2486,7 +2514,20 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
                 createMenuitem(
                     { label : $('catStrings').getString('staff.cat.marcedit.apply_selected.label'),
                       command : function (event) {
-                            applyAuthority(event.target.previousSibling, target, sf);
+                            applySelectedAuthority(event.target.previousSibling, target, sf);
+                            return true;
+                      }
+                    }
+                )
+            );
+
+            popup.appendChild( createComplexXULElement( 'menuseparator' ) );
+
+            popup.appendChild(
+                createMenuitem(
+                    { label : $('catStrings').getString('staff.cat.marcedit.apply_full.label'),
+                      command : function (event) {
+                            applyFullAuthority(event.target.previousSibling.previousSibling.previousSibling, target, sf);
                             return true;
                       }
                     }
