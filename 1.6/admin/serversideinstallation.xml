@@ -1037,10 +1037,8 @@
 						<userinput>make STAFF_CLIENT_BUILD_ID=rel_1_6_1_2 install</userinput>
 					</screen>
 					<para>The Staff Client will also be automatically built, but you must remember
-					to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version of the Staff
-					Client you will use to connect to the Evergreen server. For further information on manually
-					building the Staff Client, see 
-					<xref linkend="staffclientinstallation-building-staffclient"/>.</para>
+					to set the variable <envar>STAFF_CLIENT_BUILD_ID</envar> to match the version of the 
+					Staff Client you will use to connect to the Evergreen server.</para>
 					<para>The above commands will create a new subdirectory
 					<filename class="directory">/openils/var/web/xul/rel_1_6_1_2</filename> 
 					containing the Staff Client.</para>
@@ -1063,7 +1061,7 @@
 					tested OpenSRF.</para>
 					<para>You must copy several example OpenSRF configuration files into place after first
 					creating backup copies for troubleshooting purposes, then change all the file ownerships
-					to <systemitem class="username">opensrf</systemitem>.  
+					to <systemitem class="username">opensrf</systemitem>.
 					As the <systemitem class="username">root</systemitem> user, execute the following
 					commands:</para>
 					<screen>
@@ -1270,7 +1268,7 @@
 									<para>Comment out the line <literal>Listen 443</literal>,
 									since it conflicts with the same declaration in the
 									configuration file:
-									<filename>/etc/apache2/ports.conf</filename>.  Note that
+									<filename>/etc/apache2/ports.conf</filename>. Note that
 									<systemitem class="osname">Debian </systemitem> users
 									should not do this since the conflict does not apply to
 									that operating system.</para>
@@ -1463,26 +1461,40 @@
 				</step>
 				<step xml:id="serversideinstallation-opensrf-env">
 					<title>Modify the OpenSRF Environment</title>
-					<para>As the <systemitem class="username">opensrf</systemitem> user,
-					modify the shell configuration file <filename>~/.bashrc</filename> for
-					user <systemitem class="username">opensrf</systemitem> by adding a Perl environmental
-					variable, then execute the shell configuration file to load the new variables into
-					your current environment.</para>
-					<note>
-						<para>
-							<emphasis>In a multi-server environment, you must add any
-							modifications to <filename>~/.bashrc</filename> to the top of
-							the file <emphasis>before</emphasis> the line 
-							<literal>[ -z "$PS1" ] &amp;&amp; return </literal>.
-							This will allow headless (scripted) logins to load the correct
-							environment.</emphasis>
-						</para>
-					</note>
-					<screen>
-						<prompt># as the opensrf user:</prompt>
-						<userinput>echo "export PERL5LIB=/openils/lib/perl5:\$PERL5LIB" >> ~/.bashrc</userinput>
-						<userinput>. ~/.bashrc</userinput>
-					</screen>
+					<para>In this step you will make some minor modifications to the OpenSRF environment:</para>
+					<itemizedlist>
+						<listitem>
+							<para>Modify the permissions in the directory 
+							<filename class="directory">/openils/var/cgi-bin</filename> 
+							to make the files executable:</para>
+							<screen>
+								<prompt># as the opensrf user:</prompt>
+								<userinput>chmod 755 /openils/var/cgi-bin/*.cgi</userinput>
+							</screen>
+						</listitem>
+						<listitem>
+							<para>As the <systemitem class="username">opensrf</systemitem> user,
+							modify the shell configuration file <filename>~/.bashrc</filename> for
+							user <systemitem class="username">opensrf</systemitem> by adding a Perl
+							environmental variable, then execute the shell configuration file to load
+							the new variables into your current environment.</para>
+							<note>
+								<para>
+									<emphasis>In a multi-server environment, you must add any
+									modifications to <filename>~/.bashrc</filename> to the top of
+									the file <emphasis>before</emphasis> the line 
+									<literal>[ -z "$PS1" ] &amp;&amp; return </literal>.
+									This will allow headless (scripted) logins to load the correct
+									environment.</emphasis>
+								</para>
+							</note>
+							<screen>
+								<prompt># as the opensrf user:</prompt>
+								<userinput>echo "export PERL5LIB=/openils/lib/perl5:\$PERL5LIB" >> ~/.bashrc</userinput>
+								<userinput>. ~/.bashrc</userinput>
+							</screen>
+						</listitem>
+					</itemizedlist>
 				</step>
 				<step performance="optional">
 					<title>(OPTIONAL) Enable and Disable Language Localizations</title>
@@ -1495,6 +1507,9 @@
 		</section>
 		<section xml:id="serversideinstallation-starting">
 			<title>Starting Evergreen</title>
+			<para>In this section you will learn how to start the Evergreen services. 
+			For completeness, instructions for stopping Evergreen can be found later in 
+			<xref linkend="serversideinstallation-stopping"/>.</para>
 			<procedure>
 				<step>
 					<para>As the <systemitem class="username">root</systemitem>
@@ -1553,11 +1568,12 @@
 				</step>
 				<step>
 					<para>In this step you will generate the Web files needed by the Staff Client
-					and catalog, and calculate the proximity of locations in the Organizational Unit
-					tree (which allows <emphasis>Holds</emphasis> to work properly). You must do
-					this the first time you start Evergreen and after making any changes to the
-					library hierarchy. As the <systemitem class="username">opensrf</systemitem>
-					user, execute the following command and review the results:</para>
+					and catalog, and update the proximity of locations in the Organizational Unit
+					tree (which allows <emphasis>Holds</emphasis> to work properly).</para>
+					<para>You must do this the first time you start Evergreen and after making any
+					changes to the library hierarchy.</para>
+					<para>As the <systemitem class="username">opensrf</systemitem> user, execute the
+					following command and review the results:</para>
 					<screen>
 						<prompt># as the opensrf user:</prompt>
 						<userinput>cd /openils/bin</userinput>
@@ -1677,32 +1693,41 @@
 					<prompt># as the root user:</prompt>
 					<userinput>xulrunner /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client/build/application.ini</userinput>
 				</screen>
-				<para>The login screen for the Staff Client should appear.</para>
-				<para>Log in using the username <literal>admin</literal> and the password
-				<literal>open-ils</literal> :</para>
+				<para>The login screen for the Staff Client should appear:</para>
 				<mediaobject>
 					<alt>Logging into the Staff Client</alt>
 					<imageobject>
 						<imagedata fileref="../media/serversideinstallation-staffclient-running-1.png" format="PNG" scalefit="1" width="70%"/>
 					</imageobject>
 				</mediaobject>
-				<para>If the login is successful, you will see the following screen:</para>
+				<para>First, add the name of your Evergreen server to the field
+				<literal>Hostname</literal> in the <literal>Server</literal> section. You will probably
+				want to use <literal>127.0.0.1</literal>. After adding the server name, click Re-Test
+				Server. You should now see the messages <literal>200:OK</literal> in the fields
+				<literal>Status</literal> and <literal>Version</literal>.</para>
+				<para>Because this is the initial run of the Staff Client, you will see a warning in the
+				upper-right saying: <emphasis role="bold">Not yet configured for the specified
+				server</emphasis>. To continue, you must assign a workstation name. Refer to
+				<xref linkend="staffclientinstallation-workstationnames"/> for further details.</para>
+				<para>Try to log into the Staff Client with the username <literal>admin</literal> and
+				the password <literal>open-ils</literal>. If the login is successful, you will see the
+				following screen:</para>
 				<mediaobject>
 					<alt>Logging into the Staff Client</alt>
 					<imageobject>
 						<imagedata fileref="../media/serversideinstallation-staffclient-running-4.png" format="PNG" scalefit="1" width="70%"/>
 					</imageobject>
 				</mediaobject>
-				<para>Otherwise, you may need to click <guibutton>Add SSL Exception</guibutton> in the
-				main window. You will see a popup window labeled "Add Security Exception":</para>
+				<para>Otherwise, you may need to click <guibutton>'Add SSL Exception'</guibutton> in the
+				main window. You should see a popup window titled <literal>Add Security Exception</literal>:</para>
 				<mediaobject>
-					<alt>Logging into the Staff Client</alt>
+					<alt>Adding an SSL Exception in the Staff Client</alt>
 					<imageobject>
 						<imagedata fileref="../media/serversideinstallation-staffclient-running-2.png" format="PNG" scalefit="1" width="70%"/>
 					</imageobject>
 				</mediaobject>
-				<para>Click <guibutton>Get Certificate</guibutton>, then click <guibutton>Confirm
-				Security Exception</guibutton>, then click <guibutton>Re-Test Server</guibutton> in the
+				<para>Click <guibutton>'Get Certificate'</guibutton>, then click <guibutton>'Confirm
+				Security Exception'</guibutton>, then click <guibutton>'Re-Test Server'</guibutton> in the
 				main window and try to log in again.</para>
 			</simplesect>
 			<simplesect xml:id="serversideinstallation-starting-apache-server">
@@ -1717,6 +1742,27 @@
 					<prompt># as the root user:</prompt>
 					<userinput>apache2ctl configtest &amp;&amp; /etc/init.d/apache2 restart</userinput>
 				</screen>
+			</simplesect>
+			<simplesect xml:id="serversideinstallation-stopping">
+				<title>Stopping Evergreen</title>
+				<para>In <xref linkend="serversideinstallation-starting"/> you learned how to start the
+				Evergreen services. For completeness, following are instructions for stopping the
+				Evergreen services.</para>
+				<para>As the <systemitem class="username">opensrf</systemitem> user, stop all Evergreen
+				services by using the following command:</para>
+				<screen>
+					# as the opensrf user
+					#   stop the server; use "-l" to force hostname to be "localhost"
+					osrf_ctl.sh -l -a stop_all
+				</screen>
+				<note>
+					<para>You can also stop Evergreen services 
+					<emphasis role="bold">without</emphasis> the <option>-l</option> flag, but the
+					<command>osrf_ctl.sh</command> utility must know the fully qualified domain name
+					for the system on which it will execute. That hostname may have been specified
+					in the configuration file <filename>opensrf.xml</filename>, which you configured
+					in a previous step.</para>
+				</note>
 			</simplesect>
 		</section>
 		<section xml:id="serversideinstallation-postinstallation">
@@ -1735,7 +1781,7 @@
 				<warning>
 					<para>
 						<emphasis>This temporary network update was done to expedite
-						testing. You <emphasis role="bold"> must</emphasis> correct
+						testing. You <emphasis role="bold">must</emphasis> correct
 						this for a public production system.</emphasis>
 					</para>
 				</warning>
@@ -1776,7 +1822,7 @@
 				</warning>
 			</section>
 			<section>
-				<title>Set Up Support For Reports</title>
+				<title>(OPTIONAL) Set Up Support For Reports</title>
 				<para>Evergreen reports are extremely powerful but require some simple configuration.
 				This section describes starting and stopping the Reporter daemon processes.</para>
 				<itemizedlist>
@@ -1974,30 +2020,30 @@
 							<filename class="directory">C:\temp</filename>).</para>
 						</step>
 						<step>
-							<para>After selecting the file, click <guibutton>Open</guibutton> to import it.</para>
+							<para>After selecting the file, click <guibutton>'Open'</guibutton> to import it.</para>
 						</step>
 						<step>
-							<para>Then click <guibutton>OK</guibutton> to save the selection
+							<para>Then click <guibutton>'OK'</guibutton> to save the selection
 							and return to the VirtualBox Media Manager</para>
 						</step>
 						<step>
-							<para>Click <guibutton>New</guibutton>, then <guibutton>Next</guibutton> to continue
-							and create a new virtual machine (VM).</para>
+							<para>Click <guibutton>'New'</guibutton>, then <guibutton>'Next'</guibutton> 
+							to continue and create a new virtual machine (VM).</para>
 						</step>
 						<step>
 							<para>Create a new name for the VM and set the operating system
-							type, then click <guibutton>Next</guibutton>.</para>
+							type, then click <guibutton>'Next'</guibutton>.</para>
 						</step>
 						<step>
 							<para>Set the memory size (at least 512Mb),
-							then click <guibutton>Next</guibutton>.</para>
+							then click <guibutton>'Next'</guibutton>.</para>
 						</step>
 						<step>
 							<para>Edit the Virtual Hard Disk configuration settings; click
 							the radio boxes <guilabel>Boot Hard Disk</guilabel> and
 							<guilabel>Use existing hard disk</guilabel>
 							and ensure that the disk name <guilabel>Evergreen1601_DebianLenny.vmdk</guilabel>
-							is selected. Click <guibutton>Finish</guibutton> to finish the
+							is selected. Click <guibutton>'Finish'</guibutton> to finish the
 							setup.</para>
 						</step>
 						<step>
@@ -2007,13 +2053,13 @@
 						</step>
 						<step>
 							<para>Return to VirtualBox and see the summary of the VM just
-							created. Click <guibutton>Start</guibutton> to boot the new VM.</para>
+							created. Click <guibutton>'Start'</guibutton> to boot the new VM.</para>
 						</step>
 						<step>
 							<para>See the start of the <systemitem class="osname">Linux</systemitem>
 							boot sequence. Choose <guimenuitem>Debian Gnu/Linux, kernel
 							2.6.26-2-686</guimenuitem> from the startup menu and click
-							<guibutton>Enter</guibutton> to start 
+							<guibutton>'Enter'</guibutton> to start 
 							<systemitem class="osname">Linux</systemitem> and Evergreen. 
 							After some delay you should see the command line prompt 
 							<prompt>debian-lenny login:</prompt>. Log in with username
