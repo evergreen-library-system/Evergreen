@@ -177,7 +177,7 @@ function performRollover(args) {
                 var resp = openils.Util.readResponse(r);
                 rolloverResponses.push(resp.fund);
                 count += 1;
-                amount_rolled += resp.rollover_amount;
+                amount_rolled += Number(resp.rollover_amount);
             }, 
 
             oncomplete : function() {
