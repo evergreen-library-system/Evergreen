@@ -200,6 +200,11 @@ DECLARE
     ingest_same   boolean;
 BEGIN
 
+    -- Defining our terms:
+    -- "target record" = the record that will survive the merge
+    -- "source record" = the record that is sacrifing its existence and being
+    --   replaced by the target record
+
     -- 1. Update all bib records with the ID from target_record in their $0
     FOR bib_rec IN SELECT bre.* FROM biblio.record_entry bre 
       INNER JOIN authority.bib_linking abl ON abl.bib = bre.id
@@ -230,7 +235,7 @@ BEGIN
     --    in linked bibliographic records
     UPDATE authority.record_entry
       SET deleted = FALSE
-      WHERE id = source_record;
+      WHERE id = target_record;
 
     -- 5. "Delete" source_record
     DELETE FROM authority.record_entry
