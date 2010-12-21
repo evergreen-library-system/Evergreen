@@ -619,7 +619,7 @@ serial.manage_subs.prototype = {
                                         return;
                                     }
 
-                                    var num_to_predict = prompt('How many items would you like to predict?',
+                                    var num_to_predict = prompt('How many items (per active pattern) would you like to predict?',
                                             '12',
                                             'Number of Predicted Items');
                                     num_to_predict = String( num_to_predict ).replace(/\D/g,'');
@@ -634,31 +634,10 @@ serial.manage_subs.prototype = {
                                                 'open-ils.serial.make_predictions',
                                                 [ ses(), {"ssub_id":list[i], "num_to_predict":num_to_predict}]
                                         );
-                                        util.functional.map_list(
-                                            robj,
-                                            function(o) {
-                                                alert('debug: ' + o.date_expected());
-                                            }
-                                        );
+                                        alert('Successfully predicted ' + robj.length + ' issuance(s) for subscription #' + list[i] + '.');
                                     }
-                                    return;
 
-                                    /*JSAN.use('util.functional');
-                                    var list = util.functional.map_list(
-                                            robj,
-                                            function (o) {
-                                                o.distribution(obj.sdist_id);
-                                                return o;
-                                            }
-                                        );*/
-
-                                    var robj = obj.network.request(
-                                                'open-ils.serial',
-                                                'open-ils.serial.item.fleshed.batch.update',
-                                                [ ses(), list ]
-                                            );
-
-                                    //obj.refresh_list('main');
+                                    obj.refresh_list();
 
                                 } catch(E) {
                                     obj.error.standard_unexpected_error_alert('cmd_make_predictions failed!',E);
