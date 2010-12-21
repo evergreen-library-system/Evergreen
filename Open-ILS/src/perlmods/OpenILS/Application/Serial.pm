@@ -999,8 +999,6 @@ sub unitize_items {
         if ($mode eq 'receive') {
             $item->date_received('now');
             $item->status('Received');
-        } else {
-            $item->status('Bindery');
         }
 
         # check for types to trigger summary updates
@@ -1064,6 +1062,7 @@ sub unitize_items {
     foreach my $unit_id (keys %found_unit_ids) {
 
         # get all the needed issuances for unit
+        # TODO remove 'Bindery' from this search (leaving it in for now for backwards compatibility with any current test environment data)
         my $issuances = $editor->search_serial_issuance([ {"+sitem" => {"unit" => $unit_id, "status" => ["Received", "Bindery"]}}, {"join" => {"sitem" => {}}, "order_by" => {"siss" => "date_published"}} ]);
         #TODO: evt on search failure
 
@@ -1099,10 +1098,6 @@ sub unitize_items {
         $sort_key =~ s/(\d+)/sprintf '%06d', $1/eg; # this may need improvement
         $sunit->sort_key($sort_key);
         
-        if ($mode eq 'bind') {
-            $sunit->status(2); # set to 'Bindery' status
-        }
-
         my $evt = _update_sunit($editor, undef, $sunit);
         return $evt if $evt;
     }

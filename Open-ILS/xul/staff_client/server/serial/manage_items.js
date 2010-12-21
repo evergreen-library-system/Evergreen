@@ -577,15 +577,16 @@ serial.manage_items.prototype = {
             if ($('serial_manage_items_show_all').checked) {
                 obj.lists.main.sitem_retrieve_params = {};
             } else {
-                obj.lists.main.sitem_retrieve_params = {'date_received' : {'!=' : null}, 'status' : {'!=' : 'Bindery'} };
+                obj.lists.main.sitem_retrieve_params = {'date_received' : {'!=' : null}}; // unit set dynamically in 'retrieve'
             }
             obj.lists.main.sitem_extra_params ={'order_by' : {'sitem' : 'date_expected ASC, stream ASC'}};
 
-            obj.lists.workarea.sitem_retrieve_params = {'status' : 'Bindery'}; // unit set dynamically in 'retrieve'
+            obj.lists.workarea.sitem_retrieve_params = {}; // unit set dynamically in 'retrieve'
             obj.lists.workarea.sitem_extra_params ={'order_by' : {'sitem' : 'date_received DESC'}};
 
             // default to **NEW UNIT**
-            obj.set_sunit(-2, 'New Unit', '', '');
+            // For now, keep the unit static.  TODO: Eventually, keep track of and store the last used unit value for both receive and bind separately
+            // obj.set_sunit(-2, 'New Unit', '', '');
         }
     },
 
@@ -715,8 +716,12 @@ serial.manage_items.prototype = {
         var robj;
         rparams['+sstr'] = { "distribution" : obj.sdist_ids };
 
-        if (obj.mode == 'bind' && list_name == 'workarea') {
-             rparams['unit'] = obj.current_sunit_id;
+        if (obj.mode == 'bind') {
+            if (list_name == 'workarea') {
+                rparams['unit'] = obj.current_sunit_id;
+            } else if (!$('serial_manage_items_show_all').checked){
+                rparams['unit'] = {"<>" : obj.current_sunit_id};
+            }
         }
 
         var other_params = list.sitem_extra_params;
