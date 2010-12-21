@@ -172,10 +172,9 @@ function ClaimDialogManager(
 
     this.claim = function(lid_ids) {
         progressDialog.show(true);
-        var win = null;
 
         fieldmapper.standardRequest(
-            ["open-ils.acq", "open-ils.acq.claim.lineitem_detail"], {
+            ["open-ils.acq", "open-ils.acq.claim.lineitem_detail.atomic"], {
                 "params": [
                     openils.User.authtoken, lid_ids, null,
                     this.claimType.attr("value"),
@@ -184,20 +183,17 @@ function ClaimDialogManager(
                 "async": true,
                 "onresponse": function(r) {
                     if (r = openils.Util.readResponse(r)) {
-                        if (!win)
-                            win = openClaimVoucherWindow();
-                        dojo.byId("main", win.document).innerHTML +=
-                            (r.template_output().data() + "<hr />");
+                        if (r.length) {
+                            openils.Util.printHtmlString(
+                                r.map(
+                                    function(o) {
+                                        return o.template_output().data();
+                                    }
+                                ).join("<hr />")
+                            );
+                        }
                     }
-                    else {
-                        progressDialog.hide();
-                    }
-                },
-                "oncomplete": function() {
                     progressDialog.hide();
-                    dojo.byId("print", win.document).innerHTML =
-                        localeStrings.PRINT;
-                    dojo.byId("print", win.document).disabled = false;
                     self.claimCallback(self.workingLi);
                 }
             }

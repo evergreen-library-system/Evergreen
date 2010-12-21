@@ -376,10 +376,10 @@ function AcqLiTable() {
     };
 
     this.reconsiderClaimControl = function(li, row) {
+        if (!row) row = this._findLiRow(li);
         var option = nodeByName("action_manage_claims", row);
         var eligible = this.claimEligibleLidByLi[li.id()].length;
         var count = this._liCountClaims(li);
-        if (!row) row = this._findLiRow(li);
 
         option.disabled = !(count || eligible);
         option.innerHTML =
@@ -409,6 +409,19 @@ function AcqLiTable() {
     };
 
     this.checkClaimEligibility = function(li, callback, row) {
+        /* Assume always eligible, i.e. from this interface we don't care about
+         * claim eligibility any more. this is where the user would force a
+         * claime. */
+        this.clearEligibility(li);
+        this.claimEligibleLidByLi[li.id()] = li.lineitem_details().map(
+            function(lid) { return lid.id(); }
+        );
+        li.lineitem_details().forEach(
+            function(lid) { self.claimEligibleLid[lid.id()] = true; }
+        );
+        this.reconsiderClaimControl(li, row);
+        if (callback) callback();
+        /*
         this.clearEligibility(li);
         fieldmapper.standardRequest(
             ["open-ils.acq", "open-ils.acq.claim.eligible.lineitem_detail"], {
@@ -429,6 +442,7 @@ function AcqLiTable() {
                 }
             }
         );
+        */
     };
 
     this.updateLiNotesCount = function(li, row) {
