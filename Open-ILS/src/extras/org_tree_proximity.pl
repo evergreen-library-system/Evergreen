@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# vim:et:ts=4:sw=4
 # -----------------------------------------------------------------------
 # Copyright (C) 2008  Laurentian University
 # Dan Scott <dscott@laurentian.ca>
@@ -16,8 +17,6 @@
 
 # calculate the proximity of organizations in the organization tree
 
-# vim:noet:ts=4:sw=4
-
 use OpenSRF::AppSession;
 use OpenSRF::System;
 use OpenILS::Utils::Fieldmapper;
@@ -32,9 +31,9 @@ my $ses = OpenSRF::AppSession->create("open-ils.storage");
 my $result = $ses->request("open-ils.storage.actor.org_unit.refresh_proximity");
 
 if ($result) {
-	print "Successfully updated the organization proximity";
+    print "Successfully updated the organization proximity\n";
 } else {
-	print "Failed to update the organiziation proximity";
+    print "Failed to update the organization proximity\n";
 }
 
 $ses->disconnect();
