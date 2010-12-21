@@ -2197,7 +2197,7 @@ sub activate_purchase_order_impl {
     my $query = [
         {
             purchase_order => $po_id, 
-            '-or' => [{state => 'pending-order'}, {state => 'new'}]
+            state => [qw/pending-order new order-ready/]
         },
         {limit => 1}
     ];
