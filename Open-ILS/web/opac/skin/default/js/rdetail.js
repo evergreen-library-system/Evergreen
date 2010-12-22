@@ -1193,22 +1193,26 @@ function rdetailDrawExpandedHoldings(anchor, bibid, type) {
                 "oncomplete": function(r) {
                     try {
                         if (msg = r.recv().content()) { /* sic, assignment */
+                            if (!msg.length) return;
                             offsets[type] += msg.length;
+                            var table = dojo.create("table", null, target);
                             dojo.forEach(
                                 msg, function(o) {
-                                    dojo.create("br", null, target);
+                                    var tr = dojo.create("tr", null, table);
                                     dojo.create(
-                                        "span", {
+                                        "td", {
                                             "innerHTML": o.issuance.label(),
-                                            "style": {"padding": "0 2em"}
-                                        }, target
+                                            "style": {"paddingLeft": "3em"}
+                                        }, tr
                                     );
 
                                     if (!o.has_units) return;
                                     /* can't place holds if no units */
+                                    var td = dojo.create("td", null, tr);
                                     dojo.create(
                                         "a", {
                                             "href":"javascript:void(0);",
+                                            "style": {"marginLeft": "1.5em"},
                                             "onclick": function() {
                                                 holdsDrawEditor({
                                                     "type": "I",
@@ -1217,7 +1221,7 @@ function rdetailDrawExpandedHoldings(anchor, bibid, type) {
                                             },
                                             "innerHTML": "[" +
                                                 opac_strings.PLACE_HOLD + "]"
-                                        }, target
+                                        }, td
                                     );
                                 }
                             );
