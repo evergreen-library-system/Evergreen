@@ -36,7 +36,7 @@
 						<phrase>Running the Staff Client installer</phrase>
 					</alt>
 					<imageobject>
-						<imagedata fileref="../media/staffclientinstallation-staffclient-1.png" format="PNG" scalefit="1" width="70%"/>
+						<imagedata fileref="../media/staffclientinstallation-staffclient-1.png" format="PNG" scalefit="1" width="60%"/>
 					</imageobject>
 				</mediaobject>
 				<para>Click <guibutton>'Next'</guibutton> to continue through the guided install
@@ -50,7 +50,7 @@
 						<phrase>Running the Staff Client for the first time</phrase>
 					</alt>
 					<imageobject>
-						<imagedata fileref="../media/staffclientinstallation-staffclient-2.png" format="PNG" scalefit="1" width="70%"/>
+						<imagedata fileref="../media/staffclientinstallation-staffclient-2.png" format="PNG" scalefit="1" width="60%"/>
 					</imageobject>
 				</mediaobject>
 				<para>First, add the name of your Evergreen server to the field 
@@ -417,7 +417,7 @@
 									<para>Determine which version is needed</para>
 									<para>For most end-users, a specific version is required
 									to communicate properly with the Evergreen server. Check
-									with your system admininstrator, IT person, or HelpDesk to
+									with your system administrator, IT person, or HelpDesk to
 									determine which Staff Client versions are
 									supported.</para>
 									<para>Next, you need to determine which
@@ -531,7 +531,12 @@
 							<para>will now run the Staff Client. You may wish to create a
 							shortcut for the Staff Client. To do so, use the previous
 							command as the target for the shortcut:
-							<menuchoice><guimenu>Desktop</guimenu><guimenuitem>StartMenu</guimenuitem><guimenuitem>K-Menu</guimenuitem></menuchoice></para>
+							<menuchoice>
+								<guimenu>Desktop</guimenu>
+								<guimenuitem>StartMenu</guimenuitem>
+								<guimenuitem>K-Menu</guimenuitem>
+							</menuchoice>
+							</para>
 						</step>
 					</procedure>
 				</simplesect>
@@ -591,14 +596,22 @@
 							<literal>Windows XP</literal> from the drop-down menu, then
 							click <guibutton>'Apply'</guibutton>.</para>
 						</listitem>
-						<listitem><para>Launch the Staff Client</para> <para>A new entry for the
-							Staff Client should now appear somewhere in the <literal>All
-							Applications</literal> menu of your Linux desktop. You may also
-							find a new desktop shortcut for the Staff Client. To launch the
-							Staff Client, visit the your desktop's <literal>All
-							Applications</literal> menu and find the section similar to
-							<menuchoice><guimenu>Wine</guimenu><guimenuitem>Program Files</guimenuitem><guimenuitem>Evergreen Staff Client</guimenuitem><guimenuitem>Evergreen Staff Client</guimenuitem></menuchoice>
-							or else launch the Staff Client from the new desktop shortcut.</para></listitem>
+						<listitem>
+							<para>Launch the Staff Client</para>
+							<para>A new entry for the Staff Client should now appear
+							somewhere in the <literal>All Applications</literal> menu of
+							your Linux desktop. You may also find a new desktop shortcut for
+							the Staff Client. To launch the Staff Client, visit the
+							<literal>All Applications</literal> menu on your desktop and
+							find the section similar to
+							<menuchoice>
+								<guimenu>Wine</guimenu>
+								<guimenuitem>Program Files</guimenuitem>
+								<guimenuitem>Evergreen Staff Client</guimenuitem>
+								<guimenuitem>Evergreen Staff Client</guimenuitem>
+							</menuchoice>,
+							or else launch the Staff Client from the new desktop shortcut.</para>
+						</listitem>
 					</orderedlist>
 				</simplesect>
 			</section>
@@ -617,9 +630,7 @@
 			variables that you can pass to <command>make</command> to influence the manual build
 			process:</para>
 			<simplesect>
-				<title>
-					<envar>STAFF_CLIENT_BUILD_ID</envar>
-				</title>
+				<title><envar>STAFF_CLIENT_BUILD_ID</envar></title>
 				<para>During the normal <emphasis>make install</emphasis> Evergreen server-side
 				software build process, the variable defaults to an automatically generated
 				date/time string, but you can also override the value of <envar>BUILD_ID</envar>.</para>
@@ -641,9 +652,7 @@
 				</screen>
 			</simplesect>
 			<simplesect>
-				<title>
-					<envar>STAFF_CLIENT_VERSION</envar>
-				</title>
+				<title><envar>STAFF_CLIENT_VERSION</envar></title>
 				<para>During the normal <emphasis>make install</emphasis> Evergreen server-side
 				software build process, the variable is pulled automatically from a README file
 				in the Evergreen source root. The variable defaults to
@@ -672,9 +681,7 @@
 				</screen>
 			</simplesect>
 			<simplesect>
-				<title>
-					<envar>STAFF_CLIENT_STAMP_ID</envar>
-				</title>
+				<title><envar>STAFF_CLIENT_STAMP_ID</envar></title>
 				<para>During the normal <emphasis>make install</emphasis> Evergreen
 				server-side software build process, the variable is generated from
 				<envar>STAFF_CLIENT_VERSION</envar>. You may want to have multiple versions
@@ -892,6 +899,7 @@
 					<userinput>make generic-client</userinput>
 				</screen>
 				<para>The output file <filename>evergreen_staff_client.xpi</filename> will be created.</para>
+
 			</simplesect>
 			<simplesect>
 				<title>Packaging a <systemitem class="osname">Windows</systemitem> Client</title>
@@ -1194,7 +1202,7 @@
 				<para>Once you have created the profiles, run
 				<application>XULrunner</application> with the option <option>-no-remote</option>
 				(in addition to <option>"-profilemanger"</option> or <option>"-P"</option> if
-				neeeded). Instead of <application>XULrunner</application> opening a new login
+				needed). Instead of <application>XULrunner</application> opening a new login
 				window on your existing session it will start a new session instead, which can
 				then be logged in to a different server or workstation ID.</para>
 			</simplesect>
@@ -1237,7 +1245,7 @@
 					<phrase>Example of unconfigured Staff Client</phrase>
 				</alt>
 				<imageobject>
-					<imagedata fileref="../media/staffclientinstallation-staffclient-workstationnames-1.png" format="PNG" scalefit="1" width="70%"/>
+					<imagedata fileref="../media/staffclientinstallation-staffclient-workstationnames-1.png" format="PNG" scalefit="1" width="60%"/>
 				</imageobject>
 			</mediaobject>
 			<para>In order to assign a workstation a name, a user with appropriate
@@ -1251,7 +1259,7 @@
 					<phrase>Example of configured Staff Client</phrase>
 				</alt>
 				<imageobject>
-					<imagedata fileref="../media/staffclientinstallation-staffclient-workstationnames-2.png" format="PNG" scalefit="1" width="70%"/>
+					<imagedata fileref="../media/staffclientinstallation-staffclient-workstationnames-2.png" format="PNG" scalefit="1" width="60%"/>
 				</imageobject>
 			</mediaobject>
 			<para>Select the library this workstation physically operates in from the drop
@@ -1266,7 +1274,7 @@
 					<phrase>Example of registered Staff Client</phrase>
 				</alt>
 				<imageobject>
-					<imagedata fileref="../media/staffclientinstallation-staffclient-workstationnames-3.png" format="PNG" scalefit="1" width="70%"/>
+					<imagedata fileref="../media/staffclientinstallation-staffclient-workstationnames-3.png" format="PNG" scalefit="1" width="60%"/>
 				</imageobject>
 			</mediaobject>
 			<para>You are now ready to log into the Staff Client for the first time. Type in
@@ -1278,68 +1286,97 @@
 				<primary>staff client</primary>
 				<secondary>running through an SSH tunnel</secondary>
 			</indexterm>
-			<para>The Staff Client can use an <systemitem class="protocal">SSH</systemitem> 
-			tunnel as a <systemitem class="protocal">SOCKS 5</systemitem> proxy.</para>
-			<simplesect>
-				<title>Configuring a Proxy for the Staff Client</title>
-				<para>There are several reasons for sending network traffic for the Staff Client through
-				an <systemitem class="protocal">SSH</systemitem> proxy:</para>
-				<itemizedlist>
-					<listitem>
-						<para>Firewalls may prevent you from reaching the server. This may happen when you
-						are connecting the Staff Client to a test server that should not be available
-						generally, or it may be the result of network design priorities other than ease of
-						use.</para>
-					</listitem>
-					<listitem>
-						<para>You may wish to improve security where Staff Client traffic may be
-						susceptible to network eavesdropping. This is especially true when wireless is
-						otherwise the best option for connecting a staff machine to the network.</para>
-					</listitem>
-				</itemizedlist>
-			</simplesect>
-			<simplesect>
+			<para>You can configure the Staff Client to communicate with the Evergreen server over
+			an <systemitem class="protocal">SSH</systemitem> tunnel using a SOCKS 5 proxy
+			server. There are several reasons for sending network traffic for the Staff Client
+			through an <systemitem class="protocal">SSH</systemitem> proxy:</para>
+			<itemizedlist>
+				<listitem>
+					<para>Firewalls may prevent you from reaching the Evergreen
+					server. This may happen when you are connecting the Staff
+					Client to a test server that should not be available
+					generally, or it may be the result of network design
+					priorities other than ease of use.</para>
+				</listitem>
+				<listitem>
+					<para>You may wish to improve security in situations where
+					Staff Client traffic may be susceptible to network
+					eavesdropping. This is especially true when staff machines
+					connect via wireless links to the network.</para>
+				</listitem>
+			</itemizedlist>
+			<section>
 				<title>Setting Up an <systemitem class="protocal">SSH</systemitem> Tunnel</title>
-				<para>You will need a server that allows you to log in via <systemitem class="protocal">SSH</systemitem> and has network access to the Evergreen server 
-				you want to reach. You will use your username and password for that 
-				<systemitem class="protocal">SSH</systemitem> server to set up a tunnel.</para>
-				<para>For <systemitem class="osname">Windows</systemitem> users, one good solution 
-				is the open-source utility 
-				<ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</ulink>
-				a free <systemitem class="protocal">telnet/SSH</systemitem> client. When setting 
-				up a <application>PuTTY</application> session:</para>
+				<para>You will need a server that allows you to log in via 
+				<systemitem class="protocal">SSH</systemitem> and has network access to the 
+				Evergreen server you want to reach. You will use your username and password
+				for that <systemitem class="protocal">SSH</systemitem> server to set up a
+				tunnel.</para>
+				<para>For <systemitem class="osname">Windows</systemitem> users, one good
+				solution is the open-source utility
+				<ulink url="http://www.chiark.greenend.org.uk/~sgtatham/putty/">PuTTY</ulink>,
+				a free <systemitem class="protocal">telnet/SSH</systemitem> client.
+				Following are instructions for setting up an <application>SSH</application> 
+				session using the <application>PuTTY</application> utility:</para>
 				<mediaobject>
 					<alt>
 						<phrase>Setting up an <systemitem class="protocal">SSH</systemitem>
 						tunnel in <application>PuTTY</application></phrase>
 					</alt>
 					<imageobject>
-						<imagedata fileref="../media/staffclientinstallation-proxy-putty.png" format="PNG" scalefit="1" width="70%"/>
+						<imagedata fileref="../media/staffclientinstallation-proxy-putty.png" format="PNG" scalefit="1" width="60%"/>
 					</imageobject>
 				</mediaobject>
-				<orderedlist>
-					<listitem>Use the menu on the left to go to Connection > SSH > Tunnels.</listitem>
-					<listitem>Enter ''9999'' in the "Source port".</listitem>
-					<listitem>Choose "Dynamic". Do not enter anything in the Destination text entry box.</listitem>
-					<listitem>Click <guibutton>'Add'</guibutton>; "D9999" will now appear in the "Forwarded
-					ports" list.</listitem>
-					<listitem>Use the menu on the left to go back to "Session", and enter the host name of the
-					<systemitem class="protocal">SSH</systemitem> server.</listitem>
-					<listitem>A window will open up so that you can enter your username and password. Once you
-					are logged in, the tunnel is open.</listitem>
-				</orderedlist>
+				<procedure>
+					<step>
+						<para>Using the menu on the left, find the section
+						<menuchoice>
+							<guimenu>Connection</guimenu>
+							<guimenuitem>SSH</guimenuitem>
+							<guimenuitem>Tunnels</guimenuitem>
+						</menuchoice>
+						</para>
+					</step>
+					<step>
+						<para>In the section on the right labeled <literal>"Source
+						port"</literal>, enter <literal>9999</literal>.</para>
+					</step>
+					<step>
+						<para>Set the checkbox <literal>"Dynamic"</literal>. Do not
+						enter anything in the <literal>"Destination"</literal> text
+						entry box.</para>
+					</step>
+					<step>
+						<para>Click <guibutton>'Add'</guibutton> and notice that
+						<literal>"D9999"</literal> now appears in the section
+						labeled <literal>"Forwarded ports"</literal>.</para>
+					</step>
+					<step>
+						<para>Use the menu on the left, find the
+						<literal>"Session"</literal> section, then enter the host name
+						of the <systemitem class="protocal">SSH</systemitem>
+						server.</para>
+					</step>
+					<step>
+						<para>A pop-up window will open to allow you to enter your
+						username and password. Once you are logged in, the tunnel is
+						open.</para>
+					</step>
+				</procedure>
 				<para>See <ulink url="http://inside.mines.edu/~gmurray/HowTo/sshNotes.html">How to set up
 				<systemitem class="protocal">SSH</systemitem> (for the beginner)</ulink> for information on
 				setting up <systemitem class="protocal">SSH</systemitem> for other client operating
-				systems,</para>
-			</simplesect>
-			<simplesect>
+				systems.</para>
+			</section>
+			<section>
 				<title>Configuring the Staff Client to Use the <systemitem class="protocal">SSH</systemitem> Tunnel</title>
-				<para>In order to tell the Staff Client that all traffic should be sent through the
-				<systemitem class="protocal">SSH</systemitem> tunnel just configured, you must edit the
-				file <filename>C:\Program Files\Evergreen Staff Client\greprefs\all.js</filename>.
-				Search this file for the word <literal>socks</literal> to find the appropriate section
-				for the following changes.</para>
+				<para>In order to tell the Staff Client that all traffic should be sent
+				through the <systemitem class="protocal">SSH</systemitem> tunnel just configured,
+				you must find edit the file <filename>all.js</filename>, usually located at
+				<filename>C:\Program Files\Evergreen Staff Client\greprefs\all.js</filename>
+				 on a  <systemitem class="osname">Windows</systemitem> system.
+				Search this file for the word <literal>socks</literal> to find the appropriate
+				section for the following changes.</para>
 				<mediaobject>
 					<alt>
 						<phrase>The SOCKS section of "all.js" before changes</phrase>
@@ -1350,10 +1387,14 @@
 				</mediaobject>
 				<para>Make the following changes:</para>
 				<itemizedlist>
-					<listitem>Change the value of <literal>network.proxy.socks</literal> from
-					<literal>""</literal> to <literal>localhost</literal>.</listitem>
-					<listitem>Change the value of <literal>network.proxy.socks_port</literal> from
-					<literal>0</literal> to <literal>9999</literal>.</listitem>
+					<listitem>
+						<para>Change the value of <literal>network.proxy.socks</literal> 
+						from <literal>""</literal> to <literal>localhost</literal>.</para>
+					</listitem>
+					<listitem>
+						<para>Change the value of <literal>network.proxy.socks_port</literal>
+						from <literal>0</literal> to <literal>9999</literal>.</para>
+					</listitem>
 				</itemizedlist>
 				<mediaobject>
 					<alt>
@@ -1363,10 +1404,58 @@
 						<imagedata fileref="../media/staffclientinstallation-proxy-socks-2.png" format="PNG" scalefit="1" width="70%"/>
 					</imageobject>
 				</mediaobject>
-				<para>If everything is working correctly, you should now be able to run the Staff Client
-				and all its data will be sent encrypted through the
+				<para>If everything is working correctly, you should now be able to run 
+				the Staff Client and all its data will be sent encrypted through the 
 				<systemitem class="protocal">SSH</systemitem> tunnel you have just configured.</para>
-			</simplesect>
+			</section>
+		</section>
+		<section>
+			<title>Navigating a Tabbed Interface</title>
+			<para>Like many popular current web browsers and other applications, the Staff Client
+			uses a "tabbed" interface. Tabs allow you to have several pages open at the same time
+			in a single window. This is easier to manage on your computer screen than multiple
+			windows, since you can easily switch between tabs in the same window.</para>
+			<mediaobject>
+				<alt>
+					<phrase>Tabs in the Staff Client window</phrase>
+				</alt>
+				<imageobject>
+					<imagedata fileref="../media/staffclientinstallation-tabbed-1.png" format="PNG" scalefit="1" width="70%"/>
+				</imageobject>
+			</mediaobject>
+			<para>The "tabs" appear below the menu bar in the Staff Client with a descriptive
+			title. Simply select a tab to bring it to the front and view the page displayed in the
+			tab. You can use tabs to have access to multiple things all at the same time: patron
+			records and searches, bibliographic records and searches, circulation or cataloging
+			interfaces - anything at all in the Staff Client.</para>
+			<itemizedlist>
+				<listitem>Create a new tab by pressing
+ 				<keycombo>
+					<keycap>Ctrl</keycap>
+					<keycap>T</keycap>
+				</keycombo>
+				on the keyboard or selecting
+				<menuchoice>
+					<guimenu>File</guimenu>
+					<guimenuitem>New Tab</guimenuitem>
+				</menuchoice>
+				from the menu.</listitem>
+				<listitem>Close a tab by pressing
+  				<keycombo>
+					<keycap>Ctrl</keycap>
+					<keycap>W</keycap>
+				</keycombo> on the keyboard or selecting
+				<menuchoice>
+					<guimenu>File</guimenu>
+					<guimenuitem>Close Tab</guimenuitem>
+				</menuchoice>
+				from the menu.</listitem>
+				<listitem>Switch tabs by pressing 
+  				<keycombo>
+					<keycap>Ctrl</keycap>
+					<keycap>Tab</keycap>
+				</keycombo> on the keyboard or selecting the tab in the tab bar.</listitem>
+			</itemizedlist>
 		</section>
 	</section>
 </chapter>
