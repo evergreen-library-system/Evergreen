@@ -31,8 +31,8 @@ if(!dojo._hasResource["MARC.Field"]) {
         constructor : function(kwargs) {
             this.record = kwargs.record;
             this.tag = kwargs.tag;
-            this.ind1 = kwargs.ind1;
-            this.ind2 = kwargs.ind2;
+            this.ind1 = kwargs.ind1 || ' ';
+            this.ind2 = kwargs.ind2 || ' ';
             this.data = kwargs.data;
             if (kwargs.subfields) this.subfields = kwargs.subfields;
             else this.subfields = [];
