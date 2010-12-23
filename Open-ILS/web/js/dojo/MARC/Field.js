@@ -23,8 +23,8 @@ if(!dojo._hasResource["MARC.Field"]) {
         error : false, // MARC record pointer
         record : null, // MARC record pointer
         tag : '', // MARC tag
-        ind1 : '', // MARC indicator 1
-        ind2 : '', // MARC indicator 2
+        ind1 : ' ', // MARC indicator 1
+        ind2 : ' ', // MARC indicator 2
         data : '', // MARC data for a controlfield element
         subfields : [], // list of MARC subfields for a datafield element
 
