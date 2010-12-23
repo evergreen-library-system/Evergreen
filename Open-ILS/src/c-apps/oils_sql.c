@@ -1183,6 +1183,11 @@ int doSearch( osrfMethodContext* ctx ) {
 		rest_of_query = jsonObjectGetIndex( ctx->params, 1 );
 	}
 
+	if( !where_clause ) { 
+		osrfLogError( OSRF_LOG_MARK, "No WHERE clause parameter supplied" );
+		return -1;
+	}
+
 	// Get the class metadata
 	osrfHash* method_meta = (osrfHash*) ctx->method->userData;
 	osrfHash* class_meta = osrfHashGet( method_meta, "class" );
@@ -1247,6 +1252,11 @@ int doIdList( osrfMethodContext* ctx ) {
 	} else {
 		where_clause  = jsonObjectGetIndex( ctx->params, 0 );
 		rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 1 ) );
+	}
+
+	if( !where_clause ) { 
+		osrfLogError( OSRF_LOG_MARK, "No WHERE clause parameter supplied" );
+		return -1;
 	}
 
 	// Eliminate certain SQL clauses, if present.
