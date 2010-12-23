@@ -255,6 +255,9 @@ if(!dojo._hasResource["MARC.Record"]) {
                         );
                     }
                 } else {
+                    if (current_line.substring(4,5) == me.delimiter) // add delimiters if they were left out
+                        current_line = current_line.substring(0,3) + '\\\\' + current_line.substring(4);
+
                     var data = df_line_data(current_line);
                     if (!(data.substring(0,1) == me.delimiter)) data = me.delimiter + 'a' + data;
 
