@@ -272,7 +272,11 @@ if(!dojo._hasResource["MARC.Record"]) {
                                 ind2      : df_ind2(current_line),
                                 subfields : dojo.map(
                                     sf_list,
-                                    function (sf) { return [ sf.substring(0,1), sf.substring(1) ] }
+                                    function (sf) {
+                                        var sf_data = sf.substring(1);
+                                        if (me.delimiter == '$') sf_data = sf_data.replace(/\{dollar\}/g, '$');
+                                         return [ sf.substring(0,1), sf_data ];
+                                    }
                                 )
                         })
                     );
@@ -296,7 +300,9 @@ if(!dojo._hasResource["MARC.Record"]) {
                         f.indicator(1).replace(' ','\\') + 
                         f.indicator(2).replace(' ','\\') + 
                         dojo.map( f.subfields, function (sf) {
-                            return me.delimiter + sf.join('');
+                            var sf_data = sf[1];
+                            if (me.delimiter == '$') sf_data = sf_data.replace(/\$/g, '{dollar}');
+                            return me.delimiter + sf[0] + sf_data;
                         }).join('');
                 }
             }).join('\n');
