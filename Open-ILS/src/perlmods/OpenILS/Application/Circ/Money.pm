@@ -381,8 +381,13 @@ sub make_payments {
     # update the user to create a new last_xact_id
     $e->update_actor_user($patron) or return $e->die_event;
     $patron = $e->retrieve_actor_user($patron) or return $e->die_event;
-
     $e->commit;
+
+    # update the cached user object if a user is making a payment toward 
+    # his/her own account
+    $U->simplereq('open-ils.auth', 'open-ils.auth.session.reset_timeout', $auth, 1)
+        if $user_id == $e->requestor->id;
+
     return {last_xact_id => $patron->last_xact_id, payments => \@payment_ids};
 }
 
