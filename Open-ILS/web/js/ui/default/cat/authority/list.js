@@ -108,16 +108,31 @@ function displayAuthorities(data) {
                 var delDlg = dijit.byId("delDialog_" + auth.id);
 
                 dojo.query('#auth' + auth.id + ' span.text').forEach(function(node) {
-                    auth.text += dojox.xml.parser.textContent(node); 
+                    auth.text += dojo.trim(dojox.xml.parser.textContent(node)); 
                 });
 
                 if (!delDlg) {
+                    var content = '<div>Delete the authority record: "' + auth.text + '"?</div>';
+                    if (parseInt(linkedBibs) > 0) {
+                        content = "<div id='delAuthSum_" + auth.id + "'>Number of linked bibliographic records: " + linkedBibs + "</div>";
+                    }
+                    content += "<div id='authMARC" + auth.id + "' style='width: 100%; display:none;'>";
+                    content += "<hr style='width: 100%;' />";
+                    content += marcToHTML(auth_rec.marc());
+                    content += "</div><hr style='width: 100%;' /><div>";
+                    content += "<input type='button' dojoType='dijit.form.Button' label='Cancel' onClick='cancelDelete(" + auth.id + ")'/>";
+                    content += "<input type='button' dojoType='dijit.form.Button' label='Delete' onClick='confirmDelete(" + auth.id + ")'/>";
+                    content += "<input id='viewMARC" + auth.id + "' type='button' "
+                        + "style='float:right;' dojoType='dijit.form.Button' "
+                        + "label='View MARC' onClick='viewMARC(" + auth.id + ")'/>";
+                    content += "<input id='hideMARC" + auth.id + "' type='button' "
+                        + "style='display: none; float:right;' dojoType='dijit.form.Button' "
+                        + "label='Hide MARC' onClick='hideMARC(" + auth.id + ")'/>";
+                    content += "</div>";
                     delDlg = new dijit.Dialog({
                         "id":"delDialog_" + auth.id,
-                        "title":"Confirm deletion of record # " + auth.id + " (" + auth.text + ") ",
-                        "content":"<div id='delAuthSum_" + auth.id + "'>Number of linked bibliographic records: " + linkedBibs + "</div><hr />" + 
-                            marcToHTML(auth_rec.marc()) +
-                            "<hr /><div><input type='button' dojoType='dijit.form.Button' label='Delete' onClick='confirmDelete(" + auth.id + ")'/><input type='button' dojoType='dijit.form.Button' label='Cancel' onClick='cancelDelete(" + auth.id + ")'/></div>"
+                        "title":"Confirm deletion of record # " + auth.id,
+                        "content": content
                     });
                 }
                 delDlg.show();
@@ -130,6 +145,18 @@ function displayAuthorities(data) {
     });
 
     showBibCount(idArr);
+}
+
+function viewMARC(recId) {
+    dojo.style(dojo.byId("authMARC" + recId), 'display', 'block');
+    dojo.style(dijit.byId("viewMARC" + recId).domNode, 'display', 'none');
+    dojo.style(dijit.byId("hideMARC" + recId).domNode, 'display', 'block');
+}
+
+function hideMARC(recId) {
+    dojo.style(dojo.byId("authMARC" + recId), 'display', 'none');
+    dojo.style(dijit.byId("hideMARC" + recId).domNode, 'display', 'none');
+    dojo.style(dijit.byId("viewMARC" + recId).domNode, 'display', 'block');
 }
 
 function marcToHTML(marc) {
