@@ -680,10 +680,59 @@ int oilsAuthSessionDelete( osrfMethodContext* ctx ) {
 }
 
 /**
+ * Fetches the user object from the database and updates the user object in 
+ * the cache object, which then has to be re-inserted into the cache.
+ * User object is retrieved inside a transaction to avoid replication issues.
+ */
+static int _oilsAuthReloadUser(jsonObject* cacheObj) {
+    int reqid, userId;
+    osrfAppSession* session;
+	osrfMessage* omsg;
+    jsonObject *param, *userObj, *newUserObj;
+
+    userObj = jsonObjectGetKey( cacheObj, "userobj" );
+    userId = oilsFMGetObjectId( userObj );
+
+    session = osrfAppSessionClientInit( "open-ils.cstore" );
+    osrfAppSessionConnect(session);
+
+    reqid = osrfAppSessionSendRequest(session, NULL, "open-ils.cstore.transaction.begin", 1);
+	omsg = osrfAppSessionRequestRecv(session, reqid, 60);
+
+    if(omsg) {
+
+        osrfMessageFree(omsg);
+        param = jsonNewNumberObject(userId);
+        reqid = osrfAppSessionSendRequest(session, param, "open-ils.cstore.direct.actor.user.retrieve", 1);
+	    omsg = osrfAppSessionRequestRecv(session, reqid, 60);
+        jsonObjectFree(param);
+
+        if(omsg) {
+            newUserObj = jsonObjectClone( osrfMessageGetResult(omsg) );
+            osrfMessageFree(omsg);
+            reqid = osrfAppSessionSendRequest(session, NULL, "open-ils.cstore.transaction.rollback", 1);
+	        omsg = osrfAppSessionRequestRecv(session, reqid, 60);
+            osrfMessageFree(omsg);
+        }
+    }
+
+    osrfAppSessionFree(session); // calls disconnect internally
+
+    if(newUserObj) {
+        jsonObjectRemoveKey(cacheObj, "userobj"); // this also frees the old user object
+        jsonObjectSetKey(cacheObj, "userobj", newUserObj);
+        return 1;
+    } 
+
+    osrfLogError(OSRF_LOG_MARK, "Error retrieving user %d from database", userId);
+    return 0;
+}
+
+/**
 	Resets the auth login timeout
 	@return The event object, OILS_EVENT_SUCCESS, or OILS_EVENT_NO_SESSION
 */
-static oilsEvent*  _oilsAuthResetTimeout( const char* authToken ) {
+static oilsEvent*  _oilsAuthResetTimeout( const char* authToken, int reloadUser ) {
 	if(!authToken) return NULL;
 
 	oilsEvent* evt = NULL;
@@ -698,6 +747,11 @@ static oilsEvent*  _oilsAuthResetTimeout( const char* authToken ) {
 		evt = oilsNewEvent(OSRF_LOG_MARK, OILS_EVENT_NO_SESSION);
 
 	} else {
+
+        if(reloadUser) {
+            _oilsAuthReloadUser(cacheObj);
+        }
+
 		// Determine a new timeout value
 		jsonObject* endtime_obj = jsonObjectGetKey( cacheObj, "endtime" );
 		if( endtime_obj ) {
@@ -743,7 +797,8 @@ static oilsEvent*  _oilsAuthResetTimeout( const char* authToken ) {
 int oilsAuthResetTimeout( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
 	const char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0));
-	oilsEvent* evt = _oilsAuthResetTimeout(authToken);
+    double reloadUser = jsonObjectGetNumber( jsonObjectGetIndex(ctx->params, 1));
+	oilsEvent* evt = _oilsAuthResetTimeout(authToken, (int) reloadUser);
 	osrfAppRespondComplete( ctx, oilsEventToJSON(evt) );
 	oilsEventFree(evt);
 	return 0;
@@ -760,7 +815,7 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 	if( authToken ){
 
 		// Reset the timeout to keep the session alive
-		evt = _oilsAuthResetTimeout(authToken);
+		evt = _oilsAuthResetTimeout(authToken, 0);
 
 		if( evt && strcmp(evt->event, OILS_EVENT_SUCCESS) ) {
 			osrfAppRespondComplete( ctx, oilsEventToJSON( evt ));    // can't reset timeout
