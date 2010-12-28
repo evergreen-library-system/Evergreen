@@ -1,3 +1,4 @@
+dojo.require('dijit.Dialog');
 dojo.require('dijit.form.Button');
 dojo.require('dijit.form.DropDownButton');
 dojo.require('dijit.form.FilteringSelect');
@@ -62,9 +63,8 @@ function displayAuthorities(data) {
 
         // "Edit" menu item
         new dijit.MenuItem({"id": "edit_" + auth.id, "onClick": function(){
-            recId = this.id.slice(this.id.lastIndexOf('_') + 1);
-            pcrud = new openils.PermaCrud();
-            auth_rec = pcrud.retrieve("are", recId);
+            var pcrud = new openils.PermaCrud();
+            var auth_rec = pcrud.retrieve("are", auth.id);
             if (auth_rec) {
                 loadMarcEditor(pcrud, auth_rec);
             }
@@ -73,8 +73,7 @@ function displayAuthorities(data) {
         // "Merge" menu item
         new dijit.MenuItem({"id": "merge_" + auth.id, "onClick":function(){
             auth.text = '';
-            recId = this.id.slice(this.id.lastIndexOf('_') + 1);
-            dojo.query('#auth' + recId + ' span.text').forEach(function(node) {
+            dojo.query('#auth' + auth.id + ' span.text').forEach(function(node) {
                 auth.text += dojox.xml.parser.textContent(node); 
             });
 
@@ -87,26 +86,42 @@ function displayAuthorities(data) {
                 mergeRole += 'Master</td>';
             }
 
-            dojo.place('<tr class="toMerge" id="toMerge_' + recId + '"><td>' + mergeRole + '</td><td  style="border: 1px solid black;" id="mergeMeta_' + recId + '"></td><td style="border: 1px solid black; padding-left: 1em; padding-right: 1em;" >' + auth.text + '</td></tr>', 'mergebox-tbody', 'last');
-            dojo.place('<span class="authmeta" style="font-family: monospace;">' + auth.name + ' ' + auth.ind1 + auth.ind2 + '</span>', 'mergeMeta_' + recId, 'last');
+            dojo.place('<tr class="toMerge" id="toMerge_' + auth.id + '"><td>' + mergeRole + '</td><td  style="border: 1px solid black;" id="mergeMeta_' + auth.id + '"></td><td style="border: 1px solid black; padding-left: 1em; padding-right: 1em;" >' + auth.text + '</td></tr>', 'mergebox-tbody', 'last');
+            dojo.place('<span class="authmeta" style="font-family: monospace;">' + auth.name + ' ' + auth.ind1 + auth.ind2 + '</span>', 'mergeMeta_' + auth.id, 'last');
             dojo.removeClass('mergebox-div', 'hidden');
         }, "label":"Mark for Merge"}).placeAt(auth_menu, "last");
 
         // "Delete" menu item
-        new dijit.MenuItem({"id": "delete_" + auth.id, "onClick":function(){
-            recId = this.id.slice(this.id.lastIndexOf('_') + 1);
+        new dijit.MenuItem({
+            "id": "delete_" + auth.id,
+            "onClick":function(){
+                auth.text = '';
 
-            // Deleting an authority record is unusual; let's be 100% sure
-            if (!confirm("Are you sure you want to delete record " + recId + "?")) {
-                return;
-            }
+                var pcrud = new openils.PermaCrud();
+                var auth_rec = pcrud.retrieve("are", auth.id);
 
-            pcrud = new openils.PermaCrud();
-            auth_rec = pcrud.retrieve("are", recId);
-            if (auth_rec) {
-                pcrud.eliminate(auth_rec);
-                alert("Deleted authority record # " + recId);
-            }
+                // Bit of a hack to get the linked bib count until an explicit ID
+                var linkedBibs = dojox.xml.parser.textContent(
+                    dojo.query("#authLabel" + auth.id)[0].previousSibling
+                );
+
+                var delDlg = dijit.byId("delDialog_" + auth.id);
+
+                dojo.query('#auth' + auth.id + ' span.text').forEach(function(node) {
+                    auth.text += dojox.xml.parser.textContent(node); 
+                });
+
+                if (!delDlg) {
+                    delDlg = new dijit.Dialog({
+                        "id":"delDialog_" + auth.id,
+                        "title":"Confirm deletion of record # " + auth.id + " (" + auth.text + ") ",
+                        "content":"<div id='delAuthSum_" + auth.id + "'>Number of linked bibliographic records: " + linkedBibs + "</div><hr />" + 
+                            marcToHTML(auth_rec.marc()) +
+                            "<hr /><div><input type='button' dojoType='dijit.form.Button' label='Delete' onClick='confirmDelete(" + auth.id + ")'/><input type='button' dojoType='dijit.form.Button' label='Cancel' onClick='cancelDelete(" + auth.id + ")'/></div>"
+                    });
+                }
+                delDlg.show();
+
         }, "label":"Delete"}).placeAt(auth_menu, "last");
 
         auth_mb = new dijit.form.DropDownButton({dropDown: auth_menu, label:"Actions", id:"menu" + auth.id});
@@ -115,7 +130,47 @@ function displayAuthorities(data) {
     });
 
     showBibCount(idArr);
+}
 
+function marcToHTML(marc) {
+    var html = '<table><tbody>';
+    marc = dojox.xml.parser.parse(marc);
+    dojo.query('leader', marc).forEach(function(node) {
+        html += '<tr><td>LDR</td><td>&nbsp;</td><td>&nbsp;</td><td>' + dojox.xml.parser.textContent(node) + '</td></tr>';
+    });
+    dojo.query('controlfield', marc).forEach(function(node) {
+        html += '<tr><td>' + dojo.attr(node, "tag") + '</td><td>&nbsp;</td><td>&nbsp;</td><td>' + dojox.xml.parser.textContent(node) + '</td></tr>';
+    });
+    dojo.query('datafield', marc).forEach(function(node) {
+        var cnt = 0;
+        html += '<tr><td>' + dojo.attr(node, "tag") + '</td><td>' + dojo.attr(node, "ind1") + '</td><td>' + dojo.attr(node, "ind2") + '</td>';
+        dojo.query('subfield', node).forEach(function(sf) {
+            if (cnt == 0) {
+                html += '<td>$' + dojo.attr(sf, "code") + ' ' + dojox.xml.parser.textContent(sf) + '</td></tr>';
+                cnt = 1;
+            } else {
+                html += '<tr><td colspan="3"></td><td>$' + dojo.attr(sf, "code") + ' ' + dojox.xml.parser.textContent(sf) + '</td></tr>';
+            }
+        });
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
+function cancelDelete(recId) {
+    dijit.byId("delDialog_" + recId).hide();
+}
+
+function confirmDelete(recId) {
+    var pcrud = new openils.PermaCrud();
+    var auth_rec = pcrud.retrieve("are", recId);
+    if (auth_rec) {
+        pcrud.eliminate(auth_rec);
+        dijit.byId("delDialog_" + recId).attr("content", "Deleted authority record # " + recId);
+        setTimeout(function() {
+            dijit.byId("delDialog_" + recId).hide();
+        }, 3000);
+    }
 }
 
 function showBibCount(authIds) {
