@@ -2,7 +2,7 @@
 <!-- Application: Evergreen Staff Client -->
 <!-- Screen: Example Template for remote xul -->
 <!--
-    vim:noet:sw=4:ts=4:
+    vim:et:sw=4:ts=4:
 -->
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -60,6 +60,7 @@
                 JSAN.use('util.network'); g.network = new util.network();
                 JSAN.use('util.widgets');
                 JSAN.use('util.functional');
+                JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
                 var templates = g.network.simple_request('MARC_XML_TEMPLATE_LIST',[]);
                 if (typeof templates.ilsevent != 'undefined') throw(templates);
@@ -90,6 +91,7 @@
                             var url = urls.XUL_MARC_EDIT;
                             var params = {
                                 'record' : { 'marc' : marc },
+                                'marc_control_number_identifier': g.data.hash.aous['cat.marc_control_number_identifier'] || 'Set cat.marc_control_number_identifier in Library Settings',
                                 'fast_add_item' : function(doc_id,cn_label,cp_barcode) {
                                     try {
                                         JSAN.use('cat.util'); return cat.util.fast_item_add(doc_id,cn_label,cp_barcode);
