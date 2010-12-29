@@ -2189,6 +2189,8 @@ sub activate_purchase_order_impl {
     my $po = $e->retrieve_acq_purchase_order($po_id) or return $e->die_event;
     return $e->die_event unless $e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency);
 
+    my $provider = $e->retrieve_acq_provider($po->provider);
+
     $po->state('on-order');
     $po->order_date('now');
     update_purchase_order($mgr, $po) or return $e->die_event;
@@ -2213,6 +2215,8 @@ sub activate_purchase_order_impl {
         }
 
         $li->state('on-order');
+        $li->claim_policy($provider->default_claim_policy)
+            if $provider->default_claim_policy and !$li->claim_policy;
         create_lineitem_debits($mgr, $li, $dry_run) or return $e->die_event;
         update_lineitem($mgr, $li) or return $e->die_event;
         $mgr->post_process( sub { create_lineitem_status_events($mgr, $li->id, 'aur.ordered'); });
