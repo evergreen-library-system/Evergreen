@@ -534,8 +534,8 @@
 							clean <literal>staging</literal> directory containing the
 							finished Staff Client that can then be copied to other
 							machines. To do this, execute the following commands (remember
-							to replace <literal>DOWNLOAD_DIRECTORY</literal> and
-							<literal>STAGING_DIRECTORY</literal> with the appropriate
+							to replace <emphasis>DOWNLOAD_DIRECTORY</emphasis> and
+							<emphasis>STAGING_DIRECTORY</emphasis> with the appropriate
 							paths):</para>
 <screen>
 	<userinput>
@@ -621,7 +621,7 @@
 							user, navigate to the temporary directory where you downloaded 
 							the <systemitem class="osname">Windows</systemitem> installer 
 							file, then execute it with the <application>wine</application>
-							application (remember to replace <literal>VERSION</literal> with
+							application (remember to replace <emphasis>VERSION</emphasis> with
 							the release number of the Staff Client you downloaded):</para>
 <screen>
 	<userinput>
@@ -676,7 +676,7 @@
 			process:</para>
 			<simplesect>
 				<title>
-					<envar>STAFF_CLIENT_BUILD_ID</envar>
+					Build Variable <envar>STAFF_CLIENT_BUILD_ID</envar>
 				</title>
 				<para>During the normal <emphasis>make install</emphasis> Evergreen server-side
 				software build process, the variable defaults to an automatically generated
@@ -693,18 +693,18 @@
 				source directory with a different <envar>BUILD_ID</envar>.</para>
 				<para>As the <systemitem class="username">opensrf</systemitem> user,
 				execute the following commands to build the Staff Client (remember to replace
-				<literal>NEW_VERSION</literal> with an appropriate value):</para>
+				<emphasis>NEW_VERSION</emphasis> with an appropriate value):</para>
 <screen>
 	<userinput>
 	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
-	make STAFF_CLIENT_BUILD_ID=NEWVERSION  build
+	make STAFF_CLIENT_BUILD_ID=NEW_VERSION  build
 	</userinput>
 </screen>
 			</simplesect>
 			<simplesect>
 				<title>
-					<envar>STAFF_CLIENT_VERSION</envar>
+					Build Variable <envar>STAFF_CLIENT_VERSION</envar>
 				</title>
 				<para>During the normal <emphasis>make install</emphasis> Evergreen server-side
 				software build process, the variable is pulled automatically from a README file
@@ -739,7 +739,7 @@
 			</simplesect>
 			<simplesect>
 				<title>
-					<envar>STAFF_CLIENT_STAMP_ID</envar>
+					Build Variable <envar>STAFF_CLIENT_STAMP_ID</envar>
 				</title>
 				<para>During the normal <emphasis>make install</emphasis> Evergreen
 				server-side software build process, the variable is generated from
@@ -895,10 +895,9 @@
 </screen>
 				<para>You can also combine Javascript review and compression, and also perform a
 				<emphasis>developer build</emphasis>.</para>
-				<para>As the <systemitem class="username">opensrf</systemitem> user, run the
-				following commands from the Staff Client source directory:</para>
-				<note>In the following <command>make</command> below, the order of options is
-				important.</note>
+				<para>As the <systemitem class="username">opensrf</systemitem> user, run 
+				the following <command>make</command> command from the Staff Client source directory
+				(the order of options is important):</para>
 <screen>
 	<userinput>
 	# as the opensrf user:
@@ -1133,7 +1132,7 @@
 						<systemitem class="domainname">http://example.com</systemitem>).</para>
 						<para>As the <systemitem class="username">opensrf</systemitem> user,
 						execute the following commands to build the Staff Client (remember to
-						replace <literal>SOME_URL</literal> with an appropriate value)
+						replace <emphasis>SOME_URL</emphasis> with an appropriate value)
 						:</para>
 <screen>
 	<userinput>
@@ -1341,7 +1340,7 @@
 			<para>The Staff Client must be assigned to a library and given a unique name before it
 			will connect fully to the Evergreen server. The only restriction is that the workstation's
 			name must be unique within the assigned library. Make sure to select a workstation name
-			that you will remember later, and reflects the role, purpose, and/or location of a
+			that you will remember later, one that reflects the role, purpose, and/or location of a
 			particular computer. These names will come up later in statistical reporting, and can also
 			be handy when troubleshooting.</para>
 			<mediaobject>
