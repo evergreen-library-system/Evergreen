@@ -44,6 +44,7 @@ __PACKAGE__->register_method(
         desc => q/Create an authority record entry from a field in a bibliographic record/,
         params => q/
             @param field A hash representing the field to control, consisting of: { tag: string, ind1: string, ind2: string, subfields: [ [code, value] ... ] }
+            @param identifier A MARC control number identifier
             @param authtoken A valid authentication token
             @returns The new record object 
  /}
@@ -56,12 +57,18 @@ __PACKAGE__->register_method(
         desc => q/Creates MARCXML for an authority record entry from a field in a bibliographic record/,
         params => q/
             @param field A hash representing the field to control, consisting of: { tag: string, ind1: string, ind2: string, subfields: [ [code, value] ... ] }
+            @param identifier A MARC control number identifier
             @returns The MARCXML for the authority record
  /}
 );
 
 sub create_authority_record_from_bib_field {
-    my($self, $conn, $field, $auth) = @_;
+    my($self, $conn, $field, $cni, $auth) = @_;
+
+    # Control number identifier should have been passed in
+    if (!$cni) {
+        $cni = 'UNSET';
+    }
 
     # Change the first character of the incoming bib field tag to a '1'
     # for use in our authority record; close enough for now?
@@ -95,7 +102,7 @@ sub create_authority_record_from_bib_field {
 <record xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns="http://www.loc.gov/MARC21/slim"><leader>     nz  a22     o  4500</leader>
 <controlfield tag="001">$arn</controlfield>
 <controlfield tag="008">      ||||||||||||||||||||||||||||||||||</controlfield>
-<datafield tag="040" ind1=" " ind2=" "><subfield code="a">CONS</subfield><subfield code="c">CONS</subfield></datafield>
+<datafield tag="040" ind1=" " ind2=" "><subfield code="a">$cni</subfield><subfield code="c">$cni</subfield></datafield>
 $control
 </record>
 MARCXML
