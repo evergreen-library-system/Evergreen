@@ -397,9 +397,8 @@
 					symbolic link to that directory. As the 
 					<systemitem class="username">root</systemitem> user, make the changes as follows:</para>
 <screen>
-	<prompt>
-	# as the root user:</prompt>
 	<userinput>
+	# as the root user:
 	cd /openils/var/web/xul
 	ln -s SERVER_BUILD_ID/ CLIENT_BUILD_ID
 	</userinput>
@@ -431,9 +430,8 @@
 							select the latest version; for <application>XULrunner</application>,
 							select version <emphasis>1.8.1.4-2ubuntu5</emphasis>.</para>
 <screen>
-	<prompt>
-	# as the root user:</prompt>
 	<userinput>
+	# as the root user:
 	sudo apt-get install subversion
 	sudo apt-get install xulrunner
 	</userinput>
@@ -477,9 +475,8 @@
 									Client. Use the following commands to download the proper
 									version of the source code by tag name:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /DOWNLOAD/DIRECTORY
 	svn co rel_1_6_1_2/
 	</userinput>
@@ -505,9 +502,8 @@
 							<para>As the <systemitem class="username">opensrf</systemitem>
 							user, run the following commands to build the Staff Client:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	wget http://evergreen-ils.org/downloads/Evergreen-ILS-1.6.1.2.tar.gz
 	tar xfz Evergreen-ILS-1.6.1.2.tar.gz
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2
@@ -523,9 +519,8 @@
 							user, navigate to the <filename class="directory">build/</filename>
 							subdirectory and run the following command:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client/build
 	xulrunner application.ini
 	</userinput>
@@ -543,9 +538,8 @@
 							<literal>STAGING_DIRECTORY</literal> with the appropriate
 							paths):</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	mkdir ~/STAGING_DIRECTORY
 	cd ~/DOWNLOAD_DIRECTORY/Open-ILS/xul/
 	cp -r staff_client ~/STAGING_DIRECTORY
@@ -554,9 +548,8 @@
 							<para>Test the Staff Client to verify that all necessary files
 							were copied to the staging directory:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd ~/STAGING_DIRECTORY/staff_client/build
 	xulrunner application.ini
 	</userinput>
@@ -564,17 +557,15 @@
 							<para>If there were no problems, then finish the cleanup by
 							removing the original download directory as shown:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	rm -r -f ~/DOWNLOAD_DIRECTORY
 	</userinput>
 </screen>
 							<para>Finally, the command:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	xulrunner ~/STAGING_DIRECTORY/staff_client/build/application.ini
 	</userinput>
 </screen>
@@ -611,9 +602,8 @@
 						<listitem>
 							<para>Install wine:</para>
 <screen>
-	<prompt>
-	# as the root user:</prompt>
 	<userinput>
+	# as the root user:
 	sudo apt-get install wine
 	</userinput>
 </screen>
@@ -634,9 +624,8 @@
 							application (remember to replace <literal>VERSION</literal> with
 							the release number of the Staff Client you downloaded):</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /TEMP_DIRECTORY
 	wine evergreen-setup-rel_VERSION.exe
 	</userinput>
@@ -694,9 +683,8 @@
 				date/time string, but you can also override the value of <envar>BUILD_ID</envar>.</para>
 				<para>You could use the following commands during the normal install process:</para>
 <screen>
-	<prompt>
-	# as the root user:</prompt>
 	<userinput>
+	# as the root user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2
 	make STAFF_CLIENT_BUILD_ID=1_6_1_2 install
 	</userinput>
@@ -707,9 +695,8 @@
 				execute the following commands to build the Staff Client (remember to replace
 				<literal>NEW_VERSION</literal> with an appropriate value):</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make STAFF_CLIENT_BUILD_ID=NEWVERSION  build
 	</userinput>
@@ -727,9 +714,8 @@
 				similarly to the <envar>BUILD_ID</envar>.</para>
 				<para>You could use the following commands during the normal install process:</para>
 <screen>
-	<prompt>
-	# as the root user:</prompt>
 	<userinput>
+	# as the root user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2
 	make STAFF_CLIENT_VERSION=0mytest.200 install
 	</userinput>
@@ -744,9 +730,8 @@
 				<para>As the <systemitem class="username">opensrf</systemitem> user,
 				execute the following commands to build the Staff Client:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make STAFF_CLIENT_VERSION=0mytest.200  build
 	</userinput>
@@ -764,9 +749,8 @@
 				<envar>STAMP_ID</envar> similarly to the <envar>BUILD_ID</envar>.</para>
 				<para>You could use the following commands during the normal install process:</para>
 <screen>
-	<prompt>
-	# as the root user:</prompt>
 	<userinput>
+	# as the root user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2
 	make STAFF_CLIENT_STAMP_ID=my_test_stamp install
 	</userinput>
@@ -776,9 +760,8 @@
 				<para>As the <systemitem class="username">opensrf</systemitem> user,
 				execute the following commands to build the Staff Client:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make STAFF_CLIENT_STAMP_ID=my_test_stamp  build
 	</userinput>
@@ -885,9 +868,8 @@
 				<para>As the <systemitem class="username">opensrf</systemitem> user, run
 				the following commands from the Staff Client source directory:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make devbuild
 	</userinput>
@@ -905,9 +887,8 @@
 				<para>As the <systemitem class="username">opensrf</systemitem> user, run
 				the following commands from the Staff Client source directory:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make compress-javascript
 	</userinput>
@@ -919,9 +900,8 @@
 				<note>In the following <command>make</command> below, the order of options is
 				important.</note>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make  devbuild  compress-javascript
 	</userinput>
@@ -933,9 +913,8 @@
 				by specifying the <option>AUTOUPDATE_HOST</option> option.</para>
 				<para>You could use the following commands during the normal install process:</para>
 <screen>
-	<prompt>
-	# as the root user:</prompt>
 	<userinput>
+	# as the root user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2
 	make AUTOUPDATE_HOST=localhost install
 	</userinput>
@@ -946,9 +925,8 @@
 				<para>As the <systemitem class="username">opensrf</systemitem> user,
 				execute the following commands to build the Staff Client:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make AUTOUPDATE_HOST=localhost build
 	</userinput>
@@ -970,9 +948,8 @@
 			<systemitem class="username">opensrf</systemitem> user execute the following
 			commands:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	mkdir -p "/openils/var/web/xul/$(cat build/BUILD_ID)"
 	cp -R build/server "/openils/var/web/xul/$(cat build/BUILD_ID)"
@@ -993,9 +970,8 @@
 				<para>As the <systemitem class="username">opensrf</systemitem> user, execute
 				the following commands:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make generic-client
 	</userinput>
@@ -1048,9 +1024,8 @@
 				<para>As the <systemitem class="username">opensrf</systemitem> user
 				execute the following commands:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make win-client
 	</userinput>
@@ -1066,9 +1041,8 @@
 				<para>As the <systemitem class="username">opensrf</systemitem> user, 
 				execute the following commands:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make linux-client
 	</userinput>
@@ -1083,9 +1057,8 @@
 				<para>As the <systemitem class="username">opensrf</systemitem> user,
 				execute the following commands:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make extension
 	</userinput>
@@ -1137,9 +1110,8 @@
 						As the <systemitem class="username">opensrf</systemitem> user, execute 
 						the following commands:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2
 	./configure --prefix=/openils --sysconfdir=/openils/conf --with-updateshost=hostname
 	make
@@ -1164,9 +1136,8 @@
 						replace <literal>SOME_URL</literal> with an appropriate value)
 						:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make AUTOUPDATE_HOST=http://SOME_URL build
 	</userinput>
@@ -1199,25 +1170,22 @@
 				directory to the Staff Client source directory, then execute the following
 				commands:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	</userinput>
 </screen>
 				<para>Command to build all updates at once:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	make updates
 	</userinput>
 </screen>
 				<para>commands to build updates individually:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	make generic-updates
 	make win-updates
 	make linux-updates
@@ -1245,18 +1213,16 @@
 				one of the following commands:</para>
 				<para>To build all updates at once:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make updates-client
 	</userinput>
 </screen>
 				<para>To build updates individually:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make generic-updates-client
 	make win-updates-client
@@ -1292,9 +1258,8 @@
 				<filename>update.rdf</filename>, as the root user execute the following
 				commands:</para>
 <screen>
-	<prompt>
-	# as the root user:</prompt>
 	<userinput>
+	# as the root user:
 	cd /openils/var/updates/pub
 	chmod +x  check  download  manualupdate.html  update.rdf
 	</userinput>
@@ -1322,9 +1287,8 @@
 				<para>As the <systemitem class="username">opensrf</systemitem> user, 
 				execute the following commands:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client
 	make NSIS_EXTRAOPTS=-DPROFILES win-client
 	</userinput>
@@ -1362,9 +1326,8 @@
 		<filename class="directory">/home/opensrf/Evergreen-ILS-1.6.1.2/</filename> you can start the 
 		Staff Client as shown in the following example:</para>
 <screen>
-	<prompt>
-	# as the opensrf user:</prompt>
 	<userinput>
+	# as the opensrf user:
 	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client/build
 	xulrunner application.ini
 	</userinput>
