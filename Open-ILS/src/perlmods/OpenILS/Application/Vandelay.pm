@@ -327,6 +327,7 @@ __PACKAGE__->register_method(
     method      => "process_spool",
     api_level   => 1,
     argc        => 3,
+    max_chunk_size => 0,
     record_type => 'bib'
 );                      
 __PACKAGE__->register_method(  
@@ -334,6 +335,7 @@ __PACKAGE__->register_method(
     method      => "process_spool",
     api_level   => 1,
     argc        => 3,
+    max_chunk_size => 0,
     record_type => 'auth'
 );                      
 
@@ -343,6 +345,7 @@ __PACKAGE__->register_method(
     api_level   => 1,
     argc        => 3,
     stream      => 1,
+    max_chunk_size => 0,
     record_type => 'bib'
 );                      
 __PACKAGE__->register_method(  
@@ -351,6 +354,7 @@ __PACKAGE__->register_method(
     api_level   => 1,
     argc        => 3,
     stream      => 1,
+    max_chunk_size => 0,
     record_type => 'auth'
 );
 
@@ -500,6 +504,7 @@ __PACKAGE__->register_method(
     api_level   => 1,
     argc        => 2,
     stream      => 1,
+    max_chunk_size => 0,
     record_type => 'bib'
 );
 
@@ -509,6 +514,7 @@ __PACKAGE__->register_method(
     api_level   => 1,
     argc        => 2,
     stream      => 1,
+    max_chunk_size => 0,
     record_type => 'auth'
 );
 __PACKAGE__->register_method(  
@@ -520,6 +526,7 @@ __PACKAGE__->register_method(
     signature   => {
         desc => q/Only import records that have no collisions/
     },
+    max_chunk_size => 0,
     record_type => 'bib'
 );
 
@@ -532,6 +539,7 @@ __PACKAGE__->register_method(
     signature   => {
         desc => q/Only import records that have no collisions/
     },
+    max_chunk_size => 0,
     record_type => 'auth'
 );
 sub import_queue {
@@ -605,8 +613,10 @@ sub import_record_list_impl {
     my $type = $self->{record_type};
     my $total = @$rec_ids;
     my $count = 0;
-    my $step = '1' . '0' x ((length($total) * 3) - 2);
     my %queues;
+
+    my $step = 1;
+
     my $auto_overlay_exact = $$args{auto_overlay_exact};
     my $auto_overlay_1match = $$args{auto_overlay_1match};
     my $merge_profile = $$args{merge_profile};
@@ -646,6 +656,7 @@ sub import_record_list_impl {
 
         my $overlay_target = $overlay_map->{$rec_id};
 
+        my $error = 0;
         my $e = new_editor(xact => 1);
         $e->requestor($requestor);
 
@@ -684,12 +695,19 @@ sub import_record_list_impl {
                         $merge_profile
                     ]
                 }
-            )->[0];
+            );
 
-            if($res->{$overlay_func} eq 't') {
-                $logger->info("vl: $type direct overlay succeeded for queued rec " . 
-                    $rec->id . " and overlay target $overlay_target");
-                $imported = 1;
+            if($res and ($res = $res->[0])) {
+
+                if($res->{$overlay_func} eq 't') {
+                    $logger->info("vl: $type direct overlay succeeded for queued rec " . 
+                        $rec->id . " and overlay target $overlay_target");
+                    $imported = 1;
+                }
+
+            } else {
+                $error = 1;
+                $logger->error("vl: Error attempting overlay with func=$overlay_func, profile=$merge_profile, record=$rec_id");
             }
 
         } else {
@@ -710,16 +728,23 @@ sub import_record_list_impl {
                                 $merge_profile
                             ]
                         }
-                    )->[0];
+                    );
 
-                    if($res->{$overlay_func} eq 't') {
-                        $logger->info("vl: $type overlay-1match succeeded for queued rec " . $rec->id);
-                        $imported = 1;
+                    if($res and ($res = $res->[0])) {
+    
+                        if($res->{$overlay_func} eq 't') {
+                            $logger->info("vl: $type overlay-1match succeeded for queued rec " . $rec->id);
+                            $imported = 1;
+                        }
+
+                    } else {
+                        $error = 1;
+                        $logger->error("vl: Error attempting overlay with func=$overlay_func, profile=$merge_profile, record=$rec_id");
                     }
                 }
             }
 
-            if(!$imported and $auto_overlay_exact and scalar(@{$rec->matches}) == 1 ) {
+            if(!$imported and !$error and $auto_overlay_exact and scalar(@{$rec->matches}) == 1 ) {
                 
                 # caller says to overlay if there is an /exact/ match
 
@@ -731,15 +756,22 @@ sub import_record_list_impl {
                             $merge_profile
                         ]
                     }
-                )->[0];
+                );
 
-                if($res->{$auto_overlay_func} eq 't') {
-                    $logger->info("vl: $type auto-overlay succeeded for queued rec " . $rec->id);
-                    $imported = 1;
+                if($res and ($res = $res->[0])) {
+
+                    if($res->{$auto_overlay_func} eq 't') {
+                        $logger->info("vl: $type auto-overlay succeeded for queued rec " . $rec->id);
+                        $imported = 1;
+                    }
+
+                } else {
+                    $error = 1;
+                    $logger->error("vl: Error attempting overlay with func=$auto_overlay_func, profile=$merge_profile, record=$rec_id");
                 }
             }
 
-            if(!$imported) {
+            if(!$imported and !$error) {
             
                 # No overlay / merge occurred.  Do a traditional record import by creating a new record
             
@@ -774,7 +806,11 @@ sub import_record_list_impl {
             $conn->respond({total => $total, progress => ++$count, imported => $rec_id, err_event => $e->event});
         }
 
-        $conn->respond({total => $total, progress => $count, imported => $rec_id}) if (!$report_all and ++$count % $step) == 0;
+        if($report_all or (++$count % $step) == 0) {
+            $conn->respond({total => $total, progress => $count, imported => $rec_id});
+            # report often at first, climb quickly, then hold steady
+            $step *= 2 unless $step == 256;
+        }
     }
 
     # see if we need to mark any queues as complete
