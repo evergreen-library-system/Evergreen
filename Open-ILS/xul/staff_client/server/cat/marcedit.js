@@ -2398,7 +2398,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
                     var source_f = summarizeField(sf);
                     var new_auth = fieldmapper.standardRequest(
                         ["open-ils.cat", "open-ils.cat.authority.record.create_from_bib"],
-                        [source_f, ses()]
+                        [source_f, xulG.marc_control_number_identifier, ses()]
                     );
                     if (new_auth && new_auth.id()) {
                         var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">({xulG.marc_control_number_identifier}){new_auth.id()}</subfield>;
@@ -2423,7 +2423,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
                     var pcrud = new openils.PermaCrud({"authtoken": authtoken});
                     var rec = fieldmapper.standardRequest(
                         ["open-ils.cat", "open-ils.cat.authority.record.create_from_bib.readonly"],
-                        { "params": [source_f] }
+                        { "params": [source_f, xulG.marc_control_number_identifier] }
                     );
                     loadMarcEditor(pcrud, rec, target, sf);
                 }
