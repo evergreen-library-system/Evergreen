@@ -931,7 +931,7 @@ patron.display.prototype = {
                     obj.stop_checkouts = true;
                     }
                 }
-                var penalties = obj.patron.standing_penalties();
+                var penalties = patron.standing_penalties();
                 var dl_flag_opened = false;
                 for (var i = 0; i < penalties.length; i++) {
                     if (penalties[i].standing_penalty().block_list() || penalties[i].standing_penalty().id() == 20 /* ALERT_NOTE */) {
