@@ -403,7 +403,10 @@ circ.checkin.prototype = {
                         document.getElementById('no_change_label').setAttribute('hidden','false');
                     }
                     if (document.getElementById('fine_tally')) {
-                        var amount = Number( document.getElementById('fine_tally').getAttribute('amount') ) + Number( bill.balance_owed() );
+                        var amount = util.money.cents_as_dollars(
+                            Number( util.money.dollars_float_to_cents_integer( document.getElementById('fine_tally').getAttribute('amount') ) ) 
+                            + Number( util.money.dollars_float_to_cents_integer( bill.balance_owed() ) )
+                        );
                         document.getElementById('fine_tally').setAttribute('amount',amount);
                         document.getElementById('fine_tally').setAttribute(
                             'value',
