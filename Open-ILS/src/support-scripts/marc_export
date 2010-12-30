@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# vim:et:sw=4:ts=4:
 use strict;
 use warnings;
 use bytes;
@@ -20,9 +21,9 @@ use Time::HiRes qw/time/;
 use Getopt::Long;
 
 
-my @formats = qw/USMARC UNIMARC XML BRE/;
+my @formats = qw/USMARC UNIMARC XML BRE ARE/;
 
-my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings,$timeout,$export_mfhd) = ('/openils/conf/opensrf_core.xml','USMARC','MARC8','','$',0,undef,undef,0,undef);
+my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings,$timeout,$export_mfhd,$type) = ('/openils/conf/opensrf_core.xml','USMARC','MARC8','','$',0,undef,undef,0,undef,'biblio');
 
 GetOptions(
         'help'       => \$help,
@@ -32,6 +33,7 @@ GetOptions(
         'money=s'    => \$dollarsign,
         'config=s'   => \$config,
         'format=s'   => \$format,
+        'type=s'     => \$type,
         'xml-idl=s'  => \$idl,
         'encoding=s' => \$encoding,
         'timeout=i'  => \$timeout,
@@ -39,20 +41,30 @@ GetOptions(
 
 if ($help) {
 print <<"HELP";
+This script exports MARC authority, bibliographic, and serial holdings
+records from an Evergreen database. Input to this script consists of
+a list of record IDs, with one record ID per line, corresponding to
+the record ID in the Evergreen database table of your requested record
+type.
+
 Usage: $0 [options]
  --help or -h       This screen.
  --config or -c     Configuration file [/openils/conf/opensrf_core.xml]
- --format or -f     Output format (USMARC, UNIMARC, XML, BRE) [USMARC]
- --encoding or -e   Output Encoding (UTF-8, ISO-8859-?, MARC8) [MARC8]
+ --format or -f     Output format (USMARC, UNIMARC, XML, BRE, ARE) [USMARC]
+ --encoding or -e   Output encoding (UTF-8, ISO-8859-?, MARC8) [MARC8]
+ --xml-idl or -x    Location of the IDL XML
+ --timeout          Timeout for exporting a single record; increase if you
+                    are using --holdings and are exporting records that
+                    have a lot of items attached to them.
+ --type or -t       Record type (BIBLIO, AUTHORITY) [BIBLIO]
+
+ Additional options for type = 'BIBLIO':
  --items or -i      Include items (holdings) in the output
+ --money            Currency symbol to use in item price field [\$]
  --mfhd             Export serial MFHD records for associated bib records
                     Not compatible with --format=BRE
- --xml-idl or -x    Location of the IDL XML
  --location or -l   MARC Location Code for holdings from
                     http://www.loc.gov/marc/organizations/orgshome.html
- --timeout          Timeout for exporting a single record; increase if you
-                    are using --holdings and are exporting bibs that
-                    have a lot of items attached to them.
 
 Example:
 
@@ -62,13 +74,14 @@ HELP
     exit;
 }
 
+$type = lc($type);
 $format = uc($format);
 $encoding = uc($encoding);
 
 binmode(STDOUT, ':raw') if ($encoding ne 'UTF-8');
 binmode(STDOUT, ':utf8') if ($encoding eq 'UTF-8');
 
-if (!grep { uc($format) eq $_ } @formats) {
+if (!grep { $format eq $_ } @formats) {
     die "Please select a supported format.  ".
         "Right now that means one of [".
         join('|',@formats). "]\n";
@@ -107,33 +120,9 @@ my %orgs;
 my %shelves;
 
 my $flesh = {};
+
 if ($holdings) {
-
-    print STDERR "Retrieving Org Units ... ";
-    my $r = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search', { id => { '!=' => undef } } );
-
-    while (my $o = $r->recv) {
-        die $r->failed->stringify if ($r->failed);
-        $o = $o->content;
-        last unless ($o);
-        $orgs{$o->id} = $o;
-    }
-    $r->finish;
-    print STDERR "OK\n";
-
-    print STDERR "Retrieving Shelving locations ... ";
-    $r = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search', { id => { '!=' => undef } } );
-
-    while (my $s = $r->recv) {
-        die $r->failed->stringify if ($r->failed);
-        $s = $s->content;
-        last unless ($s);
-        $shelves{$s->id} = $s;
-    }
-    $r->finish;
-    print STDERR "OK\n";
-
-    $flesh = { flesh => 2, flesh_fields => { bre => [ 'call_numbers' ], acn => [ 'copies' ] } };
+    get_bib_locations();
 }
 
 my $start = time;
@@ -143,8 +132,12 @@ my $speed = 0;
 while ( my $i = <> ) {
     my $bib; 
 
-    my $r = $ses->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve', $i, $flesh );
+    my $r = $ses->request( "open-ils.cstore.direct.$type.record_entry.retrieve", $i, $flesh );
     my $s = $r->recv(timeout => $timeout);
+    if (!$s) {
+        warn "\n!!!!! Failed trying to read record $i\n";
+        next;
+    }
     if ($r->failed) {
         warn "\n!!!!!! Failed trying to read record $i: " . $r->failed->stringify . "\n";
         next;
@@ -159,64 +152,27 @@ while ( my $i = <> ) {
     $count{bib}++;
     next unless $bib;
 
-    if (uc($format) eq 'BRE') {
+    if ($format eq 'ARE' or $format eq 'BRE') {
         print OpenSRF::Utils::JSON->perl2JSON($bib);
         stats();
+        $count{did}++;
         next;
     }
 
     try {
 
         my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
-        my $cn_list = $bib->call_numbers;
-        if ($cn_list && @$cn_list) {
-
-            $count{cn} += @$cn_list;
-        
-            my $cp_list = [ map { @{ $_->copies } } @$cn_list ];
-            if ($cp_list && @$cp_list) {
-
-                my %cn_map;
-                push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
-                                
-                for my $cn ( @$cn_list ) {
-                    my $cn_map_list = $cn_map{$cn->id};
-    
-                    for my $cp ( @$cn_map_list ) {
-                        $count{cp}++;
-                                
-                        $r->append_fields(
-                            MARC::Field->new(
-                                852, '4', '', 
-                                a => $location,
-                                b => $orgs{$cn->owning_lib}->shortname,
-                                b => $orgs{$cp->circ_lib}->shortname,
-                                c => $shelves{$cp->location}->name,
-                                j => $cn->label,
-                                ($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
-                                p => $cp->barcode,
-                                ($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
-                                ($cp->copy_number ? ( t => $cp->copy_number ) : ()),
-                                ($cp->ref eq 't' ? ( x => 'reference' ) : ()),
-                                ($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
-                                ($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
-                                ($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
-                            )
-                        );
-
-                        stats() if (! ($count{cp} % 100 ));
-                    }
-                }
-            }
+        if ($type eq 'biblio') {
+            add_bib_holdings($bib, $r);
         }
 
-        if (uc($format) eq 'XML') {
+        if ($format eq 'XML') {
             my $xml = $r->as_xml_record;
             $xml =~ s/^<\?.+?\?>$//mo;
             print $xml;
-        } elsif (uc($format) eq 'UNIMARC') {
+        } elsif ($format eq 'UNIMARC') {
             print $r->as_usmarc;
-        } elsif (uc($format) eq 'USMARC') {
+        } elsif ($format eq 'USMARC') {
             print $r->as_usmarc;
         }
 
@@ -228,19 +184,19 @@ while ( my $i = <> ) {
         import MARC::File::XML; # reset SAX parser so that one bad record doesn't kill the entire export
     };
 
-    if ($export_mfhd) {
+    if ($export_mfhd and $type eq 'biblio') {
         my $mfhds = $editor->search_serial_record_entry({record => $i, deleted => 'f'});
         foreach my $mfhd (@$mfhds) {
             try {
                 my $r = MARC::Record->new_from_xml( $mfhd->marc, $encoding, $format );
 
-                if (uc($format) eq 'XML') {
+                if ($format eq 'XML') {
                     my $xml = $r->as_xml_record;
                     $xml =~ s/^<\?.+?\?>$//mo;
                     print $xml;
-                } elsif (uc($format) eq 'UNIMARC') {
+                } elsif ($format eq 'UNIMARC') {
                     print $r->as_usmarc;
-                } elsif (uc($format) eq 'USMARC') {
+                } elsif ($format eq 'USMARC') {
                     print $r->as_usmarc;
                 }
             } otherwise {
@@ -289,4 +245,77 @@ sub stats {
     $count{time_last} = time;
 }
 
+sub get_bib_locations {
+    print STDERR "Retrieving Org Units ... ";
+    my $r = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search', { id => { '!=' => undef } } );
 
+    while (my $o = $r->recv) {
+        die $r->failed->stringify if ($r->failed);
+        $o = $o->content;
+        last unless ($o);
+        $orgs{$o->id} = $o;
+    }
+    $r->finish;
+    print STDERR "OK\n";
+
+    print STDERR "Retrieving Shelving locations ... ";
+    $r = $ses->request( 'open-ils.cstore.direct.asset.copy_location.search', { id => { '!=' => undef } } );
+
+    while (my $s = $r->recv) {
+        die $r->failed->stringify if ($r->failed);
+        $s = $s->content;
+        last unless ($s);
+        $shelves{$s->id} = $s;
+    }
+    $r->finish;
+    print STDERR "OK\n";
+
+    $flesh = { flesh => 2, flesh_fields => { bre => [ 'call_numbers' ], acn => [ 'copies' ] } };
+}
+
+sub add_bib_holdings {
+    my $bib = shift;
+    my $r = shift;
+
+    my $cn_list = $bib->call_numbers;
+    if ($cn_list && @$cn_list) {
+
+        $count{cn} += @$cn_list;
+    
+        my $cp_list = [ map { @{ $_->copies } } @$cn_list ];
+        if ($cp_list && @$cp_list) {
+
+            my %cn_map;
+            push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
+                            
+            for my $cn ( @$cn_list ) {
+                my $cn_map_list = $cn_map{$cn->id};
+
+                for my $cp ( @$cn_map_list ) {
+                    $count{cp}++;
+                            
+                    $r->append_fields(
+                        MARC::Field->new(
+                            852, '4', '', 
+                            a => $location,
+                            b => $orgs{$cn->owning_lib}->shortname,
+                            b => $orgs{$cp->circ_lib}->shortname,
+                            c => $shelves{$cp->location}->name,
+                            j => $cn->label,
+                            ($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
+                            p => $cp->barcode,
+                            ($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
+                            ($cp->copy_number ? ( t => $cp->copy_number ) : ()),
+                            ($cp->ref eq 't' ? ( x => 'reference' ) : ()),
+                            ($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
+                            ($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
+                            ($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
+                        )
+                    );
+
+                    stats() if (! ($count{cp} % 100 ));
+                }
+            }
+        }
+    }
+}
