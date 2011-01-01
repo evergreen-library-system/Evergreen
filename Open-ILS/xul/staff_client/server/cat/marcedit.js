@@ -1,4 +1,4 @@
-// vim: noet:sw=4:ts=4:
+// vim: et:sw=4:ts=4:
 var xmlDeclaration = /^<\?xml version[^>]+?>/;
 
 var serializer = new XMLSerializer();
@@ -2230,9 +2230,9 @@ function buildBibSourceList (authtoken, recId) {
      * exist - this is specifically in the case of Z39.50 imports. Right now
      * we just avoid populating and showing the config.bib_source list
      */
-	if (!recId) {
-		return false;
-	}
+    if (!recId) {
+        return false;
+    }
 
     var bib = xulG.record.bre;
 
@@ -2240,6 +2240,11 @@ function buildBibSourceList (authtoken, recId) {
 
     // cbsList = the XUL menulist that contains the available bib sources 
     var cbsList = dojo.byId('bib-source-list');
+
+    // The openils.PermaCrud.retrieveAll call needs to have this property set
+    // to function properly; normally set via fieldmapper.IDL but in 1.6.2.x
+    // we're still relying on fmclasses
+    fieldmapper['cbs'].Identifier = 'id';
 
     // bibSources = an array containing all of the bib source objects
     var bibSources = new openils.PermaCrud({"authtoken": authtoken}).retrieveAll('cbs');
