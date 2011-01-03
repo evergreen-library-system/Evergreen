@@ -9,6 +9,7 @@ SERVER_PROPSDIR=../../Open-ILS/xul/staff_client/server/locale
 DOJO_LOCALE := $(shell echo ${LOCALE} | tr '[:upper:]-' '[:lower:]/')
 DOJO_ACQ_SRC=../../Open-ILS/web/js/dojo/openils/acq/nls
 DOJO_ACTOR_SRC=../../Open-ILS/web/js/dojo/openils/actor/nls
+DOJO_AUTHORITY_SRC=../../Open-ILS/web/js/dojo/openils/authority/nls
 DOJO_BOOKING_SRC=../../Open-ILS/web/js/dojo/openils/booking/nls
 DOJO_CIRC_SRC=../../Open-ILS/web/js/dojo/openils/circ/nls
 DOJO_CON_SRC=../../Open-ILS/web/js/dojo/openils/conify/nls
@@ -149,6 +150,7 @@ dtds2pot:
 dojo2pot:
 	@scripts/dojo_resource.py --pot $(DOJO_ACQ_SRC)/acq.js --output $(PO)/acq.js/acq.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_ACTOR_SRC)/register.js --output $(PO)/register.js/register.js.pot
+	@scripts/dojo_resource.py --pot $(DOJO_AUTHORITY_SRC)/authority.js --output $(PO)/authority.js/authority.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_BOOKING_SRC)/capture.js --output $(PO)/capture.js/capture.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_BOOKING_SRC)/pickup_and_return.js --output $(PO)/pickup_and_return.js/pickup_and_return.js.pot
 	@scripts/dojo_resource.py --pot $(DOJO_BOOKING_SRC)/pull_list.js --output $(PO)/pull_list.js/pull_list.js.pot
@@ -280,6 +282,8 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PROJECT)/$(LOCALE)/acq.js $(DOJO_ACQ_SRC)/$(DOJO_LOCALE)/acq.js
 	mkdir -p $(DOJO_ACTOR_SRC)/$(DOJO_LOCALE)
 	cp $(PROJECT)/$(LOCALE)/register.js $(DOJO_ACTOR_SRC)/$(DOJO_LOCALE)/register.js
+	mkdir -p $(DOJO_AUTHORITY_SRC)/$(DOJO_LOCALE)
+	cp $(PROJECT)/$(LOCALE)/authority.js $(DOJO_AUTHORITY_SRC)/$(DOJO_LOCALE)/authority.js
 	mkdir -p $(DOJO_BOOKING_SRC)/$(DOJO_LOCALE)
 	cp $(PROJECT)/$(LOCALE)/capture.js $(DOJO_BOOKING_SRC)/$(DOJO_LOCALE)/capture.js
 	cp $(PROJECT)/$(LOCALE)/pickup_and_return.js $(DOJO_BOOKING_SRC)/$(DOJO_LOCALE)/pickup_and_return.js
