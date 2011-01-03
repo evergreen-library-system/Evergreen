@@ -2376,7 +2376,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
     }
 
     var url = '/opac/extras/browse/marcxml/'
-        + type
+        + type + '.refs'
         + '/1' // OU - currently unscoped
         + '/' + sf.toString()
         + '/' + page
@@ -2488,13 +2488,13 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
             buildAuthorityPopup(main_text, record, auth_org, auth_id, sf_popup, target, sf);
 
             dojo.forEach(see_from, function(entry_text) {
-                buildAuthorityPopup(entry_text, record, auth_org, auth_id, sf_popup, target, sf, "font-style: italic; text-align: right; margin-left: 2em;");
+                buildAuthorityPopup(entry_text, record, auth_org, auth_id, sf_popup, target, sf, "font-style: italic; margin-left: 2em;");
             });
 
             // To-do: instead of launching the standard selector menu, invoke
             // a new authority search using the 5XX entry text
             dojo.forEach(see_also, function(entry_text) {
-                buildAuthorityPopup(entry_text, record, auth_org, auth_id, sf_popup, target, sf, "font-style: italic; text-align: right; margin-left: 2em;");
+                buildAuthorityPopup(entry_text, record, auth_org, auth_id, sf_popup, target, sf, "font-style: italic; margin-left: 2em;");
             });
 
         });
@@ -2530,7 +2530,7 @@ function buildAuthorityPopup (entry_text, record, auth_org, auth_id, sf_popup, t
     var popup = createMenuPopup({ "flex": "1" });
     if (style) {
         submenu.setAttribute('style', style);
-        popup.setAttribute('style', 'font-style: normal; text-align: left; margin-left: 0em;');
+        popup.setAttribute('style', 'font-style: normal; margin-left: 0em;');
     }
     submenu.appendChild(popup);
 
