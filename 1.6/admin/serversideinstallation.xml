@@ -928,30 +928,15 @@
 					yourself, either on the same system as Evergreen itself or on another system.
 					If your PostgreSQL server is on a different system, just skip this step.
 					If your PostgreSQL server will be on the same system as your Evergreen
-					software, then install the required PostgreSQL server packages as follows.
-					For further information on manually installing PostgreSQL, visit the official
-					<link xl:href="http://www.postgresql.org/">PostgreSQL Site</link>.</para>
-					<para>For <systemitem class="osname">Debian Lenny</systemitem> and 
-					<systemitem class="osname">Ubuntu Hardy (8.04)</systemitem>, execute these commands:</para>
-<screen>
-	<userinput>
-	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-1.6.1.2
-	make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_83</userinput>
-</screen>
-					<para>For <systemitem class="osname">Ubuntu Karmic (9.10)</systemitem> and
-					<systemitem class="osname">Ubuntu Lucid (10.04)</systemitem>, execute these commands:</para>
-<screen>
-	<userinput>
-	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-1.6.1.2
-	make -f Open-ILS/src/extras/Makefile.install install_pgsql_server_debs_84</userinput>
-</screen>
+					software, you can install the required PostgreSQL server packages as described
+					in <xref linkend="InstallingPostgreSQL-all"/>, or you can visit the official 
+					web site <link xl:href="http://www.postgresql.org/">http://www.postgresql.org</link>
+					for more information.</para>
 					<note>
 						<para>PostgreSQL versions 8.3 or 8.4 are the recommended versions to work 
 						with Evergreen 1.6.1.2 . If you have an older version of PostgreSQL, you 
-						should upgrade before installing Evergreen. To find the running version of
-						PostgreSQL, as the <systemitem class="username">postgres</systemitem> 
+						should upgrade before installing Evergreen. To find your current version 
+						of PostgreSQL, as the <systemitem class="username">postgres</systemitem> 
 						user execute the command <command>psql</command>, then type 
 						<userinput>SELECT version();</userinput> to get detailed information 
 						about your version of PostgreSQL.</para>
@@ -1514,7 +1499,7 @@
 					<para>You can load translations such as Armenian (hy-AM), Canadian French
 					(fr-CA), and others into the database to complete the translations available in
 					the OPAC and Staff Client. For further information, see
-					<xref linkend="enabling_and_disabling_localization"/>.</para>
+					<xref linkend="languagesandlocalization"/>.</para>
 				</step>
 			</procedure>
 		</section>
@@ -1713,7 +1698,7 @@
 	# as the root user:
 	xulrunner /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/xul/staff_client/build/application.ini</userinput>
 </screen>
-				<para>The login screen for the Staff Client should appear:</para>
+				<para>A login screen for the Staff Client similar to this should appear:</para>
 				<mediaobject>
 					<alt>Logging into the Staff Client</alt>
 					<imageobject>
@@ -1811,16 +1796,18 @@
 			</section>
 			<section xml:id="serversideinstallation-ssl">
 				<title>Configure a permanent SSL key</title>
-				<para>In a previous step (see <xref linkend="serversideinstallation-createsslcertificate"/>)
-				you used the command <command>openssl</command> to temporarily
-				create a new SSL key for the Apache server. This self-signed security certificate was adequate
-				during testing and development, but will continue to generate warnings in the Staff Client 
-				and browser. For a public production server you should configure or purchase a signed SSL
-				certificate.</para>
-				<para>There are several open source software solutions that provide schemes to generate and
-				maintain public key security certificates for your library system. Some popular projects are
-				listed below; please review them for background information on why you need such a system and 
-				how you can provide it:</para>
+				<para>You used the command <command>openssl</command> in an earlier step to
+				temporarily create a new SSL key for the Apache server (see 
+				<xref linkend="serversideinstallation-createsslcertificate"/> for further
+				information).  This self-signed security certificate was adequate during
+				testing and development, but will continue to generate warnings in the Staff
+				Client and browser. For a public production server you should configure or
+				purchase a signed SSL certificate.</para>
+				<para>There are several open source software solutions that provide schemes to
+				generate and maintain public key security certificates for your library
+				system. Some popular projects are listed below; please review them for
+				background information on why you need such a system and how you can provide
+				it:</para>
 				<itemizedlist>
 					<listitem>
 						<ulink url="http://www.openca.org/projects/openca/">http://www.openca.org/projects/openca/</ulink>
@@ -1843,58 +1830,8 @@
 			<section>
 				<title>(OPTIONAL) Set Up Support For Reports</title>
 				<para>Evergreen reports are extremely powerful but require some simple configuration.
-				This section describes starting and stopping the Reporter daemon processes.</para>
-				<itemizedlist>
-					<listitem>
-						<para>Starting the Reporter Daemon</para>
-						<para>Once the <systemitem class="daemon">open-ils.reporter</systemitem>
-						process is running and enabled on the gateway, you can start the
-						Reporter daemon. That process periodically checks for requests for new
-						or scheduled reports, then starts them as required.</para>
-						<para>As the <systemitem class="username">opensrf</systemitem> user,
-						start the Reporter daemon using the following command:</para>
-<screen>
-	<userinput>
-	# as the opensrf user:
-	cd /home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/src/reporter
-	./clark-kent.pl --daemon</userinput>
-</screen>
-						<para>You can control how the <command>clark-kent.pl</command> utility behaves
-						by specifying any of several command-line options:</para>
-						<itemizedlist>
-							<listitem><option>--sleep=interval</option> : number of seconds
-							to sleep between checks for new reports to run; defaults to
-							<literal>10</literal></listitem>
-							<listitem><option>--lockfile=filename</option> : where to place
-							the lockfile for the process; defaults to
-							<filename>/tmp/reporter-LOCK</filename></listitem>
-							<listitem><option>--concurrency=integer</option> : number of
-							Reporter daemon processes to run; defaults to
-							<literal>1</literal></listitem>
-							<listitem><option>--bootstrap=filename</option> : OpenSRF
-							bootstrap configuration file; defaults to
-							<filename>/openils/conf/opensrf_core.xml</filename></listitem>
-						</itemizedlist>
-					</listitem>
-					<listitem>
-						<para>Stopping the Reporter Daemon</para>
-						<para>To stop the Reporter daemon, you must kill the process and remove
-						the lockfile. The daemon may have just a single associated process or
-						there may be several processes if the daemon was started with the optional
-						<literal>--concurrency</literal> switch. It will also have a lockfile
-						in the default location.</para>
-						<para>As the <systemitem class="username">opensrf</systemitem> user,
-						execute the following shell commands:</para>
-<screen>
-	<userinput>
-	# as the root user:
-	# find and kill the process ID number(s)
-	kill `ps wax | grep "Clark Kent" | grep -v grep | cut -b1-6`
-	# remove the lock file
-	rm /tmp/reporter-LOCK</userinput>
-</screen>
-					</listitem>
-				</itemizedlist>
+				See <xref linkend="report_starting_reporter_service"/> for information on starting and
+				stopping the Reporter daemon processes.</para>
 			</section>
 		</section>
 		<section xml:id="serversideinstallation-virtual">
