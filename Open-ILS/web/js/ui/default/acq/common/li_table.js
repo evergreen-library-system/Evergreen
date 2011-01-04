@@ -228,6 +228,7 @@ function AcqLiTable() {
                         [li], self.claimPolicyPicker.attr("value"),
                         function() {
                             self.setClaimPolicyControl(li, row);
+                            self.reconsiderClaimControl(li, row);
                             liClaimPolicyDialog.hide();
                         }
                     );
@@ -291,11 +292,14 @@ function AcqLiTable() {
         dojo.query('[name=noteslink]', row)[0].onclick = function() {self.drawLiNotes(li)};
 
         if (!this.skipInitialEligibilityCheck)
-            this.fetchClaimInfo(li.id(), false, null, row);
+            this.fetchClaimInfo(
+                li.id(),
+                false,
+                function(full) { self.setClaimPolicyControl(full, row) },
+                row
+            );
 
         this.updateLiNotesCount(li, row);
-
-        this.setClaimPolicyControl(li, row);
 
         // show which PO this lineitem is a member of
         if(li.purchase_order() && !this.isPO) {
@@ -420,7 +424,7 @@ function AcqLiTable() {
             function(lid) { self.claimEligibleLid[lid.id()] = true; }
         );
         this.reconsiderClaimControl(li, row);
-        if (callback) callback();
+        if (callback) callback(li);
         /*
         this.clearEligibility(li);
         fieldmapper.standardRequest(
@@ -1926,7 +1930,10 @@ function AcqLiTable() {
                         self.claimPolicyPicker.attr("value"),
                         function() {
                             li_list.forEach(
-                                function(li) { self.setClaimPolicyControl(li); }
+                                function(li) {
+                                    self.setClaimPolicyControl(li);
+                                    self.reconsiderClaimControl(li);
+                                }
                             );
                             liClaimPolicyDialog.hide();
                         }

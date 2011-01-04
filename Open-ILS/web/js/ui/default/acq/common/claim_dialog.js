@@ -26,6 +26,11 @@ function ClaimDialogManager(
         nodeByName("lid_to_claim", this.eligibleList)
     );
 
+    var acqclet_template_parent = dojo.byId("acqclet-tbody");
+    this.eventTypeTemplate = acqclet_template_parent.removeChild(
+        nodeByName("acqclet-template", acqclet_template_parent)
+    );
+
     dojo.byId("acq-lit-li-claim-dia-claim").onclick = function() {
         var lid_ids = self.getSelectedEligible();
         if (lid_ids.length) {
@@ -55,7 +60,9 @@ function ClaimDialogManager(
 
         openils.Util.hide("acq-lit-li-claim-dia-initiate");
         openils.Util.hide("acq-lit-li-claim-dia-show");
+        openils.Util.hide("acqclet-display");
 
+        dojo.empty("acqclet-tbody");
         dojo.empty(this.showingList);
         dojo.empty(this.eligibleList);
     };
@@ -87,6 +94,62 @@ function ClaimDialogManager(
                 }
             }
         );
+
+        if (!li.claim_policy())
+            this.showClaimEventTypes();
+    };
+
+    this.showClaimEventTypes = function() {
+        if (!this._cached_event_types) {
+            this._cached_event_types = new openils.PermaCrud({
+                "authtoken": openils.User.authtoken
+            }).retrieveAll(
+                "acqclet", {"order_by": {"acqclet": "code"}}
+            );
+        }
+
+        if (this._cached_event_types && this._cached_event_types.length) {
+            openils.Util.show("acqclet-display");
+            dojo.empty("acqclet-tbody");
+            this._cached_event_types.forEach(
+                function(clet) { self._render_event_type_row(clet); }
+            );
+        }
+    };
+
+    this.selectedEventTypes = function() {
+        var selected = dojo.query("[id^='acqclet-checkbox-']").filter(
+            function(node) {
+                return dojo.attr(node, "checked");
+            }
+        ).map(
+            function(node) {
+                return dojo.attr(node, "id").match(/-(\d+)$/)[1];
+            }
+        );
+
+        return selected.length ? selected : null;
+    };
+
+    this._render_event_type_row = function(clet) {
+        var row = dojo.clone(this.eventTypeTemplate);
+
+        var checkbox = nodeByName("acqclet-checkbox", row);
+        var label = nodeByName("acqclet-label", row);
+
+        var checkbox_id = "acqclet-checkbox-" + clet.id();
+        dojo.attr(checkbox, "id", checkbox_id);
+        dojo.attr(label, "for", checkbox_id);
+
+        label.innerHTML = dojo.string.substitute(label.innerHTML, {
+            "description": clet.description(),
+            "code": clet.code(),
+            "library_initiated": clet.library_initiated() ?
+                localeStrings.LIBRARY_INITIATED : "",
+            "ou": aou.findOrgUnit(clet.org_unit()).shortname()
+        });
+
+        dojo.place(row, "acqclet-tbody");
     };
 
     this._reprReceived = function(lid) {
@@ -178,7 +241,9 @@ function ClaimDialogManager(
                 "params": [
                     openils.User.authtoken, lid_ids, null,
                     this.claimType.attr("value"),
-                    dijit.byId("acq-eligible-claim-note").attr("value")
+                    dijit.byId("acq-eligible-claim-note").attr("value"),
+                    null,
+                    this.selectedEventTypes()
                 ],
                 "async": true,
                 "onresponse": function(r) {
