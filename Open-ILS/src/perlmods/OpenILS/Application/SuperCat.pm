@@ -2128,7 +2128,7 @@ sub recent_changes {
 
 	return $_storage->request(
 		"open-ils.cstore.direct.$type.record_entry.id_list.atomic",
-		{ $axis => { ">" => $when }, id => { '>' => 0 } },
+		{ $axis => { ">" => $when }, id => { '>' => 0 }, deleted => 'f', active => 't' },
 		{ order_by => { $hint => "$axis desc" }, limit => $limit }
 	)->gather(1);
 }
