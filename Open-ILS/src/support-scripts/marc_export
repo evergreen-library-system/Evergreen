@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# vim:et:sw=4:ts=4:
 use strict;
 use warnings;
 use bytes;
@@ -20,18 +21,20 @@ use Time::HiRes qw/time/;
 use Getopt::Long;
 
 
-my @formats = qw/USMARC UNIMARC XML BRE/;
+my @formats = qw/USMARC UNIMARC XML BRE ARE/;
 
-my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings,$timeout,$export_mfhd) = ('/openils/conf/opensrf_core.xml','USMARC','MARC8','','$',0,undef,undef,0,undef);
+my ($config,$format,$encoding,$location,$dollarsign,$idl,$help,$holdings,$timeout,$export_mfhd,$type,$all_records) = ('/openils/conf/opensrf_core.xml','USMARC','MARC8','','$',0,undef,undef,0,undef,'biblio',undef);
 
 GetOptions(
         'help'       => \$help,
         'items'      => \$holdings,
         'mfhd'       => \$export_mfhd,
+        'all'        => \$all_records,
         'location=s' => \$location,
         'money=s'    => \$dollarsign,
         'config=s'   => \$config,
         'format=s'   => \$format,
+        'type=s'     => \$type,
         'xml-idl=s'  => \$idl,
         'encoding=s' => \$encoding,
         'timeout=i'  => \$timeout,
@@ -39,36 +42,61 @@ GetOptions(
 
 if ($help) {
 print <<"HELP";
+This script exports MARC authority, bibliographic, and serial holdings
+records from an Evergreen database. 
+
+Input to this script can consist of a list of record IDs, with one record ID
+per line, corresponding to the record ID in the Evergreen database table of
+your requested record type.
+
+Alternately, passing the --all option will attempt to export all records of
+the specified type from the Evergreen database. The --all option starts at
+record ID 1 and increments the ID by 1 until the largest ID in the database
+is retrieved. This may not be very efficient for databases with large gaps
+in their ID sequences.
+
 Usage: $0 [options]
  --help or -h       This screen.
  --config or -c     Configuration file [/openils/conf/opensrf_core.xml]
- --format or -f     Output format (USMARC, UNIMARC, XML, BRE) [USMARC]
- --encoding or -e   Output Encoding (UTF-8, ISO-8859-?, MARC8) [MARC8]
+ --format or -f     Output format (USMARC, UNIMARC, XML, BRE, ARE) [USMARC]
+ --encoding or -e   Output encoding (UTF-8, ISO-8859-?, MARC8) [MARC8]
+ --xml-idl or -x    Location of the IDL XML
+ --timeout          Timeout for exporting a single record; increase if you
+                    are using --holdings and are exporting records that
+                    have a lot of items attached to them.
+ --type or -t       Record type (BIBLIO, AUTHORITY) [BIBLIO]
+ --all or -a        Export all records; ignores input list
+
+ Additional options for type = 'BIBLIO':
  --items or -i      Include items (holdings) in the output
+ --money            Currency symbol to use in item price field [\$]
  --mfhd             Export serial MFHD records for associated bib records
                     Not compatible with --format=BRE
- --xml-idl or -x    Location of the IDL XML
  --location or -l   MARC Location Code for holdings from
                     http://www.loc.gov/marc/organizations/orgshome.html
- --timeout          Timeout for exporting a single record; increase if you
-                    are using --holdings and are exporting bibs that
-                    have a lot of items attached to them.
 
-Example:
+Examples:
 
+To export a set of USMARC records in a file named "output_file" based on the
+IDs contained in a file named "list_of_ids":
   cat list_of_ids | $0 > output_file
+
+To export a set of MARC21XML authority records in a file named "output.xml"
+for all authority records in the database:
+  $0 --format XML --type AUTHORITY --all > output.xml
 
 HELP
     exit;
 }
 
+$type = lc($type);
 $format = uc($format);
 $encoding = uc($encoding);
 
 binmode(STDOUT, ':raw') if ($encoding ne 'UTF-8');
 binmode(STDOUT, ':utf8') if ($encoding eq 'UTF-8');
 
-if (!grep { uc($format) eq $_ } @formats) {
+if (!grep { $format eq $_ } @formats) {
     die "Please select a supported format.  ".
         "Right now that means one of [".
         join('|',@formats). "]\n";
@@ -107,8 +135,156 @@ my %orgs;
 my %shelves;
 
 my $flesh = {};
-if ($holdings) {
 
+if ($holdings) {
+    get_bib_locations();
+}
+
+my $start = time;
+my $last_time = time;
+my %count = ('bib' => 0, 'did' => 0);
+my $speed = 0;
+
+if ($all_records) {
+    my $top_record = 0;
+    if ($type eq 'biblio') {
+        $top_record = $editor->search_biblio_record_entry([
+            {deleted => 'f'},
+            {order_by => { 'bre' => 'id DESC' }, limit => 1}
+        ])->[0]->id;
+    } elsif ($type eq 'authority') {
+        $top_record = $editor->search_authority_record_entry([
+            {deleted => 'f'},
+            {order_by => { 'are' => 'id DESC' }, limit => 1}
+        ])->[0]->id;
+    }
+    for (my $i = 0; $i++ < $top_record;) {
+        export_record($i);
+    }
+} else {
+    while ( my $i = <> ) {
+        export_record($i);
+    }
+}
+
+print "</collection>\n" if ($format eq 'XML');
+
+$speed = $count{did} / (time - $start);
+my $time = time - $start;
+print STDERR <<DONE;
+
+Exports Attempted : $count{bib}
+Exports Completed : $count{did}
+Overall Speed     : $speed
+Total Time Elapsed: $time seconds
+
+DONE
+
+sub export_record {
+    my $id = shift;
+
+    my $bib; 
+
+    my $r = $ses->request( "open-ils.cstore.direct.$type.record_entry.retrieve", $id, $flesh );
+    my $s = $r->recv(timeout => $timeout);
+    if (!$s) {
+        warn "\n!!!!! Failed trying to read record $id\n";
+        return;
+    }
+    if ($r->failed) {
+        warn "\n!!!!!! Failed trying to read record $id: " . $r->failed->stringify . "\n";
+        return;
+    }
+    if ($r->timed_out) {
+        warn "\n!!!!!! Timed out trying to read record $id\n";
+        return;
+    }
+    $bib = $s->content;
+    $r->finish;
+
+    $count{bib}++;
+    return unless $bib;
+
+    if ($format eq 'ARE' or $format eq 'BRE') {
+        print OpenSRF::Utils::JSON->perl2JSON($bib);
+        stats();
+        $count{did}++;
+        return;
+    }
+
+    try {
+
+        my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
+        if ($type eq 'biblio') {
+            add_bib_holdings($bib, $r);
+        }
+
+        if ($format eq 'XML') {
+            my $xml = $r->as_xml_record;
+            $xml =~ s/^<\?.+?\?>$//mo;
+            print $xml;
+        } elsif ($format eq 'UNIMARC') {
+            print $r->as_usmarc;
+        } elsif ($format eq 'USMARC') {
+            print $r->as_usmarc;
+        }
+
+        $count{did}++;
+
+    } otherwise {
+        my $e = shift;
+        warn "\n$e\n";
+        import MARC::File::XML; # reset SAX parser so that one bad record doesn't kill the entire export
+    };
+
+    if ($export_mfhd and $type eq 'biblio') {
+        my $mfhds = $editor->search_serial_record_entry({record => $id, deleted => 'f'});
+        foreach my $mfhd (@$mfhds) {
+            try {
+                my $r = MARC::Record->new_from_xml( $mfhd->marc, $encoding, $format );
+
+                if ($format eq 'XML') {
+                    my $xml = $r->as_xml_record;
+                    $xml =~ s/^<\?.+?\?>$//mo;
+                    print $xml;
+                } elsif ($format eq 'UNIMARC') {
+                    print $r->as_usmarc;
+                } elsif ($format eq 'USMARC') {
+                    print $r->as_usmarc;
+                }
+            } otherwise {
+                my $e = shift;
+                warn "\n$e\n";
+                import MARC::File::XML; # reset SAX parser so that one bad record doesn't kill the entire export
+            };
+        }
+    }
+
+    stats() if (! ($count{bib} % 50 ));
+}
+
+sub stats {
+    try {
+        no warnings;
+
+        $speed = $count{did} / (time - $start);
+
+        my $speed_now = ($count{did} - $count{did_last}) / (time - $count{time_last});
+        my $cn_speed = $count{cn} / (time - $start);
+        my $cp_speed = $count{cp} / (time - $start);
+
+        printf STDERR "\r  $count{did} of $count{bib} @  \%0.4f/s ttl / \%0.4f/s rt ".
+                "($count{cn} CNs @ \%0.4f/s :: $count{cp} CPs @ \%0.4f/s)\r",
+                $speed,
+                $speed_now,
+                $cn_speed,
+                $cp_speed;
+    } otherwise {};
+    $count{did_last} = $count{did};
+    $count{time_last} = time;
+}
+
+sub get_bib_locations {
     print STDERR "Retrieving Org Units ... ";
     my $r = $ses->request( 'open-ils.cstore.direct.actor.org_unit.search', { id => { '!=' => undef } } );
 
@@ -136,157 +312,49 @@ if ($holdings) {
     $flesh = { flesh => 2, flesh_fields => { bre => [ 'call_numbers' ], acn => [ 'copies' ] } };
 }
 
-my $start = time;
-my $last_time = time;
-my %count = ();
-my $speed = 0;
-while ( my $i = <> ) {
-    my $bib; 
+sub add_bib_holdings {
+    my $bib = shift;
+    my $r = shift;
 
-    my $r = $ses->request( 'open-ils.cstore.direct.biblio.record_entry.retrieve', $i, $flesh );
-    my $s = $r->recv(timeout => $timeout);
-    if ($r->failed) {
-        warn "\n!!!!!! Failed trying to read record $i: " . $r->failed->stringify . "\n";
-        next;
-    }
-    if ($r->timed_out) {
-        warn "\n!!!!!! Timed out trying to read record $i\n";
-        next;
-    }
-    $bib = $s->content;
-    $r->finish;
+    my $cn_list = $bib->call_numbers;
+    if ($cn_list && @$cn_list) {
 
-    $count{bib}++;
-    next unless $bib;
-
-    if (uc($format) eq 'BRE') {
-        print OpenSRF::Utils::JSON->perl2JSON($bib);
-        stats();
-        next;
-    }
-
-    try {
-
-        my $r = MARC::Record->new_from_xml( $bib->marc, $encoding, $format );
-        my $cn_list = $bib->call_numbers;
-        if ($cn_list && @$cn_list) {
-
-            $count{cn} += @$cn_list;
-        
-            my $cp_list = [ map { @{ $_->copies } } @$cn_list ];
-            if ($cp_list && @$cp_list) {
-
-                my %cn_map;
-                push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
-                                
-                for my $cn ( @$cn_list ) {
-                    my $cn_map_list = $cn_map{$cn->id};
+        $count{cn} += @$cn_list;
     
-                    for my $cp ( @$cn_map_list ) {
-                        $count{cp}++;
-                                
-                        $r->append_fields(
-                            MARC::Field->new(
-                                852, '4', '', 
-                                a => $location,
-                                b => $orgs{$cn->owning_lib}->shortname,
-                                b => $orgs{$cp->circ_lib}->shortname,
-                                c => $shelves{$cp->location}->name,
-                                j => $cn->label,
-                                ($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
-                                p => $cp->barcode,
-                                ($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
-                                ($cp->copy_number ? ( t => $cp->copy_number ) : ()),
-                                ($cp->ref eq 't' ? ( x => 'reference' ) : ()),
-                                ($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
-                                ($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
-                                ($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
-                            )
-                        );
+        my $cp_list = [ map { @{ $_->copies } } @$cn_list ];
+        if ($cp_list && @$cp_list) {
 
-                        stats() if (! ($count{cp} % 100 ));
-                    }
+            my %cn_map;
+            push @{$cn_map{$_->call_number}}, $_ for (@$cp_list);
+                            
+            for my $cn ( @$cn_list ) {
+                my $cn_map_list = $cn_map{$cn->id};
+
+                for my $cp ( @$cn_map_list ) {
+                    $count{cp}++;
+                            
+                    $r->append_fields(
+                        MARC::Field->new(
+                            852, '4', '', 
+                            a => $location,
+                            b => $orgs{$cn->owning_lib}->shortname,
+                            b => $orgs{$cp->circ_lib}->shortname,
+                            c => $shelves{$cp->location}->name,
+                            j => $cn->label,
+                            ($cp->circ_modifier ? ( g => $cp->circ_modifier ) : ()),
+                            p => $cp->barcode,
+                            ($cp->price ? ( y => $dollarsign.$cp->price ) : ()),
+                            ($cp->copy_number ? ( t => $cp->copy_number ) : ()),
+                            ($cp->ref eq 't' ? ( x => 'reference' ) : ()),
+                            ($cp->holdable eq 'f' ? ( x => 'unholdable' ) : ()),
+                            ($cp->circulate eq 'f' ? ( x => 'noncirculating' ) : ()),
+                            ($cp->opac_visible eq 'f' ? ( x => 'hidden' ) : ()),
+                        )
+                    );
+
+                    stats() if (! ($count{cp} % 100 ));
                 }
             }
         }
-
-        if (uc($format) eq 'XML') {
-            my $xml = $r->as_xml_record;
-            $xml =~ s/^<\?.+?\?>$//mo;
-            print $xml;
-        } elsif (uc($format) eq 'UNIMARC') {
-            print $r->as_usmarc;
-        } elsif (uc($format) eq 'USMARC') {
-            print $r->as_usmarc;
-        }
-
-        $count{did}++;
-
-    } otherwise {
-        my $e = shift;
-        warn "\n$e\n";
-        import MARC::File::XML; # reset SAX parser so that one bad record doesn't kill the entire export
-    };
-
-    if ($export_mfhd) {
-        my $mfhds = $editor->search_serial_record_entry({record => $i, deleted => 'f'});
-        foreach my $mfhd (@$mfhds) {
-            try {
-                my $r = MARC::Record->new_from_xml( $mfhd->marc, $encoding, $format );
-
-                if (uc($format) eq 'XML') {
-                    my $xml = $r->as_xml_record;
-                    $xml =~ s/^<\?.+?\?>$//mo;
-                    print $xml;
-                } elsif (uc($format) eq 'UNIMARC') {
-                    print $r->as_usmarc;
-                } elsif (uc($format) eq 'USMARC') {
-                    print $r->as_usmarc;
-                }
-            } otherwise {
-                my $e = shift;
-                warn "\n$e\n";
-                import MARC::File::XML; # reset SAX parser so that one bad record doesn't kill the entire export
-            };
-        }
     }
-
-    stats() if (! ($count{bib} % 50 ));
 }
-
-print "</collection>\n" if ($format eq 'XML');
-
-$speed = $count{did} / (time - $start);
-my $time = time - $start;
-print STDERR <<DONE;
-
-Exports Attempted : $count{bib}
-Exports Completed : $count{did}
-Overall Speed     : $speed
-Total Time Elapsed: $time seconds
-
-DONE
-
-
-sub stats {
-    try {
-        no warnings;
-
-        $speed = $count{did} / (time - $start);
-
-        my $speed_now = ($count{did} - $count{did_last}) / (time - $count{time_last});
-        my $cn_speed = $count{cn} / (time - $start);
-        my $cp_speed = $count{cp} / (time - $start);
-
-        printf STDERR "\r  $count{did} of $count{bib} @  \%0.4f/s ttl / \%0.4f/s rt ".
-                "($count{cn} CNs @ \%0.4f/s :: $count{cp} CPs @ \%0.4f/s)\r",
-                $speed,
-                $speed_now,
-                $cn_speed,
-                $cp_speed;
-    } otherwise {};
-    $count{did_last} = $count{did};
-    $count{time_last} = time;
-}
-
-
