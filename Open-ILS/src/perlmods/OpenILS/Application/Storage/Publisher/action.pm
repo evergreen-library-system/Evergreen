@@ -1169,7 +1169,10 @@ sub new_hold_copy_targeter {
 			my $all_copies = [];
 
 			# find filters for MR holds
-			my ($types, $formats, $lang) = split '-', $hold->holdable_formats;
+			my ($types, $formats, $lang);
+			if (defined($hold->holdable_formats)) {
+				($types, $formats, $lang) = split '-', $hold->holdable_formats;
+			}
 
 			# find all the potential copies
 			if ($hold->hold_type eq 'M') {
@@ -1184,7 +1187,7 @@ sub new_hold_copy_targeter {
 								],
 								( $types   ? (item_type => [split '', $types])   : () ),
 								( $formats ? (item_form => [split '', $formats]) : () ),
-								( $lang    ? (item_lang => $lang)                : () ),
+								( $lang	   ? (item_lang => $lang)				 : () ),
 							)
 				) {
 					my ($rtree) = $self
