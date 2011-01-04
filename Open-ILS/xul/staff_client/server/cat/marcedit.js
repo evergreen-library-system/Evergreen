@@ -2374,7 +2374,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
     }
 
     var url = '/opac/extras/browse/marcxml/'
-        + type
+        + type + '.refs'
         + '/1' // OU - currently unscoped
         + '/' + sf.toString()
         + '/' + page
@@ -2444,10 +2444,13 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
 
         dojo.query('record', records).forEach(function(record) {
             var main_text = '';
+            var see_from = [];
+            var see_also = [];
             var auth_id = dojox.xml.parser.textContent(dojo.query('datafield[tag="901"] subfield[code="c"]', record)[0]);
             var auth_org = dojox.xml.parser.textContent(dojo.query('controlfield[tag="003"]', record)[0]);
-            // we have grabbed the fields with tags beginning with 1 or 5 and iterate through the subfields
-            dojo.query('datafield[tag^="1"], datafield[tag^="5"]', record).forEach(function(field) {
+
+            // Grab the fields with tags beginning with 1 (main entries) and iterate through the subfields
+            dojo.query('datafield[tag^="1"]', record).forEach(function(field) {
                 dojo.query('subfield', field).forEach(function(subfield) {
                     if (main_text) {
                         main_text += ' / ';
@@ -2456,85 +2459,42 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
                 });
             });
 
-            /*
-             * 
-            if (! (main[0].parent().@tag == authority_tag_map[sf.parent().@tag][1]) ) return;
-            */
-
-            var grid = dojo.query('[name="authority-marc-template"]')[0].cloneNode(true);
-            grid.setAttribute('name','-none-');
-            grid.setAttribute('style','overflow:scroll');
-
-            var submenu = createMenu( { label : main_text } );
-
-            var popup = createMenuPopup({ flex : "1" });
-            submenu.appendChild(popup);
-
-            dojo.query('datafield[tag^="1"], datafield[tag^="5"]', record).forEach(function(field) {
-                var row = createRow(
-                    { },
-                    createLabel( { "value" : dojo.attr(field, 'tag') } ),
-                    createLabel( { "value" : dojo.attr(field, 'ind1') } ),
-                    createLabel( { "value" : dojo.attr(field, 'ind2') } )
-                );
-
-                var sf_box = createHbox();
+            // Grab the fields with tags beginning with 4 (see from entries) and iterate through the subfields
+            dojo.query('datafield[tag^="4"]', record).forEach(function(field) {
+                var see_text = '';
                 dojo.query('subfield', field).forEach(function(subfield) {
-                    sf_box.appendChild(
-                        createCheckbox(
-                            { "label"    : '\u2021' + dojo.attr(subfield, 'code') + ' ' + dojox.xml.parser.textContent(subfield),
-                              "subfield" : dojo.attr(subfield, 'code'),
-                              "tag"      : dojo.attr(field, 'tag'),
-                              "value"    : dojox.xml.parser.textContent(subfield)
-                            }
-                        )
-                    );
-                    row.appendChild(sf_box);
+                    if (see_text) {
+                        see_text += ' / ';
+                    }
+                    see_text += dojox.xml.parser.textContent(subfield);
                 });
-
-                // Append the authority linking subfield
-                sf_box.appendChild(
-                    createCheckbox(
-                        { "label"    : '\u2021' + '0' + ' (' + auth_org + ')' + auth_id,
-                          "subfield" : '0',
-                          "tag"      : dojo.attr(field, 'tag'),
-                          "value"    : '(' + auth_org + ')' + auth_id
-                        }
-                    )
-                );
-                row.appendChild(sf_box);
-
-                grid.lastChild.appendChild(row);
+                see_from.push($('catStrings').getFormattedString('staff.cat.marcedit.authority_see_from', [see_text]));
             });
 
-            grid.hidden = false;
-            popup.appendChild( grid );
-
-            popup.appendChild(
-                createMenuitem(
-                    { label : $('catStrings').getString('staff.cat.marcedit.apply_selected.label'),
-                      command : function (event) {
-                            applySelectedAuthority(event.target.previousSibling, target, sf);
-                            return true;
-                      }
+            // Grab the fields with tags beginning with 5 (see also entries) and iterate through the subfields
+            dojo.query('datafield[tag^="5"]', record).forEach(function(field) {
+                var see_text = '';
+                dojo.query('subfield', field).forEach(function(subfield) {
+                    if (see_text) {
+                        see_text += ' / ';
                     }
-                )
-            );
+                    see_text += dojox.xml.parser.textContent(subfield);
+                });
+                see_also.push($('catStrings').getFormattedString('staff.cat.marcedit.authority_see_also', [see_text]));
+            });
 
-            popup.appendChild( createComplexXULElement( 'menuseparator' ) );
+            buildAuthorityPopup(main_text, record, auth_org, auth_id, sf_popup, target, sf);
 
-            popup.appendChild(
-                createMenuitem(
-                    { label : $('catStrings').getString('staff.cat.marcedit.apply_full.label'),
-                      command : function (event) {
-                            applyFullAuthority(event.target.previousSibling.previousSibling.previousSibling, target, sf);
-                            return true;
-                      }
-                    }
-                )
-            );
+            dojo.forEach(see_from, function(entry_text) {
+                buildAuthorityPopup(entry_text, record, auth_org, auth_id, sf_popup, target, sf, "font-style: italic; margin-left: 2em;");
+            });
 
-            sf_popup.appendChild( submenu );
+            // To-do: instead of launching the standard selector menu, invoke
+            // a new authority search using the 5XX entry text
+            dojo.forEach(see_also, function(entry_text) {
+                buildAuthorityPopup(entry_text, record, auth_org, auth_id, sf_popup, target, sf, "font-style: italic; margin-left: 2em;");
+            });
+
         });
 
         if (sf_popup.childNodes.length == 0) {
@@ -2556,6 +2516,93 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
         return true;
     }});
 
+}
+
+function buildAuthorityPopup (entry_text, record, auth_org, auth_id, sf_popup, target, sf, style) {
+    var grid = dojo.query('[name="authority-marc-template"]')[0].cloneNode(true);
+    grid.setAttribute('name','-none-');
+    grid.setAttribute('style','overflow:scroll');
+
+    var submenu = createMenu( { "label": entry_text } );
+
+    var popup = createMenuPopup({ "flex": "1" });
+    if (style) {
+        submenu.setAttribute('style', style);
+        popup.setAttribute('style', 'font-style: normal; margin-left: 0em;');
+    }
+    submenu.appendChild(popup);
+
+    dojo.query('datafield[tag^="1"], datafield[tag^="4"], datafield[tag^="5"]', record).forEach(function(field) {
+        buildAuthorityPopupSelector(field, grid, auth_org, auth_id);
+    });
+
+    grid.hidden = false;
+    popup.appendChild( grid );
+
+    popup.appendChild(
+        createMenuitem(
+            { label : $('catStrings').getString('staff.cat.marcedit.apply_selected.label'),
+              command : function (event) {
+                    applySelectedAuthority(event.target.previousSibling, target, sf);
+                    return true;
+              }
+            }
+        )
+    );
+
+    popup.appendChild( createComplexXULElement( 'menuseparator' ) );
+
+    popup.appendChild(
+        createMenuitem(
+            { label : $('catStrings').getString('staff.cat.marcedit.apply_full.label'),
+              command : function (event) {
+                    applyFullAuthority(event.target.previousSibling.previousSibling.previousSibling, target, sf);
+                    return true;
+              }
+            }
+        )
+    );
+
+    sf_popup.appendChild( submenu );
+}
+
+function buildAuthorityPopupSelector (field, grid, auth_org, auth_id) {
+    var row = createRow(
+        { },
+        createLabel( { "value" : dojo.attr(field, 'tag') } ),
+        createLabel( { "value" : dojo.attr(field, 'ind1') } ),
+        createLabel( { "value" : dojo.attr(field, 'ind2') } )
+    );
+
+    var sf_box = createHbox();
+    dojo.query('subfield', field).forEach(function(subfield) {
+        sf_box.appendChild(
+            createCheckbox(
+                { "label"    : '\u2021' + dojo.attr(subfield, 'code') + ' ' + dojox.xml.parser.textContent(subfield),
+                  "subfield" : dojo.attr(subfield, 'code'),
+                  "tag"      : dojo.attr(field, 'tag'),
+                  "value"    : dojox.xml.parser.textContent(subfield)
+                }
+            )
+        );
+        row.appendChild(sf_box);
+    });
+
+    // Append the authority linking subfield only for main entries
+    if (dojo.attr(field, 'tag').charAt(0) == '1') {
+        sf_box.appendChild(
+            createCheckbox(
+                { "label"    : '\u2021' + '0' + ' (' + auth_org + ')' + auth_id,
+                  "subfield" : '0',
+                  "tag"      : dojo.attr(field, 'tag'),
+                  "value"    : '(' + auth_org + ')' + auth_id
+                }
+            )
+        );
+    }
+    row.appendChild(sf_box);
+
+    grid.lastChild.appendChild(row);
 }
 
 function summarizeField(sf) {

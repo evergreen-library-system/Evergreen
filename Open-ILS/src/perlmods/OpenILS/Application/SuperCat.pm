@@ -23,7 +23,7 @@ use base qw/OpenILS::Application/;
 # This is the client class, used for connecting to open-ils.storage
 use OpenSRF::AppSession;
 
-# This is an extention of Error.pm that supplies some error types to throw
+# This is an extension of Error.pm that supplies some error types to throw
 use OpenSRF::EX qw(:try);
 
 # This is a helper class for querying the OpenSRF Settings application ...
@@ -589,12 +589,12 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested org-scoped record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target title', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
 			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
 			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
@@ -607,12 +607,12 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested org-scoped record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target author', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
 			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
 			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
@@ -625,12 +625,12 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested org-scoped record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
 			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
 			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
@@ -643,12 +643,12 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested org-scoped record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
 			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
 			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
@@ -661,12 +661,12 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested org-scoped record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target series', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
 			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
 			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
@@ -820,7 +820,7 @@ __PACKAGE__->register_method(
 	argc      => 1,
 	signature =>
 		{ desc     => <<"		  DESC",
-Returns a list of the requested org-scoped record ids held
+Returns a list of the requested org-scoped record IDs held
 		  DESC
 		  params   =>
 		  	[
@@ -867,11 +867,11 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested authority record ids held",
+		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target title', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
@@ -882,11 +882,11 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested authority record ids held",
+		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target author', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
@@ -897,11 +897,11 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested authority record ids held",
+		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
@@ -912,11 +912,71 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested authority record ids held",
+		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_authority_browse',
+	api_name  => 'open-ils.supercat.authority.title.refs.browse',
+	tag       => '130', subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target title', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_authority_browse',
+	api_name  => 'open-ils.supercat.authority.author.refs.browse',
+	tag       => [qw/100 110 111/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target author', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_authority_browse',
+	api_name  => 'open-ils.supercat.authority.subject.refs.browse',
+	tag       => [qw/148 150 151 155/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_authority_browse',
+	api_name  => 'open-ils.supercat.authority.topic.refs.browse',
+	tag       => '150', subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
@@ -944,6 +1004,16 @@ sub authority_tag_sf_browse {
 	}
 
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	# .refs variant includes 4xx and 5xx variants for see / see also
+	if ($self->api_name =~ /\.refs\./) {
+		my @ref_tags;
+		foreach my $tagname (@$tag) {
+			push(@ref_tags, '4' . substr($tagname, 1, 2));
+			push(@ref_tags, '5' . substr($tagname, 1, 2));
+		}
+		push(@$tag, @ref_tags);
+	}
 
 	my @list = ();
 
@@ -990,7 +1060,7 @@ __PACKAGE__->register_method(
 	argc      => 1,
 	signature =>
 		{ desc     => <<"		  DESC",
-Returns a list of the requested authority record ids held
+Returns a list of the requested authority record IDs held
 		  DESC
 		  params   =>
 		  	[
@@ -1028,12 +1098,12 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested org-scoped record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target title', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
 			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
 			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
@@ -1046,12 +1116,12 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested org-scoped record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target author', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
 			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
 			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
@@ -1064,12 +1134,12 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested org-scoped record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
 			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
 			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
@@ -1082,12 +1152,12 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested org-scoped record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
 			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
 			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
@@ -1100,12 +1170,12 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested org-scoped record ids held",
+		{ desc     => "Returns a list of the requested org-scoped record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target series', type => 'string' },
 			  { name => 'org_unit', desc => 'The org unit shortname (or "-" or undef for global) to browse', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' },
 			  { name => 'statuses', desc => 'Array of statuses to filter copies by, optional and can be undef.', type => 'array' },
 			  { name => 'locations', desc => 'Array of copy locations to filter copies by, optional and can be undef.', type => 'array' }, ],
 		  'return' => { desc => 'Record IDs that have copies at the relevant org units', type => 'array' }
@@ -1248,7 +1318,7 @@ __PACKAGE__->register_method(
 	argc      => 1,
 	signature =>
 		{ desc     => <<"		  DESC",
-Returns a list of the requested org-scoped record ids held
+Returns a list of the requested org-scoped record IDs held
 		  DESC
 		  params   =>
 		  	[
@@ -1295,11 +1365,11 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested authority record ids held",
+		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target title', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
@@ -1310,11 +1380,11 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested authority record ids held",
+		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target author', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
@@ -1325,11 +1395,11 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested authority record ids held",
+		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
@@ -1340,11 +1410,71 @@ __PACKAGE__->register_method(
 	api_level => 1,
 	argc      => 1,
 	signature =>
-		{ desc     => "Returns a list of the requested authority record ids held",
+		{ desc     => "Returns a list of the requested authority record IDs held",
 		  params   =>
 		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
 			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
-			  { name => 'page', desc => 'The page of records retrieve, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_authority_startwith',
+	api_name  => 'open-ils.supercat.authority.title.refs.startwith',
+	tag       => '130', subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target title', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_authority_startwith',
+	api_name  => 'open-ils.supercat.authority.author.refs.startwith',
+	tag       => [qw/100 110 111/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target author', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_authority_startwith',
+	api_name  => 'open-ils.supercat.authority.subject.refs.startwith',
+	tag       => [qw/148 150 151 155/], subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target subject', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
+		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
+		}
+);
+__PACKAGE__->register_method(
+	method    => 'general_authority_startwith',
+	api_name  => 'open-ils.supercat.authority.topic.refs.startwith',
+	tag       => '150', subfield => 'a',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => "Returns a list of the requested authority record IDs held, including see (4xx) and see also (5xx) references",
+		  params   =>
+		  	[ { name => 'value', desc => 'The target topical subject', type => 'string' },
+			  { name => 'page_size', desc => 'Count of records to retrieve, default is 9', type => 'number' },
+			  { name => 'page', desc => 'The page of records retrieved, calculated based on page_size.  Can be positive, negative or 0.', type => 'number' }, ],
 		  'return' => { desc => 'Authority Record IDs that are near the target string', type => 'array' }
 		}
 );
@@ -1361,6 +1491,16 @@ sub authority_tag_sf_startwith {
 
 	my $offset = $limit * abs($page);
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	# .refs variant includes 4xx and 5xx variants for see / see also
+	if ($self->api_name =~ /\.refs\./) {
+		my @ref_tags;
+		foreach my $tagname (@$tag) {
+			push(@ref_tags, '4' . substr($tagname, 1, 2));
+			push(@ref_tags, '5' . substr($tagname, 1, 2));
+		}
+		push(@$tag, @ref_tags);
+	}
 
 	my @list = ();
 
@@ -1410,7 +1550,7 @@ __PACKAGE__->register_method(
 	argc      => 1,
 	signature =>
 		{ desc     => <<"		  DESC",
-Returns a list of the requested authority record ids held
+Returns a list of the requested authority record IDs held
 		  DESC
 		  params   =>
 		  	[

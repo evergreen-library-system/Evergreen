@@ -165,7 +165,7 @@ sub child_init {
                 	my $base = shift;
                 	my $site = shift;
 
-			$log->info("Creating record feed with params [$real_format, $record_list, $unapi, $site]");
+					$log->info("Creating record feed with params [$real_format, $record_list, $unapi, $site]");
                 	my $feed = create_record_feed( 'record', $real_format, $record_list, $unapi, $site, undef, $real_format =~ /(-full|-uris)$/o ? 1 : 0 );
                 	$feed->root( "$base/../" );
                 	$feed->lib( $site );
@@ -181,10 +181,10 @@ sub child_init {
         }
     }
 
-    for my $browse_axis ( qw/authority.title authority.author authority.subject authority.topic/ ) {
-        for my $record_browse_format ( qw/marcxml/ ) {
+    for my $basic_axis ( qw/authority.title authority.author authority.subject authority.topic/ ) {
+        for my $browse_axis ( ($basic_axis, $basic_axis . ".refs") ) {
             {
-                my $__f = $record_browse_format;
+                my $__f = 'marcxml';
                 my $__a = $browse_axis;
 
                 $browse_types{$__a}{$__f} = sub {
@@ -196,7 +196,7 @@ sub child_init {
                 	my $base = shift;
                 	my $site = shift;
 
-			$log->info("Creating record feed with params [$real_format, $record_list, $unapi, $site]");
+					$log->info("Creating record feed with params [$real_format, $record_list, $unapi, $site]");
                 	my $feed = create_record_feed( 'authority', $real_format, $record_list, $unapi, $site, undef, $real_format =~ /-full$/o ? -1 : 0 );
                 	$feed->root( "$base/../" );
                 	$feed->link( next => $next => $feed->type );
