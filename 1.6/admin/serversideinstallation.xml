@@ -929,7 +929,7 @@
 					If your PostgreSQL server is on a different system, just skip this step.
 					If your PostgreSQL server will be on the same system as your Evergreen
 					software, you can install the required PostgreSQL server packages as described
-					in <xref linkend="InstallingPostgreSQL-all"/>, or you can visit the official 
+					in <xref linkend="InstallingPostgreSQL"/>, or you can visit the official 
 					web site <link xl:href="http://www.postgresql.org/">http://www.postgresql.org</link>
 					for more information.</para>
 					<note>
