@@ -28,6 +28,8 @@ dojo.require('openils.CGI');
 dojo.require('openils.PermaCrud');
 dojo.require('openils.XUL');
 dojo.require('openils.widget.OrgUnitFilteringSelect');
+dojo.requireLocalization("openils.authority", "authority");
+var auth_strings = dojo.i18n.getLocalization("openils.authority", "authority");
 
 var cgi = new openils.CGI();
 
@@ -82,7 +84,7 @@ function displayAuthorities(data) {
             if (auth_rec) {
                 loadMarcEditor(pcrud, auth_rec);
             }
-        }, "label":"Edit"}).placeAt(auth_menu, "first");
+        }, "label":auth_strings.MENU_EDIT}).placeAt(auth_menu, "first");
 
         // "Merge" menu item
         new dijit.MenuItem({"id": "merge_" + auth.id, "onClick":function(){
@@ -95,15 +97,15 @@ function displayAuthorities(data) {
             var mergeRole = '<td style="border: 1px solid black; padding-left: 0.5em; padding-right: 1em;">';
             var isTarget = dojo.query('.toMerge').length;
             if (isTarget) {
-                mergeRole += 'Target</td>';
+                mergeRole += auth_strings.TARGET_RECORD + '</td>';
             } else {
-                mergeRole += 'Master</td>';
+                mergeRole += auth_strings.MASTER_RECORD + '</td>';
             }
 
             dojo.place('<tr class="toMerge" id="toMerge_' + auth.id + '"><td>' + mergeRole + '</td><td  style="border: 1px solid black;" id="mergeMeta_' + auth.id + '"></td><td style="border: 1px solid black; padding-left: 1em; padding-right: 1em;" >' + auth.text + '</td></tr>', 'mergebox-tbody', 'last');
             dojo.place('<span class="authmeta" style="font-family: monospace;">' + auth.name + ' ' + auth.ind1 + auth.ind2 + '</span>', 'mergeMeta_' + auth.id, 'last');
             dojo.removeClass('mergebox-div', 'hidden');
-        }, "label":"Mark for Merge"}).placeAt(auth_menu, "last");
+        }, "label":auth_strings.MENU_MERGE}).placeAt(auth_menu, "last");
 
         // "Delete" menu item
         new dijit.MenuItem({
@@ -126,34 +128,36 @@ function displayAuthorities(data) {
                 });
 
                 if (!delDlg) {
-                    var content = '<div>Delete the authority record: "' + auth.text + '"?</div>';
+                    var content = '<div>' + dojo.string.substitute(auth_strings.CONFIRM_DELETE_TITLE, [auth.text]) + '</div>';
                     if (parseInt(linkedBibs) > 0) {
-                        content = "<div id='delAuthSum_" + auth.id + "'>Number of linked bibliographic records: " + linkedBibs + "</div>";
+                        content = "<div id='delAuthSum_" + auth.id + "'>"
+                            + dojo.string.substitute(auth_strings.LINKED_BIBS, [linkedBibs])
+                            + "</div>";
                     }
                     content += "<div id='authMARC" + auth.id + "' style='width: 100%; display:none;'>";
                     content += "<hr style='width: 100%;' />";
                     content += marcToHTML(auth_rec.marc());
                     content += "</div><hr style='width: 100%;' /><div>";
-                    content += "<input type='button' dojoType='dijit.form.Button' label='Cancel' onClick='cancelDelete(" + auth.id + ")'/>";
-                    content += "<input type='button' dojoType='dijit.form.Button' label='Delete' onClick='confirmDelete(" + auth.id + ")'/>";
+                    content += "<input type='button' dojoType='dijit.form.Button' label='" + auth_strings.CANCEL + "' onClick='cancelDelete(" + auth.id + ")'/>";
+                    content += "<input type='button' dojoType='dijit.form.Button' label='" + auth_strings.DELETE + "' onClick='confirmDelete(" + auth.id + ")'/>";
                     content += "<input id='viewMARC" + auth.id + "' type='button' "
                         + "style='float:right;' dojoType='dijit.form.Button' "
-                        + "label='View MARC' onClick='viewMARC(" + auth.id + ")'/>";
+                        + "label='" + auth_strings.VIEW_MARC + "' onClick='viewMARC(" + auth.id + ")'/>";
                     content += "<input id='hideMARC" + auth.id + "' type='button' "
                         + "style='display: none; float:right;' dojoType='dijit.form.Button' "
-                        + "label='Hide MARC' onClick='hideMARC(" + auth.id + ")'/>";
+                        + "label='" + auth_strings.HIDE_MARC + "' onClick='hideMARC(" + auth.id + ")'/>";
                     content += "</div>";
                     delDlg = new dijit.Dialog({
                         "id":"delDialog_" + auth.id,
-                        "title":"Confirm deletion of record # " + auth.id,
+                        "title": dojo.string.substitute(auth_strings.CONFIRM_DELETE_PROMPT, [auth.id]),
                         "content": content
                     });
                 }
                 delDlg.show();
 
-        }, "label":"Delete"}).placeAt(auth_menu, "last");
+        }, "label":auth_strings.DELETE}).placeAt(auth_menu, "last");
 
-        auth_mb = new dijit.form.DropDownButton({dropDown: auth_menu, label:"Actions", id:"menu" + auth.id});
+        auth_mb = new dijit.form.DropDownButton({dropDown: auth_menu, label: auth_strings.ACTIONS, id:"menu" + auth.id});
         auth_mb.placeAt("auth" + auth.id, "first");
         auth_menu.startup();
     });
@@ -207,7 +211,7 @@ function confirmDelete(recId) {
     var auth_rec = pcrud.retrieve("are", recId);
     if (auth_rec) {
         pcrud.eliminate(auth_rec);
-        dijit.byId("delDialog_" + recId).attr("content", "Deleted authority record # " + recId);
+        dijit.byId("delDialog_" + recId).attr("content", dojo.string.substitute(auth_strings.CONFIRM_DELETE_RESULT, [recId]));
         setTimeout(function() {
             dijit.byId("delDialog_" + recId).hide();
         }, 3000);
@@ -254,13 +258,13 @@ function loadMarcEditor(pcrud, rec) {
     win.xulG = {
         "record": {"marc": rec.marc(), "rtype": "are"},
         "save": {
-            "label": "Save",
+            "label": auth_strings.SAVE,
             "func": function(xmlString) {
                 rec.marc(xmlString);
                 rec.edit_date('now');
                 rec.ischanged(true);
                 pcrud.update(rec);
-                alert("Record was saved");
+                alert(auth_strings.SAVE_RESULT_SUCCESS);
                 win.close();
             }
         }
@@ -361,7 +365,7 @@ function mergeRecords() {
         {   async: false,
             params: [openils.User.authtoken, records.shift(), records],
             oncomplete : function(r) {
-                alert("Record merge is complete.");
+                alert(auth_strings.MERGE_RESULT_SUCCESS);
                 clearMergeRecords();
                 displayRecords();
             }
