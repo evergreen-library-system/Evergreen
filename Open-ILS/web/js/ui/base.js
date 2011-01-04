@@ -37,7 +37,6 @@ function oilsSetupUser() {
         if(!authtoken) {
 
             dojo.cookie('ses', null, {expires:-1, path:'/'}); // remove the cookie
-            dojo.cookie('ses', null, {expires:-1, path:oilsBasePath}); // remove the cookie
 
             dojo.addOnLoad(function(){
                 if(openils.XUL.isXUL()) {
@@ -57,7 +56,7 @@ function oilsSetupUser() {
         }
     }
 
-    dojo.cookie('ses', authtoken, {path:oilsBasePath});
+    dojo.cookie('ses', authtoken, {path:'/'});
     openils.User.authtoken = authtoken;
     openils.User.workstation = workstation;
     return authtoken;
@@ -105,7 +104,7 @@ function oilsDoLogin() {
         args.workstation = workstation;
 
     if(user.login(args)) {
-        dojo.cookie('ses', user.authtoken, {path : oilsBasePath});
+        dojo.cookie('ses', user.authtoken, {path : '/'});
         location.href = location.href;
     } else {
         openils.Util.show('oils-login-failed');
