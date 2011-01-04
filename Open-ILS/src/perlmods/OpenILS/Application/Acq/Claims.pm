@@ -123,6 +123,13 @@ __PACKAGE__->register_method(
                 /, 
                 type => 'array'
             },
+            {   desc => q/
+                    Optional: Claim Event Types.  If present, we bypass any policy configuration
+                    and use the specified event types.  This is useful for manual claiming against
+                    items that have no claim policy.
+                /,
+                type => 'array'
+            }
         ],
         return => {
             desc => "The claim voucher events on success, Event on error",
@@ -140,7 +147,9 @@ sub claim_item {
     my $claim_type_id = shift;
     my $note = shift;
     my $policy_actions = shift;
-#   my $only_eligible = shift; # so far unused
+
+    # if this claim occurs outside of a policy, allow the caller to specificy the event type
+    my $claim_event_types = shift; 
 
     my $e = new_editor(xact => 1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
@@ -169,32 +178,28 @@ sub claim_item {
         return OpenILS::Event->new('BAD_PARAMS');
     }
 
+
+    my $lids;
     if($self->api_name =~ /claim.lineitem_detail/) {
-        my $lids = $e->search_acq_lineitem_detail([
+
+        $lids = $e->search_acq_lineitem_detail([
             {"id" => $object_id, "cancel_reason" => undef},
             $lid_flesh
         ]) or return $e->die_event;
-        foreach my $lid (@$lids) {
-            return $evt if
-                $evt = claim_lineitem_detail(
-                    $e, $lid, $claim, $claim_type, $policy_actions,
-                    $note, $claim_events
-                );
-        }
 
     } elsif($self->api_name =~ /claim.lineitem/) {
-        my $lids = $e->search_acq_lineitem_detail([
+        $lids = $e->search_acq_lineitem_detail([
             {"lineitem" => $object_id, "cancel_reason" => undef},
             $lid_flesh
         ]) or return $e->die_event;
+    }
 
-        foreach my $lid (@$lids) {
-            return $evt if
-                $evt = claim_lineitem_detail(
-                    $e, $lid, $claim, $claim_type, $policy_actions,
-                    $note, $claim_events
-                );
-        }
+    foreach my $lid (@$lids) {
+        return $evt if
+            $evt = claim_lineitem_detail(
+                $e, $lid, $claim, $claim_type, $policy_actions,
+                $note, $claim_events, $claim_event_types
+            );
     }
 
     $e->commit;
@@ -210,7 +215,7 @@ sub claim_item {
 }
 
 sub claim_lineitem_detail {
-    my($e, $lid, $claim, $claim_type, $policy_actions, $note, $claim_events) = @_;
+    my($e, $lid, $claim, $claim_type, $policy_actions, $note, $claim_events, $claim_event_types) = @_;
 
     # Create the claim object
     unless($claim) {
@@ -220,23 +225,35 @@ sub claim_lineitem_detail {
         $e->create_acq_claim($claim) or return $e->die_event;
     }
 
-    # find all eligible policy actions if none are provided
-    unless($policy_actions) {
-        my $list = $e->json_query({
-            select => {acrlid => ['claim_policy_action']},
-            from => 'acrlid',
-            where => {lineitem_detail => $lid->id}
-        });
+    unless($claim_event_types) {
+        # user did not specify explicit event types
 
-        $policy_actions = [map { $_->{claim_policy_action} } @$list];
+        unless($policy_actions) {
+            # user did not specifcy policy actions.  find all eligible.
+
+            my $list = $e->json_query({
+                select => {acrlid => ['claim_policy_action']},
+                from => 'acrlid',
+                where => {lineitem_detail => $lid->id}
+            });
+    
+            $policy_actions = [map { $_->{claim_policy_action} } @$list];
+        }
+
+        # from the set of policy_action's, locate the related event types
+        # IOW, the policy action's action
+        $claim_event_types = [];
+        for my $act_id (@$policy_actions) {
+            my $action = $e->retrieve_acq_claim_policy_action($act_id) or return $e->die_event;
+            push(@$claim_event_types, $action->action);
+        }
     }
 
     # for each eligible (or chosen) policy actions, create a claim_event
-    for my $act_id (@$policy_actions) {
-        my $action = $e->retrieve_acq_claim_policy_action($act_id) or return $e->die_event;
+    for my $event_type (@$claim_event_types) {
         my $event = Fieldmapper::acq::claim_event->new;
         $event->claim($claim->id);
-        $event->type($action->action);
+        $event->type($event_type);
         $event->creator($e->requestor->id);
         $event->note($note);
         $e->create_acq_claim_event($event) or return $e->die_event;
