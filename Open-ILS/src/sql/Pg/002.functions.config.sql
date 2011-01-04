@@ -308,7 +308,7 @@ BEGIN
     q := $q$
 SELECT * FROM (
     SELECT $q$ || ARRAY_TO_STRING( select_list, ', ' ) || $q$ FROM $q$ || relation_name || $q$ WHERE ($q$ || criteria || $q$)
-)x WHERE $q$ || ARRAY_TO_STRING( where_list, ' AND ' );
+)x WHERE $q$ || ARRAY_TO_STRING( where_list, ' OR ' );
     -- RAISE NOTICE 'query: %', q;
 
     FOR out_record IN EXECUTE q LOOP

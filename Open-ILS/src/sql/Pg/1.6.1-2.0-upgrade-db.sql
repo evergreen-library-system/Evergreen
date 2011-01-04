@@ -31,7 +31,7 @@ UPDATE biblio.record_entry SET marc = '<record xmlns="http://www.loc.gov/MARC21/
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0473');
+INSERT INTO config.upgrade_log (version) VALUES ('0474');
 
 -- Push the auri sequence in case it's out of date
 -- Add 2 as the sequence value must be 1 or higher, and seed is -1
@@ -11257,7 +11257,7 @@ BEGIN
     q := $q$
 SELECT * FROM (
     SELECT $q$ || ARRAY_TO_STRING( select_list, ', ' ) || $q$ FROM $q$ || relation_name || $q$ WHERE ($q$ || criteria || $q$)
-)x WHERE $q$ || ARRAY_TO_STRING( where_list, ' AND ' );
+)x WHERE $q$ || ARRAY_TO_STRING( where_list, ' OR ' );
     -- RAISE NOTICE 'query: %', q;
  
     FOR out_record IN EXECUTE q LOOP
