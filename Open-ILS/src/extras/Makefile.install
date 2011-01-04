@@ -229,6 +229,9 @@ CPAN_MODULES_MARC = \
     MARC::File::XML \
     Net::Z3950::ZOOM
 
+CPAN_MODULES_FORCE = \
+	Class::DBI::Frozen::301
+
 # ----------------------------------------------------------------------------
 
 all: 
@@ -266,6 +269,12 @@ install_cpan:
 # Install the CPAN modules for MARC functionality
 install_cpan_marc: 
 	for m in $(CPAN_MODULES_MARC); do perl -MCPAN -e "install \"$$m\";"; done
+
+# Force Install CPAN modules.
+install_cpan_force:
+	for m in $(CPAN_MODULES_FORCE); do \
+		echo "force install $$m" | perl -MCPAN -e shell ;\
+	done  
 
 # Install a known working version of YAZ
 install_yaz:    
