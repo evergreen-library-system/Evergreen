@@ -941,21 +941,6 @@ function vlImportRecordQueue(type, queueId, noMatchOnly, onload) {
 }
 
 
-function vlImportHoldings(queueId, importProfile, onload) {
-    displayGlobalDiv('vl-generic-progress-with-total');
-    fieldmapper.standardRequest(
-        ['open-ils.vandelay', 'open-ils.vandelay.bib_record.queue.asset.import'],
-        {   async: true,
-            params: [authtoken, importProfile, queueId],
-            onresponse: function(r) {
-                var resp = openils.Util.readResponse(r);
-                vlControlledProgressBar.update({maximum:resp.total, progress:resp.progress});
-            },
-            oncomplete: function() {onload();}
-        }
-    );
-}
-
 /**
   * Create queue, upload MARC, process spool, load the newly created queue 
   */
@@ -965,23 +950,13 @@ function batchUpload() {
 
     var handleProcessSpool = function() {
         if(vlUploadQueueAutoImport.checked || vlUploadQueueAutoOverlayExact.checked || vlUploadQueueAutoOverlay1Match.checked) {
-
+            var noMatchOnly = !vlUploadQueueAutoOverlayExact.checked && !vlUploadQueueAutoOverlay1Match.checked;
             vlImportRecordQueue(
                 currentType, 
                 currentQueueId, 
-                vlUploadQueueAutoImport.checked,  
+                noMatchOnly,
                 function() {
-                    if(vlUploadQueueHoldingsImport.checked) {
-                        vlImportHoldings(
-                            currentQueueId, 
-                            vlUploadQueueHoldingsImportProfile.attr('value'), 
-                            function() { 
-                                retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
-                            }
-                        );
-                    } else {
-                        retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
-                    }
+                    retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
                 }
             );
         } else {
@@ -1025,15 +1000,6 @@ function vlShowUploadForm() {
     vlUploadSourceSelector.setValue(vlBibSources[0].id());
     vlUploadQueueHoldingsImportProfile.store = 
         new dojo.data.ItemFileReadStore({data:viiad.toStoreData(importItemDefs)});
-    vlUploadQueueHoldingsImportProfile.attr('disabled', true);
-    dojo.connect(vlUploadQueueHoldingsImport, 'onChange',
-        function(val) {
-            if(val)
-                vlUploadQueueHoldingsImportProfile.attr('disabled', false);
-            else
-                vlUploadQueueHoldingsImportProfile.attr('disabled', true);
-        }
-    );
 }
 
 function vlShowQueueSelect() {

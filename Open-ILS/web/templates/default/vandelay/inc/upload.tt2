@@ -48,12 +48,6 @@
             </td>
         </tr>
         <tr>
-            <td>Import Attached Holdings</td>
-            <td colspan='4'>
-                <input jsId='vlUploadQueueHoldingsImport' dojoType='dijit.form.CheckBox'/>
-            </td>
-        </tr>
-        <tr>
             <td>Holdings Import Profile</td>
             <td>
                 <input jsId='vlUploadQueueHoldingsImportProfile'

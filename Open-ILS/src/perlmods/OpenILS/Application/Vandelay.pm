@@ -998,48 +998,6 @@ sub retrieve_queue_summary {
     };
 }
 
-
-__PACKAGE__->register_method(  
-    api_name    => "open-ils.vandelay.bib_record.list.asset.import",
-    method      => 'noop_import_items',
-    api_level   => 1,
-    argc        => 2,
-    stream      => 1,
-    record_type => 'bib'
-);
-__PACKAGE__->register_method(  
-    api_name    => "open-ils.vandelay.bib_record.queue.asset.import",
-    method      => 'noop_import_items',
-    api_level   => 1,
-    argc        => 2,
-    stream      => 1,
-    record_type => 'bib'
-);
-
-sub noop_import_items { return {complete => 1} }
-
-#sub import_record_list_assets {
-#    my($self, $conn, $auth, $import_def, $rec_ids) = @_;
-#    my $e = new_editor(xact=>1, authtoken => $auth);
-#    return $e->die_event unless $e->checkauth;
-#    my $err = import_record_asset_list_impl($conn, $import_def, $rec_ids, $e->requestor);
-#    $e->rollback;
-#    return $err if $err;
-#    return {complete => 1};
-#}
-#
-#sub import_record_queue_assets {
-#    my($self, $conn, $auth, $import_def, $q_id) = @_;
-#    my $e = new_editor(xact=>1, authtoken => $auth);
-#    return $e->die_event unless $e->checkauth;
-#    my $rec_ids = $e->search_vandelay_queued_bib_record(
-#        {queue => $q_id, import_time => {'!=' => undef}}, {idlist => 1});
-#    my $err = import_record_asset_list_impl($conn, $import_def, $rec_ids, $e->requestor);
-#    $e->rollback;
-#    return $err if $err;
-#    return {complete => 1};
-#}
-
 # --------------------------------------------------------------------------------
 # Given a list of queued record IDs, imports all items attached to those records
 # --------------------------------------------------------------------------------
