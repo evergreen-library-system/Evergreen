@@ -1,1 +1,62 @@
-#ChangeLog
+2010-12-23  miker
+
+	* correcting upgrade script for recent vandelay.replace_field
+	  improvements
+
+2010-12-23  gmc
+
+	* addressing two Breaker-format issues: 1) supply an "empty"
+	  (space) value for indicators in the internal format if they are
+	  left out and 2) add indicator placeholders to incoming Breaker
+	  datafield lines if they seem to be missing. Addresses
+	  https://bugs.launchpad.net/evergreen/+bug/693468
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* When the subfield delimiter is configured as "$" (the default),
+	  use {dollar} to represent a literal dollar sign. This is
+	  apparently in line with other Breaker-format tools. Fix suggested
+	  by Galen Charlton, thanks gmc!
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* commit 620f5d756619b84200add4c534a7cf22e1c0d037
+	  further fixes to null indicator handling in flat-text MARC editor
+	  
+	  [1] ensure that null indicators are converted to blanks
+	  [2] fix glitch when supplying default indicator values
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-01-01  dbs
+
+	* Fix exception thrown in MARC editor searching for bib sources
+	  
+	  As reported in https://bugs.launchpad.net/evergreen/+bug/695526,
+	  the attempt to retrieve all of the config.bib_source values using
+	  openils.PermaCrud was failing because the retrieveAll() method
+	  relies on fieldmapper.IDL's setting of the
+	  fieldmapper[hint].Identifier property for each class - but in the
+	  1.6 releases, we're still using fmclasses in XUL instead of
+	  fieldmapper.AutoIDL.
+	  
+	  So, to fix the direct problem, we can simply set the property
+	  ourselves on the desired class before invoking retrieveAll();
+	  this avoids touching code paths that might have wider unintended
+	  consequences.
+
+2011-01-04  miker
+
+	* Patch from Robert Soulliere to backport Class::DBI version
+	  checking from 2.0:
+	  https://bugs.launchpad.net/evergreen/+bug/692717
+
+	* Addressing https://bugs.launchpad.net/evergreen/+bug/696078 where
+	  deleted/inactive records are included in the freshmeat feed.
+
+2011-01-05  miker
+
+	* .: tagging 1.6.2.1
+
