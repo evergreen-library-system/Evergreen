@@ -1270,16 +1270,11 @@ sub unitize_items {
             foreach my $type (keys %{$found_types{$stream_id}}) {
                 my $issuances = $editor->search_serial_issuance([ {"+sitem" => {"stream" => $stream_id, "status" => "Received"}, "+scap" => {"type" => $type}}, {"join" => {"sitem" => {}, "scap" => {}}, "order_by" => {"siss" => "date_published"}} ]);
                 #TODO: evt on search failure
-
-                my ($mfhd, $formatted_parts) = _summarize_contents($editor, $issuances);
-
-                # retrieve and update the generated_coverage of the summary
-                my $search_method = "search_serial_${type}_summary";
-                my $summary = $editor->$search_method([{"distribution" => $sdist_id}]);
-                $summary = $summary->[0];
-                $summary->generated_coverage(join(', ', @$formatted_parts));
-                my $update_method = "update_serial_${type}_summary";
-                return $editor->event unless $editor->$update_method($summary);
+                $evt = _prepare_summaries($editor, $issuances, $sdist_id, $type);
+                if ($U->event_code($evt)) {
+                    $editor->rollback;
+                    return $evt;
+                }
             }
         }
     }
@@ -1369,19 +1364,11 @@ sub _prepare_unit_label {
     $sunit->sort_key($sort_key);
 }
 
-# XXX duplicates a block of code from unitize_items().  Once I fully understand
-# what's going on and I'm sure it's working right, I'd like to have
-# unitize_items() just use this, keeping the logic in one place.
+# _prepare_summaries populates the generated_coverage field for a given summary 
+# type ('basic', 'index', 'supplement') for a given distribution.
+# It also creates the summary if it doesn't yet exist.
 sub _prepare_summaries {
-    my ($e, $sitem, $issuances) = @_;
-
-    my $dist_id = $sitem->stream->distribution->id;
-    my $type = $sitem->issuance->holding_type;
-
-    # Make sure @$issuances contains the new issuance from sitem.
-    unless (grep { $_->id == $sitem->issuance->id } @$issuances) {
-        push @$issuances, $sitem->issuance;
-    }
+    my ($e, $issuances, $dist_id, $type) = @_;
 
     my ($mfhd, $formatted_parts) = _summarize_contents($e, $issuances);
 
@@ -1584,7 +1571,11 @@ sub receive_items_one_unit_per {
             }
 
             # create/update summary objects related to this distribution
-            $evt = _prepare_summaries($e, $item, $issuances_received);
+            # Make sure @$issuances_received contains current item's issuance
+            unless (grep { $_->id == $item->issuance->id } @$issuances_received) {
+                push @$issuances_received, $item->issuance;
+            }
+            $evt = _prepare_summaries($e, $issuances_received, $item->stream->distribution->id, $item->issuance->holding_type);
             if ($U->event_code($evt)) {
                 $e->rollback;
                 return $evt;
