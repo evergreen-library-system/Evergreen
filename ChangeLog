@@ -1,1 +1,13 @@
-#ChangeLog
+2011-01-04  miker
+
+	* Patch from Robert Soulliere to backport Class::DBI version
+	  checking from 2.0:
+	  https://bugs.launchpad.net/evergreen/+bug/692717
+
+	* Addressing https://bugs.launchpad.net/evergreen/+bug/696078 where
+	  deleted/inactive records are included in the freshmeat feed.
+
+2011-01-05  miker
+
+	* .: Tagging 1.6.1.6
+
