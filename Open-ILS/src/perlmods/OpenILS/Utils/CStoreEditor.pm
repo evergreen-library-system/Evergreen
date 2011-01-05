@@ -149,8 +149,10 @@ sub event {
 # -----------------------------------------------------------------------------
 sub die_event {
 	my $self = shift;
+    my $evt = shift;
 	$self->rollback;
     $self->died(1);
+    $self->event($evt);
 	return $self->event;
 }
 
