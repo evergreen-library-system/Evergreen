@@ -68,6 +68,7 @@ newpo:
 	@pot2po $(PROGRESS) -i po/acq.js/acq.js.pot -o $(PO)/acq.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/admin.properties/admin.properties.pot -o $(PO)/admin.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/auth.properties/auth.properties.pot -o $(PO)/auth.properties/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/authority.js/authority.js.pot -o $(PO)/authority.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/capture.js/capture.js.pot -o $(PO)/capture.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/cat.properties/cat.properties.pot -o $(PO)/cat.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/circ.properties/circ.properties.pot -o $(PO)/circ.properties/$(LOCALE).po 
@@ -111,6 +112,7 @@ updatepo: prep_output
 	@pot2po $(PROGRESS) -i po/acq.js/acq.js.pot -o $(PO)/acq.js/$(LOCALE).po  -t $(PO)/acq.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/admin.properties/admin.properties.pot -o $(PO)/admin.properties/$(LOCALE).po  -t $(PO)/admin.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/auth.properties/auth.properties.pot -o $(PO)/auth.properties/$(LOCALE).po  -t $(PO)/auth.properties/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/authority.js/authority.js.pot -o $(PO)/authority.js/$(LOCALE).po  -t $(PO)/authority.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/capture.js/capture.js.pot -o $(PO)/capture.js/$(LOCALE).po  -t $(PO)/capture.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/cat.properties/cat.properties.pot -o $(PO)/cat.properties/$(LOCALE).po  -t $(PO)/cat.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/circ.properties/circ.properties.pot -o $(PO)/circ.properties/$(LOCALE).po  -t $(PO)/circ.properties/$(LOCALE).po 
@@ -167,6 +169,7 @@ dojo2pot:
 po2dojo:
 	@mkdir -p locale/$(LOCALE)
 	@scripts/dojo_resource.py --create $(PO)/acq.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/acq.js
+	@scripts/dojo_resource.py --create $(PO)/authority.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/authority.js
 	@scripts/dojo_resource.py --create $(PO)/capture.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/capture.js
 	@scripts/dojo_resource.py --create $(PO)/conify.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/conify.js
 	@scripts/dojo_resource.py --create $(PO)/opac.js/$(LOCALE).po --output $(PROJECT)/$(LOCALE)/opac.js
