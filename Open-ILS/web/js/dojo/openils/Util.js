@@ -26,6 +26,31 @@ if(!dojo._hasResource["openils.Util"]) {
     dojo.declare('openils.Util', null, {});
 
 
+    openils.Util.timeStampRegexp =
+        /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[\+-]\d{2})(\d{2})$/;
+
+    openils.Util.timeStampAsDateObj = function(s) {
+        if (s.constructor.name == "Date") return s;
+        return dojo.date.stamp.fromISOString(
+            s.replace(openils.Util.timeStampRegexp, "$1:$2")
+        );
+    }
+
+    /**
+     * Returns a locale-appropriate representation of a timestamp when the
+     * timestamp (first argument) is actually a string as provided by
+     * fieldmapper objects.
+     * The second argument is an optional argument that will be provided
+     * as the second argument to dojo.date.locale.format()
+     */
+    openils.Util.timeStamp = function(s, opts) {
+        if (typeof(opts) == "undefined") opts = {};
+
+        return dojo.date.locale.format(
+            openils.Util.timeStampAsDateObj(s), opts
+        );
+    };
+
     /**
      * Wrapper for dojo.addOnLoad that verifies a valid login session is active
      * before adding the function to the onload set
