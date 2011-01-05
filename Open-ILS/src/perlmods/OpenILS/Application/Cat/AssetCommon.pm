@@ -457,7 +457,7 @@ sub set_item_lost {
 
     $e->allowed('SET_CIRC_LOST', $circ->circ_lib) or return $e->die_event;
 
-    return OpenILS::Event->new('COPY_MARKED_LOST')
+    return $e->die_event(OpenILS::Event->new('COPY_MARKED_LOST'))
 	    if $copy->status == OILS_COPY_STATUS_LOST;
 
     # ---------------------------------------------------------------------
