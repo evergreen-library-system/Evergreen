@@ -15513,6 +15513,45 @@ CREATE INDEX scecm_owning_copy_idx ON asset.stat_cat_entry_copy_map(owning_copy)
 
 INSERT INTO config.metabib_class ( name, label ) VALUES ( 'identifier', oils_i18n_gettext('identifier', 'Identifier', 'cmc', 'name') );
 
+-- 1.6 included stock indexes from 1 through 15, but didn't increase the
+-- sequence value to leave room for additional stock indexes in subsequent
+-- releases (hello!), so custom added indexes will conflict with these.
+
+-- The following function just adds 100 to the ID of an existing custom
+-- index (and any references to that index). So this could break if a site
+-- has custom indexes at both 16 and 116, for example - but if that's the
+-- case anywhere, I'm throwing my hands up in surrender:
+
+CREATE OR REPLACE FUNCTION config.bump_metabib_field(custom_id BIGINT) RETURNS INT AS $func$
+DECLARE
+    f_class TEXT;
+    check_id INT;
+BEGIN
+    SELECT field_class INTO f_class FROM config.metabib_field WHERE id = custom_id;
+    IF NOT FOUND THEN
+        RETURN 0;
+    END IF;
+    SELECT id FROM config.metabib_field INTO check_id WHERE id = custom_id + 100;
+    IF FOUND THEN
+        RAISE NOTICE 'Cannot bump config.metabib_field.id from % to %; the target ID already exists.', custom_id, custom_id + 100;
+        RETURN 0;
+    END IF;
+    UPDATE config.metabib_field SET id = id + 100 WHERE id = custom_id;
+    EXECUTE ' UPDATE metabib.' || f_class || '_field_entry SET field = field + 100 WHERE field = ' || custom_id;
+    UPDATE config.metabib_field_index_norm_map SET field = field + 100 WHERE field = custom_id;
+    UPDATE search.relevance_adjustment SET field = field + 100 WHERE field = custom_id;
+    RETURN 1;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+-- Now update those custom indexes
+SELECT config.bump_metabib_field(id) FROM config.metabib_field WHERE id > 15 and id < 100;
+
+-- And bump the config.metabib_field sequence to a minimum of 100 to avoid problems in the future
+SELECT setval('config.metabib_field_id_seq', GREATEST(100, (SELECT MAX(id) + 1 FROM config.metabib_field)));
+
+-- Now we can go ahead and insert the additional stock indexes
+
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
     SELECT  16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject//text()$$
       WHERE NOT EXISTS (select id from config.metabib_field where field_class = 'subject' and name = 'complete'); -- in case it's already there
