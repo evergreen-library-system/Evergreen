@@ -1,1 +1,337 @@
-#ChangeLog
+2010-12-23  gmc
+
+	* addressing two Breaker-format issues: 1) supply an "empty"
+	  (space) value for indicators in the internal format if they are
+	  left out and 2) add indicator placeholders to incoming Breaker
+	  datafield lines if they seem to be missing. Addresses
+	  https://bugs.launchpad.net/evergreen/+bug/693468
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* When the subfield delimiter is configured as "$" (the default),
+	  use {dollar} to represent a literal dollar sign. This is
+	  apparently in line with other Breaker-format tools. Fix suggested
+	  by Galen Charlton, thanks gmc!
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+	* commit 620f5d756619b84200add4c534a7cf22e1c0d037
+	  further fixes to null indicator handling in flat-text MARC editor
+	  
+	  [1] ensure that null indicators are converted to blanks
+	  [2] fix glitch when supplying default indicator values
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2010-12-28  erickson
+
+	* refresh cached user during auth session reset
+	  
+	  Add a boolean (1/0) param to open-ils.auth.session.reset_timeout
+	  that forces open-ils.auth to refresh the cached user object.
+	  Useful if
+	  a column on actor.usr was updated and the client may be pulling
+	  the
+	  object from the cache w/ a page reload, etc.
+	  
+	  Signed-off-by: Bill Erickson <erickson@esilibrary.com>
+
+	* Update auth-cached user after payment
+	  
+	  After payment toward one's own account, reset the cached user
+	  object so
+	  that it will contain the latest last_xact_id value. This is
+	  necessary
+	  for supporting patron credit card payments in the catalog.
+	  
+	  Signed-off-by: Bill Erickson <erickson@esilibrary.com>
+
+2010-12-29  dbs
+
+	* Towards a more useful authority delete confirmation pane
+	  
+	  Rather than simply creating a raw confirm dialogue that only
+	  provides the cataloguer with the ID of the authority record that
+	  is about to be deleted (not an especially useful handle), supply
+	  a confirmation dialogue that recaps how many bibliographic
+	  records
+	  are linked to this authority record and also displays the MARC of
+	  the record about to be deleted.
+	  
+	  Most authority records appear to be short enough that the MARC
+	  display is not a concern, but if it becomes a problem we can opt
+	  not to show the MARC by default and give the cataloguer the
+	  ability
+	  to click a "View MARC" button on the confirmation dialog instead.
+	  
+	  Along the way, make some more variables local and remove some
+	  unnecessary workarounds for object IDs.
+
+	* Enhance usability of authority record deletion dialogue
+	  
+	  Don't show the number of linked bib records unless it is
+	  a non-zero sum.
+	  
+	  Make "Cancel" the button with focus in the dialog, so that
+	  an errant press of the "Enter" key doesn't do the wrong thing.
+	  
+	  Trim space from the authority text in the display. Move the
+	  authority text from the dialog title to the contents of the
+	  dialog.
+	  
+	  Do not display the MARC for the authority record by default;
+	  add a "View MARC" button and toggle it to show/hide MARC.
+
+	* Invoke MARC editor with the appropriate control number identifier
+	  
+	  The control number identifier is most critical for the creation
+	  of authority records; given that the callers have the required
+	  context, have them pass in the control number identifier to the
+	  MARC editor. Edit MARC record, new MARC record, import MARC
+	  record;
+	  those have to be the big ones, right?
+
+	* Create authority records with meaningful cataloging agency values
+	  
+	  Hardcoded values in the 040 are problematic for sites that want
+	  to be a source of authority records; with the addition of another
+	  parameter to the
+	  open-ils.cat.authority.record.create_from_bib(.readonly)
+	  API, we can solve that problem. The callers of this API (the MARC
+	  editor)
+	  have access to the cat.marc_control_number_identifier OU setting,
+	  so as
+	  long as that is set correctly, problem solved.
+
+2010-12-29  erickson
+
+	* Vandelay import repairs
+	  
+	  Disable OpenSRF response chunking on calls that respond with
+	  small,
+	  sparse status updates.
+	  
+	  Repaired some bugs with status reporting and changed the
+	  reporting style
+	  for queue imports to report more early in the import, then
+	  plateau.
+	  
+	  Added some fault-tolerance to record importing
+	  
+	  Signed-off-by: Bill Erickson <erickson@esilibrary.com>
+
+	* at po activation time, apply the provider's default claim policy
+	  to each lineitem when no policy is already applied
+	  
+	  Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2010-12-30  phasefx
+
+	* fix a bug with standing penalties and the stop sign page. We
+	  still have a race condition where the stop sign page may not
+	  show, and this seems to happen when multiple patrons are
+	  retrieved at once from a patron search.
+
+	* Never do money math as anything but pennies I tell you. :-) Three
+	  $0.60 transactions run through check-in were showing a running
+	  tally of $1.79 instead of $1.80.
+
+2011-01-04  senator
+
+	* Acq: backport r19040 and r19094 from trunk
+	  
+	  [19040] Acq: support manual claiming as always intended, which to
+	  some users
+	  means claiming with no predefined policy
+	  
+	  [19094] Acq: Make manual lineitem claiming work better. When a
+	  claiming policy
+	  has not been applied, users can now choose claim actions manually
+	  (this is what
+	  a claiming policy would have specified).
+
+2011-01-04  miker
+
+	* Patch from Jason Stephenson to silence spurious warnings:
+	  https://bugs.launchpad.net/evergreen/+bug/695510
+
+	* oils_xpath_table was too strict about field nullness -- we need
+	  /some/ data, not /all/ data, to be present
+
+2011-01-04  erickson
+
+	* cleaned up vestigal item import API call; repaired some faulty
+	  assumptions in vandelay UI regarding which types of import to
+	  attempt based on user input
+	  
+	  Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-01-04  miker
+
+	* Addressing https://bugs.launchpad.net/evergreen/+bug/696078 where
+	  deleted/inactive records are included in the freshmeat feed.
+
+2011-01-04  erickson
+
+	* mixing use of '/' and '/eg' for the auth cookie path is creating
+	  complications; fall back to '/', which is the assumption from
+	  most EG code
+	  
+	  Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-01-04  dbs
+
+	* Improve see from / see also handling in MARC editor authority
+	  menu
+	  
+	  (Backporting r19091 and r19092 from trunk)
+	  
+	  The 2.0-style authorities use a browse menu that currently
+	  consists
+	  of matches against the 1XX entries, which makes working with see
+	  from /
+	  see also entries rather difficult. To prepare for an authority
+	  browse
+	  method that does surface matches against 4xx and 5xx entries, we
+	  will
+	  now display the 4xx and 5xx entries for a given authority record
+	  immediately below the 1xx entry in the browse menu, with the
+	  entry
+	  text italicized, aligned to the right, and prefixed with "See
+	  also" or
+	  "See from" appropriately. This won't provide a perfect
+	  alphabetized
+	  solution - we won't know which field provided the alphabetical
+	  browse
+	  match, so the best we can do is present the 1xx in the main
+	  browse
+	  menu and the 4xx / 5xx below - but it will provide access to the
+	  other
+	  references.
+	  
+	  We now display the 4xx fields in the authority summary / selector
+	  menu
+	  along with the 5xx fields. As part of making the 4xx and 5xx
+	  fields
+	  first-class entries in the context menu, 5xx subfields are no
+	  longer
+	  appended to their 1xx field menu entry with a "/" in the context
+	  menu.
+	  
+	  $0 subfields are no longer added to the 4xx and 5xx fields from
+	  the
+	  authority summary / selector menu; if a user had selected a 5xx
+	  and the
+	  $0 that had been added by the menu, the field would have
+	  incorrectly been
+	  linked to the 1xx authority record. To link to a 5xx entry, for
+	  now the
+	  workaround is for the user to select the 5xx subfield(s), "Apply
+	  Selected",
+	  then right-click on the new subfield to generate a new authority
+	  context menu.
+	  To improve the 5xx handling, we need to make the "See also" entry
+	  fire a new
+	  authority context menu based on the 5xx contents so that the
+	  actual 1xx
+	  authority record can be inserted and linked against.
+	  
+	  Consider an authority record containing the following fields:
+	  
+	  150 $a Infants
+	  450 $a Babies
+	  550 $a Children
+	  
+	  The ASCII-ized authority context menu will now display:
+	  
+	  Infants ->
+	  See from: Babies ->
+	  See also: Children ->
+	  
+	  The submenu in each case will currently lead to the authority
+	  record
+	  for "Infants". If we teach the underlying authority browse and
+	  startswith
+	  methods to return matches based on 4xx and 5xx fields instead of
+	  just 1xx
+	  fields, then the menu triggered by a right-click on "Childs"
+	  might look
+	  like:
+	  
+	  Chickens ->
+	  Infants ->
+	  See from: Babies ->
+	  See also: Children ->
+	  Choking ->
+	  
+	  The main entry will be out of alphabetical order, which is not
+	  ideal,
+	  but the linkage from the 5xx should at least be evident. (Also,
+	  this
+	  suggests that when clicking on a 5xx entry in the authority menu
+	  is
+	  changed to launch a new authority menu, it should use the
+	  1xx-only
+	  browse variant to avoid showing the record from which the user
+	  was
+	  referred...)
+
+	* Internationalize the JavaScript portion of the "Manage
+	  Authorities" interface
+	  
+	  We can use the dojo i18n infrastructure to support translations
+	  of the
+	  "Manage Authorities" interface, but unfortunately we still don't
+	  have
+	  a TT2 solution for i18n. Still, better to do what we can.
+
+	* Clean up marc_export and teach it how to export (all) authority
+	  records
+	  
+	  The new "--type" parameter enables users to specify "authority"
+	  and have the expected result.
+	  
+	  Add an "--all" option to marc_export and silence some warnings
+	  
+	  Rather than forcing users to generate a set of record IDs using a
+	  separate process, the --all option enables to to export all
+	  records
+	  of the specified type. Note that the approach is basic: grab the
+	  record with the highest ID, then start at ID 0 and count up by 1
+	  while trying to retrieve each record along the way. While this
+	  will
+	  undoubtedly generate plenty of warnings for deleted records or
+	  gaps
+	  in the ID sequences, the alternative of retrieving an ID list for
+	  potentially millions of records in large Evergreen instances
+	  wasn't
+	  appealing.
+	  
+	  Some other refactoring and fixes:
+	  
+	  Three large chunks of code were factored out into subroutines to
+	  make it a little easier to read the main flow of the code.
+	  
+	  As we explicitly call uc() on the $format input parameter
+	  to begin with, we don't have to call it subsequently.
+	  
+	  If a requested ID did not exist in the database, then
+	  the script would die; now we trap and flag that error but
+	  continue to fulfill subsequent requests.
+	  
+	  The --money parameter is now documented in the help, and
+	  the help has a brief overview that describes (poorly) the
+	  expected format for the list of IDs.
+	  
+	  An uninitialized variable error when exporting BRE format
+	  records was squashed.
+	  
+	  Also, $count{did} and $count{bib} resulted in uninitialized
+	  variable
+	  warnings if no records were actually exported, so initialize them
+	  to 0.
+
+2011-01-05  miker
+
+	* .: tagging 2.0-rc2
+
