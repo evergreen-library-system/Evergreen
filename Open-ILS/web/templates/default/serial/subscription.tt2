@@ -88,7 +88,7 @@
     </div>
 
     <!-- Issuances -->
-    <div dojoType="dijit.layout.ContentPane"
+    <div dojoType="dijit.layout.ContentPane" jsId="issuances_tab"
         title="Issuances" layoutAlign="client">
         <script type="dojo/connect" event="onShow">
             if (!iss_grid._fresh) {

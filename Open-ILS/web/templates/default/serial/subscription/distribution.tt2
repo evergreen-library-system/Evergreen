@@ -29,7 +29,7 @@
         <thead>
             <tr>
                 <th field="label" width="35%"
-                    get="get_sdist" formatter="format_sdist_label"></th>
+                    get="get_id_and_label" formatter="format_sdist_label"></th>
             </tr>
         </thead>
     </table>

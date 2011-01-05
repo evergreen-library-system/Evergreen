@@ -104,12 +104,19 @@ function format_org_unit(aou_id) {
     return aou_id ? aou.findOrgUnit(aou_id).shortname() : "";
 }
 
-function get_sdist(rowIndex, item) {
+function get_id_and_label(rowIndex, item) {
     if (!item) return {"id": "", "label": ""};
     return {
         "id": this.grid.store.getValue(item, "id"),
         "label": this.grid.store.getValue(item, "label")
     };
+}
+
+function format_siss_label(blob) {
+    if (!blob.id) return "";
+    return "<a href='" +
+        oilsBasePath + "/serial/list_item?issuance=" + blob.id +
+        "'>" + (blob.label ? blob.label : "[None]") + "</a>"; /* XXX i18n */
 }
 
 function format_sdist_label(blob) {
@@ -162,15 +169,23 @@ function open_batch_receive() {
 
 openils.Util.addOnLoad(
     function() {
+        var tab_dispatch = {
+            "distributions": distributions_tab,
+            "issuances": issuances_tab
+        };
+
         cgi = new openils.CGI();
         pcrud = new openils.PermaCrud();
 
         sub_id = cgi.param("id");
         load_sub_grid(
             sub_id,
-            (cgi.param("tab") == "distributions") ?
-                function() { tab_container.selectChild(distributions_tab); } :
-                null
+            (cgi.param("tab") in tab_dispatch) ?
+                function() {
+                    tab_container.selectChild(
+                        tab_dispatch[cgi.param("tab")]
+                    );
+                } : null
         );
     }
 );

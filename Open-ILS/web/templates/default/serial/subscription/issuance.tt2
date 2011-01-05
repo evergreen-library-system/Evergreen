@@ -26,6 +26,12 @@
         query="{id: '*'}"
         editOnEnter="true"
         showPaginator="true">
+        <thead>
+            <tr>
+                <th field="label" formatter="format_siss_label"
+                    get="get_id_and_label"></th>
+            </tr>
+        </thead>
     </table>
 </div>
 <div class="hidden">

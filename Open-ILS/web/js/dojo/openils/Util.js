@@ -53,6 +53,38 @@ if(!dojo._hasResource["openils.Util"]) {
         );
     };
 
+    openils.Util._userFullNameFields = [
+        "prefix", "first_given_name", "second_given_name",
+        "family_name", "suffix", "alias", "usrname"
+    ];
+
+    /**
+     * Return an array of all the name-related attributes, with nulls replaced
+     * by empty strings, from a given actor.usr fieldmapper object, to be used
+     * as the arguments to any string formatting function that wants them.
+     * Code to do this is duplicated all over the place and should be
+     * simplified as we go.
+     */
+    openils.Util.userFullName = function(user) {
+        return dojo.map(
+            openils.Util._userFullNameFields,
+            function(a) { return user[a]() || ""; }
+        );
+    };
+
+    /**
+     * Same as openils.Util.userFullName, but with a hash of results instead
+     * of an array (dojo.string.substitute(), for example, can use this too).
+     */
+    openils.Util.userFullNameHash = function(user) {
+        var hash = {};
+        dojo.forEach(
+            openils.Util._userFullNameFields,
+            function(a) { hash[a] = user[a]() || ""; }
+        );
+        return hash;
+    };
+
     /**
      * Wrapper for dojo.addOnLoad that verifies a valid login session is active
      * before adding the function to the onload set

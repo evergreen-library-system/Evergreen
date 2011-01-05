@@ -3550,10 +3550,18 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create/>
-				<retrieve/>
-				<update/>
-				<delete/>
+				<create permission="ADMIN_SERIAL_ITEM">
+					<context link="stream" jump="distribution" field="holding_lib" />
+				</create>
+				<retrieve permission="ADMIN_SERIAL_ITEM">
+					<context link="stream" jump="distribution" field="holding_lib" />
+				</retrieve>
+				<update permission="ADMIN_SERIAL_ITEM">
+					<context link="stream" jump="distribution" field="holding_lib" />
+				</update>
+				<delete permission="ADMIN_SERIAL_ITEM">
+					<context link="stream" jump="distribution" field="holding_lib" />
+				</delete>
 			</actions>
 		</permacrud>
 	</class>

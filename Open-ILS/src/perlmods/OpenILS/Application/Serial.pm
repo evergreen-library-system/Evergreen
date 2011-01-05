@@ -87,6 +87,133 @@ sub _get_mvr {
 # item methods
 #
 __PACKAGE__->register_method(
+    method    => "create_item_safely",
+    api_name  => "open-ils.serial.item.create",
+    api_level => 1,
+    stream    => 1,
+    argc      => 3,
+    signature => {
+        desc => q/Creates any number of items, respecting only a few of the
+        submitted fields, as the user shouldn't be able to freely set certain
+        ones/,
+        params => [
+            {name=> "authtoken", desc => "Authtoken for current user session",
+                type => "string"},
+            {name => "item", desc => "serial item",
+                type => "object", class => "sitem"},
+            {name => "count",
+                desc => "optional: how many items to make " .
+                    "(default 1; 1-100 permitted)",
+                type => "number"}
+        ],
+        return => {
+            desc => "created items (a stream of them)",
+            type => "object", class => "sitem"
+        }
+    }
+);
+__PACKAGE__->register_method(
+    method    => "update_item_safely",
+    api_name  => "open-ils.serial.item.update",
+    api_level => 1,
+    stream    => 1,
+    argc      => 2,
+    signature => {
+        desc => q/Edit a serial item, respecting only a few of the
+        submitted fields, as the user shouldn't be able to freely set certain
+        ones/,
+        params => [
+            {name=> "authtoken", desc => "Authtoken for current user session",
+                type => "string"},
+            {name => "item", desc => "serial item",
+                type => "object", class => "sitem"},
+        ],
+        return => {
+            desc => "created item", type => "object", class => "sitem"
+        }
+    }
+);
+
+sub _set_safe_item_fields {
+    my $dest = shift;
+    my $source = shift;
+    my $requestor_id = shift;
+    # extra fields remain in @_
+
+    $dest->edit_date("now");
+    $dest->editor($requestor_id);
+
+    my @fields = qw/date_expected date_received status/;
+
+    for my $field (@fields, @_) {
+        $dest->$field($source->$field);
+    }
+}
+
+sub update_item_safely {
+    my ($self, $client, $auth, $item) = @_;
+
+    my $e = new_editor("xact" => 1, "authtoken" => $auth);
+    $e->checkauth or return $e->die_event;
+
+    my $orig = $e->retrieve_serial_item([
+        $item->id, {
+            "flesh" => 2, "flesh_fields" => {
+                "sitem" => ["stream"], "sstr" => ["distribution"]
+            }
+        }
+    ]) or return $e->die_event;
+
+    return $e->die_event unless $e->allowed(
+        "ADMIN_SERIAL_ITEM", $orig->stream->distribution->holding_lib
+    );
+
+    _set_safe_item_fields($orig, $item, $e->requestor->id);
+    $e->update_serial_item($orig) or return $e->die_event;
+
+    $client->respond($e->retrieve_serial_item($item->id));
+    $e->commit or return $e->die_event;
+    undef;
+}
+
+sub create_item_safely {
+    my ($self, $client, $auth, $item, $count) = @_;
+
+    $count = int $count;
+    $count ||= 1;
+    return new OpenILS::Event(
+        "BAD_PARAMS", note => "Count should be from 1 to 100"
+    ) unless $count >= 1 and $count <= 100;
+
+    my $e = new_editor("xact" => 1, "authtoken" => $auth);
+    $e->checkauth or return $e->die_event;
+
+    my $stream = $e->retrieve_serial_stream([
+        $item->stream, {
+            "flesh" => 1, "flesh_fields" => {"sstr" => ["distribution"]}
+        }
+    ]) or return $e->die_event;
+
+    return $e->die_event unless $e->allowed(
+        "ADMIN_SERIAL_ITEM", $stream->distribution->holding_lib
+    );
+
+    for (my $i = 0; $i < $count; $i++) {
+        my $actual = new Fieldmapper::serial::item;
+        $actual->creator($e->requestor->id);
+        _set_safe_item_fields(
+            $actual, $item, $e->requestor->id, "issuance", "stream"
+        );
+
+        $e->create_serial_item($actual) or return $e->die_event;
+        $client->respond($e->data);
+    }
+
+    $e->commit or return $e->die_event;
+    undef;
+}
+
+__PACKAGE__->register_method(
     method    => 'fleshed_item_alter',
     api_name  => 'open-ils.serial.item.fleshed.batch.update',
     api_level => 1,
@@ -2697,7 +2824,7 @@ sub bre_by_identifier {
 }
 
 __PACKAGE__->register_method(
-    "method" => "get_receivable_items",
+    "method" => "get_items_by",
     "api_name" => "open-ils.serial.items.receivable.by_subscription",
     "stream" => 1,
     "signature" => {
@@ -2708,13 +2835,13 @@ __PACKAGE__->register_method(
         ],
         "return" => {
             "desc" => "All receivable items under a given subscription",
-            "type" => "object"
+            "type" => "object", "class" => "sitem"
         }
     }
 );
 
 __PACKAGE__->register_method(
-    "method" => "get_receivable_items",
+    "method" => "get_items_by",
     "api_name" => "open-ils.serial.items.receivable.by_issuance",
     "stream" => 1,
     "signature" => {
@@ -2725,52 +2852,90 @@ __PACKAGE__->register_method(
         ],
         "return" => {
             "desc" => "All receivable items under a given issuance",
-            "type" => "object"
+            "type" => "object", "class" => "sitem"
         }
     }
 );
 
-sub get_receivable_items {
-    my ($self, $client, $auth, $term)  = @_;
+__PACKAGE__->register_method(
+    "method" => "get_items_by",
+    "api_name" => "open-ils.serial.items.by_issuance",
+    "stream" => 1,
+    "signature" => {
+        "desc" => "Return all items under a given issuance",
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "Issuance ID", "type" => "number"},
+        ],
+        "return" => {
+            "desc" => "All items under a given issuance",
+            "type" => "object", "class" => "sitem"
+        }
+    }
+);
+
+sub get_items_by {
+    my ($self, $client, $auth, $term, $opts)  = @_;
+
+    # Not to be used in the json_query, but after limiting by perm check.
+    $opts = {} unless ref $opts eq "HASH";
+    $opts->{"limit"} ||= 10000;    # some existing users may want all results
+    $opts->{"offset"} ||= 0;
+    $opts->{"limit"} = int($opts->{"limit"});
+    $opts->{"offset"} = int($opts->{"offset"});
 
     my $e = new_editor("authtoken" => $auth);
     return $e->die_event unless $e->checkauth;
 
-    # XXX permissions
-
     my $by = ($self->api_name =~ /by_(\w+)$/)[0];
+    my $receivable = ($self->api_name =~ /receivable/);
 
     my %where = (
         "issuance" => {"issuance" => $term},
         "subscription" => {"+siss" => {"subscription" => $term}}
     );
 
-    my $item_ids = $e->json_query(
+    my $item_rows = $e->json_query(
         {
-            "select" => {"sitem" => ["id"]},
-            "from" => {"sitem" => "siss"},
+            "select" => {"sitem" => ["id"], "sdist" => ["holding_lib"]},
+            "from" => {
+                "sitem" => {
+                    "siss" => {},
+                    "sstr" => {"join" => {"sdist" => {}}}
+                }
+            },
             "where" => {
-                %{$where{$by}}, "date_received" => undef
+                %{$where{$by}}, $receivable ? ("date_received" => undef) : ()
             },
             "order_by" => {"sitem" => ["id"]}
         }
     ) or return $e->die_event;
 
-    return undef unless @$item_ids;
+    return undef unless @$item_rows;
 
-    foreach (map { $_->{"id"} } @$item_ids) {
+    my $skipped = 0;
+    my $returned = 0;
+    foreach (@$item_rows) {
+        last if $returned >= $opts->{"limit"};
+        next unless $e->allowed("RECEIVE_SERIAL", $_->{"holding_lib"});
+        if ($skipped < $opts->{"offset"}) {
+            $skipped++;
+            next;
+        }
+
         $client->respond(
             $e->retrieve_serial_item([
-                $_, {
+                $_->{"id"}, {
                     "flesh" => 3,
                     "flesh_fields" => {
-                        "sitem" => ["stream", "issuance"],
+                        "sitem" => [qw/stream issuance unit creator editor/],
                         "sstr" => ["distribution"],
                         "sdist" => ["holding_lib"]
                     }
                 }
             ])
         );
+        $returned++;
     }
 
     $e->disconnect;
