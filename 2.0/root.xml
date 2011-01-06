@@ -81,6 +81,7 @@
 		<info>
 			<title>Appendices</title>
 		</info>
+		<xi:include href="appendices/schema.xml"/>
 		<xi:include href="appendices/glossary.xml"/>
 		<xi:include href="appendices/bookindex.xml"/>
 	</part>
