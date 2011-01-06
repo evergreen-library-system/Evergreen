@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<appendix xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="more_info">
+	<info>
+		<title>Getting More Information</title>
+	</info>	
+	<para>This documentation is just one way to learn about Evergreen and find solutions to Evergreen challenges. Below is a list of many other resources to help you find answers to almost any question 
+	you might have.</para>
+		<para><link xl:href="http://www.open-ils.org/">Evergreen Wiki</link> - Loads of information and the main portal to the Evergreen community.</para><indexterm><primary>wiki</primary></indexterm>
+		<para><link xl:href="http://www.open-ils.org/listserv.php">Evergreen mailing lists</link> - These are excellent for initiating questions. There are several lists including:
+			<itemizedlist>
+				<listitem><link xl:href="http://libmail.georgialibraries.org/mailman/listinfo/open-ils-general">General list</link> - General inquiries regarding Evergreen. If unsure about 
+				which list to use, this is a good stating point.</listitem><indexterm><primary>mailing lists</primary></indexterm>
+				<listitem><link xl:href="http://libmail.georgialibraries.org/mailman/listinfo/open-ils-dev">Developer list</link> - Technical questions should be asked here including 
+				questions regarding installation. As well, patches can be submitted using this list and developer communication also takes place here. </listitem>
+				<listitem><link xl:href="http://libmail.georgialibraries.org/mailman/listinfo/open-ils-documentation">DIG list</link> - This list is used for questions and 
+				feedback regarding this documentation, the Documentation Interest Group and other documentation related ideas and issues.</listitem><indexterm><primary>Documentation Interest Group (DIG)</primary></indexterm>
+			</itemizedlist>
+		</para>
+		<para><link xl:href="http://evergreen-ils.org/blog/">Evergreen Blog</link> - Great for getting general news and updates about Evergreen. It is also an interesting historical read 
+		with entries dating back to the early beginnings of Evergreen.</para>
+		<para><link xl:href="http://evergreen-ils.org/irc.php">Evergreen IRC channel</link> - Allows live chat. Many developers hang out here and will try to field technical questions. This 
+		is often the quickest way to get a solution to a specific problem. Just remember that while the channel is open 24/7, there are times when no one is available in the channel. The most 
+		active times for the IRC channel seem to be weekday afternoons (Eastern Standard Time). There is also an archive of logs from the chat sessions available on the 
+		<link xl:href="http://evergreen-ils.org/irc.php">IRC</link> page.</para><indexterm><primary>IRC chat</primary></indexterm>
+		<para><link xl:href="http://planet.evergreen-ils.org/">Evergreen related community blogs</link> - Evergreen related blog entries from the community.</para>
+		<para><link xl:href="http://rscel.evergreen-ils.org/">Resource Sharing Cooperative of Evergreen Libraries (RSCEL)</link> - Provides some technical documents and a means for the 
+		Evergreen community to collaborate with other libraries.</para><indexterm><primary>Resource Sharing Cooperative of Evergreen Libraries (RSCEL)</primary></indexterm>
+		<para><link xl:href="http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen_libraries">List of current Evergreen libraries</link> - Locate other libraries who are  
+		using Evergreen.</para>		
+</appendix>
+
+

@@ -49,6 +49,7 @@
 			<title>Core Staff Tasks</title>
 		</info>
 		<xi:include href="stafftasks/stafftasks_intro.xml"/>
+		<xi:include href="stafftasks/alternate_serial_control.xml"/>
  	</part>
 	<part xml:id="admin">
 		<info>
