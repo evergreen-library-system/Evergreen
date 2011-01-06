@@ -1017,10 +1017,12 @@ sub authority_tag_sf_browse {
 
 	my @list = ();
 
-	if ($page <= 0) {
+	if ($page < 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
-			{ select	=> { afr => [qw/record value/] },
+			{ select	=> { afr => [
+				{ transform => "distinct", column => "record" },
+				"value" ]},
 			  from		=> { 'are', 'afr' },
 			  where		=> {
 				'+afr' => { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
@@ -1037,7 +1039,9 @@ sub authority_tag_sf_browse {
 	if ($page >= 0) {
 		my $after = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
-			{ select	=> { afr => [qw/record value/] },
+			{ select	=> { afr => [
+				{ transform => "distinct", column => "record" },
+				"value" ]},
 			  from		=> { 'are', 'afr' },
 			  where		=> {
 				'+afr' => { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } },
@@ -1510,7 +1514,9 @@ sub authority_tag_sf_startwith {
 
 		my $before = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
-			{ select	=> { afr => [qw/record value/] },
+			{ select	=> { afr => [
+				{ transform => "distinct", column => "record" },
+				"value" ]},
 			  from		=> { 'afr', 'are' },
 			  where		=> {
 				'+afr' => { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
@@ -1527,7 +1533,9 @@ sub authority_tag_sf_startwith {
 	if ($page >= 0) {
 		my $after = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
-			{ select	=> { afr => [qw/record value/] },
+			{ select	=> { afr => [
+				{ transform => "distinct", column => "record" },
+				"value" ]},
 			  from		=> { 'afr', 'are' },
 			  where		=> {
 				'+afr' => { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } },
