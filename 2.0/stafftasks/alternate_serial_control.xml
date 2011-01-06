@@ -473,9 +473,9 @@
         <para>
             Generally, you won't need to edit anything pertaining to the
             subscription itself when receiving items, so you can also get to
-            Batch Receiving through the <menuitem>Actions for this Item</menuitem> menu when
-            viewing a record in the catalog (right next to <menuitem>Alternate Serial
-            Control</menuitem> from earlier in this tutorial).
+            Batch Receiving through the <guimenuitem>Actions for this Item</guimenuitem> menu when
+            viewing a record in the catalog (right next to <guimenuitem>Alternate Serial
+            Control</guimenuitem> from earlier in this tutorial).
         </para>
         <screenshot>
             <mediaobject>
