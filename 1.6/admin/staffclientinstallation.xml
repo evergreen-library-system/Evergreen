@@ -769,7 +769,7 @@
 			<literal>staff_client</literal> directory. See the following table for a list of
 			possible <command>make</command> target keywords:</para>
 			<table>
-				<title>Keywords Targets for "make" Command</title>
+				<title>Keywords For Advanced Build Options</title>
 				<?dbfo keep-together="always" ?>
 				<tgroup align="left" cols="2" colsep="1" rowsep="1">
 					<colspec colname="keyword" colnum="1" colwidth="1.0*"/>
@@ -992,7 +992,7 @@
 				Some useful icon ID strings include the following:</para>
 				<table>
 					<?dbfo keep-together="always" ?>
-					<title>Useful icon ID strings</title>
+					<title>Icon IDs for Packaging a Windows Client</title>
 					<tgroup align="left" cols="2" colsep="1" rowsep="1">
 						<colspec colname="keyword" colnum="1" colwidth="1.0*"/>
 						<colspec colname="icon" colnum="2" colwidth="1.0*"/>
