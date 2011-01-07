@@ -105,7 +105,7 @@
        <div style="float: left;"> <p style="font-style: italic; font-size: .8em;">Documentation for Evergreen version 2.0 <br/>Copyright © 2011, Evergreen Community
         </p><p><a href="http://creativecommons.org/licenses/by-sa/3.0/" title="Creative Commons license">
             <img src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png"/></a></p></div>
-        <div style="float: right;"> <a href="../pdf/style_guide.pdf" title="also availabe in PDF"><img src="../media/pdf_icon.gif"/></a></div>
+        <div style="float: right;"> <a href="../pdf/Evergreen_Documentation.pdf" title="also availabe in PDF"><img src="../media/pdf_icon.gif"/></a></div>
                 
     </xsl:template>
     
