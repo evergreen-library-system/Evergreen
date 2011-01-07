@@ -236,6 +236,7 @@ if (!dojo._hasResource["openils.PermaCrud.Store"]) {
             if (qkeys.length < 1)
                 throw new PCSError("Not enough meat on that query");
 
+            var first_term;
             for (var qkey in req.query) {
                 var value = req.query[qkey];
                 var type = typeof value;
@@ -282,6 +283,7 @@ if (!dojo._hasResource["openils.PermaCrud.Store"]) {
                     if (req.queryOptions && req.queryOptions.ignoreCase)
                         op = "ilike";
 
+                    if (!first_term) first_term = key;
                     if (op) {
                         pcrud_query[key] = {};
                         pcrud_query[key][op] = term;
@@ -315,6 +317,9 @@ if (!dojo._hasResource["openils.PermaCrud.Store"]) {
                 /* XXX not sure whether multiple columns will work as such. */
                 hashkey = "order_by:" + opts.order_by[this.fmclass] + ":" +
                     hashkey;
+            } else if (first_term) {
+                opts.order_by = {};
+                opts.order_by[this.fmclass] = first_term + " ASC";
             }
 
             opts.id_list = this.stubby;
