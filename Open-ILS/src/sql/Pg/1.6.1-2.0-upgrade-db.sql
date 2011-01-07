@@ -15538,30 +15538,45 @@ BEGIN
     ELSE
         target_id = target;
     END IF;
-    SELECT id FROM config.metabib_field INTO check_id WHERE id = target;
+    SELECT id FROM config.metabib_field INTO check_id WHERE id = target_id;
     IF FOUND THEN
-        RAISE NOTICE 'Cannot bump config.metabib_field.id from % to %; the target ID already exists.', source, target;
+        RAISE NOTICE 'Cannot bump config.metabib_field.id from % to %; the target ID already exists.', source, target_id;
         RETURN 0;
     END IF;
-    UPDATE config.metabib_field SET id = target WHERE id = source;
-    EXECUTE ' UPDATE metabib.' || f_class || '_field_entry SET field = ' || target || ' WHERE field = ' || source;
-    UPDATE config.metabib_field_index_norm_map SET field = target WHERE field = source;
-    UPDATE search.relevance_adjustment SET field = target WHERE field = source;
+    UPDATE config.metabib_field SET id = target_id WHERE id = source;
+    EXECUTE ' UPDATE metabib.' || f_class || '_field_entry SET field = ' || target_id || ' WHERE field = ' || source;
+    UPDATE config.metabib_field_index_norm_map SET field = target_id WHERE field = source;
+    UPDATE search.relevance_adjustment SET field = target_id WHERE field = source;
     RETURN 1;
 END;
 $func$ LANGUAGE PLPGSQL;
+
+-- To avoid sequential scans against the large metabib.*_field_entry tables
+CREATE INDEX metabib_author_field_entry_field ON metabib.author_field_entry(field);
+CREATE INDEX metabib_keyword_field_entry_field ON metabib.keyword_field_entry(field);
+CREATE INDEX metabib_series_field_entry_field ON metabib.series_field_entry(field);
+CREATE INDEX metabib_subject_field_entry_field ON metabib.subject_field_entry(field);
+CREATE INDEX metabib_title_field_entry_field ON metabib.title_field_entry(field);
 
 -- Now update those custom indexes
 SELECT config.modify_metabib_field(id, NULL)
     FROM config.metabib_field
     WHERE id > 15 AND id < 100 AND field_class || name <> 'subjectcomplete';
 
+-- Ensure "subject|complete" is id = 16, if it exists
 SELECT config.modify_metabib_field(id, 16)
     FROM config.metabib_field
     WHERE id <> 16 AND field_class || name = 'subjectcomplete';
 
 -- And bump the config.metabib_field sequence to a minimum of 100 to avoid problems in the future
 SELECT setval('config.metabib_field_id_seq', GREATEST(100, (SELECT MAX(id) + 1 FROM config.metabib_field)));
+
+-- And drop the temporary indexes that we just created
+DROP INDEX metabib.metabib_author_field_entry_field;
+DROP INDEX metabib.metabib_keyword_field_entry_field;
+DROP INDEX metabib.metabib_series_field_entry_field;
+DROP INDEX metabib.metabib_subject_field_entry_field;
+DROP INDEX metabib.metabib_title_field_entry_field;
 
 -- Now we can go ahead and insert the additional stock indexes
 
