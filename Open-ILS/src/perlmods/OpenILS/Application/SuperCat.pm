@@ -1006,13 +1006,13 @@ sub authority_tag_sf_browse {
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
 	# .refs variant includes 4xx and 5xx variants for see / see also
-	if ($self->api_name =~ /\.refs\./) {
-		my @ref_tags;
-		foreach my $tagname (@$tag) {
+	my @ref_tags = ();
+	foreach my $tagname (@$tag) {
+		push(@ref_tags, $tagname);
+		if ($self->api_name =~ /\.refs\./) {
 			push(@ref_tags, '4' . substr($tagname, 1, 2));
 			push(@ref_tags, '5' . substr($tagname, 1, 2));
 		}
-		push(@$tag, @ref_tags);
 	}
 
 	my @list = ();
@@ -1020,12 +1020,10 @@ sub authority_tag_sf_browse {
 	if ($page < 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
-			{ select	=> { afr => [
-				{ transform => "distinct", column => "record" },
-				"value" ]},
+			{ select	=> { afr => [qw/record value/] },
 			  from		=> { 'are', 'afr' },
 			  where		=> {
-				'+afr' => { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
+				'+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => lc($value) } },
 				'+are' => { 'deleted' => 'f' }
 			  },
 			  order_by	=> { afr => { value => 'desc' } },
@@ -1039,12 +1037,10 @@ sub authority_tag_sf_browse {
 	if ($page >= 0) {
 		my $after = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
-			{ select	=> { afr => [
-				{ transform => "distinct", column => "record" },
-				"value" ]},
+			{ select	=> { afr => [qw/record value/] },
 			  from		=> { 'are', 'afr' },
 			  where		=> {
-				'+afr' => { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } },
+				'+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => lc($value) } },
 				'+are' => { 'deleted' => 'f' }
 			  },
 			  order_by	=> { afr => { value => 'asc' } },
@@ -1496,14 +1492,14 @@ sub authority_tag_sf_startwith {
 	my $offset = $limit * abs($page);
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
+	my @ref_tags = ();
 	# .refs variant includes 4xx and 5xx variants for see / see also
-	if ($self->api_name =~ /\.refs\./) {
-		my @ref_tags;
-		foreach my $tagname (@$tag) {
+	foreach my $tagname (@$tag) {
+		push(@ref_tags, $tagname);
+		if ($self->api_name =~ /\.refs\./) {
 			push(@ref_tags, '4' . substr($tagname, 1, 2));
 			push(@ref_tags, '5' . substr($tagname, 1, 2));
 		}
-		push(@$tag, @ref_tags);
 	}
 
 	my @list = ();
@@ -1514,12 +1510,10 @@ sub authority_tag_sf_startwith {
 
 		my $before = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
-			{ select	=> { afr => [
-				{ transform => "distinct", column => "record" },
-				"value" ]},
+			{ select	=> { afr => [qw/record value/] },
 			  from		=> { 'afr', 'are' },
 			  where		=> {
-				'+afr' => { tag => $tag, subfield => $subfield, value => { '<' => lc($value) } },
+				'+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => lc($value) } },
 				'+are' => { deleted => 'f' }
 			  },
 			  order_by	=> { afr => { value => 'desc' } },
@@ -1533,12 +1527,10 @@ sub authority_tag_sf_startwith {
 	if ($page >= 0) {
 		my $after = $_storage->request(
 			"open-ils.cstore.json_query.atomic",
-			{ select	=> { afr => [
-				{ transform => "distinct", column => "record" },
-				"value" ]},
+			{ select	=> { afr => [qw/record value/] },
 			  from		=> { 'afr', 'are' },
 			  where		=> {
-				'+afr' => { tag => $tag, subfield => $subfield, value => { '>=' => lc($value) } },
+				'+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => lc($value) } },
 				'+are' => { deleted => 'f' }
 			  },
 			  order_by	=> { afr => { value => 'asc' } },
