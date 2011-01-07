@@ -2,10 +2,10 @@
 <chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
 	xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="upgradingevergreen">
 	<info>
-		<title>Upgrading Evergreen from 1.4 to 1.6.2</title>
+		<title>Upgrading Evergreen to 1.6.1</title>
 		<abstract>
 			<para>This Chapter will explain the step-by-step process of upgrading <application>Evergreen
-			</application> from version 1.4 to 1.6.2, including steps to upgrade <application>OpenSRF</application>. Before 
+			</application> to 1.6.1, including steps to upgrade <application>OpenSRF</application>. Before 
 			upgrading, it is important to carefully plan an upgrade strategy to minimize system downtime and 
 			service interruptions. All of the steps in this chapter are to be completed from the command line.</para>
         	</abstract>
@@ -20,7 +20,7 @@
 		<command>su - opensrf</command>. Once you have become a non-root user, to become the <systemitem class="username">root</systemitem> user again simply issue the exit command.</para> 
 		<para>In the following instructions, <filename class='directory'>/path/to/OpenSRF/</filename> represents the path to the OpenSRF source directory.</para>
 	<section xml:id="upgradingevergreen-stop_evergreen">
-		<title>Stop Evergreen and back up data.</title>
+		<title>Backing Up Data</title>
 		<procedure>
 			<step>
 				<para>As <systemitem class="username">root</systemitem>, stop the <application>Apache</application> 
@@ -47,10 +47,10 @@
 		<procedure>
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract the source files for <application>OpenSRF</application> 
-				1.4:</para>
+				1.6:</para>
 <screen><userinput>
 wget http://open-ils.org/downloads/OpenSRF-1.6.2.tar.gz
-tar xzf OpenSRF-1.4.0.tar.gz
+tar xzf OpenSRF-1.6.2.tar.gz
 </userinput></screen>
 				<para>A new directory OpenSRF-1.6.2 is created.</para>
 				<note><para>For the latest edition of OpenSRF, check the Evergreen download page at 
@@ -115,7 +115,7 @@ make -f src/extras/Makefile.install [distribution]
 				you want to include support for Python<indexterm><primary>Python</primary></indexterm> and Java
 				<indexterm><primary>Java</primary></indexterm>, respectively.</note>
 <screen><userinput>
-cd /home/opensrf/OpenSRF-1.4.0
+cd /home/opensrf/OpenSRF-1.6.2
 ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 </userinput></screen>		
@@ -157,22 +157,22 @@ srfsh#
 			</step>	
 		</procedure>	
 	</section>
-	<section xml:id="upgradingevergreen-upgrading_from_1.4_to_1.6.2">
-		<title>Upgrade <application>Evergreen</application> from 1.4 to 1.6.2</title>
+	<section xml:id="upgradingevergreen-upgrading_from_1.4_to_1.6.1">
+		<title>Upgrade <application>Evergreen</application> from 1.4 to 1.6.1</title>
 		<procedure>
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract <application>Evergreen 1.6.2.0</application>
 				</para>
 <screen><userinput>
-wget http://open-ils.org/downloads/Evergreen-ILS-1.6.2.0.tar.gz
-tar xzf Evergreen-ILS-1.6.2.0.tar.gz
+wget http://open-ils.org/downloads/Evergreen-ILS-1.6.1.5.tar.gz
+tar xzf Evergreen-ILS-1.6.1.5.tar.gz
 </userinput></screen>
 				<note><para>For the latest edition of Evergreen check the Evergreen download page at
 				<ulink url="http://www.open-ils.org/downloads.php" /> and adjust upgrading instructions accordingly.</para></note>
 			</step>
 			<step>
 				<para>As the <systemitem class="username">root</systemitem> user, install the prerequisites:</para> 
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.2.0</userinput></screen>	
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.5</userinput></screen>	
 				<para>On the next command, replace <option>[distribution]</option> with one of 
 				these values for your distribution of Debian or Ubuntu:</para>
 				<itemizedlist>
@@ -205,19 +205,19 @@ tar xzf Evergreen-ILS-1.6.2.0.tar.gz
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, configure and compile 
 				<application>Evergreen</application>:</para>
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.2.0</userinput></screen>
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.5</userinput></screen>
 				<screen><userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput></screen>
 				<screen><userinput>make</userinput></screen>
 			</step>
 			<step>
 				<para>As the <systemitem class="username">root</systemitem> user, install 
 				<application>Evergreen</application>:</para>
-				<screen><userinput>make STAFF_CLIENT_BUILD_ID=rel_1_6_2_0 install</userinput></screen>
+				<screen><userinput>make STAFF_CLIENT_BUILD_ID=rel_1_6_1_5 install</userinput></screen>
 			</step>
 			<step>
 				<para>Change to the <application>Evergreen</application> installation 
 				directory:</para>
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.2.0</userinput></screen>
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-1.6.1.5</userinput></screen>
 			</step>
 			<step>
 				<para>As the <emphasis>root</emphasis> user, change all files to be owned by the 
@@ -228,7 +228,7 @@ tar xzf Evergreen-ILS-1.6.2.0.tar.gz
 				<para>As the <systemitem class="username">root</systemitem> user, build <filename>live-db-setup.pl</filename> for the cgi-bin 
 				bootstrapping scripts and <filename>offline-config.pl</filename> for the offline staff client data uploader:</para>
 <screen><userinput>
-cd /home/opensrf/Evergreen-ILS-1.6.2.0
+cd /home/opensrf/Evergreen-ILS-1.6.1.5
 perl Open-ILS/src/support-scripts/eg_db_config.pl --create-bootstrap --create-offline \ 
 --user evergreen --password evergreen --hostname localhost --port 5432 \
 --database evergreen
@@ -239,7 +239,7 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --create-bootstrap --create-of
 <screen><userinput>
 cd /openils/var/web/xul/
 rm server
-ln -s rel_1_6_2_0/server
+ln -s rel_1_6_1_5/server
 </userinput></screen>
 			</step>
 			<step>
@@ -258,7 +258,6 @@ psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.1-1.6.1.2-upgrade-db
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.2-1.6.1.3-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.3-1.6.1.4-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.4-1.6.1.5-upgrade-db.sql evergreen
-psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.1-1.6.2-upgrade-db.sql evergreen
 </userinput>
 </screen> 	
 			</step>
@@ -304,13 +303,13 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all 
 			</step> 
 		</procedure>	
 	</section>
-	<section xml:id="upgradingevergreen_1.6.0_to_1.6.2">
-		<title>Upgrade <application>Evergreen</application>from 1.6.0 to 1.6.2</title>
+	<section xml:id="upgradingevergreen_1.6.0_to_1.6.1">
+		<title>Upgrade <application>Evergreen</application> from 1.6.0 to 1.6.1</title>
 		<procedure>
 			<step>
-				<para>Follow steps 1-8 of the <link linkend="upgradingevergreen-upgrading_from_1.4_to_1.6.2">instructions for upgrading Evergreen from 1.4</link> 
+				<para>Follow steps 1-8 of the <link linkend="upgradingevergreen-upgrading_from_1.4_to_1.6.1">instructions for upgrading Evergreen from 1.4</link></para> 
 				
-			
+			</step>
 			<step>
 				<para>Update the Evergreen database:</para>
 				<note><para>it is recommended that you <link linkend="backingup">back up your Evergreen database</link> in order to restore your data if anything goes wrong.</para></note>
@@ -322,38 +321,14 @@ psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.1-1.6.1.2-upgrade-db
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.2-1.6.1.3-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.3-1.6.1.4-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.4-1.6.1.5-upgrade-db.sql evergreen
-psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.1-1.6.2-upgrade-db.sql evergreen
 </userinput>
 </screen> 	
 			</step>
 			<step>
-				<para>Follow steps 10-16 of the <link linkend="upgradingevergreen-upgrading_from_1.4_to_1.6.2">instructions for upgrading Evergreen from 1.4</link> 
+				<para>Follow steps 10-16 of the <link linkend="upgradingevergreen-upgrading_from_1.4_to_1.6.1">instructions for upgrading Evergreen from 1.4</link></para>
 				
 			
-			<step>
-		</procedure>	
-	</section>
-	<section xml:id="upgradingevergreen_1.6.1 to_1.6.2">
-		<title>Upgrade <application>Evergreen</application>from 1.6.1 to 1.6.2</title>
-		<procedure>
-			<step>
-				<para>Follow steps 1-8 of the <link linkend="upgradingevergreen-upgrading_from_1.4_to_1.6.2">instructions for upgrading Evergreen from 1.4</link> 
-				
-			
-			<step>
-				<para>Update the Evergreen database:</para>
-				<note><para>it is recommended that you <link linkend="backingup">back up your Evergreen database</link> in order to restore your data if anything goes wrong.</para></note>
-<screen>
-<userinput>
-psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1.1-1.6.2-upgrade-db.sql evergreen
-</userinput>
-</screen> 	
 			</step>
-			<step>
-				<para>Follow steps 10-16 of the <link linkend="upgradingevergreen-upgrading_from_1.4_to_1.6.2">instructions for upgrading Evergreen from 1.4</link> 
-				
-			
-			<step>
 		</procedure>	
 	</section>
 	<section xml:id="testing_after_upgrade">
@@ -394,7 +369,7 @@ cd /openils/bin
 	</section>
 	<section xml:id="upgrading_Postgresqlto8.4">
 		<title>Upgrading PostgreSQL from 8.2 to 8.4</title>
-		<para>Evergreen 1.6.2 supports PostgreSQL version 8.4 and it is recommended that you upgrade PostgreSQL when you upgrade Evergreen to 1.6.</para>
+		<para>Evergreen 1.6.1 supports PostgreSQL version 8.4 and it is recommended that you upgrade PostgreSQL when you upgrade Evergreen to 1.6.</para>
 		<note><para>The order of the following steps is very important.</para></note><indexterm><primary>databases</primary><secondary>PostgreSQL</secondary></indexterm>
 		<procedure>
 			<step>
@@ -446,5 +421,5 @@ psql -f /usr/share/postgresql/8.4/contrib/pgxml.sql evergreen
 				<para><ulink url="http://www.postgresql.org/docs/current/static/tsearch2.html#AEN102824" /></para>
 			</step>
 		</procedure>
-	</simplesect>
+	</section>
 </chapter>
