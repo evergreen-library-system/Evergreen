@@ -392,9 +392,16 @@ sub prorate_invoice {
     my @lid_debits;
     push(@lid_debits, @{find_entry_debits($e, $_, 'f', entry_amount_per_item($_))}) for @{$invoice->entries};
 
+    my $inv_items = $e->search_acq_invoice_item([
+        {"invoice" => $invoice_id, "fund_debit" => {"!=" => undef}},
+        {"flesh" => 1, "flesh_fields" => {"acqii" => ["fund_debit"]}}
+    ]) or return $e->die_event;
+
+    my @item_debits = map { $_->fund_debit } @$inv_items;
+
     my %fund_totals;
     my $total_entry_paid = 0;
-    for my $debit (@lid_debits) {
+    for my $debit (@lid_debits, @item_debits) {
         $fund_totals{$debit->fund} = 0 unless $fund_totals{$debit->fund};
         $fund_totals{$debit->fund} += $debit->amount;
         $total_entry_paid += $debit->amount;
