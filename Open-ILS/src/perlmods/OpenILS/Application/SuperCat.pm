@@ -982,76 +982,100 @@ __PACKAGE__->register_method(
 );
 
 sub authority_tag_sf_browse {
-	my $self = shift;
-	my $client = shift;
+    my $self = shift;
+    my $client = shift;
 
-	my $tag = shift;
-	my $subfield = shift;
-	my $value = shift;
-	my $page_size = shift || 9;
-	my $page = shift || 0;
+    my $tag = shift;
+    my $subfield = shift;
+    my $value = shift;
+    my $page_size = shift || 9;
+    my $page = shift || 0;
 
-	my ($before_limit,$after_limit) = (0,0);
-	my ($before_offset,$after_offset) = (0,0);
+    my ($before_limit,$after_limit) = (0,0);
+    my ($before_offset,$after_offset) = (0,0);
 
-	if (!$page) {
-		$before_limit = $after_limit = int($page_size / 2);
-		$after_limit += 1 if ($page_size % 2);
-	} else {
-		$before_offset = $after_offset = int($page_size / 2);
-		$before_offset += 1 if ($page_size % 2);
-		$before_limit = $after_limit = $page_size;
-	}
+    if (!$page) {
+        $before_limit = $after_limit = int($page_size / 2);
+        $after_limit += 1 if ($page_size % 2);
+    } else {
+        $before_offset = $after_offset = int($page_size / 2);
+        $before_offset += 1 if ($page_size % 2);
+        $before_limit = $after_limit = $page_size;
+    }
 
-	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+    my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
-	# .refs variant includes 4xx and 5xx variants for see / see also
-	my @ref_tags = ();
-	foreach my $tagname (@$tag) {
-		push(@ref_tags, $tagname);
-		if ($self->api_name =~ /\.refs\./) {
-			push(@ref_tags, '4' . substr($tagname, 1, 2));
-			push(@ref_tags, '5' . substr($tagname, 1, 2));
-		}
-	}
+    # .refs variant includes 4xx and 5xx variants for see / see also
+    my @ref_tags = ();
+    foreach my $tagname (@$tag) {
+        push(@ref_tags, $tagname);
+        if ($self->api_name =~ /\.refs\./) {
+            push(@ref_tags, '4' . substr($tagname, 1, 2));
+            push(@ref_tags, '5' . substr($tagname, 1, 2));
+        }
+    }
+    # We'll remove dupe record IDs that turn up due to 4xx and 5xx matches,
+    # so leave some room for expansion
+    if ($self->api_name =~ /\.refs\./) {
+        $after_limit *= 2;
+        $before_limit *= 2;
+    }
 
-	my @list = ();
+    my @list = ();
 
-	if ($page < 0) {
-		my $before = $_storage->request(
-			"open-ils.cstore.json_query.atomic",
-			{ select	=> { afr => [qw/record value/] },
-			  from		=> { 'are', 'afr' },
-			  where		=> {
-				'+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => lc($value) } },
-				'+are' => { 'deleted' => 'f' }
-			  },
-			  order_by	=> { afr => { value => 'desc' } },
-			  limit		=> $before_limit,
-			  offset	=> abs($page) * $page_size - $before_offset,
-			}
-		)->gather(1);
-		push @list, map { $_->{record} } reverse(@$before);
-	}
+    if ($page < 0) {
+        my $before = $_storage->request(
+            "open-ils.cstore.json_query.atomic",
+            { select    => { afr => [qw/record value/] },
+              from      => { 'are', 'afr' },
+              where     => {
+                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => lc($value) } },
+                '+are' => { 'deleted' => 'f' }
+              },
+              order_by  => { afr => { value => 'desc' } },
+              limit     => $before_limit,
+              offset    => abs($page) * $page_size - $before_offset,
+            }
+        )->gather(1);
+        push @list, map { $_->{record} } reverse(@$before);
+    }
 
-	if ($page >= 0) {
-		my $after = $_storage->request(
-			"open-ils.cstore.json_query.atomic",
-			{ select	=> { afr => [qw/record value/] },
-			  from		=> { 'are', 'afr' },
-			  where		=> {
-				'+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => lc($value) } },
-				'+are' => { 'deleted' => 'f' }
-			  },
-			  order_by	=> { afr => { value => 'asc' } },
-			  limit		=> $after_limit,
-			  offset	=> abs($page) * $page_size - $after_offset,
-			}
-		)->gather(1);
-		push @list, map { $_->{record} } @$after;
-	}
+    if ($page >= 0) {
+        my $after = $_storage->request(
+            "open-ils.cstore.json_query.atomic",
+            { select    => { afr => [qw/record value/] },
+              from      => { 'are', 'afr' },
+              where     => {
+                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => lc($value) } },
+                '+are' => { 'deleted' => 'f' }
+              },
+              order_by  => { afr => { value => 'asc' } },
+              limit     => $after_limit,
+              offset    => abs($page) * $page_size - $after_offset,
+            }
+        )->gather(1);
+        push @list, map { $_->{record} } @$after;
+    }
 
-	return \@list;
+    my @retlist = ();
+    my %seen;
+    if ($page < 0) {
+        foreach my $record (reverse @list) {
+            next if exists $seen{$record};
+            unshift @retlist, $record;
+            $seen{$record} = 1;
+            last if scalar(@retlist) == $page_size;
+        }
+    } else {
+        foreach my $record (@list) {
+            next if exists $seen{$record};
+            push @retlist, $record;
+            $seen{$record} = 1;
+            last if scalar(@retlist) == $page_size;
+        }
+    }
+
+    return \@retlist;
 }
 __PACKAGE__->register_method(
 	method    => 'authority_tag_sf_browse',
@@ -1480,68 +1504,92 @@ __PACKAGE__->register_method(
 );
 
 sub authority_tag_sf_startwith {
-	my $self = shift;
-	my $client = shift;
+    my $self = shift;
+    my $client = shift;
 
-	my $tag = shift;
-	my $subfield = shift;
-	my $value = shift;
-	my $limit = shift || 10;
-	my $page = shift || 0;
+    my $tag = shift;
+    my $subfield = shift;
+    my $value = shift;
+    my $limit = shift || 10;
+    my $page = shift || 0;
 
-	my $offset = $limit * abs($page);
-	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+    my $ref_limit = $limit;
+    my $offset = $limit * abs($page);
+    my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
-	my @ref_tags = ();
-	# .refs variant includes 4xx and 5xx variants for see / see also
-	foreach my $tagname (@$tag) {
-		push(@ref_tags, $tagname);
-		if ($self->api_name =~ /\.refs\./) {
-			push(@ref_tags, '4' . substr($tagname, 1, 2));
-			push(@ref_tags, '5' . substr($tagname, 1, 2));
-		}
-	}
+    my @ref_tags = ();
+    # .refs variant includes 4xx and 5xx variants for see / see also
+    foreach my $tagname (@$tag) {
+        push(@ref_tags, $tagname);
+        if ($self->api_name =~ /\.refs\./) {
+            push(@ref_tags, '4' . substr($tagname, 1, 2));
+            push(@ref_tags, '5' . substr($tagname, 1, 2));
+        }
+    }
+    # We'll remove dupe record IDs that turn up due to 4xx and 5xx matches,
+    # so leave some room for expansion
+    if ($self->api_name =~ /\.refs\./) {
+        $ref_limit *= 2;
+    }
 
-	my @list = ();
+    my @list = ();
 
-	if ($page < 0) {
-		# Don't skip the first actual page of results in descending order
-		$offset = $offset - $limit;
+    if ($page < 0) {
+        # Don't skip the first actual page of results in descending order
+        $offset = $offset - $limit;
 
-		my $before = $_storage->request(
-			"open-ils.cstore.json_query.atomic",
-			{ select	=> { afr => [qw/record value/] },
-			  from		=> { 'afr', 'are' },
-			  where		=> {
-				'+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => lc($value) } },
-				'+are' => { deleted => 'f' }
-			  },
-			  order_by	=> { afr => { value => 'desc' } },
-			  limit		=> $limit,
-			  offset	=> $offset
-			}
-		)->gather(1);
-		push @list, map { $_->{record} } reverse(@$before);
-	}
+        my $before = $_storage->request(
+            "open-ils.cstore.json_query.atomic",
+            { select    => { afr => [qw/record value/] },
+              from      => { 'afr', 'are' },
+              where     => {
+                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => lc($value) } },
+                '+are' => { deleted => 'f' }
+              },
+              order_by  => { afr => { value => 'desc' } },
+              limit     => $ref_limit,
+              offset    => $offset,
+            }
+        )->gather(1);
+        push @list, map { $_->{record} } reverse(@$before);
+    }
 
-	if ($page >= 0) {
-		my $after = $_storage->request(
-			"open-ils.cstore.json_query.atomic",
-			{ select	=> { afr => [qw/record value/] },
-			  from		=> { 'afr', 'are' },
-			  where		=> {
-				'+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => lc($value) } },
-				'+are' => { deleted => 'f' }
-			  },
-			  order_by	=> { afr => { value => 'asc' } },
-			  limit		=> $limit,
-			  offset	=> $offset
-			}
-		)->gather(1);
-		push @list, map { $_->{record} } @$after;
-	}
+    if ($page >= 0) {
+        my $after = $_storage->request(
+            "open-ils.cstore.json_query.atomic",
+            { select    => { afr => [qw/record value/] },
+              from      => { 'afr', 'are' },
+              where     => {
+                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => lc($value) } },
+                '+are' => { deleted => 'f' }
+              },
+              order_by  => { afr => { value => 'asc' } },
+              limit     => $ref_limit,
+              offset    => $offset,
+            }
+        )->gather(1);
+        push @list, map { $_->{record} } @$after;
+    }
 
-	return \@list;
+    my @retlist = ();
+    my %seen;
+    if ($page < 1) {
+        foreach my $record (reverse @list) {
+            next if exists $seen{$record};
+            unshift @retlist, $record;
+            $seen{$record} = 1;
+            last if scalar(@retlist) == $limit;
+        }
+    } else {
+        foreach my $record (@list) {
+            next if exists $seen{$record};
+            push @retlist, $record;
+            $seen{$record} = 1;
+            last if scalar(@retlist) == $limit;
+        }
+    }
+
+    return \@retlist;
 }
 __PACKAGE__->register_method(
 	method    => 'authority_tag_sf_startwith',
