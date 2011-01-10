@@ -385,9 +385,11 @@ function uEditFetchUserSettings(userId) {
     var names = userSettingTypes.map(function(obj) { return obj.name() });
 
     /* fetch any values set for this user */
-    userSettings = fieldmapper.standardRequest(
-        ['open-ils.actor', 'open-ils.actor.patron.settings.retrieve.authoritative'],
-        {params : [openils.User.authtoken, userId, names]});
+    if(userId) {
+        userSettings = fieldmapper.standardRequest(
+            ['open-ils.actor', 'open-ils.actor.patron.settings.retrieve.authoritative'],
+            {params : [openils.User.authtoken, userId, names]});
+    }
 }
 
 
