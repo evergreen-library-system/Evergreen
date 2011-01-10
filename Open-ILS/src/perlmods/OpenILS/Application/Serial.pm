@@ -965,12 +965,34 @@ __PACKAGE__->register_method(
     }
 );
 
+# TODO: reset/delete claims information once implemented
+# XXX: deal with emptied call numbers here?
+__PACKAGE__->register_method(
+    method    => 'unitize_items',
+    api_name  => 'open-ils.serial.reset_items',
+    api_level => 1,
+    argc      => 1,
+    signature => {
+        desc     => 'Resets the items to Expected, updates the shelving unit (deleting the shelving unit if empty), and updates the summaries',
+        'params' => [ {
+                 name => 'items',
+                 desc => 'array of serial items',
+                 type => 'array'
+            }
+        ],
+        'return' => {
+            desc => 'Returns number of reset items (num_items)',
+            type => 'hashref'
+        }
+    }
+);
+
 sub unitize_items {
     my ($self, $conn, $auth, $items, $barcodes) = @_;
 
-    my( $reqr, $evt ) = $U->checkses($auth);
-    return $evt if $evt;
-    my $editor = new_editor(requestor => $reqr, xact => 1);
+    my $editor = new_editor("authtoken" => $auth, "xact" => 1);
+    return $editor->die_event unless $editor->checkauth;
+    return $editor->die_event unless $editor->allowed("RECEIVE_SERIAL");
     $self->api_name =~ /serial\.(\w*)_items/;
     my $mode = $1;
     
@@ -999,6 +1021,13 @@ sub unitize_items {
         if ($mode eq 'receive') {
             $item->date_received('now');
             $item->status('Received');
+        } elsif ($mode eq 'reset') {
+            # clear date_received
+            $item->clear_date_received;
+            # Set status to 'Expected'
+            $item->status('Expected');
+            # remove from unit
+            $item->clear_unit;
         }
 
         # check for types to trigger summary updates
@@ -1058,6 +1087,13 @@ sub unitize_items {
         return $evt if $evt;
     }
 
+    # cleanup 'dead' units (units which are now emptied of their items)
+    my $dead_units = $editor->search_serial_unit([{'+sitem' => {'id' => undef}, 'deleted' => 'f'}, {'join' => {'sitem' => {'type' => 'left'}}}]);
+    foreach my $unit (@$dead_units) {
+        _delete_sunit($editor, undef, $unit);
+        delete $found_unit_ids{$unit->id};
+    }
+
     # deal with unit level labels
     foreach my $unit_id (keys %found_unit_ids) {
 
@@ -1065,13 +1101,6 @@ sub unitize_items {
         # TODO remove 'Bindery' from this search (leaving it in for now for backwards compatibility with any current test environment data)
         my $issuances = $editor->search_serial_issuance([ {"+sitem" => {"unit" => $unit_id, "status" => ["Received", "Bindery"]}}, {"join" => {"sitem" => {}}, "order_by" => {"siss" => "date_published"}} ]);
         #TODO: evt on search failure
-
-        my ($mfhd, $formatted_parts) = _summarize_contents($editor, $issuances);
-
-        # special case for single formatted_part (may have summarized version)
-        if (@$formatted_parts == 1) {
-            #TODO: MFHD.pm should have a 'format_summary' method for this
-        }
 
         # retrieve and update unit contents
         my $sunit;
@@ -1087,28 +1116,13 @@ sub unitize_items {
             $sdist = $sdist->[0];
         }
 
-        $sunit->detailed_contents($sdist->unit_label_prefix . ' '
-                    . join(', ', @$formatted_parts) . ' '
-                    . $sdist->unit_label_suffix);
+        _prepare_unit_label($editor, $sunit, $sdist, $issuances);
 
-        $sunit->summary_contents($sunit->detailed_contents); #TODO: change this when real summary contents are available
-
-        # create sort_key by left padding numbers to 6 digits
-        my $sort_key = $sunit->detailed_contents;
-        $sort_key =~ s/(\d+)/sprintf '%06d', $1/eg; # this may need improvement
-        $sunit->sort_key($sort_key);
-        
         my $evt = _update_sunit($editor, undef, $sunit);
         return $evt if $evt;
     }
 
-    # cleanup 'dead' units (units which are now emptied of their items)
-    my $dead_units = $editor->search_serial_unit([{'+sitem' => {'id' => undef}, 'deleted' => 'f'}, {'join' => {'sitem' => {'type' => 'left'}}}]);
-    foreach my $unit (@$dead_units) {
-        _delete_sunit($editor, undef, $unit);
-    }
-
-    if ($mode eq 'receive') { # the summary holdings do not change when binding
+    if ($mode ne 'bind') { # the summary holdings do not change when binding
         # deal with stream level summaries
         # summaries will be built from the "primary" stream only, that is, the stream with the lowest ID per distribution
         # (TODO: consider direct designation)
@@ -1143,7 +1157,7 @@ sub unitize_items {
             foreach my $type (keys %{$found_types{$stream_id}}) {
                 my $issuances = $editor->search_serial_issuance([ {"+sitem" => {"stream" => $stream_id, "status" => "Received"}, "+scap" => {"type" => $type}}, {"join" => {"sitem" => {}, "scap" => {}}, "order_by" => {"siss" => "date_published"}} ]);
                 #TODO: evt on search failure
-                $evt = _prepare_summaries($editor, $issuances, $sdist_id, $type);
+                my $evt = _prepare_summaries($editor, $issuances, $sdist_id, $type);
                 if ($U->event_code($evt)) {
                     $editor->rollback;
                     return $evt;
@@ -1207,12 +1221,12 @@ sub _issuances_received {
     return [ map { $e->retrieve_serial_issuance($_) } keys %$uniq ];
 }
 
-# XXX _prepare_unit_label() duplicates some code from unitize_items().
-# Hopefully we can unify code paths down the road.
+# _prepare_unit_label populates the detailed_contents, summary_contents, and
+# sort_key fields for a given unit based on a given set of issuances
 sub _prepare_unit_label {
-    my ($e, $sunit, $sdist, $issuance) = @_;
+    my ($e, $sunit, $sdist, $issuances) = @_;
 
-    my ($mfhd, $formatted_parts) = _summarize_contents($e, [$issuance]);
+    my ($mfhd, $formatted_parts) = _summarize_contents($e, $issuances);
 
     # special case for single formatted_part (may have summarized version)
     if (@$formatted_parts == 1) {
@@ -1436,7 +1450,7 @@ sub receive_items_one_unit_per {
             }
 
             my $evt = _prepare_unit_label(
-                $e, $user_unit, $sdist, $item->issuance
+                $e, $user_unit, $sdist, [$item->issuance]
             );
             if ($U->event_code($evt)) {
                 $e->rollback;
