@@ -2,6 +2,7 @@
 use XML::LibXML;
 use XML::LibXSLT;
 use Unicode::Normalize;
+use Data::Dumper;
 
 # ... and this has some handy common methods
 use OpenILS::Application::AppUtils;
@@ -1014,13 +1015,6 @@ sub authority_tag_sf_browse {
             push(@ref_tags, '5' . substr($tagname, 1, 2));
         }
     }
-    # We'll remove dupe record IDs that turn up due to 4xx and 5xx matches,
-    # so leave some room for expansion
-    if ($self->api_name =~ /\.refs\./) {
-        $after_limit *= 2;
-        $before_limit *= 2;
-    }
-
     my @list = ();
 
     if ($page < 0) {
@@ -1057,22 +1051,18 @@ sub authority_tag_sf_browse {
         push @list, map { $_->{record} } @$after;
     }
 
+    # If we're not pulling in see/see also references, just return the raw list
+    if ($self->api_name !~ /\.refs\./) {
+        return \@list;
+    } 
+
+    # Remove dupe record IDs that turn up due to 4xx and 5xx matches
     my @retlist = ();
     my %seen;
-    if ($page < 0) {
-        foreach my $record (reverse @list) {
-            next if exists $seen{$record};
-            unshift @retlist, $record;
-            $seen{$record} = 1;
-            last if scalar(@retlist) == $page_size;
-        }
-    } else {
-        foreach my $record (@list) {
-            next if exists $seen{$record};
-            push @retlist, $record;
-            $seen{$record} = 1;
-            last if scalar(@retlist) == $page_size;
-        }
+    foreach my $record (@list) {
+        next if exists $seen{$record};
+        push @retlist, int($record);
+        $seen{$record} = 1;
     }
 
     return \@retlist;
@@ -1526,11 +1516,6 @@ sub authority_tag_sf_startwith {
             push(@ref_tags, '5' . substr($tagname, 1, 2));
         }
     }
-    # We'll remove dupe record IDs that turn up due to 4xx and 5xx matches,
-    # so leave some room for expansion
-    if ($self->api_name =~ /\.refs\./) {
-        $ref_limit *= 2;
-    }
 
     my @list = ();
 
@@ -1571,22 +1556,18 @@ sub authority_tag_sf_startwith {
         push @list, map { $_->{record} } @$after;
     }
 
+    # If we're not pulling in see/see also references, just return the raw list
+    if ($self->api_name !~ /\.refs\./) {
+        return \@list;
+    }
+
+    # Remove dupe record IDs that turn up due to 4xx and 5xx matches
     my @retlist = ();
     my %seen;
-    if ($page < 1) {
-        foreach my $record (reverse @list) {
-            next if exists $seen{$record};
-            unshift @retlist, $record;
-            $seen{$record} = 1;
-            last if scalar(@retlist) == $limit;
-        }
-    } else {
-        foreach my $record (@list) {
-            next if exists $seen{$record};
-            push @retlist, $record;
-            $seen{$record} = 1;
-            last if scalar(@retlist) == $limit;
-        }
+    foreach my $record (@list) {
+        next if exists $seen{$record};
+        push @retlist, int($record);
+        $seen{$record} = 1;
     }
 
     return \@retlist;
