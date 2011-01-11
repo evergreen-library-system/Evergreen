@@ -385,8 +385,8 @@ function addInvoiceItem(item) {
         var cost = widgetRegistry.acqii[item.id()].cost_billed.getFormattedValue();
         var msg = dojo.string.substitute(
             localeStrings.INVOICE_CONFIRM_ITEM_DELETE, [
-                cost,
-                widgetRegistry.acqii[item.id()].inv_item_type.getFormattedValue()
+                cost || 0,
+                widgetRegistry.acqii[item.id()].inv_item_type.getFormattedValue() || ''
             ]
         );
         if(!confirm(msg)) return;
