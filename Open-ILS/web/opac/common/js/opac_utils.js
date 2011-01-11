@@ -823,7 +823,11 @@ function checkOrgHiding() {
     if ( findOrgDepth( context_org ) < depth ) {
         return false; // disable org hiding if Original Location doesn't make sense with setting depth (avoids disjointed org selectors)
     }
-    return { 'org' : findOrgUnit(context_org), 'depth' : depth };
+    if (depth) {
+        return { 'org' : findOrgUnit(context_org), 'depth' : depth };
+    } else {
+        return false;
+    }
 }
 
 var orgTreeSelector;
