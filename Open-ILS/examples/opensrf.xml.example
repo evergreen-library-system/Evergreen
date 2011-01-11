@@ -335,8 +335,6 @@ vim:et:ts=4:sw=4:
 
         </added_content>
 
-
-
         <!-- no apps are enabled globally by default -->
         <activeapps/> 
 
@@ -362,52 +360,26 @@ vim:et:ts=4:sw=4:
         <apps>
             <!-- Acquisitions server -->
             <open-ils.acq>
-                <keepalive>5</keepalive>
-                <stateless>1</stateless>
-                <language>perl</language>
-                <implementation>OpenILS::Application::Acq</implementation>
-                <max_requests>100</max_requests>
-                <unix_config>
-                    <unix_sock>open-ils.acq_unix.sock</unix_sock>
-                    <unix_pid>open-ils.acq_unix.pid</unix_pid>
-                    <unix_log>open-ils.acq_unix.log</unix_log>
-                    <max_requests>100</max_requests>
-                    <min_children>1</min_children>
-                    <max_children>15</max_children>
-                    <min_spare_children>1</min_spare_children>
-                    <max_spare_children>5</max_spare_children>
-                </unix_config>
-            </open-ils.acq>
-
-            <!-- Authentication server -->
-            <open-ils.auth>
-
                 <!-- how long to wait between stateful requests before the child process re-joins the pool -->
                 <keepalive>5</keepalive>
-
                 <!-- true if this service support stateless requests -->
                 <stateless>1</stateless>
-
                 <!-- implementation language -->
-                <language>c</language>
-
-                <!-- library to plugin -->
-                <implementation>oils_auth.so</implementation>
-
-                <!-- maximum required opensrf requests within a stateful connection -->
-                <max_requests>93</max_requests>
-
+                <language>perl</language>
+                <!-- name of the library that implements this application -->
+                <implementation>OpenILS::Application::Acq</implementation>
+                <!-- maximum OpenSRF REQUEST within a stateful connection -->
+                <max_requests>100</max_requests>
                 <unix_config>
                     <!--
                     maximum number of top level requests coming to 
                     this child before the child is recycled
                     -->
-                    <max_requests>1000</max_requests>
+                    <max_requests>100</max_requests>
                     <!-- min children to fork -->
                     <min_children>1</min_children>
                     <!-- max possible children to fork -->
                     <max_children>15</max_children>
-
                     <!--
                     C forking implementation does not support 
                     min/max idle children, but may in the future
@@ -417,9 +389,26 @@ vim:et:ts=4:sw=4:
                     <min_spare_children>1</min_spare_children>
                     <!-- max idle children -->
                     <max_spare_children>5</max_spare_children>
-
+                    <!-- currently, only Perl uses the following 3 settings -->
+                    <unix_sock>open-ils.acq_unix.sock</unix_sock>
+                    <unix_pid>open-ils.acq_unix.pid</unix_pid>
+                    <unix_log>open-ils.acq_unix.log</unix_log>
                 </unix_config>
+            </open-ils.acq>
 
+            <!-- Authentication server -->
+            <open-ils.auth>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>c</language>
+                <implementation>oils_auth.so</implementation>
+                <unix_config>
+                    <max_requests>1000</max_requests>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
                 <app_settings>
                     <!-- defined app-specific settings here -->
                     <default_timeout>
@@ -432,7 +421,6 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.auth>
 
-
             <!-- Generic search server -->
             <open-ils.search>
                 <keepalive>5</keepalive>
@@ -441,8 +429,6 @@ vim:et:ts=4:sw=4:
                 <implementation>OpenILS::Application::Search</implementation>
                 <max_requests>93</max_requests>
                 <unix_config>
-
-                    <!-- the following 3 settings are currently used by Perl services only -->
                     <unix_sock>open-ils.search_unix.sock</unix_sock>
                     <unix_pid>open-ils.search_unix.pid</unix_pid>
                     <unix_log>open-ils.search_unix.log</unix_log>
@@ -624,7 +610,6 @@ vim:et:ts=4:sw=4:
                 <stateless>1</stateless>
                 <language>c</language>
                 <implementation>osrf_math.so</implementation>
-                <max_requests>97</max_requests>
                 <unix_config>
                     <unix_sock>opensrf.math_unix.sock</unix_sock>
                     <unix_pid>opensrf.math_unix.pid</unix_pid>
@@ -642,7 +627,6 @@ vim:et:ts=4:sw=4:
                 <stateless>1</stateless>
                 <language>c</language>
                 <implementation>osrf_dbmath.so</implementation>
-                <max_requests>99</max_requests>
                 <unix_config>
                     <max_requests>1000</max_requests>
                     <unix_log>opensrf.dbmath_unix.log</unix_log>
@@ -846,13 +830,11 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.storage>
 
-
             <open-ils.cstore>
                 <keepalive>6</keepalive>
                 <stateless>1</stateless>
                 <language>C</language>
                 <implementation>oils_cstore.so</implementation>
-                <max_requests>200</max_requests>
                 <unix_config>
                     <max_requests>1000</max_requests>
                     <min_children>1</min_children>
@@ -876,14 +858,12 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.cstore>
 
-
             <open-ils.pcrud>
                 <keepalive>6</keepalive>
                 <migratable>1</migratable>
                 <stateless>1</stateless>
                 <language>C</language>
                 <implementation>oils_pcrud.so</implementation>
-                <max_requests>200</max_requests>
 
                 <unix_config>
                     <unix_log>open-ils.pcrud.log</unix_log>
@@ -912,13 +892,11 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.pcrud>
 
-
             <open-ils.qstore>
                 <keepalive>6</keepalive>
                 <stateless>1</stateless>
                 <language>C</language>
                 <implementation>oils_qstore.so</implementation>
-                <max_requests>200</max_requests>
                 <unix_config>
                     <max_requests>1000</max_requests>
                     <min_children>1</min_children>
@@ -940,7 +918,6 @@ vim:et:ts=4:sw=4:
                     </database>
                 </app_settings>
             </open-ils.qstore>
-
 
             <opensrf.settings>
                 <keepalive>1</keepalive>
@@ -996,13 +973,11 @@ vim:et:ts=4:sw=4:
                 </unix_config>
             </open-ils.reporter>
 
-
             <open-ils.reporter-store>
                 <keepalive>6</keepalive>
                 <stateless>1</stateless>
                 <language>C</language>
                 <implementation>oils_rstore.so</implementation>
-                <max_requests>95</max_requests>
                 <unix_config>
                     <max_requests>400</max_requests>
                     <min_children>1</min_children>
@@ -1167,7 +1142,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.ingest</appname>  
                 <appname>open-ils.reporter</appname>  
                 <appname>open-ils.reporter-store</appname>  
-                <appname>open-ils.resolver</appname>  
+                <!-- <appname>open-ils.resolver</appname> -->
                 <appname>open-ils.permacrud</appname>  
                 <appname>open-ils.pcrud</appname>  
                 <appname>open-ils.trigger</appname>  
