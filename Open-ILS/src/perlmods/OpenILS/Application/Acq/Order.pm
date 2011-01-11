@@ -1267,7 +1267,7 @@ sub upload_records {
         $args{picklist} = $picklist->id if $picklist;
         if($po) {
             $args{purchase_order} = $po->id;
-            $args{state} = 'order-pending';
+            $args{state} = 'pending-order';
         }
 
         my $li = create_lineitem($mgr, %args) or return $mgr->editor->die_event;
