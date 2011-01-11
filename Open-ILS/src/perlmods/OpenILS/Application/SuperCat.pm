@@ -2,7 +2,6 @@
 use XML::LibXML;
 use XML::LibXSLT;
 use Unicode::Normalize;
-use Data::Dumper;
 
 # ... and this has some handy common methods
 use OpenILS::Application::AppUtils;
