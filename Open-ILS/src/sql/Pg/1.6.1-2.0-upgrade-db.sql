@@ -15517,38 +15517,66 @@ INSERT INTO config.metabib_class ( name, label ) VALUES ( 'identifier', oils_i18
 -- sequence value to leave room for additional stock indexes in subsequent
 -- releases (hello!), so custom added indexes will conflict with these.
 
--- The following function just adds 100 to the ID of an existing custom
--- index (and any references to that index). So this could break if a site
+-- The following function changes the ID of an existing custom index
+-- (and any references to that index) to the target ID; if no target ID
+-- is supplied, then it adds 100 to the source ID. So this could break if a site
 -- has custom indexes at both 16 and 116, for example - but if that's the
 -- case anywhere, I'm throwing my hands up in surrender:
 
-CREATE OR REPLACE FUNCTION config.bump_metabib_field(custom_id BIGINT) RETURNS INT AS $func$
+CREATE OR REPLACE FUNCTION config.modify_metabib_field(source INT, target INT) RETURNS INT AS $func$
 DECLARE
     f_class TEXT;
     check_id INT;
+    target_id INT;
 BEGIN
-    SELECT field_class INTO f_class FROM config.metabib_field WHERE id = custom_id;
+    SELECT field_class INTO f_class FROM config.metabib_field WHERE id = source;
     IF NOT FOUND THEN
         RETURN 0;
     END IF;
-    SELECT id FROM config.metabib_field INTO check_id WHERE id = custom_id + 100;
+    IF target IS NULL THEN
+        target_id = source + 100;
+    ELSE
+        target_id = target;
+    END IF;
+    SELECT id FROM config.metabib_field INTO check_id WHERE id = target_id;
     IF FOUND THEN
-        RAISE NOTICE 'Cannot bump config.metabib_field.id from % to %; the target ID already exists.', custom_id, custom_id + 100;
+        RAISE NOTICE 'Cannot bump config.metabib_field.id from % to %; the target ID already exists.', source, target_id;
         RETURN 0;
     END IF;
-    UPDATE config.metabib_field SET id = id + 100 WHERE id = custom_id;
-    EXECUTE ' UPDATE metabib.' || f_class || '_field_entry SET field = field + 100 WHERE field = ' || custom_id;
-    UPDATE config.metabib_field_index_norm_map SET field = field + 100 WHERE field = custom_id;
-    UPDATE search.relevance_adjustment SET field = field + 100 WHERE field = custom_id;
+    UPDATE config.metabib_field SET id = target_id WHERE id = source;
+    EXECUTE ' UPDATE metabib.' || f_class || '_field_entry SET field = ' || target_id || ' WHERE field = ' || source;
+    UPDATE config.metabib_field_index_norm_map SET field = target_id WHERE field = source;
+    UPDATE search.relevance_adjustment SET field = target_id WHERE field = source;
     RETURN 1;
 END;
 $func$ LANGUAGE PLPGSQL;
 
+-- To avoid sequential scans against the large metabib.*_field_entry tables
+CREATE INDEX metabib_author_field_entry_field ON metabib.author_field_entry(field);
+CREATE INDEX metabib_keyword_field_entry_field ON metabib.keyword_field_entry(field);
+CREATE INDEX metabib_series_field_entry_field ON metabib.series_field_entry(field);
+CREATE INDEX metabib_subject_field_entry_field ON metabib.subject_field_entry(field);
+CREATE INDEX metabib_title_field_entry_field ON metabib.title_field_entry(field);
+
 -- Now update those custom indexes
-SELECT config.bump_metabib_field(id) FROM config.metabib_field WHERE id > 15 and id < 100;
+SELECT config.modify_metabib_field(id, NULL)
+    FROM config.metabib_field
+    WHERE id > 15 AND id < 100 AND field_class || name <> 'subjectcomplete';
+
+-- Ensure "subject|complete" is id = 16, if it exists
+SELECT config.modify_metabib_field(id, 16)
+    FROM config.metabib_field
+    WHERE id <> 16 AND field_class || name = 'subjectcomplete';
 
 -- And bump the config.metabib_field sequence to a minimum of 100 to avoid problems in the future
 SELECT setval('config.metabib_field_id_seq', GREATEST(100, (SELECT MAX(id) + 1 FROM config.metabib_field)));
+
+-- And drop the temporary indexes that we just created
+DROP INDEX metabib.metabib_author_field_entry_field;
+DROP INDEX metabib.metabib_keyword_field_entry_field;
+DROP INDEX metabib.metabib_series_field_entry_field;
+DROP INDEX metabib.metabib_subject_field_entry_field;
+DROP INDEX metabib.metabib_title_field_entry_field;
 
 -- Now we can go ahead and insert the additional stock indexes
 
