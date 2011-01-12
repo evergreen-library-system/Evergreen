@@ -224,18 +224,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         break;
 
                     case 'money':
-                        dojo.require('dijit.form.CurrencyTextBox');
-                        // plug in fix for Dojo bug http://bugs.dojotoolkit.org/ticket/9438
-                        // to allow entry of negative values; won't be needed after we upgrade
-                        // to Dojo 1.5
-                        dojo.extend(dijit.form.CurrencyTextBox, {
-                            regExpGen: function(constraints){
-                                return this._focused ?
-                                    dojo.number.regexp(dojo.mixin(dojo.mixin(this.editOptions, constraints), {type: 'decimal'})) :
-                                    dojo.currency.regexp(constraints);
-                            }
-                        });
-                        this.widget = new dijit.form.CurrencyTextBox(this.dijitArgs, this.parentNode);
+                        // dojo.require('dijit.form.CurrencyTextBox');
+                        // the CurrencyTextBox dijit is broken in Dojo 1.3; upon upgrading
+                        // to Dojo 1.5 or later, should re-evaluate work-around use of dijit.form.NumberTextBox.
+                        // See https://bugs.launchpad.net/evergreen/+bug/702117
+                        dojo.require('dijit.form.NumberTextBox');
+                        this.dijitArgs = dojo.mixin({constraints:{places:'0,2'}}, this.dijitArgs || {});
+                        this.widget = new dijit.form.NumberTextBox(this.dijitArgs, this.parentNode);
                         break;
 
                     case 'int':
