@@ -5,7 +5,7 @@
         <span dojoType="dijit.form.Button"
             onclick="iss_grid.refresh();">Refresh Grid</span>
         <span dojoType="dijit.form.Button"
-            onclick="iss_grid.showCreateDialog();">New Issuance</span>
+            onclick="iss_grid.showCreatePane();">New Issuance</span>
         <span dojoType="dijit.form.Button"
             onclick="iss_grid.deleteSelected();">Delete Selected</span>
     </div>

@@ -77,6 +77,7 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
                     dojo.create("td", null, tr)
                 );
                 input.startup();
+                wizard.preset_input_by_date(input, field.caption.toLowerCase());
                 inputs.push({"subfield": field.subfield, "input": input});
             }
         );
@@ -109,6 +110,30 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
             )
         );
         dojo.place(table, div, "only");
+    }
+
+    /* Approximate a season value given a date using the same logic as
+     * OpenILS::Utils::MFHD::Holding::chron_to_date().
+     */
+    function _loose_season(D) {
+        var m = D.getMonth() + 1;
+        var d = D.getDate();
+
+        if (
+            (m == 1 || m == 2) || (m == 12 && d >= 21) || (m == 3 && d < 20)
+        ) {
+            return 24;  /* MFHD winter */
+        } else if (
+            (m == 4 || m == 5) || (m == 3 && d >= 20) || (m == 6 && d < 21)
+        ) {
+            return 21;  /* spring */
+        } else if (
+            (m == 7 || m == 8) || (m == 6 && d >= 21) || (m == 9 && d < 22)
+        ) {
+            return 22;  /* summer */
+        } else {
+            return 23;  /* autumn */
+        }
     }
 
     dojo.declare(
@@ -161,7 +186,31 @@ if (!dojo._hasResource["openils.widget.HoldingCode"]) {
             "update_scap_selector": function(selector) {
                 this.args.scap_selector = selector;
                 this.attr("value", "");
-            }
+            },
+
+            "preset_input_by_date": function(input, chron_part) {
+                try {
+                    input.attr("value", {
+                            /* NOTE: week is specifically not covered. I'm
+                             * not sure there's an acceptably standard way
+                             * to number the weeks in a year.  Do we count
+                             * from the week of January 1? Or the first week
+                             * with a day of the week matching our example
+                             * date?  Do weeks run Mon-Sun or Sun-Sat?
+                             */
+                            "year": function(d) { return d.getFullYear(); },
+                            "season": function(d) { return _loose_season(d); },
+                            "month": function(d) { return d.getMonth() + 1; },
+                            "day": function(d) { return d.getDate(); },
+                            "hour": function(d) { return d.getHours(); },
+                        }[chron_part](this.date_widget.attr("value"))
+                    );
+                } catch (E) {
+                    ; /* Oh well; can't win them all. */
+                }
+            },
+
+            "date_widget": null
         }
     );
 }

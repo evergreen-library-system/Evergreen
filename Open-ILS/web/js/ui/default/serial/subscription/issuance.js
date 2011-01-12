@@ -41,6 +41,12 @@ function fresh_scap_selector(grid) {
                     };
                     grid.overrideEditWidgets.holding_code.startup();
                 }
+
+                grid.overrideEditWidgets.date_published =
+                    new dijit.form.DateTextBox();
+                grid.overrideEditWidgets.date_published.shove = {};
+                grid.overrideEditWidgets.holding_code.date_widget =
+                    grid.overrideEditWidgets.date_published;
             }
         }
     );
