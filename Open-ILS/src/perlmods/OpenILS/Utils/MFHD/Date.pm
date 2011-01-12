@@ -167,7 +167,7 @@ sub nth_week_of_month {
         );
     } else {
         # count backwards
-        $nth_day->subtract(days => ($day - $dow + 7) % 7);
+        $nth_day->subtract(days => ($dow - $day + 7) % 7);
 
         # 99: last week of month, 98: second last, etc.
         for (my $i = 99 - $week; $i > 0; $i--) {
@@ -196,15 +196,10 @@ sub check_date {
     if (!defined $day) {
         # MMWW
         return (
-            ($dt->month == $month)
-              && (
-                ($dt->week_of_month == $weekno)
-                || (
-                    $weekno >= 97
-                    && ($dt->week_of_month ==
-                        nth_week_of_month($dt, $weekno, $day)->week_of_month)
-                )
-              )
+            ($dt->month == $month) && (
+                $dt->week_of_month ==
+                    nth_week_of_month($dt, $weekno, $day)->week_of_month
+            )
         );
     }
 
