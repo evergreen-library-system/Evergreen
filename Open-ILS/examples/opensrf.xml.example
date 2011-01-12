@@ -89,7 +89,7 @@ vim:et:ts=4:sw=4:
             </callfile_lines> -->
         </telephony>
 
-        <!-- Overdue notices -->
+        <!-- Overdue notices: DEPRECATED in 2.0 in favour of Action/Trigger Notifications -->
         <overdue>
 
             <!-- optionally, you can define a sender address per notice type -->
@@ -107,13 +107,13 @@ vim:et:ts=4:sw=4:
                      will be appended to the notice file only if the patron has no valid email address.  -->
                 <file_append>noemail</file_append>
                 <!-- do we attempt email notification? -->
-                <email_notify>true</email_notify>
+                <email_notify>false</email_notify>
                 <!-- notice template file -->
                 <email_template>LOCALSTATEDIR/data/templates/overdue_7day.example</email_template>
             </notice>
         </overdue>
 
-        <!-- Courtesy notices -->
+        <!-- Courtesy notices: DEPRECATED in 2.0 in favour of Action/Trigger Notifications -->
         <predue>
             <notice>
                 <!-- All circulations that circulate between 5 and 13 days -->
@@ -124,7 +124,7 @@ vim:et:ts=4:sw=4:
                 <!-- notify at 1 day before the due date -->
                 <notify_interval>1 day</notify_interval>
                 <file_append>false</file_append>
-                <email_notify>true</email_notify>
+                <email_notify>false</email_notify>
                 <email_template>LOCALSTATEDIR/data/templates/predue_1day.example</email_template>
             </notice>
         </predue>
@@ -416,7 +416,7 @@ vim:et:ts=4:sw=4:
                         <opac>420</opac>
                         <staff>7200</staff>
                         <temp>300</temp>
-						<persist>2 weeks</persist>
+                        <persist>2 weeks</persist>
                     </default_timeout>
                 </app_settings>
             </open-ils.auth>
@@ -681,7 +681,7 @@ vim:et:ts=4:sw=4:
                 </unix_config>
                 <app_settings>
                     <notify_hold>
-                        <email>true</email> <!-- set to false to disable hold notice emails -->
+                        <email>false</email> <!-- set to false to disable hold notice emails -->
                     </notify_hold>
 
                     <!-- circulation policy scripts -->
