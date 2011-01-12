@@ -238,6 +238,7 @@ CPAN_MODULES = \
 CPAN_MODULES_MORE = \
     Business::CreditCard::Object \
     MARC::Record \
+    Net::SSH2 \
     UUID::Tiny
 
 # Are we sure most distros don't come with an acceptable version of Safe.pm?
