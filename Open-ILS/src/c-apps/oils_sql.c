@@ -261,7 +261,7 @@ int oilsIsDBConnected( dbi_conn handle ) {
 		// known way to detect this condition via the dbi library is by looking at the error
 		// message.  This approach will break if the language or wording of the message ever
 		// changes.
-		// Note: the dbi_conn_ping function purports to determine whether the doatabase
+		// Note: the dbi_conn_ping function purports to determine whether the database
 		// connection is live, but at this writing this function is unreliable and useless.
 		static const char* ok_msg = "ERROR:  current transaction is aborted, commands "
 			"ignored until end of transaction block\n";
