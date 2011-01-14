@@ -447,7 +447,8 @@ sub compile_query {
 		next unless ( exists $services{$service}->{attrs}->{$_} );
 		$str .= '@attr 1=' . $services{$service}->{attrs}->{$_}->{code} . # add the use attribute
 			' @attr 4=' . $services{$service}->{attrs}->{$_}->{format}; # add the structure attribute
-		if (exists $services{$service}->{attrs}->{$_}->{truncation}){
+		if (exists $services{$service}->{attrs}->{$_}->{truncation}
+                &&  $services{$service}->{attrs}->{$_}->{truncation} >= 0) {
 			$str .= ' @attr 5=' . $services{$service}->{attrs}->{$_}->{truncation};
 		}
 		$str .= " \"" . $$hash{$_} . "\" "; # add the search term
