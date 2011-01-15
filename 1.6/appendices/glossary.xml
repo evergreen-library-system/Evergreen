@@ -412,11 +412,11 @@
 			</indexterm>
 			<glossdef>
 				<para>SIP (Standard Interchange Protocol) is a communications
-				protocol used within Evergreen to transfer data to and from other
-				third party devices, such as RFID and barcode scanners that handle
-				patron and library material information. Version 2.0 (also known as
-				"SIP2") is the current standard. It was originally developed by the
-				3M Corporation.</para>
+				protocol used within Evergreen for transferring data to and from
+				other third party devices, such as RFID and barcode scanners that
+				handle patron and library material information. Version 2.0 (also
+				known as "SIP2") is the current standard. It was originally
+				developed by the 3M Corporation.</para>
 			</glossdef>
 		</glossentry>
 		<glossentry id="srfsh">
