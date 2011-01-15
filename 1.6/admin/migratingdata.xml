@@ -17,7 +17,7 @@
 		are migrating  and the content of the marc records exported from the existing system. The proecedures in this section deal with the process once the data from the existing system 
 		is exporterd into marc records. It does not cover exporting data from your existing non-Evergreen system.</para>
 		<para>Several tools for importing bibliographic records into Evergreen can be found in the Evergreen installation folder 
-		(<filename class="directory">/home/opensrf/Evergreen-ILS-1.6.1.2/Open-ILS/src/extras/import/</filename> ) and are also available from the Evergreen repository 
+		(<filename class="directory">/home/opensrf/Evergreen-ILS-1.6.1.6/Open-ILS/src/extras/import/</filename> ) and are also available from the Evergreen repository 
 		(<link xl:href="http://svn.open-ils.org/trac/ILS/browser/branches/rel_1_6_1/Open-ILS/src/extras/import" xl:title="import scripts - Evergreen repository">
 		http://svn.open-ils.org/trac/ILS/browser/branches/rel_1_6_1/Open-ILS/src/extras/import</link>).</para> 
 		<simplesect>
