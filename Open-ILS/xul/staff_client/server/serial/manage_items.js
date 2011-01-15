@@ -316,40 +316,79 @@ serial.manage_items.prototype = {
                                     success_label = 'bound';
                                 } 
 
-                                // deal with barcodes for *NEW* units
+                                // deal with barcodes and call numbers for *NEW* units
                                 var barcodes = {};
+                                var call_numbers = {};
+                                var call_numbers_by_issuance_id = {};
+
                                 if (obj.current_sunit_id < 0) { // **AUTO** or **NEW** units
-                                    new_unit_barcode = '';
+                                    var new_unit_barcode = '';
+                                    var new_unit_call_number = '';
                                     for (var i = 0; i < list.length; i++) {
                                         var item = list[i];
                                         if (new_unit_barcode) {
                                             barcodes[item.id()] = new_unit_barcode;
+                                            call_numbers[item.id()] = new_unit_call_number;
                                             continue;
                                         }
                                         var prompt_text;
                                         if (obj.current_sunit_id == -1) {
-                                            prompt_text = 'Please enter a barcode for '+item.issuance().label()+ ' from Distribution: '+item.stream().distribution().label()+'/'+item.stream().id()+':';
+                                            prompt_text = 'for '+item.issuance().label()+ ' from Distribution: '+item.stream().distribution().label()+'/'+item.stream().id()+':';
                                         } else { // must be -2
-                                            prompt_text = 'Please enter a barcode for new unit:';
+                                            prompt_text = 'for the new unit:';
                                         }
-                                        var barcode = window.prompt(prompt_text,
-                                            '',
+
+                                        // first barcodes
+                                        var barcode = window.prompt('Please enter a barcode ' + prompt_text,
+                                            '@@AUTO',
                                             'Unit Barcode Prompt');
                                         barcode = String( barcode ).replace(/\s/g,'');
                                         /* Casting a possibly null input value to a String turns it into "null" */
                                         if (!barcode || barcode == 'null') {
                                             alert('Invalid barcode entered, defaulting to system-generated.');
-                                            barcode = 'auto';
-                                        }
-
-                                        var test = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]);
-                                        if (typeof test.ilsevent == 'undefined') {
-                                            alert('Another copy has barcode "' + barcode + '", defaulting to system-generated.');
-                                            barcode = 'auto';
+                                            barcode = '@@AUTO';
+                                        } else {
+                                            var test = obj.network.simple_request('FM_ACP_RETRIEVE_VIA_BARCODE',[ barcode ]);
+                                            if (typeof test.ilsevent == 'undefined') {
+                                                alert('Another copy has barcode "' + barcode + '", defaulting to system-generated.');
+                                                barcode = '@@AUTO';
+                                            }
                                         }
                                         barcodes[item.id()] = barcode;
+
+                                        // now call numbers
+                                        if (typeof call_numbers_by_issuance_id[item.issuance().id()] == 'undefined') {
+                                            var default_cn = 'DEFAULT';
+                                            // for now, let's default to the last created call number if there is one
+                                            // TODO: make this distribution specific
+                                            var acn_list = obj.network.request(
+                                                    'open-ils.pcrud',
+                                                    'open-ils.pcrud.search.acn',
+                                                    [ ses(), {"record" : obj.docid, "owning_lib" : obj.holding_lib, "deleted" : 'f' }, {"order_by" : {"acn" : "create_date DESC"}, "limit" : "1" } ]
+                                            );
+
+                                            if (acn_list) {
+                                                default_cn = acn_list.label();
+                                            }
+                                            var call_number = window.prompt('Please enter/adjust a call number ' + prompt_text,
+                                                default_cn, //TODO: real default by setting
+                                                'Unit Call Number Prompt');
+                                            call_number = String( call_number ).replace(/^\s+/,'').replace(/\s$/,'');
+                                            /* Casting a possibly null input value to a String turns it into "null" */
+                                            if (!call_number || call_number == 'null') {
+                                                alert('Invalid call number entered, setting to "DEFAULT".');
+                                                call_number = 'DEFAULT'; //TODO: real default by setting
+                                            }
+                                            call_numbers[item.id()] = call_number;
+                                            call_numbers_by_issuance_id[item.issuance().id()] = call_number;
+                                        } else {
+                                            // we have already seen this same issuance, so use the same call number
+                                            call_numbers[item.id()] = call_numbers_by_issuance_id[item.issuance().id()];
+                                        }
+
                                         if (obj.current_sunit_id == -2) {
                                             new_unit_barcode = barcode;
+                                            new_unit_call_number = call_number;
                                         }
                                     }
                                 }
@@ -357,7 +396,7 @@ serial.manage_items.prototype = {
                                 var robj = obj.network.request(
                                             'open-ils.serial',
                                             method,
-                                            [ ses(), list, barcodes ]
+                                            [ ses(), list, barcodes, call_numbers ]
                                         );
                                 if (typeof robj.ilsevent != 'undefined') throw(robj); //TODO: catch for override
 
