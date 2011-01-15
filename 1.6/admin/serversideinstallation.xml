@@ -1889,7 +1889,7 @@
 						<title>Starting the Windows installation of <application>VirtualBox</application></title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-1.png" scalefit="0" width="70%"/>
+								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-1.png" scalefit="0" width="60%"/>
 							</imageobject>
 						</mediaobject>
 					</figure>
@@ -1897,7 +1897,7 @@
 						<title>Welcome to <application>VirtualBox</application> setup wizard</title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-2.png" scalefit="0" width="70%"/>
+								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-2.png" scalefit="0" width="60%"/>
 							</imageobject>
 						</mediaobject>
 					</figure>
@@ -1905,7 +1905,7 @@
 						<title>Accept the license agreement</title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-3.png" scalefit="0" width="70%"/>
+								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-3.png" scalefit="0" width="60%"/>
 							</imageobject>
 						</mediaobject>
 					</figure>
@@ -1913,7 +1913,7 @@
 						<title>Waiting for installation to complete</title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-4.png" scalefit="0" width="70%"/>
+								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-4.png" scalefit="0" width="60%"/>
 							</imageobject>
 						</mediaobject>
 					</figure>
@@ -1921,7 +1921,7 @@
 						<title>Installation is complete; start <application>VirtualBox</application></title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-5.png" scalefit="0" width="70%"/>
+								<imagedata fileref="../media/serversideinstallation-virtual-vbox-install-5.png" scalefit="0" width="60%"/>
 							</imageobject>
 						</mediaobject>
 					</figure>
@@ -2169,7 +2169,7 @@
 						<title>New software image added to <application>VirtualBox</application></title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-4.png" scalefit="0" width="40%"/>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-4.png" scalefit="0" width="60%"/>
 							</imageobject>
 						</mediaobject>
 					</figure>
@@ -2177,7 +2177,7 @@
 						<title>Creating a new VM</title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-5.png" scalefit="0" width="50%"/>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-5.png" scalefit="0" width="60%"/>
 							</imageobject>
 						</mediaobject>
 					</figure>
@@ -2185,7 +2185,7 @@
 						<title>Setting the VM name and OS type</title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-6.png" scalefit="0" width="50%"/>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-6.png" scalefit="0" width="60%"/>
 							</imageobject>
 						</mediaobject>
 					</figure>
@@ -2193,7 +2193,7 @@
 						<title>Setting memory size</title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-7.png" scalefit="0" width="50%"/>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-7.png" scalefit="0" width="60%"/>
 							</imageobject>
 						</mediaobject>
 					</figure>
@@ -2201,7 +2201,7 @@
 						<title>Setting up the Virtual Hard Disk</title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-8.png" scalefit="0" width="50%"/>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-8.png" scalefit="0" width="60%"/>
 							</imageobject>
 						</mediaobject>
 					</figure>
@@ -2209,7 +2209,7 @@
 						<title>Finishing definition of new VM</title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-9.png" scalefit="0" width="50%"/>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-9.png" scalefit="0" width="60%"/>
 							</imageobject>
 						</mediaobject>
 					</figure>
@@ -2217,7 +2217,7 @@
 						<title>Summary of the new VM</title>
 						<mediaobject>
 							<imageobject>
-								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-10.png" scalefit="0" width="50%"/>
+								<imagedata fileref="../media/serversideinstallation-virtual-vm-install-10.png" scalefit="0" width="60%"/>
 							</imageobject>
 						</mediaobject>
 					</figure>
