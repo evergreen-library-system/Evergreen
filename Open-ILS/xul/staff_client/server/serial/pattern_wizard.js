@@ -9,27 +9,44 @@ function S(k) {
         replace("\\n", "\n");
 }
 
-function _month_menuitems() {
-    /* XXX i18n, and also this is just pathetic in general, but a datepicker
-     * seemed wrong since we don't want a year. */
-    return [
-        ["01", "January"],
-        ["02", "February"],
-        ["03", "March"],
-        ["04", "April"],
-        ["05", "May"],
-        ["06", "June"],
-        ["07", "July"],
-        ["08", "August"],
-        ["09", "September"],
-        ["10", "October"],
-        ["11", "November"],
-        ["12", "December"]
-    ].map(
-        function(t) {
-            return dojo.create("menuitem", {"value": t[0], "label": t[1]});
-        }
-    );
+var _chronstants = {    /* snicker */
+    "month": {
+        "values": [
+            "01", "02", "03", "04", "05", "06",
+            "07", "08", "09", "10", "11", "12"
+        ]
+    },
+    "weekday": {
+        "values": ["mo", "tu", "we", "th", "fr", "sa", "su"]
+    },
+    "week": {
+        "values": ["00", "01", "02", "03", "04", "05", "97", "98", "99"]
+    },
+    "season": {
+        "values": ["21", "22", "23", "24"]
+    }
+};
+
+function _menulist(values, labels, items_only) {
+    var menuitems = [];
+    for (var i = 0; i < values.length; i++) {
+        menuitems.push(
+            dojo.create(
+                "menuitem", {"value": values[i], "label": labels[i]}
+            )
+        );
+    }
+    if (items_only) {
+        return menuitems;
+    } else {
+        var menupopup = dojo.create("menupopup");
+        menuitems.forEach(
+            function(menuitem) { dojo.place(menuitem, menupopup, "last"); }
+        );
+        var menulist = dojo.create("menulist");
+        dojo.place(menupopup, menulist, "only");
+        return menulist;
+    }
 }
 
 function _date_validate(date_val, month_val) {
@@ -121,6 +138,261 @@ function CalendarChangeRow() {
     this._init.apply(this, arguments);
 };
 
+function RegularityRow() {
+    var self = this;
+
+    this._init = function(template, id, manager) {
+        this.id = id;
+        this.manager = manager;
+        this.element = dojo.clone(template);
+
+        this.publication_code = null;
+        this.type_and_code_pattern = null;
+
+        this._prepare_event_handlers(id);
+    };
+
+    this._prepare_event_handlers = function(id) {
+        dojo.attr(
+            node_by_name("remove", this.element),
+            "oncommand",
+            function() { self.manager.remove_row(id); }
+        );
+        dojo.attr(
+            node_by_name("poc", this.element),
+            "oncommand",
+            function(ev) {
+                self.publication_code = ev.target.value;
+                self.update_chron_code_controls();
+            }
+        );
+        dojo.attr(
+            node_by_name("type_and_code_pattern", this.element),
+            "oncommand",
+            function(ev) {
+                self.type_and_code_pattern = ev.target.value;
+                self.update_chron_code_controls();
+            }
+        );
+
+        this.add_sub_row_btn = node_by_name("add_sub_row", this.element);
+        dojo.attr(
+            this.add_sub_row_btn, "oncommand", function(ev) {
+                self.add_sub_row();
+            }
+        );
+    };
+
+    this.add_sub_row = function() {
+        var container = dojo.create(
+            "hbox", null, node_by_name("sub_rows_here", this.element), "last"
+        );
+
+        /* Break up our type and code pattern into parts that can be
+         * mapped to widgets. */
+        this.get_code_pattern().map(
+            function(pattern) {
+                return self.manufacture_chron_code_control(pattern);
+            }
+        ).forEach(
+            function(control) {
+                dojo.place(control, container, "last");
+            }
+        );
+
+        /* special case: add a label for clarity for MMWW */
+        if (this.type_and_code_pattern == "w:MMWW")
+            dojo.create("description", {"value": S("week")}, container, "last");
+
+        /* another special case: YYYY needs no add/remove subrow buttons */
+        if (this.type_and_code_pattern == "y:YYYY") {
+            this.add_sub_row_btn.disabled = true;
+        } else {
+            this.add_sub_row_btn.disabled = false;
+
+            dojo.create(
+                "button", {
+                    "style": {
+                        "fontWeight": "bold", "color": "red"
+                    },
+                    "label": "X",
+                    "tooltiptext": S("remove_sub_row"),
+                    "oncommand": function() {
+                        hard_empty(container); dojo.destroy(container);
+                    }
+                }, container, "last"
+            );
+        }
+    };
+
+    this.get_code_pattern = function() {
+        var code_pattern_str = this.type_and_code_pattern.split(":")[1];
+
+        /* A special case: if the strings is YYYY, return it whole. Otherwise
+         * break it up into two-char parts. These parts come from the
+         * "Possible Code Pattern" column of "Chronology Type and Code
+         * Patterns" of the subfield $y section of the document at
+         * http://www.loc.gov/marc/holdings/hd853855.html
+         *
+         * In retrospect, there was no reason to adopt these multi-char
+         * code patterns for this purpose. Something single-char and
+         * quicker to decode would have sufficed, but meh, this works.
+         */
+        if (code_pattern_str[0] == "Y")
+            return [code_pattern_str];
+
+        var code_pattern = [];
+        for (var i=0; code_pattern_str[i]; i+=2)
+            code_pattern.push(code_pattern_str.slice(i, i + 2));
+
+        return code_pattern;
+    };
+
+    this.allow_year_split = function(yes) {
+        dojo.attr(
+            dojo.query("[name='type_and_code_pattern'] [value='y:YYYY']")[0],
+            "disabled",
+            !yes
+        );
+    };
+
+    this.update_chron_code_controls = function() {
+        if (!this.type_and_code_pattern || !this.publication_code)
+            return;
+
+        this.allow_year_split(this.publication_code != "c");
+
+        var container = node_by_name("sub_rows_here", this.element);
+        /* for some reason, this repeitition is necessary with XUL documents
+         * and dojo */
+        for (var i = 0 ; i < 2; i++) {
+            hard_empty(container);
+            dojo.forEach(container.childNodes, dojo.destroy);
+        }
+
+        this.add_sub_row();
+    };
+
+    this.manufacture_chron_code_control = function(pattern) {
+        return {
+            "dd": function() {
+                return _menulist(
+                    _chronstants.weekday.values, _chronstants.weekday.names
+                );
+            },
+            "DD": function() {
+                return dojo.create( /* XXX TODO change min/max based on month */
+                    "textbox", {
+                        "size": 3,
+                        "type": "number",
+                        "min": 1,
+                        "max": 31
+                    }
+                );
+            },
+            "MM": function() {
+                return _menulist(
+                    _chronstants.month.values, _chronstants.month.names
+                );
+            },
+            "SS": function() {
+                return _menulist(
+                    _chronstants.season.values, _chronstants.season.names
+                );
+            },
+            "WW": function() {
+                return _menulist(
+                    _chronstants.week.values, _chronstants.week.names
+                );
+            },
+            "YYYY": function() {
+                return dojo.create(
+                    "textbox", {
+                        "disabled": "true", "value": "yyy1/yyy2", "size": 9
+                    }
+                );
+            }
+        }[pattern]();
+    };
+
+    this.compile = function() {
+        return this.publication_code +
+            this.type_and_code_pattern[0] +
+            dojo.query("hbox", node_by_name("sub_rows_here", this.element)).map(
+                function(sub_row) {
+                    var t = "";
+                    dojo.filter(
+                        sub_row.childNodes, function(n) {
+                            return (
+                                n.nodeName == "menulist" ||
+                                n.nodeName == "textbox"
+                            );
+                        }
+                    ).forEach(
+                        function(control) {
+                            if (control.value.match(/^\d$/))
+                                t += "0" + control.value;
+                            else
+                                t += control.value;
+                        }
+                    );
+                    return t;
+                }
+            ).join(this.publication_code == "c" ? "/" : ",");
+    };
+
+    this._init.apply(this, arguments);
+}
+
+function RegularityEditor() {
+    var self = this;
+
+    this._init = function() {
+        this.rows = {};
+        this.row_count = 0;
+
+        this._prepare_template();
+        this.add_row();
+    };
+
+    this._prepare_template = function() {
+        var tmpl = dojo.byId("regularity_template_y");
+        tmpl.parentNode.removeChild(tmpl);
+
+        this.template = tmpl;
+    };
+
+    this.toggle = function(ev) {
+        this.active = ev.target.checked;
+        (this.active ? show : hide)("regularity_editor_here");
+    };
+
+    this.add_row = function() {
+        var id = this.row_count++;
+
+        this.rows[id] = new RegularityRow(this.template, id, this);
+
+        dojo.place(this.rows[id].element, "y_row_before_this", "before");
+    };
+
+    this.remove_row = function(id) {
+        var row = this.rows[id];
+        hard_empty(row.element);
+        dojo.destroy(row.element);
+
+        delete this.rows[id];
+    };
+
+    this.compile = function() {
+        return openils.Util.objectProperties(this.rows).sort().reduce(
+            function(a, b) { return a.concat(["y", self.rows[b].compile()]); },
+            []
+        );
+    };
+
+    this._init.apply(this, arguments);
+}
+
 function CalendarChangeEditor() {
     var self = this;
 
@@ -143,7 +415,11 @@ function CalendarChangeEditor() {
             dojo.query("[name='date_month'] menupopup", this.template)[0]
         ].forEach(
             function(menupopup) {
-                _month_menuitems().forEach(
+                _menulist(
+                    _chronstants.month.values,
+                    _chronstants.month.names,
+                    /* items_only */ true
+                ).forEach(
                     function(menuitem) {
                         dojo.place(menuitem, menupopup, "last");
                     }
@@ -543,6 +819,7 @@ function Wizard() {
         this.enum_editor = new EnumEditor();
         this.chron_editor = new ChronEditor();
         this.calendar_change_editor = new CalendarChangeEditor();
+        this.regularity_editor = new RegularityEditor();
 
         this.field_w = dojo.byId("hard_w");
     };
@@ -602,6 +879,7 @@ function Wizard() {
         code = code.concat("w", this.field_w.value);
 
         code = code.concat(this.calendar_change_editor.compile());
+        code = code.concat(this.regularity_editor.compile());
 
         return code;
     };
@@ -615,5 +893,10 @@ function Wizard() {
 }
 
 function my_init() {
+    _chronstants.week.names = S("weeks").split(".");    /* ., sic */
+    _chronstants.weekday.names = S("weekdays").split(" ");
+    _chronstants.month.names = S("months").split(" ");
+    _chronstants.season.names = S("seasons").split(" ");
+
     wizard = new Wizard(window.arguments[0]);
 }

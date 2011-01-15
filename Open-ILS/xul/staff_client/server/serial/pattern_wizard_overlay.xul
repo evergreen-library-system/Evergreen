@@ -274,6 +274,59 @@
                     </grid>
                 </radiogroup>
             </vbox>
+            <vbox id="wizard_step_regularity" class="hideme">
+                <checkbox id="use_regularity"
+                    oncommand="wizard.regularity_editor.toggle(event);"
+                    label="Specify regularity information (extra, omitted,
+                        and/or combined issues)?" />
+                <vbox id="regularity_editor_here" class="hideme">
+                    <hbox id="regularity_template_y" align="top">
+                        <menulist name="poc">
+                            <menupopup>
+                                <menuitem disabled="true" label="---" />
+                                <menuitem value="p" label="Published" />
+                                <menuitem value="o" label="Omitted" />
+                                <menuitem value="c" label="Combined" />
+                            </menupopup>
+                        </menulist>
+                        <menulist name="type_and_code_pattern">
+                            <menupopup>
+                                <menuitem disabled="true" label="---" />
+                                <menuitem value="d:dd"
+                                    label="Day of the week" />
+                                <menuitem value="d:DD"
+                                    label="Day of the month" />
+                                <menuitem value="d:MMDD"
+                                    label="Date of the year" />
+                                <menuitem value="m:MM" label="Month" />
+                                <menuitem value="s:SS" label="Season" />
+                                <menuitem value="w:WWdd"
+                                    label="Weekday of the month" />
+                                <menuitem value="w:MMWWdd"
+                                    label="Weekday of specific month" />
+                                <menuitem value="w:MMWW"
+                                    label="Week of specific month" />
+                                <menuitem value="y:YYYY"
+                                    label="Span over two years" />
+                            </menupopup>
+                        </menulist>
+                        <vbox name="sub_rows_here"></vbox>
+                        <vbox align="top">
+                            <button label="Add sub-row" icon="add"
+                                disabled="true" name="add_sub_row" />
+                            <button label="Remove whole row"
+                                icon="remove" name="remove" />
+                        </vbox>
+                    </hbox>
+                    <hbox id="y_row_before_this" pack="center"
+                        style="padding-top: 1ex;">
+                        <button id="regularity_add_y"
+                            label="Add More Regularity Information"
+                            accesskey="Y" icon="add"
+                            oncommand="wizard.regularity_editor.add_row();" />
+                    </hbox>
+                </vbox>
+            </vbox>
             <vbox id="wizard_step_submit" class="hideme">
                 <description class="step">
                     Are you ready to create a pattern code from your

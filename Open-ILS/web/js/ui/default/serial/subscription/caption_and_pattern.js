@@ -35,7 +35,7 @@ function SCAPRow() {
                 window.openDialog(
                     xulG.url_prefix("/xul/server/serial/pattern_wizard.xul"),
                     "pattern_wizard",
-                    "scrollbars=yes", /* XXX doesn't work this way? */
+                    "scrollbars=yes,width=1024",
                     function(value) {
                         self.controls.pattern_code.value = value;
                         self.controls.pattern_code.onchange();
