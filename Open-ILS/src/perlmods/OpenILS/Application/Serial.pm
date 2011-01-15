@@ -931,6 +931,11 @@ __PACKAGE__->register_method(
                  name => 'barcodes',
                  desc => 'hash of item_ids => barcodes',
                  type => 'hash'
+            },
+            {
+                 name => 'call_numbers',
+                 desc => 'hash of item_ids => call_numbers',
+                 type => 'hash'
             }
         ],
         'return' => {
@@ -955,6 +960,11 @@ __PACKAGE__->register_method(
             {
                  name => 'barcodes',
                  desc => 'hash of item_ids => barcodes',
+                 type => 'hash'
+            },
+            {
+                 name => 'call_numbers',
+                 desc => 'hash of item_ids => call_numbers',
                  type => 'hash'
             }
         ],
@@ -988,7 +998,7 @@ __PACKAGE__->register_method(
 );
 
 sub unitize_items {
-    my ($self, $conn, $auth, $items, $barcodes) = @_;
+    my ($self, $conn, $auth, $items, $barcodes, $call_numbers) = @_;
 
     my $editor = new_editor("authtoken" => $auth, "xact" => 1);
     return $editor->die_event unless $editor->checkauth;
@@ -1004,6 +1014,7 @@ sub unitize_items {
 
     my %unit_map;
     my %sdist_by_unit_id;
+    my %call_number_by_unit_id;
     my %sdist_by_stream_id;
 
     my $new_unit_id; # id for '-2' units to share
@@ -1048,14 +1059,21 @@ sub unitize_items {
         # create unit if needed
         if ($unit_id == -1 or (!$new_unit_id and $unit_id == -2)) { # create unit per item
             my $unit;
-            my $sdists = $editor->search_serial_distribution([{"+sstr" => {"id" => $stream_id}}, { "join" => {"sstr" => {}} }]);
-            $unit = _build_unit($editor, $sdists->[0], $mode, 0, $barcodes->{$item->id});
+            my $sdists = $editor->search_serial_distribution([
+                {"+sstr" => {"id" => $stream_id}},
+                {
+                    "join" => {"sstr" => {}},
+                    "flesh" => 1,
+                    "flesh_fields" => {"sdist" => ["subscription"]}
+                }]);
+            $unit = _build_unit($editor, $sdists->[0], $mode);
             # if _build_unit fails, $unit is an event, so return it
             if ($U->event_code($unit)) {
                 $editor->rollback;
                 $unit->{"note"} = "Item ID: " . $item->id;
                 return $unit;
             }
+            $unit->barcode($barcodes->{$item->id}) if exists($barcodes->{$item->id});
             my $evt =  _create_sunit($editor, $unit);
             return $evt if $evt;
             if ($unit_id == -2) {
@@ -1066,10 +1084,11 @@ sub unitize_items {
             }
             $item->unit($unit_id);
             
-            # get unit with 'DEFAULT's and save unit and sdist for later use
+            # get unit with 'DEFAULT's and save unit, sdist, and call number for later use
             $unit = $editor->retrieve_serial_unit($unit->id);
             $unit_map{$unit_id} = $unit;
             $sdist_by_unit_id{$unit_id} = $sdists->[0];
+            $call_number_by_unit_id{$unit_id} = $call_numbers->{$item->id};
             $sdist_by_stream_id{$stream_id} = $sdists->[0];
         } elsif ($unit_id == -2) { # create one unit for all '-2' items
             $unit_id = $new_unit_id;
@@ -1094,7 +1113,7 @@ sub unitize_items {
         delete $found_unit_ids{$unit->id};
     }
 
-    # deal with unit level labels
+    # deal with unit level contents
     foreach my $unit_id (keys %found_unit_ids) {
 
         # get all the needed issuances for unit
@@ -1105,21 +1124,31 @@ sub unitize_items {
         # retrieve and update unit contents
         my $sunit;
         my $sdist;
-
-        # if we just created the unit, we will already have it and the distribution stored
+        my $call_number_string;
+        my $record_id;
+        # if we just created the unit, we will already have it and the distribution stored, and we will need to assign the call number
         if (exists $unit_map{$unit_id}) {
             $sunit = $unit_map{$unit_id};
             $sdist = $sdist_by_unit_id{$unit_id};
+            $call_number_string = $call_number_by_unit_id{$unit_id};
+            $record_id = $sdist->subscription->record_entry;
         } else {
             $sunit = $editor->retrieve_serial_unit($unit_id);
             $sdist = $editor->search_serial_distribution([{"+sstr" => {"id" => $stream_ids_by_unit_id{$unit_id}}}, { "join" => {"sstr" => {}} }]);
             $sdist = $sdist->[0];
         }
 
-        _prepare_unit_label($editor, $sunit, $sdist, $issuances);
+        my $evt = _prepare_unit($editor, $sunit, $sdist, $issuances, $call_number_string, $record_id);
+        if ($U->event_code($evt)) {
+            $editor->rollback;
+            return $evt;
+        }
 
-        my $evt = _update_sunit($editor, undef, $sunit);
-        return $evt if $evt;
+        $evt = _update_sunit($editor, undef, $sunit);
+        if ($U->event_code($evt)) {
+            $editor->rollback;
+            return $evt;
+        }
     }
 
     if ($mode ne 'bind') { # the summary holdings do not change when binding
@@ -1221,10 +1250,26 @@ sub _issuances_received {
     return [ map { $e->retrieve_serial_issuance($_) } keys %$uniq ];
 }
 
-# _prepare_unit_label populates the detailed_contents, summary_contents, and
+# _prepare_unit populates the detailed_contents, summary_contents, and
 # sort_key fields for a given unit based on a given set of issuances
-sub _prepare_unit_label {
-    my ($e, $sunit, $sdist, $issuances) = @_;
+# Also finds/creates call number as needed
+sub _prepare_unit {
+    my ($e, $sunit, $sdist, $issuances, $call_number_string, $record_id) = @_;
+
+    # Handle call number first if we have one
+    if ($call_number_string) {
+        my $org_unit_id = ref $sdist->holding_lib ? $sdist->holding_lib->id : $sdist->holding_lib;
+        my $real_cn = _find_or_create_call_number(
+            $e, $org_unit_id,
+            $call_number_string, $record_id
+        );
+
+        if ($U->event_code($real_cn)) {
+            return $real_cn;
+        } else {
+            $sunit->call_number($real_cn);
+        }
+    }
 
     my ($mfhd, $formatted_parts) = _summarize_contents($e, $issuances);
 
@@ -1419,7 +1464,7 @@ sub receive_items_one_unit_per {
             my $user_unit = $item->unit;
 
             # get a unit based on associated template
-            my $template_unit = _build_unit($e, $sdist, "receive", 1);
+            my $template_unit = _build_unit($e, $sdist, "receive");
             if ($U->event_code($template_unit)) {
                 $e->rollback;
                 $template_unit->{"note"} = "Item ID: " . $item->id;
@@ -1435,22 +1480,16 @@ sub receive_items_one_unit_per {
 
             # Treat call number specially: the provided value from the
             # user will really be a string.
+            my $call_number_string;
             if ($user_unit->call_number) {
-                my $real_cn = _find_or_create_call_number(
-                    $e, $sdist->holding_lib->id,
-                    $user_unit->call_number, $record
-                );
-
-                if ($U->event_code($real_cn)) {
-                    $e->rollback;
-                    return $real_cn;
-                } else {
-                    $user_unit->call_number($real_cn);
-                }
+                $call_number_string = $user_unit->call_number;
+                # clear call number for now (replaced in _prepare_unit)
+                $user_unit->clear_call_number;
             }
 
-            my $evt = _prepare_unit_label(
-                $e, $user_unit, $sdist, [$item->issuance]
+            my $evt = _prepare_unit(
+                $e, $user_unit, $sdist, [$item->issuance],
+                $call_number_string, $record
             );
             if ($U->event_code($evt)) {
                 $e->rollback;
@@ -1512,8 +1551,7 @@ sub _build_unit {
     my $editor = shift;
     my $sdist = shift;
     my $mode = shift;
-    my $skip_call_number = shift;
-    my $barcode = shift;
+    #my $skip_call_number = shift;
 
     my $attr = $mode . '_unit_template';
     my $template = $editor->retrieve_asset_copy_template($sdist->$attr) or
@@ -1533,19 +1571,16 @@ sub _build_unit {
     $unit->creator($editor->requestor->id);
     $unit->editor($editor->requestor->id);
 
-    unless ($skip_call_number) {
-        $attr = $mode . '_call_number';
-        my $cn = $sdist->$attr or
-            return new OpenILS::Event("SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER");
-
-        $unit->call_number($cn);
-    }
-
-    if ($barcode) {
-        $unit->barcode($barcode);
-    } else {
-        $unit->barcode('AUTO');
-    }
+# XXX: this feature has been pushed back until after 2.0 at least
+#    unless ($skip_call_number) {
+#        $attr = $mode . '_call_number';
+#        my $cn = $sdist->$attr or
+#            return new OpenILS::Event("SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER");
+#
+#        $unit->call_number($cn);
+#    }
+    $unit->call_number('-1'); # default to the dummy call number
+    $unit->barcode('@@PLACEHOLDER'); # generic unit will start with a generated placeholder barcode
     $unit->sort_key('');
     $unit->summary_contents('');
     $unit->detailed_contents('');
