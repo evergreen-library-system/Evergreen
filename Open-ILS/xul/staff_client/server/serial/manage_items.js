@@ -359,16 +359,29 @@ serial.manage_items.prototype = {
                                         // now call numbers
                                         if (typeof call_numbers_by_issuance_id[item.issuance().id()] == 'undefined') {
                                             var default_cn = 'DEFAULT';
-                                            // for now, let's default to the last created call number if there is one
-                                            // TODO: make this distribution specific
-                                            var acn_list = obj.network.request(
-                                                    'open-ils.pcrud',
-                                                    'open-ils.pcrud.search.acn',
-                                                    [ ses(), {"record" : obj.docid, "owning_lib" : obj.holding_lib, "deleted" : 'f' }, {"order_by" : {"acn" : "create_date DESC"}, "limit" : "1" } ]
-                                            );
+                                            // if they defined a *_call_number, honor it as the default
+                                            var preset_cn_id = item.stream().distribution()[obj.mode + '_call_number']();
+                                            if (preset_cn_id) {
+                                                var preset_default_cn = obj.network.request(
+                                                        'open-ils.pcrud',
+                                                        'open-ils.pcrud.retrieve.acn',
+                                                        [ ses(), preset_cn_id ]
+                                                );
+                                                if (preset_default_cn) {
+                                                    default_cn = preset_default_cn.label();
+                                                }
+                                            } else {
+                                                // for now, let's default to the last created call number if there is one
+                                                // TODO: make this distribution specific
+                                                var acn_list = obj.network.request(
+                                                        'open-ils.pcrud',
+                                                        'open-ils.pcrud.search.acn',
+                                                        [ ses(), {"record" : obj.docid, "owning_lib" : obj.holding_lib, "deleted" : 'f' }, {"order_by" : {"acn" : "create_date DESC"}, "limit" : "1" } ]
+                                                );
 
-                                            if (acn_list) {
-                                                default_cn = acn_list.label();
+                                                if (acn_list) {
+                                                    default_cn = acn_list.label();
+                                                }
                                             }
                                             var call_number = window.prompt('Please enter/adjust a call number ' + prompt_text,
                                                 default_cn, //TODO: real default by setting
