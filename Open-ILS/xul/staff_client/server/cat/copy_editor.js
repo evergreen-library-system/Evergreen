@@ -1189,6 +1189,8 @@ g.render_input = function(node,blob) {
             try {
                 if (block) return; block = true;
 
+                oils_lock_page();
+
                 function post_c(v) {
                     try {
                         /* FIXME - kludgy */

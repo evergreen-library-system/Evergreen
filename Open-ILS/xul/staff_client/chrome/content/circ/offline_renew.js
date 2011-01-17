@@ -39,13 +39,13 @@ function my_init() {
         $('duedate').setAttribute('value',todayPlus);
         $('duedate').addEventListener('change',check_date,false);
 
-        $('p_barcode').addEventListener('change',handle_lock,false);
+        $('p_barcode').addEventListener('keypress',handle_lock,false);
         $('p_barcode').addEventListener('change',test_patron,false);
 
         $('p_barcode').addEventListener('keypress',handle_keypress,false);
         $('p_barcode').focus();    
 
-        $('i_barcode').addEventListener('change',handle_lock,false);
+        $('i_barcode').addEventListener('keypress',handle_lock,false);
         $('i_barcode').addEventListener('keypress',handle_keypress,false);
         $('enter').addEventListener('command',handle_enter,false);
 

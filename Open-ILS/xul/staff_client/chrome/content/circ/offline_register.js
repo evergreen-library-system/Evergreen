@@ -28,18 +28,18 @@ function my_init() {
                 xulG.lock();
             }
         }
-        $('barcode').addEventListener('change',handle_lock,false);
-        $('passwd').addEventListener('change',handle_lock,false);
-        $('ident_value').addEventListener('change',handle_lock,false);
-        $('first_given_name').addEventListener('change',handle_lock,false);
-        $('family_name').addEventListener('change',handle_lock,false);
-        $('dob').addEventListener('change',handle_lock,false);
-        $('street1').addEventListener('change',handle_lock,false);
-        $('street2').addEventListener('change',handle_lock,false);
-        $('city').addEventListener('change',handle_lock,false);
-        $('state').addEventListener('change',handle_lock,false);
-        $('country').addEventListener('change',handle_lock,false);
-        $('post_code').addEventListener('change',handle_lock,false);
+        $('barcode').addEventListener('keypress',handle_lock,false);
+        $('passwd').addEventListener('keypress',handle_lock,false);
+        $('ident_value').addEventListener('keypress',handle_lock,false);
+        $('first_given_name').addEventListener('keypress',handle_lock,false);
+        $('family_name').addEventListener('keypress',handle_lock,false);
+        $('dob').addEventListener('keypress',handle_lock,false);
+        $('street1').addEventListener('keypress',handle_lock,false);
+        $('street2').addEventListener('keypress',handle_lock,false);
+        $('city').addEventListener('keypress',handle_lock,false);
+        $('state').addEventListener('keypress',handle_lock,false);
+        $('country').addEventListener('keypress',handle_lock,false);
+        $('post_code').addEventListener('keypress',handle_lock,false);
 
         $('cancel').addEventListener(
             'command',

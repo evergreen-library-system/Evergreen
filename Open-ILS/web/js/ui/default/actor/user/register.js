@@ -685,6 +685,15 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
 
     dojo.connect(
         widget.widget,
+        'onKeyPress',
+        function(){
+            if (lock_ready && xulG && typeof xulG.lock_tab == 'function') {
+                xulG.lock_tab();
+            }
+        }
+    );
+    dojo.connect(
+        widget.widget,
         'onChange',
         function(){
             if (lock_ready && xulG && typeof xulG.lock_tab == 'function') {
@@ -692,6 +701,7 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
             }
         }
     );
+
 
     if(fmcls == 'ac') {
         if(fmfield == 'barcode') {

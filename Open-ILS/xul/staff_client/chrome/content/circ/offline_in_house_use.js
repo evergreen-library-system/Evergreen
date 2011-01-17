@@ -31,7 +31,7 @@ function my_init() {
                 xulG.lock();
             }
         }
-        $('i_barcode').addEventListener('change',handle_lock,false);
+        $('i_barcode').addEventListener('keypress',handle_lock,false);
         $('i_barcode').addEventListener('keypress',handle_keypress,false);
         $('enter').addEventListener('command',handle_enter,false);
         $('submit').addEventListener('command',next_patron,false);

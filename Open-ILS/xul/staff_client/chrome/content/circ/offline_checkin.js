@@ -33,7 +33,7 @@ function my_init() {
                 xulG.lock();
             }
         }
-        $('i_barcode').addEventListener('change',handle_lock,false);
+        $('i_barcode').addEventListener('keypress',handle_lock,false);
         $('i_barcode').addEventListener('keypress',handle_keypress,false);
         $('i_barcode').focus();    
 
