@@ -27,7 +27,8 @@ openils.Util.addOnLoad(
                 "fieldOrder": ["ordering_agency", "provider"],
                 "mode": "create",
                 overrideWidgetArgs : {
-                    provider : { dijitArgs : { store_options : { base_filter : { active :"t" } } } }
+                    provider : { dijitArgs : { store_options : { base_filter : { active :"t" } } } },
+                    ordering_agency : { orgDefaultsToWs : true }
                 },
                 "onSubmit": function(po) {
                     fieldmapper.standardRequest(
