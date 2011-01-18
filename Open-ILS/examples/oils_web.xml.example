@@ -9,8 +9,24 @@
         files have the following filename extension -->
     <default_template_extension>tt2</default_template_extension>
 
-    <!-- media_prefix can be a remote server.  
-         E.g. <media_prefix>http://static.example.com/media</media_prefix> -->
+    <!-- Media Prefix.  Allows static files to be served from an alternate domain/server
+
+            Examples:
+
+                # local URL path
+                <media_prefix>/media</media_prefix> 
+
+                # server w/ path.  
+                <media_prefix>static.example.com/media</media_prefix> 
+
+                ===
+                In the first 2 examples, the request protocol (http vs https) will
+                match the protocol of the current page
+                ===
+
+                # full-qualified with static protocol
+                <media_prefix>http://static.example.com/media</media_prefix> 
+     -->
     <media_prefix/>
 
     <!-- If set to true, all output will be parsed as XML before delivery to the client.  

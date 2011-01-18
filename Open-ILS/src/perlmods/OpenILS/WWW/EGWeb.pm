@@ -120,6 +120,14 @@ sub load_context {
         parse_accept_lang($r->headers_in->get('Accept-Language')) || 'en-US';
     $r->log->debug('skin = ' . $ctx->{skin} . ' : theme = ' . 
         $ctx->{theme} . ' : locale = ' . $ctx->{locale});
+
+    my $mprefix = $ctx->{media_prefix};
+    if($mprefix !~ /^http/ and $mprefix !~ /^\//) {
+        # if a hostname is provided /w no protocol, match the protocol to the current page
+        $ctx->{media_prefix} = ($cgi->https) ? "https://$mprefix" : "http://$mprefix";
+    }
+
+
     return $ctx;
 }
 

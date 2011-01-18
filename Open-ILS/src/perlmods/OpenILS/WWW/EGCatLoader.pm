@@ -187,6 +187,7 @@ sub load_login {
             -cookie => $cgi->cookie(
                 -name => 'ses',
                 -path => '/',
+                -secure => 1,
                 -value => $response->{payload}->{authtoken},
                 -expires => CORE::time + $response->{payload}->{authtime}
             )
