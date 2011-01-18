@@ -1,0 +1,22 @@
+[% ctx.page_title = "Home" %]
+
+[% BLOCK html_head %]
+<style>
+    #home_div { text-align: center; width: 100%; margin-top: 30px;}
+</style>
+[% END %]
+
+[% WRAPPER "default/opac/base.tt2" %]
+
+<div id='home_div'>
+    <img src='/images/eg_logo.jpg'/>
+    <br/><br/>
+    <form action='./results' method='GET'>
+        <input type='text' name='query' value='[% query %]'/>
+        <input type='submit'/>
+        <input type='hidden' name='page' value='0'/>
+    </form>
+</div>
+
+
+[% END %]

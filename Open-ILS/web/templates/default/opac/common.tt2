@@ -1,0 +1,27 @@
+[% 
+    # Org Unit Selector Widget : 
+    #   PROCESS build_org_selector id='selector-id' name='selector-name'
+    BLOCK build_org_selector;
+        first_run = 0;
+        IF !org_unit;
+            org_unit = ctx.org_tree;
+            first_run = 1;
+%]
+    <select id='[% id %]' name='[% name %]'>
+    [% END %]
+        <option value='[% org_unit.id %]' [% IF org_unit.id == value %] selected='selected' [% END %]>
+            [% 
+                pad = org_unit.ou_type.depth * 4;
+                FOR idx IN [0..pad]; '&nbsp;'; END;
+                org_unit.name;
+            %]
+        </option>
+        [% FOR child IN org_unit.children; PROCESS build_org_selector org_unit = child; END %]
+    [% IF first_run %]
+    </select>
+    [% END %]
+[% END %]
+
+[% PROCESS 'default/opac/marc_attrs.tt2' %]
+
+

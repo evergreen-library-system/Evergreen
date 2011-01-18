@@ -1,0 +1,102 @@
+[% BLOCK html_head %]
+<style>
+    #body_table { width: 100%; margin-top: 20px; }
+    #left_block { width: 15%; vertical-align: top; }
+    #right_block { width: auto; vertical-align: top;}
+    #record_table { border-collapse: collapse; width:100%; }
+    #record_table td { padding: 3px; border-bottom: 1px solid #ddd; }
+    #record_table tr:nth-child(odd) { background-color:#ded; }
+    #form_div { text-align: center; width: 100%; margin-top: 10px;}
+    #links_div { margin-bottom: 10px; padding: 5px;}
+</style>
+[% END %]
+
+[% 
+    USE CGI;
+    USE POSIX;
+    WRAPPER "default/opac/base.tt2"; 
+    PROCESS "default/opac/common.tt2";
+    ctx.page_title = "Results";
+    page = CGI.param('page') || 0; 
+    query = CGI.param('query');
+    page_count = POSIX.ceil(ctx.hit_count / ctx.page_size);
+%]
+
+<div id='form_div'>
+    <form action='./results' method='GET'>
+        <input type='text' name='query' size='50' value='[% query %]'/>
+        <input type='submit'/>
+        <input type='hidden' name='page' value='0'/>
+    </form>
+</div>
+
+<table id='body_table'>
+    <tr>
+        <td id='left_block'>
+                [% IF ctx.user; %]
+                    <div id='links_div'>
+                        <div><a href='home'>Home</a></div>
+                        <div><a href='myopac'>Account</a></div>
+                        <div><a href='logout'>Logout</a></div>
+                    </div>
+                    <hr/>
+                    <table>
+                        <tr><td colspan='2' style='border-bottom:1px solid #9A9'>Signed in as [% ctx.user.usrname %]</td></tr>
+                        <tr><td>Total Holds</td><td>[% ctx.user_stats.holds.total %]</td></tr>
+                        <tr><td>Ready Holds</td><td>[% ctx.user_stats.holds.ready %]</td></tr>
+                        <tr><td>Items Out</td><td>[% ctx.user_stats.checkouts.out %]</td></tr>
+                        <tr><td>Fines</td><td>$[% ctx.user_stats.fines.balance_owed %]</td></tr>
+                    </table>
+                [% ELSE %]
+                    [% 
+                        login = CGI.url("-path" => 1).replace('^http:', 'https:').replace('/results','/login');
+                        origin = CGI.url("-absolute" => 1, "-path" => 1, "-query" => 1) | uri 
+                    %]
+                    <a href='[% login _ '?origin=' _ origin %]'>Login</a>
+                [% END %]
+            </div>
+            <div>
+                [% FOR facet_type IN ctx.search_facets.keys %]
+                    <b>[% facet_type %]</b>
+                    <ul>
+                        [% FOR facet IN ctx.search_facets.$facet_type.keys %]
+                            <li>[% facet %] / [% ctx.search_facets.$facet_type.$facet %]</li>
+                        [% END %]
+                    </ul>
+                [% END %]
+            </div>
+        </td>
+        <td id='right_block'>
+            <div>
+                <span>Hits: [% ctx.hit_count %] / Page [% page + 1 %] of [% page_count %]</span>
+                <a [% IF page > 0 %] href='?page=[% page - 1 %]&query=[% query | uri %]' [% END %]>Prev</a>  
+                <a [% IF (page + 1) < page_count %] href='?page=[% page + 1 %]&query=[% query | uri %]' [% END %]>Next</a>
+            </div>
+            <table id='record_table'>
+                [%
+                FOR rec IN ctx.records;
+                    attrs = {marc_xml => rec.marc_xml};
+                    PROCESS get_marc_attrs args=attrs;
+                %]
+                <tr>
+                    <td style='width:52px;height:72px'>
+                        [% IF attrs.isbn %]
+                        <img width='50' height='70' src='/opac/extras/ac/jacket/small/[% attrs.isbn_clean || attrs.upc %]'/>
+                        [% END %]
+                    </td>
+                    <td width='auto'>
+                        <div>
+                            <a href='rdetail?record=[% rec.bre.id %]'>[% attrs.title %]</a>
+                            <span style='padding-left:10px;'>[% rec.copy_counts.available %] / [% rec.copy_counts.visible %]</span>
+                        </div>
+                        <div>[% attrs.author %]</div>
+                        <div>[% attrs.isbn || attrs.issn || attrs.upc %] [% attrs.publisher %] [% attrs.pubdate %]</div>
+                    </td>
+                </tr>
+                [% END %]
+            </table>
+        </td>
+    </tr>
+
+</table>
+[% END %]

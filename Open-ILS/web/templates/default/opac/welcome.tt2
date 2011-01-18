@@ -1,0 +1,27 @@
+<div style='position:absolute; top:0px; right:0px; border-left:1px solid #9A9; border-bottom:1px solid #9A9; padding: 10px; background:#ded'>
+    [% IF ctx.user; %]
+        <table>
+            <tr>
+                <td colspan='2' style='border-bottom:1px solid #9A9'>Welcome, [% ctx.user.usrname %]!</td>
+            </tr>
+            <tr>
+                <td>Total Holds</td><td>[% ctx.user_stats.holds.total %]</td>
+            </tr>
+            <tr>
+                <td>Ready Holds</td><td>[% ctx.user_stats.holds.ready %]</td>
+            </tr>
+            <tr>
+                <td>Items Out</td><td>[% ctx.user_stats.checkouts.out %]</td>
+            </tr>
+            <tr>
+                <td>Fines</td><td>$[% ctx.user_stats.fines.balance_owed %]</td>
+            </tr>
+            <tr>
+                <td><a href='logout'>Logout</a></td>
+                <td><a href='myopac'>Account</a></td>
+            </tr>
+        </table>
+    [% ELSE %]
+        <a href='[% ctx.base_url.replace('^http:', 'https:') _ ctx.base_path _ '/opac/login' %]'>Login</a>
+    [% END %]
+</div>

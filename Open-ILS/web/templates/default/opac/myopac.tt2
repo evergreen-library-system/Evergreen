@@ -1,0 +1,44 @@
+[% BLOCK html_head %]
+<style>
+    table { width: 100%; text-align: center; padding: 20px; margin-top: 30px; }
+    table { border-collapse: collapse; }
+    table { padding: 3px; border-bottom: 1px solid #ddd; text-align: left;}
+    table tr:nth-child(odd) { background-color:#ded; }
+</style>
+[% END %]
+
+[% 
+    WRAPPER "default/opac/base.tt2"; 
+    ctx.page_title = "My Account";
+%]
+
+<table>
+    <tr>
+        <td>First Name</td>
+        <td>[% ctx.user.first_given_name %]</td>
+    </tr>
+    <tr>
+        <td>Middle Name</td>
+        <td>[% ctx.user.second_given_name %]</td>
+    </tr>
+    <tr>
+        <td>Last Name</td>
+        <td>[% ctx.user.family_name %]</td>
+    </tr>
+    <tr>
+        <td>Library Card</td>
+        <td>[% ctx.user.card.barcode %]</td>
+    </tr>
+    <tr>
+        <td>Email Address</td>
+        <td>[% ctx.user.email %]</td>
+    </tr>
+    <tr>
+        <td>Phone</td>
+        <td>[% ctx.user.day_phone %]</td>
+    </tr>
+</table>
+
+
+
+[% END %]
