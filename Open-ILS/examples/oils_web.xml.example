@@ -18,6 +18,9 @@
         XML parsing adds overhead, so this should only be used for debugging -->
     <force_valid_xml>false</force_valid_xml>
 
+    <!-- Turn on template-toolkit debugging, which reports on undefined blocks, macros, etc. -->
+    <debug_template>false</debug_template>
+
     <!-- Where templates can be found.  Paths will be checked in the order entered here.
          It's possible to override individual or sets of templates by putting them into
          a path in front of the default template path -->
