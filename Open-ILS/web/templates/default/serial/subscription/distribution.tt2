@@ -22,6 +22,7 @@
         fieldOrder="['subscription','label','holding_lib']"
         suppressFields="['record_entry','subscription','receive_call_number','bind_call_number','bind_unit_template']"
         suppressEditFields="['record_entry','receive_call_number','bind_call_number','bind_unit_template']"
+        requiredFields="['receive_unit_template']"
         fmClass="sdist"
         query="{id: '*'}"
         editOnEnter="true"
