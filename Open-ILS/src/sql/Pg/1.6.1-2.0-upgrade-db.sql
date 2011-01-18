@@ -31,7 +31,7 @@ UPDATE biblio.record_entry SET marc = '<record xmlns="http://www.loc.gov/MARC21/
 
 -- Highest-numbered individual upgrade script incorporated herein:
 
-INSERT INTO config.upgrade_log (version) VALUES ('0474');
+INSERT INTO config.upgrade_log (version) VALUES ('0475');
 
 -- Push the auri sequence in case it's out of date
 -- Add 2 as the sequence value must be 1 or higher, and seed is -1
@@ -19018,6 +19018,20 @@ SELECT 'upc', 'UPC', '//*[@tag="024" and @ind1="1"]/*[@code="a"]', $r$(?:-|\s.+$
 WHERE NOT EXISTS (
     SELECT 1 FROM acq.lineitem_marc_attr_definition WHERE code = 'upc'
 );  
+
+-- '@@' auto-placeholder barcode support
+CREATE OR REPLACE FUNCTION asset.autogenerate_placeholder_barcode ( ) RETURNS TRIGGER AS $f$
+BEGIN
+	IF NEW.barcode LIKE '@@%' THEN
+		NEW.barcode := '@@' || NEW.id;
+	END IF;
+	RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER autogenerate_placeholder_barcode
+	BEFORE INSERT OR UPDATE ON asset.copy
+	FOR EACH ROW EXECUTE PROCEDURE asset.autogenerate_placeholder_barcode();
 
 COMMIT;
 
