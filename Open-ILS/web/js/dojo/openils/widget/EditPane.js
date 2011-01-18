@@ -197,8 +197,14 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
 
             getFieldValue : function(field) {
                 for(var i in this.fieldList) {
-                    if(field == this.fieldList[i].name)
-                        return this.fieldList[i].widget.getFormattedValue();
+                    if(field == this.fieldList[i].name) {
+                        var val = this.fieldList[i].widget.getFormattedValue();
+                        if (val == null && /* XXX stricter check needed? */
+                            this.fieldList[i].widget.isRequired()) {
+                            throw new Error("req");
+                        }
+                        return val;
+                    }
                 }
             },
 
@@ -217,8 +223,18 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                 var fields = this.getFields();
                 if(this.mode == 'create')
                     this.fmObject = new fieldmapper[this.fmClass]();
-                for(var idx in fields)  
-                    this.fmObject[fields[idx]](this.getFieldValue(fields[idx]));
+                try {
+                    for(var idx in fields) {
+                        this.fmObject[fields[idx]](
+                            this.getFieldValue(fields[idx])
+                        );
+                    }
+                } catch (E) {
+                    if (E.message == "req") /* req'd field set to null. bail. */
+                        return;
+                    else /* something else went wrong? */
+                        throw E;
+                }
                 if(this.mode == 'create' && this.fmIDL.pkey_sequence)
                     this.fmObject[this.fmIDL.pkey](null);
                 if (typeof(this.onSubmit) == "function") {

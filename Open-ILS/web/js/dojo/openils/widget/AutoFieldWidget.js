@@ -174,6 +174,18 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             }
         },
 
+        isRequired : function() {
+            return (
+                !this.readOnly && (
+                    this.idlField.required || (
+                        this.dijitArgs && (
+                            this.dijitArgs.required || this.dijitArgs.regExp
+                        )
+                    )
+                )
+            );
+        },
+
         build : function(onload) {
 
             if(this.widgetValue == null)
