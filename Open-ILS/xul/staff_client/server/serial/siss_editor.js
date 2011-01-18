@@ -38,6 +38,15 @@ serial.siss_editor.prototype = {
 
         obj.editor_base_init(params);
 
+        obj.multi_ssub_edit = false;
+        var ssub = obj.sisses[0].subscription();
+        for (var i = 1; i < obj.sisses.length; i++) {
+            if (obj.sisses[i].subscription() != ssub) {
+                obj.multi_ssub_edit = true;
+                break;
+            }
+        }
+
         /* Do it */
         obj.summarize( obj.sisses );
         obj.render();
@@ -53,7 +62,7 @@ serial.siss_editor.prototype = {
 
     'apply' : function(field,value) {
         var obj = this;
-        if (field == 'date_published') {
+        if (field == 'date_published' || field == 'caption_and_pattern') {
             if (value == '') { value = null; }
         }
         obj.editor_base_apply(field, value);
@@ -61,6 +70,19 @@ serial.siss_editor.prototype = {
 
     /******************************************************************************************************/
     /* Initialize the panes */
+
+    'render_scap' : function(scap) {
+        var obj = this;
+        var id;
+        if (scap == null) { // true for both 'null' AND undefined
+            return "";
+        } else if (typeof scap != 'object') {
+            id = scap;
+        } else {
+            id = scap.id()
+        }
+        return "C/P : #" + id;
+    },
 
     'init_panes' : function () {
         var obj = this;
@@ -121,13 +143,14 @@ serial.siss_editor.prototype = {
                 }
             ],
             [
-                'Caption/Pattern', //TODO: make this a drop-down selector, perhaps?
+                'Caption/Pattern',
                 {
-                    render: 'fm.caption_and_pattern();',
-                    input: 'c = function(v){ obj.apply("caption_and_pattern",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.caption_and_pattern); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
-                    value_key: 'caption_and_pattern'
+                    render: 'obj.render_scap(fm.caption_and_pattern());',
+                    input: 'if(!obj.multi_ssub_edit) { c = function(v){ obj.apply("caption_and_pattern",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( obj.get_scap_list(), function(obj2) { return [ obj.render_scap(obj2.id()), obj2.id() ]; }).sort()); x.setAttribute("value",obj.editor_values.caption_and_pattern); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false); }',
+                    value_key: 'caption_and_pattern',
+                    dropdown_key: 'fm.caption_and_pattern() == null ? null : typeof fm.caption_and_pattern() == "object" ? fm.caption_and_pattern().id() : fm.caption_and_pattern()'
                 }
-            ],
+            ]
         ],
 
         'siss_editor_right_pane' :
@@ -189,7 +212,34 @@ serial.siss_editor.prototype = {
     },
 
     /******************************************************************************************************/
-    'save_attributes' : serial.editor_base.editor_base_save_attributes
+    'save_attributes' : serial.editor_base.editor_base_save_attributes,
+
+    /******************************************************************************************************/
+    /* This returns a list of scaps appropriate for the issuances being edited */
+    'get_scap_list' : function() {
+        var obj = this;
+        try {
+            /* we will only show this list if dealing with one subscription, default to first siss*/
+            var ssub_id = typeof obj.sisses[0].subscription() == 'object' ? obj.sisses[0].subscription().id() : obj.sisses[0].subscription();
+
+            var scap_list = obj.network.request(
+                'open-ils.pcrud',
+                'open-ils.pcrud.search.scap',
+                [ ses(), {"subscription" : ssub_id }, {"order_by" : {"scap" : "id"} } ]
+            );
+
+            if (scap_list == null) {
+                return [];
+            } else if (!scap_list.length) {
+                scap_list = [scap_list];
+            }
+
+            return scap_list;
+        } catch(E) {
+            obj.error.standard_unexpected_error_alert('get_scap_list',E);
+            return [];
+        }
+    }
 };
 
 dump('exiting serial/siss_editor.js\n');
