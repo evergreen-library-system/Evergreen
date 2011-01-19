@@ -18724,7 +18724,7 @@ CREATE OR REPLACE FUNCTION authority.normalize_heading( TEXT ) RETURNS TEXT AS $
     # Default to "No attempt to code" if the leader is horribly broken
     my $fixed_field = $r->field('008');
     my $thes_char = '|';
-    if ($fixed_field) {
+    if ($fixed_field) { 
         $thes_char = substr($fixed_field->data(), 11, 1) || '|';
     }
 
@@ -18746,13 +18746,13 @@ CREATE OR REPLACE FUNCTION authority.normalize_heading( TEXT ) RETURNS TEXT AS $
             $auth_txt .= '‡' . $sf->[0] . ' ' . $sf->[1];
         }
     }
-
-    # Perhaps better to parameterize the spi and pass as a parameter
-    $auth_txt =~ s/'//go;
-
+    
     if ($auth_txt) {
-        my $result = spi_exec_query("SELECT public.naco_normalize('$auth_txt') AS norm_text");
+        my $stmt = spi_prepare('SELECT public.naco_normalize($1) AS norm_text', 'TEXT');
+        my $result = spi_exec_prepared($stmt, $auth_txt);
         my $norm_txt = $result->{rows}[0]->{norm_text};
+        spi_freeplan($stmt);
+        undef($stmt);
         return $head->tag() . "_" . $thes_code . " " . $norm_txt;
     }
 
