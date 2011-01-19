@@ -6,6 +6,7 @@ package OpenILS::Application::Storage::FTS;
 use OpenSRF::Utils::Logger qw/:level/;
 use Parse::RecDescent;
 use Unicode::Normalize;
+use Encode;
 
 my $_default_grammar_parser = new Parse::RecDescent ( <<'GRAMMAR' );
 
@@ -31,7 +32,7 @@ GRAMMAR
 #         stored procedure
 sub naco_normalize {
 
-    my $str = shift;
+    my $str = decode_utf8(shift);
     my $sf = shift;
 
     # Apply NACO normalization to input string; based on

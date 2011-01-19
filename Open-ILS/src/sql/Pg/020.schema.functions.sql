@@ -37,8 +37,9 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $
 
     use strict;
     use Unicode::Normalize;
+    use Encode;
 
-    my $str = shift;
+    my $str = decode_utf8(shift);
     my $sf = shift;
 
     # Apply NACO normalization to input string; based on
