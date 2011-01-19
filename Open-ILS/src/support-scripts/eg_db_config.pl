@@ -23,8 +23,9 @@ use File::Copy;
 use Getopt::Long;
 use File::Spec;
 use File::Basename;
+use DBI;
 
-my ($dbhost, $dbport, $dbname, $dbuser, $dbpw, $help);
+my ($dbhost, $dbport, $dbname, $dbuser, $dbpw, $help, $admin_user, $admin_pw);
 my $config_file = '';
 my $build_db_sh = '';
 my $offline_file = '';
@@ -37,8 +38,11 @@ my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 # Get the directory for this script
 my $script_dir = dirname($0);
 
+=over
+
+=item update_config() - Puts command line specified settings into xml file
+=cut
 sub update_config {
-	# Puts command line specified settings into xml file
 	my ($services, $settings) = @_;
 
 	my $parser = XML::LibXML->new();
@@ -76,7 +80,8 @@ sub update_config {
 		die "ERROR: Failed to update the configuration file '$config_file'\n";
 }
 
-# write out the offline config
+=item create_offline_config() - Write out the offline config
+=cut
 sub create_offline_config {
 	my ($setup, $settings) = @_;
 
@@ -95,7 +100,9 @@ sub create_offline_config {
 
 	close(FH);
 }
-# Extracts database settings from opensrf.xml
+
+=item get_settings() - Extracts database settings from opensrf.xml
+=cut
 sub get_settings {
 	my $settings = shift;
 
@@ -117,7 +124,8 @@ sub get_settings {
 	$settings->{pw} = $settings->{pw} || $opensrf_config->findnodes($pw);
 }
 
-# Creates the database schema by calling build-db.sh
+=item create_schema() - Creates the database schema by calling build-db.sh
+=cut
 sub create_schema {
 	my $settings = shift;
 
@@ -130,6 +138,31 @@ sub create_schema {
 	chdir($script_dir);
 }
 
+=item set_admin_account() - Sets the administrative user's user name and password
+=cut
+sub set_admin_account {
+	my $admin_user = shift;
+	my $admin_pw = shift;
+	my $settings = shift;
+
+	my $dbh = DBI->connect('dbi:Pg:dbname=' . $settings->{db} . 
+		';host=' . $settings->{host} . ';port=' . $settings->{port} . ';',
+		 $settings->{user} . "", $settings->{pw} . "", {AutoCommit => 1}
+	);
+	if ($dbh->err) {
+		print STDERR "Could not connect to database to set admin account. ";
+		print STDERR "Error was " . $dbh->errstr . "\n";
+		return;
+	}
+	my $stmt = $dbh->prepare("UPDATE actor.usr SET usrname = ?, passwd = ? WHERE id = 1");
+	$stmt->execute(($admin_user, $admin_pw));
+	if ($dbh->err) {
+		print STDERR "Failed to set admin account. ";
+		print STDERR "Error was " . $dbh->errstr . "\n";
+		return;
+	}
+}
+
 my $offline;
 my $cschema;
 my $uconfig;
@@ -140,6 +173,8 @@ GetOptions("create-schema" => \$cschema,
 		"update-config" => \$uconfig,
 		"config-file=s" => \$config_file,
 		"build-db-file=s" => \$build_db_sh,
+		"admin-user=s" => \$admin_user,
+		"admin-password=s" => \$admin_pw,
 		"service=s" => \@services,
 		"user=s" => \$settings{'user'},
 		"password=s" => \$settings{'pw'},
@@ -185,9 +220,12 @@ if ($uconfig) { update_config(\@services, \%settings); }
 get_settings(\%settings);
 
 if ($cschema) { create_schema(\%settings); }
+if ($admin_user && $admin_pw) {
+	set_admin_account($admin_user, $admin_pw, \%settings);
+}
 if ($offline) { create_offline_config($offline_file, \%settings); }
 
-if ((!$cschema && !$uconfig && !$offline) || $help) {
+if ((!$cschema && !$uconfig && !$offline && !$admin_pw) || $help) {
 	print <<HERE;
 
 SYNOPSIS
@@ -244,9 +282,16 @@ DATABASE CONFIGURATION OPTIONS
 
     --port            port number for database access
 
+    --admin-user      administration user's user name
+
+    --admin-pass      administration user's password
+
 EXAMPLES
    This script is normally used during the initial installation and
-   configuration process.
+   configuration process. This creates the database schema, sets
+   the administration user's user name and password, and modifies your
+   configuration files to include the correct database connection
+   information.
 
    For a single server install, or an install with one web/application
    server and one database server, you will typically want to invoke this
@@ -254,8 +299,8 @@ EXAMPLES
 
    perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
        --service all --create-schema --create-offline \
-       --user evergreen --password evergreen --hostname localhost --port 5432 \
-       --database evergreen 
+       --user <db-user> --password <db-pass> --hostname localhost --port 5432 \
+       --database evergreen --admin-user <admin-user> --admin-pass <admin-pass> 
 
    To update the configuration for a single service - for example, if you
    replicated a database for reporting purposes - just issue the

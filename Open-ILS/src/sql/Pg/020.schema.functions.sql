@@ -37,8 +37,9 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $
 
     use strict;
     use Unicode::Normalize;
+    use Encode;
 
-    my $str = shift;
+    my $str = decode_utf8(shift);
     my $sf = shift;
 
     # Apply NACO normalization to input string; based on
@@ -375,12 +376,12 @@ CREATE OR REPLACE FUNCTION authority.normalize_heading( TEXT ) RETURNS TEXT AS $
         }
     }
     
-    # Perhaps better to parameterize the spi and pass as a parameter
-    $auth_txt =~ s/'//go;
-
     if ($auth_txt) {
-        my $result = spi_exec_query("SELECT public.naco_normalize('$auth_txt') AS norm_text");
+        my $stmt = spi_prepare('SELECT public.naco_normalize($1) AS norm_text', 'TEXT');
+        my $result = spi_exec_prepared($stmt, $auth_txt);
         my $norm_txt = $result->{rows}[0]->{norm_text};
+        spi_freeplan($stmt);
+        undef($stmt);
         return $head->tag() . "_" . $thes_code . " " . $norm_txt;
     }
 

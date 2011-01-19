@@ -7003,56 +7003,67 @@ $$ LANGUAGE PLPGSQL;
 DROP TABLE IF EXISTS config.index_normalizer CASCADE;
 
 CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $func$
+
+    use strict;
     use Unicode::Normalize;
     use Encode;
 
-    # When working with Unicode data, the first step is to decode it to
-    # a byte string; after that, lowercasing is safe
-    my $txt = lc(decode_utf8(shift));
+    my $str = decode_utf8(shift);
     my $sf = shift;
 
-    $txt = NFD($txt);
-    $txt =~ s/\pM+//go; # Remove diacritics
+    # Apply NACO normalization to input string; based on
+    # http://www.loc.gov/catdir/pcc/naco/SCA_PccNormalization_Final_revised.pdf
+    #
+    # Note that unlike a strict reading of the NACO normalization rules,
+    # output is returned as lowercase instead of uppercase for compatibility
+    # with previous versions of the Evergreen naco_normalize routine.
 
-    # remove non-combining diacritics
-    # this list of characters follows the NACO normalization spec,
-    # but a looser but more comprehensive version might be
-    # $txt =~ s/\pLm+//go;
-    $txt =~ tr/\x{02B9}\x{02BA}\x{02BB}\x{02BC}//d;
+    # Convert to upper-case first; even though final output will be lowercase, doing this will
+    # ensure that the German eszett (ß) and certain ligatures (ﬀ, ﬁ, ﬄ, etc.) will be handled correctly.
+    # If there are any bugs in Perl's implementation of upcasing, they will be passed through here.
+    $str = uc $str;
 
-    $txt =~ s/\xE6/AE/go;   # Convert ae digraph
-    $txt =~ s/\x{153}/OE/go;# Convert oe digraph
-    $txt =~ s/\xFE/TH/go;   # Convert Icelandic thorn
+    # remove non-filing strings
+    $str =~ s/\x{0098}.*?\x{009C}//g;
 
-    $txt =~ tr/\x{2070}\x{2071}\x{2072}\x{2073}\x{2074}\x{2075}\x{2076}\x{2077}\x{2078}\x{2079}\x{207A}\x{207B}/0123456789+-/;# Convert superscript numbers
-    $txt =~ tr/\x{2080}\x{2081}\x{2082}\x{2083}\x{2084}\x{2085}\x{2086}\x{2087}\x{2088}\x{2089}\x{208A}\x{208B}/0123456889+-/;# Convert subscript numbers
+    $str = NFKD($str);
 
-    $txt =~ tr/\x{0251}\x{03B1}\x{03B2}\x{0262}\x{03B3}/AABGG/;     # Convert Latin and Greek
-    $txt =~ tr/\x{2113}\xF0\x{111}\!\"\(\)\-\{\}\<\>\;\:\.\?\xA1\xBF\/\\\@\*\%\=\xB1\+\xAE\xA9\x{2117}\$\xA3\x{FFE1}\xB0\^\_\~\`/LDD /; # Convert Misc
-    $txt =~ tr/\'\[\]\|//d;                         # Remove Misc
+    # additional substitutions - 3.6.
+    $str =~ s/\x{00C6}/AE/g;
+    $str =~ s/\x{00DE}/TH/g;
+    $str =~ s/\x{0152}/OE/g;
+    $str =~ tr/\x{0110}\x{00D0}\x{00D8}\x{0141}\x{2113}\x{02BB}\x{02BC}]['/DDOLl/d;
 
-    if ($sf && $sf =~ /^a/o) {
-        my $commapos = index($txt,',');
-        if ($commapos > -1) {
-            if ($commapos != length($txt) - 1) {
-                my @list = split /,/, $txt;
-                my $first = shift @list;
-                $txt = $first . ',' . join(' ', @list);
-            } else {
-                $txt =~ s/,/ /go;
-            }
-        }
-    } else {
-        $txt =~ s/,/ /go;
-    }
+    # transformations based on Unicode category codes
+    $str =~ s/[\p{Cc}\p{Cf}\p{Co}\p{Cs}\p{Lm}\p{Mc}\p{Me}\p{Mn}]//g;
 
-    $txt =~ s/\s+/ /go; # Compress multiple spaces
-    $txt =~ s/^\s+//o;  # Remove leading space
-    $txt =~ s/\s+$//o;  # Remove trailing space
+	if ($sf && $sf =~ /^a/o) {
+		my $commapos = index($str, ',');
+		if ($commapos > -1) {
+			if ($commapos != length($str) - 1) {
+                $str =~ s/,/\x07/; # preserve first comma
+			}
+		}
+	}
 
-    # Encoding the outgoing string is good practice, but not strictly
-    # necessary in this case because we've stripped everything from it
-    return encode_utf8($txt);
+    # since we've stripped out the control characters, we can now
+    # use a few as placeholders temporarily
+    $str =~ tr/+&@\x{266D}\x{266F}#/\x01\x02\x03\x04\x05\x06/;
+    $str =~ s/[\p{Pc}\p{Pd}\p{Pe}\p{Pf}\p{Pi}\p{Po}\p{Ps}\p{Sk}\p{Sm}\p{So}\p{Zl}\p{Zp}\p{Zs}]/ /g;
+    $str =~ tr/\x01\x02\x03\x04\x05\x06\x07/+&@\x{266D}\x{266F}#,/;
+
+    # decimal digits
+    $str =~ tr/\x{0660}-\x{0669}\x{06F0}-\x{06F9}\x{07C0}-\x{07C9}\x{0966}-\x{096F}\x{09E6}-\x{09EF}\x{0A66}-\x{0A6F}\x{0AE6}-\x{0AEF}\x{0B66}-\x{0B6F}\x{0BE6}-\x{0BEF}\x{0C66}-\x{0C6F}\x{0CE6}-\x{0CEF}\x{0D66}-\x{0D6F}\x{0E50}-\x{0E59}\x{0ED0}-\x{0ED9}\x{0F20}-\x{0F29}\x{1040}-\x{1049}\x{1090}-\x{1099}\x{17E0}-\x{17E9}\x{1810}-\x{1819}\x{1946}-\x{194F}\x{19D0}-\x{19D9}\x{1A80}-\x{1A89}\x{1A90}-\x{1A99}\x{1B50}-\x{1B59}\x{1BB0}-\x{1BB9}\x{1C40}-\x{1C49}\x{1C50}-\x{1C59}\x{A620}-\x{A629}\x{A8D0}-\x{A8D9}\x{A900}-\x{A909}\x{A9D0}-\x{A9D9}\x{AA50}-\x{AA59}\x{ABF0}-\x{ABF9}\x{FF10}-\x{FF19}/0-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-90-9/;
+
+    # intentionally skipping step 8 of the NACO algorithm; if the string
+    # gets normalized away, that's fine.
+
+    # leading and trailing spaces
+    $str =~ s/\s+/ /g;
+    $str =~ s/^\s+//;
+    $str =~ s/\s+$//g;
+
+    return lc $str;
 $func$ LANGUAGE 'plperlu' STRICT IMMUTABLE;
 
 -- Some handy functions, based on existing ones, to provide optional ingest normalization
@@ -18724,7 +18735,7 @@ CREATE OR REPLACE FUNCTION authority.normalize_heading( TEXT ) RETURNS TEXT AS $
     # Default to "No attempt to code" if the leader is horribly broken
     my $fixed_field = $r->field('008');
     my $thes_char = '|';
-    if ($fixed_field) {
+    if ($fixed_field) { 
         $thes_char = substr($fixed_field->data(), 11, 1) || '|';
     }
 
@@ -18746,13 +18757,13 @@ CREATE OR REPLACE FUNCTION authority.normalize_heading( TEXT ) RETURNS TEXT AS $
             $auth_txt .= '‡' . $sf->[0] . ' ' . $sf->[1];
         }
     }
-
-    # Perhaps better to parameterize the spi and pass as a parameter
-    $auth_txt =~ s/'//go;
-
+    
     if ($auth_txt) {
-        my $result = spi_exec_query("SELECT public.naco_normalize('$auth_txt') AS norm_text");
+        my $stmt = spi_prepare('SELECT public.naco_normalize($1) AS norm_text', 'TEXT');
+        my $result = spi_exec_prepared($stmt, $auth_txt);
         my $norm_txt = $result->{rows}[0]->{norm_text};
+        spi_freeplan($stmt);
+        undef($stmt);
         return $head->tag() . "_" . $thes_code . " " . $norm_txt;
     }
 

@@ -495,7 +495,7 @@ sub prorate_invoice {
             my $paid_diff = $full_item_paid - $total_debited;
             my $cost_diff = $full_item_cost - $total_debited;
             $logger->info("invoice: repairing prorate descrepency of paid:$paid_diff and cost:$cost_diff");
-            my $new_paid = $largest_item->amount + $paid_diff;
+            my $new_paid = $largest_item->amount_paid + $paid_diff;
             my $new_cost = $largest_item->cost_billed + $cost_diff;
 
             $largest_debit = $e->retrieve_acq_fund_debit($largest_debit->id); # get latest copy
