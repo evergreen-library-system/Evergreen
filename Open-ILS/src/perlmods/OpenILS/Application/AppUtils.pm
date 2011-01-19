@@ -1623,6 +1623,14 @@ sub xact_org {
     return $loc->[0]->{circ_lib} if @$loc;
 
     $loc = $e->json_query({
+        "select" => {bresv => ["request_lib"]},
+        from     => "bresv",
+        "where"  => {id => $xact_id},
+    });
+
+    return $loc->[0]->{request_lib} if @$loc;
+
+    $loc = $e->json_query({
         "select" => {mg => ["billing_location"]},
         from     => "mg",
         "where"  => {id => $xact_id},
