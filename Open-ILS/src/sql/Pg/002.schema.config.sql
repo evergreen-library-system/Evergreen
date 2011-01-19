@@ -70,7 +70,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0476'); -- dbs
+INSERT INTO config.upgrade_log (version) VALUES ('0477'); -- gmcharlt
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -344,7 +344,7 @@ $$;
 
 CREATE TABLE config.hard_due_date (
     id                  SERIAL      PRIMARY KEY,
-    name                TEXT        NOT NULL UNIQUE CHECK ( name ~ E'^\\w+$' ),
+    name                TEXT        NOT NULL UNIQUE,
     ceiling_date        TIMESTAMPTZ NOT NULL,
     forceto             BOOL        NOT NULL,
     owner               INT         NOT NULL   -- REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
