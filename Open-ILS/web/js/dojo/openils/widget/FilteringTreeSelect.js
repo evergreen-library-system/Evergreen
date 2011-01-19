@@ -42,7 +42,7 @@ if(!dojo._hasResource["openils.widget.FilteringTreeSelect"]){
                 if(this.dataList.length > 0) {
                     var storeData = fieldmapper[this.className].initStoreData();
                     storeData.items = this.dataList;
-                    this.store = new dojo.data.ItemFileReadStore({data:storeData});
+                    this.store = new dojo.data.ItemFileWriteStore({data:storeData});
                 }
                 this.inherited(arguments);
 

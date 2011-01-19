@@ -126,6 +126,7 @@ function load() {
     surveyTemplate = tbody.removeChild(dojo.byId('survey-row-template'));
     surveyQuestionTemplate = tbody.removeChild(dojo.byId('survey-question-row-template'));
 
+    checkGrpAppPerm(); // to do the initial load
     loadStaticFields();
     if(patron.isnew() && patron.addresses().length == 0) 
         uEditNewAddr(null, uEditAddrVirtId, true);
@@ -146,6 +147,56 @@ function load() {
     } else {
         input.widget.attr('disabled', true).attr('readOnly', true);
     }
+}
+
+var permGroups;
+var noPermGroups = [];
+// Returns true if the user is allowed to edit the selected group
+function checkGrpAppPerm(grpId) {
+
+    if(!permGroups) {
+
+        // get the groups
+        permGroups = new openils.PermaCrud().retrieveAll('pgt');
+        var permGroupPerms = []
+
+        // collect the group permissions
+        dojo.forEach(permGroups, 
+            function(grp) {
+                if(grp.application_perm())
+                    permGroupPerms.push(grp.application_perm());
+            }
+        );
+
+        // see which of the group application perms I do not have
+        var myPerms = fieldmapper.standardRequest(
+            ['open-ils.actor', 'open-ils.actor.user.has_work_perm_at.batch'],
+            [openils.User.authtoken, permGroupPerms]
+        );
+
+        var failedPerms = [];
+        for(var p in myPerms) { 
+            if(myPerms[p].length == 0) 
+                failedPerms.push(p); 
+        }
+
+        // identify which groups I cannot edit because I do not have permisssion
+
+        function checkTree(grp, failed) {
+            failed = failed || failedPerms.indexOf(grp.application_perm()) > -1;
+            if(failed) noPermGroups.push(grp.id()+'');
+            dojo.forEach(
+                permGroups.filter(function(g) { return g.parent() == grp.id() } ),
+                function(child) {
+                    checkTree(child, failed);
+                }
+            );
+        }
+
+        checkTree(permGroups.filter(function(g) { return g.parent() == null })[0]);
+    }
+
+    return noPermGroups.indexOf(grpId+'') == -1;
 }
 
 
@@ -613,12 +664,18 @@ function fleshFMRow(row, fmcls, args) {
         // not overwritten when the profile groups arrive and update
         wargs.forceSync = true;
         wargs.disableQuery = {usergroup : 'f'};
+        if(!patron.isnew() && !checkGrpAppPerm(patron.profile()))
+            wargs.readOnly = true;
     } else {
         wargs.forceSync = false;
     }
 
     var widget = new openils.widget.AutoFieldWidget(wargs);
-    widget.build();
+    widget.build(
+        function(w, ww) {
+            if(fmfield == 'profile') { trimGrpTree(ww); }
+        }
+    );
 
     // now put it back before we register the widget
     if(isPasswd2) fmfield = 'passwd2';
@@ -629,6 +686,19 @@ function fleshFMRow(row, fmcls, args) {
     widgetPile.push(widget);
     attachWidgetEvents(fmcls, fmfield, widget);
     return widget;
+}
+
+function trimGrpTree(autoWidget) {
+    var store = autoWidget.widget.store;
+    if(!store) return;
+    // remove all groups that this user are not allowed to edit, 
+    // except the profile group of an existing user
+    store.fetch({onItem : 
+        function(item) {
+            if(!checkGrpAppPerm(item.id[0]) && patron.profile() != item.id[0])
+                store.deleteItem(item);
+        }
+    });
 }
 
 function findWidget(wtype, fmfield, callback) {
