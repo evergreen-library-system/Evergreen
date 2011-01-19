@@ -3051,7 +3051,7 @@ sub checkin_handle_lost {
 
         $self->checkin_handle_lost_now_found(3) if $void_lost;
         $self->checkin_handle_lost_now_found(4) if $void_lost_fee;
-        $self->checkin_handle_lost_now_found_restore_od() if $restore_od;
+        $self->checkin_handle_lost_now_found_restore_od() if $restore_od && ! $self->void_overdues;
     }
 
     $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
