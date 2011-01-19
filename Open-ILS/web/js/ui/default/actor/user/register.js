@@ -148,6 +148,13 @@ function load() {
         input.widget.attr('disabled', true).attr('readOnly', true);
     }
 
+
+    if(!patron.isnew() && !checkGrpAppPerm(patron.profile()) && patron.id() != openils.User.user.id()) {
+        // we are not allowed to edit this user, so disable the save option
+        saveButton.attr('disabled', true);
+        saveCloneButton.attr('disabled', true);
+    }
+        
     lock_ready = true;
 }
 
