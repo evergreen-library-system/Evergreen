@@ -1950,22 +1950,40 @@
 				virtualized environment:</para>
 				<orderedlist>
 					<listitem>
-						<para>Download and install a prebuilt software image that
-						contains a working 
-						<systemitem class="osname">Linux</systemitem> / Evergreen
-						system (see 
-						<xref linkend="serversideinstall-virtual-prebuilt"/> for
-						details)</para>
-					</listitem>
-					<listitem>
 						<para>Manually install a 
 						<systemitem class="osname">Linux</systemitem> guest system,
 						then manually install Evergreen on it (see 
 						<xref linkend="serversideinstall-virtual-manual"/> for
 						details)</para>
 					</listitem>
+					<listitem>
+						<para>Download and install a prebuilt software image. The following
+						example shows installation of a working Debian "Lenny" (5.0)
+						<systemitem class="osname">Linux</systemitem> / Evergreen 1.6.1.4 system 
+						(see <xref linkend="serversideinstall-virtual-prebuilt"/> for
+						details)</para>
+					</listitem>
 				</orderedlist>
 				<para>We review each method in the following sections.</para>
+				<section xml:id="serversideinstall-virtual-manual">
+					<title>Manually install <systemitem class="osname">Linux</systemitem> and Evergreen</title>
+					<para>Instead of installing a pre-built, pre-configured virtual image
+					of <systemitem class="osname">Linux</systemitem> containing the
+					Evergreen software, you could just install a bare virtual
+					<systemitem class="osname">Linux</systemitem> guest system, then install
+					Evergreen from scratch on that system.</para>
+					<para>We recommend this approach if you need to specially configure
+					either the <systemitem class="osname">Linux</systemitem> system or
+					Evergreen itself. This will require a detailed review of both
+					<systemitem class="osname">Linux</systemitem> and Evergreen
+					configuration details. You are essentially doing a normal Evergreen
+					installation on a <systemitem class="osname">Linux</systemitem>
+					system; it just happens that 
+					<systemitem class="osname">Linux</systemitem> is running within a
+					virtualized environment on a <systemitem class="osname">Windows</systemitem> 
+					system. See <xref linkend="serversideinstallation-ubuntudebian"/> for 
+					information on a normal Evergreen installation.</para>
+				</section>
 				<section xml:id="serversideinstall-virtual-prebuilt">
 					<title>Download and install a prebuilt software image</title>
 					<para>You can download a prebuilt software image that, when installed
@@ -2065,82 +2083,240 @@
 							</tbody>
 						</tgroup>
 					</table>
-					<para>For the following example, we have already installed the
-					<application>VirtualBox</application> application (see
-					<xref linkend="serversideinstallation-virtual-vbox-install"/> for details). 
-					Continue with the steps as shown; refer to the accompanying figures for further
-					information:</para>
+					<para>In the following example you will install a prebuilt Debian
+					"Lenny" (5.0) / Evergreen 1.6.1.4 system. We assume you have already
+					installed the <application>VirtualBox</application> application (see
+					<xref linkend="serversideinstallation-virtual-vbox-install"/> for
+					details). Continue with the following steps; refer to the accompanying
+					figures for more information:</para>
 					<procedure>
 						<step>
-							<para>Start VirtualBox for the first time and select
+							<title>Download software</title>
+							<para>Download the prebuilt software image for Debian
+							"Lenny" (5.0) / Evergreen 1.6.1.4 contained in the
+							file <literal>Evergreen_1_6_1_4_Lenny.zip</literal> .
+							Create a temporary directory
+							<literal>C:\temp</literal>, then extract the contents
+							of the <literal>.ZIP</literal> file there.</para>
+						</step>
+						<step>
+							<title>Add new virtual disk</title>
+							<para>You must configure VirtualBox to recognized the new disk
+							image before you can create a new virtual machine to use it.
+							Start VirtualBox and select
 							<menuchoice>
 								<guimenu>File</guimenu>
 								<guimenuitem>VirtualBox Media Manager</guimenuitem>
 								<guimenuitem>Add</guimenuitem>
-							</menuchoice>
-							to locate the prebuilt software image just downloaded (the
-							example shows it was extracted from the original
-							<literal>.ZIP</literal> file into a temporary directory
-							<literal>C:\temp</literal>). See 
-							<xref linkend="serversideinstallation-virtual-vm-install-2"/> 
+							</menuchoice>,
+							then choose the disk image <literal>Lenny_1614_disk1.vmdk</literal>
+							that you just extracted to the temporary directory. Review
+							<xref linkend="serversideinstallation-virtual-vm-install-2"/>,
+							<xref linkend="serversideinstallation-virtual-vm-install-3"/> and
+							<xref linkend="serversideinstallation-virtual-vm-install-4"/>
 							for details.</para>
 						</step>
 						<step>
-							<para>After selecting the file, click
-							<guibutton>Open</guibutton> to import it (see 
-							<xref linkend="serversideinstallation-virtual-vm-install-3"/> 
-							for details).</para>
-						</step>
-						<step>
-							<para>Then click <guibutton>OK</guibutton> to save the
-							selection and return to the VirtualBox Media Manager (see
-							<xref linkend="serversideinstallation-virtual-vm-install-4"/>
-							for details).</para>
-						</step>
-						<step>
+							<title>Start virtual machine wizard</title>
 							<para>Click <guibutton>New</guibutton> to start the "Virtual
-							Machine Wizard", then <guibutton>Next</guibutton> to continue
-							and create a new virtual machine (VM) 
+							Machine Wizard", then click <guibutton>Next</guibutton> to
+							create a new virtual machine (VM) 
 							<xref linkend="serversideinstallation-virtual-vm-install-5"/>).</para>
 						</step>
 						<step>
-							<para>Create a new name for the VM and set the operating
+							<title>Define new virtual machine</title>
+							<para>Define a name for the new virtual machine, set the operating
 							system type, then click <guibutton>Next</guibutton> (see 
 							<xref linkend="serversideinstallation-virtual-vm-install-6"/>).</para>
 						</step>
 						<step>
-							<para>Set the memory size (we chose the default value of
-							512Mb), then click <guibutton>Next</guibutton> (see 
+							<title>Set memory size</title>
+							<para>Set the memory size (we chose a default value of 512Mb),
+							then click <guibutton>Next</guibutton> (see 
 							<xref linkend="serversideinstallation-virtual-vm-install-7"/>).</para>
 						</step>
 						<step>
-							<para>Edit the Virtual Hard Disk configuration settings; click
-							the radio boxes "Boot Hard Disk" and "Use existing hard disk"
-							and ensure that the disk name "Evergreen1601_DebianLenny.vmdk"
-							is selected. Click <guibutton>Finish</guibutton> to finish the
-							setup (see 
-							<xref linkend="serversideinstallation-virtual-vm-install-8"/>).</para>
+							<title>Attach virtual disk</title>
+							<para>Attach the virtual hard disk image by setting the radio boxes
+							<literal>Boot Hard Disk</literal> and <literal>Use existing hard
+							disk</literal>. Ensure that the proper disk name is selected.
+							Click <guibutton>Finish</guibutton> to finish the setup. Review
+							<xref linkend="serversideinstallation-virtual-vm-install-8"/>,
+							<xref linkend="serversideinstallation-virtual-vm-install-9"/> and
+ 							and <xref linkend="serversideinstallation-virtual-vm-install-10"/>
+							for details.</para>
 						</step>
 						<step>
-							<para>Install the <application>VirtualBox Guest
-							Additions</application> (really a required upgrade to
-							VirtualBox).</para>
+							<title>Start new virtual machine</title>
+							<para>Click <guibutton>Start</guibutton> to boot the new VM.</para>
 						</step>
 						<step>
-							<para>Return to VirtualBox and see the summary of the VM just created
-							(see <xref linkend="serversideinstallation-virtual-vm-install-9"/>
- 							and <xref linkend="serversideinstallation-virtual-vm-install-10"/>).
-							Click <guibutton>Start</guibutton> to boot the new VM, then 
-							log in with username <literal>root</literal> and
-							password <literal>evergreen</literal> to continue.</para>
+							<title>Manually start Evergreen</title>
+							<para>After the new virtual machine boots up for the first time,
+							you must manually start Evergreen. Start it as follows, starting
+							as the root user (see 
+							<xref linkend="serversideinstallation-starting"/> for more
+							information):</para>
+<screen>
+	<userinput>
+	su -                        # become the root user - enter "evergreen" for the password
+	su - opensrf                # as the opensrf user
+	osrf_ctl.sh -l -a start_all # start all Evergreen services
+	exit                        # become the root user again
+	/etc/init.d/apache2 restart # restart the Apache server</userinput>
+</screen>
+							<para>The following table lists the default accounts already set
+							up in the virtual machine:</para>
+							<table xml:id="serversideinstall-virtual-accounts">
+								<?dbfo keep-together="always" ?>
+								<title>Default Accounts</title>
+								<tgroup align="left" cols="3" colsep="1" rowsep="1">
+									<colspec colname="account" colnum="1" colwidth="1*"/>
+									<colspec colname="password" colnum="2" colwidth="1*"/>
+									<colspec colname="type" colnum="3" colwidth="1*"/>
+									<thead>
+										<row>
+											<entry>Account</entry>
+											<entry>Password</entry>
+											<entry>Type</entry>
+										</row>
+									</thead>
+									<tbody>
+										<row>
+											<entry>root</entry>
+											<entry>evergreen</entry>
+											<entry>Linux account</entry>
+										</row>
+									</tbody>
+									<tbody>
+										<row>
+											<entry>evergreen</entry>
+											<entry>evergreen</entry>
+											<entry>Linux account</entry>
+										</row>
+									</tbody>
+									<tbody>
+										<row>
+											<entry>opensrf</entry>
+											<entry>evergreen</entry>
+											<entry>Linux account</entry>
+										</row>
+									</tbody>
+									<tbody>
+										<row>
+											<entry>evergreen</entry>
+											<entry>evergreen</entry>
+											<entry>Database account</entry>
+										</row>
+									</tbody>
+									<tbody>
+										<row>
+											<entry>admin</entry>
+											<entry>open-ils</entry>
+											<entry>Evergreen account</entry>
+										</row>
+									</tbody>
+								</tgroup>
+							</table>
+							<para>At this point you have a running 
+							<systemitem class="osname">Linux</systemitem> / Evergreen system. If
+							you need to modify the Evergreen configuration in any way, review
+							<xref linkend="serversideinstallation-ubuntudebian"/>
+							in the standard Evergreen installation instructions.</para> 
+						</step>
+						<step>
+							<title>Start staff client</title>
+							<para> The virtual machine just installed has been configured
+							to include an optional graphical desktop environment. If you
+							configure the virtual machine for 1.0 GB RAM, you should be
+							able to run the desktop at the same time as Evergreen. To
+							start the desktop, log in as the 
+							<systemitem class="username">opensrf</systemitem> user and
+							enter the command <command>startx</command>.</para>
+							<para>The desktop in this virtual machine includes the web
+							browser <application>IceWeasel</application> (the 
+							<systemitem class="osname">Debian</systemitem> version of
+							Firefox) and <emphasis>XULRunner 1.9</emphasis>. Once you
+							start the desktop and Evergreen, you can connect to Evergreen
+							using the built-in staff client with the following
+							commands:</para>
+<screen>
+	<userinput>
+	# as the opensrf user
+	cd /home/opensrf/Evergreen-ILS-1.6.1.4/Open-ILS
+	xulrunner-1.9 xul/staff_client/build/application.ini</userinput>
+</screen>
+							<para>Connect to 
+							<emphasis role="bold">localhost</emphasis> using the
+							username and password 
+							<emphasis role="bold">admin</emphasis> / 
+							<emphasis role="bold">open-ils</emphasis> and begin populating the
+							data in your image.</para>
+						</step>
+						<step>
+							<title>(OPTIONAL) Modify network connections</title>
+							<para>This machine was configured with a NAT connection on the
+							first Ethernet adapter
+							(<emphasis role="bold">eth0</emphasis>). As the virtual machines
+							tend to map virtual devices to real MAC addresses on their host,
+							you might need to clear that mapping before making a connection.
+							As root, run:</para>
+<screen>
+	<userinput>
+	# as the root user:
+	rm /etc/udev/rules.d/70-persistent-net.rules
+	reboot</userinput>
+</screen>
+							<para>To create a network connection, as root run:
+							<emphasis role="bold">dhclient eth0</emphasis> to set up a NAT
+							connection.</para>
+						</step>
+						<step xml:id="serversideinstallation-virtual-vm-host-based">
+							<title>Add another host connection</title>
+							<para>To add another host connection, you must add a second
+							Ethernet adapter (<emphasis role="bold">eth1</emphasis>) network
+							configuration interface and configure it as a host-based
+							connection. After you add the second Ethernet adapter for the
+							host connection, to create the host network connection, as root
+							run: <emphasis role="bold">dhclient eth1</emphasis>.</para>
+							<para>To connect to your virtual machine from your host
+							machine, create the host connection and check the IP address
+							of device <literal>eth1</literal> using the
+							<command>ifconfig</command> command: 
+							<emphasis role="bold">/sbin/ifconfig eth1</emphasis>. The IP address 
+							will be listed in the inet_addr stanza as something like: <emphasis
+							role="bold">inet addr: 192.168.56.101</emphasis>.</para>
+						</step>
+						<step>
+							<title>Network connections for external staff clients</title>
+							<para>While you can use the IP address to access the OPAC, the
+							staff client needs a hostname to connect to Evergreen. For the
+							built-in staff client in the Linux graphical desktop, you can
+							just use <literal>"localhost"</literal>. But for external staff
+							clients, if your network does not assign a real hostname to the
+							IP address for the virtual image, you may need to alter the
+							hosts file on your client workstations to provide an alias for
+							the IP address.</para>
+							<para>On Linux, the hosts file can be found in the file
+							<filename>/etc/hosts</filename>. On 
+							<systemitem class="osname">Windows</systemitem>, the hosts file
+							can be found in
+							<filename>C:\WINDOWS\System32\drivers\etc\hosts</filename>.</para>
+						</step>
+						<step>
+							<title>External staff clients</title>
+							<para>You can connect a staff client to the virtual Evergreen system
+							by getting your host-based connection running (see 
+							<xref linkend="serversideinstallation-virtual-vm-host-based"/>).
+							Once you have a host-based connection, you can install and use the
+							<systemitem class="osname">Windows</systemitem> 1.6.1.4 staff
+							client available from
+							<ulink url="http://evergreen-ils.org/downloads/evergreen-setup-rel_1_6_1_4.exe">
+							http://evergreen-ils.org/downloads/evergreen-setup-rel_1_6_1_4.exe</ulink>
+							to connect to the virtual Evergreen system from another
+							<systemitem class="osname">Windows</systemitem> machine.</para>
 						</step>
 					</procedure>
-					<para>At this point you have a running 
-					<systemitem class="osname">Linux</systemitem> / Evergreen system. 
-					If you need to modify the Evergreen configuration in any way, review
-					the sectons of the standard Evergreen installation instructions in
-					<xref linkend="serversideinstallation-ubuntudebian"/> that deal with
-					configuration.</para>
 					<figure xml:id="serversideinstallation-virtual-vm-install-2">
 						<title>Starting <application>VirtualBox</application> for the first time</title>
 						<mediaobject>
@@ -2205,7 +2381,6 @@
 							</imageobject>
 						</mediaobject>
 					</figure>
-
 					<figure xml:id="serversideinstallation-virtual-vm-install-10">
 						<title>Summary of the new VM</title>
 						<mediaobject>
@@ -2214,61 +2389,6 @@
 							</imageobject>
 						</mediaobject>
 					</figure>
-				</section>
-				<section xml:id="serversideinstall-virtual-manual">
-					<title>Manually install <systemitem class="osname">Linux</systemitem> and Evergreen</title>
-					<para>Instead of installing a pre-built, pre-configured virtual image
-					of <systemitem class="osname">Linux</systemitem> containing the
-					Evergreen software, you could also manually install a 
-					<systemitem class="osname">Linux</systemitem> guest system, then install
-					Evergreen from scratch on that system.</para>
-					<para>We recommend this approach if you need to specially configure
-					either the <systemitem class="osname">Linux</systemitem> system or
-					Evergreen itself. This will require a detailed review of both
-					<systemitem class="osname">Linux</systemitem> and Evergreen
-					configuration details. You are essentially doing a normal Evergreen
-					installation on a <systemitem class="osname">Linux</systemitem>
-					system; it just happens that 
-					<systemitem class="osname">Linux</systemitem> is running within a
-					virtualized environment on a <systemitem class="osname">Windows</systemitem> 
-					system. See <xref linkend="serversideinstallation-ubuntudebian"/> for 
-					information on the normal Evergreen installation, then continue with this
-					section.</para>
-					<para>For the following example, we have already installed the
-					<application>VirtualBox</application> application (see 
-					<xref linkend="serversideinstallation-virtual-vbox-install"/> for details).
-					Continue with the steps as shown; refer to the accompanying figures
-					for further information:</para>
-					<procedure>
-						<step>
-							<para>Download and install an appropriate version of the
-							standard <systemitem class="osname">Ubuntu</systemitem> software
-							distribution on <application>"VirtualBox"</application>.</para>
-						</step>
-						<step>
-							<para>Start (boot) <systemitem class="osname">Ubuntu</systemitem>.</para>
-						</step>
-						<step>
-							<para>Install Evergreen on the
-							<systemitem class="osname">Ubuntu</systemitem> system.</para>
-						</step>
-					</procedure>
-				</section>
-				<section>
-					<title>Summary</title>
-					<para>Whether you install a pre-built, pre-configured virtual image of
-					<systemitem class="osname">Linux</systemitem> already containing the
-					Evergreen software (see <xref linkend="serversideinstall-virtual-prebuilt"/>),
-					or you install a plain virtual 
-					image <systemitem class="osname">Linux</systemitem> and then install
-					Evergreen from scratch (see <xref linkend="serversideinstall-virtual-manual"/>), 
-					your <systemitem class="osname">Windows</systemitem> system is now hosting 
-					an <systemitem class="osname">Ubuntu</systemitem> system, which itself is
-					hosting the Evergreen distribution. So far as Evergreen is concerned,
-					it is happily executing in a standard 
-					<systemitem class="osname">Ubuntu</systemitem> environment and should 
-					behave as if it were executing on a standalone 
-					<systemitem class="osname">Ubuntu</systemitem> system.</para>
 				</section>
 			</section>
 		</section>
