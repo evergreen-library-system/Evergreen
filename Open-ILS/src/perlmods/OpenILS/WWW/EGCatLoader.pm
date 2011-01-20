@@ -227,29 +227,18 @@ sub load_logout {
 #   records : list of bre's and copy-count objects
 sub load_rresults {
     my $self = shift;
-
     my $cgi = $self->cgi;
     my $ctx = $self->ctx;
     my $e = $self->editor;
 
     $ctx->{page} = 'rresult';
-
-    unless($cache{cmf}) {
-        $cache{cmf} = $e->search_config_metabib_field({id => {'!=' => undef}});
-        $cache{cmc} = $e->search_config_metabib_class({name => {'!=' => undef}});
-        $ctx->{metabib_field} = $cache{cmf};
-        $ctx->{metabib_class} = $cache{cmc};
-    }
-
     my $page = $cgi->param('page') || 0;
     my $query = $cgi->param('query');
     my $limit = $cgi->param('limit') || 10; # XXX user settings
-
     my $args = {limit => $limit, offset => $page * $limit}; 
     my $results;
 
     try {
-
         $results = $U->simplereq(
             'open-ils.search',
             'open-ils.search.biblio.multiclass.query.staff', 
@@ -270,13 +259,19 @@ sub load_rresults {
 
     return Apache2::Const::OK if @$rec_ids == 0;
 
-    my $search = OpenSRF::AppSession->create('open-ils.search');
-    my $facet_req = $search->request('open-ils.search.facet_cache.retrieve', $results->{facet_key}, 10);
-    
     my $cstore1 = OpenSRF::AppSession->create('open-ils.cstore');
-
     my $bre_req = $cstore1->request(
         'open-ils.cstore.direct.biblio.record_entry.search', {id => $rec_ids});
+
+    my $search = OpenSRF::AppSession->create('open-ils.search');
+    my $facet_req = $search->request('open-ils.search.facet_cache.retrieve', $results->{facet_key}, 10);
+
+    unless($cache{cmf}) {
+        $cache{cmf} = $e->search_config_metabib_field({id => {'!=' => undef}});
+        $cache{cmc} = $e->search_config_metabib_class({name => {'!=' => undef}});
+        $ctx->{metabib_field} = $cache{cmf};
+        $ctx->{metabib_class} = $cache{cmc};
+    }
 
     my @data;
     while(my $resp = $bre_req->recv) {
