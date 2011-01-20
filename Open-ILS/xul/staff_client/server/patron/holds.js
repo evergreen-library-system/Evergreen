@@ -773,7 +773,8 @@ patron.holds.prototype = {
                                 if (r == 0) {
                                     var transits = [];
                                     for (var i = 0; i < obj.retrieve_ids.length; i++) {
-                                        if (obj.holds_map[ obj.retrieve_ids[i].id ].transit()) {
+                                        var transit = obj.holds_map[ obj.retrieve_ids[i].id ].transit();
+                                        if (transit && ! transit.dest_recv_time() ) {
                                             transits.push( obj.retrieve_ids[i].barcode );
                                         }
                                         var robj = obj.network.simple_request('FM_AHR_CANCEL',[ ses(), obj.retrieve_ids[i].id]);
