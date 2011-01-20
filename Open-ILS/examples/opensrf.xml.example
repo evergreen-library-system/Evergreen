@@ -542,11 +542,6 @@ vim:et:ts=4:sw=4:
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
-                    <marctemplates>
-                        <K_book>LOCALSTATEDIR/templates/marc/k_book.xml</K_book>
-                        <K_audio>LOCALSTATEDIR/templates/marc/k_audio.xml</K_audio>
-                        <K_video>LOCALSTATEDIR/templates/marc/k_video.xml</K_video>
-                    </marctemplates>
                 </app_settings>
             </open-ils.booking>
 
