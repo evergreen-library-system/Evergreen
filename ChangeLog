@@ -1,1 +1,329 @@
-#ChangeLog
+2011-01-05  dbs
+
+	* Finish adding authority.js to i18n Makefile
+	  
+	  Forgot to add some crucial bits in the extensive copy and paste
+	  effort that's required to add another file to the i18n build.
+	  Sigh. Rewrites welcome! And sorry for leaving this trap for
+	  you to fall into, miker.
+
+2011-01-05  erickson
+
+	* roll back xact in set_item_lost when copy is alrady marked lost
+	  and we exit the sub; if caller passes an event to
+	  editor->die_event, capture it as the editor's last event
+	  
+	  Signed-off-by: Bill Erickson <berick@esilibrary.com>
+
+2011-01-05  dbs
+
+	* Perhaps naive method of bumping existing custom
+	  config.metabib_field entries
+
+2011-01-05  dbwells
+
+	* Unify some summarization code in preparation for further
+	  development.
+
+2011-01-07  senator
+
+	* Backport r19134 from trunk
+	  
+	  Acq: fix prorating bug
+	  
+	  When prorating, the system decides what funds to target by
+	  looking at what
+	  funds have already been spent against. Previously, the system
+	  only looked at
+	  acqie objects, but an invoice can also be composed of acqii
+	  objects.
+
+	* Backport r19137 from trunk
+	  
+	  Make openils.PermaCrud.Store use a default order_by clause in
+	  common situations
+	  
+	  This avoids an issue where, using a FilteringSelect dijit,
+	  sometimes you type a
+	  couple letters, let's says "ABC", and you get a set of matches
+	  like this:
+	  
+	  "ABCDE"
+	  "ABCD"
+	  "ABC"
+	  
+	  just because there happens to be no specific ordering. If you
+	  click the ABC
+	  match and tab away too quickly, the dijit will reset itself to
+	  the first match,
+	  "ABCDE". This is probably a Dojo/Dijit bug, as I've been able to
+	  duplicate the
+	  problem with other stores, but that's all murky.
+	  
+	  This avoids the issue by making sure the shortest match is at the
+	  top of the
+	  list.
+
+2011-01-10  dbs
+
+	* Set explicit library versioning for Evergreen 2.0 to 2:0:0
+	  
+	  This should help for anything linking to core Evergreen
+	  libraries;
+	  as we revise the -version-info number, anything that links
+	  against
+	  the core Evergreen libraries will quickly scream if we rev the
+	  interface number without specifying via the age number that
+	  previous
+	  interfaces are still supported. Let's remember to revise it
+	  accordingly!
+	  
+	  Also remove redundant linkage to oils_idl.
+
+	* Clean up c-apps Makefile.am and make everything load cleanly
+	  again
+	  
+	  Executable programs don't have library versions, so don't set
+	  -version-info
+	  for them.
+	  
+	  Add -version-info to liboils_idl and liboils_util, and link
+	  liboils_util
+	  explicitly against liboils_idl rather than relying on AM_LDFLAGS.
+	  
+	  Set the linking dependencies correctly; if a library links
+	  against
+	  liboils_util, set that as the sole link dependency; no need for
+	  liboils_idl
+	  once (let alone twice!)
+
+2011-01-10  erickson
+
+	* avoid fetching user settings for new user registration; the
+	  result of fetching settings with a null user id is that settings
+	  of the staff/editor were fetched instead, leading to settings
+	  that appeared to selected, but were not saved during submit
+
+2011-01-10  dbwells
+
+	* Additional code unification; add 'reset item' capability to
+	  unitize_items()
+
+2011-01-11  dbs
+
+	* Backport authority browsing fixes from trunk
+	  
+	  Primary fix is to remove duplicate records from the results
+	  when dupes are returned due to similar 1XX/4XX/5XX values in
+	  the same records.
+
+2011-01-11  erickson
+
+	* repaired pending-order vs order-pending thinko. Thanks to Kathy
+	  Lussier and Mike R. for the diagnosis
+
+2011-01-11  phasefx
+
+	* fix regression with org selector when specifying ?ol= and the org
+	  unit hiding setting is unset
+
+2011-01-11  gmc
+
+	* allow deletion of incomplete invoice LIs
+	  
+	  Fix silent failure when attempting to delete a LI
+	  whose type or cost was not set; dojo.string.subtitute
+	  does not like replacement values to be null.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-01-12  gmc
+
+	* allow data entry of negative currency amounts
+	  
+	  Plug in fix for Dojo bug http://bugs.dojotoolkit.org/ticket/9438,
+	  which
+	  was preventing the input of discounts and credits during invoice
+	  creation.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-01-12  dbs
+
+	* Backport fixes for custom indexes in the database schema during
+	  1.6.1-2.0 upgrade
+	  
+	  r19133 and r19136 provide more sophisticated, working handling of
+	  custom
+	  indexes during the 1.6.1-2.0 database schema upgrade.
+
+2011-01-12  gmc
+
+	* AutoFieldWidget no longer uses CurrencyTextBox dijit
+	  
+	  NumberTextBox used instead to work around problem with
+	  CurrencyTextBox's support for negative monetary amounts
+	  in Dojo 1.3. See https://bugs.launchpad.net/evergreen/+bug/702117
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-01-12  dbs
+
+	* Deprecate overdue/predue config sections in favour of
+	  action/trigger
+	  
+	  Set email notification to "false" for holds, overdues, and
+	  predues.
+	  
+	  Fix one line of whitespace.
+
+	* Add Net::SSH2 to the prereqs as the libnet-ssh2-perl package is
+	  not on Debian Lenny
+
+2011-01-14  dbs
+
+	* Enable truncation attribute in Z39.50 queries to be left out
+	  entirely
+	  
+	  Per https://bugs.launchpad.net/evergreen/+bug/702695, some Z39.50
+	  servers hate the truncation attribute (@attr 5=anything) and
+	  always
+	  return 0 hits.
+	  
+	  This gives you the ability to specify a negative value for the
+	  truncation attribute and thereby prevent the truncation attribute
+	  from being included in the Z39.50 query for a given server.
+
+2011-01-15  dbwells
+
+	* Postpone advanced serial call-number handling until after 2.0
+	  
+	  Sharing of a single call-number for multiple volumes, while well
+	  intentioned, was not ready for primetime for various reasons.
+	  This commit:
+	  1) harmonizes and unifies call-number handling in Serial.pm,
+	  sticking with current practices
+	  2) adds a very basic and now necessary prompt to the Serial
+	  Control view
+
+2011-01-17  erickson
+
+	* default ordering-agency org unit to workstation org in PO create
+	  dialog
+
+2011-01-17  dbwells
+
+	* In serial control, if they defined a *_call_number, honor it as
+	  the default
+
+2011-01-18  dbwells
+
+	* Auto-generation of placeholder barcodes approved for backport
+
+2011-01-18  erickson
+
+	* user saved searches are only accessible to the originating user;
+	  remove (incorrect) permacrud config for usr_saved_searches
+
+2011-01-18  gmc
+
+	* fix glitch that could break invoice proration
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-01-18  dbwells
+
+	* Protect against blank and invalid scap IDs in issuance editor
+
+2011-01-19  dbs
+
+	* Avoid escaping issues in authority.normalize_heading() by
+	  parameterizing the query
+	  
+	  Long story short: MARC subfield values containing backslashes
+	  caused noise
+	  and in some cases painful errors. Using
+	  spi_prepare/spi_exec_query is the
+	  safest way of handling escaping, rather than adding more regexes
+	  and munging
+	  the data before it even gets to naco_normalize().
+	  
+	  Most painful case was <subfield code="a">Foo, Bar\</subfield> -
+	  the trailing
+	  slash ended up escaping the enclosing single quote (because
+	  PostgreSQL isn't
+	  configured by default with strict conformance to SQL escaping
+	  rules yet) and
+	  threw an error.
+
+2011-01-19  gmc
+
+	* backport naco_normalize revisions to rel_2_0
+	  
+	  This implements the latest version of the NACO
+	  normalization specification found at
+	  
+	  http://www.loc.gov/catdir/pcc/naco/SCA_PccNormalization_Final_revised.pdf
+	  
+	  This version of the algorithm is more general -- for example,
+	  all combining characters are removed -- so there should be
+	  fewer fiddly edge cases to worry about for most European
+	  languages.
+	  
+	  Rebuilding the metabib.*_field_entry tables (e.g., by using
+	  reingest-1.6-2.0.pl) is recommended if there are any bibs that
+	  contain
+	  any non-ASCII characters.
+	  
+	  Normalized text is now left in the NFKD form, so while this
+	  should
+	  be transparent to the search system after reindexing, it does
+	  mean
+	  that (for example) Korean text in metabib.*_field_entry may not
+	  be in the same Unicode normalization form as that found in
+	  biblio.record_entry.
+	  
+	  Also includes fix for bug #684467: more bulletproofing of
+	  naco_normalize
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-01-19  miker
+
+	* Build and flatten a tree, correcting a sorting issue in some OU
+	  dropdowns.
+	  
+	  The previous code assumed that work org units would be delivered
+	  in hierarchical order, but alas, they are not. Thus, we build the
+	  hierarchy and then flatten it, sorting at each level. This will
+	  be non-fast with many work OUs, but the common case is a small
+	  set, which is not painful.
+	  
+	  Further improvement is warranted when the above proves false.
+
+2011-01-19  senator
+
+	* Backport r19214 from trunk
+	  
+	  Booking: Robert Soulliere spotted and fixed a bug in processing
+	  reservation-
+	  related overdue fines. See
+	  https://bugs.launchpad.net/evergreen/+bug/705061
+
+2011-01-19  phasefx
+
+	* let amnesty checkin mode trump the restore overdues on lost
+	  checkin setting
+
+2011-01-19  erickson
+
+	* remove disallowed permission groups from the perm group selector
+	  in user registration; see bug 699914
+
+	* if this user does not have permission to edit an existing user,
+	  disable the save and clone buttons
+
+2011-01-20  miker
+
+	* .: Tagging 2.0-RC3
+
