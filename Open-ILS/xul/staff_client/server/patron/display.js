@@ -948,6 +948,7 @@ patron.display.prototype = {
                     }
                 }
                 var penalties = patron.standing_penalties();
+                if (!penalties) { penalties = []; }
                 var dl_flag_opened = false;
                 for (var i = 0; i < penalties.length; i++) {
                     if (penalties[i].standing_penalty().block_list() || penalties[i].standing_penalty().id() == 20 /* ALERT_NOTE */) {
