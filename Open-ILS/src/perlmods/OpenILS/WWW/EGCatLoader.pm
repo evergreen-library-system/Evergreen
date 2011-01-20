@@ -257,6 +257,10 @@ sub load_rresults {
 
     $ctx->{page_size} = $limit;
     $ctx->{hit_count} = $results->{count};
+    $ctx->{records} = [];
+    $ctx->{search_facets} = {};
+
+    return Apache2::Const::OK if @$rec_ids == 0;
     
     my $cstore1 = OpenSRF::AppSession->create('open-ils.cstore');
 
@@ -282,7 +286,6 @@ sub load_rresults {
     $cstore1->kill_me;
 
     # shove recs into context in search results order
-    $ctx->{records} = [];
     for my $rec_id (@$rec_ids) { 
         push(
             @{$ctx->{records}},
