@@ -2040,9 +2040,9 @@ function AcqLiTable() {
             var self = this;
             acqLitExportAttrSelector.store = new dojo.data.ItemFileReadStore(
                 {
-                    "data": acqliad.toStoreData(
+                    "data": acqlimad.toStoreData(
                         this.pcrud.search(
-                            "acqliad", {"code": li_exportable_attrs}
+                            "acqlimad", {"code": li_exportable_attrs}
                         )
                     )
                 }
