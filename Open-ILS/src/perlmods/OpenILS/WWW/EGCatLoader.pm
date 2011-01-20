@@ -5,11 +5,14 @@ use XML::LibXML;
 use Digest::MD5 qw(md5_hex);
 use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR REDIRECT);
 use OpenSRF::AppSession;
+use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 my $U = 'OpenILS::Application::AppUtils';
+
+my %cache; # proc-level cache
 
 sub new {
     my($class, $apache, $ctx) = @_;
@@ -81,18 +84,17 @@ sub load {
 # context additions: 
 #   find_org_unit : function(id) => aou object
 #   org_tree : function(id) => aou object, top of tree, fleshed
-my $cached_org_tree;
-my %org_unit_map;
 sub load_helpers {
     my $self = shift;
+    $cache{org_unit_map} = {};
 
     # pull the org unit from the cached org tree
     $self->ctx->{find_org_unit} = sub {
         my $org_id = shift;
         return undef unless defined $org_id;
-        return $org_unit_map{$org_id} if defined $org_unit_map{$org_id};
+        return $cache{org_unit_map}{$org_id} if defined $cache{org_unit_map}{$org_id};
         my $tree = shift || $self->ctx->{org_tree}->();
-        return $org_unit_map{$org_id} = $tree if $tree->id == $org_id;
+        return $cache{org_unit_map}{$org_id} = $tree if $tree->id == $org_id;
         for my $child (@{$tree->children}) {
             my $node = $self->ctx->{find_org_unit}->($org_id, $child);
             return $node if $node;
@@ -101,8 +103,8 @@ sub load_helpers {
     };
 
     $self->ctx->{org_tree} = sub {
-        unless($cached_org_tree) {
-            $cached_org_tree = $self->editor->search_actor_org_unit([
+        unless($cache{org_tree}) {
+            $cache{org_tree} = $self->editor->search_actor_org_unit([
 			    {   parent_ou => undef},
 			    {   flesh            => -1,
 				    flesh_fields    => {aou =>  ['children', 'ou_type']},
@@ -110,7 +112,7 @@ sub load_helpers {
 			    }
 		    ])->[0];
         }
-        return $cached_org_tree;
+        return $cache{org_tree};
     }
 }
 
@@ -223,8 +225,6 @@ sub load_logout {
 #   page_size
 #   hit_count
 #   records : list of bre's and copy-count objects
-my $cmf_cache;
-my $cmc_cache;
 sub load_rresults {
     my $self = shift;
 
@@ -234,33 +234,44 @@ sub load_rresults {
 
     $ctx->{page} = 'rresult';
 
-    unless($cmf_cache) {
-        $cmf_cache = $e->search_config_metabib_field({id => {'!=' => undef}});
-        $cmc_cache = $e->search_config_metabib_class({name => {'!=' => undef}});
-        $ctx->{metabib_field} = $cmf_cache;
-        $ctx->{metabib_class} = $cmc_cache;
+    unless($cache{cmf}) {
+        $cache{cmf} = $e->search_config_metabib_field({id => {'!=' => undef}});
+        $cache{cmc} = $e->search_config_metabib_class({name => {'!=' => undef}});
+        $ctx->{metabib_field} = $cache{cmf};
+        $ctx->{metabib_class} = $cache{cmc};
     }
-
 
     my $page = $cgi->param('page') || 0;
     my $query = $cgi->param('query');
     my $limit = $cgi->param('limit') || 10; # XXX user settings
 
     my $args = {limit => $limit, offset => $page * $limit}; 
-    my $results = $U->simplereq('open-ils.search',
-        'open-ils.search.biblio.multiclass.query.staff', $args, $query, 1);
+    my $results;
 
-    my $search = OpenSRF::AppSession->create('open-ils.search');
-    my $facet_req = $search->request('open-ils.search.facet_cache.retrieve', $results->{facet_key}, 10);
+    try {
+
+        $results = $U->simplereq(
+            'open-ils.search',
+            'open-ils.search.biblio.multiclass.query.staff', 
+            $args, $query, 1);
+
+    } catch Error with {
+        my $err = shift;
+        $logger->error("multiclass search error: $err");
+        $results = {count => 0, ids => []};
+    };
 
     my $rec_ids = [map { $_->[0] } @{$results->{ids}}];
 
-    $ctx->{page_size} = $limit;
-    $ctx->{hit_count} = $results->{count};
     $ctx->{records} = [];
     $ctx->{search_facets} = {};
+    $ctx->{page_size} = $limit;
+    $ctx->{hit_count} = $results->{count};
 
     return Apache2::Const::OK if @$rec_ids == 0;
+
+    my $search = OpenSRF::AppSession->create('open-ils.search');
+    my $facet_req = $search->request('open-ils.search.facet_cache.retrieve', $results->{facet_key}, 10);
     
     my $cstore1 = OpenSRF::AppSession->create('open-ils.cstore');
 
@@ -271,6 +282,7 @@ sub load_rresults {
     while(my $resp = $bre_req->recv) {
         my $bre = $resp->content; 
 
+        # XXX farm out to multiple cstore sessions before loop, then collect after
         my $copy_counts = $e->json_query(
             {from => ['asset.record_copy_count', 1, $bre->id, 0]})->[0];
 
@@ -296,7 +308,7 @@ sub load_rresults {
     my $facets = $facet_req->gather(1);
 
     for my $cmf_id (keys %$facets) {  # quick-n-dirty
-        my ($cmf) = grep { $_->id eq $cmf_id } @$cmf_cache;
+        my ($cmf) = grep { $_->id eq $cmf_id } @{$cache{cmf}};
         $facets->{$cmf->label} = $facets->{$cmf_id};
         delete $facets->{$cmf_id};
     }
