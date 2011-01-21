@@ -138,7 +138,7 @@
 							</tr>
 							<tr name="local_callnumber_list" class="result_table_title_cell">
 								<td>
-								<span type='opac/slot-data+marcxml-full' query='volumes'>
+								<span type='opac/slot-data+holdings_xml-full' query='volumes'>
 								<span class='hide_me' debug='true' type='opac/slot-format'><![CDATA[
 									var output = dojo.create('span'); 
 
