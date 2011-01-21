@@ -136,15 +136,14 @@
 
 								</td>
 							</tr>
-							<tr name="local_callnumber_list" class="result_table_title_cell hide_me">
+							<tr name="local_callnumber_list" class="result_table_title_cell">
 								<td>
-								<span type='opac/slot-data+holdings_xml' query='volumes'>
+								<span type='opac/slot-data+marcxml-full' query='volumes'>
 								<span class='hide_me' debug='true' type='opac/slot-format'><![CDATA[
 									var output = dojo.create('span'); 
 
 									var item_cnt = 0;
 									var max_items = 4;
-
 
 									dojo.query('volume', item).forEach(function(vol) {
 										if (item_cnt >= max_items) {
@@ -158,11 +157,11 @@
 												return;
 											}
 											var cp_entry = dojo.create('div');
-											var loc_id;
+											var loc_visible;
 											var vol_appended = false;
 											dojo.query('location', cp).forEach(function (location) {
-												loc_id = parseInt(location.getAttribute('ident'));
-												if (loc_id != 8 && loc_id != 20 && loc_id != 185 && loc_id != 156) {
+												loc_visible = location.getAttribute('opac_visible');
+												if (loc_visible == 't') {
 													if (!vol_appended) {
 														var cn = dojo.create('span', { style: "font-weight: bold;" }, cp_entry);
 														var cn_txt = dojo.doc.createTextNode(vol.getAttribute('label'));
@@ -174,7 +173,7 @@
 													loc.appendChild(loc_txt);
 												}
 											});
-											if (loc_id == 8 || loc_id == 20 || loc_id == 185 || loc_id == 156) {
+											if (loc_visible != 't') {
 												return;
 											}
 											dojo.query('circ_lib', cp).forEach(function (circ_lib) {
