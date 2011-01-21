@@ -150,6 +150,9 @@
 											return output.innerHTML;
 										}
 										dojo.query('copy', vol).forEach(function (cp) {
+                                            if (item_cnt >= max_items) {
+                                                return;
+                                            }
 											if (cp.getAttribute('deleted') == 't') {
 												return;
 											}
