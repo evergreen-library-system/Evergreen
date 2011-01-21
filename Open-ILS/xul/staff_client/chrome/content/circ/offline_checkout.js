@@ -33,9 +33,12 @@ function my_init() {
         todayPlus = util.date.formatted_date(todayPlus,"%F");
 
         function handle_lock(ev) {
-            if (!local_lock) {
-                local_lock = true;
-                xulG.lock();
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            if (!(ev.altKey || ev.ctrlKey || ev.metakey)) {
+                if (!local_lock) {
+                    local_lock = true;
+                    xulG.lock();
+                }
             }
         }
 

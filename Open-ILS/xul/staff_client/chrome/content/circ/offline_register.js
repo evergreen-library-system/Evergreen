@@ -23,9 +23,12 @@ function my_init() {
         $('submit').addEventListener('command',next_patron,false);
 
         function handle_lock(ev) {
-            if (!local_lock) {
-                local_lock = true;
-                xulG.lock();
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            if (!(ev.altKey || ev.ctrlKey || ev.metakey)) {
+                if (!local_lock) {
+                    local_lock = true;
+                    xulG.lock();
+                }
             }
         }
         $('barcode').addEventListener('keypress',handle_lock,false);
