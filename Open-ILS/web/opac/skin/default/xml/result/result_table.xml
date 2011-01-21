@@ -136,14 +136,69 @@
 
 								</td>
 							</tr>
-							<tr name="local_callnumber_list" class="result_table_title_cell hide_me">
-								<td colspan="2">&result.localCallNumbers;
-									<span type='opac/slot-data+holdings_xml' query='volumes volume' join=", ">
-                                        <!-- Because we clone this template table, and IE won't clone <script>
-                                             nodes (yes, even when it doesn't understand the type ARG) we need
-                                             to use something other than a <script> HATE HATE HATE -->
-										<span class="hide_me" type='opac/slot-format'><![CDATA[return '<b>'+item.getAttribute('label')+'</b>';]]></span>
-									</span>
+							<tr name="local_callnumber_list" class="result_table_title_cell">
+								<td>
+								<span type='opac/slot-data+marcxml-full' query='volumes'>
+								<span class='hide_me' debug='true' type='opac/slot-format'><![CDATA[
+									var output = dojo.create('span'); 
+
+									var item_cnt = 0;
+									var max_items = 4;
+
+									dojo.query('volume', item).forEach(function(vol) {
+										if (item_cnt >= max_items) {
+											return output.innerHTML;
+										}
+										dojo.query('copy', vol).forEach(function (cp) {
+											if (cp.getAttribute('deleted') == 't') {
+												return;
+											}
+											if (cp.getAttribute('opac_visible') == 'f') {
+												return;
+											}
+											var cp_entry = dojo.create('div');
+											var loc_visible;
+											var vol_appended = false;
+											dojo.query('location', cp).forEach(function (location) {
+												loc_visible = location.getAttribute('opac_visible');
+												if (loc_visible == 't') {
+													if (!vol_appended) {
+														var cn = dojo.create('span', { style: "font-weight: bold;" }, cp_entry);
+														var cn_txt = dojo.doc.createTextNode(vol.getAttribute('label'));
+														cn.appendChild(cn_txt);
+														vol_appended = true;
+													}
+													var loc = dojo.create('span', { "style": "font-weight: bold;"}, cp_entry);
+													var loc_txt = dojo.doc.createTextNode(' - ' + dojox.xml.parser.textContent(location));
+													loc.appendChild(loc_txt);
+												}
+											});
+											if (loc_visible != 't') {
+												return;
+											}
+											dojo.query('circ_lib', cp).forEach(function (circ_lib) {
+												var cp_lib = dojo.create('span', { "style": "font-weight: bold;" }, cp_entry, "first");
+												var cp_lib_txt = dojo.doc.createTextNode(circ_lib.getAttribute('name') + ' - ');
+												cp_lib.appendChild(cp_lib_txt);
+											});
+											dojo.query('status', cp).forEach(function (status) {
+												var cp_status = dojo.create('span', { "style": "font-weight: bold;" }, cp_entry);
+												var cp_status_txt = dojo.doc.createTextNode(' (' + dojox.xml.parser.textContent(status) + ')');
+												cp_status.appendChild(cp_status_txt);
+											});
+
+											item_cnt++;
+											if (item_cnt >= max_items) {
+												dojo.create('br', null, cp_entry);
+												cp_entry.appendChild(dojo.doc.createTextNode('... more print items listed in full record'));
+											}
+											output.appendChild(cp_entry);
+										});
+									});
+
+								return output.innerHTML;
+								]]></span>
+								</span>
 								</td>
 							</tr>
                             <!-- Placeholder for ChiliFresh Review -->
