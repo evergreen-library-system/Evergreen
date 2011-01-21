@@ -2155,8 +2155,8 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable) VALUES (1, (SE
 INSERT INTO actor.usr ( profile, card, usrname, passwd, first_given_name, family_name, dob, master_account, super_user, ident_type, ident_value, home_ou ) VALUES ( 1, 1, md5(random()::text), md5(random()::text), 'Administrator', 'System Account', '1979-01-22', TRUE, TRUE, 1, 'identification', 1 );
 
 -- Admin user barcode
-INSERT INTO actor.card (usr, barcode) VALUES (1,'101010101010101');
-UPDATE actor.usr SET card = (SELECT id FROM actor.card WHERE barcode = '101010101010101') WHERE id = 1;
+INSERT INTO actor.card (usr, barcode) VALUES (1,md5(random()::text));
+UPDATE actor.usr SET card = (SELECT currval('actor.card_id_seq')) WHERE id = 1;
 
 -- Admin user permissions
 INSERT INTO permission.usr_perm_map (usr,perm,depth) VALUES (1,-1,0);
