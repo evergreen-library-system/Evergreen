@@ -101,7 +101,7 @@ if (!dojo._hasResource["openils.widget.XULTermLoader"]) {
                 if (!data) return [];
                 else return data.split("\n").
                     filter(function(o) { return o.length > 0; }).
-                    map(function(o) { return o.split(",")[0] }).
+                    map(function(o) {return o.replace("\r","").split(",")[0];}).
                     filter(function(o) { return o.length > 0; });
             }
         }
