@@ -87,7 +87,7 @@
                     </td>
                     <td width='auto'>
                         <div>
-                            <a href='rdetail?record=[% rec.bre.id %]'>[% attrs.title %]</a>
+                            <a href='rdetail/[% rec.bre.id %]'>[% attrs.title %]</a>
                             <span style='padding-left:10px;'>[% rec.copy_counts.available %] / [% rec.copy_counts.visible %]</span>
                         </div>
                         <div>[% attrs.author %]</div>

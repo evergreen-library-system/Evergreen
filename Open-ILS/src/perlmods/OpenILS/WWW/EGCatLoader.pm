@@ -3,7 +3,7 @@ use strict; use warnings;
 use CGI;
 use XML::LibXML;
 use Digest::MD5 qw(md5_hex);
-use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR REDIRECT);
+use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils::Logger qw/$logger/;
@@ -317,8 +317,11 @@ sub load_rresults {
 sub load_rdetail {
     my $self = shift;
 
+    my $rec_id = $self->ctx->{page_args}->[0]
+        or return Apache2::Const::HTTP_BAD_REQUEST;
+
     $self->ctx->{record} = $self->editor->retrieve_biblio_record_entry([
-        $self->cgi->param('record'),
+        $rec_id,
         {
             flesh => 2, 
             flesh_fields => {
