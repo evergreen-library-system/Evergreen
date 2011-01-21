@@ -21,7 +21,7 @@ sub import {
     my $self = shift;
     $web_config_file = shift;
     unless(-r $web_config_file) {
-        warn "Invalid web config $web_config_file";
+        warn "Invalid web config $web_config_file\n";
         return;
     }
     check_web_config();
@@ -80,7 +80,7 @@ sub run_context_loader {
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
 
-    $r->log->warn("context loader resulted in status $stat");
+    $r->log->info("context loader resulted in status $stat");
     return $stat;
 }
 

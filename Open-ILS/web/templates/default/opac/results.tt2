@@ -58,10 +58,12 @@
             </div>
             <div>
                 [% FOR facet_type IN ctx.search_facets.keys %]
-                    <b>[% facet_type %]</b>
+                    [% cmf = ctx.search_facets.$facet_type.cmf %]
+                    <b>[% cmf.label %]</b>
                     <ul>
-                        [% FOR facet IN ctx.search_facets.$facet_type.keys %]
-                            <li>[% facet %] / [% ctx.search_facets.$facet_type.$facet %]</li>
+                        [% FOR facet IN ctx.search_facets.$facet_type.data.keys %]
+                            [% facet_count = ctx.search_facets.$facet_type.data.$facet %]
+                            <li><a href='results?query=[% query | url %]&facet=[% cmf.field_class %]|[% cmf.name %][[% facet | url %]]'>[% facet_count %] / [% facet %]</a></li>
                         [% END %]
                     </ul>
                 [% END %]
@@ -87,7 +89,7 @@
                     </td>
                     <td width='auto'>
                         <div>
-                            <a href='rdetail/[% rec.bre.id %]'>[% attrs.title %]</a>
+                            <a href='record/[% rec.bre.id %]'>[% attrs.title %]</a>
                             <span style='padding-left:10px;'>[% rec.copy_counts.available %] / [% rec.copy_counts.visible %]</span>
                         </div>
                         <div>[% attrs.author %]</div>

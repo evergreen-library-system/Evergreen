@@ -73,7 +73,7 @@ sub load {
     return $self->load_login if $path =~ /opac\/login/;
     return $self->load_logout if $path =~ /opac\/logout/;
     return $self->load_rresults if $path =~ /opac\/results/;
-    return $self->load_rdetail if $path =~ /opac\/rdetail/;
+    return $self->load_record if $path =~ /opac\/record/;
     return $self->load_myopac if $path =~ /opac\/myopac/;
     return $self->load_place_hold if $path =~ /opac\/place_hold/;
 
@@ -233,9 +233,11 @@ sub load_rresults {
 
     $ctx->{page} = 'rresult';
     my $page = $cgi->param('page') || 0;
+    my $facet = $cgi->param('facet');
     my $query = $cgi->param('query');
     my $limit = $cgi->param('limit') || 10; # XXX user settings
     my $args = {limit => $limit, offset => $page * $limit}; 
+    $query = "$query $facet" if $facet;
     my $results;
 
     try {
@@ -268,9 +270,9 @@ sub load_rresults {
 
     unless($cache{cmf}) {
         $cache{cmf} = $e->search_config_metabib_field({id => {'!=' => undef}});
-        $cache{cmc} = $e->search_config_metabib_class({name => {'!=' => undef}});
         $ctx->{metabib_field} = $cache{cmf};
-        $ctx->{metabib_class} = $cache{cmc};
+        #$cache{cmc} = $e->search_config_metabib_class({name => {'!=' => undef}});
+        #$ctx->{metabib_class} = $cache{cmc};
     }
 
     my @data;
@@ -304,8 +306,7 @@ sub load_rresults {
 
     for my $cmf_id (keys %$facets) {  # quick-n-dirty
         my ($cmf) = grep { $_->id eq $cmf_id } @{$cache{cmf}};
-        $facets->{$cmf->label} = $facets->{$cmf_id};
-        delete $facets->{$cmf_id};
+        $facets->{$cmf_id} = {cmf => $cmf, data => $facets->{$cmf_id}};
     }
     $ctx->{search_facets} = $facets;
 
@@ -314,7 +315,7 @@ sub load_rresults {
 
 # context additions: 
 #   record : bre object
-sub load_rdetail {
+sub load_record {
     my $self = shift;
 
     my $rec_id = $self->ctx->{page_args}->[0]

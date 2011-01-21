@@ -28,7 +28,7 @@
             </td>
         </tr>
         [% IF attrs.title %]<tr><td>Title</td><td>[% attrs.title %]</td></tr>[% END %]
-        [% IF attrs.author %]<tr><td>Author</td><td><a href='results?query=au:[% attrs.author | uri %]'>[% attrs.author %]</a></td></tr>[% END %]
+        [% IF attrs.author %]<tr><td>Author</td><td><a href='../results?query=au:[% attrs.author | uri %]'>[% attrs.author %]</a></td></tr>[% END %]
         [% IF attrs.isbn %]<tr><td>ISBN</td><td>[% attrs.isbn %]</td></tr>[% END %]
         [% IF attrs.issn %]<tr><td>ISSN</td><td>[% attrs.issn %]</td></tr>[% END %]
         [% IF attrs.upc %]<tr><td>UPC</td><td>[% attrs.upc %]</td></tr>[% END %]
@@ -43,10 +43,10 @@
                     s1 = node.childNodes.1.textContent;
                 %]
                 [% IF s0 %]
-                    <a href='results?query=su:[% s0 | url %]'>[% s0 %]</a>
+                    <a href='../results?query=su:[% s0 | url %]'>[% s0 %]</a>
                     [% IF s1 %]
                     <span>--</span>
-                    <a href='results?query=su:[% s1 | url %]'>[% s1 %]</a>
+                    <a href='../results?query=su:[% s1 | url %]'>[% s1 %]</a>
                     [% END %]
                     <br/>
                 [% END %]
