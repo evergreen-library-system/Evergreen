@@ -122,7 +122,7 @@ sub load_context {
         $ctx->{theme} . ' : locale = ' . $ctx->{locale});
 
     my $mprefix = $ctx->{media_prefix};
-    if($mprefix !~ /^http/ and $mprefix !~ /^\//) {
+    if($mprefix and $mprefix !~ /^http/ and $mprefix !~ /^\//) {
         # if a hostname is provided /w no protocol, match the protocol to the current page
         $ctx->{media_prefix} = ($cgi->https) ? "https://$mprefix" : "http://$mprefix";
     }
