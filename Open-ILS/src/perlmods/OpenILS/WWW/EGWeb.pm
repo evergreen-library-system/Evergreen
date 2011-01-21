@@ -35,14 +35,16 @@ sub handler {
     my $base = $ctx->{base_path};
 
     $r->content_type('text/html; encoding=utf8');
-    my $stat = run_context_loader($r, $ctx);
-    return $stat unless $stat == Apache2::Const::OK;
 
     my($template, $page_args, $as_xml) = find_template($r, $base, $ctx);
+    $ctx->{page_args} = $page_args;
+
+    my $stat = run_context_loader($r, $ctx);
+
+    return $stat unless $stat == Apache2::Const::OK;
     return Apache2::Const::DECLINED unless $template;
 
     $template = $ctx->{skin} . "/$template";
-    $ctx->{page_args} = $page_args;
 
     my $tt = Template->new({
         OUTPUT => ($as_xml) ?  sub { parse_as_xml($r, $ctx, @_); } : $r,
