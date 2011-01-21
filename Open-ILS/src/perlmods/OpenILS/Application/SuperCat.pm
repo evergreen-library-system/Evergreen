@@ -2880,6 +2880,7 @@ sub as_xml {
     $xml .= 'id="tag:open-ils.org:asset-call_number/' . $self->obj->id . '" ';
     $xml .= 'lib="' . $self->escape( $self->obj->owning_lib->shortname ) . '" ';
     $xml .= 'opac_visible="' . $self->obj->owning_lib->opac_visible . '" ';
+    $xml .= 'deleted="' . $self->obj->deleted . '" ';
     $xml .= 'label="' . $self->escape( $self->obj->label ) . '">';
     $xml .= "\n";
 
