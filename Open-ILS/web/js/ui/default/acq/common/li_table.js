@@ -2310,7 +2310,8 @@ function AcqLiTable() {
         if(idx >= list.length) return;
         var liId = list[idx].id();
         fieldmapper.standardRequest(
-            ['open-ils.acq', 'open-ils.acq.lineitem.delete'],
+            ['open-ils.acq',
+             this.isPO ? 'open-ils.acq.purchase_order.lineitem.delete' : 'open-ils.acq.picklist.lineitem.delete'],
             {   async: true,
                 params: [openils.User.authtoken, liId],
                 oncomplete: function(r) {

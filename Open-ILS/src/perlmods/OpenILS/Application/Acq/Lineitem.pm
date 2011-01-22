@@ -186,6 +186,32 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method    => 'delete_lineitem',
+    api_name  => 'open-ils.acq.purchase_order.lineitem.delete',
+    signature => {
+        desc   => 'Deletes a lineitem from a purchase order',
+        params => [
+            {desc => 'Authentication token',  type => 'string'},
+            {desc => 'lineitem ID to delete', type => 'number'},
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => 'delete_lineitem',
+    api_name  => 'open-ils.acq.picklist.lineitem.delete',
+    signature => {
+        desc   => 'Deletes a lineitem from a picklist',
+        params => [
+            {desc => 'Authentication token',  type => 'string'},
+            {desc => 'lineitem ID to delete', type => 'number'},
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+
 sub delete_lineitem {
     my($self, $conn, $auth, $li_id) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
@@ -203,6 +229,16 @@ sub delete_lineitem {
             if $picklist->owner != $e->requestor->id;
     } else {
         # check PO perms
+    }
+
+    # once a LI is attached to a PO, deleting it
+    # from a picklist means *detaching* it from the picklist
+    if ($self->api_name =~ /picklist/ && $li->purchase_order) {
+        $li->clear_picklist;
+        my $evt = update_lineitem_impl($e, $li);
+        return $evt if $evt;
+        $e->commit;
+        return 1;
     }
 
     # delete the attached lineitem_details
