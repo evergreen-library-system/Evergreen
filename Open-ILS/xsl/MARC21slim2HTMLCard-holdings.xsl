@@ -77,17 +77,17 @@
           <xsl:apply-templates select="hold:volume/hold:uris/hold:uri"/>
         </ul>
     </xsl:if>
-    <xsl:if test="count(hold:volume[deleted='f']/hold:copies/hold:copy[deleted='f']) &gt; 0">
+    <xsl:if test="count(hold:volume[@deleted='f']/hold:copies/hold:copy[@deleted='f']) &gt; 0">
     	<u>Holdings</u>
         <ul>
-          <xsl:apply-templates select="hold:volume[deleted='f']">
+          <xsl:apply-templates select="hold:volume[@deleted='f']">
             <xsl:sort select="@lib"/>
           </xsl:apply-templates>
         </ul>
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="hold:volume[deleted='f']">
+  <xsl:template match="hold:volume[@deleted='f']">
       <li>
        <b>
         <a>
@@ -121,13 +121,13 @@
 
   <xsl:template match="hold:copies">
     <ul>
-    <xsl:apply-templates select="hold:copy[deleted='f']">
+    <xsl:apply-templates select="hold:copy[@deleted='f']">
       <xsl:sort select="hold:location"/>
     </xsl:apply-templates>
     </ul>
   </xsl:template>
 
-  <xsl:template match="hold:copy[deleted='f']">
+  <xsl:template match="hold:copy[@deleted='f']">
       <li> <xsl:value-of select="@barcode"/> <abbr class="unapi-id"><xsl:attribute name="title"><xsl:value-of select="@id"/></xsl:attribute></abbr>
         <ul>
     	  <li>Circulating from <b><xsl:value-of select="hold:circlib"/></b></li>
