@@ -34,5 +34,8 @@
 	"SUPPLEMENT_HOLDINGS": "Supplements",
 	"SUPPLEMENT_HOLDINGS_ADD": "Additional Supplement Information",
     "PLACE_HOLD": "Place hold",
-    "MORE": "More"
+    "HOLD_STATUS_PLURAL": "hold # ${0} of ${1} total holds and ${2} potential items",
+    "HOLD_STATUS_SINGULAR": "hold # ${0} of ${1} total holds and ${2} potential item",
+    "MORE": "More",
+    "MORE_COPIES_FULL_RECORD": "... more copies listed in full record"
 }
