@@ -1,4 +1,6 @@
 dojo.require('openils.BibTemplate');
+dojo.requireLocalization("openils.opac", "opac");
+var opac_strings = dojo.i18n.getLocalization("openils.opac", "opac");
 
 var recordsHandled = 0;
 var recordsCache = [];

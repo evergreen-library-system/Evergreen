@@ -193,7 +193,7 @@
 											item_cnt++;
 											if (item_cnt >= max_items) {
 												dojo.create('br', null, cp_entry);
-												cp_entry.appendChild(dojo.doc.createTextNode('... more print items listed in full record'));
+												cp_entry.appendChild(dojo.doc.createTextNode(opac_strings.MORE_COPIES_FULL_RECORD));
 											}
 											output.appendChild(cp_entry);
 										});
