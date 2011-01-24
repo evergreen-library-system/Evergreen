@@ -232,7 +232,7 @@ BEGIN
 
         from_clause := from_clause ||
             ' JOIN ( SELECT * FROM ' || query_table || ' WHERE ' || inner_where_clause ||
-                    CASE WHEN core_rel_limit > 0 THEN ' LIMIT ' || core_rel_limit::TEXT ELSE '' END || ' ) AS ' || query_part.table_alias ||
+                    ' ) AS ' || query_part.table_alias ||
                 ' ON ( m.source = ' || query_part.table_alias || '.source )' ||
             ' JOIN config.metabib_field AS ' || query_part.table_alias || '_weight' ||
                 ' ON ( ' || query_part.table_alias || '.field = ' || query_part.table_alias || '_weight.id  AND  ' || query_part.table_alias || '_weight.search_field)';
@@ -349,7 +349,8 @@ BEGIN
     END IF;
 
     core_rel_query := select_clause || from_clause || where_clause ||
-                        ' GROUP BY 1 ORDER BY 4' || CASE WHEN sort_desc THEN ' DESC' ELSE ' ASC' END || ';';
+                        ' GROUP BY 1 ORDER BY 4' || CASE WHEN sort_desc THEN ' DESC' ELSE ' ASC' END ||
+                        CASE WHEN core_rel_limit > 0 THEN ' LIMIT ' || core_rel_limit::TEXT ELSE '' END || ';';
     --RAISE NOTICE 'Base Query:  %', core_rel_query;
 
     IF param_search_ou > 0 THEN
