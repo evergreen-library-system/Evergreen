@@ -146,7 +146,7 @@ serial.scap_editor.prototype = {
         window.openDialog(
             xulG.url_prefix("/xul/server/serial/pattern_wizard.xul"),
             "pattern_wizard",
-            "scrollbars=yes", /* XXX FIXME: scrollbars aren't working. what to do? */
+            "width=800",
             onsubmit
         );
     },

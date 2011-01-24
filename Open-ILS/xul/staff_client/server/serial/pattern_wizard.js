@@ -49,24 +49,23 @@ function _menulist(values, labels, items_only) {
     }
 }
 
-function _date_validate(date_val, month_val) {
-    /* general purpose date validation irrespective of year */
-    date_val = date_val.trim();
+function _cap_number_textbox_value(node, max) {
+    if (node.value > max) node.value = max;
+    node.max = max;
+}
 
-    if (!date_val.match(/^[0123]?\d$/))
-        return false;
+function _cap_to_month(month, date_box) {
+    if (!date_box)
+        return;
 
-    date_val = Number(date_val); /* do NOT use parseInt */
-    month_val = Number(month_val);
-
-    if (date_val < 1) {
-        return false;
-    } else if (month_val == 2) {
-        return date_val <= 29;
-    } else if ([1,3,5,7,8,10,12].indexOf(month_val) != -1) {
-        return date_val <= 31;
+    if (month == "02") {
+        _cap_number_textbox_value(date_box, 29);
+    } else if (
+        ["09", "04", "06", "11"].indexOf(month) != -1
+    ) {
+        _cap_number_textbox_value(date_box, 30);
     } else {
-        return date_val <= 30;
+        _cap_number_textbox_value(date_box, 31);
     }
 }
 
@@ -91,17 +90,13 @@ function CalendarChangeRow() {
             }
         );
 
-        var date_month_selector = node_by_name("date_month", this.element);
-
         dojo.attr(
-            node_by_name("date_day", this.element), "onchange", function(ev) {
-                if (_date_validate(ev.target.value,date_month_selector.value)){
-                    return true;
-                } else {
-                    alert(S("bad_date_value"));
-                    ev.target.focus();
-                    return false;
-                }
+            node_by_name("date_month", this.element),
+            "oncommand",
+            function(ev){
+                _cap_to_month(
+                    ev.target.value, node_by_name("date_day", self.element)
+                );
             }
         );
 
@@ -291,9 +286,22 @@ function RegularityRow() {
                 );
             },
             "MM": function() {
-                return _menulist(
+                var mm = _menulist(
                     _chronstants.month.values, _chronstants.month.names
                 );
+                dojo.attr(
+                    mm, "oncommand", function(ev) {
+                        _cap_to_month(
+                            dojo.attr(ev.target, "value"),
+                            dojo.query(
+                                'textbox[type="number"]',
+                                ev.target.parentNode.parentNode.parentNode
+                                /* ev.target is the menuITEM node */
+                            )[0]
+                        );
+                    }
+                );
+                return mm;
             },
             "SS": function() {
                 return _menulist(
@@ -372,7 +380,7 @@ function RegularityEditor() {
 
         this.rows[id] = new RegularityRow(this.template, id, this);
 
-        dojo.place(this.rows[id].element, "y_row_before_this", "before");
+        dojo.place(this.rows[id].element, "y_rows_here", "last");
     };
 
     this.remove_row = function(id) {
@@ -384,10 +392,14 @@ function RegularityEditor() {
     };
 
     this.compile = function() {
-        return openils.Util.objectProperties(this.rows).sort().reduce(
-            function(a, b) { return a.concat(["y", self.rows[b].compile()]); },
-            []
-        );
+        if (!this.active) {
+            return [];
+        } else {
+            return openils.Util.objectProperties(this.rows).sort().reduce(
+                function(a, b){return a.concat(["y",self.rows[b].compile()]);},
+                []
+            );
+        }
     };
 
     this._init.apply(this, arguments);
@@ -822,6 +834,15 @@ function Wizard() {
         this.regularity_editor = new RegularityEditor();
 
         this.field_w = dojo.byId("hard_w");
+        dojo.attr(
+            dojo.byId("soft_w"), "onchange", function(ev) {
+                var use_regularity = dojo.byId("use_regularity");
+                if (ev.target.value && !use_regularity.checked) {
+                    use_regularity.checked = true;
+                    use_regularity.doCommand();
+                }
+            }
+        );
     };
 
     this.reset = function() {

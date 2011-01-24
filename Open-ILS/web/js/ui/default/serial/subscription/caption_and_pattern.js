@@ -28,6 +28,17 @@ function SCAPRow() {
             "[name='pattern_code'] button", this.element
         )[0];
         this.wizard_button.onclick = function() {
+            if (
+                openils.Util.trimString(
+                    self.controls.pattern_code.value
+                ).length &&
+                !confirm(
+                    "Are you sure you want to erase this pattern code\n" +
+                    "and create a new one via the Wizard?"  /* XXX i18n */
+                )
+            ) {
+                return;
+            }
             try {
                 netscape.security.PrivilegeManager.enablePrivilege(
                     "UniversalXPConnect"
@@ -35,7 +46,7 @@ function SCAPRow() {
                 window.openDialog(
                     xulG.url_prefix("/xul/server/serial/pattern_wizard.xul"),
                     "pattern_wizard",
-                    "scrollbars=yes,width=1024",
+                    "width=800",
                     function(value) {
                         self.controls.pattern_code.value = value;
                         self.controls.pattern_code.onchange();
@@ -73,6 +84,18 @@ function SCAPRow() {
             this.controls.id.innerHTML = datum.id() || "";
             this.controls.create_date.innerHTML =
                 openils.Util.timeStamp(datum.create_date());
+
+            /* Once created, scap objects' pattern_code field is meant to
+             * be immutable.
+             *
+             * See http://list.georgialibraries.org/pipermail/open-ils-dev/2010-May/006079.html
+             *
+             * The DB trigger mentioned was never created to enforce this
+             * immutability at that level, but this should keep users from
+             * doing the wrong thing by mistake.
+             */
+            this.controls.pattern_code.readOnly = true;
+            this.wizard_button.disabled = true;
 
             this.has_changed(false);
         } else {
@@ -334,7 +357,6 @@ function SCAPImporter() {
             );
             progress_dialog.hide();
         }
-
     };
 
     this.init.apply(this, arguments);
