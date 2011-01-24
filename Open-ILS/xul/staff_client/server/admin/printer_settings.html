@@ -41,6 +41,9 @@
     <button onclick="try { g.printer_settings(); } catch(E) { alert(E); }">&staff.printing.set_default;</button>
     <button onclick="try { g.page_settings(); } catch(E) { alert(E); }">&staff.printing.page_settings;</button><br />
     <h1>&staff.printing.advanced_settings.header;</h1>
+    <form>
+        <input type='checkbox' id='print_silent' onclick='g.toggle_silent_print(event);'>&staff.printing.advanced.mozilla_print.print_silent;</input>
+    </form>
     <button onclick="try { g.set_print_strategy('webBrowserPrint'); } catch(E) { alert(E); }">&staff.printing.advanced.mozilla_print;</button>
     <button onclick="try { g.set_print_strategy('dos.print'); } catch(E) { alert(E); }">&staff.printing.advanced.dos_print;</button>
     <button onclick="try { g.set_print_strategy('custom.print'); } catch(E) { alert(E); }">&staff.printing.advanced.custom_print;</button>

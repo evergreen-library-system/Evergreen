@@ -3441,6 +3441,7 @@
 <!ENTITY staff.printing.normal_settings.header "Normal Settings">
 <!ENTITY staff.printing.advanced_settings.header "Advanced Settings">
 <!ENTITY staff.printing.advanced.mozilla_print "Use default print strategy (Mozilla Print)">
+<!ENTITY staff.printing.advanced.mozilla_print.print_silent "Print silently when using Mozilla Print">
 <!ENTITY staff.printing.advanced.dos_print "Use alternate print strategy (DOS LPT1 Print)">
 <!ENTITY staff.printing.advanced.custom_print "Use alternate print strategy (Custom/External Print)">
 <!ENTITY staff.printing.advanced.dos_print.warning.header "Note on DOS LPT1 Print">
