@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-09-16 13:13:50-0400\n"
+"POT-Creation-Date: 2011-01-24 16:23:56-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -258,10 +258,8 @@ msgstr ""
 msgid "Remove $${0} charge for item '${1}, ${2} [${3}] from the invoice?"
 msgstr ""
 
-#: acq.js:LOAD_TERMS_FIRST
-msgid ""
-"You can't retrieve records until you've loaded a CSV file\n"
-"with bibliographic IDs in the first column."
+#: acq.js:LIBRARY_INITIATED
+msgid "Library Initiated"
 msgstr ""
 
 #: acq.js:VENDOR_PUBLIC
@@ -335,6 +333,12 @@ msgstr ""
 
 #: acq.js:COULD_NOT_DELETE_MAPPING
 msgid "Error removing tag from fund."
+msgstr ""
+
+#: acq.js:LOAD_TERMS_FIRST
+msgid ""
+"You can't retrieve records until you've loaded a CSV file\n"
+"with bibliographic IDs in the first column."
 msgstr ""
 
 #: acq.js:CANCEL

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-09-16 13:13:45-0400\n"
+"POT-Creation-Date: 2011-01-24 16:23:53-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,10 +82,6 @@ msgstr ""
 
 #: 1641.ACTION_OPEN_CIRC_COUNT_BY_CIRC_MOD_NOT_FOUND:563
 msgid "The requested action_open_circ_count_by_circ_mod was not found"
-msgstr ""
-
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:949
-msgid "The lineitem detail has no owning_lib"
 msgstr ""
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:465
@@ -205,10 +201,6 @@ msgstr ""
 msgid "Someone attempted to retrieve a user from the system and the user was not found"
 msgstr ""
 
-#: 7007.COPY_NEEDED_FOR_HOLD:835
-msgid "Copy is needed to fulfil a hold"
-msgstr ""
-
 #: 7010.COPY_ALERT_MESSAGE:844
 msgid "The requested copy has an alert message attached"
 msgstr ""
@@ -285,6 +277,10 @@ msgstr ""
 
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:593
 msgid "An authority record already exists with the requested ARN"
+msgstr ""
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:972
+msgid "The caption/pattern still has dependent issuances"
 msgstr ""
 
 #: 5000.PERM_FAILURE:789
@@ -425,6 +421,10 @@ msgstr ""
 
 #: 1872.ACQ_LINEITEM_PROVIDER_ATTR_DEFINITION_NOT_FOUND:670
 msgid "The requested acq.lineitem_provider_attr_definition was not found"
+msgstr ""
+
+#: 7007.COPY_NEEDED_FOR_HOLD:835
+msgid "Copy is needed to fulfill a hold"
 msgstr ""
 
 #: 1562.METABIB_METARECORD_SOURCE_MAP_NOT_FOUND:330
@@ -915,10 +915,6 @@ msgstr ""
 msgid "User login failed"
 msgstr ""
 
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:972
-msgid "The caption/pattern still has dependent issuances"
-msgstr ""
-
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:673
 msgid "The requested acq.currency_type was not found"
 msgstr ""
@@ -1065,6 +1061,10 @@ msgstr ""
 
 #: 1574.CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND:364
 msgid "The requested container_call_number_bucket_item was not found"
+msgstr ""
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:949
+msgid "The lineitem detail has no owning_lib"
 msgstr ""
 
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:976
