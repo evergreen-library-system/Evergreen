@@ -72,6 +72,7 @@ vim:noet:sw=4:ts=4:
 		<command id="cmd_receive_items"/>
 		<command id="cmd_refresh_list"/>
 		<command id="cmd_replace_barcode"/>
+        <command id="cmd_reset_items"/>
         <command id="cmd_set_sunit" />
         <command id="cmd_set_other_sunit" />
         <command id="cmd_show_all_libs" />

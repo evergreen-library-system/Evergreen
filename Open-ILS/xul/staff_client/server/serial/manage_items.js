@@ -206,6 +206,36 @@ serial.manage_items.prototype = {
                             }
                         }
                     ],
+                    'cmd_reset_items' : [
+                        ['command'],
+                        function() {
+                            try {
+                                if (!obj.retrieve_ids || obj.retrieve_ids.length == 0) return;
+
+                                JSAN.use('util.functional');
+                                var list = util.functional.map_list(
+                                        obj.retrieve_ids,
+                                        function (o) {
+                                            return o.sitem_id;
+                                        }
+                                    );
+
+                                var robj = obj.network.request(
+                                            'open-ils.serial',
+                                            'open-ils.serial.reset_items',
+                                            [ ses(), list ]
+                                        );
+                                if (typeof robj.ilsevent != 'undefined') throw(robj);
+
+                                alert('Successfully reset '+robj.num_items+' item(s)');
+
+                                obj.refresh_list('main');
+                                obj.refresh_list('workarea');
+                            } catch(E) {
+                                obj.error.standard_unexpected_error_alert('staff.serial.manage_items.reset_items.error',E);
+                            }
+                        }
+                    ],
                     'cmd_delete_items' : [
                         ['command'],
                         function() {
