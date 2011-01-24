@@ -764,11 +764,14 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
     dojo.connect(
         widget.widget,
         'onKeyPress',
-        function(){
-            if (lock_ready && xulG && typeof xulG.lock_tab == 'function') {
-                if (! already_locked) {
-                    xulG.lock_tab();
-                    already_locked = true;
+        function(ev){
+            netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+            if (!(ev.altKey || ev.ctrlKey || ev.metaKey)) {
+                if (lock_ready && xulG && typeof xulG.lock_tab == 'function') {
+                    if (! already_locked) {
+                        xulG.lock_tab();
+                        already_locked = true;
+                    }
                 }
             }
         }

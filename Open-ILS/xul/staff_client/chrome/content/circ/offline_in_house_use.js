@@ -26,9 +26,12 @@ function my_init() {
         } );
 
         function handle_lock(ev) {
-            if (!local_lock) {
-                local_lock = true;
-                xulG.lock();
+            netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+            if (!(ev.altKey || ev.ctrlKey || ev.metakey)) {
+                if (!local_lock) {
+                    local_lock = true;
+                    xulG.lock();
+                }
             }
         }
         $('i_barcode').addEventListener('keypress',handle_lock,false);

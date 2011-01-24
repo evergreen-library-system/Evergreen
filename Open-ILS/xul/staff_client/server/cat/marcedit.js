@@ -487,7 +487,7 @@ function setFocusToNextTag (row, direction) {
 function createMARCTextbox (element,attrs) {
 
     var box = createComplexXULElement('textbox', attrs, Array.prototype.slice.apply(arguments, [2]) );
-    box.addEventListener('keypress',function(ev) { oils_lock_page(); },false);
+    box.addEventListener('keypress',function(ev) { netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect"); if (!(ev.altKey || ev.ctrlKey || ev.metaKey)) { oils_lock_page(); } },false);
     box.onkeypress = function (event) {
         var root_node;
         var node = element;

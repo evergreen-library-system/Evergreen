@@ -3,14 +3,17 @@ attachEvt("common", "run", myOPACInit );
 //attachEvt("common", "loggedIn", myOPACInit );
 attachEvt('common','locationUpdated', myopacReload );
 
+dojo.requireLocalization("openils.opac", "opac");
+
+var opac_strings = dojo.i18n.getLocalization("openils.opac", "opac");
 var fleshedUser = null;
 var fleshedContainers = {};
 var holdCache = {};
 var holdStatusCache = {};
+var showHoldQueuePosition = false;
 var allowPendingAddr = false;
 var myopacEnableRefWorks = false;
 var myopacRefWorksHost = 'http://www.refworks.com';
-
 
 function clearNodes( node, keepArray ) {
 	if(!node) return;
@@ -472,10 +475,13 @@ function myOShowHoldStatus(r) {
 		hideMe($n(row, 'myopac_holds_cancel_link'));
 	}
 
-    if(false) {
+    if (showHoldQueuePosition) {
         var node = $n(row, 'hold_qstats');
-        // XXX best way to display this info + dojo i18n
-        node.appendChild(text('hold #' + qstats.queue_position+' of '+qstats.queue_position+' and '+qstats.potential_copies+' item(s)'));
+        if (qstats.potential_copies == 1) {
+            node.appendChild(text(dojo.string.substitute(opac_strings.HOLD_STATUS_SINGULAR, [qstats.queue_position, qstats.total_holds, qstats.potential_copies])));
+        } else {
+            node.appendChild(text(dojo.string.substitute(opac_strings.HOLD_STATUS_PLURAL, [qstats.queue_position, qstats.total_holds, qstats.potential_copies])));
+        }
         unHideMe(node);
 
     } else {
