@@ -39,9 +39,15 @@ g.page_settings = function() {
 
 g.printer_settings = function() {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    var print_silent_pref = false;
+    if (g.prefs.prefHasUserValue('print.always_print_silent')) {
+        print_silent_pref = g.prefs.getBoolPref('print.always_print_silent');
+    }
+    g.prefs.setBoolPref('print.always_print_silent', false);
     var w = get_contentWindow(document.getElementById('sample'));
     g.print.NSPrint(w ? w : window, false, {});
     g.print.save_settings();
+    g.prefs.setBoolPref('print.always_print_silent', print_silent_pref);
 }
 
 g.set_print_strategy = function(which) {
