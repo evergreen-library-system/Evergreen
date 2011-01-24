@@ -107,7 +107,7 @@ while ( my $rec = <> ) {
 			$d =~ s/\\/\\\\/gos;
 		}
 		if ($hint eq 'bre' and $fieldcache{$hint}{fields}[$x] eq 'quality') {
-			$d = int($d);
+			$d = int($d) if ($d ne '\N');
 		}
 		push @data, $d;
 		$x++;
