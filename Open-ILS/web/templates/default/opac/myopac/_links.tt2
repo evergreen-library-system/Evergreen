@@ -1,0 +1,17 @@
+[%
+pages = [
+    {url => "main", name => "My Account"},
+    {url => "items_out", name => "Items Out"},
+    {url => "items_held", name => "Items on Hold"},
+    {url => "fines", name => "Fines"},
+    {url => "prefs", name => "Account Preferences"},
+    {url => "bookbags", name => "My Bookbags"}
+];
+FOREACH page IN pages;
+    IF page.url != myopac_page %] <a href="[% page.url %]">[% END;
+        page.name;
+        IF page.url != myopac_page %]</a>
+    [% ELSE;
+        ctx.page_title = page.name;
+    END;
+END %]

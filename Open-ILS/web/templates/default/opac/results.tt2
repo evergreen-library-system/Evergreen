@@ -37,7 +37,7 @@
                 [% IF ctx.user; %]
                     <div id='links_div'>
                         <div><a href='home'>Home</a></div>
-                        <div><a href='myopac'>Account</a></div>
+                        <div><a href='myopac/main'>Account</a></div>
                         <div><a href='logout'>Logout</a></div>
                     </div>
                     <hr/>
