@@ -153,12 +153,12 @@ serial.editor_base = {
             if (obj[fm_type_plural].length > 0 && obj[fm_type_plural][0].isnew()) {
                 obj.mode = 'create';
                 if (obj.can_have_notes) $(obj.xul_id_prefix + '_notes').setAttribute('hidden','true');
-                $(obj.xul_id_prefix + '_save').setAttribute('label', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.create'));
+                $(obj.xul_id_prefix + '_save').setAttribute('label', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.create.label'));
                 $(obj.xul_id_prefix + '_save').setAttribute('accesskey', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.create.accesskey'));
             } else if (obj.mode == 'create') { // switching from create to modify
                 obj.mode = 'modify';
                 if (obj.can_have_notes) $(obj.xul_id_prefix + '_notes').setAttribute('hidden','false');
-                $(obj.xul_id_prefix + '_save').setAttribute('label', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.modify'));
+                $(obj.xul_id_prefix + '_save').setAttribute('label', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.modify.label'));
                 $(obj.xul_id_prefix + '_save').setAttribute('accesskey', $('serialStrings').getString('staff.serial.' + fm_type + '_editor.modify.accesskey'));
             }
 /*else {
