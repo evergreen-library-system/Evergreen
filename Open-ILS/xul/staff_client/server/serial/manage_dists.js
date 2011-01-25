@@ -15,7 +15,7 @@ serial.manage_dists.prototype = {
 
     'map_tree' : {},
     'map_sdist' : {},
-    //'map_sstr' : {},
+    'map_sstr' : {},
     'sel_list' : [],
     'funcs' : [],
     'editor_indexes' : { 'sdist' : 1, 'sstr' : 2, 'sbsum' : 3, 'sssum' : 4, 'sisum' : 5 },
@@ -83,13 +83,13 @@ serial.manage_dists.prototype = {
             //TODO: proper messages
             var delete_msg;
             if (list.length != 1) {
-                delete_msg = document.getElementById('serialStrings').getFormattedString('staff.serial.manage_subs.delete_' + type + '.confirm.plural', [list.length]);
+                delete_msg = document.getElementById('serialStrings').getFormattedString('staff.serial.manage_dists.delete_' + type + '.confirm.plural', [list.length]);
             } else {
-                delete_msg = document.getElementById('serialStrings').getString('staff.serial.manage_subs.delete_' + type + '.confirm');
+                delete_msg = document.getElementById('serialStrings').getString('staff.serial.manage_dists.delete_' + type + '.confirm');
             }
             var r = obj.error.yns_alert(
                     delete_msg,
-                    document.getElementById('serialStrings').getString('staff.serial.manage_subs.delete_' + type + '.title'),
+                    document.getElementById('serialStrings').getString('staff.serial.manage_dists.delete_' + type + '.title'),
                     document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_items.delete'),
                     document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_items.cancel'),
                     null,
@@ -106,7 +106,7 @@ serial.manage_dists.prototype = {
                     [ ses(), list, true ],
                     null,
                     {
-                        'title' : document.getElementById('serialStrings').getString('staff.serial.manage_subs.delete_' + type + '.override'),
+                        'title' : document.getElementById('serialStrings').getString('staff.serial.manage_dists.delete_' + type + '.override'),
                         'overridable_events' : overridable_events
                     }
                 );
@@ -126,7 +126,7 @@ serial.manage_dists.prototype = {
                 obj.refresh_list();
             }
         } catch(E) {
-            obj.error.standard_unexpected_error_alert(document.getElementById('serialStrings').getString('staff.serial.manage_subs.delete.error'),E);
+            obj.error.standard_unexpected_error_alert(document.getElementById('serialStrings').getString('staff.serial.manage_dists.delete.error'),E);
             obj.refresh_list();
         }
     },
@@ -203,7 +203,7 @@ serial.manage_dists.prototype = {
                                     params.sisses = [new_siss];
                                     obj.editor_init('siss', 'add', params);
                                 } catch(E) {
-                                    obj.error.standard_unexpected_error_alert(document.getElementById('serialStrings').getString('staff.serial.manage_subs.add.error'),E);
+                                    obj.error.standard_unexpected_error_alert(document.getElementById('serialStrings').getString('staff.serial.manage_dists.add.error'),E);
                                 }
                             }
                         ],
@@ -235,15 +235,13 @@ serial.manage_dists.prototype = {
 
                                     if (edit==0) return; // no read-only view for this interface */
                                     var new_sstr = new sstr();
-                                    new_sstr.subscription(list[0]);//TODO: add multiple at once support?
-                                    new_sstr.holding_lib(obj.map_sdist['sdist_' + list[0]].owning_lib());//default to sub owning lib
-                                    new_sstr.label('Default');
+                                    new_sstr.distribution(list[0]);//TODO: add multiple at once support?
                                     new_sstr.isnew(1);
                                     var params = {};
                                     params.sstrs = [new_sstr];
                                     obj.editor_init('sstr', 'add', params);
                                 } catch(E) {
-                                    obj.error.standard_unexpected_error_alert(document.getElementById('serialStrings').getString('staff.serial.manage_subs.add.error'),E);
+                                    obj.error.standard_unexpected_error_alert($('serialStrings').getString('staff.serial.manage_dists.add.error'),E);
                                 }
                             }
                         ],
@@ -252,7 +250,7 @@ serial.manage_dists.prototype = {
                             function() {
                                 var overridable_events = [ //TODO: proper overrides
                                 ];
-                                obj.do_delete('sstr', 'open-ils.serial.distribution.fleshed.batch.update', overridable_events);
+                                obj.do_delete('sstr', 'open-ils.serial.stream.batch.update', overridable_events);
                             }
                         ],
                         'cmd_delete_siss' : [
@@ -356,7 +354,7 @@ serial.manage_dists.prototype = {
                                     params.sdists = [new_sdist];
                                     obj.editor_init('sdist', 'add', params);
                                 } catch(E) {
-                                    obj.error.standard_unexpected_error_alert(document.getElementById('serialStrings').getString('staff.serial.manage_subs.add.error'),E);
+                                    obj.error.standard_unexpected_error_alert(document.getElementById('serialStrings').getString('staff.serial.manage_dists.add.error'),E);
                                 }
                             }
                         ],
@@ -1015,10 +1013,10 @@ serial.manage_dists.prototype = {
                 for (var i = 0; i < sdist_tree_list.length; i++) {
                     d_count++;
                     obj.map_sdist[ 'sdist_' + sdist_tree_list[i].id() ] = function(r){return r;}(sdist_tree_list[i]);
-                    /*var streams = sdist_tree_list[i].streams();
+                    var streams = sdist_tree_list[i].streams();
                     for (var j = 0; j < streams.length; j++) {
                         obj.map_sstr[ 'sstr_' + streams[j].id() ] = function(r){return r;}(streams[j]);
-                    }*/
+                    }
                 }
                 data.row.my.distribution_count = d_count;
             }
@@ -1106,7 +1104,7 @@ serial.manage_dists.prototype = {
             var sstr_group_node_data = {
                 'row' : {
                     'my' : {
-                        'label' : dojo.byId('serialStrings').getString('serial.manage_dists.streams'),
+                        'label' : $('serialStrings').getString('serial.manage_dists.streams'),
                     }
                 },
                 'retrieve_id' : 'sstr-group_' + sdist_tree.id(),
@@ -1326,7 +1324,7 @@ serial.manage_dists.prototype = {
             obj.list.clear();
             obj.map_tree = {};
             obj.map_sdist = {};
-            //obj.map_sstr = {};
+            obj.map_sstr = {};
             obj.org_ids = obj.network.simple_request('FM_SDIST_AOU_IDS_RETRIEVE_VIA_RECORD_ID.authoritative',[ obj.docid ]);
             if (typeof obj.org_ids.ilsevent != 'undefined') throw(obj.org_ids);
             JSAN.use('util.functional'); 

@@ -1619,6 +1619,8 @@
 <!ENTITY staff.serial.ssub_editor.create.accesskey "C">
 <!ENTITY staff.serial.ssub_editor.notes.label "Subscription Notes">
 <!ENTITY staff.serial.ssub_editor.notes.accesskey "N">
+<!ENTITY staff.serial.manage_dists.actions.cmd_add_sstr.label "Add Stream">
+<!ENTITY staff.serial.manage_dists.actions.cmd_delete_sstr.label "Delete Stream">
 
 <!ENTITY staff.serial.batch_receive "Batch Receive">
 <!ENTITY staff.serial.batch_receive.bib_search_term.label "Enter an identifier for a bibliographic record:">
