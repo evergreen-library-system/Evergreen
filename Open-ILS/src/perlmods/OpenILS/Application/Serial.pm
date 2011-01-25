@@ -1222,12 +1222,14 @@ sub unitize_items {
             $item->unit($unit_id);
         }
 
-        $found_unit_ids{$unit_id} = 1;
         $found_stream_ids{$stream_id} = 1;
 
-        # save the stream_id for this unit_id
-        # TODO: prevent items from different streams in same unit? (perhaps in interface)
-        $stream_ids_by_unit_id{$unit_id} = $stream_id;
+        if (defined($unit_id)) {
+            $found_unit_ids{$unit_id} = 1;
+            # save the stream_id for this unit_id
+            # TODO: prevent items from different streams in same unit? (perhaps in interface)
+            $stream_ids_by_unit_id{$unit_id} = $stream_id;
+        }
 
         my $evt = _update_sitem($editor, undef, $item);
         return $evt if $evt;

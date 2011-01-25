@@ -111,7 +111,7 @@ for my $h (@order) {
 				$d =~ s/\\/\\\\/gos;
 			}
 			if ($h eq 'bre' and $fieldcache{$h}{fields}[$x] eq 'quality') {
-				$d = int($d);
+				$d = int($d) if ($d ne '\N');
 			}
 			push @data, $d;
 			$x++;

@@ -32,8 +32,8 @@
 
 		<hbox id="sdist2_editor_nav">
 			<spacer flex="1"/>
-			<button id="sdist2_notes" label="&staff.serial.sdist_editor.notes;" accesskey="&staff.serial.sdist_editor.notes.accesskey;" oncommand="g.manage_dists.sdist_editor.notes()" />
-			<button id="sdist2_save" label="&staff.serial.sdist_editor.modify;" hidden="true" accesskey="&staff.serial.ssub_editor.modify.accesskey;" oncommand="g.manage_dists.sdist_editor.save()" />
+			<button id="sdist2_notes" label="&staff.serial.sdist_editor.notes.label;" accesskey="&staff.serial.sdist_editor.notes.accesskey;" oncommand="g.manage_dists.sdist_editor.notes()" />
+			<button id="sdist2_save" label="&staff.serial.sdist_editor.modify.label;" hidden="true" accesskey="&staff.serial.ssub_editor.modify.accesskey;" oncommand="g.manage_dists.sdist_editor.save()" />
 			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
 		</hbox>
 

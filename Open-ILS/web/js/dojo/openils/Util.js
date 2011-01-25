@@ -289,6 +289,13 @@ if(!dojo._hasResource["openils.Util"]) {
     };
 
     /**
+     * Convenience function to trim leading and trailing whitespace at once.
+     */
+    openils.Util.trimString = function(s) {
+        return s.replace(/^\s*(.+)?\s*$/,"$1");
+    }
+
+    /**
      * Assume a space-separated interval string, with optional comma
      * E.g. "1 year, 2 days"  "3 days 6 hours"
      */

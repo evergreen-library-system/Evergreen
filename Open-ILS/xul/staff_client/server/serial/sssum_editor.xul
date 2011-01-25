@@ -22,7 +22,7 @@
 
 		<hbox id="sssum_editor_nav">
 			<spacer flex="1"/>
-			<button id="sssum_save" label="&staff.serial.sssum_editor.modify;" hidden="true" accesskey="&staff.serial.sssum_editor.modify.accesskey;" oncommand="g.manage_dists.sssum_editor.save()" />
+			<button id="sssum_save" label="&staff.serial.sssum_editor.modify.label;" hidden="true" accesskey="&staff.serial.sssum_editor.modify.accesskey;" oncommand="g.manage_dists.sssum_editor.save()" />
 			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
 		</hbox>
 

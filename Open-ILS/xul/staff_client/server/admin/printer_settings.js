@@ -13,6 +13,13 @@ function my_init() {
 
         g.prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
 
+        var print_silent_pref = false;
+        if (g.prefs.prefHasUserValue('print.always_print_silent')) {
+            print_silent_pref = g.prefs.getBoolPref('print.always_print_silent');
+        }
+        var x = document.getElementById('print_silent');
+        x.checked = print_silent_pref;
+
         /*
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
         g.PSSVC = Components.classes["@mozilla.org/gfx/printsettings-service;1"].getService(Components.interfaces.nsIPrintSettingsService);
@@ -24,6 +31,13 @@ function my_init() {
     } catch(E) {
         try { g.error.standard_unexpected_error_dialog('admin/printer_settings.xul',E); } catch(F) { alert(E); }
     }
+}
+
+g.toggle_silent_print = function() {
+    var x = document.getElementById('print_silent');
+    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    g.prefs.setBoolPref('print.always_print_silent', x.checked);
+    dump('Setting print.always_print_silent to ' + x.checked + '\n');
 }
 
 g.set_printer_context = function(context) {
@@ -39,9 +53,15 @@ g.page_settings = function() {
 
 g.printer_settings = function() {
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+    var print_silent_pref = false;
+    if (g.prefs.prefHasUserValue('print.always_print_silent')) {
+        print_silent_pref = g.prefs.getBoolPref('print.always_print_silent');
+    }
+    g.prefs.setBoolPref('print.always_print_silent', false);
     var w = get_contentWindow(document.getElementById('sample'));
     g.print.NSPrint(w ? w : window, false, {});
     g.print.save_settings();
+    g.prefs.setBoolPref('print.always_print_silent', print_silent_pref);
 }
 
 g.set_print_strategy = function(which) {

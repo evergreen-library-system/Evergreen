@@ -109,8 +109,8 @@ serial.sdist_editor.prototype = {
 
     'render_call_number' : function(cn) {
         var obj = this;
-        if (cn === null) {
-            return "<Unset>";
+        if (cn == null) { // true for both 'null' AND undefined
+            return '';
         } else if (typeof cn != 'object') {
             return obj.acn_label_map[cn];
         } else {
@@ -120,8 +120,8 @@ serial.sdist_editor.prototype = {
 
     'render_unit_template' : function(ut) {
         var obj = this;
-        if (ut === null) {
-            return "<Unset>";
+        if (ut == null) { // true for both 'null' AND undefined
+            return '';
         } else if (typeof ut != 'object') {
             return obj.act_name_map[ut];
         } else {
@@ -132,8 +132,8 @@ serial.sdist_editor.prototype = {
     'render_record_entry' : function(sre) {
         var obj = this;
         var sre_id;
-        if (sre === null) {
-            return "<Unset>";
+        if (sre == null) { // true for both 'null' AND undefined
+            return '';
         } else if (typeof sre != 'object') {
             sre_id = sre;
         } else {

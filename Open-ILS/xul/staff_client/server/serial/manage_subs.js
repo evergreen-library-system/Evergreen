@@ -1,5 +1,5 @@
 dump('entering serial/manage_subs.js\n');
-// vim:noet:sw=4:ts=4:
+// vim:et:sw=4:ts=4:
 
 if (typeof serial == 'undefined') serial = {};
 serial.manage_subs = function (params) {
@@ -289,7 +289,7 @@ serial.manage_subs.prototype = {
                                     var new_sdist = new sdist();
                                     new_sdist.subscription(list[0]);//TODO: add multiple at once support?
                                     new_sdist.holding_lib(obj.map_ssub['ssub_' + list[0]].owning_lib());//default to sub owning lib
-                                    new_sdist.label('Default');
+                                    new_sdist.label($('serialStrings').getString('serial.common.default'));
                                     new_sdist.isnew(1);
                                     var params = {};
                                     params.sdists = [new_sdist];
@@ -615,16 +615,16 @@ serial.manage_subs.prototype = {
                                 try {
                                     var list = obj.ids_from_sel_list('ssub');
                                     if (list.length == 0) {
-                                        alert('You must select a subscription before predicting issuances.'); //TODO: better error
+                                        alert($('serialStrings').getString('serial.manage_subs.predict.alert')); //TODO: better error
                                         return;
                                     }
 
-                                    var num_to_predict = prompt('How many items (per active pattern) would you like to predict?',
+                                    var num_to_predict = prompt($('serialStrings').getString('serial.manage_subs.predict.prompt'),
                                             '12',
-                                            'Number of Predicted Items');
+                                            $('serialStrings').getString('serial.manage_subs.predict.prompt.text'));
                                     num_to_predict = String( num_to_predict ).replace(/\D/g,'');
                                     if (num_to_predict == '') {
-                                        alert('Invalid number entered!'); //TODO: better error
+                                        alert($('serialStrings').getString('serial.manage_subs.invalid_number')); //TODO: better error
                                         return;
                                     }
 
@@ -634,7 +634,7 @@ serial.manage_subs.prototype = {
                                                 'open-ils.serial.make_predictions',
                                                 [ ses(), {"ssub_id":list[i], "num_to_predict":num_to_predict}]
                                         );
-                                        alert('Successfully predicted ' + robj.length + ' issuance(s) for subscription #' + list[i] + '.');
+                                        alert($('serialStrings').getFormattedString('serial.manage_subs.predict_success', [robj.length, list[i]]));
                                     }
 
                                     obj.refresh_list();
@@ -1438,7 +1438,7 @@ serial.manage_subs.prototype = {
             var sdist_group_node_data = {
                 'row' : {
                     'my' : {
-                        'label' : 'Distributions',
+                        'label' : $('serialStrings').getString('serial.manage_subs.distributions'),
                     }
                 },
                 'retrieve_id' : 'sdist-group_' + ssub_tree.id(),
@@ -1452,7 +1452,7 @@ serial.manage_subs.prototype = {
             var siss_group_node_data = {
                 'row' : {
                     'my' : {
-                        'label' : 'Issuances',
+                        'label' : $('serialStrings').getString('serial.manage_subs.issuances'),
                     }
                 },
                 'retrieve_id' : 'siss-group_' + ssub_tree.id(),
@@ -1466,7 +1466,7 @@ serial.manage_subs.prototype = {
             var scap_group_node_data = {
                 'row' : {
                     'my' : {
-                        'label' : 'Captions/Patterns',
+                        'label' : $('serialStrings').getString('serial.manage_subs.captions_patterns'),
                     }
                 },
                 'retrieve_id' : 'scap-group_' + ssub_tree.id(),
@@ -1536,13 +1536,22 @@ serial.manage_subs.prototype = {
             var columns = [
                 {
                     'id' : 'tree_location',
-                    'label' : 'Location',
+                    'label' : $('serialStrings').getString('serial.manage_subs.tree_location'),
                     'flex' : 1, 'primary' : true, 'hidden' : false, 
-                    'render' : function(my) { return my.sdist ? my.sdist.label() : my.siss ? my.siss.label() : my.scap ? 'C/P : #' + my.scap.id() : my.ssub ? 'Subscription : #' + my.ssub.id() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : my.label ? my.label : "???"; },
+                    'render' : function(my) { 
+                        if (my.sdist) { return my.sdist.label(); }
+                        if (my.siss) { return my.siss.label(); }
+                        if (my.scap) { return $('serialStrings').getFormattedString('serial.manage_subs.scap_id', [my.scap.id()]); }
+                        if (my.ssub) { return $('serialStrings').getFormattedString('serial.manage_subs.ssub_id', [my.ssub.id()]); }
+                        if (my.aou) { return $('serialStrings').getFormattedString('serial.manage_dists.library_label', [my.aou.shortname(), my.aou.name()]); }
+                        if (my.label) { return my.label; }
+                        /* If all else fails... */
+                        return "???"; 
+                    },
                 },
                 {
                     'id' : 'subscription_count',
-                    'label' : 'Subscriptions',
+                    'label' : $('serialStrings').getString('serial.manage_subs.subscriptions'),
                     'flex' : 0, 'primary' : false, 'hidden' : false, 
                     'render' : function(my) { return my.subscription_count; },
                 },

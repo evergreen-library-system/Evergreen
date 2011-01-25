@@ -22,7 +22,7 @@
 
 		<hbox id="sbsum_editor_nav">
 			<spacer flex="1"/>
-			<button id="sbsum_save" label="&staff.serial.sbsum_editor.modify;" hidden="true" accesskey="&staff.serial.sbsum_editor.modify.accesskey;" oncommand="g.manage_dists.sbsum_editor.save()" />
+			<button id="sbsum_save" label="&staff.serial.sbsum_editor.modify.label;" hidden="true" accesskey="&staff.serial.sbsum_editor.modify.accesskey;" oncommand="g.manage_dists.sbsum_editor.save()" />
 			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
 		</hbox>
 

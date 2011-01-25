@@ -27,8 +27,8 @@
 
 		<hbox id="nav">
 			<spacer flex="1"/>
-			<button id="ssub_notes" label="&staff.serial.ssub_editor.notes;" accesskey="&staff.serial.ssub_editor.notes.accesskey;" oncommand="g.manage_subs.ssub_editor.notes()" />
-			<button id="ssub_save" label="&staff.serial.ssub_editor.modify;" hidden="true" accesskey="&staff.serial.ssub_editor.modify.accesskey;" oncommand="g.manage_subs.ssub_editor.save()" />
+			<button id="ssub_notes" label="&staff.serial.ssub_editor.notes.label;" accesskey="&staff.serial.ssub_editor.notes.accesskey;" oncommand="g.manage_subs.ssub_editor.notes()" />
+			<button id="ssub_save" label="&staff.serial.ssub_editor.modify.label;" hidden="true" accesskey="&staff.serial.ssub_editor.modify.accesskey;" oncommand="g.manage_subs.ssub_editor.save()" />
 			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
 		</hbox>
 
