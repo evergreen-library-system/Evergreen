@@ -17,7 +17,7 @@
 # 	- or -
 # 	make -f Makefile.install ubuntu-lucid
 # 	- or -
-# 	make -f Makefile.install fedora13
+# 	make -f Makefile.install fedora14
 # 	- or -
 # 	make -f Makefile.install centos
 # 	- or -
