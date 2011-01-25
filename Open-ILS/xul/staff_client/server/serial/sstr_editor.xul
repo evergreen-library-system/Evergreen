@@ -22,7 +22,7 @@
 
 		<hbox id="sstr_editor_nav">
 			<spacer flex="1"/>
-			<button id="sstr_save" label="&staff.serial.sstr_editor.modify;" hidden="true" accesskey="&staff.serial.sstr_editor.modify.accesskey;" oncommand="g.manage_dists.sstr_editor.save()" />
+			<button id="sstr_save" label="&staff.serial.sstr_editor.modify.label;" hidden="true" accesskey="&staff.serial.sstr_editor.modify.accesskey;" oncommand="g.manage_dists.sstr_editor.save()" />
 			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
 		</hbox>
 

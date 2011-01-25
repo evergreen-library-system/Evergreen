@@ -18,12 +18,12 @@
                     <label
                         control="bib_search_term"
                         accesskey="&staff.serial.batch_receive.bib_search_term.accesskey;"
-                        value="&staff.serial.batch_receive.bib_search_term;" />
+                        value="&staff.serial.batch_receive.bib_search_term.label;" />
                     <textbox id="bib_search_term"
                         onkeypress="batch_receiver.bib_lookup(null, event);" />
                     <button id="bib_lookup_submit"
                         oncommand="batch_receiver.bib_lookup();"
-                        label="&staff.serial.batch_receive.find_record;"
+                        label="&staff.serial.batch_receive.find_record.label;"
                         accesskey="&staff.serial.batch_receive.find_record.accesskey;" />
                 </hbox>
             </vbox>
@@ -53,7 +53,7 @@
                     <box id="sub_chooser_here"></box>
                     <button
                         oncommand="batch_receiver.choose_issuance();"
-                        label="&staff.serial.batch_receive.next;"
+                        label="&staff.serial.batch_receive.next.label;"
                         accesskey="&staff.serial.batch_receive.next.accesskey;" />
                 </hbox>
             </vbox>
@@ -72,7 +72,7 @@
                     <box id="issuance_chooser_here"></box>
                     <button
                         oncommand="batch_receiver.load_entry_form();"
-                        label="&staff.serial.batch_receive.next;"
+                        label="&staff.serial.batch_receive.next.label;"
                         accesskey="&staff.serial.batch_receive.next.accesskey;" />
                 </hbox>
             </vbox>
@@ -158,14 +158,14 @@
 
         <hbox align="center">
             <button oncommand="batch_receiver.init();"
-                label="&staff.serial.batch_receive.start_over;"
+                label="&staff.serial.batch_receive.start_over.label;"
                 accesskey="&staff.serial.batch_receive.start_over.accesskey;" />
             <spacer flex="1" />
             <checkbox
                 id="batch_receive_with_units"
                 oils_persist="checked"
                 oncommand="batch_receiver.toggle_receive_with_units(event);"
-                label="&staff.serial.batch_receive.with_units;"
+                label="&staff.serial.batch_receive.with_units.label;"
                 accesskey="&staff.serial.batch_receive.with_units.accesskey;" />
         </hbox>
     </box>

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-24 16:22-0400\n"
+"POT-Creation-Date: 2011-01-24 22:10-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1222,6 +1222,7 @@ msgstr ""
 
 #: staff.cat.opac.record_next.label
 #: staff.cat.opac.record_next.accesskey
+msgctxt "staff.cat.opac.record_next.label staff.cat.opac.record_next.accesskey"
 msgid "&Next"
 msgstr ""
 
@@ -5270,7 +5271,6 @@ msgid "Title"
 msgstr ""
 
 #: staff.next.range
-msgctxt "staff.next.range"
 msgid "Next"
 msgstr ""
 
@@ -6175,223 +6175,127 @@ msgstr ""
 msgid "Delete MFHD Record"
 msgstr ""
 
-#: staff.serial.scap_editor.pattern_wizard
-msgid "Pattern Code Wizard"
-msgstr ""
-
+#: staff.serial.scap_editor.pattern_wizard.label
 #: staff.serial.scap_editor.pattern_wizard.accesskey
-msgid "Z"
+msgid "Pattern Code Wi&zard"
 msgstr ""
 
+#: staff.serial.scap_editor.modify.label
 #: staff.serial.scap_editor.modify.accesskey
-msgctxt "staff.serial.scap_editor.modify.accesskey"
-msgid "M"
+msgid "&Modify Caption and Pattern(s)"
 msgstr ""
 
-#: staff.serial.scap_editor.modify
-msgid "Modify Caption and Pattern(s)"
-msgstr ""
-
-#: staff.serial.scap_editor.modify.accesskey
-msgctxt "staff.serial.scap_editor.modify.accesskey"
-msgid "M"
-msgstr ""
-
-#: staff.serial.scap_editor.create
-msgid "Create Caption and Pattern(s)"
-msgstr ""
-
+#: staff.serial.scap_editor.create.label
 #: staff.serial.scap_editor.create.accesskey
-msgctxt "staff.serial.scap_editor.create.accesskey"
-msgid "C"
+msgid "&Create Caption and Pattern(s)"
 msgstr ""
 
-#: staff.serial.scap_editor.notes
-msgid "Caption and Pattern Notes"
-msgstr ""
-
+#: staff.serial.scap_editor.notes.label
 #: staff.serial.scap_editor.notes.accesskey
-msgctxt "staff.serial.scap_editor.notes.accesskey"
-msgid "N"
+msgid "Caption and Pattern &Notes"
 msgstr ""
 
-#: staff.serial.sbsum_editor.modify
-msgid "Modify Basic Summary"
-msgstr ""
-
+#: staff.serial.sbsum_editor.modify.label
 #: staff.serial.sbsum_editor.modify.accesskey
-msgctxt "staff.serial.sbsum_editor.modify.accesskey"
-msgid "M"
+msgid "&Modify Basic Summary"
 msgstr ""
 
-#: staff.serial.sisum_editor.modify
-msgid "Modify Index Summary"
-msgstr ""
-
+#: staff.serial.sisum_editor.modify.label
 #: staff.serial.sisum_editor.modify.accesskey
-msgctxt "staff.serial.sisum_editor.modify.accesskey"
-msgid "M"
+msgid "&Modify Index Summary"
 msgstr ""
 
-#: staff.serial.sssum_editor.modify
-msgid "Modify Supplement Summary"
-msgstr ""
-
+#: staff.serial.sssum_editor.modify.label
 #: staff.serial.sssum_editor.modify.accesskey
-msgctxt "staff.serial.sssum_editor.modify.accesskey"
-msgid "M"
+msgid "&Modify Supplement Summary"
 msgstr ""
 
-#: staff.serial.sdist_editor.modify
-msgid "Modify Distribution(s)"
-msgstr ""
-
+#: staff.serial.sdist_editor.modify.label
 #: staff.serial.sdist_editor.modify.accesskey
-msgctxt "staff.serial.sdist_editor.modify.accesskey"
-msgid "M"
+msgid "&Modify Distribution(s)"
 msgstr ""
 
-#: staff.serial.sdist_editor.create
-msgid "Create Distribution(s)"
-msgstr ""
-
+#: staff.serial.sdist_editor.create.label
 #: staff.serial.sdist_editor.create.accesskey
-msgctxt "staff.serial.sdist_editor.create.accesskey"
-msgid "C"
+msgid "&Create Distribution(s)"
 msgstr ""
 
-#: staff.serial.sdist_editor.notes
-msgid "Distribution Notes"
-msgstr ""
-
+#: staff.serial.sdist_editor.notes.label
 #: staff.serial.sdist_editor.notes.accesskey
-msgctxt "staff.serial.sdist_editor.notes.accesskey"
-msgid "N"
+msgid "Distribution &Notes"
 msgstr ""
 
 #: staff.serial.serctrl_view.label
 msgid "Serial Control View"
 msgstr ""
 
-#: staff.serial.siss_editor.modify
-msgid "Modify Issuance(s)"
-msgstr ""
-
+#: staff.serial.siss_editor.modify.label
 #: staff.serial.siss_editor.modify.accesskey
-msgctxt "staff.serial.siss_editor.modify.accesskey"
-msgid "M"
+msgid "&Modify Issuance(s)"
 msgstr ""
 
-#: staff.serial.siss_editor.create
-msgid "Create Issuance(s)"
-msgstr ""
-
+#: staff.serial.siss_editor.create.label
 #: staff.serial.siss_editor.create.accesskey
-msgctxt "staff.serial.siss_editor.create.accesskey"
-msgid "C"
+msgid "&Create Issuance(s)"
 msgstr ""
 
-#: staff.serial.siss_editor.notes
-msgid "Issuance Notes"
-msgstr ""
-
+#: staff.serial.siss_editor.notes.label
 #: staff.serial.siss_editor.notes.accesskey
-msgctxt "staff.serial.siss_editor.notes.accesskey"
-msgid "N"
+msgid "Issuance &Notes"
 msgstr ""
 
-#: staff.serial.sitem_editor.modify
-msgid "Modify Item(s)"
-msgstr ""
-
+#: staff.serial.sitem_editor.modify.label
 #: staff.serial.sitem_editor.modify.accesskey
-msgctxt "staff.serial.sitem_editor.modify.accesskey"
-msgid "M"
+msgid "&Modify Item(s)"
 msgstr ""
 
-#: staff.serial.sitem_editor.create
-msgid "Create Item(s)"
-msgstr ""
-
+#: staff.serial.sitem_editor.create.label
 #: staff.serial.sitem_editor.create.accesskey
-msgctxt "staff.serial.sitem_editor.create.accesskey"
-msgid "C"
+msgid "&Create Item(s)"
 msgstr ""
 
-#: staff.serial.sitem_editor.notes
-msgid "Item Notes"
-msgstr ""
-
+#: staff.serial.sitem_editor.notes.label
 #: staff.serial.sitem_editor.notes.accesskey
-msgctxt "staff.serial.sitem_editor.notes.accesskey"
-msgid "N"
+msgid "Item &Notes"
 msgstr ""
 
-#: staff.serial.sstr_editor.modify
-msgid "Modify Stream(s)"
-msgstr ""
-
+#: staff.serial.sstr_editor.modify.label
 #: staff.serial.sstr_editor.modify.accesskey
-msgctxt "staff.serial.sstr_editor.modify.accesskey"
-msgid "M"
+msgid "&Modify Stream(s)"
 msgstr ""
 
-#: staff.serial.sstr_editor.create
-msgid "Create Stream(s)"
-msgstr ""
-
+#: staff.serial.sstr_editor.create.label
 #: staff.serial.sstr_editor.create.accesskey
-msgctxt "staff.serial.sstr_editor.create.accesskey"
-msgid "C"
+msgid "&Create Stream(s)"
 msgstr ""
 
-#: staff.serial.ssub_editor.modify
-msgid "Modify Subscription(s)"
-msgstr ""
-
+#: staff.serial.ssub_editor.modify.label
 #: staff.serial.ssub_editor.modify.accesskey
-msgctxt "staff.serial.ssub_editor.modify.accesskey"
-msgid "M"
+msgid "&Modify Subscription(s)"
 msgstr ""
 
-#: staff.serial.ssub_editor.create
-msgid "Create Subscription(s)"
-msgstr ""
-
+#: staff.serial.ssub_editor.create.label
 #: staff.serial.ssub_editor.create.accesskey
-msgctxt "staff.serial.ssub_editor.create.accesskey"
-msgid "C"
+msgid "&Create Subscription(s)"
 msgstr ""
 
-#: staff.serial.ssub_editor.notes
-msgid "Subscription Notes"
-msgstr ""
-
+#: staff.serial.ssub_editor.notes.label
 #: staff.serial.ssub_editor.notes.accesskey
-msgctxt "staff.serial.ssub_editor.notes.accesskey"
-msgid "N"
+msgid "Subscription &Notes"
 msgstr ""
 
 #: staff.serial.batch_receive
 msgid "Batch Receive"
 msgstr ""
 
-#: staff.serial.batch_receive.bib_search_term
-msgid "Enter an identifier for a bibliographic record:"
-msgstr ""
-
+#: staff.serial.batch_receive.bib_search_term.label
 #: staff.serial.batch_receive.bib_search_term.accesskey
-msgctxt "staff.serial.batch_receive.bib_search_term.accesskey"
-msgid "B"
+msgid "Enter an identifier for a &bibliographic record:"
 msgstr ""
 
-#: staff.serial.batch_receive.find_record
-msgid "Find Record"
-msgstr ""
-
+#: staff.serial.batch_receive.find_record.label
 #: staff.serial.batch_receive.find_record.accesskey
-msgctxt "staff.serial.batch_receive.find_record.accesskey"
-msgid "F"
+msgid "&Find Record"
 msgstr ""
 
 #: staff.serial.batch_receive.title
@@ -6408,32 +6312,20 @@ msgstr ""
 msgid "Fulfilling Subscription:"
 msgstr ""
 
-#: staff.serial.batch_receive.choose_sub
-msgid "Choose a Subscription:"
-msgstr ""
-
+#: staff.serial.batch_receive.choose_sub.label
 #: staff.serial.batch_receive.choose_sub.accesskey
-msgctxt "staff.serial.batch_receive.choose_sub.accesskey"
-msgid "S"
+msgid "Choose a &Subscription:"
 msgstr ""
 
-#: staff.serial.batch_receive.choose_issuance
-msgid "Choose an Issuance:"
-msgstr ""
-
+#: staff.serial.batch_receive.choose_issuance.label
 #: staff.serial.batch_receive.choose_issuance.accesskey
-msgctxt "staff.serial.batch_receive.choose_issuance.accesskey"
-msgid "I"
+msgid "Choose an &Issuance:"
 msgstr ""
 
-#: staff.serial.batch_receive.next
-msgctxt "staff.serial.batch_receive.next"
-msgid "Next"
-msgstr ""
-
+#: staff.serial.batch_receive.next.label
 #: staff.serial.batch_receive.next.accesskey
-msgctxt "staff.serial.batch_receive.next.accesskey"
-msgid "N"
+msgctxt "staff.serial.batch_receive.next.label staff.serial.batch_receive.next.accesskey"
+msgid "&Next"
 msgstr ""
 
 #: staff.serial.batch_receive.issuance
@@ -6490,22 +6382,14 @@ msgstr ""
 msgid "Receive Selected Items"
 msgstr ""
 
-#: staff.serial.batch_receive.start_over
-msgid "Start Over"
-msgstr ""
-
+#: staff.serial.batch_receive.start_over.label
 #: staff.serial.batch_receive.start_over.accesskey
-msgctxt "staff.serial.batch_receive.start_over.accesskey"
-msgid "O"
+msgid "Start &Over"
 msgstr ""
 
-#: staff.serial.batch_receive.with_units
-msgid "Create Units For Received Items"
-msgstr ""
-
+#: staff.serial.batch_receive.with_units.label
 #: staff.serial.batch_receive.with_units.accesskey
-msgctxt "staff.serial.batch_receive.with_units.accesskey"
-msgid "U"
+msgid "Create &Units For Received Items"
 msgstr ""
 
 #: staff.survey.wizard.page1
@@ -7253,11 +7137,6 @@ msgstr ""
 #: staff.server.admin.copy_locations.editor.circulate
 msgctxt "staff.server.admin.copy_locations.editor.circulate"
 msgid "Circulate"
-msgstr ""
-
-#: staff.server.admin.copy_locations.editor.create
-msgctxt "staff.server.admin.copy_locations.editor.create"
-msgid "Create"
 msgstr ""
 
 #: staff.server.admin.copy_locations.editor.edit
