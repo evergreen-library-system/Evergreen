@@ -91,6 +91,7 @@ newpo:
 	@pot2po $(PROGRESS) -i po/reports.js/reports.js.pot -o $(PO)/reports.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/reservation.js/reservation.js.pot -o $(PO)/reservation.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/selfcheck.js/selfcheck.js.pot -o $(PO)/selfcheck.js/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/vandelay.dtd/vandelay.dtd.pot -o $(PO)/vandelay.dtd/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/AutoFieldWidget.js/AutoFieldWidget.js.pot -o $(PO)/AutoFieldWidget.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/TranslatorPopup.js/TranslatorPopup.js.pot -o $(PO)/TranslatorPopup.js/$(LOCALE).po 
@@ -135,6 +136,7 @@ updatepo: prep_output
 	@pot2po $(PROGRESS) -i po/reports.js/reports.js.pot -o $(PO)/reports.js/$(LOCALE).po  -t $(PO)/reports.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/reservation.js/reservation.js.pot -o $(PO)/reservation.js/$(LOCALE).po  -t $(PO)/reservation.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/selfcheck.js/selfcheck.js.pot -o $(PO)/selfcheck.js/$(LOCALE).po  -t $(PO)/selfcheck.js/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po  -t $(PO)/serial.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/vandelay.dtd/vandelay.dtd.pot -o $(PO)/vandelay.dtd/$(LOCALE).po  -t $(PO)/vandelay.dtd/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/AutoFieldWidget.js/AutoFieldWidget.js.pot -o $(PO)/AutoFieldWidget.js/$(LOCALE).po  -t $(PO)/AutoFieldWidget.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/TranslatorPopup.js/TranslatorPopup.js.pot -o $(PO)/TranslatorPopup.js/$(LOCALE).po  -t $(PO)/TranslatorPopup.js/$(LOCALE).po 
@@ -201,6 +203,7 @@ props2pot:
 	@moz2po -P $(PROGRESS) -o $(PO)/common.properties/common.properties.pot -i $(SERVER_PROPSDIR)/en-US/common.properties 2>&1
 	@moz2po -P $(PROGRESS) -o $(PO)/multiclass_search_help.html/multiclass_search_help.html.pot -i $(SERVER_PROPSDIR)/en-US/multiclass_search_help.html 2>&1
 	@moz2po -P $(PROGRESS) -o $(PO)/patron.properties/patron.properties.pot -i $(SERVER_PROPSDIR)/en-US/patron.properties 2>&1
+	@moz2po -P $(PROGRESS) -o $(PO)/serial.properties/serial.properties.pot -i $(SERVER_PROPSDIR)/en-US/serial.properties 2>&1
 
 # There are some hacky things we need to do to make po2moz happy,
 # like ensure that the .po file has either ".dtd" or ".properties" in
@@ -230,6 +233,7 @@ po2props:
 	@po2moz $(PROGRESS) -i $(PO)/common.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/common.properties -t $(SERVER_PROPSDIR)/en-US/common.properties 2>&1
 	@po2moz $(PROGRESS) -i $(PO)/multiclass_search_help.html/$(LOCALE).html.po -o $(PROJECT)/$(LOCALE)/multiclass_search_help.html -t $(SERVER_PROPSDIR)/en-US/multiclass_search_help.html 2>&1
 	@po2moz $(PROGRESS) -i $(PO)/patron.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/patron.properties -t $(SERVER_PROPSDIR)/en-US/patron.properties 2>&1
+	@po2moz $(PROGRESS) -i $(PO)/serial.properties/$(LOCALE).properties.po -o $(PROJECT)/$(LOCALE)/serial.properties -t $(SERVER_PROPSDIR)/en-US/serial.properties 2>&1
 
 sql2pot:
 	@scripts/db-seed-i18n.py --pot $(SQLSRCDIR)/$(SQLSRCFILE) --output $(PO)/db.seed/$(SQLPOT)
@@ -276,6 +280,7 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PROJECT)/$(LOCALE)/lang.dtd $(DTDDIR)/$(LOCALE)/
 	cp $(PROJECT)/$(LOCALE)/opac.dtd $(DTDDIR)/$(LOCALE)/
 	cp $(PROJECT)/$(LOCALE)/reports.dtd $(DTDDIR)/$(LOCALE)/
+	cp $(PROJECT)/$(LOCALE)/serial.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
 	cp $(PROJECT)/$(LOCALE)/vandelay.dtd $(DTDDIR)/$(LOCALE)/
 	cp $(PROJECT)/$(LOCALE)/$(FMIDLENTITY) $(DTDDIR)/$(LOCALE)/
 	@scripts/merge_ils_events.py --master $(EVTSRC) --localization $(PROJECT)/$(LOCALE)/$(EVTXML) --output $(EVTSRC)
