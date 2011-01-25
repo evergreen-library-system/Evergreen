@@ -1,5 +1,5 @@
 dump('entering serial/manage_dists.js\n');
-// vim:noet:sw=4:ts=4:
+// vim:et:sw=4:ts=4:
 
 if (typeof serial == 'undefined') serial = {};
 serial.manage_dists = function (params) {
@@ -1106,7 +1106,7 @@ serial.manage_dists.prototype = {
             var sstr_group_node_data = {
                 'row' : {
                     'my' : {
-                        'label' : 'Streams',
+                        'label' : dojo.byId('serialStrings').getString('serial.manage_dists.streams'),
                     }
                 },
                 'retrieve_id' : 'sstr-group_' + sdist_tree.id(),
@@ -1185,11 +1185,20 @@ serial.manage_dists.prototype = {
                     'id' : 'tree_location',
                     'label' : 'Location',
                     'flex' : 1, 'primary' : true, 'hidden' : false, 
-                    'render' : function(my) { return my.label ? my.label : my.sstr ? 'Stream : #' + my.sstr.id() : my.sbsum ? 'Basic Summary' : my.sssum ? 'Supplement Summary' : my.sisum ? 'Index Summary' : my.sdist ? my.sdist.label() : my.aou ? my.aou.shortname() + " : " + my.aou.name() : "???"; },
+                    'render' : function(my) { 
+                        if (my.label) { return my.label; }
+                        if (my.sstr) { return $('serialStrings').getFormattedString('serial.manage_dists.stream_num', [my.sstr.id()]); }
+                        if (my.sbsum) { return $('serialStrings').getString('serial.manage_dists.sbsum'); }
+                        if (my.sssum) { return $('serialStrings').getString('serial.manage_dists.sssum'); }
+                        if (my.sisum) { return $('serialStrings').getString('serial.manage_dists.sisum'); }
+                        if (my.sdist) { return my.sdist.label(); }
+                        if (my.aou) { return $('serialStrings').getFormattedString('serial.manage_dists.stream_num', [my.aou.shortname(), my.aou.name()]); }
+                        return "???";
+                    },
                 },
                 {
                     'id' : 'distribution_count',
-                    'label' : 'Distributions',
+                    'label' : $('serialStrings').getString('serial.manage_dists.distributions'),
                     'flex' : 0, 'primary' : false, 'hidden' : false, 
                     'render' : function(my) { return my.distribution_count; },
                 }

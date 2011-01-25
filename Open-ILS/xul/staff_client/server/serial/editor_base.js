@@ -1,5 +1,5 @@
 dump('entering serial/editor_base.js\n');
-// vim:noet:sw=4:ts=4:
+// vim:et:sw=4:ts=4:
 
 if (typeof serial == 'undefined') serial = {};
 
@@ -294,7 +294,7 @@ serial.editor_base = {
                         obj.editor_values[value_key] = value;
                     }
                     if (value == "") {
-                        value = "<Unset>";
+                        value = $('serialStrings').getString('serial.editor_base.unset');
                     }
                 } catch(E) { 
                     obj.error.sdump('D_ERROR','Attempted ' + cmd + '\n' +  E + '\n'); 
