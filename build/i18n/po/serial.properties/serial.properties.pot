@@ -471,7 +471,7 @@ msgstr ""
 msgid "<Unset>"
 msgstr ""
 
-#: serail.manage_dists.streams
+#: serial.manage_dists.streams
 msgid "Streams"
 msgstr ""
 
