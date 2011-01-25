@@ -67,10 +67,10 @@
         [% FOR acn IN record.call_numbers %]
             [% FOR acp IN acn.copies %]
                 <tr>
-                    <td>[% ctx.find_org_unit(acn.owning_lib).shortname %]</td>
+                    <td>[% ctx.find_aou(acn.owning_lib).shortname %]</td>
                     <td>[% acn.label %]</td>
                     <td>[% acp.barcode %]</td>
-                    <td>[% acp.status %]</td>
+                    <td>[% ctx.find_ccs(acp.status).name %]</td>
                 </tr>
             [% END %]
         [% END %]

@@ -4,7 +4,7 @@
     BLOCK build_org_selector;
         first_run = 0;
         IF !org_unit;
-            org_unit = ctx.org_tree;
+            org_unit = ctx.aou_tree;
             first_run = 1;
 %]
     <select id='[% id %]' name='[% name %]'>

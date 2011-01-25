@@ -37,7 +37,7 @@ sub apache {
     return $self->{apache};
 }
 
-# runtime context
+# runtime / template context
 sub ctx {
     my($self, $ctx) = @_;
     $self->{ctx} = $ctx if $ctx;
@@ -63,57 +63,102 @@ sub cgi {
 sub load {
     my $self = shift;
 
-    my $path = $self->apache->path_info;
     $self->load_helpers;
-
     my $stat = $self->load_common;
     return $stat unless $stat == Apache2::Const::OK;
 
+    my $path = $self->apache->path_info;
     return $self->load_home if $path =~ /opac\/home/;
     return $self->load_login if $path =~ /opac\/login/;
     return $self->load_logout if $path =~ /opac\/logout/;
     return $self->load_rresults if $path =~ /opac\/results/;
     return $self->load_record if $path =~ /opac\/record/;
-    return $self->load_myopac if $path =~ /opac\/myopac/;
     return $self->load_place_hold if $path =~ /opac\/place_hold/;
+
+    return $self->load_myopac_holds if $path =~ /opac\/myopac\/holds/;
+    return $self->load_myopac if $path =~ /opac\/myopac/;
 
     return Apache2::Const::OK;
 }
 
 # general purpose utility functions added to the environment
-# context additions: 
-#   find_org_unit : function(id) => aou object
-#   org_tree : function(id) => aou object, top of tree, fleshed
 sub load_helpers {
     my $self = shift;
-    $cache{org_unit_map} = {};
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
 
-    # pull the org unit from the cached org tree
-    $self->ctx->{find_org_unit} = sub {
-        my $org_id = shift;
-        return undef unless defined $org_id;
-        return $cache{org_unit_map}{$org_id} if defined $cache{org_unit_map}{$org_id};
-        my $tree = shift || $self->ctx->{org_tree}->();
-        return $cache{org_unit_map}{$org_id} = $tree if $tree->id == $org_id;
-        for my $child (@{$tree->children}) {
-            my $node = $self->ctx->{find_org_unit}->($org_id, $child);
-            return $node if $node;
-        }
-        return undef;
-    };
+    $cache{map} = {}; # public object maps
+    $cache{list} = {}; # public object lists
 
-    $self->ctx->{org_tree} = sub {
-        unless($cache{org_tree}) {
-            $cache{org_tree} = $self->editor->search_actor_org_unit([
+    # fetch-on-demand-and-cache subs for commonly used public data
+    my @public_classes = qw/ccs aout/;
+
+    for my $hint (@public_classes) {
+
+        my ($class) = grep {
+            $Fieldmapper::fieldmap->{$_}->{hint} eq $hint
+        } keys %{ $Fieldmapper::fieldmap };
+
+	    $class =~ s/Fieldmapper:://o;
+	    $class =~ s/::/_/g;
+
+        # copy statuses
+        my $list_key = $hint . '_list';
+        my $find_key = "find_$hint";
+
+        $ctx->{$list_key} = sub {
+            my $method = "retrieve_all_$class";
+            $cache{list}{$hint} = $e->$method() unless $cache{list}{$hint};
+            return $cache{list}{$hint};
+        };
+    
+        $cache{map}{$hint} = {};
+
+        $ctx->{$find_key} = sub {
+            my $id = shift;
+            return $cache{map}{$hint}{$id} if $cache{map}{$hint}{$id}; 
+            ($cache{map}{$hint}{$id}) = grep { $_->id == $id } @{$ctx->{$list_key}->()};
+            return $cache{map}{$hint}{$id};
+        };
+
+    }
+
+    $ctx->{aou_tree} = sub {
+
+        # fetch the org unit tree
+        unless($cache{aou_tree}) {
+            my $tree = $e->search_actor_org_unit([
 			    {   parent_ou => undef},
 			    {   flesh            => -1,
-				    flesh_fields    => {aou =>  ['children', 'ou_type']},
+				    flesh_fields    => {aou =>  ['children']},
 				    order_by        => {aou => 'name'}
 			    }
 		    ])->[0];
+
+            # flesh the org unit type for each org unit
+            # and simultaneously set the id => aou map cache
+            sub flesh_aout {
+                my $node = shift;
+                my $ctx = shift;
+                $node->ou_type( $ctx->{find_aout}->($node->ou_type) );
+                $cache{map}{aou}{$node->id} = $node;
+                flesh_aout($_, $ctx) foreach @{$node->children};
+            };
+            flesh_aout($tree, $ctx);
+
+            $cache{aou_tree} = $tree;
         }
-        return $cache{org_tree};
-    }
+
+        return $cache{aou_tree};
+    };
+
+    # Add a special handler for the tree-shaped org unit cache
+    $cache{map}{aou} = {};
+    $ctx->{find_aou} = sub {
+        my $org_id = shift;
+        $ctx->{aou_tree}->(); # force the org tree to load
+        return $cache{map}{aou}{$org_id};
+    };
 }
 
 # context additions: 
@@ -317,6 +362,7 @@ sub load_rresults {
 #   record : bre object
 sub load_record {
     my $self = shift;
+    $self->ctx->{page} = 'record';
 
     my $rec_id = $self->ctx->{page_args}->[0]
         or return Apache2::Const::HTTP_BAD_REQUEST;
@@ -341,6 +387,7 @@ sub load_record {
 #   user : au object, fleshed
 sub load_myopac {
     my $self = shift;
+    $self->ctx->{page} = 'myopac';
 
     $self->ctx->{user} = $self->editor->retrieve_actor_user([
         $self->ctx->{user}->id,
@@ -356,11 +403,44 @@ sub load_myopac {
     return Apache2::Const::OK;
 }
 
+sub load_myopac_holds {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+
+    my $circ = OpenSRF::AppSession->create('open-ils.circ');
+    my $hold_ids = $circ->request(
+        'open-ils.circ.holds.id_list.retrieve', 
+        $e->authtoken, 
+        $e->requestor->id
+    )->gather(1);
+
+    my $req = $circ->request(
+        'open-ils.circ.hold.details.batch.retrieve', 
+        $e->authtoken, 
+        $hold_ids
+    );
+
+    # any requests we can fire off here?
+    # XXX use marc attrs instead of the mvr's returned by hold.details
+    
+    $ctx->{holds} = []; 
+    while(my $resp = $req->recv) {
+        my $hold = $resp->content;
+        # need to fetch anything else?
+        push(@{$ctx->{holds}}, $hold);
+    }
+
+    $circ->kill_me;
+    return Apache2::Const::OK;
+}
+
 # context additions: 
 sub load_place_hold {
     my $self = shift;
     my $ctx = $self->ctx;
     my $e = $self->editor;
+    $self->ctx->{page} = 'place_hold';
 
     $ctx->{hold_target} = $self->cgi->param('hold_target');
     $ctx->{hold_type} = $self->cgi->param('hold_type');
