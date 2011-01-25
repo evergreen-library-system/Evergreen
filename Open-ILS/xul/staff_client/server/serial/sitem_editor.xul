@@ -84,8 +84,8 @@
 
 		<hbox id="nav">
 			<spacer flex="1"/>
-			<button id="sitem_notes" label="&staff.serial.sitem_editor.notes;" accesskey="&staff.serial.sitem_editor.notes.accesskey;" oncommand="g.sitem_editor.notes();"/>
-			<button id="sitem_save" label="&staff.serial.sitem_editor.modify;" hidden="true" accesskey="&staff.serial.sitem_editor.modify.accesskey;" oncommand="g.sitem_editor.save();"/>
+			<button id="sitem_notes" label="&staff.serial.sitem_editor.notes.label;" accesskey="&staff.serial.sitem_editor.notes.accesskey;" oncommand="g.sitem_editor.notes();"/>
+			<button id="sitem_save" label="&staff.serial.sitem_editor.modify.label;" hidden="true" accesskey="&staff.serial.sitem_editor.modify.accesskey;" oncommand="g.sitem_editor.save();"/>
 			<button id="sitem_cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>
 		</hbox>
 
