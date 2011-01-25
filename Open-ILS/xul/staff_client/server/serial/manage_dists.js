@@ -1192,7 +1192,7 @@ serial.manage_dists.prototype = {
                         if (my.sssum) { return $('serialStrings').getString('serial.manage_dists.sssum'); }
                         if (my.sisum) { return $('serialStrings').getString('serial.manage_dists.sisum'); }
                         if (my.sdist) { return my.sdist.label(); }
-                        if (my.aou) { return $('serialStrings').getFormattedString('serial.manage_dists.stream_num', [my.aou.shortname(), my.aou.name()]); }
+                        if (my.aou) { return $('serialStrings').getFormattedString('serial.manage_dists.library_label', [my.aou.shortname(), my.aou.name()]); }
                         return "???";
                     },
                 },
