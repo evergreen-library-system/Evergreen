@@ -634,7 +634,7 @@ sub load_myopac_fines {
 
         my $last_billing;
         if($mobts->grocery) {
-            my @billings = sort { $a->billing_ts <=> $b->billing_ts } @{$mobts->grocery->billings};
+            my @billings = sort { $a->billing_ts cmp $b->billing_ts } @{$mobts->grocery->billings};
             $last_billing = pop(@billings);
         }
 
