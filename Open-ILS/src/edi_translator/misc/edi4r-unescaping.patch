@@ -1,0 +1,11 @@
+--- old/lib/edi4r/edifact.rb	2011-01-26 11:25:45.000000000 -0500
++++ new/lib/edi4r/edifact.rb	2011-01-26 16:13:16.000000000 -0500
+@@ -342,7 +342,7 @@
+       special_chars = special_chars.map{|c| c.chr}
+       @pattern_esc = Regexp.new( [ '([', special_chars, '])' ].flatten.join)
+       @pattern_unesc = Regexp.new( [ 
+-                                     '([^', @esc_char, ']?)', '[', @esc_char,
++                                     '([^', @esc_char.chr, ']?)', '[', @esc_char.chr,
+                                      ']([', special_chars,'])' 
+                                    ].flatten.join )
+       root.show_una = true
