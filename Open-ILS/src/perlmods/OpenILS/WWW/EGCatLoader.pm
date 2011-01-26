@@ -386,6 +386,8 @@ sub load_record {
 # context additions: 
 #   user : au object, fleshed
 sub load_myopac {
+    # XXX This crashes on session timeout, so somewhere around here we need to
+    # add handling for that
     my $self = shift;
     $self->ctx->{page} = 'myopac';
 
