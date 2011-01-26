@@ -3,7 +3,7 @@ use strict; use warnings;
 use CGI;
 use XML::LibXML;
 use Digest::MD5 qw(md5_hex);
-use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
+use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils qw/:datetime/;
@@ -70,16 +70,24 @@ sub load {
     return $stat unless $stat == Apache2::Const::OK;
 
     my $path = $self->apache->path_info;
+
     return $self->load_home if $path =~ /opac\/home/;
     return $self->load_login if $path =~ /opac\/login/;
     return $self->load_logout if $path =~ /opac\/logout/;
     return $self->load_rresults if $path =~ /opac\/results/;
     return $self->load_record if $path =~ /opac\/record/;
-    return $self->load_place_hold if $path =~ /opac\/place_hold/;
 
+    # ----------------------------------------------------------------
+    # These pages require authentication
+    # ----------------------------------------------------------------
+    return Apache2::Const::FORBIDDEN unless $self->cgi->https;
+    return $self->load_logout unless $self->editor->requestor;
+
+    return $self->load_place_hold if $path =~ /opac\/place_hold/;
     return $self->load_myopac_holds if $path =~ /opac\/myopac\/holds/;
     return $self->load_myopac_circs if $path =~ /opac\/myopac\/circs/;
     return $self->load_myopac if $path =~ /opac\/myopac/;
+    # ----------------------------------------------------------------
 
     return Apache2::Const::OK;
 }
@@ -265,9 +273,7 @@ sub load_login {
 sub load_logout {
     my $self = shift;
 
-    my $path = $self->apache->uri;
-    $path =~ s/(\/[^\/]+$)/\/home/;
-    my $url = 'http://' . $self->apache->hostname . "$path";
+    my $url = 'http://' . $self->apache->hostname . $self->ctx->{base_path} . "/opac/home";
 
     $self->apache->print(
         $self->cgi->redirect(
