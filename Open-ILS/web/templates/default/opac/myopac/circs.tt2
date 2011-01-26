@@ -4,6 +4,7 @@
     table { border-collapse: collapse; }
     table { padding: 3px; border-bottom: 1px solid #ddd; text-align: left;}
     table tr:nth-child(odd) { background-color:#ded; }
+    #action_div { width: 95%; text-align: right }
 </style>
 [% END %]
 
@@ -11,29 +12,36 @@
 [% WRAPPER "default/opac/base.tt2" %]
 [% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "circs" %]
 [% USE date %]
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Due Date</th>
-            <th>Renewals Remaining</th>
-            <th>Select</th>
-        </tr>
-    </thead>
-    <tbody>
-        [% FOR circ IN ctx.circs %]
-            [% attrs = {marc_xml => circ.marc_xml}; %]
-            [% PROCESS get_marc_attrs args=attrs; %]
+
+<form method='POST'>
+    <div id='action_div'>
+        <button type='submit' value='renew' name='action'>Renew Selected</button>
+        <button type='submit' value='renew_all' name='action'>Renew All</button>
+    </div>
+    <table>
+        <thead>
             <tr>
-                <td>[% attrs.title %]</td>
-                <td>[% attrs.author %]</td>
-                <td>[% date.format(ctx.parse_datetime(circ.circ.due_date),'%Y-%m-%d') %]</td>
-                <td><em>[% circ.circ.renewal_remaining %]</em></td>
-                <td><em>XXX TODO</em></td>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Due Date</th>
+                <th>Renewals Remaining</th>
+                <th>Select</th>
             </tr>
-        [% END %]
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            [% FOR circ IN ctx.circs %]
+                [% attrs = {marc_xml => circ.marc_xml}; %]
+                [% PROCESS get_marc_attrs args=attrs; %]
+                <tr>
+                    <td>[% attrs.title %]</td>
+                    <td>[% attrs.author %]</td>
+                    <td>[% date.format(ctx.parse_datetime(circ.circ.due_date),'%Y-%m-%d') %]</td>
+                    <td><em>[% circ.circ.renewal_remaining %]</em></td>
+                    <td><input name='circ' value='[% circ.circ.id %]' type='checkbox'/></td>
+                </tr>
+            [% END %]
+        </tbody>
+    </table>
+</form>
 
 [% END %]

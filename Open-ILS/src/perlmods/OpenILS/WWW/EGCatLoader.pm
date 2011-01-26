@@ -535,59 +535,126 @@ sub load_place_hold {
 }
 
 
+sub fetch_user_circs {
+    my $self = shift;
+    my $flesh = shift; # flesh bib data, etc.
+    my $circ_ids = shift;
+    my $limit = shift;
+    my $offset = shift;
+
+    my $e = $self->editor;
+
+    my @circ_ids;
+
+    if($circ_ids) {
+        @circ_ids = @$circ_ids;
+
+    } else {
+
+        my $circ_data = $U->simplereq(
+            'open-ils.actor', 
+            'open-ils.actor.user.checked_out',
+            $e->authtoken, 
+            $e->requestor->id
+        );
+
+        @circ_ids =  ( @{$circ_data->{overdue}}, @{$circ_data->{out}} );
+
+        if($limit or $offset) {
+            @circ_ids = grep { defined $_ } @circ_ids[0..($offset + $limit - 1)];
+        }
+    }
+
+    return [] unless @circ_ids;
+
+    my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
+
+    my $qflesh = {
+        flesh => 3,
+        flesh_fields => {
+            circ => ['target_copy'],
+            acp => ['call_number'],
+            acn => ['record']
+        }
+    };
+
+    $e->xact_begin;
+    my $circs = $e->search_action_circulation(
+        [{id => \@circ_ids}, ($flesh) ? $qflesh : {}], {substream => 1});
+
+    my @circs;
+    for my $circ (@$circs) {
+        push(@circs, {
+            circ => $circ, 
+            marc_xml => ($flesh and $circ->target_copy->call_number->id != -1) ? 
+                XML::LibXML->new->parse_string($circ->target_copy->call_number->record->marc) : 
+                undef  # pre-cat copy, use the dummy title/author instead
+        });
+    }
+    $e->xact_rollback;
+
+    # make sure the final list is in the correct order
+    my @sorted_circs;
+    for my $id (@circ_ids) {
+        push(
+            @sorted_circs,
+            (grep { $_->{circ}->id == $id } @circs)
+        );
+    }
+
+    return \@sorted_circs;
+}
+
+
+sub handle_circ_renew {
+    my $self = shift;
+    my $action = shift;
+    my $ctx = $self->ctx;
+
+    my @renew_ids = $self->cgi->param('circ');
+    $self->apache->log->warn("renewal ids: @renew_ids");
+
+    my $circs = $self->fetch_user_circs(1, ($action eq 'renew') ? [@renew_ids] : undef);
+
+    # TODO: fire off renewal calls in batches to speed things up
+    $ctx->{renewal_responses} = [];
+    for my $circ (@$circs) {
+
+        my $resp = $U->simplereq(
+            'open-ils.circ', 
+            'open-ils.circ.renew',
+            $self->editor->authtoken,
+            {
+                patron_id => $self->editor->requestor->id,
+                copy_id => $circ->{circ}->target_copy->id,
+                opac_renewal => 1
+            }
+        );
+
+        # TODO return these, then insert them into the circ data 
+        # blob that is shoved into the template for each circ
+        # so the template won't have to match them
+        push(@{$ctx->{renewal_responses}}, $resp); 
+    }
+
+    return undef;
+}
+
+
 sub load_myopac_circs {
     my $self = shift;
     my $e = $self->editor;
     my $ctx = $self->ctx;
-    $ctx->{circs} = [];
 
+    $ctx->{circs} = [];
     my $limit = $self->cgi->param('limit') || 10;
     my $offset = $self->cgi->param('offset') || 0;
+    my $action = $self->cgi->param('action') || '';
 
-    my $circ_data = $U->simplereq(
-        'open-ils.actor', 
-        'open-ils.actor.user.checked_out',
-        $e->authtoken, 
-        $e->requestor->id
-    );
+    # perform the renewal first if necessary
+    $self->handle_circ_renew($action) if $action =~ /renew/;
 
-    my @circ_ids =  ( @{$circ_data->{overdue}}, @{$circ_data->{out}} );
-    @circ_ids = grep { defined $_ } @circ_ids[0..($offset + $limit - 1)];
-
-    return Apache2::Const::OK unless @circ_ids;
-
-    my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
-    my $req = $cstore->request(
-        'open-ils.cstore.direct.action.circulation.search', 
-        {id => \@circ_ids},
-        {
-            flesh => 3,
-            flesh_fields => {
-                circ => ['target_copy'],
-                acp => ['call_number'],
-                acn => ['record']
-            }
-        }
-    );
-
-    my @circs;
-    while(my $resp = $req->recv) {
-        my $circ = $resp->content;
-        push(@circs, {
-            circ => $circ, 
-            marc_xml => ($circ->target_copy->call_number->id == -1) ? 
-                undef :  # pre-cat copy, use the dummy title/author instead
-                XML::LibXML->new->parse_string($circ->target_copy->call_number->record->marc),
-        });
-    }
-
-    # make sure the final list is in the correct order
-    for my $id (@circ_ids) {
-        push(
-            @{$ctx->{circs}}, 
-            (grep { $_->{circ}->id == $id } @circs)
-        );
-    }
+    $ctx->{circs} = $self->fetch_user_circs(1, undef, $limit, $offset);
 
     return Apache2::Const::OK;
 }
