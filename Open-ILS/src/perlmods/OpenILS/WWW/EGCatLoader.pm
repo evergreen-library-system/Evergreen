@@ -6,10 +6,12 @@ use Digest::MD5 qw(md5_hex);
 use Apache2::Const -compile => qw(OK DECLINED HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
+use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
+use DateTime::Format::ISO8601;
 my $U = 'OpenILS::Application::AppUtils';
 
 my %cache; # proc-level cache
@@ -76,6 +78,7 @@ sub load {
     return $self->load_place_hold if $path =~ /opac\/place_hold/;
 
     return $self->load_myopac_holds if $path =~ /opac\/myopac\/holds/;
+    return $self->load_myopac_circs if $path =~ /opac\/myopac\/circs/;
     return $self->load_myopac if $path =~ /opac\/myopac/;
 
     return Apache2::Const::OK;
@@ -159,6 +162,21 @@ sub load_helpers {
         $ctx->{aou_tree}->(); # force the org tree to load
         return $cache{map}{aou}{$org_id};
     };
+
+    # turns an ISO date into something TT can understand
+    $ctx->{parse_datetime} = sub {
+        my $date = shift;
+        $date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($date));
+        return sprintf(
+            "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.4d",
+            $date->hour,
+            $date->minute,
+            $date->second,
+            $date->day,
+            $date->month,
+            $date->year
+        );
+    }
 }
 
 # context additions: 
@@ -418,7 +436,7 @@ sub load_myopac_holds {
         $e->requestor->id
     )->gather(1);
 
-    $hold_ids = [ @$hold_ids[$offset..($offset + $limit - 1)] ];
+    $hold_ids = [ grep { defined $_ } @$hold_ids[$offset..($offset + $limit - 1)] ];
 
     my $req = $circ->request(
         'open-ils.circ.hold.details.batch.retrieve', 
@@ -448,7 +466,6 @@ sub load_myopac_holds {
     return Apache2::Const::OK;
 }
 
-# context additions: 
 sub load_place_hold {
     my $self = shift;
     my $ctx = $self->ctx;
@@ -509,5 +526,65 @@ sub load_place_hold {
 
     return Apache2::Const::OK;
 }
+
+
+sub load_myopac_circs {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+    $ctx->{circs} = [];
+
+    my $limit = $self->cgi->param('limit') || 10;
+    my $offset = $self->cgi->param('offset') || 0;
+
+    my $circ_data = $U->simplereq(
+        'open-ils.actor', 
+        'open-ils.actor.user.checked_out',
+        $e->authtoken, 
+        $e->requestor->id
+    );
+
+    my @circ_ids =  ( @{$circ_data->{overdue}}, @{$circ_data->{out}} );
+    @circ_ids = grep { defined $_ } @circ_ids[0..($offset + $limit - 1)];
+
+    return Apache2::Const::OK unless @circ_ids;
+
+    my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
+    my $req = $cstore->request(
+        'open-ils.cstore.direct.action.circulation.search', 
+        {id => \@circ_ids},
+        {
+            flesh => 3,
+            flesh_fields => {
+                circ => ['target_copy'],
+                acp => ['call_number'],
+                acn => ['record']
+            }
+        }
+    );
+
+    my @circs;
+    while(my $resp = $req->recv) {
+        my $circ = $resp->content;
+        push(@circs, {
+            circ => $circ, 
+            marc_xml => ($circ->target_copy->call_number->id == -1) ? 
+                undef :  # pre-cat copy, use the dummy title/author instead
+                XML::LibXML->new->parse_string($circ->target_copy->call_number->record->marc),
+        });
+    }
+
+    # make sure the final list is in the correct order
+    for my $id (@circ_ids) {
+        push(
+            @{$ctx->{circs}}, 
+            (grep { $_->{circ}->id == $id } @circs)
+        );
+    }
+
+    return Apache2::Const::OK;
+}
+
+
 
 1;
