@@ -3359,10 +3359,12 @@ SELECT  usr,
 			<field reporter:label="Distribution" name="distribution" reporter:datatype="link"/>
 			<field reporter:label="Routing Label" name="routing_label" reporter:datatype="text"/>
 			<field reporter:label="Items" name="items" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Routing List Users" name="routing_list_users" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="distribution" reltype="has_a" key="id" map="" class="sdist"/>
 			<link field="items" reltype="has_many" key="id" map="" class="sitem"/>
+			<link field="routing_list_users" reltype="has_many" key="stream" map="" class="srlu"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>

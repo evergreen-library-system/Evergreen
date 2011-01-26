@@ -167,6 +167,61 @@ function open_batch_receive() {
     }
 }
 
+function toggle_clone_ident_field(dij) {
+    setTimeout(
+        function() {
+            var disabled = !dij.attr("checked");
+            clone_ident.attr("disabled", disabled);
+            if (!disabled) clone_ident.focus();
+        }, 175
+    );
+}
+
+function clone_subscription(form) {
+    if (form.use_ident == "yes") {
+        fieldmapper.standardRequest(
+            ["open-ils.serial",
+                "open-ils.serial.biblio.record_entry.by_identifier.atomic"], {
+                "params": [form.ident, {"id_list": true}],
+                "async": true,
+                "oncomplete": function(r) {
+                    r = openils.Util.readResponse(r);
+                    if (!r || !r.length) {
+                        alert("No matches for that indentifier."); /*XXX i18n*/
+                    } else if (r.length != 1) {
+                        alert("Too many matches for that identifier. Use a " +
+                            "unique identifier."); /* XXX i18n */
+                    } else {
+                        _clone_subscription(r[0]);
+                    }
+                }
+            }
+        );
+    } else {
+        _clone_subscription();
+    }
+}
+
+function _clone_subscription(bre_id) {
+    progress_dialog.show(true);
+
+    fieldmapper.standardRequest(
+        ["open-ils.serial", "open-ils.serial.subscription.clone"], {
+            "params": [openils.User.authtoken, sub_id, bre_id],
+            "async": false,
+            "oncomplete": function(r) {
+                progress_dialog.hide();
+                if (!(r = openils.Util.readResponse(r))) {
+                    alert("Error cloning subscription."); /* XXX i18n */
+                } else {
+                    location.href =
+                        oilsBasePath + "/serial/subscription?id=" + r;
+                }
+            }
+        }
+    );
+}
+
 openils.Util.addOnLoad(
     function() {
         var tab_dispatch = {
