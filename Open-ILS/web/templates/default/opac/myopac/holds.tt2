@@ -8,7 +8,7 @@
 [% END %]
 
 [% WRAPPER "default/opac/base.tt2" %]
-[% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "items_held" %]
+[% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "holds" %]
 <table>
     <thead>
         <tr>

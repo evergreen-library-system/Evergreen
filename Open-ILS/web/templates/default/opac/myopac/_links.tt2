@@ -1,8 +1,8 @@
 [%
 pages = [
     {url => "main", name => "My Account"},
-    {url => "items_out", name => "Items Out"},
-    {url => "items_held", name => "Items on Hold"},
+    {url => "circs", name => "Items Out"},
+    {url => "holds", name => "Items on Hold"},
     {url => "fines", name => "Fines"},
     {url => "prefs", name => "Account Preferences"},
     {url => "bookbags", name => "My Bookbags"}
