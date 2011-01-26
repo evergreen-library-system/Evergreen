@@ -18,7 +18,7 @@
             </tr>
             <tr>
                 <td><a href='logout'>Logout</a></td>
-                <td><a href='myopac'>Account</a></td>
+                <td><a href='myopac/main'>Account</a></td>
             </tr>
         </table>
     [% ELSE %]
