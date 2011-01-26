@@ -86,6 +86,7 @@ sub load {
     return $self->load_place_hold if $path =~ /opac\/place_hold/;
     return $self->load_myopac_holds if $path =~ /opac\/myopac\/holds/;
     return $self->load_myopac_circs if $path =~ /opac\/myopac\/circs/;
+    return $self->load_myopac_fines if $path =~ /opac\/myopac\/fines/;
     return $self->load_myopac if $path =~ /opac\/myopac/;
     # ----------------------------------------------------------------
 
@@ -591,6 +592,66 @@ sub load_myopac_circs {
     return Apache2::Const::OK;
 }
 
+sub load_myopac_fines {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+    $ctx->{transactions} = [];
+
+    my $limit = $self->cgi->param('limit') || 10;
+    my $offset = $self->cgi->param('offset') || 0;
+
+    my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
+
+    # TODO: This should really use a ML call, but the existing calls 
+    # return an excessive amount of data and don't offer streaming
+
+    my $req = $cstore->request(
+        'open-ils.cstore.direct.money.open_billable_transaction_summary.search',
+        {
+            usr => $e->requestor->id,
+            balance_owed => {'!=' => 0}
+        },
+        {
+            flesh => 4,
+            flesh_fields => {
+                mobts => ['circulation', 'grocery'],
+                mg => ['billings'],
+                mb => ['btype'],
+                circ => ['target_copy'],
+                acp => ['call_number'],
+                acn => ['record']
+            },
+            order_by => { mobts => 'xact_start' },
+            limit => $limit,
+            offset => $offset
+        }
+    );
+
+    while(my $resp = $req->recv) {
+        my $mobts = $resp->content;
+        my $circ = $mobts->circulation;
+
+        my $last_billing;
+        if($mobts->grocery) {
+            my @billings = sort { $a->billing_ts <=> $b->billing_ts } @{$mobts->grocery->billings};
+            $last_billing = pop(@billings);
+        }
+
+        push(
+            @{$ctx->{transactions}},
+            {
+                xact => $mobts,
+                last_grocery_billing => $last_billing,
+                marc_xml => ($mobts->xact_type ne 'circulation' or $circ->target_copy->call_number->id == -1) ?
+                    undef :
+                    XML::LibXML->new->parse_string($circ->target_copy->call_number->record->marc),
+            } 
+        );
+    }
+
+     return Apache2::Const::OK;
+}       
 
 
 1;
