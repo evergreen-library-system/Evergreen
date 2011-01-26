@@ -408,6 +408,9 @@ sub load_myopac_holds {
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
+    my $limit = $self->cgi->param('limit') || 10;
+    my $offset = $self->cgi->param('offset') || 0;
+
     my $circ = OpenSRF::AppSession->create('open-ils.circ');
     my $hold_ids = $circ->request(
         'open-ils.circ.holds.id_list.retrieve', 
@@ -415,20 +418,30 @@ sub load_myopac_holds {
         $e->requestor->id
     )->gather(1);
 
+    $hold_ids = [ @$hold_ids[$offset..($offset + $limit - 1)] ];
+
     my $req = $circ->request(
         'open-ils.circ.hold.details.batch.retrieve', 
         $e->authtoken, 
-        $hold_ids
+        $hold_ids,
+        {
+            suppress_notices => 1,
+            suppress_transits => 1,
+            suppress_mvr => 1,
+            suppress_patron_details => 1,
+            include_bre => 1
+        }
     );
 
     # any requests we can fire off here?
-    # XXX use marc attrs instead of the mvr's returned by hold.details
     
     $ctx->{holds} = []; 
     while(my $resp = $req->recv) {
         my $hold = $resp->content;
-        # need to fetch anything else?
-        push(@{$ctx->{holds}}, $hold);
+        push(@{$ctx->{holds}}, {
+            hold => $hold,
+            marc_xml => XML::LibXML->new->parse_string($hold->{bre}->marc)
+        });
     }
 
     $circ->kill_me;
