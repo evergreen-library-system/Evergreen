@@ -77,6 +77,9 @@ sub load {
     return $self->load_record if $path =~ /opac\/record/;
     return $self->load_place_hold if $path =~ /opac\/place_hold/;
 
+    # XXX here is where we need to add a check for session timeout, either that
+    # or have load_* check something...
+
     return $self->load_myopac_holds if $path =~ /opac\/myopac\/holds/;
     return $self->load_myopac_circs if $path =~ /opac\/myopac\/circs/;
     return $self->load_myopac if $path =~ /opac\/myopac/;
@@ -404,8 +407,6 @@ sub load_record {
 # context additions: 
 #   user : au object, fleshed
 sub load_myopac {
-    # XXX This crashes on session timeout, so somewhere around here we need to
-    # add handling for that
     my $self = shift;
     $self->ctx->{page} = 'myopac';
 
