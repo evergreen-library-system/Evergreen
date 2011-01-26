@@ -1,6 +1,6 @@
 EDI Translator XML-RPC Service (for Evergreen)
 
-Copyright 2010
+Copyright 2010-2011
 License: GNU Public License v 2.0 or later
 
 Author: Joe Atzberger
@@ -18,6 +18,8 @@ Files:
     edi_webrick.rb   - the main EDI translator daemon script
     install.sh       - dependency installer (for debian lenny)
     README           - this file
+    misc/            - patches to EDI4R; purely temporary until we can
+                       get the changes accepted upstream
 
 This service can be run on a local or remote system that has the proper ruby environment
 established.  See the install.sh script for an example of how to install the needed ruby
