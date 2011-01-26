@@ -3354,8 +3354,6 @@
 <!ENTITY ev.staff.patron.ue_xhtml.alert_message_reset.value "Clear">
 <!ENTITY ev.staff.patron.ue_xhtml.date_selector.label "Date selector">
 <!ENTITY ev.staff.patron.ue_xhtml.alias.label "Alias">
-<!ENTITY staff.portal.title "Evergreen Staff Client Portal Page">
-<!ENTITY staff.portal.default.welcome "This is the Evergreen staff client portal page. You can customize this with the information or functionality your organization needs to support its operations. For example, you could add links to process and procedure documents.">
 <!ENTITY ui.circ.patron_summary.horizontal "GUI: Alternative Horizontal Patron Summary Panel">
 <!ENTITY ui.circ.patron_summary.horizontal.desc "This replaces the vertical Patron Summary Sidebar.">
 <!ENTITY ui.general.button_bar "GUI: Above-Tab Button Bar">
@@ -3450,3 +3448,25 @@
 <!ENTITY staff.printing.advanced.custom_print.warning.text "This print strategy will ignore the printer settings in the &quot;Normal Settings&quot; section. Advanced templates using Javascript may not work, even if the external tool can take the receipt.html file.">
 <!ENTITY staff.printing.advanced.html_templates.warning.header "Also...">
 <!ENTITY staff.printing.advanced.html_templates.warning.text "If using Receipt Templates with either the DOS LPT1 Print strategy or the Custom/External Print strategy (with &quot;receipt.txt&quot;), the client will try to translate any HTML markup to text, but this process may be imperfect, and for the best fidelity you should consider reworking your templates to be plain text if you are using a plain text print strategy.  However, if using a plain text print strategy with HTML markup, you may include special character codes in 2-digit hexadecimal in a &quot;hex&quot; attribute for any given element.  Such codes will be converted to actual characters and inserted at the place of the tag.  For example, &amp;lt;p hex=&amp;quot;0C&amp;quot;&amp;gt;Hello World&amp;lt;/p&amp;gt; will translate to form feed control character + Hello World. &amp;lt;p&amp;gt;Hello World&amp;lt;/p hex=&amp;quot;0C&amp;quot;&amp;gt; will translate to Hello World + form feed control character.">
+<!ENTITY staff.client.portal.title "Evergreen Staff Client Portal">
+<!ENTITY staff.client.portal.welcome "Welcome to Evergreen">
+<!ENTITY staff.client.portal.circpatron "Circulation and Patrons">
+<!ENTITY staff.client.portal.checkout "Check Out Items">
+<!ENTITY staff.client.portal.retrievebc "(Retrieve Patron By Barcode)">
+<!ENTITY staff.client.portal.checkin "Check In Items">
+<!ENTITY staff.client.portal.patronreg "Register Patron(s)">
+<!ENTITY staff.client.portal.patronsearch "Search For Patron By Name">
+<!ENTITY staff.client.portal.holdlist "Pull List for Hold Requests">
+<!ENTITY staff.client.portal.itemcataloging "Item Search and Cataloging">
+<!ENTITY staff.client.portal.advsearch "Advanced Search">
+<!ENTITY staff.client.portal.itemstatus "Item Status / Display">
+<!ENTITY staff.client.portal.marcutil "MARC Batch Import / Export">
+<!ENTITY staff.client.portal.z3950 "z39.50 Import">
+<!ENTITY staff.client.portal.copybuckets "Copy Buckets">
+<!ENTITY staff.client.portal.recordbuckets "Record Buckets">
+<!ENTITY staff.client.portal.admin "Administration">
+<!ENTITY staff.client.portal.helpdesk "Submit A Public Bug Report">
+<!ENTITY staff.client.portal.reports "Reports">
+<!ENTITY staff.client.portal.receipts "Edit Receipt Templates">
+<!ENTITY staff.client.portal.copyright "Copyright &copy; 2006-2011 Georgia Public Library Service, and others">
+<!ENTITY staff.client.portal.poweredby "Powered by">
