@@ -1,18 +1,555 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!DOCTYPE html PUBLIC 
-    "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
-    <!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
+<!DOCTYPE html PUBLIC
+	"-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
+	<!--#include virtual="/opac/locale/${locale}/lang.dtd"-->
 ]>
 
-<html xmlns='http://www.w3.org/1999/xhtml'>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>&staff.portal.title;</title>
+  <meta name="generator" content=
+  "HTML Tidy for Linux/x86 (vers 11 February 2007), see www.w3.org" />
+
+  <title>&staff.client.portal.title;</title>
+  <script type="text/javascript">
+// <![CDATA[
+  function SearchOnBlur() {
+        var textbox = document.getElementById("quicksearch");
+
+        if(textbox && textbox.value == "")
+                textbox.style.background = "#FFFFFF url(\"eg_tiny_logo.jpg\") center no-repeat";
+  }
+
+  function SearchOnFocus() {
+        var textbox = document.getElementById("quicksearch");
+        
+        if(textbox)
+                textbox.style.background = "#FFFFFF";
+  }
+
+  var home_ou_id = 1;
+
+  function SearchOnSubmit() {
+        var textbox = document.getElementById("quicksearch");
+        
+        //var home_ou_id = 1; // 1 = all org units. Should come from staff client scripts
+        // a quicksearch should probably just default to the whole system. Staff can narrow it down later if they want.
+        var search_depth = 0; // 0 = consortium, 1 = system, 2 = library, 3 = sub-library, etc.
+        
+        if(textbox && textbox.value != "") {
+                var opac_url =  xulG.url_prefix(urls.opac_rresult) + "?rt=keyword&tp=keyword&l=" + home_ou_id + "&d=" + search_depth +"&f=&t=" + escape(textbox.value);
+                var params = {'tab_name':'Catalog'};
+                var content_params = { 'session' : ses(), 'authtime' : ses('authtime'), 'opac_url' : opac_url };
+                xulG.set_tab(urls.XUL_OPAC_WRAPPER, params, content_params);
+        }
+        
+        return false;
+  }
+  // ]]> 
+  </script>
+  <script type="text/javascript" src="main/constants.js">
+</script>
+  <script type="text/javascript" src="main/lang.js">
+</script>
+  <script type="text/javascript" src="/opac/common/js/utils.js">
+</script>
+  <script type="text/javascript" src="/opac/common/js/CGI.js">
+</script>
+  <script type="text/javascript" src="/opac/common/js/md5.js">
+</script>
+  <script type="text/javascript" src="/opac/common/js/JSON.js">
+</script>
+  <script type="text/javascript" src="/opac/common/js/fmall.js">
+</script>
+  <script type="text/javascript" src="/opac/common/js/fmgen.js">
+</script>
+  <script type="text/javascript" src="/opac/common/js/RemoteRequest.js">
+</script>
+  <script type="text/javascript" src="/opac/common/js/OrgTree.js">
+</script>
+  <script type="text/javascript" src="/opac/common/js/org_utils.js">
+</script>
+  <script type="text/javascript" src="OpenILS/global_util.js">
+</script>
+  <script type="text/javascript" src="main/JSAN.js">
+</script>
+  <script type="text/javascript">
+      // <![CDATA[
+        
+                //this function will allow for the "Hello, Staff Member" messages
+                function init() { 
+                        SearchOnBlur();
+                        JSAN.use('OpenILS.data'); 
+                        var data = new OpenILS.data(); 
+                        data.stash_retrieve(); 
+                        document.getElementById('staffname').innerHTML = ", " + data.list.au[0].first_given_name(); 
+                        home_ou_id = data.list.au[0].ws_ou();
+                }
+                function jb_open_eg_web_page(path, label) {
+                        var loc = urls.XUL_BROWSER + '?url=' + window.escape(xulG.url_prefix(urls.EG_WEB_BASE) + '/' + path);
+
+                        xulG.set_tab( 
+                                loc, 
+                                {tab_name : label, browser : false }, 
+                                {no_xulG : false, show_print_button : false, show_nav_buttons : true }
+                        );
+                }
+                function jb_open_eg_web_page_newtab(path, label) {
+                        var loc = urls.XUL_BROWSER + '?url=' + window.escape(xulG.url_prefix(urls.EG_WEB_BASE) + '/' + path);
+
+                        xulG.new_tab( 
+                                loc, 
+                                {tab_name : label, browser : false }, 
+                                {no_xulG : false, show_print_button : false, show_nav_buttons : true }
+                        );
+                }
+                
+                //Place your helpdesk link here
+                function helpdesk(newtab) {
+                        loc = "https://bugs.launchpad.net/evergreen";
+                        var params = {'tab_name':'Public Bug Report'};
+                        
+                        if(newtab)
+                                xulG.new_tab(loc, params, {}); 
+                        else
+                                xulG.set_tab(loc, params, {}); 
+                }
+                
+                //A good place for a Google map.  Evergreen Indiana uses GIS data to create a Google map to verify if a library is within district boundaries
+                //http://208.119.72.68/evergreen/evergreenmap.html
+                function address_map(newtab) {
+                        loc = "http://maps.google.com";
+                        var params = {'tab_name':'Locate Address In Map'};
+                        
+                        if(newtab)
+                                xulG.new_tab(loc, params, {}); 
+                        else
+                                xulG.set_tab(loc, params, {}); 
+                }
+                function local_admin(newtab) {
+                        var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.XUL_LOCAL_ADMIN + '?ses=' + window.escape(ses()) + '&session=' + window.escape(ses())); 
+                        var params = {'tab_name':'Local Administration', 'browser' : true };
+                        var content_params = { 'no_xulG' : false, 'show_nav_buttons' : true, 'show_print_button' : true };
+                        
+                        if(newtab)
+                                xulG.new_tab(loc, params, content_params);
+                        else
+                                xulG.set_tab(loc, params, content_params);
+                }
+                function copy_status(newtab) {
+                        if(newtab)
+                                xulG.new_tab(urls.XUL_COPY_STATUS,{},{});
+                        else
+                                xulG.set_tab(urls.XUL_COPY_STATUS,{},{});
+                }
+                function hold_pull_list(newtab) {
+                        var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape(urls.XUL_HOLD_PULL_LIST + '?ses=' + window.escape(ses()));
+                        var params = {'tab_name':'On Shelf Pull List'};
+                        var content_params = {'show_print_button':true};
+                        
+                        if(newtab)
+                                xulG.new_tab(loc, params, content_params);
+                        else
+                                xulG.set_tab(loc, params, content_params);
+                }
+                function checkout(newtab) {
+                        if(newtab)
+                                xulG.new_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{});
+                        else
+                                xulG.set_tab(urls.XUL_PATRON_BARCODE_ENTRY,{},{});
+                }
+                function catalog(newtab) {
+                        var params = {'tab_name':'Catalog'};
+                        var content_params = { 'session' : ses(), 'authtime' : ses('authtime') };
+                        
+                        if(newtab)
+                                xulG.new_tab(urls.XUL_OPAC_WRAPPER, params, content_params);
+                        else
+                                xulG.set_tab(urls.XUL_OPAC_WRAPPER, params, content_params);
+                }
+                function z39_50(newtab) {
+                        if(newtab)
+                                xulG.new_tab(urls.XUL_Z3950_IMPORT,{},{});
+                        else
+                                xulG.set_tab(urls.XUL_Z3950_IMPORT,{},{});
+                }
+                function copy_buckets(newtab) {
+                        params = {'tab_name':'Copy Buckets'};
+                        if(newtab)
+                                xulG.new_tab(urls.XUL_COPY_BUCKETS, params, {});
+                        else
+                                xulG.set_tab(urls.XUL_COPY_BUCKETS, params, {});
+                }
+                function record_buckets(newtab) {
+                        params = {'tab_name':'Record Buckets'};
+                        if(newtab)
+                                xulG.new_tab(urls.XUL_RECORD_BUCKETS, params, {});
+                        else
+                                xulG.set_tab(urls.XUL_RECORD_BUCKETS, params, {});
+                }
+                function receipt_editor(newtab) {
+                        if(newtab)
+                                xulG.new_tab(urls.XUL_PRINT_LIST_TEMPLATE_EDITOR, {}, {});
+                        else
+                                xulG.set_tab(urls.XUL_PRINT_LIST_TEMPLATE_EDITOR, {}, {});
+                }
+                function checkin(newtab) {
+                        if(newtab)
+                                xulG.new_tab(urls.XUL_CHECKIN,{},{});
+                        else
+                                xulG.set_tab(urls.XUL_CHECKIN,{},{});
+                }
+                function MARC_batch_import(newtab) {
+                        if(newtab)
+                                jb_open_eg_web_page_newtab('vandelay/vandelay', 'Server Settings');
+                        else
+                                jb_open_eg_web_page('vandelay/vandelay', 'Server Settings');
+                }
+                function local_admin_reports(newtab) {
+                        var loc = urls.XUL_BROWSER + '?url=' + window.escape( xulG.url_prefix(urls.XUL_REPORTS) + '?ses=' + ses());
+                        params = {'tab_name' : 'Reports', 'browser' : false }
+                        content_params = {'no_xulG' : false, 'show_print_button' : false, show_nav_buttons : true }
+                        if(newtab)
+                                xulG.new_tab(loc, params, content_params);
+                        else
+                                xulG.set_tab(loc, params, content_params);
+                }
+                function find_patron(newtab) {
+                        if(newtab)
+                                xulG.new_tab(urls.XUL_PATRON_DISPLAY,{},{});
+                        else
+                                xulG.set_tab(urls.XUL_PATRON_DISPLAY,{},{});
+                }
+                
+                function spawn_search(s) {
+                        var loc = urls.XUL_PATRON_DISPLAY;
+                        loc += '?doit=1&amp;query=' + window.escape(js2JSON(s));
+                        xulG.new_tab( loc, {}, {} );
+                }
+                function register_patron(newtab) {
+                        function spawn_editor(p) {
+                                var url = urls.XUL_PATRON_EDIT;
+                                var param_count = 0;
+                                for (var i in p) {
+                                        if (param_count++ == 0) url += '?'; else url += '&amp;';
+                                        url += i + '=' + window.escape(p[i]);
+                                }
+                                var loc = urls.XUL_REMOTE_BROWSER + '?url=' + window.escape( url );
+                                xulG.new_tab(loc, {}, { 'show_print_button' : true , 'tab_name' : 'Editing Related Patron' , 'passthru_content_params' : {'spawn_search' : function(s) { spawn_search(s); }, 'spawn_editor' : spawn_editor }});
+                        }
+                        
+                        var loc = urls.XUL_REMOTE_BROWSER  + '?url=' + window.escape( urls.XUL_PATRON_EDIT + '?ses=' + window.escape( ses() ) );
+                        var content_params = { 
+                                                     'show_print_button' : true , 
+                                                     'tab_name' : 'Register Patron' ,
+                                                     'passthru_content_params' : { 'spawn_search' : function(s) { spawn_search(s); },
+                                                                                    'spawn_editor' : spawn_editor }
+                                                 }
+                        if(newtab)
+                                xulG.new_tab(loc, {}, content_params);
+                        else
+                                xulG.set_tab(loc, {}, content_params);
+                }
+                // ]]>
+  </script>
+  <style type="text/css">
+/*<![CDATA[*/
+  body {
+  font-family: "Trebuchet MS", Helvetica, Verdana, Arial, sans-serif;
+  }
+
+  hr {
+  border-style: solid;
+  border-color: black;
+  width: 180px;
+  }
+
+  a {
+  font-size: 85%;
+  font-weight: bold;
+  color: black;
+  text-decoration: none;
+  }
+
+  #alignment {
+        border-collapse: collapse;
+        border-style: none;
+        width: 100%;
+  }
+
+  #alignment td {
+        vertical-align: top;
+  }
+
+  .functionlist {
+        border-style: none;
+        margin-left: auto;
+        margin-right: auto;
+  }
+
+  .functionlist td {
+  text-align: left;
+        margin: 2px;
+        padding: 2px;
+  }
+
+  .functionalgroup {
+        text-align: center;
+  }
+
+  a img {
+        border-style: none;
+  }
+
+  .attribution {
+        font-size: 75%;
+  }
+
+  form {
+        margin: 0px;
+        padding: 0px;
+  }
+
+  .newtabimg {
+        float: right;
+        padding-left:4px;
+  }
+
+  .funcimg {
+        width: 48px;
+        height: 48px;
+  }
+
+  /*]]>*/
+  </style>
+  <style type="text/css">
+/*<![CDATA[*/
+  body.c4 {margin-top: 0px; padding-top: 0px; background-image: url(skin/media/images/portal/background.png);}
+  td.c3 {border: 1px solid black; border-top: 0px; border-bottom: 0px;}
+  span.c2 {font-size:75%;}
+  div.c1 {text-align: center}
+  /*]]>*/
+  </style>
 </head>
-<body style="background-color: white;">
-<h1>&staff.portal.title;</h1>
-<p>&staff.portal.default.welcome;</p>
-<img src="/opac/images/main_logo.jpg" style="display: block; margin-left: auto; margin-right: auto;"/>
+
+<body class="c4" onload="init();">
+  <div class="c1">
+    <img src="skin/media/images/portal/logo.png" height="121" width="396" alt="Evergreen logo" /><br />
+    &staff.client.portal.welcome;<span id="staffname"></span><br />
+    <br />
+  </div>
+
+  <table id="alignment">
+    <tr>
+      <td>
+        <div class="functionalgroup">
+          &staff.client.portal.circpatron;
+          <hr />
+
+          <table class="functionlist">
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/forward.png" height="48" width="48"
+              onclick="try { checkout(false); } catch(E) { alert(E); }" alt=
+              "Check Out Items" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { checkout(true); } catch(E) { alert(E); }" /><a href="#"
+              onclick=
+              "try { checkout(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.checkout;</a><br />
+              <a href="#" onclick=
+              "try { checkout(false); } catch(E) { alert(E); }; return false;"><span class="c2">
+              &staff.client.portal.retrievebc;</span></a></td>
+            </tr>
+
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/back.png" height="48" width="48" onclick=
+              "try { checkin(false); } catch(E) { alert(E); }" alt=
+              "Check In Items" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { checkin(true); } catch(E) { alert(E); }" /> <a href="#"
+              onclick=
+              "try { checkin(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.checkin;</a><br /></td>
+            </tr>
+
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/registerpatron.png" height="48" width="48"
+              onclick="try { register_patron(false); } catch(E) { alert(E); }" alt=
+              "Register Patron" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { register_patron(true); } catch(E) { alert(E); }" /> <a href=
+              "#" onclick=
+              "try { register_patron(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.patronreg;</a></td>
+            </tr>
+
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/retreivepatron.png" height="48" width="48"
+              onclick="try { find_patron(false); } catch(E) { alert(E); }" alt=
+              "Search For Patron By Name" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { find_patron(true); } catch(E) { alert(E); }" /> <a href="#"
+              onclick=
+              "try { find_patron(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.patronsearch;</a></td>
+            </tr>
+
+            <tr>
+              <td height="50"><img class="funcimg" src="skin/media/images/portal/holds.png" height="48"
+              width="48" onclick="try { hold_pull_list(false); } catch(E) { alert(E); }"
+              alt="Pull List for Hold Requests" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { hold_pull_list(true); } catch(E) { alert(E); }" /> <a href=
+              "#" onclick=
+              "try { hold_pull_list(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.holdlist;</a></td>
+            </tr>
+<!--
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/map.PNG" alt="Locate Address In Map"
+              onclick="try { address_map(false); } catch(E) { alert(E); }" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { address_map(true); } catch(E) { alert(E); }" /> <a href="#"
+              onclick=
+              "try { address_map(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.addrmap;</a></td>
+            </tr>
+-->
+          </table>
+        </div>
+      </td>
+
+      <td class="c3">
+        <div class="functionalgroup">
+          &staff.client.portal.itemcataloging;
+          <hr />
+
+          <table class="functionlist">
+            <tr>
+              <td colspan="2" rowspan="1">
+                <form action="#" onsubmit="return SearchOnSubmit();">
+                  <input id="quicksearch" onfocus="SearchOnFocus();" onblur=
+                  "SearchOnBlur();" /> <input value="Search" type="submit" />
+                </form>
+              </td>
+            </tr>
+
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/book.png" height="48" width="48" onclick=
+              "try { catalog(false); } catch(E) { alert(E); }" alt=
+              "Advanced Search" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { catalog(true); } catch(E) { alert(E); }" /> <a href="#"
+              onclick=
+              "try { catalog(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.advsearch;</a></td>
+            </tr>
+
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/book.png" height="48" width="48" onclick=
+              "try { copy_status(false); } catch(E) { alert(E); }" alt=
+              "Item Status / Display" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { copy_status(true); } catch(E) { alert(E); }" /> <a href="#"
+              onclick=
+              "try { copy_status(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.itemstatus;</a></td>
+            </tr>
+
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/batchimport.png" height="48" width="48"
+              onclick="try { MARC_batch_import(false); } catch(E) { alert(E); }" alt=
+              "MARC Batch Import / Export" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { MARC_batch_import(true); } catch(E) { alert(E); }" />
+              <a href="#" onclick=
+              "try { MARC_batch_import(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.marcutil;</a></td>
+            </tr>
+
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/z3950.png" height="48" width="48" onclick=
+              "try { z39_50(false); } catch(E) { alert(E); }" alt="Z39.50 Import" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { z39_50(true); } catch(E) { alert(E); }" /> <a href="#"
+              onclick=
+              "try { z39_50(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.z3950;</a></td>
+            </tr>
+
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/bucket.png" height="48" width="48" onclick=
+              "try { copy_buckets(false); } catch(E) { alert(E); }" alt=
+              "Copy Buckets" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { copy_buckets(true); } catch(E) { alert(E); }" /> <a href="#"
+              onclick=
+              "try { copy_buckets(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.copybuckets;</a></td>
+            </tr>
+
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/bucket.png" height="48" width="48" onclick=
+              "try { record_buckets(false); } catch(E) { alert(E); }" alt=
+              "Record Buckets" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { record_buckets(true); } catch(E) { alert(E); }" /> <a href=
+              "index.html#" onclick=
+              "try { record_buckets(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.recordbuckets;</a></td>
+            </tr>
+          </table><br />
+        </div>
+      </td>
+
+      <td>
+        <div class="functionalgroup">
+          &staff.client.portal.admin;
+          <hr />
+
+          <table class="functionlist">
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/helpdesk.png" height="48" width="48"
+              onclick="try { helpdesk(false); } catch(E) { alert(E); }" alt=
+              "Submit A Helpdesk Ticket" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { helpdesk(true); } catch(E) { alert(E); }" /> <a href="#"
+              onclick="try { helpdesk(false); } catch(E) { alert(E); }">&staff.client.portal.helpdesk;</a></td>
+            </tr>
+
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/reports.png" height="48" width="48"
+              onclick="try { local_admin_reports(false); } catch(E) { alert(E); }" alt=
+              "Reports" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { local_admin_reports(true); } catch(E) { alert(E); }" />
+              <a href="#" onclick=
+              "try { local_admin_reports(false); } catch(E) { alert(E); }; return false;">
+              &staff.client.portal.reports;</a></td>
+            </tr>
+
+            <tr>
+              <td height="50"><img src="skin/media/images/portal/receipt_editor.png" height="48" width="48"
+              onclick="try { receipt_editor(false); } catch(E) { alert(E); }" alt=
+              "Edit Receipt Templates" /></td>
+
+              <td><img class="newtabimg" src="skin/media/images/portal/newtab2.PNG" alt="Open in a new tab"
+              onclick="try { receipt_editor(true); } catch(E) { alert(E); }" /> <a href=
+              "#" onclick=
+              "try { receipt_editor(false); } catch(E) { alert(E); }; return false;">&staff.client.portal.receipts;</a></td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <div class="attribution c1">&staff.client.portal.copyright;<br />
+  &staff.client.portal.poweredby; <img src="skin/media/images/portal/eg_tiny_logo.jpg" alt="Evergreen logo" /></div>
 </body>
 </html>
+
+
