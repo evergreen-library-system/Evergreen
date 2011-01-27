@@ -10,6 +10,7 @@
         args.author = xml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
         args.publisher = xml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
         args.pubdate = xml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
+        args.mattype = xml.findnodes('//*[@tag="998"]/*[@code="d"]').textContent; # XXX this is KCLS-specific and will need to change
 
         # clean up the ISBN
         args.isbn_clean = args.isbn.replace('\ .*', '');

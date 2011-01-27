@@ -40,7 +40,6 @@
                 <th>Activate on...</th>
                 <th>Expiration Date</th>
                 <th>Select</th>
-                <th>Edit</th>
             </tr>
         </thead>
         <tbody>
@@ -50,7 +49,16 @@
             <tr>
                 <td>[% attrs.title %]</td>
                 <td>[% attrs.author %]</td>
-                <td>[% hold.hold.hold.holdable_formats %]<!-- see _myOPACFleshHoldTitle(), search for "mods_formats" in skin/default/js/myopac.js; holdable_formats is wrong --></td>
+                <td>
+                    [%
+                        format_desc = ctx.find_citm(attrs.mattype).value;
+                        icon_filename = ctx.icon_by_mattype(attrs.mattype);
+                        IF icon_filename;
+                    %]<!-- XXX in situations where we might show M-type holds, this won't be good enough -->
+                    <img alt="[% format_desc %]" title="[% format_desc %]"
+                        src="/images/mattype/[% icon_filename %]" />
+                    [%  END %]
+                </td>
                 <td>[% ctx.find_aou(hold.hold.hold.pickup_lib).name %]</td>
                 <td>[% hold.hold.hold.status %]<!-- see myOShowHoldStatus() in skin/default/js/myopac.js --></td>
                 <td>[% IF hold.hold.hold.frozen == 't' %] No [% ELSE %] Yes [% END %]</td>
@@ -61,7 +69,6 @@
                 %]</td>
                 <td>[% hold.hold.hold.expire_time %]</td>
                 <td><input type='checkbox' name='hold_id' value='[% hold.hold.hold.id %]'/></td>
-                <td><em>XXX TODO</em></td>
             </tr>
             [% END %]
         </tbody>
