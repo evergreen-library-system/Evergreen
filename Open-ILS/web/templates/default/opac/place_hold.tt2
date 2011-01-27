@@ -25,6 +25,7 @@
         <input type='Submit'/>
         <input type='hidden' name='hold_target' value='[% CGI.param('hold_target') %]'/>
         <input type='hidden' name='hold_type' value='[% CGI.param('hold_type') %]'/>
+        <input type='hidden' name='origin' value='[% CGI.param('origin') %]'/>
     </form>
     [% END %]
 </div>
