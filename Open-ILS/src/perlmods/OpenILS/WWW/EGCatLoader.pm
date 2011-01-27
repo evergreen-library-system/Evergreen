@@ -716,7 +716,6 @@ sub load_myopac_fines {
         }
     );
 
-    $ctx->{"responses"} = 0;
     while(my $resp = $req->recv) {
         my $mobts = $resp->content;
         my $circ = $mobts->circulation;
@@ -727,7 +726,6 @@ sub load_myopac_fines {
             $last_billing = pop(@billings);
         }
 
-        $ctx->{"responses"}++;
         push(
             @{$ctx->{"fines"}->{$mobts->grocery ? "grocery" : "circulation"}},
             {
