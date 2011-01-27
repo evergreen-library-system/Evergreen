@@ -4,6 +4,8 @@
     table { border-collapse: collapse; }
     table { padding: 3px; border-bottom: 1px solid #ddd; text-align: left;}
     table tr:nth-child(odd) { background-color:#ded; }
+    #action_div { width: 95%; }
+    #action-buttons { float:right; }
 </style>
 [% END %]
 
@@ -11,39 +13,59 @@
 [% PROCESS "default/opac/common.tt2" %]
 [% WRAPPER "default/opac/base.tt2" %]
 [% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "holds" %]
-<table>
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Formats</th>
-            <th>Pickup Location</th>
-            <th>Status</th>
-            <th>Active</th>
-            <th>Activate on...</th>
-            <th>Expiration Date</th>
-            <th>Select</th>
-            <th>Edit</th>
-        </tr>
-    </thead>
-    <tbody>
-        [% FOR hold IN ctx.holds %]
-            [% attrs = {marc_xml => hold.marc_xml}; %]
-            [% PROCESS get_marc_attrs args=attrs; %]
-        <tr>
-            <td>[% attrs.title %]</td>
-            <td>[% attrs.author %]</td>
-            <td>[% hold.hold.hold.holdable_formats %]<!-- see _myOPACFleshHoldTitle(), search for "mods_formats" in skin/default/js/myopac.js; holdable_formats is wrong --></td>
-            <td>[% ctx.find_aou(hold.hold.hold.pickup_lib).name %]</td>
-            <td>[% hold.hold.hold.status %]<!-- see myOShowHoldStatus() in skin/default/js/myopac.js --></td>
-            <td></td>
-            <td></td>
-            <td>[% hold.hold.hold.expire_time %]</td>
-            <td><em>XXX TODO</em></td>
-            <td><em>XXX TODO</em></td>
-        </tr>
-        [% END %]
-    </tbody>
-</table>
+<form method='POST'>
 
+    <div id='action_div'>
+        <div id='action-buttons'>
+            <select name='action'>
+                <option value='cancel'>Cancel Selected</option>
+                <option value='cancel_all'>Cancel All</option>
+                <option value='suspend'>Suspend Selected</option>
+                <option value='suspend_all'>Suspend All</option>
+                <option value='activate'>Activate Selected</option>
+                <option value='activate_all'>Activate All</option>
+            </select>
+            <input type='Submit' value='Go'/>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Formats</th>
+                <th>Pickup Location</th>
+                <th>Status</th>
+                <th>Active</th>
+                <th>Activate on...</th>
+                <th>Expiration Date</th>
+                <th>Select</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            [% FOR hold IN ctx.holds %]
+                [% attrs = {marc_xml => hold.marc_xml}; %]
+                [% PROCESS get_marc_attrs args=attrs; %]
+            <tr>
+                <td>[% attrs.title %]</td>
+                <td>[% attrs.author %]</td>
+                <td>[% hold.hold.hold.holdable_formats %]<!-- see _myOPACFleshHoldTitle(), search for "mods_formats" in skin/default/js/myopac.js; holdable_formats is wrong --></td>
+                <td>[% ctx.find_aou(hold.hold.hold.pickup_lib).name %]</td>
+                <td>[% hold.hold.hold.status %]<!-- see myOShowHoldStatus() in skin/default/js/myopac.js --></td>
+                <td>[% IF hold.hold.hold.frozen == 't' %] No [% ELSE %] Yes [% END %]</td>
+                <td>[% 
+                    IF hold.hold.hold.frozen == 't' AND hold.hold.hold.thaw_date;
+                        date.format(ctx.parse_datetime(hold.hold.hold.thaw_date),'%Y-%m-%d'); 
+                    END 
+                %]</td>
+                <td>[% hold.hold.hold.expire_time %]</td>
+                <td><input type='checkbox' name='hold_id' value='[% hold.hold.hold.id %]'/></td>
+                <td><em>XXX TODO</em></td>
+            </tr>
+            [% END %]
+        </tbody>
+    </table>
+</form> 
 [% END %]

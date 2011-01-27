@@ -429,24 +429,36 @@ sub load_myopac {
     return Apache2::Const::OK;
 }
 
-sub load_myopac_holds {
-    my $self = shift;
-    my $e = $self->editor;
-    my $ctx = $self->ctx;
 
-    my $limit = $self->cgi->param('limit') || 0;
-    my $offset = $self->cgi->param('offset') || 0;
+sub fetch_user_holds {
+    my $self = shift;
+    my $hold_ids = shift;
+    my $ids_only = shift;
+    my $flesh = shift;
+    my $limit = shift;
+    my $offset = shift;
+
+    my $e = $self->editor;
 
     my $circ = OpenSRF::AppSession->create('open-ils.circ');
-    my $hold_ids = $circ->request(
-        'open-ils.circ.holds.id_list.retrieve', 
-        $e->authtoken, 
-        $e->requestor->id
-    )->gather(1);
 
-    $hold_ids = [ grep { defined $_ } @$hold_ids[$offset..($offset + $limit - 1)] ] if $limit or $offset;
+    if(!$hold_ids) {
+
+        $hold_ids = $circ->request(
+            'open-ils.circ.holds.id_list.retrieve.authoritative', 
+            $e->authtoken, 
+            $e->requestor->id
+        )->gather(1);
+    
+        $hold_ids = [ grep { defined $_ } @$hold_ids[$offset..($offset + $limit - 1)] ] if $limit or $offset;
+    }
+
+
+    return $hold_ids if $ids_only or @$hold_ids == 0;
 
     my $req = $circ->request(
+        # TODO .authoritative version is chewing up cstores
+        # 'open-ils.circ.hold.details.batch.retrieve.authoritative', 
         'open-ils.circ.hold.details.batch.retrieve', 
         $e->authtoken, 
         $hold_ids,
@@ -459,18 +471,75 @@ sub load_myopac_holds {
         }
     );
 
-    # any requests we can fire off here?
-    
-    $ctx->{holds} = []; 
+    my @holds;
     while(my $resp = $req->recv) {
         my $hold = $resp->content;
-        push(@{$ctx->{holds}}, {
+        push(@holds, {
             hold => $hold,
-            marc_xml => XML::LibXML->new->parse_string($hold->{bre}->marc)
+            marc_xml => ($flesh) ? XML::LibXML->new->parse_string($hold->{bre}->marc) : undef
         });
     }
 
     $circ->kill_me;
+    return \@holds;
+}
+
+sub handle_hold_update {
+    my $self = shift;
+    my $action = shift;
+    my $e = $self->editor;
+
+
+    my @hold_ids = $self->cgi->param('hold_id'); # for non-_all actions
+    @hold_ids = @{$self->fetch_user_holds(undef, 1)} if $action =~ /_all/;
+
+    my $circ = OpenSRF::AppSession->create('open-ils.circ');
+
+    if($action =~ /cancel/) {
+
+        for my $hold_id (@hold_ids) {
+            my $resp = $circ->request(
+                'open-ils.circ.hold.cancel', $e->authtoken, $hold_id, 6 )->gather(1); # 6 == patron-cancelled-via-opac
+        }
+
+    } else {
+        
+        my $vlist = [];
+        for my $hold_id (@hold_ids) {
+            my $vals = {id => $hold_id};
+
+            if($action =~ /activate/) {
+                $vals->{frozen} = 'f';
+                $vals->{thaw_date} = undef;
+
+            } elsif($action =~ /suspend/) {
+                $vals->{frozen} = 't';
+                # $vals->{thaw_date} = TODO;
+            }
+            push(@$vlist, $vals);
+        }
+
+        $circ->request('open-ils.circ.hold.update.batch.atomic', $e->authtoken, undef, $vlist)->gather(1);
+    }
+
+    $circ->kill_me;
+    return undef;
+}
+
+sub load_myopac_holds {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+    
+
+    my $limit = $self->cgi->param('limit') || 0;
+    my $offset = $self->cgi->param('offset') || 0;
+    my $action = $self->cgi->param('action') || '';
+
+    $self->handle_hold_update($action) if $action;
+
+    $ctx->{holds} = $self->fetch_user_holds(undef, 0, 1, $limit, $offset);
+
     return Apache2::Const::OK;
 }
 
@@ -662,7 +731,6 @@ sub load_myopac_circs {
         my ($resp) = grep { $_->{copy} == $data->{circ}->target_copy->id } @results;
 
         if($resp) {
-            #$self->apache->log->warn("renewal response: " . OpenSRF::Utils::JSON->perl2JSON($resp));
             my $evt = ref($resp->{evt}) eq 'ARRAY' ? $resp->{evt}->[0] : $resp->{evt};
             $data->{renewal_response} = $evt;
             $success_renewals++ if $evt->{textcode} eq 'SUCCESS';
@@ -687,7 +755,7 @@ sub load_myopac_fines {
 
     my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
 
-    # TODO: This should really use a ML call, but the existing calls 
+    # TODO: This should really be a ML call, but the existing calls 
     # return an excessive amount of data and don't offer streaming
 
     my %paging = ($limit or $offset) ? (limit => $limit, offset => $offset) : ();
@@ -737,6 +805,5 @@ sub load_myopac_fines {
 
      return Apache2::Const::OK;
 }       
-
 
 1;
