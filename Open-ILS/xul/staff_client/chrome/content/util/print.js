@@ -333,8 +333,21 @@ util.print.prototype = {
                         obj._NSPrint_custom_print(w,silent,params);
                     break;    
                     case 'window.print':
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+                        var originalPrinter = false;
+                        if (prefs.prefHasUserValue('print.print_printer')) {
+                            // This is for restoring print.print_printer after any print dialog, so that when
+                            // window.print gets used again, it uses the configured printer for the right context
+                            // (which should only be default--window.print is a kludge and is in limited use),
+                            // rather than the printer last used.
+                            originalPrinter = prefs.getCharPref('print.print_printer');
+                        }
                         if (typeof w == 'object') {
                             w.print();
+                            if (originalPrinter) {
+                                prefs.setCharPref('print.print_printer',originalPrinter);
+                            }
                         } else {
                             if (params.content_type == 'text/plain') {
                                 w = window.open('data:text/plain,'+escape(params.msg));
@@ -344,6 +357,9 @@ util.print.prototype = {
                             setTimeout(
                                 function() {
                                     w.print();
+                                    if (originalPrinter) {
+                                        prefs.setCharPref('print.print_printer',originalPrinter);
+                                    }
                                     setTimeout(
                                         function() {
                                             w.close(); 
@@ -580,6 +596,12 @@ util.print.prototype = {
             if (typeof obj.gPrintSettings == 'undefined') obj.GetPrintSettings();
             if (obj.gPrintSettings) file.set_object(obj.gPrintSettings); 
             file.close();
+            if (this.context == 'default') {
+                // print.print_printer gets used by bare window.print()'s.  We sometimes use window.print for the
+                // WebBrowserPrint strategy to workaround bugs with the NSPrint xpcom, and only in the default context.
+                var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces['nsIPrefBranch']);
+                prefs.setCharPref('print.print_printer',obj.gPrintSettings.printerName);
+            }
         } catch(E) {
             this.error.standard_unexpected_error_alert("save_settings()",E);
         }
