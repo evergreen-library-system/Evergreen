@@ -40,7 +40,6 @@
                 <th>Activate on...</th>
                 <th>Expiration Date</th>
                 <th>Select</th>
-                <th>Edit</th>
             </tr>
         </thead>
         <tbody>
@@ -61,7 +60,6 @@
                 %]</td>
                 <td>[% hold.hold.hold.expire_time %]</td>
                 <td><input type='checkbox' name='hold_id' value='[% hold.hold.hold.id %]'/></td>
-                <td><em>XXX TODO</em></td>
             </tr>
             [% END %]
         </tbody>
