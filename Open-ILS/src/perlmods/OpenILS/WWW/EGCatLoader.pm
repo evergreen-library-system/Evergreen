@@ -7,6 +7,7 @@ use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERR
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
 use OpenSRF::Utils qw/:datetime/;
+use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
@@ -433,7 +434,7 @@ sub load_myopac_holds {
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
-    my $limit = $self->cgi->param('limit') || 10;
+    my $limit = $self->cgi->param('limit') || 0;
     my $offset = $self->cgi->param('offset') || 0;
 
     my $circ = OpenSRF::AppSession->create('open-ils.circ');
@@ -443,7 +444,7 @@ sub load_myopac_holds {
         $e->requestor->id
     )->gather(1);
 
-    $hold_ids = [ grep { defined $_ } @$hold_ids[$offset..($offset + $limit - 1)] ];
+    $hold_ids = [ grep { defined $_ } @$hold_ids[$offset..($offset + $limit - 1)] ] if $limit or $offset;
 
     my $req = $circ->request(
         'open-ils.circ.hold.details.batch.retrieve', 
@@ -612,21 +613,20 @@ sub handle_circ_renew {
     my $ctx = $self->ctx;
 
     my @renew_ids = $self->cgi->param('circ');
-    $self->apache->log->warn("renewal ids: @renew_ids");
 
-    my $circs = $self->fetch_user_circs(1, ($action eq 'renew') ? [@renew_ids] : undef);
+    my $circs = $self->fetch_user_circs(0, ($action eq 'renew') ? [@renew_ids] : undef);
 
     # TODO: fire off renewal calls in batches to speed things up
-    $ctx->{renewal_responses} = [];
+    my @responses;
     for my $circ (@$circs) {
 
-        my $resp = $U->simplereq(
+        my $evt = $U->simplereq(
             'open-ils.circ', 
             'open-ils.circ.renew',
             $self->editor->authtoken,
             {
                 patron_id => $self->editor->requestor->id,
-                copy_id => $circ->{circ}->target_copy->id,
+                copy_id => $circ->{circ}->target_copy,
                 opac_renewal => 1
             }
         );
@@ -634,10 +634,10 @@ sub handle_circ_renew {
         # TODO return these, then insert them into the circ data 
         # blob that is shoved into the template for each circ
         # so the template won't have to match them
-        push(@{$ctx->{renewal_responses}}, $resp); 
+        push(@responses, {copy => $circ->{circ}->target_copy, evt => $evt});
     }
 
-    return undef;
+    return @responses;
 }
 
 
@@ -647,14 +647,31 @@ sub load_myopac_circs {
     my $ctx = $self->ctx;
 
     $ctx->{circs} = [];
-    my $limit = $self->cgi->param('limit') || 10;
+    my $limit = $self->cgi->param('limit') || 0; # 0 == unlimited
     my $offset = $self->cgi->param('offset') || 0;
     my $action = $self->cgi->param('action') || '';
 
     # perform the renewal first if necessary
-    $self->handle_circ_renew($action) if $action =~ /renew/;
+    my @results = $self->handle_circ_renew($action) if $action =~ /renew/;
 
     $ctx->{circs} = $self->fetch_user_circs(1, undef, $limit, $offset);
+
+    my $success_renewals = 0;
+    my $failed_renewals = 0;
+    for my $data (@{$ctx->{circs}}) {
+        my ($resp) = grep { $_->{copy} == $data->{circ}->target_copy->id } @results;
+
+        if($resp) {
+            #$self->apache->log->warn("renewal response: " . OpenSRF::Utils::JSON->perl2JSON($resp));
+            my $evt = ref($resp->{evt}) eq 'ARRAY' ? $resp->{evt}->[0] : $resp->{evt};
+            $data->{renewal_response} = $evt;
+            $success_renewals++ if $evt->{textcode} eq 'SUCCESS';
+            $failed_renewals++ if $evt->{textcode} ne 'SUCCESS';
+        }
+    }
+
+    $ctx->{success_renewals} = $success_renewals;
+    $ctx->{failed_renewals} = $failed_renewals;
 
     return Apache2::Const::OK;
 }
@@ -665,13 +682,15 @@ sub load_myopac_fines {
     my $ctx = $self->ctx;
     $ctx->{transactions} = [];
 
-    my $limit = $self->cgi->param('limit') || 10;
+    my $limit = $self->cgi->param('limit') || 0;
     my $offset = $self->cgi->param('offset') || 0;
 
     my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
 
     # TODO: This should really use a ML call, but the existing calls 
     # return an excessive amount of data and don't offer streaming
+
+    my %paging = ($limit or $offset) ? (limit => $limit, offset => $offset) : ();
 
     my $req = $cstore->request(
         'open-ils.cstore.direct.money.open_billable_transaction_summary.search',
@@ -690,8 +709,7 @@ sub load_myopac_fines {
                 acn => ['record']
             },
             order_by => { mobts => 'xact_start' },
-            limit => $limit,
-            offset => $offset
+            %paging
         }
     );
 
