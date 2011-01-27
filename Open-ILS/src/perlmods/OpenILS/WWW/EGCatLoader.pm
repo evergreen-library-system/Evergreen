@@ -2,6 +2,7 @@ package OpenILS::WWW::EGCatLoader;
 use strict; use warnings;
 use CGI;
 use XML::LibXML;
+use URI::Escape;
 use Digest::MD5 qw(md5_hex);
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
 use OpenSRF::AppSession;
@@ -81,8 +82,12 @@ sub load {
     # ----------------------------------------------------------------
     # These pages require authentication
     # ----------------------------------------------------------------
-    return Apache2::Const::FORBIDDEN unless $self->cgi->https;
-    return $self->load_logout unless $self->editor->requestor;
+    unless($self->cgi->https and $self->editor->requestor) {
+        # If a secure resource is requested insecurely, redirect to the login page
+        my $url = 'https://' . $self->apache->hostname . $self->ctx->{base_path} . "/opac/login";
+        $self->apache->print($self->cgi->redirect(-url => $url));
+        return Apache2::Const::REDIRECT;
+    }
 
     return $self->load_place_hold if $path =~ /opac\/place_hold/;
     return $self->load_myopac_holds if $path =~ /opac\/myopac\/holds/;
@@ -201,6 +206,8 @@ sub load_common {
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
+    $ctx->{referer} = $self->cgi->referer;
+
     if($e->authtoken($self->cgi->cookie('ses'))) {
 
         if($e->checkauth) {
@@ -260,7 +267,7 @@ sub load_login {
 
     $self->apache->print(
         $cgi->redirect(
-            -url => $cgi->param('origin') || $home,
+            -url => $cgi->param('redirect_to') || $home,
             -cookie => $cgi->cookie(
                 -name => 'ses',
                 -path => '/',
@@ -597,13 +604,18 @@ sub load_place_hold {
             if($stat and $stat > 0) {
 
                 # if successful, return the user to the requesting page
-                $self->apache->print($cgi->redirect(-url => $cgi->referer));
+                $self->apache->log->info("Redirecting back to " . $cgi->param('redirect_to'));
+                $self->apache->print($cgi->redirect(-url => $cgi->param('redirect_to')));
                 return Apache2::Const::REDIRECT;
 
             } else {
+
                 $ctx->{hold_failed} = 1; # XXX process the events, etc
             }
         }
+
+        # hold permit failed
+        $self->apache->log->warn('hold permit result ' . OpenSRF::Utils::JSON->perl2JSON($allowed));
     }
 
     return Apache2::Const::OK;

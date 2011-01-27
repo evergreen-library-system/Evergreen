@@ -51,9 +51,8 @@
                 [% ELSE %]
                     [% 
                         login = CGI.url("-path" => 1).replace('^http:', 'https:').replace('/results','/login');
-                        origin = CGI.url("-absolute" => 1, "-path" => 1, "-query" => 1) | uri 
                     %]
-                    <a href='[% login _ '?origin=' _ origin %]'>Login</a>
+                    <a href='[% login %]'>Login</a>
                 [% END %]
             </div>
             <div>

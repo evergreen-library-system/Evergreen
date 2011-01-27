@@ -26,7 +26,7 @@
                 </td>
             </tr>
         </table>
-        <input type='hidden' name='origin' value='[% CGI.param('origin') %]'/>
+        <input type='hidden' name='redirect_to' value='[% CGI.param('redirect_to') || ctx.referer | replace('^http:', 'https:') %]'/>
     </form>
 </div>
 [% END %]
