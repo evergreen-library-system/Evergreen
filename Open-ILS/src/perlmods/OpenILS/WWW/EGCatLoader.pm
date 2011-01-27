@@ -682,7 +682,10 @@ sub load_myopac_fines {
     my $ctx = $self->ctx;
     $ctx->{"fines"} = {
         "circulation" => [],
-        "grocery" => []
+        "grocery" => [],
+        "total_paid" => 0,
+        "total_owed" => 0,
+        "balance_owed" => 0
     };
 
     my $limit = $self->cgi->param('limit') || 0;
@@ -725,6 +728,11 @@ sub load_myopac_fines {
             my @billings = sort { $a->billing_ts cmp $b->billing_ts } @{$mobts->grocery->billings};
             $last_billing = pop(@billings);
         }
+
+        # XXX TODO switch to some money-safe non-fp library for math
+        $ctx->{"fines"}->{$_} += $mobts->$_ for (
+            qw/total_paid total_owed balance_owed/
+        );
 
         push(
             @{$ctx->{"fines"}->{$mobts->grocery ? "grocery" : "circulation"}},

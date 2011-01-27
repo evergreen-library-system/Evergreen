@@ -23,5 +23,5 @@
 [% END %]
 
 [% PROCESS 'default/opac/marc_attrs.tt2' %]
-
-
+[% USE date %]
+[% USE money = format('$%.2f') %]

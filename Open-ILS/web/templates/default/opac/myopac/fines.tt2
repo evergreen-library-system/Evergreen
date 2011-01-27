@@ -8,8 +8,6 @@
 </style>
 [% END %]
 
-[% USE date %]
-[% USE money = format('$%.2f') %]
 [% PROCESS "default/opac/common.tt2" %]
 [% WRAPPER "default/opac/base.tt2" %]
 [% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "fines" %]
@@ -24,7 +22,9 @@
     </thead>
     <tbody>
         <tr>
-            <td colspan="3"><em>XXX TODO</em></td>
+            <td>[% money(ctx.fines.total_owed) %]</td>
+            <td>[% money(ctx.fines.total_paid) %]</td>
+            <td>[% money(ctx.fines.balance_owed) %]</td>
         </tr>
     </tbody>
 </table>

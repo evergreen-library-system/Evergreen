@@ -7,7 +7,6 @@
 </style>
 [% END %]
 
-[% USE date %]
 [% PROCESS "default/opac/common.tt2" %]
 [% WRAPPER "default/opac/base.tt2" %]
 [% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "holds" %]
