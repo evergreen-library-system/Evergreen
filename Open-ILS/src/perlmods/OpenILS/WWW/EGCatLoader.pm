@@ -663,7 +663,10 @@ sub load_myopac_fines {
     my $self = shift;
     my $e = $self->editor;
     my $ctx = $self->ctx;
-    $ctx->{transactions} = [];
+    $ctx->{"fines"} = {
+        "circulation" => [],
+        "grocery" => []
+    };
 
     my $limit = $self->cgi->param('limit') || 10;
     my $offset = $self->cgi->param('offset') || 0;
@@ -695,6 +698,7 @@ sub load_myopac_fines {
         }
     );
 
+    $ctx->{"responses"} = 0;
     while(my $resp = $req->recv) {
         my $mobts = $resp->content;
         my $circ = $mobts->circulation;
@@ -705,8 +709,9 @@ sub load_myopac_fines {
             $last_billing = pop(@billings);
         }
 
+        $ctx->{"responses"}++;
         push(
-            @{$ctx->{transactions}},
+            @{$ctx->{"fines"}->{$mobts->grocery ? "grocery" : "circulation"}},
             {
                 xact => $mobts,
                 last_grocery_billing => $last_billing,
