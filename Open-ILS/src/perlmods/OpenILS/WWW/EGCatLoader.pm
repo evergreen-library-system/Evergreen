@@ -503,19 +503,66 @@ sub fetch_user_holds {
 
     return $hold_ids if $ids_only or @$hold_ids == 0;
 
+    my $args = {
+        suppress_notices => 1,
+        suppress_transits => 1,
+        suppress_mvr => 1,
+        suppress_patron_details => 1,
+        include_bre => $flesh ? 1 : 0
+    };
+
+    # ----------------------------------------------------------------
+    # batch version for testing;  initial test show 40% speed 
+    # savings on larger sets (>20) of holds.
+    # ----------------------------------------------------------------
+    my $batch_size = 8;
+    my $batch_idx = 0;
+    my $mk_req_batch = sub {
+        my @ses;
+        my $top_idx = $batch_idx + $batch_size;
+        while($batch_idx < $top_idx) {
+            my $hold_id = $hold_ids->[$batch_idx++];
+            last unless $hold_id;
+            $self->apache->log->warn("fetching hold $hold_id");
+            my $ses = OpenSRF::AppSession->create('open-ils.circ');
+            my $req = $ses->request(
+                'open-ils.circ.hold.details.retrieve', 
+                $e->authtoken, $hold_id, $args);
+            push(@ses, {ses => $ses, req => $req});
+        }
+        return @ses;
+    };
+
+    my $first = 1;
+    my @collected;
+    my @holds;
+    my @ses;
+    while(1) {
+        @ses = $mk_req_batch->() if $first;
+        last if $first and not @ses;
+        if(@collected) {
+            while(my $blob = pop(@collected)) {
+                $blob->{marc_xml} = XML::LibXML->new->parse_string($blob->{hold}->{bre}->marc) if $flesh;
+                push(@holds, $blob);
+            }
+        }
+        for my $req_data (@ses) {
+            push(@collected, {hold => $req_data->{req}->gather(1)});
+            $self->apache->log->warn("fetched a hold");
+            $req_data->{ses}->kill_me;
+        }
+        @ses = $mk_req_batch->();
+        last unless @ses;
+        $first = 0;
+    }
+    # ----------------------------------------------------------------
+
+=head
     my $req = $circ->request(
         # TODO .authoritative version is chewing up cstores
         # 'open-ils.circ.hold.details.batch.retrieve.authoritative', 
         'open-ils.circ.hold.details.batch.retrieve', 
-        $e->authtoken, 
-        $hold_ids,
-        {
-            suppress_notices => 1,
-            suppress_transits => 1,
-            suppress_mvr => 1,
-            suppress_patron_details => 1,
-            include_bre => 1
-        }
+        $e->authtoken, $hold_ids, $args
     );
 
     my @holds;
@@ -528,6 +575,8 @@ sub fetch_user_holds {
     }
 
     $circ->kill_me;
+=cut
+
     return \@holds;
 }
 
