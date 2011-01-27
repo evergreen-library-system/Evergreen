@@ -3,8 +3,12 @@
     table { width: 100%; text-align: center; padding: 20px; margin-top: 30px; }
     table { border-collapse: collapse; }
     table { padding: 3px; border-bottom: 1px solid #ddd; text-align: left;}
-    table tr:nth-child(odd) { background-color:#ded; }
-    #action_div { width: 95%; text-align: right }
+    #action_div { width: 95%; }
+    .renew-summary { float:left; padding-right: 10px;}
+    #action-buttons { float:right; }
+    .circ-table-odd { background-color:#ded; }
+    .failure-text { font-weight: bold; color: red; }
+    #circ-form { margin-top: 20px; }
 </style>
 [% END %]
 
@@ -13,10 +17,19 @@
 [% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "circs" %]
 [% USE date %]
 
-<form method='POST'>
+
+<form method='POST' id='circ-form'>
     <div id='action_div'>
-        <button type='submit' value='renew' name='action'>Renew Selected</button>
-        <button type='submit' value='renew_all' name='action'>Renew All</button>
+        [% IF ctx.success_renewals > 0 %]
+            <div class='renew-summary'><b>Successfully renewed [% ctx.success_renewals %] items.</b></div>
+        [% END %]
+        [% IF ctx.failed_renewals > 0 %]
+            <div class='renew-summary'><b>Failed to renew [% ctx.failed_renewals %] items.</b></div>
+        [% END %]
+        <div id='action-buttons'>
+            <button type='submit' value='renew' name='action'>Renew Selected</button>
+            <button type='submit' value='renew_all' name='action'>Renew All</button>
+        </div>
     </div>
     <table>
         <thead>
@@ -32,13 +45,25 @@
             [% FOR circ IN ctx.circs %]
                 [% attrs = {marc_xml => circ.marc_xml}; %]
                 [% PROCESS get_marc_attrs args=attrs; %]
-                <tr>
+                <tr [% IF loop.count % 2 == 1 %] class='circ-table-odd' [% END %]>
                     <td>[% attrs.title %]</td>
                     <td>[% attrs.author %]</td>
                     <td>[% date.format(ctx.parse_datetime(circ.circ.due_date),'%Y-%m-%d') %]</td>
                     <td><em>[% circ.circ.renewal_remaining %]</em></td>
                     <td><input name='circ' value='[% circ.circ.id %]' type='checkbox'/></td>
                 </tr>
+                [% IF circ.renewal_response and circ.renewal_response.textcode != 'SUCCESS' %]
+                <tr [% IF loop.count % 2 == 1 %] class='circ-table-odd' [% END %]>
+                    <td colspan='0'>
+                        <div class='failure-text'>
+                            [% circ.renewal_response.textcode %] 
+                            [% IF circ.renewal_response.payload.fail_part and circ.renewal_response.payload.fail_part != circ.renewal_response.textcode %]
+                                [% circ.renewal_response.payload.fail_part %]
+                            [% END %]
+                        </div>
+                    </td>
+                </tr>
+                [% END %]
             [% END %]
         </tbody>
     </table>

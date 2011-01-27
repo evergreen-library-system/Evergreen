@@ -2791,7 +2791,7 @@ __PACKAGE__->register_method(
         "params" => [
             {"desc" => "Search token", "type" => "string"},
             {"desc" => "Options: require_subscriptions, add_mvr, is_actual_id" .
-                " (all boolean)", "type" => "object"}
+                ", id_list (all boolean)", "type" => "object"}
         ],
         "return" => {
             "desc" => "Any matching BREs, or if the add_mvr option is true, " .
@@ -2833,6 +2833,12 @@ sub bre_by_identifier {
 
         unless (@ids) {
             $e->disconnect;
+            return undef;
+        }
+
+        if ($options->{"id_list"}) {
+            $e->disconnect;
+            $client->respond($_) foreach (@ids);
             return undef;
         }
     }
@@ -3272,6 +3278,189 @@ sub create_scaps_from_marcxml {
 
     $e->commit or return $e->die_event;
     undef;
+}
+
+# All these _clone_foo() functions could possibly have been consolidated into
+# one clever function, but it's faster to get things working this way.
+sub _clone_subscription {
+    my ($sub, $bib_id, $e) = @_;
+
+    # clone sub itself
+    my $new_sub = $sub->clone;
+    $new_sub->record_entry(int $bib_id) if $bib_id;
+    $new_sub->clear_id;
+    $new_sub->clear_distributions;
+    $new_sub->clear_notes;
+    $new_sub->clear_scaps;
+
+    $e->create_serial_subscription($new_sub) or return $e->die_event;
+
+    my $new_sub_id = $e->data->id;
+    # clone dists
+    foreach my $dist (@{$sub->distributions}) {
+        my $r = _clone_distribution($dist, $new_sub_id, $e);
+        return $r if $U->event_code($r);
+    }
+
+    # clone sub notes
+    foreach my $note (@{$sub->notes}) {
+        my $r = _clone_subscription_note($note, $new_sub_id, $e);
+        return $r if $U->event_code($r);
+    }
+
+    # clone scaps
+    foreach my $scap (@{$sub->scaps}) {
+        my $r = _clone_caption_and_pattern($scap, $new_sub_id, $e);
+        return $r if $U->event_code($r);
+    }
+
+    return $new_sub_id;
+}
+
+sub _clone_distribution {
+    my ($dist, $sub_id, $e) = @_;
+
+    my $new_dist = $dist->clone;
+    $new_dist->clear_id;
+    $new_dist->clear_notes;
+    $new_dist->clear_streams;
+    $new_dist->subscription($sub_id);
+
+    $e->create_serial_distribution($new_dist) or return $e->die_event;
+    my $new_dist_id = $e->data->id;
+
+    # clone streams
+    foreach my $stream (@{$dist->streams}) {
+        my $r = _clone_stream($stream, $new_dist_id, $e);
+        return $r if $U->event_code($r);
+    }
+
+    # clone distribution notes
+    foreach my $note (@{$dist->notes}) {
+        my $r = _clone_distribution_note($note, $new_dist_id, $e);
+        return $r if $U->event_code($r);
+    }
+
+    return $new_dist_id;
+}
+
+sub _clone_subscription_note {
+    my ($note, $sub_id, $e) = @_;
+
+    my $new_note = $note->clone;
+    $new_note->clear_id;
+    $new_note->creator($e->requestor->id);
+    $new_note->create_date("now");
+    $new_note->subscription($sub_id);
+
+    $e->create_serial_subscription_note($new_note) or return $e->die_event;
+    return $e->data->id;
+}
+
+sub _clone_caption_and_pattern {
+    my ($scap, $sub_id, $e) = @_;
+
+    my $new_scap = $scap->clone;
+    $new_scap->clear_id;
+    $new_scap->subscription($sub_id);
+
+    $e->create_serial_caption_and_pattern($new_scap) or return $e->die_event;
+    return $e->data->id;
+}
+
+sub _clone_distribution_note {
+    my ($note, $dist_id, $e) = @_;
+
+    my $new_note = $note->clone;
+    $new_note->clear_id;
+    $new_note->creator($e->requestor->id);
+    $new_note->create_date("now");
+    $new_note->distribution($dist_id);
+
+    $e->create_serial_distribution_note($new_note) or return $e->die_event;
+    return $e->data->id;
+}
+
+sub _clone_stream {
+    my ($stream, $dist_id, $e) = @_;
+
+    my $new_stream = $stream->clone;
+    $new_stream->clear_id;
+    $new_stream->clear_routing_list_users;
+    $new_stream->distribution($dist_id);
+
+    $e->create_serial_stream($new_stream) or return $e->die_event;
+    my $new_stream_id = $e->data->id;
+
+    # clone routing list users
+    foreach my $user (@{$stream->routing_list_users}) {
+        my $r = _clone_routing_list_user($user, $new_stream_id, $e);
+        return $r if $U->event_code($r);
+    }
+
+    return $new_stream_id;
+}
+
+sub _clone_routing_list_user {
+    my ($user, $stream_id, $e) = @_;
+
+    my $new_user = $user->clone;
+    $new_user->clear_id;
+    $new_user->stream($stream_id);
+
+    $e->create_serial_routing_list_user($new_user) or return $e->die_event;
+    return $e->data->id;
+}
+
+__PACKAGE__->register_method(
+    "method" => "clone_subscription",
+    "api_name" => "open-ils.serial.subscription.clone",
+    "signature" => {
+        "desc" => q{Clone a subscription, including its attending distributions,
+            streams, captions and patterns, routing list users, distribution
+            notes and subscription notes. Do not include holdings-specific
+            things, like issuances, items, units, summaries. Attach the
+            clone either to the same bib record as the original, or to one
+            specified by ID.},
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "Subscription ID", "type" => "number"},
+            {"desc" => "Bib Record ID (optional)", "type" => "number"}
+        ],
+        "return" => {
+            "desc" => "ID of the new subscription", "type" => "number"
+        }
+    }
+);
+
+sub clone_subscription {
+    my ($self, $client, $auth, $sub_id, $bib_id) = @_;
+
+    my $e = new_editor("authtoken" => $auth, "xact" => 1);
+    return $e->die_event unless $e->checkauth;
+
+    my $sub = $e->retrieve_serial_subscription([
+        int $sub_id, {
+            "flesh" => 3,
+            "flesh_fields" => {
+                "ssub" => [qw/distributions notes scaps/],
+                "sdist" => [qw/streams notes/],
+                "sstr" => ["routing_list_users"]
+            }
+        }
+    ]) or return $e->die_event;
+
+    # ADMIN_SERIAL_SUBSCRIPTION will have to be good enough as a
+    # catch-all permisison for this operation.
+    return $e->die_event unless
+        $e->allowed("ADMIN_SERIAL_SUBSCRIPTION", $sub->owning_lib);
+
+    my $result = _clone_subscription($sub, $bib_id, $e);
+
+    return $e->die_event($result) if $U->event_code($result);
+
+    $e->commit or return $e->die_event;
+    return $result;
 }
 
 1;
