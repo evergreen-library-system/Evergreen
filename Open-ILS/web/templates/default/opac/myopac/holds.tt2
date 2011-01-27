@@ -50,9 +50,14 @@
                 <td>[% attrs.title %]</td>
                 <td>[% attrs.author %]</td>
                 <td>
-                    [% format_desc = ctx.find_citm(attrs.mattype).value; %]<!-- XXX in situations where we might show M-type holds, this won't be good enough -->
+                    [%
+                        format_desc = ctx.find_citm(attrs.mattype).value;
+                        icon_filename = ctx.icon_by_mattype(attrs.mattype);
+                        IF icon_filename;
+                    %]<!-- XXX in situations where we might show M-type holds, this won't be good enough -->
                     <img alt="[% format_desc %]" title="[% format_desc %]"
-                        src="[% ctx.icon_by_mattype(attrs.mattype) %]" />
+                        src="/images/mattype/[% icon_filename %]" />
+                    [%  END %]
                 </td>
                 <td>[% ctx.find_aou(hold.hold.hold.pickup_lib).name %]</td>
                 <td>[% hold.hold.hold.status %]<!-- see myOShowHoldStatus() in skin/default/js/myopac.js --></td>
