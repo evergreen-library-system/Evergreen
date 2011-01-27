@@ -60,14 +60,26 @@
                     [%  END %]
                 </td>
                 <td>[% ctx.find_aou(hold.hold.hold.pickup_lib).name %]</td>
-                <td>[% hold.hold.hold.status %]<!-- see myOShowHoldStatus() in skin/default/js/myopac.js --></td>
+                <td>[%
+                    IF hold.hold.status == 4;
+                        "Available";
+                    ELSIF hold.hold.estimated_wait;
+                        "Estimated wait (days): "; hold.hold.estimated_wait;
+                    ELSIF hold.hold.status == 3;
+                        "In Transit";
+                    ELSIF hold.hold.status < 3;
+                        "Waiting for copy";
+                    END;
+                %]</td>
                 <td>[% IF hold.hold.hold.frozen == 't' %] No [% ELSE %] Yes [% END %]</td>
                 <td>[% 
                     IF hold.hold.hold.frozen == 't' AND hold.hold.hold.thaw_date;
                         date.format(ctx.parse_datetime(hold.hold.hold.thaw_date),'%Y-%m-%d'); 
+                    ELSE;
+                        '-';
                     END 
                 %]</td>
-                <td>[% hold.hold.hold.expire_time %]</td>
+                <td>[% hold.hold.hold.expire_time ? hold.hold.hold.expire_time : '-' %]</td>
                 <td><input type='checkbox' name='hold_id' value='[% hold.hold.hold.id %]'/></td>
             </tr>
             [% END %]
