@@ -104,13 +104,15 @@ sub load_helpers {
     $cache{list} = {}; # public object lists
 
     # fetch-on-demand-and-cache subs for commonly used public data
-    my @public_classes = qw/ccs aout/;
+    my @public_classes = qw/ccs aout cifm citm clm/;
 
     for my $hint (@public_classes) {
 
         my ($class) = grep {
             $Fieldmapper::fieldmap->{$_}->{hint} eq $hint
         } keys %{ $Fieldmapper::fieldmap };
+
+        my $ident_field =  $Fieldmapper::fieldmap->{$class}->{identity};
 
 	    $class =~ s/Fieldmapper:://o;
 	    $class =~ s/::/_/g;
@@ -130,7 +132,7 @@ sub load_helpers {
         $ctx->{$find_key} = sub {
             my $id = shift;
             return $cache{map}{$hint}{$id} if $cache{map}{$hint}{$id}; 
-            ($cache{map}{$hint}{$id}) = grep { $_->id == $id } @{$ctx->{$list_key}->()};
+            ($cache{map}{$hint}{$id}) = grep { $_->$ident_field eq $id } @{$ctx->{$list_key}->()};
             return $cache{map}{$hint}{$id};
         };
 
@@ -547,10 +549,11 @@ sub load_place_hold {
     my $self = shift;
     my $ctx = $self->ctx;
     my $e = $self->editor;
+    my $cgi = $self->cgi;
     $self->ctx->{page} = 'place_hold';
 
-    $ctx->{hold_target} = $self->cgi->param('hold_target');
-    $ctx->{hold_type} = $self->cgi->param('hold_type');
+    $ctx->{hold_target} = $cgi->param('hold_target');
+    $ctx->{hold_type} = $cgi->param('hold_type');
     $ctx->{default_pickup_lib} = $e->requestor->home_ou; # XXX staff
 
     if($ctx->{hold_type} eq 'T') {
@@ -560,7 +563,7 @@ sub load_place_hold {
 
     $ctx->{marc_xml} = XML::LibXML->new->parse_string($ctx->{record}->marc);
 
-    if(my $pickup_lib = $self->cgi->param('pickup_lib')) {
+    if(my $pickup_lib = $cgi->param('pickup_lib')) {
 
         my $args = {
             patronid => $e->requestor->id,
@@ -592,13 +595,15 @@ sub load_place_hold {
             );
 
             if($stat and $stat > 0) {
-                $ctx->{hold_success} = 1;
+
+                # if successful, return the user to the requesting page
+                $self->apache->print($cgi->redirect(-url => $cgi->referer));
+                return Apache2::Const::REDIRECT;
+
             } else {
                 $ctx->{hold_failed} = 1; # XXX process the events, etc
             }
         }
-
-        # place the hold and deliver results
     }
 
     return Apache2::Const::OK;

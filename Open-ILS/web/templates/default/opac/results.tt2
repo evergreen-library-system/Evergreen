@@ -88,10 +88,15 @@
                         [% END %]
                     </td>
                     <td width='auto'>
-                        <div>
-                            <a href='record/[% rec.bre.id %]'>[% attrs.title %]</a>
-                            <span style='padding-left:10px;'>[% rec.copy_counts.available %] / [% rec.copy_counts.visible %]</span>
-                        </div>
+                        <div width='99%'>
+                            <div style='float:left'>
+                                <a href='record/[% rec.bre.id %]'>[% attrs.title %]</a>
+                            </div>
+                            <div style='float:right'>
+                                <span>[% rec.copy_counts.available %] / [% rec.copy_counts.visible %]</span>
+                                <span style='padding-left:10px;'><a href='place_hold?hold_target=[% rec.bre.id %]&hold_type=T'>Place Hold</a></span>
+                            </div>
+                        </div><br/>
                         <div>[% attrs.author %]</div>
                         <div>[% attrs.isbn || attrs.issn || attrs.upc %] [% attrs.publisher %] [% attrs.pubdate %]</div>
                     </td>
