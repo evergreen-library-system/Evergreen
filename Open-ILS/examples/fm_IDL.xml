@@ -1003,6 +1003,85 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+    <class id="chmw" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::hold_matrix_weights" oils_persist:tablename="config.hold_matrix_weights" reporter:label="Hold Matrix Weights">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.hold_matrix_weights_id_seq">
+            <field reporter:label="Hold Weights ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+            <field reporter:label="Name" name="name" reporter:datatype="text"/>
+            <field reporter:label="User Home Library" name="user_home_ou" reporter:datatype="float"/>
+            <field reporter:label="Request Library" name="request_ou" reporter:datatype="float"/>
+            <field reporter:label="Pickup Library" name="pickup_ou" reporter:datatype="float"/>
+            <field reporter:label="Owning Library" name="item_owning_ou" reporter:datatype="float"/>
+            <field reporter:label="Item Circ Library" name="item_circ_ou" reporter:datatype="float"/>
+            <field reporter:label="User Permission Group" name="usr_grp" reporter:datatype="float"/>
+            <field reporter:label="Requestor Permission Group" name="requestor_grp" reporter:datatype="float"/>
+            <field reporter:label="Circulation Modifier" name="circ_modifier" oils_persist:primitive="string" reporter:datatype="float"/>
+            <field reporter:label="MARC Type" name="marc_type" oils_persist:primitive="string" reporter:datatype="float"/>
+            <field reporter:label="MARC Form" name="marc_form" oils_persist:primitive="string" reporter:datatype="float"/>
+            <field reporter:label="Videorecording Format" name="marc_vr_format" oils_persist:primitive="string" reporter:datatype="float"/>
+            <field reporter:label="Reference?" name="ref_flag" reporter:datatype="float"/>
+        </fields>
+        <links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_HOLD_MATRIX_MATCHPOINT" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_HOLD_MATRIX_MATCHPOINT" global_required="true"/>
+                <delete permission="ADMIN_HOLD_MATRIX_MATCHPOINT" global_required="true"/>
+            </actions>
+        </permacrud>
+    </class>
+
+    <class id="ccmw" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_matrix_weights" oils_persist:tablename="config.circ_matrix_weights" reporter:label="Circ Matrix Weights">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.circ_matrix_weights_id_seq">
+            <field reporter:label="Circ Weights ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+            <field reporter:label="Name" name="name" reporter:datatype="text"/>
+            <field reporter:label="Org Unit" name="org_unit" reporter:datatype="float"/>
+            <field reporter:label="Copy Circ Lib" name="copy_circ_lib" reporter:datatype="float"/>
+            <field reporter:label="Copy Owning Lib" name="copy_owning_lib" reporter:datatype="float"/>
+            <field reporter:label="User Home Lib" name="user_home_ou" reporter:datatype="float"/>
+            <field reporter:label="Permission Group" name="grp" reporter:datatype="float"/>
+            <field reporter:label="Circulation Modifier" name="circ_modifier" reporter:datatype="float"/>
+            <field reporter:label="MARC Type" name="marc_type" reporter:datatype="float"/>
+            <field reporter:label="MARC Form" name="marc_form" reporter:datatype="float"/>
+            <field reporter:label="Videorecording Format" name="marc_vr_format" reporter:datatype="float"/>
+            <field reporter:label="Reference?" name="ref_flag" reporter:datatype="float"/>
+            <field reporter:label="User Age: Lower Bound" name="usr_age_lower_bound" reporter:datatype="float"/>
+            <field reporter:label="User Age: Upper Bound" name="usr_age_upper_bound" reporter:datatype="float"/>
+        </fields>
+        <links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_CIRC_MATRIX_MATCHPOINT" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_CIRC_MATRIX_MATCHPOINT" global_required="true"/>
+                <delete permission="ADMIN_CIRC_MATRIX_MATCHPOINT" global_required="true"/>
+            </actions>
+        </permacrud>
+    </class>
+
+    <class id="cwa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::weight_assoc" oils_persist:tablename="config.weight_assoc" reporter:label="Matrix Weight Association">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.weight_assoc_id_seq">
+            <field reporter:label="Assoc ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Active?" name="active" reporter:datatype="bool"/>
+            <field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit"/>
+            <field reporter:label="Circ Weights" name="circ_weights" reporter:datatype="link"/>
+            <field reporter:label="Hold Weights" name="hold_weights" reporter:datatype="link"/>
+        </fields>
+        <links>
+            <link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+            <link field="circ_weights" reltype="has_a" key="id" map="" class="ccmw"/>
+            <link field="hold_weights" reltype="has_a" key="id" map="" class="chmw"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_CIRC_MATRIX_MATCHPOINT ADMIN_HOLD_MATRIX_MATCHPOINT" context_field='org_unit'/>
+                <retrieve permission="ADMIN_CIRC_MATRIX_MATCHPOINT ADMIN_HOLD_MATRIX_MATCHPOINT VIEW_CIRC_MATRIX_MATCHPOINT VIEW_HOLD_MATRIX_MATCHPOINT" context_field='org_unit'/>
+                <update permission="ADMIN_CIRC_MATRIX_MATCHPOINT ADMIN_HOLD_MATRIX_MATCHPOINT" context_field='org_unit'/>
+                <delete permission="ADMIN_CIRC_MATRIX_MATCHPOINT ADMIN_HOLD_MATRIX_MATCHPOINT" context_field='org_unit'/>
+            </actions>
+        </permacrud>
+    </class>
+
 	<class id="chmm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::hold_matrix_matchpoint" oils_persist:tablename="config.hold_matrix_matchpoint" reporter:label="Hold Matrix Matchpoint">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.hold_matrix_matchpoint_id_seq">
 			<field reporter:label="Matchpoint ID" name="id" reporter:datatype="id"/>
@@ -1060,6 +1139,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Copy Circ Lib" name="copy_circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Copy Owning Lib" name="copy_owning_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="User Home Lib" name="user_home_ou" reporter:datatype="org_unit"/>
 			<field reporter:label="Permission Group" name="grp" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="MARC Type" name="marc_type" oils_persist:primitive="string" reporter:datatype="link"/>
@@ -1081,6 +1161,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="copy_circ_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="copy_owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="user_home_ou" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 			<link field="marc_type" reltype="has_a" key="code" map="" class="citm"/>

@@ -55,155 +55,146 @@ CREATE TABLE config.hold_matrix_matchpoint (
     CONSTRAINT hous_once_per_grp_loc_mod_marc UNIQUE (user_home_ou, request_ou, pickup_ou, item_owning_ou, item_circ_ou, requestor_grp, usr_grp, circ_modifier, marc_type, marc_form, marc_vr_format, ref_flag, juvenile_flag)
 );
 
-CREATE OR REPLACE FUNCTION action.find_hold_matrix_matchpoint( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT ) RETURNS INT AS $func$
+CREATE OR REPLACE FUNCTION action.find_hold_matrix_matchpoint(pickup_ou integer, request_ou integer, match_item bigint, match_user integer, match_requestor integer)
+  RETURNS integer AS
+$func$
 DECLARE
-    current_requestor_group    permission.grp_tree%ROWTYPE;
     requestor_object    actor.usr%ROWTYPE;
-    user_object        actor.usr%ROWTYPE;
-    item_object        asset.copy%ROWTYPE;
-    item_cn_object        asset.call_number%ROWTYPE;
-    rec_descriptor        metabib.rec_descriptor%ROWTYPE;
-    current_mp_weight    FLOAT;
-    matchpoint_weight    FLOAT;
-    tmp_weight        FLOAT;
-    current_mp        config.hold_matrix_matchpoint%ROWTYPE;
-    matchpoint        config.hold_matrix_matchpoint%ROWTYPE;
+    user_object         actor.usr%ROWTYPE;
+    item_object         asset.copy%ROWTYPE;
+    item_cn_object      asset.call_number%ROWTYPE;
+    rec_descriptor      metabib.rec_descriptor%ROWTYPE;
+    matchpoint          config.hold_matrix_matchpoint%ROWTYPE;
+    weights             config.hold_matrix_weights%ROWTYPE;
+    denominator         INT;
 BEGIN
-    SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
-    SELECT INTO requestor_object * FROM actor.usr WHERE id = match_requestor;
-    SELECT INTO item_object * FROM asset.copy WHERE id = match_item;
-    SELECT INTO item_cn_object * FROM asset.call_number WHERE id = item_object.call_number;
-    SELECT INTO rec_descriptor r.* FROM metabib.rec_descriptor r WHERE r.record = item_cn_object.record;
+    SELECT INTO user_object         * FROM actor.usr                WHERE id = match_user;
+    SELECT INTO requestor_object    * FROM actor.usr                WHERE id = match_requestor;
+    SELECT INTO item_object         * FROM asset.copy               WHERE id = match_item;
+    SELECT INTO item_cn_object      * FROM asset.call_number        WHERE id = item_object.call_number;
+    SELECT INTO rec_descriptor      * FROM metabib.rec_descriptor   WHERE record = item_cn_object.record;
 
-    PERFORM * FROM config.internal_flag WHERE name = 'circ.holds.usr_not_requestor' AND enabled;
+    -- The item's owner should probably be the one determining if the item is holdable
+    -- How to decide that is debatable. Decided to default to the circ library (where the item lives)
+    -- This flag will allow for setting it to the owning library (where the call number "lives")
+    PERFORM * FROM config.internal_flag WHERE name = 'circ.holds.weight_owner_not_circ' AND enabled;
 
+    -- Grab the closest set circ weight setting.
     IF NOT FOUND THEN
-        SELECT INTO current_requestor_group * FROM permission.grp_tree WHERE id = requestor_object.profile;
+        -- Default to circ library
+        SELECT INTO weights hw.*
+          FROM config.weight_assoc wa
+               JOIN config.hold_matrix_weights hw ON (hw.id = wa.hold_weights)
+               JOIN actor.org_unit_ancestors_distance( item_object.circ_lib ) d ON (wa.org_unit = d.id)
+          WHERE active
+          ORDER BY d.distance
+          LIMIT 1;
     ELSE
-        SELECT INTO current_requestor_group * FROM permission.grp_tree WHERE id = user_object.profile;
+        -- Flag is set, use owning library
+        SELECT INTO weights hw.*
+          FROM config.weight_assoc wa
+               JOIN config.hold_matrix_weights hw ON (hw.id = wa.hold_weights)
+               JOIN actor.org_unit_ancestors_distance( cn_object.owning_lib ) d ON (wa.org_unit = d.id)
+          WHERE active
+          ORDER BY d.distance
+          LIMIT 1;
     END IF;
 
-    LOOP 
-        -- for each potential matchpoint for this ou and group ...
-        FOR current_mp IN
-            SELECT    m.*
-              FROM    config.hold_matrix_matchpoint m
-              WHERE    m.requestor_grp = current_requestor_group.id AND m.active
-              ORDER BY    CASE WHEN m.circ_modifier    IS NOT NULL THEN 16 ELSE 0 END +
-                    CASE WHEN m.juvenile_flag    IS NOT NULL THEN 16 ELSE 0 END +
-                    CASE WHEN m.marc_type        IS NOT NULL THEN 8 ELSE 0 END +
-                    CASE WHEN m.marc_form        IS NOT NULL THEN 4 ELSE 0 END +
-                    CASE WHEN m.marc_vr_format    IS NOT NULL THEN 2 ELSE 0 END +
-                    CASE WHEN m.ref_flag        IS NOT NULL THEN 1 ELSE 0 END DESC LOOP
+    -- No weights? Bad admin! Defaults to handle that anyway.
+    IF weights.id IS NULL THEN
+        weights.user_home_ou    := 5;
+        weights.request_ou      := 5;
+        weights.pickup_ou       := 5;
+        weights.item_owning_ou  := 5;
+        weights.item_circ_ou    := 5;
+        weights.usr_grp         := 7;
+        weights.requestor_grp   := 8;
+        weights.circ_modifier   := 4;
+        weights.marc_type       := 3;
+        weights.marc_form       := 2;
+        weights.marc_vr_format  := 1;
+        weights.juvenile_flag   := 4;
+        weights.ref_flag        := 0;
+    END IF;
 
-            IF NOT current_mp.strict_ou_match THEN
-                current_mp_weight := 5.0;
-            ELSE
-                current_mp_weight := 0.0;
-            END IF;
+    -- Determine the max (expected) depth (+1) of the org tree and max depth of the permisson tree
+    -- If you break your org tree with funky parenting this may be wrong
+    -- Note: This CTE is duplicated in the find_circ_matrix_matchpoint function, and it may be a good idea to split it off to a function
+    -- We use one denominator for all tree-based checks for when permission groups and org units have the same weighting
+    WITH all_distance(distance) AS (
+            SELECT depth AS distance FROM actor.org_unit_type
+        UNION
+            SELECT distance AS distance FROM permission.grp_ancestors_distance((SELECT id FROM permission.grp_tree WHERE parent IS NULL))
+	)
+    SELECT INTO denominator MAX(distance) + 1 FROM all_distance;
 
-            IF current_mp.circ_modifier IS NOT NULL THEN
-                CONTINUE WHEN current_mp.circ_modifier <> item_object.circ_modifier OR item_object.circ_modifier IS NULL;
-            END IF;
+    -- To ATTEMPT to make this work like it used to, make it reverse the user/requestor profile ids.
+    -- This may be better implemented as part of the upgrade script?
+    -- Set usr_grp = requestor_grp, requestor_grp = 1 or something when this flag is already set
+    -- Then remove this flag, of course.
+    PERFORM * FROM config.internal_flag WHERE name = 'circ.holds.usr_not_requestor' AND enabled;
 
-            IF current_mp.marc_type IS NOT NULL THEN
-                IF item_object.circ_as_type IS NOT NULL THEN
-                    CONTINUE WHEN current_mp.marc_type <> item_object.circ_as_type;
-                ELSE
-                    CONTINUE WHEN current_mp.marc_type <> rec_descriptor.item_type;
-                END IF;
-            END IF;
+    IF FOUND THEN
+        -- Note: This, to me, is REALLY hacky. I put it in anyway.
+        -- If you can't tell, this is a single call swap on two variables.
+        SELECT INTO user_object.profile, requestor_object.profile
+                    requestor_object.profile, user_object.profile;
+    END IF;
 
-            IF current_mp.marc_form IS NOT NULL THEN
-                CONTINUE WHEN current_mp.marc_form <> rec_descriptor.item_form;
-            END IF;
+    -- Select the winning matchpoint into the matchpoint variable for returning
+    SELECT INTO matchpoint m.*
+      FROM  config.hold_matrix_matchpoint m
+            /*LEFT*/ JOIN permission.grp_ancestors_distance( requestor_object.profile ) rpgad ON m.requestor_grp = rpgad.id
+            LEFT JOIN permission.grp_ancestors_distance( user_object.profile ) upgad ON m.usr_grp = upgad.id
+            LEFT JOIN actor.org_unit_ancestors_distance( pickup_ou ) puoua ON m.pickup_ou = puoua.id
+            LEFT JOIN actor.org_unit_ancestors_distance( request_ou ) rqoua ON m.request_ou = rqoua.id
+            LEFT JOIN actor.org_unit_ancestors_distance( item_cn_object.owning_lib ) cnoua ON m.item_owning_ou = cnoua.id
+            LEFT JOIN actor.org_unit_ancestors_distance( item_object.circ_lib ) iooua ON m.item_circ_ou = iooua.id
+            LEFT JOIN actor.org_unit_ancestors_distance( user_object.home_ou  ) uhoua ON m.user_home_ou = uhoua.id
+      WHERE m.active
+            -- Permission Groups
+         -- AND (m.requestor_grp        IS NULL OR upgad.id IS NOT NULL) -- Optional Requestor Group?
+            AND (m.usr_grp              IS NULL OR upgad.id IS NOT NULL)
+            -- Org Units
+            AND (m.pickup_ou            IS NULL OR (puoua.id IS NOT NULL AND (puoua.distance = 0 OR NOT m.strict_ou_match)))
+            AND (m.request_ou           IS NULL OR (rqoua.id IS NOT NULL AND (rqoua.distance = 0 OR NOT m.strict_ou_match)))
+            AND (m.item_owning_ou       IS NULL OR (cnoua.id IS NOT NULL AND (cnoua.distance = 0 OR NOT m.strict_ou_match)))
+            AND (m.item_circ_ou         IS NULL OR (iooua.id IS NOT NULL AND (iooua.distance = 0 OR NOT m.strict_ou_match)))
+            AND (m.user_home_ou         IS NULL OR (uhoua.id IS NOT NULL AND (uhoua.distance = 0 OR NOT m.strict_ou_match)))
+            -- Static User Checks
+            AND (m.juvenile_flag        IS NULL OR m.juvenile_flag = user_object.juvenile)
+            -- Static Item Checks
+            AND (m.circ_modifier        IS NULL OR m.circ_modifier = item_object.circ_modifier)
+            AND (m.marc_type            IS NULL OR m.marc_type = COALESCE(item_object.circ_as_type, rec_descriptor.item_type))
+            AND (m.marc_form            IS NULL OR m.marc_form = rec_descriptor.item_form)
+            AND (m.marc_vr_format       IS NULL OR m.marc_vr_format = rec_descriptor.vr_format)
+            AND (m.ref_flag             IS NULL OR m.ref_flag = item_object.ref)
+      ORDER BY
+            -- Permission Groups
+            CASE WHEN rpgad.distance    IS NOT NULL THEN 2^(2*weights.requestor_grp - (rpgad.distance/denominator)) ELSE 0 END +
+            CASE WHEN upgad.distance    IS NOT NULL THEN 2^(2*weights.usr_grp - (upgad.distance/denominator)) ELSE 0 END +
+            -- Org Units
+            CASE WHEN puoua.distance    IS NOT NULL THEN 2^(2*weights.pickup_ou - (puoua.distance/denominator)) ELSE 0 END +
+            CASE WHEN rqoua.distance    IS NOT NULL THEN 2^(2*weights.request_ou - (rqoua.distance/denominator)) ELSE 0 END +
+            CASE WHEN cnoua.distance    IS NOT NULL THEN 2^(2*weights.item_owning_ou - (cnoua.distance/denominator)) ELSE 0 END +
+            CASE WHEN iooua.distance    IS NOT NULL THEN 2^(2*weights.item_circ_ou - (iooua.distance/denominator)) ELSE 0 END +
+            CASE WHEN uhoua.distance    IS NOT NULL THEN 2^(2*weights.user_home_ou - (uhoua.distance/denominator)) ELSE 0 END +
+            -- Static User Checks       -- Note: 4^x is equiv to 2^(2*x)
+            CASE WHEN m.juvenile_flag   IS NOT NULL THEN 4^weights.juvenile_flag ELSE 0 END +
+            -- Static Item Checks
+            CASE WHEN m.circ_modifier   IS NOT NULL THEN 4^weights.circ_modifier ELSE 0 END +
+            CASE WHEN m.marc_type       IS NOT NULL THEN 4^weights.marc_type ELSE 0 END +
+            CASE WHEN m.marc_form       IS NOT NULL THEN 4^weights.marc_form ELSE 0 END +
+            CASE WHEN m.marc_vr_format  IS NOT NULL THEN 4^weights.marc_vr_format ELSE 0 END +
+            CASE WHEN m.ref_flag        IS NOT NULL THEN 4^weights.ref_flag ELSE 0 END DESC,
+            -- Final sort on id, so that if two rules have the same sorting in the previous sort they have a defined order
+            -- This prevents "we changed the table order by updating a rule, and we started getting different results"
+            m.id;
 
-            IF current_mp.marc_vr_format IS NOT NULL THEN
-                CONTINUE WHEN current_mp.marc_vr_format <> rec_descriptor.vr_format;
-            END IF;
-
-            IF current_mp.juvenile_flag IS NOT NULL THEN
-                CONTINUE WHEN current_mp.juvenile_flag <> user_object.juvenile;
-            END IF;
-
-            IF current_mp.ref_flag IS NOT NULL THEN
-                CONTINUE WHEN current_mp.ref_flag <> item_object.ref;
-            END IF;
-
-
-            -- caclulate the rule match weight
-            IF current_mp.item_owning_ou IS NOT NULL THEN
-                CONTINUE WHEN current_mp.item_owning_ou NOT IN (SELECT (actor.org_unit_ancestors(item_cn_object.owning_lib)).id);
-                IF NOT current_mp.strict_ou_match THEN
-                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_owning_ou, item_cn_object.owning_lib)::FLOAT + 1.0)::FLOAT;
-                ELSE
-                    CONTINUE WHEN current_mp.item_owning_ou <> item_cn_object.owning_lib;
-                    tmp_weight := CASE WHEN current_mp.item_owning_ou = item_cn_object.owning_lib THEN 1.0 ELSE 0.0 END;
-                END IF;
-                current_mp_weight := current_mp_weight - tmp_weight;
-            END IF; 
-
-            IF current_mp.item_circ_ou IS NOT NULL THEN
-                CONTINUE WHEN current_mp.item_circ_ou NOT IN (SELECT (actor.org_unit_ancestors(item_object.circ_lib)).id);
-                IF NOT current_mp.strict_ou_match THEN
-                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.item_circ_ou, item_object.circ_lib)::FLOAT + 1.0)::FLOAT;
-                ELSE
-                    CONTINUE WHEN current_mp.item_circ_ou <> item_object.circ_lib;
-                    tmp_weight := CASE WHEN current_mp.item_circ_ou = item_object.circ_lib THEN 1.0 ELSE 0.0 END;
-                END IF;
-                current_mp_weight := current_mp_weight - tmp_weight;
-            END IF; 
-
-            IF current_mp.pickup_ou IS NOT NULL THEN
-                CONTINUE WHEN current_mp.pickup_ou NOT IN (SELECT (actor.org_unit_ancestors(pickup_ou)).id);
-                IF NOT current_mp.strict_ou_match THEN
-                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.pickup_ou, pickup_ou)::FLOAT + 1.0)::FLOAT;
-                ELSE
-                    CONTINUE WHEN current_mp.pickup_ou <> pickup_ou;
-                    tmp_weight := CASE WHEN current_mp.pickup_ou = pickiup_ou THEN 1.0 ELSE 0.0 END;
-                END IF;
-                current_mp_weight := current_mp_weight - tmp_weight;
-            END IF; 
-
-            IF current_mp.request_ou IS NOT NULL THEN
-                CONTINUE WHEN current_mp.request_ou NOT IN (SELECT (actor.org_unit_ancestors(request_ou)).id);
-                IF NOT current_mp.strict_ou_match THEN
-                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.request_ou, request_ou)::FLOAT + 1.0)::FLOAT;
-                ELSE
-                    CONTINUE WHEN current_mp.request_ou <> request_ou;
-                    tmp_weight := CASE WHEN current_mp.request_ou = request_ou THEN 1.0 ELSE 0.0 END;
-                END IF;
-                current_mp_weight := current_mp_weight - tmp_weight;
-            END IF; 
-
-            IF current_mp.user_home_ou IS NOT NULL THEN
-                CONTINUE WHEN current_mp.user_home_ou NOT IN (SELECT (actor.org_unit_ancestors(user_object.home_ou)).id);
-                IF NOT current_mp.strict_ou_match THEN
-                    SELECT INTO tmp_weight 1.0 / (actor.org_unit_proximity(current_mp.user_home_ou, user_object.home_ou)::FLOAT + 1.0)::FLOAT;
-                ELSE
-                    CONTINUE WHEN current_mp.user_home_ou <> user_object.home_ou;
-                    tmp_weight := CASE WHEN current_mp.user_home_ou = user_object.home_ou THEN 1.0 ELSE 0.0 END;
-                END IF;
-                current_mp_weight := current_mp_weight - tmp_weight;
-            END IF; 
-
-            -- set the matchpoint if we found the best one
-            IF matchpoint_weight IS NULL OR matchpoint_weight > current_mp_weight THEN
-                matchpoint = current_mp;
-                matchpoint_weight = current_mp_weight;
-            END IF;
-
-        END LOOP;
-
-        EXIT WHEN current_requestor_group.parent IS NULL OR matchpoint.id IS NOT NULL;
-
-        SELECT INTO current_requestor_group * FROM permission.grp_tree WHERE id = current_requestor_group.parent;
-    END LOOP;
-
+    -- Return just the ID for now
     RETURN matchpoint.id;
 END;
-$func$ LANGUAGE plpgsql;
-
+$func$ LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE FUNCTION action.hold_request_permit_test( pickup_ou INT, request_ou INT, match_item BIGINT, match_user INT, match_requestor INT, retargetting BOOL ) RETURNS SETOF action.matrix_test_result AS $func$
 DECLARE

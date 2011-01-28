@@ -101,7 +101,8 @@ ordered_file_list="
   080.schema.money.sql
   090.schema.action.sql
   095.schema.booking.sql
-  
+ 
+  099.matrix_weights.sql 
   100.circ_matrix.sql
   110.hold_matrix.sql
 
