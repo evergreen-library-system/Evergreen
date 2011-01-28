@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('0XXX');
+INSERT INTO config.upgrade_log (version) VALUES ('0479');
 
 CREATE OR REPLACE FUNCTION permission.grp_ancestors_distance( INT ) RETURNS TABLE (id INT, distance INT) AS $$
     WITH RECURSIVE grp_ancestors_distance(id, distance) AS (
