@@ -46,6 +46,7 @@
             if (typeof xulG.unlock_tab == 'function') {
                 dump('\twith xulG.lock_tab\n');
                 xulG.lock_tab();
+                window.oils_lock++; // different window scope than the chrome of xulG.lock_tab
             } else {
                 dump('\twithout xulG.lock_tab\n');
                 oils_unsaved_data_V();
@@ -64,6 +65,8 @@
             if (typeof xulG.unlock_tab == 'function') {
                 dump('\twith xulG.unlock_tab\n');
                 xulG.unlock_tab();
+                window.oils_lock--; // different window scope than the chrome of xulG.unlock_tab
+                if (window.oils_lock < 0) { window.oils_lock = 0; }
             } else {
                 dump('\twithout xulG.unlock_tab\n');
                 oils_unsaved_data_P();
