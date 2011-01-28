@@ -7,18 +7,21 @@
         data.unsaved_data++;
         window.oils_lock++;
         data.stash('unsaved_data');
+        dump('\n=-=-=-=-=\n');
+        dump('oils_unsaved_data_V for ' + location.href + '\n');
         dump('incrementing window.oils_lock\n');
-        dump(location.href + ' window.oils_lock == ' + window.oils_lock + '\n');
         dump('incrementing data.unsaved_data\n');
-        dump('data.unsaved_data == ' + data.unsaved_data + '\n');
+        dump('\twindow.oils_lock == ' + window.oils_lock + '\n');
+        dump('\tdata.unsaved_data == ' + data.unsaved_data + '\n');
     }
 
     function oils_unsaved_data_P(count) {
+        dump('\n=-=-=-=-=\n');
+        dump('oils_unsaved_data_P for ' + location.href + '\n');
         if (!count) { count = 1; }
         dump('decrementing window.oils_lock by ' + count + '\n');
         window.oils_lock -= count;
         if (window.oils_lock < 0) { window.oils_lock = 0; }
-        dump(location.href + ' window.oils_lock == ' + window.oils_lock + '\n');
         JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.stash_retrieve();
         data.stash_retrieve();
         if (typeof data.unsaved_data == 'undefined') { data.unsaved_data = 0; }
@@ -26,11 +29,13 @@
         data.unsaved_data -= count;
         if (data.unsaved_data < 0) { data.unsaved_data = 0; }
         data.stash('unsaved_data');
-        dump('data.unsaved_data == ' + data.unsaved_data + '\n');
+        dump('\twindow.oils_lock == ' + window.oils_lock + '\n');
+        dump('\tdata.unsaved_data == ' + data.unsaved_data + '\n');
     }
 
     function oils_lock_page(params) {
-        dump('oils_lock_page\n');
+        dump('\n=-=-=-=-=\n');
+        dump('oils_lock_page for ' + location.href + '\n');
         if (!params) { params = {}; }
         if (window.oils_lock > 0) {
             if (!params.allow_multiple_locks) {
@@ -53,7 +58,8 @@
     }
 
     function oils_unlock_page(params) {
-        dump('oils_unlock_page\n');
+        dump('\n=-=-=-=-=\n');
+        dump('oils_unlock_page for ' + location.href + '\n');
         if (typeof xulG != 'undefined') {
             if (typeof xulG.unlock_tab == 'function') {
                 dump('\twith xulG.unlock_tab\n');
@@ -70,12 +76,14 @@
     }
 
     window.oils_lock = 0;
-    dump(location.href + ' init window.oils_lock == ' + window.oils_lock + '\n');
+    dump('\n=-=-=-=-=\n');
+    dump('init window.oils_lock == ' + window.oils_lock + ' for ' + location.href + '\n');
     window.addEventListener(
         'close',
         function(ev) {
             try {
-                dump('oils_lock_page/oils_unlock_page onclose handler\n');
+                dump('\n=-=-=-=-=\n');
+                dump('oils_lock_page/oils_unlock_page onclose handler for ' + location.href + '\n');
                 if (window.oils_lock > 0) {
                     var confirmation = window.confirm($('offlineStrings').getString('menu.close_window.unsaved_data_warning'));
                     if (!confirmation) {
@@ -94,7 +102,7 @@
                     oils_unsaved_data_P( window.oils_lock );
                 }
                 window.oils_lock = 0;
-                dump(location.href + ' forcing window.oils_lock == ' + window.oils_lock + '\n');
+                dump('forcing window.oils_lock == ' + window.oils_lock + '\n');
 
                 // Dispatching the window close event doesn't always close the window, even though the event does happen
                 setTimeout(
