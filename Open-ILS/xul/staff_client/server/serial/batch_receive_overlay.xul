@@ -48,7 +48,7 @@
                 <hbox align="center">
                     <label
                         control="sub_chooser"
-                        value="&staff.serial.batch_receive.choose_sub;"
+                        value="&staff.serial.batch_receive.choose_sub.label;"
                         accesskey="&staff.serial.batch_receive.choose_sub.accesskey;" />
                     <box id="sub_chooser_here"></box>
                     <button
@@ -67,7 +67,7 @@
                 <hbox align="center">
                     <label
                         control="issuance_chooser"
-                        value="&staff.serial.batch_receive.choose_issuance;"
+                        value="&staff.serial.batch_receive.choose_issuance.label;"
                         accesskey="&staff.serial.batch_receive.choose_issuance.accesskey;" />
                     <box id="issuance_chooser_here"></box>
                     <button
