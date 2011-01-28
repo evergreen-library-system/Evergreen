@@ -3426,10 +3426,18 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create/>
-				<retrieve/>
-				<update/>
-				<delete/>
+				<create permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</create>
+				<retrieve permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</retrieve>
+				<update permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</update>
+				<delete permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</delete>
 			</actions>
 		</permacrud>
 	</class>
@@ -3519,10 +3527,16 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create/>
+				<create permission="ADMIN_SERIAL_SUBSCRIPTION">
+					<context link="subscription" field="owning_lib" />
+				</create>
 				<retrieve/>
-				<update/>
-				<delete/>
+				<update permission="ADMIN_SERIAL_SUBSCRIPTION">
+					<context link="subscription" field="owning_lib" />
+				</update>
+				<delete permission="ADMIN_SERIAL_SUBSCRIPTION">
+					<context link="subscription" field="owning_lib" />
+				</delete>
 			</actions>
 		</permacrud>
 	</class>
@@ -3589,10 +3603,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create/>
+				<create permission="RECEIVE_SERIAL ADMIN_SERIAL_SUBSCRIPTION" context_field="circ_lib" />
 				<retrieve/>
-				<update/>
-				<delete/>
+				<update permission="RECEIVE_SERIAL ADMIN_SERIAL_SUBSCRIPTION" context_field="circ_lib" />
+				<delete permission="RECEIVE_SERIAL ADMIN_SERIAL_SUBSCRIPTION" context_field="circ_lib" />
 			</actions>
 		</permacrud>
 	</class>
@@ -3641,7 +3655,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="sin" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::item_note" oils_persist:tablename="serial.item_note" reporter:label="Item Note">
+	<class id="sin" controller="open-ils.cstore" oils_obj:fieldmapper="serial::item_note" oils_persist:tablename="serial.item_note" reporter:label="Item Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.item_note_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Item" name="item" reporter:datatype="link"/>
@@ -3655,14 +3669,7 @@ SELECT  usr,
 			<link field="item" reltype="has_a" key="id" map="" class="sitem"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-			<actions>
-				<create/>
-				<retrieve/>
-				<update/>
-				<delete/>
-			</actions>
-		</permacrud>
+		<!-- Not available via PCRUD at this time -->
 	</class>
 
 	<class id="sbsum" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::basic_summary" oils_persist:tablename="serial.basic_summary" reporter:label="Basic Issue Summary">
@@ -3678,10 +3685,16 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create/>
+				<create permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</create>
 				<retrieve/>
-				<update/>
-				<delete/>
+				<update permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</update>
+				<create permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</create>
 			</actions>
 		</permacrud>
 	</class>
@@ -3699,10 +3712,16 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create/>
+				<create permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</create>
 				<retrieve/>
-				<update/>
-				<delete/>
+				<update permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</update>
+				<create permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</create>
 			</actions>
 		</permacrud>
 	</class>
@@ -3720,10 +3739,16 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create/>
+				<create permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</create>
 				<retrieve/>
-				<update/>
-				<delete/>
+				<update permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</update>
+				<create permission="ADMIN_SERIAL_DISTRIBUTION">
+					<context link="distribution" field="holding_lib" />
+				</create>
 			</actions>
 		</permacrud>
 	</class>
