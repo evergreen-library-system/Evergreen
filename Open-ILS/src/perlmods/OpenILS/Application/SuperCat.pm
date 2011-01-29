@@ -1498,9 +1498,13 @@ sub authority_tag_sf_startwith {
 
     my $tag = shift;
     my $subfield = shift;
+
     my $value = shift;
     my $limit = shift || 10;
     my $page = shift || 0;
+
+	# Chop the last character from the incoming value to return it on page 0
+	chop($value);
 
     my $ref_limit = $limit;
     my $offset = $limit * abs($page);
