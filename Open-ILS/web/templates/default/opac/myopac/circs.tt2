@@ -43,13 +43,16 @@
             [% FOR circ IN ctx.circs %]
                 [% attrs = {marc_xml => circ.marc_xml}; %]
                 [% PROCESS get_marc_attrs args=attrs; %]
+
                 <tr [% IF loop.count % 2 == 1 %] class='circ-table-odd' [% END %]>
-                    <td>[% attrs.title %]</td>
-                    <td>[% attrs.author %]</td>
+                    <td><a href='../record/[% circ.circ.target_copy.call_number.record.id %]'>[% attrs.title %]</a></td>
+                    <td><a href='../results?query=au:[% attrs.author | url %]'>[% attrs.author %]</a></td>
                     <td>[% date.format(ctx.parse_datetime(circ.circ.due_date),'%Y-%m-%d') %]</td>
                     <td><em>[% circ.circ.renewal_remaining %]</em></td>
-                    <td><input name='circ' value='[% circ.circ.id %]' type='checkbox'/></td>
+                    <td><input name='circ' value='[% circ.circ.id %]' type='checkbox' 
+                        [% IF circ.circ.renewal_remaining < 1 %] disabled='disabled' [% END %]/></td>
                 </tr>
+
                 [% IF circ.renewal_response and circ.renewal_response.textcode != 'SUCCESS' %]
                 <tr [% IF loop.count % 2 == 1 %] class='circ-table-odd' [% END %]>
                     <td colspan='0'>
@@ -62,6 +65,7 @@
                     </td>
                 </tr>
                 [% END %]
+
             [% END %]
         </tbody>
     </table>
