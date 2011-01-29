@@ -5,8 +5,31 @@
 <overlay id="openils_util_overlay"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
+    <script>dump('Loading OpenILS/util_overlay.xul for ' + location.href + '\n');</script>
     <scripts id="openils_util_scripts">
-        <script>dump('starting openils_util_overlay in ' + location.href + '\n');</script>
+        <script>
+        <![CDATA[
+        var _dump_level = 2; // 0 None, 1 Error, 2 Warning, 3 Info, 4 debug
+        if (!_original_dump) {
+            var _original_dump = window.dump;
+            window.dump = function (msg,level) {
+                try {
+                    if (typeof level == 'undefined') { level = 4; }
+                    if (level > _dump_level) { return; }
+                    switch(level) {
+                        case 1: case 'error': _original_dump('error: '); break;
+                        case 2: case 'warn': _original_dump('warn: '); break;
+                        case 3: case 'info': _original_dump('info: '); break;
+                        case 4: case 'debug': _original_dump('debug: '); break;
+                    }
+                    _original_dump(msg);
+                } catch(E) {
+                    alert('error in dump: ' + E + '\nmsg = ' + msg + '\nlevel = ' + level + '\n');
+                }
+            };
+        }
+        ]]>
+        </script>
         <script>var djConfig = { 'baseUrl' : '/js/dojo/dojo/',parseOnLoad: true,isDebug:false };</script>
         <script type="text/javascript" src="/js/dojo/dojo/dojo.js" />
         <script type="text/javascript" src="/IDL2js" />

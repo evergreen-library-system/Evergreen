@@ -629,6 +629,18 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/rule_age_hold_protect'); }
             ],
+            'cmd_server_admin_config_circ_weights' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/circ_matrix_weights'); }
+            ],
+            'cmd_server_admin_config_hold_weights' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/hold_matrix_weights'); }
+            ],
+            'cmd_server_admin_config_weight_assoc' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/weight_assoc'); }
+            ],
             'cmd_local_admin_external_text_editor' : [
                 ['oncommand'],
                 function() {

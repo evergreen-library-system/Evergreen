@@ -717,6 +717,9 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_recurring_fine "Circulation Recurring Fine Rules">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_max_fine "Circulation Max Fine Rules">
 <!ENTITY staff.main.menu.admin.server_admin.conify.config_rule_age_hold_protect "Age Hold Protect Rules">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_circ_weights "Circulation Matchpoint Weights">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_hold_weights "Hold Matchpoint Weights">
+<!ENTITY staff.main.menu.admin.server_admin.conify.config_weight_assoc "Weights Association">
 <!ENTITY staff.main.menu.admin.server_admin.conify.global_flag.label "Global Flags">
 
 <!ENTITY staff.main.menu.admin.server_admin.acq.label "Acquisitions">
