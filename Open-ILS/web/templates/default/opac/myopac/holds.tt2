@@ -47,8 +47,8 @@
                 [% attrs = {marc_xml => hold.marc_xml}; %]
                 [% PROCESS get_marc_attrs args=attrs; %]
             <tr>
-                <td>[% attrs.title %]</td>
-                <td>[% attrs.author %]</td>
+                <td><a href='../record/[% hold.hold.bre.id %]'>[% attrs.title %]</a></td>
+                <td><a href='../results?query=au:[% attrs.author | url %]'>[% attrs.author %]</a></td>
                 <td>
                     [%
                         format_desc = ctx.find_citm(attrs.mattype).value;
