@@ -4,6 +4,7 @@ use vars qw/$VERSION/;
 use OpenSRF::EX qw/:try/;
 use OpenILS::Application::Storage::FTS;
 use OpenILS::Utils::Fieldmapper;
+use OpenILS::Utils::Normalize qw( naco_normalize );
 use OpenSRF::Utils::Logger qw/:level/;
 use OpenSRF::Utils::Cache;
 use Data::Dumper;
@@ -33,7 +34,7 @@ sub validate_tag {
 	for my $t ( @tags ) {
 		for my $search ( @searches ) {
 			my $sf = $$search{subfield};
-			my $term = OpenILS::Application::Storage::FTS::naco_normalize($$search{term}, $sf);
+			my $term = naco_normalize($$search{term}, $sf);
 
 			$tag = [$tag] if (!ref($tag));
 

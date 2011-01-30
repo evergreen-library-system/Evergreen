@@ -14,6 +14,7 @@ package OpenILS::Application::SuperCat;
 
 use strict;
 use warnings;
+use OpenILS::Utils::Normalize qw( naco_normalize );
 
 # All OpenSRF applications must be based on OpenSRF::Application or
 # a subclass thereof.  Makes sense, eh?
@@ -863,7 +864,7 @@ sub general_authority_browse {
 __PACKAGE__->register_method(
 	method    => 'general_authority_browse',
 	api_name  => 'open-ils.supercat.authority.title.browse',
-	tag       => '130', subfield => 'a',
+	tag       => ['130'], subfield => 'a',
 	api_level => 1,
 	argc      => 1,
 	signature =>
@@ -908,7 +909,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method    => 'general_authority_browse',
 	api_name  => 'open-ils.supercat.authority.topic.browse',
-	tag       => '150', subfield => 'a',
+	tag       => ['150'], subfield => 'a',
 	api_level => 1,
 	argc      => 1,
 	signature =>
@@ -923,7 +924,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method    => 'general_authority_browse',
 	api_name  => 'open-ils.supercat.authority.title.refs.browse',
-	tag       => '130', subfield => 'a',
+	tag       => ['130'], subfield => 'a',
 	api_level => 1,
 	argc      => 1,
 	signature =>
@@ -968,7 +969,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method    => 'general_authority_browse',
 	api_name  => 'open-ils.supercat.authority.topic.refs.browse',
-	tag       => '150', subfield => 'a',
+	tag       => ['150'], subfield => 'a',
 	api_level => 1,
 	argc      => 1,
 	signature =>
@@ -990,6 +991,9 @@ sub authority_tag_sf_browse {
     my $value = shift;
     my $page_size = shift || 9;
     my $page = shift || 0;
+
+    # Match authority.full_rec normalization
+    $value = naco_normalize($value, $subfield);
 
     my ($before_limit,$after_limit) = (0,0);
     my ($before_offset,$after_offset) = (0,0);
@@ -1016,13 +1020,13 @@ sub authority_tag_sf_browse {
     }
     my @list = ();
 
-    if ($page < 0) {
+    if ($page <= 0) {
         my $before = $_storage->request(
             "open-ils.cstore.json_query.atomic",
             { select    => { afr => [qw/record value/] },
               from      => { 'are', 'afr' },
               where     => {
-                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => lc($value) } },
+                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => $value } },
                 '+are' => { 'deleted' => 'f' }
               },
               order_by  => { afr => { value => 'desc' } },
@@ -1039,7 +1043,7 @@ sub authority_tag_sf_browse {
             { select    => { afr => [qw/record value/] },
               from      => { 'are', 'afr' },
               where     => {
-                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => lc($value) } },
+                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => $value } },
                 '+are' => { 'deleted' => 'f' }
               },
               order_by  => { afr => { value => 'asc' } },
@@ -1374,7 +1378,7 @@ sub general_authority_startwith {
 __PACKAGE__->register_method(
 	method    => 'general_authority_startwith',
 	api_name  => 'open-ils.supercat.authority.title.startwith',
-	tag       => '130', subfield => 'a',
+	tag       => ['130'], subfield => 'a',
 	api_level => 1,
 	argc      => 1,
 	signature =>
@@ -1419,7 +1423,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method    => 'general_authority_startwith',
 	api_name  => 'open-ils.supercat.authority.topic.startwith',
-	tag       => '150', subfield => 'a',
+	tag       => ['150'], subfield => 'a',
 	api_level => 1,
 	argc      => 1,
 	signature =>
@@ -1434,7 +1438,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method    => 'general_authority_startwith',
 	api_name  => 'open-ils.supercat.authority.title.refs.startwith',
-	tag       => '130', subfield => 'a',
+	tag       => ['130'], subfield => 'a',
 	api_level => 1,
 	argc      => 1,
 	signature =>
@@ -1479,7 +1483,7 @@ __PACKAGE__->register_method(
 __PACKAGE__->register_method(
 	method    => 'general_authority_startwith',
 	api_name  => 'open-ils.supercat.authority.topic.refs.startwith',
-	tag       => '150', subfield => 'a',
+	tag       => ['150'], subfield => 'a',
 	api_level => 1,
 	argc      => 1,
 	signature =>
@@ -1503,8 +1507,8 @@ sub authority_tag_sf_startwith {
     my $limit = shift || 10;
     my $page = shift || 0;
 
-	# Chop the last character from the incoming value to return it on page 0
-	chop($value);
+    # Match authority.full_rec normalization
+    $value = naco_normalize($value, $subfield);
 
     my $ref_limit = $limit;
     my $offset = $limit * abs($page);
@@ -1531,7 +1535,7 @@ sub authority_tag_sf_startwith {
             { select    => { afr => [qw/record value/] },
               from      => { 'afr', 'are' },
               where     => {
-                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => lc($value) } },
+                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '<' => $value } },
                 '+are' => { deleted => 'f' }
               },
               order_by  => { afr => { value => 'desc' } },
@@ -1548,7 +1552,7 @@ sub authority_tag_sf_startwith {
             { select    => { afr => [qw/record value/] },
               from      => { 'afr', 'are' },
               where     => {
-                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => lc($value) } },
+                '+afr' => { tag => \@ref_tags, subfield => $subfield, value => { '>=' => $value } },
                 '+are' => { deleted => 'f' }
               },
               order_by  => { afr => { value => 'asc' } },
@@ -3391,4 +3395,4 @@ sub as_xml {
 
 
 1;
-# vim: noet:ts=4:sw=4
+# vim: et:ts=4:sw=4
