@@ -16,8 +16,6 @@ use OpenILS::Utils::Fieldmapper;
 use DateTime::Format::ISO8601;
 my $U = 'OpenILS::Application::AppUtils';
 
-my %cache; # proc-level cache
-
 sub _icon_by_mattype {  # XXX This is KCLS specific stuff that needs to be
                         # genericized later.
     my $mattype = shift;
@@ -138,13 +136,17 @@ sub load {
 }
 
 # general purpose utility functions added to the environment
+
+my %cache = (
+    map => {aou => {}}, # others added dynamically as needed
+    list => {},
+    org_settings => {}
+);
+
 sub load_helpers {
     my $self = shift;
     my $e = $self->editor;
     my $ctx = $self->ctx;
-
-    $cache{map} = {}; # public object maps
-    $cache{list} = {}; # public object lists
 
     # fetch-on-demand-and-cache subs for commonly used public data
     my @public_classes = qw/ccs aout cifm citm clm/;
@@ -170,7 +172,7 @@ sub load_helpers {
             return $cache{list}{$hint};
         };
     
-        $cache{map}{$hint} = {};
+        $cache{map}{$hint} = {} unless $cache{map}{$hint};
 
         $ctx->{$find_key} = sub {
             my $id = shift;
@@ -211,7 +213,6 @@ sub load_helpers {
     };
 
     # Add a special handler for the tree-shaped org unit cache
-    $cache{map}{aou} = {};
     $ctx->{find_aou} = sub {
         my $org_id = shift;
         $ctx->{aou_tree}->(); # force the org tree to load
@@ -231,7 +232,15 @@ sub load_helpers {
             $date->month,
             $date->year
         );
-    }
+    };
+
+    $ctx->{get_org_setting} = sub {
+        my($org_id, $setting) = @_;
+        $cache{org_settings}{$org_id} = {} unless $cache{org_settings}{$org_id};
+        $cache{org_settings}{$org_id}{$setting} = $U->ou_ancestor_setting_value($org_id, $setting)
+            unless exists $cache{org_settings}{$org_id}{$setting};
+        return $cache{org_settings}{$org_id}{$setting};
+    };
 }
 
 # context additions: 
@@ -245,6 +254,7 @@ sub load_common {
     my $ctx = $self->ctx;
 
     $ctx->{referer} = $self->cgi->referer;
+    $ctx->{is_staff} = ($self->apache->headers_in->get('User-Agent') =~ 'oils_xulrunner');
 
     if($e->authtoken($self->cgi->cookie('ses'))) {
 
@@ -353,16 +363,23 @@ sub load_rresults {
     my $page = $cgi->param('page') || 0;
     my $facet = $cgi->param('facet');
     my $query = $cgi->param('query');
-    my $limit = $cgi->param('limit') || 10; # XXX user settings
-    my $args = {limit => $limit, offset => $page * $limit}; 
-    $query = "$query $facet" if $facet;
+    my $limit = $cgi->param('limit') || 10; # TODO user settings
+
+    my $loc = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
+    my $depth = defined $cgi->param('depth') ? 
+        $cgi->param('depth') : $ctx->{find_aou}->($loc)->ou_type->depth;
+
+    my $args = {limit => $limit, offset => $page * $limit, org_unit => $loc, depth => $depth}; 
+    $self->apache->log->warn("Search : " . OpenSRF::Utils::JSON->perl2JSON($args));
+
+    $query = "$query $facet" if $facet; # TODO
     my $results;
 
     try {
-        $results = $U->simplereq(
-            'open-ils.search',
-            'open-ils.search.biblio.multiclass.query.staff', 
-            $args, $query, 1);
+
+        my $method = 'open-ils.search.biblio.multiclass.query';
+        $method .= '.staff' if $ctx->{is_staff};
+        $results = $U->simplereq('open-ils.search', $method, $args, $query, 1);
 
     } catch Error with {
         my $err = shift;
@@ -552,7 +569,7 @@ sub fetch_user_holds {
             $req_data->{ses}->kill_me;
         }
         @ses = $mk_req_batch->();
-        last unless @ses;
+        last unless @collected or @ses;
         $first = 0;
     }
     # ----------------------------------------------------------------
