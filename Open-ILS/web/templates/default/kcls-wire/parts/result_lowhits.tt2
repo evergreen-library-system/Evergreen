@@ -1,0 +1,93 @@
+<!-- ****************** result_lowhits.xml ***************************** -->
+<div id='result_low_hits' class='hide_me'>
+    <div id="zero_search_hits" class="hide_me">
+        <div style="float:left;width:300px;margin-top:20px;">
+            <p>Sorry, no entries were found for
+                <strong>&quot;<span id="zero_hits_term"></span>&quot;</strong><br />
+                <span id="zero_hits_label1" class="hide_me">Did you mean
+                    <strong><a id="spell_check_link" href="javascript:;"></a></strong>?</span>
+            </p>
+            <table cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td valign="top" style="padding-right:10px;">
+                        <span id="zero_hits_label2" class="hide_me">Other Possibilities:</span>
+                    </td>
+                    <td id="zero_hits_suggestions"></td>
+                </tr>
+            </table>
+        </div>
+        <div style="float:right;width:353px;background:#ccc;padding:10px;margin-top:7px;">
+            <p>
+                <strong>Still not finding what you are looking for?</strong><br />
+                Request that KCLS purchase the material you are looking for by making a
+                <a href="javascript:;">Purchase Request</a><br />
+                <strong>Note:</strong> You must be logged in to make a Purchase Request<br />
+            </p>
+            <p>
+                <strong>Keyword Search Tips</strong><br />
+                Change to <strong>Advanced Keyword Search.</strong>
+            </p>
+            <p>
+                Adjacency Multiple words are not searched together as a phrase. They will
+                be found in various parts of the record. To search for a phrase, enclose your
+                search terms in quotation marks.<br />
+                (example:  <strong>&quot;garcia marquez&quot;</strong>)
+            </p>
+            <p>
+                <strong>Truncation</strong><br />
+                Words may be right-hand truncated using an asterisk. Use a single asterisk *
+                to truncate from 1-5 characters. Use a double asterisk ** for open-ended truncation.<br />
+                (example: <strong>environment* agency</strong>)
+            </p>
+            <p>
+                <strong>Wildcards</strong><br />
+                You may use a question mark to replace a single character anywhere within a word.<br />
+                example: <strong>wom?</strong>)
+            </p>
+        </div>
+    </div>
+    <div class="hide_me">
+        <div style='text-align: center; padding-bottom: 8px;' class="hide_me">
+            <div id='result_low_hits_msg' class='hide_me'>&result.lowhits.few;</div>
+            <div id='result_zero_hits_msg' class='hide_me'>&result.lowhits.zero;</div>
+        </div>
+
+        <!-- spell checker -->
+        <div id='did_you_mean' class='lowhits_div hide_me'>
+            <span>&result.lowhits.did.you.mean; </span>
+            <!-- <a class='classic_link' id='spell_check_link'> </a> -->
+        </div>
+
+        <div id='low_hits_remove_format' class='lowhits_div hide_me'>
+            <span>&result.lowhits.formats; </span>
+            <a id='low_hits_remove_format_link' class='classic_link'>&result.lowhits.formats.search;</a>
+        </div>
+
+        <div id='low_hits_cross_ref' class='lowhits_div hide_me'>
+            <span>&result.lowhits.related;</span>
+            <div style='padding: 5px;'>
+                <a id='low_hits_xref_link' class='classic_link' style='padding-right: 5px;'> </a>
+            </div>
+        </div>
+
+        <div id='low_hits_expand_range' class='lowhits_div hide_me'>
+            <span>&result.lowhits.expand; </span>
+            <a id='low_hits_expand_link' class='classic_link' style='padding-right: 5px;'> </a>
+        </div>
+
+        <div id='low_hits_search_type' class='lowhits_div hide_me'>
+            <span>&result.lowhits.class;</span>
+            <a id='low_hits_title_search' class='hide_me classic_link' 
+                style='padding-right: 5px;'>&result.lowhits.title;</a>
+            <a id='low_hits_author_search' class='hide_me classic_link' 
+                style='padding-right: 5px;'>&result.lowhits.author;</a>
+            <a id='low_hits_subject_search' class='hide_me classic_link' 
+                style='padding-right: 5px;'>&result.lowhits.subject;</a>
+            <a id='low_hits_series_search' class='hide_me classic_link' 
+                    style='padding-right: 5px;'>&result.lowhits.series;</a>
+            <a id='low_hits_keyword_search' class='hide_me classic_link' 
+                style='padding-right: 5px;'>&result.lowhits.keyword;</a>
+        </div>
+    </div>
+</div>
+<!-- ****************** end: result_lowhits.xml ***************************** -->
