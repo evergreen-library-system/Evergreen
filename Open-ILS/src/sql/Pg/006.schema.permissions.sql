@@ -101,6 +101,27 @@ CREATE OR REPLACE FUNCTION permission.grp_ancestors ( INT ) RETURNS SETOF permis
 		END, a.name;
 $$ LANGUAGE SQL STABLE;
 
+CREATE OR REPLACE FUNCTION permission.grp_ancestors_distance( INT ) RETURNS TABLE (id INT, distance INT) AS $$
+    WITH RECURSIVE grp_ancestors_distance(id, distance) AS (
+            SELECT $1, 0
+        UNION
+            SELECT pgt.parent, gad.distance+1
+            FROM permission.grp_tree pgt JOIN grp_ancestors_distance gad ON (pgt.id = gad.id)
+            WHERE pgt.parent IS NOT NULL
+    )
+    SELECT * FROM grp_ancestors_distance;
+$$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION permission.grp_descendants_distance( INT ) RETURNS TABLE (id INT, distance INT) AS $$
+    WITH RECURSIVE grp_descendants_distance(id, distance) AS (
+            SELECT $1, 0
+        UNION
+            SELECT pgt.id, gdd.distance+1
+            FROM permission.grp_tree pgt JOIN grp_descendants_distance gdd ON (pgt.parent = gdd.id)
+    )
+    SELECT * FROM grp_descendants_distance;
+$$ LANGUAGE SQL STABLE;
+
 CREATE OR REPLACE FUNCTION permission.usr_perms ( INT ) RETURNS SETOF permission.usr_perm_map AS $$
 	SELECT	DISTINCT ON (usr,perm) *
 	  FROM	(

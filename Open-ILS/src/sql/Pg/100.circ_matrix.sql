@@ -76,20 +76,6 @@ INSERT INTO config.videorecording_format_map VALUES ('z','Other');
  **  developers focus on specific parts of the matrix.
  **/
 
-
---
---                 ****** Which ruleset and tests to use *******
---
--- * Most specific range for org_unit and grp wins.
---
--- * circ_modifier match takes precidence over marc_type match, if circ_modifier is set here
---
--- * marc_type is first checked against the circ_as_type from the copy, then the item type from the marc record
---
--- * If neither circ_modifier nor marc_type is set (both are NULLABLE) then the entry defines the default
---   ruleset and tests for the OU + group (like BOOK in PINES)
---
-
 CREATE TABLE config.circ_matrix_matchpoint (
     id                   SERIAL    PRIMARY KEY,
     active               BOOL    NOT NULL DEFAULT TRUE,
@@ -101,6 +87,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
     marc_vr_format       TEXT    REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
     copy_circ_lib        INT     REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
     copy_owning_lib      INT     REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    user_home_ou         INT     REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
     ref_flag             BOOL,
     juvenile_flag        BOOL,
     is_renewal           BOOL,
@@ -138,102 +125,116 @@ CREATE TABLE config.circ_matrix_circ_mod_test_map (
 
 CREATE OR REPLACE FUNCTION action.find_circ_matrix_matchpoint( context_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS config.circ_matrix_matchpoint AS $func$
 DECLARE
-    current_group    permission.grp_tree%ROWTYPE;
-    user_object    actor.usr%ROWTYPE;
-    item_object    asset.copy%ROWTYPE;
-    cn_object    asset.call_number%ROWTYPE;
-    rec_descriptor    metabib.rec_descriptor%ROWTYPE;
-    current_mp    config.circ_matrix_matchpoint%ROWTYPE;
-    matchpoint    config.circ_matrix_matchpoint%ROWTYPE;
+    user_object     actor.usr%ROWTYPE;
+    item_object     asset.copy%ROWTYPE;
+    cn_object       asset.call_number%ROWTYPE;
+    rec_descriptor  metabib.rec_descriptor%ROWTYPE;
+    matchpoint      config.circ_matrix_matchpoint%ROWTYPE;
+    weights         config.circ_matrix_weights%ROWTYPE;
+    user_age        INTERVAL;
+    denominator     INT;
 BEGIN
-    SELECT INTO user_object * FROM actor.usr WHERE id = match_user;
-    SELECT INTO item_object * FROM asset.copy WHERE id = match_item;
-    SELECT INTO cn_object * FROM asset.call_number WHERE id = item_object.call_number;
-    SELECT INTO rec_descriptor r.* FROM metabib.rec_descriptor r JOIN asset.call_number c USING (record) WHERE c.id = item_object.call_number;
-    SELECT INTO current_group * FROM permission.grp_tree WHERE id = user_object.profile;
+    SELECT INTO user_object     * FROM actor.usr                WHERE id = match_user;
+    SELECT INTO item_object     * FROM asset.copy               WHERE id = match_item;
+    SELECT INTO cn_object       * FROM asset.call_number        WHERE id = item_object.call_number;
+    SELECT INTO rec_descriptor  * FROM metabib.rec_descriptor   WHERE record = cn_object.record;
 
-    LOOP 
-        -- for each potential matchpoint for this ou and group ...
-        FOR current_mp IN
-            SELECT  m.*
-              FROM  config.circ_matrix_matchpoint m
-                    JOIN actor.org_unit_ancestors( context_ou ) d ON (m.org_unit = d.id)
-                    LEFT JOIN actor.org_unit_proximity p ON (p.from_org = context_ou AND p.to_org = d.id)
-              WHERE m.grp = current_group.id
-                    AND m.active
-                    AND (m.copy_owning_lib IS NULL OR cn_object.owning_lib IN ( SELECT id FROM actor.org_unit_descendants(m.copy_owning_lib) ))
-                    AND (m.copy_circ_lib   IS NULL OR item_object.circ_lib IN ( SELECT id FROM actor.org_unit_descendants(m.copy_circ_lib)   ))
-              ORDER BY    CASE WHEN p.prox        IS NULL THEN 999 ELSE p.prox END,
-                    CASE WHEN m.copy_owning_lib IS NOT NULL
-                        THEN 256 / ( SELECT COALESCE(prox, 255) + 1 FROM actor.org_unit_proximity WHERE to_org = cn_object.owning_lib AND from_org = m.copy_owning_lib LIMIT 1 )
-                        ELSE 0
-                    END +
-                    CASE WHEN m.copy_circ_lib IS NOT NULL
-                        THEN 256 / ( SELECT COALESCE(prox, 255) + 1 FROM actor.org_unit_proximity WHERE to_org = item_object.circ_lib AND from_org = m.copy_circ_lib LIMIT 1 )
-                        ELSE 0
-                    END +
-                    CASE WHEN m.is_renewal = renewal        THEN 128 ELSE 0 END +
-                    CASE WHEN m.juvenile_flag    IS NOT NULL THEN 64 ELSE 0 END +
-                    CASE WHEN m.circ_modifier    IS NOT NULL THEN 32 ELSE 0 END +
-                    CASE WHEN m.marc_type        IS NOT NULL THEN 16 ELSE 0 END +
-                    CASE WHEN m.marc_form        IS NOT NULL THEN 8 ELSE 0 END +
-                    CASE WHEN m.marc_vr_format    IS NOT NULL THEN 4 ELSE 0 END +
-                    CASE WHEN m.ref_flag        IS NOT NULL THEN 2 ELSE 0 END +
-                    CASE WHEN m.usr_age_lower_bound    IS NOT NULL THEN 0.5 ELSE 0 END +
-                    CASE WHEN m.usr_age_upper_bound    IS NOT NULL THEN 0.5 ELSE 0 END DESC LOOP
+    -- Pre-generate this so we only calc it once
+    IF user_object.dob IS NOT NULL THEN
+        SELECT INTO user_age age(user_object.dob);
+    END IF;
 
-            IF current_mp.is_renewal IS NOT NULL THEN
-                CONTINUE WHEN current_mp.is_renewal <> renewal;
-            END IF;
+    -- Grab the closest set circ weight setting.
+    SELECT INTO weights cw.*
+      FROM config.weight_assoc wa
+           JOIN config.circ_matrix_weights cw ON (cw.id = wa.circ_weights)
+           JOIN actor.org_unit_ancestors_distance( context_ou ) d ON (wa.org_unit = d.id)
+      WHERE active
+      ORDER BY d.distance
+      LIMIT 1;
 
-            IF current_mp.circ_modifier IS NOT NULL THEN
-                CONTINUE WHEN current_mp.circ_modifier <> item_object.circ_modifier OR item_object.circ_modifier IS NULL;
-            END IF;
+    -- No weights? Bad admin! Defaults to handle that anyway.
+    IF weights.id IS NULL THEN
+        weights.grp                 := 11;
+        weights.org_unit            := 10;
+        weights.circ_modifier       := 5;
+        weights.marc_type           := 4;
+        weights.marc_form           := 3;
+        weights.marc_vr_format      := 2;
+        weights.copy_circ_lib       := 8;
+        weights.copy_owning_lib     := 8;
+        weights.user_home_ou        := 8;
+        weights.ref_flag            := 1;
+        weights.juvenile_flag       := 6;
+        weights.is_renewal          := 7;
+        weights.usr_age_lower_bound := 0;
+        weights.usr_age_upper_bound := 0;
+    END IF;
 
-            IF current_mp.marc_type IS NOT NULL THEN
-                IF item_object.circ_as_type IS NOT NULL THEN
-                    CONTINUE WHEN current_mp.marc_type <> item_object.circ_as_type;
-                ELSE
-                    CONTINUE WHEN current_mp.marc_type <> rec_descriptor.item_type;
-                END IF;
-            END IF;
+    -- Determine the max (expected) depth (+1) of the org tree and max depth of the permisson tree
+    -- If you break your org tree with funky parenting this may be wrong
+    -- Note: This CTE is duplicated in the find_hold_matrix_matchpoint function, and it may be a good idea to split it off to a function
+    -- We use one denominator for all tree-based checks for when permission groups and org units have the same weighting
+    WITH all_distance(distance) AS (
+            SELECT depth AS distance FROM actor.org_unit_type
+        UNION
+       	    SELECT distance AS distance FROM permission.grp_ancestors_distance((SELECT id FROM permission.grp_tree WHERE parent IS NULL))
+	)
+    SELECT INTO denominator MAX(distance) + 1 FROM all_distance;
 
-            IF current_mp.marc_form IS NOT NULL THEN
-                CONTINUE WHEN current_mp.marc_form <> rec_descriptor.item_form;
-            END IF;
+    -- Select the winning matchpoint into the matchpoint variable for returning
+    SELECT INTO matchpoint m.*
+      FROM  config.circ_matrix_matchpoint m
+            /*LEFT*/ JOIN permission.grp_ancestors_distance( user_object.profile ) upgad ON m.grp = upgad.id
+            /*LEFT*/ JOIN actor.org_unit_ancestors_distance( context_ou ) ctoua ON m.org_unit = ctoua.id
+            LEFT JOIN actor.org_unit_ancestors_distance( cn_object.owning_lib ) cnoua ON m.copy_owning_lib = cnoua.id
+            LEFT JOIN actor.org_unit_ancestors_distance( item_object.circ_lib ) iooua ON m.copy_circ_lib = iooua.id
+            LEFT JOIN actor.org_unit_ancestors_distance( user_object.home_ou  ) uhoua ON m.user_home_ou = uhoua.id
+      WHERE m.active
+            -- Permission Groups
+         -- AND (m.grp                      IS NULL OR upgad.id IS NOT NULL) -- Optional Permission Group?
+            -- Org Units
+         -- AND (m.org_unit                 IS NULL OR ctoua.id IS NOT NULL) -- Optional Org Unit?
+            AND (m.copy_owning_lib          IS NULL OR cnoua.id IS NOT NULL)
+            AND (m.copy_circ_lib            IS NULL OR iooua.id IS NOT NULL)
+            AND (m.user_home_ou             IS NULL OR uhoua.id IS NOT NULL)
+            -- Circ Type
+            AND (m.is_renewal               IS NULL OR m.is_renewal = renewal)
+            -- Static User Checks
+            AND (m.juvenile_flag            IS NULL OR m.juvenile_flag = user_object.juvenile)
+            AND (m.usr_age_lower_bound      IS NULL OR (user_age IS NOT NULL AND m.usr_age_lower_bound < user_age))
+            AND (m.usr_age_upper_bound      IS NULL OR (user_age IS NOT NULL AND m.usr_age_upper_bound > user_age))
+            -- Static Item Checks
+            AND (m.circ_modifier            IS NULL OR m.circ_modifier = item_object.circ_modifier)
+            AND (m.marc_type                IS NULL OR m.marc_type = COALESCE(item_object.circ_as_type, rec_descriptor.item_type))
+            AND (m.marc_form                IS NULL OR m.marc_form = rec_descriptor.item_form)
+            AND (m.marc_vr_format           IS NULL OR m.marc_vr_format = rec_descriptor.vr_format)
+            AND (m.ref_flag                 IS NULL OR m.ref_flag = item_object.ref)
+      ORDER BY
+            -- Permission Groups
+            CASE WHEN upgad.distance        IS NOT NULL THEN 2^(2*weights.grp - (upgad.distance/denominator)) ELSE 0 END +
+            -- Org Units
+            CASE WHEN ctoua.distance        IS NOT NULL THEN 2^(2*weights.org_unit - (ctoua.distance/denominator)) ELSE 0 END +
+            CASE WHEN cnoua.distance        IS NOT NULL THEN 2^(2*weights.copy_owning_lib - (cnoua.distance/denominator)) ELSE 0 END +
+            CASE WHEN iooua.distance        IS NOT NULL THEN 2^(2*weights.copy_circ_lib - (iooua.distance/denominator)) ELSE 0 END +
+            CASE WHEN uhoua.distance        IS NOT NULL THEN 2^(2*weights.user_home_ou - (uhoua.distance/denominator)) ELSE 0 END +
+            -- Circ Type                    -- Note: 4^x is equiv to 2^(2*x)
+            CASE WHEN m.is_renewal          IS NOT NULL THEN 4^weights.is_renewal ELSE 0 END +
+            -- Static User Checks
+            CASE WHEN m.juvenile_flag       IS NOT NULL THEN 4^weights.juvenile_flag ELSE 0 END +
+            CASE WHEN m.usr_age_lower_bound IS NOT NULL THEN 4^weights.usr_age_lower_bound ELSE 0 END +
+            CASE WHEN m.usr_age_upper_bound IS NOT NULL THEN 4^weights.usr_age_upper_bound ELSE 0 END +
+            -- Static Item Checks
+            CASE WHEN m.circ_modifier       IS NOT NULL THEN 4^weights.circ_modifier ELSE 0 END +
+            CASE WHEN m.marc_type           IS NOT NULL THEN 4^weights.marc_type ELSE 0 END +
+            CASE WHEN m.marc_form           IS NOT NULL THEN 4^weights.marc_form ELSE 0 END +
+            CASE WHEN m.marc_vr_format      IS NOT NULL THEN 4^weights.marc_vr_format ELSE 0 END +
+            CASE WHEN m.ref_flag            IS NOT NULL THEN 4^weights.ref_flag ELSE 0 END DESC,
+            -- Final sort on id, so that if two rules have the same sorting in the previous sort they have a defined order
+            -- This prevents "we changed the table order by updating a rule, and we started getting different results"
+            m.id;
 
-            IF current_mp.marc_vr_format IS NOT NULL THEN
-                CONTINUE WHEN current_mp.marc_vr_format <> rec_descriptor.vr_format;
-            END IF;
-
-            IF current_mp.ref_flag IS NOT NULL THEN
-                CONTINUE WHEN current_mp.ref_flag <> item_object.ref;
-            END IF;
-
-            IF current_mp.juvenile_flag IS NOT NULL THEN
-                CONTINUE WHEN current_mp.juvenile_flag <> user_object.juvenile;
-            END IF;
-
-            IF current_mp.usr_age_lower_bound IS NOT NULL THEN
-                CONTINUE WHEN user_object.dob IS NULL OR current_mp.usr_age_lower_bound < age(user_object.dob);
-            END IF;
-
-            IF current_mp.usr_age_upper_bound IS NOT NULL THEN
-                CONTINUE WHEN user_object.dob IS NULL OR current_mp.usr_age_upper_bound > age(user_object.dob);
-            END IF;
-
-
-            -- everything was undefined or matched
-            matchpoint = current_mp;
-
-            EXIT WHEN matchpoint.id IS NOT NULL;
-        END LOOP;
-
-        EXIT WHEN current_group.parent IS NULL OR matchpoint.id IS NOT NULL;
-
-        SELECT INTO current_group * FROM permission.grp_tree WHERE id = current_group.parent;
-    END LOOP;
-
+    -- Return the entire matchpoint
     RETURN matchpoint;
 END;
 $func$ LANGUAGE plpgsql;

@@ -232,8 +232,8 @@ sub parse_config {
     $ctx->{media_prefix} = (ref $data->{media_prefix}) ? '' : $data->{media_prefix};
     $ctx->{base_path} = (ref $data->{base_path}) ? '' : $data->{base_path};
     $ctx->{template_paths} = [];
-    $ctx->{force_valid_xml} = ($data->{force_valid_xml} =~ /true/io) ? 1 : 0;
-    $ctx->{debug_template} = ($data->{debug_template} =~ /true/io) ? 1 : 0;
+    $ctx->{force_valid_xml} = ( ($data->{force_valid_xml}||'') =~ /true/io) ? 1 : 0;
+    $ctx->{debug_template} = ( ($data->{debug_template}||'')  =~ /true/io) ? 1 : 0;
     $ctx->{default_template_extension} = $data->{default_template_extension} || 'tt2';
     $ctx->{web_dir} = $data->{web_dir};
 

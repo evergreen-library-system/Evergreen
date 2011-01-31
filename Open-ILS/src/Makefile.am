@@ -61,7 +61,7 @@ sysconf_DATA = $(examples)/action_trigger_filters.json.example \
 if BUILDILSCORE
 
 #Add directories to build
-OILSCORE_DIRS = c-apps extras 
+OILSCORE_DIRS = c-apps extras perlmods
 #Add manual (non-automake) install targets for simplicity of installing.
 OILSCORE_INST = ilscore-install
 
@@ -158,7 +158,6 @@ oilsinclude_HEADERS = $(headsdir)/idl_fieldmapper.h $(headsdir)/oils_constants.h
 install-data-hook: $(OILSCORE_INST) $(OILSWEB_INST) $(OILSUPDATES_INST) $(OILSREP_INST)
 
 uninstall-hook:
-	rm -R $(perldir)
 	rm -R $(TEMPLATEDIR)
 	rm -R $(XSLDIR)
 	rm -R $(CGIDIR)
@@ -167,14 +166,9 @@ uninstall-hook:
 #perl-install and string-templates-install	
 ilscore-install:
 	@echo $@
-	@echo "Installing Perl modules"
-	$(MKDIR_P) $(perldir)
 	$(MKDIR_P) $(TEMPLATEDIR)
-	cp -r @srcdir@/perlmods/* $(perldir)
 	cp -r @srcdir@/templates/marc $(TEMPLATEDIR)
 	cp -r @srcdir@/templates/password-reset $(TEMPLATEDIR)
-	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@libdir@/perl5/OpenILS/WWW/Web.pm'
-	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@libdir@/perl5/OpenILS/WWW/Method.pm'
 	@echo "Installing string templates to $(TEMPLATEDIR)"
 	$(MKDIR_P) $(TEMPLATEDIR)
 	$(MKDIR_P) $(datadir)/overdue/

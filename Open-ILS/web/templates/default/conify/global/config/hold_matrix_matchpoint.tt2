@@ -9,7 +9,6 @@
             autoHeight='true'
             dojoType="openils.widget.AutoGrid" 
             fieldOrder="['id', 'strict_ou_match', 'user_home_ou', 'request_ou', 'pickup_ou', 'item_owning_ou', 'item_circ_ou', 'requestor_grp', 'circ_modifier']"
-            suppressFields="['usr_grp']"
             defaultCellWidth='"auto"'
             query="{id: '*'}" 
             fmClass='chmm' 

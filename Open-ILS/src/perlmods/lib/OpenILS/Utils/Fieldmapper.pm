@@ -27,9 +27,9 @@ __PACKAGE__->register_method(
 #
 # To dump the Javascript version of the fieldmapper struct use the command:
 #
-#	PERL5LIB=~/cvs/ILS/OpenSRF/src/perlmods/:~/cvs/ILS/Open-ILS/src/perlmods/ GEN_JS=1 perl -MOpenILS::Utils::Fieldmapper -e 'print "\n";'
+#	PERL5LIB=:~/vcs/ILS/Open-ILS/src/perlmods/lib/ GEN_JS=1 perl -MOpenILS::Utils::Fieldmapper -e 'print "\n";'
 #
-# ... adjusted for your CVS sandbox, of course.
+# ... adjusted for your VCS sandbox of choice, of course.
 #
 
 sub classes {

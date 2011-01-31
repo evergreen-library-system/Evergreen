@@ -1,8 +1,7 @@
 [% BLOCK html_head %]
 <style>
-    table { width: 100%; text-align: center; padding: 20px; margin-top: 30px; }
-    table { border-collapse: collapse; }
-    table { padding: 3px; border-bottom: 1px solid #ddd; text-align: left;}
+    table { text-align: center; padding: 20px; margin-top: 30px; border-collapse: collapse; }
+    table td { padding: 5px 15px 5px 15px; border-bottom: 1px solid #ddd; text-align: left;}
     table tr:nth-child(odd) { background-color:#ded; }
 </style>
 [% END %]
@@ -29,6 +28,7 @@
     <tr>
         <td>Email Address</td>
         <td>[% ctx.user.email %]</td>
+        <td><a href='update_email'>Change</a></td>
     </tr>
     <tr>
         <td>Phone</td>

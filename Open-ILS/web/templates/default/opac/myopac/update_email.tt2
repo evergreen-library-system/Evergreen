@@ -1,0 +1,20 @@
+[% BLOCK html_head %]
+<style>
+    table { text-align: center; padding: 20px; margin-top: 30px; border-collapse: collapse; }
+    table td { padding: 5px 15px 5px 15px; border-bottom: 1px solid #ddd; text-align: left;}
+    table tr:nth-child(odd) { background-color:#ded; }
+</style>
+[% END %]
+
+[% WRAPPER "default/opac/base.tt2" %]
+[% INCLUDE "default/opac/myopac/_links.tt2" %]
+
+<form method='POST'>
+    <table> 
+        <tr><td>Current Email</td><td>[% ctx.user.email %]</td></tr>
+        <tr><td>New Email</td><td><input type='text' name='email'/></td></tr>
+    </table>
+    <input type='submit'/>
+</form>
+
+[% END %]

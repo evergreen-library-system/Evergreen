@@ -1,6 +1,6 @@
 #/usr/bin/perl
 use strict; use warnings;
-use lib q|../../../perlmods/|;
+use lib q|../../../perlmods/lib/|;
 use Time::HiRes qw/time/;
 use OpenILS::Application::Circ::ScriptBuilder;
 require '../oils_header.pl';
