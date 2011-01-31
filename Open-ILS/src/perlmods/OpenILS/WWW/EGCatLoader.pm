@@ -130,6 +130,7 @@ sub load {
     return $self->load_myopac_circs if $path =~ /opac\/myopac\/circs/;
     return $self->load_myopac_fines if $path =~ /opac\/myopac\/fines/;
     return $self->load_myopac_update_email if $path =~ /opac\/myopac\/update_email/;
+    return $self->load_myopac_bookbags if $path =~ /opac\/myopac\/bookbags/;
     return $self->load_myopac if $path =~ /opac\/myopac/;
     # ----------------------------------------------------------------
 
@@ -959,8 +960,25 @@ sub load_myopac_update_email {
     $self->apache->print($self->cgi->redirect(-url => $url));
 
     return Apache2::Const::REDIRECT;
+}
 
+sub load_myopac_bookbags {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+    my $limit = $self->cgi->param('limit') || 0;
+    my $offset = $self->cgi->param('offset') || 0;
 
+    my $args = {order_by => {cbreb => 'name'}};
+    $args->{limit} = $limit if $limit;
+    $args->{offset} = $limit if $limit;
+
+    $ctx->{bookbags} = $e->search_container_biblio_record_entry_bucket([
+        {owner => $self->editor->requestor->id, btype => 'bookbag'},
+        $args
+    ]);
+
+    return Apache2::Const::OK;
 }
 
 
