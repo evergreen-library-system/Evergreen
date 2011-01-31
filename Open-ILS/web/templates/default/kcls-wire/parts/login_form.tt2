@@ -1,0 +1,149 @@
+<!-- ****************** login.xml ***************************** -->
+<div class="hide_me">
+	<div class='login_text color_1' style='padding: 4px; text-align: center;'>
+		<span>&opac.login.login;</span>
+	</div>
+	<br/>
+</div>
+<div class="hide_me" id="forget_pw">
+    <h1>Password Reset</h1>
+	Username or Barcode<br />
+	<input type="text" id="forget_pw_user" /><br /><br />
+	Email Address on account<br />
+	<input type="text" id="forget_pw_email" /><br />
+    <a href="javascript:;"
+        onclick="iForgotMyPassword($('forget_pw_user').value,$('forget_pw_email').value);">Submit</a> &nbsp;
+    <a href="javascript:;"
+        onclick="unHideMe($('login_box'));hideMe($('forget_pw'));">Cancel</a>
+</div>
+<table id='change_pw_table' class='data_grid hide_me' style='margin-left: 20px;' width='95%'>
+	<thead>
+        <tr><td colspan='2' align='center'><b>&login.password;</b></td></tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan='2' style='padding:10px;'>
+                &login.first.time;
+                &common.password_criteria;
+            </td>
+        </tr>
+        <tr>
+            <td>&login.password.current.enter;</td>
+            <td><input type='password' id='change_pw_current'/></td>
+        </tr>
+        <tr>
+            <td>&login.password.new.enter;</td>
+            <td><input type='password' id='change_pw_1'/></td>
+        </tr>
+        <tr>
+            <td>&login.password.new.reenter;</td>
+            <td><input type='password' id='change_pw_2'/></td>
+        </tr>
+        <tr><td><br/></td><td/></tr>
+        <tr class='color_1'>
+            <td colspan='2' align='center'>
+                <span class='login_text' style='margin-right: 20px;'>
+                    <input type='submit' value='&login.password.update;'  id='change_pw_button'/>
+                </span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<span id='pw_no_match' class='hide_me'>&login.password.nomatch;</span>
+<span id='pw_update_successful' class='hide_me'>&login.password.success;</span>
+<span id='pw_not_strong' class='hide_me'>
+    &login.password.strength;
+    &common.password_criteria;
+</span>
+<span id='patron_card_inactive_alert' class='hide_me'>&login.barcode.inactive;</span>
+<span id='patron_inactive_alert' class='hide_me'>&login.account.inactive;</span>
+<span id='patron_login_failed' class='hide_me'>&login.failed;</span>
+
+<div id="login_box">
+    <div style="height:20px;"></div>
+    <form id='login_form' method='POST' action='javascript:loginDance();'>
+        <table cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td valign="top" width="676" class="login_boxes left_brain">
+                    <table cellpadding="0" cellspacing="0" border="0"
+                        width="100%">
+                        <tr>
+	                        <td colspan="2" style="padding-bottom: 10px;">
+                                <h1>Log in to Your Account</h1>
+                                Please enter the following information:
+                                <br /><br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="42%" class="lbl1">
+                                Library Card Number or Username<br />
+                                <span class="lbl2">
+                                    Please include leading zeros and no spaces.
+                                    <br /> Example: 0026626051</span>
+                                <br /><br />
+                            </td>
+                            <td width="58%" valign="top">
+                                <div class="input_bg">
+                                    <input type="text" name="opacUser"
+                                        id="login_username" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div style="height:15px;"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top" class="lbl1">
+                                PIN Number or Password<br />
+                                <span class="lbl2">If this is your first time
+                                    logging in, please enter<br />
+                                    the last 4 digits of your phone number.<br />
+                                    Example: 0926</span>
+                            </td>
+                            <td valign="top">
+                                <div class="input_bg">
+                                    <input name="opacPass" type="password" id="login_password" />
+                                </div>
+                                <div style="padding-top:7px;">
+                                    <input class="hide_me" type="checkbox"
+                                        id="remember_me" name="remember_me" />
+                                    <label class="hide_me"
+                                        style="position:relative;top:-2px;"
+                                        for="remember_me">Remember Me?</label>
+                                </div>
+                                <div style="padding-top:14px;">
+                                    <a href="javascript:;" id="login_button"><img
+                                        alt="Log in" src="/opac/skin/kcls/graphics/login-btn2.png" /></a>
+                                    <input class="hide_me"
+                                        id="login_form_submit" type="submit" />
+                                    <a href="javascript:;" onclick="hideMe($('login_box'));unHideMe($('forget_pw'));"
+                                        style="position:relative;top:-13px;left:2px;font-size:10px;">Forgot your PIN?</a>
+                                </div>
+	                        </td>
+                        </tr>
+                    </table>
+                    <br /><br />
+                </td>
+	            <td><div style="width:10px;"></div></td>
+                <td class="login_boxes right_brain" align="center"
+                    valign="top" width="291">
+                    <a href="http://www.kcls.org/about/contact/"><img
+                        src="/opac/skin/kcls/graphics/questions.png"
+                        alt="Questions?" style="margin-top:29px;" /></a>
+	                <div style="width:182px;color:black;padding:5px 25px;">
+                        Visit our FAQs section for answers to common questions
+                        about how to use your account.
+	                </div>
+                    <a href="http://www.kcls.org/usingthelibrary/catalog_help/index.cfm#FAQs"><img
+                        alt="FAQs" src="/opac/skin/kcls/graphics/faqs-btn.png"
+                        style="margin-top:13px;" /></a>
+	            </td>
+            </tr>
+        </table>
+    </form>
+    <div style="clear:both"></div>
+</div>
+<!-- ****************** end: login.xml ***************************** -->
