@@ -6,20 +6,7 @@
 [%- END %]
 
     <div id="search-wrapper">
-        <div style="margin:auto;width:974px;height:0px;">
-            <div id="user-ql">
-                <script type="text/javascript">
-/* if(grabUser()) {
-    var str = '<div style="float:right;width:214px;">';
-    str += '<div style="position:absolute;"><div style="position:relative;top:-81px;">\n';
-    str += '<div id="quick-links">\n';
-    str += '</div></div></div></div>';
-    document.write(str);
-}*/
-                </script>
-            </div>
         [% INCLUDE "default/kcls-wire/parts/utils.tt2" %]
-        </div>
         [% INCLUDE "default/kcls-wire/parts/searchbar.tt2" %]
     </div>
     <div id="content-wrapper">
