@@ -1,0 +1,50 @@
+[%  WRAPPER "default/kcls-wire/parts/base.tt2";
+    INCLUDE "default/kcls-wire/parts/topnav.tt2";
+    ctx.page_title = "Home" %]
+[% BLOCK html_head -%]
+<script type="text/javascript" src="/opac/skin/kcls-wire/js/misc.js"></script>
+<style type='text/css'>
+    .advanced_div { padding-top: 15px; }
+    #adv_global_search select { width: 13em; }
+    #adv_global_input_table select { width: 7em; }
+    .adv_adv_link { font-size: 8pt; color: red; }
+</style>
+[% END -%]
+    <div id="search-wrapper">
+        <div style="margin:auto;width:974px;height:0px;">
+            <div id="user-ql">
+                <script type="text/javascript">
+/* if(grabUser()) {
+    var str = '<div style="float:right;width:214px;">';
+    str += '<div style="position:absolute;"><div style="position:relative;top:-81px;">\n';
+    str += '<div id="quick-links">\n';
+    str += '</div></div></div></div>';
+    document.write(str);
+}*/
+                </script>
+            </div>
+        [% INCLUDE "default/kcls-wire/parts/utils.tt2" %]
+        </div>
+        <div id="adv_search_parent">
+            <div id="adv_search_tabs">
+                <a href="javascript:;" alt="Advanced Search" id="adv_search"
+                    onclick="swapTabs(this);"
+                    rel="adv_global_search"></a>
+                <a href="javascript:;" alt="Numeric Search" id="num_search"
+                    onclick="swapTabs(this);"
+                    rel="adv_quick_search_sidebar"></a>
+                <a href="javascript:;" alt="Expert Search" id="expert_search"
+                    onclick="swapTabs(this);"
+                    rel="adv_marc_search_sidebar"></a>
+            </div>
+        </div>
+    </div>
+    <div id="content-wrapper">
+        <div id="main-content">
+            <div class="advanced_div">
+            [% INCLUDE "default/kcls-wire/parts/advanced_search.tt2" %]
+            </div>
+            <div style="clear:both;height:15px;"></div>	
+        </div>
+    </div>
+[% END %]

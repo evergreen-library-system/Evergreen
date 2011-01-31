@@ -1,13 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" [
-]>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns='http://www.w3.org/1999/xhtml' lang='[% ctx.locale %]' xml:lang='[% ctx.locale %]'>
     <head>
-        <link rel="stylesheet" type="text/css" href="/opac/skin/kcls/css/style.css" />
-        <link rel="stylesheet" type="text/css" href="/opac/skin/kcls/css/contentslider.css" />
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="/opac/skin/kcls-wire/css/style.css" />
+        <link rel="stylesheet" type="text/css" href="/opac/skin/kcls-wire/css/contentslider.css" />
         <title>Catalog - King County Library - [% ctx.page_title %]</title>
         <link rel="unapi-server" type="application/xml" title="unAPI"
             href="/opac/extras/unapi" />
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
         [% BLOCK html_head; END; # provide a default that can be overridden %]
         [% PROCESS html_head %]
     </head>

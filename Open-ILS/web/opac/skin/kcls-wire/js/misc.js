@@ -57,9 +57,9 @@ function swapTabs(el) {
     if (!el) return;
 
     var tabs = [];
-    for (var i = 0; i < el.parentNode.childNodes.length) {
+    for (var i = 0; i < el.parentNode.childNodes.length; i++) {
         var node = el.parentNode.childNodes[i];
-        if (node.nodeType == 1 && node.nodeName == "a")
+        if (node.nodeType == 1 && node.nodeName.toLowerCase() == "a")
             tabs.push(node);
     }
 
