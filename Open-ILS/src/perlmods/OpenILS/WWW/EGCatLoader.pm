@@ -129,6 +129,7 @@ sub load {
     return $self->load_myopac_holds if $path =~ /opac\/myopac\/holds/;
     return $self->load_myopac_circs if $path =~ /opac\/myopac\/circs/;
     return $self->load_myopac_fines if $path =~ /opac\/myopac\/fines/;
+    return $self->load_myopac_update_email if $path =~ /opac\/myopac\/update_email/;
     return $self->load_myopac if $path =~ /opac\/myopac/;
     # ----------------------------------------------------------------
 
@@ -370,7 +371,6 @@ sub load_rresults {
         $cgi->param('depth') : $ctx->{find_aou}->($loc)->ou_type->depth;
 
     my $args = {limit => $limit, offset => $page * $limit, org_unit => $loc, depth => $depth}; 
-    $self->apache->log->warn("Search : " . OpenSRF::Utils::JSON->perl2JSON($args));
 
     $query = "$query $facet" if $facet; # TODO
     my $results;
@@ -540,7 +540,6 @@ sub fetch_user_holds {
         while($batch_idx < $top_idx) {
             my $hold_id = $hold_ids->[$batch_idx++];
             last unless $hold_id;
-            $self->apache->log->warn("fetching hold $hold_id");
             my $ses = OpenSRF::AppSession->create('open-ils.circ');
             my $req = $ses->request(
                 'open-ils.circ.hold.details.retrieve', 
@@ -565,7 +564,6 @@ sub fetch_user_holds {
         }
         for my $req_data (@ses) {
             push(@collected, {hold => $req_data->{req}->gather(1)});
-            $self->apache->log->warn("fetched a hold");
             $req_data->{ses}->kill_me;
         }
         @ses = $mk_req_batch->();
@@ -721,7 +719,7 @@ sub load_place_hold {
         }
 
         # hold permit failed
-        $self->apache->log->warn('hold permit result ' . OpenSRF::Utils::JSON->perl2JSON($allowed));
+        $logger->info('hold permit result ' . OpenSRF::Utils::JSON->perl2JSON($allowed));
     }
 
     return Apache2::Const::OK;
@@ -939,5 +937,31 @@ sub load_myopac_fines {
 
      return Apache2::Const::OK;
 }       
+
+sub load_myopac_update_email {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+    my $email = $self->cgi->param('email') || '';
+
+    unless($email =~ /.+\@.+\..+/) { # TODO better regex?
+        $ctx->{invalid_email} = $email;
+        return Apache2::Const::OK;
+    }
+
+    my $stat = $U->simplereq(
+        'open-ils.actor', 
+        'open-ils.actor.user.email.update', 
+        $e->authtoken, $email);
+
+    my $url = $self->apache->unparsed_uri;
+    $url =~ s/update_email/main/;
+    $self->apache->print($self->cgi->redirect(-url => $url));
+
+    return Apache2::Const::REDIRECT;
+
+
+}
+
 
 1;
