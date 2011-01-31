@@ -11,7 +11,7 @@
     [% END %]
         <option value='[% org_unit.id %]' [% IF org_unit.id == value %] selected='selected' [% END %]>
             [% 
-                pad = org_unit.ou_type.depth * 4;
+                pad = org_unit.ou_type.depth * 2;
                 FOR idx IN [0..pad]; '&nbsp;'; END;
                 org_unit.name;
             %]

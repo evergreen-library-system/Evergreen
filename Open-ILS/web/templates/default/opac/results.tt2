@@ -21,11 +21,13 @@
     page = CGI.param('page') || 0; 
     query = CGI.param('query');
     page_count = POSIX.ceil(ctx.hit_count / ctx.page_size);
+    loc = CGI.param('loc');
 %]
 
 <div id='form_div'>
     <form action='./results' method='GET'>
         <input type='text' name='query' size='50' value='[% query %]'/>
+        [% PROCESS build_org_selector name='loc' value=loc %]
         <input type='submit'/>
         <input type='hidden' name='page' value='0'/>
     </form>
@@ -71,8 +73,14 @@
         <td id='right_block'>
             <div>
                 <span>Hits: [% ctx.hit_count %] / Page [% page + 1 %] of [% page_count %]</span>
-                <a [% IF page > 0 %] href='?page=[% page - 1 %]&query=[% query | uri %]' [% END %]>Prev</a>  
-                <a [% IF (page + 1) < page_count %] href='?page=[% page + 1 %]&query=[% query | uri %]' [% END %]>Next</a>
+                [% 
+                    q = query | url;
+                    np_link = '?query=' _ q;
+                    IF loc; np_link = np_link _ "&loc=" _ loc; END;
+                    IF depth or depth == 0; np_link = np_link _ "&depth=" _ depth; END;
+                %]
+                <a [% IF page > 0 %] href='[% np_link %]&page=[% page - 1 %]' [% END %]>Prev</a>  
+                <a [% IF (page + 1) < page_count %] href='[% np_link %]&page=[% page + 1 %]' [% END %]>Next</a>
             </div>
             <table id='record_table'>
                 [%
