@@ -1,31 +1,32 @@
-[%  WRAPPER "default/kcls-wire/base.tt2";
-    INCLUDE "default/kcls-wire/topnav.tt2";
+[%  WRAPPER "default/kcls-wire/parts/base.tt2";
+    INCLUDE "default/kcls-wire/parts/topnav.tt2";
     ctx.page_title = "Home" %]
+[% BLOCK html_head -%]
+<script type="text/javascript" src="/opac/skin/kcls/js/contentslider.js"></script>
+[%- END %]
 
-<div id="search-wrapper">
-    <div style="margin:auto;width:974px;height:0px;">
-        <div id="user-ql">
-            <script type="text/javascript">
+    <div id="search-wrapper">
+        <div style="margin:auto;width:974px;height:0px;">
+            <div id="user-ql">
+                <script type="text/javascript">
 /* if(grabUser()) {
-	var str = '<div style="float:right;width:214px;">';
-	str += '<div style="position:absolute;"><div style="position:relative;top:-81px;">\n';
-	str += '<div id="quick-links">\n';
-	str += '</div></div></div></div>';
-	document.write(str);
+    var str = '<div style="float:right;width:214px;">';
+    str += '<div style="position:absolute;"><div style="position:relative;top:-81px;">\n';
+    str += '<div id="quick-links">\n';
+    str += '</div></div></div></div>';
+    document.write(str);
 }*/
-            </script>
+                </script>
+            </div>
+        [% INCLUDE "default/kcls-wire/parts/utils.tt2" %]
         </div>
-    [% INCLUDE "default/kcls-wire/utils.tt2" %]
+        [% INCLUDE "default/kcls-wire/parts/searchbar.tt2" %]
     </div>
-
-    [% INCLUDE "default/kcls-wire/searchbar.tt2" %]
-</div>
-
-<div id="content-wrapper">
-    <div id="main-content">
-        <div style="height:15px;clear:both;"></div>
-        [% INCLUDE "default/kcls-wire/homesearch.tt2" %]
-	    <div style="clear:both;height:15px;"></div>	
+    <div id="content-wrapper">
+        <div id="main-content">
+            <div style="height:15px;clear:both;"></div>
+            [% INCLUDE "default/kcls-wire/parts/homesearch.tt2" %]
+            <div style="clear:both;height:15px;"></div>	
+        </div>
     </div>
-</div>
 [% END %]

@@ -6,7 +6,7 @@
             </td>
         </tr>
         <tr>
-            <td>[% INCLUDE "default/kcls-wire/stypes_selector.tt2" %]</td>
+            <td>[% INCLUDE "default/kcls-wire/parts/stypes_selector.tt2" %]</td>
             <td>
                 <div id="search_box_wrapper">
                     <input type="text" id="search_box" style="width:162px;" value="Search Keyword" onfocus="if (this.value=='Search Keyword'){this.value='';this.style.color='#000';}" onblur="if (this.value==''){this.value='Search Keyword';this.style.color='#999';}" />
@@ -18,8 +18,8 @@
             </td>
         </tr>
         <tr>
-            <td>[% INCLUDE "default/kcls-wire/format_selector.tt2" %]</td>
-            <td>[% INCLUDE "default/kcls-wire/libselect.tt2" %]</td>
+            <td>[% INCLUDE "default/kcls-wire/parts/format_selector.tt2" %]</td>
+            <td>[% INCLUDE "default/kcls-wire/parts/libselect.tt2" %]</td>
         </tr>
     </table>
  
