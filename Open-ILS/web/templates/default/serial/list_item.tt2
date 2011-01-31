@@ -28,7 +28,7 @@
             <button dojoType="dijit.form.Button"
                 onClick="sitem_grid.refresh()">Refresh Grid</button>
             <button dojoType="dijit.form.Button"
-                onClick="sitem_grid.delete_items()">
+                onClick="sitem_grid.deleteSelected()">
                 Delete Selected
             </button>
         </div>
