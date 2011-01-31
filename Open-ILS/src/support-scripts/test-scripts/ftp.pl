@@ -1,4 +1,4 @@
-#!/usr/bin/perl -IOpen-ILS/src/perlmods 
+#!/usr/bin/perl -IOpen-ILS/src/perlmods/lib/
 
 use strict; use warnings;
 

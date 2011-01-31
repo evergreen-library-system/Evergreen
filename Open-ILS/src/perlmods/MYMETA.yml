@@ -1,0 +1,980 @@
+---
+abstract: ~
+author: []
+configure_requires:
+  Module::Build: 0.36
+dynamic_config: 0
+generated_by: 'Module::Build version 0.3603'
+license: gpl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: OpenILS
+provides:
+  CQL::BooleanNode:
+    file: lib/OpenILS/WWW/SuperCat.pm
+  CQL::TermNode:
+    file: lib/OpenILS/WWW/SuperCat.pm
+  Class::DBI:
+    file: lib/OpenILS/Application/Storage/FTS.pm
+  Fieldmapper:
+    file: lib/OpenILS/Utils/Fieldmapper.pm
+  MFHD:
+    file: lib/OpenILS/Utils/MFHD.pm
+  MFHD::Caption:
+    file: lib/OpenILS/Utils/MFHD/Caption.pm
+  MFHD::Date:
+    file: lib/OpenILS/Utils/MFHD/Date.pm
+  MFHD::Holding:
+    file: lib/OpenILS/Utils/MFHD/Holding.pm
+  OpenILS:
+    file: lib/OpenILS.pm
+    version: 2.00
+  OpenILS::Application:
+    file: lib/OpenILS/Application.pm
+  OpenILS::Application::Acq:
+    file: lib/OpenILS/Application/Acq.pm
+  OpenILS::Application::Acq::BatchManager:
+    file: lib/OpenILS/Application/Acq/Order.pm
+  OpenILS::Application::Acq::Claims:
+    file: lib/OpenILS/Application/Acq/Claims.pm
+  OpenILS::Application::Acq::EDI:
+    file: lib/OpenILS/Application/Acq/EDI.pm
+  OpenILS::Application::Acq::EDI::Translator:
+    file: lib/OpenILS/Application/Acq/EDI/Translator.pm
+  OpenILS::Application::Acq::Financials:
+    file: lib/OpenILS/Application/Acq/Financials.pm
+  OpenILS::Application::Acq::Invoice:
+    file: lib/OpenILS/Application/Acq/Invoice.pm
+  OpenILS::Application::Acq::Lineitem:
+    file: lib/OpenILS/Application/Acq/Lineitem.pm
+  OpenILS::Application::Acq::Order:
+    file: lib/OpenILS/Application/Acq/Order.pm
+  OpenILS::Application::Acq::Picklist:
+    file: lib/OpenILS/Application/Acq/Picklist.pm
+  OpenILS::Application::Acq::Provider:
+    file: lib/OpenILS/Application/Acq/Provider.pm
+  OpenILS::Application::Acq::Search:
+    file: lib/OpenILS/Application/Acq/Search.pm
+  OpenILS::Application::Actor:
+    file: lib/OpenILS/Application/Actor.pm
+  OpenILS::Application::Actor::ClosedDates:
+    file: lib/OpenILS/Application/Actor/ClosedDates.pm
+  OpenILS::Application::Actor::Container:
+    file: lib/OpenILS/Application/Actor/Container.pm
+  OpenILS::Application::Actor::Friends:
+    file: lib/OpenILS/Application/Actor/Friends.pm
+  OpenILS::Application::Actor::Stage:
+    file: lib/OpenILS/Application/Actor/Stage.pm
+  OpenILS::Application::Actor::UserGroups:
+    file: lib/OpenILS/Application/Actor/UserGroups.pm
+  OpenILS::Application::AppUtils:
+    file: lib/OpenILS/Application/AppUtils.pm
+  OpenILS::Application::Booking:
+    file: lib/OpenILS/Application/Booking.pm
+  OpenILS::Application::Cat:
+    file: lib/OpenILS/Application/Cat.pm
+  OpenILS::Application::Cat::AssetCommon:
+    file: lib/OpenILS/Application/Cat/AssetCommon.pm
+  OpenILS::Application::Cat::AuthCommon:
+    file: lib/OpenILS/Application/Cat/AuthCommon.pm
+  OpenILS::Application::Cat::Authority:
+    file: lib/OpenILS/Application/Cat/Authority.pm
+  OpenILS::Application::Cat::BibCommon:
+    file: lib/OpenILS/Application/Cat/BibCommon.pm
+  OpenILS::Application::Cat::Merge:
+    file: lib/OpenILS/Application/Cat/Merge.pm
+  OpenILS::Application::Circ:
+    file: lib/OpenILS/Application/Circ.pm
+  OpenILS::Application::Circ::CircCommon:
+    file: lib/OpenILS/Application/Circ/CircCommon.pm
+  OpenILS::Application::Circ::Circulate:
+    file: lib/OpenILS/Application/Circ/Circulate.pm
+  OpenILS::Application::Circ::Circulator:
+    file: lib/OpenILS/Application/Circ/Circulate.pm
+  OpenILS::Application::Circ::CopyLocations:
+    file: lib/OpenILS/Application/Circ/CopyLocations.pm
+  OpenILS::Application::Circ::CreditCard:
+    file: lib/OpenILS/Application/Circ/CreditCard.pm
+  OpenILS::Application::Circ::HoldNotify:
+    file: lib/OpenILS/Application/Circ/HoldNotify.pm
+  OpenILS::Application::Circ::Holds:
+    file: lib/OpenILS/Application/Circ/Holds.pm
+  OpenILS::Application::Circ::Money:
+    file: lib/OpenILS/Application/Circ/Money.pm
+  OpenILS::Application::Circ::NonCat:
+    file: lib/OpenILS/Application/Circ/NonCat.pm
+  OpenILS::Application::Circ::ScriptBuilder:
+    file: lib/OpenILS/Application/Circ/ScriptBuilder.pm
+  OpenILS::Application::Circ::StatCat:
+    file: lib/OpenILS/Application/Circ/StatCat.pm
+  OpenILS::Application::Circ::Survey:
+    file: lib/OpenILS/Application/Circ/Survey.pm
+  OpenILS::Application::Circ::Transit:
+    file: lib/OpenILS/Application/Circ/Transit.pm
+  OpenILS::Application::Collections:
+    file: lib/OpenILS/Application/Collections.pm
+  OpenILS::Application::Fielder:
+    file: lib/OpenILS/Application/Fielder.pm
+  OpenILS::Application::Ingest:
+    file: lib/OpenILS/Application/Ingest.pm
+  OpenILS::Application::Ingest::Authority:
+    file: lib/OpenILS/Application/Ingest.pm
+  OpenILS::Application::Ingest::Biblio:
+    file: lib/OpenILS/Application/Ingest.pm
+  OpenILS::Application::Ingest::Biblio::Fingerprint:
+    file: lib/OpenILS/Application/Ingest.pm
+  OpenILS::Application::Ingest::Biblio::URI:
+    file: lib/OpenILS/Application/Ingest.pm
+  OpenILS::Application::Ingest::FlatMARC:
+    file: lib/OpenILS/Application/Ingest.pm
+  OpenILS::Application::Ingest::XPATH:
+    file: lib/OpenILS/Application/Ingest.pm
+  OpenILS::Application::Penalty:
+    file: lib/OpenILS/Application/Penalty.pm
+  OpenILS::Application::PermaCrud:
+    file: lib/OpenILS/Application/PermaCrud.pm
+  OpenILS::Application::Proxy:
+    file: lib/OpenILS/Application/Proxy.pm
+  OpenILS::Application::Reporter:
+    file: lib/OpenILS/Application/Reporter.pm
+  OpenILS::Application::ResolverResolver:
+    file: lib/OpenILS/Application/ResolverResolver.pm
+  OpenILS::Application::Search:
+    file: lib/OpenILS/Application/Search.pm
+  OpenILS::Application::Search::AddedContent:
+    file: lib/OpenILS/Application/Search/AddedContent.pm
+  OpenILS::Application::Search::Authority:
+    file: lib/OpenILS/Application/Search/Authority.pm
+  OpenILS::Application::Search::Biblio:
+    file: lib/OpenILS/Application/Search/Biblio.pm
+  OpenILS::Application::Search::CNBrowse:
+    file: lib/OpenILS/Application/Search/CNBrowse.pm
+  OpenILS::Application::Search::Serial:
+    file: lib/OpenILS/Application/Search/Serial.pm
+  OpenILS::Application::Search::Z3950:
+    file: lib/OpenILS/Application/Search/Z3950.pm
+  OpenILS::Application::Search::Zips:
+    file: lib/OpenILS/Application/Search/Zips.pm
+  OpenILS::Application::Serial:
+    file: lib/OpenILS/Application/Serial.pm
+  OpenILS::Application::Storage:
+    file: lib/OpenILS/Application/Storage.pm
+  OpenILS::Application::Storage::CDBI:
+    file: lib/OpenILS/Application/Storage/CDBI.pm
+    version: 1
+  OpenILS::Application::Storage::CDBI::action:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+    version: 1
+  OpenILS::Application::Storage::CDBI::actor:
+    file: lib/OpenILS/Application/Storage/CDBI/actor.pm
+    version: 1
+  OpenILS::Application::Storage::CDBI::asset:
+    file: lib/OpenILS/Application/Storage/CDBI/asset.pm
+    version: 1
+  OpenILS::Application::Storage::CDBI::authority:
+    file: lib/OpenILS/Application/Storage/CDBI/authority.pm
+    version: 1
+  OpenILS::Application::Storage::CDBI::biblio:
+    file: lib/OpenILS/Application/Storage/CDBI/biblio.pm
+    version: 1
+  OpenILS::Application::Storage::CDBI::booking:
+    file: lib/OpenILS/Application/Storage/CDBI/booking.pm
+    version: 1
+  OpenILS::Application::Storage::CDBI::config:
+    file: lib/OpenILS/Application/Storage/CDBI/config.pm
+    version: 1
+  OpenILS::Application::Storage::CDBI::container:
+    file: lib/OpenILS/Application/Storage/CDBI/container.pm
+    version: 1
+  OpenILS::Application::Storage::CDBI::metabib:
+    file: lib/OpenILS/Application/Storage/CDBI/metabib.pm
+    version: 1
+  OpenILS::Application::Storage::CDBI::money:
+    file: lib/OpenILS/Application/Storage/CDBI/money.pm
+    version: 1
+  OpenILS::Application::Storage::CDBI::permission:
+    file: lib/OpenILS/Application/Storage/CDBI/permission.pm
+    version: 1
+  OpenILS::Application::Storage::CDBI::serial:
+    file: lib/OpenILS/Application/Storage/CDBI/serial.pm
+    version: 1
+  OpenILS::Application::Storage::Driver::Pg:
+    file: lib/OpenILS/Application/Storage/Driver/Pg.pm
+  OpenILS::Application::Storage::Driver::Pg::QueryParser:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+  OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+  OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan::facet:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+  OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan::filter:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+  OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan::modifier:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+  OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan::node:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+  OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan::node::atom:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+  OpenILS::Application::Storage::FTS:
+    file: lib/OpenILS/Application/Storage/FTS.pm
+  OpenILS::Application::Storage::Publisher:
+    file: lib/OpenILS/Application/Storage/Publisher.pm
+    version: 1
+  OpenILS::Application::Storage::Publisher::action:
+    file: lib/OpenILS/Application/Storage/Publisher/action.pm
+  OpenILS::Application::Storage::Publisher::actor:
+    file: lib/OpenILS/Application/Storage/Publisher/actor.pm
+  OpenILS::Application::Storage::Publisher::asset:
+    file: lib/OpenILS/Application/Storage/Publisher/asset.pm
+  OpenILS::Application::Storage::Publisher::authority:
+    file: lib/OpenILS/Application/Storage/Publisher/authority.pm
+    version: 1
+  OpenILS::Application::Storage::Publisher::biblio:
+    file: lib/OpenILS/Application/Storage/Publisher/biblio.pm
+    version: 1
+  OpenILS::Application::Storage::Publisher::config:
+    file: lib/OpenILS/Application/Storage/Publisher/config.pm
+  OpenILS::Application::Storage::Publisher::container:
+    file: lib/OpenILS/Application/Storage/Publisher/container.pm
+  OpenILS::Application::Storage::Publisher::metabib:
+    file: lib/OpenILS/Application/Storage/Publisher/metabib.pm
+    version: 1
+  OpenILS::Application::Storage::Publisher::money:
+    file: lib/OpenILS/Application/Storage/Publisher/money.pm
+  OpenILS::Application::Storage::Publisher::permission:
+    file: lib/OpenILS/Application/Storage/Publisher/permission.pm
+  OpenILS::Application::SuperCat:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::acn:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::acp:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::auri:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::sbsum:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::scap:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::sdist:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::siss:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::sisum:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::sitem:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::sssum:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::sstr:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::ssub:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::ssum_base:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::SuperCat::unAPI::sunit:
+    file: lib/OpenILS/Application/SuperCat.pm
+  OpenILS::Application::Trigger:
+    file: lib/OpenILS/Application/Trigger.pm
+  OpenILS::Application::Trigger::Cleanup:
+    file: lib/OpenILS/Application/Trigger/Cleanup.pm
+  OpenILS::Application::Trigger::Collector:
+    file: lib/OpenILS/Application/Trigger/Collector.pm
+  OpenILS::Application::Trigger::Event:
+    file: lib/OpenILS/Application/Trigger/Event.pm
+  OpenILS::Application::Trigger::EventGroup:
+    file: lib/OpenILS/Application/Trigger/EventGroup.pm
+  OpenILS::Application::Trigger::ModLoader:
+    file: lib/OpenILS/Application/Trigger/ModRunner.pm
+  OpenILS::Application::Trigger::ModRunner:
+    file: lib/OpenILS/Application/Trigger/ModRunner.pm
+  OpenILS::Application::Trigger::ModRunner::Cleanup:
+    file: lib/OpenILS/Application/Trigger/ModRunner.pm
+  OpenILS::Application::Trigger::ModRunner::Collector:
+    file: lib/OpenILS/Application/Trigger/ModRunner.pm
+  OpenILS::Application::Trigger::ModRunner::Reactor:
+    file: lib/OpenILS/Application/Trigger/ModRunner.pm
+  OpenILS::Application::Trigger::ModRunner::Validator:
+    file: lib/OpenILS/Application/Trigger/ModRunner.pm
+  OpenILS::Application::Trigger::ModStackRunner:
+    file: lib/OpenILS/Application/Trigger/ModRunner.pm
+  OpenILS::Application::Trigger::Reactor:
+    file: lib/OpenILS/Application/Trigger/Reactor.pm
+  OpenILS::Application::Trigger::Reactor::ApplyCircFee:
+    file: lib/OpenILS/Application/Trigger/Reactor/ApplyCircFee.pm
+  OpenILS::Application::Trigger::Reactor::ApplyPatronPenalty:
+    file: lib/OpenILS/Application/Trigger/Reactor/ApplyPatronPenalty.pm
+  OpenILS::Application::Trigger::Reactor::AstCall:
+    file: lib/OpenILS/Application/Trigger/Reactor/AstCall.pm
+  OpenILS::Application::Trigger::Reactor::GeneratePurchaseOrderJEDI:
+    file: lib/OpenILS/Application/Trigger/Reactor/GeneratePurchaseOrderJEDI.pm
+  OpenILS::Application::Trigger::Reactor::MarkItemLost:
+    file: lib/OpenILS/Application/Trigger/Reactor/MarkItemLost.pm
+  OpenILS::Application::Trigger::Reactor::ProcessTemplate:
+    file: lib/OpenILS/Application/Trigger/Reactor/ProcessTemplate.pm
+  OpenILS::Application::Trigger::Reactor::SendEmail:
+    file: lib/OpenILS/Application/Trigger/Reactor/SendEmail.pm
+  OpenILS::Application::Trigger::Reactor::SendFile:
+    file: lib/OpenILS/Application/Trigger/Reactor/SendFile.pm
+  OpenILS::Application::Trigger::Reactor::StaticEmail:
+    file: lib/OpenILS/Application/Trigger/Reactor/StaticEmail.pm
+  OpenILS::Application::Trigger::Validator:
+    file: lib/OpenILS/Application/Trigger/Validator.pm
+  OpenILS::Application::Trigger::Validator::Acq:
+    file: lib/OpenILS/Application/Trigger/Validator/Acq.pm
+  OpenILS::Application::Trigger::Validator::Acq::PurchaseOrderEDIRequired:
+    file: lib/OpenILS/Application/Trigger/Validator/Acq/PurchaseOrderEDIRequired.pm
+  OpenILS::Application::Trigger::Validator::Acq::UserRequestCancelled:
+    file: lib/OpenILS/Application/Trigger/Validator/Acq/UserRequestCancelled.pm
+  OpenILS::Application::Trigger::Validator::Acq::UserRequestOrdered:
+    file: lib/OpenILS/Application/Trigger/Validator/Acq/UserRequestOrdered.pm
+  OpenILS::Application::Trigger::Validator::Acq::UserRequestReceived:
+    file: lib/OpenILS/Application/Trigger/Validator/Acq/UserRequestReceived.pm
+  OpenILS::Application::Vandelay:
+    file: lib/OpenILS/Application/Vandelay.pm
+  OpenILS::Const:
+    file: lib/OpenILS/Const.pm
+  OpenILS::Event:
+    file: lib/OpenILS/Event.pm
+  OpenILS::Perm:
+    file: lib/OpenILS/Perm.pm
+  OpenILS::Reporter::Proxy:
+    file: lib/OpenILS/Reporter/Proxy.pm
+  OpenILS::Reporter::SQLBuilder:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Having:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::OrderBy:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Select:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::Bare:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::GenericTransform:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::age:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::average:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::count:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::count_distinct:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::date_trunc:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::day_name:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::dom:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::dow:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::doy:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::first:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::hod:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::hour_trunc:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::last:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::lower:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::max:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::min:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::month_name:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::month_trunc:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::months_ago:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::moy:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::qoy:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::quarter:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::quarters_ago:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::substring:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::sum:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::upper:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::woy:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Transform::year_trunc:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Column::Where:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Input:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Input::Transform::Bare:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Input::Transform::GenericTransform:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Input::Transform::NULL:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Input::Transform::age:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Input::Transform::relative_date:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Input::Transform::relative_month:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Input::Transform::relative_week:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Input::Transform::relative_year:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Join:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Join::cross:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Join::inner:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Join::left:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Join::right:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::Relation:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::Reporter::SQLBuilder::ResultSet:
+    file: lib/OpenILS/Reporter/SQLBuilder.pm
+  OpenILS::SIP:
+    file: lib/OpenILS/SIP.pm
+  OpenILS::SIP::Item:
+    file: lib/OpenILS/SIP/Item.pm
+  OpenILS::SIP::Msg:
+    file: lib/OpenILS/SIP/Msg.pm
+  OpenILS::SIP::Patron:
+    file: lib/OpenILS/SIP/Patron.pm
+  OpenILS::SIP::Transaction:
+    file: lib/OpenILS/SIP/Transaction.pm
+  OpenILS::SIP::Transaction::Checkin:
+    file: lib/OpenILS/SIP/Transaction/Checkin.pm
+  OpenILS::SIP::Transaction::Checkout:
+    file: lib/OpenILS/SIP/Transaction/Checkout.pm
+  OpenILS::SIP::Transaction::Renew:
+    file: lib/OpenILS/SIP/Transaction/Renew.pm
+  OpenILS::Template::Plugin::Unicode:
+    file: lib/OpenILS/Template/Plugin/Unicode.pm
+  OpenILS::Template::Plugin::WebSession:
+    file: lib/OpenILS/Template/Plugin/WebSession.pm
+  OpenILS::Template::Plugin::WebUtils:
+    file: lib/OpenILS/Template/Plugin/WebUtils.pm
+  OpenILS::Utils::CStoreEditor:
+    file: lib/OpenILS/Utils/CStoreEditor.pm
+  OpenILS::Utils::Cronscript:
+    file: lib/OpenILS/Utils/Cronscript.pm
+  OpenILS::Utils::Editor:
+    file: lib/OpenILS/Utils/Editor.pm
+  OpenILS::Utils::ISBN:
+    file: lib/OpenILS/Utils/ISBN.pm
+    version: 0.01
+  OpenILS::Utils::Lockfile:
+    file: lib/OpenILS/Utils/Lockfile.pm
+  OpenILS::Utils::MFHDParser:
+    file: lib/OpenILS/Utils/MFHDParser.pm
+  OpenILS::Utils::ModsParser:
+    file: lib/OpenILS/Utils/ModsParser.pm
+  OpenILS::Utils::Normalize:
+    file: lib/OpenILS/Utils/Normalize.pm
+  OpenILS::Utils::OfflineStore:
+    file: lib/OpenILS/Utils/OfflineStore.pm
+  OpenILS::Utils::OfflineStore::Script:
+    file: lib/OpenILS/Utils/OfflineStore.pm
+  OpenILS::Utils::OfflineStore::Session:
+    file: lib/OpenILS/Utils/OfflineStore.pm
+  OpenILS::Utils::Penalty:
+    file: lib/OpenILS/Utils/Penalty.pm
+  OpenILS::Utils::PermitHold:
+    file: lib/OpenILS/Utils/PermitHold.pm
+  OpenILS::Utils::RemoteAccount:
+    file: lib/OpenILS/Utils/RemoteAccount.pm
+  OpenILS::Utils::ScriptRunner:
+    file: lib/OpenILS/Utils/ScriptRunner.pm
+  OpenILS::Utils::SpiderMonkey:
+    file: lib/OpenILS/Utils/SpiderMonkey.pm
+  OpenILS::Utils::ZClient:
+    file: lib/OpenILS/Utils/ZClient.pm
+  OpenILS::Utils::ZClient::Record:
+    file: lib/OpenILS/Utils/ZClient.pm
+  OpenILS::Utils::ZClient::ResultSet:
+    file: lib/OpenILS/Utils/ZClient.pm
+  OpenILS::WWW::AddedContent:
+    file: lib/OpenILS/WWW/AddedContent.pm
+  OpenILS::WWW::AddedContent::Amazon:
+    file: lib/OpenILS/WWW/AddedContent/Amazon.pm
+  OpenILS::WWW::AddedContent::ContentCafe:
+    file: lib/OpenILS/WWW/AddedContent/ContentCafe.pm
+  OpenILS::WWW::AddedContent::OpenLibrary:
+    file: lib/OpenILS/WWW/AddedContent/OpenLibrary.pm
+  OpenILS::WWW::AddedContent::Syndetic:
+    file: lib/OpenILS/WWW/AddedContent/Syndetic.pm
+  OpenILS::WWW::BadDebt:
+    file: lib/OpenILS/WWW/BadDebt.pm
+  OpenILS::WWW::EGWeb:
+    file: lib/OpenILS/WWW/EGWeb.pm
+  OpenILS::WWW::Exporter:
+    file: lib/OpenILS/WWW/Exporter.pm
+  OpenILS::WWW::IDL2js:
+    file: lib/OpenILS/WWW/IDL2js.pm
+  OpenILS::WWW::Method:
+    file: lib/OpenILS/WWW/Method.pm
+  OpenILS::WWW::PasswordReset:
+    file: lib/OpenILS/WWW/PasswordReset.pm
+  OpenILS::WWW::Proxy:
+    file: lib/OpenILS/WWW/Proxy.pm
+  OpenILS::WWW::Redirect:
+    file: lib/OpenILS/WWW/Redirect.pm
+  OpenILS::WWW::Reporter:
+    file: lib/OpenILS/WWW/Reporter.pm
+  OpenILS::WWW::SuperCat:
+    file: lib/OpenILS/WWW/SuperCat.pm
+  OpenILS::WWW::SuperCat::Feed:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::atom:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::atom::item:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::html:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::html::item:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::htmlcard:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::htmlcard::item:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::htmlholdings:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::htmlholdings::item:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::marctxt:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::marctxt::item:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::marcxml:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::marcxml::item:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::mods:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::mods3:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::mods32:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::mods32::item:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::mods33:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::mods33::item:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::mods3::item:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::mods::item:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::ris:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::ris::item:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::rss2:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::SuperCat::Feed::rss2::item:
+    file: lib/OpenILS/WWW/SuperCat/Feed.pm
+  OpenILS::WWW::TemplateBatchBibUpdate:
+    file: lib/OpenILS/WWW/TemplateBatchBibUpdate.pm
+  OpenILS::WWW::Vandelay:
+    file: lib/OpenILS/WWW/Vandelay.pm
+  OpenILS::WWW::Web:
+    file: lib/OpenILS/WWW/Web.pm
+  OpenILS::WWW::XMLRPCGateway:
+    file: lib/OpenILS/WWW/XMLRPCGateway.pm
+  PathConfig:
+    file: lib/OpenILS/WWW/EGWeb.pm
+  QueryParser:
+    file: lib/OpenILS/Application/Storage/QueryParser.pm
+  QueryParser::query_plan:
+    file: lib/OpenILS/Application/Storage/QueryParser.pm
+  QueryParser::query_plan::facet:
+    file: lib/OpenILS/Application/Storage/QueryParser.pm
+  QueryParser::query_plan::filter:
+    file: lib/OpenILS/Application/Storage/QueryParser.pm
+  QueryParser::query_plan::modifier:
+    file: lib/OpenILS/Application/Storage/QueryParser.pm
+  QueryParser::query_plan::node:
+    file: lib/OpenILS/Application/Storage/QueryParser.pm
+  QueryParser::query_plan::node::atom:
+    file: lib/OpenILS/Application/Storage/QueryParser.pm
+  action:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::circulation:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::hold_copy_map:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::hold_notification:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::hold_request:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::hold_transit_copy:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::in_house_use:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::non_cat_in_house_use:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::non_cataloged_circulation:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::open_circulation:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::reservation_transit_copy:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::survey:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::survey_answer:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::survey_question:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::survey_response:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::transit_copy:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  action::unfulfilled_hold_list:
+    file: lib/OpenILS/Application/Storage/CDBI/action.pm
+  actor:
+    file: lib/OpenILS/Application/Storage/CDBI/actor.pm
+  actor::card:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::org_address:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::org_unit:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::org_unit::closed_date:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::org_unit::hours_of_operation:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::org_unit_proximity:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::org_unit_setting:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::org_unit_type:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::perm_group:
+    file: lib/OpenILS/Application/Storage/CDBI/actor.pm
+  actor::perm_group_permission_map:
+    file: lib/OpenILS/Application/Storage/CDBI/actor.pm
+  actor::perm_group_user_map:
+    file: lib/OpenILS/Application/Storage/CDBI/actor.pm
+  actor::permission:
+    file: lib/OpenILS/Application/Storage/CDBI/actor.pm
+  actor::stat_cat:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::stat_cat_entry:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::stat_cat_entry_user_map:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::user:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::user_access_entry:
+    file: lib/OpenILS/Application/Storage/CDBI/actor.pm
+  actor::user_address:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::user_setting:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::user_standing_penalty:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::usr_note:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::usr_org_unit_opt_in:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  actor::workstation:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  asset:
+    file: lib/OpenILS/Application/Storage/CDBI/asset.pm
+  asset::call_number:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  asset::call_number_class:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  asset::call_number_note:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  asset::copy:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  asset::copy_location:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  asset::copy_location_order:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  asset::copy_note:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  asset::stat_cat:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  asset::stat_cat_entry:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  asset::stat_cat_entry_copy_map:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  authority:
+    file: lib/OpenILS/Application/Storage/CDBI/authority.pm
+  authority::full_rec:
+    file: lib/OpenILS/Application/Storage/CDBI/authority.pm
+  authority::record_descriptor:
+    file: lib/OpenILS/Application/Storage/CDBI/authority.pm
+  authority::record_entry:
+    file: lib/OpenILS/Application/Storage/CDBI/authority.pm
+  authority::record_note:
+    file: lib/OpenILS/Application/Storage/CDBI/authority.pm
+  biblio:
+    file: lib/OpenILS/Application/Storage/CDBI/biblio.pm
+  biblio::record_entry:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  biblio::record_note:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  booking:
+    file: lib/OpenILS/Application/Storage/CDBI/booking.pm
+  booking::reservation:
+    file: lib/OpenILS/Application/Storage/CDBI/booking.pm
+  booking::reservation_attr_value_map:
+    file: lib/OpenILS/Application/Storage/CDBI/booking.pm
+  booking::resource:
+    file: lib/OpenILS/Application/Storage/CDBI/booking.pm
+  booking::resource_attr_map:
+    file: lib/OpenILS/Application/Storage/CDBI/booking.pm
+  booking::resource_type:
+    file: lib/OpenILS/Application/Storage/CDBI/booking.pm
+  config:
+    file: lib/OpenILS/Application/Storage/CDBI/config.pm
+  config::audience_map:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::bib_source:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::copy_status:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::i18n_core:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::i18n_locale:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::identification_type:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::item_form_map:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::item_type_map:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::language_map:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::lit_form_map:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::metabib_field:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::net_access_level:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::non_cataloged_type:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::rules::age_hold_protect:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::rules::circ_duration:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::rules::max_fine:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::rules::recurring_fine:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  config::standing:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  container:
+    file: lib/OpenILS/Application/Storage/CDBI/container.pm
+  container::biblio_record_entry_bucket:
+    file: lib/OpenILS/Application/Storage/CDBI/container.pm
+  container::biblio_record_entry_bucket_item:
+    file: lib/OpenILS/Application/Storage/CDBI/container.pm
+  container::call_number_bucket:
+    file: lib/OpenILS/Application/Storage/CDBI/container.pm
+  container::call_number_bucket_item:
+    file: lib/OpenILS/Application/Storage/CDBI/container.pm
+  container::copy_bucket:
+    file: lib/OpenILS/Application/Storage/CDBI/container.pm
+  container::copy_bucket_item:
+    file: lib/OpenILS/Application/Storage/CDBI/container.pm
+  container::user_bucket:
+    file: lib/OpenILS/Application/Storage/CDBI/container.pm
+  container::user_bucket_item:
+    file: lib/OpenILS/Application/Storage/CDBI/container.pm
+  metabib:
+    file: lib/OpenILS/Application/Storage/CDBI/metabib.pm
+  metabib::author_field_entry:
+    file: lib/OpenILS/Application/Storage/CDBI/metabib.pm
+  metabib::full_rec:
+    file: lib/OpenILS/Application/Storage/CDBI/metabib.pm
+  metabib::identifier_field_entry:
+    file: lib/OpenILS/Application/Storage/CDBI/metabib.pm
+  metabib::keyword_field_entry:
+    file: lib/OpenILS/Application/Storage/CDBI/metabib.pm
+  metabib::metarecord:
+    file: lib/OpenILS/Application/Storage/CDBI/metabib.pm
+  metabib::metarecord_source_map:
+    file: lib/OpenILS/Application/Storage/CDBI/metabib.pm
+  metabib::record_descriptor:
+    file: lib/OpenILS/Application/Storage/CDBI/metabib.pm
+  metabib::series_field_entry:
+    file: lib/OpenILS/Application/Storage/CDBI/metabib.pm
+  metabib::subject_field_entry:
+    file: lib/OpenILS/Application/Storage/CDBI/metabib.pm
+  metabib::title_field_entry:
+    file: lib/OpenILS/Application/Storage/CDBI/metabib.pm
+  money:
+    file: lib/OpenILS/Application/Storage/CDBI/money.pm
+  money::billable_transaction:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::billable_transaction_summary:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::billing:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::cash_payment:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::check_payment:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::collections_tracker:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::credit_card_payment:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::credit_payment:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::desk_payment:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::forgive_payment:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::goods_payment:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::grocery:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::open_billable_transaction_summary:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::open_user_circulation_summary:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::open_user_summary:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::payment:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::user_circulation_summary:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::user_summary:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  money::work_payment:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  permission:
+    file: lib/OpenILS/Application/Storage/CDBI/permission.pm
+  permission::grp_perm_map:
+    file: lib/OpenILS/Application/Storage/CDBI/permission.pm
+  permission::grp_tree:
+    file: lib/OpenILS/Application/Storage/CDBI/permission.pm
+  permission::perm_list:
+    file: lib/OpenILS/Application/Storage/CDBI/permission.pm
+  permission::usr_grp_map:
+    file: lib/OpenILS/Application/Storage/CDBI/permission.pm
+  permission::usr_perm_map:
+    file: lib/OpenILS/Application/Storage/CDBI/permission.pm
+  permission::usr_work_ou_map:
+    file: lib/OpenILS/Application/Storage/CDBI/permission.pm
+  serial:
+    file: lib/OpenILS/Application/Storage/CDBI/serial.pm
+  serial::issuance:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  serial::item:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  serial::record_entry:
+    file: lib/OpenILS/Application/Storage/CDBI/serial.pm
+  serial::subscription:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  serial::unit:
+    file: lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+  testlib:
+    file: lib/OpenILS/Utils/MFHD/test/testlib.pm
+requires:
+  APR::Const: 0
+  APR::Table: 0
+  Apache2::Const: 0
+  Apache2::Log: 0
+  Apache2::RequestIO: 0
+  Apache2::RequestRec: 0
+  Apache2::RequestUtil: 0
+  Business::CreditCard: 0
+  Business::EDI: 0
+  Business::ISBN: 0
+  Business::OnlinePayment: 0
+  CGI: 0
+  Carp: 0
+  Class::DBI: 0
+  Class::DBI::AbstractSearch: 0
+  DBI: 0
+  Data::Dumper: 0
+  DateTime: 0
+  DateTime::Format::ISO8601: 0
+  DateTime::Format::Mail: 0
+  DateTime::Format::Strptime: 0
+  DateTime::Set: 0
+  DateTime::SpanSet: 0
+  Digest::MD5: 0
+  Email::Send: 0
+  Encode: 0
+  Error: 0
+  Exporter: 0
+  File::Basename: 0
+  File::Spec: 0
+  File::Temp: 0
+  File::stat: 0
+  Getopt::Long: 0
+  IO::Scalar: 0
+  JavaScript::SpiderMonkey: 0
+  LWP::UserAgent: 0
+  List::Util: 0
+  Locale::Country: 0
+  MARC::Batch: 0
+  MARC::Field: 0
+  MARC::File::XML: 0
+  MARC::Record: 0
+  MIME::Base64: 0
+  Net::FTP: 0
+  Net::SSH2: 0
+  OpenSRF::AppSession: 0
+  OpenSRF::Application: 0
+  OpenSRF::EX: 0
+  OpenSRF::MultiSession: 0
+  OpenSRF::System: 0
+  OpenSRF::Utils: 0
+  OpenSRF::Utils::Cache: 0
+  OpenSRF::Utils::Config: 0
+  OpenSRF::Utils::JSON: 0
+  OpenSRF::Utils::Logger: 0
+  OpenSRF::Utils::SettingsClient: 0
+  OpenSRF::Utils::SettingsParser: 0
+  POSIX: 0
+  Parse::RecDescent: 0
+  RPC::XML: 0
+  RPC::XML::Client: 0
+  RPC::XML::Function: 0
+  RPC::XML::Method: 0
+  RPC::XML::Parser: 0
+  RPC::XML::Procedure: 0
+  SRU::Request: 0
+  SRU::Response: 0
+  Safe: 0
+  Scalar::Util: 0
+  Socket: 0
+  Sys::Syslog: 0
+  Template: 0
+  Template::Plugin: 0
+  Test::More: 0
+  Text::Aspell: 0
+  Text::CSV: 0
+  Text::Glob: 0
+  Time::HiRes: 0
+  Time::Local: 0
+  UNIVERSAL::require: 0
+  UUID::Tiny: 0
+  Unicode::Normalize: 0
+  XML::LibXML: 0
+  XML::LibXML::XPathContext: 0
+  XML::LibXSLT: 0
+  XML::Simple: 0
+resources:
+  license: http://opensource.org/licenses/gpl-license.php
+version: 2.00
