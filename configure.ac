@@ -50,12 +50,12 @@ AM_PROG_CC_C_O
 #[  --enable-openils-all    enables the installation of the default openils system (base system,web,staffclient) ],
 #[case "${enableval}" in
 #    yes) openils_all=true;
-#	 openils_core=true;
-#	 openils_web=true;
-#	 openils_updates=true;
-#	 openils_reporter=true;
-#	 openils_client_xul=true;
-#	 openils_server_xul=true ;;
+#     openils_core=true;
+#     openils_web=true;
+#     openils_updates=true;
+#     openils_reporter=true;
+#     openils_client_xul=true;
+#     openils_server_xul=true ;;
 #    no)  openils_all=false ;;
 #  *) AC_MSG_ERROR([please choose another value for --enable-openils-all (supported values are yes or no])
 #esac],
@@ -203,14 +203,14 @@ AC_ARG_WITH([apxs],
 # If the passed in value doesn't work, try some reasonable defaults
 # Fedora puts the file in /usr/sbin/apxs, for example
 if ! test -x "$APXS2"; then
-	for i in /usr/bin /usr/sbin /usr/local/apache/bin /usr/local/apache2/bin ; do
-		for j in apxs apxs2 ; do
-			if test -x "$i/$j"; then
-				APXS2="$i/$j"
-				break
-			fi
-		done
-	done
+    for i in /usr/bin /usr/sbin /usr/local/apache/bin /usr/local/apache2/bin ; do
+        for j in apxs apxs2 ; do
+            if test -x "$i/$j"; then
+                APXS2="$i/$j"
+                break
+            fi
+        done
+    done
 fi
 AC_SUBST([APXS2])
 
@@ -240,145 +240,148 @@ AC_ARG_WITH([dbi],
 # If the passed in value doesn't work, fall back to reasonable defaults
 # Distributions are starting to package a good version of libdbi / libdbd
 if ! test -d "$DBI_LIBS"; then
-	for i in /usr/lib/dbd/ /usr/lib64/dbd /usr/local/lib/dbd/ ; do
-		if test -d "$i"; then
-			DBI_LIBS="$i"
-			break
-		fi
-	done
+    for i in /usr/lib/dbd/ /usr/lib64/dbd /usr/local/lib/dbd/ ; do
+        if test -d "$i"; then
+            DBI_LIBS="$i"
+            break
+        fi
+    done
 fi
 AC_SUBST([DBI_LIBS])
 
 if test "x$openils_core" = "xtrue"; then
 
-	AC_CHECK_PROG([MEMCACHED],memcached,yes,no)
-	if test $MEMCACHED = "no"; then
-		AC_MSG_ERROR([*** memcached not found, aborting])
-	fi
+    AC_CHECK_PROG([MEMCACHED],memcached,yes,no)
+    if test $MEMCACHED = "no"; then
+        AC_MSG_ERROR([*** memcached not found, aborting])
+    fi
 
-	AC_CHECK_PROG([ASPELL],aspell,yes,no)
-	if test $ASPELL = "no"; then
-		AC_MSG_ERROR([*** aspell not found, aborting])
-	fi
+    AC_CHECK_PROG([ASPELL],aspell,yes,no)
+    if test $ASPELL = "no"; then
+        AC_MSG_ERROR([*** aspell not found, aborting])
+    fi
 
-	AC_CHECK_PROG([CPAN],cpan,yes,no)
-	if test $CPAN = "no"; then
-		AC_MSG_ERROR([*** cpan not found, aborting])
-	fi
+    AC_CHECK_PROG([CPAN],cpan,yes,no)
+    if test $CPAN = "no"; then
+        AC_MSG_ERROR([*** cpan not found, aborting])
+    fi
 
-	AC_CHECK_PROG([YAZ],yaz-config,yes,no)
-	if test $YAZ = "no"; then
-		AC_MSG_ERROR([*** yaz not found, aborting])
-	fi
+    AC_CHECK_PROG([YAZ],yaz-config,yes,no)
+    if test $YAZ = "no"; then
+        AC_MSG_ERROR([*** yaz not found, aborting])
+    fi
 
-	AC_CHECK_PROG([PERL],perl,yes,no)
-	if test $PERL = "no"; then 
-		AC_MSG_ERROR([*** perl not found, aborting])
-	fi
+    AC_CHECK_PROG([PERL],perl,yes,no)
+    if test $PERL = "no"; then 
+        AC_MSG_ERROR([*** perl not found, aborting])
+    fi
 
-	#------------------------------------
-	# Checks for libraries. 
-	#------------------------------------
+    #------------------------------------
+    # Checks for libraries. 
+    #------------------------------------
 
-	# Check for the existence of libraries in non-standard locations
+    # Check for the existence of libraries in non-standard locations
 
-	AC_MSG_CHECKING(for -lopensrf)
-	if test -e ${OPENSRF_LIBS}/libopensrf.so; then
-	AC_MSG_RESULT([yes])
-	else
-	AC_MSG_ERROR([*** libopensrf not found (or not in location specified to configure), aborting])
-	fi
+    AC_MSG_CHECKING(for -lopensrf)
+    if test -e ${OPENSRF_LIBS}/libopensrf.so; then
+    AC_MSG_RESULT([yes])
+    else
+    AC_MSG_ERROR([*** libopensrf not found (or not in location specified to configure), aborting])
+    fi
 
-	# Check for the rest of the libraries
+    # Check for the rest of the libraries
 
-	#check for dynamic linking functions
-	AC_CHECK_LIB(dl,dlopen)
+    #check for dynamic linking functions
+    AC_CHECK_LIB(dl,dlopen)
 
-	#check for the libdbi library
-	AC_CHECK_LIB(dbi,dbi_initialize)
+    #check for the libdbi library
+    AC_CHECK_LIB(dbi,dbi_initialize)
 
-	#to check for the availability and function of a particular
-	#driver we need a runtime check (since the driver is loaded
-	#dynamically). This example checks for the mysql driver
-	AC_MSG_CHECKING([for libdbi pgsql driver (dynamic load)])
-	AC_RUN_IFELSE(
-	  [AC_LANG_PROGRAM(,
-	    [[dbi_initialize(0); return(dbi_conn_new("pgsql") ? 0 : 1);]])],
-	  [AC_MSG_RESULT("yes")],
-	  [AC_MSG_FAILURE("pgsql driver not installed?")])
+    #to check for the availability and function of a particular
+    #driver we need a runtime check (since the driver is loaded
+    #dynamically). This example checks for the mysql driver
+    AC_MSG_CHECKING([for libdbi pgsql driver (dynamic load)])
+    AC_RUN_IFELSE(
+      [AC_LANG_PROGRAM(,
+        [[dbi_initialize(0); return(dbi_conn_new("pgsql") ? 0 : 1);]])],
+      [AC_MSG_RESULT("yes")],
+      [AC_MSG_FAILURE("pgsql driver not installed?")])
 
-	AC_CHECK_LIB([expat], [main], [], AC_MSG_ERROR(*** OpenILS requires libexpat))
-	AC_CHECK_LIB([ncurses], [main], [], AC_MSG_ERROR(*** OpenILS requires libncurses))
-	AC_CHECK_LIB([readline], [main], [], AC_MSG_ERROR(*** OpenILS requires libreadline))
-	AC_CHECK_LIB([xml2], [main], [], AC_MSG_ERROR(*** OpenILS requires libxml2))
-	AC_CHECK_LIB([xslt], [main], [], AC_MSG_ERROR(*** OpenILS requires libxslt))
-#	AC_CHECK_LIB([perl], [main], [], AC_MSG_ERROR(*** OpenILS requires libperl-dev))
-	AC_CHECK_LIB([pq], [main], [], AC_MSG_ERROR(*** OpenILS requires libpq))
+    AC_CHECK_LIB([expat], [main], [], AC_MSG_ERROR(*** OpenILS requires libexpat))
+    AC_CHECK_LIB([ncurses], [main], [], AC_MSG_ERROR(*** OpenILS requires libncurses))
+    AC_CHECK_LIB([readline], [main], [], AC_MSG_ERROR(*** OpenILS requires libreadline))
+    AC_CHECK_LIB([xml2], [main], [], AC_MSG_ERROR(*** OpenILS requires libxml2))
+    AC_CHECK_LIB([xslt], [main], [], AC_MSG_ERROR(*** OpenILS requires libxslt))
+    AC_CHECK_LIB([pq], [main], [], AC_MSG_ERROR(*** OpenILS requires libpq))
 
 
-	#------------------------------------
-	# Checks for header files.
-	#------------------------------------
+    #------------------------------------
+    # Checks for header files.
+    #------------------------------------
 
-	AC_HEADER_STDC
-	AC_CHECK_HEADERS([fcntl.h langinfo.h locale.h stdlib.h string.h unistd.h])
+    AC_HEADER_STDC
+    AC_CHECK_HEADERS([fcntl.h langinfo.h locale.h stdlib.h string.h unistd.h])
 
-	#-------------------------------------------------------------------
-	# Checks for typedefs, structures, and compiler characteristics.
-	#-------------------------------------------------------------------
+    #-------------------------------------------------------------------
+    # Checks for typedefs, structures, and compiler characteristics.
+    #-------------------------------------------------------------------
 
-	AC_C_CONST
-	AC_TYPE_SIZE_T
-	AC_STRUCT_TM
-	AC_HEADER_STDBOOL
+    AC_C_CONST
+    AC_TYPE_SIZE_T
+    AC_STRUCT_TM
+    AC_HEADER_STDBOOL
 
-	#-------------------------------------------------------------------
-	# Checks for library functions.
-	#-------------------------------------------------------------------
+    #-------------------------------------------------------------------
+    # Checks for library functions.
+    #-------------------------------------------------------------------
 
-	AC_FUNC_STRFTIME
-	AC_FUNC_STRTOD
-	AC_CHECK_FUNCS([localtime_r memset nl_langinfo setlocale strcasecmp strchr strdup strerror strncasecmp])
+    AC_FUNC_STRFTIME
+    AC_FUNC_STRTOD
+    AC_CHECK_FUNCS([localtime_r memset nl_langinfo setlocale strcasecmp strchr strdup strerror strncasecmp])
 
-	#----------------------------
-	# Create Makefiles/Output
-	#----------------------------
+    #----------------------------
+    # Create Makefiles/Output
+    #----------------------------
 
-	AC_CONFIG_FILES([Open-ILS/examples/Makefile
-			 Open-ILS/src/c-apps/Makefile
-			 Open-ILS/src/extras/Makefile
-			 Open-ILS/src/java/Makefile
-			 Open-ILS/src/python/Makefile])
+    AC_CONFIG_FILES([Open-ILS/examples/Makefile
+             Open-ILS/src/c-apps/Makefile
+             Open-ILS/src/extras/Makefile
+             Open-ILS/src/java/Makefile
+             Open-ILS/src/python/Makefile])
 fi
 
 if test "x$build_apachemods" = "xtrue"; then
 
-	#-----------------------------------
-	# Set install path variables 
-	#-----------------------------------
+    #-----------------------------------
+    # Set install path variables 
+    #-----------------------------------
 
-	#APACHE PREFORK DEV TEST
-	AC_MSG_CHECKING([APXS2])
-	if test -x "${APXS2}"; then
-	AC_MSG_RESULT([yes])
-	else
-	AC_MSG_ERROR([*** apxs not found in ${APXS2}, aborting])
-	fi  
+    #APACHE PREFORK DEV TEST
+    AC_MSG_CHECKING([APXS2])
+    if test -x "${APXS2}"; then
+    AC_MSG_RESULT([yes])
+    else
+    AC_MSG_ERROR([*** apxs not found in ${APXS2}, aborting])
+    fi  
 
-	AC_CONFIG_FILES([Open-ILS/src/apachemods/Makefile])
+    AC_CONFIG_FILES([Open-ILS/src/apachemods/Makefile])
 fi
 
 AC_CONFIG_FILES([Makefile
-		 Open-ILS/src/Makefile
-		 Open-ILS/web/Makefile
-		 Open-ILS/updates/Makefile
-		 Open-ILS/xul/staff_client/Makefile
-		 Open-ILS/src/extras/eg_config
-		 Open-ILS/src/extras/fast-extract],
-		[
-			if test -e "./Open-ILS/src/extras/eg_config"; then chmod 755 Open-ILS/src/extras/eg_config; fi;
-			if test -e "./Open-ILS/src/extras/fast-extract"; then chmod 755 Open-ILS/src/extras/fast-extract; fi;
-		])
+         Open-ILS/src/Makefile
+         Open-ILS/web/Makefile
+         Open-ILS/updates/Makefile
+         Open-ILS/xul/staff_client/Makefile
+         Open-ILS/src/extras/eg_config
+         Open-ILS/src/extras/fast-extract
+         Open-ILS/src/perlmods/Makefile
+         Open-ILS/src/perlmods/lib/OpenILS/WWW/Method.pm
+         Open-ILS/src/perlmods/lib/OpenILS/WWW/Web.pm
+         Open-ILS/src/perlmods/lib/OpenILS/Utils/Cronscript.pm],
+        [
+            if test -e "./Open-ILS/src/extras/eg_config"; then chmod 755 Open-ILS/src/extras/eg_config; fi;
+            if test -e "./Open-ILS/src/extras/fast-extract"; then chmod 755 Open-ILS/src/extras/fast-extract; fi;
+        ])
 AC_OUTPUT
 
 #-------------------------------------------------
@@ -391,44 +394,44 @@ AC_MSG_RESULT([--------------------- Configuration options:  -------------------
 AC_MSG_RESULT([])
 AC_MSG_RESULT([-------- Installation Options: --------])
 if test "$openils_core" = "true" ; then
-	AC_MSG_RESULT([Evergreen Core:			yes])
+    AC_MSG_RESULT([Evergreen Core:          yes])
 else
-	AC_MSG_RESULT([Evergreen Core:			no])
+    AC_MSG_RESULT([Evergreen Core:          no])
 fi
 if test "$build_apachemods" = "true" ; then
-        AC_MSG_RESULT([Evergreen Apache module:	yes])
-else
-        AC_MSG_RESULT([Evergreen Apache module:	no])
-fi
-if test "$openils_web" = "true" ; then
-        AC_MSG_RESULT([Evergreen Web:			yes])
-else
-        AC_MSG_RESULT([Evergreen Web:			no])
-fi
-if test "$openils_updates" = "true" ; then
-        AC_MSG_RESULT([Evergreen Updates:		yes])
-else
-        AC_MSG_RESULT([Evergreen Updates:		no])
-fi
-if test "$openils_reporter" = "true" ; then
-        AC_MSG_RESULT([Evergreen Reporter:		yes])
-else
-        AC_MSG_RESULT([Evergreen Reporter:		no])
-fi
-if test "$openils_client" = "true" ; then
-        AC_MSG_RESULT([Evergreen Staff Client:		yes])
-else
-        AC_MSG_RESULT([Evergreen Staff Client:		no])
-fi
-if test "$EG_PYTHON_INSTALL" = "true" ; then
-        AC_MSG_RESULT([Evergreen Python Components:	yes])
-else
-        AC_MSG_RESULT([Evergreen Python Components:	no])
-fi
-if test "$evergreen_java" = "true" ; then
-        AC_MSG_RESULT([Evergreen Java Components:	yes])
-else
-        AC_MSG_RESULT([Evergreen Java Components:	no])
+AC_MSG_RESULT([Evergreen Apache module:     yes])
+    else
+AC_MSG_RESULT([Evergreen Apache module:     no])
+    fi
+    if test "$openils_web" = "true" ; then
+AC_MSG_RESULT([Evergreen Web:               yes])
+    else
+AC_MSG_RESULT([Evergreen Web:               no])
+    fi
+    if test "$openils_updates" = "true" ; then
+AC_MSG_RESULT([Evergreen Updates:           yes])
+    else
+AC_MSG_RESULT([Evergreen Updates:           no])
+    fi
+    if test "$openils_reporter" = "true" ; then
+AC_MSG_RESULT([Evergreen Reporter:          yes])
+    else
+AC_MSG_RESULT([Evergreen Reporter:          no])
+    fi
+    if test "$openils_client" = "true" ; then
+AC_MSG_RESULT([Evergreen Staff Client:      yes])
+    else
+AC_MSG_RESULT([Evergreen Staff Client:      no])
+    fi
+    if test "$EG_PYTHON_INSTALL" = "true" ; then
+AC_MSG_RESULT([Evergreen Python Components: yes])
+    else
+AC_MSG_RESULT([Evergreen Python Components: no])
+    fi
+    if test "$evergreen_java" = "true" ; then
+AC_MSG_RESULT([Evergreen Java Components:   yes])
+    else
+AC_MSG_RESULT([Evergreen Java Components:   no])
 fi
 AC_MSG_RESULT([]) 
 AC_MSG_RESULT([-------- Installation Directories --------])
@@ -444,3 +447,4 @@ AC_MSG_RESULT(OpenSRF libraries location:               ${OPENSRF_LIBS})
 
 AC_MSG_RESULT([----------------------------------------------------------------------])
 
+# vim:et:ts=4:sw=4:

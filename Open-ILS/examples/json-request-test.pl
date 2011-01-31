@@ -1,8 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
-use lib '../src/perlmods/';
-use lib '../../OpenSRF/src/perlmods/';
-use lib '../src/perlmods/OpenILS/Utils/';
+use lib '../src/perlmods/lib/';
+use lib '../src/perlmods/lib/OpenILS/Utils/';
 
 use OpenSRF::Utils::JSON;
 use OpenSRF::System;

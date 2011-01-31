@@ -51,7 +51,7 @@ sub _default_self {
     #   default_opts_clean => {},
         default_opts       => {
             'lock-file=s'   => OpenILS::Utils::Lockfile::default_filename,
-            'osrf-config=s' => '/openils/conf/opensrf_core.xml',   # TODO: packaging needs a make variable like @@EG_CONF_DIR@@
+            'osrf-config=s' => '@sysconfdir@/opensrf_core.xml',
             'debug'         => 0,
             'verbose+'      => 0,
             'help'          => 0,
