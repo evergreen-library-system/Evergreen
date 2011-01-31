@@ -1,0 +1,115 @@
+<!-- ****************** homesearch.xml ***************************** -->
+<div id="hp-banner">
+  <div id="hp-welcome">
+    <h1>Welcome to the<br />New Library Catalog!</h1>
+    Featuring enhanced holds, management<br />tools, improved self checkout, and more.<br /><br />
+    <a href="http://www.kcls.org/newcatalog" style="position:relative;top:5px;">Learn more &raquo;</a><br /><br />
+    
+    <div id="paginate-homebanner">
+      <!-- <a href="#" class="next">next</a>
+      <a href="#" class="prev">prev</a> -->
+      
+      
+<!-- ************************************ home page rotator navigator start ************************************* -->
+      <a class="toc" href="#1" rel="1" style="background:gray;"></a>
+      <a class="toc" href="#2" rel="2" style="background:#ffc331;"></a>
+      <a class="toc" href="#3" rel="3" style="background:pink;"></a>
+      <a class="toc" href="#4" rel="4" style="background:#2bb0fd;"></a>
+      <a class="toc" href="#5" rel="5" style="background:#54987f;"></a>
+      <a class="toc" href="#6" rel="6" style="background:#decc92;"></a>
+      <a class="toc" href="#7" rel="7" style="background:white;"></a>
+<!-- **************************************** home page navigator end ******************************************* -->
+
+
+
+
+<!-- DON'T TOUCH THESE NEXT 4 LINES! -->
+    </div>
+  </div>
+  <div style="float:right;width:675px;height:213px;color:green;overflow:hidden;">
+  <div id="homebanner" class="sliderwrapper">
+  
+  
+  
+  
+  
+  
+<!-- ************************************ home page banner start ********************************************** -->
+    <div class="contentdiv" style="background:white;">
+      <a href="http://www.kcls.org/newcatalog"><img alt="New catalog" src="/opac/skin/kcls/graphics/banner1.jpg" /></a>
+    </div>
+    <div class="contentdiv" style="background:#ffc331;">
+      test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
+      test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
+    </div>
+    <div class="contentdiv" style="background:pink;">
+      test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
+      test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
+    </div>
+    <div class="contentdiv" style="background:#2bb0fd;">
+      <br />
+      <img src="/opac/skin/kcls/graphics/KCLS_logo_horiz.gif" /><br />
+      test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
+      test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
+    </div>
+    <div class="contentdiv" style="background:#54987f;">
+      <div style="width:700px;height:30px;border:1px solid red;"></div>
+      test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
+      test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
+    </div>
+    <div class="contentdiv" style="background:#decc92;">
+      test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
+      test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
+    </div>
+    <div class="contentdiv" style="background:white;">
+      <table cellpadding="0" cellspacing="0" border="0" style="width:100%;height:100%;"><tr><td align="center" style="width:100%;height:100%;border:1px solid black;">
+        They call me Box Boy.
+      </td></tr></table>
+    </div>
+<!-- ************************************* home page banner end *********************************************** -->
+
+
+
+
+
+
+  </div>
+
+<script type="text/javascript">
+featuredcontentslider.init({
+id: "homebanner",
+contentsource: ["inline", ""],
+toc: "markup",
+nextprev: ["", ""],
+enablefade: [true, 0.04],
+onChange: function(previndex, curindex){},
+
+
+autorotate: [true, 3000] //pause time (in milliseconds)
+})
+</script>
+
+    <div style="position:absolute;z-index:101;"><div style="position:relative;"><a href="http://www.kcls.org/newcatalog" style="display:block;width:675px;height:213px;"></a></div></div>
+      <img alt="New catalog" src="/opac/skin/kcls/graphics/banner1.jpg" />
+    
+    
+    
+  </div>
+</div>
+
+<div id="hp-buttons">
+  <div style="float:left;"><img src="/opac/skin/kcls/graphics/hp-links-left.jpg" /></div>
+  <div style="float:left;">
+    <div id="home-buttons-inner">
+      <table cellpadding="0" cellspacing="5" border="0" id="hp-ql-table">
+          <tr><td colspan="4"><span style="color: #333;font-weight: bold;font-size: 13px;">Browse for:</span></td></tr>
+        <tr><td><a href="http://www.kcls.org/booksandreading/">books</a></td><td><a href="http://www.kcls.org/movies/movies_browse.cfm">movies</a></td><td><a href="http://www.kcls.org/ecollection/">downloads</a></td><td><a href="http://www.kcls.org/websites/">websites</a></td></tr>
+        <tr><td><a href="http://www.kcls.org/music/">music</a></td><td><a href="http://www.kcls.org/databases/subject_categories.cfm#17">magazines</a></td><td><a href="http://www.kcls.org/databases/">databases</a></td><td><a href="http://www.kcls.org/answers/">answers</a></td></tr>
+      </table>
+    </div>
+  </div>
+  <div style="float:left;"><img src="/opac/skin/kcls/graphics/hp-links-right.jpg" /></div>
+  <div style="float:right;"><a href="http://www.kcls.org/locations"><img alt="Locations" src="/opac/skin/kcls/graphics/locations.jpg" /></a></div>
+  <div style="clear:both;"></div>
+</div>
+<!-- ****************** end: homesearch.xml ***************************** -->
