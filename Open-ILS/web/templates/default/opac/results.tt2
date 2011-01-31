@@ -101,7 +101,7 @@
                             </div>
                             <div style='float:right'>
                                 <span>[% rec.copy_counts.available %] / [% rec.copy_counts.visible %]</span>
-                                <span style='padding-left:10px;'><a href='place_hold?hold_target=[% rec.bre.id %]&hold_type=T'>Place Hold</a></span>
+                                <span style='padding-left:10px;'><a href='place_hold?hold_target=[% rec.bre.id %]&hold_type=T'>Hold</a></span>
                             </div>
                         </div><br/>
                         <div>[% attrs.author %]</div>
