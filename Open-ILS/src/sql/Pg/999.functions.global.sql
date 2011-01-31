@@ -369,12 +369,19 @@ $$;
 
 CREATE OR REPLACE FUNCTION actor.usr_purge_data(
 	src_usr  IN INTEGER,
-	dest_usr IN INTEGER
+	specified_dest_usr IN INTEGER
 ) RETURNS VOID AS $$
 DECLARE
 	suffix TEXT;
 	renamable_row RECORD;
+	dest_usr INTEGER;
 BEGIN
+
+	IF specified_dest_usr IS NULL THEN
+		dest_usr := 1; -- Admin user on stock installs
+	ELSE
+		dest_usr := specified_dest_usr;
+	END IF;
 
 	UPDATE actor.usr SET
 		active = FALSE,
