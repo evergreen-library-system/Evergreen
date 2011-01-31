@@ -12,6 +12,11 @@
 [% PROCESS "default/opac/common.tt2" %]
 [% WRAPPER "default/opac/base.tt2" %]
 [% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "holds" %]
+
+[% IF ctx.holds.size == 0 %]
+<b>No Items On Hold</b>
+[% STOP; END %]
+
 <form method='POST'>
 
     <div id='action_div'>

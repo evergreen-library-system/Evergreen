@@ -16,6 +16,10 @@
 [% WRAPPER "default/opac/base.tt2" %]
 [% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "circs" %]
 
+[% IF ctx.circs.size == 0 %]
+<b>No Items Checked Out</b>
+[% STOP; END %]
+
 <form method='POST' id='circ-form'>
     <div id='action_div'>
         [% IF ctx.success_renewals > 0 %]
@@ -65,7 +69,6 @@
                     </td>
                 </tr>
                 [% END %]
-
             [% END %]
         </tbody>
     </table>
