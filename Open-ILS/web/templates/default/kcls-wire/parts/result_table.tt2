@@ -1,0 +1,258 @@
+<!-- Search results are spit into this table -->
+<!-- ****************** result_table.xml ***************************** -->
+<div id="result_table_div">
+    
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+            <td valign="top" width="1" style="padding-right:20px;">
+                <div style="width:174px;" class="hide_me" id="tehSideBar">SIDEBAR TODO
+                </div>
+            </td>
+            <td style="border-left:1px solid #e9ebf3;padding-right:27px;"
+                width="1"></td>
+            <td valign="top">
+                <table id="res_table" cellpadding="0" cellspacing="0"
+                    border="0" width="100%" style="margin-top:10px;">
+                    <tbody id="result_table">
+                        <tr id='result_table_template' class='hide_me'>
+                            <td class='result_table_row' align='left'
+                                width='100%'>
+                                <table cellpadding="0" cellspacing="0"
+                                    border="0" width="100%"
+                                    class='result_table_subtable'
+                                    id="results_table"
+                                    style="border-collapse: collapse;">
+                                    <tbody class='result_table_subtbody'>
+                                        <tr name='counts_row'>
+                                            <td width="58" valign="top"
+                                                style="font-weight:bold;padding-left:10px;"
+                                                name="results_row_count">1.
+                                            </td>
+                                            <td class='result_table_pic_header'
+                                                width="78" nowrap="nowrap" valign="top">
+                                                <a><img alt="Image of item"
+                                                        name='item_jacket' class='result_table_pic'
+                                                        src='${ident}' /></a><br />
+                                            </td>
+                                            <td class='result_table_title_cell'
+                                                name='result_table_title_cell'
+                                                valign="top">
+                                                <div style="font-weight:bold;">
+                                                    <a title="&result.table.keyword;"
+                                                        name='item_title' class='search_link'>
+                                                    </a>
+                                                </div>
+                                                <span style="font-size:11px;">
+                                                    <div>
+                                                        <em>
+                                                            <a title="&result.table.author;" name='item_author' class='search_link'></a>
+                                                        </em> &nbsp;&nbsp;
+                                                        <span name="results_pub_date"></span>
+                                                    </div>
+                                                    <table cellpadding="0" cellspacing="0" border="0"
+                                                        class="results_info_table">
+                                                        <tr name='bib_cn_list' class='result_table_title_cell'>
+                                                            <td colspan='2'>
+                                                                <span><strong>Call number:</strong></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr name="results_pub_tr" class="hide_me">
+                                                            <td valign="top">
+                                                                <strong>Publisher:</strong>
+                                                            </td>
+                                                            <td>
+                                                                <span name="results_pub"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr name="results_isbn_tr" class="hide_me">
+                                                            <td valign="top">
+                                                                <strong>ISBN:</strong>
+                                                            </td>
+                                                            <td>
+                                                                <span name="results_isbn"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr name="results_edition_tr" class="hide_me">
+                                                            <td valign="top">
+                                                                <strong>Edition:</strong>
+                                                            </td>
+                                                            <td> <span name="results_edition"></span></td>
+                                                        </tr>
+                                                        <tr name="results_phys_desc_tr" class="hide_me">
+                                                            <td nowrap="nowrap" valign="top">
+                                                                <strong>Phys. Desc.:</strong>
+                                                            </td>
+                                                            <td>
+                                                                <span name="results_phys_desc"></span>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <div>
+                                                        <span name="copy_holds"></span>
+                                                        <span name="copy_holds2"></span><br />
+                                                        <span name="copy_count_avail"></span>
+                                                        <!-- of <span name="copy_count"></span> on
+                                                        <span name="copy_count_total"></span> copies
+                                                        available-->
+                                                    </div>
+                                                </span>
+                                                <div class="hide_me">
+                                                    <span name='result_table_extra_span' class='hide_me'>
+                                                        <span name='result_table_pub_box'
+                                                            style='padding-left: 10px;'> 
+                                                            <span name='result_table_edition_span'
+                                                                style='padding-left: 10px;'></span> |
+                                                            <span name='result_table_pub_span'> </span> |
+                                                            <span name='result_table_phys_span'> </span>
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <!-- Copy this td for each copy count appended -->
+                                            <td nowrap='nowrap' name="copy_count_cell"
+                                                class='copy_count_cell hide_me' width="1"> </td>
+                                            <td name='result_table_format_cell'
+                                                class='result_table_format_cell' align="center" width="1"
+                                                style="padding:0px 10px;">
+                                                <img alt="Format" src="" class="hide_me" name="" />
+                                                <span class='hide_me' 
+                                                    style='color: #9999FF; padding-left: 10px; font-size: 7pt; font-weight: 300;'> 
+                                                    <span>&common.relevancy; </span>
+                                                    <span name='relevancy_span'> </span>
+                                                </span>
+                                                <!-- Empty span used for creating unAPI links -->
+                                                <span class="hide_me">
+                                                    <abbr style='padding-left: 8px;' name="unapi" class="unapi-id">
+                                                    <!-- unAPI URI goes here -->
+                                                    </abbr>
+                                                </span>
+                                                <!-- Empty span used for creating Google Book Search-->
+                                                <span name="googleBooksLink" class="hide_me">
+                                                    <a style='padding-left: 8px;'
+                                                        class='classic_link hide_me'
+                                                        name="googleBooks-link">&result.googleBooks.browse;</a>
+                                                </span>
+                                            </td>
+                                            <td nowrap='nowrap' width="1" align="right">
+                                                <div style="width:250px;text-align:left;">
+                                                    <div style="float:right;">
+                                                        <div style="border-bottom:1px dotted #ccc;padding-top:10px;"
+                                                            class="results_aux_utils"><a
+                                                                href="javascript:;" name="place_hold_link"><img
+                                                                src="/opac/skin/kcls/graphics/green_check.png"
+                                                                alt="place hold" /><span
+                                                                    style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
+                                                        </div>
+                                                        <div style="border-bottom:1px dotted #ccc;padding-top:6px;" class="results_aux_utils">
+                                                            <div style="position:absolute;">
+                                                                <div style="position:relative;top:5px; left: 25px;">
+                                                                    <a title="Add to my list"
+                                                                        name="result_my_list_link"
+                                                                        href="javascript:;">Add to my list</a>
+                                                                </div>
+                                                            </div>
+                                                            <a href="javascript:;"
+                                                                name="result_my_list_link_img"><img
+                                                                alt="add to my list"
+                                                                src="/opac/skin/kcls/graphics/clipboard.png" /></a>
+                                                        </div>
+                                                        <div style="padding-top:7px;" class="results_aux_utils">
+                                                            <a title="Reviews and More" target="_blank"
+                                                                name="reviews_and_more" href="javascript:;"><img
+                                                                alt="reviews &amp; more"
+                                                                src="/opac/skin/kcls/graphics/starz.png" /> <span
+                                                                    style="position:relative;top:-5px;">Reviews &amp; More</span></a>
+                                                        </div>
+                                                    </div>
+                                                    <div style="float:right;margin-right:17px;">
+                                                        <img alt="Format" class="hide_me" src=""
+                                                        name="result_mat_type" />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                            
+                                        <!-- Placeholder for ChiliFresh Review -->
+                                        <tr class="hide_me" name="chilifreshReview">
+                                            <td></td>
+                                            <td valign="top" colspan="5">
+                                                <div style="position:relative;left:-19px;">
+                                                    <span name="chilifreshReviewLink" class="chili_review"></span>
+                                                    <div name="chilifreshReviewResult" style="display:none"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                            
+                                        <tr>
+                                            <td colspan="5">
+                                                <div style="height:0px;border-top:1px solid #b7b7b7;border-bottom:1px solid #d4d4d4;margin:15px 0px;"></div>
+                                                <!-- <hr style="border-bottom:none;*height:0px;" color="#FFCC33" /> -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>  
+</div>
+
+<div>
+    <table id='' style="width:100%;"> 
+        <tbody id=''>
+            <tr class="hide_me">
+                <td class='result_table_row' width="100%">
+                    <!--#include virtual="result_info.xml"-->
+                </td>
+            </tr>
+            <!-- Template for displaying a search result.  This row template
+            is cloned and inserted for each result returned -->
+        </tbody>
+    </table>
+    <!-- ====================== -->
+    <div class="">
+        <table
+            style='width: 100%;margin-top:20px;border-top:1px dotted #ccc;padding-top:8px;'
+            id='result_info_2' class='hide_me'>
+            <tbody>
+                <tr>
+                    <td valign="top">
+                        <span class='hide_me' id='result_info_div2'
+                            style='font-size: 11px;'>
+                            <span> &common.results; </span> 
+                            <b id='offset_start2'> </b>
+                            <span>&nbsp;- </span>
+                            <b id='offset_end2'> </b>
+                            <span>&nbsp;&common.of; </span>
+                            <b id='result_count2'> </b>
+                            <span style='padding-left: 6px;'> (page </span>
+                            <span id='current_page2'> </span>
+                            <span>&nbsp;&common.of; </span>
+                            <span id='num_pages2'> </span>
+                        </span>
+                    </td>
+                    <td valign="top" id='next_prev_links2' align="right">
+                    <span id='start_end_links_span2' class='hide_me'>
+                        <a class='search_page_nav_link' id='prev_link2'
+                            title='&rdetail.page.previous;' style="cursor:pointer;">
+                            <span class="nav_arrow_fix">&#9668;</span> Previous
+                        </a>
+                        <span id="nav_pages2"
+                            style='padding-left: 11px; padding-right:13px;'></span>
+                        <a class='search_page_nav_link' id='next_link2'
+                            title='&rdetail.page.next;' style="cursor:pointer;">
+                            Next <span class="nav_arrow_fix">&#9658;</span>
+                        </a>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- ChiliFresh XXX script TODO -->
+</div>
+<!-- ****************** end: result_table.xml ***************************** -->
+

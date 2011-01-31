@@ -1,6 +1,6 @@
 [%  WRAPPER "default/kcls-wire/parts/base.tt2";
     INCLUDE "default/kcls-wire/parts/topnav.tt2";
-    ctx.page_title = "Home" %]
+    ctx.page_title = "Advanced Search" %]
 [% BLOCK html_head -%]
 <script type="text/javascript" src="/opac/skin/kcls-wire/js/misc.js"></script>
 <style type='text/css'>

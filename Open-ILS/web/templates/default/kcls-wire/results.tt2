@@ -1,0 +1,64 @@
+[%  WRAPPER "default/kcls-wire/parts/base.tt2";
+    INCLUDE "default/kcls-wire/parts/topnav.tt2";
+    ctx.page_title = "Search Results" %]
+    <div id="search-wrapper">
+        [% INCLUDE "default/kcls-wire/parts/utils.tt2" %]
+        [% INCLUDE "default/kcls-wire/parts/searchbar.tt2" %]
+    </div>
+    <div id="content-wrapper">
+        <div id="results_header_bar"><!-- XXX give #results_header_bar its own file -->
+            <div id="results_header_inner">
+                <div class="results_header_btns">
+                    <a href="index.xml"><img alt="Another Search"
+                        src="/opac/skin/kcls/graphics/another_search.png"
+                        onmouseover="this.src='/opac/skin/kcls/graphics/another_search_hover.png';"
+                        onmouseout="this.src='/opac/skin/kcls/graphics/another_search.png';" /></a>
+                </div>
+                <div class="results_header_btns">
+                    <a href="advanced"><img alt="Advanced Search"
+                        src="/opac/skin/kcls/graphics/adv_search.png"
+                        onmouseover="this.src='/opac/skin/kcls/graphics/adv_search_hover.png';"
+                        onmouseout="this.src='/opac/skin/kcls/graphics/adv_search.png';" /></a>
+                </div>
+                <div class="results_header_btns" style="width:111px;height:25px;">
+                    <a href="javascript:;" class="hide_me" id="cacheListLink"
+                        onclick="showCachedList();"><img
+                        alt="View My List"
+                        src="/opac/skin/kcls/graphics/view_my_list.png"
+                        onmouseover="this.src='/opac/skin/kcls/graphics/view_my_list_hover.png';"
+                        onmouseout="this.src='/opac/skin/kcls/graphics/view_my_list.png';" /></a>
+                </div>
+                <div class="results_header_div"></div>
+                <div class="results_header_lbl">Sort by</div>
+        <!--#if expr="$OILS_PAGE='rresult.xml' || $OILS_PAGE='mresult.xml'"-->
+        <!--#include virtual="result/filtersort.xml" -->
+        <!--#endif -->
+                <div class="results_header_div"></div>
+                <div class="results_header_lbl">View</div>
+                <select class="results_header_sel" style="width:88px;"
+                    onchange="this.selectedIndex?showDetailedInfo(true):showDetailedInfo(false);">
+                    <option>Simple</option>
+                    <option>Detailed</option>
+                </select>
+                <div class="results_header_div"></div>
+                <input type="checkbox" id="opac.result.limit2avai2"
+                onclick='searchBarSubmit(true, this);'
+                style="float:left;position:relative;top:2px;left:-2px;margin-right:4px;" />
+                <label for="opac.result.limit2avai2" class="results_header_lbl">
+                    Limit to available items
+                </label>
+                <div style="clear:both;"></div>
+            </div>
+        </div>
+        <div id="main-content">
+            <div id="tehResultsPage">
+                [% INCLUDE "default/kcls-wire/parts/result_header.tt2" %]
+                <div id="rresults_page">
+                    [% INCLUDE "default/kcls-wire/parts/results_table.tt2" %]
+                    [% INCLUDE "default/kcls-wire/parts/results_lowhits.tt2" %]
+                </div>
+            </div>
+            <div style="clear:both;height:15px;"></div>    
+        </div>
+    </div>
+[% END %]
