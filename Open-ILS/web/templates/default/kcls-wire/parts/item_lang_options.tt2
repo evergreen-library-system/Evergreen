@@ -1,0 +1,28 @@
+
+<!--
+Language otions for languages that exist in the catalog.
+This file should be updated on occasion.
+
+develooper=# select code,value from config.language_map m 
+	join metabib.rec_descriptor r on (r.item_lang = m.code) group by 1,2;
+-->
+
+<option value='eng'>English</option>
+<option value='spa'>Spanish</option>
+<option value='fre'>French</option>
+<option value='ger'>German</option>
+<option value='ita'>Italian</option>
+<option value='chi'>Chinese</option>
+<option value='jpn'>Japanese</option>
+<option value='kor'>Korean</option>
+<option value='dut'>Dutch</option>
+<option value='gre'>Greek, Modern (1453- )</option>
+<option value='lat'>Latin</option>
+<option value='vie'>Vietnamese</option>
+<option value='rus'>Russian</option>
+<option value='nor'>Norwegian</option>
+<option value='wel'>Welsh</option>
+<option value='pau'>Palauan</option>
+<option value='swe'>Swedish</option>
+<option value='nav'>Navajo</option>
+<option value='und'>Undetermined</option>

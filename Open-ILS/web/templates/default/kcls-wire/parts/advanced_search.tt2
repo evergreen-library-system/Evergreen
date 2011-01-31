@@ -15,7 +15,7 @@
 					<!-- add a new row -->
 					<tr id='adv_global_addrow'>
 						<td align='left' style="padding-top:7px;">
-							<a href="javascript:;" id="myopac_new_global_row" onclick='advAddGblRow();'>Add Search Row</a>
+							<a href="javascript:;" onclick='advAddGblRow();'>Add Search Row</a>
                             <button onclick='advSubmitGlobal();' class="hide_me">&advanced.search.submit;</button>
 						</td>
 					</tr>
@@ -126,7 +126,7 @@
 
 						<td align='left'>
 							<select multiple='multiple' size='3' id='adv_global_lang'>
-								<!--#include virtual="../../../../../common/xml/item_lang_options.xml"-->
+								[% INCLUDE "default/kcls-wire/parts/item_lang_options.tt2" %]
 							</select>
 						</td>
 
@@ -305,7 +305,6 @@
 			</tr></tbody></table>
 		</div>
 
-		<span class='hide_me' id='myopac.copy.not.found'>&sidebar.copy.not.found;</span>
 		<div style='margin-top: 8px;' class='adv_quick_search_submit'>
 		<img src="/opac/skin/kcls/graphics/search_btn.gif" alt="Search" id="adv_quick_submit" onclick='advGenericSearch();' style="cursor:pointer;" />
 			<!-- <a id='adv_quick_submit' href='javascript:advGenericSearch();' class='classic_link'>&common.submit;</a> -->
