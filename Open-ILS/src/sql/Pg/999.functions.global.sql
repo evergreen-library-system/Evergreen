@@ -374,14 +374,14 @@ CREATE OR REPLACE FUNCTION actor.usr_purge_data(
 DECLARE
 	suffix TEXT;
 	renamable_row RECORD;
-    dest_usr INTEGER;
+	dest_usr INTEGER;
 BEGIN
 
-    IF specified_dest_usr IS NULL THEN
-        dest_usr := 1; -- Admin user on stock installs
-    ELSE
-        dest_usr := specified_dest_usr;
-    END IF;
+	IF specified_dest_usr IS NULL THEN
+		dest_usr := 1; -- Admin user on stock installs
+	ELSE
+		dest_usr := specified_dest_usr;
+	END IF;
 
 	UPDATE actor.usr SET
 		active = FALSE,
