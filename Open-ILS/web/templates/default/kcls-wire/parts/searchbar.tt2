@@ -1,20 +1,39 @@
 <div id="search-box">    
-    <table cellpadding="0" cellspacing="10" border="0" style="position:relative;left:-10px;">
+    <table cellpadding="0" cellspacing="10" border="0"
+        style="position:relative;left:-10px;">
         <tr>
             <td colspan="3">
-                <span class="search_catalog_lbl">Search the Catalog</span> <a href="advanced" id="home_adv_search_link" style="position:relative;top:-1px;left:10px;"><span class="adv_search_font">Advanced Search</span></a>
+                <span class="search_catalog_lbl">Search the Catalog</span>
+                <a href="advanced" id="home_adv_search_link"
+                    style="position:relative;top:-1px;left:10px;"><span
+                    class="adv_search_font">Advanced Search</span></a>
             </td>
         </tr>
         <tr>
-            <td>[% INCLUDE "default/kcls-wire/parts/stypes_selector.tt2" %]</td>
+            <td>
+                [% INCLUDE "default/kcls-wire/parts/stypes_selector.tt2" %]
+            </td>
             <td>
                 <div id="search_box_wrapper">
-                    <input type="text" id="search_box" style="width:162px;" value="Search Keyword" onfocus="if (this.value=='Search Keyword'){this.value='';this.style.color='#000';}" onblur="if (this.value==''){this.value='Search Keyword';this.style.color='#999';}" />
+                    <input type="text" id="search_box" style="width:162px;"
+                        value="Search Keyword"
+                        onfocus="if (this.value=='Search Keyword'){this.value='';this.style.color='#000';}"
+                        onblur="if (this.value==''){this.value='Search Keyword';this.style.color='#999';}" />
                     <input id='facet_box' type='hidden' />
                 </div>
             </td>
             <td valign="top">
-                <div style="position:absolute;"><div style="position:relative;top:-3px;"><input type="button" id="search_submit" value="GO" class="hide_me" /><a href="javascript:;" id="search_submit_alt" onclick="$('search_submit').click()"><img alt="Search" src="/opac/skin/kcls/graphics/go-btn.png" onmouseover="this.src='/opac/skin/kcls/graphics/go-btn-hover.png';" onmouseout="this.src='/opac/skin/kcls/graphics/go-btn.png';" /></a></div></div>
+                <div style="position:absolute;">
+                    <div style="position:relative;top:-3px;">
+                        <input type="button" id="search_submit" value="GO"
+                            class="hide_me" /><a href="javascript:;"
+                            id="search_submit_alt"
+                            onclick="$('search_submit').click()"><img
+                            alt="Search" src="/opac/skin/kcls/graphics/go-btn.png"
+                            onmouseover="this.src='/opac/skin/kcls/graphics/go-btn-hover.png';"
+                            onmouseout="this.src='/opac/skin/kcls/graphics/go-btn.png';" /></a>
+                    </div>
+                </div>
             </td>
         </tr>
         <tr>
@@ -26,14 +45,13 @@
             </td>
         </tr>
     </table>
- 
     <div class="hide_me">
         <input type="checkbox" id="opac.result.limit2avail" />
-        <label style="position:relative;top:-3px;" for="opac.result.limit2avail">
+        <label style="position:relative;top:-3px;"
+            for="opac.result.limit2avail">
             <span style="font-size:10px;">Limit to available items</span>
         </label>
       </div>
-      
     <div id="breadcrumb"><a href="./">Catalog Home</a> &gt;</div>
     <div style="clear:both"></div>
 </div>
