@@ -1,6 +1,6 @@
 [%  WRAPPER "default/kcls-wire/parts/base.tt2";
     INCLUDE "default/kcls-wire/parts/topnav.tt2";
-    ctx.page_title = "Account Login" %]
+    ctx.page_title = "Record Detail" %]
 [% BLOCK html_head -%]
 <style type="text/css">
     #rdetail_copy_info_table { font-size: 8pt; }
