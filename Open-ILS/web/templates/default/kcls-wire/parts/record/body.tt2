@@ -1,0 +1,114 @@
+<!-- ****************** page_rdetail.xml ***************************** -->
+<div id='canvas_main' class='canvas'>
+    <div id="rdetail_header">
+        <div style="float:left;">
+            Search Results&nbsp;&nbsp;&nbsp;
+            <span id="rdetail_result_count" class="hide_me">
+                Showing Item <strong id='np_offset'></strong>
+                &nbsp;of&nbsp;<strong id='np_count'></strong>
+            </span>
+        </div>
+        <div id="rdetail_result_nav">
+            <span class="hide_me">
+                <a class='np_nav_link classic_link' id='np_start'
+                    href='javascript:rdetailStart();'
+                    title="&rdetail.page.results;">&rdetail.start;</a>
+                </span>
+                <a class='np_nav_link classic_link hide_me' id='np_prev'
+                    href='javascript:rdetailPrev();'
+                    title='&rdetail.page.previous;'><span
+                        class="nav_arrow_fix">&#9668;</span> Previous</a>
+                <span style="padding:0px 10px;"> </span>
+                <a class='np_nav_link classic_link hide_me' id='np_next'
+                    href='javascript:rdetailNext();'
+                    title='&rdetail.page.next;'>Next <span
+                        class="nav_arrow_fix">&#9658;</span></a>
+                <span class="hide_me"><a class='np_nav_link classic_link'
+                    id='np_end' href='javascript:rdetailEnd();'
+                    title="&rdetail.page.last;">&rdetail.end;</a></span>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+
+    <table width='100%' id='np_table' border='0' class="hide_me">
+        <tbody>
+            <tr class='color_4'>
+                <td style='vertical-align: top;' align="center">
+                    <span style="float:left"><a href="javascript:;"
+                        onclick="history.go(-1);">&laquo; Back</a></span>
+                    <span></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table style='' class='rdetail_header color_1 hide_me' width='100%'
+        border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+            <tr>
+                <td width='33%' align='left' class="hide_me">
+                    <span>&rdetail.detailMain.headerLabel;</span>
+                </td>
+                <td align='right' style='padding-right: 7px;' width='33%'>
+                    <span id='rdetail_exp_refworks_span' class='hide_me'
+                        style='padding-right: 7px;'>
+                        <a id='rdetail_exp_refworks'>&opac.holds.exportRefWorks;</a>
+                    </span>
+                    <span style='padding-right: 7px;' class='hide_me'
+                        id='rdetail_more_actions'>
+                        <select id='rdetail_more_actions_selector'
+                            style='max-width: 11em;' class="hide_me">
+                            <option value='start'>
+                                &rdetail.more;
+                            </option>
+                            <option disabled='disabled'>
+                                --------------
+                            </option>
+                            <option disabled='disabled'>
+                                &rdetail.bookbag.add;
+                            </option>
+                            <option disabled='disabled'>
+                                --------------
+                            </option>
+                            <option value='new_bookbag'
+                                onclick='rdetailNewBookbag();'>
+                                &rdetail.bookbag.create;
+                            </option>
+                        </select>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style='font-weight: bold; padding: 5px; margin: 5px; width: 100%;' 
+        class='hide_me color_4' id='rdetail_deleted_exp'>
+        &rdetail.record.deleted;
+    </div>
+
+    [% INCLUDE "default/kcls-wire/parts/record/summary.tt2" %]
+    <br />
+    <div style="width:100%;" class="hide_me">
+        <div style="float:right;" class="hide_me" id="lib_info_more">
+            <button onclick="unHideMe($('lib_info_less'));unHideMe($('rdetails_status2'));hideMe($('lib_info_more'));">More...</button>
+        </div>
+        <div style="float:right;" class="hide_me" id="lib_info_less">
+            <button onclick="hideMe($('lib_info_less'));hideMe($('rdetails_status2'));unHideMe($('lib_info_more'));">...Less</button>
+        </div>
+    </div>
+    [% INCLUDE "default/kcls-wire/parts/record/extras.tt2" %]
+
+    <div class='hide_me' id='rdetail_bb_none'>
+        &rdetail.none;
+    </div>
+    <div class='hide_me' id='rdetail_bb_item_success'>
+        &rdetail.bookbag.add.success;
+    </div>
+    <div class='hide_me' id='rdetail_bb_new'>
+        &rdetail.bookbag.name;
+    </div>
+    <div class='hide_me' id='rdetail_bb_success'>
+        &rdetail.bookbag.create.success;
+    </div>
+</div>
+<!-- ****************** end; page_rdetail.xml ***************************** -->

@@ -1,0 +1,217 @@
+<!-- ****************** rdetail_summary.xml ***************************** -->
+<abbr class="unapi-id" title='tag:HTTP_HOST,OILS_TIME_YEAR:biblio-record_entry/OILS_OPAC_RID'></abbr><!-- XXX FIXME or remove -->
+<!-- This holds the record summary information -->
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" id="rdetail_details_table">
+    <tbody id="rdetail_details_tbody">
+        <tr>
+            <td width="90" valign="top" id="rdetail_image_cell">
+                <a id='rdetail_img_link' href='${ident.large}'><img
+                    alt="Image of item" style='border: none;' id='rdetail_image'
+                    src='${ident.small}' onload='unHideMe($("rdetail_img_link"))'
+                    onerror='hideMe($("rdetail.jacket_attrib_div"));hideMe($("rdetail_img_link"));'/></a>
+                <br />
+                <div class='jacket_attrib hide_me' id='rdetail.jacket_attrib_div'>
+                    <div>&opac.image_provided;</div>
+                    <div>
+                        <a target='_blank' href='&vendor.base_link;'
+                            class='classic_link' id='rdetail.jacket_attrib_link'>&vendor.name;</a>
+                    </div>
+                </div>
+            </td>
+    
+            <td valign="top">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td valign="top">
+                            <span class="rdetail_item" id='rdetail_title'></span><br />
+                            <span style="color:#545454;">&common.author;: </span>
+                            <em><a title='&rdetail.author.search;' id='rdetail_author'></a></em>
+                        </td>
+                        <td align="right" valign="top" nowrap="nowrap" style="white-space:nowrap;">
+                            <div style="width:230px;text-align:left;margin-top:3px;">
+                                <div style="float:right;">
+                                    <div style="border-bottom:1px dotted #ccc;padding-top:10px;"
+                                        class="rdetail_aux_utils">
+                                        <a href="place_hold" id="rdetail_place_hold"><img
+                                            src="/opac/skin/kcls/graphics/green_check.png" alt="place hold" />
+                                            <span style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
+                                    </div>
+                                    <div style="padding-top:6px;" class="rdetail_aux_utils">
+                                        <div style="position:absolute;">
+                                            <div style="position:relative;top:5px; left: 25px;">
+                                                <a title="Add to my list" id="add_mylist"
+                                                    href="javascript:addMyList();">Add to my list</a>
+                                            </div>
+                                        </div>
+                                        <a href="javascript:addMyList();"><img
+                                            alt="add to my list"
+                                            src="/opac/skin/kcls/graphics/clipboard.png" /></a>
+                                    </div>
+                                </div>
+                                <div style="float:right;margin-right:17px;">
+                                    <img id="rdetail_tor_pic" alt="Format" class="hide_me" src="" />
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div style="border-top: 1px dotted #ccc;padding-top:17px;">
+                    <table border="0" cellpadding="0" width="100%">
+                        <tr>
+                            <td nowrap='nowrap' valign="top">
+                                <strong id="rdetail_isbn_lbl" class="">&common.isbn;</strong>
+                            </td>
+                            <td valign="top" id='rdetail_isbn'></td>
+                            <td nowrap='nowrap' valign="top">
+                                <strong id="rdetail_phys_lbl" class="">&common.physical;</strong>
+                            </td>
+                            <td valign="top" id='rdetail_physical_desc'></td>
+                        </tr>
+                        <tr>
+                            <td nowrap='nowrap' valign="top">
+                                <strong id="rdetail_ed_lbl" class="">&common.edition;</strong>
+                            </td>
+                            <td valign="top" id='rdetail_edition'></td>
+                            <td nowrap='nowrap' valign="top">
+                                <strong id="rdetail_form_lbl" class="">&common.format;</strong>
+                            </td>
+                            <td valign="top">
+                                <img alt="Format" id='' class='tor_pic hide_me' />
+                                <span id='rdetail_tor'></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td nowrap='nowrap' valign="top">
+                                <strong id="rdetail_pubdate_lbl" class="">&common.pubdate;</strong>
+                            </td>
+                            <td valign="top" id='rdetail_pubdate'></td>
+                            <td nowrap='nowrap' valign="top">
+                                <strong id="rdetail_sum_lbl" class="">Summary</strong>
+                            </td>
+                            <td valign="top" id='rdetail_abstract'></td>
+                        </tr>
+                        <tr>
+                            <td nowrap='nowrap' valign="top">
+                                <strong id="rdetail_pub_lbl" class="">&common.publisher;</strong>
+                            </td>
+                            <td valign="top" id='rdetail_publisher'></td>
+                            <td nowrap='nowrap' valign="top">
+                                <strong id="rdetail_sub_lbl" class="">&rdetail.summary.subjects;</strong>
+                            </td>
+                            <td valign="top"></td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<br /><br />
+
+<table cellpadding="0" cellspacing="0" border="0" width="100%" id="rdetails_status">
+    <tr id="rdetails_status_head">
+        <td width="25%">Location</td>
+        <td width="20%">Call Number</td>
+        <td width="18%">Selving Location</td>
+        <td width="17%">Status</td>
+        <td width="20%">Due Date</td>
+    </tr>
+</table>
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tbody id="rdetails_status2" class="hide_me">
+        <tr id="rdetails_status_head2">
+            <td width="25%"></td>
+            <td width="20%"></td>
+            <td width="18%"></td>
+            <td width="17%"></td>
+            <td width="20%"></td>
+        </tr>
+    </tbody>
+</table>
+
+<div id="rdetail_locs_expand">
+    <a href="javascript:;" onclick="expandBoxes('locs',true);"><img
+        src="/opac/skin/kcls/graphics/plus_sign.png" /></a>
+    <a style="position:relative;top:-3px;" href="javascript:;"
+        onclick="expandBoxes('locs',true);">Show more locations</a>
+</div>
+
+<div id="rdetail_locs_collapse" class="hide_me">
+    <a href="javascript:;" onclick="expandBoxes('locs',false);"><img
+        src="/opac/skin/kcls/graphics/plus_sign.png" /></a>
+    <a style="position:relative;top:-3px;" href="javascript:;"
+        onclick="expandBoxes('locs',false);">Collapse locations</a>
+</div>
+
+<div id="rdetail_extras_expand">
+    <a href="javascript:;" onclick="expandBoxes('tabs',true);"><img
+        src="/opac/skin/kcls/graphics/plus_sign.png" /></a>
+    <a style="position:relative;top:-3px;" href="javascript:;"
+        onclick="expandBoxes('tabs',true);">Expand all tabs</a>
+</div>
+
+<div id="rdetail_extras_collapse" class="hide_me">
+    <a href="javascript:;" onclick="expandBoxes('tabs',false);"><img
+        src="/opac/skin/kcls/graphics/plus_sign.png" /></a>
+    <a style="position:relative;top:-3px;" href="javascript:;"
+        onclick="expandBoxes('tabs',false);">Collapse all tabs</a>
+</div>
+
+<div class="hide_me">
+    <table id='' border="0" width="100%">
+        <tbody id='rdetail_details_tbody'>
+            <tr>
+                <td id='' rowspan='2' valign="top" align="center" style="padding-right:10px;">
+                </td>
+                <td class='rdetail_desc' valign="top" colspan="3">
+                    <table border="0" width="100%">
+                        <tr>
+                            <td valign="top">
+                                <div style="padding-bottom:7px;">
+                                    <strong>&common.title;:</strong>
+                                </div>
+                            </td>
+                            <td width="1" valign="top" align="right" style="white-space:nowrap;">
+                                <a href="place_hold" id=''><img alt="Place Hold"
+                                    src="/opac/skin/kcls/graphics/place_hold.gif" /></a>
+                                <a href="javascript:;" id="rd_reviews_and_more" target="_blank"><img
+                                    alt="Reviews and More" src="/opac/skin/kcls/graphics/reviews.gif" /></a>
+                                <a href="javascript:addMyList();" id=""><img alt="Add to My List"
+                                    src="/opac/skin/kcls/graphics/add_mylist.gif" /></a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>        
+            </tr>
+            <tr>
+                <td nowrap='nowrap' colspan="3" valign="bottom" style="padding-bottom:16px;">
+                </td>
+            </tr>
+            <tr>
+                <td><div style="height:20px;"></div></td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Empty span used for creating unAPI links -->
+    <abbr name="unapi" class="unapi-id"> <!-- unAPI URI goes here --> </abbr>
+</div> <!-- details_body -->
+
+<!-- XXX begin ChiliFresh: need to make this block conditional -->
+<script type="text/javascript">
+    var chilifresh = ''; /* account */
+    if (chilifresh == '(none)') { chilifresh = false; }
+</script>
+<input type="hidden" id="chilifresh_account" name="chilifresh_account"
+    value="" />
+<input type="hidden" id="chilifresh_profile" name="chilifresh_profile"
+    value="" />
+<input type="hidden" id="chilifresh_version" name="chilifresh_version" value="onsite_v1" />
+<input type="hidden" id="chilifresh_type" name="chilifresh_type" value="search" />
+
+<script type="text/javascript">
+//var sslSwitch = (("https:" == document.location.protocol) ? "https://secure." : "http://");
+//document.write(unescape("%3Cscript src='" + sslSwitch + "chilifresh.com/on-site/js/evergreen.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- XXX end ChiliFresh -->
+<!-- ****************** end: rdetail_summary.xml ***************************** -->
