@@ -2668,8 +2668,8 @@ sub checkin_handle_circ {
 
    # backdate the circ if necessary
    if($self->backdate) {
-        $self->checkin_handle_backdate;
-        return if $self->bail_out;
+        my $evt = $self->checkin_handle_backdate;
+        return $self->bail_on_events($evt) if $evt;
    }
 
    if(!$circ->stop_fines) {
@@ -2777,41 +2777,23 @@ sub checkin_handle_lost {
 sub checkin_handle_backdate {
     my $self = shift;
 
-    my $bd = clense_ISO8601($self->backdate);
-
     # ------------------------------------------------------------------
     # clean up the backdate for date comparison
-    # we want any bills created on or after the backdate
+    # XXX We are currently taking the due-time from the original due-date,
+    # not the input.  Do we need to do this?  This certainly interferes with
+    # backdating of hourly checkouts, but that is likely a very rare case.
     # ------------------------------------------------------------------
+    my $bd = clense_ISO8601($self->backdate);
     my $original_date = DateTime::Format::ISO8601->new->parse_datetime(clense_ISO8601($self->circ->due_date));
     my $new_date = DateTime::Format::ISO8601->new->parse_datetime($bd);
     $bd = clense_ISO8601($new_date->ymd . 'T' . $original_date->strftime('%T%z'));
 
     $self->backdate($bd);
 
-    my $bills = $self->editor->search_money_billing(
-        { 
-            billing_ts => { '>=' => $bd }, 
-            xact => $self->circ->id, 
-            btype => 1
-        }
-    );
+    my $evt = OpenILS::Application::Circ::CircCommon->void_overdues($self->editor, $self->circ, $bd);
+    return $evt if $evt;
 
-    $logger->debug("backdate found ".scalar(@$bills)." bills to void");
-
-    for my $bill (@$bills) {    
-        unless( $U->is_true($bill->voided) ) {
-            $logger->info("backdate voiding bill ".$bill->id);
-            $bill->voided('t');
-            $bill->void_time('now');
-            $bill->voider($self->editor->requestor->id);
-            my $n = $bill->note || "";
-            $bill->note("$n\nSystem: VOIDED FOR BACKDATE");
-
-            $self->bail_on_events($self->editor->event)
-                unless $self->editor->update_money_billing($bill);
-        }
-    }
+    return undef;
 }
 
 
