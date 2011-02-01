@@ -14,8 +14,8 @@
 		<indexterm><primary>migrating</primary><secondary>importing bibliographic records</secondary></indexterm>
 		<para>
 		One of the most important and challenging  tasks is migrating your bibliographic records to a new system. The procedure may be different depending on the system from which you 
-		are migrating  and the content of the marc records exported from the existing system. The proecedures in this section deal with the process once the data from the existing system 
-		is exporterd into marc records. It does not cover exporting data from your existing non-Evergreen system.</para>
+		are migrating  and the content of the marc records exported from the existing system. The procedures in this section deal with the process once the data from the existing system 
+		is exported into marc records. It does not cover exporting data from your existing non-Evergreen system.</para>
 		<para>Several tools for importing bibliographic records into Evergreen can be found in the Evergreen installation folder 
 		(<filename class="directory">/home/opensrf/Evergreen-ILS-1.6.1.6/Open-ILS/src/extras/import/</filename> ) and are also available from the Evergreen repository 
 		(<link xl:href="http://svn.open-ils.org/trac/ILS/browser/branches/rel_1_6_1/Open-ILS/src/extras/import" xl:title="import scripts - Evergreen repository">
@@ -123,45 +123,289 @@ http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
 			<para>Metarecords are required to place holds on items, among other actions.</para>
 		</simplesect>	
 	</section>
+
+
+
+<section xml:id="migrating_records_using_migration_tools">
+		<title>Migrating Bibliographic Records Using the ESI MigUration Tools</title>
+		<indexterm><primary>migrating</primary><secondary>Migration Tools</secondary></indexterm>	
+		<para>The following procedure explains how to migrate bibliographic records from marc records into Evergreen. It does not cover exporting records from specific proprietary ILS 
+		systems. For assistance with exporting records from your current system please refer to the manuals for your system or you might try to ask for help from the <link linkend="more_info">Evergreen community</link>.</para>
+		
+		<procedure>
+			<step>
+				<para>Download the Evergreen <link xl:href="http://git.esilibrary.com/?p=migration-tools.git;a=summary" 
+				xl:title="Equinox migration utilities">migration utilities</link> from the git repository.</para>
+				<para>Use the command <command>git clone git://git.esilibrary.com/git/migration-tools.git</command> to clone the migration tools.</para>
+				 <para>Install the migration tools:</para>
+<screen>
+<userinput>
+<![CDATA[
+cd migration-tools/Equinox-Migration
+perl Makefile.PL
+make
+make test
+make install
+]]>
+</userinput>
+</screen>
+</step>	
+<step>
+				<para>Dump marc records into MARCXML using <systemitem>yaz-marcdump</systemitem></para>
+
+<screen>
+<userinput>
+<![CDATA[
+echo '<?xml version="1.0" encoding="UTF-8" ?>' > imported_marc_records.xml
+yaz-marcdump -f MARC-8 -t UTF-8 -o marcxml imported_marc_records.mrc >> imported_marc_records.xml
+]]>
+</userinput>
+</screen>
+</step>	
+<step>
+				<para>Test validity of XML file using <systemitem>xmllint</systemitem></para>
+
+<screen>
+
+<userinput>
+<![CDATA[
+ xmllint --noout imported_marc_records.xml 2> marc.xml.err
+]]>
+</userinput>
+</screen>
+</step>	
+
+<step>
+				<para>Clean up the marc xml file using the <systemitem>marc_cleanup</systemitem> utility:</para>
+<screen>
+<userinput>
+marc_cleanup --marcfile=imported_marc_records.xml --fullauto [--renumber-from #] -ot 001
+</userinput>	
+</screen>
+				<para>The <option>--renumber-from</option> is required if you have bibliographic records already in your system. Use this to set the starting id number higher 
+				then the last id in the biblio.record_entry table. The marc_cleanup command will generate a file called <filename>clean.marc.xml</filename></para>
+</step>
+<step>
+				<para>Create a fingerprinter file using the <systemitem>fingerprinter</systemitem> utility:</para>
+<screen>
+<userinput>
+fingerprinter -o incumbent.fp -x incumbent.ex clean.marc.xml
+</userinput>
+				<para><systemitem>fingerprinter</systemitem> is used for deduplification of the incumbent records. The <option>-o</option> option specifies the 
+				output file and the <option>-x</option> option is used to specify the error output file.</para>
+</screen>
+</step>
+<step>
+				<para>Create a fingerprinter file for existing Evergreen bibliographic records using the <systemitem>fingerprinter</systemitem> utility if you 
+				have existing bibliographic records in your system previously imported:</para>
+<screen>
+<userinput>
+fingerprinter -o production.fp -x production.fp.ex --marctype=MARC21 existing_marc_records.mrc --tag=901 --subfield=c
+</userinput>
+</screen>
+				<para><systemitem>fingerprinter</systemitem> is used for deduplification of the incumbant records.</para>
+</step>
+
+<step>
+				<para>Create a merged fingerprint file removing duplicate records.</para>
+<screen>
+<userinput>
+cat cat production.fp incumbent.fp | sort -r > dedupe.fp
+match_fingerprints [-t start id] -o records.merge dedupe.fp
+</userinput>
+</screen>
+</step>
+
+<step>
+				<para>Create a new import XML file using the <systemitem>extract_loadset</systemitem> utility</para>
+<screen>
+<userinput>extract_loadset -l 1 -i clean.marc.xml -o merged.xml records.merge</userinput>
+</screen>
+</step>
+<step>
+				<para>Extract all of the currently used TCN's an generate the .bre and .ingest files to prepare for the bibliographic record load.</para>
+<screen>
+<userinput>
+psql -U evergreen -c "select tcn_value from biblio.record_entry where not deleted" | perl -npe 's/^\s+//;' > used_tcns
+marc2bre.pl --idfield 903 [--startid=#] --marctype=XML -f final.xml --used_tcn_file=used_tcns > evergreen_bre_import_file.bre
+</userinput>
+</screen>
+				<note>
+					<para> The option <option>--startid</option> needs to match the start id used in earlier steps and must be higher than largest id value 
+					in the biblio.record_entry table. the option <option>--idfield</option> should match the marc datafield used to store your records ids.</para>
+				</note>
+</step>
+
+<step>
+				<para>Ingest the bibliographic records into the Evergreen database.</para>
+<screen>
+<userinput>
+<![CDATA[
+direct_ingest.pl < evergreen_bre_import_file.bre > evergreen_ingest_file.ingest
+parallel_pg_loader.pl \
+-or bre \
+-or mrd \
+-or mfr \
+-or mtfe \
+-or mafe \
+-or msfe \
+-or mkfe \
+-or msefe \
+-a mrd \
+-a mfr \
+-a mtfe \
+-a mafe \
+-a msfe \
+-a mkfe \
+-a msefe evergreen_ingest_file.ingest
+]]>
+</userinput>
+</screen>
+			</step>
+			<step>
+				<para>Load the records using psql and the sql scripts generated from the previous step.</para>
+<screen>
+<userinput>
+<![CDATA[
+psql -U evergreen < pg_loader-output.sql > load_pg_loader-output
+psql -U evergreen < create_metabib.sql > log.create_metabib
+]]>
+</userinput>
+</screen>
+			</step>
+			<step>
+				<para>Extract holdings from marc records for importing copies into Evergreen using the <systemitem>extract_holdings</systemitem> utility.</para>
+<screen>
+<userinput>
+extract_holdings --marcfile=marc.clean.xml --holding 999 --copyid 999i --map holdings.map
+</userinput>
+</screen>
+				<para>This command would extract holdings based on the 949 datafield in the marc records. The copy id is generated from the subfile b in the 949 datafield. You may 
+				need to adjust these options based on the field used for holdings informatiom in your marc records.</para>
+				<para>The <option>map</option> option <filename>holdings.map</filename> refers to a file to be used for mapping subfields to the holdings data you would like extracted. Here is an example based on mapping holdings data to the 999 data field:</para>
+<programlisting>
+<![CDATA[
+call_num 999 a
+barcode 999 i
+location 999 l
+owning_lib 999 m
+circ_modifier 999 t
+]]>
+</programlisting>
+				<para>Running the extract holdings script should produce the sql file <filename>HOLDINGS.pg</filename> similar to:</para>
+<programlisting language="sql">
+BEGIN;
+
+egid, hseq, l_call_num, l_barcode, l_location, l_owning_lib, l_circ_modifier,
+40      0       HD3616.K853 U54 1997    30731100751928  STACKS  FENNELL BOOK
+41      1       HV6548.C3 S984 1998     30731100826613  STACKS  FENNELL BOOK
+41      2       HV6548.C3 S984 1998     30731100804958  STACKS  BRANTFORD       BOOK
+...
+</programlisting>
+  
+				<para>This file can be used for importing holdings into Evergreen. the <database class="field">egid</database> is a critical column. It is used to link the volume and copy to 
+				the bibliographic record. Please refer to <link linkend="migratingbibrecordcopies">for the steps to import your holdings into Evergreen.</link></para> 
+			
+			</step>
+		</procedure>
+		
+	</section>
 	<section xml:id="migratingbibrecordcopies">
 		<title>Adding Copies to Bibliographic Records</title>
-		<indexterm><primary>migrating</primary><secondary>adding copies</secondary></indexterm>	
-		<para>Once you've loaded the bibliographic records in Evergreen, you can search and view the records in the staff client, but they will not be visible in the catalogue. By 
-		default, bibliographic records will not be visible in the catalogue until you add a copy representing a physical manifestation of that resource. You can add a copy manually through 
-		the staff client via the Holdings maintenance screen, but if you're bulk-importing MARC records you probably want to bulk load the associated copies, call numbers, and barcodes as 
-		well.</para>
-		<simplesect>
-			<title>Importing volumes and copies from <systemitem>MARC21XML</systemitem> holdings</title>
-			<indexterm><primary>migrating</primary><secondary>importing volumes</secondary></indexterm>	
-			<para>There is currently no simple method for importing holdings based on the contents of the MARC holdings field (852, as specified by 
-			<link xml:href="http://www.loc.gov/marc/holdings/">http://www.loc.gov/marc/holdings/</link>). 
-			However, a more or less automated method could be built that performs the following steps:</para>
-			<procedure>
-				<step><para>Create a tab-delimited file that contains your holdings information</para>
-				<itemizedlist>
-					<listitem>Required fields: bibliographic ID, barcode, and call number</listitem>		
-					<listitem>Optional fields: shelving location (text) – see  the <link linkend="asset.table.copy">asset.copy table</link> for 
-					possible fields to include</listitem>
-				</itemizedlist>		
-				</step>
-				<step><para>Create a staging table that matches the contents of your tab-delimited file.</para>
-				</step>
-				<step><para>Insert the contents of your tab-delimited file into the table.</para>
-				</step>
-				<step><para>Generate <systemitem>SQL</systemitem> scripts for item import to match the staging table that you created.</para>
-				</step>
-				<step><para>Run the <systemitem>SQL</systemitem> scripts to create the holdings in Evergreen.</para>
-				</step>
-			</procedure>
-			<para>If an ILS has the concept of <quote>item categories</quote>, these may be mapped to Evergreen via statistical categories in the 
-			<link linkend="asset.table.stat-cat">asset.stat_cat table</link> . Note that statistical categories cannot be used as search filters; individual branches can define 
-			their own statistical categories; and define their own statistical category entries for individual items - best use case for statistical categories is probably for gifts.</para>
-			<para>In 2009, Conifer placed their <link xl:href="http://svn.open-ils.org/trac/ILS-Contrib/browser/conifer/branches/rel_1_6_1/tools/migration-scripts"  
-			xl:title="Conifer migration tools">migration tools</link> 
-			in the <link xl:href="http://svn.open-ils.org/trac/ILS-Contrib/browser/conifer" xl:title="Conifer ILS-Contrib SVN repository">Conifer ILS-Contrib SVN repository</link>, which might be useful samples augmenting the 
-			basic staging table import approach.</para>
-			<para>In 2010, Equinox contributed a set of <link xl:href="http://git.esilibrary.com/?p=migration-tools.git;a=summary"  xl:title="Equinox migration utilities">migration utilities</link></para>
-		</simplesect>
+		<para>Before bibliographic records can be found in an OPAC search copies will need to be created.  It is very important to understand how various tables related to each other in regards 
+		to holdings maintenance.</para> 
+		<para>The following procedure will guide you through the process of populating Evergreen with volumes and copies. This is a very simple example. The SQL queries may need to be adjusted 
+		for the specific data in your holdings.</para>  
+		<procedure>
+			<step>
+				<para>Create a staging_items staging table to hold the holdings data:</para>
+<programlisting language="sql">
+CREATE TABLE staging_items (
+        callnum text, -- call number label
+        bibkey  int,  -- biblio.record_entry_id
+        createdate      date,
+        location        text,
+        barcode         text,
+        item_type       text,
+        owning_lib      text  -- actor.org_unit.shortname
+);
+</programlisting>
+			</step>	
+			<step>
+				<para>Login to the Evergreen using psql and run the following COPY command to copy the items generated from extract_holdings utility:</para>
+<programlisting language="sql">
+COPY staging_items (bibkey, id, callnum, barcode, location, owning_lib, item_type) FROM 'HOLDINGS.pg'; 
+</programlisting>
+				<para>the file <filename>HOLDINGS.pg</filename> and/or the COPY query may need to be adjusted for your particular circumstances.</para>  
+			</step>
+			
+
+			<step>
+				<para>Generate shelving locations from your staging table.</para>
+<programlisting language="sql">
+INSERT INTO asset.copy_location (name, owning_lib)
+SELECT  DISTINCT l.location, ou.id
+FROM  staging_items l 
+       JOIN actor.org_unit ou	ON (l.owning_lib = ou.shortname); 
+</programlisting>
+			</step>
+			<step>
+				<para>Generate circulation modifiers from your staging table.</para>
+<programlisting language="sql">
+INSERT INTO config.circ_modifier (code, name, description, sip2_media_type, magnetic_media)
+        SELECT  DISTINCT item_type AS code,
+          item_type AS name,
+          LOWER(item_type) AS description,
+          '001' AS sip2_media_type,
+          FALSE AS magnetic_media
+          FROM  staging_items
+          WHERE item_type NOT IN (SELECT code FROM config.circ_modifier);
+</programlisting>
+			</step>
+			<step>
+				<para>Generate call numbers from your staging table:</para>
+<programlisting language="sql">
+INSERT INTO asset.call_number (creator,editor,record,label,owning_lib)
+SELECT  DISTINCT 1, 1, b.id, l.callnum, ou.id
+FROM  staging.staging_items l
+JOIN actor.org_unit ou ON (l.owning_lib = ou.shortname);
+</programlisting>
+			</step>
+			<step>
+				<para>Generate copies from your staging table:</para>
+<programlisting language="sql">
+INSERT INTO asset.copy (
+circ_lib, creator, editor, create_date, barcode,
+STATUS, location, loan_duration, fine_level, circ_modifier, deposit, ref, call_number)		
+
+SELECT  DISTINCT ou.id AS circ_lib,
+	1 AS creator,
+	1 AS editor,
+	l.createdate AS create_date,
+	l.barcode AS barcode,
+	0 AS STATUS,
+	cl.id AS location,
+	2 AS loan_duration,
+	2 AS fine_level,
+	l.item_type AS circ_modifier,
+	FALSE AS deposit,
+	CASE
+	WHEN l.item_type = 'REFERENCE' THEN TRUE
+	ELSE FALSE
+	END AS ref,						
+	cn.id AS call_number
+	FROM  staging.staging_items l
+	JOIN actor.org_unit ou
+		ON (l.owning_lib = ou.shortname)
+	JOIN asset.copy_location cl
+		ON (ou.id = cl.owning_lib AND l.location = cl.name)
+	JOIN asset.call_number cn
+		ON (ou.id = cn.owning_lib      
+		AND l.callnum = cn.label);
+</programlisting>
+				<para>You should now have copies in your Evergreen database and should be able to search and find the bibliographic records with attached copies.</para> 
+			</step>
+		</procedure>
 	</section>
 	<section xml:id="migratingpatrons">
 		<title>Migrating Patron Data</title>
