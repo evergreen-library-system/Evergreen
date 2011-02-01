@@ -2,7 +2,10 @@
     INCLUDE "default/kcls-wire/parts/topnav.tt2";
     ctx.page_title = "Account Login" %]
 [% BLOCK html_head -%]
-<script type="text/javascript" src="/opac/skin/kcls/js/contentslider.js"></script>
+<style type="text/css">
+    #rdetail_copy_info_table { font-size: 8pt; }
+    #rdetail_copy_info_table td { padding: 3px; }
+</style>
 [%- END %]
     <div id="search-wrapper">
         [% INCLUDE "default/kcls-wire/parts/utils.tt2" %]
