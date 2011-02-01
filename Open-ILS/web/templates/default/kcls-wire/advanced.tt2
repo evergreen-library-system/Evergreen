@@ -29,7 +29,7 @@
     <div id="content-wrapper">
         <div id="main-content">
             <div class="advanced_div">
-            [% INCLUDE "default/kcls-wire/parts/advanced_search.tt2" %]
+            [% INCLUDE "default/kcls-wire/parts/advanced/search.tt2" %]
             </div>
             <div style="clear:both;height:15px;"></div>	
         </div>

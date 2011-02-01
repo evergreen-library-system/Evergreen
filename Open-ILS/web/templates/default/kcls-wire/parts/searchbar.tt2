@@ -18,8 +18,12 @@
             </td>
         </tr>
         <tr>
-            <td>[% INCLUDE "default/kcls-wire/parts/format_selector.tt2" %]</td>
-            <td>[% INCLUDE "default/kcls-wire/parts/libselect.tt2" %]</td>
+            <td>
+                [% INCLUDE "default/kcls-wire/parts/format_selector.tt2" %]
+            </td>
+            <td>
+                [% INCLUDE "default/kcls-wire/parts/libselect.tt2" %]
+            </td>
         </tr>
     </table>
  
