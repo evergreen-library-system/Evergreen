@@ -219,6 +219,12 @@ CREATE INDEX unit_editor_idx   ON serial.unit ( editor );
 -- must create this rule explicitly; it is not inherited from asset.copy
 CREATE RULE protect_serial_unit_delete AS ON DELETE TO serial.unit DO INSTEAD UPDATE serial.unit SET deleted = TRUE WHERE OLD.id = serial.unit.id;
 
+-- must create this trigger explicitly; it is not inherited from asset.copy
+CREATE TRIGGER autogenerate_placeholder_barcode
+   BEFORE INSERT OR UPDATE ON serial.unit 
+   FOR EACH ROW EXECUTE PROCEDURE asset.autogenerate_placeholder_barcode()
+;
+
 CREATE TABLE serial.item (
 	id              SERIAL  PRIMARY KEY,
 	creator         INT     NOT NULL
