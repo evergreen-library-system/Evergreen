@@ -2437,9 +2437,10 @@ sub do_checkin {
 
 sub finish_fines_and_voiding {
     my $self = shift;
+    return unless $self->circ;
 
     # gather any updates to the circ after fine generation, if there was a circ
-    $self->generate_fines_finish if ($self->circ);
+    $self->generate_fines_finish;
 
     return unless $self->backdate or $self->void_overdues;
 
