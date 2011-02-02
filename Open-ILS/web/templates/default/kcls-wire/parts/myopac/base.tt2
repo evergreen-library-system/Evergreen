@@ -1,0 +1,33 @@
+[% myopac_pages = [
+    {url => "main", name => "Account Summary"},
+    {url => "circs", name => "Items Checked Out"},
+    {url => "holds", name => "Holds"},
+    {url => "prefs", name => "Account Preferences"},
+    {url => "lists", name => "My Lists"}
+] %]
+    [% INCLUDE "default/kcls-wire/parts/topnav.tt2" %]
+    <div id="search-wrapper">
+        [% INCLUDE "default/kcls-wire/parts/utils.tt2" %]
+        [% INCLUDE "default/kcls-wire/parts/searchbar.tt2" %]
+    </div>
+    <div id="content-wrapper">
+        <div id="myopac_tabs">
+            <div id="acct_tabs">
+                [%- FOREACH page IN myopac_pages;
+                    IF page.url == myopac_page;
+                        cls_which = "on";
+                        ctx.page_title = page.name;
+                    ELSE;
+                        cls_which = "off";
+                    END -%]
+                <a href="[% page.url %]"
+                    class="acct-[% page.url; '-'; cls_which %] acct-tab"></a>
+                [% END %]
+            </div>
+        </div>
+        <div id="main-content">
+            <div style="height:15px;clear:both;"></div>
+            [% content %]
+            <div style="clear:both;"></div>
+        </div>
+    </div>
