@@ -1451,6 +1451,14 @@ cat.copy_browser.prototype = {
                         'aou' : obj.data.hash.aou[ acn_tree.owning_lib() ],
                         'acn' : acn_tree,
                         'acp' : acp_item,
+                        'circ' :
+                            acp_item.circulations() 
+                            ? (
+                                acp_item.circulations().length > 0
+                                ? acp_item.circulations()[0]
+                                : null
+                            ) 
+                            : null,
                         'volume_count' : '',
                         'copy_count' : '',
                     }
