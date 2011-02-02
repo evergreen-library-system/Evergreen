@@ -1,0 +1,2126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="intro_to_sql" xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="EN"
+    xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<chapterinfo>
+    		<title>Introduction to SQL for Evergreen Administrators</title>
+	</chapterinfo>
+	<abstract id="itnroSQL_abstract">
+		<simpara>This chapter was taken from Dan Scott's <emphasis>Introduction to SQL for Evergreen Administrators</emphasis>, February 2010.</simpara>
+	</abstract>	
+	<section id="intro_to_databases">
+			<title>Introduction to SQL Databases</title>
+			<indexterm><primary>sql</primary></indexterm>
+		<simplesect>
+			<title>Introduction</title>
+			<simpara>Over time, the SQL database has become the standard method of storing,
+			retrieving, and processing raw data for applications. Ranging from embedded
+			databases such as SQLite and Apache Derby, to enterprise databases such as
+			Oracle and IBM DB2, any SQL database offers basic advantages to application
+			developers such as standard interfaces (Structured Query Language (SQL), Java
+			Database Connectivity (JDBC), Open Database Connectivity (ODBC), Perl Database
+			Independent Interface (DBI)), a standard conceptual model of data (tables,
+			fields, relationships, constraints, etc), performance in storing and retrieving
+			data, concurrent access, etc.</simpara>
+			<simpara>Evergreen is built on PostgreSQL, an open source SQL database that began as
+			<literal>POSTGRES</literal> at the University of California at Berkeley in 1986 as a research
+			project led by Professor Michael Stonebraker. A SQL interface was added to a
+			fork of the original POSTGRES Berkelely code in 1994, and in 1996 the project
+			was renamed PostgreSQL.</simpara>
+		</simplesect>
+		<simplesect id="_tables">
+			<title>Tables</title>
+			<indexterm><primary>sql</primary><secondary>tables</secondary></indexterm>
+			<simpara>The table is the cornerstone of a SQL database. Conceptually, a database table
+			is similar to a single sheet in a spreadsheet: every table has one or more
+			columns, with each row in the table containing values for each column. Each
+			column in a table defines an attribute corresponding to a particular data type.</simpara>
+			<simpara>We&#8217;ll insert a row into a table, then display the resulting contents. Don&#8217;t
+			worry if the INSERT statement is completely unfamiliar, we&#8217;ll talk more about
+			the syntax of the insert statement later.</simpara>
+			<formalpara><title><literal>actor.usr_note</literal> database table</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+evergreen=# INSERT INTO actor.usr_note (usr, creator, pub, title, value)
+    VALUES (1, 1, TRUE, 'Who is this guy?', 'He''s the administrator!');
+
+evergreen=# select id, usr, creator, pub, title, value from actor.usr_note;
+ id | usr | creator | pub |      title       |          value
+----+-----+---------+-----+------------------+-------------------------
+  1 |   1 |       1 | t   | Who is this guy? | He's the administrator!
+(1 rows)
+</programlisting>
+			</para></formalpara>
+			<simpara>PostgreSQL supports table inheritance, which lets you define tables that
+			inherit the column definitions of a given parent table. A search of the data in
+			the parent table includes the data in the child tables. Evergreen uses table
+			inheritance: for example, the <literal>action.circulation</literal> table is a child of the
+			<literal>money.billable_xact</literal> table, and the <literal>money.*_payment</literal> tables all inherit from
+			the <literal>money.payment</literal> parent table.</simpara>
+		</simplesect>
+		<simplesect id="_schemas">
+			<title>Schemas</title>
+			<simpara>PostgreSQL, like most SQL databases, supports the use of schema names to group
+			collections of tables and other database objects together. You might think of
+			schemas as namespaces if you&#8217;re a programmer; or you might think of the schema
+			/ table / column relationship like the area code / exchange / local number
+			structure of a telephone number.</simpara>
+			<table
+			frame="all"
+			rowsep="1" colsep="1"
+			>
+			<title>Examples: database object names</title>
+			<?dbhtml table-width="100%"?>
+			<?dbfo table-width="100%"?>
+			<tgroup cols="4">
+			<colspec colname="col_1" colwidth="2.0*"/>
+			<colspec colname="col_2" colwidth="1.0*"/>
+			<colspec colname="col_3" colwidth="1.0*"/>
+			<colspec colname="col_4" colwidth="1.0*"/>
+			<thead>
+			<row>
+			<entry align="left" valign="top">Full name </entry>
+			<entry align="left" valign="top">Schema name </entry>
+			<entry align="left" valign="top">Table name </entry>
+			<entry align="left" valign="top">Field name</entry>
+			</row>
+			</thead>
+			<tbody>
+			<row>
+			<entry align="left" valign="top"><simpara>actor.usr_note.title</simpara></entry>
+			<entry align="left" valign="top"><simpara>actor</simpara></entry>
+			<entry align="left" valign="top"><simpara>usr_note</simpara></entry>
+			<entry align="left" valign="top"><simpara>title</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara>biblio.record_entry.marc</simpara></entry>
+			<entry align="left" valign="top"><simpara>biblio</simpara></entry>
+			<entry align="left" valign="top"><simpara>record_entry</simpara></entry>
+			<entry align="left" valign="top"><simpara>marc</simpara></entry>
+			</row>
+			</tbody>
+			</tgroup>
+			</table>
+			<simpara>The default schema name in PostgreSQL is <literal>public</literal>, so if you do not specify a
+			schema name when creating or accessing a database object, PostgreSQL will use
+			the <literal>public</literal> schema. As a result, you might not find the object that you&#8217;re
+			looking for if you don&#8217;t use the appropriate schema.</simpara>
+			<formalpara><title>Example: Creating a table without a specific schema</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+evergreen=# CREATE TABLE foobar (foo TEXT, bar TEXT);
+CREATE TABLE
+evergreen=# \d foobar
+   Table "public.foobar"
+ Column | Type | Modifiers
+--------+------+-----------
+ foo    | text |
+ bar    | text |
+</programlisting>
+			</para></formalpara>
+			<formalpara><title>Example: Trying to access a unqualified table outside of the public schema</title><para>
+			<programlisting language="sql" linenumbering="unnumbered">evergreen=# SELECT * FROM usr_note;
+			ERROR:  relation "usr_note" does not exist
+			LINE 1: SELECT * FROM usr_note;
+					      ^</programlisting>
+			</para></formalpara>
+			<simpara>Evergreen uses schemas to organize all of its tables with mostly intuitive,
+			if short, schema names. Here&#8217;s the current (as of 2010-01-03) list of schemas
+			used by Evergreen:</simpara>
+			<table
+			frame="all"
+			rowsep="1" colsep="1"
+			>
+			<title>Evergreen schema names</title>
+			<?dbhtml table-width="80%"?>
+			<?dbfo table-width="80%"?>
+			<tgroup cols="2">
+			<colspec colname="col_1" colwidth="1.0*"/>
+			<colspec colname="col_2" colwidth="1.0*"/>
+			<thead>
+			<row>
+			<entry align="left" valign="top">Schema name </entry>
+			<entry align="left" valign="top">Description</entry>
+			</row>
+			</thead>
+			<tbody>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>acq</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Acquisitions</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>action</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Circulation actions</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>action_trigger</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Event mechanisms</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>actor</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Evergreen users and organization units</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>asset</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Call numbers and copies</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>auditor</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Track history of changes to selected tables</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>authority</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Authority records</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>biblio</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Bibliographic records</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>booking</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Resource bookings</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>config</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Evergreen configurable options</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>container</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Buckets for records, call numbers, copies, and users</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>extend_reporter</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Extra views for report definitions</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>metabib</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Metadata about bibliographic records</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>money</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Fines and bills</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>offline</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Offline transactions</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>permission</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>User permissions</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>query</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Stored SQL statements</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>reporter</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Report definitions</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>search</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Search functions</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>serial</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Serial MFHD records</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>stats</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Convenient views of circulation and asset statistics</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>vandelay</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>MARC batch importer and exporter</simpara></entry>
+			</row>
+			</tbody>
+			</tgroup>
+			</table>
+			<note><simpara>The term <emphasis>schema</emphasis> has two meanings in the world of SQL databases. We have
+			discussed the schema as a conceptual grouping of tables and other database
+			objects within a given namespace; for example, "the <emphasis role="strong">actor</emphasis> schema contains the
+			tables and functions related to users and organizational units". Another common
+			usage of <emphasis>schema</emphasis> is to refer to the entire data model for a given database;
+			for example, "the Evergreen database schema".</simpara></note>
+		</simplesect>
+		<simplesect id="_columns">
+			<title>Columns</title>
+			<simpara>Each column definition consists of:</simpara>
+			<itemizedlist>
+			<listitem>
+			<simpara>
+			a data type
+			</simpara>
+			</listitem>
+			<listitem>
+			<simpara>
+			(optionally) a default value to be used whenever a row is inserted that
+			     does not contain a specific value
+			</simpara>
+			</listitem>
+			<listitem>
+			<simpara>
+			(optionally) one or more constraints on the values beyond data type
+			</simpara>
+			</listitem>
+			</itemizedlist>
+			<simpara>Although PostgreSQL supports dozens of data types, Evergreen makes our life
+			easier by only using a handful.</simpara>
+			<table
+			frame="all"
+			rowsep="1" colsep="1"
+			>
+			<title>PostgreSQL data types used by Evergreen</title>
+			<?dbhtml table-width="90%"?>
+			<?dbfo table-width="90%"?>
+			<tgroup cols="3">
+			<colspec colname="col_1" colwidth="1.0*"/>
+			<colspec colname="col_2" colwidth="1.0*"/>
+			<colspec colname="col_3" colwidth="2.5*"/>
+			<thead>
+			<row>
+			<entry align="left" valign="top">Type name   </entry>
+			<entry align="left" valign="top">Description    </entry>
+			<entry align="left" valign="top">Limits</entry>
+			</row>
+			</thead>
+			<tbody>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>INTEGER</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Medium integer</simpara></entry>
+			<entry align="left" valign="top"><simpara>-2147483648 to +2147483647</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>BIGINT</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Large integer</simpara></entry>
+			<entry align="left" valign="top"><simpara>-9223372036854775808 to 9223372036854775807</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>SERIAL</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Sequential integer</simpara></entry>
+			<entry align="left" valign="top"><simpara>1 to 2147483647</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>BIGSERIAL</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Large sequential integer</simpara></entry>
+			<entry align="left" valign="top"><simpara>1 to 9223372036854775807</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>TEXT</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Variable length character data</simpara></entry>
+			<entry align="left" valign="top"><simpara>Unlimited length</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>BOOL</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Boolean</simpara></entry>
+			<entry align="left" valign="top"><simpara>TRUE or FALSE</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>TIMESTAMP WITH TIME ZONE</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Timestamp</simpara></entry>
+			<entry align="left" valign="top"><simpara>4713 BC to 294276 AD</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>TIME</literal></simpara></entry>
+			<entry align="left" valign="top"><simpara>Time</simpara></entry>
+			<entry align="left" valign="top"><simpara>Expressed in HH:MM:SS</simpara></entry>
+			</row>
+			<row>
+			<entry align="left" valign="top"><simpara><literal>NUMERIC</literal>(precision, scale)</simpara></entry>
+			<entry align="left" valign="top"><simpara>Decimal</simpara></entry>
+			<entry align="left" valign="top"><simpara>Up to 1000 digits of precision. In Evergreen mostly used for money
+			values, with a precision of 6 and a scale of 2 (<literal>####.##</literal>).</simpara></entry>
+			</row>
+			</tbody>
+			</tgroup>
+			</table>
+			<simpara>Full details about these data types are available from the
+			<ulink url="http://www.postgresql.org/docs/8.4/static/datatype.html">data types section of
+			the PostgreSQL manual</ulink>.</simpara>
+		</simplesect>
+		<simplesect id="_constraints">
+			<title>Constraints</title>
+			<simplesect id="_prevent_null_values">
+				<title>Prevent NULL values</title>
+				<simpara>A column definition may include the constraint <literal>NOT NULL</literal> to prevent NULL
+				values. In PostgreSQL, a NULL value is not the equivalent of zero or false or
+				an empty string; it is an explicit non-value with special properties. We&#8217;ll
+				talk more about how to work with NULL values when we get to queries.</simpara>
+			</simplesect>
+			<simplesect id="_primary_key">
+				<title>Primary key</title>
+				<simpara>Every table can have at most one primary key. A primary key consists of one or
+				more columns which together uniquely identify each row in a table. If you
+				attempt to insert a row into a table that would create a duplicate or NULL
+				primary key entry, the database rejects the row and returns an error.</simpara>
+				<simpara>Natural primary keys are drawn from the intrinsic properties of the data being
+				modelled. For example, some potential natural primary keys for a table that
+				contains people would be:</simpara>
+				<table
+				frame="all"
+				rowsep="1" colsep="1"
+				>
+				<title>Example: Some potential natural primary keys for a table of people</title>
+				<?dbhtml table-width="90%"?>
+				<?dbfo table-width="90%"?>
+				<tgroup cols="3">
+				<colspec colname="col_1" colwidth="1.0*"/>
+				<colspec colname="col_2" colwidth="2.0*"/>
+				<colspec colname="col_3" colwidth="2.0*"/>
+				<thead>
+				<row>
+				<entry align="left" valign="top">Natural key </entry>
+				<entry align="left" valign="top">Pros </entry>
+				<entry align="left" valign="top">Cons</entry>
+				</row>
+				</thead>
+				<tbody>
+				<row>
+				<entry align="left" valign="top"><simpara>First name, last name, address</simpara></entry>
+				<entry align="left" valign="top"><simpara>No two people with the same name would ever live at the same address, right?</simpara></entry>
+				<entry align="left" valign="top"><simpara>Lots of columns force data duplication in referencing tables</simpara></entry>
+				</row>
+				<row>
+				<entry align="left" valign="top"><simpara>SSN or driver&#8217;s license</simpara></entry>
+				<entry align="left" valign="top"><simpara>These are guaranteed to be unique</simpara></entry>
+				<entry align="left" valign="top"><simpara>Lots of people don&#8217;t have an SSN or a driver&#8217;s license</simpara></entry>
+				</row>
+				</tbody>
+				</tgroup>
+				</table>
+				<simpara>To avoid problems with natural keys, many applications instead define surrogate
+				primary keys. A surrogate primary keys is a column with an autoincrementing
+				integer value added to a table definition that ensures uniqueness.</simpara>
+				<simpara>Evergreen uses surrogate keys (a column named <literal>id</literal> with a <literal>SERIAL</literal> data type)
+				for most of its tables.</simpara>
+			</simplesect>
+			<simplesect id="_foreign_keys">
+				<title>Foreign keys</title>
+				<simpara>Every table can contain zero or more foreign keys: one or more columns that
+				refer to the primary key of another table.</simpara>
+				<simpara>For example, let&#8217;s consider Evergreen&#8217;s modelling of the basic relationship
+				between copies, call numbers, and bibliographic records. Bibliographic records
+				contained in the <literal>biblio.record_entry</literal> table can have call numbers attached to
+				them. Call numbers are contained in the <literal>asset.call_number</literal> table, and they can
+				have copies attached to them. Copies are contained in the <literal>asset.copy</literal> table.</simpara>
+				<table
+				frame="all"
+				rowsep="1" colsep="1"
+				>
+				<title>Example: Evergreen&#8217;s copy / call number / bibliographic record relationships</title>
+				<?dbhtml table-width="100%"?>
+				<?dbfo table-width="100%"?>
+				<tgroup cols="4">
+				<colspec colname="col_1" colwidth="1.0*"/>
+				<colspec colname="col_2" colwidth="1.0*"/>
+				<colspec colname="col_3" colwidth="1.0*"/>
+				<colspec colname="col_4" colwidth="1.0*"/>
+				<thead>
+				<row>
+				<entry align="left" valign="top">Table </entry>
+				<entry align="left" valign="top">Primary key </entry>
+				<entry align="left" valign="top">Column with a foreign key </entry>
+				<entry align="left" valign="top">Points to</entry>
+				</row>
+				</thead>
+				<tbody>
+				<row>
+				<entry align="left" valign="top"><simpara>asset.copy</simpara></entry>
+				<entry align="left" valign="top"><simpara>asset.copy.id</simpara></entry>
+				<entry align="left" valign="top"><simpara>asset.copy.call_number</simpara></entry>
+				<entry align="left" valign="top"><simpara>asset.call_number.id</simpara></entry>
+				</row>
+				<row>
+				<entry align="left" valign="top"><simpara>asset.call_number</simpara></entry>
+				<entry align="left" valign="top"><simpara>asset.call_number.id</simpara></entry>
+				<entry align="left" valign="top"><simpara>asset.call_number.record</simpara></entry>
+				<entry align="left" valign="top"><simpara>biblio.record_entry.id</simpara></entry>
+				</row>
+				<row>
+				<entry align="left" valign="top"><simpara>biblio.record_entry</simpara></entry>
+				<entry align="left" valign="top"><simpara>biblio.record_entry.id</simpara></entry>
+				<entry align="left" valign="top"><simpara></simpara></entry>
+				<entry align="left" valign="top"><simpara></simpara></entry>
+				</row>
+				</tbody>
+				</tgroup>
+				</table>
+			</simplesect>
+			<simplesect id="_check_constraints">
+				<title>Check constraints</title>
+				<simpara>PostgreSQL enables you to define rules to ensure that the value to be inserted
+				or updated meets certain conditions. For example, you can ensure that an
+				incoming integer value is within a specific range, or that a ZIP code matches a
+				particular pattern.</simpara>
+			</simplesect>
+		</simplesect>
+		<simplesect id="_deconstructing_a_table_definition_statement">
+			<title>Deconstructing a table definition statement</title>
+			<simpara>The <literal>actor.org_address</literal> table is a simple table in the Evergreen schema that
+			we can use as a concrete example of many of the properties of databases that
+			we have discussed so far.</simpara>
+<programlisting language="sql" linenumbering="unnumbered">
+CREATE TABLE actor.org_address (
+  id            SERIAL  PRIMARY KEY,      <co id="sqlCO1-1"/>
+  valid         BOOL    NOT NULL DEFAULT TRUE, <co id="sqlCO1-2"/>
+  address_type  TEXT    NOT NULL DEFAULT 'MAILING', <co id="sqlCO1-3"/>
+  org_unit      INT     NOT NULL REFERENCES actor.org_unit (id)  <co id="sqlCO1-4"/>
+			  DEFERRABLE INITIALLY DEFERRED,
+  street1       TEXT    NOT NULL,
+  street2       TEXT, <co id="sqlCO1-5"/>
+  city          TEXT    NOT NULL,
+  county        TEXT,
+  state         TEXT    NOT NULL,
+  country       TEXT    NOT NULL,
+  post_code     TEXT    NOT NULL
+);
+</programlisting>
+			<calloutlist>
+			<callout arearefs="sqlCO1-1">
+			<simpara>
+			The column named <literal>id</literal> is defined with a special data type of <literal>SERIAL</literal>; if
+			given no value when a row is inserted into a table, the database automatically
+			generates the next sequential integer value for the column. <literal>SERIAL</literal> is a
+			popular data type for a primary key because it is guaranteed to be unique - and
+			indeed, the constraint for this column identifies it as the <literal>PRIMARY KEY</literal>.
+			</simpara>
+			</callout>
+			<callout arearefs="sqlCO1-2">
+			<simpara>
+			The data type <literal>BOOL</literal> defines a boolean value: <literal>TRUE</literal> or <literal>FALSE</literal> are the only
+			acceptable values for the column. The constraint <literal>NOT NULL</literal> instructs the
+			database to prevent the column from ever containing a NULL value. The column
+			property <literal>DEFAULT TRUE</literal> instructs the database to automatically set the value
+			of the column to <literal>TRUE</literal> if no value is provided.
+			</simpara>
+			</callout>
+			<callout arearefs="sqlCO1-3">
+			<simpara>
+			The data type <literal>TEXT</literal> defines a text column of practically unlimited length.
+			As with the previous column, there is a <literal>NOT NULL</literal> constraint, and a default
+			value of <literal>'MAILING'</literal> will result if no other value is supplied.
+			</simpara>
+			</callout>
+			<callout arearefs="sqlCO1-4">
+			<simpara>
+			The <literal>REFERENCES actor.org_unit (id)</literal> clause indicates that this column has a
+			foreign key relationship to the <literal>actor.org_unit</literal> table, and that the value of
+			this column in every row in this table must have a corresponding value in the
+			<literal>id</literal> column in the referenced table (<literal>actor.org_unit</literal>).
+			</simpara>
+			</callout>
+			<callout arearefs="sqlCO1-5">
+			<simpara>
+			The column named <literal>street2</literal> demonstrates that not all columns have constraints
+			beyond data type. In this case, the column is allowed to be NULL or to contain a
+			<literal>TEXT</literal> value.
+			</simpara>
+			</callout>
+			</calloutlist>
+		</simplesect>
+		<simplesect id="_displaying_a_table_definition_using_literal_psql_literal">
+			<title>Displaying a table definition using <literal>psql</literal></title>
+			<simpara>The <literal>psql</literal> command-line interface is the preferred method for accessing
+			PostgreSQL databases. It offers features like tab-completion, readline support
+			for recalling previous commands, flexible input and output formats, and
+			is accessible via a standard SSH session.</simpara>
+			<simpara>If you press the <literal>Tab</literal> key once after typing one or more characters of the
+			database object name, <literal>psql</literal> automatically completes the name if there are no
+			other matches. If there are other matches for your current input, nothing
+			happens until you press the <literal>Tab</literal> key a second time, at which point <literal>psql</literal>
+			displays all of the matches for your current input.</simpara>
+			<simpara>To display the definition of a database object such as a table, issue the
+			command <literal>\d _object-name_</literal>. For example, to display the definition of the
+			actor.usr_note table:</simpara>
+<programlisting language="sh" linenumbering="unnumbered">
+$ psql evergreen <co id="sqlCO2-1"/>
+psql (8.4.1)
+Type "help" for help.
+
+evergreen=# \d actor.usr_note  <co id="sqlCO2-2"/>
+				        Table "actor.usr_note"
+   Column    |           Type           |                          Modifiers
+-------------+--------------------------+-------------------------------------------------------------
+ id          | bigint                   | not null default nextval('actor.usr_note_id_seq'::regclass)
+ usr         | bigint                   | not null
+ creator     | bigint                   | not null
+ create_date | timestamp with time zone | default now()
+ pub         | boolean                  | not null default false
+ title       | text                     | not null
+ value       | text                     | not null
+Indexes:
+    "usr_note_pkey" PRIMARY KEY, btree (id)
+    "actor_usr_note_creator_idx" btree (creator)
+    "actor_usr_note_usr_idx" btree (usr)
+Foreign-key constraints:
+    "usr_note_creator_fkey" FOREIGN KEY (creator) REFERENCES actor.usr(id) ON ...
+    "usr_note_usr_fkey" FOREIGN KEY (usr) REFERENCES actor.usr(id) ON DELETE ....
+
+evergreen=# \q    <co id="sqlCO2-3"/>
+$
+</programlisting>
+			<calloutlist>
+			<callout arearefs="sqlCO2-1">
+			<simpara>
+			This is the most basic connection to a PostgreSQL database. You can use a
+			number of other flags to specify user name, hostname, port, and other options.
+			</simpara>
+			</callout>
+			<callout arearefs="sqlCO2-2">
+			<simpara>
+			The <literal>\d</literal> command displays the definition of a database object.
+			</simpara>
+			</callout>
+			<callout arearefs="sqlCO2-3">
+			<simpara>
+			The <literal>\q</literal> command quits the <literal>psql</literal> session and returns you to the shell prompt.
+			</simpara>
+			</callout>
+			</calloutlist>
+		</simplesect>
+	</section>
+	<section id="basic_sql_queries">
+		<title>Basic SQL queries</title>
+		<simplesect id="_the_select_statement">
+			<title>The SELECT statement</title>
+			<simpara>The SELECT statement is the basic tool for retrieving information from a
+			database. The syntax for most SELECT statements is:</simpara>
+			<blockquote>
+			<literallayout><literal>SELECT</literal> [<emphasis>columns(s)</emphasis>]
+			  <literal>FROM</literal> [<emphasis>table(s)</emphasis>]
+			  [<literal>WHERE</literal> <emphasis>condition(s)</emphasis>]
+			  [<literal>GROUP BY</literal> <emphasis>columns(s)</emphasis>]
+			  [<literal>HAVING</literal> <emphasis>grouping-condition(s)</emphasis>]
+			  [<literal>ORDER BY</literal> <emphasis>column(s)</emphasis>]
+			  [<literal>LIMIT</literal> <emphasis>maximum-results</emphasis>]
+			  [<literal>OFFSET</literal> <emphasis>start-at-result-#</emphasis>]
+			;</literallayout>
+			</blockquote>
+			<simpara>For example, to select all of the columns for each row in the
+			<literal>actor.usr_address</literal> table, issue the following query:</simpara>
+			<programlisting language="sql" linenumbering="unnumbered">SELECT *
+			  FROM actor.usr_address
+			;</programlisting>
+		</simplesect>
+		<simplesect id="_selecting_particular_columns_from_a_table">
+			<title>Selecting particular columns from a table</title>
+			<simpara><literal>SELECT *</literal> returns all columns from all of the tables included in your query.
+			However, quite often you will want to return only a subset of the possible
+			columns. You can retrieve specific columns by listing the names of the columns
+			you want after the <literal>SELECT</literal> keyword. Separate each column name with a comma.</simpara>
+			<simpara>For example, to select just the city, county, and state from the
+			actor.usr_address table, issue the following query:</simpara>
+			<programlisting language="sql" linenumbering="unnumbered">SELECT city, county, state
+			  FROM actor.usr_address
+			;</programlisting>
+		</simplesect>
+		<simplesect id="_sorting_results_with_the_order_by_clause">
+			<title>Sorting results with the ORDER BY clause</title>
+			<simpara>By default, a SELECT statement returns rows matching your query with no
+			guarantee of any particular order in which they are returned. To force
+			the rows to be returned in a particular order, use the ORDER BY clause
+			to specify one or more columns to determine the sorting priority of the
+			rows.</simpara>
+			<simpara>For example, to sort the rows returned from your <literal>actor.usr_address</literal> query by
+			city, with county and then zip code as the tie breakers, issue the
+			following query:</simpara>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT city, county, state
+  FROM actor.usr_address
+  ORDER BY city, county, post_code
+;
+</programlisting>
+		</simplesect>
+		<simplesect id="_filtering_results_with_the_where_clause">
+			<title>Filtering results with the WHERE clause</title>
+			<simpara>Thus far, your results have been returning all of the rows in the table.
+			Normally, however, you would want to restrict the rows that are returned to the
+			subset of rows that match one or more conditions of your search. The <literal>WHERE</literal>
+			clause enables you to specify a set of conditions that filter your query
+			results. Each condition in the <literal>WHERE</literal> clause is an SQL expression that returns
+			a boolean (true or false) value.</simpara>
+			<simpara>For example, to restrict the results returned from your <literal>actor.usr_address</literal>
+			query to only those rows containing a state value of <emphasis>Connecticut</emphasis>, issue the
+			following query:</simpara>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT city, county, state
+  FROM actor.usr_address
+  WHERE state = 'Connecticut'
+  ORDER BY city, county, post_code
+;
+</programlisting>
+			<simpara>You can include more conditions in the <literal>WHERE</literal> clause with the <literal>OR</literal> and <literal>AND</literal>
+			operators. For example, to further restrict the results returned from your
+			<literal>actor.usr_address</literal> query to only those rows where the state column contains a
+			value of <emphasis>Connecticut</emphasis> and the city column contains a value of <emphasis>Hartford</emphasis>,
+			issue the following query:</simpara>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT city, county, state
+  FROM actor.usr_address
+  WHERE state = 'Connecticut'
+    AND city = 'Hartford'
+  ORDER BY city, county, post_code
+;
+</programlisting>
+			<note><simpara>To return rows where the state is <emphasis>Connecticut</emphasis> and the city is <emphasis>Hartford</emphasis> or
+			<emphasis>New Haven</emphasis>, you must use parentheses to explicitly group the city value
+			conditions together, or else the database will evaluate the <literal>OR city = 'New
+			Haven'</literal> clause entirely on its own and match all rows where the city column is
+			<emphasis>New Haven</emphasis>, even though the state might not be <emphasis>Connecticut</emphasis>.</simpara></note>
+			<formalpara><title>Trouble with OR</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT city, county, state
+  FROM actor.usr_address
+  WHERE state = 'Connecticut'
+    AND city = 'Hartford' OR city = 'New Haven'
+  ORDER BY city, county, post_code
+;
+
+-- Can return unwanted rows because the OR is not grouped!
+</programlisting>
+			</para></formalpara>
+			<formalpara><title>Grouped OR&#8217;ed conditions</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT city, county, state
+  FROM actor.usr_address
+  WHERE state = 'Connecticut'
+    AND (city = 'Hartford' OR city = 'New Haven')
+  ORDER BY city, county, post_code
+;
+
+-- The parentheses ensure that the OR is applied to the cities, and the
+-- state in either case must be 'Connecticut'
+</programlisting>
+			</para></formalpara>
+			<simplesect id="_comparison_operators">
+				<title>Comparison operators</title>
+				<simpara>Here is a partial list of comparison operators that are commonly used in
+				<literal>WHERE</literal> clauses:</simpara>
+				<simplesect id="_comparing_two_scalar_values">
+					<title>Comparing two scalar values</title>
+					<itemizedlist>
+					<listitem>
+					<simpara>
+					<literal>x = y</literal> (equal to)
+					</simpara>
+					</listitem>
+					<listitem>
+					<simpara>
+					<literal>x != y</literal> (not equal to)
+					</simpara>
+					</listitem>
+					<listitem>
+					<simpara>
+					<literal>x &lt; y</literal> (less than)
+					</simpara>
+					</listitem>
+					<listitem>
+					<simpara>
+					<literal>x &gt; y</literal> (greater than)
+					</simpara>
+					</listitem>
+					<listitem>
+					<simpara>
+					<literal>x LIKE y</literal> (TEXT value x matches a subset of TEXT y, where y is a string that
+					can contain <emphasis>%</emphasis> as a wildcard for 0 or more characters, and <emphasis>_</emphasis> as a wildcard
+					for a single character. For example, <literal>WHERE 'all you can eat fish and chips
+					and a big stick' LIKE '%fish%stick'</literal> would return TRUE)
+					</simpara>
+					</listitem>
+					<listitem>
+					<simpara>
+					<literal>x ILIKE y</literal> (like LIKE, but the comparison ignores upper-case / lower-case)
+					</simpara>
+					</listitem>
+					<listitem>
+					<simpara>
+					<literal>x IN y</literal> (x is in the list of values y, where y can be a list or a SELECT
+					statement that returns a list)
+					</simpara>
+					</listitem>
+					</itemizedlist>
+				</simplesect>
+			</simplesect>
+		</simplesect>
+		<simplesect id="_null_values">
+			<title>NULL values</title>
+			<simpara>SQL databases have a special way of representing the value of a column that has
+			no value: <literal>NULL</literal>. A <literal>NULL</literal> value is not equal to zero, and is not an empty
+			string; it is equal to nothing, not even another <literal>NULL</literal>, because it has no value
+			that can be compared.</simpara>
+			<simpara>To return rows from a table where a given column is not <literal>NULL</literal>, use the
+			<literal>IS NOT NULL</literal> comparison operator.</simpara>
+			<formalpara><title>Retrieving rows where a column is not <literal>NULL</literal></title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT id, first_given_name, family_name
+  FROM actor.usr
+  WHERE second_given_name IS NOT NULL
+;
+</programlisting>
+			</para></formalpara>
+			<simpara>Similarly, to return rows from a table where a given column is <literal>NULL</literal>, use
+			the <literal>IS NULL</literal> comparison operator.</simpara>
+			<formalpara><title>Retrieving rows where a column is <literal>NULL</literal></title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT id, first_given_name, second_given_name, family_name
+  FROM actor.usr
+  WHERE second_given_name IS NULL
+;
+
+ id | first_given_name | second_given_name |  family_name
+----+------------------+-------------------+----------------
+  1 | Administrator    |                   | System Account
+(1 row)
+</programlisting>
+			</para></formalpara>
+			<simpara>Notice that the <literal>NULL</literal> value in the output is displayed as empty space,
+			indistinguishable from an empty string; this is the default display method in
+			<literal>psql</literal>. You can change the behaviour of <literal>psql</literal> using the <literal>pset</literal> command:</simpara>
+			<formalpara><title>Changing the way <literal>NULL</literal> values are displayed in <literal>psql</literal></title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+evergreen=# \pset null '(null)'
+Null display is '(null)'.
+
+SELECT id, first_given_name, second_given_name, family_name
+  FROM actor.usr
+  WHERE second_given_name IS NULL
+;
+
+ id | first_given_name | second_given_name |  family_name
+----+------------------+-------------------+----------------
+  1 | Administrator    | (null)            | System Account
+(1 row)
+</programlisting>
+			</para></formalpara>
+			<simpara>Database queries within programming languages such as Perl and C have
+			special methods of checking for <literal>NULL</literal> values in returned results.</simpara>
+		</simplesect>
+		<simplesect id="_text_delimiter">
+			<title>Text delimiter: '</title>
+			<simpara>You might have noticed that we have been using the <literal>'</literal> character to delimit
+			TEXT values and values such as dates and times that are TEXT values. Sometimes,
+			however, your TEXT value itself contains a <literal>'</literal> character, such as the word
+			<literal>you&#8217;re</literal>. To prevent the database from prematurely ending the TEXT value at the
+			first <literal>'</literal> character and returning a syntax error, use another <literal>'</literal> character to
+			escape the following <literal>'</literal> character.</simpara>
+			<simpara>For example, to change the last name of a user in the <literal>actor.usr</literal> table to
+			<literal>L&#8217;estat</literal>, issue the following SQL:</simpara>
+			<formalpara><title>Escaping <literal>'</literal> in TEXT values</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+UPDATE actor.usr
+  SET family_name = 'L''estat'
+  WHERE profile IN (
+    SELECT id
+      FROM permission.grp_tree
+      WHERE name = 'Vampire'
+  )
+	;</programlisting>
+			</para></formalpara>
+			<simpara>When you retrieve the row from the database, the value is displayed with just
+			a single <literal>'</literal> character:</simpara>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT id, family_name
+  FROM actor.usr
+  WHERE family_name = 'L''estat'
+;
+
+ id | family_name
+----+-------------
+  1 | L'estat
+(1 row)
+</programlisting>
+		</simplesect>
+		<simplesect id="_grouping_and_eliminating_results_with_the_group_by_and_having_clauses">
+			<title>Grouping and eliminating results with the GROUP BY and HAVING clauses</title>
+			<simpara>The GROUP BY clause returns a unique set of results for the desired columns.
+			This is most often used in conjunction with an aggregate function to present
+			results for a range of values in a single query, rather than requiring you to
+			issue one query per target value.</simpara>
+			<formalpara><title>Returning unique results of a single column with <literal>GROUP BY</literal></title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT grp
+  FROM permission.grp_perm_map
+  GROUP BY grp
+  ORDER BY grp;
+
+ grp
+-----+
+   1
+   2
+   3
+   4
+   5
+   6
+   7
+  10
+(8 rows)
+</programlisting>
+			</para></formalpara>
+			<simpara>While <literal>GROUP BY</literal> can be useful for a single column, it is more often used
+			to return the distinct results across multiple columns. For example, the
+			following query shows us which groups have permissions at each depth in
+			the library hierarchy:</simpara>
+			<formalpara><title>Returning unique results of multiple columns with <literal>GROUP BY</literal></title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT grp, depth
+  FROM permission.grp_perm_map
+  GROUP BY grp, depth
+  ORDER BY depth, grp;
+
+ grp | depth
+-----+-------
+   1 |     0
+   2 |     0
+   3 |     0
+   4 |     0
+   5 |     0
+  10 |     0
+   3 |     1
+   4 |     1
+   5 |     1
+   6 |     1
+   7 |     1
+  10 |     1
+   3 |     2
+   4 |     2
+  10 |     2
+(15 rows)
+</programlisting>
+			</para></formalpara>
+			<simpara>Extending this further, you can use the <literal>COUNT()</literal> aggregate function to
+			also return the number of times each unique combination of <literal>grp</literal> and <literal>depth</literal>
+			appears in the table. <emphasis>Yes, this is a sneak peek at the use of aggregate
+			functions! Keeners.</emphasis></simpara>
+			<formalpara><title>Counting unique column combinations with <literal>GROUP BY</literal></title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT grp, depth, COUNT(grp)
+  FROM permission.grp_perm_map
+  GROUP BY grp, depth
+  ORDER BY depth, grp;
+
+ grp | depth | count
+-----+-------+-------
+   1 |     0 |     6
+   2 |     0 |     2
+   3 |     0 |    45
+   4 |     0 |     3
+   5 |     0 |     5
+  10 |     0 |     1
+   3 |     1 |     3
+   4 |     1 |     4
+   5 |     1 |     1
+   6 |     1 |     9
+   7 |     1 |     5
+  10 |     1 |    10
+   3 |     2 |    24
+   4 |     2 |     8
+  10 |     2 |     7
+(15 rows)
+</programlisting>
+			</para></formalpara>
+			<simpara>You can use the <literal>WHERE</literal> clause to restrict the returned results before grouping
+			is applied to the results. The following query restricts the results to those
+			rows that have a depth of 0.</simpara>
+			<formalpara><title>Using the <literal>WHERE</literal> clause with <literal>GROUP BY</literal></title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT grp, COUNT(grp)
+  FROM permission.grp_perm_map
+  WHERE depth = 0
+  GROUP BY grp
+  ORDER BY 2 DESC
+;
+
+ grp | count
+-----+-------
+   3 |    45
+   1 |     6
+   5 |     5
+   4 |     3
+   2 |     2
+  10 |     1
+(6 rows)
+</programlisting>
+			</para></formalpara>
+			<simpara>To restrict results after grouping has been applied to the rows, use the
+			<literal>HAVING</literal> clause; this is typically used to restrict results based on
+			a comparison to the value returned by an aggregate function. For example,
+			the following query restricts the returned rows to those that have more than
+			5 occurrences of the same value for <literal>grp</literal> in the table.</simpara>
+			<formalpara><title><literal>GROUP BY</literal> restricted by a <literal>HAVING</literal> clause</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT grp, COUNT(grp)
+  FROM permission.grp_perm_map
+  GROUP BY grp
+  HAVING COUNT(grp) &gt; 5
+;
+
+ grp | count
+-----+-------
+   6 |     9
+   4 |    15
+   5 |     6
+   1 |     6
+   3 |    72
+  10 |    18
+(6 rows)
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+		<simplesect id="_eliminating_duplicate_results_with_the_distinct_keyword">
+			<title>Eliminating duplicate results with the DISTINCT keyword</title>
+			<simpara><literal>GROUP BY</literal> is one way of eliminating duplicate results from the rows returned
+			by your query. The purpose of the <literal>DISTINCT</literal> keyword is to remove duplicate
+			rows from the results of your query. However, it works, and it is easy - so if
+			you just want a quick list of the unique set of values for a column or set of
+			columns, the <literal>DISTINCT</literal> keyword might be appropriate.</simpara>
+			<simpara>On the other hand, if you are getting duplicate rows back when you don&#8217;t expect
+			them, then applying the <literal>DISTINCT</literal> keyword might be a sign that you are
+			papering over a real problem.</simpara>
+			<formalpara><title>Returning unique results of multiple columns with <literal>DISTINCT</literal></title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT DISTINCT grp, depth
+  FROM permission.grp_perm_map
+  ORDER BY depth, grp
+;
+
+ grp | depth
+-----+-------
+   1 |     0
+   2 |     0
+   3 |     0
+   4 |     0
+   5 |     0
+  10 |     0
+   3 |     1
+   4 |     1
+   5 |     1
+   6 |     1
+   7 |     1
+  10 |     1
+   3 |     2
+   4 |     2
+  10 |     2
+(15 rows)
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+		<simplesect id="_paging_through_results_with_the_limit_and_offset_clauses">
+			<title>Paging through results with the LIMIT and OFFSET clauses</title>
+			<simpara>The <literal>LIMIT</literal> clause restricts the total number of rows returned from your query
+			and is useful if you just want to list a subset of a large number of rows. For
+			example, in the following query we list the five most frequently used
+			circulation modifiers:</simpara>
+			<formalpara><title>Using the <literal>LIMIT</literal> clause to restrict results</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT circ_modifier, COUNT(circ_modifier)
+  FROM asset.copy
+  GROUP BY circ_modifier
+  ORDER BY 2 DESC
+  LIMIT 5
+;
+
+ circ_modifier | count
+---------------+--------
+ CIRC          | 741995
+ BOOK          | 636199
+ SER           | 265906
+ DOC           | 191598
+ LAW MONO      | 126627
+(5 rows)
+</programlisting>
+			</para></formalpara>
+			<simpara>When you use the <literal>LIMIT</literal> clause to restrict the total number of rows returned
+			by your query, you can also use the <literal>OFFSET</literal> clause to determine which subset
+			of the rows will be returned. The use of the <literal>OFFSET</literal> clause assumes that
+			you&#8217;ve used the <literal>ORDER BY</literal> clause to impose order on the results.</simpara>
+			<simpara>In the following example, we use the <literal>OFFSET</literal> clause to get results 6 through
+			10 from the same query that we prevously executed.</simpara>
+			<formalpara><title>Using the <literal>OFFSET</literal> clause to return a specific subset of rows</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT circ_modifier, COUNT(circ_modifier)
+  FROM asset.copy
+  GROUP BY circ_modifier
+  ORDER BY 2 DESC
+  LIMIT 5
+  OFFSET 5
+;
+
+ circ_modifier | count
+---------------+--------
+ LAW SERIAL    | 102758
+ DOCUMENTS     |  86215
+ BOOK_WEB      |  63786
+ MFORM SER     |  39917
+ REF           |  34380
+(5 rows)
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+	</section>
+	<section id="advanced_sql_queries">
+		<title>Advanced SQL queries</title>
+		<simplesect id="_transforming_column_values_with_functions">
+			<title>Transforming column values with functions</title>
+			<simpara>PostgreSQL includes many built-in functions for manipulating column data.
+			You can also create your own functions (and Evergreen does make use of
+			many custom functions). There are two types of functions used in
+			databases: scalar functions and aggregate functions.</simpara>
+			<simplesect id="_scalar_functions">
+				<title>Scalar functions</title>
+				<simpara>Scalar functions transform each value of the target column. If your query
+				would return 50 values for a column in a given query, and you modify your
+				query to apply a scalar function to the values returned for that column,
+				it will still return 50 values. For example, the UPPER() function,
+				used to convert text values to upper-case, modifies the results in the
+				following set of queries:</simpara>
+				<formalpara><title>Using the UPPER() scalar function to convert text values to upper-case</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+-- First, without the UPPER() function for comparison
+SELECT shortname, name
+  FROM actor.org_unit
+  WHERE id &lt; 4
+;
+
+ shortname |         name
+-----------+-----------------------
+ CONS      | Example Consortium
+ SYS1      | Example System 1
+ SYS2      | Example System 2
+(3 rows)
+
+-- Now apply the UPPER() function to the name column
+SELECT shortname, UPPER(name)
+  FROM actor.org_unit
+  WHERE id &lt; 4
+;
+
+ shortname |       upper
+-----------+--------------------
+ CONS      | EXAMPLE CONSORTIUM
+ SYS1      | EXAMPLE SYSTEM 1
+ SYS2      | EXAMPLE SYSTEM 2
+(3 rows)
+</programlisting>
+				</para></formalpara>
+				<simpara>There are so many scalar functions in PostgreSQL that we cannot cover them
+				all here, but we can list some of the most commonly used functions:</simpara>
+				<itemizedlist>
+				<listitem>
+				<simpara>
+				|| - concatenates two text values together
+				</simpara>
+				</listitem>
+				<listitem>
+				<simpara>
+				COALESCE() - returns the first non-NULL value from the list of arguments
+				</simpara>
+				</listitem>
+				<listitem>
+				<simpara>
+				LOWER() - returns a text value converted to lower-case
+				</simpara>
+				</listitem>
+				<listitem>
+				<simpara>
+				REPLACE() - returns a text value after replacing all occurrences of a given text value with a different text value
+				</simpara>
+				</listitem>
+				<listitem>
+				<simpara>
+				REGEXP_REPLACE() - returns a text value after being transformed by a regular expression
+				</simpara>
+				</listitem>
+				<listitem>
+				<simpara>
+				UPPER() - returns a text value converted to upper-case
+				</simpara>
+				</listitem>
+				</itemizedlist>
+				<simpara>For a complete list of scalar functions, see
+				<ulink url="http://www.postgresql.org/docs/8.3/interactive/functions.html">the PostgreSQL function documentation</ulink>.</simpara>
+			</simplesect>
+			<simplesect id="_aggregate_functions">
+				<title>Aggregate functions</title>
+				<simpara>Aggregate functions return a single value computed from the the complete set of
+				values returned for the specified column.</simpara>
+				<itemizedlist>
+				<listitem>
+				<simpara>
+				AVG()
+				</simpara>
+				</listitem>
+				<listitem>
+				<simpara>
+				COUNT()
+				</simpara>
+				</listitem>
+				<listitem>
+				<simpara>
+				MAX()
+				</simpara>
+				</listitem>
+				<listitem>
+				<simpara>
+				MIN()
+				</simpara>
+				</listitem>
+				<listitem>
+				<simpara>
+				SUM()
+				</simpara>
+				</listitem>
+				</itemizedlist>
+			</simplesect>
+		</simplesect>
+		<simplesect id="_sub_selects">
+			<title>Sub-selects</title>
+			<simpara>A sub-select is the technique of using the results of one query to feed
+			into another query. You can, for example, return a set of values from
+			one column in a SELECT statement to be used to satisfy the IN() condition
+			of another SELECT statement; or you could return the MAX() value of a
+			column in a SELECT statement to match the = condition of another SELECT
+			statement.</simpara>
+			<simpara>For example, in the following query we use a sub-select to restrict the copies
+			returned by the main SELECT statement to only those locations that have an
+			<literal>opac_visible</literal> value of <literal>TRUE</literal>:</simpara>
+			<formalpara><title>Sub-select example</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT call_number
+  FROM asset.copy
+  WHERE deleted IS FALSE
+    AND location IN (
+    SELECT id
+      FROM asset.copy_location
+      WHERE opac_visible IS TRUE
+  )
+;
+</programlisting>
+			</para></formalpara>
+			<simpara>Sub-selects can be an approachable way to breaking down a problem that
+			requires matching values between different tables, and often result in
+			a clearly expressed solution to a problem. However, if you start writing
+			sub-selects within sub-selects, you should consider tackling the problem
+			with joins instead.</simpara>
+		</simplesect>
+		<simplesect id="_joins">
+			<title>Joins</title>
+			<simpara>Joins enable you to access the values from multiple tables in your query
+			results and comparison operators. For example, joins are what enable you to
+			relate a bibliographic record to a barcoded copy via the <literal>biblio.record_entry</literal>,
+			<literal>asset.call_number</literal>, and <literal>asset.copy</literal> tables. In this section, we discuss the
+			most common kind of join&#8212;the inner join&#8212;as well as the less common outer join
+			and some set operations which can compare and contrast the values returned by
+			separate queries.</simpara>
+			<simpara>When we talk about joins, we are going to talk about the left-hand table and
+			the right-hand table that participate in the join. Every join brings together
+			just two tables - but you can use an unlimited (for our purposes) number
+			of joins in a single SQL statement. Each time you use a join, you effectively
+			create a new table, so when you add a second join clause to a statement,
+			table 1 and table 2 (which were the left-hand table and the right-hand table
+			for the first join) now act as a merged left-hand table and the new table
+			in the second join clause is the right-hand table.</simpara>
+			<simpara>Clear as mud? Okay, let&#8217;s look at some examples.</simpara>
+			<simplesect id="_inner_joins">
+				<title>Inner joins</title>
+				<simpara>An inner join returns all of the columns from the left-hand table in the join
+				with all of the columns from the right-hand table in the joins that match a
+				condition in the ON clause. Typically, you use the <literal>=</literal> operator to match the
+				foreign key of the left-hand table with the primary key of the right-hand
+				table to follow the natural relationship between the tables.</simpara>
+				<simpara>In the following example, we return all of columns from the <literal>actor.usr</literal> and
+				<literal>actor.org_unit</literal> tables, joined on the relationship between the user&#8217;s home
+				library and the library&#8217;s ID. Notice in the results that some columns, like
+				<literal>id</literal> and <literal>mailing_address</literal>, appear twice; this is because both the <literal>actor.usr</literal>
+				and <literal>actor.org_unit</literal> tables include columns with these names. This is also why
+				we have to fully qualify the column names in our queries with the schema and
+				table names.</simpara>
+				<formalpara><title>A simple inner join</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT *
+  FROM actor.usr
+    INNER JOIN actor.org_unit ON actor.usr.home_ou = actor.org_unit.id
+    WHERE actor.org_unit.shortname = 'CONS'
+;
+
+-[ RECORD 1 ]------------------+---------------------------------
+id                             | 1
+card                           | 1
+profile                        | 1
+usrname                        | admin
+email                          |
+...
+mailing_address                |
+billing_address                |
+home_ou                        | 1
+...
+claims_never_checked_out_count | 0
+id                             | 1
+parent_ou                      |
+ou_type                        | 1
+ill_address                    | 1
+holds_address                  | 1
+mailing_address                | 1
+billing_address                | 1
+shortname                      | CONS
+name                           | Example Consortium
+email                          |
+phone                          |
+opac_visible                   | t
+fiscal_calendar                | 1
+</programlisting>
+				</para></formalpara>
+				<simpara>Of course, you do not have to return every column from the joined tables;
+				you can (and should) continue to specify only the columns that you want to
+				return. In the following example, we count the number of borrowers for
+				every user profile in a given library by joining the <literal>permission.grp_tree</literal>
+				table where profiles are defined against the <literal>actor.usr</literal> table, and then
+				joining the <literal>actor.org_unit</literal> table to give us access to the user&#8217;s home
+				library:</simpara>
+				<formalpara><title>Borrower Count by Profile (Adult, Child, etc)/Library</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT permission.grp_tree.name, actor.org_unit.name, COUNT(permission.grp_tree.name)
+  FROM actor.usr
+    INNER JOIN permission.grp_tree
+      ON actor.usr.profile = permission.grp_tree.id
+    INNER JOIN actor.org_unit
+      ON actor.org_unit.id = actor.usr.home_ou
+  WHERE actor.usr.deleted IS FALSE
+  GROUP BY permission.grp_tree.name, actor.org_unit.name
+  ORDER BY actor.org_unit.name, permission.grp_tree.name
+;
+
+ name  |        name        | count
+-------+--------------------+-------
+ Users | Example Consortium |     1
+(1 row)
+</programlisting>
+				</para></formalpara>
+			</simplesect>
+			<simplesect id="_aliases">
+				<title>Aliases</title>
+				<simpara>So far we have been fully-qualifying all of our table names and column names to
+				prevent any confusion. This quickly gets tiring with lengthy qualified
+				table names like <literal>permission.grp_tree</literal>, so the SQL syntax enables us to assign
+				aliases to table names and column names. When you define an alias for a table
+				name, you can access its column throughout the rest of the statement by simply
+				appending the column name to the alias with a period; for example, if you assign
+				the alias <literal>au</literal> to the <literal>actor.usr</literal> table, you can access the <literal>actor.usr.id</literal>
+				column through the alias as <literal>au.id</literal>.</simpara>
+				<simpara>The formal syntax for declaring an alias for a column is to follow the column
+				name in the result columns clause with <literal>AS</literal> <emphasis>alias</emphasis>. To declare an alias for a table name,
+				follow the table name in the FROM clause (including any JOIN statements) with
+				<literal>AS</literal> <emphasis>alias</emphasis>. However, the <literal>AS</literal> keyword is optional for tables (and columns as
+				of PostgreSQL 8.4), and in practice most SQL statements leave it out.  For
+				example, we can write the previous INNER JOIN statement example using aliases
+				instead of fully-qualified identifiers:</simpara>
+				<formalpara><title>Borrower Count by Profile (using aliases)</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT pgt.name AS "Profile", aou.name AS "Library", COUNT(pgt.name) AS "Count"
+  FROM actor.usr au
+    INNER JOIN permission.grp_tree pgt
+      ON au.profile = pgt.id
+    INNER JOIN actor.org_unit aou
+      ON aou.id = au.home_ou
+  WHERE au.deleted IS FALSE
+  GROUP BY pgt.name, aou.name
+  ORDER BY aou.name, pgt.name
+;
+
+ Profile |      Library       | Count
+---------+--------------------+-------
+ Users   | Example Consortium |     1
+(1 row)
+</programlisting>
+				</para></formalpara>
+				<simpara>A nice side effect of declaring an alias for your columns is that the alias
+				is used as the column header in the results table. The previous version of
+				the query, which didn&#8217;t use aliased column names, had two columns named
+				<literal>name</literal>; this version of the query with aliases results in a clearer
+				categorization.</simpara>
+			</simplesect>
+			<simplesect id="_outer_joins">
+				<title>Outer joins</title>
+				<simpara>An outer join returns all of the rows from one or both of the tables
+				participating in the join.</simpara>
+				<itemizedlist>
+				<listitem>
+				<simpara>
+				For a LEFT OUTER JOIN, the join returns all of the rows from the left-hand
+				table and the rows matching the join condition from the right-hand table, with
+				NULL values for the rows with no match in the right-hand table.
+				</simpara>
+				</listitem>
+				<listitem>
+				<simpara>
+				A RIGHT OUTER JOIN behaves in the same way as a LEFT OUTER JOIN, with the
+				exception that all rows are returned from the right-hand table participating in
+				the join.
+				</simpara>
+				</listitem>
+				<listitem>
+				<simpara>
+				For a FULL OUTER JOIN, the join returns all the rows from both the left-hand
+				and right-hand tables, with NULL values for the rows with no match in either
+				the left-hand or right-hand table.
+				</simpara>
+				</listitem>
+				</itemizedlist>
+				<formalpara><title>Base tables for the OUTER JOIN examples</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT * FROM aaa;
+
+ id | stuff
+----+-------
+  1 | one
+  2 | two
+  3 | three
+  4 | four
+  5 | five
+(5 rows)
+
+SELECT * FROM bbb;
+
+ id | stuff |   foo
+----+-------+----------
+  1 | one   | oneone
+  2 | two   | twotwo
+  5 | five  | fivefive
+  6 | six   | sixsix
+(4 rows)
+</programlisting>
+				</para></formalpara>
+				<formalpara><title>Example of a LEFT OUTER JOIN</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT * FROM aaa
+  LEFT OUTER JOIN bbb ON aaa.id = bbb.id
+;
+ id | stuff | id | stuff |   foo
+----+-------+----+-------+----------
+  1 | one   |  1 | one   | oneone
+  2 | two   |  2 | two   | twotwo
+  3 | three |    |       |
+  4 | four  |    |       |
+  5 | five  |  5 | five  | fivefive
+(5 rows)
+</programlisting>
+				</para></formalpara>
+				<formalpara><title>Example of a RIGHT OUTER JOIN</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT * FROM aaa
+  RIGHT OUTER JOIN bbb ON aaa.id = bbb.id
+;
+ id | stuff | id | stuff |   foo
+----+-------+----+-------+----------
+  1 | one   |  1 | one   | oneone
+  2 | two   |  2 | two   | twotwo
+  5 | five  |  5 | five  | fivefive
+    |       |  6 | six   | sixsix
+(4 rows)
+</programlisting>
+				</para></formalpara>
+				<formalpara><title>Example of a FULL OUTER JOIN</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT * FROM aaa
+  FULL OUTER JOIN bbb ON aaa.id = bbb.id
+;
+ id | stuff | id | stuff |   foo
+----+-------+----+-------+----------
+  1 | one   |  1 | one   | oneone
+  2 | two   |  2 | two   | twotwo
+  3 | three |    |       |
+  4 | four  |    |       |
+  5 | five  |  5 | five  | fivefive
+    |       |  6 | six   | sixsix
+(6 rows)
+</programlisting>
+				</para></formalpara>
+			</simplesect>
+			<simplesect id="_self_joins">
+				<title>Self joins</title>
+				<simpara>It is possible to join a table to itself. You can, in fact you must, use
+				aliases to disambiguate the references to the table.</simpara>
+			</simplesect>
+		</simplesect>
+		<simplesect id="_set_operations">
+			<title>Set operations</title>
+			<simpara>Relational databases are effectively just an efficient mechanism for
+			manipulating sets of values; they are implementations of set theory. There are
+			three operators for sets (tables) in which each set must have the same number
+			of columns with compatible data types: the union, intersection, and difference
+			operators.</simpara>
+			<formalpara><title>Base tables for the set operation examples</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT * FROM aaa;
+
+	id | stuff
+	----+-------
+	1 | one
+	2 | two
+	3 | three
+	4 | four
+	5 | five
+	(5 rows)
+
+SELECT * FROM bbb;
+
+	id | stuff |   foo
+	----+-------+----------
+	1 | one   | oneone
+	2 | two   | twotwo
+	5 | five  | fivefive
+	6 | six   | sixsix
+(4 rows)
+</programlisting>
+			</para></formalpara>
+			<simplesect id="_union">
+				<title>Union</title>
+				<simpara>The <literal>UNION</literal> operator returns the distinct set of rows that are members of
+				either or both of the left-hand and right-hand tables. The <literal>UNION</literal> operator
+				does not return any duplicate rows. To return duplicate rows, use the
+				<literal>UNION ALL</literal> operator.</simpara>
+				<formalpara><title>Example of a UNION set operation</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+-- The parentheses are not required, but are intended to help
+-- illustrate the sets participating in the set operation
+(
+  SELECT id, stuff
+    FROM aaa
+)
+UNION
+(
+  SELECT id, stuff
+    FROM bbb
+)
+ORDER BY 1
+;
+
+ id | stuff
+----+-------
+  1 | one
+  2 | two
+  3 | three
+  4 | four
+  5 | five
+  6 | six
+(6 rows)
+</programlisting>
+				</para></formalpara>
+			</simplesect>
+			<simplesect id="_intersection">
+				<title>Intersection</title>
+				<simpara>The <literal>INTERSECT</literal> operator returns the distinct set of rows that are common to
+				both the left-hand and right-hand tables. To return duplicate rows, use the
+				<literal>INTERSECT ALL</literal> operator.</simpara>
+				<formalpara><title>Example of an INTERSECT set operation</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+(
+  SELECT id, stuff
+    FROM aaa
+)
+INTERSECT
+(
+  SELECT id, stuff
+    FROM bbb
+)
+ORDER BY 1
+;
+
+ id | stuff
+----+-------
+  1 | one
+  2 | two
+  5 | five
+(3 rows)
+</programlisting>
+				</para></formalpara>
+			</simplesect>
+			<simplesect id="_difference">
+				<title>Difference</title>
+				<simpara>The <literal>EXCEPT</literal> operator returns the rows in the left-hand table that do not
+				exist in the right-hand table. You are effectively subtracting the common
+				rows from the left-hand table.</simpara>
+				<formalpara><title>Example of an EXCEPT set operation</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+(
+  SELECT id, stuff
+    FROM aaa
+)
+EXCEPT
+(
+  SELECT id, stuff
+    FROM bbb
+)
+ORDER BY 1
+;
+
+ id | stuff
+----+-------
+  3 | three
+  4 | four
+(2 rows)
+
+-- Order matters: switch the left-hand and right-hand tables
+-- and you get a different result
+(
+  SELECT id, stuff
+    FROM bbb
+)
+EXCEPT
+(
+  SELECT id, stuff
+    FROM aaa
+)
+ORDER BY 1
+;
+
+ id | stuff
+----+-------
+  6 | six
+(1 row)
+</programlisting>
+				</para></formalpara>
+			</simplesect>
+		</simplesect>
+		<simplesect id="_views">
+			<title>Views</title>
+			<simpara>A view is a persistent <literal>SELECT</literal> statement that acts like a read-only table.
+			To create a view, issue the <literal>CREATE VIEW</literal> statement, giving the view a name
+			and a <literal>SELECT</literal> statement on which the view is built.</simpara>
+			<simpara>The following example creates a view based on our borrower profile count:</simpara>
+			<formalpara><title>Creating a view</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+CREATE VIEW actor.borrower_profile_count AS
+  SELECT pgt.name AS "Profile", aou.name AS "Library", COUNT(pgt.name) AS "Count"
+    FROM actor.usr au
+      INNER JOIN permission.grp_tree pgt
+	ON au.profile = pgt.id
+      INNER JOIN actor.org_unit aou
+	ON aou.id = au.home_ou
+    WHERE au.deleted IS FALSE
+    GROUP BY pgt.name, aou.name
+    ORDER BY aou.name, pgt.name
+;
+</programlisting>
+			</para></formalpara>
+			<simpara>When you subsequently select results from the view, you can apply additional
+			<literal>WHERE</literal> clauses to filter the results, or <literal>ORDER BY</literal> clauses to change the
+			order of the returned rows. In the following examples, we issue a simple
+			<literal>SELECT *</literal> statement to show that the default results are returned in the
+			same order from the view as the equivalent SELECT statement would be returned.
+			Then we issue a <literal>SELECT</literal> statement with a <literal>WHERE</literal> clause to further filter the
+			results.</simpara>
+			<formalpara><title>Selecting results from a view</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT * FROM actor.borrower_profile_count;
+
+	  Profile           | Library                    | Count
+----------------------------+----------------------------+-------
+ Faculty                    | University Library         |   208
+ Graduate                   | University Library         |    16
+ Patrons                    | University Library         |    62
+...
+
+-- You can still filter your results with WHERE clauses
+SELECT *
+  FROM actor.borrower_profile_count
+  WHERE "Profile" = 'Faculty';
+
+ Profile | Library                    | Count
+---------+----------------------------+-------
+ Faculty | University Library         |   208
+ Faculty | College Library            |    64
+ Faculty | College Library 2          |   102
+ Faculty | University Library 2       |   776
+(4 rows)
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+		<simplesect id="_inheritance">
+			<title>Inheritance</title>
+			<simpara>PostgreSQL supports table inheritance: that is, a child table inherits its
+			base definition from a parent table, but can add additional columns to its
+			own definition. The data from any child tables is visible in queries against
+			the parent table.</simpara>
+			<simpara>Evergreen uses table inheritance in several areas:
+			  * In the Vandelay MARC batch importer / exporter, Evergreen defines base
+			tables for generic queues and queued records for which authority record and
+			bibliographic record child tables
+			  * Billable transactions are based on the <literal>money.billable_xact</literal> table;
+			child tables include <literal>action.circulation</literal> for circulation transactions
+			and <literal>money.grocery</literal> for general bills.
+			  * Payments are based on the <literal>money.payment</literal> table; its child table is
+			<literal>money.bnm_payment</literal> (for brick-and-mortar payments), which in turn has child
+			tables of <literal>money.forgive_payment</literal>, <literal>money.work_payment</literal>, <literal>money.credit_payment</literal>,
+			<literal>money.goods_payment</literal>, and <literal>money.bnm_desk_payment</literal>. The
+			<literal>money.bnm_desk_payment</literal> table in turn has child tables of <literal>money.cash_payment</literal>,
+			<literal>money.check_payment</literal>, and <literal>money.credit_card_payment</literal>.
+			  * Transits are based on the <literal>action.transit_copy</literal> table, which has a child
+			table of <literal>action.hold_transit_copy</literal> for transits initiated by holds.
+			  * Generic acquisition line items are defined by the
+			<literal>acq.lineitem_attr_definition</literal> table, which in turn has a number of child
+			tables to define MARC attributes, generated attributes, user attributes, and
+			provider attributes.</simpara>
+		</simplesect>
+	</section>
+	<section id="understanding_query_performance_with_explain">
+		<title>Understanding query performance with EXPLAIN</title>
+		<simpara>Some queries run for a long, long time. This can be the result of a poorly
+		written query&#8212;a query with a join condition that joins every
+		row in the <literal>biblio.record_entry</literal> table with every row in the <literal>metabib.full_rec</literal>
+		view would consume a massive amount of memory and disk space and CPU time&#8212;or
+		a symptom of a schema that needs some additional indexes. PostgreSQL provides
+		the <literal>EXPLAIN</literal> tool to estimate how long it will take to run a given query and
+		show you the <emphasis>query plan</emphasis> (how it plans to retrieve the results from the
+		database).</simpara>
+		<simpara>To generate the query plan without actually running the statement, simply
+		prepend the <literal>EXPLAIN</literal> keyword to your query. In the following example, we
+		generate the query plan for the poorly written query that would join every
+		row in the <literal>biblio.record_entry</literal> table with every row in the <literal>metabib.full_rec</literal>
+		view:</simpara>
+		<formalpara><title>Query plan for a terrible query</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+EXPLAIN SELECT *
+  FROM biblio.record_entry
+    FULL OUTER JOIN metabib.full_rec ON 1=1
+;
+
+		                   QUERY PLAN
+-------------------------------------------------------------------------------//
+ Merge Full Join  (cost=0.00..4959156437783.60 rows=132415734100864 width=1379)
+   -&gt;  Seq Scan on record_entry  (cost=0.00..400634.16 rows=2013416 width=1292)
+   -&gt;  Seq Scan on real_full_rec  (cost=0.00..1640972.04 rows=65766704 width=87)
+(3 rows)
+</programlisting>
+		</para></formalpara>
+		<simpara>This query plan shows that the query would return 132415734100864 rows, and it
+		plans to accomplish what you asked for by sequentially scanning (<emphasis>Seq Scan</emphasis>)
+		every row in each of the tables participating in the join.</simpara>
+		<simpara>In the following example, we have realized our mistake in joining every row of
+		the left-hand table with every row in the right-hand table and take the saner
+		approach of using an <literal>INNER JOIN</literal> where the join condition is on the record ID.</simpara>
+		<formalpara><title>Query plan for a less terrible query</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+EXPLAIN SELECT *
+  FROM biblio.record_entry bre
+    INNER JOIN metabib.full_rec mfr ON mfr.record = bre.id;
+		                        QUERY PLAN
+----------------------------------------------------------------------------------------//
+ Hash Join  (cost=750229.86..5829273.98 rows=65766704 width=1379)
+   Hash Cond: (real_full_rec.record = bre.id)
+   -&gt;  Seq Scan on real_full_rec  (cost=0.00..1640972.04 rows=65766704 width=87)
+   -&gt;  Hash  (cost=400634.16..400634.16 rows=2013416 width=1292)
+	 -&gt;  Seq Scan on record_entry bre  (cost=0.00..400634.16 rows=2013416 width=1292)
+(5 rows)
+</programlisting>
+		</para></formalpara>
+		<simpara>This time, we will return 65766704 rows - still way too many rows. We forgot
+		to include a <literal>WHERE</literal> clause to limit the results to something meaningful. In
+		the following example, we will limit the results to deleted records that were
+		modified in the last month.</simpara>
+		<formalpara><title>Query plan for a realistic query</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+EXPLAIN SELECT *
+  FROM biblio.record_entry bre
+    INNER JOIN metabib.full_rec mfr ON mfr.record = bre.id
+  WHERE bre.deleted IS TRUE
+    AND DATE_TRUNC('MONTH', bre.edit_date) &gt;
+	DATE_TRUNC ('MONTH', NOW() - '1 MONTH'::INTERVAL)
+;
+
+		                        QUERY PLAN
+----------------------------------------------------------------------------------------//
+ Hash Join  (cost=5058.86..2306218.81 rows=201669 width=1379)
+   Hash Cond: (real_full_rec.record = bre.id)
+   -&gt;  Seq Scan on real_full_rec  (cost=0.00..1640972.04 rows=65766704 width=87)
+   -&gt;  Hash  (cost=4981.69..4981.69 rows=6174 width=1292)
+	 -&gt;  Index Scan using biblio_record_entry_deleted on record_entry bre
+		 (cost=0.00..4981.69 rows=6174 width=1292)
+	       Index Cond: (deleted = true)
+	       Filter: ((deleted IS TRUE) AND (date_trunc('MONTH'::text, edit_date)
+		 &gt; date_trunc('MONTH'::text, (now() - '1 mon'::interval))))
+(7 rows)
+</programlisting>
+		</para></formalpara>
+		<simpara>We can see that the number of rows returned is now only 201669; that&#8217;s
+		something we can work with. Also, the overall cost of the query is 2306218,
+		compared to 4959156437783 in the original query. The <literal>Index Scan</literal> tells us
+		that the query planner will use the index that was defined on the <literal>deleted</literal>
+		column to avoid having to check every row in the <literal>biblio.record_entry</literal> table.</simpara>
+		<simpara>However, we are still running a sequential scan over the
+		<literal>metabib.real_full_rec</literal> table (the table on which the <literal>metabib.full_rec</literal>
+		view is based). Given that linking from the bibliographic records to the
+		flattened MARC subfields is a fairly common operation, we could create a
+		new index and see if that speeds up our query plan.</simpara>
+		<formalpara><title>Query plan with optimized access via a new index</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+-- This index will take a long time to create on a large database
+-- of bibliographic records
+CREATE INDEX bib_record_idx ON metabib.real_full_rec (record);
+
+EXPLAIN SELECT *
+  FROM biblio.record_entry bre
+    INNER JOIN metabib.full_rec mfr ON mfr.record = bre.id
+  WHERE bre.deleted IS TRUE
+    AND DATE_TRUNC('MONTH', bre.edit_date) &gt;
+	DATE_TRUNC ('MONTH', NOW() - '1 MONTH'::INTERVAL)
+;
+
+		                        QUERY PLAN
+----------------------------------------------------------------------------------------//
+ Nested Loop  (cost=0.00..1558330.46 rows=201669 width=1379)
+   -&gt;  Index Scan using biblio_record_entry_deleted on record_entry bre
+	   (cost=0.00..4981.69 rows=6174 width=1292)
+	 Index Cond: (deleted = true)
+	 Filter: ((deleted IS TRUE) AND (date_trunc('MONTH'::text, edit_date) &gt;
+	   date_trunc('MONTH'::text, (now() - '1 mon'::interval))))
+   -&gt;  Index Scan using bib_record_idx on real_full_rec
+	  (cost=0.00..240.89 rows=850 width=87)
+	 Index Cond: (real_full_rec.record = bre.id)
+(6 rows)
+</programlisting>
+		</para></formalpara>
+		<simpara>We can see that the resulting number of rows is still the same (201669), but
+		the execution estimate has dropped to 1558330 because the query planner can
+		use the new index (<literal>bib_record_idx</literal>) rather than scanning the entire table.
+		Success!</simpara>
+		<note><simpara>While indexes can significantly speed up read access to tables for common
+		filtering conditions, every time a row is created or updated the corresponding
+		indexes also need to be maintained - which can decrease the performance of
+		writes to the database. Be careful to keep the balance of read performance
+		versus write performance in mind if you plan to create custom indexes in your
+		Evergreen database.</simpara></note>
+	</section>
+	<section id="inserting_updating_and_deleting_data">
+		<title>Inserting, updating, and deleting data</title>
+		<simplesect id="_inserting_data">
+			<title>Inserting data</title>
+			<simpara>To insert one or more rows into a table, use the INSERT statement to identify
+			the target table and list the columns in the table for which you are going to
+			provide values for each row. If you do not list one or more columns contained
+			in the table, the database will automatically supply a <literal>NULL</literal> value for those
+			columns. The values for each row follow the <literal>VALUES</literal> clause and are grouped in
+			parentheses and delimited by commas. Each row, in turn, is delimited by commas
+			(<emphasis>this multiple row syntax requires PostgreSQL 8.2 or higher</emphasis>).</simpara>
+			<simpara>For example, to insert two rows into the <literal>permission.usr_grp_map</literal> table:</simpara>
+			<formalpara><title>Inserting rows into the <literal>permission.usr_grp_map</literal> table</title><para>
+			<programlisting language="sql" linenumbering="unnumbered">INSERT INTO permission.usr_grp_map (usr, grp)
+			  VALUES (2, 10), (2, 4)
+			;</programlisting>
+			</para></formalpara>
+			<simpara>Of course, as with the rest of SQL, you can replace individual column values
+			with one or more use sub-selects:</simpara>
+			<formalpara><title>Inserting rows using sub-selects instead of integers</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+INSERT INTO permission.usr_grp_map (usr, grp)
+  VALUES (
+    (SELECT id FROM actor.usr
+       WHERE family_name = 'Scott' AND first_given_name = 'Daniel'),
+    (SELECT id FROM permission.grp_tree
+       WHERE name = 'Local System Administrator')
+  ), (
+    (SELECT id FROM actor.usr
+       WHERE family_name = 'Scott' AND first_given_name = 'Daniel'),
+    (SELECT id FROM permission.grp_tree
+       WHERE name = 'Circulator')
+  )
+;
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+		<simplesect id="_inserting_data_using_a_select_statement">
+			<title>Inserting data using a SELECT statement</title>
+			<simpara>Sometimes you want to insert a bulk set of data into a new table based on
+			a query result. Rather than a <literal>VALUES</literal> clause, you can use a <literal>SELECT</literal>
+			statement to insert one or more rows matching the column definitions. This
+			is a good time to point out that you can include explicit values, instead
+			of just column identifiers, in the return columns of the <literal>SELECT</literal> statement.
+			The explicit values are returned in every row of the result set.</simpara>
+			<simpara>In the following example, we insert 6 rows into the <literal>permission.usr_grp_map</literal>
+			table; each row will have a <literal>usr</literal> column value of 1, with varying values for
+			the <literal>grp</literal> column value based on the <literal>id</literal> column values returned from
+			<literal>permission.grp_tree</literal>:</simpara>
+			<formalpara><title>Inserting rows via a <literal>SELECT</literal> statement</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+INSERT INTO permission.usr_grp_map (usr, grp)
+  SELECT 1, id
+    FROM permission.grp_tree
+    WHERE id &gt; 2
+;
+
+INSERT 0 6
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+		<simplesect id="_deleting_rows">
+			<title>Deleting rows</title>
+			<simpara>Deleting data from a table is normally fairly easy. To delete rows from a table,
+			issue a <literal>DELETE</literal> statement identifying the table from which you want to delete
+			rows and a <literal>WHERE</literal> clause identifying the row or rows that should be deleted.</simpara>
+			<simpara>In the following example, we delete all of the rows from the
+			<literal>permission.grp_perm_map</literal> table where the permission maps to
+			<literal>UPDATE_ORG_UNIT_CLOSING</literal> and the group is anything other than administrators:</simpara>
+			<formalpara><title>Deleting rows from a table</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+DELETE FROM permission.grp_perm_map
+  WHERE grp IN (
+    SELECT id
+      FROM permission.grp_tree
+      WHERE name != 'Local System Administrator'
+  ) AND perm = (
+    SELECT id
+      FROM permission.perm_list
+	      WHERE code = 'UPDATE_ORG_UNIT_CLOSING'
+	  )
+;
+</programlisting>
+			</para></formalpara>
+			<note><simpara>There are two main reasons that a <literal>DELETE</literal> statement may not actually
+			delete rows from a table, even when the rows meet the conditional clause.</simpara></note>
+			<orderedlist numeration="arabic">
+			<listitem>
+			<simpara>
+			If the row contains a value that is the target of a relational constraint,
+			for example, if another table has a foreign key pointing at your target
+			table, you will be prevented from deleting a row with a value corresponding
+			to a row in the dependent table.
+			</simpara>
+			</listitem>
+			<listitem>
+			<simpara>
+			If the table has a rule that substitutes a different action for a <literal>DELETE</literal>
+			statement, the deletion will not take place. In Evergreen it is common for a
+			table to have a rule that substitutes the action of setting a <literal>deleted</literal> column
+			to <literal>TRUE</literal>. For example, if a book is discarded, deleting the row representing
+			the copy from the <literal>asset.copy</literal> table would severely affect circulation statistics,
+			bills, borrowing histories, and their corresponding tables in the database that
+			have foreign keys pointing at the <literal>asset.copy</literal> table (<literal>action.circulation</literal> and
+			<literal>money.billing</literal> and its children respectively). Instead, the <literal>deleted</literal> column
+			value is set to <literal>TRUE</literal> and Evergreen&#8217;s application logic skips over these rows
+			in most cases.
+			</simpara>
+			</listitem>
+			</orderedlist>
+		</simplesect>
+		<simplesect id="_updating_rows">
+			<title>Updating rows</title>
+			<simpara>To update rows in a table, issue an <literal>UPDATE</literal> statement identifying the table
+			you want to update, the column or columns that you want to set with their
+			respective new values, and (optionally) a <literal>WHERE</literal> clause identifying the row or
+			rows that should be updated.</simpara>
+			<simpara>Following is the syntax for the <literal>UPDATE</literal> statement:</simpara>
+			<blockquote>
+			<literallayout><literal>UPDATE</literal> [<emphasis>table-name</emphasis>]
+			  <literal>SET</literal> [<emphasis>column</emphasis>] <literal>TO</literal> [<emphasis>new-value</emphasis>]
+			  <literal>WHERE</literal> [<emphasis>condition</emphasis>]
+			;</literallayout>
+			</blockquote>
+		</simplesect>
+	</section>
+	<section id="query_requests">
+		<title>Query requests</title>
+		<simpara>The following queries were requested by Bibliomation, but might be reusable
+		by other libraries.</simpara>
+		<simplesect id="_monthly_circulation_stats_by_collection_code_library">
+			<title>Monthly circulation stats by collection code / library</title>
+			<formalpara><title>Monthly Circulation Stats by Collection Code/Library</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT COUNT(acirc.id) AS "COUNT", aou.name AS "Library", acl.name AS "Copy Location"
+  FROM asset.copy ac
+    INNER JOIN asset.copy_location acl ON ac.location = acl.id
+    INNER JOIN action.circulation acirc ON acirc.target_copy = ac.id
+    INNER JOIN actor.org_unit aou ON acirc.circ_lib = aou.id
+  WHERE DATE_TRUNC('MONTH', acirc.create_time) = DATE_TRUNC('MONTH', NOW() - INTERVAL '3 month')
+    AND acirc.desk_renewal IS FALSE
+    AND acirc.opac_renewal IS FALSE
+    AND acirc.phone_renewal IS FALSE
+  GROUP BY aou.name, acl.name
+  ORDER BY aou.name, acl.name, 1
+;
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+		<simplesect id="_monthly_circulation_stats_by_borrower_stat_library">
+			<title>Monthly circulation stats by borrower stat / library</title>
+			<formalpara><title>Monthly Circulation Stats by Borrower Stat/Library</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT COUNT(acirc.id) AS "COUNT", aou.name AS "Library", asceum.stat_cat_entry AS "Borrower Stat"
+  FROM action.circulation acirc
+    INNER JOIN actor.org_unit aou ON acirc.circ_lib = aou.id
+    INNER JOIN actor.stat_cat_entry_usr_map asceum ON asceum.target_usr = acirc.usr
+    INNER JOIN actor.stat_cat astat ON asceum.stat_cat = astat.id
+  WHERE DATE_TRUNC('MONTH', acirc.create_time) = DATE_TRUNC('MONTH', NOW() - INTERVAL '3 month')
+    AND astat.name = 'Preferred language'
+    AND acirc.desk_renewal IS FALSE
+    AND acirc.opac_renewal IS FALSE
+    AND acirc.phone_renewal IS FALSE
+  GROUP BY aou.name, asceum.stat_cat_entry
+  ORDER BY aou.name, asceum.stat_cat_entry, 1
+;
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+		<simplesect id="_monthly_intralibrary_loan_stats_by_library">
+			<title>Monthly intralibrary loan stats by library</title>
+			<formalpara><title>Monthly Intralibrary Loan Stats by Library</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT aou.name AS "Library", COUNT(acirc.id)
+  FROM action.circulation acirc
+    INNER JOIN actor.org_unit aou ON acirc.circ_lib = aou.id
+    INNER JOIN asset.copy ac ON acirc.target_copy = ac.id
+    INNER JOIN asset.call_number acn ON ac.call_number = acn.id
+  WHERE acirc.circ_lib != acn.owning_lib
+    AND DATE_TRUNC('MONTH', acirc.create_time) = DATE_TRUNC('MONTH', NOW() - INTERVAL '3 month')
+    AND acirc.desk_renewal IS FALSE
+    AND acirc.opac_renewal IS FALSE
+    AND acirc.phone_renewal IS FALSE
+  GROUP by aou.name
+  ORDER BY aou.name, 2
+;
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+		<simplesect id="_monthly_borrowers_added_by_profile_adult_child_etc_library">
+			<title>Monthly borrowers added by profile (adult, child, etc) / library</title>
+			<formalpara><title>Monthly Borrowers Added by Profile (Adult, Child, etc)/Library</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT pgt.name AS "Profile", aou.name AS "Library", COUNT(pgt.name) AS "Count"
+  FROM actor.usr au
+    INNER JOIN permission.grp_tree pgt
+      ON au.profile = pgt.id
+    INNER JOIN actor.org_unit aou
+      ON aou.id = au.home_ou
+  WHERE au.deleted IS FALSE
+    AND DATE_TRUNC('MONTH', au.create_date) = DATE_TRUNC('MONTH', NOW() - '3 months'::interval)
+  GROUP BY pgt.name, aou.name
+  ORDER BY aou.name, pgt.name
+;
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+		<simplesect id="_borrower_count_by_profile_adult_child_etc_library">
+			<title>Borrower count by profile (adult, child, etc) / library</title>
+			<formalpara><title>Borrower Count by Profile (Adult, Child, etc)/Library</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT pgt.name AS "Profile", aou.name AS "Library", COUNT(pgt.name) AS "Count"
+  FROM actor.usr au
+    INNER JOIN permission.grp_tree pgt
+      ON au.profile = pgt.id
+    INNER JOIN actor.org_unit aou
+      ON aou.id = au.home_ou
+  WHERE au.deleted IS FALSE
+  GROUP BY pgt.name, aou.name
+  ORDER BY aou.name, pgt.name
+;
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+		<simplesect id="_monthly_items_added_by_collection_library">
+			<title>Monthly items added by collection / library</title>
+			<simpara>We define a <quote>collection</quote> as a shelving location in Evergreen.</simpara>
+			<formalpara><title>Monthly Items Added by Collection/Library</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+SELECT aou.name AS "Library", acl.name, COUNT(ac.barcode)
+  FROM actor.org_unit aou
+    INNER JOIN asset.call_number acn ON acn.owning_lib = aou.id
+    INNER JOIN asset.copy ac ON ac.call_number = acn.id
+    INNER JOIN asset.copy_location acl ON ac.location = acl.id
+  WHERE ac.deleted IS FALSE
+    AND acn.deleted IS FALSE
+    AND DATE_TRUNC('MONTH', ac.create_date) = DATE_TRUNC('MONTH', NOW() - '1 month'::interval)
+  GROUP BY aou.name, acl.name
+  ORDER BY aou.name, acl.name
+;
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+		<simplesect id="_hold_purchase_alert_by_library">
+			<title>Hold purchase alert by library</title>
+			<simpara>in the following set of queries, we bring together the active title, volume,
+			and copy holds and display those that have more than a certain number of holds
+			per title. The goal is to UNION ALL the three queries, then group by the
+			bibliographic record ID and display the title / author information for those
+			records that have more than a given threshold of holds.</simpara>
+			<formalpara><title>Hold Purchase Alert by Library</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+-- Title holds
+SELECT all_holds.bib_id, aou.name, rmsr.title, rmsr.author, COUNT(all_holds.bib_id)
+  FROM
+    (
+      (
+	SELECT target, request_lib
+	  FROM action.hold_request
+	  WHERE hold_type = 'T'
+	    AND fulfillment_time IS NULL
+	    AND cancel_time IS NULL
+      )
+      UNION ALL
+      -- Volume holds
+      (
+	SELECT bre.id, request_lib
+	  FROM action.hold_request ahr
+	    INNER JOIN asset.call_number acn ON ahr.target = acn.id
+	    INNER JOIN biblio.record_entry bre ON acn.record = bre.id
+	  WHERE ahr.hold_type = 'V'
+	    AND ahr.fulfillment_time IS NULL
+	    AND ahr.cancel_time IS NULL
+      )
+      UNION ALL
+      -- Copy holds
+      (
+	SELECT bre.id, request_lib
+	  FROM action.hold_request ahr
+	    INNER JOIN asset.copy ac ON ahr.target = ac.id
+	    INNER JOIN asset.call_number acn ON ac.call_number = acn.id
+	    INNER JOIN biblio.record_entry bre ON acn.record = bre.id
+	  WHERE ahr.hold_type = 'C'
+	    AND ahr.fulfillment_time IS NULL
+	    AND ahr.cancel_time IS NULL
+      )
+    ) AS all_holds(bib_id, request_lib)
+  INNER JOIN reporter.materialized_simple_record rmsr
+  INNER JOIN actor.org_unit aou ON aou.id = all_holds.request_lib
+    ON rmsr.id = all_holds.bib_id
+  GROUP BY all_holds.bib_id, aou.name, rmsr.id, rmsr.title, rmsr.author
+  HAVING COUNT(all_holds.bib_id) &gt; 2
+  ORDER BY aou.name
+;
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+		<simplesect id="_update_borrower_records_with_a_different_home_library">
+			<title>Update borrower records with a different home library</title>
+			<simpara>In this example, the library has opened a new branch in a growing area,
+			and wants to reassign the home library for the patrons in the vicinity of
+			the new branch to the new branch. To accomplish this, we create a staging table
+			that holds a set of city names and the corresponding branch shortname for the home
+			library for each city.</simpara>
+			<simpara>Then we issue an <literal>UPDATE</literal> statement to set the home library for patrons with a
+			physical address with a city that matches the city names in our staging table.</simpara>
+			<formalpara><title>Update borrower records with a different home library</title><para>
+<programlisting language="sql" linenumbering="unnumbered">
+CREATE SCHEMA staging;
+CREATE TABLE staging.city_home_ou_map (city TEXT, ou_shortname TEXT,
+  FOREIGN KEY (ou_shortname) REFERENCES actor.org_unit (shortname));
+INSERT INTO staging.city_home_ou_map (city, ou_shortname)
+  VALUES ('Southbury', 'BR1'), ('Middlebury', 'BR2'), ('Hartford', 'BR3');
+BEGIN;
+
+UPDATE actor.usr au SET home_ou = COALESCE(
+  (
+    SELECT aou.id
+      FROM actor.org_unit aou
+	INNER JOIN staging.city_home_ou_map schom ON schom.ou_shortname = aou.shortname
+	INNER JOIN actor.usr_address aua ON aua.city = schom.city
+      WHERE au.id = aua.usr
+      GROUP BY aou.id
+  ), home_ou)
+WHERE (
+  SELECT aou.id
+    FROM actor.org_unit aou
+      INNER JOIN staging.city_home_ou_map schom ON schom.ou_shortname = aou.shortname
+      INNER JOIN actor.usr_address aua ON aua.city = schom.city
+    WHERE au.id = aua.usr
+    GROUP BY aou.id
+) IS NOT NULL;
+</programlisting>
+			</para></formalpara>
+		</simplesect>
+	</section>
+	
+</chapter>
