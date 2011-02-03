@@ -1,5 +1,7 @@
 /* Some really basic utils copied mostly from old opac js:
  * opac_utils.js, utils.js, misc.js (kcls). */
+function _stub() { alert("XXX disconnected"); } /* for in progress work */
+
 function $(id) { return document.getElementById(id); }
 function $n(root, nodeName, attr) {
     return findNodeByName(root, nodeName, attr);
@@ -95,24 +97,6 @@ function swapTabs(el) {
     }
 }
 
-function sortHolds() {
-    alert("FIXME disconnected");
-    /* XXX TODO There was a method for sorting loaded holds in the DOM
-     * without reloading the page, but it was reliant on fieldmapper
-     * and some stock dojo libraries.  Could be reimplemented without
-     * deps if deemed worth it.
-     */
-}
-
-function showDetailedResults(/* Boolean */ detailed) {
-    alert("FIXME disconnected");
-    /* XXX TODO this stands in for an old onchange handler that toggled
-     * between simple and detailed results in the rresults page.
-     * Don't know if we want to keep this around or not (I'm guessing not,
-     * and that we'll do this with two different server-side pages now,
-     * but leaving this stub here for now).
-     */
-}
 
 /* Returns the character code pressed that caused the event. */
 function grabCharCode(evt) {
@@ -145,9 +129,41 @@ function advAddGblRow() {
     tbody.insertBefore(newrow, $("adv_global_addrow"));
     var input = $n(newrow, "term");
     input.value = "";
-    setEnterFunc(input, function() {
-        alert("XXX enter");
-        /* XXX TODO make a real form and get rid of this? */
-    });
+    setEnterFunc(input, _stub); /* XXX TODO make a real form and get rid of this? */
     $n(newrow, 'type').focus();
 }
+
+var rdetailNewBookbag = _stub; /* XXX TODO reimplement without JS? */
+var addMyList = _stub; /* XXX TODO we probably still need this one */
+var listSaveAction = _stub; /* XXX TODO we probably still need this one */
+var expandBoxes = _stub; /* XXX TODO possibly reimplement or replace */
+var iForgotMyPassword = _stub; /* XXX TODO possibly reimplement or replace */
+var switchSubPage = _stub;
+var myOPACRenewSelected = _stub;
+var myOPACCreateBookbag = _stub;
+var myOPACSavePrefs = _stub;
+var myOPACUpdatePhone = _stub;  /* XXX TODOD myOPACUpdate*() and the buttons where
+                                   the handlers are used should probably go
+                                   away completely */
+var myOPACUpdateUsername = _stub;
+var myOPACUpdatePassword = _stub;
+var myOPACUpdateEmail = _stub;
+var myOPACUpdateHomeOU = _stub;
+var myopacDoHoldAction = _stub;
+var myopacApplyThawDate = _stub;
+var showCachedList = _stub;
+var searchBarSubmit = _stub;
+var sortHolds = _stub; /* XXX TODO There was a method for sorting loaded holds
+                          in the DOM without reloading the page, but it was
+                          reliant on fieldmapper and some stock dojo
+                          libraries.  Could be reimplemented without deps
+                          if deemed worthwhile. */
+var showDetailedResults = _stub; /* XXX TODO for an old onchange handler that
+                                toggled between simple and detailed results
+                                in the rresults page.  */
+var checkAll = _stub;
+var sortChecked = _stub;
+var sortCheckedHist = _stub;
+var showPaymentForm = _stub;
+var showFinesDiv = _stub;
+var fadeOut = _stub;    /* XXX TODO what the heck? not seen anywhere */
