@@ -14,6 +14,9 @@
   <title>&staff.client.portal.title;</title>
   <script type="text/javascript">
 // <![CDATA[
+
+  // FIXME - some I18N love still needed in this file.  See @alt on img tags, and javascript for tab names
+
   function SearchOnBlur() {
         var textbox = document.getElementById("quicksearch");
 
@@ -107,8 +110,8 @@
                 
                 //Place your helpdesk link here
                 function helpdesk(newtab) {
-                        loc = "https://bugs.launchpad.net/evergreen";
-                        var params = {'tab_name':'Public Bug Report'};
+                        loc = "http://evergreen-ils.org/communicate.php";
+                        var params = {'tab_name':'Evergreen Project Website'};
                         
                         if(newtab)
                                 xulG.new_tab(loc, params, {}); 

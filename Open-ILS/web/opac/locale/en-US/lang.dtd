@@ -3468,7 +3468,7 @@
 <!ENTITY staff.client.portal.copybuckets "Copy Buckets">
 <!ENTITY staff.client.portal.recordbuckets "Record Buckets">
 <!ENTITY staff.client.portal.admin "Administration">
-<!ENTITY staff.client.portal.helpdesk "Submit A Public Bug Report">
+<!ENTITY staff.client.portal.helpdesk "Get Help with Evergreen">
 <!ENTITY staff.client.portal.reports "Reports">
 <!ENTITY staff.client.portal.receipts "Edit Receipt Templates">
 <!ENTITY staff.client.portal.copyright "Copyright &copy; 2006-2011 Georgia Public Library Service, and others">
