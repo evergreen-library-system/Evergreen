@@ -2220,7 +2220,6 @@ sub do_checkin {
     # run the fine generator against this circ, if this circ is there
     $self->generate_fines_start if $self->circ;
 
-
     if( $self->checkin_check_holds_shelf() ) {
         $self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
         $self->hold($U->fetch_open_hold_by_copy($self->copy->id));
@@ -2316,6 +2315,8 @@ sub do_checkin {
     }
 
     if( $self->is_renewal ) {
+        $self->finish_fines_and_voiding;
+        return if $self->bail_out;
         $self->push_events(OpenILS::Event->new('SUCCESS'));
         return;
     }
@@ -2425,8 +2426,7 @@ sub do_checkin {
             unless @{$self->events};
     }
 
-    # gather any updates to the circ after fine generation, if there was a circ
-    $self->generate_fines_finish if ($self->circ);
+    $self->finish_fines_and_voiding;
 
     OpenILS::Utils::Penalty->calculate_penalties(
         $self->editor, $self->patron->id, $self->circ_lib) if $self->patron;
@@ -2434,6 +2434,31 @@ sub do_checkin {
     $self->checkin_flesh_events;
     return;
 }
+
+sub finish_fines_and_voiding {
+    my $self = shift;
+    return unless $self->circ;
+
+    # gather any updates to the circ after fine generation, if there was a circ
+    $self->generate_fines_finish;
+
+    return unless $self->backdate or $self->void_overdues;
+
+    # void overdues after fine generation to prevent concurrent DB access to overdue billings
+    my $note = 'System: Amnesty Checkin' if $self->void_overdues;
+
+    my $evt = OpenILS::Application::Circ::CircCommon->void_overdues(
+        $self->editor, $self->circ, $self->backdate, $note);
+
+    return $self->bail_on_events($evt) if $evt;
+
+    # make sure the circ isn't closed if we just voided some fines
+    $evt = OpenILS::Application::Circ::CircCommon->reopen_xact($self->editor, $self->circ->id);
+    return $self->bail_on_events($evt) if $evt;
+
+    return undef;
+}
+
 
 # if a deposit was payed for this item, push the event
 sub check_circ_deposit {
@@ -2946,12 +2971,6 @@ sub checkin_handle_circ {
         return $self->bail_on_events($evt) if $evt;
    }
 
-   if($self->void_overdues) {
-        my $evt = OpenILS::Application::Circ::CircCommon->void_overdues(
-            $self->editor, $circ, undef, 'System: Amnesty Checkin'); # TODO i18n for system-generated notes
-        return $self->bail_on_events($evt) if $evt;
-   }
-
    if(!$circ->stop_fines) {
       $circ->stop_fines(OILS_STOP_FINES_CHECKIN);
       $circ->stop_fines(OILS_STOP_FINES_RENEW) if $self->is_renewal;
@@ -3007,10 +3026,6 @@ sub checkin_handle_circ {
 
     return $self->bail_on_events($self->editor->event)
         unless $self->editor->update_action_circulation($circ);
-
-    # make sure the circ isn't closed if we just voided some fines
-    $evt = OpenILS::Application::Circ::CircCommon->reopen_xact($self->editor, $circ->id);
-    return $self->bail_on_events($evt) if $evt;
 
     return undef;
 }
@@ -3074,10 +3089,6 @@ sub checkin_handle_backdate {
     $bd = cleanse_ISO8601($new_date->ymd . 'T' . $original_date->strftime('%T%z'));
 
     $self->backdate($bd);
-
-    my $evt = OpenILS::Application::Circ::CircCommon->void_overdues($self->editor, $self->circ, $bd);
-    return $evt if $evt;
-
     return undef;
 }
 

@@ -1213,8 +1213,6 @@ function _uEditSave(doClone) {
                 break;
 
             case 'statcat':
-                if(val == null) break;
-
                 var map = patron.stat_cat_entries().filter(
                     function(m){
                         return (m.stat_cat() == w._statcat) })[0];
@@ -1222,8 +1220,15 @@ function _uEditSave(doClone) {
                 if(map) {
                     if(map.stat_cat_entry() == val) 
                         break;
-                    map.ischanged(1);
+                    if(val == null) {
+                        val = '';
+                        map.isdeleted(1);
+                    } else {
+                        map.ischanged(1);
+                    }
                 } else {
+                    if(val == null)
+                        break;
                     map = new fieldmapper.actscecm();
                     map.isnew(1);
                 }

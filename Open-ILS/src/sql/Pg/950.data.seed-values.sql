@@ -4405,17 +4405,6 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
       WHERE i.func IN ('replace')
             AND m.id IN (19);
 
-
--- claims returned mark item missing 
-INSERT INTO
-    config.org_unit_setting_type ( name, label, description, datatype )
-    VALUES (
-        'circ.claim_return.mark_missing',
-        'Claim Return: Mark copy as missing', 
-        'When a circ is marked as claims-returned, also mark the copy as missing',
-        'bool'
-    );
-
 -- claims never checked out mark item missing 
 INSERT INTO
     config.org_unit_setting_type ( name, label, description, datatype )
