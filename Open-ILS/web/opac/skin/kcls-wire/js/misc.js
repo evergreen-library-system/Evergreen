@@ -28,6 +28,10 @@ function swapCSSClass(obj, old, newc) {
 }
 
 function addCSSClass(e,c) {
+    /* XXX I've seen much simpler implementation of this idea that just
+     * do a regexp replace on e.className.  Any reason why we're making
+     * it so hard here? I could see the justification if there's a certain
+     * browser that doesn't cooperate. */
 	if(!e || !c) return;
 
 	var css_class_string = e.className;
