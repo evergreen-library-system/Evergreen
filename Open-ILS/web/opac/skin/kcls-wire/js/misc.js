@@ -120,7 +120,7 @@ function grabCharCode(evt) {
     evt = evt || window.event || event || null;
     if (evt) {
     // OLD CODE: return (evt.charCode ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode));
-        return event.which || event.charCode || event.keyCode;
+        return evt.which || evt.charCode || evt.keyCode;
     } else {
         return -1;
     }
