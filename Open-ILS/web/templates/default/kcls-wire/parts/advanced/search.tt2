@@ -247,19 +247,8 @@
             
                             <tbody>
                                 <tr>
-
-                           <script language='javascript' type='text/javascript'>
-                              function __setsortsel() {
-                                 var sel = $('adv_global_sort_by')
-                                           if(sel.selectedIndex == 0) {
-                                               $("adv_global_sort_dir").disabled = true;
-                                               $("adv_global_sort_dir").selectedIndex = 0;
-                                           } else $("adv_global_sort_dir").disabled = false;
-                              }
-                           </script>
-
                                     <td align=''>
-                                        <select id='adv_global_sort_by' onchange='__setsortsel();'>
+                                        <select id='adv_global_sort_by'>
                                             <option value='rel'>&advanced.relevance;</option>
                                             <option value='title'>&common.title;</option>
                                             <option value='author'>&common.author;</option>
@@ -274,9 +263,6 @@
                                             <option value='desc'>&advanced.sort.desc;</option>
                                         </select>
                                     </td>
-
-                           <!-- force the enable/disable sort dir code to run -->
-                           <script language='javascript' type='text/javascript'>__setsortsel();</script>
                                 </tr>
                                 <tr>
                                     <td align='center' class="hide_me">
