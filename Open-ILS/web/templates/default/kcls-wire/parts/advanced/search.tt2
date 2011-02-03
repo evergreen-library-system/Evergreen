@@ -187,11 +187,16 @@
                             <span>&advanced.filter.pubyear;</span>
                         </td>
                         <td align='left'>
-                            <select id='adv_global_pub_date_type' onchange='
+                            <!-- XXX TODO the following select used to have this
+                                onchange handler:
                                 if($("adv_global_pub_date_type").selectedIndex == 3)
                                     unHideMe($("adv_global_pub_date_2_span"));
                                 else
-                                    hideMe($("adv_global_pub_date_2_span"));'>
+                                    hideMe($("adv_global_pub_date_2_span"));
+
+                                So do we need equiv functionality or no?
+                                -->
+                            <select id='adv_global_pub_date_type'>
                                     <option value='equals' selected='selected'>
                                         &advanced.filter.pubyear.equals;
                                     </option>

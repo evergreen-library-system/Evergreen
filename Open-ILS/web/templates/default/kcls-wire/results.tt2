@@ -36,7 +36,7 @@
                 <div class="results_header_div"></div>
                 <div class="results_header_lbl">View</div>
                 <select class="results_header_sel" style="width:88px;"
-                    onchange="this.selectedIndex?showDetailedInfo(true):showDetailedInfo(false);">
+                    onchange="showDetailedResults(Boolean(this.selectedIndex));">
                     <option>Simple</option>
                     <option>Detailed</option>
                 </select>

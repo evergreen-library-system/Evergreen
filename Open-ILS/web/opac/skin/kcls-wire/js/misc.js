@@ -76,3 +76,22 @@ function swapTabs(el) {
         }
     }
 }
+
+function sortHolds() {
+    alert("FIXME disconnected");
+    /* XXX TODO There was a method for sorting loaded holds in the DOM
+     * without reloading the page, but it was reliant on fieldmapper
+     * and some stock dojo libraries.  Could be reimplemented without
+     * deps if deemed worth it.
+     */
+}
+
+function showDetailedResults(/* Boolean */ detailed) {
+    alert("FIXME disconnected");
+    /* XXX TODO this stands in for an old onchange handler that toggled
+     * between simple and detailed results in the rresults page.
+     * Don't know if we want to keep this around or not (I'm guessing not,
+     * and that we'll do this with two different server-side pages now,
+     * but leaving this stub here for now).
+     */
+}
