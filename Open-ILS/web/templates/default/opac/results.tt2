@@ -72,7 +72,7 @@
         </td>
         <td id='right_block'>
             <div>
-                <span>Hits: [% ctx.hit_count %] / Page [% page + 1 %] of [% page_count %]</span>
+                <span>[% l('Hits: [_1] / Page [_2] of [_3]', ctx.hit_count, page + 1, page_count) %]</span>
                 [% 
                     q = query | url;
                     np_link = '?query=' _ q;

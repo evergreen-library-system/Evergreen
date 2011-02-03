@@ -15,7 +15,7 @@
     <form action='./results' method='GET'>
         <input type='text' name='query' size='50' value='[% query %]'/>
         [% PROCESS build_org_selector name='loc' %]
-        <input type='submit'/>
+        <input type='submit' value='[% l('Go!') %]'/>
         <input type='hidden' name='page' value='0'/>
     </form>
 </div>

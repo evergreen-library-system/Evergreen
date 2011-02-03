@@ -16,6 +16,7 @@ use constant OILS_HTTP_COOKIE_LOCALE => 'oils:locale';
 my $web_config;
 my $web_config_file;
 my $web_config_edit_time;
+my %lh_cache; # locale handlers
 
 sub import {
     my $self = shift;
@@ -52,13 +53,31 @@ sub handler {
         DEBUG => $ctx->{debug_template}
     });
 
-    unless($tt->process($template, {ctx => $ctx})) {
+    unless($tt->process($template, {ctx => $ctx, l => set_text_handler($ctx, $r)})) {
         $r->log->warn('Template error: ' . $tt->error);
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
 
     return Apache2::Const::OK;
 }
+
+sub set_text_handler {
+    my $ctx = shift;
+    my $r = shift;
+
+    my $locale = $ctx->{locale};
+    $locale =~ s/-/_/g;
+
+    $r->log->info("messages locale = $locale");
+
+    unless($lh_cache{$locale}) {
+        $r->log->info("Unsupported locale: $locale");
+        $lh_cache{$locale} = $lh_cache{'en_US'};
+    }
+
+    return sub { return $lh_cache{$locale}->maketext(@_); };
+}
+
 
 
 sub run_context_loader {
@@ -117,18 +136,16 @@ sub load_context {
     $ctx->{base_url} = $cgi->url(-base => 1);
     $ctx->{skin} = $cgi->cookie(OILS_HTTP_COOKIE_SKIN) || 'default';
     $ctx->{theme} = $cgi->cookie(OILS_HTTP_COOKIE_THEME) || 'default';
+
     $ctx->{locale} = 
         $cgi->cookie(OILS_HTTP_COOKIE_LOCALE) || 
         parse_accept_lang($r->headers_in->get('Accept-Language')) || 'en-US';
-    $r->log->debug('skin = ' . $ctx->{skin} . ' : theme = ' . 
-        $ctx->{theme} . ' : locale = ' . $ctx->{locale});
 
     my $mprefix = $ctx->{media_prefix};
     if($mprefix and $mprefix !~ /^http/ and $mprefix !~ /^\//) {
         # if a hostname is provided /w no protocol, match the protocol to the current page
         $ctx->{media_prefix} = ($cgi->https) ? "https://$mprefix" : "http://$mprefix";
     }
-
 
     return $ctx;
 }
@@ -223,6 +240,38 @@ sub check_web_config {
     }
 }
 
+# Create an I18N sub-module for each supported locale
+# Each module creates its own MakeText lexicon by parsing .po/.mo files
+sub load_locale_handlers {
+    my $ctx = shift;
+    my $locales = $ctx->{locales};
+
+    for my $lang (keys %$locales) {
+        my $messages = $locales->{$lang};
+        $messages = '' if ref $messages; # empty {}
+
+        # TODO Can we do this without eval?
+        my $eval = <<EVAL;
+            package OpenILS::WWW::EGWeb::I18N::$lang;
+            use base 'OpenILS::WWW::EGWeb::I18N';
+            if(\$messages) {
+                use Locale::Maketext::Lexicon::Gettext;
+                if(open F, '$messages') {
+                    our %Lexicon = (%Lexicon, %{ Locale::Maketext::Lexicon::Gettext->parse(<F>) });
+                    close F;
+                } else {
+                    warn "unable to open messages file: $messages"; 
+                }
+            }
+EVAL
+        eval $eval;
+        warn "$@\n" if $@; # TODO better logging
+        $lh_cache{$lang} = "OpenILS::WWW::EGWeb::I18N::$lang"->new;
+    }
+}
+
+
+
 sub parse_config {
     my $cfg_file = shift;
     my $data = XML::Simple->new->XMLin($cfg_file);
@@ -236,6 +285,8 @@ sub parse_config {
     $ctx->{debug_template} = ( ($data->{debug_template}||'')  =~ /true/io) ? 1 : 0;
     $ctx->{default_template_extension} = $data->{default_template_extension} || 'tt2';
     $ctx->{web_dir} = $data->{web_dir};
+    $ctx->{locales} = $data->{locales};
+    load_locale_handlers($ctx);
 
     my $tpaths = $data->{template_paths}->{path};
     $tpaths = [$tpaths] unless ref $tpaths;
@@ -268,5 +319,9 @@ sub new {
     return bless(\%args, $class);
 }
 
+# base class for all supported locales
+package OpenILS::WWW::EGWeb::I18N;
+use base 'Locale::Maketext';
+our %Lexicon = (_AUTO => 1);
 
 1;
