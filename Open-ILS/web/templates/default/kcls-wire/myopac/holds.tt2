@@ -204,7 +204,7 @@
         &myopac.holds.freeze.select_thaw;
     </div>
     <p>
-        <input dojoType="dijit.form.DateTextBox" size='10' maxlength='10'
+        <input size='10' maxlength='10'
             type='text' id='myopac_holds_thaw_date_input' />
     </p>
     <p>

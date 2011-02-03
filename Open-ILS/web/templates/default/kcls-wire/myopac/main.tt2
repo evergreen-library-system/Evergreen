@@ -323,7 +323,7 @@
                 <tr>
                     <td>Type of Card</td>
                     <td>
-                        <select dojoType='dijit.form.FilteringSelect' jsId='oilsSelfckCCType' required='true'>
+                        <select jsId='oilsSelfckCCType' required='true'>
                             <option value='VISA'>VISA</option>
                             <option value='MasterCard'>MasterCard</option>
                             <option value='American Express'>American Express</option>
