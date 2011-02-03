@@ -8,8 +8,7 @@
             <td width="90" valign="top" id="rdetail_image_cell">
                 <a id='rdetail_img_link' href='${ident.large}'><img
                     alt="Image of item" style='border: none;' id='rdetail_image'
-                    src='${ident.small}' onload='unHideMe($("rdetail_img_link"))'
-                    onerror='hideMe($("rdetail.jacket_attrib_div"));hideMe($("rdetail_img_link"));'/></a>
+                    src='${ident.small}' /></a>
                 <br />
                 <div class='jacket_attrib hide_me' id='rdetail.jacket_attrib_div'>
                     <div>&opac.image_provided;</div>
