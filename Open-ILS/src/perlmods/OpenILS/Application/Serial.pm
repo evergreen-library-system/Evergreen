@@ -936,6 +936,11 @@ __PACKAGE__->register_method(
                  name => 'call_numbers',
                  desc => 'hash of item_ids => call_numbers',
                  type => 'hash'
+            },
+            {
+                 name => 'donor_unit_ids',
+                 desc => 'hash of unit_ids => 1, keyed with ids of any units giving up items',
+                 type => 'hash'
             }
         ],
         'return' => {
@@ -965,6 +970,11 @@ __PACKAGE__->register_method(
             {
                  name => 'call_numbers',
                  desc => 'hash of item_ids => call_numbers',
+                 type => 'hash'
+            },
+            {
+                 name => 'donor_unit_ids',
+                 desc => 'hash of unit_ids => 1, keyed with ids of any units giving up items',
                  type => 'hash'
             }
         ],
@@ -998,7 +1008,7 @@ __PACKAGE__->register_method(
 );
 
 sub unitize_items {
-    my ($self, $conn, $auth, $items, $barcodes, $call_numbers) = @_;
+    my ($self, $conn, $auth, $items, $barcodes, $call_numbers, $donor_unit_ids) = @_;
 
     my $editor = new_editor("authtoken" => $auth, "xact" => 1);
     return $editor->die_event unless $editor->checkauth;
@@ -1007,6 +1017,9 @@ sub unitize_items {
     my $mode = $1;
     
     my %found_unit_ids;
+    if ($donor_unit_ids) { # units giving up items need updating as well
+        %found_unit_ids = %$donor_unit_ids;
+    }
     my %found_stream_ids;
     my %found_types;
 
@@ -1135,8 +1148,24 @@ sub unitize_items {
             $call_number_string = $call_number_by_unit_id{$unit_id};
             $record_id = $sdist->subscription->record_entry;
         } else {
+            # XXX: this code assumes you will not have units which mix streams/distributions, but current code does not enforce this
             $sunit = $editor->retrieve_serial_unit($unit_id);
-            $sdist = $editor->search_serial_distribution([{"+sstr" => {"id" => $stream_ids_by_unit_id{$unit_id}}}, { "join" => {"sstr" => {}} }]);
+            if ($stream_ids_by_unit_id{$unit_id}) {
+                $sdist = $editor->search_serial_distribution([{"+sstr" => {"id" => $stream_ids_by_unit_id{$unit_id}}}, { "join" => {"sstr" => {}}, 'limit' => 1 }]);
+            } else {
+                $sdist = $editor->search_serial_distribution([
+                    {'+sunit' => {'id' => $unit_id}},
+                    { 'join' =>
+                        {'sstr' =>
+                            { 'join' =>
+                                { 'sitem' =>
+                                    { 'join' => 'sunit' }
+                                } 
+                            } 
+                        },
+                      'limit' => 1
+                    }]);
+            }
             $sdist = $sdist->[0];
         }
 
