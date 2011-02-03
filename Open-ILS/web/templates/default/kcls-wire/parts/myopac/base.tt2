@@ -16,7 +16,7 @@
                 [%- FOREACH page IN myopac_pages;
                     IF page.url == myopac_page;
                         cls_which = "on";
-                        ctx.page_title = page.name;
+                        ctx.page_title = "Your Account - " _ page.name;
                     ELSE;
                         cls_which = "off";
                     END -%]

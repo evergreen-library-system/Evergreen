@@ -1,0 +1,290 @@
+[%  WRAPPER "default/kcls-wire/parts/base.tt2" +
+        "default/kcls-wire/parts/myopac/base.tt2";
+    myopac_page = "lists"  %]
+<div
+    style="margin-top: 6px;margin-left:20px;width:250px;padding:5px;"
+    id="mylist_div">
+    <div style="padding-bottom: 7px;">
+        <h2 style="font-weight:normal;">Create new list</h2>
+        Enter the name of the new list:<br />
+        <input type="text" id="mylist_new" />
+    </div>
+    <table cellpadding="0" cellspacing="10" border="0">
+        <tr>
+            <td>
+                Share this list?
+                <a href="javascript:;"
+                    onclick="alert($('bb_publish_text').innerHTML);"><img
+                    alt="Sharing Help"
+                    src="/opac/skin/kcls/graphics/question-mark.png" /></a>
+            </td>
+            <td>
+                <input type="radio" value="0" name="shareList"
+                    id="shareListNo" checked="checked" />
+                <label for="shareListNo">No</label>
+                <br />
+                <input type="radio" value="1" name="shareList"
+                    id="shareListYes" />
+                    <label for="shareListYes">Yes</label>
+            </td>
+        </tr>
+    </table>
+    <a href="javascript:;"
+        onclick="if(addMyList()) {hideMe($('mylist_div'));unHideMe($('myopac_bookbag_div'));}"><img
+        alt="Submit" src="/opac/skin/kcls/graphics/btnSubmit.png" /></a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="javascript:;"
+        onclick="hideMe($('mylist_div'));unHideMe($('myopac_bookbag_div'));"><img
+        alt="Cancel" src="/opac/skin/kcls/graphics/btnCancel.png" /></a>
+</div>
+<div id='myopac_bookbag_div' style="padding:5px;">
+    <div class="header_middle">
+        <span id="acct_holds_header" style="float:left;">My Lists</span>
+        <span style="float:right;">
+            <a class="hide_me" href="javascript:;">Export List</a>
+        </span>
+    </div>
+    <div style="float:right;width:85px;">
+        <div style="position:absolute">
+            <div style="position:relative;top:13px;">
+                <a href="javascript:;"
+                    style="position:relative;top:-3px;left:-5px;"
+                    onclick="alert('To take action on individual items, select item, choose action and Save.');"><img
+                    alt="Saving Help"
+                    src="/opac/skin/kcls/graphics/question-mark.png" /></a>
+                <a id='acct_lists_save' href="javascript:;"
+                    onclick="listSaveAction()"><img alt="Save"
+                    src="/opac/skin/kcls/graphics/save-btn.png" /></a>
+            </div>
+        </div>
+    </div>
+    <div style="clear:both;padding-top:10px;">
+        <a href="javascript:;"
+            onclick="hideMe($('myopac_bookbag_div'));unHideMe($('mylist_div'));">+ Add new list</a>
+    </div>
+    <div id="temp_wrapper">
+        <div id='acct_list_template2' class="hide_me">
+            <div style="width:100%">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td style="font-weight:bold;padding-right:10px;" id='anon_list_name'>
+                            Temporary List
+                        </td>
+                        <td>
+                            <a href="javascript:;"
+                                onclick="alert('Items you selected from the search results screen.')"><img
+                                alt="Anonymous List Help"
+                                src="/opac/skin/kcls/graphics/question-mark.png" /></a>
+                        </td>
+                    </tr>
+                </table>
+                <div style="float:right;"></div>
+                <div style="clear:both;padding-bottom:5px;"></div>
+            </div>
+    
+            <table id="acct_list_header_anon" cellpadding='0' cellspacing='0' border='0'>
+                <tr>
+                    <td width="1%" style="padding-left:10px;">
+                        <input type="checkbox" id="check_all_list_anon"
+                            onclick="checkAll(this.parentNode.parentNode.parentNode.parentNode.parentNode, this, 'list_action_chbx');" />
+                    </td>
+                    <td width="98%" style="padding-left:5px;">Title</td>
+                    <td width="1%">
+                        <select style='width:175px;margin-right:11px;'
+                            name="list_actions" id="sel_all_list_anon">
+                            <option value="0">-- Actions for this list --</option>
+                            <option value="hold">Place Hold</option>
+                            <option value="remove">Remove Items</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <table cellpadding='0' cellspacing='5' border='0'
+                width='91%' style='margin-left:5px;margin-top:5px;'>
+                <tbody id='anon_list_tbody'></tbody>
+            </table>
+            <br /><br />
+        </div>
+        <div id='acct_lists_prime'>
+            <div id='acct_list_template'>
+                <div style="width:100%">
+                    <div style="float:left;font-weight:bold;padding-top:5px;"
+                        name='list_name'></div>
+                    <div style="float:left;padding:5px 0px 0px 10px;">
+                        <a target='_blank' name='share_list_rss'
+                            class='hide_me'><img alt="RSS Feed" border="0"
+                            src="/opac/images/small-rss.png"
+                            title="You are sharing this list"/></a>
+                    </div>
+                    <div style="float:left;padding:5px 0px 0px 10px;">
+                        <a href="javascript:;" name="share_list_link">Share</a>
+                    </div>
+                    <div style="float:left;padding:5px 0px 0px 10px;">
+                        <a href="javascript:;" name="remove_list">Remove</a>
+                    </div>
+                    <div style="clear:both;padding-bottom:5px;"></div>
+                </div>
+                <table id="acct_list_header" cellpadding='0' cellspacing='0'
+                    border='0'>
+                    <tr>
+                        <td width="1%" style="padding-left:10px;">
+                            <input type="checkbox" id="check_all_list"
+                            onclick="checkAll(this.parentNode.parentNode.parentNode.parentNode.parentNode, this, 'list_action_chbx');" />
+                        </td>
+                        <td width="98%" style="padding-left:5px;">Title</td>
+                        <td width="1%">
+                            <select style='width:175px;margin-right:11px;' name="list_actions">
+                                <option value="0">-- Actions for this list --</option>
+                                <option value="hold">Place Hold</option>
+                                <option value="remove">Remove Items</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <table cellpadding='0' cellspacing='5' border='0'
+                    width='91%' style='margin-left:5px;margin-top:5px;'>
+                    <tbody name='list_tbody'></tbody>
+                </table>
+                <br /><br />
+            </div>
+        </div>
+    </div>
+    <div id='myopac_delete_bookbag_warn' class='hide_me'>
+        &myopac.delete.bookbag;
+    </div>
+    <div style='text-align: center; font-weight: bold;' 
+        class='hide_me' id='myopac_bookbags_none'>&myopac.no.bookbags;</div>
+    <table width='100%' class='data_grid data_grid_center hide_me'
+        id='myopac_bookbag_table'>
+        <thead>
+            <tr>
+                <td>&common.name;</td>
+                <td>&myopac.bookbag.items;</td>
+                <td>&myopac.bookbag.shared;</td>
+                <td>&myopac.bookbag.toggle;</td>
+                <td>&myopac.bookbag.delete;</td>
+            </tr>
+        </thead>
+        <tbody id='myopac_bookbag_tbody'>
+            <tr id='myopac_bookbag_tr'>
+                <td>
+                    <a href='javascript:void(0);' class='classic_link'
+                        name='myopac_expand_bookbag'> </a>
+                </td>
+                <td>
+                    <span name='myopac_bookbag_item_count'> </span>
+                    <span> &myopac.items;</span>
+                </td>
+                <td>
+                    <span name='myopac_bb_published_no' class='hide_me'>
+                        &common.no;
+                    </span>
+                    <span name='myopac_bb_published_yes' class='hide_me'>
+                        &common.yes;
+                    </span>
+                    <a name='myopac_bb_published_view'
+                        class='classic_link hide_me'>&myopac.view;</a>
+                    <a name='myopac_bb_published_atom'
+                        class='unadorned_link hide_me'>
+                        <img alt="RSS Feed" border="0"
+                        src="/opac/images/small-rss.png"
+                        title="&myopac.atom.feed;" />
+                    </a>
+                </td>
+                <td>
+                    <a name='myopac_bb_make_unpublished'
+                        class='classic_link hide_me'>&myopac.bookbag.hide;</a>
+                    <a name='myopac_bb_make_published'
+                        class='classic_link hide_me'>&myopac.bookbag.share;</a>
+                </td>
+                <td>
+                    <a class='classic_link' href='javascript:void(0);'
+                        name='myopac_container_delete'>&myopac.delete;</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table width='100%' class='data_grid data_grid_center hide_me' style='margin-top: 10px;'>
+        <thead>
+            <tr><td>&myopac.bookbag.create;</td></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> 
+                    <span style='padding-right: 5px;'>
+                        &myopac.bookbag.naming;
+                    </span>
+                    <input id='myopac_bookbag_new_name' type='text' /> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span style='padding: 5px;'>&myopac.bookbag.share;</span>
+                    <a class='classic_link'
+                        href='javascript:alert($("bb_publish_text").innerHTML);'><b>&common.help;</b></a>
+                    <span>&common.yes;</span>
+                    <input type='radio' name='bb_public' id='bb_public_yes'/>
+                    <span>&common.no;</span>
+                    <input type='radio' name='bb_public' id='bb_public_no' checked='checked'/>
+                    <input style='padding-left: 10px;'
+                        onclick='myOPACCreateBookbag();' 
+                        type='submit' value='&common.submit;' />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div style='width: 99%; text-align: center'>
+        <b id='myopac_bookbag_items_name'> </b>
+    </div>
+    <div class='hide_me'
+        style='width:100%; text-align:center; font-weight:700; margin-top:10px;'
+        id='myopac_bookbag_no_items'>
+        &myopac.bookbag.no.items;
+    </div>
+    <table width='100%' class='hide_me data_grid data_grid_center'
+        id='myopac_bookbag_items_table'>
+        <thead> 
+            <tr>
+                <td>&common.title;</td>
+                <td>&common.authors;</td>
+                <td>&myopac.bookbag.remove;</td>
+            </tr> 
+        </thead>
+        <tbody id='myopac_bookbag_items_tbody'>
+            <tr id='myopac_bookbag_items_row'>
+                <td>
+                    <a name='myopac_bookbag_items_title'
+                        class='classic_link'> </a>
+                </td>
+                <td name='myopac_bookbag_items_author'></td>
+                <td>
+                    <a name='myopac_bookbag_items_remove'
+                        class='classic_link'>&myopac.remove.link;</a>
+                </td>    
+            </tr>
+        </tbody>
+    </table>
+    <span id='bb_publish_text' class='hide_me'>&myopac.publish.text;</span>
+    <span id='myopac_remove_bb_item_confirm' class='hide_me'>
+        &myopac.item.confirm;
+    </span>
+    <span id='myopac_make_published_confirm' class='hide_me'>
+        &myopac.publish.confirm;
+    </span>
+    <span id='myopac_make_unpublished_confirm' class='hide_me'>
+        &myopac.unpublish.confirm;
+    </span>
+    <span id='myopac_bb_update_success' class='hide_me'>
+        &myopac.update.success;
+    </span>
+    <span id='bb_create_warning' class='hide_me'>
+        &myopac.create.warning;
+    </span>
+    <span id='myopac_bb_what_are' class='hide_me'>
+        &myopac.describe.bookbags;
+    </span>
+    <span class='hide_me' id='bb_update_success'>
+        &myopac.updated.success;
+    </span>
+</div>
+[% END %]
