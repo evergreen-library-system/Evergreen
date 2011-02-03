@@ -1,35 +1,30 @@
 <!-- ****************** adv_global_row.xml ***************************** -->
 <tr id='adv_global_trow' type='input'>
-	<td align='left' width='100%' nowrap='nowrap'>
-
-		<!-- select the search class -->
-		<select name='type' style='margin-right: 7px;'>
-			<option value='keyword' selected='selected'>&common.keyword;</option>
-			<option value='title'>&common.title;</option>
-			<option value='author'>&common.author;</option>
-			<option value='subject'>&common.subject;</option>
-			<option value='series'>&common.series;</option>
-			<option value='bibcn'>&common.bibcn;</option>
-			
-			</select>
-	
-		<!-- select how to treat the text -->
-		<select name='contains' style='margin-right: 7px;'>
-			<option value='contains'>&opac.advanced.refined.contains;</option>
-			<option value='nocontains'>&opac.advanced.refined.nocontains;</option>
-			<option value='exact'>&opac.advanced.refined.exact;</option>
-		</select>
-			
-		<!-- search term -->
-		<input type='text' size='18' name='term' style='margin-right: 3px;' />
-	
-		<!-- Remove this row -->
+    <td align='left' width='100%' nowrap='nowrap'>
+        <!-- select the search class -->
+        <select name='type' style='margin-right: 7px;'>
+            <option value='keyword' selected='selected'>&common.keyword;</option>
+            <option value='title'>&common.title;</option>
+            <option value='author'>&common.author;</option>
+            <option value='subject'>&common.subject;</option>
+            <option value='series'>&common.series;</option>
+            <option value='bibcn'>&common.bibcn;</option>
+            </select>
+        <!-- select how to treat the text -->
+        <select name='contains' style='margin-right: 7px;'>
+            <option value='contains'>&opac.advanced.refined.contains;</option>
+            <option value='nocontains'>&opac.advanced.refined.nocontains;</option>
+            <option value='exact'>&opac.advanced.refined.exact;</option>
+        </select>
+        <!-- search term -->
+        <input type='text' size='18' name='term'
+            style='margin-right: 3px;'
+            onkeydown="if (userPressedEnter(event)) alert('XXX Enter');" />
+        <!-- Remove this row -->
         <button onclick='
             var row = this.parentNode.parentNode;
-            var tbody = row.parentNode;
-            if( tbody.getElementsByTagName("tr").length > 2 )
+            if (row.parentNode.getElementsByTagName("tr").length > 2)
                 row.parentNode.removeChild(row);'>X</button>
-
-	</td>
+    </td>
 </tr>
 <!-- ****************** end: adv_global_row.xml ***************************** -->

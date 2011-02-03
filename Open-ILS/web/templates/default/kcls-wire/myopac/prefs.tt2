@@ -326,19 +326,25 @@
                     <tr id='myopac_update_phone1_row'
                         class='hide_me'>
                         <td class='myopac_update_cell'
-                            colspan='3'><span class='myopac_update_span'>Enter
-                            New &myopac.summary.phone.day;:</span>
-                            <input type='text'
-                               size='24'
-                               id='myopac_new_phone1'
-                               onkeydown=
-                               'if(userPressedEnter(event)) myOPACUpdatePhone("1");' />
-                         <span class='myopac_update_span'><button onclick=
-                        'myOPACUpdatePhone("1");'><span class=
-                        'myopac_update_span'>&common.submit;</span></button></span>
-                        <span class='myopac_update_span'><button onclick=
-                        'hideMe($("myopac_update_phone1_row"));'><span class=
-                        'myopac_update_span'>&common.cancel;</span></button></span></td>
+                            colspan='3'>
+                            <span class='myopac_update_span'>
+                                Enter New &myopac.summary.phone.day;:
+                            </span>
+
+                            <input type='text' size='24' id='myopac_new_phone1' />
+                            <span class='myopac_update_span'>
+                                <button onclick='myOPACUpdatePhone("1");'>
+                                    <span class='myopac_update_span'>
+                                        &common.submit;</span>
+                                </button>
+                            </span>
+                            <span class='myopac_update_span'>
+                                <button onclick='hideMe($("myopac_update_phone1_row"));'>
+                                    <span class='myopac_update_span'>
+                                        &common.cancel;</span>
+                                </button>
+                            </span>
+                        </td>
                     </tr>
 
                     <tr>
@@ -362,17 +368,14 @@
                         <td class='myopac_update_cell'
                             colspan='3'><span class='myopac_update_span'>New
                             &myopac.summary.phone.evening;:</span>
-                            <input type='text'
-                               size='24'
-                               id='myopac_new_phone2'
-                               onkeydown=
-                               'if(userPressedEnter(event)) myOPACUpdatePhone("2");' />
-                         <span class='myopac_update_span'><button onclick=
-                        'myOPACUpdatePhone("2");'><span class=
-                        'myopac_update_span'>&common.submit;</span></button></span>
-                        <span class='myopac_update_span'><button onclick=
-                        'hideMe($("myopac_update_phone2_row"));'><span class=
-                        'myopac_update_span'>&common.cancel;</span></button></span></td>
+                            <input type='text' size='24' id='myopac_new_phone2' />
+                            <span class='myopac_update_span'><button onclick=
+                                'myOPACUpdatePhone("2");'><span class=
+                                'myopac_update_span'>&common.submit;</span></button></span>
+                            <span class='myopac_update_span'><button onclick=
+                                'hideMe($("myopac_update_phone2_row"));'><span class=
+                                'myopac_update_span'>&common.cancel;</span></button></span>
+                        </td>
                     </tr>
 
                     <tr>
@@ -396,17 +399,14 @@
                         <td class='myopac_update_cell'
                             colspan='3'><span class='myopac_update_span'>Enter
                             New &myopac.summary.phone.other;:</span>
-                            <input type='text'
-                               size='24'
-                               id='myopac_new_phone3'
-                               onkeydown=
-                               'if(userPressedEnter(event)) myOPACUpdatePhone("3");' />
-                         <span class='myopac_update_span'><button onclick=
-                        'myOPACUpdatePhone("3");'><span class=
-                        'myopac_update_span'>&common.submit;</span></button></span>
-                        <span class='myopac_update_span'><button onclick=
-                        'hideMe($("myopac_update_phone3_row"));'><span class=
-                        'myopac_update_span'>&common.cancel;</span></button></span></td>
+                            <input type='text' size='24' id='myopac_new_phone3' />
+                            <span class='myopac_update_span'><button onclick=
+                                'myOPACUpdatePhone("3");'><span class=
+                                'myopac_update_span'>&common.submit;</span></button></span>
+                            <span class='myopac_update_span'><button onclick=
+                                'hideMe($("myopac_update_phone3_row"));'><span class=
+                                'myopac_update_span'>&common.cancel;</span></button></span>
+                        </td>
                     </tr>
 
                     <tr>
@@ -441,17 +441,14 @@
                         <td class='myopac_update_cell'
                             colspan='3'><span class=
                             'myopac_update_span'>&myopac.summary.username.enter;</span>
-                            <input type='text'
-                               size='24'
-                               id='myopac_new_username'
-                               onkeydown=
-                               'if(userPressedEnter(event)) myOPACUpdateUsername();' />
-                         <span class='myopac_update_span'><button onclick=
-                        'myOPACUpdateUsername();'><span class=
-                        'myopac_update_span'>&common.submit;</span></button></span>
-                        <span class='myopac_update_span'><button onclick=
-                        'hideMe($("myopac_update_username_row"));'><span class=
-                        'myopac_update_span'>&common.cancel;</span></button></span></td>
+                            <input type='text' size='24' id='myopac_new_username' />
+                            <span class='myopac_update_span'><button onclick=
+                                'myOPACUpdateUsername();'><span class=
+                                'myopac_update_span'>&common.submit;</span></button></span>
+                            <span class='myopac_update_span'><button onclick=
+                            'hideMe($("myopac_update_username_row"));'><span class=
+                                'myopac_update_span'>&common.cancel;</span></button></span>
+                        </td>
                     </tr>
                     <tr>
                         <td class='color_4 light_border'>
@@ -483,8 +480,7 @@
                                         <td>
                                             <input type='password'
                                                size='24'
-                                               id='myopac_current_password'
-                                               onkeydown='if(userPressedEnter(event)) myOPACUpdatePassword();' />
+                                               id='myopac_current_password' />
                                            </td>
                                     </tr>
                                     <tr>
@@ -493,20 +489,19 @@
 
                                         <td><input type='password'
                                                size='24'
-                                               id='myopac_new_password'
-                                               onkeydown=
-                                               'if(userPressedEnter(event)) myOPACUpdatePassword();' /></td>
+                                               id='myopac_new_password' />
+                                           </td>
                                     </tr>
 
                                     <tr>
                                         <td><span class=
                                         'myopac_update_span'>&myopac.summary.password.reenter;</span></td>
 
-                                        <td><input type='password'
-                                               size='24'
-                                               id='myopac_new_password2'
-                                               onkeydown=
-                                               'if(userPressedEnter(event)) myOPACUpdatePassword();' /></td>
+                                        <td>
+                                            <input type='password'
+                                                size='24'
+                                                id='myopac_new_password2' />
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table><span class=
@@ -537,22 +532,25 @@
 
                     <tr id='myopac_update_email_row'
                         class='hide_me'>
-                        <td class='myopac_update_cell'
-                            colspan='3'><span class=
-                            'myopac_update_span'>&myopac.summary.email.new;</span>
-                            <input type='text'
-                               size='24'
-                               id='myopac_new_email'
-                               onkeydown=
-                               'if(userPressedEnter(event)) myOPACUpdateEmail();' />
-                               <span class='myopac_update_span'><button onclick=
-                               'myOPACUpdateEmail();'><span class=
-                               'myopac_update_span'>&common.submit;</span></button></span>
-                               <span class='myopac_update_span'><button onclick=
-                               'hideMe($("myopac_update_email_row"));'><span class=
-                               'myopac_update_span'>&common.cancel;</span></button></span></td>
+                        <td class='myopac_update_cell' colspan='3'>
+                            <span class= 'myopac_update_span'>
+                                &myopac.summary.email.new;
+                            </span>
+                            <input type='text' size='24' id='myopac_new_email' />
+                            <span class='myopac_update_span'>
+                                <button onclick= 'myOPACUpdateEmail();'>
+                                    <span class= 'myopac_update_span'>
+                                        &common.submit;</span>
+                                </button>
+                            </span>
+                            <span class='myopac_update_span'>
+                                <button onclick='hideMe($("myopac_update_email_row"));'>
+                                    <span class='myopac_update_span'>
+                                        &common.cancel;</span>
+                                </button>
+                            </span>
+                        </td>
                     </tr>
-
                     <tr class="hide_me">
                         <td class='color_4 light_border'>
                         &myopac.summary.id.primary;</td>

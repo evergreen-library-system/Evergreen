@@ -20,8 +20,7 @@
                         <td align='left' style="padding-top:7px;">
                             <a href="javascript:;"
                                 onclick='advAddGblRow();'>Add Search Row</a>
-                            <button onclick='advSubmitGlobal();'
-                                class="hide_me">&advanced.search.submit;</button>
+                            <button>&advanced.search.submit;</button><!-- XXX TODO make a real form -->
                         </td>
                     </tr>
                 </tbody>
@@ -187,11 +186,16 @@
                             <span>&advanced.filter.pubyear;</span>
                         </td>
                         <td align='left'>
-                            <select id='adv_global_pub_date_type' onchange='
+                            <!-- XXX TODO the following select used to have this
+                                onchange handler:
                                 if($("adv_global_pub_date_type").selectedIndex == 3)
                                     unHideMe($("adv_global_pub_date_2_span"));
                                 else
-                                    hideMe($("adv_global_pub_date_2_span"));'>
+                                    hideMe($("adv_global_pub_date_2_span"));
+
+                                So do we need equiv functionality or no?
+                                -->
+                            <select id='adv_global_pub_date_type'>
                                     <option value='equals' selected='selected'>
                                         &advanced.filter.pubyear.equals;
                                     </option>
@@ -247,19 +251,8 @@
             
                             <tbody>
                                 <tr>
-
-                           <script language='javascript' type='text/javascript'>
-                              function __setsortsel() {
-                                 var sel = $('adv_global_sort_by')
-                                           if(sel.selectedIndex == 0) {
-                                               $("adv_global_sort_dir").disabled = true;
-                                               $("adv_global_sort_dir").selectedIndex = 0;
-                                           } else $("adv_global_sort_dir").disabled = false;
-                              }
-                           </script>
-
                                     <td align=''>
-                                        <select id='adv_global_sort_by' onchange='__setsortsel();'>
+                                        <select id='adv_global_sort_by'>
                                             <option value='rel'>&advanced.relevance;</option>
                                             <option value='title'>&common.title;</option>
                                             <option value='author'>&common.author;</option>
@@ -274,9 +267,6 @@
                                             <option value='desc'>&advanced.sort.desc;</option>
                                         </select>
                                     </td>
-
-                           <!-- force the enable/disable sort dir code to run -->
-                           <script language='javascript' type='text/javascript'>__setsortsel();</script>
                                 </tr>
                                 <tr>
                                     <td align='center' class="hide_me">
@@ -295,9 +285,11 @@
 
     <tr class='border_4_2'>
         <td align="left" colspan='2'>
-        <img src="/opac/skin/kcls/graphics/search_btn.gif" alt="Search" onclick='advSubmitGlobal();' style="cursor:pointer;" />
+            <!-- XXX TODO make a real form, and make this a real submitter -->
+        <img src="/opac/skin/kcls/graphics/search_btn.gif" alt="Search"  style="cursor:pointer;" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="javascript:;" onclick='clearSearchBoxes();' style="position: relative; top: -9px;">Reset Form</a>
+        <!-- XXX TODO make a real form, and make this a real resetter -->
+        <a href="javascript:;" style="position: relative; top: -9px;">Reset Form</a>
         </td>
     </tr>
 </table>
@@ -324,8 +316,10 @@
         </div>
 
         <div style='margin-top: 8px;' class='adv_quick_search_submit'>
-        <img src="/opac/skin/kcls/graphics/search_btn.gif" alt="Search" id="adv_quick_submit" onclick='advGenericSearch();' style="cursor:pointer;" />
-            <!-- <a id='adv_quick_submit' href='javascript:advGenericSearch();' class='classic_link'>&common.submit;</a> -->
+            <!-- XXX TODO make a real form, and make a real submitter (quick
+            submit, FKA advGenericSearch() -->
+            <img src="/opac/skin/kcls/graphics/search_btn.gif"
+                alt="Search" id="adv_quick_submit" style="cursor:pointer;" />
         </div>
     </div>
 </div>
@@ -362,10 +356,10 @@
         <a style='margin-right: 4px; position:relative;top:-10px;'
             class='classic_link'
             href='javascript:advAddMARC();'>&search.marc.add.row;</a>
-        <!-- <a style='margin-left: 4px;' class='classic_link' href='javascript:advMARCRun();'>&common.submit;</a> -->
-        <img alt="Search"
-            src="/opac/skin/kcls/graphics/search_btn.gif"
-            onclick='advMARCRun();' style="cursor:pointer;" />
+        <!-- XXX TODO make a real form, and make a real submitter (FKA
+        advMARCRun()) -->
+        <img alt="Search" src="/opac/skin/kcls/graphics/search_btn.gif"
+            style="cursor:pointer;" />
     </div>
 </div>
 <!-- ****************** end: advanced_global.xml ***************************** -->

@@ -7,6 +7,10 @@
         <title>Catalog - King County Library - [% ctx.page_title %]</title>
         <link rel="unapi-server" type="application/xml" title="unAPI"
             href="/opac/extras/unapi" />
+        [%- UNLESS skip_js %]
+        <script type="text/javascript"
+            src="/opac/skin/kcls-wire/js/misc.js"></script>
+        [%- END -%]
         [% BLOCK html_head; END; # provide a default that can be overridden %]
         [% PROCESS html_head %]
     </head>

@@ -2,7 +2,6 @@
     INCLUDE "default/kcls-wire/parts/topnav.tt2";
     ctx.page_title = "Advanced Search" %]
 [% BLOCK html_head -%]
-<script type="text/javascript" src="/opac/skin/kcls-wire/js/misc.js"></script>
 <style type='text/css'>
     .advanced_div { padding-top: 15px; }
     #adv_global_search select { width: 13em; }

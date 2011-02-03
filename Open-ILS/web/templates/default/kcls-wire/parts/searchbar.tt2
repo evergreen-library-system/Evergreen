@@ -4,7 +4,7 @@
         <tr>
             <td colspan="3">
                 <span class="search_catalog_lbl">Search the Catalog</span>
-                <a href="advanced" id="home_adv_search_link"
+                <a href="[% skin_root %]advanced" id="home_adv_search_link"
                     style="position:relative;top:-1px;left:10px;"><span
                     class="adv_search_font">Advanced Search</span></a>
             </td>
@@ -52,6 +52,8 @@
             <span style="font-size:10px;">Limit to available items</span>
         </label>
       </div>
-    <div id="breadcrumb"><a href="./">Catalog Home</a> &gt;</div>
+      <div id="breadcrumb">
+          <a href="[% skin_root %]home">Catalog Home</a> &gt;
+      </div>
     <div style="clear:both"></div>
 </div>

@@ -48,9 +48,7 @@
                                 </span>
                             </td>
                             <td align="right" class="view_link">
-                                <a href="javascript:;"
-                                    onclick="swapTabs($('acct_checked_out'));myOPACChangePage('checked');"
-                                    rel="myopac_checked_div">View All</a>
+                                <a href="circs">View All</a>
                             </td>
                         </tr>
                     </table>
@@ -65,9 +63,7 @@
                                 </span>
                             </td>
                             <td align="right" class="view_link">
-                                <a href="javascript:;"
-                                    onclick="swapTabs($('acct_holds'));myOPACChangePage('holds');"
-                                    rel="myopac_holds_div">View All</a>
+                                <a href="holds">View All</a>
                             </td>
                         </tr>
                     </table>
@@ -82,9 +78,7 @@
                                 </span>
                             </td>
                             <td align="right" class="view_link">
-                                <a href="javascript:;"
-                                    onclick="swapTabs($('acct_holds'));myOPACChangePage('holds');"
-                                    rel="myopac_holds_div">View All</a>
+                                <a href="javascript:alert('XXX TODO');">View All</a>
                             </td>
                         </tr>
                     </table>

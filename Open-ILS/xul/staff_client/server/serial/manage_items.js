@@ -304,7 +304,10 @@ serial.manage_items.prototype = {
                                 var sstr_id = target.getAttribute('sstr_id');
                                 obj.set_sunit(sunit_id, label, sdist_id, sstr_id);
                                 obj.save_sunit(sunit_id, label, sdist_id, sstr_id);
-                                if (obj.mode == 'bind') obj.refresh_list('workarea');
+                                if (obj.mode == 'bind') {
+                                    obj.refresh_list('main');
+                                    obj.refresh_list('workarea');
+                                }
                             } catch(E) {
                                 obj.error.standard_unexpected_error_alert('cmd_set_sunit failed!',E);
                             }
@@ -314,7 +317,10 @@ serial.manage_items.prototype = {
                         ['command'],
                         function() {
                             obj.set_other_sunit();
-                            if (obj.mode == 'bind') obj.refresh_list('workarea');
+                            if (obj.mode == 'bind') {
+                                obj.refresh_list('main');
+                                obj.refresh_list('workarea');
+                            }
                         }
                     ],
                     'cmd_predict_items' : [
@@ -328,10 +334,14 @@ serial.manage_items.prototype = {
                         function() {
                             try {
                                 JSAN.use('util.functional');
+                                var donor_unit_ids = {};
                                 var list = util.functional.map_list(
                                         obj.retrieve_ids,
                                         function (o) {
                                             var item = obj.list_sitem_map[o.sitem_id];
+                                            if (item.unit()) {
+                                                donor_unit_ids[item.unit().id()] = 1;
+                                            }
                                             item.unit(obj.current_sunit_id);
                                             return item;
                                         }
@@ -439,7 +449,7 @@ serial.manage_items.prototype = {
                                 var robj = obj.network.request(
                                             'open-ils.serial',
                                             method,
-                                            [ ses(), list, barcodes, call_numbers ]
+                                            [ ses(), list, barcodes, call_numbers, donor_unit_ids ]
                                         );
                                 if (typeof robj.ilsevent != 'undefined') throw(robj); //TODO: catch for override
 

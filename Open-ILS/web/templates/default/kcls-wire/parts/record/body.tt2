@@ -81,7 +81,7 @@
         </tbody>
     </table>
 
-    <div style='font-weight: bold; padding: 5px; margin: 5px; width: 100%;' 
+    <div style='font-weight: bold; padding: 5px; margin: 5px; width: 100%;'
         class='hide_me color_4' id='rdetail_deleted_exp'>
         &rdetail.record.deleted;
     </div>

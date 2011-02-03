@@ -209,10 +209,10 @@ PGSQL_CLIENT_DEBS_83 = \
 	postgresql-client
 
 PGSQL_CLIENT_DEBS_84 = \
-	postgresql-client
+	postgresql-client-8.4
 
 PGSQL_SERVER_DEBS_84 = \
-	postgresql \
+	postgresql-8.4 \
 	postgresql-contrib-8.4 \
 	postgresql-plperl-8.4 \
 	postgresql-server-dev-8.4

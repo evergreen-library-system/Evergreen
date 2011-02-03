@@ -20,7 +20,7 @@
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel'>
             <div>Provider</div>
             <div>
-                <button dojoType='dijit.form.Button' onClick='pListGrid.showCreateDialog()'>New Provider</button>
+                <button dojoType='dijit.form.Button' onClick='pListGrid.showCreatePane()'>New Provider</button>
                 <button dojoType='dijit.form.Button' onClick='pListGrid.deleteSelected()'>Delete Selected</button> 
             </div>
         </div>

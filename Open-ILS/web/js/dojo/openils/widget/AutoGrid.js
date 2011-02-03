@@ -46,6 +46,7 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                 this.attr('structure', this._compileStructure());
                 this.setStore(this.buildAutoStore());
                 this.cachedQueryOpts = {};
+                this._showing_create_pane = false;
 
                 if(this.showColumnPicker) {
                     if(!this.columnPickerPrefix) {
@@ -527,8 +528,15 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
             },
 
             showCreatePane : function() {
+                if (this._showing_create_pane)
+                    return;
+                this._showing_create_pane = true;
+
                 var self = this;
-                var done = function() { self.hidePane(); };
+                var done = function() {
+                    self._showing_create_pane = false;
+                    self.hidePane();
+                };
                 dojo.style(this.domNode, 'display', 'none');
                 this.editPane = this._makeCreatePane(done, done);
                 this.editPane.startup();

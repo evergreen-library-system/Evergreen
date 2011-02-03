@@ -5,7 +5,7 @@
         src="/opac/skin/kcls/graphics/KCLS_logo_horiz.gif" /></a></div>
     <div style="float:right;">
         <div id="your-acct-login"><a
-            href="login" id="home_myopac_link"><img
+            href="[% skin_root %]login" id="home_myopac_link"><img
             alt="Your Account Log in"
             src="/opac/skin/kcls/graphics/login-btn.png"
             onmouseover="this.src='/opac/skin/kcls/graphics/login-btn-hover.png';"
