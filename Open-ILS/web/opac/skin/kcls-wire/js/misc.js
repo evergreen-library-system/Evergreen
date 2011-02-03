@@ -1,6 +1,24 @@
 /* Some really basic utils copied mostly from old opac js:
  * opac_utils.js, utils.js, misc.js (kcls). */
 function $(id) { return document.getElementById(id); }
+function $n(root, nodeName, attr) {
+    return findNodeByName(root, nodeName, attr);
+}
+
+function findNodeByName(root, nodeName, /* defaults to "name" */attr) {
+    if (!root || !nodeName) return null;
+    if (root.nodeType != 1) return null;
+    if (!attr) attr = "name";
+    if (root.getAttribute(attr) == nodeName || root[attr] == nodeName)
+        return root;
+
+    for (var i = 0; i != root.childNodes.length; i++) {
+        var n = findNodeByName(root.childNodes[i], nodeName);
+        if (n) return n;
+    }
+
+    return null;
+}
 
 function swapCSSClass(obj, old, newc) {
 	removeCSSClass(obj, old);
@@ -94,4 +112,42 @@ function showDetailedResults(/* Boolean */ detailed) {
      * and that we'll do this with two different server-side pages now,
      * but leaving this stub here for now).
      */
+}
+
+/* Returns the character code pressed that caused the event. */
+function grabCharCode(evt) {
+    // OLD CODE: evt = (evt) ? evt : ((window.event) ? event : null);
+    evt = evt || window.event || event || null;
+    if (evt) {
+    // OLD CODE: return (evt.charCode ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode));
+        return event.which || event.charCode || event.keyCode;
+    } else {
+        return -1;
+    }
+}
+
+/* returns true if the user pressed enter */
+function userPressedEnter(evt) {
+    var code = grabCharCode(evt);
+    return (code == 13 || code == 3);
+}
+
+function setEnterFunc(node, func) {
+    if (!(node && func)) return;
+    node.onkeydown = function(evt) {
+        if (userPressedEnter(evt)) func();
+    };
+}
+
+function advAddGblRow() {
+    var tbody = $("adv_global_tbody");
+    var newrow = $("adv_global_trow").cloneNode(true);
+    tbody.insertBefore(newrow, $("adv_global_addrow"));
+    var input = $n(newrow, "term");
+    input.value = "";
+    setEnterFunc(input, function() {
+        alert("XXX enter");
+        /* XXX TODO make a real form and get rid of this? */
+    });
+    $n(newrow, 'type').focus();
 }

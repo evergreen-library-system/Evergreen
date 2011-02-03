@@ -1,10 +1,12 @@
 [% myopac_pages = [
-    {url => "main", name => "Account Summary"},
-    {url => "circs", name => "Items Checked Out"},
-    {url => "holds", name => "Holds"},
-    {url => "prefs", name => "Account Preferences"},
-    {url => "lists", name => "My Lists"}
-] %]
+        {url => "main", name => "Account Summary"},
+        {url => "circs", name => "Items Checked Out"},
+        {url => "holds", name => "Holds"},
+        {url => "prefs", name => "Account Preferences"},
+        {url => "lists", name => "My Lists"}
+    ];
+    skin_root = "../"
+%]
     [% INCLUDE "default/kcls-wire/parts/topnav.tt2" %]
     <div id="search-wrapper">
         [% INCLUDE "default/kcls-wire/parts/utils.tt2" %]

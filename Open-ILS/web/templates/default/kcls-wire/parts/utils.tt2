@@ -19,7 +19,7 @@
   <div style="float:left;width:163px;height:30px;background:url('/opac/skin/kcls/graphics/utils-corner-mid.png') repeat-x top;"> 
   
   	<a href="javascript:history.go(-1)" style="position:relative;top:1px;left:10px;"><img alt="Back" src="/opac/skin/kcls/graphics/tool_back.png" /></a>
-	<a href="./" style="position:relative;top:3px;left:20px;"><img src="/opac/skin/kcls/graphics/tool_home.png" alt="Homepage" /></a>
+	<a href="[% skin_root %]home" style="position:relative;top:3px;left:20px;"><img src="/opac/skin/kcls/graphics/tool_home.png" alt="Homepage" /></a>
 	<a href="javascript:window.print();" style="position:relative;top:5px;left:30px;"><img src="/opac/skin/kcls/graphics/tool_print.png" alt="Print Page" /></a>
 	<a href="http://www.kcls.org/usingthelibrary/catalog_help/index.cfm" style="position:relative;top:2px;left:40px;"><img alt="Help" src="/opac/skin/kcls/graphics/tool_help.png" /></a>
    	<a href="javascript:history.go(+1)" style="position:relative;top:2px;left:50px;"><img src="/opac/skin/kcls/graphics/tool_forward.png" alt="Forward" /></a>

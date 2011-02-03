@@ -4,7 +4,6 @@
 [% BLOCK html_head -%]
 <script type="text/javascript" src="/opac/skin/kcls/js/contentslider.js"></script>
 [%- END %]
-
     <div id="search-wrapper">
         [% INCLUDE "default/kcls-wire/parts/utils.tt2" %]
         [% INCLUDE "default/kcls-wire/parts/searchbar.tt2" %]
