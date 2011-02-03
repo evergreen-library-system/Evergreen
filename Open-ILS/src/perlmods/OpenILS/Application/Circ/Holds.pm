@@ -566,6 +566,12 @@ sub uncancel_hold {
     $hold->clear_cancel_time;
     $hold->clear_cancel_cause;
     $hold->clear_cancel_note;
+    $hold->clear_shelf_time;
+    $hold->clear_current_copy;
+    $hold->clear_capture_time;
+    $hold->clear_prev_check_time;
+    $hold->clear_shelf_expire_time;
+
     $e->update_action_hold_request($hold) or return $e->die_event;
     $e->commit;
 
