@@ -37,6 +37,7 @@
                 	<title>Introduction</title>
            	</info>
 		<xi:include href="intro/intro_intro.xml"/>
+		<xi:include href="intro/releasenotes.xml"/>
  	</part>
 	<part xml:id="opac">
 		<info>
