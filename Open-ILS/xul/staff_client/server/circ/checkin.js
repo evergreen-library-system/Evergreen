@@ -447,8 +447,6 @@ circ.checkin.prototype = {
                 node.setAttribute('no_change_label_label', no_change_label.getAttribute('value'));
                 node.setAttribute('no_change_label_click', no_change_label.getAttribute('onclick'));
             }
-        } else {
-            dump('puppy ' + new Date() + '\n',1);
         }
     },
 
