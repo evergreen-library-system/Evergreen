@@ -3,14 +3,12 @@
   <div id="hp-welcome">
     <h1>Welcome to the<br />New Library Catalog!</h1>
     Featuring enhanced holds, management<br />tools, improved self checkout, and more.<br /><br />
-    <a href="http://www.kcls.org/newcatalog" style="position:relative;top:5px;">Learn more &raquo;</a><br /><br />
-    
+    <a href="http://www.kcls.org/newcatalog" id="learn_more">Learn more &raquo;</a>
+    <br /><br />
     <div id="paginate-homebanner">
-      <!-- <a href="#" class="next">next</a>
-      <a href="#" class="prev">prev</a> -->
-      
       
 <!-- ************************************ home page rotator navigator start ************************************* -->
+    <!-- these are presumably temporary anyway, no need to use css -->
       <a class="toc" href="#1" rel="1" style="background:gray;"></a>
       <a class="toc" href="#2" rel="2" style="background:#ffc331;"></a>
       <a class="toc" href="#3" rel="3" style="background:pink;"></a>
@@ -20,19 +18,11 @@
       <a class="toc" href="#7" rel="7" style="background:white;"></a>
 <!-- **************************************** home page navigator end ******************************************* -->
 
-
-
-
 <!-- DON'T TOUCH THESE NEXT 4 LINES! -->
     </div>
   </div>
-  <div style="float:right;width:675px;height:213px;color:green;overflow:hidden;">
-  <div id="homebanner" class="sliderwrapper">
-  
-  
-  
-  
-  
+  <div id="they_said_dont_touch">
+    <div id="homebanner" class="sliderwrapper">
   
 <!-- ************************************ home page banner start ********************************************** -->
     <div class="contentdiv" style="background:white;">
@@ -67,14 +57,7 @@
       </td></tr></table>
     </div>
 <!-- ************************************* home page banner end *********************************************** -->
-
-
-
-
-
-
   </div>
-
 <script type="text/javascript">
 featuredcontentslider.init({
 id: "homebanner",
@@ -89,20 +72,23 @@ autorotate: [true, 3000] //pause time (in milliseconds)
 })
 </script>
 
-    <div style="position:absolute;z-index:101;"><div style="position:relative;"><a href="http://www.kcls.org/newcatalog" style="display:block;width:675px;height:213px;"></a></div></div>
-      <img alt="New catalog" src="/opac/skin/kcls/graphics/banner1.jpg" />
-    
-    
-    
-  </div>
+        <div id="new_cat_link_holder">
+            <div class="pos-rel">
+                <a href="http://www.kcls.org/newcatalog"></a>
+            </div>
+        </div>
+        <img alt="New catalog" src="/opac/skin/kcls/graphics/banner1.jpg" />
+    </div>
 </div>
 
 <div id="hp-buttons">
-  <div style="float:left;"><img src="/opac/skin/kcls/graphics/hp-links-left.jpg" /></div>
-  <div style="float:left;">
+    <div class="float-left">
+        <img src="/opac/skin/kcls/graphics/hp-links-left.jpg" />
+    </div>
+    <div class="float-left">
     <div id="home-buttons-inner">
       <table cellpadding="0" cellspacing="5" border="0" id="hp-ql-table">
-          <tr><td colspan="4"><span style="color: #333;font-weight: bold;font-size: 13px;">Browse for:</span></td></tr>
+          <tr><td colspan="4"><span class="opac-auto-029">Browse for:</span></td></tr>
         <tr><td><a href="http://www.kcls.org/booksandreading/">books</a></td><td><a href="http://www.kcls.org/movies/movies_browse.cfm">movies</a></td><td><a href="http://www.kcls.org/ecollection/">downloads</a></td><td><a href="http://www.kcls.org/websites/">websites</a></td></tr>
         <tr><td><a href="http://www.kcls.org/music/">music</a></td><td><a href="http://www.kcls.org/databases/subject_categories.cfm#17">magazines</a></td><td><a href="http://www.kcls.org/databases/">databases</a></td><td><a href="http://www.kcls.org/answers/">answers</a></td></tr>
       </table>

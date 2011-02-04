@@ -137,6 +137,9 @@ function advAddGblRow() {
     $n(newrow, 'type').focus();
 }
 
+var rdetailShowExtra = _stub; /* XXX TODO reimplement without JS? */
+var cnBrowsePrev = _stub;
+var cnBrowseNext = _stub;
 var rdetailNewBookbag = _stub; /* XXX TODO reimplement without JS? */
 var addMyList = _stub; /* XXX TODO we probably still need this one */
 var listSaveAction = _stub; /* XXX TODO we probably still need this one */

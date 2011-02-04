@@ -1,9 +1,9 @@
 <!-- ****************** top_nav.xml ***************************** -->
 <div id="header">
-    <div style="float:left;"><a
+    <div class="float-left"><a
         href="http://www.kcls.org"><img alt="KCLS Logo"
         src="/opac/skin/kcls/graphics/KCLS_logo_horiz.gif" /></a></div>
-    <div style="float:right;">
+    <div class="float-right">
         <div id="your-acct-login"><a
             href="[% skin_root %]login" id="home_myopac_link"><img
             alt="Your Account Log in"
@@ -15,7 +15,7 @@
     </div>
     <div class="common-no-pad"></div>
 </div>
-<div style="height:24px;background:#252525;">
+<div id="gold-links-holder">
     <div id="gold-links">
         <div id="header-links">
             <a href="http://www.kcls.org/usingthelibrary/index.cfm">Using the Library</a>
