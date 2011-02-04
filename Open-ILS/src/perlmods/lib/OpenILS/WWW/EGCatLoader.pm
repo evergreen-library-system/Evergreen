@@ -16,44 +16,6 @@ use OpenILS::Utils::Fieldmapper;
 use DateTime::Format::ISO8601;
 my $U = 'OpenILS::Application::AppUtils';
 
-sub _icon_by_mattype {  # XXX This is KCLS specific stuff that needs to be
-                        # genericized later.
-    my $mattype = shift;
-
-    my %type_map = (
-        "a" => "media_book.jpg",
-        "b" => "media_magazines.jpg",
-        "c" => "media_printedmusic.jpg",
-        "d" => "media_microform.jpg",
-        "e" => "media_equipment.jpg",
-        "f" => "media_films.jpg",
-        "g" => "",
-        "h" => "media_dvd.jpg",
-        "i" => "media_bookoncassette.jpg",
-        "j" => "media_musiccd.jpg",
-        "k" => "media_musiccassette.jpg",
-        "l" => "media_musicrecord.jpg",
-        "m" => "media_software.jpg",
-        "n" => "media_bookoncd.jpg",
-        "o" => "media_kit.jpg",
-        "p" => "media_newspaper.jpg",
-        "q" => "media_largeprint.jpg",
-        "r" => "media_3dobject.jpg",
-        "s" => "media_slide.jpg",
-        "t" => "media_online.jpg",
-        "u" => "media_eaudio.jpg",
-        "v" => "media_ebooktext.jpg",
-        "w" => "media_eaudio.jpg",
-        "x" => "media_downloadmusic.jpg",
-        "y" => "media_downloadvideo.jpg",
-        "z" => "media_map.jpg",
-        "2" => "media_cassettewithbook.jpg",
-        "5" => "media_cdwithbook.jpg"
-    );
-
-    return $type_map{$mattype};
-}
-
 sub new {
     my($class, $apache, $ctx) = @_;
 
@@ -651,8 +613,6 @@ sub load_myopac_holds {
     $self->handle_hold_update($action) if $action;
 
     $ctx->{holds} = $self->fetch_user_holds(undef, 0, 1, $limit, $offset);
-
-    $ctx->{"icon_by_mattype"} = \&_icon_by_mattype;
 
     return Apache2::Const::OK;
 }

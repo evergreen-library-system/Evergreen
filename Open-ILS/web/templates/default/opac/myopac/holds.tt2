@@ -9,9 +9,9 @@
 </style>
 [% END %]
 
-[% PROCESS "default/opac/common.tt2" %]
-[% WRAPPER "default/opac/base.tt2" %]
-[% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "holds" %]
+[%  PROCESS "default/opac/common.tt2";
+    WRAPPER "default/opac/base.tt2";
+    INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "holds" %]
 
 [% IF ctx.holds.size == 0 %]
 <b>No Items On Hold</b>
@@ -55,8 +55,9 @@
                 <td><a href='../results?query=au:[% attrs.author | url %]'>[% attrs.author %]</a></td>
                 <td>
                     [%
-                        format_desc = ctx.find_citm(attrs.mattype).value;
-                        icon_filename = ctx.icon_by_mattype(attrs.mattype);
+                        key = attrs.mattype;
+                        format_desc = ctx.find_citm(key).value;
+                        icon_filename = icon_by_mattype.$key;
                         IF icon_filename;
                     %]<!-- XXX in situations where we might show M-type holds, this won't be good enough -->
                     <img alt="[% format_desc %]" title="[% format_desc %]"
