@@ -58,7 +58,7 @@
             </div>
         </div>
     </div>
-    <div style="clear-both pad-top-ten">
+    <div class="clear-both pad-top-ten">
         <a href="javascript:;"
             onclick="hideMe($('myopac_bookbag_div'));unHideMe($('mylist_div'));">+ Add new list</a>
     </div>
@@ -79,7 +79,7 @@
                     </tr>
                 </table>
                 <div class="float-right"></div>
-                <div style="clear-both pad-bottom-five"></div>
+                <div class="clear-both pad-bottom-five"></div>
             </div>
     
             <table id="acct_list_header_anon" cellpadding='0' cellspacing='0' border='0'>

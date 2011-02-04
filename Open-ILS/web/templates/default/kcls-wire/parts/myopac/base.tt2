@@ -30,6 +30,6 @@
         <div id="main-content">
             <div class="common-full-pad"></div>
             [% content %]
-            <div style="clear-both"></div>
+            <div class="clear-both"></div>
         </div>
     </div>
