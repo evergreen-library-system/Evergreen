@@ -2411,6 +2411,7 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
             no_change_label.setAttribute('hidden','true');
             no_change_label.setAttribute('onclick','');
             removeCSSClass(no_change_label,'click_link');
+            no_change_label.setAttribute('unique_row_counter','');
         }
 
         var msg = '';
@@ -2481,6 +2482,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                     no_change_label.setAttribute('value', m + text + '  ');
                     no_change_label.setAttribute('hidden','false');
                     no_change_label.setAttribute('onclick','');
+                    removeCSSClass(no_change_label,'click_link');
+                    no_change_label.setAttribute('unique_row_counter','');
                     if (typeof params.info_blurb == 'function') {
                         params.info_blurb( text );
                     }
@@ -2720,6 +2723,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         no_change_label.setAttribute('value', m);
                         no_change_label.setAttribute('hidden','false');
                         no_change_label.setAttribute('onclick','');
+                        removeCSSClass(no_change_label,'click_link');
+                        no_change_label.setAttribute('unique_row_counter','');
                         if (typeof params.info_blurb == 'function') {
                             params.info_blurb( text );
                         }
@@ -2756,6 +2761,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         no_change_label.setAttribute('value', m + needs_cat + '  ');
                         no_change_label.setAttribute('hidden','false');
                         no_change_label.setAttribute('onclick','');
+                        removeCSSClass(no_change_label,'click_link');
+                        no_change_label.setAttribute('unique_row_counter','');
                         if (typeof params.info_blurb == 'function') {
                             params.info_blurb( needs_cat );
                         }
@@ -2842,6 +2849,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                         no_change_label.setAttribute('value', m);
                         no_change_label.setAttribute('hidden','false');
                         no_change_label.setAttribute('onclick','');
+                        removeCSSClass(no_change_label,'click_link');
+                        no_change_label.setAttribute('unique_row_counter','');
                         if (typeof params.info_blurb == 'function') {
                             params.info_blurb( text );
                         }
@@ -3102,6 +3111,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 no_change_label.setAttribute('value', m + trans_msg + '  ');
                 no_change_label.setAttribute('hidden','false');
                 no_change_label.setAttribute('onclick','');
+                removeCSSClass(no_change_label,'click_link');
+                no_change_label.setAttribute('unique_row_counter','');
                 if (typeof params.info_blurb == 'function') {
                     params.info_blurb( trans_msg );
                 }
@@ -3131,6 +3142,8 @@ circ.util.checkin_via_barcode2 = function(session,params,backdate,auto_print,che
                 no_change_label.setAttribute('value',m + mis_scan_msg + '  ');
                 no_change_label.setAttribute('hidden','false');
                 no_change_label.setAttribute('onclick','');
+                removeCSSClass(no_change_label,'click_link');
+                no_change_label.setAttribute('unique_row_counter','');
                 if (typeof params.info_blurb == 'function') {
                     params.info_blurb( mis_scan_msg );
                 }
@@ -3232,6 +3245,8 @@ circ.util.renew_via_barcode = function ( params, async ) {
                                 no_change_label.setAttribute('value',m + mis_scan_msg + '  ');
                                 no_change_label.setAttribute('hidden','false');
                                 no_change_label.setAttribute('onclick','');
+                                removeCSSClass(no_change_label,'click_link');
+                                no_change_label.setAttribute('unique_row_counter','');
                                 if (typeof params.info_blurb == 'function') {
                                     params.info_blurb( mis_scan_msg );
                                 }
