@@ -71,6 +71,7 @@ CREATE TABLE config.upgrade_log (
 );
 
 INSERT INTO config.upgrade_log (version) VALUES ('0481'); -- dbs
+INSERT INTO config.upgrade_log (version) VALUES ('2.0.1');
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,

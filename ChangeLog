@@ -1,1 +1,196 @@
-#ChangeLog
+2011-01-27  phasefx
+
+	* enable the checkbox column so we can delete hard due dates
+
+2011-01-28  senator
+
+	* Backport r19325 from trunk
+	  
+	  Serials: Add some missing permacrud permissions to IDL
+	  
+	  7 classes (sdistn, siss, sunit, sin, sbsum, sssum, sisum) were
+	  missing IDL
+	  perms. Appropriate permissions were added to all but sin
+	  (serial_item_note).
+	  
+	  For the sin class, since it's several leaps away from anything
+	  that points at
+	  an org unit, and since no existing code deals with it via
+	  PermaCrud, its
+	  PermaCrud section was simply removed.
+	  
+	  Some classes retain open <retrieve /> permissions, and others do
+	  not.
+	  
+	  No new permissions were created for this. All permissions are
+	  reused from
+	  "higher" serials objects.
+	  
+	  Credit to Mike Rylander for spotting the omissions.
+
+	* Backport r19327 from trunk
+	  
+	  Stay in sync with entity name changes
+
+2011-01-29  dbs
+
+	* Address typos in Rollover and Propagation dialogue
+
+2011-01-30  dbs
+
+	* Correct authority browsing for reals
+	  
+	  First, restore the >= enable before and after ranges in
+	  authority_tag_sf_browse(), after I mistakenly removed it in
+	  r19131; the second storage request for $after does not
+	  stomp on the prior $before results, it simply gets pushed
+	  onto the carefully constructed list of $before results,
+	  ensuring that our target is in the middle of page 0.
+	  
+	  Second, we're treating all of the "tag" members in the
+	  method registration as list references now (for the purpose
+	  of searching against 4xx/5xx in the .refs. variants), but
+	  that was blowing up when we registered just a single tag as
+	  a string and tried to treat the scalar as a list reference.
+	  I could have checked to see if what we had incoming was a
+	  reference and dance accordingly, but opted to just define
+	  all single-tag entries as single-element arrays instead.
+	  Applied the same to startwith.
+	  
+	  Finally, in r19331 I had used chop() to ensure that an
+	  exact match for startwith would be returned as element 1 on
+	  page 0, instead of appearing as the last element of page -1.
+	  I had said that the right way to do this would be to
+	  naco_normalize()
+	  the value to match the normalized afr.value, and so this is what
+	  I have done. Rather than torturously using O:A:Storage:FTS to get
+	  at the naco_normalize() definition, I moved the function into its
+	  own Utils package and adjusted its usage accordingly through the
+	  affected code. One step closer to single-sourcing the function
+	  in the database, as well?
+
+	* Use the browse method instead of startwith for Manage
+	  Authorities, too
+	  
+	  Now that the browse method is working properly, adopt it for the
+	  Manage Authorities interface as well so that context around the
+	  search term can be provided.
+
+	* Don't attempt to control 4xx fields in records
+	  
+	  Per LP bug # 708029, it doesn't make sense to apply an
+	  authority control on a 4xx field; so remove those entries
+	  from the authority tag map.
+
+2011-01-31  phasefx
+
+	* backport 19344, 19345 for patron purge fix for handling former
+	  staff users
+
+2011-02-01  senator
+
+	* Backport r19351 from trunk
+	  
+	  Acq: make the "new provider" button under Admin -> Server Admin
+	  ->
+	  Acquisitions -> Providers not produce a dialog with a ton of
+	  mysterious
+	  whitespace. Spotted by Dan Scott.
+
+	* Backport r19353 from trunk
+	  
+	  This should get this correct version of postgresql installed for
+	  clean
+	  installations on debian-lenny, *if* your system has the backports
+	  repo enabled.
+
+	* Backport r19355 from trunk
+	  
+	  Acq: Improving on r19351, don't let showCreatePane() be issued
+	  repeatedly to
+	  fill the window with redundant dialogs, since a) it looks silly,
+	  and b) the
+	  dialogs don't work when there are more than one of them. Thanks
+	  again Dan.
+
+2011-02-01  erickson
+
+	* make sure that inline overdue fines generation completes before
+	  we attempt to void overdues fines in checkin, otherwise it's
+	  possible to create multiple services (storage and cstore)
+	  competing for the same DB row mid-transaction, resulting in
+	  cstore timeouts and rollback of checkin. This could happen with
+	  backdated or amnesty checkins
+
+2011-02-02  dbs
+
+	* Apply autogenerate barcode trigger to serial.unit to enable
+	  serial checkin
+	  
+	  Serial checkin tried to use the '@@AUTO' macro to autogenerate
+	  barcodes,
+	  but unfortunately the required trigger had only been defined on
+	  the parent
+	  table asset.copy and not on the child table serial.unit. Here we
+	  define the
+	  trigger on serial.unit to resolve that problem.
+
+2011-02-02  erickson
+
+	* exit finish_fines_and_voiding() if there is no open circ
+
+2011-02-02  phasefx
+
+	* backport r19364 from trunk for stat cat field value removal in
+	  patron editor
+
+	* let due date show up correctly in the copy browser for
+	  circulating items
+
+2011-02-03  dbs
+
+	* Authorities: control 610/611, do not control 4xx by default
+	  
+	  The 4xx fields in bibliographic records have not been controlled
+	  fields for some time (1988 for CAN/MARC, 1999 for USMARC per)
+	  http://www.loc.gov/marc/bibliographic/bd4xx.html; and
+	  http://www.oclc.org/bibformats/en/4xx/default.shtm also lists
+	  these as obsolete. So, remove them from the default controlled
+	  fields in Evergreen.
+	  
+	  Also, add 610/611 to the controlled fields list (per LP #712467).
+
+2011-02-03  dbwells
+
+	* Two binding fixes for manage items
+	  
+	  The first fix is more or less cosmetic. When selecting a target
+	  unit, both areas need to refresh in order to not show the
+	  selected unit's items in the main list.
+	  
+	  The second fix involves handling cases where moving items from
+	  one unit to another does not empty the 'donor' unit. In those
+	  cases, we need to update the contents of both the new and the old
+	  unit.
+
+2011-02-03  erickson
+
+	* clear shelf expire time and some other fields when un-cancelling
+	  a hold
+
+2011-02-04  erickson
+
+	* ported open-ils.actor.user.transaction.[fleshed.]retrieve to
+	  CStoreEditor both for cleanup and to take advantage of
+	  .authoritative. Use authoritative version in staff client
+
+2011-02-04  dbwells
+
+	* Fix ModsParser.pm bug involving invalid ISBNs. See bug #697398.
+
+2011-02-04  miker
+
+	* upgrade script
+
+	* .: Tagging 2.0.1
+
