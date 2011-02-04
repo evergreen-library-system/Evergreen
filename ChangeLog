@@ -1,1 +1,90 @@
-#ChangeLog
+2011-01-11  phasefx
+
+	* fix regression with org selector when specifying ?ol= and the org
+	  unit hiding setting is unset
+
+2011-01-19  phasefx
+
+	* some interfaces (or at least org_unit_settings.js) was not
+	  infering the identifier value here. This helps the filtering org
+	  select dijit in that interface
+
+2011-01-19  miker
+
+	* Build and flatten a tree, correcting a sorting issue in some OU
+	  dropdowns.
+	  
+	  The previous code assumed that work org units would be delivered
+	  in hierarchical order, but alas, they are not. Thus, we build the
+	  hierarchy and then flatten it, sorting at each level.
+	  This will be non-fast with many work OUs, but the common case is
+	  a small set, which is not painful.
+	  
+	  Further improvement is warranted when the above proves false.
+
+2011-01-19  senator
+
+	* Backport r19214 from trunk
+	  
+	  Booking: Robert Soulliere spotted and fixed a bug in processing
+	  reservation-
+	  related overdue fines. See
+	  https://bugs.launchpad.net/evergreen/+bug/705061
+
+2011-01-20  senator
+
+	* Backport r19229 from trunk
+	  
+	  Booking: these lines don't belong; they were erroneously copied
+	  and pasted
+	  from a neighboring section of the file
+
+2011-01-20  phasefx
+
+	* don't offer to cancel related transits that have already
+	  completed when canceling holds. related to 19234, but data
+	  structure is different
+
+2011-01-24  gmc
+
+	* improve performance of multi-class searches
+	  
+	  Backport of trunk commit 18233.
+	  
+	  For as yet unknown reasons, Postgres sometimes uses
+	  nested loops instead of hash joins when joining subqueries
+	  in a multi-class bib search. This can result in searches
+	  such as "author:rowling title:harry potter" never completing.
+	  
+	  Removing the interior limit clause can both speed up the query
+	  and make search results more accurate when combining queries
+	  of two or more common words.
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-01-27  phasefx
+
+	* enable the checkbox column so we can delete hard due dates
+
+2011-02-01  dbwells
+
+	* Backport r19288 : Fix checkin backdate assumptions
+	  
+	  checkin_handle_backdate() did not properly interpret bill data
+	  (voided too much), so lets use void_overdues() instead
+
+2011-02-02  phasefx
+
+	* backport r19364 from trunk for stat cat field value removal in
+	  patron editor
+
+2011-02-04  dbwells
+
+	* Fix ModsParser.pm bug involving invalid ISBNs. See bug #697398.
+
+2011-02-04  miker
+
+	* upgrade scripts
+
+	* .: Tagging 1.6.2.2
+
