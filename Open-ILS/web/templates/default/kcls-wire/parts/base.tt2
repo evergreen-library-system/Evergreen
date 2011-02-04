@@ -2,8 +2,12 @@
 <html xmlns='http://www.w3.org/1999/xhtml' lang='[% ctx.locale %]' xml:lang='[% ctx.locale %]'>
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-        <link rel="stylesheet" type="text/css" href="/opac/skin/kcls-wire/css/style.css" />
-        <link rel="stylesheet" type="text/css" href="/opac/skin/kcls-wire/css/contentslider.css" />
+        <link rel="stylesheet" type="text/css"
+            href="/opac/skin/kcls-wire/css/semiauto.css" />
+        <link rel="stylesheet" type="text/css"
+            href="/opac/skin/kcls-wire/css/style.css" />
+        <link rel="stylesheet" type="text/css"
+            href="/opac/skin/kcls-wire/css/contentslider.css" />
         <title>Catalog - King County Library - [% ctx.page_title %]</title>
         <link rel="unapi-server" type="application/xml" title="unAPI"
             href="/opac/extras/unapi" />

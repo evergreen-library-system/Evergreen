@@ -1,4 +1,4 @@
-        <div style="margin:auto;width:974px;height:0px;">
+        <div class="big-block">
             <div id="user-ql">
                 <script type="text/javascript">
 /* if(grabUser()) {
@@ -10,23 +10,31 @@
 }*/
                 </script>
             </div>
-
-<!-- ****************** utils.xml ***************************** -->
-
-<div style="float:right;">
-<div style="position:relative;">
-<img src="/opac/skin/kcls/graphics/utils-corner-left.png" style="float:left;" />
-  <div style="float:left;width:163px;height:30px;background:url('/opac/skin/kcls/graphics/utils-corner-mid.png') repeat-x top;"> 
-  
-  	<a href="javascript:history.go(-1)" style="position:relative;top:1px;left:10px;"><img alt="Back" src="/opac/skin/kcls/graphics/tool_back.png" /></a>
-	<a href="[% skin_root %]home" style="position:relative;top:3px;left:20px;"><img src="/opac/skin/kcls/graphics/tool_home.png" alt="Homepage" /></a>
-	<a href="javascript:window.print();" style="position:relative;top:5px;left:30px;"><img src="/opac/skin/kcls/graphics/tool_print.png" alt="Print Page" /></a>
-	<a href="http://www.kcls.org/usingthelibrary/catalog_help/index.cfm" style="position:relative;top:2px;left:40px;"><img alt="Help" src="/opac/skin/kcls/graphics/tool_help.png" /></a>
-   	<a href="javascript:history.go(+1)" style="position:relative;top:2px;left:50px;"><img src="/opac/skin/kcls/graphics/tool_forward.png" alt="Forward" /></a>
-	
-  </div>
-<img src="/opac/skin/kcls/graphics/utils-corner-right.png" style="float:left;" />
-</div>
-</div>
-
+            <div class="float-right">
+                <div class="pos-rel">
+                    <img
+                        src="/opac/skin/kcls/graphics/utils-corner-left.png"
+                        class="float-left" />
+                    <div class="left-corner"> 
+                        <a href="javascript:history.go(-1)"
+                            id="util_back_btn"><img alt="Back"
+                            src="/opac/skin/kcls/graphics/tool_back.png" /></a>
+                        <a href="[% skin_root %]home"
+                            id="util_home_btn"><img alt="Homepage"
+                            src="/opac/skin/kcls/graphics/tool_home.png" /></a>
+                        <a href="javascript:window.print();"
+                            id="util_print_btn"><img alt="Print Page"
+                            src="/opac/skin/kcls/graphics/tool_print.png" /></a>
+                        <a href="http://www.kcls.org/usingthelibrary/catalog_help/index.cfm"
+                            id="util_help_btn"><img alt="Help"
+                            src="/opac/skin/kcls/graphics/tool_help.png" /></a>
+                        <a href="javascript:history.go(+1)"
+                            id="util_forw_btn"><img alt="Forward"
+                            src="/opac/skin/kcls/graphics/tool_forward.png" /></a>
+                    </div>
+                    <img
+                        src="/opac/skin/kcls/graphics/utils-corner-right.png"
+                        class="float-left" />
+                </div>
+            </div>
         </div>
