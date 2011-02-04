@@ -13,7 +13,7 @@
 
 
     </div>
-    <div style="clear:both;height:0px;margin:0px;padding:0px;"></div>
+    <div class="common-no-pad"></div>
 </div>
 <div style="height:24px;background:#252525;">
     <div id="gold-links">

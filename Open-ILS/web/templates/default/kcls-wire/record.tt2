@@ -1,12 +1,6 @@
 [%  WRAPPER "default/kcls-wire/parts/base.tt2";
     INCLUDE "default/kcls-wire/parts/topnav.tt2";
     ctx.page_title = "Record Detail" %]
-[% BLOCK html_head %]
-<style type="text/css">
-    #rdetail_copy_info_table { font-size: 8pt; }
-    #rdetail_copy_info_table td { padding: 3px; }
-</style>
-[% END %]
     <div id="search-wrapper">
         [% INCLUDE "default/kcls-wire/parts/utils.tt2" %]
         [% INCLUDE "default/kcls-wire/parts/searchbar.tt2" %]
@@ -14,7 +8,7 @@
     <div id="content-wrapper">
         <div id="main-content">
             [% INCLUDE "default/kcls-wire/parts/record/body.tt2" %]
-            <div style="clear:both;height:15px;"></div>	
+            <div class="common-full-pad"></div>	
         </div>
     </div>
 [% END %]

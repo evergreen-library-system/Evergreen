@@ -51,22 +51,23 @@
                 </div>
             </div>
 
-            <div style="clear:both;"></div>
+            <div class="clear-both"></div>
         </div>
 
         <div class="header_middle">
-            <span id="acct_prefs_header"
-                 style="float:left;">Account Information and Preferences</span>
-                 <span style="float:right;"><a class="hide_me"
-               href="javascript:;"
-               onclick="fadeOut(this);">Export List</a></span>
+            <span id="acct_prefs_header">
+                Account Information and Preferences
+            </span>
+            <span class="float-right">
+                <a class="hide_me"
+                    href="javascript:;"
+                    onclick="fadeOut(this);">Export List</a>
+            </span>
         </div>
 
-        <div style="clear:both;height:10px;"></div>
+        <div class="clear-both normal-height"></div>
 
-        <table width='100%'
-               class="hide_me"
-               id="acct_search_main">
+        <table class="hide_me full-width" id="acct_search_main">
             <tbody id='myopac_prefs_tbody'>
                 <tr id='myopac_prefs_loading'>
                     <td colspan='3'><b>&myopac.loading;</b></td>

@@ -20,7 +20,7 @@
                         onmouseover="this.src='/opac/skin/kcls/graphics/adv_search_hover.png';"
                         onmouseout="this.src='/opac/skin/kcls/graphics/adv_search.png';" /></a>
                 </div>
-                <div class="results_header_btns" style="width:111px;height:25px;">
+                <div class="results_header_btns cached_list_div">
                     <a href="javascript:;" class="hide_me" id="cacheListLink"
                         onclick="showCachedList();"><img
                         alt="View My List"
@@ -35,19 +35,18 @@
         <!--#endif -->
                 <div class="results_header_div"></div>
                 <div class="results_header_lbl">View</div>
-                <select class="results_header_sel" style="width:88px;"
+                <select class="results_header_sel"
                     onchange="showDetailedResults(Boolean(this.selectedIndex));">
                     <option>Simple</option>
                     <option>Detailed</option>
                 </select>
                 <div class="results_header_div"></div>
-                <input type="checkbox" id="opac.result.limit2avai2"
-                onclick='searchBarSubmit(true, this);'
-                style="float:left;position:relative;top:2px;left:-2px;margin-right:4px;" />
-                <label for="opac.result.limit2avai2" class="results_header_lbl">
+                <input type="checkbox" id="limit_to_available"
+                    onclick='searchBarSubmit(true, this);' />
+                <label for="limit_to_available" class="results_header_lbl">
                     Limit to available items
                 </label>
-                <div style="clear:both;"></div>
+                <div class="clear-both"></div>
             </div>
         </div>
         <div id="main-content">
@@ -58,7 +57,7 @@
                     [% INCLUDE "default/kcls-wire/parts/result/lowhits.tt2" %]
                 </div>
             </div>
-            <div style="clear:both;height:15px;"></div>    
+            <div class="common-full-pad"></div>    
         </div>
     </div>
 [% END %]

@@ -587,6 +587,8 @@ div.select-wrapper:hover {
 	margin-right: 6px;
 }
 
+.cached_list_div { width: 111px; height: 25px; }
+
 .results_header_div {
 	float: left;
 	width: 0px;
@@ -607,6 +609,7 @@ div.select-wrapper:hover {
 }
 
 .results_header_sel {
+    width: 88px;
 	float:left;
 	position: relative;
 	top: 2px;
@@ -869,3 +872,16 @@ div.select-wrapper:hover {
 	font-weight: bold;
 	font-size: 10px;
 }
+
+.advanced_div { padding-top: 15px; }
+#adv_global_search select { width: 13em; }
+#adv_global_input_table select { width: 7em; }
+.adv_adv_link { font-size: 8pt; color: red; }
+#acct_prefs_header { float: left; }
+#limit_to_available {
+    float: left; position: relative; top: 2px;
+    left: -2px; margin-right: 4px;
+}
+#rdetail_copy_info_table { font-size: 8pt; }
+#rdetail_copy_info_table td { padding: 3px; }
+

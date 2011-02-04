@@ -19,7 +19,7 @@
         <div class="align selected hide_me" id="holds_hist_label">
             <img src="/opac/skin/kcls/graphics/sub_holds_hist_on.jpg" />
         </div>	
-        <div style="clear:both;"></div>
+        <div class="clear-both"></div>
     </div>
     <div class="header_middle">
         <span id="acct_holds_header" style="float:left;">
@@ -29,7 +29,7 @@
             <a class="hide_me" href="javascript:;">Export List</a>
         </span>
     </div>
-    <div style="clear:both;"></div>
+    <div class="clear-both"></div>
     <div id='holds_main'>
         <table cellpadding='0' cellspacing='0' border='0'
             style="padding:8px 0px 6px 0px;">

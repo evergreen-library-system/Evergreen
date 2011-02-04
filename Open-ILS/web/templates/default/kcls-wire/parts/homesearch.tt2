@@ -108,8 +108,8 @@ autorotate: [true, 3000] //pause time (in milliseconds)
       </table>
     </div>
   </div>
-  <div style="float:left;"><img src="/opac/skin/kcls/graphics/hp-links-right.jpg" /></div>
-  <div style="float:right;"><a href="http://www.kcls.org/locations"><img alt="Locations" src="/opac/skin/kcls/graphics/locations.jpg" /></a></div>
-  <div style="clear:both;"></div>
+  <div class="float-left"><img src="/opac/skin/kcls/graphics/hp-links-right.jpg" /></div>
+  <div class="float-right"><a href="http://www.kcls.org/locations"><img alt="Locations" src="/opac/skin/kcls/graphics/locations.jpg" /></a></div>
+  <div class="clear-both"></div>
 </div>
 <!-- ****************** end: homesearch.xml ***************************** -->

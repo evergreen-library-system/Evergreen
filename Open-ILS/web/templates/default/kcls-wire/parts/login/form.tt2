@@ -144,6 +144,6 @@
             </tr>
         </table>
     </form>
-    <div style="clear:both"></div>
+    <div class="clear-both"></div>
 </div>
 <!-- ****************** end: login.xml ***************************** -->

@@ -98,7 +98,7 @@
                 </div>
             </div>
         </div>
-        <div style="clear:both;"></div>
+        <div class="clear-both"></div>
         <div id='myopac_fines_div'>
             <table width='100%' class='data_grid data_grid_center'>
                 <thead class='color_3'>

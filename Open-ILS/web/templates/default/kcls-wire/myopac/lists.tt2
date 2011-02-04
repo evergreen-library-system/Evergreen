@@ -58,7 +58,7 @@
             </div>
         </div>
     </div>
-    <div style="clear:both;padding-top:10px;">
+    <div style="clear-both pad-top-ten">
         <a href="javascript:;"
             onclick="hideMe($('myopac_bookbag_div'));unHideMe($('mylist_div'));">+ Add new list</a>
     </div>
@@ -78,8 +78,8 @@
                         </td>
                     </tr>
                 </table>
-                <div style="float:right;"></div>
-                <div style="clear:both;padding-bottom:5px;"></div>
+                <div class="float-right"></div>
+                <div style="clear-both pad-bottom-five"></div>
             </div>
     
             <table id="acct_list_header_anon" cellpadding='0' cellspacing='0' border='0'>
@@ -122,7 +122,7 @@
                     <div style="float:left;padding:5px 0px 0px 10px;">
                         <a href="javascript:;" name="remove_list">Remove</a>
                     </div>
-                    <div style="clear:both;padding-bottom:5px;"></div>
+                    <div class="clear-both pad-bottom-five"></div>
                 </div>
                 <table id="acct_list_header" cellpadding='0' cellspacing='0'
                     border='0'>

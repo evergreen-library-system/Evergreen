@@ -28,8 +28,8 @@
             </div>
         </div>
         <div id="main-content">
-            <div style="height:15px;clear:both;"></div>
+            <div class="common-full-pad"></div>
             [% content %]
-            <div style="clear:both;"></div>
+            <div style="clear-both"></div>
         </div>
     </div>

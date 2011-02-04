@@ -55,5 +55,5 @@
       <div id="breadcrumb">
           <a href="[% skin_root %]home">Catalog Home</a> &gt;
       </div>
-    <div style="clear:both"></div>
+    <div class="clear-both"></div>
 </div>

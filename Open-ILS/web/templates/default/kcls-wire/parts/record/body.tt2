@@ -27,7 +27,7 @@
                     id='np_end' href='javascript:rdetailEnd();'
                     title="&rdetail.page.last;">&rdetail.end;</a></span>
         </div>
-        <div style="clear:both;"></div>
+        <div class="clear-both"></div>
     </div>
 
     <table width='100%' id='np_table' border='0' class="hide_me">

@@ -11,7 +11,7 @@
     <div id="content-wrapper">
         <div id="main-content">
             [% INCLUDE "default/kcls-wire/parts/login/form.tt2" %]
-            <div style="clear:both;height:30px;"></div>	
+            <div class="clear-both very-big-height"></div>	
         </div>
     </div>
 [% END %]

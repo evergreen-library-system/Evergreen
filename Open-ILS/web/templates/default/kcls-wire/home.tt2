@@ -10,9 +10,9 @@
     </div>
     <div id="content-wrapper">
         <div id="main-content">
-            <div style="height:15px;clear:both;"></div>
+            <div class="common-full-pad"></div>
             [% INCLUDE "default/kcls-wire/parts/homesearch.tt2" %]
-            <div style="clear:both;height:15px;"></div>	
+            <div class="common-full-pad"></div>	
         </div>
     </div>
 [% END %]
