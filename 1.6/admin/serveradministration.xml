@@ -171,6 +171,69 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			</note>
 		</procedure>
 		<procedure>
+			<title>Changing the Default Organizational Units and Types Using SQL</title>
+			<para>Evergreen comes with several default organizational units set up out-of-the-box. Most libraries will want to customize the Org units with their own Organizational Units and 
+			types. The quickest way to do this is with SQL.</para> 
+			<note><para>The following procedure should only be done before you have migrated users and items into your system.</para></note>
+			<step>
+				<para>Delete all but the core organizational unit:</para>
+<programlisting language="sql">
+BEGIN;
+DELETE FROM actor.org_unit WHERE id > 1;
+DELETE FROM actor.org_address WHERE id > 1;
+DELETE FROM actor.workstation WHERE owning_lib > 1;
+COMMIT;
+</programlisting>
+			</step>
+			<step>
+				<para>Clean up our org unit types, in preparation for creating the organizational units hierarchy:</para>
+<programlisting language="sql">
+BEGIN;
+DELETE FROM actor.org_unit_type WHERE id > 2;
+UPDATE actor.org_unit_type SET name = 'System', can_have_users = TRUE
+WHERE id = 1;
+UPDATE actor.org_unit_type SET name = 'Branch', can_have_users = TRUE,
+can_have_vols = TRUE WHERE id = 2;
+COMMIT;
+</programlisting>
+</step>
+			<step>
+				<para>Create a branch that hangs off the only remaining parent branch setting the addresses to the system address temporarily:</para>
+<programlisting language="sql">
+INSERT INTO actor.org_unit (parent_ou, ou_type, ill_address,
+holds_address, mailing_address, billing_address, shortname, name)
+  VALUES (1, 2, 1, 1, 1, 1, 'MYBRANCH', 'My Branch');
+</programlisting>
+			</step>
+					<step>
+				<para>Find out what ID was assigned to the new branch:</para>
+<programlisting language="sql">
+SELECT id FROM actor.org_unit WHERE shortname = 'MYBRANCH';
+</programlisting>
+			</step>
+			<step>
+				<para>Create our required org address and update <database class="table">actor.org_unit</database> to point ot correct <database class="table">actor.org_address</database> <database class="field">id</database> (assuming output of last step was <quote>101</quote>, adjust accordingly.):</para>
+<programlisting language="sql">
+BEGIN;
+INSERT INTO actor.org_address (id, org_unit, street1, city, state,
+country, post_code)
+  VALUES (2, 101, 'Fake Street', 'Fake', 'Fake', 'Fake', 'FOO BAR');
+UPDATE actor.org_unit SET ill_address= 2, holds_address = 2, mailing_address = 2, billing_address = 2 WHERE id = 101;
+COMMIT; 
+</programlisting>
+			</step>
+<step>
+				<para>Run autogen.sh for your changes to be updated.</para>
+<screen>
+<userinput>./autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
+</screen>
+
+			</step>
+
+
+
+		</procedure>
+		<procedure>
 			<title>Editing Organizational Units<indexterm><primary>organization units</primary><secondary>editing</secondary></indexterm></title>
 			<step><para>Select the organizational unit you wish to edit from the 
 			organizational unit tree in the left pane.</para></step>
