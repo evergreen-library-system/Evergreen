@@ -168,6 +168,7 @@ var sortHolds = _stub; /* XXX TODO There was a method for sorting loaded holds
 var showDetailedResults = _stub; /* XXX TODO for an old onchange handler that
                                 toggled between simple and detailed results
                                 in the rresults page.  */
+var showCanvas = _stub;
 var checkAll = _stub;
 var sortChecked = _stub;
 var sortCheckedHist = _stub;
