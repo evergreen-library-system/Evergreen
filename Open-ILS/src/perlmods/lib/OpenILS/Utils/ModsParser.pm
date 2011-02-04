@@ -16,7 +16,7 @@ my $mods_sheet;
 
 # ----------------------------------------------------------------------------------------
 # XPATH for extracting info from a MODS doc
-my $isbn_xpath			= "//mods:mods/mods:identifier[\@type='isbn']";
+my $isbn_xpath			= "//mods:mods/mods:identifier[\@type='isbn' and not(\@invalid)]";
 my $resource_xpath	= "//mods:mods/mods:typeOfResource";
 my $pub_xpath			= "//mods:mods/mods:originInfo//mods:dateIssued[\@encoding='marc']|" . 
 								"//mods:mods/mods:originInfo//mods:dateIssued[1]";
