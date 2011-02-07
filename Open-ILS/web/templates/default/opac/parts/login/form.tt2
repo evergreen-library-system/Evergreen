@@ -64,7 +64,7 @@
 
 <div id="login_box">
     <div style="height:20px;"></div>
-    <form id='login_form' method='POST' action='#'>
+    <form id='login_form' method='POST'>
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
                 <td valign="top" width="676" class="login_boxes left_brain">
@@ -87,7 +87,7 @@
                             </td>
                             <td width="58%" valign="top">
                                 <div class="input_bg">
-                                    <input type="text" name="opacUser"
+                                    <input type="text" name="username"
                                         id="login_username" />
                                 </div>
                             </td>
@@ -107,9 +107,12 @@
                             </td>
                             <td valign="top">
                                 <div class="input_bg">
-                                    <input name="opacPass" type="password" id="login_password" />
+                                    <input name="password" type="password" id="login_password" />
                                 </div>
                                 <div style="padding-top:7px;">
+                                    <input type='hidden'
+                                        name='redirect_to'
+                                        value='[% CGI.param('redirect_to') || ctx.referer | replace('^http:', 'https:') %]' />
                                     <input class="hide_me" type="checkbox"
                                         id="remember_me" name="remember_me" />
                                     <label class="hide_me"
