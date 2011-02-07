@@ -7,12 +7,11 @@
             <img src="/opac/skin/kcls/graphics/sub_checked_out_on.jpg" />
         </div>
         <div class="align" id="checked_hist_link">
-            <a class="" href="javascript:;"
-                onclick="switchSubPage('checked','hist')"><img
+            <a class="" href="#"><img
                 src="/opac/skin/kcls/graphics/sub_checked_hist_off.jpg" /></a>
         </div>
         <div class="align hide_me" id="checked_link">
-            <a href="javascript:;" onclick="switchSubPage('checked','main')">
+            <a href="#">
                 <img src="/opac/skin/kcls/graphics/sub_checked_out_off.jpg" />
             </a>
         </div>
@@ -27,7 +26,7 @@
             Current Items Checked Out
         </span>
         <span style="float:right;">
-            <a class="hide_me" href="javascript:;">Export List</a>
+            <a class="hide_me" href="#">Export List</a>
         </span>
     </div>
     <div class="clear-both"></div>
@@ -36,19 +35,15 @@
             style="padding:8px 0px 6px 0px;">
             <tr>
                 <td>
-                    <a href="javascript:;"
-                        onclick="myOPACRenewSelected();">Renew
-                        Selected Titles</a>
+                    <a href="#">Renew Selected Titles</a>
                 </td>
                 <td style="padding-left:9px;">
-                    <a class="hide_me" href="javascript:;"><img
+                    <a class="hide_me" href="#"><img
                         alt="Save"
                         src="/opac/skin/kcls/graphics/save-btn.png" /></a>
                 </td>
                 <td style="padding-left:5px;">
-                    <a href="javascript:;"
-                        onclick="alert('To Renew an individual title, select box and click Renew Selected Titles');"><img
-                        alt="Renewing Help"
+                    <a href="#"><img alt="Renewing Help"
                         src="/opac/skin/kcls/graphics/question-mark.png" /></a>
                 </td>
             </tr>
@@ -57,40 +52,30 @@
             border='0'>
             <tr>
                 <td width="1%" style="padding-left:10px;">
-                    <input type="checkbox" id="check_all_checked"
-                    onclick="checkAll($('checked_temp_parent'), this.id);" />
+                    <input type="checkbox" id="check_all_checked" />
                 </td>
                 <td width="40%" style="padding-left:5px;">
-                    <span title="Click to sort"
-                        onclick="sortChecked('title');" style="cursor:pointer;">
+                    <span title="Click to sort" style="cursor:pointer;">
                         Title
                     </span> /
-                    <span title="Click to sort"
-                        onclick="sortChecked('author');" style="cursor:pointer;">
+                    <span title="Click to sort" style="cursor:pointer;">
                         Author
                     </span>
                 </td>
                 <td width="8%" style="padding-right:5px;" align="center">
-                    <span title="Click to sort"
-                        onclick="sortChecked('renews');"
-                        style="cursor:pointer;">
+                    <span title="Click to sort" style="cursor:pointer;">
                         Renews<br />Left
                     </span>
                 </td>
                 <td width="13%" style="padding-left:5px;">
-                    <span title="Click to sort"
-                        onclick="sortChecked('due');"
-                        style="cursor:pointer;">Due Date
+                    <span title="Click to sort" style="cursor:pointer;">Due Date
                     </span>
                 </td>
                 <td width="16%">
-                    <span title="Click to sort"
-                        onclick="sortChecked('barcode');"
-                        style="cursor:pointer;">barcode</span>
+                    <span title="Click to sort" style="cursor:pointer;">barcode</span>
                 </td>
                 <td width="22%">
-                    <span title="Click to sort" onclick="sortChecked('cn');"
-                        style="cursor:pointer;">call number</span>
+                    <span title="Click to sort" style="cursor:pointer;">call number</span>
                 </td>
             </tr>
         </table>
@@ -106,7 +91,7 @@
                         <td width="40%"
                             style="padding-left:5px;padding-bottom:10px;"
                             name="author">
-                            <a href="javascript:;" name="title"></a>
+                            <a href="#" name="title"></a>
                         </td>
                         <td width="8%" name="renewals" align="center"></td>
                         <td width="13%" style="padding-left:5px;"
@@ -124,31 +109,25 @@
             <tr>
                 <td width="45%" style="padding-left:15px;">
                     <span title="Click to sort"
-                        onclick="sortCheckedHist('title');"
                         style="cursor:pointer;">Title</span> /
                     <span title="Click to sort"
-                        onclick="sortCheckedHist('author');"
                         style="cursor:pointer;">Author</span>
                 </td>
                 <td width="22%"
                     style="white-space:nowrap;padding-left:5px;">
                     <span title="Click to sort"
-                        onclick="sortCheckedHist('cn');"
                         style="cursor:pointer;">Call Number</span>
                 </td>
                 <td width="11%">
                     <span title="Click to sort"
-                        onclick="sortCheckedHist('checkout');"
                         style="cursor:pointer;">Checkout</span>
                 </td>
                 <td width="11%">
                     <span title="Click to sort"
-                        onclick="sortCheckedHist('due');"
                         style="cursor:pointer;">Due Date</span>
                 </td>
                 <td width="11%">
                     <span title="Click to sort"
-                        onclick="sortCheckedHist('returned');"
                         style="cursor:pointer;">Returned</span>
                 </td>
             </tr>
@@ -159,7 +138,7 @@
                 <tr id="acct_checked_hist_temp">
                     <td width="45%"
                         style="padding-left:15px;padding-bottom:10px;">
-                        <a href="javascript:;" name="title"></a> /
+                        <a href="#" name="title"></a> /
                         <span name="author"></span>
                     </td>
                     <td width="22%" style="padding-left:5px;"

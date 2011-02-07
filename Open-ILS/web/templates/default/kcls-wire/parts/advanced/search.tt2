@@ -18,8 +18,6 @@
                     <!-- add a new row -->
                     <tr id='adv_global_addrow'>
                         <td align='left' style="padding-top:7px;">
-                            <a href="javascript:;"
-                                onclick='advAddGblRow();'>Add Search Row</a>
                             <button>&advanced.search.submit;</button><!-- XXX TODO make a real form -->
                         </td>
                     </tr>
@@ -102,21 +100,11 @@
                             <span>&advanced.literary.form;</span>
                             <a id='adv_global_lit_form_link_adv'
                                 class='classic_link adv_adv_link'
-                                href='javascript:void(0);' onclick='
-                                hideMe($("adv_global_lit_form_basic"));
-                                unHideMe($("adv_global_lit_form"));
-                                hideMe(this);
-                                unHideMe($("adv_global_lit_form_link_basic"));
-                                '>&advanced.link;</a>
+                                href='#'>&advanced.link;</a>
 
                             <a id='adv_global_lit_form_link_basic'
                                 class='hide_me classic_link adv_adv_link'
-                                href='javascript:void(0);' onclick='
-                                unHideMe($("adv_global_lit_form_basic"));
-                                hideMe($("adv_global_lit_form"));
-                                unHideMe($("adv_global_lit_form_link_adv"));
-                                hideMe(this);
-                                '>&advanced.basic.link;</a>
+                                href='#'>&advanced.basic.link;</a>
                         </td>
                         <td align='left' class="hide_me">
                             <select multiple='multiple' size='3'
@@ -145,20 +133,11 @@
                             <span>&advanced.audience;</span>
                             <a id='adv_global_audience_link_adv'
                                 class='classic_link adv_adv_link'
-                                href='javascript:void(0);' onclick='
-                                hideMe($("adv_global_audience_basic"));
-                                unHideMe($("adv_global_audience"));
-                                hideMe(this);
-                                unHideMe($("adv_global_audience_link_basic"));
-                                '>&advanced.link;</a>
+                                href='#'>&advanced.link;</a>
 
                             <a id='adv_global_audience_link_basic'
                                 class='hide_me classic_link adv_adv_link'
-                                href='javascript:void(0);' onclick='
-                                unHideMe($("adv_global_audience_basic"));
-                                hideMe($("adv_global_audience"));
-                                unHideMe($("adv_global_audience_link_adv"));
-                                hideMe(this);'>&advanced.basic.link;</a>
+                                href='#'>&advanced.basic.link;</a>
                         </td>
                         <td align='left' class="hide_me">
                             <select multiple='multiple' size='3'
@@ -186,15 +165,6 @@
                             <span>&advanced.filter.pubyear;</span>
                         </td>
                         <td align='left'>
-                            <!-- XXX TODO the following select used to have this
-                                onchange handler:
-                                if($("adv_global_pub_date_type").selectedIndex == 3)
-                                    unHideMe($("adv_global_pub_date_2_span"));
-                                else
-                                    hideMe($("adv_global_pub_date_2_span"));
-
-                                So do we need equiv functionality or no?
-                                -->
                             <select id='adv_global_pub_date_type'>
                                     <option value='equals' selected='selected'>
                                         &advanced.filter.pubyear.equals;
@@ -343,11 +313,8 @@
             </tr>
             <tr name='crow' class='hide_me'>
                 <td colspan='4' align='center'>
-                <a href='javascript:void(0);' class='classic_link'
-                    onclick='
-                        var div = $("adv_marc_search_sidebar");
-                        if( div.getElementsByTagName("table").length > 1 )
-                            div.removeChild(this.parentNode.parentNode.parentNode.parentNode);'>&common.close;</a>
+                    <a href='javascript:void(0);'
+                        class='classic_link'>&common.close;</a>
                 </td>
             </tr>
         </tbody>

@@ -11,10 +11,8 @@
 	<input type="text" id="forget_pw_user" /><br /><br />
 	Email Address on account<br />
 	<input type="text" id="forget_pw_email" /><br />
-    <a href="javascript:;"
-        onclick="iForgotMyPassword($('forget_pw_user').value,$('forget_pw_email').value);">Submit</a> &nbsp;
-    <a href="javascript:;"
-        onclick="unHideMe($('login_box'));hideMe($('forget_pw'));">Cancel</a>
+    <a href="#">Submit</a> &nbsp;
+    <a href="#">Cancel</a>
 </div>
 <table id='change_pw_table' class='data_grid hide_me' style='margin-left: 20px;' width='95%'>
 	<thead>
@@ -62,7 +60,7 @@
 
 <div id="login_box">
     <div style="height:20px;"></div>
-    <form id='login_form' method='POST' action='javascript:loginDance();'>
+    <form id='login_form' method='POST' action='#'>
         <table cellpadding="0" cellspacing="0" border="0">
             <tr>
                 <td valign="top" width="676" class="login_boxes left_brain">
@@ -115,11 +113,11 @@
                                         for="remember_me">Remember Me?</label>
                                 </div>
                                 <div style="padding-top:14px;">
-                                    <a href="javascript:;" id="login_button"><img
+                                    <a href="#" id="login_button"><img
                                         alt="Log in" src="/opac/skin/kcls/graphics/login-btn2.png" /></a>
                                     <input class="hide_me"
                                         id="login_form_submit" type="submit" />
-                                    <a href="javascript:;" onclick="hideMe($('login_box'));unHideMe($('forget_pw'));"
+                                    <a href="#"
                                         style="position:relative;top:-13px;left:2px;font-size:10px;">Forgot your PIN?</a>
                                 </div>
 	                        </td>

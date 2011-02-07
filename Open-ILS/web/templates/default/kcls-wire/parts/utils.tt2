@@ -1,15 +1,5 @@
         <div class="big-block">
-            <div id="user-ql">
-                <script type="text/javascript">
-/* if(grabUser()) {
-    var str = '<div style="float:right;width:214px;">';
-    str += '<div style="position:absolute;"><div style="position:relative;top:-81px;">\n';
-    str += '<div id="quick-links">\n';
-    str += '</div></div></div></div>';
-    document.write(str);
-}*/
-                </script>
-            </div>
+            <div id="user-ql"></div>
             <div class="float-right">
                 <div class="pos-rel">
                     <img

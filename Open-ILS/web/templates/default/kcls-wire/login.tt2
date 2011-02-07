@@ -1,9 +1,6 @@
 [%  WRAPPER "default/kcls-wire/parts/base.tt2";
     INCLUDE "default/kcls-wire/parts/topnav.tt2";
     ctx.page_title = "Account Login" %]
-[% BLOCK html_head -%]
-<script type="text/javascript" src="/opac/skin/kcls/js/contentslider.js"></script>
-[%- END %]
     <div id="search-wrapper">
         [% INCLUDE "default/kcls-wire/parts/utils.tt2" %]
         [% INCLUDE "default/kcls-wire/parts/searchbar.tt2" %]

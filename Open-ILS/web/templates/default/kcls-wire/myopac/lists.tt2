@@ -13,8 +13,7 @@
         <tr>
             <td>
                 Share this list?
-                <a href="javascript:;"
-                    onclick="alert($('bb_publish_text').innerHTML);"><img
+                <a href="#"><img
                     alt="Sharing Help"
                     src="/opac/skin/kcls/graphics/question-mark.png" /></a>
             </td>
@@ -29,38 +28,33 @@
             </td>
         </tr>
     </table>
-    <a href="javascript:;"
-        onclick="if(addMyList()) {hideMe($('mylist_div'));unHideMe($('myopac_bookbag_div'));}"><img
+    <a href="#"><img
         alt="Submit" src="/opac/skin/kcls/graphics/btnSubmit.png" /></a>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="javascript:;"
-        onclick="hideMe($('mylist_div'));unHideMe($('myopac_bookbag_div'));"><img
+    <a href="#"><img
         alt="Cancel" src="/opac/skin/kcls/graphics/btnCancel.png" /></a>
 </div>
 <div id='myopac_bookbag_div' style="padding:5px;">
     <div class="header_middle">
         <span id="acct_holds_header" style="float:left;">My Lists</span>
         <span style="float:right;">
-            <a class="hide_me" href="javascript:;">Export List</a>
+            <a class="hide_me" href="#">Export List</a>
         </span>
     </div>
     <div style="float:right;width:85px;">
         <div style="position:absolute">
             <div style="position:relative;top:13px;">
-                <a href="javascript:;"
-                    style="position:relative;top:-3px;left:-5px;"
-                    onclick="alert('To take action on individual items, select item, choose action and Save.');"><img
+                <a href="#"
+                    style="position:relative;top:-3px;left:-5px;"><img
                     alt="Saving Help"
                     src="/opac/skin/kcls/graphics/question-mark.png" /></a>
-                <a id='acct_lists_save' href="javascript:;"
-                    onclick="listSaveAction()"><img alt="Save"
+                <a id='acct_lists_save' href="#"><img alt="Save"
                     src="/opac/skin/kcls/graphics/save-btn.png" /></a>
             </div>
         </div>
     </div>
     <div class="clear-both pad-top-ten">
-        <a href="javascript:;"
-            onclick="hideMe($('myopac_bookbag_div'));unHideMe($('mylist_div'));">+ Add new list</a>
+        <a href="#">+ Add new list</a>
     </div>
     <div id="temp_wrapper">
         <div id='acct_list_template2' class="hide_me">
@@ -71,8 +65,7 @@
                             Temporary List
                         </td>
                         <td>
-                            <a href="javascript:;"
-                                onclick="alert('Items you selected from the search results screen.')"><img
+                            <a href="#"><img
                                 alt="Anonymous List Help"
                                 src="/opac/skin/kcls/graphics/question-mark.png" /></a>
                         </td>
@@ -85,8 +78,7 @@
             <table id="acct_list_header_anon" cellpadding='0' cellspacing='0' border='0'>
                 <tr>
                     <td width="1%" style="padding-left:10px;">
-                        <input type="checkbox" id="check_all_list_anon"
-                            onclick="checkAll(this.parentNode.parentNode.parentNode.parentNode.parentNode, this, 'list_action_chbx');" />
+                        <input type="checkbox" id="check_all_list_anon" />
                     </td>
                     <td width="98%" style="padding-left:5px;">Title</td>
                     <td width="1%">
@@ -117,10 +109,10 @@
                             title="You are sharing this list"/></a>
                     </div>
                     <div style="float:left;padding:5px 0px 0px 10px;">
-                        <a href="javascript:;" name="share_list_link">Share</a>
+                        <a href="#" name="share_list_link">Share</a>
                     </div>
                     <div style="float:left;padding:5px 0px 0px 10px;">
-                        <a href="javascript:;" name="remove_list">Remove</a>
+                        <a href="#" name="remove_list">Remove</a>
                     </div>
                     <div class="clear-both pad-bottom-five"></div>
                 </div>
@@ -128,8 +120,7 @@
                     border='0'>
                     <tr>
                         <td width="1%" style="padding-left:10px;">
-                            <input type="checkbox" id="check_all_list"
-                            onclick="checkAll(this.parentNode.parentNode.parentNode.parentNode.parentNode, this, 'list_action_chbx');" />
+                            <input type="checkbox" id="check_all_list" />
                         </td>
                         <td width="98%" style="padding-left:5px;">Title</td>
                         <td width="1%">
@@ -168,7 +159,7 @@
         <tbody id='myopac_bookbag_tbody'>
             <tr id='myopac_bookbag_tr'>
                 <td>
-                    <a href='javascript:void(0);' class='classic_link'
+                    <a href='#' class='classic_link'
                         name='myopac_expand_bookbag'> </a>
                 </td>
                 <td>
@@ -198,7 +189,7 @@
                         class='classic_link hide_me'>&myopac.bookbag.share;</a>
                 </td>
                 <td>
-                    <a class='classic_link' href='javascript:void(0);'
+                    <a class='classic_link' href='#'
                         name='myopac_container_delete'>&myopac.delete;</a>
                 </td>
             </tr>
@@ -221,14 +212,13 @@
                 <td>
                     <span style='padding: 5px;'>&myopac.bookbag.share;</span>
                     <a class='classic_link'
-                        href='javascript:alert($("bb_publish_text").innerHTML);'><b>&common.help;</b></a>
+                        href='#'><b>&common.help;</b></a>
                     <span>&common.yes;</span>
                     <input type='radio' name='bb_public' id='bb_public_yes'/>
                     <span>&common.no;</span>
                     <input type='radio' name='bb_public' id='bb_public_no' checked='checked'/>
-                    <input style='padding-left: 10px;'
-                        onclick='myOPACCreateBookbag();' 
-                        type='submit' value='&common.submit;' />
+                    <input style='padding-left: 10px;' type='submit'
+                        value='&common.submit;' />
                 </td>
             </tr>
         </tbody>

@@ -5,14 +5,11 @@
         [% INCLUDE "default/kcls-wire/parts/utils.tt2" %]
         <div id="adv_search_parent">
             <div id="adv_search_tabs">
-                <a href="javascript:;" alt="Advanced Search" id="adv_search"
-                    onclick="swapTabs(this);"
+                <a href="#" alt="Advanced Search" id="adv_search"
                     rel="adv_global_search"></a>
-                <a href="javascript:;" alt="Numeric Search" id="num_search"
-                    onclick="swapTabs(this);"
+                <a href="#" alt="Numeric Search" id="num_search"
                     rel="adv_quick_search_sidebar"></a>
-                <a href="javascript:;" alt="Expert Search" id="expert_search"
-                    onclick="swapTabs(this);"
+                <a href="#" alt="Expert Search" id="expert_search"
                     rel="adv_marc_search_sidebar"></a>
             </div>
         </div>

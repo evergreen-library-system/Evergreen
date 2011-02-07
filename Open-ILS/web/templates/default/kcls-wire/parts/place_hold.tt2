@@ -12,7 +12,7 @@
                             <input type='submit' value='&common.submit;' id='xul_recipient_barcode_submit' />
                         </td>
                         <td>
-                            <input type='submit' value='&common.cancel;' onclick='showCanvas();' />
+                            <input type='submit' value='&common.cancel;' />
                         </td>
                         <td>
                             <input type='submit' value='&common.hold.place;' id='xul_recipient_me' />
@@ -45,16 +45,16 @@
         <p>If you use the Traveling Library Center (TLC) and ABC Express
             services, please select "Outreach" to have the item delivered
             during your scheduled visit.</p>
-        <a href="javascript:;" id="holds_submit"><img
+        <a href="#" id="holds_submit"><img
             alt="Submit" src="/opac/skin/kcls/graphics/btnSubmit.png" /></a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="javascript:;" id="holds_cancel"><img
+        <a href="#" id="holds_cancel"><img
             alt="Cancel" src="/opac/skin/kcls/graphics/btnCancel.png" /></a>
         <br /><br />
         <p>* If you need your item today, and it is checked in at your
             library, please place your hold and then call your library to set it
             aside. Placing a hold without calling the library will increase your
-            wait time.<br /><a href="javascript:;">Library phone numbers.</a>
+            wait time.<br /><a href="#">Library phone numbers.</a>
         </p>
         <p>* For best possible service, we recommend keeping a printed copy of
         your most recent holds list.</p>
@@ -117,8 +117,7 @@
                     <td class='holds_cell'>&common.phone.enable;</td>
                     <td class='holds_cell'>
                         <input type='checkbox' id='holds_enable_phone'
-                            checked='checked'
-                            onchange='if(this.checked)$("holds_phone").disabled=false; else $("holds_phone").disabled=true;'/>
+                            checked='checked' />
                     </td>
                 </tr>
                 <tr>
@@ -167,11 +166,10 @@
                     <td class='holds_cell'>
                         &opac.holds.freeze;
                         <a class='classic_link'
-                            href='javascript:alert("&opac.holds.freeze.help;");'>&common.help;</a>
+                            href='#'>&common.help;</a>
                         </td>
                     <td class='holds_cell'>
-                        <input type='checkbox' id='holds_frozen_chkbox'
-                            onchange='if($("holds_frozen_chkbox").checked) unHideMe($("hold_frozen_thaw_row")); else hideMe($("hold_frozen_thaw_row"));' /> 
+                        <input type='checkbox' id='holds_frozen_chkbox' /> 
                     </td>
                 </tr>
                 <tr id='hold_frozen_thaw_row' class='hide_me'>
@@ -189,8 +187,8 @@
                 <tr id='holds_alt_formats_row_extras' class='hide_me'>
                     <td colspan='2' align='center'>
                         <div style='padding: 8px;'>
-                            <a class='classic_link' href='javascript:void(0);' style='padding: 5px;'
-                                onclick='unHideMe($("holds_alt_formats_row"));'>&common.hold.advanced;</a>
+                            <a class='classic_link' href='#'
+                                style='padding: 5px;'>&common.hold.advanced;</a>
                         </div>
                     </td>
                 </tr>
@@ -200,8 +198,8 @@
                     <td class='holds_cell'>
                         <div style='margin-bottom: 5px;'>
                             <span>&common.format.alternatives; </span>
-                            <span> <a class='classic_link' style='color:red;' href='javascript:void(0);' 
-                                onclick='alert($("holds_explain_adv").innerHTML)'>&common.help;</a></span>
+                            <span><a class='classic_link' style='color:red;'
+                                    href='#'>&common.help;</a></span>
                         </div>
                         <div>&common.control.click;</div>
                     </td>
@@ -237,16 +235,15 @@
     </div>
     <div id="anonListTable" class="hide_me" style="margin-top: 6px;">
     <select id="holdsCacheSel" class="hide_me"></select><br />
-    <a href="javascript:;" onclick="placeHoldOnCache();">Place hold on selected</a><br />
-    <a href="javascript:;" onclick="delSelCache();">Remove selected</a>
+    <a href="#">Place hold on selected</a><br />
+    <a href="#">Remove selected</a>
     
     <table id="temp_list_holds" cellpadding='0' cellspacing='0' border='0'
         style="margin-top:10px;">
         <tr>
             <td width="1%" style="padding-left:10px;">
                 <input type='checkbox' title='Select All'
-                    id='anon_selector'
-                    onclick="checkAll($('anonListParent'),this.id)" />
+                    id='anon_selector' />
             </td>
             <td width="1%">
             </td>
@@ -267,7 +264,7 @@
             </tr>
         </tbody>
     </table>
-    <a href="javascript:;" onclick="try { hideResultsPage(); } catch(e) {} hideMe($('anonListTable'));">Back to search results</a>
+    <a href="#">Back to search results</a>
     </div>
 
     <span class='hide_me' id='format_words'>

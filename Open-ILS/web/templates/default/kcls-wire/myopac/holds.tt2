@@ -7,13 +7,11 @@
             <img src="/opac/skin/kcls/graphics/sub_holds_on.jpg" />
         </div>
         <div class="align hide_me" id="holds_hist_link">
-            <a href="javascript:;"
-                onclick="switchSubPage('holds','hist');"><img
+            <a href="#"><img
                 src="/opac/skin/kcls/graphics/sub_holds_hist_off.jpg" /></a>
         </div>
         <div class="align hide_me" id="holds_link">
-            <a href="javascript:;"
-                onclick="switchSubPage('holds','main');"><img
+            <a href="#"><img
                 src="/opac/skin/kcls/graphics/sub_holds_off.jpg" /></a>
         </div>
         <div class="align selected hide_me" id="holds_hist_label">
@@ -26,7 +24,7 @@
             Current Items on Hold
         </span>
         <span style="float:right;">
-            <a class="hide_me" href="javascript:;">Export List</a>
+            <a class="hide_me" href="#">Export List</a>
         </span>
     </div>
     <div class="clear-both"></div>
@@ -54,19 +52,17 @@
                     </select>
                 </td>
                 <td width="1" style="padding-left:9px;">
-                    <a href="javascript:;" onclick="myopacDoHoldAction();"><img
+                    <a href="#"><img
                         alt="Save"
                         src="/opac/skin/kcls/graphics/save-btn.png" /></a>
                 </td>
                 <td width="1" style="padding-left:5px;">
-                    <a href="javascript:;"
-                        onclick="alert('Suspend your hold for pick up at a later date. Edit individual items with the Edit link or check the Title box to select all, select action and Save.');"><img
+                    <a href="#"><img
                         alt="Holds Help"
                         src="/opac/skin/kcls/graphics/question-mark.png" /></a>
                 </td>
                 <td align="right">
-                    <select class="hide_me" id="holds_sort"
-                        onchange="sortHolds(this.options[this.selectedIndex].value);">
+                    <select class="hide_me" id="holds_sort">
                         <option value="">-- Sort By --</option>
                         <option value="title">Title</option>
                         <option value="pickup">PickUp Location</option>
@@ -79,28 +75,23 @@
             border='0' width="100%">
             <tr>
                 <td width="36" align="center">
-                    <input type="checkbox" id="check_all_holds"
-                        onclick="checkAll($('holds_temp_parent'), this.id);" />
+                    <input type="checkbox" id="check_all_holds" />
                 </td>
                 <td width="138">
                     <span title="Click to sort"
-                        onclick="sortHolds('title');" style="cursor:pointer;">
+                        style="cursor:pointer;">
                         Title
                     </span>
                 </td>
                 <td width="123">
-                    <span title="Click to sort"
-                        onclick="sortHolds('author');"
-                        style="cursor:pointer;">Author</span>
+                    <span title="Click to sort" style="cursor:pointer;">Author</span>
                 </td>
                 <td width="64">
                     <span title="Click to sort"
-                        onclick="sortHolds('format');"
                         style="cursor:pointer;">Format</span>
                 </td>
                 <td width="136">
                     <span title="Click to sort"
-                        onclick="sortHolds('pickup');"
                         style="cursor:pointer;">Pickup Location</span>
                 </td>
                 <td width="104">Activate</td>
@@ -108,7 +99,6 @@
                 <td width="95">Active</td>
                 <td width="172">
                     <span title="Click to sort"
-                        onclick="sortHolds('status');"
                         style="cursor:pointer;">Status</span>
                 </td>
             </tr>
@@ -127,7 +117,7 @@
                     </td>
                     <td width="138">
                         <div style="margin-top:10px;margin-bottom:10px;">
-                            <a href="javascript:;" name="myopac_holds_title_link"></a>
+                            <a href="#" name="myopac_holds_title_link"></a>
                         </div>
                     </td>
                     <td width="123">
@@ -173,10 +163,10 @@
                     </td>
                     <td width="62" align="right"
                         style="text-align:right;padding-right:7px;">
-                        <a name="hold_edit_link" href="javascript:;">Edit</a>
-                        <a href="javascript:;" name="hold_save_link"
+                        <a name="hold_edit_link" href="#">Edit</a>
+                        <a href="#" name="hold_save_link"
                             class="hide_me">Save</a>
-                        <a href="javascript:;" name="hold_cancel_link"
+                        <a href="#" name="hold_cancel_link"
                             class="hide_me">Back</a>
                     </td>
                 </tr>
@@ -208,7 +198,7 @@
             type='text' id='myopac_holds_thaw_date_input' />
     </p>
     <p>
-        <button onclick='myopacApplyThawDate();'>&common.submit;</button>
+        <button>&common.submit;</button>
     </p>
 </div>
 [% END %]

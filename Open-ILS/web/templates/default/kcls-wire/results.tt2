@@ -21,8 +21,7 @@
                         onmouseout="this.src='/opac/skin/kcls/graphics/adv_search.png';" /></a>
                 </div>
                 <div class="results_header_btns cached_list_div">
-                    <a href="javascript:;" class="hide_me" id="cacheListLink"
-                        onclick="showCachedList();"><img
+                    <a href="#" class="hide_me" id="cacheListLink"><img
                         alt="View My List"
                         src="/opac/skin/kcls/graphics/view_my_list.png"
                         onmouseover="this.src='/opac/skin/kcls/graphics/view_my_list_hover.png';"
@@ -35,14 +34,12 @@
         <!--#endif -->
                 <div class="results_header_div"></div>
                 <div class="results_header_lbl">View</div>
-                <select class="results_header_sel"
-                    onchange="showDetailedResults(Boolean(this.selectedIndex));">
+                <select class="results_header_sel">
                     <option>Simple</option>
                     <option>Detailed</option>
                 </select>
                 <div class="results_header_div"></div>
-                <input type="checkbox" id="limit_to_available"
-                    onclick='searchBarSubmit(true, this);' />
+                <input type="checkbox" id="limit_to_available" />
                 <label for="limit_to_available" class="results_header_lbl">
                     Limit to available items
                 </label>

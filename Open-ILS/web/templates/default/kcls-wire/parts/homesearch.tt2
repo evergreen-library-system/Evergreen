@@ -58,20 +58,6 @@
     </div>
 <!-- ************************************* home page banner end *********************************************** -->
   </div>
-<script type="text/javascript">
-featuredcontentslider.init({
-id: "homebanner",
-contentsource: ["inline", ""],
-toc: "markup",
-nextprev: ["", ""],
-enablefade: [true, 0.04],
-onChange: function(previndex, curindex){},
-
-
-autorotate: [true, 3000] //pause time (in milliseconds)
-})
-</script>
-
         <div id="new_cat_link_holder">
             <div class="pos-rel">
                 <a href="http://www.kcls.org/newcatalog"></a>

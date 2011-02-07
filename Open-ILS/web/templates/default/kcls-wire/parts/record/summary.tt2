@@ -40,10 +40,10 @@
                                         <div style="position:absolute;">
                                             <div style="position:relative;top:5px; left: 25px;">
                                                 <a title="Add to my list" id="add_mylist"
-                                                    href="javascript:addMyList();">Add to my list</a>
+                                                    href="#">Add to my list</a>
                                             </div>
                                         </div>
-                                        <a href="javascript:addMyList();"><img
+                                        <a href="#"><img
                                             alt="add to my list"
                                             src="/opac/skin/kcls/graphics/clipboard.png" /></a>
                                     </div>
@@ -130,31 +130,26 @@
 </table>
 
 <div id="rdetail_locs_expand">
-    <a href="javascript:;" onclick="expandBoxes('locs',true);"><img
+    <a href="#"><img
         src="/opac/skin/kcls/graphics/plus_sign.png" /></a>
-    <a style="position:relative;top:-3px;" href="javascript:;"
-        onclick="expandBoxes('locs',true);">Show more locations</a>
+    <a style="position:relative;top:-3px;" href="#">Show more locations</a>
 </div>
 
 <div id="rdetail_locs_collapse" class="hide_me">
-    <a href="javascript:;" onclick="expandBoxes('locs',false);"><img
+    <a href="#"><img
         src="/opac/skin/kcls/graphics/plus_sign.png" /></a>
-    <a style="position:relative;top:-3px;" href="javascript:;"
-        onclick="expandBoxes('locs',false);">Collapse locations</a>
+    <a style="position:relative;top:-3px;" href="#">Collapse locations</a>
 </div>
 
 <div id="rdetail_extras_expand">
-    <a href="javascript:;" onclick="expandBoxes('tabs',true);"><img
+    <a href="#"><img
         src="/opac/skin/kcls/graphics/plus_sign.png" /></a>
-    <a style="position:relative;top:-3px;" href="javascript:;"
-        onclick="expandBoxes('tabs',true);">Expand all tabs</a>
+    <a style="position:relative;top:-3px;" href="#">Expand all tabs</a>
 </div>
 
 <div id="rdetail_extras_collapse" class="hide_me">
-    <a href="javascript:;" onclick="expandBoxes('tabs',false);"><img
-        src="/opac/skin/kcls/graphics/plus_sign.png" /></a>
-    <a style="position:relative;top:-3px;" href="javascript:;"
-        onclick="expandBoxes('tabs',false);">Collapse all tabs</a>
+    <a href="#"><img src="/opac/skin/kcls/graphics/plus_sign.png" /></a>
+    <a style="position:relative;top:-3px;" href="#">Collapse all tabs</a>
 </div>
 
 <div class="hide_me">
@@ -174,9 +169,9 @@
                             <td width="1" valign="top" align="right" style="white-space:nowrap;">
                                 <a href="place_hold" id=''><img alt="Place Hold"
                                     src="/opac/skin/kcls/graphics/place_hold.gif" /></a>
-                                <a href="javascript:;" id="rd_reviews_and_more" target="_blank"><img
+                                <a href="#" id="rd_reviews_and_more" target="_blank"><img
                                     alt="Reviews and More" src="/opac/skin/kcls/graphics/reviews.gif" /></a>
-                                <a href="javascript:addMyList();" id=""><img alt="Add to My List"
+                                <a href="#" id=""><img alt="Add to My List"
                                     src="/opac/skin/kcls/graphics/add_mylist.gif" /></a>
                             </td>
                         </tr>
@@ -196,21 +191,4 @@
     <abbr name="unapi" class="unapi-id"> <!-- unAPI URI goes here --> </abbr>
 </div> <!-- details_body -->
 
-<!-- XXX begin ChiliFresh: need to make this block conditional -->
-<script type="text/javascript">
-    var chilifresh = ''; /* account */
-    if (chilifresh == '(none)') { chilifresh = false; }
-</script>
-<input type="hidden" id="chilifresh_account" name="chilifresh_account"
-    value="" />
-<input type="hidden" id="chilifresh_profile" name="chilifresh_profile"
-    value="" />
-<input type="hidden" id="chilifresh_version" name="chilifresh_version" value="onsite_v1" />
-<input type="hidden" id="chilifresh_type" name="chilifresh_type" value="search" />
-
-<script type="text/javascript">
-//var sslSwitch = (("https:" == document.location.protocol) ? "https://secure." : "http://");
-//document.write(unescape("%3Cscript src='" + sslSwitch + "chilifresh.com/on-site/js/evergreen.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<!-- XXX end ChiliFresh -->
 <!-- ****************** end: rdetail_summary.xml ***************************** -->

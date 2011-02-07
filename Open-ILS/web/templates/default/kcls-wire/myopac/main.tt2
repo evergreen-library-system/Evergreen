@@ -28,8 +28,8 @@
                 </div>
             </div>
             Fines: <span id="myopac_sum_fines_bal">$0.00</span><br />
-            <a class="hide_me" href="javascript:;" id="pay_fines_btn1"
-                onclick="showPaymentForm();"><img alt="Pay Fines"
+            <a class="hide_me" href="#" id="pay_fines_btn1"><img
+                alt="Pay Fines"
                 onmouseover="this.src='/opac/skin/kcls/graphics/pay-fines-btn-hover.png';"
                 onmouseout="this.src='/opac/skin/kcls/graphics/pay-fines-btn.png';"
                 src="/opac/skin/kcls/graphics/pay-fines-btn.png"
@@ -78,7 +78,7 @@
                                 </span>
                             </td>
                             <td align="right" class="view_link">
-                                <a href="javascript:alert('XXX TODO');">View All</a>
+                                <a href="#">View All</a>
                             </td>
                         </tr>
                     </table>
@@ -90,8 +90,7 @@
                             <td align="right" class="view_link">
                                 <a class="hide_me"
                                     id="show_fines_link"
-                                    href="javascript:;"
-                                    onclick="showFinesDiv(this);">Show Overdue Materials</a>
+                                    href="#">Show Overdue Materials</a>
                             </td>
                         </tr>
                     </table>
@@ -156,7 +155,6 @@
                                 <br />
                                 <input id="pay_fines_box1" checked="checked"
                                     type="checkbox"
-                                    onclick="checkAll($('myopac_circ_trans_tbody'), this, 'selector');"
                                     title="Click to (un)select all fines" />
                             </td>
                         </tr>
@@ -211,7 +209,6 @@
                                 <br />
                                 <input id="pay_fines_box2" checked="checked"
                                     type="checkbox"
-                                    onclick="checkAll($('myopac_trans_tbody'), this, 'selector');"
                                     title="Click to (un)select all fines" />
                             </td>
                         </tr>
@@ -242,8 +239,7 @@
                     </tbody>
                 </table>
             </div>
-            <a href="javascript:;"
-                onclick="showPaymentForm();"><img alt="Pay Fines"
+            <a href="#"><img alt="Pay Fines"
                 onmouseover="this.src='/opac/skin/kcls/graphics/pay-fines-btn-hover.png';"
                 src="/opac/skin/kcls/graphics/pay-fines-btn.png"
                 style="position:relative;top:5px;" /></a>
@@ -333,8 +329,7 @@
                     <td>
                         <div style="position:absolute;">
                             <div style="position:relative;left:80px;">
-                                <a href="javascript:;"
-                                    onclick="alert('Also known as a CVV2 code, it is the 3-digit number on the back of the card next to your signature.\nKCLS only accpets VISA and MasterCard.');"><img
+                                <a href="#"><img
                                     src="/opac/skin/kcls/graphics/question-mark.png" /></a>
                             </div>
                         </div>
@@ -390,7 +385,7 @@
                         <button jsId='oilsSelfckCCSubmit'>
                             Submit Payment
                         </button>
-                        <button onclick="hideMe($('pay_fines_now'));unHideMe($('acct_sum'));">
+                        <button>
                             Cancel
                         </button>
                     </td>

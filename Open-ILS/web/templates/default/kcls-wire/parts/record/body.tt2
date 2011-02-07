@@ -11,20 +11,20 @@
         <div id="rdetail_result_nav">
             <span class="hide_me">
                 <a class='np_nav_link classic_link' id='np_start'
-                    href='javascript:rdetailStart();'
+                    href='#'
                     title="&rdetail.page.results;">&rdetail.start;</a>
                 </span>
                 <a class='np_nav_link classic_link hide_me' id='np_prev'
-                    href='javascript:rdetailPrev();'
+                    href='#'
                     title='&rdetail.page.previous;'><span
                         class="nav_arrow_fix">&#9668;</span> Previous</a>
                 <span style="padding:0px 10px;"> </span>
                 <a class='np_nav_link classic_link hide_me' id='np_next'
-                    href='javascript:rdetailNext();'
+                    href='#'
                     title='&rdetail.page.next;'>Next <span
                         class="nav_arrow_fix">&#9658;</span></a>
                 <span class="hide_me"><a class='np_nav_link classic_link'
-                    id='np_end' href='javascript:rdetailEnd();'
+                    id='np_end' href='#'
                     title="&rdetail.page.last;">&rdetail.end;</a></span>
         </div>
         <div class="clear-both"></div>
@@ -70,8 +70,7 @@
                             <option disabled='disabled'>
                                 --------------
                             </option>
-                            <option value='new_bookbag'
-                                onclick='rdetailNewBookbag();'>
+                            <option value='new_bookbag'>
                                 &rdetail.bookbag.create;
                             </option>
                         </select>
@@ -90,10 +89,10 @@
     <br />
     <div style="width:100%;" class="hide_me">
         <div style="float:right;" class="hide_me" id="lib_info_more">
-            <button onclick="unHideMe($('lib_info_less'));unHideMe($('rdetails_status2'));hideMe($('lib_info_more'));">More...</button>
+            <button>More...</button>
         </div>
         <div style="float:right;" class="hide_me" id="lib_info_less">
-            <button onclick="hideMe($('lib_info_less'));hideMe($('rdetails_status2'));unHideMe($('lib_info_more'));">...Less</button>
+            <button>...Less</button>
         </div>
     </div>
     [% INCLUDE "default/kcls-wire/parts/record/extras.tt2" %]

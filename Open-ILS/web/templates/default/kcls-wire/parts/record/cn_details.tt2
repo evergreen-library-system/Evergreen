@@ -4,7 +4,7 @@
         <tr style='border: 3px solid #E0E0E0;' id='rdetail_volume_details_row' templateRow='1'>
             <td colspan='10'>
                 <div style='text-align: center; margin-top: 6px; margin-bottom: 6px'>
-                    <a name='print' href='javascript:void(0);' class='classic_link'>&rdetail.print;</a>
+                    <a name='print' href='#' class='classic_link'>&rdetail.print;</a>
                     <table class='data_grid data_grid_center' style='width: 100%'>
                         <thead>
                             <tr>
@@ -26,7 +26,7 @@
                                     <a class='hide_me classic_link copy_more_info'
                                         name='less_details_link'>&rdetail.cn.less;</a>
                                     <a class='hide_me classic_link copy_more_info'
-                                        name='copy_hold_link' href='javascript:void(0);'>&rdetail.cn.hold;</a>
+                                        name='copy_hold_link' href='#'>&rdetail.cn.hold;</a>
                                 </td>
                                 <td name='status'> </td>
                                 <td name='location'> </td>
