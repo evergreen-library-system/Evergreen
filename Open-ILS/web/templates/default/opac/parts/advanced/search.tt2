@@ -8,7 +8,7 @@
                     <tr>
                         <td>
                             <div style="width:100%;" class="header_middle">
-                                &advanced.search.title;
+                                [% l("Search Input") %]
                             </div>
                         </td>
                     </tr>
@@ -18,7 +18,7 @@
                     <!-- add a new row -->
                     <tr id='adv_global_addrow'>
                         <td align='left' style="padding-top:7px;">
-                            <button>&advanced.search.submit;</button><!-- XXX TODO make a real form -->
+                            <button>[% l("Submit Search") %]</button><!-- XXX TODO make a real form -->
                         </td>
                     </tr>
                 </tbody>
@@ -27,10 +27,10 @@
     </tr>
     <tr>
         <td align='center'>
-            &advanced.search.library;<br /><br />
+            [% l("Search Library") %]<br /><br />
             [% INCLUDE "default/opac/parts/libselect.tt2" %]
             <br /><br />
-            <span>&result.limit2avail;</span>
+            <span>[% l("Limit to Available") %]</span>
             <input type='checkbox' id='opac.result.limit2avail'/>
         </td>
     </tr>
@@ -40,14 +40,14 @@
                 <thead>
                     <tr>
                         <td colspan='2' align='center'>
-                            &advanced.search.filters;
+                            [% l("Search Filters") %]
                         </td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td align='right' class="hide_me">
-                            <span>&advanced.item.form;</span>
+                            <span>[% l("Item Form") %]</span>
                         </td>
                         <td align='left' class="hide_me">
                             <select multiple='multiple' size='3'
@@ -55,7 +55,7 @@
                             </select>    
                         </td>
                         <td align='right'>
-                            <span>&advanced.item.type;</span><br />
+                            <span>[% l("Item Type") %]</span><br />
                         </td>
                         <td align='left'>
                             <select multiple='multiple' size='3'
@@ -63,7 +63,7 @@
                             </select>    
                             <select multiple='multiple' size='3'
                                 id='adv_global_item_type_basic'>
-                                <option value=''>&opac.search.allFormats;</option>
+                                <option value=''>[% l("All Formats") %]</option>
                                 <option value='a'>Book</option>
                                 <option value='i'>Book on cassette</option>
                                 <option value='n'>Book on CD</option>
@@ -97,14 +97,14 @@
                             </select>    
                         </td>
                         <td align='right' class="hide_me">
-                            <span>&advanced.literary.form;</span>
+                            <span>[% l("Literary Form") %]</span>
                             <a id='adv_global_lit_form_link_adv'
                                 class='classic_link adv_adv_link'
-                                href='#'>&advanced.link;</a>
+                                href='#'>[% l("Advanced") %]</a>
 
                             <a id='adv_global_lit_form_link_basic'
                                 class='hide_me classic_link adv_adv_link'
-                                href='#'>&advanced.basic.link;</a>
+                                href='#'>[% l("Basic") %]</a>
                         </td>
                         <td align='left' class="hide_me">
                             <select multiple='multiple' size='3'
@@ -113,15 +113,15 @@
                             <select multiple='multiple' size='3'
                                 id='adv_global_lit_form_basic'>
                                 <option value='0 '>
-                                    &advanced.non.fiction;
+                                    [% l("Non Fiction") %]
                                 </option>
                                 <option value='1'>
-                                    &advanced.fiction;
+                                    [% l("Fiction") %]
                                 </option>
                             </select>    
                         </td>
                         <td align='right'>
-                            <span>&advanced.language;</span>
+                            <span>[% l("Language") %]</span>
                         </td>
                         <td align='left'>
                             <select multiple='multiple' size='3' id='adv_global_lang'>
@@ -130,14 +130,14 @@
                         </td>
 
                         <td align='right' class="hide_me">
-                            <span>&advanced.audience;</span>
+                            <span>[% l("Audience") %]</span>
                             <a id='adv_global_audience_link_adv'
                                 class='classic_link adv_adv_link'
-                                href='#'>&advanced.link;</a>
+                                href='#'>[% l("Advanced") %]</a>
 
                             <a id='adv_global_audience_link_basic'
                                 class='hide_me classic_link adv_adv_link'
-                                href='#'>&advanced.basic.link;</a>
+                                href='#'>[% l("Basic") %]</a>
                         </td>
                         <td align='left' class="hide_me">
                             <select multiple='multiple' size='3'
@@ -145,14 +145,14 @@
                             </select>
                             <select multiple='multiple' size='3'
                                 id='adv_global_audience_basic'>
-                                <option value='e '>&advanced.adult;</option>
-                                <option value='abcdj'>&advanced.juvenile;</option>
-                                <option value='fg '>&advanced.general;</option>
+                                <option value='e '>[% l("Adult") %]</option>
+                                <option value='abcdj'>[% l("Juvenile") %]</option>
+                                <option value='fg '>[% l("General") %]</option>
                             </select>
                         </td>
 
                         <td align='right' class="hide_me">
-                            <span>&advanced.biblevel;</span>
+                            <span>[% l("Bib Level") %]</span>
                         </td>
                         <td align='left' class="hide_me">
                             <select multiple='multiple' size='3'
@@ -162,21 +162,21 @@
                     </tr>
                     <tr>
                         <td align='right'>
-                            <span>&advanced.filter.pubyear;</span>
+                            <span>[% l("Publication Year") %]</span>
                         </td>
                         <td align='left'>
                             <select id='adv_global_pub_date_type'>
                                     <option value='equals' selected='selected'>
-                                        &advanced.filter.pubyear.equals;
+                                        [% l("Is") %]
                                     </option>
                                     <option value='before'>
-                                        &advanced.filter.pubyear.before;
+                                        [% l("Before") %]
                                     </option>
                                     <option value='after'>
-                                        &advanced.filter.pubyear.after;
+                                        [% l("After") %]
                                     </option>
                                     <option value='between'>
-                                        &advanced.filter.pubyear.between;
+                                        [% l("Between") %]
                                     </option>
                             </select>    
                             <div style='margin-top:5px;'>
@@ -184,7 +184,7 @@
                                     size='4' maxlength='4'/>
                                 <span id='adv_global_pub_date_2_span'
                                     class='hide_me'>
-                                    &common.and; <input
+                                    [% l("and") %] <input
                                         id='adv_global_pub_date_2' type='text'
                                         size='4' maxlength='4'/>
                                 </span>
@@ -193,7 +193,7 @@
                     </tr>
                     <!-- copy location selector -->
                     <tr id='adv_copy_location_filter_row' class='hide_me'>
-                        <td align='right'>&opac.advanced.copy_loc_filter;</td>
+                        <td align='right'>[% l("Shelving Location") %]</td>
                         <td align='left' id='adv_copy_location_filter_td'>
                             <select size='3'
                                 id='adv_copy_location_filter_select'
@@ -214,7 +214,7 @@
             
                             <thead>
                                 <tr>
-                                    <td align='center' width='50%'>&advanced.sort.criteria;</td>
+                                    <td align='center' width='50%'>[% l("Sort Criteria") %]</td>
                                     <td align='center'></td>
                                 </tr>
                             </thead>
@@ -223,24 +223,24 @@
                                 <tr>
                                     <td align=''>
                                         <select id='adv_global_sort_by'>
-                                            <option value='rel'>&advanced.relevance;</option>
-                                            <option value='title'>&common.title;</option>
-                                            <option value='author'>&common.author;</option>
-                                            <option value='pubdate'>&advanced.pubdate;</option>
+                                            <option value='rel'>[% l("Relevance") %]</option>
+                                            <option value='title'>[% l("Title") %]</option>
+                                            <option value='author'>[% l("Author") %]</option>
+                                            <option value='pubdate'>[% l("Publication date") %]</option>
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <select id='adv_global_sort_dir' disabled='disabled'>
-                                            <option value='asc'>&advanced.sort.asc;</option>
-                                            <option value='desc'>&advanced.sort.desc;</option>
+                                            <option value='asc'>[% l("Ascending / A to Z") %]</option>
+                                            <option value='desc'>[% l("Descending / Z to A") %]</option>
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align='center' class="hide_me">
-                                        <span>&advanced.frbrize;</span>
+                                        <span>[% l("Group Formats and Editions") %]</span>
                                         <input id='adv_group_titles' type='checkbox' />
                                     </td>
                                     <td align='center'></td>
@@ -267,17 +267,17 @@
 
 <div id='adv_quick_search_sidebar' class='sidebar_chunk hide_me' style='text-align:center; margin-top: 20px; width:400px;'> 
     <div id='adv_quick_search'>
-        <div class='adv_quick_search color_4'><b>&sidebar.quick.search;</b></div>
+        <div class='adv_quick_search color_4'><b>[% l("Quick Search") %]</b></div>
         <div style='margin-top: 8px;'>
             <table><tbody><tr>
                 <td>
                     <select id='adv_quick_type'>
-                        <option value='isbn'>&opac.advanced.quick.isbn;</option>
-                        <option value='issn'>&opac.advanced.quick.issn;</option>
-                        <option value='cn'>&opac.advanced.quick.cn;</option>
-                        <option value='lccn'>&opac.advanced.quick.lccn;</option>
-                        <option value='tcn'>&opac.advanced.quick.tcn;</option>
-                        <option value='barcode'>&opac.advanced.quick.barcode;</option>
+                        <option value='isbn'>[% l("ISBN") %]</option>
+                        <option value='issn'>[% l("ISSN") %]</option>
+                        <option value='cn'>[% l("Call Number") %]</option>
+                        <option value='lccn'>[% l("LCCN") %]</option>
+                        <option value='tcn'>[% l("TCN") %]</option>
+                        <option value='barcode'>[% l("Item Barcode") %]</option>
                     </select>
                 </td><td>
                     <input type='text' id='adv_quick_text' size='16' />
@@ -297,24 +297,24 @@
 
 <div id='adv_marc_search_sidebar' class='sidebar_chunk hide_me'
     style='width:400px; margin-top: 20px;'> 
-    <div class='adv_quick_search color_4'><b>&search.marc;</b></div>
+    <div class='adv_quick_search color_4'><b>[% l("MARC Expert Search") %]</b></div>
     <table style='margin: 3px; width: 100%;' id='adv_sdbar_table'
         class='border_4_3'>
         <tbody>
             <tr>
-                <td align="right">&search.marc.tag;</td>
+                <td align="right">[% l("Tag:") %]</td>
                 <td align="left"><input name='advanced.marc.tag' maxlength='3' size='3' /></td>
-                <td align="right">&search.marc.subfield;</td>
+                <td align="right">[% l("Subfield:") %]</td>
                 <td align="left"><input name='advanced.marc.subfield' maxlength='1' size='1' /></td>
             </tr>
             <tr>
-                <td align="right">&search.marc.value;</td>
+                <td align="right">[% l("Value:") %]</td>
                 <td colspan='3' align="left"><input name='advanced.marc.value' size='18' /></td>
             </tr>
             <tr name='crow' class='hide_me'>
                 <td colspan='4' align='center'>
                     <a href='javascript:void(0);'
-                        class='classic_link'>&common.close;</a>
+                        class='classic_link'>[% l("close") %]</a>
                 </td>
             </tr>
         </tbody>
@@ -322,7 +322,7 @@
     <div id='adv_marc_submit' class='adv_quick_search_submit'>
         <a style='margin-right: 4px; position:relative;top:-10px;'
             class='classic_link'
-            href='javascript:advAddMARC();'>&search.marc.add.row;</a>
+            href='javascript:advAddMARC();'>[% l("Add Row") %]</a>
         <!-- XXX TODO make a real form, and make a real submitter (FKA
         advMARCRun()) -->
         <img alt="Search" src="/images/search_btn.gif"

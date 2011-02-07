@@ -1,10 +1,10 @@
 <!-- ****************** stypes_selector.xml ***************************** -->
 <select id='search_type_selector'>
-	<option value='keyword' selected='selected'>&common.keyword;</option>
-	<option value='title'>&common.title;</option>
-	<option value='author'>&common.author;</option>
-	<option value='subject'>&common.subject;</option>
-	<option value='series'>&common.series;</option>
+	<option value='keyword' selected='selected'>[% l("Keyword") %]</option>
+	<option value='title'>[% l("Title") %]</option>
+	<option value='author'>[% l("Author") %]</option>
+	<option value='subject'>[% l("Subject") %]</option>
+	<option value='series'>[% l("Series") %]</option>
 	<option value='cn'>Call Number</option>
 </select>
 <!-- ****************** end: stypes_selector.xml ***************************** -->

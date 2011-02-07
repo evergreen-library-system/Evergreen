@@ -6,7 +6,7 @@
                 <td id='rdetail_annotation_link' class='hide_me rdetail_extras_td'
                     style='padding-right: 15px; padding-left: 15px;' >
                     <a href='javascript:rdetailShowExtra("annotation");' 
-                        class='classic_link'>&rdetail.extras.annotation;</a>
+                        class='classic_link'>[% l("Annotation") %]</a>
                 </td>
             </tr>
         </thead>
@@ -14,7 +14,7 @@
 
     <div id='rdetail_extras_div' style='width: 100%;'> 
         <div id='rdetail_extras_loading' class='hide_me' 
-            style='padding: 10px;'>&common.loading;</div>
+            style='padding: 10px;'>[% l("Loading...") %]</div>
 
         <div rel="rdetail_summary_div" rel2="summary" class="rdetail_extras hide_me" id="rdetail_summary_link">
             <div class="rdetail_extras_hr"></div>
@@ -135,7 +135,7 @@
         <div id='rdetail_content_div' class='rdetail_extras_div hide_me'>
             <strong>Contents:</strong>
             <div id='rdetail_content_div_inner' style="padding-bottom:10px;"></div>
-            <strong>&rdetail.extras.toc;:</strong>
+            <strong>[% l("Table of Contents") %]:</strong>
             <div id='rdetail_toc_div' class='rdetail_extras_div'></div>
         </div>
         
@@ -215,7 +215,7 @@
                 <a href='javascript:rdetailShowExtra("reviews");'><img
                     alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("reviews");'
-                    class="rdetail_extras_lbl">&rdetail.extras.reviews;</a>
+                    class="rdetail_extras_lbl">[% l("Reviews") %]</a>
             </div>
         </div>
 
@@ -228,7 +228,7 @@
                 <a href='javascript:rdetailShowExtra("excerpt");'><img
                     alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("excerpt");'
-                    class="rdetail_extras_lbl">&rdetail.extras.excerpt;</a>
+                    class="rdetail_extras_lbl">[% l("Excerpt") %]</a>
             </div>
         </div>
 
@@ -241,7 +241,7 @@
                 <a href='javascript:rdetailShowExtra("preview");'><img
                     alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("preview");'
-                    class="rdetail_extras_lbl">&rdetail.extras.preview;</a>
+                    class="rdetail_extras_lbl">[% l("Preview") %]</a>
             </div>
         </div>
 
@@ -254,7 +254,7 @@
                 <a href='javascript:rdetailShowExtra("novelist");'><img
                     alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("novelist");'
-                    class="rdetail_extras_lbl">&rdetail.extras.novelist;</a>
+                    class="rdetail_extras_lbl">[% l("Suggestions by NoveList") %]</a>
             </div>
         </div>
 
@@ -265,19 +265,19 @@
                 <a href='javascript:rdetailShowExtra("cn");'><img
                     alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("cn");'
-                    class="rdetail_extras_lbl">&rdetail.extras.browser;</a>
+                    class="rdetail_extras_lbl">[% l("Shelf Browser") %]</a>
             </div>
         </div>
 
         <div id='rdetail_cn_browse_div' style='text-align: center;' class='hide_me'>
             <div id='cn_browse_none' class='hide_me color_4'
                 style='width: 90%; text-align: center; margin: 10px;'>
-                &rdetail.extras.call.null;
+                [% l("There are no call numbers for this item at this location.") %]
             </div>
 
             <div id='rdetail_cn_browse_select_div' 
                 style='width: 100%; border: 1px solid black; padding: 6px; margin-top: 5px;'>
-                <span>&rdetail.extras.call.local; </span>
+                <span>[% l("Local Call Numbers:") %] </span>
                 <select id='cn_browse_selector'> </select>
             </div>
             [% INCLUDE "default/opac/parts/cn_browse.tt2" %]
@@ -292,7 +292,7 @@
                 <a href='javascript:rdetailShowExtra("copyinfo");'><img
                     alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("copyinfo");'
-                    class="rdetail_extras_lbl">&rdetail.extras.summary;</a>
+                    class="rdetail_extras_lbl">[% l("Copy Summary") %]</a>
             </div>
         </div>
 
@@ -304,16 +304,16 @@
                 <a href='javascript:rdetailShowExtra("marc");'><img
                     alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("marc");'
-                    class="rdetail_extras_lbl">&rdetail.extras.marc;</a>
+                    class="rdetail_extras_lbl">[% l("MARC Record") %]</a>
             </div>
         </div>
         <div id='rdetail_marc_div' class='rdetail_extras_div hide_me'>
             <div id='rdetail_view_marc_box'></div>
         </div>
     </div>
-    <div id='rdetail_preview_full_text' class='hide_me'>&rdetail.extras.preview.fulltext;</div>
-    <div id='rdetail_preview_title' class='hide_me'>&rdetail.extras.preview.title;</div>
-    <div id='rdetail_preview_badge' class='hide_me'>&rdetail.extras.preview.badge;</div>
+    <div id='rdetail_preview_full_text' class='hide_me'>[% l("Full text") %]</div>
+    <div id='rdetail_preview_title' class='hide_me'>[% l("See the full text of this book.") %]</div>
+    <div id='rdetail_preview_badge' class='hide_me'>[% l("Show a preview of this book from Google Book Search") %]</div>
 </div>
 
 <!-- XXX TODO Novelist stuff here? -->

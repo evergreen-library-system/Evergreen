@@ -141,19 +141,19 @@
         </div>
     </div>
     <div id='myopac_delete_bookbag_warn' class='hide_me'>
-        &myopac.delete.bookbag;
+        [% l("This will remove the selected bookbag and all items contained within the bookbag.  Are you sure you wish to continue?") %]
     </div>
     <div style='text-align: center; font-weight: bold;' 
-        class='hide_me' id='myopac_bookbags_none'>&myopac.no.bookbags;</div>
+        class='hide_me' id='myopac_bookbags_none'>[% l("You have not created any bookbags") %]</div>
     <table width='100%' class='data_grid data_grid_center hide_me'
         id='myopac_bookbag_table'>
         <thead>
             <tr>
-                <td>&common.name;</td>
-                <td>&myopac.bookbag.items;</td>
-                <td>&myopac.bookbag.shared;</td>
-                <td>&myopac.bookbag.toggle;</td>
-                <td>&myopac.bookbag.delete;</td>
+                <td>[% l("Name") %]</td>
+                <td>[% l("# Items") %]</td>
+                <td>[% l("Shared") %]</td>
+                <td>[% l("Share / Hide") %]</td>
+                <td>[% l("Delete this bookbag?") %]</td>
             </tr>
         </thead>
         <tbody id='myopac_bookbag_tbody'>
@@ -164,61 +164,61 @@
                 </td>
                 <td>
                     <span name='myopac_bookbag_item_count'> </span>
-                    <span> &myopac.items;</span>
+                    <span> [% l("Items") %]</span>
                 </td>
                 <td>
                     <span name='myopac_bb_published_no' class='hide_me'>
-                        &common.no;
+                        [% l("No") %]
                     </span>
                     <span name='myopac_bb_published_yes' class='hide_me'>
-                        &common.yes;
+                        [% l("Yes") %]
                     </span>
                     <a name='myopac_bb_published_view'
-                        class='classic_link hide_me'>&myopac.view;</a>
+                        class='classic_link hide_me'>[% l("(View)") %]</a>
                     <a name='myopac_bb_published_atom'
                         class='unadorned_link hide_me'>
                         <img alt="RSS Feed" border="0"
                         src="/opac/images/small-rss.png"
-                        title="&myopac.atom.feed;" />
+                        title="[% l("ATOM Feed") %]" />
                     </a>
                 </td>
                 <td>
                     <a name='myopac_bb_make_unpublished'
-                        class='classic_link hide_me'>&myopac.bookbag.hide;</a>
+                        class='classic_link hide_me'>[% l("Hide") %]</a>
                     <a name='myopac_bb_make_published'
-                        class='classic_link hide_me'>&myopac.bookbag.share;</a>
+                        class='classic_link hide_me'>[% l("Share this Bookbag") %]</a>
                 </td>
                 <td>
                     <a class='classic_link' href='#'
-                        name='myopac_container_delete'>&myopac.delete;</a>
+                        name='myopac_container_delete'>[% l("Delete") %]</a>
                 </td>
             </tr>
         </tbody>
     </table>
     <table width='100%' class='data_grid data_grid_center hide_me' style='margin-top: 10px;'>
         <thead>
-            <tr><td>&myopac.bookbag.create;</td></tr>
+            <tr><td>[% l("Create a new Bookbag") %]</td></tr>
         </thead>
         <tbody>
             <tr>
                 <td> 
                     <span style='padding-right: 5px;'>
-                        &myopac.bookbag.naming;
+                        [% l("Enter the name of the new Bookbag: ") %]
                     </span>
                     <input id='myopac_bookbag_new_name' type='text' /> 
                 </td>
             </tr>
             <tr>
                 <td>
-                    <span style='padding: 5px;'>&myopac.bookbag.share;</span>
+                    <span style='padding: 5px;'>[% l("Share this Bookbag") %]</span>
                     <a class='classic_link'
-                        href='#'><b>&common.help;</b></a>
-                    <span>&common.yes;</span>
+                        href='#'><b>[% l("(Help)") %]</b></a>
+                    <span>[% l("Yes") %]</span>
                     <input type='radio' name='bb_public' id='bb_public_yes'/>
-                    <span>&common.no;</span>
+                    <span>[% l("No") %]</span>
                     <input type='radio' name='bb_public' id='bb_public_no' checked='checked'/>
                     <input style='padding-left: 10px;' type='submit'
-                        value='&common.submit;' />
+                        value='[% l("Submit") %]' />
                 </td>
             </tr>
         </tbody>
@@ -229,15 +229,15 @@
     <div class='hide_me'
         style='width:100%; text-align:center; font-weight:700; margin-top:10px;'
         id='myopac_bookbag_no_items'>
-        &myopac.bookbag.no.items;
+        [% l("The selected bookbag contains no items...") %]
     </div>
     <table width='100%' class='hide_me data_grid data_grid_center'
         id='myopac_bookbag_items_table'>
         <thead> 
             <tr>
-                <td>&common.title;</td>
-                <td>&common.authors;</td>
-                <td>&myopac.bookbag.remove;</td>
+                <td>[% l("Title") %]</td>
+                <td>[% l("Authors") %]</td>
+                <td>[% l("Remove this item?") %]</td>
             </tr> 
         </thead>
         <tbody id='myopac_bookbag_items_tbody'>
@@ -249,32 +249,32 @@
                 <td name='myopac_bookbag_items_author'></td>
                 <td>
                     <a name='myopac_bookbag_items_remove'
-                        class='classic_link'>&myopac.remove.link;</a>
+                        class='classic_link'>[% l("remove") %]</a>
                 </td>    
             </tr>
         </tbody>
     </table>
-    <span id='bb_publish_text' class='hide_me'>&myopac.publish.text;</span>
+    <span id='bb_publish_text' class='hide_me'>[% l("Sharing a Bookbag means that the contents of the Bookbag will be visible to others.  To see the public view of a shared Bookbag, click the \"View\" link in the \"Shared\" column of the Bookbag list at the top of this page.") %]</span>
     <span id='myopac_remove_bb_item_confirm' class='hide_me'>
-        &myopac.item.confirm;
+        [% l("Are you sure you wish to remove this bookbag item?") %]
     </span>
     <span id='myopac_make_published_confirm' class='hide_me'>
-        &myopac.publish.confirm;
+        [% l("Sharing this bookbag will allow the contents of the bookbag to be seen by others.  Are you sure you wish to share this bookbag?") %]
     </span>
     <span id='myopac_make_unpublished_confirm' class='hide_me'>
-        &myopac.unpublish.confirm;
+        [% l("Are you sure you wish to hide this bookbag?") %]
     </span>
     <span id='myopac_bb_update_success' class='hide_me'>
-        &myopac.update.success;
+        [% l("The Bookbag was successfully updated.") %]
     </span>
     <span id='bb_create_warning' class='hide_me'>
-        &myopac.create.warning;
+        [% l("Warning: Adding items to a bookbag creates a link between you and the items in the database.  The contents of the bookbag are NOT publicly viewable unless the bookbag is shared. However, if you prefer not to have any link between your patron record and a particular item or items, we suggest that you do not place said items in a bookbag or that you avoid using bookbags all together.  Thank you.") %]
     </span>
     <span id='myopac_bb_what_are' class='hide_me'>
-        &myopac.describe.bookbags;
+        [% l("Bookbags are...") %]
     </span>
     <span class='hide_me' id='bb_update_success'>
-        &myopac.updated.success;
+        [% l("Bookbag successfully updated") %]
     </span>
 </div>
 [% END %]

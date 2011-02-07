@@ -4,23 +4,23 @@
         <tr>
             <td class="h1" width="116">Search Results</td>
             <td valign="bottom" nowrap="nowrap" width="320" style="white-space:nowrap;" class="hide_me" id="result_numbers1">
-                <span> &common.results; </span>
+                <span> [% l("Results") %] </span>
                 <span id='offset_start' style='font-weight:bold'></span>
                 <span>&nbsp;- </span>
                 <span id='offset_end' style='font-weight:bold'></span>
-                <span>&nbsp;&common.of; </span>
+                <span>&nbsp;[% l("of") %] </span>
                 <span id='result_count' style='font-weight:bold'></span>
                 <span style='padding-left: 6px;'>
                     (page
                 </span>
                 <span id='current_page'></span>
-                <span>&nbsp;&common.of; </span>
+                <span>&nbsp;[% l("of") %] </span>
                 <span id='num_pages'></span>)
             </td>
             <td align="right" valign="bottom">
                 <span id='start_end_links_span' class='hide_me'>
                     <a class='search_page_nav_link' id='prev_link'
-                        title='&rdetail.page.previous;' style="cursor:pointer;">
+                        title='[% l("Previous page") %]' style="cursor:pointer;">
                         <span class="nav_arrow_fix">&#9668;</span> Previous
                     </a>
                     <span class='hide_me' id='result_info_div'
@@ -28,7 +28,7 @@
                         <span id="nav_pages"></span>
                     </span>
                     <a class='search_page_nav_link' id='next_link'
-                        title='&rdetail.page.next;' style="cursor:pointer;">
+                        title='[% l("Next page") %]' style="cursor:pointer;">
                         Next <span class="nav_arrow_fix">&#9658;</span>
                     </a>
                 </span>

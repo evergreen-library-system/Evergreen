@@ -1,6 +1,6 @@
 <!-- ****************** format_selector.xml ***************************** -->
 <select id='format_selector'>
-    <option value=''>&opac.search.allFormats;</option>
+    <option value=''>[% l("All Formats") %]</option>
     <option value='a'>Book</option>
     <option value='i'>Book on cassette</option>
     <option value='n'>Book on CD</option>
@@ -31,12 +31,12 @@
     <option value='z'>Map</option>
     <option value='s'>Slide set</option>	
 <!--
-	<option value='at'>&opac.search.books;</option>
-	<option value='at-d'>&opac.search.largePrint;</option>
-	<option value='i'>&opac.search.audioBooks;</option>
-	<option value='g'>&opac.search.videoRecordings;</option>
-	<option value='j'>&opac.search.music;</option>
-	<option value='m'>&opac.search.electronic;</option>
+	<option value='at'>[% l("Books") %]</option>
+	<option value='at-d'>[% l("Large Print Books") %]</option>
+	<option value='i'>[% l("Audiobooks") %]</option>
+	<option value='g'>[% l("Video Recordings") %]</option>
+	<option value='j'>[% l("Music") %]</option>
+	<option value='m'>[% l("Electronic Resources") %]</option>
 -->
 </select>
 <!-- ****************** end: format_selector.xml ***************************** -->

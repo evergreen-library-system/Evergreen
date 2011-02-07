@@ -4,18 +4,18 @@
             <table class='data_grid' style='margin-top: 20px;'>
                 <tbody>
                     <tr>
-                        <td>&opac.holds.xulRecipient;:</td>
+                        <td>[% l("Enter recipient barcode") %]:</td>
                         <td>
                             <input type='text' id='xul_recipient_barcode' />
                         </td>
                         <td>
-                            <input type='submit' value='&common.submit;' id='xul_recipient_barcode_submit' />
+                            <input type='submit' value='[% l("Submit") %]' id='xul_recipient_barcode_submit' />
                         </td>
                         <td>
-                            <input type='submit' value='&common.cancel;' />
+                            <input type='submit' value='[% l("Cancel") %]' />
                         </td>
                         <td>
-                            <input type='submit' value='&common.hold.place;' id='xul_recipient_me' />
+                            <input type='submit' value='[% l("Place hold for my account") %]' id='xul_recipient_me' />
                         </td>
                     </tr>
                 </tbody>
@@ -25,7 +25,7 @@
     <div id='check_holds_box' class='hide_me canvas' 
         style='margin-top: 6px; width: 100%; text-align: center'>
         <br/><br/><br/>
-        <b>&common.hold.check;</b>
+        <b>[% l("Checking for possibility of hold fulfillment...") %]</b>
     </div>
     <div id='holds_box' class='canvas' style='margin-top: 6px;'>
         <br/>
@@ -62,78 +62,78 @@
             <tbody>
                 <tr>
                     <td class='holds_cell color_1' 
-                        align='center' colspan='2'>&common.hold.create;</td>
+                        align='center' colspan='2'>[% l("Create / Edit a Hold") %]</td>
                 </tr>
                 <tr>
-                    <td class='holds_cell'>&opac.holds.recipient;:</td>
+                    <td class='holds_cell'>[% l("Recipient") %]:</td>
                     <td class='holds_cell' id='holds_recipient'> </td>
                 </tr>
                 <tr>
-                    <td class='holds_cell'>&common.title.label;</td>
+                    <td class='holds_cell'>[% l("Title:") %]</td>
                     <!-- <td class='holds_cell' id='holds_title'> </td> -->
                 </tr>
                 <tr>
-                    <td class='holds_cell'>&common.author;</td>
+                    <td class='holds_cell'>[% l("Author") %]</td>
                     <td class='holds_cell' id='holds_author'> </td>
                 </tr>
                 <tr>
-                    <td class='holds_cell'>&common.format;</td>
+                    <td class='holds_cell'>[% l("Format") %]</td>
                     <td class='holds_cell' id='holds_format'> </td>
                 </tr>
                 <tr id='hold_physical_desc_row'>
-                    <td class='holds_cell'>&common.physical.label;</td>
+                    <td class='holds_cell'>[% l("Physical Description:") %]</td>
                     <td class='holds_cell' id='holds_physical_desc'> </td>
                 </tr>
 
                 <tr class='hide_me' id='holds_cn_row'>
-                    <td class='holds_cell'>&common.call.number.label;</td>
+                    <td class='holds_cell'>[% l("Call Number:") %]</td>
                     <td class='holds_cell'><b id='holds_cn'/> </td>
                 </tr>
 
                 <tr class='hide_me' id='holds_copy_row'>
-                    <td class='holds_cell'>&common.copy.barcode.label;</td>
+                    <td class='holds_cell'>[% l("Copy Barcode:") %]</td>
                     <td class='holds_cell'><b id='holds_copy'/> </td>
                 </tr>
 
                 <tr class='hide_me' id='holds_type_row'>
-                    <td class='holds_cell'>&common.hold.type.label;</td>
+                    <td class='holds_cell'>[% l("Hold Type:") %]</td>
                     <td class='holds_cell hide_me' id='holds_is_cn'>
-                        <b>&common.hold.volume;</b>
+                        <b>[% l("Volume Hold") %]</b>
                     </td>
                     <td class='holds_cell hide_me' id='holds_is_copy'>
-                        <b>&common.hold.copy;</b>
+                        <b>[% l("Copy Hold") %]</b>
                     </td>
                 </tr>
                 <tr>
-                    <td class='holds_cell'>&opac.holds.contactPhone;:</td>
+                    <td class='holds_cell'>[% l("Contact telephone number") %]:</td>
                     <td class='holds_cell'>
                         <input id='holds_phone' size='13' maxlength='12'/>
                         <span style='margin-left: 4px; font-size: 7pt;'>
-                            &common.phone.format;
+                            [% l("(XXX-YYY-ZZZZ)") %]
                         </span>
                     </td>
                 </tr>
                 <tr>
-                    <td class='holds_cell'>&common.phone.enable;</td>
+                    <td class='holds_cell'>[% l("Enable phone notifications for this hold?") %]</td>
                     <td class='holds_cell'>
                         <input type='checkbox' id='holds_enable_phone'
                             checked='checked' />
                     </td>
                 </tr>
                 <tr>
-                    <td class='holds_cell'>&opac.holds.contactEmail;:</td>
+                    <td class='holds_cell'>[% l("Contact email address") %]:</td>
                     <td class='holds_cell' id='holds_email'> 
                         <span class='hide_me' id='holds.no_email'>
-                           &common.email.none;<br/>
-                           &common.email.set;
+                           ([% l("Patron has no configured email address)" %])<br/>
+                           ([% l("See") %] <a class='classic_link' id='holds.no_email.my_account'>[% l("My Account") %]</a> [% l("for setting your email address") %])
                         </span>
                         <span class='hide_me' id='holds.no_email.xul'>
-                           &common.email.none; 
+                           [% l("(Patron has no configured email address)") %] 
                         </span>
                     </td>
                 </tr>
                 <tr>
-                    <td class='holds_cell'>&common.email.enable;</td>
+                    <td class='holds_cell'>[% l("Enable email notifications for this hold?") %]</td>
                     <td class='holds_cell'>
                         <input type='checkbox' id='holds_enable_email'
                             checked='checked'/>
@@ -148,14 +148,14 @@
                 </tr>
                 -->
                 <tr>
-                    <td class='holds_cell'>&opac.holds.pickupLocation;</td>
+                    <td class='holds_cell'>[% l("Pickup location") %]</td>
                     <td class='holds_cell'>
                         <!-- <select id='holds_org_selector'> </select> -->
                     </td>
                 </tr>
 
                 <tr>
-                    <td class='holds_cell'>&opac.holds.expire_time;</td>
+                    <td class='holds_cell'>[% l("Expiration date") %]</td>
                     <td class='holds_cell'>
                         <input size='10' maxlength='10'
                          id='holds_expire_time' />
@@ -164,9 +164,9 @@
 
                 <tr>
                     <td class='holds_cell'>
-                        &opac.holds.freeze;
+                        [% l("Suspend this hold") %]
                         <a class='classic_link'
-                            href='#'>&common.help;</a>
+                            href='#'>[% l("(Help)") %]</a>
                         </td>
                     <td class='holds_cell'>
                         <input type='checkbox' id='holds_frozen_chkbox' /> 
@@ -176,7 +176,7 @@
                     <td class='holds_cell'>
                         <!-- XXX TODO there used to be script here dealing with
                         frozen holds -->
-                        &opac.holds.freeze.thaw_date;
+                        [% l("Automatically activate hold on:") %]
                     </td>
                     <td class='holds_cell'>
                         <input size='10' maxlength='10'
@@ -188,7 +188,7 @@
                     <td colspan='2' align='center'>
                         <div style='padding: 8px;'>
                             <a class='classic_link' href='#'
-                                style='padding: 5px;'>&common.hold.advanced;</a>
+                                style='padding: 5px;'>[% l("Advanced Hold Options") %]</a>
                         </div>
                     </td>
                 </tr>
@@ -197,40 +197,40 @@
 
                     <td class='holds_cell'>
                         <div style='margin-bottom: 5px;'>
-                            <span>&common.format.alternatives; </span>
+                            <span>[% l("Acceptable Alternative Formats:") %] </span>
                             <span><a class='classic_link' style='color:red;'
-                                    href='#'>&common.help;</a></span>
+                                    href='#'>[% l("(Help)") %]</a></span>
                         </div>
-                        <div>&common.control.click;</div>
+                        <div>[% l("(control-click to select multiple formats)") %]</div>
                     </td>
 
                     <td class='holds_cell'>
                         <select id='hold_alt_form_selector' multiple='multiple' style='width: 14em;'>
-                            <option value='at'    class='hide_me'>&opac.search.books;</option>
-                            <option value='at-d' class='hide_me'>&opac.search.largePrint;</option>
-                            <option value='i'        class='hide_me'>&opac.search.audioBooks;</option>
-                            <option value='g'        class='hide_me'>&opac.search.videoRecordings;</option>
-                            <option value='j'        class='hide_me'>&opac.search.music;</option>
+                            <option value='at'    class='hide_me'>[% l("Books") %]</option>
+                            <option value='at-d' class='hide_me'>[% l("Large Print Books") %]</option>
+                            <option value='i'        class='hide_me'>[% l("Audiobooks") %]</option>
+                            <option value='g'        class='hide_me'>[% l("Video Recordings") %]</option>
+                            <option value='j'        class='hide_me'>[% l("Music") %]</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td class='holds_cell' align='center' colspan='2'>
-                        <!-- <button id='holds_submit'>&opac.holds.placeHold;</button> -->
-                        <button class='hide_me' id='holds_update'>&common.hold.update;</button>
+                        <!-- <button id='holds_submit'>[% l("Place Hold") %]</button> -->
+                        <button class='hide_me' id='holds_update'>[% l("Update Hold") %]</button>
                         <span style='padding: 20px;'> </span>
-                        <!-- <button id='holds_cancel'>&common.cancel;</button> -->
+                        <!-- <button id='holds_cancel'>[% l("Cancel") %]</button> -->
                     </td>
                 </tr>
             </tbody>
         </table>
-        <div class='hide_me' id='holds_success'>&opac.holds.success;</div>
-        <div class='hide_me' id='holds_failure'>&opac.holds.failure;</div>
+        <div class='hide_me' id='holds_success'>[% l("Hold was successfully placed") %]</div>
+        <div class='hide_me' id='holds_failure'>[% l("Hold was not successfully placed") %]</div>
         <span class='hide_me' id='holds_bad_phone'>
-            &common.phone.format.help;
+            [% l("The phone number does not have the correct format. The expected format is XXX-YYY-ZZZZ") %]
         </span>
         <span class='hide_me' id='hold_not_allowed'>
-            &common.hold.failed;
+            [% l("No items were found that could fulfill the requested holds.  It's possible that choosing a different format will result in a successful hold.  It is also possible that you have exceeded the number of allowable holds.  For further information, please consult your local librarian.") %]
         </span>
     </div>
     <div id="anonListTable" class="hide_me" style="margin-top: 6px;">
@@ -268,20 +268,20 @@
     </div>
 
     <span class='hide_me' id='format_words'>
-        <span name='at'>&opac.search.books;</span>
-        <span name='at-d'>&opac.search.largePrint;</span>
-        <span name='i'>&opac.search.audioBooks;</span>
-        <span name='g'>&opac.search.videoRecordings;</span>
-        <span name='j'>&opac.search.music;</span>
-        <span name='m'>&opac.search.electronic;</span>
+        <span name='at'>[% l("Books") %]</span>
+        <span name='at-d'>[% l("Large Print Books") %]</span>
+        <span name='i'>[% l("Audiobooks") %]</span>
+        <span name='g'>[% l("Video Recordings") %]</span>
+        <span name='j'>[% l("Music") %]</span>
+        <span name='m'>[% l("Electronic Resources") %]</span>
     </span>
 
-    <span class='hide_me' id='holds_explain_adv'>&holds.advanced_options;</span>
-    <span class='hide_me' id='holds_pick_good_org'>&common.hold.delivery;</span>
-    <span class='hide_me' id='hold_dup_exists'>&common.hold.exists;</span>
-    <span class='hide_me' id='hold_dup_exists_override'>&common.hold.exists.override;</span>
-    <span id='hold_failed_patron_barred' class='hide_me'>&common.hold.barred;</span>
-    <span id='invalid_hold' class='hide_me'>&common.hold.item.invalid;</span>
-    <span id='holds_invalid_recipient' class='hide_me'>&common.hold.patron.invalid;</span>
+    <span class='hide_me' id='holds_explain_adv'>[% l("If you wish to broaden the scope of your hold to include other versions of this title, select the formats that would be acceptable.  The first available copy will be sent to you.") %]</span>
+    <span class='hide_me' id='holds_pick_good_org'>[% l("Please select a physical location where your hold can be delivered.") %]</span>
+    <span class='hide_me' id='hold_dup_exists'>[% l("A hold already exists on the requested item.") %]</span>
+    <span class='hide_me' id='hold_dup_exists_override'>[% l("A hold already exists on the requested item. Would you like to create the hold anyway?") %]</span>
+    <span id='hold_failed_patron_barred' class='hide_me'>[% l("PATRON BARRED. Please see any notes in the \"Staff Notes\" section of your \"My Account\" page or contact your local library.") %]</span>
+    <span id='invalid_hold' class='hide_me'>[% l("This hold is no longer valid. It's likely that the target for the hold was deleted from the system.  Please cancel this hold and place a new one.") %]</span>
+    <span id='holds_invalid_recipient' class='hide_me'>[% l("The patron barcode entered as the hold recipient is invalid.") %]</span>
 
 </div>

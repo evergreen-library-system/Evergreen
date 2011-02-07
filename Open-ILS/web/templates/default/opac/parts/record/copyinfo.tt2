@@ -3,22 +3,22 @@
     <div style='width: 100%; text-align: center; padding-bottom: 5px;'>
         <span>
             <a href='javascript:void(0);' id='copy_info_local_link' 
-                class='rdetail_copy_nav_link hide_me classic_link'><b>&rdetail.copyInfo.local;</b></a>
+                class='rdetail_copy_nav_link hide_me classic_link'><b>[% l("View Copy Information for this location only") %]</b></a>
         </span>
         <span width=''>
             <a href='javascript:void(0);' id='copy_info_all_link' 
-                class='rdetail_copy_nav_link classic_link'><b>&rdetail.copyInfo.all;</b></a>
+                class='rdetail_copy_nav_link classic_link'><b>[% l("View copy information for all libraries") %]</b></a>
         </span>
     </div>
     <table id='rdetail_copy_info_table' class='data_grid'>
         <thead>
             <tr>
-                <td class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.library;</td>
-                <td class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.callnumber;</td>
+                <td class='rdetail_copy_info_header_cell'>[% l("Library") %]</td>
+                <td class='rdetail_copy_info_header_cell'>[% l("Callnumber") %]</td>
                 <td name='rdetail_copylocation_header' class='rdetail_copy_info_header_cell hide_me'>
-                    &rdetail.copyInfo.copylocation;
+                    [% l("Copy Location") %]
                 </td>
-                <td class='rdetail_copy_info_header_cell'>&rdetail.copyInfo.actions;</td>
+                <td class='rdetail_copy_info_header_cell'>[% l("Actions") %]</td>
                 <td nowrap='nowrap' class='rdetail_copy_info_header_cell' id='rdetail_copy_info_status'> 
                     <div name='rdetail_status_cell'> </div>
                 </td>
@@ -28,22 +28,22 @@
             <tr id='rdetail_copy_info_row' class='hide_me'>
                 <td name='rdetail_library_cell'>
                     <a name='lib_print_link' class='hide_me classic_link'
-                        style='font-size: 8pt; padding-left: 20px;'>&rdetail.copyInfo.print;</a>
+                        style='font-size: 8pt; padding-left: 20px;'>[% l("Print Call Numbers for this library") %]</a>
                 </td>
                 <td name='rdetail_callnumber_cell'> </td>
                 <td class="hide_me" name='rdetail_copylocation_cell'> </td>
                 <td name='rdetail_actions_cell'> 
                     <div style='padding-bottom: 1px;'>
                         <a style='font-size: 8pt;'
-                            name='details' class='hide_me classic_link'>&rdetail.copyInfo.details;</a>
+                            name='details' class='hide_me classic_link'>[% l("Copy Details") %]</a>
                     </div>
                     <div style='margin-top: 2px;'>
                         <a name='browse' style='font-size: 8pt;'
-                            class='hide_me classic_link'>&rdetail.copyInfo.browse;</a>
+                            class='hide_me classic_link'>[% l("Browse Call Numbers") %]</a>
                     </div>
                     <div style='margin-top: 2px;' name='hold_div' class='hide_me'>
                         <a name='hold' style='font-size: 8pt;' href='javascript:void(0);'
-                            class='classic_link'>&rdetail.copyInfo.hold;</a>
+                            class='classic_link'>[% l("Place Hold") %]</a>
                     </div>
                 </td>
                 <td nowrap='nowrap' class='rdetail_copy_count_cell vertical' 
@@ -52,7 +52,7 @@
             </tr>
             <tr id='rdetail_copy_info_loading'>
                 <td>
-                    &rdetail.loading;
+                    [% l("Loading copy information...") %]
                 </td>
             </tr>
         </tbody>
@@ -63,6 +63,6 @@
         </tbody>
     </table> -->
     <br/><br/>
-    <div id='rdetail_copy_info_none' class='hide_me'>&rdetail.noneAvailable;</div>
+    <div id='rdetail_copy_info_none' class='hide_me'>[% l(" * There are no copies in this location") %]</div>
 </div> <!-- copy info -->
 <!-- ****************** end: rdetail_copyinfo.xml ***************************** -->

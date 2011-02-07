@@ -48,45 +48,45 @@
     </div>
     <div class="hide_me">
         <div style='text-align: center; padding-bottom: 8px;' class="hide_me">
-            <div id='result_low_hits_msg' class='hide_me'>&result.lowhits.few;</div>
-            <div id='result_zero_hits_msg' class='hide_me'>&result.lowhits.zero;</div>
+            <div id='result_low_hits_msg' class='hide_me'>[% l("Few hits were returned for your search.") %]</div>
+            <div id='result_zero_hits_msg' class='hide_me'>[% l("Zero hits were returned for your search.") %]</div>
         </div>
 
         <!-- spell checker -->
         <div id='did_you_mean' class='lowhits_div hide_me'>
-            <span>&result.lowhits.did.you.mean; </span>
+            <span>[% l("Maybe you meant:") %] </span>
             <!-- <a class='classic_link' id='spell_check_link'> </a> -->
         </div>
 
         <div id='low_hits_remove_format' class='lowhits_div hide_me'>
-            <span>&result.lowhits.formats; </span>
-            <a id='low_hits_remove_format_link' class='classic_link'>&result.lowhits.formats.search;</a>
+            <span>[% l("You will find more hits when searching all item formats:") %] </span>
+            <a id='low_hits_remove_format_link' class='classic_link'>[% l("Search again with all formats?") %]</a>
         </div>
 
         <div id='low_hits_cross_ref' class='lowhits_div hide_me'>
-            <span>&result.lowhits.related;</span>
+            <span>[% l("You may also like to try these related searches:") %]</span>
             <div style='padding: 5px;'>
                 <a id='low_hits_xref_link' class='classic_link' style='padding-right: 5px;'> </a>
             </div>
         </div>
 
         <div id='low_hits_expand_range' class='lowhits_div hide_me'>
-            <span>&result.lowhits.expand; </span>
+            <span>[% l("You may also wish to expand your search range to:") %] </span>
             <a id='low_hits_expand_link' class='classic_link' style='padding-right: 5px;'> </a>
         </div>
 
         <div id='low_hits_search_type' class='lowhits_div hide_me'>
-            <span>&result.lowhits.class;</span>
+            <span>[% l("You can try searching the same terms by:") %]</span>
             <a id='low_hits_title_search' class='hide_me classic_link' 
-                style='padding-right: 5px;'>&result.lowhits.title;</a>
+                style='padding-right: 5px;'>[% l("title") %]</a>
             <a id='low_hits_author_search' class='hide_me classic_link' 
-                style='padding-right: 5px;'>&result.lowhits.author;</a>
+                style='padding-right: 5px;'>[% l("author") %]</a>
             <a id='low_hits_subject_search' class='hide_me classic_link' 
-                style='padding-right: 5px;'>&result.lowhits.subject;</a>
+                style='padding-right: 5px;'>[% l("subject") %]</a>
             <a id='low_hits_series_search' class='hide_me classic_link' 
-                    style='padding-right: 5px;'>&result.lowhits.series;</a>
+                    style='padding-right: 5px;'>[% l("series") %]</a>
             <a id='low_hits_keyword_search' class='hide_me classic_link' 
-                style='padding-right: 5px;'>&result.lowhits.keyword;</a>
+                style='padding-right: 5px;'>[% l("keyword") %]</a>
         </div>
     </div>
 </div>

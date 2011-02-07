@@ -4,6 +4,6 @@
     </span>
     <span id='lib_selector_span'>
         <a id='lib_selector_link' class='classic_link'
-            href='#'>&library.select.help;</a>
+            href='#'>[% l("Choose a library to search") %]</a>
     </span>
 <!-- ****************** end: libselect.xml ***************************** -->

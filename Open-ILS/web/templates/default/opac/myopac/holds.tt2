@@ -35,19 +35,19 @@
                 <td width="1">
                     <select id="acct_holds_actions">
                         <option id='myopac_holds_actions_none' value=''>
-                        -- &myopac.holds.actions; --
+                        -- [% l("Actions for selected holds") %] --
                         </option>
                         <option value='freeze'>
-                            &myopac.holds.freeze_selected;
+                            [% l("Suspend") %]
                         </option>
                         <option value='thaw'>
-                            &myopac.holds.thaw_selected;
+                            [% l("Activate") %]
                         </option>
                         <option value='thaw_date'>
-                            &myopac.holds.thaw_date_selected;
+                            [% l("Set Active Date") %]
                         </option>
                         <option value='cancel'>
-                            &myopac.holds.cancel_selected;
+                            [% l("Cancel") %]
                         </option>
                     </select>
                 </td>
@@ -175,30 +175,30 @@
     </div>
     <div id='holds_hist_table' class="hide_me">testing...</div>
 
-    <span id='myopac.holds.cancel.confirm' class='hide_me'>&myopac.holds.cancel.confirm;</span>
-    <span id='myopac.holds.freeze.confirm' class='hide_me'>&myopac.holds.freeze.confirm;</span>
-    <span id='myopac.holds.thaw.confirm' class='hide_me'>&myopac.holds.thaw.confirm;</span>
-    <span id='myopac.holds.thaw_date.confirm' class='hide_me'>&myopac.holds.thaw_date.confirm;</span>
-    <span id='myopac.holds.freeze.select_thaw' class='hide_me'>&myopac.holds.freeze.select_thaw;</span>
+    <span id='myopac.holds.cancel.confirm' class='hide_me'>[% l("Are you sure you wish to cancel the selected holds?") %]</span>
+    <span id='myopac.holds.freeze.confirm' class='hide_me'>[% l("Are you sure you wish to suspend the selected holds?  If an item has already been selected to fulfill the hold, it will not be suspended") %]</span>
+    <span id='myopac.holds.thaw.confirm' class='hide_me'>[% l("Are you sure you wish to activate the selected holds?") %]</span>
+    <span id='myopac.holds.thaw_date.confirm' class='hide_me'>[% l("Are you sure you wish to change the activate date for the selected holds?") %]</span>
+    <span id='myopac.holds.freeze.select_thaw' class='hide_me'>[% l("Select an automatic activation date.  If no date is chosen, the holds will remain suspended until they are manually activated.") %]</span>
 
     <table width='100%' id='myopac_holds_processing' class='hide_me'>
-        <tr><td>&myopac.holds.processing;</td></tr>
+        <tr><td>[% l("Processing holds... This may take a moment.") %]</td></tr>
     </table>
    
     <span class='hide_me' id='myopac_holds_cancel_verify'>
-    	&myopac.holds.verify;
+    	[% l("If you wish to cancel the selected hold, click OK, otherwise click Cancel.") %]
     </span>
 </div>
 <div id='myopac_holds_thaw_date_form' class='hide_me'>
     <div id='myopac_holds_freeze_select_thaw'>
-        &myopac.holds.freeze.select_thaw;
+        [% l("Select an automatic activation date.  If no date is chosen, the holds will remain suspended until they are manually activated.") %]
     </div>
     <p>
         <input size='10' maxlength='10'
             type='text' id='myopac_holds_thaw_date_input' />
     </p>
     <p>
-        <button>&common.submit;</button>
+        <button>[% l("Submit") %]</button>
     </p>
 </div>
 [% END %]

@@ -153,13 +153,13 @@
     </div>
     <div id='non_cat_circs_div' class='hide_me'>
         <br/>
-        <div style='text-align: center'><b>&myopac.checked.other.circ;</b></div>
+        <div style='text-align: center'><b>[% l("Other Circulations") %]</b></div>
         <table class='data_grid' width='100%'>
             <thead>
                 <tr>
-                    <td>&myopac.checked.circ.lib;</td>
-                    <td>&myopac.checked.item.type;</td>
-                    <td>&myopac.checked.circ.time;</td>
+                    <td>[% l("Circulating Library") %]</td>
+                    <td>[% l("Circulation Type") %]</td>
+                    <td>[% l("Please return by ...") %]</td>
                 </tr>
             </thead>
             <tbody id='non_cat_circs_tbody'>
@@ -171,9 +171,9 @@
             </tbody>
         </table>
     </div>
-    <div id='myopac_renew_success' class='hide_me'>&myopac.checked.renew.success;</div>
-    <span class='hide_me' id='myopac_renew_confirm'>&myopac.checked.renew.confirm;</span>
-    <span class='hide_me' id='myopac_renew_fail'>&myopac.checked.renew.fail;</span>
-   <span class='hide_me' id='myopac_renew_fail2'>&myopac.checked.renew.fail2;</span>
+    <div id='myopac_renew_success' class='hide_me'>[% l("item(s) successfully renewed") %]</div>
+    <span class='hide_me' id='myopac_renew_confirm'>[% l("Are you sure you wish to renew the selected item(s)?") %]</span>
+    <span class='hide_me' id='myopac_renew_fail'>[% l("The system is unable to renew the selected item at this time.  This usually means the item is needed to fulfill a hold.  Please see a librarian for further help.") %]</span>
+   <span class='hide_me' id='myopac_renew_fail2'>[% l("Library policy prevents the renewal of this item at this time.  Please see a librarian for further details.") %]</span>
 </div>
 [% END %]

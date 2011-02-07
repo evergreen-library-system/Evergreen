@@ -11,10 +11,10 @@
                     src='${ident.small}' /></a>
                 <br />
                 <div class='jacket_attrib hide_me' id='rdetail.jacket_attrib_div'>
-                    <div>&opac.image_provided;</div>
+                    <div>[% l("Image provided by") %]</div>
                     <div>
-                        <a target='_blank' href='&vendor.base_link;'
-                            class='classic_link' id='rdetail.jacket_attrib_link'>&vendor.name;</a>
+                        <a target='_blank' href='[% l("http://amazon.com/dp/") %]'
+                            class='classic_link' id='rdetail.jacket_attrib_link'>[% l("Amazon") %]</a>
                     </div>
                 </div>
             </td>
@@ -24,8 +24,8 @@
                     <tr>
                         <td valign="top">
                             <span class="rdetail_item" id='rdetail_title'></span><br />
-                            <span style="color:#545454;">&common.author;: </span>
-                            <em><a title='&rdetail.author.search;' id='rdetail_author'></a></em>
+                            <span style="color:#545454;">[% l("Author") %]: </span>
+                            <em><a title='[% l("Perform an author search") %]' id='rdetail_author'></a></em>
                         </td>
                         <td align="right" valign="top" nowrap="nowrap" style="white-space:nowrap;">
                             <div style="width:230px;text-align:left;margin-top:3px;">
@@ -59,21 +59,21 @@
                     <table border="0" cellpadding="0" width="100%">
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_isbn_lbl" class="">&common.isbn;</strong>
+                                <strong id="rdetail_isbn_lbl" class="">[% l("ISBN") %]</strong>
                             </td>
                             <td valign="top" id='rdetail_isbn'></td>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_phys_lbl" class="">&common.physical;</strong>
+                                <strong id="rdetail_phys_lbl" class="">[% l("Physical Description") %]</strong>
                             </td>
                             <td valign="top" id='rdetail_physical_desc'></td>
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_ed_lbl" class="">&common.edition;</strong>
+                                <strong id="rdetail_ed_lbl" class="">[% l("Edition") %]</strong>
                             </td>
                             <td valign="top" id='rdetail_edition'></td>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_form_lbl" class="">&common.format;</strong>
+                                <strong id="rdetail_form_lbl" class="">[% l("Format") %]</strong>
                             </td>
                             <td valign="top">
                                 <img alt="Format" id='' class='tor_pic hide_me' />
@@ -82,7 +82,7 @@
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_pubdate_lbl" class="">&common.pubdate;</strong>
+                                <strong id="rdetail_pubdate_lbl" class="">[% l("Publication Date") %]</strong>
                             </td>
                             <td valign="top" id='rdetail_pubdate'></td>
                             <td nowrap='nowrap' valign="top">
@@ -92,11 +92,11 @@
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_pub_lbl" class="">&common.publisher;</strong>
+                                <strong id="rdetail_pub_lbl" class="">[% l("Publisher") %]</strong>
                             </td>
                             <td valign="top" id='rdetail_publisher'></td>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_sub_lbl" class="">&rdetail.summary.subjects;</strong>
+                                <strong id="rdetail_sub_lbl" class="">[% l("Subjects") %]</strong>
                             </td>
                             <td valign="top"></td>
                         </tr>
@@ -163,7 +163,7 @@
                         <tr>
                             <td valign="top">
                                 <div style="padding-bottom:7px;">
-                                    <strong>&common.title;:</strong>
+                                    <strong>[% l("Title") %]:</strong>
                                 </div>
                             </td>
                             <td width="1" valign="top" align="right" style="white-space:nowrap;">

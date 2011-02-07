@@ -12,20 +12,20 @@
             <span class="hide_me">
                 <a class='np_nav_link classic_link' id='np_start'
                     href='#'
-                    title="&rdetail.page.results;">&rdetail.start;</a>
+                    title="[% l("First results page") %]">[% l("Start") %]</a>
                 </span>
                 <a class='np_nav_link classic_link hide_me' id='np_prev'
                     href='#'
-                    title='&rdetail.page.previous;'><span
+                    title='[% l("Previous page") %]'><span
                         class="nav_arrow_fix">&#9668;</span> Previous</a>
                 <span style="padding:0px 10px;"> </span>
                 <a class='np_nav_link classic_link hide_me' id='np_next'
                     href='#'
-                    title='&rdetail.page.next;'>Next <span
+                    title='[% l("Next page") %]'>Next <span
                         class="nav_arrow_fix">&#9658;</span></a>
                 <span class="hide_me"><a class='np_nav_link classic_link'
                     id='np_end' href='#'
-                    title="&rdetail.page.last;">&rdetail.end;</a></span>
+                    title="[% l("Last results page") %]">[% l("End") %]</a></span>
         </div>
         <div class="clear-both"></div>
     </div>
@@ -47,31 +47,31 @@
         <tbody>
             <tr>
                 <td width='33%' align='left' class="hide_me">
-                    <span>&rdetail.detailMain.headerLabel;</span>
+                    <span>[% l("Record Summary") %]</span>
                 </td>
                 <td align='right' style='padding-right: 7px;' width='33%'>
                     <span id='rdetail_exp_refworks_span' class='hide_me'
                         style='padding-right: 7px;'>
-                        <a id='rdetail_exp_refworks'>&opac.holds.exportRefWorks;</a>
+                        <a id='rdetail_exp_refworks'>[% l("Export to RefWorks") %]</a>
                     </span>
                     <span style='padding-right: 7px;' class='hide_me'
                         id='rdetail_more_actions'>
                         <select id='rdetail_more_actions_selector'
                             style='max-width: 11em;' class="hide_me">
                             <option value='start'>
-                                &rdetail.more;
+                                [% l("More Actions...") %]
                             </option>
                             <option disabled='disabled'>
                                 --------------
                             </option>
                             <option disabled='disabled'>
-                                &rdetail.bookbag.add;
+                                [% l("Add to bookbag") %]
                             </option>
                             <option disabled='disabled'>
                                 --------------
                             </option>
                             <option value='new_bookbag'>
-                                &rdetail.bookbag.create;
+                                [% l("Create a new bookbag") %]
                             </option>
                         </select>
                     </span>
@@ -82,7 +82,7 @@
 
     <div style='font-weight: bold; padding: 5px; margin: 5px; width: 100%;'
         class='hide_me color_4' id='rdetail_deleted_exp'>
-        &rdetail.record.deleted;
+        [% l("This record has been deleted from the database.  We recommend that you remove this title from any bookbags it may have been added to.") %]
     </div>
 
     [% INCLUDE "default/opac/parts/record/summary.tt2" %]
@@ -98,16 +98,16 @@
     [% INCLUDE "default/opac/parts/record/extras.tt2" %]
 
     <div class='hide_me' id='rdetail_bb_none'>
-        &rdetail.none;
+        [% l("(none)") %]
     </div>
     <div class='hide_me' id='rdetail_bb_item_success'>
-        &rdetail.bookbag.add.success;
+        [% l("Item successfully added to bookbag") %]
     </div>
     <div class='hide_me' id='rdetail_bb_new'>
-        &rdetail.bookbag.name;
+        [% l("Enter the name of the new bookbag") %]
     </div>
     <div class='hide_me' id='rdetail_bb_success'>
-        &rdetail.bookbag.create.success;
+        [% l("Bookbag successfully created") %]
     </div>
 </div>
 <!-- ****************** end; page_rdetail.xml ***************************** -->
