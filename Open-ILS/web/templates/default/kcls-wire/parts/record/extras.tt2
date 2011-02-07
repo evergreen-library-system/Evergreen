@@ -20,7 +20,7 @@
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("summary");'><img
-                    alt="" src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("summary");'
                     class="rdetail_extras_lbl">Summary</a>
             </div>
@@ -43,7 +43,7 @@
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("subject");'><img
-                    alt="" src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("subject");' class="rdetail_extras_lbl">subject</a>
             </div>
         </div>
@@ -127,7 +127,7 @@
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("content");'><img alt=""
-                    src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("content");' class="rdetail_extras_lbl">Contents</a>
             </div>
         </div>
@@ -143,7 +143,7 @@
             class="rdetail_extras hide_me" id="rdetail_authors_link"><div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("authors");'><img
-                    alt="" src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("authors");' class="rdetail_extras_lbl">Author</a>
             </div>
         </div>
@@ -164,7 +164,7 @@
             class="rdetail_extras hide_me" id="rdetail_series_link"><div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("series");'><img
-                    alt="" src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("series");'
                     class="rdetail_extras_lbl">series</a>
             </div>
@@ -180,7 +180,7 @@
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("awards");'><img
-                    alt="" src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("awards");'
                     class="rdetail_extras_lbl">awards, reviews &amp; suggested reads</a>
             </div>
@@ -213,7 +213,7 @@
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("reviews");'><img
-                    alt="" src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("reviews");'
                     class="rdetail_extras_lbl">&rdetail.extras.reviews;</a>
             </div>
@@ -226,7 +226,7 @@
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("excerpt");'><img
-                    alt="" src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("excerpt");'
                     class="rdetail_extras_lbl">&rdetail.extras.excerpt;</a>
             </div>
@@ -239,7 +239,7 @@
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("preview");'><img
-                    alt="" src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("preview");'
                     class="rdetail_extras_lbl">&rdetail.extras.preview;</a>
             </div>
@@ -252,7 +252,7 @@
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("novelist");'><img
-                    alt="" src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("novelist");'
                     class="rdetail_extras_lbl">&rdetail.extras.novelist;</a>
             </div>
@@ -263,7 +263,7 @@
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("cn");'><img
-                    alt="" src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("cn");'
                     class="rdetail_extras_lbl">&rdetail.extras.browser;</a>
             </div>
@@ -290,7 +290,7 @@
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("copyinfo");'><img
-                    alt="" src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("copyinfo");'
                     class="rdetail_extras_lbl">&rdetail.extras.summary;</a>
             </div>
@@ -302,7 +302,7 @@
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("marc");'><img
-                    alt="" src="/opac/skin/kcls/graphics/rdetail_arrow.png" /></a>
+                    alt="" src="/images/rdetail_arrow.png" /></a>
                 <a href='javascript:rdetailShowExtra("marc");'
                     class="rdetail_extras_lbl">&rdetail.extras.marc;</a>
             </div>

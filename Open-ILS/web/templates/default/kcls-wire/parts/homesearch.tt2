@@ -26,7 +26,7 @@
   
 <!-- ************************************ home page banner start ********************************************** -->
     <div class="contentdiv" style="background:white;">
-      <a href="http://www.kcls.org/newcatalog"><img alt="New catalog" src="/opac/skin/kcls/graphics/banner1.jpg" /></a>
+      <a href="http://www.kcls.org/newcatalog"><img alt="New catalog" src="/images/banner1.jpg" /></a>
     </div>
     <div class="contentdiv" style="background:#ffc331;">
       test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
@@ -38,7 +38,7 @@
     </div>
     <div class="contentdiv" style="background:#2bb0fd;">
       <br />
-      <img src="/opac/skin/kcls/graphics/KCLS_logo_horiz.gif" /><br />
+      <img src="/images/KCLS_logo_horiz.gif" /><br />
       test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
       test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
     </div>
@@ -63,13 +63,13 @@
                 <a href="http://www.kcls.org/newcatalog"></a>
             </div>
         </div>
-        <img alt="New catalog" src="/opac/skin/kcls/graphics/banner1.jpg" />
+        <img alt="New catalog" src="/images/banner1.jpg" />
     </div>
 </div>
 
 <div id="hp-buttons">
     <div class="float-left">
-        <img src="/opac/skin/kcls/graphics/hp-links-left.jpg" />
+        <img src="/images/hp-links-left.jpg" />
     </div>
     <div class="float-left">
     <div id="home-buttons-inner">
@@ -80,8 +80,8 @@
       </table>
     </div>
   </div>
-  <div class="float-left"><img src="/opac/skin/kcls/graphics/hp-links-right.jpg" /></div>
-  <div class="float-right"><a href="http://www.kcls.org/locations"><img alt="Locations" src="/opac/skin/kcls/graphics/locations.jpg" /></a></div>
+  <div class="float-left"><img src="/images/hp-links-right.jpg" /></div>
+  <div class="float-right"><a href="http://www.kcls.org/locations"><img alt="Locations" src="/images/locations.jpg" /></a></div>
   <div class="clear-both"></div>
 </div>
 <!-- ****************** end: homesearch.xml ***************************** -->

@@ -15,7 +15,7 @@
                 Share this list?
                 <a href="#"><img
                     alt="Sharing Help"
-                    src="/opac/skin/kcls/graphics/question-mark.png" /></a>
+                    src="/images/question-mark.png" /></a>
             </td>
             <td>
                 <input type="radio" value="0" name="shareList"
@@ -29,10 +29,10 @@
         </tr>
     </table>
     <a href="#"><img
-        alt="Submit" src="/opac/skin/kcls/graphics/btnSubmit.png" /></a>
+        alt="Submit" src="/images/btnSubmit.png" /></a>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="#"><img
-        alt="Cancel" src="/opac/skin/kcls/graphics/btnCancel.png" /></a>
+        alt="Cancel" src="/images/btnCancel.png" /></a>
 </div>
 <div id='myopac_bookbag_div' style="padding:5px;">
     <div class="header_middle">
@@ -47,9 +47,9 @@
                 <a href="#"
                     style="position:relative;top:-3px;left:-5px;"><img
                     alt="Saving Help"
-                    src="/opac/skin/kcls/graphics/question-mark.png" /></a>
+                    src="/images/question-mark.png" /></a>
                 <a id='acct_lists_save' href="#"><img alt="Save"
-                    src="/opac/skin/kcls/graphics/save-btn.png" /></a>
+                    src="/images/save-btn.png" /></a>
             </div>
         </div>
     </div>
@@ -67,7 +67,7 @@
                         <td>
                             <a href="#"><img
                                 alt="Anonymous List Help"
-                                src="/opac/skin/kcls/graphics/question-mark.png" /></a>
+                                src="/images/question-mark.png" /></a>
                         </td>
                     </tr>
                 </table>

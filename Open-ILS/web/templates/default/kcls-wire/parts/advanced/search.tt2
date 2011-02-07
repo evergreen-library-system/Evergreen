@@ -256,7 +256,7 @@
     <tr class='border_4_2'>
         <td align="left" colspan='2'>
             <!-- XXX TODO make a real form, and make this a real submitter -->
-        <img src="/opac/skin/kcls/graphics/search_btn.gif" alt="Search"  style="cursor:pointer;" />
+        <img src="/images/search_btn.gif" alt="Search"  style="cursor:pointer;" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <!-- XXX TODO make a real form, and make this a real resetter -->
         <a href="javascript:;" style="position: relative; top: -9px;">Reset Form</a>
@@ -288,7 +288,7 @@
         <div style='margin-top: 8px;' class='adv_quick_search_submit'>
             <!-- XXX TODO make a real form, and make a real submitter (quick
             submit, FKA advGenericSearch() -->
-            <img src="/opac/skin/kcls/graphics/search_btn.gif"
+            <img src="/images/search_btn.gif"
                 alt="Search" id="adv_quick_submit" style="cursor:pointer;" />
         </div>
     </div>
@@ -325,7 +325,7 @@
             href='javascript:advAddMARC();'>&search.marc.add.row;</a>
         <!-- XXX TODO make a real form, and make a real submitter (FKA
         advMARCRun()) -->
-        <img alt="Search" src="/opac/skin/kcls/graphics/search_btn.gif"
+        <img alt="Search" src="/images/search_btn.gif"
             style="cursor:pointer;" />
     </div>
 </div>

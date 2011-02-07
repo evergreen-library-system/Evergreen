@@ -2,14 +2,14 @@
 <div id="header">
     <div class="float-left"><a
         href="http://www.kcls.org"><img alt="KCLS Logo"
-        src="/opac/skin/kcls/graphics/KCLS_logo_horiz.gif" /></a></div>
+        src="/images/KCLS_logo_horiz.gif" /></a></div>
     <div class="float-right">
         <div id="your-acct-login"><a
             href="[% skin_root %]login" id="home_myopac_link"><img
             alt="Your Account Log in"
-            src="/opac/skin/kcls/graphics/login-btn.png"
-            onmouseover="this.src='/opac/skin/kcls/graphics/login-btn-hover.png';"
-            onmouseout="this.src='/opac/skin/kcls/graphics/login-btn.png';" /></a></div>
+            src="/images/login-btn.png"
+            onmouseover="this.src='/images/login-btn-hover.png';"
+            onmouseout="this.src='/images/login-btn.png';" /></a></div>
 
 
     </div>

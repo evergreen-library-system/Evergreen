@@ -4,18 +4,18 @@
 <div id='myopac_holds_div'>
     <div id="acct_holds_tabs" style="padding-bottom: 12px;color:#666;">
         <div class="align selected" id="holds_label">
-            <img src="/opac/skin/kcls/graphics/sub_holds_on.jpg" />
+            <img src="/images/sub_holds_on.jpg" />
         </div>
         <div class="align hide_me" id="holds_hist_link">
             <a href="#"><img
-                src="/opac/skin/kcls/graphics/sub_holds_hist_off.jpg" /></a>
+                src="/images/sub_holds_hist_off.jpg" /></a>
         </div>
         <div class="align hide_me" id="holds_link">
             <a href="#"><img
-                src="/opac/skin/kcls/graphics/sub_holds_off.jpg" /></a>
+                src="/images/sub_holds_off.jpg" /></a>
         </div>
         <div class="align selected hide_me" id="holds_hist_label">
-            <img src="/opac/skin/kcls/graphics/sub_holds_hist_on.jpg" />
+            <img src="/images/sub_holds_hist_on.jpg" />
         </div>	
         <div class="clear-both"></div>
     </div>
@@ -54,12 +54,12 @@
                 <td width="1" style="padding-left:9px;">
                     <a href="#"><img
                         alt="Save"
-                        src="/opac/skin/kcls/graphics/save-btn.png" /></a>
+                        src="/images/save-btn.png" /></a>
                 </td>
                 <td width="1" style="padding-left:5px;">
                     <a href="#"><img
                         alt="Holds Help"
-                        src="/opac/skin/kcls/graphics/question-mark.png" /></a>
+                        src="/images/question-mark.png" /></a>
                 </td>
                 <td align="right">
                     <select class="hide_me" id="holds_sort">
