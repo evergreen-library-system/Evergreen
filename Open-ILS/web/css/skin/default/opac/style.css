@@ -506,6 +506,12 @@ div.select-wrapper:hover {
 	font-weight: bold;
 }
 
+#hp-ql-bottom img {
+    position:relative;
+    top:-1px;
+    left:2px;
+}
+
 #content-wrapper {
 	background: white;
 	min-height: 260px;
@@ -513,9 +519,10 @@ div.select-wrapper:hover {
 }
 
 #main-content {
-	width: 974px;
-	margin:auto;
-	padding-left:0px;
+    /* on devcatalog: width: 974px; margin:auto; padding-left:0px; */
+	width: 694px;
+	margin: auto;
+	padding-left: 17px;
 }
 
 #main-content .login_boxes {
