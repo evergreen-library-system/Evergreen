@@ -33,7 +33,7 @@
                                     <div style="border-bottom:1px dotted #ccc;padding-top:10px;"
                                         class="rdetail_aux_utils">
                                         <a href="place_hold" id="rdetail_place_hold"><img
-                                            src="/images/green_check.png" alt="place hold" />
+                                            src="[% ctx.media_prefix %]/images/green_check.png" alt="place hold" />
                                             <span style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
                                     </div>
                                     <div style="padding-top:6px;" class="rdetail_aux_utils">
@@ -45,7 +45,7 @@
                                         </div>
                                         <a href="#"><img
                                             alt="add to my list"
-                                            src="/images/clipboard.png" /></a>
+                                            src="[% ctx.media_prefix %]/images/clipboard.png" /></a>
                                     </div>
                                 </div>
                                 <div style="float:right;margin-right:17px;">
@@ -131,24 +131,24 @@
 
 <div id="rdetail_locs_expand">
     <a href="#"><img
-        src="/images/plus_sign.png" /></a>
+        src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
     <a style="position:relative;top:-3px;" href="#">Show more locations</a>
 </div>
 
 <div id="rdetail_locs_collapse" class="hide_me">
     <a href="#"><img
-        src="/images/plus_sign.png" /></a>
+        src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
     <a style="position:relative;top:-3px;" href="#">Collapse locations</a>
 </div>
 
 <div id="rdetail_extras_expand">
     <a href="#"><img
-        src="/images/plus_sign.png" /></a>
+        src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
     <a style="position:relative;top:-3px;" href="#">Expand all tabs</a>
 </div>
 
 <div id="rdetail_extras_collapse" class="hide_me">
-    <a href="#"><img src="/images/plus_sign.png" /></a>
+    <a href="#"><img src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
     <a style="position:relative;top:-3px;" href="#">Collapse all tabs</a>
 </div>
 
@@ -168,11 +168,11 @@
                             </td>
                             <td width="1" valign="top" align="right" style="white-space:nowrap;">
                                 <a href="place_hold" id=''><img alt="Place Hold"
-                                    src="/images/place_hold.gif" /></a>
+                                    src="[% ctx.media_prefix %]/images/place_hold.gif" /></a>
                                 <a href="#" id="rd_reviews_and_more" target="_blank"><img
-                                    alt="Reviews and More" src="/images/reviews.gif" /></a>
+                                    alt="Reviews and More" src="[% ctx.media_prefix %]/images/reviews.gif" /></a>
                                 <a href="#" id=""><img alt="Add to My List"
-                                    src="/images/add_mylist.gif" /></a>
+                                    src="[% ctx.media_prefix %]/images/add_mylist.gif" /></a>
                             </td>
                         </tr>
                     </table>

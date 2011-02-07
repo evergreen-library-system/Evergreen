@@ -7,33 +7,33 @@
             <div style="float:left;">
                 <div class="align selected"
                      id="prefs_info_lbl"><img src=
-                     "/images/sub_prefs_info_on.jpg" /></div>
+                     "[% ctx.media_prefix %]/images/sub_prefs_info_on.jpg" /></div>
 
                 <div class="align hide_me"
                      id="prefs_info_link">
                     <a href="#"><img src=
-                         "/images/sub_prefs_info_off.jpg" /></a>
+                         "[% ctx.media_prefix %]/images/sub_prefs_info_off.jpg" /></a>
                 </div>
 
                 <div class="align"
                      id="prefs_notify_link">
                     <a href="#"><img src=
-                         "/images/sub_prefs_notify_off.jpg" /></a>
+                         "[% ctx.media_prefix %]/images/sub_prefs_notify_off.jpg" /></a>
                 </div>
 
                 <div class="align selected hide_me"
                      id="prefs_notify_lbl"><img src=
-                     "/images/sub_prefs_notify_on.jpg" /></div>
+                     "[% ctx.media_prefix %]/images/sub_prefs_notify_on.jpg" /></div>
 
                 <div class="align"
                      id="prefs_search_link">
                     <a href="#"><img src=
-                         "/images/sub_prefs_search_off.jpg" /></a>
+                         "[% ctx.media_prefix %]/images/sub_prefs_search_off.jpg" /></a>
                 </div>
 
                 <div class="align selected hide_me"
                      id="prefs_search_lbl"><img src=
-                     "/images/sub_prefs_search_on.jpg" /></div>
+                     "[% ctx.media_prefix %]/images/sub_prefs_search_on.jpg" /></div>
             </div>
 
             <div style="float:right;width:65px;">
@@ -42,7 +42,7 @@
                         <a id='acct_prefs_save'
                              class='hide_me'
                              href="#"><img alt="Save"
-                             src="/images/save-btn.png" /></a>
+                             src="[% ctx.media_prefix %]/images/save-btn.png" /></a>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                                 <a href="#">
                                 <img alt="Search Hits Help"
                                      src=
-                                     "/images/question-mark.png" /></a>
+                                     "[% ctx.media_prefix %]/images/question-mark.png" /></a>
                             </div>
                         </div><select id='prefs_hits_per'
                             style="position:relative;z-index:100;">
@@ -399,7 +399,7 @@
                                     <a href="#">
                                     <img alt="Username Help"
                                          src=
-                                         "/images/question-mark.png" /></a>
+                                         "[% ctx.media_prefix %]/images/question-mark.png" /></a>
                                 </div>
                             </div>[% l("Username") %]
                         </td>
@@ -600,7 +600,7 @@
                                     <td>
                                         <a href="#"><img
                                             alt="Address Help"
-                                            src="/images/question-mark.png" /></a>
+                                            src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                                     </td>
                                 </tr>
                             </table>

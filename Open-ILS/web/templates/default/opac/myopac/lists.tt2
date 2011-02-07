@@ -15,7 +15,7 @@
                 Share this list?
                 <a href="#"><img
                     alt="Sharing Help"
-                    src="/images/question-mark.png" /></a>
+                    src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
             </td>
             <td>
                 <input type="radio" value="0" name="shareList"
@@ -29,10 +29,10 @@
         </tr>
     </table>
     <a href="#"><img
-        alt="Submit" src="/images/btnSubmit.png" /></a>
+        alt="Submit" src="[% ctx.media_prefix %]/images/btnSubmit.png" /></a>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a href="#"><img
-        alt="Cancel" src="/images/btnCancel.png" /></a>
+        alt="Cancel" src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
 </div>
 <div id='myopac_bookbag_div' style="padding:5px;">
     <div class="header_middle">
@@ -47,9 +47,9 @@
                 <a href="#"
                     style="position:relative;top:-3px;left:-5px;"><img
                     alt="Saving Help"
-                    src="/images/question-mark.png" /></a>
+                    src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                 <a id='acct_lists_save' href="#"><img alt="Save"
-                    src="/images/save-btn.png" /></a>
+                    src="[% ctx.media_prefix %]/images/save-btn.png" /></a>
             </div>
         </div>
     </div>
@@ -67,7 +67,7 @@
                         <td>
                             <a href="#"><img
                                 alt="Anonymous List Help"
-                                src="/images/question-mark.png" /></a>
+                                src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                         </td>
                     </tr>
                 </table>
@@ -105,7 +105,7 @@
                     <div style="float:left;padding:5px 0px 0px 10px;">
                         <a target='_blank' name='share_list_rss'
                             class='hide_me'><img alt="RSS Feed" border="0"
-                            src="/opac/images/small-rss.png"
+                            src="/opac[% ctx.media_prefix %]/images/small-rss.png"
                             title="You are sharing this list"/></a>
                     </div>
                     <div style="float:left;padding:5px 0px 0px 10px;">
@@ -178,7 +178,7 @@
                     <a name='myopac_bb_published_atom'
                         class='unadorned_link hide_me'>
                         <img alt="RSS Feed" border="0"
-                        src="/opac/images/small-rss.png"
+                        src="/opac[% ctx.media_prefix %]/images/small-rss.png"
                         title="[% l("ATOM Feed") %]" />
                     </a>
                 </td>

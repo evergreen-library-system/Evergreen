@@ -3,27 +3,27 @@
             <div class="float-right">
                 <div class="pos-rel">
                     <img
-                        src="/images/utils-corner-left.png"
+                        src="[% ctx.media_prefix %]/images/utils-corner-left.png"
                         class="float-left" />
                     <div class="left-corner"> 
                         <a href="javascript:history.go(-1)"
                             id="util_back_btn"><img alt="Back"
-                            src="/images/tool_back.png" /></a>
+                            src="[% ctx.media_prefix %]/images/tool_back.png" /></a>
                         <a href="[% skin_root %]home"
                             id="util_home_btn"><img alt="Homepage"
-                            src="/images/tool_home.png" /></a>
+                            src="[% ctx.media_prefix %]/images/tool_home.png" /></a>
                         <a href="javascript:window.print();"
                             id="util_print_btn"><img alt="Print Page"
-                            src="/images/tool_print.png" /></a>
+                            src="[% ctx.media_prefix %]/images/tool_print.png" /></a>
                         <a href="http://www.kcls.org/usingthelibrary/catalog_help/index.cfm"
                             id="util_help_btn"><img alt="Help"
-                            src="/images/tool_help.png" /></a>
+                            src="[% ctx.media_prefix %]/images/tool_help.png" /></a>
                         <a href="javascript:history.go(+1)"
                             id="util_forw_btn"><img alt="Forward"
-                            src="/images/tool_forward.png" /></a>
+                            src="[% ctx.media_prefix %]/images/tool_forward.png" /></a>
                     </div>
                     <img
-                        src="/images/utils-corner-right.png"
+                        src="[% ctx.media_prefix %]/images/utils-corner-right.png"
                         class="float-left" />
                 </div>
             </div>

@@ -9,30 +9,30 @@
         <div id="myopac_sum_fines">
             <div style="position:absolute;">
                 <div style="position:relative;top:-15px;left:-23px;">
-                    <img src="/images/acct_sum_fines_tl.png" />
+                    <img src="[% ctx.media_prefix %]/images/acct_sum_fines_tl.png" />
                 </div>
             </div>
             <div style="position:absolute;">
                 <div style="position:relative;top:-15px;left:172px;">
-                    <img src="/images/acct_sum_fines_tr.png" />
+                    <img src="[% ctx.media_prefix %]/images/acct_sum_fines_tr.png" />
                 </div>
             </div>
             <div style="position:absolute;">
                 <div style="position:relative;top:161px;left:-23px;">
-                    <img src="/images/acct_sum_fines_bl.png" />
+                    <img src="[% ctx.media_prefix %]/images/acct_sum_fines_bl.png" />
                 </div>
             </div>
             <div style="position:absolute;">
                 <div style="position:relative;top:161px;left:172px;">
-                    <img src="/images/acct_sum_fines_br.png" />
+                    <img src="[% ctx.media_prefix %]/images/acct_sum_fines_br.png" />
                 </div>
             </div>
             Fines: <span id="myopac_sum_fines_bal">$0.00</span><br />
             <a class="hide_me" href="#" id="pay_fines_btn1"><img
                 alt="Pay Fines"
-                onmouseover="this.src='/images/pay-fines-btn-hover.png';"
-                onmouseout="this.src='/images/pay-fines-btn.png';"
-                src="/images/pay-fines-btn.png"
+                onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
+                onmouseout="this.src='[% ctx.media_prefix %]/images/pay-fines-btn.png';"
+                src="[% ctx.media_prefix %]/images/pay-fines-btn.png"
                 style="position:relative;top:5px;" /></a>
         </div>
         <div style="width:662px;">
@@ -240,8 +240,8 @@
                 </table>
             </div>
             <a href="#"><img alt="Pay Fines"
-                onmouseover="this.src='/images/pay-fines-btn-hover.png';"
-                src="/images/pay-fines-btn.png"
+                onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
+                src="[% ctx.media_prefix %]/images/pay-fines-btn.png"
                 style="position:relative;top:5px;" /></a>
             <br/>
         </div>
@@ -330,7 +330,7 @@
                         <div style="position:absolute;">
                             <div style="position:relative;left:80px;">
                                 <a href="#"><img
-                                    src="/images/question-mark.png" /></a>
+                                    src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                             </div>
                         </div>
                         Security Code

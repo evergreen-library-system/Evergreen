@@ -3,11 +3,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
         <link rel="stylesheet" type="text/css"
-            href="/css/skin/default/opac/semiauto.css" />
+            href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css" />
         <link rel="stylesheet" type="text/css"
-            href="/css/skin/default/opac/style.css" />
+            href="[% ctx.media_prefix %]/css/skin/default/opac/style.css" />
         <link rel="stylesheet" type="text/css"
-            href="/css/skin/default/opac/contentslider.css" />
+            href="[% ctx.media_prefix %]/css/skin/default/opac/contentslider.css" />
         <title>Catalog - King County Library - [% ctx.page_title %]</title>
         <link rel="unapi-server" type="application/xml" title="unAPI"
             href="/opac/extras/unapi" />

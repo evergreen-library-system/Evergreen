@@ -118,7 +118,7 @@
                                 </div>
                                 <div style="padding-top:14px;">
                                     <a href="#" id="login_button"><img
-                                        alt="Log in" src="/images/login-btn2.png" /></a>
+                                        alt="Log in" src="[% ctx.media_prefix %]/images/login-btn2.png" /></a>
                                     <input class="hide_me"
                                         id="login_form_submit" type="submit" />
                                     <a href="#"
@@ -133,14 +133,14 @@
                 <td class="login_boxes right_brain" align="center"
                     valign="top" width="291">
                     <a href="http://www.kcls.org/about/contact/"><img
-                        src="/images/questions.png"
+                        src="[% ctx.media_prefix %]/images/questions.png"
                         alt="Questions?" style="margin-top:29px;" /></a>
 	                <div style="width:182px;color:black;padding:5px 25px;">
                         Visit our FAQs section for answers to common questions
                         about how to use your account.
 	                </div>
                     <a href="http://www.kcls.org/usingthelibrary/catalog_help/index.cfm#FAQs"><img
-                        alt="FAQs" src="/images/faqs-btn.png"
+                        alt="FAQs" src="[% ctx.media_prefix %]/images/faqs-btn.png"
                         style="margin-top:13px;" /></a>
 	            </td>
             </tr>

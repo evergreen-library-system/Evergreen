@@ -27,9 +27,9 @@
                         <input type="button" id="search_submit" value="GO"
                             class="hide_me" /><a href="#"
                                 id="search_submit_alt"><img
-                                alt="Search" src="/images/go-btn.png"
-                            onmouseover="this.src='/images/go-btn-hover.png';"
-                            onmouseout="this.src='/images/go-btn.png';" /></a>
+                                alt="Search" src="[% ctx.media_prefix %]/images/go-btn.png"
+                            onmouseover="this.src='[% ctx.media_prefix %]/images/go-btn-hover.png';"
+                            onmouseout="this.src='[% ctx.media_prefix %]/images/go-btn.png';" /></a>
                     </div>
                 </div>
             </td>

@@ -4,19 +4,19 @@
 <div id='myopac_checked_div' style="padding:0px;">
     <div id="acct_checked_tabs" style="padding-bottom: 12px;color:#666;">
         <div class="align selected" id="checked_label">
-            <img src="/images/sub_checked_out_on.jpg" />
+            <img src="[% ctx.media_prefix %]/images/sub_checked_out_on.jpg" />
         </div>
         <div class="align" id="checked_hist_link">
             <a class="" href="#"><img
-                src="/images/sub_checked_hist_off.jpg" /></a>
+                src="[% ctx.media_prefix %]/images/sub_checked_hist_off.jpg" /></a>
         </div>
         <div class="align hide_me" id="checked_link">
             <a href="#">
-                <img src="/images/sub_checked_out_off.jpg" />
+                <img src="[% ctx.media_prefix %]/images/sub_checked_out_off.jpg" />
             </a>
         </div>
         <div class="align selected hide_me" id="checked_hist_label">
-            <img src="/images/sub_checked_hist_on.jpg" />
+            <img src="[% ctx.media_prefix %]/images/sub_checked_hist_on.jpg" />
         </div>    
         <div class="clear-both"></div>
     </div>
@@ -40,11 +40,11 @@
                 <td style="padding-left:9px;">
                     <a class="hide_me" href="#"><img
                         alt="Save"
-                        src="/images/save-btn.png" /></a>
+                        src="[% ctx.media_prefix %]/images/save-btn.png" /></a>
                 </td>
                 <td style="padding-left:5px;">
                     <a href="#"><img alt="Renewing Help"
-                        src="/images/question-mark.png" /></a>
+                        src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                 </td>
             </tr>
         </table>

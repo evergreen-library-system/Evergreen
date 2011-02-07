@@ -46,10 +46,10 @@
             services, please select "Outreach" to have the item delivered
             during your scheduled visit.</p>
         <a href="#" id="holds_submit"><img
-            alt="Submit" src="/images/btnSubmit.png" /></a>
+            alt="Submit" src="[% ctx.media_prefix %]/images/btnSubmit.png" /></a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="#" id="holds_cancel"><img
-            alt="Cancel" src="/images/btnCancel.png" /></a>
+            alt="Cancel" src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
         <br /><br />
         <p>* If you need your item today, and it is checked in at your
             library, please place your hold and then call your library to set it
