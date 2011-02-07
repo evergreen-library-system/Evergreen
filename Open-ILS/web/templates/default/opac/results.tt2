@@ -1,117 +1,60 @@
-[% BLOCK html_head %]
-<style>
-    #body_table { width: 100%; margin-top: 20px; }
-    #left_block { width: 15%; vertical-align: top; }
-    #right_block { width: auto; vertical-align: top;}
-    #record_table { border-collapse: collapse; width:100%; }
-    #record_table td { padding: 3px; border-bottom: 1px solid #ddd; }
-    #record_table tr:nth-child(odd) { background-color:#ded; }
-    .record-table-odd { background-color:#ded; }
-    #form_div { text-align: center; width: 100%; margin-top: 10px;}
-    #links_div { margin-bottom: 10px; padding: 5px;}
-</style>
-[% END %]
-
-[% 
-    USE CGI;
-    USE POSIX;
-    WRAPPER "default/opac/base.tt2"; 
-    PROCESS "default/opac/common.tt2";
-    ctx.page_title = "Results";
-    page = CGI.param('page') || 0; 
-    query = CGI.param('query');
-    page_count = POSIX.ceil(ctx.hit_count / ctx.page_size);
-    loc = CGI.param('loc');
-%]
-
-<div id='form_div'>
-    <form action='./results' method='GET'>
-        <input type='text' name='query' size='50' value='[% query %]'/>
-        [% PROCESS build_org_selector name='loc' value=loc %]
-        <input type='submit'/>
-        <input type='hidden' name='page' value='0'/>
-    </form>
-</div>
-
-<table id='body_table'>
-    <tr>
-        <td id='left_block'>
-                [% IF ctx.user; %]
-                    <div id='links_div'>
-                        <div><a href='home'>Home</a></div>
-                        <div><a href='myopac/main'>Account</a></div>
-                        <div><a href='logout'>Logout</a></div>
-                    </div>
-                    <hr/>
-                    <table>
-                        <tr><td colspan='2' style='border-bottom:1px solid #9A9'>Signed in as [% ctx.user.usrname %]</td></tr>
-                        <tr><td>Total Holds</td><td>[% ctx.user_stats.holds.total %]</td></tr>
-                        <tr><td>Ready Holds</td><td>[% ctx.user_stats.holds.ready %]</td></tr>
-                        <tr><td>Items Out</td><td>[% ctx.user_stats.checkouts.out %]</td></tr>
-                        <tr><td>Fines</td><td>$[% ctx.user_stats.fines.balance_owed %]</td></tr>
-                    </table>
-                [% ELSE %]
-                    [% 
-                        login = CGI.url("-path" => 1).replace('^http:', 'https:').replace('/results','/login');
-                    %]
-                    <a href='[% login %]'>Login</a>
-                [% END %]
+[%  WRAPPER "default/opac/parts/base.tt2";
+    INCLUDE "default/opac/parts/topnav.tt2";
+    ctx.page_title = "Search Results" %]
+    <div id="search-wrapper">
+        [% INCLUDE "default/opac/parts/utils.tt2" %]
+        [% INCLUDE "default/opac/parts/searchbar.tt2" %]
+    </div>
+    <div id="content-wrapper">
+        <div id="results_header_bar"><!-- XXX give #results_header_bar its own file -->
+            <div id="results_header_inner">
+                <div class="results_header_btns">
+                    <a href="index.xml"><img alt="Another Search"
+                        src="/images/another_search.png"
+                        onmouseover="this.src='/images/another_search_hover.png';"
+                        onmouseout="this.src='/images/another_search.png';" /></a>
+                </div>
+                <div class="results_header_btns">
+                    <a href="advanced"><img alt="Advanced Search"
+                        src="/images/adv_search.png"
+                        onmouseover="this.src='/images/adv_search_hover.png';"
+                        onmouseout="this.src='/images/adv_search.png';" /></a>
+                </div>
+                <div class="results_header_btns cached_list_div">
+                    <a href="#" class="hide_me" id="cacheListLink"><img
+                        alt="View My List"
+                        src="/images/view_my_list.png"
+                        onmouseover="this.src='/images/view_my_list_hover.png';"
+                        onmouseout="this.src='/images/view_my_list.png';" /></a>
+                </div>
+                <div class="results_header_div"></div>
+                <div class="results_header_lbl">Sort by</div>
+        <!--#if expr="$OILS_PAGE='rresult.xml' || $OILS_PAGE='mresult.xml'"-->
+        <!--#include virtual="result/filtersort.xml" -->
+        <!--#endif -->
+                <div class="results_header_div"></div>
+                <div class="results_header_lbl">View</div>
+                <select class="results_header_sel">
+                    <option>Simple</option>
+                    <option>Detailed</option>
+                </select>
+                <div class="results_header_div"></div>
+                <input type="checkbox" id="limit_to_available" />
+                <label for="limit_to_available" class="results_header_lbl">
+                    Limit to available items
+                </label>
+                <div class="clear-both"></div>
             </div>
-            <div>
-                [% FOR facet_type IN ctx.search_facets.keys %]
-                    [% cmf = ctx.search_facets.$facet_type.cmf %]
-                    <b>[% cmf.label %]</b>
-                    <ul>
-                        [% FOR facet IN ctx.search_facets.$facet_type.data.keys %]
-                            [% facet_count = ctx.search_facets.$facet_type.data.$facet %]
-                            <li><a href='results?query=[% query | url %]&facet=[% cmf.field_class %]|[% cmf.name %][[% facet | url %]]'>[% facet_count %] / [% facet %]</a></li>
-                        [% END %]
-                    </ul>
-                [% END %]
+        </div>
+        <div id="main-content">
+            <div id="tehResultsPage">
+                [% INCLUDE "default/opac/parts/result/header.tt2" %]
+                <div id="rresults_page">
+                    [% INCLUDE "default/opac/parts/result/table.tt2" %]
+                    [% INCLUDE "default/opac/parts/result/lowhits.tt2" %]
+                </div>
             </div>
-        </td>
-        <td id='right_block'>
-            <div>
-                <span>[% l('Hits: [_1] / Page [_2] of [_3]', ctx.hit_count, page + 1, page_count) %]</span>
-                [% 
-                    q = query | url;
-                    np_link = '?query=' _ q;
-                    IF loc; np_link = np_link _ "&loc=" _ loc; END;
-                    IF depth or depth == 0; np_link = np_link _ "&depth=" _ depth; END;
-                %]
-                <a [% IF page > 0 %] href='[% np_link %]&page=[% page - 1 %]' [% END %]>Prev</a>  
-                <a [% IF (page + 1) < page_count %] href='[% np_link %]&page=[% page + 1 %]' [% END %]>Next</a>
-            </div>
-            <table id='record_table'>
-                [%
-                FOR rec IN ctx.records;
-                    attrs = {marc_xml => rec.marc_xml};
-                    PROCESS get_marc_attrs args=attrs;
-                %]
-                <tr [% IF loop.count % 2 == 1 %] class='record-table-odd' [% END %]>
-                    <td style='width:52px;height:72px'>
-                        [% IF attrs.isbn %]
-                        <img width='50' height='70' src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% attrs.isbn_clean || attrs.upc %]'/>
-                        [% END %]
-                    </td>
-                    <td width='auto'>
-                        <div width='99%'>
-                            <div style='float:left'>
-                                <a href='record/[% rec.bre.id %]'>[% attrs.title %]</a>
-                            </div>
-                            <div style='float:right'>
-                                <span>[% rec.copy_counts.available %] / [% rec.copy_counts.visible %]</span>
-                                <span style='padding-left:10px;'><a href='place_hold?hold_target=[% rec.bre.id %]&hold_type=T'>Hold</a></span>
-                            </div>
-                        </div><br/>
-                        <div>[% attrs.author %]</div>
-                        <div>[% attrs.isbn || attrs.issn || attrs.upc %] [% attrs.publisher %] [% attrs.pubdate %]</div>
-                    </td>
-                </tr>
-                [% END %]
-            </table>
-        </td>
-    </tr>
-
-</table>
+            <div class="common-full-pad"></div>    
+        </div>
+    </div>
 [% END %]

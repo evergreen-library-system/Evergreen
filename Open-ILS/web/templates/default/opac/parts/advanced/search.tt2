@@ -14,7 +14,7 @@
                     </tr>
                 </thead>
                 <tbody id='adv_global_tbody'>
-                    [% INCLUDE "default/kcls-wire/parts/advanced/global_row.tt2" %]
+                    [% INCLUDE "default/opac/parts/advanced/global_row.tt2" %]
                     <!-- add a new row -->
                     <tr id='adv_global_addrow'>
                         <td align='left' style="padding-top:7px;">
@@ -28,7 +28,7 @@
     <tr>
         <td align='center'>
             &advanced.search.library;<br /><br />
-            [% INCLUDE "default/kcls-wire/parts/libselect.tt2" %]
+            [% INCLUDE "default/opac/parts/libselect.tt2" %]
             <br /><br />
             <span>&result.limit2avail;</span>
             <input type='checkbox' id='opac.result.limit2avail'/>
@@ -125,7 +125,7 @@
                         </td>
                         <td align='left'>
                             <select multiple='multiple' size='3' id='adv_global_lang'>
-                                [% INCLUDE "default/kcls-wire/parts/item_lang_options.tt2" %]
+                                [% INCLUDE "default/opac/parts/item_lang_options.tt2" %]
                             </select>
                         </td>
 

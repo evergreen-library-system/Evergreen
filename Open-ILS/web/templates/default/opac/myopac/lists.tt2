@@ -1,5 +1,5 @@
-[%  WRAPPER "default/kcls-wire/parts/base.tt2" +
-        "default/kcls-wire/parts/myopac/base.tt2";
+[%  WRAPPER "default/opac/parts/base.tt2" +
+        "default/opac/parts/myopac/base.tt2";
     myopac_page = "lists"  %]
 <div
     style="margin-top: 6px;margin-left:20px;width:250px;padding:5px;"

@@ -1,0 +1,39 @@
+[% BLOCK html_head %]
+<style>
+    table { text-align: center; padding: 20px; margin-top: 30px; border-collapse: collapse; }
+    table td { padding: 5px 15px 5px 15px; border-bottom: 1px solid #ddd; text-align: left;}
+    table tr:nth-child(odd) { background-color:#ded; }
+</style>
+[% END %]
+
+[% WRAPPER "default/opac/base.tt2" %]
+[% INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "main" %]
+<table>
+    <tr>
+        <td>First Name</td>
+        <td>[% ctx.user.first_given_name %]</td>
+    </tr>
+    <tr>
+        <td>Middle Name</td>
+        <td>[% ctx.user.second_given_name %]</td>
+    </tr>
+    <tr>
+        <td>Last Name</td>
+        <td>[% ctx.user.family_name %]</td>
+    </tr>
+    <tr>
+        <td>Library Card</td>
+        <td>[% ctx.user.card.barcode %]</td>
+    </tr>
+    <tr>
+        <td>Email Address</td>
+        <td>[% ctx.user.email %]</td>
+        <td><a href='update_email'>Change</a></td>
+    </tr>
+    <tr>
+        <td>Phone</td>
+        <td>[% ctx.user.day_phone %]</td>
+    </tr>
+</table>
+
+[% END %]

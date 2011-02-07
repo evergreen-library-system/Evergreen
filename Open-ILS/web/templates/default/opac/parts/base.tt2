@@ -16,6 +16,6 @@
     </head>
     <body>
         [% content %] 
-        [% INCLUDE "default/kcls-wire/parts/footer.tt2" %]
+        [% INCLUDE "default/opac/parts/footer.tt2" %]
     </body>
 </html>

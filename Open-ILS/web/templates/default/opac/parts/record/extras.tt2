@@ -280,10 +280,10 @@
                 <span>&rdetail.extras.call.local; </span>
                 <select id='cn_browse_selector'> </select>
             </div>
-            [% INCLUDE "default/kcls-wire/parts/cn_browse.tt2" %]
+            [% INCLUDE "default/opac/parts/cn_browse.tt2" %]
         </div>
 
-        [% INCLUDE "default/kcls-wire/parts/record/cn_details.tt2" %]
+        [% INCLUDE "default/opac/parts/record/cn_details.tt2" %]
 
         <div rel="rdetail_copy_info_div" rel2="copyinfo"
             class="rdetail_extras" id="rdetail_copy_info_link">
@@ -296,7 +296,7 @@
             </div>
         </div>
 
-        [% INCLUDE "default/kcls-wire/parts/record/copyinfo.tt2" %]
+        [% INCLUDE "default/opac/parts/record/copyinfo.tt2" %]
 
         <div rel="rdetail_marc_div" rel2="marc" class="rdetail_extras" id="rdetail_viewmarc_link">
             <div class="rdetail_extras_hr"></div>

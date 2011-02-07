@@ -10,7 +10,7 @@
         </tr>
         <tr>
             <td>
-                [% INCLUDE "default/kcls-wire/parts/stypes_selector.tt2" %]
+                [% INCLUDE "default/opac/parts/stypes_selector.tt2" %]
             </td>
             <td>
                 <div id="search_box_wrapper">
@@ -36,10 +36,10 @@
         </tr>
         <tr>
             <td>
-                [% INCLUDE "default/kcls-wire/parts/format_selector.tt2" %]
+                [% INCLUDE "default/opac/parts/format_selector.tt2" %]
             </td>
             <td>
-                [% INCLUDE "default/kcls-wire/parts/libselect.tt2" %]
+                [% INCLUDE "default/opac/parts/libselect.tt2" %]
             </td>
         </tr>
     </table>

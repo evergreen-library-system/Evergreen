@@ -85,7 +85,7 @@
         &rdetail.record.deleted;
     </div>
 
-    [% INCLUDE "default/kcls-wire/parts/record/summary.tt2" %]
+    [% INCLUDE "default/opac/parts/record/summary.tt2" %]
     <br />
     <div style="width:100%;" class="hide_me">
         <div style="float:right;" class="hide_me" id="lib_info_more">
@@ -95,7 +95,7 @@
             <button>...Less</button>
         </div>
     </div>
-    [% INCLUDE "default/kcls-wire/parts/record/extras.tt2" %]
+    [% INCLUDE "default/opac/parts/record/extras.tt2" %]
 
     <div class='hide_me' id='rdetail_bb_none'>
         &rdetail.none;

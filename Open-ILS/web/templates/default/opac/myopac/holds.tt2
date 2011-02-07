@@ -1,94 +1,204 @@
-[% BLOCK html_head %]
-<style>
-    table { width: 100%; text-align: center; padding: 20px; margin-top: 30px; }
-    table { border-collapse: collapse; }
-    table { padding: 3px; border-bottom: 1px solid #ddd; text-align: left;}
-    table tr:nth-child(odd) { background-color:#ded; }
-    #action_div { width: 95%; }
-    #action-buttons { float:right; }
-</style>
-[% END %]
-
-[%  PROCESS "default/opac/common.tt2";
-    WRAPPER "default/opac/base.tt2";
-    INCLUDE "default/opac/myopac/_links.tt2" myopac_page = "holds" %]
-
-[% IF ctx.holds.size == 0 %]
-<b>No Items On Hold</b>
-[% STOP; END %]
-
-<form method='POST'>
-
-    <div id='action_div'>
-        <div id='action-buttons'>
-            <select name='action'>
-                <option value='cancel'>Cancel Selected</option>
-                <option value='cancel_all'>Cancel All</option>
-                <option value='suspend'>Suspend Selected</option>
-                <option value='suspend_all'>Suspend All</option>
-                <option value='activate'>Activate Selected</option>
-                <option value='activate_all'>Activate All</option>
-            </select>
-            <input type='Submit' value='Go'/>
+[%  WRAPPER "default/opac/parts/base.tt2" +
+        "default/opac/parts/myopac/base.tt2";
+    myopac_page = "holds"  %]
+<div id='myopac_holds_div'>
+    <div id="acct_holds_tabs" style="padding-bottom: 12px;color:#666;">
+        <div class="align selected" id="holds_label">
+            <img src="/images/sub_holds_on.jpg" />
         </div>
+        <div class="align hide_me" id="holds_hist_link">
+            <a href="#"><img
+                src="/images/sub_holds_hist_off.jpg" /></a>
+        </div>
+        <div class="align hide_me" id="holds_link">
+            <a href="#"><img
+                src="/images/sub_holds_off.jpg" /></a>
+        </div>
+        <div class="align selected hide_me" id="holds_hist_label">
+            <img src="/images/sub_holds_hist_on.jpg" />
+        </div>	
+        <div class="clear-both"></div>
     </div>
-    <table>
-        <thead>
+    <div class="header_middle">
+        <span id="acct_holds_header" style="float:left;">
+            Current Items on Hold
+        </span>
+        <span style="float:right;">
+            <a class="hide_me" href="#">Export List</a>
+        </span>
+    </div>
+    <div class="clear-both"></div>
+    <div id='holds_main'>
+        <table cellpadding='0' cellspacing='0' border='0'
+            style="padding:8px 0px 6px 0px;">
             <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Formats</th>
-                <th>Pickup Location</th>
-                <th>Status</th>
-                <th>Active</th>
-                <th>Activate on...</th>
-                <th>Expiration Date</th>
-                <th>Select</th>
-            </tr>
-        </thead>
-        <tbody>
-            [% FOR hold IN ctx.holds %]
-                [% attrs = {marc_xml => hold.marc_xml}; %]
-                [% PROCESS get_marc_attrs args=attrs; %]
-            <tr>
-                <td><a href='../record/[% hold.hold.bre.id %]'>[% attrs.title %]</a></td>
-                <td><a href='../results?query=au:[% attrs.author | url %]'>[% attrs.author %]</a></td>
-                <td>
-                    [%
-                        key = attrs.mattype;
-                        format_desc = ctx.find_citm(key).value;
-                        icon_filename = icon_by_mattype.$key;
-                        IF icon_filename;
-                    %]<!-- XXX in situations where we might show M-type holds, this won't be good enough -->
-                    <img alt="[% format_desc %]" title="[% format_desc %]"
-                        src="/images/mattype/[% icon_filename %]" />
-                    [%  END %]
+                <td width="1">
+                    <select id="acct_holds_actions">
+                        <option id='myopac_holds_actions_none' value=''>
+                        -- &myopac.holds.actions; --
+                        </option>
+                        <option value='freeze'>
+                            &myopac.holds.freeze_selected;
+                        </option>
+                        <option value='thaw'>
+                            &myopac.holds.thaw_selected;
+                        </option>
+                        <option value='thaw_date'>
+                            &myopac.holds.thaw_date_selected;
+                        </option>
+                        <option value='cancel'>
+                            &myopac.holds.cancel_selected;
+                        </option>
+                    </select>
                 </td>
-                <td>[% ctx.find_aou(hold.hold.hold.pickup_lib).name %]</td>
-                <td>[%
-                    IF hold.hold.status == 4;
-                        "Available";
-                    ELSIF hold.hold.estimated_wait;
-                        "Estimated wait (days): "; hold.hold.estimated_wait;
-                    ELSIF hold.hold.status == 3;
-                        "In Transit";
-                    ELSIF hold.hold.status < 3;
-                        "Waiting for copy";
-                    END;
-                %]</td>
-                <td>[% IF hold.hold.hold.frozen == 't' %] No [% ELSE %] Yes [% END %]</td>
-                <td>[% 
-                    IF hold.hold.hold.frozen == 't' AND hold.hold.hold.thaw_date;
-                        date.format(ctx.parse_datetime(hold.hold.hold.thaw_date),'%Y-%m-%d'); 
-                    ELSE;
-                        '-';
-                    END 
-                %]</td>
-                <td>[% hold.hold.hold.expire_time ? hold.hold.hold.expire_time : '-' %]</td>
-                <td><input type='checkbox' name='hold_id' value='[% hold.hold.hold.id %]'/></td>
+                <td width="1" style="padding-left:9px;">
+                    <a href="#"><img
+                        alt="Save"
+                        src="/images/save-btn.png" /></a>
+                </td>
+                <td width="1" style="padding-left:5px;">
+                    <a href="#"><img
+                        alt="Holds Help"
+                        src="/images/question-mark.png" /></a>
+                </td>
+                <td align="right">
+                    <select class="hide_me" id="holds_sort">
+                        <option value="">-- Sort By --</option>
+                        <option value="title">Title</option>
+                        <option value="pickup">PickUp Location</option>
+                        <option value="status">Status</option>
+                    </select>
+                </td>
             </tr>
-            [% END %]
-        </tbody>
+        </table>
+        <table id="acct_holds_main_header" cellpadding='0' cellspacing='0'
+            border='0' width="100%">
+            <tr>
+                <td width="36" align="center">
+                    <input type="checkbox" id="check_all_holds" />
+                </td>
+                <td width="138">
+                    <span title="Click to sort"
+                        style="cursor:pointer;">
+                        Title
+                    </span>
+                </td>
+                <td width="123">
+                    <span title="Click to sort" style="cursor:pointer;">Author</span>
+                </td>
+                <td width="64">
+                    <span title="Click to sort"
+                        style="cursor:pointer;">Format</span>
+                </td>
+                <td width="136">
+                    <span title="Click to sort"
+                        style="cursor:pointer;">Pickup Location</span>
+                </td>
+                <td width="104">Activate</td>
+                <td width="106">Cancel if not<br />filled by</td>
+                <td width="95">Active</td>
+                <td width="172">
+                    <span title="Click to sort"
+                        style="cursor:pointer;">Status</span>
+                </td>
+            </tr>
+        </table>
+        <div class="hide_me">
+            <select id="hold_pickup_lib_temp" name="hold_pickup_lib_sel"
+                class="hide_me" style="width:125px;height:21px;"></select>
+        </div>
+
+        <table cellpadding='0' cellspacing='0' border='0' width="100%">
+            <tbody id="holds_temp_parent">
+                <tr id="acct_holds_temp" name="acct_holds_temp"
+                    class="acct_holds_temp">
+                    <td width="36" align="center" style="text-align:center;">
+                        <input type="checkbox" name="check_all_holds" />
+                    </td>
+                    <td width="138">
+                        <div style="margin-top:10px;margin-bottom:10px;">
+                            <a href="#" name="myopac_holds_title_link"></a>
+                        </div>
+                    </td>
+                    <td width="123">
+                        <div style="margin-top:10px;margin-bottom:10px;"
+                            name="myopac_holds_author"></div>
+                    </td>
+                    <td width="64">
+                        <div style="width:26px;height:23px;margin-top:6px;margin-bottom:6px;"
+                            name="myopac_holds_formats">
+                        </div>
+                    </td>
+                    <td width="136">
+                        <span name="hold_pickup_lib_span"></span>
+                        <span name="hold_pickup_lib"></span>
+                    </td>
+                    <td width="104">
+                        <input
+                            title="Enter a date (e.g. 10/21/2010)"
+                            class="hide_me" style="width:91px;"
+                            name="activate_box" type="text" />
+                            <span name="activate_date"></span>
+                    </td>
+                    <td width="106">
+                        <input title="Enter a date (e.g. 10/21/2010)"
+                            class="hide_me" style="width:91px;"
+                            name="hold_expires_box" type="text" />
+                            <span name="hold_expires"></span>
+                    </td>
+                    <td width="95">
+                        <select name="hold_active_sel"
+                            style="width:90px;" class="hide_me">
+                            <option value="f">Active</option>
+                            <option value="t">Suspended</option>
+                        </select>
+                        <span name="hold_active"></span>
+                    </td>
+                    <td width="110">
+                        <div name="acct_holds_status"
+                            style="margin-top:10px;margin-bottom:10px;">
+                            <span class="hide_me"
+                                name="hold_ready_expire"></span>
+                        </div>
+                    </td>
+                    <td width="62" align="right"
+                        style="text-align:right;padding-right:7px;">
+                        <a name="hold_edit_link" href="#">Edit</a>
+                        <a href="#" name="hold_save_link"
+                            class="hide_me">Save</a>
+                        <a href="#" name="hold_cancel_link"
+                            class="hide_me">Back</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id='holds_hist_table' class="hide_me">testing...</div>
+
+    <span id='myopac.holds.cancel.confirm' class='hide_me'>&myopac.holds.cancel.confirm;</span>
+    <span id='myopac.holds.freeze.confirm' class='hide_me'>&myopac.holds.freeze.confirm;</span>
+    <span id='myopac.holds.thaw.confirm' class='hide_me'>&myopac.holds.thaw.confirm;</span>
+    <span id='myopac.holds.thaw_date.confirm' class='hide_me'>&myopac.holds.thaw_date.confirm;</span>
+    <span id='myopac.holds.freeze.select_thaw' class='hide_me'>&myopac.holds.freeze.select_thaw;</span>
+
+    <table width='100%' id='myopac_holds_processing' class='hide_me'>
+        <tr><td>&myopac.holds.processing;</td></tr>
     </table>
-</form> 
+   
+    <span class='hide_me' id='myopac_holds_cancel_verify'>
+    	&myopac.holds.verify;
+    </span>
+</div>
+<div id='myopac_holds_thaw_date_form' class='hide_me'>
+    <div id='myopac_holds_freeze_select_thaw'>
+        &myopac.holds.freeze.select_thaw;
+    </div>
+    <p>
+        <input size='10' maxlength='10'
+            type='text' id='myopac_holds_thaw_date_input' />
+    </p>
+    <p>
+        <button>&common.submit;</button>
+    </p>
+</div>
 [% END %]

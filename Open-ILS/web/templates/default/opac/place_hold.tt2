@@ -1,33 +1,15 @@
-[% BLOCK html_head %]
-<style>
-</style>
-[% END %]
-
-[% 
-    USE CGI;
-    PROCESS "default/opac/common.tt2";
-    WRAPPER "default/opac/base.tt2"; 
-    ctx.page_title = "Place Hold";
-    attrs = {marc_xml => ctx.marc_xml};
-    PROCESS get_marc_attrs args=attrs;
-%]
-
-
-<div>
-    <div>Placing hold on [% attrs.title %], by [% attrs.author %]</div>
-    [% IF ctx.hold_success %] 
-        <div>Succeeded</div>
-    [% ELSIF ctx.hold_failed %]
-        <div>Failed...</div>
-    [% ELSE %]
-    <form action='place_hold' method='POST'>
-        Choose a pickup Library [% PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib %]
-        <input type='Submit'/>
-        <input type='hidden' name='hold_target' value='[% CGI.param('hold_target') %]'/>
-        <input type='hidden' name='hold_type' value='[% CGI.param('hold_type') %]'/>
-        <input type='hidden' name='redirect_to' value='[% ctx.referer %]'/>
-    </form>
-    [% END %]
-</div>
-
+[%  WRAPPER "default/opac/parts/base.tt2";
+    INCLUDE "default/opac/parts/topnav.tt2";
+    ctx.page_title = "Place Hold" %]
+    <div id="search-wrapper">
+        [% INCLUDE "default/opac/parts/utils.tt2" %]
+        [% INCLUDE "default/opac/parts/searchbar.tt2" %]
+    </div>
+    <div id="content-wrapper">
+        <div id="main-content">
+            <div class="common-full-pad"></div>	
+            [% INCLUDE "default/opac/parts/place_hold.tt2" %]
+            <div class="common-full-pad"></div>	
+        </div>
+    </div>
 [% END %]

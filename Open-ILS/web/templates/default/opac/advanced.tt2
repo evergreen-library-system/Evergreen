@@ -1,8 +1,8 @@
-[%  WRAPPER "default/kcls-wire/parts/base.tt2";
-    INCLUDE "default/kcls-wire/parts/topnav.tt2";
+[%  WRAPPER "default/opac/parts/base.tt2";
+    INCLUDE "default/opac/parts/topnav.tt2";
     ctx.page_title = "Advanced Search" %]
     <div id="search-wrapper">
-        [% INCLUDE "default/kcls-wire/parts/utils.tt2" %]
+        [% INCLUDE "default/opac/parts/utils.tt2" %]
         <div id="adv_search_parent">
             <div id="adv_search_tabs">
                 <a href="#" alt="Advanced Search" id="adv_search"
@@ -17,7 +17,7 @@
     <div id="content-wrapper">
         <div id="main-content">
             <div class="advanced_div">
-            [% INCLUDE "default/kcls-wire/parts/advanced/search.tt2" %]
+            [% INCLUDE "default/opac/parts/advanced/search.tt2" %]
             </div>
             <div class="common-full-pad"></div>	
         </div>
