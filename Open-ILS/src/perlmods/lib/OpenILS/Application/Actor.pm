@@ -1749,6 +1749,7 @@ __PACKAGE__->register_method(
     method   => "user_transaction_retrieve",
     api_name => "open-ils.actor.user.transaction.fleshed.retrieve",
     argc     => 1,
+    authoritative => 1,
     notes    => "Returns a fleshed transaction record"
 );
 
@@ -1756,68 +1757,55 @@ __PACKAGE__->register_method(
     method   => "user_transaction_retrieve",
     api_name => "open-ils.actor.user.transaction.retrieve",
     argc     => 1,
+    authoritative => 1,
     notes    => "Returns a transaction record"
 );
 
 sub user_transaction_retrieve {
-	my( $self, $client, $login_session, $bill_id ) = @_;
+	my($self, $client, $auth, $bill_id) = @_;
 
-	# I think I'm deprecated... make sure.   phasefx says, "No, I'll use you :)
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
 
-	my $trans = $apputils->simple_scalar_request( 
-		"open-ils.cstore",
-		"open-ils.cstore.direct.money.billable_transaction_summary.retrieve",
-		$bill_id
-	);
+    my $trans = $e->retrieve_money_billable_transaction_summary(
+        [$bill_id, {flesh => 1, flesh_fields => {mbts => ['usr']}}]) or return $e->event;
 
-	my( $user_obj, $target, $evt ) = $apputils->checkses_requestor(
-		$login_session, $trans->usr, 'VIEW_USER_TRANSACTIONS' );
-	return $evt if $evt;
-	
-	my $api = $self->api_name();
-	if($api !~ /fleshed/o) { return $trans; }
+    return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS', $trans->usr->home_ou);
 
-	if( $trans->xact_type ne 'circulation' ) {
-		$logger->debug("Returning non-circ transaction");
-		return {transaction => $trans};
-	}
+    $trans->usr($trans->usr->id); # de-flesh for backwards compat
 
-	my $circ = $apputils->simple_scalar_request(
-			"open-ils.cstore",
-			"open-ils.cstore.direct.action.circulation.retrieve",
-			$trans->id );
+    return $trans unless $self->api_name =~ /flesh/;
+    return {transaction => $trans} if $trans->xact_type ne 'circulation';
 
-	return {transaction => $trans} unless $circ;
-	$logger->debug("Found the circ transaction");
-
-	my $title = $apputils->simple_scalar_request(
-		"open-ils.storage", 
-		"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
-		$circ->target_copy );
-
-	return {transaction => $trans, circ => $circ } unless $title;
-	$logger->debug("Found the circ title");
+    my $circ = $e->retrieve_action_circulation([
+        $trans->id, {
+            flesh => 3,
+            flesh_fields => {
+                circ => ['target_copy'],
+                acp => ['call_number'],
+                acn => ['record']
+            }
+        }
+    ]);
 
 	my $mods;
-    my $copy = $apputils->simple_scalar_request(
-        "open-ils.cstore",
-        "open-ils.cstore.direct.asset.copy.retrieve",
-        $circ->target_copy );
+    my $copy = $circ->target_copy;
 
-	try {
+    if($circ->target_copy->call_number->id == OILS_PRECAT_CALL_NUMBER) {
+        $mods = new Fieldmapper::metabib::virtual_record;
+        $mods->doc_id(OILS_PRECAT_RECORD);
+        $mods->title($copy->dummy_title);
+        $mods->author($copy->dummy_author);
+
+    } else {
 		my $u = OpenILS::Utils::ModsParser->new();
-		$u->start_mods_batch($title->marc());
+		$u->start_mods_batch($circ->target_copy->call_number->record->marc);
 		$mods = $u->finish_mods_batch();
-	} otherwise {
-		if ($title->id == OILS_PRECAT_RECORD) {
-			$mods = new Fieldmapper::metabib::virtual_record;
-			$mods->doc_id(OILS_PRECAT_RECORD);
-			$mods->title($copy->dummy_title);
-			$mods->author($copy->dummy_author);
-		}
-	};
+	}
 
-	$logger->debug("MODSized the circ title");
+    # more de-fleshiing
+    $circ->target_copy($circ->target_copy->id);
+    $copy->call_number($copy->call_number->id);
 
 	return {transaction => $trans, circ => $circ, record => $mods, copy => $copy };
 }

@@ -12,6 +12,8 @@ util.browser = function (params) {
 
 util.browser.prototype = {
 
+    'lock_reload' : false, // as opposed to lock 'n load :)
+
     'init' : function( params ) {
 
         try {
@@ -124,6 +126,14 @@ util.browser.prototype = {
                             ['command'],
                             function() {
                                 try {
+                                    if (obj.lock_reload) {
+                                        if (window.confirm( $('offlineStrings').getString('browser.reload.unsaved_data_warning') )) {
+                                            obj.lock_reload = false;
+                                            window.xulG.unlock_tab();
+                                        } else {
+                                            return;
+                                        }
+                                    }
                                     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                     var n = obj.getWebNavigation();
                                     n.reload( Components.interfaces.nsIWebNavigation.LOAD_FLAGS_NONE );
@@ -258,8 +268,18 @@ util.browser.prototype = {
             if (!cw.xulG.set_tab) { cw.xulG.set_tab = function(a,b,c) { return window.xulG.set_tab(a,b,c); }; }
             if (!cw.xulG.new_tab) { cw.xulG.new_tab = function(a,b,c) { return window.xulG.new_tab(a,b,c); }; }
             if (!cw.xulG.close_tab) { cw.xulG.close_tab = function(a) { return window.xulG.close_tab(a); }; }
-            if (!cw.xulG.lock_tab) { cw.xulG.lock_tab = function() { return window.xulG.lock_tab(); }; }
-            if (!cw.xulG.unlock_tab) { cw.xulG.unlock_tab = function() { return window.xulG.unlock_tab(); }; }
+            if (!cw.xulG.lock_tab) {
+                cw.xulG.lock_tab = function() {
+                    obj.lock_reload = true;
+                    return window.xulG.lock_tab();
+                };
+            }
+            if (!cw.xulG.unlock_tab) {
+                cw.xulG.unlock_tab = function() {
+                    obj.lock_reload = false;
+                    return window.xulG.unlock_tab();
+                };
+            }
             if (!cw.xulG.inspect_tab) { cw.xulG.inspect_tab = function() { return window.xulG.inspect_tab(); }; }
             if (!cw.xulG.new_patron_tab) { cw.xulG.new_patron_tab = function(a,b) { return window.xulG.new_patron_tab(a,b); }; }
             if (!cw.xulG.set_patron_tab) { cw.xulG.set_patron_tab = function(a,b) { return window.xulG.set_patron_tab(a,b); }; }

@@ -59,6 +59,7 @@ circ.checkin.prototype = {
                                     try {
                                         var p = JSON2js(o.getAttribute('retrieve_id')); 
                                         p.unique_row_counter = o.getAttribute('unique_row_counter'); 
+                                        o.setAttribute('id','_checkin_list_row_'+p.unique_row_counter);
                                         return p; 
                                     } catch(E) {
                                         return -1;
@@ -101,6 +102,21 @@ circ.checkin.prototype = {
                             obj.controller.view.sel_clip.setAttribute('disabled','false');
                             obj.controller.view.sel_mark_items_damaged.setAttribute('disabled','false');
                             obj.controller.view.sel_mark_missing_pieces.setAttribute('disabled','false');
+                        }
+
+                        // This is for updating that label in the upper left of the UI that shows Item already checked-in, etc.
+                        // Our purpose here is to show the bill amount associated with a specific transaction whenever that
+                        // transaction is selected in the list
+                        if (obj.selection_list.length == 1) {
+                            var unique_row_counter = obj.selection_list[0].unique_row_counter;
+                            var node = $('_checkin_list_row_'+unique_row_counter);
+                            if (node && node.getAttribute('no_change_label_label')) {
+                                $('no_change_label').setAttribute('unique_row_counter',unique_row_counter);
+                                $('no_change_label').setAttribute('value',node.getAttribute('no_change_label_label'));
+                                $('no_change_label').setAttribute('onclick',node.getAttribute('no_change_label_click'));
+                                $('no_change_label').setAttribute('hidden','false');
+                                addCSSClass($('no_change_label'),'click_link'); 
+                            }
                         }
                     } catch(E) {
                         alert('FIXME: ' + E);
@@ -401,41 +417,59 @@ circ.checkin.prototype = {
 
     },
 
+    'update_no_change_label' : function (node,row) {
+        var obj = this;
+        var no_change_label = document.getElementById('no_change_label');
+        var incumbent_row = no_change_label.getAttribute('unique_row_counter');
+        var incoming_row = node.getAttribute('unique_row_counter');
+        if (!incumbent_row) { incumbent_row = incoming_row; }
+        if (row.my.mbts && ( no_change_label || document.getElementById('fine_tally') ) ) {
+            var bill = row.my.mbts;
+            if (Number(bill.balance_owed()) == 0) { return; }
+            if (no_change_label) {
+                var msg = incumbent_row != incoming_row
+                    ? '' // clear out label if for a different transaction
+                    : no_change_label.getAttribute('value');
+                var new_msg = document.getElementById('circStrings').getFormattedString(
+                    'staff.circ.utils.billable.amount', [
+                        row.my.acp.barcode(),
+                        util.money.sanitize(bill.balance_owed())
+                    ]
+                );
+                no_change_label.setAttribute(
+                    'value', 
+                    msg.indexOf(new_msg) > -1 ? msg : msg + new_msg + '  '
+                );
+                no_change_label.setAttribute('hidden','false');
+                no_change_label.setAttribute('onclick','xulG.new_patron_tab({},{"id" : '+bill.usr()+', "show" : "bills" })');
+                no_change_label.setAttribute('unique_row_counter',incoming_row);
+                addCSSClass(no_change_label,'click_link'); 
+                node.setAttribute('no_change_label_label', no_change_label.getAttribute('value'));
+                node.setAttribute('no_change_label_click', no_change_label.getAttribute('onclick'));
+            }
+        }
+    },
+
     'gen_list_retrieve_row_func' : function() {
         var obj = this;
         return function(params) {
             try {
                 var row = params.row;
                 if (typeof params.on_retrieve == 'function') params.on_retrieve(row);
-
-                var no_change_label = document.getElementById('no_change_label');
-                if (row.my.mbts && ( no_change_label || document.getElementById('fine_tally') ) ) {
-                    var bill = row.my.mbts;
-                    if (Number(bill.balance_owed()) == 0) { return; }
-                    if (no_change_label) {
-                        var m = no_change_label.getAttribute('value');
-                        no_change_label.setAttribute(
-                            'value', 
-                            m + document.getElementById('circStrings').getFormattedString('staff.circ.utils.billable.amount', [row.my.acp.barcode(), util.money.sanitize(bill.balance_owed())]) + '  '
-                        );
-                        no_change_label.setAttribute('hidden','false');
-                        no_change_label.setAttribute('onclick','xulG.new_patron_tab({},{"id" : '+bill.usr()+', "show" : "bills" })');
-                        addCSSClass(no_change_label,'click_link');                        
-                    }
-                    if (document.getElementById('fine_tally')) {
-                        var amount = util.money.cents_as_dollars(
-                            Number( util.money.dollars_float_to_cents_integer( document.getElementById('fine_tally').getAttribute('amount') ) ) 
-                            + Number( util.money.dollars_float_to_cents_integer( bill.balance_owed() ) )
-                        );
-                        document.getElementById('fine_tally').setAttribute('amount',amount);
-                        document.getElementById('fine_tally').setAttribute(
-                            'value',
-                            document.getElementById('circStrings').getFormattedString('staff.circ.utils.fine_tally_text', [ util.money.sanitize( amount ) ])
-                        );
-                        document.getElementById('fine_tally').setAttribute('hidden','false');
-                    }
+                obj.update_no_change_label(params.my_node,row);
+                var bill = row.my.mbts;
+                if (bill && document.getElementById('fine_tally')) {
+                    var amount = util.money.cents_as_dollars(
+                        Number( util.money.dollars_float_to_cents_integer( document.getElementById('fine_tally').getAttribute('amount') ) ) 
+                        + Number( util.money.dollars_float_to_cents_integer( bill.balance_owed() ) )
+                    );
+                    document.getElementById('fine_tally').setAttribute('amount',amount);
+                    document.getElementById('fine_tally').setAttribute(
+                        'value',
+                        document.getElementById('circStrings').getFormattedString('staff.circ.utils.fine_tally_text', [ util.money.sanitize( amount ) ])
+                    );
+                    document.getElementById('fine_tally').setAttribute('hidden','false');
                 }
-
             } catch(E) {
                 alert('Error in checkin.js, list_retrieve_row(): ' + E);
             }
