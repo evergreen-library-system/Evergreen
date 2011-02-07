@@ -65,7 +65,7 @@
         <table class="hide_me full-width" id="acct_search_main">
             <tbody id='myopac_prefs_tbody'>
                 <tr id='myopac_prefs_loading'>
-                    <td colspan='3'><b>&myopac.loading;</b></td>
+                    <td colspan='3'><b>&common.loading;</b></td>
                 </tr>
 
                 <tr id='myopac_prefs_row'>

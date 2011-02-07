@@ -16,7 +16,7 @@
 </div>
 <table id='change_pw_table' class='data_grid hide_me' style='margin-left: 20px;' width='95%'>
 	<thead>
-        <tr><td colspan='2' align='center'><b>&login.password;</b></td></tr>
+        <tr><td colspan='2' align='center'><b>&common.password;</b></td></tr>
     </thead>
     <tbody>
         <tr>

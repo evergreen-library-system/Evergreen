@@ -8,7 +8,7 @@
             <option value='author'>&common.author;</option>
             <option value='subject'>&common.subject;</option>
             <option value='series'>&common.series;</option>
-            <option value='bibcn'>&common.bibcn;</option>
+            <option value='bibcn'>Bibliographic call number:</option>
             </select>
         <!-- select how to treat the text -->
         <select name='contains' style='margin-right: 7px;'>

@@ -153,7 +153,7 @@
     </div>
     <div id='non_cat_circs_div' class='hide_me'>
         <br/>
-        <div style='text-align: center'><b>&myopac.common.other.circ;</b></div>
+        <div style='text-align: center'><b>&myopac.checked.other.circ;</b></div>
         <table class='data_grid' width='100%'>
             <thead>
                 <tr>
