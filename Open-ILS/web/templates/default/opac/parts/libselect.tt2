@@ -24,7 +24,7 @@
 
 <!-- ****************** libselect.xml ***************************** -->
     <span id='depth_selector_span'>
-        [% PROCESS build_org_selector name='loc' %]
+        [% PROCESS build_org_selector name='loc' value=loc %]
     </span>
     <span id='lib_selector_span'>
         <a id='lib_selector_link' class='classic_link'
