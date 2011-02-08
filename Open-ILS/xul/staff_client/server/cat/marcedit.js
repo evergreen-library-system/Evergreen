@@ -1926,7 +1926,9 @@ function getAuthorityContextMenu (target, sf) {
         return false;
     }
 
-    browseAuthority( sf_popup, menu_id, target, sf, 20, page);
+    if (sf.toString()) {
+        browseAuthority(sf_popup, menu_id, target, sf, 20, page);
+    }
 
     return true;
 }
