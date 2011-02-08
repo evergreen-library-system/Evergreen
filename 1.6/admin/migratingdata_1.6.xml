@@ -616,42 +616,6 @@ COMMIT;
 			the convenience of patron loads and the cost of processing these loads vs staff adding patrons manually.</para>   
 	       </simplesect> 
 	</section>
-	<section xml:id="electronicresourcesvisible">	
-		<title>Making Electronic Resources Visible in the Catalogue</title>
-		<indexterm><primary>migrating</primary><secondary>importing bibliographic records</secondary><tertiary>electronic resources </tertiary></indexterm>
-		<para>For electronic resources that should be visible in the catalogue without any copies, you must set the source column value in the record.biblio_entry row for the respective 
-		bibliographic record to a value that matches the corresponding ID of the <link linkend="config.table.bib-source">config.bib_source</link> where the transcendant value is 
-		<emphasis>TRUE</emphasis>. Here's a practical example:</para>
-		<procedure>
-		  	 <step>
-				<para>Connect to your Evergreen database with <command>psql</command> (substitute username / database name as required):</para>
-<screen>
-<userinput>psql -U postgres evergreen</userinput>
-</screen>
-			</step>
-		 	 <step>
-				<para>Add a source for your electronic resources:</para>
-<screen>
-<userinput>
-# INSERT INTO config.bib_source(quality, source, transcendant) 
-	VALUES (50, 'Institutional repository', TRUE);</userinput>
-</screen>
-			</step>
-		 	 <step>
-				<para>Find the ID that was generated for your new source:</para>
-<screen>
-<userinput># SELECT ID FROM config.bib_source WHERE source = 'Institutional repository';</userinput>
-</screen>
-			</step>
-		 	 <step>
-				<para>Update the source column for your bibliographic record for the electronic resource (for the sake of the example, let's assume that the ID returned from the new 
-				source was 4, and that we know that the bib record with ID 75 is an electronic resource from your institutional repository):</para>
-<screen>
-<userinput># UPDATE biblio.record_entry SET source = 4 where biblio.record_entry.id=75;</userinput>
-</screen>
-			</step>
-		</procedure>
-	</section>
 	<section xml:id="emptydatabase">
 		<title>Restoring your Evergreen Database to an Empty State</title>
 		<para>If you've done a test import of records and you want to quickly get Evergreen back to a pristine state, you can create a clean Evergreen database schema by performing the 

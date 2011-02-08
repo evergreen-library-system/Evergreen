@@ -608,6 +608,29 @@
 			</procedure>
    		</simplesect>
 	</section>	
+	<section xml:id="electronicresourcesvisible">	
+		<title>Cataloguing Electronic Resources -- Finding Them in OPAC searches</title>
+		<indexterm><primary>cataloguing</primary><secondary>electronic resources</secondary></indexterm>
+		<para>For electronic resources to be visible in the catalog, you should add the <literal>9</literal> subfield in the <literal>856</literal> data field to indicate
+		 which organizational units will be able to find the resource.</para>
+		<procedure>
+		  	 <step>
+				<para>Open the record in the cataloging module</para>
+			</step>
+		 	 <step>
+				<para>Add the <literal>9</literal> subfield to the record and enter the short name of the organizational unit for the value. For example:</para>
+<screen>856 40 $u http://lwn.net $y Linux Weekly News $9 BR1</screen>
+				<para>would make this item visible to people searching in a library scope that contains <literal>BR1</literal>.</para>
+				<note><para>You can enter more than one <literal>9</literal> subfield or you can enter the parent organizational unit to make this item visible in more than 
+				one organizatuional unit under the same parent organizational unit.</para></note>
+			</step>
+		 	
+		 	 <step>
+				<para>Save the record</para>
+				<para>After a short time the electronic resource should appear in OPAC searches</para>
+			</step>
+		</procedure>
+	</section>
 	<section xml:id="PrintingSpineandPocketLabels">
 		<title>Printing Spine and Pocket Labels</title>
 		<indexterm><primary>labels</primary><secondary>spine</secondary></indexterm>
