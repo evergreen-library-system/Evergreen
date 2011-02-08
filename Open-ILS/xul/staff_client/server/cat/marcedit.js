@@ -2610,15 +2610,24 @@ function summarizeField(sf) {
         "ind2": '',
         "subfields": []
     };
-    for (var i = 0; i < sf.parent().subfield.length(); i++) {
-        source_f.subfields.push([sf.parent().subfield[i].@code.toString(), sf.parent().subfield[i].toString()]);
-    }
+
     source_f.tag = sf.parent().@tag.toString();
     source_f.ind1 = sf.parent().@ind1.toString();
     source_f.ind1 = sf.parent().@ind2.toString();
+
+    for (var i = 0; i < sf.parent().subfield.length(); i++) {
+        var sf_iter = sf.parent().subfield[i];
+
+        /* Filter out subfields that are not controlled for this tag */
+        if (!control_map[source_f.tag][sf_iter.@code.toString()]) {
+            continue;
+        }
+
+        source_f.subfields.push([sf_iter.@code.toString(), sf_iter.toString()]);
+    }
+
     return source_f;
 }
-
 
 function buildBibSourceList (authtoken, recId) {
     /* TODO: Work out how to set the bib source of the bre that does not yet
