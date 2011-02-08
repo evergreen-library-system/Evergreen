@@ -74,7 +74,7 @@
 		<xi:include href="admin/staffclientinstallation.xml"/>	
 		<xi:include href="admin/Upgrading-Evergreen_1.6.xml"/>	
 		<xi:include href="admin/AdminMisc.xml"/>
-		<xi:include href="admin/migratingdata.xml"/>
+		<xi:include href="admin/migratingdata_1.6.xml"/>
 		<xi:include href="admin/troubleshooting.xml"/>
 		<xi:include href="admin/localization.xml"/>
  		<xi:include href="admin/z3950.xml"/>
