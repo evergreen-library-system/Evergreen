@@ -56,8 +56,8 @@
 		<info>
 			<title>Administration</title>
 		</info>
-		<xi:include href="admin/admin-intro.xml"/>
-	
+		<xi:include href="admin/admin-intro.xml"/>	
+		<xi:include href="admin/migratingdata_2.0.xml"/>
 	</part>
 	<part xml:id="reports">
 		<info>
