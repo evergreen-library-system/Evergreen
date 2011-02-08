@@ -2,22 +2,13 @@
 # vim:noet:ts=4:
 use strict;
 use warnings;
+use Test::More tests => 5;
+use Error qw(:try);
 
-#FIXME: use Test::More or any kind of Test module instead of eval/die if
-
-BEGIN {
-	eval "use OpenSRF::Utils::Config;";
-	die "Please ensure that /openils/lib/perl5 is in your PERL5LIB environment variable.
-	You must run this script as the 'opensrf' user.\n" if ($@);
-	eval "use Error qw/:try/;";
-	die "Please install Error.pm.\n" if ($@);
-	eval "use UNIVERSAL::require;";
-	die "Please install the UNIVERSAL::require perl module.\n" if ($@);
-	eval "use Getopt::Long;";
-	die "Please install the Getopt::Long perl module.\n" if ($@);
-	eval "use Net::Domain;";
-	die "Please install the Net::Domain perl module.\n" if ($@);
-}
+use_ok( 'OpenSRF::Utils::Config' );
+use_ok( 'UNIVERSAL::require' );
+use_ok( 'Getopt::Long' );
+use_ok( 'Net::Domain' );
 
 my $output = '';
 my $perloutput = '';
@@ -139,6 +130,9 @@ foreach my $database (@databases) {
 	$output .= test_db_connect($db_name, $db_host, $db_port, $db_user, $db_pw, $osrf_xpath);
 }
 
+print "\nChecking postgresql version\n";
+system ("psql", "--version");
+
 print "\nChecking database drivers to ensure <driver> matches <language>\n";
 # Check database drivers
 # if language eq 'C', driver eq 'pgsql'
@@ -180,6 +174,10 @@ foreach my $driver_node (@drivers) {
 			$result = "* ERROR: $driver language is $language in $lang_xpath\n";
 			warn $result;
 		}
+
+	} elsif ($driver eq "SIP") {
+			$result = "* OK SIP from telephony section. \n";
+			warn $result;
 	} else {
 		$result = "* ERROR: Unknown driver $driver in $driver_xpath\n";
 		warn $result;
@@ -430,3 +428,6 @@ Tie::IxHash
 Parse::RecDescent
 SRU
 JSON::XS
+UUID::Tiny
+Business::CreditCard::Object
+Net::Z3950::Simple2ZOOM
