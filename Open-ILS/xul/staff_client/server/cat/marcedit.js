@@ -2401,11 +2401,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
                         [source_f, xulG.marc_control_number_identifier, ses()]
                     );
                     if (new_auth && new_auth.id()) {
-                        var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">({xulG.marc_control_number_identifier}){new_auth.id()}</subfield>;
-                        sf.parent().appendChild(id_sf);
-                        var new_sf = marcSubfield(id_sf);
-                        target.parentNode.appendChild(new_sf);
-                        alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
+                        addNewAuthorityID(new_auth, sf, target);
                     }
                 }
             })
@@ -2687,6 +2683,20 @@ function onBibSourceSelect() {
     }
 }
 
+function addNewAuthorityID(authority, sf, target) {
+    var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">({xulG.marc_control_number_identifier}){authority.id()}</subfield>;
+    sf.parent().appendChild(id_sf);
+    var new_sf = marcSubfield(id_sf);
+
+    var node = target;
+    while (dojo.attr(node, 'name') != 'sf_box') {
+        node = node.parentNode;
+    }
+    node.appendChild( new_sf );
+
+    alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
+}
+
 function loadMarcEditor(pcrud, marcxml, target, sf) {
     /*
        To run in Firefox directly, must set signed.applets.codebase_principal_support
@@ -2714,11 +2724,9 @@ function loadMarcEditor(pcrud, marcxml, target, sf) {
                         if (!new_rec) {
                             return '';
                         }
-                        var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">({xulG.marc_control_number_identifier}){new_rec.id()}</subfield>;
-                        sf.parent().appendChild(id_sf);
-                        var new_sf = marcSubfield(id_sf);
-                        target.parentNode.appendChild(new_sf);
-                        alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
+
+                        addNewAuthorityID(new_rec, sf, target);
+
                         win.close();
                     }
                 });
