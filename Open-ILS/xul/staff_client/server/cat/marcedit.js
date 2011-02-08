@@ -1928,7 +1928,7 @@ function getAuthorityContextMenu (target, sf) {
         return false;
     }
 
-    if (sf.toString()) {
+    if (sf.toString().replace(/\s*/, '')) {
         browseAuthority(sf_popup, menu_id, target, sf, 20, page);
     }
 
