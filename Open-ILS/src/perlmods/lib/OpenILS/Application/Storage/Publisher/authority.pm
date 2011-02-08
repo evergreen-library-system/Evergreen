@@ -1,3 +1,6 @@
+use strict;
+use warnings;
+
 package OpenILS::Application::Storage::Publisher::authority;
 use base qw/OpenILS::Application::Storage::Publisher/;
 use vars qw/$VERSION/;
@@ -35,8 +38,6 @@ sub validate_tag {
 		for my $search ( @searches ) {
 			my $sf = $$search{subfield};
 			my $term = naco_normalize($$search{term}, $sf);
-
-			$tag = [$tag] if (!ref($tag));
 
 			push @values, $t, $sf, $term;
 
