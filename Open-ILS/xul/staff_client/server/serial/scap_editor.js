@@ -2,7 +2,6 @@ dump('entering serial/scap_editor.js\n');
 // vim:noet:sw=4:ts=4:
 
 JSAN.use('serial.editor_base');
-var pattern_code_key = 'Pattern Code (temporary)';
 
 if (typeof serial == 'undefined') serial = {};
 serial.scap_editor = function (params) {
@@ -68,29 +67,27 @@ serial.scap_editor.prototype = {
         'scap_editor_left_pane' :
         [
             [
-                'ID',
+                'id',
                 { 
-                    render: '"ID : " + fm.id();', 
                     //input: 'c = function(v){ obj.apply("distribution",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
                 }
             ],
             [
-                $('catStrings').getString('staff.cat.copy_editor.field.creation_date.label'),
+                'create_date',
                 {
-                    render: 'fm.create_date() == null ? "<Unset>" : util.date.formatted_date( fm.create_date(), "%F");',
+                    render: 'fm.create_date() == null ? "" : util.date.formatted_date( fm.create_date(), "%F");',
                 }
             ],
             [
-                'Type',
+                'type',
                 {
-                    render: 'fm.type();',
                     input: 'c = function(v){ obj.apply("type",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ ["basic", "basic"], ["index", "index"], ["supplement", "supplement"] ] ); x.setAttribute("value",obj.editor_values.type); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'type'
                 }
             ],
             [
-                'Active?',
+                'active',
                 {
                     render: 'fm.active() == null ? $("catStrings").getString("staff.cat.copy_editor.field.unset_or_null") : ( get_bool( fm.active() ) ? $("catStrings").getString("staff.cat.copy_editor.field.circulate.yes_or_true") : $("catStrings").getString("staff.cat.copy_editor.field.circulate.no_or_false") )',
                     input: 'c = function(v){ obj.apply("active",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( [ [ $("catStrings").getString("staff.cat.copy_editor.field.circulate.yes_or_true"), get_db_true() ], [ $("catStrings").getString("staff.cat.copy_editor.field.circulate.no_or_false"), get_db_false() ] ] ); x.setAttribute("value",obj.editor_values.active); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
@@ -99,9 +96,8 @@ serial.scap_editor.prototype = {
                 }
             ],
             [
-                pattern_code_key,
+                'pattern_code',
                 { 
-                    render: 'fm.pattern_code() == null ? "" : fm.pattern_code();',
                     input: 'c = function(v){ obj.apply("pattern_code",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.pattern_code); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'pattern_code'
                 }

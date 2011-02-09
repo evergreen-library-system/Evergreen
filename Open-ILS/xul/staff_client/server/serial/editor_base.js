@@ -285,7 +285,7 @@ serial.editor_base = {
 
                 try { 
                     value = eval( cmd );
-                    if (typeof(value) == 'undefined') {
+                    if (value == null) { // true for both 'null' and undefined
                         value = "";
                     }
                     if (dropdown_key) {
@@ -356,7 +356,12 @@ serial.editor_base = {
                         groupbox.setAttribute('class','copy_editor_field_changed');
                     }
                     caption = document.createElement('caption'); groupbox.appendChild(caption);
-                    caption.setAttribute('label',fn); caption.setAttribute('id','caption_'+fn);
+                    if (f[1].label) {
+                        caption.setAttribute('label',f[1].label);
+                    } else {
+                        caption.setAttribute('label',fieldmapper.IDL.fmclasses[fm_type].field_map[fn].label);
+                    }
+                    caption.setAttribute('id','caption_'+fn);
                     vbox = document.createElement('vbox'); groupbox.appendChild(vbox);
                     grid = util.widgets.make_grid( [ { 'flex' : 1 }, {}, {} ] ); vbox.appendChild(grid);
                     grid.setAttribute('flex','1');

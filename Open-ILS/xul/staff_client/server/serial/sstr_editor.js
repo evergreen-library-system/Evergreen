@@ -67,17 +67,17 @@ serial.sstr_editor.prototype = {
         'sstr_editor_left_pane' :
         [
             [
-                'ID',
+                'id',
                 { 
-                    render: '"ID : " + fm.id();', 
+                    //render: 'fm.id() == null ? "" : fm.id();',
                     //input: 'c = function(v){ obj.apply("distribution",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
                 }
             ],
             [
-                'Routing Label',
+                'routing_label',
                 { 
-                    render: 'fm.routing_label() == null ? "" : fm.routing_label();',
+                    //render: 'fm.routing_label() == null ? "" : fm.routing_label();',
                     input: 'c = function(v){ obj.apply("routing_label",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.routing_label); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'routing_label'
                 }

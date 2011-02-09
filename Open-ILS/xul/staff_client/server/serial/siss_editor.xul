@@ -30,8 +30,7 @@
 
 		<hbox id="siss_editor_nav">
 			<spacer flex="1"/>
-			<button id="siss_notes" label="Issuance Notes" accesskey="&staff.cat.copy_editor.copy_notes.accesskey;" oncommand="g.manage_subs.siss_editor.notes()" />
-			<button id="siss_save" label="Modify Issuances" hidden="true" accesskey="&staff.cat.copy_editor.save.accesskey;" oncommand="g.manage_subs.siss_editor.save()" />
+			<button id="siss_save" label="&staff.serial.siss_editor.modify.label;" hidden="true" accesskey="&staff.cat.copy_editor.save.accesskey;" oncommand="g.manage_subs.siss_editor.save()" />
 			<!--<button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="window.close();"/>-->
 		</hbox>
 
