@@ -89,16 +89,11 @@ serial.sdist_editor.prototype = {
         obj.holding_lib_changed = (field == 'holding_lib');
         var loop_func = function(sdist) {
             if (obj.holding_lib_changed) {
-                sdist['bind_call_number'](null);
-                obj.changed['Bind Call Number'] = true;
-                sdist['receive_call_number'](null);
-                obj.changed['Receive Call Number'] = true;
-                sdist['bind_unit_template'](null);
-                obj.changed['Bind Unit Template'] = true;
-                sdist['receive_unit_template'](null);
-                obj.changed['Receive Unit Template'] = true;
-                sdist['record_entry'](null);
-                obj.changed['Legacy Record Entry'] = true;
+                var field_name_list = ['bind_call_number','receive_call_number','bind_unit_template','receive_unit_template','record_entry'];
+                for (var i = 0; i < field_name_list.length; i++) {
+                    sdist[field_name_list[i]](null);
+                    obj.changed[fieldmapper.IDL.fmclasses.sdist.field_map[field_name_list[i]].label] = true;
+                }
             }
         }
         obj.editor_base_apply(field, value, loop_func);
@@ -150,33 +145,29 @@ serial.sdist_editor.prototype = {
         '_editor_left_pane' :
         [
             [
-                'ID',
+                'id',
                 { 
-                    render: '"ID : " + fm.id();', 
                     //input: 'c = function(v){ obj.apply("distribution",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
                 }
             ],
             [
-                'Label',
+                'label',
                 { 
-                    render: 'fm.label() == null ? "" : fm.label();',
                     input: 'c = function(v){ obj.apply("label",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.label); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'label'
                 }
             ],
             [
-                'Unit Label Prefix',
+                'unit_label_prefix',
                 {
-                    render: 'fm.unit_label_prefix() == null ? "" : fm.unit_label_prefix();',
                     input: 'c = function(v){ obj.apply("unit_label_prefix",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.unit_label_prefix); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'unit_label_prefix'
                 }
             ],
             [
-                'Unit Label Suffix',
+                'unit_label_suffix',
                 { 
-                    render: 'fm.unit_label_suffix() == null ? "" : fm.unit_label_suffix();',
                     input: 'c = function(v){ obj.apply("unit_label_suffix",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.unit_label_suffix); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'unit_label_suffix'
                 }
@@ -186,7 +177,7 @@ serial.sdist_editor.prototype = {
             '_editor_right_pane' :
         [
             [
-                'Holding Lib',
+                'holding_lib',
                 {
                     render: 'typeof fm.holding_lib() == "object" ? fm.holding_lib().shortname() : obj.data.hash.aou[ fm.holding_lib() ].shortname()',
                     input: 'c = function(v){ if (obj.editor_values.holding_lib != v) obj.apply("holding_lib",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( obj.data.list.aou, function(myobj) { var sname = myobj.shortname(); for (i = sname.length; i < 20; i++) sname += " "; return [ myobj.name() ? sname + " " + myobj.name() : myobj.shortname(), myobj.id(), ( ! get_bool( obj.data.hash.aout[ myobj.ou_type() ].can_have_vols() ) ), ( obj.data.hash.aout[ myobj.ou_type() ].depth() * 2), ]; }), obj.data.list.au[0].ws_ou()); x.setAttribute("value",obj.editor_values.holding_lib); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
@@ -199,7 +190,7 @@ serial.sdist_editor.prototype = {
         '_editor_lso_pane' :
         [
             [
-                'Legacy Record Entry',
+                'record_entry',
                 {
                     render: 'obj.render_record_entry(fm.record_entry())',
                     input: 'if(!obj.multi_org_edit) { c = function(v){ obj.apply("record_entry",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( obj.get_sre_details_list(), function(obj) { return [ obj.label, obj.id ]; }).sort()); x.setAttribute("value",obj.editor_values.record_entry); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false); }',
@@ -208,7 +199,7 @@ serial.sdist_editor.prototype = {
                 }
             ],
             [
-                'Receive Call Number',
+                'receive_call_number',
                 {
                     render: 'obj.render_call_number(fm.receive_call_number())',
                     input: 'if(!obj.multi_org_edit) { c = function(v){ obj.apply("receive_call_number",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( obj.get_acn_list(), function(obj) { return [ obj.label(), obj.id() ]; }).sort()); x.setAttribute("value",obj.editor_values.receive_call_number); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false); }',
@@ -217,7 +208,7 @@ serial.sdist_editor.prototype = {
                 }
             ],
             [
-                'Bind Call Number',
+                'bind_call_number',
                 {
                     render: 'obj.render_call_number(fm.bind_call_number())',
                     input: 'if(!obj.multi_org_edit) { c = function(v){ obj.apply("bind_call_number",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( obj.get_acn_list(), function(obj) { return [ obj.label(), obj.id() ]; }).sort()); x.setAttribute("value",obj.editor_values.bind_call_number); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false); }',
@@ -226,7 +217,7 @@ serial.sdist_editor.prototype = {
                 }
             ],
             [
-                'Receive Unit Template',
+                'receive_unit_template',
                 {
                     render: 'obj.render_unit_template(fm.receive_unit_template())',
                     input: 'if(!obj.multi_org_edit) { c = function(v){ obj.apply("receive_unit_template",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( obj.get_act_list(), function(obj) { return [ obj.name(), obj.id() ]; }).sort()); x.setAttribute("value",obj.editor_values.receive_unit_template); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false); }',
@@ -235,7 +226,7 @@ serial.sdist_editor.prototype = {
                 }
             ],
             [
-                'Bind Unit Template',
+                'bind_unit_template',
                 {
                     render: 'obj.render_unit_template(fm.bind_unit_template())',
                     input: 'if(!obj.multi_org_edit) { c = function(v){ obj.apply("bind_unit_template",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( obj.get_act_list(), function(obj) { return [ obj.name(), obj.id() ]; }).sort()); x.setAttribute("value",obj.editor_values.bind_unit_template); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false); }',
@@ -282,7 +273,7 @@ serial.sdist_editor.prototype = {
         win.open(
             urls.XUL_SERIAL_NOTES, 
             //+ '?copy_id=' + window.escape(obj.sdists[0].id()),
-            'Distribution Notes','chrome,resizable,modal',
+            $('serialStrings').getString('staff.serial.sdist_editor.notes'),'chrome,resizable,modal',
             { 'object_id' : obj.sdists[0].id(), 'function_type' : 'SDISTN', 'object_type' : 'distribution', 'constructor' : sdistn }
         );
     },

@@ -102,15 +102,14 @@ serial.ssub_editor.prototype = {
         'left_pane' :
         [
             [
-                'ID',
+                'id',
                 { 
-                    render: '"ID : " + fm.id();', 
                     //input: 'c = function(v){ obj.apply("distribution",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
                 }
             ],
             [
-                'Owning Lib',
+                'owning_lib',
                 {
                     render: 'typeof fm.owning_lib() == "object" ? fm.owning_lib().shortname() : obj.data.hash.aou[ fm.owning_lib() ].shortname()',
                     input: 'c = function(v){ obj.apply("owning_lib",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( obj.data.list.aou, function(myobj) { var sname = myobj.shortname(); for (i = sname.length; i < 20; i++) sname += " "; return [ myobj.name() ? sname + " " + myobj.name() : myobj.shortname(), myobj.id(), ( ! get_bool( obj.data.hash.aout[ myobj.ou_type() ].can_have_vols() ) ), ( obj.data.hash.aout[ myobj.ou_type() ].depth() * 2), ]; }), obj.data.list.au[0].ws_ou()); x.setAttribute("value",obj.editor_values.owning_lib); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
@@ -123,7 +122,7 @@ serial.ssub_editor.prototype = {
             'right_pane' :
         [
             [
-                'Start Date',
+                'start_date',
                 { 
                     render: 'fm.start_date() == null ? "" : util.date.formatted_date( fm.start_date(), "%F");',
                     input: 'c = function(v){ obj.apply("start_date",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.start_date); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
@@ -131,7 +130,7 @@ serial.ssub_editor.prototype = {
                 }
             ],
             [
-                'End Date',
+                'end_date',
                 {
                     render: 'fm.end_date() == null ? "" : util.date.formatted_date( fm.end_date(), "%F");',
                     input: 'c = function(v){ obj.apply("end_date",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.end_date); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
@@ -139,9 +138,8 @@ serial.ssub_editor.prototype = {
                 }
             ],
             [
-                'Date Offset',
+                'expected_date_offset',
                 { 
-                    render: 'fm.expected_date_offset() == null ? "" : fm.expected_date_offset();',
                     input: 'c = function(v){ obj.apply("expected_date_offset",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.expected_date_offset); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'expected_date_offset'
                 }
@@ -181,7 +179,7 @@ serial.ssub_editor.prototype = {
         JSAN.use('util.window'); var win = new util.window();
         win.open(
             urls.XUL_SERIAL_NOTES, 
-            'Subscription Notes','chrome,resizable,modal',
+            $('serialStrings').getString('staff.serial.ssub_editor.notes'),'chrome,resizable,modal',
             { 'object_id' : obj.ssubs[0].id(), 'function_type' : 'SSUBN', 'object_type' : 'subscription', 'constructor' : ssubn }
         );
     },

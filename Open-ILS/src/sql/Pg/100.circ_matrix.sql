@@ -79,6 +79,7 @@ INSERT INTO config.videorecording_format_map VALUES ('z','Other');
 CREATE TABLE config.circ_matrix_matchpoint (
     id                   SERIAL    PRIMARY KEY,
     active               BOOL    NOT NULL DEFAULT TRUE,
+    -- Match Fields
     org_unit             INT        NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
     grp                  INT     NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
     circ_modifier        TEXT    REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
@@ -93,6 +94,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
     is_renewal           BOOL,
     usr_age_lower_bound  INTERVAL,
     usr_age_upper_bound  INTERVAL,
+    -- "Result" Fields
     circulate            BOOL    NOT NULL DEFAULT TRUE,    -- Hard "can't circ" flag requiring an override
     duration_rule        INT     NOT NULL REFERENCES config.rule_circ_duration (id) DEFERRABLE INITIALLY DEFERRED,
     recurring_fine_rule  INT     NOT NULL REFERENCES config.rule_recurring_fine (id) DEFERRABLE INITIALLY DEFERRED,
@@ -100,14 +102,11 @@ CREATE TABLE config.circ_matrix_matchpoint (
     hard_due_date        INT     REFERENCES config.hard_due_date (id) DEFERRABLE INITIALLY DEFERRED,
     script_test          TEXT,                           -- javascript source 
     total_copy_hold_ratio     FLOAT,
-    available_copy_hold_ratio FLOAT,
-    CONSTRAINT ep_once_per_grp_loc_mod_marc UNIQUE (
-        grp, org_unit, circ_modifier, marc_type, marc_form, marc_vr_format, ref_flag,
-        juvenile_flag, usr_age_lower_bound, usr_age_upper_bound, is_renewal, copy_circ_lib,
-        copy_owning_lib
-    )
+    available_copy_hold_ratio FLOAT
 );
 
+-- Nulls don't count for a constraint match, so we have to coalesce them into something that does.
+CREATE UNIQUE INDEX ccmm_once_per_paramset ON config.circ_matrix_matchpoint (org_unit, grp, COALESCE(circ_modifier, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_vr_format, ''), COALESCE(copy_circ_lib::TEXT, ''), COALESCE(copy_owning_lib::TEXT, ''), COALESCE(user_home_ou::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(is_renewal::TEXT, ''), COALESCE(usr_age_lower_bound::TEXT, ''), COALESCE(usr_age_upper_bound::TEXT, '')) WHERE active;
 
 -- Tests for max items out by circ_modifier
 CREATE TABLE config.circ_matrix_circ_mod_test (
