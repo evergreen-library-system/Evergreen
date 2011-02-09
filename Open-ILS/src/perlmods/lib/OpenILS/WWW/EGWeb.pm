@@ -246,6 +246,8 @@ sub load_locale_handlers {
     my $ctx = shift;
     my $locales = $ctx->{locales};
 
+    $locales->{en_US} = {} unless exists $locales->{en_US};
+
     for my $lang (keys %$locales) {
         my $messages = $locales->{$lang};
         $messages = '' if ref $messages; # empty {}
