@@ -887,9 +887,6 @@ sub mark_item {
         ($copy->call_number->id == OILS_PRECAT_CALL_NUMBER) ? 
             $copy->circ_lib : $copy->call_number->owning_lib;
 
-    return $e->die_event unless $e->allowed('UPDATE_COPY', $owning_lib);
-
-
 	my $perm = 'MARK_ITEM_MISSING';
 	my $stat = OILS_COPY_STATUS_MISSING;
 
@@ -898,9 +895,6 @@ sub mark_item {
 		$stat = OILS_COPY_STATUS_DAMAGED;
         my $evt = handle_mark_damaged($e, $copy, $owning_lib, $args);
         return $evt if $evt;
-
-        my $ses = OpenSRF::AppSession->create('open-ils.trigger');
-        $ses->request('open-ils.trigger.event.autocreate', 'damaged', $copy, $owning_lib);
 
 	} elsif ( $self->api_name =~ /bindery/ ) {
 		$perm = 'MARK_ITEM_BINDERY';
@@ -922,6 +916,8 @@ sub mark_item {
 		$stat = OILS_COPY_STATUS_DISCARD;
 	}
 
+    # caller may proceed if either perm is allowed
+    return $e->die_event unless $e->allowed([$perm, 'UPDATE_COPY'], $owning_lib);
 
 	$copy->status($stat);
 	$copy->edit_date('now');
@@ -938,6 +934,12 @@ sub mark_item {
 	);
 
 	$e->commit;
+
+	if( $self->api_name =~ /damaged/ ) {
+        # now that we've committed the changes, create related A/T events
+        my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+        $ses->request('open-ils.trigger.event.autocreate', 'damaged', $copy, $owning_lib);
+    }
 
 	$logger->debug("resetting holds that target the marked copy");
 	OpenILS::Application::Circ::Holds->_reset_hold($e->requestor, $_) for @$holds;
