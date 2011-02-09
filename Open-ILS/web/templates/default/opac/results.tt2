@@ -18,7 +18,7 @@
         <div id="results_header_bar">
             <div id="results_header_inner">
                 <div class="results_header_btns">
-                    <a href="index.xml"><img alt="Another Search"
+                    <a href="home"><img alt="Another Search"
                         src="[% ctx.media_prefix %]/images/another_search.png"
                         onmouseover="this.src='[% ctx.media_prefix %]/images/another_search_hover.png';"
                         onmouseout="this.src='[% ctx.media_prefix %]/images/another_search.png';" /></a>
@@ -38,16 +38,14 @@
                 </div>
                 <div class="results_header_div"></div>
                 <div class="results_header_lbl">Sort by</div>
-        <!--#if expr="$OILS_PAGE='rresult.xml' || $OILS_PAGE='mresult.xml'"-->
-        <!--#include virtual="result/filtersort.xml" -->
-        <!--#endif -->
+                [% INCLUDE "default/opac/parts/result/filtersort.tt2" %]
                 <div class="results_header_div"></div>
-                <div class="results_header_lbl">View</div>
+                <!-- XXX still needed?<div class="results_header_lbl">View</div>
                 <select class="results_header_sel">
                     <option>Simple</option>
                     <option>Detailed</option>
                 </select>
-                <div class="results_header_div"></div>
+                <div class="results_header_div"></div> -->
                 <input type="checkbox" id="limit_to_available" />
                 <label for="limit_to_available" class="results_header_lbl">
                     Limit to available items

@@ -623,22 +623,18 @@ div.select-wrapper:hover {
 	margin:0;
 }
 
-#results_header_nav1 {
+.results_header_nav1 {
 	padding: 5px 7px 6px 0px;
 	border-bottom: 1px dotted #ccc;
 }
 
-#results_header_nav1 .h1 {
+.results_header_nav1 .h1 {
 	font-size:14px;
 	font-weight:bold;
 	color:#074079;
 }
 
-#start_end_links_span {
-	font-size: 11px;
-}
-
-#start_end_links_span2 {
+.start_end_links_span {
 	font-size: 11px;
 }
 
@@ -652,9 +648,8 @@ div.select-wrapper:hover {
 	margin-top: 20px;
 }
 
-#result_numbers1 {
-	font-size: 11px;
-	padding-left:15px;
+.result_numbers {
+	font-size: 11px; padding-left:15px; white-space: nowrap; width: 320px;
 }
 
 .result_table_subtable { width: 100%; border-collapse: collapse; border: 0; }
@@ -892,3 +887,4 @@ div.select-wrapper:hover {
 #rdetail_copy_info_table { font-size: 8pt; }
 #rdetail_copy_info_table td { padding: 3px; }
 .search_page_nav_link { cursor: pointer; }
+#opac.result.sort { width: 160px; }

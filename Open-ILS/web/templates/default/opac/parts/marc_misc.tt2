@@ -10,6 +10,16 @@
         args.author = xml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
         args.publisher = xml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
         args.pubdate = xml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
+        args.edition = xml.findnodes('//*[@tag="250"]/*[@code="a"]').textContent ||
+            xml.findnodes('//*[@tag="534"]/*[@code="b"]').textContent ||
+            xml.findnodes('//*[@tag="775"]/*[@code="b"]').textContent;
+        phys = xml.findnodes(
+            '//*[@tag="300"]/*[@code="a" or @code="b" or @code="c" or @code="e"]'
+        );
+        phys_content = [];
+        FOR p IN phys; phys_content.push(p.textContent); END;
+        args.phys_desc = phys_content.join("");
+
         # clean up the ISBN
         args.isbn_clean = args.isbn.replace('\ .*', '');
 
