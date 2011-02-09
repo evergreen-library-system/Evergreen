@@ -1,36 +1,55 @@
+[%  q = query | url;
+    np_link = '?query=' _ q;
+    IF loc;
+        np_link = np_link _ "&loc=" _ loc;
+    END;
+    IF depth or depth == 0;
+        np_link = np_link _ "&depth=" _ depth;
+    END;
+    ctx.result_start = 1 + ctx.page_size * page;
+    ctx.result_stop = 1 + ctx.page_size * (page + 1);
+    IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
+%]
 <div style="height: 10px;"></div>
 <div id="results_header_nav1">
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
             <td class="h1" width="116">Search Results</td>
-            <td valign="bottom" nowrap="nowrap" width="320" style="white-space:nowrap;" class="hide_me" id="result_numbers1">
-                <span> [% l("Results") %] </span>
-                <span id='offset_start' style='font-weight:bold'></span>
-                <span>&nbsp;- </span>
-                <span id='offset_end' style='font-weight:bold'></span>
-                <span>&nbsp;[% l("of") %] </span>
-                <span id='result_count' style='font-weight:bold'></span>
+            <td valign="bottom" nowrap="nowrap" width="320"
+                style="white-space:nowrap;" id="result_numbers1">
+                [% l("Results") %]
+                <strong>[% ctx.result_start %]</strong>
+                &nbsp;-
+                <strong>[% ctx.result_stop  %] </strong>
+                &nbsp;[% l("of") %]
+                <strong>[% ctx.hit_count %]</strong>
                 <span style='padding-left: 6px;'>
                     (page
+                    <strong>[% page + 1 %]</strong>
+                    &nbsp;[% l("of") %]
+                    <strong>[% page_count %]</strong>)
                 </span>
-                <span id='current_page'></span>
-                <span>&nbsp;[% l("of") %] </span>
-                <span id='num_pages'></span>)
             </td>
             <td align="right" valign="bottom">
-                <span id='start_end_links_span' class='hide_me'>
+                <span id='start_end_links_span'>
+                    [% IF page > 0 %]
                     <a class='search_page_nav_link' id='prev_link'
-                        title='[% l("Previous page") %]' style="cursor:pointer;">
+                        href="[% np_link _ '&page=' _ (page - 1) %]"
+                        title='[% l("Previous page") %]'>
                         <span class="nav_arrow_fix">&#9668;</span> Previous
                     </a>
+                    [% END %]
                     <span class='hide_me' id='result_info_div'
                         style='padding-left: 11px; padding-right:11px;'>
                         <span id="nav_pages"></span>
                     </span>
+                    [% IF (page + 1) < page_count %]
                     <a class='search_page_nav_link' id='next_link'
-                        title='[% l("Next page") %]' style="cursor:pointer;">
+                        href="[% np_link _ '&page=' _ (page + 1) %]"
+                        title='[% l("Next page") %]'>
                         Next <span class="nav_arrow_fix">&#9658;</span>
                     </a>
+                    [% END %]
                 </span>
             </td>
         </tr>

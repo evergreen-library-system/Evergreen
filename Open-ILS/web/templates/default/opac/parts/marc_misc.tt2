@@ -1,0 +1,52 @@
+[% 
+    # Extract MARC fields from XML
+    #   get_marc_attrs( { marc_xml => doc } )
+    BLOCK get_marc_attrs;
+        xml = args.marc_xml;
+        args.isbn = xml.findnodes('//*[@tag="020"]/*[@code="a"]').shift.textContent;
+        args.upc = xml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
+        args.issn = xml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
+        args.title = xml.findnodes('//*[@tag="245"]/*[@code="a"]').textContent;
+        args.author = xml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+        args.publisher = xml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
+        args.pubdate = xml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
+        # clean up the ISBN
+        args.isbn_clean = args.isbn.replace('\ .*', '');
+
+        # KCLS-specific stuff; needs to change
+        args.mattype = xml.findnodes('//*[@tag="998"]/*[@code="d"]').textContent;
+        args.kcls_cn = xml.findnodes('//*[@tag="092" or @tag="099"]/*').textContent;
+
+    END;
+
+    icon_by_mattype = {     # XXX KCLS-specific
+        "a" => "media_book.jpg",
+        "b" => "media_magazines.jpg",
+        "c" => "media_printedmusic.jpg",
+        "d" => "media_microform.jpg",
+        "e" => "media_equipment.jpg",
+        "f" => "media_films.jpg",
+        "g" => "",
+        "h" => "media_dvd.jpg",
+        "i" => "media_bookoncassette.jpg",
+        "j" => "media_musiccd.jpg",
+        "k" => "media_musiccassette.jpg",
+        "l" => "media_musicrecord.jpg",
+        "m" => "media_software.jpg",
+        "n" => "media_bookoncd.jpg",
+        "o" => "media_kit.jpg",
+        "p" => "media_newspaper.jpg",
+        "q" => "media_largeprint.jpg",
+        "r" => "media_3dobject.jpg",
+        "s" => "media_slide.jpg",
+        "t" => "media_online.jpg",
+        "u" => "media_eaudio.jpg",
+        "v" => "media_ebooktext.jpg",
+        "w" => "media_eaudio.jpg",
+        "x" => "media_downloadmusic.jpg",
+        "y" => "media_downloadvideo.jpg",
+        "z" => "media_map.jpg",
+        "2" => "media_cassettewithbook.jpg",
+        "5" => "media_cdwithbook.jpg"
+    };
+%]

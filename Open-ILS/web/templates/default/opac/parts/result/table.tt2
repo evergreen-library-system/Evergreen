@@ -1,7 +1,7 @@
-<!-- Search results are spit into this table -->
+[%  PROCESS "default/opac/parts/marc_misc.tt2";
+    SET result_count = ctx.result_start; %]
 <!-- ****************** result_table.xml ***************************** -->
 <div id="result_table_div">
-    
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
             <td valign="top" width="1" style="padding-right:20px;">
@@ -14,63 +14,64 @@
                 <table id="res_table" cellpadding="0" cellspacing="0"
                     border="0" width="100%" style="margin-top:10px;">
                     <tbody id="result_table">
-                        <tr id='result_table_template' class='hide_me'>
-                            <td class='result_table_row' align='left'
-                                width='100%'>
-                                <table cellpadding="0" cellspacing="0"
-                                    border="0" width="100%"
-                                    class='result_table_subtable'
-                                    id="results_table"
-                                    style="border-collapse: collapse;">
+                    [%  FOR rec IN ctx.records;
+                            attrs = {marc_xml => rec.marc_xml};
+                            PROCESS get_marc_attrs args=attrs %]
+                        <tr>
+                            <td class='result_table_row' align='left' width='100%'>
+                                <table cellpadding="0" cellspacing="0" class='result_table_subtable'>
                                     <tbody class='result_table_subtbody'>
                                         <tr name='counts_row'>
                                             <td width="58" valign="top"
                                                 style="font-weight:bold;padding-left:10px;"
-                                                name="results_row_count">1.
-                                            </td>
+                                                name="results_row_count">[%
+                                                    result_count; result_count = result_count + 1
+                                                %].</td>
                                             <td class='result_table_pic_header'
                                                 width="78" nowrap="nowrap" valign="top">
-                                                <a><img alt="Image of item"
+                                                [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
+                                                <a href="record/[% rec.bre.id %]"><img alt="Image of item"
                                                         name='item_jacket' class='result_table_pic'
-                                                        src='${ident}' /></a><br />
+                                                        src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident %]' /></a><br />
+                                                [% END %]
                                             </td>
                                             <td class='result_table_title_cell'
                                                 name='result_table_title_cell'
                                                 valign="top">
-                                                <div style="font-weight:bold;">
-                                                    <a title="[% l("View titles for this record") %]"
-                                                        name='item_title' class='search_link'>
-                                                    </a>
+                                                <div class="bold">
+                                                    <a title="[% attrs.title %]" name='item_title'
+                                                        href="record/[% rec.bre.id %]"
+                                                        class='search_link'>[% attrs.title %]</a>
                                                 </div>
                                                 <span style="font-size:11px;">
                                                     <div>
                                                         <em>
-                                                            <a title="[% l("Perform an Author Search") %]" name='item_author' class='search_link'></a>
+                                                            <a title="[% l("Perform an Author Search") %]"
+                                                                name='item_author'
+                                                                href="results?query=author%3a[% attrs.author | replace('[,\.:;]', '') | uri %]&loc=[% loc %]"
+                                                                class='search_link'>[% attrs.author %]</a>
                                                         </em> &nbsp;&nbsp;
-                                                        <span name="results_pub_date"></span>
+                                                        [% attrs.pubdate %]
                                                     </div>
                                                     <table cellpadding="0" cellspacing="0" border="0"
                                                         class="results_info_table">
                                                         <tr name='bib_cn_list' class='result_table_title_cell'>
                                                             <td colspan='2'>
-                                                                <span><strong>Call number:</strong></span>
+                                                                <strong>Call number:</strong>
+                                                                [% args.kcls_cn %]
                                                             </td>
                                                         </tr>
-                                                        <tr name="results_pub_tr" class="hide_me">
+                                                        <tr name="results_pub_tr" class="[% attrs.publisher ? '' : 'hide_me' %]">
                                                             <td valign="top">
                                                                 <strong>Publisher:</strong>
                                                             </td>
-                                                            <td>
-                                                                <span name="results_pub"></span>
-                                                            </td>
+                                                            <td>[% attrs.publisher; %]</td>
                                                         </tr>
-                                                        <tr name="results_isbn_tr" class="hide_me">
+                                                        <tr name="results_isbn_tr" class="[% attrs.isbn ? '' : 'hide_me' %]">
                                                             <td valign="top">
                                                                 <strong>ISBN:</strong>
                                                             </td>
-                                                            <td>
-                                                                <span name="results_isbn"></span>
-                                                            </td>
+                                                            <td>[% attrs.isbn %]</td>
                                                         </tr>
                                                         <tr name="results_edition_tr" class="hide_me">
                                                             <td valign="top">
@@ -99,7 +100,7 @@
                                                 <div class="hide_me">
                                                     <span name='result_table_extra_span' class='hide_me'>
                                                         <span name='result_table_pub_box'
-                                                            style='padding-left: 10px;'> 
+                                                            style='padding-left: 10px;'>
                                                             <span name='result_table_edition_span'
                                                                 style='padding-left: 10px;'></span> |
                                                             <span name='result_table_pub_span'> </span> |
@@ -115,8 +116,8 @@
                                                 class='result_table_format_cell' align="center" width="1"
                                                 style="padding:0px 10px;">
                                                 <img alt="Format" src="" class="hide_me" name="" />
-                                                <span class='hide_me' 
-                                                    style='color: #9999FF; padding-left: 10px; font-size: 7pt; font-weight: 300;'> 
+                                                <span class='hide_me'
+                                                    style='color: #9999FF; padding-left: 10px; font-size: 7pt; font-weight: 300;'>
                                                     <span>[% l("Match Score: ") %] </span>
                                                     <span name='relevancy_span'> </span>
                                                 </span>
@@ -165,13 +166,17 @@
                                                         </div>
                                                     </div>
                                                     <div style="float:right;margin-right:17px;">
-                                                        <img alt="Format" class="hide_me" src=""
-                                                        name="result_mat_type" />
+                                                    [%  key = attrs.mattype;
+                                                        format_desc = ctx.find_citm(key).value;
+                                                        icon_filename = icon_by_mattype.$key;
+                                                        IF icon_filename; %]
+                                                        <img alt="[% format_desc %]" title="[% format_desc %]"
+                                                            src="[% ctx.media_prefix _ '/images/' _ icon_filename %]" />
+                                                    [% END %]
                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
-                            
                                         <!-- Placeholder for ChiliFresh Review -->
                                         <tr class="hide_me" name="chilifreshReview">
                                             <td></td>
@@ -182,7 +187,6 @@
                                                 </div>
                                             </td>
                                         </tr>
-                            
                                         <tr>
                                             <td colspan="5">
                                                 <div style="height:0px;border-top:1px solid #b7b7b7;border-bottom:1px solid #d4d4d4;margin:15px 0px;"></div>
@@ -193,15 +197,16 @@
                                 </table>
                             </td>
                         </tr>
+                    [% END %]
                     </tbody>
                 </table>
             </td>
         </tr>
-    </table>  
+    </table>
 </div>
 
 <div>
-    <table id='' style="width:100%;"> 
+    <table id='' style="width:100%;">
         <tbody id=''>
             <tr class="hide_me">
                 <td class='result_table_row' width="100%">
@@ -222,7 +227,7 @@
                     <td valign="top">
                         <span class='hide_me' id='result_info_div2'
                             style='font-size: 11px;'>
-                            <span> [% l("Results") %] </span> 
+                            <span> [% l("Results") %] </span>
                             <b id='offset_start2'> </b>
                             <span>&nbsp;- </span>
                             <b id='offset_end2'> </b>

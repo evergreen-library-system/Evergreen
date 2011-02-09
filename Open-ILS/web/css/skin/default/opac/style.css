@@ -657,7 +657,7 @@ div.select-wrapper:hover {
 	padding-left:15px;
 }
 
-
+.result_table_subtable { width: 100%; border-collapse: collapse; border: 0; }
 
 
 
@@ -891,4 +891,4 @@ div.select-wrapper:hover {
 }
 #rdetail_copy_info_table { font-size: 8pt; }
 #rdetail_copy_info_table td { padding: 3px; }
-
+.search_page_nav_link { cursor: pointer; }
