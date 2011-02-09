@@ -67,25 +67,22 @@ serial.sisum_editor.prototype = {
         'sisum_editor_left_pane' :
         [
             [
-                'ID',
+                'id',
                 { 
-                    render: '"ID : " + fm.id();' 
                     //input: 'c = function(v){ obj.apply("distribution",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
 
                 }
             ],
             [
-                'Textual Holdings',
+                'textual_holdings',
                 { 
-                    render: 'fm.textual_holdings() == null ? "" : fm.textual_holdings();',
                     input: 'c = function(v){ obj.apply("textual_holdings",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("size", 85); x.setAttribute("value",obj.editor_values.textual_holdings); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'textual_holdings'
                 }
             ],
             [
-                'Generated Coverage',
+                'generated_coverage',
                 { 
-                    render: 'fm.generated_coverage() == null ? "" : fm.generated_coverage();'
                 }
             ]
         ]

@@ -3674,11 +3674,11 @@ SELECT  usr,
 
 	<class id="sbsum" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::basic_summary" oils_persist:tablename="serial.basic_summary" reporter:label="Basic Issue Summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.basic_summary_id_seq">
-			<field name="id" reporter:datatype="id" />
-			<field name="distribution" reporter:datatype="link"/>
-			<field name="generated_coverage" reporter:datatype="text"/>
-			<field name="textual_holdings" reporter:datatype="text"/>
-			<field name="show_generated" reporter:datatype="bool"/>
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Distribution" name="distribution" reporter:datatype="link"/>
+			<field reporter:label="Generated Coverage" name="generated_coverage" reporter:datatype="text"/>
+			<field reporter:label="Textual Holdings" name="textual_holdings" reporter:datatype="text"/>
+			<field reporter:label="Show Generated?" name="show_generated" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="distribution" reltype="has_a" key="id" map="" class="sdist"/>
@@ -3701,11 +3701,11 @@ SELECT  usr,
 
 	<class id="sssum" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::supplement_summary" oils_persist:tablename="serial.supplement_summary" reporter:label="Supplemental Issue Summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.supplement_summary_id_seq">
-			<field name="id" reporter:datatype="id" />
-			<field name="distribution" reporter:datatype="link"/>
-			<field name="generated_coverage" reporter:datatype="text"/>
-			<field name="textual_holdings" reporter:datatype="text"/>
-			<field name="show_generated" reporter:datatype="bool"/>
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Distribution" name="distribution" reporter:datatype="link"/>
+			<field reporter:label="Generated Coverage" name="generated_coverage" reporter:datatype="text"/>
+			<field reporter:label="Textual Holdings" name="textual_holdings" reporter:datatype="text"/>
+			<field reporter:label="Show Generated?" name="show_generated" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="distribution" reltype="has_a" key="id" map="" class="sdist"/>
@@ -3728,11 +3728,11 @@ SELECT  usr,
 
 	<class id="sisum" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="serial::index_summary" oils_persist:tablename="serial.index_summary" reporter:label="Index Issue Summary">
 		<fields oils_persist:primary="id" oils_persist:sequence="serial.index_summary_id_seq">
-			<field name="id" reporter:datatype="id" />
-			<field name="distribution" reporter:datatype="link"/>
-			<field name="generated_coverage" reporter:datatype="text"/>
-			<field name="textual_holdings" reporter:datatype="text"/>
-			<field name="show_generated" reporter:datatype="bool"/>
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Distribution" name="distribution" reporter:datatype="link"/>
+			<field reporter:label="Generated Coverage" name="generated_coverage" reporter:datatype="text"/>
+			<field reporter:label="Textual Holdings" name="textual_holdings" reporter:datatype="text"/>
+			<field reporter:label="Show Generated?" name="show_generated" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="distribution" reltype="has_a" key="id" map="" class="sdist"/>
