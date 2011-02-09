@@ -1637,6 +1637,24 @@
 <!ENTITY staff.serial.ssub_editor.notes.accesskey "N">
 <!ENTITY staff.serial.manage_dists.actions.cmd_add_sstr.label "Add Stream">
 <!ENTITY staff.serial.manage_dists.actions.cmd_delete_sstr.label "Delete Stream">
+<!ENTITY staff.serial.manage_items.actions.cmd_edit_items.label "Edit Item Attributes">
+<!ENTITY staff.serial.manage_items.actions.cmd_edit_items.access_key "E">
+<!ENTITY staff.serial.manage_items.actions.cmd_delete_items.label "Delete Items">
+<!ENTITY staff.serial.manage_items.actions.cmd_delete_items.access_key "D">
+<!ENTITY staff.serial.manage_items.actions.cmd_reset_items.label "Reset Items to Expected">
+<!ENTITY staff.serial.manage_items.workarea_showing "Showing: ">
+<!ENTITY staff.serial.manage_items.workarea_current_unit "Current Working Unit: ">
+<!ENTITY staff.serial.manage_items.workarea_recently_received "Recently Received">
+<!ENTITY staff.serial.manage_items.mode "Mode:">
+<!ENTITY staff.serial.manage_items.bind.label "Bind">
+<!ENTITY staff.serial.manage_items.receive.label "Receive">
+<!ENTITY staff.serial.manage_items.show_all.label "Show All">
+<!ENTITY staff.serial.manage_items.receive_move.label "Receive/Move Selected &#8595;">
+<!ENTITY staff.serial.manage_items.set_current_unit.label "Set Current Unit">
+<!ENTITY staff.serial.manage_items.auto_per_item.label "Auto per Item">
+<!ENTITY staff.serial.manage_items.new_unit.label "New Unit">
+<!ENTITY staff.serial.manage_items.recent.label "Recent">
+<!ENTITY staff.serial.manage_items.other_unit.label "Other...">
 
 <!ENTITY staff.serial.batch_receive "Batch Receive">
 <!ENTITY staff.serial.batch_receive.bib_search_term.label "Enter an identifier for a bibliographic record:">
