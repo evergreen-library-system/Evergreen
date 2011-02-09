@@ -29,7 +29,7 @@ serial.siss_editor.prototype = {
 
     'fm_type' : 'siss',
     'fm_type_plural' : 'sisses',
-    'can_have_notes' : true,
+    'can_have_notes' : false, // XXX no notes table exists yet, but it might make sense
 
     'init' : function (params) {
         var obj = this;
@@ -81,7 +81,7 @@ serial.siss_editor.prototype = {
         } else {
             id = scap.id()
         }
-        return "C/P : #" + id;
+        return $('serialStrings').getFormattedString('serial.manage_subs.scap_id', [id]);
     },
 
     'init_panes' : function () {
@@ -92,27 +92,27 @@ serial.siss_editor.prototype = {
             'siss_editor_left_pane' :
         [
             [
-                $('catStrings').getString('staff.cat.copy_editor.field.creation_date.label') + ' ', //adding extra spaces to satisfy summarize uniqueness requirements
+                'create_date',
                 {
-                    render: 'fm.create_date() == null ? "<Unset>" : util.date.formatted_date( fm.create_date(), "%F");',
+                    render: 'fm.create_date() == null ? "" : util.date.formatted_date( fm.create_date(), "%F");',
                 }
             ],
             [
-                $('catStrings').getString('staff.cat.copy_editor.field.creator.label') + ' ',
+                'creator',
                 {
-                    render: 'fm.creator().usrname() == null ? "<Unset>" : fm.creator().usrname();',
+                    render: 'fm.creator().usrname() == null ? "" : fm.creator().usrname();',
                 }
             ],
             [
-                $('catStrings').getString('staff.cat.copy_editor.field.last_edit_date.label') + ' ',
+                'edit_date',
                 {
-                    render: 'fm.edit_date() == null ? "<Unset>" : util.date.formatted_date( fm.edit_date(), "%F");',
+                    render: 'fm.edit_date() == null ? "" : util.date.formatted_date( fm.edit_date(), "%F");',
                 }
             ],
             [
-                $('catStrings').getString('staff.cat.copy_editor.field.last_editor.label') + ' ',
+                'editor',
                 {
-                    render: 'fm.editor().usrname() == null ? "<Unset>" : fm.editor().usrname();',
+                    render: 'fm.editor().usrname() == null ? "" : fm.editor().usrname();',
                 }
             ],
         ],
@@ -135,15 +135,14 @@ serial.siss_editor.prototype = {
                 }
             ],*/
             [
-                'Holding Code',
+                'holding_code',
                 {
-                    render: 'fm.holding_code();',
                     input: 'c = function(v){ obj.apply("holding_code",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.holding_code); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'holding_code'
                 }
             ],
             [
-                'Caption/Pattern',
+                'caption_and_pattern',
                 {
                     render: 'obj.render_scap(fm.caption_and_pattern());',
                     input: 'if(!obj.multi_ssub_edit) { c = function(v){ obj.apply("caption_and_pattern",v); if (typeof post_c == "function") post_c(v); }; x = util.widgets.make_menulist( util.functional.map_list( obj.get_scap_list(), function(obj2) { return [ obj.render_scap(obj2.id()), obj2.id() ]; }).sort()); x.setAttribute("value",obj.editor_values.caption_and_pattern); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false); }',
@@ -156,7 +155,7 @@ serial.siss_editor.prototype = {
         'siss_editor_right_pane' :
         [
             [
-                'Date Published',
+                'date_published',
                 {
                     render: 'fm.date_published() == null ? "" : util.date.formatted_date( fm.date_published(), "%F");',
                     input: 'c = function(v){ obj.apply("date_published",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.date_published); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
@@ -164,9 +163,8 @@ serial.siss_editor.prototype = {
                 }
             ],
             [
-                'Issuance Label',
+                'label',
                 {
-                    render: 'fm.label() == null ? "" : fm.label();',
                     input: 'c = function(v){ obj.apply("label",v); if (typeof post_c == "function") post_c(v); }; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.label); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
                     value_key: 'label'
                 }
@@ -206,7 +204,7 @@ serial.siss_editor.prototype = {
         JSAN.use('util.window'); var win = new util.window();
         win.open(
             urls.XUL_SERIAL_NOTES, 
-            'Issuance Notes','chrome,resizable,modal',
+            $('serialStrings').getString('staff.serial.siss_editor.notes'),'chrome,resizable,modal',
             { 'object_id' : obj.sisses[0].id(), 'function_type' : 'SISSN', 'object_type' : 'issuance', 'constructor' : sissn }
         );
     },
