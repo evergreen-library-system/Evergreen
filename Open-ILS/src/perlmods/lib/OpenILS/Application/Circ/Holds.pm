@@ -2658,8 +2658,6 @@ sub batch_uber_hold {
 
 sub uber_hold_impl {
     my($e, $hold_id, $args) = @_;
-
-	my $resp = {};
     $args ||= {};
 
 	my $hold = $e->retrieve_action_hold_request(
