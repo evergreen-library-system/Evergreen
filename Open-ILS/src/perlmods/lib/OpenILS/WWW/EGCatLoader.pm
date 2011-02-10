@@ -113,7 +113,7 @@ sub load_helpers {
     my $ctx = $self->ctx;
 
     # fetch-on-demand-and-cache subs for commonly used public data
-    my @public_classes = qw/ccs aout cifm citm clm/;
+    my @public_classes = qw/ccs aout cifm citm clm cmf/;
 
     for my $hint (@public_classes) {
 
@@ -250,29 +250,43 @@ sub load_home {
 sub load_login {
     my $self = shift;
     my $cgi = $self->cgi;
+    my $ctx = $self->ctx;
 
-    $self->ctx->{page} = 'login';
+    $ctx->{page} = 'login';
 
     my $username = $cgi->param('username');
     my $password = $cgi->param('password');
+    my $org_unit = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
+    my $persist = $cgi->param('persist');
 
+    # initial log form loading
     return Apache2::Const::OK unless $username and $password;
 
 	my $seed = $U->simplereq(
         'open-ils.auth', 
-		'open-ils.auth.authenticate.init',
-        $username);
+		'open-ils.auth.authenticate.init', $username);
+
+    my $args = {	
+        username => $username, 
+        password => md5_hex($seed . md5_hex($password)), 
+        type => ($persist) ? 'persist' : 'opac' 
+    };
+
+    my $bc_regex = $ctx->{get_org_setting}->($org_unit, 'opac.barcode_regex');
+
+    $args->{barcode} = delete $args->{username} 
+        if $bc_regex and $username =~ /$bc_regex/;
 
 	my $response = $U->simplereq(
-        'open-ils.auth', 
-		'open-ils.auth.authenticate.complete', 
-		{	username => $username, 
-			password => md5_hex($seed . md5_hex($password)), 
-			type => 'opac' 
-        }
-    );
+        'open-ils.auth', 'open-ils.auth.authenticate.complete', $args);
 
-    # XXX check event, redirect as necessary
+    if($U->event_code($response)) { 
+        # login failed, report the reason to the template
+        $ctx->{login_failed_event} = $response;
+        return Apache2::Const::OK;
+    }
+
+    # login succeeded, redirect as necessary
 
     my $home = $self->apache->unparsed_uri;
     $home =~ s/\/login/\/home/;
@@ -285,7 +299,7 @@ sub load_login {
                 -path => '/',
                 -secure => 1,
                 -value => $response->{payload}->{authtoken},
-                -expires => CORE::time + $response->{payload}->{authtime}
+                -expires => ($persist) ? CORE::time + $response->{payload}->{authtime} : undef
             )
         )
     );
@@ -366,13 +380,6 @@ sub load_rresults {
     my $search = OpenSRF::AppSession->create('open-ils.search');
     my $facet_req = $search->request('open-ils.search.facet_cache.retrieve', $results->{facet_key}, 10);
 
-    unless($cache{cmf}) {
-        $cache{cmf} = $e->search_config_metabib_field({id => {'!=' => undef}});
-        $ctx->{metabib_field} = $cache{cmf};
-        #$cache{cmc} = $e->search_config_metabib_class({name => {'!=' => undef}});
-        #$ctx->{metabib_class} = $cache{cmc};
-    }
-
     my @data;
     while(my $resp = $bre_req->recv) {
         my $bre = $resp->content; 
@@ -402,10 +409,7 @@ sub load_rresults {
 
     my $facets = $facet_req->gather(1);
 
-    for my $cmf_id (keys %$facets) {  # quick-n-dirty
-        my ($cmf) = grep { $_->id eq $cmf_id } @{$cache{cmf}};
-        $facets->{$cmf_id} = {cmf => $cmf, data => $facets->{$cmf_id}};
-    }
+    $facets->{$_} = {cmf => $ctx->{find_cmf}->($_), data => $facets->{$_}} for keys %$facets;  # quick-n-dirty
     $ctx->{search_facets} = $facets;
 
     return Apache2::Const::OK;
