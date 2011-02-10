@@ -1,6 +1,5 @@
-
-
 <!-- TODO: MOVE INTO SEPARATE FORGOT-PASSWORD PAGE 
+
 <div class="hide_me">
 	<div class='login_text color_1' style='padding: 4px; text-align: center;'>
 		<span>[% l("Login") %]</span>
@@ -62,17 +61,20 @@
 
  ^== TODO: MOVE INTO SEPARATE FORGOT-PASSWORD PAGE  -->
 
-
-[% IF ctx.login_failed_event;
+[% IF ctx.login_failed_event %]
+<div id='login-failed-message'>
+[%
     IF ctx.login_failed_event.textcode == 'PATRON_CARD_INACTIVE';
         l("The barcode used to login is marked as inactive.  Please contact your local library.");
     ELSIF ctx.login_failed_event.textcode == 'PATRON_INACTIVE';
         l("This account has been deactivated.  Please contact your local library.");
     ELSE;
-        l("Login failed. The username or password provided was not valid.  Ensure Caps-Lock is off and try again or contact your local library.");
+        l("Login failed. The username or password provided was not valid.  
+            Ensure Caps-Lock is off and try again or contact your local library.");
     END;
-END %]
-
+%]
+</div>
+[% END %]
 
 <div>
     <div style="height:20px;"></div>
@@ -84,8 +86,8 @@ END %]
                         width="100%">
                         <tr>
 	                        <td colspan="2" style="padding-bottom: 10px;">
-                                <h1>Log in to Your Account</h1>
-                                Please enter the following information:
+                                <h1>[% l('Log in to Your Account') %]</h1>
+                                [% l('Please enter the following information:') %]
                                 <br /><br />
                             </td>
                         </tr>
@@ -115,7 +117,9 @@ END %]
                             <td valign="top" class="lbl1">
                                 [% l('PIN Number or Password') %]<br />
                                 <span class="lbl2">
-                                    [% l('If this is your first time logging in, please enter [_1] the last 4 digits of your phone number. [_2] Example: 0926', '<br/>', '<br/>') %]
+                                    [% | l('<br/>', '<br/>') %]
+                                       If this is your first time logging in, please enter [_1] the last 4 digits of your phone number. [_2] Example: 0926
+                                    [% END %]
                                 </span>
                             </td>
                             <td valign="top">
@@ -123,13 +127,20 @@ END %]
                                     <input name="password" type="password" />
                                 </div>
                                 <div style="padding-top:7px;">
-                                    <input type='hidden'
-                                        name='redirect_to'
-                                        value='[% CGI.param('redirect_to') || ctx.referer | replace('^http:', 'https:') %]' />
+                                    [%
+                                        # If no redirect is offered or it's leading us back to the 
+                                        # login form, redirect the user to My Account
+                                        redirect = CGI.param('redirect_to') || ctx.referer;
+                                        IF !redirect OR redirect.match(ctx.path_info _ '$');
+                                            redirect = CGI.url('-full' => 1) _ '/opac/myopac/main';
+                                        END;
+                                        redirect = redirect  | replace('^http:', 'https:');
+                                    %]
+                                    <input type='hidden' name='redirect_to' value='[% redirect %]'/>
                                     <input type="checkbox" name="persist" /> [% l('Remember Me?') %]
                                 </div>
                                 <div style="padding-top:14px;">
-                                    <input type='image' alt="Log in" src="[% ctx.media_prefix %]/images/login-btn2.png" />
+                                    <input type='image' alt="[% l('Log in') %]" src="[% ctx.media_prefix %]/images/login-btn2.png" />
                                     <!-- TODO
                                     <a href="reset_password"
                                         style="position:relative;top:-13px;left:2px;font-size:10px;">Forgot your PIN?</a>

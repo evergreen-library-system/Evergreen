@@ -82,7 +82,7 @@ sub load {
     # ----------------------------------------------------------------
     unless($self->cgi->https and $self->editor->requestor) {
         # If a secure resource is requested insecurely, redirect to the login page
-        my $url = 'https://' . $self->apache->hostname . $self->ctx->{base_path} . "/opac/login";
+        my $url = 'https://' . $self->apache->hostname . $self->ctx->{opac_root} . "/login";
         $self->apache->print($self->cgi->redirect(-url => $url));
         return Apache2::Const::REDIRECT;
     }
@@ -198,6 +198,7 @@ sub load_helpers {
         );
     };
 
+    # retrieve and cache org unit setting values
     $ctx->{get_org_setting} = sub {
         my($org_id, $setting) = @_;
         $cache{org_settings}{$org_id} = {} unless $cache{org_settings}{$org_id};
@@ -218,6 +219,8 @@ sub load_common {
     my $ctx = $self->ctx;
 
     $ctx->{referer} = $self->cgi->referer;
+    $ctx->{path_info} = $self->cgi->path_info;
+    $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
     $ctx->{is_staff} = ($self->apache->headers_in->get('User-Agent') =~ 'oils_xulrunner');
 
     if($e->authtoken($self->cgi->cookie('ses'))) {
@@ -259,7 +262,7 @@ sub load_login {
     my $org_unit = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
     my $persist = $cgi->param('persist');
 
-    # initial log form loading
+    # initial log form only
     return Apache2::Const::OK unless $username and $password;
 
 	my $seed = $U->simplereq(
@@ -310,7 +313,7 @@ sub load_login {
 sub load_logout {
     my $self = shift;
 
-    my $url = 'http://' . $self->apache->hostname . $self->ctx->{base_path} . "/opac/home";
+    my $url = 'http://' . $self->apache->hostname . $self->ctx->{opac_root} . "/home";
 
     $self->apache->print(
         $self->cgi->redirect(

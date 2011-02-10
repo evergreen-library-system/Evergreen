@@ -1,3 +1,4 @@
+[% USE CGI %]
 [%  WRAPPER "default/opac/parts/base.tt2";
     INCLUDE "default/opac/parts/topnav.tt2";
     ctx.page_title = "Account Login" %]
