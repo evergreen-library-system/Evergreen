@@ -71,7 +71,8 @@ sub load {
 
     my $path = $self->apache->path_info;
 
-    return $self->load_home if $path =~ /opac\/home/;
+    return $self->load_simple("home") if $path =~ /opac\/home/;
+    return $self->load_simple("advanced") if $path =~ /opac\/advanced/;
     return $self->load_login if $path =~ /opac\/login/;
     return $self->load_logout if $path =~ /opac\/logout/;
     return $self->load_rresults if $path =~ /opac\/results/;
@@ -243,9 +244,9 @@ sub load_common {
     return Apache2::Const::OK;
 }
 
-sub load_home {
-    my $self = shift;
-    $self->ctx->{page} = 'home';
+sub load_simple {
+    my ($self, $page) = @_;
+    $self->ctx->{page} = $page;
     return Apache2::Const::OK;
 }
 
