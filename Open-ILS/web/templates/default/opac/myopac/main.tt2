@@ -48,7 +48,7 @@
                                 </span>
                             </td>
                             <td align="right" class="view_link">
-                                <a href="circs">View All</a>
+                                <a href="[% ctx.opac_root %]/circs">View All</a>
                             </td>
                         </tr>
                     </table>
@@ -63,7 +63,7 @@
                                 </span>
                             </td>
                             <td align="right" class="view_link">
-                                <a href="holds">View All</a>
+                                <a href="[% ctx.opac_root %]/holds">View All</a>
                             </td>
                         </tr>
                     </table>

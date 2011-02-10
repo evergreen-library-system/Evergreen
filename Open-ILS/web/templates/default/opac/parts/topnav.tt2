@@ -1,14 +1,14 @@
-[% USE money = format('$%.2f'); %]
+[%- USE money = format('$%.2f');
+    ctx.opac_root = '/eg/opac' -%]
 <div id="header">
     <div class="float-left">
-        <a href="http://www.kcls.org"><img
-            alt="KCLS Logo"
+        <a href="http://www.kcls.org"><img alt="KCLS Logo"
             src="[% ctx.media_prefix %]/images/KCLS_logo_horiz.gif" /></a>
     </div>
     <div class="float-right">
         [% IF !ctx.user %]
         <div id="your-acct-login">
-            <a href="[% skin_root %]login" id="home_myopac_link"><img
+            <a href="[% ctx.opac_root %]/login" id="home_myopac_link"><img
                 alt="Your Account Log in"
                 src="[% ctx.media_prefix %]/images/login-btn.png"
                 onmouseover="this.src='[% ctx.media_prefix %]/images/login-btn-hover.png';"
@@ -35,12 +35,12 @@
                             <img src="[% ctx.media_prefix %]/images/dash-divider.jpg" />
                         </td>
                         <td id="dash_corner_mid1c">
-                            <a href="[% skin_root %]myopac/main" class="pos-rel-top4"><img
+                            <a href="[% ctx.opac_root %]/myopac/main" class="pos-rel-top4"><img
                                 alt="[% l('My Account') %]"
                                 src="[% ctx.media_prefix %]/images/acct-btn.png"
                                 onmouseover="this.src='[% ctx.media_prefix %]/images/acct-btn-hover.png';"
                                 onmouseout="this.src='[% ctx.media_prefix %]/images/acct-btn.png';" /></a>
-                            <a href="[% skin_root %]logout" class="pos-rel-top4"
+                            <a href="[% ctx.opac_root %]/logout" class="pos-rel-top4"
                                 id="logout_link"><img
                                 alt="[% l('Logout') %]"
                                 src="[% ctx.media_prefix %]/images/logout-btn.png"

@@ -30,7 +30,7 @@
                                             <td class='result_table_pic_header'
                                                 width="78" nowrap="nowrap" valign="top">
                                                 [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
-                                                <a href="record/[% rec.bre.id %]"><img alt="Image of item"
+                                                <a href="[% ctx.opac_root %]/record/[% rec.bre.id %]"><img alt="Image of item"
                                                         name='item_jacket' class='result_table_pic'
                                                         src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident %]' /></a><br />
                                                 [% END %]
@@ -40,7 +40,7 @@
                                                 valign="top">
                                                 <div class="bold">
                                                     <a title="[% attrs.title %]" name='item_title'
-                                                        href="record/[% rec.bre.id %]"
+                                                        href="[% ctx.opac_root %]/record/[% rec.bre.id %]"
                                                         class='search_link'>[% attrs.title %]</a>
                                                 </div>
                                                 <span style="font-size:11px;">
@@ -48,7 +48,7 @@
                                                         <em>
                                                             <a title="[% l("Perform an Author Search") %]"
                                                                 name='item_author'
-                                                                href="results?query=author%3a[% attrs.author | replace('[,\.:;]', '') | uri %]&loc=[% loc %]"
+                                                                href="[% ctx.opac_root %]/results?query=author%3a[% attrs.author | replace('[,\.:;]', '') | uri %]&loc=[% loc %]"
                                                                 class='search_link'>[% attrs.author %]</a>
                                                         </em> &nbsp;&nbsp;
                                                         [% attrs.pubdate %]
@@ -139,7 +139,7 @@
                                                     <div style="float:right;">
                                                         <div style="border-bottom:1px dotted #ccc;padding-top:10px;"
                                                             class="results_aux_utils"><a
-                                                                href="place_hold?hold_target=[% rec.bre.id %]&hold_type=T" name="place_hold_link"><img
+                                                                href="[% ctx.opac_root %]/place_hold?hold_target=[% rec.bre.id %]&hold_type=T" name="place_hold_link"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
                                                                 alt="place hold" /><span
                                                                     style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
