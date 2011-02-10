@@ -1,26 +1,29 @@
-<!-- ****************** top_nav.xml ***************************** -->
 <div id="header">
-    <div class="float-left"><a
-        href="http://www.kcls.org"><img alt="KCLS Logo"
-        src="[% ctx.media_prefix %]/images/KCLS_logo_horiz.gif" /></a></div>
+    <div class="float-left">
+        <a href="http://www.kcls.org"><img
+            alt="KCLS Logo"
+            src="[% ctx.media_prefix %]/images/KCLS_logo_horiz.gif" /></a>
+    </div>
     <div class="float-right">
-        <div id="your-acct-login"><a
-            href="[% skin_root %]login" id="home_myopac_link"><img
-            alt="Your Account Log in"
-            src="[% ctx.media_prefix %]/images/login-btn.png"
-            onmouseover="this.src='[% ctx.media_prefix %]/images/login-btn-hover.png';"
-            onmouseout="this.src='[% ctx.media_prefix %]/images/login-btn.png';" /></a></div>
-
-
+        <div id="your-acct-login">
+            <a href="[% skin_root %]login" id="home_myopac_link"><img
+                alt="Your Account Log in"
+                src="[% ctx.media_prefix %]/images/login-btn.png"
+                onmouseover="this.src='[% ctx.media_prefix %]/images/login-btn-hover.png';"
+                onmouseout="this.src='[% ctx.media_prefix %]/images/login-btn.png';" /></a>
+        </div>
     </div>
     <div class="common-no-pad"></div>
 </div>
 <div id="gold-links-holder">
     <div id="gold-links">
         <div id="header-links">
-            <a href="http://www.kcls.org/usingthelibrary/index.cfm">Using the Library</a>
-            <a href="http://www.kcls.org/booksandreading/">Books &amp; Reading</a>
-            <a href="http://www.kcls.org/research/index.cfm">Research &amp; Homework</a>
+            <a href="http://www.kcls.org/usingthelibrary/index.cfm">Using
+                the Library</a>
+            <a href="http://www.kcls.org/booksandreading/">Books &amp;
+                Reading</a>
+            <a href="http://www.kcls.org/research/index.cfm">Research &amp;
+                Homework</a>
             <a href="http://www.kcls.org/programs/">Programs &amp; Classes</a>
             <a href="http://www.kcls.org/events/">Events</a>
             <a href="/opac/extras/mobile/">Mobile Catalog</a>
@@ -28,4 +31,3 @@
         </div>
     </div>
 </div>
-<!-- ****************** end: top_nav.xml ***************************** -->

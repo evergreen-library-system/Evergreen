@@ -5,6 +5,8 @@
 %]
 <div>
     <div id='xulholds_box' class='hide_me canvas' style='margin-top: 6px;'>
+        <!-- XXX TODO staff will need this to work ("advanced" hold placement)
+        later -->
         <center>
             <table class='data_grid' style='margin-top: 20px;'>
                 <tbody>
@@ -43,7 +45,7 @@
             <input type="hidden" name="hold_type"
                 value="[% CGI.param('hold_type') | html %]" />
             <input type="hidden" name="redirect_to"
-                value="[% CGI.param('redirect_to') | html %]" />
+                value="[% ctx.referer | replace('^http:', 'https:') | html %]" />
             <h1>Place Hold</h1>
             <p>
                 You would like to place a hold on
@@ -56,9 +58,9 @@
             </p>
             <p>
                 If you would like to change the library pick up location, select
-                from the &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                from the
                 [% PROCESS "default/opac/parts/org_selector.tt2";
-                    PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib %]<br />
+                    PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib %]<br class="clear-both" />
                 Location dropdown menu.
             </p>
             <p>If you use the Traveling Library Center (TLC) and ABC Express
