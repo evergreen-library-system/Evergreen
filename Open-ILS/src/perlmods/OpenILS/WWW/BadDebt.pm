@@ -100,7 +100,7 @@ sub handler {
             my $w;
 
             if ($s->xact_type eq 'circulation') {
-                $w = $cstore->request('open-ils.cstore.direct.action.circulation.retrieve' => $xact)->gather(1)->circ_lib :
+                $w = $cstore->request('open-ils.cstore.direct.action.circulation.retrieve' => $xact)->gather(1)->circ_lib;
             } elsif ($s->xact_type eq 'grocery') {
                 $w = $cstore->request('open-ils.cstore.direct.money.grocery.retrieve' => $xact)->gather(1)->billing_location;
             } elsif ($s->xact_type eq 'reservation') {
