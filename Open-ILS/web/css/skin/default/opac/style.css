@@ -518,12 +518,8 @@ div.select-wrapper:hover {
 	border-bottom: 1px solid black;
 }
 
-#main-content {
-    /* on devcatalog: width: 974px; margin:auto; padding-left:0px; */
-	width: 694px;
-	margin: auto;
-	padding-left: 17px;
-}
+#main-content-home { width: 694px; margin: auto; padding-left: 17px; }
+#main-content { width: 974px; margin:auto; padding-left: 0px; }
 
 #main-content .login_boxes {
 	border: 1px solid #dedede;
