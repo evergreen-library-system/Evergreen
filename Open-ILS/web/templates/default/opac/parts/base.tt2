@@ -6,13 +6,11 @@
             href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css" />
         <link rel="stylesheet" type="text/css"
             href="[% ctx.media_prefix %]/css/skin/default/opac/style.css" />
-        <link rel="stylesheet" type="text/css"
-            href="[% ctx.media_prefix %]/css/skin/default/opac/contentslider.css" />
         <title>Catalog - King County Library - [% ctx.page_title %]</title>
-        <link rel="unapi-server" type="application/xml" title="unAPI"
-            href="/opac/extras/unapi" />
-        [% BLOCK html_head; END; # provide a default that can be overridden %]
-        [% PROCESS html_head %]
+        [%# <!-- is this needed? --><link rel="unapi-server"
+            type="application/xml" title="unAPI" href="/opac/extras/unapi" />%]
+        [% BLOCK html_head; END; # provide a default that can be overridden -%]
+        [%- PROCESS html_head -%]
     </head>
     <body>
         [% content %] 

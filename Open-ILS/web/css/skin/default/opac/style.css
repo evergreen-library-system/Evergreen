@@ -102,10 +102,47 @@ div.select-wrapper:hover {
 }
 
 #dash_user {
-	font-weight:bold;
-	text-transform:capitalize;
+	font-weight: bold;
+	text-transform: capitalize;
+    position: relative;
+    top: 10px;
 }
 
+#dash_corner_mid1a {
+    vertical-align: top;
+    background: url('/images/dash-corner-mid1.png') repeat-x;
+    padding-left: 8px;
+}
+#dash_corner_mid1b {
+    background: url('/images/dash-corner-mid1.png') repeat-x;
+    padding: 0px 8px 0px 10px;
+}
+#dash_corner_mid1b img { position: relative; top: -1px; }
+#dash_corner_mid1c {
+    background: url('/images/dash-corner-mid1.png') repeat-x;
+    vertical-align: top;
+}
+#dash_corner_mid2a {
+    vertical-align: top;
+    width: 372px;
+    background: url('/images/dash-corner-mid2.png') repeat-x;
+}
+.dash-pos-out { position: relative; left: 3px; }
+.dash-pos-holds { position: relative; left: 100px; }
+.dash-align-out { text-align: right; width: 86px; }
+.dash-align-holds { text-align: right; width: 62px; }
+.dash-pos-pickup { position: relative; left: 170px; }
+.dash-align-pickup { text-align: right; width: 111px; }
+.dash-pos-fines { position: relative; left: 284px; }
+.dash-align-fines { text-align: right; width: 76px; }
+.pos-rel-top4 { position: relative; top: 4px; }
+#dash_number_row { position: relative; top: 6px; }
+#logout_link { left: 1px; }
+
+#dash_checked { color: #ffcc33; }
+#dash_holds { color: #ffcc33; }
+#dash_pickup { color: #1dd93c; }
+#dash_fines { color: #f41d36; }
 #header {
 	color: #fff;
 	padding: 26px 0px 26px 0px;
@@ -166,6 +203,12 @@ div.select-wrapper:hover {
 #gold-links {
 	margin:auto;
 	width:974px;
+	padding-left:0px;
+}
+
+#gold-links-home {
+	margin:auto;
+	width:694px;
 	padding-left:0px;
 }
 
@@ -441,7 +484,7 @@ div.select-wrapper:hover {
 #hp-buttons {
 	margin: auto;
 	margin-top: 6px;
-	width: 974px;
+	width: 694px; /* 974px; */
 }
 
 #hp-welcome {
@@ -467,7 +510,7 @@ div.select-wrapper:hover {
 
 #hp-banner {
 	margin: auto;
-	width:974px;
+	width: 694px; /* formerly 974px */
 	height: 213px;
 }
 
@@ -518,12 +561,8 @@ div.select-wrapper:hover {
 	border-bottom: 1px solid black;
 }
 
-#main-content {
-    /* on devcatalog: width: 974px; margin:auto; padding-left:0px; */
-	width: 694px;
-	margin: auto;
-	padding-left: 17px;
-}
+#main-content-home { width: 694px; margin: auto; padding-left: 17px; }
+#main-content { width: 974px; margin:auto; padding-left: 0px; }
 
 #main-content .login_boxes {
 	border: 1px solid #dedede;

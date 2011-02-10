@@ -1,5 +1,12 @@
+[%  USE CGI;
+    PROCESS "default/opac/parts/marc_misc.tt2";
+    attrs = {marc_xml => ctx.marc_xml};
+    PROCESS get_marc_attrs args=attrs;
+%]
 <div>
     <div id='xulholds_box' class='hide_me canvas' style='margin-top: 6px;'>
+        <!-- XXX TODO staff will need this to work ("advanced" hold placement)
+        later -->
         <center>
             <table class='data_grid' style='margin-top: 20px;'>
                 <tbody>
@@ -9,13 +16,16 @@
                             <input type='text' id='xul_recipient_barcode' />
                         </td>
                         <td>
-                            <input type='submit' value='[% l("Submit") %]' id='xul_recipient_barcode_submit' />
+                            <input type='submit' value='[% l("Submit") %]'
+                                id='xul_recipient_barcode_submit' />
                         </td>
                         <td>
                             <input type='submit' value='[% l("Cancel") %]' />
                         </td>
                         <td>
-                            <input type='submit' value='[% l("Place hold for my account") %]' id='xul_recipient_me' />
+                            <input type='submit'
+                                value='[% l("Place hold for my account") %]'
+                                id='xul_recipient_me' />
                         </td>
                     </tr>
                 </tbody>
@@ -28,28 +38,40 @@
         <b>[% l("Checking for possibility of hold fulfillment...") %]</b>
     </div>
     <div id='holds_box' class='canvas' style='margin-top: 6px;'>
-        <br/>
-        <h1>Place Hold</h1>
-        <p>
-        You would like to place a hold on
-        <strong>&quot;<span id="holds_title"></span>&quot;</strong>
-        to be picked up at
-        <strong>&quot;<span id="holds_pickup_lib"></span>&quot;</strong>.<br />
-        If this is correct, press <strong>SUBMIT</strong>.</p>
-        <p>
-            If you would like to change the library pick up location, select
-            from the &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <select style="width:200px;" id="holds_org_selector"></select><br />
-            Location dropdown menu.
-        </p>
-        <p>If you use the Traveling Library Center (TLC) and ABC Express
-            services, please select "Outreach" to have the item delivered
-            during your scheduled visit.</p>
-        <a href="#" id="holds_submit"><img
-            alt="Submit" src="[% ctx.media_prefix %]/images/btnSubmit.png" /></a>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="#" id="holds_cancel"><img
-            alt="Cancel" src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
+        <form method="POST">
+            <br/>
+            <input type="hidden" name="hold_target"
+                value="[% CGI.param('hold_target') | html %]" />
+            <input type="hidden" name="hold_type"
+                value="[% CGI.param('hold_type') | html %]" />
+            <input type="hidden" name="redirect_to"
+                value="[% ctx.referer | replace('^http:', 'https:') | html %]" />
+            <h1>Place Hold</h1>
+            <p>
+                You would like to place a hold on
+                <strong><q>[% attrs.title %]</q></strong>
+                to be picked up at
+                <strong>
+                    <q>[% ctx.find_aou(ctx.default_pickup_lib).name %].</q>
+                </strong><br />
+                If this is correct, press <strong>SUBMIT</strong>.
+            </p>
+            <p>
+                If you would like to change the library pick up location, select
+                from the
+                [% PROCESS "default/opac/parts/org_selector.tt2";
+                    PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib %]<br class="clear-both" />
+                Location dropdown menu.
+            </p>
+            <p>If you use the Traveling Library Center (TLC) and ABC Express
+                services, please select "Outreach" to have the item delivered
+                during your scheduled visit.</p>
+            <input type="image" name="submit" value="submit" title="Submit"
+                alt="Submit" src="[% ctx.media_prefix %]/images/btnSubmit.png" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="javascript:history.go(-1);" id="holds_cancel"><img
+                alt="Cancel" src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
+        </form>
         <br /><br />
         <p>* If you need your item today, and it is checked in at your
             library, please place your hold and then call your library to set it
@@ -124,7 +146,7 @@
                     <td class='holds_cell'>[% l("Contact email address") %]:</td>
                     <td class='holds_cell' id='holds_email'> 
                         <span class='hide_me' id='holds.no_email'>
-                           ([% l("Patron has no configured email address)" %])<br/>
+                           ([% l("Patron has no configured email address") %])<br/>
                            ([% l("See") %] <a class='classic_link' id='holds.no_email.my_account'>[% l("My Account") %]</a> [% l("for setting your email address") %])
                         </span>
                         <span class='hide_me' id='holds.no_email.xul'>
@@ -234,37 +256,37 @@
         </span>
     </div>
     <div id="anonListTable" class="hide_me" style="margin-top: 6px;">
-    <select id="holdsCacheSel" class="hide_me"></select><br />
-    <a href="#">Place hold on selected</a><br />
-    <a href="#">Remove selected</a>
-    
-    <table id="temp_list_holds" cellpadding='0' cellspacing='0' border='0'
-        style="margin-top:10px;">
-        <tr>
-            <td width="1%" style="padding-left:10px;">
-                <input type='checkbox' title='Select All'
-                    id='anon_selector' />
-            </td>
-            <td width="1%">
-            </td>
-            <td width="98%" style="padding-left:40px;">
-                <strong>Title</strong>
-            </td>
-        </tr>
-    </table>
-    <table width='100%' style="margin-left:7px;margin-bottom:10px;">
-        <thead>
-            <tr><td width='20'></td><td width='30'></td><td></td></tr>
-        </thead>
-        <tbody id="anonListParent">
-            <tr id="anonListTemp">
-              <td><input type='checkbox' name='anon_selector' /></td>
-              <td name="curr_row"></td>
-              <td name="title"></td>
+        <select id="holdsCacheSel" class="hide_me"></select><br />
+        <a href="#">Place hold on selected</a><br />
+        <a href="#">Remove selected</a>
+        
+        <table id="temp_list_holds" cellpadding='0' cellspacing='0' border='0'
+            style="margin-top:10px;">
+            <tr>
+                <td width="1%" style="padding-left:10px;">
+                    <input type='checkbox' title='Select All'
+                        id='anon_selector' />
+                </td>
+                <td width="1%">
+                </td>
+                <td width="98%" style="padding-left:40px;">
+                    <strong>Title</strong>
+                </td>
             </tr>
-        </tbody>
-    </table>
-    <a href="#">Back to search results</a>
+        </table>
+        <table width='100%' style="margin-left:7px;margin-bottom:10px;">
+            <thead>
+                <tr><td width='20'></td><td width='30'></td><td></td></tr>
+            </thead>
+            <tbody id="anonListParent">
+                <tr id="anonListTemp">
+                  <td><input type='checkbox' name='anon_selector' /></td>
+                  <td name="curr_row"></td>
+                  <td name="title"></td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="#">Back to search results</a>
     </div>
 
     <span class='hide_me' id='format_words'>
@@ -283,5 +305,4 @@
     <span id='hold_failed_patron_barred' class='hide_me'>[% l("PATRON BARRED. Please see any notes in the \"Staff Notes\" section of your \"My Account\" page or contact your local library.") %]</span>
     <span id='invalid_hold' class='hide_me'>[% l("This hold is no longer valid. It's likely that the target for the hold was deleted from the system.  Please cancel this hold and place a new one.") %]</span>
     <span id='holds_invalid_recipient' class='hide_me'>[% l("The patron barcode entered as the hold recipient is invalid.") %]</span>
-
 </div>

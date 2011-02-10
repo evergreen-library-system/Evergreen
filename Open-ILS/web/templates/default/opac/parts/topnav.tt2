@@ -1,30 +1,121 @@
-<!-- ****************** top_nav.xml ***************************** -->
-[% 
+[%- USE money = format('$%.2f');
     USE CGI; 
-    USE EGI18N;
-%]
+    USE EGI18N; -%]
 <div id="header">
-    <div class="float-left"><a
-        href="http://www.kcls.org"><img alt="KCLS Logo"
-        src="[% ctx.media_prefix %]/images/KCLS_logo_horiz.gif" /></a></div>
+    <div class="float-left">
+        <a href="http://www.kcls.org"><img alt="KCLS Logo"
+            src="[% ctx.media_prefix %]/images/KCLS_logo_horiz.gif" /></a>
+    </div>
     <div class="float-right">
-        <div id="your-acct-login"><a
-            href="[% skin_root %]login" id="home_myopac_link"><img
-            alt="Your Account Log in"
-            src="[% ctx.media_prefix %]/images/login-btn.png"
-            onmouseover="this.src='[% ctx.media_prefix %]/images/login-btn-hover.png';"
-            onmouseout="this.src='[% ctx.media_prefix %]/images/login-btn.png';" /></a></div>
-
-
+        [% IF !ctx.user %]
+        <div id="your-acct-login">
+            <a href="[% ctx.opac_root %]/login" id="home_myopac_link"><img
+                alt="Your Account Log in"
+                src="[% ctx.media_prefix %]/images/login-btn.png"
+                onmouseover="this.src='[% ctx.media_prefix %]/images/login-btn-hover.png';"
+                onmouseout="this.src='[% ctx.media_prefix %]/images/login-btn.png';" /></a>
+        </div>
+        [% ELSE %]
+        <div id="dash_wrapper">
+            <div class="float-right">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td>
+                            <img src="[% ctx.media_prefix %]/images/dash-corner-left1.png" />
+                        </td>
+                        <td id="dash_corner_mid1a">
+                            <span id="dash_user">
+                                [%  # XXX TODO: some kind of standard helper
+                                    # function in TT2 to render human names,
+                                    # i18n aware.
+                                    ctx.user.first_given_name %]
+                                [% ctx.user.family_name %]
+                            </span>
+                        </td>
+                        <td id="dash_corner_mid1b">
+                            <img src="[% ctx.media_prefix %]/images/dash-divider.jpg" />
+                        </td>
+                        <td id="dash_corner_mid1c">
+                            <a href="[% ctx.opac_root %]/myopac/main" class="pos-rel-top4"><img
+                                alt="[% l('My Account') %]"
+                                src="[% ctx.media_prefix %]/images/acct-btn.png"
+                                onmouseover="this.src='[% ctx.media_prefix %]/images/acct-btn-hover.png';"
+                                onmouseout="this.src='[% ctx.media_prefix %]/images/acct-btn.png';" /></a>
+                            <a href="[% ctx.opac_root %]/logout" class="pos-rel-top4"
+                                id="logout_link"><img
+                                alt="[% l('Logout') %]"
+                                src="[% ctx.media_prefix %]/images/logout-btn.png"
+                                onmouseover="this.src='[% ctx.media_prefix %]/images/logout-btn-hover.png';"
+                                onmouseout="this.src='[% ctx.media_prefix %]/images/logout-btn.png';" /></a>
+                        </td>
+                        <td>
+                            <img src="[% ctx.media_prefix %]/images/dash-corner-right1.png" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="dashboard">
+                <div class="pos-abs">
+                    <div class="pos-rel-top4">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td>
+                                    <img src="[% ctx.media_prefix %]/images/dash-corner-left2.png" />
+                                </td>
+                                <td id="dash_corner_mid2a">
+                                    <div id="dash_number_row">
+                                        <div class="pos-abs">
+                                            <div class="dash-pos-out">
+                                                <div class="dash-align-out">
+                                                    <span id="dash_checked">[% ctx.user_stats.checkouts.out %]</span> [% l("Checked Out") %]
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pos-abs">
+                                            <div class="dash-pos-holds">
+                                                <div class="dash-align-holds">
+                                                    <span id="dash_holds">[% ctx.user_stats.holds.total %]</span> [% l("On Hold") %]
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pos-abs">
+                                            <div class="dash-pos-pickup">
+                                                <div class="dash-align-pickup">
+                                                    <span id="dash_pickup">[% ctx.user_stats.holds.ready %]</span> [% l("Ready for Pickup") %]
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pos-abs">
+                                            <div class="dash-pos-fines">
+                                                <div class="dash-align-fines">
+                                                    <span id="dash_fines">[% money(ctx.user_stats.fines.balance_owed) %]</span> [% l("Fines") %]
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <img src="[% ctx.media_prefix %]/images/dash-corner-right2.png" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        [% END %]
     </div>
     <div class="common-no-pad"></div>
 </div>
 <div id="gold-links-holder">
     <div id="gold-links">
         <div id="header-links">
-            <a href="http://www.kcls.org/usingthelibrary/index.cfm">Using the Library</a>
-            <a href="http://www.kcls.org/booksandreading/">Books &amp; Reading</a>
-            <a href="http://www.kcls.org/research/index.cfm">Research &amp; Homework</a>
+            <a href="http://www.kcls.org/usingthelibrary/index.cfm">Using
+                the Library</a>
+            <a href="http://www.kcls.org/booksandreading/">Books &amp;
+                Reading</a>
+            <a href="http://www.kcls.org/research/index.cfm">Research &amp;
+                Homework</a>
             <a href="http://www.kcls.org/programs/">Programs &amp; Classes</a>
             <a href="http://www.kcls.org/events/">Events</a>
             <a href="/opac/extras/mobile/">Mobile Catalog</a>
@@ -32,4 +123,3 @@
         </div>
     </div>
 </div>
-<!-- ****************** end: top_nav.xml ***************************** -->

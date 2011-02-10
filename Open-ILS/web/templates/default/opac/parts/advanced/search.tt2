@@ -28,7 +28,14 @@
     <tr>
         <td align='center'>
             [% l("Search Library") %]<br /><br />
-            [% INCLUDE "default/opac/parts/libselect.tt2" %]
+            <span id='depth_selector_span'>
+                [% PROCESS "default/opac/parts/org_selector.tt2";
+                    PROCESS build_org_selector name='loc' value=loc %]
+            </span>
+            <span id='lib_selector_span'>
+                <a id='lib_selector_link' class='classic_link'
+                    href='#'>[% l("Choose a library to search") %]</a>
+            </span>
             <br /><br />
             <span>[% l("Limit to Available") %]</span>
             <input type='checkbox' id='opac.result.limit2avail'/>
