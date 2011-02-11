@@ -1547,6 +1547,7 @@ __PACKAGE__->register_method(
 sub biblio_search_isbn { 
 	my( $self, $client, $isbn ) = @_;
 	$logger->debug("Searching ISBN $isbn");
+	$isbn =~ s/-//g;
 	my $e = new_editor();
 	my $recs = $U->storagereq(
 		'open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $isbn );
