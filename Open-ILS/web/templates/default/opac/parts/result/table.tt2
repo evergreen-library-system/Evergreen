@@ -31,7 +31,7 @@
                                                 width="78" nowrap="nowrap" valign="top">
                                                 [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
                                                 <a href="[% ctx.opac_root %]/record/[% rec.bre.id %]"><img alt="Image of item"
-                                                        name='item_jacket' class='result_table_pic'
+                                                        name='item_jacket' class='result_table_pic' width="55"
                                                         src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident %]' /></a><br />
                                                 [% END %]
                                             </td>

@@ -1,6 +1,14 @@
 <!-- ****************** page_rdetail.xml ***************************** -->
+[%  record = ctx.record;
+    attrs = {marc_xml => ctx.marc_xml};
+    PROCESS "default/opac/parts/marc_misc.tt2";
+    PROCESS get_marc_attrs args=attrs %]
 <div id='canvas_main' class='canvas'>
-    <div id="rdetail_header">
+    <div id="rdetail_header" class="hide_me">[%#
+        XXX Does it make sense for now to even have this section?  Why
+        should the record detail page be aware of the ongoing search?
+        The user can use the back button to go back to their search results
+        like on any other website. %]
         <div style="float:left;">
             Search Results&nbsp;&nbsp;&nbsp;
             <span id="rdetail_result_count" class="hide_me">
