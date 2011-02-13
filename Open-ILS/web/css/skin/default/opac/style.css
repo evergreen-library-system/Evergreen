@@ -383,6 +383,7 @@ div.select-wrapper:hover {
 	font-size: 18px;
 }
 
+#rdetail_image { border: none; }
 #rdetail_image_cell {
 	padding-top: 3px;
 	padding-right: 10px;

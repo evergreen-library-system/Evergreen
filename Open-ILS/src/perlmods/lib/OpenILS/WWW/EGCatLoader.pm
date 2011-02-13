@@ -240,6 +240,5 @@ sub load_logout {
     return Apache2::Const::REDIRECT;
 }
 
-
 1;
 

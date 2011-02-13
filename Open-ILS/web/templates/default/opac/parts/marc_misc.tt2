@@ -1,34 +1,4 @@
 [% 
-    # Extract MARC fields from XML
-    #   get_marc_attrs( { marc_xml => doc } )
-    BLOCK get_marc_attrs;
-        xml = args.marc_xml;
-        args.isbn = xml.findnodes('//*[@tag="020"]/*[@code="a"]').shift.textContent;
-        args.upc = xml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
-        args.issn = xml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
-        args.title = xml.findnodes('//*[@tag="245"]/*[@code="a"]').textContent;
-        args.author = xml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
-        args.publisher = xml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
-        args.pubdate = xml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
-        args.edition = xml.findnodes('//*[@tag="250"]/*[@code="a"]').textContent ||
-            xml.findnodes('//*[@tag="534"]/*[@code="b"]').textContent ||
-            xml.findnodes('//*[@tag="775"]/*[@code="b"]').textContent;
-        phys = xml.findnodes(
-            '//*[@tag="300"]/*[@code="a" or @code="b" or @code="c" or @code="e"]'
-        );
-        phys_content = [];
-        FOR p IN phys; phys_content.push(p.textContent); END;
-        args.phys_desc = phys_content.join("");
-
-        # clean up the ISBN
-        args.isbn_clean = args.isbn.replace('\ .*', '');
-
-        # KCLS-specific stuff; needs to change
-        args.mattype = xml.findnodes('//*[@tag="998"]/*[@code="d"]').textContent;
-        args.kcls_cn = xml.findnodes('//*[@tag="092" or @tag="099"]/*').textContent;
-
-    END;
-
     icon_by_mattype = {     # XXX KCLS-specific
         "a" => "media_book.jpg",
         "b" => "media_magazines.jpg",
@@ -59,4 +29,38 @@
         "2" => "media_cassettewithbook.jpg",
         "5" => "media_cdwithbook.jpg"
     };
+
+    # Extract MARC fields from XML
+    #   get_marc_attrs( { marc_xml => doc } )
+    BLOCK get_marc_attrs;
+        xml = args.marc_xml;
+        args.isbn = xml.findnodes('//*[@tag="020"]/*[@code="a"]').shift.textContent;
+        args.upc = xml.findnodes('//*[@tag="024"]/*[@code="a"]').textContent;
+        args.issn = xml.findnodes('//*[@tag="022"]/*[@code="a"]').textContent;
+        args.title = xml.findnodes('//*[@tag="245"]/*[@code="a"]').textContent;
+        args.author = xml.findnodes('//*[@tag="100"]/*[@code="a"]').textContent;
+        args.publisher = xml.findnodes('//*[@tag="260"]/*[@code="b"]').textContent;
+        args.pubdate = xml.findnodes('//*[@tag="260"]/*[@code="c"]').textContent;
+        args.edition = xml.findnodes('//*[@tag="250"]/*[@code="a"]').textContent ||
+            xml.findnodes('//*[@tag="534"]/*[@code="b"]').textContent ||
+            xml.findnodes('//*[@tag="775"]/*[@code="b"]').textContent;
+        phys = xml.findnodes(
+            '//*[@tag="300"]/*[@code="a" or @code="b" or @code="c" or @code="e"]'
+        );
+        phys_content = [];
+        FOR p IN phys; phys_content.push(p.textContent); END;
+        args.phys_desc = phys_content.join("");
+
+        # clean up the ISBN
+        args.isbn_clean = args.isbn.replace('\ .*', '');
+
+        # KCLS-specific stuff; needs to change
+        args.mattype = xml.findnodes('//*[@tag="998"]/*[@code="d"]').textContent;
+        args.kcls_cn = xml.findnodes('//*[@tag="092" or @tag="099"]/*').textContent;
+        mattype = attrs.mattype;
+        args.format = ctx.find_citm(mattype).value;
+        args.format_icon = icon_by_mattype.$mattype;
+
+    END;
+
 %]
