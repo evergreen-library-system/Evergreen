@@ -1,4 +1,5 @@
-[%  WRAPPER "default/opac/parts/base.tt2" +
+[%  PROCESS "default/opac/parts/header.tt2";
+    WRAPPER "default/opac/parts/base.tt2" +
         "default/opac/parts/myopac/base.tt2";
     myopac_page = "holds"  %]
 <div id='myopac_holds_div'>

@@ -66,7 +66,7 @@
                     <table border="0" cellpadding="0" width="100%">
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                [% IF attrs.isbn %]<strong id="rdetail_isbn_lbl" class="">[% l("ISBN") %]</strong>[% END %]
+                                [% IF attrs.isbn %]<strong id="rdetail_isbn_lbl">[% l("ISBN") %]</strong>[% END %]
                             </td>
                             <td valign="top" id='rdetail_isbn'>[% attrs.isbn %]</td>
                             <td nowrap='nowrap' valign="top">
@@ -96,18 +96,18 @@
                             </td>
                             <td valign="top" id='rdetail_pubdate'>[% attrs.pubdate %]</td>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_sum_lbl" class="">Summary</strong>
+                                <strong id="rdetail_sum_lbl">Summary</strong>
                             </td>
                             <td valign="top" id='rdetail_abstract'></td>
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_pub_lbl" class="">[% IF attrs.publisher; l("Publisher"); END %]</strong>
+                                <strong id="rdetail_pub_lbl">[% IF attrs.publisher; l("Publisher"); END %]</strong>
                             </td>
                             <td valign="top" id='rdetail_publisher'>[% attrs.publisher %]</td>
                             <td nowrap='nowrap' valign="top">
                                 [%# XXX TODO see kcls' drawMarcSubjects() in rdetail.js %]
-                                <strong id="rdetail_sub_lbl" class="hide_me">[% l("Subjects") %]</strong>
+                                <strong id="rdetail_sub_lbl">[% l("Subjects") %]</strong>
                             </td>
                             <td valign="top"></td>
                         </tr>

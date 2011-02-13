@@ -1,4 +1,5 @@
-[%  WRAPPER "default/opac/parts/base.tt2";
+[%  PROCESS "default/opac/parts/header.tt2";
+    WRAPPER "default/opac/parts/base.tt2";
     INCLUDE "default/opac/parts/topnav.tt2";
     ctx.page_title = "Record Detail" %]
     <div id="search-wrapper">

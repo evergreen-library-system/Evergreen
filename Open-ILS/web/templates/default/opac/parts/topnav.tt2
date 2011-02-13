@@ -1,6 +1,3 @@
-[%- USE money = format('$%.2f');
-    USE CGI; 
-    USE EGI18N; -%]
 <div id="header">
     <div class="float-left">
         <a href="http://www.kcls.org"><img alt="KCLS Logo"
