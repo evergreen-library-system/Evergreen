@@ -26,57 +26,25 @@ use Encode;
 use Unicode::Normalize;
 use OpenILS::Application::AppUtils;
 use Data::Dumper;
+use Pod::Usage qw/ pod2usage /;
 
-=head1
-
-For a given set of records (specified by ID at the command line, or special option --all):
-
-=over
-
-=item * Iterate through the list of fields that are controlled fields
-
-=item * Iterate through the list of subfields that are controlled for
-that given field
-
-=item * Search for a matching authority record for that combination of
-field + subfield(s)
-
-=over
-
-=item * If we find a match, then add a $0 subfield to that field identifying
-the controlling authority record
-
-=item * If we do not find a match, then insert a row into an "uncontrolled"
-table identifying the record ID, field, and subfield(s) that were not controlled
-
-=back
-
-=item * Iterate through the list of floating subdivisions
-
-=over
-
-=item * If we find a match, then add a $0 subfield to that field identifying
-the controlling authority record
-
-=item * If we do not find a match, then insert a row into an "uncontrolled"
-table identifying the record ID, field, and subfield(s) that were not controlled
-
-=back
-
-=item * If we changed the record, update it in the database
-
-=back
-
-=cut
-
-my $all_records;
+my ($start_id, $end_id);
 my $bootstrap = '/openils/conf/opensrf_core.xml';
 my @records;
+
+my %options;
 my $result = GetOptions(
+    \%options,
     'configuration=s' => \$bootstrap,
-    'record=s' => \@records,
-    'all' => \$all_records
+    'record=i' => \@records,
+    'all', 'help',
+    'start_id=i' => \$start_id,
+    'end_id=i' => \$end_id,
 );
+
+if (!$result or $options{help}) {
+    pod2usage(0);
+}
 
 OpenSRF::System->bootstrap_client(config_file => $bootstrap);
 Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
@@ -87,7 +55,7 @@ OpenILS::Utils::CStoreEditor::init();
 
 my $editor = OpenILS::Utils::CStoreEditor->new;
 my $undeleted;
-if ($all_records) {
+if ($options{all}) {
     # get a list of all non-deleted records from Evergreen
     # open-ils.cstore open-ils.cstore.direct.biblio.record_entry.id_list.atomic {"deleted":"f"}
     $undeleted = $editor->request( 
@@ -95,6 +63,10 @@ if ($all_records) {
         [{deleted => 'f'}, {id => { '>' => 0}}]
     );
     @records = @$undeleted;
+}
+
+if ($start_id and $end_id) {
+    @records = ($start_id .. $end_id);
 }
 # print Dumper($undeleted, \@records);
 
@@ -444,3 +416,120 @@ foreach my $rec_id (@records) {
     }
     $e->commit();
 }
+
+__END__
+
+=head1 NAME
+
+authority_control_fields.pl - Controls fields in bibliographic records with authorities in Evergreen
+
+=head1 SYNOPSIS
+
+C<authority_control_fields.pl> [B<--configuration>=I<opensrf_core.conf>]
+[[B<--record>=I<record>[ B<--record>=I<record>]]] | [B<--all>] | [B<--start_id>=I<start-ID> B<--end_id>=I<end-ID>]
+
+=head1 DESCRIPTION
+
+For a given set of records:
+
+=over
+
+=item * Iterate through the list of fields that are controlled fields
+
+=item * Iterate through the list of subfields that are controlled for
+that given field
+
+=item * Search for a matching authority record for that combination of
+field + subfield(s)
+
+=over
+
+=item * If we find a match, then add a $0 subfield to that field identifying
+the controlling authority record
+
+=item * If we do not find a match, then insert a row into an "uncontrolled"
+table identifying the record ID, field, and subfield(s) that were not controlled
+
+=back
+
+=item * Iterate through the list of floating subdivisions
+
+=over
+
+=item * If we find a match, then add a $0 subfield to that field identifying
+the controlling authority record
+
+=item * If we do not find a match, then insert a row into an "uncontrolled"
+table identifying the record ID, field, and subfield(s) that were not controlled
+
+=back
+
+=item * If we changed the record, update it in the database
+
+=back
+
+=head1 OPTIONS
+
+=over
+
+=item * B<-c> I<config-file>, B<--configuration>=I<config-file>
+
+Specifies the OpenSRF configuration file used to connect to the OpenSRF router.
+Defaults to F</openils/conf/opensrf_core.xml>
+
+=item * B<-r> I<record-ID>, B<--record>=I<record-ID>
+
+Specifies the bibliographic record ID (found in the C<biblio.record_entry.id>
+column) of the record to process. This option may be specified more than once
+to process multiple records in a single run.
+
+=item * B<-a>, B<--all>
+
+Specifies that all bibliographic records should be processed. For large
+databases, this may take an extraordinarily long amount of time.
+
+=item * B<-s> I<start-ID>, B<--start_id>=I<start-ID>
+
+Specifies the starting ID of the range of bibliographic records to process.
+This option is ignored unless it is accompanied by the B<-e> or B<--end_id>
+option.
+
+=item * B<-e> I<end-ID>, B<--end_id>=I<end-ID>
+
+Specifies the ending ID of the range of bibliographic records to process.
+This option is ignored unless it is accompanied by the B<-s> or B<--start>
+option.
+
+=back
+
+=head1 EXAMPLES
+
+    authority_control_fields.pl --start_id 1 --end_id 50000
+
+Processes the bibliographic records with IDs between 1 and 50,000 using the
+default OpenSRF configuration file for connection information.
+
+=head1 AUTHOR
+
+Dan Scott <dscott@laurentian.ca>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright 2010-2011 by Dan Scott
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+=cut
+
