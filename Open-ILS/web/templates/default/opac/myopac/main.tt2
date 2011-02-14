@@ -1,4 +1,5 @@
 [%  PROCESS "default/opac/parts/header.tt2";
+    PROCESS "default/opac/parts/marc_misc.tt2";
     WRAPPER "default/opac/parts/base.tt2" +
         "default/opac/parts/myopac/base.tt2";
     myopac_page = "main"  %]
@@ -28,9 +29,9 @@
                     <img src="[% ctx.media_prefix %]/images/acct_sum_fines_br.png" />
                 </div>
             </div>
-            Fines:
-            <span id="myopac_sum_fines_bal" class='[% ctx.user_stats.fines.balance_owed ? "red" : ""%]'>
-                [% money(ctx.user_stats.fines.balance_owed) %]
+            [% l('Fines:') %]
+            <span id="myopac_sum_fines_bal" class='[% ctx.fines.balance_owed ? "red" : ""%]'>
+                [% money(ctx.fines.balance_owed) %]
             </span><br />
             <a class="hide_me" href="#" id="pay_fines_btn1"><img
                 alt="Pay Fines"
@@ -46,13 +47,13 @@
                     <table width="100%" cellspacing="0" cellpadding="0">
                         <tr>
                             <td>
-                                Items Currently Checked out
+                                [% l("Items Currently Checked out") %]
                                 <span id="myopac_sum_checked" class="view_link">
-                                    ([% ctx.user_stats.checkouts.out %])
+                                    ([% ctx.user_stats.checkouts.total_out %])
                                 </span>
                             </td>
                             <td align="right" class="view_link">
-                                <a href="[% ctx.opac_root %]/circs">View All</a>
+                                <a href="[% ctx.opac_root %]/myopac/circs">[% l("View All") %]</a>
                             </td>
                         </tr>
                     </table>
@@ -67,7 +68,7 @@
                                 </span>
                             </td>
                             <td align="right" class="view_link">
-                                <a href="[% ctx.opac_root %]/holds">View All</a>
+                                <a href="[% ctx.opac_root %]/myopac/holds">View All</a>
                             </td>
                         </tr>
                     </table>
@@ -118,9 +119,9 @@
                 </thead>
                 <tbody id='myopac_fines_summary_tbody'>
                     <tr id='myopac_fines_summary_row'>
-                        <td id='myopac_fines_summary_total'>[% money(ctx.user_stats.fines.total_owed) %]</td>
-                        <td id='myopac_fines_summary_paid'>[% money(ctx.user_stats.fines.total_paid) %]</td>
-                        <td id='myopac_fines_summary_balance' style='color:red;font-weight: bold;'>[% money(ctx.user_stats.fines.balance_owed) %]</td>
+                        <td id='myopac_fines_summary_total'>[% money(ctx.fines.total_owed) %]</td>
+                        <td id='myopac_fines_summary_paid'>[% money(ctx.fines.total_paid) %]</td>
+                        <td id='myopac_fines_summary_balance' style='color:red;font-weight: bold;'>[% money(ctx.fines.balance_owed) %]</td>
                     </tr>
                 </tbody>
             </table>
@@ -131,16 +132,15 @@
             <span>will continue to accrue fines until the checked out item is returned.</span>
         </div>
         -->
-        <!-- Table for circulation transactions only -->
-            <div id='myopac_circ_trans_div' class='hide_me'>
+        [% IF ctx.fines.circulation.size > 0 %]
+            <div id='myopac_circ_trans_div'>
                 <br/><hr/><br/>
                 <table width='100%' class='data_grid data_grid_center'
                     id='myopac_circ_trans_table'>
                     <thead>
-                    <!--<tr><td colspan='10' style='padding: 6px'><b>[% l("Overdue Materials") %]</b></td></tr>-->
                         <tr>
                             <td colspan='10' style='padding: 6px'>
-                                <b>Fines</b>
+                                <strong>[% l("Fines") %]</strong>
                             </td>
                         </tr>
                         <tr>
@@ -161,28 +161,61 @@
                         </tr>
                     </thead>
                     <tbody id='myopac_circ_trans_tbody'>
+                        [% FOR f IN ctx.fines.circulation;
+                            attrs = {marc_xml => f.marc_xml};
+                            PROCESS get_marc_attrs args=attrs %]
                         <tr id='myopac_circ_trans_row'>
                             <td>
-                                <a class='classic_link' name='myopac_circ_trans_title'> </a>
-                            </td>
-                            <td name='myopac_circ_trans_author'> </td>
-                            <td name='myopac_circ_trans_start'> </td>
-                            <td name='myopac_circ_trans_due'> </td>
-                            <td name='myopac_circ_trans_finished'>
-                                <span style='color:red;'>[% l("(fines accruing)") %]</span>
+                                <a class='classic_link'
+                                    href="[% ctx.opac_root %]/record/[% f.xact.circulation.target_copy.call_number.record.id %]">[% attrs.title %]</a>
                             </td>
                             <td>
-                                <span style='color: red; font-weight: bold;'
-                                    name='myopac_circ_trans_balance'>[% l("\$") %]</span>
+                                <a class="classic_link"
+                                    href="[% ctx.opac_root %]/results?query=au:[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
+                            </td>
+                            <td name='myopac_circ_trans_start'>
+                                [% date.format(
+                                    ctx.parse_datetime(
+                                        f.xact.circulation.xact_start
+                                    ), "%m/%d/%Y"
+                                ) %]
+                            </td>
+                            <td name='myopac_circ_trans_due'>
+                                [% date.format(
+                                    ctx.parse_datetime(
+                                        f.xact.circulation.due_date
+                                    ), "%m/%d/%Y"
+                                ) %]
+                            </td>
+                            <td name='myopac_circ_trans_finished'>
+                                [%  IF f.xact.circulation.checkin_time;
+                                        date.format(
+                                            ctx.parse_datetime(
+                                                f.xact.circulation.checkin_time
+                                            ), "%m/%d/%Y"
+                                        );
+                                    ELSE %]
+                                    <!-- XXX TODO fines aren't really accruing
+                                        if circ has hit maxfines. more clarity
+                                        here? -->
+                                    <span class="red">[% l('(fines accruing)') %]</span>
+                                [%  END %]
+                            </td>
+                            <td>
+                                <strong class="red">
+                                    [% money(f.xact.balance_owed) %]
+                                </strong>
                             </td>
                             <td align="center">
                                 <input type="checkbox" checked="checked"
                                     name="selector" title="pay this fine" />
                             </td>
                         </tr>
+                        [% END %]
                     </tbody>
                 </table>
             </div>
+        [% END %]
 
             <!-- Table for all non-circulation transactions -->
             <div id='myopac_trans_div' class='hide_me'>

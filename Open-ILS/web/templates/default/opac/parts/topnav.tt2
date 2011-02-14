@@ -64,7 +64,7 @@
                                         <div class="pos-abs">
                                             <div class="dash-pos-out">
                                                 <div class="dash-align-out">
-                                                    <span id="dash_checked">[% ctx.user_stats.checkouts.out %]</span> [% l("Checked Out") %]
+                                                    <span id="dash_checked">[% ctx.user_stats.checkouts.total_out %]</span> [% l("Checked Out") %]
                                                 </div>
                                             </div>
                                         </div>
