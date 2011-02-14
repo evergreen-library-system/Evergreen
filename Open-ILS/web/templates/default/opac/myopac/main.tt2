@@ -28,7 +28,10 @@
                     <img src="[% ctx.media_prefix %]/images/acct_sum_fines_br.png" />
                 </div>
             </div>
-            Fines: <span id="myopac_sum_fines_bal">$0.00</span><br />
+            Fines:
+            <span id="myopac_sum_fines_bal" class='[% ctx.user_stats.fines.balance_owed ? "red" : ""%]'>
+                [% money(ctx.user_stats.fines.balance_owed) %]
+            </span><br />
             <a class="hide_me" href="#" id="pay_fines_btn1"><img
                 alt="Pay Fines"
                 onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
@@ -114,13 +117,10 @@
                     </tr>
                 </thead>
                 <tbody id='myopac_fines_summary_tbody'>
-                    <tr id='myopac_fines_summary_loading'>
-                        <td>[% l("Loading...") %]</td>
-                    </tr>
-                    <tr id='myopac_fines_summary_row' class='hide_me'>
-                        <td id='myopac_fines_summary_total' >[% l("\$") %]</td>
-                        <td id='myopac_fines_summary_paid' >[% l("\$") %]</td>
-                        <td id='myopac_fines_summary_balance' style='color:red;font-weight: bold;'>[% l("\$") %]</td>
+                    <tr id='myopac_fines_summary_row'>
+                        <td id='myopac_fines_summary_total'>[% money(ctx.user_stats.fines.total_owed) %]</td>
+                        <td id='myopac_fines_summary_paid'>[% money(ctx.user_stats.fines.total_paid) %]</td>
+                        <td id='myopac_fines_summary_balance' style='color:red;font-weight: bold;'>[% money(ctx.user_stats.fines.balance_owed) %]</td>
                     </tr>
                 </tbody>
             </table>

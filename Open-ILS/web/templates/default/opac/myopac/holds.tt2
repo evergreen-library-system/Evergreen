@@ -1,9 +1,10 @@
 [%  PROCESS "default/opac/parts/header.tt2";
+    PROCESS "default/opac/parts/marc_misc.tt2";
     WRAPPER "default/opac/parts/base.tt2" +
         "default/opac/parts/myopac/base.tt2";
     myopac_page = "holds"  %]
 <div id='myopac_holds_div'>
-    <div id="acct_holds_tabs" style="padding-bottom: 12px;color:#666;">
+    <div id="acct_holds_tabs" style="padding-bottom: 12px;color:#666;" class="hide_me">
         <div class="align selected" id="holds_label">
             <img src="[% ctx.media_prefix %]/images/sub_holds_on.jpg" />
         </div>
@@ -111,41 +112,54 @@
 
         <table cellpadding='0' cellspacing='0' border='0' width="100%">
             <tbody id="holds_temp_parent">
+                [% FOR hold IN ctx.holds;
+                    attrs = {marc_xml => hold.marc_xml};
+                    PROCESS get_marc_attrs args=attrs %]
                 <tr id="acct_holds_temp" name="acct_holds_temp"
                     class="acct_holds_temp">
                     <td width="36" align="center" style="text-align:center;">
-                        <input type="checkbox" name="check_all_holds" />
+                        <input type="checkbox" name="hold_id" value="[% hold.hold.hold.id %]" />
                     </td>
                     <td width="138">
                         <div style="margin-top:10px;margin-bottom:10px;">
-                            <a href="#" name="myopac_holds_title_link"></a>
+                            <a href="[% ctx.opac_root %]/record/[% hold.hold.bre.id %]">[% attrs.title | html %]</a>
                         </div>
                     </td>
                     <td width="123">
-                        <div style="margin-top:10px;margin-bottom:10px;"
-                            name="myopac_holds_author"></div>
+                        <div style="margin-top:10px;margin-bottom:10px;">
+                            <a href="[% ctx.opac_root %]/results?query=au:[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author | html %]</a>
+                        </div>
                     </td>
                     <td width="64">
-                        <div style="width:26px;height:23px;margin-top:6px;margin-bottom:6px;"
-                            name="myopac_holds_formats">
+                        <div style="width:26px;height:23px;margin-top:6px;margin-bottom:6px;">
+                            [% IF attrs.format_icon %]
+                            <img src="[% ctx.media_prefix %]/images/[% attrs.form_icon %]"
+                                title="[% attrs.format %]" alt="[% attrs.format %]" />
+                            [% ELSE;
+                                attrs.format;
+                               END %]
                         </div>
                     </td>
                     <td width="136">
-                        <span name="hold_pickup_lib_span"></span>
-                        <span name="hold_pickup_lib"></span>
+                        [% ctx.find_aou(hold.hold.hold.pickup_lib).name %]
                     </td>
                     <td width="104">
                         <input
                             title="Enter a date (e.g. 10/21/2010)"
                             class="hide_me" style="width:91px;"
                             name="activate_box" type="text" />
-                            <span name="activate_date"></span>
+                        [% IF hold.hold.hold.frozen == 't' AND
+                                hold.hold.hold.thaw_date;
+                            date.format(ctx.parse_datetime(hold.hold.hold.thaw_date), '%m/%d/%Y');
+                        END %]
                     </td>
                     <td width="106">
                         <input title="Enter a date (e.g. 10/21/2010)"
                             class="hide_me" style="width:91px;"
                             name="hold_expires_box" type="text" />
-                            <span name="hold_expires"></span>
+                        [% IF hold.hold.hold.expire_time;
+                            date.format(ctx.parse_datetime(hold.hold.hold.expire_time), '%m/%d/%Y');
+                        END %]
                     </td>
                     <td width="95">
                         <select name="hold_active_sel"
@@ -153,13 +167,23 @@
                             <option value="f">Active</option>
                             <option value="t">Suspended</option>
                         </select>
-                        <span name="hold_active"></span>
+                        [% l(hold.hold.hold.frozen == 'f' ? 'Active' : 'Suspended') %]
                     </td>
                     <td width="110">
                         <div name="acct_holds_status"
                             style="margin-top:10px;margin-bottom:10px;">
-                            <span class="hide_me"
-                                name="hold_ready_expire"></span>
+                            [%
+                                IF hold.hold.status == 4;
+                                    l("Available");
+                                ELSIF hold.hold.estimated_wait;
+                                    l("Estimated wait (days): ");
+                                    hold.hold.estimated_wait;
+                                ELSIF hold.hold.status == 3;
+                                    l("In Transit");
+                                ELSIF hold.hold.status < 3;
+                                    l("Waiting for copy");
+                                END;
+                            %]
                         </div>
                     </td>
                     <td width="62" align="right"
@@ -171,6 +195,7 @@
                             class="hide_me">Back</a>
                     </td>
                 </tr>
+                [% END %]
             </tbody>
         </table>
     </div>

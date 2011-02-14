@@ -1,9 +1,10 @@
 [%  PROCESS "default/opac/parts/header.tt2";
+    PROCESS "default/opac/parts/marc_misc.tt2";
     WRAPPER "default/opac/parts/base.tt2" +
         "default/opac/parts/myopac/base.tt2";
     myopac_page = "circs"  %]
 <div id='myopac_checked_div' style="padding:0px;">
-    <div id="acct_checked_tabs" style="padding-bottom: 12px;color:#666;">
+    <div id="acct_checked_tabs" style="padding-bottom: 12px;color:#666;" class="hide_me">
         <div class="align selected" id="checked_label">
             <img src="[% ctx.media_prefix %]/images/sub_checked_out_on.jpg" />
         </div>
@@ -85,7 +86,9 @@
             <div id="acct_checked_temp">
                 <table cellpadding='0' cellspacing='0' border='0'
                     style="margin-top:5px;">
-                    [% FOR circ IN ctx.circs %]
+                    [% FOR circ IN ctx.circs;
+                        attrs = {marc_xml => circ.marc_xml};
+                        PROCESS get_marc_attrs args=attrs; %]
                     <tr>
                         <td width="1%" style="padding-left:10px;" valign="top">
                             <input type="checkbox" name="check_all_checked" />
@@ -93,7 +96,10 @@
                         <td width="40%"
                             style="padding-left:5px;padding-bottom:10px;"
                             name="author">
-                            <a href="#" name="title"></a>
+                            <a href="[% ctx.opac_root %]/record/[% circ.circ.target_copy.call_number.record.id %]" name="[% l('Catalog record') %]">[% attrs.title %]</a>
+                            [% IF attrs.author %] /
+                            <a href="[% ctx.opac_root %]/results?query=au:[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
+                            [% END %]
                         </td>
                         <td width="8%" name="renewals" align="center">
                             [% circ.circ.renewal_remaining %]
