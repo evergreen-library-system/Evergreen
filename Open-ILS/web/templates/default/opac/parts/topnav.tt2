@@ -6,8 +6,7 @@
     <div class="float-right">
         [% IF !ctx.user %]
         <div id="your-acct-login">
-            [% myopac_redirect = 'https://' _ ctx.hostname _ ctx.opac_root _ '/myopac/main' | url %]
-            <a href="[% ctx.opac_root %]/login?redirect_to=[% myopac_redirect %]" id="home_myopac_link"><img
+            <a href="[% ctx.opac_root %]/myopac/main?foo=bar" id="home_myopac_link"><img
                 alt="[% l('Your Account Log in') %]"
                 src="[% ctx.media_prefix %]/images/login-btn.png"
                 onmouseover="this.src='[% ctx.media_prefix %]/images/login-btn-hover.png';"

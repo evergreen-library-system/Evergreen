@@ -81,8 +81,6 @@ sub load {
 
     my $path = $self->apache->path_info;
 
-    $self->apache->log->info("path = $path; referer = " . $self->cgi->referer);
-
     return $self->load_simple("home") if $path =~ /opac\/home/;
     return $self->load_simple("advanced") if $path =~ /opac\/advanced/;
     return $self->load_login if $path =~ /opac\/login/;
@@ -91,14 +89,10 @@ sub load {
     return $self->load_record if $path =~ /opac\/record/;
 
     # ----------------------------------------------------------------
-    # These pages require authentication
+    #  Everything below here requires authentication
     # ----------------------------------------------------------------
-    unless($self->cgi->https and $self->editor->requestor) {
-        # If a secure resource is requested insecurely, redirect to the login page
-        my $url = 'https://' . $self->apache->hostname . $self->ctx->{opac_root} . "/login";
-        $self->apache->print($self->cgi->redirect(-url => $url));
-        return Apache2::Const::REDIRECT;
-    }
+    return $self->redirect_secure($path) 
+        unless $self->cgi->https and $self->editor->requestor;
 
     return $self->load_place_hold if $path =~ /opac\/place_hold/;
     return $self->load_myopac_holds if $path =~ /opac\/myopac\/holds/;
@@ -107,9 +101,20 @@ sub load {
     return $self->load_myopac_update_email if $path =~ /opac\/myopac\/update_email/;
     return $self->load_myopac_bookbags if $path =~ /opac\/myopac\/bookbags/;
     return $self->load_myopac if $path =~ /opac\/myopac/;
-    # ----------------------------------------------------------------
 
     return Apache2::Const::OK;
+}
+
+# -----------------------------------------------------------------------------
+# If a secure resource is requested insecurely, redirect to the login page,
+# then return to the originally requrested resource upon successful login.
+# -----------------------------------------------------------------------------
+sub redirect_secure {
+    my ($self, $path) = @_;
+    my $login_page = sprintf('https://%s%s/login', $self->apache->hostname, $self->ctx->{opac_root});
+    my $redirect_to = uri_escape($self->apache->unparsed_uri);
+    $self->apache->print($self->cgi->redirect(-url => "$login_page?redirect_to=$redirect_to"));
+    return Apache2::Const::REDIRECT;
 }
 
 # -----------------------------------------------------------------------------
