@@ -2,7 +2,7 @@
     USE date;
     USE CGI; 
     USE EGI18N;
-    SET DATE_FORMAT = '%m/%d/%Y';
+    SET DATE_FORMAT = l('%m/%d/%Y');
 
     item_types = [  # XXX KCLS-specific
         {'code' => 'a', 'name' => 'Book', 'image' => 'media_book.jpg'},
