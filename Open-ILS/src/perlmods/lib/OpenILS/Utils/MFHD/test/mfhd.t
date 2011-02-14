@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Test::More 'no_plan';
+use File::Basename qw(dirname);
 
 use MARC::Record;
 use OpenILS::Utils::MFHD;
@@ -30,7 +31,8 @@ sub right_answer {
 my $rec;
 my @captions;
 
-open(my $testdata, "<mfhddata.txt") or die("Cannot open 'mfhddata.txt': $!");
+my $testfile = dirname(__FILE__) . "/mfhddata.txt";
+open(my $testdata, "<", $testfile) or die("Cannot open '$testfile': $!");
 
 while ($rec = testlib::load_MARC_rec($testdata, $testno++)) {
     $rec = MFHD->new($rec);

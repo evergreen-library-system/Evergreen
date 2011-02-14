@@ -2095,6 +2095,8 @@ __PACKAGE__->register_method(
 sub biblio_search_isbn { 
 	my( $self, $client, $isbn ) = @_;
 	$logger->debug("Searching ISBN $isbn");
+	# Strip hyphens from incoming ISBNs
+	$isbn =~ s/-//g;
 	my $recs = $U->storagereq('open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $isbn);
 	return { ids => $recs, count => scalar(@$recs) };
 }
@@ -2109,6 +2111,8 @@ sub biblio_search_isbn_batch {
 	$logger->debug("Searching ISBNs @$isbn_list");
 	my @recs = (); my %rec_set = ();
 	foreach my $isbn ( @$isbn_list ) {
+		# Strip hyphens from incoming ISBNs
+		$isbn =~ s/-//g;
 		foreach my $rec ( @{ $U->storagereq(
 			'open-ils.storage.id_list.biblio.record_entry.search.isbn.atomic', $isbn )
 		} ) {
