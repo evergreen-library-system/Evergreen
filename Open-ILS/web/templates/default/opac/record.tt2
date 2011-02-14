@@ -12,4 +12,15 @@
             <div class="common-full-pad"></div>	
         </div>
     </div>
+    [%# TODO: TEST CODE, DELETE ME... %]
+    [% FOR copy_info IN ctx.copies %]
+        <div>
+            [% 
+                copy_info.id _ ' ' _ copy_info.barcode _ ' ' _ ctx.find_aou(copy_info.circ_lib).name _ 
+                ' ' _ copy_info.copy_location _ ' ' _ copy_info.copy_status _ 
+                ' ' _ copy_info.call_number_label _ ' ' _ copy_info.call_number _ ' ';
+                IF copy_info.due_date; date.format(ctx.parse_datetime(copy_info.due_date),'%m/%d/%Y'); END;
+            %]
+        </div>
+    [% END %]
 [% END %]

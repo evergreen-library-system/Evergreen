@@ -13,23 +13,101 @@ sub load_record {
     my $self = shift;
     $self->ctx->{page} = 'record';
 
+    my $org = $self->cgi->param('loc') || $self->ctx->{aou_tree}->()->id;
+    my $depth = $self->cgi->param('depth') || 0;
+    my $copy_limit = $self->cgi->param('copy_limit');
+    my $copy_offset = $self->cgi->param('copy_offset');
+
     my $rec_id = $self->ctx->{page_args}->[0]
         or return Apache2::Const::HTTP_BAD_REQUEST;
 
-    $self->ctx->{record} = $self->editor->retrieve_biblio_record_entry([
-        $rec_id,
-        {
-            flesh => 2, 
-            flesh_fields => {
-                bre => ['call_numbers'],
-                acn => ['copies'] # limit, paging, etc.
-            }
-        }
-    ]);
+    # run copy retrieval in parallel to bib retrieval
+    my $copy_rec = OpenSRF::AppSession->create('open-ils.cstore')->request(
+        'open-ils.cstore.json_query.atomic', 
+        $self->mk_copy_query($rec_id, $org, $depth, $copy_limit, $copy_offset));
 
+    $self->ctx->{record} = $self->editor->retrieve_biblio_record_entry($rec_id);
     $self->ctx->{marc_xml} = XML::LibXML->new->parse_string($self->ctx->{record}->marc);
 
+    $self->ctx->{copies} = $copy_rec->gather(1);
+
     return Apache2::Const::OK;
+}
+
+sub mk_copy_query {
+    my $self = shift;
+    my $rec_id = shift;
+    my $org = shift;
+    my $depth = shift;
+    my $copy_limit = shift || 20;
+    my $copy_offset = shift || 0;
+
+    my $query = {
+        select => {
+            acp => ['id', 'barcode', 'circ_lib'],
+            acpl => [{column => 'name', alias => 'copy_location'}],
+            ccs => [{column => 'name', alias => 'copy_status'}],
+            acn => [
+                {column => 'label', alias => 'call_number_label'},
+                {column => 'id', alias => 'call_number'}
+            ],
+            circ => ['due_date'],
+        },
+        from => {
+            acp => {
+                acn => {},
+                acpl => {},
+                ccs => {},
+                circ => {type => 'left'},
+                aou => {}
+            }
+        },
+        where => {
+            '+acp' => {
+                deleted => 'f',
+                call_number => {
+                    in => {
+                        select => {acn => ['id']},
+                        from => 'acn',
+                        where => {record => $rec_id}
+                    }
+                },
+                circ_lib => {
+                    in => {
+                        select => {aou => [{
+                            column => 'id', 
+                            transform => 'actor.org_unit_descendants', 
+                            result_field => 'id', 
+                            params => [$depth]
+                        }]},
+                        from => 'aou',
+                        where => {id => $org}
+                    }
+                }
+            },
+            '+acn' => {deleted => 'f'},
+            '+circ' => {checkin_time => undef}
+        },
+
+        # Order is: copies with circ_lib=org, followed by circ_lib name, followed by call_number label
+        order_by => [
+            {class => 'aou', field => 'name'}, 
+            {class => 'acn', field => 'label'}
+        ],
+
+        limit => $copy_limit,
+        offset => $copy_offset
+    };
+
+    # Filter hidden items if this is the public catalog
+    unless($self->ctx->{is_staff}) { 
+        $query->{where}->{'+acp'}->{opac_visible} = 't';
+        $query->{where}->{'+acpl'}->{opac_visible} = 't';
+        $query->{where}->{'+ccs'}->{opac_visible} = 't';
+    }
+
+    return $query;
+    #return $self->editor->json_query($query);
 }
 
 1;
