@@ -675,16 +675,17 @@ sub load_place_hold {
             );
 
             if($stat and $stat > 0) {
-
                 # if successful, return the user to the requesting page
                 $self->apache->log->info("Redirecting back to " . $cgi->param('redirect_to'));
                 $self->apache->print($cgi->redirect(-url => $cgi->param('redirect_to')));
                 return Apache2::Const::REDIRECT;
 
             } else {
-
-                $ctx->{hold_failed} = 1; # XXX process the events, etc
+                $ctx->{hold_failed} = 1;
             }
+        } else { # hold *check* failed
+            $ctx->{hold_failed} = 1; # XXX process the events, etc
+            $ctx->{hold_failed_event} = $allowed->{last_event};
         }
 
         # hold permit failed

@@ -38,6 +38,21 @@
         <b>[% l("Checking for possibility of hold fulfillment...") %]</b>
     </div>
     <div id='holds_box' class='canvas' style='margin-top: 6px;'>
+        [% IF ctx.hold_success %]
+        <div><big><strong>[% l("Hold was successfully placed"); %]</strong></big></div>
+        [% ELSIF ctx.hold_failed %]
+        <div><big><strong>[% l("Hold was not successfully placed"); %]</strong></big></div>
+            [% IF ctx.hold_failed_event %]
+        <div>
+            <strong>Problem:</strong>
+            <span title="[% ctx.hold_failed_event.textcode %]">
+                <em>[% ctx.hold_failed_event.desc ||
+                        ctx.hold_failed_event.payload.fail_part ||
+                        ctx.hold_failed_event.textcode %]</em>
+            </span>
+        </div>
+            [% END;
+        ELSE %]
         <form method="POST">
             <br/>
             <input type="hidden" name="hold_target"
@@ -80,6 +95,7 @@
         </p>
         <p>* For best possible service, we recommend keeping a printed copy of
         your most recent holds list.</p>
+        [% END # ctx.hold_success %]
         <table width='90%' border="1" class="hide_me">
             <tbody>
                 <tr>
