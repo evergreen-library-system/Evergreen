@@ -630,6 +630,7 @@ CREATE TABLE money.credit_card_payment (
     cc_processor TEXT,
     cc_first_name TEXT,
     cc_last_name TEXT,
+    cc_order_number TEXT,
 	expire_month	INT,
 	expire_year	INT,
 	approval_code	TEXT

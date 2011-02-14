@@ -143,7 +143,7 @@ sub make_payments {
     my %orgs;
 
     # unless/until determined by payment processor API
-    my ($approval_code, $cc_processor, $cc_type) = (undef,undef,undef);
+    my ($approval_code, $cc_processor, $cc_type, $cc_order_number) = (undef,undef,undef, undef);
 
     my $patron = $e->retrieve_actor_user($user_id) or return $e->die_event;
 
@@ -302,6 +302,7 @@ sub make_payments {
                 $approval_code = $cc_payload->{"authorization"};
                 $cc_type = $cc_payload->{"card_type"};
                 $cc_processor = $cc_payload->{"processor"};
+                $cc_order_number = $cc_payload->{"order_number"};
                 $logger->info("Credit card payment for user $user_id succeeded");
             }
         } else {
@@ -346,6 +347,7 @@ sub make_payments {
         }
 
         $payment->approval_code($approval_code) if $approval_code;
+        $payment->cc_order_number($cc_order_number) if $cc_order_number;
         $payment->cc_type($cc_type) if $cc_type;
         $payment->cc_processor($cc_processor) if $cc_processor;
         $payment->cc_first_name($cc_args->{'billing_first'}) if $cc_args->{'billing_first'};
