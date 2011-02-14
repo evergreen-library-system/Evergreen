@@ -139,12 +139,11 @@ sub load_common {
     $ctx->{path_info} = $self->cgi->path_info;
     $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
     $ctx->{is_staff} = ($self->apache->headers_in->get('User-Agent') =~ 'oils_xulrunner');
+    $ctx->{home_page} = 'http://' . $self->apache->hostname . $self->ctx->{opac_root} . "/home";
 
     if($e->authtoken($self->cgi->cookie('ses'))) {
 
         if($e->checkauth) {
-
-            $self->apache->log->warn("authtime = " . $e->authtime);
 
             $ctx->{authtoken} = $e->authtoken;
             $ctx->{authtime} = $e->authtime;
@@ -234,11 +233,9 @@ sub load_login {
 sub load_logout {
     my $self = shift;
 
-    my $url = 'http://' . $self->apache->hostname . $self->ctx->{opac_root} . "/home";
-
     $self->apache->print(
         $self->cgi->redirect(
-            -url => $url,
+            -url => $self->ctx->{home_page},
             -cookie => $self->cgi->cookie(
                 -name => 'ses',
                 -path => '/',
