@@ -116,4 +116,11 @@ sub mk_copy_query {
     #return $self->editor->json_query($query);
 }
 
+sub mk_marc_html {
+    my($self, $rec_id) = @_;
+
+    $self->ctx->{marc_html} = $U->simplereq(
+        'open-ils.search', 'open-ils.search.biblio.record.html', $rec_id);
+}
+
 1;
