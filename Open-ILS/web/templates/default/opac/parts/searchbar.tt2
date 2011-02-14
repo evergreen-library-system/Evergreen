@@ -39,7 +39,7 @@
         </tr>
         <tr>
             <td>
-                [% INCLUDE "default/opac/parts/format_selector.tt2" %]
+                [% INCLUDE "default/opac/parts/format_selector.tt2" value=CGI.param("item_type") %]
             </td>
             <td>
                 <span id='depth_selector_span'>

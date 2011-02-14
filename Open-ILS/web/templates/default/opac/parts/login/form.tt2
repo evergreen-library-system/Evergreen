@@ -104,7 +104,7 @@
                             </td>
                             <td width="58%" valign="top">
                                 <div class="input_bg">
-                                    <input type="text" name="username"/>
+                                    <input type="text" id="username_field" name="username"/>
                                 </div>
                             </td>
                         </tr>

@@ -34,6 +34,7 @@ sub fetch_user_holds {
     my $hold_ids = shift;
     my $ids_only = shift;
     my $flesh = shift;
+    my $available = shift;
     my $limit = shift;
     my $offset = shift;
 
@@ -91,6 +92,10 @@ sub fetch_user_holds {
         last if $first and not @ses;
 
         if(@collected) {
+            # If desired by the caller, filter any holds that are not available.
+            if ($available) {
+                @collected = grep { $_->{hold}->{status} == 4 } @collected;
+            }
             while(my $blob = pop(@collected)) {
                 $blob->{marc_xml} = XML::LibXML->new->parse_string($blob->{hold}->{bre}->marc) if $flesh;
                 push(@holds, $blob);
@@ -167,10 +172,11 @@ sub load_myopac_holds {
     my $limit = $self->cgi->param('limit') || 0;
     my $offset = $self->cgi->param('offset') || 0;
     my $action = $self->cgi->param('action') || '';
+    my $available = int($self->cgi->param('available'));
 
     $self->handle_hold_update($action) if $action;
 
-    $ctx->{holds} = $self->fetch_user_holds(undef, 0, 1, $limit, $offset);
+    $ctx->{holds} = $self->fetch_user_holds(undef, 0, 1, $available, $limit, $offset);
 
     return Apache2::Const::OK;
 }

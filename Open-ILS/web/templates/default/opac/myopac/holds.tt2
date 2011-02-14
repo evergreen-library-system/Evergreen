@@ -23,7 +23,12 @@
     </div>
     <div class="header_middle">
         <span id="acct_holds_header" style="float:left;">
-            Current Items on Hold
+            [%  IF CGI.param("available");
+                    l("Items Ready for Pickup");
+                ELSE;
+                    l("Current Items on Hold");
+                END
+            %]
         </span>
         <span style="float:right;">
             <a class="hide_me" href="#">Export List</a>
@@ -31,8 +36,7 @@
     </div>
     <div class="clear-both"></div>
     <div id='holds_main'>
-        <table cellpadding='0' cellspacing='0' border='0'
-            style="padding:8px 0px 6px 0px;">
+        <table cellpadding='0' cellspacing='0' class="opac-auto-097">
             <tr>
                 <td width="1">
                     <select id="acct_holds_actions">
@@ -64,6 +68,15 @@
                         src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
                 </td>
                 <td align="right">
+                    [% l("Show") %] &nbsp; &nbsp;
+                    [% IF CGI.param("available") %]
+                    <a href="holds">[% l('all') %]</a> |
+                    <strong>[% l("only available") %]</strong>
+                    [% ELSE %]
+                    <strong>[% l("all") %]</strong> |
+                    <a href="holds?available=1">[% l("only available") %]</a>
+                    [% END %] &nbsp; &nbsp;
+                    [% l("holds") %]
                     <select class="hide_me" id="holds_sort">
                         <option value="">-- Sort By --</option>
                         <option value="title">Title</option>
@@ -150,7 +163,7 @@
                             name="activate_box" type="text" />
                         [% IF hold.hold.hold.frozen == 't' AND
                                 hold.hold.hold.thaw_date;
-                            date.format(ctx.parse_datetime(hold.hold.hold.thaw_date), '%m/%d/%Y');
+                            date.format(ctx.parse_datetime(hold.hold.hold.thaw_date), DATE_FORMAT);
                         END %]
                     </td>
                     <td width="106">
@@ -158,7 +171,7 @@
                             class="hide_me" style="width:91px;"
                             name="hold_expires_box" type="text" />
                         [% IF hold.hold.hold.expire_time;
-                            date.format(ctx.parse_datetime(hold.hold.hold.expire_time), '%m/%d/%Y');
+                            date.format(ctx.parse_datetime(hold.hold.hold.expire_time), DATE_FORMAT);
                         END %]
                     </td>
                     <td width="95">

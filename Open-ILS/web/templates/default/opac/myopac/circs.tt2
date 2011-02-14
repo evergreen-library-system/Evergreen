@@ -33,8 +33,7 @@
     </div>
     <div class="clear-both"></div>
     <div id='checked_main'>
-        <table cellpadding='0' cellspacing='0' border='0'
-            style="padding:8px 0px 6px 0px;">
+        <table cellpadding='0' cellspacing='0' class="opac-auto-097b">
             <tr>
                 <td>
                     <a href="#">Renew Selected Titles</a>
@@ -106,7 +105,7 @@
                         </td>
                         <td width="13%" style="padding-left:5px;"
                             name="due_date">
-                            [% date.format(ctx.parse_datetime(circ.circ.due_date),'%m/%d/%Y') %]
+                            [% date.format(ctx.parse_datetime(circ.circ.due_date),DATE_FORMAT) %]
                         </td>
                         <td width="16%" name="barcode">
                             [% circ.circ.target_copy.barcode %]
