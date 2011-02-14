@@ -163,8 +163,10 @@ make install
 				</para> 
 <screen>
 <userinput>
-export PATH=[<emphasis class="italic">path to Evergreen</emphasis>]/Open-ILS/src/extras/import:/[<emphasis class="italic">path to migration-tools</emphasis>]/migration-tools:$PATH:.
-export PERL5LIB=/openils/lib/perl5:/[<emphasis class="italic">path to migration-tools directory</emphasis>]/migration-tools/Equinox-Migration/lib
+export PATH=[<emphasis class="italic">path to Evergreen</emphasis>]/Open-ILS/src/extras/import: \
+/[<emphasis class="italic">path to migration-tools</emphasis>]/migration-tools:$PATH:.
+export PERL5LIB=/openils/lib/perl5: \
+/[<emphasis class="italic">path to migration-tools directory</emphasis>]/migration-tools/Equinox-Migration/lib
 </userinput>
 </screen>
 </step>
@@ -217,7 +219,8 @@ fingerprinter -o incumbent.fp -x incumbent.ex clean.marc.xml
 				have existing bibliographic records in your system previously imported:</para>
 <screen>
 <userinput>
-fingerprinter -o production.fp -x production.fp.ex --marctype=MARC21 existing_marc_records.mrc --tag=901 --subfield=c
+fingerprinter -o production.fp -x production.fp.ex --marctype=MARC21 existing_marc_records.mrc \
+--tag=901 --subfield=c
 </userinput>
 </screen>
 				<para><systemitem>fingerprinter</systemitem> is used for deduplification of the incumbant records.</para>
@@ -244,8 +247,10 @@ match_fingerprints [-t start id] -o records.merge dedupe.fp
 				<para>Extract all of the currently used TCN's an generate the .bre and .ingest files to prepare for the bibliographic record load.</para>
 <screen>
 <userinput>
-psql -U evergreen -c "select tcn_value from biblio.record_entry where not deleted" | perl -npe 's/^\s+//;' > used_tcns
-marc2bre.pl --idfield 903 [--startid=#] --marctype=XML -f final.xml --used_tcn_file=used_tcns > evergreen_bre_import_file.bre
+psql -U evergreen -c "select tcn_value from biblio.record_entry where not deleted" \
+| perl -npe 's/^\s+//;' > used_tcns
+marc2bre.pl --idfield 903 [--startid=#] --marctype=XML -f final.xml \
+--used_tcn_file=used_tcns > evergreen_bre_import_file.bre
 </userinput>
 </screen>
 				<note>
@@ -327,7 +332,8 @@ BEGIN;
 
 <emphasis class="bold">TRUNCATE TABLE staging_items;</emphasis>
 
-<emphasis class="bold">INSERT INTO staging_items (</emphasis>egid, hseq, l_call_num, l_barcode, l_location, l_owning_lib, l_circ_modifier <emphasis>FROM stdin;</emphasis> 
+<emphasis class="bold">INSERT INTO staging_items (</emphasis>egid, hseq, l_call_num, l_barcode, 
+l_location, l_owning_lib, l_circ_modifier <emphasis>FROM stdin;</emphasis> 
 40      0       HD3616.K853 U54 1997    30731100751928  STACKS  FENNELL BOOK
 41      1       HV6548.C3 S984 1998     30731100826613  STACKS  FENNELL BOOK
 41      2       HV6548.C3 S984 1998     30731100804958  STACKS  BRANTFORD       BOOK
@@ -648,8 +654,8 @@ SELECT DISTINCT bre.id FROM biblio.record_entry AS bre
 	JOIN asset.call_number AS acn ON acn.record-bre.id 
 	WHERE bre.deleted='false' and ownling_lib=101 \g /home/opensrf/records.txt;
 </programlisting>
-				<para>This query will create a file called <filename>ids.txt</filename> containing a column of distinct ids of items owned by the organizational unit with the 
-				<table class="field">id</table> <literal>101</literal>.</para>
+				<para>This query will create a file called <filename>records.txt</filename> containing a column of distinct ids of items owned by the organizational unit with the 
+				<database class="field">id</database> <literal>101</literal>.</para>
 			</step>
 			<step>
 				<para>Navigate to the support-scripts folder</para>
@@ -660,7 +666,8 @@ SELECT DISTINCT bre.id FROM biblio.record_entry AS bre
 			<step>
 				<para>Run <command>marc_export</command>, using the id file you created in step 1 to define which files to export.</para>
 <screen>
-<userinput>cat /home/opensrf/records.txt | ./marc_export -i -c /openils/conf/opensrf_core.xml -x /openils/conf/fm_IDL.xml -f XML --timeout 5 > exported_files.xml
+<userinput>cat /home/opensrf/records.txt | ./marc_export -i -c /openils/conf/opensrf_core.xml \
+-x /openils/conf/fm_IDL.xml -f XML --timeout 5 > exported_files.xml
 </userinput>
 </screen>
 				<para>The example above export the records into MARCXML format.</para>
