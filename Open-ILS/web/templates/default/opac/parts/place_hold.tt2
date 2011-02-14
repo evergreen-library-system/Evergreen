@@ -44,7 +44,7 @@
         <div><big><strong>[% l("Hold was not successfully placed"); %]</strong></big></div>
             [% IF ctx.hold_failed_event %]
         <div>
-            <strong>Problem:</strong>
+            <strong>[% l('Problem:') %]</strong>
             <span title="[% ctx.hold_failed_event.textcode %]">
                 <em>[% ctx.hold_failed_event.desc ||
                         ctx.hold_failed_event.payload.fail_part ||
@@ -63,39 +63,41 @@
                 value="[% ctx.referer | replace('^http:', 'https:') | html %]" />
             <h1>Place Hold</h1>
             <p>
-                You would like to place a hold on
-                <strong><q>[% attrs.title %]</q></strong>
-                to be picked up at
-                <strong>
-                    <q>[% ctx.find_aou(ctx.default_pickup_lib).name %].</q>
-                </strong><br />
+                [% | l(attrs.title, ctx.find_aou(ctx.default_pickup_lib).name) %]
+                You would like to place a hold on <strong><q>[_1]</q></strong> to be picked up at [_2].
                 If this is correct, press <strong>SUBMIT</strong>.
+                [% END %]
             </p>
             <p>
-                If you would like to change the library pick up location, select
-                from the
+                [% l('If you would like to change the library pick up location, select from the location dropdown menu.') %]
+                <br class="clear-both" />
                 [% PROCESS "default/opac/parts/org_selector.tt2";
-                    PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib %]<br class="clear-both" />
-                Location dropdown menu.
+                    PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib %]
             </p>
-            <p>If you use the Traveling Library Center (TLC) and ABC Express
+            <p>
+                [% |l %]If you use the Traveling Library Center (TLC) and ABC Express
                 services, please select "Outreach" to have the item delivered
-                during your scheduled visit.</p>
-            <input type="image" name="submit" value="submit" title="Submit"
-                alt="Submit" src="[% ctx.media_prefix %]/images/btnSubmit.png" />
+                during your scheduled visit.[% END %]
+            </p>
+            <input type="image" name="submit" value="submit" title="[% l('Submit') %]"
+                alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png" />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="javascript:history.go(-1);" id="holds_cancel"><img
-                alt="Cancel" src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
+                alt="[% l('Cancel') %]" src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
         </form>
         <br /><br />
-        <p>* If you need your item today, and it is checked in at your
+        <p>
+            [% |l %]* If you need your item today, and it is checked in at your
             library, please place your hold and then call your library to set it
             aside. Placing a hold without calling the library will increase your
-            wait time.<br /><a href="#">Library phone numbers.</a>
+            wait time.[% END %]
+            <br /><a href="#">[% l('Library phone numbers.') %]</a>
         </p>
-        <p>* For best possible service, we recommend keeping a printed copy of
-        your most recent holds list.</p>
-        [% END # ctx.hold_success %]
+        <p>
+            [% |l %]* For best possible service, we recommend keeping 
+            a printed copy of your most recent holds list.[% END %]
+        </p>
+        [% END %] <!-- ctx.hold_success -->
         <table width='90%' border="1" class="hide_me">
             <tbody>
                 <tr>
@@ -268,7 +270,10 @@
             [% l("The phone number does not have the correct format. The expected format is XXX-YYY-ZZZZ") %]
         </span>
         <span class='hide_me' id='hold_not_allowed'>
-            [% l("No items were found that could fulfill the requested holds.  It's possible that choosing a different format will result in a successful hold.  It is also possible that you have exceeded the number of allowable holds.  For further information, please consult your local librarian.") %]
+            [% |l %]No items were found that could fulfill the requested holds.  
+                It's possible that choosing a different format will result in a successful hold.  
+                It is also possible that you have exceeded the number of allowable holds.  
+                For further information, please consult your local librarian.[% END %]
         </span>
     </div>
     <div id="anonListTable" class="hide_me" style="margin-top: 6px;">
@@ -314,11 +319,23 @@
         <span name='m'>[% l("Electronic Resources") %]</span>
     </span>
 
-    <span class='hide_me' id='holds_explain_adv'>[% l("If you wish to broaden the scope of your hold to include other versions of this title, select the formats that would be acceptable.  The first available copy will be sent to you.") %]</span>
+    <span class='hide_me' id='holds_explain_adv'>
+        [% |l %]If you wish to broaden the scope of your hold to include other versions of this title, 
+        select the formats that would be acceptable.  The first available copy will be sent to you.[% END %]
+    </span>
+
     <span class='hide_me' id='holds_pick_good_org'>[% l("Please select a physical location where your hold can be delivered.") %]</span>
     <span class='hide_me' id='hold_dup_exists'>[% l("A hold already exists on the requested item.") %]</span>
     <span class='hide_me' id='hold_dup_exists_override'>[% l("A hold already exists on the requested item. Would you like to create the hold anyway?") %]</span>
-    <span id='hold_failed_patron_barred' class='hide_me'>[% l("PATRON BARRED. Please see any notes in the \"Staff Notes\" section of your \"My Account\" page or contact your local library.") %]</span>
-    <span id='invalid_hold' class='hide_me'>[% l("This hold is no longer valid. It's likely that the target for the hold was deleted from the system.  Please cancel this hold and place a new one.") %]</span>
+
+    <span id='hold_failed_patron_barred' class='hide_me'>
+        [% |l %]PATRON BARRED. Please see any notes in the "Staff Notes" section of your 
+        "My Account" page or contact your local library.[% END %]
+    </span>
+
+    <span id='invalid_hold' class='hide_me'>
+        [% |l %]This hold is no longer valid. It's likely that the target for the hold was 
+        deleted from the system.  Please cancel this hold and place a new one.[% END %]
+    </span>
     <span id='holds_invalid_recipient' class='hide_me'>[% l("The patron barcode entered as the hold recipient is invalid.") %]</span>
 </div>
