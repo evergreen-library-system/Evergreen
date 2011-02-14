@@ -144,8 +144,12 @@ sub load_common {
 
         if($e->checkauth) {
 
+            $self->apache->log->warn("authtime = " . $e->authtime);
+
             $ctx->{authtoken} = $e->authtoken;
+            $ctx->{authtime} = $e->authtime;
             $ctx->{user} = $e->requestor;
+
             $ctx->{user_stats} = $U->simplereq(
                 'open-ils.actor', 
                 'open-ils.actor.user.opac.vital_stats', 
