@@ -84,9 +84,8 @@ sub fetch_user_holds {
     };
 
     my $first = 1;
-    my @collected;
-    my @holds;
-    my @ses;
+    my(@collected, @holds, @ses);
+
     while(1) {
         @ses = $mk_req_batch->() if $first;
         last if $first and not @ses;
@@ -108,7 +107,13 @@ sub fetch_user_holds {
         $first = 0;
     }
 
-    return \@holds;
+    # put the holds back into the original server sort order
+    my @sorted;
+    for my $id (@$hold_ids) {
+        push @sorted, grep { $_->{hold}->{hold}->id == $id } @holds;
+    }
+
+    return \@sorted;
 }
 
 sub handle_hold_update {

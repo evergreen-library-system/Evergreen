@@ -1,13 +1,14 @@
 <div id="header">
     <div class="float-left">
-        <a href="http://www.kcls.org"><img alt="KCLS Logo"
+        <a href="http://www.kcls.org"><img alt="[% l('KCLS Logo') %]" 
             src="[% ctx.media_prefix %]/images/KCLS_logo_horiz.gif" /></a>
     </div>
     <div class="float-right">
         [% IF !ctx.user %]
         <div id="your-acct-login">
-            <a href="[% ctx.opac_root %]/login" id="home_myopac_link"><img
-                alt="Your Account Log in"
+            [% myopac_redirect = 'https://' _ ctx.hostname _ ctx.opac_root _ '/myopac/main' | url %]
+            <a href="[% ctx.opac_root %]/login?redirect_to=[% myopac_redirect %]" id="home_myopac_link"><img
+                alt="[% l('Your Account Log in') %]"
                 src="[% ctx.media_prefix %]/images/login-btn.png"
                 onmouseover="this.src='[% ctx.media_prefix %]/images/login-btn-hover.png';"
                 onmouseout="this.src='[% ctx.media_prefix %]/images/login-btn.png';" /></a>
@@ -22,22 +23,20 @@
                         </td>
                         <td id="dash_corner_mid1a">
                             <span id="dash_user">
-                                [%  # XXX TODO: some kind of standard helper
-                                    # function in TT2 to render human names,
-                                    # i18n aware.
-                                    ctx.user.first_given_name %]
-                                [% ctx.user.family_name %]
+                                [%  l('[_1] [_2]', ctx.user.first_given_name, ctx.user.family_name) %]
                             </span>
                         </td>
                         <td id="dash_corner_mid1b">
                             <img src="[% ctx.media_prefix %]/images/dash-divider.jpg" />
                         </td>
                         <td id="dash_corner_mid1c">
+
                             <a href="[% ctx.opac_root %]/myopac/main" class="pos-rel-top4"><img
                                 alt="[% l('My Account') %]"
                                 src="[% ctx.media_prefix %]/images/acct-btn.png"
                                 onmouseover="this.src='[% ctx.media_prefix %]/images/acct-btn-hover.png';"
                                 onmouseout="this.src='[% ctx.media_prefix %]/images/acct-btn.png';" /></a>
+
                             <a href="[% ctx.opac_root %]/logout" class="pos-rel-top4"
                                 id="logout_link"><img
                                 alt="[% l('Logout') %]"
@@ -107,12 +106,9 @@
 <div id="gold-links-holder">
     <div id="gold-links">
         <div id="header-links">
-            <a href="http://www.kcls.org/usingthelibrary/index.cfm">Using
-                the Library</a>
-            <a href="http://www.kcls.org/booksandreading/">Books &amp;
-                Reading</a>
-            <a href="http://www.kcls.org/research/index.cfm">Research &amp;
-                Homework</a>
+            <a href="http://www.kcls.org/usingthelibrary/index.cfm">Using the Library</a>
+            <a href="http://www.kcls.org/booksandreading/">Books &amp; Reading</a>
+            <a href="http://www.kcls.org/research/index.cfm">Research &amp; Homework</a>
             <a href="http://www.kcls.org/programs/">Programs &amp; Classes</a>
             <a href="http://www.kcls.org/events/">Events</a>
             <a href="/opac/extras/mobile/">Mobile Catalog</a>

@@ -81,6 +81,8 @@ sub load {
 
     my $path = $self->apache->path_info;
 
+    $self->apache->log->info("path = $path; referer = " . $self->cgi->referer);
+
     return $self->load_simple("home") if $path =~ /opac\/home/;
     return $self->load_simple("advanced") if $path =~ /opac\/advanced/;
     return $self->load_login if $path =~ /opac\/login/;
