@@ -1,4 +1,5 @@
-[%  WRAPPER "default/opac/parts/base.tt2" +
+[%  PROCESS "default/opac/parts/header.tt2";
+    WRAPPER "default/opac/parts/base.tt2" +
         "default/opac/parts/myopac/base.tt2";
     myopac_page = "circs"  %]
 <div id='myopac_checked_div' style="padding:0px;">
@@ -84,6 +85,7 @@
             <div id="acct_checked_temp">
                 <table cellpadding='0' cellspacing='0' border='0'
                     style="margin-top:5px;">
+                    [% FOR circ IN ctx.circs %]
                     <tr>
                         <td width="1%" style="padding-left:10px;" valign="top">
                             <input type="checkbox" name="check_all_checked" />
@@ -93,12 +95,21 @@
                             name="author">
                             <a href="#" name="title"></a>
                         </td>
-                        <td width="8%" name="renewals" align="center"></td>
+                        <td width="8%" name="renewals" align="center">
+                            [% circ.circ.renewal_remaining %]
+                        </td>
                         <td width="13%" style="padding-left:5px;"
-                            name="due_date"></td>
-                        <td width="16%" name="barcode"></td>
-                        <td width="22%" name="call_number"></td>
+                            name="due_date">
+                            [% date.format(ctx.parse_datetime(circ.circ.due_date),'%m/%d/%Y') %]
+                        </td>
+                        <td width="16%" name="barcode">
+                            [% circ.circ.target_copy.barcode %]
+                        </td>
+                        <td width="22%" name="call_number">
+                            [% circ.circ.target_copy.call_number.label %]
+                        </td>
                     </tr>
+                    [% END %]
                 </table>
             </div>
         </div>

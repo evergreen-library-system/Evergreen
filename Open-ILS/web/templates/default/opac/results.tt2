@@ -1,4 +1,4 @@
-[%  USE CGI;
+[%  PROCESS "default/opac/parts/header.tt2";
     USE POSIX;
 
     WRAPPER "default/opac/parts/base.tt2";

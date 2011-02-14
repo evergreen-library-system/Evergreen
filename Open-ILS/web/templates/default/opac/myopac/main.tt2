@@ -1,4 +1,5 @@
-[%  WRAPPER "default/opac/parts/base.tt2" +
+[%  PROCESS "default/opac/parts/header.tt2";
+    WRAPPER "default/opac/parts/base.tt2" +
         "default/opac/parts/myopac/base.tt2";
     myopac_page = "main"  %]
 <div id='myopac_summary_div' style="padding:0px;">
@@ -44,7 +45,7 @@
                             <td>
                                 Items Currently Checked out
                                 <span id="myopac_sum_checked" class="view_link">
-                                    (0)
+                                    ([% ctx.user_stats.checkouts.out %])
                                 </span>
                             </td>
                             <td align="right" class="view_link">
@@ -59,7 +60,7 @@
                             <td>
                                 Items Currently on Hold
                                 <span id="myopac_sum_holds" class="view_link">
-                                    (0)
+                                    ([% ctx.user_stats.holds.total %])
                                 </span>
                             </td>
                             <td align="right" class="view_link">
@@ -74,7 +75,7 @@
                             <td>
                                 Items ready for pickup
                                 <span id="myopac_sum_pickup" class="view_link">
-                                    (0)
+                                    ([% ctx.user_stats.holds.ready %])
                                 </span>
                             </td>
                             <td align="right" class="view_link">
