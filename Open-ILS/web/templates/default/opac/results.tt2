@@ -3,7 +3,7 @@
 
     WRAPPER "default/opac/parts/base.tt2";
     INCLUDE "default/opac/parts/topnav.tt2";
-    ctx.page_title = "Search Results";
+    ctx.page_title = l("Search Results");
 
     page = CGI.param('page') || 0;
     query = CGI.param('query');

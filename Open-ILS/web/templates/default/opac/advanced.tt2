@@ -1,7 +1,7 @@
 [%  PROCESS "default/opac/parts/header.tt2";
     WRAPPER "default/opac/parts/base.tt2";
     INCLUDE "default/opac/parts/topnav.tt2";
-    ctx.page_title = "Advanced Search" %]
+    ctx.page_title = l("Advanced Search") %]
     <div id="search-wrapper">
         [% INCLUDE "default/opac/parts/utils.tt2" %]
         <div id="adv_search_parent">
