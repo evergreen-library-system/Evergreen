@@ -44,9 +44,15 @@ sub mk_copy_query {
 
     my $query = {
         select => {
-            acp => ['id', 'barcode', 'circ_lib'],
-            acpl => [{column => 'name', alias => 'copy_location'}],
-            ccs => [{column => 'name', alias => 'copy_status'}],
+            acp => ['id', 'barcode', 'circ_lib', 'create_date', 'age_protect', 'holdable'],
+            acpl => [
+                {column => 'name', alias => 'copy_location'},
+                {column => 'holdable', alias => 'location_holdable'}
+            ],
+            ccs => [
+                {column => 'name', alias => 'copy_status'},
+                {column => 'holdable', alias => 'status_holdable'}
+            ],
             acn => [
                 {column => 'label', alias => 'call_number_label'},
                 {column => 'id', alias => 'call_number'}

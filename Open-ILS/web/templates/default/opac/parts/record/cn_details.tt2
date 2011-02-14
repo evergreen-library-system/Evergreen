@@ -11,14 +11,39 @@
                                 <td width='33%'>[% l("Barcode") %]</td>
                                 <td>[% l("Status") %]</td>
                                 <td>[% l("Location") %]</td>
-                                <td name='age_protect_label' class='hide_me'>[% l("Age Hold Protection") %]</td>
-                                <td name='create_date_label' class='hide_me'>[% l("Create Date") %]</td>
-                                <td name='holdable_label' class='hide_me'>[% l("Holdable") %]</td>
-                                <td name='due_date_label' class='hide_me'>[% l("Due Date") %]</td>
+                                [% IF ctx.is_staff %]
+                                <td>[% l("Age Hold Protection") %]</td>
+                                <td>[% l("Create Date") %]</td>
+                                <td>[% l("Holdable") %]</td>
+                                [% END %]
+                                <td>[% l("Due Date") %]</td>
                             </tr>
                         </thead>
                         <tbody name='copies_tbody' class='copy_details_table' width='100%'>
+                            [% FOR copy_info IN ctx.copies %]
                             <tr name='copies_row'>
+                                <td>[% copy_info.barcode %]</td>
+                                <td>[% copy_info.copy_status %]</td>
+                                <td>[% copy_info.copy_location %]</td>
+                                [% IF ctx.is_staff %]
+                                <td>[% copy_info.age_protect %]</td>
+                                <td>[% date.format(ctx.parse_datetime(copy_info.create_date), DATE_FORMAT) %]</td>
+                                <td>
+                                    [%  IF copy_info.holdable == 't' AND 
+                                            copy_info.location_holdable == 't' AND
+                                            copy_info.status_holdable == 't';
+                                            l('Yes');
+                                        ELSE;
+                                            l('No');
+                                        END; 
+                                    %]
+                                </td>
+                                [% END %]
+                                <td>[% date.format(ctx.parse_datetime(copy_info.create_date), DATE_FORMAT) %]</td>
+                            </tr>
+                            [% END %]
+
+                                <!-- XXX keeping for now for reference...
                                 <td>
                                     <span name='barcode'> </span>
                                     <a class='hide_me classic_link copy_more_info'
@@ -39,6 +64,7 @@
                                     <span name='copy_due_date'> </span>
                                 </td>
                             </tr>
+                                -->
 
                             <tr name='copy_extras_row' class='hide_me'>
                                 <td colspan='10'>
