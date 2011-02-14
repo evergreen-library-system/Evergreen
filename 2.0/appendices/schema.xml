@@ -3711,7 +3711,7 @@
           					<title>Constraints on fund</title>
 						
           					<varlistentry>
-            						<term>acq_fund_rollover_implies_propagate</term>
+            						<term>acq_fund_rollover_ implies_propagate</term>
             						<listitem><para>CHECK ((propagate OR (NOT rollover)))</para></listitem>
           					</varlistentry>
 						
@@ -20086,7 +20086,7 @@
 							</row>
 						
               						<row>
-								<entry>claims_never_checked_out_count</entry>
+								<entry>claims_never_checked _out_count</entry>
 								<entry>integer</entry>
 								<entry><para>
 									
@@ -27029,7 +27029,7 @@
 							</row>
 						
               						<row>
-								<entry>claims_never_checked_out_count</entry>
+								<entry>claims_never_checked _out_count</entry>
 								<entry>integer</entry>
 								<entry><para>
 									
@@ -27531,7 +27531,7 @@
 							</row>
 						
               						<row>
-								<entry>claims_never_checked_out_count</entry>
+								<entry>claims_never_checked _out_count</entry>
 								<entry>integer</entry>
 								<entry><para>
 									
@@ -36747,7 +36747,7 @@
           					<title>Constraints on rule_age_hold_protect</title>
 						
           					<varlistentry>
-            						<term>rule_age_hold_protect_name_check</term>
+            						<term>rule_age_hold_ protect_name_check</term>
             						<listitem><para>CHECK ((name ~ &apos;^\\w+$&apos;::text))</para></listitem>
           					</varlistentry>
 						
@@ -54206,7 +54206,7 @@
           					<title>Constraints on relevance_adjustment</title>
 						
           					<varlistentry>
-            						<term>relevance_adjustment_bump_type_check</term>
+            						<term>relevance_adjustment _bump_type_check</term>
             						<listitem><para>CHECK ((bump_type = ANY (ARRAY[&apos;word_order&apos;::text, &apos;first_word&apos;::text, &apos;full_match&apos;::text])))</para></listitem>
           					</varlistentry>
 						
@@ -57209,7 +57209,7 @@
 									
 									
 									
-                								DEFAULT nextval(&apos;staging.mailing_address_stage_row_id_seq&apos;::regclass);
+                								DEFAULT nextval(&apos;staging.mailing_address_ stage_row_id_seq&apos;::regclass);
 									
 									
 										
@@ -59453,7 +59453,7 @@
           					<title>Constraints on authority_queue</title>
 						
           					<varlistentry>
-            						<term>authority_queue_queue_type_check</term>
+            						<term>authority_queue_ queue_type_check</term>
             						<listitem><para>CHECK ((queue_type = &apos;authority&apos;::text))</para></listitem>
           					</varlistentry>
 						
