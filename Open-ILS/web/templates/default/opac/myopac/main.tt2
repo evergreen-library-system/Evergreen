@@ -34,7 +34,7 @@
                 [% money(ctx.fines.balance_owed) %]
             </span><br />
             <a class="hide_me" href="#" id="pay_fines_btn1"><img
-                alt="Pay Fines"
+                alt="[% l('Pay Fines') %]"
                 onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
                 onmouseout="this.src='[% ctx.media_prefix %]/images/pay-fines-btn.png';"
                 src="[% ctx.media_prefix %]/images/pay-fines-btn.png"
@@ -150,13 +150,11 @@
                             <td>[% l("Due Date") %]</td>
                             <td>[% l("Date Returned") %]</td>
                             <td>[% l("Balance Owed") %]</td>
-                            <td align="center" nowrap="nowrap"
-                                style="white-space:nowrap;">
-                                <label for="pay_fines_box1">Pay Fines</label>
-                                <br />
+                            <td nowrap="nowrap" style="white-space:nowrap;">
                                 <input id="pay_fines_box1" checked="checked"
                                     type="checkbox"
-                                    title="Click to (un)select all fines" />
+                                    title="[% l('Click to (un)select all fines') %]" />
+                                <label for="pay_fines_box1">[% l('Pay Fines') %]</label>
                             </td>
                         </tr>
                     </thead>
@@ -206,7 +204,7 @@
                                     [% money(f.xact.balance_owed) %]
                                 </strong>
                             </td>
-                            <td align="center">
+                            <td>
                                 <input type="checkbox" checked="checked"
                                     name="selector"
                                     title="[% l('Pay this fine') %]" />
@@ -241,11 +239,10 @@
                             <td width='16%'>[% l("Billing Type") %]</td>
                             <td width='4%' align="center" nowrap="nowrap"
                                 style="white-space:nowrap;">
-                                <label for="pay_fines_box2">[% l("Pay Fines") %]</label>
-                                <br />
                                 <input id="pay_fines_box2" checked="checked"
                                     type="checkbox"
                                     title="[% l('Click to (un)select all fines') %]" />
+                                <label for="pay_fines_box2">[% l("Pay Fines") %]</label>
                             </td>
                         </tr>
                     </thead>
@@ -273,7 +270,7 @@
                                 </strong>
                             </td>
                             <td>[% f.xact.last_billing_type %]</td>
-                            <td align="center">
+                            <td>
                                 <input type="checkbox" name='selector'
                                     title='[% l("Pay this fine") %]'
                                     checked="checked" />
@@ -284,7 +281,7 @@
                 </table>
             </div>
             [% END %]
-            <a href="#"><img alt="Pay Fines"
+            <a href="#"><img alt="[% l('Pay Fines') %]"
                 onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
                 src="[% ctx.media_prefix %]/images/pay-fines-btn.png"
                 style="position:relative;top:5px;" /></a>
