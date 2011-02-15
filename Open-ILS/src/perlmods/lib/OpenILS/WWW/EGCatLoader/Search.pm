@@ -20,6 +20,7 @@ sub load_rresults {
 
     $ctx->{page} = 'rresult';
     my $page = $cgi->param('page') || 0;
+    my $item_type = $cgi->param('item_type');
     my $facet = $cgi->param('facet');
     my $query = $cgi->param('query');
     my $limit = $cgi->param('limit') || 10; # TODO user settings
@@ -28,7 +29,10 @@ sub load_rresults {
     my $depth = defined $cgi->param('depth') ? 
         $cgi->param('depth') : $ctx->{find_aou}->($loc)->ou_type->depth;
 
-    my $args = {limit => $limit, offset => $page * $limit, org_unit => $loc, depth => $depth}; 
+    my $args = {
+        limit => $limit, offset => $page * $limit,
+        org_unit => $loc, depth => $depth, $item_type ? (item_type => [$item_type]) : ()
+    };
 
     $query = "$query $facet" if $facet; # TODO
     my $results;
