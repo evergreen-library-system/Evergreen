@@ -6,7 +6,7 @@
     <div class="float-right">
         [% IF !ctx.user %]
         <div id="your-acct-login">
-            <a href="[% ctx.opac_root %]/myopac/main?foo=bar" id="home_myopac_link"><img
+            <a href="[% ctx.opac_root %]/myopac/main" id="home_myopac_link"><img
                 alt="[% l('Your Account Log in') %]"
                 src="[% ctx.media_prefix %]/images/login-btn.png"
                 onmouseover="this.src='[% ctx.media_prefix %]/images/login-btn-hover.png';"

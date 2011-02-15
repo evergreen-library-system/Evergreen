@@ -1,4 +1,4 @@
-[%- USE money = format('$%.2f');
+[%- USE money = format(l('$%.2f'));
     USE date;
     USE CGI; 
     USE EGI18N;
