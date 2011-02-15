@@ -928,3 +928,5 @@ div.select-wrapper:hover {
 #rdetail_copy_info_table td { padding: 3px; }
 .search_page_nav_link { cursor: pointer; }
 #opac.result.sort { width: 160px; }
+.renew-summary { font-size: 125%; font-style: italic; margin: 0.5ex 0; }
+.failure-text { margin-left: 4em; font-style: italic; color: #ff0000; }

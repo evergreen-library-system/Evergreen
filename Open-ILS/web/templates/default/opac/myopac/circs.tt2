@@ -24,24 +24,36 @@
     </div>
     
     <div class="header_middle">
-        <span id="acct_checked_header" style="float:left;">
-            Current Items Checked Out
-        </span>
-        <span style="float:right;">
-            <a class="hide_me" href="#">Export List</a>
+        <span class="float-left">[% l('Current Items Checked Out') %]</span>
+        <span class="float-right">
+            <a class="hide_me" href="#">[% l('Export List') %]</a>
         </span>
     </div>
     <div class="clear-both"></div>
+    [% IF ctx.success_renewals %]
+    <div class="renew-summary">
+        [% l("Successfully renewed [_1] item(s)", ctx.success_renewals) %]
+    </div>
+    [% END %]
+    [% IF ctx.failed_renewals %]
+    <div class="renew-summary red">
+        [% l("Failed to renew [_1] item(s)", ctx.failed_renewals) %]
+    </div>
+    [% END %]
     <div id='checked_main'>
+        <form method="POST" id="circ-form"
+            onsubmit="return confirm('[% l("Are you sure you wish to renew the selected item(s)?") %]');">
         <table cellpadding='0' cellspacing='0' class="opac-auto-097b">
             <tr>
                 <td>
-                    <a href="#">Renew Selected Titles</a>
+                    <select name="action">
+                        <option value="renew">[% l('Renew Selected Titles') %]</option>
+                    </select>
                 </td>
                 <td style="padding-left:9px;">
-                    <a class="hide_me" href="#"><img
-                        alt="Save"
-                        src="[% ctx.media_prefix %]/images/save-btn.png" /></a>
+                    <input type="image"
+                        alt="[% l('Go') %]" title="[% l('Go') %]"
+                        src="[% ctx.media_prefix %]/images/go-btn.png" /></a>
                 </td>
                 <td style="padding-left:5px;">
                     <a href="#"><img alt="Renewing Help"
@@ -53,7 +65,9 @@
             border='0'>
             <tr>
                 <td width="1%" style="padding-left:10px;">
-                    <input type="checkbox" id="check_all_checked" />
+                    <input type="checkbox" id="check_all_checked"
+                        onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' && !inputs[i].disabled) inputs[i].checked = this.checked;}"
+                    />
                 </td>
                 <td width="40%" style="padding-left:5px;">
                     <span title="Click to sort" style="cursor:pointer;">
@@ -90,7 +104,9 @@
                         PROCESS get_marc_attrs args=attrs; %]
                     <tr>
                         <td width="1%" style="padding-left:10px;" valign="top">
-                            <input type="checkbox" name="check_all_checked" />
+                            <input type="checkbox" name="circ"
+                                [% IF circ.circ.renewal_remaining < 1; l('disabled="disabled"'); END %]
+                                value="[% circ.circ.id %]" />
                         </td>
                         <td width="40%"
                             style="padding-left:5px;padding-bottom:10px;"
@@ -114,10 +130,21 @@
                             [% circ.circ.target_copy.call_number.label %]
                         </td>
                     </tr>
-                    [% END %]
+                    [%  IF circ.renewal_response AND
+                            circ.renewal_response.textcode != 'SUCCESS' %]
+                    <tr>
+                        <td colspan="6">[%# XXX colspan="0" does not work in IE %]
+                            <span class="failure-text" title="[% circ.renewal_response.textcode %] / [% circ.renewal_response.payload.fail_part %]">
+                                [% circ.renewal_response.desc || circ.renewal_response.payload.fail_part || circ.renewal_response.textcode %]
+                            </span>
+                        </td>
+                    </tr>
+                    [%  END;
+                    END %]
                 </table>
             </div>
         </div>
+        </form>
     </div>
     <div id='checked_hist' class="hide_me" style="padding-top:8px;">
         <table id="acct_checked_hist_header" cellpadding='0' cellspacing='0'
@@ -186,9 +213,6 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-    <div id='myopac_renew_success' class='hide_me'>[% l("item(s) successfully renewed") %]</div>
-    <span class='hide_me' id='myopac_renew_confirm'>[% l("Are you sure you wish to renew the selected item(s)?") %]</span>
     <span class='hide_me' id='myopac_renew_fail'>[% l("The system is unable to renew the selected item at this time.  This usually means the item is needed to fulfill a hold.  Please see a librarian for further help.") %]</span>
    <span class='hide_me' id='myopac_renew_fail2'>[% l("Library policy prevents the renewal of this item at this time.  Please see a librarian for further details.") %]</span>
 </div>
