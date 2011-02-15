@@ -83,7 +83,7 @@
                                 </span>
                             </td>
                             <td align="right" class="view_link">
-                                <a href="#">View All</a>
+                                <a href="[% ctx.opac_root %]/myopac/holds?available=1">View All</a>
                             </td>
                         </tr>
                     </table>
