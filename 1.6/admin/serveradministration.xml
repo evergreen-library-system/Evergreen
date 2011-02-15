@@ -63,6 +63,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 <userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
 </screen> 
 				</step>	
+				<step>
+					<para>As root, restart the Apache server:</para>
+<screen>
+<userinput>/etc/init.d/apache2 restart</userinput>
+				</screen> 
+			</step>	
 				<step><para>The staff client will need to be restarted for changes to appear.</para>
 				</step>	
 			</procedure>
@@ -76,6 +82,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<step><para>From the server command line, run autogen to apply the changes to the database and scripts. Run the following command as the opensrf user:</para>
 <screen>
 <userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
+</screen> 
+				</step>	
+				<step>
+					<para>As root, restart the Apache server:</para>
+<screen>
+<userinput>/etc/init.d/apache2 restart</userinput>
 </screen> 
 				</step>	
 				<step><para>The staff client will need to be restarted for changes to appear.</para>
@@ -97,6 +109,12 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 				<step><para>From the server command line, run autogen to apply the changes to the database and scripts. Run the following command as the opensrf user:</para>
 <screen>
 <userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
+</screen> 
+				</step>	
+				<step>
+				<para>As root, restart the Apache server:</para>
+<screen>
+<userinput>/etc/init.d/apache2 restart</userinput>
 </screen> 
 				</step>	
 				<step><para>The staff client will need to be restarted for changes to appear.</para>
@@ -147,6 +165,18 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 <userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
 </screen> 
 				</step>	
+				<step>
+				<para>As root, restart the Apache server:</para>
+<screen>
+<userinput>/etc/init.d/apache2 restart</userinput>
+</screen> 
+				</step>	
+				<step>
+					<para>As root, restart the Apache server:</para>
+<screen>
+<userinput>/etc/init.d/apache2 restart</userinput>
+</screen> 
+				</step>	
 				<step><para>The staff client will need to be restarted for changes to appear.</para>
 				</step>		
 		</procedure>
@@ -156,9 +186,16 @@ xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="serveradministrati
 			<step><para>Select the <emphasis>organizational unit</emphasis> you wish to delete from the organizational unit tree in the left pane.</para></step>
 			<step><para>Click<guibutton>Delete</guibutton>.</para></step>
 			<step><para>Click <guibutton>OK</guibutton> on the warning alert box.</para></step>
-			<step><para>From the server command line, run autogen to apply the changes to the database and scripts. Run the following command as the opensrf user:</para>
+			<step>
+				<para>From the server command line, run autogen to apply the changes to the database and scripts. Run the following command as the opensrf user:</para>
 <screen>
 <userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
+</screen> 
+				</step>	
+				<step>
+					<para>As root, restart the Apache server:</para>
+<screen>
+<userinput>/etc/init.d/apache2 restart</userinput>
 </screen> 
 				</step>	
 				<step><para>The staff client will need to be restarted for changes to appear.</para>
@@ -227,11 +264,13 @@ COMMIT;
 <screen>
 <userinput>./autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
 </screen>
-
 			</step>
-
-
-
+			<step>
+				<para>As root, restart the Apache server:</para>
+<screen>
+<userinput>/etc/init.d/apache2 restart</userinput>
+</screen> 
+			</step>	
 		</procedure>
 		<procedure>
 			<title>Editing Organizational Units<indexterm><primary>organization units</primary><secondary>editing</secondary></indexterm></title>
@@ -244,6 +283,13 @@ COMMIT;
 <userinput>/openils/bin/autogen.sh -c /openils/conf/opensrf_core.xml -u</userinput>
 </screen> 
 			</step>	
+			<step>
+				<para>As root, restart the Apache server:</para>
+<screen>
+<userinput>/etc/init.d/apache2 restart</userinput>
+</screen> 
+			</step>	
+
 			<step><para>The staff client will need to be restarted for changes to appear.</para>
 			</step>	
 		</procedure>
@@ -277,12 +323,8 @@ COMMIT;
 			    </formalpara>
 			 </listitem>
 		      </itemizedlist>
-
 			<para>To review or edit your library's hours of operation,</para>
-
-
 	      <procedure>
-
 		 <step>
 		    <para>Open the <guilabel>Organizational Units</guilabel> interface.</para>
 		 </step>
