@@ -150,7 +150,7 @@
                             name="activate_box" type="text" />
                         [% IF hold.hold.hold.frozen == 't' AND
                                 hold.hold.hold.thaw_date;
-                            date.format(ctx.parse_datetime(hold.hold.hold.thaw_date), '%m/%d/%Y');
+                            date.format(ctx.parse_datetime(hold.hold.hold.thaw_date), DATE_FORMAT);
                         END %]
                     </td>
                     <td width="106">
@@ -158,7 +158,7 @@
                             class="hide_me" style="width:91px;"
                             name="hold_expires_box" type="text" />
                         [% IF hold.hold.hold.expire_time;
-                            date.format(ctx.parse_datetime(hold.hold.hold.expire_time), '%m/%d/%Y');
+                            date.format(ctx.parse_datetime(hold.hold.hold.expire_time), DATE_FORMAT);
                         END %]
                     </td>
                     <td width="95">
