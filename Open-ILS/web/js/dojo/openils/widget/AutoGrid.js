@@ -611,15 +611,17 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
 
     openils.widget.AutoGrid.defaultGetter = function(rowIndex, item) {
         if(!item) return '';
+        if(!this.grid.overrideWidgetArgs[this.field])
+            this.grid.overrideWidgetArgs[this.field] = {};
         var val = this.grid.store.getValue(item, this.field);
-        var autoWidget = new openils.widget.AutoFieldWidget({
+        var autoWidget = new openils.widget.AutoFieldWidget(dojo.mixin({
             fmClass: this.grid.fmClass,
             fmField: this.field,
             widgetValue : val,
             readOnly : true,
             forceSync : true, // prevents many simultaneous requests for the same data
             suppressLinkedFields : this.grid.suppressLinkedFields
-        });
+        },this.grid.overrideWidgetArgs[this.field]));
 
         autoWidget.build();
 

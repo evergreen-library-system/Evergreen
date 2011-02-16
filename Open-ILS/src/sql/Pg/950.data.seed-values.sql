@@ -2174,7 +2174,7 @@ SELECT SETVAL('asset.copy_location_id_seq'::TEXT, 100);
 INSERT INTO asset.call_number VALUES (-1,1,NOW(),1,NOW(),-1,1,'UNCATALOGED');
 
 -- circ matrix
-INSERT INTO config.circ_matrix_matchpoint (org_unit,grp,duration_rule,recurring_fine_rule,max_fine_rule) VALUES (1,1,11,1,1);
+INSERT INTO config.circ_matrix_matchpoint (org_unit,grp,circulate,duration_rule,recurring_fine_rule,max_fine_rule) VALUES (1,1,true,11,1,1);
 
 INSERT INTO config.circ_matrix_weights(name, org_unit, grp, circ_modifier, marc_type, marc_form, marc_vr_format, copy_circ_lib, copy_owning_lib, user_home_ou, ref_flag, juvenile_flag, is_renewal, usr_age_upper_bound, usr_age_lower_bound) VALUES 
     ('Default', 10.0, 11.0, 5.0, 4.0, 3.0, 2.0, 8.0, 8.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0),

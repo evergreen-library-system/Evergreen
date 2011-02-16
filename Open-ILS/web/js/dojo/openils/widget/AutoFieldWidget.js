@@ -142,6 +142,14 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
          */
         getDisplayString : function() {
             var value = this.widgetValue;
+            if(this.inherits) {
+                switch(value) {
+                    case null :
+                    case undefined :
+                    case 'unset' :
+                        return openils.widget.AutoFieldWidget.localeStrings.INHERITED;
+                }
+            }
             switch(this.idlField.datatype) {
                 case 'bool':
                     switch(value) {
@@ -272,13 +280,13 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                         break;
 
                     case 'bool':
-                        if(this.ternary) {
+                        if(this.ternary || this.inherits) {
                             dojo.require('dijit.form.FilteringSelect');
                             var store = new dojo.data.ItemFileReadStore({
                                 data:{
                                     identifier : 'value',
                                     items:[
-                                        {label : openils.widget.AutoFieldWidget.localeStrings.UNSET, value : 'unset'},
+                                        {label : (this.inherits ? openils.widget.AutoFieldWidget.localeStrings.INHERITED : openils.widget.AutoFieldWidget.localeStrings.UNSET), value : 'unset'},
                                         {label : openils.widget.AutoFieldWidget.localeStrings.TRUE, value : 'true'},
                                         {label : openils.widget.AutoFieldWidget.localeStrings.FALSE, value : 'false'}
                                     ]
