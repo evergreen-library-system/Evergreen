@@ -114,7 +114,45 @@ name='Default' csstype='color'/&gt;
 			This will link to Google Books content including table of contents and complete versions of the work if it exists in Google Books. Items not in Google Books will not 
 			display a link. This feature can be turned off by changing the googleBooksLink variable setting to <emphasis>false</emphasis> in the file 
 			<filename>/openils/var/web/opac/skin/default/js/result_common.js</filename>. By default, this feature is activated. </para> 
-		</simplesect>	  
+		</simplesect>
+		<simplesect xml:id="addedcontent-syndetics">
+			<title>Syndetics</title><indexterm><primary>added content</primary><secondary>Syndetics</secondary></indexterm>
+			<para>Sydantics is another option for added content, Here is an example of using Sydantics as your added content provider:</para>
+			
+<programlisting>
+<![CDATA[
+            <!-- We're using Syndetics -->
+            <module>OpenILS::WWW::AddedContent::Syndetic</module>
+            <base_url>http://syndetics.com/index.aspx</base_url>
+
+            <!-- A userid is required to access the added content from Syndetic. -->
+            <userid>uneedsomethinghere</userid>
+
+            <!--
+            Max number of seconds to wait for an added content request to
+            return data.  Data not returned within the timeout is considered
+            a failure
+            -->
+            <timeout>1</timeout>
+
+            <!--
+            After added content lookups have been disabled due to too many
+            lookup failures, this is the amount of time to wait before
+            we try again
+            -->
+            <retry_timeout>600</retry_timeout>
+
+            <!--
+            maximum number of consecutive lookup errors a given process can
+            have before added content lookups are disabled for everyone
+            -->
+            <max_errors>15</max_errors>
+
+        </added_content>
+]]>
+</programlisting>
+			<note><para>Sydantics is a fee based service. For details, visit: <ulink url="http://www.bowker.com/syndetics/">http://www.bowker.com/syndetics/</ulink></para></note>	
+		</simplesect>	  	  
 	</section>
 	<section xml:id="resultspage">
 		<title>Customizing the Results Page</title>
