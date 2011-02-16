@@ -15,8 +15,8 @@ sub load_record {
 
     my $org = $self->cgi->param('loc') || $self->ctx->{aou_tree}->()->id;
     my $depth = $self->cgi->param('depth') || 0;
-    my $copy_limit = $self->cgi->param('copy_limit');
-    my $copy_offset = $self->cgi->param('copy_offset');
+    my $copy_limit = int($self->cgi->param('copy_limit') || 20);
+    my $copy_offset = int($self->cgi->param('copy_offset') || 0);
 
     my $rec_id = $self->ctx->{page_args}->[0]
         or return Apache2::Const::HTTP_BAD_REQUEST;
@@ -30,6 +30,8 @@ sub load_record {
     $self->ctx->{marc_xml} = XML::LibXML->new->parse_string($self->ctx->{record}->marc);
 
     $self->ctx->{copies} = $copy_rec->gather(1);
+    $self->ctx->{copy_limit} = $copy_limit;
+    $self->ctx->{copy_offset} = $copy_offset;
 
     return Apache2::Const::OK;
 }
@@ -39,8 +41,8 @@ sub mk_copy_query {
     my $rec_id = shift;
     my $org = shift;
     my $depth = shift;
-    my $copy_limit = shift || 20;
-    my $copy_offset = shift || 0;
+    my $copy_limit = shift;
+    my $copy_offset = shift;
 
     my $query = {
         select => {
