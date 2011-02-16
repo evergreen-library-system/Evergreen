@@ -319,7 +319,7 @@ circ_modifier 999 t
 <programlisting language="sql">
 BEGIN;
 
-egid, hseq, l_call_num, l_barcode, l_location, l_owning_lib, l_circ_modifier,
+egid, hseq, l_callnum, l_barcode, l_location, l_owning_lib, l_circ_modifier,
 40      0       HD3616.K853 U54 1997    30731100751928  STACKS  FENNELL BOOK
 41      1       HV6548.C3 S984 1998     30731100826613  STACKS  FENNELL BOOK
 41      2       HV6548.C3 S984 1998     30731100804958  STACKS  BRANTFORD       BOOK
@@ -357,13 +357,13 @@ l_location, l_owning_lib, l_circ_modifier <emphasis>FROM stdin;</emphasis>
 <programlisting language="sql">
 CREATE TABLE staging_items (
         l_callnum text, -- call number label
-	hseq int, -- call number label
+	hseq int, 
         egid  int,  -- biblio.record_entry_id
         createdate      date,
         l_location        text,
         l_barcode         text,
         l_circ_modifier       text,
-        l_owning_lib      text  -- actor.org_unit.shortname
+        l_owning_lib      text -- actor.org_unit.shortname 
 );
 </programlisting>
 			</step>	
@@ -432,7 +432,7 @@ SELECT  DISTINCT ou.id AS circ_lib,
 	cn.id AS call_number
 	FROM  staging_items l
 		JOIN actor.org_unit ou
-			ON (l.owning_lib = ou.shortname)
+			ON (l.l_owning_lib = ou.shortname)
 		JOIN asset.copy_location cl
 			ON (ou.id = cl.owning_lib AND l.l_location = cl.name)
 		JOIN metabib.real_full_rec m 
