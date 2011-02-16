@@ -7,7 +7,7 @@
                 <span class="search_catalog_lbl">[% l('Search the Catalog') %]</span>
                 <a href="[% ctx.opac_root %]/advanced"
                     id="home_adv_search_link"><span
-                    class="adv_search_font">Advanced Search</span></a>
+                    class="adv_search_font">[% l('Advanced Search') %]</span></a>
             </td>
         </tr>
         <tr>
@@ -16,8 +16,8 @@
             </td>
             <td>
                 <div id="search_box_wrapper">
-                    <input type="text" id="search_box" name="query"
-                        value="[% query || l("Search Keyword") | html %]"
+                    <!-- Note: when common browsers support HTML5 placeholder text, we can remove the JS -->
+                    <input type="text" id="search_box" name="query" value="[% query || l("Search Keyword") | html %]"
                         onfocus="if (this.value=='[% l("Search Keyword") %]'){this.value='';this.style.color='#000';}"
                         onblur="if (this.value==''){this.value='[% l("Search Keyword") %]';this.style.color='#999';}" />
                     <input name='page' type='hidden' value="0" />
@@ -26,13 +26,9 @@
             <td valign="top">
                 <div class="pos-abs">
                     <div class="opac-auto-143">
-                        <input type="submit" id="search_submit" value="GO"
-                            class="hide_me" /><a
-                                href="javascript:document.getElementById('search_submit').click();"
-                                id="search_submit_alt"><img
-                                alt="Search" src="[% ctx.media_prefix %]/images/go-btn.png"
+                        <input type="image" alt="[% l('Search') %]" src="[% ctx.media_prefix %]/images/go-btn.png"
                             onmouseover="this.src='[% ctx.media_prefix %]/images/go-btn-hover.png';"
-                            onmouseout="this.src='[% ctx.media_prefix %]/images/go-btn.png';" /></a>
+                            onmouseout="this.src='[% ctx.media_prefix %]/images/go-btn.png';" />
                     </div>
                 </div>
             </td>
@@ -54,7 +50,7 @@
     </table>
     </form>
     <div id="breadcrumb">
-        <a href="[% ctx.opac_root %]/home">Catalog Home</a> &gt;
+        <a href="[% ctx.opac_root %]/home">[% l('Catalog Home') %]</a> &gt;
     </div>
     <div class="clear-both"></div>
 </div>

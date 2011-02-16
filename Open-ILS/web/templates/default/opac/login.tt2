@@ -11,6 +11,7 @@
             [% INCLUDE "default/opac/parts/login/form.tt2" %]
             <div class="clear-both very-big-height"></div>	
             <script type="text/javascript">
+                /* Note: when common browsers suppor HTML5 "autofocus", we can remove this */
                 var _onload = window.onload;
                 window.onload = function() {
                     try {

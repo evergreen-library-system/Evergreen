@@ -10,8 +10,7 @@
         <link rel="stylesheet" type="text/css"
             href="[% ctx.media_prefix %]/css/skin/default/opac/style.css" />
         <title>[% l('Catalog - King County Library - [_1]', ctx.page_title) %]</title>
-        [%# <!-- is this needed? --><link rel="unapi-server"
-            type="application/xml" title="unAPI" href="/opac/extras/unapi" />%]
+        <link rel="unapi-server" type="application/xml" title="unAPI" href="/opac/extras/unapi" />
         [% BLOCK html_head; END; # provide a default that can be overridden -%]
         [%- PROCESS html_head -%]
     </head>
