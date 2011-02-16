@@ -408,7 +408,7 @@ div.select-wrapper:hover {
 	padding: 7px 0px 3px 13px;
 }
 
-#rdetails_status_head td {
+#rdetails_status thead td {
 	background-color: #d8d8d8;
 	padding: 13px 0px 13px 13px;
 	font-size: 10px;
@@ -416,8 +416,8 @@ div.select-wrapper:hover {
 	font-weight: bold;
 }
 
-#rdetails_status_head2 td {
-	padding: 0px;
+#rdetails_status tbody td {
+	padding-left: 13px;;
 }
 
 .rdetail_extras {

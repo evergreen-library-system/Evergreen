@@ -120,27 +120,64 @@
 <br /><br />
 
 <table cellpadding="0" cellspacing="0" border="0" width="100%" id="rdetails_status">
-    <tr id="rdetails_status_head">
-        <td width="25%">Location</td>
-        <td width="20%">Call Number</td>
-        <td width="18%">Selving Location</td>
-        <td width="17%">Status</td>
-        <td width="20%">Due Date</td>
-    </tr>
-</table>
-<table cellpadding="0" cellspacing="0" border="0" width="100%">
-    <tbody id="rdetails_status2" class="hide_me">
-        <tr id="rdetails_status_head2">
-            <td width="25%"></td>
-            <td width="20%"></td>
-            <td width="18%"></td>
-            <td width="17%"></td>
-            <td width="20%"></td>
+    <thead>
+        <tr id="rdetails_status_head">
+            <td>[% l("Location") %]</td>
+            <td>[% l("Call Number") %]</td>
+            <td>[% l("Barcode") %]</td>
+            <td>[% l("Shelving Location") %]</td>
+            [% IF ctx.is_staff %]
+            <td>[% l("Age Hold Protection") %]</td>
+            <td>[% l("Create Date") %]</td>
+            <td>[% l("Holdable") %]</td>
+            [% END %]
+            <td>[% l("Status") %]</td>
+            <td>[% l("Due Date") %]</td>
         </tr>
+    </thead>
+    <tbody class="copy_details_table">
+        [% FOR copy_info IN ctx.copies %]
+        <tr>
+            <td>[%
+                # XXX KCLS-specific kludging
+                org_name = ctx.find_aou(copy_info.circ_lib).name;
+                dir = org_name | lower | replace('[^\w]', '') |
+                    replace('.+320th', '320th'); %]
+                <a href="http://www.kcls.org/[% dir %]/"
+                    class="classic_link">[% org_name %]</a>
+            </td>
+            <td>[% copy_info.call_number_label %]</td>
+            <td>[% copy_info.barcode %]</td>
+            <td>[% copy_info.copy_location %]</td>
+            [% IF ctx.is_staff %]
+            <td>
+                [% copy_info.age_protect ?
+                    ctx.find_crahp(copy_info.age_protect).name : l('None') %]
+            </td>
+            <td>[% date.format(
+                ctx.parse_datetime(copy_info.create_date),
+                DATE_FORMAT
+            ) %]</td>
+            <td>[% (copy_info.holdable == 't' AND
+                    copy_info.location_holdable == 't' AND
+                    copy_info.status_holdable == 't') ? l('Yes') : l('No') %]</td>
+            [% END %]
+            <td>[% copy_info.copy_status %]</td>
+            <td>[%
+                IF copy_info.due_date;
+                    date.format(
+                        ctx.parse_datetime(copy_info.due_date),
+                        DATE_FORMAT
+                    );
+                ELSE;
+                    '-';
+                END %]</td>
+        </tr>
+        [% END %]
     </tbody>
 </table>
 
-<div id="rdetail_locs_expand">
+<div id="rdetail_locs_expand" class="hide_me">
     <a href="#"><img
         src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
     <a style="position:relative;top:-3px;" href="#">Show more locations</a>
@@ -152,7 +189,7 @@
     <a style="position:relative;top:-3px;" href="#">Collapse locations</a>
 </div>
 
-<div id="rdetail_extras_expand">
+<div id="rdetail_extras_expand" class="hide_me">
     <a href="#"><img
         src="[% ctx.media_prefix %]/images/plus_sign.png" /></a>
     <a style="position:relative;top:-3px;" href="#">Expand all tabs</a>

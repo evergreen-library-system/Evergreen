@@ -19,7 +19,7 @@ sub init_ro_object_cache {
     my $ctx = $self->ctx;
 
     # fetch-on-demand-and-cache subs for commonly used public data
-    my @public_classes = qw/ccs aout cifm citm clm cmf/;
+    my @public_classes = qw/ccs aout cifm citm clm cmf crahp/;
 
     for my $hint (@public_classes) {
 

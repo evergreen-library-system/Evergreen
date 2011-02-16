@@ -1,5 +1,4 @@
-<!-- ****************** rdetail_extras.xml ***************************** -->
-<div xmlns:xi="http://www.w3.org/2001/XInclude" id="rdetail_main_div" class="">
+<div id="rdetail_main_div">
     <table class='hide_me rdetails_extra_links'>
         <thead>
             <tr>
@@ -258,7 +257,7 @@
             </div>
         </div>
 
-        <div rel="rdetail_cn_browse_div" rel2="cn" class="rdetail_extras"
+        <div rel="rdetail_cn_browse_div" rel2="cn" class="rdetail_extras hide_me"
             id="rdetail_viewcn_link">
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
@@ -286,7 +285,7 @@
         [% INCLUDE "default/opac/parts/record/cn_details.tt2" %]
 
         <div rel="rdetail_copy_info_div" rel2="copyinfo"
-            class="rdetail_extras" id="rdetail_copy_info_link">
+            class="hide_me rdetail_extras" id="rdetail_copy_info_link">
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("copyinfo");'><img
@@ -298,7 +297,7 @@
 
         [% INCLUDE "default/opac/parts/record/copyinfo.tt2" %]
 
-        <div rel="rdetail_marc_div" rel2="marc" class="rdetail_extras" id="rdetail_viewmarc_link">
+        <div rel="rdetail_marc_div" rel2="marc" class="rdetail_extras hide_me" id="rdetail_viewmarc_link">
             <div class="rdetail_extras_hr"></div>
             <div class="rdetail_extras_link">
                 <a href='javascript:rdetailShowExtra("marc");'><img
@@ -315,7 +314,4 @@
     <div id='rdetail_preview_title' class='hide_me'>[% l("See the full text of this book.") %]</div>
     <div id='rdetail_preview_badge' class='hide_me'>[% l("Show a preview of this book from Google Book Search") %]</div>
 </div>
-
 <!-- XXX TODO Novelist stuff here? -->
-
-<!-- ****************** end: rdetail_extras.xml ***************************** -->
