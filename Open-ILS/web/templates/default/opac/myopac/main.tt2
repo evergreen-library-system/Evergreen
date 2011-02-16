@@ -1,4 +1,6 @@
-[%  WRAPPER "default/opac/parts/base.tt2" +
+[%  PROCESS "default/opac/parts/header.tt2";
+    PROCESS "default/opac/parts/marc_misc.tt2";
+    WRAPPER "default/opac/parts/base.tt2" +
         "default/opac/parts/myopac/base.tt2";
     myopac_page = "main"  %]
 <div id='myopac_summary_div' style="padding:0px;">
@@ -27,9 +29,12 @@
                     <img src="[% ctx.media_prefix %]/images/acct_sum_fines_br.png" />
                 </div>
             </div>
-            Fines: <span id="myopac_sum_fines_bal">$0.00</span><br />
+            [% l('Fines:') %]
+            <span id="myopac_sum_fines_bal" class='[% ctx.fines.balance_owed ? "red" : ""%]'>
+                [% money(ctx.fines.balance_owed) %]
+            </span><br />
             <a class="hide_me" href="#" id="pay_fines_btn1"><img
-                alt="Pay Fines"
+                alt="[% l('Pay Fines') %]"
                 onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
                 onmouseout="this.src='[% ctx.media_prefix %]/images/pay-fines-btn.png';"
                 src="[% ctx.media_prefix %]/images/pay-fines-btn.png"
@@ -42,13 +47,13 @@
                     <table width="100%" cellspacing="0" cellpadding="0">
                         <tr>
                             <td>
-                                Items Currently Checked out
+                                [% l("Items Currently Checked out") %]
                                 <span id="myopac_sum_checked" class="view_link">
-                                    (0)
+                                    ([% ctx.user_stats.checkouts.total_out %])
                                 </span>
                             </td>
                             <td align="right" class="view_link">
-                                <a href="circs">View All</a>
+                                <a href="[% ctx.opac_root %]/myopac/circs">[% l("View All") %]</a>
                             </td>
                         </tr>
                     </table>
@@ -59,11 +64,11 @@
                             <td>
                                 Items Currently on Hold
                                 <span id="myopac_sum_holds" class="view_link">
-                                    (0)
+                                    ([% ctx.user_stats.holds.total %])
                                 </span>
                             </td>
                             <td align="right" class="view_link">
-                                <a href="holds">View All</a>
+                                <a href="[% ctx.opac_root %]/myopac/holds">View All</a>
                             </td>
                         </tr>
                     </table>
@@ -74,11 +79,11 @@
                             <td>
                                 Items ready for pickup
                                 <span id="myopac_sum_pickup" class="view_link">
-                                    (0)
+                                    ([% ctx.user_stats.holds.ready %])
                                 </span>
                             </td>
                             <td align="right" class="view_link">
-                                <a href="#">View All</a>
+                                <a href="[% ctx.opac_root %]/myopac/holds?available=1">View All</a>
                             </td>
                         </tr>
                     </table>
@@ -113,13 +118,10 @@
                     </tr>
                 </thead>
                 <tbody id='myopac_fines_summary_tbody'>
-                    <tr id='myopac_fines_summary_loading'>
-                        <td>[% l("Loading...") %]</td>
-                    </tr>
-                    <tr id='myopac_fines_summary_row' class='hide_me'>
-                        <td id='myopac_fines_summary_total' >[% l("\$") %]</td>
-                        <td id='myopac_fines_summary_paid' >[% l("\$") %]</td>
-                        <td id='myopac_fines_summary_balance' style='color:red;font-weight: bold;'>[% l("\$") %]</td>
+                    <tr id='myopac_fines_summary_row'>
+                        <td id='myopac_fines_summary_total'>[% money(ctx.fines.total_owed) %]</td>
+                        <td id='myopac_fines_summary_paid'>[% money(ctx.fines.total_paid) %]</td>
+                        <td id='myopac_fines_summary_balance' style='color:red;font-weight: bold;'>[% money(ctx.fines.balance_owed) %]</td>
                     </tr>
                 </tbody>
             </table>
@@ -130,16 +132,15 @@
             <span>will continue to accrue fines until the checked out item is returned.</span>
         </div>
         -->
-        <!-- Table for circulation transactions only -->
-            <div id='myopac_circ_trans_div' class='hide_me'>
+        [% IF ctx.fines.circulation.size > 0 %]
+            <div id='myopac_circ_trans_div'>
                 <br/><hr/><br/>
                 <table width='100%' class='data_grid data_grid_center'
                     id='myopac_circ_trans_table'>
                     <thead>
-                    <!--<tr><td colspan='10' style='padding: 6px'><b>[% l("Overdue Materials") %]</b></td></tr>-->
                         <tr>
                             <td colspan='10' style='padding: 6px'>
-                                <b>Fines</b>
+                                <strong>[% l("Fines") %]</strong>
                             </td>
                         </tr>
                         <tr>
@@ -149,42 +150,75 @@
                             <td>[% l("Due Date") %]</td>
                             <td>[% l("Date Returned") %]</td>
                             <td>[% l("Balance Owed") %]</td>
-                            <td align="center" nowrap="nowrap"
-                                style="white-space:nowrap;">
-                                <label for="pay_fines_box1">Pay Fines</label>
-                                <br />
+                            <td nowrap="nowrap" style="white-space:nowrap;">
                                 <input id="pay_fines_box1" checked="checked"
                                     type="checkbox"
-                                    title="Click to (un)select all fines" />
+                                    title="[% l('Click to (un)select all fines') %]" />
+                                <label for="pay_fines_box1">[% l('Pay Fines') %]</label>
                             </td>
                         </tr>
                     </thead>
                     <tbody id='myopac_circ_trans_tbody'>
+                        [% FOR f IN ctx.fines.circulation;
+                            attrs = {marc_xml => f.marc_xml};
+                            PROCESS get_marc_attrs args=attrs %]
                         <tr id='myopac_circ_trans_row'>
                             <td>
-                                <a class='classic_link' name='myopac_circ_trans_title'> </a>
-                            </td>
-                            <td name='myopac_circ_trans_author'> </td>
-                            <td name='myopac_circ_trans_start'> </td>
-                            <td name='myopac_circ_trans_due'> </td>
-                            <td name='myopac_circ_trans_finished'>
-                                <span style='color:red;'>[% l("(fines accruing)") %]</span>
+                                <a class='classic_link'
+                                    href="[% ctx.opac_root %]/record/[% f.xact.circulation.target_copy.call_number.record.id %]">[% attrs.title %]</a>
                             </td>
                             <td>
-                                <span style='color: red; font-weight: bold;'
-                                    name='myopac_circ_trans_balance'>[% l("\$") %]</span>
+                                <a class="classic_link"
+                                    href="[% ctx.opac_root %]/results?query=au:[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
                             </td>
-                            <td align="center">
+                            <td name='myopac_circ_trans_start'>
+                                [% date.format(
+                                    ctx.parse_datetime(
+                                        f.xact.circulation.xact_start
+                                    ), DATE_FORMAT
+                                ) %]
+                            </td>
+                            <td name='myopac_circ_trans_due'>
+                                [% date.format(
+                                    ctx.parse_datetime(
+                                        f.xact.circulation.due_date
+                                    ), DATE_FORMAT
+                                ) %]
+                            </td>
+                            <td name='myopac_circ_trans_finished'>
+                                [%  IF f.xact.circulation.checkin_time;
+                                        date.format(
+                                            ctx.parse_datetime(
+                                                f.xact.circulation.checkin_time
+                                            ), DATE_FORMAT
+                                        );
+                                    ELSE %]
+                                    <!-- XXX TODO fines aren't really accruing
+                                        if circ has hit maxfines. more clarity
+                                        here? -->
+                                    <span class="red">[% l('(fines accruing)') %]</span>
+                                [%  END %]
+                            </td>
+                            <td>
+                                <strong class="red">
+                                    [% money(f.xact.balance_owed) %]
+                                </strong>
+                            </td>
+                            <td>
                                 <input type="checkbox" checked="checked"
-                                    name="selector" title="pay this fine" />
+                                    name="selector"
+                                    title="[% l('Pay this fine') %]" />
                             </td>
                         </tr>
+                        [% END %]
                     </tbody>
                 </table>
             </div>
+        [% END %]
 
+        [% IF ctx.fines.grocery.size > 0 %]
             <!-- Table for all non-circulation transactions -->
-            <div id='myopac_trans_div' class='hide_me'>
+            <div id='myopac_trans_div'>
                 <br/>
                 <hr style="border-bottom:none;*height:0px;" color="#dcdbdb" />
                 <br/>
@@ -205,41 +239,49 @@
                             <td width='16%'>[% l("Billing Type") %]</td>
                             <td width='4%' align="center" nowrap="nowrap"
                                 style="white-space:nowrap;">
-                                <label for="pay_fines_box2">Pay Fines</label>
-                                <br />
                                 <input id="pay_fines_box2" checked="checked"
                                     type="checkbox"
-                                    title="Click to (un)select all fines" />
+                                    title="[% l('Click to (un)select all fines') %]" />
+                                <label for="pay_fines_box2">[% l("Pay Fines") %]</label>
                             </td>
                         </tr>
                     </thead>
                     <tbody id='myopac_trans_tbody'>
+                        [% FOR f IN ctx.fines.grocery %]
                         <tr id='myopac_trans_row'>
-                            <td name='myopac_trans_start'> </td>
-                            <td name='myopac_trans_last_payment'> </td>
-                            <td name='myopac_trans_init_amount'>
-                                [% l("\$") %]
+                            <td>[% date.format(
+                                    ctx.parse_datetime(f.xact.xact_start),
+                                    DATE_FORMAT
+                            ) %]</td>
+                            <td>
+                                [%  IF f.xact.last_payment_ts;
+                                        date.format(
+                                            ctx.parse_datetime(
+                                                f.xact.last_payment_ts
+                                            ), DATE_FORMAT
+                                        );
+                                    END %]
                             </td>
-                            <td name='myopac_trans_total_paid'>
-                                [% l("\$") %]
+                            <td>[% money(f.xact.total_owed) %]</td>
+                            <td>[% money(f.xact.total_paid) %]</td>
+                            <td class="red">
+                                <strong>
+                                    [% money(f.xact.balance_owed) %]
+                                </strong>
                             </td>
-                            <td style='color:red; font-weight: bold;'>
-                                <span name='myopac_trans_balance_recur'
-                                    class='hide_me'> * </span>
-                                <span name='myopac_trans_balance'>
-                                    [% l("\$") %]
-                                </span>
-                            </td>
-                            <td name='myopac_trans_bill_type'></td>
-                            <td align="center">
+                            <td>[% f.xact.last_billing_type %]</td>
+                            <td>
                                 <input type="checkbox" name='selector'
-                                    title='pay this fine' checked="checked" />
+                                    title='[% l("Pay this fine") %]'
+                                    checked="checked" />
                             </td>
                         </tr>
+                        [% END %]
                     </tbody>
                 </table>
             </div>
-            <a href="#"><img alt="Pay Fines"
+            [% END %]
+            <a href="#"><img alt="[% l('Pay Fines') %]"
                 onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
                 src="[% ctx.media_prefix %]/images/pay-fines-btn.png"
                 style="position:relative;top:5px;" /></a>

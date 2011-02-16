@@ -1,16 +1,14 @@
-[%  WRAPPER "default/opac/parts/base.tt2";
+[%  PROCESS "default/opac/parts/header.tt2";
+    WRAPPER "default/opac/parts/base.tt2";
     INCLUDE "default/opac/parts/topnav.tt2";
-    ctx.page_title = "Advanced Search" %]
+    ctx.page_title = l("Advanced Search") %]
     <div id="search-wrapper">
         [% INCLUDE "default/opac/parts/utils.tt2" %]
         <div id="adv_search_parent">
             <div id="adv_search_tabs">
-                <a href="#" alt="Advanced Search" id="adv_search"
-                    rel="adv_global_search"></a>
-                <a href="#" alt="Numeric Search" id="num_search"
-                    rel="adv_quick_search_sidebar"></a>
-                <a href="#" alt="Expert Search" id="expert_search"
-                    rel="adv_marc_search_sidebar"></a>
+                <a href="#" alt="[% l('Advanced Search') %]" id="adv_search"></a>
+                <a href="#" alt="[% l('Numeric Search') %]" id="num_search"></a>
+                <a href="#" alt="[% l('Expert Search') %]" id="expert_search"></a>
             </div>
         </div>
     </div>

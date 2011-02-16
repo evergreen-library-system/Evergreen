@@ -29,29 +29,29 @@ treechildren::-moz-tree-cell-text(selected,focus) {
 * { font-size-adjust: .5; }
 */
 
-.ALL_FONTS_SMALLER * { font-size-adjust: .3 !important;}
-.ALL_FONTS_LARGER * { font-size-adjust: 1.1 !important; }
-.ALL_FONTS_XX_SMALL * { font-size: xx-small !important; }
-.ALL_FONTS_X_SMALL * { font-size: x-small !important; }
-.ALL_FONTS_SMALL * { font-size: small !important; }
-.ALL_FONTS_MEDIUM * { font-size: medium !important; }
-.ALL_FONTS_LARGE * { font-size: large !important; }
-.ALL_FONTS_X_LARGE * { font-size: x-large !important; }
-.ALL_FONTS_XX_LARGE * { font-size: xx-large !important; }
-.ALL_FONTS_5PT * { font-size: 5pt !important; }
-.ALL_FONTS_6PT * { font-size: 6pt !important; }
-.ALL_FONTS_7PT * { font-size: 7pt !important; }
-.ALL_FONTS_8PT * { font-size: 8pt !important; }
-.ALL_FONTS_9PT * { font-size: 9pt !important; }
-.ALL_FONTS_10PT * { font-size: 10pt !important; }
-.ALL_FONTS_11PT * { font-size: 11pt !important; }
-.ALL_FONTS_12PT * { font-size: 12pt !important; }
-.ALL_FONTS_13PT * { font-size: 13pt !important; }
-.ALL_FONTS_14PT * { font-size: 14pt !important; }
-.ALL_FONTS_15PT * { font-size: 15pt !important; }
-.ALL_FONTS_16PT * { font-size: 16pt !important; }
-.ALL_FONTS_17PT * { font-size: 17pt !important; }
-.ALL_FONTS_18PT * { font-size: 18pt !important; }
+.ALL_FONTS_SMALLER *|* { font-size-adjust: .3 !important;}
+.ALL_FONTS_LARGER *|* { font-size-adjust: 1.1 !important; }
+.ALL_FONTS_XX_SMALL *|* { font-size: xx-small !important; }
+.ALL_FONTS_X_SMALL *|* { font-size: x-small !important; }
+.ALL_FONTS_SMALL *|* { font-size: small !important; }
+.ALL_FONTS_MEDIUM *|* { font-size: medium !important; }
+.ALL_FONTS_LARGE *|* { font-size: large !important; }
+.ALL_FONTS_X_LARGE *|* { font-size: x-large !important; }
+.ALL_FONTS_XX_LARGE *|* { font-size: xx-large !important; }
+.ALL_FONTS_5PT *|* { font-size: 5pt !important; }
+.ALL_FONTS_6PT *|* { font-size: 6pt !important; }
+.ALL_FONTS_7PT *|* { font-size: 7pt !important; }
+.ALL_FONTS_8PT *|* { font-size: 8pt !important; }
+.ALL_FONTS_9PT *|* { font-size: 9pt !important; }
+.ALL_FONTS_10PT *|* { font-size: 10pt !important; }
+.ALL_FONTS_11PT *|* { font-size: 11pt !important; }
+.ALL_FONTS_12PT *|* { font-size: 12pt !important; }
+.ALL_FONTS_13PT *|* { font-size: 13pt !important; }
+.ALL_FONTS_14PT *|* { font-size: 14pt !important; }
+.ALL_FONTS_15PT *|* { font-size: 15pt !important; }
+.ALL_FONTS_16PT *|* { font-size: 16pt !important; }
+.ALL_FONTS_17PT *|* { font-size: 17pt !important; }
+.ALL_FONTS_18PT *|* { font-size: 18pt !important; }
 
 .copyable * { -moz-user-select: text; -moz-user-focus: normal; }
 

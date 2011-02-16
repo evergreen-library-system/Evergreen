@@ -50,7 +50,8 @@ sub handler {
     my $tt = Template->new({
         OUTPUT => ($as_xml) ?  sub { parse_as_xml($r, $ctx, @_); } : $r,
         INCLUDE_PATH => $ctx->{template_paths},
-        DEBUG => $ctx->{debug_template}
+        DEBUG => $ctx->{debug_template},
+        PLUGINS => {EGI18N => 'OpenILS::WWW::EGWeb::I18NFilter'}
     });
 
     unless($tt->process($template, {ctx => $ctx, l => set_text_handler($ctx, $r)})) {
@@ -75,7 +76,8 @@ sub set_text_handler {
         $lh_cache{$locale} = $lh_cache{'en_US'};
     }
 
-    return sub { return $lh_cache{$locale}->maketext(@_); };
+    return $OpenILS::WWW::EGWeb::I18NFilter::maketext = 
+        sub { return $lh_cache{$locale}->maketext(@_); };
 }
 
 
@@ -245,6 +247,8 @@ sub check_web_config {
 sub load_locale_handlers {
     my $ctx = shift;
     my $locales = $ctx->{locales};
+
+    $locales->{en_US} = {} unless exists $locales->{en_US};
 
     for my $lang (keys %$locales) {
         my $messages = $locales->{$lang};

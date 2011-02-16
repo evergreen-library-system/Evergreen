@@ -1,0 +1,44 @@
+[%- USE money = format(l('$%.2f'));
+    USE date;
+    USE CGI; 
+    USE EGI18N;
+    SET DATE_FORMAT = l('%m/%d/%Y');
+
+    item_types = [  # XXX KCLS-specific
+        {'code' => 'a', 'name' => 'Book', 'image' => 'media_book.jpg'},
+        {'code' => 'i', 'name' => 'Book on cassette', 'image' => 'media_bookoncasset.jpg'},
+        {'code' => 'n', 'name' => 'Book on CD', 'image' => 'media_bookoncd.jpg'},
+        {'code' => 'x', 'name' => 'Download music', 'image' => 'media_downloadmusic.jpg'},
+        {'code' => 'y', 'name' => 'Download video', 'image' => 'media_downloadvideo.jpg'},
+        {'code' => 'h', 'name' => 'DVD', 'image' => 'media_dvd.jpg'},
+        {'code' => 'w', 'name' => 'eBook - Audio', 'image' => 'media_eaudio.jpg'},
+        {'code' => 'v', 'name' => 'eBook - Text', 'image' => 'media_ebooktext.jpg'},
+        {'code' => 'e', 'name' => 'Equipment', 'image' => 'media_equipment.jpg'},
+        {'code' => 'f', 'name' => 'Films', 'image' => 'media_films.jpg'},
+        {'code' => 'o', 'name' => 'Kit', 'image' => 'media_kit.jpg'},
+        {'code' => 'q', 'name' => 'Large print', 'image' => 'media_largeprint.jpg'},
+        {'code' => 'b', 'name' => 'Magazine', 'image' => 'media_magazines.jpg'},
+        {'code' => 'd', 'name' => 'Microform', 'image' => 'media_microform.jpg'},
+        {'code' => 'k', 'name' => 'Music cassette', 'image' => 'media_musiccassette.jpg'},
+        {'code' => 'j', 'name' => 'Music CD', 'image' => 'media_musiccd.jpg'},
+        {'code' => 'l', 'name' => 'Music LP', 'image' => 'media_musicrecord.jpg'},
+        {'code' => 'p', 'name' => 'Newspaper', 'image' => 'media_newspaper.jpg'},
+        {'code' => 't', 'name' => 'Online', 'image' => 'media_online.jpg'},
+        {'code' => 'u', 'name' => 'Player', 'image' => 'media_eaudio.jpg'},
+        {'code' => 'c', 'name' => 'Printed music / scores', 'image' => 'media_printedmusic.jpg'},
+        {'code' => '2', 'name' => 'Read along with cassette', 'image' => 'media_cassettewithbook.jpg'},
+        {'code' => '5', 'name' => 'Read along with CD', 'image' => 'media_cdwithbook.jpg'},
+        {'code' => 'm', 'name' => 'Software', 'image' => 'media_software.jpg'},
+        {'code' => 'g', 'name' => 'Video', 'image' => ''},
+        {'code' => 'r', 'name' => '3-D Object', 'image' => 'media_3dobject.jpg'},
+        {'code' => 'z', 'name' => 'Map', 'image' => 'media_map.jpg'},
+        {'code' => 's', 'name' => 'Slide set', 'image' => 'media_slide.jpg'}
+    ];
+
+    icon_by_mattype = {};
+    FOR o IN item_types;
+        code = o.code;
+        icon_by_mattype.$code = o.image;
+    END;
+
+-%]

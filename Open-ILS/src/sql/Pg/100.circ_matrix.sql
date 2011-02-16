@@ -79,6 +79,7 @@ INSERT INTO config.videorecording_format_map VALUES ('z','Other');
 CREATE TABLE config.circ_matrix_matchpoint (
     id                   SERIAL    PRIMARY KEY,
     active               BOOL    NOT NULL DEFAULT TRUE,
+    -- Match Fields
     org_unit             INT        NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
     grp                  INT     NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
     circ_modifier        TEXT    REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
@@ -93,6 +94,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
     is_renewal           BOOL,
     usr_age_lower_bound  INTERVAL,
     usr_age_upper_bound  INTERVAL,
+    -- "Result" Fields
     circulate            BOOL    NOT NULL DEFAULT TRUE,    -- Hard "can't circ" flag requiring an override
     duration_rule        INT     NOT NULL REFERENCES config.rule_circ_duration (id) DEFERRABLE INITIALLY DEFERRED,
     recurring_fine_rule  INT     NOT NULL REFERENCES config.rule_recurring_fine (id) DEFERRABLE INITIALLY DEFERRED,
@@ -100,14 +102,11 @@ CREATE TABLE config.circ_matrix_matchpoint (
     hard_due_date        INT     REFERENCES config.hard_due_date (id) DEFERRABLE INITIALLY DEFERRED,
     script_test          TEXT,                           -- javascript source 
     total_copy_hold_ratio     FLOAT,
-    available_copy_hold_ratio FLOAT,
-    CONSTRAINT ep_once_per_grp_loc_mod_marc UNIQUE (
-        grp, org_unit, circ_modifier, marc_type, marc_form, marc_vr_format, ref_flag,
-        juvenile_flag, usr_age_lower_bound, usr_age_upper_bound, is_renewal, copy_circ_lib,
-        copy_owning_lib
-    )
+    available_copy_hold_ratio FLOAT
 );
 
+-- Nulls don't count for a constraint match, so we have to coalesce them into something that does.
+CREATE UNIQUE INDEX ccmm_once_per_paramset ON config.circ_matrix_matchpoint (org_unit, grp, COALESCE(circ_modifier, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_vr_format, ''), COALESCE(copy_circ_lib::TEXT, ''), COALESCE(copy_owning_lib::TEXT, ''), COALESCE(user_home_ou::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(is_renewal::TEXT, ''), COALESCE(usr_age_lower_bound::TEXT, ''), COALESCE(usr_age_upper_bound::TEXT, '')) WHERE active;
 
 -- Tests for max items out by circ_modifier
 CREATE TABLE config.circ_matrix_circ_mod_test (
@@ -132,7 +131,7 @@ DECLARE
     matchpoint      config.circ_matrix_matchpoint%ROWTYPE;
     weights         config.circ_matrix_weights%ROWTYPE;
     user_age        INTERVAL;
-    denominator     INT;
+    denominator     NUMERIC(6,2);
 BEGIN
     SELECT INTO user_object     * FROM actor.usr                WHERE id = match_user;
     SELECT INTO item_object     * FROM asset.copy               WHERE id = match_item;
@@ -155,20 +154,20 @@ BEGIN
 
     -- No weights? Bad admin! Defaults to handle that anyway.
     IF weights.id IS NULL THEN
-        weights.grp                 := 11;
-        weights.org_unit            := 10;
-        weights.circ_modifier       := 5;
-        weights.marc_type           := 4;
-        weights.marc_form           := 3;
-        weights.marc_vr_format      := 2;
-        weights.copy_circ_lib       := 8;
-        weights.copy_owning_lib     := 8;
-        weights.user_home_ou        := 8;
-        weights.ref_flag            := 1;
-        weights.juvenile_flag       := 6;
-        weights.is_renewal          := 7;
-        weights.usr_age_lower_bound := 0;
-        weights.usr_age_upper_bound := 0;
+        weights.grp                 := 11.0;
+        weights.org_unit            := 10.0;
+        weights.circ_modifier       := 5.0;
+        weights.marc_type           := 4.0;
+        weights.marc_form           := 3.0;
+        weights.marc_vr_format      := 2.0;
+        weights.copy_circ_lib       := 8.0;
+        weights.copy_owning_lib     := 8.0;
+        weights.user_home_ou        := 8.0;
+        weights.ref_flag            := 1.0;
+        weights.juvenile_flag       := 6.0;
+        weights.is_renewal          := 7.0;
+        weights.usr_age_lower_bound := 0.0;
+        weights.usr_age_upper_bound := 0.0;
     END IF;
 
     -- Determine the max (expected) depth (+1) of the org tree and max depth of the permisson tree
@@ -212,24 +211,24 @@ BEGIN
             AND (m.ref_flag                 IS NULL OR m.ref_flag = item_object.ref)
       ORDER BY
             -- Permission Groups
-            CASE WHEN upgad.distance        IS NOT NULL THEN 2^(2*weights.grp - (upgad.distance/denominator)) ELSE 0 END +
+            CASE WHEN upgad.distance        IS NOT NULL THEN 2^(2*weights.grp - (upgad.distance/denominator)) ELSE 0.0 END +
             -- Org Units
-            CASE WHEN ctoua.distance        IS NOT NULL THEN 2^(2*weights.org_unit - (ctoua.distance/denominator)) ELSE 0 END +
-            CASE WHEN cnoua.distance        IS NOT NULL THEN 2^(2*weights.copy_owning_lib - (cnoua.distance/denominator)) ELSE 0 END +
-            CASE WHEN iooua.distance        IS NOT NULL THEN 2^(2*weights.copy_circ_lib - (iooua.distance/denominator)) ELSE 0 END +
-            CASE WHEN uhoua.distance        IS NOT NULL THEN 2^(2*weights.user_home_ou - (uhoua.distance/denominator)) ELSE 0 END +
+            CASE WHEN ctoua.distance        IS NOT NULL THEN 2^(2*weights.org_unit - (ctoua.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN cnoua.distance        IS NOT NULL THEN 2^(2*weights.copy_owning_lib - (cnoua.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN iooua.distance        IS NOT NULL THEN 2^(2*weights.copy_circ_lib - (iooua.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN uhoua.distance        IS NOT NULL THEN 2^(2*weights.user_home_ou - (uhoua.distance/denominator)) ELSE 0.0 END +
             -- Circ Type                    -- Note: 4^x is equiv to 2^(2*x)
-            CASE WHEN m.is_renewal          IS NOT NULL THEN 4^weights.is_renewal ELSE 0 END +
+            CASE WHEN m.is_renewal          IS NOT NULL THEN 4^weights.is_renewal ELSE 0.0 END +
             -- Static User Checks
-            CASE WHEN m.juvenile_flag       IS NOT NULL THEN 4^weights.juvenile_flag ELSE 0 END +
-            CASE WHEN m.usr_age_lower_bound IS NOT NULL THEN 4^weights.usr_age_lower_bound ELSE 0 END +
-            CASE WHEN m.usr_age_upper_bound IS NOT NULL THEN 4^weights.usr_age_upper_bound ELSE 0 END +
+            CASE WHEN m.juvenile_flag       IS NOT NULL THEN 4^weights.juvenile_flag ELSE 0.0 END +
+            CASE WHEN m.usr_age_lower_bound IS NOT NULL THEN 4^weights.usr_age_lower_bound ELSE 0.0 END +
+            CASE WHEN m.usr_age_upper_bound IS NOT NULL THEN 4^weights.usr_age_upper_bound ELSE 0.0 END +
             -- Static Item Checks
-            CASE WHEN m.circ_modifier       IS NOT NULL THEN 4^weights.circ_modifier ELSE 0 END +
-            CASE WHEN m.marc_type           IS NOT NULL THEN 4^weights.marc_type ELSE 0 END +
-            CASE WHEN m.marc_form           IS NOT NULL THEN 4^weights.marc_form ELSE 0 END +
-            CASE WHEN m.marc_vr_format      IS NOT NULL THEN 4^weights.marc_vr_format ELSE 0 END +
-            CASE WHEN m.ref_flag            IS NOT NULL THEN 4^weights.ref_flag ELSE 0 END DESC,
+            CASE WHEN m.circ_modifier       IS NOT NULL THEN 4^weights.circ_modifier ELSE 0.0 END +
+            CASE WHEN m.marc_type           IS NOT NULL THEN 4^weights.marc_type ELSE 0.0 END +
+            CASE WHEN m.marc_form           IS NOT NULL THEN 4^weights.marc_form ELSE 0.0 END +
+            CASE WHEN m.marc_vr_format      IS NOT NULL THEN 4^weights.marc_vr_format ELSE 0.0 END +
+            CASE WHEN m.ref_flag            IS NOT NULL THEN 4^weights.ref_flag ELSE 0.0 END DESC,
             -- Final sort on id, so that if two rules have the same sorting in the previous sort they have a defined order
             -- This prevents "we changed the table order by updating a rule, and we started getting different results"
             m.id;

@@ -1,6 +1,7 @@
-[%  WRAPPER "default/opac/parts/base.tt2";
+[%  PROCESS "default/opac/parts/header.tt2";
+    WRAPPER "default/opac/parts/base.tt2";
     INCLUDE "default/opac/parts/topnav.tt2";
-    ctx.page_title = "Place Hold" %]
+    ctx.page_title = l("Place Hold") %]
     <div id="search-wrapper">
         [% INCLUDE "default/opac/parts/utils.tt2" %]
         [% INCLUDE "default/opac/parts/searchbar.tt2" %]

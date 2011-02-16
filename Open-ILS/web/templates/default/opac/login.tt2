@@ -1,6 +1,7 @@
-[%  WRAPPER "default/opac/parts/base.tt2";
+[%  PROCESS "default/opac/parts/header.tt2";
+    WRAPPER "default/opac/parts/base.tt2";
     INCLUDE "default/opac/parts/topnav.tt2";
-    ctx.page_title = "Account Login" %]
+    ctx.page_title = l("Account Login") %]
     <div id="search-wrapper">
         [% INCLUDE "default/opac/parts/utils.tt2" %]
         [% INCLUDE "default/opac/parts/searchbar.tt2" %]
@@ -9,6 +10,17 @@
         <div id="main-content">
             [% INCLUDE "default/opac/parts/login/form.tt2" %]
             <div class="clear-both very-big-height"></div>	
+            <script type="text/javascript">
+                var _onload = window.onload;
+                window.onload = function() {
+                    try {
+                        document.getElementById("username_field").focus();
+                        if (_onload) _onload();
+                    } catch (E) {
+                        void(0);
+                    }
+                };
+            </script>
         </div>
     </div>
 [% END %]

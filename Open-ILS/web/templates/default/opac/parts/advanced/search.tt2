@@ -28,7 +28,14 @@
     <tr>
         <td align='center'>
             [% l("Search Library") %]<br /><br />
-            [% INCLUDE "default/opac/parts/libselect.tt2" %]
+            <span id='depth_selector_span'>
+                [% PROCESS "default/opac/parts/org_selector.tt2";
+                    PROCESS build_org_selector name='loc' value=loc %]
+            </span>
+            <span id='lib_selector_span'>
+                <a id='lib_selector_link' class='classic_link'
+                    href='#'>[% l("Choose a library to search") %]</a>
+            </span>
             <br /><br />
             <span>[% l("Limit to Available") %]</span>
             <input type='checkbox' id='opac.result.limit2avail'/>
@@ -50,20 +57,19 @@
                             <span>[% l("Item Form") %]</span>
                         </td>
                         <td align='left' class="hide_me">
-                            <select multiple='multiple' size='3'
-                                id='adv_global_item_form'>
+                            <select multiple='multiple' size='3' id='adv_global_item_form'>
                             </select>    
                         </td>
                         <td align='right'>
                             <span>[% l("Item Type") %]</span><br />
                         </td>
                         <td align='left'>
-                            <select multiple='multiple' size='3'
-                                id='adv_global_item_type' class='hide_me'>
+                            <select multiple='multiple' size='3' id='adv_global_item_type' class='hide_me'>
                             </select>    
-                            <select multiple='multiple' size='3'
-                                id='adv_global_item_type_basic'>
+                            <select multiple='multiple' size='3' id='adv_global_item_type_basic'>
                                 <option value=''>[% l("All Formats") %]</option>
+
+                                <!-- These will be replaced w/ SVF.  Leave them hard-coded for now -->
                                 <option value='a'>Book</option>
                                 <option value='i'>Book on cassette</option>
                                 <option value='n'>Book on CD</option>
@@ -98,26 +104,14 @@
                         </td>
                         <td align='right' class="hide_me">
                             <span>[% l("Literary Form") %]</span>
-                            <a id='adv_global_lit_form_link_adv'
-                                class='classic_link adv_adv_link'
-                                href='#'>[% l("Advanced") %]</a>
-
-                            <a id='adv_global_lit_form_link_basic'
-                                class='hide_me classic_link adv_adv_link'
-                                href='#'>[% l("Basic") %]</a>
+                            <a class='classic_link adv_adv_link' href='#'>[% l("Advanced") %]</a>
+                            <a class='hide_me classic_link adv_adv_link' href='#'>[% l("Basic") %]</a>
                         </td>
                         <td align='left' class="hide_me">
-                            <select multiple='multiple' size='3'
-                                id='adv_global_lit_form' class='hide_me'>
-                            </select>    
-                            <select multiple='multiple' size='3'
-                                id='adv_global_lit_form_basic'>
-                                <option value='0 '>
-                                    [% l("Non Fiction") %]
-                                </option>
-                                <option value='1'>
-                                    [% l("Fiction") %]
-                                </option>
+                            <select multiple='multiple' size='3' id='adv_global_lit_form' class='hide_me'> </select>    
+                            <select multiple='multiple' size='3' id='adv_global_lit_form_basic'> 
+                                <option value='0 '>[% l("Non Fiction") %]</option>
+                                <option value='1'>[% l("Fiction") %]</option>
                             </select>    
                         </td>
                         <td align='right'>
@@ -140,11 +134,9 @@
                                 href='#'>[% l("Basic") %]</a>
                         </td>
                         <td align='left' class="hide_me">
-                            <select multiple='multiple' size='3'
-                                id='adv_global_audience' class='hide_me'>
+                            <select multiple='multiple' size='3' id='adv_global_audience' class='hide_me'>
                             </select>
-                            <select multiple='multiple' size='3'
-                                id='adv_global_audience_basic'>
+                            <select multiple='multiple' size='3' id='adv_global_audience_basic'>
                                 <option value='e '>[% l("Adult") %]</option>
                                 <option value='abcdj'>[% l("Juvenile") %]</option>
                                 <option value='fg '>[% l("General") %]</option>
@@ -155,8 +147,7 @@
                             <span>[% l("Bib Level") %]</span>
                         </td>
                         <td align='left' class="hide_me">
-                            <select multiple='multiple' size='3'
-                                id='adv_global_bib_level'>
+                            <select multiple='multiple' size='3' id='adv_global_bib_level'>
                             </select>    
                         </td>
                     </tr>
@@ -166,27 +157,15 @@
                         </td>
                         <td align='left'>
                             <select id='adv_global_pub_date_type'>
-                                    <option value='equals' selected='selected'>
-                                        [% l("Is") %]
-                                    </option>
-                                    <option value='before'>
-                                        [% l("Before") %]
-                                    </option>
-                                    <option value='after'>
-                                        [% l("After") %]
-                                    </option>
-                                    <option value='between'>
-                                        [% l("Between") %]
-                                    </option>
+                                    <option value='equals' selected='selected'>[% l("Is") %] </option>
+                                    <option value='before'>[% l("Before") %]</option>
+                                    <option value='after'>[% l("After") %]</option>
+                                    <option value='between'>[% l("Between") %]</option>
                             </select>    
                             <div style='margin-top:5px;'>
-                                <input id='adv_global_pub_date_1' type='text'
-                                    size='4' maxlength='4'/>
-                                <span id='adv_global_pub_date_2_span'
-                                    class='hide_me'>
-                                    [% l("and") %] <input
-                                        id='adv_global_pub_date_2' type='text'
-                                        size='4' maxlength='4'/>
+                                <input id='adv_global_pub_date_1' type='text' size='4' maxlength='4'/>
+                                <span id='adv_global_pub_date_2_span' class='hide_me'>
+                                    [% l("and") %] <input id='adv_global_pub_date_2' type='text' size='4' maxlength='4'/>
                                 </span>
                             </div>
                         </td>
@@ -256,7 +235,7 @@
     <tr class='border_4_2'>
         <td align="left" colspan='2'>
             <!-- XXX TODO make a real form, and make this a real submitter -->
-        <img src="[% ctx.media_prefix %]/images/search_btn.gif" alt="Search"  style="cursor:pointer;" />
+        <img src="[% ctx.media_prefix %]/images/search_btn.gif" alt="[% l('Search') %]"  style="cursor:pointer;" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <!-- XXX TODO make a real form, and make this a real resetter -->
         <a href="javascript:;" style="position: relative; top: -9px;">Reset Form</a>
@@ -289,7 +268,7 @@
             <!-- XXX TODO make a real form, and make a real submitter (quick
             submit, FKA advGenericSearch() -->
             <img src="[% ctx.media_prefix %]/images/search_btn.gif"
-                alt="Search" id="adv_quick_submit" style="cursor:pointer;" />
+                alt="[% l('Search') %]" id="adv_quick_submit" style="cursor:pointer;" />
         </div>
     </div>
 </div>
@@ -313,20 +292,17 @@
             </tr>
             <tr name='crow' class='hide_me'>
                 <td colspan='4' align='center'>
-                    <a href='javascript:void(0);'
-                        class='classic_link'>[% l("close") %]</a>
+                    <a href='javascript:void(0);' class='classic_link'>[% l("close") %]</a>
                 </td>
             </tr>
         </tbody>
     </table>
     <div id='adv_marc_submit' class='adv_quick_search_submit'>
         <a style='margin-right: 4px; position:relative;top:-10px;'
-            class='classic_link'
-            href='javascript:advAddMARC();'>[% l("Add Row") %]</a>
+            class='classic_link' href='javascript:advAddMARC();'>[% l("Add Row") %]</a>
         <!-- XXX TODO make a real form, and make a real submitter (FKA
         advMARCRun()) -->
-        <img alt="Search" src="[% ctx.media_prefix %]/images/search_btn.gif"
-            style="cursor:pointer;" />
+        <img alt="Search" src="[% ctx.media_prefix %]/images/search_btn.gif" style="cursor:pointer;" />
     </div>
 </div>
 <!-- ****************** end: advanced_global.xml ***************************** -->

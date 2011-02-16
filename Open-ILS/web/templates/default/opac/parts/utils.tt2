@@ -9,7 +9,7 @@
                         <a href="javascript:history.go(-1)"
                             id="util_back_btn"><img alt="Back"
                             src="[% ctx.media_prefix %]/images/tool_back.png" /></a>
-                        <a href="[% skin_root %]home"
+                        <a href="[% ctx.opac_root %]/home"
                             id="util_home_btn"><img alt="Homepage"
                             src="[% ctx.media_prefix %]/images/tool_home.png" /></a>
                         <a href="javascript:window.print();"

@@ -6,9 +6,11 @@
     <tbody id="rdetail_details_tbody">
         <tr>
             <td width="90" valign="top" id="rdetail_image_cell">
-                <a id='rdetail_img_link' href='${ident.large}'><img
-                    alt="Image of item" style='border: none;' id='rdetail_image'
-                    src='${ident.small}' /></a>
+                [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
+                <a id='rdetail_img_link' href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident %]'><img
+                    alt="Image of item" id='rdetail_image'
+                    src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident %]' /></a>
+                [% END %]
                 <br />
                 <div class='jacket_attrib hide_me' id='rdetail.jacket_attrib_div'>
                     <div>[% l("Image provided by") %]</div>
@@ -23,16 +25,21 @@
                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tr>
                         <td valign="top">
-                            <span class="rdetail_item" id='rdetail_title'></span><br />
-                            <span style="color:#545454;">[% l("Author") %]: </span>
-                            <em><a title='[% l("Perform an author search") %]' id='rdetail_author'></a></em>
+                            <span id='rdetail_title'>[% attrs.title %]</span><br />
+                            [% IF attrs.author %]
+                            <span style="color:#545454;">[% l("Author") %]:</span>
+                            <em><a title='[% l("Perform an author search") %]'
+                                    id='rdetail_author'
+                                    href="[% ctx.opac_root %]/results?query=author%3a[% attrs.author | replace('[,\.:;]', '') | uri %]&loc=[% loc %]">[% attrs.author %]</a>
+                            </em>
+                            [% END %]
                         </td>
                         <td align="right" valign="top" nowrap="nowrap" style="white-space:nowrap;">
                             <div style="width:230px;text-align:left;margin-top:3px;">
                                 <div style="float:right;">
                                     <div style="border-bottom:1px dotted #ccc;padding-top:10px;"
                                         class="rdetail_aux_utils">
-                                        <a href="place_hold" id="rdetail_place_hold"><img
+                                        <a href="[% ctx.opac_root %]/place_hold?hold_target=[% record.id %]&hold_type=T" id="rdetail_place_hold"><img
                                             src="[% ctx.media_prefix %]/images/green_check.png" alt="place hold" />
                                             <span style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
                                     </div>
@@ -59,44 +66,48 @@
                     <table border="0" cellpadding="0" width="100%">
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_isbn_lbl" class="">[% l("ISBN") %]</strong>
+                                [% IF attrs.isbn %]<strong id="rdetail_isbn_lbl">[% l("ISBN") %]</strong>[% END %]
                             </td>
-                            <td valign="top" id='rdetail_isbn'></td>
+                            <td valign="top" id='rdetail_isbn'>[% attrs.isbn %]</td>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_phys_lbl" class="">[% l("Physical Description") %]</strong>
+                                [% IF attrs.phys_desc %]<strong id="rdetail_phys_lbl">[% l("Physical Description") %]</strong>[% END %]
                             </td>
-                            <td valign="top" id='rdetail_physical_desc'></td>
+                            <td valign="top" id='rdetail_physical_desc'>[% attrs.phys_desc %]</td>
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_ed_lbl" class="">[% l("Edition") %]</strong>
+                                <strong id="rdetail_ed_lbl">[% IF attrs.edition; l("Edition"); END %]</strong>
                             </td>
-                            <td valign="top" id='rdetail_edition'></td>
+                            <td valign="top" id='rdetail_edition'>[% attrs.edition %]</td>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_form_lbl" class="">[% l("Format") %]</strong>
+                                <strong id="rdetail_form_lbl">[% IF attrs.format; l("Format"); END %]</strong>
                             </td>
                             <td valign="top">
-                                <img alt="Format" id='' class='tor_pic hide_me' />
-                                <span id='rdetail_tor'></span>
+                                [% IF attrs.format %]
+                                <img alt="Format" class='tor_pic'
+                                    title="[% attrs.format %]"
+                                    src="[% ctx.media_prefix _ '/images/' _ attrs.format_icon %]" />
+                                [%  END %]
                             </td>
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_pubdate_lbl" class="">[% l("Publication Date") %]</strong>
+                                <strong id="rdetail_pubdate_lbl">[% IF attrs.pubdate; l("Publication Date"); END %]</strong>
                             </td>
-                            <td valign="top" id='rdetail_pubdate'></td>
+                            <td valign="top" id='rdetail_pubdate'>[% attrs.pubdate %]</td>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_sum_lbl" class="">Summary</strong>
+                                <strong id="rdetail_sum_lbl">Summary</strong>
                             </td>
                             <td valign="top" id='rdetail_abstract'></td>
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_pub_lbl" class="">[% l("Publisher") %]</strong>
+                                <strong id="rdetail_pub_lbl">[% IF attrs.publisher; l("Publisher"); END %]</strong>
                             </td>
-                            <td valign="top" id='rdetail_publisher'></td>
+                            <td valign="top" id='rdetail_publisher'>[% attrs.publisher %]</td>
                             <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_sub_lbl" class="">[% l("Subjects") %]</strong>
+                                [%# XXX TODO see kcls' drawMarcSubjects() in rdetail.js %]
+                                <strong id="rdetail_sub_lbl">[% l("Subjects") %]</strong>
                             </td>
                             <td valign="top"></td>
                         </tr>
@@ -167,7 +178,7 @@
                                 </div>
                             </td>
                             <td width="1" valign="top" align="right" style="white-space:nowrap;">
-                                <a href="place_hold" id=''><img alt="Place Hold"
+                                <a href="[% ctx.opac_root %]/place_hold?hold_target=[% record.id %]&hold_type=T"><img alt="Place Hold"
                                     src="[% ctx.media_prefix %]/images/place_hold.gif" /></a>
                                 <a href="#" id="rd_reviews_and_more" target="_blank"><img
                                     alt="Reviews and More" src="[% ctx.media_prefix %]/images/reviews.gif" /></a>

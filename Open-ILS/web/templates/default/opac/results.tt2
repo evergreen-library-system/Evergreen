@@ -1,9 +1,9 @@
-[%  USE CGI;
+[%  PROCESS "default/opac/parts/header.tt2";
     USE POSIX;
 
     WRAPPER "default/opac/parts/base.tt2";
     INCLUDE "default/opac/parts/topnav.tt2";
-    ctx.page_title = "Search Results";
+    ctx.page_title = l("Search Results");
 
     page = CGI.param('page') || 0;
     query = CGI.param('query');
@@ -18,13 +18,13 @@
         <div id="results_header_bar">
             <div id="results_header_inner">
                 <div class="results_header_btns">
-                    <a href="index.xml"><img alt="Another Search"
+                    <a href="[% ctx.opac_root %]/home"><img alt="[% l('Another Search') %]"
                         src="[% ctx.media_prefix %]/images/another_search.png"
                         onmouseover="this.src='[% ctx.media_prefix %]/images/another_search_hover.png';"
                         onmouseout="this.src='[% ctx.media_prefix %]/images/another_search.png';" /></a>
                 </div>
                 <div class="results_header_btns">
-                    <a href="advanced"><img alt="Advanced Search"
+                    <a href="[% ctx.opac_root %]/advanced"><img alt="[% l('Advanced Search') %]"
                         src="[% ctx.media_prefix %]/images/adv_search.png"
                         onmouseover="this.src='[% ctx.media_prefix %]/images/adv_search_hover.png';"
                         onmouseout="this.src='[% ctx.media_prefix %]/images/adv_search.png';" /></a>
@@ -38,19 +38,17 @@
                 </div>
                 <div class="results_header_div"></div>
                 <div class="results_header_lbl">Sort by</div>
-        <!--#if expr="$OILS_PAGE='rresult.xml' || $OILS_PAGE='mresult.xml'"-->
-        <!--#include virtual="result/filtersort.xml" -->
-        <!--#endif -->
+                [% INCLUDE "default/opac/parts/result/filtersort.tt2" %]
                 <div class="results_header_div"></div>
-                <div class="results_header_lbl">View</div>
+                <!-- XXX still needed?<div class="results_header_lbl">View</div>
                 <select class="results_header_sel">
                     <option>Simple</option>
                     <option>Detailed</option>
                 </select>
-                <div class="results_header_div"></div>
+                <div class="results_header_div"></div> -->
                 <input type="checkbox" id="limit_to_available" />
                 <label for="limit_to_available" class="results_header_lbl">
-                    Limit to available items
+                    [% l('Limit to available items') %]
                 </label>
                 <div class="clear-both"></div>
             </div>

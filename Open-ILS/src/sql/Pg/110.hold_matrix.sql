@@ -32,6 +32,7 @@ CREATE TABLE config.hold_matrix_matchpoint (
     id                      SERIAL    PRIMARY KEY,
     active                  BOOL    NOT NULL DEFAULT TRUE,
     strict_ou_match         BOOL    NOT NULL DEFAULT FALSE,
+    -- Match Fields
     user_home_ou            INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
     request_ou              INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
     pickup_ou               INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
@@ -45,15 +46,18 @@ CREATE TABLE config.hold_matrix_matchpoint (
     marc_vr_format          TEXT    REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
     juvenile_flag           BOOL,
     ref_flag                BOOL,
+    -- "Result" Fields
     holdable                BOOL    NOT NULL DEFAULT TRUE,                -- Hard "can't hold" flag requiring an override
     distance_is_from_owner  BOOL    NOT NULL DEFAULT FALSE,                -- How to calculate transit_range.  True means owning lib, false means copy circ lib
     transit_range           INT        REFERENCES actor.org_unit_type (id) DEFERRABLE INITIALLY DEFERRED,        -- Can circ inside range of cn.owner/cp.circ_lib at depth of the org_unit_type specified here
     max_holds               INT,                            -- Total hold requests must be less than this, NULL means skip (always pass)
     include_frozen_holds    BOOL    NOT NULL DEFAULT TRUE,                -- Include frozen hold requests in the count for max_holds test
     stop_blocked_user       BOOL    NOT NULL DEFAULT FALSE,                -- Stop users who cannot check out items from placing holds
-    age_hold_protect_rule   INT        REFERENCES config.rule_age_hold_protect (id) DEFERRABLE INITIALLY DEFERRED,    -- still not sure we want to move this off the copy
-    CONSTRAINT hous_once_per_grp_loc_mod_marc UNIQUE (user_home_ou, request_ou, pickup_ou, item_owning_ou, item_circ_ou, requestor_grp, usr_grp, circ_modifier, marc_type, marc_form, marc_vr_format, ref_flag, juvenile_flag)
+    age_hold_protect_rule   INT        REFERENCES config.rule_age_hold_protect (id) DEFERRABLE INITIALLY DEFERRED    -- still not sure we want to move this off the copy
 );
+
+-- Nulls don't count for a constraint match, so we have to coalesce them into something that does.
+CREATE UNIQUE INDEX chmm_once_per_paramset ON config.hold_matrix_matchpoint (COALESCE(user_home_ou::TEXT, ''), COALESCE(request_ou::TEXT, ''), COALESCE(pickup_ou::TEXT, ''), COALESCE(item_owning_ou::TEXT, ''), COALESCE(item_circ_ou::TEXT, ''), COALESCE(usr_grp::TEXT, ''), COALESCE(requestor_grp::TEXT, ''), COALESCE(circ_modifier, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_vr_format, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(ref_flag::TEXT, '')) WHERE active;
 
 CREATE OR REPLACE FUNCTION action.find_hold_matrix_matchpoint(pickup_ou integer, request_ou integer, match_item bigint, match_user integer, match_requestor integer)
   RETURNS integer AS
@@ -66,7 +70,7 @@ DECLARE
     rec_descriptor      metabib.rec_descriptor%ROWTYPE;
     matchpoint          config.hold_matrix_matchpoint%ROWTYPE;
     weights             config.hold_matrix_weights%ROWTYPE;
-    denominator         INT;
+    denominator         NUMERIC(6,2);
 BEGIN
     SELECT INTO user_object         * FROM actor.usr                WHERE id = match_user;
     SELECT INTO requestor_object    * FROM actor.usr                WHERE id = match_requestor;
@@ -102,19 +106,19 @@ BEGIN
 
     -- No weights? Bad admin! Defaults to handle that anyway.
     IF weights.id IS NULL THEN
-        weights.user_home_ou    := 5;
-        weights.request_ou      := 5;
-        weights.pickup_ou       := 5;
-        weights.item_owning_ou  := 5;
-        weights.item_circ_ou    := 5;
-        weights.usr_grp         := 7;
-        weights.requestor_grp   := 8;
-        weights.circ_modifier   := 4;
-        weights.marc_type       := 3;
-        weights.marc_form       := 2;
-        weights.marc_vr_format  := 1;
-        weights.juvenile_flag   := 4;
-        weights.ref_flag        := 0;
+        weights.user_home_ou    := 5.0;
+        weights.request_ou      := 5.0;
+        weights.pickup_ou       := 5.0;
+        weights.item_owning_ou  := 5.0;
+        weights.item_circ_ou    := 5.0;
+        weights.usr_grp         := 7.0;
+        weights.requestor_grp   := 8.0;
+        weights.circ_modifier   := 4.0;
+        weights.marc_type       := 3.0;
+        weights.marc_form       := 2.0;
+        weights.marc_vr_format  := 1.0;
+        weights.juvenile_flag   := 4.0;
+        weights.ref_flag        := 0.0;
     END IF;
 
     -- Determine the max (expected) depth (+1) of the org tree and max depth of the permisson tree
@@ -171,22 +175,22 @@ BEGIN
             AND (m.ref_flag             IS NULL OR m.ref_flag = item_object.ref)
       ORDER BY
             -- Permission Groups
-            CASE WHEN rpgad.distance    IS NOT NULL THEN 2^(2*weights.requestor_grp - (rpgad.distance/denominator)) ELSE 0 END +
-            CASE WHEN upgad.distance    IS NOT NULL THEN 2^(2*weights.usr_grp - (upgad.distance/denominator)) ELSE 0 END +
+            CASE WHEN rpgad.distance    IS NOT NULL THEN 2^(2*weights.requestor_grp - (rpgad.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN upgad.distance    IS NOT NULL THEN 2^(2*weights.usr_grp - (upgad.distance/denominator)) ELSE 0.0 END +
             -- Org Units
-            CASE WHEN puoua.distance    IS NOT NULL THEN 2^(2*weights.pickup_ou - (puoua.distance/denominator)) ELSE 0 END +
-            CASE WHEN rqoua.distance    IS NOT NULL THEN 2^(2*weights.request_ou - (rqoua.distance/denominator)) ELSE 0 END +
-            CASE WHEN cnoua.distance    IS NOT NULL THEN 2^(2*weights.item_owning_ou - (cnoua.distance/denominator)) ELSE 0 END +
-            CASE WHEN iooua.distance    IS NOT NULL THEN 2^(2*weights.item_circ_ou - (iooua.distance/denominator)) ELSE 0 END +
-            CASE WHEN uhoua.distance    IS NOT NULL THEN 2^(2*weights.user_home_ou - (uhoua.distance/denominator)) ELSE 0 END +
+            CASE WHEN puoua.distance    IS NOT NULL THEN 2^(2*weights.pickup_ou - (puoua.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN rqoua.distance    IS NOT NULL THEN 2^(2*weights.request_ou - (rqoua.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN cnoua.distance    IS NOT NULL THEN 2^(2*weights.item_owning_ou - (cnoua.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN iooua.distance    IS NOT NULL THEN 2^(2*weights.item_circ_ou - (iooua.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN uhoua.distance    IS NOT NULL THEN 2^(2*weights.user_home_ou - (uhoua.distance/denominator)) ELSE 0.0 END +
             -- Static User Checks       -- Note: 4^x is equiv to 2^(2*x)
-            CASE WHEN m.juvenile_flag   IS NOT NULL THEN 4^weights.juvenile_flag ELSE 0 END +
+            CASE WHEN m.juvenile_flag   IS NOT NULL THEN 4^weights.juvenile_flag ELSE 0.0 END +
             -- Static Item Checks
-            CASE WHEN m.circ_modifier   IS NOT NULL THEN 4^weights.circ_modifier ELSE 0 END +
-            CASE WHEN m.marc_type       IS NOT NULL THEN 4^weights.marc_type ELSE 0 END +
-            CASE WHEN m.marc_form       IS NOT NULL THEN 4^weights.marc_form ELSE 0 END +
-            CASE WHEN m.marc_vr_format  IS NOT NULL THEN 4^weights.marc_vr_format ELSE 0 END +
-            CASE WHEN m.ref_flag        IS NOT NULL THEN 4^weights.ref_flag ELSE 0 END DESC,
+            CASE WHEN m.circ_modifier   IS NOT NULL THEN 4^weights.circ_modifier ELSE 0.0 END +
+            CASE WHEN m.marc_type       IS NOT NULL THEN 4^weights.marc_type ELSE 0.0 END +
+            CASE WHEN m.marc_form       IS NOT NULL THEN 4^weights.marc_form ELSE 0.0 END +
+            CASE WHEN m.marc_vr_format  IS NOT NULL THEN 4^weights.marc_vr_format ELSE 0.0 END +
+            CASE WHEN m.ref_flag        IS NOT NULL THEN 4^weights.ref_flag ELSE 0.0 END DESC,
             -- Final sort on id, so that if two rules have the same sorting in the previous sort they have a defined order
             -- This prevents "we changed the table order by updating a rule, and we started getting different results"
             m.id;

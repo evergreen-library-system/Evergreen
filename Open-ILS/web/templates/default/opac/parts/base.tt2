@@ -2,17 +2,18 @@
 <html xmlns='http://www.w3.org/1999/xhtml' lang='[% ctx.locale %]' xml:lang='[% ctx.locale %]'>
     <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        [% IF ctx.authtime %]
+        <meta http-equiv="refresh" content="[% ctx.authtime %];[% ctx.home_page %]">
+        [% END %]
         <link rel="stylesheet" type="text/css"
             href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css" />
         <link rel="stylesheet" type="text/css"
             href="[% ctx.media_prefix %]/css/skin/default/opac/style.css" />
-        <link rel="stylesheet" type="text/css"
-            href="[% ctx.media_prefix %]/css/skin/default/opac/contentslider.css" />
-        <title>Catalog - King County Library - [% ctx.page_title %]</title>
-        <link rel="unapi-server" type="application/xml" title="unAPI"
-            href="/opac/extras/unapi" />
-        [% BLOCK html_head; END; # provide a default that can be overridden %]
-        [% PROCESS html_head %]
+        <title>[% l('Catalog - King County Library - [_1]', ctx.page_title) %]</title>
+        [%# <!-- is this needed? --><link rel="unapi-server"
+            type="application/xml" title="unAPI" href="/opac/extras/unapi" />%]
+        [% BLOCK html_head; END; # provide a default that can be overridden -%]
+        [%- PROCESS html_head -%]
     </head>
     <body>
         [% content %] 

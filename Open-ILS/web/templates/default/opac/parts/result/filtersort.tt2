@@ -1,0 +1,19 @@
+<!-- ****************** filtersort.xml ***************************** -->
+    <select class="results_header_sel" id='opac.result.sort' onchange='searchBarSubmit(true);'>
+        <option selected='selected' value=''>[% l("Sort Results by Relevance") %]</option>
+        <optgroup label='[% l("Sort Results by Title") %]'>
+            <option id='opac.result.title.a2z' label='&common.a2z.titla;' value='title.asc'>[% l("Title: A to Z") %]</option>
+            <option id='opac.result.title.z2a' label='&common.z2a.titla;' value='title.desc'>[% l("Title: Z to A") %]</option>
+        </optgroup>
+        <optgroup label='[% l("Sort Results by Author") %]'>
+            <option id='opac.result.author.a2z' label='[% l("Author: A to Z") %]' value='author.asc'>[% l("Author: A to Z") %]</option>
+            <option id='opac.result.author.z2a' label='[% l("Author: Z to A") %]' value='author.desc'>[% l("Author: Z to A") %]</option>
+        </optgroup>
+        <optgroup label='[% l("Sort Results by Publication Date") %]'>
+            <option id='opac.result.pubdate.new2old' label='[% l("Date: Newest to Oldest") %]' 
+                value='pubdate.desc'>[% l("Date: Newest to Oldest") %]</option>
+            <option id='opac.result.pubdate.old2new' label='[% l("Date: Oldest to Newest") %]' 
+                value='pubdate.asc'>[% l("Date: Oldest to Newest") %]</option>
+        </optgroup>
+    </select>
+<!-- ****************** end: filtersort.xml ***************************** -->

@@ -86,17 +86,13 @@ serial.sitem_editor.prototype = {
         'sitem_editor_left_pane' :
         [
             [
-                'ID',
+                'id',
                 { 
-                    render: '"#" + fm.id();', 
-
                 }
             ],
             [
-                'Status',
+                'status',
                 { 
-                    render: 'fm.status();',
-                    value_key: 'label'
                 }
             ]
         ],
@@ -104,14 +100,15 @@ serial.sitem_editor.prototype = {
         'sitem_editor_middle_pane' :
         [
             [
-                'Distribution',
+                'distribution',
                 {
                     render: 'fm.stream().distribution().label() == null ? "" : fm.stream().distribution().label();',
+                    label: fieldmapper.IDL.fmclasses.sstr.field_map.distribution.label
 
                 }
             ],
             [
-                'Shelving Unit ID',
+                'unit',
                 {
                     render: 'fm.unit() == null ? "" : "#" + fm.unit().id();',
                 }
@@ -122,7 +119,7 @@ serial.sitem_editor.prototype = {
         'sitem_editor_right_pane' :
         [
             [
-                'Date Expected',
+                'date_expected',
                 {
                     render: 'fm.date_expected() == null ? "" : util.date.formatted_date( fm.date_expected(), "%F");',
                     input: 'c = function(v){ var applied = obj.apply("date_expected",v); if (typeof post_c == "function") post_c(v, !applied);}; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.date_expected); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false);',
@@ -130,7 +127,7 @@ serial.sitem_editor.prototype = {
                 }
             ],
             [
-                'Date Received',
+                'date_received',
                 {
                     render: 'fm.date_received() == null ? "" : util.date.formatted_date( fm.date_received(), "%F");',
                     input: 'if (obj.editor_values.date_received) { c = function(v){ var applied = obj.apply("date_received",v); if (typeof post_c == "function") post_c(v, !applied);}; x = document.createElement("textbox"); x.setAttribute("value",obj.editor_values.date_received); x.addEventListener("apply",function(f){ return function(ev) { f(ev.target.value); } }(c), false); } else { alert("Cannot edit Date Received for unreceived items."); block = false; }',

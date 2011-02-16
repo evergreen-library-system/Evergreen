@@ -1,35 +1,10 @@
-<!-- ****************** format_selector.xml ***************************** -->
-<select id='format_selector'>
+[%  name = name || "item_type";
+    id = id || "format_selector" %]
+<select id='[% id %]' name='[% name %]'>
     <option value=''>[% l("All Formats") %]</option>
-    <option value='a'>Book</option>
-    <option value='i'>Book on cassette</option>
-    <option value='n'>Book on CD</option>
-    <option value='x'>Download music</option>
-    <option value='y'>Download video</option>
-    <option value='h'>DVD</option>
-    <option value='w'>eBook - Audio</option>
-    <option value='v'>eBook - Text</option>
-    <option value='e'>Equipment</option>
-    <option value='f'>Films</option>
-    <option value='o'>Kit</option>
-    <option value='q'>Large print</option>
-    <option value='b'>Magazine</option>
-    <option value='d'>Microform</option>
-    <option value='k'>Music cassette</option>
-    <option value='j'>Music CD</option>
-    <option value='l'>Music LP</option>
-    <option value='p'>Newspaper</option>
-    <option value='t'>Online</option>
-    <option value='u'>Player</option>
-    <option value='c'>Printed music</option>
-    <option value='2'>Read along with cassette</option>
-    <option value='5'>Read along with CD</option>	
-    <option value='c'>Scores</option>	
-    <option value='m'>Software</option>
-    <option value='g'>Video</option>
-    <option value='r'>3-D Object</option>
-    <option value='z'>Map</option>
-    <option value='s'>Slide set</option>	
+[% FOR o IN item_types %]
+    <option value='[% o.code %]'[% value == o.code ? ' selected="selected"' : ''%]>[% o.name %]</option>
+[%- END %]
 <!--
 	<option value='at'>[% l("Books") %]</option>
 	<option value='at-d'>[% l("Large Print Books") %]</option>
@@ -39,4 +14,3 @@
 	<option value='m'>[% l("Electronic Resources") %]</option>
 -->
 </select>
-<!-- ****************** end: format_selector.xml ***************************** -->

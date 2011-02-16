@@ -3260,6 +3260,7 @@ __PACKAGE__->register_method(
     }
 );
 
+# XXX Need to add type I (and, soon, type P) holds to these counts
 sub rec_hold_count {
     my($self, $conn, $target_id) = @_;
 

@@ -23,9 +23,9 @@
     <form action='place_hold' method='POST'>
         Choose a pickup Library [% PROCESS build_org_selector name='pickup_lib' value=ctx.default_pickup_lib %]
         <input type='Submit'/>
-        <input type='hidden' name='hold_target' value='[% CGI.param('hold_target') %]'/>
-        <input type='hidden' name='hold_type' value='[% CGI.param('hold_type') %]'/>
-        <input type='hidden' name='redirect_to' value='[% ctx.referer %]'/>
+        <input type='hidden' name='hold_target' value='[% CGI.param('hold_target') | html %]'/>
+        <input type='hidden' name='hold_type' value='[% CGI.param('hold_type') | html %]'/>
+        <input type='hidden' name='redirect_to' value='[% ctx.referer | html %]'/>
     </form>
     [% END %]
 </div>

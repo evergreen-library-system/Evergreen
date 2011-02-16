@@ -30,8 +30,8 @@
                                             <td class='result_table_pic_header'
                                                 width="78" nowrap="nowrap" valign="top">
                                                 [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
-                                                <a href="record/[% rec.bre.id %]"><img alt="Image of item"
-                                                        name='item_jacket' class='result_table_pic'
+                                                <a href="[% ctx.opac_root %]/record/[% rec.bre.id %]"><img alt="Image of item"
+                                                        name='item_jacket' class='result_table_pic' width="55"
                                                         src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident %]' /></a><br />
                                                 [% END %]
                                             </td>
@@ -40,7 +40,7 @@
                                                 valign="top">
                                                 <div class="bold">
                                                     <a title="[% attrs.title %]" name='item_title'
-                                                        href="record/[% rec.bre.id %]"
+                                                        href="[% ctx.opac_root %]/record/[% rec.bre.id %]"
                                                         class='search_link'>[% attrs.title %]</a>
                                                 </div>
                                                 <span style="font-size:11px;">
@@ -48,7 +48,7 @@
                                                         <em>
                                                             <a title="[% l("Perform an Author Search") %]"
                                                                 name='item_author'
-                                                                href="results?query=author%3a[% attrs.author | replace('[,\.:;]', '') | uri %]&loc=[% loc %]"
+                                                                href="[% ctx.opac_root %]/results?query=author%3a[% attrs.author | replace('[,\.:;]', '') | uri %]&loc=[% loc %]"
                                                                 class='search_link'>[% attrs.author %]</a>
                                                         </em> &nbsp;&nbsp;
                                                         [% attrs.pubdate %]
@@ -73,18 +73,18 @@
                                                             </td>
                                                             <td>[% attrs.isbn %]</td>
                                                         </tr>
-                                                        <tr name="results_edition_tr" class="hide_me">
+                                                        <tr name="results_edition_tr" class="[% attrs.edition ? '' : 'hide_me' %]">
                                                             <td valign="top">
                                                                 <strong>Edition:</strong>
                                                             </td>
-                                                            <td> <span name="results_edition"></span></td>
+                                                            <td>[% attrs.edition %]</td>
                                                         </tr>
-                                                        <tr name="results_phys_desc_tr" class="hide_me">
+                                                        <tr name="results_phys_desc_tr" class="[% attrs.phys_desc ? '' : 'hide_me' %]">
                                                             <td nowrap="nowrap" valign="top">
                                                                 <strong>Phys. Desc.:</strong>
                                                             </td>
                                                             <td>
-                                                                <span name="results_phys_desc"></span>
+                                                                [% args.phys_desc %]
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -139,7 +139,7 @@
                                                     <div style="float:right;">
                                                         <div style="border-bottom:1px dotted #ccc;padding-top:10px;"
                                                             class="results_aux_utils"><a
-                                                                href="javascript:;" name="place_hold_link"><img
+                                                                href="[% ctx.opac_root %]/place_hold?hold_target=[% rec.bre.id %]&hold_type=T" name="place_hold_link"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
                                                                 alt="place hold" /><span
                                                                     style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
@@ -204,60 +204,8 @@
         </tr>
     </table>
 </div>
-
 <div>
-    <table id='' style="width:100%;">
-        <tbody id=''>
-            <tr class="hide_me">
-                <td class='result_table_row' width="100%">
-                    <!--#include virtual="result_info.xml"-->
-                </td>
-            </tr>
-            <!-- Template for displaying a search result.  This row template
-            is cloned and inserted for each result returned -->
-        </tbody>
-    </table>
-    <!-- ====================== -->
-    <div class="">
-        <table
-            style='width: 100%;margin-top:20px;border-top:1px dotted #ccc;padding-top:8px;'
-            id='result_info_2' class='hide_me'>
-            <tbody>
-                <tr>
-                    <td valign="top">
-                        <span class='hide_me' id='result_info_div2'
-                            style='font-size: 11px;'>
-                            <span> [% l("Results") %] </span>
-                            <b id='offset_start2'> </b>
-                            <span>&nbsp;- </span>
-                            <b id='offset_end2'> </b>
-                            <span>&nbsp;[% l("of") %] </span>
-                            <b id='result_count2'> </b>
-                            <span style='padding-left: 6px;'> (page </span>
-                            <span id='current_page2'> </span>
-                            <span>&nbsp;[% l("of") %] </span>
-                            <span id='num_pages2'> </span>
-                        </span>
-                    </td>
-                    <td valign="top" id='next_prev_links2' align="right">
-                    <span id='start_end_links_span2' class='hide_me'>
-                        <a class='search_page_nav_link' id='prev_link2'
-                            title='[% l("Previous page") %]' style="cursor:pointer;">
-                            <span class="nav_arrow_fix">&#9668;</span> Previous
-                        </a>
-                        <span id="nav_pages2"
-                            style='padding-left: 11px; padding-right:13px;'></span>
-                        <a class='search_page_nav_link' id='next_link2'
-                            title='[% l("Next page") %]' style="cursor:pointer;">
-                            Next <span class="nav_arrow_fix">&#9658;</span>
-                        </a>
-                        </span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    [% ctx.results_count_header %]
     <!-- ChiliFresh XXX script TODO -->
 </div>
 <!-- ****************** end: result_table.xml ***************************** -->
-

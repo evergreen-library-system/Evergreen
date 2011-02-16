@@ -1928,7 +1928,9 @@ function getAuthorityContextMenu (target, sf) {
         return false;
     }
 
-    browseAuthority( sf_popup, menu_id, target, sf, 20, page);
+    if (sf.toString().replace(/\s*/, '')) {
+        browseAuthority(sf_popup, menu_id, target, sf, 20, page);
+    }
 
     return true;
 }
@@ -2399,11 +2401,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
                         [source_f, xulG.marc_control_number_identifier, ses()]
                     );
                     if (new_auth && new_auth.id()) {
-                        var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">({xulG.marc_control_number_identifier}){new_auth.id()}</subfield>;
-                        sf.parent().appendChild(id_sf);
-                        var new_sf = marcSubfield(id_sf);
-                        target.parentNode.appendChild(new_sf);
-                        alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
+                        addNewAuthorityID(new_auth, sf, target);
                     }
                 }
             })
@@ -2612,15 +2610,24 @@ function summarizeField(sf) {
         "ind2": '',
         "subfields": []
     };
-    for (var i = 0; i < sf.parent().subfield.length(); i++) {
-        source_f.subfields.push([sf.parent().subfield[i].@code.toString(), sf.parent().subfield[i].toString()]);
-    }
+
     source_f.tag = sf.parent().@tag.toString();
     source_f.ind1 = sf.parent().@ind1.toString();
     source_f.ind1 = sf.parent().@ind2.toString();
+
+    for (var i = 0; i < sf.parent().subfield.length(); i++) {
+        var sf_iter = sf.parent().subfield[i];
+
+        /* Filter out subfields that are not controlled for this tag */
+        if (!control_map[source_f.tag][sf_iter.@code.toString()]) {
+            continue;
+        }
+
+        source_f.subfields.push([sf_iter.@code.toString(), sf_iter.toString()]);
+    }
+
     return source_f;
 }
-
 
 function buildBibSourceList (authtoken, recId) {
     /* TODO: Work out how to set the bib source of the bre that does not yet
@@ -2685,6 +2692,20 @@ function onBibSourceSelect() {
     }
 }
 
+function addNewAuthorityID(authority, sf, target) {
+    var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">({xulG.marc_control_number_identifier}){authority.id()}</subfield>;
+    sf.parent().appendChild(id_sf);
+    var new_sf = marcSubfield(id_sf);
+
+    var node = target;
+    while (dojo.attr(node, 'name') != 'sf_box') {
+        node = node.parentNode;
+    }
+    node.appendChild( new_sf );
+
+    alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
+}
+
 function loadMarcEditor(pcrud, marcxml, target, sf) {
     /*
        To run in Firefox directly, must set signed.applets.codebase_principal_support
@@ -2712,11 +2733,9 @@ function loadMarcEditor(pcrud, marcxml, target, sf) {
                         if (!new_rec) {
                             return '';
                         }
-                        var id_sf = <subfield code="0" xmlns="http://www.loc.gov/MARC21/slim">({xulG.marc_control_number_identifier}){new_rec.id()}</subfield>;
-                        sf.parent().appendChild(id_sf);
-                        var new_sf = marcSubfield(id_sf);
-                        target.parentNode.appendChild(new_sf);
-                        alert($('catStrings').getString('staff.cat.marcedit.create_authority_success.label'));
+
+                        addNewAuthorityID(new_rec, sf, target);
+
                         win.close();
                     }
                 });
