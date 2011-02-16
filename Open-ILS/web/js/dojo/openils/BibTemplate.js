@@ -112,9 +112,15 @@ if(!dojo._hasResource["openils.BibTemplate"]) {
                                     try { (new Function( 'BT', 'slotXML', 'slot', unescape(cb.innerHTML) ))(BT,bib,slot) } catch (e) {/*meh*/}
                                 });
 
+                                var query = slot.getAttribute('query');
+                                var xml_root = bib.documentElement || bib;
+
+                                // Opera (as of 11.01) fails with quotes in queries
+                                if (dojo.isOpera) query = query.replace(/"|'/g, '');
+
                                 var item_list = dojo.query(
-                                    slot.getAttribute('query'),
-                                    bib
+                                    query,
+                                    xml_root // Make Opera work by querying from the root element
                                 );
 
                                 if (item_limit) {
