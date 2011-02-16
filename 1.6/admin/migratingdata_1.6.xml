@@ -308,7 +308,7 @@ extract_holdings --marcfile=clean.marc.xml --holding 999 --copyid 999i --map hol
 				<para>The <option>map</option> option <filename>holdings.map</filename> refers to a file to be used for mapping subfields to the holdings data you would like extracted. Here is an example based on mapping holdings data to the 999 data field:</para>
 <programlisting>
 <![CDATA[
-call_num 999 a
+callnum 999 a
 barcode 999 i
 location 999 l
 owning_lib 999 m
@@ -332,7 +332,7 @@ BEGIN;
 
 <emphasis class="bold">TRUNCATE TABLE staging_items;</emphasis>
 
-<emphasis class="bold">INSERT INTO staging_items (</emphasis>egid, hseq, l_call_num, l_barcode, 
+<emphasis class="bold">INSERT INTO staging_items (</emphasis>egid, hseq, l_callnum, l_barcode, 
 l_location, l_owning_lib, l_circ_modifier <emphasis>FROM stdin;</emphasis> 
 40      0       HD3616.K853 U54 1997    30731100751928  STACKS  FENNELL BOOK
 41      1       HV6548.C3 S984 1998     30731100826613  STACKS  FENNELL BOOK
@@ -356,14 +356,14 @@ l_location, l_owning_lib, l_circ_modifier <emphasis>FROM stdin;</emphasis>
 				<para>Create a staging_items staging table to hold the holdings data:</para>
 <programlisting language="sql">
 CREATE TABLE staging_items (
-        callnum text, -- call number label
+        l_callnum text, -- call number label
 	hseq int, -- call number label
         egid  int,  -- biblio.record_entry_id
         createdate      date,
-        location        text,
-        barcode         text,
-        item_type       text,
-        owning_lib      text  -- actor.org_unit.shortname
+        l_location        text,
+        l_barcode         text,
+        l_circ_modifier       text,
+        l_owning_lib      text  -- actor.org_unit.shortname
 );
 </programlisting>
 			</step>	
@@ -380,31 +380,31 @@ CREATE TABLE staging_items (
 				<para>Generate shelving locations from your staging table.</para>
 <programlisting language="sql">
 INSERT INTO asset.copy_location (name, owning_lib)
-SELECT  DISTINCT l.location, ou.id
+SELECT  DISTINCT l.l_location, ou.id
 FROM  staging_items l 
-       JOIN actor.org_unit ou	ON (l.owning_lib = ou.shortname); 
+       JOIN actor.org_unit ou	ON (l.l_owning_lib = ou.shortname); 
 </programlisting>
 			</step>
 			<step>
 				<para>Generate circulation modifiers from your staging table.</para>
 <programlisting language="sql">
 INSERT INTO config.circ_modifier (code, name, description, sip2_media_type, magnetic_media)
-        SELECT  DISTINCT item_type AS code,
-          item_type AS name,
-          LOWER(item_type) AS description,
+        SELECT  DISTINCT l_circ_modifier AS code,
+          l_circ_modifier AS name,
+          LOWER(l_circ_modifier) AS description,
           '001' AS sip2_media_type,
           FALSE AS magnetic_media
           FROM  staging_items
-          WHERE item_type NOT IN (SELECT code FROM config.circ_modifier);
+          WHERE l_circ_modifier NOT IN (SELECT code FROM config.circ_modifier);
 </programlisting>
 			</step>
 			<step>
 				<para>Generate call numbers from your staging table:</para>
 <programlisting language="sql">
 INSERT INTO asset.call_number (creator,editor,record,label,owning_lib)
-SELECT  DISTINCT 1, 1, b.id, l.callnum, ou.id
-FROM  staging.staging_items l
-JOIN actor.org_unit ou ON (l.owning_lib = ou.shortname);
+  SELECT  DISTINCT 1, 1, l.egid, l.l_callnum, ou.id
+  FROM  staging_items l
+  JOIN actor.org_unit ou ON (l.l_owning_lib = ou.shortname);
 </programlisting>
 			</step>
 			<step>
@@ -417,27 +417,30 @@ STATUS, location, loan_duration, fine_level, circ_modifier, deposit, ref, call_n
 SELECT  DISTINCT ou.id AS circ_lib,
 	1 AS creator,
 	1 AS editor,
-	l.createdate AS create_date,
-	l.barcode AS barcode,
+	l.l_createdate AS create_date,
+	l.l_barcode AS barcode,
 	0 AS STATUS,
 	cl.id AS location,
 	2 AS loan_duration,
 	2 AS fine_level,
-	l.item_type AS circ_modifier,
+	l.l_circ_modifier AS circ_modifier,
 	FALSE AS deposit,
 	CASE
-	WHEN l.item_type = 'REFERENCE' THEN TRUE
+	WHEN l.l_circ_modifier = 'REFERENCE' THEN TRUE
 	ELSE FALSE
 	END AS ref,						
 	cn.id AS call_number
-	FROM  staging.staging_items l
-	JOIN actor.org_unit ou
-		ON (l.owning_lib = ou.shortname)
-	JOIN asset.copy_location cl
-		ON (ou.id = cl.owning_lib AND l.location = cl.name)
-	JOIN asset.call_number cn
-		ON (ou.id = cn.owning_lib      
-		AND l.callnum = cn.label);
+	FROM  staging_items l
+		JOIN actor.org_unit ou
+			ON (l.owning_lib = ou.shortname)
+		JOIN asset.copy_location cl
+			ON (ou.id = cl.owning_lib AND l.l_location = cl.name)
+		JOIN metabib.real_full_rec m 
+			ON (m.value = l.egid)
+		JOIN asset.call_number cn
+			ON (ou.id = cn.owning_lib  
+			AND m.record = cn.record       
+			AND l.l_callnum = cn.label)      
 </programlisting>
 				<para>You should now have copies in your Evergreen database and should be able to search and find the bibliographic records with attached copies.</para> 
 			</step>

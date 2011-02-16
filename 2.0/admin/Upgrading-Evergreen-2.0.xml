@@ -8,9 +8,18 @@
 			</application> to 2.0, including steps to upgrade <application>OpenSRF</application>. Before 
 			upgrading, it is important to carefully plan an upgrade strategy to minimize system downtime and 
 			service interruptions. All of the steps in this chapter are to be completed from the command line.</para>
+			
         	</abstract>
 	</info>    
-		<para>In the following instructions, you are asked to perform certain steps as either the <systemitem class="username">root</systemitem>  or <systemitem class="username">opensrf</systemitem> user.</para>
+		<para>Evergreen 2.0 has several software requirements:</para>
+ 		<itemizedlist>
+			<listitem>PostgreSQL: Version 8.4 is the minimum supported version of PostgreSQL. </listitem>
+			<listitem>Linux: Evergreen 2.0 has been tested on Debian Squeeze (6.0) and Ubuntu Lucid Lynx (10.04). If you are runnung an older version of these distributions, 
+			you may want to upgrade befor installing Evergreen 2.0. For instructions om upgrading these distribuitions, visit the 
+			<ulink url="http://www.debian.org/releases/squeeze/">Debian</ulink> or <ulink url="https://help.ubuntu.com/community/LucidUpgrades">Ubuntu</ulink> websites.</listitem>
+		</itemizedlist>
+		<para>In the following instructions, you are asked to perform certain steps as either the <systemitem class="username">root</systemitem>  or 
+		<systemitem class="username">opensrf</systemitem> user.</para>
       		<itemizedlist>
 			<listitem>Debian: To become the <systemitem class="username">root</systemitem> user, issue the <command>su</command> command and enter the password of the 
 			<systemitem class="username">root</systemitem> user.</listitem>
@@ -67,27 +76,21 @@ cd /home/opensrf/OpenSRF-1.6.2
 				<para>Replace <option>[distribution]</option> below with the following value 
 				for your distribution:</para>
 				<itemizedlist>
-					
-					<listitem>
-						<para><option>debian-lenny</option> for <systemitem class="osname">Debian Lenny (5.0)</systemitem></para>
-					</listitem>
 					<listitem>
 						<para><option>debian-squeeze</option> for <systemitem class="osname">Debian Squeeze (6.0)</systemitem>
 						<indexterm><primary>Linux</primary><secondary>Debian</secondary></indexterm></para>
 					</listitem>
 					<listitem>
-					<para><option>ubuntu-hardy</option> for <systemitem class="osname">Ubuntu Hardy Heron (8.04)</systemitem>
-					<indexterm><primary>Linux</primary><secondary>Ubuntu</secondary></indexterm></para>
-					</listitem>
-					<listitem>
 						<para><option>ubuntu-lucid</option> for <systemitem class="osname">Ubuntu Lucid Lynx
-						(10.04)</systemitem></para>
+						(10.04)</systemitem><indexterm><primary>Linux</primary><secondary>Ubuntu</secondary></indexterm></para>
 					</listitem>
 					<listitem>
-						<para><option>centos</option> for <systemitem class="osname">CentOS 5</systemitem></para>
+						<para><option>centos</option> for <systemitem class="osname">CentOS 5</systemitem>
+						<indexterm><primary>Linux</primary><secondary>CentOS</secondary></indexterm></para>
 					</listitem>
 					<listitem>
-						<para><option>rhel</option> for <systemitem class="osname">Red Hat Enterprise Linux 5</systemitem></para>
+						<para><option>rhel</option> for <systemitem class="osname">Red Hat Enterprise Linux 5</systemitem>
+						<indexterm><primary>Linux</primary><secondary>Red Hat</secondary></indexterm></para>
 					</listitem>
 				</itemizedlist>
 <screen><userinput>
@@ -151,13 +154,15 @@ srfsh#
 	</section>
 	<section xml:id="upgradingevergreen-upgrading_from_1.6_to_2.0">
 		<title>Upgrade <application>Evergreen</application> from 1.6.1 to 2.0</title>
+		<note><para>8.4 is the minimum supported version of PostgreSQL. Evergreen 2.0 has been tested on Debian Squeeze (6.0) and Ubuntu Lucid (10.04). If you are runnung an older version of 
+			these distributions, you may want to upgrade befor installing Evergreen 2.0. For instructions om upgrading these distribuitions, visit the 
+			<ulink url="http://www.debian.org/releases/squeeze/">Debian</ulink> or <ulink url="https://help.ubuntu.com/community/LucidUpgrades">Ubuntu</ulink> websites.</para></note>
 		<procedure>
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract <application>Evergreen 2.0</application>
 				</para>
 <screen><userinput>
-wget http://www.open-ils.org/downloads/exit
-uEvergreen-ILS-2.0.1.tar.gz
+wget http://www.open-ils.org/downloads/Evergreen-ILS-2.0.1.tar.gz
 tar xzf Evergreen-ILS-2.0.1.tar.gz
 </userinput></screen>
 				<note><para>For the latest edition of Evergreen 2.0, check the Evergreen download page at
@@ -204,25 +209,15 @@ tar xzf Evergreen-ILS-2.0.1.tar.gz
 				<screen><userinput>chown -R opensrf:opensrf /openils</userinput></screen>
 			</step>			
 			<step>
-				<para>As the <systemitem class="username">root</systemitem> user, build <filename>live-db-setup.pl</filename> for the cgi-bin 
-				bootstrapping scripts and <filename>offline-config.pl</filename> for the offline staff client data uploader:</para>
-<screen><userinput>
-cd /home/opensrf/Evergreen-ILS-2.0.1
-perl Open-ILS/src/support-scripts/eg_db_config.pl --create-bootstrap --create-offline \ 
---user evergreen --password evergreen --hostname localhost --port 5432 \
---database evergreen
-</userinput></screen>
-			</step>
-			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, update server symlink in <filename class="directory">/openils/var/web/xul/</filename>:</para>
 <screen><userinput>
 cd /openils/var/web/xul/
 rm server
-ln -s rel_1_6_1_5/server
+ln -s rel_2_0_1/server
 </userinput></screen>
 			</step>
 			<step>
-				<para>Update the Evergreen database:</para>
+				<para>Update the <database>evergreen</database> database:</para>
 				<note><para>It is recommended that you <link linkend="backingup">back up your Evergreen database</link> in order to restore your data if anything goes wrong.</para></note>
 <screen>
 <userinput>
@@ -232,9 +227,9 @@ psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.0-2.0.1-upgrade-db.sql
 </screen> 	
 			</step>
 <step>
-				<para>Run the <filename>reingest-1.6-2.0.pl<filename> script to generate an sql script. Then use the sql file to reingest bib records into your 
-				<database>evergreen<batabase> database. This is required to make the new facet sidebar in OPAC search results work and to upgrade the keyword indexes to use 
-				the revised NACO normalization routine</para>
+				<para>Run the <filename>reingest-1.6-2.0.pl</filename> script to generate an sql script. Then use the sql file to reingest bib records into your 
+				<database>evergreen</database> database. This is required to make the new facet sidebar in OPAC search results work and to upgrade the keyword indexes to use 
+				the revised NACO normalization routine.</para>
 				<note><para>If you are running a large Evergreen installation, it is recommend that you examine the script first. Reingesting a large number of bibliographic records 
 				may take several hours.</para></note>
 <screen><userinput>perl Open-ILS/src/sql/Pg/reingest-1.6-2.0.pl</userinput></screen>
@@ -258,7 +253,7 @@ psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.0-2.0.1-upgrade-db.sql
 			<step>
 				<para>Update <filename>opensrf.xml</filename> with the database connection info:</para>
 <screen><userinput>
-perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all --user evergreen \
+perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all --create-offline --user evergreen \
 --password evergreen --hostname localhost --port 5432 --database evergreen
 </userinput></screen>
 			</step>
