@@ -15,7 +15,7 @@
  		<itemizedlist>
 			<listitem>PostgreSQL: Version 8.4 is the minimum supported version of PostgreSQL. </listitem>
 			<listitem>Linux: Evergreen 2.0 has been tested on Debian Squeeze (6.0) and Ubuntu Lucid Lynx (10.04). If you are runnung an older version of these distributions, 
-			you may want to upgrade befor installing Evergreen 2.0. For instructions om upgrading these distribuitions, visit the 
+			you may want to upgrade befor installing Evergreen 2.0. For instructions on upgrading these distributions, visit the 
 			<ulink url="http://www.debian.org/releases/squeeze/">Debian</ulink> or <ulink url="https://help.ubuntu.com/community/LucidUpgrades">Ubuntu</ulink> websites.</listitem>
 		</itemizedlist>
 		<para>In the following instructions, you are asked to perform certain steps as either the <systemitem class="username">root</systemitem>  or 
@@ -154,9 +154,12 @@ srfsh#
 	</section>
 	<section xml:id="upgradingevergreen-upgrading_from_1.6_to_2.0">
 		<title>Upgrade <application>Evergreen</application> from 1.6.1 to 2.0</title>
-		<note><para>8.4 is the minimum supported version of PostgreSQL. Evergreen 2.0 has been tested on Debian Squeeze (6.0) and Ubuntu Lucid (10.04). If you are runnung an older version of 
-			these distributions, you may want to upgrade befor installing Evergreen 2.0. For instructions om upgrading these distribuitions, visit the 
-			<ulink url="http://www.debian.org/releases/squeeze/">Debian</ulink> or <ulink url="https://help.ubuntu.com/community/LucidUpgrades">Ubuntu</ulink> websites.</para></note>
+		<note>
+			<para>PostgreSQL 8.4 is the minimum supported version of PostgreSQL.</para> 
+			<para>Evergreen 2.0 has been tested on Debian Squeeze (6.0) and Ubuntu Lucid (10.04). If you are runnung an older version of 
+			these distributions, you may want to upgrade befor installing Evergreen 2.0. For instructions on upgrading these distribuitions, visit the 
+			<ulink url="http://www.debian.org/releases/squeeze/">Debian</ulink> or <ulink url="https://help.ubuntu.com/community/LucidUpgrades">Ubuntu</ulink> websites.</para>
+		</note>
 		<procedure>
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract <application>Evergreen 2.0</application>
@@ -238,8 +241,8 @@ psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.0-2.0.1-upgrade-db.sql
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, 
 				copy <filename>/openils/conf/oils_web.xml.example</filename> to <filename>/openils/conf/oils_web.xml</filename>
+				. (If upgrading from 1.6.1.x, <filename>oils_web.xml</filename> should already exist.)</para>
 				<indexterm><primary>configuration files</primary><secondary>oils_web.xml</secondary></indexterm>
-				(needed for acquisitions templates).</para>
 				<screen><userinput>cp /openils/conf/oils_web.xml.example /openils/conf/oils_web.xml</userinput></screen>
 			</step>
 			<step>
@@ -249,6 +252,8 @@ psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.0-2.0.1-upgrade-db.sql
 				<screen><userinput>cp /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml</userinput></screen>
 				<indexterm><primary>configuration files</primary><secondary>opensrf_core.xml</secondary></indexterm>
 				<screen><userinput>cp /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml</userinput></screen>
+				<caution><para>Copying these configuration files will remove any customizations you have made to them. Remember to redo your customizations after copying 
+				them.</para></caution>
 			</step>
 			<step>
 				<para>Update <filename>opensrf.xml</filename> with the database connection info:</para>
@@ -269,12 +274,12 @@ perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all 
 			<para>Update /etc/apache2/sites-available/eg.conf by copying the example from Open-ILS/
 			examples/apache/eg.conf.</para><indexterm><primary>configuration files</primary><secondary>eg.conf</secondary></indexterm>
 			</step>
-			<step>
-				<para>Recover customizations you have made to the <application>Apache</application><indexterm><primary>Apache</primary></indexterm> 
-				configuration files. For example, if you purchased an SSL certificate, you 
+			<caution>
+				<para>Copying these Apache configuration files will remove any customizations you have made to them. Remember to redo your customizations after copying 
+				them. For example, if you purchased an SSL certificate, you 
 				will need to edit <filename>eg.conf</filename> to point to the appropriate SSL certificate files.</para>
 				<indexterm><primary>SSL</primary><secondary>certificates</secondary></indexterm>
-			</step> 
+			</caution> 
 		</procedure>	
 	</section>
 	<section xml:id="testing_after_upgrade">
