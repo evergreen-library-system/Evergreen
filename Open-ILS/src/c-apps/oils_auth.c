@@ -807,8 +807,17 @@ int oilsAuthResetTimeout( osrfMethodContext* ctx ) {
 
 int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
+    bool returnFull = false;
 
 	const char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0));
+
+    if(ctx->params->size > 1) {
+        // caller wants full cached object, with authtime, etc.
+        const char* rt = jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
+        if(rt && strcmp(rt, "0") != 0) 
+            returnFull = true;
+    }
+
 	jsonObject* cacheObj = NULL;
 	oilsEvent* evt = NULL;
 
@@ -828,7 +837,10 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 			cacheObj = osrfCacheGetObject( key );
 			if(cacheObj) {
 				// Return a copy of the cached user object
-				osrfAppRespondComplete( ctx, jsonObjectGetKeyConst( cacheObj, "userobj"));
+                if(returnFull)
+				    osrfAppRespondComplete( ctx, cacheObj);
+                else
+				    osrfAppRespondComplete( ctx, jsonObjectGetKeyConst( cacheObj, "userobj"));
 				jsonObjectFree(cacheObj);
 			} else {
 				// Auth token is invalid or expired
