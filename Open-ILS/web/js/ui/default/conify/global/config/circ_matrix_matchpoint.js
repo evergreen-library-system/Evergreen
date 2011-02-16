@@ -12,7 +12,18 @@ var circModEntryCache = {};
 var matchPoint;
 
 function load(){
+    cmGrid.overrideWidgetArgs.grp = {hrbefore : true};
     cmGrid.overrideWidgetArgs.is_renewal = {ternary : true};
+    cmGrid.overrideWidgetArgs.ref_flag = {ternary : true};
+    cmGrid.overrideWidgetArgs.juvenile_flag = {ternary : true};
+    cmGrid.overrideWidgetArgs.circulate = {inherits : true, hrbefore : true};
+    cmGrid.overrideWidgetArgs.duration_rule = {inherits : true};
+    cmGrid.overrideWidgetArgs.recurring_fine_rule = {inherits : true};
+    cmGrid.overrideWidgetArgs.max_fine_rule = {inherits : true};
+    cmGrid.overrideWidgetArgs.available_copy_hold_ratio = {inherits : true};
+    cmGrid.overrideWidgetArgs.total_copy_hold_ratio = {inherits : true};
+    cmGrid.overrideWidgetArgs.renewals = {inherits : true};
+    cmGrid.overrideWidgetArgs.hard_due_date = {inherits : true};
     cmGrid.loadAll({order_by:{ccmm:'circ_modifier'}});
     cmGrid.onEditPane = buildEditPaneAdditions;
     circModEditor = dojo.byId('circ-mod-editor').parentNode.removeChild(dojo.byId('circ-mod-editor'));

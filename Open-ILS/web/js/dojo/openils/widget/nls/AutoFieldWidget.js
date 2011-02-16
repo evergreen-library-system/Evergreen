@@ -1,5 +1,6 @@
 {
     "TRUE" : "True",
     "FALSE" : "False",
-    "UNSET" : "Unset"
+    "UNSET" : "Unset",
+    "INHERITED" : "Inherited"
 }

@@ -1151,16 +1151,15 @@ sub run_indb_circ_test {
     $self->circ_test_success($U->is_true($results->[0]->{success}));
 
     if(my $mp = $results->[0]->{matchpoint}) {
-        $logger->info("circulator: circ policy test found matchpoint $mp");
-        $self->circ_matrix_matchpoint(
-            $self->editor->retrieve_config_circ_matrix_matchpoint([
-                $mp,
-                {   flesh => 1,
-                    flesh_fields => {ccmm => 
-                        ['duration_rule', 'recurring_fine_rule', 'max_fine_rule', 'hard_due_date']}
-                }
-            ])
-        );
+        $logger->info("circulator: circ policy test found matchpoint built via rows " . $results->[0]->{buildrows});
+        $self->circ_matrix_matchpoint($self->editor->retrieve_config_circ_matrix_matchpoint($mp));
+        $self->circ_matrix_matchpoint->duration_rule($self->editor->retrieve_config_rules_circ_duration($results->[0]->{duration_rule}));
+        if($results->[0]->{renewals}) {
+            $self->circ_matrix_matchpoint->duration_rule->max_renewals($results->[0]->{renewals});
+        }
+        $self->circ_matrix_matchpoint->recurring_fine_rule($self->editor->retrieve_config_rules_recurring_fine($results->[0]->{recurring_fine_rule}));
+        $self->circ_matrix_matchpoint->max_fine_rule($self->editor->retrieve_config_rules_max_fine($results->[0]->{max_fine_rule}));
+        $self->circ_matrix_matchpoint->hard_due_date($self->editor->retrieve_config_hard_due_date($results->[0]->{hard_due_date}));
     }
 
     return $self->matrix_test_result($results);

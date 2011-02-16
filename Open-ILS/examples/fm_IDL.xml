@@ -1146,13 +1146,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="MARC Form" name="marc_form" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="Videorecording Format" name="marc_vr_format" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="Reference?" name="ref_flag" reporter:datatype="bool"/>
+            <field reporter:label="Juvenile?" name="juvenile_flag" reporter:datatype="bool"/>
 			<field reporter:label="User Age: Lower Bound" name="usr_age_lower_bound" reporter:datatype="text"/>
 			<field reporter:label="User Age: Upper Bound" name="usr_age_upper_bound" reporter:datatype="text"/>
 			<field reporter:label="Circulate?" name="circulate" reporter:datatype="bool"/>
-			<field reporter:label="Duration Rule" name="duration_rule" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Max Fine Rule" name="max_fine_rule" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Duration Rule" name="duration_rule" reporter:datatype="link"/>
+			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" reporter:datatype="link"/>
+			<field reporter:label="Max Fine Rule" name="max_fine_rule" reporter:datatype="link"/>
             <field reporter:label="Hard Due Date" name="hard_due_date" reporter:datatype="link"/>
+            <field reporter:label="Renewals Override" name="renewals" reporter:datatype="int"/>
 			<field reporter:label="Script Test" name="script_test" reporter:datatype="text"/>
 			<field name="total_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Total Copy/Hold Ratio"/>
 			<field name="available_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Available Copy/Hold Ratio"/>

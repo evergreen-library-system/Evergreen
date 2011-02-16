@@ -9,7 +9,7 @@
     <table  jsId="cmGrid"
             style="height: 600px;"
             dojoType="openils.widget.AutoGrid"
-            fieldOrder="['org_unit', 'active', 'grp', 'circ_modifier', 'marc_type', 'marc_form', 'marc_vr_format']"
+            fieldOrder="['id', 'active', 'grp', 'org_unit', 'copy_circ_lib', 'copy_owning_lib', 'user_home_ou', 'is_renewal', 'juvenile_flag', 'circ_modifier', 'marc_type', 'marc_form', 'marc_vr_format', 'ref_flag', 'usr_age_lower_bound', 'usr_age_upper_bound', 'circulate', 'duration_rule', 'renewals', 'hard_due_date', 'recurring_fine_rule', 'max_fine_rule', 'available_copy_hold_ratio', 'total_copy_hold_ratio', 'script_test']"
             defaultCellWidth='"auto"'
             query="{id: '*'}"
             fmClass='ccmm'
@@ -58,10 +58,19 @@
 <div class='hidden'><div dojoType='openils.widget.ProgressDialog' jsId='progressDialog'/></div>
 
 <script type="text/javascript">
-    function format_hard_due_date(name) {
-        return "<a href='" + oilsBasePath +
-            "/conify/global/config/hard_due_date?name=" +
-            encodeURIComponent(name) + "'>" + name + "</a>";
+    function format_hard_due_date(name, id) {
+        var item=this.grid.getItem(id);
+        if(!item) return name;
+        switch (this.grid.store.getValue(this.grid.getItem(id), 'hard_due_date')) {
+            case null :
+            case undefined :
+            case 'unset' :
+                return name;
+            default:
+                return "<a href='" + oilsBasePath +
+                    "/conify/global/config/hard_due_date?name=" +
+                    encodeURIComponent(name) + "'>" + name + "</a>";
+        }
     }
 </script>
 [% END %]
