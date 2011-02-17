@@ -55,11 +55,9 @@
         </div>
         <div id="main-content">
             <div id="tehResultsPage">
-                [% INCLUDE "default/opac/parts/result/header.tt2" %]
-                <div id="rresults_page">
-                    [% INCLUDE "default/opac/parts/result/table.tt2" %]
-                    [% INCLUDE "default/opac/parts/result/lowhits.tt2" %]
-                </div>
+                [% path = "default/opac/parts/result/" _
+                    (ctx.records.size ? "table.tt2" : "lowhits.tt2");
+                INCLUDE $path %]
             </div>
             <div class="common-full-pad"></div>    
         </div>

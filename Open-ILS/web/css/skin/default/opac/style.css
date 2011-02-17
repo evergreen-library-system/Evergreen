@@ -720,6 +720,7 @@ div.select-wrapper:hover {
 
 #zero_hits_term {
 	text-transform: uppercase;
+    font-weight: bold;
 }
 
 #zero_search_hits #spell_check_link {

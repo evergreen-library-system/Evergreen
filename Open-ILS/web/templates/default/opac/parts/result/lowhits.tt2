@@ -1,9 +1,8 @@
-<!-- ****************** result_lowhits.xml ***************************** -->
-<div id='result_low_hits' class='hide_me'>
-    <div id="zero_search_hits" class="hide_me">
+<div id='result_low_hits'>
+    <div id="zero_search_hits">
         <div style="float:left;width:300px;margin-top:20px;">
             <p>Sorry, no entries were found for
-                <strong>&quot;<span id="zero_hits_term"></span>&quot;</strong><br />
+                <q id="zero_hits_term">[% query | html %]</q><br />
                 <span id="zero_hits_label1" class="hide_me">Did you mean
                     <strong><a id="spell_check_link" href="javascript:;"></a></strong>?</span>
             </p>
@@ -28,7 +27,8 @@
                 Change to <strong>Advanced Keyword Search.</strong>
             </p>
             <p>
-                Adjacency Multiple words are not searched together as a phrase. They will
+                <strong>Adjacency</strong><br />
+                Multiple words are not searched together as a phrase. They will
                 be found in various parts of the record. To search for a phrase, enclose your
                 search terms in quotation marks.<br />
                 (example:  <strong>&quot;garcia marquez&quot;</strong>)
@@ -90,4 +90,3 @@
         </div>
     </div>
 </div>
-<!-- ****************** end: result_lowhits.xml ***************************** -->

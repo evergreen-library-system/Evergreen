@@ -1,6 +1,67 @@
 [%  PROCESS "default/opac/parts/marc_misc.tt2";
-    SET result_count = ctx.result_start; %]
-<!-- ****************** result_table.xml ***************************** -->
+
+    q = query | url;
+    np_link = '?query=' _ q;
+    IF loc;
+        np_link = np_link _ "&loc=" _ loc;
+    END;
+    IF depth or depth == 0;
+        np_link = np_link _ "&depth=" _ depth;
+    END;
+    ctx.result_start = 1 + ctx.page_size * page;
+    ctx.result_stop = 1 + ctx.page_size * (page + 1);
+    IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
+
+    result_count = ctx.result_start;
+%]
+<div style="height: 10px;"></div>
+[% BLOCK results_count_header %]
+<div class="results_header_nav1">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+            <td class="h1" width="116">Search Results</td>
+            <td valign="bottom" nowrap="nowrap" class="result_number">
+                [% l("Results") %]
+                <strong>[% ctx.result_start %]</strong>
+                &nbsp;-
+                <strong>[% ctx.result_stop  %] </strong>
+                &nbsp;[% l("of") %]
+                <strong>[% ctx.hit_count %]</strong>
+                <span style='padding-left: 6px;'>
+                    (page
+                    <strong>[% page + 1 %]</strong>
+                    &nbsp;[% l("of") %]
+                    <strong>[% page_count %]</strong>)
+                </span>
+            </td>
+            <td align="right" valign="bottom">
+                <span class='start_end_links_span'>
+                    [% IF page > 0 %]
+                    <a class='search_page_nav_link'
+                        href="[% np_link _ '&page=' _ (page - 1) %]"
+                        title='[% l("Previous page") %]'>
+                        <span class="nav_arrow_fix">&#9668;</span> Previous
+                    </a>
+                    [% END %]
+                    <span class='hide_me'
+                        style='padding-left: 11px; padding-right:11px;'>
+                        <span></span>
+                    </span>
+                    [% IF (page + 1) < page_count %]
+                    <a class='search_page_nav_link'
+                        href="[% np_link _ '&page=' _ (page + 1) %]"
+                        title='[% l("Next page") %]'>
+                        Next <span class="nav_arrow_fix">&#9658;</span>
+                    </a>
+                    [% END %]
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+[% END %]
+[% ctx.results_count_header = PROCESS results_count_header;
+    ctx.results_count_header %]
 <div id="result_table_div">
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
@@ -208,4 +269,3 @@
     [% ctx.results_count_header %]
     <!-- ChiliFresh XXX script TODO -->
 </div>
-<!-- ****************** end: result_table.xml ***************************** -->
