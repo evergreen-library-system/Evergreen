@@ -1689,6 +1689,14 @@ sub reservation_targeter {
                     next;
                 }
 
+                # At this point, if we're just targeting one specific
+                # resource, just succeed. We don't care about its present
+                # copy status.
+                if ($bresv->target_resource) {
+                    push @good_resources, $res;
+                    next;
+                }
+
                 if ($copy->status->id == 0 || $copy->status->id == 7) {
                     push @good_resources, $res;
                     next;
