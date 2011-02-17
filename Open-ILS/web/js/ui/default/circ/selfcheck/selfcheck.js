@@ -373,6 +373,11 @@ SelfCheckManager.prototype.handleAlert = function(message, shouldPopup, sound) {
 
     dojo.byId('oils-selfck-status-div').innerHTML = message;
 
+    if(shouldPopup)
+        openils.Util.addCSSClass( dojo.byId('oils-selfck-status-div'), 'checkout_failure' );
+    else
+        openils.Util.removeCSSClass( dojo.byId('oils-selfck-status-div'), 'checkout_failure' );
+
     if(shouldPopup && this.orgSettings[SET_ALERT_POPUP]) 
         alert(message);
 
