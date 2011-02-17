@@ -1,8 +1,7 @@
-<!-- ****************** advanced_global.xml ***************************** -->
 <table id='adv_global_search' class='data_grid data_grid_center' width='100%'>
     <tr style='border-bottom: none;'>
         <!-- Contains the user-addable(?) rows to define search class, containment and text -->
-        <td valign='top' width='65%' style='border-bottom: none;'>
+        <td valign='top' style='border-bottom: none;'>
             <table width='100%' id='adv_global_input_table'>
                 <thead>
                     <tr>
@@ -18,7 +17,8 @@
                     <!-- add a new row -->
                     <tr id='adv_global_addrow'>
                         <td align='left' style="padding-top:7px;">
-                            <button>[% l("Submit Search") %]</button><!-- XXX TODO make a real form -->
+                            <a href="javascript:;" id="myopac_new_global_row" onclick='advAddGblRow();'>Add Search Row</a>
+                            <button class="hide_me">[% l("Submit Search") %]</button><!-- XXX TODO make a real form -->
                         </td>
                     </tr>
                 </tbody>
@@ -26,182 +26,54 @@
         </td>
     </tr>
     <tr>
-        <td align='center'>
-            [% l("Search Library") %]<br /><br />
-            <span id='depth_selector_span'>
-                [% PROCESS "default/opac/parts/org_selector.tt2";
-                    PROCESS build_org_selector name='loc' value=loc %]
-            </span>
-            <span id='lib_selector_span'>
-                <a id='lib_selector_link' class='classic_link'
-                    href='#'>[% l("Choose a library to search") %]</a>
-            </span>
-            <br /><br />
-            <span>[% l("Limit to Available") %]</span>
-            <input type='checkbox' id='opac.result.limit2avail'/>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            <table width='100%'>
-                <thead>
-                    <tr>
-                        <td colspan='2' align='center'>
-                            [% l("Search Filters") %]
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td align='right' class="hide_me">
-                            <span>[% l("Item Form") %]</span>
-                        </td>
-                        <td align='left' class="hide_me">
-                            <select multiple='multiple' size='3' id='adv_global_item_form'>
-                            </select>    
-                        </td>
-                        <td align='right'>
-                            <span>[% l("Item Type") %]</span><br />
-                        </td>
-                        <td align='left'>
-                            <select multiple='multiple' size='3' id='adv_global_item_type' class='hide_me'>
-                            </select>    
-                            <select multiple='multiple' size='3' id='adv_global_item_type_basic'>
-                                <option value=''>[% l("All Formats") %]</option>
-
-                                <!-- These will be replaced w/ SVF.  Leave them hard-coded for now -->
-                                <option value='a'>Book</option>
-                                <option value='i'>Book on cassette</option>
-                                <option value='n'>Book on CD</option>
-                                <option value='x'>Download music</option>
-                                <option value='y'>Download video</option>
-                                <option value='h'>DVD</option>
-                                <option value='w'>eBook - Audio</option>
-                                <option value='v'>eBook - Text</option>
-                                <option value='e'>Equipment</option>
-                                <option value='f'>Films</option>
-                                <option value='o'>Kit</option>
-                                <option value='q'>Large print</option>
-                                <option value='b'>Magazine</option>
-                                <option value='d'>Microform</option>
-                                <option value='k'>Music cassette</option>
-                                <option value='j'>Music CD</option>
-                                <option value='l'>Music LP</option>
-                                <option value='p'>Newspaper</option>
-                                <option value='t'>Online</option>
-                                <option value='u'>Player</option>
-                                <option value='c'>Printed music</option>
-                                <option value='2'>Read along with cassette</option>
-                                <option value='5'>Read along with CD</option>    
-                                <option value='c'>Scores</option>    
-                                <option value='m'>Software</option>
-                                <option value='g'>Video</option>
-                                <option value='r'>3-D Object</option>
-                                <option value='z'>Map</option>
-                                <option value='s'>Slide set</option>
-
-                            </select>    
-                        </td>
-                        <td align='right' class="hide_me">
-                            <span>[% l("Literary Form") %]</span>
-                            <a class='classic_link adv_adv_link' href='#'>[% l("Advanced") %]</a>
-                            <a class='hide_me classic_link adv_adv_link' href='#'>[% l("Basic") %]</a>
-                        </td>
-                        <td align='left' class="hide_me">
-                            <select multiple='multiple' size='3' id='adv_global_lit_form' class='hide_me'> </select>    
-                            <select multiple='multiple' size='3' id='adv_global_lit_form_basic'> 
-                                <option value='0 '>[% l("Non Fiction") %]</option>
-                                <option value='1'>[% l("Fiction") %]</option>
-                            </select>    
-                        </td>
-                        <td align='right'>
-                            <span>[% l("Language") %]</span>
-                        </td>
-                        <td align='left'>
-                            <select multiple='multiple' size='3' id='adv_global_lang'>
-                                [% INCLUDE "default/opac/parts/item_lang_options.tt2" %]
-                            </select>
-                        </td>
-
-                        <td align='right' class="hide_me">
-                            <span>[% l("Audience") %]</span>
-                            <a id='adv_global_audience_link_adv'
-                                class='classic_link adv_adv_link'
-                                href='#'>[% l("Advanced") %]</a>
-
-                            <a id='adv_global_audience_link_basic'
-                                class='hide_me classic_link adv_adv_link'
-                                href='#'>[% l("Basic") %]</a>
-                        </td>
-                        <td align='left' class="hide_me">
-                            <select multiple='multiple' size='3' id='adv_global_audience' class='hide_me'>
-                            </select>
-                            <select multiple='multiple' size='3' id='adv_global_audience_basic'>
-                                <option value='e '>[% l("Adult") %]</option>
-                                <option value='abcdj'>[% l("Juvenile") %]</option>
-                                <option value='fg '>[% l("General") %]</option>
-                            </select>
-                        </td>
-
-                        <td align='right' class="hide_me">
-                            <span>[% l("Bib Level") %]</span>
-                        </td>
-                        <td align='left' class="hide_me">
-                            <select multiple='multiple' size='3' id='adv_global_bib_level'>
-                            </select>    
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align='right'>
-                            <span>[% l("Publication Year") %]</span>
-                        </td>
-                        <td align='left'>
-                            <select id='adv_global_pub_date_type'>
-                                    <option value='equals' selected='selected'>[% l("Is") %] </option>
-                                    <option value='before'>[% l("Before") %]</option>
-                                    <option value='after'>[% l("After") %]</option>
-                                    <option value='between'>[% l("Between") %]</option>
-                            </select>    
-                            <div style='margin-top:5px;'>
-                                <input id='adv_global_pub_date_1' type='text' size='4' maxlength='4'/>
-                                <span id='adv_global_pub_date_2_span' class='hide_me'>
-                                    [% l("and") %] <input id='adv_global_pub_date_2' type='text' size='4' maxlength='4'/>
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- copy location selector -->
-                    <tr id='adv_copy_location_filter_row' class='hide_me'>
-                        <td align='right'>[% l("Shelving Location") %]</td>
-                        <td align='left' id='adv_copy_location_filter_td'>
-                            <select size='3'
-                                id='adv_copy_location_filter_select'
-                                multiple='multiple'>
-                            </select>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </td>
-    </tr>
-    <tr style='border-top: none;'>
-        <td align='center' valign='top' style='border-top: none;' colspan='2'>
-            <table style='border: none; width: 100%;'>
+        <td align='top'>
+          <div style="width:100%;" class="header_middle">Search Filters</div>
+          <table cellpadding='10' cellspacing='0' border='0'><tr>
+            <td valign='top'>
+                <strong>[% l("Item Type") %]</strong><br />
+                [%  INCLUDE "default/opac/parts/format_selector.tt2"
+                        value=CGI.param("item_type")
+                        multiple="multiple" size="4"
+                        id="adv_global_item_type_basic" %]
+            </td>
+            <td valign='top'>
+                <strong>[% l("Language") %]</strong><br />
+                <select multiple='multiple' size='4' id='adv_global_lang'>
+                    [% INCLUDE "default/opac/parts/item_lang_options.tt2" %]
+                </select>
+            </td>
+            <td valign='top'>
+                <strong>[% l("Audience") %]</strong><br />
+                <select multiple='multiple' size='3' id='adv_global_audience' class='hide_me'></select>
+                <select multiple='multiple' size='3' id='adv_global_audience_basic'>
+                    <option value='abcj'>[% l("Juvenile") %]</option>
+                    <option value='d'>[% l("General") %]</option>
+                    <option value='e'>[% l("Adult") %]</option>
+                </select>
+                    <!--<a id='adv_global_audience_link_adv' class='classic_link adv_adv_link'
+                        href='javascript:void(0);' onclick='
+                        hideMe($("adv_global_audience_basic"));
+                        unHideMe($("adv_global_audience"));
+                        hideMe(this);
+                        unHideMe($("adv_global_audience_link_basic"));
+                        '>[% l("Advanced") %]</a>
+                    <a id='adv_global_audience_link_basic' class='hide_me classic_link adv_adv_link'
+                        href='javascript:void(0);' onclick='
+                        unHideMe($("adv_global_audience_basic"));
+                        hideMe($("adv_global_audience"));
+                        unHideMe($("adv_global_audience_link_adv"));
+                        hideMe(this);'>[% l("Basic") %]</a>-->
+            </td>
+            <td valign='top'>
+            <strong>[% l("Sort Criteria") %]</strong>
+              <table style='border: none; width: 100%;'>
                 <tr>
                     <td align='center' width='100%'>
                         <table class='' width='100%'>
-            
-                            <thead>
-                                <tr>
-                                    <td align='center' width='50%'>[% l("Sort Criteria") %]</td>
-                                    <td align='center'></td>
-                                </tr>
-                            </thead>
-            
                             <tbody>
                                 <tr>
                                     <td align=''>
-                                        <select id='adv_global_sort_by'>
+                                        <select id='adv_global_sort_by' onchange='__setsortsel();'>
                                             <option value='rel'>[% l("Relevance") %]</option>
                                             <option value='title'>[% l("Title") %]</option>
                                             <option value='author'>[% l("Author") %]</option>
@@ -216,18 +88,113 @@
                                             <option value='desc'>[% l("Descending / Z to A") %]</option>
                                         </select>
                                     </td>
+                           <!-- force the enable/disable sort dir code to run -->
+                           <script language='javascript' type='text/javascript'>__setsortsel();</script>
                                 </tr>
                                 <tr>
                                     <td align='center' class="hide_me">
                                         <span>[% l("Group Formats and Editions") %]</span>
                                         <input id='adv_group_titles' type='checkbox' />
                                     </td>
-                                    <td align='center'></td>
+                                    <td align='center'>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </td>
                 </tr>
+              </table>
+            </td>
+          </tr></table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <table cellpadding='10' cellspacing='0' border='0'>
+                <tbody>
+                    <tr>
+                        <td align='right' class="hide_me">
+                            <span>[% l("Item Form") %]</span>
+                        </td>
+                        <td align='left' class="hide_me">
+                            <select multiple='multiple' size='3' id='adv_global_item_form'>
+                            </select>    
+                        </td>
+                        <td align='right' class="hide_me">
+                            <span>[% l("Literary Form") %]</span>
+                            <a id='adv_global_lit_form_link_adv' class='classic_link adv_adv_link'
+                                href='javascript:void(0);' onclick='
+                                hideMe($("adv_global_lit_form_basic"));
+                                unHideMe($("adv_global_lit_form"));
+                                hideMe(this);
+                                unHideMe($("adv_global_lit_form_link_basic"));
+                                '>[% l("Advanced") %]</a>
+                            <a id='adv_global_lit_form_link_basic' class='hide_me classic_link adv_adv_link'
+                                href='javascript:void(0);' onclick='
+                                unHideMe($("adv_global_lit_form_basic"));
+                                hideMe($("adv_global_lit_form"));
+                                unHideMe($("adv_global_lit_form_link_adv"));
+                                hideMe(this);
+                                '>[% l("Basic") %]</a>
+                        </td>
+                        <td align='left' class="hide_me">
+                            <select multiple='multiple' size='3' id='adv_global_lit_form' class='hide_me'>
+                            </select>    
+                            <select multiple='multiple' size='3' id='adv_global_lit_form_basic'>
+                                <option value='0 '>[% l("Non Fiction") %]</option>
+                                <option value='1'>[% l("Fiction") %]</option>
+                            </select>    
+                        </td>
+                        <td align='right' class="hide_me">
+                            <span>[% l("Bib Level") %]</span>
+                        </td>
+                        <td align='left' class="hide_me">
+                            <select multiple='multiple' size='3' id='adv_global_bib_level'>
+                            </select>    
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign='top'>
+                            <strong>[% l("Search Library") %]</strong><br />
+                            [% PROCESS "default/opac/parts/org_selector.tt2";
+                                PROCESS build_org_selector name='loc' value=loc %]
+                            <div style="position:relative;top:7px;">
+                                <input type='checkbox'
+                                id='opac.result.limit2avail'/>
+                                <label style="position:relative;top:-2px;"
+                                    for='opac.result.limit2avail'>
+                                    [% l("Limit to Available") %]</label>
+                            </div>
+                        </td>
+                        <td valign='top'>
+                            <strong>[% l("Publication Year") %]</strong><br />
+                            <select id='adv_global_pub_date_type' onchange='
+                                if($("adv_global_pub_date_type").selectedIndex == 3)
+                                    unHideMe($("adv_global_pub_date_2_span"));
+                                else
+                                    hideMe($("adv_global_pub_date_2_span"));'>
+                                <option value='equals' selected='selected'>[% l("Is") %]</option>
+                                <option value='before'>[% l("Before") %]</option>
+                                <option value='after'>[% l("After") %]</option>
+                                <option value='between'>[% l("Between") %]</option>
+                            </select>    
+                            <div style='margin-top:5px;'>
+                                <input id='adv_global_pub_date_1' type='text' size='4' maxlength='4'/>
+                                <span id='adv_global_pub_date_2_span' class='hide_me'>
+                                   [% l("and") %] <input id='adv_global_pub_date_2' type='text' size='4' maxlength='4'/>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- copy location selector -->
+                    <tr id='adv_copy_location_filter_row' class='hide_me'>
+                        <td align='right'>[% l("Shelving Location") %]</td>
+                        <td align='left' id='adv_copy_location_filter_td'>
+                            <select size='3' id='adv_copy_location_filter_select' multiple='multiple'>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
         </td>
     </tr>
@@ -305,4 +272,3 @@
         <img alt="Search" src="[% ctx.media_prefix %]/images/search_btn.gif" style="cursor:pointer;" />
     </div>
 </div>
-<!-- ****************** end: advanced_global.xml ***************************** -->

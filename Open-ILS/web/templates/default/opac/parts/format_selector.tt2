@@ -1,6 +1,8 @@
 [%  name = name || "item_type";
     id = id || "format_selector" %]
-<select id='[% id %]' name='[% name %]'>
+<select id='[% id %]' name='[% name %]'[%
+    multiple ? ' multiple="multiple"' : '';
+    size ? (' size="' _ size _ '"') : ''; %]>
     <option value=''>[% l("All Formats") %]</option>
 [% FOR o IN item_types %]
     <option value='[% o.code %]'[% value == o.code ? ' selected="selected"' : ''%]>[% o.name %]</option>
