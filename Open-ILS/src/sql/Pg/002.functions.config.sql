@@ -420,10 +420,21 @@ CREATE OR REPLACE FUNCTION oils_json_to_text( TEXT ) RETURNS TEXT AS $f$
 $f$ LANGUAGE PLPERLU;
 
 CREATE OR REPLACE FUNCTION maintain_901 () RETURNS TRIGGER AS $func$
+DECLARE
+    use_id_for_tcn BOOLEAN;
 BEGIN
     -- Remove any existing 901 fields before we insert the authoritative one
     NEW.marc := REGEXP_REPLACE(NEW.marc, E'<datafield\s*[^<>]*?\s*tag="901".+?</datafield>', '', 'g');
+
     IF TG_TABLE_SCHEMA = 'biblio' THEN
+        -- Set TCN value to record ID?
+        SELECT enabled FROM config.global_flag INTO use_id_for_tcn
+            WHERE name = 'cat.bib.use_id_for_tcn';
+
+        IF use_id_for_tcn = 't' THEN
+            NEW.tcn_value := NEW.id;
+        END IF;
+
         NEW.marc := REGEXP_REPLACE(
             NEW.marc,
             E'(</(?:[^:]*?:)?record>)',
