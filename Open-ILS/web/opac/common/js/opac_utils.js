@@ -555,7 +555,7 @@ function grabUser(ses, force) {
 			return G.user;
 
 	/* first make sure the session is valid */
-	var request = new Request(FETCH_SESSION, ses, 1 );
+	var request = new Request(FETCH_SESSION, ses);
 	request.request.alertEvent = false;
 	request.send(true);
 	var user = request.result();
@@ -569,7 +569,7 @@ function grabUser(ses, force) {
                 function(success, authtoken) { 
                     if(success) {
                         ses = authtoken;
-                        var request = new Request(FETCH_SESSION, ses, 1);
+                        var request = new Request(FETCH_SESSION, ses);
                         request.request.alertEvent = false;
                         request.send(true);
                         user = request.result();
