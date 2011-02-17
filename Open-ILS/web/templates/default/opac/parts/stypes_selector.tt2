@@ -1,10 +1,16 @@
-<!-- ****************** stypes_selector.xml ***************************** -->
-<select id='search_type_selector'>
-	<option value='keyword' selected='selected'>[% l("Keyword") %]</option>
-	<option value='title'>[% l("Title") %]</option>
-	<option value='author'>[% l("Author") %]</option>
-	<option value='subject'>[% l("Subject") %]</option>
-	<option value='series'>[% l("Series") %]</option>
-	<option value='cn'>Call Number</option>
+[%  search_classes = [
+    {value => "", label => l("Keyword")},
+    {value => "title", label => l("Title")},
+    {value => "author", label => l("Author")},
+    {value => "subject", label => l("Subject")},
+    {value => "series", label => l("Series")},
+    {value => "cn", label => l("Call Number")}  # XXX or should this be bibcn?
+] %]
+<select id='search_type_selector' name="class">
+    [%  search_class = CGI.param('class');
+        FOR sc IN search_classes -%]
+    <option value='[% sc.value %]'[%
+        search_class == sc.value ? ' selected="selected"' : ''
+    %]>[% sc.label %]</option>
+    [% END -%]
 </select>
-<!-- ****************** end: stypes_selector.xml ***************************** -->

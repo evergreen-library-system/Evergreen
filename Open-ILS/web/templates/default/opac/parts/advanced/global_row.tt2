@@ -1,15 +1,9 @@
-<!-- ****************** adv_global_row.xml ***************************** -->
 <tr id='adv_global_trow' type='input'>
     <td align='left' width='100%' nowrap='nowrap'>
         <!-- select the search class -->
-        <select name='type' style='margin-right: 7px;'>
-            <option value='keyword' selected='selected'>[% l("Keyword") %]</option>
-            <option value='title'>[% l("Title") %]</option>
-            <option value='author'>[% l("Author") %]</option>
-            <option value='subject'>[% l("Subject") %]</option>
-            <option value='series'>[% l("Series") %]</option>
-            <option value='bibcn'>Bibliographic call number:</option>
-            </select>
+        <span class="opac-auto-078">
+            [% INCLUDE "default/opac/parts/stypes_selector.tt2" %]
+        </span>
         <!-- select how to treat the text -->
         <select name='contains' style='margin-right: 7px;'>
             <option value='contains'>[% l("Contains") %]</option>
@@ -21,4 +15,3 @@
         <!-- Remove this row -->
     </td>
 </tr>
-<!-- ****************** end: adv_global_row.xml ***************************** -->

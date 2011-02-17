@@ -23,6 +23,7 @@ sub load_rresults {
     my $item_type = $cgi->param('item_type');
     my $facet = $cgi->param('facet');
     my $query = $cgi->param('query');
+    my $search_class = $cgi->param('class');
     my $limit = $cgi->param('limit') || 10; # TODO user settings
 
     my $loc = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
@@ -35,6 +36,10 @@ sub load_rresults {
     };
 
     $query = "$query $facet" if $facet; # TODO
+    # XXX Since open-ils.search is a public service, it is responsible for
+    # being wary of injection/bad input, not us, right?
+    $query = $search_class . ':' . $query if $search_class;
+
     my $results;
 
     try {
