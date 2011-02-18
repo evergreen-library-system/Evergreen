@@ -1,23 +1,15 @@
 /* once done renaming and everything, combine with style.css */
-.opac-auto-001 { background: #2bb0fd; }
-.opac-auto-002 { background: #54987f; }
-.opac-auto-003 { background: #decc92; }
+
+/* Verfied in-use classes --------------------------- */
 .opac-auto-004 { background: #E0F0E0; }
-.opac-auto-005 { background: #ffc331; }
-.gray-back { background: gray; }
-.pink-back { background: pink; }
-.white-back { background: white; }
 .opac-auto-009 { border: 3px solid #E0E0E0; }
 .opac-auto-010 { border-bottom: 1px dotted #ccc; padding-top: 10px; }
 .opac-auto-011 { border-bottom: 1px dotted #ccc; padding-top: 6px; }
 .opac-auto-012 { border-bottom: none; }
 .opac-auto-013 { border-bottom: none; *height: 0px; }
-.opac-auto-014 { border-collapse: collapse; }
 .opac-auto-015 { border-left: 1px solid #e9ebf3; padding-right: 27px; }
-.opac-auto-016 { border: none; }
 .opac-auto-017 { border: none; width: 100%; }
 .opac-auto-018 { border-top: 1px dotted #ccc; padding-top: 17px; }
-.opac-auto-019 { border-top: none; }
 .clear-both { clear: both; }
 .common-no-pad { clear: both; height: 0px; margin: 0px; padding: 0px; }
 .common-full-pad { clear: both; height: 15px; }
@@ -27,6 +19,9 @@
 .red { color: red; }
 .bold-red { color: red; font-weight: bold }
 .pointer { cursor: pointer; }
+/* ------------------------------------------- */
+
+
 #lib_selector_span { display: none }
 .float-left { float: left; }
 .opac-auto-039 { float: left; font-weight: bold; padding-top: 5px; }

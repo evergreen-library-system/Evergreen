@@ -121,14 +121,14 @@
                     <tr id='myopac_fines_summary_row'>
                         <td id='myopac_fines_summary_total'>[% money(ctx.fines.total_owed) %]</td>
                         <td id='myopac_fines_summary_paid'>[% money(ctx.fines.total_paid) %]</td>
-                        <td id='myopac_fines_summary_balance' style='color:red;font-weight: bold;'>[% money(ctx.fines.balance_owed) %]</td>
+                        <td id='myopac_fines_summary_balance' class='bold-red'>[% money(ctx.fines.balance_owed) %]</td>
                     </tr>
                 </tbody>
             </table>
         <!--
         <div id='accrue_explanation' class='hide_me'>
             <span>Transactions whose balances are marked with a</span>
-            <span style='color:red; font-weight: bold'>*</span>
+            <span class='bold-red'>*</span>
             <span>will continue to accrue fines until the checked out item is returned.</span>
         </div>
         -->
@@ -220,7 +220,7 @@
             <!-- Table for all non-circulation transactions -->
             <div id='myopac_trans_div'>
                 <br/>
-                <hr style="border-bottom:none;*height:0px;" color="#dcdbdb" />
+                <hr class='opac-auto-013'  color="#dcdbdb" />
                 <br/>
                 <table width='100%' class='data_grid data_grid_center'
                     id='myopac_trans_table'>

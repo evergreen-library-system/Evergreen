@@ -69,8 +69,7 @@
                 <div style="width:174px;" class="hide_me" id="tehSideBar">SIDEBAR TODO
                 </div>
             </td>
-            <td style="border-left:1px solid #e9ebf3;padding-right:27px;"
-                width="1"></td>
+            <td class='opac-auto-015' width="1"></td>
             <td valign="top">
                 <table id="res_table" cellpadding="0" cellspacing="0"
                     border="0" width="100%" style="margin-top:10px;">
@@ -177,8 +176,7 @@
                                                 class='result_table_format_cell' align="center" width="1"
                                                 style="padding:0px 10px;">
                                                 <img alt="Format" src="" class="hide_me" name="" />
-                                                <span class='hide_me'
-                                                    style='color: #9999FF; padding-left: 10px; font-size: 7pt; font-weight: 300;'>
+                                                <span class='hide_me opac-auto-031'>
                                                     <span>[% l("Match Score: ") %] </span>
                                                     <span name='relevancy_span'> </span>
                                                 </span>
@@ -198,14 +196,13 @@
                                             <td nowrap='nowrap' width="1" align="right">
                                                 <div style="width:250px;text-align:left;">
                                                     <div style="float:right;">
-                                                        <div style="border-bottom:1px dotted #ccc;padding-top:10px;"
-                                                            class="results_aux_utils"><a
+                                                        <div class="results_aux_utils opac-auto-010"><a
                                                                 href="[% ctx.opac_root %]/place_hold?hold_target=[% rec.bre.id %]&hold_type=T" name="place_hold_link"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
                                                                 alt="place hold" /><span
                                                                     style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
                                                         </div>
-                                                        <div style="border-bottom:1px dotted #ccc;padding-top:6px;" class="results_aux_utils">
+                                                        <div class="results_aux_utils opac-auto-011">
                                                             <div style="position:absolute;">
                                                                 <div style="position:relative;top:5px; left: 25px;">
                                                                     <a title="Add to my list"
@@ -251,7 +248,7 @@
                                         <tr>
                                             <td colspan="5">
                                                 <div style="height:0px;border-top:1px solid #b7b7b7;border-bottom:1px solid #d4d4d4;margin:15px 0px;"></div>
-                                                <!-- <hr style="border-bottom:none;*height:0px;" color="#FFCC33" /> -->
+                                                <!-- <hr class='opac-auto-013' color="#FFCC33" /> -->
                                             </td>
                                         </tr>
                                     </tbody>

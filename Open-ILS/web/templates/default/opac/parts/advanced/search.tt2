@@ -1,7 +1,7 @@
 <table id='adv_global_search' class='data_grid data_grid_center' width='100%'>
     <tr style='border-bottom: none;'>
         <!-- Contains the user-addable(?) rows to define search class, containment and text -->
-        <td valign='top' style='border-bottom: none;'>
+        <td valign='top' class='opac-auto-012'>
             <table width='100%' id='adv_global_input_table'>
                 <thead>
                     <tr>
@@ -66,7 +66,7 @@
             </td>
             <td valign='top'>
             <strong>[% l("Sort Criteria") %]</strong>
-              <table style='border: none; width: 100%;'>
+              <table class='opac-auto-017'>
                 <tr>
                     <td align='center' width='100%'>
                         <table class='' width='100%'>
@@ -202,7 +202,7 @@
     <tr class='border_4_2'>
         <td align="left" colspan='2'>
             <!-- XXX TODO make a real form, and make this a real submitter -->
-        <img src="[% ctx.media_prefix %]/images/search_btn.gif" alt="[% l('Search') %]"  style="cursor:pointer;" />
+        <img src="[% ctx.media_prefix %]/images/search_btn.gif" alt="[% l('Search') %]"  class='pointer' />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <!-- XXX TODO make a real form, and make this a real resetter -->
         <a href="javascript:;" style="position: relative; top: -9px;">Reset Form</a>
@@ -235,7 +235,7 @@
             <!-- XXX TODO make a real form, and make a real submitter (quick
             submit, FKA advGenericSearch() -->
             <img src="[% ctx.media_prefix %]/images/search_btn.gif"
-                alt="[% l('Search') %]" id="adv_quick_submit" style="cursor:pointer;" />
+                alt="[% l('Search') %]" id="adv_quick_submit" class='pointer' />
         </div>
     </div>
 </div>
@@ -269,6 +269,6 @@
             class='classic_link' href='javascript:advAddMARC();'>[% l("Add Row") %]</a>
         <!-- XXX TODO make a real form, and make a real submitter (FKA
         advMARCRun()) -->
-        <img alt="Search" src="[% ctx.media_prefix %]/images/search_btn.gif" style="cursor:pointer;" />
+        <img alt="Search" src="[% ctx.media_prefix %]/images/search_btn.gif" class='pointer' />
     </div>
 </div>

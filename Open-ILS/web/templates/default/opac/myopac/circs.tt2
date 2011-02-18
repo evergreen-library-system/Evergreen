@@ -70,27 +70,25 @@
                     />
                 </td>
                 <td width="40%" style="padding-left:5px;">
-                    <span title="Click to sort" style="cursor:pointer;">
+                    <span title="Click to sort" class='pointer'>
                         Title
                     </span> /
-                    <span title="Click to sort" style="cursor:pointer;">
+                    <span title="Click to sort" class='pointer'>
                         Author
                     </span>
                 </td>
                 <td width="8%" style="padding-right:5px;" align="center">
-                    <span title="Click to sort" style="cursor:pointer;">
-                        Renews<br />Left
+                    <span title="Click to sort" class='pointer'>Renews<br />Left
                     </span>
                 </td>
                 <td width="13%" style="padding-left:5px;">
-                    <span title="Click to sort" style="cursor:pointer;">Due Date
-                    </span>
+                    <span title="Click to sort" class='pointer'>Due Date</span>
                 </td>
                 <td width="16%">
-                    <span title="Click to sort" style="cursor:pointer;">barcode</span>
+                    <span title="Click to sort" class='pointer'>barcode</span>
                 </td>
                 <td width="22%">
-                    <span title="Click to sort" style="cursor:pointer;">call number</span>
+                    <span title="Click to sort" class='pointer'>call number</span>
                 </td>
             </tr>
         </table>
@@ -151,27 +149,21 @@
             border='0' width='100%'>
             <tr>
                 <td width="45%" style="padding-left:15px;">
-                    <span title="Click to sort"
-                        style="cursor:pointer;">Title</span> /
-                    <span title="Click to sort"
-                        style="cursor:pointer;">Author</span>
+                    <span title="Click to sort" class='pointer'>Title</span> /
+                    <span title="Click to sort" class='pointer'>Author</span>
                 </td>
                 <td width="22%"
                     style="white-space:nowrap;padding-left:5px;">
-                    <span title="Click to sort"
-                        style="cursor:pointer;">Call Number</span>
+                    <span title="Click to sort" class='pointer'>Call Number</span>
                 </td>
                 <td width="11%">
-                    <span title="Click to sort"
-                        style="cursor:pointer;">Checkout</span>
+                    <span title="Click to sort" class='pointer'>Checkout</span>
                 </td>
                 <td width="11%">
-                    <span title="Click to sort"
-                        style="cursor:pointer;">Due Date</span>
+                    <span title="Click to sort" class='pointer'>Due Date</span>
                 </td>
                 <td width="11%">
-                    <span title="Click to sort"
-                        style="cursor:pointer;">Returned</span>
+                    <span title="Click to sort" class='pointer'>Returned</span>
                 </td>
             </tr>
         </table>

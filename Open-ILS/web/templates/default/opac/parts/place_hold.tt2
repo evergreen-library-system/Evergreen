@@ -238,8 +238,7 @@
                     <td class='holds_cell'>
                         <div style='margin-bottom: 5px;'>
                             <span>[% l("Acceptable Alternative Formats:") %] </span>
-                            <span><a class='classic_link' style='color:red;'
-                                    href='#'>[% l("(Help)") %]</a></span>
+                            <span><a class='classic_link red' href='#'>[% l("(Help)") %]</a></span>
                         </div>
                         <div>[% l("(control-click to select multiple formats)") %]</div>
                     </td>

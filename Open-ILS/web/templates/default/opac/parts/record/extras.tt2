@@ -191,7 +191,7 @@
                 <strong>Patron Reviews:</strong>
                 <div id='rdetail_chilifresh_reviews' class='hide_me' style="margin-bottom:20px;">
                     <div id='chilifreshReviewLink' name='chilifreshReviewLink' class='chili_review'></div>
-                    <div id='chilifreshReviewResult' name='chilifreshReviewResult' style='display:none'></div>
+                    <div id='chilifreshReviewResult' name='chilifreshReviewResult' class='hidden'></div>
                 </div>
                 <strong>Reviews:</strong>
                 <div id='rdetail_review_container' style="margin-bottom:20px;"></div>

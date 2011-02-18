@@ -27,7 +27,7 @@
                         <td valign="top">
                             <span id='rdetail_title'>[% attrs.title %]</span><br />
                             [% IF attrs.author %]
-                            <span style="color:#545454;">[% l("Author") %]:</span>
+                            <span class='opac-auto-030'>[% l("Author") %]:</span>
                             <em><a title='[% l("Perform an author search") %]'
                                     id='rdetail_author'
                                     href="[% ctx.opac_root %]/results?query=author%3a[% attrs.author | replace('[,\.:;]', '') | uri %]&loc=[% loc %]">[% attrs.author %]</a>
@@ -37,8 +37,7 @@
                         <td align="right" valign="top" nowrap="nowrap" style="white-space:nowrap;">
                             <div style="width:230px;text-align:left;margin-top:3px;">
                                 <div style="float:right;">
-                                    <div style="border-bottom:1px dotted #ccc;padding-top:10px;"
-                                        class="rdetail_aux_utils">
+                                    <div class="rdetail_aux_utils opac-auto-010">
                                         <a href="[% ctx.opac_root %]/place_hold?hold_target=[% record.id %]&hold_type=T" id="rdetail_place_hold"><img
                                             src="[% ctx.media_prefix %]/images/green_check.png" alt="place hold" />
                                             <span style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
@@ -62,7 +61,7 @@
                         </td>
                     </tr>
                 </table>
-                <div style="border-top: 1px dotted #ccc;padding-top:17px;">
+                <div class='opac-auto-018'>
                     <table border="0" cellpadding="0" width="100%">
                         <tr>
                             <td nowrap='nowrap' valign="top">

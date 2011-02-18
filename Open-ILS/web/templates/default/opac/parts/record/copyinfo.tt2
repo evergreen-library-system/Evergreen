@@ -59,7 +59,7 @@
     </table>
     <!-- <table class='hide_me'>
         <tbody>
-        <tr style='border: 3px solid #E0E0E0;' id='rdetail_volume_details_row'><td colspan='10'></td></tr>
+        <tr class='opac-auto-009' id='rdetail_volume_details_row'><td colspan='10'></td></tr>
         </tbody>
     </table> -->
     <br/><br/>

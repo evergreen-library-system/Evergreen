@@ -58,7 +58,7 @@ h2 {
 	font-weight:bold;
 }
 
-.hide_me {
+.hide_me, .hidden {
 	display: none;
 	visibility: hidden;
 }

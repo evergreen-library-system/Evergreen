@@ -1,6 +1,6 @@
 <table class="hide_me">
     <tbody>
-        <tr style='border: 3px solid #E0E0E0;' id='rdetail_volume_details_row' templateRow='1'>
+        <tr class='opac-auto-009' id='rdetail_volume_details_row' templateRow='1'>
             <td colspan='10'>
                 <div style='text-align: center; margin-top: 6px; margin-bottom: 6px'>
                     <a name='print' href='#' class='classic_link'>[% l("print these details") %]</a>
@@ -78,7 +78,7 @@
                     <tr><td>[% l("Publisher") %]</td><td colspan='2' name='publisher'></td></tr>
                     <tr><td>[% l("Physical Description") %]</td><td colspan='2' name='phys'></td></tr>
                     <tr>
-                        <td colspan='3' style='background: #E0F0E0;'> </td>
+                        <td colspan='3' class='opac-auto-004'> </td>
                     </tr>
                     <tr name='cnrow'>
                         <td><b>[% l("Call Number") %]</b></td>
