@@ -239,12 +239,12 @@ sub load_login {
 
     # login succeeded, redirect as necessary
 
-    my $home = $self->apache->unparsed_uri;
-    $home =~ s/\/login/\/home/;
+    my $acct = $self->apache->unparsed_uri;
+    $acct =~ s#/login#/myopac/main#;
 
     $self->apache->print(
         $cgi->redirect(
-            -url => $cgi->param('redirect_to') || $home,
+            -url => $cgi->param('redirect_to') || $acct,
             -cookie => $cgi->cookie(
                 -name => 'ses',
                 -path => '/',
