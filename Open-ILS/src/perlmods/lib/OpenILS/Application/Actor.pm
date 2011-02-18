@@ -1641,7 +1641,7 @@ foreach (keys %methods) {
             }
         }
     );
-    /\.have_balance/ and $args{authoritative} = 1;     # FIXME: I don't know why have_charge isn't authoritative
+    $args{authoritative} = 1;
     __PACKAGE__->register_method(%args);
 }
 
@@ -1682,12 +1682,17 @@ __PACKAGE__->register_method(
 
 
 sub user_transactions {
-	my( $self, $client, $login_session, $user_id, $type, $options ) = @_;
+	my( $self, $client, $auth, $user_id, $type, $options ) = @_;
     $options ||= {};
 
-	my( $user_obj, $target, $evt ) = $apputils->checkses_requestor(
-		$login_session, $user_id, 'VIEW_USER_TRANSACTIONS' );
-	return $evt if $evt;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+
+    return $e->event unless 
+        $e->requestor->id == $user_id or
+        $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou);
 
     my $api = $self->api_name();
 
@@ -1695,17 +1700,13 @@ sub user_transactions {
         { 'balance_owed' => { '<>' => 0 } }:
         { 'total_owed' => { '>' => 0 } };
 
-    my ($trans) = $self->method_lookup(
-        'open-ils.actor.user.transactions.history.still_open')
-      ->run( $login_session, $user_id, $type, $filter, $options );
+    my $method = 'open-ils.actor.user.transactions.history.still_open';
+    $method = "$method.authoritative" if $api => /authoritative/;
+    my ($trans) = $self->method_lookup($method)->run($auth, $user_id, $type, $filter, $options);
 
 	if($api =~ /total/o) { 
 		my $total = 0.0;
-		for my $t (@$trans) {
-			$total += $t->balance_owed;
-		}
-
-		$logger->debug("Total balance owed by user $user_id: $total");
+        $total += $_->balance_owed for @$trans;
 		return $total;
 	}
 
@@ -1720,27 +1721,8 @@ sub user_transactions {
 			next;
 		}
 
-		my $circ = $apputils->simple_scalar_request(
-				"open-ils.cstore",
-				"open-ils.cstore.direct.action.circulation.retrieve",
-				$t->id );
-
-		next unless $circ;
-
-		my $title = $apputils->simple_scalar_request(
-			"open-ils.storage", 
-			"open-ils.storage.fleshed.biblio.record_entry.retrieve_by_copy",
-			$circ->target_copy );
-
-		next unless $title;
-
-		my $u = OpenILS::Utils::ModsParser->new();
-		$u->start_mods_batch($title->marc());
-		my $mods = $u->finish_mods_batch();
-		$mods->doc_id($title->id) if $mods;
-
-		push @resp, {transaction => $t, circ => $circ, record => $mods };
-
+        my $circ_data = flesh_circ($e, $t->id);
+		push @resp, {transaction => $t, %$circ_data};
 	}
 
 	return \@resp; 
@@ -1779,8 +1761,18 @@ sub user_transaction_retrieve {
     return $trans unless $self->api_name =~ /flesh/;
     return {transaction => $trans} if $trans->xact_type ne 'circulation';
 
+    my $circ_data = flesh_circ($e, $trans->id, 1);
+
+	return {transaction => $trans, %$circ_data};
+}
+
+sub flesh_circ {
+    my $e = shift;
+    my $circ_id = shift;
+    my $flesh_copy = shift;
+
     my $circ = $e->retrieve_action_circulation([
-        $trans->id, {
+        $circ_id, {
             flesh => 3,
             flesh_fields => {
                 circ => ['target_copy'],
@@ -1809,7 +1801,7 @@ sub user_transaction_retrieve {
     $circ->target_copy($circ->target_copy->id);
     $copy->call_number($copy->call_number->id);
 
-	return {transaction => $trans, circ => $circ, record => $mods, copy => $copy };
+	return {circ => $circ, record => $mods, copy => ($flesh_copy) ? $copy : undef };
 }
 
 
@@ -2021,23 +2013,20 @@ sub _sigmaker {
     return @sig;
 }
 
-my %hist_methods = (
+my %auth_hist_methods = (
     'history'             => '',
     'history.have_charge' => 'that have an initial charge',
     'history.still_open'  => 'that are not finished',
-);
-my %auth_hist_methods = (
     'history.have_balance'         => 'that have a balance',
     'history.have_bill'            => 'that have billings',
     'history.have_bill_or_payment' => 'that have non-zero-sum billings or at least 1 payment',
+    'history.have_payment' => 'that have at least 1 payment',
 );
-foreach (keys %hist_methods) {
-    __PACKAGE__->register_method(_sigmaker($_,       $hist_methods{$_}));
-    __PACKAGE__->register_method(_sigmaker("$_.ids", $hist_methods{$_}));
-}
+
 foreach (keys %auth_hist_methods) {
     __PACKAGE__->register_method(_sigmaker($_,       $auth_hist_methods{$_}, 1));
     __PACKAGE__->register_method(_sigmaker("$_.ids", $auth_hist_methods{$_}, 1));
+    __PACKAGE__->register_method(_sigmaker("$_.fleshed", $auth_hist_methods{$_}, 1));
 }
 
 sub user_transaction_history {
@@ -2067,6 +2056,10 @@ sub user_transaction_history {
             'last_payment_ts' => { '<>' => undef }
         };
 
+    } elsif($api =~ /have_payment/) {
+
+        $filter->{last_payment_ts} ||= {'<>' => undef};
+
     } elsif( $api =~ /have_balance/o) {
 
         # transactions that have a non-zero overall balance
@@ -2089,17 +2082,27 @@ sub user_transaction_history {
     $options_clause->{'offset'} = $options->{'offset'} if $options->{'offset'}; 
 
     my $mbts = $e->search_money_billable_transaction_summary(
-        [ 
-            { usr => $userid, @xact_finish, %$filter },
+        [   { usr => $userid, @xact_finish, %$filter },
             $options_clause
         ]
     );
 
-    if ($api =~ /\.ids/) {
-    	return [map {$_->id} @$mbts];
-    } else {
-        return $mbts;
-    }
+    return [map {$_->id} @$mbts] if $api =~ /\.ids/;
+    return $mbts unless $api =~ /fleshed/;
+
+	my @resp;
+	for my $t (@$mbts) {
+			
+		if( $t->xact_type ne 'circulation' ) {
+			push @resp, {transaction => $t};
+			next;
+		}
+
+        my $circ_data = flesh_circ($e, $t->id);
+		push @resp, {transaction => $t, %$circ_data};
+	}
+
+	return \@resp; 
 }
 
 
@@ -3517,7 +3520,9 @@ sub user_payments {
     return $e->die_event unless $e->checkauth;
 
     my $user = $e->retrieve_actor_user($user_id) or return $e->event;
-    return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou);
+    return $e->event unless 
+        $e->requestor->id == $user_id or
+        $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou);
 
     # Find all payments for all transactions for user $user_id
     my $query = {

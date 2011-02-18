@@ -87,6 +87,7 @@ DEBS =  \
 	libdatetime-set-perl\
 	libdbd-pg-perl\
 	libemail-send-perl\
+	libemail-simple-perl\
 	libgd-graph3d-perl\
 	liblog-log4perl-perl\
 	libmarc-record-perl\
@@ -172,6 +173,7 @@ FEDORA_13_RPMS = \
 	perl-Business-ISBN-Data \
 	perl-DBD-Pg \
 	perl-Email-Send \
+	perl-Email-Simple \
 	perl-GDGraph3d \
 	perl-Net-SSH2 \
 	perl-OLE-Storage_Lite \

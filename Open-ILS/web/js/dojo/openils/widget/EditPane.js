@@ -77,6 +77,20 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     if(field.name == this.fmIDL.pkey && this.mode == 'create' && this.fmIDL.pkey_sequence)
                         continue; /* don't show auto-generated fields on create */
 
+                    if(!this.overrideWidgetArgs[field.name])
+                        this.overrideWidgetArgs[field.name] = {};
+
+                    if(this.overrideWidgetArgs[field.name].hrbefore && this.paneStackCount <= 1) {
+                        var hrTr = document.createElement('tr');
+                        var hrTd = document.createElement('td');
+                        var hr = document.createElement('hr');
+                        hrTd.colSpan = 2;
+                        dojo.addClass(hrTd, 'openils-widget-editpane-hr-cell');
+                        hrTd.appendChild(hr);
+                        hrTr.appendChild(hrTd);
+                        tbody.appendChild(hrTr);
+                    }
+
                     if((idx++ % this.paneStackCount) == 0 || !currentRow) {
                         // time to start a new row
                         currentRow = document.createElement('tr');
@@ -106,9 +120,6 @@ if(!dojo._hasResource['openils.widget.EditPane']) {
                     currentRow.appendChild(nameTd);
                     currentRow.appendChild(valTd);
                     //dojo.addClass(docTd, 'oils-fm-edit-pane-help');
-
-                    if(!this.overrideWidgetArgs[field.name])
-                        this.overrideWidgetArgs[field.name] = {};
 
                     var args = dojo.mixin(
                         {   // defaults

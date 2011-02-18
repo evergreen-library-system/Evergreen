@@ -139,7 +139,7 @@ sub make_payments {
     my $cc_args = $payments->{cc_args};
     my $check_number = $payments->{check_number};
     my $total_paid = 0;
-    my $this_ou = $e->requestor->ws_ou;
+    my $this_ou = $e->requestor->ws_ou || $e->requestor->home_ou;
     my %orgs;
 
     # unless/until determined by payment processor API
@@ -534,9 +534,11 @@ sub format_payment_receipt {
                     mbt => ['usr']
                 }
             }
-        ]) or return OpenILS::Event->new('MP_NOT_FOUND');
+        ]) or return $e->event;
 
-        return $e->event unless $e->allowed('VIEW_TRANSACTION', $payment->xact->usr->home_ou); 
+        return $e->event unless 
+            $e->requestor->id == $payment->xact->usr->id or
+            $e->allowed('VIEW_TRANSACTION', $payment->xact->usr->home_ou); 
 
         push @$payments, $payment;
     }
