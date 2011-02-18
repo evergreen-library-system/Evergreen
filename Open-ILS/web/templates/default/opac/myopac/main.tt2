@@ -150,12 +150,13 @@
                             <td>[% l("Due Date") %]</td>
                             <td>[% l("Date Returned") %]</td>
                             <td>[% l("Balance Owed") %]</td>
+                            <!-- TODO: hidden until pay-fines is implemented
                             <td nowrap="nowrap" style="white-space:nowrap;">
                                 <input id="pay_fines_box1" checked="checked"
-                                    type="checkbox"
-                                    title="[% l('Click to (un)select all fines') %]" />
+                                    type="checkbox" title="[% l('Click to (un)select all fines') %]" />
                                 <label for="pay_fines_box1">[% l('Pay Fines') %]</label>
                             </td>
+                            -->
                         </tr>
                     </thead>
                     <tbody id='myopac_circ_trans_tbody'>
@@ -204,11 +205,11 @@
                                     [% money(f.xact.balance_owed) %]
                                 </strong>
                             </td>
+                            <!-- TODO: hidden until pay-fines is implemented
                             <td>
-                                <input type="checkbox" checked="checked"
-                                    name="selector"
-                                    title="[% l('Pay this fine') %]" />
+                                <input type="checkbox" name="selector" title="[% l('Pay this fine') %]" />
                             </td>
+                            -->
                         </tr>
                         [% END %]
                     </tbody>
@@ -237,6 +238,7 @@
                             <td width='16%'>[% l("Total Amount Paid") %]</td>
                             <td width='16%'>[% l("Balance Owed") %]</td>
                             <td width='16%'>[% l("Billing Type") %]</td>
+                            <!-- TODO: hidden until pay-fines is implemented
                             <td width='4%' align="center" nowrap="nowrap"
                                 style="white-space:nowrap;">
                                 <input id="pay_fines_box2" checked="checked"
@@ -244,6 +246,7 @@
                                     title="[% l('Click to (un)select all fines') %]" />
                                 <label for="pay_fines_box2">[% l("Pay Fines") %]</label>
                             </td>
+                            -->
                         </tr>
                     </thead>
                     <tbody id='myopac_trans_tbody'>
@@ -270,22 +273,24 @@
                                 </strong>
                             </td>
                             <td>[% f.xact.last_billing_type %]</td>
+                            <!-- TODO: hidden until pay-fines is implemented
                             <td>
-                                <input type="checkbox" name='selector'
-                                    title='[% l("Pay this fine") %]'
-                                    checked="checked" />
+                                <input type="checkbox" name='selector' title='[% l("Pay this fine") %]'/>
                             </td>
+                            -->
                         </tr>
                         [% END %]
                     </tbody>
                 </table>
             </div>
             [% END %]
+            <!-- TODO: hidden until pay-fines is implemented
             <a href="#"><img alt="[% l('Pay Fines') %]"
                 onmouseover="this.src='[% ctx.media_prefix %]/images/pay-fines-btn-hover.png';"
                 src="[% ctx.media_prefix %]/images/pay-fines-btn.png"
                 style="position:relative;top:5px;" /></a>
             <br/>
+            -->
         </div>
     </div>
     <div id="pay_fines_now" class="hide_me">
