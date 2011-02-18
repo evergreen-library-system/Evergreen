@@ -1688,7 +1688,9 @@ sub user_transactions {
 
     my $user = $e->retrieve_actor_user($user_id) or return $e->event;
 
-    return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou);
+    return $e->event unless 
+        $e->requestor->id == $user_id or
+        $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou);
 
     my $api = $self->api_name();
 
@@ -3516,7 +3518,9 @@ sub user_payments {
     return $e->die_event unless $e->checkauth;
 
     my $user = $e->retrieve_actor_user($user_id) or return $e->event;
-    return $e->event unless $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou);
+    return $e->event unless 
+        $e->requestor->id == $user_id or
+        $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou);
 
     # Find all payments for all transactions for user $user_id
     my $query = {
