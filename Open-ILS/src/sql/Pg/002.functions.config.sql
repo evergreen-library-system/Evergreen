@@ -605,5 +605,20 @@ CREATE OR REPLACE FUNCTION oils_text_as_bytea (TEXT) RETURNS BYTEA AS $_$
     SELECT CAST(REGEXP_REPLACE(UPPER($1), $$\\$$, $$\\\\$$, 'g') AS BYTEA);
 $_$ LANGUAGE SQL IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION lpad_number_substrings( TEXT, TEXT, INT ) RETURNS TEXT AS $$
+    my $string = shift;
+    my $pad = shift;
+    my $len = shift;
+    my $find = $len - 1;
+
+    while ($string =~ /(?:^|\D)(\d{1,$find})(?:$|\D)/) {
+        my $padded = $1;
+        $padded = $pad x ($len - length($padded)) . $padded
+        $string =~ s/$1/$padded/sg;
+    }
+
+    return $string;
+$$ LANUGAGE PLPERLU;
+
 COMMIT;
 
