@@ -534,9 +534,11 @@ sub format_payment_receipt {
                     mbt => ['usr']
                 }
             }
-        ]) or return OpenILS::Event->new('MP_NOT_FOUND');
+        ]) or return $e->event;
 
-        return $e->event unless $e->allowed('VIEW_TRANSACTION', $payment->xact->usr->home_ou); 
+        return $e->event unless 
+            $e->requestor->id == $payment->xact->usr->id or
+            $e->allowed('VIEW_TRANSACTION', $payment->xact->usr->home_ou); 
 
         push @$payments, $payment;
     }
