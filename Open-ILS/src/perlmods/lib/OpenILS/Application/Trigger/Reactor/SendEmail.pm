@@ -3,10 +3,11 @@ use strict; use warnings;
 use Error qw/:try/;
 use Data::Dumper;
 use Email::Send;
+use Email::Simple;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::Trigger::Reactor;
 use OpenSRF::Utils::Logger qw/:logger/;
-use utf8;
+use Encode;
 $Data::Dumper::Indent = 0;
 
 use base 'OpenILS::Application::Trigger::Reactor';
@@ -24,6 +25,10 @@ setting is used to send the email, and the value at
 /opensrf/default/email_notify/sender_address is passed into the template as
 the 'default_sender' variable.
 
+Email is encoded in UTF-8 and the corresponding MIME-Version, Content-Type,
+and Content-Transfer-Encoding headers are set to help mail user agents
+decode the content.
+
 No default template is assumed, and all information other than the
 default_sender that the system provides is expected to be gathered by the
 Event Definition through either Environment or Parameter definitions.
@@ -39,7 +44,7 @@ sub handler {
     my $smtp = $conf->config_value('email_notify', 'smtp_server');
     $$env{default_sender} = $conf->config_value('email_notify', 'sender_address');
 
-    my $text = $self->run_TT($env);
+    my $text = encode_utf8($self->run_TT($env));
     return 0 if (!$text);
 
     my $sender = Email::Send->new({mailer => 'SMTP'});
@@ -48,10 +53,13 @@ sub handler {
     my $stat;
     my $err;
 
-    utf8::encode($text); # prevent "Wide character" errors in Email::Send
+    my $email = Email::Simple->new($text);
+    $email->header_set('MIME-Version' => '1.0');
+    $email->header_set('Content-Type' => "text/plain; charset=UTF-8");
+    $email->header_set('Content-Transfer-Encoding' => '8bit');
 
     try {
-        $stat = $sender->send($text);
+        $stat = $sender->send($email);
     } catch Error with {
         $err = $stat = shift;
         $logger->error("SendEmail Reactor: Email failed with error: $err");
