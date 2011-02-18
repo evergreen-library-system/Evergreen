@@ -139,7 +139,7 @@ sub make_payments {
     my $cc_args = $payments->{cc_args};
     my $check_number = $payments->{check_number};
     my $total_paid = 0;
-    my $this_ou = $e->requestor->ws_ou;
+    my $this_ou = $e->requestor->ws_ou || $e->requestor->home_ou;
     my %orgs;
 
     # unless/until determined by payment processor API
