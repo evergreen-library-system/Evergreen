@@ -55,7 +55,7 @@ sub handler {
     });
 
     unless($tt->process($template, {ctx => $ctx, l => set_text_handler($ctx, $r)})) {
-        $r->log->warn('Template error: ' . $tt->error);
+        $r->log->warn('egweb: template error: ' . $tt->error);
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
 
@@ -69,10 +69,10 @@ sub set_text_handler {
     my $locale = $ctx->{locale};
     $locale =~ s/-/_/g;
 
-    $r->log->info("messages locale = $locale");
+    $r->log->debug("egweb: messages locale = $locale");
 
     unless($lh_cache{$locale}) {
-        $r->log->info("Unsupported locale: $locale");
+        $r->log->info("egweb: Unsupported locale: $locale");
         $lh_cache{$locale} = $lh_cache{'en_US'};
     }
 
@@ -97,11 +97,11 @@ sub run_context_loader {
     };
 
     if($@) {
-        $r->log->error("Context Loader error: $@");
+        $r->log->error("egweb: Context Loader error: $@");
         return Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     }
 
-    $r->log->info("context loader resulted in status $stat");
+    $r->log->debug("egweb: context loader resulted in status $stat");
     return $stat;
 }
 
@@ -120,7 +120,7 @@ sub parse_as_xml {
     } otherwise {
 	    my $e = shift;
         my $err = "Invalid XML: $e";
-        $r->log->error($err);
+        $r->log->error("egweb: $err");
         $r->content_type('text/plain; encoding=utf8');
         $r->print("\n$err\n\n$data");
     };
@@ -206,7 +206,7 @@ sub find_template {
             last unless $localpath;
             for my $tpath (@{$ctx->{template_paths}}) {
                 my $fpath = "$tpath/$skin/$localpath.$ext";
-                $r->log->debug("looking at possible template $fpath");
+                $r->log->debug("egweb: looking at possible template $fpath");
                 if(-r $fpath) {
                     $template = "$localpath.$ext";
                     last;
@@ -221,12 +221,12 @@ sub find_template {
 
         # no template configured or found
         unless($template) {
-            $r->log->warn("No template configured for path $path");
+            $r->log->debug("egweb: No template configured for path $path");
             return ();
         }
     }
 
-    $r->log->debug("template = $template : page args = @$page_args");
+    $r->log->debug("egweb: template = $template : page args = @$page_args");
     return ($template, $page_args, $as_xml);
 }
 
@@ -236,7 +236,7 @@ sub check_web_config {
     my $r = shift;
     my $epoch = stat($web_config_file)->mtime;
     unless($web_config_edit_time and $web_config_edit_time == $epoch) {
-        $r->log->debug("Reloading web config after edit...") if $r;
+        $r->log->debug("egweb: Reloading web config after edit...") if $r;
         $web_config_edit_time = $epoch;
         $web_config = parse_config($web_config_file);
     }

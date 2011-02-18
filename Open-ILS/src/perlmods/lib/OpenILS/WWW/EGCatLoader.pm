@@ -83,15 +83,28 @@ sub load {
 
     return $self->load_simple("home") if $path =~ /opac\/home/;
     return $self->load_simple("advanced") if $path =~ /opac\/advanced/;
-    return $self->load_login if $path =~ /opac\/login/;
-    return $self->load_logout if $path =~ /opac\/logout/;
     return $self->load_rresults if $path =~ /opac\/results/;
     return $self->load_record if $path =~ /opac\/record/;
 
     # ----------------------------------------------------------------
-    #  Everything below here requires authentication
+    # Logout and login require SSL
     # ----------------------------------------------------------------
-    return $self->redirect_secure($path) 
+    if($path =~ /opac\/login/) {
+        return $self->redirect_ssl unless $self->cgi->https;
+        return $self->load_login;
+    }
+
+    if($path =~ /opac\/logout/) {
+        #return Apache2::Const::FORBIDDEN unless $self->cgi->https; 
+        $self->apache->log->warn("catloader: logout called in non-secure context from " . 
+            ($self->ctx->{referer} || '<no referer>')) unless $self->cgi->https;
+        return $self->load_logout;
+    }
+
+    # ----------------------------------------------------------------
+    #  Everything below here requires SSL + authentication
+    # ----------------------------------------------------------------
+    return $self->redirect_auth
         unless $self->cgi->https and $self->editor->requestor;
 
     return $self->load_place_hold if $path =~ /opac\/place_hold/;
@@ -105,12 +118,23 @@ sub load {
     return Apache2::Const::OK;
 }
 
+
 # -----------------------------------------------------------------------------
-# If a secure resource is requested insecurely, redirect to the login page,
+# Redirect to SSL equivalent of a given page
+# -----------------------------------------------------------------------------
+sub redirect_ssl {
+    my $self = shift;
+    my $new_page = sprintf('https://%s%s', $self->apache->hostname, $self->apache->unparsed_uri);
+    $self->apache->print($self->cgi->redirect(-url => $new_page));
+    return Apache2::Const::REDIRECT;
+}
+
+# -----------------------------------------------------------------------------
+# If an authnticated resource is requested w/o auth, redirect to the login page,
 # then return to the originally requrested resource upon successful login.
 # -----------------------------------------------------------------------------
-sub redirect_secure {
-    my ($self, $path) = @_;
+sub redirect_auth {
+    my $self = shift;
     my $login_page = sprintf('https://%s%s/login', $self->apache->hostname, $self->ctx->{opac_root});
     my $redirect_to = uri_escape($self->apache->unparsed_uri);
     $self->apache->print($self->cgi->redirect(-url => "$login_page?redirect_to=$redirect_to"));
@@ -160,7 +184,7 @@ sub load_common {
         } else {
 
             # For now, keep an eye out for any pages being unceremoniously redirected to logout...
-            $self->apache->log->info("loading " . $ctx->{path_info} . "; auth session " . 
+            $self->apache->log->info("catloader: loading " . $ctx->{path_info} . "; auth session " . 
                 $e->authtoken . " no longer valid; redirecting to logout");
 
             return $self->load_logout;
