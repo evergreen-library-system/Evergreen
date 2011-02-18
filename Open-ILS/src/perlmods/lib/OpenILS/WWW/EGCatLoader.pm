@@ -20,8 +20,11 @@ use OpenILS::WWW::EGCatLoader::Util;
 use OpenILS::WWW::EGCatLoader::Account;
 use OpenILS::WWW::EGCatLoader::Search;
 use OpenILS::WWW::EGCatLoader::Record;
+use OpenILS::WWW::EGCatLoader::Container;
 
 my $U = 'OpenILS::Application::AppUtils';
+
+use constant COOKIE_SES => 'ses';
 
 sub new {
     my($class, $apache, $ctx) = @_;
@@ -85,6 +88,9 @@ sub load {
     return $self->load_simple("advanced") if $path =~ /opac\/advanced/;
     return $self->load_rresults if $path =~ /opac\/results/;
     return $self->load_record if $path =~ /opac\/record/;
+    return $self->load_mylist_add if $path =~ /opac\/mylist\/add/;
+    return $self->load_mylist_del if $path =~ /opac\/mylist\/del/;
+    return $self->load_cache_clear if $path =~ /opac\/cache\/clear/;
 
     # ----------------------------------------------------------------
     # Logout and login require SSL
@@ -168,7 +174,7 @@ sub load_common {
     $ctx->{home_page} = 'http://' . $self->apache->hostname . $self->ctx->{opac_root} . "/home";
     $ctx->{logout_page} = 'https://' . $self->apache->hostname . $self->ctx->{opac_root} . "/logout";
 
-    if($e->authtoken($self->cgi->cookie('ses'))) {
+    if($e->authtoken($self->cgi->cookie(COOKIE_SES))) {
 
         if($e->checkauth) {
 
@@ -246,7 +252,7 @@ sub load_login {
         $cgi->redirect(
             -url => $cgi->param('redirect_to') || $acct,
             -cookie => $cgi->cookie(
-                -name => 'ses',
+                -name => COOKIE_SES,
                 -path => '/',
                 -secure => 1,
                 -value => $response->{payload}->{authtoken},
@@ -264,11 +270,15 @@ sub load_login {
 sub load_logout {
     my $self = shift;
 
+    # If the user was adding anyting to an anonymous cache 
+    # while logged in, go ahead and clear it out.
+    $self->clear_anon_cache;
+
     $self->apache->print(
         $self->cgi->redirect(
             -url => $self->ctx->{home_page},
             -cookie => $self->cgi->cookie(
-                -name => 'ses',
+                -name => COOKIE_SES,
                 -path => '/',
                 -value => '',
                 -expires => '-1h'

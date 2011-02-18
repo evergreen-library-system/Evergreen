@@ -107,12 +107,16 @@ sub init_ro_object_cache {
     # retrieve and cache org unit setting values
     $ctx->{get_org_setting} = sub {
         my($org_id, $setting) = @_;
-        $cache{org_settings}{$org_id} = {} unless $cache{org_settings}{$org_id};
-        $cache{org_settings}{$org_id}{$setting} = $U->ou_ancestor_setting_value($org_id, $setting)
-            unless exists $cache{org_settings}{$org_id}{$setting};
+
+        $cache{org_settings}{$org_id} = {} 
+            unless $cache{org_settings}{$org_id};
+
+        $cache{org_settings}{$org_id}{$setting} = 
+            $U->ou_ancestor_setting_value($org_id, $setting)
+                unless exists $cache{org_settings}{$org_id}{$setting};
+
         return $cache{org_settings}{$org_id}{$setting};
     };
 }
-
 
 1;
