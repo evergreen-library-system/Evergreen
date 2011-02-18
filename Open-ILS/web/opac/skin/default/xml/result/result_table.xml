@@ -172,7 +172,7 @@
 														vol_appended = true;
 													}
 													var loc = dojo.create('span', { "style": "font-weight: bold;"}, cp_entry);
-													var loc_txt = dojo.doc.createTextNode(' - ' + dojox.xml.parser.textContent(location));
+													var loc_txt = dojo.doc.createTextNode(' - ' + BT.textContent(location));
 													loc.appendChild(loc_txt);
 												}
 											});
@@ -186,7 +186,7 @@
 											});
 											dojo.query('status', cp).forEach(function (status) {
 												var cp_status = dojo.create('span', { "style": "font-weight: bold;" }, cp_entry);
-												var cp_status_txt = dojo.doc.createTextNode(' (' + dojox.xml.parser.textContent(status) + ')');
+												var cp_status_txt = dojo.doc.createTextNode(' (' + BT.textContent(status) + ')');
 												cp_status.appendChild(cp_status_txt);
 											});
 
