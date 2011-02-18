@@ -8,7 +8,7 @@
             <td width="90" valign="top" id="rdetail_image_cell">
                 [% ident = attrs.isbn_clean || attrs.upc; IF ident; %]
                 <a id='rdetail_img_link' href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/[% ident %]'><img
-                    alt="Image of item" id='rdetail_image'
+                    alt="[% l('Image of item') %]" id='rdetail_image'
                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/[% ident %]' /></a>
                 [% END %]
                 <br />
@@ -39,7 +39,7 @@
                                 <div style="float:right;">
                                     <div class="rdetail_aux_utils opac-auto-010">
                                         <a href="[% ctx.opac_root %]/place_hold?hold_target=[% record.id %]&hold_type=T" id="rdetail_place_hold"><img
-                                            src="[% ctx.media_prefix %]/images/green_check.png" alt="place hold" />
+                                            src="[% ctx.media_prefix %]/images/green_check.png" alt="[% l('place hold') %]" />
                                             <span style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
                                     </div>
                                     <div style="padding-top:6px;" class="rdetail_aux_utils">
@@ -50,12 +50,12 @@
                                             </div>
                                         </div>
                                         <a href="#"><img
-                                            alt="add to my list"
+                                            alt="[% l('add to my list') %]"
                                             src="[% ctx.media_prefix %]/images/clipboard.png" /></a>
                                     </div>
                                 </div>
                                 <div style="float:right;margin-right:17px;">
-                                    <img id="rdetail_tor_pic" alt="Format" class="hide_me" src="" />
+                                    <img id="rdetail_tor_pic" alt="[% l('Format') %]" class="hide_me" src="" />
                                 </div>
                             </div>
                         </td>
@@ -83,7 +83,7 @@
                             </td>
                             <td valign="top">
                                 [% IF attrs.format %]
-                                <img alt="Format" class='tor_pic'
+                                <img alt="[% l('Format') %]" class='tor_pic'
                                     title="[% attrs.format %]"
                                     src="[% ctx.media_prefix _ '/images/' _ attrs.format_icon %]" />
                                 [%  END %]
@@ -232,11 +232,11 @@
                                 </div>
                             </td>
                             <td width="1" valign="top" align="right" style="white-space:nowrap;">
-                                <a href="[% ctx.opac_root %]/place_hold?hold_target=[% record.id %]&hold_type=T"><img alt="Place Hold"
+                                <a href="[% ctx.opac_root %]/place_hold?hold_target=[% record.id %]&hold_type=T"><img alt="[% l('Place Hold') %]"
                                     src="[% ctx.media_prefix %]/images/place_hold.gif" /></a>
                                 <a href="#" id="rd_reviews_and_more" target="_blank"><img
-                                    alt="Reviews and More" src="[% ctx.media_prefix %]/images/reviews.gif" /></a>
-                                <a href="#" id=""><img alt="Add to My List"
+                                    alt="[% l('Reviews and More') %]" src="[% ctx.media_prefix %]/images/reviews.gif" /></a>
+                                <a href="#" id=""><img alt="[% l('Add to My List') %]"
                                     src="[% ctx.media_prefix %]/images/add_mylist.gif" /></a>
                             </td>
                         </tr>
