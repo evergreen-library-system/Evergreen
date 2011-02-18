@@ -139,7 +139,10 @@ sub load_common {
     $ctx->{path_info} = $self->cgi->path_info;
     $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
     $ctx->{is_staff} = ($self->apache->headers_in->get('User-Agent') =~ 'oils_xulrunner');
+
+    # capture some commonly accessed pages
     $ctx->{home_page} = 'http://' . $self->apache->hostname . $self->ctx->{opac_root} . "/home";
+    $ctx->{logout_page} = 'https://' . $self->apache->hostname . $self->ctx->{opac_root} . "/logout";
 
     if($e->authtoken($self->cgi->cookie('ses'))) {
 
@@ -155,6 +158,10 @@ sub load_common {
                 $e->authtoken, $e->requestor->id);
 
         } else {
+
+            # For now, keep an eye out for any pages being unceremoniously redirected to logout...
+            $self->apache->log->info("loading " . $ctx->{path_info} . "; auth session " . 
+                $e->authtoken . " no longer valid; redirecting to logout");
 
             return $self->load_logout;
         }
