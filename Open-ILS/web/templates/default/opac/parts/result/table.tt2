@@ -13,19 +13,13 @@
 <div class="results_header_nav1">
     <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <tr>
-            <td class="h1" width="116">Search Results</td>
+            <td class="h1" width="116">[% l('Search Results') %]</td>
             <td valign="bottom" nowrap="nowrap" class="result_number">
-                [% l("Results") %]
-                <strong>[% ctx.result_start %]</strong>
-                &nbsp;-
-                <strong>[% ctx.result_stop  %] </strong>
-                &nbsp;[% l("of") %]
-                <strong>[% ctx.hit_count %]</strong>
+                [% |l(ctx.result_start, ctx.result_stop, ctx.hit_count) %]
+                Results <strong>[_1]</strong> - <strong>[_2]</strong> of <strong>[_3]</strong>
+                [% END %]
                 <span style='padding-left: 6px;'>
-                    (page
-                    <strong>[% page + 1 %]</strong>
-                    &nbsp;[% l("of") %]
-                    <strong>[% page_count %]</strong>)
+                    [% |l(page + 1, page_count) %](page <strong>[_1]</strong> of <strong>[_2]</strong>)[% END %]
                 </span>
             </td>
             <td align="right" valign="bottom">
