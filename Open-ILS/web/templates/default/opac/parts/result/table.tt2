@@ -137,12 +137,9 @@
                                                         </tr>
                                                     </table>
                                                     <div>
-                                                        <span name="copy_holds"></span>
-                                                        <span name="copy_holds2"></span><br />
-                                                        <span name="copy_count_avail"></span>
-                                                        <!-- of <span name="copy_count"></span> on
-                                                        <span name="copy_count_total"></span> copies
-                                                        available-->
+                                                        [% l('[_1] of [_2] [_3] available',
+                                                            rec.copy_counts.available, rec.copy_counts.visible,
+                                                            rec.copy_counts.visible == 1 ? 'copy' : 'copies') %]
                                                     </div>
                                                 </span>
                                                 <div class="hide_me">
