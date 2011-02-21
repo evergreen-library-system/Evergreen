@@ -17,7 +17,7 @@
             <td>
                 <div id="search_box_wrapper">
                     <!-- Note: when common browsers support HTML5 placeholder text, we can remove the JS -->
-                    <input type="text" id="search_box" name="query" value="[% query || l("Search Keyword") | html %]"
+                    <input type="text" id="search_box" name="query" value="[% ctx.processed_search_query || l("Search Keyword") | html %]"
                         onfocus="if (this.value=='[% l("Search Keyword") %]'){this.value='';this.style.color='#000';}"
                         onblur="if (this.value==''){this.value='[% l("Search Keyword") %]';this.style.color='#999';}" />
                     <input name='page' type='hidden' value="0" />
@@ -35,7 +35,7 @@
         </tr>
         <tr>
             <td>
-                [% INCLUDE "default/opac/parts/format_selector.tt2" value=CGI.param("item_type") %]
+                [% INCLUDE "default/opac/parts/format_selector.tt2" value=CGI.param("format") %]
             </td>
             <td>
                 <span id='depth_selector_span'>

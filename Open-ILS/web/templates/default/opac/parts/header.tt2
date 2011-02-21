@@ -4,7 +4,7 @@
     USE EGI18N;
     SET DATE_FORMAT = l('%m/%d/%Y');
 
-    item_types = [  # XXX KCLS-specific
+    formats = [  # XXX KCLS-specific
         {'code' => 'a', 'name' => 'Book', 'image' => 'media_book.jpg'},
         {'code' => 'i', 'name' => 'Book on cassette', 'image' => 'media_bookoncasset.jpg'},
         {'code' => 'n', 'name' => 'Book on CD', 'image' => 'media_bookoncd.jpg'},
@@ -35,10 +35,10 @@
         {'code' => 's', 'name' => 'Slide set', 'image' => 'media_slide.jpg'}
     ];
 
-    icon_by_mattype = {};
-    FOR o IN item_types;
+    icon_by_format = {};
+    FOR o IN formats;
         code = o.code;
-        icon_by_mattype.$code = o.image;
+        icon_by_format.$code = o.image;
     END;
 
 -%]

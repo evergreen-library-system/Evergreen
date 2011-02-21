@@ -5,8 +5,10 @@
     INCLUDE "default/opac/parts/topnav.tt2";
     ctx.page_title = l("Search Results");
 
+    query_string = CGI.query_string |
+        replace(';x=\d+','') | replace(';y=\d+','') | replace(';page=\d*', '') |
+        replace(';', '&');
     page = CGI.param('page') || 0;
-    query = CGI.param('query');
     loc = CGI.param('loc');
     page_count = POSIX.ceil(ctx.hit_count / ctx.page_size);
 %]

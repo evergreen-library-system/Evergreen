@@ -1,12 +1,12 @@
 [%  search_classes = [
-    {value => "", label => l("Keyword")},
+    {value => "keyword", label => l("Keyword")},
     {value => "title", label => l("Title")},
     {value => "author", label => l("Author")},
     {value => "subject", label => l("Subject")},
     {value => "series", label => l("Series")},
-    {value => "cn", label => l("Call Number")}  # XXX or should this be bibcn?
+    {value => "id|bibcn", label => l("Call Number")}
 ] %]
-<select id='search_type_selector' name="class">
+<select name="class">
     [%  search_class = CGI.param('class');
         FOR sc IN search_classes -%]
     <option value='[% sc.value %]'[%

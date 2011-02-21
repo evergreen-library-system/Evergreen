@@ -1,3 +1,4 @@
+<form id="adv_search_form" action="[% ctx.opac_root %]/results" method="GET">
 <table id='adv_global_search' class='data_grid data_grid_center' width='100%'>
     <tr style='border-bottom: none;'>
         <!-- Contains the user-addable(?) rows to define search class, containment and text -->
@@ -17,8 +18,7 @@
                     <!-- add a new row -->
                     <tr id='adv_global_addrow'>
                         <td align='left' style="padding-top:7px;">
-                            <a href="javascript:;" id="myopac_new_global_row" onclick='advAddGblRow();'>Add Search Row</a>
-                            <button class="hide_me">[% l("Submit Search") %]</button><!-- XXX TODO make a real form -->
+                            <a href="javascript:;" id="myopac_new_global_row" onclick='addSearchRow();'>Add Search Row</a>
                         </td>
                     </tr>
                 </tbody>
@@ -38,14 +38,15 @@
             </td>
             <td valign='top'>
                 <strong>[% l("Language") %]</strong><br />
-                <select multiple='multiple' size='4' id='adv_global_lang'>
+                <select multiple='multiple' size='4' name="lang" id='adv_global_lang'>
                     [% INCLUDE "default/opac/parts/item_lang_options.tt2" %]
                 </select>
             </td>
             <td valign='top'>
                 <strong>[% l("Audience") %]</strong><br />
-                <select multiple='multiple' size='3' id='adv_global_audience' class='hide_me'></select>
-                <select multiple='multiple' size='3' id='adv_global_audience_basic'>
+                <!-- XXX this used to be multiple, but when would that be
+                useful? -->
+                <select size='3' name="audience" id='adv_global_audience_basic'>
                     <option value='abcj'>[% l("Juvenile") %]</option>
                     <option value='d'>[% l("General") %]</option>
                     <option value='e'>[% l("Adult") %]</option>
@@ -73,7 +74,7 @@
                             <tbody>
                                 <tr>
                                     <td align=''>
-                                        <select id='adv_global_sort_by' onchange='__setsortsel();'>
+                                        <select id='adv_global_sort_by' name="sort" onchange="$('adv_global_sort_dir').disabled = !Boolean(this.selectedIndex);">
                                             <option value='rel'>[% l("Relevance") %]</option>
                                             <option value='title'>[% l("Title") %]</option>
                                             <option value='author'>[% l("Author") %]</option>
@@ -83,13 +84,12 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <select id='adv_global_sort_dir' disabled='disabled'>
+                                        <select id='adv_global_sort_dir' name="sort_order" disabled='disabled'>
                                             <option value='asc'>[% l("Ascending / A to Z") %]</option>
                                             <option value='desc'>[% l("Descending / Z to A") %]</option>
                                         </select>
                                     </td>
                            <!-- force the enable/disable sort dir code to run -->
-                           <script language='javascript' type='text/javascript'>__setsortsel();</script>
                                 </tr>
                                 <tr>
                                     <td align='center' class="hide_me">
@@ -159,8 +159,8 @@
                             [% PROCESS "default/opac/parts/org_selector.tt2";
                                 PROCESS build_org_selector name='loc' value=loc %]
                             <div style="position:relative;top:7px;">
-                                <input type='checkbox'
-                                id='opac.result.limit2avail'/>
+                                <input type='checkbox' name="available" value="1"
+                                    id='opac.result.limit2avail'/>
                                 <label style="position:relative;top:-2px;"
                                     for='opac.result.limit2avail'>
                                     [% l("Limit to Available") %]</label>
@@ -168,20 +168,20 @@
                         </td>
                         <td valign='top'>
                             <strong>[% l("Publication Year") %]</strong><br />
-                            <select id='adv_global_pub_date_type' onchange='
-                                if($("adv_global_pub_date_type").selectedIndex == 3)
+                            <select id='adv_global_pub_date_type' name='pubyear_how' onchange='
+                                if(this.selectedIndex == 3)
                                     unHideMe($("adv_global_pub_date_2_span"));
                                 else
                                     hideMe($("adv_global_pub_date_2_span"));'>
-                                <option value='equals' selected='selected'>[% l("Is") %]</option>
+                                <option value='between' selected='selected'>[% l("Is") %]</option><!-- sic -->
                                 <option value='before'>[% l("Before") %]</option>
                                 <option value='after'>[% l("After") %]</option>
                                 <option value='between'>[% l("Between") %]</option>
                             </select>    
                             <div style='margin-top:5px;'>
-                                <input id='adv_global_pub_date_1' type='text' size='4' maxlength='4'/>
+                                <input id='adv_global_pub_date_1' name='pubyear1' type='text' size='4' maxlength='4'/>
                                 <span id='adv_global_pub_date_2_span' class='hide_me'>
-                                   [% l("and") %] <input id='adv_global_pub_date_2' type='text' size='4' maxlength='4'/>
+                                   [% l("and") %] <input name='pubyear2' id='adv_global_pub_date_2' type='text' size='4' maxlength='4'/>
                                 </span>
                             </div>
                         </td>
@@ -198,20 +198,18 @@
             </table>
         </td>
     </tr>
-
     <tr class='border_4_2'>
         <td align="left" colspan='2'>
-            <!-- XXX TODO make a real form, and make this a real submitter -->
-        <img src="[% ctx.media_prefix %]/images/search_btn.gif" alt="[% l('Search') %]"  class='pointer' />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <!-- XXX TODO make a real form, and make this a real resetter -->
-        <a href="javascript:;" style="position: relative; top: -9px;">Reset Form</a>
+            <input type="image" src="[% ctx.media_prefix %]/images/search_btn.gif"
+            alt="[% l('Search') %]" class='pointer' />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="javascript:document.getElementById('adv_search_form').reset();"
+                id="adv_reset">[% l('Reset Form') %]</a>
         </td>
     </tr>
 </table>
-
-
-<div id='adv_quick_search_sidebar' class='sidebar_chunk hide_me' style='text-align:center; margin-top: 20px; width:400px;'> 
+</form>
+<div id='adv_quick_search_sidebar' class='sidebar_chunk hide_me'> 
     <div id='adv_quick_search'>
         <div class='adv_quick_search color_4'><b>[% l("Quick Search") %]</b></div>
         <div style='margin-top: 8px;'>

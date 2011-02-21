@@ -1,13 +1,8 @@
 [%  PROCESS "default/opac/parts/marc_misc.tt2";
 
-    q = query | url;
-    np_link = '?query=' _ q;
-    IF loc;
-        np_link = np_link _ "&loc=" _ loc;
-    END;
-    IF depth or depth == 0;
-        np_link = np_link _ "&depth=" _ depth;
-    END;
+    q = query_string | url;
+    np_link = '?' _ q;
+
     ctx.result_start = 1 + ctx.page_size * page;
     ctx.result_stop = 1 + ctx.page_size * (page + 1);
     IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;

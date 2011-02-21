@@ -136,11 +136,11 @@
 .opac-auto-149 { position: relative; top: 5px; left: 25px; }
 #util_print_btn { position: relative; top: 5px; left: 30px; }
 .opac-auto-151 { position: relative; top: 75px; }
-.opac-auto-152 { position: relative; top: -9px; }
+#adv_reset { position: relative; top: -9px; }
 .opac-auto-153 { position: relative; z-index: 100; }
 .text-center { text-align: center; }
 .opac-auto-156 { text-align: center; font-weight: bold; }
-.opac-auto-157 { text-align: center; margin-top: 20px; width: 400px; }
+#adv_quick_search_sidebar { text-align: center; margin-top: 20px; width: 400px; }
 .opac-auto-158 { text-align: center; margin-top: 6px; margin-bottom: 6px }
 .opac-auto-159 { text-align: center; padding: 20px; width: 100% }
 .opac-auto-160 { text-align: center; padding-bottom: 8px; }

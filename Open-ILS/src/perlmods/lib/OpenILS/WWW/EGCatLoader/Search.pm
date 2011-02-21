@@ -8,6 +8,85 @@ use OpenILS::Application::AppUtils;
 my $U = 'OpenILS::Application::AppUtils';
 
 
+sub _prepare_biblio_search_basics {
+    my ($cgi) = @_;
+
+    my %parts;
+    my @part_names = qw/class contains query/;
+    $parts{$_} = [ $cgi->param($_) ] for (@part_names);
+
+    my @chunks = ();
+    for (my $i = 0; $i < scalar @{$parts{'class'}}; $i++) {
+        my ($class, $contains, $query) = map { $parts{$_}->[$i] } @part_names;
+
+        push(@chunks, $class . ':') unless $class eq 'keyword' and $i == 0;
+
+        # This stuff probably will need refined or rethought to better handle
+        # the weird things Real Users will surely type in.
+        if ($contains eq 'nocontains') {
+            $query =~ s/"//g;
+            $query = ('"' . $query . '"') if index $query, ' ';
+            $query = '-' . $query;
+        } elsif ($contains eq 'exact') {
+            $query =~ s/"//g;
+            $query = ('"' . $query . '"') if index $query, ' ';
+        }
+        push @chunks, $query;
+    }
+
+    return join(' ', @chunks);
+}
+
+sub _prepare_biblio_search {
+    my ($cgi, $ctx) = @_;
+
+    my $query = _prepare_biblio_search_basics($cgi);
+    my $args = {};
+
+    $args->{'org_unit'} = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
+    $args->{'depth'} = defined $cgi->param('depth') ?
+        $cgi->param('depth') :
+        $ctx->{find_aou}->($args->{'org_unit'})->ou_type->depth;
+
+    if ($cgi->param('available')) {
+        $query = '#available ' . $query;
+    }
+
+    if ($cgi->param('format')) {
+        $args->{'format'} = join('', $cgi->param('format'));
+    }
+
+    if ($cgi->param('lang')) {
+        # XXX TODO find out how to build query with multiple langs, if that
+        # even needs to be a feature of adv search.
+        $query .= ' lang:' . $cgi->param('lang');
+    }
+
+    if ($cgi->param('audience')) {
+        $query .= ' audience(' . $cgi->param('audience') . ')';
+    }
+
+    if (defined $cgi->param('sort')) {
+        my $sort = $cgi->param('sort');
+        my $sort_order = $cgi->param('sort_order');
+        $query .= " sort($sort)";
+        $query .= '#' . $sort_order if $sort_order and $sort ne 'rel';
+    }
+
+    if ($cgi->param('pubyear_how') && $cgi->param('pubyear1')) {
+        if ($cgi->param('pubyear_how') eq 'between') {
+            $query .= ' between(' . $cgi->param('pubyear1');
+            $query .= ',' .  $cgi->param('pubyear2') if $cgi->param('pubyear2');
+            $query .= ')';
+        } else {
+            $query .= ' ' . $cgi->param('pubyear_how') .
+                '(' . $cgi->param('pubyear1') . ')';
+        }
+    }
+
+    return ($args, $query);
+}
+
 # context additions: 
 #   page_size
 #   hit_count
@@ -20,25 +99,19 @@ sub load_rresults {
 
     $ctx->{page} = 'rresult';
     my $page = $cgi->param('page') || 0;
-    my $item_type = $cgi->param('item_type');
     my $facet = $cgi->param('facet');
-    my $query = $cgi->param('query');
-    my $search_class = $cgi->param('class');
     my $limit = $cgi->param('limit') || 10; # TODO user settings
 
-    my $loc = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
-    my $depth = defined $cgi->param('depth') ? 
-        $cgi->param('depth') : $ctx->{find_aou}->($loc)->ou_type->depth;
+    my ($args, $query) = _prepare_biblio_search($cgi, $ctx);
 
-    my $args = {
-        limit => $limit, offset => $page * $limit,
-        org_unit => $loc, depth => $depth, $item_type ? (item_type => [$item_type]) : ()
-    };
+    # Stuff these into the TT context so that templates can use them in redrawing forms
+    $ctx->{processed_search_query} = $query;
+    $ctx->{processed_search_args} = $args;
+
+    $args->{'limit'} = $limit;
+    $args->{'offset'} = $page * $limit;
 
     $query = "$query $facet" if $facet; # TODO
-    # XXX Since open-ils.search is a public service, it is responsible for
-    # being wary of injection/bad input, not us, right?
-    $query = $search_class . ':' . $query if $search_class;
 
     my $results;
 
