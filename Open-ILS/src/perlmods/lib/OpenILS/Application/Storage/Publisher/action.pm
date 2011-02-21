@@ -1411,7 +1411,8 @@ sub new_hold_copy_targeter {
 						# We haven't exceeded max_loops yet
 						my @keeper_copies;
 						for my $cp ( @$all_copies ) {
-							push(@keeper_copies, $cp) if ( grep { $_ eq ''.$cp->circ_lib } @keepers );
+							push(@keeper_copies, $cp) if ( !@keepers || grep { $_ eq ''.$cp->circ_lib } @keepers );
+
 						}
 						$all_copies = [@keeper_copies];
 					} else {
