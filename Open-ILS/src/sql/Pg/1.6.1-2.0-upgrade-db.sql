@@ -14892,6 +14892,10 @@ CREATE INDEX claim_lid_idx ON acq.claim( lineitem_detail );
 
 CREATE OR REPLACE RULE protect_bib_rec_delete AS ON DELETE TO biblio.record_entry DO INSTEAD (UPDATE biblio.record_entry SET deleted = TRUE WHERE OLD.id = biblio.record_entry.id; DELETE FROM metabib.metarecord_source_map WHERE source = OLD.id);
 
+-- remove invalid data ... there was no fkey before, boo
+DELETE FROM metabib.series_field_entry WHERE source NOT IN (SELECT id FROM biblio.record_entry);
+DELETE FROM metabib.series_field_entry WHERE field NOT IN (SELECT id FROM config.metabib_field);
+
 CREATE INDEX metabib_title_field_entry_value_idx ON metabib.title_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_author_field_entry_value_idx ON metabib.author_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_subject_field_entry_value_idx ON metabib.subject_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
