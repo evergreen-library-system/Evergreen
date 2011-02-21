@@ -137,9 +137,8 @@
                                                         </tr>
                                                     </table>
                                                     <div>
-                                                        [% l('[_1] of [_2] [_3] available',
-                                                            rec.copy_counts.available, rec.copy_counts.visible,
-                                                            rec.copy_counts.visible == 1 ? 'copy' : 'copies') %]
+                                                        [% l('[_1] of [quant,_2,copy,copies] available',
+                                                            rec.copy_counts.available, rec.copy_counts.visible) %]
                                                     </div>
                                                 </span>
                                                 <div class="hide_me">

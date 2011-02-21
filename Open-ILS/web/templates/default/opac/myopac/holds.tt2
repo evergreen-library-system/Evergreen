@@ -87,6 +87,11 @@
                 </td>
             </tr>
         </table>
+        [% IF ctx.holds.size < 1 %]
+        <div class="opac-auto-079">
+            <big><strong>[% l('No holds found.') %]</strong></big>
+        </div>
+        [% ELSE %]
         <table id="acct_holds_main_header" cellpadding='0' cellspacing='0'
             border='0' width="100%">
             <tr>
@@ -212,9 +217,9 @@
                 [% END %]
             </tbody>
         </table>
+        [% END %]
         </form>
     </div>
-    <div id='holds_hist_table' class="hide_me">testing...</div>
 
     <span id='myopac.holds.cancel.confirm' class='hide_me'>[% l("Are you sure you wish to cancel the selected holds?") %]</span>
     <span id='myopac.holds.freeze.confirm' class='hide_me'>[% l("Are you sure you wish to suspend the selected holds?  If an item has already been selected to fulfill the hold, it will not be suspended") %]</span>
