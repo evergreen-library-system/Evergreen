@@ -1,11 +1,11 @@
-README for Evergreen trunk
+README for Evergreen 2.0.2
 
 Installing prerequisites:
 ========================
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (1.4.0 or later).
+1. Begin by installing the most recent version of OpenSRF (1.6.0 or later).
 You can download OpenSRF releases from
 http://evergreen-ils.org/downloads
 
@@ -43,7 +43,7 @@ Installation instructions:
 Once you have configured and compiled Evergreen, issue the following
 command as the root user to install Evergreen:
 
-make STAFF_CLIENT_BUILD_ID=rel_trunk install
+make STAFF_CLIENT_BUILD_ID=rel_2_0_2 install
 
 This will install Evergreen, including example configuration files in
 /openils/conf/ that you can use as templates for your own configuration files.
@@ -111,11 +111,10 @@ connection information in opensrf.xml for you.
 Creating the Evergreen database:
 ===============================
 
-PostgreSQL 8.3 or 8.4 will be installed on your system by the Makefile.install
+PostgreSQL 8.4 will be installed on your system by the Makefile.install
 prerequisite installer if packages are available for your distribution, or
-you will have to compile PostgreSQL 8.3 or 8.4 from source and install it (which
-is beyond the scope of this document). PostgreSQL 8.4 is recommended if you have
-the option.
+you will have to compile PostgreSQL 8.4 from source and install it (which
+is beyond the scope of this document).
 
 Once the PostgreSQL database server has been installed, you will need to
 create the database and add the appropriate languages and extensions to

@@ -1,1 +1,243 @@
-#ChangeLog
+2011-02-08  dbs
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js: Prevent
+	  authority context menu from being displayed on empty content (LP
+	  712538)
+	  
+	  It's confusing to have the authority context menu - particularly
+	  the
+	  "Create authority" options - appear for empty content. Check to
+	  ensure
+	  that the subfield being clicked on actually has some content
+	  before
+	  displaying the authority context menu.
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js: Prevent
+	  authority context menu on whitespace content
+	  
+	  Continuing the refinement of LP 712538, if the subfield contains
+	  only whitespace, treat it as though it were empty for the
+	  purposes
+	  of the context menu.
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js: Ensure new
+	  authority ID subfield is inserted in the correct XUL DOM location
+	  
+	  Addresses LP 712499. After creating an authority via the context
+	  menu
+	  in the MARC editor, the new ID subfield ($0) would be created
+	  right after
+	  the subfield on which the context menu was invoked. It turns out
+	  that it
+	  was being placed in the wrong location, and one symptom was that
+	  the
+	  Validate button would not validate the controlled field against
+	  the newly
+	  created authority.
+	  
+	  Now we hunt through the parent DOM nodes until we find the
+	  'sf_box' element
+	  and then we append the ID subfield to that node. We also
+	  eliminate some
+	  duplicate code by defining a common function so that the problem
+	  can be
+	  fixed in one stroke...
+
+	* Open-ILS/xul/staff_client/server/cat/marcedit.js: Create
+	  authorities that only contain controlled subfields (LP 712496)
+	  
+	  Selecting "Create authority" on a field containing uncontrolled
+	  subfields
+	  would generate an authority record that contained those
+	  uncontrolled
+	  subfields. This would, in turn, prevent the "Validate" button
+	  from operating
+	  correctly - if you added a 700 with $a and $c subfields, clicked
+	  "Create
+	  authority", and then immediately clicked "Validate", the field
+	  would show
+	  up as red.
+	  
+	  Now we filter out the uncontrolled subfields before they get sent
+	  to
+	  the "Create authority" function, avoiding this validation
+	  problem.
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/authority.pm:
+	  Remove syntax error from O:A:Storage:Publisher:authority and add
+	  strict pragma
+	  
+	  Came across a line of dead code while debugging a related
+	  problem, and
+	  noticed that strict/warnings wasn't in place, so I culled the
+	  dead code
+	  and added use strict/use warnings accordingly (now that we no
+	  longer
+	  have the syntax error caused by the dead code).
+
+2011-02-09  phasefx
+
+	* Open-ILS/xul/staff_client/server/skin/global.css: tweak selector
+	  used for font_helper() CSS classes
+	  
+	  Makes the flat-text MARC editor respect the global font settings,
+	  resolving bug https://bugs.launchpad.net/evergreen/+bug/678078
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+	  Signed-off-by: Jason Etheridge <jason@esilibrary.com>
+
+2011-02-09  erickson
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ.pm: allow item
+	  status update if either status-specific perm is allowed or
+	  UPDATE_COPY is allowed. fire off related A/T events after the
+	  initial transaction has been committed
+
+2011-02-09  dbwells
+
+	* Open-ILS/examples/fm_IDL.xml,
+	  Open-ILS/web/opac/locale/en-US/lang.dtd,
+	  Open-ILS/xul/staff_client/server/serial/editor_base.js,
+	  Open-ILS/xul/staff_client/server/serial/manage_items.xul,
+	  Open-ILS/xul/staff_client/server/serial/sbsum_editor.js,
+	  Open-ILS/xul/staff_client/server/serial/scap_editor.js,
+	  Open-ILS/xul/staff_client/server/serial/sdist_editor.js,
+	  Open-ILS/xul/staff_client/server/serial/siss_editor.js,
+	  Open-ILS/xul/staff_client/server/serial/siss_editor.xul,
+	  Open-ILS/xul/staff_client/server/serial/sisum_editor.js,
+	  Open-ILS/xul/staff_client/server/serial/sitem_editor.js,
+	  Open-ILS/xul/staff_client/server/serial/sssum_editor.js,
+	  Open-ILS/xul/staff_client/server/serial/sstr_editor.js,
+	  Open-ILS/xul/staff_client/server/serial/ssub_editor.js: Reduce
+	  hard-coded strings in Serial Control interfaces
+
+2011-02-10  dbs
+
+	* Open-ILS/src/perlmods/OpenILS/WWW/BadDebt.pm: Correct syntax
+	  error in BadDebt.pm
+
+2011-02-11  miker
+
+	* Open-ILS/src/sql/Pg/002.schema.config.sql,
+	  Open-ILS/src/sql/Pg/040.schema.asset.sql,
+	  Open-ILS/src/sql/Pg/upgrade/0484.sql.pg-90-compat.sql: Postgres
+	  9.0 is more strict about variable names in functions. We will
+	  probably hit more of these, but these in particular break the
+	  OPAC.
+
+2011-02-11  dbs
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Search/Biblio.pm,
+	  Open-ILS/src/sql/Pg/002.schema.config.sql,
+	  Open-ILS/src/sql/Pg/reporter-schema.sql,
+	  Open-ILS/src/sql/Pg/upgrade/0485.schema.reporter_strip_isbns.sql:
+	  Normalize ISBNs by stripping hyphens in search methods and in
+	  reporter.materialized_simple_record
+	  
+	  We weren't normalizing ISBNs in search or in
+	  reporter.materialized_simple_record
+	  which required users to exactly match the form of the ISBN as
+	  entered in the
+	  MARC record to get a successful search result - pretty hit or
+	  miss.
+	  
+	  The longer term fix in 2.0 and above is to make the ISBN search
+	  search against
+	  the identifier|isbn index, which also gets ISBN10/ISBN13
+	  equivalence goodness.
+	  But this patch will be relatively easy to backport through to
+	  1.6.1 and plugs
+	  some of the holes in our exposed APIs and search points in the
+	  short term.
+
+2011-02-13  dbs
+
+	* Open-ILS/src/support-scripts/authority_control_fields.pl: Teach
+	  authority_control_fields.pl about record ranges
+	  
+	  Passing --record 10,000 times at the command line sucks, and
+	  --all is not particularly realistic for large databases. Adding
+	  --start_id and --end_id makes this script more usable.
+	  
+	  Also provide reasonably full POD documentation, and rely on
+	  Pod::Usage to provide help based on it when help is requested
+	  or passed in options don't make sense.
+
+2011-02-16  miker
+
+	* Open-ILS/web/js/dojo/openils/BibTemplate.js: Patch based on work
+	  by Dan Wells to improve Opera BibTemplate support
+
+2011-02-17  dbs
+
+	* Open-ILS/src/sql/Pg/002.functions.config.sql,
+	  Open-ILS/src/sql/Pg/002.schema.config.sql,
+	  Open-ILS/src/sql/Pg/upgrade/0488.function.maintain_901_tcn.sql:
+	  Teach maintain_901 trigger to respect the "Use record ID for TCN"
+	  global flag
+	  
+	  Rather than relying on the Perl layer to set the correct TCN on
+	  the way in,
+	  do it as part of the in-database indexing to ensure that we have
+	  consistent
+	  results no matter how the record gets into the database.
+
+	* Open-ILS/web/opac/skin/default/xml/body.xml,
+	  Open-ILS/web/opac/skin/default/xml/home/index_body.xml: Avoid
+	  mixed-content warnings due to HTTP link for Google Chrome Frame
+	  
+	  We're hardcoding this to HTTPS for now to avoid the mixed-content
+	  warnings that
+	  occur when content location is https:// and the linked script is
+	  at http:// but
+	  a config-aware patch probably wouldn't be a bad idea.
+
+	* README: Note --admin-user / --admin-pass options for
+	  eg_db_config.pl
+	  
+	  Missed backporting this doc from trunk - thanks to Chris Sharp
+	  for
+	  pointing this out.
+
+2011-02-17  senator
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/action.pm:
+	  Backport r19470 from trunk
+	  
+	  Booking: fix the targeter in the
+	  I'm-reserving-this-exact-resource-with-this-
+	  exact-barcode case.
+	  
+	  It should have always worked like this. This should better mirror
+	  the behavior
+	  in the holds targeter when placing a copy-level hold. Basically
+	  don't fail
+	  to target a resource for a reservation later just because it's
+	  not in an
+	  available status right at this moment.
+
+2011-02-18  dbs
+
+	* Open-ILS/web/opac/skin/default/xml/result/result_table.xml:
+	  Switch to BT.textContent() for Opera compatibility
+	  
+	  The BT.textContent() method abstracts away some of the browser
+	  differences for us. Most importantly, it makes Opera happy.
+
+	* Open-ILS/web/opac/skin/default/xml/result/result_table.xml:
+	  Whitespace - convert mix of tabs/spaces to pure spaces
+
+2011-02-21  miker
+
+	* Open-ILS/src/sql/Pg/1.6.1-2.0-upgrade-db.sql: Addressing LP bug:
+	  https://bugs.launchpad.net/evergreen/+bug/721450
+	  
+	  If a series-class index definition has been removed, the data
+	  remains in the field entry table. This is because there was no
+	  fkey previously. We need to clean that data out so that the fkey
+	  can be validated during upgrade.
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Storage/Publisher/action.pm:
+	  Make sure we continue looping in situations where there is only
+	  one copy
+
