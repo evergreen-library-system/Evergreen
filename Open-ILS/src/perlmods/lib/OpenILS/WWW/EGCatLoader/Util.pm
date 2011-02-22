@@ -7,7 +7,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 my $U = 'OpenILS::Application::AppUtils';
 
-my %cache = (
+our %cache = (
     map => {aou => {}}, # others added dynamically as needed
     list => {},
     org_settings => {}
