@@ -26,7 +26,7 @@
             <a href="http://www.kcls.org/employment/">[% l('Employment') %]</a> 
         </div>
         <script type="text/javascript"
-            src="[% ctx.media_prefix %]/js/opac/simple.js"></script>
+            src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js"></script>
         <!-- Google Analytics -->
         <script type="text/javascript">
         /* uncomment when ready */ /*
