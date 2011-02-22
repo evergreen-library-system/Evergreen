@@ -12,7 +12,7 @@
             href='[% ctx.media_prefix %]/css/theme/[% ctx.skin %].css' />
 	    <script language='javascript' src='/IDL2js' type='text/javascript'></script>
         <script type="text/javascript">var djConfig = {parseOnLoad:true,isDebug:false};</script>
-        <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/dojo/dojo.js"></script>
+        <script type="text/javascript" src="/js/dojo/dojo/dojo.js"></script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/dojo/openils_dojo.js"></script>
         <script type="text/javascript" src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
         <script type="text/javascript">
