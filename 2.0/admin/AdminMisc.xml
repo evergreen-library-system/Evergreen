@@ -1,0 +1,320 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude"
+	    xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="adminmisc">
+	<info>
+		
+	<title>Server Operations and Maintenance</title>
+	<indexterm><primary>receipt template editor</primary></indexterm>
+		<abstract>
+			<para>This chapter deals with basic server operations such as starting and stopping <application>Evergreen</application> as well wall 
+			security, backing up and troubleshooting <application>Evergreen</application>.</para>
+        	</abstract>
+	</info>    
+	<section xml:id="startingopensrf">
+		<title>Starting, Stopping and Restarting</title>
+		<para>Occasionally, you may need to restart <application>Evergreen</application>. It is imperative that you understand the basic 
+		commands to stop and start the <application>Evergreen</application> server. You can start and stop <application>Evergreen</application> from the command line of 
+		the server using the <command>osrf_ctl.sh</command> script located in the 
+		<filename class="directory">openils/bin</filename> directory.</para>   
+		<note><para><command>The osrf_ctl.sh</command> command must be run as the <systemitem class="username">opensrf</systemitem> user.</para></note>
+		<para>To view help on <command>osrf_ctl.sh</command> and get all of its options, run:</para>
+		<screen><userinput>osrf_ctl.sh -h</userinput></screen>
+		<para>To start Evergreen, run:</para>
+		<screen><userinput>osrf_ctl.sh -l -a start_all</userinput></screen>
+		<para>The <option>-l</option> flag is used to indicate that Evergreen is configured to use <systemitem class="domainname">localhost</systemitem> as 
+		the host. If you have configured <filename>opensrf.xml</filename> to use your real hostname, do not use the <option>-l</option> flag. The <option>-a</option> 
+		option is required and indicates the <emphasis>action</emphasis> of the command. In this case 
+		<option>start_all</option>.    
+		</para>	
+		<note>
+			<para>If you receive the error message: <errortext>osrf_ctl.sh: command not found</errortext>, then your environment variable 
+			<varname>PATH</varname><indexterm><primary>environment variable</primary><secondary>PATH</secondary></indexterm> does not include the 
+			<filename class="directory">/openils/bin</filename> directory. You can set it using the following command:</para>
+			<screen><userinput>export <varname>PATH</varname>=$PATH:<filename class="directory">/openils/bin</filename></userinput></screen>
+			<para>If you receive the error message <errortext>Can't locate OpenSRF/System.pm in @INC … BEGIN 
+			failed–compilation aborted</errortext>, then your environment variable <varname>PERL5LIB</varname><indexterm><primary>environment 
+			variable</primary><secondary>PERL5LIB</secondary></indexterm> does not 
+			include the <filename class="directory">/openils/lib/perl5</filename> directory.  You can set it 
+			using the following command:</para>
+			<screen><userinput>export <varname>PERL5LIB</varname>=$PERL5LIB:<filename class="directory">/openils/lib/perl5</filename></userinput></screen>
+		</note>		
+		<para>It is also possible to start a specific service. For example:</para>
+		<screen><userinput>osrf_ctl.sh -l -a start_router</userinput></screen>
+		<para>will only start the <systemitem class="service">router</systemitem> service.</para>
+		<caution>
+			<para>If you decide to start each service individually, you need to start them in a specific order 
+			for Evergreen to start correctly. Run the commands in this exact order:</para>
+			<screen><userinput>osrf_ctl.sh -l -a start_router</userinput></screen>
+			<screen><userinput>osrf_ctl.sh -l -a start_perl</userinput></screen>
+			<screen><userinput>osrf_ctl.sh -l -a start_c</userinput></screen>
+		</caution>	
+		<para>After starting or restarting Evergreen, it is also necessary to restart the <systemitem class="service">Apache web server</systemitem>
+		<indexterm><primary>web server</primary><secondary>Apache</secondary></indexterm> for the OPAC to work correctly.</para>  
+		<para>To stop <application>Evergreen</application>, run:</para>
+		<screen><userinput>osrf_ctl.sh -l -a stop_all</userinput></screen>
+		<para>As with starting, you can choose to stop services individually.</para>
+		<para>To restart <application>Evergreen</application>, run:</para>
+		<screen><userinput>osrf_ctl.sh -l -a restart_all</userinput></screen>
+	</section>
+	<section xml:id="backingup">
+		<title>Backing Up</title>
+		<indexterm><primary>databases</primary><secondary>backing up</secondary></indexterm>
+	
+		<para>Backing up your system files and data is a critical task for server and database administrators. 
+		Having a strategy for backing up and recovery could be the difference between a minor annoyance for users and
+		a complete catastrophe.</para>   
+		<simplesect>
+			<title>Backing up the <application>Evergreen</application> Database</title><indexterm><primary>databases</primary></indexterm>
+			<para>Most of the critical data for an <application>Evergreen</application> system – patrons, bibliographic records, holdings, 
+			transactions, bills – is stored in the <application>PostgreSQL</application><indexterm><primary>databases</primary>
+			<secondary>PostgreSQL</secondary></indexterm>  database. You can therefore use normal 
+			<application>PostgreSQL</application> backup procedures to backup this data. For example, the simplest method of backing up the Evergreen
+			database is to use the <command>pg_dump</command> command to create a live backup of the database without having to 
+			interrupt any Evergreen services. Here is an example pg_dump command which will dump a local Evergreen database into a the file <filename>evergreen_db.backup</filename>:</para>
+			<screen><userinput>pg_dump -U evergreen -h localhost -f evergreen_db.backup evergreen</userinput></screen>
+			<para>To restore the backed up database into a new database, create a new database using the 
+			template0 database template and the UTF8 encoding, and run the <command>psql</command> command, specifying the new 
+			database as your target:</para>
+			<screen><userinput>createdb -T template0 -E UTF8 -U evergreen -h localhost new_evergreen</userinput></screen>
+			<screen><userinput>psql -U evergreen -h localhost -f evergreen_db.backup new_evergreen</userinput></screen>
+			<note>
+				<para>This method of backup is only suitable for small Evergreen instances. Larger sites 
+				should consider implementing continuous archiving (also known as <quote>log shipping</quote>) to provide 
+				more granular backups with lower system overhead. More information on backing up <application>PostgreSQL</application> 
+				databases can be found in the official <link xl:href="http://www.postgresql.org/docs/"><application>PostgreSQL</application> documentation</link>.</para>
+			</note>
+		</simplesect>
+		<simplesect>
+			<title>Backing up Evergreen Files</title>
+			<indexterm><primary>directories</primary><secondary>backing up</secondary></indexterm>
+			<para>When you deploy Evergreen, you will probably customize many aspects of your system including 
+			the system configuration files, <application>Apache</application> configuration files, OPAC and Staff Client. In order to 
+			protect your investment of time, you should carefully consider the best approach to backing up 
+			files.</para>
+			<para>There are a number of ways of tackling this problem. You could create a script that regularly 
+			creates a time-stamped tarball of all of these files and copies it to a remote server - but that 
+			would build up over time to hundreds of files. You could use <link xl:href="http://www.samba.org/rsync/"><application>rsync</application></link>
+			<indexterm><primary>rsync</primary></indexterm> to ensure that the files of 
+			interest are regularly updated on a remote server - but then you would lose track of the changes to 
+			the files, should you make a change that introduces a problem down the road.</para>
+			<para>Perhaps one of the best options is to use a version control system like <link xl:href="http://bazaar.canonical.com">
+			<application>Bazaar</application></link><indexterm><primary>Version Control System</primary><secondary>Subversion</secondary></indexterm>, 
+			<link xl:href="http://git-scm.com/"><application>git</application></link><indexterm><primary>Version Control System</primary><secondary>git</secondary></indexterm> 
+			or <link xl:href="http://subversion.apache.org/"><application>Subversion</application></link><indexterm><primary>Version Control System</primary>
+			<secondary>Subversion</secondary></indexterm> to regularly push updates of the files you care about to a repository on a 
+			remote server. This gives you the advantage of quickly being able to run through the history of the 
+			changes you made, with a commenting system that reminds you why each change was made, combined with 
+			remote storage of the pertinent files in case of disaster on site. In addition, your team can create 
+			local copies of the repository and test their own changes in isolation from the production 
+			system. Using a version control system also helps to recover system customizations after an 
+			upgrade.</para>
+		</simplesect>
+		<simplesect>
+			<title>Full System Backup</title>
+			<para>A full system backup archives every file on the file system. Some basic methods require you 
+			to shut down most system processes; other methods can use mirrored RAID<indexterm><primary>RAID</primary></indexterm> setups or 
+			SAN<indexterm><primary>SAN</primary></indexterm> storage to 
+			take <quote>snapshot</quote> backups of your full system while the system continues to run. The subject of how 
+			to implement full system backups is beyond the scope of this documentation.</para>
+		</simplesect>
+	</section>
+	<section xml:id="security">
+		<title>Security</title>
+		<indexterm><primary>security</primary></indexterm>
+		<para>As with an ILS and resource accessible from the world wide web careful consideration needs to be 
+		given to the security of your <application>Evergreen</application> servers and database. While it is impossible to cover all aspects 
+		of security, it is important to take several precautions when setting up production <application>Evergreen</application> site.</para>
+		<orderedlist>
+			<listitem>
+				<para>Change the Evergreen <systemitem class="username">admin</systemitem> password and keep it secure. The 
+				default admin password is known by anyone who has installed <application>Evergreen</application>. It is not a secret 
+				and needs to be changed by the Administrator. It should also only be shared by those who 
+				need the highest level of access to your system.</para>
+			</listitem>
+			<listitem>
+				<para>Create strong passwords using a combination of numerical and alphabetical characters 
+				for all of the Administrative passwords including the <systemitem class="username">postgres</systemitem> and 
+				<systemitem class="username">opensrf</systemitem> users</para>     
+			</listitem>
+			<listitem>
+				<para>Open ports in the firewall<indexterm><primary>firewall</primary></indexterm> with caution - It is only necessary to open ports 
+				<systemitem class="protocol">80</systemitem> and <systemitem class="protocol">443</systemitem>
+				for <systemitem class="protocol">TCP</systemitem> connections to the Evergreen server from the OPAC and the staff client.  It is critical for administrators to 
+				understand the concepts of network security and take precautions to minimize vulnerabilities. 
+				</para>
+			</listitem>
+			<listitem>
+				<para>Use permissions <indexterm><primary>permissions</primary></indexterm> and permission groups wisely - it is important to understand the 
+				purpose of the permissions and to only give users the level of access that they require.
+				</para> 
+			</listitem>
+					</orderedlist>	
+	</section>
+	<section xml:id="logfiles">
+		<title>Managing Log Files</title>
+		<indexterm><primary>logs</primary><secondary>managing</secondary></indexterm>
+		<para><application>Evergreen</application> comes with a sophisticated logging system, but it is important to manage the <application>OpenSRF</application> 
+		and <application>Evergreen</application> logs. This section will provide a couple of log management techniques and tools.</para> 	
+		<simplesect>
+			<title>Using the <systemitem class="service">logrotate</systemitem> Utility to Manage Log Size</title> 
+			<indexterm><primary>logs</primary><secondary>Log Rotate</secondary></indexterm>
+			 <para>Fortunately, this is not a new problem for <systemitem class="osname">Unix</systemitem> administrators, and there are a number of ways of keeping your logs under control. 
+			On <systemitem class="osname">Debian</systemitem> and <systemitem class="osname">Ubuntu</systemitem>, for example, 
+			the <systemitem class="service">logrotate</systemitem> utility controls when old log files are compressed and a new log file is started. 
+			<systemitem class="service">logrotate</systemitem> runs once a day and checks all log files that it knows about to see if a 
+			threshold of time or size has been reached and rotates the log files if a threshold condition has been met.</para>
+			<para>To teach <systemitem class="service">logrotate</systemitem> to rotate Evergreen logs on a weekly basis, or if they are > 50MB in size, 
+			create a new file <filename>/etc/logrotate.d/evergreen</filename> with the following contents: </para>
+<programlisting>
+compress
+/openils/var/log/*.log {
+# keep the last 4 archived log files along with the current log file
+ # log log.1.gz log.2.gz log.3.gz log.4.gz
+ # and delete the oldest log file (what would have been log.5.gz)
+rotate 5
+# if the log file is > 50MB in size, rotate it immediately
+size 50M
+ # for those logs that don't grow fast, rotate them weekly anyway
+  weekly
+}
+</programlisting>
+		</simplesect>
+		<simplesect>
+			<title>Changing Logging Level for <application>Evergreen</application></title>
+			<indexterm><primary>logs</primary><secondary>logging levels</secondary></indexterm>
+			<para>Change the Log Levels in your config files. Changing the level of logging will help 
+			narrow down errors.</para> 
+			<tip>
+				<para>A high logging level is not wise to do in a production environment since  it 
+				will produce vastly larger log files and thus reduce server performance.</para>
+			</tip>
+			<para>Change logging levels by editing the configuration file 
+			<filename>/openils/conf/opensrf_core.xml</filename><indexterm><primary>configuration files</primary><secondary>opensrf_core.xml</secondary></indexterm></para>
+			<para>you will want to search for lines containing &lt;loglevel&gt;.</para>
+			<para> the default setting for loglevel is 3 which will log <emphasis>errors</emphasis>, 
+			<emphasis>warnings</emphasis> and <emphasis>information</emphasis>.</para>
+			<para>The next level is 4 which is for debugging and provides additional information 
+			helpful for the debugging process.</para>
+			<para>Thus, lines with:</para>
+			<programlisting>&lt;loglevel&gt;3&lt;/loglevel&gt;</programlisting>
+			<para>Should be changed to:</para>
+			<programlisting>&lt;loglevel&gt;4&lt;/loglevel&gt;</programlisting>
+			<para>to allow debugging level logging</para>
+			<para>Other logging levels include <emphasis>0</emphasis> for no logging, 
+			<emphasis>1</emphasis> for logging errors and <emphasis>2</emphasis> for logging warnings 
+			and errors.</para>
+		</simplesect>
+	</section>
+	<section xml:id="InstallingPostgreSQL">
+		<title>Installing PostgreSQL from Source</title>
+		<indexterm><primary>databases</primary><secondary>PostgreSQL</secondary></indexterm>
+		<para>Some <systemitem class="osname">Linux</systemitem> distributions, such as <systemitem class="osname">Debian Etch (4.0)</systemitem>, do not offer PostgreSQL 
+		version 8.2 as an installable package. Before you continue, examine the software dependencies listed in <xref linkend="serversideinstall-software-dependencies"/> 
+		to ensure that your Linux distribution supports the required version of PostgreSQL.</para>
+
+		<note>
+			<para>Some <systemitem class="osname">Linux</systemitem> distributions, such as <systemitem class="osname">Debian Etch (4.0)</systemitem>, do not offer PostgreSQL 
+		version 8.2 as an installable package. Before you continue, examine the software dependencies listed in <xref linkend="serversideinstall-software-dependencies"/> 
+		to ensure that your Linux distribution supports the required version of PostgreSQL.</para>
+		</note>
+		
+		<procedure>
+			<step>
+				<para>Install the application <application>stow</application> on your system if it is not already installed. Issue the following command as 
+				the <systemitem class="username">root</systemitem> user:</para>
+<screen>
+<userinput>apt-get install stow</userinput>
+</screen>
+			</step>
+			<step>
+				<para>Download, compile, and install the latest release for PostgreSQL 8.2 (which was version <literal>8.2.12</literal> at the time of this writing). 
+				As the <systemitem class="username">root</systemitem> user, follow these steps:</para>
+				
+<screen>
+<userinput>
+wget http://wwwmaster.postgresql.org/redir/198/h/source/v8.2.17/postgresql-8.2.17.tar.bz2
+tar xzf postgresql-8.2.17.tar.gz
+cd postgresql-8.2.17
+./configure --with-perl --enable-integer-datetimes --with-openssl --prefix=/usr/local/stow/pgsql
+make
+make install
+cd contrib
+make
+make install
+cd xml2
+make
+make install
+cd /usr/local/stow
+stow pgsql
+</userinput>
+</screen>
+				
+			</step>
+			<step>
+				<para>Create the new user <systemitem class="username">postgres</systemitem> to run the PostgreSQL processes. 
+				As the <systemitem class="username">root</systemitem> user, execute this command:</para>
+				<screen><userinput>adduser postgres</userinput></screen>
+			</step>
+			<step>
+				<para>Initialize the database directory and start up PostgreSQL. As the <systemitem class="username">root</systemitem> user, follow these steps:</para>
+				
+<screen>
+<userinput>
+mkdir -p /usr/local/pgsql/data
+chown postgres /usr/local/pgsql/data
+su - postgres
+initdb -D /usr/local/pgsql/data -E UNICODE --locale=C
+pg_ctl -D /usr/local/pgsql/data -l /home/postgres/logfile start
+</userinput>
+</screen>
+				<note>
+					<para>If an error occurs during the final step above, review the path of the home directory for the 
+					<systemitem class="username">postgres</systemitem> user. It may be <literal>/var/lib/postresql</literal> instead of <literal>/home/postres</literal>.</para>
+				</note>
+			</step>
+		</procedure>
+	</section>
+	<section xml:id="configuringPostgreSQL">
+		<title>Configuring PostgreSQL</title>
+		<indexterm><primary>databases</primary><secondary>PostgreSQL</secondary></indexterm>
+		<para>The values of several PostreSQL configuration parameters may be changed for enhanced performance. The following table lists the default values 
+		and some suggested updates for several useful parameters:</para>
+		<table>
+			<title>Suggested configuration values</title>
+			<tgroup align="left" cols="3" colsep="1" rowsep="1">
+				<colspec colnum="1" colwidth="1.0*"/>
+				<colspec colnum="2" colwidth="1.0*"/>
+				<colspec colnum="3" colwidth="1.0*"/>
+				<thead>
+					<row>
+						<entry>Parameter</entry>
+						<entry>Default</entry>
+						<entry>Suggested</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>default_statistics_target</entry>
+						<entry>10</entry>
+						<entry>100</entry>
+					</row>
+					<row>
+						<entry>work_mem</entry>
+						<entry>4Mb</entry>
+						<entry>128Mb</entry>
+					</row>
+					<row>
+						<entry>shared_buffers</entry>
+						<entry>8Mb</entry>
+						<entry>512Mb</entry>
+					</row>
+					<row>
+						<entry>effective_cache_size</entry>
+						<entry>128Mb</entry>
+						<entry>4Gb</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</section>
+</chapter>

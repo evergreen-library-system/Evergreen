@@ -52,14 +52,22 @@
 		</info>
 		<xi:include href="stafftasks/stafftasks_intro.xml"/>
 		<xi:include href="stafftasks/alternate_serial_control.xml"/>
+		<xi:include href="stafftasks/booking.xml"/>
  	</part>
 	<part xml:id="admin">
 		<info>
 			<title>Administration</title>
 		</info>
 		<xi:include href="admin/admin-intro.xml"/>	
+		<xi:include href="admin/serversideinstallation_2.0.xml"/>	
 		<xi:include href="admin/Upgrading-Evergreen-2.0.xml"/>
 		<xi:include href="admin/migratingdata_2.0.xml"/>
+		<xi:include href="admin/AdminMisc.xml"/>
+		<xi:include href="admin/sip.xml"/>
+		<xi:include href="admin/z3950.xml"/>
+		<xi:include href="admin/troubleshooting.xml"/>
+		<xi:include href="admin/actiontriggers.xml"/>
+		<xi:include href="admin/admin-booking.xml"/>
 	</part>
 	<part xml:id="reports">
 		<info>
