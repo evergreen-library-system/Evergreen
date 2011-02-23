@@ -81,7 +81,9 @@
                                                 'my' : { 
                                                     'mbts' : r 
                                                 } 
-                                            } 
+                                            },
+                                            'no_auto_select' : true,
+                                            'to_bottom' : true 
                                         } 
                                     );
                                 } else {
@@ -90,7 +92,9 @@
                                             'retrieve_id' : r, 
                                             'row' : { 
                                                 'my' : {} 
-                                            } 
+                                            },
+                                            'no_auto_select' : true,
+                                            'to_bottom' : true
                                         } 
                                     );
                                 }
