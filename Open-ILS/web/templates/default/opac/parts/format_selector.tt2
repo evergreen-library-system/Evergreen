@@ -5,7 +5,7 @@
     size ? (' size="' _ size _ '"') : ''; %]>
     <option value=''>[% l("All Formats") %]</option>
 [% FOR o IN formats %]
-    <option value='[% o.code %]'[% value == o.code ? ' selected="selected"' : ''%]>[% o.name %]</option>
+    <option value='[% o.code %]'[% values.grep('^' _ o.code _ '$').size ? ' selected="selected"' : ''%]>[% o.name %]</option>
 [%- END %]
 <!--
 	<option value='at'>[% l("Books") %]</option>

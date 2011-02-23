@@ -32,24 +32,23 @@
             <td valign='top'>
                 <strong>[% l("Item Type") %]</strong><br />
                 [%  INCLUDE "default/opac/parts/format_selector.tt2"
-                        value=CGI.param("item_type")
+                        values=CGI.param("format")
                         multiple="multiple" size="4"
                         id="adv_global_item_type_basic" %]
             </td>
             <td valign='top'>
                 <strong>[% l("Language") %]</strong><br />
                 <select multiple='multiple' size='4' name="lang" id='adv_global_lang'>
-                    [% INCLUDE "default/opac/parts/item_lang_options.tt2" %]
+                    [% INCLUDE "default/opac/parts/item_lang_options.tt2"
+                        values=CGI.param("lang") %]
                 </select>
             </td>
             <td valign='top'>
                 <strong>[% l("Audience") %]</strong><br />
-                <!-- XXX this used to be multiple, but when would that be
-                useful? -->
-                <select size='3' name="audience" id='adv_global_audience_basic'>
-                    <option value='abcj'>[% l("Juvenile") %]</option>
-                    <option value='d'>[% l("General") %]</option>
-                    <option value='e'>[% l("Adult") %]</option>
+                <select size='3' name="audience" multiple="multiple"
+                    id='adv_global_audience_basic'>
+                    [% INCLUDE "default/opac/parts/audience_options.tt2"
+                        values=CGI.param("audience") %]
                 </select>
                     <!--<a id='adv_global_audience_link_adv' class='classic_link adv_adv_link'
                         href='javascript:void(0);' onclick='
@@ -66,41 +65,12 @@
                         hideMe(this);'>[% l("Basic") %]</a>-->
             </td>
             <td valign='top'>
-            <strong>[% l("Sort Criteria") %]</strong>
+            <strong>[% l("Sort Results") %]</strong>
               <table class='opac-auto-017'>
                 <tr>
                     <td align='center' width='100%'>
-                        <table class='' width='100%'>
-                            <tbody>
-                                <tr>
-                                    <td align=''>
-                                        <select id='adv_global_sort_by' name="sort" onchange="$('adv_global_sort_dir').disabled = !Boolean(this.selectedIndex);">
-                                            <option value='rel'>[% l("Relevance") %]</option>
-                                            <option value='title'>[% l("Title") %]</option>
-                                            <option value='author'>[% l("Author") %]</option>
-                                            <option value='pubdate'>[% l("Publication date") %]</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <select id='adv_global_sort_dir' name="sort_order" disabled='disabled'>
-                                            <option value='asc'>[% l("Ascending / A to Z") %]</option>
-                                            <option value='desc'>[% l("Descending / Z to A") %]</option>
-                                        </select>
-                                    </td>
-                           <!-- force the enable/disable sort dir code to run -->
-                                </tr>
-                                <tr>
-                                    <td align='center' class="hide_me">
-                                        <span>[% l("Group Formats and Editions") %]</span>
-                                        <input id='adv_group_titles' type='checkbox' />
-                                    </td>
-                                    <td align='center'>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        [% INCLUDE "default/opac/parts/filtersort.tt2"
+                            value=CGI.param('sort') %]
                     </td>
                 </tr>
               </table>
@@ -113,54 +83,14 @@
             <table cellpadding='10' cellspacing='0' border='0'>
                 <tbody>
                     <tr>
-                        <td align='right' class="hide_me">
-                            <span>[% l("Item Form") %]</span>
-                        </td>
-                        <td align='left' class="hide_me">
-                            <select multiple='multiple' size='3' id='adv_global_item_form'>
-                            </select>    
-                        </td>
-                        <td align='right' class="hide_me">
-                            <span>[% l("Literary Form") %]</span>
-                            <a id='adv_global_lit_form_link_adv' class='classic_link adv_adv_link'
-                                href='javascript:void(0);' onclick='
-                                hideMe($("adv_global_lit_form_basic"));
-                                unHideMe($("adv_global_lit_form"));
-                                hideMe(this);
-                                unHideMe($("adv_global_lit_form_link_basic"));
-                                '>[% l("Advanced") %]</a>
-                            <a id='adv_global_lit_form_link_basic' class='hide_me classic_link adv_adv_link'
-                                href='javascript:void(0);' onclick='
-                                unHideMe($("adv_global_lit_form_basic"));
-                                hideMe($("adv_global_lit_form"));
-                                unHideMe($("adv_global_lit_form_link_adv"));
-                                hideMe(this);
-                                '>[% l("Basic") %]</a>
-                        </td>
-                        <td align='left' class="hide_me">
-                            <select multiple='multiple' size='3' id='adv_global_lit_form' class='hide_me'>
-                            </select>    
-                            <select multiple='multiple' size='3' id='adv_global_lit_form_basic'>
-                                <option value='0 '>[% l("Non Fiction") %]</option>
-                                <option value='1'>[% l("Fiction") %]</option>
-                            </select>    
-                        </td>
-                        <td align='right' class="hide_me">
-                            <span>[% l("Bib Level") %]</span>
-                        </td>
-                        <td align='left' class="hide_me">
-                            <select multiple='multiple' size='3' id='adv_global_bib_level'>
-                            </select>    
-                        </td>
-                    </tr>
-                    <tr>
                         <td valign='top'>
                             <strong>[% l("Search Library") %]</strong><br />
                             [% PROCESS "default/opac/parts/org_selector.tt2";
                                 PROCESS build_org_selector name='loc' value=loc %]
                             <div style="position:relative;top:7px;">
-                                <input type='checkbox' name="available" value="1"
-                                    id='opac.result.limit2avail'/>
+                                <input type='checkbox' name="modifier"
+                                value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]
+                                    id='opac.result.limit2avail' />
                                 <label style="position:relative;top:-2px;"
                                     for='opac.result.limit2avail'>
                                     [% l("Limit to Available") %]</label>
@@ -168,20 +98,25 @@
                         </td>
                         <td valign='top'>
                             <strong>[% l("Publication Year") %]</strong><br />
-                            <select id='adv_global_pub_date_type' name='pubyear_how' onchange='
+                            <select id='adv_global_pub_date_type' name='pubdate' onchange='
                                 if(this.selectedIndex == 3)
                                     unHideMe($("adv_global_pub_date_2_span"));
                                 else
                                     hideMe($("adv_global_pub_date_2_span"));'>
-                                <option value='between' selected='selected'>[% l("Is") %]</option><!-- sic -->
-                                <option value='before'>[% l("Before") %]</option>
-                                <option value='after'>[% l("After") %]</option>
-                                <option value='between'>[% l("Between") %]</option>
+                                    [%  FOR opt IN [
+                                            {"code" => "is", "label" => l("Is")},
+                                            {"code" => "before", "label" => l("Before")},
+                                            {"code" => "after", "label" => l("After")},
+                                            {"code" => "between", "label" => l("Between")}
+                                        ];
+                                            |l(opt.code, opt.label) %]
+                                        <option value="[_1]"[% CGI.param('pubdate') == opt.code ? ' selected="selected"' : '' %]>[_2]</option>
+                                    [%  END; END %]
                             </select>    
                             <div style='margin-top:5px;'>
-                                <input id='adv_global_pub_date_1' name='pubyear1' type='text' size='4' maxlength='4'/>
-                                <span id='adv_global_pub_date_2_span' class='hide_me'>
-                                   [% l("and") %] <input name='pubyear2' id='adv_global_pub_date_2' type='text' size='4' maxlength='4'/>
+                                <input id='adv_global_pub_date_1' name='date1' type='text' size='4' maxlength='4' />
+                                <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
+                                   [% l("and") %] <input name='date2' id='adv_global_pub_date_2' type='text' size='4' maxlength='4'/>
                                 </span>
                             </div>
                         </td>
@@ -208,6 +143,7 @@
         </td>
     </tr>
 </table>
+<input type="hidden" name="_adv" value="1" />
 </form>
 <div id='adv_quick_search_sidebar' class='sidebar_chunk hide_me'> 
     <div id='adv_quick_search'>

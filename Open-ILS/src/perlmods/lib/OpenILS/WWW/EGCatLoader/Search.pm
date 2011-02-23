@@ -48,12 +48,12 @@ sub _prepare_biblio_search {
         $cgi->param('depth') :
         $ctx->{find_aou}->($args->{'org_unit'})->ou_type->depth;
 
-    if ($cgi->param('available')) {
+    if (grep /available/, $cgi->param('modifier')) {
         $query = '#available ' . $query;
     }
 
     if ($cgi->param('format')) {
-        $args->{'format'} = join('', $cgi->param('format'));
+        $query .= ' format(' . join('', $cgi->param('format')) . ')';
     }
 
     if ($cgi->param('lang')) {
@@ -63,24 +63,26 @@ sub _prepare_biblio_search {
     }
 
     if ($cgi->param('audience')) {
-        $query .= ' audience(' . $cgi->param('audience') . ')';
+        $query .= ' audience(' . join(',', $cgi->param('audience')) . ')';
     }
 
     if (defined $cgi->param('sort')) {
-        my $sort = $cgi->param('sort');
-        my $sort_order = $cgi->param('sort_order');
-        $query .= " sort($sort)";
-        $query .= '#' . $sort_order if $sort_order and $sort ne 'rel';
+        my ($axis, $desc) = split /\./, $cgi->param('sort');
+        $query .= " sort($axis)";
+        $query .= '#descending' if $desc;
     }
 
-    if ($cgi->param('pubyear_how') && $cgi->param('pubyear1')) {
-        if ($cgi->param('pubyear_how') eq 'between') {
-            $query .= ' between(' . $cgi->param('pubyear1');
-            $query .= ',' .  $cgi->param('pubyear2') if $cgi->param('pubyear2');
+    if ($cgi->param('pubdate') && $cgi->param('date1')) {
+        if ($cgi->param('pubdate') eq 'between') {
+            $query .= ' between(' . $cgi->param('date1');
+            $query .= ',' .  $cgi->param('date2') if $cgi->param('date2');
             $query .= ')';
+        } elsif ($cgi->param('pubdate') eq 'is') {
+            $query .= ' between(' . $cgi->param('date1') .
+                ',' .  $cgi->param('date1') . ')';  # sic, date1 twice
         } else {
-            $query .= ' ' . $cgi->param('pubyear_how') .
-                '(' . $cgi->param('pubyear1') . ')';
+            $query .= ' ' . $cgi->param('pubdate') .
+                '(' . $cgi->param('date1') . ')';
         }
     }
 

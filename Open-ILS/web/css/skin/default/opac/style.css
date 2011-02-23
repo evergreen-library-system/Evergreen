@@ -931,3 +931,9 @@ div.select-wrapper:hover {
 #opac.result.sort { width: 160px; }
 .renew-summary { font-size: 125%; font-style: italic; margin: 0.5ex 0; }
 .failure-text { margin-left: 4em; font-style: italic; color: #ff0000; }
+.refine-controls { font-size: 125%; padding: 0.5ex 0; }
+#adv_search_refine input[type=text] { border: 1px inset #ccc !important; }
+#adv_search_refine select { border: 1px inset #ccc !important; }
+#adv_search_refine {
+    padding-left: 5em; background-color: #d7d7d7; margin: 2ex 0;
+}

@@ -1,5 +1,22 @@
 [% PROCESS "default/opac/parts/org_selector.tt2" %]
 <div id="search-box">    
+    [% IF CGI.param('_adv') # this means adv search got us here %]
+    <div class="refine-controls">
+        <span id="refine_control_reveal">[
+            <a href="[% ctx.opac_root %]/advanced?[% query_string %]"
+                onclick="unHideMe($('adv_search_refine')); unHideMe($('refine_control_hide')); hideMe($('refine_control_reveal')); return false;">[%
+            l('Click to Refine Your Search')
+        %]</a> ]</span>
+        <span id="refine_control_hide" class="hide_me">[
+            <a href="javascript:void(0);"
+                onclick="hideMe($('adv_search_refine')); hideMe($('refine_control_hide')); unHideMe($('refine_control_reveal')); return false;">[%
+            l('Click to Hide Search Form')
+        %]</a> ]</span>
+    </div>
+    <div id="adv_search_refine" class="hide_me">
+        [% INCLUDE "default/opac/parts/advanced/search.tt2" %]
+    </div>
+    [% ELSE %]
     <form action="[% ctx.opac_root %]/results" method="GET">
     <table cellpadding="0" cellspacing="10" border="0">
         <tr>
@@ -49,6 +66,7 @@
         </tr>
     </table>
     </form>
+    [% END %]
     <div id="breadcrumb">
         <a href="[% ctx.opac_root %]/home">[% l('Catalog Home') %]</a> &gt;
     </div>

@@ -1,0 +1,9 @@
+[%
+FOR opt IN [
+    {'code' => 'a,b,c,j', 'label' => l("Juvenile")},
+    {'code' => 'd', 'label' => l("General")},
+    {'code' => 'e', 'label' => l("Adult")}
+];
+    |l(opt.code, opt.label) %]
+<option value='[_1]'[% values.grep('^' _ opt.code _ '$').size ? ' selected="selected"' : '' %]>[_2]</option>
+[% END; END %]

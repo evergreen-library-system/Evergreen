@@ -39,19 +39,21 @@
                         onmouseout="this.src='[% ctx.media_prefix %]/images/view_my_list.png';" /></a>
                 </div>
                 <div class="results_header_div"></div>
-                <div class="results_header_lbl">Sort by</div>
-                [% INCLUDE "default/opac/parts/result/filtersort.tt2" %]
-                <div class="results_header_div"></div>
-                <!-- XXX still needed?<div class="results_header_lbl">View</div>
-                <select class="results_header_sel">
-                    <option>Simple</option>
-                    <option>Detailed</option>
-                </select>
-                <div class="results_header_div"></div> -->
-                <input type="checkbox" id="limit_to_available" />
-                <label for="limit_to_available" class="results_header_lbl">
-                    [% l('Limit to available items') %]
-                </label>
+                [% UNLESS CGI.param('_adv') %]
+                    <div class="results_header_lbl">Sort by</div>
+                    [% INCLUDE "default/opac/parts/filtersort.tt2" %]
+                    <div class="results_header_div"></div>
+                    <!-- XXX still needed?<div class="results_header_lbl">View</div>
+                    <select class="results_header_sel">
+                        <option>Simple</option>
+                        <option>Detailed</option>
+                    </select>
+                    <div class="results_header_div"></div> -->
+                    <input type="checkbox" id="limit_to_available" />
+                    <label for="limit_to_available" class="results_header_lbl">
+                        [% l('Limit to available items') %]
+                    </label>
+                [% END %]
                 <div class="clear-both"></div>
             </div>
         </div>
