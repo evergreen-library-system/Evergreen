@@ -469,8 +469,8 @@ BEGIN
                 trans
           FROM
                 actor.org_unit_descendants(ans.id) d
-                JOIN asset.copy cp ON (cp.circ_lib = d.id)
-                JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number)
+                JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
+                JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number AND NOT cn.deleted)
           GROUP BY 1,2,6;
 
         IF NOT FOUND THEN
@@ -500,8 +500,8 @@ BEGIN
                 trans
           FROM
                 actor.org_unit_descendants(ans.id) d
-                JOIN asset.copy cp ON (cp.circ_lib = d.id)
-                JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number)
+                JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
+                JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number AND NOT cn.deleted)
           GROUP BY 1,2,6;
 
         IF NOT FOUND THEN
@@ -615,8 +615,8 @@ BEGIN
                 trans
           FROM
                 actor.org_unit_descendants(ans.id) d
-                JOIN asset.copy cp ON (cp.circ_lib = d.id)
-                JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number)
+                JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
+                JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number AND NOT cn.deleted)
                 JOIN metabib.metarecord_source_map m ON (m.source = cn.record)
           GROUP BY 1,2,6;
 
@@ -647,8 +647,8 @@ BEGIN
                 trans
           FROM
                 actor.org_unit_descendants(ans.id) d
-                JOIN asset.copy cp ON (cp.circ_lib = d.id)
-                JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number)
+                JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
+                JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number AND NOT cn.deleted)
                 JOIN metabib.metarecord_source_map m ON (m.source = cn.record)
           GROUP BY 1,2,6;
 
