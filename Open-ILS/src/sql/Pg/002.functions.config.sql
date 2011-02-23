@@ -613,7 +613,7 @@ CREATE OR REPLACE FUNCTION lpad_number_substrings( TEXT, TEXT, INT ) RETURNS TEX
 
     while ($string =~ /(?:^|\D)(\d{1,$find})(?:$|\D)/) {
         my $padded = $1;
-        $padded = $pad x ($len - length($padded)) . $padded
+        $padded = $pad x ($len - length($padded)) . $padded;
         $string =~ s/$1/$padded/sg;
     }
 
