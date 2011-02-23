@@ -1774,6 +1774,18 @@ our %nested_qualifier_map = (
 		},
 );
 
+# Our authority search options are currently pretty impoverished;
+# just right-truncated string match on a few categories, or by
+# ID number
+our %nested_auth_qualifier_map = (
+        eg => {
+            id          => ['id', 'Record number'],
+            name        => ['author', 'Personal or corporate author, or meeting name'],
+            title       => ['title', 'Uniform title'],
+            subject     => ['subject', 'Chronological term, topical term, geographic name, or genre/form term'],
+            topic       => ['topic', 'Topical term'],
+        },
+);
 
 my $base_explain = <<XML;
 <explain
@@ -1808,7 +1820,7 @@ my $base_explain = <<XML;
 	</schemaInfo>
 
 	<configInfo>
-		<default type="numberOfRecords">50</default>
+		<default type="numberOfRecords">10</default>
 		<default type="contextSet">eg</default>
 		<default type="index">keyword</default>
 		<default type="relation">all</default>
@@ -1923,61 +1935,10 @@ sub sru_search {
 		$resp->numberOfRecords($recs->{count});
 
 	} elsif ( $resp->type eq 'explain' ) {
-		if (!$ex_doc) {
-			my $host = $cgi->virtual_host || $cgi->server_name;
-
-			my $add_path = 0;
-			if ( $cgi->server_software !~ m|^Apache/2.2| ) {
-				my $rel_name = $cgi->url(-relative=>1);
-				$add_path = 1 if ($cgi->url(-path_info=>1) !~ /$rel_name$/);
-			}
-			my $base = $cgi->url(-base=>1);
-			my $url = $cgi->url(-path_info=>$add_path);
-			$url =~ s/^$base\///o;
-
-			my $doc = $parser->parse_string($base_explain);
-			my $e = $doc->documentElement;
-			$e->findnodes('/z:explain/z:serverInfo/z:host')->shift->appendText( $host );
-			$e->findnodes('/z:explain/z:serverInfo/z:port')->shift->appendText( $cgi->server_port );
-			$e->findnodes('/z:explain/z:serverInfo/z:database')->shift->appendText( $url );
-
-			for my $name ( keys %OpenILS::WWW::SuperCat::nested_qualifier_map ) {
-
-				my $identifier = $OpenILS::WWW::SuperCat::qualifier_ids{ $name };
-
-				next unless $identifier;
-
-				my $set_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'set' );
-				$set_node->setAttribute( identifier => $identifier );
-				$set_node->setAttribute( name => $name );
-
-				$e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $set_node );
-
-				for my $index ( keys %{ $OpenILS::WWW::SuperCat::nested_qualifier_map{$name} } ) {
-					my $desc = $OpenILS::WWW::SuperCat::nested_qualifier_map{$name}{$index}[1] || $index;
-
-					my $name_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'name' );
-
-					my $map_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'map' );
-					$map_node->appendChild( $name_node );
-
-					my $title_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'title' );
-
-					my $index_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'index' );
-					$index_node->appendChild( $title_node );
-					$index_node->appendChild( $map_node );
-
-					$index_node->setAttribute( id => $name . '.' . $index );
-					$title_node->appendText( $desc );
-					$name_node->setAttribute( set => $name );
-					$name_node->appendText($index );
-
-					$e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $index_node );
-				}
-			}
-
-			$ex_doc = $e->toString;
-		}
+		return_sru_explain($cgi, $req, $resp, \$ex_doc,
+			\%OpenILS::WWW::SuperCat::nested_qualifier_map,
+			\%OpenILS::WWW::SuperCat::qualifier_ids
+		);
 
 		$resp->record(
 			SRU::Response::Record->new(
@@ -2009,6 +1970,10 @@ sub sru_search {
         return  "$leftStr $rightStr";
     }
 
+    sub toEvergreenAuth {
+        return toEvergreen(shift);
+    }
+
     package CQL::TermNode;
 
     sub toEvergreen {
@@ -2019,13 +1984,13 @@ sub sru_search {
 
         my $query;
         if ( $qualifier ) {
-			my ($qset, $qname) = split(/\./, $qualifier);
+            my ($qset, $qname) = split(/\./, $qualifier);
 
-			$log->debug("SRU toEvergreen: $qset, $qname   $OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}[0]\n");
+            $log->debug("SRU toEvergreen: $qset, $qname   $OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}[0]\n");
 
             if ( exists($OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}) ) {
                 $qualifier = $OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}[0] || 'kw';
-			}
+            }
 
             my @modifiers = $relation->getModifiers();
 
@@ -2054,6 +2019,167 @@ sub sru_search {
 
         return "$qualifier:$term";
     }
+
+    sub toEvergreenAuth {
+        my $self      = shift;
+        my $qualifier = $self->getQualifier();
+        my $term      = $self->getTerm();
+        my $relation  = $self->getRelation();
+
+        my $query;
+        if ( $qualifier ) {
+            my ($qset, $qname) = split(/\./, $qualifier);
+
+            $log->debug("SRU toEvergreenAuth: $qset, $qname   $OpenILS::WWW::SuperCat::nested_auth_qualifier_map{$qset}{$qname}[0]\n");
+
+            if ( exists($OpenILS::WWW::SuperCat::nested_auth_qualifier_map{$qset}{$qname}) ) {
+                $qualifier = $OpenILS::WWW::SuperCat::nested_auth_qualifier_map{$qset}{$qname}[0] || 'author';
+            }
+        }
+        return { qualifier => $qualifier, term => $term };
+    }
+}
+
+my $auth_ex_doc;
+sub sru_auth_search {
+    my $cgi = new CGI;
+
+    my $req = SRU::Request->newFromCGI( $cgi );
+    my $resp = SRU::Response->newFromRequest( $req );
+
+    if ( $resp->type eq 'searchRetrieve' ) {
+        return_auth_response($cgi, $req, $resp);
+    } elsif ( $resp->type eq 'explain' ) {
+        return_sru_explain($cgi, $req, $resp, \$auth_ex_doc,
+            \%OpenILS::WWW::SuperCat::nested_auth_qualifier_map,
+            \%OpenILS::WWW::SuperCat::qualifier_ids
+        );
+    }
+
+    print $cgi->header( -type => 'application/xml' );
+    print $U->entityize($resp->asXML) . "\n";
+    return Apache2::Const::OK;
+}
+
+sub explain_header {
+    my $cgi = shift;
+
+    my $host = $cgi->virtual_host || $cgi->server_name;
+
+    my $add_path = 0;
+    if ( $cgi->server_software !~ m|^Apache/2.2| ) {
+        my $rel_name = $cgi->url(-relative=>1);
+        $add_path = 1 if ($cgi->url(-path_info=>1) !~ /$rel_name$/);
+    }
+    my $base = $cgi->url(-base=>1);
+    my $url = $cgi->url(-path_info=>$add_path);
+    $url =~ s/^$base\///o;
+
+    my $doc = $parser->parse_string($base_explain);
+    my $e = $doc->documentElement;
+    $e->findnodes('/z:explain/z:serverInfo/z:host')->shift->appendText( $host );
+    $e->findnodes('/z:explain/z:serverInfo/z:port')->shift->appendText( $cgi->server_port );
+    $e->findnodes('/z:explain/z:serverInfo/z:database')->shift->appendText( $url );
+
+    return ($doc, $e);
+}
+
+sub return_sru_explain {
+    my ($cgi, $req, $resp, $explain, $qualifier_map, $qualifier_ids) = @_;
+
+    if (!$$explain) {
+        my ($doc, $e) = explain_header($cgi);
+        for my $name ( keys %$qualifier_map ) {
+
+            my $identifier = $qualifier_ids->{ $name };
+
+            next unless $identifier;
+
+            my $set_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'set' );
+            $set_node->setAttribute( identifier => $identifier );
+            $set_node->setAttribute( name => $name );
+
+            $e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $set_node );
+
+            for my $index ( keys %{ $qualifier_map->{$name} } ) {
+                my $desc = $qualifier_map->{$name}{$index}[1] || $index;
+
+                my $name_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'name' );
+
+                my $map_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'map' );
+                $map_node->appendChild( $name_node );
+
+                my $title_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'title' );
+
+                my $index_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'index' );
+                $index_node->appendChild( $title_node );
+                $index_node->appendChild( $map_node );
+
+                $index_node->setAttribute( id => $name . '.' . $index );
+                $title_node->appendText( $desc );
+                $name_node->setAttribute( set => $name );
+                $name_node->appendText($index );
+
+                $e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $index_node );
+            }
+        }
+
+        $$explain = $e->toString;
+    }
+
+    $resp->record(
+        SRU::Response::Record->new(
+            recordSchema    => 'info:srw/cql-context-set/2/zeerex-1.1',
+            recordData      => $$explain
+        )
+    );
+
+}
+
+sub return_auth_response {
+    my ($cgi, $req, $resp) = @_;
+
+    my $cql_query = decode_utf8($req->query);
+    my $search = $req->cql->toEvergreenAuth;
+
+    my $qualifier = decode_utf8($search->{qualifier});
+    my $term = decode_utf8($search->{term});
+
+    $log->info("SRU NAF search string [$cql_query] converted to "
+        . "[$qualifier:$term]\n");
+
+    my $page_size = $req->maximumRecords;
+    $page_size ||= 10;
+
+    # startwith deals with pages, so convert startRecord to a page number
+    my $page = ($req->startRecord / $page_size) || 0;
+
+    my $recs;
+    if ($qualifier eq "id") {
+        $recs = [ int($term) ];
+    } else {
+        $recs = $supercat->request(
+            "open-ils.supercat.authority.$qualifier.startwith", $term, $page_size, $page
+        )->gather(1);
+    }
+
+    my $record_position = $req->startRecord;
+    my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
+    foreach my $record (@$recs) {
+        my $marcxml = $cstore->request(
+            'open-ils.cstore.direct.authority.record_entry.retrieve', $record
+        )->gather(1)->marc;
+
+        $resp->addRecord(
+            SRU::Response::Record->new(
+                recordSchema    => 'info:srw/schema/1/marcxml-v1.1',
+                recordData => $marcxml,
+                recordPosition => ++$record_position
+            )
+        );
+    }
+
+    $resp->numberOfRecords(scalar(@$recs));
 }
 
 =head2 get_ou($org_unit)
@@ -2085,4 +2211,4 @@ sub get_ou {
 
 1;
 
-# vim: noet:ts=4:sw=4
+# vim: et:ts=4:sw=4
