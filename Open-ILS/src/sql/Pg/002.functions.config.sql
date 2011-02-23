@@ -618,7 +618,7 @@ CREATE OR REPLACE FUNCTION lpad_number_substrings( TEXT, TEXT, INT ) RETURNS TEX
     }
 
     return $string;
-$$ LANUGAGE PLPERLU;
+$$ LANGUAGE PLPERLU;
 
 COMMIT;
 
