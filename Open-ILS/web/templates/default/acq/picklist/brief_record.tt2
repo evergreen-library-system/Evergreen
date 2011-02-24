@@ -13,7 +13,7 @@
                 <td><select dojoType='dijit.form.ComboBox' jsId='plSelector'/></td>
             </tr>
             <tr id='acq-brief-record-po-row'>
-                <td>Adding to Purchse Order</td>
+                <td>Adding to Purchase Order</td>
                 <td><input dojoType='dijit.form.TextBox' jsId='poNumber' disabled='disabled'/></td>
             </tr>
             <tr id='acq-brief-record-row'>
