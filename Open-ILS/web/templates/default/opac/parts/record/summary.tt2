@@ -104,11 +104,27 @@
                                 <strong id="rdetail_pub_lbl">[% IF attrs.publisher; l("Publisher"); END %]</strong>
                             </td>
                             <td valign="top" id='rdetail_publisher'>[% attrs.publisher %]</td>
+                            [% BLOCK render_subject;
+                            FOR node IN ctx.marc_xml.findnodes('//*[@tag="650"]');
+                                s0 = node.childNodes.0.textContent;
+                                s1 = node.childNodes.1.textContent;
+                                IF s0;
+                                    IF s0.match('\S') %]
+                                    <a href="[% ctx.opac_root %]/results?query=su:[% s0 | url %]">[% s0 %]</a>
+                                    &mdash;
+                                    [% END; IF s1 %]
+                                    <a href="[% ctx.opac_root %]/results?query=su:[% s1 | url %]">[% s1 %]</a>
+                                    <br/>
+                                    [% END %]
+                                [% END %]
+                            [% END %]
+                            [% END %]
+                            [% s = PROCESS render_subject; IF s.match('\S') %]
                             <td nowrap='nowrap' valign="top">
-                                [%# XXX TODO see kcls' drawMarcSubjects() in rdetail.js %]
                                 <strong id="rdetail_sub_lbl">[% l("Subjects") %]</strong>
                             </td>
-                            <td valign="top"></td>
+                            <td valign="top">[% s %]</td>
+                            [% END %]
                         </tr>
                     </table>
                 </div>

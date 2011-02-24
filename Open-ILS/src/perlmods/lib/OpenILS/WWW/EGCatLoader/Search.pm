@@ -11,15 +11,17 @@ my $U = 'OpenILS::Application::AppUtils';
 sub _prepare_biblio_search_basics {
     my ($cgi) = @_;
 
+    return $cgi->param('query') unless $cgi->param('qtype');
+
     my %parts;
-    my @part_names = qw/class contains query/;
+    my @part_names = qw/qtype contains query/;
     $parts{$_} = [ $cgi->param($_) ] for (@part_names);
 
     my @chunks = ();
-    for (my $i = 0; $i < scalar @{$parts{'class'}}; $i++) {
-        my ($class, $contains, $query) = map { $parts{$_}->[$i] } @part_names;
+    for (my $i = 0; $i < scalar @{$parts{'qtype'}}; $i++) {
+        my ($qtype, $contains, $query) = map { $parts{$_}->[$i] } @part_names;
 
-        push(@chunks, $class . ':') unless $class eq 'keyword' and $i == 0;
+        push(@chunks, $qtype . ':') unless $qtype eq 'keyword' and $i == 0;
 
         # This stuff probably will need refined or rethought to better handle
         # the weird things Real Users will surely type in.
@@ -41,32 +43,16 @@ sub _prepare_biblio_search {
     my ($cgi, $ctx) = @_;
 
     my $query = _prepare_biblio_search_basics($cgi);
-    my $args = {};
 
-    $args->{'org_unit'} = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
-    $args->{'depth'} = defined $cgi->param('depth') ?
-        $cgi->param('depth') :
-        $ctx->{find_aou}->($args->{'org_unit'})->ou_type->depth;
+    $query = ('#' . $_ . ' ' . $query) foreach ($cgi->param('modifier'));
 
-    if (grep /available/, $cgi->param('modifier')) {
-        $query = '#available ' . $query;
+    foreach (grep /^fi:/, $cgi->param) {
+        /:(\w+)$/ or next;
+        my $term = join(",", $cgi->param($_));
+        $query .= " $1($term)" if length $term;
     }
 
-    if ($cgi->param('format')) {
-        $query .= ' format(' . join('', $cgi->param('format')) . ')';
-    }
-
-    if ($cgi->param('lang')) {
-        # XXX TODO find out how to build query with multiple langs, if that
-        # even needs to be a feature of adv search.
-        $query .= ' lang:' . $cgi->param('lang');
-    }
-
-    if ($cgi->param('audience')) {
-        $query .= ' audience(' . join(',', $cgi->param('audience')) . ')';
-    }
-
-    if (defined $cgi->param('sort')) {
+    if ($cgi->param('sort')) {
         my ($axis, $desc) = split /\./, $cgi->param('sort');
         $query .= " sort($axis)";
         $query .= '#descending' if $desc;
@@ -86,7 +72,17 @@ sub _prepare_biblio_search {
         }
     }
 
-    return ($args, $query);
+    my $site = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
+    if (defined($cgi->param('loc')) or not $query =~ /site\(\d+\)/) {
+        $query .= " site($site)";
+    }
+    if (defined($cgi->param('depth')) or not $query =~ /depth\(\d+\)/) {
+        my $depth = defined $cgi->param('depth') ?
+            $cgi->param('depth') : $ctx->{find_aou}->($site)->ou_type->depth;
+        $query .= " depth($depth)";
+    }
+
+    return $query;
 }
 
 # context additions: 
@@ -103,20 +99,35 @@ sub load_rresults {
     my $page = $cgi->param('page') || 0;
     my $facet = $cgi->param('facet');
     my $limit = $cgi->param('limit') || 10; # TODO user settings
+    my $offset = $page * $limit;
 
-    my ($args, $query) = _prepare_biblio_search($cgi, $ctx);
+    my $query = _prepare_biblio_search($cgi, $ctx);
+# XXX for now, we still put limit and offset into a hash rather than
+# right into the query string, because use of the limit() and offset() filters
+# in the query string doesn't actually work as advertised.
+#
+# When you do, with offsets > 0, you get wrong results in the 'count'
+# part of the result hash from open-ils.search.biblio.multiclass.query.
+#
+#    if (defined $cgi->param('limit') or not $query =~ /limit\(\d+\)/) {
+#        $query =~ s/ limit\(\d+\)//;
+#        $query .= " limit($limit)";
+#    }
+#    if (defined $cgi->param('page') or not $query =~ /offset\(\d+\)/) {
+#        $query =~ s/ offset\(\d+\)//;
+#        $query .= " offset($offset)";
+#    }
+    my $args = {'limit' => $limit, 'offset' => $offset};
+
 
     # Stuff these into the TT context so that templates can use them in redrawing forms
     $ctx->{processed_search_query} = $query;
-    $ctx->{processed_search_args} = $args;
-
-    $args->{'limit'} = $limit;
-    $args->{'offset'} = $page * $limit;
 
     $query = "$query $facet" if $facet; # TODO
 
     my $results;
 
+    $logger->info("LFW XXX: compiled query: q{$query}");
     try {
 
         my $method = 'open-ils.search.biblio.multiclass.query';

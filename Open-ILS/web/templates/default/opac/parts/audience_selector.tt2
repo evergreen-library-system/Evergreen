@@ -1,3 +1,9 @@
+[%  name = name || "fi:audience";
+    id = id || "audience_selector";
+    values = values || CGI.param(name) %]
+<select id='[% id %]' name='[% name %]'[%
+    multiple ? ' multiple="multiple"' : '';
+    size ? (' size="' _ size _ '"') : ''; %]>
 [%
 FOR opt IN [
     {'code' => 'a,b,c,j', 'label' => l("Juvenile")},
@@ -7,3 +13,4 @@ FOR opt IN [
     |l(opt.code, opt.label) %]
 <option value='[_1]'[% values.grep('^' _ opt.code _ '$').size ? ' selected="selected"' : '' %]>[_2]</option>
 [% END; END %]
+</select>

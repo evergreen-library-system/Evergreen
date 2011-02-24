@@ -11,7 +11,7 @@
             <option value='exact'>[% l("Matches Exactly") %]</option>
         </select>
         <!-- search term -->
-        <input type='text' size='18' name='query' style='margin-right: 3px;' />
+        <input type='text' size='18' name='query' />
         <!-- Remove this row -->
         <a href="javascript:;"
             style="position:relative;top:1px; vertical-align: middle;"

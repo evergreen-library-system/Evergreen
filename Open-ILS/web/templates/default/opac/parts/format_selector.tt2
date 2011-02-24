@@ -1,5 +1,6 @@
-[%  name = name || "format";
-    id = id || "format_selector" %]
+[%-  name = name || "fi:format";
+    id = id || "format_selector";
+    values = values || CGI.param(name) -%]
 <select id='[% id %]' name='[% name %]'[%
     multiple ? ' multiple="multiple"' : '';
     size ? (' size="' _ size _ '"') : ''; %]>

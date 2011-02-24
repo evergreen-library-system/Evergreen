@@ -1,4 +1,10 @@
-[%
+[%- name = name || "fi:language";
+    id = id || "language_selector";
+    values = values || CGI.param(name); -%]
+<select id='[% id %]' name='[% name %]'[%
+    multiple ? ' multiple="multiple"' : '';
+    size ? (' size="' _ size _ '"') : ''; %]>
+[%-
 # Language otions for languages that exist in the catalog.
 # This file should be updated on occasion.
 #
@@ -30,4 +36,5 @@ FOR lang IN [
 ];
     |l(lang.code, lang.label) %]
 <option value='[_1]'[% values.grep('^' _ lang.code _ '$').size ? ' selected="selected"' : '' %]>[_2]</option>
-[%  END; END %]
+[%  END; END -%]
+</select>

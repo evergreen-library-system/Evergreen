@@ -6,8 +6,8 @@
     {value => "series", label => l("Series")},
     {value => "id|bibcn", label => l("Call Number")}
 ] %]
-<select name="class">
-    [%  search_class = CGI.param('class');
+<select name="qtype">
+    [%  search_class = CGI.param('qtype');
         FOR sc IN search_classes -%]
     <option value='[% sc.value %]'[%
         search_class == sc.value ? ' selected="selected"' : ''

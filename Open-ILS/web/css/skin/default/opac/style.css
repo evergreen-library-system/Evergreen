@@ -228,7 +228,7 @@ div.select-wrapper:hover {
 #search_box_wrapper {
 	border:1px solid #e9ebf3;
 	padding: 1px;
-	padding-left:3px;
+    padding-left: 3px;
 }
 
 #search-wrapper #breadcrumb {
@@ -656,7 +656,7 @@ div.select-wrapper:hover {
 }
 
 .results_header_sel {
-    width: 88px;
+    /* width: 88px; */
 	float:left;
 	position: relative;
 	top: 2px;

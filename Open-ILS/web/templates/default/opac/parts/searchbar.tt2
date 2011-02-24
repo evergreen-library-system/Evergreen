@@ -1,23 +1,8 @@
 [% PROCESS "default/opac/parts/org_selector.tt2" %]
 <div id="search-box">    
-    [% IF CGI.param('_adv') # this means adv search got us here %]
-    <div class="refine-controls">
-        <span id="refine_control_reveal">[
-            <a href="[% ctx.opac_root %]/advanced?[% query_string %]"
-                onclick="unHideMe($('adv_search_refine')); unHideMe($('refine_control_hide')); hideMe($('refine_control_reveal')); return false;">[%
-            l('Click to Refine Your Search')
-        %]</a> ]</span>
-        <span id="refine_control_hide" class="hide_me">[
-            <a href="javascript:void(0);"
-                onclick="hideMe($('adv_search_refine')); hideMe($('refine_control_hide')); unHideMe($('refine_control_reveal')); return false;">[%
-            l('Click to Hide Search Form')
-        %]</a> ]</span>
-    </div>
-    <div id="adv_search_refine" class="hide_me">
-        [% INCLUDE "default/opac/parts/advanced/search.tt2" %]
-    </div>
-    [% ELSE %]
+    [% UNLESS took_care_of_form -%]
     <form action="[% ctx.opac_root %]/results" method="GET">
+    [%- END %]
     <table cellpadding="0" cellspacing="10" border="0">
         <tr>
             <td colspan="3">
@@ -28,17 +13,23 @@
             </td>
         </tr>
         <tr>
+            [% IF is_advanced %]
+            <td colspan="2">
+                <input type="hidden" name="_adv" value="1" />
+            [% ELSE %]
             <td>
-                [% INCLUDE "default/opac/parts/stypes_selector.tt2" %]
+            [% INCLUDE "default/opac/parts/stypes_selector.tt2" %]
             </td>
             <td>
+            [% END %]
                 <div id="search_box_wrapper">
                     <!-- Note: when common browsers support HTML5 placeholder text, we can remove the JS -->
-                    <input type="text" id="search_box" name="query" value="[% ctx.processed_search_query || l("Search Keyword") | html %]"
+                    <input type="text" id="search_box" name="query" value="[% is_advanced ? ctx.processed_search_query : CGI.param('query') || l("Search Keyword") | html %]"
+                        [% IF is_advanced %]style="width: 450px"[% END %]
                         onfocus="if (this.value=='[% l("Search Keyword") %]'){this.value='';this.style.color='#000';}"
                         onblur="if (this.value==''){this.value='[% l("Search Keyword") %]';this.style.color='#999';}" />
-                    <input name='page' type='hidden' value="0" />
                 </div>
+                <input name='page' type='hidden' value="0" />
             </td>
             <td valign="top">
                 <div class="pos-abs">
@@ -50,6 +41,7 @@
                 </div>
             </td>
         </tr>
+        [% UNLESS is_advanced %]
         <tr>
             <td>
                 [% INCLUDE "default/opac/parts/format_selector.tt2" value=CGI.param("format") %]
@@ -64,8 +56,15 @@
                 </span>
             </td>
         </tr>
+        [% END %]
     </table>
-    </form>
+    [% UNLESS took_care_of_form %]</form>[% END %]
+    [% IF is_advanced %]
+    <div class="opac-auto-102">
+        [ <a href="[% ctx.opac_root %]/advanced?[% query_string %]">[%
+            l('Click to Refine Your Search')
+        %]</a> ]
+    </div>
     [% END %]
     <div id="breadcrumb">
         <a href="[% ctx.opac_root %]/home">[% l('Catalog Home') %]</a> &gt;

@@ -32,23 +32,19 @@
             <td valign='top'>
                 <strong>[% l("Item Type") %]</strong><br />
                 [%  INCLUDE "default/opac/parts/format_selector.tt2"
-                        values=CGI.param("format")
                         multiple="multiple" size="4"
                         id="adv_global_item_type_basic" %]
             </td>
             <td valign='top'>
                 <strong>[% l("Language") %]</strong><br />
-                <select multiple='multiple' size='4' name="lang" id='adv_global_lang'>
-                    [% INCLUDE "default/opac/parts/item_lang_options.tt2"
-                        values=CGI.param("lang") %]
-                </select>
+                [%  INCLUDE "default/opac/parts/language_selector.tt2"
+                        multiple="multiple" size="4" %]
             </td>
             <td valign='top'>
                 <strong>[% l("Audience") %]</strong><br />
-                <select size='3' name="audience" multiple="multiple"
-                    id='adv_global_audience_basic'>
-                    [% INCLUDE "default/opac/parts/audience_options.tt2"
-                        values=CGI.param("audience") %]
+                    [% INCLUDE "default/opac/parts/audience_selector.tt2"
+                        id="adv_global_audience_basic"
+                        multiple="multiple" size="4" %]
                 </select>
                     <!--<a id='adv_global_audience_link_adv' class='classic_link adv_adv_link'
                         href='javascript:void(0);' onclick='
@@ -114,9 +110,9 @@
                                     [%  END; END %]
                             </select>    
                             <div style='margin-top:5px;'>
-                                <input id='adv_global_pub_date_1' name='date1' type='text' size='4' maxlength='4' />
+                                <input id='adv_global_pub_date_1' name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
                                 <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
-                                   [% l("and") %] <input name='date2' id='adv_global_pub_date_2' type='text' size='4' maxlength='4'/>
+                                   [% l("and") %] <input name='date2' id='adv_global_pub_date_2' type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
                                 </span>
                             </div>
                         </td>
