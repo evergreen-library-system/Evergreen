@@ -228,6 +228,8 @@ psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1-2.0-upgrade-db.sql e
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.0-2.0.1-upgrade-db.sql evergreen
 </userinput>
 </screen> 	
+<note><para>The <filename>1.6.1-2.0-upgrade-db.sql</filename> upgrade script may take a long time (hours) to process on larger 
+systems.<para></note>
 			</step>
 <step>
 				<para>Run the <filename>reingest-1.6-2.0.pl</filename> script to generate an sql script. Then use the sql file to reingest bib records into your 
