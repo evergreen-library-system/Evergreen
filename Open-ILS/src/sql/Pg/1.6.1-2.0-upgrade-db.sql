@@ -18793,6 +18793,17 @@ ALTER TABLE acq.provider_contact
 ALTER TABLE actor.stat_cat
 	ADD COLUMN usr_summary BOOL NOT NULL DEFAULT FALSE;
 
+-- Per Robert Soulliere, it can be necessary in some cases to clean out bad
+-- data from action.reservation_transit_copy before applying the missing
+-- fkeys below.
+-- https://bugs.launchpad.net/evergreen/+bug/721450
+DELETE FROM action.reservation_transit_copy
+    WHERE target_copy NOT IN (SELECT id FROM booking.resource);
+-- In the same spirit as the above delete, this can only fix bad data.
+UPDATE action.reservation_transit_copy
+    SET reservation = NULL
+    WHERE reservation NOT IN (SELECT id FROM booking.reservation);
+
 -- Recreate some foreign keys that were somehow dropped, probably
 -- by some kind of cascade from an inherited table:
 
