@@ -18876,6 +18876,9 @@ CREATE TRIGGER asset_label_sortkey_trigger
     BEFORE UPDATE OR INSERT ON asset.call_number
     FOR EACH ROW EXECUTE PROCEDURE asset.label_normalizer();
 
+-- Now populate the label_sortkey column via the trigger
+UPDATE asset.call_number SET id = id;
+
 CREATE OR REPLACE FUNCTION container.clear_all_expired_circ_history_items( )
 RETURNS VOID AS $$
 --
