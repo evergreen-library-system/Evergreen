@@ -19,7 +19,6 @@ dojo.require('openils.widget.ProgressDialog');
 var authtoken;
 var contextOrg;
 var user;
-var workOrgs;
 var osSettings = {};
 var ouSettingValues = {};
 var osEditAutoWidget;
@@ -30,20 +29,8 @@ function osInit(data) {
     contextOrg = user.user.ws_ou();
     openils.User.authtoken = authtoken;
 
-    fieldmapper.standardRequest(
-        [   'open-ils.actor',
-            'open-ils.actor.user.get_work_ous.ids'],
-        {   async: true,
-            params: [authtoken],
-            oncomplete: function(r) {
-                var list = r.recv().content();
-                if(e = openils.Event.parse(list))
-                    return alert(e);
-                workOrgs = list;
-                buildMergedOrgSelector(list);
-            }
-        }
-    );
+    var connect = function() { dojo.connect(contextOrg, 'onChange', osChangeContext); };
+    new openils.User().buildPermOrgSelector('STAFF_LOGIN', osContextSelector, null, connect);
 
     osDraw();
 }
@@ -81,7 +68,7 @@ function osDraw(specific_setting) {
         [   'open-ils.actor', 
             'open-ils.actor.ou_setting.ancestor_default.batch'],
         {   async: true,
-            params: [contextOrg, names],
+            params: [contextOrg, names, authtoken],
             oncomplete: function(r) {
                 var data = r.recv().content();
                 if(e = openils.Event.parse(data))
@@ -93,58 +80,6 @@ function osDraw(specific_setting) {
             }
         }
     );
-}
-
-function insertTreePath(target,newPath,ifield,cfield) {
-    var newTop = newPath.shift();
-    var child = newPath[0];
-
-    var subtarget = dojo.filter(target[cfield](), function (tc) {return tc[ifield]() == child[ifield]()});
-
-    if (subtarget.length == 0) {
-        target[cfield]().push(child);
-        subtarget = [child];
-    }
-
-    if (newPath.length > 1) insertTreePath(subtarget[0],newPath,ifield,cfield);
-}
-
-function flattenTree(tree,cfield,sort_field,kill_kids,list) {
-    if (!list) list = [];
-    list.push(tree);
-
-    var kids = tree[cfield]();
-    if (sort_field) kids = kids.sort(function (a,b) { return a[sort_field]() > b[sort_field]() });
-
-    dojo.forEach(kids, function (c) { return flattenTree(c,cfield,sort_field,kill_kids,list) });
-
-    if (kill_kids) tree[cfield]([]);
-    return list;
-}
-
-function buildMergedOrgSelector(orgList) {
-    var orgTree;
-    for(var i = 0; i < orgList.length; i++) {
-        // add the work org path
-        var node = fieldmapper.aou.findOrgUnit(orgList[i]).clone();
-        node.children([]);
-
-        var path = [node];
-        while(node.parent_ou() != null) {
-            node = fieldmapper.aou.findOrgUnit(node.parent_ou()).clone();
-            node.children([]);
-            path.push(node);
-        }
-
-        if (!orgTree) orgTree = path[0];
-        insertTreePath(orgTree, path.reverse(), 'id', 'children');
-
-    }
-
-    var store = new dojo.data.ItemFileReadStore({data:aou.toStoreData(flattenTree(orgTree, 'children', 'shortname', true))});
-    osContextSelector.store = store;
-    osContextSelector.startup();
-    osContextSelector.setValue(user.user.ws_ou());
 }
 
 function osChangeContext() {
