@@ -714,6 +714,8 @@ div.select-wrapper:hover {
 	padding-bottom:5px;
 }
 
+#zero_search_hits div { float:left;width:300px;margin-top:20px; }
+
 #zero_search_hits p {
 	margin-top:0;
 }
@@ -937,3 +939,4 @@ div.select-wrapper:hover {
 #adv_search_refine {
     padding-left: 5em; background-color: #d7d7d7; margin: 2ex 0;
 }
+.row-remover { position: relative; top: 1px; vertical-align: middle; }

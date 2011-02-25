@@ -1,21 +1,26 @@
-<tr id="adv_global_row" type='input'>
+[%
+    contains = CGI.param('contains');
+    queries = CGI.param('query');
+    qtypes = CGI.param('qtype') || ['keyword'];
+    FOR qtype IN qtypes;
+        c = contains.shift;
+        q = queries.shift; %]
+<tr[% IF loop.first %] id="adv_global_row"[% END %]>
     <td align='left' width='100%' nowrap='nowrap'>
-        <!-- select the search class -->
         <span class="opac-auto-078">
-            [% INCLUDE "default/opac/parts/stypes_selector.tt2" %]
+            [% INCLUDE "default/opac/parts/qtype_selector.tt2"
+                query_type=qtype %]
         </span>
-        <!-- select how to treat the text -->
         <select name='contains' style='margin-right: 7px;'>
-            <option value='contains'>[% l("Contains") %]</option>
-            <option value='nocontains'>[% l("Does not contain") %]</option>
-            <option value='exact'>[% l("Matches Exactly") %]</option>
+            <option value='contains'[% c == 'contains' ? ' selected="selected"' : '' %]>[% l("Contains") %]</option>
+            <option value='nocontains'[% c == 'nocontains' ? ' selected="selected"' : '' %]>[% l("Does not contain") %]</option>
+            <option value='exact'[% c == 'exact' ? ' selected="selected"' : '' %]>[% l("Matches Exactly") %]</option>
         </select>
-        <!-- search term -->
-        <input type='text' size='18' name='query' />
-        <!-- Remove this row -->
-        <a href="javascript:;"
-            style="position:relative;top:1px; vertical-align: middle;"
+        <input type='text' size='18' name='query' value="[% q | html %]" />
+        <a href="javascript:;" class="row-remover"
             title="[% l('Remove row') %]" alt="[% l('Remove row') %]"
             onclick='var row = this.parentNode.parentNode;var tbody = row.parentNode; if( tbody.getElementsByTagName("tr").length > 2 ) row.parentNode.removeChild(row);'><img src="[% ctx.media_prefix %]/images/adv_row_close_btn.png" /></a>
     </td>
 </tr>
+[%      i = i + 1;
+    END %]

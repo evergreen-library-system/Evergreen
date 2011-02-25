@@ -18,7 +18,7 @@
                 <input type="hidden" name="_adv" value="1" />
             [% ELSE %]
             <td>
-            [% INCLUDE "default/opac/parts/stypes_selector.tt2" %]
+            [% INCLUDE "default/opac/parts/qtype_selector.tt2" %]
             </td>
             <td>
             [% END %]
