@@ -127,7 +127,6 @@ sub load_rresults {
 
     my $results;
 
-    $logger->info("LFW XXX: compiled query: q{$query}");
     try {
 
         my $method = 'open-ils.search.biblio.multiclass.query';
