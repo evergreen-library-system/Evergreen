@@ -21,6 +21,7 @@ sub _prepare_biblio_search_basics {
     for (my $i = 0; $i < scalar @{$parts{'qtype'}}; $i++) {
         my ($qtype, $contains, $query) = map { $parts{$_}->[$i] } @part_names;
 
+        next unless $query =~ /\S/;
         push(@chunks, $qtype . ':') unless $qtype eq 'keyword' and $i == 0;
 
         # This stuff probably will need refined or rethought to better handle

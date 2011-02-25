@@ -1,7 +1,7 @@
 [%
     contains = CGI.param('contains');
     queries = CGI.param('query');
-    qtypes = CGI.param('qtype') || ['keyword'];
+    qtypes = CGI.param('qtype') || ['keyword' x 3];
     FOR qtype IN qtypes;
         c = contains.shift;
         q = queries.shift; %]
