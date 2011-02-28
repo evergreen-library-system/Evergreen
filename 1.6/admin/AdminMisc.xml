@@ -294,10 +294,13 @@ esac;
 </programlisting>
 			</step>
 			<step>
-				<para>Save file in <filename>/etc/init.d</filename> folder.</para> 
+				<para>Save file in <filename class="directory">/etc/bin</filename> folder as <filename>evergreenstart</filename> if you would like this as a manual script for starting Evergreen services.</para> 
+				
+				<para>Save file in <filename class="directory">/etc/init.d</filename> folder as <filename>evergreenstart</filename> if you would like to run this script automatically 
+				during your server's boot process as explained in later steps.</para> 
 			</step>
 			<step>
-			<para>Ensure that it is executable.</para>
+			<para>Ensure that the script is executable.</para>
 <screen><userinput>sudo chmod 755 evergreenstart </userinput></screen>
 			</step> 
 			<step>
@@ -307,17 +310,16 @@ esac;
 <screen><userinput>/etc/init.d/apache2 restart</userinput></screen>
 			</step> 
 			<step>
-			<para>Test the script by running it from the command line as the <systemitem class="username">root</systemitem> user.</para>
-<screen><userinput>/etc/init.d/evergreenstart restart</userinput></screen>
-			<para>You will also need to restart apache as <systemitem class="username">root</systemitem>.</para>
-<screen><userinput>/etc/init.d/apache2 restart</userinput></screen>
-			</step> 
-			<step>
+			<note><para>The next steps are optional if you want to automate Evergreen so it starts during your server's boot process.</para></note>
 			<para>Update runlevel defaults of the new evergreenstart service as the <systemitem class="username">root</systemitem>  user:</para>
 <screen><userinput>update-rc.d evergreenstart defaults 80 20</userinput></screen>
 <note><para>For Evergreen to start properly during a reboot, you will want to ensure that the first number <option>80</option> is lower than the assigned starting priority for Apache so it starts before Apache.  It should also a higher stopping priority <option>20</option> than Apache so it stops after Apache at shutdown.</para></note>
 			</step> 
+			<step>
+			<para>Test the startup script by rebooting the Evergreen Server and checking to ensure that all Evergreen sercices started properly.</para>
+			</step> 
 		</procedure>
+		<caution><para>This has not yet been tested in a Evergreen multi-server, <quote>brick</quote> configuration.</para></caution> 
 		<para>For more information on update-rc.d you should review the documentation on this topic for <link xl:href="http://www.debuntu.org/how-to-manage-services-with-update-rc.d">
 		Debian</link> or <link xl:href="http://manpages.ubuntu.com/manpages/hardy/man8/update-rc.d.8.html">Ubuntu</link> depending on your distribution of Linux.</para> 	
 	</section>
