@@ -30,9 +30,12 @@ sub _prepare_biblio_search_basics {
             $query =~ s/"//g;
             $query = ('"' . $query . '"') if index $query, ' ';
             $query = '-' . $query;
-        } elsif ($contains eq 'exact') {
+        } elsif ($contains eq 'phrase') {
             $query =~ s/"//g;
             $query = ('"' . $query . '"') if index $query, ' ';
+        } elsif ($contains eq 'exact') {
+            $query =~ s/[\^\$]//g;
+            $query = '^' . $query . '$';
         }
         push @chunks, $query;
     }
@@ -103,23 +106,9 @@ sub load_rresults {
     my $offset = $page * $limit;
 
     my $query = _prepare_biblio_search($cgi, $ctx);
-# XXX for now, we still put limit and offset into a hash rather than
-# right into the query string, because use of the limit() and offset() filters
-# in the query string doesn't actually work as advertised.
-#
-# When you do, with offsets > 0, you get wrong results in the 'count'
-# part of the result hash from open-ils.search.biblio.multiclass.query.
-#
-#    if (defined $cgi->param('limit') or not $query =~ /limit\(\d+\)/) {
-#        $query =~ s/ limit\(\d+\)//;
-#        $query .= " limit($limit)";
-#    }
-#    if (defined $cgi->param('page') or not $query =~ /offset\(\d+\)/) {
-#        $query =~ s/ offset\(\d+\)//;
-#        $query .= " offset($offset)";
-#    }
+    # Limit and offset will stay here. Everything else should be part of
+    # the query string, not special args.
     my $args = {'limit' => $limit, 'offset' => $offset};
-
 
     # Stuff these into the TT context so that templates can use them in redrawing forms
     $ctx->{processed_search_query} = $query;

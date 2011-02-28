@@ -1,4 +1,10 @@
 [%
+    contains_options = [
+        {value => 'contains', label => l('Contains')},
+        {value => 'nocontains', label => l('Does not contain')},
+        {value => 'phrase', label => l('Contains phrase')},
+        {value => 'exact', label => l('Matches exactly')}
+    ];
     contains = CGI.param('contains');
     queries = CGI.param('query');
     qtypes = CGI.param('qtype') || ['keyword' x 3];
@@ -12,9 +18,10 @@
                 query_type=qtype %]
         </span>
         <select name='contains' style='margin-right: 7px;'>
-            <option value='contains'[% c == 'contains' ? ' selected="selected"' : '' %]>[% l("Contains") %]</option>
-            <option value='nocontains'[% c == 'nocontains' ? ' selected="selected"' : '' %]>[% l("Does not contain") %]</option>
-            <option value='exact'[% c == 'exact' ? ' selected="selected"' : '' %]>[% l("Matches Exactly") %]</option>
+            [% FOR o IN contains_options;
+                |l(o.value, o.label) -%]
+            <option value="[_1]"[% c == o.value ? ' selected="selected"' : '' %]>[_2]</option>
+            [% END; END %]
         </select>
         <input type='text' size='18' name='query' value="[% q | html %]" />
         <a href="javascript:;" class="row-remover"
