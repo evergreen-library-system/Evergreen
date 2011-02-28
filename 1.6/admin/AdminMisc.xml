@@ -44,9 +44,9 @@
 		<caution>
 			<para>If you decide to start each service individually, you need to start them in a specific order 
 			for Evergreen to start correctly. Run the commands in this exact order:</para>
-			<screen><userinput>osrf_ctl.sh -l -a start_router</userinput></screen>
-			<screen><userinput>osrf_ctl.sh -l -a start_perl</userinput></screen>
-			<screen><userinput>osrf_ctl.sh -l -a start_c</userinput></screen>
+<screen><userinput>osrf_ctl.sh -l -a start_router</userinput></screen>
+<screen><userinput>osrf_ctl.sh -l -a start_perl</userinput></screen>
+<screen><userinput>osrf_ctl.sh -l -a start_c</userinput></screen>
 		</caution>	
 		<para>After starting or restarting Evergreen, it is also necessary to restart the <systemitem class="service">Apache web server</systemitem>
 		<indexterm><primary>web server</primary><secondary>Apache</secondary></indexterm> for the OPAC to work correctly.</para>  
@@ -55,6 +55,271 @@
 		<para>As with starting, you can choose to stop services individually.</para>
 		<para>To restart <application>Evergreen</application>, run:</para>
 		<screen><userinput>osrf_ctl.sh -l -a restart_all</userinput></screen>
+		<simplesect>
+			<title>Starting Specific Perl Services</title>
+			<para>It is also possible to start and stop a specific perl service using <filename>opensrf-perl.pl</filename>.  Here is the syntax for starting a perl service with this command:</para>
+<screen><userinput>opensrf-perl.pl --service <systemitem class="service">&lt;service-name&gt;</systemitem> -a start -p <filename class="directory">&lt;PID-directory&gt;</filename> </userinput></screen>
+<para>Example (starting the booking module):</para>
+<screen><userinput>opensrf-perl.pl --service <systemitem class="service">open-ils.booking</systemitem> -a start -p <filename class="directory">/openils/var/run/opensrf</filename></userinput></screen>
+
+<para>This is the syntax for stopping a perl service with this command:</para>
+<screen><userinput>opensrf-perl.pl --service <systemitem class="service">&lt;service-name&gt;</systemitem> -a stop -p <filename class="directory">&lt;PID-directory&gt;</filename> </userinput></screen>
+<para>Example (stopping the booking module):</para>
+<screen><userinput>opensrf-perl.pl --service <systemitem class="service">open-ils.booking</systemitem> -a stop -p <filename class="directory">/openils/var/run/opensrf</filename></userinput></screen>
+			<para>These commands can be very useful when you edit Perl modules and only need to restart the specific service for changes to take effect.</para>
+			
+			<note>
+			<para>The default for the PID-directory: <filename class="directory">/openils/var/run/opensrf</filename></para>
+			<para>For a clustered server instance of Evergreen, you must store the PIDs on a directory 
+			that is local to each server, or else one of your cluster servers may try killing processes on itself that actually have PIDs on other servers.</para>
+			<para>For services running on the local server use the <option>--localhost</option> to force the hostname to be <systemitem class="domainname">localhost</systemitem>, 
+			instead of the fully qualified domain name for the machine.</para>
+			<para>To see other options run the command with the <option>-h</option> option:</para>
+<screen><userinput>opensrf-perl.pl  -h</userinput></screen>
+			</note>
+<para>For a list of Evergreen/OpenSRF perl services see: <xref linkend="_evergreen_specific_opensrf_services"/>.</para>
+		</simplesect>
+	</section>
+	<section xml:id="evergreen_startup_script">
+		<title>Automating Evergreen Startup and Shutdown</title>
+		<para>Once you understand starting and stopping Evergreen, you will want to create a start up script for two purposes:</para>
+		<itemizedlist>
+			<listitem>Allow you to start, restart and stop Evergreen, SIP, reporter and z39.50 services with one command.</listitem>
+			<listitem>Allow Evergreen to stop and start properly during a system restart.</listitem>
+		</itemizedlist>
+		<para>The following procedure is for Debian or Ubuntu distributions of Linux.</para>
+		<procedure>
+			<step>
+				<para>Create a bash script for starting Evergreen and all associated services. Here is an example script:</para>  
+
+<programlisting>
+<![CDATA[
+
+
+#!/bin/bash
+
+OPENILS_BASE="/openils"
+OPENILS_CORE="${OPENILS_BASE}/conf/opensrf_core.xml"
+SRU_LOG="${OPENILS_BASE}/var/log/sru.log"
+
+SIP_PID="${OPENILS_BASE}/var/run"
+SIP_CONF="${OPENILS_BASE}/conf/oils_sip.xml"
+
+REP_LOCK="${OPENILS_BASE}/var/lock/reporter-LOCK"
+REP_NAME="Clark Kent, waiting for trouble"
+
+sru_name='simple2zoom'
+
+if [ $(whoami) != 'opensrf' ]; then
+ PERL5LIB='/openils/lib/perl5:$PERL5LIB';
+fi;
+
+start() {
+        sleep 3
+        echo "Starting Evergreen"
+        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh -l -a start_all"
+}
+
+stop() {
+        echo "Stopping Evergreen"
+        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh -l -a stop_all"
+}
+
+autogen() {
+        echo "Running Autogen Update"
+        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin autogen.sh -u -c ${OPENILS_CORE}"
+}
+
+sip_start() {
+        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin oils_ctl.sh \
+                                                                                                                     -d ${SIP_PID} \
+                                                                                                                     -s ${SIP_CONF} \
+                                                                                                                     -a start_sip"
+}
+
+sip_stop() {
+        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin oils_ctl.sh \
+                                                                                                                     -d ${SIP_PID} \
+                                                                                                                     -s ${SIP_CONF} \
+                                                                                                                     -a stop_sip"
+}
+
+sip_restart() {
+        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin oils_ctl.sh \
+                                                                                                                     -d ${SIP_PID} \
+                                                                                                                     -s ${SIP_CONF} \
+                                                                                                                     -a restart_sip"
+}
+
+start_rep() {
+        pids="$(pidof "$REP_NAME")"
+        if [ ! x"$pids" = x ] ; then
+          echo FAILURE ; echo $"Starting Reporting: already running as $pids" 
+          return 1
+        fi
+        rm -f $REP_LOCK
+        sudo -u opensrf bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin clark-kent.pl \
+                                                           --lockfile=${REP_LOCK} --boostrap=${OPENILS_CORE} --concurrency=1 --sleep=30 --daemon" ;
+        pids="$(pidof "$REP_NAME")"
+        if [ x"$pids" = x ] ; then
+          echo FAILURE 
+        else 
+          echo OK
+        fi
+        echo "Starting Reporting: $pids" 
+        return $RETVAL
+}
+
+stop_rep() {
+        pids="$(pidof "$REP_NAME")"
+        if [ x"$pids" = x ] ; then
+          echo FAILURE ; echo $"Stopping Reporting: not running" ; RETVAL=1
+        else 
+          kill $pids ; RETVAL=$?
+          if [ $RETVAL ] ; then
+            echo OK ; echo $"Stopping Reporting: $pids"
+          else
+            echo FAILURE 
+          fi
+        fi
+        rm -f $REP_LOCK
+        return $RETVAL
+}
+
+z39_50_start() {
+        pids=`ps -eo pid,args | grep $sru_name | grep -v grep | cut -c1-6`
+        if [ ! x"$pids" = x ] ; then
+          echo FAILURE ; echo $"Starting Z39.50/SRU: already running as $pids" 
+          return 1
+        fi
+        sudo -u opensrf bash -c "touch ${SRU_LOG}"
+        sudo bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin z39_50.sh >> ${SRU_LOG} 2>&1" &
+        sleep 1
+        pids=`ps -eo pid,args | grep $sru_name | grep -v grep | cut -c1-6`
+        if [ x"$pids" = x ] ; then
+          echo FAILURE 
+        else 
+          echo OK
+        fi
+        echo "Starting Z39.50/SRU: $pids" 
+        return $RETVAL
+}
+
+z39_50_stop() {
+        pids=`ps -eo pid,args | grep $sru_name | grep -v grep | cut -c1-6`
+        if [ x"$pids" = x ] ; then
+          echo FAILURE ; echo $"Stopping Z39.50/SRU: not running" ; RETVAL=1
+        else 
+          kill $pids ; RETVAL=$?
+          if [ $RETVAL ] ; then
+            echo OK ; echo $"Stopping Z39.50/SRU: $pids"
+          else
+            echo FAILURE 
+          fi
+        fi
+        return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        start_rep
+        z39_50_start
+        sip_start
+    ;;
+    stop)
+        sip_stop
+        z39_50_stop
+        stop_rep
+        stop
+    ;;
+    restart)
+        echo "Restarting Evergreen, Reporter and Z39.50 Processes"
+        sip_stop
+        z39_50_stop
+        stop_rep
+        stop
+        start
+        start_rep
+        z39_50_start
+        sip_start
+    ;;
+    autogen)
+        autogen
+    ;;
+    sip_start)
+        sip_start
+    ;;
+    sip_stop)
+        sip_stop
+    ;;
+    sip_restart)
+        sip_restart
+    ;;
+    start_reporter)
+        start_rep
+    ;;
+    stop_reporter)
+        stop_rep
+    ;;
+    restart_reporter)
+	stop_rep
+	start_rep
+    ;;
+    z39_50_start)
+        z39_50_start
+    ;;
+    z39_50_stop)
+        z39_50_stop
+    ;;
+    z39_50_restart)
+        z39_50_stop
+        z39_50_start
+    ;;
+    start_router|stop_router|restart_router|start_perl|stop_perl|restart_perl| \
+    start_c|stop_c|restart_c|start_osrf|stop_osrf|restart_osrf|stop_all|start_all|restart_all)
+        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh -l -a $1"
+    ;;
+    *)
+        echo " * Usage: /etc/init.d/evergreen {start|stop|restart|autogen"
+        echo "                                 |sip_start|sip_stop|sip_restart"
+        echo "                                 |z39_50_start|z39_50_stop|z39_50_restart"
+        echo "                                 |start_reporter|stop_reporter|restart_reporter"
+        echo "                                 |start_router|stop_router|restart_router|start_perl|stop_perl|restart_perl"
+        echo "                                 |start_c|stop_c|restart_c|start_osrf|stop_osrf|restart_osrf|stop_all|start_all|restart_all}"
+        exit 1
+    ;;
+esac;
+]]>
+</programlisting>
+			</step>
+			<step>
+				<para>Save file in <filename>/etc/init.d</filename> folder.</para> 
+			</step>
+			<step>
+			<para>Ensure that it is executable.</para>
+<screen><userinput>sudo chmod 755 evergreenstart </userinput></screen>
+			</step> 
+			<step>
+				<para>Test the script by running it from the command line as the <systemitem class="username">root</systemitem> user.</para>
+<screen><userinput>/etc/init.d/evergreenstart restart</userinput></screen>
+				<para>You will also need to restart apache as the <systemitem class="username">root</systemitem> user.</para>
+<screen><userinput>/etc/init.d/apache2 restart</userinput></screen>
+			</step> 
+			<step>
+			<para>Test the script by running it from the command line as the <systemitem class="username">root</systemitem> user.</para>
+<screen><userinput>/etc/init.d/evergreenstart restart</userinput></screen>
+			<para>You will also need to restart apache as <systemitem class="username">root</systemitem>.</para>
+<screen><userinput>/etc/init.d/apache2 restart</userinput></screen>
+			</step> 
+			<step>
+			<para>Update runlevel defaults of the new evergreenstart service as the <systemitem class="username">root</systemitem>  user:</para>
+<screen><userinput>update-rc.d evergreenstart defaults 80 20</userinput></screen>
+<note><para>For Evergreen to start properly during a reboot, you will want to ensure that the first number <option>80</option> is lower than the assigned starting priority for Apache so it starts before Apache.  It should also a higher stopping priority <option>20</option> than Apache so it stops after Apache at shutdown.</para></note>
+			</step> 
+		</procedure>
+		<para>For more information on update-rc.d you should review the documentation on this topic for <link xl:href="http://www.debuntu.org/how-to-manage-services-with-update-rc.d">
+		Debian</link> or <link xl:href="http://manpages.ubuntu.com/manpages/hardy/man8/update-rc.d.8.html">Ubuntu</link> depending on your distribution of Linux.</para> 	
 	</section>
 	<section xml:id="backingup">
 		<title>Backing Up</title>
