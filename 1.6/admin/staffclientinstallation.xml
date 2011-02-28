@@ -63,6 +63,25 @@
 				server</emphasis>. The first thing you must do to the Staff Client on every workstation
 				is to assign it a workstation name. This is covered in 
 				<xref linkend="staffclientinstallation-workstationnames"/>.</para>
+					<note><para>Users must have the <literal>REGISTER_WORKSTATION</literal> permission and be assigned the appropriate working location(s) in order to 
+					register a workstation.</para></note> 
+					<para>To add working locations to a user’s account:</para>
+					<orderedlist>
+						<listitem>
+							<para>Retrieve the user through a patron search and select <menuchoice><guimenu>Other</guimenu><guimenuitem>User Permission 
+							Editor</guimenuitem></menuchoice> and select the boxes for the locations necessary.</para> 
+							<para>Save the user record.</para>
+							<note>
+								<para>Making modifications to <guilabel>Working Locations</guilabel> while changing permission settings does not work – when this 
+								workflow is performed, permission changes will not be applied to the database.</para>
+							</note>
+						</listitem>
+						<listitem>
+							<para>Alternately, from the <guimenu>Admin</guimenu> menu, select <guimenuitem>User Permission Editor</guimenuitem> and retrieve the user by 
+							barcode.</para>  
+							<para>Make changes to working locations as described above.</para>
+						</listitem>
+					</orderedlist>
 			</section>
 			<section xml:id="staffclientinstallation-installing-macos">
 				<title>Installing on <systemitem class="osname">Mac OS</systemitem></title>
