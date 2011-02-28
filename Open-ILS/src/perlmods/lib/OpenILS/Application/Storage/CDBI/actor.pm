@@ -18,7 +18,8 @@ __PACKAGE__->columns( Essential => qw/usrname email first_given_name
 				photo_url create_date expire_date credit_forward_balance
 				super_user usrgroup passwd card last_xact_id
 				standing barred profile prefix suffix alert_message
-				day_phone evening_phone other_phone mailing_address/ );
+				day_phone evening_phone other_phone mailing_address
+				claims_never_checked_out_count/ );
 
 #-------------------------------------------------------------------------------
 package actor::usr_org_unit_opt_in;

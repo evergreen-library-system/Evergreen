@@ -2914,6 +2914,7 @@ sub clear_shelf_process {
         $hold->cancel_time('now');
         $hold->cancel_cause(2); # Hold Shelf expiration
         $e->update_action_hold_request($hold) or return $e->die_event;
+        delete_hold_copy_maps($self, $e, $hold->id) and return $e->die_event;
 
         my $copy = $hold->current_copy;
 

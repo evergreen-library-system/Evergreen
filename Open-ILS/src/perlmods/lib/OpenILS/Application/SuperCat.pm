@@ -2353,13 +2353,19 @@ sub retrieve_record_objects {
 	my $client = shift;
 	my $ids = shift;
 
+	my $type = 'biblio';
+
+	if ($self->api_name =~ /authority/) {
+		$type = 'authority';
+	}
+
 	$ids = [$ids] unless (ref $ids);
 	$ids = [grep {$_} @$ids];
 
 	return [] unless (@$ids);
 
 	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
-	return $_storage->request('open-ils.cstore.direct.biblio.record_entry.search.atomic' => { id => [grep {$_} @$ids] })->gather(1);
+	return $_storage->request("open-ils.cstore.direct.$type.record_entry.search.atomic" => { id => [grep {$_} @$ids] })->gather(1);
 }
 __PACKAGE__->register_method(
 	method    => 'retrieve_record_objects',
@@ -2382,6 +2388,26 @@ Returns the Fieldmapper object representation of the requested bibliographic rec
 		}
 );
 
+__PACKAGE__->register_method(
+	method    => 'retrieve_record_objects',
+	api_name  => 'open-ils.supercat.authority.object.retrieve',
+	api_level => 1,
+	argc      => 1,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the Fieldmapper object representation of the requested authority records
+		  DESC
+		  params   =>
+		  	[
+				{ name => 'authIds',
+				  desc => 'OpenILS authority::record_entry ids',
+				  type => 'array' },
+			],
+		  'return' =>
+		  	{ desc => 'The authority records',
+			  type => 'array' }
+		}
+);
 
 sub retrieve_isbn_object {
 	my $self = shift;

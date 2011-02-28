@@ -125,6 +125,8 @@ ordered_file_list="
   953.data.MODS32-xsl.sql
   954.data.MODS33-xsl.sql
   954.data.marc21expand880.sql
+
+  990.schema.unapi.sql
   
   reporter-schema.sql
   extend-reporter.sql

@@ -97,7 +97,8 @@ __PACKAGE__->columns(Essential => qw/request_time capture_time fulfillment_time
 				     hold_type holdable_formats target cancel_time shelf_time
 				     phone_notify email_notify selection_depth cancel_note
 				     pickup_lib current_copy request_lib frozen thaw_date mint_condition
-				     fulfillment_staff fulfillment_lib selection_ou cut_in_line/);
+				     fulfillment_staff fulfillment_lib selection_ou cut_in_line
+					 shelf_expire_time/);
 
 #-------------------------------------------------------------------------------
 

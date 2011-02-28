@@ -424,7 +424,7 @@ DECLARE
     use_id_for_tcn BOOLEAN;
 BEGIN
     -- Remove any existing 901 fields before we insert the authoritative one
-    NEW.marc := REGEXP_REPLACE(NEW.marc, E'<datafield\s*[^<>]*?\s*tag="901".+?</datafield>', '', 'g');
+    NEW.marc := REGEXP_REPLACE(NEW.marc, E'<datafield[^>]*?tag="901".+?</datafield>', '', 'g');
 
     IF TG_TABLE_SCHEMA = 'biblio' THEN
         -- Set TCN value to record ID?
@@ -613,12 +613,12 @@ CREATE OR REPLACE FUNCTION lpad_number_substrings( TEXT, TEXT, INT ) RETURNS TEX
 
     while ($string =~ /(?:^|\D)(\d{1,$find})(?:$|\D)/) {
         my $padded = $1;
-        $padded = $pad x ($len - length($padded)) . $padded
+        $padded = $pad x ($len - length($padded)) . $padded;
         $string =~ s/$1/$padded/sg;
     }
 
     return $string;
-$$ LANUGAGE PLPERLU;
+$$ LANGUAGE PLPERLU;
 
 COMMIT;
 
