@@ -1050,14 +1050,16 @@
 	perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
 	  --service all --create-schema --create-offline \
 	  --hostname HOSTNAME --port PORT \
-	  --user evergreen --password PASSWORD --database DATABASENAME</userinput>
+	  --user evergreen --password PASSWORD --database DATABASENAME --admin-user ADMIN-USER --admin-pass ADMIN-PASSWORD </userinput>
 							</screen>
 							<para>On most systems, <emphasis>HOSTNAME</emphasis> will be
 							<emphasis role="bold">localhost</emphasis> and
 							<emphasis>PORT</emphasis> will be <emphasis role="bold">5432</emphasis>.
 							Of course, values for <emphasis>PASSWORD</emphasis> and
  							<emphasis>DATABASENAME</emphasis> must match the values you used in 
- 							<xref linkend="serversideinstallation-postgresqlcreateuser"/>.</para>
+ 							<xref linkend="serversideinstallation-postgresqlcreateuser"/>. The <option>admin-user</option> and <option>admin-pass</option> options will 
+							specify the Evergreen administrator account's username and password. This was 
+							changed for security reasons, it was previously admin/open-ils</para>
 							<para>As the command executes, you may see warnings similar to:
 							<literal>ERROR: schema SOMENAME does not exist</literal> (in fact,
 							you may see one warning per schema) but they can be safely ignored.</para>
@@ -1182,11 +1184,10 @@
 									applications on your server:</para>
 									
 									<para>Edit the Apache configuration file and change the lines:</para>
-									<screen>
-										<userinput>
-	export APACHE_RUN_USER=www-data
-	export APACHE_RUN_GROUP=www-data</userinput>
-									</screen>
+<screen>
+<userinput>export APACHE_RUN_USER=www-data</userinput>
+<userinput>export APACHE_RUN_GROUP=www-data</userinput>
+</screen>
 									<para>to instead read:</para>
 									<screen>
 										<userinput>
