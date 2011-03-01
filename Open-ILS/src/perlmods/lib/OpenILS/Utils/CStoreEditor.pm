@@ -115,11 +115,19 @@ sub log {
 sub checkauth {
 	my $self = shift;
 	$self->log(D, "checking auth token ".$self->authtoken);
-	my ($reqr, $evt) = $U->checkses($self->authtoken);
-	$self->event($evt) if $evt;
-	return $self->{requestor} = $reqr;
-}
 
+	my $content = $U->simplereq( 
+		'open-ils.auth', 
+		'open-ils.auth.session.retrieve', $self->authtoken, 1);
+
+    if(!$content or $U->event_code($content)) {
+        $self->event( ($content) ? $content : OpenILS::Event->new('NO_SESSION'));
+        return undef;
+    }
+
+    $self->{authtime} = $content->{authtime};
+	return $self->{requestor} = $content->{userobj};
+}
 
 =head test
 sub checkauth {
@@ -175,6 +183,12 @@ sub authtoken {
 	my( $self, $auth ) = @_;
 	$self->{authtoken} = $auth if $auth;
 	return $self->{authtoken};
+}
+
+sub authtime {
+	my( $self, $auth ) = @_;
+	$self->{authtime} = $auth if $auth;
+	return $self->{authtime};
 }
 
 sub timeout {

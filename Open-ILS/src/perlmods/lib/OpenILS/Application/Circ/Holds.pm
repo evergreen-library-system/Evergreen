@@ -2635,10 +2635,10 @@ __PACKAGE__->register_method(
 );
 
 sub uber_hold {
-	my($self, $client, $auth, $hold_id) = @_;
+	my($self, $client, $auth, $hold_id, $args) = @_;
 	my $e = new_editor(authtoken=>$auth);
 	$e->checkauth or return $e->event;
-    return uber_hold_impl($e, $hold_id);
+    return uber_hold_impl($e, $hold_id, $args);
 }
 
 __PACKAGE__->register_method(
@@ -2649,17 +2649,16 @@ __PACKAGE__->register_method(
 );
 
 sub batch_uber_hold {
-	my($self, $client, $auth, $hold_ids) = @_;
+	my($self, $client, $auth, $hold_ids, $args) = @_;
 	my $e = new_editor(authtoken=>$auth);
 	$e->checkauth or return $e->event;
-    $client->respond(uber_hold_impl($e, $_)) for @$hold_ids;
+    $client->respond(uber_hold_impl($e, $_, $args)) for @$hold_ids;
     return undef;
 }
 
 sub uber_hold_impl {
-    my($e, $hold_id) = @_;
-
-	my $resp = {};
+    my($e, $hold_id, $args) = @_;
+    $args ||= {};
 
 	my $hold = $e->retrieve_action_hold_request(
 		[
@@ -2688,27 +2687,33 @@ sub uber_hold_impl {
 	my $user = $hold->usr;
 	$hold->usr($user->id);
 
-	my $card = $e->retrieve_actor_card($user->card)
-		or return $e->event;
 
-	my( $mvr, $volume, $copy ) = find_hold_mvr($e, $hold);
+	my( $mvr, $volume, $copy, $issuance, $bre ) = find_hold_mvr($e, $hold, $args->{suppress_mvr});
 
-	flesh_hold_notices([$hold], $e);
-	flesh_hold_transits([$hold]);
+	flesh_hold_notices([$hold], $e) unless $args->{suppress_notices};
+	flesh_hold_transits([$hold]) unless $args->{suppress_transits};
 
     my $details = retrieve_hold_queue_status_impl($e, $hold);
 
-    return {
+    my $resp = {
         hold           => $hold,
         copy           => $copy,
         volume         => $volume,
-        mvr            => $mvr,
-        patron_first   => $user->first_given_name,
-        patron_last    => $user->family_name,
-        patron_barcode => $card->barcode,
-        patron_alias   => $user->alias,
         %$details
     };
+
+    $resp->{mvr} = $mvr unless $args->{suppress_mvr};
+    unless($args->{suppress_patron_details}) {
+	    my $card = $e->retrieve_actor_card($user->card) or return $e->event;
+        $resp->{patron_first}   = $user->first_given_name,
+        $resp->{patron_last}    = $user->family_name,
+        $resp->{patron_barcode} = $card->barcode,
+        $resp->{patron_alias}   = $user->alias,
+    };
+
+    $resp->{bre} = $bre if $args->{include_bre};
+
+    return $resp;
 }
 
 
@@ -2718,7 +2723,7 @@ sub uber_hold_impl {
 # hold is all about
 # -----------------------------------------------------
 sub find_hold_mvr {
-	my( $e, $hold ) = @_;
+	my( $e, $hold, $no_mvr ) = @_;
 
 	my $tid;
 	my $copy;
@@ -2767,7 +2772,7 @@ sub find_hold_mvr {
 
     # TODO return metarcord mvr for M holds
 	my $title = $e->retrieve_biblio_record_entry($tid);
-	return ( $U->record_to_mvr($title), $volume, $copy, $issuance );
+	return ( ($no_mvr) ? undef : $U->record_to_mvr($title), $volume, $copy, $issuance, $title );
 }
 
 __PACKAGE__->register_method(
