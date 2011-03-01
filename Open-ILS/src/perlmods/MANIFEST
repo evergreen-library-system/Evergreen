@@ -162,7 +162,6 @@ lib/OpenILS/WWW/BadDebt.pm
 lib/OpenILS/WWW/EGWeb.pm
 lib/OpenILS/WWW/Exporter.pm
 lib/OpenILS/WWW/IDL2js.pm
-lib/OpenILS/WWW/Method.pm
 lib/OpenILS/WWW/PasswordReset.pm
 lib/OpenILS/WWW/Proxy.pm
 lib/OpenILS/WWW/Redirect.pm
@@ -172,6 +171,5 @@ lib/OpenILS/WWW/SuperCat.pm
 lib/OpenILS/WWW/SuperCat/Feed.pm
 lib/OpenILS/WWW/TemplateBatchBibUpdate.pm
 lib/OpenILS/WWW/Vandelay.pm
-lib/OpenILS/WWW/Web.pm
 lib/OpenILS/WWW/XMLRPCGateway.pm
 MANIFEST			This list of files
