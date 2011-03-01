@@ -34,7 +34,7 @@ use OpenILS::Application::Actor::Stage;
 
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;
-use List::Util qw/max/;
+use List::Util qw/max reduce/;
 
 use UUID::Tiny qw/:std/;
 
@@ -1591,6 +1591,8 @@ sub user_opac_vitals {
         ->method_lookup('open-ils.actor.user.checked_out.count')
         ->run($auth => $user_id);
     return $out if (defined($U->event_code($out)));
+
+    $out->{"total_out"} = reduce { $a + $out->{$b} } 0, qw/out overdue long_overdue/;
 
     return {
         user => {
