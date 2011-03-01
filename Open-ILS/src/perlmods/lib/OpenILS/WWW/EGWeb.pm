@@ -18,7 +18,7 @@ my $web_config_edit_time;
 
 sub import {
     my $self = shift;
-    $web_config_file = shift;
+    $web_config_file = shift || '';
     unless(-r $web_config_file) {
         warn "Invalid web config $web_config_file";
         return;
