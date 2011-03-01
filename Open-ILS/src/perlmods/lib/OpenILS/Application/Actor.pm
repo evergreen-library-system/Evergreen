@@ -1313,6 +1313,9 @@ sub update_passwd {
 
     $e->update_actor_user($db_user) or return $e->die_event;
     $e->commit;
+
+    # update the cached user to pick up these changes
+    $U->simplereq('open-ils.auth', 'open-ils.auth.session.reset_timeout', $auth, 1);
     return 1;
 }
 
@@ -1701,7 +1704,7 @@ sub user_transactions {
         { 'total_owed' => { '>' => 0 } };
 
     my $method = 'open-ils.actor.user.transactions.history.still_open';
-    $method = "$method.authoritative" if $api => /authoritative/;
+    $method = "$method.authoritative" if $api =~ /authoritative/;
     my ($trans) = $self->method_lookup($method)->run($auth, $user_id, $type, $filter, $options);
 
 	if($api =~ /total/o) { 
