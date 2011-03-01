@@ -375,8 +375,6 @@ AC_CONFIG_FILES([Makefile
          Open-ILS/src/extras/eg_config
          Open-ILS/src/extras/fast-extract
          Open-ILS/src/perlmods/Makefile
-         Open-ILS/src/perlmods/lib/OpenILS/WWW/Method.pm
-         Open-ILS/src/perlmods/lib/OpenILS/WWW/Web.pm
          Open-ILS/src/perlmods/lib/OpenILS/Utils/Cronscript.pm],
         [
             if test -e "./Open-ILS/src/extras/eg_config"; then chmod 755 Open-ILS/src/extras/eg_config; fi;
