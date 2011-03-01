@@ -1,5 +1,6 @@
 package OpenILS::Application::Trigger::Reactor;
 use strict; use warnings;
+use Encode qw/ encode /;
 use Template;
 use DateTime;
 use DateTime::Format::ISO8601;
@@ -46,6 +47,13 @@ my $_TT_helpers = {
     escape_json => sub {
         my $str = shift;
         $str =~ s/([\x{0080}-\x{fffd}])/sprintf('\u%0.4x',ord($1))/sgoe;
+        return $str;
+    },
+
+    # encode email headers in UTF-8, per RFC2231
+    escape_email_header => sub {
+        my $str = shift;
+        $str = encode("MIME-Header", $str);
         return $str;
     },
 
