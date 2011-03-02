@@ -28,15 +28,10 @@
             
       </info> 
       
-     
+     	<xi:include href="contributing_DIG.xml"/>
       <xi:include href="glossary.xml"/>
       <xi:include href="image.xml"/> 
       <xi:include href="links.xml"/> 
       <xi:include href="pi.xml"/>     
       <xi:include href="tips.xml"/>
-     
-     
-      
-      
-      
 </book>
