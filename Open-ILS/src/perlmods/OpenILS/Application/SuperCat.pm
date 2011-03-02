@@ -299,7 +299,7 @@ sub cn_browse {
 	if ($page <= 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { "<" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
+			{ label		=> { "<" => $label },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
               @cp_filter
@@ -422,7 +422,7 @@ sub cn_startwith {
 	if ($page < 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { "<" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
+			{ label		=> { "<" => $label },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
               @cp_filter
