@@ -30,7 +30,7 @@
 ]]></programlisting>
 		<para>An important attribute is <code language="xml">xml:id</code>. This must be a unique id to the entire documentation and is important for cross referencing chapters, sections, tables 
 		and other parts of the documentation.</para>    
-		<para>Also remember to add the closing &lt;/chapter&lt; tag at the very end of the document.</para> 
+		<para>Also remember to add the closing &lt;/chapter&gt; tag at the very end of the document.</para> 
 		<para>The chapter is the container for files contributed to DIG. Do not create a new file to add a <code language="xml">&lt;section&gt;</code> to an existing 
 		<code language="xml">&lt;chapter&gt;</code> and do not use the <code language="xml">&lt;book&gt;</code> container in yor file since the 
 		<code language="xml">&lt;book&gt;</code> element is already in the <filename>root.xml</filename> file.</para> 
