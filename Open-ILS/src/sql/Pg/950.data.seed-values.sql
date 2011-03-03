@@ -2252,7 +2252,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.hold_expire_alert_interval',
     oils_i18n_gettext('circ.hold_expire_alert_interval', 'Holds: Expire Alert Interval', 'coust', 'label'),
-    oils_i18n_gettext('circ.hold_expire_alert_interval', 'Amount of time before a hold expires at which point the patron should be alerted', 'coust', 'description'),
+    oils_i18n_gettext('circ.hold_expire_alert_interval', 'Amount of time before a hold expires at which point the patron should be alerted. Examples: "5 days", "1 hour"', 'coust', 'description'),
     'interval'),
 
 ( 'circ.hold_expire_interval',
@@ -2317,12 +2317,12 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.holds.default_estimated_wait_interval',
     oils_i18n_gettext('circ.holds.default_estimated_wait_interval', 'Holds: Default Estimated Wait', 'coust', 'label'),
-    oils_i18n_gettext('circ.holds.default_estimated_wait_interval', 'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the default estimated length of time to assume an item will be checked out.', 'coust', 'description'),
+    oils_i18n_gettext('circ.holds.default_estimated_wait_interval', 'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the default estimated length of time to assume an item will be checked out. Examples: "3 weeks", "7 days"', 'coust', 'description'),
     'interval'),
 
 ( 'circ.holds.min_estimated_wait_interval',
     oils_i18n_gettext('circ.holds.min_estimated_wait_interval', 'Holds: Minimum Estimated Wait', 'coust', 'label'),
-    oils_i18n_gettext('circ.holds.min_estimated_wait_interval', 'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the minimum estimated length of time to assume an item will be checked out.', 'coust', 'description'),
+    oils_i18n_gettext('circ.holds.min_estimated_wait_interval', 'When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the minimum estimated length of time to assume an item will be checked out. Examples: "2 weeks", "5 days"', 'coust', 'description'),
     'interval'),
 
 ( 'circ.selfcheck.patron_login_timeout',
@@ -2462,7 +2462,7 @@ INSERT into config.org_unit_setting_type
 
 ( 'circ.hold_shelf_status_delay',
     oils_i18n_gettext('circ.hold_shelf_status_delay', 'Hold Shelf Status Delay', 'coust', 'label'),
-    oils_i18n_gettext('circ.hold_shelf_status_delay', 'The purpose is to provide an interval of time after an item goes into the on-holds-shelf status before it appears to patrons that it is actually on the holds shelf.  This gives staff time to process the item before it shows as ready-for-pickup.', 'coust', 'description'),
+    oils_i18n_gettext('circ.hold_shelf_status_delay', 'The purpose is to provide an interval of time after an item goes into the on-holds-shelf status before it appears to patrons that it is actually on the holds shelf.  This gives staff time to process the item before it shows as ready-for-pickup. Examples: "5 days", "1 hour"', 'coust', 'description'),
     'interval'),
 
 ( 'circ.patron_invalid_address_apply_penalty',

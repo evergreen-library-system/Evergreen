@@ -299,7 +299,7 @@ sub cn_browse {
 	if ($page <= 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { "<" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
+			{ label		=> { "<" => $label },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
               @cp_filter
@@ -346,7 +346,7 @@ Returns the XML representation of the requested bibliographic record's holdings
 		  params   =>
 		  	[
 				{ name => 'label',
-				  desc => 'The target call number lable',
+				  desc => 'The target call number label',
 				  type => 'string' },
 				{ name => 'org_unit',
 				  desc => 'The org unit shortname (or "-" or undef for global) to browse',
@@ -422,7 +422,7 @@ sub cn_startwith {
 	if ($page < 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { "<" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
+			{ label		=> { "<" => $label },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
               @cp_filter
@@ -469,7 +469,7 @@ Returns the XML representation of the requested bibliographic record's holdings
 		  params   =>
 		  	[
 				{ name => 'label',
-				  desc => 'The target call number lable',
+				  desc => 'The target call number label',
 				  type => 'string' },
 				{ name => 'org_unit',
 				  desc => 'The org unit shortname (or "-" or undef for global) to browse',
@@ -2840,6 +2840,41 @@ Returns the ISBN list for the metarecord of the requested isbn
 			  type => 'object' }
 		}
 );
+
+sub return_bib_search_aliases {
+    my %aliases;
+
+	my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
+
+	my $cmsa = $_storage->request(
+		'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
+		{ alias => { like => '%.%'} }
+	)->gather(1);
+
+    foreach my $alias (@$cmsa) {
+        my ($qualifier, $name) = $alias->alias =~ m/^(.+?)\.(.+)$/;
+        push(@{$aliases{$qualifier}}, $name);
+    }
+
+    return \%aliases;
+}
+
+__PACKAGE__->register_method(
+	method    => 'return_bib_search_aliases',
+	api_name  => 'open-ils.supercat.biblio.search_aliases',
+	api_level => 1,
+	argc      => 0,
+	signature =>
+		{ desc     => <<"		  DESC",
+Returns the set of qualified search aliases in the system
+		  DESC
+		  params   => [ ],
+		  'return' =>
+		  	{ desc => 'Hash of qualified search aliases',
+			  type => 'object' }
+		}
+);
+
 
 package OpenILS::Application::SuperCat::unAPI;
 use base qw/OpenILS::Application::SuperCat/;
