@@ -147,6 +147,27 @@ sub child_init {
         ->request("open-ils.supercat.biblio.search_aliases")
         ->gather(1)};
 
+    # Append the non-search-alias attributes to the qualifier map
+    push(@{$qualifier_map{'eg'}}, qw/
+        available
+        ascending
+        descending
+        sort
+        format
+        before
+        after
+        statuses
+        locations
+        site
+        depth
+        lasso
+        offset
+        limit
+        preferred_language
+        preferred_language_weight
+        preferred_language_multiplier
+    /);
+
     my $list = $supercat
         ->request("open-ils.supercat.record.formats")
         ->gather(1);
@@ -1855,7 +1876,7 @@ sub sru_search {
 
     } elsif ( $resp->type eq 'explain' ) {
         return_sru_explain($cgi, $req, $resp, \$ex_doc,
-            \%OpenILS::WWW::SuperCat::nested_qualifier_map,
+            undef,
             \%OpenILS::WWW::SuperCat::qualifier_ids
         );
 
@@ -2004,11 +2025,12 @@ sub explain_header {
 }
 
 sub return_sru_explain {
-    my ($cgi, $req, $resp, $explain, $qualifier_map, $qualifier_ids) = @_;
+    my ($cgi, $req, $resp, $explain, $index_map, $qualifier_ids) = @_;
 
+    $index_map ||= \%qualifier_map;
     if (!$$explain) {
         my ($doc, $e) = explain_header($cgi);
-        for my $name ( keys %$qualifier_map ) {
+        for my $name ( keys %{$index_map} ) {
 
             my $identifier = $qualifier_ids->{ $name };
 
@@ -2019,8 +2041,18 @@ sub return_sru_explain {
             $set_node->setAttribute( name => $name );
 
             $e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $set_node );
+            my %attribute_desc = (
+                site        => 'Evergreen Site Code (shortname)',
+                sort        => 'Sort on relevance, title, author, pubdate, create_date or edit_date',
+                dir         => 'Sort direction (asc|desc)',
+                available   => 'Filter to available (true|false)',
+            );
 
-            for my $index ( @{$qualifier_map{$name}} ) {
+            for my $index ( @{$index_map->{$name}} ) {
+                my $title = $index;
+                if (exists $attribute_desc{$title}) {
+                    $title = $attribute_desc{$title};
+                }
 
                 my $name_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'name' );
 
@@ -2034,7 +2066,7 @@ sub return_sru_explain {
                 $index_node->appendChild( $map_node );
 
                 $index_node->setAttribute( id => "$name.$index" );
-                $title_node->appendText( $index);
+                $title_node->appendText($title);
                 $name_node->setAttribute( set => $name );
                 $name_node->appendText($index);
 
