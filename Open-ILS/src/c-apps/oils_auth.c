@@ -719,6 +719,12 @@ static int _oilsAuthReloadUser(jsonObject* cacheObj) {
     osrfAppSessionFree(session); // calls disconnect internally
 
     if(newUserObj) {
+
+        // ws_ou and wsid are ephemeral and need to be manually propagated
+        // oilsFMSetString dupe()'s internally, no need to clone the string
+        oilsFMSetString(newUserObj, "wsid", oilsFMGetStringConst(userObj, "wsid"));
+        oilsFMSetString(newUserObj, "ws_ou", oilsFMGetStringConst(userObj, "ws_ou"));
+
         jsonObjectRemoveKey(cacheObj, "userobj"); // this also frees the old user object
         jsonObjectSetKey(cacheObj, "userobj", newUserObj);
         return 1;
