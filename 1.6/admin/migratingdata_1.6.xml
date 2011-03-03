@@ -333,11 +333,13 @@ BEGIN;
 <emphasis class="bold">TRUNCATE TABLE staging_items;</emphasis>
 
 <emphasis class="bold">INSERT INTO staging_items (</emphasis>egid, hseq, l_callnum, l_barcode, 
-l_location, l_owning_lib, l_circ_modifier <emphasis>FROM stdin;</emphasis> 
+l_location, l_owning_lib, l_circ_modifier<emphasis>) FROM stdin;</emphasis> 
 40      0       HD3616.K853 U54 1997    30731100751928  STACKS  FENNELL BOOK
 41      1       HV6548.C3 S984 1998     30731100826613  STACKS  FENNELL BOOK
 41      2       HV6548.C3 S984 1998     30731100804958  STACKS  BRANTFORD       BOOK
-<emphasis>COMMIT;</emphasis>
+<emphasis>\.
+
+COMMIT;</emphasis>
 </programlisting>
 			<para>This file can be used for importing holdings into Evergreen. the <database class="field">egid</database> is a critical column. It is used to link the volume and 
 				copy to the bibliographic record. Please refer to <link linkend="migratingbibrecordcopies">for the steps to import your holdings into Evergreen.</link></para> 
@@ -436,7 +438,7 @@ SELECT  DISTINCT ou.id AS circ_lib,
 		JOIN asset.copy_location cl
 			ON (ou.id = cl.owning_lib AND l.l_location = cl.name)
 		JOIN metabib.real_full_rec m 
-			ON (m.value = l.egid)
+			ON (m.record = l.egid)
 		JOIN asset.call_number cn
 			ON (ou.id = cn.owning_lib  
 			AND m.record = cn.record       
