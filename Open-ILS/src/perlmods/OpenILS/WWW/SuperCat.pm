@@ -34,7 +34,7 @@ my $log = 'OpenSRF::Utils::Logger';
 my $U = 'OpenILS::Application::AppUtils';
 
 # set the bootstrap config when this module is loaded
-my ($bootstrap, $supercat, $actor, $parser, $search, $xslt, $cn_browse_xslt, %browse_types);
+my ($bootstrap, $supercat, $actor, $parser, $search, $xslt, $cn_browse_xslt, %browse_types, %qualifier_map);
 
 $browse_types{call_number}{xml} = sub {
 	my $tree = shift;
@@ -142,6 +142,10 @@ sub child_init {
         );
 
 	$cn_browse_xslt = $xslt->parse_stylesheet( $cn_browse_xslt );
+
+    %qualifier_map = %{$supercat
+        ->request("open-ils.supercat.biblio.search_aliases")
+        ->gather(1)};
 
 	my $list = $supercat
 		->request("open-ils.supercat.record.formats")
@@ -1601,91 +1605,6 @@ sub item_age_browse {
 	return Apache2::Const::OK;
 }
 
-our %qualifier_map = (
-
-    # Some EG qualifiers
-    'eg.site'               => 'site',
-    'eg.sort'               => 'sort',
-    'eg.direction'          => 'dir',
-    'eg.available'          => 'available',
-
-    # Title class:
-    'eg.title'              => 'title',
-    'dc.title'              => 'title',
-    'bib.titleabbreviated'  => 'title|abbreviated',
-    'bib.titleuniform'      => 'title|uniform',
-    'bib.titletranslated'   => 'title|translated',
-    'bib.titlealternative'  => 'title',
-    'bib.titleseries'       => 'series',
-    'eg.series'             => 'title',
-
-    # Author/Name class:
-    'eg.author'             => 'author',
-    'eg.name'               => 'author',
-    'creator'               => 'author',
-    'dc.creator'            => 'author',
-    'dc.contributer'        => 'author',
-    'dc.publisher'          => 'keyword',
-    'bib.name'              => 'author',
-    'bib.namepersonal'      => 'author|personal',
-    'bib.namepersonalfamily'=> 'author|personal',
-    'bib.namepersonalgiven' => 'author|personal',
-    'bib.namecorporate'     => 'author|corporate',
-    'bib.nameconference'    => 'author|conference',
-
-    # Subject class:
-    'eg.subject'            => 'subject',
-    'dc.subject'            => 'subject',
-    'bib.subjectplace'      => 'subject|geographic',
-    'bib.subjecttitle'      => 'keyword',
-    'bib.subjectname'       => 'subject|name',
-    'bib.subjectoccupation' => 'keyword',
-
-    # Keyword class:
-    'eg.keyword'            => 'keyword',
-    'srw.serverchoice'      => 'keyword',
-
-    # Identifiers:
-    'dc.identifier'         => 'keyword',
-
-    # Dates:
-    'bib.dateissued'        => undef,
-    'bib.datecreated'       => undef,
-    'bib.datevalid'         => undef,
-    'bib.datemodified'      => undef,
-    'bib.datecopyright'     => undef,
-
-    # Resource Type:
-    'dc.type'               => undef,
-
-    # Format:
-    'dc.format'             => undef,
-
-    # Genre:
-    'bib.genre'             => 'keyword',
-
-    # Target Audience:
-    'bib.audience'          => undef,
-
-    # Place of Origin:
-    'bib.originplace'       => undef,
-
-    # Language
-    'dc.language'           => 'lang',
-
-    # Edition
-    'bib.edition'           => 'keyword',
-
-    # Part:
-    'bib.volume'            => 'keyword',
-    'bib.issue'             => 'keyword',
-    'bib.startpage'         => 'keyword',
-    'bib.endpage'           => 'keyword',
-
-    # Issuance:
-    'bib.issuance'          => 'keyword',
-);
-
 our %qualifier_ids = (
 		eg => 'http://open-ils.org/spec/SRU/context-set/evergreen/v1',
 		dc => 'info:srw/cql-context-set/1/dc-v1.1',
@@ -1953,9 +1872,7 @@ sub sru_search {
 
 				$e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $set_node );
 
-				for my $index ( keys %{ $OpenILS::WWW::SuperCat::nested_qualifier_map{$name} } ) {
-					my $desc = $OpenILS::WWW::SuperCat::nested_qualifier_map{$name}{$index}[1] || $index;
-
+				for my $index ( @{$qualifier_map{$name} } ) {
 					my $name_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'name' );
 
 					my $map_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'map' );
@@ -1967,10 +1884,10 @@ sub sru_search {
 					$index_node->appendChild( $title_node );
 					$index_node->appendChild( $map_node );
 
-					$index_node->setAttribute( id => $name . '.' . $index );
-					$title_node->appendText( $desc );
+					$index_node->setAttribute( id => "$name.$index" );
+					$title_node->appendText( $index);
 					$name_node->setAttribute( set => $name );
-					$name_node->appendText($index );
+					$name_node->appendText($index);
 
 					$e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $index_node );
 				}
