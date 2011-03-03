@@ -3,7 +3,8 @@ BEGIN;
 INSERT INTO config.upgrade_log (version) VALUES ('2.0.1');
 INSERT INTO config.upgrade_log (version) VALUES ('0480');
 
-CREATE OR REPLACE FUNCTION actor.usr_purge_data(
+DROP FUNCTION IF EXISTS actor.usr_purge_data(INT, INT);
+CREATE FUNCTION actor.usr_purge_data(
 	src_usr  IN INTEGER,
 	specified_dest_usr IN INTEGER
 ) RETURNS VOID AS $$
