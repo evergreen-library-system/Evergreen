@@ -233,8 +233,7 @@ sub load_place_hold {
             if($stat and $stat > 0) {
                 # if successful, return the user to the requesting page
                 $self->apache->log->info("Redirecting back to " . $cgi->param('redirect_to'));
-                $self->apache->print($cgi->redirect(-url => $cgi->param('redirect_to')));
-                return Apache2::Const::REDIRECT;
+                return $self->generic_redirect;
 
             } else {
                 $ctx->{hold_failed} = 1;
@@ -482,9 +481,8 @@ sub load_myopac_update_email {
 
     my $url = $self->apache->unparsed_uri;
     $url =~ s/update_email/main/;
-    $self->apache->print($self->cgi->redirect(-url => $url));
 
-    return Apache2::Const::REDIRECT;
+    return $self->generic_redirect($url);
 }
 
 sub load_myopac_bookbags {
@@ -496,7 +494,9 @@ sub load_myopac_bookbags {
 
     my $args = {order_by => {cbreb => 'name'}};
     $args->{limit} = $limit if $limit;
-    $args->{offset} = $limit if $limit;
+    $args->{offset} = $offset if $offset;
+
+    (undef, $ctx->{mylist}) = $self->fetch_mylist;
 
     $ctx->{bookbags} = $e->search_container_biblio_record_entry_bucket([
         {owner => $self->editor->requestor->id, btype => 'bookbag'},
@@ -506,5 +506,80 @@ sub load_myopac_bookbags {
     return Apache2::Const::OK;
 }
 
+
+# actions are create, delete, show, hide, rename, add_rec, delete_item
+# CGI is action, list=list_id, add_rec=bre_id, del_item=bucket_item_id, name=new_bucket_name
+sub load_myopac_bookbag_update {
+    my $self = shift;
+    my $e = $self->editor;
+    my $cgi = $self->cgi;
+    my $action = $cgi->param('action');
+    my $list_id = $cgi->param('list');
+    my $add_rec = $cgi->param('add_rec');
+    my $del_item = $cgi->param('del_item');
+    my $name = $cgi->param('name');
+    my $success = 0;
+    my $list;
+
+    if($action eq 'create') {
+        $list = Fieldmapper::container::biblio_record_entry_bucket->new;
+        $list->name($name);
+        $list->owner($e->requestor->id);
+        $list->btype('bookbag');
+        $list->pub('f');
+        $success = $U->simplereq('open-ils.actor', 
+            'open-ils.actor.container.create', $e->authtoken, 'biblio', $list)
+
+    } else {
+
+        $list = $e->retrieve_container_biblio_record_entry_bucket($list_id);
+
+        return Apache2::Const::HTTP_BAD_REQUEST unless 
+            $list and $list->owner == $e->requestor->id;
+    }
+
+    if($action eq 'delete') {
+        $success = $U->simplereq('open-ils.actor', 
+            'open-ils.actor.container.full_delete', $e->authtoken, 'biblio', $list_id);
+
+    } elsif($action eq 'show') {
+        unless($U->is_true($list->pub)) {
+            $list->pub('t');
+            $success = $U->simplereq('open-ils.actor', 
+                'open-ils.actor.container.update', $e->authtoken, 'biblio', $list);
+        }
+
+    } elsif($action eq 'hide') {
+        if($U->is_true($list->pub)) {
+            $list->pub('f');
+            $success = $U->simplereq('open-ils.actor', 
+                'open-ils.actor.container.update', $e->authtoken, 'biblio', $list);
+        }
+
+    } elsif($action eq 'rename') {
+        if($name) {
+            $list->name($name);
+            $success = $U->simplereq('open-ils.actor', 
+                'open-ils.actor.container.update', $e->authtoken, 'biblio', $list);
+        }
+
+    } elsif($action eq 'add_rec') {
+        my $item = Fieldmapper::container::biblio_record_entry_bucket_item->new;
+        $item->bucket($list_id);
+        $item->target_biblio_record_entry($add_rec);
+        $success = $U->simplereq('open-ils.actor', 
+            'open-ils.actor.container.item.create', $e->authtoken, 'biblio', $item);
+
+    } elsif($action eq 'del_item') {
+        $success = $U->simplereq('open-ils.actor', 
+            'open-ils.actor.container.item.delete', $e->authtoken, 'biblio', $del_item);
+    }
+
+    return $self->generic_redirect if $success;
+
+    $self->ctx->{bucket_action} = $action;
+    $self->ctx->{bucket_action_failed} = 1;
+    return Apache2::Const::OK;
+}
 
 1

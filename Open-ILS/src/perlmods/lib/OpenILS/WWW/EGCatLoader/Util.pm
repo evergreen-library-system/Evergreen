@@ -119,4 +119,22 @@ sub init_ro_object_cache {
     };
 }
 
+sub generic_redirect {
+    my $self = shift;
+    my $url = shift;
+    my $cookie = shift; # can be an array of cgi.cookie's
+
+    $self->apache->print(
+        $self->cgi->redirect(
+            -url => $url || 
+                $self->cgi->param('redirect_to') || 
+                $self->ctx->{referer} || 
+                $self->ctx->{home_page},
+            -cookie => $cookie
+        )
+    );
+
+    return Apache2::Const::REDIRECT;
+}
+
 1;

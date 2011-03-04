@@ -118,7 +118,8 @@ sub load {
     return $self->load_myopac_circs if $path =~ /opac\/myopac\/circs/;
     return $self->load_myopac_fines if $path =~ /opac\/myopac\/main/;
     return $self->load_myopac_update_email if $path =~ /opac\/myopac\/update_email/;
-    return $self->load_myopac_bookbags if $path =~ /opac\/myopac\/bookbags/;
+    return $self->load_myopac_bookbags if $path =~ /opac\/myopac\/lists/;
+    return $self->load_myopac_bookbag_update if $path =~ /opac\/myopac\/list\/update/;
     return $self->load_myopac if $path =~ /opac\/myopac/;
 
     return Apache2::Const::OK;
@@ -131,8 +132,7 @@ sub load {
 sub redirect_ssl {
     my $self = shift;
     my $new_page = sprintf('https://%s%s', $self->apache->hostname, $self->apache->unparsed_uri);
-    $self->apache->print($self->cgi->redirect(-url => $new_page));
-    return Apache2::Const::REDIRECT;
+    return $self->generic_redirect($new_page);
 }
 
 # -----------------------------------------------------------------------------
@@ -143,8 +143,7 @@ sub redirect_auth {
     my $self = shift;
     my $login_page = sprintf('https://%s%s/login', $self->apache->hostname, $self->ctx->{opac_root});
     my $redirect_to = uri_escape($self->apache->unparsed_uri);
-    $self->apache->print($self->cgi->redirect(-url => "$login_page?redirect_to=$redirect_to"));
-    return Apache2::Const::REDIRECT;
+    return $self->generic_redirect("$login_page?redirect_to=$redirect_to");
 }
 
 # -----------------------------------------------------------------------------
@@ -248,20 +247,16 @@ sub load_login {
     my $acct = $self->apache->unparsed_uri;
     $acct =~ s#/login#/myopac/main#;
 
-    $self->apache->print(
-        $cgi->redirect(
-            -url => $cgi->param('redirect_to') || $acct,
-            -cookie => $cgi->cookie(
-                -name => COOKIE_SES,
-                -path => '/',
-                -secure => 1,
-                -value => $response->{payload}->{authtoken},
-                -expires => ($persist) ? CORE::time + $response->{payload}->{authtime} : undef
-            )
+    return $self->generic_redirect(
+        $cgi->param('redirect_to') || $acct,
+        $cgi->cookie(
+            -name => COOKIE_SES,
+            -path => '/',
+            -secure => 1,
+            -value => $response->{payload}->{authtoken},
+            -expires => ($persist) ? CORE::time + $response->{payload}->{authtime} : undef
         )
     );
-
-    return Apache2::Const::REDIRECT;
 }
 
 # -----------------------------------------------------------------------------
@@ -274,19 +269,15 @@ sub load_logout {
     # while logged in, go ahead and clear it out.
     $self->clear_anon_cache;
 
-    $self->apache->print(
-        $self->cgi->redirect(
-            -url => $self->ctx->{home_page},
-            -cookie => $self->cgi->cookie(
-                -name => COOKIE_SES,
-                -path => '/',
-                -value => '',
-                -expires => '-1h'
-            )
+    return $self->generic_redirect(
+        $self->ctx->{home_page},
+        $self->cgi->cookie(
+            -name => COOKIE_SES,
+            -path => '/',
+            -value => '',
+            -expires => '-1h'
         )
     );
-
-    return Apache2::Const::REDIRECT;
 }
 
 1;

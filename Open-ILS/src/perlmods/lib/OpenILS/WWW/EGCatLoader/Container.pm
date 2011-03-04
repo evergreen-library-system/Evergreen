@@ -97,19 +97,15 @@ sub mylist_action_redirect {
     my $self = shift;
     my $cache_key = shift;
 
-    $self->apache->print(
-        $self->cgi->redirect(
-            -url => $self->cgi->param('redirect_to') || $self->ctx->{referer} || $self->ctx->{home_page},
-            -cookie => $self->cgi->cookie(
-                -name => COOKIE_ANON_CACHE,
-                -path => '/',
-                -value => ($cache_key) ? $cache_key : '',
-                -expires => ($cache_key) ? undef : '-1h'
-            )
+    return $self->generic_redirect(
+        undef, 
+        $self->cgi->cookie(
+            -name => COOKIE_ANON_CACHE,
+            -path => '/',
+            -value => ($cache_key) ? $cache_key : '',
+            -expires => ($cache_key) ? undef : '-1h'
         )
     );
-
-    return Apache2::Const::REDIRECT;
 }
 
 1;
