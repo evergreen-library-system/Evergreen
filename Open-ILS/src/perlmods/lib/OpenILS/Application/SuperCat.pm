@@ -2854,10 +2854,13 @@ sub return_bib_search_aliases {
     foreach (@$cmsa) {
         if ($_->alias =~ /\./) {
             my ($qualifier, $name) = $_->alias =~ m/^(.+?)\.(.+)$/;
-            push(@{$aliases{$qualifier}}, $name);
+            $aliases{$qualifier}{$name}{'index'} = $_->alias;
+            # We will add a 'title' property in a subsequent schema
+            $aliases{$qualifier}{$name}{'title'} = $name;
         } else {
             # au/kw/se/su/ti go into the default 'eg' qualifier
-            push(@{$aliases{'eg'}}, $_->alias);
+            $aliases{'eg'}{$_->alias}{'index'} = $_->alias;
+            $aliases{'eg'}{$_->alias}{'title'} = $_->alias;
         }
     }
 
