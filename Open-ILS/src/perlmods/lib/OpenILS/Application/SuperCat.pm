@@ -2848,12 +2848,17 @@ sub return_bib_search_aliases {
 
 	my $cmsa = $_storage->request(
 		'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
-		{ alias => { like => '%.%'} }
+		{ alias => { '!=' => undef } }
 	)->gather(1);
 
-    foreach my $alias (@$cmsa) {
-        my ($qualifier, $name) = $alias->alias =~ m/^(.+?)\.(.+)$/;
-        push(@{$aliases{$qualifier}}, $name);
+    foreach (@$cmsa) {
+        if ($_->alias =~ /\./) {
+            my ($qualifier, $name) = $_->alias =~ m/^(.+?)\.(.+)$/;
+            push(@{$aliases{$qualifier}}, $name);
+        } else {
+            # au/kw/se/su/ti go into the default 'eg' qualifier
+            push(@{$aliases{'eg'}}, $_->alias);
+        }
     }
 
     return \%aliases;
