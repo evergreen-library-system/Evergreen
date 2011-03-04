@@ -536,7 +536,7 @@ sub unapi {
         $lib_id = $lib_object->id;
 
         $ou_types = $actor->request( 'open-ils.actor.org_types.retrieve' )->gather(1);
-        $lib_depth = $depth || (grep { $_->id == $lib_object->ou_type } @$ou_types)[0]->depth;
+        $lib_depth = defined($depth) ? $depth : (grep { $_->id == $lib_object->ou_type } @$ou_types)[0]->depth;
     }
 
     if ($command eq 'browse') {
