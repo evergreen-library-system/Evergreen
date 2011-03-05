@@ -1,0 +1,916 @@
+The Acquisitions Module
+=======================
+Evergreen Release 2.0.0
+
+.License
+
+This manual is licensed under the Creative Commons, Attribution-Share-Alike
+license. This document was created by Equinox Software, Inc. with funding
+provided by Georgia Public Library Service. Any reproductions or adaptations
+must attribute original creation of this work to Equinox Software, Inc. and
+Georgia Public Library Service. Any reproductions or adaptations must be
+distributed under the same or a similar license.
+
+.Abstract
+
+This documentation is intended for users who will be performing front line
+processes in the acquisitions module. Documented functions include creating
+selection lists, creating and activating purchase orders, and receiving,
+invoicing, and claiming items. Administrative functions are documented in
+Administration Functions in the Acquisitions Module.  This document is intended
+for first time users of the Acquisitions module as well as those who are
+familiar with the module and need only a reference guide. The contents of this
+document are alphabetized by topic.
+
+Brief Records
+-------------
+
+Brief records are short bibliographic records with minimal information that are
+often used as placeholder records until items are received. Brief records can
+be added to selection lists or purchase orders and can be imported into the
+catalog. You can add brief records to new or existing selection lists. You can
+add brief records to new, pending or on-order purchase orders.
+
+Add brief records to a selection list
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  . Click Acquisitions -> New Brief Record. You can also add brief records to
+an existing selection list by clicking the Actions menu on the selection list
+and choosing Add Brief Record.
+  . Choose a selection list from the drop down menu, or enter the name of a new selection list.
+  . Enter bibliographic information in the desired fields.
+  . Click Save Record.
+
+Add brief records to purchase orders
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can add brief records to new or existing purchase orders.
+
+  . Open or create a purchase order. See section 13 for more information.
+  . Click Add Brief Record.
+  . Enter bibliographic information in the desired fields. Notice that the
+record is added to the purchase order that you just created.
+  . Click Save Record.
+
+Cancel/suspend acquisitions
+---------------------------
+
+You can cancel entire purchase orders, line items on the purchase orders, and individual copies
+that are attached to a line item. You can also use cancel reasons to suspend purchase orders,
+line items, and copies. For example, a cancel reason such as Delayed Publication, would
+indicate that the item will be purchased when the item is published. The purchase is, in effect,
+suspended rather than cancelled, but the state of the purchase order, line item, or copy would
+still become cancelled.
+
+Cancel/suspend copies
+~~~~~~~~~~~~~~~~~~~~~
+
+You can cancel or suspend line items that are in a state of on order or pending order.
+
+  . Select the Copies link.
+  . Click the Cancel link adjacent to the copy that you wish to cancel.
+  . Select a cancel reason from the drop down menu that appears, and click Cancel copy.
+
+Cancel/suspend line items
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can cancel or suspend line items that are in a state of on order or pending order.
+
+  . Check the boxes of the line items that you wish to cancel.
+  . Click Actions ->Cancel Selected Lineitems.
+  . Select a cancel reason from the drop down menu. Choose the cancel reason,
+and click Cancel Line Items. The status of the line item is now cancelled.
+
+Cancel/suspend purchase orders
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  . Notice the Cancel column in the top half of the purchase order.
+  . Click the drop down arrow adjacent to Cancel order, and select a reason for
+cancelling the order.
+  . Click Cancel order. The state of the purchase order is cancelled.
+
+Claim items
+-----------
+
+Manual claiming of items can be accomplished in multiple ways, but electronic
+claiming is not available in the 2.0 release.
+
+You can apply claim policies to line items or individual copies. You also can
+use the default claim policy associated with your provider to claim items.
+
+Apply a claim policy
+~~~~~~~~~~~~~~~~~~~~
+
+You can apply a claim policy to an item in one of two ways: apply a claim
+policy to a line item when the item is created on the selection list or
+purchase order, or use the default claim policy associated with the provider on
+the purchase order. The default claim policy for a provider is established when
+the provider is created and will be used for claiming if no claim policy has
+been applied.
+
+  . Open a selection list or purchase order. See section 13 for more information.
+  . Click the Actions drop down menu on the line item.
+  . Click Apply Claim Policy.
+  . A drop down menu of claim policies will appear. Choose a claim policy to
+apply to the line item. The claim policy will be applied to all items that have
+not been received or cancelled.
+  . Click Save.
+
+Change a claim policy
+~~~~~~~~~~~~~~~~~~~~~
+
+You can manually change a claim policy that has been applied to a line item.
+
+  . Open a selection list or purchase order.
+  . Click the Actions drop down menu on the line item.
+  . Click Change Claim Policy.
+  . A drop down menu of claim policies will appear. Choose a claim policy to apply to the line
+item.
+  . Click Save.
+
+Claim an item
+~~~~~~~~~~~~~
+
+You can manually claim items at any time after the item has been ordered.
+
+  . Open a purchase order.
+  . Click the Actions drop down menu on the line item.
+  . Click Claims. The number of existing claims appears in parentheses.
+  . A drop down menu of items to be claimed and possible claim actions appears.
+Check the boxes adjacent to the item that you want to claim and the action that
+you will take. You can claim items that have not been received or cancelled.
+  . Click Claim Selected.
+  . Select a claim type from the drop down menu. Entering a note is optional.
+  . Click Claim.
+  . The number of existing claims on the line item updates, and a claim voucher
+appears. The voucher can be printed and mailed to the vendor to initiate the
+claim.
+
+Produce a list of claim-ready items
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If an item has not been received and meets the conditions for claiming
+according to the item’s claim policy, then the item will be eligible for
+claiming. Evergreen can produce a list of items, by ordering branch, which is
+ready to be claimed. You can use this list to manually claim items from your
+provider.
+
+  . Click Acquisitions ->Claim-Ready Items.
+  . Choose a branch from the drop down menu to claim items that were ordered by this
+branch.
+  . Any items that meet the conditions for claiming will appear.
+  . Check the box adjacent to the line items that you wish to claim. Click Claim selected items.
+  . Select a claim type from the drop down menu. Entering a note is optional.
+  . Click Claim.
+
+Export Single Attribute List
+----------------------------
+
+You can export ISBNs, ISSNs, or UPCs as a file from the list of line item(s). A list of ISBNs, for
+example, could be uploaded to vendor websites when placing orders.
+
+  . From a selection list or purchase order, check the boxes of the line items with attributes
+that you wish to export.
+  . Click Actions -> Export Single Attribute List.
+  . Choose the line item attribute that you would like to export from the drop down list of
+attributes.
+  . Click Export List.
+  . Save the file to your computer.
+  . Open the file. Choose a program to open the file. The following is an example of an ISBN in
+a spreadsheet.
+
+Funds
+-----
+
+You can apply a single fund or multiple funds to copies on a selection list or
+purchase order.  You can change the fund that has been applied to an item at
+any time on a selection list. You can change the fund that has been applied to
+an item on a purchase order if the purchase order has not yet been activated.
+
+Funds can be applied to items from the Copies link that is located on a line
+item. Funds can also be applied to copies by batch updating line items and
+their attendant copies.
+
+Apply funds to individual copies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  . Click the Copies link on the line item.
+  . To apply a fund to an individual item, click the drop down arrow in the Fund field.
++
+[NOTE]
+A yellow fund name indicates that the balance in the fund has dropped to the
+warning percent that was entered in the admin module. A red fund name
+indicates that the balance in the fund has dropped to the stop percent that was
+entered in the admin module. Funds that have been closed out will no longer
+appear on the drop down list.
++
+  . To apply a fund to multiple items, see section 7 for more information.
+
+Apply funds to copies via batch updates to line items
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can apply funds to all copies on a line item(s) from the Actions menu on
+the selection list or the purchase order.
+
+  . Check the boxes of the line items with copies to which you would like to apply funds.
+  . Click Actions ->Apply Funds to Selected Items.
+  . Select the fund that you wish to apply to the copies.
+  . Click Submit.
+
+Invoice acquisitions
+--------------------
+
+You can create invoices for purchase orders, individual line items, and blanket
+purchases. You can also link existing invoices to purchase orders. In 2.0, all
+invoicing is manual.
+
+You can invoice items before you receive the items if desired. You can also
+reopen closed invoices, and you can print all invoices.
+
+Create a blanket invoice
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can create a blanket invoice for purchases that are not attached to a
+purchase order.
+
+  . Click Acquisitions -> Create invoice.
+  . Enter the invoice information in the top half of the screen. See section 6 .1 for more
+information.
+  . Select a charge type from the drop down menu.
+  . Select a fund from the drop down menu.
+  . Enter a Title/Description of the resource.
+  . Enter the amount that you were billed.
+  . Enter the amount that you paid.
+  . Save the invoice. See section 6.1 for more information.
+
+Create an invoice for a line item
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See section 7.5.6 for details.
+
+Create an invoice for a purchase order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can create an invoice for all of the line items on a purchase order. The
+only fields that are required to save the invoice are the Vendor Invoice ID and
+the number of items invoiced, billed, and paid for each line item. With the
+exception of fields with drop down menus, no limitations on the data that you
+enter exist.
+
+  . Open a purchase order.
+  . Click Create Invoice.
+  . Enter a Vendor Invoice ID. This number may be listed on the paper invoice sent from your
+vendor.
+  . Choose a Receive Method from the drop down menu.
++
+[NOTE]
+Only paper invoicing is available in the 2.0 release. Electronic invoicing
+may be available in future releases.
++
+  . The Provider is generated from the purchase order and is entered by default.
+  . Enter a note.
+  . Select a payment method from the drop down menu.
+  . The Invoice Date is entered by default as the date that you create the invoice. You can
+change the date by clicking in the field. A calendar drops down.
+  . Enter an Invoice Type.
+  . The Shipper defaults to the provider that was entered in the purchase order.
+  . Enter a Payment Authorization.
+  . The Receiver defaults to the branch at which your workstation is registered. You can
+change the receiver by selecting an org unit from the drop down menu.
+The bibliographic line items are listed in the next section of the invoice. Along with the title
+and author of the line items is a summary of copies ordered, received, invoiced, claimed, and
+cancelled. You can also view the amounts estimated, encumbered, and paid for each line item.
+Finally, each line item has a line item ID and links to the selection list (if used) and the purchase
+order.
+  . Enter the number of items that were invoiced, the amount that the organization was billed,
+and the amount that the organization paid.
+  . You have the option to add charge types if applicable. Charge types are additional charges
+that can be selected from the drop down menu. Common charge types include taxes and
+handling fees.
+  . You have three options for saving an invoice. You can click Save, which saves the changes
+that you have made, but keeps the invoice open. You can click Save and Prorate, which
+enables you to save the invoice and prorate any additional charges, such as taxes, across
+funds, if multiple funds have been used to pay the invoice. You also can click Save and
+Close. Choose this option when you have completed the invoice.
+[NOTE]
+You can re-open a closed invoice by clicking the link, Re-open invoice. This link
+appears at the bottom of a closed invoice.
+
+Link an existing invoice to a purchase order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can use the link invoice feature to link an existing invoice to a purchase
+order. For example, an invoice is received for a shipment with items on
+purchase order #1 and purchase order #2.  When the invoice arrives, purchase
+order #1 is retrieved, and the invoice is created. To receive the items on
+purchase order #2, simply link the invoice to the purchase order. You do not
+need to recreate it.
+
+  . Open a purchase order.
+  . Click Link Invoice.
+  . Enter the Invoice # and the Provider of the invoice to which you wish to link.
+  . Click Link.
+
+View an invoice
+~~~~~~~~~~~~~~~
+
+You can view an invoice in one of four ways: view open invoices; view invoices
+on a purchase order; view invoices by searching specific invoice fields; view
+invoices attached to a line item.
+
+  * To view open invoices, click Acquisitions -> Open invoices. This opens the Acquisitions
+Search screen. The default fields search for open invoices. Click Search.
+  * To view invoices on a purchase order, open a purchase order, and click the View Invoices
+link. The number in parentheses indicates the number of invoices that are attached to the
+purchase order.
+  *  To view invoices by searching specific invoice fields, see section 15.
+  *  To view invoices for a line item, see section 7.5.10.
+
+Line Items
+----------
+
+Line items represent bibliographic records on a selection list or purchase
+order. One line item corresponds to one bibliographic record. Line items
+contain attributes, which are characteristics of the bibliographic record, such
+as ISBNs or Title. Line items also contain copy information, price information,
+and notes and alerts.
+
+Add alerts to a line item
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Alerts are pop up messages that appear when an item is received. Alerts can be
+printed on the line item worksheet.
+
+  . Click the Notes link on the line item.
+  . Click the New Alert drop down button.
+  . Choose an alert code from the drop down menu.
+  . Add additional comments if desired.
+  . Click Create. The alert will display on the screen.
+  . Click Return to return to the line item. When you return to the line item,
+a flag will appear to indicate that an alert is on the line item.
+
+Add copies to a line item
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the Copies link to add copy information to a line item. You can add copies
+to line items on a selection list or a purchase order.
+
+  . Click the Copies link on a line item.
+  . Enter the number of items that you want to order in Item Count, and click Go. The number
+of items that you want to order will display below.
+  . If desired, apply a Distribution Formula from the drop down list. Distribution formulas tell
+the ILS how many copies should be distributed to each location.
+  . The owning branch and shelving location populate with entries from the distribution
+formula. Click Apply.
+  . Look back at the top gray row of text boxes above the distribution formula. Each text box in
+this row corresponds to the columns below. Changes made here will be applied to all
+copies below. Click Batch Update.
+  . Click Save Changes.
+  . Click Return to return to the selection list or purchase order.
+  . Add the item’s price to the line item in the Estimated Price field.
+
+Add notes to a line item
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Notes on line items can include any additional information that you want to add
+to the line item. Notes can be internal or can be made available to providers.
+Notes appear in a pop up box when an item is received. Notes can be printed on
+line item worksheets, which can be printed and placed in books for processing.
+
+  . Click the Notes link on the line item.
+  . Click the New Note drop down button.
+  . Enter a note.
+  . You have the option to make this note available to your provider. Click the
+check box adjacent to Note is vendor-public.
+  . Click Create. The note will appear on the screen.
+  . Click Return to return to the line item. When you return to the line item,
+a number in parentheses adjacent to notes indicates how many notes are attached
+to the item.
+
+Cancel a line item
+~~~~~~~~~~~~~~~~~~
+
+For more information, see section 2.
+
+Line item actions
+~~~~~~~~~~~~~~~~~
+
+Apply claim policy
+^^^^^^^^^^^^^^^^^^
+
+See section 3.1 for more information.
+
+Claims
+^^^^^^
+
+See section 3.3 for more information.
+
+Holdings maintenance
+^^^^^^^^^^^^^^^^^^^^
+
+After an item has been received, click Actions -> Holdings Maintenance to edit
+holdings. The Holdings Maintenance screen opens in a new tab.
+
+Link to invoice
+^^^^^^^^^^^^^^^
+
+Use the Link to invoice menu item to link the line item to an invoice that
+already exists in the ILS.
+
+  . Click Actions -> Link to Invoice.
+  . A pop up box appears. Enter an invoice number.
+  . Enter a provider. The field will auto-complete.
+  . Click Link.
+
+Mark received
+^^^^^^^^^^^^^
+
+See section 14.2 for more information.
+
+New invoice
+^^^^^^^^^^^
+
+See section 6 for more information.
+
+Un-receive
+^^^^^^^^^^
+
+See section 14.2 for more information.
+
+Update barcodes
+^^^^^^^^^^^^^^^
+
+After an item has been received, click Actions -> Update Barcodes to edit
+holdings. The Volume and Copy Creator screen opens in a new tab.
+
+View history
+^^^^^^^^^^^^
+
+Click Actions -> View history to view the changes that have occurred in the
+life of the line item.
+
+View invoice
+^^^^^^^^^^^^
+
+Click Actions -> View invoice to view any invoices that are attached to the line item.
+
+Line Item Worksheet
+~~~~~~~~~~~~~~~~~~~
+
+The Line Item Worksheet was designed to be a printable sheet that contains
+details about the line item, including alerts and notes, and distribution of
+the copies. This worksheet could placed in a book that is sent to cataloging or
+processing.
+
+  . From a selection list or purchase order, click the worksheet link on the line item.
+  . The line item worksheet appears.
+  . To print the worksheet, click the Print Page link in the top right corner.
+
+Link line items to the catalog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can link a MARC record or brief record on a selection list to the corresponding MARC record
+in the catalog. This may be useful for librarians who have a brief MARC record in their catalog
+and want to import a better record that is attached to their selection list. No collision detection
+exists when importing an item into the selection list or catalog, so the link to catalog option
+enables you to search for a matching record and link to it from the selection list or purchase
+order. When you import the record from the purchase order, the record will overlay the linked
+record in the catalog.
+
+  . From the line item, click Link to catalog.
+  . In the text box that pops up, search terms, such as ISBN and title, are entered by default.
+  . Click Search.
+  . Result(s) appear. Click the link to View MARC, or Select the record to link it to the record on
+the selection list or purchase order.
+  . The screen will reload, and the line item displays with a catalog link. The records are linked.
+
+Load Bib Records and Items Into the Catalog
+-------------------------------------------
+
+You can load bib records and items into the catalog at three different locations in the
+acquisitions module.
+
+  * You can import bib records and items (if holdings information is attached) when you upload
+MARC order records. Click Acquisitions -> Load MARC Order Records and check the box
+adjacent to Load Bibs and Items into the ILS.
+  * You can import bib records and items into the catalog when you create a purchase order
+from a selection list. From the selection list, click Actions -> Create Purchase Order. Check
+the box adjacent to Load Bibs and Items into the ILS to import the records into the catalog.
+  * You can import bib records and items into the catalog from a purchase order by clicking
+Actions -> Load Bibs and Items.
+[NOTE]
+If you have not loaded bib records and items into the catalog before you activate
+a purchase order, then the ILS will automatically import the bib records and
+items into the catalog when you activate the purchase order.
+
+Load Catalog Record IDs
+-----------------------
+
+The Load Catalog Record IDs function enables you to create line items from a
+list of catalog records whose record IDs are saved in a CSV file.
+
+This would be useful if you want to batch order copies of items that your
+organization already owns. For example, you run a copy/hold ratio report to
+identify how many copies you have available compared to the number of holds
+that are on your Hot Fiction display. You decide that you want to order an
+extra copy of six titles. Your copy/hold ratio report includes the record ID of
+each title. You can save the record IDs into a CSV file, upload the file into
+the ILS, and create a purchase order for the items.
+
+  . Create a CSV file with the record ID of each catalog record in the first
+column of the spreadsheet. You can create this CSV file from a spreadsheet
+generated by a report, as suggested in the aforementioned example. You can also
+copy and paste record IDs from the catalog record into the CSV file.
++
+[NOTE]
+Record IDs are auto-generated digits associated with each record. They are
+found in the Record Summary that appears at the top of each record.
++
+  . Save the CSV file to your computer.
+  . Click Acquisitions -> Load Catalog Record IDs.
+  . Click Load More Terms.
+  . The screen will display the number of terms (record IDs) that have been loaded.
+  . Click Retrieve Records. The records will appear as line items to which you can add copies,
+notes, and pricing information. Use the Actions menu to save these items to a selection list or
+purchase order.
+
+Load MARC Order Records
+-----------------------
+
+The Load MARC Order Records screen enables you to upload MARC records that have been
+saved on your computer into the ILS. You can add the records to a selection list and/or to a
+purchase order. You can both create and activate purchase orders in one step from this
+interface. Also, from this interface, you can load bibs and items into the catalog.
+
+  . Click Acquisitions -> Load MARC Order Records
+  . If you want to upload the MARC records to a new purchase order, then click the check box
+adjacent to Create Purchase Order.
+  . If you want to activate the purchase order at the time of creation, then click the check box
+adjacent to Activate Purchase Order.
+  . If you want to load bibs and items into the catalog, then click the check box adjacent to
+Load Bibs and Items into the ILS.
+  . Enter the name of the Provider. The text will auto-complete.
+  . Select an org unit from the drop down menu. The context org unit is the org unit that
+"owns" the bib record. You should select a physical location rather than a political or
+administrative org unit as the context org unit. For example, the Smith County Library
+System is funding purchase of a copy of Gone with the Wind. The system owns the bib
+record, but it cannot receive the physical item. The acquisitions librarian will choose a
+physical branch of that system, a processing center or an individual branch, to receive the
+item.
+  . If you want to upload the records to a selection list, you can select a list from the drop down
+menu, or type in the name of the selection list that you want to create.
+  . Click Browse to search for the file of bibliographic records.
+  . Click Upload.
+  . A summary of the items that have been processed will appear.
+  . Click the links that appear to view the purchase order or the selection list.
+
+MARC Federated Search
+---------------------
+
+The MARC Federated Search enables you to import bibliographic records into a selection list or
+purchase order from a Z39.50 source.
+
+  . Click Acquisitions -> MARC Federated Search.
+  . Check the boxes of Z39.50 services that you want to search. Your local Evergreen Catalog is
+checked by default. Click Submit.
+  . A list of results will appear. Click the Copies link to add copy information to the line item.
+See section 7 for more information.
+  . Click the Notes link to add notes or line item alerts to the line item. See section 7 for more
+information.
+  . Enter a price in the Estimated Price field.
+  . You can save the line item(s) to a selection list by checking the box on the line item and
+clicking Actions ->Save Items to Selection List. You can also create a purchase order from
+the line item(s) by checking the box on the line item and clicking Actions -> Create
+Purchase Order.
+
+Patron Requests
+---------------
+
+The patron requests interface will allow you to view requests that patrons make
+via the OPAC.  The functionality for OPAC requests is not currently available
+in the native Evergreen interface, so the screen remains blank in 2.0.
+
+Purchase Orders
+---------------
+
+You can create a purchase order from a selection list, a batch upload of MARC
+order records, the View/Place Orders link in the catalog, or results from a
+MARC Federated Search. For more information on creating purchase orders using
+these methods, see sections 16, 10, 17, and 11.  You can also create blanket
+purchase orders to which you can add brief records or generic charges and fees.
+
+Activate a purchase order
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Before you can active a purchase order, the following criteria must be met:
+
+  . The field, Activate Order?, is located in the top half of the purchase order. The answer
+adjacent to this field must be Yes.
+  . Each line item must contain an estimated price. If the Activate Order? field in the top half
+of the purchase order reads, No: The lineitem has no price (ACQ_LINEITEM_NO_PRICE),
+then simply enter a price in the estimated price field, tab out of the field, and click Reload.
+
+When the above criteria have been met, proceed with the following:
+  . Look at the Activate Order? field in the top half of the purchase order. Click the
+hyperlinked Activate Order. When you activate the order, the bibliographic records and
+copies will be imported into the catalog, and the funds associated with the purchases will be
+encumbered.
+
+Add brief records to a purchase order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To add brief records to a purchase order, see section 2.2 for more information.
+You can add brief records to new or existing purchase orders.
+
+Add charges, taxes, fees, or discounts to a purchase order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can add charges, taxes, fees, or discounts to a purchase order. These
+additional charges will be reflected in the amounts that are estimated and
+encumbered on the purchase order.
+
+  . Open or create a purchase order.
+  . Click New charge.
+  . Select a charge type from the drop down menu.
+  . Select a fund from the drop down menu.
+  . Enter a Title/Description, Author, and Note if applicable.
+  . Enter an estimated cost.
+  . Add another new charge, or click Save New Charges.
+[NOTE]
+Discounts are not consistently supported in the 2.0 release.
+
+Add notes to a purchase order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can add notes to each purchase order. These can be viewed by staff and/or
+by the provider. By default, notes are only visible to staff.
+
+  . Open a purchase order.
+  . In the top half of the purchase order, you see a Notes field. The number of notes that are
+attached to the purchase order is hyperlinked in parentheses next to the Notes field.
+  . Click the hyperlinked number.
+  . Click New Note.
+  . Enter the note. If you wish to make it available to the provider, click the check box adjacent
+to Note is vendor-public.
+  . Click Create.
+
+Cancel/Suspend a purchase order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To cancel or suspend a purchase order, see section 2.1.
+
+Create a purchase order
+~~~~~~~~~~~~~~~~~~~~~~~
+
+  . Click Acquisitions → Create Purchase Order.
+  . A pop-up box appears. Select an owning library from the drop down menu.
+  . Enter a provider in the box. The text will auto complete.
+  . Check the box adjacent to Prepayment Required.
+  . Click Save.
+  . The purchase order has been created. You can now create a new charge type or add a brief
+record.
+[NOTE]
+The Total Estimated is the sum of the prices. The Total Encumbered is the total
+estimated that is encumbered when the purchase order is activated. The Total
+Spent column automatically updates when the items are invoiced.
+
+Mark ready for order
+~~~~~~~~~~~~~~~~~~~~
+
+After an item has been added to a selection list or purchase order, you can mark it ready for
+order. This step is optional but may be useful to individual workflows.
+
+  . If you want to mark part of a selection list ready for selector, then you can check the box(es)
+of the line item(s) that you wish to mark ready for selector. If you want to mark the entire
+list ready for selector, then skip to step 2.
+  . Click Actions -> Mark Ready for Order.
+  . A pop up box will appear. Choose to mark the selected line items or all line items.
+  . Click Go.
+  . The screen will refresh. The line item will be highlighted gray, and the status will change to
+order-ready.
+
+Name a purchase order
+~~~~~~~~~~~~~~~~~~~~~
+
+A new purchase order is given the purchase order ID as a default name. However,
+you can change that name to any grouping of letters or numbers. You can reuse
+purchase order names as long as a name is never used twice in the same year.
+
+  . Open or create a purchase order.
+  . The Name of the purchase order is in the top left column of the purchase order. The
+hyperlinked number is an internal ID number that Evergreen has assigned.
+  . To change this number, click on the hyperlinked ID.
+  . Enter a new purchase order number in the pop up box.
+  . Click OK.
+
+Print purchase orders
+~~~~~~~~~~~~~~~~~~~~~
+
+You can print a purchase order from the purchase order screen. If you add a
+note to a line item, the note will only appear in the Notes column on the
+printed purchase order if you make the note vendor-public. Currently, no notes
+appear in the Notes to the Vendor section of the printed purchase order.
+
+  . Open a purchase order.
+  . Click Actions -> Print Purchase Order.
+
+Receive a purchase order
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+See section 14.1 for more information on receiving a purchase order.
+
+Split order by line items
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can create a purchase order with multiple line items, and then split the
+purchase order so that each line item is on separate purchase orders.
+
+When a purchase order is in the status of pending, a link to split order by
+Lineitems appears in the bottom left corner of the top half of the screen.
+
+  . Click Split Order by Lineitems.
+  . A pop up box will confirm that you want to split the purchase order. Click OK to continue.
+  . The items will display by default as a virtual combined purchase order. Future
+enhancements will allow you to activate the purchase order for each item from this screen.
+
+View On-Order Purchase Orders
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can view a list of on-order purchase orders by clicking Acquisitions –> Purchase Orders. The
+ordering agency defaults to the branch at which your workstation is registered. The state of the
+purchase order defaults to on-order.
+
+You can add more search terms by clicking Add Search Term. Search terms are ANDed together.
+Click Search to begin your search.
+
+If you want to expand or change your search of purchase orders, you can choose other criteria
+from the drop down menus. See section 15 for more information.
+
+View EDI messages on a purchase order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can view electronic messages from your vendor about a specific purchase order.
+
+  . Open a purchase order.
+  . In the top half of the purchase order, you see an EDI Messages field. The number of
+messages that are attached to the purchase order is hyperlinked in parentheses next to the
+EDI Messages field.
+  . Click the hyperlinked number to view the messages.
+
+View Purchase Order History
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the top half of the purchase order, you can view the history of the purchase
+order. Click the View link in the History field.
+
+Receiving
+---------
+
+You can receive and un-receive entire purchase orders, line items, and
+individual copies. You can receive items before or after you invoice items.
+
+Receive/un-receive copies
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  * To receive copies, click the Copies link on the line item, and click the Mark Received link
+adjacent to each copy.
+  * To un-receive copies, click the Copies link on the line item, and click the Un-Receive link
+adjacent to each copy.
+
+Receive/un-receive line items
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  * To receive a line item, click the Actions -> Mark Received link on the line item.
+  * To un-receive a line item, click the Actions -> Un-receive link on the line item.
+
+Receive/un-receive purchase orders
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  * To receive a purchase order, click Actions ->Mark Purchase Order as Received. The
+purchase order will have a state of received.
+  * To un-receive a purchase order, click Actions ->Un-Receive Purchase Order. The purchase
+will have a state of on order.
+
+Searching
+---------
+
+In the acquisitions module, you can search line items, line items and catalog
+records, selection lists, purchase orders, and invoices. To access the
+searching interface, click Acquisitions → General Search.
+[NOTE]
+Users may wish to begin their acquisitions process by searching line items
+and catalog records. This ensures that they do not purchase an item that the
+library already owns or is on another selection list or purchase order.
+
+  . Choose the object that you would like to search from the drop down menu.
+  . Next, refine your search by choosing the specific fields that you would like to search. Click
+Add Search Term to add more fields. Search terms are ANDed together. Click the red X at
+the end of each row to delete search terms. Some search terms will be disabled depending
+on your choice of items to search.
+  . After you have added search term(s), click Search or click the Enter key. A list of results
+appears.
+  . If you want to edit your search, click the Reveal Search button in the top right corner of the
+results screen to display your search.
+
+Selection Lists
+---------------
+
+Selection lists allow you to create, manage, and save lists of items that you
+may want to purchase. To view your selection list, click Acquisitions -> My
+Selection Lists. Use the general search to view selection lists created by
+other users.
+
+Create a selection list
+~~~~~~~~~~~~~~~~~~~~~~~
+Selection lists can be created in four areas within the module. Selection lists can be created
+when you Add Brief Records, Upload MARC Order Records, or find records through the MARC
+Federated Search. In each of these interfaces, you will find the Add to Selection List field.
+Enter the name of the selection list that you want to create in that field.
+Selection lists can also be created through the My Selection Lists interface:
+
+  . Click Acquisitions → My Selection Lists.
+  . Click the New Selection List drop down arrow.
+  . Enter the name of the selection list in the box that appears.
+  . Click Create.
+
+Add items to a selection list
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can add items to a selection list in one of three ways: add a brief record
+(section 2); upload MARC order records (section 10); add records through a
+federated search (section 11); or use the View/Place Orders menu item in the
+catalog (section 17). See the sections listed in parentheses for more
+information on each of these methods.
+
+Clone selection lists
+~~~~~~~~~~~~~~~~~~~~~
+
+Cloning selection lists enables you to copy one selection list into a new
+selection list. You can maintain both copies of the list, or you can delete the
+previous list.
+
+  . Click Acquisitions -> My Selection Lists.
+  . Check the box adjacent to the list that you want to clone.
+  . Click Clone Selected.
+  . Enter a name into the box that appears, and click Clone.
+
+Merge selection lists
+~~~~~~~~~~~~~~~~~~~~~
+
+You can merge two or more selection lists into one selection list.
+
+  . Click Acquisitions -> My Selection Lists.
+  . Check the boxes adjacent to the selection lists that you want to merge, and click Merge
+Selected.
+  . Choose the Lead Selection List from the drop down menu. This is the list to which the items
+on the other list(s) will be transferred.
+  . Click Merge.
+
+Delete selection lists
+~~~~~~~~~~~~~~~~~~~~~~
+
+You can delete selection lists that you do not want to save. You will not be able to retrieve
+these items through the General Search after you have deleted the list. You must delete all line
+items from a selection list before you can delete the list.
+
+  . Click Acquisitions -> My Selection Lists.
+  . Check the box adjacent to the selection list(s) that you want to delete.
+  . Click Delete Selected.
+
+Mark Ready for Selector
+~~~~~~~~~~~~~~~~~~~~~~~
+
+After an item has been added to a selection list or purchase order, you can
+mark it ready for selector. This step is optional but may be useful to
+individual workflows.
+
+  . If you want to mark part of a selection list ready for selector, then you can check the box(es)
+of the line item(s) that you wish to mark ready for selector. If you want to mark the entire
+list ready for selector, then skip to step 2.
+  . Click Actions -> Mark Ready for Selector.
+  . A pop up box will appear. Choose to mark the selected line items or all line items.
+  . Click Go.
+  . The screen will refresh. The marked line item(s) will be highlighted pink, and the status 
+changes to selector-ready.
+
+Convert selection list to purchase order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use the Actions menu to convert a selection list to a purchase order.
+
+  . From a selection list, click Actions -> Create Purchase Order.
+  . A pop up box will appear.
+  . Select the ordering agency from the drop down menu.
+  . Enter the provider.
+  . Check the box adjacent to prepayment required if prepayment is required.
+  . Choose if you will add All Lineitems or Selected Lineitems to your purchase order.
+  . Check the box if you want to Import Bibs and Create Copies in the catalog.
+  . Click Submit.
+
+View/Place Orders
+-----------------
+
+  . Open a bib record.
+  . Click Actions for this Record -> View/Place Orders.
+  . Click Add to Selection List, or click Create Purchase Order.
+  . See sections 13 and 16 for instructions to proceed.
