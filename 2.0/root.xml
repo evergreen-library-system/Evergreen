@@ -53,6 +53,8 @@
 		<xi:include href="stafftasks/stafftasks_intro.xml"/>
 		<xi:include href="stafftasks/alternate_serial_control.xml"/>
 		<xi:include href="stafftasks/booking.xml"/>
+		<xi:include href="stafftasks/acquisitions_module_GPLS.xml"/>
+		
  	</part>
 	<part xml:id="admin">
 		<info>
