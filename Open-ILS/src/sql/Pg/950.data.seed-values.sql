@@ -62,7 +62,7 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES 
     (15, 'keyword', 'keyword', oils_i18n_gettext(15, 'General Keywords', 'cmf', 'label'), 'mods32', $$//mods32:mods/*[not(local-name()='originInfo')]$$ ); -- /* to fool vim */;
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject//text()$$ );
+    (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject$$ );
 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
     (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marcxml', $$//marc:controlfield[@tag='001']$$ );
@@ -81,7 +81,7 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath )
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
     (24, 'identifier', 'sici', oils_i18n_gettext(24, 'SICI', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='024' and ind1='4']/marc:subfield[@code='a' or @code='z']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
-    (25, 'identifier', 'bibcn', oils_i18n_gettext(25, 'Local Free-Text Call Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='099']//text()$$ );
+    (25, 'identifier', 'bibcn', oils_i18n_gettext(25, 'Local Free-Text Call Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='099']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
     (26, 'identifier', 'tcn', oils_i18n_gettext(26, 'Title Control Number', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='901']/marc:subfield[@code='a']$$ );
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath ) VALUES
