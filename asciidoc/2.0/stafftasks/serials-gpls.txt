@@ -1,0 +1,538 @@
+The Serials Module
+==================
+
+This documentation is intended for users who will be ordering subscriptions, distributing issues, and receiving issues in Evergreen  . 0.   Specifically, this tutorial documents the functionality in the serials module and illustrates a basic serials workflow in which the user will register a subscription to a serial publication; distribute issues of that publication to branches; define the captions to be affixed to each issue; specify details of the publication pattern; predict future issues, and receive copies of an issue.  Claiming serials is not available in  . 0.  This document also includes a list of administrative permissions that users must have to use the serials module.
+
+
+Serial Control View, Alternate Serial Control View, and MFHD Records: A Summary
+-------------------------------------------------------------------------------
+
+Serial Control View and Alternate Serial Control View offer you two views of Serials.  Both views enable you to create subscriptions, add distributions, define captions, predict future issues, and receive items.  Serial Control View was designed for users who work with a smaller number of issues and was designed to accommodate workflows in academic and special libraries.  Alternate Serial Control View was designed for users who receive a larger number of issues and was designed for use in public libraries.  
+
+The views are interoperable, but because the views were designed for different purposes, some differences emerge.  For example, Serial Control View enables you to create and edit serials in a single tabbed interface while Alternate Serial Control View leads you through a series of steps on multiple screens.  In addition, receiving functions vary between views.  Both receiving interfaces enable you to batch receive issues.  However, the Serials Batch Receive interface, which is associated with Alternate Serial Control View, allows for more customization of each receiving unit while the Items tab in Serial Control View allows for greater flexibility in creating multi-issue units, such as in binding serials.
+
+MFHD records that you created in  . 6 will also exist in  . 0.  Pre-existing MFHD records will display above the holdings summary for serials created in Alternate Serial Control View.  See section  .  . 2 for an example of this display.  If you create a serial in Serial Control View, the generated holdings and the previous MFHD record will display in a single holdings summary, separated by a comma.  See section  .  . 1 for an example of this display.  You can also create new MFHD records manually in  . 0 just as you could in  .  . 
+
+
+Copy Templates for Serials
+--------------------------
+
+A copy template enables you to specify item attributes that should be applied by default to copies of serials.  You can create one copy template and apply it to multiple serials. You can also create multiple copy templates.  Templates will be used in the Alternate Serial Control View or the Serial Control View.
+
+
+Create a copy template
+~~~~~~~~~~~~~~~~~~~~~~
+
+  . To create a copy template, click Admin -> Local Administration -> Copy Template Editor.
+  . Enter a Name for the template.
+  . Select an owning library from the Owning lib drop down menu.  This organization owns the    copy template.  A staff member with permissions at that organization can modify the copy template. The menu is populated from the organizations that you created in Admin -> Server Administration -> Organizational Units.
+  . Click the box adjacent to Circulate? If you want the item to circulate.
+  . Check the box adjacent to Holdable? if patrons can place holds on the item.
+  . Check the box adjacent to OPAC Visible? if you want patrons to be able to see the item in the OPAC after you receive it.
+  . Select a loan duration rule from the drop down menu.
+  . Select a fine level for the item from the drop down menu.
+  . Select a copy Location from the drop down menu.  The menu is populated from the copy locations that you created in Admin -> Local Administration ->  Copy Locations.
+  . Select a circ modifier from the drop down box.  The menu is populated from the modifiers that you created in Admin -> Server Administration -> Circulation Modifiers.
+  . Check the box adjacent to Floating? if the item is part of a floating collection.
+  . Check the box adjacent to Deposit? if patrons must place a deposit on the copy before they can use it.
+  . Check the box adjacent to Reference? if the item is a reference item.
+  . If the item is in mint condition, then check the box adjacent to Mint Condition?
+  . Enter age protection rules in the Age Protect field.  Age protection allows you to control the extent to which an item can circulate after it has been received.  For example, you may want to protect new copies of a serial so that only patrons who check out the item at your branch can use it.
+  . Enter a message in the Alert Message field.  This message will appear every time the item is     checked out to a patron.
+  . Enter a code from the MARC fixed fields if you want to control the circulation based on the   item type in the Circ as Type field.
+  . Enter a deposit amount if patrons must place a deposit on the copy before they can use it.
+  . Enter the price of the item.
+  . Enter the ID of the copy status in the Status field.  A list of copy statuses and their IDs can be found in Admin -> Server Administration -> Copy Status.
+  . Click Save.
+
+Fine level and loan duration are required fields in the Copy Template Editor.
+
+
+Edit a copy template
+~~~~~~~~~~~~~~~~~~~~
+
+You can make changes to an existing copy template.  Changes that you make to a copy template will apply to any items that you receive after you edited the template.
+
+  . To edit a copy template, click your cursor in the row that you want to edit.  The row will turn blue.  
+  . Double-click.  The copy template will appear, and you can edit the fields.
+  . After making changes, click Save.
+
+From the copy template interface, you can delete copy templates that have never been used.
+
+
+Alternate Serial Control View
+-----------------------------
+
+Using the Alternate Serial Control View, you can create a subscription, a distribution, a stream, and a caption and pattern, and you can generate predictions and receive issues.
+To access Alternate Serial Control View, open a serials record, and click Actions for this Record -> Alternate Serial Control.  This opens the  Subscriptions interface
+
+
+Subscriptions
+~~~~~~~~~~~~~
+
+Add new subscriptions to a serials record that exists in the catalog.
+
+Create a subscription
+^^^^^^^^^^^^^^^^^^^^^
+  
+ . Click New Subscription.
+ . Select an owning library.  The owning library indicates the organizational unit(s) whose staff can use this subscription.  This menu is populated with the shortnames that you created for your libraries in the organizational units tree in Admin -> Server Administration -> Organizational Units.  
+The rule of parental inheritance applies to this list.  For example, if a system is made the owner of a subscription, then users, with appropriate permissions, at the branches within the system could also use this subscription.
+ . Enter the date that the subscription begins in the start date.  Recommended practice is that you select the date from the drop down calendar although you can manually enter a date.
+Owning library and start date are required fields in the new subscription pop up box.
+ . Enter the date that the subscription ends in the end date.  Recommended practice is to select a date from the drop down calendar, but you can manually enter a date, also.  
+ . Enter the difference between the nominal publishing date of an issue and the date that you expect to receive your copy in the Expected Date Offset.  For example, if an issue is published the first day of each month, but you receive the copy two days prior to the publication date, then enter -2 days into this field.
+ . Click Save.
+ . After you save the subscription, it will appear in a list with a hyperlinked ID number.
+  Use the drop down menu at the top of the screen to view subscriptions at other organizations.
+
+Manage a subscription
+^^^^^^^^^^^^^^^^^^^^^
+
+Click the hyperlinked ID number to manage the subscription.  The tabbed interface enables you to create distributions, captions and patterns, and issuances.
+
+Edit a subscription
+^^^^^^^^^^^^^^^^^^^
+
+Edit a subscription as you would edit a copy template.  
+
+
+Distributions
+~~~~~~~~~~~~~
+
+Distributions indicate the branches that should receive copies of a serial.  Distributions work together with streams to indicate the number of copies that should be sent to each branch.
+
+Create a distribution
+^^^^^^^^^^^^^^^^^^^^^
+
+ . Click the Distributions tab.
+ . Click New Distribution.
+ . Enter a name for the distribution in the Label field.  It may be useful to identify the branch to which you are distributing these issues in this field.  This field is not publicly visible and only appears when an item is received.  There are no limits on the number of characters that can be entered in this field.
+ . Select a holding library from the drop down menu.  The holding library is the branch that will receive the copies.
+ . Select a copy template from the Receive Unit Template drop down menu.  This menu is populated with the copy templates that you created in Copy Template Editor.
++
+[NOTE]
+Label, Holding Library, and Receive Unit Template are required fields in the new distribution pop up box.
++
+ . Ignore the fields, Unit Label Prefix and Unit Label Suffix.  These fields are not functional in Alternate Serial Control View.
+ . Click Save.  The distribution will appear in a list in the Distributions tab in the Subscription Details.
+
+Edit a distribution
+^^^^^^^^^^^^^^^^^^^
+
+Edit a distribution just as you would edit a copy template.
+
+From the distribution interface, you can also delete distributions. Deleting the distribution would delete related data, such as streams associated with this distribution, but it would not delete units, the copy-equivalent objects that hold barcodes.  Recommended practice is that you do not delete distributions.
+
+
+Streams
+~~~~~~~
+
+Distributions work together with streams to indicate the number of copies that should be sent to each branch.  Distributions identify the branches that should receive copies of a serial.  Streams identify how many copies should be sent to each branch.  Streams are intended for copies that are received on a recurring, even if irregular, basis.
+
+In our example, the Apex Branch should receive copies, so we created a distribution to that branch.  The Apex Branch should receive two copies, so we will create two streams to that branch.
+
+Create a stream
+^^^^^^^^^^^^^^^
+
+Click the hyperlinked title of the distribution.  The number of streams that have already been created for this distribution displays adjacent to the title.
+You can choose one of two ways to create a stream: New Stream or Create Many Streams.  The New Stream button allows you to create one new stream and assign it a routing label.
+
+ . Click New Stream
+ . Enter a routing label so that the copy could be read by specific users or departments before the copy is shelved.  The routing label appears during receiving and could be added to routing lists; it is not viewable by the public.  Routing lists do not print from in  2.0.  This field is optional.
+ . Click Save.
+ 
+The Create Many Streams button allows you to create multiple streams at once, but it does not allow you to add a routing label when you create the stream.  
+
+ . Click Create Many Streams.
+ . Enter the number of streams that you want to create in the How many? Field.
+ . Click Create.
+
+Edit a stream
+^^^^^^^^^^^^^
+
+Edit a stream just as you would edit a copy template.
+
+From the streams interface, you can also delete streams. Deleting the stream would delete related data, but it would not delete units, or the copy-equivalent objects that hold barcodes.  Recommended practice is that you do not delete streams.
+
+Captions and Patterns
+~~~~~~~~~~~~~~~~~~~~~
+
+The Captions and Patterns wizard allows you to enter caption and pattern data as it is described by the 853, 854, and 855 MARC tags.  These tags allow you to define how issues will be captioned, and how often the library receives issues of the serial.
+
+In  2.0, it is not possible to create a caption and pattern and apply it to multiple subscriptions.  However, you can re-use patterns if you copy and paste to and from the pattern code field in the Captions and Patterns tab.  
+
+
+Create a Caption and Pattern
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ . Open the Subscription Details.
+ . Click the Captions and Patterns tab.
+ . Click Add Caption and Pattern.
+ . In the Type drop down box, select the MARC tag to which you would like to add data.
+ . In the Pattern Code drop down box, you can enter a JSON representation of the 85X tag by hand, or you can click the Wizard to enter the information in a user-friendly format.
+ . The Caption and Pattern that you create is Active by default, but you can deactivate a caption and pattern at a later time by unchecking the box.
+
+[NOTE]
+A subscription may have multiple captions and patterns listed in the subscripiton details, but only one Caption and Pattern can be active at any time.
+If you want to add multiple patterns, e.g. for Basic and Supplement, Click Add Caption and Pattern.
+
+Use the Pattern Code Wizard
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Pattern Code Wizard enables you to create the caption of the item and add its publication information.  The Wizard is composed of five pages of questions.  You can use the Next and Previous navigation buttons in the top corners to flip between pages.
+
+ . To add a pattern code, click Wizard.
+ . Page 1: Enumerations
+ .. To add an enumeration, check the box adjacent to Use enumerations?.  The enumerations conform to $a-$h of the 853,854, and 855 MARC tags.
+ .. A field for the First level will appear.  Enter the enumeration for the first level.  A common first level enumeration is volume, or “v.”
+ .. Click Add Enumeration.
+ .. A field for the Second level will appear.  Enter the enumeration for the second level.  A common first level enumeration is number, or “no.”
+ .. Enter the number of bibliographic units per next higher level.  This conforms to $u in the 853, 854, and 855 MARC tags.  
+ .. Choose the enumeration scheme from the drop down menu.  This conforms to $v in the 853, 854, and 855 MARC tags.
++
+[NOTE]
+You can add up to six levels of enumeration.
++
+ .. Add Alternate Enumeration if desired.  
+ .. When you have completed the enumerations, click Next.
+ . Page 2: Calendar
+ .. To use months, seasons, or dates in your caption, check the box adjacent to Use calendar changes?
+ .. Identify the point in the year at which the highest level enumeration caption changes.  
+ .. In the Type drop down menu, select the points during the year at which you want the calendar to restart.
+ .. In the Point drop down menu, select the specific time at which you would like to change the calendar
+ .. To add another calendar change, click Add Calendar Change.  There are no limits on the number of calendar changes that you can add.  
+ .. When you have finished the calendar changes, click Next.
+ . Page 3:  Chronology
+ .. To add chronological units to the captions, check the box adjacent to Use chronology captions?
+ .. Choose a chronology for the first level.  If you want to display the terms, “year” and “month” next to the chronology caption in the catlaog, then check the box beneath Display in holding field?
+ .. To include additional levels of chronology, click Add Chronology Caption.  Each level that you add must be smaller than the previous level.
+ .. After you have completed the chronology caption, click Next.
+ . Page 4:  Compress and Expand Captions
+ .. Select the appropriate option for compressing or expanding your captions in the catalog from the compressibility and expandability drop down menu.  The entries in the drop down menu correspond to the indicator codes and the subfield $w in the 853 tag.  Compressibility and expandability correspond to the first indicator in the 853 tag.
+ .. Choose the appropriate caption evaluation from the drop down menu.
+ .. Choose the frequency of your publication from the drop down menu.  For irregular frequencies, you may wish to select use number of issues per year, and enter the total number of issues that you receive each year.  However, in the  . 0 release, recommended practice is that you use only regular frequencies.  Planned development will create an additional step to aid in the creation of irregular frequencies.
+ .. Click Next.
+ . Page 5:  Finish Captions and Patterns
+ .. To complete the wizard, click Create Pattern Code.
+ .. Return to Subscription Details.
+ .. Confirm that the box adjacent to Active is checked.  Click Save Changes.  The row is now highlighted gray instead of orange.
+ 
+Issuances
+~~~~~~~~~
+
+The Issuances tab enables you to manually create an issue in the ILS.  The ILS will use the initial issue that you manually create to predict future issues.
+
+Create an issuance
+^^^^^^^^^^^^^^^^^^
+
+ . Click the Issuances tab in the Subscription Details.
+ . Click New Issuance.
+ . The Subscription, Creator, and Editor fields contain subscription and user IDs, respectively.  These fields are disabled because Evergreen automatically fills in these fields.
+ . Enter a name for this issuance in the Label field.  There are no limits on the number of characters that can be entered in this field.  You may want to enter the month and year of the publication in hand.
+ . Enter the Date Published of the issuance that you are editing.  Recommended practice is that you select the date from the drop down calendar although you can manually enter a date.  If you are creating one manual issue before automatically predicting more issues, then this date should be the date of the most current issue before the prediction starts.  
+ . Select a Caption/Pattern from the drop down menu.  The numbers in the drop down menu correspond to the IDs of the caption/patterns that you created.
+ . The Holding Type appears by default and corresponds to the Type that you selected when you created the Caption/Pattern. 
+ . In the holding code area of the New Issuance dialog, click Wizard.  The Wizard enables you to add holdings information.
+ . Enter the volume of the item in hand in the v. field.
+ . Enter the number of the item in hand in the no. field. 
+ . Enter the year of publication in the Year field. 
+ . Enter the month of publication in the Month field if applicable.  You must enter the calendar number of the month rather than the name of the month.  For example, enter 12 if the item in hand was published in December.
+ . Enter the day of publication in the day field if applicable.
+ . Click Compile to generate the holdings code. 
+ . Click Save.  The newly generated issuance will appear in a list in the Issuances tab of the Subscription Details.
+
+Generate item predicitions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After you manually create the first issue, Evergreen will predict future issuances.  Use the Generate Predictions functionality to predict future issues.
+
+ . Click Subscription Details -> Issuances -> Generate Predictions.
+ . Choose the length of time for which you want to predict issues.  If you select the radio button to predict until end of subscription, then Evergreen will predict issues until the end date that you created when you created the subscription.  See section  . 1 for more information.  If you do not have an end date, select the radio button to predict a certain number of issuances, and enter a number in the field.
+ . Click Generate.
+ . Evergreen will predict a run of issuances and copies.  The prediction will appear in a list.
+ . You can delete the first, manual issuance by clicking the check box adjacent to the issuance and clicking Delete Selected. 
+
+
+Receiving
+~~~~~~~~~
+
+You can batch receive items through a simple or an advanced interface.  The simple interface does not allow you to add barcodes or use the copy template.  These items are also not visible in the OPAC.  The advanced interface enables you to use the copy templates that you created, add barcodes, and make items OPAC visible and holdable.
+
+You can access both Batch Receive interfaces from two locations in the ILS.  From the Subscription Details screen, you can click Batch Item Receive.  You can also access these interfaces by opening the catalog record for the serial, and clicking Actions for this Record -> Serials Batch Receive.
+
+Simple Batch Receiving
+^^^^^^^^^^^^^^^^^^^^^^
+
+Follow these steps to receive items in batch in a simple interface.
+
+ . The Batch Receive interface displays issues that have not yet been received.  The earliest expected issue appears at the top of the list.
+ . In the right lower corner, you see a check box to Create Units for Received Items.  If you do not check this box, then you will receive items in simple mode.
+ . Click Next.
+ . In simple mode, the distributions that you created are displayed.  They are marked received by default.  If you hover over the branch name, you can view the name of the distribution and its stream.  
+ . You can receive and add a note to each item individually, or you can perform these actions on all of the distributions and streams at once. To do so, look above the line, and enter the note that you want to apply to all copies and confirm that the box to Receive? is checked.
+ . Click Apply.  The note should appear in the note field in each distribution.
++
+[NOTE]
+In  2.0, the note field is only displayed in the current screen. 
++
+ . Then click Receive Selected Items.
+ . The received items are cleared from the screen.
+
+Advanced Batch Receiving
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Follow these steps to receive items in batch in a simple interface.
+
+ . The Batch Receive interface displays issues that have not yet been received.  The earliest expected issue appears at the top of the list.
+ . If you want to barcode each copy, display it in the catalog, and make it holdable, then check the box adjacent to Create Units for Received Items in the lower right side of the screen.
+ . This will allow you to utilize the copy templates and input additional information about the copy:
+ .. Barcode – You can scan printed barcodes into the barcode field for each copy, or you can allow the system to auto-generate barcodes.  
+ ...To auto-generate barcodes, check the box adjacent to Auto-generate?, and enter the first barcode into the barcode field in the first row of the table. Then press the Tab key.  The remaining barcode fields will automatically populate with the next barcodes in sequence, including check digits.
+ .. Circ Modifiers -  The circ modifiers drop down menu is populated with the circulation modifiers that you created in Admin -> Server Administration -> Circulation Modifiers.  If you entered a circ modifier in the copy template that you created for this subscription, then it will appear by default in the distributions.
+ .. Call Number – Enter a call number.  Any item with a barcode must also have a call number.
+ .. Note – Add a note. There are no limits on the number of characters that can be entered in this field.  The note only displays in this screen.
+ .. Copy Location – The copy location drop down menu is populated with the copy locations that you created in Admin -> Local Administration -> Copy Location Editor.  If you entered a copy location in the copy template that you created for this subscription, then it will appear by default in the distributions.
+ .. Price - If you entered a price in the copy template that you created for this subscription, then it will appear by default in the distributions.  You can also manually enter a price if you did not include one in the copy template.
+ .. Receive? – The boxes in the Receive? Column are checked by default.  Uncheck the box if you do not want to receive the item.  Evergreen will retain the unreceived copies and will allow you to receive them at a later time.
+ .  When you are ready to receive the items, click Receive Selected Items.
+ .  The items that have been received are cleared from the Batch Receive interface. The remaining disabled item is an unreceived item.
+ . If the items that you received have a barcode, a copy template that was set to OPAC Visible, and are assigned a shelving location that is OPAC Visible, then you can view the received items in the catalog.  Notice that the Holdings Summary has been updated to reflect the most recent addition to the holdings.
+
+Serial Control View
+-------------------
+
+Serial Control View is separate from the Alternate Serial Control interface.  Serial Control View enables you to manage serials in a single tabbed interface.  This view also enables you to bind units.  Serial Control View consists of five tabs: Items, Units, Distributions, Subscriptions, and Claims.  Units and Claims are not functional in  2.0.
+
+To access Serial Control View, open a bib record and click Actions for this Record -> Serial Control View.
+
+Subscriptions
+~~~~~~~~~~~~~
+
+The Subscriptions tab enables you to view and manage subscriptions.
+
+Create a subscription
+^^^^^^^^^^^^^^^^^^^^^
+
+ . Click the Subscriptions tab.
+ . Select the branch that will own the subscription.
+ . Right-click or click Actions for Selected Row, and click Add Subscription.
+ . Enter the date that the subscription begins in the start date, and click Apply.  You must enter the date in YYYY-MM-DD format.
+ . Enter the date that the subscription ends in the end date.  This field is optional.
+ . Enter the difference between the nominal publishing date of an issue and the date that you expect to receive your copy in the Expected Date Offset.  For example, if an issue is published the first day of each month, but you receive the copy two days prior to the publication date, then enter -2 days into this field.
+ . When finished, click Create Subscription(s) in the bottom right corner of the screen.
+ .  A confirmation message appears.  Click OK.
+		
+You can add notes to the subscription by clicking Subscription Notes.  These                            
+notes are currently viewable only in the staff client by clicking on the Subscription Notes button.
+
+Edit a subscription
+^^^^^^^^^^^^^^^^^^^
+
+To edit a subscription, select the subscription in the tree on the left side of the screen.   You can edit the following categories:  Owning Lib, Start Date, End Date, and Date Offset.  After you edit the subscription, click Modify Subscription(s) to save the changes.
+
+Distributions
+~~~~~~~~~~~~~
+
+Distributions indicate the branches that should receive copies of a serial.  Distributions work together with streams to indicate the number of copies that should be sent to each branch.
+
+Create a distribution
+^^^^^^^^^^^^^^^^^^^^^
+
+ . Click the distributions link beneath the subscription.  Right click or click Actions for Selected Rows, and click Add distribution.
+ . Apply a new label to the distribution. It may be useful to identify the branch to which you are distributing these issues in this field.  This field is not publicly visible and only appears when an item is received.  There are no limits on the number of characters that can be entered in this field.
+ .  Apply a prefix to the spine label if desired.  This information will display in Serial Control View when the items are received, but it does not print on the spine label in  . 0.
+ .  Apply a suffix to the spine label if desired. This information will display in Serial Control View when the items are received, but it does not print on the spine label in  . 0.
+ . The holding library is filled in by default and is the library to which you attached the subscription.
+ . The Legacy Record Entry contains the MFHD records that are attached to the bib record if the owning library is identical to the distribution’s holding library. A distribution can thus be an extension of an MFHD record.  Select the MFHD record from the drop down menu.
+ . The Receive Call Number field is empty until you receive the first item.  When you receive the first item, you are prompted to enter a call number.  That call number will populate this drop down menu.
+ . The Bind Call Number field is empty until you bind the first item.  When you receive the first item, you are prompted to enter a call number.  That call number will populate this drop down menu.
+ . Receive Unit Template – The template that should be applied to copies when they are received.  Select a template from the drop down menu.
+ . Bind Unit Template - The template that should be applied to copies when they are bound.  Select a template from the drop down menu.
+ . When finished, click Create Distribution(s) in the bottom right corner of the screen.
+ .  A confirmation message appears.  Click OK.
+
+[NOTE]
+You can add notes to the distribution by clicking Distribution Notes.  These                            
+notes are currently viewable only in the staff client by clicking on the Distribution Notes button.
+
+Edit a distribution
+^^^^^^^^^^^^^^^^^^^
+
+To edit a distribution, select the distribution in the tree on the left side of the screen.   You can edit the following categories:  Label, Holding Lib, Legacy Record Entry, Receive Unit Template, Bind Unit Template, Receive Call Number and Bind Call Number.  After you edit the distribution, click Modify Distribution(s) to save the changes.
+
+Streams
+~~~~~~~
+
+Distributions work together with streams to indicate the number of copies that should be sent to each branch.  Distributions identify the branches that should receive copies of a serial.  Streams identify how many copies should be sent to each branch.  Streams are intended for copies that are received on a recurring, even if irregular, basis.
+
+In our example, the Apex Branch should receive copies, so we created a distribution to that branch.  The Apex Branch should receive two copies, so we will create two streams to that branch.
+
+Create a stream
+^^^^^^^^^^^^^^^
+
+ . Click the Distributions tab.
+ . Check the boxes to Show Dist. and Show Groups to view distributions and streams.
+ . Select the Streams link beneath the distribution that you created for that branch.  Right click or click Actions for Selected Row -> Add Stream.
+ . Click the stream that is created.
+ . Enter a routing label so that the copy could be read by specific users or departments before the copy is shelved.  The routing label appears during receiving and could be added to routing lists; it is not viewable by the public.  Routing lists do not print in  . 0.  This field is optional.
+ . Click Modify Stream(s) in the bottom right corner of the screen.
+
+
+The data in the Basic Summary, Supplement Summary, and Index Summary are automatically generated by the ILS when you create a  caption and pattern and a holdings statement.  You can create additional textual holdings manually by editing the Textual Holdings field. 
+
+Edit a stream
+^^^^^^^^^^^^^
+
+ . To edit a stream, select the stream in the tree on the left side of the screen.   You can edit the following category:
+ - Routing Label – The label given to an issue to direct it to the people or departments that should view the issue before it is available to the public.
+ . The Basic Summary displays the distribution ID, the Textual Holdings, and the Generated Holdings.  The OPAC uses data in legacy records, the generated coverage field, and the textual holdings fields to display holdings information.  
+ .. The distribution ID and the Generated Coverage are created by Evergreen.
+ .. Textual Holdings – Enter any additional holdings information in this field, and it will display in the OPAC as Additional Volume Information.
+ .. Then click Modify Basic Summary to save your changes.  Your changes will appear in the OPAC view.
+
+Captions and Patterns
+~~~~~~~~~~~~~~~~~~~~~
+
+The Captions and Patterns wizard allows you to enter caption and pattern data as it is described by the 853, 854, and 855 MARC tags.  These tags allow you to define how issues will be captioned, and how often the library receives issues of the serial.
+
+In  2.0, it is not possible to create a caption and pattern and apply it to multiple subscriptions.  However, you can re-use patterns if you copy and paste to and from the pattern code field in the Captions and Patterns tab.  
+
+Create a caption and pattern
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ . Click the Subscriptions tab.
+ . Beneath the subscription, click Captions and Patterns, and right-click or click Actions for Selected Row -> Add Caption/Pattern.
+ . The ID and Creation Date will fill in automatically. 
+ . Click the Unset entry beneath Type.  A drop down menu will appear.  Choose the type of caption and pattern that you want to create, and click Apply.
+ . Click the Unset entry beneath Active.  A drop down menu will appear.  Choose Yes if you want to activate the caption and pattern.  Click Apply.
+ . Click the Unset entry beneath the Pattern Code (temporary) field if you want to create the pattern code by hand.  If you want to create it automatically, click Pattern Code Wizard in the lower right corner.
+ . Follow the steps for using the pattern code wizard.
+ . Click Apply.
+ . Click Create Caption and Pattern(s).
+
+Edit a caption and pattern
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To edit a caption/pattern, select the caption/pattern in the tree on the left side of the screen.  You can edit the following categories:
+ - Type – Change the type of the caption/pattern.
+ - Acitve – Activate or deactivate the caption/pattern.
+ - Pattern Code – Edit the contents of the field, or click the Pattern Code Wizard to create a new pattern code.
+
+After you edit the subscription, click Modify Caption and Pattern(s) to save the changes.
+
+Issuances
+~~~~~~~~~
+
+The Issuances tab enables you to manually create an issue in the ILS.  The ILS will use the initial issue that you manually create to predict future issues.
+
+Create an issuance
+^^^^^^^^^^^^^^^^^^
+
+ . Click the Subscriptions tab.
+ . Beneath the subscription, click Issuances, and right-click or click Actions for Selected Row -> Add Issuance.
+ . The fields in the first column will fill in automatically after you have created the issuance.
+ . Click the Unset link in the Holding Code field, and manually enter a holding code.  Click Apply.
+ . Click the Unset link in the Caption/Pattern field.  Select a caption/pattern from the drop down menu.  Click Apply.
+ . Enter the Date Published of the issuance that you are editing.  Enter the date in YYYY-MM-DD format.  If you are creating one manual issue before automatically predicting more issues, then this date should be the date that you want to enter before the prediction starts.  Click Apply.
+ . Click in the Issuance Label field to name the issuance.  There are no limits on the number of characters that can be entered in this field.  You may want to enter the month and year of the publication in hand.  Click Apply.
+ . Click Create Issuance in the lower right corner to save your changes.
+ . A confirmation message appears.  Click OK.
+
+Edit an issuance
+^^^^^^^^^^^^^^^^
+
+To  edit an issuance, select the issuance in the tree on the left side of the screen.  You can edit the following categories: Holding Code, Caption/Pattern, Date Published, and Issuance Label.  After you edit the issuance, click Modify Issuance(s) to save the changes.
+
+Generate item predictions
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ . Open the Subscriptions tab.
+ . Right-click or click Actions for Selected Row -> Make predictions.
+ . A pop up box will aks you how many items you want to predict.  Enter the number, and click OK.
+ . A confirmation message will appear.  Click OK.
+ . Click the Issuances link to view the predicted issues.
+
+Receiving
+~~~~~~~~~
+
+Receive items in the Items tab.  From this interface, you can receive items, edit item attributes, and delete items.
+
+Receive Items
+^^^^^^^^^^^^^
+
+ . To receive items, click the Receive radio button.  In the top half of the screen, the items that have yet to be received are displayed.  In the bottom half of the screen, recently received items are displayed.
+ . Select the branch that will receive the items from the drop down box.
+ . Select the issue that you want to receive.
+ . Select the current working unit.  Click Set Current Unit, located in the lower right corner of the screen.  A drop down menu will appear. 
+ - If you want to barcode each item individually, select Auto per item. This setting is recommended for most receiving  processes. 
+ - If you want each item within a unit to share the same barcode, then select New Unit.  This setting is advised for most binding processes. 
+ - If you want the item to be received or bound into an existing item, select Recent and select the desired issue.  To making a change in bound items, receive or bind the items into an already existing unit.
+ . Click Receive/Move Selected.
+ . Enter a barcode and call number if prompted to do so.
+ . A message confirming receipt of the item appears.  Click OK.
+ . The screen refreshes.  In the top half of the screen, the item displays a received date.  In the bottom half of the screen, the item that you have just received is now at the top of the list of the received items.
+
+After receiving items, you can view the updated holdings in the OPAC.  In this example, the legacy MFHD record and the items recently received in the serial control view display together in the MFHD statement.
+
+Edit Item Attributes
+^^^^^^^^^^^^^^^^^^^^
+
+In this pop up box, you can view the Item ID, Status, Distribution, and Shelving ID.  These are generated by Evergreen.  However, you may need to edit an item’s Date Expected or Received.  
+
+ . To edit item attributes, select the item(s) that you want to edit, and click Actions for Selected Rows -> Edit Item Attributes.
+ . Edit the attributes that appear.  When you are finished, click Modify Item(s).
+
+Delete Items
+^^^^^^^^^^^^
+
+You can use this menu item to delete items from your holdings. To delete items from your holdings, click Actions for Selected Rows -> Delete Item.
+
+
+Bind Items
+~~~~~~~~~~
+
+The binding mode applies the binding template, which is defined in the distribution (see section 2 for more information), to units that should be bound.
+
+ . Select the the branch that will receive the items from the drop down box.
+ . To bind items, click the Bind radio button.  Items that have been received will appear in the top half of the screen.
+ . Select the current working unit.  
+ . Select the issues that you want to bind, and click Receive/Move Selected.
+ . In the bottom half of the screen, you can view the items that you have bound together.
+
+If you want to view all items, including those that have not been received, in the top half of the screen, click the check box adjacent to Show All.
+
+
+MFHD Record
+-----------
+
+You can manually create MFHD statements. 
+
+ . 1 Create an MFHD record
+ . Open a serial record, and in the bottom right corner above the copy information, click Add MFHD Record.  You can also add the MFHD statement by clicking Actions for this Record ->MFHD Holdings ->Add MFHD Record.
+ . A message will confirm that you have created the MFHD Record.  Click OK.
+ . Click Reload in the top left corner of the record.
+ . The Holdings Summary will appear. Click Edit Holdings in the right corner.
+ . Click Edit Record.
+ . The MFHD window will pop up.  Enter holdings information.  Click Save MFHD.
+ . Close the MFHD window.
+ . Click Reload in the top left corner of the record.  The Holdings Summary will reflect the changes to the MFHD statement.
+
+Permissions
+-----------
+
+The following permissions enable you to control serials’ functions.  Although you can assign each permission to users in the Admin module, it is recommended that either all serials permissions be assigned to an individual, or that they should be assigned to individuals in the following groups.
+
+The following permission allow you to create, manage, view, edit, and perform all other functions associated with these serials tasks:
+
+ - ADMIN_SERIAL_CAPTION_PATTERN 
+ - ADMIN_SERIAL_DISTRIBUTION 
+ - ADMIN_SERIAL_STREAM 
+ - ADMIN_SERIAL_SUBSCRIPTION
+
+To receive copies of serials:
+
+ - RECEIVE_SERIAL 
+ - CREATE_VOLUME
+
+You only need the CREATE_VOLUME permission if you are barcoding items and creating new call numbers per issue.
