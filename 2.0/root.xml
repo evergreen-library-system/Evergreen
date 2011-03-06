@@ -53,7 +53,7 @@
 		<xi:include href="stafftasks/stafftasks_intro.xml"/>
 		<xi:include href="stafftasks/alternate_serial_control.xml"/>
 		<xi:include href="stafftasks/booking.xml"/>
-		<xi:include href="stafftasks/acquisitions_module_GPLS.xml"/>
+		<xi:include href="stafftasks/acquisitions_module-GPLS.xml"/>
 		
  	</part>
 	<part xml:id="admin">
@@ -70,6 +70,7 @@
 		<xi:include href="admin/troubleshooting.xml"/>
 		<xi:include href="admin/actiontriggers.xml"/>
 		<xi:include href="admin/admin-booking.xml"/>
+		<xi:include href="admin/acquisitions_admin_functions.xml"/>
 	</part>
 	<part xml:id="reports">
 		<info>
