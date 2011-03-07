@@ -403,14 +403,6 @@ sub TEST_SETUP {
 
 __PACKAGE__->default_search_class( 'keyword' );
 
-# XXX to become magic filters
-__PACKAGE__->add_search_filter( 'audience' );
-__PACKAGE__->add_search_filter( 'vr_format' );
-__PACKAGE__->add_search_filter( 'item_type' );
-__PACKAGE__->add_search_filter( 'item_form' );
-__PACKAGE__->add_search_filter( 'lit_form' );
-__PACKAGE__->add_search_filter( 'bib_level' );
-
 # will be retained simply for back-compat
 __PACKAGE__->add_search_filter( 'format' );
 
