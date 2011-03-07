@@ -2266,46 +2266,49 @@ sub fetch_cn_by_info {
 
 __PACKAGE__->register_method(
     method   => 'bib_extras',
-    api_name => 'open-ils.search.biblio.lit_form_map.retrieve.all'
+    api_name => 'open-ils.search.biblio.lit_form_map.retrieve.all',
+    ctype => 'lit_form'
 );
 __PACKAGE__->register_method(
     method   => 'bib_extras',
-    api_name => 'open-ils.search.biblio.item_form_map.retrieve.all'
+    api_name => 'open-ils.search.biblio.item_form_map.retrieve.all',
+    ctype => 'item_form'
 );
 __PACKAGE__->register_method(
     method   => 'bib_extras',
-    api_name => 'open-ils.search.biblio.item_type_map.retrieve.all'
+    api_name => 'open-ils.search.biblio.item_type_map.retrieve.all',
+    ctype => 'item_type',
 );
 __PACKAGE__->register_method(
     method   => 'bib_extras',
-    api_name => 'open-ils.search.biblio.bib_level_map.retrieve.all'
+    api_name => 'open-ils.search.biblio.bib_level_map.retrieve.all',
+    ctype => 'bib_level'
 );
 __PACKAGE__->register_method(
     method   => 'bib_extras',
-    api_name => 'open-ils.search.biblio.audience_map.retrieve.all'
+    api_name => 'open-ils.search.biblio.audience_map.retrieve.all',
+    ctype => 'audience'
 );
 
 sub bib_extras {
 	my $self = shift;
+    $logger->warn("deprecation warning: " .$self->api_name);
 
 	my $e = new_editor();
 
-	return $e->retrieve_all_config_lit_form_map()
-		if( $self->api_name =~ /lit_form/ );
+    my $ctype = $self->{ctype};
+    my $ccvms = $e->search_config_coded_value_map({ctype => $ctype});
 
-	return $e->retrieve_all_config_item_form_map()
-		if( $self->api_name =~ /item_form_map/ );
+    my @objs;
+    for my $ccvm (@$ccvms) {
+        my $obj = "Fieldmapper::config::${ctype}_map"->new;
+        $obj->value($ccvm->value);
+        $obj->code($ccvm->code);
+        $obj->description($ccvm->description) if $obj->can('description');
+        push(@objs, $obj);
+    }
 
-	return $e->retrieve_all_config_item_type_map()
-		if( $self->api_name =~ /item_type_map/ );
-
-	return $e->retrieve_all_config_bib_level_map()
-		if( $self->api_name =~ /bib_level_map/ );
-
-	return $e->retrieve_all_config_audience_map()
-		if( $self->api_name =~ /audience_map/ );
-
-	return [];
+    return \@objs;
 }
 
 

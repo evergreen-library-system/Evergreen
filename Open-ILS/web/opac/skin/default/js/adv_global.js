@@ -14,27 +14,12 @@ function advgInit() {
 
 	$n($('adv_global_tbody'), 'term').focus();
 
-	var extras = [ 
-		FETCH_LIT_FORMS, 
-		FETCH_ITEM_FORMS, 
-		FETCH_ITEM_TYPES, 
-		FETCH_AUDIENCES,
-		FETCH_BIB_LEVELS 
-    ];
+    var ctypes = ["bib_level", "item_form", "item_type", "audience", "lit_form"];
 
-	for( var x in extras ) {
-
-		var req = new Request(extras[x]);
-
-		if(x == 0) req.request.sel = $('adv_global_lit_form');
-		if(x == 1) req.request.sel = $('adv_global_item_form');
-		if(x == 2) req.request.sel = $('adv_global_item_type');
-		if(x == 3) req.request.sel = $('adv_global_audience');
-		if(x == 4) req.request.sel = $('adv_global_bib_level');
-
-		req.callback(advDrawBibExtras);
-		req.send();
-	}
+    var req = new Request('open-ils.fielder:open-ils.fielder.ccvm.atomic', {"cache":1,"query":{"ctype":ctypes}});
+    req.callback(advDrawBibExtras);
+    req.request.ctypes = ctypes;
+    req.send();
 
 	var input = $n($('adv_global_trow'), 'term');
 	input.focus();
@@ -158,21 +143,24 @@ function advAddGblRow() {
 
 function advDrawBibExtras(r) {
 	var data = r.getResultObject();
-	var sel = r.sel;
-
-	data = data.sort( /* sort alphabetically */
-		function(a,b) { 
-			if( a.value() < b.value() ) return -1;
-			if( a.value() > b.value() ) return 1;
-			return 0;
-		}
-	);
-
-	for( var d = 0; d < data.length; d++ ) {
-		var thing = data[d];
-		var opt = insertSelectorVal( sel, -1, thing.value(), thing.code() );
-		opt.setAttribute('title', thing.value());
-	}
+    var ctypes = r.ctypes
+    dojo.forEach(ctypes,
+        function(ctype) {
+	        var sel = $('adv_global_' + ctype);
+            var ctypeData = dojo.filter(data, function(item) { return item.ctype == ctype } );
+            ctypeData = ctypeData.sort(
+                function(a,b) { /* sort alphabetically */
+                    return (a.value < b.value) ? -1 : 1;
+                }
+            );
+            dojo.forEach(ctypeData,
+                function(thing) {
+                    var opt = insertSelectorVal(sel, -1, thing.value, thing.code);
+                    opt.setAttribute('title', thing.value);
+                }
+            );
+        }
+    );
 }
 
 function advSelToStringList(sel) {
