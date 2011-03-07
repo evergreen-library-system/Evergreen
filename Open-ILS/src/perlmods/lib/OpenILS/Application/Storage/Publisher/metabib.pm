@@ -3048,6 +3048,13 @@ sub query_parser_fts {
 	}
 	return undef;
 }
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.query_parser_search",
+	method		=> 'query_parser_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
 
 sub query_parser_fts_wrapper {
 	my $self = shift;
