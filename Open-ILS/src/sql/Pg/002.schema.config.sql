@@ -756,6 +756,59 @@ CREATE OR REPLACE FUNCTION public.split_date_range( TEXT ) RETURNS TEXT AS $func
         SELECT REGEXP_REPLACE( $1, E'(\\d{4})-(\\d{4})', E'\\1 \\2', 'g' );
 $func$ LANGUAGE SQL STRICT IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION public.approximate_date( TEXT, TEXT ) RETURNS TEXT AS $func$
+        SELECT REGEXP_REPLACE( $1, E'\\D', $2, 'g' );
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.approximate_low_date( TEXT ) RETURNS TEXT AS $func$
+        SELECT approximate_date( $1, '0');
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.approximate_high_date( TEXT ) RETURNS TEXT AS $func$
+        SELECT approximate_date( $1, '9');
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.integer_or_null( TEXT ) RETURNS TEXT AS $func$
+        SELECT CASE WHEN $1 ~ E'^\\d+$' THEN $1 ELSE NULL END
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.force_to_isbn13( TEXT ) RETURNS TEXT AS $func$
+    use Business::ISBN;
+    use strict;
+    use warnings;
+
+    # Find the first ISBN, force it to ISBN13 and return it
+
+    my $input = shift;
+
+    foreach my $word (split(/\s/, $input)) {
+        my $isbn = Business::ISBN->new($word);
+
+        # First check the checksum; if it is not valid, fix it and add the original
+        # bad-checksum ISBN to the output
+        if ($isbn && $isbn->is_valid_checksum() == Business::ISBN::BAD_CHECKSUM) {
+            $isbn->fix_checksum();
+        }
+
+        # If we now have a valid ISBN, force it to ISBN13 and return it
+        return $isbn->as_isbn13->isbn if ($isbn && $isbn->is_valid());
+    }
+    return undef;
+$func$ LANGUAGE PLPERLU;
+
+COMMENT ON FUNCTION public.force_to_isbn13(TEXT) IS $$
+/*
+ * Copyright (C) 2011 Equinox Software
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * Inspired by translate_isbn1013
+ *
+ * The force_to_isbn13 function takes an input ISBN and returns the ISBN13
+ * version without hypens and with a repaired checksum if the checksum was bad
+ */
+$$;
+
+
 CREATE OR REPLACE FUNCTION public.translate_isbn1013( TEXT ) RETURNS TEXT AS $func$
     use Business::ISBN;
     use strict;
