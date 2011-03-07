@@ -12,7 +12,7 @@
 <!ENTITY conify.admin.grp_tree.link "Permission Groups">
 <!ENTITY conify.admin.perm_list.link "Permissions">
 <!ENTITY conify.admin.copy_status.link "Copy Statuses">
-<!ENTITY conify.admin.marc_code_maps.link "MARC Codes">
+<!ENTITY conify.admin.marc_code_maps.link "Coded Value Maps">
 <!ENTITY conify.admin.bottom_pane.title "Controls">
 <!-- Organization unit type configuration interface -->
 <!ENTITY conify.org_unit_type.title "Global :: Actor :: Organization Unit Types">
