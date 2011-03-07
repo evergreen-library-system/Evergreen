@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('XXXX'); -- miker
+INSERT INTO config.upgrade_log (version) VALUES ('0495'); -- miker
 
 CREATE TABLE config.record_attr_definition (
     name        TEXT    PRIMARY KEY,
