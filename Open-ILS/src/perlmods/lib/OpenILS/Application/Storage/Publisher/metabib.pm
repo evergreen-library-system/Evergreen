@@ -2784,11 +2784,11 @@ sub query_parser_fts {
     if (!$parser->initialization_complete) {
         my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
         $parser->initialize(
-            config_metabib_field_index_norm_map =>
+            config_record_attr_index_norm_map =>
                 $cstore->request(
-                    'open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic',
+                    'open-ils.cstore.direct.config.record_attr_index_norm_map.search.atomic',
                     { id => { "!=" => undef } },
-                    { flesh => 1, flesh_fields => { cmfinm => [qw/norm/] }, order_by => [{ class => "cmfinm", field => "pos" }] }
+                    { flesh => 1, flesh_fields => { crainm => [qw/norm/] }, order_by => [{ class => "crainm", field => "pos" }] }
                 )->gather(1),
             search_relevance_adjustment         =>
                 $cstore->request(
