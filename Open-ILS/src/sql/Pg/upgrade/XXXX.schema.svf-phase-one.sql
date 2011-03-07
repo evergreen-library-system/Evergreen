@@ -106,6 +106,17 @@ DROP TABLE config.lit_form_map;
 DROP TABLE config.audience_map;
 DROP TABLE config.videorecording_format_map;
 
+UPDATE config.i18n_core SET fq_field = 'ccvm.value', identity_value = ccvm.id FROM config.coded_value_map AS ccvm WHERE fq_field = 'clm.value' AND ccvm.ctype = 'item_lang' AND identity_value = ccvm.code;
+UPDATE config.i18n_core SET fq_field = 'ccvm.value', identity_value = ccvm.id FROM config.coded_value_map AS ccvm WHERE fq_field = 'cblvl.value' AND ccvm.ctype = 'bib_level' AND identity_value = ccvm.code;
+UPDATE config.i18n_core SET fq_field = 'ccvm.value', identity_value = ccvm.id FROM config.coded_value_map AS ccvm WHERE fq_field = 'cifm.value' AND ccvm.ctype = 'item_form' AND identity_value = ccvm.code;
+UPDATE config.i18n_core SET fq_field = 'ccvm.value', identity_value = ccvm.id FROM config.coded_value_map AS ccvm WHERE fq_field = 'citm.value' AND ccvm.ctype = 'item_type' AND identity_value = ccvm.code;
+UPDATE config.i18n_core SET fq_field = 'ccvm.value', identity_value = ccvm.id FROM config.coded_value_map AS ccvm WHERE fq_field = 'clfm.value' AND ccvm.ctype = 'lit_form' AND identity_value = ccvm.code;
+UPDATE config.i18n_core SET fq_field = 'ccvm.value', identity_value = ccvm.id FROM config.coded_value_map AS ccvm WHERE fq_field = 'cam.value' AND ccvm.ctype = 'audience' AND identity_value = ccvm.code;
+UPDATE config.i18n_core SET fq_field = 'ccvm.value', identity_value = ccvm.id FROM config.coded_value_map AS ccvm WHERE fq_field = 'cvrfm.value' AND ccvm.ctype = 'vr_format' AND identity_value = ccvm.code;
+
+UPDATE config.i18n_core SET fq_field = 'ccvm.description', identity_value = ccvm.id FROM config.coded_value_map AS ccvm WHERE fq_field = 'clfm.description' AND ccvm.ctype = 'lit_form' AND identity_value = ccvm.code;
+UPDATE config.i18n_core SET fq_field = 'ccvm.description', identity_value = ccvm.id FROM config.coded_value_map AS ccvm WHERE fq_field = 'cam.description' AND ccvm.ctype = 'audience' AND identity_value = ccvm.code;
+
 CREATE VIEW config.language_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_lang';
 CREATE VIEW config.bib_level_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'bib_level';
 CREATE VIEW config.item_form_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_form';
