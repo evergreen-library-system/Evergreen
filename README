@@ -1,11 +1,11 @@
-README for Evergreen trunk
+README for Evergreen 2.0
 
 Installing prerequisites:
 ========================
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (1.4.0 or later).
+1. Begin by installing the most recent version of OpenSRF (1.6.2 or later).
 You can download OpenSRF releases from
 http://evergreen-ils.org/downloads
 
@@ -43,7 +43,7 @@ Installation instructions:
 Once you have configured and compiled Evergreen, issue the following
 command as the root user to install Evergreen:
 
-make STAFF_CLIENT_BUILD_ID=rel_trunk install
+make STAFF_CLIENT_BUILD_ID=rel_2_0 install
 
 This will install Evergreen, including example configuration files in
 /openils/conf/ that you can use as templates for your own configuration files.
@@ -111,10 +111,10 @@ connection information in opensrf.xml for you.
 Creating the Evergreen database:
 ===============================
 
-PostgreSQL 8.3 or 8.4 will be installed on your system by the Makefile.install
+PostgreSQL 8.4 or 9.0 will be installed on your system by the Makefile.install
 prerequisite installer if packages are available for your distribution, or
-you will have to compile PostgreSQL 8.3 or 8.4 from source and install it (which
-is beyond the scope of this document). PostgreSQL 8.4 is recommended if you have
+you will have to compile PostgreSQL 8.4 9.0 from source and install it (which
+is beyond the scope of this document). PostgreSQL 9.0 is recommended if you have
 the option.
 
 Once the PostgreSQL database server has been installed, you will need to
@@ -122,16 +122,16 @@ create the database and add the appropriate languages and extensions to
 support Evergreen. Issue the following commands as the "postgres" user to set
 up a database called "evergreen". Note that the location of the PostgreSQL
 "contrib" packages may vary depending on your distribution. In the following
-commands, we assume that you are working with PostgreSQL 8.4 on a Debian-based
+commands, we assume that you are working with PostgreSQL 9.0 on a Debian-based
 system:
 
 createdb --template template0 --encoding UNICODE evergreen
 createlang plperl evergreen
 createlang plperlu evergreen
 createlang plpgsql evergreen
-psql -f /usr/share/postgresql/8.4/contrib/tablefunc.sql -d evergreen
-psql -f /usr/share/postgresql/8.4/contrib/tsearch2.sql -d evergreen
-psql -f /usr/share/postgresql/8.4/contrib/pgxml.sql -d evergreen
+psql -f /usr/share/postgresql/9.0/contrib/tablefunc.sql -d evergreen
+psql -f /usr/share/postgresql/9.0/contrib/tsearch2.sql -d evergreen
+psql -f /usr/share/postgresql/9.0/contrib/pgxml.sql -d evergreen
 
 Once you have created the Evergreen database, you need to create a PostgreSQL
 user to access the database. Issue the following command as the "postgres"
