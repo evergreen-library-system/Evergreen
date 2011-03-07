@@ -31,7 +31,6 @@
     dojo.require('openils.widget.AutoGrid');
     dojo.require('openils.widget.AutoFieldWidget');
 
-    var firstRun = true;
     openils.Util.addOnLoad(
         function() {
 
@@ -47,12 +46,15 @@
                         function(newVal) {
                             ccvmGrid.resetStore();
                             ccvmGrid.loadAll({order_by : {ccvm : 'code'}}, {ctype : newVal});
+                            ccvmGrid.overrideWidgetArgs.ctype = {dijitArgs : {value : newVal}};
+                            // ^-- why is this not working?
                         }
                     );
-                    // start with something arbitrary that has some data
-                    w.attr('value', 'audience'); 
                 }
             );
+
+            // hide the progress indicator since we're not loading any data up front
+            dojo.style(ccvmGrid.loadProgressIndicator, 'visibility', 'hidden');
         }
     );
 
