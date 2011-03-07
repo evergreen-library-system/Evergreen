@@ -4950,6 +4950,34 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,params)
       WHERE i.func IN ('replace')
             AND m.id IN (19);
 
+INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
+    SELECT  m.name, i.id, 0
+      FROM  config.record_attr_definition m,
+            config.index_normalizer i
+      WHERE i.func IN ('content_or_null')
+            AND m.name IN ('titlesort', 'authorsort');
+
+INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
+    SELECT  m.name, i.id, 0
+      FROM  config.record_attr_definition m,
+            config.index_normalizer i
+      WHERE i.func IN ('integer_or_null')
+            AND m.name IN ('date1', 'date2', 'pubdate');
+
+INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
+    SELECT  m.name, i.id, 0
+      FROM  config.record_attr_definition m,
+            config.index_normalizer i
+      WHERE i.func IN ('approximate_low_date')
+            AND m.name IN ('date1', 'pubdate');
+
+INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
+    SELECT  m.name, i.id, 0
+      FROM  config.record_attr_definition m,
+            config.index_normalizer i
+      WHERE i.func IN ('approximate_high_date')
+            AND m.name IN ('date2');
+
 -- claims never checked out mark item missing 
 INSERT INTO
     config.org_unit_setting_type ( name, label, description, datatype )
