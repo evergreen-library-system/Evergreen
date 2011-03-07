@@ -83,9 +83,9 @@ CREATE TABLE config.circ_matrix_matchpoint (
     org_unit             INT        NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
     grp                  INT     NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
     circ_modifier        TEXT    REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
-    marc_type            TEXT    REFERENCES config.item_type_map (code) DEFERRABLE INITIALLY DEFERRED,
-    marc_form            TEXT    REFERENCES config.item_form_map (code) DEFERRABLE INITIALLY DEFERRED,
-    marc_vr_format       TEXT    REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
+    marc_type            TEXT,
+    marc_form            TEXT,
+    marc_vr_format       TEXT,
     copy_circ_lib        INT     REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
     copy_owning_lib      INT     REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
     user_home_ou         INT     REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,

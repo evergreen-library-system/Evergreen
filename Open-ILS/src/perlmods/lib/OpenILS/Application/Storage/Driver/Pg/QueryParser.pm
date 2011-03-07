@@ -33,7 +33,6 @@ sub quote_phrase_value {
 
 sub init {
     my $class = shift;
-
 }
 
 sub default_preferred_language {
@@ -70,6 +69,24 @@ sub simple_plan {
 sub toSQL {
     my $self = shift;
     return $self->parse_tree->toSQL;
+}
+
+sub dynamic_filters {
+    my $self = shift;
+    my $new = shift;
+
+    $self->custom_data->{dynamic_filters} ||= [];
+    push(@{$self->custom_data->{dynamic_filters}}, $new) if ($new);
+    return $self->custom_data->{dynamic_filters};
+}
+
+sub dynamic_sorters {
+    my $self = shift;
+    my $new = shift;
+
+    $self->custom_data->{dynamic_sorters} ||= [];
+    push(@{$self->custom_data->{dynamic_sorters}}, $new) if ($new);
+    return $self->custom_data->{dynamic_sorters};
 }
 
 sub facet_field_id_map {
@@ -237,13 +254,32 @@ sub initialize_relevance_bumps {
     return $self->relevance_bumps;
 }
 
-sub initialize_normalizers {
+sub initialize_query_normalizers {
     my $self = shift;
     my $tree = shift; # open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic { "id" : { "!=" : null } }, { "flesh" : 1, "flesh_fields" : { "cmfinm" : ["norm"] }, "order_by" : [{ "class" : "cmfinm", "field" : "pos" }] }
 
     for my $cmfinm ( @$tree ) {
         my $field_info = $self->search_field_class_by_id( $cmfinm->field );
         __PACKAGE__->add_query_normalizer( $field_info->{classname}, $field_info->{field}, $cmfinm->norm->func, OpenSRF::Utils::JSON->JSON2perl($cmfinm->params) );
+    }
+}
+
+sub initialize_dynamic_filters {
+    my $self = shift;
+    my $list = shift; # open-ils.cstore.direct.config.record_attr_definition.search.atomic { "id" : { "!=" : null } }
+
+    for my $crad ( @$list ) {
+        __PACKAGE__->dynamic_filters( __PACKAGE__->add_search_filter( $crad->name ) ) if ($U->is_true($crad->filter));
+        __PACKAGE__->dynamic_sorters( $crad->name ) if ($U->is_true($crad->sorter));
+    }
+}
+
+sub initialize_filter_normalizers {
+    my $self = shift;
+    my $tree = shift; # open-ils.cstore.direct.config.record_attr_index_norm_map.search.atomic { "id" : { "!=" : null } }, { "flesh" : 1, "flesh_fields" : { "crainm" : ["norm"] }, "order_by" : [{ "class" : "crainm", "field" : "pos" }] }
+
+    for my $crainm ( @$tree ) {
+        __PACKAGE__->add_filter_normalizer( $crainm->name, $crainm->norm->func, OpenSRF::Utils::JSON->JSON2perl($crainm->params) );
     }
 }
 
@@ -258,6 +294,18 @@ sub initialize {
 
     return $_complete if ($_complete);
 
+    # tsearch rank normalization adjustments. see http://www.postgresql.org/docs/9.0/interactive/textsearch-controls.html#TEXTSEARCH-RANKING for details
+    $self->custom_data->{rank_cd_weight_map} = {
+        CD_logDocumentLength    => 1,
+        CD_documentLength       => 2,
+        CD_meanHarmonic         => 4,
+        CD_uniqueWords          => 8,
+        CD_logUniqueWords       => 16,
+        CD_selfPlusOne          => 32
+    };
+
+    $self->add_search_modifier( $_ ) for (keys %{ $self->custom_data->{rank_cd_weight_map} });
+
     $self->initialize_search_field_id_map( $args{config_metabib_field} )
         if ($args{config_metabib_field});
 
@@ -267,14 +315,21 @@ sub initialize {
     $self->initialize_relevance_bumps( $args{search_relevance_adjustment} )
         if ($args{search_relevance_adjustment});
 
-    $self->initialize_normalizers( $args{config_metabib_field_index_norm_map} )
+    $self->initialize_query_normalizers( $args{config_metabib_field_index_norm_map} )
         if ($args{config_metabib_field_index_norm_map});
+
+    $self->initialize_dynamic_filters( $args{config_record_attr_definition} )
+        if ($args{config_record_attr_definition});
+
+    $self->initialize_filter_normalizers( $args{config_record_attr_index_norm_map} )
+        if ($args{config_record_attr_index_norm_map});
 
     $_complete = 1 if (
         $args{config_metabib_field_index_norm_map} &&
         $args{search_relevance_adjustment} &&
         $args{config_metabib_search_alias} &&
-        $args{config_metabib_field}
+        $args{config_metabib_field} &&
+        $args{config_record_attr_definition}
     );
 
     return $_complete;
@@ -348,43 +403,55 @@ sub TEST_SETUP {
 
 __PACKAGE__->default_search_class( 'keyword' );
 
+# XXX to become magic filters
 __PACKAGE__->add_search_filter( 'audience' );
 __PACKAGE__->add_search_filter( 'vr_format' );
-__PACKAGE__->add_search_filter( 'format' );
 __PACKAGE__->add_search_filter( 'item_type' );
 __PACKAGE__->add_search_filter( 'item_form' );
 __PACKAGE__->add_search_filter( 'lit_form' );
+__PACKAGE__->add_search_filter( 'bib_level' );
+
+# will be retained simply for back-compat
+__PACKAGE__->add_search_filter( 'format' );
+
+# grumble grumble, special cases against date1 and date2
+__PACKAGE__->add_search_filter( 'before' );
+__PACKAGE__->add_search_filter( 'after' );
+__PACKAGE__->add_search_filter( 'between' );
+__PACKAGE__->add_search_filter( 'during' );
+
+# used by layers above this
+__PACKAGE__->add_search_filter( 'statuses' );
 __PACKAGE__->add_search_filter( 'locations' );
 __PACKAGE__->add_search_filter( 'site' );
 __PACKAGE__->add_search_filter( 'lasso' );
 __PACKAGE__->add_search_filter( 'my_lasso' );
 __PACKAGE__->add_search_filter( 'depth' );
-__PACKAGE__->add_search_filter( 'sort' );
 __PACKAGE__->add_search_filter( 'language' );
-__PACKAGE__->add_search_filter( 'preferred_language' );
-__PACKAGE__->add_search_filter( 'preferred_language_weight' );
-__PACKAGE__->add_search_filter( 'preferred_language_multiplier' );
-__PACKAGE__->add_search_filter( 'statuses' );
-__PACKAGE__->add_search_filter( 'bib_level' );
-__PACKAGE__->add_search_filter( 'before' );
-__PACKAGE__->add_search_filter( 'after' );
-__PACKAGE__->add_search_filter( 'between' );
-__PACKAGE__->add_search_filter( 'during' );
 __PACKAGE__->add_search_filter( 'offset' );
 __PACKAGE__->add_search_filter( 'limit' );
-__PACKAGE__->add_search_filter( 'core_limit' );
 __PACKAGE__->add_search_filter( 'check_limit' );
 __PACKAGE__->add_search_filter( 'skip_check' );
 __PACKAGE__->add_search_filter( 'superpage' );
 __PACKAGE__->add_search_filter( 'superpage_size' );
 __PACKAGE__->add_search_filter( 'estimation_strategy' );
-
 __PACKAGE__->add_search_modifier( 'available' );
+__PACKAGE__->add_search_modifier( 'staff' );
+
+# used internally, but generally not user-settable
+__PACKAGE__->add_search_filter( 'preferred_language' );
+__PACKAGE__->add_search_filter( 'preferred_language_weight' );
+__PACKAGE__->add_search_filter( 'preferred_language_multiplier' );
+__PACKAGE__->add_search_filter( 'core_limit' );
+
+# XXX Valid values to be supplied by SVF
+__PACKAGE__->add_search_filter( 'sort' );
+
+# modifies core query, not configurable
 __PACKAGE__->add_search_modifier( 'descending' );
 __PACKAGE__->add_search_modifier( 'ascending' );
 __PACKAGE__->add_search_modifier( 'metarecord' );
 __PACKAGE__->add_search_modifier( 'metabib' );
-__PACKAGE__->add_search_modifier( 'staff' );
 
 
 #-------------------------------
@@ -435,54 +502,53 @@ sub toSQL {
     if (($filters{preferred_language} || $self->QueryParser->default_preferred_language) && ($filters{preferred_language_multiplier} || $self->QueryParser->default_preferred_language_multiplier)) {
         my $pl = $self->QueryParser->quote_value( $filters{preferred_language} ? $filters{preferred_language} : $self->QueryParser->default_preferred_language );
         my $plw = $filters{preferred_language_multiplier} ? $filters{preferred_language_multiplier} : $self->QueryParser->default_preferred_language_multiplier;
-        $rel = "($rel * COALESCE( NULLIF( FIRST(mrd.item_lang) = $pl , FALSE )::INT * $plw, 1))";
+        $rel = "($rel * COALESCE( NULLIF( mrd.attrs \@> hstore('item_lang', $pl), FALSE )::INT * $plw, 1))";
     }
-    $rel .= '::NUMERIC';
+    $rel = "1.0/($rel)::NUMERIC";
 
-    for my $f ( qw/audience vr_format item_type item_form lit_form language bib_level/ ) {
+    my %dyn_filters = ( '' => [] ); # the "catch-all" key
+    for my $f ( @{ $self->dynamic_filters } ) {
         my $col = $f;
-        $col = 'item_lang' if ($f eq 'language');
-        $filters{$f} = '';
+        $col = 'item_lang' if ($f eq 'language'); #XXX filter aliases would address this ... booo ... later
+
+        $dyn_filters{$f} = '';
+
         my ($filter) = $self->find_filter($f);
         if ($filter) {
-            $filters{$f} = "AND mrd.$col in (" . join(",",map { $self->QueryParser->quote_value($_) } @{$filter->args}) . ")";
+            my @fargs = @{$filter->args};
+
+            if (@fargs > 1) {
+                $dyn_filters{$f} = "( " .
+                    join(
+                        " OR ",
+                        map { "mrd.attrs \@> hstore('$col', " . $self->QueryParser->quote_value($_) . ")" } @fargs
+                    ) . 
+                    " )";
+            } else {
+                push(@{$dyn_filters{''}}, "hstore('$col', " . $self->QueryParser->quote_value($fargs[0]) . ")");
+            }
         }
     }
 
-    my $audience = $filters{audience};
-    my $vr_format = $filters{vr_format};
-    my $item_type = $filters{item_type};
-    my $item_form = $filters{item_form};
-    my $lit_form = $filters{lit_form};
-    my $language = $filters{language};
-    my $bib_level = $filters{bib_level};
+    my $combined_dyn_filters = 'mrd.attrs @> (' . join(' || ', @{$dyn_filters{''}}) . ')';
+    delete($dyn_filters{''});
 
+    $combined_dyn_filters .= join(' AND ', values(%dyn_filters));
+    
     my $rank = $rel;
 
     my $desc = 'ASC';
     $desc = 'DESC' if ($self->find_modifier('descending'));
 
-    if ($sort_filter eq 'rel') { # relevance ranking flips sort dir
-        if ($desc eq  'ASC') {
-            $desc = 'DESC';
-        } else {
-            $desc = 'ASC';
-        }
+    if (grep {$_ eq $sort_filter} @{$self->dynamic_sorters}) {
+        $rank = "(mrd.attrs->'$sort_filter')"
+    } elsif ($sort_filter eq 'create_date') {
+        $rank = "FIRST((SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source))";
+    } elsif ($sort_filter eq 'edit_date') {
+        $rank = "FIRST((SELECT edit_date FROM biblio.record_entry rbr WHERE rbr.id = m.source))";
     } else {
-        if ($sort_filter eq 'title') {
-            $rank = "FIRST((SELECT frt.value FROM metabib.full_rec frt WHERE frt.record = m.source AND frt.tag = 'tnf' AND frt.subfield = 'a' LIMIT 1))";
-        } elsif ($sort_filter eq 'pubdate') {
-            $rank = "FIRST(mrd.date1)::NUMERIC";
-        } elsif ($sort_filter eq 'create_date') {
-            $rank = "FIRST((SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source))";
-        } elsif ($sort_filter eq 'edit_date') {
-            $rank = "FIRST((SELECT edit_date FROM biblio.record_entry rbr WHERE rbr.id = m.source))";
-        } elsif ($sort_filter eq 'author') {
-            $rank = "FIRST((SELECT fra.value FROM metabib.full_rec fra WHERE fra.record = m.source AND fra.tag LIKE '1%' AND fra.subfield = 'a' ORDER BY fra.tag LIMIT 1))";
-        } else {
-            # default to rel ranking
-            $rank = $rel;
-        }
+        # default to rel ranking
+        $rank = $rel;
     }
 
     my $key = 'm.source';
@@ -494,25 +560,25 @@ sub toSQL {
     my ($between) = $self->find_filter('between');
 
     if ($before and @{$before->args} == 1) {
-        $before = "AND mrd.date1 <= " . $self->QueryParser->quote_value($before->args->[0]);
+        $before = "AND (mrd.attrs->'date1') <= " . $self->QueryParser->quote_value($before->args->[0]);
     } else {
         $before = '';
     }
 
     if ($after and @{$after->args} == 1) {
-        $after = "AND mrd.date1 >= " . $self->QueryParser->quote_value($after->args->[0]);
+        $after = "AND (mrd.attrs->'date1') >= " . $self->QueryParser->quote_value($after->args->[0]);
     } else {
         $after = '';
     }
 
     if ($during and @{$during->args} == 1) {
-        $during = "AND " . $self->QueryParser->quote_value($during->args->[0]) . " BETWEEN mrd.date1 AND mrd.date2";
+        $during = "AND " . $self->QueryParser->quote_value($during->args->[0]) . " BETWEEN (mrd.attrs->'date1') AND (mrd.attrs->'date2')";
     } else {
         $during = '';
     }
 
     if ($between and @{$between->args} == 2) {
-        $between = "AND mrd.date1 BETWEEN " . $self->QueryParser->quote_value($between->args->[0]) . " AND " . $self->QueryParser->quote_value($between->args->[1]);
+        $between = "AND (mrd.attrs->'date1') BETWEEN " . $self->QueryParser->quote_value($between->args->[0]) . " AND " . $self->QueryParser->quote_value($between->args->[1]);
     } else {
         $between = '';
     }
@@ -524,22 +590,16 @@ SELECT  $key AS id,
         ARRAY_ACCUM(DISTINCT m.source) AS records,
         $rel AS rel,
         $rank AS rank, 
-        FIRST(mrd.date1) AS tie_break
+        FIRST(mrd.attrs->'date1') AS tie_break
   FROM  metabib.metarecord_source_map m
-        JOIN metabib.rec_descriptor mrd ON (m.source = mrd.record)
+        JOIN metabib.record_attr mrd ON (m.source = mrd.id)
         $$flat_plan{from}
   WHERE 1=1
         $before
         $after
         $during
         $between
-        $audience
-        $vr_format
-        $item_type
-        $item_form
-        $lit_form
-        $language
-        $bib_level
+        $combined_dyn_filters
         AND $$flat_plan{where}
   GROUP BY 1
   ORDER BY 4 $desc NULLS LAST, 5 DESC NULLS LAST, 3 DESC
@@ -828,8 +888,16 @@ sub tsquery {
 
 sub rank {
     my $self = shift;
+
+    my $rank_norm_map = $self->plan->QueryParser->custom_data->{rank_cd_weight_map};
+    
+    my $cover_density = 0;
+    for my $norm ( keys %$rank_norm_map) {
+        $cover_density += $$rank_norm_map{$norm} if ($self->plan->find_modifier($norm));
+    }
+
     return $self->{rank} if ($self->{rank});
-    return $self->{rank} = 'rank(' . $self->table_alias . '.index_vector, ' . $self->table_alias . '.tsq)';
+    return $self->{rank} = 'rank_cd(' . $self->table_alias . '.index_vector, ' . $self->table_alias . ".tsq, $cover_density)";
 }
 
 

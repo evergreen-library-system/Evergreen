@@ -566,44 +566,6 @@ CREATE TABLE config.remote_account (
     last_activity TIMESTAMP WITH TIME ZONE
 );
 
-CREATE TABLE config.audience_map (
-	code		TEXT	PRIMARY KEY,
-	value		TEXT	NOT NULL,
-	description	TEXT
-);
-
-CREATE TABLE config.lit_form_map (
-	code		TEXT	PRIMARY KEY,
-	value		TEXT	NOT NULL,
-	description	TEXT
-);
-
-CREATE TABLE config.language_map (
-	code	TEXT	PRIMARY KEY,
-	value	TEXT	NOT NULL
-);
-
-CREATE TABLE config.item_form_map (
-	code	TEXT	PRIMARY KEY,
-	value	TEXT	NOT NULL
-);
-
-CREATE TABLE config.item_type_map (
-	code	TEXT	PRIMARY KEY,
-	value	TEXT	NOT NULL
-);
-
-CREATE TABLE config.bib_level_map (
-	code	TEXT	PRIMARY KEY,
-	value	TEXT	NOT NULL
-);
-
-CREATE TABLE config.marc21_rec_type_map (
-    code        TEXT    PRIMARY KEY,
-    type_val    TEXT    NOT NULL,
-    blvl_val    TEXT    NOT NULL
-);
-
 CREATE TABLE config.marc21_ff_pos_map (
     id          SERIAL  PRIMARY KEY,
     fixed_field TEXT    NOT NULL,
@@ -675,7 +637,7 @@ CREATE TABLE config.z3950_attr (
 
 CREATE TABLE config.i18n_locale (
     code        TEXT    PRIMARY KEY,
-    marc_code   TEXT    NOT NULL REFERENCES config.language_map (code) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    marc_code   TEXT    NOT NULL, -- should exist in config.coded_value_map WHERE ctype = 'item_lang'
     name        TEXT    UNIQUE NOT NULL,
     description TEXT
 );
@@ -865,6 +827,56 @@ CREATE TABLE config.metabib_field_index_norm_map (
         params  TEXT,
         pos     INT     NOT NULL DEFAULT 0
 );
+
+CREATE TABLE config.record_attr_definition (
+    name        TEXT    PRIMARY KEY,
+    label       TEXT    NOT NULL, -- I18N
+    filter      BOOL    NOT NULL DEFAULT TRUE,  -- becomes QP filter if true
+    sorter      BOOL    NOT NULL DEFAULT FALSE, -- becomes QP sort() axis if true
+
+-- For pre-extracted fields. Takes the first occurance, uses naive subfield ordering
+    tag         TEXT, -- LIKE format
+    sf_list     TEXT, -- pile-o-values, like 'abcd' for a and b and c and d
+
+-- This is used for both tag/sf and xpath entries
+    joiner      TEXT,
+
+-- For xpath-extracted attrs
+    xpath       TEXT,
+    format      TEXT    REFERENCES config.xml_transform (name) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    start_pos   INT,
+    string_len  INT,
+
+-- For fixed fields
+    fixed_field TEXT, -- should exist in config.marc21_ff_pos_map.fixed_field
+
+-- For phys-char fields
+    phys_char_sf    INT REFERENCES config.marc21_physical_characteristic_subfield_map (id)
+);
+
+CREATE TABLE config.record_attr_index_norm_map (
+    id      SERIAL  PRIMARY KEY,
+    attr    TEXT    NOT NULL REFERENCES config.record_attr_definition (name) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    norm    INT     NOT NULL REFERENCES config.index_normalizer (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    params  TEXT,
+    pos     INT     NOT NULL DEFAULT 0
+);
+
+CREATE TABLE config.coded_value_map (
+    id          SERIAL  PRIMARY KEY,
+    ctype       TEXT    NOT NULL REFERENCES config.record_attr_definition (name) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    code        TEXT    NOT NULL,
+    value       TEXT    NOT NULL,
+    description TEXT
+);
+
+CREATE VIEW config.language_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_lang';
+CREATE VIEW config.bib_level_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'bib_level';
+CREATE VIEW config.item_form_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_form';
+CREATE VIEW config.item_type_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_type';
+CREATE VIEW config.lit_form_map AS SELECT code, value, description FROM config.coded_value_map WHERE ctype = 'lit_form';
+CREATE VIEW config.audience_map AS SELECT code, value, description FROM config.coded_value_map WHERE ctype = 'audience';
+CREATE VIEW config.videorecording_format_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'vr_format';
 
 CREATE OR REPLACE FUNCTION oils_tsearch2 () RETURNS TRIGGER AS $$
 DECLARE

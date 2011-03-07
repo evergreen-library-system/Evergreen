@@ -571,6 +571,80 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+	<class id="crad" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::record_attr_definition" oils_persist:tablename="config.record_attr_definition" reporter:label="SVF Record Attribute Defintion" oils_persist:field_safe="true">
+		<fields oils_persist:primary="name">
+			<field reporter:label="Name" name="name" reporter:datatype="id"/>
+			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+			<field reporter:label="Filter?" name="filter" reporter:datatype="bool"/>
+			<field reporter:label="Sorter?" name="sorter" reporter:datatype="bool"/>
+			<field reporter:label="MARC Tag" name="tag" reporter:datatype="text"/>
+			<field reporter:label="MARC Subfields" name="sf_list" reporter:datatype="text"/>
+			<field reporter:label="Joiner" name="joiner" reporter:datatype="text"/>
+			<field reporter:label="XPath" name="xpath" reporter:datatype="text"/>
+			<field reporter:label="Format" name="format" reporter:datatype="link"/>
+			<field reporter:label="Starting Position" name="start_pos" reporter:datatype="int"/>
+			<field reporter:label="String Length" name="string_len" reporter:datatype="int"/>
+			<field reporter:label="Fixed Field" name="fixed_field" reporter:datatype="text"/>
+			<field reporter:label="Physical Characteristic" name="phys_char_sf" reporter:datatype="text"/>
+			<field reporter:label="Normalizers" name="normalizers" reporter:datatype="link" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="format" reltype="has_a" key="name" map="" class="cxt"/>
+			<link field="normalizers" reltype="has_many" key="name" map="" class="crainm"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_SVF" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_SVF" global_required="true"/>
+                <delete permission="ADMIN_SVF" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="crainm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::record_attr_index_norm_map" oils_persist:tablename="config.record_attr_index_norm_map" reporter:label="SVF Record Attribute to Indexing Normalizer Map" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.record_attr_index_norm_map_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="SVF Attribute" name="attr" reporter:datatype="link"/>
+			<field reporter:label="Normalizer" name="norm" reporter:datatype="link"/>
+			<field reporter:label="Parameters (JSON Array)" name="params" reporter:datatype="text"/>
+			<field reporter:label="Order of Application" name="pos" reporter:datatype="int"/>
+		</fields>
+		<links>
+			<link field="attr" reltype="has_a" key="id" map="" class="crad"/>
+			<link field="norm" reltype="has_a" key="id" map="" class="cin"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+                <delete permission="ADMIN_INDEX_NORMALIZER" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="ccvm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::coded_value_map" oils_persist:tablename="config.coded_value_map" reporter:label="SVF Record Attribute Coded Value Map" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.coded_value_map_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="SVF Attribute" name="ctype" reporter:datatype="link"/>
+			<field reporter:label="Code" name="code" reporter:datatype="text"/>
+			<field reporter:label="Value" name="value" reporter:datatype="text"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="ctype" reltype="has_a" key="id" map="" class="crad"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_CODED_VALUE" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_CODED_VALUE" global_required="true"/>
+                <delete permission="ADMIN_CODED_VALUE" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+
 	<class id="cracct" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::remote_account" oils_persist:tablename="config.remote_account" reporter:label="Remote (3rd party) Account">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.remote_account_id_seq">
 			<field name="id"            reporter:datatype="id"   reporter:label="ID"/>
