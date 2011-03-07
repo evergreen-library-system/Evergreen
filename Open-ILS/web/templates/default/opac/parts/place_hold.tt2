@@ -1,5 +1,4 @@
-[%  USE CGI;
-    PROCESS "default/opac/parts/marc_misc.tt2";
+[%  PROCESS "default/opac/parts/marc_misc.tt2";
     attrs = {marc_xml => ctx.marc_xml};
     PROCESS get_marc_attrs args=attrs;
 %]

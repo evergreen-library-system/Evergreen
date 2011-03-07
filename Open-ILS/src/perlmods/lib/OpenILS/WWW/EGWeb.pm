@@ -51,7 +51,10 @@ sub handler {
         OUTPUT => ($as_xml) ?  sub { parse_as_xml($r, $ctx, @_); } : $r,
         INCLUDE_PATH => $ctx->{template_paths},
         DEBUG => $ctx->{debug_template},
-        PLUGINS => {EGI18N => 'OpenILS::WWW::EGWeb::I18NFilter'}
+        PLUGINS => {
+            EGI18N => 'OpenILS::WWW::EGWeb::I18NFilter',
+            CGIUTF8 => 'OpenILS::WWW::EGWeb::CGIUTF8'
+        }
     });
 
     unless($tt->process($template, {ctx => $ctx, l => set_text_handler($ctx, $r)})) {

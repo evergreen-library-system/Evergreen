@@ -1,6 +1,5 @@
 package OpenILS::WWW::EGCatLoader;
 use strict; use warnings;
-use CGI;
 use XML::LibXML;
 use URI::Escape;
 use Digest::MD5 qw(md5_hex);
@@ -14,6 +13,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use DateTime::Format::ISO8601;
+use OpenILS::WWW::CGIUTF8;
 
 # EGCatLoader sub-modules 
 use OpenILS::WWW::EGCatLoader::Util;
@@ -33,7 +33,7 @@ sub new {
 
     $self->apache($apache);
     $self->ctx($ctx);
-    $self->cgi(CGI->new);
+    $self->cgi(new OpenILS::WWW::CGIUTF8);
 
     OpenILS::Utils::CStoreEditor->init; # just in case
     $self->editor(new_editor());
