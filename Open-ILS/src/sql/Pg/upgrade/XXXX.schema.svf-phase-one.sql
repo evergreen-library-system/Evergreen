@@ -448,5 +448,5 @@ $func$ LANGUAGE PLPGSQL;
 
 DROP FUNCTION metabib.reingest_metabib_rec_descriptor( bib_id BIGINT );
 
-ROLLBACK;
+COMMIT;
 
