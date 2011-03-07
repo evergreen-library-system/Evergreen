@@ -26,35 +26,6 @@ INSERT INTO config.xml_transform VALUES ( 'mods32', 'http://www.loc.gov/mods/v3'
 INSERT INTO config.xml_transform VALUES ( 'mods33', 'http://www.loc.gov/mods/v3', 'mods33', '');
 INSERT INTO config.xml_transform VALUES ( 'marc21expand880', 'http://www.loc.gov/MARC21/slim', 'marc', '' );
 
--- record attributes
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('alph','Alph','Alph');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('audience','Audn','Audn');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('bib_level','BLvl','BLvl');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('biog','Biog','Biog');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('conf','Conf','Conf');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('control_type','Ctrl','Ctrl');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ctry','Ctry','Ctry');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('date1','Date1','Date1');
-INSERT INTO config.record_attr_definition (name,label,fixed_field,sorter,filter) values ('pubdate','Pub Date','Date1',TRUE,FALSE);
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('date2','Date2','Date2');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('cat_form','Desc','Desc');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('pub_status','DtSt','DtSt');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('enc_level','ELvl','ELvl');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('fest','Fest','Fest');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_form','Form','Form');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('gpub','GPub','GPub');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ills','Ills','Ills');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('indx','Indx','Indx');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_lang','Lang','Lang');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('lit_form','LitF','LitF');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('mrec','MRec','MRec');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ff_sl','S/L','S/L');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('type_mat','TMat','TMat');
-INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_type','Type','Type');
-INSERT INTO config.record_attr_definition (name,label,phys_char_sf) values ('vr_format','Videorecording format',72);
-INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag) values ('titlesort','Title',TRUE,FALSE,'tnf');
-INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag) values ('authorsort','Author',TRUE,FALSE,'1%');
-
 -- Index Definitions
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field ) VALUES 
     (1, 'series', 'seriestitle', oils_i18n_gettext(1, 'Series Title', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:relatedItem[@type="series"]/mods32:titleInfo$$, TRUE );
@@ -3813,6 +3784,35 @@ INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, leng
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Type', 'ldr', 'SCO', 6, 1, 'c');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Type', 'ldr', 'SER', 6, 1, 'a');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Type', 'ldr', 'VIS', 6, 1, 'g');
+
+-- record attributes
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('alph','Alph','Alph');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('audience','Audn','Audn');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('bib_level','BLvl','BLvl');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('biog','Biog','Biog');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('conf','Conf','Conf');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('control_type','Ctrl','Ctrl');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ctry','Ctry','Ctry');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('date1','Date1','Date1');
+INSERT INTO config.record_attr_definition (name,label,fixed_field,sorter,filter) values ('pubdate','Pub Date','Date1',TRUE,FALSE);
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('date2','Date2','Date2');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('cat_form','Desc','Desc');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('pub_status','DtSt','DtSt');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('enc_level','ELvl','ELvl');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('fest','Fest','Fest');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_form','Form','Form');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('gpub','GPub','GPub');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ills','Ills','Ills');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('indx','Indx','Indx');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_lang','Lang','Lang');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('lit_form','LitF','LitF');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('mrec','MRec','MRec');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ff_sl','S/L','S/L');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('type_mat','TMat','TMat');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_type','Type','Type');
+INSERT INTO config.record_attr_definition (name,label,phys_char_sf) values ('vr_format','Videorecording format',72);
+INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag) values ('titlesort','Title',TRUE,FALSE,'tnf');
+INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag) values ('authorsort','Author',TRUE,FALSE,'1%');
 
 -- Trigger Event Definitions -------------------------------------------------
 
