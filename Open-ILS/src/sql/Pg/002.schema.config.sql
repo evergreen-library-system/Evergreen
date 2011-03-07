@@ -566,6 +566,12 @@ CREATE TABLE config.remote_account (
     last_activity TIMESTAMP WITH TIME ZONE
 );
 
+CREATE TABLE config.marc21_rec_type_map (
+    code        TEXT    PRIMARY KEY,
+    type_val    TEXT    NOT NULL,
+    blvl_val    TEXT    NOT NULL
+);
+
 CREATE TABLE config.marc21_ff_pos_map (
     id          SERIAL  PRIMARY KEY,
     fixed_field TEXT    NOT NULL,
