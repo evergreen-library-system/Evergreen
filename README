@@ -121,17 +121,17 @@ create the database and add the appropriate languages and extensions to
 support Evergreen. Issue the following commands as the "postgres" user to set
 up a database called "evergreen". Note that the location of the PostgreSQL
 "contrib" packages may vary depending on your distribution. In the following
-commands, we assume that you are working with PostgreSQL 8.4 on a Debian-based
+commands, we assume that you are working with PostgreSQL 9.0 on a Debian-based
 system:
 
 createdb --template template0 --encoding UNICODE evergreen
 createlang plperl evergreen
 createlang plperlu evergreen
 createlang plpgsql evergreen
-psql -f /usr/share/postgresql/8.4/contrib/tablefunc.sql -d evergreen
-psql -f /usr/share/postgresql/8.4/contrib/tsearch2.sql -d evergreen
-psql -f /usr/share/postgresql/8.4/contrib/pgxml.sql -d evergreen
-psql -f /usr/share/postgresql/8.4/contrib/hstore.sql -d evergreen
+psql -f /usr/share/postgresql/9.0/contrib/tablefunc.sql -d evergreen
+psql -f /usr/share/postgresql/9.0/contrib/tsearch2.sql -d evergreen
+psql -f /usr/share/postgresql/9.0/contrib/pgxml.sql -d evergreen
+psql -f /usr/share/postgresql/9.0/contrib/hstore.sql -d evergreen
 
 Once you have created the Evergreen database, you need to create a PostgreSQL
 user to access the database. Issue the following command as the "postgres"
