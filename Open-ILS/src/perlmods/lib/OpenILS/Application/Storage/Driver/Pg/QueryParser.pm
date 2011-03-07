@@ -532,7 +532,8 @@ sub toSQL {
     $combined_dyn_filters .= 'AND mrd.attrs @> (' . join(' || ', @{$dyn_filters{''}}) . ') ' if (@{$dyn_filters{''}});
     delete($dyn_filters{''});
 
-    $combined_dyn_filters .= 'AND ' . join(' AND ', values(%dyn_filters));
+    my @dyn_filter_list = values(%dyn_filters);
+    $combined_dyn_filters .= 'AND ' . join(' AND ', @dyn_filter_list) if (@dyn_filter_list);
     
     my $rank = $rel;
 
