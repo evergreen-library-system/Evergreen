@@ -1,0 +1,63 @@
+[% WRAPPER default/base.tt2 %]
+<h1>Code Value Maps</h1> <br/>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+    <div>Coded Value Maps</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='ccvmGrid.showCreateDialog()'>New Map</button>
+        <button dojoType='dijit.form.Button' onClick='ccvmGrid.deleteSelected()'>Delete Selected</button>
+    </div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <span>Record Attribute Type: </span><div id='attr-def-div'/>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="ccvmGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['ctype', 'code', 'value', 'description']"
+            query="{code: '*'}"
+            defaultCellWidth='"25%"'
+            fmClass='ccvm'
+            showPaginator='true'
+            editOnEnter='true'/>
+ </div>
+
+<script type ="text/javascript">
+
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require('openils.widget.AutoFieldWidget');
+
+    openils.Util.addOnLoad(
+        function() {
+
+            var selector = new openils.widget.AutoFieldWidget({
+                fmClass : 'ccvm',
+                fmField : 'ctype',
+                parentNode : dojo.byId('attr-def-div')
+            });
+
+            selector.build(
+                function(w, ww) {
+                    dojo.connect(w, 'onChange', 
+                        function(newVal) {
+                            ccvmGrid.resetStore();
+                            ccvmGrid.loadAll({order_by : {ccvm : 'code'}}, {ctype : newVal});
+                            ccvmGrid.overrideWidgetArgs.ctype = {dijitArgs : {value : newVal}};
+                            // ^-- why is this not working?
+                        }
+                    );
+                }
+            );
+
+            // hide the progress indicator since we're not loading any data up front
+            dojo.style(ccvmGrid.loadProgressIndicator, 'visibility', 'hidden');
+        }
+    );
+
+</script>
+
+[% END %]

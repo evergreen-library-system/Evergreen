@@ -135,41 +135,38 @@ CREATE INDEX metabib_facet_entry_field_idx ON metabib.facet_entry (field);
 CREATE INDEX metabib_facet_entry_value_idx ON metabib.facet_entry (SUBSTRING(value,1,1024));
 CREATE INDEX metabib_facet_entry_source_idx ON metabib.facet_entry (source);
 
-
-CREATE TABLE metabib.rec_descriptor (
-	id		BIGSERIAL PRIMARY KEY,
-	record		BIGINT,
-	item_type	TEXT,
-	item_form	TEXT,
-	bib_level	TEXT,
-	control_type	TEXT,
-	char_encoding	TEXT,
-	enc_level	TEXT,
-	audience	TEXT,
-	lit_form	TEXT,
-	type_mat	TEXT,
-	cat_form	TEXT,
-	pub_status	TEXT,
-	item_lang	TEXT,
-	vr_format	TEXT,
-	date1		TEXT,
-	date2		TEXT
+CREATE TABLE metabib.record_attr (
+	id		BIGINT	PRIMARY KEY REFERENCES biblio.record_entry (id) ON DELETE CASCADE,
+	attrs	HSTORE	NOT NULL DEFAULT ''::HSTORE
 );
-CREATE INDEX metabib_rec_descriptor_record_idx ON metabib.rec_descriptor (record);
-CREATE INDEX metabib_rec_descriptor_item_type_idx ON metabib.rec_descriptor (item_type);
-CREATE INDEX metabib_rec_descriptor_item_form_idx ON metabib.rec_descriptor (item_form);
-CREATE INDEX metabib_rec_descriptor_bib_level_idx ON metabib.rec_descriptor (bib_level);
-CREATE INDEX metabib_rec_descriptor_control_type_idx ON metabib.rec_descriptor (control_type);
-CREATE INDEX metabib_rec_descriptor_char_encoding_idx ON metabib.rec_descriptor (char_encoding);
-CREATE INDEX metabib_rec_descriptor_enc_level_idx ON metabib.rec_descriptor (enc_level);
-CREATE INDEX metabib_rec_descriptor_audience_idx ON metabib.rec_descriptor (audience);
-CREATE INDEX metabib_rec_descriptor_lit_form_idx ON metabib.rec_descriptor (lit_form);
-CREATE INDEX metabib_rec_descriptor_cat_form_idx ON metabib.rec_descriptor (cat_form);
-CREATE INDEX metabib_rec_descriptor_pub_status_idx ON metabib.rec_descriptor (pub_status);
-CREATE INDEX metabib_rec_descriptor_item_lang_idx ON metabib.rec_descriptor (item_lang);
-CREATE INDEX metabib_rec_descriptor_vr_format_idx ON metabib.rec_descriptor (vr_format);
-CREATE INDEX metabib_rec_descriptor_date1_idx ON metabib.rec_descriptor (date1);
-CREATE INDEX metabib_rec_descriptor_dates_idx ON metabib.rec_descriptor (date1,date2);
+CREATE INDEX metabib_svf_attrs_idx ON metabib.record_attr USING GIST (attrs);
+CREATE INDEX metabib_svf_date1_idx ON metabib.record_attr ((attrs->'date1'));
+CREATE INDEX metabib_svf_dates_idx ON metabib.record_attr ((attrs->'date1'),(attrs->'date2'));
+
+-- Back-compat view ... we're moving to an HSTORE world
+CREATE TYPE metabib.rec_desc_type AS (
+    item_type       TEXT,
+    item_form       TEXT,
+    bib_level       TEXT,
+    control_type    TEXT,
+    char_encoding   TEXT,
+    enc_level       TEXT,
+    audience        TEXT,
+    lit_form        TEXT,
+    type_mat        TEXT,
+    cat_form        TEXT,
+    pub_status      TEXT,
+    item_lang       TEXT,
+    vr_format       TEXT,
+    date1           TEXT,
+    date2           TEXT
+);
+
+CREATE VIEW metabib.rec_descriptor AS
+    SELECT  id,
+            id AS record,
+            (populate_record(NULL::metabib.rec_desc_type, attrs)).*
+      FROM  metabib.record_attr;
 
 -- Use a sequence that matches previous version, for easier upgrading.
 CREATE SEQUENCE metabib.full_rec_id_seq;
@@ -459,18 +456,18 @@ return undef;
 
 $func$ LANGUAGE PLPERLU;
 
-CREATE OR REPLACE FUNCTION biblio.marc21_record_type( rid BIGINT ) RETURNS config.marc21_rec_type_map AS $func$
+CREATE OR REPLACE FUNCTION vandelay.marc21_record_type( marc TEXT ) RETURNS config.marc21_rec_type_map AS $func$
 DECLARE
-	ldr         RECORD;
+	ldr         TEXT;
 	tval        TEXT;
 	tval_rec    RECORD;
 	bval        TEXT;
 	bval_rec    RECORD;
     retval      config.marc21_rec_type_map%ROWTYPE;
 BEGIN
-    SELECT * INTO ldr FROM metabib.full_rec WHERE record = rid AND tag = 'LDR' LIMIT 1;
+    ldr := oils_xpath_string( '//*[local-name()="leader"]', marc );
 
-    IF ldr.id IS NULL THEN
+    IF ldr IS NULL OR ldr = '' THEN
         SELECT * INTO retval FROM config.marc21_rec_type_map WHERE code = 'BKS';
         RETURN retval;
     END IF;
@@ -479,10 +476,10 @@ BEGIN
     SELECT * INTO bval_rec FROM config.marc21_ff_pos_map WHERE fixed_field = 'BLvl' LIMIT 1; -- They're all the same
 
 
-    tval := SUBSTRING( ldr.value, tval_rec.start_pos + 1, tval_rec.length );
-    bval := SUBSTRING( ldr.value, bval_rec.start_pos + 1, bval_rec.length );
+    tval := SUBSTRING( ldr, tval_rec.start_pos + 1, tval_rec.length );
+    bval := SUBSTRING( ldr, bval_rec.start_pos + 1, bval_rec.length );
 
-    -- RAISE NOTICE 'type %, blvl %, ldr %', tval, bval, ldr.value;
+    -- RAISE NOTICE 'type %, blvl %, ldr %', tval, bval, ldr;
 
     SELECT * INTO retval FROM config.marc21_rec_type_map WHERE type_val LIKE '%' || tval || '%' AND blvl_val LIKE '%' || bval || '%';
 
@@ -495,16 +492,20 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION biblio.marc21_extract_fixed_field( rid BIGINT, ff TEXT ) RETURNS TEXT AS $func$
+CREATE OR REPLACE FUNCTION biblio.marc21_record_type( rid BIGINT ) RETURNS config.marc21_rec_type_map AS $func$
+    SELECT * FROM vandelay.marc21_record_type( (SELECT marc FROM biblio.record_entry WHERE id = $1) );
+$func$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION vandelay.marc21_extract_fixed_field( marc TEXT, ff TEXT ) RETURNS TEXT AS $func$
 DECLARE
     rtype       TEXT;
     ff_pos      RECORD;
     tag_data    RECORD;
     val         TEXT;
 BEGIN
-    rtype := (biblio.marc21_record_type( rid )).code;
+    rtype := (vandelay.marc21_record_type( marc )).code;
     FOR ff_pos IN SELECT * FROM config.marc21_ff_pos_map WHERE fixed_field = ff AND rec_type = rtype ORDER BY tag DESC LOOP
-        FOR tag_data IN SELECT * FROM metabib.full_rec WHERE tag = UPPER(ff_pos.tag) AND record = rid LOOP
+        FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(ff_pos.tag) || '"]/text()', marc ) ) x(value) LOOP
             val := SUBSTRING( tag_data.value, ff_pos.start_pos + 1, ff_pos.length );
             RETURN val;
         END LOOP;
@@ -516,30 +517,64 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+CREATE OR REPLACE FUNCTION biblio.marc21_extract_fixed_field( rid BIGINT, ff TEXT ) RETURNS TEXT AS $func$
+    SELECT * FROM vandelay.marc21_extract_fixed_field( (SELECT marc FROM biblio.record_entry WHERE id = $1), $2 );
+$func$ LANGUAGE SQL;
+
+CREATE TYPE biblio.record_ff_map AS (record BIGINT, ff_name TEXT, ff_value TEXT);
+CREATE OR REPLACE FUNCTION vandelay.marc21_extract_all_fixed_fields( marc TEXT ) RETURNS SETOF biblio.record_ff_map AS $func$
+DECLARE
+    tag_data    TEXT;
+    rtype       TEXT;
+    ff_pos      RECORD;
+    output      biblio.record_ff_map%ROWTYPE;
+BEGIN
+    rtype := (vandelay.marc21_record_type( marc )).code;
+
+    FOR ff_pos IN SELECT * FROM config.marc21_ff_pos_map WHERE rec_type = rtype ORDER BY tag DESC LOOP
+        output.ff_name  := ff_pos.fixed_field;
+        output.ff_value := NULL;
+
+        FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(tag) || '"]/text()', marc ) ) x(value) LOOP
+            output.ff_value := SUBSTRING( tag_data.value, ff_pos.start_pos + 1, ff_pos.length );
+            IF output.ff_value IS NULL THEN output.ff_value := REPEAT( ff_pos.default_val, ff_pos.length ); END IF;
+            RETURN NEXT output;
+            output.ff_value := NULL;
+        END LOOP;
+
+    END LOOP;
+
+    RETURN;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION biblio.marc21_extract_all_fixed_fields( rid BIGINT ) RETURNS SETOF biblio.record_ff_map AS $func$
+    SELECT $1 AS record, ff_name, ff_value FROM vandelay.marc21_extract_all_fixed_fields( (SELECT marc FROM biblio.record_entry WHERE id = $1) );
+$func$ LANGUAGE SQL;
+
 CREATE TYPE biblio.marc21_physical_characteristics AS ( id INT, record BIGINT, ptype TEXT, subfield INT, value INT );
-CREATE OR REPLACE FUNCTION biblio.marc21_physical_characteristics( rid BIGINT ) RETURNS SETOF biblio.marc21_physical_characteristics AS $func$
+CREATE OR REPLACE FUNCTION vandelay.marc21_physical_characteristics( marc TEXT) RETURNS SETOF biblio.marc21_physical_characteristics AS $func$
 DECLARE
     rowid   INT := 0;
-    _007    RECORD;
+    _007    TEXT;
     ptype   config.marc21_physical_characteristic_type_map%ROWTYPE;
     psf     config.marc21_physical_characteristic_subfield_map%ROWTYPE;
     pval    config.marc21_physical_characteristic_value_map%ROWTYPE;
     retval  biblio.marc21_physical_characteristics%ROWTYPE;
 BEGIN
 
-    SELECT * INTO _007 FROM metabib.full_rec WHERE record = rid AND tag = '007' LIMIT 1;
+    _007 := oils_xpath_string( '//*[@tag="007"]', marc );
 
-    IF _007.id IS NOT NULL THEN
-        SELECT * INTO ptype FROM config.marc21_physical_characteristic_type_map WHERE ptype_key = SUBSTRING( _007.value, 1, 1 );
+    IF _007 IS NOT NULL AND _007 <> '' THEN
+        SELECT * INTO ptype FROM config.marc21_physical_characteristic_type_map WHERE ptype_key = SUBSTRING( _007, 1, 1 );
 
         IF ptype.ptype_key IS NOT NULL THEN
             FOR psf IN SELECT * FROM config.marc21_physical_characteristic_subfield_map WHERE ptype_key = ptype.ptype_key LOOP
-                SELECT * INTO pval FROM config.marc21_physical_characteristic_value_map WHERE ptype_subfield = psf.id AND value = SUBSTRING( _007.value, psf.start_pos + 1, psf.length );
+                SELECT * INTO pval FROM config.marc21_physical_characteristic_value_map WHERE ptype_subfield = psf.id AND value = SUBSTRING( _007, psf.start_pos + 1, psf.length );
 
                 IF pval.id IS NOT NULL THEN
                     rowid := rowid + 1;
                     retval.id := rowid;
-                    retval.record := rid;
                     retval.ptype := ptype.ptype_key;
                     retval.subfield := psf.id;
                     retval.value := pval.id;
@@ -553,6 +588,10 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION biblio.marc21_physical_characteristics( rid BIGINT ) RETURNS SETOF biblio.marc21_physical_characteristics AS $func$
+    SELECT id, $1 AS record, ptype, subfield, value FROM vandelay.marc21_physical_characteristics( (SELECT marc FROM biblio.record_entry WHERE id = $1) );
+$func$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION biblio.extract_quality ( marc TEXT, best_lang TEXT, best_type TEXT ) RETURNS INT AS $func$
 DECLARE
@@ -702,37 +741,6 @@ BEGIN
 
     RETURN NEW;
 
-END;
-$func$ LANGUAGE PLPGSQL;
-
-CREATE OR REPLACE FUNCTION metabib.reingest_metabib_rec_descriptor( bib_id BIGINT ) RETURNS VOID AS $func$
-BEGIN
-    PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
-    IF NOT FOUND THEN
-        DELETE FROM metabib.rec_descriptor WHERE record = bib_id;
-    END IF;
-    INSERT INTO metabib.rec_descriptor (record, item_type, item_form, bib_level, control_type, enc_level, audience, lit_form, type_mat, cat_form, pub_status, item_lang, vr_format, date1, date2)
-        SELECT  bib_id,
-                biblio.marc21_extract_fixed_field( bib_id, 'Type' ),
-                biblio.marc21_extract_fixed_field( bib_id, 'Form' ),
-                biblio.marc21_extract_fixed_field( bib_id, 'BLvl' ),
-                biblio.marc21_extract_fixed_field( bib_id, 'Ctrl' ),
-                biblio.marc21_extract_fixed_field( bib_id, 'ELvl' ),
-                biblio.marc21_extract_fixed_field( bib_id, 'Audn' ),
-                biblio.marc21_extract_fixed_field( bib_id, 'LitF' ),
-                biblio.marc21_extract_fixed_field( bib_id, 'TMat' ),
-                biblio.marc21_extract_fixed_field( bib_id, 'Desc' ),
-                biblio.marc21_extract_fixed_field( bib_id, 'DtSt' ),
-                biblio.marc21_extract_fixed_field( bib_id, 'Lang' ),
-                (   SELECT  v.value
-                      FROM  biblio.marc21_physical_characteristics( bib_id) p
-                            JOIN config.marc21_physical_characteristic_subfield_map s ON (s.id = p.subfield)
-                            JOIN config.marc21_physical_characteristic_value_map v ON (v.id = p.value)
-                      WHERE p.ptype = 'v' AND s.subfield = 'e'    ),
-                LPAD(NULLIF(REGEXP_REPLACE(NULLIF(biblio.marc21_extract_fixed_field( bib_id, 'Date1'), ''), E'\\D', '0', 'g')::INT,0)::TEXT,4,'0'),
-                LPAD(NULLIF(REGEXP_REPLACE(NULLIF(biblio.marc21_extract_fixed_field( bib_id, 'Date2'), ''), E'\\D', '9', 'g')::INT,9999)::TEXT,4,'0');
-
-    RETURN;
 END;
 $func$ LANGUAGE PLPGSQL;
 
@@ -917,10 +925,19 @@ $func$ LANGUAGE SQL;
 
 -- AFTER UPDATE OR INSERT trigger for biblio.record_entry
 CREATE OR REPLACE FUNCTION biblio.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
+DECLARE
+    transformed_xml TEXT;
+    prev_xfrm       TEXT;
+    normalizer      RECORD;
+    xfrm            config.xml_transform%ROWTYPE;
+    attr_value      TEXT;
+    new_attrs       HSTORE := ''::HSTORE;
+    attr_def        config.record_attr_definition%ROWTYPE;
 BEGIN
 
     IF NEW.deleted IS TRUE THEN -- If this bib is deleted
         DELETE FROM metabib.metarecord_source_map WHERE source = NEW.id; -- Rid ourselves of the search-estimate-killing linkage
+        DELETE FROM metabib.record_attr WHERE id = NEW.id; -- Kill the attrs hash, useless on deleted records
         DELETE FROM authority.bib_linking WHERE bib = NEW.id; -- Avoid updating fields in bibs that are no longer visible
         RETURN NEW; -- and we're done
     END IF;
@@ -943,9 +960,92 @@ BEGIN
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_metabib_full_rec' AND enabled;
     IF NOT FOUND THEN
         PERFORM metabib.reingest_metabib_full_rec(NEW.id);
+
+        -- Now we pull out attribute data, which is dependent on the mfr for all but XPath-based fields
         PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_metabib_rec_descriptor' AND enabled;
         IF NOT FOUND THEN
-            PERFORM metabib.reingest_metabib_rec_descriptor(NEW.id);
+            FOR attr_def IN SELECT * FROM config.record_attr_definition ORDER BY format LOOP
+
+                IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
+                    SELECT  ARRAY_TO_STRING(ARRAY_ACCUM(value), COALESCE(attr_def.joiner,' ')) INTO attr_value
+                      FROM  (SELECT * FROM metabib.full_rec ORDER BY tag, subfield) AS x
+                      WHERE record = NEW.id
+                            AND tag LIKE attr_def.tag
+                            AND CASE
+                                WHEN attr_def.sf_list IS NOT NULL 
+                                    THEN POSITION(subfield IN attr_def.sf_list) > 0
+                                ELSE TRUE
+                                END
+                      GROUP BY tag
+                      ORDER BY tag
+                      LIMIT 1;
+
+                ELSIF attr_def.fixed_field IS NOT NULL THEN -- a named fixed field, see config.marc21_ff_pos_map.fixed_field
+                    attr_value := biblio.marc21_extract_fixed_field(NEW.id, attr_def.fixed_field);
+
+                ELSIF attr_def.xpath IS NOT NULL THEN -- and xpath expression
+
+                    SELECT INTO xfrm * FROM config.xml_transform WHERE name = attr_def.format;
+            
+                    -- See if we can skip the XSLT ... it's expensive
+                    IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
+                        -- Can't skip the transform
+                        IF xfrm.xslt <> '---' THEN
+                            transformed_xml := oils_xslt_process(NEW.marc,xfrm.xslt);
+                        ELSE
+                            transformed_xml := NEW.marc;
+                        END IF;
+            
+                        prev_xfrm := xfrm.name;
+                    END IF;
+
+                    IF xfrm.name IS NULL THEN
+                        -- just grab the marcxml (empty) transform
+                        SELECT INTO xfrm * FROM config.xml_transform WHERE xslt = '---' LIMIT 1;
+                        prev_xfrm := xfrm.name;
+                    END IF;
+
+                    attr_value := oils_xpath_string(attr_def.xpath, transformed_xml, COALESCE(attr_def.joiner,' '), ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]);
+
+                ELSIF attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
+                    SELECT  value::TEXT INTO attr_value
+                      FROM  biblio.marc21_physical_characteristics(NEW.id)
+                      WHERE subfield = attr_def.phys_char_sf
+                      LIMIT 1; -- Just in case ...
+
+                END IF;
+
+                -- apply index normalizers to attr_value
+                FOR normalizer IN
+                    SELECT  n.func AS func,
+                            n.param_count AS param_count,
+                            m.params AS params
+                      FROM  config.index_normalizer n
+                            JOIN config.record_attr_index_norm_map m ON (m.norm = n.id)
+                      WHERE attr = attr_def.name
+                      ORDER BY m.pos LOOP
+                        EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                            quote_literal( attr_value ) ||
+                            CASE
+                                WHEN normalizer.param_count > 0
+                                    THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                                    ELSE ''
+                                END ||
+                            ')' INTO attr_value;
+        
+                END LOOP;
+
+                -- Add the new value to the hstore
+                new_attrs := new_attrs || hstore( attr_def.name, attr_value );
+
+            END LOOP;
+
+            IF TG_OP = 'INSERT' OR OLD.deleted THEN -- initial insert OR revivication
+                INSERT INTO metabib.record_attr (id, attrs) VALUES (NEW.id, new_attrs);
+            ELSE
+                UPDATE metabib.record_attr SET attrs = attrs || new_attrs WHERE id = NEW.id;
+            END IF;
+
         END IF;
     END IF;
 

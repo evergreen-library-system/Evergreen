@@ -251,8 +251,8 @@
 									<td align=''>
 										<select id='adv_global_sort_by' onchange='__setsortsel();'>
 											<option value='rel'>&advanced.relevance;</option>
-											<option value='title'>&common.title;</option>
-											<option value='author'>&common.author;</option>
+											<option value='titlesort'>&common.title;</option>
+											<option value='authorsort'>&common.author;</option>
 											<option value='pubdate'>&advanced.pubdate;</option>
 										</select>
 									</td>

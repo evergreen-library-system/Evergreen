@@ -41,9 +41,9 @@ CREATE TABLE config.hold_matrix_matchpoint (
     usr_grp                 INT        REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
     requestor_grp           INT        NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
     circ_modifier           TEXT    REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
-    marc_type               TEXT    REFERENCES config.item_type_map (code) DEFERRABLE INITIALLY DEFERRED,
-    marc_form               TEXT    REFERENCES config.item_form_map (code) DEFERRABLE INITIALLY DEFERRED,
-    marc_vr_format          TEXT    REFERENCES config.videorecording_format_map (code) DEFERRABLE INITIALLY DEFERRED,
+    marc_type               TEXT,
+    marc_form               TEXT,
+    marc_vr_format          TEXT,
     juvenile_flag           BOOL,
     ref_flag                BOOL,
     -- "Result" Fields
