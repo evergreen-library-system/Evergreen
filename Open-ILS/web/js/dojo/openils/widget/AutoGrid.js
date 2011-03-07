@@ -470,8 +470,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                         if(field.widget.widget.attr('disabled')) return;
                         var w = clonePane.fieldList.filter(
                             function(i) { return (i.name == field.name) })[0];
-                        w.widget.baseWidgetValue(field.widget.widgetValue); // sync widgets
-                        w.widget.onload = function(){w.widget.baseWidgetValue(field.widget.widgetValue)}; // async widgets
+                        w.widget.baseWidgetValue(field.widget.widget.attr('value')); // sync widgets
+                        w.widget.onload = function(){w.widget.baseWidgetValue(field.widget.widget.attr('value'))}; // async widgets
                     }
                 );
                 origPane.destroy();
