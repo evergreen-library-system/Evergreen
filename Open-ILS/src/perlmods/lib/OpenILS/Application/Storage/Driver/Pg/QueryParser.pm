@@ -513,7 +513,6 @@ sub toSQL {
 
         my ($filter) = $self->find_filter($f);
         if ($filter) {
-            $dyn_filters{$f} = '';
             my @fargs = @{$filter->args};
 
             if (@fargs > 1) {
@@ -530,11 +529,10 @@ sub toSQL {
     }
 
     my $combined_dyn_filters = '';
-    $combined_dyn_filters = 'mrd.attrs @> (' . join(' || ', @{$dyn_filters{''}}) . ')' if (@{$dyn_filters{''}});
+    $combined_dyn_filters .= 'AND mrd.attrs @> (' . join(' || ', @{$dyn_filters{''}}) . ') ' if (@{$dyn_filters{''}});
     delete($dyn_filters{''});
 
-    $combined_dyn_filters .= ' AND ' if ($combined_dyn_filters);
-    $combined_dyn_filters .= join(' AND ', values(%dyn_filters));
+    $combined_dyn_filters .= 'AND ' . join(' AND ', values(%dyn_filters));
     
     my $rank = $rel;
 
