@@ -602,6 +602,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
+	<class id="mra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::record_attr" oils_persist:tablename="metabib.record_attr" reporter:label="SVF Record Attribute" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id">
+			<field reporter:label="Record ID" name="id" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Attributes" name="attrs" reporter:datatype="text"  oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="id" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+            </actions>
+        </permacrud>
+	</class>
+
 	<class id="crainm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::record_attr_index_norm_map" oils_persist:tablename="config.record_attr_index_norm_map" reporter:label="SVF Record Attribute to Indexing Normalizer Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.record_attr_index_norm_map_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
@@ -1949,6 +1964,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Simple Record Extracts " name="simple_record" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Authority Links" name="authority_links" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Subscriptions" name="subscriptions" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="SVF Attributes" name="attrs" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -1969,6 +1985,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="full_record_entries" reltype="has_many" key="record" map="" class="mfr"/>
 			<link field="authority_links" reltype="has_many" key="bib" map="" class="abl"/>
 			<link field="subscriptions" reltype="has_many" key="record_entry" map="" class="ssub"/>
+			<link field="attrs" reltype="might_have" key="id" map="" class="mra"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
