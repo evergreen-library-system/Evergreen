@@ -263,589 +263,556 @@ INSERT INTO config.net_access_level (id, name) VALUES
     (3, oils_i18n_gettext(3, 'No Access', 'cnal', 'name'));
 SELECT SETVAL('config.net_access_level_id_seq'::TEXT, 100);
 
-INSERT INTO config.audience_map (code, value, description) VALUES 
-    ('', oils_i18n_gettext('', 'Unknown or unspecified', 'cam', 'value'), 
-	oils_i18n_gettext('', 'The target audience for the item not known or not specified.', 'cam', 'description'));
-INSERT INTO config.audience_map (code, value, description) VALUES 
-    ('a', oils_i18n_gettext('a', 'Preschool', 'cam', 'value'),
-	oils_i18n_gettext('a', 'The item is intended for children, approximate ages 0-5 years.', 'cam', 'description'));
-INSERT INTO config.audience_map (code, value, description) VALUES 
-    ('b', oils_i18n_gettext('b', 'Primary', 'cam', 'value'),
-	oils_i18n_gettext('b', 'The item is intended for children, approximate ages 6-8 years.', 'cam', 'description'));
-INSERT INTO config.audience_map (code, value, description) VALUES 
-    ('c', oils_i18n_gettext('c', 'Pre-adolescent', 'cam', 'value'),
-	oils_i18n_gettext('c', 'The item is intended for young people, approximate ages 9-13 years.', 'cam', 'description'));
-INSERT INTO config.audience_map (code, value, description) VALUES 
-    ('d', oils_i18n_gettext('d', 'Adolescent', 'cam', 'value'),
-    oils_i18n_gettext('d', 'The item is intended for young people, approximate ages 14-17 years.', 'cam', 'description'));
-INSERT INTO config.audience_map (code, value, description) VALUES 
-    ('e', oils_i18n_gettext('e', 'Adult', 'cam', 'value'),
-	oils_i18n_gettext('e', 'The item is intended for adults.', 'cam', 'description'));
-INSERT INTO config.audience_map (code, value, description) VALUES 
-    ('f', oils_i18n_gettext('f', 'Specialized', 'cam', 'value'),
-	oils_i18n_gettext('f', 'The item is aimed at a particular audience and the nature of the presentation makes the item of little interest to another audience.', 'cam', 'description'));
-INSERT INTO config.audience_map (code, value, description) VALUES 
-    ('g', oils_i18n_gettext('g', 'General', 'cam', 'value'),
-	oils_i18n_gettext('g', 'The item is of general interest and not aimed at an audience of a particular intellectual level.', 'cam', 'description'));
-INSERT INTO config.audience_map (code, value, description) VALUES 
-    ('j', oils_i18n_gettext('j', 'Juvenile', 'cam', 'value'),
-	oils_i18n_gettext('j', 'The item is intended for children and young people, approximate ages 0-15 years.', 'cam', 'description'));
-
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('0', oils_i18n_gettext('0', 'Not fiction (not further specified)', 'clfm', 'value'),
-	oils_i18n_gettext('0', 'The item is not a work of fiction and no further identification of the literary form is desired', 'clfm', 'description'));
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('1', oils_i18n_gettext('1', 'Fiction (not further specified)', 'clfm', 'value'),
-	oils_i18n_gettext('1', 'The item is a work of fiction and no further identification of the literary form is desired', 'clfm', 'description'));
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('c', oils_i18n_gettext('c', 'Comic strips', 'clfm', 'value'), NULL);
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('d', oils_i18n_gettext('d', 'Dramas', 'clfm', 'value'), NULL);
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('e', oils_i18n_gettext('e', 'Essays', 'clfm', 'value'), NULL);
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('f', oils_i18n_gettext('f', 'Novels', 'clfm', 'value'), NULL);
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('h', oils_i18n_gettext('h', 'Humor, satires, etc.', 'clfm', 'value'),
-	oils_i18n_gettext('h', 'The item is a humorous work, satire or of similar literary form.', 'clfm', 'description'));
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('i', oils_i18n_gettext('i', 'Letters', 'clfm', 'value'),
-	oils_i18n_gettext('i', 'The item is a single letter or collection of correspondence.', 'clfm', 'description'));
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('j', oils_i18n_gettext('j', 'Short stories', 'clfm', 'value'),
-	oils_i18n_gettext('j', 'The item is a short story or collection of short stories.', 'clfm', 'description'));
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('m', oils_i18n_gettext('m', 'Mixed forms', 'clfm', 'value'),
-	oils_i18n_gettext('m', 'The item is a variety of literary forms (e.g., poetry and short stories).', 'clfm', 'description'));
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('p', oils_i18n_gettext('p', 'Poetry', 'clfm', 'value'),
-	oils_i18n_gettext('p', 'The item is a poem or collection of poems.', 'clfm', 'description'));
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('s', oils_i18n_gettext('s', 'Speeches', 'clfm', 'value'),
-	oils_i18n_gettext('s', 'The item is a speech or collection of speeches.', 'clfm', 'description'));
-INSERT INTO config.lit_form_map (code, value, description) VALUES 
-    ('u', oils_i18n_gettext('u', 'Unknown', 'clfm', 'value'),
-	oils_i18n_gettext('u', 'The literary form of the item is unknown.', 'clfm', 'description'));
-
 -- TO-DO: Auto-generate these values from CLDR
 -- XXX These are the values used in MARC records ... does that match CLDR, including deprecated languages?
-INSERT INTO config.language_map (code, value) VALUES ('aar', oils_i18n_gettext('aar', 'Afar', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('abk', oils_i18n_gettext('abk', 'Abkhaz', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ace', oils_i18n_gettext('ace', 'Achinese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ach', oils_i18n_gettext('ach', 'Acoli', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ada', oils_i18n_gettext('ada', 'Adangme', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ady', oils_i18n_gettext('ady', 'Adygei', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('afa', oils_i18n_gettext('afa', 'Afroasiatic (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('afh', oils_i18n_gettext('afh', 'Afrihili (Artificial language)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('afr', oils_i18n_gettext('afr', 'Afrikaans', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-ajm', oils_i18n_gettext('-ajm', 'Aljamía', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('aka', oils_i18n_gettext('aka', 'Akan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('akk', oils_i18n_gettext('akk', 'Akkadian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('alb', oils_i18n_gettext('alb', 'Albanian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ale', oils_i18n_gettext('ale', 'Aleut', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('alg', oils_i18n_gettext('alg', 'Algonquian (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('amh', oils_i18n_gettext('amh', 'Amharic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ang', oils_i18n_gettext('ang', 'English, Old (ca. 450-1100)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('apa', oils_i18n_gettext('apa', 'Apache languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ara', oils_i18n_gettext('ara', 'Arabic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('arc', oils_i18n_gettext('arc', 'Aramaic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('arg', oils_i18n_gettext('arg', 'Aragonese Spanish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('arm', oils_i18n_gettext('arm', 'Armenian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('arn', oils_i18n_gettext('arn', 'Mapuche', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('arp', oils_i18n_gettext('arp', 'Arapaho', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('art', oils_i18n_gettext('art', 'Artificial (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('arw', oils_i18n_gettext('arw', 'Arawak', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('asm', oils_i18n_gettext('asm', 'Assamese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ast', oils_i18n_gettext('ast', 'Bable', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ath', oils_i18n_gettext('ath', 'Athapascan (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('aus', oils_i18n_gettext('aus', 'Australian languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ava', oils_i18n_gettext('ava', 'Avaric', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ave', oils_i18n_gettext('ave', 'Avestan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('awa', oils_i18n_gettext('awa', 'Awadhi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('aym', oils_i18n_gettext('aym', 'Aymara', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('aze', oils_i18n_gettext('aze', 'Azerbaijani', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bad', oils_i18n_gettext('bad', 'Banda', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bai', oils_i18n_gettext('bai', 'Bamileke languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bak', oils_i18n_gettext('bak', 'Bashkir', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bal', oils_i18n_gettext('bal', 'Baluchi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bam', oils_i18n_gettext('bam', 'Bambara', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ban', oils_i18n_gettext('ban', 'Balinese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('baq', oils_i18n_gettext('baq', 'Basque', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bas', oils_i18n_gettext('bas', 'Basa', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bat', oils_i18n_gettext('bat', 'Baltic (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bej', oils_i18n_gettext('bej', 'Beja', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bel', oils_i18n_gettext('bel', 'Belarusian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bem', oils_i18n_gettext('bem', 'Bemba', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ben', oils_i18n_gettext('ben', 'Bengali', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ber', oils_i18n_gettext('ber', 'Berber (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bho', oils_i18n_gettext('bho', 'Bhojpuri', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bih', oils_i18n_gettext('bih', 'Bihari', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bik', oils_i18n_gettext('bik', 'Bikol', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bin', oils_i18n_gettext('bin', 'Edo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bis', oils_i18n_gettext('bis', 'Bislama', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bla', oils_i18n_gettext('bla', 'Siksika', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bnt', oils_i18n_gettext('bnt', 'Bantu (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bos', oils_i18n_gettext('bos', 'Bosnian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bra', oils_i18n_gettext('bra', 'Braj', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bre', oils_i18n_gettext('bre', 'Breton', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('btk', oils_i18n_gettext('btk', 'Batak', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bua', oils_i18n_gettext('bua', 'Buriat', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bug', oils_i18n_gettext('bug', 'Bugis', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bul', oils_i18n_gettext('bul', 'Bulgarian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('bur', oils_i18n_gettext('bur', 'Burmese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cad', oils_i18n_gettext('cad', 'Caddo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cai', oils_i18n_gettext('cai', 'Central American Indian (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-cam', oils_i18n_gettext('-cam', 'Khmer', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('car', oils_i18n_gettext('car', 'Carib', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cat', oils_i18n_gettext('cat', 'Catalan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cau', oils_i18n_gettext('cau', 'Caucasian (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ceb', oils_i18n_gettext('ceb', 'Cebuano', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cel', oils_i18n_gettext('cel', 'Celtic (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cha', oils_i18n_gettext('cha', 'Chamorro', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('chb', oils_i18n_gettext('chb', 'Chibcha', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('che', oils_i18n_gettext('che', 'Chechen', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('chg', oils_i18n_gettext('chg', 'Chagatai', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('chi', oils_i18n_gettext('chi', 'Chinese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('chk', oils_i18n_gettext('chk', 'Truk', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('chm', oils_i18n_gettext('chm', 'Mari', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('chn', oils_i18n_gettext('chn', 'Chinook jargon', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cho', oils_i18n_gettext('cho', 'Choctaw', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('chp', oils_i18n_gettext('chp', 'Chipewyan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('chr', oils_i18n_gettext('chr', 'Cherokee', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('chu', oils_i18n_gettext('chu', 'Church Slavic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('chv', oils_i18n_gettext('chv', 'Chuvash', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('chy', oils_i18n_gettext('chy', 'Cheyenne', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cmc', oils_i18n_gettext('cmc', 'Chamic languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cop', oils_i18n_gettext('cop', 'Coptic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cor', oils_i18n_gettext('cor', 'Cornish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cos', oils_i18n_gettext('cos', 'Corsican', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cpe', oils_i18n_gettext('cpe', 'Creoles and Pidgins, English-based (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cpf', oils_i18n_gettext('cpf', 'Creoles and Pidgins, French-based (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cpp', oils_i18n_gettext('cpp', 'Creoles and Pidgins, Portuguese-based (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cre', oils_i18n_gettext('cre', 'Cree', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('crh', oils_i18n_gettext('crh', 'Crimean Tatar', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('crp', oils_i18n_gettext('crp', 'Creoles and Pidgins (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cus', oils_i18n_gettext('cus', 'Cushitic (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('cze', oils_i18n_gettext('cze', 'Czech', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('dak', oils_i18n_gettext('dak', 'Dakota', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('dan', oils_i18n_gettext('dan', 'Danish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('dar', oils_i18n_gettext('dar', 'Dargwa', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('day', oils_i18n_gettext('day', 'Dayak', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('del', oils_i18n_gettext('del', 'Delaware', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('den', oils_i18n_gettext('den', 'Slave', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('dgr', oils_i18n_gettext('dgr', 'Dogrib', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('din', oils_i18n_gettext('din', 'Dinka', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('div', oils_i18n_gettext('div', 'Divehi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('doi', oils_i18n_gettext('doi', 'Dogri', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('dra', oils_i18n_gettext('dra', 'Dravidian (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('dua', oils_i18n_gettext('dua', 'Duala', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('dum', oils_i18n_gettext('dum', 'Dutch, Middle (ca. 1050-1350)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('dut', oils_i18n_gettext('dut', 'Dutch', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('dyu', oils_i18n_gettext('dyu', 'Dyula', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('dzo', oils_i18n_gettext('dzo', 'Dzongkha', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('efi', oils_i18n_gettext('efi', 'Efik', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('egy', oils_i18n_gettext('egy', 'Egyptian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('eka', oils_i18n_gettext('eka', 'Ekajuk', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('elx', oils_i18n_gettext('elx', 'Elamite', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('eng', oils_i18n_gettext('eng', 'English', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('enm', oils_i18n_gettext('enm', 'English, Middle (1100-1500)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('epo', oils_i18n_gettext('epo', 'Esperanto', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-esk', oils_i18n_gettext('-esk', 'Eskimo languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-esp', oils_i18n_gettext('-esp', 'Esperanto', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('est', oils_i18n_gettext('est', 'Estonian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-eth', oils_i18n_gettext('-eth', 'Ethiopic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ewe', oils_i18n_gettext('ewe', 'Ewe', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ewo', oils_i18n_gettext('ewo', 'Ewondo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('fan', oils_i18n_gettext('fan', 'Fang', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('fao', oils_i18n_gettext('fao', 'Faroese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-far', oils_i18n_gettext('-far', 'Faroese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('fat', oils_i18n_gettext('fat', 'Fanti', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('fij', oils_i18n_gettext('fij', 'Fijian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('fin', oils_i18n_gettext('fin', 'Finnish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('fiu', oils_i18n_gettext('fiu', 'Finno-Ugrian (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('fon', oils_i18n_gettext('fon', 'Fon', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('fre', oils_i18n_gettext('fre', 'French', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-fri', oils_i18n_gettext('-fri', 'Frisian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('frm', oils_i18n_gettext('frm', 'French, Middle (ca. 1400-1600)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('fro', oils_i18n_gettext('fro', 'French, Old (ca. 842-1400)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('fry', oils_i18n_gettext('fry', 'Frisian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ful', oils_i18n_gettext('ful', 'Fula', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('fur', oils_i18n_gettext('fur', 'Friulian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gaa', oils_i18n_gettext('gaa', 'Gã', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-gae', oils_i18n_gettext('-gae', 'Scottish Gaelic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-gag', oils_i18n_gettext('-gag', 'Galician', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-gal', oils_i18n_gettext('-gal', 'Oromo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gay', oils_i18n_gettext('gay', 'Gayo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gba', oils_i18n_gettext('gba', 'Gbaya', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gem', oils_i18n_gettext('gem', 'Germanic (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('geo', oils_i18n_gettext('geo', 'Georgian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ger', oils_i18n_gettext('ger', 'German', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gez', oils_i18n_gettext('gez', 'Ethiopic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gil', oils_i18n_gettext('gil', 'Gilbertese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gla', oils_i18n_gettext('gla', 'Scottish Gaelic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gle', oils_i18n_gettext('gle', 'Irish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('glg', oils_i18n_gettext('glg', 'Galician', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('glv', oils_i18n_gettext('glv', 'Manx', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gmh', oils_i18n_gettext('gmh', 'German, Middle High (ca. 1050-1500)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('goh', oils_i18n_gettext('goh', 'German, Old High (ca. 750-1050)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gon', oils_i18n_gettext('gon', 'Gondi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gor', oils_i18n_gettext('gor', 'Gorontalo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('got', oils_i18n_gettext('got', 'Gothic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('grb', oils_i18n_gettext('grb', 'Grebo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('grc', oils_i18n_gettext('grc', 'Greek, Ancient (to 1453)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gre', oils_i18n_gettext('gre', 'Greek, Modern (1453- )', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('grn', oils_i18n_gettext('grn', 'Guarani', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-gua', oils_i18n_gettext('-gua', 'Guarani', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('guj', oils_i18n_gettext('guj', 'Gujarati', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('gwi', oils_i18n_gettext('gwi', 'Gwich', 'clm', 'value''in'));
-INSERT INTO config.language_map (code, value) VALUES ('hai', oils_i18n_gettext('hai', 'Haida', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('hat', oils_i18n_gettext('hat', 'Haitian French Creole', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('hau', oils_i18n_gettext('hau', 'Hausa', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('haw', oils_i18n_gettext('haw', 'Hawaiian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('heb', oils_i18n_gettext('heb', 'Hebrew', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('her', oils_i18n_gettext('her', 'Herero', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('hil', oils_i18n_gettext('hil', 'Hiligaynon', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('him', oils_i18n_gettext('him', 'Himachali', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('hin', oils_i18n_gettext('hin', 'Hindi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('hit', oils_i18n_gettext('hit', 'Hittite', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('hmn', oils_i18n_gettext('hmn', 'Hmong', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('hmo', oils_i18n_gettext('hmo', 'Hiri Motu', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('hun', oils_i18n_gettext('hun', 'Hungarian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('hup', oils_i18n_gettext('hup', 'Hupa', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('iba', oils_i18n_gettext('iba', 'Iban', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ibo', oils_i18n_gettext('ibo', 'Igbo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ice', oils_i18n_gettext('ice', 'Icelandic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ido', oils_i18n_gettext('ido', 'Ido', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('iii', oils_i18n_gettext('iii', 'Sichuan Yi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ijo', oils_i18n_gettext('ijo', 'Ijo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('iku', oils_i18n_gettext('iku', 'Inuktitut', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ile', oils_i18n_gettext('ile', 'Interlingue', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ilo', oils_i18n_gettext('ilo', 'Iloko', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ina', oils_i18n_gettext('ina', 'Interlingua (International Auxiliary Language Association)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('inc', oils_i18n_gettext('inc', 'Indic (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ind', oils_i18n_gettext('ind', 'Indonesian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ine', oils_i18n_gettext('ine', 'Indo-European (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('inh', oils_i18n_gettext('inh', 'Ingush', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-int', oils_i18n_gettext('-int', 'Interlingua (International Auxiliary Language Association)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ipk', oils_i18n_gettext('ipk', 'Inupiaq', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ira', oils_i18n_gettext('ira', 'Iranian (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-iri', oils_i18n_gettext('-iri', 'Irish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('iro', oils_i18n_gettext('iro', 'Iroquoian (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ita', oils_i18n_gettext('ita', 'Italian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('jav', oils_i18n_gettext('jav', 'Javanese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('jpn', oils_i18n_gettext('jpn', 'Japanese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('jpr', oils_i18n_gettext('jpr', 'Judeo-Persian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('jrb', oils_i18n_gettext('jrb', 'Judeo-Arabic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kaa', oils_i18n_gettext('kaa', 'Kara-Kalpak', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kab', oils_i18n_gettext('kab', 'Kabyle', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kac', oils_i18n_gettext('kac', 'Kachin', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kal', oils_i18n_gettext('kal', 'Kalâtdlisut', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kam', oils_i18n_gettext('kam', 'Kamba', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kan', oils_i18n_gettext('kan', 'Kannada', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kar', oils_i18n_gettext('kar', 'Karen', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kas', oils_i18n_gettext('kas', 'Kashmiri', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kau', oils_i18n_gettext('kau', 'Kanuri', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kaw', oils_i18n_gettext('kaw', 'Kawi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kaz', oils_i18n_gettext('kaz', 'Kazakh', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kbd', oils_i18n_gettext('kbd', 'Kabardian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kha', oils_i18n_gettext('kha', 'Khasi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('khi', oils_i18n_gettext('khi', 'Khoisan (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('khm', oils_i18n_gettext('khm', 'Khmer', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kho', oils_i18n_gettext('kho', 'Khotanese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kik', oils_i18n_gettext('kik', 'Kikuyu', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kin', oils_i18n_gettext('kin', 'Kinyarwanda', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kir', oils_i18n_gettext('kir', 'Kyrgyz', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kmb', oils_i18n_gettext('kmb', 'Kimbundu', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kok', oils_i18n_gettext('kok', 'Konkani', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kom', oils_i18n_gettext('kom', 'Komi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kon', oils_i18n_gettext('kon', 'Kongo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kor', oils_i18n_gettext('kor', 'Korean', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kos', oils_i18n_gettext('kos', 'Kusaie', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kpe', oils_i18n_gettext('kpe', 'Kpelle', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kro', oils_i18n_gettext('kro', 'Kru', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kru', oils_i18n_gettext('kru', 'Kurukh', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kua', oils_i18n_gettext('kua', 'Kuanyama', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kum', oils_i18n_gettext('kum', 'Kumyk', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kur', oils_i18n_gettext('kur', 'Kurdish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-kus', oils_i18n_gettext('-kus', 'Kusaie', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('kut', oils_i18n_gettext('kut', 'Kutenai', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lad', oils_i18n_gettext('lad', 'Ladino', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lah', oils_i18n_gettext('lah', 'Lahnda', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lam', oils_i18n_gettext('lam', 'Lamba', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-lan', oils_i18n_gettext('-lan', 'Occitan (post-1500)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lao', oils_i18n_gettext('lao', 'Lao', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-lap', oils_i18n_gettext('-lap', 'Sami', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lat', oils_i18n_gettext('lat', 'Latin', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lav', oils_i18n_gettext('lav', 'Latvian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lez', oils_i18n_gettext('lez', 'Lezgian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lim', oils_i18n_gettext('lim', 'Limburgish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lin', oils_i18n_gettext('lin', 'Lingala', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lit', oils_i18n_gettext('lit', 'Lithuanian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lol', oils_i18n_gettext('lol', 'Mongo-Nkundu', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('loz', oils_i18n_gettext('loz', 'Lozi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ltz', oils_i18n_gettext('ltz', 'Letzeburgesch', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lua', oils_i18n_gettext('lua', 'Luba-Lulua', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lub', oils_i18n_gettext('lub', 'Luba-Katanga', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lug', oils_i18n_gettext('lug', 'Ganda', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lui', oils_i18n_gettext('lui', 'Luiseño', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lun', oils_i18n_gettext('lun', 'Lunda', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('luo', oils_i18n_gettext('luo', 'Luo (Kenya and Tanzania)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('lus', oils_i18n_gettext('lus', 'Lushai', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mac', oils_i18n_gettext('mac', 'Macedonian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mad', oils_i18n_gettext('mad', 'Madurese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mag', oils_i18n_gettext('mag', 'Magahi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mah', oils_i18n_gettext('mah', 'Marshallese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mai', oils_i18n_gettext('mai', 'Maithili', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mak', oils_i18n_gettext('mak', 'Makasar', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mal', oils_i18n_gettext('mal', 'Malayalam', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('man', oils_i18n_gettext('man', 'Mandingo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mao', oils_i18n_gettext('mao', 'Maori', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('map', oils_i18n_gettext('map', 'Austronesian (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mar', oils_i18n_gettext('mar', 'Marathi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mas', oils_i18n_gettext('mas', 'Masai', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-max', oils_i18n_gettext('-max', 'Manx', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('may', oils_i18n_gettext('may', 'Malay', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mdr', oils_i18n_gettext('mdr', 'Mandar', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('men', oils_i18n_gettext('men', 'Mende', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mga', oils_i18n_gettext('mga', 'Irish, Middle (ca. 1100-1550)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mic', oils_i18n_gettext('mic', 'Micmac', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('min', oils_i18n_gettext('min', 'Minangkabau', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mis', oils_i18n_gettext('mis', 'Miscellaneous languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mkh', oils_i18n_gettext('mkh', 'Mon-Khmer (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-mla', oils_i18n_gettext('-mla', 'Malagasy', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mlg', oils_i18n_gettext('mlg', 'Malagasy', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mlt', oils_i18n_gettext('mlt', 'Maltese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mnc', oils_i18n_gettext('mnc', 'Manchu', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mni', oils_i18n_gettext('mni', 'Manipuri', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mno', oils_i18n_gettext('mno', 'Manobo languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('moh', oils_i18n_gettext('moh', 'Mohawk', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mol', oils_i18n_gettext('mol', 'Moldavian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mon', oils_i18n_gettext('mon', 'Mongolian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mos', oils_i18n_gettext('mos', 'Mooré', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mul', oils_i18n_gettext('mul', 'Multiple languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mun', oils_i18n_gettext('mun', 'Munda (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mus', oils_i18n_gettext('mus', 'Creek', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('mwr', oils_i18n_gettext('mwr', 'Marwari', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('myn', oils_i18n_gettext('myn', 'Mayan languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nah', oils_i18n_gettext('nah', 'Nahuatl', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nai', oils_i18n_gettext('nai', 'North American Indian (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nap', oils_i18n_gettext('nap', 'Neapolitan Italian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nau', oils_i18n_gettext('nau', 'Nauru', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nav', oils_i18n_gettext('nav', 'Navajo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nbl', oils_i18n_gettext('nbl', 'Ndebele (South Africa)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nde', oils_i18n_gettext('nde', 'Ndebele (Zimbabwe)  ', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ndo', oils_i18n_gettext('ndo', 'Ndonga', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nds', oils_i18n_gettext('nds', 'Low German', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nep', oils_i18n_gettext('nep', 'Nepali', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('new', oils_i18n_gettext('new', 'Newari', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nia', oils_i18n_gettext('nia', 'Nias', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nic', oils_i18n_gettext('nic', 'Niger-Kordofanian (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('niu', oils_i18n_gettext('niu', 'Niuean', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nno', oils_i18n_gettext('nno', 'Norwegian (Nynorsk)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nob', oils_i18n_gettext('nob', 'Norwegian (Bokmål)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nog', oils_i18n_gettext('nog', 'Nogai', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('non', oils_i18n_gettext('non', 'Old Norse', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nor', oils_i18n_gettext('nor', 'Norwegian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nso', oils_i18n_gettext('nso', 'Northern Sotho', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nub', oils_i18n_gettext('nub', 'Nubian languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nya', oils_i18n_gettext('nya', 'Nyanja', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nym', oils_i18n_gettext('nym', 'Nyamwezi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nyn', oils_i18n_gettext('nyn', 'Nyankole', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nyo', oils_i18n_gettext('nyo', 'Nyoro', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('nzi', oils_i18n_gettext('nzi', 'Nzima', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('oci', oils_i18n_gettext('oci', 'Occitan (post-1500)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('oji', oils_i18n_gettext('oji', 'Ojibwa', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ori', oils_i18n_gettext('ori', 'Oriya', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('orm', oils_i18n_gettext('orm', 'Oromo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('osa', oils_i18n_gettext('osa', 'Osage', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('oss', oils_i18n_gettext('oss', 'Ossetic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ota', oils_i18n_gettext('ota', 'Turkish, Ottoman', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('oto', oils_i18n_gettext('oto', 'Otomian languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('paa', oils_i18n_gettext('paa', 'Papuan (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('pag', oils_i18n_gettext('pag', 'Pangasinan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('pal', oils_i18n_gettext('pal', 'Pahlavi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('pam', oils_i18n_gettext('pam', 'Pampanga', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('pan', oils_i18n_gettext('pan', 'Panjabi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('pap', oils_i18n_gettext('pap', 'Papiamento', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('pau', oils_i18n_gettext('pau', 'Palauan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('peo', oils_i18n_gettext('peo', 'Old Persian (ca. 600-400 B.C.)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('per', oils_i18n_gettext('per', 'Persian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('phi', oils_i18n_gettext('phi', 'Philippine (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('phn', oils_i18n_gettext('phn', 'Phoenician', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('pli', oils_i18n_gettext('pli', 'Pali', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('pol', oils_i18n_gettext('pol', 'Polish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('pon', oils_i18n_gettext('pon', 'Ponape', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('por', oils_i18n_gettext('por', 'Portuguese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('pra', oils_i18n_gettext('pra', 'Prakrit languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('pro', oils_i18n_gettext('pro', 'Provençal (to 1500)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('pus', oils_i18n_gettext('pus', 'Pushto', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('que', oils_i18n_gettext('que', 'Quechua', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('raj', oils_i18n_gettext('raj', 'Rajasthani', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('rap', oils_i18n_gettext('rap', 'Rapanui', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('rar', oils_i18n_gettext('rar', 'Rarotongan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('roa', oils_i18n_gettext('roa', 'Romance (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('roh', oils_i18n_gettext('roh', 'Raeto-Romance', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('rom', oils_i18n_gettext('rom', 'Romani', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('rum', oils_i18n_gettext('rum', 'Romanian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('run', oils_i18n_gettext('run', 'Rundi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('rus', oils_i18n_gettext('rus', 'Russian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sad', oils_i18n_gettext('sad', 'Sandawe', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sag', oils_i18n_gettext('sag', 'Sango (Ubangi Creole)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sah', oils_i18n_gettext('sah', 'Yakut', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sai', oils_i18n_gettext('sai', 'South American Indian (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sal', oils_i18n_gettext('sal', 'Salishan languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sam', oils_i18n_gettext('sam', 'Samaritan Aramaic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('san', oils_i18n_gettext('san', 'Sanskrit', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-sao', oils_i18n_gettext('-sao', 'Samoan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sas', oils_i18n_gettext('sas', 'Sasak', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sat', oils_i18n_gettext('sat', 'Santali', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('scc', oils_i18n_gettext('scc', 'Serbian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sco', oils_i18n_gettext('sco', 'Scots', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('scr', oils_i18n_gettext('scr', 'Croatian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sel', oils_i18n_gettext('sel', 'Selkup', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sem', oils_i18n_gettext('sem', 'Semitic (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sga', oils_i18n_gettext('sga', 'Irish, Old (to 1100)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sgn', oils_i18n_gettext('sgn', 'Sign languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('shn', oils_i18n_gettext('shn', 'Shan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-sho', oils_i18n_gettext('-sho', 'Shona', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sid', oils_i18n_gettext('sid', 'Sidamo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sin', oils_i18n_gettext('sin', 'Sinhalese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sio', oils_i18n_gettext('sio', 'Siouan (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sit', oils_i18n_gettext('sit', 'Sino-Tibetan (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sla', oils_i18n_gettext('sla', 'Slavic (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('slo', oils_i18n_gettext('slo', 'Slovak', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('slv', oils_i18n_gettext('slv', 'Slovenian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sma', oils_i18n_gettext('sma', 'Southern Sami', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sme', oils_i18n_gettext('sme', 'Northern Sami', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('smi', oils_i18n_gettext('smi', 'Sami', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('smj', oils_i18n_gettext('smj', 'Lule Sami', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('smn', oils_i18n_gettext('smn', 'Inari Sami', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('smo', oils_i18n_gettext('smo', 'Samoan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sms', oils_i18n_gettext('sms', 'Skolt Sami', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sna', oils_i18n_gettext('sna', 'Shona', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('snd', oils_i18n_gettext('snd', 'Sindhi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-snh', oils_i18n_gettext('-snh', 'Sinhalese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('snk', oils_i18n_gettext('snk', 'Soninke', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sog', oils_i18n_gettext('sog', 'Sogdian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('som', oils_i18n_gettext('som', 'Somali', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('son', oils_i18n_gettext('son', 'Songhai', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sot', oils_i18n_gettext('sot', 'Sotho', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('spa', oils_i18n_gettext('spa', 'Spanish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('srd', oils_i18n_gettext('srd', 'Sardinian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('srr', oils_i18n_gettext('srr', 'Serer', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ssa', oils_i18n_gettext('ssa', 'Nilo-Saharan (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-sso', oils_i18n_gettext('-sso', 'Sotho', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ssw', oils_i18n_gettext('ssw', 'Swazi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('suk', oils_i18n_gettext('suk', 'Sukuma', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sun', oils_i18n_gettext('sun', 'Sundanese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sus', oils_i18n_gettext('sus', 'Susu', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('sux', oils_i18n_gettext('sux', 'Sumerian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('swa', oils_i18n_gettext('swa', 'Swahili', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('swe', oils_i18n_gettext('swe', 'Swedish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-swz', oils_i18n_gettext('-swz', 'Swazi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('syr', oils_i18n_gettext('syr', 'Syriac', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-tag', oils_i18n_gettext('-tag', 'Tagalog', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tah', oils_i18n_gettext('tah', 'Tahitian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tai', oils_i18n_gettext('tai', 'Tai (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-taj', oils_i18n_gettext('-taj', 'Tajik', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tam', oils_i18n_gettext('tam', 'Tamil', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-tar', oils_i18n_gettext('-tar', 'Tatar', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tat', oils_i18n_gettext('tat', 'Tatar', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tel', oils_i18n_gettext('tel', 'Telugu', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tem', oils_i18n_gettext('tem', 'Temne', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ter', oils_i18n_gettext('ter', 'Terena', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tet', oils_i18n_gettext('tet', 'Tetum', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tgk', oils_i18n_gettext('tgk', 'Tajik', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tgl', oils_i18n_gettext('tgl', 'Tagalog', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tha', oils_i18n_gettext('tha', 'Thai', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tib', oils_i18n_gettext('tib', 'Tibetan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tig', oils_i18n_gettext('tig', 'Tigré', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tir', oils_i18n_gettext('tir', 'Tigrinya', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tiv', oils_i18n_gettext('tiv', 'Tiv', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tkl', oils_i18n_gettext('tkl', 'Tokelauan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tli', oils_i18n_gettext('tli', 'Tlingit', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tmh', oils_i18n_gettext('tmh', 'Tamashek', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tog', oils_i18n_gettext('tog', 'Tonga (Nyasa)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ton', oils_i18n_gettext('ton', 'Tongan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tpi', oils_i18n_gettext('tpi', 'Tok Pisin', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-tru', oils_i18n_gettext('-tru', 'Truk', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tsi', oils_i18n_gettext('tsi', 'Tsimshian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tsn', oils_i18n_gettext('tsn', 'Tswana', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tso', oils_i18n_gettext('tso', 'Tsonga', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('-tsw', oils_i18n_gettext('-tsw', 'Tswana', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tuk', oils_i18n_gettext('tuk', 'Turkmen', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tum', oils_i18n_gettext('tum', 'Tumbuka', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tup', oils_i18n_gettext('tup', 'Tupi languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tur', oils_i18n_gettext('tur', 'Turkish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tut', oils_i18n_gettext('tut', 'Altaic (Other)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tvl', oils_i18n_gettext('tvl', 'Tuvaluan', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('twi', oils_i18n_gettext('twi', 'Twi', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('tyv', oils_i18n_gettext('tyv', 'Tuvinian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('udm', oils_i18n_gettext('udm', 'Udmurt', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('uga', oils_i18n_gettext('uga', 'Ugaritic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('uig', oils_i18n_gettext('uig', 'Uighur', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ukr', oils_i18n_gettext('ukr', 'Ukrainian', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('umb', oils_i18n_gettext('umb', 'Umbundu', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('und', oils_i18n_gettext('und', 'Undetermined', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('urd', oils_i18n_gettext('urd', 'Urdu', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('uzb', oils_i18n_gettext('uzb', 'Uzbek', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('vai', oils_i18n_gettext('vai', 'Vai', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ven', oils_i18n_gettext('ven', 'Venda', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('vie', oils_i18n_gettext('vie', 'Vietnamese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('vol', oils_i18n_gettext('vol', 'Volapük', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('vot', oils_i18n_gettext('vot', 'Votic', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('wak', oils_i18n_gettext('wak', 'Wakashan languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('wal', oils_i18n_gettext('wal', 'Walamo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('war', oils_i18n_gettext('war', 'Waray', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('was', oils_i18n_gettext('was', 'Washo', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('wel', oils_i18n_gettext('wel', 'Welsh', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('wen', oils_i18n_gettext('wen', 'Sorbian languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('wln', oils_i18n_gettext('wln', 'Walloon', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('wol', oils_i18n_gettext('wol', 'Wolof', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('xal', oils_i18n_gettext('xal', 'Kalmyk', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('xho', oils_i18n_gettext('xho', 'Xhosa', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('yao', oils_i18n_gettext('yao', 'Yao (Africa)', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('yap', oils_i18n_gettext('yap', 'Yapese', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('yid', oils_i18n_gettext('yid', 'Yiddish', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('yor', oils_i18n_gettext('yor', 'Yoruba', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('ypk', oils_i18n_gettext('ypk', 'Yupik languages', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('zap', oils_i18n_gettext('zap', 'Zapotec', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('zen', oils_i18n_gettext('zen', 'Zenaga', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('zha', oils_i18n_gettext('zha', 'Zhuang', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('znd', oils_i18n_gettext('znd', 'Zande', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('zul', oils_i18n_gettext('zul', 'Zulu', 'clm', 'value'));
-INSERT INTO config.language_map (code, value) VALUES ('zun', oils_i18n_gettext('zun', 'Zuni', 'clm', 'value'));
+INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES
+    (1, 'item_lang', 'aar', oils_i18n_gettext('aar', 'Afar', 'ccvm', 'value')),
+    (2, 'item_lang', 'abk', oils_i18n_gettext('abk', 'Abkhaz', 'ccvm', 'value')),
+    (3, 'item_lang', 'ace', oils_i18n_gettext('ace', 'Achinese', 'ccvm', 'value')),
+    (4, 'item_lang', 'ach', oils_i18n_gettext('ach', 'Acoli', 'ccvm', 'value')),
+    (5, 'item_lang', 'ada', oils_i18n_gettext('ada', 'Adangme', 'ccvm', 'value')),
+    (6, 'item_lang', 'ady', oils_i18n_gettext('ady', 'Adygei', 'ccvm', 'value')),
+    (7, 'item_lang', 'afa', oils_i18n_gettext('afa', 'Afroasiatic (Other)', 'ccvm', 'value')),
+    (8, 'item_lang', 'afh', oils_i18n_gettext('afh', 'Afrihili (Artificial language)', 'ccvm', 'value')),
+    (9, 'item_lang', 'afr', oils_i18n_gettext('afr', 'Afrikaans', 'ccvm', 'value')),
+    (10, 'item_lang', '-ajm', oils_i18n_gettext('-ajm', 'Aljamía', 'ccvm', 'value')),
+    (11, 'item_lang', 'aka', oils_i18n_gettext('aka', 'Akan', 'ccvm', 'value')),
+    (12, 'item_lang', 'akk', oils_i18n_gettext('akk', 'Akkadian', 'ccvm', 'value')),
+    (13, 'item_lang', 'alb', oils_i18n_gettext('alb', 'Albanian', 'ccvm', 'value')),
+    (14, 'item_lang', 'ale', oils_i18n_gettext('ale', 'Aleut', 'ccvm', 'value')),
+    (15, 'item_lang', 'alg', oils_i18n_gettext('alg', 'Algonquian (Other)', 'ccvm', 'value')),
+    (16, 'item_lang', 'amh', oils_i18n_gettext('amh', 'Amharic', 'ccvm', 'value')),
+    (17, 'item_lang', 'ang', oils_i18n_gettext('ang', 'English, Old (ca. 450-1100)', 'ccvm', 'value')),
+    (18, 'item_lang', 'apa', oils_i18n_gettext('apa', 'Apache languages', 'ccvm', 'value')),
+    (19, 'item_lang', 'ara', oils_i18n_gettext('ara', 'Arabic', 'ccvm', 'value')),
+    (20, 'item_lang', 'arc', oils_i18n_gettext('arc', 'Aramaic', 'ccvm', 'value')),
+    (21, 'item_lang', 'arg', oils_i18n_gettext('arg', 'Aragonese Spanish', 'ccvm', 'value')),
+    (22, 'item_lang', 'arm', oils_i18n_gettext('arm', 'Armenian', 'ccvm', 'value')),
+    (23, 'item_lang', 'arn', oils_i18n_gettext('arn', 'Mapuche', 'ccvm', 'value')),
+    (24, 'item_lang', 'arp', oils_i18n_gettext('arp', 'Arapaho', 'ccvm', 'value')),
+    (25, 'item_lang', 'art', oils_i18n_gettext('art', 'Artificial (Other)', 'ccvm', 'value')),
+    (26, 'item_lang', 'arw', oils_i18n_gettext('arw', 'Arawak', 'ccvm', 'value')),
+    (27, 'item_lang', 'asm', oils_i18n_gettext('asm', 'Assamese', 'ccvm', 'value')),
+    (28, 'item_lang', 'ast', oils_i18n_gettext('ast', 'Bable', 'ccvm', 'value')),
+    (29, 'item_lang', 'ath', oils_i18n_gettext('ath', 'Athapascan (Other)', 'ccvm', 'value')),
+    (30, 'item_lang', 'aus', oils_i18n_gettext('aus', 'Australian languages', 'ccvm', 'value')),
+    (31, 'item_lang', 'ava', oils_i18n_gettext('ava', 'Avaric', 'ccvm', 'value')),
+    (32, 'item_lang', 'ave', oils_i18n_gettext('ave', 'Avestan', 'ccvm', 'value')),
+    (33, 'item_lang', 'awa', oils_i18n_gettext('awa', 'Awadhi', 'ccvm', 'value')),
+    (34, 'item_lang', 'aym', oils_i18n_gettext('aym', 'Aymara', 'ccvm', 'value')),
+    (35, 'item_lang', 'aze', oils_i18n_gettext('aze', 'Azerbaijani', 'ccvm', 'value')),
+    (36, 'item_lang', 'bad', oils_i18n_gettext('bad', 'Banda', 'ccvm', 'value')),
+    (37, 'item_lang', 'bai', oils_i18n_gettext('bai', 'Bamileke languages', 'ccvm', 'value')),
+    (38, 'item_lang', 'bak', oils_i18n_gettext('bak', 'Bashkir', 'ccvm', 'value')),
+    (39, 'item_lang', 'bal', oils_i18n_gettext('bal', 'Baluchi', 'ccvm', 'value')),
+    (40, 'item_lang', 'bam', oils_i18n_gettext('40', 'Bambara', 'ccvm', 'value')),
+    (41, 'item_lang', 'ban', oils_i18n_gettext('41', 'Balinese', 'ccvm', 'value')),
+    (42, 'item_lang', 'baq', oils_i18n_gettext('42', 'Basque', 'ccvm', 'value')),
+    (43, 'item_lang', 'bas', oils_i18n_gettext('43', 'Basa', 'ccvm', 'value')),
+    (44, 'item_lang', 'bat', oils_i18n_gettext('44', 'Baltic (Other)', 'ccvm', 'value')),
+    (45, 'item_lang', 'bej', oils_i18n_gettext('45', 'Beja', 'ccvm', 'value')),
+    (46, 'item_lang', 'bel', oils_i18n_gettext('46', 'Belarusian', 'ccvm', 'value')),
+    (47, 'item_lang', 'bem', oils_i18n_gettext('47', 'Bemba', 'ccvm', 'value')),
+    (48, 'item_lang', 'ben', oils_i18n_gettext('48', 'Bengali', 'ccvm', 'value')),
+    (49, 'item_lang', 'ber', oils_i18n_gettext('49', 'Berber (Other)', 'ccvm', 'value')),
+    (50, 'item_lang', 'bho', oils_i18n_gettext('50', 'Bhojpuri', 'ccvm', 'value')),
+    (51, 'item_lang', 'bih', oils_i18n_gettext('51', 'Bihari', 'ccvm', 'value')),
+    (52, 'item_lang', 'bik', oils_i18n_gettext('52', 'Bikol', 'ccvm', 'value')),
+    (53, 'item_lang', 'bin', oils_i18n_gettext('53', 'Edo', 'ccvm', 'value')),
+    (54, 'item_lang', 'bis', oils_i18n_gettext('54', 'Bislama', 'ccvm', 'value')),
+    (55, 'item_lang', 'bla', oils_i18n_gettext('55', 'Siksika', 'ccvm', 'value')),
+    (56, 'item_lang', 'bnt', oils_i18n_gettext('56', 'Bantu (Other)', 'ccvm', 'value')),
+    (57, 'item_lang', 'bos', oils_i18n_gettext('57', 'Bosnian', 'ccvm', 'value')),
+    (58, 'item_lang', 'bra', oils_i18n_gettext('58', 'Braj', 'ccvm', 'value')),
+    (59, 'item_lang', 'bre', oils_i18n_gettext('59', 'Breton', 'ccvm', 'value')),
+    (60, 'item_lang', 'btk', oils_i18n_gettext('60', 'Batak', 'ccvm', 'value')),
+    (61, 'item_lang', 'bua', oils_i18n_gettext('61', 'Buriat', 'ccvm', 'value')),
+    (62, 'item_lang', 'bug', oils_i18n_gettext('62', 'Bugis', 'ccvm', 'value')),
+    (63, 'item_lang', 'bul', oils_i18n_gettext('63', 'Bulgarian', 'ccvm', 'value')),
+    (64, 'item_lang', 'bur', oils_i18n_gettext('64', 'Burmese', 'ccvm', 'value')),
+    (65, 'item_lang', 'cad', oils_i18n_gettext('65', 'Caddo', 'ccvm', 'value')),
+    (66, 'item_lang', 'cai', oils_i18n_gettext('66', 'Central American Indian (Other)', 'ccvm', 'value')),
+    (67, 'item_lang', '-cam', oils_i18n_gettext('67', 'Khmer', 'ccvm', 'value')),
+    (68, 'item_lang', 'car', oils_i18n_gettext('68', 'Carib', 'ccvm', 'value')),
+    (69, 'item_lang', 'cat', oils_i18n_gettext('69', 'Catalan', 'ccvm', 'value')),
+    (70, 'item_lang', 'cau', oils_i18n_gettext('70', 'Caucasian (Other)', 'ccvm', 'value')),
+    (71, 'item_lang', 'ceb', oils_i18n_gettext('71', 'Cebuano', 'ccvm', 'value')),
+    (72, 'item_lang', 'cel', oils_i18n_gettext('72', 'Celtic (Other)', 'ccvm', 'value')),
+    (73, 'item_lang', 'cha', oils_i18n_gettext('73', 'Chamorro', 'ccvm', 'value')),
+    (74, 'item_lang', 'chb', oils_i18n_gettext('74', 'Chibcha', 'ccvm', 'value')),
+    (75, 'item_lang', 'che', oils_i18n_gettext('75', 'Chechen', 'ccvm', 'value')),
+    (76, 'item_lang', 'chg', oils_i18n_gettext('76', 'Chagatai', 'ccvm', 'value')),
+    (77, 'item_lang', 'chi', oils_i18n_gettext('77', 'Chinese', 'ccvm', 'value')),
+    (78, 'item_lang', 'chk', oils_i18n_gettext('78', 'Truk', 'ccvm', 'value')),
+    (79, 'item_lang', 'chm', oils_i18n_gettext('79', 'Mari', 'ccvm', 'value')),
+    (80, 'item_lang', 'chn', oils_i18n_gettext('80', 'Chinook jargon', 'ccvm', 'value')),
+    (81, 'item_lang', 'cho', oils_i18n_gettext('81', 'Choctaw', 'ccvm', 'value')),
+    (82, 'item_lang', 'chp', oils_i18n_gettext('82', 'Chipewyan', 'ccvm', 'value')),
+    (83, 'item_lang', 'chr', oils_i18n_gettext('83', 'Cherokee', 'ccvm', 'value')),
+    (84, 'item_lang', 'chu', oils_i18n_gettext('84', 'Church Slavic', 'ccvm', 'value')),
+    (85, 'item_lang', 'chv', oils_i18n_gettext('85', 'Chuvash', 'ccvm', 'value')),
+    (86, 'item_lang', 'chy', oils_i18n_gettext('86', 'Cheyenne', 'ccvm', 'value')),
+    (87, 'item_lang', 'cmc', oils_i18n_gettext('87', 'Chamic languages', 'ccvm', 'value')),
+    (88, 'item_lang', 'cop', oils_i18n_gettext('88', 'Coptic', 'ccvm', 'value')),
+    (89, 'item_lang', 'cor', oils_i18n_gettext('89', 'Cornish', 'ccvm', 'value')),
+    (90, 'item_lang', 'cos', oils_i18n_gettext('90', 'Corsican', 'ccvm', 'value')),
+    (91, 'item_lang', 'cpe', oils_i18n_gettext('91', 'Creoles and Pidgins, English-based (Other)', 'ccvm', 'value')),
+    (92, 'item_lang', 'cpf', oils_i18n_gettext('92', 'Creoles and Pidgins, French-based (Other)', 'ccvm', 'value')),
+    (93, 'item_lang', 'cpp', oils_i18n_gettext('93', 'Creoles and Pidgins, Portuguese-based (Other)', 'ccvm', 'value')),
+    (94, 'item_lang', 'cre', oils_i18n_gettext('94', 'Cree', 'ccvm', 'value')),
+    (95, 'item_lang', 'crh', oils_i18n_gettext('95', 'Crimean Tatar', 'ccvm', 'value')),
+    (96, 'item_lang', 'crp', oils_i18n_gettext('96', 'Creoles and Pidgins (Other)', 'ccvm', 'value')),
+    (97, 'item_lang', 'cus', oils_i18n_gettext('97', 'Cushitic (Other)', 'ccvm', 'value')),
+    (98, 'item_lang', 'cze', oils_i18n_gettext('98', 'Czech', 'ccvm', 'value')),
+    (99, 'item_lang', 'dak', oils_i18n_gettext('99', 'Dakota', 'ccvm', 'value')),
+    (100, 'item_lang', 'dan', oils_i18n_gettext('100', 'Danish', 'ccvm', 'value')),
+    (101, 'item_lang', 'dar', oils_i18n_gettext('101', 'Dargwa', 'ccvm', 'value')),
+    (102, 'item_lang', 'day', oils_i18n_gettext('102', 'Dayak', 'ccvm', 'value')),
+    (103, 'item_lang', 'del', oils_i18n_gettext('103', 'Delaware', 'ccvm', 'value')),
+    (104, 'item_lang', 'den', oils_i18n_gettext('104', 'Slave', 'ccvm', 'value')),
+    (105, 'item_lang', 'dgr', oils_i18n_gettext('105', 'Dogrib', 'ccvm', 'value')),
+    (106, 'item_lang', 'din', oils_i18n_gettext('106', 'Dinka', 'ccvm', 'value')),
+    (107, 'item_lang', 'div', oils_i18n_gettext('107', 'Divehi', 'ccvm', 'value')),
+    (108, 'item_lang', 'doi', oils_i18n_gettext('108', 'Dogri', 'ccvm', 'value')),
+    (109, 'item_lang', 'dra', oils_i18n_gettext('109', 'Dravidian (Other)', 'ccvm', 'value')),
+    (110, 'item_lang', 'dua', oils_i18n_gettext('110', 'Duala', 'ccvm', 'value')),
+    (111, 'item_lang', 'dum', oils_i18n_gettext('111', 'Dutch, Middle (ca. 1050-1350)', 'ccvm', 'value')),
+    (112, 'item_lang', 'dut', oils_i18n_gettext('112', 'Dutch', 'ccvm', 'value')),
+    (113, 'item_lang', 'dyu', oils_i18n_gettext('113', 'Dyula', 'ccvm', 'value')),
+    (114, 'item_lang', 'dzo', oils_i18n_gettext('114', 'Dzongkha', 'ccvm', 'value')),
+    (115, 'item_lang', 'efi', oils_i18n_gettext('115', 'Efik', 'ccvm', 'value')),
+    (116, 'item_lang', 'egy', oils_i18n_gettext('116', 'Egyptian', 'ccvm', 'value')),
+    (117, 'item_lang', 'eka', oils_i18n_gettext('117', 'Ekajuk', 'ccvm', 'value')),
+    (118, 'item_lang', 'elx', oils_i18n_gettext('118', 'Elamite', 'ccvm', 'value')),
+    (119, 'item_lang', 'eng', oils_i18n_gettext('119', 'English', 'ccvm', 'value')),
+    (120, 'item_lang', 'enm', oils_i18n_gettext('120', 'English, Middle (1100-1500)', 'ccvm', 'value')),
+    (121, 'item_lang', 'epo', oils_i18n_gettext('121', 'Esperanto', 'ccvm', 'value')),
+    (122, 'item_lang', '-esk', oils_i18n_gettext('122', 'Eskimo languages', 'ccvm', 'value')),
+    (123, 'item_lang', '-esp', oils_i18n_gettext('123', 'Esperanto', 'ccvm', 'value')),
+    (124, 'item_lang', 'est', oils_i18n_gettext('124', 'Estonian', 'ccvm', 'value')),
+    (125, 'item_lang', '-eth', oils_i18n_gettext('125', 'Ethiopic', 'ccvm', 'value')),
+    (126, 'item_lang', 'ewe', oils_i18n_gettext('126', 'Ewe', 'ccvm', 'value')),
+    (127, 'item_lang', 'ewo', oils_i18n_gettext('127', 'Ewondo', 'ccvm', 'value')),
+    (128, 'item_lang', 'fan', oils_i18n_gettext('128', 'Fang', 'ccvm', 'value')),
+    (129, 'item_lang', 'fao', oils_i18n_gettext('129', 'Faroese', 'ccvm', 'value')),
+    (130, 'item_lang', '-far', oils_i18n_gettext('130', 'Faroese', 'ccvm', 'value')),
+    (131, 'item_lang', 'fat', oils_i18n_gettext('131', 'Fanti', 'ccvm', 'value')),
+    (132, 'item_lang', 'fij', oils_i18n_gettext('132', 'Fijian', 'ccvm', 'value')),
+    (133, 'item_lang', 'fin', oils_i18n_gettext('133', 'Finnish', 'ccvm', 'value')),
+    (134, 'item_lang', 'fiu', oils_i18n_gettext('134', 'Finno-Ugrian (Other)', 'ccvm', 'value')),
+    (135, 'item_lang', 'fon', oils_i18n_gettext('135', 'Fon', 'ccvm', 'value')),
+    (136, 'item_lang', 'fre', oils_i18n_gettext('136', 'French', 'ccvm', 'value')),
+    (137, 'item_lang', '-fri', oils_i18n_gettext('137', 'Frisian', 'ccvm', 'value')),
+    (138, 'item_lang', 'frm', oils_i18n_gettext('138', 'French, Middle (ca. 1400-1600)', 'ccvm', 'value')),
+    (139, 'item_lang', 'fro', oils_i18n_gettext('139', 'French, Old (ca. 842-1400)', 'ccvm', 'value')),
+    (140, 'item_lang', 'fry', oils_i18n_gettext('140', 'Frisian', 'ccvm', 'value')),
+    (141, 'item_lang', 'ful', oils_i18n_gettext('141', 'Fula', 'ccvm', 'value')),
+    (142, 'item_lang', 'fur', oils_i18n_gettext('142', 'Friulian', 'ccvm', 'value')),
+    (143, 'item_lang', 'gaa', oils_i18n_gettext('143', 'Gã', 'ccvm', 'value')),
+    (144, 'item_lang', '-gae', oils_i18n_gettext('144', 'Scottish Gaelic', 'ccvm', 'value')),
+    (145, 'item_lang', '-gag', oils_i18n_gettext('145', 'Galician', 'ccvm', 'value')),
+    (146, 'item_lang', '-gal', oils_i18n_gettext('146', 'Oromo', 'ccvm', 'value')),
+    (147, 'item_lang', 'gay', oils_i18n_gettext('147', 'Gayo', 'ccvm', 'value')),
+    (148, 'item_lang', 'gba', oils_i18n_gettext('148', 'Gbaya', 'ccvm', 'value')),
+    (149, 'item_lang', 'gem', oils_i18n_gettext('149', 'Germanic (Other)', 'ccvm', 'value')),
+    (150, 'item_lang', 'geo', oils_i18n_gettext('150', 'Georgian', 'ccvm', 'value')),
+    (151, 'item_lang', 'ger', oils_i18n_gettext('151', 'German', 'ccvm', 'value')),
+    (152, 'item_lang', 'gez', oils_i18n_gettext('152', 'Ethiopic', 'ccvm', 'value')),
+    (153, 'item_lang', 'gil', oils_i18n_gettext('153', 'Gilbertese', 'ccvm', 'value')),
+    (154, 'item_lang', 'gla', oils_i18n_gettext('154', 'Scottish Gaelic', 'ccvm', 'value')),
+    (155, 'item_lang', 'gle', oils_i18n_gettext('155', 'Irish', 'ccvm', 'value')),
+    (156, 'item_lang', 'glg', oils_i18n_gettext('156', 'Galician', 'ccvm', 'value')),
+    (157, 'item_lang', 'glv', oils_i18n_gettext('157', 'Manx', 'ccvm', 'value')),
+    (158, 'item_lang', 'gmh', oils_i18n_gettext('158', 'German, Middle High (ca. 1050-1500)', 'ccvm', 'value')),
+    (159, 'item_lang', 'goh', oils_i18n_gettext('159', 'German, Old High (ca. 750-1050)', 'ccvm', 'value')),
+    (160, 'item_lang', 'gon', oils_i18n_gettext('160', 'Gondi', 'ccvm', 'value')),
+    (161, 'item_lang', 'gor', oils_i18n_gettext('161', 'Gorontalo', 'ccvm', 'value')),
+    (162, 'item_lang', 'got', oils_i18n_gettext('162', 'Gothic', 'ccvm', 'value')),
+    (163, 'item_lang', 'grb', oils_i18n_gettext('163', 'Grebo', 'ccvm', 'value')),
+    (164, 'item_lang', 'grc', oils_i18n_gettext('164', 'Greek, Ancient (to 1453)', 'ccvm', 'value')),
+    (165, 'item_lang', 'gre', oils_i18n_gettext('165', 'Greek, Modern (1453- )', 'ccvm', 'value')),
+    (166, 'item_lang', 'grn', oils_i18n_gettext('166', 'Guarani', 'ccvm', 'value')),
+    (167, 'item_lang', '-gua', oils_i18n_gettext('167', 'Guarani', 'ccvm', 'value')),
+    (168, 'item_lang', 'guj', oils_i18n_gettext('168', 'Gujarati', 'ccvm', 'value')),
+    (169, 'item_lang', 'gwi', oils_i18n_gettext('169', 'Gwich', 'ccvm', 'value''in')),
+    (170, 'item_lang', 'hai', oils_i18n_gettext('170', 'Haida', 'ccvm', 'value')),
+    (171, 'item_lang', 'hat', oils_i18n_gettext('171', 'Haitian French Creole', 'ccvm', 'value')),
+    (172, 'item_lang', 'hau', oils_i18n_gettext('172', 'Hausa', 'ccvm', 'value')),
+    (173, 'item_lang', 'haw', oils_i18n_gettext('173', 'Hawaiian', 'ccvm', 'value')),
+    (174, 'item_lang', 'heb', oils_i18n_gettext('174', 'Hebrew', 'ccvm', 'value')),
+    (175, 'item_lang', 'her', oils_i18n_gettext('175', 'Herero', 'ccvm', 'value')),
+    (176, 'item_lang', 'hil', oils_i18n_gettext('176', 'Hiligaynon', 'ccvm', 'value')),
+    (177, 'item_lang', 'him', oils_i18n_gettext('177', 'Himachali', 'ccvm', 'value')),
+    (178, 'item_lang', 'hin', oils_i18n_gettext('178', 'Hindi', 'ccvm', 'value')),
+    (179, 'item_lang', 'hit', oils_i18n_gettext('179', 'Hittite', 'ccvm', 'value')),
+    (180, 'item_lang', 'hmn', oils_i18n_gettext('180', 'Hmong', 'ccvm', 'value')),
+    (181, 'item_lang', 'hmo', oils_i18n_gettext('181', 'Hiri Motu', 'ccvm', 'value')),
+    (182, 'item_lang', 'hun', oils_i18n_gettext('182', 'Hungarian', 'ccvm', 'value')),
+    (183, 'item_lang', 'hup', oils_i18n_gettext('183', 'Hupa', 'ccvm', 'value')),
+    (184, 'item_lang', 'iba', oils_i18n_gettext('184', 'Iban', 'ccvm', 'value')),
+    (185, 'item_lang', 'ibo', oils_i18n_gettext('185', 'Igbo', 'ccvm', 'value')),
+    (186, 'item_lang', 'ice', oils_i18n_gettext('186', 'Icelandic', 'ccvm', 'value')),
+    (187, 'item_lang', 'ido', oils_i18n_gettext('187', 'Ido', 'ccvm', 'value')),
+    (188, 'item_lang', 'iii', oils_i18n_gettext('188', 'Sichuan Yi', 'ccvm', 'value')),
+    (189, 'item_lang', 'ijo', oils_i18n_gettext('189', 'Ijo', 'ccvm', 'value')),
+    (190, 'item_lang', 'iku', oils_i18n_gettext('190', 'Inuktitut', 'ccvm', 'value')),
+    (191, 'item_lang', 'ile', oils_i18n_gettext('191', 'Interlingue', 'ccvm', 'value')),
+    (192, 'item_lang', 'ilo', oils_i18n_gettext('192', 'Iloko', 'ccvm', 'value')),
+    (193, 'item_lang', 'ina', oils_i18n_gettext('193', 'Interlingua (International Auxiliary Language Association)', 'ccvm', 'value')),
+    (194, 'item_lang', 'inc', oils_i18n_gettext('194', 'Indic (Other)', 'ccvm', 'value')),
+    (195, 'item_lang', 'ind', oils_i18n_gettext('195', 'Indonesian', 'ccvm', 'value')),
+    (196, 'item_lang', 'ine', oils_i18n_gettext('196', 'Indo-European (Other)', 'ccvm', 'value')),
+    (197, 'item_lang', 'inh', oils_i18n_gettext('197', 'Ingush', 'ccvm', 'value')),
+    (198, 'item_lang', '-int', oils_i18n_gettext('198', 'Interlingua (International Auxiliary Language Association)', 'ccvm', 'value')),
+    (199, 'item_lang', 'ipk', oils_i18n_gettext('199', 'Inupiaq', 'ccvm', 'value')),
+    (200, 'item_lang', 'ira', oils_i18n_gettext('200', 'Iranian (Other)', 'ccvm', 'value')),
+    (201, 'item_lang', '-iri', oils_i18n_gettext('201', 'Irish', 'ccvm', 'value')),
+    (202, 'item_lang', 'iro', oils_i18n_gettext('202', 'Iroquoian (Other)', 'ccvm', 'value')),
+    (203, 'item_lang', 'ita', oils_i18n_gettext('203', 'Italian', 'ccvm', 'value')),
+    (204, 'item_lang', 'jav', oils_i18n_gettext('204', 'Javanese', 'ccvm', 'value')),
+    (205, 'item_lang', 'jpn', oils_i18n_gettext('205', 'Japanese', 'ccvm', 'value')),
+    (206, 'item_lang', 'jpr', oils_i18n_gettext('206', 'Judeo-Persian', 'ccvm', 'value')),
+    (207, 'item_lang', 'jrb', oils_i18n_gettext('207', 'Judeo-Arabic', 'ccvm', 'value')),
+    (208, 'item_lang', 'kaa', oils_i18n_gettext('208', 'Kara-Kalpak', 'ccvm', 'value')),
+    (209, 'item_lang', 'kab', oils_i18n_gettext('209', 'Kabyle', 'ccvm', 'value')),
+    (210, 'item_lang', 'kac', oils_i18n_gettext('210', 'Kachin', 'ccvm', 'value')),
+    (211, 'item_lang', 'kal', oils_i18n_gettext('211', 'Kalâtdlisut', 'ccvm', 'value')),
+    (212, 'item_lang', 'kam', oils_i18n_gettext('212', 'Kamba', 'ccvm', 'value')),
+    (213, 'item_lang', 'kan', oils_i18n_gettext('213', 'Kannada', 'ccvm', 'value')),
+    (214, 'item_lang', 'kar', oils_i18n_gettext('214', 'Karen', 'ccvm', 'value')),
+    (215, 'item_lang', 'kas', oils_i18n_gettext('215', 'Kashmiri', 'ccvm', 'value')),
+    (216, 'item_lang', 'kau', oils_i18n_gettext('216', 'Kanuri', 'ccvm', 'value')),
+    (217, 'item_lang', 'kaw', oils_i18n_gettext('217', 'Kawi', 'ccvm', 'value')),
+    (218, 'item_lang', 'kaz', oils_i18n_gettext('218', 'Kazakh', 'ccvm', 'value')),
+    (219, 'item_lang', 'kbd', oils_i18n_gettext('219', 'Kabardian', 'ccvm', 'value')),
+    (220, 'item_lang', 'kha', oils_i18n_gettext('220', 'Khasi', 'ccvm', 'value')),
+    (221, 'item_lang', 'khi', oils_i18n_gettext('221', 'Khoisan (Other)', 'ccvm', 'value')),
+    (222, 'item_lang', 'khm', oils_i18n_gettext('222', 'Khmer', 'ccvm', 'value')),
+    (223, 'item_lang', 'kho', oils_i18n_gettext('223', 'Khotanese', 'ccvm', 'value')),
+    (224, 'item_lang', 'kik', oils_i18n_gettext('224', 'Kikuyu', 'ccvm', 'value')),
+    (225, 'item_lang', 'kin', oils_i18n_gettext('225', 'Kinyarwanda', 'ccvm', 'value')),
+    (226, 'item_lang', 'kir', oils_i18n_gettext('226', 'Kyrgyz', 'ccvm', 'value')),
+    (227, 'item_lang', 'kmb', oils_i18n_gettext('227', 'Kimbundu', 'ccvm', 'value')),
+    (228, 'item_lang', 'kok', oils_i18n_gettext('228', 'Konkani', 'ccvm', 'value')),
+    (229, 'item_lang', 'kom', oils_i18n_gettext('229', 'Komi', 'ccvm', 'value')),
+    (230, 'item_lang', 'kon', oils_i18n_gettext('230', 'Kongo', 'ccvm', 'value')),
+    (231, 'item_lang', 'kor', oils_i18n_gettext('231', 'Korean', 'ccvm', 'value')),
+    (232, 'item_lang', 'kos', oils_i18n_gettext('232', 'Kusaie', 'ccvm', 'value')),
+    (233, 'item_lang', 'kpe', oils_i18n_gettext('233', 'Kpelle', 'ccvm', 'value')),
+    (234, 'item_lang', 'kro', oils_i18n_gettext('234', 'Kru', 'ccvm', 'value')),
+    (235, 'item_lang', 'kru', oils_i18n_gettext('235', 'Kurukh', 'ccvm', 'value')),
+    (236, 'item_lang', 'kua', oils_i18n_gettext('236', 'Kuanyama', 'ccvm', 'value')),
+    (237, 'item_lang', 'kum', oils_i18n_gettext('237', 'Kumyk', 'ccvm', 'value')),
+    (238, 'item_lang', 'kur', oils_i18n_gettext('238', 'Kurdish', 'ccvm', 'value')),
+    (239, 'item_lang', '-kus', oils_i18n_gettext('239', 'Kusaie', 'ccvm', 'value')),
+    (240, 'item_lang', 'kut', oils_i18n_gettext('240', 'Kutenai', 'ccvm', 'value')),
+    (241, 'item_lang', 'lad', oils_i18n_gettext('241', 'Ladino', 'ccvm', 'value')),
+    (242, 'item_lang', 'lah', oils_i18n_gettext('242', 'Lahnda', 'ccvm', 'value')),
+    (243, 'item_lang', 'lam', oils_i18n_gettext('243', 'Lamba', 'ccvm', 'value')),
+    (244, 'item_lang', '-lan', oils_i18n_gettext('244', 'Occitan (post-1500)', 'ccvm', 'value')),
+    (245, 'item_lang', 'lao', oils_i18n_gettext('245', 'Lao', 'ccvm', 'value')),
+    (246, 'item_lang', '-lap', oils_i18n_gettext('246', 'Sami', 'ccvm', 'value')),
+    (247, 'item_lang', 'lat', oils_i18n_gettext('247', 'Latin', 'ccvm', 'value')),
+    (248, 'item_lang', 'lav', oils_i18n_gettext('248', 'Latvian', 'ccvm', 'value')),
+    (249, 'item_lang', 'lez', oils_i18n_gettext('249', 'Lezgian', 'ccvm', 'value')),
+    (250, 'item_lang', 'lim', oils_i18n_gettext('250', 'Limburgish', 'ccvm', 'value')),
+    (251, 'item_lang', 'lin', oils_i18n_gettext('251', 'Lingala', 'ccvm', 'value')),
+    (252, 'item_lang', 'lit', oils_i18n_gettext('252', 'Lithuanian', 'ccvm', 'value')),
+    (253, 'item_lang', 'lol', oils_i18n_gettext('253', 'Mongo-Nkundu', 'ccvm', 'value')),
+    (254, 'item_lang', 'loz', oils_i18n_gettext('254', 'Lozi', 'ccvm', 'value')),
+    (255, 'item_lang', 'ltz', oils_i18n_gettext('255', 'Letzeburgesch', 'ccvm', 'value')),
+    (256, 'item_lang', 'lua', oils_i18n_gettext('256', 'Luba-Lulua', 'ccvm', 'value')),
+    (257, 'item_lang', 'lub', oils_i18n_gettext('257', 'Luba-Katanga', 'ccvm', 'value')),
+    (258, 'item_lang', 'lug', oils_i18n_gettext('258', 'Ganda', 'ccvm', 'value')),
+    (259, 'item_lang', 'lui', oils_i18n_gettext('259', 'Luiseño', 'ccvm', 'value')),
+    (260, 'item_lang', 'lun', oils_i18n_gettext('260', 'Lunda', 'ccvm', 'value')),
+    (261, 'item_lang', 'luo', oils_i18n_gettext('261', 'Luo (Kenya and Tanzania)', 'ccvm', 'value')),
+    (262, 'item_lang', 'lus', oils_i18n_gettext('262', 'Lushai', 'ccvm', 'value')),
+    (263, 'item_lang', 'mac', oils_i18n_gettext('263', 'Macedonian', 'ccvm', 'value')),
+    (264, 'item_lang', 'mad', oils_i18n_gettext('264', 'Madurese', 'ccvm', 'value')),
+    (265, 'item_lang', 'mag', oils_i18n_gettext('265', 'Magahi', 'ccvm', 'value')),
+    (266, 'item_lang', 'mah', oils_i18n_gettext('266', 'Marshallese', 'ccvm', 'value')),
+    (267, 'item_lang', 'mai', oils_i18n_gettext('267', 'Maithili', 'ccvm', 'value')),
+    (268, 'item_lang', 'mak', oils_i18n_gettext('268', 'Makasar', 'ccvm', 'value')),
+    (269, 'item_lang', 'mal', oils_i18n_gettext('269', 'Malayalam', 'ccvm', 'value')),
+    (270, 'item_lang', 'man', oils_i18n_gettext('270', 'Mandingo', 'ccvm', 'value')),
+    (271, 'item_lang', 'mao', oils_i18n_gettext('271', 'Maori', 'ccvm', 'value')),
+    (272, 'item_lang', 'map', oils_i18n_gettext('272', 'Austronesian (Other)', 'ccvm', 'value')),
+    (273, 'item_lang', 'mar', oils_i18n_gettext('273', 'Marathi', 'ccvm', 'value')),
+    (274, 'item_lang', 'mas', oils_i18n_gettext('274', 'Masai', 'ccvm', 'value')),
+    (275, 'item_lang', '-max', oils_i18n_gettext('275', 'Manx', 'ccvm', 'value')),
+    (276, 'item_lang', 'may', oils_i18n_gettext('276', 'Malay', 'ccvm', 'value')),
+    (277, 'item_lang', 'mdr', oils_i18n_gettext('277', 'Mandar', 'ccvm', 'value')),
+    (278, 'item_lang', 'men', oils_i18n_gettext('278', 'Mende', 'ccvm', 'value')),
+    (279, 'item_lang', 'mga', oils_i18n_gettext('279', 'Irish, Middle (ca. 1100-1550)', 'ccvm', 'value')),
+    (280, 'item_lang', 'mic', oils_i18n_gettext('280', 'Micmac', 'ccvm', 'value')),
+    (281, 'item_lang', 'min', oils_i18n_gettext('281', 'Minangkabau', 'ccvm', 'value')),
+    (282, 'item_lang', 'mis', oils_i18n_gettext('282', 'Miscellaneous languages', 'ccvm', 'value')),
+    (283, 'item_lang', 'mkh', oils_i18n_gettext('283', 'Mon-Khmer (Other)', 'ccvm', 'value')),
+    (284, 'item_lang', '-mla', oils_i18n_gettext('284', 'Malagasy', 'ccvm', 'value')),
+    (285, 'item_lang', 'mlg', oils_i18n_gettext('285', 'Malagasy', 'ccvm', 'value')),
+    (286, 'item_lang', 'mlt', oils_i18n_gettext('286', 'Maltese', 'ccvm', 'value')),
+    (287, 'item_lang', 'mnc', oils_i18n_gettext('287', 'Manchu', 'ccvm', 'value')),
+    (288, 'item_lang', 'mni', oils_i18n_gettext('288', 'Manipuri', 'ccvm', 'value')),
+    (289, 'item_lang', 'mno', oils_i18n_gettext('289', 'Manobo languages', 'ccvm', 'value')),
+    (290, 'item_lang', 'moh', oils_i18n_gettext('290', 'Mohawk', 'ccvm', 'value')),
+    (291, 'item_lang', 'mol', oils_i18n_gettext('291', 'Moldavian', 'ccvm', 'value')),
+    (292, 'item_lang', 'mon', oils_i18n_gettext('292', 'Mongolian', 'ccvm', 'value')),
+    (293, 'item_lang', 'mos', oils_i18n_gettext('293', 'Mooré', 'ccvm', 'value')),
+    (294, 'item_lang', 'mul', oils_i18n_gettext('294', 'Multiple languages', 'ccvm', 'value')),
+    (295, 'item_lang', 'mun', oils_i18n_gettext('295', 'Munda (Other)', 'ccvm', 'value')),
+    (296, 'item_lang', 'mus', oils_i18n_gettext('296', 'Creek', 'ccvm', 'value')),
+    (297, 'item_lang', 'mwr', oils_i18n_gettext('297', 'Marwari', 'ccvm', 'value')),
+    (298, 'item_lang', 'myn', oils_i18n_gettext('298', 'Mayan languages', 'ccvm', 'value')),
+    (299, 'item_lang', 'nah', oils_i18n_gettext('299', 'Nahuatl', 'ccvm', 'value')),
+    (300, 'item_lang', 'nai', oils_i18n_gettext('300', 'North American Indian (Other)', 'ccvm', 'value')),
+    (301, 'item_lang', 'nap', oils_i18n_gettext('301', 'Neapolitan Italian', 'ccvm', 'value')),
+    (302, 'item_lang', 'nau', oils_i18n_gettext('302', 'Nauru', 'ccvm', 'value')),
+    (303, 'item_lang', 'nav', oils_i18n_gettext('303', 'Navajo', 'ccvm', 'value')),
+    (304, 'item_lang', 'nbl', oils_i18n_gettext('304', 'Ndebele (South Africa)', 'ccvm', 'value')),
+    (305, 'item_lang', 'nde', oils_i18n_gettext('305', 'Ndebele (Zimbabwe)  ', 'ccvm', 'value')),
+    (306, 'item_lang', 'ndo', oils_i18n_gettext('306', 'Ndonga', 'ccvm', 'value')),
+    (307, 'item_lang', 'nds', oils_i18n_gettext('307', 'Low German', 'ccvm', 'value')),
+    (308, 'item_lang', 'nep', oils_i18n_gettext('308', 'Nepali', 'ccvm', 'value')),
+    (309, 'item_lang', 'new', oils_i18n_gettext('309', 'Newari', 'ccvm', 'value')),
+    (310, 'item_lang', 'nia', oils_i18n_gettext('310', 'Nias', 'ccvm', 'value')),
+    (311, 'item_lang', 'nic', oils_i18n_gettext('311', 'Niger-Kordofanian (Other)', 'ccvm', 'value')),
+    (312, 'item_lang', 'niu', oils_i18n_gettext('312', 'Niuean', 'ccvm', 'value')),
+    (313, 'item_lang', 'nno', oils_i18n_gettext('313', 'Norwegian (Nynorsk)', 'ccvm', 'value')),
+    (314, 'item_lang', 'nob', oils_i18n_gettext('314', 'Norwegian (Bokmål)', 'ccvm', 'value')),
+    (315, 'item_lang', 'nog', oils_i18n_gettext('315', 'Nogai', 'ccvm', 'value')),
+    (316, 'item_lang', 'non', oils_i18n_gettext('316', 'Old Norse', 'ccvm', 'value')),
+    (317, 'item_lang', 'nor', oils_i18n_gettext('317', 'Norwegian', 'ccvm', 'value')),
+    (318, 'item_lang', 'nso', oils_i18n_gettext('318', 'Northern Sotho', 'ccvm', 'value')),
+    (319, 'item_lang', 'nub', oils_i18n_gettext('319', 'Nubian languages', 'ccvm', 'value')),
+    (320, 'item_lang', 'nya', oils_i18n_gettext('320', 'Nyanja', 'ccvm', 'value')),
+    (321, 'item_lang', 'nym', oils_i18n_gettext('321', 'Nyamwezi', 'ccvm', 'value')),
+    (322, 'item_lang', 'nyn', oils_i18n_gettext('322', 'Nyankole', 'ccvm', 'value')),
+    (323, 'item_lang', 'nyo', oils_i18n_gettext('323', 'Nyoro', 'ccvm', 'value')),
+    (324, 'item_lang', 'nzi', oils_i18n_gettext('324', 'Nzima', 'ccvm', 'value')),
+    (325, 'item_lang', 'oci', oils_i18n_gettext('325', 'Occitan (post-1500)', 'ccvm', 'value')),
+    (326, 'item_lang', 'oji', oils_i18n_gettext('326', 'Ojibwa', 'ccvm', 'value')),
+    (327, 'item_lang', 'ori', oils_i18n_gettext('327', 'Oriya', 'ccvm', 'value')),
+    (328, 'item_lang', 'orm', oils_i18n_gettext('328', 'Oromo', 'ccvm', 'value')),
+    (329, 'item_lang', 'osa', oils_i18n_gettext('329', 'Osage', 'ccvm', 'value')),
+    (330, 'item_lang', 'oss', oils_i18n_gettext('330', 'Ossetic', 'ccvm', 'value')),
+    (331, 'item_lang', 'ota', oils_i18n_gettext('331', 'Turkish, Ottoman', 'ccvm', 'value')),
+    (332, 'item_lang', 'oto', oils_i18n_gettext('332', 'Otomian languages', 'ccvm', 'value')),
+    (333, 'item_lang', 'paa', oils_i18n_gettext('333', 'Papuan (Other)', 'ccvm', 'value')),
+    (334, 'item_lang', 'pag', oils_i18n_gettext('334', 'Pangasinan', 'ccvm', 'value')),
+    (335, 'item_lang', 'pal', oils_i18n_gettext('335', 'Pahlavi', 'ccvm', 'value')),
+    (336, 'item_lang', 'pam', oils_i18n_gettext('336', 'Pampanga', 'ccvm', 'value')),
+    (337, 'item_lang', 'pan', oils_i18n_gettext('337', 'Panjabi', 'ccvm', 'value')),
+    (338, 'item_lang', 'pap', oils_i18n_gettext('338', 'Papiamento', 'ccvm', 'value')),
+    (339, 'item_lang', 'pau', oils_i18n_gettext('339', 'Palauan', 'ccvm', 'value')),
+    (340, 'item_lang', 'peo', oils_i18n_gettext('340', 'Old Persian (ca. 600-400 B.C.)', 'ccvm', 'value')),
+    (341, 'item_lang', 'per', oils_i18n_gettext('341', 'Persian', 'ccvm', 'value')),
+    (342, 'item_lang', 'phi', oils_i18n_gettext('342', 'Philippine (Other)', 'ccvm', 'value')),
+    (343, 'item_lang', 'phn', oils_i18n_gettext('343', 'Phoenician', 'ccvm', 'value')),
+    (344, 'item_lang', 'pli', oils_i18n_gettext('344', 'Pali', 'ccvm', 'value')),
+    (345, 'item_lang', 'pol', oils_i18n_gettext('345', 'Polish', 'ccvm', 'value')),
+    (346, 'item_lang', 'pon', oils_i18n_gettext('346', 'Ponape', 'ccvm', 'value')),
+    (347, 'item_lang', 'por', oils_i18n_gettext('347', 'Portuguese', 'ccvm', 'value')),
+    (348, 'item_lang', 'pra', oils_i18n_gettext('348', 'Prakrit languages', 'ccvm', 'value')),
+    (349, 'item_lang', 'pro', oils_i18n_gettext('349', 'Provençal (to 1500)', 'ccvm', 'value')),
+    (350, 'item_lang', 'pus', oils_i18n_gettext('350', 'Pushto', 'ccvm', 'value')),
+    (351, 'item_lang', 'que', oils_i18n_gettext('351', 'Quechua', 'ccvm', 'value')),
+    (352, 'item_lang', 'raj', oils_i18n_gettext('352', 'Rajasthani', 'ccvm', 'value')),
+    (353, 'item_lang', 'rap', oils_i18n_gettext('353', 'Rapanui', 'ccvm', 'value')),
+    (354, 'item_lang', 'rar', oils_i18n_gettext('354', 'Rarotongan', 'ccvm', 'value')),
+    (355, 'item_lang', 'roa', oils_i18n_gettext('355', 'Romance (Other)', 'ccvm', 'value')),
+    (356, 'item_lang', 'roh', oils_i18n_gettext('356', 'Raeto-Romance', 'ccvm', 'value')),
+    (357, 'item_lang', 'rom', oils_i18n_gettext('357', 'Romani', 'ccvm', 'value')),
+    (358, 'item_lang', 'rum', oils_i18n_gettext('358', 'Romanian', 'ccvm', 'value')),
+    (359, 'item_lang', 'run', oils_i18n_gettext('359', 'Rundi', 'ccvm', 'value')),
+    (360, 'item_lang', 'rus', oils_i18n_gettext('360', 'Russian', 'ccvm', 'value')),
+    (361, 'item_lang', 'sad', oils_i18n_gettext('361', 'Sandawe', 'ccvm', 'value')),
+    (362, 'item_lang', 'sag', oils_i18n_gettext('362', 'Sango (Ubangi Creole)', 'ccvm', 'value')),
+    (363, 'item_lang', 'sah', oils_i18n_gettext('363', 'Yakut', 'ccvm', 'value')),
+    (364, 'item_lang', 'sai', oils_i18n_gettext('364', 'South American Indian (Other)', 'ccvm', 'value')),
+    (365, 'item_lang', 'sal', oils_i18n_gettext('365', 'Salishan languages', 'ccvm', 'value')),
+    (366, 'item_lang', 'sam', oils_i18n_gettext('366', 'Samaritan Aramaic', 'ccvm', 'value')),
+    (367, 'item_lang', 'san', oils_i18n_gettext('367', 'Sanskrit', 'ccvm', 'value')),
+    (368, 'item_lang', '-sao', oils_i18n_gettext('368', 'Samoan', 'ccvm', 'value')),
+    (369, 'item_lang', 'sas', oils_i18n_gettext('369', 'Sasak', 'ccvm', 'value')),
+    (370, 'item_lang', 'sat', oils_i18n_gettext('370', 'Santali', 'ccvm', 'value')),
+    (371, 'item_lang', 'scc', oils_i18n_gettext('371', 'Serbian', 'ccvm', 'value')),
+    (372, 'item_lang', 'sco', oils_i18n_gettext('372', 'Scots', 'ccvm', 'value')),
+    (373, 'item_lang', 'scr', oils_i18n_gettext('373', 'Croatian', 'ccvm', 'value')),
+    (374, 'item_lang', 'sel', oils_i18n_gettext('374', 'Selkup', 'ccvm', 'value')),
+    (375, 'item_lang', 'sem', oils_i18n_gettext('375', 'Semitic (Other)', 'ccvm', 'value')),
+    (376, 'item_lang', 'sga', oils_i18n_gettext('376', 'Irish, Old (to 1100)', 'ccvm', 'value')),
+    (377, 'item_lang', 'sgn', oils_i18n_gettext('377', 'Sign languages', 'ccvm', 'value')),
+    (378, 'item_lang', 'shn', oils_i18n_gettext('378', 'Shan', 'ccvm', 'value')),
+    (379, 'item_lang', '-sho', oils_i18n_gettext('379', 'Shona', 'ccvm', 'value')),
+    (380, 'item_lang', 'sid', oils_i18n_gettext('380', 'Sidamo', 'ccvm', 'value')),
+    (381, 'item_lang', 'sin', oils_i18n_gettext('381', 'Sinhalese', 'ccvm', 'value')),
+    (382, 'item_lang', 'sio', oils_i18n_gettext('382', 'Siouan (Other)', 'ccvm', 'value')),
+    (383, 'item_lang', 'sit', oils_i18n_gettext('383', 'Sino-Tibetan (Other)', 'ccvm', 'value')),
+    (384, 'item_lang', 'sla', oils_i18n_gettext('384', 'Slavic (Other)', 'ccvm', 'value')),
+    (385, 'item_lang', 'slo', oils_i18n_gettext('385', 'Slovak', 'ccvm', 'value')),
+    (386, 'item_lang', 'slv', oils_i18n_gettext('386', 'Slovenian', 'ccvm', 'value')),
+    (387, 'item_lang', 'sma', oils_i18n_gettext('387', 'Southern Sami', 'ccvm', 'value')),
+    (388, 'item_lang', 'sme', oils_i18n_gettext('388', 'Northern Sami', 'ccvm', 'value')),
+    (389, 'item_lang', 'smi', oils_i18n_gettext('389', 'Sami', 'ccvm', 'value')),
+    (390, 'item_lang', 'smj', oils_i18n_gettext('390', 'Lule Sami', 'ccvm', 'value')),
+    (391, 'item_lang', 'smn', oils_i18n_gettext('391', 'Inari Sami', 'ccvm', 'value')),
+    (392, 'item_lang', 'smo', oils_i18n_gettext('392', 'Samoan', 'ccvm', 'value')),
+    (393, 'item_lang', 'sms', oils_i18n_gettext('393', 'Skolt Sami', 'ccvm', 'value')),
+    (394, 'item_lang', 'sna', oils_i18n_gettext('394', 'Shona', 'ccvm', 'value')),
+    (395, 'item_lang', 'snd', oils_i18n_gettext('395', 'Sindhi', 'ccvm', 'value')),
+    (396, 'item_lang', '-snh', oils_i18n_gettext('396', 'Sinhalese', 'ccvm', 'value')),
+    (397, 'item_lang', 'snk', oils_i18n_gettext('397', 'Soninke', 'ccvm', 'value')),
+    (398, 'item_lang', 'sog', oils_i18n_gettext('398', 'Sogdian', 'ccvm', 'value')),
+    (399, 'item_lang', 'som', oils_i18n_gettext('399', 'Somali', 'ccvm', 'value')),
+    (400, 'item_lang', 'son', oils_i18n_gettext('400', 'Songhai', 'ccvm', 'value')),
+    (401, 'item_lang', 'sot', oils_i18n_gettext('401', 'Sotho', 'ccvm', 'value')),
+    (402, 'item_lang', 'spa', oils_i18n_gettext('402', 'Spanish', 'ccvm', 'value')),
+    (403, 'item_lang', 'srd', oils_i18n_gettext('403', 'Sardinian', 'ccvm', 'value')),
+    (404, 'item_lang', 'srr', oils_i18n_gettext('404', 'Serer', 'ccvm', 'value')),
+    (405, 'item_lang', 'ssa', oils_i18n_gettext('405', 'Nilo-Saharan (Other)', 'ccvm', 'value')),
+    (406, 'item_lang', '-sso', oils_i18n_gettext('406', 'Sotho', 'ccvm', 'value')),
+    (407, 'item_lang', 'ssw', oils_i18n_gettext('407', 'Swazi', 'ccvm', 'value')),
+    (408, 'item_lang', 'suk', oils_i18n_gettext('408', 'Sukuma', 'ccvm', 'value')),
+    (409, 'item_lang', 'sun', oils_i18n_gettext('409', 'Sundanese', 'ccvm', 'value')),
+    (410, 'item_lang', 'sus', oils_i18n_gettext('410', 'Susu', 'ccvm', 'value')),
+    (411, 'item_lang', 'sux', oils_i18n_gettext('411', 'Sumerian', 'ccvm', 'value')),
+    (412, 'item_lang', 'swa', oils_i18n_gettext('412', 'Swahili', 'ccvm', 'value')),
+    (413, 'item_lang', 'swe', oils_i18n_gettext('413', 'Swedish', 'ccvm', 'value')),
+    (414, 'item_lang', '-swz', oils_i18n_gettext('414', 'Swazi', 'ccvm', 'value')),
+    (415, 'item_lang', 'syr', oils_i18n_gettext('415', 'Syriac', 'ccvm', 'value')),
+    (416, 'item_lang', '-tag', oils_i18n_gettext('416', 'Tagalog', 'ccvm', 'value')),
+    (417, 'item_lang', 'tah', oils_i18n_gettext('417', 'Tahitian', 'ccvm', 'value')),
+    (418, 'item_lang', 'tai', oils_i18n_gettext('418', 'Tai (Other)', 'ccvm', 'value')),
+    (419, 'item_lang', '-taj', oils_i18n_gettext('419', 'Tajik', 'ccvm', 'value')),
+    (420, 'item_lang', 'tam', oils_i18n_gettext('420', 'Tamil', 'ccvm', 'value')),
+    (421, 'item_lang', '-tar', oils_i18n_gettext('421', 'Tatar', 'ccvm', 'value')),
+    (422, 'item_lang', 'tat', oils_i18n_gettext('422', 'Tatar', 'ccvm', 'value')),
+    (423, 'item_lang', 'tel', oils_i18n_gettext('423', 'Telugu', 'ccvm', 'value')),
+    (424, 'item_lang', 'tem', oils_i18n_gettext('424', 'Temne', 'ccvm', 'value')),
+    (425, 'item_lang', 'ter', oils_i18n_gettext('425', 'Terena', 'ccvm', 'value')),
+    (426, 'item_lang', 'tet', oils_i18n_gettext('426', 'Tetum', 'ccvm', 'value')),
+    (427, 'item_lang', 'tgk', oils_i18n_gettext('427', 'Tajik', 'ccvm', 'value')),
+    (428, 'item_lang', 'tgl', oils_i18n_gettext('428', 'Tagalog', 'ccvm', 'value')),
+    (429, 'item_lang', 'tha', oils_i18n_gettext('429', 'Thai', 'ccvm', 'value')),
+    (430, 'item_lang', 'tib', oils_i18n_gettext('430', 'Tibetan', 'ccvm', 'value')),
+    (431, 'item_lang', 'tig', oils_i18n_gettext('431', 'Tigré', 'ccvm', 'value')),
+    (432, 'item_lang', 'tir', oils_i18n_gettext('432', 'Tigrinya', 'ccvm', 'value')),
+    (433, 'item_lang', 'tiv', oils_i18n_gettext('433', 'Tiv', 'ccvm', 'value')),
+    (434, 'item_lang', 'tkl', oils_i18n_gettext('434', 'Tokelauan', 'ccvm', 'value')),
+    (435, 'item_lang', 'tli', oils_i18n_gettext('435', 'Tlingit', 'ccvm', 'value')),
+    (436, 'item_lang', 'tmh', oils_i18n_gettext('436', 'Tamashek', 'ccvm', 'value')),
+    (437, 'item_lang', 'tog', oils_i18n_gettext('437', 'Tonga (Nyasa)', 'ccvm', 'value')),
+    (438, 'item_lang', 'ton', oils_i18n_gettext('438', 'Tongan', 'ccvm', 'value')),
+    (439, 'item_lang', 'tpi', oils_i18n_gettext('439', 'Tok Pisin', 'ccvm', 'value')),
+    (440, 'item_lang', '-tru', oils_i18n_gettext('440', 'Truk', 'ccvm', 'value')),
+    (441, 'item_lang', 'tsi', oils_i18n_gettext('441', 'Tsimshian', 'ccvm', 'value')),
+    (442, 'item_lang', 'tsn', oils_i18n_gettext('442', 'Tswana', 'ccvm', 'value')),
+    (443, 'item_lang', 'tso', oils_i18n_gettext('443', 'Tsonga', 'ccvm', 'value')),
+    (444, 'item_lang', '-tsw', oils_i18n_gettext('444', 'Tswana', 'ccvm', 'value')),
+    (445, 'item_lang', 'tuk', oils_i18n_gettext('445', 'Turkmen', 'ccvm', 'value')),
+    (446, 'item_lang', 'tum', oils_i18n_gettext('446', 'Tumbuka', 'ccvm', 'value')),
+    (447, 'item_lang', 'tup', oils_i18n_gettext('447', 'Tupi languages', 'ccvm', 'value')),
+    (448, 'item_lang', 'tur', oils_i18n_gettext('448', 'Turkish', 'ccvm', 'value')),
+    (449, 'item_lang', 'tut', oils_i18n_gettext('449', 'Altaic (Other)', 'ccvm', 'value')),
+    (450, 'item_lang', 'tvl', oils_i18n_gettext('450', 'Tuvaluan', 'ccvm', 'value')),
+    (451, 'item_lang', 'twi', oils_i18n_gettext('451', 'Twi', 'ccvm', 'value')),
+    (452, 'item_lang', 'tyv', oils_i18n_gettext('452', 'Tuvinian', 'ccvm', 'value')),
+    (453, 'item_lang', 'udm', oils_i18n_gettext('453', 'Udmurt', 'ccvm', 'value')),
+    (454, 'item_lang', 'uga', oils_i18n_gettext('454', 'Ugaritic', 'ccvm', 'value')),
+    (455, 'item_lang', 'uig', oils_i18n_gettext('455', 'Uighur', 'ccvm', 'value')),
+    (456, 'item_lang', 'ukr', oils_i18n_gettext('456', 'Ukrainian', 'ccvm', 'value')),
+    (457, 'item_lang', 'umb', oils_i18n_gettext('457', 'Umbundu', 'ccvm', 'value')),
+    (458, 'item_lang', 'und', oils_i18n_gettext('458', 'Undetermined', 'ccvm', 'value')),
+    (459, 'item_lang', 'urd', oils_i18n_gettext('459', 'Urdu', 'ccvm', 'value')),
+    (460, 'item_lang', 'uzb', oils_i18n_gettext('460', 'Uzbek', 'ccvm', 'value')),
+    (461, 'item_lang', 'vai', oils_i18n_gettext('461', 'Vai', 'ccvm', 'value')),
+    (462, 'item_lang', 'ven', oils_i18n_gettext('462', 'Venda', 'ccvm', 'value')),
+    (463, 'item_lang', 'vie', oils_i18n_gettext('463', 'Vietnamese', 'ccvm', 'value')),
+    (464, 'item_lang', 'vol', oils_i18n_gettext('464', 'Volapük', 'ccvm', 'value')),
+    (465, 'item_lang', 'vot', oils_i18n_gettext('465', 'Votic', 'ccvm', 'value')),
+    (466, 'item_lang', 'wak', oils_i18n_gettext('466', 'Wakashan languages', 'ccvm', 'value')),
+    (467, 'item_lang', 'wal', oils_i18n_gettext('467', 'Walamo', 'ccvm', 'value')),
+    (468, 'item_lang', 'war', oils_i18n_gettext('468', 'Waray', 'ccvm', 'value')),
+    (469, 'item_lang', 'was', oils_i18n_gettext('469', 'Washo', 'ccvm', 'value')),
+    (470, 'item_lang', 'wel', oils_i18n_gettext('470', 'Welsh', 'ccvm', 'value')),
+    (471, 'item_lang', 'wen', oils_i18n_gettext('471', 'Sorbian languages', 'ccvm', 'value')),
+    (472, 'item_lang', 'wln', oils_i18n_gettext('472', 'Walloon', 'ccvm', 'value')),
+    (473, 'item_lang', 'wol', oils_i18n_gettext('473', 'Wolof', 'ccvm', 'value')),
+    (474, 'item_lang', 'xal', oils_i18n_gettext('474', 'Kalmyk', 'ccvm', 'value')),
+    (475, 'item_lang', 'xho', oils_i18n_gettext('475', 'Xhosa', 'ccvm', 'value')),
+    (476, 'item_lang', 'yao', oils_i18n_gettext('476', 'Yao (Africa)', 'ccvm', 'value')),
+    (477, 'item_lang', 'yap', oils_i18n_gettext('477', 'Yapese', 'ccvm', 'value')),
+    (478, 'item_lang', 'yid', oils_i18n_gettext('478', 'Yiddish', 'ccvm', 'value')),
+    (479, 'item_lang', 'yor', oils_i18n_gettext('479', 'Yoruba', 'ccvm', 'value')),
+    (480, 'item_lang', 'ypk', oils_i18n_gettext('480', 'Yupik languages', 'ccvm', 'value')),
+    (481, 'item_lang', 'zap', oils_i18n_gettext('481', 'Zapotec', 'ccvm', 'value')),
+    (482, 'item_lang', 'zen', oils_i18n_gettext('482', 'Zenaga', 'ccvm', 'value')),
+    (483, 'item_lang', 'zha', oils_i18n_gettext('483', 'Zhuang', 'ccvm', 'value')),
+    (484, 'item_lang', 'znd', oils_i18n_gettext('484', 'Zande', 'ccvm', 'value')),
+    (485, 'item_lang', 'zul', oils_i18n_gettext('485', 'Zulu', 'ccvm', 'value')),
+    (486, 'item_lang', 'zun', oils_i18n_gettext('486', 'Zuni', 'ccvm', 'value'));
 
-INSERT INTO config.item_form_map (code, value) VALUES ('a', oils_i18n_gettext('a', 'Microfilm', 'cifm', 'value'));
-INSERT INTO config.item_form_map (code, value) VALUES ('b', oils_i18n_gettext('b', 'Microfiche', 'cifm', 'value'));
-INSERT INTO config.item_form_map (code, value) VALUES ('c', oils_i18n_gettext('c', 'Microopaque', 'cifm', 'value'));
-INSERT INTO config.item_form_map (code, value) VALUES ('d', oils_i18n_gettext('d', 'Large print', 'cifm', 'value'));
-INSERT INTO config.item_form_map (code, value) VALUES ('f', oils_i18n_gettext('f', 'Braille', 'cifm', 'value'));
-INSERT INTO config.item_form_map (code, value) VALUES ('r', oils_i18n_gettext('r', 'Regular print reproduction', 'cifm', 'value'));
-INSERT INTO config.item_form_map (code, value) VALUES ('s', oils_i18n_gettext('s', 'Electronic', 'cifm', 'value'));
+INSERT INTO config.coded_value_map (id, ctype, code, value, description) VALUES 
+    (487,'audience', ' ', oils_i18n_gettext('487', 'Unknown or unspecified', 'ccvm', 'value'),  oils_i18n_gettext('487', 'The target audience for the item not known or not specified.', 'ccvm', 'description')),
+    (488,'audience', 'a', oils_i18n_gettext('488', 'Preschool', 'ccvm', 'value'),               oils_i18n_gettext('488', 'The item is intended for children, approximate ages 0-5 years.', 'ccvm', 'description')),
+    (489,'audience', 'b', oils_i18n_gettext('489', 'Primary', 'ccvm', 'value'),                 oils_i18n_gettext('489', 'The item is intended for children, approximate ages 6-8 years.', 'ccvm', 'description')),
+    (490,'audience', 'c', oils_i18n_gettext('490', 'Pre-adolescent', 'ccvm', 'value'),          oils_i18n_gettext('490', 'The item is intended for young people, approximate ages 9-13 years.', 'ccvm', 'description')),
+    (491,'audience', 'd', oils_i18n_gettext('491', 'Adolescent', 'ccvm', 'value'),              oils_i18n_gettext('491', 'The item is intended for young people, approximate ages 14-17 years.', 'ccvm', 'description')),
+    (492,'audience', 'e', oils_i18n_gettext('492', 'Adult', 'ccvm', 'value'),                   oils_i18n_gettext('492', 'The item is intended for adults.', 'ccvm', 'description')),
+    (493,'audience', 'f', oils_i18n_gettext('493', 'Specialized', 'ccvm', 'value'),             oils_i18n_gettext('493', 'The item is aimed at a particular audience and the nature of the presentation makes the item of little interest to another audience.', 'ccvm', 'description')),
+    (494,'audience', 'g', oils_i18n_gettext('494', 'General', 'ccvm', 'value'),                 oils_i18n_gettext('494', 'The item is of general interest and not aimed at an audience of a particular intellectual level.', 'ccvm', 'description')),
+    (495,'audience', 'j', oils_i18n_gettext('495', 'Juvenile', 'ccvm', 'value'),                oils_i18n_gettext('495', 'The item is intended for children and young people, approximate ages 0-15 years.', 'ccvm', 'description'));
 
-INSERT INTO config.item_type_map (code, value) VALUES ('a', oils_i18n_gettext('a', 'Language material', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('t', oils_i18n_gettext('t', 'Manuscript language material', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('g', oils_i18n_gettext('g', 'Projected medium', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('k', oils_i18n_gettext('k', 'Two-dimensional nonprojectable graphic', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('r', oils_i18n_gettext('r', 'Three-dimensional artifact or naturally occurring object', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('o', oils_i18n_gettext('o', 'Kit', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('p', oils_i18n_gettext('p', 'Mixed materials', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('e', oils_i18n_gettext('e', 'Cartographic material', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('f', oils_i18n_gettext('f', 'Manuscript cartographic material', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('c', oils_i18n_gettext('c', 'Notated music', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('d', oils_i18n_gettext('d', 'Manuscript notated music', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('i', oils_i18n_gettext('i', 'Nonmusical sound recording', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('j', oils_i18n_gettext('j', 'Musical sound recording', 'citm', 'value'));
-INSERT INTO config.item_type_map (code, value) VALUES ('m', oils_i18n_gettext('m', 'Computer file', 'citm', 'value'));
+INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES
+    (496, 'item_type', 'a', oils_i18n_gettext('496', 'Language material', 'ccvm', 'value')),
+    (497, 'item_type', 't', oils_i18n_gettext('497', 'Manuscript language material', 'ccvm', 'value')),
+    (498, 'item_type', 'g', oils_i18n_gettext('498', 'Projected medium', 'ccvm', 'value')),
+    (499, 'item_type', 'k', oils_i18n_gettext('499', 'Two-dimensional nonprojectable graphic', 'ccvm', 'value')),
+    (500, 'item_type', 'r', oils_i18n_gettext('500', 'Three-dimensional artifact or naturally occurring object', 'ccvm', 'value')),
+    (501, 'item_type', 'o', oils_i18n_gettext('501', 'Kit', 'ccvm', 'value')),
+    (502, 'item_type', 'p', oils_i18n_gettext('502', 'Mixed materials', 'ccvm', 'value')),
+    (503, 'item_type', 'e', oils_i18n_gettext('503', 'Cartographic material', 'ccvm', 'value')),
+    (504, 'item_type', 'f', oils_i18n_gettext('504', 'Manuscript cartographic material', 'ccvm', 'value')),
+    (505, 'item_type', 'c', oils_i18n_gettext('505', 'Notated music', 'ccvm', 'value')),
+    (506, 'item_type', 'd', oils_i18n_gettext('506', 'Manuscript notated music', 'ccvm', 'value')),
+    (507, 'item_type', 'i', oils_i18n_gettext('507', 'Nonmusical sound recording', 'ccvm', 'value')),
+    (508, 'item_type', 'j', oils_i18n_gettext('508', 'Musical sound recording', 'ccvm', 'value')),
+    (509, 'item_type', 'm', oils_i18n_gettext('509', 'Computer file', 'ccvm', 'value'));
 
-INSERT INTO config.bib_level_map (code, value) VALUES ('a', oils_i18n_gettext('a', 'Monographic component part', 'cblvl', 'value'));
-INSERT INTO config.bib_level_map (code, value) VALUES ('b', oils_i18n_gettext('b', 'Serial component part', 'cblvl', 'value'));
-INSERT INTO config.bib_level_map (code, value) VALUES ('c', oils_i18n_gettext('c', 'Collection', 'cblvl', 'value'));
-INSERT INTO config.bib_level_map (code, value) VALUES ('d', oils_i18n_gettext('d', 'Subunit', 'cblvl', 'value'));
-INSERT INTO config.bib_level_map (code, value) VALUES ('i', oils_i18n_gettext('i', 'Integrating resource', 'cblvl', 'value'));
-INSERT INTO config.bib_level_map (code, value) VALUES ('m', oils_i18n_gettext('m', 'Monograph/Item', 'cblvl', 'value'));
-INSERT INTO config.bib_level_map (code, value) VALUES ('s', oils_i18n_gettext('s', 'Serial', 'cblvl', 'value'));
+INSERT INTO config.coded_value_map (id, ctype, code, value, description) VALUES 
+    (510, 'lit_form', '0', oils_i18n_gettext('510', 'Not fiction (not further specified)', 'ccvm', 'value'), oils_i18n_gettext('510', 'The item is not a work of fiction and no further identification of the literary form is desired', 'ccvm', 'description')),
+    (511, 'lit_form', '1', oils_i18n_gettext('511', 'Fiction (not further specified)', 'ccvm', 'value'),     oils_i18n_gettext('511', 'The item is a work of fiction and no further identification of the literary form is desired', 'ccvm', 'description')),
+    (512, 'lit_form', 'c', oils_i18n_gettext('512', 'Comic strips', 'ccvm', 'value'), NULL),
+    (513, 'lit_form', 'd', oils_i18n_gettext('513', 'Dramas', 'ccvm', 'value'), NULL),
+    (514, 'lit_form', 'e', oils_i18n_gettext('514', 'Essays', 'ccvm', 'value'), NULL),
+    (515, 'lit_form', 'f', oils_i18n_gettext('515', 'Novels', 'ccvm', 'value'), NULL),
+    (516, 'lit_form', 'h', oils_i18n_gettext('516', 'Humor, satires, etc.', 'ccvm', 'value'),                oils_i18n_gettext('516', 'The item is a humorous work, satire or of similar literary form.', 'ccvm', 'description')),
+    (517, 'lit_form', 'i', oils_i18n_gettext('517', 'Letters', 'ccvm', 'value'),                             oils_i18n_gettext('517', 'The item is a single letter or collection of correspondence.', 'ccvm', 'description')),
+    (518, 'lit_form', 'j', oils_i18n_gettext('518', 'Short stories', 'ccvm', 'value'),                       oils_i18n_gettext('518', 'The item is a short story or collection of short stories.', 'ccvm', 'description')),
+    (519, 'lit_form', 'm', oils_i18n_gettext('519', 'Mixed forms', 'ccvm', 'value'),                         oils_i18n_gettext('519', 'The item is a variety of literary forms (e.g., poetry and short stories).', 'ccvm', 'description')),
+    (520, 'lit_form', 'p', oils_i18n_gettext('520', 'Poetry', 'ccvm', 'value'),                              oils_i18n_gettext('520', 'The item is a poem or collection of poems.', 'ccvm', 'description')),
+    (521, 'lit_form', 's', oils_i18n_gettext('521', 'Speeches', 'ccvm', 'value'),                            oils_i18n_gettext('521', 'The item is a speech or collection of speeches.', 'ccvm', 'description')),
+    (522, 'lit_form', 'u', oils_i18n_gettext('522', 'Unknown', 'ccvm', 'value'),                             oils_i18n_gettext('522', 'The literary form of the item is unknown.', 'ccvm', 'description'));
+
+
+INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES
+    (523, 'item_form', 'a', oils_i18n_gettext('523', 'Microfilm', 'ccvm', 'value')),
+    (524, 'item_form', 'b', oils_i18n_gettext('524', 'Microfiche', 'ccvm', 'value')),
+    (525, 'item_form', 'c', oils_i18n_gettext('525', 'Microopaque', 'ccvm', 'value')),
+    (526, 'item_form', 'd', oils_i18n_gettext('526', 'Large print', 'ccvm', 'value')),
+    (527, 'item_form', 'f', oils_i18n_gettext('527', 'Braille', 'ccvm', 'value')),
+    (528, 'item_form', 'r', oils_i18n_gettext('528', 'Regular print reproduction', 'ccvm', 'value')),
+    (529, 'item_form', 's', oils_i18n_gettext('529', 'Electronic', 'ccvm', 'value'));
+
+INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES
+    (530, 'bib_level', 'a', oils_i18n_gettext('530', 'Monographic component part', 'ccvm', 'value')),
+    (531, 'bib_level', 'b', oils_i18n_gettext('531', 'Serial component part', 'ccvm', 'value')),
+    (532, 'bib_level', 'c', oils_i18n_gettext('532', 'Collection', 'ccvm', 'value')),
+    (533, 'bib_level', 'd', oils_i18n_gettext('533', 'Subunit', 'ccvm', 'value')),
+    (534, 'bib_level', 'i', oils_i18n_gettext('534', 'Integrating resource', 'ccvm', 'value')),
+    (535, 'bib_level', 'm', oils_i18n_gettext('535', 'Monograph/Item', 'ccvm', 'value')),
+    (536, 'bib_level', 's', oils_i18n_gettext('536', 'Serial', 'ccvm', 'value'));
 
 -- available locales
 INSERT INTO config.i18n_locale (code,marc_code,name,description)
