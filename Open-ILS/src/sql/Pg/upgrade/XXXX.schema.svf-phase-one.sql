@@ -201,7 +201,7 @@ DECLARE
 BEGIN
     rtype := (vandelay.marc21_record_type( marc )).code;
     FOR ff_pos IN SELECT * FROM config.marc21_ff_pos_map WHERE fixed_field = ff AND rec_type = rtype ORDER BY tag DESC LOOP
-        FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(tag) || '"]/text()', marc ) ) x(value) LOOP
+        FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(ff_pos.tag) || '"]/text()', marc ) ) x(value) LOOP
             val := SUBSTRING( tag_data.value, ff_pos.start_pos + 1, ff_pos.length );
             RETURN val;
         END LOOP;
@@ -251,7 +251,7 @@ $func$ LANGUAGE SQL;
 CREATE OR REPLACE FUNCTION vandelay.marc21_physical_characteristics( marc TEXT) RETURNS SETOF biblio.marc21_physical_characteristics AS $func$
 DECLARE
     rowid   INT := 0;
-    _007    RECORD;
+    _007    TEXT;
     ptype   config.marc21_physical_characteristic_type_map%ROWTYPE;
     psf     config.marc21_physical_characteristic_subfield_map%ROWTYPE;
     pval    config.marc21_physical_characteristic_value_map%ROWTYPE;
@@ -330,7 +330,7 @@ BEGIN
         IF NOT FOUND THEN
             FOR attr_def IN SELECT * FROM config.record_attr_definition ORDER BY format LOOP
 
-                IF attr_def.tag THEN -- tag (and optional subfield list) selection
+                IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
                     SELECT  ARRAY_TO_STRING(ARRAY_ACCUM(value), COALESCE(attr_def.joiner,' ')) INTO attr_value
                       FROM  (SELECT * FROM metabib.full_rec ORDER BY tag, subfield) AS x
                       WHERE record = NEW.id
@@ -371,7 +371,7 @@ BEGIN
 
                     attr_value := oils_xpath_string(attr_def.xpath, transformed_xml, COALESCE(attr_def.joiner,' '), ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]);
 
-                ELSIF attr_def.phys_char IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
+                ELSIF attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
                     SELECT  value::TEXT INTO attr_value
                       FROM  biblio.marc21_physical_characteristics(NEW.id)
                       WHERE subfield = attr_def.phys_char_sf
