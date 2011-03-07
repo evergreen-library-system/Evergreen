@@ -147,6 +147,41 @@ sub child_init {
         ->request("open-ils.supercat.biblio.search_aliases")
         ->gather(1)};
 
+    my %attribute_desc = (
+        site        => 'Evergreen Site Code (shortname)',
+        sort        => 'Sort on relevance, title, author, pubdate, create_date or edit_date',
+        dir         => 'Sort direction (asc|desc)',
+        available   => 'Filter to available (true|false)',
+    );
+
+    # Append the non-search-alias attributes to the qualifier map
+    foreach ( qw/
+            available
+            ascending
+            descending
+            sort
+            format
+            before
+            after
+            statuses
+            locations
+            site
+            depth
+            lasso
+            offset
+            limit
+            preferred_language
+            preferred_language_weight
+            preferred_language_multiplier
+        /) {
+        $qualifier_map{'eg'}{$_}{'index'} = $_;
+        if (exists $attribute_desc{$_}) {
+            $qualifier_map{'eg'}{$_}{'title'} = $attribute_desc{$_};
+        } else {
+            $qualifier_map{'eg'}{$_}{'title'} = $_;
+        }
+    }
+
     my $list = $supercat
         ->request("open-ils.supercat.record.formats")
         ->gather(1);
@@ -501,7 +536,7 @@ sub unapi {
         $lib_id = $lib_object->id;
 
         $ou_types = $actor->request( 'open-ils.actor.org_types.retrieve' )->gather(1);
-        $lib_depth = $depth || (grep { $_->id == $lib_object->ou_type } @$ou_types)[0]->depth;
+        $lib_depth = defined($depth) ? $depth : (grep { $_->id == $lib_object->ou_type } @$ou_types)[0]->depth;
     }
 
     if ($command eq 'browse') {
@@ -1612,97 +1647,16 @@ our %qualifier_ids = (
     srw => ''
 );
 
-our %nested_qualifier_map = (
-        eg => {
-            site        => ['site','Evergreen Site Code (shortname)'],
-            sort        => ['sort','Sort on relevance, title, author, pubdate, create_date or edit_date'],
-            direction   => ['dir','Sort direction (asc|desc)'],
-            available   => ['available','Filter to available (true|false)'],
-            title       => ['title'],
-            author      => ['author'],
-            name        => ['author'],
-            subject     => ['subject'],
-            keyword     => ['keyword'],
-            series      => ['series'],
-        },
-        dc => {
-            title       => ['title'],
-            creator     => ['author'],
-            contributor => ['author'],
-            publisher   => ['keyword'],
-            subject     => ['subject'],
-            identifier  => ['keyword'],
-            type        => [undef],
-            format      => [undef],
-            language    => ['lang'],
-        },
-        bib => {
-        # Title class:
-            titleAbbreviated    => ['title'],
-            titleUniform        => ['title'],
-            titleTranslated     => ['title'],
-            titleAlternative    => ['title'],
-            titleSeries         => ['series'],
-
-    # Author/Name class:
-            name                => ['author'],
-            namePersonal        => ['author'],
-            namePersonalFamily  => ['author'],
-            namePersonalGiven   => ['author'],
-            nameCorporate       => ['author'],
-            nameConference      => ['author'],
-
-        # Subject class:
-            subjectPlace        => ['subject'],
-            subjectTitle        => ['keyword'],
-            subjectName         => ['subject|name'],
-            subjectOccupation   => ['keyword'],
-
-    # Keyword class:
-
-    # Dates:
-            dateIssued          => [undef],
-            dateCreated         => [undef],
-            dateValid           => [undef],
-            dateModified        => [undef],
-            dateCopyright       => [undef],
-
-    # Genre:
-            genre               => ['keyword'],
-
-    # Target Audience:
-            audience            => [undef],
-
-    # Place of Origin:
-            originPlace         => [undef],
-
-    # Edition
-            edition             => ['keyword'],
-
-    # Part:
-            volume              => ['keyword'],
-            issue               => ['keyword'],
-            startPage           => ['keyword'],
-            endPage             => ['keyword'],
-
-    # Issuance:
-            issuance            => ['keyword'],
-        },
-        srw    => {
-            serverChoice        => ['keyword'],
-        },
-);
-
 # Our authority search options are currently pretty impoverished;
 # just right-truncated string match on a few categories, or by
 # ID number
 our %nested_auth_qualifier_map = (
         eg => {
-            id          => ['id', 'Record number'],
-            name        => ['author', 'Personal or corporate author, or meeting name'],
-            title       => ['title', 'Uniform title'],
-            subject     => ['subject', 'Chronological term, topical term, geographic name, or genre/form term'],
-            topic       => ['topic', 'Topical term'],
+            id          => { index => 'id', title => 'Record number'},
+            name        => { index => 'author', title => 'Personal or corporate author, or meeting name'},
+            title       => { index => 'title', title => 'Uniform title'},
+            subject     => { index => 'subject', title => 'Chronological term, topical term, geographic name, or genre/form term'},
+            topic       => { index => 'topic', title => 'Topical term'},
         },
 );
 
@@ -1855,7 +1809,7 @@ sub sru_search {
 
     } elsif ( $resp->type eq 'explain' ) {
         return_sru_explain($cgi, $req, $resp, \$ex_doc,
-            \%OpenILS::WWW::SuperCat::nested_qualifier_map,
+            undef,
             \%OpenILS::WWW::SuperCat::qualifier_ids
         );
 
@@ -1905,10 +1859,9 @@ sub sru_search {
         if ( $qualifier ) {
             my ($qset, $qname) = split(/\./, $qualifier);
 
-            $log->debug("SRU toEvergreen: $qset, $qname   $OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}[0]\n");
-
-            if ( exists($OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}) ) {
-                $qualifier = $OpenILS::WWW::SuperCat::nested_qualifier_map{$qset}{$qname}[0] || 'kw';
+            if ( exists($qualifier_map{$qset}{$qname}) ) {
+                $qualifier = $qualifier_map{$qset}{$qname}{'index'} || 'kw';
+                $log->debug("SRU toEvergreen: $qset, $qname   $qualifier_map{$qset}{$qname}{'index'}\n");
             }
 
             my @modifiers = $relation->getModifiers();
@@ -1949,10 +1902,9 @@ sub sru_search {
         if ( $qualifier ) {
             my ($qset, $qname) = split(/\./, $qualifier);
 
-            $log->debug("SRU toEvergreenAuth: $qset, $qname   $OpenILS::WWW::SuperCat::nested_auth_qualifier_map{$qset}{$qname}[0]\n");
-
             if ( exists($OpenILS::WWW::SuperCat::nested_auth_qualifier_map{$qset}{$qname}) ) {
-                $qualifier = $OpenILS::WWW::SuperCat::nested_auth_qualifier_map{$qset}{$qname}[0] || 'author';
+                $qualifier = $OpenILS::WWW::SuperCat::nested_auth_qualifier_map{$qset}{$qname}{'index'} || 'author';
+                $log->debug("SRU toEvergreenAuth: $qset, $qname   $OpenILS::WWW::SuperCat::nested_auth_qualifier_map{$qset}{$qname}{'index'}\n");
             }
         }
         return { qualifier => $qualifier, term => $term };
@@ -2004,11 +1956,12 @@ sub explain_header {
 }
 
 sub return_sru_explain {
-    my ($cgi, $req, $resp, $explain, $qualifier_map, $qualifier_ids) = @_;
+    my ($cgi, $req, $resp, $explain, $index_map, $qualifier_ids) = @_;
 
+    $index_map ||= \%qualifier_map;
     if (!$$explain) {
         my ($doc, $e) = explain_header($cgi);
-        for my $name ( keys %$qualifier_map ) {
+        for my $name ( keys %{$index_map} ) {
 
             my $identifier = $qualifier_ids->{ $name };
 
@@ -2019,9 +1972,7 @@ sub return_sru_explain {
             $set_node->setAttribute( name => $name );
 
             $e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $set_node );
-
-            for my $index ( @{$qualifier_map{$name}} ) {
-
+            for my $index ( sort keys %{$index_map->{$name}} ) {
                 my $name_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'name' );
 
                 my $map_node = $doc->createElementNS( 'http://explain.z3950.org/dtd/2.0/', 'map' );
@@ -2034,9 +1985,9 @@ sub return_sru_explain {
                 $index_node->appendChild( $map_node );
 
                 $index_node->setAttribute( id => "$name.$index" );
-                $title_node->appendText( $index);
+                $title_node->appendText($index_map->{$name}{$index}{'title'});
                 $name_node->setAttribute( set => $name );
-                $name_node->appendText($index);
+                $name_node->appendText($index_map->{$name}{$index}{'index'});
 
                 $e->findnodes('/z:explain/z:indexInfo')->shift->appendChild( $index_node );
             }
