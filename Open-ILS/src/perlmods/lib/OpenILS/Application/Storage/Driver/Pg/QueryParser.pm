@@ -502,19 +502,18 @@ sub toSQL {
     if (($filters{preferred_language} || $self->QueryParser->default_preferred_language) && ($filters{preferred_language_multiplier} || $self->QueryParser->default_preferred_language_multiplier)) {
         my $pl = $self->QueryParser->quote_value( $filters{preferred_language} ? $filters{preferred_language} : $self->QueryParser->default_preferred_language );
         my $plw = $filters{preferred_language_multiplier} ? $filters{preferred_language_multiplier} : $self->QueryParser->default_preferred_language_multiplier;
-        $rel = "($rel * COALESCE( NULLIF( mrd.attrs \@> hstore('item_lang', $pl), FALSE )::INT * $plw, 1))";
+        $rel = "($rel * COALESCE( NULLIF( FIRST(mrd.attrs \@> hstore('item_lang', $pl)), FALSE )::INT * $plw, 1))";
     }
     $rel = "1.0/($rel)::NUMERIC";
 
     my %dyn_filters = ( '' => [] ); # the "catch-all" key
-    for my $f ( @{ $self->dynamic_filters } ) {
+    for my $f ( @{ $self->QueryParser->dynamic_filters } ) {
         my $col = $f;
         $col = 'item_lang' if ($f eq 'language'); #XXX filter aliases would address this ... booo ... later
 
-        $dyn_filters{$f} = '';
-
         my ($filter) = $self->find_filter($f);
         if ($filter) {
+            $dyn_filters{$f} = '';
             my @fargs = @{$filter->args};
 
             if (@fargs > 1) {
@@ -530,9 +529,11 @@ sub toSQL {
         }
     }
 
-    my $combined_dyn_filters = 'mrd.attrs @> (' . join(' || ', @{$dyn_filters{''}}) . ')';
+    my $combined_dyn_filters = '';
+    $combined_dyn_filters = 'mrd.attrs @> (' . join(' || ', @{$dyn_filters{''}}) . ')' if (@{$dyn_filters{''}});
     delete($dyn_filters{''});
 
+    $combined_dyn_filters .= ' AND ' if ($combined_dyn_filters);
     $combined_dyn_filters .= join(' AND ', values(%dyn_filters));
     
     my $rank = $rel;
@@ -540,8 +541,8 @@ sub toSQL {
     my $desc = 'ASC';
     $desc = 'DESC' if ($self->find_modifier('descending'));
 
-    if (grep {$_ eq $sort_filter} @{$self->dynamic_sorters}) {
-        $rank = "(mrd.attrs->'$sort_filter')"
+    if (grep {$_ eq $sort_filter} @{$self->QueryParser->dynamic_sorters}) {
+        $rank = "FIRST(mrd.attrs->'$sort_filter')"
     } elsif ($sort_filter eq 'create_date') {
         $rank = "FIRST((SELECT create_date FROM biblio.record_entry rbr WHERE rbr.id = m.source))";
     } elsif ($sort_filter eq 'edit_date') {
