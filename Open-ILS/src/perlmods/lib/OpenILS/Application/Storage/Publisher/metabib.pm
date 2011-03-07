@@ -2814,7 +2814,7 @@ sub query_parser_fts {
             config_record_attr_definition       =>
                 $cstore->request(
                     'open-ils.cstore.direct.config.record_attr_definition.search.atomic',
-                    { id => { "!=" => undef } }
+                    { name => { "!=" => undef } }
                 )->gather(1),
         );
 
@@ -3092,7 +3092,7 @@ sub query_parser_fts_wrapper {
             config_record_attr_definition       =>
                 $cstore->request(
                     'open-ils.cstore.direct.config.record_attr_definition.search.atomic',
-                    { id => { "!=" => undef } }
+                    { name => { "!=" => undef } }
                 )->gather(1),
         );
 
