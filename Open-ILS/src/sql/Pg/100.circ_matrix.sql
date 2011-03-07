@@ -41,32 +41,6 @@ INSERT INTO config.circ_modifier (code, name, description, sip2_media_type )
 -- add an fkey pointing to the new circ mod table
 ALTER TABLE asset.copy ADD CONSTRAINT circ_mod_fkey FOREIGN KEY (circ_modifier) REFERENCES config.circ_modifier (code) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
--- config table to hold the vr_format names
-CREATE TABLE config.videorecording_format_map (
-    code    TEXT    PRIMARY KEY,
-    value    TEXT    NOT NULL
-);
-
-INSERT INTO config.videorecording_format_map VALUES ('a','Beta');
-INSERT INTO config.videorecording_format_map VALUES ('b','VHS');
-INSERT INTO config.videorecording_format_map VALUES ('c','U-matic');
-INSERT INTO config.videorecording_format_map VALUES ('d','EIAJ');
-INSERT INTO config.videorecording_format_map VALUES ('e','Type C');
-INSERT INTO config.videorecording_format_map VALUES ('f','Quadruplex');
-INSERT INTO config.videorecording_format_map VALUES ('g','Laserdisc');
-INSERT INTO config.videorecording_format_map VALUES ('h','CED');
-INSERT INTO config.videorecording_format_map VALUES ('i','Betacam');
-INSERT INTO config.videorecording_format_map VALUES ('j','Betacam SP');
-INSERT INTO config.videorecording_format_map VALUES ('k','Super-VHS');
-INSERT INTO config.videorecording_format_map VALUES ('m','M-II');
-INSERT INTO config.videorecording_format_map VALUES ('o','D-2');
-INSERT INTO config.videorecording_format_map VALUES ('p','8 mm.');
-INSERT INTO config.videorecording_format_map VALUES ('q','Hi-8 mm.');
-INSERT INTO config.videorecording_format_map VALUES ('u','Unknown');
-INSERT INTO config.videorecording_format_map VALUES ('v','DVD');
-INSERT INTO config.videorecording_format_map VALUES ('z','Other');
-
-
 
 /**
  **  Here we define the tables that make up the circ matrix.  Conceptually, this implements
