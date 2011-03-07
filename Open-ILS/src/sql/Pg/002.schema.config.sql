@@ -888,6 +888,7 @@ CREATE TABLE config.metabib_field_index_norm_map (
 CREATE TABLE config.record_attr_definition (
     name        TEXT    PRIMARY KEY,
     label       TEXT    NOT NULL, -- I18N
+    description TEXT,
     filter      BOOL    NOT NULL DEFAULT TRUE,  -- becomes QP filter if true
     sorter      BOOL    NOT NULL DEFAULT FALSE, -- becomes QP sort() axis if true
 
