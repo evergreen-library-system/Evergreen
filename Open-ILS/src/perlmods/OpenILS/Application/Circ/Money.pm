@@ -322,11 +322,11 @@ sub make_payments {
         my $amount = $payment->amount;
         my $transid = $payment->xact;
         my $trans = $xacts{$transid};
+        # making payment with existing patron credit.
+        $credit -= $amount if $type eq 'credit_payment';
         if( (my $cred = ($trans->balance_owed - $amount)) <= 0 ) {
             # Any overpay on this transaction goes directly into patron
-            # credit making payment with existing patron credit.
-            $credit -= $amount if $type eq 'credit_payment';
-
+            # credit
             $cred = -$cred;
             $credit += $cred;
             my $circ = $e->retrieve_action_circulation($transid);
