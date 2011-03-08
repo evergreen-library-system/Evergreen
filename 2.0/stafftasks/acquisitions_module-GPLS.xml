@@ -661,7 +661,7 @@
 		order. Click the View link in the History field.</simpara>
 	</simplesect>
 </section>
-<section id="_receiving">
+<section id="acquisitions_receiving">
 	<title>Receiving</title>
 	<simpara>You can receive and un-receive entire purchase orders, line items, and
 	individual copies. You can receive items before or after you invoice items.</simpara>
@@ -809,7 +809,6 @@
 	<listitem><simpara>Open a bib record.</simpara></listitem>
 	<listitem><simpara>Click Actions for this Record &#8594; View/Place Orders.</simpara></listitem>
 	<listitem><simpara>Click Add to Selection List, or click Create Purchase Order.</simpara></listitem>
-	<listitem><simpara>See sections 13 and 16 for instructions to proceed.</simpara></listitem>
 	</orderedlist>
 </section>
 </chapter>

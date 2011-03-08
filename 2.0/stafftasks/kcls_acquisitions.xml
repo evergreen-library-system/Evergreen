@@ -182,7 +182,7 @@
 			<listitem><simpara>Purchase Order will display.  (Purchase Order Status &amp; Line Item Status = on-order)</simpara></listitem>
 			<listitem><simpara>Check item(s) received against the Line Item details and verify the following: Title/Author, ISBN, Publisher, Pub. Date, Edition, Format 
 			(Format is in Notes), Est. Price, Status, 
-			Provider, and Copies. (For more info see “Section 3.1 Print Items” in LT2 CAPS Manual).  If everything checks out with the order, you are ready to receive.  If partial receipt, see 
+			Provider, and Copies.  If everything checks out with the order, you are ready to receive.  If partial receipt, see 
 			Partial Receipts section.</simpara></listitem>
 			<listitem><simpara>Click on Line Item Actions drop down menu Select Mark Received.  Purchase Order &amp; Line Item status will change to “received.”</simpara></listitem>
 			<listitem><simpara>Click on worksheet link.  Print worksheet.  Click Go Back.</simpara></listitem>
