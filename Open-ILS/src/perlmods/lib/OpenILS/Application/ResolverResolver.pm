@@ -279,7 +279,7 @@ sub delete_cached_holdings {
 }
 
 __PACKAGE__->register_method(
-    method    => 'delete_holdings_cache',
+    method    => 'delete_cached_holdings',
     api_name  => 'open-ils.resolver.delete_cached_holdings',
     api_level => 1,
     argc      => 3,
