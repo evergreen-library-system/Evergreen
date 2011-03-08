@@ -730,7 +730,7 @@ main.menu.prototype = {
             ],
             'cmd_server_admin_marc_code' : [
                 ['oncommand'],
-                function() { open_conify_page('config/marc_code_maps', null); }
+                function() { open_eg_web_page('conify/global/config/record_attr_definition'); }
             ],
             'cmd_server_admin_billing_type' : [
                 ['oncommand'],

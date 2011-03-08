@@ -363,33 +363,6 @@ CREATE TABLE asset.copy_template (
 	mint_condition BOOL
 );
 
-CREATE VIEW stats.fleshed_copy AS 
-        SELECT  cp.*,
-		CAST(cp.create_date AS DATE) AS create_date_day,
-		CAST(cp.edit_date AS DATE) AS edit_date_day,
-		DATE_TRUNC('hour', cp.create_date) AS create_date_hour,
-		DATE_TRUNC('hour', cp.edit_date) AS edit_date_hour,
-                cn.label AS call_number_label,
-                cn.owning_lib,
-                rd.item_lang,
-                rd.item_type,
-                rd.item_form
-        FROM    asset.copy cp
-                JOIN asset.call_number cn ON (cp.call_number = cn.id)
-                JOIN metabib.rec_descriptor rd ON (rd.record = cn.record);
-
-CREATE VIEW stats.fleshed_call_number AS 
-        SELECT  cn.*,
-       		CAST(cn.create_date AS DATE) AS create_date_day,
-		CAST(cn.edit_date AS DATE) AS edit_date_day,
-		DATE_TRUNC('hour', cn.create_date) AS create_date_hour,
-		DATE_TRUNC('hour', cn.edit_date) AS edit_date_hour,
-         	rd.item_lang,
-                rd.item_type,
-                rd.item_form
-        FROM    asset.call_number cn
-                JOIN metabib.rec_descriptor rd ON (rd.record = cn.record);
-
 CREATE OR REPLACE FUNCTION asset.opac_ou_record_copy_count (org INT, rid BIGINT) RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT) AS $f$
 DECLARE
     ans RECORD;

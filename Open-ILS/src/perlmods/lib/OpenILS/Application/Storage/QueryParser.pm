@@ -207,6 +207,35 @@ sub query_normalizers {
     return $parser_config{$pkg}{normalizers};
 }
 
+sub add_filter_normalizer {
+    my $pkg = shift;
+    $pkg = ref($pkg) || $pkg;
+    my $filter = shift;
+    my $func = shift;
+    my $params = shift || [];
+
+    return $func if (grep { $_ eq $func } @{$pkg->filter_normalizers->{$filter}});
+
+    push(@{$pkg->filter_normalizers->{$filter}}, { function => $func, params => $params });
+
+    return $func;
+}
+
+sub filter_normalizers {
+    my $pkg = shift;
+    $pkg = ref($pkg) || $pkg;
+
+    my $filter = shift;
+
+    $parser_config{$pkg}{filter_normalizers} ||= {};
+    if ($filter) {
+        $parser_config{$pkg}{filter_normalizers}{$filter} ||= [];
+        return $parser_config{$pkg}{filter_normalizers}{$filter};
+    }
+
+    return $parser_config{$pkg}{filter_normalizers};
+}
+
 sub default_search_class {
     my $pkg = shift;
     $pkg = ref($pkg) || $pkg;

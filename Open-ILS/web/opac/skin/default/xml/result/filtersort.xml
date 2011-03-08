@@ -3,12 +3,12 @@
     <select id='opac.result.sort' onchange='searchBarSubmit(true);'>
         <option selected='selected' value=''>&result.sort_by;</option>
         <optgroup label='&result.sort_by.title;'>
-            <option id='opac.result.title.a2z' label='&common.a2z.titla;' value='title.asc'>&common.a2z.title;</option>
-            <option id='opac.result.title.z2a' label='&common.z2a.titla;' value='title.desc'>&common.z2a.title;</option>
+            <option id='opac.result.title.a2z' label='&common.a2z.titla;' value='titlesort.asc'>&common.a2z.title;</option>
+            <option id='opac.result.title.z2a' label='&common.z2a.titla;' value='titlesort.desc'>&common.z2a.title;</option>
         </optgroup>
         <optgroup label='&result.sort_by.author;'>
-            <option id='opac.result.author.a2z' label='&common.a2z.author;' value='author.asc'>&common.a2z.author;</option>
-            <option id='opac.result.author.z2a' label='&common.z2a.author;' value='author.desc'>&common.z2a.author;</option>
+            <option id='opac.result.author.a2z' label='&common.a2z.author;' value='authorsort.asc'>&common.a2z.author;</option>
+            <option id='opac.result.author.z2a' label='&common.z2a.author;' value='authorsort.desc'>&common.z2a.author;</option>
         </optgroup>
         <optgroup label='&result.sort_by.pubdate;'>
             <option id='opac.result.pubdate.new2old' label='&common.new2old.pubdate;' 

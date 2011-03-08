@@ -70,7 +70,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0494'); -- dbs
+INSERT INTO config.upgrade_log (version) VALUES ('0496'); -- dbs
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -566,38 +566,6 @@ CREATE TABLE config.remote_account (
     last_activity TIMESTAMP WITH TIME ZONE
 );
 
-CREATE TABLE config.audience_map (
-	code		TEXT	PRIMARY KEY,
-	value		TEXT	NOT NULL,
-	description	TEXT
-);
-
-CREATE TABLE config.lit_form_map (
-	code		TEXT	PRIMARY KEY,
-	value		TEXT	NOT NULL,
-	description	TEXT
-);
-
-CREATE TABLE config.language_map (
-	code	TEXT	PRIMARY KEY,
-	value	TEXT	NOT NULL
-);
-
-CREATE TABLE config.item_form_map (
-	code	TEXT	PRIMARY KEY,
-	value	TEXT	NOT NULL
-);
-
-CREATE TABLE config.item_type_map (
-	code	TEXT	PRIMARY KEY,
-	value	TEXT	NOT NULL
-);
-
-CREATE TABLE config.bib_level_map (
-	code	TEXT	PRIMARY KEY,
-	value	TEXT	NOT NULL
-);
-
 CREATE TABLE config.marc21_rec_type_map (
     code        TEXT    PRIMARY KEY,
     type_val    TEXT    NOT NULL,
@@ -675,7 +643,7 @@ CREATE TABLE config.z3950_attr (
 
 CREATE TABLE config.i18n_locale (
     code        TEXT    PRIMARY KEY,
-    marc_code   TEXT    NOT NULL REFERENCES config.language_map (code) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    marc_code   TEXT    NOT NULL, -- should exist in config.coded_value_map WHERE ctype = 'item_lang'
     name        TEXT    UNIQUE NOT NULL,
     description TEXT
 );
@@ -794,6 +762,63 @@ CREATE OR REPLACE FUNCTION public.split_date_range( TEXT ) RETURNS TEXT AS $func
         SELECT REGEXP_REPLACE( $1, E'(\\d{4})-(\\d{4})', E'\\1 \\2', 'g' );
 $func$ LANGUAGE SQL STRICT IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION public.approximate_date( TEXT, TEXT ) RETURNS TEXT AS $func$
+        SELECT REGEXP_REPLACE( $1, E'\\D', $2, 'g' );
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.approximate_low_date( TEXT ) RETURNS TEXT AS $func$
+        SELECT approximate_date( $1, '0');
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.approximate_high_date( TEXT ) RETURNS TEXT AS $func$
+        SELECT approximate_date( $1, '9');
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.content_or_null( TEXT ) RETURNS TEXT AS $func$
+        SELECT CASE WHEN $1 ~ E'^\\s*$' THEN NULL ELSE $1 END
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.integer_or_null( TEXT ) RETURNS TEXT AS $func$
+        SELECT CASE WHEN $1 ~ E'^\\d+$' THEN $1 ELSE NULL END
+$func$ LANGUAGE SQL STRICT IMMUTABLE;
+
+CREATE OR REPLACE FUNCTION public.force_to_isbn13( TEXT ) RETURNS TEXT AS $func$
+    use Business::ISBN;
+    use strict;
+    use warnings;
+
+    # Find the first ISBN, force it to ISBN13 and return it
+
+    my $input = shift;
+
+    foreach my $word (split(/\s/, $input)) {
+        my $isbn = Business::ISBN->new($word);
+
+        # First check the checksum; if it is not valid, fix it and add the original
+        # bad-checksum ISBN to the output
+        if ($isbn && $isbn->is_valid_checksum() == Business::ISBN::BAD_CHECKSUM) {
+            $isbn->fix_checksum();
+        }
+
+        # If we now have a valid ISBN, force it to ISBN13 and return it
+        return $isbn->as_isbn13->isbn if ($isbn && $isbn->is_valid());
+    }
+    return undef;
+$func$ LANGUAGE PLPERLU;
+
+COMMENT ON FUNCTION public.force_to_isbn13(TEXT) IS $$
+/*
+ * Copyright (C) 2011 Equinox Software
+ * Mike Rylander <mrylander@gmail.com>
+ *
+ * Inspired by translate_isbn1013
+ *
+ * The force_to_isbn13 function takes an input ISBN and returns the ISBN13
+ * version without hypens and with a repaired checksum if the checksum was bad
+ */
+$$;
+
+
 CREATE OR REPLACE FUNCTION public.translate_isbn1013( TEXT ) RETURNS TEXT AS $func$
     use Business::ISBN;
     use strict;
@@ -865,6 +890,57 @@ CREATE TABLE config.metabib_field_index_norm_map (
         params  TEXT,
         pos     INT     NOT NULL DEFAULT 0
 );
+
+CREATE TABLE config.record_attr_definition (
+    name        TEXT    PRIMARY KEY,
+    label       TEXT    NOT NULL, -- I18N
+    description TEXT,
+    filter      BOOL    NOT NULL DEFAULT TRUE,  -- becomes QP filter if true
+    sorter      BOOL    NOT NULL DEFAULT FALSE, -- becomes QP sort() axis if true
+
+-- For pre-extracted fields. Takes the first occurance, uses naive subfield ordering
+    tag         TEXT, -- LIKE format
+    sf_list     TEXT, -- pile-o-values, like 'abcd' for a and b and c and d
+
+-- This is used for both tag/sf and xpath entries
+    joiner      TEXT,
+
+-- For xpath-extracted attrs
+    xpath       TEXT,
+    format      TEXT    REFERENCES config.xml_transform (name) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    start_pos   INT,
+    string_len  INT,
+
+-- For fixed fields
+    fixed_field TEXT, -- should exist in config.marc21_ff_pos_map.fixed_field
+
+-- For phys-char fields
+    phys_char_sf    INT REFERENCES config.marc21_physical_characteristic_subfield_map (id)
+);
+
+CREATE TABLE config.record_attr_index_norm_map (
+    id      SERIAL  PRIMARY KEY,
+    attr    TEXT    NOT NULL REFERENCES config.record_attr_definition (name) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    norm    INT     NOT NULL REFERENCES config.index_normalizer (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    params  TEXT,
+    pos     INT     NOT NULL DEFAULT 0
+);
+
+CREATE TABLE config.coded_value_map (
+    id          SERIAL  PRIMARY KEY,
+    ctype       TEXT    NOT NULL REFERENCES config.record_attr_definition (name) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    code        TEXT    NOT NULL,
+    value       TEXT    NOT NULL,
+    description TEXT
+);
+
+CREATE VIEW config.language_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_lang';
+CREATE VIEW config.bib_level_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'bib_level';
+CREATE VIEW config.item_form_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_form';
+CREATE VIEW config.item_type_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'item_type';
+CREATE VIEW config.lit_form_map AS SELECT code, value, description FROM config.coded_value_map WHERE ctype = 'lit_form';
+CREATE VIEW config.audience_map AS SELECT code, value, description FROM config.coded_value_map WHERE ctype = 'audience';
+CREATE VIEW config.videorecording_format_map AS SELECT code, value FROM config.coded_value_map WHERE ctype = 'vr_format';
 
 CREATE OR REPLACE FUNCTION oils_tsearch2 () RETURNS TRIGGER AS $$
 DECLARE

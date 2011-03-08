@@ -2784,11 +2784,11 @@ sub query_parser_fts {
     if (!$parser->initialization_complete) {
         my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
         $parser->initialize(
-            config_metabib_field_index_norm_map =>
+            config_record_attr_index_norm_map =>
                 $cstore->request(
-                    'open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic',
+                    'open-ils.cstore.direct.config.record_attr_index_norm_map.search.atomic',
                     { id => { "!=" => undef } },
-                    { flesh => 1, flesh_fields => { cmfinm => [qw/norm/] }, order_by => [{ class => "cmfinm", field => "pos" }] }
+                    { flesh => 1, flesh_fields => { crainm => [qw/norm/] }, order_by => [{ class => "crainm", field => "pos" }] }
                 )->gather(1),
             search_relevance_adjustment         =>
                 $cstore->request(
@@ -2804,6 +2804,17 @@ sub query_parser_fts {
                 $cstore->request(
                     'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
                     { alias => { "!=" => undef } }
+                )->gather(1),
+            config_metabib_field_index_norm_map =>
+                $cstore->request(
+                    'open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic',
+                    { id => { "!=" => undef } },
+                    { flesh => 1, flesh_fields => { cmfinm => [qw/norm/] }, order_by => [{ class => "cmfinm", field => "pos" }] }
+                )->gather(1),
+            config_record_attr_definition       =>
+                $cstore->request(
+                    'open-ils.cstore.direct.config.record_attr_definition.search.atomic',
+                    { name => { "!=" => undef } }
                 )->gather(1),
         );
 
@@ -3037,6 +3048,13 @@ sub query_parser_fts {
 	}
 	return undef;
 }
+__PACKAGE__->register_method(
+	api_name	=> "open-ils.storage.query_parser_search",
+	method		=> 'query_parser_fts',
+	api_level	=> 1,
+	stream		=> 1,
+	cachable	=> 1,
+);
 
 sub query_parser_fts_wrapper {
 	my $self = shift;
@@ -3051,11 +3069,11 @@ sub query_parser_fts_wrapper {
     if (!$parser->initialization_complete) {
         my $cstore = OpenSRF::AppSession->create( 'open-ils.cstore' );
         $parser->initialize(
-            config_metabib_field_index_norm_map =>
+            config_record_attr_index_norm_map =>
                 $cstore->request(
-                    'open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic',
+                    'open-ils.cstore.direct.config.record_attr_index_norm_map.search.atomic',
                     { id => { "!=" => undef } },
-                    { flesh => 1, flesh_fields => { cmfinm => [qw/norm/] }, order_by => [{ class => "cmfinm", field => "pos" }] }
+                    { flesh => 1, flesh_fields => { crainm => [qw/norm/] }, order_by => [{ class => "crainm", field => "pos" }] }
                 )->gather(1),
             search_relevance_adjustment         =>
                 $cstore->request(
@@ -3071,6 +3089,17 @@ sub query_parser_fts_wrapper {
                 $cstore->request(
                     'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
                     { alias => { "!=" => undef } }
+                )->gather(1),
+            config_metabib_field_index_norm_map =>
+                $cstore->request(
+                    'open-ils.cstore.direct.config.metabib_field_index_norm_map.search.atomic',
+                    { id => { "!=" => undef } },
+                    { flesh => 1, flesh_fields => { cmfinm => [qw/norm/] }, order_by => [{ class => "cmfinm", field => "pos" }] }
+                )->gather(1),
+            config_record_attr_definition       =>
+                $cstore->request(
+                    'open-ils.cstore.direct.config.record_attr_definition.search.atomic',
+                    { name => { "!=" => undef } }
                 )->gather(1),
         );
 

@@ -360,11 +360,15 @@ var FETCH_ISSUANCE					= 'open-ils.serial:open-ils.serial.issuance.pub_fleshed.b
 var FETCH_COPY_LOCATIONS		= 'open-ils.circ:open-ils.circ.copy_location.retrieve.all';
 var FETCH_COPY_NOTES				= 'open-ils.circ:open-ils.circ.copy_note.retrieve.all';
 var FETCH_COPY_STAT_CATS		= 'open-ils.circ:open-ils.circ.asset.stat_cat_entries.fleshed.retrieve_by_copy';
-var FETCH_LIT_FORMS				= 'open-ils.search:open-ils.search.biblio.lit_form_map.retrieve.all';
-var FETCH_ITEM_FORMS				= 'open-ils.search:open-ils.search.biblio.item_form_map.retrieve.all';
-var FETCH_ITEM_TYPES				= 'open-ils.search:open-ils.search.biblio.item_type_map.retrieve.all';
-var FETCH_BIB_LEVELS				= 'open-ils.search:open-ils.search.biblio.bib_level_map.retrieve.all';
-var FETCH_AUDIENCES				= 'open-ils.search:open-ils.search.biblio.audience_map.retrieve.all';
+
+/* XXX deprecated.  Use ccvm's instead  */
+var FETCH_LIT_FORMS             = 'open-ils.search:open-ils.search.biblio.lit_form_map.retrieve.all';
+var FETCH_ITEM_FORMS            = 'open-ils.search:open-ils.search.biblio.item_form_map.retrieve.all';
+var FETCH_ITEM_TYPES            = 'open-ils.search:open-ils.search.biblio.item_type_map.retrieve.all';
+var FETCH_BIB_LEVELS            = 'open-ils.search:open-ils.search.biblio.bib_level_map.retrieve.all';
+var FETCH_AUDIENCES             = 'open-ils.search:open-ils.search.biblio.audience_map.retrieve.all';
+/* ----------------------------------- */
+
 //var FETCH_HOLD_STATUS			= 'open-ils.circ:open-ils.circ.hold.status.retrieve';
 var FETCH_HOLD_STATUS			= 'open-ils.circ:open-ils.circ.hold.queue_stats.retrieve';
 var FETCH_NON_CAT_CIRCS			= 'open-ils.circ:open-ils.circ.open_non_cataloged_circulation.user';

@@ -123,7 +123,7 @@ sub resolve_holdings {
 
     # Big ugly SFX OpenURL request
     my $url_args = '?url_ver=Z39.88-2004&url_ctx_fmt=infofi/fmt:kev:mtx:ctx&'
-        . 'ctx_enc=UTF-8&ctx_ver=Z39.88-2004&rfr_id=info:sid/conifer&'
+        . 'ctx_enc=UTF-8&ctx_ver=Z39.88-2004&rfr_id=info:sid/evergreen&'
         . 'sfx.ignore_date_threshold=1&'
         . 'sfx.response_type=multi_obj_detailed_xml&__service_type=getFullTxt';
 
@@ -158,19 +158,27 @@ sub resolve_holdings {
 
     my @sfx_result;
     foreach my $target (@targets) {
+        my %full_txt;
+
+        # Ensure we have a name and especially URL to return
+        $full_txt{'name'} = $target->findvalue('./target_public_name') || next;
+        $full_txt{'url'} = $target->findvalue('.//target_url') || next;
+        $full_txt{'coverage'} = $target->findvalue('.//coverage_statement') || '';
+        $full_txt{'embargo'} = $target->findvalue('.//embargo_statement') || '';
+
         if ($format eq 'raw') {
             push @sfx_result, {
-                public_name => $target->findvalue('./target_public_name'),
-                target_url => $target->findvalue('.//target_url'),
-                target_coverage => $target->findvalue('.//coverage_statement'),
-                target_embargo => $target->findvalue('.//embargo_statement'),
+                public_name => $full_txt{'name'},
+                target_url => $full_txt{'url'},
+                target_coverage => $full_txt{'coverage'},
+                target_embargo => $full_txt{'embargo'},
             };
         } else {
             my $rhr = Fieldmapper::resolver::holdings_record->new;
-            $rhr->public_name($target->findvalue('./target_public_name'));
-            $rhr->target_url($target->findvalue('.//target_url'));
-            $rhr->target_coverage($target->findvalue('.//coverage_statement'));
-            $rhr->target_embargo($target->findvalue('.//embargo_statement'));
+            $rhr->public_name($full_txt{'name'});
+            $rhr->target_url($full_txt{'url'});
+            $rhr->target_coverage($full_txt{'coverage'});
+            $rhr->target_embargo($full_txt{'embargo'});
             push @sfx_result, $rhr;
         }
     }
@@ -271,7 +279,7 @@ sub delete_cached_holdings {
 }
 
 __PACKAGE__->register_method(
-    method    => 'delete_holdings_cache',
+    method    => 'delete_cached_holdings',
     api_name  => 'open-ils.resolver.delete_cached_holdings',
     api_level => 1,
     argc      => 3,

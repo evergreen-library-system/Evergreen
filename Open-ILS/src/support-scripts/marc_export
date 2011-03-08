@@ -278,7 +278,12 @@ sub export_record {
 
         if ($replace_001) {
             my $tcn = $r->field('001');
-            $tcn->update($id);
+            if ($tcn) {
+                $tcn->update($id);
+            } else {
+                my $new_001 = MARC::Field->new('001', $id);
+                $r->insert_fields_ordered($new_001);
+            }
         }
 
         if ($format eq 'XML') {
