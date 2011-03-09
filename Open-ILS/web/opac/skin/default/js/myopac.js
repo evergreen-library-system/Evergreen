@@ -285,10 +285,11 @@ function myOPACDrawCheckedTitle(r) {
 	var record = r.getResultObject();
 	var circid = r.circ;
 
-	if(!record || checkILSEvent(record)) {
+	/* Draw pre-cataloged items */
+	if(!record || checkILSEvent(record) || !(record.title() && record.author())) {
 		var req = new Request( FETCH_COPY, r.copy );
-		req.request.circ = circid
-		req.callback(myOPACDrawNonCatalogedItem);
+		req.request.circ = circid;
+		req.callback(myOPACDrawPreCatalogedItem);
 		req.send();
 		return;
 	}
@@ -296,12 +297,13 @@ function myOPACDrawCheckedTitle(r) {
 	var row = $('myopac_checked_row_ ' + circid);
 	var tlink = $n( row, "myopac_checked_title_link" );
 	var alink = $n( row, "myopac_checked_author_link" );
+
 	buildTitleDetailLink(record, tlink);
 	buildSearchLink(STYPE_AUTHOR, record.author(), alink);
    __circ_titles[circid] = record.title();
 }
 
-function myOPACDrawNonCatalogedItem(r) {
+function myOPACDrawPreCatalogedItem(r) {
 	var copy = r.getResultObject();
 	var circid = r.circ;
 
