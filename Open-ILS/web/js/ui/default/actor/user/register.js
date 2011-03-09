@@ -87,7 +87,62 @@ function load() {
         'ui.patron.default_country',
         'ui.patron.registration.require_address',
         'circ.holds.behind_desk_pickup_supported',
-        'circ.patron_edit.clone.copy_address'
+        'circ.patron_edit.clone.copy_address',
+        'ui.patron.edit.au.second_given_name.show',
+        'ui.patron.edit.au.second_given_name.suggest',
+        'ui.patron.edit.au.suffix.show',
+        'ui.patron.edit.au.suffix.suggest',
+        'ui.patron.edit.au.alias.show',
+        'ui.patron.edit.au.alias.suggest',
+        'ui.patron.edit.au.dob.require',
+        'ui.patron.edit.au.dob.show',
+        'ui.patron.edit.au.dob.suggest',
+        'ui.patron.edit.au.dob.calendar',
+        'ui.patron.edit.au.juvenile.show',
+        'ui.patron.edit.au.juvenile.suggest',
+        'ui.patron.edit.au.ident_value.show',
+        'ui.patron.edit.au.ident_value.suggest',
+        'ui.patron.edit.au.ident_value2.show',
+        'ui.patron.edit.au.ident_value2.suggest',
+        'ui.patron.edit.au.email.require',
+        'ui.patron.edit.au.email.show',
+        'ui.patron.edit.au.email.suggest',
+        'ui.patron.edit.au.email.regex',
+        'ui.patron.edit.au.email.example',
+        'ui.patron.edit.au.day_phone.require',
+        'ui.patron.edit.au.day_phone.show',
+        'ui.patron.edit.au.day_phone.suggest',
+        'ui.patron.edit.au.day_phone.regex',
+        'ui.patron.edit.au.day_phone.example',
+        'ui.patron.edit.au.evening_phone.require',
+        'ui.patron.edit.au.evening_phone.show',
+        'ui.patron.edit.au.evening_phone.suggest',
+        'ui.patron.edit.au.evening_phone.regex',
+        'ui.patron.edit.au.evening_phone.example',
+        'ui.patron.edit.au.other_phone.require',
+        'ui.patron.edit.au.other_phone.show',
+        'ui.patron.edit.au.other_phone.suggest',
+        'ui.patron.edit.au.other_phone.regex',
+        'ui.patron.edit.au.other_phone.example',
+        'ui.patron.edit.phone.regex',
+        'ui.patron.edit.phone.example',
+        'ui.patron.edit.au.active.show',
+        'ui.patron.edit.au.active.suggest',
+        'ui.patron.edit.au.barred.show',
+        'ui.patron.edit.au.barred.suggest',
+        'ui.patron.edit.au.master_account.show',
+        'ui.patron.edit.au.master_account.suggest',
+        'ui.patron.edit.au.claims_returned_count.show',
+        'ui.patron.edit.au.claims_returned_count.suggest',
+        'ui.patron.edit.au.claims_never_checked_out_count.show',
+        'ui.patron.edit.au.claims_never_checked_out_count.suggest',
+        'ui.patron.edit.au.alert_message.show',
+        'ui.patron.edit.au.alert_message.suggest',
+        'ui.patron.edit.aua.post_code.regex',
+        'ui.patron.edit.aua.post_code.example',
+        'ui.patron.edit.aua.county.require',
+        'format.date',
+        'ui.patron.edit.default_suggested'
     ]);
 
     for(k in orgSettings)
@@ -120,6 +175,9 @@ function load() {
     }
 
     tbody = dojo.byId('uedit-tbody');
+
+    if(orgSettings['ui.patron.edit.default_suggested'])
+        uEditToggleRequired(2);
 
     addrTemplateRows = dojo.query('tr[type=addr-template]', tbody);
     dojo.forEach(addrTemplateRows, function(row) { row.parentNode.removeChild(row); } );
@@ -591,6 +649,7 @@ function fleshFMRow(row, fmcls, args) {
     var wconstraints = row.getAttribute('wconstraints');
     /* use CSS to set the zindex for widgets you want to disable. */
     var disabled = dojo.style(row, 'zIndex') == -1 ? true : false;
+    var isphone = (fmcls == 'au') && (fmfield.search('_phone') != -1);
 
     var isPasswd2 = (fmfield == 'passwd2');
     if(isPasswd2) fmfield = 'passwd';
@@ -601,6 +660,7 @@ function fleshFMRow(row, fmcls, args) {
     var htd = existing[0] || row.appendChild(document.createElement('td'));
     var ltd = existing[1] || row.appendChild(document.createElement('td'));
     var wtd = existing[2] || row.appendChild(document.createElement('td'));
+    var ftd = existing[3] || row.appendChild(document.createElement('td'));
 
     openils.Util.addCSSClass(htd, 'uedit-help');
     if(fieldDoc[fmcls] && fieldDoc[fmcls][fmfield]) {
@@ -612,11 +672,22 @@ function fleshFMRow(row, fmcls, args) {
     }
 
     if(!ltd.textContent) {
-        var span = document.createElement('span');
         ltd.appendChild(document.createTextNode(fieldIdl.label));
     }
 
-    span = document.createElement('span');
+    if(!ftd.textContent) {
+        if(orgSettings['ui.patron.edit.' + fmcls + '.' + fmfield + '.example']) {
+            ftd.appendChild(document.createTextNode(localeStrings.EXAMPLE + orgSettings['ui.patron.edit.' + fmcls + '.' + fmfield + '.example']));
+        }
+        else if(isphone && orgSettings['ui.patron.edit.phone.example']) {
+            ftd.appendChild(document.createTextNode(localeStrings.EXAMPLE + orgSettings['ui.patron.edit.phone.example']));
+        }
+        else if(fieldIdl.datatype == 'timestamp') {
+            ftd.appendChild(document.createTextNode(localeStrings.EXAMPLE + dojo.date.locale.format(new Date(1970,0,31),{selector: "date", fullYear: true, datePattern: (orgSettings['format.date'] ? orgSettings['format.date'] : null)})));
+        }
+    }
+
+    var span = document.createElement('span');
     wtd.appendChild(span);
 
     var fmObject = null;
@@ -631,7 +702,19 @@ function fleshFMRow(row, fmcls, args) {
             break;
     }
 
-    var required = row.getAttribute('required') == 'required';
+    // Adjust required value by org settings
+    var curRequired = row.getAttribute('required');
+    var required = curRequired == 'required';
+    if(orgSettings['ui.patron.edit.' + fmcls + '.' + fmfield + '.require']) {
+        row.setAttribute('required', 'required');
+        required = true;
+    }
+    else if (curRequired != 'required' && orgSettings['ui.patron.edit.' + fmcls + '.' + fmfield + '.show']) {
+        row.setAttribute('required', 'show');
+    }
+    else if (curRequired != 'required' && curRequired != 'show' && orgSettings['ui.patron.edit.' + fmcls + '.' + fmfield + '.suggest']) {
+        row.setAttribute('required', 'suggested');
+    }
 
     // password data is not fetched/required/displayed for existing users
     if(!patron.isnew() && 'passwd' == fmfield)
@@ -644,14 +727,21 @@ function fleshFMRow(row, fmcls, args) {
         disabled : disabled
     };
 
+    // Org settings provided regex?
+    if(orgSettings['ui.patron.edit.' + fmcls + '.' + fmfield + '.regex']) {
+        dijitArgs.regExp = orgSettings['ui.patron.edit.' + fmcls + '.' + fmfield + '.regex'];
+    }
+    else if(isphone && orgSettings['ui.patron.edit.phone.regex']) {
+        dijitArgs.regExp = orgSettings['ui.patron.edit.phone.regex'];
+    }
+
     if(fmcls == 'au' && fmfield == 'passwd') {
         if (orgSettings['global.password_regex']) {
             dijitArgs.regExp = orgSettings['global.password_regex'];
         }
     }
 
-    // TODO RSN: Add Setting!
-    if(fmcls == 'au' && fmfield == 'dob')
+    if(fmcls == 'au' && fmfield == 'dob' && !orgSettings['ui.patron.edit.au.dob.calendar'])
         dijitArgs.popupClass = "";
 
     var value = row.getAttribute('wvalue');
@@ -913,7 +1003,7 @@ function attachWidgetEvents(fmcls, fmfield, widget) {
                 return;
 
             case 'day_phone':
-                // if configured, use the last for digits of the day phone number as the password
+                // if configured, use the last four digits of the day phone number as the password
                 if(uEditUsePhonePw && patron.isnew()) {
                     dojo.connect(widget.widget, 'onChange',
                         function(newVal) {
@@ -1498,13 +1588,29 @@ function uEditDeleteAddr(id, noAlert) {
     widgetPile = widgetPile.filter(function(w){return (w._addr != id)});
 }
 
-function uEditToggleRequired() {
-    if((tbody.className +'').match(/hide-non-required/)) 
-        openils.Util.removeCSSClass(tbody, 'hide-non-required');
-    else
-        openils.Util.addCSSClass(tbody, 'hide-non-required');
-    openils.Util.toggle('uedit-show-required');
-    openils.Util.toggle('uedit-show-all');
+function uEditToggleRequired(level) {
+    openils.Util.removeCSSClass(tbody, 'hide-non-required');
+    openils.Util.removeCSSClass(tbody, 'hide-non-suggested');
+    openils.Util.show('uedit-show-required');
+    openils.Util.show('uedit-show-required-br');
+    openils.Util.show('uedit-show-suggested');
+    openils.Util.show('uedit-show-suggested-br');
+    openils.Util.show('uedit-show-all');
+    switch(level) {
+        case 1:
+            openils.Util.hide('uedit-show-required');
+            openils.Util.hide('uedit-show-required-br');
+            openils.Util.addCSSClass(tbody, 'hide-non-required');
+            break;
+        case 2:
+            openils.Util.hide('uedit-show-suggested');
+            openils.Util.hide('uedit-show-suggested-br');
+            openils.Util.addCSSClass(tbody, 'hide-non-suggested');
+            break;
+        default:
+            openils.Util.hide('uedit-show-all');
+            break;
+    } 
 }
 
 function printable_output() {

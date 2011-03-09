@@ -271,6 +271,16 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                     case 'timestamp':
                         dojo.require('dijit.form.DateTextBox');
                         dojo.require('dojo.date.stamp');
+                        if(!this.dijitArgs.constraints) {
+                            this.dijitArgs.constraints = {};
+                        }
+                        if(!this.dijitArgs.constraints.datePattern) {
+                            var user = new openils.User().user;
+                            if(user.ws_ou()) {
+                                var datePattern = fieldmapper.aou.fetchOrgSettingDefault(user.ws_ou(), 'format.date');
+                                if(datePattern) this.dijitArgs.constraints.datePattern = datePattern.value;
+                            }
+                        }
                         this.widget = new dijit.form.DateTextBox(this.dijitArgs, this.parentNode);
                         if (this.widgetValue != null) {
                             this.widgetValue = openils.Util.timeStampAsDateObj(
