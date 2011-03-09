@@ -1,1 +1,229 @@
-#ChangeLog
+2011-02-22  erickson
+
+	* dojo.js has to be loaded from the same domain as the page, unless
+	  it's a cross-domain build
+
+2011-02-23  dbs
+
+	* Correct the install location for Dojo i18n bundles
+	  
+	  We had been converting xx-YY into xx/yy for a directory
+	  structure,
+	  but current evidence shows that it should be xx-yy. Hard to
+	  believe
+	  we've overlooked this for so long. Also, with the exception of
+	  the
+	  en-ca/en-gb/en-us locales, we should probably trim the locale to
+	  just xx - but that's a different problem, and let's just focus on
+	  getting this working to begin with.
+	  
+	  Addresses Launchpad # 723489
+
+	* Add 830 as a controllable bibliographic field in authority
+	  linking script
+	  
+	  Per http://www.loc.gov/marc/bibliographic/bd830.html,
+	  bibliographic 830
+	  should be controlled by authority 130. The "common cataloging
+	  practice"
+	  in 830 of omitting non-filing characters may cause some entries
+	  to not be
+	  linked that otherwise would be.
+
+2011-02-23  miker
+
+	* include copy/call_number deletedness in staff-version copy counts
+
+2011-02-23  erickson
+
+	* clear out the hold_copy_map entries for holds cancelled via the
+	  clear-shelf processes
+
+2011-02-24  senator
+
+	* Per Robert Soulliere, it can be necessary in some cases to clean
+	  out bad
+	  data from action.reservation_transit_copy before applying the
+	  missing
+	  fkeys to said table.
+	  
+	  https://bugs.launchpad.net/evergreen/+bug/721450
+
+2011-02-24  gmc
+
+	* added missing columns to CDBI table definitions
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-02-24  dbwells
+
+	* Fix regex in maintain 901c
+	  
+	  The previous regex would delete any 901 fields *and* any fields
+	  which followed. Since the 901 is typically the last field, this
+	  problem didn't surface during testing.
+
+2011-02-24  gmc
+
+	* typo fix
+	  
+	  "Pat, I'd like to buy a vowel"
+	  
+	  Signed-off-by: Galen Charlton <gmc@esilibrary.com>
+
+2011-02-25  miker
+
+	* make sure asset.call_number.label_sortkey is up to date
+
+2011-02-25  erickson
+
+	* Updated org selector code in org setting UI
+	  
+	  Removed some ad-hoc org-unit tree widget code and replaced with
+	  the a standard solution from the openils dojo user lib.
+	  
+	  Pass the auth on org value retrieval to pick up perm-protected
+	  settings.
+	  
+	  Use STAFF_LOGIN for context selector perm, since each setting has
+	  its
+	  own perm that is checked before fetching.
+
+2011-03-01  dbs
+
+	* Add a TT helper to encode email headers in UTF-8
+	  
+	  This can and should be used to encode any headers (To, From,
+	  Subject, etc)
+	  in an email that might include text outside of the ASCII 7-bit
+	  range. Names
+	  of people or libraries, for example, that might otherwise come
+	  out garbled.
+
+2011-03-02  miker
+
+	* Call number sorting "before" the context needs to be segregated
+	  based on directly on the label, "here-and-after" on the bytea
+	  version. Testing bears this out, but more eyes would be
+	  appreciated.
+
+2011-03-03  dbs
+
+	* Draw SRU search indexes from config.metabib_search_alias
+	  
+	  We had hardcoded search indexes for SRU, but thanks to the work
+	  of Mike Rylander, it is fairly easy to remove that brittle code
+	  and replace it with code that polls the contents of
+	  config.metabib_search_alias and dumps it into the explain
+	  document.
+
+2011-03-03  miker
+
+	* Patch (mildly revised) from Anoop Atre to address new Postgres
+	  9.0 strictness requirements involving plan invalidation
+
+2011-03-03  erickson
+
+	* when using the force-reload option to reset timeout, propagate
+	  the ws_ou and wsid values from the cached user object into the
+	  reloaded user object
+
+2011-03-04  dbs
+
+	* Backport SRU fixes from trunk (r19572, r19573)
+	  
+	  Add complete set of Evergreen search aliases and attributes to
+	  SRU explain
+	  
+	  Original "pull from database" code had limited the search aliases
+	  to those
+	  that were qualified; now we pull all of them, and if they are not
+	  qualified,
+	  we qualify them as "eg".
+	  
+	  In addition, for some of the non-index attributes (sort,
+	  direction, site,
+	  available), restore the descriptive title that was previously
+	  available.
+	  Slightly longer term we will add a "description" column to
+	  config.metabib_search_alias to store this information.
+	  
+	  By returning explicit index and title elements from the method,
+	  we can backport cleanly to 2.0 and set the stage for pulling the
+	  title element directly from the database in 2.1 and beyond.
+	  
+	  In addition, the enriched object enables us to get rid of the
+	  hardcoded nested qualifier map for bibs.
+	  
+	  Finally, we also fix the mappings of SRU qualifiers to Evergreen
+	  search aliases (in many cases we had been quietly falling back
+	  to plain kw searches, which was not cool).
+
+2011-03-04  dbwells
+
+	* Respect a setting of depth=0. In particular, this fixes holdings
+	  requests for branch-level searches with an 'Everything' scope.
+
+2011-03-05  dbs
+
+	* Correct search index definitions for subject|complete and
+	  identifier|bibcn
+	  
+	  Dan Wells reported in LP# 729385 that the index definitions for
+	  subject|complete and identifier|bibcn were not working, and
+	  traced
+	  the problem to a change in how indexes are generated in 2.0+.
+	  Dropping
+	  the trailing '//text()' on these two indexes addresses the
+	  problem.
+	  
+	  Sites upgrading from a previous version of Evergreen 2.0 will
+	  want
+	  to refresh the indexes after applying this schema change to
+	  enable
+	  searches against subject|complete and identifier|bibcn to work.
+
+2011-03-07  dbs
+
+	* Fix cloning of AutoField widgets: LP #728055
+	  
+	  Cloning Action/Trigger event definitions was not working
+	  properly, as
+	  all values were being copied from the original object using their
+	  display
+	  strings rather than the underlying values.
+	  
+	  Bill Erickson suggested a fix in IRC that works, so full credit
+	  to him
+	  for this change!
+
+2011-03-07  miker
+
+	* We now require PG 9.0+, say as much in the README; also, other
+	  assorted updates to version numbers
+
+2011-03-08  dbwells
+
+	* Address LP bug #724583, "Paying Bills with Patron Credit does not
+	  always decrease patron Credit"
+
+2011-03-08  dbs
+
+	* Add missing ampersand to ind1 attribute in identifier index
+	  xpaths
+	  
+	  This addresses LP # 731564. Thanks to Dan Wells for identifying
+	  (hah)
+	  the identifier xpath problem!
+
+2011-03-09  dbwells
+
+	* Fix LP bug #727432, "overpaying with patron credit can generate a
+	  double credit"
+
+2011-03-09  miker
+
+	* 2.0.3 upgrade script
+
+	* .: Tagging 2.0.3
+
