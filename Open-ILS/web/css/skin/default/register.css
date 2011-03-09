@@ -70,7 +70,12 @@
 
 .dijitTextBoxFocused, .dijitFocused { border:1px dashed #3e3e3e; color: #303030; font-weight:bold;}
 
-.hide-non-required tr:not([required]) {
+.hide-non-required tr:not([required]), .hide-non-required tr[required=suggested] {
+    visibility:hidden;
+    display:none;
+}
+
+.hide-non-suggested tr:not([required]) {
     visibility:hidden;
     display:none;
 }
