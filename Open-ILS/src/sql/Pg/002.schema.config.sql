@@ -70,6 +70,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
+INSERT INTO config.upgrade_log (version) VALUES ('2.1-prealpha1'); -- miker for tsbere
 INSERT INTO config.upgrade_log (version) VALUES ('0497'); -- miker for tsbere
 
 CREATE TABLE config.bib_source (
