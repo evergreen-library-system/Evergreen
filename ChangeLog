@@ -227,3 +227,21 @@
 
 	* .: Tagging 2.0.3
 
+	* ChangeLog, Open-ILS/src/perlmods/OpenILS/Application.pm,
+	  Open-ILS/src/sql/Pg/002.schema.config.sql, README: bumping
+	  version number; adding changelog
+
+	* Open-ILS/web/opac/skin/default/js/myopac.js: Last minute
+	  side-port for 2.0.3 of r19655: Draw pre-cataloged items (author
+	  and title) in My Account checkedout screen
+	  
+	  Two problems: FETCH_MODS_FROM_COPY returns an object, so we
+	  weren't
+	  getting to the point of fetching the raw copy itself, and there
+	  was
+	  some confusion about pre-cataloged vs. non-cataloged items that
+	  is
+	  hopefully straightened out now.
+	  
+	  Addresses LP # 723895
+
