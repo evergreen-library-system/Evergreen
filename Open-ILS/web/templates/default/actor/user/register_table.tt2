@@ -99,11 +99,11 @@
     </tr>
 
     <!-- stat cats -->
-    <tr class='divider' id='stat-cat-divider'><td colspan='0'>Statistical Categories</td></tr>
-    <tr id='stat-cat-row-template'><td class='uedit-help'/><td name='name'/><td name='widget'/></tr>
+    <tr class='divider' id='stat-cat-divider' required='suggested'><td colspan='0'>Statistical Categories</td></tr>
+    <tr id='stat-cat-row-template'><td class='uedit-help' required='suggested'/><td name='name'/><td name='widget'/></tr>
 
     <!-- surveys -->
-    <tr id='survey-row-template' class='divider'><td colspan='0' name='name'/></tr>
-    <tr id='survey-question-row-template'><td class='uedit-help'/><td name='question'/><td name='answers'/></tr>
+    <tr id='survey-row-template' class='divider' required='suggested'><td colspan='0' name='name'/></tr>
+    <tr id='survey-question-row-template'><td class='uedit-help' required='suggested'/><td name='question'/><td name='answers'/></tr>
 </tbody>
 
