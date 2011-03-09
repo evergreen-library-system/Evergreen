@@ -769,7 +769,21 @@ function apply_payment() {
         payment_blob.payment_type = $('payment_type').value;
         var tally_blob = tally_pending();
         payment_blob.payments = tally_blob.payments;
-        payment_blob.patron_credit = $('convert_change_to_credit').checked ? tally_blob.change : '0.00'; 
+        // Handle patron credit
+        if ( payment_blob.payment_type == 'credit_payment' ) { // paying with patron credit
+            if ( $('convert_change_to_credit').checked ) {
+                // No need to convert credit into credit, handled automatically
+                payment_blob.patron_credit = '0.00';
+            } else {
+                // Cashing out extra credit as change
+                payment_blob.patron_credit = 0 - tally_blob.change;
+            }
+        } else if ( $('convert_change_to_credit').checked ) {
+            // Saving change from a non-credit payment as patron credit on server
+            payment_blob.patron_credit = tally_blob.change;
+        } else {
+            payment_blob.patron_credit = '0.00';
+        }
         if ( payment_blob.payments.length == 0 && payment_blob.patron_credit == '0.00' ) {
             alert($("patronStrings").getString('staff.patron.bills.apply_payment.nothing_applied'));
             return;
