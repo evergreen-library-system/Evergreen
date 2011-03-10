@@ -33,13 +33,15 @@
                         onmouseover="this.src='[% ctx.media_prefix %]/images/adv_search_hover.png';"
                         onmouseout="this.src='[% ctx.media_prefix %]/images/adv_search.png';" /></a>
                 </div>
+                [% IF ctx.mylist.size %]
                 <div class="results_header_btns cached_list_div">
-                    <a href="#" class="hide_me" id="cacheListLink"><img
+                    <a href="[% ctx.opac_root; ctx.user ? '/myopac/lists' : '/mylist' %]"><img
                         alt="View My List"
                         src="[% ctx.media_prefix %]/images/view_my_list.png"
                         onmouseover="this.src='[% ctx.media_prefix %]/images/view_my_list_hover.png';"
                         onmouseout="this.src='[% ctx.media_prefix %]/images/view_my_list.png';" /></a>
                 </div>
+                [% END %]
                 <div class="results_header_div"></div>
                 [% UNLESS CGI.param('_adv') %]
                     <div class="results_header_lbl">Sort by</div>

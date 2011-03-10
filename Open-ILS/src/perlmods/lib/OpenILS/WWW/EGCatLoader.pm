@@ -84,12 +84,17 @@ sub load {
 
     my $path = $self->apache->path_info;
 
+    (undef, $self->ctx->{mylist}) = $self->fetch_mylist unless
+        $path =~ /opac\/my(opac\/lists|list)/;
+
     return $self->load_simple("home") if $path =~ /opac\/home/;
     return $self->load_simple("advanced") if $path =~ /opac\/advanced/;
     return $self->load_rresults if $path =~ /opac\/results/;
     return $self->load_record if $path =~ /opac\/record/;
+
     return $self->load_mylist_add if $path =~ /opac\/mylist\/add/;
     return $self->load_mylist_del if $path =~ /opac\/mylist\/del/;
+    return $self->load_mylist if $path =~ /opac\/mylist/;
     return $self->load_cache_clear if $path =~ /opac\/cache\/clear/;
 
     # ----------------------------------------------------------------

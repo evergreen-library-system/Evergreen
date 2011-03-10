@@ -13,7 +13,7 @@ use constant ANON_CACHE_MYLIST => 'mylist';
 # Retrieve the users cached records AKA 'My List'
 # Returns an empty list if there are no cached records
 sub fetch_mylist {
-    my $self = shift;
+    my ($self, $with_marc_xml) = @_;
 
     my $list = [];
     my $cache_key = $self->cgi->cookie(COOKIE_ANON_CACHE);
@@ -32,8 +32,12 @@ sub fetch_mylist {
     }
 
     $self->apache->log->info("Found anon-cache list [@$list]");
+    my $marc_xml;
+    if ($with_marc_xml) {
+        $marc_xml = $self->fetch_marc_xml_by_id($list);
+    }
 
-    return ($cache_key, $list);
+    return ($cache_key, $list, $marc_xml);
 }
 
 
@@ -106,6 +110,14 @@ sub mylist_action_redirect {
             -expires => ($cache_key) ? undef : '-1h'
         )
     );
+}
+
+sub load_mylist {
+    my ($self) = shift;
+    (undef, $self->ctx->{mylist}, $self->ctx->{mylist_marc_xml}) =
+        $self->fetch_mylist(1);
+
+    return Apache2::Const::OK;
 }
 
 1;

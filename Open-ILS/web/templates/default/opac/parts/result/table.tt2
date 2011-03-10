@@ -181,26 +181,26 @@
                                                 <div style="width:250px;text-align:left;">
                                                     <div style="float:right;">
                                                         <div class="results_aux_utils opac-auto-010"><a
-                                                                href="[% ctx.opac_root %]/place_hold?hold_target=[% rec.bre.id %]&hold_type=T" name="place_hold_link"><img
+                                                                href="[% ctx.opac_root %]/place_hold?hold_target=[% rec.bre.id %]&hold_type=T" name="place_hold_link" class="no-dec"><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png"
                                                                 alt="place hold" /><span
                                                                     style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
                                                         </div>
                                                         <div class="results_aux_utils opac-auto-011">
+                                                            <form action="[% ctx.opac_root %]/mylist/add" method="POST">
+                                                                <input type="hidden" name="record" value="[% rec.bre.id %]" />
                                                             <div style="position:absolute;">
                                                                 <div style="position:relative;top:5px; left: 25px;">
-                                                                    <a title="Add to my list"
-                                                                        name="result_my_list_link"
-                                                                        href="javascript:;">Add to my list</a>
+                                                                    <input type="submit" title="[% l('Add to my list') %]" value="[% l('Add to my list') %]" class="subtle-button" />
                                                                 </div>
                                                             </div>
-                                                            <a href="javascript:;"
-                                                                name="result_my_list_link_img"><img
-                                                                alt="add to my list"
-                                                                src="[% ctx.media_prefix %]/images/clipboard.png" /></a>
+                                                                <input type="image"
+                                                                alt="[% l('Add to my list') %]"
+                                                                src="[% ctx.media_prefix %]/images/clipboard.png" />
+                                                        </form>
                                                         </div>
                                                         <div style="padding-top:7px;" class="results_aux_utils">
-                                                            <a title="Reviews and More" target="_blank"
+                                                            <a title="Reviews and More" target="_blank" class="no-dec"
                                                                 name="reviews_and_more" href="javascript:;"><img
                                                                 alt="reviews &amp; more"
                                                                 src="[% ctx.media_prefix %]/images/starz.png" /> <span

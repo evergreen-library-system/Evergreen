@@ -489,19 +489,31 @@ sub load_myopac_bookbags {
     my $self = shift;
     my $e = $self->editor;
     my $ctx = $self->ctx;
-    my $limit = $self->cgi->param('limit') || 0;
-    my $offset = $self->cgi->param('offset') || 0;
 
-    my $args = {order_by => {cbreb => 'name'}};
-    $args->{limit} = $limit if $limit;
-    $args->{offset} = $offset if $offset;
+    my $rv = $self->load_mylist;
+    return $rv if $rv ne Apache2::Const::OK;
 
-    (undef, $ctx->{mylist}) = $self->fetch_mylist;
+    my $args = {
+        order_by => {cbreb => 'name'},
+        limit => $self->cgi->param('limit') || 10,
+        offset => $self->cgi->param('limit') || 0
+    };
 
     $ctx->{bookbags} = $e->search_container_biblio_record_entry_bucket([
         {owner => $self->editor->requestor->id, btype => 'bookbag'},
-        $args
-    ]);
+        # XXX what to do about the possibility of really large bookbags here?
+        {"flesh" => 1, "flesh_fields" => {"cbreb" => ["items"]}, %$args}
+    ]) or return $e->die_event;
+
+    # get unique record IDs
+    my %rec_ids = ();
+    foreach my $bbag (@{$ctx->{bookbags}}) {
+        foreach my $item_id (map { $_->id } @{$bbag->items}) {
+            $rec_ids{$item_id} = 1;
+        }
+    }
+
+    $ctx->{bookbags_marc_xml} = $self->fetch_marc_xml_by_id(keys %rec_ids);
 
     return Apache2::Const::OK;
 }

@@ -940,3 +940,12 @@ div.select-wrapper:hover {
     padding-left: 5em; background-color: #d7d7d7; margin: 2ex 0;
 }
 .row-remover { position: relative; top: 1px; vertical-align: middle; }
+.subtle-button {
+    background-color: #ffffff;
+    color: #003399; text-decoration: none;
+    font-size: 12px;
+    padding: 0; border: 0; margin: 0;
+    vertical-align: middle;
+}
+.subtle-button:hover { text-decoration: underline; cursor: pointer; }
+.no-dec:hover { text-decoration: none; }

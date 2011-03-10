@@ -26,6 +26,7 @@ sub _prepare_biblio_search_basics {
 
         # This stuff probably will need refined or rethought to better handle
         # the weird things Real Users will surely type in.
+        $contains = "" unless defined $contains; # silence warning
         if ($contains eq 'nocontains') {
             $query =~ s/"//g;
             $query = ('"' . $query . '"') if index $query, ' ';
@@ -138,43 +139,16 @@ sub load_rresults {
 
     return Apache2::Const::OK if @$rec_ids == 0;
 
-    my $cstore1 = OpenSRF::AppSession->create('open-ils.cstore');
-    my $bre_req = $cstore1->request(
-        'open-ils.cstore.direct.biblio.record_entry.search', {id => $rec_ids});
-
-    my $search = OpenSRF::AppSession->create('open-ils.search');
-    my $facet_req = $search->request('open-ils.search.facet_cache.retrieve', $results->{facet_key}, 10);
-
-    my @data;
-    while(my $resp = $bre_req->recv) {
-        my $bre = $resp->content; 
-
-        # XXX farm out to multiple cstore sessions before loop, then collect after
-        my $copy_counts = $e->json_query(
-            {from => ['asset.record_copy_count', 1, $bre->id, 0]})->[0];
-
-        push(@data,
-            {
-                bre => $bre,
-                marc_xml => XML::LibXML->new->parse_string($bre->marc),
-                copy_counts => $copy_counts
-            }
-        );
-    }
-
-    $cstore1->kill_me;
+    my ($facets, @data) = $self->get_records_and_facets($rec_ids, $results->{facet_key});
 
     # shove recs into context in search results order
-    for my $rec_id (@$rec_ids) { 
+    for my $rec_id (@$rec_ids) {
         push(
             @{$ctx->{records}},
             grep { $_->{bre}->id == $rec_id } @data
         );
     }
 
-    my $facets = $facet_req->gather(1);
-
-    $facets->{$_} = {cmf => $ctx->{find_cmf}->($_), data => $facets->{$_}} for keys %$facets;  # quick-n-dirty
     $ctx->{search_facets} = $facets;
 
     return Apache2::Const::OK;

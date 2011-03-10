@@ -137,4 +137,73 @@ sub generic_redirect {
     return Apache2::Const::REDIRECT;
 }
 
+sub get_records_and_facets {
+    my ($self, $rec_ids, $facet_key) = @_;
+
+    my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
+    my $bre_req = $cstore->request(
+        'open-ils.cstore.direct.biblio.record_entry.search', {id => $rec_ids}
+    );
+
+    my $search = OpenSRF::AppSession->create('open-ils.search');
+    my $facet_req = $search->request(
+        'open-ils.search.facet_cache.retrieve', $facet_key, 10
+    ) if $facet_key;
+
+    my @data;
+    while (my $resp = $bre_req->recv) {
+        my $bre = $resp->content;
+
+        # XXX farm out to multiple cstore sessions before loop,
+        # then collect after
+        my $copy_counts = $self->editor->json_query(
+            {from => ['asset.record_copy_count', 1, $bre->id, 0]}
+        )->[0];
+
+        push @data, {
+            bre => $bre,
+            marc_xml => XML::LibXML->new->parse_string($bre->marc),
+            copy_counts => $copy_counts
+        };
+    }
+
+    $cstore->kill_me;
+
+    my $facets;
+    if ($facet_key) {
+        $facets = $facet_req->gather(1);
+
+        $facets->{$_} = {
+            cmf => $self->ctx->{find_cmf}->($_),
+            data => $facets->{$_}
+        } for keys %$facets;    # quick-n-dirty
+    } else {
+        $facets = undef;
+    }
+
+    return ($facets, @data);
+}
+
+sub fetch_marc_xml_by_id {
+    my ($self, $id_list) = @_;
+    $id_list = [$id_list] unless ref($id_list);
+    return {} if scalar(grep { defined $_ } @$id_list) < 1;
+
+    # I'm just sure there needs to be some more efficient way to get all of
+    # this.
+    my $results = $self->editor->json_query({
+        "select" => {"bre" => ["id", "marc"]},
+        "from" => {"bre" => {}},
+        "where" => {"id" => $id_list}
+    }) or return $self->editor->die_event;
+
+    my $marc_xml = {};
+    for my $r (@$results) {
+        $marc_xml->{$r->{"id"}} =
+            (new XML::LibXML)->parse_string($r->{"marc"});
+    }
+
+    return $marc_xml;
+}
+
 1;

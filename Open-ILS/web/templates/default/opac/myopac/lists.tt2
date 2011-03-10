@@ -1,36 +1,10 @@
 [%  PROCESS "default/opac/parts/header.tt2";
+    PROCESS "default/opac/parts/marc_misc.tt2";
     WRAPPER "default/opac/parts/base.tt2" +
         "default/opac/parts/myopac/base.tt2";
     myopac_page = "lists"  %]
-<div style="margin-top: 6px;margin-left:20px;width:250px;padding:5px;" id="mylist_div">
-
-    <!-- new list creation -->
-    <div style="padding-bottom: 7px;">
-        <h2 style="font-weight:normal;">[% l('Create new list') %]</h2>
-        [% l('Enter the name of the new list:') %]<br/>
-        <input type="text" id="mylist_new" />
-    </div>
-
-    <table cellpadding="0" cellspacing="10" border="0">
-        <tr>
-            <td>
-                [% l('Share this list?') %]
-                <a href="#"><img alt="Sharing Help"     
-                    src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
-            </td>
-            <td>
-                <input type="radio" value="0" name="shareList" checked="checked" />[% l('No') %]
-                <br/>
-                <input type="radio" value="1" name="shareList"/>[% l('Yes') %]
-            </td>
-        </tr>
-    </table>
-    <a href="#"><img alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png"/></a>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="#"><img alt="[% l('Cancel') %]" src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
-</div>
 <div id='myopac_bookbag_div' style="padding:5px;">
-    <div class="header_middle">
+    <!-- <div class="header_middle">
         <span id="acct_holds_header" style="float:left;">[% l('My Lists') %]</span>
         <span style="float:right;"><a class="hide_me" href="#">[% l('Export List') %]</a></span>
     </div>
@@ -42,50 +16,10 @@
                 <a href="#"><img alt="[% l('Save') %]" src="[% ctx.media_prefix %]/images/save-btn.png"/></a>
             </div>
         </div>
-    </div>
-    <div class="clear-both pad-top-ten">
-        <a href="#">[% l('+ Add new list') %]</a>
-    </div>
+    </div> -->
     <div id="temp_wrapper">
-        <div id='acct_list_template2' class="hide_me">
-            <div style="width:100%">
-                <table cellpadding="0" cellspacing="0" border="0">
-                    <tr>
-                        <td style="font-weight:bold;padding-right:10px;" id='anon_list_name'>
-                            [% l('Temporary List') %]
-                        </td>
-                        <td>
-                            <a href="#"><img
-                                alt="[% l('Anonymous List Help') %]"
-                                src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
-                        </td>
-                    </tr>
-                </table>
-                <div class="float-right"></div>
-                <div class="clear-both pad-bottom-five"></div>
-            </div>
-    
-            <table id="acct_list_header_anon" cellpadding='0' cellspacing='0' border='0'>
-                <tr>
-                    <td width="1%" style="padding-left:10px;"><input type="checkbox"/>
-                    </td>
-                    <td width="98%" style="padding-left:5px;">Title</td>
-                    <td width="1%">
-                        <select style='width:175px;margin-right:11px;'
-                            name="list_actions" id="sel_all_list_anon">
-                            <option value="0">[% l('-- Actions for this list --') %]</option>
-                            <option value="hold">[% l('Place Hold') %]</option>
-                            <option value="remove">[% l('Remove Items') %]</option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-            <table cellpadding='0' cellspacing='5' border='0'
-                width='91%' style='margin-left:5px;margin-top:5px;'>
-                <tbody id='anon_list_tbody'></tbody>
-            </table>
-            <br /><br />
-        </div>
+        [% INCLUDE "default/opac/parts/anon_list.tt2" %]
+        [% IF ctx.bookbags.size %]
         <div id='acct_lists_prime'>
             <div id='acct_list_template'>
                 <div style="width:100%">
@@ -112,7 +46,7 @@
                         </td>
                         <td width="98%" style="padding-left:5px;">Title</td>
                         <td width="1%">
-                            <select style='width:175px;margin-right:11px;' name="list_actions">
+                            <select class="opac-auto-179" name="list_actions">
                                 <option value="0">[% l('-- Actions for this list --') %]</option>
                                 <option value="hold">[% l('Place Hold') %]</option>
                                 <option value="remove">[% l('Remove Items') %]</option>
@@ -127,6 +61,7 @@
                 <br /><br />
             </div>
         </div>
+        [% END %]
     </div>
     <div id='myopac_delete_bookbag_warn' class='hide_me'>
         [% l("This will remove the selected bookbag and all items contained within the bookbag.  Are you sure you wish to continue?") %]
@@ -169,32 +104,6 @@
                 </td>
                 <td>
                     <a class='classic_link' href='#'>[% l("Delete") %]</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table width='100%' class='data_grid data_grid_center hide_me' style='margin-top: 10px;'>
-        <thead>
-            <tr><td>[% l("Create a new Bookbag") %]</td></tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td> 
-                    <span style='padding-right: 5px;'>
-                        [% l("Enter the name of the new Bookbag: ") %]
-                    </span>
-                    <input id='myopac_bookbag_new_name' type='text' /> 
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span style='padding: 5px;'>[% l("Share this Bookbag") %]</span>
-                    <a class='classic_link' href='#'><b>[% l("(Help)") %]</b></a>
-                    <span>[% l("Yes") %]</span>
-                    <input type='radio' name='bb_public' id='bb_public_yes'/>
-                    <span>[% l("No") %]</span>
-                    <input type='radio' name='bb_public' id='bb_public_no' checked='checked'/>
-                    <input style='padding-left: 10px;' type='submit' value='[% l("Submit") %]' />
                 </td>
             </tr>
         </tbody>
@@ -250,5 +159,32 @@
     <span class='hide_me' id='bb_update_success'>
         [% l("Bookbag successfully updated") %]
     </span>
+</div>
+<div style="margin-top: 6px;margin-left:20px;width:250px;padding:5px;" id="mylist_div">
+
+    <!-- new list creation -->
+    <div style="padding-bottom: 7px;">
+        <h2 style="font-weight:normal;">[% l('Create new list') %]</h2>
+        [% l('Enter the name of the new list:') %]<br/>
+        <input type="text" id="mylist_new" />
+    </div>
+
+    <table cellpadding="0" cellspacing="10" border="0">
+        <tr>
+            <td>
+                [% l('Share this list?') %]
+                <a href="#"><img alt="[% l('Sharing Help') %]"
+                    src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+            </td>
+            <td>
+                <input type="radio" value="0" name="shareList" checked="checked" />[% l('No') %]
+                <br/>
+                <input type="radio" value="1" name="shareList"/>[% l('Yes') %]
+            </td>
+        </tr>
+    </table>
+    <a href="#"><img alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png"/></a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="#"><img alt="[% l('Cancel') %]" src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
 </div>
 [% END %]
