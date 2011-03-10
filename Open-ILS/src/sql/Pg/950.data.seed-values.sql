@@ -1388,30 +1388,17 @@ INSERT INTO permission.perm_list (code) VALUES ('ADMIN_BOOKING_RESERVATION_ATTR_
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_ACQ_DISTRIB_FORMULA');
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_ACQ_FISCAL_YEAR');
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_ACQ_FUND_TAG');
-INSERT INTO permission.perm_list (code) VALUES ('ADMIN_ACQ_FUND');
-INSERT INTO permission.perm_list (code) VALUES ('VIEW_FUND');
-INSERT INTO permission.perm_list (code) VALUES ('MANAGE_FUND');
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_AGE_PROTECT_RULE');
-INSERT INTO permission.perm_list (code) VALUES ('ADMIN_CIRC_MATRIX_MATCHPOINT');
 INSERT INTO permission.perm_list (code) VALUES ('VIEW_CIRC_MATRIX_MATCHPOINT');
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_CIRC_MOD');
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_FIELD_DOC');
-INSERT INTO permission.perm_list (code) VALUES ('ADMIN_FUNDING_SOURCE');
-INSERT INTO permission.perm_list (code) VALUES ('MANAGE_FUNDING_SOURCE');
-INSERT INTO permission.perm_list (code) VALUES ('VIEW_FUNDING_SOURCE');
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_HOLD_CANCEL_CAUSE');
 INSERT INTO permission.perm_list (code) VALUES ('VIEW_HOLD_MATRIX_MATCHPOINT');
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_IDENT_TYPE');
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_MARC_CODE');
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_MAX_FINE_RULE');
-INSERT INTO permission.perm_list (code) VALUES ('ADMIN_PROVIDER');
-INSERT INTO permission.perm_list (code) VALUES ('MANAGE_PROVIDER');
-INSERT INTO permission.perm_list (code) VALUES ('VIEW_PROVIDER');
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_RECURING_FINE_RULE');
-INSERT INTO permission.perm_list (code) VALUES ('ADMIN_STANDING_PENALTY');
 INSERT INTO permission.perm_list (code) VALUES ('VIEW_STANDING_PENALTY');
-INSERT INTO permission.perm_list (code) VALUES ('ADMIN_TRIGGER_EVENT_DEF');
-INSERT INTO permission.perm_list (code) VALUES ('VIEW_TRIGGER_EVENT_DEF');
 INSERT INTO permission.perm_list (code) VALUES ('ADMIN_Z3950_SOURCE');
 
 -- ORG UNIT Settings
