@@ -245,3 +245,24 @@
 	  
 	  Addresses LP # 723895
 
+	* ChangeLog: updating changelog
+
+2011-03-09  dbs
+
+	* build/i18n/Makefile: 'newpo' in install_all_locales was wiping
+	  out all fr-CA translations
+	  
+	  Long story short, we would rather have install_all_locales fail
+	  loudly
+	  than silently wipe out fr-CA.
+
+2011-03-10  miker
+
+	* Open-ILS/src/sql/Pg/1.6.1-2.0-upgrade-db.sql: Side-port critical
+	  fixes for the 1.6.1 upgrade script (booking data retention, seed
+	  data renormalization)
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Circulate.pm: Skip
+	  fine generation when the fine interval is day-granular, meaning
+	  fines are handled by the nightly cron script
+
