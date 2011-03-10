@@ -110,6 +110,9 @@ INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('temp
 -- under a different name:
 
 ALTER TABLE booking.resource_type
+	ALTER COLUMN record TYPE BIGINT;
+
+ALTER TABLE booking.resource_type
 	ADD CONSTRAINT brt_name_and_record_once_per_owner UNIQUE(owner, name, record);
 
 -- Now upgrade permission.perm_list.  This is fairly complicated.
@@ -3184,9 +3187,44 @@ INSERT INTO action_trigger.validator (module,description) VALUES (
 -- additional opportunities for typos, since we already have the insert from
 -- an upgrade script.
 
-UPDATE action_trigger.environment
-SET event_def = 20
-WHERE event_def = 15;
+DELETE FROM action_trigger.event_definition
+WHERE id = 15;
+
+-- Only insert this if it's not there already
+INSERT INTO action_trigger.hook (key,core_type,description)
+ SELECT  'password.reset_request','aupr','Patron has requested a self-serve password reset'
+   WHERE (SELECT COUNT(*) FROM action_trigger.hook WHERE key = 'password.reset_request') = 0;
+
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, template)
+    VALUES (20, 'f', 1, 'Password reset request notification', 'password.reset_request', 'NOOP_True', 'SendEmail', '00:00:01',
+$$
+[%- USE date -%]
+[%- user = target.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || user.home_ou.email || default_sender %]
+Subject: [% user.home_ou.name %]: library account password reset request
+
+You have received this message because you, or somebody else, requested a reset
+of your library system password. If you did not request a reset of your library
+system password, just ignore this message and your current password will
+continue to work.
+
+If you did request a reset of your library system password, please perform
+the following steps to continue the process of resetting your password:
+
+1. Open the following link in a web browser: https://[% params.hostname %]/opac/password/[% params.locale || 'en-US' %]/[% target.uuid %]
+The browser displays a password reset form.
+
+2. Enter your new password in the password reset form in the browser. You must
+enter the password twice to ensure that you do not make a mistake. If the
+passwords match, you will then be able to log in to your library system account
+with the new password.
+
+$$);
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES
+    ( 20, 'usr' ),
+    ( 20, 'usr.home_ou' );
 
 UPDATE action_trigger.event
 SET event_def = 20
@@ -3195,9 +3233,6 @@ WHERE event_def = 15;
 UPDATE action_trigger.event_params
 SET event_def = 20
 WHERE event_def = 15;
-
-DELETE FROM action_trigger.event_definition
-WHERE id = 15;
 
 INSERT INTO action_trigger.event_definition (
         id,
@@ -8355,138 +8390,6 @@ ALTER TABLE action.transit_copy
 ADD COLUMN prev_dest INTEGER REFERENCES actor.org_unit( id )
 							 DEFERRABLE INITIALLY DEFERRED;
 
-DROP SCHEMA IF EXISTS booking CASCADE;
-
-CREATE SCHEMA booking;
-
-CREATE TABLE booking.resource_type (
-	id             SERIAL          PRIMARY KEY,
-	name           TEXT            NOT NULL,
-	fine_interval  INTERVAL,
-	fine_amount    DECIMAL(8,2)    NOT NULL DEFAULT 0,
-	owner          INT             NOT NULL
-	                               REFERENCES actor.org_unit( id )
-	                               DEFERRABLE INITIALLY DEFERRED,
-	catalog_item   BOOLEAN         NOT NULL DEFAULT FALSE,
-	transferable   BOOLEAN         NOT NULL DEFAULT FALSE,
-    record         BIGINT          REFERENCES biblio.record_entry (id)
-	                               DEFERRABLE INITIALLY DEFERRED,
-    max_fine       NUMERIC(8,2),
-    elbow_room     INTERVAL,
-    CONSTRAINT brt_name_and_record_once_per_owner UNIQUE(owner, name, record)
-);
-
-CREATE TABLE booking.resource (
-	id             SERIAL           PRIMARY KEY,
-	owner          INT              NOT NULL
-	                                REFERENCES actor.org_unit(id)
-	                                DEFERRABLE INITIALLY DEFERRED,
-	type           INT              NOT NULL
-	                                REFERENCES booking.resource_type(id)
-	                                DEFERRABLE INITIALLY DEFERRED,
-	overbook       BOOLEAN          NOT NULL DEFAULT FALSE,
-	barcode        TEXT             NOT NULL,
-	deposit        BOOLEAN          NOT NULL DEFAULT FALSE,
-	deposit_amount DECIMAL(8,2)     NOT NULL DEFAULT 0.00,
-	user_fee       DECIMAL(8,2)     NOT NULL DEFAULT 0.00,
-	CONSTRAINT br_unique UNIQUE (owner, barcode)
-);
-
--- For non-catalog items: hijack barcode for name/description
-
-CREATE TABLE booking.resource_attr (
-	id              SERIAL          PRIMARY KEY,
-	owner           INT             NOT NULL
-	                                REFERENCES actor.org_unit(id)
-	                                DEFERRABLE INITIALLY DEFERRED,
-	name            TEXT            NOT NULL,
-	resource_type   INT             NOT NULL
-	                                REFERENCES booking.resource_type(id)
-	                                ON DELETE CASCADE
-	                                DEFERRABLE INITIALLY DEFERRED,
-	required        BOOLEAN         NOT NULL DEFAULT FALSE,
-	CONSTRAINT bra_name_once_per_type UNIQUE(resource_type, name)
-);
-
-CREATE TABLE booking.resource_attr_value (
-	id               SERIAL         PRIMARY KEY,
-	owner            INT            NOT NULL
-	                                REFERENCES actor.org_unit(id)
-	                                DEFERRABLE INITIALLY DEFERRED,
-	attr             INT            NOT NULL
-	                                REFERENCES booking.resource_attr(id)
-	                                DEFERRABLE INITIALLY DEFERRED,
-	valid_value      TEXT           NOT NULL,
-	CONSTRAINT brav_logical_key UNIQUE(owner, attr, valid_value)
-);
-
-CREATE TABLE booking.resource_attr_map (
-	id               SERIAL         PRIMARY KEY,
-	resource         INT            NOT NULL
-	                                REFERENCES booking.resource(id)
-	                                ON DELETE CASCADE
-	                                DEFERRABLE INITIALLY DEFERRED,
-	resource_attr    INT            NOT NULL
-	                                REFERENCES booking.resource_attr(id)
-	                                ON DELETE CASCADE
-	                                DEFERRABLE INITIALLY DEFERRED,
-	value            INT            NOT NULL
-	                                REFERENCES booking.resource_attr_value(id)
-	                                DEFERRABLE INITIALLY DEFERRED,
-	CONSTRAINT bram_one_value_per_attr UNIQUE(resource, resource_attr)
-);
-
-CREATE TABLE booking.reservation (
-	request_time     TIMESTAMPTZ   NOT NULL DEFAULT now(),
-	start_time       TIMESTAMPTZ,
-	end_time         TIMESTAMPTZ,
-	capture_time     TIMESTAMPTZ,
-	cancel_time      TIMESTAMPTZ,
-	pickup_time      TIMESTAMPTZ,
-	return_time      TIMESTAMPTZ,
-	booking_interval INTERVAL,
-	fine_interval    INTERVAL,
-	fine_amount      DECIMAL(8,2),
-	target_resource_type  INT       NOT NULL
-	                                REFERENCES booking.resource_type(id)
-	                                ON DELETE CASCADE
-	                                DEFERRABLE INITIALLY DEFERRED,
-	target_resource  INT            REFERENCES booking.resource(id)
-	                                ON DELETE CASCADE
-	                                DEFERRABLE INITIALLY DEFERRED,
-	current_resource INT            REFERENCES booking.resource(id)
-	                                ON DELETE CASCADE
-	                                DEFERRABLE INITIALLY DEFERRED,
-	request_lib      INT            NOT NULL
-	                                REFERENCES actor.org_unit(id)
-	                                DEFERRABLE INITIALLY DEFERRED,
-	pickup_lib       INT            REFERENCES actor.org_unit(id)
-	                                DEFERRABLE INITIALLY DEFERRED,
-	capture_staff    INT            REFERENCES actor.usr(id)
-	                                DEFERRABLE INITIALLY DEFERRED,
-    max_fine         NUMERIC(8,2)
-) INHERITS (money.billable_xact);
-
-ALTER TABLE booking.reservation ADD PRIMARY KEY (id);
-
-ALTER TABLE booking.reservation
-	ADD CONSTRAINT booking_reservation_usr_fkey
-	FOREIGN KEY (usr) REFERENCES actor.usr (id)
-	DEFERRABLE INITIALLY DEFERRED;
-
-CREATE TABLE booking.reservation_attr_value_map (
-	id               SERIAL         PRIMARY KEY,
-	reservation      INT            NOT NULL
-	                                REFERENCES booking.reservation(id)
-	                                ON DELETE CASCADE
-	                                DEFERRABLE INITIALLY DEFERRED,
-	attr_value       INT            NOT NULL
-	                                REFERENCES booking.resource_attr_value(id)
-	                                ON DELETE CASCADE
-	                                DEFERRABLE INITIALLY DEFERRED,
-	CONSTRAINT bravm_logical_key UNIQUE(reservation, attr_value)
-);
-
 -- represents a circ chain summary
 CREATE TYPE action.circ_chain_summary AS (
     num_circs INTEGER,
@@ -8581,8 +8484,11 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
+DROP TRIGGER IF EXISTS mat_summary_create_tgr ON booking.reservation;
 CREATE TRIGGER mat_summary_create_tgr AFTER INSERT ON booking.reservation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_create ('reservation');
+DROP TRIGGER IF EXISTS mat_summary_change_tgr ON booking.reservation;
 CREATE TRIGGER mat_summary_change_tgr AFTER UPDATE ON booking.reservation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_update ();
+DROP TRIGGER IF EXISTS mat_summary_remove_tgr ON booking.reservation;
 CREATE TRIGGER mat_summary_remove_tgr AFTER DELETE ON booking.reservation FOR EACH ROW EXECUTE PROCEDURE money.mat_summary_delete ();
 
 ALTER TABLE config.standing_penalty
@@ -18807,16 +18713,6 @@ UPDATE action.reservation_transit_copy
 -- Recreate some foreign keys that were somehow dropped, probably
 -- by some kind of cascade from an inherited table:
 
-ALTER TABLE action.reservation_transit_copy
-	ADD CONSTRAINT artc_tc_fkey FOREIGN KEY (target_copy)
-		REFERENCES booking.resource(id)
-		ON DELETE CASCADE
-		DEFERRABLE INITIALLY DEFERRED,
-	ADD CONSTRAINT reservation_transit_copy_reservation_fkey FOREIGN KEY (reservation)
-		REFERENCES booking.reservation(id)
-		ON DELETE SET NULL
-		DEFERRABLE INITIALLY DEFERRED;
-
 CREATE INDEX user_bucket_item_target_user_idx
 	ON container.user_bucket_item ( target_user );
 
@@ -19066,6 +18962,17 @@ COMMIT;
 
 -- Some operations go outside of the transaction, because they may
 -- legitimately fail.
+
+ALTER TABLE action.reservation_transit_copy
+	ADD CONSTRAINT artc_tc_fkey FOREIGN KEY (target_copy)
+		REFERENCES booking.resource(id)
+		ON DELETE CASCADE
+		DEFERRABLE INITIALLY DEFERRED,
+	ADD CONSTRAINT reservation_transit_copy_reservation_fkey FOREIGN KEY (reservation)
+		REFERENCES booking.reservation(id)
+		ON DELETE SET NULL
+		DEFERRABLE INITIALLY DEFERRED;
+
 
 \qecho ALTERs of auditor.action_hold_request_history will fail if the table
 \qecho doesn't exist; ignore those errors if they occur.
