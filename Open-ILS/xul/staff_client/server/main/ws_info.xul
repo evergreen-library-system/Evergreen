@@ -155,6 +155,10 @@
         }
 
         function register() {
+            if(g.tb.value.length == 0) {
+                alert(document.getElementById('commonStrings').getString('staff.main.gen_offline_widgets.registration.empty'));
+                return;
+            }
             try {
                 var robj = g.network.simple_request(
                     'AUTH_WORKSTATION',
