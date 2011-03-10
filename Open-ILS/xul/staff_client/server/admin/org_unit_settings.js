@@ -29,10 +29,20 @@ function osInit(data) {
     contextOrg = user.user.ws_ou();
     openils.User.authtoken = authtoken;
 
-    var connect = function() { dojo.connect(contextOrg, 'onChange', osChangeContext); };
-    new openils.User().buildPermOrgSelector('STAFF_LOGIN', osContextSelector, null, connect);
+    var connect = function() { 
+        dojo.connect(contextOrg, 'onChange', osChangeContext); 
 
-    osDraw();
+        // don't draw the org settings grid unless the user has permission
+        // to view org settings in at least 1 org unit
+        osContextSelector.store.fetch({query: {}, start: 0, count: 0, 
+            onBegin: function(size) { 
+                if(size) { osDraw();  return; }
+                dojo.removeClass('no-perms', 'hide_me');
+            }
+        });
+    };
+
+    new openils.User().buildPermOrgSelector('VIEW_ORG_SETTINGS', osContextSelector, null, connect);
 }
 dojo.addOnLoad(osInit);
 
