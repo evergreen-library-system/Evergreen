@@ -2926,14 +2926,17 @@ sub generate_fines_start {
    my $self = shift;
    my $reservation = shift;
 
-   my $id = $reservation ? $self->reservation->id : $self->circ->id;
+   my $obj = $reservation ? $self->reservation: $self->circ;
+
+   # Don't generate fines on circs with a fine interval that's not day-granular
+   return undef if (OpenSRF::Utils->interval_to_seconds($obj->fine_interval) % 86400 == 0);
 
    if (!exists($self->{_gen_fines_req})) {
       $self->{_gen_fines_req} = OpenSRF::AppSession->create('open-ils.storage') 
           ->request(
              'open-ils.storage.action.circulation.overdue.generate_fines',
              undef,
-             $id
+             $obj->id
           );
    }
 
@@ -2943,6 +2946,8 @@ sub generate_fines_start {
 sub generate_fines_finish {
    my $self = shift;
    my $reservation = shift;
+
+   $self->{_gen_fines_req}->wait_complete if ($self->{_gen_fines_req});
 
    my $id = $reservation ? $self->reservation->id : $self->circ->id;
 
