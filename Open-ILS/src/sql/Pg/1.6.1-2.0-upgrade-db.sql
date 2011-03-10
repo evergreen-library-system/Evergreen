@@ -3170,33 +3170,44 @@ INSERT INTO action_trigger.validator (module,description) VALUES (
     )
 ;
 
--- What was event_definition #15 in v1.6.1 will be recreated as #20.  This
+
+-- The password reset event_definition in v1.6.1 will be moved to #20.  This
 -- renumbering requires some juggling:
 --
 -- 1. Update any child rows to point to #20.  These updates will temporarily
--- violate foreign key constraints, but that's okay as long as we create
+-- violate foreign key constraints, but that's okay as long as we have a
 -- #20 before committing.
 --
--- 2. Delete the old #15.
+-- 2. Update the id of the password reset event_definition to 20
 --
--- 3. Insert the new #15.
---
--- 4. Insert #20.
---
--- We could combine steps 2 and 3 into a single update, but that would create
--- additional opportunities for typos, since we already have the insert from
--- an upgrade script.
+-- This code might fail in some cases, but should work with all stock 1.6.1
+-- instances, whether fresh or via upgrade
 
-DELETE FROM action_trigger.event_definition
-WHERE id = 15;
+UPDATE action_trigger.environment
+SET event_def = 20
+WHERE event_def = (SELECT id FROM action_trigger.event_definition WHERE hook = 'password.reset_request' ORDER BY id ASC LIMIT 1);
 
--- Only insert this if it's not there already
+UPDATE action_trigger.event
+SET event_def = 20
+WHERE event_def = (SELECT id FROM action_trigger.event_definition WHERE hook = 'password.reset_request' ORDER BY id ASC LIMIT 1);
+
+UPDATE action_trigger.event_params
+SET event_def = 20
+WHERE event_def = (SELECT id FROM action_trigger.event_definition WHERE hook = 'password.reset_request' ORDER BY id ASC LIMIT 1);
+
+UPDATE action_trigger.event_definition
+SET id = 20
+WHERE id = (SELECT id FROM action_trigger.event_definition WHERE hook = 'password.reset_request' ORDER BY id ASC LIMIT 1);
+
+
+-- Let's also take the opportunity to rebuild the trigger
+-- if it got mangled somehow
 INSERT INTO action_trigger.hook (key,core_type,description)
  SELECT  'password.reset_request','aupr','Patron has requested a self-serve password reset'
    WHERE (SELECT COUNT(*) FROM action_trigger.hook WHERE key = 'password.reset_request') = 0;
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, template)
-    VALUES (20, 'f', 1, 'Password reset request notification', 'password.reset_request', 'NOOP_True', 'SendEmail', '00:00:01',
+    SELECT 20, 'f', 1, 'Password reset request notification', 'password.reset_request', 'NOOP_True', 'SendEmail', '00:00:01',
 $$
 [%- USE date -%]
 [%- user = target.usr -%]
@@ -3220,19 +3231,16 @@ enter the password twice to ensure that you do not make a mistake. If the
 passwords match, you will then be able to log in to your library system account
 with the new password.
 
-$$);
+$$
+   WHERE (SELECT COUNT(*) FROM action_trigger.event_definition WHERE id = 20) = 0;
 
-INSERT INTO action_trigger.environment ( event_def, path) VALUES
-    ( 20, 'usr' ),
-    ( 20, 'usr.home_ou' );
+INSERT INTO action_trigger.environment ( event_def, path)
+    SELECT 20, 'usr'
+		WHERE (SELECT COUNT(*) FROM action_trigger.environment WHERE event_def = 20 AND path = 'usr') = 0;
 
-UPDATE action_trigger.event
-SET event_def = 20
-WHERE event_def = 15;
-
-UPDATE action_trigger.event_params
-SET event_def = 20
-WHERE event_def = 15;
+INSERT INTO action_trigger.environment ( event_def, path)
+    SELECT 20, 'usr.home_ou'
+		WHERE (SELECT COUNT(*) FROM action_trigger.environment WHERE event_def = 20 AND path = 'usr.home_ou') = 0;
 
 INSERT INTO action_trigger.event_definition (
         id,
