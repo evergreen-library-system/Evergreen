@@ -1734,6 +1734,7 @@
 <!ENTITY staff.server.admin.org_unit_settings.title "Organization Unit Settings">
 <!ENTITY staff.server.admin.org_unit_settings.context "Context Location">
 <!ENTITY staff.server.admin.org_unit_settings.uninherited " * Indicates the setting is not inherited from the parent org unit at run time">
+<!ENTITY staff.server.admin.org_unit_settings.no_perms "You do not have permission to view org unit settings">
 <!ENTITY staff.server.admin.org_unit_settings.edit_setting "Edit Setting">
 <!ENTITY staff.server.admin.org_unit_settings.delete_setting "Delete Setting">
 <!ENTITY staff.server.admin.org_unit_settings.update_setting "Update Setting">
