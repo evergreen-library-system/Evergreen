@@ -29,5 +29,6 @@
     "AUTO_ATTR_VALUE_reset": "Clear / New Patron",
     "AUTO_ATTR_VALUE_pickup": "Pick up",
     "AUTO_ATTR_VALUE_return": "Return",
-    "ADDRESS": "${0}\n${1}\n${2}, ${3} ${4}"
+    "ADDRESS": "${0}\n${1}\n${2}, ${3} ${4}",
+    "COPY_ALERT": "${0}:\n${1}\n\nDo you wish to return it anyway?"
 }
