@@ -266,3 +266,22 @@
 	  fine generation when the fine interval is day-granular, meaning
 	  fines are handled by the nightly cron script
 
+	* ChangeLog: updating changelog for last minute fixes
+
+2011-03-10  senator
+
+	* Open-ILS/src/perlmods/OpenILS/Application/Circ/Circulate.pm,
+	  Open-ILS/web/js/dojo/openils/booking/nls/pickup_and_return.js,
+	  Open-ILS/web/js/ui/default/booking/populator.js: Backport r19682
+	  from trunk
+	  
+	  Booking: don't bail out completely on COPY_ALERT_MESSAGE when
+	  returning items
+	  
+	  Provide overridability.
+
+2011-03-10  dbwells
+
+	* Open-ILS/src/sql/Pg/1.6.1-2.0-upgrade-db.sql: Make the password
+	  reset upgrade safe for fresh DBs, upgraded DBs, and mangled DBs
+
