@@ -18,7 +18,8 @@ CREATE TABLE vandelay.queued_record (
     create_time	TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
     import_time	TIMESTAMP WITH TIME ZONE,
 	purpose		TEXT						NOT NULL DEFAULT 'import' CHECK (purpose IN ('import','overlay')),
-    marc		TEXT                        NOT NULL
+    marc		TEXT                        NOT NULL,
+    quality     INT                         NOT NULL DEFAULT 0
 );
 
 
@@ -95,7 +96,8 @@ CREATE TABLE vandelay.bib_match (
 	field_type		TEXT		NOT NULL CHECK (field_type in ('isbn','tcn_value','id')),
 	matched_attr	INT			REFERENCES vandelay.queued_bib_record_attr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	queued_record	BIGINT		REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	eg_record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+	eg_record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    quality         INT         NOT NULL DEFAULT 0
 );
 
 -- DROP TABLE vandelay.import_item CASCADE;
@@ -143,6 +145,251 @@ CREATE TABLE vandelay.merge_profile (
 	CONSTRAINT add_replace_strip_or_preserve CHECK ((preserve_spec IS NOT NULL OR replace_spec IS NOT NULL) OR (preserve_spec IS NULL AND replace_spec IS NULL))
 );
 
+CREATE TABLE vandelay.match_set (
+    id      SERIAL  PRIMARY KEY,
+    name    TEXT        NOT NULL,
+    owner   INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE,
+    mtype   TEXT        NOT NULL DEFAULT 'biblio', -- 'biblio','authority','mfhd'?, others?
+    CONSTRAINT name_once_per_owner_mtype UNIQUE (name, owner, mtype)
+);
+
+-- Table to define match points, either FF via SVF or tag+subfield
+CREATE TABLE vandelay.match_set_point (
+    id          SERIAL  PRIMARY KEY,
+    match_set   INT     NOT NULL REFERENCES vandelay.match_set (id),
+    fixed_field TEXT, -- should exist in config.marc21_ff_pos_map.fixed_field
+    tag         TEXT,
+    subfield    TEXT,
+    required    BOOL    NOT NULL DEFAULT TRUE,
+    quality     INT     NOT NULL DEFAULT 1, -- higher is better
+    CONSTRAINT vmsp_need_a_subfield_with_a_tag CHECK ((tag IS NOT NULL AND subfield IS NOT NULL) OR tag IS NULL),
+    CONSTRAINT vmsp_need_a_tag_or_a_ff CHECK (tag IS NOT NULL AND fixed_field IS NULL) OR (tag IS NULL AND fixed_field IS NOT NULL)),
+    CONSTRAINT vmsp_def_once_per_set UNIQUE (match_set, COALESCE(tag,''), COALESCE(subfield,''), COALESCE(fixed_field,''))
+);
+
+CREATE TABLE vandelay.match_set_quality (
+    id          SERIAL  PRIMARY KEY,
+    match_set   INT     NOT NULL REFERENCES vandelay.match_set (id),
+    fixed_field TEXT, -- should exist in config.marc21_ff_pos_map.fixed_field
+    tag         TEXT,
+    subfield    TEXT,
+    value       TEXT    NOT NULL,
+    quality     INT     NOT NULL DEFAULT 1, -- higher is better
+    CONSTRAINT vmsq_need_a_subfield_with_a_tag CHECK ((tag IS NOT NULL AND subfield IS NOT NULL) OR tag IS NULL),
+    CONSTRAINT vmsq_need_a_tag_or_a_ff CHECK (tag IS NOT NULL AND fixed_field IS NULL) OR (tag IS NULL AND fixed_field IS NOT NULL)),
+    CONSTRAINT vmsq_def_once_per_set UNIQUE (match_set, COALESCE(tag,''), COALESCE(subfield,''), COALESCE(fixed_field,''))
+);
+
+CREATE OR REPLACE FUNCTION vandelay.marc21_record_type( marc TEXT ) RETURNS config.marc21_rec_type_map AS $func$
+DECLARE
+    ldr         TEXT;
+    tval        TEXT;
+    tval_rec    RECORD;
+    bval        TEXT;
+    bval_rec    RECORD;
+    retval      config.marc21_rec_type_map%ROWTYPE;
+BEGIN
+    ldr := oils_xpath_string( '//*[local-name()="leader"]', marc );
+
+    IF ldr IS NULL OR ldr = '' THEN
+        SELECT * INTO retval FROM config.marc21_rec_type_map WHERE code = 'BKS';
+        RETURN retval;
+    END IF;
+
+    SELECT * INTO tval_rec FROM config.marc21_ff_pos_map WHERE fixed_field = 'Type' LIMIT 1; -- They're all the same
+    SELECT * INTO bval_rec FROM config.marc21_ff_pos_map WHERE fixed_field = 'BLvl' LIMIT 1; -- They're all the same
+
+
+    tval := SUBSTRING( ldr, tval_rec.start_pos + 1, tval_rec.length );
+    bval := SUBSTRING( ldr, bval_rec.start_pos + 1, bval_rec.length );
+
+    -- RAISE NOTICE 'type %, blvl %, ldr %', tval, bval, ldr;
+
+    SELECT * INTO retval FROM config.marc21_rec_type_map WHERE type_val LIKE '%' || tval || '%' AND blvl_val LIKE '%' || bval || '%';
+
+
+    IF retval.code IS NULL THEN
+        SELECT * INTO retval FROM config.marc21_rec_type_map WHERE code = 'BKS';
+    END IF;
+
+    RETURN retval;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.marc21_extract_fixed_field( marc TEXT, ff TEXT ) RETURNS TEXT AS $func$
+DECLARE
+    rtype       TEXT;
+    ff_pos      RECORD;
+    tag_data    RECORD;
+    val         TEXT;
+BEGIN
+    rtype := (vandelay.marc21_record_type( marc )).code;
+    FOR ff_pos IN SELECT * FROM config.marc21_ff_pos_map WHERE fixed_field = ff AND rec_type = rtype ORDER BY tag DESC LOOP
+        FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(ff_pos.tag) || '"]/text()', marc ) ) x(value) LOOP
+            val := SUBSTRING( tag_data.value, ff_pos.start_pos + 1, ff_pos.length );
+            RETURN val;
+        END LOOP;
+        val := REPEAT( ff_pos.default_val, ff_pos.length );
+        RETURN val;
+    END LOOP;
+
+    RETURN NULL;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE TYPE biblio.record_ff_map AS (record BIGINT, ff_name TEXT, ff_value TEXT);
+CREATE OR REPLACE FUNCTION vandelay.marc21_extract_all_fixed_fields( marc TEXT ) RETURNS SETOF biblio.record_ff_map AS $func$
+DECLARE
+    tag_data    TEXT;
+    rtype       TEXT;
+    ff_pos      RECORD;
+    output      biblio.record_ff_map%ROWTYPE;
+BEGIN
+    rtype := (vandelay.marc21_record_type( marc )).code;
+
+    FOR ff_pos IN SELECT * FROM config.marc21_ff_pos_map WHERE rec_type = rtype ORDER BY tag DESC LOOP
+        output.ff_name  := ff_pos.fixed_field;
+        output.ff_value := NULL;
+
+        FOR tag_data IN SELECT value FROM UNNEST( oils_xpath( '//*[@tag="' || UPPER(tag) || '"]/text()', marc ) ) x(value) LOOP
+            output.ff_value := SUBSTRING( tag_data.value, ff_pos.start_pos + 1, ff_pos.length );
+            IF output.ff_value IS NULL THEN output.ff_value := REPEAT( ff_pos.default_val, ff_pos.length ); END IF;
+            RETURN NEXT output;
+            output.ff_value := NULL;
+        END LOOP;
+
+    END LOOP;
+
+    RETURN;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE TYPE biblio.marc21_physical_characteristics AS ( id INT, record BIGINT, ptype TEXT, subfield INT, value INT );
+CREATE OR REPLACE FUNCTION vandelay.marc21_physical_characteristics( marc TEXT) RETURNS SETOF biblio.marc21_physical_characteristics AS $func$
+DECLARE
+    rowid   INT := 0;
+    _007    TEXT;
+    ptype   config.marc21_physical_characteristic_type_map%ROWTYPE;
+    psf     config.marc21_physical_characteristic_subfield_map%ROWTYPE;
+    pval    config.marc21_physical_characteristic_value_map%ROWTYPE;
+    retval  biblio.marc21_physical_characteristics%ROWTYPE;
+BEGIN
+
+    _007 := oils_xpath_string( '//*[@tag="007"]', marc );
+
+    IF _007 IS NOT NULL AND _007 <> '' THEN
+        SELECT * INTO ptype FROM config.marc21_physical_characteristic_type_map WHERE ptype_key = SUBSTRING( _007, 1, 1 );
+
+        IF ptype.ptype_key IS NOT NULL THEN
+            FOR psf IN SELECT * FROM config.marc21_physical_characteristic_subfield_map WHERE ptype_key = ptype.ptype_key LOOP
+                SELECT * INTO pval FROM config.marc21_physical_characteristic_value_map WHERE ptype_subfield = psf.id AND value = SUBSTRING( _007, psf.start_pos + 1, psf.length );
+
+                IF pval.id IS NOT NULL THEN
+                    rowid := rowid + 1;
+                    retval.id := rowid;
+                    retval.ptype := ptype.ptype_key;
+                    retval.subfield := psf.id;
+                    retval.value := pval.id;
+                    RETURN NEXT retval;
+                END IF;
+
+            END LOOP;
+        END IF;
+    END IF;
+
+    RETURN;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREAT TYPE vandelay.flat_marc AS ( tag CHAR(3), ind1 TEXT, ind2 TEXT, subfield TEXT, value TEXT );
+CREATE OR REPLACE FUNCTION vandelay.flay_marc ( TEXT ) RETURNS SETOF vandelay.flat_marc AS $func$
+
+use MARC::Record;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
+
+my $xml = shift;
+my $r = MARC::Record->new_from_xml( $xml );
+
+return_next( { tag => 'LDR', value => $r->leader } );
+
+for my $f ( $r->fields ) {
+    if ($f->is_control_field) {
+        return_next({ tag => $f->tag, value => $f->data });
+    } else {
+        for my $s ($f->subfields) {
+            return_next({
+                tag      => $f->tag,
+                ind1     => $f->indicator(1),
+                ind2     => $f->indicator(2),
+                subfield => $s->[0],
+                value    => $s->[1]
+            });
+
+            if ( $f->tag eq '245' and $s->[0] eq 'a' ) {
+                my $trim = $f->indicator(2) || 0;
+                return_next({
+                    tag      => 'tnf',
+                    ind1     => $f->indicator(1),
+                    ind2     => $f->indicator(2),
+                    subfield => 'a',
+                    value    => substr( $s->[1], $trim )
+                });
+            }
+        }
+    }
+}
+
+return undef;
+
+$func$ LANGUAGE PLPERLU;
+
+CREATE OR REPLACE FUNCTION vandelay.flatten_marc ( marc TEXT ) RETURNS SETOF vandelay.flat_marc AS $func$
+DECLARE
+    output  vandelay.flat_marc%ROWTYPE;
+    field   RECORD;
+BEGIN
+    FOR field IN SELECT * FROM vandelay.flay_marc( marc ) LOOP
+        output.ind1 := field.ind1;
+        output.ind2 := field.ind2;
+        output.tag := field.tag;
+        output.subfield := field.subfield;
+        IF field.subfield IS NOT NULL AND field.tag NOT IN ('020','022','024') THEN -- exclude standard numbers and control fields
+            output.value := naco_normalize(field.value, field.subfield);
+        ELSE
+            output.value := field.value;
+        END IF;
+
+        CONTINUE WHEN output.value IS NULL;
+
+        RETURN NEXT output;
+    END LOOP;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.incoming_record_quality ( xml TEXT, match_set_id INT ) RETURNS INT AS $_$
+DECLARE
+    out_q   INT := 0;
+    rvalue  TEXT;
+    test    vandelay.match_set_quality%ROWTYPE;
+BEGIN
+
+    FOR test IN SELECT * FROM vandelay.match_set_quality WHERE match_set = match_set_id LOOP
+        IF test.tag IS NOT NULL THEN
+            FOR rvalue IN SELECT value FROM vandelay.flatten_marc( xml ) WHERE tag = test.tag AND subfield = test.subfield LOOP
+                IF test.value = rvalue THEN
+                    out_q := out_q + test.quality;
+                END IF;
+            END LOOP;
+        ELSIF test.fixed_field IS NOT NULL THEN -- a named fixed field, see config.marc21_ff_pos_map.fixed_field
+            IF test.value = vandelay.marc21_extract_fixed_field(xml, test.fixed_field) THEN
+                out_q := out_q + test.quality;
+            END IF;
+        END IF;
+    END LOOP;
+
+    RETURN out_q;
+END;
+$_$ LANGUAGE PLPGSQL;
 
 CREATE TYPE vandelay.tcn_data AS (tcn TEXT, tcn_source TEXT, used BOOL);
 CREATE OR REPLACE FUNCTION vandelay.find_bib_tcn_data ( xml TEXT ) RETURNS SETOF vandelay.tcn_data AS $_$
