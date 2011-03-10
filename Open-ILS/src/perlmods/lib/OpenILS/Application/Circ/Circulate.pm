@@ -180,6 +180,10 @@ __PACKAGE__->register_method(
 );
 __PACKAGE__->register_method(
     method   => "run_method",
+    api_name => "open-ils.circ.reservation.return.override"
+);
+__PACKAGE__->register_method(
+    method   => "run_method",
     api_name => "open-ils.circ.checkout.inspect",
     desc     => q/Returns the circ matrix test result and, on success, the rule set and matrix test object/
 );
