@@ -155,7 +155,7 @@ sub process_payment {
             $argshash->{patron_id},
             {
                 flesh        => 1,
-                flesh_fields => { au => ["mailing_address"] }
+                flesh_fields => { au => ["mailing_address", "card"] }
             }
         ]
     ) or return $e->event;
@@ -197,6 +197,9 @@ sub prepare_bop_content {
     $content{FirstName}    = $content{first_name};   # kludge mcugly for PP
     $content{LastName}     = $content{last_name};
 
+    # makes patron barcode accessible in CC payment records
+    my $bc = ($patron->card) ? $patron->card->barcode : '';
+    $content{description}  = "$bc " . ($content{description} || '');
 
     # Especially for the following fields, do we need to support different
     # mapping of fields for different payment processors, particularly ones
