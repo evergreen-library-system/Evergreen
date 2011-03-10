@@ -3187,9 +3187,44 @@ INSERT INTO action_trigger.validator (module,description) VALUES (
 -- additional opportunities for typos, since we already have the insert from
 -- an upgrade script.
 
-UPDATE action_trigger.environment
-SET event_def = 20
-WHERE event_def = 15;
+DELETE FROM action_trigger.event_definition
+WHERE id = 15;
+
+-- Only insert this if it's not there already
+INSERT INTO action_trigger.hook (key,core_type,description)
+ SELECT  'password.reset_request','aupr','Patron has requested a self-serve password reset'
+   WHERE (SELECT COUNT(*) FROM action_trigger.hook WHERE key = 'password.reset_request') = 0;
+
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, template)
+    VALUES (20, 'f', 1, 'Password reset request notification', 'password.reset_request', 'NOOP_True', 'SendEmail', '00:00:01',
+$$
+[%- USE date -%]
+[%- user = target.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || user.home_ou.email || default_sender %]
+Subject: [% user.home_ou.name %]: library account password reset request
+
+You have received this message because you, or somebody else, requested a reset
+of your library system password. If you did not request a reset of your library
+system password, just ignore this message and your current password will
+continue to work.
+
+If you did request a reset of your library system password, please perform
+the following steps to continue the process of resetting your password:
+
+1. Open the following link in a web browser: https://[% params.hostname %]/opac/password/[% params.locale || 'en-US' %]/[% target.uuid %]
+The browser displays a password reset form.
+
+2. Enter your new password in the password reset form in the browser. You must
+enter the password twice to ensure that you do not make a mistake. If the
+passwords match, you will then be able to log in to your library system account
+with the new password.
+
+$$);
+
+INSERT INTO action_trigger.environment ( event_def, path) VALUES
+    ( 20, 'usr' ),
+    ( 20, 'usr.home_ou' );
 
 UPDATE action_trigger.event
 SET event_def = 20
@@ -3198,9 +3233,6 @@ WHERE event_def = 15;
 UPDATE action_trigger.event_params
 SET event_def = 20
 WHERE event_def = 15;
-
-DELETE FROM action_trigger.event_definition
-WHERE id = 15;
 
 INSERT INTO action_trigger.event_definition (
         id,
