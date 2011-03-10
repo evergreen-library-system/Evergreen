@@ -172,6 +172,9 @@ __PACKAGE__->register_method(
     api_name    => "open-ils.circ.reservation.pickup");
 __PACKAGE__->register_method(
     method  => "run_method",
+    api_name    => "open-ils.circ.reservation.return.override");
+__PACKAGE__->register_method(
+    method  => "run_method",
     api_name    => "open-ils.circ.reservation.return");
 
 __PACKAGE__->register_method(
