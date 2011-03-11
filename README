@@ -124,7 +124,7 @@ up a database called "evergreen". Note that the location of the PostgreSQL
 commands, we assume that you are working with PostgreSQL 9.0 on a Debian-based
 system:
 
-createdb --template template0 --encoding UNICODE evergreen
+createdb --template template0 --lc-ctype=C --lc-collate=C --encoding UNICODE evergreen
 createlang plperl evergreen
 createlang plperlu evergreen
 createlang plpgsql evergreen
