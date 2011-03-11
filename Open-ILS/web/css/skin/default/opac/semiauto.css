@@ -24,8 +24,8 @@
 
 #lib_selector_span { display: none }
 .float-left { float: left; }
-.opac-auto-039 { float: left; font-weight: bold; padding-top: 5px; }
-.opac-auto-040 { float: left; padding: 5px 0px 0px 10px; }
+.bookbag-name { float: left; font-weight: bold; padding-top: 5px; }
+.bookbag-share { float: left; padding: 5px 0px 0px 10px; }
 .left-corner { float: left; width: 163px; height: 30px; background: url('/images/utils-corner-mid.png') repeat-x top; }
 .float-right { float: right; }
 .opac-auto-045 { float: right; margin-right: 17px; }
@@ -55,7 +55,7 @@
 .opac-auto-070 { margin-bottom: 20px; }
 .opac-auto-071 { margin-bottom: 5px; }
 .opac-auto-072 { margin-left: 20px; }
-.opac-auto-073 { margin-left: 5px; margin-top: 5px; }
+.bookbag-list { margin-left: 5px; margin-top: 5px; width: 91%; border: 0;}
 #cn_browse_where { margin-left: 6px; }
 .opac-auto-075 { margin-right: 20px; }
 .opac-auto-076 { margin-right: 3px; }
@@ -152,7 +152,7 @@
 .opac-auto-168 { width: 100%; border: 2px solid #E0F0E0; margin-bottom: 20px; }
 .opac-auto-169 { width: 100%; height: 100%; }
 .opac-auto-170 { width: 100%; margin-top: 20px; border-top: 1px dotted #ccc; padding-top: 8px; }
-.opac-auto-171 { width: 100%; text-align: center; font-weight: 700; margin-top: 10px; }
+.opac-auto-171 { font-size: 120%; text-align: center; font-style: italic; }
 .opac-auto-172 { width: 100%; text-align: center; padding-bottom: 5px; }
 .opac-auto-173 { width: 10px; }
 .opac-auto-174 { width: 111px; height: 25px; }

@@ -60,17 +60,19 @@ sub load_mylist_add {
 # Removes a record ID from My List
 sub load_mylist_del {
     my $self = shift;
-    my $rec_id = $self->cgi->param('record');
+    my @rec_ids = $self->cgi->param('record');
 
     my ($cache_key, $list) = $self->fetch_mylist;
     return $self->mylist_action_redirect unless $cache_key;
 
-    $list = [ grep { $_ ne $rec_id } @$list ];
+    my @keep;
+    foreach my $id (@$list) { push(@keep, $id) unless grep { $id eq $_ } @rec_ids; }
 
     $cache_key = $U->simplereq(
         'open-ils.actor',
         'open-ils.actor.anon_cache.set_value', 
-        $cache_key, ANON_CACHE_MYLIST, $list);
+        $cache_key, ANON_CACHE_MYLIST, \@keep
+    );
 
     return $self->mylist_action_redirect($cache_key);
 }

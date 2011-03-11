@@ -528,7 +528,8 @@ sub load_myopac_bookbag_update {
     my $action = $cgi->param('action');
     my $list_id = $cgi->param('list');
     my $add_rec = $cgi->param('add_rec');
-    my $del_item = $cgi->param('del_item');
+    my @del_item = $cgi->param('del_item');
+    my $shared = $cgi->param('shared');
     my $name = $cgi->param('name');
     my $success = 0;
     my $list;
@@ -538,7 +539,7 @@ sub load_myopac_bookbag_update {
         $list->name($name);
         $list->owner($e->requestor->id);
         $list->btype('bookbag');
-        $list->pub('f');
+        $list->pub($shared ? 't' : 'f');
         $success = $U->simplereq('open-ils.actor', 
             'open-ils.actor.container.create', $e->authtoken, 'biblio', $list)
 
@@ -583,8 +584,13 @@ sub load_myopac_bookbag_update {
             'open-ils.actor.container.item.create', $e->authtoken, 'biblio', $item);
 
     } elsif($action eq 'del_item') {
-        $success = $U->simplereq('open-ils.actor', 
-            'open-ils.actor.container.item.delete', $e->authtoken, 'biblio', $del_item);
+        foreach (@del_item) {
+            $success = $U->simplereq(
+                'open-ils.actor',
+                'open-ils.actor.container.item.delete', $e->authtoken, 'biblio', $_
+            );
+            last unless $success;
+        }
     }
 
     return $self->generic_redirect if $success;

@@ -9,7 +9,11 @@
     </div>
     <div id="content-wrapper">
         <div id="main-content">
-            [% INCLUDE "default/opac/parts/anon_list.tt2" %]
+            [%  IF ctx.mylist.size;
+                    INCLUDE "default/opac/parts/anon_list.tt2";
+                ELSE %]
+                <div class="opac-auto-171 opac-auto-097">[% l("You have not created a list yet."); %]</div>
+                [% END %]
             <div class="common-full-pad"></div>	
         </div>
     </div>
