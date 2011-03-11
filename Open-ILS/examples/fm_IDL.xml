@@ -275,6 +275,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
 			<field reporter:label="Type" name="queue_type" reporter:datatype="text"/>
+			<field reporter:label="Quality" name="quality" reporter:datatype="int"/>
 			<field reporter:label="Item Import Attribute Definition" name="item_attr_def" reporter:datatype="link"/>
 		</fields>
 		<links>
@@ -369,6 +370,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Matched Attribute" name="matched_attr" reporter:datatype="link"/>
 			<field reporter:label="Evergreen Record" name="eg_record" reporter:datatype="link"/>
 			<field reporter:label="Field Type" name="field_type" reporter:datatype="text"/>
+			<field reporter:label="Quality" name="quality" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="queued_record" reltype="has_a" key="id" map="" class="vqbr"/>
@@ -392,6 +394,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
 			<field reporter:label="Type" name="queue_type" reporter:datatype="text"/>
+			<field reporter:label="Quality" name="quality" reporter:datatype="int"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -481,6 +484,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Queued Record" name="queued_record" reporter:datatype="link"/>
 			<field reporter:label="Matched Attribute" name="matched_attr" reporter:datatype="link"/>
 			<field reporter:label="Evergreen Record" name="eg_record" reporter:datatype="link"/>
+			<field reporter:label="Quality" name="quality" reporter:datatype="int"/>
 		</fields>
 		<links>
 			<link field="queued_record" reltype="has_a" key="id" map="" class="vqbr"/>
@@ -497,6 +501,71 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="vms" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::match_set" oils_persist:tablename="vandelay.match_set" reporter:label="Record Matching Definition Set">
+		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.match_set_id_seq">
+			<field reporter:label="Match Set ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Owning Library" name="owner" reporter:datatype="link"/>
+			<field reporter:label="Match Set Type" name="mtype" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_IMPORT_MATCH_SET ADMIN_IMPORT_IMPORT_MATCH_SET" context_field="owner"/>
+				<retrieve permission="CREATE_IMPORT_MATCH_SET UPDATE_IMPORT_MATCH_SET DELETE_IMPORT_MATCH_SET" context_field="owner"/>
+				<update permission="UPDATE_IMPORT_MATCH_SET" context_field="owner"/>
+				<delete permission="DELETE_IMPORT_MATCH_SET" context_field="owner"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="vmsp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::match_set_point" oils_persist:tablename="vandelay.match_set_point" reporter:label="Record Matching Definition">
+		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.match_set_point_id_seq">
+			<field reporter:label="Match Definition ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Match Set" name="match_set" reporter:datatype="link"/>
+			<field reporter:label="Fixed Field" name="fixed_field" reporter:datatype="text"/>
+			<field reporter:label="Tag" name="tag" reporter:datatype="text"/>
+			<field reporter:label="Subfield" name="subfield" reporter:datatype="text"/>
+			<field reporter:label="Required?" name="required" reporter:datatype="bool"/>
+			<field reporter:label="Importance" name="quality" reporter:datatype="int"/>
+		</fields>
+		<links>
+			<link field="match_set" reltype="has_a" key="id" map="" class="vms"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_IMPORT_MATCH_SET ADMIN_IMPORT_IMPORT_MATCH_SET" context_field="owner"/>
+				<retrieve permission="CREATE_IMPORT_MATCH_SET UPDATE_IMPORT_MATCH_SET DELETE_IMPORT_MATCH_SET" context_field="owner"/>
+				<update permission="UPDATE_IMPORT_MATCH_SET" context_field="owner"/>
+				<delete permission="DELETE_IMPORT_MATCH_SET" context_field="owner"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="vmsq" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::match_set_quality" oils_persist:tablename="vandelay.match_set_quality" reporter:label="Record Quality Metric">
+		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.match_set_quality_id_seq">
+			<field reporter:label="Quality Metric ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Match Set" name="match_set" reporter:datatype="link"/>
+			<field reporter:label="Fixed Field" name="fixed_field" reporter:datatype="text"/>
+			<field reporter:label="Tag" name="tag" reporter:datatype="text"/>
+			<field reporter:label="Subfield" name="subfield" reporter:datatype="text"/>
+			<field reporter:label="Value" name="value" reporter:datatype="text"/>
+			<field reporter:label="Importance" name="quality" reporter:datatype="int"/>
+		</fields>
+		<links>
+			<link field="match_set" reltype="has_a" key="id" map="" class="vms"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="CREATE_IMPORT_MATCH_SET ADMIN_IMPORT_IMPORT_MATCH_SET" context_field="owner"/>
+				<retrieve permission="CREATE_IMPORT_MATCH_SET UPDATE_IMPORT_MATCH_SET DELETE_IMPORT_MATCH_SET" context_field="owner"/>
+				<update permission="UPDATE_IMPORT_MATCH_SET" context_field="owner"/>
+				<delete permission="DELETE_IMPORT_MATCH_SET" context_field="owner"/>
+			</actions>
+		</permacrud>
+	</class>
 
 	<class id="auoi" controller="open-ils.cstore" oils_obj:fieldmapper="actor::usr_org_unit_opt_in" oils_persist:tablename="actor.usr_org_unit_opt_in" reporter:label="User Sharing Opt-in">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_org_unit_opt_in_id_seq">
