@@ -2,7 +2,45 @@ DROP SCHEMA IF EXISTS vandelay CASCADE;
 
 BEGIN;
 
+CREATE OR REPLACE FUNCTION array_remove_item_by_value(inp ANYARRAY, el ANYELEMENT) RETURNS anyarray AS $$ SELECT ARRAY_ACCUM(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2; $$ LANGUAGE SQL;
+
 CREATE SCHEMA vandelay;
+
+CREATE TABLE vandelay.match_set (
+    id      SERIAL  PRIMARY KEY,
+    name    TEXT        NOT NULL,
+    owner   INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE,
+    mtype   TEXT        NOT NULL DEFAULT 'biblio', -- 'biblio','authority','mfhd'?, others?
+    CONSTRAINT name_once_per_owner_mtype UNIQUE (name, owner, mtype)
+);
+
+-- Table to define match points, either FF via SVF or tag+subfield
+CREATE TABLE vandelay.match_set_point (
+    id          SERIAL  PRIMARY KEY,
+    match_set   INT     NOT NULL REFERENCES vandelay.match_set (id),
+    svf         TEXT    REFERENCES config.record_attr_definition,
+    tag         TEXT,
+    subfield    TEXT,
+    required    BOOL    NOT NULL DEFAULT TRUE,
+    quality     INT     NOT NULL DEFAULT 1, -- higher is better
+    CONSTRAINT vmsp_need_a_subfield_with_a_tag CHECK ((tag IS NOT NULL AND subfield IS NOT NULL) OR tag IS NULL),
+    CONSTRAINT vmsp_need_a_tag_or_a_ff CHECK (tag IS NOT NULL AND svf IS NULL) OR (tag IS NULL AND svf IS NOT NULL)),
+    CONSTRAINT vmsp_def_once_per_set UNIQUE (match_set, COALESCE(tag,''), COALESCE(subfield,''), COALESCE(svf,''))
+);
+
+CREATE TABLE vandelay.match_set_quality (
+    id          SERIAL  PRIMARY KEY,
+    match_set   INT     NOT NULL REFERENCES vandelay.match_set (id),
+    svf         TEXT    REFERENCES config.record_attr_definition,
+    tag         TEXT,
+    subfield    TEXT,
+    value       TEXT    NOT NULL,
+    quality     INT     NOT NULL DEFAULT 1, -- higher is better
+    CONSTRAINT vmsq_need_a_subfield_with_a_tag CHECK ((tag IS NOT NULL AND subfield IS NOT NULL) OR tag IS NULL),
+    CONSTRAINT vmsq_need_a_tag_or_a_ff CHECK (tag IS NOT NULL AND svf IS NULL) OR (tag IS NULL AND svf IS NOT NULL)),
+    CONSTRAINT vmsq_def_once_per_set UNIQUE (match_set, COALESCE(tag,''), COALESCE(subfield,''), COALESCE(svf,''))
+);
+
 
 CREATE TABLE vandelay.queue (
 	id				BIGSERIAL	PRIMARY KEY,
@@ -10,6 +48,7 @@ CREATE TABLE vandelay.queue (
 	name			TEXT		NOT NULL,
 	complete		BOOL		NOT NULL DEFAULT FALSE,
 	queue_type		TEXT		NOT NULL DEFAULT 'bib' CHECK (queue_type IN ('bib','authority')),
+    match_set       INT         REFERENCES vandelay.match_set (id) DEFERRABLE INITIALLY DEFERRED ON UPDATE CASCADE ON DELETE SET NULL,
 	CONSTRAINT vand_queue_name_once_per_owner_const UNIQUE (owner,name,queue_type)
 );
 
@@ -32,8 +71,7 @@ CREATE TABLE vandelay.bib_attr_definition (
 	code		TEXT	UNIQUE NOT NULL,
 	description	TEXT,
 	xpath		TEXT	NOT NULL,
-	remove		TEXT	NOT NULL DEFAULT '',
-	ident		BOOL	NOT NULL DEFAULT FALSE
+	remove		TEXT	NOT NULL DEFAULT ''
 );
 
 -- Each TEXT field (other than 'name') should hold an XPath predicate for pulling the data needed
@@ -93,8 +131,7 @@ CREATE INDEX queued_bib_record_attr_record_idx ON vandelay.queued_bib_record_att
 
 CREATE TABLE vandelay.bib_match (
 	id				BIGSERIAL	PRIMARY KEY,
-	field_type		TEXT		NOT NULL CHECK (field_type in ('isbn','tcn_value','id')),
-	matched_attr	INT			REFERENCES vandelay.queued_bib_record_attr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	matched_set 	INT			REFERENCES vandelay.match_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	queued_record	BIGINT		REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	eg_record		BIGINT		REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     quality         INT         NOT NULL DEFAULT 0
@@ -143,41 +180,6 @@ CREATE TABLE vandelay.merge_profile (
     preserve_spec   TEXT,
 	CONSTRAINT vand_merge_prof_owner_name_idx UNIQUE (owner,name),
 	CONSTRAINT add_replace_strip_or_preserve CHECK ((preserve_spec IS NOT NULL OR replace_spec IS NOT NULL) OR (preserve_spec IS NULL AND replace_spec IS NULL))
-);
-
-CREATE TABLE vandelay.match_set (
-    id      SERIAL  PRIMARY KEY,
-    name    TEXT        NOT NULL,
-    owner   INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE,
-    mtype   TEXT        NOT NULL DEFAULT 'biblio', -- 'biblio','authority','mfhd'?, others?
-    CONSTRAINT name_once_per_owner_mtype UNIQUE (name, owner, mtype)
-);
-
--- Table to define match points, either FF via SVF or tag+subfield
-CREATE TABLE vandelay.match_set_point (
-    id          SERIAL  PRIMARY KEY,
-    match_set   INT     NOT NULL REFERENCES vandelay.match_set (id),
-    fixed_field TEXT, -- should exist in config.marc21_ff_pos_map.fixed_field
-    tag         TEXT,
-    subfield    TEXT,
-    required    BOOL    NOT NULL DEFAULT TRUE,
-    quality     INT     NOT NULL DEFAULT 1, -- higher is better
-    CONSTRAINT vmsp_need_a_subfield_with_a_tag CHECK ((tag IS NOT NULL AND subfield IS NOT NULL) OR tag IS NULL),
-    CONSTRAINT vmsp_need_a_tag_or_a_ff CHECK (tag IS NOT NULL AND fixed_field IS NULL) OR (tag IS NULL AND fixed_field IS NOT NULL)),
-    CONSTRAINT vmsp_def_once_per_set UNIQUE (match_set, COALESCE(tag,''), COALESCE(subfield,''), COALESCE(fixed_field,''))
-);
-
-CREATE TABLE vandelay.match_set_quality (
-    id          SERIAL  PRIMARY KEY,
-    match_set   INT     NOT NULL REFERENCES vandelay.match_set (id),
-    fixed_field TEXT, -- should exist in config.marc21_ff_pos_map.fixed_field
-    tag         TEXT,
-    subfield    TEXT,
-    value       TEXT    NOT NULL,
-    quality     INT     NOT NULL DEFAULT 1, -- higher is better
-    CONSTRAINT vmsq_need_a_subfield_with_a_tag CHECK ((tag IS NOT NULL AND subfield IS NOT NULL) OR tag IS NULL),
-    CONSTRAINT vmsq_need_a_tag_or_a_ff CHECK (tag IS NOT NULL AND fixed_field IS NULL) OR (tag IS NULL AND fixed_field IS NOT NULL)),
-    CONSTRAINT vmsq_def_once_per_set UNIQUE (match_set, COALESCE(tag,''), COALESCE(subfield,''), COALESCE(fixed_field,''))
 );
 
 CREATE OR REPLACE FUNCTION vandelay.marc21_record_type( marc TEXT ) RETURNS config.marc21_rec_type_map AS $func$
@@ -366,6 +368,183 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+CREATE OR REPLACE FUNCTION vandelay.extract_rec_attrs ( xml TEXT, attr_defs TEXT[]) RETURNS hstore AS $_$
+DECLARE
+    transformed_xml TEXT;
+    prev_xfrm       TEXT;
+    normalizer      RECORD;
+    xfrm            config.xml_transform%ROWTYPE;
+    attr_value      TEXT;
+    new_attrs       HSTORE := ''::HSTORE;
+    attr_def        config.record_attr_definition%ROWTYPE;
+BEGIN
+
+    FOR attr_def IN SELECT * FROM config.record_attr_definition WHERE name IN (SELECT * FROM UNNEST(attr_defs)) ORDER BY format LOOP
+
+        IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
+            SELECT  ARRAY_TO_STRING(ARRAY_ACCUM(x.value), COALESCE(attr_def.joiner,' ')) INTO attr_value
+              FROM  vandelay.flatten_marc(xml) AS x
+              WHERE x.tag LIKE attr_def.tag
+                    AND CASE
+                        WHEN attr_def.sf_list IS NOT NULL
+                            THEN POSITION(x.subfield IN attr_def.sf_list) > 0
+                        ELSE TRUE
+                        END
+              GROUP BY x.tag
+              ORDER BY x.tag
+              LIMIT 1;
+
+        ELSIF attr_def.fixed_field IS NOT NULL THEN -- a named fixed field, see config.marc21_ff_pos_map.fixed_field
+            attr_value := vandelay.marc21_extract_fixed_field(xml, attr_def.fixed_field);
+
+        ELSIF attr_def.xpath IS NOT NULL THEN -- and xpath expression
+
+            SELECT INTO xfrm * FROM config.xml_transform WHERE name = attr_def.format;
+
+            -- See if we can skip the XSLT ... it's expensive
+            IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
+                -- Can't skip the transform
+                IF xfrm.xslt <> '---' THEN
+                    transformed_xml := oils_xslt_process(xml,xfrm.xslt);
+                ELSE
+                    transformed_xml := xml;
+                END IF;
+
+                prev_xfrm := xfrm.name;
+            END IF;
+
+            IF xfrm.name IS NULL THEN
+                -- just grab the marcxml (empty) transform
+                SELECT INTO xfrm * FROM config.xml_transform WHERE xslt = '---' LIMIT 1;
+                prev_xfrm := xfrm.name;
+            END IF;
+
+            attr_value := oils_xpath_string(attr_def.xpath, transformed_xml, COALESCE(attr_def.joiner,' '), ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]);
+
+        ELSIF attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
+            SELECT  value::TEXT INTO attr_value
+              FROM  vandelay.marc21_physical_characteristics(xml)
+              WHERE subfield = attr_def.phys_char_sf
+              LIMIT 1; -- Just in case ...
+
+        END IF;
+
+        -- apply index normalizers to attr_value
+        FOR normalizer IN
+            SELECT  n.func AS func,
+                    n.param_count AS param_count,
+                    m.params AS params
+              FROM  config.index_normalizer n
+                    JOIN config.record_attr_index_norm_map m ON (m.norm = n.id)
+              WHERE attr = attr_def.name
+              ORDER BY m.pos LOOP
+                EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                    quote_literal( attr_value ) ||
+                    CASE
+                        WHEN normalizer.param_count > 0
+                            THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                            ELSE ''
+                        END ||
+                    ')' INTO attr_value;
+
+        END LOOP;
+
+        -- Add the new value to the hstore
+        new_attrs := new_attrs || hstore( attr_def.name, attr_value );
+
+    END LOOP;
+
+    RETURN new_attrs;
+END;
+$_$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION vandelay.extract_rec_attrs ( xml TEXT ) RETURNS hstore AS $_$
+    SELECT vandelay.extract_rec_attrs( $1, (SELECT ARRAY_ACCUM(name) FROM config.record_attr_definition));
+$_$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION vandelay.match_bib_record ( ) RETURNS TRIGGER AS $func$
+DECLARE
+    incoming_existing_id    TEXT;
+    my_bib_queue            vandelay.bib_queue%ROWTYPE;
+    my_match_set            vandelay.match_set%ROWTYPE;
+    test                    vandelay.match_set_point%ROWTYPE;
+    potential_matches       BIGINT[];
+    matches                 BIGINT[];
+    rvalue                  TEXT;
+    quality_set             hstore;
+    tmp_rec                 BIGINT;
+    tmp_quality             INT;
+    first_round             BOOL;
+BEGIN
+    DELETE FROM vandelay.bib_match WHERE queued_record = NEW.id;
+
+    incoming_existing_id := oils_xpath_string('//*[@tag="901"]/*[@code="c"][1]',NEW.marc);
+
+    IF incoming_existing_id IS NOT NULL THEN
+        INSERT INTO vandelay.bib_match (field_type, queued_record, eg_record) VALUES ('id', NEW.id, exact_id);
+        RETURN NEW;
+    END IF;
+
+    SELECT * INTO my_bib_queue FROM vandelay.bib_queue WHERE id = NEW.queue;
+
+    first_round := TRUE;
+    -- whew ... here we go ...
+    FOR test IN SELECT * FROM vandelay.match_set_point WHERE match_set = my_bib_queue.match_set ORDER BY required DESC LOOP
+        IF test.tag IS NOT NULL THEN
+            FOR rvalue IN SELECT value FROM vandelay.flatten_marc( xml ) WHERE tag = test.tag AND subfield = test.subfield LOOP
+                SELECT ARRAY_ACCUM(DISTINCT record) INTO potential_matches FROM metabib.real_full_rec WHERE tag = test.tag AND subfield = test.subfield AND value = rvalue;
+
+                IF first_round THEN
+                    matches := potential_matches;
+                    first_round := FALSE;
+                ELSIF test.required THEN
+                    FOR tmp_rec IN SELECT * FROM UNNEST(matches) LOOP
+                        IF tmp_rec NOT IN (SELECT * FROM UNNEST(potential_matches)) THEN
+                            matches := array_remove_item_by_value(matches, tmp_rec);
+                            potential_matches := array_remove_item_by_value(potential_matches, tmp_rec);
+                        END IF;
+                    END LOOP;
+                END IF;
+
+                -- add the quality for this match
+                FOR tmp_rec IN SELECT * FROM UNNEST(potential_matches);
+                    tmp_quality := COALESCE((quality_set -> tmp_rec::TEXT)::INT, 0);
+                    quality := quality || hstore(tmp_rec::TEXT, (tmp_quality + test.quality)::TEXT);
+                END LOOP;
+
+            END LOOP;
+        ELSE
+            rvalue := vandelay.vandelay.extract_rec_attrs(xml, ARRAY[test.svf]);
+
+            IF first_round THEN
+                matches := potential_matches;
+                first_round := FALSE;
+            ELSIF test.required THEN
+                FOR tmp_rec IN SELECT * FROM UNNEST(matches) LOOP
+                    IF tmp_rec NOT IN (SELECT * FROM UNNEST(potential_matches)) THEN
+                        matches := array_remove_item_by_value(matches, tmp_rec);
+                        potential_matches := array_remove_item_by_value(potential_matches, tmp_rec);
+                    END IF;
+                END LOOP;
+            END IF;
+
+            -- add the quality for this match
+            FOR tmp_rec IN SELECT * FROM UNNEST(potential_matches);
+                tmp_quality := COALESCE((quality_set -> tmp_rec::TEXT)::INT, 0);
+                quality := quality || hstore(tmp_rec::TEXT, (tmp_quality + test.quality)::TEXT);
+            END LOOP;
+
+        END IF;
+    END LOOP;
+
+    FOR tmp_rec IN SELECT * FROM UNNEST(matches) LOOP
+        INSERT INTO vandelay.bib_match (matched_set, queued_record, eg_record, quality) VALUES (my_bib_queue.match_set, NEW.id, tmp_rec, (quality_set -> tmp_rec::TEXT));
+    END LOOP;
+
+    RETURN NEW;
+END;
+$func$ LANGUAGE PLPGSQL;
+
 CREATE OR REPLACE FUNCTION vandelay.incoming_record_quality ( xml TEXT, match_set_id INT ) RETURNS INT AS $_$
 DECLARE
     out_q   INT := 0;
@@ -380,8 +559,8 @@ BEGIN
                     out_q := out_q + test.quality;
                 END IF;
             END LOOP;
-        ELSIF test.fixed_field IS NOT NULL THEN -- a named fixed field, see config.marc21_ff_pos_map.fixed_field
-            IF test.value = vandelay.marc21_extract_fixed_field(xml, test.fixed_field) THEN
+        ELSE
+            IF test.value = vandelay.extract_rec_attrs(xml, ARRAY[test.svf]) THEN
                 out_q := out_q + test.quality;
             END IF;
         END IF;
@@ -1458,8 +1637,7 @@ CREATE TABLE vandelay.authority_attr_definition (
 	code		TEXT	UNIQUE NOT NULL,
 	description	TEXT,
 	xpath		TEXT	NOT NULL,
-	remove		TEXT	NOT NULL DEFAULT '',
-	ident		BOOL	NOT NULL DEFAULT FALSE
+	remove		TEXT	NOT NULL DEFAULT ''
 );
 
 CREATE TABLE vandelay.authority_queue (
@@ -1485,9 +1663,10 @@ CREATE INDEX queued_authority_record_attr_record_idx ON vandelay.queued_authorit
 
 CREATE TABLE vandelay.authority_match (
 	id				BIGSERIAL	PRIMARY KEY,
-	matched_attr	INT			REFERENCES vandelay.queued_authority_record_attr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	matched_set 	INT			REFERENCES vandelay.match_set (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	queued_record	BIGINT		REFERENCES vandelay.queued_authority_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	eg_record		BIGINT		REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED
+	eg_record		BIGINT		REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
+    quality         INT         NOT NULL DEFAULT 0
 );
 
 CREATE OR REPLACE FUNCTION vandelay.ingest_authority_marc ( ) RETURNS TRIGGER AS $$

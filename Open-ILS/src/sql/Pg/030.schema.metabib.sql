@@ -1116,7 +1116,7 @@ BEGIN
             IF TG_OP = 'INSERT' OR OLD.deleted THEN -- initial insert OR revivication
                 INSERT INTO metabib.record_attr (id, attrs) VALUES (NEW.id, new_attrs);
             ELSE
-                UPDATE metabib.record_attr SET attrs = attrs || new_attrs WHERE id = NEW.id;
+                UPDATE metabib.record_attr SET attrs = new_attrs WHERE id = NEW.id;
             END IF;
 
         END IF;
