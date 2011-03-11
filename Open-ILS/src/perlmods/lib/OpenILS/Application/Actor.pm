@@ -1795,10 +1795,8 @@ sub flesh_circ {
         $mods->author($copy->dummy_author);
 
     } else {
-		my $u = OpenILS::Utils::ModsParser->new();
-		$u->start_mods_batch($circ->target_copy->call_number->record->marc);
-		$mods = $u->finish_mods_batch();
-	}
+        $mods = $U->record_to_mvr($circ->target_copy->call_number->record);
+    }
 
     # more de-fleshiing
     $circ->target_copy($circ->target_copy->id);
