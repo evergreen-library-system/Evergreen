@@ -379,7 +379,7 @@ install_pgsql_client_debs_84:
 	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_84)
 
 install_pgsql_server_debs_84:
-	LANG=C $(APT_TOOL) install $(PGSQL_SERVER_DEBS_84)
+	$(APT_TOOL) install $(PGSQL_SERVER_DEBS_84)
 
 install_pgsql_client_debs_83:
 	$(APT_TOOL) install $(PGSQL_CLIENT_DEBS_83)
