@@ -81,21 +81,24 @@ function EligibleLiTable(filter) {
         var count = 0;
         this.reset();
         fieldmapper.standardRequest(
-            ["open-ils.acq", "open-ils.acq.claim.eligible.lineitem_detail"], {
+            ["open-ils.acq", "open-ils.acq.claim.eligible.lineitem_detail.atomic"], {
                 "params": [openils.User.authtoken, this.filter],
                 "async": true,
-                "onresponse": function(r) {
-                    if (r = openils.Util.readResponse(r)) {
-                        if (!count++)
-                            openils.Util.show("acq-eligible-claim-controls");
-                        self.addIfMissing(r.lineitem());
-                    } else {
-                        progressDialog.hide();
-                    }
-                },
-                "oncomplete": function() {
-                    if (count < 1) self.showEmpty();
+                "oncomplete": function(r) {
                     progressDialog.hide();
+                    var rset = openils.Util.readResponse(r);
+                    if (rset.length < 1) self.showEmpty();
+                    else {
+                        var byLi = {};
+                        rset.forEach(
+                            function(r) {
+                                byLi[r.lineitem()] =
+                                    (byLi[r.lineitem()] || 0) + 1;
+                            }
+                        );
+                        for (var key in byLi)
+                            self.addIfMissing(key, byLi[key]);
+                    }
                 }
             }
         );
@@ -113,7 +116,7 @@ function EligibleLiTable(filter) {
             nodeByName("lid_link", "eligible-li-" + liId).onclick =
                 function() {
                     location.href = oilsBasePath + "/acq/po/view/" +
-                        self.liCache[liId].purchase_order().id() + "," +
+                        self.liCache[liId].purchase_order().id() + "/" +
                         liId;
                 };
             openils.Util.show(
@@ -124,10 +127,7 @@ function EligibleLiTable(filter) {
 
     /* Despite being called with an argument that's a lineitem ID, this method
      * is actually called once per lineitem _detail_. */
-    this.addIfMissing = function(liId) {
-        this._updateLidLink(liId);
-        if (this.liCache[liId]) return;
-
+    this.addIfMissing = function(liId, number_of_appearances) {
         var row = dojo.clone(this.rowTemplate);
 
         var checkbox = nodeByName("selector", row);
@@ -141,6 +141,9 @@ function EligibleLiTable(filter) {
                 dojo.attr(row, "id", "eligible-li-" + liId);
                 dojo.attr(checkbox, "value", liId);
                 dojo.place(row, self.tBody, "last");
+
+                for (var i = 0; i < number_of_appearances; i++)
+                    self._updateLidLink(liId);
             }
         );
     };
