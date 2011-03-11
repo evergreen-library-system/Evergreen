@@ -201,9 +201,11 @@ sub prepare_bop_content {
     # Especially for the following fields, do we need to support different
     # mapping of fields for different payment processors, particularly ones
     # in other countries?
-    $content{address}    ||= $patron->mailing_address->street1;
-    $content{address} .= ", " . $patron->mailing_address->street2
-        if $patron->mailing_address->street2;
+    if(!$content{address}) {
+        $content{address}  = $patron->mailing_address->street1;
+        $content{address} .= ", " . $patron->mailing_address->street2
+            if $patron->mailing_address->street2;
+    }
 
     $content{city}       ||= $patron->mailing_address->city;
     $content{state}      ||= $patron->mailing_address->state;
