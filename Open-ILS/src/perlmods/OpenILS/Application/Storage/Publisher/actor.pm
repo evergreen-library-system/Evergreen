@@ -10,8 +10,9 @@ use DateTime;
 use DateTime::Format::ISO8601;  
 use DateTime::Set;
 use DateTime::SpanSet;
-                                                
-						                                                
+
+use Encode;
+
 my $_dt_parser = DateTime::Format::ISO8601->new;    
 
 my $log = 'OpenSRF::Utils::Logger';
@@ -643,15 +644,15 @@ sub patron_search {
 	# group 3 = barcode
 
 	my $usr = join ' AND ', map { "LOWER(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
-	my @usrv = map { "^$$search{$_}{value}" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+	my @usrv = map { "^" . encode_utf8($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
 
 	my $addr = join ' AND ', map { "LOWER(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
-	my @addrv = map { "^$$search{$_}{value}" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
+	my @addrv = map { "^" . encode_utf8($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
 
-	my $pv = $$search{phone}{value};
-	my $iv = $$search{ident}{value};
-	my $nv = $$search{name}{value};
-	my $cv = $$search{card}{value};
+	my $pv = encode_utf8($$search{phone}{value});
+	my $iv = encode_utf8($$search{ident}{value});
+	my $nv = encode_utf8($$search{name}{value});
+	my $cv = encode_utf8($$search{card}{value});
 
 	my $card = '';
 	if ($cv) {
