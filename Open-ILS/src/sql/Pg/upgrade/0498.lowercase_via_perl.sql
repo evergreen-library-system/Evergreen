@@ -46,6 +46,10 @@ CREATE INDEX actor_usr_other_phone_idx ON actor.usr (evergreen.lowercase(other_p
 CREATE INDEX actor_usr_ident_value_idx ON actor.usr (evergreen.lowercase(ident_value));
 CREATE INDEX actor_usr_ident_value2_idx ON actor.usr (evergreen.lowercase(ident_value2));
 
+-- update actor.card indexes
+DROP INDEX IF EXISTS actor.actor_card_barcode_evergreen_lowercase_idx;
+CREATE INDEX actor_card_barcode_evergreen_lowercase_idx ON actor.card (evergreen.lowercase(barcode));
+
 CREATE OR REPLACE FUNCTION vandelay.match_bib_record ( ) RETURNS TRIGGER AS $func$
 DECLARE
     attr        RECORD;

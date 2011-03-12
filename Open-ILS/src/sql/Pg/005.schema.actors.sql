@@ -316,7 +316,7 @@ COMMENT ON TABLE actor.card IS $$
 $$;
 
 CREATE INDEX actor_card_usr_idx ON actor.card (usr);
-CREATE INDEX actor_card_barcode_evergreen.lowercase_idx ON actor.card (evergreen.lowercase(barcode));
+CREATE INDEX actor_card_barcode_evergreen_lowercase_idx ON actor.card (evergreen.lowercase(barcode));
 
 CREATE TABLE actor.org_unit_type (
 	id		SERIAL	PRIMARY KEY,
