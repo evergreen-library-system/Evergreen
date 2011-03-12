@@ -11,8 +11,6 @@ use DateTime::Format::ISO8601;
 use DateTime::Set;
 use DateTime::SpanSet;
 
-use Encode;
-
 my $_dt_parser = DateTime::Format::ISO8601->new;    
 
 my $log = 'OpenSRF::Utils::Logger';
@@ -643,20 +641,20 @@ sub patron_search {
 	# group 2 = phone, ident
 	# group 3 = barcode
 
-	my $usr = join ' AND ', map { "LOWER(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
-	my @usrv = map { "^" . encode_utf8($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+	my $usr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+	my @usrv = map { "^" . $$search{$_}{value} } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
 
-	my $addr = join ' AND ', map { "LOWER(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
-	my @addrv = map { "^" . encode_utf8($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
+	my $addr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
+	my @addrv = map { "^" . $$search{$_}{value} } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
 
-	my $pv = encode_utf8($$search{phone}{value});
-	my $iv = encode_utf8($$search{ident}{value});
-	my $nv = encode_utf8($$search{name}{value});
-	my $cv = encode_utf8($$search{card}{value});
+	my $pv = $$search{phone}{value};
+	my $iv = $$search{ident}{value};
+	my $nv = $$search{name}{value};
+	my $cv = $$search{card}{value};
 
 	my $card = '';
 	if ($cv) {
-	    $card = 'JOIN (SELECT DISTINCT usr FROM actor.card WHERE LOWER(barcode) LIKE ?||\'%\') AS card ON (card.usr = users.id)';
+	    $card = 'JOIN (SELECT DISTINCT usr FROM actor.card WHERE evergreen.lowercase(barcode) LIKE ?||\'%\') AS card ON (card.usr = users.id)';
 	    unshift(@usrv, $cv);
 	}
 
@@ -665,7 +663,7 @@ sub patron_search {
 	my @phonev;
 	if ($pv) {
 		for my $p ( qw/day_phone evening_phone other_phone/ ) {
-			push @ps, "LOWER($p) ~ ?";
+			push @ps, "evergreen.lowercase($p) ~ ?";
 			push @phonev, "^$pv";
 		}
 		$phone = '(' . join(' OR ', @ps) . ')';
@@ -676,7 +674,7 @@ sub patron_search {
 	my @identv;
 	if ($iv) {
 		for my $i ( qw/ident_value ident_value2/ ) {
-			push @is, "LOWER($i) ~ ?";
+			push @is, "evergreen.lowercase($i) ~ ?";
 			push @identv, "^$iv";
 		}
 		$ident = '(' . join(' OR ', @is) . ')';
@@ -687,7 +685,7 @@ sub patron_search {
 	my @namev;
 	if (0 && $nv) {
 		for my $n ( qw/first_given_name second_given_name family_name/ ) {
-			push @ns, "LOWER($n) ~ ?";
+			push @ns, "evergreen.lowercase($n) ~ ?";
 			push @namev, "^$nv";
 		}
 		$name = '(' . join(' OR ', @ns) . ')';
@@ -724,8 +722,8 @@ sub patron_search {
 
 	return undef if (!$select && !$card);
 
-	my $order_by = join ', ', map { 'LOWER(CAST(users.'. (split / /,$_)[0] . ' AS text)) ' . (split / /,$_)[1] } @$sort;
-	my $distinct_list = join ', ', map { 'LOWER(CAST(users.'. (split / /,$_)[0] . ' AS text))' } @$sort;
+	my $order_by = join ', ', map { 'evergreen.lowercase(CAST(users.'. (split / /,$_)[0] . ' AS text)) ' . (split / /,$_)[1] } @$sort;
+	my $distinct_list = join ', ', map { 'evergreen.lowercase(CAST(users.'. (split / /,$_)[0] . ' AS text))' } @$sort;
     my $group_list = $distinct_list;
 
 	if ($inactive) {
