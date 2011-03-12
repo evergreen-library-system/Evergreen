@@ -32,7 +32,7 @@ COMMENT ON TEXT SEARCH DICTIONARY english_nostop IS 'English snowball stemmer wi
 
 CREATE TEXT SEARCH CONFIGURATION title ( COPY = pg_catalog.english );
 ALTER TEXT SEARCH CONFIGURATION title ALTER MAPPING FOR word, hword, hword_part WITH pg_catalog.simple;
-ALTER TEXT SEARCH CONFIGURATION title ALTER MAPPING FOR asciiword, asciihword, hword_asciipart WITH public.english_nostop;
+ALTER TEXT SEARCH CONFIGURATION title ALTER MAPPING FOR asciiword, asciihword, hword_asciipart WITH english_nostop;
 CREATE TEXT SEARCH CONFIGURATION author ( COPY = title );
 CREATE TEXT SEARCH CONFIGURATION subject ( COPY = title );
 CREATE TEXT SEARCH CONFIGURATION keyword ( COPY = title );

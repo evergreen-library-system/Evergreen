@@ -15,15 +15,13 @@
  *
  */
 
--- Allow these to fail gracelessly outside the transaction
--- because PostgreSQL 8.1 does not support IF EXISTS
-DROP AGGREGATE array_accum(anyelement) CASCADE;
-DROP AGGREGATE public.first(anyelement) CASCADE;
-DROP AGGREGATE public.last(anyelement) CASCADE;
-DROP AGGREGATE public.agg_text(text) CASCADE;
-DROP AGGREGATE public.agg_tsvector(tsvector) CASCADE;
-
 BEGIN;
+
+DROP AGGREGATE IF EXISTS array_accum(anyelement) CASCADE;
+DROP AGGREGATE IF EXISTS public.first(anyelement) CASCADE;
+DROP AGGREGATE IF EXISTS public.last(anyelement) CASCADE;
+DROP AGGREGATE IF EXISTS public.agg_text(text) CASCADE;
+DROP AGGREGATE IF EXISTS public.agg_tsvector(tsvector) CASCADE;
 
 CREATE AGGREGATE array_accum (
 	sfunc = array_append,
