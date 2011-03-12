@@ -596,7 +596,7 @@ sub toSQL {
 	my $params = $self->resolve_param( $self->{_column}->{params} );
 	my $start = $$params[0];
 	my $len = $$params[1];
-	return 'LOWER("' . $self->{_relation} . '"."' . $self->name . '")';
+	return 'evergreen.lowercase("' . $self->{_relation} . '"."' . $self->name . '")';
 }
 
 sub is_aggregate { return 0 }
