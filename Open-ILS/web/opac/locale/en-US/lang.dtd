@@ -1563,6 +1563,8 @@
 <!ENTITY staff.patron_search_form.phone.label 'Phone:'>
 <!ENTITY staff.patron_search_form.post_code.accesskey ''>
 <!ENTITY staff.patron_search_form.post_code.label 'ZIP:'>
+<!ENTITY staff.patron_search_form.profile.accesskey ''>
+<!ENTITY staff.patron_search_form.profile.label 'Filter by Permission Profile:'>
 <!ENTITY staff.patron_search_form.search.accesskey 'S'>
 <!ENTITY staff.patron_search_form.search.label 'Search'>
 <!ENTITY staff.patron_search_form.second_given_name.accesskey ''>

@@ -232,6 +232,10 @@ patron.search_form.prototype = {
                             };
                         }
                     ],
+                    'profile' : [ ['render'],function(e) {
+                            return function() {};
+                        } 
+                    ],
                     'inactive' : [ ['render'], function(e) { 
                             return function() {}; 
                         } 
@@ -295,6 +299,14 @@ patron.search_form.prototype = {
         );
         cb.checked = cb.getAttribute('value') == "true" ? true : false;
 
+        var menupopup = document.getElementById('profile').firstChild;
+        for (var i = 0; i < obj.OpenILS.data.list.pgt.length; i++) { 
+            var my_pgt = obj.OpenILS.data.list.pgt[i]; 
+            var menuitem = document.createElement('menuitem'); 
+            menuitem.setAttribute('label',my_pgt.name()); 
+            menuitem.setAttribute('value',my_pgt.id());
+            menupopup.appendChild(menuitem); 
+        };
     },
 
     'on_submit' : function(q) {
@@ -312,6 +324,9 @@ patron.search_form.prototype = {
             if (node && node.value != '') {
                 if (id == 'inactive') {
                     query[id] = node.getAttribute('value');
+                    obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + node.getAttribute('value') + '\n');
+                } else if (id == 'profile') {
+                    query[id] = node.selectedItem.getAttribute('value');
                     obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + node.getAttribute('value') + '\n');
                 } else {
                     if (id == 'search_depth') {
@@ -331,7 +346,7 @@ patron.search_form.prototype = {
                             obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + value + '\n');
                         }
                     }
-                }
+                } 
             }
         }
         if (typeof obj.on_submit == 'function') {
