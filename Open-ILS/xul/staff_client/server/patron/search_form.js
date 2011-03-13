@@ -232,7 +232,7 @@ patron.search_form.prototype = {
                             };
                         }
                     ],
-                    'profile' : [ ['render'],function(e) {
+                    'profile' : [ ['render'], function(e) {
                             return function() {};
                         } 
                     ],
@@ -243,7 +243,7 @@ patron.search_form.prototype = {
                     'search_depth' : [ ['render'],function(e) {
                             return function() {};
                         }
-                    ],
+                    ]
                 }
             }
         );
@@ -286,7 +286,7 @@ patron.search_form.prototype = {
         util.widgets.load_attributes(file);
         ml.value = ml.getAttribute('value');
         if (! ml.value) {
-            ml.value = 0
+            ml.value = 0;
             ml.setAttribute('value',ml.value);
         }
 
@@ -299,14 +299,34 @@ patron.search_form.prototype = {
         );
         cb.checked = cb.getAttribute('value') == "true" ? true : false;
 
-        var menupopup = document.getElementById('profile').firstChild;
-        for (var i = 0; i < obj.OpenILS.data.list.pgt.length; i++) { 
-            var my_pgt = obj.OpenILS.data.list.pgt[i]; 
-            var menuitem = document.createElement('menuitem'); 
-            menuitem.setAttribute('label',my_pgt.name()); 
-            menuitem.setAttribute('value',my_pgt.id());
-            menupopup.appendChild(menuitem); 
-        };
+        /* Populate the Patron Profile filter */
+        util.widgets.remove_children(obj.controller.view.profile);
+        var profile_ml = util.widgets.make_menulist(
+            util.functional.map_list( obj.OpenILS.data.list.pgt,
+                function(el,idx) {
+                    return [ el.name(), el.id() ]
+                }
+            ).sort(
+                function(a,b) {
+                    if (a[0] < b[0]) return -1;
+                    if (a[0] > b[0]) return 1;
+                    return 0;
+                }
+            )
+        );
+        profile_ml.addEventListener('command', function() {
+                profile_ml.parentNode.setAttribute('value', profile_ml.value);
+            }, false
+        );
+        profile_ml.setAttribute('id','profile_ml');
+
+        /* Add an empty menu item as the default profile */
+        var empty = document.createElement('menuitem'); 
+        profile_ml.firstChild.insertBefore(empty, profile_ml.firstChild.firstChild);
+        empty.setAttribute('label', '');
+        empty.setAttribute('value', ''); 
+        obj.controller.view.profile.appendChild(profile_ml);
+        profile_ml.value = profile_ml.getAttribute('value');
     },
 
     'on_submit' : function(q) {
@@ -326,7 +346,7 @@ patron.search_form.prototype = {
                     query[id] = node.getAttribute('value');
                     obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + node.getAttribute('value') + '\n');
                 } else if (id == 'profile') {
-                    query[id] = node.selectedItem.getAttribute('value');
+                    query[id] = node.firstChild.getAttribute('value');
                     obj.error.sdump('D_DEBUG','id = ' + id + '  value = ' + node.getAttribute('value') + '\n');
                 } else {
                     if (id == 'search_depth') {
