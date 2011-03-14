@@ -1684,7 +1684,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="cxt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::xml_transform" oils_persist:tablename="config.xml_transform" reporter:label="XML/XSLT Transform Definition">
 		<fields oils_persist:primary="name">
-			<field reporter:label="Field Class" name="field_class" />
 			<field reporter:label="Name" name="name" reporter:datatype="text" />
 			<field reporter:label="Namespace URI" name="namespace_uri" reporter:datatype="text"/>
 			<field reporter:label="Namespace Prefix" name="prefix" reporter:datatype="text"/>
