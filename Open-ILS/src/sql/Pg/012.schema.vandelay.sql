@@ -106,6 +106,11 @@ CREATE TABLE vandelay.import_item_attr_definition (
 	CONSTRAINT vand_import_item_attr_def_idx UNIQUE (owner,name)
 );
 
+CREATE TABLE vandelay.import_error (
+    code        TEXT    PRIMARY KEY,
+    description TEXT    NOT NULL -- i18n
+);
+
 CREATE TABLE vandelay.bib_queue (
 	queue_type	    TEXT	NOT NULL DEFAULT 'bib' CHECK (queue_type = 'bib'),
 	item_attr_def	BIGINT REFERENCES vandelay.import_item_attr_definition (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
@@ -114,9 +119,11 @@ CREATE TABLE vandelay.bib_queue (
 ALTER TABLE vandelay.bib_queue ADD PRIMARY KEY (id);
 
 CREATE TABLE vandelay.queued_bib_record (
-	queue		INT		NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	bib_source	INT		REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
-	imported_as	BIGINT	REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED
+	queue		    INT		NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	bib_source	    INT		REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
+	imported_as 	BIGINT	REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
+	import_error	INT     REFERENCES vandelay.import_error (id) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	error_detail	TEXT
 ) INHERITS (vandelay.queued_record);
 ALTER TABLE vandelay.queued_bib_record ADD PRIMARY KEY (id);
 CREATE INDEX queued_bib_record_queue_idx ON vandelay.queued_bib_record (queue);
@@ -137,11 +144,12 @@ CREATE TABLE vandelay.bib_match (
     quality         INT         NOT NULL DEFAULT 0
 );
 
--- DROP TABLE vandelay.import_item CASCADE;
 CREATE TABLE vandelay.import_item (
     id              BIGSERIAL   PRIMARY KEY,
     record          BIGINT      NOT NULL REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	import_error	INT         REFERENCES vandelay.import_error (id) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	error_detail	TEXT,
     owning_lib      INT,
     circ_lib        INT,
     call_number     TEXT,
@@ -1648,7 +1656,9 @@ ALTER TABLE vandelay.authority_queue ADD PRIMARY KEY (id);
 
 CREATE TABLE vandelay.queued_authority_record (
 	queue		INT	NOT NULL REFERENCES vandelay.authority_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	imported_as	INT	REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED
+	imported_as	INT	REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
+	import_error	INT     REFERENCES vandelay.import_error (id) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	error_detail	TEXT
 ) INHERITS (vandelay.queued_record);
 ALTER TABLE vandelay.queued_authority_record ADD PRIMARY KEY (id);
 CREATE INDEX queued_authority_record_queue_idx ON vandelay.queued_authority_record (queue);

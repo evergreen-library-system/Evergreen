@@ -186,6 +186,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Import Item ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Import Record" name="record" reporter:datatype="link"/>
 			<field reporter:label="Attribute Definition" name="definition" reporter:datatype="link"/>
+			<field reporter:label="Import Error" name="import_error" reporter:datatype="link"/>
+			<field reporter:label="Import Error Detail" name="error_detail" reporter:datatype="text"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="int"/>
 			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="int"/>
 			<field reporter:label="Call Number" name="call_number" reporter:datatype="text"/>
@@ -207,6 +209,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool"/>
 		</fields>
 		<links>
+			<link field="import_error" reltype="has_a" key="code" map="" class="vie"/>
 			<link field="record" reltype="has_a" key="id" map="" class="vqbr"/>
 			<link field="definition" reltype="has_a" key="id" map="" class="viiad"/>
 		</links>
@@ -294,6 +297,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="vie" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::import_error" oils_persist:tablename="vandelay.import_error" reporter:label="Import/Overlay Error Definitions">
+		<fields oils_persist:primary="code">
+			<field reporter:label="Error Code" name="code" reporter:selector="description" reporter:datatype="id"/>
+			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="item_attr_def" reltype="has_a" key="id" map="" class="viiad"/>
+			<link field="match_set" reltype="has_a" key="id" map="" class="vms"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="vqbr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::queued_bib_record" oils_persist:tablename="vandelay.queued_bib_record" reporter:label="Queued Bib Record">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.queued_record_id_seq">
 			<field reporter:label="Record ID" name="id" reporter:datatype="id"/>
@@ -303,11 +323,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Queue" name="queue" reporter:datatype="link"/>
 			<field reporter:label="Bib Source" name="bib_source" reporter:datatype="link"/>
 			<field reporter:label="Final Target Record" name="imported_as" reporter:datatype="link"/>
+			<field reporter:label="Import Error" name="import_error" reporter:datatype="link"/>
+			<field reporter:label="Import Error Detail" name="error_detail" reporter:datatype="text"/>
 			<field reporter:label="Purpose" name="purpose" reporter:datatype="text"/>
 			<field reporter:label="Attributes" name="attributes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Matches" name="matches" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
+			<link field="import_error" reltype="has_a" key="code" map="" class="vie"/>
 			<link field="queue" reltype="has_a" key="id" map="" class="vbq"/>
 			<link field="bib_source" reltype="has_a" key="id" map="" class="cbs"/>
 			<link field="imported_as" reltype="has_a" key="id" map="" class="bre"/>
@@ -419,11 +442,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="MARC" name="marc" reporter:datatype="text"/>
 			<field reporter:label="Queue" name="queue" reporter:datatype="link"/>
 			<field reporter:label="Final Target Record" name="imported_as" reporter:datatype="link"/>
+			<field reporter:label="Import Error" name="import_error" reporter:datatype="link"/>
+			<field reporter:label="Import Error Detail" name="error_detail" reporter:datatype="text"/>
 			<field reporter:label="Purpose" name="purpose" reporter:datatype="text"/>
 			<field reporter:label="Attributes" name="attributes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Matches" name="matches" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
+			<link field="import_error" reltype="has_a" key="code" map="" class="vie"/>
 			<link field="queue" reltype="has_a" key="id" map="" class="vaq"/>
 			<link field="imported_as" reltype="has_a" key="id" map="" class="are"/>
             <link field="attributes" reltype="has_many" key="record" map="" class="vqara"/>
