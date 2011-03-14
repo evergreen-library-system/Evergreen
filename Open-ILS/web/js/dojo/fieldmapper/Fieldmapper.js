@@ -26,7 +26,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 	called 'fmclasses' to be fleshed with the classes we need to build */
 
 	function FMEX(message) { this.message = message; }
-	FMEX.toString = function() { return "FieldmapperException: " + this.message + "\n"; }
+    FMEX.toString = function() { return "FieldmapperException: " + this.message + "\n"; };
 
 	dojo.declare( "fieldmapper.Fieldmapper", null, {
 
@@ -47,14 +47,14 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
 			for( var i in this.a ) {
 				var thing = this.a[i];
-				if(thing == null) continue;
+                if(thing === null) continue;
 
 				if( thing._isfieldmapper ) {
 					obj.a[i] = thing.clone();
 				} else {
 
 					if(dojo.isArray(thing)) {
-						obj.a[i] = new Array();
+                        obj.a[i] = [];
 
 						for( var j in thing ) {
 
@@ -100,12 +100,13 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 				this.classname = this.declaredClass;
                 this._fields = [];
 
+                var p, f;
                 if (fieldmapper.IDL && fieldmapper.IDL.loaded) {
-                    this.Structure = fieldmapper.IDL.fmclasses[this.classname]
+                    this.Structure = fieldmapper.IDL.fmclasses[this.classname];
 
-                    for (var f in fieldmapper.IDL.fmclasses[this.classname].fields) {
+                    for (f in fieldmapper.IDL.fmclasses[this.classname].fields) {
                         var field = fieldmapper.IDL.fmclasses[this.classname].fields[f];
-                        var p = field.array_position;
+                        p = field.array_position;
     	    			this._fields.push( field.name );
 			    		this[field.name]=new Function('n', 'if(arguments.length==1)this.a['+p+']=n;return this.a['+p+'];');
                     }
@@ -113,8 +114,8 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 				    this._fields = fmclasses[this.classname];
 
     				for( var pos = 0; pos <  this._fields.length; pos++ ) {
-    					var p = parseInt(pos);
-	    				var f = this._fields[pos];
+                        p = parseInt(pos, 10);
+                        f = this._fields[pos];
 		    			this[f]=new Function('n', 'if(arguments.length==1)this.a['+p+']=n;return this.a['+p+'];');
 			    	}
                 }
@@ -130,7 +131,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
         fieldmapper[cl].prototype.fromStoreItem = _fromStoreItem;
         fieldmapper[cl].toStoreData = _toStoreData;
         fieldmapper[cl].toStoreItem = _toStoreItem;
-        fieldmapper[cl].prototype.toStoreItem = function ( args ) { return _toStoreItem(this, args) };
+        fieldmapper[cl].prototype.toStoreItem = function ( args ) { return _toStoreItem(this, args); };
         fieldmapper[cl].initStoreData = _initStoreData;
         fieldmapper[cl].prototype.toHash = _toHash;
         fieldmapper[cl].toHash = _toHash;
@@ -162,27 +163,27 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
         if(!args.onmethoderror) {
             args.onmethoderror = function(r, stat, stat_text) {
                 throw new Error('Method error: ' + r.stat + ' : ' + stat_text);
+            };
             }
-        }
 
         if(!args.ontransporterror) {
             args.ontransporterror = function(xreq) {
                 throw new Error('Transport error method='+args.method+', status=' + xreq.status);
+            };
             }
-        }
 
 		if (!args.onerror) {
 			args.onerror = function (r) {
 				throw new Error('Request error encountered! ' + r);
+            };
 			}
-		}
 
 		if (!args.oncomplete) {
 			args.oncomplete = function (r) {
 				var x = r.recv();
 				if (x) result = x.content();
+            };
 			}
-		}
 
 		args.method = meth[1];
 		if (staff && meth[2]) args.method += '.staff';
@@ -192,10 +193,10 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 		return result;
 	};
 
-	fieldmapper.standardRequest = function (meth, params) { return fieldmapper._request(meth, false, params) };
+    fieldmapper.standardRequest = function (meth, params) { return fieldmapper._request(meth, false, params); };
 	fieldmapper.Fieldmapper.prototype.standardRequest = fieldmapper.standardRequest;
 
-	fieldmapper.staffRequest = function (meth, params) { return fieldmapper._request(meth, true, params) };
+    fieldmapper.staffRequest = function (meth, params) { return fieldmapper._request(meth, true, params); };
 	fieldmapper.Fieldmapper.prototype.staffRequest = fieldmapper.staffRequest;
 
 	fieldmapper.OpenSRF = {};
@@ -214,7 +215,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
     //** FROM HASH **/
 	function _fromHash (_hash) {
 		for ( var i=0; i < this._fields.length; i++) {
-			if (_hash[this._fields[i]] != null)
+            if (_hash[this._fields[i]] !== null)
 				this[this._fields[i]]( _hash[this._fields[i]] );
 		}
 		return this;
@@ -222,9 +223,10 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 
 	function _toHash (includeNulls, virtFields) {
 		var _hash = {};
-		for ( var i=0; i < this._fields.length; i++) {
-			if (includeNulls || this[this._fields[i]]() != null) {
-				if (this[this._fields[i]]() == null)
+        var i;
+        for (i=0; i < this._fields.length; i++) {
+            if (includeNulls || this[this._fields[i]]() !== null) {
+                if (this[this._fields[i]]() === null)
                     _hash[this._fields[i]] = null;
                 else
 				    _hash[this._fields[i]] = '' + this[this._fields[i]]();
@@ -232,7 +234,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 		}
 
 		if (virtFields && virtFields.length > 0) {
-			for (var i = 0; i < virtFields.length; i++) {
+            for (i = 0; i < virtFields.length; i++) {
 				if (!_hash[virtFields[i]])
 					_hash[virtFields[i]] = null;
 			}
@@ -247,10 +249,11 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 	function _fromStoreItem (data) {
 		this.fromHash(data);
 
-		for (var i = 0; this._ignore_fields && i < this._ignore_fields.length; i++)
+        var i;
+        for (i = 0; this._ignore_fields && i < this._ignore_fields.length; i++)
 			this[this._ignore_fields[i]](null);
 
-		for (var i = 0; this._fields && i < this._fields.length; i++) {
+        for (i = 0; this._fields && i < this._fields.length; i++) {
 			if (dojo.isArray( this[this._fields[i]]() ))
 				this[this._fields[i]]( this[this._fields[i]]()[0] );
 		}
@@ -274,22 +277,23 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 		if (!params) params = {};
         var data = this.initStoreData(label, params);
 
-		for (var i = 0; list && i < list.length; i++) data.items.push( list[i].toHash(true, params.virtualFields) );
+        var i, j;
+        for (i = 0; list && i < list.length; i++) data.items.push( list[i].toHash(true, params.virtualFields) );
 
 		if (params.children && params.parent) {
 			var _hash_list = data.items;
 
 			var _find_root = {};
-			for (var i = 0; _hash_list && i < _hash_list.length; i++) {
+            for (i = 0; _hash_list && i < _hash_list.length; i++) {
 				_find_root[_hash_list[i][params.identifier]] = _hash_list[i]; 
 			}
 
 			var item_data = [];
-			for (var i = 0; _hash_list && i < _hash_list.length; i++) {
-				var obj = _hash_list[i]
+            for (i = 0; _hash_list && i < _hash_list.length; i++) {
+                var obj = _hash_list[i];
 				obj[params.children] = [];
 
-				for (var j = 0; _hash_list && j < _hash_list.length; j++) {
+                for (j = 0; _hash_list && j < _hash_list.length; j++) {
 					var kid = _hash_list[j];
 					if (kid[params.parent] == obj[params.identifier]) {
 						obj[params.children].push( { _reference : kid[params.identifier] } );
@@ -301,7 +305,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 				item_data.push( obj );
 			}
 
-			for (var j in _find_root) {
+            for (j in _find_root) {
 				_find_root[j]['_top'] = 'true';
 				if (!_find_root[j][params.parent])
 					_find_root[j]['_trueRoot'] = 'true';
@@ -364,17 +368,17 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
 	fieldmapper.aou.toStoreData = function (list, label) {
 		if (!label) label = 'shortname';
 		return _toStoreData.call(this, list, label, { 'parent' : 'parent_ou', 'children' : 'children' });
-	}
+    };
 
 	fieldmapper.aout.toStoreData = function (list, label) {
 		if (!label) label = 'name';
 		return _toStoreData.call(this, list, label, { 'parent' : 'parent', 'children' : 'children' });
-	}
+    };
 
 	fieldmapper.pgt.toStoreData = function (list, label) {
 		if (!label) label = 'name';
 		return _toStoreData.call(this, list, label, { 'parent' : 'parent', 'children' : 'children' });
-	}
+    };
     /** FROM dojoData **/
     
 

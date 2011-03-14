@@ -25,9 +25,10 @@ if(!dojo._hasResource['fieldmapper.hash']){
         /* XXX Content loaded in Fieldmapper */
         /* XXX deprecate this file **/
 
+        var i;
         function _fromHash (_hash) {
-            for ( var i=0; i < this._fields.length; i++) {
-                if (_hash[this._fields[i]] != null)
+            for (i = 0; i < this._fields.length; i++) {
+                if (_hash[this._fields[i]] !== null)
                     this[this._fields[i]]( _hash[this._fields[i]] );
             }
             return this;
@@ -35,9 +36,9 @@ if(!dojo._hasResource['fieldmapper.hash']){
 
         function _toHash (includeNulls, virtFields) {
             var _hash = {};
-            for ( var i=0; i < this._fields.length; i++) {
-                if (includeNulls || this[this._fields[i]]() != null) {
-                    if (this[this._fields[i]]() == null)
+            for (i = 0; i < this._fields.length; i++) {
+                if (includeNulls || this[this._fields[i]]() !== null) {
+                    if (this[this._fields[i]]() === null)
                         _hash[this._fields[i]] = null;
                     else
                         _hash[this._fields[i]] = '' + this[this._fields[i]]();
@@ -45,7 +46,7 @@ if(!dojo._hasResource['fieldmapper.hash']){
             }
 
             if (virtFields && virtFields.length > 0) {
-                for (var i = 0; i < virtFields.length; i++) {
+                for (i = 0; i < virtFields.length; i++) {
                     if (!_hash[virtFields[i]])
                         _hash[virtFields[i]] = null;
                 }
