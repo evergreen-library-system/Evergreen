@@ -2951,12 +2951,12 @@ sub generate_fines_finish {
    my $self = shift;
    my $reservation = shift;
 
-   $self->{_gen_fines_req}->wait_complete if ($self->{_gen_fines_req});
-
-   my $id = $reservation ? $self->reservation->id : $self->circ->id;
+   return undef unless $self->{_gen_fines_req};
 
    $self->{_gen_fines_req}->wait_complete;
    delete($self->{_gen_fines_req});
+
+   my $id = $reservation ? $self->reservation->id : $self->circ->id;
 
    # refresh the circ in case the fine generator set the stop_fines field
    $self->reservation($self->editor->retrieve_booking_reservation($id)) if $reservation;
