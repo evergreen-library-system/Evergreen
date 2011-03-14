@@ -53,7 +53,7 @@ sub handler {
         DEBUG => $ctx->{debug_template},
         PLUGINS => {
             EGI18N => 'OpenILS::WWW::EGWeb::I18NFilter',
-            CGIUTF8 => 'OpenILS::WWW::EGWeb::CGIUTF8'
+            CGI_utf8 => 'OpenILS::WWW::EGWeb::CGI_utf8'
         }
     });
 

@@ -13,7 +13,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use DateTime::Format::ISO8601;
-use CGI qw(-utf8);
+use CGI qw(:all -utf8);
 
 # EGCatLoader sub-modules 
 use OpenILS::WWW::EGCatLoader::Util;
@@ -34,10 +34,6 @@ sub new {
     $self->apache($apache);
     $self->ctx($ctx);
     $self->cgi(new CGI);
-
-    my $msg1 = "LFW XXX: param('query') is " . $self->cgi->param('query');
-    $logger->info("LFW XXX: msg1 is " . $msg1);
-    $logger->info("LFW XXX: query_string is " . $self->cgi->query_string());
 
     OpenILS::Utils::CStoreEditor->init; # just in case
     $self->editor(new_editor());
