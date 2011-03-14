@@ -46,7 +46,7 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
     };
 
     fieldmapper.aou.LoadOrg = function (id, slim_ok) {
-        if (slim_ok === null) slim_ok = fieldmapper.aou.slim_ok;
+        if (slim_ok == null) slim_ok = fieldmapper.aou.slim_ok;
         var slim_o = fieldmapper.aou.OrgCache[id];
 
         if (slim_o && (slim_ok || slim_o.loaded))
@@ -80,7 +80,7 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 
         for (var i in fieldmapper.aou.OrgCache) {
             var x = fieldmapper.aou.OrgCache[i].org;
-            if (x.parent_ou() === null || x.parent_ou() === '') {
+            if (x.parent_ou() == null || x.parent_ou() == '') {
                 fieldmapper.aou.globalOrgTree = x;
                 continue;
             }
@@ -135,7 +135,7 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
     fieldmapper.aou.findOrgDepth = fieldmapper.aou.prototype.findOrgDepth;
 
     fieldmapper.aout.findOrgTypeFromDepth = function (depth) {
-        if( depth === null ) return null;
+        if( depth == null ) return null;
         fieldmapper.aout.LoadOrgTypes();
         for( var i in fieldmapper.aout.OrgTypeCache ) {
             var t = fieldmapper.aout.OrgTypeCache[i].type;
@@ -145,7 +145,7 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
     };
 
     fieldmapper.aou.findOrgUnitSN = function (sn, slim_ok) {
-        if (slim_ok === null) slim_ok = fieldmapper.aou.slim_ok;
+        if (slim_ok == null) slim_ok = fieldmapper.aou.slim_ok;
         var org = fieldmapper.aou.OrgCacheSN[sn];
         if (!org) {
             for (var i in fieldmapper.aou.OrgCache) {
