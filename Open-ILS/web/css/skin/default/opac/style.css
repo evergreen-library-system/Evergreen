@@ -950,3 +950,8 @@ div.select-wrapper:hover {
 .subtle-button:hover { text-decoration: underline; cursor: pointer; }
 .no-dec:hover { text-decoration: none; }
 .pending-addr td { background-color: #ffcccc !important; border: 0 !important; }
+
+#account-update-email table { text-align: center; padding: 20px; margin-top: 30px; border-collapse: collapse; }
+#account-update-email table td { padding: 5px 15px 5px 15px; border-bottom: 1px solid #ddd; text-align: left;}
+#account-update-email-error { font-size: 1.5em; padding: 10px; border:1px solid #e9ebf3;}
+

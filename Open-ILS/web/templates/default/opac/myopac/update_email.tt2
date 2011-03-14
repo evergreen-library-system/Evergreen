@@ -1,0 +1,24 @@
+[%  PROCESS "default/opac/parts/header.tt2";
+    PROCESS "default/opac/parts/marc_misc.tt2";
+    WRAPPER "default/opac/parts/base.tt2" +
+        "default/opac/parts/myopac/base.tt2";
+    myopac_page = "update_email"  %]
+<div id='myopac_summary_div' style="padding:0px;">
+
+[% IF ctx.invalid_email %]
+    <div id='account-update-email-error'>
+        [% | l(ctx.invalid_email) %]
+        The email address "<b>[_1]</b>" is invalid.  Please try a different email address.
+        [% END %]
+    </div>
+[% END %]
+
+<form method='POST' id='account-update-email'>
+    <table> 
+        <tr><td>[% l('Current Email') %]</td><td>[% ctx.user.email | html %]</td></tr>
+        <tr><td>[% l('New Email') %]</td><td><input type='text' name='email' value='[% ctx.invalid_email | html %]'/></td></tr>
+        <tr><td colspan='2' align='center'><input type='submit'/></td></tr>
+    </table>
+</form>
+
+[% END %]

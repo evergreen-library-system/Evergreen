@@ -475,14 +475,9 @@
                     </tr>
 
                     <tr>
-                        <td class='color_4 light_border'>
-                        [% l("Email Address") %]</td>
-
+                        <td class='color_4 light_border'>[% l("Email Address") %]</td>
                         <td class='light_border'>[% ctx.user.email | html %]</td>
-
-                        <td class='light_border'><a href='#'
-                           class="hide_me"
-                           style='text-decoration: underline;'>[% l("Change") %]</a></td>
+                        <td class='light_border'><a href='update_email'>[% l('Change') %]</a></td>
                     </tr>
 
                     <tr class='hide_me'>

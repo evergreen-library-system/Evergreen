@@ -480,7 +480,7 @@ sub load_myopac_update_email {
         $e->authtoken, $email);
 
     my $url = $self->apache->unparsed_uri;
-    $url =~ s/update_email/main/;
+    $url =~ s/update_email/prefs/;
 
     return $self->generic_redirect($url);
 }
