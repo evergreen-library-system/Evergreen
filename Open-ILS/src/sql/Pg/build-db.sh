@@ -83,6 +83,7 @@ ordered_file_list="
 
   001.schema.offline.sql
 
+  002.functions.general.sql
   002.schema.config.sql
   002.functions.aggregate.sql
   002.functions.config.sql

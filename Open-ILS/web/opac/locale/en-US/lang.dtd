@@ -1563,6 +1563,8 @@
 <!ENTITY staff.patron_search_form.phone.label 'Phone:'>
 <!ENTITY staff.patron_search_form.post_code.accesskey ''>
 <!ENTITY staff.patron_search_form.post_code.label 'ZIP:'>
+<!ENTITY staff.patron_search_form.profile.accesskey ''>
+<!ENTITY staff.patron_search_form.profile.label 'Filter by Permission Profile:'>
 <!ENTITY staff.patron_search_form.search.accesskey 'S'>
 <!ENTITY staff.patron_search_form.search.label 'Search'>
 <!ENTITY staff.patron_search_form.second_given_name.accesskey ''>
@@ -1734,6 +1736,7 @@
 <!ENTITY staff.server.admin.org_unit_settings.title "Organization Unit Settings">
 <!ENTITY staff.server.admin.org_unit_settings.context "Context Location">
 <!ENTITY staff.server.admin.org_unit_settings.uninherited " * Indicates the setting is not inherited from the parent org unit at run time">
+<!ENTITY staff.server.admin.org_unit_settings.no_perms "You do not have permission to view org unit settings">
 <!ENTITY staff.server.admin.org_unit_settings.edit_setting "Edit Setting">
 <!ENTITY staff.server.admin.org_unit_settings.delete_setting "Delete Setting">
 <!ENTITY staff.server.admin.org_unit_settings.update_setting "Update Setting">

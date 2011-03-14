@@ -869,10 +869,10 @@ sub owner_queue_retrieve {
 
     if($self->{record_type} eq 'bib') {
         $queues = $e->search_vandelay_bib_queue(
-            [$search, {order_by => {vbq => 'lower(name)'}}]);
+            [$search, {order_by => {vbq => 'evergreen.lowercase(name)'}}]);
     } else {
         $queues = $e->search_vandelay_authority_queue(
-            [$search, {order_by => {vaq => 'lower(name)'}}]);
+            [$search, {order_by => {vaq => 'evergreen.lowercase(name)'}}]);
     }
     $conn->respond($_) for @$queues;
     $e->rollback;

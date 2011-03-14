@@ -97,18 +97,18 @@ CREATE INDEX actor_usr_usrgroup_idx ON actor.usr (usrgroup);
 CREATE INDEX actor_usr_mailing_address_idx ON actor.usr (mailing_address);
 CREATE INDEX actor_usr_billing_address_idx ON actor.usr (billing_address);
 
-CREATE INDEX actor_usr_first_given_name_idx ON actor.usr (lower(first_given_name));
-CREATE INDEX actor_usr_second_given_name_idx ON actor.usr (lower(second_given_name));
-CREATE INDEX actor_usr_family_name_idx ON actor.usr (lower(family_name));
+CREATE INDEX actor_usr_first_given_name_idx ON actor.usr (evergreen.lowercase(first_given_name));
+CREATE INDEX actor_usr_second_given_name_idx ON actor.usr (evergreen.lowercase(second_given_name));
+CREATE INDEX actor_usr_family_name_idx ON actor.usr (evergreen.lowercase(family_name));
 
-CREATE INDEX actor_usr_email_idx ON actor.usr (lower(email));
+CREATE INDEX actor_usr_email_idx ON actor.usr (evergreen.lowercase(email));
 
-CREATE INDEX actor_usr_day_phone_idx ON actor.usr (lower(day_phone));
-CREATE INDEX actor_usr_evening_phone_idx ON actor.usr (lower(evening_phone));
-CREATE INDEX actor_usr_other_phone_idx ON actor.usr (lower(other_phone));
+CREATE INDEX actor_usr_day_phone_idx ON actor.usr (evergreen.lowercase(day_phone));
+CREATE INDEX actor_usr_evening_phone_idx ON actor.usr (evergreen.lowercase(evening_phone));
+CREATE INDEX actor_usr_other_phone_idx ON actor.usr (evergreen.lowercase(other_phone));
 
-CREATE INDEX actor_usr_ident_value_idx ON actor.usr (lower(ident_value));
-CREATE INDEX actor_usr_ident_value2_idx ON actor.usr (lower(ident_value2));
+CREATE INDEX actor_usr_ident_value_idx ON actor.usr (evergreen.lowercase(ident_value));
+CREATE INDEX actor_usr_ident_value2_idx ON actor.usr (evergreen.lowercase(ident_value2));
 
 CREATE FUNCTION actor.crypt_pw_insert () RETURNS TRIGGER AS $$
 	BEGIN
@@ -316,7 +316,7 @@ COMMENT ON TABLE actor.card IS $$
 $$;
 
 CREATE INDEX actor_card_usr_idx ON actor.card (usr);
-CREATE INDEX actor_card_barcode_lower_idx ON actor.card (lower(barcode));
+CREATE INDEX actor_card_barcode_evergreen_lowercase_idx ON actor.card (evergreen.lowercase(barcode));
 
 CREATE TABLE actor.org_unit_type (
 	id		SERIAL	PRIMARY KEY,
@@ -515,12 +515,12 @@ CREATE TABLE actor.usr_address (
 
 CREATE INDEX actor_usr_addr_usr_idx ON actor.usr_address (usr);
 
-CREATE INDEX actor_usr_addr_street1_idx ON actor.usr_address (lower(street1));
-CREATE INDEX actor_usr_addr_street2_idx ON actor.usr_address (lower(street2));
+CREATE INDEX actor_usr_addr_street1_idx ON actor.usr_address (evergreen.lowercase(street1));
+CREATE INDEX actor_usr_addr_street2_idx ON actor.usr_address (evergreen.lowercase(street2));
 
-CREATE INDEX actor_usr_addr_city_idx ON actor.usr_address (lower(city));
-CREATE INDEX actor_usr_addr_state_idx ON actor.usr_address (lower(state));
-CREATE INDEX actor_usr_addr_post_code_idx ON actor.usr_address (lower(post_code));
+CREATE INDEX actor_usr_addr_city_idx ON actor.usr_address (evergreen.lowercase(city));
+CREATE INDEX actor_usr_addr_state_idx ON actor.usr_address (evergreen.lowercase(state));
+CREATE INDEX actor_usr_addr_post_code_idx ON actor.usr_address (evergreen.lowercase(post_code));
 
 CREATE TABLE actor.usr_password_reset (
   id SERIAL PRIMARY KEY,

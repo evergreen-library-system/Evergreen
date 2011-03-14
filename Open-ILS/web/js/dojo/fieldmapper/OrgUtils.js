@@ -17,192 +17,193 @@
 
 if(!dojo._hasResource["fieldmapper.OrgUtils"]){
 
-	dojo._hasResource["fieldmapper.OrgUtils"] = true;
-	dojo.provide("fieldmapper.OrgUtils");
-	dojo.require("fieldmapper.Fieldmapper");
-	dojo.require("fieldmapper.OrgTree", true);
-	dojo.require("fieldmapper.OrgLasso", true);
+    dojo._hasResource["fieldmapper.OrgUtils"] = true;
+    dojo.provide("fieldmapper.OrgUtils");
+    dojo.require("fieldmapper.Fieldmapper");
+    dojo.require("fieldmapper.OrgTree", true);
+    dojo.require("fieldmapper.OrgLasso", true);
 
-	fieldmapper.aou.slim_ok = true;
-	fieldmapper.aou.globalOrgTree = {};
-	fieldmapper.aou.OrgCache = {};
-	fieldmapper.aou.OrgCacheSN = {};
-	fieldmapper.aout.OrgTypeCache = {};
+    fieldmapper.aou.slim_ok = true;
+    fieldmapper.aou.globalOrgTree = {};
+    fieldmapper.aou.OrgCache = {};
+    fieldmapper.aou.OrgCacheSN = {};
+    fieldmapper.aout.OrgTypeCache = {};
 
-	fieldmapper.aout.LoadOrgTypes = function () {
-		for (var i in fieldmapper.aout.OrgTypeCache) {
-			return;
-		}
+    fieldmapper.aout.LoadOrgTypes = function () {
+        var i;
+        for (i in fieldmapper.aout.OrgTypeCache) {
+            return;
+        }
 
-		var types = fieldmapper.standardRequest(['open-ils.actor','open-ils.actor.org_types.retrieve']);
+        var types = fieldmapper.standardRequest(['open-ils.actor','open-ils.actor.org_types.retrieve']);
 
-		for (var i = 0; i < types.length; i++) {
-			fieldmapper.aout.OrgTypeCache[types[i].id()] = {
-				loaded : true,
-				type : types[i]
-			};
-		}
-	}
+        for (i = 0; i < types.length; i++) {
+            fieldmapper.aout.OrgTypeCache[types[i].id()] = {
+                loaded : true,
+                type : types[i]
+            };
+        }
+    };
 
-	fieldmapper.aou.LoadOrg = function (id, slim_ok) {
-		if (slim_ok == null) slim_ok = fieldmapper.aou.slim_ok;
-		var slim_o = fieldmapper.aou.OrgCache[id];
+    fieldmapper.aou.LoadOrg = function (id, slim_ok) {
+        if (slim_ok === null) slim_ok = fieldmapper.aou.slim_ok;
+        var slim_o = fieldmapper.aou.OrgCache[id];
 
-		if (slim_o && (slim_ok || slim_o.loaded))
-			return fieldmapper.aou.OrgCache[id].org;
+        if (slim_o && (slim_ok || slim_o.loaded))
+            return fieldmapper.aou.OrgCache[id].org;
 
-		var o = fieldmapper.standardRequest(['open-ils.actor','open-ils.actor.org_unit.retrieve'],[null,id]);
+        var o = fieldmapper.standardRequest(['open-ils.actor','open-ils.actor.org_unit.retrieve'],[null,id]);
         if(!(o && o.id)) {
             throw new Error("fieldmapper.aou.LoadOrg(): No org unit found with ID " + id);
         }
-		o.children = fieldmapper.aou.OrgCache[o.id()].children;
-		fieldmapper.aou.OrgCache[o.id()] = { loaded : true, org : o };
-		return o;
-	}
-	fieldmapper.aou.findOrgUnit = fieldmapper.aou.LoadOrg;
+        o.children = fieldmapper.aou.OrgCache[o.id()].children;
+        fieldmapper.aou.OrgCache[o.id()] = { loaded : true, org : o };
+        return o;
+    };
+    fieldmapper.aou.findOrgUnit = fieldmapper.aou.LoadOrg;
 
-	if (window._l) {
-		for (var i = 0; i < _l.length; i++) {
-			fieldmapper.aou.OrgCache[_l[i][0]] = {
-				loaded: false,
-				org : new fieldmapper.aou().fromHash({
-					id : _l[i][0],
-					ou_type : _l[i][1],
-					parent_ou : _l[i][2],
-					name : _l[i][3],
-					opac_visible : _l[i][4],
-					shortname : _l[i][5]
-				})
-			};
+    if (window._l) {
+        for (var i = 0; i < _l.length; i++) {
+            fieldmapper.aou.OrgCache[_l[i][0]] = {
+                loaded: false,
+                org : new fieldmapper.aou().fromHash({
+                    id : _l[i][0],
+                    ou_type : _l[i][1],
+                    parent_ou : _l[i][2],
+                    name : _l[i][3],
+                    opac_visible : _l[i][4],
+                    shortname : _l[i][5]
+                })
+            };
 
-		}
+        }
 
-		for (var i in fieldmapper.aou.OrgCache) {
-			var x = fieldmapper.aou.OrgCache[i].org;
-			if (x.parent_ou() == null || x.parent_ou() == '') {
-				fieldmapper.aou.globalOrgTree = x;
-				continue;
-			}
+        for (var i in fieldmapper.aou.OrgCache) {
+            var x = fieldmapper.aou.OrgCache[i].org;
+            if (x.parent_ou() === null || x.parent_ou() === '') {
+                fieldmapper.aou.globalOrgTree = x;
+                continue;
+            }
 
-			var par = fieldmapper.aou.findOrgUnit(x.parent_ou(),true);
-			if (!par.children()) par.children([]);
-			par.children().push(x);
-			fieldmapper.aou.OrgCache[x.id()].treePtr = x;
-		}
+            var par = fieldmapper.aou.findOrgUnit(x.parent_ou(),true);
+            if (!par.children()) par.children([]);
+            par.children().push(x);
+            fieldmapper.aou.OrgCache[x.id()].treePtr = x;
+        }
 
-		for (var i = 0; i < globalOrgTypes.length; i++) {
-			fieldmapper.aout.OrgTypeCache[globalOrgTypes[i].id()] = {
-				loaded : true,
-				type : globalOrgTypes[i]
-			};
-		}
-	}
+        for (var i = 0; i < globalOrgTypes.length; i++) {
+            fieldmapper.aout.OrgTypeCache[globalOrgTypes[i].id()] = {
+                loaded : true,
+                type : globalOrgTypes[i]
+            };
+        }
+    }
 
 
    /* ---------------------------------------------------------------------- */
 
-	fieldmapper.aou.prototype.fetchOrgSettingDefault = function (name) {
-		return this.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING, [this.id(), name] ); 
-	}
+    fieldmapper.aou.prototype.fetchOrgSettingDefault = function (name) {
+        return this.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING, [this.id(), name] ); 
+    };
 
-	fieldmapper.aou.prototype.fetchOrgSettingBatch = function (nameList) {
-		return this.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING_BATCH, [this.id(), nameList] ); 
-	}
+    fieldmapper.aou.prototype.fetchOrgSettingBatch = function (nameList) {
+        return this.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING_BATCH, [this.id(), nameList] ); 
+    };
 
-	fieldmapper.aou.fetchOrgSettingDefault = function (orgId, name) {
-		return fieldmapper.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING, [orgId, name] ); 
-	}
+    fieldmapper.aou.fetchOrgSettingDefault = function (orgId, name) {
+        return fieldmapper.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING, [orgId, name] ); 
+    };
 
-	fieldmapper.aou.fetchOrgSettingBatch = function (orgId, nameList) {
-		return fieldmapper.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING_BATCH, [orgId, nameList] ); 
-	}
+    fieldmapper.aou.fetchOrgSettingBatch = function (orgId, nameList) {
+        return fieldmapper.standardRequest( fieldmapper.OpenSRF.methods.FETCH_ORG_SETTING_BATCH, [orgId, nameList] ); 
+    };
 
-	fieldmapper.aout.findOrgType = function (id) {
-		fieldmapper.aout.LoadOrgTypes();
-		return fieldmapper.aout.OrgTypeCache[id].type;
-	}
+    fieldmapper.aout.findOrgType = function (id) {
+        fieldmapper.aout.LoadOrgTypes();
+        return fieldmapper.aout.OrgTypeCache[id].type;
+    };
 
-	fieldmapper.aou.prototype.findOrgDepth = function (id) {
-		if (!id) id = this.id;
-		if (!id) return null;
+    fieldmapper.aou.prototype.findOrgDepth = function (id) {
+        if (!id) id = this.id;
+        if (!id) return null;
 
-		var org = fieldmapper.aou.findOrgUnit(id);
-		return fieldmapper.aout.findOrgType(
-			fieldmapper.aou.findOrgUnit(id).ou_type()
-		).depth();
-	}
-	fieldmapper.aou.findOrgDepth = fieldmapper.aou.prototype.findOrgDepth;
+        var org = fieldmapper.aou.findOrgUnit(id);
+        return fieldmapper.aout.findOrgType(
+            fieldmapper.aou.findOrgUnit(id).ou_type()
+        ).depth();
+    };
+    fieldmapper.aou.findOrgDepth = fieldmapper.aou.prototype.findOrgDepth;
 
-	fieldmapper.aout.findOrgTypeFromDepth = function (depth) {
-		if( depth == null ) return null;
-		fieldmapper.aout.LoadOrgTypes();
-		for( var i in fieldmapper.aout.OrgTypeCache ) {
-			var t = fieldmapper.aout.OrgTypeCache[i].type;
-			if( t.depth() == depth ) return t;
-		}
-		return null;
-	}
+    fieldmapper.aout.findOrgTypeFromDepth = function (depth) {
+        if( depth === null ) return null;
+        fieldmapper.aout.LoadOrgTypes();
+        for( var i in fieldmapper.aout.OrgTypeCache ) {
+            var t = fieldmapper.aout.OrgTypeCache[i].type;
+            if( t.depth() == depth ) return t;
+        }
+        return null;
+    };
 
-	fieldmapper.aou.findOrgUnitSN = function (sn, slim_ok) {
-		if (slim_ok == null) slim_ok = fieldmapper.aou.slim_ok;
-		var org = fieldmapper.aou.OrgCacheSN[sn];
-		if (!org) {
-			for (var i in fieldmapper.aou.OrgCache) {
-				var o = fieldmapper.aou.OrgCache[i];
-				if (o.org.shortname() == sn) {
-					fieldmapper.aou.OrgCacheSN[o.org.shortname()] = o;
-					org = o;
-				}
-			}
+    fieldmapper.aou.findOrgUnitSN = function (sn, slim_ok) {
+        if (slim_ok === null) slim_ok = fieldmapper.aou.slim_ok;
+        var org = fieldmapper.aou.OrgCacheSN[sn];
+        if (!org) {
+            for (var i in fieldmapper.aou.OrgCache) {
+                var o = fieldmapper.aou.OrgCache[i];
+                if (o.org.shortname() == sn) {
+                    fieldmapper.aou.OrgCacheSN[o.org.shortname()] = o;
+                    org = o;
+                }
+            }
 
-			if (!slim_ok && !fieldmapper.aou.OrgCache[org.id()].loaded) {
-				org = fieldmapper.standardRequest(fieldmapper.OpenSRF.methods.FETCH_ORG_BY_SHORTNAME, sn);
+            if (!slim_ok && !fieldmapper.aou.OrgCache[org.id()].loaded) {
+                org = fieldmapper.standardRequest(fieldmapper.OpenSRF.methods.FETCH_ORG_BY_SHORTNAME, sn);
 
-				org.children = fieldmapper.aou.OrgCache[org.id()].children;
-				fieldmapper.aou.OrgCache[org.id()] = { loaded : true, org : org };
-				fieldmapper.aou.OrgCacheSN[org.shortname()] = { loaded : true, org : org };
-			}
+                org.children = fieldmapper.aou.OrgCache[org.id()].children;
+                fieldmapper.aou.OrgCache[org.id()] = { loaded : true, org : org };
+                fieldmapper.aou.OrgCacheSN[org.shortname()] = { loaded : true, org : org };
+            }
 
-		}
+        }
 
-		return org;
-	}
+        return org;
+    };
 
-	fieldmapper.aou.prototype.orgNodeTrail = function(node, asId) {
-		if (!node) node = this;
-		if (!node) return [];
+    fieldmapper.aou.prototype.orgNodeTrail = function(node, asId) {
+        if (!node) node = this;
+        if (!node) return [];
 
-		var na = [];
+        var na = [];
 
-		while( node ) {
-			na.push(node);
-			if (node.parent_ou())
-				node = fieldmapper.aou.findOrgUnit(node.parent_ou());
-			else
-				node = null;
-		}
+        while( node ) {
+            na.push(node);
+            if (node.parent_ou())
+                node = fieldmapper.aou.findOrgUnit(node.parent_ou());
+            else
+                node = null;
+        }
 
-		na.reverse();
-		if (asId) return na.map(function(o) { return o.id(); });
-		else return na;
-	}
-	fieldmapper.aou.orgNodeTrail = fieldmapper.aou.prototype.orgNodeTrail;
+        na.reverse();
+        if (asId) return na.map(function(o) { return o.id(); });
+        else return na;
+    };
+    fieldmapper.aou.orgNodeTrail = fieldmapper.aou.prototype.orgNodeTrail;
 
-	fieldmapper.aou.prototype.orgIsMine = function (me, org) {
-		if (this._isfieldmapper) {
-			org = me;
-			me = this;
-		}
+    fieldmapper.aou.prototype.orgIsMine = function (me, org) {
+        if (this._isfieldmapper) {
+            org = me;
+            me = this;
+        }
 
-		if(!me || !org) return false;
+        if(!me || !org) return false;
 
-		if(me.id() == org.id()) return true;
+        if(me.id() == org.id()) return true;
 
-		for( var i in me.children() ) {
-			if(me.children()[i].orgIsMine(org)) return true;
-		}
-		return false;
-	}
+        for( var i in me.children() ) {
+            if(me.children()[i].orgIsMine(org)) return true;
+        }
+        return false;
+    };
 
     /** Given an org id, returns an array of org units including
      * the org for the ID provided and all descendant orgs */
@@ -223,32 +224,32 @@ if(!dojo._hasResource["fieldmapper.OrgUtils"]){
         }
         addNode(fieldmapper.aou.findOrgUnit(orgId));
         return list;
-    }
+    };
 
     fieldmapper.aou.fullPath = function(orgId, asId) {
 
         var orgList = fieldmapper.aou.orgNodeTrail(fieldmapper.aou.findOrgUnit(orgId));
         orgList.pop(); // prevent dupes
-        orgList = orgList.concat(fieldmapper.aou.descendantNodeList(orgId))
+        orgList = orgList.concat(fieldmapper.aou.descendantNodeList(orgId));
 
         if(!asId) return orgList;
         return orgList.map( function(node) { return node.id(); } );
-    }
+    };
 
-	dojo.addOnUnload( function () {
-		for (var i in fieldmapper.aou.OrgCache) {
-			x=fieldmapper.aou.OrgCache[i].treePtr;
-			if (!x) continue;
+    dojo.addOnUnload( function () {
+        for (var i in fieldmapper.aou.OrgCache) {
+            x=fieldmapper.aou.OrgCache[i].treePtr;
+            if (!x) continue;
 
-			x.children(null);
-			x.parent_ou(null);
-			fieldmapper.aou.OrgCache[i]=null;
-		}
-		fieldmapper.aou.globalOrgTree = null;
-		fieldmapper.aou.OrgCache = null;
-		fieldmapper.aou.OrgCacheSN = null;
-		fieldmapper.aout.OrgTypeCache = null;
-	});
+            x.children(null);
+            x.parent_ou(null);
+            fieldmapper.aou.OrgCache[i]=null;
+        }
+        fieldmapper.aou.globalOrgTree = null;
+        fieldmapper.aou.OrgCache = null;
+        fieldmapper.aou.OrgCacheSN = null;
+        fieldmapper.aout.OrgTypeCache = null;
+    });
 }
 
 

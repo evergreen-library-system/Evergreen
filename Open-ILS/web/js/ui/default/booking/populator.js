@@ -4,6 +4,7 @@
 dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dojo.date.locale");
 dojo.require("openils.PermaCrud");
+dojo.require("dojo.string");
 
 function Populator(widgets, primary_input) {
     this.widgets = widgets;
@@ -133,7 +134,7 @@ Populator.prototype.populate_patron = function(data) {
     this.reveal_container(this.widgets.patron);
     /* Maybe add patron's home OU or something here later... */
 };
-Populator.prototype.return_by_resource = function(barcode) {
+Populator.prototype.return_by_resource = function(barcode, override) {
     /* XXX instead of talking to the server every time we do this, we could
      * also check the "out" cache, iff we have one.  */
     var r = fieldmapper.standardRequest(
@@ -157,14 +158,26 @@ Populator.prototype.return_by_resource = function(barcode) {
             alert(localeStrings.NOTICE_CHANGE_OF_PATRON);
         }
         this.patron_barcode = new_barcode;
-        var ret = this.return(r);
+        var ret = this.return(r, override);
         if (!ret) {
             alert(localeStrings.RETURN_NO_RESPONSE);
         } else if (is_ils_event(ret) && ret.textcode != "SUCCESS") {
-            if (ret.textcode == "ROUTE_ITEM")
+            if (ret.textcode == "ROUTE_ITEM") {
                 display_transit_slip(ret);
-            else
+            } else if (ret.textcode == "COPY_ALERT_MESSAGE") {
+                if (
+                    confirm(
+                        dojo.string.substitute(
+                            localeStrings.COPY_ALERT, [ret.desc, ret.payload]
+                       )
+                    )
+                ) {
+                    this.return_by_resource(barcode, true /*override*/);
+                    return;
+                }
+            } else {
                 alert(my_ils_error(localeStrings.RETURN_ERROR, ret));
+            }
         } else {
             /* XXX speedbump should go, but something has to happen else
              * there's no indication to staff that anything happened when
@@ -231,9 +244,11 @@ Populator.prototype.pickup = function(reservation) {
         }]
     );
 };
-Populator.prototype.return = function(reservation) {
+Populator.prototype.return = function(reservation, override) {
+    var method = "open-ils.circ.reservation.return";
+    if (override) method += ".override";
     return fieldmapper.standardRequest(
-        ["open-ils.circ", "open-ils.circ.reservation.return"],
+        ["open-ils.circ", method],
         [openils.User.authtoken, {
             "patron_barcode": this.patron_barcode,
             "reservation": reservation.id()
@@ -258,20 +273,33 @@ Populator.prototype.act_on_selected = function(how, which) {
     var reservations = selected_id_list.map(function(o) { return cache[o]; });
 
     /* Do we have to process these one at a time?  I think so... */
-    for (var i in reservations) {
-        var result = this[how](reservations[i]);
+    var self = this;
+    function looper(reservation, override) {
+        if (looper._done) return;
+        var result = self[how](reservation, override);
         if (!result) {
             alert(no_response_msg);
         } else if (is_ils_event(result) && result.textcode != "SUCCESS") {
-            if (result.textcode == "ROUTE_ITEM")
+            if (result.textcode == "ROUTE_ITEM") {
                 display_transit_slip(result);
-            else
+            } else if (result.textcode == "COPY_ALERT_MESSAGE") {
+                if (confirm(
+                    dojo.string.substitute(
+                        localeStrings.COPY_ALERT, [result.desc, result.payload]
+                   )
+                )) {
+                    looper(reservation, true);
+                }
+                return; // continues processing other resvs
+            } else {
                 alert(my_ils_error(error_msg, result));
+            }
         } else {
-            continue;
+            return;
         }
-        break;
+        looper._done = true;
     }
+    dojo.forEach(reservations, looper);
 
     this.populate();
 };

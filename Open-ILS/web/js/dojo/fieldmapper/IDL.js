@@ -22,7 +22,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     fieldmapper.IDL.fmclasses[c] = window._preload_fieldmapper_IDL[c];
 
                     window.fmclasses[c] = [];
-                    dojo.forEach(fieldmapper.IDL.fmclasses[c].fields, function(obj){ window.fmclasses[c].push(obj.name) });
+                    dojo.forEach(fieldmapper.IDL.fmclasses[c].fields, function(obj){ window.fmclasses[c].push(obj.name); });
 
                     if (classlist && classlist.length)
                         classlist = dojo.filter(classlist, function(x){return x != c;});
@@ -161,13 +161,13 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
 
                 var obj = {
                     field : field,
-                    name	: name,
+                    name : name,
                     label : fieldmapper._getAttributeNS(field,this.NS_REPORTS,'label'),
                     datatype : fieldmapper._getAttributeNS(field,this.NS_REPORTS,'datatype'),
                     primitive : fieldmapper._getAttributeNS(field,this.NS_PERSIST,'primitive'),
                     selector : fieldmapper._getAttributeNS(field,this.NS_REPORTS,'selector'),
                     array_position : position++,
-                    type	: 'field',
+                    type : 'field',
                     virtual : (fieldmapper._getAttributeNS(fields[i],this.NS_PERSIST, 'virtual') == 'true'),
                     required : (fieldmapper._getAttributeNS(fields[i],this.NS_OBJ, 'required') == 'true'),
                     i18n : (fieldmapper._getAttributeNS(fields[i],this.NS_PERSIST, 'i18n') == 'true')
@@ -221,14 +221,17 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
     };
 
     window.fmclasses = {};
-    fieldmapper.IDL.load = function (list) { if (!list) list = []; return new fieldmapper.IDL(list); };
+    fieldmapper.IDL.load = function (list) {
+        if (!list) list = [];
+        return new fieldmapper.IDL(list);
+    };
     fieldmapper.IDL.loaded = false;
 
     JSON2js.fallbackObjectifier = function (arg, key_name, val_name) {
         console.log("Firing IDL loader for " + arg[key_name]);
         fieldmapper.IDL.load([arg[key_name]]);
         return decodeJS(arg);
-    }
+    };
  
 }
 

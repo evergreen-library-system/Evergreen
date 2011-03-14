@@ -125,6 +125,10 @@
                 accesskey="&staff.patron_search_form.post_code.accesskey;"/>
             <textbox id="post_code" group="1" context="clipboard"/>
         </row>
+        <row>
+            <label value="&staff.patron_search_form.profile.label;"/>
+            <hbox id="profile" />
+        </row>
         <row id="psr12">
             <spacer id="pss12"/>
             <button id="search" label="&staff.patron_search_form.search.label;" 
