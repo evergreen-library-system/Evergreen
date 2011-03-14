@@ -24,9 +24,9 @@ CREATE TABLE vandelay.match_set_point (
     required    BOOL    NOT NULL DEFAULT TRUE,
     quality     INT     NOT NULL DEFAULT 1, -- higher is better
     CONSTRAINT vmsp_need_a_subfield_with_a_tag CHECK ((tag IS NOT NULL AND subfield IS NOT NULL) OR tag IS NULL),
-    CONSTRAINT vmsp_need_a_tag_or_a_ff CHECK (tag IS NOT NULL AND svf IS NULL) OR (tag IS NULL AND svf IS NOT NULL)),
-    CONSTRAINT vmsp_def_once_per_set UNIQUE (match_set, COALESCE(tag,''), COALESCE(subfield,''), COALESCE(svf,''))
+    CONSTRAINT vmsp_need_a_tag_or_a_ff CHECK ((tag IS NOT NULL AND svf IS NULL) OR (tag IS NULL AND svf IS NOT NULL))
 );
+CREATE UNIQUE INDEX vmsp_def_once_per_set ON vandelay.match_set_point (match_set, COALESCE(tag,''), COALESCE(subfield,''), COALESCE(svf,''));
 
 CREATE TABLE vandelay.match_set_quality (
     id          SERIAL  PRIMARY KEY,
@@ -37,9 +37,9 @@ CREATE TABLE vandelay.match_set_quality (
     value       TEXT    NOT NULL,
     quality     INT     NOT NULL DEFAULT 1, -- higher is better
     CONSTRAINT vmsq_need_a_subfield_with_a_tag CHECK ((tag IS NOT NULL AND subfield IS NOT NULL) OR tag IS NULL),
-    CONSTRAINT vmsq_need_a_tag_or_a_ff CHECK (tag IS NOT NULL AND svf IS NULL) OR (tag IS NULL AND svf IS NOT NULL)),
-    CONSTRAINT vmsq_def_once_per_set UNIQUE (match_set, COALESCE(tag,''), COALESCE(subfield,''), COALESCE(svf,''))
+    CONSTRAINT vmsq_need_a_tag_or_a_ff CHECK ((tag IS NOT NULL AND svf IS NULL) OR (tag IS NULL AND svf IS NOT NULL))
 );
+CREATE UNIQUE INDEX vmsq_def_once_per_set ON vandelay.match_set_quality (match_set, COALESCE(tag,''), COALESCE(subfield,''), COALESCE(svf,''));
 
 
 CREATE TABLE vandelay.queue (
@@ -48,7 +48,7 @@ CREATE TABLE vandelay.queue (
 	name			TEXT		NOT NULL,
 	complete		BOOL		NOT NULL DEFAULT FALSE,
 	queue_type		TEXT		NOT NULL DEFAULT 'bib' CHECK (queue_type IN ('bib','authority')),
-    match_set       INT         REFERENCES vandelay.match_set (id) DEFERRABLE INITIALLY DEFERRED ON UPDATE CASCADE ON DELETE SET NULL,
+    match_set       INT         REFERENCES vandelay.match_set (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	CONSTRAINT vand_queue_name_once_per_owner_const UNIQUE (owner,name,queue_type)
 );
 
@@ -122,7 +122,7 @@ CREATE TABLE vandelay.queued_bib_record (
 	queue		    INT		NOT NULL REFERENCES vandelay.bib_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	bib_source	    INT		REFERENCES config.bib_source (id) DEFERRABLE INITIALLY DEFERRED,
 	imported_as 	BIGINT	REFERENCES biblio.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
-	import_error	INT     REFERENCES vandelay.import_error (id) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	import_error	TEXT    REFERENCES vandelay.import_error (code) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	error_detail	TEXT
 ) INHERITS (vandelay.queued_record);
 ALTER TABLE vandelay.queued_bib_record ADD PRIMARY KEY (id);
@@ -148,7 +148,7 @@ CREATE TABLE vandelay.import_item (
     id              BIGSERIAL   PRIMARY KEY,
     record          BIGINT      NOT NULL REFERENCES vandelay.queued_bib_record (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     definition      BIGINT      NOT NULL REFERENCES vandelay.import_item_attr_definition (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	import_error	INT         REFERENCES vandelay.import_error (id) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	import_error	TEXT        REFERENCES vandelay.import_error (code) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	error_detail	TEXT,
     owning_lib      INT,
     circ_lib        INT,
@@ -311,7 +311,7 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREAT TYPE vandelay.flat_marc AS ( tag CHAR(3), ind1 TEXT, ind2 TEXT, subfield TEXT, value TEXT );
+CREATE TYPE vandelay.flat_marc AS ( tag CHAR(3), ind1 TEXT, ind2 TEXT, subfield TEXT, value TEXT );
 CREATE OR REPLACE FUNCTION vandelay.flay_marc ( TEXT ) RETURNS SETOF vandelay.flat_marc AS $func$
 
 use MARC::Record;
@@ -515,9 +515,9 @@ BEGIN
                 END IF;
 
                 -- add the quality for this match
-                FOR tmp_rec IN SELECT * FROM UNNEST(potential_matches);
+                FOR tmp_rec IN SELECT * FROM UNNEST(potential_matches) LOOP
                     tmp_quality := COALESCE((quality_set -> tmp_rec::TEXT)::INT, 0);
-                    quality := quality || hstore(tmp_rec::TEXT, (tmp_quality + test.quality)::TEXT);
+                    quality_set := quality_set || hstore(tmp_rec::TEXT, (tmp_quality + test.quality)::TEXT);
                 END LOOP;
 
             END LOOP;
@@ -537,9 +537,9 @@ BEGIN
             END IF;
 
             -- add the quality for this match
-            FOR tmp_rec IN SELECT * FROM UNNEST(potential_matches);
+            FOR tmp_rec IN SELECT * FROM UNNEST(potential_matches) LOOP
                 tmp_quality := COALESCE((quality_set -> tmp_rec::TEXT)::INT, 0);
-                quality := quality || hstore(tmp_rec::TEXT, (tmp_quality + test.quality)::TEXT);
+                quality_set := quality_set || hstore(tmp_rec::TEXT, (tmp_quality + test.quality)::TEXT);
             END LOOP;
 
         END IF;
@@ -1657,7 +1657,7 @@ ALTER TABLE vandelay.authority_queue ADD PRIMARY KEY (id);
 CREATE TABLE vandelay.queued_authority_record (
 	queue		INT	NOT NULL REFERENCES vandelay.authority_queue (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	imported_as	INT	REFERENCES authority.record_entry (id) DEFERRABLE INITIALLY DEFERRED,
-	import_error	INT     REFERENCES vandelay.import_error (id) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+	import_error	TEXT    REFERENCES vandelay.import_error (code) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	error_detail	TEXT
 ) INHERITS (vandelay.queued_record);
 ALTER TABLE vandelay.queued_authority_record ADD PRIMARY KEY (id);
