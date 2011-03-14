@@ -2,6 +2,7 @@
     USE date;
     USE CGI = CGIUTF8;
     USE EGI18N;
+    USE POSIX;
     SET DATE_FORMAT = l('%m/%d/%Y');
 
     # Don't wrap in l() here; do that where this format string is actually used.
