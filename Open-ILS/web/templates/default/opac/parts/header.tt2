@@ -4,6 +4,9 @@
     USE EGI18N;
     SET DATE_FORMAT = l('%m/%d/%Y');
 
+    # Don't wrap in l() here; do that where this format string is actually used.
+    SET HUMAN_NAME_FORMAT = '[_1] [_2] [_3] [_4] [_5]';
+
     formats = [  # XXX KCLS-specific
         {'code' => 'a', 'name' => 'Book', 'image' => 'media_book.jpg'},
         {'code' => 'i', 'name' => 'Book on cassette', 'image' => 'media_bookoncasset.jpg'},

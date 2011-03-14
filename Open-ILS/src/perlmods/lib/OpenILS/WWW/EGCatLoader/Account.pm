@@ -19,7 +19,7 @@ sub load_myopac {
         {
             flesh => 1,
             flesh_fields => {
-                au => ['card']
+                au => [qw/card home_ou addresses ident_type/]
                 # ...
             }
         }

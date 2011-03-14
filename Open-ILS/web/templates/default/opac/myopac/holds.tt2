@@ -205,13 +205,12 @@
                             %]
                         </div>
                     </td>
-                    <td width="62" align="right"
-                        style="text-align:right;padding-right:7px;">
-                        <a name="hold_edit_link" href="#">Edit</a>
+                    <td class="opac-auto-161">
+                        <!-- XXX TODO <a name="hold_edit_link" href="#">Edit</a>
                         <a href="#" name="hold_save_link"
                             class="hide_me">Save</a>
                         <a href="#" name="hold_cancel_link"
-                            class="hide_me">Back</a>
+                            class="hide_me">Back</a> -->
                     </td>
                 </tr>
                 [% END %]

@@ -949,3 +949,4 @@ div.select-wrapper:hover {
 }
 .subtle-button:hover { text-decoration: underline; cursor: pointer; }
 .no-dec:hover { text-decoration: none; }
+.pending-addr td { background-color: #ffcccc !important; border: 0 !important; }

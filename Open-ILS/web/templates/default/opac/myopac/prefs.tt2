@@ -3,7 +3,7 @@
         "default/opac/parts/myopac/base.tt2";
     myopac_page = "prefs"  %]
     <div id='myopac_prefs_div'>
-        <div id="acct_prefs_tabs"
+        <!-- XXX TODO <div id="acct_prefs_tabs"
              style="padding-bottom: 12px;color:#666;">
             <div style="float:left;">
                 <div class="align selected"
@@ -49,7 +49,7 @@
             </div>
 
             <div class="clear-both"></div>
-        </div>
+        </div> -->
 
         <div class="header_middle">
             <span id="acct_prefs_header">
@@ -285,16 +285,12 @@
                         <td width='30%'
                             class='color_4 light_border'>[% l("Name") %]</td>
 
-                        <td class='light_border'><span id=
-                        'myopac_summary_prefix'
-                              style='padding-right: 5px;'></span> <span id=
-                              'myopac_summary_first'
-                              style='padding-right: 5px;'></span> <span id=
-                              'myopac_summary_middle'
-                              style='padding-right: 5px;'></span> <span id=
-                              'myopac_summary_last'
-                              style='padding-right: 5px;'></span> <span id=
-                              'myopac_summary_suffix'></span></td>
+                        <td class='light_border'>[% l(
+                            HUMAN_NAME_FORMAT,
+                            ctx.user.prefix, ctx.user.first_given_name,
+                            ctx.user.second_given_name, ctx.user.family_name,
+                            ctx.user.suffix
+                        ) | html %]</td>
 
                         <td></td>
                     </tr>
@@ -304,7 +300,7 @@
                         [% l("Day Phone") %]</td>
 
                         <td class='light_border'
-                            id='myopac_summary_dayphone'></td>
+                            id='myopac_summary_dayphone'>[% ctx.user.day_phone | html %]</td>
 
                         <td class='light_border'><a href='#'
                            class="hide_me"
@@ -342,7 +338,7 @@
                         [% l("Evening Phone") %]</td>
 
                         <td class='light_border'
-                            id='myopac_summary_eveningphone'></td>
+                            id='myopac_summary_eveningphone'>[% ctx.user.evening_phone | html %]</td>
 
                         <td class='light_border'><a href='#'
                            class="hide_me"
@@ -369,7 +365,7 @@
                         [% l("Other Phone") %]</td>
 
                         <td class='light_border'
-                            id='myopac_summary_otherphone'></td>
+                            id='myopac_summary_otherphone'>[% ctx.user.other_phone | html %]</td>
 
                         <td class='light_border'><a href='#'
                            class="hide_me"
@@ -394,7 +390,7 @@
                     <tr>
                         <td class='color_4 light_border'>
                             <div style="position:absolute">
-                                <div style=
+                                <div class="hide_me" style=
                                 "position:relative;left:70px;top:-3px;">
                                     <a href="#">
                                     <img alt="Username Help"
@@ -405,7 +401,7 @@
                         </td>
 
                         <td class='light_border'
-                            id='myopac_summary_username'></td>
+                            id='myopac_summary_username'>[% ctx.user.usrname | html %]</td>
 
                         <td class='light_border'><a href='#'
                            class="hide_me"
@@ -434,12 +430,9 @@
                             [% l("(not shown)") %]</td>
                         <td class='light_border'><a href='#'
                            class="hide_me"
-                           id='myopac_summary_password_change'
-                           style=
-                           'text-decoration: underline;'>[% l("Change") %]</a></td>
+                           style='text-decoration: underline;'>[% l("Change") %]</a></td>
                     </tr>
-                    <tr id='myopac_update_password_row'
-                        class='hide_me'>
+                    <tr class='hide_me'>
                         <td class='myopac_update_cell'
                             colspan='3'>
                             <table>
@@ -453,17 +446,14 @@
 
                                         <td>
                                             <input type='password'
-                                               size='24'
-                                               id='myopac_current_password' />
+                                               size='24' />
                                            </td>
                                     </tr>
                                     <tr>
                                         <td><span class=
                                         'myopac_update_span'>[% l("Enter new password:") %]</span></td>
 
-                                        <td><input type='password'
-                                               size='24'
-                                               id='myopac_new_password' />
+                                        <td><input type='password' size='24' />
                                            </td>
                                     </tr>
 
@@ -472,9 +462,7 @@
                                         'myopac_update_span'>[% l("Re-enter new password:") %]</span></td>
 
                                         <td>
-                                            <input type='password'
-                                                size='24'
-                                                id='myopac_new_password2' />
+                                            <input type='password' size='24' />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -490,23 +478,19 @@
                         <td class='color_4 light_border'>
                         [% l("Email Address") %]</td>
 
-                        <td class='light_border'
-                            id='myopac_summary_email'></td>
+                        <td class='light_border'>[% ctx.user.email | html %]</td>
 
                         <td class='light_border'><a href='#'
                            class="hide_me"
-                           id='myopac_summary_email_change'
-                           style=
-                           'text-decoration: underline;'>[% l("Change") %]</a></td>
+                           style='text-decoration: underline;'>[% l("Change") %]</a></td>
                     </tr>
 
-                    <tr id='myopac_update_email_row'
-                        class='hide_me'>
+                    <tr class='hide_me'>
                         <td class='myopac_update_cell' colspan='3'>
                             <span class= 'myopac_update_span'>
                                 [% l("Enter new email address:") %]
                             </span>
-                            <input type='text' size='24' id='myopac_new_email' />
+                            <input type='text' size='24' />
                             <span class='myopac_update_span'>
                                 <button>
                                     <span class= 'myopac_update_span'>
@@ -521,22 +505,25 @@
                             </span>
                         </td>
                     </tr>
-                    <tr class="hide_me">
+                    [% IF ctx.user.ident_value %]<tr class="hide_me">
                         <td class='color_4 light_border'>
                         [% l("Primary Identification") %]</td>
 
-                        <td class='light_border'
-                            id='myopac_summary_ident1'></td>
-
+                        <td class='light_border'>
+                            [%
+                            # l('[_1] ([_2])', ctx.user.ident_value, ctx.user.ident_type.name) | html
+                            # XXX uncomment the above line to show primary
+                            # identification. With a minor tweak it could
+                            # alternatively be shown but partially obscured. %]
+                        </td>
                         <td></td>
-                    </tr>
+                    </tr>[% END %]
 
                     <tr>
                         <td class='color_4 light_border'>
                         [% l("Active Barcode") %]</td>
 
-                        <td class='light_border'
-                            id='myopac_summary_barcode'></td>
+                        <td class='light_border'>[% ctx.user.card.barcode %]</td>
 
                         <td></td>
                     </tr>
@@ -544,21 +531,17 @@
                     <tr>
                         <td class='color_4 light_border'>
                         [% l("Home Library") %]</td>
-                        <td class='light_border'
-                            id='myopac_summary_homelib'></td>
+                        <td class='light_border'>[% ctx.user.home_ou.name %]</td>
                         <td><a href='#'
                            class="hide_me"
-                           id='myopac_summary_home_change'
-                           style=
-                           'text-decoration: underline;'>[% l("Change") %]</a></td>
+                           style='text-decoration: underline;'>[% l("Change") %]</a></td>
                     </tr>
-                    <tr id='myopac_update_home_row'
-                        class='hide_me'>
+                    <tr class='hide_me'>
                         <td class='myopac_update_cell'
                             colspan='3'>
                             <span class='myopac_update_span'>
                                 New home library:</span>
-                            <select id='myopac_new_home'>
+                            <select>
                             </select>
                             <span class='myopac_update_span'>
                                 <button>
@@ -590,64 +573,56 @@
             <table width='100%' class='light_border data_grid'>
                 <thead>
                     <tr>
-                        <td>[% l("Addresses") %]</td>
+                        <td><strong>[% l("Addresses") %]</strong></td>
 
-                        <td id='myopac_pending_addr_td' class='hide_me'>
-                            <table cellpadding="0" cellspacing="0" border="0">
-                                <tr>
-                                    <td>[% l("Pending Addresses") %]</td>
-
-                                    <td>
-                                        <a href="#"><img
-                                            alt="Address Help"
-                                            src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
                     </tr>
                 </thead>
                 <tbody id='myopac_addr_tbody'>
-                    <tr id='myopac_addr_row' class='light_border'>
+                    [% FOR addr IN ctx.user.addresses %]
+                    <tr class='[% addr.pending == "t" ? "pending-addr" : "light_border" %]'>
                         <td>
                             <table>
                                 <tr>
                                     <td>[% l("Address Type") %]</td>
-                                    <td name='myopac_addr_type'></td>
+                                    <td name='myopac_addr_type'>[%
+                                        IF addr.pending == "t";
+                                            "<strong>" _ l("*** PENDING ***") _ "</strong> ";
+                                        END;
+                                        addr.address_type | lower | ucfirst;
+                                    %]</td>
                                 </tr>
-
                                 <tr>
                                     <td>[% l("Street") %]</td>
-                                    <td name='myopac_addr_street'></td>
+                                    <td name='myopac_addr_street'>[% addr.street1 | html %]</td>
                                 </tr>
-                                <tr>
+                                [% IF addr.street2 %]<tr>
                                     <td>[% l("Street") %]</td>
-                                    <td name='myopac_addr_street2'></td>
-                                </tr>
+                                    <td name='myopac_addr_street2'>[% addr.street2 | html %]</td>
+                                </tr>[% END %]
 
                                 <tr>
                                     <td>[% l("City") %]</td>
-                                    <td name='myopac_addr_city'></td>
+                                    <td name='myopac_addr_city'>[% addr.city | html %]</td>
                                 </tr>
 
                                 <tr>
                                     <td>[% l("County") %]</td>
-                                    <td name='myopac_addr_county'></td>
+                                    <td name='myopac_addr_county'>[% addr.county| html  %]</td>
                                 </tr>
 
                                 <tr>
                                     <td>[% l("State") %]</td>
-                                    <td name='myopac_addr_state'></td>
+                                    <td name='myopac_addr_state'>[% addr.state | html %]</td>
                                 </tr>
 
                                 <tr>
                                     <td>[% l("Country") %]</td>
-                                    <td name='myopac_addr_country'></td>
+                                    <td name='myopac_addr_country'>[% addr.country | html %]</td>
                                 </tr>
 
                                 <tr>
                                     <td>[% l("Zip") %]</td>
-                                    <td name='myopac_addr_zip'></td>
+                                    <td name='myopac_addr_zip'>[% addr.post_code | html %]</td>
                                 </tr>
                                 <tr>
                                     <td name='myopac_addr_edit_td'
@@ -659,74 +634,8 @@
                                 </tr>
                             </table>
                         </td>
-                        <td class='hide_me'
-                            name='myopac_pending_addr_td'>
-                            <table>
-                                <tr>
-                                    <td>[% l("Address Type") %]</td>
-
-                                    <td><input name=
-                                    'myopac_pending_addr_type' /></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                    [% l("Street") %]</td>
-
-                                    <td><input name=
-                                    'myopac_pending_addr_street' /></td>
-                                </tr>
-                                <tr>
-                                    <td>[% l("Street") %]</td>
-                                    <td>
-                                        <input name='myopac_pending_addr_street2' />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>[% l("City") %]</td>
-                                    <td>
-                                        <input name='myopac_pending_addr_city' />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>[% l("County") %]</td>
-
-                                    <td>
-                                        <input name='myopac_pending_addr_county' />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>[% l("State") %]</td>
-                                    <td>
-                                        <input name='myopac_pending_addr_state' />
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>[% l("Country") %]</td>
-
-                                    <td>
-                                        <input name='myopac_pending_addr_country' />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>[% l("Zip") %]</td>
-                                    <td><input name=
-                                    'myopac_pending_addr_zip' /></td>
-                                </tr>
-                                <tr>
-                                    <td name='myopac_addr_edit_td' colspan='2'>
-                                        <a class='classic_link'
-                                            name='myopac_pending_addr_edit_link'
-                                            href='#'>Save Changes</a>
-                                        <a style='padding-left:10px;'
-                                            class='classic_link'
-                                            name='myopac_pending_addr_del_link'
-                                            href='#'>Discard Pending Address</a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
                     </tr>
+                    [% END %]
                 </tbody>
             </table>
         </div>
