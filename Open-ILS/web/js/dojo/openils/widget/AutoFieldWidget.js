@@ -583,7 +583,8 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
                 // invalid data.  This change tells dojo to pretend this focusing has 
                 // already happened so we can style required widgets during page render.
                 this.widget._hasBeenBlurred = true;
-                this.widget.validate();
+                if(this.widget.validate)
+                    this.widget.validate();
             }
         },
 
