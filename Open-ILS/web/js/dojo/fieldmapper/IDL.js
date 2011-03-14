@@ -22,7 +22,7 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
                     fieldmapper.IDL.fmclasses[c] = window._preload_fieldmapper_IDL[c];
 
                     window.fmclasses[c] = [];
-                    dojo.forEach(fieldmapper.IDL.fmclasses[c].fields, function(obj){ window.fmclasses[c].push(obj.name) });
+                    dojo.forEach(fieldmapper.IDL.fmclasses[c].fields, function(obj){ window.fmclasses[c].push(obj.name); });
 
                     if (classlist && classlist.length)
                         classlist = dojo.filter(classlist, function(x){return x != c;});
@@ -221,14 +221,17 @@ if(!dojo._hasResource["fieldmapper.IDL"]) {
     };
 
     window.fmclasses = {};
-    fieldmapper.IDL.load = function (list) { if (!list) list = []; return new fieldmapper.IDL(list); };
+    fieldmapper.IDL.load = function (list) {
+        if (!list) list = [];
+        return new fieldmapper.IDL(list);
+    };
     fieldmapper.IDL.loaded = false;
 
     JSON2js.fallbackObjectifier = function (arg, key_name, val_name) {
         console.log("Firing IDL loader for " + arg[key_name]);
         fieldmapper.IDL.load([arg[key_name]]);
         return decodeJS(arg);
-    }
+    };
  
 }
 
