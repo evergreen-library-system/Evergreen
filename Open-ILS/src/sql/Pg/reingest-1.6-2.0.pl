@@ -77,6 +77,21 @@ sub fetch_num_bibs_from_database {
 
 sub header {
     print OUT q {
+\qecho First, make sure that the rows needed for title sorting are
+\qecho available.
+
+BEGIN; 
+DELETE FROM metabib.real_full_rec WHERE tag = 'tnf'; 
+INSERT INTO metabib.real_full_rec (record, tag, subfield, value) 
+   SELECT  record, 
+           'tnf', 
+           'a', 
+           SUBSTRING(value, COALESCE(NULLIF(REGEXP_REPLACE(ind2,'[^0-9]','','g'),''),'0')::int + 1) 
+     FROM  metabib.real_full_rec 
+     WHERE tag = '245' 
+           AND subfield = 'a'; 
+COMMIT;
+
 \qecho Do a partial reingest to fully populate metabib.facet_entry
 \qecho and update the keyword indexes to reflect changes in the default
 \qecho NACO normalization.  This can be time consuming on large databases.
