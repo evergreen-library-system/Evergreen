@@ -106,11 +106,17 @@
 
             g.tb = document.getElementById('wsname');
 
+            var dnsService = Components.classes["@mozilla.org/network/dns-service;1"]
+                 .createInstance(Components.interfaces.nsIDNSService);
+
             render_menulist();
 
             document.getElementById('register_btn').disabled = false;
             document.getElementById('wsname').disabled = false;
-            document.getElementById('wsname').value = '';
+            if(dnsService.myHostName && dnsService.myHostName.toLowerCase() != 'localhost')
+                g.tb.value = dnsService.myHostName;
+            else
+                g.tb.value = '';
 
             document.getElementById('wsname').focus();
         }
