@@ -105,19 +105,31 @@
                             </td>
                             <td valign="top" id='rdetail_publisher'>[% attrs.publisher %]</td>
                             [% BLOCK render_subject;
-                            FOR node IN ctx.marc_xml.findnodes('//*[@tag="650"]');
-                                s0 = node.childNodes.0.textContent;
-                                s1 = node.childNodes.1.textContent;
-                                IF s0;
-                                    IF s0.match('\S') %]
-                                    <a href="[% ctx.opac_root %]/results?query=su:[% s0 | url %]">[% s0 %]</a>
-                                    &mdash;
-                                    [% END; IF s1 %]
-                                    <a href="[% ctx.opac_root %]/results?query=su:[% s1 | url %]">[% s1 %]</a>
-                                    <br/>
-                                    [% END %]
-                                [% END %]
-                            [% END %]
+                            loc = CGI.param('loc') | uri;
+                            FOR node IN ctx.marc_xml.findnodes('//*[starts-with(@tag,"6")]');
+                                all_terms = [];
+                                FOR subfield IN node.childNodes;
+                                    NEXT UNLESS subfield.nodeName == "subfield";
+                                    code = 0;
+                                    FOR a IN subfield.attributes;
+                                        IF a.nodeName == "code";
+                                            code = a.nodeValue;
+                                        END;
+                                    END;
+                                    NEXT UNLESS code.match('[a-z]');
+
+                                    IF code.match('[vxyz]');
+                                        " &mdash; ";
+                                    END;
+                                    # at this point, we actually have a partial
+                                    # term to use.
+                                    single_term = subfield.textContent | html;
+                                    all_terms.push(subfield.textContent);
+                                    total_term = all_terms.join(" ").replace('\s+$', '') ; # XXX need to take care of any &'s, right?
+                                    '<a href="' _ ctx.opac_root _ '/results?qtype=subject&query=' _ total_term _ '&loc=' _ loc _ '">' _ single_term _ '</a>';
+                                END;
+                                "<br />";
+                            END %]
                             [% END %]
                             [% s = PROCESS render_subject; IF s.match('\S') %]
                             <td nowrap='nowrap' valign="top">
