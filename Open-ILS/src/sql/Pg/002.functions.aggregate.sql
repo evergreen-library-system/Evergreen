@@ -66,7 +66,7 @@ CREATE AGGREGATE public.agg_text (
 	stype	 = text
 );
 
-CREATE OR REPLACE FUNCTION public.tsvector_concat ( tsvector, tsvector ) RETURNS tsvector AS $$
+CREATE OR REPLACE FUNCTION tsvector_concat ( tsvector, tsvector ) RETURNS pg_catalog.tsvector AS $$
 SELECT
 	CASE	WHEN $1 IS NULL
 			THEN $2
@@ -77,9 +77,9 @@ SELECT
 $$ LANGUAGE SQL STABLE;
 
 CREATE AGGREGATE public.agg_tsvector (
-	sfunc	 = public.tsvector_concat,
-	basetype = tsvector,
-	stype	 = tsvector
+	sfunc	 = tsvector_concat,
+	basetype = pg_catalog.tsvector,
+	stype	 = pg_catalog.tsvector
 );
 
 CREATE OR REPLACE FUNCTION public.explode_array(anyarray) RETURNS SETOF anyelement AS $BODY$
