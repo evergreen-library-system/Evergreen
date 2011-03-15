@@ -119,7 +119,8 @@ function prep_update
 function check_file
 {
 	CHECK_FILE="${1#$NEW/}"
-	if [ $CHECK_FILE == "update.manifest" ]; then
+	if [ $CHECK_FILE == "update.manifest" -o $CHECK_FILE == "defaults/preferences/developers.js" -o $CHECK_FILE == "defaults/preferences/aa_per_machine.js" ]; then
+        echo "Skipping $CHECK_FILE";
 		return;
 	fi
 	DIR=$(dirname "$WORK/$CHECK_FILE")
@@ -165,7 +166,7 @@ function check_file
 function remove_file
 {
 	RM_FILE="${1#$OLD/}"
-	if [ $RM_FILE != "update.manifest" ]; then
+	if [ $RM_FILE != "update.manifest" -a $RM_FILE != "defaults/preferences/developers.js" -a $RM_FILE != "defaults/preferences/aa_per_machine.js" -a $RM_FILE != "defaults/preferences/autoupdate.js" -a $RM_FILE != "defaults/preferences/autochannel.js" ]; then
 		echo "remove \"$RM_FILE\"" >> "$MANIFEST"
 	fi
 }
