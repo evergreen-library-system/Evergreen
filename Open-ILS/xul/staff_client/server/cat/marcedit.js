@@ -2440,7 +2440,9 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
         );
         sf_popup.appendChild( createComplexXULElement( 'menuseparator' ) );
 
-        dojo.query('record', records).forEach(function(record) {
+        var recs = dojo.query('record', records)
+        for (var i = 0; i < recs.length; i++) {
+            var record = recs[i];
             var main_text = '';
             var see_from = [];
             var see_also = [];
@@ -2493,7 +2495,7 @@ function browseAuthority (sf_popup, menu_id, target, sf, limit, page) {
                 buildAuthorityPopup(entry_text, record, auth_org, auth_id, sf_popup, target, sf, "font-style: italic; margin-left: 2em;");
             });
 
-        });
+        }
 
         if (sf_popup.childNodes.length == 0) {
             sf_popup.appendChild(createLabel( { value : $('catStrings').getString('staff.cat.marcedit.no_authority_match.label') } ) );
