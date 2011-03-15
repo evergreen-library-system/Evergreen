@@ -141,6 +141,12 @@ oilsRptFolderManager.prototype.createTopFolder = function(type, orgsel) {
 
 	folder.owner(USER.id());
 	folder.parent(null);
+
+	/* Protect against empty folder names */
+	if (!DOM.oils_rpt_top_folder_name.value) {
+		return;
+	}
+
 	folder.name(DOM.oils_rpt_top_folder_name.value);
 	folder.shared(getSelectorVal(DOM.oils_rpt_top_folder_shared));
 
