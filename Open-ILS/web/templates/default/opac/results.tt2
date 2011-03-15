@@ -6,11 +6,7 @@
     ctx.page_title = l("Search Results");
     is_advanced = CGI.param("_adv").size;
 
-    query_string = CGI.query_string |
-        replace(';x=\d+','') | replace(';y=\d+','') | replace(';page=\d*', '') |
-        replace(';', '&');
     page = CGI.param('page') || 0;
-    loc = CGI.param('loc');
     page_count = POSIX.ceil(ctx.hit_count / ctx.page_size);
 %]
     <form action="[% ctx.opac_root %]/results" method="GET">

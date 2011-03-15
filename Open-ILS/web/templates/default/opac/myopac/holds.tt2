@@ -146,7 +146,7 @@
                     </td>
                     <td width="123">
                         <div style="margin-top:10px;margin-bottom:10px;">
-                            <a href="[% ctx.opac_root %]/results?query=au:[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author | html %]</a>
+                            <a href="[% ctx.opac_root %]/results?qtype=author&query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author | html %]</a>
                         </div>
                     </td>
                     <td width="64">

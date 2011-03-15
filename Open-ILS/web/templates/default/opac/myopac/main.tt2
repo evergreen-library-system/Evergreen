@@ -170,7 +170,7 @@
                             </td>
                             <td>
                                 <a class="classic_link"
-                                    href="[% ctx.opac_root %]/results?query=au:[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
+                                    href="[% ctx.opac_root %]/results?qtype=author&query=[% attrs.author | replace('[,\.:;]', '') | url %]">[% attrs.author %]</a>
                             </td>
                             <td name='myopac_circ_trans_start'>
                                 [% date.format(
