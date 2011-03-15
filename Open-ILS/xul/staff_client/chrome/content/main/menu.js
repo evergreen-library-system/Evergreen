@@ -1292,7 +1292,7 @@ main.menu.prototype = {
         obj.controller.init( { 'window_knows_me_by' : 'g.menu.controller', 'control_map' : cmd_map } );
 
         obj.controller.view.tabbox = window.document.getElementById('main_tabbox');
-        obj.controller.view.tabs = obj.controller.view.tabbox.firstChild;
+        obj.controller.view.tabs = window.document.getElementById('main_tabs');
         obj.controller.view.panels = obj.controller.view.tabbox.lastChild;
 
         obj.new_tab(null,{'focus':true},null);
