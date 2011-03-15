@@ -20,8 +20,9 @@
             <td>
             [% INCLUDE "default/opac/parts/qtype_selector.tt2" %]
             </td>
-            <td>
             [% END %]
+            [% IF ctx.processed_search_query OR NOT is_advanced %]
+            <td>
                 <div id="search_box_wrapper">
                     <!-- Note: when common browsers support HTML5 placeholder text, we can remove the JS -->
                     <input type="text" id="search_box" name="query" value="[% is_advanced ? ctx.processed_search_query : CGI.param('query') || l("Search Keyword") | html %]"
@@ -40,6 +41,7 @@
                     </div>
                 </div>
             </td>
+            [% END %]
         </tr>
         [% UNLESS is_advanced %]
         <tr>
@@ -59,10 +61,10 @@
         [% END %]
     </table>
     [% UNLESS took_care_of_form %]</form>[% END %]
-    [% IF is_advanced %]
+    [% IF is_advanced AND CGI.param('qtype') %]
     <div class="opac-auto-102">
         [ <a href="[% ctx.opac_root %]/advanced?[% query_string %]">[%
-            l('Click to Refine Your Search')
+            l('Click to Refine Your Original Search')
         %]</a> ]
     </div>
     [% END %]

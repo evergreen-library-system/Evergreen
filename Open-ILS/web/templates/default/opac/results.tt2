@@ -4,7 +4,6 @@
     WRAPPER "default/opac/parts/base.tt2";
     INCLUDE "default/opac/parts/topnav.tt2";
     ctx.page_title = l("Search Results");
-    is_advanced = CGI.param("_adv").size;
 
     page = CGI.param('page') || 0;
     page_count = POSIX.ceil(ctx.hit_count / ctx.page_size);
@@ -39,7 +38,7 @@
                 </div>
                 [% END %]
                 <div class="results_header_div"></div>
-                [% UNLESS CGI.param('_adv') %]
+                [% UNLESS is_advanced %]
                     <div class="results_header_lbl">Sort by</div>
                     [% INCLUDE "default/opac/parts/filtersort.tt2" value=CGI.param('sort') %]
                     <div class="results_header_div"></div>

@@ -77,11 +77,11 @@ sub _prepare_biblio_search {
         }
     }
 
-    my $site = $cgi->param('loc') || $ctx->{aou_tree}->()->id;
-    if (defined($cgi->param('loc')) or not $query =~ /site\(\d+\)/) {
+    my $site = $cgi->param('loc');
+    if (defined($site) and ($site ne $ctx->{aou_tree}->()->id) and not $query =~ /site\(\d+\)/) {
         $query .= " site($site)";
     }
-    if (defined($cgi->param('depth')) or not $query =~ /depth\(\d+\)/) {
+    if (defined($cgi->param('depth')) and not $query =~ /depth\(\d+\)/) {
         my $depth = defined $cgi->param('depth') ?
             $cgi->param('depth') : $ctx->{find_aou}->($site)->ou_type->depth;
         $query .= " depth($depth)";

@@ -19,6 +19,8 @@
 
     propagator = '?' _ query_string;
 
+    is_advanced = CGI.param("_adv").size;
+
     formats = [  # XXX KCLS-specific
         {'code' => 'a', 'name' => 'Book', 'image' => 'media_book.jpg'},
         {'code' => 'i', 'name' => 'Book on cassette', 'image' => 'media_bookoncasset.jpg'},
