@@ -556,6 +556,10 @@ div.select-wrapper:hover {
     left:2px;
 }
 
+.almost-content-wrapper {
+	background: white;
+}
+
 #content-wrapper {
 	background: white;
 	min-height: 260px;

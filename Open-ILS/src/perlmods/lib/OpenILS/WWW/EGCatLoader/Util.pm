@@ -187,7 +187,14 @@ sub get_records_and_facets {
 sub fetch_marc_xml_by_id {
     my ($self, $id_list) = @_;
     $id_list = [$id_list] unless ref($id_list);
-    return {} if scalar(grep { defined $_ } @$id_list) < 1;
+
+    {
+        no warnings qw/numeric/;
+        $id_list = [map { int $_ } @$id_list];
+        $id_list = [grep { $_ > 0} @$id_list];
+    };
+
+    return {} if scalar(@$id_list) < 1;
 
     # I'm just sure there needs to be some more efficient way to get all of
     # this.

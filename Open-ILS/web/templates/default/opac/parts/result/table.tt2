@@ -185,15 +185,17 @@
                                                                     style="position:relative;top:-3px;left:3px;">Place Hold</span></a>
                                                         </div>
                                                         <div class="results_aux_utils opac-auto-011">
-                                                            <form action="[% ctx.opac_root %]/mylist/add" method="POST">
+                                                            [%  operation = ctx.mylist.grep(rec.bre.id).size ? "delete" : "add";
+                                                                label = (operation == "add") ? "Add to" : "Remove from"; %]
+                                                            <form action="[% ctx.opac_root %]/mylist/[% operation %]" method="POST">
                                                                 <input type="hidden" name="record" value="[% rec.bre.id %]" />
                                                             <div style="position:absolute;">
                                                                 <div style="position:relative;top:5px; left: 25px;">
-                                                                    <input type="submit" title="[% l('Add to my list') %]" value="[% l('Add to my list') %]" class="subtle-button" />
+                                                                    <input type="submit" title="[% l(label _ ' my list') %]" value="[% l(label _ ' my list') %]" class="subtle-button" />
                                                                 </div>
                                                             </div>
                                                                 <input type="image"
-                                                                alt="[% l('Add to my list') %]"
+                                                                alt="[% l(label _ ' my list') %]"
                                                                 src="[% ctx.media_prefix %]/images/clipboard.png" />
                                                         </form>
                                                         </div>
