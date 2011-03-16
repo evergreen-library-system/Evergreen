@@ -21,7 +21,7 @@ DROP AGGREGATE IF EXISTS array_accum(anyelement) CASCADE;
 DROP AGGREGATE IF EXISTS public.first(anyelement) CASCADE;
 DROP AGGREGATE IF EXISTS public.last(anyelement) CASCADE;
 DROP AGGREGATE IF EXISTS public.agg_text(text) CASCADE;
-DROP AGGREGATE IF EXISTS public.agg_tsvector(tsvector) CASCADE;
+DROP AGGREGATE IF EXISTS public.agg_tsvector(pg_catalog.tsvector) CASCADE;
 
 CREATE AGGREGATE array_accum (
 	sfunc = array_append,
