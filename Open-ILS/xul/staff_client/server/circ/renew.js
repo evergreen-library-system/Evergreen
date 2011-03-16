@@ -203,6 +203,7 @@ circ.renew.prototype = {
                         ['command'],
                         function() {
                             var p = { 
+                                'printer_context' : 'receipt',
                                 'template' : 'renew'
                             };
                             obj.list.print(p);
