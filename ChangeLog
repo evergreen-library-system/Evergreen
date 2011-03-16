@@ -1,1 +1,181 @@
-#ChangeLog
+2011-03-11  dbs
+
+	* Ensure incoming query values to patron search are UTF8-encoded
+	  
+	  Addresses the problem reported with searching for patrons with
+	  Armenian names, where Unicode query params were getting corrupted
+	  on its way to the database.
+
+2011-03-11  erickson
+
+	* use the existing util method for mvr-izing, since it handles some
+	  additional important steps (e.g. capturing doc_id)
+
+2011-03-11  dbs
+
+	* LANG=C results in SQL_ASCII encoding by default for PostgreSQL,
+	  which isn't cool
+	  
+	  We want LC_CTYPE=C and LC_COLLATE=C, and SERVER_ENCODING=UTF8.
+	  The docs have been adjusted as 8.4 and up now offer
+	  database-level
+	  --lc-ctype / --lc-collate options for createdb command.
+
+	* Update the README to include explict LC_CTYPE/LC_COLLATE db
+	  settings
+
+2011-03-11  senator
+
+	* Backport r19709 from trunk
+	  
+	  Acq: The "Claim-Ready Items" interface did not render correctly
+	  for > 1 item
+	  
+	  The problem was racy async rendering logic. Now we look at our
+	  whole result
+	  set and build our table accordingly at the end.
+	  
+	  This interface should probably learn about paging one day in
+	  order to
+	  handle large result sets.
+
+2011-03-11  erickson
+
+	* only append street2 to CC payment address if no address is
+	  provided by the caller
+
+2011-03-12  dbs
+
+	* Resolve inconsistent results when invoking LOWER() in C vs. UTF8
+	  locale databases
+	  
+	  As reported by the Fundamental Science Library of Armenia, patron
+	  searches
+	  were not retrieving patrons who were known to be part of the
+	  patron database.
+	  
+	  While the initial approach to solve this problem used an
+	  encode_utf8() call
+	  to encode the data before passing it on to the database, this
+	  turned out to
+	  break the patron search function in other environments.
+	  
+	  Testing by Dan Wells confirmed that the LOWER() function returned
+	  different
+	  results when invoked against text in a database created with
+	  LC_CTYPE=C vs
+	  a database created with LC_CTYPE=*.UTF-8. As the patron search
+	  function
+	  used a Perl lc() function call to convert the incoming data to
+	  lowercase,
+	  the success of the call depended on the LC_CTYPE value of the
+	  database.
+	  
+	  To avoid this problem in the future, we define our own
+	  evergreen.lowercase()
+	  function that can reliably produce lowercase text for characters
+	  outside
+	  the Latin1 range, and we convert our indexes and function calls
+	  to use that
+	  function consistently.
+
+	* Use valid DDL for forgotten index on actor.card
+
+	* Clean up build errors when creating/recreating database schema
+	  
+	  Dropping the evergreen schema cascaded and wiped out some
+	  previously
+	  defined functions, so move it ahead of the other functions. (And
+	  maybe
+	  we can start moving those public functions into the evergreen
+	  schema?)
+	  
+	  DROP AGGREGATE IF EXISTS exists on any version of PostgreSQL that
+	  we
+	  care about for Evergreen 2.0, so we can use it to avoid false
+	  errors
+	  during schema creation.
+	  
+	  FTS config was complaining about public.english_nostop in the
+	  ALTER
+	  statement, so remove the schema qualification. This seems to have
+	  been there for a long time?
+
+2011-03-14  erickson
+
+	* exit gen_fines_stop early if there is nothing to do; prevents
+	  (unneeded) secondary call to ->wait_complete on potentially undef
+	  reference
+
+2011-03-15  dbs
+
+	* Prevent creation of report folders with empty folder names
+	  
+	  Addresses LP # 720755. Clicking the "Create Folder" button when
+	  no folder name has been supplied is now a no-op.
+
+2011-03-15  miker
+
+	* teach the 1.6-2.0 reingest generator about "tnf"-tag rows for
+	  title sorting
+
+2011-03-15  dbwells
+
+	* Re-enable close button for staff client tabs
+	  
+	  There is a different fix for this in trunk/2.1, but I thought a
+	  simple fix for this was worth adding for those sticking with 2.0
+	  for a while.
+
+2011-03-16  dbs
+
+	* Set default db schema search path to public,pg_catalog
+	  
+	  With the addition of the 'evergreen' schema, we discovered that
+	  all of the unqualified database objects were being created in
+	  the 'evergreen' schema if the database user name was 'evergreen'
+	  (as the default search path is "$user",public we started matching
+	  "$user").
+	  
+	  Thomas Berezansky proposed a variation of the function provided
+	  here for changing database settings. By creating the function in
+	  the first schema file, the subsequent connections pick up the
+	  new default search path and all works blissfully as it once did.
+	  
+	  Long term, we should probably move towards explicitly qualified
+	  database objects.
+
+	* Backport r19756 and r19758 for proper namespaces in aggregate
+	  functions
+	  
+	  Schema creation and recreation tested with PostgreSQL 8.4 and 9.0
+	  and
+	  seems good. Fingers crossed.
+
+2011-03-16  miker
+
+	* Patch from Steve Callendar addressing holdability tests for
+	  copies
+
+	* Patch from Steve Callendar addressing CN sort order on page 0
+	  (and before) of CN browse
+
+2011-03-16  phasefx
+
+	* dedicated renewal interface should use receipt printer
+
+2011-03-16  miker
+
+	* upgrade script matching r19759-r19761
+
+	* Update the upgrade script whith version and additional upgrade
+	  bits
+
+	* Addresses LP bug #736167, correctly populate hold format list for
+	  Advanced Options
+
+	* .: Tagging 2.0.4
+
+	* Open-ILS/src/perlmods/OpenILS/Application.pm,
+	  Open-ILS/src/sql/Pg/002.schema.config.sql, README: version bumps
+
