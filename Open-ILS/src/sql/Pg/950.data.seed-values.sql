@@ -3475,6 +3475,7 @@ INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('gpub
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ills','Ills','Ills');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('indx','Indx','Indx');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('item_lang','Lang','Lang');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('language','Language (2.0 compat version)','Lang');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('lit_form','LitF','LitF');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('mrec','MRec','MRec');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ff_sl','S/L','S/L');
