@@ -207,6 +207,7 @@ CREATE OR REPLACE FUNCTION asset.label_normalizer_generic(TEXT) RETURNS TEXT AS 
     # thus could probably be considered a derived work, although nothing was
     # directly copied - but to err on the safe side of providing attribution:
     # Copyright (C) 2007 LibLime
+    # Copyright (C) 2011 Equinox Software, Inc (Steve Callendar)
     # Licensed under the GPL v2 or later
 
     use strict;
@@ -214,13 +215,16 @@ CREATE OR REPLACE FUNCTION asset.label_normalizer_generic(TEXT) RETURNS TEXT AS 
 
     # Converts the callnumber to uppercase
     # Strips spaces from start and end of the call number
-    # Converts anything other than letters, digits, and periods into underscores
-    # Collapses multiple underscores into a single underscore
+    # Converts anything other than letters, digits, and periods into spaces
+    # Collapses multiple spaces into a single underscore
     my $callnum = uc(shift);
     $callnum =~ s/^\s//g;
     $callnum =~ s/\s$//g;
-    $callnum =~ s/[^A-Z0-9_.]/_/g;
-    $callnum =~ s/_{2,}/_/g;
+    # NOTE: this previously used underscores, but this caused sorting issues
+    # for the "before" half of page 0 on CN browse, sorting CNs containing a
+    # decimal before "whole number" CNs
+    $callnum =~ s/[^A-Z0-9_.]/ /g;
+    $callnum =~ s/ {2,}/ /g;
 
     return $callnum;
 $func$ LANGUAGE PLPERLU;
