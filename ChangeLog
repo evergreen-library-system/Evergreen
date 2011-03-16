@@ -1,1 +1,127 @@
-#ChangeLog
+2011-02-09  erickson
+
+	* allow item status update if either status-specific perm is
+	  allowed or UPDATE_COPY is allowed. fire off related A/T events
+	  after the initial transaction has been committed
+
+2011-02-10  dbs
+
+	* Correct syntax error in BadDebt.pm
+
+2011-02-11  dbs
+
+	* Normalize ISBNs by stripping hyphens in search methods and in
+	  reporter.materialized_simple_record
+	  
+	  We weren't normalizing ISBNs in search or in
+	  reporter.materialized_simple_record
+	  which required users to exactly match the form of the ISBN as
+	  entered in the
+	  MARC record to get a successful search result - pretty hit or
+	  miss.
+	  
+	  The longer term fix in 2.0 and above is to make the ISBN search
+	  search against
+	  the identifier|isbn index, which also gets ISBN10/ISBN13
+	  equivalence goodness.
+	  But this patch will be relatively easy to backport through to
+	  1.6.1 and plugs
+	  some of the holes in our exposed APIs and search points in the
+	  short term.
+
+2011-02-17  senator
+
+	* Backport r19470 from trunk
+	  
+	  Booking: fix the targeter in the
+	  I'm-reserving-this-exact-resource-with-this-
+	  exact-barcode case.
+	  
+	  It should have always worked like this. This should better mirror
+	  the behavior
+	  in the holds targeter when placing a copy-level hold. Basically
+	  don't fail
+	  to target a resource for a reservation later just because it's
+	  not in an
+	  available status right at this moment.
+
+2011-02-23  dbs
+
+	* Correct the install location for Dojo i18n bundles
+	  
+	  We had been converting xx-YY into xx/yy for a directory
+	  structure,
+	  but current evidence shows that it should be xx-yy. Hard to
+	  believe
+	  we've overlooked this for so long. Also, with the exception of
+	  the
+	  en-ca/en-gb/en-us locales, we should probably trim the locale to
+	  just xx - but that's a different problem, and let's just focus on
+	  getting this working to begin with.
+	  
+	  Addresses Launchpad # 723489
+
+2011-03-04  miker
+
+	* correct the MOBTS view with regard to reservation additions (only
+	  affects reporting)
+
+	* Upgrade script for an upcoming 1.6.1.8 release
+
+2011-03-07  dbs
+
+	* Fix cloning of AutoField widgets: LP #728055
+	  
+	  Cloning Action/Trigger event definitions was not working
+	  properly, as
+	  all values were being copied from the original object using their
+	  display
+	  strings rather than the underlying values.
+	  
+	  Bill Erickson suggested a fix in IRC that works, so full credit
+	  to him
+	  for this change!
+
+2011-03-09  dbs
+
+	* Draw pre-cataloged items (author and title) in My Account
+	  checkedout screen
+	  
+	  Two problems: FETCH_MODS_FROM_COPY returns an object, so we
+	  weren't
+	  getting to the point of fetching the raw copy itself, and there
+	  was
+	  some confusion about pre-cataloged vs. non-cataloged items that
+	  is
+	  hopefully straightened out now.
+	  
+	  Addresses LP # 723895
+
+2011-03-10  dbs
+
+	* Remove duplicate permission.perm_list entries from data seed
+	  values
+	  
+	  These duplicate perms somehow slipped into r18962 and need to
+	  go away.
+
+2011-03-10  senator
+
+	* Backport r19682 from trunk
+	  
+	  Booking: don't bail out completely on COPY_ALERT_MESSAGE when
+	  returning items
+	  
+	  Provide overridability.
+
+2011-03-15  dbs
+
+	* Prevent creation of report folders with empty folder names
+	  
+	  Addresses LP # 720755. Clicking the "Create Folder" button when
+	  no folder name has been supplied is now a no-op.
+
+2011-03-16  miker
+
+	* .: Tagging 1.6.1.8
+
