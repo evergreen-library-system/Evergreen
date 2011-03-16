@@ -640,13 +640,6 @@ function holdsGetFormats() {
 	var rec	= holdArgs.record;
 	var mrec = holdArgs.metarecord;
 
-	for( var i = 0; i < desc.length; i++ ) {
-		var d = desc[i];
-		if( type == 'T' && d.item_lang() != lang ) continue;
-		formats.push( _t_f_2_format(d.item_type(), d.item_form()));
-	}
-
-	formats = uniquify(formats);
 
 	if( type == 'T') {
 
@@ -659,13 +652,26 @@ function holdsGetFormats() {
 				break;
 			}
 		}
+
+    	for( var i = 0; i < desc.length; i++ ) {
+	    	var d = desc[i];
+		    if( type == 'T' && d.item_lang() != lang ) continue;
+    		formats.push( _t_f_2_format(d.item_type(), d.item_form()));
+	    }
+
 	} else if( type =='M') {
 
         // All available formats are selected by default in MR holds
-		for( var i = 0; i < formats.length; i++ ) {
-			sformats.push(formats[i]);
-		}
+       	for( var i = 0; i < desc.length; i++ ) {
+	    	var d = desc[i];
+		    var _tmp_f = _t_f_2_format(d.item_type(), d.item_form());
+    		formats.push( _tmp_f );
+	    	sformats.push( _tmp_f );
+    	}
 	}
+
+	formats = uniquify(formats);
+	sformats = uniquify(sformats);
 
 	return {
 		lang : lang,

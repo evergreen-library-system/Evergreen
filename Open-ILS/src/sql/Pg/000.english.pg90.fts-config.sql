@@ -18,6 +18,8 @@
 
 BEGIN;
 
+SET search_path = public, pg_catalog;
+
 CREATE OR REPLACE FUNCTION oils_tsearch2 () RETURNS TRIGGER AS $$
 BEGIN
 	NEW.index_vector = to_tsvector((TG_ARGV[0])::regconfig, NEW.value);

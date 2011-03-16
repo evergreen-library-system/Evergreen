@@ -25,6 +25,7 @@ export NSIS_EXTRAOPTS
 export NSIS_WICON=$$(if [ -f client/evergreen.ico ]; then echo '-DWICON'; fi)
 export NSIS_AUTOUPDATE=$$([ -f client/defaults/preferences/autoupdate.js ] && echo '-DAUTOUPDATE')
 export NSIS_DEV=$$([ -f client/defaults/preferences/developers.js ] && echo '-DDEVELOPER')
+export NSIS_PERMACHINE=$$([ -f client/defaults/preferences/aa_per_machine.js ] && echo '-DPERMACHINE')
 
 #------------------------------
 # Build ILS XUL CLIENT/SERVER
@@ -39,6 +40,10 @@ install-exec-local: $(OILSSERVER_INST)
 devbuild: build
 	@echo ' * Copying in developer preferences'
 	@cp external/developers.js build/defaults/preferences/
+
+permachine: build
+	@echo ' * Copying in default to machine level registration file'
+	@cp external/aa_per_machine.js build/defaults/preferences/
 
 build: build_dir chrome2remote localize_manifest generated custom_skins open-ils stamp 
 	@echo To test the staff client:
@@ -246,7 +251,7 @@ linux-xulrunner: client_app
 
 win-client: win-xulrunner
 	@echo 'Building installer'
-	@makensis -DPRODUCT_VERSION="${STAFF_CLIENT_VERSION}" ${NSIS_WICON} ${NSIS_AUTOUPDATE} ${NSIS_DEV} ${NSIS_EXTRAOPTS} windowssetup.nsi
+	@makensis -DPRODUCT_VERSION="${STAFF_CLIENT_VERSION}" ${NSIS_WICON} ${NSIS_AUTOUPDATE} ${NSIS_DEV} ${NSIS_PERMACHINE} ${NSIS_EXTRAOPTS} windowssetup.nsi
 	@echo 'Done'
 
 # For linux, just build a tar.bz2 archive

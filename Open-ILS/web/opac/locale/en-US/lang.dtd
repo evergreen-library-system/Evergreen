@@ -706,7 +706,8 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.grp_tree.label "Permission Groups">
 <!ENTITY staff.main.menu.admin.server_admin.conify.perm_list.label "Permissions">
 <!ENTITY staff.main.menu.admin.server_admin.conify.copy_status.label "Copy Statuses">
-<!ENTITY staff.main.menu.admin.server_admin.conify.marc_code_maps.label "Coded Value Maps">
+<!ENTITY staff.main.menu.admin.server_admin.conify.marc_record_attrs.label "MARC Record Attributes">
+<!ENTITY staff.main.menu.admin.server_admin.conify.coded_value_maps.label "MARC Coded Value Maps">
 <!ENTITY staff.main.menu.admin.server_admin.conify.billing_type.label "Billing Types">
 <!ENTITY staff.main.menu.admin.server_admin.conify.z3950_source.label "Z39.50 Servers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_modifier.label "Circulation Modifiers">
