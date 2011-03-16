@@ -520,8 +520,12 @@ sub format_payment_receipt {
 
     my $for_print = ($self->api_name =~ /print/);
     my $for_email = ($self->api_name =~ /email/);
-    my $e = new_editor(authtoken => $auth);
-    return $e->event unless $e->checkauth;
+
+    # manually use xact (i.e. authoritative) so we can kill the cstore
+    # connection before sending the action/trigger request.  This prevents our cstore
+    # backend from sitting idle while A/T (which uses its own transactions) runs.
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
 
     my $payments = [];
     for my $id (@$mp_ids) {
@@ -534,14 +538,16 @@ sub format_payment_receipt {
                     mbt => ['usr']
                 }
             }
-        ]) or return $e->event;
+        ]) or return $e->die_event;
 
-        return $e->event unless 
+        return $e->die_event unless 
             $e->requestor->id == $payment->xact->usr->id or
             $e->allowed('VIEW_TRANSACTION', $payment->xact->usr->home_ou); 
 
         push @$payments, $payment;
     }
+
+    $e->rollback;
 
     if ($for_print) {
 
