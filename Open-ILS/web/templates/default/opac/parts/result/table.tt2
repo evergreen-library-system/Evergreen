@@ -199,13 +199,13 @@
                                                                 src="[% ctx.media_prefix %]/images/clipboard.png" />
                                                         </form>
                                                         </div>
-                                                        <div style="padding-top:7px;" class="results_aux_utils">
+                                                        <!-- <div style="padding-top:7px;" class="results_aux_utils">
                                                             <a title="Reviews and More" target="_blank" class="no-dec"
                                                                 name="reviews_and_more" href="javascript:;"><img
                                                                 alt="reviews &amp; more"
                                                                 src="[% ctx.media_prefix %]/images/starz.png" /> <span
                                                                     style="position:relative;top:-5px;">Reviews &amp; More</span></a>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                     <div style="float:right;margin-right:17px;">
                                                     [%  key = attrs.mattype;

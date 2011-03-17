@@ -958,4 +958,12 @@ div.select-wrapper:hover {
 #account-update-email table { text-align: center; padding: 20px; margin-top: 30px; border-collapse: collapse; }
 #account-update-email table td { padding: 5px 15px 5px 15px; border-bottom: 1px solid #ddd; text-align: left;}
 #account-update-email-error { font-size: 1.5em; padding: 10px; border:1px solid #e9ebf3;}
-
+a.dash-link:hover { text-decoration: underline !important; }
+#list_create_table td { vertical-align: middle; padding: 0 8px; }
+#list_create_table {
+    background-color: #ccc;
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+    border-bottom: 1px dotted #666;
+}
+.list-create-table-buttons input[type=image] { margin-top: 2px; }

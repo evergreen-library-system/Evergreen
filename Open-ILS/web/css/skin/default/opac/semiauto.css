@@ -24,8 +24,8 @@
 
 #lib_selector_span { display: none }
 .float-left { float: left; }
-.bookbag-name { float: left; font-weight: bold; padding-top: 5px; }
-.bookbag-share { float: left; padding: 5px 0px 0px 10px; }
+.bookbag-share { float: left; padding: 5px 0; }
+.bookbag-controls { float: left; padding: 5px 0px 0px 10px; }
 .left-corner { float: left; width: 163px; height: 30px; background: url('/images/utils-corner-mid.png') repeat-x top; }
 .float-right { float: right; }
 .opac-auto-045 { float: right; margin-right: 17px; }

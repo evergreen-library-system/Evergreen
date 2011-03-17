@@ -8,9 +8,9 @@
                             [% l('Temporary List') %]
                         </td>
                         <td>
-                            <a href="#"><img
+                            <!-- <a href="#"><img
                                 alt="[% l('Anonymous List Help') %]"
-                                src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+                                src="[% ctx.media_prefix %]/images/question-mark.png" /></a>-->
                         </td>
                     </tr>
                 </table>

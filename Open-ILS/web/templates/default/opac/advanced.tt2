@@ -7,8 +7,8 @@
         <div id="adv_search_parent">
             <div id="adv_search_tabs">
                 <a href="#" alt="[% l('Advanced Search') %]" id="adv_search"></a>
-                <a href="#" alt="[% l('Numeric Search') %]" id="num_search"></a>
-                <a href="#" alt="[% l('Expert Search') %]" id="expert_search"></a>
+<!--                <a href="#" alt="[% l('Numeric Search') %]" id="num_search"></a>
+                    <a href="#" alt="[% l('Expert Search') %]" id="expert_search"></a> -->
             </div>
         </div>
     </div>

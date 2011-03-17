@@ -18,21 +18,42 @@
         </div>
     </div> -->
     <div id="temp_wrapper">
+<!-- new list creation -->
+<form action="[% ctx.opac_root %]/myopac/list/update" method="POST" id="create_form">
+    <h2>[% l('Create new list') %]</h2><a name="createnewlist"></a>
+<table cellpadding="0" border="0" id="list_create_table">
+    <tr>
+        <td>
+            <label for="list_create_name">[% l('Enter the name of the new list:') %]</label>
+            <input id="list_create_name" type="text" name="name" />
+            <input type="hidden" name="action" value="create" />
+        </td>
+        <td>
+            <label for="list_create_shared">[% l('Share this list?') %]</label>
+            <select name="shared" id="list_create_shared">
+                <option value="0">[% l('No') %]
+                <option value="1">[% l('Yes') %]
+            </select>
+            <a href="javascript:void(0);" onclick="alert(document.getElementById('bb_publish_text').innerHTML);"><img alt="[% l('Sharing Help') %]"
+                src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
+        </td>
+        <td class="list-create-table-buttons">
+            <input type="image" alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png"/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="javascript:void(0);"
+                onclick="document.getElementById('create_form').reset(); return false"><img
+                alt="[% l('Cancel') %]"
+                src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
+        </td>
+    </tr>
+</table>
+            </form>
         [% INCLUDE "default/opac/parts/anon_list.tt2" %]
         [% IF ctx.bookbags.size %]
         <div id='acct_lists_prime'>
             [% FOR bbag IN ctx.bookbags %]
             <div id='acct_list_template'>
                 <div style="width:100%">
-                    <div class="bookbag-name">[% bbag.name %]</div>
-                    <div class="bookbag-share">
-                        [% IF bbag.pub == 't'; # XXX TODO %]
-                        <!-- <a target='_blank' name='share_list_rss'><img
-                            alt="[% l('RSS Feed') %]" border="0"
-                            src="[% ctx.media_prefix %]/images/small-rss.png"
-                            title="[% l('You are sharing this list') %]" /></a> -->
-                        [% END %]
-                    </div>
                     <form action="[% ctx.opac_root %]/myopac/list/update"
                         method="POST">
                         <div class="bookbag-share">
@@ -48,12 +69,21 @@
                     </form>
                     <form action="[% ctx.opac_root %]/myopac/list/update"
                         method="POST">
-                        <div class="bookbag-share">
+                        <div class="bookbag-controls">
                             <input type="hidden" name="list" value="[% bbag.id %]" />
                             <input type="hidden" name="action" value="delete" />
                             <input type="submit" value="[% l('Delete List') %]" />
                         </div>
                     </form>
+                    <div class="bookbag-controls"><big><strong>[% bbag.name %]</strong></big></div>
+                    <div class="bookbag-controls">
+                        [% IF bbag.pub == 't'; # XXX TODO %]
+                        <!-- <a target='_blank' name='share_list_rss'><img
+                            alt="[% l('RSS Feed') %]" border="0"
+                            src="[% ctx.media_prefix %]/images/small-rss.png"
+                            title="[% l('You are sharing this list') %]" /></a> -->
+                        [% END %]
+                    </div>
                     <div class="clear-both pad-bottom-five"></div>
                 </div>
                 <form action="[% ctx.opac_root %]/myopac/list/update"
@@ -133,34 +163,4 @@
         [% l("Bookbag successfully updated") %]
     </span>
 </div>
-<!-- new list creation -->
-<form action="[% ctx.opac_root %]/myopac/list/update" method="POST" id="create_form">
-<div style="padding-bottom: 7px;">
-    <h2>[% l('Create new list') %]</h2><a name="createnewlist"></a>
-    [% l('Enter the name of the new list:') %]<br/>
-    <input type="hidden" name="action" value="create" />
-    <input type="text" name="name" />
-</div>
-
-<table cellpadding="0" cellspacing="10" border="0">
-    <tr>
-        <td>
-            [% l('Share this list?') %]
-            <a href="#"><img alt="[% l('Sharing Help') %]"
-                src="[% ctx.media_prefix %]/images/question-mark.png" /></a>
-        </td>
-        <td>
-            <input type="radio" value="0" name="shared" id="shared_0" checked="checked" /><label for="shared_0">[% l('No') %]</label>
-            <br/>
-            <input type="radio" value="1" name="shared" id="shared_1"/><label for="shared_1">[% l('Yes') %]</label>
-        </td>
-    </tr>
-</table>
-<input type="image" alt="[% l('Submit') %]" src="[% ctx.media_prefix %]/images/btnSubmit.png"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="javascript:void(0);"
-    onclick="document.getElementById('create_form').reset(); return false"><img
-    alt="[% l('Cancel') %]"
-    src="[% ctx.media_prefix %]/images/btnCancel.png" /></a>
-</form>
 [% END %]

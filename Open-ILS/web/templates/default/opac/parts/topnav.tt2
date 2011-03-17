@@ -62,28 +62,28 @@
                                         <div class="pos-abs">
                                             <div class="dash-pos-out">
                                                 <div class="dash-align-out">
-                                                    <span id="dash_checked">[% ctx.user_stats.checkouts.total_out %]</span> [% l("Checked Out") %]
+                                                    <a class="dash-link" href="[% ctx.opac_root %]/myopac/circs"><span id="dash_checked">[% ctx.user_stats.checkouts.total_out %]</span> [% l("Checked Out") %]</a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="pos-abs">
                                             <div class="dash-pos-holds">
                                                 <div class="dash-align-holds">
-                                                    <span id="dash_holds">[% ctx.user_stats.holds.total %]</span> [% l("On Hold") %]
+                                                    <a class="dash-link" href="[% ctx.opac_root %]/myopac/holds"><span id="dash_holds">[% ctx.user_stats.holds.total %]</span> [% l("On Hold") %]</a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="pos-abs">
                                             <div class="dash-pos-pickup">
                                                 <div class="dash-align-pickup">
-                                                    <span id="dash_pickup">[% ctx.user_stats.holds.ready %]</span> [% l("Ready for Pickup") %]
+                                                    <a class="dash-link" href="[% ctx.opac_root %]/myopac/holds?available=1"><span id="dash_pickup">[% ctx.user_stats.holds.ready %]</span> [% l("Ready for Pickup") %]</a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="pos-abs">
                                             <div class="dash-pos-fines">
                                                 <div class="dash-align-fines">
-                                                    <span id="dash_fines">[% money(ctx.user_stats.fines.balance_owed) %]</span> [% l("Fines") %]
+                                                    <a class="dash-link" href="[% ctx.opac_root %]/myopac/main"><span id="dash_fines">[% money(ctx.user_stats.fines.balance_owed) %]</span> [% l("Fines") %]</a>
                                                 </div>
                                             </div>
                                         </div>
