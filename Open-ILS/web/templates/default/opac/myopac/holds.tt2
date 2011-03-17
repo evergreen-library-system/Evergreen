@@ -133,11 +133,12 @@
             <tbody id="holds_temp_parent">
                 [% FOR hold IN ctx.holds;
                     attrs = {marc_xml => hold.marc_xml};
-                    PROCESS get_marc_attrs args=attrs %]
+                    PROCESS get_marc_attrs args=attrs;
+                    ahr = hold.hold.hold %]
                 <tr id="acct_holds_temp" name="acct_holds_temp"
                     class="acct_holds_temp">
                     <td width="36" align="center" style="text-align:center;">
-                        <input type="checkbox" name="hold_id" value="[% hold.hold.hold.id %]" />
+                        <input type="checkbox" name="hold_id" value="[% ahr.id %]" />
                     </td>
                     <td width="138">
                         <div style="margin-top:10px;margin-bottom:10px;">
@@ -160,24 +161,24 @@
                         </div>
                     </td>
                     <td width="136">
-                        [% ctx.find_aou(hold.hold.hold.pickup_lib).name %]
+                        [% ctx.find_aou(ahr.pickup_lib).name %]
                     </td>
                     <td width="104">
                         <!-- <input
                             title="Enter a date (e.g. 10/21/2010)"
                             class="hide_me" style="width:91px;"
                             name="activate_box" type="text" /> -->
-                        [% IF hold.hold.hold.frozen == 't' AND
-                                hold.hold.hold.thaw_date;
-                            date.format(ctx.parse_datetime(hold.hold.hold.thaw_date), DATE_FORMAT);
+                        [% IF ahr.frozen == 't' AND
+                                ahr.thaw_date;
+                            date.format(ctx.parse_datetime(ahr.thaw_date), DATE_FORMAT);
                         END %]
                     </td>
                     <td width="106">
                         <!-- <input title="[% l('Enter a date (e.g. 10/21/2010)') %]"
                             class="hide_me" style="width:91px;"
                             name="hold_expires_box" type="text" />-->
-                        [% IF hold.hold.hold.expire_time;
-                            date.format(ctx.parse_datetime(hold.hold.hold.expire_time), DATE_FORMAT);
+                        [% IF ahr.expire_time;
+                            date.format(ctx.parse_datetime(ahr.expire_time), DATE_FORMAT);
                         END %]
                     </td>
                     <td width="95">
@@ -186,7 +187,7 @@
                             <option value="f">Active</option>
                             <option value="t">Suspended</option>
                         </select> -->
-                        [% l(hold.hold.hold.frozen == 'f' ? 'Active' : 'Suspended') %]
+                        [% l(ahr.frozen == 'f' ? 'Active' : 'Suspended') %]
                     </td>
                     <td width="110">
                         <div name="acct_holds_status"
@@ -194,6 +195,10 @@
                             [%
                                 IF hold.hold.status == 4;
                                     l("Available");
+                                    IF ahr.shelf_expire_time;
+                                        l('<br/>Expires [_1]', 
+                                            date.format(ctx.parse_datetime(ahr.shelf_expire_time), DATE_FORMAT));
+                                    END;
                                 ELSIF hold.hold.estimated_wait AND hold.hold.estimated_wait > 0;
                                     # estimated wait is delivered as seconds.
                                     SET hwait = POSIX.ceil(hold.hold.estimated_wait / 86400);
