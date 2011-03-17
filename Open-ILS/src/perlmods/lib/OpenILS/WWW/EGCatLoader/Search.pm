@@ -78,7 +78,7 @@ sub _prepare_biblio_search {
     }
 
     my $site = $cgi->param('loc');
-    if (defined($site) and ($site ne $ctx->{aou_tree}->()->id) and not $query =~ /site\(\d+\)/) {
+    if (defined($site) and $site ne '' and ($site ne $ctx->{aou_tree}->()->id) and not $query =~ /site\(\d+\)/) {
         $query .= " site($site)";
     }
     if (defined($cgi->param('depth')) and not $query =~ /depth\(\d+\)/) {
