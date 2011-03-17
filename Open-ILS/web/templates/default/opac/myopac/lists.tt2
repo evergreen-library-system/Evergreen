@@ -77,11 +77,10 @@
                     </form>
                     <div class="bookbag-controls"><big><strong>[% bbag.name %]</strong></big></div>
                     <div class="bookbag-controls">
-                        [% IF bbag.pub == 't'; # XXX TODO %]
-                        <!-- <a target='_blank' name='share_list_rss'><img
+                        [% IF bbag.pub == 't'; %]
+                        <a target='_blank' href='/opac/extras/feed/bookbag/rss2-full/[% bbag.id %]'><img
                             alt="[% l('RSS Feed') %]" border="0"
-                            src="[% ctx.media_prefix %]/images/small-rss.png"
-                            title="[% l('You are sharing this list') %]" /></a> -->
+                            src="[% ctx.media_prefix %]/images/small-rss.png"/></a>
                         [% END %]
                     </div>
                     <div class="clear-both pad-bottom-five"></div>
