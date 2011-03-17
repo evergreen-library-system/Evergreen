@@ -275,8 +275,8 @@ $func$ LANGUAGE PLPERLU;
 
 INSERT INTO asset.call_number_class (name, normalizer, field) VALUES 
     ('Generic', 'asset.label_normalizer_generic', '050ab,055ab,060ab,070ab,080ab,082ab,086ab,088ab,090,092,096,098,099'),
-    ('Dewey (DDC)', 'asset.label_normalizer_dewey', '080ab,082ab'),
-    ('Library of Congress (LC)', 'asset.label_normalizer_lc', '050ab,055ab')
+    ('Dewey (DDC)', 'asset.label_normalizer_dewey', '080ab,082ab,092abef'),
+    ('Library of Congress (LC)', 'asset.label_normalizer_lc', '050ab,055ab,090abef')
 ;
 
 CREATE TABLE asset.call_number (
