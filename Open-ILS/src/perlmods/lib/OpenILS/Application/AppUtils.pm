@@ -1800,7 +1800,8 @@ sub create_circ_chain_summary {
 
 # Returns "mra" attribute key/value pairs for a set of bre's
 # Takes a list of bre IDs, returns a hash of hashes,
-# {bre1=> {key1 => value1, key2 => value2, ...}, bre2 => {...}, ...}
+# {bre_id1 => {key1 => {code => value1, label => label1}, ...}...}
+my $ccvm_cache;
 sub get_bre_attrs {
     my ($class, $bre_ids, $e) = @_;
     $e = $e || OpenILS::Utils::CStoreEditor->new;
@@ -1834,8 +1835,19 @@ sub get_bre_attrs {
 
     return $attrs unless $mra;
 
+    $ccvm_cache = $ccvm_cache || $e->search_config_coded_value_map({id => {'!=' => undef}});
+
     for my $id (@$bre_ids) {
-        $attrs->{$id} = { map {$_->{key} => $_->{value}} grep { $_->{bre} eq $id } @$mra };
+        $attrs->{$id} = {};
+        for my $mra (grep { $_->{bre} eq $id } @$mra) {
+            my $ctype = $mra->{key};
+            my $code = $mra->{value};
+            $attrs->{$id}->{$ctype} = {code => $code};
+            if($code) {
+                my ($ccvm) = grep { $_->ctype eq $ctype and $_->code eq $code } @$ccvm_cache;
+                $attrs->{$id}->{$ctype}->{label} = $ccvm->value if $ccvm;
+            }
+        }
     }
 
     return $attrs;
