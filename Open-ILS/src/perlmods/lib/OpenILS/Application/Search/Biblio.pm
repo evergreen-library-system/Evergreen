@@ -2364,6 +2364,9 @@ sub rec_to_mr_rec_descriptors {
     my $item_forms = $$args{item_forms};
     my $item_types = $$args{item_types};
     my $item_lang  = $$args{item_lang};
+    my $pickup_lib = $$args{pickup_lib};
+
+    my $hard_boundary = $U->ou_ancestor_setting_value($pickup_lib, OILS_SETTING_HOLD_HARD_BOUNDARY) if (defined $pickup_lib);
 
 	my $e = new_editor();
 	my $recs;
@@ -2384,6 +2387,35 @@ sub rec_to_mr_rec_descriptors {
 	$search->{item_lang} = $item_lang  if $item_lang;
 
 	my $desc = $e->search_metabib_record_descriptor($search);
+
+    if ($hard_boundary) { # 0 (or "top") is the same as no setting
+        my $orgs = $e->json_query(
+            { from => [ 'actor.org_unit_descendants' => $pickup_lib, $hard_boundary ] }
+        );
+
+        my $good_records = $e->json_query(
+            { distinct => 1,
+              select   => { 'bre' => ['id'] },
+              from     => { 'bre' => { 'acn' => { 'join' => { 'acp' } } } },
+              where    => {
+                '+bre' => { id => \@recs },
+                '+acp' => {
+                    circ_lib => [ map { $_->{id} } @$orgs ],
+                    deleted  => 'f'
+                }
+              }
+            }
+        );
+
+        my @keep;
+        for my $d (@$desc) {
+            if ( grep { $d->record == $_->{id} } @$good_records ) {
+                push @keep, $d;
+            }
+        }
+
+        $desc = \@keep;
+    }
 
 	return { metarecord => $mrec, descriptors => $desc };
 }
