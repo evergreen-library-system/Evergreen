@@ -103,6 +103,8 @@
             </div>
         </div>
         <div class="clear-both"></div>
+
+        <!-- open transaction summary;  
         <div id='myopac_fines_div'>
             <table width='100%' class='data_grid data_grid_center'>
                 <thead class='color_3'>
@@ -125,6 +127,8 @@
                     </tr>
                 </tbody>
             </table>
+        -->
+
         <!--
         <div id='accrue_explanation' class='hide_me'>
             <span>Transactions whose balances are marked with a</span>
