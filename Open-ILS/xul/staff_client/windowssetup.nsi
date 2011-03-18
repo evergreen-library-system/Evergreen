@@ -113,13 +113,8 @@ Section "Staff Client" SECMAIN
 
   !ifdef AUTOUPDATE | PERMACHINE
   ; For autoupdate and/or registering per machine, make sure we can write to the install directory.
-  ; If the AccessControl plugin was packaged or part of nsis we would use it instead.
-  ; Also, as cacls.exe is depreciated when icacls.exe exists, try icacls.exe first.
-  IfFileExists "$SYSDIR/icacls.exe" 0 +3
-  ExecWait '"$SYSDIR/icacls.exe" "$INSTDIR" /grant Everyone:(OI)(CI)F'  
-  Goto +3
-  IfFileExists "$SYSDIR/cacls.exe" 0 +2
-  ExecWait '"$SYSDIR/cacls.exe" "$INSTDIR" /E /G Everyone:F'
+  !addplugindir AccessControl/Plugins
+  AccessControl::GrantOnFile "$INSTDIR" "Everyone" "FullAccess"
   !endif
 SectionEnd
 

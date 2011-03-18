@@ -160,6 +160,7 @@ sub load_class {
 		$tablename = '';
 	}
 	my $restrict_primary = get_attribute( $attribute_list, 'oils_persist:restrict_primary' );
+	my $field_safe = get_attribute( $attribute_list, 'oils_persist:field_safe' );
 
 	# Load the attributes into the Fieldmapper --------------------
 
@@ -170,6 +171,7 @@ sub load_class {
 	$$fieldmap{$fm}{ table }            = $tablename;
 	$$fieldmap{$fm}{ controller }       = [ split ' ', $controller ];
 	$$fieldmap{$fm}{ restrict_primary } = $restrict_primary;
+	$$fieldmap{$fm}{ field_safe }       = $field_safe;
 
 	# Load fields and links
 
