@@ -1797,5 +1797,49 @@ sub create_circ_chain_summary {
     return $obj;
 }
 
+
+# Returns "mra" attribute key/value pairs for a set of bre's
+# Takes a list of bre IDs, returns a hash of hashes,
+# {bre1=> {key1 => value1, key2 => value2, ...}, bre2 => {...}, ...}
+sub get_bre_attrs {
+    my ($class, $bre_ids, $e) = @_;
+    $e = $e || OpenILS::Utils::CStoreEditor->new;
+
+    my $attrs = {};
+    return $attrs unless defined $bre_ids;
+    $bre_ids = [$bre_ids] unless ref $bre_ids;
+
+    my $mra = $e->json_query({
+        select => {
+            mra => [
+                {
+                    column => 'id',
+                    alias => 'bre'
+                }, {
+                    column => 'attrs',
+                    transform => 'each',
+                    result_field => 'key',
+                    alias => 'key'
+                },{
+                    column => 'attrs',
+                    transform => 'each',
+                    result_field => 'value',
+                    alias => 'value'
+                }
+            ]
+        },
+        from => 'mra',
+        where => {id => $bre_ids}
+    });
+
+    return $attrs unless $mra;
+
+    for my $id (@$bre_ids) {
+        $attrs->{$id} = { map {$_->{key} => $_->{value}} grep { $_->{bre} eq $id } @$mra };
+    }
+
+    return $attrs;
+}
+
 1;
 
