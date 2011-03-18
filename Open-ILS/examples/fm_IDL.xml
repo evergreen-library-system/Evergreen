@@ -2568,7 +2568,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="ccs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_status" oils_persist:tablename="config.copy_status" oils_persist:restrict_primary="100" reporter:label="Copy Status">
+	<class id="ccs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_status" oils_persist:tablename="config.copy_status" oils_persist:restrict_primary="100" reporter:label="Copy Status" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.copy_status_id_seq">
 			<field name="holdable" reporter:datatype="bool"/>
 			<field name="id" reporter:selector="name" reporter:datatype="id"/>
@@ -4330,7 +4330,7 @@ SELECT  usr,
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
-	<class id="aout" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit_type" oils_persist:tablename="actor.org_unit_type" reporter:label="Organizational Unit Type">
+	<class id="aout" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit_type" oils_persist:tablename="actor.org_unit_type" reporter:label="Organizational Unit Type" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_type_id_seq">
 			<field reporter:label="Subordinate Types" name="children" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Can Have Users?" name="can_have_users" reporter:datatype="bool"/>
@@ -4757,7 +4757,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="crahp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::age_hold_protect" oils_persist:tablename="config.rule_age_hold_protect" reporter:label="Age Hold Protection Rule">
+	<class id="crahp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::rules::age_hold_protect" oils_persist:tablename="config.rule_age_hold_protect" reporter:label="Age Hold Protection Rule" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.rule_age_hold_protect_id_seq">
 			<field reporter:label="Item Age" name="age" reporter:datatype="interval"/>
 			<field reporter:label="Rule ID" name="id" reporter:selector="name" reporter:datatype="id"/>
