@@ -31,7 +31,6 @@ sub fetch_mylist {
         }
     }
 
-    $self->apache->log->info("Found anon-cache list [@$list]");
     my $marc_xml;
     if ($with_marc_xml) {
         $marc_xml = $self->fetch_marc_xml_by_id($list);
