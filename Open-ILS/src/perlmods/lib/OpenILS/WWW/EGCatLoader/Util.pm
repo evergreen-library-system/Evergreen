@@ -7,7 +7,8 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 my $U = 'OpenILS::Application::AppUtils';
 
-our %cache = (
+my $ro_object_subs; # cached subs
+our %cache = ( # cached data
     map => {aou => {}}, # others added dynamically as needed
     list => {},
     org_settings => {}
@@ -18,42 +19,46 @@ sub init_ro_object_cache {
     my $e = $self->editor;
     my $ctx = $self->ctx;
 
-    # fetch-on-demand-and-cache subs for commonly used public data
-    my @public_classes = qw/ccs aout cifm citm clm cmf crahp/;
+    if($ro_object_subs) {
+        # subs have been built.  insert into the context then move along.
+        $ctx->{$_} = $ro_object_subs->{$_} for keys %$ro_object_subs;
+        return;
+    }
 
-    for my $hint (@public_classes) {
+    # make all "field_safe" classes accesible by default in the template context
+    my @classes = grep {
+        ($Fieldmapper::fieldmap->{$_}->{field_safe} || '') =~ /true/i
+    } keys %{ $Fieldmapper::fieldmap };
 
-        my ($class) = grep {
-            $Fieldmapper::fieldmap->{$_}->{hint} eq $hint
-        } keys %{ $Fieldmapper::fieldmap };
+    for my $class (@classes) {
+
+        my $hint = $Fieldmapper::fieldmap->{$class}->{hint};
+        next if $hint eq 'aou'; # handled separately
 
         my $ident_field =  $Fieldmapper::fieldmap->{$class}->{identity};
+        (my $eclass = $class) =~ s/Fieldmapper:://o;
+        $eclass =~ s/::/_/g;
 
-	    $class =~ s/Fieldmapper:://o;
-	    $class =~ s/::/_/g;
-
-        # copy statuses
-        my $list_key = $hint . '_list';
+        my $list_key = "${hint}_list";
         my $find_key = "find_$hint";
 
-        $ctx->{$list_key} = sub {
-            my $method = "retrieve_all_$class";
+        $ro_object_subs->{$list_key} = sub {
+            my $method = "retrieve_all_$eclass";
             $cache{list}{$hint} = $e->$method() unless $cache{list}{$hint};
             return $cache{list}{$hint};
         };
     
         $cache{map}{$hint} = {} unless $cache{map}{$hint};
 
-        $ctx->{$find_key} = sub {
+        $ro_object_subs->{$find_key} = sub {
             my $id = shift;
             return $cache{map}{$hint}{$id} if $cache{map}{$hint}{$id}; 
-            ($cache{map}{$hint}{$id}) = grep { $_->$ident_field eq $id } @{$ctx->{$list_key}->()};
+            ($cache{map}{$hint}{$id}) = grep { $_->$ident_field eq $id } @{$ro_object_subs->{$list_key}->()};
             return $cache{map}{$hint}{$id};
         };
-
     }
 
-    $ctx->{aou_tree} = sub {
+    $ro_object_subs->{aou_tree} = sub {
 
         # fetch the org unit tree
         unless($cache{aou_tree}) {
@@ -69,12 +74,12 @@ sub init_ro_object_cache {
             # and simultaneously set the id => aou map cache
             sub flesh_aout {
                 my $node = shift;
-                my $ctx = shift;
-                $node->ou_type( $ctx->{find_aout}->($node->ou_type) );
+                my $ro_object_subs = shift;
+                $node->ou_type( $ro_object_subs->{find_aout}->($node->ou_type) );
                 $cache{map}{aou}{$node->id} = $node;
-                flesh_aout($_, $ctx) foreach @{$node->children};
+                flesh_aout($_, $ro_object_subs) foreach @{$node->children};
             };
-            flesh_aout($tree, $ctx);
+            flesh_aout($tree, $ro_object_subs);
 
             $cache{aou_tree} = $tree;
         }
@@ -83,14 +88,14 @@ sub init_ro_object_cache {
     };
 
     # Add a special handler for the tree-shaped org unit cache
-    $ctx->{find_aou} = sub {
+    $ro_object_subs->{find_aou} = sub {
         my $org_id = shift;
-        $ctx->{aou_tree}->(); # force the org tree to load
+        $ro_object_subs->{aou_tree}->(); # force the org tree to load
         return $cache{map}{aou}{$org_id};
     };
 
     # turns an ISO date into something TT can understand
-    $ctx->{parse_datetime} = sub {
+    $ro_object_subs->{parse_datetime} = sub {
         my $date = shift;
         $date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($date));
         return sprintf(
@@ -105,7 +110,7 @@ sub init_ro_object_cache {
     };
 
     # retrieve and cache org unit setting values
-    $ctx->{get_org_setting} = sub {
+    $ro_object_subs->{get_org_setting} = sub {
         my($org_id, $setting) = @_;
 
         $cache{org_settings}{$org_id} = {} 
@@ -117,6 +122,8 @@ sub init_ro_object_cache {
 
         return $cache{org_settings}{$org_id}{$setting};
     };
+
+    $ctx->{$_} = $ro_object_subs->{$_} for keys %$ro_object_subs;
 }
 
 sub generic_redirect {
