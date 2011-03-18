@@ -12,7 +12,7 @@
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
 !ifndef PRODUCT_LICENSE
-  !define PRODUCT_LICENSE "..\..\..\LICENSE.txt"
+  !define PRODUCT_LICENSE
 !endif
 
 ; MUI 1.67 compatible ------

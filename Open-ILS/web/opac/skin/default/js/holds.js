@@ -300,26 +300,32 @@ function _h_set_rec(args, doneCallback) {
 
 function _h_set_rec_descriptors(args, doneCallback) {
 
+    if( ! args.pickup_lib )
+        args.pickup_lib = getSelectorVal($('holds_org_selector'));
+
+    if(args.pickup_lib === null)
+        args.pickup_lib = holdArgs.recipient.home_ou();
+
 	// grab the list of record desciptors attached to this records metarecord 
 	if( ! args.recordDescriptors )  {
-		var params = {};
+		var params = { pickup_lib: args.pickup_lib };
 
         if (args.type == 'M') {
     		if( !args.metarecord && args.record) {
                 params.metarecord = args.metarecord = args.record;
                 delete(args.record);
 	    	} else {
-		    		params = { metarecord : args.metarecordObject.doc_id() };
+		    		params.metarecord = args.metarecordObject.doc_id();
     		}
         } else {
-    		params = { record: args.record };
+    		params.record = args.record;
         }
 
 		if( ! args.record ) {
 			if( args.metarecord )
-				params = { metarecord : args.metarecord };
+				params.metarecord = args.metarecord;
 			else 
-				params = { metarecord : args.metarecordObject.doc_id() };
+				params.metarecord = args.metarecordObject.doc_id();
 		}
 
 		var req = new Request(FETCH_MR_DESCRIPTORS, params );
@@ -350,6 +356,7 @@ function holdsDrawWindow() {
 	$('holds_cancel').onclick = function(){ runEvt('common', 'holdUpdateCanceled'), showCanvas() };
 	$('holds_submit').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
 	$('holds_update').onclick = function(){holdsPlaceHold(holdsBuildHoldFromWindow())};
+    $('holds_org_selector').onchange = function(){holdsDrawWindow()};
 	holdFetchObjects(null, 
 		function(){
 			__holdsDrawWindow();
