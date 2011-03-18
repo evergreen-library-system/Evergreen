@@ -3138,6 +3138,8 @@ char* SELECT (
 					const char* _alias;
 					if ((tmp_const = jsonObjectGetKeyConst( selfield, "alias" ))) {
 						_alias = jsonObjectGetString( tmp_const );
+					} else if ((tmp_const = jsonObjectGetKeyConst( selfield, "result_field" ))) { // Use result_field name as the alias
+						_alias = jsonObjectGetString( tmp_const );
 					} else {         // Use field name as the alias
 						_alias = col_name;
 					}
