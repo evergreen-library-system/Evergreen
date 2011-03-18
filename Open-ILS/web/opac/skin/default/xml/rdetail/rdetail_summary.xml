@@ -92,7 +92,7 @@
                 <td type='opac/slot-data' query='datafield[tag^="6"]' class='rdetail_item'>
                     <script type='opac/slot-format'><![CDATA[
                         var cgi = new CGI();
-                        var other_params = [ 'd', 'l', 'r', 'av', 's', 'sd' ];
+                        var other_params = [ 'd', 'l', 'r', 'av', 's', 'sd', 'ol' ];
                         var total = '';
                         var output = [];
                         var list = dojo.query( 'subfield', item );
