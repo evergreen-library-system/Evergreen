@@ -1,3 +1,6 @@
+"""
+A Python-friendly wrapper for accessing the Evergreen open-ils.cstore service
+"""
 # -----------------------------------------------------------------------
 # Copyright (C) 2007  Georgia Public Library Service
 # Bill Erickson <billserickson@gmail.com>
@@ -13,11 +16,11 @@
 # GNU General Public License for more details.
 # -----------------------------------------------------------------------
 
-from osrf.log import *
-from osrf.json import *
 from oils.utils.idl import IDLParser
+from osrf.const import OSRF_APP_SESSION_CONNECTED
+from osrf.log import log_debug, log_info, log_error
 from osrf.ses import ClientSession
-from oils.const import *
+import oils.const
 import re
 
 ACTIONS = ['create', 'retrieve', 'batch_retrieve', 'update', 'delete', 'search']
@@ -87,7 +90,7 @@ class CSEditor(object):
                 connect time.  xact implies connect.
         '''
 
-        self.app = args.get('app', OILS_APP_CSTORE)
+        self.app = args.get('app', oils.const.OILS_APP_CSTORE)
         self.authtoken = args.get('authtoken', args.get('auth'))
         self.requestor = args.get('requestor')
         self.connect = args.get('connect')
@@ -106,15 +109,17 @@ class CSEditor(object):
         '''
         pass
 
-
     # -------------------------------------------------------------------------
     # Creates a session if one does not already exist.  If necessary, connects
     # to the remote service and starts a transaction
     # -------------------------------------------------------------------------
     def session(self, ses=None):
-        ''' Creates a session if one does not already exist.  If necessary, connects
-            to the remote service and starts a transaction
-        '''
+        """
+        Creates a session if one does not already exist.
+
+        If necessary, connects to the remote service and starts a transaction.
+        """
+
         if not self.__session:
             self.__session = ClientSession(self.app)
 
@@ -127,27 +132,30 @@ class CSEditor(object):
             self.request(self.app + '.transaction.begin')
 
         return self.__session
-   
 
     def log(self, func, string):
         ''' Logs string with some meta info '''
 
-        s = "editor[";
-        if self.xact: s += "1|"
-        else: s += "0|"
-        if self.requestor: s += str(self.requestor.id())
-        else: s += "0"
-        s += "]"
-        func("%s %s" % (s, string))
+        meta = "editor["
+        if self.xact:
+            meta += "1|"
+        else:
+            meta += "0|"
 
+        if self.requestor:
+            meta += str(self.requestor.id())
+        else:
+            meta += "0"
+        meta += "]"
+        func("%s %s" % (meta, string))
 
     def rollback(self):
         ''' Rolls back the existing db transaction '''
 
         if self.__session and self.xact:
-             self.log(log_info, "rolling back db transaction")
-             self.request(self.app + '.transaction.rollback')
-             self.disconnect()
+            self.log(log_info, "rolling back db transaction")
+            self.request(self.app + '.transaction.rollback')
+            self.disconnect()
              
     def commit(self):
         ''' Commits the existing db transaction and disconnects '''
@@ -157,18 +165,16 @@ class CSEditor(object):
             self.request(self.app + '.transaction.commit')
             self.disconnect()
 
-
     def disconnect(self):
         ''' Disconnects from the remote service '''
         if self.__session:
             self.__session.disconnect()
             self.__session = None
 
-
-    # -------------------------------------------------------------------------
-    # Sends a request
-    # -------------------------------------------------------------------------
     def request(self, method, params=[]):
+        """
+        Sends a request.
+        """
 
         # XXX improve param logging here
 
@@ -190,7 +196,6 @@ class CSEditor(object):
 
         return val
 
-
     # -------------------------------------------------------------------------
     # Returns true if our requestor is allowed to perform the request action
     # 'org' defaults to the requestors ws_ou
@@ -198,10 +203,9 @@ class CSEditor(object):
     def allowed(self, perm, org=None):
         pass # XXX
 
+    def runMethod(self, action, obj_type, arg, options={}):
 
-    def runMethod(self, action, type, arg, options={}):
-
-        method = "%s.direct.%s.%s" % (self.app, type, action)
+        method = "%s.direct.%s.%s" % (self.app, obj_type, action)
 
         if options.get('idlist'):
             method = method.replace('search', 'id_list')
@@ -215,7 +219,7 @@ class CSEditor(object):
             method += '.atomic'
             arg = {'id' : arg}
 
-        params = [arg];
+        params = [arg]
         if len(options.keys()):
             params.append(options)
 
@@ -239,34 +243,33 @@ class CSEditor(object):
         }
         return self.rawSearch(args)
 
-
     def fieldSearch(self, hint, fields, where):
         return self.rawSearch2(hint, fields, where)
 
-
-
-# -------------------------------------------------------------------------
-# Creates a class method for each action on each type of fieldmapper object
-# -------------------------------------------------------------------------
 __editor_loaded = False
 def oilsLoadCSEditor():
+    """
+    Creates a class method for each action on each type of fieldmapper object
+    """
+
     global __editor_loaded
     if __editor_loaded:
         return
     __editor_loaded = True
 
-    obj = IDLParser.get_parser().IDLObject
+    obj = IDLParser.get_parser().idl_object
 
-    for k, fm in obj.iteritems():
+    for fmap in obj.itervalues():
         for action in ACTIONS:
 
-            fmname = fm.fieldmapper.replace('::', '_')
-            type = fm.fieldmapper.replace('::', '.')
+            fmname = fmap.fieldmapper.replace('::', '_')
+            obj_type = fmap.fieldmapper.replace('::', '.')
             name = "%s_%s" % (action, fmname)
 
-            s = 'def %s(self, arg, **options):\n' % name
-            s += '\treturn self.runMethod("%s", "%s", arg, dict(options))\n' % (action, type)
-            s += 'setattr(CSEditor, "%s", %s)' % (name, name)
+            method = 'def %s(self, arg, **options):\n' % name
+            method += '\treturn self.runMethod("%s", "%s"' % (action, obj_type)
+            method += ', arg, dict(options))\n'
+            method += 'setattr(CSEditor, "%s", %s)' % (name, name)
 
-            exec(s)
+            exec(method)
 
