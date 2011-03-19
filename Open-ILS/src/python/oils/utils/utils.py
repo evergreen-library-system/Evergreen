@@ -13,20 +13,18 @@
 # GNU General Public License for more details.
 # -----------------------------------------------------------------------
 
-import re, hashlib
+import hashlib
 import osrf.ses
-from osrf.log import *
-
-
 
 # -----------------------------------------------------------------------
 # Grab-bag of general utility functions
 # -----------------------------------------------------------------------
 
-def md5sum(str):
-    m = hashlib.md5()
-    m.update(str)
-    return m.hexdigest()
+def md5sum(string):
+    """Return an MD5 message digest for a given input string"""
+    md5 = hashlib.md5()
+    md5.update(string)
+    return md5.hexdigest()
 
 def unique(arr):
     ''' Unique-ify a list.  only works if list items are hashable '''
@@ -41,9 +39,19 @@ def is_db_true(data):
         return False
     return True
 
+def login(username, password, login_type=None, workstation=None):
+    """
+    Login to the server and get back an authentication token
 
-def login(username, password, type=None, workstation=None):
-    ''' Login to the server and get back an authtoken'''
+    @param username: user name
+    @param password: password
+    @param login_type: one of 'opac', 'temp', or 'staff' (default: 'staff')
+    @param workstation: name of the workstation to associate with this login
+
+    @rtype: string
+    @return: a string containing an authentication token to pass as
+        a required parameter of many OpenSRF service calls
+    """
 
     log_info("attempting login with user " + username)
 
@@ -60,7 +68,7 @@ def login(username, password, type=None, workstation=None):
         {   'workstation' : workstation,
             'username' : username,
             'password' : password,
-            'type' : type
+            'type' : login_type
         }
     )
 
