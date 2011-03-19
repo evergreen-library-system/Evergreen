@@ -1,3 +1,7 @@
+"""
+Grab-bag of general utility functions
+"""
+
 # -----------------------------------------------------------------------
 # Copyright (C) 2007  Georgia Public Library Service
 # Bill Erickson <billserickson@gmail.com>
@@ -16,25 +20,30 @@
 import hashlib
 import osrf.ses
 
-# -----------------------------------------------------------------------
-# Grab-bag of general utility functions
-# -----------------------------------------------------------------------
-
 def md5sum(string):
-    """Return an MD5 message digest for a given input string"""
+    """
+    Return an MD5 message digest for a given input string
+    """
+
     md5 = hashlib.md5()
     md5.update(string)
     return md5.hexdigest()
 
 def unique(arr):
-    ''' Unique-ify a list.  only works if list items are hashable '''
+    """
+    Unique-ify a list.  only works if list items are hashable
+    """
+
     o = {}
     for x in arr:
         o[x] = 1
     return o.keys()
 
 def is_db_true(data):
-    ''' Returns true if the data provided matches what the database considers a true value '''
+    """
+    Returns PostgreSQL's definition of "truth" for the supplied data, roughly.
+    """
+
     if not data or data == 'f' or str(data) == '0':
         return False
     return True
