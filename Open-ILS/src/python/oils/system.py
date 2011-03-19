@@ -19,20 +19,26 @@ from oils.utils.idl import IDLParser
 from oils.utils.csedit import oilsLoadCSEditor
 
 class System(object):
+
     @staticmethod
     def connect(**kwargs):
-	    """Connects to the opensrf network,  parses the IDL file, and loads the CSEditor"""
-	    osrf.system.System.connect(**kwargs)
-	    IDLParser.parse()
-	    oilsLoadCSEditor()
+        """
+        Connects to the OpenSRF network, parses the IDL, and loads the CSEditor.
+        """
+
+        osrf.system.System.connect(**kwargs)
+        IDLParser.parse()
+        oilsLoadCSEditor()
 
     @staticmethod
     def remote_connect(**kwargs):
-	    """
-            Connects to the opensrf network,  parses the IDL file, and loads the CSEditor.
-            This version of connect does not talk to opensrf.settings, which means it 
-            also does not connect to the opensrf cache.
         """
-	    osrf.system.System.net_connect(**kwargs)
-	    IDLParser.parse()
-	    oilsLoadCSEditor()
+        Connects to the OpenSRF network, parses the IDL, and loads the CSEditor.
+
+        This version of connect does not talk to opensrf.settings, which means
+        it also does not connect to the OpenSRF cache.
+        """
+
+        osrf.system.System.net_connect(**kwargs)
+        IDLParser.parse()
+        oilsLoadCSEditor()
