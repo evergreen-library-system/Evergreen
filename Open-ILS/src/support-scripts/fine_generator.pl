@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # ---------------------------------------------------------------------
-# Fine generator with default grace period param.
-# ./object_dumper.pl <bootstrap_config> <lockfile> <grace (default 0)>
+# Fine generator
+# ./fine_generator.pl <bootstrap_config> <lockfile>
 # ---------------------------------------------------------------------
 
 use strict; 
@@ -15,7 +15,9 @@ my $config = shift || die "bootstrap config required\n";
 my $lockfile = shift || "/tmp/generate_fines-LOCK";
 my $grace = shift;
 
-$grace = '' if (!defined($grace) or $grace == 0);
+if (defined($grace)) {
+    die "Grace period is now defined in the database. It should not be passed to the fine generator.";
+}
  
 if (-e $lockfile) {
         open(F,$lockfile);
@@ -44,7 +46,7 @@ if ($parallel == 1) {
 
     my $r = OpenSRF::AppSession
             ->create( 'open-ils.storage' )
-            ->request( 'open-ils.storage.action.circulation.overdue.generate_fines' => $grace );
+            ->request( 'open-ils.storage.action.circulation.overdue.generate_fines' );
 
     while (!$r->complete) { $r->recv };
 
@@ -57,10 +59,10 @@ if ($parallel == 1) {
     );
 
     my $storage = OpenSRF::AppSession->create("open-ils.storage");
-    my $r = $storage->request('open-ils.storage.action.circulation.overdue.id_list', $grace);
+    my $r = $storage->request('open-ils.storage.action.circulation.overdue.id_list');
     while (my $resp = $r->recv) {
         my $circ_id = $resp->content;
-        $multi_generator->request( 'open-ils.storage.action.circulation.overdue.generate_fines', $grace, $circ_id );
+        $multi_generator->request( 'open-ils.storage.action.circulation.overdue.generate_fines', $circ_id );
     }
     $storage->disconnect();
     $multi_generator->session_wait(1);

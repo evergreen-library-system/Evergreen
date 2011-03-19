@@ -1245,6 +1245,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Max Fine Rule" name="max_fine_rule" reporter:datatype="link"/>
             <field reporter:label="Hard Due Date" name="hard_due_date" reporter:datatype="link"/>
             <field reporter:label="Renewals Override" name="renewals" reporter:datatype="int"/>
+            <field reporter:label="Grace Period Override" name="grace_period" reporter:datatype="interval"/>
 			<field reporter:label="Script Test" name="script_test" reporter:datatype="text"/>
 			<field name="total_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Total Copy/Hold Ratio"/>
 			<field name="available_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Available Copy/Hold Ratio"/>
@@ -2805,6 +2806,7 @@ SELECT  usr,
 			<field reporter:label="Recurring Fine Amount" name="recurring_fine" reporter:datatype="money" />
 			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" reporter:datatype="link"/>
 			<field reporter:label="Remaining Renewals" name="renewal_remaining" reporter:datatype="int" />
+			<field reporter:label="Grace Period" name="grace_period" reporter:datatype="interval" />
 			<field reporter:label="Fine Stop Reason" name="stop_fines" reporter:datatype="text"/>
 			<field reporter:label="Fine Stop Date/Time" name="stop_fines_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Circulating Item" name="target_copy" reporter:datatype="link"/>
@@ -2866,6 +2868,7 @@ SELECT  usr,
 			<field reporter:label="Recurring Fine Amount" name="recurring_fine" reporter:datatype="money" />
 			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" reporter:datatype="link"/>
 			<field reporter:label="Remaining Renewals" name="renewal_remaining" reporter:datatype="int" />
+			<field reporter:label="Grace Period" name="grace_period" reporter:datatype="interval" />
 			<field reporter:label="Fine Stop Reason" name="stop_fines" reporter:datatype="text"/>
 			<field reporter:label="Fine Stop Date/Time" name="stop_fines_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Circulating Item" name="target_copy" reporter:datatype="link"/>
@@ -2930,6 +2933,7 @@ SELECT  usr,
 			<field reporter:label="Recurring Fine Amount" name="recurring_fine" reporter:datatype="money" />
 			<field reporter:label="Recurring Fine Rule" name="recurring_fine_rule" reporter:datatype="link"/>
 			<field reporter:label="Remaining Renewals" name="renewal_remaining" reporter:datatype="int" />
+			<field reporter:label="Grace Period" name="grace_period" reporter:datatype="interval" />
 			<field reporter:label="Fine Stop Reason" name="stop_fines" reporter:datatype="text"/>
 			<field reporter:label="Fine Stop Date/Time" name="stop_fines_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Circulating Item" name="target_copy" reporter:datatype="link"/>
@@ -4571,6 +4575,7 @@ SELECT  usr,
 			<field name="recurring_fine" reporter:datatype="money" />
 			<field name="recurring_fine_rule" reporter:datatype="link"/>
 			<field name="renewal_remaining" reporter:datatype="int" />
+            <field name="grace_period" reporter:datatype="interval" />
 			<field name="stop_fines" reporter:datatype="text"/>
 			<field name="stop_fines_time" reporter:datatype="timestamp"/>
 			<field name="target_copy" reporter:datatype="link"/>
@@ -4606,6 +4611,7 @@ SELECT  usr,
 			<field name="name" reporter:datatype="text"/>
 			<field name="normal" reporter:datatype="money" />
 			<field name="recurrence_interval" reporter:datatype="interval"/>
+            <field name="grace_period" reporter:datatype="interval" />
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">

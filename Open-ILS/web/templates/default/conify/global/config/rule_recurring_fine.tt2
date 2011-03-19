@@ -11,7 +11,7 @@
     <div>
     <table  jsId="ruleRecurringFineGrid"
             dojoType="openils.widget.AutoGrid"
-            fieldOrder="['name', 'recurrence_interval', 'low', 'normal', 'high']"
+            fieldOrder="['name', 'recurrence_interval', 'low', 'normal', 'high', 'grace_period']"
             suppressFields="['id']"
             query="{id: '*'}"
             fmClass='crrf'
