@@ -1162,6 +1162,9 @@ sub run_indb_circ_test {
             $self->circ_matrix_matchpoint->duration_rule->max_renewals($results->[0]->{renewals});
         }
         $self->circ_matrix_matchpoint->recurring_fine_rule($self->editor->retrieve_config_rules_recurring_fine($results->[0]->{recurring_fine_rule}));
+        if($results->[0]->{grace_period}) {
+            $self->circ_matrix_matchpoint->recurring_fine_rule->grace_period($results->[0]->{grace_period});
+        }
         $self->circ_matrix_matchpoint->max_fine_rule($self->editor->retrieve_config_rules_max_fine($results->[0]->{max_fine_rule}));
         $self->circ_matrix_matchpoint->hard_due_date($self->editor->retrieve_config_hard_due_date($results->[0]->{hard_due_date}));
     }
@@ -1220,7 +1223,8 @@ sub get_circ_policy {
         max_fine_rule => $max_fine_rule->name,
         max_fine => $self->get_max_fine_amount($max_fine_rule),
         fine_interval => $recurring_fine_rule->recurrence_interval,
-        renewal_remaining => $duration_rule->max_renewals
+        renewal_remaining => $duration_rule->max_renewals,
+        grace_period => $recurring_fine_rule->grace_period
     };
 
     if($hard_due_date) {
@@ -1833,6 +1837,7 @@ sub build_checkout_circ_object {
         $circ->max_fine($policy->{max_fine});
         $circ->fine_interval($recurring->recurrence_interval);
         $circ->renewal_remaining($duration->max_renewals);
+        $circ->grace_period($policy->{grace_period});
 
     } else {
 
@@ -1841,6 +1846,7 @@ sub build_checkout_circ_object {
         $circ->recurring_fine_rule(OILS_UNLIMITED_CIRC_DURATION);
         $circ->max_fine_rule(OILS_UNLIMITED_CIRC_DURATION);
         $circ->renewal_remaining(0);
+        $circ->grace_period(0);
     }
 
    $circ->target_copy( $copy->id );
@@ -2928,15 +2934,25 @@ sub generate_fines {
 sub generate_fines_start {
    my $self = shift;
    my $reservation = shift;
+   my $dt_parser = DateTime::Format::ISO8601->new;
 
-   my $id = $reservation ? $self->reservation->id : $self->circ->id;
+   my $obj = $reservation ? $self->reservation : $self->circ;
+
+   # If we have a grace period
+   if($obj->can('grace_period')) {
+      # Parse out the due date
+      my $due_date = $dt_parser->parse_datetime( cleanse_ISO8601($obj->due_date) );
+      # Add the grace period to the due date
+      $due_date->add(seconds => OpenSRF::Utils->interval_to_seconds($obj->grace_period));
+      # Don't generate fines on circs still in grace period
+      return undef if ($due_date > DateTime->now);
+   }
 
    if (!exists($self->{_gen_fines_req})) {
       $self->{_gen_fines_req} = OpenSRF::AppSession->create('open-ils.storage') 
           ->request(
              'open-ils.storage.action.circulation.overdue.generate_fines',
-             undef,
-             $id
+             $obj->id
           );
    }
 
@@ -2946,6 +2962,8 @@ sub generate_fines_start {
 sub generate_fines_finish {
    my $self = shift;
    my $reservation = shift;
+
+   return undef unless $self->{_gen_fines_req};
 
    my $id = $reservation ? $self->reservation->id : $self->circ->id;
 

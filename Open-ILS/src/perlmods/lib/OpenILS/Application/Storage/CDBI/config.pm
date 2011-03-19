@@ -59,7 +59,7 @@ package config::rules::recurring_fine;
 use base qw/config/;
 __PACKAGE__->table('config_rule_recurring_fine');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/name high normal low recurrence_interval/);
+__PACKAGE__->columns(Essential => qw/name high normal low recurrence_interval grace_period/);
 #-------------------------------------------------------------------------------
 
 package config::rules::age_hold_protect;

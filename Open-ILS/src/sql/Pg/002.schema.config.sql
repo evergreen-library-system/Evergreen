@@ -70,7 +70,7 @@ CREATE TABLE config.upgrade_log (
     install_date    TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
-INSERT INTO config.upgrade_log (version) VALUES ('0502'); -- dbwells
+INSERT INTO config.upgrade_log (version) VALUES ('0503'); -- miker for tsbere
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -420,7 +420,8 @@ CREATE TABLE config.rule_recurring_fine (
 	high			NUMERIC(6,2)	NOT NULL,
 	normal			NUMERIC(6,2)	NOT NULL,
 	low			NUMERIC(6,2)	NOT NULL,
-	recurrence_interval	INTERVAL	NOT NULL DEFAULT '1 day'::INTERVAL
+	recurrence_interval	INTERVAL	NOT NULL DEFAULT '1 day'::INTERVAL,
+    grace_period       INTERVAL         NOT NULL DEFAULT '1 day'::INTERVAL
 );
 COMMENT ON TABLE config.rule_recurring_fine IS $$
 /*
