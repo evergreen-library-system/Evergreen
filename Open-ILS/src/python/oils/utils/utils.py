@@ -18,7 +18,7 @@ Grab-bag of general utility functions
 # -----------------------------------------------------------------------
 
 import hashlib
-import osrf.ses
+import osrf.log, osrf.ses
 
 def md5sum(string):
     """
@@ -62,7 +62,7 @@ def login(username, password, login_type=None, workstation=None):
         a required parameter of many OpenSRF service calls
     """
 
-    log_info("attempting login with user " + username)
+    osrf.log.log_info("attempting login with user " + username)
 
     seed = osrf.ses.ClientSession.atomic_request(
         'open-ils.auth', 
