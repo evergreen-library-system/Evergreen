@@ -1,3 +1,8 @@
+"""
+Defines Evergreen constants, including namespaces, events, and services
+
+The OILS prefix derives from Evergreen's old working title, Open-ILS.
+"""
 # -----------------------------------------------------------------------
 # Copyright (C) 2007  Georgia Public Library Service
 # Bill Erickson <erickson@esilibrary.com>
@@ -13,17 +18,15 @@
 # GNU General Public License for more details.
 # -----------------------------------------------------------------------
 
-
-OILS_NS_OBJ='http://open-ils.org/spec/opensrf/IDL/objects/v1'
-OILS_NS_PERSIST='http://open-ils.org/spec/opensrf/IDL/persistence/v1'
-OILS_NS_REPORTER='http://open-ils.org/spec/opensrf/IDL/reporter/v1'
-
+OILS_NS_OBJ = 'http://open-ils.org/spec/opensrf/IDL/objects/v1'
+OILS_NS_PERSIST = 'http://open-ils.org/spec/opensrf/IDL/persistence/v1'
+OILS_NS_REPORTER = 'http://open-ils.org/spec/opensrf/IDL/reporter/v1'
 
 OILS_EVENT_SUCCESS = 'SUCCESS'
 
 OILS_APP_AUTH = 'open-ils.auth'
 OILS_APP_CIRC = 'open-ils.circ'
-OILS_APP_CSTORE='open-ils.cstore'
-OILS_APP_SEARCH='open-ils.search'
-OILS_APP_ACQ='open-ils.acq'
-OILS_APP_ACTOR='open-ils.actor'
+OILS_APP_CSTORE = 'open-ils.cstore'
+OILS_APP_SEARCH = 'open-ils.search'
+OILS_APP_ACQ = 'open-ils.acq'
+OILS_APP_ACTOR = 'open-ils.actor'
