@@ -113,7 +113,7 @@ Creating the Evergreen database:
 
 PostgreSQL 8.4 or 9.0 will be installed on your system by the Makefile.install
 prerequisite installer if packages are available for your distribution, or
-you will have to compile PostgreSQL 8.4 9.0 from source and install it (which
+you will have to compile PostgreSQL 8.4 or 9.0 from source and install it (which
 is beyond the scope of this document). PostgreSQL 9.0 is recommended if you have
 the option.
 
