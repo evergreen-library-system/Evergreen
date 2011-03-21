@@ -55,7 +55,8 @@ function feedback() {
 
 PSQL_ACCESS="-h $DB_HOST -U $DB_USER $DB_NAME";
 
-VERSION=$(psql -c "select max(version) from config.upgrade_log" -t $PSQL_ACCESS);
+# Need to avoid versions like '1.6.0.4' from throwing off the upgrade
+VERSION=$(psql -c "SELECT MAX(version) FROM config.upgrade_log WHERE version ~ E'^\\d+$'" -t $PSQL_ACCESS);
 [  $? -gt 0  ] && die "Database access failed.";
 # [ $VERBOSE ] && echo RAW VERSION: $VERSION     # TODO: for verbose mode
 VERSION=$(echo $VERSION | sed -e 's/^ *0*//');    # This is a separate step so we can check $? above.
