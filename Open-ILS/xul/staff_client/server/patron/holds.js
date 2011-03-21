@@ -1492,7 +1492,7 @@ patron.holds.prototype = {
                     params.push( obj.pull_from_shelf_interface.current.limit ); params.push( obj.pull_from_shelf_interface.current.offset );
                     var x = document.getElementById('hold_count');
                     if (x) {
-                        obj.network.simple_request('FM_AHR_PULL_LIST_COUNT',params,function(req) {
+                        obj.network.simple_request('FM_AHR_PULL_LIST_COUNT',[ses()],function(req) {
                             var count = req.getResultObject();
                             if (typeof count.ilsevent == 'undefined' && count != null) {
                                 x.setAttribute('value', document.getElementById('patronStrings').getFormattedString(
