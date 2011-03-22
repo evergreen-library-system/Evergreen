@@ -157,7 +157,6 @@ CENTOS_PERL = \
 FEDORA_13_RPMS = \
 	aspell \
 	aspell-en \
-	js-devel \
 	libdbi \
 	libdbi-dbd-pgsql \
 	libdbi-devel \
@@ -270,7 +269,7 @@ centos: install_centos_pgsql centos_like
 rhel: install_redhat_pgsql centos_like
 centos_like: install_centos_rpms install_yaz install_cpan_marc install install_centos_perl create_ld_local install_cpan_safe install_cpan_force
 
-fedora13: install_fedora_13_rpms install_cpan install_cpan_fedora install_cpan_marc install_spidermonkey install_cpan_force
+fedora13: install_fedora_13_rpms install_cpan install_cpan_fedora install_cpan_marc install_js_sm install_cpan_force
 fedora14: fedora13
 
 debian-lenny: lenny generic_debian install_cpan_more install_cpan_safe
@@ -326,7 +325,7 @@ install_js_sm: install_libjs install_spidermonkey
 install_libjs: 
 	if [ ! -f $(LIBJS).tar.gz ]; then wget $(LIBJS_URL); fi;
 	tar -zxf $(LIBJS).tar.gz
-	cd js/src/ && JS_THREADSAFE=true JS_DIST=/usr make -f Makefile.ref
+	cd js/src/ && JS_DIST=/usr make -f Makefile.ref
 	mkdir -p $(JS_INSTALL_PREFIX)/include/js/
 	cp js/src/*.h $(JS_INSTALL_PREFIX)/include/js/
 	cp js/src/*.tbl $(JS_INSTALL_PREFIX)/include/js/
@@ -342,7 +341,7 @@ install_spidermonkey:
 	if [ ! -z $(FEDORA) ]; then \
 		sed -i -e 's/js32.dll/libjs.so/' $(LIBJS_PERL)/Makefile.PL ; \
 	fi;
-	cd $(LIBJS_PERL) && perl Makefile.PL -E4X -JS_THREADSAFE && make && make test && make install
+	cd $(LIBJS_PERL) && perl Makefile.PL -E4X && make && make test && make install
 
 # On Ubuntu and possibly Debian, the libdbi0 package prevents the 
 # compiled-from-source version from being used and breaks the install.
