@@ -52,16 +52,16 @@
 		</procedure>
 	</section>
 	<section xml:id="upgradingevergreen-upgradingOpenSRF">
-		<title>Upgrading OpenSRF to 1.6.2</title><indexterm><primary>OpenSRF</primary></indexterm>
+		<title>Upgrading OpenSRF to 1.6.3</title><indexterm><primary>OpenSRF</primary></indexterm>
 		<procedure>
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract the source files for <application>OpenSRF</application> 
-				1.6.2:</para>
+				1.6.3:</para>
 <screen><userinput>
-wget http://open-ils.org/downloads/OpenSRF-1.6.2.tar.gz
-tar xzf OpenSRF-1.6.2.tar.gz
+wget http://open-ils.org/downloads/OpenSRF-1.6.3.tar.gz
+tar xzf OpenSRF-1.6.3.tar.gz
 </userinput></screen>
-				<para>A new directory OpenSRF-1.6.2 is created.</para>
+				<para>A new directory OpenSRF-1.6.3 is created.</para>
 				<note><para>For the latest edition of OpenSRF, check the Evergreen download page at 
 				<ulink url="http://www.open-ils.org/downloads.php" />.
 				</para></note>
@@ -71,7 +71,7 @@ tar xzf OpenSRF-1.6.2.tar.gz
 				prerequisite installer.</para> 
 <screen><userinput>
 aptitude install make
-cd /home/opensrf/OpenSRF-1.6.2
+cd /home/opensrf/OpenSRF-1.6.3
 </userinput></screen>		
 				<para>Replace <option>[distribution]</option> below with the following value 
 				for your distribution:</para>
@@ -80,6 +80,10 @@ cd /home/opensrf/OpenSRF-1.6.2
 						<para><option>debian-squeeze</option> for <systemitem class="osname">Debian Squeeze (6.0)</systemitem>
 						<indexterm><primary>Linux</primary><secondary>Debian</secondary></indexterm></para>
 					</listitem>
+					<listitem>
+						<para><option>fedora13</option> for <systemitem class="osname">Fedora 13</systemitem>
+						<indexterm><primary>Linux</primary><secondary>Fedora</secondary></indexterm></para>
+					</listitem>			
 					<listitem>
 						<para><option>ubuntu-lucid</option> for <systemitem class="osname">Ubuntu Lucid Lynx
 						(10.04)</systemitem><indexterm><primary>Linux</primary><secondary>Ubuntu</secondary></indexterm></para>
@@ -110,7 +114,7 @@ make -f src/extras/Makefile.install [distribution]
 				you want to include support for Python<indexterm><primary>Python</primary></indexterm> and Java
 				<indexterm><primary>Java</primary></indexterm>, respectively.</note>
 <screen><userinput>
-cd /home/opensrf/OpenSRF-1.6.2
+cd /home/opensrf/OpenSRF-1.6.3
 ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 </userinput></screen>		
@@ -119,7 +123,7 @@ make
 				<para>As the <systemitem class="username">root</systemitem> user, return to your OpenSRF build directory and install 
 				OpenSRF:</para>
 <screen><userinput>
-cd /home/opensrf/OpenSRF-1.6.2
+cd /home/opensrf/OpenSRF-1.6.3
 make install
 </userinput></screen>
 			</step>
@@ -165,15 +169,15 @@ srfsh#
 				<para>As the <systemitem class="username">opensrf</systemitem> user, download and extract <application>Evergreen 2.0</application>
 				</para>
 <screen><userinput>
-wget http://www.open-ils.org/downloads/Evergreen-ILS-2.0.1.tar.gz
-tar xzf Evergreen-ILS-2.0.1.tar.gz
+wget http://www.open-ils.org/downloads/Evergreen-ILS-2.0.4.tar.gz
+tar xzf Evergreen-ILS-2.0.4.tar.gz
 </userinput></screen>
 				<note><para>For the latest edition of Evergreen 2.0, check the Evergreen download page at
 				<ulink url="http://www.open-ils.org/downloads.php" /> and adjust upgrading instructions accordingly.</para></note>
 			</step>
 			<step>
 				<para>As the <systemitem class="username">root</systemitem> user, install the prerequisites:</para> 
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.1</userinput></screen>	
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.4</userinput></screen>	
 				<para>On the next command, replace <option>[distribution]</option> with one of 
 				these values for your distribution of Debian or Ubuntu:</para>
 				<itemizedlist>
@@ -192,19 +196,19 @@ tar xzf Evergreen-ILS-2.0.1.tar.gz
 			<step>
 				<para>As the <systemitem class="username">opensrf</systemitem> user, configure and compile 
 				<application>Evergreen</application>:</para>
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.1</userinput></screen>
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.4</userinput></screen>
 				<screen><userinput>./configure --prefix=/openils --sysconfdir=/openils/conf</userinput></screen>
 				<screen><userinput>make</userinput></screen>
 			</step>
 			<step>
 				<para>As the <systemitem class="username">root</systemitem> user, install 
 				<application>Evergreen</application>:</para>
-				<screen><userinput>make STAFF_CLIENT_BUILD_ID=rel_2_0_1 install</userinput></screen>
+				<screen><userinput>make STAFF_CLIENT_BUILD_ID=rel_2_0_4 install</userinput></screen>
 			</step>
 			<step>
 				<para>Change to the <application>Evergreen</application> installation 
 				directory:</para>
-				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.1</userinput></screen>
+				<screen><userinput>cd /home/opensrf/Evergreen-ILS-2.0.4</userinput></screen>
 			</step>
 			<step>
 				<para>As the <emphasis>root</emphasis> user, change all files to be owned by the 
@@ -216,20 +220,25 @@ tar xzf Evergreen-ILS-2.0.1.tar.gz
 <screen><userinput>
 cd /openils/var/web/xul/
 rm server
-ln -s rel_2_0_1/server
+ln -s rel_2_0_4/server
 </userinput></screen>
 			</step>
 			<step>
 				<para>Update the <database>evergreen</database> database:</para>
 				<note><para>It is recommended that you <link linkend="backingup">back up your Evergreen database</link> in order to restore your data if anything goes wrong.</para></note>
+    				<note><para>The <filename>1.6.1-2.0-upgrade-db.sql</filename> upgrade script may take a long time (hours) to process 
+                                 on larger systems.</para></note>
 <screen>
 <userinput>
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/1.6.1-2.0-upgrade-db.sql evergreen
 psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.0-2.0.1-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.1-2.0.2-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.1-2.0.2-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.2-2.0.3-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.3-2.0.4-upgrade-db.sql evergreen
 </userinput>
 </screen> 	
-                                 <note><para>The <filename>1.6.1-2.0-upgrade-db.sql</filename> upgrade script may take a long time (hours) to process 
-                                 on larger systems.</para></note>
+                             
 			</step>
 <step>
 				<para>Run the <filename>reingest-1.6-2.0.pl</filename> script to generate an sql script. Then use the sql file to reingest bib records into your 
@@ -322,7 +331,7 @@ cd /openils/bin
 	</section>
 	<section xml:id="upgrading_Postgresqlto8.4">
 		<title>Upgrading PostgreSQL from 8.2 to 8.4 (if required)</title>
-		<para>Evergreen 1.6.1 supports PostgreSQL version 8.4 and it is recommended that you upgrade PostgreSQL when you upgrade Evergreen to 1.6.</para>
+		<para>Evergreen 2.0 requires PostgreSQL version 8.4 or later.</para>
 		<note><para>The order of the following steps is very important.</para></note><indexterm><primary>databases</primary><secondary>PostgreSQL</secondary></indexterm>
 		<procedure>
 			<step>

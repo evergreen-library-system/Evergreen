@@ -1306,7 +1306,57 @@
          </para>
       </informalfigure>
    </section>
-   <xi:include href="admin-survey.xml"/>
+  <section xml:id="fielddocumentation">
+	<title>Field Documentation</title>
+	<para>Field Documentation is custom field-level documentation that explains individual fields for
+	library staff.  As of 2.0, the field documentation only is used in the Patron Registration screen.</para>
+	<simplesect>
+		<title>Administering Field Documentation</title>
+		<indexterm><primary>field documentation</primary><secondary>administering field documentation</secondary></indexterm>
+	      <para>If their permission settings allow, staff members can create local field documentation.  This
+	      requires the ADMIN_FIELD_DOC permission.  The 'depth' at which that permission is applied, is the maximum
+	      level of the org tree at which the staff member will be able to create field documentation.</para>
+	      <procedure>
+		 <step>
+		    <para>In the staff client, select <menuchoice>
+			  <guimenu>Admin</guimenu>
+			  <guimenuitem>Local Administration</guimenuitem>
+			  <guimenuitem>Field Documentation</guimenuitem>
+		       </menuchoice></para>
+		 </step>
+		  <step>
+		      <para>Click the <guibutton>New</guibutton> button.</para>
+		  </step>
+		  <step>
+		    <para>Using the <guilabel>fm_class</guilabel> selector, select the database table for which you wish to create Field Documentation.  This will show all of the 
+		existing Field Documentation for that table.</para>
+		    <note><para>As of Evergreen 2.0, only the ILS User table is used anywhere in the Evergreen UI</para></note>
+		 </step>
+		  <step>
+		      <para>Using the <guilabel>owner</guilabel> selector, select the topmost org unit at which you would like the field documentation to be available.</para>
+		  </step>
+		  <step>
+		      <para>Using the <guilabel>field</guilabel> selector, select the field you wish to document.</para>
+		  </step>          
+		  <step>
+		      <para>Enter your actual documentation in the <guilabel>string</guilabel> text box.</para>
+		  </step>          
+		  <step>
+		      <para>Click <guibutton>Save</guibutton> to save your Field Documentation entry</para>
+		  </step>
+	      </procedure>
+	      <note>
+		 <para>To view field documentation for different tables, use the <guilabel>Class</guilabel> selector to filter the Field Documentation list</para>
+	      </note>
+	</simplesect>
+	<simplesect>
+	    <title>Patron Field Documentation</title>
+	    <indexterm><primary>field documentation</primary><secondary>patron field documentation</secondary></indexterm>
+	    <para>On the patron registration screen there are small boxes along the left hand side.  If a magnifying glass appears, you may click that magnifying 
+		glass to retrieve the Field Documentation for that patron field.</para>
+	</simplesect>
+</section>
+<xi:include href="admin-survey.xml"/>
    <section xml:id="lsa-cash-reports">
       <info>
          <title>Cash Reports</title>
