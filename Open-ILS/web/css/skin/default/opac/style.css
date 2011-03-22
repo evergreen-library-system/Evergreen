@@ -967,3 +967,4 @@ a.dash-link:hover { text-decoration: underline !important; }
     border-bottom: 1px dotted #666;
 }
 .list-create-table-buttons input[type=image] { margin-top: 2px; }
+.result_table_format_cell { padding: 0px 10px; text-align: center; }

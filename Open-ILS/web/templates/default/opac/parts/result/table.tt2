@@ -155,9 +155,10 @@
                                             <td nowrap='nowrap' name="copy_count_cell"
                                                 class='copy_count_cell hide_me' width="1"> </td>
                                             <td name='result_table_format_cell'
-                                                class='result_table_format_cell' align="center" width="1"
-                                                style="padding:0px 10px;">
-                                                <img alt="Format" src="" class="hide_me" name="" />
+                                                class='result_table_format_cell' width="1">
+                                                [% IF attrs.format %]
+                                                <img alt="[% attrs.format %]" src="[% ctx.media_prefix %]/images/[% attrs.format_icon %]" />
+                                                [% END %]
                                                 <span class='hide_me opac-auto-031'>
                                                     <span>[% l("Match Score: ") %] </span>
                                                     <span name='relevancy_span'> </span>

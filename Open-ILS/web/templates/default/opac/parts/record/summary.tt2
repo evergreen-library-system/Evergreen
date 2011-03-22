@@ -59,7 +59,10 @@
                                     </div>
                                 </div>
                                 <div style="float:right;margin-right:17px;">
-                                    <img id="rdetail_tor_pic" alt="[% l('Format') %]" class="hide_me" src="" />
+                                    [% IF attrs.format %]
+                                    <img alt="[% attrs.format %]"
+                                        src="[% ctx.media_prefix %]/images/[% attrs.format_icon %]" />
+                                    [% END %]
                                 </div>
                             </div>
                         </td>
@@ -82,16 +85,6 @@
                                 <strong id="rdetail_ed_lbl">[% IF attrs.edition; l("Edition"); END %]</strong>
                             </td>
                             <td valign="top" id='rdetail_edition'>[% attrs.edition %]</td>
-                            <td nowrap='nowrap' valign="top">
-                                <strong id="rdetail_form_lbl">[% IF attrs.format; l("Format"); END %]</strong>
-                            </td>
-                            <td valign="top">
-                                [% IF attrs.format %]
-                                <img alt="[% l('Format') %]" class='tor_pic'
-                                    title="[% attrs.format %]"
-                                    src="[% ctx.media_prefix _ '/images/' _ attrs.format_icon %]" />
-                                [%  END %]
-                            </td>
                         </tr>
                         <tr>
                             <td nowrap='nowrap' valign="top">
