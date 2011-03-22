@@ -191,7 +191,11 @@ sub add_relevance_bump {
     my $multiplier = shift;
     my $active = shift;
 
-    $active = 1 if (!defined($active));
+    if (defined($active) and $active eq 'f') {
+        $active = 0;
+    } else {
+        $active = 1;
+    }
 
     $self->relevance_bumps->{$class}{$field}{$type} = { multiplier => $multiplier, active => $active };
 
@@ -231,7 +235,7 @@ sub initialize_relevance_bumps {
 
     for my $sra (@$sra_list) {
         my $c = $self->search_field_class_by_id( $sra->field );
-        __PACKAGE__->add_relevance_bump( $c->{classname}, $c->{field}, $sra->bump_type, $sra->multiplier );
+        __PACKAGE__->add_relevance_bump( $c->{classname}, $c->{field}, $sra->bump_type, $sra->multiplier, $sra->active );
     }
 
     return $self->relevance_bumps;
