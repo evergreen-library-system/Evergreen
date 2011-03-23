@@ -63,7 +63,7 @@ use base qw/action/;
 __PACKAGE__->table('action_circulation');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact_start usr target_copy circ_lib
-				     duration duration_rule renewal_remaining
+				     duration duration_rule renewal_remaining grace_period
 				     recurring_fine_rule recurring_fine stop_fines
 				     max_fine max_fine_rule fine_interval
 				     stop_fines xact_finish due_date opac_renewal
@@ -78,7 +78,7 @@ use base qw/action/;
 __PACKAGE__->table('action_open_circulation');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/xact_start usr target_copy circ_lib
-				     duration duration_rule renewal_remaining
+				     duration duration_rule renewal_remaining grace_period
 				     recurring_fine_rule recurring_fine stop_fines
 				     max_fine max_fine_rule fine_interval
 				     stop_fines xact_finish due_date opac_renewal

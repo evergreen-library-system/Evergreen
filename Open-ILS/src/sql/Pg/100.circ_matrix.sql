@@ -75,6 +75,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
     max_fine_rule        INT     REFERENCES config.rule_max_fine (id) DEFERRABLE INITIALLY DEFERRED,
     hard_due_date        INT     REFERENCES config.hard_due_date (id) DEFERRABLE INITIALLY DEFERRED,
     renewals             INT,    -- Renewal count override
+    grace_period         INTERVAL,    -- Grace period override
     script_test          TEXT,                           -- javascript source 
     total_copy_hold_ratio     FLOAT,
     available_copy_hold_ratio FLOAT
@@ -249,6 +250,9 @@ BEGIN
         IF matchpoint.renewals IS NULL THEN
             matchpoint.renewals := cur_matchpoint.renewals;
         END IF;
+        IF matchpoint.grace_period IS NULL THEN
+            matchpoint.grace_period := cur_matchpoint.grace_period;
+        END IF;
     END LOOP;
 
     -- Check required fields
@@ -337,7 +341,7 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE TYPE action.circ_matrix_test_result AS ( success BOOL, fail_part TEXT, buildrows INT[], matchpoint INT, circulate BOOL, duration_rule INT, recurring_fine_rule INT, max_fine_rule INT, hard_due_date INT, renewals INT );
+CREATE TYPE action.circ_matrix_test_result AS ( success BOOL, fail_part TEXT, buildrows INT[], matchpoint INT, circulate BOOL, duration_rule INT, recurring_fine_rule INT, max_fine_rule INT, hard_due_date INT, renewals INT, grace_period INTERVAL );
 CREATE OR REPLACE FUNCTION action.item_user_circ_test( circ_ou INT, match_item BIGINT, match_user INT, renewal BOOL ) RETURNS SETOF action.circ_matrix_test_result AS $func$
 DECLARE
     user_object             actor.usr%ROWTYPE;
@@ -429,6 +433,7 @@ BEGIN
     result.max_fine_rule        := circ_matchpoint.max_fine_rule;
     result.hard_due_date        := circ_matchpoint.hard_due_date;
     result.renewals             := circ_matchpoint.renewals;
+    result.grace_period         := circ_matchpoint.grace_period;
     result.buildrows            := circ_test.buildrows;
 
     -- Fail if we couldn't find a matchpoint

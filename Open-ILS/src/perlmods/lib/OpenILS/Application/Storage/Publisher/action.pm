@@ -95,23 +95,16 @@ __PACKAGE__->register_method(
 
 
 sub overdue_circs {
-	my $grace = shift;
     my $upper_interval = shift || '1 millennium';
 	my $idlist = shift;
 
 	my $c_t = action::circulation->table;
 
-	if ($grace && $grace =~ /^\d+$/o) {
-    	$grace = " - ($grace * (fine_interval))";
-    } else {
-        $grace = '';
-    } 
-
 	my $sql = <<"	SQL";
 		SELECT	*
 		  FROM	$c_t
 		  WHERE	stop_fines IS NULL
-		  	AND due_date < ( CURRENT_TIMESTAMP $grace)
+		  	AND due_date < ( CURRENT_TIMESTAMP - grace_period )
             AND fine_interval < ?::INTERVAL
 	SQL
 
@@ -125,7 +118,7 @@ sub overdue_circs {
 		SELECT	*
 		  FROM	$c_t
 		  WHERE	return_time IS NULL
-		  	AND end_time < ( CURRENT_TIMESTAMP $grace)
+		  	AND end_time < ( CURRENT_TIMESTAMP )
             AND fine_interval IS NOT NULL
             AND cancel_time IS NULL
 	SQL
@@ -266,11 +259,10 @@ __PACKAGE__->register_method(
 sub grab_overdue {
 	my $self = shift;
 	my $client = shift;
-	my $grace = shift || '';
 
 	my $idlist = $self->api_name =~/id_list/o ? 1 : 0;
     
-	$client->respond( $idlist ? $_ : $_->to_fieldmapper ) for ( overdue_circs($grace, '', $idlist) );
+	$client->respond( $idlist ? $_ : $_->to_fieldmapper ) for ( overdue_circs('', $idlist) );
 
 	return undef;
 
@@ -787,7 +779,6 @@ sub seconds_to_interval_hash {
 sub generate_fines {
 	my $self = shift;
 	my $client = shift;
-	my $grace = shift;
 	my $circ = shift;
 	my $overbill = shift;
 
@@ -799,7 +790,7 @@ sub generate_fines {
             action::circulation->search_where( { id => $circ, stop_fines => undef } ),
             booking::reservation->search_where( { id => $circ, return_time => undef, cancel_time => undef } );
 	} else {
-		push @circs, overdue_circs($grace);
+		push @circs, overdue_circs();
 	}
 
 	my %hoo = map { ( $_->id => $_ ) } actor::org_unit::hours_of_operation->retrieve_all;
@@ -823,6 +814,8 @@ sub generate_fines {
             $recurring_fine_method = 'fine_amount';
             next unless ($c->fine_interval);
         }
+        #TODO: reservation grace periods
+        my $grace_period = ($is_reservation ? 0 : $c->grace_period);
 
 		try {
 			if ($self->method_lookup('open-ils.storage.transaction.current')->run) {
@@ -902,8 +895,8 @@ sub generate_fines {
 						while ( $h->$dow_open eq '00:00:00' and $h->$dow_close eq '00:00:00' ) {
 							# if the circ lib is closed, add a day to the grace period...
 
-							$grace++;
-							$log->info( "Grace period for circ ".$c->id." extended to $grace intervals" );
+							$grace_period+=86400;
+							$log->info( "Grace period for circ ".$c->id." extended to $grace_period [" . seconds_to_interval( $grace_period ) . "]" );
 							$log->info( "Day of week $dow open $dow_open, close $dow_close" );
 
 							$due_dt = $due_dt->add( days => 1 );
@@ -927,12 +920,11 @@ sub generate_fines {
             $pending_fine_count++ if ($fine_interval && ($fine_interval % 86400 == 0));
 
             if ( $last_fine == $due                         # we have no fines yet
-                 && $grace                                  # and we have a grace period
-                 && $pending_fine_count <= $grace           # and we seem to be inside that period
-                 && $now < $due + $fine_interval * $grace   # and some date math bares that out, then
+                 && $grace_period                           # and we have a grace period
+                 && $now < $due + $grace_period             # and some date math says were are within the grace period
             ) {
-                $client->respond( "Still inside grace period of: ". seconds_to_interval( $fine_interval * $grace)."\n" );
-                $log->info( "Circ ".$c->id." is still inside grace period of: $grace [". seconds_to_interval( $fine_interval * $grace).']' );
+                $client->respond( "Still inside grace period of: ". seconds_to_interval( $grace_period )."\n" );
+                $log->info( "Circ ".$c->id." is still inside grace period of: $grace_period [". seconds_to_interval( $grace_period ).']' );
                 next;
             }
 

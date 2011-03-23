@@ -31,7 +31,7 @@ EG_BIN_DIR = /openils/bin
 # m h dom mon dow   command
 
 # Run the hold targeter
-* */4 * * *   . ~/.bashrc && $EG_BIN_DIR/hold_targeter.pl $SRF_CORE
+*/15 * * * *   . ~/.bashrc && $EG_BIN_DIR/hold_targeter.pl $SRF_CORE
 
 # Run the hold thawer
 5  0  * * *   . ~/.bashrc && $EG_BIN_DIR/thaw_expired_frozen_holds.srfsh
@@ -61,7 +61,7 @@ EG_BIN_DIR = /openils/bin
 # Action/Trigger entries ----
 
 # Runs all pending A/T events every half hour
-0 */2 * * * . ~/.bashrc && $EG_BIN_DIR/action_trigger_runner.pl --osrf-config $SRF_CORE --run-pending
+*/30 * * * * . ~/.bashrc && $EG_BIN_DIR/action_trigger_runner.pl --osrf-config $SRF_CORE --run-pending
 
 # Passive A/T event generation.
 # Note: push these back to 3am so they will run after the fine generator and spread out the start minute to reduce dogpiling

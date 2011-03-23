@@ -23,6 +23,7 @@ function load(){
     cmGrid.overrideWidgetArgs.available_copy_hold_ratio = {inherits : true};
     cmGrid.overrideWidgetArgs.total_copy_hold_ratio = {inherits : true};
     cmGrid.overrideWidgetArgs.renewals = {inherits : true};
+    cmGrid.overrideWidgetArgs.grace_period = {inherits : true};
     cmGrid.overrideWidgetArgs.hard_due_date = {inherits : true};
     cmGrid.loadAll({order_by:{ccmm:'circ_modifier'}});
     cmGrid.onEditPane = buildEditPaneAdditions;

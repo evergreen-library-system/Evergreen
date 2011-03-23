@@ -26,6 +26,8 @@ export NSIS_WICON=$$(if [ -f client/evergreen.ico ]; then echo '-DWICON'; fi)
 export NSIS_AUTOUPDATE=$$([ -f client/defaults/preferences/autoupdate.js ] && echo '-DAUTOUPDATE')
 export NSIS_DEV=$$([ -f client/defaults/preferences/developers.js ] && echo '-DDEVELOPER')
 export NSIS_PERMACHINE=$$([ -f client/defaults/preferences/aa_per_machine.js ] && echo '-DPERMACHINE')
+# Url taken from http://nsis.sourceforge.net/AccessControl_plug-in
+NSIS_ACCESSCONTROL=http://nsis.sourceforge.net/mediawiki/images/4/4a/AccessControl.zip
 
 #------------------------------
 # Build ILS XUL CLIENT/SERVER
@@ -250,8 +252,9 @@ linux-xulrunner: client_app
 # Build a windows installer.
 
 win-client: win-xulrunner
+	@if [ "${NSIS_AUTOUPDATE}${NSIS_PERMACHINE}" -a ! -d AccessControl ]; then echo 'Fetching AccessControl Plugin'; wget ${NSIS_ACCESSCONTROL} -O AccessControl.zip; unzip AccessControl.zip; fi
 	@echo 'Building installer'
-	@makensis -DPRODUCT_VERSION="${STAFF_CLIENT_VERSION}" ${NSIS_WICON} ${NSIS_AUTOUPDATE} ${NSIS_DEV} ${NSIS_PERMACHINE} ${NSIS_EXTRAOPTS} windowssetup.nsi
+	@makensis -V2 -DPRODUCT_VERSION="${STAFF_CLIENT_VERSION}" ${NSIS_WICON} ${NSIS_AUTOUPDATE} ${NSIS_DEV} ${NSIS_PERMACHINE} ${NSIS_EXTRAOPTS} windowssetup.nsi
 	@echo 'Done'
 
 # For linux, just build a tar.bz2 archive

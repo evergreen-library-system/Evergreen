@@ -1,3 +1,7 @@
+"""
+Grab-bag of general utility functions
+"""
+
 # -----------------------------------------------------------------------
 # Copyright (C) 2007  Georgia Public Library Service
 # Bill Erickson <billserickson@gmail.com>
@@ -13,39 +17,52 @@
 # GNU General Public License for more details.
 # -----------------------------------------------------------------------
 
-import re, hashlib
-import osrf.ses
-from osrf.log import *
+import hashlib
+import osrf.log, osrf.ses
 
+def md5sum(string):
+    """
+    Return an MD5 message digest for a given input string
+    """
 
-
-# -----------------------------------------------------------------------
-# Grab-bag of general utility functions
-# -----------------------------------------------------------------------
-
-def md5sum(str):
-    m = hashlib.md5()
-    m.update(str)
-    return m.hexdigest()
+    md5 = hashlib.md5()
+    md5.update(string)
+    return md5.hexdigest()
 
 def unique(arr):
-    ''' Unique-ify a list.  only works if list items are hashable '''
+    """
+    Unique-ify a list.  only works if list items are hashable
+    """
+
     o = {}
     for x in arr:
         o[x] = 1
     return o.keys()
 
 def is_db_true(data):
-    ''' Returns true if the data provided matches what the database considers a true value '''
+    """
+    Returns PostgreSQL's definition of "truth" for the supplied data, roughly.
+    """
+
     if not data or data == 'f' or str(data) == '0':
         return False
     return True
 
+def login(username, password, login_type=None, workstation=None):
+    """
+    Login to the server and get back an authentication token
 
-def login(username, password, type=None, workstation=None):
-    ''' Login to the server and get back an authtoken'''
+    @param username: user name
+    @param password: password
+    @param login_type: one of 'opac', 'temp', or 'staff' (default: 'staff')
+    @param workstation: name of the workstation to associate with this login
 
-    log_info("attempting login with user " + username)
+    @rtype: string
+    @return: a string containing an authentication token to pass as
+        a required parameter of many OpenSRF service calls
+    """
+
+    osrf.log.log_info("attempting login with user " + username)
 
     seed = osrf.ses.ClientSession.atomic_request(
         'open-ils.auth', 
@@ -60,7 +77,7 @@ def login(username, password, type=None, workstation=None):
         {   'workstation' : workstation,
             'username' : username,
             'password' : password,
-            'type' : type
+            'type' : login_type
         }
     )
 
