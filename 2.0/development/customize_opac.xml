@@ -364,7 +364,7 @@ name='Default' csstype='color'/&gt;
 ]]>
 </programlisting>
 		<para> Replace <emphasis>[domain name]</emphasis> with the domain name of your Evergreen server and replace <emphasis>[locale]</emphasis> with the desired locale of 
-		your Evergreen instance (e.g. en-US). This does a basic keyword search. Different types of searches and more advanced search forms can be developed. For further information on the url parameters used by Evergreen, see <xref linkend="search_url" /> for more details.</para> 
+		your Evergreen instance (e.g. en-US). This does a basic keyword search. Different types of searches and more advanced search forms can be developed.</para> 
 	</section>
 </chapter>
 

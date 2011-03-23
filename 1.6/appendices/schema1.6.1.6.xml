@@ -15247,7 +15247,7 @@
 				
 				
           					<varlistentry>
-            						<term>copy_loan_duration_check</term>
+            						<term>copy_ loan_ duration_ check</term>
             						<listitem><para>CHECK ((loan_duration = ANY (ARRAY[1, 2, 3])))</para></listitem>
           					</varlistentry>
 						
@@ -15890,7 +15890,7 @@
           					<title>Constraints on copy_transparency</title>
 						
           					<varlistentry>
-            						<term>copy_transparency_fine_level_check</term>
+            						<term>copy_ transparency_ fine_ level_ check</term>
             						<listitem><para>CHECK ((fine_level = ANY (ARRAY[1, 2, 3])))</para></listitem>
           					</varlistentry>
 						

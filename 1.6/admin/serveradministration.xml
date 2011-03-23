@@ -255,7 +255,9 @@ BEGIN;
 INSERT INTO actor.org_address (id, org_unit, street1, city, state,
 country, post_code)
   VALUES (2, 101, 'Fake Street', 'Fake', 'Fake', 'Fake', 'FOO BAR');
-UPDATE actor.org_unit SET ill_address= 2, holds_address = 2, mailing_address = 2, billing_address = 2 WHERE id = 101;
+
+UPDATE actor.org_unit SET ill_address= 2, holds_address = 2, 
+	mailing_address = 2, billing_address = 2 WHERE id = 101;
 COMMIT; 
 </programlisting>
 			</step>

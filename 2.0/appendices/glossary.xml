@@ -337,7 +337,7 @@
 			<glossdef>
 				<para>Public Key Infrastructure (PKI) describes the schemes needed
 				to generate and maintain digital SSL Certificates.</para>
-				<glossseealso otherterm="SSL Certificate"/>
+				<glossseealso otherterm="SSL_Certificate"/>
 			</glossdef>
 		</glossentry>
 		<glossentry xml:id="PostgreSQL">

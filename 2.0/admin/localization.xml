@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="languagesandlocalization" xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xl="http://www.w3.org/1999/xlink">
+<info>
+<title>Languages and Localization</title>
+</info>
+	<section xml:id="enabling_and_disabling_localization">			
+		<title>Enabling and Disabling Languages</title>
+		<para>Evergreen is bundled with support for a number of languages beyond American English (<emphasis role="bold">en-US</emphasis>). The translated interfaces are 
+		split between static files that are automatically installed with Evergreen, and dynamic labels that can be stored in the Evergreen database. Evergreen is 
+		installed with additional SQL files that contain translated dynamic labels for a number of languages, and to make the set of translated labels available in 
+		all interfaces. Only a few steps are required to enable or disable one or more languages.</para>
+		<simplesect>
+			<title>Enabling a Localization</title>
+			<indexterm><primary>languages</primary><secondary>enabling a localization</secondary></indexterm>
+			<para>To enable the translated labels for a given language to display in Evergreen, just populate the database with the translated labels and enable the localization. The 
+			following example illustrates how to enable Canadian French (<emphasis role="bold">fr-CA</emphasis>) support in the database. These same steps can be used with any of the 
+			languages bundled with Evergreen, or you can create and add your own localization.</para>
+			<orderedlist>
+				<listitem>
+					<para>The translated labels for each locale are stored in SQL files named "950.data.seed-values-xx-YY.sql" where "xx-YY" represents the locale code for 
+					the translation. Load the translated labels into the Evergreen database using the command <command>psql</command>, substituting your user, host and 
+					database connection information accordingly:</para>
+<programlisting language="xml"><![CDATA[
+$ psql -U <username> -h <hostname> -d <database> \ 
+-f /path/to/Evergreen-source/Open-ILS/src/sql/Pg/950.data.seed-values-fr-CA.sql
+]]></programlisting>
+				</listitem>
+				<listitem>
+					<para>Ensure the locale is enabled in the Evergreen database by using the utility <command>psql</command> to check for the existence of the locale in the 
+					table <literal>config.i18n_locale</literal>:</para>
+					
+<screen>
+<userinput>SELECT code, marc_code, name, description
+FROM config.i18n_locale
+WHERE code = 'fr-CA';</userinput>
+</screen>
+				
+					<para>As shown in the following example, if one row of output is returned, then the locale is already enabled:</para>
+<screen>
+code  | marc_code |      name       |   description   
+------+-----------+-----------------+-----------------
+fr-CA | fre       | French (Canada) | Canadian French
+(1 row)
+</screen>
+					<para>If zero rows of output are returned, then the locale is not enabled:</para>
+<screen>
+code | marc_code | name | description 
+------+-----------+------+-------------
+(0 rows)
+</screen>
+					<para>To enable a locale, use <command>psql</command> to insert a row into the table <literal>config.i18n_locale</literal> as follows:</para>
+<screen>
+INSERT INTO config.i18n_locale (code, marc_code, name, description)
+VALUES ('fr-CA', 'fre', 'French (Canada)', 'Canadian French');
+</screen>
+				</listitem>
+			</orderedlist>
+		</simplesect>
+		<simplesect>
+			<title>Disabling a Localization</title>
+			<indexterm><primary>languages</primary><secondary>disabling a localization</secondary></indexterm>
+			<para>You might not want to offer all of the localizations that are preconfigured in Evergreen. If you choose to disable the dynamic labels for a locale, just delete those 
+			entries from the table <literal>config.i18n_locale</literal> using the <command>psql</command> utility:</para>
+<screen>
+<userinput>DELETE FROM config.i18n_locale
+WHERE code = 'fr-CA';</userinput>
+</screen>
+		</simplesect>
+	</section>
+</chapter>

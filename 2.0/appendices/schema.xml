@@ -22028,9 +22028,8 @@
                 								NOT NULL;
 									
 									
-                								DEFAULT &apos;050ab,055ab,060ab,070ab,080ab,082ab,086ab,088ab,090,092,096,098,099&apos;::text;
-									
-									
+                								DEFAULT &apos;050ab, 055ab, 060ab, 070ab, 080ab, 082ab, 086ab, 088ab, 090, 092, 096, 098, 
+										099 &apos;::text;		
 									</para></entry>
 							</row>
 						
@@ -61582,14 +61581,6 @@
 									
 										
                 									PRIMARY KEY
-														
-									
-									
-									
-									
-									
-										
-									
 									</para></entry>
 							</row>
 						
@@ -61673,4 +61664,3 @@
 	</section>
 	
   </chapter>
-

@@ -411,7 +411,7 @@ psql -f /usr/share/postgresql/8.4/contrib/pgxml.sql evergreen
 				<screen><userinput>psql -f /Open-ILS/src/sql/Pg/000.english.pg84.fts-config.sql evergreen</userinput></screen>
 			</step>
 			<step>
-				<para><link linkend="upgraderestart">Restart Evergreen and OpenSRF services</link></para>
+				<para><link linkend="startingopensrf">Restart Evergreen and OpenSRF services</link></para>
 			</step>
 			<step>
 				<para>For additional information regarding upgrading PostgreSQL, see the following documentation in PostgreSQL:</para>

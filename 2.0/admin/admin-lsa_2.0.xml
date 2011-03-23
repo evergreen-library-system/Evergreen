@@ -8,7 +8,6 @@
       <info>
          <title>Overview</title>
       </info>
-      <informalfigure>
          <para>Many Evergreen configuration options are available under the <menuchoice>
                <guimenu>Admin (-)</guimenu>
                <guimenuitem>Local Administration</guimenuitem>

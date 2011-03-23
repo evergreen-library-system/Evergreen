@@ -269,8 +269,9 @@ psql -U evergreen -h localhost -f Open-ILS/src/sql/Pg/2.0.3-2.0.4-upgrade-db.sql
 			<step>
 				<para>Update <filename>opensrf.xml</filename> with the database connection info:</para>
 <screen><userinput>
-perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config --service all --create-offline --user evergreen \
---password evergreen --hostname localhost --port 5432 --database evergreen
+perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
+--service all --create-offline --user evergreen --password evergreen \ 
+--hostname localhost --port 5432 --database evergreen
 </userinput></screen>
 			</step>
 			<step>
@@ -373,7 +374,7 @@ psql -f /usr/share/postgresql/8.4/contrib/pgxml.sql evergreen
 				<screen><userinput>psql -f /Open-ILS/src/sql/Pg/000.english.pg84.fts-config.sql evergreen</userinput></screen>
 			</step>
 			<step>
-				<para><link linkend="upgraderestart">Restart Evergreen and OpenSRF services</link></para>
+				<para><link linkend="startingopensrf">Restart Evergreen and OpenSRF services</link></para>
 			</step>
 			<step>
 				<para>For additional information regarding upgrading PostgreSQL, see the following documentation in PostgreSQL:</para>

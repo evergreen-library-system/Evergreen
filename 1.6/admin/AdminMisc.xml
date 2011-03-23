@@ -114,39 +114,50 @@ fi;
 start() {
         sleep 3
         echo "Starting Evergreen"
-        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh -l -a start_all"
+        sudo -u opensrf /bin/bash -c \ 
+	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh \
+	-l -a start_all"
 }
 
 stop() {
         echo "Stopping Evergreen"
-        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh -l -a stop_all"
+        sudo -u opensrf /bin/bash -c \
+	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh \
+	-l -a stop_all"
 }
 
 autogen() {
         echo "Running Autogen Update"
-        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin autogen.sh -u -c ${OPENILS_CORE}"
+        sudo -u opensrf /bin/bash -c \ 
+	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin autogen.sh \
+	 -u -c ${OPENILS_CORE}"
 }
 
 sip_start() {
-        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin oils_ctl.sh \
-                                                                                                                     -d ${SIP_PID} \
-                                                                                                                     -s ${SIP_CONF} \
-                                                                                                                     -a start_sip"
+        sudo -u opensrf /bin/bash -c \
+	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin oils_ctl.sh \
+        -d ${SIP_PID} \
+	-s ${SIP_CONF} \
+	-a start_sip"
 }
 
 sip_stop() {
-        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin oils_ctl.sh \
-                                                                                                                     -d ${SIP_PID} \
-                                                                                                                     -s ${SIP_CONF} \
-                                                                                                                     -a stop_sip"
+        sudo -u opensrf /bin/bash -c \ 
+	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin oils_ctl.sh \
+	-d ${SIP_PID} \
+	-s ${SIP_CONF} \
+	-a stop_sip"
 }
 
 sip_restart() {
-        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin oils_ctl.sh \
-                                                                                                                     -d ${SIP_PID} \
-                                                                                                                     -s ${SIP_CONF} \
-                                                                                                                     -a restart_sip"
+        sudo -u opensrf /bin/bash -c \
+	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin oils_ctl.sh \
+	-d ${SIP_PID} \
+	 -s ${SIP_CONF} \
+	-a restart_sip"
 }
+]]></programlisting>
+<programlisting><![CDATA[
 
 start_rep() {
         pids="$(pidof "$REP_NAME")"
@@ -155,8 +166,9 @@ start_rep() {
           return 1
         fi
         rm -f $REP_LOCK
-        sudo -u opensrf bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin clark-kent.pl \
-                                                           --lockfile=${REP_LOCK} --boostrap=${OPENILS_CORE} --concurrency=1 --sleep=30 --daemon" ;
+        sudo -u opensrf bash -c \
+	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin clark-kent.pl \
+	--lockfile=${REP_LOCK} --boostrap=${OPENILS_CORE} --concurrency=1 --sleep=30 --daemon" ;
         pids="$(pidof "$REP_NAME")"
         if [ x"$pids" = x ] ; then
           echo FAILURE 
@@ -190,7 +202,8 @@ z39_50_start() {
           return 1
         fi
         sudo -u opensrf bash -c "touch ${SRU_LOG}"
-        sudo bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin z39_50.sh >> ${SRU_LOG} 2>&1" &
+        sudo bash -c \ 
+	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin z39_50.sh >> ${SRU_LOG} 2>&1" &
         sleep 1
         pids=`ps -eo pid,args | grep $sru_name | grep -v grep | cut -c1-6`
         if [ x"$pids" = x ] ; then
@@ -216,7 +229,8 @@ z39_50_stop() {
         fi
         return $RETVAL
 }
-
+]]></programlisting>
+<programlisting><![CDATA[
 case "$1" in
     start)
         start
@@ -275,25 +289,27 @@ case "$1" in
     ;;
     start_router|stop_router|restart_router|start_perl|stop_perl|restart_perl| \
     start_c|stop_c|restart_c|start_osrf|stop_osrf|restart_osrf|stop_all|start_all|restart_all)
-        sudo -u opensrf /bin/bash -c "PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh -l -a $1"
+        sudo -u opensrf /bin/bash -c \
+	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh -l -a $1"
     ;;
     *)
         echo " * Usage: /etc/init.d/evergreen {start|stop|restart|autogen"
-        echo "                                 |sip_start|sip_stop|sip_restart"
-        echo "                                 |z39_50_start|z39_50_stop|z39_50_restart"
-        echo "                                 |start_reporter|stop_reporter|restart_reporter"
-        echo "                                 |start_router|stop_router|restart_router|start_perl|stop_perl|restart_perl"
-        echo "                                 |start_c|stop_c|restart_c|start_osrf|stop_osrf|restart_osrf|stop_all|start_all|restart_all}"
+        echo "	|sip_start|sip_stop|sip_restart"
+        echo "	|z39_50_start|z39_50_stop|z39_50_restart"
+        echo "  |start_reporter|stop_reporter|restart_reporter"
+        echo "	|start_router|stop_router|restart_router|start_perl|stop_perl|restart_perl"
+        echo "	|start_c|stop_c|restart_c|start_osrf|stop_osrf|restart_osrf|stop_all|start_all|restart_all}"
         exit 1
     ;;
 esac;
 ]]></programlisting>
 			</step>
 			<step>
-				<para>Save file in <filename class="directory">/etc/bin</filename> folder as <filename>evergreenstart</filename> if you would like this as a manual script for starting Evergreen services.</para> 
+				<para>Save file in <filename class="directory">/etc/bin</filename> folder as <filename>evergreenstart</filename> 
+				if you would like this as a manual script for starting Evergreen services.</para> 
 				
-				<para>Save file in <filename class="directory">/etc/init.d</filename> folder as <filename>evergreenstart</filename> if you would like to run this script automatically 
-				during your server's boot process as explained in later steps.</para> 
+				<para>Save file in <filename class="directory">/etc/init.d</filename> folder as <filename>evergreenstart</filename> 
+				if you would like to run this script automatically during your server's boot process as explained in later steps.</para> 
 			</step>
 			<step>
 			<para>Ensure that the script is executable.</para>
@@ -312,8 +328,10 @@ esac;
 				<para>Update runlevel defaults of the new evergreenstart service as the <systemitem class="username">root</systemitem>  user:</para>
 <screen><userinput>update-rc.d evergreenstart defaults 80 20</userinput></screen>
 				<note>
-					<para>For Evergreen to start properly during a reboot, you will want to ensure that the first number (<option>80</option>) is lower than the assigned 
-					starting priority for Apache, so it starts before Apache. It should also have a larger stopping priority number (<option>20</option>) than Apache so it stops 
+					<para>For Evergreen to start properly during a reboot, you will want to ensure that the first number 
+					(<option>80</option>) is lower than the assigned 
+					starting priority for Apache, so it starts before Apache. It should also have a larger stopping priority number 
+					(<option>20</option>) than Apache so it stops 
 					after Apache during a boot cycle.</para>
 				</note>
 			</step> 
@@ -322,13 +340,14 @@ esac;
 			</step> 
 		</procedure>
 		<caution><para>This has not yet been tested in a Evergreen multi-server, <quote>brick</quote> configuration.</para></caution> 
-		<para>For more information on update-rc.d you should review the documentation on this topic for <link xl:href="http://www.debuntu.org/how-to-manage-services-with-update-rc.d">
-		Debian</link> or <link xl:href="http://manpages.ubuntu.com/manpages/hardy/man8/update-rc.d.8.html">Ubuntu</link> depending on your distribution of Linux.</para> 	
+		<para>For more information on update-rc.d you should review the documentation on this topic for 
+		<link xl:href="http://www.debuntu.org/how-to-manage-services-with-update-rc.d">
+		Debian</link> or <link xl:href="http://manpages.ubuntu.com/manpages/hardy/man8/update-rc.d.8.html">Ubuntu</link> 
+		depending on your distribution of Linux.</para> 	
 	</section>
 	<section xml:id="backingup">
 		<title>Backing Up</title>
 		<indexterm><primary>databases</primary><secondary>backing up</secondary></indexterm>
-	
 		<para>Backing up your system files and data is a critical task for server and database administrators. 
 		Having a strategy for backing up and recovery could be the difference between a minor annoyance for users and
 		a complete catastrophe.</para>   
@@ -339,7 +358,8 @@ esac;
 			<secondary>PostgreSQL</secondary></indexterm>  database. You can therefore use normal 
 			<application>PostgreSQL</application> backup procedures to backup this data. For example, the simplest method of backing up the Evergreen
 			database is to use the <command>pg_dump</command> command to create a live backup of the database without having to 
-			interrupt any Evergreen services. Here is an example pg_dump command which will dump a local Evergreen database into a the file <filename>evergreen_db.backup</filename>:</para>
+			interrupt any Evergreen services. Here is an example pg_dump command which will dump a local Evergreen database into a the file 
+			<filename>evergreen_db.backup</filename>:</para>
 			<screen><userinput>pg_dump -U evergreen -h localhost -f evergreen_db.backup evergreen</userinput></screen>
 			<para>To restore the backed up database into a new database, create a new database using the 
 			template0 database template and the UTF8 encoding, and run the <command>psql</command> command, specifying the new 
@@ -350,7 +370,8 @@ esac;
 				<para>This method of backup is only suitable for small Evergreen instances. Larger sites 
 				should consider implementing continuous archiving (also known as <quote>log shipping</quote>) to provide 
 				more granular backups with lower system overhead. More information on backing up <application>PostgreSQL</application> 
-				databases can be found in the official <link xl:href="http://www.postgresql.org/docs/"><application>PostgreSQL</application> documentation</link>.</para>
+				databases can be found in the official <link xl:href="http://www.postgresql.org/docs/"><application>PostgreSQL</application> 
+				documentation</link>.</para>
 			</note>
 		</simplesect>
 		<simplesect>
@@ -408,8 +429,8 @@ esac;
 			<listitem>
 				<para>Open ports in the firewall<indexterm><primary>firewall</primary></indexterm> with caution - It is only necessary to open ports 
 				<systemitem class="protocol">80</systemitem> and <systemitem class="protocol">443</systemitem>
-				for <systemitem class="protocol">TCP</systemitem> connections to the Evergreen server from the OPAC and the staff client.  It is critical for administrators to 
-				understand the concepts of network security and take precautions to minimize vulnerabilities. 
+				for <systemitem class="protocol">TCP</systemitem> connections to the Evergreen server from the OPAC and the staff client.  It is 
+				critical for administrators to understand the concepts of network security and take precautions to minimize vulnerabilities. 
 				</para>
 			</listitem>
 			<listitem>
@@ -427,7 +448,8 @@ esac;
 		<simplesect>
 			<title>Using the <systemitem class="service">logrotate</systemitem> Utility to Manage Log Size</title> 
 			<indexterm><primary>logs</primary><secondary>Log Rotate</secondary></indexterm>
-			 <para>Fortunately, this is not a new problem for <systemitem class="osname">Unix</systemitem> administrators, and there are a number of ways of keeping your logs under control. 
+			 <para>Fortunately, this is not a new problem for <systemitem class="osname">Unix</systemitem> administrators, and 
+			there are a number of ways of keeping your logs under control. 
 			On <systemitem class="osname">Debian</systemitem> and <systemitem class="osname">Ubuntu</systemitem>, for example, 
 			the <systemitem class="service">logrotate</systemitem> utility controls when old log files are compressed and a new log file is started. 
 			<systemitem class="service">logrotate</systemitem> runs once a day and checks all log files that it knows about to see if a 

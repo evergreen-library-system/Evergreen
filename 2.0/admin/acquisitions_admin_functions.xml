@@ -16,21 +16,21 @@
 	the currency associated with that fund.</simpara>
 	<simplesect>
 		<title>Create a currency type</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To create a new currency type, click Admin &#8594; Server Administration &#8594; Acquisitions&#8594; Currency types.</simpara></listitem>
-		<listitem><simpara>Enter the currency code. No limits exist on the number of characters that can be entered in this field.</simpara></listitem>
-		<listitem><simpara>Enter the name of the currency type in Currency Label field. No limits exist on the number of characters that can be entered in
-		this field.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>To create a new currency type, click Admin &#8594; Server Administration &#8594; Acquisitions&#8594; Currency types.</simpara></step>
+		<step><simpara>Enter the currency code. No limits exist on the number of characters that can be entered in this field.</simpara></step>
+		<step><simpara>Enter the name of the currency type in Currency Label field. No limits exist on the number of characters that can be entered in
+		this field.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Edit a currency type</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To edit a currency type, click your cursor in the row that you want to edit. The row will turn blue.</simpara></listitem>
-		<listitem><simpara>Double-click. The pop-up box will appear, and you can edit the fields.</simpara></listitem>
-		<listitem><simpara>After making changes, click Save.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>To edit a currency type, click your cursor in the row that you want to edit. The row will turn blue.</simpara></step>
+		<step><simpara>Double-click. The pop-up box will appear, and you can edit the fields.</simpara></step>
+		<step><simpara>After making changes, click Save.</simpara></step>
+		</procedure>
 		<note><simpara>From the currency types interface, you can delete currencies that have never been applied to funds or used to make purchases.</simpara></note>
 	</simplesect>
 </section>
@@ -47,14 +47,14 @@
 	an explicit amount to credit to the receiving fund.</simpara>
 	<simplesect>
 		<title>Create an exchange rate</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To create a new exchange rate, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594; Exchange Rates.</simpara></listitem>
-		<listitem><simpara>Click New Exchange Rate.</simpara></listitem>
-		<listitem><simpara>Enter the From Currency from the drop down menu populated by the currency types.</simpara></listitem>
-		<listitem><simpara>Enter the To Currency from the drop down menu populated by the currency types.</simpara></listitem>
-		<listitem><simpara>Enter the exchange Ratio.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>To create a new exchange rate, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594; Exchange Rates.</simpara></step>
+		<step><simpara>Click New Exchange Rate.</simpara></step>
+		<step><simpara>Enter the From Currency from the drop down menu populated by the currency types.</simpara></step>
+		<step><simpara>Enter the To Currency from the drop down menu populated by the currency types.</simpara></step>
+		<step><simpara>Enter the exchange Ratio.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Edit an Exchange Rate</title>
@@ -67,45 +67,46 @@
 	sources as you need.</simpara>
 	<simplesect>
 		<title>Create a funding source</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To create a new funding source, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594; Funding Source.</simpara></listitem>
-		<listitem><simpara>Enter a funding source name. No limits exist on the number of characters that can be entered in this field.</simpara></listitem>
-		<listitem><simpara>Select an owner from the drop down menu. The owner indicates the organizational unit(s) whose staff can use this funding source.
+		<procedure>
+		<step><simpara>To create a new funding source, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594; Funding Source.</simpara></step>
+		<step><simpara>Enter a funding source name. No limits exist on the number of characters that can be entered in this field.</simpara></step>
+		<step><simpara>Select an owner from the drop down menu. The owner indicates the organizational unit(s) whose staff can use this funding source.
 		This menu is populated with the shortnames that you created for your libraries in the organizational units tree (See
 		Admin &#8594; Server Administration &#8594; Organizational Units).</simpara>
-		<literallayout class="monospaced">The rule of parental inheritance applies to this list. For example, if a system is made the owner of a funding source,
-		then users with appropriate permissions at the branches within the system could also use the funding source.</literallayout></listitem>
-		<listitem><simpara>Create a code for the source. No limits exist on the number of characters that can be entered in this field.</simpara></listitem>
-		<listitem><simpara>Select a currency from the drop down menu. This menu is populated from the choices in the Currency Types interface.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		<note><para>The rule of parental inheritance applies to this list. For example, if a system is made the owner of a funding source,
+		then users with appropriate permissions at the branches within the system could also use the funding source.</para></note>
+		</step>
+		<step><simpara>Create a code for the source. No limits exist on the number of characters that can be entered in this field.</simpara></step>
+		<step><simpara>Select a currency from the drop down menu. This menu is populated from the choices in the Currency Types interface.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Allocate Credits to Funding Sources</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Apply a credit to this funding source.</simpara></listitem>
-		<listitem><simpara>Enter the amount of money that the funding source contributes to the organization. Funding sources are not tied to fiscal
+		<procedure>
+		<step><simpara>Apply a credit to this funding source.</simpara></step>
+		<step><simpara>Enter the amount of money that the funding source contributes to the organization. Funding sources are not tied to fiscal
 		or calendar years, so you can continue to add money to the same funding source over multiple years, e.g. County
 		Funding. Alternatively, you can name funding sources by year, e.g. County Funding 2010 and County Funding 2011, and apply
-		credits each year to the matching source.</simpara></listitem>
-		<listitem><simpara>To apply a credit, click on the hyperlinked name of the funding source. The Funding Source Details will appear.</simpara></listitem>
-		<listitem><simpara>Click Apply credit.</simpara></listitem>
-		<listitem><simpara>Enter an amount to apply to this funding source.</simpara></listitem>
-		<listitem><simpara>Enter a note. This field is optional.</simpara></listitem>
-		<listitem><simpara>Click Apply.</simpara></listitem>
-		</orderedlist>
+		credits each year to the matching source.</simpara></step>
+		<step><simpara>To apply a credit, click on the hyperlinked name of the funding source. The Funding Source Details will appear.</simpara></step>
+		<step><simpara>Click Apply credit.</simpara></step>
+		<step><simpara>Enter an amount to apply to this funding source.</simpara></step>
+		<step><simpara>Enter a note. This field is optional.</simpara></step>
+		<step><simpara>Click Apply.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Allocate credits to funds</title>
 		<simpara>If you have already set up your funds, then you can then click the Allocate to Fund button to apply credits from the
 		funding sources to the funds. If you have not yet set up your funds, or you need to add a new one, you can allocate
 		credits to funds from the funds interface. See section 1.2 for more information.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To allocate credits to funds, click Allocate to Fund.</simpara></listitem>
-		<listitem><simpara>Enter the amount that you want to allocate.</simpara></listitem>
-		<listitem><simpara>Enter a note. This field is optional.</simpara></listitem>
-		<listitem><simpara>Click Apply.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>To allocate credits to funds, click Allocate to Fund.</simpara></step>
+		<step><simpara>Enter the amount that you want to allocate.</simpara></step>
+		<step><simpara>Enter a note. This field is optional.</simpara></step>
+		<step><simpara>Click Apply.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Track Debits and Credits</title>
@@ -122,16 +123,16 @@
 	rather than reporting on each individual fund.</simpara>
 	<simplesect>
 		<title>Create a Fund Tag</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To create a fund tag, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594; Fund Tags.</simpara></listitem>
-		<listitem><simpara>Click New Fund Tag. No limits exist on the number of characters that can be entered in this field.</simpara></listitem>
-		<listitem><simpara>Select a Fund Tag Owner from the drop down menu. The owner indicates the organizational unit(s) whose staff can use this
+		<procedure>
+		<step><simpara>To create a fund tag, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594; Fund Tags.</simpara></step>
+		<step><simpara>Click New Fund Tag. No limits exist on the number of characters that can be entered in this field.</simpara></step>
+		<step><simpara>Select a Fund Tag Owner from the drop down menu. The owner indicates the organizational unit(s) whose staff can use this
 		fund tag. This menu is populated with the shortnames that you created for your libraries in the organizational units tree
 		(See Admin &#8594; Server Administration &#8594; Organizational Units).</simpara>
-		<note><simpara>The rule of parental inheritance applies to this list.</simpara></note></listitem>
-		<listitem><simpara>Enter a Fund Tag Name. No limits exist on the number of characters that can be entered in this field.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		<note><simpara>The rule of parental inheritance applies to this list.</simpara></note></step>
+		<step><simpara>Enter a Fund Tag Name. No limits exist on the number of characters that can be entered in this field.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 </section>
 <section id="acq_admin_funds">
@@ -145,86 +146,87 @@
 	are owned by specific organizational units during specific years.</simpara>
 	<simplesect>
 		<title>Create a fund</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To create a new fund, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594; Funds.</simpara></listitem>
-		<listitem><simpara>Enter a name for the fund. No limits exist on the number of characters that can be entered in this field.</simpara></listitem>
-		<listitem><simpara>Create a code for the fund. No limits exist on the number of characters that can be entered in this field.</simpara></listitem>
-		<listitem><simpara>Enter a year for the fund. This can be a fiscal year or a calendar year. The format of the year is YYYY.</simpara></listitem>
-		<listitem><simpara>Select an org unit from the drop down menu. The org unit indicates the organizational units whose staff can use this fund. This menu is populated with the 
+		<procedure>
+		<step><simpara>To create a new fund, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594; Funds.</simpara></step>
+		<step><simpara>Enter a name for the fund. No limits exist on the number of characters that can be entered in this field.</simpara></step>
+		<step><simpara>Create a code for the fund. No limits exist on the number of characters that can be entered in this field.</simpara></step>
+		<step><simpara>Enter a year for the fund. This can be a fiscal year or a calendar year. The format of the year is YYYY.</simpara></step>
+		<step><simpara>Select an org unit from the drop down menu. The org unit indicates the organizational units whose staff can use this fund. This menu is populated with the 
 		shortnames that you created for your libraries in the organizational units tree (See Admin &#8594; Server Administration &#8594; Organizational Units).</simpara>
-		<note><simpara>The rule of parental inheritance applies to this list. See section</simpara></note></listitem>
-		<listitem><simpara>Select a currency type from the drop down menu. This menu is comprised of entries in the currency types menu. When a fund
-		is applied to a line item or copy, the price of the item will be encumbered in the currency associated with the fund.</simpara></listitem>
-		<listitem><simpara>Click the Active box to activate this fund. You cannot make purchases from this fund if it is not active.</simpara></listitem>
-		<listitem><simpara>Enter a Balance Stop Percent. The balance stop percent prevents you from making purchases when only a specified amount of the
+		<note><simpara>The rule of parental inheritance applies to this list. See section</simpara></note></step>
+		<step><simpara>Select a currency type from the drop down menu. This menu is comprised of entries in the currency types menu. When a fund
+		is applied to a line item or copy, the price of the item will be encumbered in the currency associated with the fund.</simpara></step>
+		<step><simpara>Click the Active box to activate this fund. You cannot make purchases from this fund if it is not active.</simpara></step>
+		<step><simpara>Enter a Balance Stop Percent. The balance stop percent prevents you from making purchases when only a specified amount of the
 		fund remains. For example, if you want to leave a five percent balance in the fund, then you would enter 5 in the field.
 		You can also enter negative numbers to prevent over expenditure. When the fund reaches its balance stop percent, it will appear in 
-		red when you apply funds to copies.</simpara></listitem>
-		<listitem><simpara>Enter a Balance Warning Percent. The balance warning percent gives you a warning that the fund is low. You can specify any percent. For example, if you want to be 
+		red when you apply funds to copies.</simpara></step>
+		<step><simpara>Enter a Balance Warning Percent. The balance warning percent gives you a warning that the fund is low. You can specify any percent. For example, if you want to be 
 		warned when the fund has only 10 percent of its balance remaining, then enter 10 in the field. When the fund reaches its balance warning percent, it will appear in yellow when you 
-		apply funds to copies.</simpara></listitem>
-		<listitem><simpara>Check the Propagate box to propagate funds. When you propagate a fund, the ILS will create a new fund for the following fisca 
+		apply funds to copies.</simpara></step>
+		<step><simpara>Check the Propagate box to propagate funds. When you propagate a fund, the ILS will create a new fund for the following fisca 
 		year with the same parameters as your current fund. All of the settings transfer except for the year and the amount of
-		money in the fund. Propagation occurs during the fiscal year close-out operation.</simpara></listitem>
-		<listitem><simpara>Check the Rollover box if you want to roll over remaining funds into the same fund next year.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		money in the fund. Propagation occurs during the fiscal year close-out operation.</simpara></step>
+		<step><simpara>Check the Rollover box if you want to roll over remaining funds into the same fund next year.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Allocate Credits from Funding Sources to Funds</title>
 		<simpara>Credits can be applied to funds from funding sources using the fund interface. The
 		credits that you apply to the fund can be applied later to purchases.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To access funds, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594; Funds.</simpara></listitem>
-		<listitem><simpara>Click the hyperlinked name of the fund.</simpara></listitem>
-		<listitem><simpara>To add a credit to the fund, click the Create Allocation tab.</simpara></listitem>
-		<listitem><simpara>Choose a Funding Source from the drop down menu.</simpara></listitem>
-		<listitem><simpara>Enter an amount that you want to apply to the fund from the funding source.</simpara></listitem>
-		<listitem><simpara>Enter a note. This field is optional.</simpara></listitem>
-		<listitem><simpara>Click Apply.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>To access funds, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594; Funds.</simpara></step>
+		<step><simpara>Click the hyperlinked name of the fund.</simpara></step>
+		<step><simpara>To add a credit to the fund, click the Create Allocation tab.</simpara></step>
+		<step><simpara>Choose a Funding Source from the drop down menu.</simpara></step>
+		<step><simpara>Enter an amount that you want to apply to the fund from the funding source.</simpara></step>
+		<step><simpara>Enter a note. This field is optional.</simpara></step>
+		<step><simpara>Click Apply.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Transfer credits between funds</title>
 		<simpara>The credits that you allocate to funds can be transferred between funds if desired. In
 		the following example, you can transfer $500.00 from the Young Adult Fiction fund to
 		the Children’s DVD fund.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To access funds, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594; Funds.</simpara></listitem>
-		<listitem><simpara>Click the hyperlinked name of the originating fund.</simpara></listitem>
-		<listitem><simpara>The Fund Details screen appears. Click Transfer Money.</simpara></listitem>
-		<listitem><simpara>Enter the amount that you would like to transfer.</simpara></listitem>
-		<listitem><simpara>From the drop down menu, select the destination fund.
-		</simpara></listitem>
-		<listitem><simpara>Add a note. This field is optional.</simpara></listitem>
-		<listitem><simpara>Click Transfer.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>To access funds, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594; Funds.</simpara></step>
+		<step><simpara>Click the hyperlinked name of the originating fund.</simpara></step>
+		<step><simpara>The Fund Details screen appears. Click Transfer Money.</simpara></step>
+		<step><simpara>Enter the amount that you would like to transfer.</simpara></step>
+		<step><simpara>From the drop down menu, select the destination fund.
+		</simpara></step>
+		<step><simpara>Add a note. This field is optional.</simpara></step>
+		<step><simpara>Click Transfer.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Track Balances and Expenditures</title>
 		<simpara>The Fund Details allows you to track the fund’s balance, encumbrances, and amount
 		spent. It also allows you to track allocations from the funding source(s), debits, and
 		fund tags.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To access the fund details, click on the hyperlinked name of the fund that you
-		created.</simpara></listitem>
-		<listitem><simpara>The Summary allows you to track the following:</simpara>
-		<orderedlist numeration="loweralpha">
-		<listitem><simpara>Balance – The balance is calculated by subtracting both items that have been
-		invoiced and encumbrances from the total allocated to the fund.</simpara></listitem>
-		<listitem><simpara>Total Allocated – This amount is the total amount allocated from the Funding
-		Source.</simpara></listitem>
-		<listitem><simpara>Spent Balance – This balance is calculated by subtracting only the items that
-		have been invoiced from the total allocated to the fund. It does not include
-		encumbrances.</simpara></listitem>
-		<listitem><simpara>Total Debits – The total debits are calculated by adding the cost of items that
-		have been invoiced and encumbrances.</simpara></listitem>
-		<listitem><simpara>Total Spent – The total spent is calculated by adding the cost of items that
-		have been invoiced. It does not include encumbrances.</simpara></listitem>
-		<listitem><simpara>Total Encumbered – The total encumbered is calculated by adding all
-		encumbrances.</simpara></listitem>
-		</orderedlist></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>To access the fund details, click on the hyperlinked name of the fund that you
+		created.</simpara></step>
+		<step><simpara>The Summary allows you to track the following:</simpara>
+			<orderedlist numeration="loweralpha">
+				<listitem><simpara>Balance – The balance is calculated by subtracting both items that have been
+				invoiced and encumbrances from the total allocated to the fund.</simpara></listitem>
+				<listitem><simpara>Total Allocated – This amount is the total amount allocated from the Funding
+				Source.</simpara></listitem>
+				<listitem><simpara>Spent Balance – This balance is calculated by subtracting only the items that
+				have been invoiced from the total allocated to the fund. It does not include
+				encumbrances.</simpara></listitem>
+				<listitem><simpara>Total Debits – The total debits are calculated by adding the cost of items that
+				have been invoiced and encumbrances.</simpara></listitem>
+				<listitem><simpara>Total Spent – The total spent is calculated by adding the cost of items that
+				have been invoiced. It does not include encumbrances.</simpara></listitem>
+				<listitem><simpara>Total Encumbered – The total encumbered is calculated by adding all
+				encumbrances.</simpara></listitem>
+			</orderedlist>
+		</step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Edit a Fund</title>
@@ -236,22 +238,22 @@
 		and create analogous funds for the next year. It transfers encumbrances to the
 		analogous funds, and it rolls over any remaining funds if you checked the rollover box
 		when creating the fund.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To access the year end closeout of a fund, click Admin &#8594; Server Administration &#8594;
-		Acquisitions &#8594; Funds.</simpara></listitem>
-		<listitem><simpara>Click Fund Propagation and Rollover.</simpara></listitem>
-		<listitem><simpara>Check the box adjacent to Perform Fiscal Year Close-Out Operation.</simpara></listitem>
-		<listitem><simpara>Notice that the context org unit reflects the context org unit that you selected at
-		the top of the Funds screen.</simpara></listitem>
-		<listitem><simpara>If you want to perform the close-out operation on the context org unit and its child
-		units, then check the box adjacent to Include Funds for Descendant Org Units.</simpara></listitem>
-		<listitem><simpara>Check the box adjacent to dry run if you want to test changes to the funds before
+		<procedure>
+		<step><simpara>To access the year end closeout of a fund, click Admin &#8594; Server Administration &#8594;
+		Acquisitions &#8594; Funds.</simpara></step>
+		<step><simpara>Click Fund Propagation and Rollover.</simpara></step>
+		<step><simpara>Check the box adjacent to Perform Fiscal Year Close-Out Operation.</simpara></step>
+		<step><simpara>Notice that the context org unit reflects the context org unit that you selected at
+		the top of the Funds screen.</simpara></step>
+		<step><simpara>If you want to perform the close-out operation on the context org unit and its child
+		units, then check the box adjacent to Include Funds for Descendant Org Units.</simpara></step>
+		<step><simpara>Check the box adjacent to dry run if you want to test changes to the funds before
 		they are enacted. Evergreen will generate a summary of the changes that would
-		occur during the selected operations. No data will be changed.</simpara></listitem>
-		<listitem><simpara>Click Process.</simpara></listitem>
-		<listitem><simpara>Evergreen will begin the propagation process. Evergreen will make a clone of each
-		fund, but it will increment the year by   .</simpara></listitem>
-		</orderedlist>
+		occur during the selected operations. No data will be changed.</simpara></step>
+		<step><simpara>Click Process.</simpara></step>
+		<step><simpara>Evergreen will begin the propagation process. Evergreen will make a clone of each
+		fund, but it will increment the year by   .</simpara></step>
+		</procedure>
 	</simplesect>
 </section>
 <section id="acq_admin_providers">
@@ -260,34 +262,34 @@
 	information for the provider, holdings information, invoices, and other information.</simpara>
 	<simplesect>
 		<title>Create a provider</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To create a new provider, click Admin &#8594; Server Administration &#8594;Acquisitions &#8594;
-		Providers.</simpara></listitem>
-		<listitem><simpara>Enter the provider name.</simpara></listitem>
-		<listitem><simpara>Create a code for the provider. No limits exist on the number of characters that can
-		be entered in this field.</simpara></listitem>
-		<listitem><simpara>Select an owner from the drop down menu. The owner indicates the organizational units whose staff can use this provider. This menu is populated with the shortnames 
+		<procedure>
+		<step><simpara>To create a new provider, click Admin &#8594; Server Administration &#8594;Acquisitions &#8594;
+		Providers.</simpara></step>
+		<step><simpara>Enter the provider name.</simpara></step>
+		<step><simpara>Create a code for the provider. No limits exist on the number of characters that can
+		be entered in this field.</simpara></step>
+		<step><simpara>Select an owner from the drop down menu. The owner indicates the organizational units whose staff can use this provider. This menu is populated with the shortnames 
 		that you created for your libraries in the organizational units tree (See Admin &#8594; Server Administration &#8594; Organizational Units).</simpara>
 		<note><simpara>The rule of parental inheritance applies to this list. See section   .1
-		for more information.</simpara></note></listitem>
-		<listitem><simpara>Select a currency from the drop down menu. This drop down list is populated by the
-		list of currencies available in the currency types.</simpara></listitem>
-		<listitem><simpara>A provider must be active in order for purchases to be made from that provider. To
+		for more information.</simpara></note></step>
+		<step><simpara>Select a currency from the drop down menu. This drop down list is populated by the
+		list of currencies available in the currency types.</simpara></step>
+		<step><simpara>A provider must be active in order for purchases to be made from that provider. To
 		activate the provider, check the box adjacent to Active. To deactivate a vendor,
-		uncheck the box.</simpara></listitem>
-		<listitem><simpara>Select a default claim policy from the drop down box. This list is derived from the
-		claim policies that can be created</simpara></listitem>
-		<listitem><simpara>Select an EDI default. This list is derived from the EDI accounts that can be created.</simpara></listitem>
-		<listitem><simpara>Enter the provider’s email address.</simpara></listitem>
-		<listitem><simpara>In the Fax Phone field, enter the provider’s fax number.</simpara></listitem>
-		<listitem><simpara>In the holdings tag field, enter the tag in which the provider places holdings data.</simpara></listitem>
-		<listitem><simpara>In the phone field, enter the provider’s phone number.</simpara></listitem>
-		<listitem><simpara>If prepayment is required to purchase from this provider, then check the box
-		adjacent to prepayment required.</simpara></listitem>
-		<listitem><simpara>Enter the Standard Address Number (SAN) for your provider.</simpara></listitem>
-		<listitem><simpara>Enter the web address for the provider’s website in the URL field.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		uncheck the box.</simpara></step>
+		<step><simpara>Select a default claim policy from the drop down box. This list is derived from the
+		claim policies that can be created</simpara></step>
+		<step><simpara>Select an EDI default. This list is derived from the EDI accounts that can be created.</simpara></step>
+		<step><simpara>Enter the provider’s email address.</simpara></step>
+		<step><simpara>In the Fax Phone field, enter the provider’s fax number.</simpara></step>
+		<step><simpara>In the holdings tag field, enter the tag in which the provider places holdings data.</simpara></step>
+		<step><simpara>In the phone field, enter the provider’s phone number.</simpara></step>
+		<step><simpara>If prepayment is required to purchase from this provider, then check the box
+		adjacent to prepayment required.</simpara></step>
+		<step><simpara>Enter the Standard Address Number (SAN) for your provider.</simpara></step>
+		<step><simpara>Enter the web address for the provider’s website in the URL field.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Add contact and holdings information to providers</title>
@@ -296,21 +298,21 @@
 		hyperlinked name of the provider on the Providers screen. The tabs allow you to add a
 		provider address and contact, attribute definitions, and holding subfields. You can also
 		view invoices associated with the provider.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Enter a Provider Address, and click Save.</simpara>
+		<procedure>
+		<step><simpara>Enter a Provider Address, and click Save.</simpara>
 		<note><simpara>Required fields for the provider address are: Street 1, city, state,
-		country, post code. You may have multiple valid addresses.</simpara></note></listitem>
-		<listitem><simpara>Enter the Provider Contact, and click Save.</simpara></listitem>
-		<listitem><simpara>Your vendor may include information that is specific to your organization in MARC
+		country, post code. You may have multiple valid addresses.</simpara></note></step>
+		<step><simpara>Enter the Provider Contact, and click Save.</simpara></step>
+		<step><simpara>Your vendor may include information that is specific to your organization in MARC
 		tags. You can specify the types of information that should be entered in each MARC
 		tag. Enter attribute definitions to correlate MARC tags with the information that
 		they should contain in incoming vendor records. Some technical knowledge is
-		required to enter XPath information.</simpara></listitem>
-		<listitem><simpara>You may have entered a holdings tag when you created the provider profile. You
+		required to enter XPath information.</simpara></step>
+		<step><simpara>You may have entered a holdings tag when you created the provider profile. You
 		can also enter holdings subfields. Holdings subfields allow you to specify subfields
-		within the holdings tag to which your vendor adds holdings information.</simpara></listitem>
-		<listitem><simpara>Click invoices to access invoices associated with a provider.</simpara></listitem>
-		</orderedlist>
+		within the holdings tag to which your vendor adds holdings information.</simpara></step>
+		<step><simpara>Click invoices to access invoices associated with a provider.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Edit a provider</title>
@@ -329,33 +331,33 @@
 	<simplesect>
 		<title>EDI Accounts</title>
 		<simpara>Create EDI Accounts to communicate electronically with providers.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Create a label. The label allows you to differentiate between accounts for the same
+		<procedure>
+		<step><simpara>Create a label. The label allows you to differentiate between accounts for the same
 		provider. No limits exist on the number of characters that can be entered in this
-		field.</simpara></listitem>
-		<listitem><simpara>Enter a host. Your provider will provide you with the requisite FTP or SCP
-		information.</simpara></listitem>
-		<listitem><simpara>Enter the username that has been supplied by your provider.</simpara></listitem>
-		<listitem><simpara>Enter the password that has been supplied by your provider.</simpara></listitem>
-		<listitem><simpara>Enter account information. This field enables you to add a supplemental password
+		field.</simpara></step>
+		<step><simpara>Enter a host. Your provider will provide you with the requisite FTP or SCP
+		information.</simpara></step>
+		<step><simpara>Enter the username that has been supplied by your provider.</simpara></step>
+		<step><simpara>Enter the password that has been supplied by your provider.</simpara></step>
+		<step><simpara>Enter account information. This field enables you to add a supplemental password
 		for entry to a remote system after log in has been completed. This field is optional
-		for the ILS but may be required by your provider.</simpara></listitem>
-		<listitem><simpara>Select an owner from the drop down menu. The owner indicates the organizational
+		for the ILS but may be required by your provider.</simpara></step>
+		<step><simpara>Select an owner from the drop down menu. The owner indicates the organizational
 		units whose staff can use this EDI account. This menu is populated with the
 		shortnames that you created for your libraries in the organizational units tree (See
 		Admin &#8594; Server Administration &#8594; Organizational Units).</simpara>
-		<note><simpara>The rule of parental inheritance applies to this list.</simpara></note></listitem>
-		<listitem><simpara>The Last Activity updates automatically with any inbound or outbound
-		communication.</simpara></listitem>
-		<listitem><simpara>Select a provider from the drop down menu to whom this account belongs.</simpara></listitem>
-		<listitem><simpara>Enter a path. The path indicates the remote location on the server from which files
-		are pulled in to the ILS.</simpara></listitem>
-		<listitem><simpara>Enter the incoming directory. This directory indicates the location on your local
-		network to which the files download.</simpara></listitem>
-		<listitem><simpara>Enter the vendor account number supplied by your provider.</simpara></listitem>
-		<listitem><simpara>Enter the vendor account code supplied by your provider.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		<note><simpara>The rule of parental inheritance applies to this list.</simpara></note></step>
+		<step><simpara>The Last Activity updates automatically with any inbound or outbound
+		communication.</simpara></step>
+		<step><simpara>Select a provider from the drop down menu to whom this account belongs.</simpara></step>
+		<step><simpara>Enter a path. The path indicates the remote location on the server from which files
+		are pulled in to the ILS.</simpara></step>
+		<step><simpara>Enter the incoming directory. This directory indicates the location on your local
+		network to which the files download.</simpara></step>
+		<step><simpara>Enter the vendor account number supplied by your provider.</simpara></step>
+		<step><simpara>Enter the vendor account code supplied by your provider.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>EDI Messages</title>
@@ -372,75 +374,75 @@
 		<title>Create a claim policy</title>
 		<simpara>The claim policy link enables you to name the claim policy and specify the organization
 		that owns it.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To create a claim policy, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594;
-		Claim Policies.</simpara></listitem>
-		<listitem><simpara>Create a claim policy name. No limits exist on the number of characters that can be
-		entered in this field.</simpara></listitem>
-		<listitem><simpara>Select an org unit from the drop down menu. The org unit indicates the
+		<procedure>
+		<step><simpara>To create a claim policy, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594;
+		Claim Policies.</simpara></step>
+		<step><simpara>Create a claim policy name. No limits exist on the number of characters that can be
+		entered in this field.</simpara></step>
+		<step><simpara>Select an org unit from the drop down menu. The org unit indicates the
 		organizational units whose staff can use this claim policy. This menu is populated
 		with the shortnames that you created for your libraries in the organizational units
 		tree (See Admin &#8594; Server Administration &#8594; Organizational Units).</simpara>
-		<note><simpara>The rule of parental inheritance applies to this list.</simpara></note></listitem>
-		<listitem><simpara>Enter a description. No limits exist on the number of characters that can be entered
-		in this field.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		<note><simpara>The rule of parental inheritance applies to this list.</simpara></note></step>
+		<step><simpara>Enter a description. No limits exist on the number of characters that can be entered
+		in this field.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Create a claim type</title>
 		<simpara>The claim type link enables you to specify the reason for a type of claim.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To create a claim type, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594;
-		Claim types.</simpara></listitem>
-		<listitem><simpara>Create a claim type. No limits exist on the number of characters that can be entered
-		in this field.</simpara></listitem>
-		<listitem><simpara>Select an org unit from the drop down menu. The org unit indicates the
+		<procedure>
+		<step><simpara>To create a claim type, click Admin &#8594; Server Administration &#8594; Acquisitions &#8594;
+		Claim types.</simpara></step>
+		<step><simpara>Create a claim type. No limits exist on the number of characters that can be entered
+		in this field.</simpara></step>
+		<step><simpara>Select an org unit from the drop down menu. The org unit indicates the
 		organizational units whose staff can use this claim type. This menu is populated
 		with the shortnames that you created for your libraries in the organizational units
 		tree (See Admin &#8594; Server Administration &#8594; Organizational Units).</simpara>
-		<note><simpara>The rule of parental inheritance applies to this list.</simpara></note></listitem>
-		<listitem><simpara>Enter a description. No limits exist on the number of characters that can be entered
-		in this field.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		<note><simpara>The rule of parental inheritance applies to this list.</simpara></note></step>
+		<step><simpara>Enter a description. No limits exist on the number of characters that can be entered
+		in this field.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Create a claim event type</title>
 		<simpara>The claim event type describes the physical action that should occur when an item
 		needs to be claimed. For example, the user should notify the vendor via email that the
 		library is claiming an item.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To access the claim event types, click Admin &#8594; Server Administration &#8594;
-		Acquisitions &#8594;Claim event type.</simpara></listitem>
-		<listitem><simpara>Enter a code for the claim event type. No limits exist on the number of characters
-		that can be entered in this field.</simpara></listitem>
-		<listitem><simpara>Select an org unit from the drop down menu. The org unit indicates the
+		<procedure>
+		<step><simpara>To access the claim event types, click Admin &#8594; Server Administration &#8594;
+		Acquisitions &#8594;Claim event type.</simpara></step>
+		<step><simpara>Enter a code for the claim event type. No limits exist on the number of characters
+		that can be entered in this field.</simpara></step>
+		<step><simpara>Select an org unit from the drop down menu. The org unit indicates the
 		organizational units whose staff can use this event type. This menu is populated
 		with the shortnames that you created for your libraries in the organizational units
 		tree (See Admin &#8594; Server Administration &#8594; Organizational Units).</simpara>
-		<note><simpara>The rule of parental inheritance applies to this list.</simpara></note></listitem>
-		<listitem><simpara>Enter a description. No limits exist on the number of characters that can be entered
-		in this field.</simpara></listitem>
-		<listitem><simpara>If this claim is initiated by the user, then check the box adjacent to Library Initiated.</simpara>
+		<note><simpara>The rule of parental inheritance applies to this list.</simpara></note></step>
+		<step><simpara>Enter a description. No limits exist on the number of characters that can be entered
+		in this field.</simpara></step>
+		<step><simpara>If this claim is initiated by the user, then check the box adjacent to Library Initiated.</simpara>
 		<note><simpara>Currently, all claims are initiated by a user. The ILS cannot automatically
-		claim an issue.</simpara></note></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		claim an issue.</simpara></note></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Create a claim policy action</title>
 		<simpara>The claim policy action enables you to specify how long a user should wait before
 		claiming the item.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To access claim policy actions, click Admin &#8594; Server Administration &#8594; Acquisitions
-		&#8594;Claim Policy Actions.</simpara></listitem>
-		<listitem><simpara>Select an Action (Event Type) from the drop down menu.</simpara></listitem>
-		<listitem><simpara>Enter an action interval. This field indicates how long a user should wait before
-		claiming the item.</simpara></listitem>
-		<listitem><simpara>In the Claim Policy ID field, select a claim policy from the drop down menu.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>To access claim policy actions, click Admin &#8594; Server Administration &#8594; Acquisitions
+		&#8594;Claim Policy Actions.</simpara></step>
+		<step><simpara>Select an Action (Event Type) from the drop down menu.</simpara></step>
+		<step><simpara>Enter an action interval. This field indicates how long a user should wait before
+		claiming the item.</simpara></step>
+		<step><simpara>In the Claim Policy ID field, select a claim policy from the drop down menu.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 		<note><simpara>You can create claim cycles by adding multiple claim policy actions to a
 		claim policy.</simpara></note>
 	</simplesect>
@@ -459,19 +461,19 @@
 		Invoice item types can also be used when adding non-bibliographic items to a purchase
 		order. When invoiced, the invoice item type will copy from the purchase order to the
 		invoice.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To create a new charge type, click Admin &#8594; Server Administration &#8594; Acquisitions
-		&#8594; Invoice Item Type.</simpara></listitem>
-		<listitem><simpara>Click New Invoice Item Type.</simpara></listitem>
-		<listitem><simpara>Create a code for the charge type. No limits exist on the number of characters that
-		can be entered in this field.</simpara></listitem>
-		<listitem><simpara>Create a label. No limits exist on the number of characters that can be entered in
-		this field. The text in this field appears in the drop down menu on the invoice.</simpara></listitem>
-		<listitem><simpara>If items on the invoice were purchased with the monies in multiple funds, then you
+		<procedure>
+		<step><simpara>To create a new charge type, click Admin &#8594; Server Administration &#8594; Acquisitions
+		&#8594; Invoice Item Type.</simpara></step>
+		<step><simpara>Click New Invoice Item Type.</simpara></step>
+		<step><simpara>Create a code for the charge type. No limits exist on the number of characters that
+		can be entered in this field.</simpara></step>
+		<step><simpara>Create a label. No limits exist on the number of characters that can be entered in
+		this field. The text in this field appears in the drop down menu on the invoice.</simpara></step>
+		<step><simpara>If items on the invoice were purchased with the monies in multiple funds, then you
 		can divide the additional charge across funds. Check the box adjacent to Prorate? if
-		you want to prorate the charge across funds.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		you want to prorate the charge across funds.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 </section>
 <section id="acq_admin_invoice_payment_method">
@@ -480,17 +482,17 @@
 	payment method(s) that you accept. The text that you enter in the admin module will
 	appear as a drop down menu in the invoice type and payment method fields on the
 	invoice.</simpara>
-	<orderedlist numeration="arabic">
-	<listitem><simpara>To create a new invoice payment method, click Admin &#8594; Server Administration &#8594;
-	Acquisitions &#8594; Invoice Payment Method.</simpara></listitem>
-	<listitem><simpara>Click New Invoice Payment Method.</simpara></listitem>
-	<listitem><simpara>Create a code for the invoice payment method. No limits exist on the number of
-	characters that can be entered in this field.</simpara></listitem>
-	<listitem><simpara>Create a name for the invoice payment method. No limits exist on the number of
+	<procedure>
+	<step><simpara>To create a new invoice payment method, click Admin &#8594; Server Administration &#8594;
+	Acquisitions &#8594; Invoice Payment Method.</simpara></step>
+	<step><simpara>Click New Invoice Payment Method.</simpara></step>
+	<step><simpara>Create a code for the invoice payment method. No limits exist on the number of
+	characters that can be entered in this field.</simpara></step>
+	<step><simpara>Create a name for the invoice payment method. No limits exist on the number of
 	characters that can be entered in this field. The text in this field appears in the drop
-	down menu on the invoice.</simpara></listitem>
-	<listitem><simpara>Click Save.</simpara></listitem>
-	</orderedlist>
+	down menu on the invoice.</simpara></step>
+	<step><simpara>Click Save.</simpara></step>
+	</procedure>
 </section>
 <section id="acq_admin_distribution_formulas">
 	<title>Distribution Formulas</title>
@@ -498,31 +500,31 @@
 	distributed to specific branches. You can create and reuse formulas as needed.</simpara>
 	<simplesect>
 		<title>Create a distribution formula</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Admin &#8594; Server Administration &#8594; Acquisitions &#8594;Distribution Formulas.</simpara></listitem>
-		<listitem><simpara>Click New Formula.</simpara></listitem>
-		<listitem><simpara>Enter a Formula Name. No limits exist on the number of characters that can be
-		entered in this field.</simpara></listitem>
-		<listitem><simpara>Choose a Formula Owner from the drop down menu. The Formula Owner indicates
+		<procedure>
+		<step><simpara>Click Admin &#8594; Server Administration &#8594; Acquisitions &#8594;Distribution Formulas.</simpara></step>
+		<step><simpara>Click New Formula.</simpara></step>
+		<step><simpara>Enter a Formula Name. No limits exist on the number of characters that can be
+		entered in this field.</simpara></step>
+		<step><simpara>Choose a Formula Owner from the drop down menu. The Formula Owner indicates
 		the organizational units whose staff can use this formula. This menu is populated
 		with the shortnames that you created for your libraries in the organizational units
 		tree (See Admin &#8594; Server Administration &#8594; Organizational Units).</simpara>
-		<note><simpara>The rule of parental inheritance applies to this list.</simpara></note></listitem>
-		<listitem><simpara>Ignore the Skip Count field. It has no purpose in 2.0.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		<listitem><simpara>Click New Entry.</simpara></listitem>
-		<listitem><simpara>Select an Owning Library from the drop down menu. This indicates the branch that
+		<note><simpara>The rule of parental inheritance applies to this list.</simpara></note></step>
+		<step><simpara>Ignore the Skip Count field. It has no purpose in 2.0.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		<step><simpara>Click New Entry.</simpara></step>
+		<step><simpara>Select an Owning Library from the drop down menu. This indicates the branch that
 		will receive the items. This menu is populated with the shortnames that you created
 		for your libraries in the organizational units tree (See Admin &#8594; Server
-		Administration &#8594; Organizational Units).</simpara></listitem>
-		<listitem><simpara>Select a Shelving Location from the drop down menu.</simpara></listitem>
-		<listitem><simpara>In the Item Count field, enter the number of items that should be distributed to the
-		branch. You can enter the number or use the arrows on the right side of the field.</simpara></listitem>
-		<listitem><simpara>Click Apply Changes. The screen will reload.</simpara></listitem>
-		<listitem><simpara>To view the changes to your formula, click Admin &#8594; Server Administration &#8594;
+		Administration &#8594; Organizational Units).</simpara></step>
+		<step><simpara>Select a Shelving Location from the drop down menu.</simpara></step>
+		<step><simpara>In the Item Count field, enter the number of items that should be distributed to the
+		branch. You can enter the number or use the arrows on the right side of the field.</simpara></step>
+		<step><simpara>Click Apply Changes. The screen will reload.</simpara></step>
+		<step><simpara>To view the changes to your formula, click Admin &#8594; Server Administration &#8594;
 		Acquisitions &#8594; Distribution Formulas. The item_count will reflect the entries to
-		your distribution formula.</simpara></listitem>
-		</orderedlist>
+		your distribution formula.</simpara></step>
+		</procedure>
 		<note><simpara>To edit the Formula Name, click the hyperlinked name of the formula in
 		the top left corner. A pop up box will enable you to enter a new formula
 		name.</simpara></note>
@@ -540,21 +542,21 @@
 	as received.</simpara>
 	<simplesect>
 		<title>Create a line item alert</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To create a line item alert, click Administration &#8594; Server Administration &#8594;
-		Acquisitions &#8594; Line Item Alerts.</simpara></listitem>
-		<listitem><simpara>Click New Line Item Alert Text.</simpara></listitem>
-		<listitem><simpara>Create a code for the text. No limits exist on the number of characters that can be
-		entered in this field.</simpara></listitem>
-		<listitem><simpara>Create a description for the text. No limits exist on the number of characters that can
-		be entered in this field.</simpara></listitem>
-		<listitem><simpara>Select an owning library from the drop down menu. The owning library indicates the
+		<procedure>
+		<step><simpara>To create a line item alert, click Administration &#8594; Server Administration &#8594;
+		Acquisitions &#8594; Line Item Alerts.</simpara></step>
+		<step><simpara>Click New Line Item Alert Text.</simpara></step>
+		<step><simpara>Create a code for the text. No limits exist on the number of characters that can be
+		entered in this field.</simpara></step>
+		<step><simpara>Create a description for the text. No limits exist on the number of characters that can
+		be entered in this field.</simpara></step>
+		<step><simpara>Select an owning library from the drop down menu. The owning library indicates the
 		organizational units whose staff can use this alert. This menu is populated with the
 		shortnames that you created for your libraries in the organizational units tree (See
 		Admin &#8594; Server Administration &#8594; Organizational Units).
-		</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 </section>
 <section id="acq_admin_line_item_marc_attribute_definitions">
@@ -577,22 +579,22 @@
 	associated with the purchase.</simpara>
 	<simplesect>
 		<title>Create a cancel/suspend reason</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>To add a new cancel reason, click Administration &#8594; Server Administration &#8594;
-		Acquisitions &#8594; Cancel reasons.</simpara></listitem>
-		<listitem><simpara>Click New Cancel Reason.</simpara></listitem>
-		<listitem><simpara>Select a using library from the drop down menu. The using library indicates the
+		<procedure>
+		<step><simpara>To add a new cancel reason, click Administration &#8594; Server Administration &#8594;
+		Acquisitions &#8594; Cancel reasons.</simpara></step>
+		<step><simpara>Click New Cancel Reason.</simpara></step>
+		<step><simpara>Select a using library from the drop down menu. The using library indicates the
 		organizational units whose staff can use this cancel reason. This menu is populated
 		with the shortnames that you created for your libraries in the organizational units
-		tree (See Admin &#8594; Server Administration &#8594; Organizational Units.)</simpara></listitem>
-		<listitem><simpara>Create a label for the cancel reason. This label will appear when you select a cancel
-		reason on an item or a PO.</simpara></listitem>
-		<listitem><simpara>Create a description of the cancel reason. This is a free text field and can be
-		comprised of any text of your choosing.</simpara></listitem>
-		<listitem><simpara>If you want to retain the debits associated with the cancelled purchase, click the box
-		adjacent to Keep Debits?</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		tree (See Admin &#8594; Server Administration &#8594; Organizational Units.)</simpara></step>
+		<step><simpara>Create a label for the cancel reason. This label will appear when you select a cancel
+		reason on an item or a PO.</simpara></step>
+		<step><simpara>Create a description of the cancel reason. This is a free text field and can be
+		comprised of any text of your choosing.</simpara></step>
+		<step><simpara>If you want to retain the debits associated with the cancelled purchase, click the box
+		adjacent to Keep Debits?</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 </section>
 <section id="acq_admin_acquisitions_permissions_in_the_admin_module">

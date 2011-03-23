@@ -22,9 +22,7 @@
 	to emulate a <systemitem class="osname">Linux</systemitem>
 	environment). It can also be installed to run on other <systemitem class="osname">Linux</systemitem> 
 	systems via virtualized environments (using, for example, <application>"VirtualBox"</application> or
-	<application>"VMware"</application>). More information on virtualized environments can be found in 
-	<xref linkend="serversideinstallation-virtual"/>.</para>
-	<para>Installation of the Evergreen Staff Client software is reviewed in <xref linkend="staffclientinstallation"/>. </para>
+	<application>"VMware"</application>).</para>
 	<para>The Evergreen server-side software has dependencies on particular versions of certain major software
 	sub-components. Successful installation of Evergreen software requires that software versions agree with those
 	listed here:</para>
@@ -802,8 +800,8 @@
 					and unpacked. Remember to replace <emphasis>[DISTRIBUTION]</emphasis> in the following
 					example with the keyword corresponding to the name of one of the 
 					<systemitem class="osname">Linux</systemitem> distributions listed in the following
-					distribution keywords table <xref linkend="serversideinstallation-keywords-evergreen"/> .
-					For example, to install the prerequisites for Ubuntu version 10.05 (Karmic Koala) you would
+					distribution list.
+					For example, to install the prerequisites for Ubuntu version 10.05 (Lucid Lynx) you would
 					enter this command: <command>make -f Open-ILS/src/extras/Makefile.install
 					ubuntu-lucid</command>.</para>
 					<screen>
@@ -1047,15 +1045,15 @@
 							the following commands and replace <emphasis>HOSTNAME, PORT,
 							PASSWORD</emphasis> and <emphasis>DATABASENAME</emphasis> with appropriate
 							values:</para>
-							<screen>
-								<userinput>
-	# as the root user:
-	cd /home/opensrf/Evergreen-ILS-2.0.4
-	perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
-	  --service all --create-schema --create-offline \
-	  --hostname HOSTNAME --port PORT \
-	  --user evergreen --password PASSWORD --database DATABASENAME --admin-user ADMIN-USER --admin-pass ADMIN-PASSWORD </userinput>
-							</screen>
+<screen>
+<userinput>cd /home/opensrf/Evergreen-ILS-2.0.4
+perl Open-ILS/src/support-scripts/eg_db_config.pl --update-config \
+--service all --create-schema --create-offline \
+--hostname HOSTNAME --port PORT \
+--user evergreen --password PASSWORD \
+--database DATABASENAME --admin-user ADMIN-USER \ 
+--admin-pass ADMIN-PASSWORD </userinput>
+</screen>
 							<para>On most systems, <emphasis>HOSTNAME</emphasis> will be
 							<emphasis role="bold">localhost</emphasis> and
 							<emphasis>PORT</emphasis> will be <emphasis role="bold">5432</emphasis>.
@@ -1595,11 +1593,9 @@
 				<literal>Status</literal> and <literal>Version</literal>.</para>
 				<para>Because this is the initial run of the Staff Client, you will see a warning in the
 				upper-right saying: <emphasis role="bold">Not yet configured for the specified
-				server</emphasis>. To continue, you must assign a workstation name. Refer to
-				<xref linkend="staffclientinstallation-workstationnames"/> for further details.</para>
-				<para>Try to log into the Staff Client with the username <literal>admin</literal> and
-				the password <literal>open-ils</literal>. If the login is successful, you will see the
-				following screen:</para>
+				server</emphasis>. To continue, you must assign a workstation name.</para>
+				<para>Try to log into the Staff Client with the admin username and password you created during installation. If the login is successful, 
+				you will see the following screen:</para>
 				<mediaobject>
 					<alt>Logging into the Staff Client</alt>
 					<imageobject>

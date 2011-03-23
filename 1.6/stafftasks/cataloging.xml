@@ -530,7 +530,7 @@
 			       <mediaobject>
 				  <alt>screenshot of staff client</alt>
 				  <imageobject role="html">
-				     <imagedata scalefit="0" fileref="../media/add_holdings-3.png"/>
+				     <imagedata scalefit="1" fileref="../media/add_holdings-3.png"/>
 				  </imageobject>
 				  <imageobject role="fo">
 				     <imagedata scale="80" fileref="../media/add_holdings-3.png"/>

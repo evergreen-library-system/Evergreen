@@ -289,7 +289,7 @@ $
 					Follow the steps in the troubleshooting guide in <xref linkend="troubleshooting"/>.</para>
 		</step>
 		<step>
-			<para>Try to login from the <link linkend="staffclient-login">staff client</link></para><indexterm><primary>staff client</primary><secondary>testing</secondary></indexterm>
+			<para>Try to login from the staff client</para><indexterm><primary>staff client</primary><secondary>testing</secondary></indexterm>
 		</step>
 		<step xml:id="testing-opac">
 					<title>Testing the Catalog</title>
