@@ -1043,8 +1043,13 @@ function _timerRun(tname) {
 }
 
 function checkILSEvent(obj) {
-	if( obj && obj.ilsevent != null && obj.ilsevent != 0 )
-		return parseInt(obj.ilsevent);
+	if (obj && typeof obj == 'object' && typeof obj.ilsevent != 'undefined') {
+        if (obj.ilsevent === '') {
+            return true;
+        } else if ( obj.ilsevent != null && obj.ilsevent != 0 ) {
+            return parseInt(obj.ilsevent);
+        }
+    }
 	return null;
 }
 
