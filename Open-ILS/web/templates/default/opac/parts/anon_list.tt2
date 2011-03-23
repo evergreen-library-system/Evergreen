@@ -1,5 +1,5 @@
         [% IF ctx.mylist.size %]
-        <form action="[% ctx.opac_root %]/mylist/del" method="POST">
+        <form action="[% ctx.opac_root %]/mylist/move" method="POST">
         <div id='acct_list_template2'>
             <div style="width:100%">
                 <table cellpadding="0" cellspacing="0" border="0">
@@ -29,6 +29,13 @@
                                 <option>[% l('-- Actions for this list --') %]</option>
                                 <!-- XXX not ready <option value="hold">[% l('Place Hold') %]</option> -->
                                 <option value="delete">[% l('Remove Items') %]</option>
+                                [% IF ctx.user AND ctx.bookbags.size %]
+                                <optgroup label="Move selected items to">
+                                    [% FOR bbag IN ctx.bookbags %]]
+                                    <option value="[% bbag.id %]" class="opac-auto-179-inner-option">[% bbag.name %]</option>
+                                    [% END %]
+                                </optgroup>
+                                [% END %]
                             </select>
                             <input type="submit" value="[% l('Go') %]" />
                         </td>
