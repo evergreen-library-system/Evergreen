@@ -26,8 +26,8 @@
         # KCLS-specific stuff; needs to change
         args.mattype = xml.findnodes('//*[@tag="998"]/*[@code="d"]').textContent;
         args.kcls_cn = xml.findnodes('//*[@tag="092" or @tag="099"]/*').textContent;
-        mattype = attrs.mattype;
+        mattype = args.mattype;
         args.format = ctx.find_citm(mattype).value;
-        args.format_icon = icon_by_mattype.$mattype;
+        args.format_icon = icon_by_format.$mattype;
     END;
 %]
