@@ -56,8 +56,8 @@ sub load_mylist_add {
     return $self->mylist_action_redirect($cache_key);
 }
 
-# Removes a record ID from My List
-sub load_mylist_del {
+# Removes a record ID from My List, or moves to an actual bookbag
+sub load_mylist_move {
     my $self = shift;
     my @rec_ids = $self->cgi->param('record');
 
@@ -72,6 +72,12 @@ sub load_mylist_del {
         'open-ils.actor.anon_cache.set_value', 
         $cache_key, ANON_CACHE_MYLIST, \@keep
     );
+
+    if ($self->ctx->{user} and $self->cgi->param('action') =~ /^\d+$/) {
+        # in this case, action becomes list_id
+        $self->load_myopac_bookbag_update('add_rec', $self->cgi->param('action'));
+        # XXX TODO: test for failure of above
+    }
 
     return $self->mylist_action_redirect($cache_key);
 }

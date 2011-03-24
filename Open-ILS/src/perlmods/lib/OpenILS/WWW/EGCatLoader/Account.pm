@@ -508,26 +508,30 @@ sub load_myopac_bookbags {
     # get unique record IDs
     my %rec_ids = ();
     foreach my $bbag (@{$ctx->{bookbags}}) {
-        foreach my $item_id (map { $_->id } @{$bbag->items}) {
-            $rec_ids{$item_id} = 1;
+        foreach my $rec_id (
+            map { $_->target_biblio_record_entry } @{$bbag->items}
+        ) {
+            $rec_ids{$rec_id} = 1;
         }
     }
 
-    $ctx->{bookbags_marc_xml} = $self->fetch_marc_xml_by_id(keys %rec_ids);
+    $ctx->{bookbags_marc_xml} = $self->fetch_marc_xml_by_id([keys %rec_ids]);
 
     return Apache2::Const::OK;
 }
 
 
 # actions are create, delete, show, hide, rename, add_rec, delete_item
-# CGI is action, list=list_id, add_rec=bre_id, del_item=bucket_item_id, name=new_bucket_name
+# CGI is action, list=list_id, add_rec/record=bre_id, del_item=bucket_item_id, name=new_bucket_name
 sub load_myopac_bookbag_update {
-    my $self = shift;
+    my ($self, $action, $list_id) = @_;
     my $e = $self->editor;
     my $cgi = $self->cgi;
-    my $action = $cgi->param('action');
-    my $list_id = $cgi->param('list');
-    my $add_rec = $cgi->param('add_rec');
+
+    $action ||= $cgi->param('action');
+    $list_id ||= $cgi->param('list');
+
+    my @add_rec = $cgi->param('add_rec') || $cgi->param('record');
     my @del_item = $cgi->param('del_item');
     my $shared = $cgi->param('shared');
     my $name = $cgi->param('name');
@@ -577,11 +581,14 @@ sub load_myopac_bookbag_update {
         }
 
     } elsif($action eq 'add_rec') {
-        my $item = Fieldmapper::container::biblio_record_entry_bucket_item->new;
-        $item->bucket($list_id);
-        $item->target_biblio_record_entry($add_rec);
-        $success = $U->simplereq('open-ils.actor', 
-            'open-ils.actor.container.item.create', $e->authtoken, 'biblio', $item);
+        foreach my $add_rec (@add_rec) {
+            my $item = Fieldmapper::container::biblio_record_entry_bucket_item->new;
+            $item->bucket($list_id);
+            $item->target_biblio_record_entry($add_rec);
+            $success = $U->simplereq('open-ils.actor', 
+                'open-ils.actor.container.item.create', $e->authtoken, 'biblio', $item);
+            last unless $success;
+        }
 
     } elsif($action eq 'del_item') {
         foreach (@del_item) {

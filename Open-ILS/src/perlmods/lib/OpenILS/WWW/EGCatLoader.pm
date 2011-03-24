@@ -93,7 +93,7 @@ sub load {
     return $self->load_record if $path =~ /opac\/record/;
 
     return $self->load_mylist_add if $path =~ /opac\/mylist\/add/;
-    return $self->load_mylist_del if $path =~ /opac\/mylist\/del/;
+    return $self->load_mylist_move if $path =~ /opac\/mylist\/move/;
     return $self->load_mylist if $path =~ /opac\/mylist/;
     return $self->load_cache_clear if $path =~ /opac\/cache\/clear/;
 

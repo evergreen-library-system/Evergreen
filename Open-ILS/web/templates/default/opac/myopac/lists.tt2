@@ -113,11 +113,11 @@
                         </td></tr>
                         [% END %]
                         [% FOR item IN bbag.items;
-                            item_id = item.id;
-                            attrs = {marc_xml => ctx.bookbags_marc_xml.$item_id};
+                            rec_id = item.target_biblio_record_entry;
+                            attrs = {marc_xml => ctx.bookbags_marc_xml.$rec_id};
                             PROCESS get_marc_attrs args=attrs %]
                         <tr>
-                            <td class="opac-auto-097b" style="padding-left: 10px;"><input type="checkbox" name="del_item" value="[% item_id %]" /></td>
+                            <td class="opac-auto-097b" style="padding-left: 10px;"><input type="checkbox" name="del_item" value="[% item.id %]" /></td>
                             <td class="opac-auto-097b" style="padding-left: 5px;">[% attrs.title %]</td>
                             <td class="opac-auto-097b">[% attrs.author %]</td>
                         </tr>
