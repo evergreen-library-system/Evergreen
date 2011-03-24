@@ -1,7 +1,7 @@
 <!-- ****************** page_rdetail.xml ***************************** -->
 [%  record = ctx.record;
     attrs = {marc_xml => ctx.marc_xml};
-    PROCESS "default/opac/parts/marc_misc.tt2";
+    PROCESS "default/opac/parts/misc_util.tt2";
     PROCESS get_marc_attrs args=attrs %]
 <div id='canvas_main' class='canvas'>
     <div id="rdetail_header" class="hide_me">[%#

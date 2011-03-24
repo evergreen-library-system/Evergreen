@@ -1,5 +1,5 @@
 [%  PROCESS "default/opac/parts/header.tt2";
-    PROCESS "default/opac/parts/marc_misc.tt2";
+    PROCESS "default/opac/parts/misc_util.tt2";
     WRAPPER "default/opac/parts/base.tt2";
     INCLUDE "default/opac/parts/topnav.tt2";
     ctx.page_title = l("Record Detail") %]

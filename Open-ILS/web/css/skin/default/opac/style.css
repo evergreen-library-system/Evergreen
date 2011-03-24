@@ -968,3 +968,7 @@ a.dash-link:hover { text-decoration: underline !important; }
 }
 .list-create-table-buttons input[type=image] { margin-top: 2px; }
 .result_table_format_cell { padding: 0px 10px; text-align: center; }
+#hold_editor h1 { font-size: 120%; font-weight: bold; }
+#hold_editor h2 { font-size: 111%; font-weight: normal; text-indent: 2em; font-style: italic; }
+#hold_editor h1, #hold_editor h2 { margin: 2px 0; }
+#hold_editor_table th { text-align: right; padding-right: 1em; }

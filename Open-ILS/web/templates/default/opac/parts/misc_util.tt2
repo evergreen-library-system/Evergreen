@@ -30,4 +30,22 @@
         args.format = ctx.find_citm(mattype).value;
         args.format_icon = icon_by_format.$mattype;
     END;
+
+    BLOCK get_hold_status;
+        IF hold.hold.status == 4;
+            l("Available");
+            IF ahr.shelf_expire_time;
+                l('<br/>Expires [_1]', 
+                    date.format(ctx.parse_datetime(ahr.shelf_expire_time), DATE_FORMAT));
+            END;
+        ELSIF hold.hold.estimated_wait AND hold.hold.estimated_wait > 0;
+            # estimated wait is delivered as seconds.
+            SET hwait = POSIX.ceil(hold.hold.estimated_wait / 86400);
+            l("Estimated wait: [quant,_1,day,days]", hwait);
+        ELSIF hold.hold.status == 3;
+            l("In Transit");
+        ELSIF hold.hold.status < 3;
+            l("Waiting for copy");
+        END;
+    END;
 %]
