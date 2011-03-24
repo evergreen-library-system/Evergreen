@@ -17,16 +17,20 @@ CREATE TABLE vandelay.match_set (
 -- Table to define match points, either FF via SVF or tag+subfield
 CREATE TABLE vandelay.match_set_point (
     id          SERIAL  PRIMARY KEY,
-    match_set   INT     NOT NULL REFERENCES vandelay.match_set (id),
-    svf         TEXT    REFERENCES config.record_attr_definition,
+    match_set   INT     REFERENCES vandelay.match_set (id),
+    parent      INT     REFERENCES vandelay.match_set_point (id),
+    bool_op     TEXT    CHECK (bool_op IS NULL OR (bool_op IN ('AND','OR','NOT'))),
+    svf         TEXT    REFERENCES config.record_attr_definition (name),
     tag         TEXT,
     subfield    TEXT,
-    required    BOOL    NOT NULL DEFAULT TRUE,
     quality     INT     NOT NULL DEFAULT 1, -- higher is better
     CONSTRAINT vmsp_need_a_subfield_with_a_tag CHECK ((tag IS NOT NULL AND subfield IS NOT NULL) OR tag IS NULL),
-    CONSTRAINT vmsp_need_a_tag_or_a_ff CHECK ((tag IS NOT NULL AND svf IS NULL) OR (tag IS NULL AND svf IS NOT NULL))
+    CONSTRAINT vmsp_need_a_tag_or_a_ff_or_a_bo CHECK (
+        (tag IS NOT NULL AND svf IS NULL AND bool_op IS NULL) OR
+        (tag IS NULL AND svf IS NOT NULL AND bool_op IS NULL) OR
+        (tag IS NULL AND svf IS NULL AND bool_op IS NOT NULL)
+    )
 );
-CREATE UNIQUE INDEX vmsp_def_once_per_set ON vandelay.match_set_point (match_set, COALESCE(tag,''), COALESCE(subfield,''), COALESCE(svf,''));
 
 CREATE TABLE vandelay.match_set_quality (
     id          SERIAL  PRIMARY KEY,
@@ -500,6 +504,10 @@ BEGIN
 
     first_round := TRUE;
     -- whew ... here we go ...
+
+
+    -- Commented out until replaced by tree-ish version
+/*
     FOR test IN SELECT * FROM vandelay.match_set_point WHERE match_set = my_bib_queue.match_set ORDER BY required DESC LOOP
         IF test.tag IS NOT NULL THEN
             FOR rvalue IN SELECT value FROM vandelay.flatten_marc( xml ) WHERE tag = test.tag AND subfield = test.subfield LOOP
@@ -551,6 +559,7 @@ BEGIN
     FOR tmp_rec IN SELECT * FROM UNNEST(matches) LOOP
         INSERT INTO vandelay.bib_match (matched_set, queued_record, eg_record, quality) VALUES (my_bib_queue.match_set, NEW.id, tmp_rec, (quality_set -> tmp_rec::TEXT));
     END LOOP;
+*/
 
     RETURN NEW;
 END;
