@@ -186,17 +186,20 @@ OpenILS.data.prototype = {
                 break;
                 case 'actsc':
                     found = obj.network.simple_request('FM_ACTSC_RETRIEVE_VIA_PCRUD',[ ses(), { 'id' : { '=' : value } }]);
-                    if (typeof found.ilsevent != 'undefined') throw(found);
+                    if (typeof found.ilsevent != 'undefined') throw(js2JSON(found));
                     found = found[0];
                 break;
                 default: return undefined; break;
             }
             if (typeof found.ilsevent != 'undefined') throw(found);
             if (!obj.hash[key]) obj.hash[key] = {};
-            obj.hash[key][value] = found; obj.list[key].push( found ); obj.stash('hash','list');
+            obj.hash[key][value] = found;
+            if (!obj.list[key]) obj.list[key] = [];
+            obj.list[key].push( found );
+            obj.stash('hash','list');
             return found;
         } catch(E) {
-            this.error.sdump('D_ERROR','Error in OpenILS.data.lookup('+key+','+value+'): ' + js2JSON(E) );
+            alert('Error in OpenILS.data.lookup('+key+','+value+'): ' + E );
             return undefined;
         }
     },
