@@ -76,6 +76,7 @@ ShowUnInstDetails show
 RequestExecutionLevel admin
 
 Section "Staff Client" SECMAIN
+  SetShellVarContext All ; All Users (for shortcuts)
   ; Uninstall old (inno) variant?
   IfFileExists "$INSTDIR/unin000.exe" 0 +3
     ExecWait '"$INSTDIR/unins000.exe" /VERYSILENT'
@@ -234,6 +235,7 @@ Function "un.RemoveFileCheck"
 FunctionEnd
 
 Section Uninstall
+  SetShellVarContext All ; All Users (for shortcuts)
   !insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
