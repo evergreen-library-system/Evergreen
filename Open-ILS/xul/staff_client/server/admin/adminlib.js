@@ -18,7 +18,7 @@ function fetchUser(session) {
     }
     if(!session) throw "User session is not defined";
     SESSION = session;
-    var request = new Request(FETCH_SESSION, session, 1);
+    var request = new Request(FETCH_SESSION, session);
     request.send(true);
     var user = request.result();
     if(checkILSEvent(user)) throw user;
