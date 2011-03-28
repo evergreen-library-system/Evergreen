@@ -3,7 +3,7 @@
 	    xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:id="adminmisc">
 	<info>
 		
-	<title>Server Operations and Maintenance</title>
+	<title>Server Operations</title>
 	<indexterm><primary>receipt template editor</primary></indexterm>
 		<abstract>
 			<para>This chapter deals with basic server operations such as starting and stopping <application>Evergreen</application> as well wall 
@@ -203,7 +203,8 @@ z39_50_start() {
         fi
         sudo -u opensrf bash -c "touch ${SRU_LOG}"
         sudo bash -c \ 
-	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin z39_50.sh >> ${SRU_LOG} 2>&1" &
+	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin \
+	z39_50.sh >> ${SRU_LOG} 2>&1" &
         sleep 1
         pids=`ps -eo pid,args | grep $sru_name | grep -v grep | cut -c1-6`
         if [ x"$pids" = x ] ; then
@@ -290,7 +291,8 @@ case "$1" in
     start_router|stop_router|restart_router|start_perl|stop_perl|restart_perl| \
     start_c|stop_c|restart_c|start_osrf|stop_osrf|restart_osrf|stop_all|start_all|restart_all)
         sudo -u opensrf /bin/bash -c \
-	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh -l -a $1"
+	"PERL5LIB=${PERL5LIB}:${OPENILS_BASE}/lib/perl5 \ 
+	PATH=${PATH}:${OPENILS_BASE}/bin osrf_ctl.sh -l -a $1"
     ;;
     *)
         echo " * Usage: /etc/init.d/evergreen {start|stop|restart|autogen"
@@ -298,7 +300,8 @@ case "$1" in
         echo "	|z39_50_start|z39_50_stop|z39_50_restart"
         echo "  |start_reporter|stop_reporter|restart_reporter"
         echo "	|start_router|stop_router|restart_router|start_perl|stop_perl|restart_perl"
-        echo "	|start_c|stop_c|restart_c|start_osrf|stop_osrf|restart_osrf|stop_all|start_all|restart_all}"
+        echo "	|start_c|stop_c|restart_c|start_osrf|stop_osrf|restart_osrf 
+		|stop_all|start_all|restart_all}"
         exit 1
     ;;
 esac;

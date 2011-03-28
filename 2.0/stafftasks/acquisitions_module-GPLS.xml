@@ -22,25 +22,25 @@
 	add brief records to new, pending or on-order purchase orders.</simpara>
 	<simplesect>
 		<title>Add brief records to a selection list</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Acquisitions &#8594; New Brief Record. You can also add brief records to
+		<procedure>
+		<step><simpara>Click Acquisitions &#8594; New Brief Record. You can also add brief records to
 		an existing selection list by clicking the Actions menu on the selection list
-		and choosing Add Brief Record.</simpara></listitem>
-		<listitem><simpara>Choose a selection list from the drop down menu, or enter the name of a new selection list.</simpara></listitem>
-		<listitem><simpara>Enter bibliographic information in the desired fields.</simpara></listitem>
-		<listitem><simpara>Click Save Record.</simpara></listitem>
-		</orderedlist>
+		and choosing Add Brief Record.</simpara></step>
+		<step><simpara>Choose a selection list from the drop down menu, or enter the name of a new selection list.</simpara></step>
+		<step><simpara>Enter bibliographic information in the desired fields.</simpara></step>
+		<step><simpara>Click Save Record.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Add brief records to purchase orders</title>
 		<simpara>You can add brief records to new or existing purchase orders.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Open or create a purchase order.</simpara></listitem>
-		<listitem><simpara>Click Add Brief Record.</simpara></listitem>
-		<listitem><simpara>Enter bibliographic information in the desired fields. Notice that the
-		record is added to the purchase order that you just created.</simpara></listitem>
-		<listitem><simpara>Click Save Record.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Open or create a purchase order.</simpara></step>
+		<step><simpara>Click Add Brief Record.</simpara></step>
+		<step><simpara>Enter bibliographic information in the desired fields. Notice that the
+		record is added to the purchase order that you just created.</simpara></step>
+		<step><simpara>Click Save Record.</simpara></step>
+		</procedure>
 	</simplesect>
 </section>
 <section id="_cancel_suspend_acquisitions">
@@ -54,30 +54,30 @@
 	<simplesect>
 		<title>Cancel/suspend copies</title>
 		<simpara>You can cancel or suspend line items that are in a state of on order or pending order.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Select the Copies link.</simpara></listitem>
-		<listitem><simpara>Click the Cancel link adjacent to the copy that you wish to cancel.</simpara></listitem>
-		<listitem><simpara>Select a cancel reason from the drop down menu that appears, and click Cancel copy.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Select the Copies link.</simpara></step>
+		<step><simpara>Click the Cancel link adjacent to the copy that you wish to cancel.</simpara></step>
+		<step><simpara>Select a cancel reason from the drop down menu that appears, and click Cancel copy.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Cancel/suspend line items</title>
 		<simpara>You can cancel or suspend line items that are in a state of on order or pending order.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Check the boxes of the line items that you wish to cancel.</simpara></listitem>
-		<listitem><simpara>Click Actions &#8594;Cancel Selected Lineitems.</simpara></listitem>
-		<listitem><simpara>Select a cancel reason from the drop down menu. Choose the cancel reason,
-		and click Cancel Line Items. The status of the line item is now cancelled.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Check the boxes of the line items that you wish to cancel.</simpara></step>
+		<step><simpara>Click Actions &#8594;Cancel Selected Lineitems.</simpara></step>
+		<step><simpara>Select a cancel reason from the drop down menu. Choose the cancel reason,
+		and click Cancel Line Items. The status of the line item is now cancelled.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Cancel/suspend purchase orders</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Notice the Cancel column in the top half of the purchase order.</simpara></listitem>
-		<listitem><simpara>Click the drop down arrow adjacent to Cancel order, and select a reason for
-		cancelling the order.</simpara></listitem>
-		<listitem><simpara>Click Cancel order. The state of the purchase order is cancelled.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Notice the Cancel column in the top half of the purchase order.</simpara></step>
+		<step><simpara>Click the drop down arrow adjacent to Cancel order, and select a reason for
+		cancelling the order.</simpara></step>
+		<step><simpara>Click Cancel order. The state of the purchase order is cancelled.</simpara></step>
+		</procedure>
 	</simplesect>
 </section>
 <section id="_claim_items">
@@ -94,45 +94,45 @@
 		the purchase order. The default claim policy for a provider is established when
 		the provider is created and will be used for claiming if no claim policy has
 		been applied.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Open a selection list or purchase order.</simpara></listitem>
-		<listitem><simpara>Click the Actions drop down menu on the line item.</simpara></listitem>
-		<listitem><simpara>Click Apply Claim Policy.</simpara></listitem>
-		<listitem><simpara>A drop down menu of claim policies will appear. Choose a claim policy to
+		<procedure>
+		<step><simpara>Open a selection list or purchase order.</simpara></step>
+		<step><simpara>Click the Actions drop down menu on the line item.</simpara></step>
+		<step><simpara>Click Apply Claim Policy.</simpara></step>
+		<step><simpara>A drop down menu of claim policies will appear. Choose a claim policy to
 		apply to the line item. The claim policy will be applied to all items that have
-		not been received or cancelled.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		not been received or cancelled.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Change a claim policy</title>
 		<simpara>You can manually change a claim policy that has been applied to a line item.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Open a selection list or purchase order.</simpara></listitem>
-		<listitem><simpara>Click the Actions drop down menu on the line item.</simpara></listitem>
-		<listitem><simpara>Click Change Claim Policy.</simpara></listitem>
-		<listitem><simpara>A drop down menu of claim policies will appear. Choose a claim policy to apply to the line
-		item.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Open a selection list or purchase order.</simpara></step>
+		<step><simpara>Click the Actions drop down menu on the line item.</simpara></step>
+		<step><simpara>Click Change Claim Policy.</simpara></step>
+		<step><simpara>A drop down menu of claim policies will appear. Choose a claim policy to apply to the line
+		item.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Claim an item</title>
 		<simpara>You can manually claim items at any time after the item has been ordered.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Open a purchase order.</simpara></listitem>
-		<listitem><simpara>Click the Actions drop down menu on the line item.</simpara></listitem>
-		<listitem><simpara>Click Claims. The number of existing claims appears in parentheses.</simpara></listitem>
-		<listitem><simpara>A drop down menu of items to be claimed and possible claim actions appears.
+		<procedure>
+		<step><simpara>Open a purchase order.</simpara></step>
+		<step><simpara>Click the Actions drop down menu on the line item.</simpara></step>
+		<step><simpara>Click Claims. The number of existing claims appears in parentheses.</simpara></step>
+		<step><simpara>A drop down menu of items to be claimed and possible claim actions appears.
 		Check the boxes adjacent to the item that you want to claim and the action that
-		you will take. You can claim items that have not been received or cancelled.</simpara></listitem>
-		<listitem><simpara>Click Claim Selected.</simpara></listitem>
-		<listitem><simpara>Select a claim type from the drop down menu. Entering a note is optional.</simpara></listitem>
-		<listitem><simpara>Click Claim.</simpara></listitem>
-		<listitem><simpara>The number of existing claims on the line item updates, and a claim voucher
+		you will take. You can claim items that have not been received or cancelled.</simpara></step>
+		<step><simpara>Click Claim Selected.</simpara></step>
+		<step><simpara>Select a claim type from the drop down menu. Entering a note is optional.</simpara></step>
+		<step><simpara>Click Claim.</simpara></step>
+		<step><simpara>The number of existing claims on the line item updates, and a claim voucher
 		appears. The voucher can be printed and mailed to the vendor to initiate the
-		claim.</simpara></listitem>
-		</orderedlist>
+		claim.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Produce a list of claim-ready items</title>
@@ -141,32 +141,32 @@
 		claiming. Evergreen can produce a list of items, by ordering branch, which is
 		ready to be claimed. You can use this list to manually claim items from your
 		provider.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Acquisitions &#8594;Claim-Ready Items.</simpara></listitem>
-		<listitem><simpara>Choose a branch from the drop down menu to claim items that were ordered by this
-		branch.</simpara></listitem>
-		<listitem><simpara>Any items that meet the conditions for claiming will appear.</simpara></listitem>
-		<listitem><simpara>Check the box adjacent to the line items that you wish to claim. Click Claim selected items.</simpara></listitem>
-		<listitem><simpara>Select a claim type from the drop down menu. Entering a note is optional.</simpara></listitem>
-		<listitem><simpara>Click Claim.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Click Acquisitions &#8594;Claim-Ready Items.</simpara></step>
+		<step><simpara>Choose a branch from the drop down menu to claim items that were ordered by this
+		branch.</simpara></step>
+		<step><simpara>Any items that meet the conditions for claiming will appear.</simpara></step>
+		<step><simpara>Check the box adjacent to the line items that you wish to claim. Click Claim selected items.</simpara></step>
+		<step><simpara>Select a claim type from the drop down menu. Entering a note is optional.</simpara></step>
+		<step><simpara>Click Claim.</simpara></step>
+		</procedure>
 	</simplesect>
 </section>
 <section id="_export_single_attribute_list">
 	<title>Export Single Attribute List</title>
 	<simpara>You can export ISBNs, ISSNs, or UPCs as a file from the list of line item(s). A list of ISBNs, for
 	example, could be uploaded to vendor websites when placing orders.</simpara>
-	<orderedlist numeration="arabic">
-	<listitem><simpara>From a selection list or purchase order, check the boxes of the line items with attributes
-	that you wish to export.</simpara></listitem>
-	<listitem><simpara>Click Actions &#8594; Export Single Attribute List.</simpara></listitem>
-	<listitem><simpara>Choose the line item attribute that you would like to export from the drop down list of
-	attributes.</simpara></listitem>
-	<listitem><simpara>Click Export List.</simpara></listitem>
-	<listitem><simpara>Save the file to your computer.</simpara></listitem>
-	<listitem><simpara>Open the file. Choose a program to open the file. The following is an example of an ISBN in
-	a spreadsheet.</simpara></listitem>
-	</orderedlist>
+	<procedure>
+	<step><simpara>From a selection list or purchase order, check the boxes of the line items with attributes
+	that you wish to export.</simpara></step>
+	<step><simpara>Click Actions &#8594; Export Single Attribute List.</simpara></step>
+	<step><simpara>Choose the line item attribute that you would like to export from the drop down list of
+	attributes.</simpara></step>
+	<step><simpara>Click Export List.</simpara></step>
+	<step><simpara>Save the file to your computer.</simpara></step>
+	<step><simpara>Open the file. Choose a program to open the file. The following is an example of an ISBN in
+	a spreadsheet.</simpara></step>
+	</procedure>
 </section>
 <section id="_funds">
 <title>Funds</title>
@@ -179,27 +179,27 @@
 	their attendant copies.</simpara>
 	<simplesect>
 		<title>Apply funds to individual copies</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click the Copies link on the line item.</simpara></listitem>
-		<listitem><simpara>To apply a fund to an individual item, click the drop down arrow in the Fund field.</simpara>
+		<procedure>
+		<step><simpara>Click the Copies link on the line item.</simpara></step>
+		<step><simpara>To apply a fund to an individual item, click the drop down arrow in the Fund field.</simpara>
 		<note><simpara>A yellow fund name indicates that the balance in the fund has dropped to the
 		warning percent that was entered in the admin module. A red fund name
 		indicates that the balance in the fund has dropped to the stop percent that was
 		entered in the admin module. Funds that have been closed out will no longer
 		appear on the drop down list.</simpara></note>
-		</listitem>
-		</orderedlist>
+		</step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Apply funds to copies via batch updates to line items</title>
 		<simpara>You can apply funds to all copies on a line item(s) from the Actions menu on
 		the selection list or the purchase order.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Check the boxes of the line items with copies to which you would like to apply funds.</simpara></listitem>
-		<listitem><simpara>Click Actions &#8594;Apply Funds to Selected Items.</simpara></listitem>
-		<listitem><simpara>Select the fund that you wish to apply to the copies.</simpara></listitem>
-		<listitem><simpara>Click Submit.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Check the boxes of the line items with copies to which you would like to apply funds.</simpara></step>
+		<step><simpara>Click Actions &#8594;Apply Funds to Selected Items.</simpara></step>
+		<step><simpara>Select the fund that you wish to apply to the copies.</simpara></step>
+		<step><simpara>Click Submit.</simpara></step>
+		</procedure>
 	</simplesect>
 </section>
 <section id="_invoice_acquisitions">
@@ -212,16 +212,16 @@
 		<title>Create a blanket invoice</title>
 		<simpara>You can create a blanket invoice for purchases that are not attached to a
 		purchase order.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Acquisitions &#8594; Create invoice.</simpara></listitem>
-		<listitem><simpara>Enter the invoice information in the top half of the screen. </simpara></listitem>
-		<listitem><simpara>Select a charge type from the drop down menu.</simpara></listitem>
-		<listitem><simpara>Select a fund from the drop down menu.</simpara></listitem>
-		<listitem><simpara>Enter a Title/Description of the resource.</simpara></listitem>
-		<listitem><simpara>Enter the amount that you were billed.</simpara></listitem>
-		<listitem><simpara>Enter the amount that you paid.</simpara></listitem>
-		<listitem><simpara>Save the invoice.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Click Acquisitions &#8594; Create invoice.</simpara></step>
+		<step><simpara>Enter the invoice information in the top half of the screen. </simpara></step>
+		<step><simpara>Select a charge type from the drop down menu.</simpara></step>
+		<step><simpara>Select a fund from the drop down menu.</simpara></step>
+		<step><simpara>Enter a Title/Description of the resource.</simpara></step>
+		<step><simpara>Enter the amount that you were billed.</simpara></step>
+		<step><simpara>Enter the amount that you paid.</simpara></step>
+		<step><simpara>Save the invoice.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Create an invoice for a purchase order</title>
@@ -230,41 +230,41 @@
 		the number of items invoiced, billed, and paid for each line item. With the
 		exception of fields with drop down menus, no limitations on the data that you
 		enter exist.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Open a purchase order.</simpara></listitem>
-		<listitem><simpara>Click Create Invoice.</simpara></listitem>
-		<listitem><simpara>Enter a Vendor Invoice ID. This number may be listed on the paper invoice sent from your
-		vendor.</simpara></listitem>
-		<listitem><simpara>Choose a Receive Method from the drop down menu.</simpara>
+		<procedure>
+		<step><simpara>Open a purchase order.</simpara></step>
+		<step><simpara>Click Create Invoice.</simpara></step>
+		<step><simpara>Enter a Vendor Invoice ID. This number may be listed on the paper invoice sent from your
+		vendor.</simpara></step>
+		<step><simpara>Choose a Receive Method from the drop down menu.</simpara>
 		<note><simpara>Only paper invoicing is available in the 2.0 release. Electronic invoicing
 		may be available in future releases.</simpara></note>
-		</listitem>
-		<listitem><simpara>The Provider is generated from the purchase order and is entered by default.</simpara></listitem>
-		<listitem><simpara>Enter a note.</simpara></listitem>
-		<listitem><simpara>Select a payment method from the drop down menu.</simpara></listitem>
-		<listitem><simpara>The Invoice Date is entered by default as the date that you create the invoice. You can
-		change the date by clicking in the field. A calendar drops down.</simpara></listitem>
-		<listitem><simpara>Enter an Invoice Type.</simpara></listitem>
-		<listitem><simpara>The Shipper defaults to the provider that was entered in the purchase order.</simpara></listitem>
-		<listitem><simpara>Enter a Payment Authorization.</simpara></listitem>
-		<listitem><simpara>The Receiver defaults to the branch at which your workstation is registered. You can
+		</step>
+		<step><simpara>The Provider is generated from the purchase order and is entered by default.</simpara></step>
+		<step><simpara>Enter a note.</simpara></step>
+		<step><simpara>Select a payment method from the drop down menu.</simpara></step>
+		<step><simpara>The Invoice Date is entered by default as the date that you create the invoice. You can
+		change the date by clicking in the field. A calendar drops down.</simpara></step>
+		<step><simpara>Enter an Invoice Type.</simpara></step>
+		<step><simpara>The Shipper defaults to the provider that was entered in the purchase order.</simpara></step>
+		<step><simpara>Enter a Payment Authorization.</simpara></step>
+		<step><simpara>The Receiver defaults to the branch at which your workstation is registered. You can
 		change the receiver by selecting an org unit from the drop down menu.
 		The bibliographic line items are listed in the next section of the invoice. Along with the title
 		and author of the line items is a summary of copies ordered, received, invoiced, claimed, and
 		cancelled. You can also view the amounts estimated, encumbered, and paid for each line item.
 		Finally, each line item has a line item ID and links to the selection list (if used) and the purchase
-		order.</simpara></listitem>
-		<listitem><simpara>Enter the number of items that were invoiced, the amount that the organization was billed,
-		and the amount that the organization paid.</simpara></listitem>
-		<listitem><simpara>You have the option to add charge types if applicable. Charge types are additional charges
+		order.</simpara></step>
+		<step><simpara>Enter the number of items that were invoiced, the amount that the organization was billed,
+		and the amount that the organization paid.</simpara></step>
+		<step><simpara>You have the option to add charge types if applicable. Charge types are additional charges
 		that can be selected from the drop down menu. Common charge types include taxes and
-		handling fees.</simpara></listitem>
-		<listitem><simpara>You have three options for saving an invoice. You can click Save, which saves the changes
+		handling fees.</simpara></step>
+		<step><simpara>You have three options for saving an invoice. You can click Save, which saves the changes
 		that you have made, but keeps the invoice open. You can click Save and Prorate, which
 		enables you to save the invoice and prorate any additional charges, such as taxes, across
 		funds, if multiple funds have been used to pay the invoice. You also can click Save and
-		Close. Choose this option when you have completed the invoice.</simpara></listitem>
-		</orderedlist>
+		Close. Choose this option when you have completed the invoice.</simpara></step>
+		</procedure>
 		<note><simpara>You can re-open a closed invoice by clicking the link, Re-open invoice. This link
 		appears at the bottom of a closed invoice.</simpara></note>
 	</simplesect>
@@ -276,12 +276,12 @@
 		order #1 is retrieved, and the invoice is created. To receive the items on
 		purchase order #2, simply link the invoice to the purchase order. You do not
 		need to recreate it.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Open a purchase order.</simpara></listitem>
-		<listitem><simpara>Click Link Invoice.</simpara></listitem>
-		<listitem><simpara>Enter the Invoice # and the Provider of the invoice to which you wish to link.</simpara></listitem>
-		<listitem><simpara>Click Link.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Open a purchase order.</simpara></step>
+		<step><simpara>Click Link Invoice.</simpara></step>
+		<step><simpara>Enter the Invoice # and the Provider of the invoice to which you wish to link.</simpara></step>
+		<step><simpara>Click Link.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>View an invoice</title>
@@ -308,35 +308,35 @@
 		<title>Add alerts to a line item</title>
 		<simpara>Alerts are pop up messages that appear when an item is received. Alerts can be
 		printed on the line item worksheet.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click the Notes link on the line item.</simpara></listitem>
-		<listitem><simpara>Click the New Alert drop down button.</simpara></listitem>
-		<listitem><simpara>Choose an alert code from the drop down menu.</simpara></listitem>
-		<listitem><simpara>Add additional comments if desired.</simpara></listitem>
-		<listitem><simpara>Click Create. The alert will display on the screen.</simpara></listitem>
-		<listitem><simpara>Click Return to return to the line item. When you return to the line item,
-		a flag will appear to indicate that an alert is on the line item.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Click the Notes link on the line item.</simpara></step>
+		<step><simpara>Click the New Alert drop down button.</simpara></step>
+		<step><simpara>Choose an alert code from the drop down menu.</simpara></step>
+		<step><simpara>Add additional comments if desired.</simpara></step>
+		<step><simpara>Click Create. The alert will display on the screen.</simpara></step>
+		<step><simpara>Click Return to return to the line item. When you return to the line item,
+		a flag will appear to indicate that an alert is on the line item.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Add copies to a line item</title>
 		<simpara>Use the Copies link to add copy information to a line item. You can add copies
 		to line items on a selection list or a purchase order.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click the Copies link on a line item.</simpara></listitem>
-		<listitem><simpara>Enter the number of items that you want to order in Item Count, and click Go. The number
-		of items that you want to order will display below.</simpara></listitem>
-		<listitem><simpara>If desired, apply a Distribution Formula from the drop down list. Distribution formulas tell
-		the ILS how many copies should be distributed to each location.</simpara></listitem>
-		<listitem><simpara>The owning branch and shelving location populate with entries from the distribution
-		formula. Click Apply.</simpara></listitem>
-		<listitem><simpara>Look back at the top gray row of text boxes above the distribution formula. Each text box in
+		<procedure>
+		<step><simpara>Click the Copies link on a line item.</simpara></step>
+		<step><simpara>Enter the number of items that you want to order in Item Count, and click Go. The number
+		of items that you want to order will display below.</simpara></step>
+		<step><simpara>If desired, apply a Distribution Formula from the drop down list. Distribution formulas tell
+		the ILS how many copies should be distributed to each location.</simpara></step>
+		<step><simpara>The owning branch and shelving location populate with entries from the distribution
+		formula. Click Apply.</simpara></step>
+		<step><simpara>Look back at the top gray row of text boxes above the distribution formula. Each text box in
 		this row corresponds to the columns below. Changes made here will be applied to all
-		copies below. Click Batch Update.</simpara></listitem>
-		<listitem><simpara>Click Save Changes.</simpara></listitem>
-		<listitem><simpara>Click Return to return to the selection list or purchase order.</simpara></listitem>
-		<listitem><simpara>Add the item’s price to the line item in the Estimated Price field.</simpara></listitem>
-		</orderedlist>
+		copies below. Click Batch Update.</simpara></step>
+		<step><simpara>Click Save Changes.</simpara></step>
+		<step><simpara>Click Return to return to the selection list or purchase order.</simpara></step>
+		<step><simpara>Add the item’s price to the line item in the Estimated Price field.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Add notes to a line item</title>
@@ -344,17 +344,17 @@
 		to the line item. Notes can be internal or can be made available to providers.
 		Notes appear in a pop up box when an item is received. Notes can be printed on
 		line item worksheets, which can be printed and placed in books for processing.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click the Notes link on the line item.</simpara></listitem>
-		<listitem><simpara>Click the New Note drop down button.</simpara></listitem>
-		<listitem><simpara>Enter a note.</simpara></listitem>
-		<listitem><simpara>You have the option to make this note available to your provider. Click the
-		check box adjacent to Note is vendor-public.</simpara></listitem>
-		<listitem><simpara>Click Create. The note will appear on the screen.</simpara></listitem>
-		<listitem><simpara>Click Return to return to the line item. When you return to the line item,
+		<procedure>
+		<step><simpara>Click the Notes link on the line item.</simpara></step>
+		<step><simpara>Click the New Note drop down button.</simpara></step>
+		<step><simpara>Enter a note.</simpara></step>
+		<step><simpara>You have the option to make this note available to your provider. Click the
+		check box adjacent to Note is vendor-public.</simpara></step>
+		<step><simpara>Click Create. The note will appear on the screen.</simpara></step>
+		<step><simpara>Click Return to return to the line item. When you return to the line item,
 		a number in parentheses adjacent to notes indicates how many notes are attached
-		to the item.</simpara></listitem>
-		</orderedlist>
+		to the item.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Holdings maintenance</title>
@@ -365,12 +365,12 @@
 		<title>Link to invoice</title>
 		<simpara>Use the Link to invoice menu item to link the line item to an invoice that
 		already exists in the ILS.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Actions &#8594; Link to Invoice.</simpara></listitem>
-		<listitem><simpara>A pop up box appears. Enter an invoice number.</simpara></listitem>
-		<listitem><simpara>Enter a provider. The field will auto-complete.</simpara></listitem>
-		<listitem><simpara>Click Link.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Click Actions &#8594; Link to Invoice.</simpara></step>
+		<step><simpara>A pop up box appears. Enter an invoice number.</simpara></step>
+		<step><simpara>Enter a provider. The field will auto-complete.</simpara></step>
+		<step><simpara>Click Link.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Update barcodes</title>
@@ -392,11 +392,11 @@
 		details about the line item, including alerts and notes, and distribution of
 		the copies. This worksheet could placed in a book that is sent to cataloging or
 		processing.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>From a selection list or purchase order, click the worksheet link on the line item.</simpara></listitem>
-		<listitem><simpara>The line item worksheet appears.</simpara></listitem>
-		<listitem><simpara>To print the worksheet, click the Print Page link in the top right corner.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>From a selection list or purchase order, click the worksheet link on the line item.</simpara></step>
+		<step><simpara>The line item worksheet appears.</simpara></step>
+		<step><simpara>To print the worksheet, click the Print Page link in the top right corner.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Link line items to the catalog</title>
@@ -407,14 +407,14 @@
 		enables you to search for a matching record and link to it from the selection list or purchase
 		order. When you import the record from the purchase order, the record will overlay the linked
 		record in the catalog.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>From the line item, click Link to catalog.</simpara></listitem>
-		<listitem><simpara>In the text box that pops up, search terms, such as ISBN and title, are entered by default.</simpara></listitem>
-		<listitem><simpara>Click Search.</simpara></listitem>
-		<listitem><simpara>Result(s) appear. Click the link to View MARC, or Select the record to link it to the record on
-		the selection list or purchase order.</simpara></listitem>
-		<listitem><simpara>The screen will reload, and the line item displays with a catalog link. The records are linked.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>From the line item, click Link to catalog.</simpara></step>
+		<step><simpara>In the text box that pops up, search terms, such as ISBN and title, are entered by default.</simpara></step>
+		<step><simpara>Click Search.</simpara></step>
+		<step><simpara>Result(s) appear. Click the link to View MARC, or Select the record to link it to the record on
+		the selection list or purchase order.</simpara></step>
+		<step><simpara>The screen will reload, and the line item displays with a catalog link. The records are linked.</simpara></step>
+		</procedure>
 	</simplesect>
 </section>
 <section id="_load_bib_records_and_items_into_the_catalog">
@@ -445,22 +445,22 @@
 		extra copy of six titles. Your copy/hold ratio report includes the record ID of
 		each title. You can save the record IDs into a CSV file, upload the file into
 		the ILS, and create a purchase order for the items.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Create a CSV file with the record ID of each catalog record in the first
+		<procedure>
+		<step><simpara>Create a CSV file with the record ID of each catalog record in the first
 		column of the spreadsheet. You can create this CSV file from a spreadsheet
 		generated by a report, as suggested in the aforementioned example. You can also
 		copy and paste record IDs from the catalog record into the CSV file.</simpara>
 		<note><simpara>Record IDs are auto-generated digits associated with each record. They are
 		found in the Record Summary that appears at the top of each record.</simpara></note>
-		</listitem>
-		<listitem><simpara>Save the CSV file to your computer.</simpara></listitem>
-		<listitem><simpara>Click Acquisitions &#8594; Load Catalog Record IDs.</simpara></listitem>
-		<listitem><simpara>Click Load More Terms.</simpara></listitem>
-		<listitem><simpara>The screen will display the number of terms (record IDs) that have been loaded.</simpara></listitem>
-		<listitem><simpara>Click Retrieve Records. The records will appear as line items to which you can add copies,
+		</step>
+		<step><simpara>Save the CSV file to your computer.</simpara></step>
+		<step><simpara>Click Acquisitions &#8594; Load Catalog Record IDs.</simpara></step>
+		<step><simpara>Click Load More Terms.</simpara></step>
+		<step><simpara>The screen will display the number of terms (record IDs) that have been loaded.</simpara></step>
+		<step><simpara>Click Retrieve Records. The records will appear as line items to which you can add copies,
 		notes, and pricing information. Use the Actions menu to save these items to a selection list or
-		purchase order.</simpara></listitem>
-		</orderedlist>
+		purchase order.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Load MARC Order Records</title>
@@ -468,46 +468,46 @@
 		saved on your computer into the ILS. You can add the records to a selection list and/or to a
 		purchase order. You can both create and activate purchase orders in one step from this
 		interface. Also, from this interface, you can load bibs and items into the catalog.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Acquisitions &#8594; Load MARC Order Records</simpara></listitem>
-		<listitem><simpara>If you want to upload the MARC records to a new purchase order, then click the check box
-		adjacent to Create Purchase Order.</simpara></listitem>
-		<listitem><simpara>If you want to activate the purchase order at the time of creation, then click the check box
-		adjacent to Activate Purchase Order.</simpara></listitem>
-		<listitem><simpara>If you want to load bibs and items into the catalog, then click the check box adjacent to
-		Load Bibs and Items into the ILS.</simpara></listitem>
-		<listitem><simpara>Enter the name of the Provider. The text will auto-complete.</simpara></listitem>
-		<listitem><simpara>Select an org unit from the drop down menu. The context org unit is the org unit that
+		<procedure>
+		<step><simpara>Click Acquisitions &#8594; Load MARC Order Records</simpara></step>
+		<step><simpara>If you want to upload the MARC records to a new purchase order, then click the check box
+		adjacent to Create Purchase Order.</simpara></step>
+		<step><simpara>If you want to activate the purchase order at the time of creation, then click the check box
+		adjacent to Activate Purchase Order.</simpara></step>
+		<step><simpara>If you want to load bibs and items into the catalog, then click the check box adjacent to
+		Load Bibs and Items into the ILS.</simpara></step>
+		<step><simpara>Enter the name of the Provider. The text will auto-complete.</simpara></step>
+		<step><simpara>Select an org unit from the drop down menu. The context org unit is the org unit that
 		"owns" the bib record. You should select a physical location rather than a political or
 		administrative org unit as the context org unit. For example, the Smith County Library
 		System is funding purchase of a copy of Gone with the Wind. The system owns the bib
 		record, but it cannot receive the physical item. The acquisitions librarian will choose a
 		physical branch of that system, a processing center or an individual branch, to receive the
-		item.</simpara></listitem>
-		<listitem><simpara>If you want to upload the records to a selection list, you can select a list from the drop down
-		menu, or type in the name of the selection list that you want to create.</simpara></listitem>
-		<listitem><simpara>Click Browse to search for the file of bibliographic records.</simpara></listitem>
-		<listitem><simpara>Click Upload.</simpara></listitem>
-		<listitem><simpara>A summary of the items that have been processed will appear.</simpara></listitem>
-		<listitem><simpara>Click the links that appear to view the purchase order or the selection list.</simpara></listitem>
-		</orderedlist>
+		item.</simpara></step>
+		<step><simpara>If you want to upload the records to a selection list, you can select a list from the drop down
+		menu, or type in the name of the selection list that you want to create.</simpara></step>
+		<step><simpara>Click Browse to search for the file of bibliographic records.</simpara></step>
+		<step><simpara>Click Upload.</simpara></step>
+		<step><simpara>A summary of the items that have been processed will appear.</simpara></step>
+		<step><simpara>Click the links that appear to view the purchase order or the selection list.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>MARC Federated Search</title>
 		<simpara>The MARC Federated Search enables you to import bibliographic records into a selection list or
 		purchase order from a Z39.50 source.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Acquisitions &#8594; MARC Federated Search.</simpara></listitem>
-		<listitem><simpara>Check the boxes of Z39.50 services that you want to search. Your local Evergreen Catalog is
-		checked by default. Click Submit.</simpara></listitem>
-		<listitem><simpara>A list of results will appear. Click the Copies link to add copy information to the line item.</simpara></listitem>
-		<listitem><simpara>Click the Notes link to add notes or line item alerts to the line item.</simpara></listitem>
-		<listitem><simpara>Enter a price in the Estimated Price field.</simpara></listitem>
-		<listitem><simpara>You can save the line item(s) to a selection list by checking the box on the line item and
+		<procedure>
+		<step><simpara>Click Acquisitions &#8594; MARC Federated Search.</simpara></step>
+		<step><simpara>Check the boxes of Z39.50 services that you want to search. Your local Evergreen Catalog is
+		checked by default. Click Submit.</simpara></step>
+		<step><simpara>A list of results will appear. Click the Copies link to add copy information to the line item.</simpara></step>
+		<step><simpara>Click the Notes link to add notes or line item alerts to the line item.</simpara></step>
+		<step><simpara>Enter a price in the Estimated Price field.</simpara></step>
+		<step><simpara>You can save the line item(s) to a selection list by checking the box on the line item and
 		clicking Actions &#8594;Save Items to Selection List. You can also create a purchase order from
 		the line item(s) by checking the box on the line item and clicking Actions &#8594; Create
-		Purchase Order.</simpara></listitem>
-		</orderedlist>
+		Purchase Order.</simpara></step>
+		</procedure>
 	</simplesect>
 </section>
 <section id="_patron_requests">
@@ -525,13 +525,13 @@
 	<simplesect>
 	<title>Activate a purchase order</title>
 	<simpara>Before you can active a purchase order, the following criteria must be met:</simpara>
-	<orderedlist numeration="arabic">
-	<listitem><simpara>The field, Activate Order?, is located in the top half of the purchase order. The answer
-	adjacent to this field must be Yes.</simpara></listitem>
-	<listitem><simpara>Each line item must contain an estimated price. If the Activate Order? field in the top half
+	<procedure>
+	<step><simpara>The field, Activate Order?, is located in the top half of the purchase order. The answer
+	adjacent to this field must be Yes.</simpara></step>
+	<step><simpara>Each line item must contain an estimated price. If the Activate Order? field in the top half
 	of the purchase order reads, No: The lineitem has no price (ACQ_LINEITEM_NO_PRICE),
-	then simply enter a price in the estimated price field, tab out of the field, and click Reload.</simpara></listitem>
-	</orderedlist><simpara>When the above criteria have been met, proceed with the following:
+	then simply enter a price in the estimated price field, tab out of the field, and click Reload.</simpara></step>
+	</procedure><simpara>When the above criteria have been met, proceed with the following:
 	  . Look at the Activate Order? field in the top half of the purchase order. Click the
 	hyperlinked Activate Order. When you activate the order, the bibliographic records and
 	copies will be imported into the catalog, and the funds associated with the purchases will be
@@ -543,43 +543,43 @@
 		<simpara>You can add charges, taxes, fees, or discounts to a purchase order. These
 		additional charges will be reflected in the amounts that are estimated and
 		encumbered on the purchase order.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Open or create a purchase order.</simpara></listitem>
-		<listitem><simpara>Click New charge.</simpara></listitem>
-		<listitem><simpara>Select a charge type from the drop down menu.</simpara></listitem>
-		<listitem><simpara>Select a fund from the drop down menu.</simpara></listitem>
-		<listitem><simpara>Enter a Title/Description, Author, and Note if applicable.</simpara></listitem>
-		<listitem><simpara>Enter an estimated cost.</simpara></listitem>
-		<listitem><simpara>Add another new charge, or click Save New Charges.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Open or create a purchase order.</simpara></step>
+		<step><simpara>Click New charge.</simpara></step>
+		<step><simpara>Select a charge type from the drop down menu.</simpara></step>
+		<step><simpara>Select a fund from the drop down menu.</simpara></step>
+		<step><simpara>Enter a Title/Description, Author, and Note if applicable.</simpara></step>
+		<step><simpara>Enter an estimated cost.</simpara></step>
+		<step><simpara>Add another new charge, or click Save New Charges.</simpara></step>
+		</procedure>
 		<note><simpara>Discounts are not consistently supported in the 2.0 release.</simpara></note>
 	</simplesect>
 	<simplesect>
 		<title>Add notes to a purchase order</title>
 		<simpara>You can add notes to each purchase order. These can be viewed by staff and/or
 		by the provider. By default, notes are only visible to staff.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Open a purchase order.</simpara></listitem>
-		<listitem><simpara>In the top half of the purchase order, you see a Notes field. The number of notes that are
-		attached to the purchase order is hyperlinked in parentheses next to the Notes field.</simpara></listitem>
-		<listitem><simpara>Click the hyperlinked number.</simpara></listitem>
-		<listitem><simpara>Click New Note.</simpara></listitem>
-		<listitem><simpara>Enter the note. If you wish to make it available to the provider, click the check box adjacent
-		to Note is vendor-public.</simpara></listitem>
-		<listitem><simpara>Click Create.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Open a purchase order.</simpara></step>
+		<step><simpara>In the top half of the purchase order, you see a Notes field. The number of notes that are
+		attached to the purchase order is hyperlinked in parentheses next to the Notes field.</simpara></step>
+		<step><simpara>Click the hyperlinked number.</simpara></step>
+		<step><simpara>Click New Note.</simpara></step>
+		<step><simpara>Enter the note. If you wish to make it available to the provider, click the check box adjacent
+		to Note is vendor-public.</simpara></step>
+		<step><simpara>Click Create.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Create a purchase order</title>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Acquisitions → Create Purchase Order.</simpara></listitem>
-		<listitem><simpara>A pop-up box appears. Select an owning library from the drop down menu.</simpara></listitem>
-		<listitem><simpara>Enter a provider in the box. The text will auto complete.</simpara></listitem>
-		<listitem><simpara>Check the box adjacent to Prepayment Required.</simpara></listitem>
-		<listitem><simpara>Click Save.</simpara></listitem>
-		<listitem><simpara>The purchase order has been created. You can now create a new charge type or add a brief
-		record.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Click Acquisitions → Create Purchase Order.</simpara></step>
+		<step><simpara>A pop-up box appears. Select an owning library from the drop down menu.</simpara></step>
+		<step><simpara>Enter a provider in the box. The text will auto complete.</simpara></step>
+		<step><simpara>Check the box adjacent to Prepayment Required.</simpara></step>
+		<step><simpara>Click Save.</simpara></step>
+		<step><simpara>The purchase order has been created. You can now create a new charge type or add a brief
+		record.</simpara></step>
+		</procedure>
 		<note><simpara>The Total Estimated is the sum of the prices. The Total Encumbered is the total
 		estimated that is encumbered when the purchase order is activated. The Total
 		Spent column automatically updates when the items are invoiced.</simpara></note>
@@ -588,30 +588,30 @@
 		<title>Mark ready for order</title>
 	<simpara>After an item has been added to a selection list or purchase order, you can mark it ready for
 		order. This step is optional but may be useful to individual workflows.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>If you want to mark part of a selection list ready for selector, then you can check the box(es)
+		<procedure>
+		<step><simpara>If you want to mark part of a selection list ready for selector, then you can check the box(es)
 		of the line item(s) that you wish to mark ready for selector. If you want to mark the entire
-		list ready for selector, then skip to step 2.</simpara></listitem>
-		<listitem><simpara>Click Actions &#8594; Mark Ready for Order.</simpara></listitem>
-		<listitem><simpara>A pop up box will appear. Choose to mark the selected line items or all line items.</simpara></listitem>
-		<listitem><simpara>Click Go.</simpara></listitem>
-		<listitem><simpara>The screen will refresh. The line item will be highlighted gray, and the status will change to
-		order-ready.</simpara></listitem>
-		</orderedlist>
+		list ready for selector, then skip to step 2.</simpara></step>
+		<step><simpara>Click Actions &#8594; Mark Ready for Order.</simpara></step>
+		<step><simpara>A pop up box will appear. Choose to mark the selected line items or all line items.</simpara></step>
+		<step><simpara>Click Go.</simpara></step>
+		<step><simpara>The screen will refresh. The line item will be highlighted gray, and the status will change to
+		order-ready.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Name a purchase order</title>
 	<simpara>A new purchase order is given the purchase order ID as a default name. However,
 		you can change that name to any grouping of letters or numbers. You can reuse
 		purchase order names as long as a name is never used twice in the same year.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Open or create a purchase order.</simpara></listitem>
-		<listitem><simpara>The Name of the purchase order is in the top left column of the purchase order. The
-		hyperlinked number is an internal ID number that Evergreen has assigned.</simpara></listitem>
-		<listitem><simpara>To change this number, click on the hyperlinked ID.</simpara></listitem>
-		<listitem><simpara>Enter a new purchase order number in the pop up box.</simpara></listitem>
-		<listitem><simpara>Click OK.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Open or create a purchase order.</simpara></step>
+		<step><simpara>The Name of the purchase order is in the top left column of the purchase order. The
+		hyperlinked number is an internal ID number that Evergreen has assigned.</simpara></step>
+		<step><simpara>To change this number, click on the hyperlinked ID.</simpara></step>
+		<step><simpara>Enter a new purchase order number in the pop up box.</simpara></step>
+		<step><simpara>Click OK.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Print purchase orders</title>
@@ -619,22 +619,22 @@
 		note to a line item, the note will only appear in the Notes column on the
 		printed purchase order if you make the note vendor-public. Currently, no notes
 		appear in the Notes to the Vendor section of the printed purchase order.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Open a purchase order.</simpara></listitem>
-		<listitem><simpara>Click Actions &#8594; Print Purchase Order.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Open a purchase order.</simpara></step>
+		<step><simpara>Click Actions &#8594; Print Purchase Order.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Split order by line items</title>
 	<simpara>You can create a purchase order with multiple line items, and then split the
 		purchase order so that each line item is on separate purchase orders.</simpara><simpara>When a purchase order is in the status of pending, a link to split order by
 		Lineitems appears in the bottom left corner of the top half of the screen.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Split Order by Lineitems.</simpara></listitem>
-		<listitem><simpara>A pop up box will confirm that you want to split the purchase order. Click OK to continue.</simpara></listitem>
-		<listitem><simpara>The items will display by default as a virtual combined purchase order. Future
-		enhancements will allow you to activate the purchase order for each item from this screen.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Click Split Order by Lineitems.</simpara></step>
+		<step><simpara>A pop up box will confirm that you want to split the purchase order. Click OK to continue.</simpara></step>
+		<step><simpara>The items will display by default as a virtual combined purchase order. Future
+		enhancements will allow you to activate the purchase order for each item from this screen.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>View On-Order Purchase Orders</title>
@@ -647,13 +647,13 @@
 	<simplesect>
 		<title>View EDI messages on a purchase order</title>
 	<simpara>You can view electronic messages from your vendor about a specific purchase order.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Open a purchase order.</simpara></listitem>
-		<listitem><simpara>In the top half of the purchase order, you see an EDI Messages field. The number of
+		<procedure>
+		<step><simpara>Open a purchase order.</simpara></step>
+		<step><simpara>In the top half of the purchase order, you see an EDI Messages field. The number of
 		messages that are attached to the purchase order is hyperlinked in parentheses next to the
-		EDI Messages field.</simpara></listitem>
-		<listitem><simpara>Click the hyperlinked number to view the messages.</simpara></listitem>
-		</orderedlist>
+		EDI Messages field.</simpara></step>
+		<step><simpara>Click the hyperlinked number to view the messages.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>View Purchase Order History</title>
@@ -699,17 +699,17 @@
 	<note><simpara>Users may wish to begin their acquisitions process by searching line items
 	and catalog records. This ensures that they do not purchase an item that the
 	library already owns or is on another selection list or purchase order.</simpara></note>
-	<orderedlist numeration="arabic">
-	<listitem><simpara>Choose the object that you would like to search from the drop down menu.</simpara></listitem>
-	<listitem><simpara>Next, refine your search by choosing the specific fields that you would like to search. Click
+	<procedure>
+	<step><simpara>Choose the object that you would like to search from the drop down menu.</simpara></step>
+	<step><simpara>Next, refine your search by choosing the specific fields that you would like to search. Click
 	Add Search Term to add more fields. Search terms are ANDed together. Click the red X at
 	the end of each row to delete search terms. Some search terms will be disabled depending
-	on your choice of items to search.</simpara></listitem>
-	<listitem><simpara>After you have added search term(s), click Search or click the Enter key. A list of results
-	appears.</simpara></listitem>
-	<listitem><simpara>If you want to edit your search, click the Reveal Search button in the top right corner of the
-	results screen to display your search.</simpara></listitem>
-	</orderedlist>
+	on your choice of items to search.</simpara></step>
+	<step><simpara>After you have added search term(s), click Search or click the Enter key. A list of results
+	appears.</simpara></step>
+	<step><simpara>If you want to edit your search, click the Reveal Search button in the top right corner of the
+	results screen to display your search.</simpara></step>
+	</procedure>
 </section>
 <section id="acquisitons__selection_lists">
 	<title>Selection Lists</title>
@@ -724,12 +724,12 @@
 		Federated Search. In each of these interfaces, you will find the Add to Selection List field.
 		Enter the name of the selection list that you want to create in that field.
 		Selection lists can also be created through the My Selection Lists interface:</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Acquisitions → My Selection Lists.</simpara></listitem>
-		<listitem><simpara>Click the New Selection List drop down arrow.</simpara></listitem>
-		<listitem><simpara>Enter the name of the selection list in the box that appears.</simpara></listitem>
-		<listitem><simpara>Click Create.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Click Acquisitions → My Selection Lists.</simpara></step>
+		<step><simpara>Click the New Selection List drop down arrow.</simpara></step>
+		<step><simpara>Enter the name of the selection list in the box that appears.</simpara></step>
+		<step><simpara>Click Create.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Add items to a selection list</title>
@@ -742,73 +742,73 @@
 	<simpara>Cloning selection lists enables you to copy one selection list into a new
 		selection list. You can maintain both copies of the list, or you can delete the
 		previous list.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Acquisitions &#8594; My Selection Lists.</simpara></listitem>
-		<listitem><simpara>Check the box adjacent to the list that you want to clone.</simpara></listitem>
-		<listitem><simpara>Click Clone Selected.</simpara></listitem>
-		<listitem><simpara>Enter a name into the box that appears, and click Clone.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Click Acquisitions &#8594; My Selection Lists.</simpara></step>
+		<step><simpara>Check the box adjacent to the list that you want to clone.</simpara></step>
+		<step><simpara>Click Clone Selected.</simpara></step>
+		<step><simpara>Enter a name into the box that appears, and click Clone.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Merge selection lists</title>
 	<simpara>You can merge two or more selection lists into one selection list.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Acquisitions &#8594; My Selection Lists.</simpara></listitem>
-		<listitem><simpara>Check the boxes adjacent to the selection lists that you want to merge, and click Merge
-		Selected.</simpara></listitem>
-		<listitem><simpara>Choose the Lead Selection List from the drop down menu. This is the list to which the items
-		on the other list(s) will be transferred.</simpara></listitem>
-		<listitem><simpara>Click Merge.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Click Acquisitions &#8594; My Selection Lists.</simpara></step>
+		<step><simpara>Check the boxes adjacent to the selection lists that you want to merge, and click Merge
+		Selected.</simpara></step>
+		<step><simpara>Choose the Lead Selection List from the drop down menu. This is the list to which the items
+		on the other list(s) will be transferred.</simpara></step>
+		<step><simpara>Click Merge.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Delete selection lists</title>
 	<simpara>You can delete selection lists that you do not want to save. You will not be able to retrieve
 		these items through the General Search after you have deleted the list. You must delete all line
 		items from a selection list before you can delete the list.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>Click Acquisitions &#8594; My Selection Lists.</simpara></listitem>
-		<listitem><simpara>Check the box adjacent to the selection list(s) that you want to delete.</simpara></listitem>
-		<listitem><simpara>Click Delete Selected.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>Click Acquisitions &#8594; My Selection Lists.</simpara></step>
+		<step><simpara>Check the box adjacent to the selection list(s) that you want to delete.</simpara></step>
+		<step><simpara>Click Delete Selected.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Mark Ready for Selector</title>
 	<simpara>After an item has been added to a selection list or purchase order, you can
 		mark it ready for selector. This step is optional but may be useful to
 		individual workflows.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>If you want to mark part of a selection list ready for selector, then you can check the box(es)
+		<procedure>
+		<step><simpara>If you want to mark part of a selection list ready for selector, then you can check the box(es)
 		of the line item(s) that you wish to mark ready for selector. If you want to mark the entire
-		list ready for selector, then skip to step 2.</simpara></listitem>
-		<listitem><simpara>Click Actions &#8594; Mark Ready for Selector.</simpara></listitem>
-		<listitem><simpara>A pop up box will appear. Choose to mark the selected line items or all line items.</simpara></listitem>
-		<listitem><simpara>Click Go.</simpara></listitem>
-		<listitem><simpara>The screen will refresh. The marked line item(s) will be highlighted pink, and the status
-		changes to selector-ready.</simpara></listitem>
-		</orderedlist>
+		list ready for selector, then skip to step 2.</simpara></step>
+		<step><simpara>Click Actions &#8594; Mark Ready for Selector.</simpara></step>
+		<step><simpara>A pop up box will appear. Choose to mark the selected line items or all line items.</simpara></step>
+		<step><simpara>Click Go.</simpara></step>
+		<step><simpara>The screen will refresh. The marked line item(s) will be highlighted pink, and the status
+		changes to selector-ready.</simpara></step>
+		</procedure>
 	</simplesect>
 	<simplesect>
 		<title>Convert selection list to purchase order</title>
 	<simpara>Use the Actions menu to convert a selection list to a purchase order.</simpara>
-		<orderedlist numeration="arabic">
-		<listitem><simpara>From a selection list, click Actions &#8594; Create Purchase Order.</simpara></listitem>
-		<listitem><simpara>A pop up box will appear.</simpara></listitem>
-		<listitem><simpara>Select the ordering agency from the drop down menu.</simpara></listitem>
-		<listitem><simpara>Enter the provider.</simpara></listitem>
-		<listitem><simpara>Check the box adjacent to prepayment required if prepayment is required.</simpara></listitem>
-		<listitem><simpara>Choose if you will add All Lineitems or Selected Lineitems to your purchase order.</simpara></listitem>
-		<listitem><simpara>Check the box if you want to Import Bibs and Create Copies in the catalog.</simpara></listitem>
-		<listitem><simpara>Click Submit.</simpara></listitem>
-		</orderedlist>
+		<procedure>
+		<step><simpara>From a selection list, click Actions &#8594; Create Purchase Order.</simpara></step>
+		<step><simpara>A pop up box will appear.</simpara></step>
+		<step><simpara>Select the ordering agency from the drop down menu.</simpara></step>
+		<step><simpara>Enter the provider.</simpara></step>
+		<step><simpara>Check the box adjacent to prepayment required if prepayment is required.</simpara></step>
+		<step><simpara>Choose if you will add All Lineitems or Selected Lineitems to your purchase order.</simpara></step>
+		<step><simpara>Check the box if you want to Import Bibs and Create Copies in the catalog.</simpara></step>
+		<step><simpara>Click Submit.</simpara></step>
+		</procedure>
 	</simplesect>
 </section>
 <section id="acquisitons_view_place_orders">
 	<title>View/Place Orders</title>
-	<orderedlist numeration="arabic">
-	<listitem><simpara>Open a bib record.</simpara></listitem>
-	<listitem><simpara>Click Actions for this Record &#8594; View/Place Orders.</simpara></listitem>
-	<listitem><simpara>Click Add to Selection List, or click Create Purchase Order.</simpara></listitem>
-	</orderedlist>
+	<procedure>
+	<step><simpara>Open a bib record.</simpara></step>
+	<step><simpara>Click Actions for this Record &#8594; View/Place Orders.</simpara></step>
+	<step><simpara>Click Add to Selection List, or click Create Purchase Order.</simpara></step>
+	</procedure>
 </section>
 </chapter>

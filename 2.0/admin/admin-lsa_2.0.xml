@@ -581,8 +581,7 @@
          <title>Closed Dates Editor</title>
 	<indexterm><primary>closed dates editor</primary></indexterm>
       </info>
-      <para>These dates are in addition to your regular weekly closed days (see <xref
-            linkend="server-hours"/>).    Both regular closed days and those entered in the
+      <para>These dates are in addition to your regular weekly closed days. Both regular closed days and those entered in the
             <guilabel>Closed Dates Editor</guilabel> affect due dates and fines:</para>
       <itemizedlist>
          <listitem>
@@ -881,9 +880,8 @@
 
                   <row>
                      <entry>Default Item Price</entry>
-                     <entry>Replacement charge for lost items if price is unset in the <guilabel>
-                           <link linkend="add-editor">Copy Editor</link>
-                        </guilabel>. Does not apply if item price is set to $0</entry>
+                     <entry>Replacement charge for lost items if price is unset in the <guilabel>Copy Editor</guilabel>. 
+			Does not apply if item price is set to $0</entry>
                      <entry><link linkend="lsa-data-types">Number</link> (dollars)</entry>
                     
                      <entry/>
@@ -910,7 +908,7 @@
 
                   <row xml:id="lsa-library-settings-button">
                      <entry>GUI: Above-Tab Button Bar </entry>
-                     <entry>If true the staff client <link linkend="button-bar">button bar</link>
+                     <entry>If true the staff client button bar
                         appears by default on all workstations registered to your library; staff can
                         override this setting at each login.</entry>
                      <entry>

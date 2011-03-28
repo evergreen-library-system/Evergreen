@@ -15897,7 +15897,7 @@
 				
 				
           					<varlistentry>
-            						<term>copy_transparency_loan_duration_check</term>
+            						<term>copy_ transparency_ loan_ duration_ check</term>
             						<listitem><para>CHECK ((loan_duration = ANY (ARRAY[1, 2, 3])))</para></listitem>
           					</varlistentry>
 						
