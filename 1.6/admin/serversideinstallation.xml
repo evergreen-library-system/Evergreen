@@ -2040,10 +2040,10 @@ OpenILS::WWW::Redirect->parse_ips_file('/openils/conf/lib_ips.txt');
 						<?dbfo keep-together="always" ?>
 						<title>Linux / Evergreen Virtual Images</title>
 						<tgroup align="left" cols="4" colsep="1" rowsep="1">
-							<colspec colname="Linux_version" colnum="1" colwidth="2*"/>
-							<colspec colname="EV_version" colnum="2" colwidth="1*"/>
-							<colspec colname="download_link" colnum="3" colwidth="1*"/>
-							<colspec colname="comments" colnum="4" colwidth="3*"/>
+							<colspec colname="Linux_version" colnum="1" colwidth="2.0*"/>
+							<colspec colname="EV_version" colnum="2" colwidth="1.0*"/>
+							<colspec colname="download_link" colnum="3" colwidth="1.0*"/>
+							<colspec colname="comments" colnum="4" colwidth="3.0*"/>
 							<thead>
 								<row>
 									<entry>Linux Version</entry>
@@ -2208,9 +2208,9 @@ OpenILS::WWW::Redirect->parse_ips_file('/openils/conf/lib_ips.txt');
 								<?dbfo keep-together="always" ?>
 								<title>Default Accounts</title>
 								<tgroup align="left" cols="3" colsep="1" rowsep="1">
-									<colspec colname="account" colnum="1" colwidth="1*"/>
-									<colspec colname="password" colnum="2" colwidth="1*"/>
-									<colspec colname="type" colnum="3" colwidth="1*"/>
+									<colspec colname="account" colnum="1" colwidth="1.0*"/>
+									<colspec colname="password" colnum="2" colwidth="1.0*"/>
+									<colspec colname="type" colnum="3" colwidth="1.0*"/>
 									<thead>
 										<row>
 											<entry>Account</entry>

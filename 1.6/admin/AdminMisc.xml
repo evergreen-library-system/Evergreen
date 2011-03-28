@@ -42,11 +42,12 @@
 		<screen><userinput>osrf_ctl.sh -l -a start_router</userinput></screen>
 		<para>will only start the <systemitem class="service">router</systemitem> service.</para>
 		<caution>
-			<para>If you decide to start each service individually, you need to start them in a specific order 
-			for Evergreen to start correctly. Run the commands in this exact order:</para>
-<screen><userinput>osrf_ctl.sh -l -a start_router</userinput></screen>
-<screen><userinput>osrf_ctl.sh -l -a start_perl</userinput></screen>
-<screen><userinput>osrf_ctl.sh -l -a start_c</userinput></screen>
+			<para>If you decide to start each service individually, you need to start them in a specific order:</para>
+<screen>
+<userimput>osrf_ctl.sh -l -a start_router</userinput>
+<userinput>osrf_ctl.sh -l -a start_perl</userinput>
+<userinput>osrf_ctl.sh -l -a start_c</userinput>
+</screen>
 		</caution>	
 		<para>After starting or restarting Evergreen, it is also necessary to restart the <systemitem class="service">Apache web server</systemitem>
 		<indexterm><primary>web server</primary><secondary>Apache</secondary></indexterm> for the OPAC to work correctly.</para>  
