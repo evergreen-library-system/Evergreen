@@ -87,25 +87,25 @@ sub load {
     (undef, $self->ctx->{mylist}) = $self->fetch_mylist unless
         $path =~ /opac\/my(opac\/lists|list)/;
 
-    return $self->load_simple("home") if $path =~ /opac\/home/;
-    return $self->load_simple("advanced") if $path =~ /opac\/advanced/;
-    return $self->load_rresults if $path =~ /opac\/results/;
-    return $self->load_record if $path =~ /opac\/record/;
+    return $self->load_simple("home") if $path =~ m|opac/home|;
+    return $self->load_simple("advanced") if $path =~ m|opac/advanced|;
+    return $self->load_rresults if $path =~ m|opac/results|;
+    return $self->load_record if $path =~ m|opac/record|;
 
-    return $self->load_mylist_add if $path =~ /opac\/mylist\/add/;
-    return $self->load_mylist_move if $path =~ /opac\/mylist\/move/;
-    return $self->load_mylist if $path =~ /opac\/mylist/;
-    return $self->load_cache_clear if $path =~ /opac\/cache\/clear/;
+    return $self->load_mylist_add if $path =~ m|opac/mylist/add|;
+    return $self->load_mylist_move if $path =~ m|opac/mylist/move|;
+    return $self->load_mylist if $path =~ m|opac/mylist|;
+    return $self->load_cache_clear if $path =~ m|opac/cache/clear|;
 
     # ----------------------------------------------------------------
     # Logout and login require SSL
     # ----------------------------------------------------------------
-    if($path =~ /opac\/login/) {
+    if($path =~ m|opac/login|) {
         return $self->redirect_ssl unless $self->cgi->https;
         return $self->load_login;
     }
 
-    if($path =~ /opac\/logout/) {
+    if($path =~ m|opac/logout|) {
         #return Apache2::Const::FORBIDDEN unless $self->cgi->https; 
         $self->apache->log->warn("catloader: logout called in non-secure context from " . 
             ($self->ctx->{referer} || '<no referer>')) unless $self->cgi->https;
@@ -118,14 +118,16 @@ sub load {
     return $self->redirect_auth
         unless $self->cgi->https and $self->editor->requestor;
 
-    return $self->load_place_hold if $path =~ /opac\/place_hold/;
-    return $self->load_myopac_holds if $path =~ /opac\/myopac\/holds/;
-    return $self->load_myopac_circs if $path =~ /opac\/myopac\/circs/;
-    return $self->load_myopac_fines if $path =~ /opac\/myopac\/main/;
-    return $self->load_myopac_update_email if $path =~ /opac\/myopac\/update_email/;
-    return $self->load_myopac_bookbags if $path =~ /opac\/myopac\/lists/;
-    return $self->load_myopac_bookbag_update if $path =~ /opac\/myopac\/list\/update/;
-    return $self->load_myopac if $path =~ /opac\/myopac/;
+    return $self->load_place_hold if $path =~ m|opac/place_hold|;
+    return $self->load_myopac_holds if $path =~ m|opac/myopac/holds|;
+    return $self->load_myopac_circs if $path =~ m|opac/myopac/circs|;
+    return $self->load_myopac_fines if $path =~ m|opac/myopac/main|;
+    return $self->load_myopac_update_email if $path =~ m|opac/myopac/update_email|;
+    return $self->load_myopac_bookbags if $path =~ m|opac/myopac/lists|;
+    return $self->load_myopac_bookbag_update if $path =~ m|opac/myopac/list/update|;
+    return $self->load_myopac_circ_history if $path =~ m|opac/myopac/circ_history|;
+    return $self->load_myopac_hold_history if $path =~ m|opac/myopac/hold_history|;
+    return $self->load_myopac if $path =~ m|opac/myopac|;
 
     return Apache2::Const::OK;
 }
