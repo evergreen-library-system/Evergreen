@@ -148,14 +148,14 @@
                     <spacer flex="1"/>
                     <button label="&staff.patron.bills_overlay.receipt_options.label;" accesskey="&staff.patron.bills_overlay.receipt_options.accesskey;" type="menu">
                         <menupopup>
-                            <menuitem id="receipt_upon_payment" type="checkbox" label="&staff.patron.bills_overlay.receipt_upon_payment.label;" accesskey="&staff.patron.bills_overlay.receipt_upon_payment.accesskey;" checked="true"/>
-                            <menuitem id="printer_prompt" type="checkbox" label="&staff.patron.bills_overlay.printer_prompt.label;" accesskey="&staff.patron.bills_overlay.printer_prompt.accesskey;" />
+                            <menuitem id="receipt_upon_payment" type="checkbox" label="&staff.patron.bills_overlay.receipt_upon_payment.label;" accesskey="&staff.patron.bills_overlay.receipt_upon_payment.accesskey;" oils_persist="checked"/>
+                            <menuitem id="printer_prompt" type="checkbox" label="&staff.patron.bills_overlay.printer_prompt.label;" accesskey="&staff.patron.bills_overlay.printer_prompt.accesskey;"  oils_persist="checked"/>
                             <hbox style="border: solid thin black">
                                 <vbox pack="center">
                                     <label value="&staff.patron.bills_overlay.number_of_copies.label;" accesskey="&staff.patron.bills_overlay.number_of_copies.accesskey;" control="num_of_receipts" />
                                 </vbox>
                                 <vbox pack="center">
-                                    <textbox id="num_of_receipts" value="1" type="number" min="0" size="2"/>
+                                    <textbox id="num_of_receipts" value="1" type="number" min="0" size="2" oils_persist="value"/>
                                 </vbox>
                             </hbox>
                         </menupopup>
