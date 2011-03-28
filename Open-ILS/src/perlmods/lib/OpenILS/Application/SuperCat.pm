@@ -237,6 +237,29 @@ sub tree_walker {
 	return @things
 }
 
+# find a label_sortkey for a call number with a label which is equal
+# (or close to) a given label value
+sub _label_sortkey_from_label {
+	my ($label, $_storage, $ou_ids, $cp_filter) = @_;
+
+	my $closest_cn = $_storage->request(
+			"open-ils.cstore.direct.asset.call_number.search.atomic",
+			{ label      => { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
+			  owning_lib => $ou_ids,
+			  deleted    => 'f',
+			  @$cp_filter
+			},
+			{ limit     => 1,
+			  order_by  => { acn => "oils_text_as_bytea(label), id" }
+			}
+		)->gather(1);
+	if (@$closest_cn) {
+		return $closest_cn->[0]->label_sortkey;
+	} else {
+		return '~~~'; #fallback to high ascii value, we are at the end
+	}
+}
+
 sub cn_browse {
 	my $self = shift;
 	my $client = shift;
@@ -296,10 +319,12 @@ sub cn_browse {
         );
     }
 
+	my $label_sortkey = _label_sortkey_from_label($label, $_storage, \@ou_ids, \@cp_filter);
+
 	if ($page <= 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { "<" => $label },
+			{ label_sortkey	=> { "<" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label_sortkey] } },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
               @cp_filter
@@ -317,7 +342,7 @@ sub cn_browse {
 	if ($page >= 0) {
 		my $after = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
+			{ label_sortkey	=> { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label_sortkey] } },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
               @cp_filter
@@ -419,10 +444,12 @@ sub cn_startwith {
         );
     }
 
+	my $label_sortkey = _label_sortkey_from_label($label, $_storage, \@ou_ids, \@cp_filter);
+
 	if ($page < 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { "<" => $label },
+			{ label_sortkey	=> { "<" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label_sortkey] } },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
               @cp_filter
@@ -440,7 +467,7 @@ sub cn_startwith {
 	if ($page >= 0) {
 		my $after = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
+			{ label_sortkey	=> { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label_sortkey] } },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
               @cp_filter
