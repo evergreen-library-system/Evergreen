@@ -732,6 +732,10 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/record_attr_definition'); }
             ],
+            'cmd_server_admin_coded_value_map' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/coded_value_map'); }
+            ],
             'cmd_server_admin_acn_prefix' : [
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/acn_prefix'); }
