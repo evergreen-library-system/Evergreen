@@ -2,6 +2,21 @@ BEGIN;
 
 INSERT INTO config.upgrade_log (version) VALUES ('0504'); -- miker
 
+CREATE OR REPLACE FUNCTION lpad_number_substrings( TEXT, TEXT, INT ) RETURNS TEXT AS $$
+    my $string = shift;
+    my $pad = shift;
+    my $len = shift;
+    my $find = $len - 1;
+
+    while ($string =~ /(?:^|\D)(\d{1,$find})(?:$|\D)/) {
+        my $padded = $1;
+        $padded = $pad x ($len - length($padded)) . $padded;
+        $string =~ s/$1/$padded/sg;
+    }
+
+    return $string;
+$$ LANGUAGE PLPERLU;
+
 CREATE TABLE biblio.monograph_part (
     id              SERIAL  PRIMARY KEY,
     record          BIGINT  NOT NULL REFERENCES biblio.record_entry (id),
