@@ -408,6 +408,7 @@ sub load_myopac_circ_history {
     return Apache2::Const::OK;
 }
 
+# TODO: action.usr_visible_holds does not return cancelled holds.  Should it?
 sub load_myopac_hold_history {
     my $self = shift;
     my $e = $self->editor;
