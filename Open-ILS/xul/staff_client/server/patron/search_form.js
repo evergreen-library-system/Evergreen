@@ -261,9 +261,9 @@ patron.search_form.prototype = {
         JSAN.use('util.file'); JSAN.use('util.widgets'); JSAN.use('util.functional');
         util.widgets.remove_children(obj.controller.view.search_depth);
         var ml = util.widgets.make_menulist(
-            util.functional.map_list( obj.OpenILS.data.list.aout, 
+            util.functional.map_list( obj.OpenILS.data.list.my_aou,
                 function(el,idx) {
-                    return [ el.opac_label(), el.depth() ]
+                    return [ el.name(), el.id() ]
                 }
             ).sort(
                 function(a,b) {

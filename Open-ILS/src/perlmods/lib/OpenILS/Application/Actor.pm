@@ -1222,14 +1222,19 @@ __PACKAGE__->register_method(
 );
 sub patron_adv_search {
 	my( $self, $client, $auth, $search_hash, 
-        $search_limit, $search_sort, $include_inactive, $search_depth ) = @_;
+        $search_limit, $search_sort, $include_inactive, $search_ou ) = @_;
 
 	my $e = new_editor(authtoken=>$auth);
 	return $e->event unless $e->checkauth;
 	return $e->event unless $e->allowed('VIEW_USER');
+
+	# depth boundary outside of which patrons must opt-in, default to 0
+	my $opt_boundary = 0;
+	$opt_boundary = $U->ou_ancestor_setting_value($e->requestor->ws_ou,'org.patron_opt_boundary') if user_opt_in_enabled($self);
+
 	return $U->storagereq(
 		"open-ils.storage.actor.user.crazy_search", $search_hash, 
-            $search_limit, $search_sort, $include_inactive, $e->requestor->ws_ou, $search_depth);
+            $search_limit, $search_sort, $include_inactive, $e->requestor->ws_ou, $search_ou, $opt_boundary);
 }
 
 
@@ -2988,16 +2993,24 @@ sub user_opt_in_at_org {
 
 	my $e = new_editor(authtoken => $auth);
 	return $e->event unless $e->checkauth;
-    my $org_id = $e->requestor->ws_ou;
 
     my $user = $e->retrieve_actor_user($user_id) or return $e->event;
 	return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
 
-    # user is automatically opted-in at the home org
-    return 1 if $user->home_ou eq $org_id;
+    my $ws_org = $e->requestor->ws_ou;
+    # user is automatically opted-in if they are from the local org
+    return 1 if $user->home_ou eq $ws_org;
+
+    # get the boundary setting
+    my $opt_boundary = $U->ou_ancestor_setting_value($e->requestor->ws_ou,'org.patron_opt_boundary');
+ 
+    # auto opt in if user falls within the opt boundary
+    my $opt_orgs = $U->get_org_descendants($ws_org, $opt_boundary);
+
+    return 1 if grep $_ eq $user->home_ou, @$opt_orgs;
 
     my $vals = $e->search_actor_usr_org_unit_opt_in(
-        {org_unit=>$org_id, usr=>$user_id},{idlist=>1});
+        {org_unit=>$opt_orgs, usr=>$user_id},{idlist=>1});
 
     return 1 if @$vals;
     return 0;
@@ -3013,11 +3026,22 @@ __PACKAGE__->register_method(
 );
 
 sub create_user_opt_in_at_org {
-    my($self, $conn, $auth, $user_id) = @_;
+    my($self, $conn, $auth, $user_id, $org_id) = @_;
 
 	my $e = new_editor(authtoken => $auth, xact=>1);
 	return $e->die_event unless $e->checkauth;
-    my $org_id = $e->requestor->ws_ou;
+   
+    # if a specific org unit wasn't passed in, get one based on the defaults;
+    if(!$org_id){
+        my $wsou = $e->requestor->ws_ou;
+        # get the default opt depth
+        my $opt_depth = $U->ou_ancestor_setting_value($wsou,'org.patron_opt_default'); 
+        # get the org unit at that depth
+        my $org = $e->json_query({ 
+            from => [ 'actor.org_unit_ancestor_at_depth', $wsou, $opt_depth ]})->[0];
+
+	$org_id = $org->{id};
+    }
 
     my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
 	return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
