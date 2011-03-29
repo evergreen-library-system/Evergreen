@@ -504,11 +504,27 @@ sub recall_items {
 }
 
 sub unavail_holds {
-	my ($self, $start, $end) = @_;
-	my @holds;
-	syslog('LOG_DEBUG', 'OILS: Patron->unavail_holds()');
-	return (defined $start and defined $end) ? 
-		[ $holds[($start-1)..($end-1)] ] : \@holds;
+     my ($self, $start, $end) = @_;
+     syslog('LOG_DEBUG', 'OILS: Patron->unavail_holds()');
+ 
+     # Unavailable holds fall into two groups: holds not yet captured (capture_time is null),
+     # and holds captured but not yet on the holds shelf (status <> 8 ['On holds shelf'])
+     # meaning the item is in transit, or you have a bad data issue
+ 
+     my $captured_but_not_waiting_holds = [{ usr => $self->{user}->id, fulfillment_time => undef, cancel_time => undef, capture_time => {'!=', undef}, '+acp' => {status => {'!=', 8}}}, {'join' => 'acp'}];
+     my $uncaptured_holds = { usr => $self->{user}->id, fulfillment_time => undef, cancel_time => undef, capture_time => undef };
+ 
+     my @holds_sip_output;
+ 
+     foreach my $unavail_item_query ($captured_but_not_waiting_holds, $uncaptured_holds)
+     {
+         my $holds_queried_data = $self->{editor}->search_action_hold_request($unavail_item_query);
+         push( @holds_sip_output, OpenILS::SIP::clean_text($self->__hold_to_title($_)) ) for @$holds_queried_data;
+     }
+ 
+     return (defined $start and defined $end) ?
+         [ @holds_sip_output[($start-1)..($end-1)] ] :
+         \@holds_sip_output;
 }
 
 sub block {
