@@ -22,7 +22,7 @@ vim: noet:sw=4:ts=4:
 <?xul-overlay href="/xul/server/cat/bib_brief_overlay.xul"?>
 
 <window id="cat_bib_brief_win" 
-    onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
+    onload="try { my_init(); font_helper(); persist_helper(); unhide_add_volumes_button(); } catch(E) { alert(E); }"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
     <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -39,7 +39,13 @@ vim: noet:sw=4:ts=4:
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties"/>
 
     <groupbox id="groupbox" flex="1">
-        <caption id="caption"><label value="&staff.cat.bib_brief.record_summary;"/>(<label value="&staff.cat.bib_brief.view_marc;" class="click_link" onclick="view_marc();"/>)</caption>
+        <caption id="caption">
+            <label value="&staff.cat.bib_brief.record_summary;"/>
+            <label id="add_volumes_left_paren" value="(" hidden="true"/>
+            <label id="add_volumes" value="&staff.cat.bib_brief.add_volumes;" class="click_link" onclick="add_volumes();" hidden="true"/>
+            <label id="add_volumes_right_paren" value=")" hidden="true"/>
+            (<label value="&staff.cat.bib_brief.view_marc;" class="click_link" onclick="view_marc();"/>)
+        </caption>
         <grid id="bib_brief_grid" />
     </groupbox>
 

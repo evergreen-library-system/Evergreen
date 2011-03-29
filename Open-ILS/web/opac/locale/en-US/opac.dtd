@@ -202,6 +202,7 @@ avoid using bookbags all together.  Thank you.">
 <!--	================================================================= 
 	MyOPAC Holds Page 
 	================================================================= -->
+
 <!ENTITY myopac.holds.formats "Formats">
 <!ENTITY myopac.holds.location "Pickup Location">
 <!ENTITY myopac.holds.edit "Edit">
@@ -488,6 +489,7 @@ Please see a librarian to renew your account.">
 	Rdetail
 	================================================================= -->
 <!ENTITY rdetail.print "print these details">
+<!ENTITY rdetail.cn.part "Part">
 <!ENTITY rdetail.cn.barcode "Barcode">
 <!ENTITY rdetail.cn.location "Location">
 <!ENTITY rdetail.cn.hold.age "Age Hold Protection">
@@ -592,6 +594,7 @@ We recommend that you remove this title from any bookbags it may have been added
 <!ENTITY common.call.number.label "Call Number:">
 <!ENTITY common.isbn.label "ISBN:">
 <!ENTITY common.issn.label "ISSN:">
+<!ENTITY common.mono_parts.label "Monograph Parts:">
 <!ENTITY common.copy.barcode.label "Copy Barcode:">
 <!ENTITY common.issuance_label.label "Issuance Label:">
 <!ENTITY common.hold.place "Place hold for my account">

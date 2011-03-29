@@ -2467,7 +2467,6 @@ function AcqLiTable() {
                                     copyList.push(copy);
                                 }
                                 if (xulG) {
-                                    // If we need to, we can pass in an update_copy function to handle the update instead of volume_item_creator
                                     xulG.volume_item_creator( { 'existing_copies' : copyList } );
                                 }
                             } catch(E) {

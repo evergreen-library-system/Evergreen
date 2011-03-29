@@ -571,22 +571,45 @@ circ.util.columns = function(modify,params) {
             'flex' : 1,
             'primary' : false,
             'hidden' : true,
-            'editable' : false, 'render' : function(my) {
-                if (my.acp && my.acp.call_number() == -1) {
+            'editable' : false, 'render' : function(my,scratch_data) {
+                var acn_id;
+                if (my.acn) {
+                    if (typeof my.acn == 'object') {
+                        acn_id = my.acn.id();
+                    } else {
+                        acn_id = my.acn;
+                    }
+                } else if (my.acp) {
+                    if (typeof my.acp.call_number() == 'object') {
+                        acn_id = my.acp.call_number().id();
+                    } else {
+                        acn_id = my.acp.call_number();
+                    }
+                }
+                if (!acn_id && acn_id != 0) {
+                    return '';
+                } else if (acn_id == -1) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
-                } else if (my.acp && my.acp.call_number() == -2) {
+                } else if (acn_id == -2) {
                     return document.getElementById('circStrings').getString('staff.circ.utils.retrieving');
                 } else {
                     if (!my.acn) {
-                        var x = network.simple_request("FM_ACN_RETRIEVE.authoritative",[ my.acp.call_number() ]);
-                        if (x.ilsevent) {
-                            return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
-                        } else {
-                            my.acn = x; return x.label();
+                        if (typeof scratch_data['acn_map'] == 'undefined') {
+                            scratch_data['acn_map'] = {};
                         }
-                    } else {
-                        return my.acn.label();
+                        if (typeof scratch_data['acn_map'][ acn_id ] == 'undefined') {
+                            var x = network.simple_request("FM_ACN_RETRIEVE.authoritative",[ acn_id ]);
+                            if (x.ilsevent) {
+                                return document.getElementById('circStrings').getString('staff.circ.utils.not_cataloged');
+                            } else {
+                                my.acn = x;
+                                scratch_data['acn_map'][ acn_id ] = my.acn;
+                            }
+                        } else {
+                            my.acn = scratch_data['acn_map'][ acn_id ];
+                        }
                     }
+                    return my.acn.label();
                 }
             },
             'persist' : 'hidden width ordinal'
@@ -604,6 +627,71 @@ circ.util.columns = function(modify,params) {
                 } else {
                     return my.acn.owning_lib().shortname();
                 }
+            },
+            'persist' : 'hidden width ordinal'
+        },
+        {
+            'id' : 'prefix',
+            'fm_class' : 'acn',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.prefix'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                if (typeof my.acn == 'undefined') return '';
+                return (typeof my.acn.prefix() == 'object') ? my.acn.prefix().label() : my.acn.prefix();
+            },
+            'persist' : 'hidden width ordinal'
+        },
+        {
+            'id' : 'suffix',
+            'fm_class' : 'acn',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.suffix'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                if (typeof my.acn == 'undefined') return '';
+                return (typeof my.acn.suffix() == 'object') ? my.acn.suffix().label() : my.acn.suffix();
+            },
+            'persist' : 'hidden width ordinal'
+        },
+        {
+            'id' : 'label_class',
+            'fm_class' : 'acn',
+            'label' : document.getElementById('circStrings').getString('staff.circ.utils.label_class'),
+            'flex' : 1,
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                if (typeof my.acn == 'undefined') return '';
+                return (typeof my.acn.label_class() == 'object') ? my.acn.label_class().name() : my.acn.label_class();
+            },
+            'persist' : 'hidden width ordinal'
+        },
+        {
+            'id' : 'parts',
+            'fm_class' : 'acp',
+            'label' : document.getElementById('commonStrings').getString('staff.acp_label_parts'),
+            'flex' : 1,
+            'sort_type' : 'number',
+            'primary' : false,
+            'hidden' : true,
+            'editable' : false, 'render' : function(my) {
+                if (! my.acp.parts()) return '';
+                var parts = my.acp.parts();
+                var display_string = '';
+                for (var i = 0; i < parts.length; i++) {
+                    if (my.doc_id) {
+                        if (my.doc_id == parts[i].record()) {
+                            return parts[i].label();
+                        }
+                    } else {
+                        if (i != 0) display_string += ' : ';
+                        display_string += parts[i].label();
+                    }
+                }
+                return display_string;
             },
             'persist' : 'hidden width ordinal'
         },
@@ -2233,9 +2321,11 @@ circ.util.std_map_row_to_column = function(error_value) {
 };
 */
 circ.util.std_map_row_to_columns = function(error_value) {
-    return function(row,cols) {
+    return function(row,cols,scratch) {
         // row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
         // cols contains all of the objects listed above in columns
+        // scratch is a temporary space shared by all cells/rows (or just per row if not explicitly passed in)
+        if (!scratch) { scratch = {}; }
 
         var obj = {};
         JSAN.use('util.error'); obj.error = new util.error();
@@ -2249,7 +2339,7 @@ circ.util.std_map_row_to_columns = function(error_value) {
         try {
             for (var i = 0; i < cols.length; i++) {
                 switch (typeof cols[i].render) {
-                    case 'function': try { values[i] = cols[i].render(my); } catch(E) { values[i] = error_value; obj.error.sdump('D_COLUMN_RENDER_ERROR',E); } break;
+                    case 'function': try { values[i] = cols[i].render(my,scratch); } catch(E) { values[i] = error_value; obj.error.sdump('D_COLUMN_RENDER_ERROR',E); } break;
                     case 'string' : cmd += 'try { ' + cols[i].render + '; values['+i+'] = v; } catch(E) { values['+i+'] = error_value; }'; break;
                     default: cmd += 'values['+i+'] = "??? '+(typeof cols[i].render)+'"; ';
                 }

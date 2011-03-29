@@ -522,13 +522,13 @@ cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
         JSAN.use('util.error'); error = new util.error();
         JSAN.use('util.network'); var network = new util.network();
 
-        var acn_id = network.simple_request(
+        var acn_blob = network.simple_request(
             'FM_ACN_FIND_OR_CREATE',
             [ ses(), cn_label, doc_id, ses('ws_ou') ]
         );
 
-        if (typeof acn_id.ilsevent != 'undefined') {
-            error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.volume_copy_creator.stash_and_close.problem_with_volume', [cn]), acn_id);
+        if (typeof acn_blob.ilsevent != 'undefined') {
+            error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.volume_copy_creator.stash_and_close.problem_with_volume', [cn]), acn_blob);
             return;
         }
 
@@ -536,7 +536,7 @@ cat.util.fast_item_add = function(doc_id,cn_label,cp_barcode) {
         copy_obj.id( -1 );
         copy_obj.isnew('1');
         copy_obj.barcode( cp_barcode );
-        copy_obj.call_number( acn_id );
+        copy_obj.call_number( acn_blob.acn_id );
         copy_obj.circ_lib( ses('ws_ou') );
         /* FIXME -- use constants */
         copy_obj.deposit(0);

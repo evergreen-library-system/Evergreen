@@ -141,6 +141,8 @@
     <command id="cmd_server_admin_marc_code"/>
     <command id="cmd_server_admin_coded_value_map"/>
     <command id="cmd_server_admin_billing_type"/>
+    <command id="cmd_server_admin_acn_prefix"/>
+    <command id="cmd_server_admin_acn_suffix"/>
     <command id="cmd_server_admin_acq_invoice_item_type"/>
     <command id="cmd_server_admin_acq_invoice_payment_method"/>
     <command id="cmd_server_admin_acq_cancel_reason"/>
@@ -392,6 +394,8 @@
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.grp_tree.label;" command="cmd_server_admin_grp_tree"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.perm_list.label;" command="cmd_server_admin_perm_list"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.copy_status.label;" command="cmd_server_admin_copy_status"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.acn_prefix.label;" command="cmd_server_admin_acn_prefix"/>
+                <menuitem label="&staff.main.menu.admin.server_admin.conify.acn_suffix.label;" command="cmd_server_admin_acn_suffix"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.marc_record_attrs.label;" command="cmd_server_admin_marc_code"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.coded_value_maps.label;" command="cmd_server_admin_coded_value_map"/>
                 <menuitem label="&staff.main.menu.admin.server_admin.conify.billing_type.label;" command="cmd_server_admin_billing_type"/>

@@ -20,7 +20,6 @@
 
 <window id="cat_copy_editor_win" 
     onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
-    width="800" height="580" oils_persist="width height"
     title="&staff.cat.copy_editor.window.label;"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -42,7 +41,7 @@
         <caption id="caption" label="&staff.cat.copy_editor.groupbox1.label;"/>
 
         <hbox id="top_nav">
-            <hbox style="background: grey">
+            <hbox id="template_bar" style="background: grey" flex="1">
                 <vbox><spacer flex="1"/><label value="&staff.cat.copy_editor.templates.label;" style="font-weight: bold"/><spacer flex="1"/></vbox>
                 <hbox id="template_placeholder"/>
                 <button id="apply_template" label="&staff.cat.copy_editor.templates.apply_template.label;" accesskey="&staff.cat.copy_editor.templates.apply_template.accesskey;" oncommand="g.apply_template()"/>
@@ -50,9 +49,9 @@
                 <button id="import_templates" label="&staff.cat.copy_editor.templates.import_template.label;" oncommand="g.import_templates()"/>
                 <button id="export_templates" label="&staff.cat.copy_editor.templates.export_template.label;" oncommand="g.export_templates()"/>
                 <button id="save_template" label="&staff.cat.copy_editor.templates.save_template.label;" oncommand="g.save_template()"/>
+                <spacer flex="1"/>
+                <button label="&staff.cat.copy_editor.templates.reset.label;" accesskey="&staff.cat.copy_editor.templates.reset.accesskey;" oncommand="g.reset()"/>
             </hbox>
-            <spacer flex="1"/>
-            <button label="&staff.cat.copy_editor.templates.reset.label;" accesskey="&staff.cat.copy_editor.templates.reset.accesskey;" oncommand="g.reset()"/>
         </hbox>
 
         <hbox flex="1" style="overflow: scroll">
@@ -88,8 +87,10 @@
         <hbox id="nav">
             <spacer flex="1"/>
             <button id="copy_notes" label="&staff.cat.copy_editor.copy_notes.label;" accesskey="&staff.cat.copy_editor.copy_notes.accesskey;" oncommand="g.copy_notes();"/>
-            <button id="save" label="&staff.cat.copy_editor.save.label;" hidden="true" accesskey="&staff.cat.copy_editor.save.accesskey;" oncommand="g.stash_and_close();"/>
-            <button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="JSAN.use('util.widgets'); util.widgets.dispatch('close',window);"/>
+            <hbox id="non_unified_buttons">
+                <button id="save" label="&staff.cat.copy_editor.save.label;" hidden="true" accesskey="&staff.cat.copy_editor.save.accesskey;" oncommand="g.stash_and_close();"/>
+                <button id="cancel" label="&staff.cat.copy_editor.cancel.label;" accesskey="&staff.cat.copy_editor.cancel.accesskey;" oncommand="JSAN.use('util.widgets'); util.widgets.dispatch('close',window);"/>
+            </hbox>
         </hbox>
 
         <spacer/>

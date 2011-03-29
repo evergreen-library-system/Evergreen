@@ -499,7 +499,7 @@ function myOShowHoldStatus(r) {
 function myOPACDrawHoldTitle(hold) {
 	var method;
 
-	if( hold.hold_type() == 'T' || hold.hold_type() == 'M' ) {
+	if( hold.hold_type() == 'T' || hold.hold_type() == 'M') {
 		if(hold.hold_type() == "M") method = FETCH_MRMODS;
 		if(hold.hold_type() == "T") method = FETCH_RMODS;
 		var req = new Request(method, hold.target());
@@ -521,7 +521,7 @@ function myOPACFleshHoldTitle(r) {
 
 function _myOPACFleshHoldTitle(hold, holdObjects) {
 
-	var record = holdObjects.recordObject;
+	var record  = holdObjects.recordObject;
 	var volume	= holdObjects.volumeObject;
 	var copy	= holdObjects.copyObject;
 
@@ -538,6 +538,11 @@ function _myOPACFleshHoldTitle(hold, holdObjects) {
 
 	buildTitleDetailLink(record, title_link);
 	buildSearchLink(STYPE_AUTHOR, record.author(), author_link);
+
+    if(hold.hold_type() == 'P') {
+        unHideMe($n(row, 'vol_copy'));
+        $n(row, 'part').appendChild(text(holdObjects.partObject.label));
+    }
 
 	if( volume ) {
 		$n(row, 'volume').appendChild(text(volume.label()));

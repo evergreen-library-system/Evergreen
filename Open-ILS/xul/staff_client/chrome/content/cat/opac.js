@@ -89,18 +89,27 @@ function opac_wrapper_set_help_context() {
 function set_brief_view() {
     var url = xulG.url_prefix( urls.XUL_BIB_BRIEF ) + '?docid=' + window.escape(docid); 
     dump('spawning ' + url + '\n');
+
+    var content_params = {
+        'set_tab_name' : function(n) {
+            if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
+                try { window.xulG.set_tab_name(document.getElementById('offlineStrings').getFormattedString("cat.bib_record", [n])); } catch(E) { alert(E); }
+            } else {
+                dump('no set_tab_name\n');
+            }
+        }
+    };
+
+    ["url_prefix", "new_tab", "set_tab", "close_tab", "new_patron_tab",
+        "set_patron_tab", "volume_item_creator", "get_new_session",
+        "holdings_maintenance_tab", "open_chrome_window", "url_prefix",
+        "network_meter", "page_meter", "set_statusbar", "set_help_context"
+    ].forEach(function(k) { content_params[k] = xulG[k]; });
+
     top_pane.set_iframe( 
         url,
-        {}, 
-        { 
-            'set_tab_name' : function(n) { 
-                if (typeof window.xulG == 'object' && typeof window.xulG.set_tab_name == 'function') {
-                    try { window.xulG.set_tab_name(document.getElementById('offlineStrings').getFormattedString("cat.bib_record", [n])); } catch(E) { alert(E); }
-                } else {
-                    dump('no set_tab_name\n');
-                }
-            }
-        }  
+        {},
+        content_params
     );
 }
 
@@ -172,13 +181,13 @@ function set_marc_edit() {
                             JSAN.use('util.error'); error = new util.error();
                             JSAN.use('util.network'); var network = new util.network();
 
-                            var acn_id = network.simple_request(
+                            var acn_blob = network.simple_request(
                                 'FM_ACN_FIND_OR_CREATE',
                                 [ ses(), cn_label, doc_id, ses('ws_ou') ]
                             );
 
-                            if (typeof acn_id.ilsevent != 'undefined') {
-                                error.standard_unexpected_error_alert('Error in chrome/content/cat/opac.js, cat.util.fast_item_add', acn_id);
+                            if (typeof acn_blob.ilsevent != 'undefined') {
+                                error.standard_unexpected_error_alert('Error in chrome/content/cat/opac.js, cat.util.fast_item_add', acn_blob);
                                 return;
                             }
 
@@ -186,7 +195,7 @@ function set_marc_edit() {
                             copy_obj.id( -1 );
                             copy_obj.isnew('1');
                             copy_obj.barcode( cp_barcode );
-                            copy_obj.call_number( acn_id );
+                            copy_obj.call_number( acn_blob.acn_id );
                             copy_obj.circ_lib( ses('ws_ou') );
                             /* FIXME -- use constants */
                             copy_obj.deposit(0);
@@ -822,8 +831,10 @@ function add_volumes() {
 
         var title = document.getElementById('offlineStrings').getFormattedString('staff.circ.copy_status.add_volumes.title', [docid]);
 
+        var horizontal_interface = String( g.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
+        var url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
         var w = xulG.new_tab(
-            window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
+            url,
             { 'tab_name' : title },
             { 'doc_id' : docid, 'ou_ids' : [ ses('ws_ou') ] }
         );
@@ -831,3 +842,20 @@ function add_volumes() {
         alert('Error in chrome/content/cat/opac.js, add_volumes(): ' + E);
     }
 }
+
+function manage_parts() {
+    try {
+        var title = document.getElementById('offlineStrings').getFormattedString('staff.cat.manage_parts.title', [docid]);
+        var loc = urls.XUL_BROWSER + "?url=" + window.escape(
+            window.xulG.url_prefix(urls.CONIFY_MANAGE_PARTS) + '?r=' + docid
+        );
+        var w = xulG.new_tab(
+            loc,
+            { 'tab_name' : title },
+            {}
+        );
+    } catch(E) {
+        alert('Error in chrome/content/cat/opac.js, manage_parts(): ' + E);
+    }
+}
+

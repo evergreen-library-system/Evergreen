@@ -134,7 +134,9 @@ util.widgets.make_menulist = function( items, dvalue ) {
             menuitem.setAttribute('disabled','true');
         }
     }
-    menulist.setAttribute('value',dvalue);
+    if (typeof dvalue != 'undefined') {
+        menulist.setAttribute('value',dvalue);
+    }
     return menulist;
 }
 
@@ -209,7 +211,7 @@ util.widgets.insertAfter = function(parent_node,new_node,sibling_node) {
     }
 }
 
-util.widgets.apply_vertical_tab_on_enter_handler = function(node,onfailure) {
+util.widgets.apply_vertical_tab_on_enter_handler = function(node,onfailure,no_enter_func) {
     try {
         node.addEventListener(
             'keypress',
@@ -224,8 +226,13 @@ util.widgets.apply_vertical_tab_on_enter_handler = function(node,onfailure) {
                         ev.preventDefault(); ev.stopPropagation();
                         return true;
                     } else {
+                        dump('keypress: attempting onfailure\n');
                         if (typeof onfailure == 'function') return onfailure(ev);
                         return false;
+                    }
+                } else {
+                    if (typeof no_enter_func == 'function') {
+                        no_enter_func(ev);
                     }
                 }
             },
