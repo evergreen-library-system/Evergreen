@@ -587,11 +587,23 @@ sub recall_items {
 }
 
 sub unavail_holds {
-	my ($self, $start, $end) = @_;
-	my @holds;
-	syslog('LOG_DEBUG', 'OILS: Patron->unavail_holds()');
-	return (defined $start and defined $end) ? 
-		[ $holds[($start-1)..($end-1)] ] : \@holds;
+     my ($self, $start, $end) = @_;
+     syslog('LOG_DEBUG', 'OILS: Patron->unavail_holds()');
+ 
+     my @holds_sip_output = map {
+        OpenILS::SIP::clean_text($self->__hold_to_title($_))
+     } @{
+        $self->{editor}->search_action_hold_request({
+            usr              => $self->{user}->id,
+            fulfillment_time => undef,
+            cancel_time      => undef,
+            shelf_time       => undef
+        })
+     };
+ 
+     return (defined $start and defined $end) ?
+         [ @holds_sip_output[($start-1)..($end-1)] ] :
+         \@holds_sip_output;
 }
 
 sub block {
