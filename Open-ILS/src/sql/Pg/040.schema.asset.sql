@@ -91,6 +91,13 @@ CREATE INDEX cp_editor_idx   ON asset.copy ( editor );
 CREATE INDEX cp_create_date  ON asset.copy (create_date);
 CREATE RULE protect_copy_delete AS ON DELETE TO asset.copy DO INSTEAD UPDATE asset.copy SET deleted = TRUE WHERE OLD.id = asset.copy.id;
 
+CREATE TABLE asset.copy_part_map (
+    id          SERIAL  PRIMARY KEY,
+    target_copy BIGINT  NOT NULL, -- points o asset.copy
+    part        INT     NOT NULL REFERENCES biblio.monograph_part (id) ON DELETE CASCADE
+);
+CREATE UNIQUE INDEX copy_part_map_cp_part_idx ON asset.copy_part_map (target_copy, part);
+
 CREATE TABLE asset.opac_visible_copies (
   id        BIGINT primary key, -- copy id
   record    BIGINT,
@@ -279,6 +286,42 @@ INSERT INTO asset.call_number_class (name, normalizer, field) VALUES
     ('Library of Congress (LC)', 'asset.label_normalizer_lc', '050ab,055ab,090abef')
 ;
 
+CREATE OR REPLACE FUNCTION asset.normalize_affix_sortkey () RETURNS TRIGGER AS $$
+BEGIN
+    NEW.label_sortkey := REGEXP_REPLACE(
+        lpad_number_substrings(
+            naco_normalize(NEW.label),
+            '0',
+            10
+        ),
+        E'\\s+',
+        '',
+        'g'
+    );
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TABLE asset.call_number_prefix (
+	id		        SERIAL   PRIMARY KEY,
+	owning_lib	    INT			NOT NULL REFERENCES actor.org_unit (id),
+	label		    TEXT		NOT NULL, -- i18n
+	label_sortkey	TEXT
+);
+CREATE TRIGGER prefix_normalize_tgr BEFORE INSERT OR UPDATE ON asset.call_number_prefix FOR EACH ROW EXECUTE PROCEDURE asset.normalize_affix_sortkey();
+CREATE UNIQUE INDEX asset_call_number_prefix_once_per_lib ON asset.call_number_prefix (label, owning_lib);
+CREATE INDEX asset_call_number_prefix_sortkey_idx ON asset.call_number_prefix (label_sortkey);
+
+CREATE TABLE asset.call_number_suffix (
+	id		        SERIAL   PRIMARY KEY,
+	owning_lib	    INT			NOT NULL REFERENCES actor.org_unit (id),
+	label		    TEXT		NOT NULL, -- i18n
+	label_sortkey	TEXT
+);
+CREATE TRIGGER suffix_normalize_tgr BEFORE INSERT OR UPDATE ON asset.call_number_suffix FOR EACH ROW EXECUTE PROCEDURE asset.normalize_affix_sortkey();
+CREATE UNIQUE INDEX asset_call_number_suffix_once_per_lib ON asset.call_number_suffix (label, owning_lib);
+CREATE INDEX asset_call_number_suffix_sortkey_idx ON asset.call_number_suffix (label_sortkey);
+
 CREATE TABLE asset.call_number (
 	id		bigserial PRIMARY KEY,
 	creator		BIGINT				NOT NULL,
@@ -286,9 +329,11 @@ CREATE TABLE asset.call_number (
 	editor		BIGINT				NOT NULL,
 	edit_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
 	record		bigint				NOT NULL,
-	owning_lib	INT				NOT NULL,
+	owning_lib	INT				    NOT NULL,
 	label		TEXT				NOT NULL,
 	deleted		BOOL				NOT NULL DEFAULT FALSE,
+	prefix  	INT				    NOT NULL DEFAULT -1 REFERENCES asset.call_number_prefix(id) DEFERRABLE INITIALLY DEFERRED,
+	suffix  	INT				    NOT NULL DEFAULT -1 REFERENCES asset.call_number_suffix(id) DEFERRABLE INITIALLY DEFERRED,
 	label_class	BIGINT				DEFAULT 1 NOT NULL
 							REFERENCES asset.call_number_class(id)
 							DEFERRABLE INITIALLY DEFERRED,
@@ -300,7 +345,7 @@ CREATE INDEX asset_call_number_editor_idx ON asset.call_number (editor);
 CREATE INDEX asset_call_number_dewey_idx ON asset.call_number (public.call_number_dewey(label));
 CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_number (oils_text_as_bytea(label),id,owning_lib);
 CREATE INDEX asset_call_number_label_sortkey ON asset.call_number(oils_text_as_bytea(label_sortkey));
-CREATE UNIQUE INDEX asset_call_number_label_once_per_lib ON asset.call_number (record, owning_lib, label) WHERE deleted = FALSE OR deleted IS FALSE;
+CREATE UNIQUE INDEX asset_call_number_label_once_per_lib ON asset.call_number (record, owning_lib, label, prefix, suffix) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE INDEX asset_call_number_label_sortkey_browse ON asset.call_number(oils_text_as_bytea(label_sortkey), oils_text_as_bytea(label), id, owning_lib) WHERE deleted IS FALSE OR deleted = FALSE;
 CREATE RULE protect_cn_delete AS ON DELETE TO asset.call_number DO INSTEAD UPDATE asset.call_number SET deleted = TRUE WHERE OLD.id = asset.call_number.id;
 CREATE TRIGGER asset_label_sortkey_trigger

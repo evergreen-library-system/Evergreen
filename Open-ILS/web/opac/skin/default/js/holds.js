@@ -16,7 +16,8 @@ var holdTargetTypeMap = {
     T : 'record',
     V : 'volume',
     I : 'issuance',
-    C : 'copy'
+    C : 'copy',
+    P : 'part'
 };
 
 
@@ -228,8 +229,11 @@ function holdFetchObjects(hold, doneCallback) {
         } else if( type == 'I' ) {
             _h_set_issuance(args, doneCallback);
 
+        } else if( type == 'P' ) {
+            _h_set_parts(args, doneCallback);
+
 		} else {
-			if( type == 'T' ) {
+			if( type == 'T') {
 				_h_set_rec(args, doneCallback);
 			} else {
 				_h_set_rec_descriptors(args, doneCallback);
@@ -238,6 +242,25 @@ function holdFetchObjects(hold, doneCallback) {
 	}
 
 	return args;
+}
+
+function _h_set_parts(args, doneCallback) {
+
+    var preq = new Request(
+        'open-ils.fielder:open-ils.fielder.bmp.atomic',
+        {"cache":1, "fields":["label", "record"],"query": {"id":args.part}}
+    );
+
+    preq.callback(
+        function(r) {
+            var part = r.getResultObject()[0];
+            args.record = part.record;
+            args.partObject = part;
+            _h_set_rec(args, doneCallback);
+        }
+    );
+
+    preq.send();
 }
 
 function _h_set_vol(args, doneCallback) {
@@ -291,10 +314,13 @@ function _h_set_rec(args, doneCallback) {
 	else 
 		args.recordObject = findRecord( args.record, 'T' );
 	
-	if( args.type == 'T' || args.type == 'M' ) 
+	if( args.type == 'T' || args.type == 'M' )  {
 		_h_set_rec_descriptors(args, doneCallback);
-	else 
+	//} else if(args.type == 'P') {
+        //_h_get_parts(args, doneCallback);
+    } else {
 		if(doneCallback) doneCallback(args);
+    }
 }
 
 
@@ -304,7 +330,7 @@ function _h_set_rec_descriptors(args, doneCallback) {
         args.pickup_lib = getSelectorVal($('holds_org_selector'));
 
     if(args.pickup_lib === null)
-        args.pickup_lib = holdArgs.recipient.home_ou();
+        args.pickup_lib = args.recipient.home_ou();
 
 	// grab the list of record desciptors attached to this records metarecord 
 	if( ! args.recordDescriptors )  {
@@ -332,21 +358,45 @@ function _h_set_rec_descriptors(args, doneCallback) {
 		req.callback(
 			function(r) {
 				var data = r.getResultObject();
-				holdArgs.recordDescriptors = args.recordDescriptors = data.descriptors;
-				holdArgs.metarecord = args.metarecord = data.metarecord;
+				args.recordDescriptors = args.recordDescriptors = data.descriptors;
+				args.metarecord = args.metarecord = data.metarecord;
 				if( args.type == 'M' && ! args.metarecordObject) 
-					holdArgs.metarecordObject = args.metarecordObject = findRecord(args.metarecord, 'M');	
+					args.metarecordObject = args.metarecordObject = findRecord(args.metarecord, 'M');	
 
-				if(doneCallback) doneCallback(args);
+                _h_get_parts(args, doneCallback);
 			}
 		);
 		req.send();
 
 	} else {
-		if(doneCallback) doneCallback(args);
+        _h_get_parts(args, doneCallback);
 	}
 
 	return args;
+}
+
+function _h_get_parts(args, doneCallback) {
+
+    if(args.type == 'M' || args.editHold || args.holdParts) {
+        if(doneCallback) 
+            doneCallback(args);
+
+    } else {
+
+		var req = new Request(
+            'open-ils.search:open-ils.search.biblio.record_hold_parts', 
+		    {pickup_lib: args.pickup_lib, record: args.record}
+        );
+
+		req.callback(
+			function(r) {
+				args.recordParts = r.getResultObject();
+                if(doneCallback)
+                    doneCallback(args);
+			}
+		);
+		req.send();
+    }
 }
 
 
@@ -452,6 +502,30 @@ function __holdsDrawWindow() {
 		hideMe($('holds_cn_row'));
 		hideMe($('holds_issuance_row'));
 	}
+
+    if(holdArgs.recordParts && holdArgs.recordParts.length) {
+        var selector = $('holds_parts_selector');
+        unHideMe($('holds_parts_row'));
+        unHideMe(selector);
+
+        var nodeList = [];
+        dojo.forEach(selector.options, 
+            function(node) { if(node.value != '') nodeList.push(node) } );
+
+        dojo.forEach(nodeList, function(node) { selector.removeChild(node); });
+
+        dojo.forEach(
+            holdArgs.recordParts, 
+            function(part) {
+                insertSelectorVal(selector, -1, part.label, part.id);
+            }
+        );
+
+    } else if(holdArgs.type == 'P') {
+        unHideMe($('holds_parts_row'));
+        unHideMe($('holds_parts_label'));
+	    appendClear( $('holds_parts_label'), text(holdArgs.partObject.label));
+    }
 
 	removeChildren($('holds_format'));
 
@@ -623,6 +697,20 @@ function holdsSetFormatSelector() {
 		if(type=='M') opt.selected=true;
 		unHideMe(opt);
 	}
+
+    // If the user selects a format, P-type holds are no longer an option
+    // disable and reset the P-type form control
+    selector.onchange = function() {
+        var partsSel = $('holds_parts_selector');
+        for(var i = 0; i < selector.options.length; i++) {
+            if(selector.options[i].selected) {
+                partsSel.selectedIndex = 0; // none selected
+                partsSel.disabled = true;
+                return;
+            }
+        }
+        partsSel.disabled = false;
+    }
 }
 
 function findFormatSelectorOptByParts( sel, val ) {
@@ -747,7 +835,8 @@ function holdsCheckPossibility(pickuplib, hold, recurse) {
 		hold_type : holdArgs.type,
 		patronid : holdArgs.recipient.id(),
 		depth : 0, 
-		pickup_lib : pickuplib 
+		pickup_lib : pickuplib,
+        partid : holdArgs.part
 	};
 
 	if(recurse) {
@@ -839,7 +928,15 @@ function holdsBuildHoldFromWindow() {
 	else
 		hold.email_notify(0);
 
+    var part = getSelectorVal($('holds_parts_selector'));
+    if(part) {
+        holdArgs.type = 'P';
+        holdArgs.part = part;
+    }
+
 	var target = holdArgs[holdTargetTypeMap[holdArgs.type]];
+
+    // a mono part is selected
 
 	hold.pickup_lib(org); 
 	//hold.request_lib(org); 

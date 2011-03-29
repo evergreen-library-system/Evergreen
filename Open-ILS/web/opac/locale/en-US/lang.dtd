@@ -284,6 +284,8 @@
 <!ENTITY staff.cat.opac.copy_browse.accesskey "H">
 <!ENTITY staff.cat.opac.copy_browse.label "Holdings Maintenance">
 <!ENTITY staff.cat.opac.default.label "Set bottom interface as Default">
+<!ENTITY staff.cat.opac.manage_parts.accesskey "P">
+<!ENTITY staff.cat.opac.manage_parts.label "Manage Parts">
 <!ENTITY staff.cat.opac.marc_edit.accesskey "E">
 <!ENTITY staff.cat.opac.marc_edit.label "MARC Edit">
 <!ENTITY staff.cat.opac.marc_view.accesskey "V">
@@ -708,6 +710,8 @@
 <!ENTITY staff.main.menu.admin.server_admin.conify.copy_status.label "Copy Statuses">
 <!ENTITY staff.main.menu.admin.server_admin.conify.marc_record_attrs.label "MARC Record Attributes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.coded_value_maps.label "MARC Coded Value Maps">
+<!ENTITY staff.main.menu.admin.server_admin.conify.acn_prefix.label "Call Number Prefixes">
+<!ENTITY staff.main.menu.admin.server_admin.conify.acn_suffix.label "Call Number Suffixes">
 <!ENTITY staff.main.menu.admin.server_admin.conify.billing_type.label "Billing Types">
 <!ENTITY staff.main.menu.admin.server_admin.conify.z3950_source.label "Z39.50 Servers">
 <!ENTITY staff.main.menu.admin.server_admin.conify.circulation_modifier.label "Circulation Modifiers">
@@ -2368,6 +2372,7 @@
 <!ENTITY staff.cat.bib_brief.title.label "Title:">
 <!ENTITY staff.cat.bib_brief.title.accesskey "">
 <!ENTITY staff.cat.bib_brief.view_marc "View MARC">
+<!ENTITY staff.cat.bib_brief.add_volumes "Add Volumes">
 <!ENTITY staff.cat.bib_brief.author.label "Author:">
 <!ENTITY staff.cat.bib_brief.author.accesskey "">
 <!ENTITY staff.cat.bib_brief.edition.label "Edition:">
@@ -2462,7 +2467,7 @@
 <!ENTITY staff.cat.copy_browser.actions.cmd_create_brt.accesskey "K">
 <!ENTITY staff.cat.copy_browser.actions.sel_patron.label "Show Last Few Circulations">
 <!ENTITY staff.cat.copy_browser.actions.sel_patron.accesskey "L">
-<!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.label "Edit Item Attributes">
+<!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.label "Edit Item Attributes / Call Numbers / Replace Barcodes">
 <!ENTITY staff.cat.copy_browser.actions.cmd_edit_items.accesskey "E">
 <!ENTITY staff.cat.copy_browser.actions.cmd_transfer_items.label "Transfer Items to Previously Marked Volume">
 <!ENTITY staff.cat.copy_browser.actions.cmd_transfer_items.accesskey "T">
@@ -2486,7 +2491,6 @@
 <!ENTITY staff.cat.copy_browser.actions.sel_mark_items_missing.accesskey "g">
 <!ENTITY staff.cat.copy_browser.actions.cmd_print_spine_labels.label "Print Item Spine Labels">
 <!ENTITY staff.cat.copy_browser.actions.cmd_print_spine_labels.accesskey "P">
-<!ENTITY staff.cat.copy_browser.actions.cmd_replace_barcode.label "Replace Barcode">
 <!ENTITY staff.cat.copy_browser.actions.save_columns.label "Save Columns">
 <!ENTITY staff.cat.copy_browser.actions.cmd_refresh_list.label "Refresh Listing">
 <!ENTITY staff.cat.copy_browser.actions.cmd_refresh_list.accesskey "R">
@@ -2513,7 +2517,7 @@
 
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_patron.label "Show Last Few Circulations">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.sel_patron.accesskey "L">
-<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label "Edit Item Attributes">
+<!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.label "Edit Item Attributes / Call Numbers / Replace Barcodes">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_edit_items.accesskey "E">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.label "Transfer Items to Previously Marked Volume">
 <!ENTITY staff.cat.copy_browser.holdings_maintenance.cmd_transfer_items.accesskey "T">
@@ -2766,6 +2770,12 @@
 <!ENTITY staff.cat.volume_copy_creator.print_labels.accesskey "P">
 <!ENTITY staff.cat.volume_copy_creator.library_label.value "Library">
 <!ENTITY staff.cat.volume_copy_creator.num_of_volumes_label.value "# of volumes">
+<!ENTITY staff.cat.volume_copy_creator.batch_bar "BATCH">
+<!ENTITY staff.cat.volume_copy_creator.batch_bar.call_number.classification "Classification:">
+<!ENTITY staff.cat.volume_copy_creator.batch_bar.call_number.prefix "Prefix:">
+<!ENTITY staff.cat.volume_copy_creator.batch_bar.call_number.label.label "Label:">
+<!ENTITY staff.cat.volume_copy_creator.batch_bar.call_number.label.accesskey "L">
+<!ENTITY staff.cat.volume_copy_creator.batch_bar.call_number.suffix "Suffix:">
 <!ENTITY staff.cat.volume_editor.title "Volumes">
 <!ENTITY staff.cat.volume_editor.caption.label "Volume Editor">
 <!ENTITY staff.cat.volume_editor.modify.label "Modify">
@@ -2774,6 +2784,11 @@
 <!ENTITY staff.cat.volume_editor.cancel.accesskey "C">
 <!ENTITY staff.cat.volume_editor.automerge.label "Auto-Merge on Volume Collision">
 <!ENTITY staff.cat.volume_editor.automerge.accesskey "A">
+<!ENTITY staff.cat.volume_editor.owning_lib "Owning lib">
+<!ENTITY staff.cat.volume_editor.classification "Classification">
+<!ENTITY staff.cat.volume_editor.prefix "Prefix">
+<!ENTITY staff.cat.volume_editor.label "Label">
+<!ENTITY staff.cat.volume_editor.suffix "Suffix">
 <!ENTITY staff.cat.z3950.marc_import.label "MARC Import via Z39.50">
 <!ENTITY staff.cat.z3950.marc_import.accesskey "I">
 <!ENTITY staff.cat.z3950.service_credentials.label "Service and Credentials">

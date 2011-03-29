@@ -44,9 +44,16 @@
                         var record = g.network.simple_request('MODS_SLIM_RECORD_RETRIEVE.authoritative', [ volume.record() ]);
                         volume.record( record );
 
-                        /* Jam the prefixes and suffixes into the volume object */
-                        volume.prefix = label_prefix;
-                        volume.suffix = label_suffix;
+                        /* The volume object has native prefix and suffixes now, so affix the ones coming from copy locations */
+                        var temp_prefix = label_prefix + ' ' + (typeof volume.prefix() == 'object' ? volume.prefix().label() : volume.prefix());
+                        var temp_suffix = (typeof volume.suffix() == 'object' ? volume.suffix().label() : volume.suffix()) + ' ' + label_suffix;
+
+                        /* And assume that leading and trailing spaces can be trimmed */
+                        temp_prefix = temp_prefix.replace(/\s+$/,'').replace(/^\s+/,'');
+                        temp_suffix = temp_suffix.replace(/\s+$/,'').replace(/^\s+/,'');
+
+                        volume.prefix( temp_prefix );
+                        volume.suffix( temp_suffix );
 
                         g.volumes[ volume.id() ] = volume;
                     }
@@ -183,11 +190,11 @@
 
             /* Only add the prefixes and suffixes once */
             if (!override || volume.id() != override.acn) {
-                if (volume.prefix) {
-                    callnum = volume.prefix + ' ' + callnum;
+                if (volume.prefix()) {
+                    callnum = volume.prefix() + ' ' + callnum;
                 }
-                if (volume.suffix) {
-                    callnum += ' ' + volume.suffix;
+                if (volume.suffix()) {
+                    callnum += ' ' + volume.suffix();
                 }
             }
 

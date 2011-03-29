@@ -14,6 +14,9 @@ util.browser.prototype = {
 
     'lock_reload' : false, // as opposed to lock 'n load :)
 
+    'back_button_clicked' : false,
+    'from_back' : false,
+
     'init' : function( params ) {
 
         try {
@@ -115,7 +118,10 @@ util.browser.prototype = {
                                 try {
                                     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
                                     var n = obj.getWebNavigation();
-                                    if (n.canGoBack) n.goBack();
+                                    if (n.canGoBack) {
+                                        obj.back_button_clicked = true;
+                                        n.goBack();
+                                    }
                                 } catch(E) {
                                     var err = 'cmd_back: ' + E;
                                     obj.error.sdump('D_ERROR',err);
@@ -265,6 +271,7 @@ util.browser.prototype = {
             cw.IAMXUL = true;
             cw.XUL_BUILD_ID = '/xul/server/'.split(/\//)[2];
             cw.xulG = obj.passthru_content_params || {};
+            cw.xulG.fromBack = obj.from_back;
             if (!cw.xulG.set_tab) { cw.xulG.set_tab = function(a,b,c) { return window.xulG.set_tab(a,b,c); }; }
             if (!cw.xulG.new_tab) { cw.xulG.new_tab = function(a,b,c) { return window.xulG.new_tab(a,b,c); }; }
             if (!cw.xulG.close_tab) { cw.xulG.close_tab = function(a) { return window.xulG.close_tab(a); }; }
@@ -412,6 +419,7 @@ util.browser.prototype = {
                         if (stateFlags & nsIWebProgressListener.STATE_IS_DOCUMENT) {
                             s += ('\tSTATE_IS_DOCUMENT\n');
                             if( stateFlags & nsIWebProgressListener.STATE_STOP ) {
+                                var alert_string = 'document has stopped: ' + new Date() + '\n'; dump(alert_string);
                                 obj.push_variables(); obj.updateNavButtons();
                                 if (typeof obj.on_url_load == 'function') {
                                     try {
@@ -448,6 +456,8 @@ util.browser.prototype = {
                         }
                         if (stateFlags & nsIWebProgressListener.STATE_START) {
                             s += ('\tSTATE_START\n');
+                            obj.from_back = obj.back_button_clicked;
+                            obj.back_button_clicked = false;
                         }
                         if (stateFlags & nsIWebProgressListener.STATE_REDIRECTING) {
                             s += ('\tSTATE_REDIRECTING\n');

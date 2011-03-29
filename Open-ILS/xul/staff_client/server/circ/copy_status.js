@@ -532,8 +532,10 @@ circ.copy_status.prototype = {
     
                                     var title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.add_items.title', [r]);
     
+                                    var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
+                                    var url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
                                     var w = xulG.new_tab(
-                                        window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
+                                        url,
                                         { 'tab_name' : title },
                                         { 'doc_id' : r, 'ou_ids' : list, 'copy_shortcut' : copy_shortcut[r] }
                                     );
@@ -682,8 +684,10 @@ circ.copy_status.prototype = {
 
                                     var title = document.getElementById('circStrings').getFormattedString('staff.circ.copy_status.add_volumes.title', [r]);
 
+                                    var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
+                                    var url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
                                     var w = xulG.new_tab(
-                                        window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
+                                        url,
                                         { 'tab_name' : title },
                                         { 'doc_id' : r, 'ou_ids' : list }
                                     );

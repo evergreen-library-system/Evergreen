@@ -288,14 +288,16 @@ cat.copy_browser.prototype = {
 
                                     var title = document.getElementById('catStrings').getString('staff.cat.copy_browser.add_item.title');
 
+                                    var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
+                                    var url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
                                     var w = xulG.new_tab(
-                                        window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
+                                        url,
                                         { 'tab_name' : title },
                                         {
                                             'doc_id' : obj.docid, 
                                             'ou_ids' : list, 
                                             'copy_shortcut' : copy_shortcut,
-                                            'refresh' : function() { obj.refresh_list(); }
+                                            'onrefresh' : function() { obj.refresh_list(); }
                                         }
                                     );
                                 } catch(E) {
@@ -331,7 +333,7 @@ cat.copy_browser.prototype = {
                                 }
                             }
                         ],
-                        'cmd_replace_barcode' : [
+                        'cmd_edit_items' : [
                             ['command'],
                             function() {
                                 try {
@@ -356,12 +358,12 @@ cat.copy_browser.prototype = {
                                     xulG.volume_item_creator( {'existing_copies':list, 'onrefresh' : function() { obj.refresh_list(); } } );
 
                                 } catch(E) {
-                                    obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.replace_barcode.error'),E);
+                                    obj.error.standard_unexpected_error_alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.edit_items.error'),E);
                                     obj.refresh_list();
                                 }
                             }
                         ],
-                        'cmd_edit_items' : [
+                        'old_cmd_edit_items' : [
                             ['command'],
                             function() {
                                 try {
@@ -536,10 +538,12 @@ cat.copy_browser.prototype = {
 
                                     var title = document.getElementById('catStrings').getString('staff.cat.copy_browser.add_volume.title');
 
+                                    var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
+                                    var url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
                                     var w = xulG.new_tab(
-                                        window.xulG.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
+                                        url,
                                         { 'tab_name' : title },
-                                        { 'doc_id' : obj.docid, 'ou_ids' : list, 'refresh' : function() { obj.refresh_list(); } }
+                                        { 'doc_id' : obj.docid, 'ou_ids' : list, 'onrefresh' : function() { obj.refresh_list(); } }
                                     );
 
                                 } catch(E) {
@@ -639,7 +643,6 @@ cat.copy_browser.prototype = {
                                             }
                                             if (robj.ilsevent != 0) throw(robj);
                                         }
-                                        alert(document.getElementById('catStrings').getString('staff.cat.copy_browser.delete_volume.success'));
                                         obj.refresh_list();
                                     }
                                 } catch(E) {
@@ -1448,6 +1451,7 @@ cat.copy_browser.prototype = {
             var data = {
                 'row' : {
                     'my' : {
+                        'doc_id' : obj.docid,
                         'aou' : obj.data.hash.aou[ acn_tree.owning_lib() ],
                         'acn' : acn_tree,
                         'acp' : acp_item,
@@ -1517,6 +1521,7 @@ cat.copy_browser.prototype = {
                         'circ_lib' : { 'hidden' : false },
                         'owning_lib' : { 'hidden' : false },
                         'call_number' : { 'hidden' : false },
+                        'parts' : { 'hidden' : false },
                         'due_date' : { 'hidden' : false },
                         'acp_status' : { 'hidden' : false },
                     },
@@ -1525,8 +1530,12 @@ cat.copy_browser.prototype = {
                             'due_date',
                             'owning_lib',
                             'circ_lib',
+                            'label_class',
+                            'prefix',
                             'call_number',
+                            'suffix',
                             'copy_number',
+                            'parts',
                             'location',
                             'barcode',
                             'loan_duration',
@@ -1668,7 +1677,6 @@ cat.copy_browser.prototype = {
             obj.controller.view.cmd_add_items.setAttribute('disabled','true');
             obj.controller.view.cmd_add_items_to_buckets.setAttribute('disabled','true');
             obj.controller.view.cmd_edit_items.setAttribute('disabled','true');
-            obj.controller.view.cmd_replace_barcode.setAttribute('disabled','true');
             obj.controller.view.cmd_delete_items.setAttribute('disabled','true');
             obj.controller.view.cmd_print_spine_labels.setAttribute('disabled','true');
             obj.controller.view.cmd_add_volumes.setAttribute('disabled','true');
@@ -1700,7 +1708,6 @@ cat.copy_browser.prototype = {
                 obj.controller.view.sel_mark_items_missing.setAttribute('disabled','false');
                 obj.controller.view.cmd_add_items_to_buckets.setAttribute('disabled','false');
                 obj.controller.view.cmd_edit_items.setAttribute('disabled','false');
-                obj.controller.view.cmd_replace_barcode.setAttribute('disabled','false');
                 obj.controller.view.cmd_delete_items.setAttribute('disabled','false');
                 obj.controller.view.cmd_print_spine_labels.setAttribute('disabled','false');
                 obj.controller.view.cmd_transfer_items.setAttribute('disabled','false');

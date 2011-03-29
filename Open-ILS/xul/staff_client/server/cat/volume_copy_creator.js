@@ -1,5 +1,16 @@
 const g_max_copies_that_can_be_added_at_a_time_per_volume = 999;
+const rel_vert_pos_volume_count = 1;
+const rel_vert_pos_call_number_classification = 2;
+const rel_vert_pos_call_number_prefix = 3;
+const rel_vert_pos_call_number = 4;
+const rel_vert_pos_call_number_suffix = 5;
+const rel_vert_pos_copy_count = 6;
+const rel_vert_pos_barcode = 7;
+const rel_vert_pos_part = 8;
+const update_timer = 1000;
 var g = {};
+g.use_defaults = true;
+g.acn_map = {}; // store retrieved acn objects here by id
 
 function my_init() {
     try {
@@ -15,11 +26,37 @@ function my_init() {
         g.error.sdump('D_TRACE','my_init() for cat/volume_copy_creator.xul');
 
         JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
-        JSAN.use('util.widgets'); JSAN.use('util.functional');
+        JSAN.use('util.widgets'); JSAN.use('util.functional'); JSAN.use('util.fm_utils');
 
         JSAN.use('util.network'); g.network = new util.network();
 
         g.refresh = xul_param('onrefresh');
+
+        if (xulG.unified_interface) {
+            $('non_unified_buttons').hidden = true;
+            xulG.reset_batch_menus = function() {
+                $('batch_class_menulist').value = false;
+                util.widgets.dispatch('command',$('batch_class_menulist'));
+                $('batch_prefix_menulist').value = false;
+                util.widgets.dispatch('command',$('batch_prefix_menulist'));
+                $('batch_suffix_menulist').value = false;
+                util.widgets.dispatch('command',$('batch_suffix_menulist'));
+            }
+            xulG.apply_template_to_batch = function(id,value) {
+                if (!isNaN(Number(value))) {
+                    $(id).value = value;
+                    util.widgets.dispatch('command',$(id));
+                }
+                setTimeout(
+                    function() {
+                        // TODO:  Only apply batch to columns that haven't been adjusted manually?
+                        util.widgets.dispatch('command',$('batch_button'));
+                    },0
+                );
+            }
+        } else {
+            $('Create').hidden = true;
+        }
 
         /***********************************************************************************************************/
         /* Am I adding just copies or copies and volumes?  Or am I rebarcoding existing copies? */
@@ -43,11 +80,15 @@ function my_init() {
             set_attr('EditThenCreate','accesskey','staff.cat.volume_copy_creator.edit_then_rebarcode.btn.accesskey');
             set_attr('CreateWithDefaults','label','staff.cat.volume_copy_creator.rebarcode.btn.label');
             set_attr('CreateWithDefaults','accesskey','staff.cat.volume_copy_creator.rebarcode.btn.accesskey');
+            set_attr('Create','label','staff.cat.volume_copy_creator.rebarcode.btn.label');
+            set_attr('Create','accesskey','staff.cat.volume_copy_creator.rebarcode.btn.accesskey');
         } else {
             set_attr('EditThenCreate','label','staff.cat.volume_copy_creator.edit_then_create.btn.label');
             set_attr('EditThenCreate','accesskey','staff.cat.volume_copy_creator.edit_then_create.btn.accesskey');
             set_attr('CreateWithDefaults','label','staff.cat.volume_copy_creator.create_with_defaults.btn.label');
             set_attr('CreateWithDefaults','accesskey','staff.cat.volume_copy_creator.create_with_defaults.btn.accesskey');
+            set_attr('Create','label','staff.cat.volume_copy_creator.create.btn.label');
+            set_attr('Create','accesskey','staff.cat.volume_copy_creator.create.btn.accesskey');
         }
 
         //g.error.sdump('D_ERROR','location.href = ' + location.href + '\n\ncopy_short cut = ' + g.copy_shortcut + '\n\nou_ids = ' + xul_param('ou_ids'));
@@ -56,18 +97,19 @@ function my_init() {
 
         // Get the default callnumber classification scheme from OU settings
         dojo.require('fieldmapper.OrgUtils');
-        var label_class = g.data.hash.aous['cat.default_classification_scheme']; //fieldmapper.aou.fetchOrgSettingDefault(ses('ws_ou'), 'cat.default_classification_scheme');
+        //fieldmapper.aou.fetchOrgSettingDefault(ses('ws_ou'), 'cat.default_classification_scheme');
+        g.label_class = g.data.hash.aous['cat.default_classification_scheme'];
 
-        // Assign a default value if none was returned 
-        if (!label_class) {
-            label_class = 1;
+        // Assign a default value if none was returned
+        if (!g.label_class) {
+            g.label_class = g.data.list.acnc[0].id();
         }
 
         /***********************************************************************************************************/
-        /* If we're passed existing_copies, rig up a copy_shortcut object to leverage existing code for rendering the volume labels, etc. 
-         * Also make a lookup object for existing copies keyed on org id and callnumber label, and another keyed on copy id. */
+        /* If we're passed existing_copies, rig up a copy_shortcut object to leverage existing code for rendering the volume labels, etc.
+         * Also make a lookup object for existing copies keyed on org id and callnumber composite key, and another keyed on copy id. */
 
-        // g.org_label_existing_copy_map = { ou_id : { callnumber_label : [ copy1, copy2, ... ] }, ... }
+        // g.org_label_existing_copy_map = { ou_id : { callnumber_composite_key : [ copy1, copy2, ... ] }, ... }
         g.org_label_existing_copy_map = {};
         // g.id_copy_map = { acp_id : acp, ... }
         g.id_copy_map = {};
@@ -82,11 +124,17 @@ function my_init() {
                 g.copy_shortcut[ call_number.owning_lib() ] = {};
                 g.org_label_existing_copy_map[ call_number.owning_lib() ] = {};
             }
-            g.copy_shortcut[ call_number.owning_lib() ][ call_number.label() ] = call_number.id();
-            if (! g.org_label_existing_copy_map[ call_number.owning_lib() ][ call_number.label() ]) {
-                g.org_label_existing_copy_map[ call_number.owning_lib() ][ call_number.label() ] = [];
+            var acnc_id = call_number.label_class() ?
+                ( typeof call_number.label_class() == 'object' ? call_number.label_class().id() : call_number.label_class() )
+                : g.label_class;
+            var acnp_id = typeof call_number.prefix() == 'object' ? call_number.prefix().id() : call_number.prefix();
+            var acns_id = typeof call_number.suffix() == 'object' ? call_number.suffix().id() : call_number.suffix();
+            var callnumber_composite_key = acnc_id + ':' + acnp_id + ':' + call_number.label() + ':' + acns_id;
+            g.copy_shortcut[ call_number.owning_lib() ][ callnumber_composite_key ] = call_number.id();
+            if (! g.org_label_existing_copy_map[ call_number.owning_lib() ][ callnumber_composite_key ]) {
+                g.org_label_existing_copy_map[ call_number.owning_lib() ][ callnumber_composite_key ] = [];
             }
-            g.org_label_existing_copy_map[ call_number.owning_lib() ][ call_number.label() ].push( copy );
+            g.org_label_existing_copy_map[ call_number.owning_lib() ][ callnumber_composite_key ].push( copy );
         }
 
         /***********************************************************************************************************/
@@ -104,18 +152,26 @@ function my_init() {
         get_contentWindow(summary).xulG = { 'docid' : g.doc_id };
 
         /***********************************************************************************************************/
-        /* For the call number drop down */
+        /* Setup pcrud and fetch the monographic parts for this bib */
 
-        if (g.existing_copies.length > 0 || !g.copy_shortcut) {
-            g.list_callnumbers(g.doc_id, label_class);
-        }
+        dojo.require('openils.PermaCrud');
+        g.pcrud = new openils.PermaCrud({'authtoken':ses()});
+        g.parts = g.pcrud.search('bmp',{'record':g.doc_id},{'order_by': { 'bmp' : 'label_sortkey' } });
+        g.parts_hash = util.functional.convert_object_list_to_hash( g.parts );
+
+        /***********************************************************************************************************/
+        /* For the batch drop downs */
+
+        g.list_classes();
+        g.list_callnumbers(g.doc_id, g.label_class);
+        g.render_batch_button();
 
         /***********************************************************************************************************/
         /* render the orgs and volumes/input */
 
         var rows = document.getElementById('rows');
 
-        var node_id = 0;
+        g.ou_ids = [];
         for (var i = 0; i < ou_ids.length; i++) {
             try {
                 var org = g.data.hash.aou[ ou_ids[i] ];
@@ -123,13 +179,33 @@ function my_init() {
                     var row = document.createElement('row'); rows.appendChild(row); row.setAttribute('ou_id',ou_ids[i]);
                     g.render_library_label(row,ou_ids[i]);
                     g.render_volume_count_entry( row, ou_ids[i] );
+                    g.ou_ids.push( ou_ids[i] );
                 }
             } catch(E) {
                 g.error.sdump('D_ERROR',E);
             }
         }
+        g.common_ancestor_ou_ids = util.fm_utils.find_common_aou_ancestors( g.ou_ids ).reverse();
+
+        /***********************************************************************************************************/
+        /* For the remainder batch drop downs */
+
+        g.list_prefixes();
+        g.list_suffixes();
+
+        /************/
 
         g.load_prefs();
+
+        if (g.existing_copies.length > 0) {
+            g.gather_copies_soon();
+        }
+
+        try {
+            $('main').parentNode.scrollLeft = 9999;
+        } catch(E) {
+            dump('Error in volume_copy_creator.js, my_init(), trying to auto-scroll to the far right: ' + E + '\n');
+        }
 
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/volume_copy_creator.js', E]);
@@ -147,8 +223,12 @@ g.render_library_label = function(row,ou_id) {
 g.render_volume_count_entry = function(row,ou_id) {
     var hb = document.createElement('vbox'); row.appendChild(hb);
     var tb = document.createElement('textbox'); hb.appendChild(tb);
+    if (g.use_defaults) {
+        tb.value = 1; // default to 1 volume per org
+        tb.select();
+    }
     tb.setAttribute('ou_id',ou_id); tb.setAttribute('size','3'); tb.setAttribute('cols','3');
-    tb.setAttribute('rel_vert_pos','1'); 
+    tb.setAttribute('rel_vert_pos',rel_vert_pos_volume_count);
     if ( (!g.copy_shortcut) && (!g.last_focus) ) { tb.focus(); g.last_focus = tb; }
     var node;
     function render_copy_count_entry(ev) {
@@ -161,15 +241,16 @@ g.render_volume_count_entry = function(row,ou_id) {
                 return;
             }
             if (node) { row.removeChild(node); node = null; }
-            //ev.target.disabled = true;
             node = g.render_callnumber_copy_count_entry(row,ou_id,ev.target.value);
         }
     }
-    util.widgets.apply_vertical_tab_on_enter_handler( 
-        tb, 
-        function() { render_copy_count_entry({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); }
+    util.widgets.apply_vertical_tab_on_enter_handler(
+        tb,
+        function() { render_copy_count_entry({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); },
+        g.delay_gather_copies_soon
     );
     tb.addEventListener( 'change', render_copy_count_entry, false);
+    tb.addEventListener( 'change', g.gather_copies_soon, false);
     tb.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
     setTimeout(
         function() {
@@ -184,6 +265,14 @@ g.render_volume_count_entry = function(row,ou_id) {
                     ).length;
                     render_copy_count_entry({'target':tb});
                     tb.disabled = true;
+                } else if (tb.value) {
+                    // since we're now supplying a default
+                    render_copy_count_entry({'target':tb});
+                    setTimeout(
+                        function() {
+                            util.widgets.vertical_tab(tb);
+                        }, 0
+                    );
                 }
             } catch(E) {
                 alert(E);
@@ -199,14 +288,35 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
     var rows = grid.lastChild;
     var r = document.createElement('row'); rows.appendChild( r );
     var x = document.createElement('label'); r.appendChild(x);
-    x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums')); x.setAttribute('style','font-weight: bold');
+        x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.classification'));
+        x.setAttribute('style','font-weight: bold');
     x = document.createElement('label'); r.appendChild(x);
-    x.setAttribute('value',$("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies')); x.setAttribute('style','font-weight: bold');
-    x.setAttribute('size','3'); x.setAttribute('cols','3');
+        x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.prefix'));
+        x.setAttribute('style','font-weight: bold');
+    x = document.createElement('label'); r.appendChild(x);
+        x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.call_nums'));
+        x.setAttribute('style','font-weight: bold');
+    x = document.createElement('label'); r.appendChild(x);
+        x.setAttribute('value', $("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.suffix'));
+        x.setAttribute('style','font-weight: bold');
+    x = document.createElement('label'); r.appendChild(x);
+        x.setAttribute('value',$("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.num_of_copies'));
+        x.setAttribute('style','font-weight: bold');
+    x = document.createElement('label'); r.appendChild(x);
+        x.setAttribute('value',$("catStrings").getString('staff.cat.volume_copy_creator.render_callnumber_copy_count_entry.barcodes_and_parts'));
+        x.setAttribute('style','font-weight: bold');
 
-    function handle_change(call_number_column_textbox,number_of_copies_column_textbox,barcode_column_box) {
-        if (call_number_column_textbox.value == '') return;
-        if (isNaN( Number( number_of_copies_column_textbox.value ) )) return;
+    function handle_change_precipitating_barcode_rendering(
+        callnumber_composite_key,
+        number_of_copies_column_textbox,
+        barcode_column_box
+    ) {
+        dump('handle_change_precipitating_barcode_rendering\n');
+
+        if (isNaN( Number( number_of_copies_column_textbox.value ) )) {
+            dump('1:handle_change_precipitating_barcode_rendering early return\n');
+            return;
+        }
         if ( Number( number_of_copies_column_textbox.value ) > g_max_copies_that_can_be_added_at_a_time_per_volume ) {
             g.error.yns_alert($("catStrings").getFormattedString('staff.cat.volume_copy_creator.render_volume_count_entry.message', [g_max_copies_that_can_be_added_at_a_time_per_volume]),
                 $("catStrings").getString('staff.cat.volume_copy_creator.render_volume_count_entry.title'),
@@ -219,59 +329,177 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
         }
         g.render_barcode_entry(
             barcode_column_box,
-            call_number_column_textbox.value,
+            callnumber_composite_key,
             Number(number_of_copies_column_textbox.value),
             ou_id
         );
 
-        document.getElementById("EditThenCreate").disabled = false;
-        document.getElementById("CreateWithDefaults").disabled = false;
+        if (! xulG.unified_interface) {
+            document.getElementById("EditThenCreate").disabled = false;
+            document.getElementById("CreateWithDefaults").disabled = false;
+        } else {
+            document.getElementById("Create").disabled = false;
+        }
     }
 
-    function handle_change_call_number_column_textbox(ev) {
-        var _call_number_column_textbox = ev.target;    
+    function handle_change_to_callnumber_data(ev) {
+        dump('handle_change_to_callnumber_data\n');
+        var _call_number_column_textbox = ev.target;
         var _call_number_column_box = _call_number_column_textbox.parentNode;
-        var _number_of_copies_column_box = _call_number_column_box.nextSibling;
+
+        var _classification_column_box = _call_number_column_box.previousSibling.previousSibling; /* two over to the left */
+        var _classification_column_menulist = _classification_column_box.firstChild;
+
+        var _prefix_column_box = _call_number_column_box.previousSibling; /* one over to the left */
+        var _prefix_column_menulist = _prefix_column_box.firstChild;
+
+        var _suffix_column_box = _call_number_column_box.nextSibling; /* one over to the right */
+        var _suffix_column_menulist = _suffix_column_box.firstChild;
+
+        var _number_of_copies_column_box = _call_number_column_box.nextSibling.nextSibling; /* two over to the right */
         var _number_of_copies_column_textbox = _number_of_copies_column_box.firstChild;
+
         var _barcode_column_box = _number_of_copies_column_box.nextSibling;
-        handle_change(_call_number_column_textbox,_number_of_copies_column_textbox,_barcode_column_box);
+
+        var acn_label = _call_number_column_textbox.value;
+        var acnc_id = _classification_column_menulist.value;
+        var acnp_id = _prefix_column_menulist.value;
+        var acns_id = _suffix_column_menulist.value;
+        var callnumber_composite_key = acnc_id + ':' + acnp_id + ':' + acn_label + ':' + acns_id;
+        dump('\tcomposite_key = ' + callnumber_composite_key + '\n');
+
+        _call_number_column_textbox.setAttribute('callkey',callnumber_composite_key);
+        _call_number_column_textbox.setAttribute('acnc_id',acnc_id);
+        _call_number_column_textbox.setAttribute('acnp_id',acnp_id);
+        _call_number_column_textbox.setAttribute('acns_id',acns_id);
+
+        handle_change_precipitating_barcode_rendering(
+            callnumber_composite_key,
+            _number_of_copies_column_textbox,
+            _barcode_column_box
+        );
     }
 
     function handle_change_number_of_copies_column_textbox(ev) {
-        var _number_of_copies_column_textbox = ev.target;    
+        dump('handle_change_number_of_copies_column_textbox\n');
+        var _number_of_copies_column_textbox = ev.target;
         var _number_of_copies_column_box = _number_of_copies_column_textbox.parentNode;
-        var _call_number_column_box = _number_of_copies_column_box.previousSibling;
+        var _call_number_column_box = _number_of_copies_column_box.previousSibling.previousSibling; /* two over */
         var _call_number_column_textbox = _call_number_column_box.firstChild;
-        var _barcode_column_box = _number_of_copies_column_box.nextSibling;
-        handle_change(_call_number_column_textbox,_number_of_copies_column_textbox,_barcode_column_box);
+        handle_change_to_callnumber_data({'target':_call_number_column_textbox}); // let this guy do the work
     }
 
     for (var i = 0; i < count; i++) {
         var r = document.createElement('row'); rows.appendChild(r);
-        var call_number_column_box = document.createElement('vbox'); r.appendChild(call_number_column_box);
-        var number_of_copies_column_box = document.createElement('vbox'); r.appendChild(number_of_copies_column_box);
-        var barcode_column_box = document.createElement('vbox'); r.appendChild(barcode_column_box);
-        var call_number_column_textbox = document.createElement('textbox'); call_number_column_box.appendChild(call_number_column_textbox);
-        call_number_column_textbox.setAttribute('rel_vert_pos','2');
-        call_number_column_textbox.setAttribute('ou_id',ou_id);
-        util.widgets.apply_vertical_tab_on_enter_handler( 
-            call_number_column_textbox, 
-            function() { handle_change_call_number_column_textbox({'target':call_number_column_textbox}); setTimeout(function(){util.widgets.vertical_tab(call_number_column_textbox);},0); }
-        );
-        var number_of_copies_column_textbox = document.createElement('textbox'); number_of_copies_column_box.appendChild(number_of_copies_column_textbox);
-        number_of_copies_column_textbox.setAttribute('size','3'); number_of_copies_column_textbox.setAttribute('cols','3');
-        number_of_copies_column_textbox.setAttribute('rel_vert_pos','3');
-        number_of_copies_column_textbox.setAttribute('ou_id',ou_id);
-        util.widgets.apply_vertical_tab_on_enter_handler( 
-            number_of_copies_column_textbox, 
-            function() { handle_change_number_of_copies_column_textbox({'target':number_of_copies_column_textbox}); setTimeout(function(){util.widgets.vertical_tab(number_of_copies_column_textbox);},0); }
-        );
 
-        call_number_column_textbox.addEventListener( 'change', handle_change_call_number_column_textbox, false);
-        call_number_column_textbox.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
-        number_of_copies_column_textbox.addEventListener( 'change', handle_change_number_of_copies_column_textbox, false);
-        number_of_copies_column_textbox.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
-        if ( !g.last_focus ) { number_of_copies_column_textbox.focus(); g.last_focus = number_of_copies_column_textbox; }
+            /**** CLASSIFICATION COLUMN ****/
+            var classification_column_box = document.createElement('vbox');
+            r.appendChild(classification_column_box);
+
+            /**** PREFIX COLUMN ****/
+            var prefix_column_box = document.createElement('vbox');
+            r.appendChild(prefix_column_box);
+
+            /**** CALLNUMBER COLUMN ****/
+            var call_number_column_box = document.createElement('vbox');
+            r.appendChild(call_number_column_box);
+                var call_number_column_textbox = document.createElement('textbox');
+                call_number_column_box.appendChild(call_number_column_textbox);
+                    if (g.use_defaults && $('marc_cn').firstChild) {
+                        // default to first real value from batch callnumber menu
+                        var menupopup = $('marc_cn').firstChild.firstChild;
+                        if (menupopup.childNodes.length > 1) {
+                            call_number_column_textbox.value = menupopup.childNodes[1].getAttribute('label');
+                            call_number_column_textbox.select();
+                        }
+                    }
+                    call_number_column_textbox.setAttribute('rel_vert_pos',rel_vert_pos_call_number);
+                    call_number_column_textbox.setAttribute('ou_id',ou_id);
+                    util.widgets.apply_vertical_tab_on_enter_handler(
+                        call_number_column_textbox,
+                        function() {
+                            handle_change_to_callnumber_data({'target':call_number_column_textbox});
+                            setTimeout(
+                                function(){
+                                    util.widgets.vertical_tab(call_number_column_textbox);
+                                },0
+                            );
+                        },
+                        g.delay_gather_copies_soon
+                    );
+                    call_number_column_textbox.addEventListener( 'change', handle_change_to_callnumber_data, false);
+                    call_number_column_textbox.addEventListener( 'change', g.gather_copies_soon, false);
+                    call_number_column_textbox.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
+
+                    /**** CLASSIFICATION COLUMN revisited ****/
+                    var classification_column_menulist = g.render_class_menu(call_number_column_textbox);
+                    classification_column_menulist.addEventListener(
+                        'command',
+                        function() {
+                            handle_change_to_callnumber_data({'target':call_number_column_textbox});
+                        }
+                        ,false
+                    );
+                    classification_column_box.appendChild(classification_column_menulist);
+
+                    /**** PREFIX COLUMN revisited ****/
+                    var prefix_column_menulist = g.render_prefix_menu(call_number_column_textbox);
+                    prefix_column_menulist.addEventListener(
+                        'command',
+                        function() {
+                            handle_change_to_callnumber_data({'target':call_number_column_textbox});
+                        }
+                        ,false
+                    );
+
+                    prefix_column_box.appendChild(prefix_column_menulist);
+
+            /**** SUFFIX COLUMN ****/
+            var suffix_column_box = document.createElement('vbox');
+            r.appendChild(suffix_column_box);
+                var suffix_column_menulist = g.render_suffix_menu(call_number_column_textbox);
+                suffix_column_menulist.addEventListener(
+                    'command',
+                    function() {
+                        handle_change_to_callnumber_data({'target':call_number_column_textbox});
+                    }
+                    ,false
+                );
+                suffix_column_box.appendChild(suffix_column_menulist);
+
+            /**** NUMBER OF COPIES COLUMN ****/
+            var number_of_copies_column_box = document.createElement('vbox');
+            r.appendChild(number_of_copies_column_box);
+                var number_of_copies_column_textbox = document.createElement('textbox');
+                number_of_copies_column_box.appendChild(number_of_copies_column_textbox);
+                    if (g.use_defaults) {
+                        // default to one copy per call number
+                        number_of_copies_column_textbox.value = 1;
+                        number_of_copies_column_textbox.select();
+                    }
+                    number_of_copies_column_textbox.setAttribute('size','3'); number_of_copies_column_textbox.setAttribute('cols','3');
+                    number_of_copies_column_textbox.setAttribute('rel_vert_pos',rel_vert_pos_copy_count);
+                    number_of_copies_column_textbox.setAttribute('ou_id',ou_id);
+                    util.widgets.apply_vertical_tab_on_enter_handler(
+                        number_of_copies_column_textbox,
+                        function() {
+                            handle_change_number_of_copies_column_textbox({'target':number_of_copies_column_textbox});
+                            setTimeout(
+                                function(){
+                                    util.widgets.vertical_tab(number_of_copies_column_textbox);
+                                },0
+                            );
+                        },
+                        g.delay_gather_copies_soon
+                    );
+                    number_of_copies_column_textbox.addEventListener( 'change', handle_change_number_of_copies_column_textbox, false);
+                    number_of_copies_column_textbox.addEventListener( 'change', g.gather_copies_soon, false);
+                    number_of_copies_column_textbox.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
+                    if ( !g.last_focus ) { number_of_copies_column_textbox.focus(); g.last_focus = number_of_copies_column_textbox; }
+
+            /**** BARCODE COLUMN ****/
+            var barcode_column_box = document.createElement('vbox');
+            r.appendChild(barcode_column_box);
 
         setTimeout(
             function(idx,call_number_column_textbox,number_of_copies_column_textbox){
@@ -279,23 +507,36 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
                     try {
                         JSAN.use('util.functional');
                         if (g.copy_shortcut) {
-                            var label = util.functional.map_object_to_list(
+                            var callnumber_composite_key = util.functional.map_object_to_list(
                                 g.copy_shortcut[ou_id],
                                 function(o,i) {
                                     return i;
                                 }
                             )[idx];
                             if (g.org_label_existing_copy_map[ou_id]) {
-                                var num_of_copies = g.org_label_existing_copy_map[ou_id][label].length;
+                                var num_of_copies = g.org_label_existing_copy_map[ou_id][callnumber_composite_key].length;
                                 if (num_of_copies>0) {
                                     number_of_copies_column_textbox.value = num_of_copies;
                                     number_of_copies_column_textbox.disabled = true;
                                 }
                             }
-                            call_number_column_textbox.value = label; 
-                            handle_change_call_number_column_textbox({'target':call_number_column_textbox});
-                            if (g.existing_copies.length < 1) {
-                                call_number_column_textbox.disabled = true;
+                            var acn_label = callnumber_composite_key.split(/:/).slice(2,-1).join(':');
+                            var acnc_id = callnumber_composite_key.split(/:/)[0];
+                            var acnp_id = callnumber_composite_key.split(/:/)[1];
+                            var acns_id = callnumber_composite_key.split(/:/).slice(-1)[0];
+                            call_number_column_textbox.value = acn_label;
+                            classification_column_menulist.value = acnc_id;
+                            prefix_column_menulist.value = acnp_id;
+                            suffix_column_menulist.value = acns_id;
+                            handle_change_to_callnumber_data({'target':call_number_column_textbox});
+                        } else {
+
+                            // if we're providing defaults, keep on rendering
+                            if (call_number_column_textbox.value) {
+                                util.widgets.dispatch('change',call_number_column_textbox);
+                            }
+                            if (number_of_copies_column_textbox.value) {
+                                util.widgets.dispatch('change',number_of_copies_column_textbox);
                             }
                         }
                     } catch(E) {
@@ -309,36 +550,150 @@ g.render_callnumber_copy_count_entry = function(row,ou_id,count) {
     return grid;
 }
 
-g.render_barcode_entry = function(node,callnumber,count,ou_id) {
+g.render_part_menu = function(barcode_tb) {
+    var hbox = document.createElement('hbox');
+    var menulist = document.createElement('menulist');
+        menulist.setAttribute('editable','true');
+        hbox.appendChild(menulist);
+    var button = document.createElement('button');
+        button.setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.create_part.btn.label'));
+        button.hidden = true;
+        hbox.appendChild(button);
+
+    var menupopup = document.createElement('menupopup');
+        menulist.appendChild(menupopup);
+        g.render_part_menuitems(menupopup);
+
+    button.addEventListener(
+        'command',
+        function(ev) {
+            var new_part = new bmp();
+                new_part.isnew(1);
+                new_part.label(menulist.value);
+                new_part.record(g.doc_id);
+            g.pcrud.create(new_part, {
+                "oncomplete": function (r, objs) {
+                    var db_part = objs[0];
+                    if (!db_part) { return; }
+                    g.parts.push( db_part );
+                    g.parts_hash[ db_part.id() ] = db_part;
+                    g.render_part_menuitems(menupopup);
+                    if (menulist.selectedItem) {
+                        barcode_tb.setAttribute('bmp_id',menulist.selectedItem.value);
+                        button.hidden = true;
+                    }
+                    g.gather_copies_soon();
+                }
+            });
+        },
+        false
+    );
+
+    menulist.addEventListener(
+        'change',
+        function(ev) {
+            if (! ev.target.selectedItem) {
+                button.hidden = false;
+            }
+        },
+        false
+    );
+    menulist.addEventListener('change',g.gather_copies_soon,false);
+    menulist.addEventListener(
+        'command',
+        function(ev) {
+            barcode_tb.setAttribute('bmp_id',menulist.selectedItem.value);
+            button.hidden = true;
+        },
+        false
+    );
+    menulist.addEventListener('command',g.gather_copies_soon,false);
+
+    return hbox;
+}
+
+g.render_part_menuitems = function(menupopup) {
+    util.widgets.remove_children(menupopup);
+    var menuitem = document.createElement('menuitem');
+    menuitem.setAttribute('label','');
+    menuitem.setAttribute('value','');
+    menupopup.appendChild(menuitem);
+    for (var i = 0; i < g.parts.length; i++) {
+        var menuitem = document.createElement('menuitem');
+        menuitem.setAttribute('label',g.parts[i].label());
+        menuitem.setAttribute('value',g.parts[i].id());
+        menupopup.appendChild(menuitem);
+    }
+
+}
+
+g.render_barcode_entry = function(node,callnumber_composite_key,count,ou_id) {
     try {
+        dump('g.render_barcode_entry(node,'+callnumber_composite_key+','+count+','+ou_id+'\n');
         function ready_to_create(ev) {
-            document.getElementById("EditThenCreate").disabled = false;
-            document.getElementById("CreateWithDefaults").disabled = false;
+            if (! xulG.unified_interface) {
+                document.getElementById("EditThenCreate").disabled = false;
+                document.getElementById("CreateWithDefaults").disabled = false;
+            } else {
+                document.getElementById("Create").disabled = false;
+            }
         }
 
-        JSAN.use('util.barcode'); 
+        JSAN.use('util.barcode');
 
         for (var i = 0; i < count; i++) {
-            var tb; var set_handlers = false;
+            var tb_part_box;
+            var tb;
+            var part_menu;
+            var set_handlers = false;
             if (typeof node.childNodes[i] == 'undefined') {
-                tb = document.createElement('textbox'); node.appendChild(tb);
+                tb_part_box = document.createElement('hbox');
+                node.appendChild(tb_part_box);
+                tb = document.createElement('textbox');
+                tb_part_box.appendChild(tb);
+                part_menu = g.render_part_menu(tb);
+                tb_part_box.appendChild(part_menu);
                 set_handlers = true;
             } else {
-                tb = node.childNodes[i];
+                tb_part_box = node.childNodes[i];
+                tb = tb_part_box.firstChild;
+                part_menu = tb_part_box.lastChild;
             }
             tb.setAttribute('ou_id',ou_id);
-            tb.setAttribute('callnumber',callnumber);
-            tb.setAttribute('rel_vert_pos','4');
+            tb.setAttribute('callkey',callnumber_composite_key);
+            tb.setAttribute('rel_vert_pos',rel_vert_pos_barcode);
+            part_menu.firstChild.setAttribute('rel_vert_pos',rel_vert_pos_part);
             if (!tb.value && g.org_label_existing_copy_map[ ou_id ]) {
-                tb.value = g.org_label_existing_copy_map[ ou_id ][ callnumber ][i].barcode();
-                tb.setAttribute('acp_id', g.org_label_existing_copy_map[ ou_id ][ callnumber ][i].id());
+                tb.value = g.org_label_existing_copy_map[ ou_id ][ callnumber_composite_key ][i].barcode();
+                tb.setAttribute('acp_id', g.org_label_existing_copy_map[ ou_id ][ callnumber_composite_key ][i].id());
+                var temp_parts = g.org_label_existing_copy_map[ ou_id ][ callnumber_composite_key ][i].parts();
+                temp_parts = util.functional.filter_list(
+                    temp_parts,
+                    function(p) {
+                        return p.record() == g.doc_id; // filter out foreign parts
+                    }
+                );
+                if (temp_parts.length > 0) {
+                    tb.setAttribute('bmp_id',temp_parts[0].id());
+                    part_menu.firstChild.value = g.parts_hash[ temp_parts[0].id() ].label();
+                }
                 tb.select();
                 if (! g.first_focus) { g.first_focus = tb; }
             }
+            if (g.use_defaults && ! g.first_focus) {
+                g.first_focus = tb;
+                tb.focus();
+            }
             if (set_handlers) {
-                util.widgets.apply_vertical_tab_on_enter_handler( 
-                    tb, 
-                    function() { ready_to_create({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); }
+                util.widgets.apply_vertical_tab_on_enter_handler(
+                    tb,
+                    function() { ready_to_create({'target':tb}); setTimeout(function(){util.widgets.vertical_tab(tb);},0); },
+                    g.delay_gather_copies_soon
+                );
+                util.widgets.apply_vertical_tab_on_enter_handler(
+                    part_menu.firstChild,
+                    function() { setTimeout(function(){util.widgets.vertical_tab(part_menu.firstChild);},0); },
+                    g.delay_gather_copies_soon
                 );
                 tb.addEventListener('change', function(ev) {
                     var barcode = String( ev.target.value ).replace(/\s/g,'');
@@ -351,11 +706,13 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
                         setTimeout( function() { ev.target.select(); ev.target.focus(); }, 0);
                     }
                 }, false);
+                tb.addEventListener('change', g.gather_copies_soon, false);
                 tb.addEventListener( 'focus', function(ev) { g.last_focus = ev.target; }, false );
             }
         }
-        
-        setTimeout( function() { if (g.first_focus) { g.first_focus.focus(); } }, 0 ); 
+
+        g.gather_copies_soon();
+        setTimeout( function() { if (g.first_focus) { g.first_focus.focus(); } }, 0 );
 
     } catch(E) {
         g.error.sdump('D_ERROR','g.render_barcode_entry: ' + E);
@@ -364,7 +721,7 @@ g.render_barcode_entry = function(node,callnumber,count,ou_id) {
 
 g.generate_barcodes = function() {
     try {
-        var nodes = document.getElementsByAttribute('rel_vert_pos','4');
+        var nodes = document.getElementsByAttribute('rel_vert_pos',rel_vert_pos_barcode);
         if (nodes.length < 1) { return; }
         var first_barcode = nodes[0].value;
 
@@ -387,50 +744,167 @@ g.generate_barcodes = function() {
         for (var i = 0; i < barcodes.length; i++) {
             nodes[i+1].value = barcodes[i];
             nodes[i+1].select();
+            util.widgets.dispatch('change',nodes[i+1]);
         }
+
+        setTimeout(
+            function() {
+                g.gather_copies_soon();
+            },0
+        );
 
     } catch(E) {
         g.error.sdump('D_ERROR','g.generate_barcodes: ' + E);
     }
 }
 
-g.new_node_id = -1;
+g.delay_gather_copies_soon = function() {
+    if (xulG.unified_interface) {
+        dump('g.delay_gather_copies_soon()\n');
+        g.gather_copies_soon();
+    }
+}
 
-g.stash_and_close = function(param) {
-
+g.gather_copies_soon = function() {
     try {
+        if (!xulG.unified_interface) { return; }
+        dump('g.gather_copies_soon()\n');
+        document.getElementById("Create").disabled = true;
+        if (g.update_copy_editor_timeoutID) {
+            clearTimeout(g.update_copy_editor_timeoutID);
+        }
+        // This function is expensive when it comes to keeping the UI responsive, so let's give it a delay
+        // that quick entry of consecutive fields can override
+        g.update_copy_editor_timeoutID = setTimeout(
+            function() {
+                try {
+                    g.gather_copies();
+                    xulG.refresh_copy_editor();
+                    document.getElementById("Create").disabled = false;
+                } catch(E) {
+                    alert('Error in volume_copy_editor.js with g.gather_copies_soon setTimeout func(): ' + E);
+                }
+            }, update_timer
+        );
+    } catch(E) {
+        alert('Error in volume_copy_creator.js, g.gather_copies_soon(): ' + E);
+    }
+}
 
+g.new_acp_id = -1;
+g.new_acn_id = -1;
+
+g.gather_copies = function() {
+    dump('g.gather_copies()\n');
+    try {
         var nl = document.getElementsByTagName('textbox');
 
-        var volumes_hash = {};
+        g.volumes_scaffold = {};
+        /*
+            g.volumes_scaffold = {
+                '#ou_id' : {
+                    '#class_id:#prefix_id:#callnumber label:#suffix_id' : {
+                        'callnumber_data' : {
+                            'acn_id' : '#callnumber id',
+                            'acn_label' : '#callnumber label',
+                            'acnc_id' : '#classification_id',
+                            'acnp_id' : '#prefix_id',
+                            'acns_id' : '#suffix_id'
+                        },
+                        'barcode_data' :
+                            [
+                                {
+                                    'barcode' : '#barcode',
+                                    'acp_id' : '#copy_id',
+                                    'bmp_id' : '#part_id'
+                                }, ...
+                            ]
+                    }
+                }, ...
+            }
+        */
 
         var barcodes = [];
-        
+        var v_count = 0;
         for (var i = 0; i < nl.length; i++) {
-            if ( nl[i].getAttribute('rel_vert_pos') == 4 ) barcodes.push( nl[i] );
-            if ( nl[i].getAttribute('rel_vert_pos') == 2 )  {
+            if ( nl[i].getAttribute('rel_vert_pos') == rel_vert_pos_barcode ) barcodes.push( nl[i] );
+            if ( nl[i].getAttribute('rel_vert_pos') == rel_vert_pos_call_number )  {
+                v_count++;
                 var ou_id = nl[i].getAttribute('ou_id');
+                var acn_id = nl[i].getAttribute('acn_id');
+                if (!acn_id) {
+                    acn_id = g.new_acn_id--;
+                    nl[i].setAttribute('acn_id',acn_id);
+                }
+                var acnc_id = nl[i].getAttribute('acnc_id') || g.label_class;
+                var acnp_id = nl[i].getAttribute('acnp_id') || -1;
+                var acns_id = nl[i].getAttribute('acns_id') || -1;
                 var callnumber = nl[i].value;
-                if (typeof volumes_hash[ou_id] == 'undefined') { volumes_hash[ou_id] = {} }
-                if (typeof volumes_hash[ou_id][callnumber] == 'undefined') { volumes_hash[ou_id][callnumber] = [] }
+                if (typeof g.volumes_scaffold[ou_id] == 'undefined') {
+                    g.volumes_scaffold[ou_id] = {}
+                }
+                var composite_key = acnc_id + ':' + acnp_id + ':' + callnumber + ':' + acns_id;
+                if (typeof g.volumes_scaffold[ou_id][composite_key] == 'undefined') {
+                    g.volumes_scaffold[ou_id][composite_key] = {
+                        //'node' : nl[i],
+                        'callnumber_data' : {
+                            'acn_id' : acn_id,
+                            'acn_label' : callnumber,
+                            'acnc_id' : acnc_id,
+                            'acnp_id' : acnp_id,
+                            'acns_id' : acns_id
+                        },
+                        'barcode_data' : []
+                    }
+                    dump('fleshing volumes scaffold with ou_id = ' + ou_id + ' composite_key = ' + composite_key + ' acn_id = ' + acn_id + '\n');
+                }
             }
         };
-    
+        dump('volume_copy_creator: processed ' + nl.length + ' textbox nodes, consisting of ' + barcodes.length + ' barcodes and ' + v_count + 'volumes\n');
+        dump('volume scaffold = ' + js2JSON(g.volumes_scaffold) + '\n');
+
         for (var i = 0; i < barcodes.length; i++) {
-            var acp_id = barcodes[i].getAttribute('acp_id') || g.new_node_id--;
+            var acp_id = barcodes[i].getAttribute('acp_id') || g.new_acp_id--;
             var ou_id = barcodes[i].getAttribute('ou_id');
-            var callnumber = barcodes[i].getAttribute('callnumber');
+            var callnumber_composite_key = barcodes[i].getAttribute('callkey');
             var barcode = barcodes[i].value;
+            var bmp_id = barcodes[i].getAttribute('bmp_id');
 
-            if (typeof volumes_hash[ou_id] == 'undefined') { volumes_hash[ou_id] = {} }
-            if (typeof volumes_hash[ou_id][callnumber] == 'undefined') { volumes_hash[ou_id][callnumber] = [] }
+            dump('placing ' + barcode + ' for ou = ' + ou_id + ' into composite_key bin ' + callnumber_composite_key + '\n');
 
-            if (barcode != '') volumes_hash[ou_id][callnumber].push( { 'barcode' : barcode, 'acp_id' : acp_id } );
+            if (typeof g.volumes_scaffold[ou_id] == 'undefined') {
+                dump('1: I want to remove this soon, so alert me if it is getting used, ou_id = ' + ou_id + '\n');
+                g.volumes_scaffold[ou_id] = {}
+            }
+            if (typeof g.volumes_scaffold[ou_id][callnumber_composite_key] == 'undefined') {
+                dump('2: when does this happen, and why? ou_id = ' + ou_id + ' callnumber_composite_key = ' + callnumber_composite_key + '\n');
+                // one way this can happen, race condition between this function and editing a widget
+                g.volumes_scaffold[ou_id][callnumber_composite_key] = {
+                    'callnumber_data' : {
+                        // not ideal, but hey...
+                        'acn_label' : callnumber_composite_key.split(/:/).slice(2,-1).join(':'),
+                        'acnc_id' : callnumber_composite_key.split(/:/)[0],
+                        'acnp_id' : callnumber_composite_key.split(/:/)[1],
+                        'acns_id' : callnumber_composite_key.split(/:/).slice(-1)[0]
+                    },
+                    'barcode_data' : []
+                }
+            }
+
+            if (barcode != '') {
+                g.volumes_scaffold[ou_id][callnumber_composite_key].barcode_data.push(
+                    {
+                        'barcode' : barcode,
+                        'acp_id' : acp_id,
+                        'bmp_id' : bmp_id
+                    }
+                );
+            }
         }
 
         var volumes = [];
         var copies = [];
-        var volume_labels = {};
+        var volume_data = {};
 
         function new_copy(acp_id,ou_id,acn_id,barcode) {
             var copy = new acp();
@@ -454,43 +928,163 @@ g.stash_and_close = function(param) {
             return copy;
         }
 
-        for (var ou_id in volumes_hash) {
-            for (var cn_label in volumes_hash[ou_id]) {
-
-                var acn_id = g.network.simple_request(
-                    'FM_ACN_FIND_OR_CREATE',
-                    [ ses(), cn_label, g.doc_id, ou_id ]
-                );
-
-                if (typeof acn_id.ilsevent != 'undefined') {
-                    g.error.standard_unexpected_error_alert($("catStrings").getFormattedString('staff.cat.volume_copy_creator.stash_and_close.problem_with_volume', [cn]), acn_id);
-                    continue;
-                }
-
-                volume_labels[ acn_id ] = { 'label' : cn_label, 'owning_lib' : ou_id };
-
-                for (var i = 0; i < volumes_hash[ou_id][cn_label].length; i++) {
-                    var barcode = volumes_hash[ou_id][cn_label][i].barcode;
-                    var acp_id = volumes_hash[ou_id][cn_label][i].acp_id;
-                    var copy;
-                    if (acp_id < 0) {
+        for (var ou_id in g.volumes_scaffold) {
+            for (var composite_key in g.volumes_scaffold[ou_id]) {
+                for (var i = 0; i < g.volumes_scaffold[ou_id][composite_key].barcode_data.length; i++) {
+                    var barcode = g.volumes_scaffold[ou_id][composite_key].barcode_data[i].barcode;
+                    var acp_id = g.volumes_scaffold[ou_id][composite_key].barcode_data[i].acp_id;
+                    var bmp_id = g.volumes_scaffold[ou_id][composite_key].barcode_data[i].bmp_id;
+                    var acn_id = g.volumes_scaffold[ou_id][composite_key].callnumber_data.acn_id;
+                    dump('gather_copies(): barcode = ' + barcode + ' acp_id = ' + acp_id + ' bmp_id = ' + bmp_id + ' acn_id = ' + acn_id + ' composite_key = ' + composite_key + '\n');
+                    var copy = g.id_copy_map[ acp_id ];
+                    if (!copy) {
                         copy = new_copy(acp_id,ou_id,acn_id,barcode);
+                        g.id_copy_map[ acp_id ] = copy;
                     } else {
-                        copy = g.id_copy_map[ acp_id ];
-                        copy.barcode( barcode );
-                        copy.call_number( acn_id );
-                        copy.ischanged('1');
+                        copy.ischanged( get_db_true() );
                     }
+                    copy.barcode( barcode );
+                    copy.call_number( acn_id );
+                    var temp_parts = util.functional.filter_list(
+                        copy.parts() || [],
+                        function(p) {
+                            return (p.record() != g.doc_id); // filter out parts for this bib
+                        }
+                    );
+                    if (bmp_id) {
+                        temp_parts.push( g.parts_hash[ bmp_id ] );
+                    }
+                    copy.parts( temp_parts );
                     copies.push( copy );
                 }
             }
         }
 
+        xulG.copies = copies;
+        return copies;
+
+    } catch(E) {
+        alert('Error in volume_copy_creator.js, g.gather_copies():' + E);
+    }
+}
+
+g.vivicate_update_volumes = function() {
+    try {
+        var volumes = [];
+        for (var ou_id in g.volumes_scaffold) {
+            for (var composite_key in g.volumes_scaffold[ou_id]) {
+
+                var callnumber_data = g.volumes_scaffold[ou_id][composite_key].callnumber_data;
+                var acn_id = callnumber_data.acn_id;
+                var acnp_id = callnumber_data.acnp_id;
+                var acns_id = callnumber_data.acns_id;
+                var acnc_id = callnumber_data.acnc_id;
+
+                if (acn_id < 0) {
+
+                    var acn_blob = g.network.simple_request(
+                        'FM_ACN_FIND_OR_CREATE',
+                        [ ses(), callnumber_data.acn_label, g.doc_id, ou_id, acnp_id, acns_id, acnc_id ]
+                    );
+                    dump('FM_ACN_FIND_OR_CREATE: label = ' + callnumber_data.acn_label
+                        + ' doc = ' + g.doc_id + ' ou = ' + ou_id + ' acnp = ' + acnp_id + ' acns = ' + acns_id + ' acnc = ' + acnc_id + '\n');
+
+                    if (typeof acn_blob.ilsevent != 'undefined') {
+                        alert('Error in g.vivicate_update_volumes, acn_id = ' + acn_id + ' acn_blob = ' + js2JSON(acn_blob));
+                        continue;
+                    }
+
+                    acn_id = acn_blob.acn_id;
+
+                    if (typeof g.acn_map[ acn_id ] == 'undefined') {
+                        var temp_acn = g.network.simple_request(
+                            'FM_ACN_RETRIEVE.authoritative',
+                            [ acn_id ]
+                        );
+                        if (typeof temp_acn.ilsevent != 'undefined') {
+                            alert('Error in g.vivicate_update_volumes, acn_id = ' + acn_id + ' temp_acn = ' + js2JSON(temp_acn));
+                            continue;
+                        }
+                        g.acn_map[ acn_id ] = temp_acn;
+                        if (callnumber_data.acn_id < 0) {
+                            g.acn_map[ callnumber_data.acn_id ] = temp_acn;
+                        }
+                    }
+
+                }
+/*
+                var my_acn = g.acn_map[ acn_id ];
+
+                var node = g.volumes_scaffold[ou_id][composite_key].node;
+                var class_menulist = node.parentNode.previousSibling.previousSibling.firstChild;
+                var prefix_menulist = node.parentNode.previousSibling.firstChild;
+                var suffix_menulist = node.parentNode.nextSibling.firstChild;
+
+                if ( String(class_menulist.value) != String(my_acn.label_class()) {
+                    my_acn.label_class( class_menulist.value );
+                    my_acn.ischanged( get_db_true() );
+                }
+                if ( String(prefix_menulist.value) != String(my_acn.prefix()) {
+                    my_acn.prefix( prefix_menulist.value );
+                    my_acn.ischanged( get_db_true() );
+                }
+                if ( String(suffix_menulist.value) != String(my_acn.suffix()) {
+                    my_acn.suffix( suffix_menulist.value );
+                    my_acn.ischanged( get_db_true() );
+                }
+
+                if (get_bool( my_acn.ischanged() )) {
+                    volumes.push( my_acn );
+                }
+*/
+            }
+        }
+        if (volumes.length > 0) {
+            if (typeof xul_param('update_volume') == 'function') {
+                xul_param('update_volume')(volumes);
+            } else {
+                 var r = g.network.simple_request(
+                    'FM_ACN_TREE_UPDATE',
+                    [ ses(),volumes, false, { 'auto_merge_vols' : false } ]
+                );
+                if (typeof r.ilsevent != 'undefined') {
+                    alert('error with volume update: ' + js2JSON(r));
+                }
+            }
+        }
+    } catch(E) {
+        alert('Error in volume_copy_creator.js, vivicate_volumes(): ' + E);
+    }
+}
+
+g.stash_and_close = function(param) {
+
+    try {
+
+        var copies;
+        if (xulG.unified_interface) {
+            copies = xulG.copies;
+        } else {
+            copies = g.gather_copies();
+            copies = blob.copies;
+        }
+
         var dont_close = false;
-        JSAN.use('util.window'); var win = new util.window();
+
+        g.vivicate_update_volumes();
+        for (var i = 0; i < copies.length; i++) {
+            var acn_id = copies[i].call_number();
+            if (typeof g.acn_map[acn_id] != 'undefined') {
+                // handle vivicated-callnumbers
+                copies[i].call_number( g.acn_map[acn_id].id() );
+            } else {
+                alert('error in stash and close, acn_id = ' + acn_id);
+            }
+        }
+
         if (copies.length > 0) {
-            JSAN.use('cat.util');
             if (param == 'edit') {
+                JSAN.use('cat.util');
                 copies = cat.util.spawn_copy_editor( { 'edit' : true, 'docid' : g.doc_id, 'copies' : copies, 'caller_handles_update' : true });
             }
             if (typeof xul_param('update_copy') == 'function') {
@@ -501,7 +1095,7 @@ g.stash_and_close = function(param) {
                     [ ses(),copies, true ]
                 );
                 if (typeof r.ilsevent != 'undefined') {
-                    g.error.standard_unexpected_error_alert('copy update',r);
+                    alert('error with copy update:' + js2JSON(r));
                 }
             }
             try {
@@ -513,22 +1107,26 @@ g.stash_and_close = function(param) {
                         urls.XUL_SPINE_LABEL,
                         { 'tab_name' : $("catStrings").getString('staff.cat.util.spine_editor.tab_name') },
                         {
-                            'barcodes' : util.functional.map_list( copies, function(o){return o.barcode();}) 
+                            'barcodes' : util.functional.map_list( copies, function(o){return o.barcode();})
                         }
                     );
                 }
             } catch(E) {
-                g.error.standard_unexpected_error_alert($(catStrings).getString('staff.cat.volume_copy_creator.stash_and_close.tree_err2'),E);
+                alert('2: Error in volume_copy_creator.js with g.stash_and_close(): ' + E);
             }
         }
 
         try { if (typeof window.refresh == 'function') { window.refresh(); } } catch(E) { dump(E+'\n'); }
         try { if (typeof g.refresh == 'function') { g.refresh(); } } catch(E) { dump(E+'\n'); }
 
+        if (typeof xulG.unlock_copy_editor == 'function') {
+            xulG.unlock_copy_editor();
+        }
+
         if (! dont_close) { xulG.close_tab(); }
 
     } catch(E) {
-        g.error.standard_unexpected_error_alert($(catStrings).getString('staff.cat.volume_copy_creator.stash_and_close.tree_err3'),E);
+        alert('3: Error in volume_copy_creator.js with g.stash_and_close(): ' + E);
     }
 }
 
@@ -559,8 +1157,7 @@ g.load_prefs = function() {
 
         }
     } catch(E) {
-        g.error.standard_unexpected_error_alert($(catStrings).getString('staff.cat.volume_copy_creator.load_prefs.err_retrieving_prefs'),E);
-        
+        alert('Error in volume_copy_creator.js with g.load_prefs(): ' + E);
     }
 }
 
@@ -576,9 +1173,142 @@ g.save_prefs = function () {
         );
         file.close();
     } catch(E) {
-        g.error.standard_unexpected_error_alert($(catStrings).getString('staff.cat.volume_copy_creator.save_prefs.err_storing_prefs'),E);
+        alert('Error in volume_copy_creator.js with g.save_prefs(): ' + E);
     }
 }
+
+g.render_class_menu = function(call_number_tb) {
+    var ml = util.widgets.make_menulist(
+        util.functional.map_list(
+            g.data.list.acnc,
+            function(o) {
+                return [ o.name(), o.id() ];
+            }
+        )
+    );
+    ml.setAttribute('rel_vert_pos',rel_vert_pos_call_number_classification);
+    ml.addEventListener(
+        'command',
+        function() {
+            call_number_tb.setAttribute('acnc_id',ml.value);
+        },
+        false
+    );
+    return ml;
+}
+
+g.render_prefix_menu = function(call_number_tb) {
+    var ou_id = call_number_tb.getAttribute('ou_id');
+    var org = g.data.hash.aou[ ou_id ];
+    var menulist = document.createElement('menulist');
+        var menupopup = document.createElement('menupopup');
+        menulist.appendChild(menupopup);
+        var org_list = []; // order from top of consortium to owning lib
+        while(org) {
+            org_list.unshift(org.id());
+            org = org.parent_ou();
+            if (org && typeof org != 'object') {
+                org = g.data.hash.aou[ org ];
+            }
+        }
+        for (var i = 0; i < org_list.length; i++) {
+            g.render_prefix_menu_items(menupopup,org_list[i]);
+        }
+
+    menulist.setAttribute('rel_vert_pos',rel_vert_pos_call_number_prefix);
+    menulist.addEventListener(
+        'command',
+        function() {
+            call_number_tb.setAttribute('acnp_id',menulist.value);
+        },
+        false
+    );
+    return menulist;
+}
+
+g.render_prefix_menu_items = function(menupopup,ou_id) {
+    if (typeof g.data.list['acnp_for_lib_'+ou_id] == 'undefined') {
+        g.data.list['acnp_for_lib_'+ou_id] = g.network.simple_request(
+            'FM_ACNP_RETRIEVE_VIA_PCRUD',
+            [ ses(), {"owning_lib":{"=":ou_id}}, {"order_by":{"acnp":"label_sortkey"}} ]
+        );
+        g.data.stash('list');
+    }
+    for (var i = 0; i < g.data.list['acnp_for_lib_'+ou_id].length; i++) {
+        var my_acnp = g.data.list['acnp_for_lib_'+ou_id][i];
+        var menuitem = document.createElement('menuitem');
+        menupopup.appendChild(menuitem);
+            menuitem.setAttribute(
+                'label',
+                my_acnp.id() == -1 ? '' :
+                $('catStrings').getFormattedString(
+                    'staff.cat.volume_copy_creator.call_number_prefix.menuitem_label',
+                    [
+                        my_acnp.label(),
+                        g.data.hash.aou[ ou_id ].shortname()
+                    ]
+                )
+            );
+            menuitem.setAttribute('value',my_acnp.id());
+    }
+}
+
+g.render_suffix_menu = function(call_number_tb) {
+    var ou_id = call_number_tb.getAttribute('ou_id');
+    var org = g.data.hash.aou[ ou_id ];
+    var menulist = document.createElement('menulist');
+        var menupopup = document.createElement('menupopup');
+        menulist.appendChild(menupopup);
+        var org_list = []; // order from top of consortium to owning lib
+        while(org) {
+            org_list.unshift(org.id());
+            org = org.parent_ou();
+            if (org && typeof org != 'object') {
+                org = g.data.hash.aou[ org ];
+            }
+        }
+        for (var i = 0; i < org_list.length; i++) {
+            g.render_suffix_menu_items(menupopup,org_list[i]);
+        }
+
+    menulist.setAttribute('rel_vert_pos',rel_vert_pos_call_number_suffix);
+    menulist.addEventListener(
+        'command',
+        function() {
+            call_number_tb.setAttribute('acns_id',menulist.value);
+        },
+        false
+    );
+    return menulist;
+}
+
+g.render_suffix_menu_items = function(menupopup,ou_id) {
+    if (typeof g.data.list['acns_for_lib_'+ou_id] == 'undefined') {
+        g.data.list['acns_for_lib_'+ou_id] = g.network.simple_request(
+            'FM_ACNS_RETRIEVE_VIA_PCRUD',
+            [ ses(), {"owning_lib":{"=":ou_id}}, {"order_by":{"acns":"label_sortkey"}} ]
+        );
+        g.data.stash('list');
+    }
+    for (var i = 0; i < g.data.list['acns_for_lib_'+ou_id].length; i++) {
+        var my_acns = g.data.list['acns_for_lib_'+ou_id][i];
+        var menuitem = document.createElement('menuitem');
+        menupopup.appendChild(menuitem);
+            menuitem.setAttribute(
+                'label',
+                my_acns.id() == -1 ? '' :
+                $('catStrings').getFormattedString(
+                    'staff.cat.volume_copy_creator.call_number_suffix.menuitem_label',
+                    [
+                        my_acns.label(),
+                        g.data.hash.aou[ ou_id ].shortname()
+                    ]
+                )
+            );
+            menuitem.setAttribute('value',my_acns.id());
+    }
+}
+
 
 g.list_callnumbers = function(doc_id, label_class) {
     var cn_blob;
@@ -589,18 +1319,113 @@ g.list_callnumbers = function(doc_id, label_class) {
     }
     var hbox = document.getElementById('marc_cn');
     var ml = util.widgets.make_menulist(
-        util.functional.map_list(
-            cn_blob,
-            function(o) {
-                for (var i in o) {
-                    return [ o[i], i ];
+        [
+            [ '', '' ]
+        ].concat(
+            util.functional.map_list(
+                cn_blob,
+                function(o) {
+                    for (var i in o) {
+                        return [ o[i], i ];
+                    }
                 }
-            }
+            )
         )
     ); hbox.appendChild(ml);
     ml.setAttribute('editable','true');
     ml.setAttribute('width', '200');
+    ml.setAttribute('id', 'marc_cn_menulist');
+}
+
+g.list_classes = function() {
+    var hbox = $('batch_class');
+    var ml = util.widgets.make_menulist(
+        [
+            [ '<No Change>', false ]
+        ].concat(
+            util.functional.map_list(
+                g.data.list.acnc,
+                function(o) {
+                    return [ o.name(), o.id() ];
+                }
+            )
+        )
+    ); hbox.appendChild(ml);
+    ml.setAttribute('id','batch_class_menulist');
+    ml.addEventListener(
+        'command',
+        function() {
+            if (!isNaN(Number(ml.value))) {
+                addCSSClass(hbox,'copy_editor_field_changed');
+                if (xulG.unified_interface) {
+                    xulG.notify_of_templatable_field_change('batch_class_menulist',ml.value);
+                }
+            } else {
+                removeCSSClass(hbox,'copy_editor_field_changed');
+            }
+        },
+        false
+    );
+}
+
+g.list_prefixes = function() {
+    var hbox = $('batch_prefix');
+    var ml = util.widgets.make_menulist(
+        [
+            [ '<No Change>', false ]
+        ]
+    ); hbox.appendChild(ml);
+    for (var i = 0; i < g.common_ancestor_ou_ids.length; i++) {
+        g.render_prefix_menu_items(ml.firstChild,g.common_ancestor_ou_ids[i]);
+    }
+    ml.setAttribute('id','batch_prefix_menulist');
+    ml.addEventListener(
+        'command',
+        function() {
+            if (!isNaN(Number(ml.value))) {
+                addCSSClass(hbox,'copy_editor_field_changed');
+                if (xulG.unified_interface) {
+                    xulG.notify_of_templatable_field_change('batch_prefix_menulist',ml.value);
+                }
+            } else {
+                removeCSSClass(hbox,'copy_editor_field_changed');
+            }
+        },
+        false
+    );
+}
+
+g.list_suffixes = function() {
+    var hbox = $('batch_suffix');
+    var ml = util.widgets.make_menulist(
+        [
+            [ '<No Change>', false ]
+        ]
+    ); hbox.appendChild(ml);
+    for (var i = 0; i < g.common_ancestor_ou_ids.length; i++) {
+        g.render_suffix_menu_items(ml.firstChild,g.common_ancestor_ou_ids[i]);
+    }
+    ml.setAttribute('id','batch_suffix_menulist');
+    ml.addEventListener(
+        'command',
+        function() {
+            if (!isNaN(Number(ml.value))) {
+                addCSSClass(hbox,'copy_editor_field_changed');
+                if (xulG.unified_interface) {
+                    xulG.notify_of_templatable_field_change('batch_suffix_menulist',ml.value);
+                }
+            } else {
+                removeCSSClass(hbox,'copy_editor_field_changed');
+            }
+        },
+        false
+    );
+}
+
+g.render_batch_button = function() {
+    var hbox = $('batch_button_box');
     var btn = document.createElement('button');
+    btn.setAttribute('id','batch_button');
     btn.setAttribute('label',$('catStrings').getString('staff.cat.volume_copy_creator.my_init.btn.label'));
     btn.setAttribute('accesskey',$('catStrings').getString('staff.cat.volume_copy_creator.my_init.btn.accesskey'));
     btn.setAttribute('image','/xul/server/skin/media/images/down_arrow.gif');
@@ -610,15 +1435,49 @@ g.list_callnumbers = function(doc_id, label_class) {
         function() {
             var nl = document.getElementsByTagName('textbox');
             for (var i = 0; i < nl.length; i++) {
-                if (nl[i].getAttribute('rel_vert_pos')==2 
-                    && !nl[i].disabled) 
-                {
-                    nl[i].value = ml.value;
-                    util.widgets.dispatch('change',nl[i]);
+                /* label */
+                if (nl[i].getAttribute('rel_vert_pos')==rel_vert_pos_call_number && !nl[i].disabled) {
+                    var label =  $('marc_cn').firstChild.value;
+                    if (label != '') {
+                        nl[i].value = label;
+                        util.widgets.dispatch('change',nl[i]);
+                    }
                 }
             }
+            nl = document.getElementsByTagName('menulist');
+            for (var i = 0; i < nl.length; i++) {
+                /* classification */
+                if (nl[i].getAttribute('rel_vert_pos')==rel_vert_pos_call_number_classification && !nl[i].disabled) {
+                    var value =  $('batch_class_menulist').value;
+                    if (!isNaN( Number(value) )) {
+                        nl[i].value = value;
+                        util.widgets.dispatch('command',nl[i]);
+                    }
+                }
+                /* prefix */
+                if (nl[i].getAttribute('rel_vert_pos')==rel_vert_pos_call_number_prefix && !nl[i].disabled) {
+                    var value =  $('batch_prefix_menulist').value;
+                    if (!isNaN( Number(value) )) {
+                        nl[i].value = value;
+                        util.widgets.dispatch('command',nl[i]);
+                    }
+                }
+                /* suffix */
+                if (nl[i].getAttribute('rel_vert_pos')==rel_vert_pos_call_number_suffix && !nl[i].disabled) {
+                    var value =  $('batch_suffix_menulist').value;
+                    if (!isNaN( Number(value) )) {
+                        nl[i].value = value;
+                        util.widgets.dispatch('command',nl[i]);
+                    }
+                }
+            }
+            setTimeout(
+                function() {
+                    g.gather_copies_soon();
+                },0
+            );
             if (g.last_focus) setTimeout( function() { g.last_focus.focus(); }, 0 );
-        }, 
+        },
         false
     );
 }

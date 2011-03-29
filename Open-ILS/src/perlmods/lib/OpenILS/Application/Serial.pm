@@ -1360,6 +1360,7 @@ sub unitize_items {
 sub _find_or_create_call_number {
     my ($e, $lib, $cn_string, $record) = @_;
 
+    # FIXME: should suffix and prefix come into play here?
     my $existing = $e->search_asset_call_number({
         "owning_lib" => $lib,
         "label" => $cn_string,

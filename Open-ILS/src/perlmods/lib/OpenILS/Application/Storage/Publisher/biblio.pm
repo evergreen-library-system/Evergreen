@@ -380,19 +380,28 @@ sub record_copy_status_count {
 	my $descendants = "actor.org_unit_descendants(?,?)";
 
 	my $cn_table = asset::call_number->table;
+	my $cnp_table = asset::call_number_prefix->table;
+	my $cns_table = asset::call_number_prefix->table;
 	my $cp_table = asset::copy->table;
 	my $cl_table = asset::copy_location->table;
 	my $cs_table = config::copy_status->table;
 
 	my $sql = <<"	SQL";
 
-		SELECT	cp.circ_lib, cn.label, cp.status, count(cp.id)
+		SELECT	cp.circ_lib,
+				CASE WHEN cnp.id > -1 THEN cnp.label || ' ' ELSE '' END || cn.label || CASE WHEN cns.id > -1 THEN ' ' || cns.label ELSE '' END,
+				cp.status,
+				count(cp.id)
 		  FROM	$cp_table cp,
 		  	$cn_table cn,
+		  	$cns_table cns,
+		  	$cnp_table cnp,
 			$cl_table cl,
 			$cs_table cs,
 			$descendants d
 		  WHERE	cn.record = ?
+		  	AND cnp.id = cn.prefix
+		  	AND cns.id = cn.suffix
 		  	AND cp.call_number = cn.id
 		  	AND cp.location = cl.id
 			AND cp.circ_lib = d.id
@@ -440,6 +449,8 @@ sub record_copy_status_location_count {
 	my $descendants = "actor.org_unit_descendants(?,?)";
 
 	my $cn_table = asset::call_number->table;
+	my $cnp_table = asset::call_number_prefix->table;
+	my $cns_table = asset::call_number_prefix->table;
 	my $cp_table = asset::copy->table;
 	my $cl_table = asset::copy_location->table;
 	my $cs_table = config::copy_status->table;
@@ -450,16 +461,20 @@ sub record_copy_status_location_count {
 	my $sql = <<"	SQL";
 
 		SELECT	cp.circ_lib,
-				cn.label, 
+				CASE WHEN cnp.id > -1 THEN cnp.label || ' ' ELSE '' END || cn.label || CASE WHEN cns.id > -1 THEN ' ' || cns.label ELSE '' END,
 				oils_i18n_xlate('asset.copy_location', 'acpl', 'name', 'id', cl.id::TEXT, ?),
 				cp.status,
 				count(cp.id)
 		  FROM	$cp_table cp,
 		  	$cn_table cn,
+		  	$cns_table cns,
+		  	$cnp_table cnp,
 			$cl_table cl,
 			$cs_table cs,
 			$descendants d
 		  WHERE	cn.record = ?
+		  	AND cnp.id = cn.prefix
+		  	AND cns.id = cn.suffix
 		  	AND cp.call_number = cn.id
 		  	AND cp.location = cl.id
 			AND cp.circ_lib = d.id

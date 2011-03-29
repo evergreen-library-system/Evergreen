@@ -279,6 +279,17 @@ function rresultCollectRecords(ids, base) {
 	runEvt("result", "preCollectRecords");
 	var x = 0;
 
+    // don't perform rdetail redirect if user was on rdetail and cliecked Back
+    if(findCurrentPage() == RRESULT && isXUL()) {
+        if(ids.length == 1 && !xulG.fromBack) {
+            var args = {};
+            args.page = RDETAIL;
+            args[PARAM_OFFSET] = 0;
+            args[PARAM_RID] = ids[0];
+            location.href = buildOPACLink(args);
+        }
+    }
+
 	if (!base) base = 0;
 	if( rresultIsPaged )  base = 0;
 

@@ -102,6 +102,7 @@ econst OILS_HOLD_TYPE_ISSUANCE    => 'I';
 econst OILS_HOLD_TYPE_VOLUME      => 'V';
 econst OILS_HOLD_TYPE_TITLE       => 'T';
 econst OILS_HOLD_TYPE_METARECORD  => 'M';
+econst OILS_HOLD_TYPE_MONOPART    => 'P';
 
 
 econst OILS_BILLING_TYPE_OVERDUE_MATERIALS => 'Overdue materials';
