@@ -66,7 +66,13 @@ patron.holds.prototype = {
         JSAN.use('util.list'); obj.list = new util.list( obj.tree_id || 'holds_list');
         obj.list.init(
             {
-                'columns' : columns,
+                'columns' : columns.concat(
+                    obj.list.fm_columns('acp', {
+                        '*' : { 'expanded_label' : true, 'hidden' : true },
+                        // example of unhiding some columns by default
+                        // 'acp_circ_modifier' : { 'hidden' : false }
+                    })
+                ),
                 'map_row_to_columns' : circ.util.std_map_row_to_columns(),
                 'retrieve_row' : function(params) {
                     var row = params.row;
