@@ -121,7 +121,7 @@ sub direct {
             scalar(map { @{$_->copies} } @{$rec->{record}->call_numbers}));
     }
 
-    print "\ndurect calls processing duration is $duration\n\n";
+    print "\ndirect calls processing duration is $duration\n\n";
 }
 
 for (0..3) { direct(@recs); unapi(@recs); }
