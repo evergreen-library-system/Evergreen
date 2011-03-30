@@ -22,7 +22,7 @@
     <tr fmclass='au' fmfield='passwd' required='required'>
         <td/><td/><td/>
         <td>
-            <button dojoType='dijit.form.Button' jsId='generatePassword' scrollOnFocus='false'>Generate Password</button>
+            <button dojoType='dijit.form.Button' jsId='generatePassword' scrollOnFocus='false' tabIndex='-1'>Reset Password</button>
         </td>
     </tr>
     <tr fmclass='au' fmfield='passwd2' required='required'><td/><td>Verify Password</td><td/></tr>
