@@ -24,6 +24,8 @@
 <div class="pad-bottom-five">
     <div class="header_middle">
         <span id="acct_holds_header float-left">[% l('Editing Hold') %]</span>
+        &nbsp; &nbsp; &nbsp; &nbsp;
+        <a href="[% ctx.opac_root %]/myopac/holds">[% l('List all holds') %]</a>
     </div>
     <div id="hold_editor">
         [% IF hold %]
@@ -36,11 +38,12 @@
             <p>
                 <strong>[% l('Status') %]</strong>: [% hold.human_status %]
             </p>
-            <form>
+            <form method="POST">
                 <table id="hold_editor_table">
                     <tr>
                         <th>
-                            <input type="hidden" name="hold"
+                            <input type="hidden" name="action" value="edit" />
+                            <input type="hidden" name="hold_id"
                                 value="[% ahr.id %]" />
                             [% l('Pickup library') %]
                         </th>
@@ -57,14 +60,51 @@
                             <input type="text" name="expire_time"
                                 value="[% expire_time | html %]" />
                         </td>
+                        <td class="fmt-note">
+                            <em>[% l('Enter date in MM/DD/YYYY format') %]</em>
+                            <!-- XXX TODO pick out a minimal, simple, reliable
+                            calendar widget that's not part of some giant,
+                            bloated framework and doesn't do anything at onload.
+                            -->
+                        </td>
                     </tr>
                     <tr>
                         <th>
-                            [% l('Activate on') %]
+                            [% l('Active?') %]
+                        </th>
+                        <td>
+                            <select name="frozen">
+                                <option value="f"[% ahr.frozen == 't' ? '' :' selected="selected"' %]>
+                                    [% l('Yes, this hold is active now') %]
+                                </option>
+                                <option value="t"[% ahr.frozen == 't' ? ' selected="selected"' : '' %]>
+                                    [% l('No, this hold is suspended') %]
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            [% l('If suspended, activate on') %]
                         </th>
                         <td>
                             <input type="text" name="thaw_date"
                                 value="[% thaw_date | html %]" />
+                        </td>
+                        <td class="fmt-note">
+                            <em>[% l('Enter date in MM/DD/YYYY format') %]</em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="hold-editor-controls">
+                            <input type="image"
+                                src="[% ctx.media_prefix %]/images/btnSubmit.png"
+                                alt="[% l('Submit') %]"
+                                title="[% l('Submit') %]" />
+                            <a href="[% ctx.opac_root %]/myopac/holds"><img
+                                src="[% ctx.media_prefix %]/images/btnCancel.png"
+                                alt="[% l('Cancel') %]"
+                                title="[% l('Cancel') %]" /></a>
                         </td>
                     </tr>
                 </table>

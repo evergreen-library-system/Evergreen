@@ -125,7 +125,7 @@ sub handle_hold_update {
     my $self = shift;
     my $action = shift;
     my $e = $self->editor;
-
+    my $url;
 
     my @hold_ids = $self->cgi->param('hold_id'); # for non-_all actions
     @hold_ids = @{$self->fetch_user_holds(undef, 1)} if $action =~ /_all/;
@@ -139,7 +139,7 @@ sub handle_hold_update {
                 'open-ils.circ.hold.cancel', $e->authtoken, $hold_id, 6 )->gather(1); # 6 == patron-cancelled-via-opac
         }
 
-    } else {
+    } elsif ($action =~ /activate|suspend/) {
         
         my $vlist = [];
         for my $hold_id (@hold_ids) {
@@ -157,10 +157,32 @@ sub handle_hold_update {
         }
 
         $circ->request('open-ils.circ.hold.update.batch.atomic', $e->authtoken, undef, $vlist)->gather(1);
+    } elsif ($action eq 'edit') {
+
+        my @vals = map {
+            my $val = {"id" => $_};
+            $val->{"frozen"} = $self->cgi->param("frozen");
+            $val->{"pickup_lib"} = $self->cgi->param("pickup_lib");
+
+            for my $field (qw/expire_time thaw_date/) {
+                # XXX TODO make this support other date formats, not just
+                # MM/DD/YYYY.
+                next unless $self->cgi->param($field) =~
+                    m:^(\d{2})/(\d{2})/(\d{4})$:;
+                $val->{$field} = "$3-$1-$2";
+            }
+            $val;
+        } @hold_ids;
+
+        $circ->request(
+            'open-ils.circ.hold.update.batch.atomic',
+            $e->authtoken, undef, \@vals
+        )->gather(1);   # LFW XXX test for failure
+        $url = 'https://' . $self->apache->hostname . $self->ctx->{opac_root} . '/myopac/holds';
     }
 
     $circ->kill_me;
-    return undef;
+    return defined($url) ? $self->generic_redirect($url) : undef;
 }
 
 sub load_myopac_holds {
@@ -174,11 +196,12 @@ sub load_myopac_holds {
     my $action = $self->cgi->param('action') || '';
     my $available = int($self->cgi->param('available') || 0);
 
-    $self->handle_hold_update($action) if $action;
+    my $hold_handle_result;
+    $hold_handle_result = $self->handle_hold_update($action) if $action;
 
     $ctx->{holds} = $self->fetch_user_holds(undef, 0, 1, $available, $limit, $offset);
 
-    return Apache2::Const::OK;
+    return defined($hold_handle_result) ? $hold_handle_result : Apache2::Const::OK;
 }
 
 sub load_place_hold {
