@@ -390,6 +390,43 @@ sub load_myopac_circs {
     return Apache2::Const::OK;
 }
 
+sub load_myopac_circ_history {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+    my $limit = $self->cgi->param('limit');
+    my $offset = $self->cgi->param('offset');
+
+    my $circs = $e->json_query({
+        from => ['action.usr_visible_circs', $e->requestor->id],
+        limit => $limit || 25,
+        offset => $offset || 0
+    });
+
+    $ctx->{circs} = $self->fetch_user_circs(1, [map { $_->{id} } @$circs], $limit, $offset);
+
+    return Apache2::Const::OK;
+}
+
+# TODO: action.usr_visible_holds does not return cancelled holds.  Should it?
+sub load_myopac_hold_history {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+    my $limit = $self->cgi->param('limit');
+    my $offset = $self->cgi->param('offset');
+
+    my $holds = $e->json_query({
+        from => ['action.usr_visible_holds', $e->requestor->id],
+        limit => $limit || 25,
+        offset => $offset || 0
+    });
+
+    $ctx->{holds} = $self->fetch_user_holds([map { $_->{id} } @$holds], 0, 1, 0, $limit, $offset);
+
+    return Apache2::Const::OK;
+}
+
 sub load_myopac_fines {
     my $self = shift;
     my $e = $self->editor;

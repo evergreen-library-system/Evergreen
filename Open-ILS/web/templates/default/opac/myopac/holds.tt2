@@ -4,23 +4,17 @@
         "default/opac/parts/myopac/base.tt2";
     myopac_page = "holds"  %]
 <div id='myopac_holds_div'>
-    <div id="acct_holds_tabs" style="padding-bottom: 12px;color:#666;" class="hide_me">
-        <div class="align selected" id="holds_label">
-            <img src="[% ctx.media_prefix %]/images/sub_holds_on.jpg" />
+
+    <div id="acct_holds_tabs" style="padding-bottom: 12px;color:#666;">
+        <div class="align selected">
+            <img src="[% ctx.media_prefix %]/images/sub_holds_on.jpg"/>
         </div>
-        <div class="align hide_me" id="holds_hist_link">
-            <a href="#"><img
-                src="[% ctx.media_prefix %]/images/sub_holds_hist_off.jpg" /></a>
+        <div class="align">
+            <a href='hold_history'><img src="[% ctx.media_prefix %]/images/sub_holds_hist_off.jpg"/></a>
         </div>
-        <div class="align hide_me" id="holds_link">
-            <a href="#"><img
-                src="[% ctx.media_prefix %]/images/sub_holds_off.jpg" /></a>
-        </div>
-        <div class="align selected hide_me" id="holds_hist_label">
-            <img src="[% ctx.media_prefix %]/images/sub_holds_hist_on.jpg" />
-        </div>	
         <div class="clear-both"></div>
     </div>
+
     <div class="header_middle">
         <span id="acct_holds_header" style="float:left;">
             [%  IF CGI.param("available");

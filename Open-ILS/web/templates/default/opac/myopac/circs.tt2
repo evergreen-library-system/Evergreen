@@ -4,25 +4,18 @@
         "default/opac/parts/myopac/base.tt2";
     myopac_page = "circs"  %]
 <div id='myopac_checked_div' style="padding:0px;">
-    <div id="acct_checked_tabs" style="padding-bottom: 12px;color:#666;" class="hide_me">
-        <div class="align selected" id="checked_label">
+
+    <div id="acct_checked_tabs" style="padding-bottom: 12px;color:#666;">
+        <div class="align selected">
             <img src="[% ctx.media_prefix %]/images/sub_checked_out_on.jpg" />
         </div>
-        <div class="align" id="checked_hist_link">
-            <a class="" href="#"><img
+        <div class="align">
+            <a href="circ_history"><img
                 src="[% ctx.media_prefix %]/images/sub_checked_hist_off.jpg" /></a>
         </div>
-        <div class="align hide_me" id="checked_link">
-            <a href="#">
-                <img src="[% ctx.media_prefix %]/images/sub_checked_out_off.jpg" />
-            </a>
-        </div>
-        <div class="align selected hide_me" id="checked_hist_label">
-            <img src="[% ctx.media_prefix %]/images/sub_checked_hist_on.jpg" />
-        </div>    
         <div class="clear-both"></div>
     </div>
-    
+
     <div class="header_middle">
         <span class="float-left">[% l('Current Items Checked Out') %]</span>
         <span class="float-right">
@@ -150,48 +143,6 @@
         </form>
     </div>
     [% END %]
-    <div id='checked_hist' class="hide_me" style="padding-top:8px;">
-        <table id="acct_checked_hist_header" cellpadding='0' cellspacing='0'
-            border='0' width='100%'>
-            <tr>
-                <td width="45%" style="padding-left:15px;">
-                    <span title="Click to sort" class='pointer'>Title</span> /
-                    <span title="Click to sort" class='pointer'>Author</span>
-                </td>
-                <td width="22%"
-                    style="white-space:nowrap;padding-left:5px;">
-                    <span title="Click to sort" class='pointer'>Call Number</span>
-                </td>
-                <td width="11%">
-                    <span title="Click to sort" class='pointer'>Checkout</span>
-                </td>
-                <td width="11%">
-                    <span title="Click to sort" class='pointer'>Due Date</span>
-                </td>
-                <td width="11%">
-                    <span title="Click to sort" class='pointer'>Returned</span>
-                </td>
-            </tr>
-        </table>
-        <table cellpadding='0' cellspacing='0' border='0'
-            style="margin-top:5px;" width="100%">
-            <tbody id="acct_checked_hist_parent">
-                <tr id="acct_checked_hist_temp">
-                    <td width="45%"
-                        style="padding-left:15px;padding-bottom:10px;">
-                        <a href="#" name="title"></a> /
-                        <span name="author"></span>
-                    </td>
-                    <td width="22%" style="padding-left:5px;"
-                        name="call_number"></td>
-                    <td width="11%" name="checkout"></td>
-                    <td width="11%" name="due_date"></td>
-                    <td width="11%" name="returned"
-                        nowrap="nowrap" style="white-space:nowrap;"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
     <div id='non_cat_circs_div' class='hide_me'>
         <br/>
         <div style='text-align: center'><b>[% l("Other Circulations") %]</b></div>
@@ -211,7 +162,6 @@
                 </tr>
             </tbody>
         </table>
-    <span class='hide_me' id='myopac_renew_fail'>[% l("The system is unable to renew the selected item at this time.  This usually means the item is needed to fulfill a hold.  Please see a librarian for further help.") %]</span>
-   <span class='hide_me' id='myopac_renew_fail2'>[% l("Library policy prevents the renewal of this item at this time.  Please see a librarian for further details.") %]</span>
+    </div>
 </div>
 [% END %]

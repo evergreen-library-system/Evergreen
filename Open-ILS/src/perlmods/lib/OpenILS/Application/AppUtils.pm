@@ -713,7 +713,7 @@ sub fetch_copy_location_by_name {
 }
 
 sub fetch_callnumber {
-	my( $self, $id ) = @_;
+	my( $self, $id, $flesh ) = @_;
 	my $evt = undef;
 
 	my $e = OpenILS::Event->new( 'ASSET_CALL_NUMBER_NOT_FOUND', id => $id );
@@ -725,6 +725,27 @@ sub fetch_callnumber {
 		'open-ils.cstore',
 		'open-ils.cstore.direct.asset.call_number.retrieve', $id );
 	$evt = $e  unless $cn;
+
+    if ($flesh && $cn) {
+        $cn->prefix(
+            $self->simplereq(
+                'open-ils.cstore',
+                'open-ils.cstore.direct.asset.call_number_prefix.retrieve', $cn->prefix
+            )
+        );
+        $cn->suffix(
+            $self->simplereq(
+                'open-ils.cstore',
+                'open-ils.cstore.direct.asset.call_number_suffix.retrieve', $cn->suffix
+            )
+        );
+        $cn->label_class(
+            $self->simplereq(
+                'open-ils.cstore',
+                'open-ils.cstore.direct.asset.call_number_class.retrieve', $cn->label_class
+            )
+        );
+    }
 
 	return ( $cn, $evt );
 }

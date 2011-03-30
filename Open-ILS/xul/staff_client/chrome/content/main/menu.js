@@ -736,6 +736,14 @@ main.menu.prototype = {
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/coded_value_map'); }
             ],
+            'cmd_server_admin_acn_prefix' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/acn_prefix'); }
+            ],
+            'cmd_server_admin_acn_suffix' : [
+                ['oncommand'],
+                function() { open_eg_web_page('conify/global/config/acn_suffix'); }
+            ],
             'cmd_server_admin_billing_type' : [
                 ['oncommand'],
                 function() { open_eg_web_page('conify/global/config/billing_type'); }
@@ -1588,8 +1596,10 @@ main.menu.prototype = {
     },
     'volume_item_creator' : function(params) {
         var obj = this;
+        var horizontal_interface = String( obj.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
+        var url = obj.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
         var w = obj.new_tab(
-            obj.url_prefix(urls.XUL_VOLUME_COPY_CREATOR),
+            url,
             { 'tab_name' : document.getElementById('offlineStrings').getString('staff.cat.create_or_rebarcode_items') },
             params
         );

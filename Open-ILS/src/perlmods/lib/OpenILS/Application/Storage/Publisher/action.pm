@@ -1233,6 +1233,15 @@ sub new_hold_copy_targeter {
 						{ id => [map {$_->id} @{ $vtree->copies }],
 						  deleted => 'f' }
 					) if ($vtree && @{ $vtree->copies });
+
+			} elsif ($hold->hold_type eq 'P') {
+				my @part_maps = asset::copy_part_map->search_where( { part => $hold->target } );
+				$all_copies = [
+					asset::copy->search_where(
+						{ id => [map {$_->target_copy} @part_maps],
+						  deleted => 'f' }
+					)
+				] if (@part_maps);
 					
 			} elsif ($hold->hold_type eq 'I') {
 				my ($itree) = $self

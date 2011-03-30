@@ -458,7 +458,7 @@ sub biblio_multi_search_full_rec {
 		}
 		my $where = join(' OR ', @wheres);
 
-		push @selects, "SELECT id, record, $rank as sum FROM $search_table WHERE $where";
+		push @selects, "SELECT record, AVG($rank) as sum FROM $search_table WHERE $where GROUP BY record";
 
 	}
 
@@ -475,7 +475,7 @@ sub biblio_multi_search_full_rec {
 	my $cl_table = asset::copy_location->table;
 	my $br_table = biblio::record_entry->table;
 
-	my $cj = 'HAVING COUNT(x.id) = ' . scalar(@selects) if ($class_join eq 'AND');
+	my $cj = 'HAVING COUNT(x.record) = ' . scalar(@selects) if ($class_join eq 'AND');
 	my $search_table =
 		'(SELECT x.record, sum(x.sum) FROM (('.
 			join(') UNION ALL (', @selects).

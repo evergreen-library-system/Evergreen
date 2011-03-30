@@ -640,6 +640,15 @@ sub modify_from_fieldmapper {
 	asset::call_number->has_many( copies => 'asset::copy' );
 	asset::call_number->has_many( notes => 'asset::call_number_note' );
 
+	asset::call_number->has_a( prefix => 'asset::call_number_prefix' );
+	asset::call_number->has_a( suffix => 'asset::call_number_suffix' );
+
+	asset::call_number_prefix->has_a( owning_lib => 'actor::org_unit' );
+	asset::call_number_suffix->has_a( owning_lib => 'actor::org_unit' );
+
+	asset::call_number_prefix->has_many( call_numbers => 'asset::call_number' );
+	asset::call_number_suffix->has_many( call_numbers => 'asset::call_number' );
+
 	authority::record_entry->has_many( record_descriptor => 'authority::record_descriptor' );
 	authority::record_entry->has_many( notes => 'authority::record_note' );
 

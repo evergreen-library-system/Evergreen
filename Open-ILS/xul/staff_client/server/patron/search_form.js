@@ -299,34 +299,36 @@ patron.search_form.prototype = {
         );
         cb.checked = cb.getAttribute('value') == "true" ? true : false;
 
-        /* Populate the Patron Profile filter */
-        util.widgets.remove_children(obj.controller.view.profile);
-        var profile_ml = util.widgets.make_menulist(
-            util.functional.map_list( obj.OpenILS.data.list.pgt,
-                function(el,idx) {
-                    return [ el.name(), el.id() ]
-                }
-            ).sort(
-                function(a,b) {
-                    if (a[0] < b[0]) return -1;
-                    if (a[0] > b[0]) return 1;
-                    return 0;
-                }
-            )
-        );
-        profile_ml.addEventListener('command', function() {
-                profile_ml.parentNode.setAttribute('value', profile_ml.value);
-            }, false
-        );
-        profile_ml.setAttribute('id','profile_ml');
+        /* Populate the Patron Profile filter, if it exists */
+        if (obj.controller.view.profile) {
+            util.widgets.remove_children(obj.controller.view.profile);
+            var profile_ml = util.widgets.make_menulist(
+                util.functional.map_list( obj.OpenILS.data.list.pgt,
+                    function(el,idx) {
+                        return [ el.name(), el.id() ]
+                    }
+                ).sort(
+                    function(a,b) {
+                        if (a[0] < b[0]) return -1;
+                        if (a[0] > b[0]) return 1;
+                        return 0;
+                    }
+                )
+            );
+            profile_ml.addEventListener('command', function() {
+                    profile_ml.parentNode.setAttribute('value', profile_ml.value);
+                }, false
+            );
+            profile_ml.setAttribute('id','profile_ml');
 
-        /* Add an empty menu item as the default profile */
-        var empty = document.createElement('menuitem'); 
-        profile_ml.firstChild.insertBefore(empty, profile_ml.firstChild.firstChild);
-        empty.setAttribute('label', '');
-        empty.setAttribute('value', ''); 
-        obj.controller.view.profile.appendChild(profile_ml);
-        profile_ml.value = profile_ml.getAttribute('value');
+            /* Add an empty menu item as the default profile */
+            var empty = document.createElement('menuitem'); 
+            profile_ml.firstChild.insertBefore(empty, profile_ml.firstChild.firstChild);
+            empty.setAttribute('label', '');
+            empty.setAttribute('value', ''); 
+            obj.controller.view.profile.appendChild(profile_ml);
+            profile_ml.value = profile_ml.getAttribute('value');
+        }
     },
 
     'on_submit' : function(q) {

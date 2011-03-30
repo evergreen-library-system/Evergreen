@@ -540,9 +540,10 @@ patron.util.columns = function(modify,params) {
 }
 
 patron.util.std_map_row_to_columns = function(error_value) {
-    return function(row,cols) {
+    return function(row,cols,scratch) {
         // row contains { 'my' : { 'au' : {} } }
         // cols contains all of the objects listed above in columns
+        // scratch is a temporary space shared by all cells/rows (or just per row if not explicitly passed in)
         
         var obj = {}; obj.OpenILS = {}; 
         JSAN.use('util.error'); obj.error = new util.error();

@@ -186,17 +186,20 @@ OpenILS.data.prototype = {
                 break;
                 case 'actsc':
                     found = obj.network.simple_request('FM_ACTSC_RETRIEVE_VIA_PCRUD',[ ses(), { 'id' : { '=' : value } }]);
-                    if (typeof found.ilsevent != 'undefined') throw(found);
+                    if (typeof found.ilsevent != 'undefined') throw(js2JSON(found));
                     found = found[0];
                 break;
                 default: return undefined; break;
             }
             if (typeof found.ilsevent != 'undefined') throw(found);
             if (!obj.hash[key]) obj.hash[key] = {};
-            obj.hash[key][value] = found; obj.list[key].push( found ); obj.stash('hash','list');
+            obj.hash[key][value] = found;
+            if (!obj.list[key]) obj.list[key] = [];
+            obj.list[key].push( found );
+            obj.stash('hash','list');
             return found;
         } catch(E) {
-            this.error.sdump('D_ERROR','Error in OpenILS.data.lookup('+key+','+value+'): ' + js2JSON(E) );
+            alert('Error in OpenILS.data.lookup('+key+','+value+'): ' + E );
             return undefined;
         }
     },
@@ -531,6 +534,9 @@ OpenILS.data.prototype = {
             }
         }
 
+        // If we don't clear these, then things like obj.list['acnp_for_lib_1'] may stick around
+        obj.hash = {}; obj.list = {};
+
         this.chain = [];
 
         this.chain.push(
@@ -579,6 +585,27 @@ OpenILS.data.prototype = {
                         api.FM_CSP_PCRUD_SEARCH.app,
                         api.FM_CSP_PCRUD_SEARCH.method,
                         [ obj.session.key, {"id":{"!=":null}}, {"order_by":{"csp":"id"}} ],
+                        false
+                    ]
+                );
+                try {
+                    f();
+                } catch(E) {
+                    var error = 'Error: ' + js2JSON(E);
+                    obj.error.sdump('D_ERROR',error);
+                    throw(E);
+                }
+            }
+        );
+
+        this.chain.push(
+            function() {
+                var f = gen_fm_retrieval_func(
+                    'acnc',
+                    [
+                        api.FM_ACNC_RETRIEVE_VIA_PCRUD.app,
+                        api.FM_ACNC_RETRIEVE_VIA_PCRUD.method,
+                        [ obj.session.key, {"id":{"!=":null}}, {"order_by":{"acnc":"name"}} ],
                         false
                     ]
                 );
@@ -824,7 +851,6 @@ OpenILS.data.prototype = {
             }
         );
 
-
         this.chain.push(
             function() {
                 var f = gen_fm_retrieval_func(
@@ -838,6 +864,50 @@ OpenILS.data.prototype = {
                 );
                 try {
                     f();
+                } catch(E) {
+                    var error = 'Error: ' + js2JSON(E);
+                    obj.error.sdump('D_ERROR',error);
+                    throw(E);
+                }
+            }
+        );
+
+        this.chain.push(
+            function() {
+                var f = gen_fm_retrieval_func(
+                    'acnp',
+                    [
+                        api.FM_ACNP_RETRIEVE_VIA_PCRUD.app,
+                        api.FM_ACNP_RETRIEVE_VIA_PCRUD.method,
+                        [ obj.session.key, {"owning_lib":{"=":obj.list.au[0].ws_ou()}}, {"order_by":{"acnp":"label_sortkey"}} ],
+                        false
+                    ]
+                );
+                try {
+                    f();
+                    obj.list['acnp_for_lib_'+obj.list.au[0].ws_ou()] = obj.list.acnp;
+                } catch(E) {
+                    var error = 'Error: ' + js2JSON(E);
+                    obj.error.sdump('D_ERROR',error);
+                    throw(E);
+                }
+            }
+        );
+
+        this.chain.push(
+            function() {
+                var f = gen_fm_retrieval_func(
+                    'acns',
+                    [
+                        api.FM_ACNS_RETRIEVE_VIA_PCRUD.app,
+                        api.FM_ACNS_RETRIEVE_VIA_PCRUD.method,
+                        [ obj.session.key, {"owning_lib":{"=":obj.list.au[0].ws_ou()}}, {"order_by":{"acns":"label_sortkey"}} ],
+                        false
+                    ]
+                );
+                try {
+                    f();
+                    obj.list['acns_for_lib_'+obj.list.au[0].ws_ou()] = obj.list.acns;
                 } catch(E) {
                     var error = 'Error: ' + js2JSON(E);
                     obj.error.sdump('D_ERROR',error);

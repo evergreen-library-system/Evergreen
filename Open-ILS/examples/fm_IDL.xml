@@ -1814,14 +1814,57 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-    <class id="acnc" controller="open-ils.cstore" oils_obj:fieldmapper="asset::call_number_class" oils_persist:tablename="asset.call_number_class" reporter:label="Call number classification scheme">
+    <class id="acnc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number_class" oils_persist:tablename="asset.call_number_class" reporter:label="Call number classification scheme">
         <fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_class_id_seq">
             <field reporter:label="Call number class ID" name="id" reporter_datatype="id"/>
             <field reporter:label="Name" name="name" reporter:datatype="text"/>
             <field reporter:label="Normalizer function" name="normalizer" reporter:datatype="text"/>
             <field reporter:label="Call number fields" name="field" reporter:datatype="text"/>
         </fields>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+            </actions>
+        </permacrud>
     </class>
+	<class id="acns" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number_suffix" oils_persist:tablename="asset.call_number_suffix" reporter:label="Call Number/Volume Suffix">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_suffix_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+			<field reporter:label="Label Sort Key" name="label_sortkey" reporter:datatype="text"/>
+			<field reporter:label="Owning Library" name="owning_lib"  reporter:datatype="org_unit"/>
+		</fields>
+		<links>
+			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_VOLUME_SUFFIX" context_field="owning_lib"/>
+                <retrieve/>
+                <update permission="UPDATE_VOLUME_SUFFIX" context_field="owning_lib"/>
+                <delete permission="DELETE_VOLUME_SUFFIX" context_field="owning_lib"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="acnp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number_prefix" oils_persist:tablename="asset.call_number_prefix" reporter:label="Call Number/Volume Prefix">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_prefix_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Label" name="label" reporter:datatype="text"/>
+			<field reporter:label="Label Sort Key" name="label_sortkey" reporter:datatype="text"/>
+			<field reporter:label="Owning Library" name="owning_lib"  reporter:datatype="org_unit"/>
+		</fields>
+		<links>
+			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_VOLUME_PREFIX" context_field="owning_lib"/>
+                <retrieve/>
+                <update permission="UPDATE_VOLUME_PREFIX" context_field="owning_lib"/>
+                <delete permission="DELETE_VOLUME_PREFIX" context_field="owning_lib"/>
+            </actions>
+        </permacrud>
+	</class>
 	<class id="acn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number" oils_persist:tablename="asset.call_number" reporter:label="Call Number/Volume">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_id_seq">
 			<field reporter:label="Copies" name="copies" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -1839,6 +1882,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="URIs" name="uris" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Sort Key" name="label_sortkey" reporter:datatype="text"/>
 			<field reporter:label="Classification Scheme" name="label_class" reporter:datatype="link"/>
+			<field reporter:label="Prefix" name="prefix" reporter:datatype="link"/>
+			<field reporter:label="Suffix" name="suffix" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
@@ -1850,6 +1895,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="uris" reltype="has_many" key="call_number" map="uri" class="auricnm"/>
 			<link field="uri_maps" reltype="has_many" key="call_number" map="" class="auricnm"/>
 			<link field="label_class" reltype="has_a" key="id" map="" class="acnc"/>
+			<link field="prefix" reltype="has_a" key="id" map="" class="acnp"/>
+			<link field="suffix" reltype="has_a" key="id" map="" class="acns"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -2024,6 +2071,44 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
                 <retrieve/>
                 <update permission="UPDATE_HOURS_OF_OPERATION" context_field="id"/>
                 <delete permission="DELETE_HOURS_OF_OPERATION" context_field="id"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="bmp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="biblio::monograph_part" oils_persist:tablename="biblio.monograph_part" reporter:label="Monograph Parts" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="biblio.monograph_part_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="record" reporter:datatype="link"/>
+			<field name="label" reporter:datatype="text"/>
+			<field name="label_sortkey" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_MONOGRAPH_PART" global_required="true"/>
+                <retrieve/>
+                <update permission="UPDATE_MONOGRAPH_PART" global_required="true"/>
+                <delete permission="DELETE_MONOGRAPH_PART" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="acpm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_part_map" oils_persist:tablename="asset.copy_part_map" reporter:label="Copy Monograph Part Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_part_map_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="target_copy" reporter:datatype="link" />
+			<field name="part" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="part" reltype="has_a" key="id" map="" class="bmp"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="MAP_MONOGRAPH_PART" global_required="true"/>
+                <retrieve/>
+                <update permission="MAP_MONOGRAPH_PART" global_required="true"/>
+                <delete permission="MAP_MONOGRAPH_PART" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
@@ -4684,6 +4769,7 @@ SELECT  usr,
 			<field reporter:label="Total Circulations" name="total_circ_count" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Holds" name="holds" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Statistical Category Entries" name="stat_cat_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Monograph Parts" name="parts" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
@@ -4700,6 +4786,7 @@ SELECT  usr,
 			<link field="circulations" reltype="has_many" key="target_copy" map="" class="circ"/>
 			<link field="total_circ_count" reltype="might_have" key="id" map="" class="erfcc"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
+			<link field="parts" reltype="has_many" key="target_copy" map="part" class="acpm"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
