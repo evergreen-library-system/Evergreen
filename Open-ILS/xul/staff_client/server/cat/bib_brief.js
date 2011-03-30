@@ -9,13 +9,13 @@ function my_init() {
         JSAN.use('util.error'); g.error = new util.error();
         g.error.sdump('D_TRACE','my_init() for cat_bib_brief.xul');
 
-        JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+        JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
 
         docid = xul_param('docid');
 
         var key = location.pathname + location.search + location.hash;
-        if (!docid && typeof data.modal_xulG_stack != 'undefined' && typeof data.modal_xulG_stack[key] != 'undefined') {
-            var xulG = data.modal_xulG_stack[key][ data.modal_xulG_stack[key].length - 1 ];
+        if (!docid && typeof g.data.modal_xulG_stack != 'undefined' && typeof g.data.modal_xulG_stack[key] != 'undefined') {
+            var xulG = g.data.modal_xulG_stack[key][ g.data.modal_xulG_stack[key].length - 1 ];
             if (typeof xulG == 'object') {
                 docid = xulG.docid;
             }
@@ -28,7 +28,7 @@ function my_init() {
 
         if (docid > -1) {
 
-            data.last_record = docid; data.stash('last_record');
+            g.data.last_record = docid; g.data.stash('last_record');
 
             g.network.simple_request(
                 'MODS_SLIM_RECORD_RETRIEVE.authoritative',
@@ -87,6 +87,14 @@ function my_init() {
     }
 }
 
+function unhide_add_volumes_button() {
+    if (xulG && typeof xulG == 'object' && typeof xulG['new_tab'] == 'function') {
+        document.getElementById('add_volumes').hidden = false;
+        document.getElementById('add_volumes_left_paren').hidden = false;
+        document.getElementById('add_volumes_right_paren').hidden = false;
+    }
+}
+
 function view_marc() {
     try {
         JSAN.use('util.window'); var win = new util.window();
@@ -114,4 +122,39 @@ function spawn_patron(span) {
     }
 }
 
+function add_volumes() {
+    try {
+        var edit = 0;
+        try {
+            edit = g.network.request(
+                api.PERM_MULTI_ORG_CHECK.app,
+                api.PERM_MULTI_ORG_CHECK.method,
+                [
+                    ses(),
+                    ses('staff_id'),
+                    [ ses('ws_ou') ],
+                    [ 'CREATE_VOLUME', 'CREATE_COPY' ]
+                ]
+            ).length == 0 ? 1 : 0;
+        } catch(E) {
+            g.error.sdump('D_ERROR','batch permission check: ' + E);
+        }
 
+        if (edit==0) {
+            alert(document.getElementById('offlineStrings').getString('staff.circ.copy_status.add_volumes.perm_failure'));
+            return; // no read-only view for this interface
+        }
+
+        var title = document.getElementById('offlineStrings').getFormattedString('staff.circ.copy_status.add_volumes.title', [docid]);
+
+        var horizontal_interface = String( g.data.hash.aous['ui.cat.volume_copy_editor.horizontal'] ) == 'true';
+        var url = window.xulG.url_prefix( horizontal_interface ? urls.XUL_VOLUME_COPY_CREATOR_HORIZONTAL : urls.XUL_VOLUME_COPY_CREATOR );
+        var w = xulG.new_tab(
+            url,
+            { 'tab_name' : title },
+            { 'doc_id' : docid, 'ou_ids' : [ ses('ws_ou') ] }
+        );
+    } catch(E) {
+        alert('Error in server/cat/bib_brief.js, add_volumes(): ' + E);
+    }
+}

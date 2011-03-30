@@ -413,6 +413,12 @@
 
     function update_modal_xulG(v) {
         try {
+            if (typeof xulG != "undefined" && xulG.not_modal) {
+                xulG = v;
+                xulG.not_modal = true;
+                return;
+            }
+
             JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
             var key = location.pathname + location.search + location.hash;
             if (typeof data.modal_xulG_stack != 'undefined' && typeof data.modal_xulG_stack[key] != 'undefined') {
@@ -453,11 +459,15 @@
             }
             if (typeof _params.no_xulG == 'undefined') {
                 if (typeof _params.modal_xulG != 'undefined') {
-                    JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
-                    var key = location.pathname + location.search + location.hash;
-                    //dump('xul_param, considering modal key = ' + key + '\n');
-                    if (typeof data.modal_xulG_stack != 'undefined' && typeof data.modal_xulG_stack[key] != 'undefined') {
-                        xulG = data.modal_xulG_stack[key][ data.modal_xulG_stack[key].length - 1 ];
+                    if (typeof xulG != 'undefined' && xulG.not_modal) {
+                        // for interfaces that used to be modal but aren't now, do nothing
+                    } else {
+                        JSAN.use('OpenILS.data'); var data = new OpenILS.data(); data.init({'via':'stash'});
+                        var key = location.pathname + location.search + location.hash;
+                        //dump('xul_param, considering modal key = ' + key + '\n');
+                        if (typeof data.modal_xulG_stack != 'undefined' && typeof data.modal_xulG_stack[key] != 'undefined') {
+                            xulG = data.modal_xulG_stack[key][ data.modal_xulG_stack[key].length - 1 ];
+                        }
                     }
                 }
                 if (typeof xulG == 'object' && typeof xulG[ param_name ] != 'undefined') {

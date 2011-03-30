@@ -51,6 +51,16 @@
 					<td class='holds_cell' id='holds_physical_desc'> </td>
 				</tr>
 
+				<tr class='hide_me' id='holds_parts_row'>
+					<td class='holds_cell'>&common.mono_parts.label;</td>
+					<td class='holds_cell'>
+                        <span class='hide_me' id='holds_parts_label'></span>
+                        <select id='holds_parts_selector' class='hide_me'>
+                            <option value=''></option>
+                        </select>
+                    </td>
+				</tr>
+
 				<tr class='hide_me' id='holds_cn_row'>
 					<td class='holds_cell'>&common.call.number.label;</td>
 					<td class='holds_cell'><b id='holds_cn'/> </td>

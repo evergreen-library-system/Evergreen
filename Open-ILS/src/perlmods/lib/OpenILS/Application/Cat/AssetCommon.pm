@@ -133,6 +133,63 @@ sub update_copy_stat_entries {
 	return undef;
 }
 
+# if 'delete_maps' is true, the copy->parts data is  treated as the
+# authoritative list for the copy. existing part maps not targeting
+# these parts will be deleted from the DB
+sub update_copy_parts {
+	my($class, $editor, $copy, $delete_maps) = @_;
+
+	return undef if $copy->isdeleted;
+	return undef unless $copy->ischanged or $copy->isnew;
+
+	my $evt;
+	my $incoming_parts = $copy->parts;
+
+	if( $delete_maps ) {
+		$incoming_parts = ($incoming_parts and @$incoming_parts) ? $incoming_parts : [];
+	} else {
+		return undef unless ($incoming_parts and @$incoming_parts);
+	}
+
+	my $maps = $editor->search_asset_copy_part_map({target_copy=>$copy->id});
+
+	if(!$copy->isnew) {
+		# if there is no part map on the copy who's id matches the
+		# current map's id, remove the map from the database
+		for my $map (@$maps) {
+			if(! grep { $_->id == $map->part } @$incoming_parts ) {
+
+				$logger->info("copy update found stale ".
+					"monographic part map ".$map->id. " on copy ".$copy->id);
+
+				$editor->delete_asset_copy_part_map($map)
+					or return $editor->event;
+			}
+		}
+	}
+
+	# go through the part map update/create process
+	for my $incoming_part (@$incoming_parts) { 
+		next unless $incoming_part;
+
+		# if this link already exists in the DB, don't attempt to re-create it
+		next if( grep{$_->part == $incoming_part->id} @$maps );
+	
+		my $new_map = Fieldmapper::asset::copy_part_map->new();
+
+		$new_map->part( $incoming_part->id );
+		$new_map->target_copy( $copy->id );
+
+		$editor->create_asset_copy_part_map($new_map)
+			or return $editor->event;
+
+		$logger->info("copy update created new monographic part copy map ".$editor->data);
+	}
+
+	return undef;
+}
+
+
 
 sub update_copy {
 	my($class, $editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib) = @_;
@@ -224,6 +281,9 @@ sub update_fleshed_copies {
 		my $sc_entries = $copy->stat_cat_entries;
 		$copy->clear_stat_cat_entries;
 
+        my $parts = $copy->parts;
+		$copy->clear_parts;
+
 		if( $copy->isdeleted ) {
 			$evt = $class->delete_copy($editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib);
 			return $evt if $evt;
@@ -240,6 +300,9 @@ sub update_fleshed_copies {
 
 		$copy->stat_cat_entries( $sc_entries );
 		$evt = $class->update_copy_stat_entries($editor, $copy, $delete_stats);
+		$copy->parts( $parts );
+		# probably okay to use $delete_stats here for simplicity
+		$evt = $class->update_copy_parts($editor, $copy, $delete_stats);
 		return $evt if $evt;
 	}
 
@@ -305,6 +368,8 @@ sub create_volume {
 			owning_lib	=> $vol->owning_lib,
 			record		=> $vol->record,
 			label			=> $vol->label,
+			prefix			=> $vol->prefix,
+			suffix			=> $vol->suffix,
 			deleted		=> 'f'
 		}
 	);
@@ -345,13 +410,16 @@ sub create_volume {
 
 # returns the volume if it exists
 sub volume_exists {
-    my($class, $e, $rec_id, $label, $owning_lib) = @_;
+    my($class, $e, $rec_id, $label, $owning_lib, $prefix, $suffix) = @_;
     return $e->search_asset_call_number(
-        {label => $label, record => $rec_id, owning_lib => $owning_lib, deleted => 'f'})->[0];
+        {label => $label, record => $rec_id, owning_lib => $owning_lib, deleted => 'f', prefix => $prefix, suffix => $suffix})->[0];
 }
 
 sub find_or_create_volume {
-	my($class, $e, $label, $record_id, $org_id) = @_;
+	my($class, $e, $label, $record_id, $org_id, $prefix, $suffix, $label_class) = @_;
+
+    $prefix ||= '-1';
+    $suffix ||= '-1';
 
     my $vol;
 
@@ -360,7 +428,7 @@ sub find_or_create_volume {
             or return (undef, $e->die_event);
 
     } else {
-        $vol = $class->volume_exists($e, $record_id, $label, $org_id);
+        $vol = $class->volume_exists($e, $record_id, $label, $org_id, $prefix, $suffix);
     }
 
 	# If the volume exists, return the ID
@@ -373,7 +441,10 @@ sub find_or_create_volume {
 
 	$vol = Fieldmapper::asset::call_number->new;
 	$vol->owning_lib($org_id);
+	$vol->label_class($label_class) if ($label_class);
 	$vol->label($label);
+	$vol->prefix($prefix);
+	$vol->suffix($suffix);
 	$vol->record($record_id);
 
     my $evt = OpenILS::Application::Cat::AssetCommon->create_volume(0, $e, $vol);

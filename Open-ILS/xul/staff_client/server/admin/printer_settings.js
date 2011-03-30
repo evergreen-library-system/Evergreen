@@ -36,8 +36,17 @@ function my_init() {
 g.toggle_silent_print = function() {
     var x = document.getElementById('print_silent');
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-    g.prefs.setBoolPref('print.always_print_silent', x.checked);
-    dump('Setting print.always_print_silent to ' + x.checked + '\n');
+    if (x.checked) {
+        g.prefs.setBoolPref('print.always_print_silent', true);
+        dump('Setting print.always_print_silent to true\n');
+    } else {
+        // Setting print.always_print_silent to false is not the same as clearing it, since a false here will prevent
+        // gPrintSettings.printSilent = true from working when fed to webBrowserPrint
+        if (g.prefs.HasUserValue('print.always_print_silent')) {
+            g.prefs.clearUserPref('print.always_print_silent');
+        }
+        dump('Clearing print.always_print_silent\n');
+    }
 }
 
 g.set_printer_context = function(context) {

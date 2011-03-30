@@ -237,6 +237,29 @@ sub tree_walker {
 	return @things
 }
 
+# find a label_sortkey for a call number with a label which is equal
+# (or close to) a given label value
+sub _label_sortkey_from_label {
+	my ($label, $_storage, $ou_ids, $cp_filter) = @_;
+
+	my $closest_cn = $_storage->request(
+			"open-ils.cstore.direct.asset.call_number.search.atomic",
+			{ label      => { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
+			  owning_lib => $ou_ids,
+			  deleted    => 'f',
+			  @$cp_filter
+			},
+			{ limit     => 1,
+			  order_by  => { acn => "oils_text_as_bytea(label), id" }
+			}
+		)->gather(1);
+	if (@$closest_cn) {
+		return $closest_cn->[0]->label_sortkey;
+	} else {
+		return '~~~'; #fallback to high ascii value, we are at the end
+	}
+}
+
 sub cn_browse {
 	my $self = shift;
 	my $client = shift;
@@ -296,16 +319,18 @@ sub cn_browse {
         );
     }
 
+	my $label_sortkey = _label_sortkey_from_label($label, $_storage, \@ou_ids, \@cp_filter);
+
 	if ($page <= 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { "<" => $label },
+			{ label_sortkey	=> { "<" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label_sortkey] } },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
               @cp_filter
 			},
 			{ flesh		=> 1,
-			  flesh_fields	=> { acn => [qw/record owning_lib/] },
+			  flesh_fields	=> { acn => [qw/record owning_lib prefix suffix/] },
 			  order_by	=> { acn => "oils_text_as_bytea(label_sortkey) desc, oils_text_as_bytea(label) desc, id desc, owning_lib desc" },
 			  limit		=> $before_limit,
 			  offset	=> abs($page) * $page_size - $before_offset,
@@ -317,13 +342,13 @@ sub cn_browse {
 	if ($page >= 0) {
 		my $after = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
+			{ label_sortkey	=> { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label_sortkey] } },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
               @cp_filter
 			},
 			{ flesh		=> 1,
-			  flesh_fields	=> { acn => [qw/record owning_lib/] },
+			  flesh_fields	=> { acn => [qw/record owning_lib prefix suffix/] },
 			  order_by	=> { acn => "oils_text_as_bytea(label_sortkey), oils_text_as_bytea(label), id, owning_lib" },
 			  limit		=> $after_limit,
 			  offset	=> abs($page) * $page_size - $after_offset,
@@ -419,16 +444,18 @@ sub cn_startwith {
         );
     }
 
+	my $label_sortkey = _label_sortkey_from_label($label, $_storage, \@ou_ids, \@cp_filter);
+
 	if ($page < 0) {
 		my $before = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { "<" => $label },
+			{ label_sortkey	=> { "<" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label_sortkey] } },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
               @cp_filter
 			},
 			{ flesh		=> 1,
-			  flesh_fields	=> { acn => [qw/record owning_lib/] },
+			  flesh_fields	=> { acn => [qw/record owning_lib prefix suffix/] },
 			  order_by	=> { acn => "oils_text_as_bytea(label_sortkey) desc, oils_text_as_bytea(label) desc, id desc, owning_lib desc" },
 			  limit		=> $limit,
 			  offset	=> $offset,
@@ -440,13 +467,13 @@ sub cn_startwith {
 	if ($page >= 0) {
 		my $after = $_storage->request(
 			"open-ils.cstore.direct.asset.call_number.search.atomic",
-			{ label		=> { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label] } },
+			{ label_sortkey	=> { ">=" => { transform => "oils_text_as_bytea", value => ["oils_text_as_bytea", $label_sortkey] } },
 			  owning_lib	=> \@ou_ids,
               deleted => 'f',
               @cp_filter
 			},
 			{ flesh		=> 1,
-			  flesh_fields	=> { acn => [qw/record owning_lib/] },
+			  flesh_fields	=> { acn => [qw/record owning_lib prefix suffix/] },
 			  order_by	=> { acn => "oils_text_as_bytea(label_sortkey), oils_text_as_bytea(label), id, owning_lib" },
 			  limit		=> $limit,
 			  offset	=> $offset,
@@ -1663,7 +1690,7 @@ sub retrieve_uri {
         		  flesh_fields	=> {
 	        	  			auri    => [qw/call_number_maps/],
 	        	  			auricnm	=> [qw/call_number/],
-	        	  			acn	    => [qw/owning_lib record/],
+	        	  			acn	    => [qw/owning_lib record prefix suffix/],
     				}
 	    	    })
             ->gather(1))
@@ -1704,8 +1731,8 @@ sub retrieve_copy {
 	    	    $cpid,
     		    { flesh		=> 2,
         		  flesh_fields	=> {
-	        	  			acn	=> [qw/owning_lib record/],
-		        			acp	=> [qw/call_number location status circ_lib stat_cat_entries notes/],
+	        	  			acn	=> [qw/owning_lib record prefix suffix/],
+		        			acp	=> [qw/call_number location status circ_lib stat_cat_entries notes parts/],
     				}
 	    	    })
             ->gather(1))
@@ -1747,9 +1774,9 @@ sub retrieve_callnumber {
 	    	    $cnid,
     		    { flesh		=> 5,
         		  flesh_fields	=> {
-	        	  			acn	=> [qw/owning_lib record copies uri_maps/],
+	        	  			acn	=> [qw/owning_lib record copies uri_maps prefix suffix/],
 	        	  			auricnm	=> [qw/uri/],
-		        			acp	=> [qw/location status circ_lib stat_cat_entries notes/],
+		        			acp	=> [qw/location status circ_lib stat_cat_entries notes parts/],
     				}
 	    	    })
             ->gather(1))
@@ -1796,8 +1823,8 @@ sub basic_record_holdings {
 		{ flesh		=> 5,
 		  flesh_fields	=> {
 					bre	=> [qw/call_numbers/],
-		  			acn	=> [qw/copies owning_lib/],
-					acp	=> [qw/location status circ_lib/],
+		  			acn	=> [qw/copies owning_lib prefix suffix/],
+					acp	=> [qw/location status circ_lib parts/],
 				}
 		}
 	)->gather(1);
@@ -1948,9 +1975,9 @@ sub new_record_holdings {
         },
 		{ flesh		=> 5,
 		  flesh_fields	=> {
-		  			acn	=> [qw/copies owning_lib uri_maps/],
+		  			acn	=> [qw/copies owning_lib uri_maps prefix suffix/],
 		  			auricnm	=> [qw/uri/],
-					acp	=> [qw/circ_lib location status stat_cat_entries notes/],
+					acp	=> [qw/circ_lib location status stat_cat_entries notes parts/],
 					asce	=> [qw/stat_cat/],
 				},
           ( $limit > -1 ? ( limit  => $limit  ) : () ),
@@ -2022,7 +2049,7 @@ sub new_record_holdings {
 					sstr	=> [qw/items/],
 					sitem	=> [qw/notes unit/],
 					sunit	=> [qw/notes location status circ_lib stat_cat_entries call_number/],
-					acn	=> [qw/owning_lib/],
+					acn	=> [qw/owning_lib prefix suffix/],
 				},
           ( $limit > -1 ? ( limit  => $limit  ) : () ),
           ( $offset     ? ( offset => $offset ) : () ),
@@ -2994,6 +3021,20 @@ sub as_xml {
     }
 
 
+    $xml .= '      <prefix ';
+    $xml .= 'ident="' . $self->obj->prefix->id . '" ';
+    $xml .= 'id="tag:open-ils.org:asset-call_number_prefix/' . $self->obj->prefix->id . '" ';
+    $xml .= 'label_sortkey="'.$self->escape( $self->obj->prefix->label_sortkey ) .'">';
+    $xml .= $self->escape( $self->obj->prefix->label ) .'</prefix>';
+    $xml .= "\n";
+
+    $xml .= '      <suffix ';
+    $xml .= 'ident="' . $self->obj->suffix->id . '" ';
+    $xml .= 'id="tag:open-ils.org:asset-call_number_suffix/' . $self->obj->suffix->id . '" ';
+    $xml .= 'label_sortkey="'.$self->escape( $self->obj->suffix->label_sortkey ) .'">';
+    $xml .= $self->escape( $self->obj->suffix->label ) .'</suffix>';
+    $xml .= "\n";
+
     $xml .= '      <owning_lib xmlns="http://open-ils.org/spec/actors/v1" ';
     $xml .= 'id="tag:open-ils.org:actor-org_unit/' . $self->obj->owning_lib->id . '" ';
     $xml .= 'shortname="'.$self->escape( $self->obj->owning_lib->shortname ) .'" ';
@@ -3426,6 +3467,15 @@ sub as_xml {
     $xml .= 'name="'.$self->escape( $self->obj->circ_lib->name ) .'" opac_visible="'.$self->obj->circ_lib->opac_visible.'"/>';
     $xml .= "\n";
 
+	$xml .= "        <monograph_parts>\n";
+	if (ref($self->obj->parts) && $self->obj->parts) {
+		for my $part ( @{$self->obj->parts} ) {
+			$xml .= sprintf('        <monograph_part record="%s" sortkey="%s">%s</monograph_part>',$part->record, $self->escape($part->label_sortkey), $self->escape($part->label));
+			$xml .= "\n";
+		}
+	}
+
+	$xml .= "        </monograph_parts>\n";
 	$xml .= "        <copy_notes>\n";
 	if (ref($self->obj->notes) && $self->obj->notes) {
 		for my $note ( @{$self->obj->notes} ) {

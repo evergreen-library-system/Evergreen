@@ -799,6 +799,7 @@ function apply_payment() {
             }
             try {
                 if ( ! $('receipt_upon_payment').hasAttribute('checked') ) { return; } // Skip print attempt
+                if ( ! $('receipt_upon_payment').getAttribute('checked') ) { return; } // Skip print attempt
                 var no_print_prompting = g.data.hash.aous['circ.staff_client.do_not_auto_attempt_print'];
                 if (no_print_prompting) {
                     if (no_print_prompting.indexOf( "Bill Pay" ) > -1) { return; } // Skip print attempt
@@ -831,9 +832,19 @@ function apply_payment() {
                     'data' : g.previous_summary
                 };
                 g.error.sdump('D_DEBUG',js2JSON(params));
-                if (! $('printer_prompt').hasAttribute('checked')) params.no_prompt = true;
+                if ($('printer_prompt').hasAttribute('checked')) {
+                    if ($('printer_prompt').getAttribute('checked')) {
+                            params.no_prompt = false;
+                    } else {
+                            params.no_prompt = true;
+                    }
+                } else {
+                    params.no_prompt = true;
+                }
                 JSAN.use('util.print'); var print = new util.print('receipt');
-                print.tree_list( params ); 
+                for (var i = 0; i < $('num_of_receipts').value; i++) {
+                    print.tree_list( params );
+                }
             } catch(E) {
                 g.error.standard_unexpected_error_alert('bill receipt', E);
             }

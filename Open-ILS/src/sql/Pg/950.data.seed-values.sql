@@ -1588,6 +1588,8 @@ INSERT INTO biblio.record_entry VALUES (-1,1,1,1,-1,NOW(),NOW(),FALSE,FALSE,'','
 INSERT INTO asset.copy_location (id, name,owning_lib) VALUES (1, oils_i18n_gettext(1, 'Stacks', 'acpl', 'name'),1);
 SELECT SETVAL('asset.copy_location_id_seq'::TEXT, 100);
 
+INSERT INTO asset.call_number_suffix (id, owning_lib, label) VALUES (-1, 1, '');
+INSERT INTO asset.call_number_prefix (id, owning_lib, label) VALUES (-1, 1, '');
 INSERT INTO asset.call_number VALUES (-1,1,NOW(),1,NOW(),-1,1,'UNCATALOGED');
 
 -- circ matrix
@@ -7941,3 +7943,15 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
     (37, 'circ_lib.billing_address')
 ;
 
+INSERT INTO config.org_unit_setting_type ( name, label, description, datatype ) VALUES (
+    'ui.cat.volume_copy_editor.horizontal',
+    oils_i18n_gettext(
+        'ui.cat.volume_copy_editor.horizontal',
+        'GUI: Horizontal layout for Volume/Copy Creator/Editor.',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'ui.cat.volume_copy_editor.horizontal',
+        'The main entry point for this interface is in Holdings Maintenance, Actions for Selected Rows, Edit Item Attributes / Call Numbers / Replace Barcodes.  This setting changes the top and bottom panes for that interface into left and right panes.',
+        'coust', 'description'),
+    'bool'
+);

@@ -79,4 +79,30 @@ CREATE INDEX biblio_record_note_record_idx ON biblio.record_note ( record );
 CREATE INDEX biblio_record_note_creator_idx ON biblio.record_note ( creator );
 CREATE INDEX biblio_record_note_editor_idx ON biblio.record_note ( editor );
 
+CREATE TABLE biblio.monograph_part (
+    id              SERIAL  PRIMARY KEY,
+    record          BIGINT  NOT NULL REFERENCES biblio.record_entry (id),
+    label           TEXT    NOT NULL,
+    label_sortkey   TEXT    NOT NULL,
+    CONSTRAINT record_label_unique UNIQUE (record,label)
+);
+
+CREATE OR REPLACE FUNCTION biblio.normalize_biblio_monograph_part_sortkey () RETURNS TRIGGER AS $$
+BEGIN
+    NEW.label_sortkey := REGEXP_REPLACE(
+        lpad_number_substrings(
+            naco_normalize(NEW.label),
+            '0',
+            10
+        ),
+        E'\\s+',
+        '',
+        'g'
+    );
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER norm_sort_label BEFORE INSERT OR UPDATE ON biblio.monograph_part FOR EACH ROW EXECUTE PROCEDURE biblio.normalize_biblio_monograph_part_sortkey();
+
 COMMIT;

@@ -338,8 +338,14 @@ sub ol_status {
 			$resfile = "$basedir/archive/$org/$seskey/results";
 		}
 		my $data = ol_file_to_perl($resfile);
-		$data = [ grep { $_->{event}->{ilsevent} ne '0' } @$data ];
-		ol_handle_result($data);
+        my $data2 = [];
+        for my $d (@$data) {
+            my $evt = $d->{event};
+            $evt = $evt->[0] if ref $evt eq 'ARRAY';
+            push(@$data2, $d) if $evt->{ilsevent} ne '0';
+        }
+		#$data = [ grep { $_->{event}->{ilsevent} ne '0' } @$data ];
+		ol_handle_result($data2);
 	}
 }
 

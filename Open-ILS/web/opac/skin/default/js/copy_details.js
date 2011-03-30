@@ -208,6 +208,7 @@ function cpdDrawCopies(r) {
 function cpdDrawCopy(r) {
 	var copy = r.getResultObject();
 	var row  = r.row;
+    var trow = r.args.templateRow;
 
     if (r.args.copy_location && copy.location().name() != r.args.copy_location) {
         hideMe(row);
@@ -217,6 +218,18 @@ function cpdDrawCopy(r) {
 	$n(row, 'barcode').appendChild(text(copy.barcode()));
 	$n(row, 'location').appendChild(text(copy.location().name()));
 	$n(row, 'status').appendChild(text(copy.status().name()));
+
+    // append comma-separated list of part this copy is linked to
+    if(copy.parts() && copy.parts().length) {
+        unHideMe($n(trow, 'copy_part_label'));
+        unHideMe($n(row, 'copy_part'));
+        for(var i = 0; i < copy.parts().length; i++) {
+            var part = copy.parts()[i];
+            var node = $n(row, 'copy_part');
+            if(i > 0) node.appendChild(text(','));
+            node.appendChild(text(part.label()));
+        }
+    }
 
 	if(isXUL()) {
 		/* show the hold link */

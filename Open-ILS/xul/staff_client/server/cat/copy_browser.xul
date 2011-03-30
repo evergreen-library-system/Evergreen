@@ -86,7 +86,6 @@ vim:noet:sw=4:ts=4:
         <command id="cmd_add_items"/>
         <command id="cmd_add_items_to_buckets"/>
         <command id="cmd_edit_items"/>
-        <command id="cmd_replace_barcode"/>
         <command id="cmd_delete_items"/>
         <command id="cmd_transfer_items"/>
         <command id="cmd_print_spine_labels"/>
@@ -128,7 +127,6 @@ vim:noet:sw=4:ts=4:
             <menuitem command="sel_mark_items_missing" label="&staff.cat.copy_browser.actions.sel_mark_items_missing.label;" accesskey="&staff.cat.copy_browser.actions.sel_mark_items_missing.accesskey;"/>
             <menuseparator/>
             <menuitem command="cmd_print_spine_labels" label="&staff.cat.copy_browser.actions.cmd_print_spine_labels.label;" accesskey="&staff.cat.copy_browser.actions.cmd_print_spine_labels.accesskey;"/>
-            <menuitem command="cmd_replace_barcode" label="&staff.cat.copy_browser.actions.cmd_replace_barcode.label;" accesskey=""/>
             <menuitem command="save_columns" label="&staff.cat.copy_browser.actions.save_columns.label;"/>
             <menuitem command="cmd_refresh_list" label="&staff.cat.copy_browser.actions.cmd_refresh_list.label;" accesskey="&staff.cat.copy_browser.actions.cmd_refresh_list.accesskey;"/>
         </popup>
@@ -142,8 +140,6 @@ vim:noet:sw=4:ts=4:
             <label value="&staff.cat.copy_browser.holdings_maintenance.depth_filter_menu;" />
             <hbox id="x_depth_menu"/>
             <spacer flex="1"/>
-            <label value="&staff.cat.copy_browser.holdings_maintenance.consortial_total;"/><label id="consortial_total"/>
-            <label value="&staff.cat.copy_browser.holdings_maintenance.consortial_available;"/><label id="consortial_available"/>
         </hbox>
         <hbox>
             <checkbox id="show_acns" label="&staff.cat.copy_browser.holdings_maintenance.show_acns;" />
@@ -155,6 +151,8 @@ vim:noet:sw=4:ts=4:
             <button label="Show All Libs" command="cmd_show_all_libs" accesskey=""/>
             -->
             <spacer flex="1"/>
+            <label value="&staff.cat.copy_browser.holdings_maintenance.consortial_total;"/><label id="consortial_total"/>
+            <label value="&staff.cat.copy_browser.holdings_maintenance.consortial_available;"/><label id="consortial_available"/>
             <menubar>
                 <menu label="&staff.cat.copy_browser.holdings_maintenance.actions.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.actions.accesskey;">
                     <menupopup>
@@ -182,7 +180,6 @@ vim:noet:sw=4:ts=4:
                         <menuitem command="sel_mark_items_missing" label="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.sel_mark_items_missing.accesskey;"/>
                         <menuseparator/>
                         <menuitem command="cmd_print_spine_labels" label="&staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_print_spine_labels.accesskey;"/>
-                        <menuitem command="cmd_replace_barcode" label="&staff.cat.copy_browser.holdings_maintenance.cmd_replace_barcode.label;" accesskey=""/>
                         <menuitem command="save_columns" label="&staff.cat.copy_browser.holdings_maintenance.save_columns.label;"/>
                         <menuitem command="cmd_refresh_list" label="&staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.label;" accesskey="&staff.cat.copy_browser.holdings_maintenance.cmd_refresh_list.accesskey;"/>
                     </menupopup>

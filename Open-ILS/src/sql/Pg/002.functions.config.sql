@@ -482,6 +482,11 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+CREATE OR REPLACE FUNCTION force_unicode_normal_form(string TEXT, form TEXT) RETURNS TEXT AS $func$
+use Unicode::Normalize 'normalize';
+return normalize($_[1],$_[0]); # reverse the params
+$func$ LANGUAGE PLPERLU;
+
 CREATE OR REPLACE FUNCTION maintain_control_numbers() RETURNS TRIGGER AS $func$
 use strict;
 use MARC::Record;

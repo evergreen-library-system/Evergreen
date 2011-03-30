@@ -207,6 +207,10 @@ function load() {
         input.widget.attr('disabled', true).attr('readOnly', true);
     }
 
+	dojo.connect(generatePassword, 'onClick', generatePasswordHandler);
+	if (uEditUsePhonePw) {
+		generatePassword.attr('disabled', true);
+	}
 
     if(!patron.isnew() && !checkGrpAppPerm(patron.profile()) && patron.id() != openils.User.user.id()) {
         // we are not allowed to edit this user, so disable the save option
@@ -326,6 +330,16 @@ function replaceCardHandler() {
         patron.cards(t);
 }
 
+/**
+ * Generate a random password for the patron.
+ */
+function generatePasswordHandler() {
+	uEditMakeRandomPw(patron);
+	var f = findWidget('au', 'passwd');
+	f.widget.attr('value', patron.passwd());
+	f = findWidget('au', 'passwd2');
+	f.widget.attr('value', patron.passwd());
+}
 
 /**
  * Loads a staged user and turns them into something the editor can understand
