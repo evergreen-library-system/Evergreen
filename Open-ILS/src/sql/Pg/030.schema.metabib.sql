@@ -140,7 +140,7 @@ BEGIN
     NEW.value := force_unicode_normal_form(NEW.value,'NFC');
     RETURN NEW;
 END;
-$$ LANUAGE PLPGSQL;
+$$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER facet_force_nfc_tgr
 	BEFORE UPDATE OR INSERT ON metabib.facet_entry
