@@ -190,11 +190,7 @@
                         </div>
                     </td>
                     <td class="opac-auto-161">
-                        <!-- XXX TODO <a name="hold_edit_link" href="#">Edit</a>
-                        <a href="#" name="hold_save_link"
-                            class="hide_me">Save</a>
-                        <a href="#" name="hold_cancel_link"
-                            class="hide_me">Back</a> -->
+                        <a href="[% ctx.opac_root %]/myopac/holds/edit?id=[% ahr.id %]">Edit</a>
                     </td>
                 </tr>
                 [% END %]
