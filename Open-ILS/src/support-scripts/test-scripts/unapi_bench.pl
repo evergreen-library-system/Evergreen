@@ -89,8 +89,9 @@ sub direct {
     my $bre_req = $cstore->request(
         'open-ils.cstore.direct.biblio.record_entry.search', 
         {id => \@recs},
-        {flesh => 2, flesh_fields => {bre => ['call_numbers'], acn => ['copies']}}
+        {flesh => 3, flesh_fields => {bre => ['call_numbers'], acn => ['copies'], acp => ['location']}}
         # in practice, ^-- this might be a separate, paged json_query
+        # note, not fleshing copy status since copy statuses will always be cached in the ML
     );
 
     my @data;
