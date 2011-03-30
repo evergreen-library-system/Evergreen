@@ -973,8 +973,8 @@ sub copy_details {
 			{
 				flesh => 2,
 				flesh_fields => {
-					acp => ['call_number'],
-					acn => ['record']
+					acp => ['call_number','parts'],
+					acn => ['record','prefix','suffix','label_class']
 				}
 			}
 		]) or return $e->event;

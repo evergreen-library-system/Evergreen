@@ -2,8 +2,6 @@
 var g = {};
 g.map_acn = {};
 
-var xulG = {};
-
 function $(id) { return document.getElementById(id); }
 
 function my_init() {
@@ -23,6 +21,10 @@ function my_init() {
         JSAN.use('util.functional');
         JSAN.use('OpenILS.data'); g.data = new OpenILS.data(); g.data.init({'via':'stash'});
         JSAN.use('util.network'); g.network = new util.network();
+
+        if (xulG.unified_interface) {
+            $('non_unified_buttons').hidden = true;
+        }
 
         g.docid = xul_param('docid',{'modal_xulG':true});
         g.handle_update = xul_param('handle_update',{'modal_xulG':true});
@@ -63,44 +65,50 @@ function my_init() {
 
         if (xul_param('edit',{'modal_xulG':true}) == '1') { 
 
-            // Editor desired, but let's check permissions
-            g.edit = false;
+            g.edit = true;
 
-            try {
-                var check = g.network.simple_request(
-                    'PERM_MULTI_ORG_CHECK',
-                    [ 
-                        ses(), 
-                        g.data.list.au[0].id(), 
-                        util.functional.map_list(
-                            g.copies,
-                            function (o) {
-                                var lib;
-                                var cn_id = o.call_number();
-                                if (cn_id == -1) {
-                                    lib = o.circ_lib(); // base perms on circ_lib instead of owning_lib if pre-cat
-                                } else {
-                                    if (! g.map_acn[ cn_id ]) {
-                                        var req = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ cn_id ]);
-                                        if (typeof req.ilsevent == 'undefined') {
-                                            g.map_acn[ cn_id ] = req;
-                                            lib = g.map_acn[ cn_id ].owning_lib();
-                                        } else {
-                                            lib = o.circ_lib();
-                                        }
+            if (g.copies.length > 0) { // When loaded in the unified interface, there may be no copies yet (from the volum/item creator) 
+
+                // Editor desired, but let's check permissions
+                g.edit = false;
+
+                try {
+                    var check = g.network.simple_request(
+                        'PERM_MULTI_ORG_CHECK',
+                        [ 
+                            ses(), 
+                            g.data.list.au[0].id(), 
+                            util.functional.map_list(
+                                g.copies,
+                                function (o) {
+                                    var lib;
+                                    var cn_id = o.call_number();
+                                    if (cn_id == -1) {
+                                        lib = o.circ_lib(); // base perms on circ_lib instead of owning_lib if pre-cat
                                     } else {
-                                        lib = g.map_acn[ cn_id ].owning_lib();
+                                        if (! g.map_acn[ cn_id ]) {
+                                            var req = g.network.simple_request('FM_ACN_RETRIEVE.authoritative',[ cn_id ]);
+                                            if (typeof req.ilsevent == 'undefined') {
+                                                g.map_acn[ cn_id ] = req;
+                                                lib = g.map_acn[ cn_id ].owning_lib();
+                                            } else {
+                                                lib = o.circ_lib();
+                                            }
+                                        } else {
+                                            lib = g.map_acn[ cn_id ].owning_lib();
+                                        }
                                     }
+                                    return typeof lib == 'object' ? lib.id() : lib;
                                 }
-                                return typeof lib == 'object' ? lib.id() : lib;
-                            }
-                        ),
-                        g.copies.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
-                    ]
-                );
-                g.edit = check.length == 0;
-            } catch(E) {
-                g.error.standard_unexpected_error_alert('batch permission check',E);
+                            ),
+                            g.copies.length == 1 ? [ 'UPDATE_COPY' ] : [ 'UPDATE_COPY', 'UPDATE_BATCH_COPY' ]
+                        ]
+                    );
+                    g.edit = check.length == 0;
+                } catch(E) {
+                    g.error.standard_unexpected_error_alert('batch permission check',E);
+                }
+
             }
 
             if (g.edit) {
@@ -110,6 +118,7 @@ function my_init() {
             } else {
                 $('top_nav').setAttribute('hidden','true');
             }
+
         } else {
             $('top_nav').setAttribute('hidden','true');
         }
@@ -162,6 +171,29 @@ function my_init() {
         g.render();
         g.check_for_unmet_required_fields();
 
+        if (xulG.unified_interface) {
+            xulG.refresh_copy_editor = function() {
+                try {
+                    g.copies = xulG.copies;
+                    g.original_copies = js2JSON( g.copies );
+                    for (var i = 0; i < g.applied_templates.length; i++) {
+                        g._apply_template( g.applied_templates[i] );
+                    }
+                    g.summarize( g.copies );
+                    g.render();
+                    g.check_for_unmet_required_fields();
+                } catch(E) {
+                    alert('Error in copy_editor.js, xulG.refresh_copy_editor(): ' + E);
+                }
+            };
+            xulG.unlock_copy_editor = function() {
+                oils_unlock_page();
+            };
+            xulG.notify_of_templatable_field_change = function(id,v) {
+                g.changed[ 'volume_copy_creator.'+id ] = { 'type' : 'volume_copy_creator', 'field' : id, 'value' : v };
+            }
+        }
+
     } catch(E) {
         var err_msg = $("commonStrings").getFormattedString('common.exception', ['cat/copy_editor.js', E]);
         try { g.error.sdump('D_ERROR',err_msg); } catch(E) { dump(err_msg); dump(js2JSON(E)); }
@@ -191,6 +223,25 @@ g.retrieve_templates = function() {
             function() { g.copy_editor_prefs[ 'template_menu' ] = { 'value' : g.template_menu.value }; g.save_attributes(); },
             false
         );
+
+        if (xulG.unified_interface) {
+            if (typeof xulG.update_unified_template_list == 'function') {
+                xulG.update_unified_template_list(list);
+                // functions the unified wrapper should use to let the item attribute editor do the heavy lifting for templates
+                xulG.update_item_editor_template_selection = function(new_value) {
+                    g.template_menu.value = new_value;
+                    g.copy_editor_prefs[ 'template_menu' ] = { 'value' : g.template_menu.value };
+                    g.save_attributes();
+                }
+                xulG.item_editor_apply_template = function() { g.apply_template(); };
+                xulG.item_editor_delete_template = function() { g.delete_template(); };
+                xulG.item_editor_save_template = function() { g.save_template(); };
+                xulG.item_editor_import_templates = function() { g.import_templates(); };
+                xulG.item_editor_export_templates = function() { g.export_templates(); };
+                xulG.item_editor_reset = function() { g.reset(); };
+            }
+        }
+
     } catch(E) {
         g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.retrieve_templates.error'), E);
     }
@@ -199,9 +250,25 @@ g.retrieve_templates = function() {
 /******************************************************************************************************/
 /* Apply Template */
 
+g.applied_templates = [];
+
 g.apply_template = function() {
     try {
         var name = g.template_menu.value;
+        if (g.templates[ name ] != 'undefined') {
+            g.applied_templates.push( name );
+            g._apply_template(name);
+            g.summarize( g.copies );
+            g.render();
+            g.check_for_unmet_required_fields();
+        }
+    } catch(E) {
+        g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.apply_templates.error'), E);
+    }
+}
+
+g._apply_template = function(name) {
+    try {
         if (g.templates[ name ] != 'undefined') {
             var template = g.templates[ name ];
             for (var i in template) {
@@ -216,14 +283,16 @@ g.apply_template = function() {
                     case 'owning_lib' :
                         g.apply_owning_lib(template[i].value);
                     break;
+                    case 'volume_copy_creator' :
+                        if (xulG.unified_interface) {
+                            xulG.apply_template_to_batch(template[i].field,template[i].value);
+                        }
+                    break;
                 }
             }
-            g.summarize( g.copies );
-            g.render();
-            g.check_for_unmet_required_fields();
         }
     } catch(E) {
-        g.error.standard_unexpected_error_alert($('catStrings').getString('staff.cat.copy_editor.apply_templates.error'), E);
+        alert('Error in copy_editor.js, g._apply_template('+name+'): ' + E);
     }
 }
 
@@ -383,12 +452,16 @@ g.import_templates = function() {
 /* Restore backup copies */
 
 g.reset = function() {
+    g.applied_templates = [];
     g.changed = {};
     g.copies = JSON2js( g.original_copies );
     g.summarize( g.copies );
     g.render();
     g.check_for_unmet_required_fields();
     oils_unlock_page();
+    if (xulG.unified_interface) {
+        xulG.reset_batch_menus();
+    }
 }
 
 /******************************************************************************************************/
@@ -459,6 +532,8 @@ g.apply_stat_cat = function(sc_id,entry_id) {
 
 g.apply_owning_lib = function(ou_id) {
     g.error.sdump('D_TRACE','ou_id = ' + ou_id + '\n');
+    // but don't allow this when bundled with the volume/copy creator UI, or if we're editing pre-cats
+    if (! g.safe_to_change_owning_lib() ) { return; }
     for (var i = 0; i < g.copies.length; i++) {
         var copy = g.copies[i];
         try {
@@ -471,15 +546,15 @@ g.apply_owning_lib = function(ou_id) {
                 g.map_acn[copy.call_number()] = volume;
             }
             var old_volume = g.map_acn[copy.call_number()];
-            var acn_id = g.network.simple_request(
+            var acn_blob = g.network.simple_request(
                 'FM_ACN_FIND_OR_CREATE',
-                [ses(),old_volume.label(),old_volume.record(),ou_id]
+                [ses(),old_volume.label(),old_volume.record(),ou_id,old_volume.prefix(),old_volume.suffix(),old_volume.label_class()]
             );
-            if (typeof acn_id.ilsevent != 'undefined') {
-                g.error.standard_unexpected_error_alert($('catStrings').getFormattedString('staff.cat.copy_editor.apply_owning_lib.call_number.error', [copy.barcode()]), acn_id);
+            if (typeof acn_blob.ilsevent != 'undefined') {
+                g.error.standard_unexpected_error_alert($('catStrings').getFormattedString('staff.cat.copy_editor.apply_owning_lib.call_number.error', [copy.barcode()]), acn_blob);
                 continue;
             }
-            copy.call_number(acn_id);
+            copy.call_number(acn_blob.acn_id);
             copy.ischanged('1');
         } catch(E) {
             g.error.standard_unexpected_error_alert('apply_stat_cat',E);
@@ -490,10 +565,11 @@ g.apply_owning_lib = function(ou_id) {
 }
 
 /******************************************************************************************************/
-/* This returns true if none of the copies being edited are pre-cats */
+/* This returns false if any of the copies being edited are pre-cats, or if we're embedded in the unified volume/copy UI */
 
 g.safe_to_change_owning_lib = function() {
     try {
+        if (xulG.unified_interface) { return false; }
         var safe = true;
         for (var i = 0; i < g.copies.length; i++) {
             var cn = g.copies[i].call_number();

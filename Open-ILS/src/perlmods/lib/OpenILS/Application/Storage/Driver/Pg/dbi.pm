@@ -1,5 +1,16 @@
 {
 
+    #-------------------------------------------------------------------------------
+    package asset::copy_part_map;
+
+    asset::copy_part_map->table( 'asset.copy_part_map' );
+
+    #-------------------------------------------------------------------------------
+    package biblio::monograph_part;
+
+    biblio::monograph_part->table( 'biblio.monograph_part' );
+    biblio::monograph_part->sequence( 'biblio.monograph_part_id_seq' );
+
 	#-------------------------------------------------------------------------------
 	package container::user_bucket;
 
@@ -321,6 +332,18 @@
 	asset::call_number->table( 'asset.call_number' );
 	asset::call_number->sequence( 'asset.call_number_id_seq' );
 	
+	#---------------------------------------------------------------------
+	package asset::call_number_suffix;
+	
+	asset::call_number_suffix->table( 'asset.call_number_suffix' );
+	asset::call_number_suffix->sequence( 'asset.call_number_suffix_id_seq' );
+
+	#---------------------------------------------------------------------
+	package asset::call_number_prefix;
+	
+	asset::call_number_prefix->table( 'asset.call_number_prefix' );
+	asset::call_number_prefix->sequence( 'asset.call_number_prefix_id_seq' );
+
 	#---------------------------------------------------------------------
 	package asset::call_number_class;
 	

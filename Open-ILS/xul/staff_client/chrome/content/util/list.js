@@ -30,6 +30,7 @@ util.list.prototype = {
     'init' : function (params) {
 
         var obj = this;
+        obj.scratch_data = {};
 
         JSAN.use('util.widgets');
 
@@ -1016,11 +1017,11 @@ util.list.prototype = {
     
                 if (typeof params.map_row_to_column == 'function')  {
     
-                    label = params.map_row_to_column(params.row,this.columns[i]);
+                    label = params.map_row_to_column(params.row,this.columns[i],this.scratch_data);
     
                 } else if (typeof this.map_row_to_column == 'function') {
     
-                    label = this.map_row_to_column(params.row,this.columns[i]);
+                    label = this.map_row_to_column(params.row,this.columns[i],this.scratch_data);
     
                 }
                 if (this.columns[i].type == 'checkbox') { treecell.setAttribute('value',label); } else { treecell.setAttribute('label',label ? label : ''); }
@@ -1032,11 +1033,11 @@ util.list.prototype = {
 
             if (typeof params.map_row_to_columns == 'function') {
 
-                labels = params.map_row_to_columns(params.row,this.columns);
+                labels = params.map_row_to_columns(params.row,this.columns,this.scratch_data);
 
             } else if (typeof this.map_row_to_columns == 'function') {
 
-                labels = this.map_row_to_columns(params.row,this.columns);
+                labels = this.map_row_to_columns(params.row,this.columns,this.scratch_data);
 
             }
             for (var i = 0; i < labels.length; i++) {
@@ -1070,13 +1071,13 @@ util.list.prototype = {
             var value = '';
             if (typeof params.map_row_to_column == 'function')  {
 
-                value = params.map_row_to_column(params.row,this.columns[i]);
+                value = params.map_row_to_column(params.row,this.columns[i],this.scratch_data);
 
             } else {
 
                 if (typeof this.map_row_to_column == 'function') {
 
-                    value = this.map_row_to_column(params.row,this.columns[i]);
+                    value = this.map_row_to_column(params.row,this.columns[i],this.scratch_data);
                 }
             }
             if (typeof value == 'string' || typeof value == 'number') {
@@ -1817,9 +1818,11 @@ util.list.prototype = {
     },
     // Default for the map_row_to_columns function for .init
     'std_map_row_to_columns' : function(error_value) {
-        return function(row,cols) {
+        return function(row,cols,scratch) {
             // row contains { 'my' : { 'acp' : {}, 'circ' : {}, 'mvr' : {} } }
             // cols contains all of the objects listed above in columns
+            // scratch is a temporary space shared by all cells/rows (or just per row if not explicitly passed in)
+            if (!scratch) { scratch = {}; }
 
             var obj = {};
             JSAN.use('util.error'); obj.error = new util.error();
@@ -1833,7 +1836,7 @@ util.list.prototype = {
             try {
                 for (var i = 0; i < cols.length; i++) {
                     switch (typeof cols[i].render) {
-                        case 'function': try { values[i] = cols[i].render(my); } catch(E) { values[i] = error_value; obj.error.sdump('D_COLUMN_RENDER_ERROR',E); } break;
+                        case 'function': try { values[i] = cols[i].render(my,scratch); } catch(E) { values[i] = error_value; obj.error.sdump('D_COLUMN_RENDER_ERROR',E); } break;
                         case 'string' : cmd += 'try { ' + cols[i].render + '; values['+i+'] = v; } catch(E) { values['+i+'] = error_value; }'; break;
                         default: cmd += 'values['+i+'] = "??? '+(typeof cols[i].render)+'"; ';
                     }

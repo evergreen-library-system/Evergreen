@@ -660,16 +660,23 @@ sub _build_volume_list {
     $search_hash->{deleted} = 'f';
     my $e = new_editor();
 
-    my $vols = $e->search_asset_call_number([$search_hash, { 'order_by' => {
-        'acn' => 'oils_text_as_bytea(label_sortkey), oils_text_as_bytea(label), id, owning_lib'
-    } } ] );
+    my $vols = $e->search_asset_call_number([
+        $search_hash,
+        {
+            flesh => 1,
+            flesh_fields => { acn => ['prefix','suffix','label_class'] },
+            'order_by' => { 'acn' => 'oils_text_as_bytea(label_sortkey), oils_text_as_bytea(label), id, owning_lib' }
+        }
+    ]);
 
     my @volumes;
 
     for my $volume (@$vols) {
 
-        my $copies = $e->search_asset_copy(
-            { call_number => $volume->id , deleted => 'f' });
+        my $copies = $e->search_asset_copy([
+            { call_number => $volume->id , deleted => 'f' },
+            { flesh => 1, flesh_fields => { acp => ['parts'] } }
+        ]);
 
         $copies = [ sort { $a->barcode cmp $b->barcode } @$copies  ];
 
@@ -912,6 +919,8 @@ sub update_volume {
         owning_lib => $vol->owning_lib,
         record     => $vol->record,
         label      => $vol->label,
+        prefix     => $vol->prefix,
+        suffix     => $vol->suffix,
         deleted    => 'f',
         id         => {'!=' => $vol->id}
     });
@@ -1034,6 +1043,8 @@ sub batch_volume_transfer {
         my $existing_vol = $e->search_asset_call_number(
             {
                 label      => $vol->label, 
+                prefix     => $vol->prefix, 
+                suffix     => $vol->suffix, 
                 record     => $rec, 
                 owning_lib => $o_lib,
                 deleted    => 'f'
@@ -1114,15 +1125,15 @@ __PACKAGE__->register_method(
 );
 
 sub find_or_create_volume {
-    my( $self, $conn, $auth, $label, $record_id, $org_id ) = @_;
+    my( $self, $conn, $auth, $label, $record_id, $org_id, $prefix, $suffix, $label_class ) = @_;
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
     my ($vol, $evt, $exists) = 
-        OpenILS::Application::Cat::AssetCommon->find_or_create_volume($e, $label, $record_id, $org_id);
+        OpenILS::Application::Cat::AssetCommon->find_or_create_volume($e, $label, $record_id, $org_id, $prefix, $suffix, $label_class);
     return $evt if $evt;
     $e->rollback if $exists;
     $e->commit if $vol;
-    return $vol->id;
+    return { 'acn_id' => $vol->id, 'existed' => $exists };
 }
 
 

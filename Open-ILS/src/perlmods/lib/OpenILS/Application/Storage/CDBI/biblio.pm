@@ -22,5 +22,13 @@ biblio::record_note->columns( Essential => qw/id record value creator
 					editor create_date edit_date pub/ );
 #-------------------------------------------------------------------------------
 
+#-------------------------------------------------------------------------------
+package biblio::monograph_part;
+use base qw/biblio/;
+
+biblio::monograph_part->table( 'biblio_monograph_part' );
+biblio::monograph_part->columns( Essential => qw/id record label label_sortkey/ );
+#-------------------------------------------------------------------------------
+
 1;
 

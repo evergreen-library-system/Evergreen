@@ -6,6 +6,7 @@
 <!-- STYLESHEETS -->
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="/xul/server/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="/xul/server/skin/cat.css" type="text/css"?>
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <!-- LOCALIZATION -->
@@ -19,7 +20,6 @@
 
 <window id="cat_volume_copy_creator_win" 
     onload="try { my_init(); font_helper(); persist_helper(); } catch(E) { alert(E); }"
-    width="800" height="580" oils_persist="height width sizemode"
     title="&staff.cat.volume_copy_creator.title;"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -36,31 +36,69 @@
     <messagecatalog id="catStrings" src="/xul/server/locale/<!--#echo var='locale'-->/cat.properties" />
     <messagecatalog id="circStrings" src="/xul/server/locale/<!--#echo var='locale'-->/circ.properties" />
 
-    <vbox id="summary_box"/>
-    <hbox>
-        <hbox id="marc_cn"/>
-        <spacer flex="1" />
-        <button id="generate_barcodes" label="&staff.cat.volume_copy_creator.generate_barcodes.label;" oncommand="g.generate_barcodes();" accesskey="&staff.cat.volume_copy_creator.generate_barcodes.accesskey;"/>
-        <checkbox id="check_barcodes" label="&staff.cat.volume_copy_creator.check_barcodes.label;" oncommand="g.save_prefs();" accesskey="&staff.cat.volume_copy_creator.check_barcodes.accesskey;"/>
-        <checkbox id="print_labels" label="&staff.cat.volume_copy_creator.print_labels.label;"  oncommand="g.save_prefs();" accesskey="&staff.cat.volume_copy_creator.print_labels.accesskey;"/>
-    </hbox>
-    <groupbox flex="1" class="my_overflow">
-        <caption id="caption" label="&staff.cat.volume_copy_creator.label;"/>
-        <grid flex="1">
-            <columns> <column flex="0"/> <column flex="0"/> <column flex="1"/> </columns>
-            <rows id="rows">
-                <row>
-                    <label value="&staff.cat.volume_copy_creator.library_label.value;" style="font-weight: bold"/>
-                    <label value="&staff.cat.volume_copy_creator.num_of_volumes_label.value;" style="font-weight: bold"/>
-                </row>
-            </rows>
-        </grid>
-    </groupbox>
-    <hbox style="border-bottom: solid black thin">
-        <spacer flex="1" />
-        <button id="CreateWithDefaults" disabled="true" oncommand="g.stash_and_close('noedit');"/>
-        <button id="EditThenCreate" disabled="true" oncommand="g.stash_and_close('edit');"/>
-    </hbox>
+<vbox flex="1" class="my_overflow">
+    <vbox id="summary_box" oils_persist="height"/>
+    <splitter
+        collapse="before"
+        resize_before="flex"
+        resize_after="flex"
+        oils_persist="state hidden"
+        oils_persist_peers="summary_box main">
+        <grippy/>
+    </splitter>
+    <vbox id="main" oils_persist="height" flex="1">
+        <hbox flex="0">
+            <hbox id="batch_bar">
+                <label value="&staff.cat.volume_copy_creator.batch_bar;"/>
+                <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.classification;"/>
+                <hbox id="batch_class"/>
+                <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.prefix;"/>
+                <hbox id="batch_prefix"/>
+                <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.label.label;"
+                    accesskey="&staff.cat.volume_copy_creator.batch_bar.call_number.label.accesskey;" control="marc_cn_menulist"/>
+                <hbox id="marc_cn"/>
+                <label value="&staff.cat.volume_copy_creator.batch_bar.call_number.suffix;"/>
+                <hbox id="batch_suffix"/>
+                <hbox id="batch_button_box"/>
+            </hbox>
+            <spacer flex="1" />
+        </hbox>
+        <groupbox flex="1" class="my_overflow">
+            <caption id="caption" label="&staff.cat.volume_copy_creator.label;"/>
+            <grid flex="1">
+                <columns> <column flex="0"/> <column flex="0"/> <column flex="1"/> </columns>
+                <rows id="rows">
+                    <row>
+                        <label value="&staff.cat.volume_copy_creator.library_label.value;" style="font-weight: bold"/>
+                        <label value="&staff.cat.volume_copy_creator.num_of_volumes_label.value;" style="font-weight: bold"/>
+                    </row>
+                </rows>
+            </grid>
+        </groupbox>
+        <hbox style="border-bottom: solid black thin" flex="0">
+            <hbox id="misc_control_bar">
+                <button id="generate_barcodes"
+                    label="&staff.cat.volume_copy_creator.generate_barcodes.label;"
+                    oncommand="g.generate_barcodes();"
+                    accesskey="&staff.cat.volume_copy_creator.generate_barcodes.accesskey;"/>
+                <checkbox id="check_barcodes"
+                    label="&staff.cat.volume_copy_creator.check_barcodes.label;"
+                    oncommand="g.save_prefs();"
+                    accesskey="&staff.cat.volume_copy_creator.check_barcodes.accesskey;"/>
+                <checkbox id="print_labels"
+                    label="&staff.cat.volume_copy_creator.print_labels.label;"
+                    oncommand="g.save_prefs();"
+                    accesskey="&staff.cat.volume_copy_creator.print_labels.accesskey;"/>
+            </hbox>
+            <spacer flex="1"/>
+            <hbox id="non_unified_buttons">
+                <button id="CreateWithDefaults" disabled="true" oncommand="g.stash_and_close('noedit');"/>
+                <button id="EditThenCreate" disabled="true" oncommand="g.stash_and_close('edit');"/>
+            </hbox>
+            <button id="Create" disabled="true" oncommand="g.stash_and_close('unified_interface');"/>
+        </hbox>
+    </vbox>
+</vbox>
 
 </window>
 

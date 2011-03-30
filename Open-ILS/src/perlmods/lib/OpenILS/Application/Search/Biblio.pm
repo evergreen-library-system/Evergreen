@@ -446,7 +446,7 @@ sub fleshed_copy_retrieve_batch {
 		"open-ils.cstore.direct.asset.copy.search.atomic",
 		{ id => $ids },
 		{ flesh => 1, 
-		  flesh_fields => { acp => [ qw/ circ_lib location status stat_cat_entries / ] }
+		  flesh_fields => { acp => [ qw/ circ_lib location status stat_cat_entries parts / ] }
 		});
 }
 
@@ -494,7 +494,7 @@ sub fleshed_copy_retrieve2 {
                 flesh        => 2,
                 flesh_fields => {
                     acp => [
-                        qw/ location status stat_cat_entry_copy_maps notes age_protect /
+                        qw/ location status stat_cat_entry_copy_maps notes age_protect parts /
                     ],
                     ascecm => [qw/ stat_cat stat_cat_entry /],
                 }
@@ -2227,6 +2227,21 @@ sub fetch_cn {
 }
 
 __PACKAGE__->register_method(
+    method        => "fetch_fleshed_cn",
+    api_name      => "open-ils.search.callnumber.fleshed.retrieve",
+    authoritative => 1,
+    notes         => "retrieves a callnumber based on ID, fleshing prefix, suffix, and label_class",
+);
+
+sub fetch_fleshed_cn {
+	my( $self, $client, $id ) = @_;
+	my( $cn, $evt ) = $apputils->fetch_callnumber( $id, 1 );
+	return $evt if $evt;
+	return $cn;
+}
+
+
+__PACKAGE__->register_method(
     method    => "fetch_copy_by_cn",
     api_name  => 'open-ils.search.copies_by_call_number.retrieve',
     signature => q/
@@ -2341,6 +2356,52 @@ sub fetch_slim_record {
     }
     return \@res;
 }
+
+__PACKAGE__->register_method(
+    method    => 'rec_hold_parts',
+    api_name  => 'open-ils.search.biblio.record_hold_parts',
+    signature => q/
+       Returns a list of {label :foo, id : bar} objects for viable monograph parts for a given record
+	/
+);
+
+sub rec_hold_parts {
+	my( $self, $conn, $args ) = @_;
+
+    my $rec        = $$args{record};
+    my $mrec       = $$args{metarecord};
+    my $pickup_lib = $$args{pickup_lib};
+    my $e = new_editor();
+
+    my $query = {
+        select => {bmp => ['id', 'label']},
+        from => 'bmp',
+        where => {
+            id => {
+                in => {
+                    select => {'acpm' => ['part']},
+                    from => {acpm => {acp => {join => {acn => {join => 'bre'}}}}},
+                    where => {
+                        '+acp' => {'deleted' => 'f'},
+                        '+bre' => {id => $rec}
+                    },
+                    distinct => 1,
+                }
+            }
+        }
+    };
+
+    if(defined $pickup_lib) {
+        my $hard_boundary = $U->ou_ancestor_setting_value($pickup_lib, OILS_SETTING_HOLD_HARD_BOUNDARY);
+        if($hard_boundary) {
+            my $orgs = $e->json_query({from => ['actor.org_unit_descendants' => $pickup_lib, $hard_boundary]});
+            $query->{where}->{'+acp'}->{circ_lib} = [ map { $_->{id} } @$orgs ];
+        }
+    }
+
+    return $e->json_query($query);
+}
+
 
 
 

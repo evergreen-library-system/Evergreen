@@ -183,6 +183,8 @@ sub create_hold {
         return $e->die_event unless $e->allowed('TITLE_HOLDS',  $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_VOLUME ) {
         return $e->die_event unless $e->allowed('VOLUME_HOLDS', $porg);
+    } elsif ( $t eq OILS_HOLD_TYPE_MONOPART ) {
+        return $e->die_event unless $e->allowed('TITLE_HOLDS', $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_ISSUANCE ) {
         return $e->die_event unless $e->allowed('ISSUANCE_HOLDS', $porg);
     } elsif ( $t eq OILS_HOLD_TYPE_COPY ) {
@@ -1947,6 +1949,7 @@ The named fields in the hash are:
  pickup_lib   - destination for hold, fallback value for selection_ou
  selection_ou - ID of org_unit establishing hard and soft hold boundary settings
  issuanceid   - ID of the issuance to be held, required for Issuance level hold
+ partid       - ID of the monograph part to be held, required for monograph part level hold
  titleid      - ID (BRN) of the title to be held, required for Title level hold
  volume_id    - required for Volume level hold
  copy_id      - required for Copy level hold
@@ -2038,6 +2041,7 @@ sub do_possibility_checks {
     my($e, $patron, $request_lib, $depth, %params) = @_;
 
     my $issuanceid   = $params{issuanceid}      || "";
+    my $partid       = $params{partid}      || "";
     my $titleid      = $params{titleid}      || "";
     my $volid        = $params{volume_id};
     my $copyid       = $params{copy_id};
@@ -2080,6 +2084,12 @@ sub do_possibility_checks {
 
 		return _check_issuance_hold_is_possible(
 			$issuanceid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
+        );
+
+	} elsif( $hold_type eq OILS_HOLD_TYPE_MONOPART ) {
+
+		return _check_monopart_hold_is_possible(
+			$partid, $depth, $request_lib, $patron, $e->requestor, $pickup_lib, $selection_ou
         );
 
 	} elsif( $hold_type eq OILS_HOLD_TYPE_METARECORD ) {
@@ -2371,6 +2381,140 @@ sub _check_issuance_hold_is_possible {
     if (!$status[0]) {
         if (!defined($empty_ok)) {
             $empty_ok = $e->retrieve_config_global_flag('circ.holds.empty_issuance_ok');
+            $empty_ok = ($empty_ok and $U->is_true($empty_ok->enabled));
+        }
+
+        return (1,0) if ($empty_ok);
+    }
+    return @status;
+}
+
+sub _check_monopart_hold_is_possible {
+    my( $partid, $depth, $request_lib, $patron, $requestor, $pickup_lib, $selection_ou ) = @_;
+   
+    my $e = new_editor();
+    my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
+
+    # this monster will grab the id and circ_lib of all of the "holdable" copies for the given record
+    my $copies = $e->json_query(
+        { 
+            select => { acp => ['id', 'circ_lib'] },
+              from => {
+                acp => {
+                    acpm => {
+                        field  => 'target_copy',
+                        fkey   => 'id',
+                        filter => { part => $partid }
+                    },
+                    acpl => { field => 'id', filter => { holdable => 't'}, fkey => 'location' },
+                    ccs  => { field => 'id', filter => { holdable => 't'}, fkey => 'status'   }
+                }
+            }, 
+            where => {
+                '+acp' => { circulate => 't', deleted => 'f', holdable => 't', %org_filter }
+            },
+            distinct => 1
+        }
+    );
+
+    $logger->info("monopart possible found ".scalar(@$copies)." potential copies");
+
+    my $empty_ok;
+    if (!@$copies) {
+        $empty_ok = $e->retrieve_config_global_flag('circ.holds.empty_part_ok');
+        $empty_ok = ($empty_ok and $U->is_true($empty_ok->enabled));
+
+        return (
+            0, 0, [
+                new OpenILS::Event(
+                    "HIGH_LEVEL_HOLD_HAS_NO_COPIES",
+                    "payload" => {"fail_part" => "no_ultimate_items"}
+                )
+            ]
+        ) unless $empty_ok;
+
+        return (1, 0);
+    }
+
+    # -----------------------------------------------------------------------
+    # sort the copies into buckets based on their circ_lib proximity to 
+    # the patron's home_ou.  
+    # -----------------------------------------------------------------------
+
+    my $home_org = $patron->home_ou;
+    my $req_org = $request_lib->id;
+
+    $logger->info("prox cache $home_org " . $prox_cache{$home_org});
+
+    $prox_cache{$home_org} = 
+        $e->search_actor_org_unit_proximity({from_org => $home_org})
+        unless $prox_cache{$home_org};
+    my $home_prox = $prox_cache{$home_org};
+
+    my %buckets;
+    my %hash = map { ($_->to_org => $_->prox) } @$home_prox;
+    push( @{$buckets{ $hash{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
+
+    my @keys = sort { $a <=> $b } keys %buckets;
+
+
+    if( $home_org ne $req_org ) {
+      # -----------------------------------------------------------------------
+      # shove the copies close to the request_lib into the primary buckets 
+      # directly before the farthest away copies.  That way, they are not 
+      # given priority, but they are checked before the farthest copies.
+      # -----------------------------------------------------------------------
+        $prox_cache{$req_org} = 
+            $e->search_actor_org_unit_proximity({from_org => $req_org})
+            unless $prox_cache{$req_org};
+        my $req_prox = $prox_cache{$req_org};
+
+        my %buckets2;
+        my %hash2 = map { ($_->to_org => $_->prox) } @$req_prox;
+        push( @{$buckets2{ $hash2{$_->{circ_lib}} } }, $_->{id} ) for @$copies;
+
+        my $highest_key = $keys[@keys - 1];  # the farthest prox in the exising buckets
+        my $new_key = $highest_key - 0.5; # right before the farthest prox
+        my @keys2   = sort { $a <=> $b } keys %buckets2;
+        for my $key (@keys2) {
+            last if $key >= $highest_key;
+            push( @{$buckets{$new_key}}, $_ ) for @{$buckets2{$key}};
+        }
+    }
+
+    @keys = sort { $a <=> $b } keys %buckets;
+
+    my $title;
+    my %seen;
+    my @status;
+    OUTER: for my $key (@keys) {
+      my @cps = @{$buckets{$key}};
+
+      $logger->info("looking at " . scalar(@{$buckets{$key}}). " copies in proximity bucket $key");
+
+      for my $copyid (@cps) {
+
+         next if $seen{$copyid};
+         $seen{$copyid} = 1; # there could be dupes given the merged buckets
+         my $copy = $e->retrieve_asset_copy($copyid);
+         $logger->debug("looking at bucket_key=$key, copy $copyid : circ_lib = " . $copy->circ_lib);
+
+         unless($title) { # grab the title if we don't already have it
+            my $vol = $e->retrieve_asset_call_number(
+               [ $copy->call_number, { flesh => 1, flesh_fields => { bre => ['fixed_fields'], acn => ['record'] } } ] );
+            $title = $vol->record;
+         }
+   
+         @status = verify_copy_for_hold(
+            $patron, $requestor, $title, $copy, $pickup_lib, $request_lib);
+
+         last OUTER if $status[0];
+      }
+    }
+
+    if (!$status[0]) {
+        if (!defined($empty_ok)) {
+            $empty_ok = $e->retrieve_config_global_flag('circ.holds.empty_part_ok');
             $empty_ok = ($empty_ok and $U->is_true($empty_ok->enabled));
         }
 
@@ -2688,7 +2832,7 @@ sub uber_hold_impl {
 	$hold->usr($user->id);
 
 
-	my( $mvr, $volume, $copy, $issuance, $bre ) = find_hold_mvr($e, $hold, $args->{suppress_mvr});
+	my( $mvr, $volume, $copy, $issuance, $part, $bre ) = find_hold_mvr($e, $hold, $args->{suppress_mvr});
 
 	flesh_hold_notices([$hold], $e) unless $args->{suppress_notices};
 	flesh_hold_transits([$hold]) unless $args->{suppress_transits};
@@ -2697,12 +2841,15 @@ sub uber_hold_impl {
 
     my $resp = {
         hold           => $hold,
-        copy           => $copy,
-        volume         => $volume,
+        ($copy     ? (copy           => $copy)     : ()),
+        ($volume   ? (volume         => $volume)   : ()),
+        ($issuance ? (issuance       => $issuance) : ()),
+        ($part     ? (part           => $part)     : ()),
+        ($args->{include_bre}  ?  (bre => $bre)    : ()),
+        ($args->{suppress_mvr} ?  () : (mvr => $mvr)),
         %$details
     };
 
-    $resp->{mvr} = $mvr unless $args->{suppress_mvr};
     unless($args->{suppress_patron_details}) {
 	    my $card = $e->retrieve_actor_card($user->card) or return $e->event;
         $resp->{patron_first}   = $user->first_given_name,
@@ -2710,8 +2857,6 @@ sub uber_hold_impl {
         $resp->{patron_barcode} = $card->barcode,
         $resp->{patron_alias}   = $user->alias,
     };
-
-    $resp->{bre} = $bre if $args->{include_bre};
 
     return $resp;
 }
@@ -2729,6 +2874,7 @@ sub find_hold_mvr {
 	my $copy;
 	my $volume;
     my $issuance;
+    my $part;
 
 	if( $hold->hold_type eq OILS_HOLD_TYPE_METARECORD ) {
 		my $mr = $e->retrieve_metabib_metarecord($hold->target)
@@ -2751,6 +2897,14 @@ sub find_hold_mvr {
 
         $tid = $issuance->subscription->record_entry;
 
+    } elsif( $hold->hold_type eq OILS_HOLD_TYPE_MONOPART ) {
+        $part = $e->retrieve_biblio_monographic_part([
+            $hold->target,
+            {flesh => 1, flesh_fields => {bmp => [ qw/record/ ]}}
+        ]) or return $e->event;
+
+        $tid = $part->record;
+
 	} elsif( $hold->hold_type eq OILS_HOLD_TYPE_COPY ) {
 		$copy = $e->retrieve_asset_copy([
             $hold->target, 
@@ -2772,7 +2926,7 @@ sub find_hold_mvr {
 
     # TODO return metarcord mvr for M holds
 	my $title = $e->retrieve_biblio_record_entry($tid);
-	return ( ($no_mvr) ? undef : $U->record_to_mvr($title), $volume, $copy, $issuance, $title );
+	return ( ($no_mvr) ? undef : $U->record_to_mvr($title), $volume, $copy, $issuance, $part, $title );
 }
 
 __PACKAGE__->register_method(
@@ -3139,6 +3293,14 @@ sub hold_item_is_checked_out {
 
         $query->{where}->{'+acp'}->{call_number} = $hold_target;
 
+     } elsif($hold_type eq 'P') {
+
+        $query->{from}->{acp}->{acpm} = {
+            field  => 'target_copy',
+            fkey   => 'id',
+            filter => {part => $hold_target},
+        };
+
      } elsif($hold_type eq 'I') {
 
         $query->{from}->{acp}->{sitem} = {
@@ -3305,7 +3467,7 @@ sub rec_hold_count {
                 '-or' => [
                     {
                         '-and' => {
-                            hold_type => 'C',
+                            hold_type => [qw/C F R/],
                             target => {
                                 in => {
                                     select => {acp => ['id']},

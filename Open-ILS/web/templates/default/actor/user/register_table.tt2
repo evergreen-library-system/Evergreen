@@ -19,7 +19,12 @@
             </span>
         </td>
     </tr>
-    <tr fmclass='au' fmfield='passwd' required='required'/>
+    <tr fmclass='au' fmfield='passwd' required='required'>
+        <td/><td/><td/>
+        <td>
+            <button dojoType='dijit.form.Button' jsId='generatePassword' scrollOnFocus='false' tabIndex='-1'>Reset Password</button>
+        </td>
+    </tr>
     <tr fmclass='au' fmfield='passwd2' required='required'><td/><td>Verify Password</td><td/></tr>
     <tr fmclass='au' fmfield='first_given_name' required='required'/>
     <tr fmclass='au' fmfield='second_given_name'/>
