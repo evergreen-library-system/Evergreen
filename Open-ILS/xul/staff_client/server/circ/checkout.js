@@ -576,11 +576,10 @@ circ.checkout.prototype = {
             var dp = obj.controller.view.checkout_duedate_datepicker;
             var tp_date = tp.dateValue;
             var dp_date = dp.dateValue;
-            tp_date.setFullYear( dp_date.getFullYear() );
-            tp_date.setMonth( dp_date.getMonth() );
-            tp_date.setDate( dp_date.getDate() );
+            dp_date.setHours( tp_date.getHours() );
+            dp_date.setMinutes( tp_date.getMinutes() );
 
-            params.due_date = util.date.formatted_date(tp_date,'%{iso8601}');
+            params.due_date = util.date.formatted_date(dp_date,'%{iso8601}');
         }
 
         if (typeof obj.on_checkout == 'function') { obj.on_checkout(params); }
