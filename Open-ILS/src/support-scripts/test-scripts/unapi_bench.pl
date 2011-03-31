@@ -43,27 +43,68 @@ sub unapi {
     my @recs = @_;
     my $start = time();
 
-    my %records;
-    for my $rec_id (@recs) {
-        #my $data = $e->json_query({from => ['unapi.biblio_record_entry_feed', "{$rec_id}", 'marcxml', '{holdings_xml,acp}', 'CONS']})->[0];
-        my $data = $e->json_query({from => ['unapi.bre', $rec_id, 'marcxml', 'record', '{holdings_xml,acp}', 'CONS']})->[0];
-        my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'});
-        #$xml = $xml->documentElement->getElementsByLocalName('record')->[0];
-        $xml = $xml->documentElement;
-        my $attrs = get_bib_attrs($xml);
-        $records{$rec_id}{$_} = $attrs->{$_} for keys %$attrs;
+    my $ses1 = OpenSRF::AppSession->create('open-ils.cstore');
+    my $ses2 = OpenSRF::AppSession->create('open-ils.cstore');
+    my $ses3 = OpenSRF::AppSession->create('open-ils.cstore');
+    my ($req1, $req2, $req3);
 
-        my $rvols = [];
-        for my $volnode ($xml->findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]')) {
-            my $vol = {}; 
-            $vol->{copies} = [];
-            $vol->{label} = $volnode->getAttribute('label');
-            for my $copynode ($volnode->getElementsByLocalName('copy')) {
-                my $copy = {};   
-                $copy->{barcode} = $copynode->getAttribute('barcode');
-                push(@{$vol->{copies}}, $copy);
+    my %records;
+    while(@recs) {
+        my ($id1, $id2, $id3) = (pop @recs, pop @recs, pop @recs);
+
+        for my $r ($req1, $req2, $req3) {
+            if($r) {
+                my $data = $r->gather(1);
+                my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'});
+                $xml = $xml->documentElement;
+                my $attrs = get_bib_attrs($xml);
+                my $rec_id =  xptext($xml,'*[@tag="901"]/*[@code="c"]');
+                $records{$rec_id}{$_} = $attrs->{$_} for keys %$attrs;
+
+                my $rvols = [];
+                for my $volnode ($xml->findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]')) {
+                    my $vol = {}; 
+                    $vol->{copies} = [];
+                    $vol->{label} = $volnode->getAttribute('label');
+                    for my $copynode ($volnode->getElementsByLocalName('copy')) {
+                        my $copy = {};   
+                        $copy->{barcode} = $copynode->getAttribute('barcode');
+                        push(@{$vol->{copies}}, $copy);
+                    }
+                    push(@{$records{$rec_id}->{volumes}}, $vol);
+                }
+
             }
-            push(@{$records{$rec_id}->{volumes}}, $vol);
+        }
+
+        $req1 = ($id1) ? $ses1->request('open-ils.cstore.json_query', {from => ['unapi.bre', $id1, 'marcxml', 'record', '{holdings_xml,acp}', 'CONS']}) : undef;
+        $req2 = ($id2) ? $ses1->request('open-ils.cstore.json_query', {from => ['unapi.bre', $id2, 'marcxml', 'record', '{holdings_xml,acp}', 'CONS']}) : undef;
+        $req3 = ($id3) ? $ses1->request('open-ils.cstore.json_query', {from => ['unapi.bre', $id3, 'marcxml', 'record', '{holdings_xml,acp}', 'CONS']}) : undef;
+    }
+
+
+    for my $r ($req1, $req2, $req3) {
+        if($r) {
+            my $data = $r->gather(1);
+            my $xml = XML::LibXML->new->parse_string($data->{'unapi.bre'});
+            $xml = $xml->documentElement;
+            my $attrs = get_bib_attrs($xml);
+            my $rec_id =  xptext($xml,'*[@tag="901"]/*[@code="c"]');
+            $records{$rec_id}{$_} = $attrs->{$_} for keys %$attrs;
+
+            my $rvols = [];
+            for my $volnode ($xml->findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]')) {
+                my $vol = {}; 
+                $vol->{copies} = [];
+                $vol->{label} = $volnode->getAttribute('label');
+                for my $copynode ($volnode->getElementsByLocalName('copy')) {
+                    my $copy = {};   
+                    $copy->{barcode} = $copynode->getAttribute('barcode');
+                    push(@{$vol->{copies}}, $copy);
+                }
+                push(@{$records{$rec_id}->{volumes}}, $vol);
+            }
+
         }
     }
 
@@ -128,41 +169,54 @@ sub direct {
 
     my $start = time();
 
-    my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
-    my $cstore2 = OpenSRF::AppSession->create('open-ils.cstore');
-    my $bre_req = $cstore->request(
-        'open-ils.cstore.direct.biblio.record_entry.search', 
-        {id => \@recs},
-        {
-            flesh => 4, 
-            flesh_fields => {
-                bre => ['call_numbers'], 
-                acn => ['copies', 'uris'], 
-                acp => ['location', 'stat_cat_entries', 'parts'],
-                ascecm => ['stat_cat', 'stat_cat_entry'],
-                acpm => ['part']
-            }
+    my $ses1 = OpenSRF::AppSession->create('open-ils.cstore');
+    my $ses2 = OpenSRF::AppSession->create('open-ils.cstore');
+    my $ses3 = OpenSRF::AppSession->create('open-ils.cstore');
+    my ($req1, $req2, $req3);
+
+    my $query = {
+        flesh => 4, 
+        flesh_fields => {
+            bre => ['call_numbers'], 
+            acn => ['copies', 'uris'], 
+            acp => ['location', 'stat_cat_entries', 'parts'],
+            ascecm => ['stat_cat', 'stat_cat_entry'],
+            acpm => ['part']
         }
-        # in practice, ^-- this might be a separate, paged json_query
-        # note, not fleshing copy status since copy statuses will always be cached in the ML
-    );
+    };
 
-    my @data;
-    while (my $resp = $bre_req->recv) {
-        my $bre = $resp->content;
+    my $first = 1;
+    while(@recs) {
+        my ($id1, $id2, $id3) = (pop @recs, pop @recs, pop @recs);
 
-        my $cc_req = $cstore2->request(
-            'open-ils.cstore.json_query', 
-            {from => ['asset.record_copy_count', 1, $bre->id, 0]}
-        );
+        for my $r ($req1, $req2, $req3) {
+            last unless $r;
+            my $bre = $r->gather(1);
+            my $xml = XML::LibXML->new->parse_string($bre->marc)->documentElement;
+            my $attrs = get_bib_attrs($xml);
+            $records{$bre->id}{record} = $bre;
+            $records{$bre->id}{$_} = $attrs->{$_} for keys %$attrs;
+        }
 
+        $req1 = ($id1) ? $ses1->request('open-ils.cstore.direct.biblio.record_entry.search', {id => $id1}, $query) : undef;
+        $req2 = ($id2) ? $ses1->request('open-ils.cstore.direct.biblio.record_entry.search', {id => $id2}, $query) : undef;
+        $req3 = ($id3) ? $ses1->request('open-ils.cstore.direct.biblio.record_entry.search', {id => $id3}, $query) : undef;
+        
+        if($first) {
+            $records{$_}{counts} = $e->json_query({from => ['asset.record_copy_count', 1, $_, 0]})->[0] for @recs;
+            $first = 0;
+        }
+    }
+
+    for my $r ($req1, $req2, $req3) {
+        last unless $r;
+        my $bre = $r->gather(1);
         my $xml = XML::LibXML->new->parse_string($bre->marc)->documentElement;
         my $attrs = get_bib_attrs($xml);
         $records{$bre->id}{record} = $bre;
         $records{$bre->id}{$_} = $attrs->{$_} for keys %$attrs;
-
-        $records{$bre->id}->{counts} = $cc_req->gather(1);
     }
+
 
     my $duration = time() - $start;
 
