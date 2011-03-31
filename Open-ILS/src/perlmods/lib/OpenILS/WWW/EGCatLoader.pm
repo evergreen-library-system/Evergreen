@@ -173,6 +173,7 @@ sub load_common {
 
     $ctx->{referer} = $self->cgi->referer;
     $ctx->{path_info} = $self->cgi->path_info;
+    $ctx->{unparsed_uri} = $self->apache->unparsed_uri;
     $ctx->{opac_root} = $ctx->{base_path} . "/opac"; # absolute base url
     $ctx->{is_staff} = ($self->apache->headers_in->get('User-Agent') =~ 'oils_xulrunner');
 
@@ -252,7 +253,7 @@ sub load_login {
     # login succeeded, redirect as necessary
 
     my $acct = $self->apache->unparsed_uri;
-    $acct =~ s#/login#/myopac/main#;
+    $acct =~ s|/login|/myopac/main|;
 
     return $self->generic_redirect(
         $cgi->param('redirect_to') || $acct,
